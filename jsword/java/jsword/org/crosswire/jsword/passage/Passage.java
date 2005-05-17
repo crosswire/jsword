@@ -67,7 +67,7 @@ import java.util.Iterator;
  * <p>I considered giving Passages names to allow for a CLI that could
  * use named RangedPassages, however that is perhaps better left to another class.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -78,7 +78,7 @@ public interface Passage extends Key, Serializable
      * For example "10 verses in 4 books"
      * @return a String containing an overview of the verses
      */
-    public String getOverview();
+    String getOverview();
 
     /**
      * Returns the number of verses in this collection. Like Collection.size()
@@ -87,7 +87,7 @@ public interface Passage extends Key, Serializable
      * @return the number of Verses in this collection
      * @see Verse
      */
-    public int countVerses();
+    int countVerses();
 
     /**
      * Like countVerses() that counts VerseRanges instead of Verses
@@ -98,7 +98,7 @@ public interface Passage extends Key, Serializable
      * @return the number of VerseRanges in this collection
      * @see VerseRange
      */
-    public int countRanges(RestrictionType restrict);
+    int countRanges(RestrictionType restrict);
 
     /**
      * Ensures that there are a maximum of <code>count</code> Verses in
@@ -111,7 +111,7 @@ public interface Passage extends Key, Serializable
      * @return A new Passage conatining the remaining verses or null
      * @see Verse
      */
-    public Passage trimVerses(int count);
+    Passage trimVerses(int count);
 
     /**
      * Ensures that there are a maximum of <code>count</code> VerseRanges
@@ -125,13 +125,13 @@ public interface Passage extends Key, Serializable
      * @return A new Passage conatining the remaining verses or null
      * @see VerseRange
      */
-    public Passage trimRanges(int count, RestrictionType restrict);
+    Passage trimRanges(int count, RestrictionType restrict);
 
     /**
      * How many books are there in this Passage
      * @return The number of distinct books
      */
-    public int booksInPassage();
+    int booksInPassage();
 
     /**
      * How many chapters are there in a particular book in this Passage
@@ -139,7 +139,7 @@ public interface Passage extends Key, Serializable
      * @return The number of distinct chapters
      * @throws NoSuchVerseException if the book is invalid
      */
-    public int chaptersInPassage(int book) throws NoSuchVerseException;
+    int chaptersInPassage(int book) throws NoSuchVerseException;
 
     /**
      * How many chapters are there in a particular book in this Passage
@@ -149,7 +149,7 @@ public interface Passage extends Key, Serializable
      * @return The number of distinct chapters
      * @throws NoSuchVerseException if the book/chapter is invalid
      */
-    public int versesInPassage(int book, int chapter) throws NoSuchVerseException;
+    int versesInPassage(int book, int chapter) throws NoSuchVerseException;
 
     /**
      * Get a specific Verse from this collection
@@ -157,7 +157,7 @@ public interface Passage extends Key, Serializable
      * @return The Verse
      * @throws ArrayIndexOutOfBoundsException If the offset is out of range
      */
-    public Verse getVerseAt(int offset) throws ArrayIndexOutOfBoundsException;
+    Verse getVerseAt(int offset) throws ArrayIndexOutOfBoundsException;
 
     /**
      * Get a specific VerseRange from this collection
@@ -166,7 +166,7 @@ public interface Passage extends Key, Serializable
      * @return The Verse Range
      * @throws ArrayIndexOutOfBoundsException If the offset is out of range
      */
-    public VerseRange getRangeAt(int offset, RestrictionType restrict) throws ArrayIndexOutOfBoundsException;
+    VerseRange getRangeAt(int offset, RestrictionType restrict) throws ArrayIndexOutOfBoundsException;
 
     /**
      * Like verseElements() that iterates over VerseRanges instead of Verses.
@@ -175,33 +175,33 @@ public interface Passage extends Key, Serializable
      * @param restrict Do we break ranges over chapters
      * @return A list enumerator
      */
-    public Iterator rangeIterator(RestrictionType restrict);
+    Iterator rangeIterator(RestrictionType restrict);
 
     /**
      * Returns true if this collection contains all the specified Verse
      * @param that Verse or VerseRange that may exist in this Passage
      * @return true if this collection contains that
      */
-    public boolean contains(VerseBase that);
+    boolean contains(VerseBase that);
 
     /**
      * Add this Verse/VerseRange to this Passage
      * @param that The Verses to be removed from this Passage
      */
-    public void add(VerseBase that);
+    void add(VerseBase that);
 
     /**
      * Remove this Verse/VerseRange from this Passage
      * @param that The Verses to be removed from this Passage
      */
-    public void remove(VerseBase that);
+    void remove(VerseBase that);
 
     /**
      * Returns true if this Passage contains all of the verses in that Passage
      * @param that Passage to be checked for containment in this collection.
      * @return true if this reference contains all of the Verses in that Passage
      */
-    public boolean containsAll(Passage that);
+    boolean containsAll(Passage that);
 
     /**
      * To be compatible with humans we read/write ourselves to a file that a human can
@@ -210,7 +210,7 @@ public interface Passage extends Key, Serializable
      * @exception java.io.IOException If the file/network etc breaks
      * @exception NoSuchVerseException If the file was invalid
      */
-    public void readDescription(Reader in) throws IOException, NoSuchVerseException;
+    void readDescription(Reader in) throws IOException, NoSuchVerseException;
 
     /**
      * To be compatible with humans we read/write ourselves to a file that a human can
@@ -218,7 +218,7 @@ public interface Passage extends Key, Serializable
      * @param out The stream to write to
      * @exception java.io.IOException If the file/network etc breaks
      */
-    public void writeDescription(Writer out) throws IOException;
+    void writeDescription(Writer out) throws IOException;
 
     /**
      * For preformance reasons we may well want to hint to the Passage that we
@@ -228,17 +228,17 @@ public interface Passage extends Key, Serializable
      * optimizeReads() is a loss of time if you then persist in writing to the
      * Passage.
      */
-    public void optimizeReads();
+    void optimizeReads();
 
     /**
      * Event Listeners - Add Listener
      * @param li The listener to add
      */
-    public void addPassageListener(PassageListener li);
+    void addPassageListener(PassageListener li);
 
     /**
      * Event Listeners - Remove Listener
      * @param li The listener to remove
      */
-    public void removePassageListener(PassageListener li);
+    void removePassageListener(PassageListener li);
 }

@@ -27,7 +27,7 @@ import java.io.Serializable;
 /**
  * The PrettySerializingContentHandler uses a FormatType to control its output.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at gmail dot com]
  */
@@ -138,7 +138,7 @@ public final class FormatType implements Serializable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public final boolean equals(Object o)
+    public boolean equals(Object o)
     {
         return super.equals(o);
     }
@@ -147,7 +147,7 @@ public final class FormatType implements Serializable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#hashCode()
      */
-    public final int hashCode()
+    public int hashCode()
     {
         return super.hashCode();
     }

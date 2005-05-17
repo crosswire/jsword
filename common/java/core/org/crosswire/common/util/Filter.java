@@ -25,7 +25,7 @@ package org.crosswire.common.util;
 /**
  * A method of filtering Objects.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
@@ -36,5 +36,5 @@ public interface Filter
      * @param obj The object to test
      * @return boolean true if it passes, false otherwise
      */
-    public boolean test(Object obj);
+    boolean test(Object obj);
 }

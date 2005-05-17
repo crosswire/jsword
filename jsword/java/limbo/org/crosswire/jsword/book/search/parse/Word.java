@@ -27,7 +27,7 @@ package org.crosswire.jsword.book.search.parse;
  * extended by CommandWord and Word to provide interfaces that
  * actually do some good.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

@@ -29,11 +29,11 @@ import org.crosswire.jsword.passage.Key;
  * just wants it to work, but it would be good to have some way to get the
  * problems fixed, so as a start point we report them through this class.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class DataPolice
+public final class DataPolice
 {
     /**
      * Prevent instansiation

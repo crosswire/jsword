@@ -28,11 +28,11 @@ import org.crosswire.jsword.passage.Key;
 /**
  * The search.Searcher uses a List of Tokens to calculate a search.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public interface Query
 {
-    public Key find(Index index) throws BookException;
+    Key find(Index index) throws BookException;
 }

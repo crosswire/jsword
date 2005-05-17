@@ -33,11 +33,11 @@ import java.util.regex.Pattern;
  * The blur specifier is either ~ or ~n, where ~ means adjacent verses,
  * but ~n means to blur by n verses.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class QueryBuilder
+public final class QueryBuilder
 {
     /**
      * Prevent Instansiation
@@ -48,11 +48,12 @@ public class QueryBuilder
 
     /**
      * Tokenize a query into a list of Tokens.
-     * @param sought The text to parse
+     * @param aSearch The text to parse
      * @return A List of selected Tokens
      */
-    public static List tokenize(String sought)
+    public static List tokenize(String aSearch)
     {
+        String sought = aSearch;
         List output = new ArrayList();
         if (sought == null || sought.length()  == 0)
         {

@@ -40,11 +40,11 @@ import org.jdom.Text;
 /**
  * Some simple utilities to help working with OSIS classes.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class OSISUtil
+public final class OSISUtil
 {
     /**
      * Constant to help narrow down what we use "hi" for. In this case the bold tag

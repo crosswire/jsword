@@ -138,7 +138,7 @@ import org.crosswire.jsword.passage.Verse;
  * next. So it looks like I sort out the first 3. Time to reasurect that
  * VB code. Now is it a port or a re-write?
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author Mark Goodwin [mark at thorubio dot org]

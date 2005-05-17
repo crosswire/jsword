@@ -26,11 +26,11 @@ import org.crosswire.common.util.MsgBase;
 /**
  * Compile safe Msg resource settings.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class Msg extends MsgBase
+public final class Msg extends MsgBase
 {
     static final Msg DONE = new Msg("Job.Done"); //$NON-NLS-1$
 

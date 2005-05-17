@@ -32,7 +32,7 @@ import java.util.Set;
  * that the objects implement Comparable. Methods that take an index
  * to indicate an insertion point are ignored.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */

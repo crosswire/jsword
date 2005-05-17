@@ -25,7 +25,7 @@ package org.crosswire.jsword.passage;
  * A default implementation of KeyVisitor that does nothing, for use in
  * inheritance where you want to save space by not overriding all methods.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

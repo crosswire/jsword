@@ -33,7 +33,7 @@ import org.xml.sax.Locator;
  * This class provides for the formatted serialization of a SAX stream
  * to a <code>Writer</code>.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at gmail dot com]
  */
@@ -161,7 +161,7 @@ public class PrettySerializingContentHandler implements ContentHandler
 //            // Hack alert JTextPane cannot handle <br/>
 //            if (localname.equalsIgnoreCase("br")) //$NON-NLS-1$
 //            {
-                write(getTagEnd());
+            write(getTagEnd());
 //            }
 //            else
 //            {
@@ -170,21 +170,21 @@ public class PrettySerializingContentHandler implements ContentHandler
         }
 //        else
 //        {
-            if (formatting.isClassic())
-            {
-                emitWhitespace(depth);
-            }
+        if (formatting.isClassic())
+        {
+            emitWhitespace(depth);
+        }
 
-            write(getEndTagStart());
+        write(getEndTagStart());
 
-            write(decorateTagName(localname));
+        write(decorateTagName(localname));
 
-            if (formatting.isAnalytic())
-            {
-                emitWhitespace(depth);
-            }
+        if (formatting.isAnalytic())
+        {
+            emitWhitespace(depth);
+        }
 
-            write(getTagEnd());
+        write(getTagEnd());
 //        }
         pendingEndTag = false;
         lookingForChars = false;
@@ -363,7 +363,7 @@ public class PrettySerializingContentHandler implements ContentHandler
         '\t', '\t', '\t', '\t', '\t',
         '\t', '\t', '\t', '\t', '\t',
         '\t', '\t', '\t', '\t', '\t',
-        '\t', '\t', '\t', '\t', '\t'
+        '\t', '\t', '\t', '\t', '\t',
     };
 
     /**

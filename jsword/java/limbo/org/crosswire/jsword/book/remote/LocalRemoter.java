@@ -40,7 +40,7 @@ import org.jdom.input.SAXHandler;
  * Calls to execute() are implemented by simply directly calling the local
  * methods.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

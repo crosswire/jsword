@@ -24,7 +24,7 @@ package org.crosswire.jsword.book.search;
 /**
  * A SearchRequest consists of a string and modifiers for the search.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
@@ -33,10 +33,10 @@ public interface SearchRequest
     /**
      * @return the modifications to this SearchRequest
      */
-    public SearchModifier getSearchModifier();
+    SearchModifier getSearchModifier();
 
     /**
      * @return the request that is being operated upon
      */
-    public String getRequest();
+    String getRequest();
 }

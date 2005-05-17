@@ -29,7 +29,7 @@ import javax.swing.table.AbstractTableModel;
 /**
  * The RowTableModel defines the "model" behaviour for a RowTable.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  * @author Joe Walker [joe at eireneh dot com]

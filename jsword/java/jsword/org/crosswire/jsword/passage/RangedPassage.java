@@ -48,7 +48,7 @@ import java.util.TreeSet;
  * I'm not sure which will be best. So I'm starting with 1 and
  * optimizing later ... Maybe the best is to allow the user to choose?
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -400,7 +400,7 @@ public class RangedPassage extends AbstractPassage
         /* (non-Javadoc)
          * @see java.util.Iterator#hasNext()
          */
-        public final boolean hasNext()
+        public boolean hasNext()
         {
             return real.hasNext();
         }
@@ -408,7 +408,7 @@ public class RangedPassage extends AbstractPassage
         /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
-        public final Object next() throws NoSuchElementException
+        public Object next() throws NoSuchElementException
         {
             return real.next();
         }

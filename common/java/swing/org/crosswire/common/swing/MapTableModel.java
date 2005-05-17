@@ -38,7 +38,7 @@ import org.crosswire.common.util.Convert;
  * we are displaying it then don't expect the changes to be automatically
  * reflected in the JTable.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -98,10 +98,11 @@ public class MapTableModel extends AbstractTableModel
 
     /**
      * @param key
-     * @param value
+     * @param aValue
      */
-    public void add(String key, String value)
+    public void add(String key, String aValue)
     {
+        String value = aValue;
         if (value == null)
         {
             value = ""; //$NON-NLS-1$
@@ -253,7 +254,7 @@ public class MapTableModel extends AbstractTableModel
      */
     private String[] colNames = new String[]
     {
-        Msg.KEYS.toString(), Msg.VALUES.toString()
+        Msg.KEYS.toString(), Msg.VALUES.toString(),
     };
 
     /**

@@ -51,7 +51,7 @@ import org.crosswire.common.util.StringUtil;
  *
  * The values for the icons are a path which can be found as a resource.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  * @author Joe Walker [joe at eireneh dot com]

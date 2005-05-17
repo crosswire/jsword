@@ -35,11 +35,11 @@ import org.crosswire.jsword.passage.Key;
 /**
  * Various utilities used by different Sword classes.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class SwordUtil
+public final class SwordUtil
 {
     /**
      * Prevent Instansiation
@@ -52,11 +52,12 @@ public class SwordUtil
      * Read a RandomAccessFile
      * @param raf The file to read
      * @param offset The record to read
-     * @param size The number of bytes to read
+     * @param theSize The number of bytes to read
      * @return the read data
      */
-    protected static byte[] readRAF(RandomAccessFile raf, int offset, int size) throws IOException
+    protected static byte[] readRAF(RandomAccessFile raf, int offset, int theSize) throws IOException
     {
+        int size = theSize;
         if (offset + size > raf.length())
         {
             DataPolice.report("Need to reduce size to avoid EOFException. offset=" + offset + " size=" + size + " but raf.length=" + raf.length()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

@@ -27,7 +27,7 @@ import java.util.Iterator;
 /**
  * The base unit that is collected by a Passage.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -37,7 +37,7 @@ public interface VerseBase extends Cloneable, Comparable, Serializable, Key
      * Translate the Passage into a human readable string
      * @return The string representation
      */
-    public String getName();
+    String getName();
 
     /**
      * Translate the Passage into a human readable string, with the
@@ -47,14 +47,14 @@ public interface VerseBase extends Cloneable, Comparable, Serializable, Key
      * @param base The verse to use to cut down unnecessary output.
      * @return The string representation
      */
-    public String getName(Verse base);
+    String getName(Verse base);
 
     /**
      * The OSIS defined specification for this Verse/VerseRange.
      * Uses short books names, with "." as a verse part separator.
      * @return a String containing the OSIS description of the verses
      */
-    public String getOSISName();
+    String getOSISName();
 
     /**
      * Create an array of Verses.
@@ -62,7 +62,7 @@ public interface VerseBase extends Cloneable, Comparable, Serializable, Key
      * @return The array of verses that this makes up
      * @see #verseIterator()
      */
-    public Verse[] toVerseArray();
+    Verse[] toVerseArray();
 
     /**
      * Enumerate over the verses in this object. I remember thinking at some
@@ -75,5 +75,5 @@ public interface VerseBase extends Cloneable, Comparable, Serializable, Key
      * going to itterate over the whole array.
      * @return A verse iterator
      */
-    public Iterator verseIterator();
+    Iterator verseIterator();
 }

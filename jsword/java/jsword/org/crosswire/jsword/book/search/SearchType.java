@@ -26,7 +26,7 @@ import java.io.Serializable;
 /**
  * An Enumeration of the possible types of Searches.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
@@ -253,7 +253,7 @@ public abstract class SearchType implements Serializable
         NOT_WORDS,
         START_WORDS,
         SPELL_WORDS,
-        RANGE
+        RANGE,
     };
 
     /**

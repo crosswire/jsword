@@ -34,7 +34,7 @@ import java.util.Hashtable;
  * intra-word punctuation sets, so we will only need 1 byte per word
  * instead of 2.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

@@ -47,7 +47,7 @@ import org.jdom.Document;
  * <p> The contents of the About field are in rtf.
  * <p> \ is used as a continuation line.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Mark Goodwin [mark at thorubio dot org]
  * @author Joe Walker [joe at eireneh dot com]

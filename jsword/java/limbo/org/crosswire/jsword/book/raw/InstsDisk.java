@@ -30,7 +30,7 @@ import org.crosswire.jsword.passage.Verse;
  * InstsDisk is a Base implementation of the Insts interface using the in
  * on disk model (Disk).
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

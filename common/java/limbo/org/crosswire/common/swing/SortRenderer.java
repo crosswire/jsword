@@ -34,7 +34,7 @@ import javax.swing.table.TableColumn;
 /**
  * A SortRenderer indicates the column that is sorted by italizing it.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  * @author Joe Walker [joe at eireneh dot com]

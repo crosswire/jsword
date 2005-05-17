@@ -35,7 +35,7 @@ import javax.swing.text.Document;
  * A Document is a Container for text that supports editing and provides
  * notification of changes (serves as the model in an MVC relationship).
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

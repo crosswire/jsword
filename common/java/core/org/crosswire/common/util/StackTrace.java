@@ -31,7 +31,7 @@ import java.util.Enumeration;
  * makes use of the way exceptions print their stack straces, however
  * it is probably a safe enough assumption for the moment.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -207,7 +207,7 @@ public final class StackTrace
         /**
          * Are there more stack levels
          */
-         private int level;
+        private int level;
     }
 
     /**

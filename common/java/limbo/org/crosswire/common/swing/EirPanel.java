@@ -38,7 +38,7 @@ import javax.swing.JPanel;
  * EirPanel is an extension of JPanel that adds the ability to be visible in
  * a separate dialog.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

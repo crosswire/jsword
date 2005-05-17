@@ -34,7 +34,7 @@ import org.crosswire.jsword.passage.BibleInfo;
  * make up a Passage. The central interface is an Eumeration over the
  * words in the given verse.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

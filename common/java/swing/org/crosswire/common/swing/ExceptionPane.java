@@ -66,11 +66,11 @@ import org.crosswire.common.xml.XMLUtil;
 /**
  * A simple way of reporting problems to the user.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class ExceptionPane extends JPanel
+public final class ExceptionPane extends JPanel
 {
     /**
      * Use showExceptionDialog for the time being
@@ -568,33 +568,33 @@ public class ExceptionPane extends JPanel
     /**
     *
     */
-   private static final class ExceptionRunner implements Runnable
-   {
-       /**
-        * @param ev
-        */
-       public ExceptionRunner(ReporterEvent ev)
-       {
-           event = ev;
-       }
+    private static final class ExceptionRunner implements Runnable
+    {
+        /**
+         * @param ev
+         */
+        public ExceptionRunner(ReporterEvent ev)
+        {
+            event = ev;
+        }
 
-       /* (non-Javadoc)
-        * @see java.lang.Runnable#run()
-        */
-       public void run()
-       {
-           if (event.getSource() instanceof Component)
-           {
-               showExceptionDialog((Component) event.getSource(), event.getException());
-           }
-           else
-           {
-               showExceptionDialog(null, event.getException());
-           }
-       }
+        /* (non-Javadoc)
+         * @see java.lang.Runnable#run()
+         */
+        public void run()
+        {
+            if (event.getSource() instanceof Component)
+            {
+                showExceptionDialog((Component) event.getSource(), event.getException());
+            }
+            else
+            {
+                showExceptionDialog(null, event.getException());
+            }
+        }
 
-       private ReporterEvent event;
-   }
+        private ReporterEvent event;
+    }
 
    /**
      *

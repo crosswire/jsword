@@ -53,12 +53,12 @@ import org.crosswire.jsword.book.filter.gbf.GBFTags.UnderlineStartTag;
  * The best place to go for more information about the GBF spec that I have
  * found is: <a href="http://ebible.org/bible/gbf.htm">http://ebible.org/bible/gbf.htm</a>
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class GBFTagBuilders
+public final class GBFTagBuilders
 {
     /**
      * 

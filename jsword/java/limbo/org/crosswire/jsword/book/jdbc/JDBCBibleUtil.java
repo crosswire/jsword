@@ -28,7 +28,7 @@ import org.crosswire.common.util.Reporter;
  * JDBCBook was getting a bit long winded, so I took all the static
  * methods and parcled them off here.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

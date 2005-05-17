@@ -24,7 +24,7 @@ package org.crosswire.jsword.book;
 /**
  * The BibleDriver class allows creation of new Books.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -37,14 +37,14 @@ public interface BookDriver
      * you use this method.
      * @return A list of the known Bibles
      */
-    public Book[] getBooks();
+    Book[] getBooks();
 
     /**
      * Is this name capable of creating writing data in the correct format
      * as well as reading it?
      * @return true/false to indicate ability to write data
      */
-    public boolean isWritable();
+    boolean isWritable();
 
     /**
      * Create a new Book based on a source.
@@ -52,14 +52,14 @@ public interface BookDriver
      * @return The new WritableBible
      * @exception BookException If the name is not valid
      */
-    public Book create(Book source) throws BookException;
+    Book create(Book source) throws BookException;
 
     /**
      * Is this book able to be deleted.
      * @param dead the book to be deleted
      * @return whether the book can be deleted.
      */
-    public boolean isDeletable(Book dead);
+    boolean isDeletable(Book dead);
 
     /**
      * Delete this Book from the system.
@@ -67,10 +67,10 @@ public interface BookDriver
      * of Book etc, this method will throw up because most will be read-only.
      * @throws BookException If the Book can't be deleted.
      */
-    public void delete(Book dead) throws BookException;
+    void delete(Book dead) throws BookException;
 
     /**
      * A short name for this BookDriver
      */
-    public String getDriverName();
+    String getDriverName();
 }

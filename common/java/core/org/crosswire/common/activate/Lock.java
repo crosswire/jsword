@@ -24,11 +24,8 @@ package org.crosswire.common.activate;
 /**
  * This class only exists to disuade you from calling activate() directly on
  * an Activatable object.
- * 
- * <p><table border='1' cellPadding='3' cellSpacing='0'>
- * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

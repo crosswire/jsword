@@ -27,7 +27,7 @@ import java.io.Writer;
  * This class provides for the formatted and syntax highlighted
  * serialization of a SAX stream to a <code>Writer</code>.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at gmail dot com]
  */

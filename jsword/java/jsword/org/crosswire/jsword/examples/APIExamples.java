@@ -44,7 +44,7 @@ import org.xml.sax.SAXException;
 /**
  * All the methods in this class highlight some are of the API and how to use it.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

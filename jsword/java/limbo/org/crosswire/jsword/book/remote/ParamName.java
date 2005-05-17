@@ -26,7 +26,7 @@ import java.io.Serializable;
 /**
  * Some constants so that everyone can agree on the names for various methods.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

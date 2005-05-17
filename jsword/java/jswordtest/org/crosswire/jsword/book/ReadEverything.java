@@ -36,7 +36,7 @@ import org.jdom.JDOMException;
 /**
  * Test to check that all modules can be read.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

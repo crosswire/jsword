@@ -28,11 +28,11 @@ import org.crosswire.jsword.book.Book;
 /**
  * Factory method for creating a new Searcher.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class SearcherFactory
+public final class SearcherFactory
 {
     /**
      * Prevent Instansiation

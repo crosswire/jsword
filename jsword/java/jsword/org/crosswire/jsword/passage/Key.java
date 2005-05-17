@@ -30,7 +30,7 @@ import java.util.Iterator;
  * KeyLists can only store other Keys and simplified by making add() and remove()
  * return void and not a boolean.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -42,26 +42,26 @@ public interface Key extends Comparable, Cloneable
      * sensible rendering eg "Mat 3:1-4" and "Mar 1:1, 3, 5" and "3Jo, Jude"
      * @return a String containing a description of the Key
      */
-    public String getName();
+    String getName();
 
     /**
      * The OSIS defined specification for this Passage.
      * Uses short books names, with "." as a verse part separator.
      * @return a String containing the OSIS description of the verses
      */
-    public String getOSISName();
+    String getOSISName();
 
     /**
      * All keys have parents unless they are the root of a Key.
      * @return The parent of this tree, or null if this Key is the root.
      */
-    public Key getParent();
+    Key getParent();
 
     /**
      * Returns true if the receiver is a leaf node and can not have children.
      * Any attempt to add()/remove() wlll throw
      */
-    public boolean canHaveChildren();
+    boolean canHaveChildren();
 
     /**
      * Returns the number of elements in this set (its cardinality).  If this
@@ -69,67 +69,67 @@ public interface Key extends Comparable, Cloneable
      * <tt>Integer.MAX_VALUE</tt>.
      * @return the number of elements in this set (its cardinality).
      */
-    public int getChildCount();
+    int getChildCount();
 
     /**
      * Does this Passage have 0 members
      * @return <tt>true</tt> if this set contains no elements.
      */
-    public boolean isEmpty();
+    boolean isEmpty();
 
     /**
      * Returns <tt>true</tt> if this set contains the specified element.
      * @param key element whose presence in this set is to be tested.
      * @return <tt>true</tt> if this set contains the specified element.
      */
-    public boolean contains(Key key);
+    boolean contains(Key key);
 
     /**
      * @return an iterator over the elements in this set.
      */
-    public Iterator iterator();
+    Iterator iterator();
 
     /**
      * Adds the specified element to this set if it is not already present.
      * @param key element to be added to this set.
      * @throws NullPointerException if the specified element is null
      */
-    public void addAll(Key key);
+    void addAll(Key key);
 
     /**
      * Removes the specified elements from this set if it is present.
      * @param key object to be removed from this set, if present.
      * @throws NullPointerException if the specified element is null
      */
-    public void removeAll(Key key);
+    void removeAll(Key key);
 
     /**
      * Removes all but the specified element from this set.
      * @param key object to be left in this set.
      * @throws NullPointerException if the specified element is null
      */
-    public void retainAll(Key key);
+    void retainAll(Key key);
 
     /**
      * Removes all of the elements from this set (optional operation).
      * This set will be empty after this call returns (unless it throws an
      * exception).
      */
-    public void clear();
+    void clear();
 
     /**
      * Gets a key from a specific point in this list.
      * @param index The index of the Key to retrieve
      * @return The specified key
      */
-    public Key get(int index);
+    Key get(int index);
 
     /**
      * Reverse a Key into the position the key holds in the list
      * @param that The Key to find
      * @return The index of the key or -1 if the key is not in the list
      */
-    public int indexOf(Key that);
+    int indexOf(Key that);
 
     /**
      * Widen the range of the verses/keys in this list. This is primarily for
@@ -138,12 +138,12 @@ public interface Key extends Comparable, Cloneable
      * @param restrict How should we restrict the blurring?
      * @see Passage
      */
-    public void blur(int by, RestrictionType restrict);
+    void blur(int by, RestrictionType restrict);
 
     /**
      * This needs to be declared here so that it is visible as a method
      * on a derived Key.
      * @return A complete copy of ourselves
      */
-    public Object clone();
+    Object clone();
 }

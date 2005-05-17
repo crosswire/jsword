@@ -36,7 +36,7 @@ import org.jdom.Element;
  * StudyTool is-an extension to Bible that knows about the original
  * Greek/Hebrew in the form of Strongs numbers.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

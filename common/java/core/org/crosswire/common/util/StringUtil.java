@@ -31,7 +31,7 @@ import java.util.List;
  * A generic class of String utils.
  * It would be good if we could put this stuff in java.lang ...
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -478,11 +478,12 @@ public final class StringUtil
      * </pre>
      *
      * @param array  the array of values to join together, may be null
-     * @param separator  the separator character to use, null treated as ""
+     * @param aSeparator  the separator character to use, null treated as ""
      * @return the joined String, <code>null</code> if null array input
      */
-    public static String join(Object[] array, String separator)
+    public static String join(Object[] array, String aSeparator)
     {
+        String separator = aSeparator;
         if (array == null)
         {
             return null;

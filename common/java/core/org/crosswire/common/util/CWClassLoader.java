@@ -30,7 +30,7 @@ import java.net.URL;
  * in more places. This is needed so that ResourceBundle can find
  * resources that are not held in the same package as the class.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
@@ -136,8 +136,9 @@ public class CWClassLoader extends ClassLoader
      * Prefix the search with a package prefix, if not already.
      * Skip a leading '/' if present.
      */
-    private String adjustPackageSearch(String search)
+    private String adjustPackageSearch(String aSearch)
     {
+        String search = aSearch;
         // If it has embedded '/' there is nothing to do.
         if (search.indexOf('/', 1) == -1)
         {
@@ -167,8 +168,9 @@ public class CWClassLoader extends ClassLoader
     /**
      * Change all but a leading '/' to '.'
      */
-    private String adjustPathSearch(String search)
+    private String adjustPathSearch(String aSearch)
     {
+        String search = aSearch;
         if (search.indexOf('/', 1) != -1)
         {
             // Change all but a leading '/' to '.'

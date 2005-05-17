@@ -27,11 +27,11 @@ import java.lang.reflect.Method;
 /**
  * Various utilities for running introspected methods.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class ReflectionUtil
+public final class ReflectionUtil
 {
     /**
      * Prevent Instansiation
@@ -63,7 +63,7 @@ public class ReflectionUtil
         // because it does not cope with inheritance (at least in the MVM)
         // so we have to search ourselves...
         Method[] testMethods = clazz.getMethods();
-        outer:
+    outer:
         for (int i = 0; i < testMethods.length; i++)
         {
             // This this the right method name?
@@ -122,7 +122,7 @@ public class ReflectionUtil
         // because it does not cope with inheritance (at least in the MVM)
         // so we have to search ourselves...
         Method[] testMethods = clazz.getMethods();
-        outer:
+    outer:
         for (int i = 0; i < testMethods.length; i++)
         {
             // This this the right method name?

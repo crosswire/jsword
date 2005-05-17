@@ -44,7 +44,7 @@ import org.crosswire.common.util.StringUtil;
  * <p>Importantly, this class takes care of Serialization in a general yet
  * optimized way. I think I am going to have a look at replacement here.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -1120,7 +1120,7 @@ public abstract class AbstractPassage implements Passage
         /* (non-Javadoc)
          * @see java.util.Iterator#hasNext()
          */
-        public final boolean hasNext()
+        public boolean hasNext()
         {
             return next_range != null;
         }
@@ -1128,7 +1128,7 @@ public abstract class AbstractPassage implements Passage
         /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
-        public final Object next() throws NoSuchElementException
+        public Object next() throws NoSuchElementException
         {
             Object retcode = next_range;
 
@@ -1163,7 +1163,7 @@ public abstract class AbstractPassage implements Passage
             Verse start = next_verse;
             Verse end = next_verse;
 
-            findnext:
+        findnext:
             while (true)
             {
                 if (!it.hasNext())

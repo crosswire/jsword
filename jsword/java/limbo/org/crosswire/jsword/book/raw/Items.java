@@ -28,7 +28,7 @@ import java.util.Iterator;
  * Items is a list of words, puncuation marks or other bits of data that
  * can be indexed by number. 
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

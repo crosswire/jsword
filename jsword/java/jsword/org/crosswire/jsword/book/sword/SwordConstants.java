@@ -27,13 +27,13 @@ import org.crosswire.jsword.passage.Verse;
 /**
  * A Constants to help the SwordBookDriver to read Sword format data.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Mark Goodwin [mark at thorubio dot org]
  * @author Joe Walker [joe at eireneh dot com]
  * @author The Sword project (don't know who - no credits in original files (canon.h))
  */
-public class SwordConstants
+public final class SwordConstants
 {
     /**
      * Prevent Instansiation
@@ -187,7 +187,7 @@ public class SwordConstants
             351, 381, 418, 429, 443, 454, 497,
             648, 680, 693, 702, 769, 822, 828,
             877, 890, 905, 909, 919, 921, 926,
-            934, 938, 942, 946, 949, 964
+            934, 938, 942, 946, 949, 964,
         };
 
         short[] bksnt =
@@ -196,7 +196,7 @@ public class SwordConstants
             123, 140, 157, 171, 178, 185, 190,
             195, 201, 205, 212, 217, 221, 223,
             237, 243, 249, 253, 259, 261, 263,
-            265
+            265,
         };
 
         bks[SwordConstants.TESTAMENT_OLD] = bksot;
@@ -342,7 +342,7 @@ public class SwordConstants
             23751, 23767, 23788, 23789, 23805, 23829, 23830,
             23852, 23866, 23877, 23892, 23904, 23920, 23935,
             23959, 23977, 23990, 24008, 24023, 24033, 24055,
-            24056, 24071, 24089, 24108
+            24056, 24071, 24089, 24108,
         };
 
         short[] cpsnt =
@@ -388,7 +388,7 @@ public class SwordConstants
             7819, 7820, 7841, 7871, 7894, 7906, 7921,
             7939, 7957, 7971, 7993, 8005, 8025, 8043,
             8062, 8083, 8092, 8114, 8133, 8158, 8180,
-            8196, 8224
+            8196, 8224,
         };
 
         cps[SwordConstants.TESTAMENT_OLD] = cpsot;

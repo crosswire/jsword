@@ -28,7 +28,7 @@ import org.xml.sax.Attributes;
  * THML Tag interface - there should be one implementation of this class for
  * each THML tag.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -39,7 +39,7 @@ public interface Tag
      * For example the Tag that represents the &gtfont ...> element would return
      * the string "font".
      */
-    public String getTagName();
+    String getTagName();
 
     /**
      * Make changes to the specified OSIS element given the attributes passed
@@ -48,5 +48,5 @@ public interface Tag
      * @param attrs The source document attributes.
      * @return the element to which content is attached
      */
-    public Element processTag(Element ele, Attributes attrs);
+    Element processTag(Element ele, Attributes attrs);
 }

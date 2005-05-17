@@ -28,7 +28,7 @@ import org.crosswire.jsword.passage.Key;
 /**
  * An and token specifies that a result needs to be in both the left and the right token.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */

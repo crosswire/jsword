@@ -29,7 +29,7 @@ import java.util.Iterator;
  * contained instances of DistinctPassage and RangedPassage and selects
  * the fastest implementation for each fo its methods from the 3 available.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

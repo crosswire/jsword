@@ -38,7 +38,7 @@ import org.crosswire.common.util.Logger;
  * be valid, although some versions may not return any text for verses
  * that they consider to be mis-translated in some way.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -883,7 +883,7 @@ public final class VerseRange implements VerseBase
      * @param verseCount The number of verses
      * @return The last verse in the range
      */
-    private static final Verse calcEnd(Verse start, int verseCount)
+    private static Verse calcEnd(Verse start, int verseCount)
     {
         return start.add(verseCount - 1);
     }
@@ -894,7 +894,7 @@ public final class VerseRange implements VerseBase
      * @param end The last verse in the range
      * @return The number of verses. Always >= 1.
      */
-    private static final int calcVerseCount(Verse start, Verse end)
+    private static int calcVerseCount(Verse start, Verse end)
     {
         return end.subtract(start) + 1;
     }

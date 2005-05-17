@@ -27,7 +27,7 @@ import java.util.EventListener;
  * Implement WorkListener and call MutableBook.addProgressListener()
  * to recieve ProgressEvents when ever we make progress.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -38,5 +38,5 @@ public interface WorkListener extends EventListener
      * The amount of progress is indicated by ev.getPercent()
      * @param ev Describes the progress
      */
-    public void workProgressed(WorkEvent ev);
+    void workProgressed(WorkEvent ev);
 }

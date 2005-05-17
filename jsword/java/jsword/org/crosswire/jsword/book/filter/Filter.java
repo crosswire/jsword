@@ -28,7 +28,7 @@ import org.crosswire.jsword.passage.Key;
 /**
  * A generic interface for things that can convert a String into OSIS data.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -40,5 +40,5 @@ public interface Filter
      * @param plain The encoded text
      * @return a List of OSIS Elements
      */
-    public List toOSIS(Key key, String plain) throws FilterException;
+    List toOSIS(Key key, String plain) throws FilterException;
 }

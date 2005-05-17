@@ -31,7 +31,7 @@ import javax.swing.border.Border;
 /**
  * EdgeBorder.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker
  * @author Claude Duguay Copyright (c) 1998
@@ -62,10 +62,14 @@ public class EdgeBorder implements Border, SwingConstants
     {
         switch (edge)
         {
-        case SOUTH: return new Insets(0, 0, 2, 0);
-        case EAST: return new Insets(0, 2, 0, 0);
-        case WEST: return new Insets(0, 0, 0, 2);
-        default: return new Insets(2, 0, 0, 0);
+        case SOUTH:
+            return new Insets(0, 0, 2, 0);
+        case EAST:
+            return new Insets(0, 2, 0, 0);
+        case WEST:
+            return new Insets(0, 0, 0, 2);
+        default:
+            return new Insets(2, 0, 0, 0);
         }
     }
 

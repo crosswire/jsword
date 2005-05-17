@@ -28,7 +28,7 @@ import org.crosswire.jsword.passage.NoSuchKeyException;
 /**
  * An index into a body of text that knows what words exist and where they are.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -44,7 +44,7 @@ public interface Index
      * @param query The text to search for
      * @return The references to the word
      */
-    public Key find(String query) throws BookException;
+    Key find(String query) throws BookException;
 
     /**
      * An index must be able to create KeyLists for users in a similar way to
@@ -54,7 +54,7 @@ public interface Index
      * @throws NoSuchKeyException If the string can not be turned into a Key
      * @see org.crosswire.jsword.passage.KeyFactory#getKey(String)
      */
-    public Key getKey(String name) throws NoSuchKeyException;
+    Key getKey(String name) throws NoSuchKeyException;
 
     /**
      * Set any modifier for the current and subsequent search.
@@ -62,11 +62,11 @@ public interface Index
      *
      * @param modifier how to modify the search and its results.
      */
-    public void setSearchModifier(SearchModifier modifier);
+    void setSearchModifier(SearchModifier modifier);
 
     /**
      * Get the current SearchModifier. If there is none then return null.
      * @return the current search modifier, or null if there is not one.
      */
-    public SearchModifier getSearchModifier();
+    SearchModifier getSearchModifier();
 }

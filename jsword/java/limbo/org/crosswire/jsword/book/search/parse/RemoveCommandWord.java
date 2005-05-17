@@ -28,7 +28,7 @@ import org.crosswire.jsword.passage.Key;
  * Alter the Passage by calling removeAll with a Passage grabbed from the next
  * word in the search string.
  *  
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

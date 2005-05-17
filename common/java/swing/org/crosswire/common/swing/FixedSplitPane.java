@@ -54,7 +54,7 @@ import javax.swing.JSplitPane;
  * Since the preferred way of managing the sizes of containers is not with
  * pixel counts, the solution here is to set the preferred size to zero.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */

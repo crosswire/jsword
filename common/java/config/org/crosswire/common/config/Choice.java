@@ -35,7 +35,7 @@ import org.jdom.Element;
  * <li>provide a GUI editor for itself</li>
  * </ul>
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -44,38 +44,38 @@ public interface Choice
     /**
      * String value to associate with the name (key)
      */
-    public void init(Element option, ResourceBundle configResources) throws StartupException;
+    void init(Element option, ResourceBundle configResources) throws StartupException;
 
     /**
      * The full path of the option.
      * @return String The path string as supplied in config.properties
      */
-    public String getFullPath();
+    String getFullPath();
 
     /**
      * Sets the full path of the option.
      * @param fullPath The path string as supplied in config.properties
      */
-    public void setFullPath(String fullPath);
+    void setFullPath(String fullPath);
 
     /**
      * The type by which UIs can pick an appropriate editor
      * @return String The type string as supplied in config.xml
      */
-    public String getType();
+    String getType();
 
     /**
      * The class that this Choice works on. Used to decide how to display the
      * choice to the user.
      * @return The Class that this Choice works using.
      */
-    public Class getConvertionClass();
+    Class getConvertionClass();
 
     /**
      * String value to associate with the name (key)
      * @return value of this Choice
      */
-    public String getString();
+    String getString();
 
     /**
      * String value to associate with this Field. This method can
@@ -83,19 +83,19 @@ public interface Choice
      * point. The Config dialog ought to cope with any errors.
      * @param value The new value for this Choice
      */
-    public void setString(String value) throws Exception;
+    void setString(String value) throws Exception;
 
     /**
      * Gets a brief description of what is going on
      * @return Some help text
      */
-    public String getHelpText();
+    String getHelpText();
 
     /**
      * Sets a brief description of what is going on
      * @param helptext Some help text
      */
-    public void setHelpText(String helptext);
+    void setHelpText(String helptext);
 
     /**
      * Is this Choice OK to write out to a file, or should we use settings
@@ -103,7 +103,7 @@ public interface Choice
      * typical use of this is for password configuration.
      * @return True if it is safe to store the value in a config file.
      */
-    public boolean isSaveable();
+    boolean isSaveable();
 
     /**
      * Sometimes we need to ensure that we configure items in a certain
@@ -113,47 +113,47 @@ public interface Choice
      * being PRIORITY_NORMAL
      * @return A priority level
      */
-    public int getPriority();
+    int getPriority();
 
     /**
      * Do we need to restart the program in order for this change to have
      * effect?
      * @return True if a restart is required
      */
-    public boolean requiresRestart();
+    boolean requiresRestart();
 
     /**
      * The highest level priority generally for system level stuff
      */
-    public static final int PRIORITY_SYSTEM = 10;
+    int PRIORITY_SYSTEM = 10;
 
     /**
      * The priority level for important but non system level stuff
      */
-    public static final int PRIORITY_EXTENDER = 9;
+    int PRIORITY_EXTENDER = 9;
 
     /**
      * The priority level for important but non system level stuff
      */
-    public static final int PRIORITY_HIGHEST = 8;
+    int PRIORITY_HIGHEST = 8;
 
     /**
      * The priority level for normal use
      */
-    public static final int PRIORITY_NORMAL = 6;
+    int PRIORITY_NORMAL = 6;
 
     /**
      * The priority level for creating items for later configuring
      */
-    public static final int PRIORITY_CTOR = 4;
+    int PRIORITY_CTOR = 4;
 
     /**
      * The priority level for configuring previously created items
      */
-    public static final int PRIORITY_ACCESSOR = 2;
+    int PRIORITY_ACCESSOR = 2;
 
     /**
      * The lowest level priority generally for system level stuff
      */
-    public static final int PRIORITY_LOWEST = 0;
+    int PRIORITY_LOWEST = 0;
 }

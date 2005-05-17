@@ -28,7 +28,7 @@ import org.xml.sax.Attributes;
 /**
  * THML Tag to process the li element.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

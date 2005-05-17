@@ -41,7 +41,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * <a href="http://www.ccel.org/ThML/ThML1.04.htm">http://www.ccel.org/ThML/ThML1.04.htm</a>
  * to work out what the tags meant.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -174,49 +174,49 @@ public class CustomHandler extends DefaultHandler
 
     static {
         Tag[] tags = new Tag[]
-            {
-                new ATag(),
-                new BlockquoteTag(),
-                new BrTag(),
-                new BTag(),
-                new CenterTag(),
-                new CitationTag(),
-                new DivTag(),
-                new ForeignTag(),
-                new FontTag(),
-                new HrTag(),
-                new ITag(),
-                new LiTag(),
-                new NoteTag(),
-                new NameTag(),
-                new OlTag(),
-                new PTag(),
-                new PbTag(),
-                new RootTag(),
-                new ScriptureTag(),
-                new ScripRefTag(),
-                new SmallTag(),
-                new SupTag(),
-                new SyncTag(),
-                new TableTag(),
-                new TdTag(),
-                new TermTag(),
-                new ThTag(),
-                new TrTag(),
-                new UTag(),
-                new UlTag(),
-                new AliasTag("h1", new BTag()), //$NON-NLS-1$
-                new AliasTag("h2", new BTag()), //$NON-NLS-1$
-                new AliasTag("h3", new BTag()), //$NON-NLS-1$
-                new AliasTag("h4", new BTag()), //$NON-NLS-1$
-                new AliasTag("dl", new UlTag()), //$NON-NLS-1$
-                new AliasTag("dd", new LiTag()), //$NON-NLS-1$
-                new AliasTag("dt", new LiTag()), //$NON-NLS-1$
-                new IgnoreTag("img"), //$NON-NLS-1$
-                new IgnoreTag("span"), //$NON-NLS-1$
-                new IgnoreTag("dir"), //$NON-NLS-1$
-                new IgnoreTag("pre"), //$NON-NLS-1$
-            };
+        {
+            new ATag(),
+            new BlockquoteTag(),
+            new BrTag(),
+            new BTag(),
+            new CenterTag(),
+            new CitationTag(),
+            new DivTag(),
+            new ForeignTag(),
+            new FontTag(),
+            new HrTag(),
+            new ITag(),
+            new LiTag(),
+            new NoteTag(),
+            new NameTag(),
+            new OlTag(),
+            new PTag(),
+            new PbTag(),
+            new RootTag(),
+            new ScriptureTag(),
+            new ScripRefTag(),
+            new SmallTag(),
+            new SupTag(),
+            new SyncTag(),
+            new TableTag(),
+            new TdTag(),
+            new TermTag(),
+            new ThTag(),
+            new TrTag(),
+            new UTag(),
+            new UlTag(),
+            new AliasTag("h1", new BTag()), //$NON-NLS-1$
+            new AliasTag("h2", new BTag()), //$NON-NLS-1$
+            new AliasTag("h3", new BTag()), //$NON-NLS-1$
+            new AliasTag("h4", new BTag()), //$NON-NLS-1$
+            new AliasTag("dl", new UlTag()), //$NON-NLS-1$
+            new AliasTag("dd", new LiTag()), //$NON-NLS-1$
+            new AliasTag("dt", new LiTag()), //$NON-NLS-1$
+            new IgnoreTag("img"), //$NON-NLS-1$
+            new IgnoreTag("span"), //$NON-NLS-1$
+            new IgnoreTag("dir"), //$NON-NLS-1$
+            new IgnoreTag("pre"), //$NON-NLS-1$
+        };
         for (int i = 0; i < tags.length; i++)
         {
             Tag t = tags[i];

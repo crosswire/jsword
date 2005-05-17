@@ -62,7 +62,7 @@ import org.crosswire.jsword.passage.Verse;
  * A search engine - This is a stepping stone on the way to allowing use of
  * Lucene in place of our search engine.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

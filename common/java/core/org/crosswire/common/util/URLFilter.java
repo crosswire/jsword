@@ -24,7 +24,7 @@ package org.crosswire.common.util;
 /**
  * This is the URL equivalent of FilenameFilter in the java.io package.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @see java.io.FilenameFilter
@@ -36,5 +36,5 @@ public interface URLFilter
      * @param name the name of the file.
      * @return <code>true</code> if and only if the name should be included in the file list; <code>false</code> otherwise.
      */
-    public boolean accept(String name);
+    boolean accept(String name);
 }

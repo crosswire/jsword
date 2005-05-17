@@ -34,7 +34,7 @@ import org.crosswire.common.util.EventListenerList;
  * This maintains a dated list of objects and
  * a current navigation list.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at gmail dot com]
  */
@@ -55,13 +55,14 @@ public class History
     /**
      * Make a particular element in the navigation list the current
      * item in history.
-     * @param i the index of item to make the last one in the back list,
+     * @param index the index of item to make the last one in the back list,
      *          -1 (or lower) will put everything in the forward list.
      *          Indexes beyond the end of the list will put everything
      *          in the back list.
      */
-    public Object select(int i)
+    public Object select(int index)
     {
+        int i = index;
         // Adjust to be 1 based
         int size = nav.size();
         if (i > size)

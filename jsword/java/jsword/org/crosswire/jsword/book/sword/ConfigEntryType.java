@@ -75,7 +75,7 @@ import org.crosswire.jsword.book.basic.AbstractBookMetaData;
  *     }
  *     </pre>
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com\
@@ -190,7 +190,7 @@ public class ConfigEntryType implements Serializable
         {
             "BOOK", //$NON-NLS-1$
             "CHAPTER", //$NON-NLS-1$
-            "VERSE" //$NON-NLS-1$
+            "VERSE", //$NON-NLS-1$
         }));
 
         /**
@@ -489,7 +489,7 @@ public class ConfigEntryType implements Serializable
         {
             DIRECTION_LTOR,
             DIRECTION_RTOL,
-            DIRECTION_BIDI
+            DIRECTION_BIDI,
         }));
 
         /**
@@ -562,7 +562,7 @@ public class ConfigEntryType implements Serializable
             "Public Domain", //$NON-NLS-1$
             "Copyrighted; Free non-commercial distribution", //$NON-NLS-1$
             "Copyrighted; Permission to distribute granted to CrossWire", //$NON-NLS-1$
-            "Copyrighted" //$NON-NLS-1$
+            "Copyrighted", //$NON-NLS-1$
         }));
 
         /**
@@ -645,7 +645,7 @@ public class ConfigEntryType implements Serializable
         private final Set choices = new HashSet(Arrays.asList(new String[]
         {
             "Latin-1", //$NON-NLS-1$
-            "UTF-8" //$NON-NLS-1$
+            "UTF-8", //$NON-NLS-1$
         }));
 
         /**
@@ -778,7 +778,7 @@ public class ConfigEntryType implements Serializable
             {
                 return false;
             }
-    }
+        }
 
         /**
          * Serialization ID
@@ -904,7 +904,7 @@ public class ConfigEntryType implements Serializable
             "RawLD", //$NON-NLS-1$
             "RawLD4", //$NON-NLS-1$
             "zLD", //$NON-NLS-1$
-            "RawGenBook" //$NON-NLS-1$
+            "RawGenBook", //$NON-NLS-1$
         }));
 
         /**
@@ -1011,12 +1011,12 @@ public class ConfigEntryType implements Serializable
          * The array of choices.
          */
         private final String[] choiceArray = new String[]
-            {
-                "Plaintext", //$NON-NLS-1$
-                "GBF", //$NON-NLS-1$
-                "ThML", //$NON-NLS-1$
-                "OSIS", //$NON-NLS-1$
-            };
+        {
+            "Plaintext", //$NON-NLS-1$
+            "GBF", //$NON-NLS-1$
+            "ThML", //$NON-NLS-1$
+            "OSIS", //$NON-NLS-1$
+        };
         /**
          * The set of choices.
          */
@@ -1443,50 +1443,50 @@ public class ConfigEntryType implements Serializable
 
     private static final ConfigEntryType[] VALUES =
     {
-                    ABOUT,
-                    BLOCK_COUNT,
-                    BLOCK_TYPE,
-                    CATEGORY,
-                    CIPHER_KEY,
-                    COMPRESS_TYPE,
-                    COPYRIGHT,
-                    COPYRIGHT_CONTACT_ADDRESS,
-                    COPYRIGHT_CONTACT_EMAIL,
-                    COPYRIGHT_CONTACT_NAME,
-                    COPYRIGHT_DATE,
-                    COPYRIGHT_HOLDER,
-                    COPYRIGHT_NOTES,
-                    DATA_PATH,
-                    DESCRIPTION,
-                    DIRECTION,
-                    DISPLAY_LEVEL,
-                    DISTRIBUTION_LICENSE,
-                    DISTRIBUTION_NOTES,
-                    DISTRIBUTION_SOURCE,
-                    ENCODING,
-                    GLOBAL_OPTION_FILTER,
-                    GLOSSARY_FROM,
-                    GLOSSARY_TO,
-                    HISTORY,
-                    INSTALL_SIZE,
-                    FEATURE,
-                    FONT,
-                    LANG,
-                    LCSH,
-                    MOD_DRV,
-                    MINIMUM_VERSION,
-                    OBSOLETES,
-                    SOURCE_TYPE,
-                    SWORD_VERSION_DATE,
-                    TEXT_SOURCE,
-                    VERSION,
-                    OSIS_Q_TO_TICK,
-                    INITIALS,
-                    KEY,
-                    LANGUAGE,
-                    LANGUAGE_FROM,
-                    LANGUAGE_TO,
-                    SHORT_PROMO,
-                    SHORT_COPYRIGHT,
+        ABOUT,
+        BLOCK_COUNT,
+        BLOCK_TYPE,
+        CATEGORY,
+        CIPHER_KEY,
+        COMPRESS_TYPE,
+        COPYRIGHT,
+        COPYRIGHT_CONTACT_ADDRESS,
+        COPYRIGHT_CONTACT_EMAIL,
+        COPYRIGHT_CONTACT_NAME,
+        COPYRIGHT_DATE,
+        COPYRIGHT_HOLDER,
+        COPYRIGHT_NOTES,
+        DATA_PATH,
+        DESCRIPTION,
+        DIRECTION,
+        DISPLAY_LEVEL,
+        DISTRIBUTION_LICENSE,
+        DISTRIBUTION_NOTES,
+        DISTRIBUTION_SOURCE,
+        ENCODING,
+        GLOBAL_OPTION_FILTER,
+        GLOSSARY_FROM,
+        GLOSSARY_TO,
+        HISTORY,
+        INSTALL_SIZE,
+        FEATURE,
+        FONT,
+        LANG,
+        LCSH,
+        MOD_DRV,
+        MINIMUM_VERSION,
+        OBSOLETES,
+        SOURCE_TYPE,
+        SWORD_VERSION_DATE,
+        TEXT_SOURCE,
+        VERSION,
+        OSIS_Q_TO_TICK,
+        INITIALS,
+        KEY,
+        LANGUAGE,
+        LANGUAGE_FROM,
+        LANGUAGE_TO,
+        SHORT_PROMO,
+        SHORT_COPYRIGHT,
     };
 }

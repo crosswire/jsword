@@ -34,7 +34,7 @@ import java.text.MessageFormat;
  * before you used it, however EventExceptions would be used directly.
  * </p>
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @see LucidException
@@ -107,7 +107,7 @@ public class LucidRuntimeException extends RuntimeException
             log.warn("Format fail for '" + out + '\'', ex); //$NON-NLS-1$
             return "Error formatting message '" + out + '\''; //$NON-NLS-1$
         }
-     }
+    }
 
     /**
      * The log stream

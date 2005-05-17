@@ -26,11 +26,11 @@ import java.io.Serializable;
 /**
  * An Enumeration of the possible Features a Book may have.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class FeatureType implements Serializable
+public final class FeatureType implements Serializable
 {
     /**
      * The book is one of Greek Definitions. AKA, Strongs.
@@ -101,7 +101,7 @@ public class FeatureType implements Serializable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public final boolean equals(Object o)
+    public boolean equals(Object o)
     {
         return super.equals(o);
     }
@@ -110,7 +110,7 @@ public class FeatureType implements Serializable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#hashCode()
      */
-    public final int hashCode()
+    public int hashCode()
     {
         return super.hashCode();
     }
@@ -144,7 +144,7 @@ public class FeatureType implements Serializable
         HEBREW_DEFINITIONS,
         HEBREW_PARSE,
         DAILY_DEVOTIONS,
-        GLOSSARY
+        GLOSSARY,
     };
 
     /**

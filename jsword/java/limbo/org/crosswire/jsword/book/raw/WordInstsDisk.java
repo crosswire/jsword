@@ -34,7 +34,7 @@ import org.crosswire.jsword.passage.BibleInfo;
  * WordInstsDisk is like WordInstsMem however the entire block of data is
  * not stored in memory, it is simply indexed and left on disk.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

@@ -26,7 +26,7 @@ import junit.framework.TestCase;
 /**
  * JUnit Test.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -77,7 +77,7 @@ public class BookMetaDataTest extends TestCase
         test(v1.getFirstPublished(), new Date(631152000000L)); // 1 1 1990
         test(v1.getFullName(), "a,b");
         test(v1.getInitials(), "initials");
-        test(v1.getLicence(), new URL("http://localhost/file.txt"));
+        test(v1.getLicense(), new URL("http://localhost/file.txt"));
         test(v1.getOpenness(), Version.STATUS_PD);
         v1 = VersionFactory.decodeVersion("a", "i, ,XXX, ");
         test(v1.getName(), "a");
@@ -85,7 +85,7 @@ public class BookMetaDataTest extends TestCase
         test(v1.getFirstPublished(), null);
         test(v1.getFullName(), "a");
         test(v1.getInitials(), "i");
-        test(v1.getLicence(), null);
+        test(v1.getLicense(), null);
         test(v1.getOpenness(), Version.STATUS_UNKNOWN);
         v1 = VersionFactory.decodeVersion("abcabc", " , , , ");
         test(v1.getName(), "abcabc");
@@ -93,7 +93,7 @@ public class BookMetaDataTest extends TestCase
         test(v1.getFirstPublished(), null);
         test(v1.getFullName(), "abcabc");
         test(v1.getInitials(), "a");
-        test(v1.getLicence(), null);
+        test(v1.getLicense(), null);
         test(v1.getOpenness(), Version.STATUS_UNKNOWN);
 
         log("VersionFactory.decodeStatus(String)");

@@ -49,7 +49,7 @@ import org.xml.sax.SAXException;
  * 
  * LATER(joe): check nesting on these THML elements
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

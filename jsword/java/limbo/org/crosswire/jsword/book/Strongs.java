@@ -36,7 +36,7 @@ import org.jdom.Element;
  * <li>Parsing: 0, 5625-5773, 8675-8809 (but not 5626, 5653, 5687, 5767, 8679)
  * </ul>
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

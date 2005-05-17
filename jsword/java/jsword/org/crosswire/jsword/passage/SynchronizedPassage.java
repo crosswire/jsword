@@ -31,7 +31,7 @@ import java.util.Iterator;
  * synchronized. It is final to give the VM as much hope as possible at
  * being able to inline stuff.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

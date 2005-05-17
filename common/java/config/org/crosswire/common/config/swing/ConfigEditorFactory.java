@@ -36,11 +36,11 @@ import org.crosswire.common.util.Reporter;
  * Allow a swing program to display a Dialog box displaying a set of
  * config options.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class ConfigEditorFactory
+public final class ConfigEditorFactory
 {
     /**
      * Prevent Instansiation

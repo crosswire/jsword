@@ -45,7 +45,7 @@ import org.xml.sax.SAXException;
  * 
  * The remoting mechanism is defined by an implementation of RemoteBibleDriver.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

@@ -27,11 +27,11 @@ package org.crosswire.common.util;
  * <p>
  * It has been tested to work in command line and WebStart environments.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
-public class CallContext extends SecurityManager
+public final class CallContext extends SecurityManager
 {
     /**
      * Prevent instansiation

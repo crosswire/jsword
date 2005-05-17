@@ -28,7 +28,7 @@ import java.util.EventObject;
  * operations on a Passage, calculating the extent of the changes is
  * hard. In these cases we default the range to Gen 1:1-Rev 22:21
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

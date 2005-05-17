@@ -45,7 +45,7 @@ import org.crosswire.jsword.util.Project;
 /**
  * This represents all of the SwordBibles.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
@@ -235,11 +235,12 @@ public class SwordBookDriver extends AbstractBookDriver
 
     /**
      * Accessor for the Sword directory
-     * @param newDirs The new Sword directory
+     * @param theNewDirs The new Sword directory
      * @throws BookException
      */
-    public static void setSwordPath(File[] newDirs) throws BookException
+    public static void setSwordPath(File[] theNewDirs) throws BookException
     {
+        File[] newDirs = theNewDirs;
         newDirs = validateSwordPath(newDirs);
         if (newDirs == null)
         {
@@ -256,11 +257,12 @@ public class SwordBookDriver extends AbstractBookDriver
      * validateSwordPath maintains the invariant that the download
      * location is first in the list. If null or an empty array
      * is passed then the defaultList is used.
-     * @param files
+     * @param theFiles
      * @return null if the list is not to be used, otherwise it returns the list.
      */
-    private static File[] validateSwordPath(File[] files)
+    private static File[] validateSwordPath(File[] theFiles)
     {
+        File[] files = theFiles;
         // Get the current download file location
         File downloadDir = SwordBookDriver.dirs[0];
         boolean useDefaultPaths = false;

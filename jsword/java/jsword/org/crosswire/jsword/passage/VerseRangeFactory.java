@@ -26,7 +26,7 @@ import org.crosswire.common.util.StringUtil;
 /**
  * A factory that creates VerseRanges from user input.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
@@ -41,17 +41,17 @@ public final class VerseRangeFactory
     {
     }
 
-      /**
-      * Construct a VerseRange from a human readable string. For example
-      * "Gen 1:1-3" in case the user does not want to have their typing
-      * 'fixed' by a meddling patronizing computer.
-      * @param orginal The textual representation
-      * @exception NoSuchVerseException If the text can not be understood
-      */
-     public static VerseRange fromString(String orginal) throws NoSuchVerseException
-     {
-         return fromString(orginal, null);
-     }
+    /**
+     * Construct a VerseRange from a human readable string. For example
+     * "Gen 1:1-3" in case the user does not want to have their typing
+     * 'fixed' by a meddling patronizing computer.
+     * @param orginal The textual representation
+     * @exception NoSuchVerseException If the text can not be understood
+     */
+    public static VerseRange fromString(String orginal) throws NoSuchVerseException
+    {
+        return fromString(orginal, null);
+    }
 
     /**
      * Construct a VerseRange from a String and a VerseRange. For example given "2:2"

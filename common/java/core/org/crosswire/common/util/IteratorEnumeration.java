@@ -30,7 +30,7 @@ import java.util.NoSuchElementException;
  * <p>The only real difference between the 2 is the naming and
  * that Enumeration does not have the delete method.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

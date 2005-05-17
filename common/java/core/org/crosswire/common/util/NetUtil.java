@@ -35,20 +35,20 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 import java.util.jar.JarEntry;
 
 /**
  * The NetUtil class looks after general utility stuff around the
  * java.net package.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author Mark Goodwin
  */
-public class NetUtil
+public final class NetUtil
 {
     /**
      * Basic constructor - ensure that we can't be instansiated
@@ -338,11 +338,12 @@ public class NetUtil
     /**
      * Utility to add a string to the end of a URL.
      * @param orig The URL to strip
-     * @param extra The text to add to the end of the URL
+     * @param anExtra The text to add to the end of the URL
      * @return The stripped URL
      */
-    public static URL lengthenURL(URL orig, String extra)
+    public static URL lengthenURL(URL orig, String anExtra)
     {
+        String extra = anExtra;
         try
         {
             char firstChar = extra.charAt(extra.length() - 1);

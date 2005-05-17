@@ -42,7 +42,7 @@ import org.crosswire.jsword.book.sword.SwordBookMetaData;
 /**
  * An implementation of Installer for reading data from Sword FTP sites.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

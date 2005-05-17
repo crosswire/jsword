@@ -29,7 +29,7 @@ import org.crosswire.common.config.Config;
 /**
  * Some static methods for using the Config package.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -40,12 +40,12 @@ public interface ConfigEditor
      * Fields that it will display.
      * @param config The configurable settings
      */
-    public void construct(Config config);
+    void construct(Config config);
 
     /**
      * Create a dialog to house a TreeConfig component
      * using the default set of Fields
      * @param parent A component to use to find a frame to use as a dialog parent
      */
-    public void showDialog(Component parent, ActionListener al);
+    void showDialog(Component parent, ActionListener al);
 }

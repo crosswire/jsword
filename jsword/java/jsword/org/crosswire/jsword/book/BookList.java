@@ -29,9 +29,9 @@ import java.util.List;
  * a specific driver.
  * This interface provides a common method of accessing all of them.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
- * @see gnu.gpl.Licence
+ * @see gnu.gpl.License
  * @author Joe Walker [joe at eireneh dot com]
  */
 public interface BookList
@@ -39,23 +39,23 @@ public interface BookList
     /**
      * Get an iterator over all the Books of all types.
      */
-    public List getBooks();
+    List getBooks();
 
     /**
      * Get a filtered iterator over all the Books.
      * @see BookFilters
      */
-    public List getBooks(BookFilter filter);
+    List getBooks(BookFilter filter);
 
     /**
      * Remove a BibleListener from our list of listeners
      * @param li The old listener
      */
-    public void addBooksListener(BooksListener li);
+    void addBooksListener(BooksListener li);
 
     /**
      * Add a BibleListener to our list of listeners
      * @param li The new listener
      */
-    public void removeBooksListener(BooksListener li);
+    void removeBooksListener(BooksListener li);
 }

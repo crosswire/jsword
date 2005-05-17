@@ -27,7 +27,7 @@ import java.util.EventListener;
  * BiblesListeners are able to be notified about changes to the numbers
  * of Bibles installed on the system.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -37,11 +37,11 @@ public interface BooksListener extends EventListener
      * Called whenever a new Bible is added to the system.
      * @param ev A description of the change
      */
-    public void bookAdded(BooksEvent ev);
+    void bookAdded(BooksEvent ev);
 
     /**
      * Called whenever a Bible is removed from the system.
      * @param ev A description of the change
      */
-    public void bookRemoved(BooksEvent ev);
+    void bookRemoved(BooksEvent ev);
 }

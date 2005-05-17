@@ -27,7 +27,7 @@ import org.crosswire.jsword.book.search.SearchModifier;
  * The DefaultSearchModifier provides a simple implementation
  * of a SearchModifier.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at gmail dot com]
  */

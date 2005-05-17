@@ -26,7 +26,7 @@ import java.util.EventListener;
 /**
  * ConfigListener.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -35,10 +35,10 @@ public interface ConfigListener extends EventListener
     /**
      * Called whenever Config.add() is called
      */
-    public void choiceAdded(ConfigEvent ev);
+    void choiceAdded(ConfigEvent ev);
 
     /**
      * Called whenever Config.remove() is called
      */
-    public void choiceRemoved(ConfigEvent ev);
+    void choiceRemoved(ConfigEvent ev);
 }

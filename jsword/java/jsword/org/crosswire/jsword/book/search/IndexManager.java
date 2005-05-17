@@ -29,7 +29,7 @@ import org.crosswire.jsword.book.BookException;
 /**
  * A way of managing a way of creating a search index for a book.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -38,18 +38,18 @@ public interface IndexManager
     /**
      * Detects if index data has been stored for this Bible already
      */
-    public boolean isIndexed(Book book);
+    boolean isIndexed(Book book);
 
     /**
      * Create a new Searcher.
      */
-    public Index getIndex(Book book) throws BookException;
+    Index getIndex(Book book) throws BookException;
 
     /**
      * Read from the given source version to generate ourselves. On completion
      * of this method the index should be usable.
      */
-    public void scheduleIndexCreation(Book book);
+    void scheduleIndexCreation(Book book);
 
     /**
      * We have downloaded a search index to a zip file. It should be installed
@@ -57,11 +57,11 @@ public interface IndexManager
      * @param book The book that we downloaded an index for
      * @param tempDest The URL of a zip file to install
      */
-    public void installDownloadedIndex(Book book, URL tempDest) throws BookException;
+    void installDownloadedIndex(Book book, URL tempDest) throws BookException;
 
     /**
      * Tidy up after yourself and remove all the files that make up any indexes
      * you created.
      */
-    public void deleteIndex(Book book) throws BookException;
+    void deleteIndex(Book book) throws BookException;
 }

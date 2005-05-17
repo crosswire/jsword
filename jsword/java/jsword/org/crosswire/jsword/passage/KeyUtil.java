@@ -28,11 +28,11 @@ import org.crosswire.common.util.Logger;
 /**
  * .
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class KeyUtil
+public final class KeyUtil
 {
     /**
      * Prevent instansiation

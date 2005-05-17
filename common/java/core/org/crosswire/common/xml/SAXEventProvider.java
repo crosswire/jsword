@@ -27,7 +27,7 @@ import org.xml.sax.SAXException;
 /**
  * A simple way of giving someone a place from which to get SAX events.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -38,5 +38,5 @@ public interface SAXEventProvider
      * method.
      * @param handler The place to send SAX events.
      */
-    public void provideSAXEvents(ContentHandler handler) throws SAXException;
+    void provideSAXEvents(ContentHandler handler) throws SAXException;
 }

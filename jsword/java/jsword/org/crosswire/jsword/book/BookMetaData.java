@@ -39,7 +39,7 @@ import org.jdom.Document;
  * JSword. So Books must be able to add versions to the system, and the system
  * must cope with books that already exist.</p>
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -53,34 +53,34 @@ public interface BookMetaData extends Comparable
      * This method should not return null or a blank string.
      * @return The name of this book
      */
-    public String getName();
+    String getName();
 
     /**
      * What type of content is this, a Bible or a reference work like a
      * Dictionary or Commentary
      * @return The type of book
      */
-    public BookType getType();
+    BookType getType();
 
     /**
      * Accessor for the driver that runs this Book.
      * Note this method should only be used to delete() Books. Everything else
      * you should want to do to a Book should be available in other ways.
      */
-    public BookDriver getDriver();
+    BookDriver getDriver();
 
     /**
      * The language of the book is the common name for the iso639 code.
      * @return the common name for the language
      */
-    public String getLanguage();
+    String getLanguage();
 
     /**
      * The initials of this book - how people familiar with this book will know
      * it, for example "NIV", "KJV".
      * @return The book's initials
      */
-    public String getInitials();
+    String getInitials();
 
     /**
      * Calculated field: Get an OSIS identifier for the OsisText.setOsisIDWork()
@@ -88,21 +88,21 @@ public interface BookMetaData extends Comparable
      * The response will generally be of the form [Bible][Dict..].getInitials
      * @return The osis id of this book
      */
-    public String getOsisID();
+    String getOsisID();
 
     /**
      * Calculated field: The full name of the book, for example
      * The format is "name, (Driver)"
      * @return The full name of this book
      */
-    public String getFullName();
+    String getFullName();
 
     /**
      * Calculated field: The name of the name, which could be helpful to
      * distinguish similar Books available through 2 BookDrivers.
      * @return The driver name
      */
-    public String getDriverName();
+    String getDriverName();
 
     /**
      * Return the orientation of the language of the Book. If a book contains more than one language,
@@ -110,37 +110,37 @@ public interface BookMetaData extends Comparable
      * Arabic and Hebrew in their propper orientation.
      * @return true if the orientation for the dominate language is LeftToRight.
      */
-    public boolean isLeftToRight();
+    boolean isLeftToRight();
 
     /**
      * Return whether the feature is supported by the book.
      */
-    public boolean hasFeature(FeatureType feature);
+    boolean hasFeature(FeatureType feature);
 
     /**
      * Get a list of all the properties available to do with this Book.
      * The returned Properties will be read-only so any attempts to alter it
      * will fail.
      */
-    public Map getProperties();
+    Map getProperties();
 
     /**
      * Has anyone generated a search index for this Book?
      * @see org.crosswire.jsword.book.search.IndexManager
      */
-    public IndexStatus getIndexStatus();
+    IndexStatus getIndexStatus();
 
     /**
      * This method does not alter the index status, however it is for Indexers
      * that are responsible for indexing and have changed the status themselves.
      * @see org.crosswire.jsword.book.search.IndexManager
      */
-    public void setIndexStatus(IndexStatus status);
+    void setIndexStatus(IndexStatus status);
 
     /**
      * Get an OSIS representation of information concerning this Book.
      */
-    public Document toOSIS();
+    Document toOSIS();
 
     /**
      * Adds a <code>PropertyChangeListener</code> to the listener list.
@@ -150,46 +150,46 @@ public interface BookMetaData extends Comparable
      * to setting a bound property, such as <code>setIndexStatus</code>.
      * @param li the <code>PropertyChangeListener</code> to be added
      */
-    public void addPropertyChangeListener(PropertyChangeListener li);
+    void addPropertyChangeListener(PropertyChangeListener li);
 
     /**
      * Removes a <code>PropertyChangeListener</code> from the listener list.
      * @param li the <code>PropertyChangeListener</code> to be removed
      */
-    public void removePropertyChangeListener(PropertyChangeListener li);
+    void removePropertyChangeListener(PropertyChangeListener li);
 
     /**
      * The key for the type in the properties map
      */
-    public static final String KEY_TYPE = "Key"; //$NON-NLS-1$
+    String KEY_TYPE = "Key"; //$NON-NLS-1$
 
     /**
      * The key for the book in the properties map
      */
-    public static final String KEY_BOOK = "Book"; //$NON-NLS-1$
+    String KEY_BOOK = "Book"; //$NON-NLS-1$
 
     /**
      * The key for the driver in the properties map
      */
-    public static final String KEY_DRIVER = "Driver"; //$NON-NLS-1$
+    String KEY_DRIVER = "Driver"; //$NON-NLS-1$
 
     /**
      * The key for the name in the properties map
      */
-    public static final String KEY_NAME = "Description"; //$NON-NLS-1$
+    String KEY_NAME = "Description"; //$NON-NLS-1$
 
     /**
      * The key for the name in the properties map
      */
-    public static final String KEY_LANGUAGE = "Language"; //$NON-NLS-1$
+    String KEY_LANGUAGE = "Language"; //$NON-NLS-1$
 
     /**
      * The key for the initials in the properties map
      */
-    public static final String KEY_INITIALS = "Initials"; //$NON-NLS-1$
+    String KEY_INITIALS = "Initials"; //$NON-NLS-1$
 
     /**
      * The key for the indexed status in the properties map
      */
-    public static final String KEY_INDEXSTATUS = "IndexStatus"; //$NON-NLS-1$
+    String KEY_INDEXSTATUS = "IndexStatus"; //$NON-NLS-1$
 }

@@ -27,7 +27,7 @@ import java.util.NoSuchElementException;
 /**
  * An iterator that filters as it goes.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]

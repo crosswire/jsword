@@ -28,11 +28,11 @@ package org.crosswire.jsword.book.filter;
  * <p>Both OSISFilter and THMLFilter need to report on strings that failed
  * parsing but don't want to output too much data. forOutput() helps.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class FilterUtil
+public final class FilterUtil
 {
     /**
      * Prevent Instansiation

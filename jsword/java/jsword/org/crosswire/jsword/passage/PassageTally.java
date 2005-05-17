@@ -78,7 +78,7 @@ import org.crosswire.common.util.Logger;
  * 
  * <p>LATER(joe): Specify how passage ranks work.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -181,11 +181,12 @@ public class PassageTally extends AbstractPassage
     /**
      * A Human readable version of the verse list. Uses short books names,
      * and the shortest possible rendering eg "Mat 3:1-4, 6"
-     * @param max_count The number of matches to return, 0 gives all matches
+     * @param cnt The number of matches to return, 0 gives all matches
      * @return a String containing a description of the verses
      */
-    public String getName(int max_count)
+    public String getName(int cnt)
     {
+        int max_count = cnt;
         if (PassageUtil.isPersistentNaming() && originalName != null)
         {
             return originalName;
@@ -259,11 +260,12 @@ public class PassageTally extends AbstractPassage
     /**
      * A Human readable version of the PassageTally.
      * Uses short books names, and the shortest possible rendering eg "Mat 3:1-4"
-     * @param max_count The number of matches to return, 0 gives all matches
+     * @param cnt The number of matches to return, 0 gives all matches
      * @return a String containing a description of the verses
      */
-    public String getNameAndTally(int max_count)
+    public String getNameAndTally(int cnt)
     {
+        int max_count = cnt;
         StringBuffer retcode = new StringBuffer();
         if (max_count == 0)
         {
@@ -758,7 +760,7 @@ public class PassageTally extends AbstractPassage
      * @param ord The verse to increment
      * @param tally The amount to inrease by
      */
-    private final void increment(int ord, int tally)
+    private void increment(int ord, int tally)
     {
         boolean exists = board[ord - 1] > 0;
         board[ord - 1] += tally;
@@ -786,7 +788,7 @@ public class PassageTally extends AbstractPassage
      * Increment a verse by an amount
      * @param tally The amount to inrease by
      */
-    private final void incrementMax(int tally)
+    private void incrementMax(int tally)
     {
         max += tally;
         if (max > MAX_TALLY)
@@ -803,7 +805,7 @@ public class PassageTally extends AbstractPassage
      * Wipe the rank of the given verse to zero
      * @param ord The verse to increment
      */
-    private final void kill(int ord)
+    private void kill(int ord)
     {
         if (board[ord - 1] > 0)
         {

@@ -32,13 +32,13 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
  * needed to dynamically change the look and feel (PLAF) and to add new
  * PLAFs without needing to restart.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author Mark Goodwin [mark at thorubio dot org]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class LookAndFeelUtil
+public final class LookAndFeelUtil
 {
     /**
      * Prevent Instansiation

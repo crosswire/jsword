@@ -27,12 +27,12 @@ import org.crosswire.common.util.Logger;
 /**
  * A Factory class for IndexManagers.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
 
  */
-public class IndexManagerFactory
+public final class IndexManagerFactory
 {
     /**
      * Prevent Instansiation

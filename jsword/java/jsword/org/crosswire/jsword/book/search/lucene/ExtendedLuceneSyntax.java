@@ -28,7 +28,7 @@ import org.crosswire.jsword.book.search.SearchSyntax;
  * ExtendedLuceneSyntax represents the extension of stock Lucene syntax
  * with passage ranges and with blurring (searching in nearby verses).
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */

@@ -24,7 +24,7 @@ package org.crosswire.jsword.book.filter.gbf;
 /**
  * A Tag that has a tagname from the input.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */

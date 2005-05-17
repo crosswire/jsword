@@ -30,7 +30,7 @@ import org.crosswire.jsword.passage.Key;
  * get at a default Bible (or they may have one hard coded if necessary)
  * or to get at ParamWords that follow this command.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
 */

@@ -36,11 +36,11 @@ import org.crosswire.common.util.Reporter;
  * make simplicity, overweigh the possible re-use gains of a
  * properties file.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class FieldMap
+public final class FieldMap
 {
     /**
      * Prevent Instansiation

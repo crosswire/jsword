@@ -405,7 +405,7 @@ package org.crosswire.common.crypt;
  * Regarding this port to Java and not the original code, the following license
  * applies:
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Michael Paul Johnson [ kahunapule at mpj dot cx] Original code
  * @author unascribed Sword's C++ implementation
@@ -417,8 +417,9 @@ public class Sapphire
     /**
      * Construct a Sapphire Stream Cipher from a key, possibly null or empty.
      */
-    public Sapphire(byte[] key)
+    public Sapphire(byte[] aKey)
     {
+        byte[] key = aKey;
         if (key == null)
         {
             key = new byte[0];

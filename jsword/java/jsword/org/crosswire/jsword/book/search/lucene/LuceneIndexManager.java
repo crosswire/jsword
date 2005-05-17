@@ -43,7 +43,7 @@ import org.crosswire.jsword.util.Project;
 /**
  * An implementation of IndexManager for Lucene indexes.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

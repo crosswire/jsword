@@ -38,7 +38,7 @@ import org.jdom.Element;
  * The best place to go for more information about the GBF spec that I have
  * found is: <a href="http://ebible.org/bible/gbf.htm">http://ebible.org/bible/gbf.htm</a>
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -75,8 +75,9 @@ public class GBFFilter implements Filter
      * Turn the string into a list of tags in the order that they appear in the
      * original string.
      */
-    private List parseTags(String remains)
+    private List parseTags(String aRemains)
     {
+        String remains = aRemains;
         List taglist = new ArrayList();
 
         while (true)

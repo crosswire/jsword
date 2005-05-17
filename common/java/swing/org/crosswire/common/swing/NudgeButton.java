@@ -33,7 +33,7 @@ import javax.swing.SwingConstants;
  * A nudge button set based on this dialog -
  * even down to passing on edited source.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

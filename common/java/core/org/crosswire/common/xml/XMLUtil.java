@@ -37,11 +37,11 @@ import org.xml.sax.SAXException;
 /**
  * Utilities for working with SAX XML parsing.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class XMLUtil
+public final class XMLUtil
 {
     /**
      * Prevent Instansiation
@@ -94,48 +94,48 @@ public class XMLUtil
     /**
      * Normalizes the given string
      */
-     public static String escape(String s)
-     {
-         if (s == null)
-         {
-             return s;
-         }
-         int len = s.length();
-         StringBuffer str = new StringBuffer(len);
+    public static String escape(String s)
+    {
+        if (s == null)
+        {
+            return s;
+        }
+        int len = s.length();
+        StringBuffer str = new StringBuffer(len);
 
-         for (int i = 0; i < len; i++)
-         {
-             char ch = s.charAt(i); //$NON-NLS-1$
-             switch (ch)
-             {
-             case '<':
-                 str.append("&lt;"); //$NON-NLS-1$
-                 break;
+        for (int i = 0; i < len; i++)
+        {
+            char ch = s.charAt(i); //$NON-NLS-1$
+            switch (ch)
+            {
+            case '<':
+                str.append("&lt;"); //$NON-NLS-1$
+                break;
 
-             case '>':
-                 str.append("&gt;"); //$NON-NLS-1$
-                 break;
+            case '>':
+                str.append("&gt;"); //$NON-NLS-1$
+                break;
 
-             case '&':
-                 str.append("&amp;"); //$NON-NLS-1$
-                 break;
+            case '&':
+                str.append("&amp;"); //$NON-NLS-1$
+                break;
 
-             case '"':
-                 str.append("&quot;"); //$NON-NLS-1$
-                 break;
+            case '"':
+                str.append("&quot;"); //$NON-NLS-1$
+                break;
 
-             default:
-                 str.append(ch);
-             }
-         }
+            default:
+                str.append(ch);
+            }
+        }
 
-         return str.toString();
-     }
+        return str.toString();
+    }
 
 
     /**
-     * A parse has failed so we can try to kill the broken entities and then have
-     * another go.
+     * A parse has failed so we can try to kill the broken entities and then
+     * have another go.
      */
     public static String cleanAllEntities(String broken)
     {
@@ -147,7 +147,7 @@ public class XMLUtil
         String working = broken;
         int cleanfrom = 0;
 
-        allEntities:
+    allEntities:
         while (true)
         {
             int amp = working.indexOf('&', cleanfrom);
@@ -160,7 +160,7 @@ public class XMLUtil
 
             // Check for chars that should not be in an entity name
             int i = amp + 1;
-            singleEntity:
+        singleEntity:
             while (true)
             {
                 // if we are at the end of the string the disgard from the & on
@@ -213,8 +213,9 @@ public class XMLUtil
      * Attempt to guess what the entity should have been and fix it, or remove
      * it if there are no obvious replacements.
      */
-    private static String guessEntity(String broken)
+    private static String guessEntity(String brokenEntity)
     {
+        String broken = brokenEntity;
         // strip any beginning & or ending ;
         if (broken.endsWith(";")) //$NON-NLS-1$
         {
@@ -295,7 +296,7 @@ public class XMLUtil
 
         String working = broken;
 
-        allTags:
+    allTags:
         while (true)
         {
             int lt = working.indexOf('<');
@@ -310,7 +311,7 @@ public class XMLUtil
             int i = lt;
             int startattr = -1;
 
-            singletag:
+        singletag:
             while (true)
             {
                 i++;

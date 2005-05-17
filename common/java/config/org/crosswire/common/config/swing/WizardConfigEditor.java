@@ -60,7 +60,7 @@ import org.crosswire.common.util.Reporter;
  * view was the only one you would ever need. This package is a re-write
  * that addresses these shortcomings and others.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

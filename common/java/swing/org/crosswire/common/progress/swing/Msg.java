@@ -26,11 +26,11 @@ import org.crosswire.common.util.MsgBase;
 /**
  * Compile safe Msg resource settings.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class Msg extends MsgBase
+public final class Msg extends MsgBase
 {
     static final Msg NO_JOBS = new Msg("JobsViewPane.NoJob"); //$NON-NLS-1$
     static final Msg CANCEL = new Msg("JobsProgressBar.Cancel"); //$NON-NLS-1$

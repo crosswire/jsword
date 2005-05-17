@@ -35,7 +35,7 @@ import org.crosswire.common.util.NetUtil;
  * makes load time very very slow, instead of just slow, so it is all
  * commented out.</p>
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

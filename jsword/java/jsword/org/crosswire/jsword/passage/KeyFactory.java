@@ -24,7 +24,7 @@ package org.crosswire.jsword.passage;
 /**
  * A Factory for new Keys and KeyLists.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -38,7 +38,7 @@ public interface KeyFactory
      * in the Bible, but a commentary may well miss some out.
      * @return A Key that includes all of the known Keys
      */
-    public Key getGlobalKeyList();
+    Key getGlobalKeyList();
 
     /**
      * Someone has typed in a reference to find, but we need a Key to actually
@@ -50,7 +50,7 @@ public interface KeyFactory
      * @return The Key corresponding to the input text
      * @throws NoSuchKeyException If the name can not be parsed.
      */
-    public Key getKey(String name) throws NoSuchKeyException;
+    Key getKey(String name) throws NoSuchKeyException;
 
     /**
      * Fetch an empty Key to which we can add Keys.
@@ -60,5 +60,5 @@ public interface KeyFactory
      * empty Key to which you can safely add other Keys it generates.
      * @return An empty Key that can hold other Keys from this factory.
      */
-    public Key createEmptyKeyList();
+    Key createEmptyKeyList();
 }

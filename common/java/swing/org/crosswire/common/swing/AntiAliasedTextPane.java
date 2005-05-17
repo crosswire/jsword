@@ -31,7 +31,7 @@ import javax.swing.JTextPane;
  * An extension of JTextPane that does Anti-Aliasing.
  * J2SE5(joe): we will need to take a bit of care not clashing with J2SE5 AA
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

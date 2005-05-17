@@ -38,11 +38,11 @@ import org.crosswire.jsword.book.CaseType;
  * static only classes. However they are both non-trivial, so together they would
  * be large, and there is a good dividing line between the 2.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class BibleInfo
+public final class BibleInfo
 {
     /**
      * Ensure that we can not be instantiated
@@ -146,7 +146,7 @@ public class BibleInfo
      * @see Passage
      * @see #getCase()
      */
-    public static final void setCase(int bookCase)
+    public static void setCase(int bookCase)
     {
         BibleInfo.bookCase = CaseType.fromInteger(bookCase);
     }
@@ -157,7 +157,7 @@ public class BibleInfo
      * @see Passage
      * @see BibleInfo#setCase(CaseType)
      */
-    public static final int getCase()
+    public static int getCase()
     {
         return BibleInfo.bookCase.toInteger();
     }
@@ -173,7 +173,7 @@ public class BibleInfo
      * @see Passage
      * @see #getCase()
      */
-    public static final void setCase(CaseType newBookCase)
+    public static void setCase(CaseType newBookCase)
     {
         if (newBookCase.equals(CaseType.MIXED))
         {
@@ -188,7 +188,7 @@ public class BibleInfo
      * @see Passage
      * @see BibleInfo#setCase(int)
      */
-    public static final CaseType getDefaultCase()
+    public static CaseType getDefaultCase()
     {
         return BibleInfo.bookCase;
     }
@@ -200,7 +200,7 @@ public class BibleInfo
      * @return The full name of the book
      * @exception NoSuchVerseException If the book number is not valid
      */
-    public static final String getLongBookName(int book) throws NoSuchVerseException
+    public static String getLongBookName(int book) throws NoSuchVerseException
     {
         try
         {
@@ -232,7 +232,7 @@ public class BibleInfo
      * @return The short name of the book
      * @exception NoSuchVerseException If the book number is not valid
      */
-    public static final String getShortBookName(int book) throws NoSuchVerseException
+    public static String getShortBookName(int book) throws NoSuchVerseException
     {
         try
         {
@@ -245,7 +245,7 @@ public class BibleInfo
                 return shortBooksUpper[book - 1];
             }
 
-                return shortBooks[book - 1];
+            return shortBooks[book - 1];
         }
         catch (ArrayIndexOutOfBoundsException ex)
         {
@@ -262,7 +262,7 @@ public class BibleInfo
      * @return the OSIS defined short name for a book
      * @exception NoSuchVerseException If the book number is not valid
      */
-    public static final String getOSISName(int book) throws NoSuchVerseException
+    public static String getOSISName(int book) throws NoSuchVerseException
     {
         try
         {
@@ -282,7 +282,7 @@ public class BibleInfo
      * @param find The string to identify
      * @return The book number (1 to 66) On error -1
      */
-    public static final int getBookNumber(String find)
+    public static int getBookNumber(String find)
     {
         if (!containsLetter(find))
         {
@@ -344,7 +344,7 @@ public class BibleInfo
      * @param find The string to identify
      * @return The book number (1 to 66)
      */
-    public static final boolean isBookName(String find)
+    public static boolean isBookName(String find)
     {
         return getBookNumber(find) != -1;
     }
@@ -353,7 +353,7 @@ public class BibleInfo
      * Count the books in the Bible.
      * @return 66 always - the number of books in the Bible
      */
-    public static final int booksInBible()
+    public static int booksInBible()
     {
         return BOOKS_IN_BIBLE;
     }
@@ -362,7 +362,7 @@ public class BibleInfo
      * Count the chapters in the Bible.
      * @return 1189 always - the number of chapters in the Bible
      */
-    public static final int chaptersInBible()
+    public static int chaptersInBible()
     {
         return CHAPTERS_IN_BIBLE;
     }
@@ -373,7 +373,7 @@ public class BibleInfo
      * by some versions missing out some verses as 'there in error'
      * @return 31102 always - the number of verses in the Bible
      */
-    public static final int versesInBible()
+    public static int versesInBible()
     {
         return VERSES_IN_BIBLE;
     }
@@ -384,7 +384,7 @@ public class BibleInfo
      * @return The number of chapters
      * @exception NoSuchVerseException If the book number is not valid
      */
-    public static final int chaptersInBook(int book) throws NoSuchVerseException
+    public static int chaptersInBook(int book) throws NoSuchVerseException
     {
         try
         {
@@ -406,7 +406,7 @@ public class BibleInfo
      * @return The number of verses
      * @exception NoSuchVerseException If the book or chapter number is not valid
      */
-    public static final int versesInChapter(int book, int chapter) throws NoSuchVerseException
+    public static int versesInChapter(int book, int chapter) throws NoSuchVerseException
     {
         try
         {
@@ -429,7 +429,7 @@ public class BibleInfo
      * @return The number of verses
      * @exception NoSuchVerseException If the book number is not valid
      */
-    public static final int versesInBook(int book) throws NoSuchVerseException
+    public static int versesInBook(int book) throws NoSuchVerseException
     {
         try
         {
@@ -454,7 +454,7 @@ public class BibleInfo
      * @return The ordinal number of verses
      * @exception NoSuchVerseException If the reference is illegal
      */
-    public static final int verseOrdinal(int book, int chapter, int verse) throws NoSuchVerseException
+    public static int verseOrdinal(int book, int chapter, int verse) throws NoSuchVerseException
     {
         validate(book, chapter, verse);
         return ORDINAL_AT_START_OF_CHAPTER[book - 1][chapter - 1] + verse - 1;
@@ -468,7 +468,7 @@ public class BibleInfo
      * @return The ordinal number of the verse
      * @exception NoSuchVerseException If the reference is illegal
      */
-    public static final int verseOrdinal(int[] ref) throws NoSuchVerseException
+    public static int verseOrdinal(int[] ref) throws NoSuchVerseException
     {
         if (ref.length != 3)
         {
@@ -486,7 +486,7 @@ public class BibleInfo
      * @return An array of 3 ints, book, chapter, verse
      * @exception NoSuchVerseException If the reference is illegal
      */
-    public static final int[] decodeOrdinal(int ordinal) throws NoSuchVerseException
+    public static int[] decodeOrdinal(int ordinal) throws NoSuchVerseException
     {
         if (ordinal < 1 || ordinal > BibleInfo.versesInBible())
         {
@@ -523,7 +523,7 @@ public class BibleInfo
      * @param verse The verse part of the reference.
      * @exception NoSuchVerseException If the reference is illegal
      */
-    public static final void validate(int book, int chapter, int verse) throws NoSuchVerseException
+    public static void validate(int book, int chapter, int verse) throws NoSuchVerseException
     {
         // Check the book
         if (book < 1 || book > BOOKS_IN_BIBLE)
@@ -561,7 +561,7 @@ public class BibleInfo
      * @param ref An array of 3 ints, book, chapter, verse
      * @exception NoSuchVerseException If the reference is illegal
      */
-    public static final void validate(int[] ref) throws NoSuchVerseException
+    public static void validate(int[] ref) throws NoSuchVerseException
     {
         if (ref.length != 3)
         {
@@ -591,7 +591,7 @@ public class BibleInfo
      * @param ref An array of 3 ints, book, chapter, verse. This array will be changed.
      * @return The original array that has been patched.
      */
-    public static final int[] patch(int[] ref)
+    public static int[] patch(int[] ref)
     {
         try
         {
@@ -672,7 +672,7 @@ public class BibleInfo
      * @return the number of verses
      * @exception NoSuchVerseException If either reference is illegal
      */
-    public static final int verseCount(int book1, int chapter1, int verse1, int book2, int chapter2, int verse2) throws NoSuchVerseException
+    public static int verseCount(int book1, int chapter1, int verse1, int book2, int chapter2, int verse2) throws NoSuchVerseException
     {
         int verse_ord1 = verseOrdinal(book1, chapter1, verse1);
         int verse_ord2 = verseOrdinal(book2, chapter2, verse2);
@@ -687,7 +687,7 @@ public class BibleInfo
      * @return the number of verses
      * @exception NoSuchVerseException If either reference is illegal
      */
-    public static final int verseCount(int[] ref1, int[] ref2) throws NoSuchVerseException
+    public static int verseCount(int[] ref1, int[] ref2) throws NoSuchVerseException
     {
         if (ref1.length != 3 || ref2.length != 3)
         {
@@ -702,7 +702,7 @@ public class BibleInfo
      * @param book The book to test
      * @return True if this book is a part of this section
      */
-    public static final boolean isPentateuch(int book)
+    public static boolean isPentateuch(int book)
     {
         return book >= Names.GENESIS && book <= Names.DEUTERONOMY;
     }
@@ -712,7 +712,7 @@ public class BibleInfo
      * @param book The book to test
      * @return True if this book is a part of this section
      */
-    public static final boolean isHistory(int book)
+    public static boolean isHistory(int book)
     {
         return book >= Names.JOSHUA && book <= Names.ESTHER;
     }
@@ -722,7 +722,7 @@ public class BibleInfo
      * @param book The book to test
      * @return True if this book is a part of this section
      */
-    public static final boolean isPoetry(int book)
+    public static boolean isPoetry(int book)
     {
         return book >= Names.JOB && book <= Names.SONGOFSOLOMON;
     }
@@ -732,7 +732,7 @@ public class BibleInfo
      * @param book The book to test
      * @return True if this book is a part of this section
      */
-    public static final boolean isMajorProphet(int book)
+    public static boolean isMajorProphet(int book)
     {
         return book >= Names.ISAIAH && book <= Names.DANIEL;
     }
@@ -742,7 +742,7 @@ public class BibleInfo
      * @param book The book to test
      * @return True if this book is a part of this section
      */
-    public static final boolean isMinorProphet(int book)
+    public static boolean isMinorProphet(int book)
     {
         return book >= Names.HOSEA && book <= Names.MALACHI;
     }
@@ -752,7 +752,7 @@ public class BibleInfo
      * @param book The book to test
      * @return True if this book is a part of this section
      */
-    public static final boolean isGospel(int book)
+    public static boolean isGospel(int book)
     {
         return book >= Names.MATTHEW && book <= Names.JOHN;
     }
@@ -762,7 +762,7 @@ public class BibleInfo
      * @param book The book to test
      * @return True if this book is a part of this section
      */
-    public static final boolean isGospelOrActs(int book)
+    public static boolean isGospelOrActs(int book)
     {
         return book >= Names.MATTHEW && book <= Names.ACTS;
     }
@@ -772,7 +772,7 @@ public class BibleInfo
      * @param book The book to test
      * @return True if this book is a part of this section
      */
-    public static final boolean isLetter(int book)
+    public static boolean isLetter(int book)
     {
         return book >= Names.ROMANS && book <= Names.JUDE;
     }
@@ -783,7 +783,7 @@ public class BibleInfo
      * @return True The section
      * @see BibleInfo.Section
      */
-    public static final int getSection(int book)
+    public static int getSection(int book)
     {
         // Ordered by section size for speed
         if (isLetter(book))
@@ -830,7 +830,7 @@ public class BibleInfo
      * @return The number of books in the given section
      * @see #getSection(int)
      */
-    public static final int booksInSection(int section)
+    public static int booksInSection(int section)
     {
         return BOOKS_IN_SECTION[section];
     }
@@ -842,7 +842,7 @@ public class BibleInfo
      * @return The full name of the book
      * @exception NoSuchVerseException If the book number is not valid
      */
-    public static final String getSectionName(int section) throws NoSuchVerseException
+    public static String getSectionName(int section) throws NoSuchVerseException
     {
         if (section == 0)
         {
@@ -1055,7 +1055,7 @@ public class BibleInfo
     private static final int CHAPTERS_IN_BIBLE = 1189;
 
     /** Constant for the number of chapters in each book */
-    private static final short[] CHAPTERS_IN_BOOK =
+    static final short[] CHAPTERS_IN_BOOK =
     {
         50, 40, 27, 36, 34, 24, 21,  4, 31, 24,
         22, 25, 29, 36, 10, 13, 10, 42, 150, 31,
@@ -1067,10 +1067,10 @@ public class BibleInfo
     };
 
     /** Constant for the number of verses in the Bible */
-    private static final short VERSES_IN_BIBLE = 31102;
+    static final short VERSES_IN_BIBLE = 31102;
 
     /** Constant for the number of verses in each book */
-    private static final short[] VERSES_IN_BOOK =
+    static final short[] VERSES_IN_BOOK =
     {
         1533, 1213,  859, 1288,  959,  658,  618,   85,  810,  695,
         816,  719,  942,  822,  280,  406,  167, 1070, 2461,  915,
@@ -1082,7 +1082,7 @@ public class BibleInfo
     };
 
     /** Constant for the number of verses in each chapter */
-    private static final short[][] VERSES_IN_CHAPTER =
+    static final short[][] VERSES_IN_CHAPTER =
     {
         { 31, 25, 24, 26, 32, 22, 24, 22, 29, 32, 32, 20, 18, 24, 21, 16, 27, 33, 38, 18, 34, 24, 20, 67, 34, 35, 46, 22, 35, 43, 55, 32, 20, 31, 29, 43, 36, 30, 23, 23, 57, 38, 34, 34, 28, 34, 31, 22, 33, 26 },
         { 22, 25, 22, 31, 23, 30, 25, 32, 35, 29, 10, 51, 22, 31, 27, 36, 16, 27, 25, 26, 36, 31, 33, 18, 40, 37, 21, 43, 46, 38, 18, 35, 23, 35, 35, 38, 29, 31, 43, 38 },
@@ -1149,11 +1149,11 @@ public class BibleInfo
         { 13 },
         { 14 },
         { 25 },
-        { 20, 29, 22, 11, 14, 17, 17, 13, 21, 11, 19, 17, 18, 20,  8, 21, 18, 24, 21, 15, 27, 21 }
+        { 20, 29, 22, 11, 14, 17, 17, 13, 21, 11, 19, 17, 18, 20,  8, 21, 18, 24, 21, 15, 27, 21 },
     };
 
     /** Constant for the ordinal number of the first verse in each book */
-    private static final short[] ORDINAL_AT_START_OF_BOOK =
+    static final short[] ORDINAL_AT_START_OF_BOOK =
     {
         1,  1534,  2747,  3606,  4894,  5853,  6511,  7129,  7214,  8024,
         8719,  9535, 10254, 11196, 12018, 12298, 12704, 12871, 13941, 16402,
@@ -1170,35 +1170,65 @@ public class BibleInfo
      * this module) then you will need to cut the psalms line in half to
      * get it to compile under JBuilder.
      */
-    private static final short[][] ORDINAL_AT_START_OF_CHAPTER =
+    static final short[][] ORDINAL_AT_START_OF_CHAPTER =
     {
-        {     1,    32,    57,    81,   107,   139,   161,   185,   207,   236,   268,   300,   320,   338,   362,   383,   399,   426,   459,   497,   515,   549,   573,   593,   660,   694,   729,   775,   797,   832,   875,   930,   962,   982,  1013,  1042,  1085,  1121,  1151,  1174,  1197,  1254,  1292,  1326,  1360,  1388,  1422,  1453,  1475,  1508, },
-        {  1534,  1556,  1581,  1603,  1634,  1657,  1687,  1712,  1744,  1779,  1808,  1818,  1869,  1891,  1922,  1949,  1985,  2001,  2028,  2053,  2079,  2115,  2146,  2179,  2197,  2237,  2274,  2295,  2338,  2384,  2422,  2440,  2475,  2498,  2533,  2568,  2606,  2635,  2666,  2709, },
-        {  2747,  2764,  2780,  2797,  2832,  2851,  2881,  2919,  2955,  2979,  2999,  3046,  3054,  3113,  3170,  3203,  3237,  3253,  3283,  3320,  3347,  3371,  3404,  3448,  3471,  3526,  3572, },
-        {  3606,  3660,  3694,  3745,  3794,  3825,  3852,  3941,  3967,  3990,  4026,  4061,  4077,  4110,  4155,  4196,  4246,  4259,  4291,  4313,  4342,  4377,  4418,  4448,  4473,  4491,  4556,  4579,  4610,  4650,  4666,  4720,  4762,  4818,  4847,  4881, },
-        {  4894,  4940,  4977,  5006,  5055,  5088,  5113,  5139,  5159,  5188,  5210,  5242,  5274,  5292,  5321,  5344,  5366,  5386,  5408,  5429,  5449,  5472,  5502,  5527,  5549,  5568,  5587,  5613,  5681,  5710,  5730,  5760,  5812,  5841, },
-        {  5853,  5871,  5895,  5912,  5936,  5951,  5978,  6004,  6039,  6066,  6109,  6132,  6156,  6189,  6204,  6267,  6277,  6295,  6323,  6374,  6383,  6428,  6462,  6478, },
-        {  6511,  6547,  6570,  6601,  6625,  6656,  6696,  6721,  6756,  6813,  6831,  6871,  6886,  6911,  6931,  6951,  6982,  6995,  7026,  7056,  7104, },
+        {     1,    32,    57,    81,   107,   139,   161,   185,   207,   236,   268,   300,   320,   338,   362,   383,   399,   426,   459,   497,
+            515,   549,   573,   593,   660,   694,   729,   775,   797,   832,   875,   930,   962,   982,  1013,  1042,  1085,  1121,  1151,  1174,
+            1197,  1254,  1292,  1326,  1360,  1388,  1422,  1453,  1475,  1508, },
+        {  1534,  1556,  1581,  1603,  1634,  1657,  1687,  1712,  1744,  1779,  1808,  1818,  1869,  1891,  1922,  1949,  1985,  2001,  2028,  2053,
+           2079,  2115,  2146,  2179,  2197,  2237,  2274,  2295,  2338,  2384,  2422,  2440,  2475,  2498,  2533,  2568,  2606,  2635,  2666,  2709, },
+        {  2747,  2764,  2780,  2797,  2832,  2851,  2881,  2919,  2955,  2979,  2999,  3046,  3054,  3113,  3170,  3203,  3237,  3253,  3283,  3320,
+           3347,  3371,  3404,  3448,  3471,  3526,  3572, },
+        {  3606,  3660,  3694,  3745,  3794,  3825,  3852,  3941,  3967,  3990,  4026,  4061,  4077,  4110,  4155,  4196,  4246,  4259,  4291,  4313,
+           4342,  4377,  4418,  4448,  4473,  4491,  4556,  4579,  4610,  4650,  4666,  4720,  4762,  4818,  4847,  4881, },
+        {  4894,  4940,  4977,  5006,  5055,  5088,  5113,  5139,  5159,  5188,  5210,  5242,  5274,  5292,  5321,  5344,  5366,  5386,  5408,  5429,
+           5449,  5472,  5502,  5527,  5549,  5568,  5587,  5613,  5681,  5710,  5730,  5760,  5812,  5841, },
+        {  5853,  5871,  5895,  5912,  5936,  5951,  5978,  6004,  6039,  6066,  6109,  6132,  6156,  6189,  6204,  6267,  6277,  6295,  6323,  6374,
+           6383,  6428,  6462,  6478, },
+        {  6511,  6547,  6570,  6601,  6625,  6656,  6696,  6721,  6756,  6813,  6831,  6871,  6886,  6911,  6931,  6951,  6982,  6995,  7026,  7056,
+           7104, },
         {  7129,  7151,  7174,  7192, },
-        {  7214,  7242,  7278,  7299,  7321,  7333,  7354,  7371,  7393,  7420,  7447,  7462,  7487,  7510,  7562,  7597,  7620,  7678,  7708,  7732,  7774,  7789,  7812,  7841,  7863,  7907,  7932,  7944,  7969,  7980,  8011, },
-        {  8024,  8051,  8083,  8122,  8134,  8159,  8182,  8211,  8229,  8242,  8261,  8288,  8319,  8358,  8391,  8428,  8451,  8480,  8513,  8556,  8582,  8604,  8655,  8694, },
-        {  8719,  8772,  8818,  8846,  8880,  8898,  8936,  8987,  9053,  9081,  9110,  9153,  9186,  9220,  9251,  9285,  9319,  9343,  9389,  9410,  9453,  9482, },
-        {  9535,  9553,  9578,  9605,  9649,  9676,  9709,  9729,  9758,  9795,  9831,  9852,  9873,  9898,  9927,  9965,  9985, 10026, 10063, 10100, 10121, 10147, 10167, 10204, 10224, },
-        { 10254, 10308, 10363, 10387, 10430, 10456, 10537, 10577, 10617, 10661, 10675, 10722, 10762, 10776, 10793, 10822, 10865, 10892, 10909, 10928, 10936, 10966, 10985, 11017, 11048, 11079, 11111, 11145, 11166, },
-        { 11196, 11213, 11231, 11248, 11270, 11284, 11326, 11348, 11366, 11397, 11416, 11439, 11455, 11477, 11492, 11511, 11525, 11544, 11578, 11589, 11626, 11646, 11658, 11679, 11706, 11734, 11757, 11766, 11793, 11829, 11856, 11877, 11910, 11935, 11968, 11995, },
+        {  7214,  7242,  7278,  7299,  7321,  7333,  7354,  7371,  7393,  7420,  7447,  7462,  7487,  7510,  7562,  7597,  7620,  7678,  7708,  7732,
+           7774,  7789,  7812,  7841,  7863,  7907,  7932,  7944,  7969,  7980,  8011, },
+        {  8024,  8051,  8083,  8122,  8134,  8159,  8182,  8211,  8229,  8242,  8261,  8288,  8319,  8358,  8391,  8428,  8451,  8480,  8513,  8556,
+           8582,  8604,  8655,  8694, },
+        {  8719,  8772,  8818,  8846,  8880,  8898,  8936,  8987,  9053,  9081,  9110,  9153,  9186,  9220,  9251,  9285,  9319,  9343,  9389,  9410,
+           9453,  9482, },
+        {  9535,  9553,  9578,  9605,  9649,  9676,  9709,  9729,  9758,  9795,  9831,  9852,  9873,  9898,  9927,  9965,  9985, 10026, 10063, 10100,
+           10121, 10147, 10167, 10204, 10224, },
+        { 10254, 10308, 10363, 10387, 10430, 10456, 10537, 10577, 10617, 10661, 10675, 10722, 10762, 10776, 10793, 10822, 10865, 10892, 10909, 10928,
+          10936, 10966, 10985, 11017, 11048, 11079, 11111, 11145, 11166, },
+        { 11196, 11213, 11231, 11248, 11270, 11284, 11326, 11348, 11366, 11397, 11416, 11439, 11455, 11477, 11492, 11511, 11525, 11544, 11578, 11589,
+          11626, 11646, 11658, 11679, 11706, 11734, 11757, 11766, 11793, 11829, 11856, 11877, 11910, 11935, 11968, 11995, },
         { 12018, 12029, 12099, 12112, 12136, 12153, 12175, 12203, 12239, 12254, },
         { 12298, 12309, 12329, 12361, 12384, 12403, 12422, 12495, 12513, 12551, 12590, 12626, 12673, },
         { 12704, 12726, 12749, 12764, 12781, 12795, 12809, 12819, 12836, 12868, },
-        { 12871, 12893, 12906, 12932, 12953, 12980, 13010, 13031, 13053, 13088, 13110, 13130, 13155, 13183, 13205, 13240, 13262, 13278, 13299, 13328, 13357, 13391, 13421, 13438, 13463, 13469, 13483, 13506, 13534, 13559, 13590, 13630, 13652, 13685, 13722, 13738, 13771, 13795, 13836, 13866, 13890, 13924, },
-        { 13941, 13947, 13959, 13967, 13975, 13987, 13997, 14014, 14023, 14043, 14061, 14068, 14076, 14082, 14089, 14094, 14105, 14120, 14170, 14184, 14193, 14206, 14237, 14243, 14253, 14275, 14287, 14301, 14310, 14321, 14333, 14357, 14368, 14390, 14412, 14440, 14452, 14492, 14514, 14527, 14544, 14557, 14568, 14573, 14599, 14616, 14627, 14636, 14650, 14670, 14693, 14712, 14721, 14727, 14734, 14757, 14770, 14781, 14792, 14809, 14821, 14829, 14841, 14852, 14862, 14875, 14895, 14902, 14937, 14973, 14978, 15002,
-          15022, 15050, 15073, 15083, 15095, 15115, 15187, 15200, 15219, 15235, 15243, 15261, 15273, 15286, 15303, 15310, 15328, 15380, 15397, 15413, 15428, 15433, 15456, 15467, 15480, 15492, 15501, 15510, 15515, 15523, 15551, 15573, 15608, 15653, 15701, 15744, 15757, 15788, 15795, 15805, 15815, 15824, 15832, 15850, 15869, 15871, 15900, 16076, 16083, 16091, 16100, 16104, 16112, 16117, 16123, 16128, 16134, 16142, 16150, 16153, 16171, 16174, 16177, 16198, 16224, 16233, 16241, 16265, 16278, 16288, 16295, 16307, 16322, 16343, 16353, 16373, 16387, 16396, },
-        { 16402, 16435, 16457, 16492, 16519, 16542, 16577, 16604, 16640, 16658, 16690, 16721, 16749, 16774, 16809, 16842, 16875, 16903, 16927, 16956, 16986, 17017, 17046, 17081, 17115, 17143, 17171, 17198, 17226, 17253, 17286, },
+        { 12871, 12893, 12906, 12932, 12953, 12980, 13010, 13031, 13053, 13088, 13110, 13130, 13155, 13183, 13205, 13240, 13262, 13278, 13299, 13328,
+          13357, 13391, 13421, 13438, 13463, 13469, 13483, 13506, 13534, 13559, 13590, 13630, 13652, 13685, 13722, 13738, 13771, 13795, 13836, 13866,
+          13890, 13924, },
+        { 13941, 13947, 13959, 13967, 13975, 13987, 13997, 14014, 14023, 14043, 14061, 14068, 14076, 14082, 14089, 14094, 14105, 14120, 14170, 14184,
+          14193, 14206, 14237, 14243, 14253, 14275, 14287, 14301, 14310, 14321, 14333, 14357, 14368, 14390, 14412, 14440, 14452, 14492, 14514, 14527,
+          14544, 14557, 14568, 14573, 14599, 14616, 14627, 14636, 14650, 14670, 14693, 14712, 14721, 14727, 14734, 14757, 14770, 14781, 14792, 14809,
+          14821, 14829, 14841, 14852, 14862, 14875, 14895, 14902, 14937, 14973, 14978, 15002, 15022, 15050, 15073, 15083, 15095, 15115, 15187, 15200,
+          15219, 15235, 15243, 15261, 15273, 15286, 15303, 15310, 15328, 15380, 15397, 15413, 15428, 15433, 15456, 15467, 15480, 15492, 15501, 15510,
+          15515, 15523, 15551, 15573, 15608, 15653, 15701, 15744, 15757, 15788, 15795, 15805, 15815, 15824, 15832, 15850, 15869, 15871, 15900, 16076,
+          16083, 16091, 16100, 16104, 16112, 16117, 16123, 16128, 16134, 16142, 16150, 16153, 16171, 16174, 16177, 16198, 16224, 16233, 16241, 16265,
+          16278, 16288, 16295, 16307, 16322, 16343, 16353, 16373, 16387, 16396, },
+        { 16402, 16435, 16457, 16492, 16519, 16542, 16577, 16604, 16640, 16658, 16690, 16721, 16749, 16774, 16809, 16842, 16875, 16903, 16927, 16956,
+          16986, 17017, 17046, 17081, 17115, 17143, 17171, 17198, 17226, 17253, 17286, },
         { 17317, 17335, 17361, 17383, 17399, 17419, 17431, 17460, 17477, 17495, 17515, 17525, },
         { 17539, 17556, 17573, 17584, 17600, 17616, 17629, 17642, },
-        { 17656, 17687, 17709, 17735, 17741, 17771, 17784, 17809, 17831, 17852, 17886, 17902, 17908, 17930, 17962, 17971, 17985, 17999, 18006, 18031, 18037, 18054, 18079, 18097, 18120, 18132, 18153, 18166, 18195, 18219, 18252, 18261, 18281, 18305, 18322, 18332, 18354, 18392, 18414, 18422, 18453, 18482, 18507, 18535, 18563, 18588, 18601, 18616, 18638, 18664, 18675, 18698, 18713, 18725, 18742, 18755, 18767, 18788, 18802, 18823, 18845, 18856, 18868, 18887, 18899, 18924, },
-        { 18948, 18967, 19004, 19029, 19060, 19091, 19121, 19155, 19177, 19203, 19228, 19251, 19268, 19295, 19317, 19338, 19359, 19386, 19409, 19424, 19442, 19456, 19486, 19526, 19536, 19574, 19598, 19620, 19637, 19669, 19693, 19733, 19777, 19803, 19825, 19844, 19876, 19897, 19925, 19943, 19959, 19977, 19999, 20012, 20042, 20047, 20075, 20082, 20129, 20168, 20214, 20278, },
+        { 17656, 17687, 17709, 17735, 17741, 17771, 17784, 17809, 17831, 17852, 17886, 17902, 17908, 17930, 17962, 17971, 17985, 17999, 18006, 18031,
+          18037, 18054, 18079, 18097, 18120, 18132, 18153, 18166, 18195, 18219, 18252, 18261, 18281, 18305, 18322, 18332, 18354, 18392, 18414, 18422,
+          18453, 18482, 18507, 18535, 18563, 18588, 18601, 18616, 18638, 18664, 18675, 18698, 18713, 18725, 18742, 18755, 18767, 18788, 18802, 18823,
+          18845, 18856, 18868, 18887, 18899, 18924, },
+        { 18948, 18967, 19004, 19029, 19060, 19091, 19121, 19155, 19177, 19203, 19228, 19251, 19268, 19295, 19317, 19338, 19359, 19386, 19409, 19424,
+          19442, 19456, 19486, 19526, 19536, 19574, 19598, 19620, 19637, 19669, 19693, 19733, 19777, 19803, 19825, 19844, 19876, 19897, 19925, 19943,
+          19959, 19977, 19999, 20012, 20042, 20047, 20075, 20082, 20129, 20168, 20214, 20278, },
         { 20312, 20334, 20356, 20422, 20444, },
-        { 20466, 20494, 20504, 20531, 20548, 20565, 20579, 20606, 20624, 20635, 20657, 20682, 20710, 20733, 20756, 20764, 20827, 20851, 20883, 20897, 20946, 20978, 21009, 21058, 21085, 21102, 21123, 21159, 21185, 21206, 21232, 21250, 21282, 21315, 21346, 21361, 21399, 21427, 21450, 21479, 21528, 21554, 21574, 21601, 21632, 21657, 21681, 21704, },
+        { 20466, 20494, 20504, 20531, 20548, 20565, 20579, 20606, 20624, 20635, 20657, 20682, 20710, 20733, 20756, 20764, 20827, 20851, 20883, 20897,
+          20946, 20978, 21009, 21058, 21085, 21102, 21123, 21159, 21185, 21206, 21232, 21250, 21282, 21315, 21346, 21361, 21399, 21427, 21450, 21479,
+          21528, 21554, 21574, 21601, 21632, 21657, 21681, 21704, },
         { 21739, 21760, 21809, 21839, 21876, 21907, 21935, 21963, 21990, 22017, 22038, 22083, },
         { 22096, 22107, 22130, 22135, 22154, 22169, 22180, 22196, 22210, 22227, 22242, 22254, 22268, 22284, },
         { 22293, 22313, 22345, },
@@ -1212,11 +1242,15 @@ public class BibleInfo
         { 22842, 22857, },
         { 22880, 22901, 22914, 22924, 22938, 22949, 22964, 22978, 23001, 23018, 23030, 23047, 23061, 23070, },
         { 23091, 23105, 23122, 23140, },
-        { 23146, 23171, 23194, 23211, 23236, 23284, 23318, 23347, 23381, 23419, 23461, 23491, 23541, 23599, 23635, 23674, 23702, 23729, 23764, 23794, 23828, 23874, 23920, 23959, 24010, 24056, 24131, 24197, },
+        { 23146, 23171, 23194, 23211, 23236, 23284, 23318, 23347, 23381, 23419, 23461, 23491, 23541, 23599, 23635, 23674, 23702, 23729, 23764, 23794,
+          23828, 23874, 23920, 23959, 24010, 24056, 24131, 24197, },
         { 24217, 24262, 24290, 24325, 24366, 24409, 24465, 24502, 24540, 24590, 24642, 24675, 24719, 24756, 24828, 24875, },
-        { 24895, 24975, 25027, 25065, 25109, 25148, 25197, 25247, 25303, 25365, 25407, 25461, 25520, 25555, 25590, 25622, 25653, 25690, 25733, 25781, 25828, 25866, 25937, 25993, },
-        { 26046, 26097, 26122, 26158, 26212, 26259, 26330, 26383, 26442, 26483, 26525, 26582, 26632, 26670, 26701, 26728, 26761, 26787, 26827, 26869, 26900, },
-        { 26925, 26951, 26998, 27024, 27061, 27103, 27118, 27178, 27218, 27261, 27309, 27339, 27364, 27416, 27444, 27485, 27525, 27559, 27587, 27628, 27666, 27706, 27736, 27771, 27798, 27825, 27857, 27901, },
+        { 24895, 24975, 25027, 25065, 25109, 25148, 25197, 25247, 25303, 25365, 25407, 25461, 25520, 25555, 25590, 25622, 25653, 25690, 25733, 25781,
+          25828, 25866, 25937, 25993, },
+        { 26046, 26097, 26122, 26158, 26212, 26259, 26330, 26383, 26442, 26483, 26525, 26582, 26632, 26670, 26701, 26728, 26761, 26787, 26827, 26869,
+          26900, },
+        { 26925, 26951, 26998, 27024, 27061, 27103, 27118, 27178, 27218, 27261, 27309, 27339, 27364, 27416, 27444, 27485, 27525, 27559, 27587, 27628,
+          27666, 27706, 27736, 27771, 27798, 27825, 27857, 27901, },
         { 27932, 27964, 27993, 28024, 28049, 28070, 28093, 28118, 28157, 28190, 28211, 28247, 28268, 28282, 28305, 28338, },
         { 28365, 28396, 28412, 28435, 28456, 28469, 28489, 28529, 28542, 28569, 28602, 28636, 28667, 28680, 28720, 28778, },
         { 28802, 28826, 28843, 28861, 28879, 28900, 28918, 28934, 28958, 28973, 28991, 29024, 29045, },
@@ -1238,13 +1272,14 @@ public class BibleInfo
         { 30647, },
         { 30660, },
         { 30674, },
-        { 30699, 30719, 30748, 30770, 30781, 30795, 30812, 30829, 30842, 30863, 30874, 30893, 30910, 30928, 30948, 30956, 30977, 30995, 31019, 31040, 31055, 31082, },
+        { 30699, 30719, 30748, 30770, 30781, 30795, 30812, 30829, 30842, 30863, 30874, 30893, 30910, 30928, 30948, 30956, 30977, 30995, 31019, 31040,
+          31055, 31082, },
     };
 
     /**
      * The number of books in each section
      */
-    private static final short[] BOOKS_IN_SECTION =
+    static final short[] BOOKS_IN_SECTION =
     {
         0, // Does not exist
         5, // Pentateuch = 1;

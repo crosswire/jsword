@@ -29,7 +29,7 @@ import org.crosswire.jsword.passage.RestrictionType;
 /**
  * A blur token specifies much to blur the results of the right token.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */

@@ -44,7 +44,7 @@ import org.jdom.Element;
 /**
  * A Sword version of Dictionary.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -223,8 +223,9 @@ public class SwordDictionary extends AbstractBook
     }
 
     // TODO(DM): Hack alert!!! This is not in the right place!!!
-    private Key getStrongsKey(String text)
+    private Key getStrongsKey(String txt)
     {
+        String text = txt;
         // Is the string all digits?
         Matcher m = STRONGS_PATTERN.matcher(text);
         if (!m.matches())
@@ -265,7 +266,7 @@ public class SwordDictionary extends AbstractBook
     /**
      * Helper method so we can quickly activate ourselves on access
      */
-    private final void checkActive()
+    private void checkActive()
     {
         if (!active)
         {

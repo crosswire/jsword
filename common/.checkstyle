@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fileset-config file-format-version="1.1.0" simple-config="true">
+<fileset name="all" check-config-name="JSword Coding Style" enabled="true"><file-match-pattern match-pattern="." include-pattern="true"/>
+</fileset>
+<filter name="FilesFromPackage" enabled="true"><filter-data value="java/limbo"/>
+<filter-data value="java/test"/>
+<filter-data value="java/tar"/>
+<filter-data value="resource"/>
+</filter>
+<filter name="NonSrcDirs" enabled="true"/>
+</fileset-config>

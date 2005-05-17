@@ -29,7 +29,7 @@ import org.crosswire.common.util.MsgBase;
  * A definition of how open a Bible is. Can is be freely copied or is
  * it proprietary.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -46,7 +46,7 @@ public class Openness implements Serializable
     public static final Openness PD = new Openness(Msg.OPEN_PD);
 
     /**
-     * Does the data have a licence that permits free use
+     * Does the data have a license that permits free use
      */
     public static final Openness FREE = new Openness(Msg.OPEN_FREE);
 

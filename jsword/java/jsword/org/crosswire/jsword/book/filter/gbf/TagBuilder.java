@@ -24,7 +24,7 @@ package org.crosswire.jsword.book.filter.gbf;
 /**
  * A class that packages start and end Tags together.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -36,5 +36,5 @@ public interface TagBuilder
      * @param name The tag name to test
      * @return a new tag or null if the name isn't one we know about
      */
-    public abstract Tag createTag(String name);
+    Tag createTag(String name);
 }

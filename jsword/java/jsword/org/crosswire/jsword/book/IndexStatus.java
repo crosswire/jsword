@@ -28,11 +28,11 @@ import java.io.Serializable;
  * 
  * <p>NOTE(joe): consider giving each a number (1,2,4,8) and allowing combinations
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class IndexStatus implements Serializable
+public final class IndexStatus implements Serializable
 {
     /**
      * There is a complete and ready to use search index
@@ -103,7 +103,7 @@ public class IndexStatus implements Serializable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public final boolean equals(Object o)
+    public boolean equals(Object o)
     {
         return super.equals(o);
     }
@@ -112,7 +112,7 @@ public class IndexStatus implements Serializable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#hashCode()
      */
-    public final int hashCode()
+    public int hashCode()
     {
         return super.hashCode();
     }

@@ -26,7 +26,7 @@ package org.crosswire.jsword.book.raw;
  * into memory at init time, and read the rest of the data when requested.
  * This is slower than the Mem alternative fast but less memory hungry.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

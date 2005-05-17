@@ -52,7 +52,7 @@ import org.crosswire.common.swing.FormPane;
 /**
  * A Tabbed view of a config class.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -125,7 +125,7 @@ public class TreeConfigEditor extends AbstractConfigEditor
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         //if (cards > 1)
-            add(BorderLayout.WEST, new JScrollPane(tree));
+        add(BorderLayout.WEST, new JScrollPane(tree));
 
         add(BorderLayout.CENTER, panel);
         add(BorderLayout.SOUTH, new ButtonPane(this));

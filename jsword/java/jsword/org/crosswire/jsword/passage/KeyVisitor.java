@@ -24,7 +24,7 @@ package org.crosswire.jsword.passage;
 /**
  * An interface for components wanting to visit all the nodes in a Key tree.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -35,12 +35,12 @@ public interface KeyVisitor
      * change to do processing based on it.
      * @param key The found leaf node.
      */
-    public void visitLeaf(Key key);
+    void visitLeaf(Key key);
 
     /**
      * We've found a branch node in a Key tree, and are giving the visitor a
      * change to do processing based on it.
      * @param key The found branch node.
      */
-    public void visitBranch(Key key);
+    void visitBranch(Key key);
 }

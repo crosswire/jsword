@@ -27,7 +27,7 @@ import org.crosswire.jsword.passage.Key;
 /**
  * The central interface to all searching.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -37,19 +37,19 @@ public interface Searcher
      * Setup the index that this parser can use to do word level searches
      * @param index The Index to query for words
      */
-    public void init(Index index);
+    void init(Index index);
 
     /**
      * Take a search request and decipher it into a Passage.
      * @param request The request
      * @return The matching verses
      */
-    public Key search(SearchRequest request) throws BookException;
+    Key search(SearchRequest request) throws BookException;
 
     /**
      * Take a search request and decipher it into a Passage.
      * @param request The request
      * @return The matching verses
      */
-    public Key search(String request) throws BookException;
+    Key search(String request) throws BookException;
 }

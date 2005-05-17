@@ -24,7 +24,7 @@ package org.crosswire.common.swing;
 /**
  * Another way to get ahold of missing exceptions.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

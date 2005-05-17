@@ -60,7 +60,7 @@ import java.util.StringTokenizer;
  * verse that is the end of a range, it is interpreted in the context of the range's
  * start.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
@@ -550,7 +550,7 @@ public abstract class AccuracyType implements Serializable
      * @param text The string to test for validity
      * @throws NoSuchVerseException If the text is invalid
      */
-    private static final void checkValidChapterOrVerse(String text) throws NoSuchVerseException
+    private static void checkValidChapterOrVerse(String text) throws NoSuchVerseException
     {
         if (!isEndMarker(text))
         {
@@ -850,7 +850,7 @@ public abstract class AccuracyType implements Serializable
         BOOK_VERSE,
         BOOK_ONLY,
         CHAPTER_VERSE,
-        VERSE_ONLY
+        VERSE_ONLY,
     };
 
     /**

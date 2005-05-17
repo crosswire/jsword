@@ -46,7 +46,7 @@ import org.crosswire.common.util.Convert;
  * It allows the user to specify additional classes that extend the
  * functionality of the program.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -182,7 +182,7 @@ public class PathField extends JPanel implements Field
      * What is the currently selected value?
      * @return The currently selected value
      */
-    private final String currentValue()
+    private String currentValue()
     {
         return (String) model.getElementAt(list.getSelectedIndex());
     }

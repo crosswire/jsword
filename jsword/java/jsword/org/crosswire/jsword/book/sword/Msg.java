@@ -26,11 +26,11 @@ import org.crosswire.common.util.MsgBase;
 /**
  * Compile safe Msg resource settings.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-class Msg extends MsgBase
+final class Msg extends MsgBase
 {
     static final Msg NO_KEY = new Msg("SwordDictionary.NoKey"); //$NON-NLS-1$
     static final Msg BAD_KEY = new Msg("RawLDBackend.BadKey"); //$NON-NLS-1$

@@ -43,7 +43,7 @@ import org.jdom.Element;
  * than the inheritance. DefaultBookMetaData is probably the preferred
  * implementation.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -169,15 +169,16 @@ public class DefaultBookMetaData extends AbstractBookMetaData
     }
 
     /**
-     * @param type The type to set.
+     * @param aType The type to set.
      */
-    public void setType(BookType type)
+    public void setType(BookType aType)
     {
-        if (type == null)
+        BookType t = aType;
+        if (t == null)
         {
-            type = BookType.BIBLE;
+            t = BookType.BIBLE;
         }
-        this.type = type;
+        type = t;
 
         putProperty(KEY_TYPE, type.toString());
     }

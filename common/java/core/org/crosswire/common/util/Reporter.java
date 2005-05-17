@@ -46,11 +46,11 @@ import java.util.Properties;
  *     because it makes the app more susceptible to the configuration of the
  *     things that listen to reports.</li>
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class Reporter
+public final class Reporter
 {
     /**
      * Enforce Singleton

@@ -24,11 +24,11 @@ package org.crosswire.common.util;
 /**
  * Compile safe Msg resource settings.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-class Msg extends MsgBase
+final class Msg extends MsgBase
 {
     static final Msg SECURITY = new Msg("CallContext.Security"); //$NON-NLS-1$
     static final Msg WRONG_TYPE = new Msg("EventListenerList.WrongType"); //$NON-NLS-1$

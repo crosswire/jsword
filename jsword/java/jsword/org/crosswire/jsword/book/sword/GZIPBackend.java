@@ -87,7 +87,7 @@ import org.crosswire.jsword.passage.Verse;
  * TODO(DM): Testament 0 is used to index an README file for the bible.
  * At this time it is ignored.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

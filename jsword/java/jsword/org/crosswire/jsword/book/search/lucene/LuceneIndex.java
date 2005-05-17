@@ -66,7 +66,7 @@ import org.crosswire.jsword.passage.VerseFactory;
 /**
  * Implement the SearchEngine using Lucene as the search engine.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
 

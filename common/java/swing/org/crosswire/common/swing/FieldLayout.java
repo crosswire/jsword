@@ -31,7 +31,7 @@ import java.awt.Insets;
  * We ought to consider the Form layout idea that I dreamt
  * up earlier when considering updates to this.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author Ideas from JDJ article by Claude Duguay

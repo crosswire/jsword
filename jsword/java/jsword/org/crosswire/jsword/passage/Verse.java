@@ -54,7 +54,7 @@ import org.crosswire.common.util.Logger;
  * about 0.25s also.
  * </p>
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -578,7 +578,7 @@ public final class Verse implements VerseBase, Comparable
      * @param b The second verse to compare
      * @return The bigger of the 2 verses
      */
-    public static final Verse max(Verse a, Verse b)
+    public static Verse max(Verse a, Verse b)
     {
         if (a.compareTo(b) == -1)
         {
@@ -594,7 +594,7 @@ public final class Verse implements VerseBase, Comparable
      * @param b The second verse to compare
      * @return The smaller of the 2 verses
      */
-    public static final Verse min(Verse a, Verse b)
+    public static Verse min(Verse a, Verse b)
     {
         if (a.compareTo(b) == 1)
         {
@@ -743,7 +743,7 @@ public final class Verse implements VerseBase, Comparable
      * @param chapter The chapter to set
      * @param verse The verse to set
      */
-    private final void setAndPatch(int book, int chapter, int verse)
+    private void setAndPatch(int book, int chapter, int verse)
     {
         int[] ref = { book, chapter, verse };
 
@@ -773,7 +773,7 @@ public final class Verse implements VerseBase, Comparable
      * @param verse The verse to set
      * @exception NoSuchVerseException If the verse can not be understood
      */
-    private final void set(int book, int chapter, int verse) throws NoSuchVerseException
+    private void set(int book, int chapter, int verse) throws NoSuchVerseException
     {
         BibleInfo.validate(book, chapter, verse);
 
@@ -788,7 +788,7 @@ public final class Verse implements VerseBase, Comparable
      * @param ordinal The ordinal of the verse
      * @exception NoSuchVerseException If the verse can not be understood
      */
-    private final void set(int ordinal) throws NoSuchVerseException
+    private void set(int ordinal) throws NoSuchVerseException
     {
         int[] ref = BibleInfo.decodeOrdinal(ordinal);
 

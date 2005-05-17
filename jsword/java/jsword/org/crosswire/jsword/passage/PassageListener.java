@@ -27,7 +27,7 @@ import java.util.EventListener;
  * A PassageListener gets told when the verses in a Passage have changed (added
  * or removed).
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -38,19 +38,19 @@ public interface PassageListener extends EventListener
      * where can be had from the Event
      * @param ev a PassageEvent encapuslating the event information
      */
-    public void versesAdded(PassageEvent ev);
+    void versesAdded(PassageEvent ev);
 
     /**
      * Sent after stuff has been removed from the Passage, more info about what
      * and where can be had from the Event
      * @param ev a PassageEvent encapuslating the event information
      */
-    public void versesRemoved(PassageEvent ev);
+    void versesRemoved(PassageEvent ev);
 
     /** 
      * Sent after verses have been symultaneously added and removed from
      * the Passage, more info about what and where can be had from the Event
      * @param ev a PassageEvent encapuslating the event information
      */
-    public void versesChanged(PassageEvent ev);
+    void versesChanged(PassageEvent ev);
 }

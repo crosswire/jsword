@@ -35,9 +35,9 @@ import org.jdom.Element;
 /**
  * A ConfigEntry holds the value(s) for an entry of ConfigEntryType.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
- * @see gnu.gpl.Licence
+ * @see gnu.gpl.License
  * @author DM Smith [ dmsmith555 at hotmail dot com]
  */
 public class ConfigEntry
@@ -207,8 +207,9 @@ public class ConfigEntry
     /**
      * Add a value to the list of values for this ConfigEntry
      */
-    public void addValue(String aValue)
+    public void addValue(String val)
     {
+        String aValue = val;
         String confEntryName = getName();
         // Filter known types of entries
         if (type != null)

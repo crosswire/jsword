@@ -39,7 +39,7 @@ import org.crosswire.jsword.passage.BibleInfo;
  * PassageUtil.
  * <p>Storing these 4 cases takes 2 bits per word, 4 words per byte.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

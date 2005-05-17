@@ -32,11 +32,11 @@ import java.util.Set;
  * so that it can keep a track of exactly what is active and what can be
  * deactivate()d is save memory.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class Activator
+public final class Activator
 {
     /**
      * Prevent instansiation

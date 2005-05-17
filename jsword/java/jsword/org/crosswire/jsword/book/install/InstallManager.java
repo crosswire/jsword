@@ -42,7 +42,7 @@ import org.crosswire.jsword.util.Project;
 /**
  * A manager to abstract out the non-view specific module installation tasks.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

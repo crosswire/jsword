@@ -50,7 +50,7 @@ import org.crosswire.jsword.passage.BibleInfo;
  *
  * <p>In the AV there are 790790 words, in the NIV there are 726111 words.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

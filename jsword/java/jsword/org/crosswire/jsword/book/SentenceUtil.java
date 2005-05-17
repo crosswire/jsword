@@ -33,11 +33,11 @@ import org.crosswire.common.util.StringUtil;
  * It is not designed to be used outside of the book package, so using it
  * outside of these bounds is at your own risk.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class SentenceUtil
+public final class SentenceUtil
 {
     /**
      * Ensure we can not be instansiated
@@ -185,11 +185,12 @@ public class SentenceUtil
     /**
      * From a sentence get a list of words (in original order) without
      * any punctuation, and all in lower case.
-     * @param sentence The string to parse.
+     * @param aSentence The string to parse.
      * @return The words split up as an array
      */
-    public static String[] getWords(String sentence)
+    public static String[] getWords(String aSentence)
     {
+        String sentence = aSentence;
         // First there are some things we regard as word delimitters even if
         // they are not near space. Note that "-" should not be in this list
         // because words like abel-beth-maiacha comtain them.

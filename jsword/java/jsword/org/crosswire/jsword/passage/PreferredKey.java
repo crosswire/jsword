@@ -26,7 +26,7 @@ package org.crosswire.jsword.passage;
  * This interface will often be optional to allow objects to not specify a
  * preferrence.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -36,5 +36,5 @@ public interface PreferredKey
      * What Key would this object like us to use?
      * @return The preferredKey
      */
-    public Key getPreferred();
+    Key getPreferred();
 }

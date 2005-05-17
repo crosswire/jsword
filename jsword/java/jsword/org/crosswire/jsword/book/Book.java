@@ -31,7 +31,7 @@ import org.crosswire.jsword.passage.KeyFactory;
  * either as an XML document or as plain text - It uses Keys to refer
  * to parts of itself, and can search for words (returning Keys).
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -41,12 +41,12 @@ public interface Book extends Activatable, KeyFactory, BookMetaData
      * Meta-Information: What version of the Bible is this?
      * @return A Version for this Bible
      */
-    public BookMetaData getBookMetaData();
+    BookMetaData getBookMetaData();
 
     /**
      * Set the meta-information for this book.
      */
-    public void setBookMetaData(BookMetaData bmd);
+    void setBookMetaData(BookMetaData bmd);
 
     /**
      * Retrieval: Add to the given document some mark-up for the specified
@@ -55,7 +55,7 @@ public interface Book extends Activatable, KeyFactory, BookMetaData
      * @return The found Book data
      * @throws BookException If anything goes wrong with this method
      */
-    public BookData getData(Key key) throws BookException;
+    BookData getData(Key key) throws BookException;
 
     /**
      * Returns the raw text that getData(Key key) builds into OSIS.
@@ -63,7 +63,7 @@ public interface Book extends Activatable, KeyFactory, BookMetaData
      * @return The found Book data
      * @throws BookException If anything goes wrong with this method
      */
-    public String getRawData(Key key) throws BookException;
+    String getRawData(Key key) throws BookException;
 
     /**
      * Retrieval: For a given search spec find a list of references to it.
@@ -72,7 +72,7 @@ public interface Book extends Activatable, KeyFactory, BookMetaData
      * @param request The search spec.
      * @throws BookException If anything goes wrong with this method
      */
-    public Key find(SearchRequest request) throws BookException;
+    Key find(SearchRequest request) throws BookException;
 
     /**
      * Retrieval: For a given search spec find a list of references to it.
@@ -81,5 +81,5 @@ public interface Book extends Activatable, KeyFactory, BookMetaData
      * @param request The search spec.
      * @throws BookException If anything goes wrong with this method
      */
-    public Key find(String request) throws BookException;
+    Key find(String request) throws BookException;
 }

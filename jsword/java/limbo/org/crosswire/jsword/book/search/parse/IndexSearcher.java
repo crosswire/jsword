@@ -51,7 +51,7 @@ import org.crosswire.jsword.passage.Key;
  * <li>grammar have     (words like has have had and so on. Can also use gr ...)</ul>
  * <li>The ability to add soundslike type extensions.</ul>
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

@@ -28,7 +28,7 @@ import org.crosswire.common.util.EmptyIterator;
 /**
  * A simple default implementation of the Key interface.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

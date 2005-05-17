@@ -48,7 +48,7 @@ import org.jdom.Element;
  * <p> The contents of the About field are in rtf.
  * <p> \ is used as a continuation line.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Mark Goodwin [mark at thorubio dot org]
  * @author Joe Walker [joe at eireneh dot com]
@@ -418,7 +418,10 @@ public class ConfigEntryTable
             // At least one of the two languages should match the lang entry
             if (!langFrom.equals(lang) && !langTo.equals(lang))
             {
-                log.error("Data error in " + internal + ". Neither " + ConfigEntryType.GLOSSARY_FROM.getName() + " or " + ConfigEntryType.GLOSSARY_FROM.getName() + " match " + ConfigEntryType.LANG.getName());  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                log.error("Data error in " + internal + //$NON-NLS-1$
+                          ". Neither " + ConfigEntryType.GLOSSARY_FROM.getName() + //$NON-NLS-1$
+                          " or " + ConfigEntryType.GLOSSARY_FROM.getName() + //$NON-NLS-1$
+                          " match " + ConfigEntryType.LANG.getName()); //$NON-NLS-1$
             }
 
             if (fromLeftToRight != toLeftToRight)

@@ -24,7 +24,7 @@ package org.crosswire.jsword.book.install;
 /**
  * An abstract factory to allow generic creation of Installers.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -35,7 +35,7 @@ public interface InstallerFactory
      * properties.
      * @return A new Installer implemented to fit with this Factory
      */
-    public Installer createInstaller();
+    Installer createInstaller();
 
     /**
      * Create a new Installer with values from the given url to use for
@@ -43,5 +43,5 @@ public interface InstallerFactory
      * @param url The configuration string
      * @return A new Installer implemented to fit with this Factory
      */
-    public Installer createInstaller(String url);
+    Installer createInstaller(String url);
 }

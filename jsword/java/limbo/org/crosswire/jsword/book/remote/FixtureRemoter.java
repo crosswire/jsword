@@ -26,7 +26,7 @@ import org.jdom.Document;
 /**
  * A Fixture to help testing Converters and Remoters
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

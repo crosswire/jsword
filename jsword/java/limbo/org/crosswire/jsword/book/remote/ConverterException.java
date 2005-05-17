@@ -27,7 +27,7 @@ import org.crosswire.common.util.MsgBase;
 /**
  * Something went wrong with a Conversion.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @see org.crosswire.jsword.book.remote.Converter

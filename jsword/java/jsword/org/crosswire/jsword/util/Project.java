@@ -34,11 +34,11 @@ import org.crosswire.common.util.NetUtil;
 /**
  * The Project class looks after the source of project files.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class Project
+public final class Project
 {
     /**
      * The cache of downloaded files inside the project directory

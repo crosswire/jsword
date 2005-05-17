@@ -45,7 +45,7 @@ import java.util.logging.Logger;
  * <li>{8} is the system supplied new line</li>
  * </ul>
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  * @author Joe Walker [joe at eireneh dot com]
@@ -114,7 +114,7 @@ public class PatternFormatter extends Formatter
             record.getSourceClassName(), // 5
             record.getSourceMethodName(), // 6
             new Long(record.getSequenceNumber()), // 7
-            lineSeparator // 8
+            lineSeparator, // 8
         };
 
         StringBuffer text = new StringBuffer();

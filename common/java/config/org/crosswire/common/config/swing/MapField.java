@@ -51,7 +51,7 @@ import org.crosswire.common.util.Convert;
  * It allows the user to specify additional classes that extend the
  * functionality of the program.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -214,7 +214,7 @@ public class MapField extends JPanel implements Field
      * What is the currently selected key?
      * @return The currently selected key
      */
-    private final String currentKey()
+    private String currentKey()
     {
         return (String) tableModel.getValueAt(table.getSelectedRow(), 0);
     }
@@ -223,7 +223,7 @@ public class MapField extends JPanel implements Field
      * What is the currently selected value?
      * @return The currently selected value
      */
-    private final String currentValue()
+    private String currentValue()
     {
         return (String) tableModel.getValueAt(table.getSelectedRow(), 1);
     }

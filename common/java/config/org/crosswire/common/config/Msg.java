@@ -26,14 +26,11 @@ import org.crosswire.common.util.MsgBase;
 /**
  * Compile safe Msg resource settings.
  * 
- * <p><table border='1' cellPadding='3' cellSpacing='0'>
- * <tr><td bgColor='white' class='TableRowColor'><font size='-7'>
- *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class Msg extends MsgBase
+public final class Msg extends MsgBase
 {
     static final Msg CONFIG_NOCLASS = new Msg("AbstractReflectedChoice.ConfigNoClass"); //$NON-NLS-1$
     static final Msg CONFIG_MISSINGELE = new Msg("AbstractReflectedChoice.ConfigMissingEle"); //$NON-NLS-1$

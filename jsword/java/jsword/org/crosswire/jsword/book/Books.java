@@ -40,12 +40,12 @@ import org.crosswire.common.util.Reporter;
  * The Bibles class (along with Bible) is the central point of contact
  * between the rest of the world and this set of packages.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class Books implements BookList
+public final class Books implements BookList
 {
     /**
      * Create a singleton instance of the class.

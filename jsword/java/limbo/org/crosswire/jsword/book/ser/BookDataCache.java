@@ -42,7 +42,7 @@ import org.crosswire.jsword.passage.Verse;
 /**
  * A cache of BibleData that can be shared amongst Bibles.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

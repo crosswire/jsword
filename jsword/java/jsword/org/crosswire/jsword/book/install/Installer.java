@@ -36,7 +36,7 @@ import org.crosswire.jsword.book.BookList;
  * however the rest of the system is designed to be able to use data from
  * e-Sword, OLB, etc.</p>
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -46,13 +46,13 @@ public interface Installer extends BookList
      * Accessor for the URL
      * @return the source url
      */
-    public String getURL();
+    String getURL();
 
     /**
      * @param book The book meta-data to get a URL from.
      * @return the remote url for the BookMetaData
      */
-    public URL toRemoteURL(Book book);
+    URL toRemoteURL(Book book);
 
     /**
      * Get a list of BookMetaData objects that represent downloadable modules.
@@ -61,7 +61,7 @@ public interface Installer extends BookList
      * remote source. See notes on reload for more information.
      * @see Installer#reloadBookList()
      */
-    public List getBooks();
+    List getBooks();
 
     /**
      * Return true if the module is not installed or there is a newer
@@ -69,7 +69,7 @@ public interface Installer extends BookList
      * @param book The book meta-data to check on.
      * @return whether there is a newer version to install
      */
-    public boolean isNewer(Book book);
+    boolean isNewer(Book book);
 
     /**
      * Refetch a list of names from the remote source.
@@ -77,7 +77,7 @@ public interface Installer extends BookList
      * of this action. If the user lives in a country that persecutes
      * Christians then this action might give the game away.</b>
      */
-    public void reloadBookList() throws InstallException;
+    void reloadBookList() throws InstallException;
 
     /**
      * Download and install a module locally.
@@ -85,7 +85,7 @@ public interface Installer extends BookList
      * reloadIndex()
      * @param book The module to install
      */
-    public void install(Book book) throws InstallException;
+    void install(Book book) throws InstallException;
 
     /**
      * Download a search index for the given Book.
@@ -95,5 +95,5 @@ public interface Installer extends BookList
      * @param tempDest A temporary URL for downloading to. Passed to the
      * IndexManager for installation.
      */
-    public void downloadSearchIndex(Book book, URL tempDest) throws InstallException;
+    void downloadSearchIndex(Book book, URL tempDest) throws InstallException;
 }

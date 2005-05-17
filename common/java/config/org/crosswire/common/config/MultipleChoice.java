@@ -25,7 +25,7 @@ package org.crosswire.common.config;
  * MultipleChoice is simply a Choice where there are a number of alternative
  * options.
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
@@ -36,5 +36,5 @@ public interface MultipleChoice extends Choice
      * where the user interface allows presentation of alternatives.
      * @return A string array of alternatives.
      */
-    public String[] getOptions();
+    String[] getOptions();
 }

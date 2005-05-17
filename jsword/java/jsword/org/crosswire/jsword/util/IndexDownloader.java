@@ -35,11 +35,11 @@ import org.crosswire.jsword.book.search.IndexManagerFactory;
 /**
  * .
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class IndexDownloader
+public final class IndexDownloader
 {
     /**
      * Prevent instansiation

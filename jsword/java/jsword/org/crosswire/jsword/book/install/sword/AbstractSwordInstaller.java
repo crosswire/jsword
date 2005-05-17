@@ -21,6 +21,9 @@
  */
 package org.crosswire.jsword.book.install.sword;
 
+import com.ice.tar.TarEntry;
+import com.ice.tar.TarInputStream;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -55,13 +58,10 @@ import org.crosswire.jsword.book.sword.SwordBookMetaData;
 import org.crosswire.jsword.book.sword.SwordConstants;
 import org.crosswire.jsword.util.Project;
 
-import com.ice.tar.TarEntry;
-import com.ice.tar.TarInputStream;
-
 /**
  * .
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

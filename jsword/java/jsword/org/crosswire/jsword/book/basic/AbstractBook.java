@@ -44,7 +44,7 @@ import org.jdom.Document;
  * This class does a lot of work in helping make search easier, and implementing
  * some basic write methods. 
  * 
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

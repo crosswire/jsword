@@ -34,7 +34,7 @@ import javax.swing.event.EventListenerList;
  * to its listeners after modifying the ActionEvent to include
  * the ACTION_COMMAND_KEY.
  *
- * @see gnu.gpl.Licence for license details.
+ * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
