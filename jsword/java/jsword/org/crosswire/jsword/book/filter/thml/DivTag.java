@@ -47,6 +47,21 @@ public class DivTag implements Tag
      */
     public Element processTag(Element ele, Attributes attrs)
     {
+        // See if there are variant readings e.g. WHNU Mat 1.9
+        String typeAttr = attrs.getValue("type"); //$NON-NLS-1$
+        if ("variant".equals(typeAttr)) //$NON-NLS-1$
+        {
+            Element seg = OSISUtil.factory().createSeg();
+            seg.setAttribute(OSISUtil.ATTRIBUTE_SEG_TYPE, OSISUtil.VARIANT_TYPE);
+            String classAttr = attrs.getValue("class"); //$NON-NLS-1$
+            if (classAttr != null)
+            {
+                seg.setAttribute(OSISUtil.ATTRIBUTE_SEG_SUBTYPE, OSISUtil.VARIANT_CLASS + classAttr);
+            }
+            ele.addContent(seg);
+            return seg;
+        }
+
         Element div = OSISUtil.factory().createDiv();
         ele.addContent(div);
         return div;

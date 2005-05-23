@@ -97,9 +97,16 @@ public final class OSISUtil
     public static final String NOTETYPE_STUDY = "x-StudyNote"; //$NON-NLS-1$
 
     /**
+     * Constant for the variant type segment
+     */
+    public static final String VARIANT_TYPE = "x-variant"; //$NON-NLS-1$
+    public static final String VARIANT_CLASS = "x-class"; //$NON-NLS-1$
+
+    /**
      * Constant for a Strongs numbering lemma
      */
-    public static final String LEMMA_STRONGS = "x-Strongs:"; //$NON-NLS-1$
+    public static final String LEMMA_STRONGS = "strong:"; //$NON-NLS-1$
+    public static final String MORPH_ROBINSONS = "robinson:"; //$NON-NLS-1$
 
     /**
      * Constant for Strongs numbering morphology
@@ -142,10 +149,11 @@ public final class OSISUtil
     public static final String ATTRIBUTE_W_LEMMA = "lemma"; //$NON-NLS-1$
     public static final String ATTRIBUTE_HI_TYPE = "type"; //$NON-NLS-1$
     public static final String ATTRIBUTE_SEG_TYPE = "type"; //$NON-NLS-1$
+    public static final String ATTRIBUTE_SEG_SUBTYPE = "subType"; //$NON-NLS-1$
     public static final String ATTRIBUTE_REFERENCE_OSISREF = "osisRef"; //$NON-NLS-1$
     public static final String ATTRIBUTE_NOTE_TYPE = "type"; //$NON-NLS-1$
     public static final String ATTRIBUTE_SPEAKER_WHO = "who"; //$NON-NLS-1$
-    public static final String ATTRIBUTE_WORD_MORPH = "morph"; //$NON-NLS-1$
+    public static final String ATTRIBUTE_W_MORPH = "morph"; //$NON-NLS-1$
     public static final String ATTRIBUTE_OSISTEXT_OSISIDWORK = "osisIDWork"; //$NON-NLS-1$
     public static final String ATTRIBUTE_DIV_LANG = "lang"; //$NON-NLS-1$
 

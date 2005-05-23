@@ -533,7 +533,7 @@ public final class GBFTags
                 return;
             }
 
-            String existingMorph = word.getAttributeValue(OSISUtil.ATTRIBUTE_WORD_MORPH);
+            String existingMorph = word.getAttributeValue(OSISUtil.ATTRIBUTE_W_MORPH);
             StringBuffer newMorph = new StringBuffer();
 
             if (existingMorph != null && existingMorph.length() > 0)
@@ -541,7 +541,7 @@ public final class GBFTags
                 newMorph.append(existingMorph).append('|');
             }
             newMorph.append(OSISUtil.MORPH_STRONGS).append(name.substring(2));
-            word.setAttribute(OSISUtil.ATTRIBUTE_WORD_MORPH, newMorph.toString());
+            word.setAttribute(OSISUtil.ATTRIBUTE_W_MORPH, newMorph.toString());
         }
     }
 
