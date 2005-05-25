@@ -23,6 +23,7 @@ package org.crosswire.common.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.regex.Pattern;
 
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
@@ -147,7 +148,6 @@ public final class XMLUtil
         String working = broken;
         int cleanfrom = 0;
 
-    allEntities:
         while (true)
         {
             int amp = working.indexOf('&', cleanfrom);
@@ -155,15 +155,21 @@ public final class XMLUtil
             // If there are no more amps then we are done
             if (amp == -1)
             {
-                break allEntities;
+                break;
+            }
+            
+            // Skip references of the kind &#ddd;
+            if (validCharacterEntityPattern.matcher(working.substring(amp)).find())
+            {
+                cleanfrom = working.indexOf(';', amp) + 1;
+                continue;
             }
 
             // Check for chars that should not be in an entity name
             int i = amp + 1;
-        singleEntity:
             while (true)
             {
-                // if we are at the end of the string the disgard from the & on
+                // if we are at the end of the string the discard from the & on
                 if (i >= working.length())
                 {
                     String entity = working.substring(amp);
@@ -171,12 +177,12 @@ public final class XMLUtil
                     //DataPolice.report("replacing unterminated entity: '" + entity + "' with: '" + replace + "'");
 
                     working = working.substring(0, amp) + replace;
-                    break singleEntity;
+                    break;
                 }
 
                 // if we have come to an ; then we just have an entity that isn't
                 // properly declared, (or maybe it is but something else is
-                // broken) so disgard it
+                // broken) so discard it
                 char c = working.charAt(i);
                 if (c == ';')
                 {
@@ -185,7 +191,7 @@ public final class XMLUtil
                     //DataPolice.report("replacing entity: '" + entity + "' with: '" + replace + "'");
 
                     working = working.substring(0, amp) + replace + working.substring(i + 1);
-                    break singleEntity;
+                    break;
                 }
 
                 // XML entities are letters, numbers or -????
@@ -197,7 +203,7 @@ public final class XMLUtil
                     //DataPolice.report("replacing invalid entity: '" + entity + "' with: '" + replace + "'");
 
                     working = working.substring(0, amp) + replace + working.substring(i);
-                    break singleEntity;
+                    break;
                 }
 
                 i++;
@@ -368,4 +374,6 @@ public final class XMLUtil
      * The log stream
      */
     protected static final Logger log = Logger.getLogger(XMLUtil.class);
+
+    private static Pattern validCharacterEntityPattern = Pattern.compile("^&#x?\\d{2,4};"); //$NON-NLS-1$
 }

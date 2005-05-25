@@ -57,23 +57,23 @@ public final class StackTrace
     /**
      * Create a stack trace of the code at this point
      * @param ex The Throwable containing the Stack Trace
-     * @param disgard The number of uppermost stack frames to ignore
+     * @param discard The number of uppermost stack frames to ignore
      */
-    private void init(Throwable ex, int disgard)
+    private void init(Throwable ex, int discard)
     {
         StringWriter sout = new StringWriter();
         ex.printStackTrace(new PrintWriter(sout));
         String msg = new String(sout.getBuffer());
         String[] calls = StringUtil.split(msg, "\n\r"); //$NON-NLS-1$
 
-        classNames = new String[calls.length - disgard];
-        methodNames = new String[calls.length - disgard];
-        fileNames = new String[calls.length - disgard];
-        lineNumbers = new int[calls.length - disgard];
+        classNames = new String[calls.length - discard];
+        methodNames = new String[calls.length - discard];
+        fileNames = new String[calls.length - discard];
+        lineNumbers = new int[calls.length - discard];
 
         for (int i = 0; i < classNames.length; i++)
         {
-            String call = calls[i + disgard];
+            String call = calls[i + discard];
 
             try
             {

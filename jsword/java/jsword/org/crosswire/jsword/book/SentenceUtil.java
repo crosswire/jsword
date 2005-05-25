@@ -49,7 +49,7 @@ public final class SentenceUtil
     /**
      * Take a string and tokenize it using " " and "--" as delimiters
      * into an Array of Strings. There is a question mark over what to do
-     * with initial spaces. This algorithm disgards them, I'm not sure if
+     * with initial spaces. This algorithm discards them, I'm not sure if
      * this is the right thing to do.
      * @param sentence The string to parse.
      * @return The string array

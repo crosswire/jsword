@@ -64,38 +64,32 @@ public class THMLFilter implements Filter
         Element ele = null;
         try
         {
-            ele = parse(plain);
+            ele = parse(XMLUtil.cleanAllEntities(plain));
         }
         catch (Exception ex1)
         {
             DataPolice.report("Parse failed: " + ex1.getMessage() + //$NON-NLS-1$
                               "\non: " + plain); //$NON-NLS-1$
 
-            // Attempt to fix broken entities, that could be a low damage
-            // way to fix a broken input string
-            String cropped = XMLUtil.cleanAllEntities(plain);
+            // So just try to strip out all XML looking things
+            String shawn = XMLUtil.cleanAllTags(plain);
 
             try
             {
-                ele = parse(cropped);
+                ele = parse(shawn);
             }
             catch (Exception ex2)
             {
-                log.warn("Could not fix it by cleaning entities: " + ex2.getMessage()); //$NON-NLS-1$
-
-                // So just try to strip out all XML looking things
-                String shawn = XMLUtil.cleanAllTags(cropped);
+                log.warn("Could not fix it by cleaning tags: " + ex2.getMessage()); //$NON-NLS-1$
 
                 try
                 {
-                    ele = parse(shawn);
-                }
-                catch (Exception ex3)
-                {
-                    log.warn("Could not fix it by cleaning tags: " + ex3.getMessage()); //$NON-NLS-1$
-
                     ele = OSISUtil.factory().createP();
                     ele.addContent(plain);
+                }
+                catch (Exception ex4)
+                {
+                    log.warn("no way. say it ain't so! " + ex4.getMessage()); //$NON-NLS-1$
                 }
             }
         }
@@ -104,7 +98,6 @@ public class THMLFilter implements Filter
             if (ele == null)
             {
                 ele = OSISUtil.factory().createP();
-                ele.addContent(plain);
             }
             // Make sure that other places don't report this problem
             DataPolice.setKey(null);
