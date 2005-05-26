@@ -21,6 +21,13 @@
  */
 package gnu.gpl;
 
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
+import org.crosswire.common.util.CWClassLoader;
+import org.crosswire.common.util.Logger;
+
 /**
 JSword is covered by the GNU General Public License.
 <pre>
@@ -372,4 +379,62 @@ Public License instead of this License.
  */
 public class License
 {
+    /**
+     * Build a License object from which can be obtained the warranty and its details.
+     */
+    public License()
+    {
+        resources = ResourceBundle.getBundle(License.class.getName(), Locale.getDefault(), new CWClassLoader(License.class));
+    }
+
+    /**
+     * Get JSword's Warranty.
+     * 
+     * @return the warranty for JSword
+     */
+    public String getWarranty()
+    {
+        return getString("License.warranty"); //$NON-NLS-1$
+    }
+    
+    /**
+     * Get JSword's license distribution terms.
+     * 
+     * @return the details of JSword's distribution license
+     */
+    public String getDetails()
+    {
+        return getString("License.details"); //$NON-NLS-1$
+    }
+    
+    /**
+     * Get a specified resource.
+     * 
+     * @param key the resource to obtain
+     * @return the requested resources
+     */
+    private String getString(String key)
+    {
+        try
+        {
+            return resources.getString(key); //$NON-NLS-1$
+        }
+        catch (MissingResourceException ex)
+        {
+            log.error("Missing resource: Locale=" + Locale.getDefault().toString() + " key=" + key); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        assert false;
+        return ""; //$NON-NLS-1$
+    }
+
+    /**
+     * The bundle containing translations of JSword's warranty and license.
+     */
+    private ResourceBundle resources;
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(License.class);
 }
