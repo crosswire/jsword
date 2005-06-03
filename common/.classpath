@@ -1,52 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry exported="true" sourcepath="/jsword-support/othersource/junit-3.8.1-src.jar" kind="lib" path="jar/junit-3.8.1/junit.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="jar/jaf-1.0.2/activation.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry exported="true" sourcepath="/jsword-support/othersource/jdom-1.0.zip" kind="lib" path="jar/jdom-1.0/jdom-1.0.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="src" path="java/gpl">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="src" path="java/limbo">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="src" path="java/core">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="src" path="java/config">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="src" path="java/swing">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="src" path="java/test">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="src" path="java/tar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="resource">
-		<attributes>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" sourcepath="/jsword-support/othersource/jdom-1.0.zip" kind="lib" path="jar/jdom-1.0/jdom-1.0.jar"/>
+	<classpathentry kind="src" path="java/gpl"/>
+	<classpathentry kind="src" path="java/limbo"/>
+	<classpathentry kind="src" path="java/core"/>
+	<classpathentry kind="src" path="java/config"/>
+	<classpathentry kind="src" path="java/swing"/>
+	<classpathentry kind="src" path="java/test"/>
+	<classpathentry kind="src" path="java/tar"/>
+	<classpathentry exported="true" kind="lib" path="resource"/>
+	<classpathentry kind="lib" path="jar/jaf-1.0.2/activation.jar"/>
+	<classpathentry exported="true" kind="lib" path="jar/junit-3.8.1/junit.jar"/>
 	<classpathentry kind="output" path="target/eclipse/classes"/>
 </classpath>
