@@ -1,7 +1,5 @@
 <project name="jsword" default="all">
 
-  <!-- JSword does not have a resource dir -->
-  <property name="source.res"     value=""/>
   <!-- This build uses the core build targets -->
   <import file="../common/core.xml"/>
   <property name="dependency" value="common"/>
