@@ -9,7 +9,7 @@ export JNLP_HOMEPAGE=http://www.crosswire.org/bibledesktop
 export JNLP_CODEBASE=$JNLP_HOMEPAGE/nightly
 export JNLP_INSTALLED=$WEBAPP_BIBLEDESKTOP/nightly
 
-export EMAIL=joe@eireneh.com dmsmith555@yahoo.com
+export EMAIL="joe@eireneh.com dmsmith555@yahoo.com"
 export ANT_HOME=/usr/local/ant
 export JAVA_HOME=/usr/local/java
 
@@ -17,5 +17,5 @@ export PATH=$PATH:/usr/local/bin
 export PATH=$PATH:/bin
 export PATH=$PATH:/usr/bin
 export PATH=$PATH:$ANT_HOME/bin
-export PATH=$PATH:/home/joe/local/bin
+export PATH=$PATH:/home/jsword/bin
 export PATH=$PATH:$JAVA_HOME/bin
