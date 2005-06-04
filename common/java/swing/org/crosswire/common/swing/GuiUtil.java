@@ -36,6 +36,7 @@ import java.util.MissingResourceException;
 import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -337,6 +338,10 @@ public final class GuiUtil
         c.invalidate();
         c.validate();
         c.repaint();
+        if (c instanceof JComponent)
+        {
+            ((JComponent) c).revalidate();
+        }
     }
 
     /**
