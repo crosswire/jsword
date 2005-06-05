@@ -1039,6 +1039,10 @@ public final class VerseRange implements VerseBase
      */
     public boolean contains(Key key)
     {
+        if (key instanceof VerseRange)
+        {
+            return contains((VerseRange) key);
+        }
         return false;
     }
 
@@ -1102,7 +1106,10 @@ public final class VerseRange implements VerseBase
      */
     public void blur(int by, RestrictionType restrict)
     {
-        throw new UnsupportedOperationException();
+        VerseRange newRange = restrict.blur(this, by, by);
+        start = newRange.start;
+        end = newRange.end;
+        verseCount = newRange.verseCount;
     }
 
     /**

@@ -633,14 +633,11 @@ public class PassageTally extends AbstractPassage
      */
     public void blur(int verses, RestrictionType restrict)
     {
+        assert verses > 0;
+
         optimizeWrites();
-
+        raiseEventSuppresion();
         raiseNormalizeProtection();
-
-        if (verses < 0)
-        {
-            throw new IllegalArgumentException(Msg.ERROR_BLUR.toString());
-        }
 
         if (!restrict.equals(RestrictionType.NONE))
         {
@@ -707,7 +704,10 @@ public class PassageTally extends AbstractPassage
         resetMax();
 
         lowerNormalizeProtection();
-        fireIntervalAdded(this, null, null);
+        if (lowerEventSuppresionAndTest())
+        {
+            fireIntervalAdded(this, null, null);
+        }
     }
 
     /**

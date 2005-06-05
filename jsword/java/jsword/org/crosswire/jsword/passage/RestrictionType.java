@@ -85,48 +85,48 @@ public abstract class RestrictionType implements Serializable
         private static final long serialVersionUID = 3905246714754643248L;
     };
 
-    /**
-     * Blurring is restricted to the book.
-     */
-    public static final RestrictionType BOOK = new RestrictionType("BOOK") //$NON-NLS-1$
-    {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.passage.RestrictionType#isSameScope(org.crosswire.jsword.passage.Verse, org.crosswire.jsword.passage.Verse)
-         */
-        public boolean isSameScope(Verse start, Verse end)
-        {
-            return start.isSameBook(end);
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword.passage.VerseRange, int, int)
-         */
-        public VerseRange blur(VerseRange range, int blurDown, int blurUp)
-        {
-            throw new IllegalArgumentException(Msg.RANGE_BLURBOOK.toString());
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword.passage.Verse, int, int)
-         */
-        public VerseRange blur(Verse verse, int blurDown, int blurUp)
-        {
-            throw new IllegalArgumentException(Msg.RANGE_BLURBOOK.toString());
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword.passage.Verse, int, int)
-         */
-        public VerseRange toRange(Verse verse, int count)
-        {
-            throw new IllegalArgumentException(Msg.RANGE_BLURBOOK.toString());
-        }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3978142166633820472L;
-    };
+//    /**
+//     * Blurring is restricted to the book.
+//     */
+//    public static final RestrictionType BOOK = new RestrictionType("BOOK") //$NON-NLS-1$
+//    {
+//        /* (non-Javadoc)
+//         * @see org.crosswire.jsword.passage.RestrictionType#isSameScope(org.crosswire.jsword.passage.Verse, org.crosswire.jsword.passage.Verse)
+//         */
+//        public boolean isSameScope(Verse start, Verse end)
+//        {
+//            return start.isSameBook(end);
+//        }
+//
+//        /* (non-Javadoc)
+//         * @see org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword.passage.VerseRange, int, int)
+//         */
+//        public VerseRange blur(VerseRange range, int blurDown, int blurUp)
+//        {
+//            throw new IllegalArgumentException(Msg.RANGE_BLURBOOK.toString());
+//        }
+//
+//        /* (non-Javadoc)
+//         * @see org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword.passage.Verse, int, int)
+//         */
+//        public VerseRange blur(Verse verse, int blurDown, int blurUp)
+//        {
+//            throw new IllegalArgumentException(Msg.RANGE_BLURBOOK.toString());
+//        }
+//
+//        /* (non-Javadoc)
+//         * @see org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword.passage.Verse, int, int)
+//         */
+//        public VerseRange toRange(Verse verse, int count)
+//        {
+//            throw new IllegalArgumentException(Msg.RANGE_BLURBOOK.toString());
+//        }
+//
+//        /**
+//         * Serialization ID
+//         */
+//        private static final long serialVersionUID = 3978142166633820472L;
+//    };
 
     /**
      * Blurring is restricted to the chapter
@@ -148,21 +148,22 @@ public abstract class RestrictionType implements Serializable
         {
             try
             {
+                Verse start = range.getStart();
+                int startBook = start.getBook();
+                int startChapter = start.getChapter();
+                int startVerse = start.getVerse() - blurDown;
 
-                int startBook = range.getStart().getBook();
-                int startChapter = range.getStart().getChapter();
-                int startVerse = range.getStart().getVerse() - blurDown;
-
-                int endBook = range.getEnd().getBook();
-                int endChapter = range.getEnd().getChapter();
-                int endVerse = range.getEnd().getVerse() + blurUp;
+                Verse end = range.getEnd();
+                int endBook = end.getBook();
+                int endChapter = end.getChapter();
+                int endVerse = end.getVerse() + blurUp;
 
                 startVerse = Math.max(startVerse, 1);
                 endVerse = Math.min(endVerse, BibleInfo.versesInChapter(endBook, endChapter));
 
-                Verse start = new Verse(startBook, startChapter, startVerse);
-                Verse end = new Verse(endBook, endChapter, endVerse);
-                return new VerseRange(start, end);
+                Verse newStart = new Verse(startBook, startChapter, startVerse);
+                Verse newEnd = new Verse(endBook, endChapter, endVerse);
+                return new VerseRange(newStart, newEnd);
             }
             catch (NoSuchVerseException ex)
             {
@@ -361,7 +362,7 @@ public abstract class RestrictionType implements Serializable
     {
         if (defaultBlurRestriction == null)
         {
-            defaultBlurRestriction = RestrictionType.CHAPTER;
+            defaultBlurRestriction = RestrictionType.NONE;
         }
         return defaultBlurRestriction;
     }
@@ -388,7 +389,7 @@ public abstract class RestrictionType implements Serializable
     private static final RestrictionType[] VALUES =
     {
         NONE,
-        BOOK,
         CHAPTER,
+//      BOOK,
     };
 }

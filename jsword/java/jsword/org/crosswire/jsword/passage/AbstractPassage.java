@@ -1211,7 +1211,7 @@ public abstract class AbstractPassage implements Passage
         /**
          * Do we restrict ranges to not crossing chapter boundries
          */
-        private RestrictionType restrict = RestrictionType.NONE;
+        private RestrictionType restrict;
     }
 
     /**

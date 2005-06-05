@@ -292,27 +292,20 @@ public class BitwisePassage extends AbstractPassage
      */
     public void blur(int verses, RestrictionType restrict)
     {
+        assert verses > 0;
         optimizeWrites();
         raiseNormalizeProtection();
 
-        if (verses < 0)
-        {
-            throw new IllegalArgumentException(Msg.ERROR_BLUR.toString());
-        }
-
         if (!restrict.equals(RestrictionType.NONE))
         {
-            BitwisePassage temp = (BitwisePassage) this.clone();
-            Iterator it = temp.rangeIterator(RestrictionType.NONE);
-
-            while (it.hasNext())
-            {
-                VerseRange range = restrict.blur((VerseRange) it.next(), verses, verses);
-                add(range);
-            }
+            super.blur(verses, restrict);
         }
         else
         {
+            optimizeWrites();
+            raiseEventSuppresion();
+            raiseNormalizeProtection();
+
             int versesInBible = BibleInfo.versesInBible();
             BitSet newStore = new BitSet(versesInBible + 1);
 
@@ -328,10 +321,13 @@ public class BitwisePassage extends AbstractPassage
             }
 
             store = newStore;
-        }
 
-        lowerNormalizeProtection();
-        fireIntervalAdded(this, null, null);
+            lowerNormalizeProtection();
+            if (lowerEventSuppresionAndTest())
+            {
+                fireIntervalAdded(this, null, null);
+            }
+        }
     }
 
     /**
