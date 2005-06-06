@@ -93,7 +93,7 @@ public class SyncTag implements Tag
                     }
                     buf.append(OSISUtil.LEMMA_STRONGS);
                     buf.append(value);
-                    wEle.setAttribute(OSISUtil.ATTRIBUTE_W_LEMMA, buf.toString());               
+                    wEle.setAttribute(OSISUtil.ATTRIBUTE_W_LEMMA, buf.toString());
                 }
             }
             return null;
@@ -129,7 +129,7 @@ public class SyncTag implements Tag
                     }
                     buf.append(OSISUtil.MORPH_ROBINSONS);
                     buf.append(value);
-                    wEle.setAttribute(OSISUtil.ATTRIBUTE_W_MORPH, buf.toString());               
+                    wEle.setAttribute(OSISUtil.ATTRIBUTE_W_MORPH, buf.toString());
                 }
             }
             return null;

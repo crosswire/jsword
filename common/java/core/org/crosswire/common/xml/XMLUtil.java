@@ -157,7 +157,7 @@ public final class XMLUtil
             {
                 break;
             }
-            
+
             // Skip references of the kind &#ddd;
             if (validCharacterEntityPattern.matcher(working.substring(amp)).find())
             {

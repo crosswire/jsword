@@ -391,7 +391,7 @@ public class License
     {
         return Msg.WARRANTY.toString(name);
     }
-    
+
     /**
      * Get the license distribution terms.
      * 
@@ -401,7 +401,7 @@ public class License
     {
         return Msg.DETAILS.toString(name);
     }
-    
+
     /**
      * The name of the program being licensed.
      */
