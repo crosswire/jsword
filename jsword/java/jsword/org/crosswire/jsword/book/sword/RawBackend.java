@@ -129,7 +129,7 @@ public class RawBackend extends AbstractBackend
     public String getRawText(Key key) throws BookException
     {
         checkActive();
-        String charset = getBookMetaData().getModuleCharset();
+        String charset = getBookMetaData().getBookCharset();
 
         Verse verse = KeyUtil.getVerse(key);
 

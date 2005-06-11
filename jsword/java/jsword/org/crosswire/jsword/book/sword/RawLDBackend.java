@@ -205,7 +205,7 @@ public class RawLDBackend extends AbstractBackend
     {
         checkActive();
 
-        String charset = getBookMetaData().getModuleCharset();
+        String charset = getBookMetaData().getBookCharset();
 
         if (!(key instanceof IndexKey))
         {

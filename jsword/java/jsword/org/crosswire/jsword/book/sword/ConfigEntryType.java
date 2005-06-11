@@ -27,7 +27,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.crosswire.jsword.book.BookType;
+import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.basic.AbstractBookMetaData;
 
 
@@ -83,7 +83,7 @@ import org.crosswire.jsword.book.basic.AbstractBookMetaData;
 public class ConfigEntryType implements Serializable
 {
     /**
-     * Contains rtf that describes the module.
+     * Contains rtf that describes the book.
      */
     public static final ConfigEntryType ABOUT = new ConfigEntryType("About") //$NON-NLS-1$
     {
@@ -200,7 +200,7 @@ public class ConfigEntryType implements Serializable
     };
 
     /**
-     * The Category of the module. Used on the web to classify books into a tree.
+     * The Category of the book. Used on the web to classify books into a tree.
      */
     public static final ConfigEntryType CATEGORY = new ConfigEntryType("Category") //$NON-NLS-1$
     {
@@ -238,7 +238,7 @@ public class ConfigEntryType implements Serializable
     };
 
     /**
-     * If this exists in the conf, then the module is encrypted. The value is used to
+     * If this exists in the conf, then the book is encrypted. The value is used to
      * unlock the book. The encryption algorithm is Sapphire. This has yet to be implemented
      * in JSword.
      */
@@ -448,7 +448,7 @@ public class ConfigEntryType implements Serializable
     };
 
     /**
-     * The full name of this module
+     * The full name of this book
      */
     public static final ConfigEntryType DESCRIPTION = new ConfigEntryType("Description"); //$NON-NLS-1$
 
@@ -591,7 +591,7 @@ public class ConfigEntryType implements Serializable
     };
 
     /**
-     * Similar to DataPath. It gives where on the Crosswire server the module can be found.
+     * Similar to DataPath. It gives where on the Crosswire server the book can be found.
      * Informational only.
      */
     public static final ConfigEntryType DISTRIBUTION_SOURCE = new ConfigEntryType("DistributionSource") //$NON-NLS-1$
@@ -760,7 +760,7 @@ public class ConfigEntryType implements Serializable
     };
 
     /**
-     * The installed size of the module in bytes. This is not the size of the zip that is downloaded.
+     * The installed size of the book in bytes. This is not the size of the zip that is downloaded.
      */
     public static final ConfigEntryType INSTALL_SIZE = new ConfigEntryType("InstallSize") //$NON-NLS-1$
     {
@@ -787,7 +787,7 @@ public class ConfigEntryType implements Serializable
     };
 
     /**
-     * A Feature describes a characteristic of the Module.
+     * A Feature describes a characteristic of the Book.
      * TODO(DMS): use this to present the user with a pick list of books for Strongs,
      * and Heb/Greek Def/Parse. We should also use DailyDevotional to map the days to a date.
      */
@@ -838,14 +838,14 @@ public class ConfigEntryType implements Serializable
     };
 
     /**
-     * A recommended font to use for the module.
+     * A recommended font to use for the book.
      * TODO(DMS): Use this font.
-     * TODO(DMS): Allow a user to associate a font with a module.
+     * TODO(DMS): Allow a user to associate a font with a book.
      */
     public static final ConfigEntryType FONT = new ConfigEntryType("Font"); //$NON-NLS-1$
 
     /**
-     * single value string, defaults to en, the language of the module
+     * single value string, defaults to en, the language of the book
      */
     public static final ConfigEntryType LANG = new ConfigEntryType("Lang") //$NON-NLS-1$
     {
@@ -865,12 +865,12 @@ public class ConfigEntryType implements Serializable
 
     /**
      * Library of Congress Subject Heading.
-     * Typically this is of the form BookType Scope Language, where scope is typically O.T., N.T.
+     * Typically this is of the form BookCategory Scope Language, where scope is typically O.T., N.T.
      */
     public static final ConfigEntryType LCSH = new ConfigEntryType("LCSH"); //$NON-NLS-1$
 
     /**
-     * This indicates how the module was stored.
+     * This indicates how the book was stored.
      */
     public static final ConfigEntryType MOD_DRV = new ConfigEntryType("ModDrv") //$NON-NLS-1$
     {
@@ -914,7 +914,7 @@ public class ConfigEntryType implements Serializable
     };
 
     /**
-     * single value version number, lowest sword c++ version that can read this module
+     * single value version number, lowest sword c++ version that can read this book
      * JSword does not use this value.
      */
     public static final ConfigEntryType MINIMUM_VERSION = new ConfigEntryType("MinimumVersion") //$NON-NLS-1$
@@ -936,7 +936,7 @@ public class ConfigEntryType implements Serializable
 
 
     /**
-     * A list of prior "initials" for the current module. Informational only.
+     * A list of prior "initials" for the current book. Informational only.
      */
     public static final ConfigEntryType OBSOLETES = new ConfigEntryType("Obsoletes") //$NON-NLS-1$
     {
@@ -1029,7 +1029,7 @@ public class ConfigEntryType implements Serializable
     };
 
     /**
-     * The date that this version of the module was last updated. Informational only.
+     * The date that this version of the book was last updated. Informational only.
      */
     public static final ConfigEntryType SWORD_VERSION_DATE = new ConfigEntryType("SwordVersionDate") //$NON-NLS-1$
     {
@@ -1050,7 +1050,7 @@ public class ConfigEntryType implements Serializable
     };
 
     /**
-     * Information on where the module's text was obtained.
+     * Information on where the book's text was obtained.
      */
     public static final ConfigEntryType TEXT_SOURCE = new ConfigEntryType("TextSource") //$NON-NLS-1$
     {
@@ -1131,7 +1131,7 @@ public class ConfigEntryType implements Serializable
     };
 
     /**
-     * The abbreviated name by which this module is known. This is in the [] on the first non-blank
+     * The abbreviated name by which this book is known. This is in the [] on the first non-blank
      * line of the conf. JSword uses this for display and access purposes.
      */
     public static final ConfigEntryType INITIALS = new ConfigEntryType("Initials") //$NON-NLS-1$
@@ -1169,7 +1169,7 @@ public class ConfigEntryType implements Serializable
          */
         public Object getDefault()
         {
-            return BookType.OTHER.toString(); //$NON-NLS-1$
+            return BookCategory.OTHER.toString(); //$NON-NLS-1$
         }
 
         /**
@@ -1334,7 +1334,7 @@ public class ConfigEntryType implements Serializable
     }
 
     /**
-     * Synthetic keys are those that are not in the Sword Module's conf,
+     * Synthetic keys are those that are not in the Sword Book's conf,
      * but are needed by the program. Typically, these are derived by the program
      * from the other entries.
      * @return true if this is synthetic
@@ -1375,7 +1375,7 @@ public class ConfigEntryType implements Serializable
             }
         }
         // should not get here.
-        // But there are typos in the keys in the module conf files
+        // But there are typos in the keys in the book conf files
         // And this allows for the addition of new fields in
         // advance of changing JSword
         return null;

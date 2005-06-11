@@ -81,7 +81,7 @@ public final class BookFilters
     {
         public boolean test(Book book)
         {
-            return book.getType().equals(BookType.BIBLE);
+            return book.getType().equals(BookCategory.BIBLE);
         }
     }
 
@@ -105,7 +105,7 @@ public final class BookFilters
     {
         public boolean test(Book book)
         {
-            return book.getType().equals(BookType.DICTIONARY);
+            return book.getType().equals(BookCategory.DICTIONARY);
         }
     }
 
@@ -129,7 +129,7 @@ public final class BookFilters
     {
         public boolean test(Book book)
         {
-            return book.getType().equals(BookType.COMMENTARY);
+            return book.getType().equals(BookCategory.COMMENTARY);
         }
     }
 

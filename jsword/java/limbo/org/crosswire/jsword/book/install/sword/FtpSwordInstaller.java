@@ -35,8 +35,6 @@ import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.install.InstallException;
-import org.crosswire.jsword.book.install.sword.AbstractSwordInstaller;
-import org.crosswire.jsword.book.install.sword.FTPMsg;
 import org.crosswire.jsword.book.sword.SwordBookMetaData;
 
 /**

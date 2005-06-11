@@ -55,7 +55,7 @@ public interface Installer extends BookList
     URL toRemoteURL(Book book);
 
     /**
-     * Get a list of BookMetaData objects that represent downloadable modules.
+     * Get a list of BookMetaData objects that represent downloadable books.
      * If no list has been retrieved from the remote source using reloadIndex()
      * then we should just return an empty list and not attempt to contact the
      * remote source. See notes on reload for more information.
@@ -64,7 +64,7 @@ public interface Installer extends BookList
     List getBooks();
 
     /**
-     * Return true if the module is not installed or there is a newer
+     * Return true if the book is not installed or there is a newer
      * version to install.
      * @param book The book meta-data to check on.
      * @return whether there is a newer version to install
@@ -80,10 +80,10 @@ public interface Installer extends BookList
     void reloadBookList() throws InstallException;
 
     /**
-     * Download and install a module locally.
+     * Download and install a book locally.
      * The name should be one from an index list retrieved from getIndex() or
      * reloadIndex()
-     * @param book The module to install
+     * @param book The book to install
      */
     void install(Book book) throws InstallException;
 

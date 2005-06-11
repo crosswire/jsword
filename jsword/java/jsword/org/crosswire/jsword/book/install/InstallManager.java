@@ -40,7 +40,7 @@ import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.util.Project;
 
 /**
- * A manager to abstract out the non-view specific module installation tasks.
+ * A manager to abstract out the non-view specific book installation tasks.
  * 
  * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.

@@ -33,10 +33,10 @@ import java.util.TreeMap;
 
 import org.crosswire.common.util.CWClassLoader;
 import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.BookType;
 import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractBook;
@@ -66,7 +66,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
     /**
      * Constructor for ReadingsBook.
      */
-    public ReadingsBook(ReadingsBookDriver driver, String name, BookType type)
+    public ReadingsBook(ReadingsBookDriver driver, String name, BookCategory type)
     {
         BookMetaData bmd = new DefaultBookMetaData(driver, name, type);
         setBookMetaData(bmd);

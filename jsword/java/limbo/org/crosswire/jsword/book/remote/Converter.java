@@ -28,8 +28,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.BookType;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
@@ -92,7 +92,7 @@ public class Converter
             String name = bmdele.getChildTextTrim(ELEMENT_NAME);
             String typestr = bmdele.getChildTextTrim(ELEMENT_TYPE);
 
-            BookType type = BookType.fromString(typestr);
+            BookCategory type = BookCategory.fromString(typestr);
 
             Book book = new RemoteBook(remoter, driver, name, type);
 

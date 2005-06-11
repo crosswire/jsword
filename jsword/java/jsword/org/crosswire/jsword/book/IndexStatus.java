@@ -66,7 +66,7 @@ public final class IndexStatus implements Serializable
     };
 
     /**
-     * @param name The name of the BookType
+     * @param name The name of the BookCategory
      */
     private IndexStatus(String name)
     {
@@ -126,7 +126,7 @@ public final class IndexStatus implements Serializable
     }
 
     /**
-     * The name of the BookType
+     * The name of the BookCategory
      */
     private String name;
 

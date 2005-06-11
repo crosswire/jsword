@@ -417,7 +417,7 @@ public final class OSISUtil
      * div element and it will be provided as a container. It is this div
      * that "contains" the verse element.</p>
      * <p>The verse element may either be
-     * a container or a milestone. Sword OSIS modules differ in whether
+     * a container or a milestone. Sword OSIS books differ in whether
      * they provide the verse element. Most do not. The few that do are
      * using the container model, but it has been proposed that milestones
      * are the best practice.</p>

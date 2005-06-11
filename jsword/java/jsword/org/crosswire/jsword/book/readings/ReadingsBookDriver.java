@@ -28,8 +28,8 @@ import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.common.util.URLFilter;
 import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookDriver;
-import org.crosswire.jsword.book.BookType;
 import org.crosswire.jsword.book.basic.AbstractBookDriver;
 
 /**
@@ -48,7 +48,7 @@ public class ReadingsBookDriver extends AbstractBookDriver
     {
         books = new Book[]
         {
-            new ReadingsBook(this, Msg.TITLE.toString(), BookType.DICTIONARY),
+            new ReadingsBook(this, Msg.TITLE.toString(), BookCategory.DICTIONARY),
         };
     }
 

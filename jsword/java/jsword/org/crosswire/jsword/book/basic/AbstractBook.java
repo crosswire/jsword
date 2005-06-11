@@ -26,10 +26,10 @@ import java.util.Map;
 
 import org.crosswire.common.activate.Lock;
 import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.BookType;
 import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.IndexStatus;
 import org.crosswire.jsword.book.search.SearchRequest;
@@ -199,7 +199,7 @@ public abstract class AbstractBook implements Book
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getType()
      */
-    public BookType getType()
+    public BookCategory getType()
     {
         return bmd.getType();
     }

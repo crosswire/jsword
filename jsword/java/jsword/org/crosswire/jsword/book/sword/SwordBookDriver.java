@@ -165,18 +165,18 @@ public class SwordBookDriver extends AbstractBookDriver
             throw new BookException(Msg.DELETE_FAILED, new Object [] {confFile});
         }
 
-        File moduleDir = new File(downloadDir, sbmd.getModulePath());
+        File bookDir = new File(downloadDir, sbmd.getBookPath());
 
         // Delete the conf
         List failures = FileUtil.delete(confFile);
         if (failures.size() == 0)
         {
-            // If the conf is gone, then we cannot get to the module
+            // If the conf is gone, then we cannot get to the book
             // and then we can download it again.
-            // But if the conf is present and the module is gone,
+            // But if the conf is present and the book is gone,
             // then we get errors.
-            // Delete the download module's dir
-            failures = FileUtil.delete(moduleDir);
+            // Delete the download book's dir
+            failures = FileUtil.delete(bookDir);
             Books.installed().removeBook(dead);
         }
 
@@ -222,8 +222,8 @@ public class SwordBookDriver extends AbstractBookDriver
      */
     private Book createBook(SwordBookMetaData sbmd, File progdir) throws BookException
     {
-        ModuleType modtype = sbmd.getModuleType();
-        if (modtype.getBookType() == null)
+        BookType modtype = sbmd.getBookType();
+        if (modtype.getBookCategory() == null)
         {
             // LATER(joe): how do we support books?
             log.warn("No support for book type: DRIVER_RAW_GEN_BOOK"); //$NON-NLS-1$

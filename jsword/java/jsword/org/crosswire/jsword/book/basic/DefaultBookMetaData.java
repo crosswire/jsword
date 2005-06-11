@@ -26,9 +26,9 @@ import java.util.Properties;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.BookType;
 import org.crosswire.jsword.book.IndexStatus;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.search.IndexManager;
@@ -77,7 +77,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData
      * Ctor with some default values.
      * A call to setBook() is still required after this ctor is called
      */
-    public DefaultBookMetaData(BookDriver driver, String name, BookType type)
+    public DefaultBookMetaData(BookDriver driver, String name, BookCategory type)
     {
         setDriver(driver);
         setName(name);
@@ -88,7 +88,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getType()
      */
-    public BookType getType()
+    public BookCategory getType()
     {
         return type;
     }
@@ -171,12 +171,12 @@ public class DefaultBookMetaData extends AbstractBookMetaData
     /**
      * @param aType The type to set.
      */
-    public void setType(BookType aType)
+    public void setType(BookCategory aType)
     {
-        BookType t = aType;
+        BookCategory t = aType;
         if (t == null)
         {
-            t = BookType.BIBLE;
+            t = BookCategory.BIBLE;
         }
         type = t;
 
@@ -188,10 +188,10 @@ public class DefaultBookMetaData extends AbstractBookMetaData
      */
     public void setType(String typestr)
     {
-        BookType newType = null;
+        BookCategory newType = null;
         if (typestr != null)
         {
-            newType = BookType.fromString(typestr);
+            newType = BookCategory.fromString(typestr);
         }
 
         setType(newType);
@@ -239,7 +239,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData
         table.addContent(rowEle);
     }
 
-    private BookType type;
+    private BookCategory type;
     private String name;
     private String initials;
 }

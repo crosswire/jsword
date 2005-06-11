@@ -32,32 +32,32 @@ import java.io.Serializable;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public final class BookType implements Serializable
+public final class BookCategory implements Serializable
 {
     /**
      * Books that are Bibles
      */
-    public static final BookType BIBLE = new BookType("Bible"); //$NON-NLS-1$
+    public static final BookCategory BIBLE = new BookCategory("Bible"); //$NON-NLS-1$
 
     /**
      * Books that are Dictionaries
      */
-    public static final BookType DICTIONARY = new BookType("Dictionary"); //$NON-NLS-1$
+    public static final BookCategory DICTIONARY = new BookCategory("Dictionary"); //$NON-NLS-1$
 
     /**
      * Books that are Commentaries
      */
-    public static final BookType COMMENTARY = new BookType("Commentary"); //$NON-NLS-1$
+    public static final BookCategory COMMENTARY = new BookCategory("Commentary"); //$NON-NLS-1$
 
     /**
      * Books that are not any of the above
      */
-    public static final BookType OTHER = new BookType("Other"); //$NON-NLS-1$
+    public static final BookCategory OTHER = new BookCategory("Other"); //$NON-NLS-1$
 
     /**
-     * @param name The name of the BookType
+     * @param name The name of the BookCategory
      */
-    private BookType(String name)
+    private BookCategory(String name)
     {
         this.name = name;
     }
@@ -65,11 +65,11 @@ public final class BookType implements Serializable
     /**
      * Lookup method to convert from a String
      */
-    public static BookType fromString(String name)
+    public static BookCategory fromString(String name)
     {
         for (int i = 0; i < VALUES.length; i++)
         {
-            BookType o = VALUES[i];
+            BookCategory o = VALUES[i];
             if (o.name.equalsIgnoreCase(name))
             {
                 return o;
@@ -81,7 +81,7 @@ public final class BookType implements Serializable
     /**
      * Lookup method to convert from an integer
      */
-    public static BookType fromInteger(int i)
+    public static BookCategory fromInteger(int i)
     {
         return VALUES[i];
     }
@@ -113,7 +113,7 @@ public final class BookType implements Serializable
     }
 
     /**
-     * The name of the BookType
+     * The name of the BookCategory
      */
     private String name;
 
@@ -126,7 +126,7 @@ public final class BookType implements Serializable
         return VALUES[obj];
     }
 
-    private static final BookType[] VALUES =
+    private static final BookCategory[] VALUES =
     {
         BIBLE,
         DICTIONARY,

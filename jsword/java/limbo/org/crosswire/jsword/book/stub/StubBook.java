@@ -21,11 +21,11 @@
  */
 package org.crosswire.jsword.book.stub;
 
+import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.BookType;
-import org.crosswire.jsword.book.basic.DefaultBookMetaData;
 import org.crosswire.jsword.book.basic.AbstractPassageBook;
+import org.crosswire.jsword.book.basic.DefaultBookMetaData;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterFactory;
 import org.crosswire.jsword.passage.Key;
@@ -44,7 +44,7 @@ public class StubBook extends AbstractPassageBook
     /**
      * Basic constructor for a StubBook
      */
-    public StubBook(StubBookDriver driver, String name, BookType type)
+    public StubBook(StubBookDriver driver, String name, BookCategory type)
     {
         BookMetaData bmd = new DefaultBookMetaData(driver, name, type);
         setBookMetaData(bmd);

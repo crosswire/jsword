@@ -98,7 +98,7 @@ public final class GBFTagBuilders
             if (reply == null)
             {
                 // I'm not confident enough that we handle all the GBF tags
-                // that I will blame the module instead of the program
+                // that I will blame the book instead of the program
                 log.warn("Ignoring tag of <" + name + ">"); //$NON-NLS-1$ //$NON-NLS-2$
                 //DataPolice.report("Ignoring tag of <" + name + ">");
             }

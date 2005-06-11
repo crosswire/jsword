@@ -77,7 +77,7 @@ public class CustomHandler extends DefaultHandler
 
         Tag t = (Tag) TAG_MAP.get(qname);
 
-        // Some of the THML modules are broken in that they use uppercase
+        // Some of the THML books are broken in that they use uppercase
         // element names, which the spec disallows, but we might as well
         // look out for them
         if (t == null)

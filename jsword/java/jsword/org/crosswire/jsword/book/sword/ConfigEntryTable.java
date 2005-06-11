@@ -31,13 +31,13 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.jsword.book.BookType;
+import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractBookMetaData;
 import org.jdom.Element;
 
 /**
- * A utility class for loading the entries in a Sword module's conf file.
+ * A utility class for loading the entries in a Sword book's conf file.
  * Since the conf files are manually maintained, there can be all sorts
  * of errors in them. This class does robust checking and reporting.
  *
@@ -61,9 +61,9 @@ public class ConfigEntryTable
      * Loads a sword config from a given Reader.
      * @throws IOException
      */
-    public ConfigEntryTable(Reader in, String moduleName) throws IOException
+    public ConfigEntryTable(Reader in, String bookName) throws IOException
     {
-        internal = moduleName;
+        internal = bookName;
         supported = true;
 
         loadFile(in);
@@ -74,7 +74,7 @@ public class ConfigEntryTable
     }
 
     /**
-     * Determines whether the Sword Module's conf is supported by JSword.
+     * Determines whether the Sword Book's conf is supported by JSword.
      */
     public boolean isSupported()
     {
@@ -91,9 +91,9 @@ public class ConfigEntryTable
     /**
      * Returns an Enumeration of all the keys found in the config file.
      */
-    public ModuleType getModuleType()
+    public BookType getBookType()
     {
-        return moduleType;
+        return bookType;
     }
 
     /**
@@ -485,21 +485,21 @@ public class ConfigEntryTable
             return;
         }
 
-        moduleType = ModuleType.getModuleType(modTypeName);
-        if (getModuleType() == null)
+        bookType = BookType.getBookType(modTypeName);
+        if (getBookType() == null)
         {
-            log.error("Book not supported: malformed conf file for " + internal + " no module type found"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            log.error("Book not supported: malformed conf file for " + internal + " no book type found"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             supported = false;
             return;
         }
 
-        BookType type = getModuleType().getBookType();
+        BookCategory type = getBookType().getBookCategory();
         if (type == null)
         {
             // We plan to add RawGenBook at a later time. So we don't need to be reminded all the time.
             if (!modTypeName.equals("RawGenBook")) //$NON-NLS-1$
             {
-                log.debug("Book not supported: " + internal + " because missing book type for ModuleType (" + modTypeName + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                log.debug("Book not supported: " + internal + " because missing book type for BookType (" + modTypeName + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
             supported = false;
             return;
@@ -524,7 +524,7 @@ public class ConfigEntryTable
      */
     private void validate()
     {
-        // Only locked modules that have a key can be used.
+        // Only locked books that have a key can be used.
         String cipher = (String) getValue(ConfigEntryType.CIPHER_KEY);
         if (cipher != null && cipher.length() == 0)
         {
@@ -643,14 +643,14 @@ public class ConfigEntryTable
     private static final Logger log = Logger.getLogger(ConfigEntryTable.class);
 
     /**
-     * True if this module's config type can be used by JSword.
+     * True if this book's config type can be used by JSword.
      */
     private boolean supported;
 
     /**
-     * The ModuleType for this ConfigEntry
+     * The BookType for this ConfigEntry
      */
-    private ModuleType moduleType;
+    private BookType bookType;
 
     /**
      * A map of lists of known config entries.

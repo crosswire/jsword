@@ -24,7 +24,6 @@ package org.crosswire.jsword.book.install.sword;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.install.Installer;
 import org.crosswire.jsword.book.install.InstallerFactory;
-import org.crosswire.jsword.book.install.sword.FTPMsg;
 
 /**
  * A Factory for instances of FtpSwordInstaller.

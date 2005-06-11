@@ -91,7 +91,7 @@ public abstract class BlockType implements Serializable
 
     /**
      * Return a character indicating the kind of blocking.
-     * This is used in the names of compressed sword modules.
+     * This is used in the names of compressed sword books.
      *
      * @return the indicator
      */

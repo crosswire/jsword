@@ -38,14 +38,14 @@ final class Msg extends MsgBase
     static final Msg FILTER_FAIL = new Msg("SwordDictionary.FilterFail"); //$NON-NLS-1$
     static final Msg MISSING_FILE = new Msg("GZIPBackend.MissingFile"); //$NON-NLS-1$
     static final Msg READ_FAIL = new Msg("GZIPBackend.ReadFail"); //$NON-NLS-1$
-    static final Msg COMPRESSION_UNSUPPORTED = new Msg("ModuleType.CompressionUnsupported"); //$NON-NLS-1$
+    static final Msg COMPRESSION_UNSUPPORTED = new Msg("BookType.CompressionUnsupported"); //$NON-NLS-1$
     static final Msg TYPE_UNSUPPORTED = new Msg("SwordBookDriver.TypeUnsuported"); //$NON-NLS-1$
     static final Msg DELETE_FAILED = new Msg("SwordBookDriver.DeleteFailed"); //$NON-NLS-1$
     static final Msg TYPE_UNKNOWN = new Msg("RawLDBackend.TypeUnknown"); //$NON-NLS-1$
     static final Msg MISSING_BACKEND = new Msg("SwordDictionary.MissingBackend"); //$NON-NLS-1$
     static final Msg DRIVER_READONLY = new Msg("SwordBook.DriverReadonly"); //$NON-NLS-1$
-    static final Msg UNDEFINED_MODULE = new Msg("ModuleType.UndefinedModule"); //$NON-NLS-1$
-    static final Msg UNDEFINED_DATATYPE = new Msg("ModuleType.UndefinedDatatype"); //$NON-NLS-1$
+    static final Msg UNDEFINED_BOOK_TYPE = new Msg("BookType.UndefinedBookType"); //$NON-NLS-1$
+    static final Msg UNDEFINED_DATATYPE = new Msg("BookType.UndefinedDatatype"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

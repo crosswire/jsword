@@ -34,7 +34,7 @@ import org.jdom.Document;
 import org.jdom.JDOMException;
 
 /**
- * Test to check that all modules can be read.
+ * Test to check that all books can be read.
  * 
  * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.
@@ -50,7 +50,7 @@ public class ReadEverything
     }
 
     /**
-     * Read all the modules that we can get our hands on.
+     * Read all the books that we can get our hands on.
      */
     public static void main(String[] args) throws IOException, JDOMException
     {

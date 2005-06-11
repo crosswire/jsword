@@ -35,7 +35,7 @@ import org.crosswire.jsword.passage.Verse;
 import org.jdom.Element;
 
 /**
- * SwordBook is a base class for all sword type modules.
+ * SwordBook is a base class for all sword type books.
  * 
  * @see gnu.gpl.License for license details.
  *      The copyright to this program is held by it's authors.

@@ -46,25 +46,25 @@ public class ConfigEntry
     /**
      * Create a ConfigEntry whose type is not certain
      * and whose value is not known.
-     * @param moduleName the internal name of the module
+     * @param bookName the internal name of the book
      * @param aName the name of the ConfigEntry.
      */
-    public ConfigEntry(String moduleName, String aName)
+    public ConfigEntry(String bookName, String aName)
     {
-        internal = moduleName;
+        internal = bookName;
         name = aName;
         type = ConfigEntryType.fromString(aName);
     }
 
     /**
      * Create a ConfigEntry directly with an initial value.
-     * @param moduleName the internal name of the module
+     * @param bookName the internal name of the book
      * @param aType the kind of ConfigEntry
      * @param aValue the initial value for the ConfigEntry
      */
-    public ConfigEntry(String moduleName, ConfigEntryType aType, String aValue)
+    public ConfigEntry(String bookName, ConfigEntryType aType, String aValue)
     {
-        internal = moduleName;
+        internal = bookName;
         name = aType.getName();
         type = aType;
         addValue(aValue);

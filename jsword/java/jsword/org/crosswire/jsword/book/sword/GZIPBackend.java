@@ -216,7 +216,7 @@ public class GZIPBackend extends AbstractBackend
     {
         checkActive();
 
-        String charset = getBookMetaData().getModuleCharset();
+        String charset = getBookMetaData().getBookCharset();
 
         Verse verse = KeyUtil.getVerse(key);
 

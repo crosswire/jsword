@@ -59,11 +59,11 @@ public class ConverterTest extends TestCase
  
         t1 = new BookMetaData[]
         {
-            new DefaultBookMetaData(rbd, null, "v1", BookType.BIBLE), //$NON-NLS-1$
-            new DefaultBookMetaData(rbd, null, "v2", BookType.BIBLE), //$NON-NLS-1$
-            new DefaultBookMetaData(rbd, null, "v3", BookType.BIBLE), //$NON-NLS-1$
-            new DefaultBookMetaData(rbd, null, "test version", BookType.BIBLE), //$NON-NLS-1$
-            new DefaultBookMetaData(rbd, null, "test version", BookType.BIBLE), //$NON-NLS-1$
+            new DefaultBookMetaData(rbd, null, "v1", BookCategory.BIBLE), //$NON-NLS-1$
+            new DefaultBookMetaData(rbd, null, "v2", BookCategory.BIBLE), //$NON-NLS-1$
+            new DefaultBookMetaData(rbd, null, "v3", BookCategory.BIBLE), //$NON-NLS-1$
+            new DefaultBookMetaData(rbd, null, "test version", BookCategory.BIBLE), //$NON-NLS-1$
+            new DefaultBookMetaData(rbd, null, "test version", BookCategory.BIBLE), //$NON-NLS-1$
         };
         uid1 = new String[]
         {

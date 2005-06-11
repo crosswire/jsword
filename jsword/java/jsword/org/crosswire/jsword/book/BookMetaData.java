@@ -60,7 +60,7 @@ public interface BookMetaData extends Comparable
      * Dictionary or Commentary
      * @return The type of book
      */
-    BookType getType();
+    BookCategory getType();
 
     /**
      * Accessor for the driver that runs this Book.

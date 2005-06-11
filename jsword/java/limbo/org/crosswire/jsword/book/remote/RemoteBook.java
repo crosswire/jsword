@@ -24,10 +24,10 @@ package org.crosswire.jsword.book.remote;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.xml.JDOMSAXEventProvider;
 import org.crosswire.common.xml.SAXEventProvider;
+import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.BookType;
 import org.crosswire.jsword.book.basic.AbstractBook;
 import org.crosswire.jsword.book.basic.DefaultBookMetaData;
 import org.crosswire.jsword.passage.Key;
@@ -54,7 +54,7 @@ public class RemoteBook extends AbstractBook
     /**
      * Basic constructor for a SerBook
      */
-    public RemoteBook(Remoter remoter, RemoteBookDriver driver, String name, BookType type)
+    public RemoteBook(Remoter remoter, RemoteBookDriver driver, String name, BookCategory type)
     {
         BookMetaData bmd = new DefaultBookMetaData(driver, name, type);
         setBookMetaData(bmd);

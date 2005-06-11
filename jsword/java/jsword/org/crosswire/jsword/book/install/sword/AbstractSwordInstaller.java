@@ -470,7 +470,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     protected String host;
 
     /**
-     * The directory containing modules on the <code>host</code>.
+     * The directory containing books on the <code>host</code>.
      */
     protected String directory = "/"; //$NON-NLS-1$
 
@@ -485,7 +485,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     protected static final String FILE_LIST_GZ = "mods.d.tar.gz"; //$NON-NLS-1$
 
     /**
-     * The suffix of zip modules on this server
+     * The suffix of zip books on this server
      */
     protected static final String ZIP_SUFFIX = ".zip"; //$NON-NLS-1$
 

@@ -64,7 +64,7 @@ public final class FeatureType implements Serializable
     public static final FeatureType GLOSSARY = new FeatureType("Glossary"); //$NON-NLS-1$
 
     /**
-     * @param name The name of the BookType
+     * @param name The name of the BookCategory
      */
     private FeatureType(String name)
     {
@@ -124,7 +124,7 @@ public final class FeatureType implements Serializable
     }
 
     /**
-     * The name of the BookType
+     * The name of the BookCategory
      */
     private String name;
 

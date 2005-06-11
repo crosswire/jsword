@@ -30,7 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.crosswire.jsword.book.BookType;
+import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.basic.AbstractBookMetaData;
 import org.crosswire.jsword.book.filter.Filter;
@@ -38,7 +38,7 @@ import org.crosswire.jsword.book.filter.FilterFactory;
 import org.jdom.Document;
 
 /**
- * A utility class for loading and representing Sword module configs.
+ * A utility class for loading and representing Sword book configs.
  *
  * <p>Config file format. See also:
  * <a href="http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout">
@@ -109,20 +109,20 @@ public class SwordBookMetaData extends AbstractBookMetaData
     }
 
     /**
-     * Returns the Charset of the module based on the encoding attribute
-     * @return the charset of the module.
+     * Returns the Charset of the book based on the encoding attribute
+     * @return the charset of the book.
      */
-    public String getModuleCharset()
+    public String getBookCharset()
     {
         return (String) ENCODING_JAVA.get(getProperty(ConfigEntryType.ENCODING));
     }
 
     /**
-     * Returns the Module Type.
+     * Returns the Book Type.
      */
-    public ModuleType getModuleType()
+    public BookType getBookType()
     {
-        return cet.getModuleType();
+        return cet.getBookType();
     }
 
     /**
@@ -135,7 +135,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
     }
 
     /**
-     * @return Returns the relative path of the module's conf.
+     * @return Returns the relative path of the book's conf.
      */
     public String getConfPath()
     {
@@ -143,16 +143,16 @@ public class SwordBookMetaData extends AbstractBookMetaData
     }
 
     /**
-     * @return the relative path of the module.
+     * @return the relative path of the book.
      */
-    public String getModulePath()
+    public String getBookPath()
     {
         // The path begins with ./
         String dataPath = getProperty(ConfigEntryType.DATA_PATH).substring(2);
         // Dictionaries and Daily Devotionals end with the prefix of the data
         // files name, not a directory name.
         // Lots of paths end with '/'
-        if (getType() == BookType.DICTIONARY
+        if (getType() == BookCategory.DICTIONARY
             || dataPath.charAt(dataPath.length() - 1) == '/')
         {
             dataPath = dataPath.substring(0, dataPath.lastIndexOf('/'));
@@ -163,9 +163,9 @@ public class SwordBookMetaData extends AbstractBookMetaData
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getType()
      */
-    public BookType getType()
+    public BookCategory getType()
     {
-        return getModuleType().getBookType();
+        return getBookType().getBookCategory();
     }
 
     public Document toOSIS()

@@ -22,7 +22,7 @@
 package org.crosswire.jsword.book.stub;
 
 import org.crosswire.jsword.book.Book;
-import org.crosswire.jsword.book.BookType;
+import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.basic.AbstractBookDriver;
 
 /**
@@ -43,10 +43,10 @@ public class StubBookDriver extends AbstractBookDriver
     {
         books = new Book[]
         {
-            new StubBook(this, "Stub Version", BookType.BIBLE), //$NON-NLS-1$
-            new StubBook(this, "New Stub Version", BookType.BIBLE), //$NON-NLS-1$
-            new StubBook(this, "Stub Comments", BookType.COMMENTARY), //$NON-NLS-1$
-            new StubDictionary(this, "Stub Dict", BookType.DICTIONARY), //$NON-NLS-1$
+            new StubBook(this, "Stub Version", BookCategory.BIBLE), //$NON-NLS-1$
+            new StubBook(this, "New Stub Version", BookCategory.BIBLE), //$NON-NLS-1$
+            new StubBook(this, "Stub Comments", BookCategory.COMMENTARY), //$NON-NLS-1$
+            new StubDictionary(this, "Stub Dict", BookCategory.DICTIONARY), //$NON-NLS-1$
         };
     }
 
