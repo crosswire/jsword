@@ -301,6 +301,8 @@ public final class GuiUtil
         honoredDim.width = finalDim.width;
         honoredDim.height = finalDim.height;
 
+        log.warn("Window size was: " + requestedDim + " is: " + honoredDim); //$NON-NLS-1$ //$NON-NLS-2$
+
         return honoredState;
     }
 
