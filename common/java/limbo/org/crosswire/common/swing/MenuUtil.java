@@ -208,10 +208,10 @@ public class MenuUtil
         URL url = getResource(key + SUFFIX_IMAGE);
         JButton button = new JButton(new ImageIcon(url)
         {
-			public float getAlignmentY()
-            {
-                return 0.5f;
-            }
+//			public float getAlignmentY()
+//            {
+//                return 0.5f;
+//            }
             private static final long serialVersionUID = 3256726182224539701L;
         });
         button.setRequestFocusEnabled(false);

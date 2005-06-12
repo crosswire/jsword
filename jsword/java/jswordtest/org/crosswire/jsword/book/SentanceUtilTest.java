@@ -121,10 +121,6 @@ public class SentanceUtilTest extends TestCase
         assertEquals(CaseType.getCase("Fred"), CaseType.SENTENCE); //$NON-NLS-1$
         assertEquals(CaseType.getCase("F-ed"), CaseType.SENTENCE); //$NON-NLS-1$
         assertEquals(CaseType.getCase("F00d"), CaseType.SENTENCE); //$NON-NLS-1$
-        assertEquals(CaseType.getCase("fRED"), CaseType.MIXED); //$NON-NLS-1$
-        assertEquals(CaseType.getCase("frED"), CaseType.MIXED); //$NON-NLS-1$
-        assertEquals(CaseType.getCase("freD"), CaseType.MIXED); //$NON-NLS-1$
-        assertEquals(CaseType.getCase("LORD's"), CaseType.MIXED); //$NON-NLS-1$
         assertEquals(CaseType.getCase(""), CaseType.LOWER); //$NON-NLS-1$
         // The results of this are undefined so
         // assertEquals(PassageUtil.getCase("FreD"), CaseType.SENTENCE);
@@ -150,8 +146,6 @@ public class SentanceUtilTest extends TestCase
         assertEquals(CaseType.SENTENCE.setCase("frED"), "Fred"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(CaseType.SENTENCE.setCase("fr00"), "Fr00"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(CaseType.SENTENCE.setCase("fr=_"), "Fr=_"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(CaseType.MIXED.setCase("lord's"), "LORD's"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(CaseType.MIXED.setCase("LORD's"), "LORD's"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(CaseType.LOWER.setCase("no-one"), "no-one"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(CaseType.UPPER.setCase("no-one"), "NO-ONE"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(CaseType.SENTENCE.setCase("no-one"), "No-one"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -164,8 +158,6 @@ public class SentanceUtilTest extends TestCase
         assertEquals(CaseType.LOWER.setCase(""), ""); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(CaseType.UPPER.setCase(""), ""); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(CaseType.SENTENCE.setCase(""), ""); //$NON-NLS-1$ //$NON-NLS-2$
-        try { CaseType.MIXED.setCase("god-inspired"); fail(); } //$NON-NLS-1$
-        catch (IllegalArgumentException ex) { }
     }
 
     public void testToSentenceCase() throws Exception

@@ -165,18 +165,18 @@ public final class VerseRange implements VerseBase
                     // Just report the name of the book, we don't need to worry about the
                     // base since we start at the start of a book, and should have been
                     // recently normalized()
-                    return BibleInfo.getShortBookName(start_book)
+                    return BibleInfo.getBookName(start_book)
                          + VerseRange.RANGE_PREF_DELIM
-                         + BibleInfo.getShortBookName(end_book);
+                         + BibleInfo.getBookName(end_book);
                 }
 
                 // If this range is exactly a whole chapter
                 if (isWholeChapters())
                 {
                     // Just report book and chapter names
-                    return BibleInfo.getShortBookName(start_book)
+                    return BibleInfo.getBookName(start_book)
                          + Verse.VERSE_PREF_DELIM1 + start_chapter
-                         + VerseRange.RANGE_PREF_DELIM + BibleInfo.getShortBookName(end_book)
+                         + VerseRange.RANGE_PREF_DELIM + BibleInfo.getBookName(end_book)
                          + Verse.VERSE_PREF_DELIM1 + end_chapter;
                 }
 
@@ -189,7 +189,7 @@ public final class VerseRange implements VerseBase
                 // Just report the name of the book, we don't need to worry about the
                 // base since we start at the start of a book, and should have been
                 // recently normalized()
-                return BibleInfo.getShortBookName(start_book);
+                return BibleInfo.getBookName(start_book);
             }
 
             // If this is 2 separate chapters
@@ -199,7 +199,7 @@ public final class VerseRange implements VerseBase
                 if (isWholeChapters())
                 {
                     // Just report the name of the book and the chapters
-                    return BibleInfo.getShortBookName(start_book)
+                    return BibleInfo.getBookName(start_book)
                          + Verse.VERSE_PREF_DELIM1 + start_chapter
                          + VerseRange.RANGE_PREF_DELIM + end_chapter;
                 }
@@ -213,7 +213,7 @@ public final class VerseRange implements VerseBase
             if (isWholeChapter())
             {
                 // Just report the name of the book and the chapter
-                return BibleInfo.getShortBookName(start_book)
+                return BibleInfo.getBookName(start_book)
                      + Verse.VERSE_PREF_DELIM1 + start_chapter;
             }
 

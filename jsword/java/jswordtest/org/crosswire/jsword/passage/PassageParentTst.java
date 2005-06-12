@@ -141,6 +141,7 @@ public class PassageParentTst extends TestCase
         exo23 = new Verse(2, 2, 3);
         exo3b = new Verse(2, 3, 11);
         rev99 = VerseFactory.fromString("Rev 22:21"); //$NON-NLS-1$
+        BibleInfo.setFullBookName(false);
     }
 
     protected void tearDown()

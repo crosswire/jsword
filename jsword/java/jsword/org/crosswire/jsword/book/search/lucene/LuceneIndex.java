@@ -361,7 +361,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                     bookNum = verse.getBook();
                     if (oldBookNum != bookNum)
                     {
-                        name = BibleInfo.getLongBookName(bookNum);
+                        name = BibleInfo.getBookName(bookNum);
                         oldBookNum = bookNum;
                     }
                 }

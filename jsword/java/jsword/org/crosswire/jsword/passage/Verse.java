@@ -168,11 +168,11 @@ public final class Verse implements VerseBase, Comparable
             // To cope with thing like Jude 2...
             if (BibleInfo.chaptersInBook(book) == 1)
             {
-                return BibleInfo.getShortBookName(book)
+                return BibleInfo.getBookName(book)
                     + Verse.VERSE_PREF_DELIM1
                     + verse;
             }
-            return BibleInfo.getShortBookName(book)
+            return BibleInfo.getBookName(book)
                 + Verse.VERSE_PREF_DELIM1
                 + chapter
                 + Verse.VERSE_PREF_DELIM2
@@ -209,7 +209,7 @@ public final class Verse implements VerseBase, Comparable
             {
                 if (base.book != book)
                 {
-                    return BibleInfo.getShortBookName(book)
+                    return BibleInfo.getBookName(book)
                         + Verse.VERSE_PREF_DELIM1
                         + verse;
                 }
@@ -219,7 +219,7 @@ public final class Verse implements VerseBase, Comparable
 
             if (base.book != book)
             {
-                return BibleInfo.getShortBookName(book)
+                return BibleInfo.getBookName(book)
                     + Verse.VERSE_PREF_DELIM1
                     + chapter
                     + Verse.VERSE_PREF_DELIM2

@@ -175,11 +175,27 @@ public final class BibleInfo
      */
     public static void setCase(CaseType newBookCase)
     {
-        if (newBookCase.equals(CaseType.MIXED))
-        {
-            throw new IllegalArgumentException();
-        }
         BibleInfo.bookCase = newBookCase;
+    }
+
+    /**
+     * This is only used by config
+     * @return Whether the name is long or short. Default is Full (true).
+     * @see BibleInfo#setFullBookName(boolean)
+     */
+    public static boolean isFullBookName()
+    {
+        return BibleInfo.fullBookName;
+    }
+
+    /**
+     * Set whether the name should be full or abbreviated, long or short.
+     * @param fullName The new case to use for reporting book names
+     * @see #isFullBookName()
+     */
+    public static void setFullBookName(boolean fullName)
+    {
+        BibleInfo.fullBookName = fullName;
     }
 
     /**
@@ -191,6 +207,22 @@ public final class BibleInfo
     public static CaseType getDefaultCase()
     {
         return BibleInfo.bookCase;
+    }
+
+    /**
+     * Get the preferred name of a book.
+     * Altered by the case setting (see setBookCase() and isLongBookName())
+     * @param book The book number (1-66)
+     * @return The full name of the book
+     * @exception NoSuchVerseException If the book number is not valid
+     */
+    public static String getBookName(int book) throws NoSuchVerseException
+    {
+        if (isFullBookName())
+        {
+            return getLongBookName(book);
+        }
+        return getShortBookName(book);
     }
 
     /**
@@ -537,7 +569,7 @@ public final class BibleInfo
             Object[] params = new Object[]
             {
                 new Integer(chaptersInBook(book)),
-                getShortBookName(book - 1), new Integer(chapter),
+                getBookName(book - 1), new Integer(chapter),
             };
             throw new NoSuchVerseException(Msg.BOOKS_CHAPTER, params);
         }
@@ -548,7 +580,7 @@ public final class BibleInfo
             Object[] params = new Object[]
             {
                 new Integer(versesInChapter(book, chapter)),
-                getShortBookName(book - 1),
+                getBookName(book - 1),
                 new Integer(chapter),
                 new Integer(verse),
             };
@@ -897,9 +929,14 @@ public final class BibleInfo
     private static final String OSIS_PROPERTIES = "OSISNames"; //$NON-NLS-1$
 
     /**
-     * How the book names are reported
+     * How the book names are reported.
      */
     private static CaseType bookCase = CaseType.SENTENCE;
+
+    /**
+     * Whether long or short, full or abbreviated names are used.
+     */
+    private static boolean fullBookName = true;
 
     /**
      * Handy section finder. There is a bit of moderately bad programming

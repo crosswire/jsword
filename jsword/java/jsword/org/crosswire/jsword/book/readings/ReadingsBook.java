@@ -36,7 +36,6 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractBook;
@@ -66,15 +65,26 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
     /**
      * Constructor for ReadingsBook.
      */
-    public ReadingsBook(ReadingsBookDriver driver, String name, BookCategory type)
+    public ReadingsBook(ReadingsBookDriver driver, BookCategory type)
     {
-        BookMetaData bmd = new DefaultBookMetaData(driver, name, type);
-        setBookMetaData(bmd);
-
         String setname = ReadingsBookDriver.getReadingsSet();
 
         Locale defaultLocale = Locale.getDefault();
         ResourceBundle prop = ResourceBundle.getBundle(setname, defaultLocale, new CWClassLoader(ReadingsBookDriver.class));
+
+        String name = Msg.TITLE.toString();
+        try
+        {
+            name = prop.getString("title"); //$NON-NLS-1$
+        }
+        catch (MissingResourceException e)
+        {
+            log.warn("Missing resource: 'title' while parsing: " + setname); //$NON-NLS-1$
+        }
+
+        DefaultBookMetaData bmd = new DefaultBookMetaData(driver, name, type);
+        bmd.setInitials(setname);
+        setBookMetaData(bmd);
 
         // We use 1972 because it is a leap year.
         GregorianCalendar greg = new GregorianCalendar(1972, Calendar.JANUARY, 1);

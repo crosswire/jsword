@@ -61,15 +61,6 @@ public class BibleInfoTest extends TestCase
 
         BibleInfo.setCase(CaseType.SENTENCE);
         assertEquals(BibleInfo.getDefaultCase(), CaseType.SENTENCE);
-
-        try
-        {
-            BibleInfo.setCase(CaseType.MIXED);
-            fail();
-        }
-        catch (IllegalArgumentException ex)
-        {
-        }
     }
 
     public void testGetLongBookName() throws Exception
@@ -88,7 +79,7 @@ public class BibleInfoTest extends TestCase
 
         try
         {
-            BibleInfo.getShortBookName(0);
+            BibleInfo.getLongBookName(0);
             fail();
         }
         catch (NoSuchVerseException ex)
@@ -97,7 +88,7 @@ public class BibleInfoTest extends TestCase
 
         try
         {
-            BibleInfo.getShortBookName(67);
+            BibleInfo.getLongBookName(67);
             fail();
         }
         catch (NoSuchVerseException ex)

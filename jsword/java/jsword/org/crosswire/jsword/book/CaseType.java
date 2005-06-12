@@ -96,24 +96,6 @@ public abstract class CaseType implements Serializable
         private static final long serialVersionUID = 3257002163871035698L;
     };
 
-    public static final CaseType MIXED = new CaseType("MIXED") //$NON-NLS-1$
-    {
-        public String setCase(String word)
-        {
-            if (word.equalsIgnoreCase("lord's")) //$NON-NLS-1$
-            {
-                return "LORD's"; //$NON-NLS-1$
-            }
-            // This should not happen
-            throw new IllegalArgumentException(Msg.ERROR_MIXED.toString());
-        }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3546925766555547956L;
-    };
-
     public abstract String setCase(String word);
 
     /**
@@ -175,20 +157,6 @@ public abstract class CaseType implements Serializable
         if (word.equals(word.toUpperCase()) && word.length() != 1)
         {
             return UPPER;
-        }
-
-        // If initial is lower then it must be mixed
-        if (Character.isLowerCase(word.charAt(0)))
-        {
-            return MIXED;
-        }
-
-        // Hack the only real caseMixed is LORD's
-        // And we don't want to bother sorting out Tubal-Cain
-        // as SENTENCE, so for now ...
-        if (word.equals("LORD's")) //$NON-NLS-1$
-        {
-            return MIXED;
         }
 
         // So ...
@@ -283,6 +251,5 @@ public abstract class CaseType implements Serializable
         LOWER,
         SENTENCE,
         UPPER,
-        MIXED,
     };
 }

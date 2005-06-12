@@ -48,7 +48,7 @@ public class ReadingsBookDriver extends AbstractBookDriver
     {
         books = new Book[]
         {
-            new ReadingsBook(this, Msg.TITLE.toString(), BookCategory.DICTIONARY),
+            new ReadingsBook(this, BookCategory.DICTIONARY),
         };
     }
 
