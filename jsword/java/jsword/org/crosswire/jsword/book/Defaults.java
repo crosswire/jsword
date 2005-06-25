@@ -44,8 +44,42 @@ public final class Defaults
     {
     }
 
+    /**
+     * Determine whether the getBible should return the current Bible
+     * or the user's chosen default.
+     * @return true if the bible tracks the user's selection
+     */
+    public static boolean isCurrentBible()
+    {
+        return currentBible;
+    }
+
+    /**
+     * Establish whether the getBible should return the current Bible
+     * or the user's chosen default.
+     * @param current
+     */
+    public static void setCurrentBible(boolean current)
+    {
+        currentBible = current;
+    }
+
+    /**
+     * If the user has chosen to remember the book (by type)
+     * then set the current book for that type.
+     * @param book
+     */
+    public static void setCurrentBook(Book book)
+    {
+        BookCategory type = book.getType();
+        if (type.equals(BookCategory.BIBLE) && isCurrentBible())
+        {
+            setBible(book);
+        }
+    }
+
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#setDefault(org.crosswire.jsword.book.Book)
+     * @see org.crosswire.jsword.book.DefaultBook#setDefault(org.crosswire.jsword.book.Book)
      */
     public static void setBible(Book book)
     {
@@ -53,7 +87,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#unsetDefault()
+     * @see org.crosswire.jsword.book.DefaultBook#unsetDefault()
      */
     protected static void unsetBible()
     {
@@ -61,7 +95,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#getDefault()
+     * @see org.crosswire.jsword.book.DefaultBook#getDefault()
      */
     public static Book getBible()
     {
@@ -69,7 +103,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#getDefaultName()
+     * @see org.crosswire.jsword.book.DefaultBook#getDefaultName()
      */
     public static String getBibleByName()
     {
@@ -77,7 +111,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#setDefaultByName(java.lang.String)
+     * @see org.crosswire.jsword.book.DefaultBook#setDefaultByName(java.lang.String)
      */
     public static void setBibleByName(String name)
     {
@@ -85,7 +119,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#setDefault(org.crosswire.jsword.book.Book)
+     * @see org.crosswire.jsword.book.DefaultBook#setDefault(org.crosswire.jsword.book.Book)
      */
     public static void setCommentary(Book book)
     {
@@ -93,7 +127,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#unsetDefault()
+     * @see org.crosswire.jsword.book.DefaultBook#unsetDefault()
      */
     protected static void unsetCommentary()
     {
@@ -101,7 +135,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#getDefault()
+     * @see org.crosswire.jsword.book.DefaultBook#getDefault()
      */
     public static Book getCommentary()
     {
@@ -109,7 +143,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#getDefaultName()
+     * @see org.crosswire.jsword.book.DefaultBook#getDefaultName()
      */
     public static String getCommentaryByName()
     {
@@ -117,7 +151,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#setDefaultByName(java.lang.String)
+     * @see org.crosswire.jsword.book.DefaultBook#setDefaultByName(java.lang.String)
      */
     public static void setCommentaryByName(String name)
     {
@@ -125,7 +159,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#setDefault(org.crosswire.jsword.book.Book)
+     * @see org.crosswire.jsword.book.DefaultBook#setDefault(org.crosswire.jsword.book.Book)
      */
     public static void setDictionary(Book book)
     {
@@ -133,7 +167,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#unsetDefault()
+     * @see org.crosswire.jsword.book.DefaultBook#unsetDefault()
      */
     protected static void unsetDictionary()
     {
@@ -141,7 +175,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#getDefault()
+     * @see org.crosswire.jsword.book.DefaultBook#getDefault()
      */
     public static Book getDictionary()
     {
@@ -149,7 +183,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#getDefaultName()
+     * @see org.crosswire.jsword.book.DefaultBook#getDefaultName()
      */
     public static String getDictionaryByName()
     {
@@ -157,7 +191,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#setDefaultByName(java.lang.String)
+     * @see org.crosswire.jsword.book.DefaultBook#setDefaultByName(java.lang.String)
      */
     public static void setDictionaryByName(String name)
     {
@@ -165,7 +199,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#setDefault(org.crosswire.jsword.book.Book)
+     * @see org.crosswire.jsword.book.DefaultBook#setDefault(org.crosswire.jsword.book.Book)
      */
     public static void setGreekDefinitions(Book book)
     {
@@ -173,7 +207,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#unsetDefault()
+     * @see org.crosswire.jsword.book.DefaultBook#unsetDefault()
      */
     protected static void unsetGreekDefinitions()
     {
@@ -181,7 +215,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#getDefault()
+     * @see org.crosswire.jsword.book.DefaultBook#getDefault()
      */
     public static Book getGreekDefinitions()
     {
@@ -189,7 +223,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#getDefaultName()
+     * @see org.crosswire.jsword.book.DefaultBook#getDefaultName()
      */
     public static String getGreekDefinitionsByName()
     {
@@ -197,7 +231,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#setDefaultByName(java.lang.String)
+     * @see org.crosswire.jsword.book.DefaultBook#setDefaultByName(java.lang.String)
      */
     public static void setGreekDefinitionsByName(String name)
     {
@@ -205,7 +239,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#setDefault(org.crosswire.jsword.book.Book)
+     * @see org.crosswire.jsword.book.DefaultBook#setDefault(org.crosswire.jsword.book.Book)
      */
     public static void setHebrewDefinitions(Book book)
     {
@@ -213,7 +247,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#unsetDefault()
+     * @see org.crosswire.jsword.book.DefaultBook#unsetDefault()
      */
     protected static void unsetHebrewDefinitions()
     {
@@ -221,7 +255,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#getDefault()
+     * @see org.crosswire.jsword.book.DefaultBook#getDefault()
      */
     public static Book getHebrewDefinitions()
     {
@@ -229,7 +263,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#getDefaultName()
+     * @see org.crosswire.jsword.book.DefaultBook#getDefaultName()
      */
     public static String getHebrewDefinitionsByName()
     {
@@ -237,7 +271,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#setDefaultByName(java.lang.String)
+     * @see org.crosswire.jsword.book.DefaultBook#setDefaultByName(java.lang.String)
      */
     public static void setHebrewDefinitionsByName(String name)
     {
@@ -245,7 +279,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#setDefault(org.crosswire.jsword.book.Book)
+     * @see org.crosswire.jsword.book.DefaultBook#setDefault(org.crosswire.jsword.book.Book)
      */
     public static void setGreekParse(Book book)
     {
@@ -253,7 +287,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#unsetDefault()
+     * @see org.crosswire.jsword.book.DefaultBook#unsetDefault()
      */
     protected static void unsetGreekParse()
     {
@@ -261,7 +295,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#getDefault()
+     * @see org.crosswire.jsword.book.DefaultBook#getDefault()
      */
     public static Book getGreekParse()
     {
@@ -269,7 +303,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#getDefaultName()
+     * @see org.crosswire.jsword.book.DefaultBook#getDefaultName()
      */
     public static String getGreekParseByName()
     {
@@ -277,7 +311,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#setDefaultByName(java.lang.String)
+     * @see org.crosswire.jsword.book.DefaultBook#setDefaultByName(java.lang.String)
      */
     public static void setGreekParseByName(String name)
     {
@@ -285,7 +319,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#setDefault(org.crosswire.jsword.book.Book)
+     * @see org.crosswire.jsword.book.DefaultBook#setDefault(org.crosswire.jsword.book.Book)
      */
     public static void setHebrewParse(Book book)
     {
@@ -293,7 +327,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#unsetDefault()
+     * @see org.crosswire.jsword.book.DefaultBook#unsetDefault()
      */
     protected static void unsetHebrewParse()
     {
@@ -301,7 +335,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#getDefault()
+     * @see org.crosswire.jsword.book.DefaultBook#getDefault()
      */
     public static Book getHebrewParse()
     {
@@ -309,7 +343,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#getDefaultName()
+     * @see org.crosswire.jsword.book.DefaultBook#getDefaultName()
      */
     public static String getHebrewParseByName()
     {
@@ -317,7 +351,7 @@ public final class Defaults
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDefault#setDefaultByName(java.lang.String)
+     * @see org.crosswire.jsword.book.DefaultBook#setDefaultByName(java.lang.String)
      */
     public static void setHebrewParseByName(String name)
     {
@@ -482,6 +516,11 @@ public final class Defaults
     private static final String GREEKPARSE_KEY = "greekparse-names"; //$NON-NLS-1$
     private static final String HEBREWPARSE_KEY = "hebrewparse-names"; //$NON-NLS-1$
 
+    /**
+     * Indicates whether the last book of each type is used next time.
+     */
+    private static boolean currentBible = true;
+    
     /**
      * The default Bible
      */
