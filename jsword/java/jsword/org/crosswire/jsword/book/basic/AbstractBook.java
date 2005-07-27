@@ -101,7 +101,7 @@ public abstract class AbstractBook implements Book
             }
             catch (InstantiationException ex)
             {
-                throw new BookException(Msg.INDEX_FAIL);
+                throw new BookException(Msg.INDEX_FAIL, ex);
             }
         }
 
