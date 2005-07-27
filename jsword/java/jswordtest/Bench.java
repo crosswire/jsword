@@ -10,7 +10,7 @@ import org.crosswire.jsword.book.test.Speed;
 /**
  * Bench is a command line utility that runs the Speed benchmark program.
  * 
- * @see gnu.gpl.License for license details.
+ * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
