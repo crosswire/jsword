@@ -23,6 +23,7 @@ package gnu.lgpl;
 
 
 /**
+This software is covered by the GNU Lesser General Public License.
 <pre>
           GNU LESSER GENERAL PUBLIC LICENSE
                Version 2.1, February 1999

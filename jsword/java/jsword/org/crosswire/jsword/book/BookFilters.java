@@ -310,7 +310,7 @@ public final class BookFilters
         {
             List cache = new ArrayList();
             String[] filters = match.split(";"); //$NON-NLS-1$
-            for (int i = 0; i < filters.length; i++ )
+            for (int i = 0; i < filters.length; i++)
             {
                 String[] parts = filters[i].split("="); //$NON-NLS-1$
                 if (parts.length != 2 || parts[0].length() == 0 || parts[1].length() == 0)
@@ -342,7 +342,7 @@ public final class BookFilters
          */
         public boolean test(Book book)
         {
-            for (int i = 0; i < tests.length; i++ )
+            for (int i = 0; i < tests.length; i++)
             {
                 Test test = tests[i];
                 try
@@ -362,9 +362,12 @@ public final class BookFilters
 
             return true;
         }
-        
+
         private Test[] tests;
 
+        /**
+         *
+         */
         private class Test
         {
             protected String result;

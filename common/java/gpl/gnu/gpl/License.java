@@ -23,7 +23,7 @@ package gnu.gpl;
 
 
 /**
-JSword is covered by the GNU General Public License.
+This software is covered by the GNU General Public License.
 <pre>
                     GNU GENERAL PUBLIC LICENSE
                        Version 2, June 1991

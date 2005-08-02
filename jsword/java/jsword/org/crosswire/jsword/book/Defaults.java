@@ -520,7 +520,7 @@ public final class Defaults
      * Indicates whether the last book of each type is used next time.
      */
     private static boolean currentBible = true;
-    
+
     /**
      * The default Bible
      */
