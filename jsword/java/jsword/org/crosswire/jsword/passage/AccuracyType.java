@@ -22,7 +22,6 @@
 package org.crosswire.jsword.passage;
 
 import java.io.Serializable;
-import java.util.StringTokenizer;
 
 /**
  * Types of Accuracy for verse references.
@@ -599,175 +598,101 @@ public abstract class AccuracyType implements Serializable
     }
 
     /**
-     * Take a string and parse it into an Array of Strings where each
-     * part is likely to be a verse part (book, chapter, verse, ...)
-     * @param command The string to parse.
+     * Take a string representation of a verse and parse it into
+     * an Array of Strings where each part is likely to be a verse part.
+     * The goal is to allow the greatest possible variations in user input.
+     * <p>Parts can be separated by pretty much anything. No distinction
+     * is made between them. While chapter and verse need to be separated,
+     * a separator is assumed between digits and non-digits. Adjacent words,
+     * (i.e. sequences of non-digits) are understood to be a book reference.
+     * If a number runs up against a book name, it is considered to be either
+     * part of the book name (i.e. it is before it) or a chapter number (i.e.
+     * it stands after it.)</p>
+     * <p>Note: ff and $ are considered to be digits.</p>
+     * <p>Note: it is not necessary for this to be a BCV (book, chapter, verse),
+     * it may just be BC, B, C, V or CV. No distinction is needed here for a
+     * number that stands alone.</p>
+     * @param input The string to parse.
      * @return The string array
      */
-    public static String[] tokenize(String command)
+    public static String[] tokenize(String input)
     {
-        String delim = AccuracyType.VERSE_ALLOWED_DELIMS;
-        /* I am taking this out because ch has been removed and v by itself does not make sense
+        // The results are expected to be no more than 3 parts
+        String [] args = { null, null, null, null, null, null, null, null};
 
-        // The substrings "ch" and "v" are really a book/chapter or
-        // chapter/verse separators we should swap them for normal delims
-        // I recon it is safe to assume that there is no more than one of
-        // each
-        int idx = command.lastIndexOf("v"); //$NON-NLS-1$
-        if (idx != -1)
+        // Normalize the input by replacing non-digits and non-letters with spaces.
+        int length = input.length();
+        // Create an output array big enough to add ' ' where needed
+        char [] normalized = new char [length * 2];
+        char lastChar = '0'; // start with a digit so normalized won't start with a space
+        char curChar = ' '; // can be anything
+        int tokenCount = 0;
+        int normalizedLength = 0;
+        int startIndex = 0;
+        String token = null;
+        boolean foundBoundary = false;
+        for (int i = 0; i < length; i++)
         {
-            // Check that the "v" is surrounded my non letters - i.e.
-            // it is not part of "prov"
-            if (!Character.isLetter(command.charAt(idx - 1))
-                && !Character.isLetter(command.charAt(idx + 1)))
+            curChar = input.charAt(i);
+            boolean charIsDigit = curChar == '$' || Character.isDigit(curChar) || (curChar == 'f' && (i + 1 < length ? input.charAt(i + 1) : ' ') == 'f');
+            if (charIsDigit || Character.isLetter(curChar))
             {
-                command = command.substring(0, idx) + Verse.VERSE_PREF_DELIM2 + command.substring(idx + 1);
-            }
-        }
-        */
-
-        /*
-        // I'm taking this out - it is of dubious use and confuses cases like
-        // 1ch 5:1 which could be book 1 chapter 5 verse 1 or 1Ch 5:1
-        idx = command.lastIndexOf("ch");
-        if (idx != -1)
-        {
-            // Check that the "ch" is surrounded by non letters - i.e.
-            // it is not part of "chronicles"
-            if (!Character.isLetter(command.charAt(idx - 1)) &&
-                !Character.isLetter(command.charAt(idx + 2)))
-            {
-                command = command.substring(0, idx) + VERSE_PREF_DELIM1 + command.substring(idx + 2);
-            }
-        }
-        */
-
-        // Create the original string array
-        StringTokenizer tokenize = new StringTokenizer(command, delim);
-        String[] args = new String[tokenize.countTokens()];
-        int argc = 0;
-        while (tokenize.hasMoreTokens())
-        {
-            args[argc++] = tokenize.nextToken();
-        }
-
-        // If the first word is a number (possibly Roman),
-        // and the second a word, but not an
-        // EndMarker then this must be something like "2 Ki ...", so join
-        // them together to get "2Ki ..."
-        if (args.length > 1)
-        {
-            if (Character.isLetter(args[1].charAt(0))
-                && !isEndMarker(args[1]))
-            {
-                // If the first word is roman then convert it
-                int roman = isRoman(args[0]);
-                if (roman != 0)
+                foundBoundary = true;
+                boolean charWasDigit = lastChar == '$' || Character.isDigit(lastChar) || (lastChar == 'f' && (i > 2 ? input.charAt(i - 2) : '0') == 'f');
+                if (charWasDigit || Character.isLetter(lastChar))
                 {
-                    args[0] = Integer.toString(roman);
-                }
-                if (Character.isDigit(args[0].charAt(0)))
-                {
-                    String[] oldargs = args;
-                    args = new String[oldargs.length - 1];
-
-                    args[0] = oldargs[0] + oldargs[1];
-                    for (int i = 1; i < args.length; i++)
+                    foundBoundary = false;
+                    // Replace transitions between digits and letters with spaces.
+                    if (normalizedLength > 0 && charWasDigit != charIsDigit)
                     {
-                        args[i] = oldargs[i + 1];
+                        foundBoundary = true;
                     }
                 }
-            }
-        }
-
-        // If the first word contains letters, but ends with a number
-        // then this must be something like "Gen1" to split them up
-        // to get "Gen 1"
-        if (args.length > 0
-            && Character.isDigit(args[0].charAt(args[0].length() - 1))
-            && containsLetter(args[0]))
-        {
-            // This might make the code quicker (less array subscripting)
-            // It certainly makes for more readable code.
-            String word = args[0];
-
-            // The caveat here is that - We should not split if the bit
-            // before the number is one of the numeric book identifiers,
-            // in that case #2 means Exo and not the book of # chapter 2
-            // so if we start with a book number id mark
-            boolean foundLetters = false;
-            int i = 0;
-
-            // Find the split
-            for (i = 0; i < word.length(); i++)
-            {
-                if (!foundLetters)
+                if (foundBoundary)
                 {
-                    if (Character.isLetter(word.charAt(i)))
+                    // On a boundary:
+                    // Digits always start a new token
+                    // Letters always continue a previous token
+                    if (charIsDigit)
                     {
-                        foundLetters = true;
+                        token = new String(normalized, startIndex, normalizedLength - startIndex);
+                        args[tokenCount++] = token;
+                        normalizedLength = 0;
+                    }
+                    else
+                    {
+                        normalized[normalizedLength++] = ' ';
                     }
                 }
-                else
-                {
-                    if (!Character.isLetter(word.charAt(i)))
-                    {
-                        break;
-                    }
-                }
+                normalized[normalizedLength++] = curChar;
             }
 
-            String[] oldargs = args;
-            args = new String[oldargs.length + 1];
-
-            args[0] = oldargs[0].substring(0, i);
-            args[1] = oldargs[0].substring(i);
-            for (int j = 2; j < args.length; j++)
+            // Until the first character is copied, there is no last char
+            if (normalizedLength > 0)
             {
-                args[j] = oldargs[j - 1];
+                lastChar = curChar;
             }
         }
+        token = new String(normalized, startIndex, normalizedLength - startIndex);
+        args[tokenCount++] = token;
 
-        // The last 2 sections join and split up parts of the array, should
-        // I combine them to make for less array manipulation?
-        // This would only speed things up in the rare case where someone
-        // enters "2 Tim3:16" or something. The above method will still work
-        // it will just be slower, and it is a heck of a lot easier to
-        // understand and debug. Optimize when you need to not before.
-
-        return args;
-    }
-
-    /**
-     * Return the value of the roman numeral if the string is a roman number of I, II or III
-     * @param text
-     * @return the value of the allowable roman numeral, zero otherwise
-     */
-    private static int isRoman(String text)
-    {
-        if (text.matches("^[Ii]{1,3}$")) //$NON-NLS-1$
+        System.out.print(input);
+        System.out.print('<');
+        for (int i = 0; i < tokenCount; i++)
         {
-            return text.length();
-        }
-        return 0;
-    }
-    /**
-     * This is simply a convenience function to wrap Character.isLetter()
-     * @param text The string to be parsed
-     * @return true if the string contains letters
-     */
-    private static boolean containsLetter(String text)
-    {
-        for (int i = 0; i < text.length(); i++)
-        {
-            if (Character.isLetter(text.charAt(i)))
+            if (i > 0)
             {
-                return true;
+                System.out.print(',');
             }
+            System.out.print(args[i]);
         }
+        System.out.println('>');
 
-        return false;
+        String [] results = new String [tokenCount];
+        System.arraycopy(args, 0, results, 0, tokenCount);
+        return results;
     }
+
 
     /**
      * Lookup method to convert from a String
