@@ -427,35 +427,38 @@ public abstract class AccuracyType implements Serializable
 
     /**
      * Determine how closely the string defines a verse.
+     * @param original
      * @param parts is a reference split into parts
      * @return what is the kind of accuracy of the string reference.
      * @throws NoSuchVerseException
      */
-    public static AccuracyType fromText(String[] parts) throws NoSuchVerseException
+    public static AccuracyType fromText(String original, String[] parts) throws NoSuchVerseException
     {
-        return fromText(parts, null, null);
+        return fromText(original, parts, null, null);
     }
 
     /**
+     * @param original
      * @param parts
      * @param verseAccuracy
      * @return the accuracy of the parts
      * @throws NoSuchVerseException
      */
-    public static AccuracyType fromText(String[] parts, AccuracyType verseAccuracy) throws NoSuchVerseException
+    public static AccuracyType fromText(String original, String[] parts, AccuracyType verseAccuracy) throws NoSuchVerseException
     {
-        return fromText(parts, verseAccuracy, null);
+        return fromText(original, parts, verseAccuracy, null);
     }
 
     /**
+     * @param original
      * @param parts
      * @param basis
      * @return the accuracy of the parts
      * @throws NoSuchVerseException
      */
-    public static AccuracyType fromText(String[] parts, VerseRange basis) throws NoSuchVerseException
+    public static AccuracyType fromText(String original, String[] parts, VerseRange basis) throws NoSuchVerseException
     {
-        return fromText(parts, null, basis);
+        return fromText(original, parts, null, basis);
     }
 
     /**
@@ -474,8 +477,9 @@ public abstract class AccuracyType implements Serializable
      * @return the accuracy of the parts
      * @throws NoSuchVerseException
      */
-    public static AccuracyType fromText(String[] parts, AccuracyType verseAccuracy, VerseRange basis) throws NoSuchVerseException
+    public static AccuracyType fromText(String original, String[] parts, AccuracyType verseAccuracy, VerseRange basis) throws NoSuchVerseException
     {
+        String msg = original; //$NON-NLS-1$
         switch (parts.length)
         {
         case 1:
@@ -511,7 +515,13 @@ public abstract class AccuracyType implements Serializable
                 return VERSE_ONLY;
             }
 
-            throw new NoSuchVerseException(Msg.VERSE_PARTS, new Object[] { AccuracyType.VERSE_ALLOWED_DELIMS });
+            for (int i = 0; i < parts.length; i++)
+            {
+                msg += ", "; //$NON-NLS-1$
+                msg += parts[1];
+            }
+            
+            throw new NoSuchVerseException(Msg.VERSE_PARTS, new Object[] { msg }); // AccuracyType.VERSE_ALLOWED_DELIMS });
 
         case 2:
             // Does it start with a book?
@@ -537,10 +547,23 @@ public abstract class AccuracyType implements Serializable
                 checkValidChapterOrVerse(parts[2]);
                 return BOOK_VERSE;
             }
-            throw new NoSuchVerseException(Msg.VERSE_PARTS, new Object[] { AccuracyType.VERSE_ALLOWED_DELIMS });
+
+            for (int i = 0; i < parts.length; i++)
+            {
+                msg += ", "; //$NON-NLS-1$
+                msg += parts[1];
+            }
+            
+            throw new NoSuchVerseException(Msg.VERSE_PARTS, new Object[] { msg }); // AccuracyType.VERSE_ALLOWED_DELIMS });
 
         default:
-            throw new NoSuchVerseException(Msg.VERSE_PARTS, new Object[] { AccuracyType.VERSE_ALLOWED_DELIMS });
+            for (int i = 0; i < parts.length; i++)
+            {
+                msg += ", "; //$NON-NLS-1$
+                msg += parts[1];
+            }
+            
+            throw new NoSuchVerseException(Msg.VERSE_PARTS, new Object[] { msg }); // AccuracyType.VERSE_ALLOWED_DELIMS });
         }
     }
 
@@ -675,18 +698,6 @@ public abstract class AccuracyType implements Serializable
         }
         token = new String(normalized, startIndex, normalizedLength - startIndex);
         args[tokenCount++] = token;
-
-        System.out.print(input);
-        System.out.print('<');
-        for (int i = 0; i < tokenCount; i++)
-        {
-            if (i > 0)
-            {
-                System.out.print(',');
-            }
-            System.out.print(args[i]);
-        }
-        System.out.println('>');
 
         String [] results = new String [tokenCount];
         System.arraycopy(args, 0, results, 0, tokenCount);

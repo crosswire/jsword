@@ -478,16 +478,16 @@ public class VerseTest extends TestCase
     public void testGetAccuracy() throws Exception
     {
         VerseRange vr = new VerseRange(gen11, gen11);
-        assertEquals(AccuracyType.fromText(AccuracyType.tokenize("Gen 1:1"), vr), AccuracyType.BOOK_VERSE); //$NON-NLS-1$
-        assertEquals(AccuracyType.fromText(AccuracyType.tokenize("Gen 1"), vr), AccuracyType.BOOK_CHAPTER); //$NON-NLS-1$
-        assertEquals(AccuracyType.fromText(AccuracyType.tokenize("Jude 1"), vr), AccuracyType.BOOK_VERSE); //$NON-NLS-1$
-        assertEquals(AccuracyType.fromText(AccuracyType.tokenize("Jude 1:1"), vr), AccuracyType.BOOK_VERSE); //$NON-NLS-1$
-        assertEquals(AccuracyType.fromText(AccuracyType.tokenize("Gen"), vr), AccuracyType.BOOK_ONLY); //$NON-NLS-1$
-        assertEquals(AccuracyType.fromText(AccuracyType.tokenize("1:1"), vr), AccuracyType.CHAPTER_VERSE); //$NON-NLS-1$
-        assertEquals(AccuracyType.fromText(AccuracyType.tokenize("1"), vr), AccuracyType.VERSE_ONLY); //$NON-NLS-1$
+        assertEquals(AccuracyType.fromText("Gen 1:1", AccuracyType.tokenize("Gen 1:1"), vr), AccuracyType.BOOK_VERSE); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(AccuracyType.fromText("Gen 1", AccuracyType.tokenize("Gen 1"), vr), AccuracyType.BOOK_CHAPTER); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(AccuracyType.fromText("Jude 1", AccuracyType.tokenize("Jude 1"), vr), AccuracyType.BOOK_VERSE); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(AccuracyType.fromText("Jude 1:1", AccuracyType.tokenize("Jude 1:1"), vr), AccuracyType.BOOK_VERSE); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(AccuracyType.fromText("Gen", AccuracyType.tokenize("Gen"), vr), AccuracyType.BOOK_ONLY); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(AccuracyType.fromText("1:1", AccuracyType.tokenize("1:1"), vr), AccuracyType.CHAPTER_VERSE); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(AccuracyType.fromText("1", AccuracyType.tokenize("1"), vr), AccuracyType.VERSE_ONLY); //$NON-NLS-1$ //$NON-NLS-2$
         try
         {
-            AccuracyType.fromText(AccuracyType.tokenize("complete and utter rubbish"), vr); //$NON-NLS-1$
+            AccuracyType.fromText("complete and utter rubbish", AccuracyType.tokenize("complete and utter rubbish"), vr); //$NON-NLS-1$ //$NON-NLS-2$
             fail();
         }
         catch (NoSuchVerseException ex)
@@ -495,7 +495,7 @@ public class VerseTest extends TestCase
         }
         try
         {
-            AccuracyType.fromText(AccuracyType.tokenize("b 1 1"), vr); //$NON-NLS-1$
+            AccuracyType.fromText("b 1 1", AccuracyType.tokenize("b 1 1"), vr); //$NON-NLS-1$ //$NON-NLS-2$
             fail();
         }
         catch (NoSuchVerseException ex)
@@ -503,7 +503,7 @@ public class VerseTest extends TestCase
         }
         try
         {
-            AccuracyType.fromText((String[])null, vr);
+            AccuracyType.fromText(null, (String[])null, vr);
             fail();
         }
         catch (NullPointerException ex)

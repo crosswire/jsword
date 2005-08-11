@@ -88,11 +88,20 @@ public final class VerseRangeFactory
     private static VerseRange fromText(String original, String startVerseDesc, String endVerseDesc, VerseRange basis) throws NoSuchVerseException
     {
         String[] startParts = AccuracyType.tokenize(startVerseDesc);
-        AccuracyType accuracyStart = AccuracyType.fromText(startParts, basis);
+        AccuracyType accuracyStart = AccuracyType.fromText(original, startParts, basis);
         Verse start = accuracyStart.createStartVerse(startVerseDesc, basis, startParts);
 
-        String[] endParts = AccuracyType.tokenize(endVerseDesc);
-        AccuracyType accuracyEnd = AccuracyType.fromText(endParts, accuracyStart, basis);
+        String[] endParts;
+        if (startVerseDesc.equals(endVerseDesc))
+        {
+            endParts = startParts;
+        }
+        else
+        {
+            endParts = AccuracyType.tokenize(endVerseDesc);
+        }
+
+        AccuracyType accuracyEnd = AccuracyType.fromText(original, endParts, accuracyStart, basis);
         Verse end = accuracyEnd.createEndVerse(endVerseDesc, start, endParts);
 
         return new VerseRange(original, start, end);

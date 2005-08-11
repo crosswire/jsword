@@ -54,7 +54,7 @@ public final class VerseFactory
             return null;
         }
         String[] parts = AccuracyType.tokenize(original);
-        AccuracyType accuracy = AccuracyType.fromText(parts);
+        AccuracyType accuracy = AccuracyType.fromText(original, parts);
         assert accuracy != null;
         return accuracy.createStartVerse(original, null, parts);
     }
@@ -74,7 +74,7 @@ public final class VerseFactory
             return null;
         }
         String[] parts = AccuracyType.tokenize(original);
-        AccuracyType accuracy = AccuracyType.fromText(parts, null, verseRangeBasis);
+        AccuracyType accuracy = AccuracyType.fromText(original, parts, null, verseRangeBasis);
         assert accuracy != null;
         return accuracy.createStartVerse(original, verseRangeBasis, parts);
     }
