@@ -520,7 +520,7 @@ public abstract class AccuracyType implements Serializable
                 msg += ", "; //$NON-NLS-1$
                 msg += parts[1];
             }
-            
+
             throw new NoSuchVerseException(Msg.VERSE_PARTS, new Object[] { msg }); // AccuracyType.VERSE_ALLOWED_DELIMS });
 
         case 2:
@@ -553,7 +553,7 @@ public abstract class AccuracyType implements Serializable
                 msg += ", "; //$NON-NLS-1$
                 msg += parts[1];
             }
-            
+
             throw new NoSuchVerseException(Msg.VERSE_PARTS, new Object[] { msg }); // AccuracyType.VERSE_ALLOWED_DELIMS });
 
         default:
@@ -562,7 +562,7 @@ public abstract class AccuracyType implements Serializable
                 msg += ", "; //$NON-NLS-1$
                 msg += parts[1];
             }
-            
+
             throw new NoSuchVerseException(Msg.VERSE_PARTS, new Object[] { msg }); // AccuracyType.VERSE_ALLOWED_DELIMS });
         }
     }

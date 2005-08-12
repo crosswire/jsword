@@ -327,7 +327,7 @@ public final class BibleInfo
         {
             return bookNum.intValue();
         }
-        
+
         bookNum = (Integer) osisMap.get(find.replaceFirst(" ", "")); //$//$NON-NLS-1$ //$NON-NLS-2$
         if (bookNum != null)
         {
