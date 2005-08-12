@@ -135,6 +135,21 @@ public class RemoteBook extends AbstractBook
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#isValidKey(java.lang.String)
+     */
+    public Key getValidKey(String name)
+    {
+        try
+        {
+            return getKey(name);
+        }
+        catch (Exception e)
+        {
+            return createEmptyKeyList();
+        }
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getKey(java.lang.String)
      */
     public final Key getKey(String text) throws NoSuchKeyException

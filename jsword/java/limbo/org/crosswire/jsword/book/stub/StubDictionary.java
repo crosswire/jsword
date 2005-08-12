@@ -103,6 +103,21 @@ public class StubDictionary extends AbstractBook
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#isValidKey(java.lang.String)
+     */
+    public Key getValidKey(String name)
+    {
+        try
+        {
+            return getKey(name);
+        }
+        catch (Exception e)
+        {
+            return createEmptyKeyList();
+        }
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getKey(java.lang.String)
      */
     public Key getKey(String name) throws NoSuchKeyException

@@ -41,6 +41,14 @@ public interface KeyFactory
     Key getGlobalKeyList();
 
     /**
+     * Get a Key for the name, if possible. Otherwise return an empty Key.
+     * 
+     * @param name
+     * @return a valid key.
+     */
+    Key getValidKey(String name);
+    
+    /**
      * Someone has typed in a reference to find, but we need a Key to actually
      * look it up.
      * So we create a Key from the string if such a translation is possible.
