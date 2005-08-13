@@ -129,11 +129,21 @@ public abstract class AbstractKeyList implements Key
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#getOSISName()
+     * @see org.crosswire.jsword.passage.Key#getOSISRef()
      */
-    public String getOSISName()
+    public String getOsisRef()
     {
-        DefaultKeyVisitor visitor = new OSISNameVisitor();
+        DefaultKeyVisitor visitor = new OsisRefVisitor();
+        KeyUtil.visit(this, visitor);
+        return visitor.toString();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getOSISId()
+     */
+    public String getOsisID()
+    {
+        DefaultKeyVisitor visitor = new OsisIDVisitor();
         KeyUtil.visit(this, visitor);
         return visitor.toString();
     }
@@ -217,7 +227,7 @@ public abstract class AbstractKeyList implements Key
             if (reply.length() > 0)
             {
                 // strip off the final ", "
-                reply = reply.substring(0, reply.length() - AbstractPassage.REF_OSIS_DELIM.length());
+                reply = reply.substring(0, reply.length() - AbstractPassage.REF_PREF_DELIM.length());
             }
 
             return reply;
@@ -227,18 +237,48 @@ public abstract class AbstractKeyList implements Key
     }
 
     /** 
-     * The <code>OSISNameVisitor</code> constructs a readable representation
+     * The <code>OsisRefVisitor</code> constructs a readable representation
      * of the Passage, using OSIS names.
      */
-    private static class OSISNameVisitor extends NameVisitor
+    private static class OsisRefVisitor extends NameVisitor
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.KeyVisitor#visitLeaf(org.crosswire.jsword.passage.Key)
          */
         public void visitLeaf(Key key)
         {
-            buffer.append(key.getOSISName());
+            buffer.append(key.getOsisRef());
             buffer.append(AbstractPassage.REF_PREF_DELIM);
+        }
+    }
+
+    /** 
+     * The <code>OsisRefVisitor</code> constructs a readable representation
+     * of the Passage, using OSIS names.
+     */
+    private static class OsisIDVisitor extends NameVisitor
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.passage.KeyVisitor#visitLeaf(org.crosswire.jsword.passage.Key)
+         */
+        public void visitLeaf(Key key)
+        {
+            buffer.append(key.getOsisID());
+            buffer.append(AbstractPassage.REF_OSIS_DELIM);
+        }
+        /* (non-Javadoc)
+         * @see java.lang.Object#toString()
+         */
+        public String toString()
+        {
+            String reply = super.toString();
+            if (reply.length() > 0)
+            {
+                // strip off the final " "
+                reply = reply.substring(0, reply.length() - AbstractPassage.REF_OSIS_DELIM.length());
+            }
+
+            return reply;
         }
     }
 

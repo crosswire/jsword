@@ -47,7 +47,7 @@ public interface KeyFactory
      * @return a valid key.
      */
     Key getValidKey(String name);
-    
+
     /**
      * Someone has typed in a reference to find, but we need a Key to actually
      * look it up.

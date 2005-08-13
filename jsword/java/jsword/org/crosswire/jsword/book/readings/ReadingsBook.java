@@ -161,7 +161,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
                     VerseRange range = (VerseRange) it.next();
 
                     Element reading = OSISUtil.factory().createReference();
-                    reading.setAttribute(OSISUtil.ATTRIBUTE_REFERENCE_OSISREF, range.getOSISName());
+                    reading.setAttribute(OSISUtil.ATTRIBUTE_REFERENCE_OSISREF, range.getOsisRef());
                     reading.addContent(range.getName());
 
                     Element item = OSISUtil.factory().createItem();

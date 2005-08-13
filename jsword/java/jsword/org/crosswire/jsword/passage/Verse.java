@@ -247,7 +247,7 @@ public final class Verse implements VerseBase, Comparable
      * Uses short books names, with "." as a verse part separator.
      * @return a String containing the OSIS description of the verses
      */
-    public String getOSISName()
+    public String getOsisRef()
     {
         try
         {
@@ -262,6 +262,14 @@ public final class Verse implements VerseBase, Comparable
             assert false : ex;
             return "!Error!"; //$NON-NLS-1$
         }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getOSISId()
+     */
+    public String getOsisID()
+    {
+        return getOsisRef();
     }
 
     /**

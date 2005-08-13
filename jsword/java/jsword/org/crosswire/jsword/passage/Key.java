@@ -45,11 +45,25 @@ public interface Key extends Comparable, Cloneable
     String getName();
 
     /**
-     * The OSIS defined specification for this Passage.
-     * Uses short books names, with "." as a verse part separator.
+     * The OSIS defined reference specification for this Key.
+     * When the key is a single element, it is an OSIS book name with '.'
+     * separating the parts. When the key is multiple elements, it 
+     * uses a range notation. Note, this will create a comma separated
+     * list of ranges, which is improper OSIS.
+     *
      * @return a String containing the OSIS description of the verses
      */
-    String getOSISName();
+    String getOsisRef();
+
+    /**
+     * The OSIS defined id specification for this Key.
+     * When the key is a single element, it is an OSIS book name with '.'
+     * separating the parts. When the key is multiple elements, it 
+     * uses a space to separate each.
+     *
+     * @return a String containing the OSIS description of the verses
+     */
+    String getOsisID();
 
     /**
      * All keys have parents unless they are the root of a Key.

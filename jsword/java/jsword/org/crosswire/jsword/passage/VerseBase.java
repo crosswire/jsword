@@ -54,7 +54,7 @@ public interface VerseBase extends Cloneable, Comparable, Serializable, Key
      * Uses short books names, with "." as a verse part separator.
      * @return a String containing the OSIS description of the verses
      */
-    String getOSISName();
+    String getOsisRef();
 
     /**
      * Create an array of Verses.

@@ -115,7 +115,7 @@ public final class GBFTags
             try
             {
                 Passage ref = (Passage) KEY_FACTORY.getKey(refstr);
-                seg.setAttribute(OSISUtil.ATTRIBUTE_REFERENCE_OSISREF, ref.getOSISName());
+                seg.setAttribute(OSISUtil.ATTRIBUTE_REFERENCE_OSISREF, ref.getOsisRef());
             }
             catch (NoSuchKeyException ex)
             {

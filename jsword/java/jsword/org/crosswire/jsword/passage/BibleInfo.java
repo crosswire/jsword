@@ -581,7 +581,7 @@ public final class BibleInfo
         }
 
         // Check the verse
-        if (validate && (verse < 1 || verse > versesInChapter(book, chapter)))
+        if (verse < 1 || verse > versesInChapter(book, chapter))
         {
             Object[] params = new Object[]
             {
@@ -592,22 +592,6 @@ public final class BibleInfo
             };
             throw new NoSuchVerseException(Msg.BOOKS_VERSE, params);
         }
-    }
-
-    /**
-     * @return Returns the validate.
-     */
-    public static boolean isValidate()
-    {
-        return validate;
-    }
-
-    /**
-     * @param validate The validate to set.
-     */
-    public static void setValidate(boolean validate)
-    {
-        BibleInfo.validate = validate;
     }
 
     /**
@@ -959,11 +943,6 @@ public final class BibleInfo
      * Whether long or short, full or abbreviated names are used.
      */
     private static boolean fullBookName = true;
-
-    /**
-     * Whether validate should throw an exception.
-     */
-    private static boolean validate = true;
 
     /**
      * Handy section finder. There is a bit of moderately bad programming

@@ -137,9 +137,17 @@ final class SynchronizedPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#getOSISName()
      */
-    public synchronized String getOSISName()
+    public synchronized String getOsisRef()
     {
-        return ref.getOSISName();
+        return ref.getOsisRef();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getOSISId()
+     */
+    public String getOsisID()
+    {
+        return ref.getOsisID();
     }
 
     /* (non-Javadoc)

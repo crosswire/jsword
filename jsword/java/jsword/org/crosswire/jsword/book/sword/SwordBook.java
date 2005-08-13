@@ -116,7 +116,7 @@ public class SwordBook extends AbstractPassageBook
         // If we get here then the text is not marked up with verse
         // In this case we add the verse markup.
         Element everse = OSISUtil.factory().createVerse();
-        everse.setAttribute(OSISUtil.ATTRIBUTE_VERSE_OSISID, key.getOSISName());
+        everse.setAttribute(OSISUtil.ATTRIBUTE_VERSE_OSISID, key.getOsisID());
         div.addContent(everse);
         super.addOSIS(key, everse, osisContent);
     }

@@ -200,17 +200,43 @@ public abstract class AbstractPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#getOSISName()
      */
-    public String getOSISName()
+    public String getOsisRef()
     {
         StringBuffer retcode = new StringBuffer();
 
         Iterator it = rangeIterator(RestrictionType.NONE);
-        while (it.hasNext())
+        boolean hasNext = it.hasNext();
+        while (hasNext)
         {
             VerseRange range = (VerseRange) it.next();
-            retcode.append(range.getOSISName());
+            retcode.append(range.getOsisRef());
 
-            if (it.hasNext())
+            hasNext = it.hasNext();
+            if (hasNext)
+            {
+                retcode.append(AbstractPassage.REF_OSIS_DELIM);
+            }
+        }
+
+        return retcode.toString();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getOSISId()
+     */
+    public String getOsisID()
+    {
+        StringBuffer retcode = new StringBuffer();
+
+        Iterator it = rangeIterator(RestrictionType.NONE);
+        boolean hasNext = it.hasNext();
+        while (hasNext)
+        {
+            VerseRange range = (VerseRange) it.next();
+            retcode.append(range.getOsisID());
+
+            hasNext = it.hasNext();
+            if (hasNext)
             {
                 retcode.append(AbstractPassage.REF_OSIS_DELIM);
             }

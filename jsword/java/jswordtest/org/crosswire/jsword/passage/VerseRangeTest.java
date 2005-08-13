@@ -170,7 +170,7 @@ public class VerseRangeTest extends TestCase
     public void testPersistentNaming() throws Exception
     {
         PassageUtil.setPersistentNaming(false);
-        assertEquals(VerseRangeFactory.fromString("1corinth 8-9").toString(), "1Co 8-9"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(VerseRangeFactory.fromString("1corinth 8-9").toString(), "1Cor 8-9"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(VerseRangeFactory.fromString("Genesis 1 1").toString(), "Gen 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(VerseRangeFactory.fromString("g 1 1-e 1 1").toString(), "Gen 1:1-Exo 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(VerseRangeFactory.fromString("g-e:1:10").toString(), "Gen 1:1-Exo 1:10"); //$NON-NLS-1$ //$NON-NLS-2$

@@ -67,15 +67,15 @@ public class BibleInfoTest extends TestCase
     {
         BibleInfo.setCase(CaseType.SENTENCE);
         assertEquals(BibleInfo.getLongBookName(1), "Genesis"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getLongBookName(66), "Revelation"); //$NON-NLS-1$
+        assertEquals(BibleInfo.getLongBookName(66), "Revelation of John"); //$NON-NLS-1$
 
         BibleInfo.setCase(CaseType.LOWER);
         assertEquals(BibleInfo.getLongBookName(1), "genesis"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getLongBookName(66), "revelation"); //$NON-NLS-1$
+        assertEquals(BibleInfo.getLongBookName(66), "revelation of john"); //$NON-NLS-1$
 
         BibleInfo.setCase(CaseType.UPPER);
         assertEquals(BibleInfo.getLongBookName(1), "GENESIS"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getLongBookName(66), "REVELATION"); //$NON-NLS-1$
+        assertEquals(BibleInfo.getLongBookName(66), "REVELATION OF JOHN"); //$NON-NLS-1$
 
         try
         {

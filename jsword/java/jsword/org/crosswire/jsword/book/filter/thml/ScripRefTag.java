@@ -61,7 +61,7 @@ public class ScripRefTag implements Tag
             try
             {
                 Passage ref = (Passage) keyf.getKey(refstr);
-                String osisname = ref.getOSISName();
+                String osisname = ref.getOsisRef();
                 reference.setAttribute(OSISUtil.ATTRIBUTE_REFERENCE_OSISREF, osisname);
             }
             catch (NoSuchKeyException ex)
