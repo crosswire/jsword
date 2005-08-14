@@ -299,8 +299,35 @@ public final class VerseRange implements VerseBase
      */
     public String getOsisID()
     {
+        try
+        {    
+            // This range is exactly a whole book
+            if (isWholeBook())
+            {
+                // Just report the name of the book, we don't need to worry about the
+                // base since we start at the start of a book, and should have been
+                // recently normalized()
+                return BibleInfo.getOSISName(start.getBook());
+            }
+
+            // If this range is exactly a whole chapter
+            if (isWholeChapter())
+            {
+                // Just report the name of the book and the chapter
+                return BibleInfo.getOSISName(start.getBook()) + Verse.VERSE_OSIS_DELIM + start.getChapter();
+            }
+        }
+        catch (NoSuchVerseException ex)
+        {
+            assert false : ex;
+            return "!Error!"; //$NON-NLS-1$
+        }
+
         int startOrdinal = start.getOrdinal();
         int endOrdinal = end.getOrdinal();
+
+        // TODO(DM): could analyze each book and chapter in the range
+        // to see if it is wholly contained in the range and output it if it is.
 
         // Estimate the size of the buffer: book.dd.dd (where book is 3-5, 3 typical)
         StringBuffer buf = new StringBuffer((endOrdinal - startOrdinal + 1) * 10);
