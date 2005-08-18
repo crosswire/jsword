@@ -39,6 +39,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.jar.JarEntry;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.util.HttpURLConnection;
+
 /**
  * The NetUtil class looks after general utility stuff around the
  * java.net package.
@@ -46,7 +52,8 @@ import java.util.jar.JarEntry;
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
- * @author Mark Goodwin
+ * @author Mark Goodwin [goodwinster at gmail dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public final class NetUtil
 {
@@ -533,6 +540,40 @@ public final class NetUtil
      */
     public static int getSize(URL url)
     {
+        if (url.getProtocol().equals(PROTOCOL_HTTP))
+        {
+            // Create an instance of HttpClient.
+            HttpClient client = new HttpClient();
+
+            // Create a method instance.
+            GetMethod method = new GetMethod(url.toExternalForm());
+            
+            // Execute the method.
+            try
+            {
+                int statusCode = client.executeMethod(method);
+                if (statusCode != HttpStatus.SC_OK)
+                {
+                    return 0;
+                }
+            }
+            catch (HttpException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            catch (IOException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            HttpURLConnection connection = new HttpURLConnection(method, url);
+            
+            return connection.getContentLength();
+
+        }
+
         try
         {
             URLConnection urlConnection = url.openConnection();
@@ -551,6 +592,39 @@ public final class NetUtil
      */
     public static long getLastModified(URL url)
     {
+        if (url.getProtocol().equals(PROTOCOL_HTTP))
+        {
+            // Create an instance of HttpClient.
+            HttpClient client = new HttpClient();
+
+            // Create a method instance.
+            GetMethod method = new GetMethod(url.toExternalForm());
+            
+            // Execute the method.
+            try
+            {
+                int statusCode = client.executeMethod(method);
+                if (statusCode != HttpStatus.SC_OK)
+                {
+                    return 0;
+                }
+            }
+            catch (HttpException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            catch (IOException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            HttpURLConnection connection = new HttpURLConnection(method, url);
+            
+            return connection.getLastModified();
+
+        }
         try
         {
             URLConnection urlConnection = url.openConnection();

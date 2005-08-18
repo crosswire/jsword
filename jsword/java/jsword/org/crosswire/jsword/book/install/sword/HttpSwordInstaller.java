@@ -26,8 +26,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 
+import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.crosswire.common.progress.Job;
 import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.NetUtil;
@@ -41,6 +46,7 @@ import org.crosswire.jsword.book.install.InstallException;
  *      The copyright to this program is held by it's authors.
  * @author Mark Goodwin [goodwinster at gmail dot com]
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class HttpSwordInstaller extends AbstractSwordInstaller implements Comparable
 {
@@ -94,6 +100,16 @@ public class HttpSwordInstaller extends AbstractSwordInstaller implements Compar
         InputStream in = null;
         OutputStream out = null;
 
+        // Create an instance of HttpClient.
+        HttpClient client = new HttpClient();
+
+        // Create a method instance.
+        GetMethod method = new GetMethod(url.toExternalForm());
+        
+        // Provide custom retry handler is necessary
+        method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, 
+                new DefaultHttpMethodRetryHandler(3, false));
+
         try
         {
             if (job != null)
@@ -101,30 +117,44 @@ public class HttpSwordInstaller extends AbstractSwordInstaller implements Compar
                 job.setProgress(Msg.JOB_DOWNLOADING.toString());
             }
 
-            // Download the index file
-            out = NetUtil.getOutputStream(dest);
+            // Execute the method.
+            int statusCode = client.executeMethod(method);
 
-            URLConnection urlConnection = url.openConnection();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                throw new InstallException(Msg.MISSING_FILE, new Object [] { method.getStatusLine().toString() });
+            }
+
             try
             {
-                in = urlConnection.getInputStream();
+                in = method.getResponseBodyAsStream();
             }
             catch (Exception exception)
             {
                 throw new InstallException(Msg.MISSING_FILE, exception);
             }
 
+            // Download the index file
+            out = NetUtil.getOutputStream(dest);
+
             byte[] buf = new byte[4096];
-            for (int count = 0; -1 != (count = in.read(buf)); )
+            for (int count = 0; -1 != (count = in.read(buf));)
             {
                 out.write(buf, 0, count);
             }
         }
+        catch (HttpException e)
+        {
+            throw new InstallException(Msg.MISSING_FILE, e);
+        }
         finally
         {
+            // Release the connection.
+            method.releaseConnection();
+            // Close the streams
             IOUtil.close(in);
             IOUtil.close(out);
-        }
+        }  
     }
 
     /* (non-Javadoc)
