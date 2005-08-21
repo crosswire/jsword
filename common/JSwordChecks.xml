@@ -377,7 +377,7 @@
 </module>
 <module name="Header">
 <property name="headerFile" value="E:\Eclipse\JSword\common\LicenseHeader.txt"/>
-<property name="ignoreLines" value="20"/>
+<property name="ignoreLines" value="3,20"/>
 </module>
 <module name="RequiredRegexp">
 <property name="format" value="see gnu.gpl.License for license details."/>

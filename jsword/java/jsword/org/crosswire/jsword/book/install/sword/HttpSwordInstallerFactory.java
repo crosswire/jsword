@@ -21,7 +21,6 @@
  */
 package org.crosswire.jsword.book.install.sword;
 
-import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.install.Installer;
 import org.crosswire.jsword.book.install.InstallerFactory;
 
@@ -32,6 +31,7 @@ import org.crosswire.jsword.book.install.InstallerFactory;
  *      The copyright to this program is held by it's authors.
  * @author Mark Goodwin [goodwinster at gmail dot com]
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class HttpSwordInstallerFactory implements InstallerFactory
 {
@@ -46,19 +46,26 @@ public class HttpSwordInstallerFactory implements InstallerFactory
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.InstallerFactory#createInstaller(java.lang.String)
      */
-    public Installer createInstaller(String url)
+    public Installer createInstaller(String installerDefinition)
     {
-        String[] parts = url.split(NetUtil.SEPARATOR, 4);
+        String[] parts = installerDefinition.split(",", 4); //$NON-NLS-1$
         if (parts.length < 4)
         {
-            throw new IllegalArgumentException(Msg.INVALID_URL.toString(url));
+            throw new IllegalArgumentException(Msg.INVALID_DEFINITION.toString(installerDefinition));
         }
 
         HttpSwordInstaller reply = new HttpSwordInstaller();
 
-        String part2 = parts[2];
-        reply.setHost(part2);
-        reply.setDirectory(NetUtil.SEPARATOR + parts[3]);
+        reply.setHost(parts[0]);
+        reply.setDirectory(parts[1]);
+        if (parts[2].length() > 0)
+        {
+            reply.setProxyHost(parts[2]);
+            if (parts[5].length() > 0)
+            {
+                reply.setProxyPort(Integer.valueOf(parts[3]));
+            }
+        }
 
         return reply;
     }

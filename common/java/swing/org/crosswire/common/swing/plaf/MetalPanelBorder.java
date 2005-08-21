@@ -28,7 +28,6 @@ import javax.swing.border.AbstractBorder;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-
 /**
  * A class that provides a border that matches MetalBorders.ScrollPaneBorder.
  *

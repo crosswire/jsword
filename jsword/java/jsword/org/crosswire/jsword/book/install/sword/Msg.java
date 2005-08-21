@@ -34,7 +34,7 @@ final class Msg extends MsgBase
 {
     static final Msg UNKNOWN_ERROR = new Msg("SwordInstaller.UnknownError"); //$NON-NLS-1$
     static final Msg CACHE_ERROR = new Msg("SwordInstaller.CacheError"); //$NON-NLS-1$
-    static final Msg INVALID_URL = new Msg("SwordInstaller.InvalidURL"); //$NON-NLS-1$
+    static final Msg INVALID_DEFINITION = new Msg("SwordInstaller.InvalidURL"); //$NON-NLS-1$
     static final Msg INSTALLING = new Msg("SwordInstaller.Installing"); //$NON-NLS-1$
     static final Msg JOB_INIT = new Msg("SwordInstaller.JobInit"); //$NON-NLS-1$
     static final Msg JOB_CONFIG = new Msg("SwordInstaller.JobConfig"); //$NON-NLS-1$

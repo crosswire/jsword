@@ -50,7 +50,7 @@ public class FtpSwordInstallerFactory implements InstallerFactory
         String[] parts = url.split(NetUtil.SEPARATOR, 4);
         if (parts.length < 4)
         {
-            throw new IllegalArgumentException(Msg.INVALID_URL.toString(url));
+            throw new IllegalArgumentException(Msg.INVALID_DEFINITION.toString(url));
         }
 
         FtpSwordInstaller reply = new FtpSwordInstaller();

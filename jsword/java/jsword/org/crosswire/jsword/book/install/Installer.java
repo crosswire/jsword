@@ -39,14 +39,21 @@ import org.crosswire.jsword.book.BookList;
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public interface Installer extends BookList
 {
     /**
+     * Get the type of the Installer.
+     * @return the type of the installer
+     */
+    String getType();
+
+    /**
      * Accessor for the URL
      * @return the source url
      */
-    String getURL();
+    String getInstallerDefinition();
 
     /**
      * @param book The book meta-data to get a URL from.
@@ -62,6 +69,14 @@ public interface Installer extends BookList
      * @see Installer#reloadBookList()
      */
     List getBooks();
+
+    /**
+     * Return true if the book is not installed or there is a newer
+     * version to install.
+     * @param book The book meta-data to check on.
+     * @return whether there is a newer version to install
+     */
+    int getSize(Book book);
 
     /**
      * Return true if the book is not installed or there is a newer

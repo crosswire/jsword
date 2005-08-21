@@ -39,12 +39,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.jar.JarEntry;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.util.HttpURLConnection;
-
 /**
  * The NetUtil class looks after general utility stuff around the
  * java.net package.
@@ -540,38 +534,18 @@ public final class NetUtil
      */
     public static int getSize(URL url)
     {
+        return getSize(url, null);
+    }
+    public static int getSize(URL url, String proxyHost)
+    {
+        return getSize(url, proxyHost, null);
+    }
+    public static int getSize(URL url, String proxyHost, Integer proxyPort)
+    {
         if (url.getProtocol().equals(PROTOCOL_HTTP))
         {
-            // Create an instance of HttpClient.
-            HttpClient client = new HttpClient();
-
-            // Create a method instance.
-            GetMethod method = new GetMethod(url.toExternalForm());
-            
-            // Execute the method.
-            try
-            {
-                int statusCode = client.executeMethod(method);
-                if (statusCode != HttpStatus.SC_OK)
-                {
-                    return 0;
-                }
-            }
-            catch (HttpException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            catch (IOException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
-            HttpURLConnection connection = new HttpURLConnection(method, url);
-            
-            return connection.getContentLength();
-
+            WebResource wr = new WebResource(url, proxyHost, proxyPort);
+            return wr.getSize();
         }
 
         try
@@ -592,39 +566,22 @@ public final class NetUtil
      */
     public static long getLastModified(URL url)
     {
+        return getLastModified(url, null);
+    }
+
+    public static long getLastModified(URL url, String proxyHost)
+    {
+        return getLastModified(url, proxyHost, null);
+    }
+
+    public static long getLastModified(URL url, String proxyHost, Integer proxyPort)
+    {
         if (url.getProtocol().equals(PROTOCOL_HTTP))
         {
-            // Create an instance of HttpClient.
-            HttpClient client = new HttpClient();
-
-            // Create a method instance.
-            GetMethod method = new GetMethod(url.toExternalForm());
-            
-            // Execute the method.
-            try
-            {
-                int statusCode = client.executeMethod(method);
-                if (statusCode != HttpStatus.SC_OK)
-                {
-                    return 0;
-                }
-            }
-            catch (HttpException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            catch (IOException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
-            HttpURLConnection connection = new HttpURLConnection(method, url);
-            
-            return connection.getLastModified();
-
+            WebResource wr = new WebResource(url, proxyHost, proxyPort);
+            return wr.getLastModified();
         }
+
         try
         {
             URLConnection urlConnection = url.openConnection();
@@ -657,7 +614,15 @@ public final class NetUtil
      */
     public static boolean isNewer(URL left, URL right)
     {
-        return NetUtil.getLastModified(left) > NetUtil.getLastModified(right);
+        return isNewer(left, right, null);
+    }
+    public static boolean isNewer(URL left, URL right, String proxyHost)
+    {
+        return isNewer(left, right, proxyHost, null);
+    }
+    public static boolean isNewer(URL left, URL right, String proxyHost, Integer proxyPort)
+    {
+        return NetUtil.getLastModified(left, proxyHost, proxyPort) > NetUtil.getLastModified(right, proxyHost, proxyPort);
     }
 
     /**

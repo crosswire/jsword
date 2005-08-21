@@ -21,7 +21,6 @@
  */
 package org.crosswire.common.swing.plaf;
 
-import java.awt.Insets;
 import javax.swing.BorderFactory;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -54,7 +53,7 @@ public class MetalLFCustoms extends AbstractLFCustoms
             BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         Object[] metalUIDefaults = new Object[] {
-            "TabbedPane.contentBorderInsets", new Insets(1, 0, 0, 0), //$NON-NLS-1$
+            "BibleViewPane.TabbedPaneUI", MetalBorderlessTabbedPaneUI.createUI(null), //$NON-NLS-1$
             "SplitPane.dividerSize", new Integer(5), //$NON-NLS-1$
             "SelectPanel.border", panelSelectBorder //$NON-NLS-1$
         };

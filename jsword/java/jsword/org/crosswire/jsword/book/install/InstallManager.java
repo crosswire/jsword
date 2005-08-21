@@ -45,6 +45,7 @@ import org.crosswire.jsword.util.Project;
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class InstallManager
 {
@@ -53,6 +54,8 @@ public class InstallManager
      */
     public InstallManager()
     {
+        installers = new HashMap();
+
         try
         {
             Properties sitemap = ResourceUtil.getProperties(getClass());
@@ -61,12 +64,14 @@ public class InstallManager
             for (Iterator it = sitemap.entrySet().iterator(); it.hasNext(); )
             {
                 Map.Entry entry = (Map.Entry) it.next();
-                String url = (String) entry.getValue();
+                String installerDefinition = (String) entry.getValue();
 
                 try
                 {
-                    String[] parts = url.split(":"); //$NON-NLS-1$
+                    String[] parts = installerDefinition.split(",", 3); //$NON-NLS-1$
                     String type = parts[0];
+                    String name = parts[1];
+                    String rest = parts[2];
 
                     Class clazz = (Class) factories.get(type);
                     if (clazz == null)
@@ -76,9 +81,9 @@ public class InstallManager
                     else
                     {
                         InstallerFactory ifactory = (InstallerFactory) clazz.newInstance();
-                        Installer installer = ifactory.createInstaller(url);
+                        Installer installer = ifactory.createInstaller(rest);
 
-                        internalAdd((String) entry.getKey(), installer);
+                        internalAdd(name, installer);
                     }
                 }
                 catch (Exception ex)
@@ -100,11 +105,20 @@ public class InstallManager
     public void save()
     {
         Properties props = new Properties();
+        StringBuffer buf = new StringBuffer();
+        int i = 1;
         for (Iterator it = installers.keySet().iterator(); it.hasNext(); )
         {
             String name = (String) it.next();
             Installer installer = (Installer) installers.get(name);
-            props.setProperty(name, installer.getURL());
+            // Clear the buffer
+            buf.delete(0, buf.length());
+            buf.append(installer.getType());
+            buf.append(',');
+            buf.append(name);
+            buf.append(',');
+            buf.append(installer.getInstallerDefinition());
+            props.setProperty("Installer." + i++, buf.toString()); //$NON-NLS-1$
         }
         URL outputURL = Project.instance().getWritablePropertiesURL(getClass().getName()); //$NON-NLS-1$
         try
@@ -181,7 +195,7 @@ public class InstallManager
         {
             String name = (String) it.next();
             Installer test = (Installer) installers.get(name);
-            log.warn("  it isn't equal to " + test.getURL()); //$NON-NLS-1$
+            log.warn("  it isn't equal to " + test.getInstallerDefinition()); //$NON-NLS-1$
         }
         return null;
     }
@@ -258,6 +272,7 @@ public class InstallManager
                 // We have a dupe - remove the old name
                 log.warn("duplicate installers: " + name + "=" + tname + ". removing " + tname); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
+                // Can't call removeInstaller while iterating.
                 it.remove();
                 fireInstallersChanged(this, tinstaller, false);
             }
@@ -345,7 +360,7 @@ public class InstallManager
     /**
      * The list of discovered installers
      */
-    private Map installers = new HashMap();
+    private Map installers;
 
     /**
      * The list of listeners

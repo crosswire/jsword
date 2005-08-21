@@ -47,9 +47,26 @@ import org.crosswire.jsword.book.sword.SwordBookMetaData;
 public class FtpSwordInstaller extends AbstractSwordInstaller implements Comparable
 {
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.install.Installer#getType()
+     */
+    public String getType()
+    {
+        return "sword-ftp"; //$NON-NLS-1$
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.install.Installer#getSize(org.crosswire.jsword.book.Book)
+     */
+    public int getSize(Book book)
+    {
+        // not implemented
+        return 0;
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#getURL()
      */
-    public String getURL()
+    public String getInstallerDefinition()
     {
         return PROTOCOL_SWORD + "://" + username + ":" + password + "@" + host + directory; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
@@ -198,12 +215,12 @@ public class FtpSwordInstaller extends AbstractSwordInstaller implements Compara
 
     /**
      * Like getURL() except that we skip the password for display purposes.
-     * @see FtpSwordInstaller#getURL()
+     * @see FtpSwordInstaller#getInstallerDefinition()
      * @see java.lang.Object#toString()
      */
     public String toString()
     {
-        return getURL();
+        return getInstallerDefinition();
     }
 
     /* (non-Javadoc)

@@ -20,10 +20,10 @@
  * ID: $Id$
  */
 package org.crosswire.common.swing.plaf;
+
 import javax.swing.BorderFactory;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
-
 
 /**
  * Customizations for other LF other than Windows and Metal.

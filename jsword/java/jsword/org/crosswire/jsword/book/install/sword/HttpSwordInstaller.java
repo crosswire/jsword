@@ -21,21 +21,13 @@
  */
 package org.crosswire.jsword.book.install.sword;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.crosswire.common.progress.Job;
-import org.crosswire.common.util.IOUtil;
+import org.crosswire.common.util.LucidException;
 import org.crosswire.common.util.NetUtil;
+import org.crosswire.common.util.WebResource;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.install.InstallException;
 
@@ -51,11 +43,19 @@ import org.crosswire.jsword.book.install.InstallException;
 public class HttpSwordInstaller extends AbstractSwordInstaller implements Comparable
 {
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.install.Installer#getURL()
+     * @see org.crosswire.jsword.book.install.Installer#getType()
      */
-    public String getURL()
+    public String getType()
     {
-        return PROTOCOL_WEB + "://" + host + directory; //$NON-NLS-1$
+        return "sword-http"; //$NON-NLS-1$
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.install.Installer#getSize(org.crosswire.jsword.book.Book)
+     */
+    public int getSize(Book book)
+    {
+        return NetUtil.getSize(toRemoteURL(book), proxyHost, proxyPort);
     }
 
     /* (non-Javadoc)
@@ -83,9 +83,13 @@ public class HttpSwordInstaller extends AbstractSwordInstaller implements Compar
             URL url = new URL(NetUtil.PROTOCOL_HTTP, host, dir + '/' + file); //$NON-NLS-1$
             copy(job, url, dest);
         }
-        catch (IOException ex)
+        catch (LucidException ex)
         {
-            throw new InstallException(Msg.UNKNOWN_ERROR, ex);
+            throw new InstallException(Msg.MISSING_FILE, ex);
+        }
+        catch (MalformedURLException e)
+        {
+            assert false : e;
         }
     }
 
@@ -93,68 +97,17 @@ public class HttpSwordInstaller extends AbstractSwordInstaller implements Compar
      * @param job
      * @param url
      * @param dest
-     * @throws IOException
+     * @throws LucidException
      */
-    private void copy(Job job, URL url, URL dest) throws IOException, InstallException
+    private void copy(Job job, URL url, URL dest) throws LucidException
     {
-        InputStream in = null;
-        OutputStream out = null;
-
-        // Create an instance of HttpClient.
-        HttpClient client = new HttpClient();
-
-        // Create a method instance.
-        GetMethod method = new GetMethod(url.toExternalForm());
-        
-        // Provide custom retry handler is necessary
-        method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, 
-                new DefaultHttpMethodRetryHandler(3, false));
-
-        try
+        if (job != null)
         {
-            if (job != null)
-            {
-                job.setProgress(Msg.JOB_DOWNLOADING.toString());
-            }
-
-            // Execute the method.
-            int statusCode = client.executeMethod(method);
-
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                throw new InstallException(Msg.MISSING_FILE, new Object [] { method.getStatusLine().toString() });
-            }
-
-            try
-            {
-                in = method.getResponseBodyAsStream();
-            }
-            catch (Exception exception)
-            {
-                throw new InstallException(Msg.MISSING_FILE, exception);
-            }
-
-            // Download the index file
-            out = NetUtil.getOutputStream(dest);
-
-            byte[] buf = new byte[4096];
-            for (int count = 0; -1 != (count = in.read(buf));)
-            {
-                out.write(buf, 0, count);
-            }
+            job.setProgress(Msg.JOB_DOWNLOADING.toString());
         }
-        catch (HttpException e)
-        {
-            throw new InstallException(Msg.MISSING_FILE, e);
-        }
-        finally
-        {
-            // Release the connection.
-            method.releaseConnection();
-            // Close the streams
-            IOUtil.close(in);
-            IOUtil.close(out);
-        }  
+
+        WebResource wr = new WebResource(url, proxyHost, proxyPort);
+        wr.copy(dest);
     }
 
     /* (non-Javadoc)
@@ -183,9 +136,4 @@ public class HttpSwordInstaller extends AbstractSwordInstaller implements Compar
     {
         return super.hashCode();
     }
-
-    /**
-     * We need to be ablee to provide a URL as part of the API
-     */
-    private static final String PROTOCOL_WEB = "sword-http"; //$NON-NLS-1$
 }

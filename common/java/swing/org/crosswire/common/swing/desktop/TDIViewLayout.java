@@ -22,11 +22,12 @@
 package org.crosswire.common.swing.desktop;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.MouseListener;
-
-import javax.swing.BorderFactory;
 import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
+import javax.swing.UIManager;
+import javax.swing.plaf.TabbedPaneUI;
 
 
 /**
@@ -47,7 +48,11 @@ public class TDIViewLayout extends AbstractViewLayout
     {
         super();
         tabs = new JTabbedPane();
-        tabs.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
+        if (UIManager.getDefaults().containsKey("BibleViewPane.TabbedPaneUI")) //$NON-NLS-1$
+        {
+            tabs.setUI((TabbedPaneUI) UIManager.get("BibleViewPane.TabbedPaneUI")); //$NON-NLS-1$
+        }
+        tabs.setMinimumSize(new Dimension(0, 0));
     }
 
     /* (non-Javadoc)
@@ -58,7 +63,7 @@ public class TDIViewLayout extends AbstractViewLayout
         int viewCount = getViewCount();
 
         if (viewCount > 0)
-        {
+        {               
             if (viewCount == 1)
             {
                 Component first = getView(0);
@@ -66,6 +71,7 @@ public class TDIViewLayout extends AbstractViewLayout
                 tabs.add(first, getTitle(first));
                 getPanel().add(tabs, getConstraint());
             }
+
             tabs.add(component, getTitle(component));
             tabs.setSelectedComponent(component);
         }

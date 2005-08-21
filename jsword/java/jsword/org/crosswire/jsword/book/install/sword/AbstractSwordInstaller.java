@@ -64,6 +64,7 @@ import org.crosswire.jsword.util.Project;
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public abstract class AbstractSwordInstaller extends AbstractBookList implements Installer
 {
@@ -75,6 +76,27 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
      * @throws InstallException
      */
     protected abstract void download(Job job, String dir, String file, URL dest) throws InstallException;
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.install.Installer#getURL()
+     */
+    public String getInstallerDefinition()
+    {
+        StringBuffer buf = new StringBuffer(host);
+        buf.append(',');
+        buf.append(directory);
+        buf.append(',');
+        if (proxyHost != null)
+        {
+            buf.append(proxyHost);
+        }
+        buf.append(',');
+        if (proxyPort != null)
+        {
+            buf.append(proxyPort);
+        }
+        return buf.toString();
+    }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#isNewer(org.crosswire.jsword.book.BookMetaData)
@@ -107,7 +129,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         }
 
         URL remote = toRemoteURL(book);
-        return NetUtil.isNewer(remote, configurl);
+        return NetUtil.isNewer(remote, configurl, proxyHost, proxyPort);
     }
 
     /* (non-Javadoc)
@@ -367,6 +389,38 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     }
 
     /**
+     * @return Returns the proxyHost.
+     */
+    public String getProxyHost()
+    {
+        return proxyHost;
+    }
+
+    /**
+     * @param proxyHost The proxyHost to set.
+     */
+    public void setProxyHost(String proxyHost)
+    {
+        this.proxyHost = proxyHost;
+    }
+
+    /**
+     * @return Returns the proxyPort.
+     */
+    public Integer getProxyPort()
+    {
+        return proxyPort;
+    }
+
+    /**
+     * @param proxyPort The proxyPort to set.
+     */
+    public void setProxyPort(Integer proxyPort)
+    {
+        this.proxyPort = proxyPort;
+    }
+
+    /**
      * The URL for the cached index file for this installer
      */
     protected URL getCachedIndexFile() throws InstallException
@@ -468,6 +522,16 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
      * The remote hostname.
      */
     protected String host;
+
+    /**
+     * The remote proxy hostname.
+     */
+    protected String proxyHost;
+
+    /**
+     * The remote proxy port.
+     */
+    protected Integer proxyPort;
 
     /**
      * The directory containing books on the <code>host</code>.

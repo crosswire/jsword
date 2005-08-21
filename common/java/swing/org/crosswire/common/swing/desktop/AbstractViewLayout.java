@@ -21,9 +21,9 @@
  */
 package org.crosswire.common.swing.desktop;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -51,15 +51,9 @@ public abstract class AbstractViewLayout implements Viewable
      */
     protected AbstractViewLayout()
     {
-        panel = new JPanel(new GridBagLayout());
-
+        panel = new JPanel(new BorderLayout());
         views = new ArrayList();
         listenerList = new EventListenerList();
-
-        gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
     }
 
     /**

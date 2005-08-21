@@ -20,13 +20,13 @@
  * ID: $Id$
  */
 package org.crosswire.common.swing.plaf;
+
 import java.awt.Color;
-import java.awt.Insets;
+
 import javax.swing.BorderFactory;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-
 
 /**
  * Customizations to Windows LF for tabs.
@@ -65,7 +65,7 @@ public class WindowsLFCustoms extends AbstractLFCustoms
 
         Object[] windowsUIDefaults = new Object[]
         {
-            "TabbedPane.contentBorderInsets", new Insets(1, 0, 0, 0), //$NON-NLS-1$
+            "BibleViewPane.TabbedPaneUI", WindowsBorderlessTabbedPaneUI.createUI(null), //$NON-NLS-1$
             "TabbedPanePanel.border", tabbedPanePanelBorder, //$NON-NLS-1$
             "StandardBorder.color", standardBorderColor, //$NON-NLS-1$
             "SelectPanel.border", panelSelectBorder //$NON-NLS-1$

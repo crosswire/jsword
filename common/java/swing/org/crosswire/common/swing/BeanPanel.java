@@ -48,6 +48,7 @@ import org.crosswire.common.util.StringUtil;
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class BeanPanel extends JPanel
 {
@@ -193,7 +194,27 @@ public class BeanPanel extends JPanel
             try
             {
                 String data = text.getText();
-                writer.invoke(bean, new Object[] { data });
+                Class argType = writer.getParameterTypes()[0];
+                if (argType == Integer.class)
+                {
+                    Integer i = null;
+                    if (data != null && data.length() > 0)
+                    {
+                        try
+                        {
+                            i = new Integer(data);
+                        }
+                        catch (NumberFormatException e)
+                        {
+                            i = null;
+                        }
+                    }
+                    writer.invoke(bean, new Object[] { i });
+                }
+                else
+                {
+                    writer.invoke(bean, new Object[] { data });
+                }
             }
             catch (Exception ex)
             {

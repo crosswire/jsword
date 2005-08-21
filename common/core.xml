@@ -33,6 +33,9 @@
     =========================================================================-->
   <patternset id="external.runtime.jars">
     <include name="**/jdom-*.jar"/>
+    <include name="**/commons-codec-*.jar"/>
+    <include name="**/commons-httpclient-*.jar"/>
+    <include name="**/commons-logging.jar"/>
     <include name="**/commons-net-*.jar"/>
     <include name="**/lucene-*.jar"/>
     <include name="**/activation.jar"/>

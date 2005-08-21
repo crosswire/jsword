@@ -27,6 +27,10 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
+import org.crosswire.common.swing.plaf.MetalLFCustoms;
+import org.crosswire.common.swing.plaf.OtherLFCustoms;
+import org.crosswire.common.swing.plaf.WindowsLFCustoms;
+
 /**
  * LookAndFeelUtil declares the Choices and actions
  * needed to dynamically change the look and feel (PLAF) and to add new
@@ -37,6 +41,7 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
  * @author Joe Walker [joe at eireneh dot com]
  * @author Mark Goodwin [mark at thorubio dot org]
  * @author DM Smith [dmsmith555 at yahoo dot com]
+ * @author Willie Thean [williethean at yahoo dot com]
  */
 public final class LookAndFeelUtil
 {
@@ -107,10 +112,18 @@ public final class LookAndFeelUtil
         String systemLAF = UIManager.getSystemLookAndFeelClassName();
         try
         {
+            // GTKLookAndFeel and MotiflLookAndFeel doesn't look good currently.
+            // Only WindowsLookAndFeel and MetalLookAndFeel looks fine.
+            // Not sure how AquaLookAndFeel looks, so allow it for now.
             // NOTE(DM): test with the gtk laf before allowing it.
-            if (systemLAF.indexOf("gtk") == -1) //$NON-NLS-1$
+            if (systemLAF.indexOf("WindowsLookAndFeel") != -1 ||  //$NON-NLS-1$
+                systemLAF.indexOf("AquaLookAndfeel") != -1) //$NON-NLS-1$
             {
                 UIManager.setLookAndFeel(systemLAF);
+                // MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme());
+                // UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel"); //$NON-NLS-1$
+                // UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+                // UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
                 defaultLAF = Class.forName(systemLAF);
             }
         }
@@ -129,6 +142,25 @@ public final class LookAndFeelUtil
         catch (UnsupportedLookAndFeelException e)
         {
             assert false;
+        }
+
+        customizeBDLookandFeel();
+    }
+    
+    private static void customizeBDLookandFeel() 
+    {
+        String currentLF = UIManager.getLookAndFeel().getClass().getName();
+
+        if (currentLF.indexOf("MetalLookAndFeel") != -1) //$NON-NLS-1$
+        {
+            new MetalLFCustoms().initUIDefaults();
+        }
+        else if (currentLF.indexOf("WindowsLookAndFeel") != -1) //$NON-NLS-1$
+        {
+            new WindowsLFCustoms().initUIDefaults();
+        }
+        else {
+            new OtherLFCustoms().initUIDefaults();
         }
     }
 }
