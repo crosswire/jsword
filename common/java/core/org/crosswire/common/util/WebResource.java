@@ -54,7 +54,7 @@ public class WebResource
         client = new HttpClient();
         HostConfiguration config = client.getHostConfiguration();
         config.setHost(new HttpHost(theURL.getHost(), theURL.getPort()));
-        if (theProxyHost != null)
+        if (theProxyHost != null && theProxyHost.length() > 0)
         {
             config.setProxyHost(new ProxyHost(theProxyHost, theProxyPort == null ? -1 : theProxyPort.intValue()));
         }

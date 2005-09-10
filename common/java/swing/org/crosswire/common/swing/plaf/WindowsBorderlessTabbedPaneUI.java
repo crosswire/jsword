@@ -34,7 +34,8 @@ import javax.swing.plaf.ComponentUI;
  */
 public class WindowsBorderlessTabbedPaneUI extends WindowsTabbedPaneUI
 {
-    public static ComponentUI createUI(JComponent c) {
+    public static ComponentUI createUI(JComponent c)
+    {
         return new WindowsBorderlessTabbedPaneUI();
     }
 
@@ -48,11 +49,11 @@ public class WindowsBorderlessTabbedPaneUI extends WindowsTabbedPaneUI
      */
     protected Insets getContentBorderInsets(int tabPlacement)
     {
-        if (tabPlacement == SwingConstants.TOP) 
+        if (tabPlacement == SwingConstants.TOP)
         {
             return new Insets(1, 0, 0, 0);
         }
-        else if (tabPlacement == SwingConstants.LEFT) 
+        else if (tabPlacement == SwingConstants.LEFT)
         {
             return new Insets(0, 1, 0, 0);
         }
@@ -64,7 +65,8 @@ public class WindowsBorderlessTabbedPaneUI extends WindowsTabbedPaneUI
         {
             return new Insets(0, 0, 0, 1);
         }
-        else {
+        else
+        {
             return new Insets(0, 0, 0, 0);
         }
     }

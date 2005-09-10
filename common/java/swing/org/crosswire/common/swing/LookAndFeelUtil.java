@@ -146,8 +146,8 @@ public final class LookAndFeelUtil
 
         customizeBDLookandFeel();
     }
-    
-    private static void customizeBDLookandFeel() 
+
+    private static void customizeBDLookandFeel()
     {
         String currentLF = UIManager.getLookAndFeel().getClass().getName();
 
@@ -159,7 +159,8 @@ public final class LookAndFeelUtil
         {
             new WindowsLFCustoms().initUIDefaults();
         }
-        else {
+        else
+        {
             new OtherLFCustoms().initUIDefaults();
         }
     }

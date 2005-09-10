@@ -63,7 +63,7 @@ public class TDIViewLayout extends AbstractViewLayout
         int viewCount = getViewCount();
 
         if (viewCount > 0)
-        {               
+        {
             if (viewCount == 1)
             {
                 Component first = getView(0);

@@ -363,12 +363,15 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     }
 
     /**
-     * @param directory The directory to set.
+     * @param newDirectory The directory to set.
      */
-    public void setDirectory(String directory)
+    public void setDirectory(String newDirectory)
     {
-        this.directory = directory;
-        loaded = false;
+        if (directory == null || !directory.equals(newDirectory))
+        {
+            directory = newDirectory;
+            loaded = false;
+        }
     }
 
     /**
@@ -380,12 +383,15 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     }
 
     /**
-     * @param host The host to set.
+     * @param newHost The host to set.
      */
-    public void setHost(String host)
+    public void setHost(String newHost)
     {
-        this.host = host;
-        loaded = false;
+        if (host == null || !host.equals(newHost))
+        {
+            host = newHost;
+            loaded = false;
+        }
     }
 
     /**
@@ -397,11 +403,20 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     }
 
     /**
-     * @param proxyHost The proxyHost to set.
+     * @param newProxyHost The proxyHost to set.
      */
-    public void setProxyHost(String proxyHost)
+    public void setProxyHost(String newProxyHost)
     {
-        this.proxyHost = proxyHost;
+        String pHost = null;
+        if (newProxyHost != null && newProxyHost.length() > 0)
+        {
+            pHost = newProxyHost;
+        }
+        if (proxyHost == null || !proxyHost.equals(pHost))
+        {
+            proxyHost = pHost;
+            loaded = false;
+        }
     }
 
     /**
@@ -413,11 +428,15 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     }
 
     /**
-     * @param proxyPort The proxyPort to set.
+     * @param newProxyPort The proxyPort to set.
      */
-    public void setProxyPort(Integer proxyPort)
+    public void setProxyPort(Integer newProxyPort)
     {
-        this.proxyPort = proxyPort;
+        if (proxyPort == null || !proxyPort.equals(newProxyPort))
+        {
+            proxyPort = newProxyPort;
+            loaded = false;
+        }
     }
 
     /**
@@ -561,7 +580,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /**
      * The relative path of the dir holding the search index files
      */
-    protected static final String SEARCH_DIR = "seach/jsword/L1"; //$NON-NLS-1$
+    protected static final String SEARCH_DIR = "search/jsword/L1"; //$NON-NLS-1$
 
     /**
      * When we cache a download index
