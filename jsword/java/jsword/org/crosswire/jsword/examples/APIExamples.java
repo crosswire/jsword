@@ -21,23 +21,35 @@
  */
 package org.crosswire.jsword.examples;
 
+import java.net.URL;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.transform.TransformerException;
 
+import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.common.xml.Converter;
 import org.crosswire.common.xml.SAXEventProvider;
+import org.crosswire.common.xml.TransformingSAXEventProvider;
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.BookFilters;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.BooksEvent;
 import org.crosswire.jsword.book.BooksListener;
+import org.crosswire.jsword.book.search.basic.DefaultSearchModifier;
+import org.crosswire.jsword.book.search.basic.DefaultSearchRequest;
+import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
+import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageTally;
+import org.crosswire.jsword.passage.RestrictionType;
+import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.util.ConverterFactory;
 import org.xml.sax.SAXException;
 
@@ -90,7 +102,14 @@ public class APIExamples
 
         Converter styler = ConverterFactory.getConverter();
 
-        SAXEventProvider htmlsep = styler.convert(osissep);
+        TransformingSAXEventProvider htmlsep = (TransformingSAXEventProvider) styler.convert(osissep);
+        
+        // You can also pass parameters to the xslt. What you pass depends upon what the xslt can use.
+        BookMetaData bmd = bible.getBookMetaData();
+        boolean direction = bmd.isLeftToRight();
+        htmlsep.setParameter("direction", direction ? "ltr" : "rtl"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        
+        // Finally you can get the styled text.
         String text = XMLUtil.writeToString(htmlsep);
 
         System.out.println("The html text of Gen 1:1 is " + text); //$NON-NLS-1$
@@ -131,14 +150,105 @@ public class APIExamples
 
         // This does a standard operator search. See the search documentation
         // for more examples of how to search
-        Key key = bible.find("moses + aaron"); //$NON-NLS-1$
+        Key key = bible.find("+moses +aaron"); //$NON-NLS-1$
 
         System.out.println("The following verses contain both moses and aaron: " + key.getName()); //$NON-NLS-1$
+        
+        // You can also trim the result to a more managable quantity.
+        // The test here is not necessary since we are working with a bible. It is necessary if we don't know what it is.
+        if (key instanceof Passage)
+        {
+            Passage remaining = ((Passage)key).trimVerses(5);
+            System.out.println("The first 5 verses containing both moses and aaron: " + key.getName()); //$NON-NLS-1$
+            System.out.println("The rest of the verses are: " + remaining.getName()); //$NON-NLS-1$
+        }
+    }
 
-        // Or you can do a best match search, by enclosing the string in quotes ...
-        key = bible.find("\"for god so loves the world\""); //$NON-NLS-1$
+    /**
+     * An example of how to perform a ranked search.
+     * @throws BookException
+     */
+    void rankedSearch() throws BookException
+    {
+        Book bible = Books.installed().getBook(BIBLE_NAME);
 
-        System.out.println("Trying to find verses like John 3:16: " + key.getName()); //$NON-NLS-1$
+        // For a more complex example:
+        // Rank the verses and show the first 20
+        boolean rank = true;
+
+        DefaultSearchModifier modifier = new DefaultSearchModifier();
+        modifier.setRanked(rank);
+
+        Key results = bible.find(new DefaultSearchRequest("for god so loved the world", modifier)); //$NON-NLS-1$
+        int total = results.getChildCount();
+        int partial = total;
+
+        // we get PassageTallys for rank searches
+        if (results instanceof PassageTally || rank)
+        {
+            PassageTally tally = (PassageTally) results;
+            tally.setOrdering(PassageTally.ORDER_TALLY);
+            int rankCount = 20;
+            if (rankCount > 0 && rankCount < total)
+            {
+                // Here we are trimming by ranges, where a range is a set of continuous verses.
+                tally.trimRanges(rankCount, RestrictionType.NONE);
+                partial = rankCount;
+            }
+        }
+        System.out.println("Showing the first " + partial + " of " + total + " verses."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        System.out.println(results);
+    }
+
+    /**
+     * An example of how to do a search and then get text for each range of verses.
+     * @throws BookException
+     * @throws SAXException
+     */
+    void searchAndShow() throws BookException, SAXException
+    {
+        Book bible = Books.installed().getBook(BIBLE_NAME);
+
+        // Search for words like Melchezedik
+        Key key = bible.find("melchesidec~"); //$NON-NLS-1$
+
+        // Here is an example of how to iterate over the ranges and get the text for each
+        // The key's iterator would have iterated over verses.
+        
+        // The following shows how to use a stylesheet of your own choosing
+        String path = "xsl/cswing/simple.xsl"; //$NON-NLS-1$
+        URL xslurl = ResourceUtil.getResource(path);
+
+        Iterator rangeIter = ((Passage) key).rangeIterator(RestrictionType.CHAPTER); // Make ranges break on chapter boundaries.
+        while (rangeIter.hasNext())
+        {
+            Key range = (Key) rangeIter.next();
+            BookData data = bible.getData(range);
+            SAXEventProvider osissep = data.getSAXEventProvider();
+            SAXEventProvider htmlsep = new TransformingSAXEventProvider(xslurl, osissep);
+            String text = XMLUtil.writeToString(htmlsep);
+            System.out.println("The html text of " + range.getName() + " is " + text); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+    }
+
+    /**
+     * An example of how to get the text of a book for export.
+     * 
+     * @throws NoSuchKeyException
+     * @throws BookException
+     */
+    public void export() throws NoSuchKeyException, BookException
+    {
+        Book bible = Books.installed().getBook(BIBLE_NAME);
+        Key key = bible.getKey("Gen"); //$NON-NLS-1$
+        // Get a verse iterator
+        Iterator iter = key.iterator();
+        while (iter.hasNext())
+        {
+            Verse verse = (Verse) iter.next();
+            BookData data = bible.getData(verse);
+            System.out.println('|' + BibleInfo.getBookName(verse.getBook()) + '|' + verse.getChapter() + '|' + verse.getVerse() + '|' + data.getVerseText());
+        }
     }
 
     /**
@@ -207,5 +317,8 @@ public class APIExamples
         examples.readStyledText();
         examples.readDictionary();
         examples.search();
+        examples.rankedSearch();
+        examples.searchAndShow();
+        examples.export();
     }
 }
