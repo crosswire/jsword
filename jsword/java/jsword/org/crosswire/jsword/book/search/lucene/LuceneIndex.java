@@ -185,7 +185,8 @@ public class LuceneIndex extends AbstractIndex implements Activatable
             {
 
                 Analyzer analyzer = new SimpleAnalyzer();
-                Query query = QueryParser.parse(search, LuceneIndex.FIELD_BODY, analyzer);
+                QueryParser parser = new QueryParser(LuceneIndex.FIELD_BODY, analyzer);
+                Query query = parser.parse(search);
                 Hits hits = searcher.search(query);
 
                 // For ranking we use a PassageTally
@@ -349,6 +350,8 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                     doc = new Document();
                     doc.add(Field.UnIndexed(FIELD_NAME, subkey.getOsisRef()));
                     doc.add(Field.Text(FIELD_BODY, new StringReader(text)));
+                    // Lucene 1.9/2.0 doc.add(new Field(FIELD_NAME, subkey.getOsisRef(), Field.Store.YES, Field.Index.NO));
+//                  // Lucene 1.9/2.0 doc.add(new Field(FIELD_BODY, new StringReader(text)));
                     writer.addDocument(doc);
                 }
 
