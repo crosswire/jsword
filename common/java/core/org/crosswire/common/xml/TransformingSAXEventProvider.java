@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import javax.xml.transform.ErrorListener;
+import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
@@ -54,7 +55,7 @@ import org.xml.sax.SAXException;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class TransformingSAXEventProvider implements SAXEventProvider
+public class TransformingSAXEventProvider extends Transformer implements SAXEventProvider
 {
     /**
      * Simple ctor
@@ -102,53 +103,61 @@ public class TransformingSAXEventProvider implements SAXEventProvider
     }
 
     /* (non-Javadoc)
+     * @see javax.xml.transform.Transformer#transform(javax.xml.transform.Source, javax.xml.transform.Result)
+     */
+    public void transform(Source xmlSource, Result outputTarget) throws TransformerException
+    {
+        TemplateInfo tinfo;
+        try
+        {
+            tinfo = getTemplateInfo();
+        }
+        catch (IOException e)
+        {
+            throw new TransformerException(e);
+        }
+
+        Transformer transformer = tinfo.getTemplates().newTransformer();
+
+        for (Iterator it = outputs.keySet().iterator(); it.hasNext(); )
+        {
+            String key = (String) it.next();
+            String val = getOutputProperty(key);
+            transformer.setOutputProperty(key, val);
+        }
+
+        for (Iterator it = params.keySet().iterator(); it.hasNext(); )
+        {
+            String key = (String) it.next();
+            Object val = params.get(key);
+            transformer.setParameter(key, val);
+        }
+
+        if (errors != null)
+        {
+            transformer.setErrorListener(errors);
+        }
+
+        if (resolver != null)
+        {
+            transformer.setURIResolver(resolver);
+        }
+
+        transformer.transform(xmlSource, outputTarget);
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.common.xml.SAXEventProvider#provideSAXEvents(org.xml.sax.ContentHandler)
      */
     public void provideSAXEvents(ContentHandler handler) throws SAXException
     {
         try
         {
-            Source src_in = new SAXSource(new SAXEventProviderXMLReader(xmlsep), new SAXEventProviderInputSource());
+            Source xmlSource = new SAXSource(new SAXEventProviderXMLReader(xmlsep), new SAXEventProviderInputSource());
 
-            TemplateInfo tinfo = getTemplateInfo();
+            SAXResult outputTarget = new SAXResult(handler);
 
-            SAXResult res_out = new SAXResult(handler);
-
-            Transformer transformer = tinfo.getTemplates().newTransformer();
-
-            for (Iterator it = outputs.keySet().iterator(); it.hasNext(); )
-            {
-                String key = (String) it.next();
-                String val = getOutputProperty(key);
-                transformer.setOutputProperty(key, val);
-            }
-
-            for (Iterator it = params.keySet().iterator(); it.hasNext(); )
-            {
-                String key = (String) it.next();
-                Object val = params.get(key);
-                transformer.setParameter(key, val);
-            }
-
-            if (errors != null)
-            {
-                transformer.setErrorListener(errors);
-            }
-
-            if (resolver != null)
-            {
-                transformer.setURIResolver(resolver);
-            }
-
-            transformer.transform(src_in, res_out);
-        }
-        catch (IOException ex)
-        {
-            throw new SAXException(ex);
-        }
-        catch (TransformerConfigurationException ex)
-        {
-            throw new SAXException(ex);
+            transform(xmlSource, outputTarget);
         }
         catch (TransformerException ex)
         {
