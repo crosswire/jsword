@@ -1,3 +1,72 @@
+Release 3.0 
+-------------------
+Changes since Release Candidate 4:
+
+ * 37526 - Fixed incorrect processing of HTTP parameters with an 
+           empty name
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 37256 - Fixed bug causing MultipartRequestEntity to miscalculate the 
+           total content length if any of the parts returns a negative
+           content length value
+           Contributed by Loïc Péron <loic.peron at bigfoot.com>
+
+ * 37197 - Preemptive auth flag no longer disregarded when tunneling 
+           SSL connections via a proxy
+           Contributed by wynand <wolman at gmail.com>
+
+ * 37154 - UsernamePasswordCredentials.equals(null) no longer causes NPE
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 37129 - HttpConnection changed to use a protocol socket factory registered 
+           for 'http' protocol instead of DefaultProtocolSocketFactory when 
+           connecting to a proxy to establish a secure tunnel
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+Release 3.0 Release Candidate 4
+-------------------
+Changes since Release Candidate 3:
+
+ * 36882 - Max connections per host setting did not work
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 36791 - Fixed HttpConnection#isOpen flag concurrency problem
+           Contributed by Jean-Marie White <jmwhite5 at yahoo.com>
+
+ * 36339 - Request is no longer retried if preemptive authentication fails
+           and Basic is the only supported authentication scheme advertised
+           by the target server
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 36372 - nonce-count in digest auth should not be quoted
+           Contributed by Ortwin Glueck <oglueck at apache.org>
+           
+ * 36369 - Custom Proxy-Connection header no longer gets overwritten
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 36595 - Do not attempt to retry aborted methods
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 36140 - ParameterParser changed to correctly differentiate between empty and 
+           null (no value) parameters
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 35085 - HTTP 204 "NO CONTENT" response no longer results in dropped 
+           connection.
+           Contributed by Ian Bray <Ian.Bray at logicacmg.com>
+
+ * 35944 - Connection always gets released back to the pool even if an unchecked 
+           exception is thrown in HttpMethod#releaseConnection method.
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 35642 - Do not retry if host is unreachable. This ensures a connection timeout
+           will be obeyed.
+           Contributed by Ortwin Glueck <oglueck at apache.org>
+           
+ * 35815 - SimpleHttpConnectionManager now logs warnings when it detects it is
+           being used incorrectly. 
+           Contributed by Michael Becke <mbecke at apache.org>
+
 Release 3.0 Release Candidate 3
 -------------------
 Changes since Release Candidate 2:

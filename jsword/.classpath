@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="/common"/>
+	<classpathentry exported="true" kind="src" path="/common"/>
 	<classpathentry kind="src" path="java/jsword"/>
 	<classpathentry kind="src" path="java/limbo"/>
 	<classpathentry kind="src" path="java/jswordtest"/>
-	<classpathentry kind="lib" path="jar/lucene-1.4.3/lucene-1.4.3.jar"/>
+	<classpathentry exported="true" sourcepath="jar/lucene-1.4.3/lucene-1.4.3-src.zip" kind="lib" path="jar/lucene-1.4.3/lucene-1.4.3.jar"/>
 	<classpathentry kind="output" path="target/eclipse/classes"/>
 </classpath>

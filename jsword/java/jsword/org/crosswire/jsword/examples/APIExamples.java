@@ -103,12 +103,12 @@ public class APIExamples
         Converter styler = ConverterFactory.getConverter();
 
         TransformingSAXEventProvider htmlsep = (TransformingSAXEventProvider) styler.convert(osissep);
-        
+
         // You can also pass parameters to the xslt. What you pass depends upon what the xslt can use.
         BookMetaData bmd = bible.getBookMetaData();
         boolean direction = bmd.isLeftToRight();
         htmlsep.setParameter("direction", direction ? "ltr" : "rtl"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        
+
         // Finally you can get the styled text.
         String text = XMLUtil.writeToString(htmlsep);
 
@@ -153,12 +153,12 @@ public class APIExamples
         Key key = bible.find("+moses +aaron"); //$NON-NLS-1$
 
         System.out.println("The following verses contain both moses and aaron: " + key.getName()); //$NON-NLS-1$
-        
+
         // You can also trim the result to a more managable quantity.
         // The test here is not necessary since we are working with a bible. It is necessary if we don't know what it is.
         if (key instanceof Passage)
         {
-            Passage remaining = ((Passage)key).trimVerses(5);
+            Passage remaining = ((Passage) key).trimVerses(5);
             System.out.println("The first 5 verses containing both moses and aaron: " + key.getName()); //$NON-NLS-1$
             System.out.println("The rest of the verses are: " + remaining.getName()); //$NON-NLS-1$
         }
@@ -214,7 +214,7 @@ public class APIExamples
 
         // Here is an example of how to iterate over the ranges and get the text for each
         // The key's iterator would have iterated over verses.
-        
+
         // The following shows how to use a stylesheet of your own choosing
         String path = "xsl/cswing/simple.xsl"; //$NON-NLS-1$
         URL xslurl = ResourceUtil.getResource(path);
