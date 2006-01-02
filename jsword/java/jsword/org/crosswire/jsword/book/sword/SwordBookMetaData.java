@@ -152,7 +152,10 @@ public class SwordBookMetaData extends AbstractBookMetaData
         // Dictionaries and Daily Devotionals end with the prefix of the data
         // files name, not a directory name.
         // Lots of paths end with '/'
-        if (getType() == BookCategory.DICTIONARY
+        BookCategory bc = getBookCategory();
+        if (bc == BookCategory.DICTIONARY
+            || bc == BookCategory.GLOSSARY
+            || bc == BookCategory.DAILY_DEVOTIONS
             || dataPath.charAt(dataPath.length() - 1) == '/')
         {
             dataPath = dataPath.substring(0, dataPath.lastIndexOf('/'));
@@ -163,9 +166,17 @@ public class SwordBookMetaData extends AbstractBookMetaData
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getType()
      */
-    public BookCategory getType()
+    public BookCategory getBookCategory()
     {
-        return getBookType().getBookCategory();
+        if (type == null)
+        {
+            type = BookCategory.fromString(getProperty(ConfigEntryType.CATEGORY));
+            if (type == BookCategory.OTHER)
+            {
+                type = getBookType().getBookCategory();
+            }
+        }
+        return type;
     }
 
     public Document toOSIS()
@@ -260,5 +271,5 @@ public class SwordBookMetaData extends AbstractBookMetaData
     }
 
     private ConfigEntryTable cet;
-
+    private BookCategory type;
 }

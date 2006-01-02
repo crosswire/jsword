@@ -27,7 +27,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.basic.AbstractBookMetaData;
 
 
@@ -220,6 +219,14 @@ public class ConfigEntryType implements Serializable
             return true;
         }
 
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
+         */
+        public Object getDefault()
+        {
+            return "Other"; //$NON-NLS-1$
+        }
+
         /**
          * The set of choices.
          */
@@ -229,6 +236,11 @@ public class ConfigEntryType implements Serializable
             "Glossaries", //$NON-NLS-1$
             "Cults / Unorthodox / Questionable Material", //$NON-NLS-1$
             "Essays", //$NON-NLS-1$
+            // The following are not actually in the conf,
+            // but are deduced from other fields
+            "Bible", //$NON-NLS-1$
+            "Dictionary", //$NON-NLS-1$
+            "Commentary", //$NON-NLS-1$
         }));
 
         /**
@@ -1151,34 +1163,6 @@ public class ConfigEntryType implements Serializable
     };
 
     /**
-     * The key is used to subdivide the books into their types.
-     * TODO(DMS): Change Key to something more descriptive.
-     */
-    public static final ConfigEntryType KEY = new ConfigEntryType("Key") //$NON-NLS-1$
-    {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#isSynthetic()
-         */
-        public boolean isSynthetic()
-        {
-            return true;
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
-         */
-        public Object getDefault()
-        {
-            return BookCategory.OTHER.toString(); //$NON-NLS-1$
-        }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3544671776240908087L;
-    };
-
-    /**
      * single value string, unknown use
      * While Lang is an IS0-639 or ethnolog value, this is a friendly representation
      * of the same.
@@ -1482,7 +1466,6 @@ public class ConfigEntryType implements Serializable
         VERSION,
         OSIS_Q_TO_TICK,
         INITIALS,
-        KEY,
         LANGUAGE,
         LANGUAGE_FROM,
         LANGUAGE_TO,

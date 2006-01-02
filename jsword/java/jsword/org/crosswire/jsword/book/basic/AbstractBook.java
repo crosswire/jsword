@@ -199,9 +199,9 @@ public abstract class AbstractBook implements Book
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getType()
      */
-    public BookCategory getType()
+    public BookCategory getBookCategory()
     {
-        return bmd.getType();
+        return bmd.getBookCategory();
     }
 
     /* (non-Javadoc)

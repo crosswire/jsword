@@ -31,6 +31,7 @@ import java.io.Serializable;
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public final class BookCategory implements Serializable
 {
@@ -48,6 +49,16 @@ public final class BookCategory implements Serializable
      * Books that are Commentaries
      */
     public static final BookCategory COMMENTARY = new BookCategory("Commentary"); //$NON-NLS-1$
+
+    /**
+     * Books that are indexed by day. AKA, Daily Devotions
+     */
+    public static final BookCategory DAILY_DEVOTIONS = new BookCategory("Daily Devotional"); //$NON-NLS-1$
+
+    /**
+     * Books that map words from one language to another.
+     */
+    public static final BookCategory GLOSSARY = new BookCategory("Glossaries"); //$NON-NLS-1$
 
     /**
      * Books that are not any of the above
@@ -131,6 +142,8 @@ public final class BookCategory implements Serializable
         BIBLE,
         DICTIONARY,
         COMMENTARY,
+        DAILY_DEVOTIONS,
+        GLOSSARY,
         OTHER,
     };
 

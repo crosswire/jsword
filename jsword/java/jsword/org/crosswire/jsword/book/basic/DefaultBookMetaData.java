@@ -59,7 +59,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData
 
         setProperties(prop);
         setName(prop.getProperty(BookMetaData.KEY_NAME));
-        setType(prop.getProperty(BookMetaData.KEY_TYPE));
+        setType(prop.getProperty(BookMetaData.KEY_CATEGORY));
         setLanguage(prop.getProperty(BookMetaData.KEY_LANGUAGE));
 
         IndexManager imanager = IndexManagerFactory.getIndexManager();
@@ -81,14 +81,14 @@ public class DefaultBookMetaData extends AbstractBookMetaData
     {
         setDriver(driver);
         setName(name);
-        setType(type);
+        setBookCategory(type);
         setLanguage(null); // Default language
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getType()
      */
-    public BookCategory getType()
+    public BookCategory getBookCategory()
     {
         return type;
     }
@@ -171,7 +171,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData
     /**
      * @param aType The type to set.
      */
-    public void setType(BookCategory aType)
+    public void setBookCategory(BookCategory aType)
     {
         BookCategory t = aType;
         if (t == null)
@@ -180,7 +180,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData
         }
         type = t;
 
-        putProperty(KEY_TYPE, type.toString());
+        putProperty(KEY_CATEGORY, type.toString());
     }
 
     /**
@@ -194,7 +194,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData
             newType = BookCategory.fromString(typestr);
         }
 
-        setType(newType);
+        setBookCategory(newType);
     }
 
     /* (non-Javadoc)
@@ -206,7 +206,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData
         Element ele = factory.createTable();
         addRow(ele, "Initials", getInitials()); //$NON-NLS-1$
         addRow(ele, "Description", getFullName()); //$NON-NLS-1$
-        addRow(ele, "Key", getType().toString()); //$NON-NLS-1$
+        addRow(ele, "Key", getBookCategory().toString()); //$NON-NLS-1$
         addRow(ele, "Language", getLanguage()); //$NON-NLS-1$
         return new Document(ele);
     }

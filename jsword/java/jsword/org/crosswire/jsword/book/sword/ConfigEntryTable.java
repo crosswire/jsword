@@ -493,8 +493,8 @@ public class ConfigEntryTable
             return;
         }
 
-        BookCategory type = getBookType().getBookCategory();
-        if (type == null)
+        BookCategory basicCategory = getBookType().getBookCategory();
+        if (basicCategory == null)
         {
             // We plan to add RawGenBook at a later time. So we don't need to be reminded all the time.
             if (!modTypeName.equals("RawGenBook")) //$NON-NLS-1$
@@ -505,7 +505,15 @@ public class ConfigEntryTable
             return;
         }
 
-        add(ConfigEntryType.KEY, type.toString());
+        // The book type represents the underlying category of book.
+        // Fine tune it here.
+        BookCategory focusedCategory = BookCategory.fromString(getValue(ConfigEntryType.CATEGORY).toString());
+        if (focusedCategory == BookCategory.OTHER)
+        {
+            focusedCategory = getBookType().getBookCategory();
+        }
+
+        add(ConfigEntryType.CATEGORY, focusedCategory.toString());
     }
 
     private void adjustName()
@@ -573,7 +581,7 @@ public class ConfigEntryTable
     {
         ConfigEntryType.INITIALS,
         ConfigEntryType.DESCRIPTION,
-        ConfigEntryType.KEY,
+        ConfigEntryType.CATEGORY, // may not be present in conf
         ConfigEntryType.DATA_PATH,
         ConfigEntryType.MOD_DRV,
     };
@@ -582,9 +590,8 @@ public class ConfigEntryTable
     {
         ConfigEntryType.INITIALS,
         ConfigEntryType.DESCRIPTION,
-        ConfigEntryType.KEY,
-        ConfigEntryType.LCSH,
         ConfigEntryType.CATEGORY,
+        ConfigEntryType.LCSH,
         ConfigEntryType.VERSION,
         ConfigEntryType.SWORD_VERSION_DATE,
         ConfigEntryType.HISTORY,

@@ -56,11 +56,11 @@ public interface BookMetaData extends Comparable
     String getName();
 
     /**
-     * What type of content is this, a Bible or a reference work like a
-     * Dictionary or Commentary
-     * @return The type of book
+     * What category of content is this, a Bible or a reference work like a
+     * Dictionary or Commentary.
+     * @return The category of book
      */
-    BookCategory getType();
+    BookCategory getBookCategory();
 
     /**
      * Accessor for the driver that runs this Book.
@@ -161,7 +161,7 @@ public interface BookMetaData extends Comparable
     /**
      * The key for the type in the properties map
      */
-    String KEY_TYPE = "Key"; //$NON-NLS-1$
+    String KEY_CATEGORY = "Category"; //$NON-NLS-1$
 
     /**
      * The key for the book in the properties map

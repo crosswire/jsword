@@ -71,7 +71,7 @@ public final class Defaults
      */
     public static void setCurrentBook(Book book)
     {
-        BookCategory type = book.getType();
+        BookCategory type = book.getBookCategory();
         if (type.equals(BookCategory.BIBLE) && isCurrentBible())
         {
             setBible(book);
