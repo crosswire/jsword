@@ -26,7 +26,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.crosswire.common.config.ChoiceFactory;
-import org.crosswire.jsword.book.readings.ReadingsBookDriver;
 
 /**
  * Handles the current default Books.
@@ -196,6 +195,46 @@ public final class Defaults
     public static void setDictionaryByName(String name)
     {
         dictionaryDeft.setDefaultByName(name);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.DefaultBook#setDefault(org.crosswire.jsword.book.Book)
+     */
+    public static void setDailyDevotional(Book book)
+    {
+        dictionaryDeft.setDefault(book);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.DefaultBook#unsetDefault()
+     */
+    protected static void unsetDailyDevotional()
+    {
+        dailyDevotionalDeft.unsetDefault();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.DefaultBook#getDefault()
+     */
+    public static Book getDailyDevotional()
+    {
+        return dailyDevotionalDeft.getDefault();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.DefaultBook#getDefaultName()
+     */
+    public static String getDailyDevotionalByName()
+    {
+        return dailyDevotionalDeft.getDefaultName();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.DefaultBook#setDefaultByName(java.lang.String)
+     */
+    public static void setDailyDevotionalByName(String name)
+    {
+        dailyDevotionalDeft.setDefaultByName(name);
     }
 
     /* (non-Javadoc)
@@ -373,6 +412,11 @@ public final class Defaults
         return dictionaryDeft;
     }
 
+    protected static DefaultBook getDefaultDailyDevotional()
+    {
+        return dailyDevotionalDeft;
+    }
+
     protected static DefaultBook getDefaultGreekDefinitions()
     {
         return greekDefinitionsDeft;
@@ -407,6 +451,11 @@ public final class Defaults
         String[] dnames = getFullNameArray(BookFilters.getDictionaries());
         ChoiceFactory.getDataMap().put(DICTIONARY_KEY, dnames);
 
+        // Create the array of DailyDevotionals
+        String[] rnames = getFullNameArray(BookFilters.getDailyDevotionals());
+        ChoiceFactory.getDataMap().put(DAILY_DEVOTIONALS_KEY, rnames);
+        //ChoiceFactory.getDataMap().put(DAILY_DEVOTIONALS_KEY, ReadingsBookDriver.getInstalledReadingsSets());
+
         // Create the array of Dictionaries
         String[] greekDef = getFullNameArray(BookFilters.getGreekDefinitions());
         ChoiceFactory.getDataMap().put(GREEKDEF_KEY, greekDef);
@@ -422,9 +471,6 @@ public final class Defaults
         // Create the array of Dictionaries
         String[] hebrewParse = getFullNameArray(BookFilters.getHebrewParse());
         ChoiceFactory.getDataMap().put(HEBREWPARSE_KEY, hebrewParse);
-
-        // Create the array of readings sets
-        ChoiceFactory.getDataMap().put(READINGS_KEY, ReadingsBookDriver.getInstalledReadingsSets());
     }
 
     /**
@@ -452,6 +498,7 @@ public final class Defaults
         bibleDeft.setDefaultConditionally(book);
         commentaryDeft.setDefaultConditionally(book);
         dictionaryDeft.setDefaultConditionally(book);
+        dailyDevotionalDeft.setDefaultConditionally(book);
         greekDefinitionsDeft.setDefaultConditionally(book);
         greekParseDeft.setDefaultConditionally(book);
         hebrewDefinitionsDeft.setDefaultConditionally(book);
@@ -499,6 +546,7 @@ public final class Defaults
 
             getDefaultBible().unsetDefaultConditionally(book);
             getDefaultCommentary().unsetDefaultConditionally(book);
+            getDefaultDailyDevotional().unsetDefaultConditionally(book);
             getDefaultDictionary().unsetDefaultConditionally(book);
             getDefaultGreekDefinitions().unsetDefaultConditionally(book);
             getDefaultGreekParse().unsetDefaultConditionally(book);
@@ -510,7 +558,7 @@ public final class Defaults
     private static final String BIBLE_KEY = "bible-names"; //$NON-NLS-1$
     private static final String COMMENTARY_KEY = "commentary-names"; //$NON-NLS-1$
     private static final String DICTIONARY_KEY = "dictionary-names"; //$NON-NLS-1$
-    private static final String READINGS_KEY = "readings"; //$NON-NLS-1$
+    private static final String DAILY_DEVOTIONALS_KEY = "daily-devotional-names"; //$NON-NLS-1$
     private static final String GREEKDEF_KEY = "greekdef-names"; //$NON-NLS-1$
     private static final String HEBREWDEF_KEY = "hebrewdef-names"; //$NON-NLS-1$
     private static final String GREEKPARSE_KEY = "greekparse-names"; //$NON-NLS-1$
@@ -530,6 +578,11 @@ public final class Defaults
      * The default Commentary
      */
     private static DefaultBook commentaryDeft = new DefaultBook(Books.installed(), BookFilters.getCommentaries());
+
+    /**
+     * The default DailyDevotional
+     */
+    private static DefaultBook dailyDevotionalDeft = new DefaultBook(Books.installed(), BookFilters.getDailyDevotionals());
 
     /**
      * The default Dictionary

@@ -39,8 +39,7 @@ public class DefaultLeafKeyList implements Key
      */
     public DefaultLeafKeyList(String name, String osisName)
     {
-        this.name = name;
-        this.osisName = osisName;
+        this(name, osisName, null);
     }
 
     /**
@@ -186,6 +185,40 @@ public class DefaultLeafKeyList implements Key
     public String toString()
     {
         return getName();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals(Object obj)
+    {
+        // Since this can not be null
+        if (obj == null)
+        {
+            return false;
+        }
+
+        // We might consider checking for equality against all Keys?
+        // However currently we don't.
+
+        // Check that that is the same as this
+        // Don't use instanceof since that breaks inheritance
+        if (!obj.getClass().equals(this.getClass()))
+        {
+            return false;
+        }
+
+        // The real bit ...
+        DefaultLeafKeyList that = (DefaultLeafKeyList) obj;
+        return name.equals(that.name) && osisName.equals(that.osisName);
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode()
+    {
+        return name.hashCode();
     }
 
     /* (non-Javadoc)

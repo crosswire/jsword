@@ -181,6 +181,10 @@ public abstract class BookType implements Serializable
     {
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
+            if (sbmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS))
+            {
+                return new SwordDailyDevotion(sbmd, backend);
+            }
             return new SwordDictionary(sbmd, backend);
         }
 
@@ -202,6 +206,10 @@ public abstract class BookType implements Serializable
     {
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
+            if (sbmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS))
+            {
+                return new SwordDailyDevotion(sbmd, backend);
+            }
             return new SwordDictionary(sbmd, backend);
         }
 
@@ -223,6 +231,10 @@ public abstract class BookType implements Serializable
     {
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
+            if (sbmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS))
+            {
+                return new SwordDailyDevotion(sbmd, backend);
+            }
             return new SwordDictionary(sbmd, backend);
         }
 

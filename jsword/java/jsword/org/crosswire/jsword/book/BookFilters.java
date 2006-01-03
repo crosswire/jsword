@@ -113,8 +113,32 @@ public final class BookFilters
         {
             BookCategory category = book.getBookCategory();
             return category.equals(BookCategory.DICTIONARY)
-                 || category.equals(BookCategory.GLOSSARY)
-                 || category.equals(BookCategory.DAILY_DEVOTIONS);
+                 || category.equals(BookCategory.GLOSSARY);
+        }
+    }
+
+    /**
+     * A filter that accepts everything that implements DailyDevotionals
+     */
+    public static BookFilter getDailyDevotionals()
+    {
+        return dailyDevotionalsBookFilter;
+    }
+
+    /**
+     * Filter for all dictionaries
+     */
+    private static BookFilter dailyDevotionalsBookFilter = new DailyDevotionalsBookFilter();
+
+    /**
+     * Filter for all dictionaries
+     */
+    private static class DailyDevotionalsBookFilter implements BookFilter
+    {
+        public boolean test(Book book)
+        {
+            BookCategory category = book.getBookCategory();
+            return category.equals(BookCategory.DAILY_DEVOTIONS);
         }
     }
 

@@ -253,7 +253,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
         // The real bit ...
         BookMetaData that = (BookMetaData) obj;
 
-        return getName().equals(that.getName());
+        return getBookCategory().equals(that.getBookCategory()) && getName().equals(that.getName());
     }
 
     /* (non-Javadoc)
@@ -270,7 +270,12 @@ public abstract class AbstractBookMetaData implements BookMetaData
     public int compareTo(Object obj)
     {
         BookMetaData that = (BookMetaData) obj;
-        return this.getInitials().compareTo(that.getInitials());
+        int result = this.getBookCategory().compareTo(that.getBookCategory());
+        if (result == 0)
+        {
+            result = this.getInitials().compareTo(that.getInitials());
+        }
+        return result;
     }
 
     /* (non-Javadoc)

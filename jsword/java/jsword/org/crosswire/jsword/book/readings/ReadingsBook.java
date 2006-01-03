@@ -87,19 +87,19 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
         setBookMetaData(bmd);
 
         // We use 1972 because it is a leap year.
-        GregorianCalendar greg = new GregorianCalendar(1972, Calendar.JANUARY, 1);
+        Calendar greg = new GregorianCalendar(1972, Calendar.JANUARY, 1);
         while (greg.get(Calendar.YEAR) == 1972)
         {
-            String key = KEYBASE + (1 + greg.get(Calendar.MONTH)) + "." + greg.get(Calendar.DATE); //$NON-NLS-1$
+            String internalKey = ReadingsKey.external2internal(greg);
             String readings = ""; //$NON-NLS-1$
 
             try
             {
-                readings = prop.getString(key);
+                readings = prop.getString(internalKey);
             }
             catch (MissingResourceException e)
             {
-                log.warn("Missing resource: " + key + " while parsing: " + setname); //$NON-NLS-1$ //$NON-NLS-2$
+                log.warn("Missing resource: " + internalKey + " while parsing: " + setname); //$NON-NLS-1$ //$NON-NLS-2$
             }
 
             hash.put(new ReadingsKey(greg.getTime()), readings);
@@ -242,11 +242,6 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
      * The global key list
      */
     private Key global;
-
-    /**
-     * The base for the keys in the properties file.
-     */
-    private static final String KEYBASE = "readings."; //$NON-NLS-1$
 
     /**
      * The store of keys and data

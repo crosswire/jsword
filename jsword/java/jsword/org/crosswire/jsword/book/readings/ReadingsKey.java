@@ -22,8 +22,10 @@
 package org.crosswire.jsword.book.readings;
 
 import java.text.DateFormat;
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.crosswire.jsword.passage.DefaultLeafKeyList;
@@ -127,6 +129,14 @@ public class ReadingsKey extends DefaultLeafKeyList
         return super.clone();
     }
 
+    public static String external2internal(Calendar externalKey)
+    {
+        Object[] objs = {new Integer(1 + externalKey.get(Calendar.MONTH)),
+                         new Integer(externalKey.get(Calendar.DATE))};
+        return KEY_FORMAT.format(objs);
+
+    }
+
     /**
      * The day of the year for the readings
      */
@@ -141,4 +151,6 @@ public class ReadingsKey extends DefaultLeafKeyList
     {
         NAME_DF.setLenient(true);
     }
+
+    private static final MessageFormat KEY_FORMAT = new MessageFormat("{0,number,00}.{1,number,00}"); //$NON-NLS-1$
 }

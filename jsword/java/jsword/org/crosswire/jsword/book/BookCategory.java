@@ -33,7 +33,7 @@ import java.io.Serializable;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class BookCategory implements Serializable
+public final class BookCategory implements Serializable, Comparable
 {
     /**
      * Books that are Bibles
@@ -95,6 +95,15 @@ public final class BookCategory implements Serializable
     public static BookCategory fromInteger(int i)
     {
         return VALUES[i];
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    public int compareTo(Object o)
+    {
+        BookCategory that = (BookCategory) o;
+        return this.name.compareTo(that.name);
     }
 
     /**

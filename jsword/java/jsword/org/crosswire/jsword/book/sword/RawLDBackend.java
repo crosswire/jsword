@@ -24,6 +24,10 @@ package org.crosswire.jsword.book.sword;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
@@ -31,7 +35,10 @@ import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.common.util.StringUtil;
+import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.DefaultLeafKeyList;
@@ -128,7 +135,13 @@ public class RawLDBackend extends AbstractBackend
     {
         checkActive();
 
-        Key reply = new DefaultKeyList(null, getBookMetaData().getName());
+        BookMetaData bmd = getBookMetaData();
+        Key reply = new DefaultKeyList(null, bmd.getName());
+
+        boolean isDailyDevotional = bmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS);
+        // We use 1972 because it is a leap year.
+        Calendar greg = new GregorianCalendar(1972, Calendar.JANUARY, 1);
+        DateFormat NAME_DF = new SimpleDateFormat("d MMMM"); //$NON-NLS-1$
 
         int entrysize = OFFSETSIZE + datasize;
         long entries;
@@ -184,6 +197,15 @@ public class RawLDBackend extends AbstractBackend
                 {
                     keytitle = keytitle.substring(0, keytitle.length() - 1);
                 }
+
+                if (isDailyDevotional)
+                {
+                    String[] parts = StringUtil.splitAll(keytitle, '.');
+                    greg.set(Calendar.MONTH, Integer.parseInt(parts[0]) - 1);
+                    greg.set(Calendar.DATE, Integer.parseInt(parts[1]));
+                    keytitle = NAME_DF.format(greg.getTime());
+                }
+
                 Key key = new IndexKey(keytitle, offset, size, reply);
 
                 reply.addAll(key);
@@ -191,6 +213,10 @@ public class RawLDBackend extends AbstractBackend
             catch (IOException ex)
             {
                 log.error("Ignoring entry", ex); //$NON-NLS-1$
+            }
+            catch (NumberFormatException e)
+            {
+                log.error("Ignoring entry", e); //$NON-NLS-1$
             }
         }
 
@@ -314,6 +340,17 @@ public class RawLDBackend extends AbstractBackend
 
             this.offset = offset;
             this.size = size;
+        }
+
+        /**
+         * Setup with the key name. Use solely for searching.
+         */
+        protected IndexKey(String text)
+        {
+            super(text, text, null);
+
+            this.offset = -1;
+            this.size = -1;
         }
 
         /* (non-Javadoc)

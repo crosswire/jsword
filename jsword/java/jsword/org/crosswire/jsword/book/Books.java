@@ -23,7 +23,6 @@ package org.crosswire.jsword.book;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -54,7 +53,7 @@ public final class Books implements BookList
      */
     private Books()
     {
-        books = new ArrayList();
+        books = new BookSet();
         drivers = new HashSet();
         listeners = new EventListenerList();
         threaded = false;
@@ -76,7 +75,7 @@ public final class Books implements BookList
      */
     public synchronized List getBooks()
     {
-        return Collections.unmodifiableList(books);
+        return new BookSet(books);
     }
 
     /* (non-Javadoc)
@@ -135,7 +134,7 @@ public final class Books implements BookList
     public synchronized List getBooks(BookFilter filter)
     {
         List temp = CollectionUtil.createList(new BookFilterIterator(getBooks().iterator(), filter));
-        return Collections.unmodifiableList(temp);
+        return new BookSet(temp);
     }
 
     /* (non-Javadoc)
@@ -421,7 +420,7 @@ public final class Books implements BookList
     /**
      * The list of Books
      */
-    private List books;
+    private BookSet books;
 
     /**
      * An array of BookDrivers
