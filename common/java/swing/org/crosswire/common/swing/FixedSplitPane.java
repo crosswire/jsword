@@ -26,6 +26,10 @@ import java.awt.Dimension;
 
 import javax.swing.JComponent;
 import javax.swing.JSplitPane;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.SplitPaneUI;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 /**
  * This is a hack to fix the setDividerLocation problem and other layout problems.
@@ -65,6 +69,17 @@ public class FixedSplitPane extends JSplitPane
      */
     public FixedSplitPane()
     {
+    }
+
+    /**
+     * Constructor for FixedSplitPane that has no divider shadow
+     * and starts out with an empty border.
+     */
+    public FixedSplitPane(boolean visibleDividerBorder)
+    {
+        this();
+        this.visibleDividerBorder = visibleDividerBorder;
+        setBorder(EMPTY_BORDER);
     }
 
     /**
@@ -192,10 +207,68 @@ public class FixedSplitPane extends JSplitPane
         }
     }
 
+    /**
+     * Whether visible borders are hinted
+     * 
+     * @return the divider border visiblity hint
+     */
+    public boolean isVisibleDividerBorder()
+    {
+        return visibleDividerBorder;
+    }
+    
+    /**
+     * Set a hint whether the border should be visible or not.
+     * Look and feels may ignore this.
+     * 
+     * @param newVisibility
+     */
+    public void setVisibleDividerBorder(boolean newVisibility)
+    {
+        boolean oldVisibility = isVisibleDividerBorder();
+        if (oldVisibility == newVisibility)
+        {
+            return;
+        }
+        visibleDividerBorder = newVisibility;
+        firePropertyChange(PROPERTYNAME_VISIBLE_DIVIDER_BORDER, oldVisibility, newVisibility);
+    }
+
+    /* (non-Javadoc)
+     * @see javax.swing.JComponent#updateUI()
+     */
+    public void updateUI()
+    {
+        super.updateUI();
+        if (!visibleDividerBorder)
+        {
+            SplitPaneUI splitPaneUI = getUI();
+            if (splitPaneUI instanceof BasicSplitPaneUI) {
+                BasicSplitPaneUI basicUI = (BasicSplitPaneUI) splitPaneUI;
+                basicUI.getDivider().setBorder(EMPTY_BORDER);
+            }
+        }
+    }
+
     private static final Dimension DOT = new Dimension(0, 0);
     private boolean firstValidate = true;
     private boolean hasProportionalLocation;
     private double proportionalLocation;
+
+    /**
+     * Property for border visibility
+     */
+    public static final String PROPERTYNAME_VISIBLE_DIVIDER_BORDER = "visibleDividerBorder"; //$NON-NLS-1$
+
+    /**
+     * An Empty Border
+     */
+    private static final Border EMPTY_BORDER = new EmptyBorder(0, 0, 0, 0);
+
+    /**
+     * Hint for whether Divider border should be visible.
+     */
+    private boolean visibleDividerBorder;
 
     /**
      * Serialization ID
