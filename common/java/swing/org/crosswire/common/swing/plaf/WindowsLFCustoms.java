@@ -55,8 +55,15 @@ public class WindowsLFCustoms extends AbstractLFCustoms
         Object windowsScrollPaneborder = UIManager.get("ScrollPane.border"); //$NON-NLS-1$
         if (windowsScrollPaneborder != null)
         {
-            standardBorderColor = ((LineBorder) windowsScrollPaneborder).getLineColor();
-            tabbedPanePanelBorder = new LineBorder(standardBorderColor);
+            if (windowsScrollPaneborder instanceof LineBorder)
+            {
+                standardBorderColor = ((LineBorder) windowsScrollPaneborder).getLineColor();
+                tabbedPanePanelBorder = new LineBorder(standardBorderColor);
+            }
+            else
+            {
+                tabbedPanePanelBorder = BorderFactory.createEmptyBorder(1, 1, 1, 1);
+            }
         }
 
         Border panelSelectBorder = BorderFactory.createCompoundBorder(
