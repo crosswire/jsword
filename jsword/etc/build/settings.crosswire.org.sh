@@ -10,7 +10,7 @@ export JNLP_CODEBASE=$JNLP_HOMEPAGE/nightly
 export JNLP_INSTALLED=$WEBAPP_BIBLEDESKTOP/nightly
 
 export EMAIL="joe@eireneh.com dmsmith555@yahoo.com"
-export ANT_HOME=/usr/local/ant
+export ANT_HOME=/home/jsword/ant
 export JAVA_HOME=/usr/local/java
 
 export PATH=$PATH:/usr/local/bin
