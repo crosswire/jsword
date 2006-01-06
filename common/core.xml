@@ -264,7 +264,7 @@
       == The path separator could be either / or \
       -->
     <copy todir="${target.classes}" includeEmptyDirs="false" >
-      <mapper type="regexp" from=".*[\\/](org[\\/].*)" to="\1"/>
+      <mapper type="regexp" from=".*[\\/]((gnu|com|org)[\\/].*)" to="\1"/>
       <fileset dir="${source.java}">
         <patternset refid="java.non.compile"/>
         <exclude name="**/*Test*"/>
