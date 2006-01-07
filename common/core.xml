@@ -10,21 +10,22 @@
     == These are the standard locations that this build file uses.
     == This assumes that the build file is in the root of the project.
     =========================================================================-->
-  <property name="source.root"    value="."/>
-  <property name="source.etc"     value="etc"/>
-  <property name="source.jar"     value="jar"/>
-  <property name="source.java"    value="java"/>
-  <property name="source.res"     value="resource"/>
-  <property name="target.root"    value="target/ant"/>
-  <property name="target.classes" value="${target.root}/classes"/>
-  <property name="target.jar"     value="${target.root}/jar"/>
-  <property name="target.signed"  value="${target.root}/signed"/>
-  <property name="test.root"      value="${target.root}/test"/>
-  <property name="test.classes"   value="${test.root}/classes"/>
-  <property name="test.jar"       value="${test.root}"/>
-  <property name="keystore.file"  value="../common/common.keystore"/>
-  <property name="keystore.alias" value="test builds"/>
-  <property name="keystore.pswd"  value="p455w0rd"/>
+  <property name="release.version" value="1.0"/>
+  <property name="source.root"     value="."/>
+  <property name="source.etc"      value="etc"/>
+  <property name="source.jar"      value="jar"/>
+  <property name="source.java"     value="java"/>
+  <property name="source.res"      value="resource"/>
+  <property name="target.root"     value="target/ant"/>
+  <property name="target.classes"  value="${target.root}/classes"/>
+  <property name="target.jar"      value="${target.root}/jar"/>
+  <property name="target.signed"   value="${target.root}/signed"/>
+  <property name="test.root"       value="${target.root}/test"/>
+  <property name="test.classes"    value="${test.root}/classes"/>
+  <property name="test.jar"        value="${test.root}"/>
+  <property name="keystore.file"   value="../common/common.keystore"/>
+  <property name="keystore.alias"  value="test builds"/>
+  <property name="keystore.pswd"   value="p455w0rd"/>
 
   <!--=======================================================================
     == These jars are necessary for Bible Desktop to be compiled and run.
@@ -160,7 +161,7 @@
     == Also build all test java files into class files in their own directory.
     =========================================================================-->
   <target name="build" depends="compile, jar.check" unless="jar.uptodate" description="Run a full build">
-    <jar jarfile="${target.jar}/${ant.project.name}.jar">
+    <jar jarfile="${target.jar}/${ant.project.name}-${release.version}.jar">
       <fileset dir="${target.classes}"/>
       <fileset dir="${source.res}"/>
     </jar>

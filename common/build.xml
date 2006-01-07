@@ -1,4 +1,4 @@
-<project name="common" default="all">
+<project name="jsword-common" default="all">
 
   <!-- This build uses the core build targets -->
   <import file="../common/core.xml"/>
