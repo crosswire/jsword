@@ -141,7 +141,7 @@ public class RawLDBackend extends AbstractBackend
         boolean isDailyDevotional = bmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS);
         // We use 1972 because it is a leap year.
         Calendar greg = new GregorianCalendar(1972, Calendar.JANUARY, 1);
-        DateFormat NAME_DF = new SimpleDateFormat("d MMMM"); //$NON-NLS-1$
+        DateFormat nameDF = new SimpleDateFormat("d MMMM"); //$NON-NLS-1$
 
         int entrysize = OFFSETSIZE + datasize;
         long entries;
@@ -203,7 +203,7 @@ public class RawLDBackend extends AbstractBackend
                     String[] parts = StringUtil.splitAll(keytitle, '.');
                     greg.set(Calendar.MONTH, Integer.parseInt(parts[0]) - 1);
                     greg.set(Calendar.DATE, Integer.parseInt(parts[1]));
-                    keytitle = NAME_DF.format(greg.getTime());
+                    keytitle = nameDF.format(greg.getTime());
                 }
 
                 Key key = new IndexKey(keytitle, offset, size, reply);

@@ -99,25 +99,17 @@ public class SwordBookDriver extends AbstractBookDriver
                         SwordBookMetaData sbmd = new SwordBookMetaData(configfile, internal);
                         sbmd.setDriver(this);
 
-                        if (sbmd.isSupported())
-                        {
-                            Book book = createBook(sbmd, dirs[j]);
-                            valid.add(book);
+                        Book book = createBook(sbmd, dirs[j]);
+                        valid.add(book);
 
-                            IndexManager imanager = IndexManagerFactory.getIndexManager();
-                            if (imanager.isIndexed(book))
-                            {
-                                sbmd.setIndexStatus(IndexStatus.DONE);
-                            }
-                            else
-                            {
-                                sbmd.setIndexStatus(IndexStatus.UNDONE);
-                            }
+                        IndexManager imanager = IndexManagerFactory.getIndexManager();
+                        if (imanager.isIndexed(book))
+                        {
+                            sbmd.setIndexStatus(IndexStatus.DONE);
                         }
                         else
                         {
-                            String name = bookdir.substring(0, bookdir.indexOf(SwordConstants.EXTENSION_CONF));
-                            log.warn("Unsupported Book: " + name); //$NON-NLS-1$
+                            sbmd.setIndexStatus(IndexStatus.UNDONE);
                         }
                     }
                     catch (Exception ex)
@@ -198,22 +190,19 @@ public class SwordBookDriver extends AbstractBookDriver
 
     /**
      * A helper class for the FtpSwordInstaller to tell us that it has copied a
-     * new Book into our install dorectory
+     * new Book into our install directory
      * @param sbmd The SwordBookMetaData object for the new Book
      * @param bookpath The path that we have installed to
      * @throws BookException
      */
     public static void registerNewBook(SwordBookMetaData sbmd, File bookpath) throws BookException
     {
-        if (sbmd.isSupported())
+        BookDriver[] drivers = Books.installed().getDriversByClass(SwordBookDriver.class);
+        for (int i = 0; i < drivers.length; i++)
         {
-            BookDriver[] drivers = Books.installed().getDriversByClass(SwordBookDriver.class);
-            for (int i = 0; i < drivers.length; i++)
-            {
-                SwordBookDriver sdriver = (SwordBookDriver) drivers[i];
-                Book book = sdriver.createBook(sbmd, bookpath);
-                Books.installed().addBook(book);
-            }
+            SwordBookDriver sdriver = (SwordBookDriver) drivers[i];
+            Book book = sdriver.createBook(sbmd, bookpath);
+            Books.installed().addBook(book);
         }
     }
 

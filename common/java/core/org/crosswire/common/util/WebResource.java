@@ -134,9 +134,11 @@ public class WebResource
                 out = NetUtil.getOutputStream(dest);
 
                 byte[] buf = new byte[4096];
-                for (int count = 0; -1 != (count = in.read(buf)); )
+                int count = in.read(buf);
+                while (-1 != count)
                 {
                     out.write(buf, 0, count);
+                    count = in.read(buf);
                 }
             }
         }

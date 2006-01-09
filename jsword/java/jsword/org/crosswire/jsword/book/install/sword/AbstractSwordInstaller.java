@@ -325,11 +325,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                         SwordBookMetaData sbmd = new SwordBookMetaData(rin, internal);
                         sbmd.setDriver(fake);
                         Book book = new SwordBook(sbmd, null);
-
-                        if (sbmd.isSupported())
-                        {
-                            entries.put(book.getName(), book);
-                        }
+                        entries.put(book.getName(), book);
                     }
                     catch (Exception ex)
                     {

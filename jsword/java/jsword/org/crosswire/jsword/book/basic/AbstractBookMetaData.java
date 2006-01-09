@@ -114,6 +114,30 @@ public abstract class AbstractBookMetaData implements BookMetaData
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#isSupported()
+     */
+    public boolean isSupported()
+    {
+        return true;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#isEnciphered()
+     */
+    public boolean isEnciphered()
+    {
+        return false;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#isQuestionable()
+     */
+    public boolean isQuestionable()
+    {
+        return false;
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getLanguage()
      */
     public String getLanguage()

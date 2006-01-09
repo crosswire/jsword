@@ -257,7 +257,7 @@ public abstract class BookType implements Serializable
     /**
      * Generic Books
      */
-    public static final BookType RAW_GEN_BOOK = new BookType("RawGenBook", null) //$NON-NLS-1$ //$NON-NLS-2$
+    public static final BookType RAW_GEN_BOOK = new BookType("RawGenBook", BookCategory.OTHER) //$NON-NLS-1$ //$NON-NLS-2$
     {
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
@@ -266,7 +266,12 @@ public abstract class BookType implements Serializable
 
         protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
-            return new RawBackend(sbmd, rootPath);
+            return new GenBookBackend(sbmd, rootPath);
+        }
+
+        protected boolean isBackendSupported(SwordBookMetaData sbmd)
+        {
+            return false;
         }
 
         /**

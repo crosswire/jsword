@@ -76,6 +76,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
     public SwordBookMetaData(Reader in, String internal) throws IOException
     {
         cet = new ConfigEntryTable(in, internal);
+        buildProperties();
 //        Element ele = cet.toOSIS();
 //        SAXEventProvider sep = new JDOMSAXEventProvider(new Document(ele));
 //        try
@@ -85,19 +86,30 @@ public class SwordBookMetaData extends AbstractBookMetaData
 //        catch(Exception e)
 //        {
 //        }
-        if (isSupported())
-        {
-            buildProperties();
-        }
-
     }
 
-    /**
-     * Is this one of the supported book types?
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#isQuestionable()
+     */
+    public boolean isQuestionable()
+    {
+        return cet.isQuestionable();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#isSupported()
      */
     public boolean isSupported()
     {
-        return cet.isSupported();
+        return cet.isSupported() && cet.getBookType().isSupported(this);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#isEnciphered()
+     */
+    public boolean isEnciphered()
+    {
+        return cet.isEnciphered();
     }
 
     /* (non-Javadoc)

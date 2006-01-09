@@ -213,6 +213,30 @@ public abstract class AbstractBook implements Book
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#isSupported()
+     */
+    public boolean isSupported()
+    {
+        return bmd.isSupported();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#isEnciphered()
+     */
+    public boolean isEnciphered()
+    {
+        return bmd.isEnciphered();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#isQuestionable()
+     */
+    public boolean isQuestionable()
+    {
+        return bmd.isQuestionable();
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#hasFeature(org.crosswire.jsword.book.FeatureType)
      */
     public boolean hasFeature(FeatureType feature)

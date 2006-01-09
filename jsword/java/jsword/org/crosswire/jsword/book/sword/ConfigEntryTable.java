@@ -76,9 +76,27 @@ public class ConfigEntryTable
     /**
      * Determines whether the Sword Book's conf is supported by JSword.
      */
+    public boolean isQuestionable()
+    {
+        return questionable;
+    }
+
+    /**
+     * Determines whether the Sword Book's conf is supported by JSword.
+     */
     public boolean isSupported()
     {
         return supported;
+    }
+
+    /**
+     * Determines whether the Sword Book is enciphered and without a key.
+     * @return true if enciphered
+     */
+    public boolean isEnciphered()
+    {
+        String cipher = (String) getValue(ConfigEntryType.CIPHER_KEY);
+        return cipher != null && cipher.length() == 0;
     }
     /**
      * Returns an Enumeration of all the keys found in the config file.
@@ -476,6 +494,11 @@ public class ConfigEntryTable
 
     private void adjustBookType()
     {
+        // The book type represents the underlying category of book.
+        // Fine tune it here.
+        BookCategory focusedCategory = BookCategory.fromString(getValue(ConfigEntryType.CATEGORY).toString());
+        questionable = focusedCategory == BookCategory.QUESTIONABLE;
+
         // From the config map, extract the important bean properties
         String modTypeName = (String) getValue(ConfigEntryType.MOD_DRV);
         if (modTypeName == null)
@@ -496,19 +519,13 @@ public class ConfigEntryTable
         BookCategory basicCategory = getBookType().getBookCategory();
         if (basicCategory == null)
         {
-            // We plan to add RawGenBook at a later time. So we don't need to be reminded all the time.
-            if (!modTypeName.equals("RawGenBook")) //$NON-NLS-1$
-            {
-                log.debug("Book not supported: " + internal + " because missing book type for BookType (" + modTypeName + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            }
             supported = false;
             return;
         }
 
         // The book type represents the underlying category of book.
         // Fine tune it here.
-        BookCategory focusedCategory = BookCategory.fromString(getValue(ConfigEntryType.CATEGORY).toString());
-        if (focusedCategory == BookCategory.OTHER)
+        if (focusedCategory == BookCategory.OTHER || focusedCategory == BookCategory.QUESTIONABLE)
         {
             focusedCategory = getBookType().getBookCategory();
         }
@@ -532,9 +549,7 @@ public class ConfigEntryTable
      */
     private void validate()
     {
-        // Only locked books that have a key can be used.
-        String cipher = (String) getValue(ConfigEntryType.CIPHER_KEY);
-        if (cipher != null && cipher.length() == 0)
+        if (isEnciphered())
         {
             log.debug("Book not supported: " + internal + " because it is locked and there is no key."); //$NON-NLS-1$ //$NON-NLS-2$
             supported = false;
@@ -648,6 +663,11 @@ public class ConfigEntryTable
      * The log stream
      */
     private static final Logger log = Logger.getLogger(ConfigEntryTable.class);
+
+    /**
+     * True if this book is considered questionable.
+     */
+    private boolean questionable;
 
     /**
      * True if this book's config type can be used by JSword.

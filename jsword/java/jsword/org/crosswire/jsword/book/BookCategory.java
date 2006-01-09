@@ -61,6 +61,11 @@ public final class BookCategory implements Serializable, Comparable
     public static final BookCategory GLOSSARY = new BookCategory("Glossaries"); //$NON-NLS-1$
 
     /**
+     * Books that are questionable.
+     */
+    public static final BookCategory QUESTIONABLE = new BookCategory("Cults / Unorthodox / Questionable Material"); //$NON-NLS-1$
+
+    /**
      * Books that are not any of the above
      */
     public static final BookCategory OTHER = new BookCategory("Other"); //$NON-NLS-1$
@@ -153,6 +158,7 @@ public final class BookCategory implements Serializable, Comparable
         COMMENTARY,
         DAILY_DEVOTIONS,
         GLOSSARY,
+        QUESTIONABLE,
         OTHER,
     };
 

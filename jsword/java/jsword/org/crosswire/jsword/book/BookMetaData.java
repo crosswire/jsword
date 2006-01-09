@@ -98,6 +98,39 @@ public interface BookMetaData extends Comparable
     String getFullName();
 
     /**
+     * Indicate whether this book is supported by JSword.
+     * Since the expectation is that all books are supported,
+     * abstract implementations should return true and let
+     * specific implementations return false if they cannot
+     * support the book.
+     * 
+     * @return true if the book is supported
+     */
+    public boolean isSupported();
+
+    /**
+     * Indicate whether this book is enciphered and without a key.
+     * Since the expectation is that most books are unenciphered,
+     * abstract implementations should return false and let
+     * specific implementations return true otherwise.
+     * 
+     * @return true if the book is enciphered
+     */
+    public boolean isEnciphered();
+
+    /**
+     * Indicate whether this book is questionable. A book may
+     * be deemed questionable if it's quality or content has not
+     * been confirmed.
+     * Since the expectation is that all books are not questionable,
+     * abstract implementations should return false and let
+     * specific implementations return true if the book is questionable.
+     * 
+     * @return true if the book is questionable
+     */
+    public boolean isQuestionable();
+
+    /**
      * Calculated field: The name of the name, which could be helpful to
      * distinguish similar Books available through 2 BookDrivers.
      * @return The driver name

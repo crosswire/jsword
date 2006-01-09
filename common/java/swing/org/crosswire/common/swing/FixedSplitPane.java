@@ -216,7 +216,7 @@ public class FixedSplitPane extends JSplitPane
     {
         return visibleDividerBorder;
     }
-    
+
     /**
      * Set a hint whether the border should be visible or not.
      * Look and feels may ignore this.
@@ -243,7 +243,8 @@ public class FixedSplitPane extends JSplitPane
         if (!visibleDividerBorder)
         {
             SplitPaneUI splitPaneUI = getUI();
-            if (splitPaneUI instanceof BasicSplitPaneUI) {
+            if (splitPaneUI instanceof BasicSplitPaneUI)
+            {
                 BasicSplitPaneUI basicUI = (BasicSplitPaneUI) splitPaneUI;
                 basicUI.getDivider().setBorder(EMPTY_BORDER);
             }
