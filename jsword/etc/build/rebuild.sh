@@ -25,11 +25,6 @@ echo JSWORD_HOME=$JSWORD_HOME
 
 . $JSWORD_HOME/etc/build/commands.`dnsdomainname`.sh
 
-# keep the cvsup separate to allow build.xml to be updated
-# we used to use: "$ANT_HOME/bin/ant cvsup $PROPERTIES"
-# but this spawned a jvm just to do a "cvs -q up -d -P" which
-# seemed like a waste ...
-
 echo ""
 echo "=============================================================================="
 for PROJECT in common jsword-support jsword jsword-sword jsword-web biblemapper bibledesktop bibledesktop-web
