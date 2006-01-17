@@ -378,29 +378,6 @@
   </target>
 
   <!--=======================================================================
-    == target that can be used manually or the nightly builds to sync with
-    == the CVS server.
-    =========================================================================-->
-  <target name="cvsup" description="cvs update">
-    <cvs cvsRoot=":pserver:joe@cvs.crosswire.org:/cvs/jsword" dest=".">
-      <commandline>
-        <argument value="-q"/>
-        <argument value="update"/>
-        <argument value="-d"/>
-        <argument value="-P"/>
-      </commandline>
-    </cvs>
-    <antcall target="cvsup.extra"/>
-  </target>
-
-  <!--=======================================================================
-    == Do any other needed work after cvsup.
-    == By overriding this target in the importing ant build file,
-    == it will allow for the definition of any other post cvsup activities.
-    =========================================================================-->
-  <target name="cvsup.extra" description="Extra stuff to do after calling cvsup"/>
-
-  <!--=======================================================================
     == A handy target that can be useful for testing various things. Designed
     == to be hacked about before it is run. The main class is done as a property
     == so it can be overridden from outside if needed. Main classes that have
