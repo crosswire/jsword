@@ -15,7 +15,7 @@
   <property name="source.etc"      value="etc"/>
   <property name="source.jar"      value="jar"/>
   <property name="source.java"     value="java"/>
-  <property name="source.res"      value="resource"/>
+  <property name="source.res"      value="resources"/>
   <property name="target.root"     value="target/ant"/>
   <property name="target.classes"  value="${target.root}/classes"/>
   <property name="target.jar"      value="${target.root}/jar"/>
@@ -67,7 +67,6 @@
     <include name="**/*.java"/>
     <exclude name="test/**"/>
     <exclude name="limbo/**"/>
-    <exclude name="gpl/**"/>
   </patternset>
   <path id="source.path">
     <dirset dir="${source.java}" includes="*">
