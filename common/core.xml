@@ -11,11 +11,11 @@
     == This assumes that the build file is in the root of the project.
     =========================================================================-->
   <property name="release.version" value="1.0"/>
-  <property name="source.root"     value="."/>
+  <property name="source.root"     value="src"/>
   <property name="source.etc"      value="etc"/>
   <property name="source.jar"      value="jar"/>
-  <property name="source.java"     value="src"/>
-  <property name="source.res"      value="resources"/>
+  <property name="source.java"     value="${source.root}/main/java"/>
+  <property name="source.res"      value="${source.root}/main/resources"/>
   <property name="target.root"     value="target/ant"/>
   <property name="target.classes"  value="${target.root}/classes"/>
   <property name="target.jar"      value="${target.root}/jar"/>
@@ -26,6 +26,8 @@
   <property name="keystore.file"   value="../common/common.keystore"/>
   <property name="keystore.alias"  value="test builds"/>
   <property name="keystore.pswd"   value="p455w0rd"/>
+  <available file="${source.jar}" type="dir" property="jardir.present"/>
+  <available file="${source.res}" type="dir" property="resdir.present"/>
 
   <!--=======================================================================
     == These jars are necessary for Bible Desktop to be compiled and run.
@@ -106,7 +108,15 @@
   <target name="init" description="Prepare for other tasks">
     <echo message="Initializing ${ant.project.name}"/>
     <tstamp/>
+    <antcall target="init.extra"/>
   </target>
+
+  <!--=======================================================================
+	== Do any other needed work after clean.
+	== By overriding this target in the importing ant build file,
+	== it will allow for the definition of any other post clean activities.
+	=========================================================================-->
+  <target name="init.extra" description="Extra stuff to do when initializing"/>
 
   <!--=======================================================================
     == Clean the intermediate files and build everything, test it and
@@ -168,14 +178,12 @@
   <target name="build" depends="compile, jar.check" unless="jar.uptodate" description="Run a full build">
     <jar jarfile="${target.jar}/${ant.project.name}-${release.version}.jar">
       <fileset dir="${target.classes}"/>
-      <fileset dir="${source.res}"/>
     </jar>
   </target>
   <target name="jar.check">
     <uptodate property="jar.uptodate"
         targetfile="${target.jar}/${ant.project.name}.jar">
       <srcfiles dir="${target.classes}"/>
-      <srcfiles dir="${source.res}"/>
     </uptodate>
   </target>
 
@@ -200,7 +208,7 @@
   <target name="test.suite" description="Run a full test suite"/>
 
   <!--=======================================================================
-    == Invoke a clean on any dependencies, if any.
+    == Invoke a test on any dependencies, if any.
     == This target requires the "dependency" property to be set by
     == the importing ant build file.
     =========================================================================-->
@@ -212,12 +220,9 @@
   </target>
 
   <!--=======================================================================
-    == Copy all the external jars to a single locaton.
-    == Calls prepare.dependency.
-    =========================================================================-->
-  <target name="prepare"
-          depends="build.dependency"
-          description="Prepare the build by copying needed jars and files.">
+	== Copy all the local 3rd party jars to a single locaton.
+	=========================================================================-->
+  <target name="prepare.jars" if="jardir.present">
     <!-- Copy the jars from the std location to the target jar directory -->
     <mkdir dir="${target.jar}"/>
     <copy todir="${target.jar}" flatten="true">
@@ -225,6 +230,28 @@
         <patternset refid="external.runtime.jars"/>
       </fileset>
     </copy>
+  </target>
+
+  <!--=======================================================================
+	== Copy all the local 3rd party jars to a single locaton.
+	=========================================================================-->
+  <target name="prepare.resources" if="resdir.present">
+	<!-- Copy the resources from the std location to the target classes directory -->
+	<mkdir dir="${target.classes}"/>
+	<copy verbose="true" todir="${target.classes}" flatten="false" failonerror="false" preservelastmodified="true">
+	  <fileset dir="${source.res}" includes="**"/>
+	</copy>
+  </target>
+
+  <!--=======================================================================
+    == Copy all the local and external 3rd party jars to a single locaton.
+    == Also copy the resources to ${target.classes}
+    == Calls prepare.dependency.
+    =========================================================================-->
+  <target name="prepare"
+          depends="build.dependency, prepare.jars, prepare.resources"
+          description="Prepare the build by copying needed jars and files.">
+    <!-- Copy the jars from the std location to the target jar directory -->
     <antcall target="prepare.dependency"/>
 <!-- Not currently needed.
     <antcall target="prepare.extra"/>
@@ -239,6 +266,7 @@
   <target name="prepare.dependency"
           if="dependency.jar"
           description="Prepare this build from the dependency.">
+    <mkdir dir="${target.jar}"/>
     <copy todir="${target.jar}" flatten="true">
       <fileset dir="${dependency.jar}" includes="*.jar"/>
     </copy>
@@ -276,9 +304,7 @@
         <exclude name="**/*Test*"/>
       </fileset>
     </copy>
-<!-- Not currently needed.
     <antcall target="compile.extra"/>
--->
   </target>
 
   <!--=======================================================================
@@ -287,9 +313,7 @@
     == it will allow for the definition of any other post compilation,
     == pre jar activities.
     =========================================================================-->
-  <target name="compile.extra" description="Compile extras files.">
-    <echo message="${ant.project.name} has no extra files to compile."/>
-  </target>
+  <target name="compile.extra" description="Compile extras files."/>
 
   <!--=======================================================================
     == Compile all the test java files under testsource.path into class files.
