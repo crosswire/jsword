@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry exported="true" kind="src" path="/common"/>
-	<classpathentry kind="src" path="java/main"/>
-	<classpathentry kind="src" path="java/limbo"/>
-	<classpathentry kind="src" path="java/test"/>
 	<classpathentry exported="true" sourcepath="jar/lucene-1.4.3/lucene-1.4.3-src.zip" kind="lib" path="jar/lucene-1.4.3/lucene-1.4.3.jar"/>
+	<classpathentry kind="src" path="src/limbo"/>
+	<classpathentry kind="src" path="src/main"/>
+	<classpathentry kind="src" path="src/test"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
