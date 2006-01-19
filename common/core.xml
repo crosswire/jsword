@@ -43,6 +43,7 @@
     <include name="**/jlfgr-*.jar"/>
     <include name="**/rome-*.jar"/>
     <include name="**/xmlrpc-*.jar"/>
+    <include name="**/gnu-regexp-*.jar"/>
     <include name="**/werx-*.jar"/>
     <include name="**/blogapps-*.jar"/>
     <include name="**/kafenio-*/*.jar"/>
