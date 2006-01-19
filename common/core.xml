@@ -41,6 +41,11 @@
     <include name="**/lucene-*.jar"/>
     <include name="**/activation.jar"/>
     <include name="**/jlfgr-*.jar"/>
+    <include name="**/rome-*.jar"/>
+    <include name="**/xmlrpc-*.jar"/>
+    <include name="**/werx-*.jar"/>
+    <include name="**/blogapps-*.jar"/>
+    <include name="**/kafenio-*/*.jar"/>
     <include name="**/servlet.jar"/>
   </patternset>
 
