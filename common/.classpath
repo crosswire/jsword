@@ -14,7 +14,6 @@
 	<classpathentry exported="true" sourcepath="jar/commons-httpclient-3.0/commons-httpclient-3.0-src.zip" kind="lib" path="jar/commons-httpclient-3.0/commons-httpclient-3.0.jar"/>
 	<classpathentry exported="true" sourcepath="jar/commons-net-1.4.1/commons-net-1.4.1-src.zip" kind="lib" path="jar/commons-net-1.4.1/commons-net-1.4.1.jar"/>
 	<classpathentry kind="src" path="src/limbo/java"/>
-	<classpathentry kind="src" path="src/swing/java"/>
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="src" path="src/tar/java"/>
 	<classpathentry kind="src" path="src/main/java"/>
