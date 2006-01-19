@@ -6,13 +6,6 @@
 			<attribute value="jar:file:/E:/Eclipse/JSword/common/jar/jdom-1.0/jdom-1.0.zip!/jdom-1.0/build/apidocs" name="javadoc_location"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="java/gpl"/>
-	<classpathentry kind="src" path="java/limbo"/>
-	<classpathentry kind="src" path="java/core"/>
-	<classpathentry kind="src" path="java/config"/>
-	<classpathentry kind="src" path="java/swing"/>
-	<classpathentry kind="src" path="java/test"/>
-	<classpathentry kind="src" path="java/tar"/>
 	<classpathentry exported="true" kind="lib" path="resources"/>
 	<classpathentry kind="lib" path="jar/jaf-1.0.2/activation.jar"/>
 	<classpathentry exported="true" sourcepath="jar/junit-3.8.1/junit-3.8.1-src.jar" kind="lib" path="jar/junit-3.8.1/junit.jar"/>
