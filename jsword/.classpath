@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry exported="true" kind="src" path="/common"/>
 	<classpathentry exported="true" sourcepath="jar/lucene-1.4.3/lucene-1.4.3-src.zip" kind="lib" path="jar/lucene-1.4.3/lucene-1.4.3.jar"/>
+	<classpathentry exported="true" kind="src" path="/common"/>
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="src" path="src/limbo/java"/>
 	<classpathentry kind="src" path="src/main/java"/>
