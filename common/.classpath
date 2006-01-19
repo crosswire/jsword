@@ -13,12 +13,5 @@
 	<classpathentry exported="true" sourcepath="jar/commons-logging-1.0.4/commons-logging-1.0.4-src.zip" kind="lib" path="jar/commons-logging-1.0.4/commons-logging.jar"/>
 	<classpathentry exported="true" sourcepath="jar/commons-httpclient-3.0/commons-httpclient-3.0-src.zip" kind="lib" path="jar/commons-httpclient-3.0/commons-httpclient-3.0.jar"/>
 	<classpathentry exported="true" sourcepath="jar/commons-net-1.4.1/commons-net-1.4.1-src.zip" kind="lib" path="jar/commons-net-1.4.1/commons-net-1.4.1.jar"/>
-	<classpathentry kind="src" path="src/config"/>
-	<classpathentry kind="src" path="src/core"/>
-	<classpathentry kind="src" path="src/gpl"/>
-	<classpathentry kind="src" path="src/limbo"/>
-	<classpathentry kind="src" path="src/swing"/>
-	<classpathentry kind="src" path="src/tar"/>
-	<classpathentry kind="src" path="src/test"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
