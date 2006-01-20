@@ -16,7 +16,7 @@
   <property name="source.jar"      value="jar"/>
   <property name="source.java"     value="${source.root}/main/java"/>
   <property name="source.res"      value="${source.root}/main/resources"/>
-  <property name="target.root"     value="target/ant"/>
+  <property name="target.root"     value="target"/>
   <property name="target.classes"  value="${target.root}/classes"/>
   <property name="target.jar"      value="${target.root}/jar"/>
   <property name="target.signed"   value="${target.root}/signed"/>
@@ -108,15 +108,7 @@
   <target name="init" description="Prepare for other tasks">
     <echo message="Initializing ${ant.project.name}"/>
     <tstamp/>
-    <antcall target="init.extra"/>
   </target>
-
-  <!--=======================================================================
-	== Do any other needed work after clean.
-	== By overriding this target in the importing ant build file,
-	== it will allow for the definition of any other post clean activities.
-	=========================================================================-->
-  <target name="init.extra" description="Extra stuff to do when initializing"/>
 
   <!--=======================================================================
     == Clean the intermediate files and build everything, test it and

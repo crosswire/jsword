@@ -1,4 +1,4 @@
-#Fri May 27 22:30:54 EDT 2005
+#Fri Jan 20 12:11:35 EST 2006
 eclipse.preferences.version=1
 org.eclipse.jdt.core.builder.cleanOutputFolder=clean
 org.eclipse.jdt.core.builder.duplicateResourceTask=warning
@@ -73,8 +73,8 @@ org.eclipse.jdt.core.compiler.problem.unusedPrivateMember=warning
 org.eclipse.jdt.core.compiler.problem.varargsArgumentNeedCast=warning
 org.eclipse.jdt.core.compiler.source=1.4
 org.eclipse.jdt.core.compiler.taskCaseSensitive=enabled
-org.eclipse.jdt.core.compiler.taskPriorities=NORMAL,HIGH,NORMAL,LOW,LOW,NORMAL,NORMAL,LOW,LOW,HIGH,LOW,LOW,LOW
-org.eclipse.jdt.core.compiler.taskTags=TODO,URGENT,PENDING,NOTE,LATER,BUG,DEAD,SPEEDUP,I18N,JDK14,NOWARN,PARANOIA,BORROWED
+org.eclipse.jdt.core.compiler.taskPriorities=
+org.eclipse.jdt.core.compiler.taskTags=
 org.eclipse.jdt.core.formatter.align_type_members_on_columns=false
 org.eclipse.jdt.core.formatter.alignment_for_arguments_in_allocation_expression=18
 org.eclipse.jdt.core.formatter.alignment_for_arguments_in_enum_constant=16
@@ -316,5 +316,5 @@ org.eclipse.jdt.core.formatter.put_empty_statement_on_new_line=true
 org.eclipse.jdt.core.formatter.tabulation.char=space
 org.eclipse.jdt.core.formatter.tabulation.size=4
 org.eclipse.jdt.core.formatter.use_tabs_only_for_leading_indentations=false
-org.eclipse.jdt.core.incompatibleJDKLevel=ignore
+org.eclipse.jdt.core.incompatibleJDKLevel=warning
 org.eclipse.jdt.core.incompleteClasspath=error
