@@ -7,22 +7,4 @@
     <delete dir="${keystore.file}"/>
   </target>
 
-  <target name="compile.extra" description="Compile extras files.">
-    <javac debug="on"
-    	   srcdir="src/tar/java"
-           destdir="${target.classes}"
-           source="1.4">
-      <classpath refid="runtime.jarpath"/>
-    </javac>
-    <!-- Copy the resources to the proper org/crosswire directory.
-      == The path separator could be either / or \
-      -->
-    <copy verbose="${verbose.copy}"
-          todir="${target.classes}"
-          includeEmptyDirs="false">
-      <fileset dir="src/tar/java"
-               includes="**/*.txt"/>
-    </copy>
-  </target>
-
 </project>
