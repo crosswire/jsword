@@ -16,6 +16,7 @@
   <property name="source.jar"      value="jar"/>
   <property name="source.java"     value="${source.root}/main/java"/>
   <property name="source.res"      value="${source.root}/main/resources"/>
+  <property name="source.test"     value="${source.root}/test"/>
   <property name="target.root"     value="target"/>
   <property name="target.classes"  value="${target.root}/classes"/>
   <property name="target.jar"      value="${target.root}/jar"/>
@@ -28,6 +29,8 @@
   <property name="keystore.pswd"   value="p455w0rd"/>
   <available file="${source.jar}" type="dir" property="jardir.present"/>
   <available file="${source.res}" type="dir" property="resdir.present"/>
+	
+  <property name="verbose.copy"    value="true"/>
 
   <!--=======================================================================
     == These jars are necessary for Bible Desktop to be compiled and run.
@@ -50,6 +53,7 @@
     <include name="**/blogapps-*.jar"/>
     <include name="**/kafenio-*/*.jar"/>
     <include name="**/servlet.jar"/>
+    <include name="**/javatar-*/*.jar"/>
   </patternset>
 
   <!--=======================================================================
@@ -73,14 +77,9 @@
     =========================================================================-->
   <patternset id="java.compile">
     <include name="**/*.java"/>
-    <exclude name="test/**"/>
-    <exclude name="limbo/**"/>
   </patternset>
   <path id="source.path">
-    <dirset dir="${source.java}" includes="*">
-      <exclude name="*test*"/>
-      <exclude name="*limbo*"/>
-    </dirset>
+    <dirset dir="${source.java}" includes="*"/>
   </path>
 
   <!--=======================================================================
@@ -88,7 +87,7 @@
     == These are the ones with "test" in their names.
     =========================================================================-->
   <path id="testsource.path">
-    <dirset dir="${source.java}" includes="*test*"/>
+    <dirset dir="${source.test}" includes="*"/>
   </path>
 
   <!--=======================================================================
@@ -105,7 +104,8 @@
   <!--=======================================================================
     == Mark this build with the current timestamp
     =========================================================================-->
-  <target name="init" description="Prepare for other tasks">
+  <target name="init"
+          description="Prepare for other tasks">
     <echo message="Initializing ${ant.project.name}"/>
     <tstamp/>
   </target>
@@ -144,7 +144,8 @@
     == By overriding this target in the importing ant build file,
     == it will allow for the definition of any other post clean activities.
     =========================================================================-->
-  <target name="clean.extra" description="Extra stuff to do after calling clean"/>
+  <target name="clean.extra"
+          description="Extra stuff to do after calling clean"/>
 
   <!--=======================================================================
     == Invoke a clean on any dependencies, if any.
@@ -167,16 +168,20 @@
     ==
     == Also build all test java files into class files in their own directory.
     =========================================================================-->
-  <target name="build" depends="compile, jar.check" unless="jar.uptodate" description="Run a full build">
+  <target name="build"
+          depends="compile, jar.check"
+          unless="jar.uptodate"
+          description="Run a full build">
     <jar jarfile="${target.jar}/${ant.project.name}-${release.version}.jar">
       <fileset dir="${target.classes}"/>
     </jar>
   </target>
   <target name="jar.check">
     <uptodate property="jar.uptodate"
-        targetfile="${target.jar}/${ant.project.name}.jar">
+        targetfile="${target.jar}/${ant.project.name}-${release.version}.jar">
       <srcfiles dir="${target.classes}"/>
     </uptodate>
+    <echo message="jar.uptodate result: ${jar.uptodate}"/>
   </target>
 
   <!--=======================================================================
@@ -196,8 +201,11 @@
     == But first invoke a testbuild on any dependencies, if any.
     ==
     =========================================================================-->
-  <target name="test" depends="test.dependency, testcompile, test.suite" description="Run a full test build"/>
-  <target name="test.suite" description="Run a full test suite"/>
+  <target name="test"
+          depends="test.dependency, testcompile, test.suite"
+          description="Run a full test build"/>
+  <target name="test.suite"
+          description="Run a full test suite"/>
 
   <!--=======================================================================
     == Invoke a test on any dependencies, if any.
@@ -214,10 +222,11 @@
   <!--=======================================================================
 	== Copy all the local 3rd party jars to a single locaton.
 	=========================================================================-->
-  <target name="prepare.jars" if="jardir.present">
+  <target name="prepare.jars"
+          if="jardir.present">
     <!-- Copy the jars from the std location to the target jar directory -->
     <mkdir dir="${target.jar}"/>
-    <copy todir="${target.jar}" flatten="true">
+    <copy verbose="${verbose.copy}" todir="${target.jar}" flatten="true">
       <fileset dir="${source.jar}">
         <patternset refid="external.runtime.jars"/>
       </fileset>
@@ -225,12 +234,13 @@
   </target>
 
   <!--=======================================================================
-	== Copy all the local 3rd party jars to a single locaton.
+	== Copy all the resources to a single locaton.
 	=========================================================================-->
-  <target name="prepare.resources" if="resdir.present">
+  <target name="prepare.resources"
+          if="resdir.present">
 	<!-- Copy the resources from the std location to the target classes directory -->
 	<mkdir dir="${target.classes}"/>
-	<copy verbose="true" todir="${target.classes}" flatten="false" failonerror="false" preservelastmodified="true">
+	<copy verbose="${verbose.copy}" todir="${target.classes}" flatten="false" failonerror="false" preservelastmodified="true">
 	  <fileset dir="${source.res}" includes="**"/>
 	</copy>
   </target>
@@ -259,7 +269,7 @@
           if="dependency.jar"
           description="Prepare this build from the dependency.">
     <mkdir dir="${target.jar}"/>
-    <copy todir="${target.jar}" flatten="true">
+    <copy verbose="${verbose.copy}" todir="${target.jar}" flatten="true">
       <fileset dir="${dependency.jar}" includes="*.jar"/>
     </copy>
   </target>
@@ -269,7 +279,8 @@
     == By overriding this target in the importing ant build file,
     == it will allow for the definition of any other needed preparation.
     =========================================================================-->
-  <target name="prepare.extra" description="Prepare extras files.">
+  <target name="prepare.extra"
+          description="Prepare extras files.">
     <echo message="${ant.project.name} has no extra files to prepare."/>
   </target>
 
@@ -277,7 +288,10 @@
     == Compile all the java files under source.path into class files.
     == Make sure that all the resources in those directories make it over too.
     =========================================================================-->
-  <target name="compile" depends="prepare" description="Compile the source">
+  <target name="compile"
+          depends="prepare, compile.check"
+          unless="source.uptodate"
+          description="Compile the source">
     <mkdir dir="${target.classes}"/>
     <javac debug="on"
            includes="**/*.java"
@@ -286,17 +300,26 @@
       <src refid="source.path"/>
       <classpath refid="runtime.jarpath"/>
     </javac>
-    <!-- Copy the resources to the proper org/crosswire directory.
+    <!-- Copy the adjacent property files to the proper org/crosswire directory.
       == The path separator could be either / or \
       -->
-    <copy todir="${target.classes}" includeEmptyDirs="false" >
-      <mapper type="regexp" from=".*[\\/]((gnu|com|org)[\\/].*)" to="\1"/>
-      <fileset dir="${source.java}">
-        <patternset refid="java.non.compile"/>
-        <exclude name="**/*Test*"/>
-      </fileset>
-    </copy>
+	<copy verbose="${verbose.copy}"
+	      todir="${target.classes}"
+	      includeEmptyDirs="false"
+	      preservelastmodified="true">
+	  <fileset dir="${source.java}">
+	    <patternset refid="java.non.compile"/>
+	  </fileset>
+	</copy>
     <antcall target="compile.extra"/>
+  </target>
+  <target name="compile.check">
+    <uptodate property="source.uptodate"
+        targetfile="${target.jar}/${ant.project.name}-${release.version}.jar">
+      <srcfiles dir="${source.java}"/>
+      <srcfiles dir="${source.root}" includes="resources/**/*.*"/>
+    </uptodate>
+    <echo message="source.uptodate result: ${source.uptodate}"/>
   </target>
 
   <!--=======================================================================
@@ -305,7 +328,8 @@
     == it will allow for the definition of any other post compilation,
     == pre jar activities.
     =========================================================================-->
-  <target name="compile.extra" description="Compile extras files."/>
+  <target name="compile.extra"
+          description="Compile extras files."/>
 
   <!--=======================================================================
     == Compile all the test java files under testsource.path into class files.
@@ -333,14 +357,17 @@
     == By overriding this target in the importing ant build file,
     == it will allow for the definition of any other post compilation.
     =========================================================================-->
-  <target name="testcompile.extra" description="Compile extras test files."/>
+  <target name="testcompile.extra"
+          description="Compile extras test files."/>
 
   <!--=======================================================================
     == Install the built artifacts.
     == By overriding this target in the importing ant build file,
     == it will allow for the definition of any other needed work.
     =========================================================================-->
-  <target name="install" depends="install.dependency" description="Install the built project."/>
+  <target name="install"
+          depends="install.dependency"
+          description="Install the built project."/>
 
   <!--=======================================================================
     == Invoke an install on any dependencies, if any.
@@ -351,7 +378,9 @@
           if="dependency"
           description="Clean the dependencies">
     <echo message="Install project dependency first: ${dependency}."/>
-    <ant dir="../${dependency}" target="install" inheritAll="false"/>
+    <ant dir="../${dependency}"
+         target="install"
+         inheritAll="false"/>
   </target>
 
   <!--=======================================================================
@@ -389,13 +418,16 @@
       <dname>
         <param name="CN" value="JSword Project"/>
         <param name="OU" value="Test Builds"/>
-        <param name="O" value="Crosswire.org"/>
-        <param name="C" value="UK" />
+        <param name="O"  value="Crosswire.org"/>
+        <param name="C"  value="UK" />
       </dname>
     </genkey>
   </target>
-  <target name="keygen.check" description="Check the keystore is there">
-    <available property="keygen.uptodate" file="${keystore.file}"/>
+  <target name="keygen.check"
+          description="Check the keystore is there">
+    <available
+        property="keygen.uptodate"
+        file="${keystore.file}"/>
   </target>
 
   <!--=======================================================================
@@ -408,9 +440,12 @@
     ==   abbot.editor.Costello
     ==   org.acm.seguin.tools.install.PrettyPrinterConfigGUI
     =========================================================================-->
-  <property name="exec.main" value="org.crosswire.bibledesktop.desktop.Desktop"/>
-  <target name="exec" description="Test execution">
-    <java classname="${exec.main}" fork="true">
+  <property name="exec.main"
+            value="org.crosswire.bibledesktop.desktop.Desktop"/>
+  <target name="exec"
+          description="Test execution">
+    <java classname="${exec.main}"
+          fork="true">
       <assertions enablesystemassertions="true">
         <enable/>
       </assertions>
