@@ -5,6 +5,5 @@
 	<classpathentry exported="true" kind="src" path="/common"/>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/test/java"/>
-	<classpathentry kind="src" path="src/limbo/java"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

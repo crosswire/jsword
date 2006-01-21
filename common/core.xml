@@ -30,7 +30,7 @@
   <available file="${source.jar}" type="dir" property="jardir.present"/>
   <available file="${source.res}" type="dir" property="resdir.present"/>
 	
-  <property name="verbose.copy"    value="true"/>
+  <property name="verbose.copy"    value="false"/>
 
   <!--=======================================================================
     == These jars are necessary for Bible Desktop to be compiled and run.

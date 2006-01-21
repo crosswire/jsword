@@ -63,8 +63,6 @@ public class JSwordAllTests extends TestCase
         // commented out because the tests were very poor.
         //suite.addTestSuite(org.crosswire.jsword.book.OsisTest.class);
 
-        suite.addTestSuite(org.crosswire.jsword.book.search.parse.DictionaryTest.class);
-        suite.addTestSuite(org.crosswire.jsword.book.search.parse.CustomTokenizerTest.class);
         /* FIXME
         suite.addTestSuite(org.crosswire.jsword.book.search.parse.ParserTest.class);
         suite.addTestSuite(org.crosswire.jsword.book.search.parse.WordsTest.class);
