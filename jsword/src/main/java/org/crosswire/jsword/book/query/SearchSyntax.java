@@ -19,7 +19,7 @@
  *
  * ID: $Id$
  */
-package org.crosswire.jsword.book.search;
+package org.crosswire.jsword.book.query;
 
 /**
  * A SearchSyntax allows for the decoration of strings in a way that is

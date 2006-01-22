@@ -19,28 +19,29 @@
  *
  * ID: $Id$
  */
-package org.crosswire.jsword.book.search.lucene;
+package org.crosswire.jsword.book.query.basic;
 
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.query.Query;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.passage.Key;
 
 /**
- * A base token is the smallest unit of search that the index can perform.
+ * An or token specifies that a result needs to be in either the left and the right token.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
-public class BaseQuery implements Query
+public class OrQuery extends AbstractBinaryQuery
 {
 
     /**
      * 
      */
-    public BaseQuery(String theQuery)
+    public OrQuery(Query theLeftToken, Query theRightToken)
     {
-        query = theQuery;
+        super(theLeftToken, theRightToken);
     }
 
     /* (non-Javadoc)
@@ -48,16 +49,9 @@ public class BaseQuery implements Query
      */
     public Key find(Index index) throws BookException
     {
-        return index.find(query);
+        Key left = getLeftToken().find(index);
+        Key right = getRightToken().find(index);
+        left.addAll(right);
+        return left;
     }
-
-    /**
-     * @return the query
-     */
-    public String getQuery()
-    {
-        return query;
-    }
-
-    private String query;
 }

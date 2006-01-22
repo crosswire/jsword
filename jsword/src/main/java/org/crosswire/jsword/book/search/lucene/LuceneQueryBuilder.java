@@ -26,6 +26,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.crosswire.jsword.book.query.Query;
+import org.crosswire.jsword.book.query.basic.AndNotQuery;
+import org.crosswire.jsword.book.query.basic.AndQuery;
+import org.crosswire.jsword.book.query.basic.BaseQuery;
+import org.crosswire.jsword.book.query.basic.BlurQuery;
+import org.crosswire.jsword.book.query.basic.RangeQuery;
+
 /**
  * A query can have a optional range specifier and an optional blur specifier.
  * The range specifier can be +[range], -[range] or just [range].
@@ -37,12 +44,12 @@ import java.util.regex.Pattern;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class QueryBuilder
+public final class LuceneQueryBuilder
 {
     /**
      * Prevent Instansiation
      */
-    private QueryBuilder()
+    private LuceneQueryBuilder()
     {
     }
 

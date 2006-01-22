@@ -19,30 +19,31 @@
  *
  * ID: $Id$
  */
-package org.crosswire.jsword.book.search.lucene;
+package org.crosswire.jsword.book.query.basic;
 
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.query.Query;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.NoSuchKeyException;
+import org.crosswire.jsword.passage.RestrictionType;
 
 /**
- * A range token specifies how a range should be included in the search.
- * It provides a range, a modifier (AND [+] or AND NOT [-]).
+ * A blur token specifies much to blur the results of the right token.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
-public class RangeQuery implements Query
+public class BlurQuery extends AbstractBinaryQuery
 {
 
     /**
      * 
      */
-    public RangeQuery(String theRange)
+    public BlurQuery(Query theLeftToken, Query theRightToken, int theFactor)
     {
-        range = theRange;
+        super(theLeftToken, theRightToken);
+        factor = theFactor;
     }
 
     /* (non-Javadoc)
@@ -50,23 +51,20 @@ public class RangeQuery implements Query
      */
     public Key find(Index index) throws BookException
     {
-        try
-        {
-            return index.getKey(range);
-        }
-        catch (NoSuchKeyException e)
-        {
-            throw new BookException(Msg.ILLEGAL_PASSAGE, e, new Object[] { range });
-        }
+        Key left = getLeftToken().find(index);
+        Key right = getRightToken().find(index);
+        right.blur(factor, RestrictionType.getDefaultBlurRestriction());
+        left.retainAll(right);
+        return left;
     }
 
     /**
-     * @return the range
+     * @return the blur factor
      */
-    public String getRange()
+    public int getFactor()
     {
-        return range;
+        return factor;
     }
 
-    private String range;
+    private int factor;
 }

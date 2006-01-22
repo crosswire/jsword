@@ -23,6 +23,9 @@ package org.crosswire.jsword.book.search;
 
 import java.io.Serializable;
 
+import org.crosswire.jsword.book.query.SearchSyntax;
+import org.crosswire.jsword.book.query.SearchSyntaxFactory;
+
 /**
  * An Enumeration of the possible types of Searches.
  * 

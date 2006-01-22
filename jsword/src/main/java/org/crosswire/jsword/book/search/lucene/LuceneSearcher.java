@@ -21,10 +21,9 @@
  */
 package org.crosswire.jsword.book.search.lucene;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.query.Query;
+import org.crosswire.jsword.book.query.QueryBuilderFactory;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.book.search.SearchRequest;
 import org.crosswire.jsword.book.search.Searcher;
@@ -49,7 +48,7 @@ import org.crosswire.jsword.passage.Key;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class IndexSearcher implements Searcher
+public class LuceneSearcher implements Searcher
 {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.Searcher#init(org.crosswire.jsword.book.search.Index)
@@ -73,27 +72,18 @@ public class IndexSearcher implements Searcher
     public Key search(SearchRequest request) throws BookException
     {
         index.setSearchModifier(request.getSearchModifier());
-        List output = QueryBuilder.tokenize(request.getRequest());
-        Key results = search(output);
+        Query query = QueryBuilderFactory.getQueryBuilder().parse(request.getRequest());
+        Key results = search(query);
         index.setSearchModifier(null);
         return results;
     }
 
-    /**
-     * Take a search string and decipher it into a Key.
-     * @return The matching verses
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.search.Searcher#search(org.crosswire.jsword.book.query.Query)
      */
-    protected Key search(List matches) throws BookException
+    public Key search(Query query) throws BookException
     {
-        // Get an empty key
-        Key key = index.find(null);
-        Iterator iter = matches.iterator();
-        while (iter.hasNext())
-        {
-            Query token = (Query) iter.next();
-            key.addAll(token.find(index));
-        }
-        return key;
+        return query.find(index);
     }
 
     /**

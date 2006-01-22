@@ -19,9 +19,10 @@
  *
  * ID: $Id$
  */
-package org.crosswire.jsword.book.search.lucene;
+package org.crosswire.jsword.book.query.basic;
 
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.query.Query;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.passage.Key;
 

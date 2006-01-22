@@ -19,20 +19,45 @@
  *
  * ID: $Id$
  */
-package org.crosswire.jsword.book.search.lucene;
+package org.crosswire.jsword.book.query.basic;
 
-import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.search.Index;
-import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.book.query.Query;
 
 /**
- * The search.Searcher uses a List of Tokens to calculate a search.
+ * A binary token has a left token and right token.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
- * @author DM Smith [dmsmith555 at yahoo dot com]
+ * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
-public interface Query
+public abstract class AbstractBinaryQuery implements Query
 {
-    Key find(Index index) throws BookException;
+
+    /**
+     * 
+     */
+    public AbstractBinaryQuery(Query theLeftToken, Query theRightToken)
+    {
+        leftToken = theLeftToken;
+        rightToken = theRightToken;
+    }
+
+    /**
+     * @return Returns the leftToken.
+     */
+    public Query getLeftToken()
+    {
+        return leftToken;
+    }
+
+    /**
+     * @return Returns the rightToken.
+     */
+    public Query getRightToken()
+    {
+        return rightToken;
+    }
+
+    private Query leftToken;
+    private Query rightToken;
 }

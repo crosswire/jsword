@@ -19,28 +19,30 @@
  *
  * ID: $Id$
  */
-package org.crosswire.jsword.book.search.lucene;
+package org.crosswire.jsword.book.query.basic;
 
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 
 /**
- * An or token specifies that a result needs to be in either the left and the right token.
+ * A range query specifies how a range should be included in the search.
+ * It provides a range, a modifier (AND [+] or AND NOT [-]).
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
-public class OrQuery extends AbstractBinaryQuery
+public class RangeQuery extends AbstractQuery
 {
 
     /**
      * 
      */
-    public OrQuery(Query theLeftToken, Query theRightToken)
+    public RangeQuery(String theRange)
     {
-        super(theLeftToken, theRightToken);
+        super(theRange);
     }
 
     /* (non-Javadoc)
@@ -48,9 +50,14 @@ public class OrQuery extends AbstractBinaryQuery
      */
     public Key find(Index index) throws BookException
     {
-        Key left = getLeftToken().find(index);
-        Key right = getRightToken().find(index);
-        left.addAll(right);
-        return left;
+        String range = getQuery();
+        try
+        {
+            return index.getKey(range);
+        }
+        catch (NoSuchKeyException e)
+        {
+            throw new BookException(Msg.ILLEGAL_PASSAGE, e, new Object[] { range });
+        }
     }
 }

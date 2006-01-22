@@ -19,32 +19,30 @@
  *
  * ID: $Id$
  */
-package org.crosswire.jsword.book.search.lucene;
+package org.crosswire.jsword.book.query.basic;
 
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.query.Query;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.RestrictionType;
 
 /**
- * A blur token specifies much to blur the results of the right token.
+ * An and token specifies that a result needs to be in both the left and the right token.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
-public class BlurQuery extends AbstractBinaryQuery
+public class AndQuery extends AbstractBinaryQuery
 {
 
     /**
      * 
      */
-    public BlurQuery(Query theLeftToken, Query theRightToken, int theFactor)
+    public AndQuery(Query theLeftToken, Query theRightToken)
     {
         super(theLeftToken, theRightToken);
-        factor = theFactor;
     }
-
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.parse.Query#find(org.crosswire.jsword.book.search.Index)
      */
@@ -52,18 +50,7 @@ public class BlurQuery extends AbstractBinaryQuery
     {
         Key left = getLeftToken().find(index);
         Key right = getRightToken().find(index);
-        right.blur(factor, RestrictionType.getDefaultBlurRestriction());
         left.retainAll(right);
         return left;
     }
-
-    /**
-     * @return the blur factor
-     */
-    public int getFactor()
-    {
-        return factor;
-    }
-
-    private int factor;
 }

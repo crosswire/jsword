@@ -22,6 +22,7 @@
 package org.crosswire.jsword.book.search;
 
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.query.Query;
 import org.crosswire.jsword.passage.Key;
 
 /**
@@ -51,5 +52,5 @@ public interface Searcher
      * @param request The request
      * @return The matching verses
      */
-    Key search(String request) throws BookException;
+    Key search(Query request) throws BookException;
 }

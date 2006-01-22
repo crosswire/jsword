@@ -19,37 +19,35 @@
  *
  * ID: $Id$
  */
-package org.crosswire.jsword.book.search.lucene;
+package org.crosswire.jsword.book.query.basic;
 
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.passage.Key;
 
 /**
- * An and token specifies that a result needs to be in both the left and the right token.
+ * A base query is the smallest unit of search that the index can perform.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
-public class AndQuery extends AbstractBinaryQuery
+public class BaseQuery extends AbstractQuery
 {
 
     /**
      * 
      */
-    public AndQuery(Query theLeftToken, Query theRightToken)
+    public BaseQuery(String theQuery)
     {
-        super(theLeftToken, theRightToken);
+        super(theQuery);
     }
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.parse.Query#find(org.crosswire.jsword.book.search.Index)
      */
     public Key find(Index index) throws BookException
     {
-        Key left = getLeftToken().find(index);
-        Key right = getRightToken().find(index);
-        left.retainAll(right);
-        return left;
+        return index.find(getQuery());
     }
 }
