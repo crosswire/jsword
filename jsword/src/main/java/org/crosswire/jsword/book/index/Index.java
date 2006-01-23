@@ -19,9 +19,10 @@
  *
  * ID: $Id$
  */
-package org.crosswire.jsword.book.search;
+package org.crosswire.jsword.book.index;
 
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.search.SearchModifier;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 

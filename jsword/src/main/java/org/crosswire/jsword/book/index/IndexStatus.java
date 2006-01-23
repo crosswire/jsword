@@ -19,7 +19,7 @@
  *
  * ID: $Id$
  */
-package org.crosswire.jsword.book;
+package org.crosswire.jsword.book.index;
 
 import java.io.Serializable;
 
