@@ -21,14 +21,14 @@
  */
 package org.crosswire.common.progress;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Timer;
@@ -62,16 +62,14 @@ public final class Job
         this.reportedpc = 0;
         this.finished = false;
         this.interruptable = work != null;
-        this.listeners = new PropertyChangeSupport(this);
+        this.listeners = new ArrayList();
         this.start = -1;
         this.predictedlen = -1;
 
         if (fakeupdates)
         {
             updater = new Timer();
-            updater.schedule(new PredictTask(),
-                             0,
-                             100);
+            updater.schedule(new PredictTask(), 0, 100);
         }
 
         // Set-up the timings files. It's not a disaster if it doesn't load
@@ -211,10 +209,8 @@ public final class Job
         {
             return;
         }
-        Boolean oldValue = Boolean.valueOf(interruptable);
-        Boolean newValue = Boolean.valueOf(newInterruptable);
         interruptable = newInterruptable;
-        listeners.firePropertyChange("interruptable", oldValue, newValue); //$NON-NLS-1$
+        fireStateChanged();
     }
 
     /**
@@ -250,6 +246,60 @@ public final class Job
     public String getJobDescription()
     {
         return jobdesc;
+    }
+
+    /**
+     * Add a listener to the list
+     */
+    public synchronized void addWorkListener(WorkListener li)
+    {
+        List temp = new ArrayList();
+        temp.addAll(listeners);
+
+        if (!temp.contains(li))
+        {
+            temp.add(li);
+            listeners = temp;
+        }
+    }
+
+    /**
+     * Remote a listener from the list
+     */
+    public synchronized void removeWorkListener(WorkListener li)
+    {
+        if (listeners.contains(li))
+        {
+            List temp = new ArrayList();
+            temp.addAll(listeners);
+            temp.remove(li);
+            listeners = temp;
+        }
+    }
+
+    protected void fireStateChanged()
+    {
+        final WorkEvent ev = new WorkEvent(this);
+
+        // we need to keep the synchronized section very small to avoid deadlock
+        // certainly keep the event dispatch clear of the synchronized block or
+        // there will be a deadlock
+        final List temp = new ArrayList();
+        synchronized (this)
+        {
+            temp.addAll(listeners);
+        }
+
+        // We ought only to tell listeners about jobs that are in our
+        // list of jobs so we need to fire before delete.
+        if (listeners != null)
+        {
+            int count = temp.size();
+            for (int i = 0; i < count; i++)
+            {
+                ((WorkListener) temp.get(i)).workStateChanged(ev);
+            }
+        }
     }
 
     /**
@@ -441,26 +491,6 @@ public final class Job
     }
 
     /**
-     * Interface for people to be notified of changes to the
-     * current Font.
-     * @param li The new listener class
-     */
-    public void addPropertyChangeListener(PropertyChangeListener li)
-    {
-        listeners.addPropertyChangeListener(li);
-    }
-
-    /**
-     * Interface for people to be notified of changes to the
-     * current Font.
-     * @param li The listener class to be deleted
-     */
-    public void removePropertyChangeListener(PropertyChangeListener li)
-    {
-        listeners.removePropertyChangeListener(li);
-    }
-
-    /**
      * Does this job allow interruptions?
      */
     private boolean interruptable;
@@ -543,7 +573,7 @@ public final class Job
     /**
      * People that want to know about "interruptable" changes
      */
-    private PropertyChangeSupport listeners;
+    private List listeners;
 
     /**
      * So we can fake progress for Jobs that don't tell us how they are doing

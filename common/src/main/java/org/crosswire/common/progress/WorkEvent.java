@@ -43,6 +43,14 @@ public class WorkEvent extends EventObject
     }
 
     /**
+     * Initialize a WorkEvent
+     */
+    public WorkEvent(Job source)
+    {
+        super(source);
+    }
+
+    /**
      * Accessor for the Job
      */
     public Job getJob()

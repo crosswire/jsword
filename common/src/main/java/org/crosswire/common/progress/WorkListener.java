@@ -39,4 +39,5 @@ public interface WorkListener extends EventListener
      * @param ev Describes the progress
      */
     void workProgressed(WorkEvent ev);
+    void workStateChanged(WorkEvent ev);
 }
