@@ -29,10 +29,10 @@ import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.IndexStatus;
 import org.crosswire.jsword.book.OSISUtil;
-import org.crosswire.jsword.book.search.IndexManager;
-import org.crosswire.jsword.book.search.IndexManagerFactory;
+import org.crosswire.jsword.book.index.IndexManager;
+import org.crosswire.jsword.book.index.IndexManagerFactory;
+import org.crosswire.jsword.book.index.IndexStatus;
 import org.jdom.Document;
 import org.jdom.Element;
 

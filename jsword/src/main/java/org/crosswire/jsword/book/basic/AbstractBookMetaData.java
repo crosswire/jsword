@@ -21,7 +21,6 @@
  */
 package org.crosswire.jsword.book.basic;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -37,7 +36,9 @@ import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.FeatureType;
-import org.crosswire.jsword.book.IndexStatus;
+import org.crosswire.jsword.book.index.IndexStatus;
+import org.crosswire.jsword.book.index.IndexStatusEvent;
+import org.crosswire.jsword.book.index.IndexStatusListener;
 import org.jdom.Document;
 
 /**
@@ -195,7 +196,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
         IndexStatus oldValue = this.indexStatus;
         this.indexStatus = newValue;
         prop.put(KEY_INDEXSTATUS, newValue);
-        firePropertyChange(KEY_INDEXSTATUS, oldValue, newValue);
+        firePropertyChange(oldValue, newValue);
     }
 
     /* (non-Javadoc)
@@ -319,28 +320,28 @@ public abstract class AbstractBookMetaData implements BookMetaData
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#addPropertyChangeListener(java.beans.PropertyChangeListener)
+     * @see org.crosswire.jsword.book.BookMetaData#addIndexStatusListener(org.crosswire.jsword.book.index.IndexStatusListener)
      */
-    public void addPropertyChangeListener(PropertyChangeListener listener)
+    public void addIndexStatusListener(IndexStatusListener listener)
     {
         if (listeners == null)
         {
             listeners = new EventListenerList();
         }
-        listeners.add(PropertyChangeListener.class, listener);
+        listeners.add(IndexStatusListener.class, listener);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#removePropertyChangeListener(java.beans.PropertyChangeListener)
+     * @see org.crosswire.jsword.book.BookMetaData#removeIndexStatusListener(org.crosswire.jsword.book.index.IndexStatusListener)
      */
-    public void removePropertyChangeListener(PropertyChangeListener listener)
+    public void removeIndexStatusListener(IndexStatusListener listener)
     {
         if (listeners == null)
         {
             return;
         }
 
-        listeners.remove(PropertyChangeListener.class, listener);
+        listeners.remove(IndexStatusListener.class, listener);
     }
 
     /**
@@ -348,16 +349,14 @@ public abstract class AbstractBookMetaData implements BookMetaData
      * If <code>oldValue</code> and <code>newValue</code> are not equal and the
      * <code>PropertyChangeEvent</code> listener list isn't empty,
      * then fire a <code>PropertyChange</code> event to each listener.
-     * @param propertyName  the programmatic name of the property that was changed
-     * @param oldValue the old value of the property (as an Object)
-     * @param newValue the new value of the property (as an Object)
-     * @see java.beans.PropertyChangeSupport
+     * @param oldStatus the old value of the property (as an Object)
+     * @param newStatus the new value of the property (as an Object)
      */
-    protected void firePropertyChange(String propertyName, Object oldValue, Object newValue)
+    protected void firePropertyChange(IndexStatus oldStatus, IndexStatus newStatus)
     {
         if (listeners != null)
         {
-            if (oldValue != null && newValue != null && oldValue.equals(newValue))
+            if (oldStatus != null && newStatus != null && oldStatus.equals(newStatus))
             {
                 return;
             }
@@ -369,9 +368,9 @@ public abstract class AbstractBookMetaData implements BookMetaData
                 {
                     if (listenerList[i] == PropertyChangeListener.class)
                     {
-                        PropertyChangeEvent ev = new PropertyChangeEvent(this, propertyName, oldValue, newValue);
-                        PropertyChangeListener li = (PropertyChangeListener) listenerList[i + 1];
-                        li.propertyChange(ev);
+                        IndexStatusEvent ev = new IndexStatusEvent(this, newStatus);
+                        IndexStatusListener li = (IndexStatusListener) listenerList[i + 1];
+                        li.statusChanged(ev);
                     }
                 }
             }

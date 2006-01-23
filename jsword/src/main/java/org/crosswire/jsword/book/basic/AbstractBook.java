@@ -21,7 +21,6 @@
  */
 package org.crosswire.jsword.book.basic;
 
-import java.beans.PropertyChangeListener;
 import java.util.Map;
 
 import org.crosswire.common.activate.Lock;
@@ -31,7 +30,8 @@ import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.FeatureType;
-import org.crosswire.jsword.book.IndexStatus;
+import org.crosswire.jsword.book.index.IndexStatus;
+import org.crosswire.jsword.book.index.IndexStatusListener;
 import org.crosswire.jsword.book.search.SearchRequest;
 import org.crosswire.jsword.book.search.Searcher;
 import org.crosswire.jsword.book.search.SearcherFactory;
@@ -245,19 +245,19 @@ public abstract class AbstractBook implements Book
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#removePropertyChangeListener(java.beans.PropertyChangeListener)
+     * @see org.crosswire.jsword.book.BookMetaData#removeIndexStatusListener(org.crosswire.jsword.book.index.IndexStatusListener)
      */
-    public void removePropertyChangeListener(PropertyChangeListener li)
+    public void removeIndexStatusListener(IndexStatusListener li)
     {
-        bmd.removePropertyChangeListener(li);
+        bmd.removeIndexStatusListener(li);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#addPropertyChangeListener(java.beans.PropertyChangeListener)
+     * @see org.crosswire.jsword.book.BookMetaData#addIndexStatusListener(org.crosswire.jsword.book.index.IndexStatusListener)
      */
-    public void addPropertyChangeListener(PropertyChangeListener li)
+    public void addIndexStatusListener(IndexStatusListener li)
     {
-        bmd.addPropertyChangeListener(li);
+        bmd.addIndexStatusListener(li);
     }
 
     /* (non-Javadoc)
