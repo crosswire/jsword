@@ -27,10 +27,10 @@ import java.net.URL;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.index.IndexManager;
+import org.crosswire.jsword.book.index.IndexManagerFactory;
 import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.book.install.Installer;
-import org.crosswire.jsword.book.search.IndexManager;
-import org.crosswire.jsword.book.search.IndexManagerFactory;
 
 /**
  * .
