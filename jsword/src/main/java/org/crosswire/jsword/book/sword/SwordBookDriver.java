@@ -37,9 +37,9 @@ import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.basic.AbstractBookDriver;
-import org.crosswire.jsword.book.index.IndexManager;
-import org.crosswire.jsword.book.index.IndexManagerFactory;
-import org.crosswire.jsword.book.index.IndexStatus;
+import org.crosswire.jsword.index.IndexManager;
+import org.crosswire.jsword.index.IndexManagerFactory;
+import org.crosswire.jsword.index.IndexStatus;
 import org.crosswire.jsword.util.Project;
 
 /**

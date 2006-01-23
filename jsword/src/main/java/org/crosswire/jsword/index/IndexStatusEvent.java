@@ -17,26 +17,50 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: BooksListener.java 763 2005-07-27 23:26:43Z dmsmith $
+ * ID: $Id: BooksEvent.java 763 2005-07-27 23:26:43Z dmsmith $
  */
-package org.crosswire.jsword.book.index;
+package org.crosswire.jsword.index;
 
-import java.util.EventListener;
+import java.util.EventObject;
 
 
 /**
- * IndexStatusListeners are able to be notified about changes to the
- * IndexStatus of a book.
+ * An IndexStatusEvent is fired whenever the IndexStatus
+ * of a book has changed.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public interface IndexStatusListener extends EventListener
+public class IndexStatusEvent extends EventObject
 {
     /**
-     * Called whenever the IndexStatus of a book has changed.
-     * @param ev A description of the change
+     * Basic constructor
+     * @param status The new status of the book.
      */
-    void statusChanged(IndexStatusEvent ev);
+    public IndexStatusEvent(Object source, IndexStatus status)
+    {
+        super(source);
+
+        indexStatus = status;
+    }
+
+    /**
+     * @return Returns the indexStatus.
+     */
+    public IndexStatus getIndexStatus()
+    {
+        return indexStatus;
+    }
+
+    /**
+     * The indexStatus of the book.
+     */
+    private transient IndexStatus indexStatus;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3834876879554819894L;
+
 }

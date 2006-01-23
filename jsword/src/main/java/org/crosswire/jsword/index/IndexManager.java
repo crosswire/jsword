@@ -19,7 +19,7 @@
  *
  * ID: $Id$
  */
-package org.crosswire.jsword.book.index;
+package org.crosswire.jsword.index;
 
 import java.net.URL;
 

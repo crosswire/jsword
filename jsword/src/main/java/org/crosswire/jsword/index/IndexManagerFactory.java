@@ -19,7 +19,7 @@
  *
  * ID: $Id$
  */
-package org.crosswire.jsword.book.index;
+package org.crosswire.jsword.index;
 
 import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;

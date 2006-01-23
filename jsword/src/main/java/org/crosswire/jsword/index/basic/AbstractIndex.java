@@ -19,10 +19,10 @@
  *
  * ID: $Id$
  */
-package org.crosswire.jsword.book.index.basic;
+package org.crosswire.jsword.index.basic;
 
-import org.crosswire.jsword.book.index.Index;
 import org.crosswire.jsword.book.search.SearchModifier;
+import org.crosswire.jsword.index.Index;
 
 /**
  * A simple implementation of an Index that provides the

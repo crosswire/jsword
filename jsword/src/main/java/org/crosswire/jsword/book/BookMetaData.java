@@ -23,8 +23,8 @@ package org.crosswire.jsword.book;
 
 import java.util.Map;
 
-import org.crosswire.jsword.book.index.IndexStatus;
-import org.crosswire.jsword.book.index.IndexStatusListener;
+import org.crosswire.jsword.index.IndexStatus;
+import org.crosswire.jsword.index.IndexStatusListener;
 import org.jdom.Document;
 
 /**
@@ -160,14 +160,14 @@ public interface BookMetaData extends Comparable
 
     /**
      * Has anyone generated a search index for this Book?
-     * @see org.crosswire.jsword.book.index.IndexManager
+     * @see org.crosswire.jsword.index.IndexManager
      */
     IndexStatus getIndexStatus();
 
     /**
      * This method does not alter the index status, however it is for Indexers
      * that are responsible for indexing and have changed the status themselves.
-     * @see org.crosswire.jsword.book.index.IndexManager
+     * @see org.crosswire.jsword.index.IndexManager
      */
     void setIndexStatus(IndexStatus status);
 

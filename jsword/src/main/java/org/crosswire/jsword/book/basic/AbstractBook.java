@@ -30,12 +30,12 @@ import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.FeatureType;
-import org.crosswire.jsword.book.index.IndexStatus;
-import org.crosswire.jsword.book.index.IndexStatusListener;
 import org.crosswire.jsword.book.search.SearchRequest;
 import org.crosswire.jsword.book.search.Searcher;
 import org.crosswire.jsword.book.search.SearcherFactory;
 import org.crosswire.jsword.book.search.basic.DefaultSearchRequest;
+import org.crosswire.jsword.index.IndexStatus;
+import org.crosswire.jsword.index.IndexStatusListener;
 import org.crosswire.jsword.passage.Key;
 import org.jdom.Document;
 
@@ -245,7 +245,7 @@ public abstract class AbstractBook implements Book
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#removeIndexStatusListener(org.crosswire.jsword.book.index.IndexStatusListener)
+     * @see org.crosswire.jsword.book.BookMetaData#removeIndexStatusListener(org.crosswire.jsword.index.IndexStatusListener)
      */
     public void removeIndexStatusListener(IndexStatusListener li)
     {
@@ -253,7 +253,7 @@ public abstract class AbstractBook implements Book
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#addIndexStatusListener(org.crosswire.jsword.book.index.IndexStatusListener)
+     * @see org.crosswire.jsword.book.BookMetaData#addIndexStatusListener(org.crosswire.jsword.index.IndexStatusListener)
      */
     public void addIndexStatusListener(IndexStatusListener li)
     {
