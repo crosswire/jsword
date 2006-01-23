@@ -19,9 +19,9 @@
  *
  * ID: $Id$
  */
-package org.crosswire.jsword.book.search.basic;
+package org.crosswire.jsword.book.index.basic;
 
-import org.crosswire.jsword.book.search.Index;
+import org.crosswire.jsword.book.index.Index;
 import org.crosswire.jsword.book.search.SearchModifier;
 
 /**
