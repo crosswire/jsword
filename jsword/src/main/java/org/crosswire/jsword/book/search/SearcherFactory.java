@@ -24,6 +24,9 @@ package org.crosswire.jsword.book.search;
 import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.index.Index;
+import org.crosswire.jsword.book.index.IndexManager;
+import org.crosswire.jsword.book.index.IndexManagerFactory;
 
 /**
  * Factory method for creating a new Searcher.

@@ -22,6 +22,7 @@
 package org.crosswire.jsword.book.search;
 
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.index.Index;
 import org.crosswire.jsword.book.query.Query;
 import org.crosswire.jsword.passage.Key;
 
