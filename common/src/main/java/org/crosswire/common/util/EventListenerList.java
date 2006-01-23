@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.EventListener;
 
 /**
@@ -46,7 +47,7 @@ import java.util.EventListener;
  *
  * <p>A single instance
  * can be used to hold all listeners (of all types) for the instance
- * using the lsit.  It is the responsiblity of the class using the
+ * using the list.  It is the responsiblity of the class using the
  * EventListenerList to provide type-safe API (preferably conforming
  * to the JavaBeans spec) and methods which dispatch event notification
  * methods to appropriate Event Listeners on the list.
@@ -105,7 +106,7 @@ import java.util.EventListener;
  * version of Sw*ng.  A future release of Sw*ng will provide support for
  * long term persistence.
  *
- * @version 1.23 10/01/98
+ * @version 1.34 01/23/03
  * @author Georges Saab
  * @author Hans Muller
  * @author James Gosling
@@ -131,7 +132,63 @@ public class EventListenerList implements Serializable
      */
     public Object[] getListenerList()
     {
-        return listenerList;
+        Object[] lList = listenerList;
+        return lList;
+    }
+
+    /**
+     * Return an array of all the listeners of the given type. 
+     * @return all of the listeners of the specified type. 
+     * @exception  ClassCastException if the supplied class
+     *      is not assignable to EventListener
+     * 
+     * @since 1.3
+     */
+    public EventListener[] getListeners(Class t)
+    {
+        Object[] lList = listenerList;
+        int n = getListenerCount(lList, t);
+        EventListener[] result = (EventListener[]) Array.newInstance(t, n);
+        int j = 0;
+        for (int i = lList.length - 2; i >= 0; i -= 2)
+        {
+            if (lList[i] == t)
+            {
+                result[j++] = (EventListener) lList[i + 1];
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Returns the total number of listeners for this listener list.
+     */
+    public int getListenerCount()
+    {
+        return listenerList.length/2;
+    }
+
+    /**
+     * Returns the total number of listeners of the supplied type 
+     * for this listener list.
+     */
+    public int getListenerCount(Class t)
+    {
+        Object[] lList = listenerList;
+        return getListenerCount(lList, t);
+    }
+
+    private int getListenerCount(Object[] list, Class t)
+    {
+        int count = 0;
+        for (int i = 0; i < list.length; i += 2)
+        {
+            if (t == (Class) list[i])
+            {
+                count++;
+            }
+        }
+        return count;
     }
 
     /**
@@ -141,7 +198,12 @@ public class EventListenerList implements Serializable
      */
     public synchronized void add(Class t, EventListener li)
     {
-        assert li != null;
+        if (li ==null) {
+            // In an ideal world, we would do an assertion here
+            // to help developers know they are probably doing
+            // something wrong
+            return;
+        }
 
         if (!t.isInstance(li))
         {
@@ -175,7 +237,12 @@ public class EventListenerList implements Serializable
      */
     public synchronized void remove(Class t, EventListener li)
     {
-        assert li != null;
+        if (li ==null) {
+            // In an ideal world, we would do an assertion here
+            // to help developers know they are probably doing
+            // something wrong
+            return;
+        }
 
         if (!t.isInstance(li))
         {
