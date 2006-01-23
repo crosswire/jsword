@@ -24,17 +24,19 @@ package org.crosswire.jsword.book.query.basic;
 import org.crosswire.jsword.book.query.Query;
 
 /**
- * A base token is the smallest unit of search that the index can perform.
+ * A base query is the smallest unit of search that the index can perform.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
- * @author DM Smith [ dmsmith555 at yahoo dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public abstract class AbstractQuery implements Query
 {
 
     /**
+     * Construct a query from a string.
      * 
+     * @param theQuery
      */
     public AbstractQuery(String theQuery)
     {

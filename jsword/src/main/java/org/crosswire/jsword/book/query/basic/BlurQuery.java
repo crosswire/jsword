@@ -28,21 +28,25 @@ import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.RestrictionType;
 
 /**
- * A blur token specifies much to blur the results of the right token.
+ * A blur query specifies how much to blur the results of the right query
+ * before ANDing it to the left.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
- * @author DM Smith [ dmsmith555 at yahoo dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class BlurQuery extends AbstractBinaryQuery
 {
-
     /**
+     * Create a query that specifies how much to blur the results of the right query
+     * before ANDing it to the left.
      * 
+     * @param theLeftQuery
+     * @param theRightQuery
      */
-    public BlurQuery(Query theLeftToken, Query theRightToken, int theFactor)
+    public BlurQuery(Query theLeftQuery, Query theRightQuery, int theFactor)
     {
-        super(theLeftToken, theRightToken);
+        super(theLeftQuery, theRightQuery);
         factor = theFactor;
     }
 
@@ -51,10 +55,24 @@ public class BlurQuery extends AbstractBinaryQuery
      */
     public Key find(Index index) throws BookException
     {
-        Key left = getLeftToken().find(index);
-        Key right = getRightToken().find(index);
+        Key left = getLeftQuery().find(index);
+
+        if (left.isEmpty())
+        {
+            return left;
+        }
+
+        Key right = getRightQuery().find(index);
+
+        if (right.isEmpty())
+        {
+            return right;
+        }
+
         right.blur(factor, RestrictionType.getDefaultBlurRestriction());
+
         left.retainAll(right);
+
         return left;
     }
 

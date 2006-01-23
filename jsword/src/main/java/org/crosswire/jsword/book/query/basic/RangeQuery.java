@@ -38,7 +38,9 @@ public class RangeQuery extends AbstractQuery
 {
 
     /**
+     * Construct a query from the range specification.
      * 
+     * @param theRange
      */
     public RangeQuery(String theRange)
     {

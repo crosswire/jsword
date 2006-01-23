@@ -27,22 +27,25 @@ import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.passage.Key;
 
 /**
- * An "And Not" token specifies that a result needs to be in the left
- * but not in the right token.
+ * An "And Not" query specifies that a result needs to be in the left
+ * but not in the right query result.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
- * @author DM Smith [ dmsmith555 at yahoo dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class AndNotQuery extends AbstractBinaryQuery
 {
 
     /**
+     * Create a query where the right query result is subtracted from the left query result.
      * 
+     * @param theLeftQuery
+     * @param theRightQuery
      */
-    public AndNotQuery(Query theLeftToken, Query theRightToken)
+    public AndNotQuery(Query theLeftQuery, Query theRightQuery)
     {
-        super(theLeftToken, theRightToken);
+        super(theLeftQuery, theRightQuery);
     }
 
     /* (non-Javadoc)
@@ -50,9 +53,22 @@ public class AndNotQuery extends AbstractBinaryQuery
      */
     public Key find(Index index) throws BookException
     {
-        Key left = getLeftToken().find(index);
-        Key right = getRightToken().find(index);
+        Key left = getLeftQuery().find(index);
+
+        if (left.isEmpty())
+        {
+            return left;
+        }
+
+        Key right = getRightQuery().find(index);
+
+        if (right.isEmpty())
+        {
+            return left;
+        }
+
         left.removeAll(right);
+
         return left;
     }
 

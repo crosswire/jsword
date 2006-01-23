@@ -26,7 +26,7 @@ import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.passage.Key;
 
 /**
- * The search.Searcher uses a List of Tokens to calculate a search.
+ * The search.Searcher uses a Query to calculate a search result.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.

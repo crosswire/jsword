@@ -32,13 +32,13 @@ public interface BinaryQuery extends Query
 {
 
     /**
-     * @return Returns the leftToken.
+     * @return Returns the leftQuery.
      */
-    Query getLeftToken();
+    Query getLeftQuery();
 
     /**
-     * @return Returns the rightToken.
+     * @return Returns the rightQuery.
      */
-    Query getRightToken();
+    Query getRightQuery();
 
 }

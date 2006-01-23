@@ -27,7 +27,7 @@ import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.passage.Key;
 
 /**
- * An or token specifies that a result needs to be in either the left and the right token.
+ * An OR query specifies that a result is the union of the left and the right query results.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
@@ -39,9 +39,9 @@ public class OrQuery extends AbstractBinaryQuery
     /**
      * 
      */
-    public OrQuery(Query theLeftToken, Query theRightToken)
+    public OrQuery(Query theLeftQuery, Query theRightQuery)
     {
-        super(theLeftToken, theRightToken);
+        super(theLeftQuery, theRightQuery);
     }
 
     /* (non-Javadoc)
@@ -49,9 +49,21 @@ public class OrQuery extends AbstractBinaryQuery
      */
     public Key find(Index index) throws BookException
     {
-        Key left = getLeftToken().find(index);
-        Key right = getRightToken().find(index);
+        Key left = getLeftQuery().find(index);
+        Key right = getRightQuery().find(index);
+
+        if (left.isEmpty())
+        {
+            return right;
+        }
+
+        if (right.isEmpty())
+        {
+            return left;
+        }
+
         left.addAll(right);
+
         return left;
     }
 }

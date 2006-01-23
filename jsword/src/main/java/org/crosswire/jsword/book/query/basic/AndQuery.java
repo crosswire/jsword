@@ -27,30 +27,46 @@ import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.passage.Key;
 
 /**
- * An and token specifies that a result needs to be in both the left and the right token.
+ * An AND query specifies that a result needs to be in both the left and the right query results.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
- * @author DM Smith [ dmsmith555 at yahoo dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class AndQuery extends AbstractBinaryQuery
 {
 
     /**
+     * Create a query where the result is the intersection of two queries.
      * 
+     * @param theLeftQuery
+     * @param theRightQuery
      */
-    public AndQuery(Query theLeftToken, Query theRightToken)
+    public AndQuery(Query theLeftQuery, Query theRightQuery)
     {
-        super(theLeftToken, theRightToken);
+        super(theLeftQuery, theRightQuery);
     }
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.parse.Query#find(org.crosswire.jsword.book.search.Index)
      */
     public Key find(Index index) throws BookException
     {
-        Key left = getLeftToken().find(index);
-        Key right = getRightToken().find(index);
+        Key left = getLeftQuery().find(index);
+
+        if (left.isEmpty())
+        {
+            return left;
+        }
+
+        Key right = getRightQuery().find(index);
+
+        if (right.isEmpty())
+        {
+            return right;
+        }
+
         left.retainAll(right);
+
         return left;
     }
 }

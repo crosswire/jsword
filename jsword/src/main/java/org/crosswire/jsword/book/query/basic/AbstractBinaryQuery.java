@@ -24,40 +24,42 @@ package org.crosswire.jsword.book.query.basic;
 import org.crosswire.jsword.book.query.Query;
 
 /**
- * A binary token has a left token and right token.
+ * A binary query has a left query and right query.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
- * @author DM Smith [ dmsmith555 at yahoo dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public abstract class AbstractBinaryQuery implements Query
 {
-
     /**
+     * Create a query consisting of two queries.
      * 
+     * @param theLeftQuery
+     * @param theRightQuery
      */
-    public AbstractBinaryQuery(Query theLeftToken, Query theRightToken)
+    public AbstractBinaryQuery(Query theLeftQuery, Query theRightQuery)
     {
-        leftToken = theLeftToken;
-        rightToken = theRightToken;
+        leftQuery = theLeftQuery;
+        rightQuery = theRightQuery;
     }
 
     /**
-     * @return Returns the leftToken.
+     * @return Returns the leftQuery.
      */
-    public Query getLeftToken()
+    public Query getLeftQuery()
     {
-        return leftToken;
+        return leftQuery;
     }
 
     /**
-     * @return Returns the rightToken.
+     * @return Returns the rightQuery.
      */
-    public Query getRightToken()
+    public Query getRightQuery()
     {
-        return rightToken;
+        return rightQuery;
     }
 
-    private Query leftToken;
-    private Query rightToken;
+    private Query leftQuery;
+    private Query rightQuery;
 }

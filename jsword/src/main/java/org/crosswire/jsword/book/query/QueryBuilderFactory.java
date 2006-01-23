@@ -25,7 +25,7 @@ import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
 
 /**
- * A Factory class for QueryDecorator.
+ * A Factory class for QueryBuilder.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
