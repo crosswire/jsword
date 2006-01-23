@@ -17,28 +17,38 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: Msg.java 763 2005-07-27 23:26:43Z dmsmith $
+ * ID: $Id: BaseQuery.java 763 2005-07-27 19:26:43 -0400 (Wed, 27 Jul 2005) dmsmith $
  */
-package org.crosswire.jsword.index.query.basic;
+package org.crosswire.jsword.index.query;
 
-import org.crosswire.common.util.MsgBase;
 
 /**
- * Compile safe Msg resource settings.
+ * A base query is the smallest unit of search that the index can perform.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-final class Msg extends MsgBase
+public abstract class AbstractQuery implements Query
 {
-    static final Msg ILLEGAL_PASSAGE = new Msg("RangeQuery.IllegalPassage"); //$NON-NLS-1$
 
     /**
-     * Passthrough ctor
+     * Construct a query from a string.
+     * 
+     * @param theQuery
      */
-    private Msg(String name)
+    public AbstractQuery(String theQuery)
     {
-        super(name);
+        query = theQuery;
     }
+
+    /**
+     * @return the query
+     */
+    public String getQuery()
+    {
+        return query;
+    }
+
+    private String query;
 }

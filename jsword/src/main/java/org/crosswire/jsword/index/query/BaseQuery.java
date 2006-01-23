@@ -17,43 +17,39 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
+ * ID: $Id:BaseQuery.java 984 2006-01-23 14:18:33 -0500 (Mon, 23 Jan 2006) dmsmith $
  */
-package org.crosswire.jsword.index.search.basic;
+package org.crosswire.jsword.index.query;
 
-import org.crosswire.jsword.index.search.SearchModifier;
+import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.index.Index;
+import org.crosswire.jsword.passage.Key;
 
 /**
- * The DefaultSearchModifier provides a simple implementation
- * of a SearchModifier.
+ * A base query is the smallest unit of search that the index can perform.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
- * @author DM Smith [dmsmith555 at gmail dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-
-public class DefaultSearchModifier implements SearchModifier
+public class BaseQuery extends AbstractQuery
 {
 
+    /**
+     * Construct a query from a string.
+     * 
+     * @param theQuery
+     */
+    public BaseQuery(String theQuery)
+    {
+        super(theQuery);
+    }
+
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.SearchModifier#isRanked()
+     * @see org.crosswire.jsword.index.search.parse.Query#find(org.crosswire.jsword.index.search.Index)
      */
-    public boolean isRanked()
+    public Key find(Index index) throws BookException
     {
-        return ranked;
+        return index.find(getQuery());
     }
-
-    /**
-     * Set whether or not the search should be ranked.
-     * @param newRanked true if the search should be ranked
-     */
-    public void setRanked(boolean newRanked)
-    {
-        ranked = newRanked;
-    }
-
-    /**
-     * The indicator of whether the request should be ranked.
-     */
-    private boolean ranked;
 }

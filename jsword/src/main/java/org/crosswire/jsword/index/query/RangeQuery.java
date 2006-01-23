@@ -17,31 +17,34 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
+ * ID: $Id:RangeQuery.java 984 2006-01-23 14:18:33 -0500 (Mon, 23 Jan 2006) dmsmith $
  */
-package org.crosswire.jsword.index.query.basic;
+package org.crosswire.jsword.index.query;
 
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.index.Index;
-import org.crosswire.jsword.index.query.Query;
 import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 
 /**
- * An OR query specifies that a result is the union of the left and the right query results.
+ * A range query specifies how a range should be included in the search.
+ * It provides a range, a modifier (AND [+] or AND NOT [-]).
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
-public class OrQuery extends AbstractBinaryQuery
+public class RangeQuery extends AbstractQuery
 {
 
     /**
+     * Construct a query from the range specification.
      * 
+     * @param theRange
      */
-    public OrQuery(Query theLeftQuery, Query theRightQuery)
+    public RangeQuery(String theRange)
     {
-        super(theLeftQuery, theRightQuery);
+        super(theRange);
     }
 
     /* (non-Javadoc)
@@ -49,21 +52,14 @@ public class OrQuery extends AbstractBinaryQuery
      */
     public Key find(Index index) throws BookException
     {
-        Key left = getLeftQuery().find(index);
-        Key right = getRightQuery().find(index);
-
-        if (left.isEmpty())
+        String range = getQuery();
+        try
         {
-            return right;
+            return index.getKey(range);
         }
-
-        if (right.isEmpty())
+        catch (NoSuchKeyException e)
         {
-            return left;
+            throw new BookException(Msg.ILLEGAL_PASSAGE, e, new Object[] { range });
         }
-
-        left.addAll(right);
-
-        return left;
     }
 }

@@ -17,13 +17,12 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
+ * ID: $Id:AndQuery.java 984 2006-01-23 14:18:33 -0500 (Mon, 23 Jan 2006) dmsmith $
  */
-package org.crosswire.jsword.index.query.basic;
+package org.crosswire.jsword.index.query;
 
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.index.Index;
-import org.crosswire.jsword.index.query.Query;
 import org.crosswire.jsword.passage.Key;
 
 /**

@@ -17,43 +17,52 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id:AbstractIndex.java 983 2006-01-23 14:10:49 -0500 (Mon, 23 Jan 2006) dmsmith $
+ * ID: $Id:OrQuery.java 984 2006-01-23 14:18:33 -0500 (Mon, 23 Jan 2006) dmsmith $
  */
-package org.crosswire.jsword.index.basic;
+package org.crosswire.jsword.index.query;
 
+import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.index.Index;
-import org.crosswire.jsword.index.search.SearchModifier;
+import org.crosswire.jsword.passage.Key;
 
 /**
- * A simple implementation of an Index that provides the
- * set/get for SearchModifier.
+ * An OR query specifies that a result is the union of the left and the right query results.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
- * @author DM Smith [dmsmith555 at gmail dot com]
+ * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
-
-public abstract class AbstractIndex implements Index
+public class OrQuery extends AbstractBinaryQuery
 {
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.Index#setSearchModifier(org.crosswire.jsword.index.search.SearchModifier)
-     */
-    public void setSearchModifier(SearchModifier theModifier)
-    {
-        modifier = theModifier;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.Index#getSearchModifier()
-     */
-    public SearchModifier getSearchModifier()
-    {
-        return modifier;
-    }
-
     /**
-     * How the search is to be modified.
+     * 
      */
-    private SearchModifier modifier;
+    public OrQuery(Query theLeftQuery, Query theRightQuery)
+    {
+        super(theLeftQuery, theRightQuery);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.index.search.parse.Query#find(org.crosswire.jsword.index.search.Index)
+     */
+    public Key find(Index index) throws BookException
+    {
+        Key left = getLeftQuery().find(index);
+        Key right = getRightQuery().find(index);
+
+        if (left.isEmpty())
+        {
+            return right;
+        }
+
+        if (right.isEmpty())
+        {
+            return left;
+        }
+
+        left.addAll(right);
+
+        return left;
+    }
 }

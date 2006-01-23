@@ -32,10 +32,10 @@ import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.index.IndexStatus;
 import org.crosswire.jsword.index.IndexStatusListener;
+import org.crosswire.jsword.index.search.DefaultSearchRequest;
 import org.crosswire.jsword.index.search.SearchRequest;
 import org.crosswire.jsword.index.search.Searcher;
 import org.crosswire.jsword.index.search.SearcherFactory;
-import org.crosswire.jsword.index.search.basic.DefaultSearchRequest;
 import org.crosswire.jsword.passage.Key;
 import org.jdom.Document;
 

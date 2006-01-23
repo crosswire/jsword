@@ -17,32 +17,36 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
+ * ID: $Id:BlurQuery.java 984 2006-01-23 14:18:33 -0500 (Mon, 23 Jan 2006) dmsmith $
  */
-package org.crosswire.jsword.index.query.basic;
+package org.crosswire.jsword.index.query;
 
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.index.Index;
 import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.RestrictionType;
 
 /**
- * A base query is the smallest unit of search that the index can perform.
+ * A blur query specifies how much to blur the results of the right query
+ * before ANDing it to the left.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class BaseQuery extends AbstractQuery
+public class BlurQuery extends AbstractBinaryQuery
 {
-
     /**
-     * Construct a query from a string.
+     * Create a query that specifies how much to blur the results of the right query
+     * before ANDing it to the left.
      * 
-     * @param theQuery
+     * @param theLeftQuery
+     * @param theRightQuery
      */
-    public BaseQuery(String theQuery)
+    public BlurQuery(Query theLeftQuery, Query theRightQuery, int theFactor)
     {
-        super(theQuery);
+        super(theLeftQuery, theRightQuery);
+        factor = theFactor;
     }
 
     /* (non-Javadoc)
@@ -50,6 +54,34 @@ public class BaseQuery extends AbstractQuery
      */
     public Key find(Index index) throws BookException
     {
-        return index.find(getQuery());
+        Key left = getLeftQuery().find(index);
+
+        if (left.isEmpty())
+        {
+            return left;
+        }
+
+        Key right = getRightQuery().find(index);
+
+        if (right.isEmpty())
+        {
+            return right;
+        }
+
+        right.blur(factor, RestrictionType.getDefaultBlurRestriction());
+
+        left.retainAll(right);
+
+        return left;
     }
+
+    /**
+     * @return the blur factor
+     */
+    public int getFactor()
+    {
+        return factor;
+    }
+
+    private int factor;
 }

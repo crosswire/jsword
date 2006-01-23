@@ -17,37 +17,28 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: OrQuery.java 964 2006-01-22 10:10:00 -0500 (Sun, 22 Jan 2006) dmsmith $
+ * ID: $Id: Msg.java 763 2005-07-27 23:26:43Z dmsmith $
  */
-package org.crosswire.jsword.index.query.basic;
+package org.crosswire.jsword.index.query;
 
-import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.index.Index;
-import org.crosswire.jsword.index.query.Query;
-import org.crosswire.jsword.passage.Key;
+import org.crosswire.common.util.MsgBase;
 
 /**
- * A null query searches for nothing and returns an empty Key.
+ * Compile safe Msg resource settings.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class NullQuery implements Query
+final class Msg extends MsgBase
 {
+    static final Msg ILLEGAL_PASSAGE = new Msg("RangeQuery.IllegalPassage"); //$NON-NLS-1$
+
     /**
-     * Create a NullQuery.
+     * Passthrough ctor
      */
-    public NullQuery()
+    private Msg(String name)
     {
+        super(name);
     }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.query.Query#find(org.crosswire.jsword.index.search.Index)
-     */
-    public Key find(Index index) throws BookException
-    {
-        return index.find(null);
-    }
-
 }

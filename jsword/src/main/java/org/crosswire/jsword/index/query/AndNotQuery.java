@@ -17,37 +17,34 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
+ * ID: $Id:AndNotQuery.java 984 2006-01-23 14:18:33 -0500 (Mon, 23 Jan 2006) dmsmith $
  */
-package org.crosswire.jsword.index.query.basic;
+package org.crosswire.jsword.index.query;
 
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.index.Index;
-import org.crosswire.jsword.index.query.Query;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.RestrictionType;
 
 /**
- * A blur query specifies how much to blur the results of the right query
- * before ANDing it to the left.
+ * An "And Not" query specifies that a result needs to be in the left
+ * but not in the right query result.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class BlurQuery extends AbstractBinaryQuery
+public class AndNotQuery extends AbstractBinaryQuery
 {
+
     /**
-     * Create a query that specifies how much to blur the results of the right query
-     * before ANDing it to the left.
+     * Create a query where the right query result is subtracted from the left query result.
      * 
      * @param theLeftQuery
      * @param theRightQuery
      */
-    public BlurQuery(Query theLeftQuery, Query theRightQuery, int theFactor)
+    public AndNotQuery(Query theLeftQuery, Query theRightQuery)
     {
         super(theLeftQuery, theRightQuery);
-        factor = theFactor;
     }
 
     /* (non-Javadoc)
@@ -66,23 +63,12 @@ public class BlurQuery extends AbstractBinaryQuery
 
         if (right.isEmpty())
         {
-            return right;
+            return left;
         }
 
-        right.blur(factor, RestrictionType.getDefaultBlurRestriction());
-
-        left.retainAll(right);
+        left.removeAll(right);
 
         return left;
     }
 
-    /**
-     * @return the blur factor
-     */
-    public int getFactor()
-    {
-        return factor;
-    }
-
-    private int factor;
 }

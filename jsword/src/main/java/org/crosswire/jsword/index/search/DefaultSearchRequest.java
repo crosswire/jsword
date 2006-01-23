@@ -17,12 +17,10 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
+ * ID: $Id:DefaultSearchRequest.java 984 2006-01-23 14:18:33 -0500 (Mon, 23 Jan 2006) dmsmith $
  */
-package org.crosswire.jsword.index.search.basic;
+package org.crosswire.jsword.index.search;
 
-import org.crosswire.jsword.index.search.SearchModifier;
-import org.crosswire.jsword.index.search.SearchRequest;
 
 /**
  * A default implementation of a SearchRequest.

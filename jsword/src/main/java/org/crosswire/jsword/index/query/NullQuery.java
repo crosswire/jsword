@@ -17,39 +17,36 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: BaseQuery.java 763 2005-07-27 19:26:43 -0400 (Wed, 27 Jul 2005) dmsmith $
+ * ID: $Id: OrQuery.java 964 2006-01-22 10:10:00 -0500 (Sun, 22 Jan 2006) dmsmith $
  */
-package org.crosswire.jsword.index.query.basic;
+package org.crosswire.jsword.index.query;
 
-import org.crosswire.jsword.index.query.Query;
+import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.index.Index;
+import org.crosswire.jsword.passage.Key;
 
 /**
- * A base query is the smallest unit of search that the index can perform.
+ * A null query searches for nothing and returns an empty Key.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public abstract class AbstractQuery implements Query
+public class NullQuery implements Query
 {
-
     /**
-     * Construct a query from a string.
-     * 
-     * @param theQuery
+     * Create a NullQuery.
      */
-    public AbstractQuery(String theQuery)
+    public NullQuery()
     {
-        query = theQuery;
     }
 
-    /**
-     * @return the query
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.index.query.Query#find(org.crosswire.jsword.index.search.Index)
      */
-    public String getQuery()
+    public Key find(Index index) throws BookException
     {
-        return query;
+        return index.find(null);
     }
 
-    private String query;
 }

@@ -17,7 +17,7 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
+ * ID: $Id:LuceneSearcher.java 984 2006-01-23 14:18:33 -0500 (Mon, 23 Jan 2006) dmsmith $
  */
 package org.crosswire.jsword.index.lucene;
 
@@ -25,9 +25,9 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.index.Index;
 import org.crosswire.jsword.index.query.Query;
 import org.crosswire.jsword.index.query.QueryBuilderFactory;
+import org.crosswire.jsword.index.search.DefaultSearchRequest;
 import org.crosswire.jsword.index.search.SearchRequest;
 import org.crosswire.jsword.index.search.Searcher;
-import org.crosswire.jsword.index.search.basic.DefaultSearchRequest;
 import org.crosswire.jsword.passage.Key;
 
 /**

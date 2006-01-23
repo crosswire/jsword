@@ -17,21 +17,21 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
+ * ID: $Id:LuceneQueryBuilder.java 984 2006-01-23 14:18:33 -0500 (Mon, 23 Jan 2006) dmsmith $
  */
 package org.crosswire.jsword.index.lucene;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.crosswire.jsword.index.query.AndNotQuery;
+import org.crosswire.jsword.index.query.AndQuery;
+import org.crosswire.jsword.index.query.BaseQuery;
+import org.crosswire.jsword.index.query.BlurQuery;
+import org.crosswire.jsword.index.query.NullQuery;
 import org.crosswire.jsword.index.query.Query;
 import org.crosswire.jsword.index.query.QueryBuilder;
-import org.crosswire.jsword.index.query.basic.AndNotQuery;
-import org.crosswire.jsword.index.query.basic.AndQuery;
-import org.crosswire.jsword.index.query.basic.BaseQuery;
-import org.crosswire.jsword.index.query.basic.BlurQuery;
-import org.crosswire.jsword.index.query.basic.NullQuery;
-import org.crosswire.jsword.index.query.basic.RangeQuery;
+import org.crosswire.jsword.index.query.RangeQuery;
 
 /**
  * A query can have a optional range specifier and an optional blur specifier.
