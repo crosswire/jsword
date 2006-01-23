@@ -22,9 +22,9 @@
 package org.crosswire.jsword.book.search.lucene;
 
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.index.Index;
 import org.crosswire.jsword.book.query.Query;
 import org.crosswire.jsword.book.query.QueryBuilderFactory;
-import org.crosswire.jsword.book.search.Index;
 import org.crosswire.jsword.book.search.SearchRequest;
 import org.crosswire.jsword.book.search.Searcher;
 import org.crosswire.jsword.book.search.basic.DefaultSearchRequest;
