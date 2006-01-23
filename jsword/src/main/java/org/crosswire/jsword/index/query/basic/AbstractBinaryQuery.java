@@ -17,43 +17,49 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id:AbstractIndex.java 983 2006-01-23 14:10:49 -0500 (Mon, 23 Jan 2006) dmsmith $
+ * ID: $Id$
  */
-package org.crosswire.jsword.index.basic;
+package org.crosswire.jsword.index.query.basic;
 
-import org.crosswire.jsword.index.Index;
-import org.crosswire.jsword.index.search.SearchModifier;
+import org.crosswire.jsword.index.query.Query;
 
 /**
- * A simple implementation of an Index that provides the
- * set/get for SearchModifier.
+ * A binary query has a left query and right query.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
- * @author DM Smith [dmsmith555 at gmail dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-
-public abstract class AbstractIndex implements Index
+public abstract class AbstractBinaryQuery implements Query
 {
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.Index#setSearchModifier(org.crosswire.jsword.index.search.SearchModifier)
+    /**
+     * Create a query consisting of two queries.
+     * 
+     * @param theLeftQuery
+     * @param theRightQuery
      */
-    public void setSearchModifier(SearchModifier theModifier)
+    public AbstractBinaryQuery(Query theLeftQuery, Query theRightQuery)
     {
-        modifier = theModifier;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.Index#getSearchModifier()
-     */
-    public SearchModifier getSearchModifier()
-    {
-        return modifier;
+        leftQuery = theLeftQuery;
+        rightQuery = theRightQuery;
     }
 
     /**
-     * How the search is to be modified.
+     * @return Returns the leftQuery.
      */
-    private SearchModifier modifier;
+    public Query getLeftQuery()
+    {
+        return leftQuery;
+    }
+
+    /**
+     * @return Returns the rightQuery.
+     */
+    public Query getRightQuery()
+    {
+        return rightQuery;
+    }
+
+    private Query leftQuery;
+    private Query rightQuery;
 }

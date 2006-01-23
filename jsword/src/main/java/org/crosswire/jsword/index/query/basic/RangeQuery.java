@@ -17,43 +17,49 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id:AbstractIndex.java 983 2006-01-23 14:10:49 -0500 (Mon, 23 Jan 2006) dmsmith $
+ * ID: $Id$
  */
-package org.crosswire.jsword.index.basic;
+package org.crosswire.jsword.index.query.basic;
 
+import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.index.Index;
-import org.crosswire.jsword.index.search.SearchModifier;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 
 /**
- * A simple implementation of an Index that provides the
- * set/get for SearchModifier.
+ * A range query specifies how a range should be included in the search.
+ * It provides a range, a modifier (AND [+] or AND NOT [-]).
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
- * @author DM Smith [dmsmith555 at gmail dot com]
+ * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
-
-public abstract class AbstractIndex implements Index
+public class RangeQuery extends AbstractQuery
 {
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.Index#setSearchModifier(org.crosswire.jsword.index.search.SearchModifier)
-     */
-    public void setSearchModifier(SearchModifier theModifier)
-    {
-        modifier = theModifier;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.Index#getSearchModifier()
-     */
-    public SearchModifier getSearchModifier()
-    {
-        return modifier;
-    }
-
     /**
-     * How the search is to be modified.
+     * Construct a query from the range specification.
+     * 
+     * @param theRange
      */
-    private SearchModifier modifier;
+    public RangeQuery(String theRange)
+    {
+        super(theRange);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.index.search.parse.Query#find(org.crosswire.jsword.index.search.Index)
+     */
+    public Key find(Index index) throws BookException
+    {
+        String range = getQuery();
+        try
+        {
+            return index.getKey(range);
+        }
+        catch (NoSuchKeyException e)
+        {
+            throw new BookException(Msg.ILLEGAL_PASSAGE, e, new Object[] { range });
+        }
+    }
 }

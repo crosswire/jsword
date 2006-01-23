@@ -22,7 +22,7 @@
 package org.crosswire.jsword.index;
 
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.search.SearchModifier;
+import org.crosswire.jsword.index.search.SearchModifier;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 

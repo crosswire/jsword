@@ -17,43 +17,43 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id:AbstractIndex.java 983 2006-01-23 14:10:49 -0500 (Mon, 23 Jan 2006) dmsmith $
+ * ID: $Id$
  */
-package org.crosswire.jsword.index.basic;
+package org.crosswire.jsword.index.search.basic;
 
-import org.crosswire.jsword.index.Index;
 import org.crosswire.jsword.index.search.SearchModifier;
 
 /**
- * A simple implementation of an Index that provides the
- * set/get for SearchModifier.
+ * The DefaultSearchModifier provides a simple implementation
+ * of a SearchModifier.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at gmail dot com]
  */
 
-public abstract class AbstractIndex implements Index
+public class DefaultSearchModifier implements SearchModifier
 {
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.Index#setSearchModifier(org.crosswire.jsword.index.search.SearchModifier)
+     * @see org.crosswire.jsword.index.search.SearchModifier#isRanked()
      */
-    public void setSearchModifier(SearchModifier theModifier)
+    public boolean isRanked()
     {
-        modifier = theModifier;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.Index#getSearchModifier()
-     */
-    public SearchModifier getSearchModifier()
-    {
-        return modifier;
+        return ranked;
     }
 
     /**
-     * How the search is to be modified.
+     * Set whether or not the search should be ranked.
+     * @param newRanked true if the search should be ranked
      */
-    private SearchModifier modifier;
+    public void setRanked(boolean newRanked)
+    {
+        ranked = newRanked;
+    }
+
+    /**
+     * The indicator of whether the request should be ranked.
+     */
+    private boolean ranked;
 }

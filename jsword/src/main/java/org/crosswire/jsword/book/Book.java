@@ -22,7 +22,7 @@
 package org.crosswire.jsword.book;
 
 import org.crosswire.common.activate.Activatable;
-import org.crosswire.jsword.book.search.SearchRequest;
+import org.crosswire.jsword.index.search.SearchRequest;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyFactory;
 

@@ -17,43 +17,41 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id:AbstractIndex.java 983 2006-01-23 14:10:49 -0500 (Mon, 23 Jan 2006) dmsmith $
+ * ID: $Id$
  */
-package org.crosswire.jsword.index.basic;
+package org.crosswire.jsword.index.search;
 
+import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.index.Index;
-import org.crosswire.jsword.index.search.SearchModifier;
+import org.crosswire.jsword.index.query.Query;
+import org.crosswire.jsword.passage.Key;
 
 /**
- * A simple implementation of an Index that provides the
- * set/get for SearchModifier.
+ * The central interface to all searching.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
- * @author DM Smith [dmsmith555 at gmail dot com]
+ * @author Joe Walker [joe at eireneh dot com]
  */
-
-public abstract class AbstractIndex implements Index
+public interface Searcher
 {
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.Index#setSearchModifier(org.crosswire.jsword.index.search.SearchModifier)
+    /**
+     * Setup the index that this parser can use to do word level searches
+     * @param index The Index to query for words
      */
-    public void setSearchModifier(SearchModifier theModifier)
-    {
-        modifier = theModifier;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.Index#getSearchModifier()
-     */
-    public SearchModifier getSearchModifier()
-    {
-        return modifier;
-    }
+    void init(Index index);
 
     /**
-     * How the search is to be modified.
+     * Take a search request and decipher it into a Passage.
+     * @param request The request
+     * @return The matching verses
      */
-    private SearchModifier modifier;
+    Key search(SearchRequest request) throws BookException;
+
+    /**
+     * Take a search request and decipher it into a Passage.
+     * @param request The request
+     * @return The matching verses
+     */
+    Key search(Query request) throws BookException;
 }

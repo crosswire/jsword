@@ -17,43 +17,67 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id:AbstractIndex.java 983 2006-01-23 14:10:49 -0500 (Mon, 23 Jan 2006) dmsmith $
+ * ID: $Id$
  */
-package org.crosswire.jsword.index.basic;
+package org.crosswire.jsword.index.search.basic;
 
-import org.crosswire.jsword.index.Index;
 import org.crosswire.jsword.index.search.SearchModifier;
+import org.crosswire.jsword.index.search.SearchRequest;
 
 /**
- * A simple implementation of an Index that provides the
- * set/get for SearchModifier.
+ * A default implementation of a SearchRequest.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
- * @author DM Smith [dmsmith555 at gmail dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-
-public abstract class AbstractIndex implements Index
+public class DefaultSearchRequest implements SearchRequest
 {
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.Index#setSearchModifier(org.crosswire.jsword.index.search.SearchModifier)
+    /**
+     * Create a DefaultSearchRequest for the provided request and
+     * the provided modifiers.
+     * @param theRequest what is being searched
+     * @param theModifier how the search is to be modified
      */
-    public void setSearchModifier(SearchModifier theModifier)
+    public DefaultSearchRequest(String theRequest, SearchModifier theModifier)
     {
+        request = theRequest;
         modifier = theModifier;
     }
 
+    /**
+     * Create a DefaultSearchRequest for the provided request.
+     * @param theRequest what is being searched
+     */
+    public DefaultSearchRequest(String theRequest)
+    {
+        this(theRequest, null);
+    }
+
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.Index#getSearchModifier()
+     * @see org.crosswire.jsword.index.search.SearchRequest#isRanked()
      */
     public SearchModifier getSearchModifier()
     {
         return modifier;
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.index.search.SearchRequest#getRequest()
+     */
+    public String getRequest()
+    {
+        return request;
+    }
+
     /**
-     * How the search is to be modified.
+     * The actual search request
+     */
+    private String request;
+
+    /**
+     * How the search is to be modified
      */
     private SearchModifier modifier;
 }

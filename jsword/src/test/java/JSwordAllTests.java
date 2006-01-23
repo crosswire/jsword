@@ -64,8 +64,8 @@ public class JSwordAllTests extends TestCase
         //suite.addTestSuite(org.crosswire.jsword.book.OsisTest.class);
 
         /* FIXME
-        suite.addTestSuite(org.crosswire.jsword.book.search.parse.ParserTest.class);
-        suite.addTestSuite(org.crosswire.jsword.book.search.parse.WordsTest.class);
+        suite.addTestSuite(org.crosswire.jsword.index.search.parse.ParserTest.class);
+        suite.addTestSuite(org.crosswire.jsword.index.search.parse.WordsTest.class);
         */
         return suite;
     }
