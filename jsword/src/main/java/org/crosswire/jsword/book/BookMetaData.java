@@ -21,9 +21,10 @@
  */
 package org.crosswire.jsword.book;
 
-import java.beans.PropertyChangeListener;
 import java.util.Map;
 
+import org.crosswire.jsword.book.index.IndexStatus;
+import org.crosswire.jsword.book.index.IndexStatusListener;
 import org.jdom.Document;
 
 /**
@@ -159,14 +160,14 @@ public interface BookMetaData extends Comparable
 
     /**
      * Has anyone generated a search index for this Book?
-     * @see org.crosswire.jsword.book.search.IndexManager
+     * @see org.crosswire.jsword.book.index.IndexManager
      */
     IndexStatus getIndexStatus();
 
     /**
      * This method does not alter the index status, however it is for Indexers
      * that are responsible for indexing and have changed the status themselves.
-     * @see org.crosswire.jsword.book.search.IndexManager
+     * @see org.crosswire.jsword.book.index.IndexManager
      */
     void setIndexStatus(IndexStatus status);
 
@@ -176,20 +177,18 @@ public interface BookMetaData extends Comparable
     Document toOSIS();
 
     /**
-     * Adds a <code>PropertyChangeListener</code> to the listener list.
-     * The listener is registered for all properties. However the only one likely
-     * to change at the time of writing is the Index Status.
-     * <p>A <code>PropertyChangeEvent</code> will get fired in response
-     * to setting a bound property, such as <code>setIndexStatus</code>.
-     * @param li the <code>PropertyChangeListener</code> to be added
+     * Adds a <code>IndexStatusListener</code> to the listener list.
+     * <p>A <code>IndexStatusEvent</code> will get fired in response
+     * to <code>setIndexStatus</code>.
+     * @param li the <code>IndexStatusListener</code> to be added
      */
-    void addPropertyChangeListener(PropertyChangeListener li);
+    void addIndexStatusListener(IndexStatusListener li);
 
     /**
-     * Removes a <code>PropertyChangeListener</code> from the listener list.
-     * @param li the <code>PropertyChangeListener</code> to be removed
+     * Removes a <code>IndexStatusListener</code> from the listener list.
+     * @param li the <code>IndexStatusListener</code> to be removed
      */
-    void removePropertyChangeListener(PropertyChangeListener li);
+    void removeIndexStatusListener(IndexStatusListener li);
 
     /**
      * The key for the type in the properties map
