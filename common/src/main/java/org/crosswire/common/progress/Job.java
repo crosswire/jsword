@@ -21,7 +21,6 @@
  */
 package org.crosswire.common.progress;
 
-import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
@@ -32,10 +31,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.Timer;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
@@ -71,9 +68,10 @@ public final class Job
 
         if (fakeupdates)
         {
-            Action actupdate = new PredictAction();
-            updater = new Timer(100, actupdate);
-            updater.start();
+            updater = new Timer();
+            updater.schedule(new PredictTask(),
+                             0,
+                             100);
         }
 
         // Set-up the timings files. It's not a disaster if it doesn't load
@@ -151,7 +149,8 @@ public final class Job
 
             if (updater != null)
             {
-                updater.stop();
+                updater.cancel();
+                updater = null;
             }
 
             current.put(statedesc, new Integer((int) (System.currentTimeMillis() - start)));
@@ -537,7 +536,7 @@ public final class Job
     private URL predicturl;
 
     /**
-     * The swing timer that lets us post fake progress events
+     * The timer that lets us post fake progress events
      */
     private Timer updater;
 
@@ -549,12 +548,12 @@ public final class Job
     /**
      * So we can fake progress for Jobs that don't tell us how they are doing
      */
-    private final class PredictAction extends AbstractAction
+    private final class PredictTask extends TimerTask
     {
         /* (non-Javadoc)
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
-        public void actionPerformed(ActionEvent ev)
+        public void run()
         {
             guessProgress();
             JobManager.fireWorkProgressed(Job.this, true);
