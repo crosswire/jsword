@@ -25,25 +25,25 @@ import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
 
 /**
- * A Factory class for SearchSyntax.
+ * A Factory class for QueryDecorator.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class SearchSyntaxFactory
+public final class QueryDecoratorFactory
 {
     /**
      * Prevent Instansiation
      */
-    private SearchSyntaxFactory()
+    private QueryDecoratorFactory()
     {
     }
 
     /**
-     * Create a new SearchSyntax.
+     * Create a new QueryDecorator.
      */
-    public static SearchSyntax getSearchSyntax()
+    public static QueryDecorator getSearchSyntax()
     {
         return instance;
     }
@@ -51,12 +51,12 @@ public final class SearchSyntaxFactory
     /**
      * The singleton
      */
-    private static SearchSyntax instance;
+    private static QueryDecorator instance;
 
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(SearchSyntaxFactory.class);
+    private static final Logger log = Logger.getLogger(QueryDecoratorFactory.class);
 
     /**
      * Setup the instance
@@ -65,12 +65,12 @@ public final class SearchSyntaxFactory
     {
         try
         {
-            Class impl = ClassUtil.getImplementor(SearchSyntax.class);
-            instance = (SearchSyntax) impl.newInstance();
+            Class impl = ClassUtil.getImplementor(QueryDecorator.class);
+            instance = (QueryDecorator) impl.newInstance();
         }
         catch (Exception ex)
         {
-            log.error("createIndexManager failed", ex); //$NON-NLS-1$
+            log.error("create Query Decorator failed", ex); //$NON-NLS-1$
         }
     }
 }

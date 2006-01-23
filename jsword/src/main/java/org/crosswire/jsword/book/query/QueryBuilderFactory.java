@@ -17,7 +17,7 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: SearchSyntaxFactory.java 763 2005-07-27 23:26:43Z dmsmith $
+ * ID: $Id: QueryDecoratorFactory.java 763 2005-07-27 23:26:43Z dmsmith $
  */
 package org.crosswire.jsword.book.query;
 
@@ -25,7 +25,7 @@ import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
 
 /**
- * A Factory class for SearchSyntax.
+ * A Factory class for QueryDecorator.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.

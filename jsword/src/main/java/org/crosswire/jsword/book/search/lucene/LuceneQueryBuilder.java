@@ -21,16 +21,16 @@
  */
 package org.crosswire.jsword.book.search.lucene;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.crosswire.jsword.book.query.Query;
+import org.crosswire.jsword.book.query.QueryBuilder;
 import org.crosswire.jsword.book.query.basic.AndNotQuery;
 import org.crosswire.jsword.book.query.basic.AndQuery;
 import org.crosswire.jsword.book.query.basic.BaseQuery;
 import org.crosswire.jsword.book.query.basic.BlurQuery;
+import org.crosswire.jsword.book.query.basic.NullQuery;
 import org.crosswire.jsword.book.query.basic.RangeQuery;
 
 /**
@@ -44,84 +44,75 @@ import org.crosswire.jsword.book.query.basic.RangeQuery;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class LuceneQueryBuilder
+public final class LuceneQueryBuilder implements QueryBuilder
 {
     /**
      * Prevent Instansiation
      */
-    private LuceneQueryBuilder()
+    public LuceneQueryBuilder()
     {
     }
 
-    /**
-     * Tokenize a query into a list of Tokens.
-     * @param aSearch The text to parse
-     * @return A List of selected Tokens
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.query.QueryBuilder#parse(java.lang.String)
      */
-    public static List tokenize(String aSearch)
+    public Query parse(String aSearch)
     {
+        Query query = NULL_QUERY;
+
         String sought = aSearch;
-        List output = new ArrayList();
         if (sought == null || sought.length()  == 0)
         {
-            return output;
+            return query;
         }
 
         int i = 0;
 
-        Query query = null;
         Query range = null;
-        String rangeModifier = null;
+        String rangeModifier = ""; //$NON-NLS-1$
         // Look for a range +[...], -[...], or [...]
         Matcher rangeMatcher = RANGE_PATTERN.matcher(sought);
         if (rangeMatcher.find())
         {
             rangeModifier = rangeMatcher.group(1);
             range = new RangeQuery(rangeMatcher.group(2));
-            sought = sought.substring(rangeMatcher.end() - 1);
+            sought = sought.substring(rangeMatcher.end());
         }
 
         // Look for a blur ~n
         Matcher blurMatcher = BLUR_PATTERN.matcher(sought);
         if (blurMatcher.find())
         {
-            int blurFactor = 1;
             // Did we have ~ or ~n?
-            if (blurMatcher.groupCount() > 0)
+            int blurFactor = 1;
+            String blur = blurMatcher.group(1);
+            if (blur.length() > 0)
             {
-                blurFactor = Integer.valueOf(blurMatcher.group(1)).intValue();
+                blurFactor = Integer.valueOf(blur).intValue();
             }
             Query left = new BaseQuery(sought.substring(i, blurMatcher.start()));
             Query right = new BaseQuery(sought.substring(blurMatcher.end()));
             query = new BlurQuery(left, right, blurFactor);
         }
-        else
+        else if (sought.length() > 0)
         {
             query = new BaseQuery(sought);
         }
 
-        if (range != null)
+        if (range != null && !NULL_QUERY.equals(query))
         {
-            if (rangeModifier == null)
+            if (rangeModifier.length() == 0 || rangeModifier.charAt(0) == '+')
             {
-                output.add(query);
-                output.add(range);
-            }
-            else if (rangeModifier.charAt(0) == '+')
-            {
-                output.add(new AndQuery(query, range));
+                query = new AndQuery(range, query);
             }
             else
             {
                 // AndNot needs to be after what it is restricting
-                output.add(new AndNotQuery(query, range));
+                query = new AndNotQuery(query, range);
             }
         }
-        else
-        {
-            output.add(query);
-        }
-        return output;
+
+        return query;
     }
 
     /**
@@ -136,5 +127,10 @@ public final class LuceneQueryBuilder
      * The pattern of a blur. A '~', optionally followed by a number, representing the number of verses.
      */
     private static final Pattern BLUR_PATTERN = Pattern.compile("\\s~(\\d*)?\\s"); //$NON-NLS-1$
+
+    /**
+     * A query that returns nothing.
+     */
+    private static final Query NULL_QUERY = new NullQuery();
 
 }

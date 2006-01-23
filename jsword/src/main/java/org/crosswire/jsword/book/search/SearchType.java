@@ -23,8 +23,8 @@ package org.crosswire.jsword.book.search;
 
 import java.io.Serializable;
 
-import org.crosswire.jsword.book.query.SearchSyntax;
-import org.crosswire.jsword.book.query.SearchSyntaxFactory;
+import org.crosswire.jsword.book.query.QueryDecorator;
+import org.crosswire.jsword.book.query.QueryDecoratorFactory;
 
 /**
  * An Enumeration of the possible types of Searches.
@@ -237,7 +237,7 @@ public abstract class SearchType implements Serializable
      */
     private String name;
 
-    protected static final SearchSyntax SEARCH_SYNTAX = SearchSyntaxFactory.getSearchSyntax();
+    protected static final QueryDecorator SEARCH_SYNTAX = QueryDecoratorFactory.getSearchSyntax();
 
     // Support for serialization
     private static int nextObj;

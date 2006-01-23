@@ -22,7 +22,7 @@
 package org.crosswire.jsword.book.search.lucene;
 
 import org.crosswire.common.util.StringUtil;
-import org.crosswire.jsword.book.query.SearchSyntax;
+import org.crosswire.jsword.book.query.QueryDecorator;
 
 /**
  * LuceneQueryDecorator represents the extension of stock Lucene syntax
@@ -32,16 +32,8 @@ import org.crosswire.jsword.book.query.SearchSyntax;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
-public class LuceneQueryDecorator implements SearchSyntax
+public class LuceneQueryDecorator implements QueryDecorator
 {
-    private char quote = '"';
-    private char plus = '+';
-    private char minus = '-';
-    private char open = '[';
-    private char close = ']';
-    private char fuzzy = '~';
-    private char wild = '*';
-
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.search.SearchSyntax#decorateAllWords(java.lang.String)
      */
@@ -49,8 +41,8 @@ public class LuceneQueryDecorator implements SearchSyntax
     {
         String[] words = queryWords.split(SPACE);
         StringBuffer search = new StringBuffer();
-        search.append(plus);
-        search.append(StringUtil.join(words, SPACE + plus));
+        search.append(PLUS);
+        search.append(StringUtil.join(words, SPACE_PLUS));
         return search.toString();
     }
 
@@ -70,9 +62,9 @@ public class LuceneQueryDecorator implements SearchSyntax
     {
         // This performs a best match
         StringBuffer search = new StringBuffer();
-        search.append(quote);
+        search.append(QUOTE);
         search.append(queryWords);
-        search.append(quote);
+        search.append(QUOTE);
         return search.toString();
     }
 
@@ -83,8 +75,8 @@ public class LuceneQueryDecorator implements SearchSyntax
     {
         String[] words = queryWords.split(SPACE);
         StringBuffer search = new StringBuffer();
-        search.append(minus);
-        search.append(StringUtil.join(words, SPACE + minus));
+        search.append(MINUS);
+        search.append(StringUtil.join(words, SPACE_MINUS));
         return search.toString();
     }
 
@@ -94,10 +86,10 @@ public class LuceneQueryDecorator implements SearchSyntax
     public String decorateRange(String queryWords)
     {
         StringBuffer search = new StringBuffer();
-        search.append(plus);
-        search.append(open);
+        search.append(PLUS);
+        search.append(OPEN);
         search.append(queryWords);
-        search.append(close);
+        search.append(CLOSE);
         return search.toString();
     }
 
@@ -107,8 +99,8 @@ public class LuceneQueryDecorator implements SearchSyntax
     public String decorateSpellWords(String queryWords)
     {
         String[] words = queryWords.split(SPACE);
-        StringBuffer search = new StringBuffer(StringUtil.join(words, SPACE + fuzzy));
-        search.append(fuzzy);
+        StringBuffer search = new StringBuffer(StringUtil.join(words, FUZZY_SPACE));
+        search.append(FUZZY);
         return search.toString();
     }
 
@@ -118,8 +110,8 @@ public class LuceneQueryDecorator implements SearchSyntax
     public String decorateStartWords(String queryWords)
     {
         String[] words = queryWords.split(SPACE);
-        StringBuffer search = new StringBuffer(StringUtil.join(words, SPACE + wild));
-        search.append(wild);
+        StringBuffer search = new StringBuffer(StringUtil.join(words, WILD_SPACE));
+        search.append(WILD);
         return search.toString();
     }
 
@@ -128,4 +120,20 @@ public class LuceneQueryDecorator implements SearchSyntax
      * one and that we don't have lots of NON-NLS comments everywhere
      */
     private static final String SPACE = " "; //$NON-NLS-1$
+    private static final char QUOTE = '"';
+    private static final char PLUS = '+';
+    private static final String SPACE_PLUS = " +"; //$NON-NLS-1$
+
+    private static final char MINUS = '-';
+    private static final String SPACE_MINUS = " -"; //$NON-NLS-1$
+
+    private static final char OPEN = '[';
+    private static final char CLOSE = ']';
+
+    private static final char FUZZY = '~';
+    private static final String FUZZY_SPACE = "~ "; //$NON-NLS-1$
+
+    private static final char WILD = '*';
+    private static final String WILD_SPACE = "* "; //$NON-NLS-1$
+
 }
