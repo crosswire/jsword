@@ -165,7 +165,7 @@ public class EventListenerList implements Serializable
      */
     public int getListenerCount()
     {
-        return listenerList.length/2;
+        return listenerList.length / 2;
     }
 
     /**
@@ -198,7 +198,8 @@ public class EventListenerList implements Serializable
      */
     public synchronized void add(Class t, EventListener li)
     {
-        if (li ==null) {
+        if (li == null)
+        {
             // In an ideal world, we would do an assertion here
             // to help developers know they are probably doing
             // something wrong
@@ -237,7 +238,8 @@ public class EventListenerList implements Serializable
      */
     public synchronized void remove(Class t, EventListener li)
     {
-        if (li ==null) {
+        if (li == null)
+        {
             // In an ideal world, we would do an assertion here
             // to help developers know they are probably doing
             // something wrong

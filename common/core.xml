@@ -226,7 +226,7 @@
           if="jardir.present">
     <!-- Copy the jars from the std location to the target jar directory -->
     <mkdir dir="${target.jar}"/>
-    <copy verbose="${verbose.copy}" todir="${target.jar}" flatten="true">
+    <copy verbose="${verbose.copy}" todir="${target.jar}" flatten="true" preservelastmodified="true">
       <fileset dir="${source.jar}">
         <patternset refid="external.runtime.jars"/>
       </fileset>
@@ -269,7 +269,7 @@
           if="dependency.jar"
           description="Prepare this build from the dependency.">
     <mkdir dir="${target.jar}"/>
-    <copy verbose="${verbose.copy}" todir="${target.jar}" flatten="true">
+    <copy verbose="${verbose.copy}" todir="${target.jar}" flatten="true" preservelastmodified="true">
       <fileset dir="${dependency.jar}" includes="*.jar"/>
     </copy>
   </target>
