@@ -113,6 +113,27 @@ public final class OSISUtil
      */
     public static final String MORPH_STRONGS = "x-StrongsMorph:T"; //$NON-NLS-1$
 
+    /**
+     * Constant to help narrow down what we use "q" for. In this case: blockquote
+     */
+    public static final String Q_BLOCK = "blockquote"; //$NON-NLS-1$
+
+    /**
+     * Constant to help narrow down what we use "q" for. In this case: citation
+     */
+    public static final String Q_CITATION = "citation"; //$NON-NLS-1$
+
+    /**
+     * Constant to help narrow down what we use "q" for. In this case: embedded
+     */
+    public static final String Q_EMBEDDED = "embedded"; //$NON-NLS-1$
+
+    /**
+     * Constant to help narrow down what we use "list" for.
+     */
+    public static final String LIST_ORDERED = "x-ordered"; //$NON-NLS-1$
+    public static final String LIST_UNORDERED = "x-unordered"; //$NON-NLS-1$
+
     public static final String OSIS_ELEMENT_TITLE = "title"; //$NON-NLS-1$
     public static final String OSIS_ELEMENT_TABLE = "table"; //$NON-NLS-1$
     public static final String OSIS_ELEMENT_SPEECH = "speech"; //$NON-NLS-1$
@@ -148,6 +169,8 @@ public final class OSISUtil
     public static final String OSIS_ATTR_EID = "eID"; //$NON-NLS-1$
     public static final String ATTRIBUTE_W_LEMMA = "lemma"; //$NON-NLS-1$
     public static final String ATTRIBUTE_HI_TYPE = "type"; //$NON-NLS-1$
+    public static final String ATTRIBUTE_Q_TYPE = "type"; //$NON-NLS-1$
+    public static final String ATTRIBUTE_LIST_TYPE = "type"; //$NON-NLS-1$
     public static final String ATTRIBUTE_SEG_TYPE = "type"; //$NON-NLS-1$
     public static final String ATTRIBUTE_SEG_SUBTYPE = "subType"; //$NON-NLS-1$
     public static final String ATTRIBUTE_REFERENCE_OSISREF = "osisRef"; //$NON-NLS-1$
