@@ -32,7 +32,7 @@ import org.xml.sax.Attributes;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class ScriptureTag implements Tag
+public class ScriptureTag extends AbstractTag
 {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()

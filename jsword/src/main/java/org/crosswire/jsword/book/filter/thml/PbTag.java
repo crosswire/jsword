@@ -21,17 +21,16 @@
  */
 package org.crosswire.jsword.book.filter.thml;
 
-import org.jdom.Element;
-import org.xml.sax.Attributes;
 
 /**
- * THML Tag to process the pb element.
+ * THML Tag to process the pb (page break) element.
+ * Do nothing since pages are a hard copy kind of thing.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class PbTag implements Tag
+public class PbTag extends AbstractTag
 {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
@@ -41,12 +40,4 @@ public class PbTag implements Tag
         return "pb"; //$NON-NLS-1$
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
-     */
-    public Element processTag(Element ele, Attributes attrs)
-    {
-        // Only for print edition
-        return null;
-    }
 }

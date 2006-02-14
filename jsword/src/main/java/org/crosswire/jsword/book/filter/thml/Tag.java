@@ -49,4 +49,10 @@ public interface Tag
      * @return the element to which content is attached
      */
     Element processTag(Element ele, Attributes attrs);
+
+    /**
+     * Do additional processing of the tag after the element has been created.
+     * @param ele the created element to process
+     */
+    void processContent(Element ele);
 }

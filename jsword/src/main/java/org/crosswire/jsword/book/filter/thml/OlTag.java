@@ -32,7 +32,7 @@ import org.xml.sax.Attributes;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class OlTag implements Tag
+public class OlTag extends AbstractTag
 {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
@@ -48,6 +48,7 @@ public class OlTag implements Tag
     public Element processTag(Element ele, Attributes attrs)
     {
         Element list = OSISUtil.factory().createList();
+        ele.setAttribute(OSISUtil.ATTRIBUTE_LIST_TYPE, OSISUtil.LIST_ORDERED);
         ele.addContent(list);
         return list;
     }

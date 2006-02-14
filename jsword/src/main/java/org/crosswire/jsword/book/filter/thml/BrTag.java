@@ -32,7 +32,7 @@ import org.xml.sax.Attributes;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class BrTag implements Tag
+public class BrTag extends AbstractTag
 {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
@@ -47,8 +47,8 @@ public class BrTag implements Tag
      */
     public Element processTag(Element ele, Attributes attrs)
     {
-        Element p = OSISUtil.factory().createP();
-        ele.addContent(p);
-        return p;
+        Element lb = OSISUtil.factory().createLB();
+        ele.addContent(lb);
+        return lb;
     }
 }

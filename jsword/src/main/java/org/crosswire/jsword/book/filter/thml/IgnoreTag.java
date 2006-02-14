@@ -21,8 +21,6 @@
  */
 package org.crosswire.jsword.book.filter.thml;
 
-import org.jdom.Element;
-import org.xml.sax.Attributes;
 
 /**
  * THML Tag to process the pb element.
@@ -31,7 +29,7 @@ import org.xml.sax.Attributes;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class IgnoreTag implements Tag
+public class IgnoreTag extends AbstractTag
 {
     /**
      * Simple ctor
@@ -47,14 +45,6 @@ public class IgnoreTag implements Tag
     public String getTagName()
     {
         return name;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
-     */
-    public Element processTag(Element ele, Attributes attrs)
-    {
-        return null;
     }
 
     /**

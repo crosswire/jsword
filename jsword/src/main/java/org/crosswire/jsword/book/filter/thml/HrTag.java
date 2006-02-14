@@ -21,8 +21,6 @@
  */
 package org.crosswire.jsword.book.filter.thml;
 
-import org.jdom.Element;
-import org.xml.sax.Attributes;
 
 /**
  * THML Tag to process the hr element.
@@ -31,7 +29,7 @@ import org.xml.sax.Attributes;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class HrTag implements Tag
+public class HrTag extends AbstractTag
 {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
@@ -39,14 +37,5 @@ public class HrTag implements Tag
     public String getTagName()
     {
         return "hr"; //$NON-NLS-1$
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
-     */
-    public Element processTag(Element ele, Attributes attrs)
-    {
-        // NOTE(joe): are we right to ignore HR tags in THML?
-        return null;
     }
 }

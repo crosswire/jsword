@@ -37,7 +37,7 @@ import org.xml.sax.Attributes;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class ScripRefTag implements Tag
+public class ScripRefTag extends AbstractTag
 {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
@@ -68,22 +68,39 @@ public class ScripRefTag implements Tag
             {
                 DataPolice.report("Unparsable passage:" + refstr + " due to " + ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
             }
-            ele.addContent(reference);
         }
         else
         {
-            // Don't lose the text
-            reference = OSISUtil.factory().createDiv();
-            // NOTE(joe): is it right to ignore a missing passage
-            //DataPolice.report("Missing passage.");
-            //XMLUtil.debugSAXAttributes(attrs);
+            // The reference will be filled in by processContent
+            reference = OSISUtil.factory().createReference();
         }
 
+        ele.addContent(reference);
+
         return reference;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.filter.thml.AbstractTag#processContent(org.jdom.Element)
+     */
+    public void processContent(Element ele)
+    {
+        String refstr = ele.getValue();
+        try
+        {
+            Passage ref = (Passage) keyf.getKey(refstr);
+            String osisname = ref.getOsisRef();
+            ele.setAttribute(OSISUtil.ATTRIBUTE_REFERENCE_OSISREF, osisname);
+        }
+        catch (NoSuchKeyException ex)
+        {
+            DataPolice.report("Unparsable passage:" + refstr + " due to " + ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+        }
     }
 
     /**
      * To convert strings into Biblical keys
      */
     protected KeyFactory keyf = PassageKeyFactory.instance();
+
 }
