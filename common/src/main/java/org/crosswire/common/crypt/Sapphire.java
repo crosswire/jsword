@@ -610,6 +610,7 @@ public class Sapphire
             {
                 keypos = 0;           // Recycle the user key.
                 rsum += key.length;   // key "aaaa" != key "aaaaaaaa"
+                rsum &= 0xFF;
             }
 
             u = mask & rsum;
