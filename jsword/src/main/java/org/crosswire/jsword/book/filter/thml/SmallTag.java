@@ -48,7 +48,7 @@ public class SmallTag extends AbstractTag
     public Element processTag(Element ele, Attributes attrs)
     {
         Element seg = OSISUtil.factory().createSeg();
-        seg.setAttribute(OSISUtil.ATTRIBUTE_SEG_TYPE, OSISUtil.SEG_SMALL);
+        seg.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.SEG_SMALL);
         ele.addContent(seg);
         return seg;
     }

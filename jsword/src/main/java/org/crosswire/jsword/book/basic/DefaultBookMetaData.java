@@ -202,7 +202,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData
      */
     public Document toOSIS()
     {
-        OSISUtil.ObjectFactory factory = OSISUtil.factory();
+        OSISUtil.OSISFactory factory = OSISUtil.factory();
         Element ele = factory.createTable();
         addRow(ele, "Initials", getInitials()); //$NON-NLS-1$
         addRow(ele, "Description", getFullName()); //$NON-NLS-1$
@@ -218,13 +218,13 @@ public class DefaultBookMetaData extends AbstractBookMetaData
             return;
         }
 
-        OSISUtil.ObjectFactory factory = OSISUtil.factory();
+        OSISUtil.OSISFactory factory = OSISUtil.factory();
 
         Element rowEle = factory.createRow();
 
         Element nameEle = factory.createCell();
         Element hiEle = factory.createHI();
-        hiEle.setAttribute(OSISUtil.ATTRIBUTE_HI_TYPE, OSISUtil.HI_BOLD);
+        hiEle.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_BOLD);
         nameEle.addContent(hiEle);
         Element valueElement = factory.createCell();
         rowEle.addContent(nameEle);

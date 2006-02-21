@@ -148,6 +148,7 @@ public final class OSISUtil
     public static final String OSIS_ELEMENT_ITEM = "item"; //$NON-NLS-1$
     public static final String OSIS_ELEMENT_FOREIGN = "foreign"; //$NON-NLS-1$
     public static final String OSIS_ELEMENT_W = "w"; //$NON-NLS-1$
+    public static final String OSIS_ELEMENT_CHAPTER = "chapter"; //$NON-NLS-1$
     public static final String OSIS_ELEMENT_VERSE = "verse"; //$NON-NLS-1$
     public static final String OSIS_ELEMENT_CELL = "cell"; //$NON-NLS-1$
     public static final String OSIS_ELEMENT_DIV = "div"; //$NON-NLS-1$
@@ -163,22 +164,18 @@ public final class OSISUtil
 
     public static final String ATTRIBUTE_TEXT_OSISIDWORK = "osisIDWork"; //$NON-NLS-1$
     public static final String ATTRIBUTE_WORK_OSISWORK = "osisWork"; //$NON-NLS-1$
-    public static final String ATTRIBUTE_VERSE_OSISID = "osisID"; //$NON-NLS-1$
-    public static final String ATTRIBUTE_DIV_OSISID = "osisID"; //$NON-NLS-1$
+    public static final String OSIS_ATTR_OSISID = "osisID"; //$NON-NLS-1$
     public static final String OSIS_ATTR_SID = "sID"; //$NON-NLS-1$
     public static final String OSIS_ATTR_EID = "eID"; //$NON-NLS-1$
     public static final String ATTRIBUTE_W_LEMMA = "lemma"; //$NON-NLS-1$
-    public static final String ATTRIBUTE_HI_TYPE = "type"; //$NON-NLS-1$
-    public static final String ATTRIBUTE_Q_TYPE = "type"; //$NON-NLS-1$
-    public static final String ATTRIBUTE_LIST_TYPE = "type"; //$NON-NLS-1$
-    public static final String ATTRIBUTE_SEG_TYPE = "type"; //$NON-NLS-1$
-    public static final String ATTRIBUTE_SEG_SUBTYPE = "subType"; //$NON-NLS-1$
-    public static final String ATTRIBUTE_REFERENCE_OSISREF = "osisRef"; //$NON-NLS-1$
-    public static final String ATTRIBUTE_NOTE_TYPE = "type"; //$NON-NLS-1$
+    public static final String OSIS_ATTR_TYPE = "type"; //$NON-NLS-1$
+    public static final String OSIS_ATTR_SUBTYPE = "subType"; //$NON-NLS-1$
+    public static final String OSIS_ATTR_REF = "osisRef"; //$NON-NLS-1$
     public static final String ATTRIBUTE_SPEAKER_WHO = "who"; //$NON-NLS-1$
     public static final String ATTRIBUTE_W_MORPH = "morph"; //$NON-NLS-1$
     public static final String ATTRIBUTE_OSISTEXT_OSISIDWORK = "osisIDWork"; //$NON-NLS-1$
-    public static final String ATTRIBUTE_DIV_LANG = "lang"; //$NON-NLS-1$
+    public static final String OSIS_ATTR_LANG = "xml:lang"; //$NON-NLS-1$
+    public static final String ATTRIBUTE_DIV_BOOK = "book"; //$NON-NLS-1$
 
     /**
      * Prefix for OSIS IDs that refer to Bibles
@@ -202,12 +199,12 @@ public final class OSISUtil
     {
     }
 
-    private static ObjectFactory factory = new ObjectFactory();
+    private static OSISFactory factory = new OSISFactory();
 
     /**
-     * An accessor for the ObjectFactory that creates OSIS objects
+     * An accessor for the OSISFactory that creates OSIS objects
      */
-    public static ObjectFactory factory()
+    public static OSISFactory factory()
     {
         return factory;
     }
@@ -215,7 +212,7 @@ public final class OSISUtil
     /**
      * A generic way of creating empty Elements of various types
      */
-    public static class ObjectFactory
+    public static class OSISFactory
     {
         /**
          * 
@@ -601,7 +598,7 @@ public final class OSISUtil
         if (ele.getName().equals(OSIS_ELEMENT_VERSE))
         {
             // If the element is an OSIS Verse then this is fairly easy
-            String osisid = ele.getAttributeValue(ATTRIBUTE_VERSE_OSISID);
+            String osisid = ele.getAttributeValue(OSIS_ATTR_OSISID);
 
             try
             {

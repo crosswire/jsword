@@ -46,7 +46,7 @@ public class PlainTextFilter implements Filter
      */
     public List toOSIS(Key key, String plain)
     {
-        OSISUtil.ObjectFactory factory = OSISUtil.factory();
+        OSISUtil.OSISFactory factory = OSISUtil.factory();
         Element ele = factory.createDiv();
 
         String[] lines = StringUtil.splitAll(plain, '\n');

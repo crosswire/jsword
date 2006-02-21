@@ -26,7 +26,7 @@ import java.util.LinkedList;
 import org.crosswire.common.util.ClassUtil;
 import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.OSISUtil;
-import org.crosswire.jsword.book.OSISUtil.ObjectFactory;
+import org.crosswire.jsword.book.OSISUtil.OSISFactory;
 import org.crosswire.jsword.passage.KeyFactory;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
@@ -86,7 +86,7 @@ public final class GBFTags
         public void updateOsisStack(LinkedList stack)
         {
             Element hi = OSIS_FACTORY.createHI();
-            hi.setAttribute(OSISUtil.ATTRIBUTE_HI_TYPE, OSISUtil.HI_BOLD);
+            hi.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_BOLD);
 
             Element current = (Element) stack.get(0);
             current.addContent(hi);
@@ -115,7 +115,7 @@ public final class GBFTags
             try
             {
                 Passage ref = (Passage) KEY_FACTORY.getKey(refstr);
-                seg.setAttribute(OSISUtil.ATTRIBUTE_REFERENCE_OSISREF, ref.getOsisRef());
+                seg.setAttribute(OSISUtil.OSIS_ATTR_REF, ref.getOsisRef());
             }
             catch (NoSuchKeyException ex)
             {
@@ -182,7 +182,7 @@ public final class GBFTags
         {
             Element current = (Element) stack.get(0);
             Element note = OSIS_FACTORY.createNote();
-            note.setAttribute(OSISUtil.ATTRIBUTE_NOTE_TYPE, OSISUtil.NOTETYPE_STUDY);
+            note.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.NOTETYPE_STUDY);
 
             current.addContent(note);
             stack.addFirst(note);
@@ -291,7 +291,7 @@ public final class GBFTags
         public void updateOsisStack(LinkedList stack)
         {
             Element hi = OSIS_FACTORY.createHI();
-            hi.setAttribute(OSISUtil.ATTRIBUTE_HI_TYPE, OSISUtil.HI_ITALIC);
+            hi.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_ITALIC);
 
             Element current = (Element) stack.get(0);
             current.addContent(hi);
@@ -319,7 +319,7 @@ public final class GBFTags
         {
             // LATER(joe): is div the right thing?
             Element seg = OSIS_FACTORY.createSeg();
-            seg.setAttribute(OSISUtil.ATTRIBUTE_SEG_TYPE, OSISUtil.SEG_JUSTIFYRIGHT);
+            seg.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.SEG_JUSTIFYRIGHT);
 
             Element current = (Element) stack.get(0);
             current.addContent(seg);
@@ -627,7 +627,7 @@ public final class GBFTags
         public void updateOsisStack(LinkedList stack)
         {
             Element note = OSIS_FACTORY.createNote();
-            note.setAttribute(OSISUtil.ATTRIBUTE_NOTE_TYPE, OSISUtil.NOTETYPE_STUDY);
+            note.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.NOTETYPE_STUDY);
 
             Element current = (Element) stack.get(0);
             current.addContent(note);
@@ -710,7 +710,7 @@ public final class GBFTags
         public void updateOsisStack(LinkedList stack)
         {
             Element hi = OSIS_FACTORY.createHI();
-            hi.setAttribute(OSISUtil.ATTRIBUTE_HI_TYPE, OSISUtil.HI_UNDERLINE);
+            hi.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_UNDERLINE);
 
             Element current = (Element) stack.get(0);
             current.addContent(hi);
@@ -726,5 +726,5 @@ public final class GBFTags
     /**
      * To create OSIS DOM nodes.
      */
-    protected static final ObjectFactory OSIS_FACTORY = OSISUtil.factory();
+    protected static final OSISFactory OSIS_FACTORY = OSISUtil.factory();
 }

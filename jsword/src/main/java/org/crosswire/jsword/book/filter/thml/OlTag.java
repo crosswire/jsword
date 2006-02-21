@@ -48,7 +48,7 @@ public class OlTag extends AbstractTag
     public Element processTag(Element ele, Attributes attrs)
     {
         Element list = OSISUtil.factory().createList();
-        ele.setAttribute(OSISUtil.ATTRIBUTE_LIST_TYPE, OSISUtil.LIST_ORDERED);
+        ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.LIST_ORDERED);
         ele.addContent(list);
         return list;
     }

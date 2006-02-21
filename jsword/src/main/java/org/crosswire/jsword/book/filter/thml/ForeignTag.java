@@ -52,7 +52,7 @@ public class ForeignTag extends AbstractTag
         String lang = attrs.getValue("lang"); //$NON-NLS-1$
         if (lang != null)
         {
-            div.setAttribute(OSISUtil.ATTRIBUTE_DIV_LANG, lang);
+            div.setAttribute(OSISUtil.OSIS_ATTR_LANG, lang);
         }
 
         ele.addContent(div);

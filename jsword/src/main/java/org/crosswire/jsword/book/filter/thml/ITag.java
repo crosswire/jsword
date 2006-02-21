@@ -48,7 +48,7 @@ public class ITag extends AbstractTag
     public Element processTag(Element ele, Attributes attrs)
     {
         Element hi = OSISUtil.factory().createHI();
-        hi.setAttribute(OSISUtil.ATTRIBUTE_HI_TYPE, OSISUtil.HI_ITALIC);
+        hi.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_ITALIC);
         ele.addContent(hi);
         return hi;
     }

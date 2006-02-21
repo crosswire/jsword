@@ -54,7 +54,7 @@ public class OsisTest extends TestCase
         seg.addContent("In the beginning God created the heaven and the earth."); //$NON-NLS-1$
 
         Element verse = OSISUtil.factory().createVerse();
-        verse.setAttribute(OSISUtil.ATTRIBUTE_VERSE_OSISID, "Gen.1.1"); //$NON-NLS-1$
+        verse.setAttribute(OSISUtil.OSIS_ATTR_OSISID, "Gen.1.1"); //$NON-NLS-1$
         verse.addContent(seg);
 
         Element div = OSISUtil.factory().createDiv();

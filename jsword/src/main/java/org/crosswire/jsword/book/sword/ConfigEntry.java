@@ -260,7 +260,7 @@ public class ConfigEntry
 
     public Element toOSIS()
     {
-        OSISUtil.ObjectFactory factory = OSISUtil.factory();
+        OSISUtil.OSISFactory factory = OSISUtil.factory();
 
         Element rowEle = factory.createRow();
 
@@ -390,7 +390,7 @@ public class ConfigEntry
         return copy;
     }
 
-    private List processLines(OSISUtil.ObjectFactory factory, String aValue)
+    private List processLines(OSISUtil.OSISFactory factory, String aValue)
     {
         List list = new ArrayList();
         String [] lines = StringUtil.splitAll(aValue, '\n');

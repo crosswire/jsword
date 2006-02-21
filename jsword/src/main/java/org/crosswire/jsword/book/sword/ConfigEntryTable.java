@@ -149,7 +149,7 @@ public class ConfigEntryTable
      */
     public Element toOSIS()
     {
-        OSISUtil.ObjectFactory factory = OSISUtil.factory();
+        OSISUtil.OSISFactory factory = OSISUtil.factory();
         Element ele = factory.createTable();
         toOSIS(factory, ele, "BasicInfo", BASIC_INFO); //$NON-NLS-1$
         toOSIS(factory, ele, "LangInfo", LANG_INFO); //$NON-NLS-1$
@@ -560,7 +560,7 @@ public class ConfigEntryTable
     /**
      * Build an ordered map so that it displays in a consistent order.
      */
-    private void toOSIS(OSISUtil.ObjectFactory factory, Element ele, String aTitle, ConfigEntryType[] category)
+    private void toOSIS(OSISUtil.OSISFactory factory, Element ele, String aTitle, ConfigEntryType[] category)
     {
         Element title = null;
         for (int i = 0; i < category.length; i++)

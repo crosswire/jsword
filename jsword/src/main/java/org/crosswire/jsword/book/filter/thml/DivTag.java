@@ -52,11 +52,11 @@ public class DivTag extends AbstractTag
         if ("variant".equals(typeAttr)) //$NON-NLS-1$
         {
             Element seg = OSISUtil.factory().createSeg();
-            seg.setAttribute(OSISUtil.ATTRIBUTE_SEG_TYPE, OSISUtil.VARIANT_TYPE);
+            seg.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.VARIANT_TYPE);
             String classAttr = attrs.getValue("class"); //$NON-NLS-1$
             if (classAttr != null)
             {
-                seg.setAttribute(OSISUtil.ATTRIBUTE_SEG_SUBTYPE, OSISUtil.VARIANT_CLASS + classAttr);
+                seg.setAttribute(OSISUtil.OSIS_ATTR_SUBTYPE, OSISUtil.VARIANT_CLASS + classAttr);
             }
             ele.addContent(seg);
             return seg;

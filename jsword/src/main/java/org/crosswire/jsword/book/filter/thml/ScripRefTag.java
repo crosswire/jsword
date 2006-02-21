@@ -62,7 +62,7 @@ public class ScripRefTag extends AbstractTag
             {
                 Passage ref = (Passage) keyf.getKey(refstr);
                 String osisname = ref.getOsisRef();
-                reference.setAttribute(OSISUtil.ATTRIBUTE_REFERENCE_OSISREF, osisname);
+                reference.setAttribute(OSISUtil.OSIS_ATTR_REF, osisname);
             }
             catch (NoSuchKeyException ex)
             {
@@ -90,7 +90,7 @@ public class ScripRefTag extends AbstractTag
         {
             Passage ref = (Passage) keyf.getKey(refstr);
             String osisname = ref.getOsisRef();
-            ele.setAttribute(OSISUtil.ATTRIBUTE_REFERENCE_OSISREF, osisname);
+            ele.setAttribute(OSISUtil.OSIS_ATTR_REF, osisname);
         }
         catch (NoSuchKeyException ex)
         {

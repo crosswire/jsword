@@ -71,7 +71,7 @@ public class FontTag extends AbstractTag
         String type = buf.toString();
         if (type != null)
         {
-            seg.setAttribute(OSISUtil.ATTRIBUTE_SEG_TYPE, type);
+            seg.setAttribute(OSISUtil.OSIS_ATTR_TYPE, type);
         }
         else
         {

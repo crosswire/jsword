@@ -138,7 +138,7 @@ public class SyncTag extends AbstractTag
         if ("Dict".equals(type)) //$NON-NLS-1$
         {
             Element div = OSISUtil.factory().createDiv();
-            div.setAttribute(OSISUtil.ATTRIBUTE_DIV_OSISID, "dict://" + value); //$NON-NLS-1$
+            div.setAttribute(OSISUtil.OSIS_ATTR_OSISID, "dict://" + value); //$NON-NLS-1$
             ele.addContent(div);
             return div;
         }

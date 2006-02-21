@@ -48,7 +48,7 @@ public class NoteTag extends AbstractTag
     public Element processTag(Element ele, Attributes attrs)
     {
         Element note = OSISUtil.factory().createNote();
-        note.setAttribute(OSISUtil.ATTRIBUTE_NOTE_TYPE, OSISUtil.NOTETYPE_STUDY);
+        note.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.NOTETYPE_STUDY);
         ele.addContent(note);
         return note;
     }
