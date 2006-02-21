@@ -16,5 +16,7 @@
 	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry kind="lib" path="jar/xerces-2.7.1/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="jar/xerces-2.7.1/xml-apis.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
