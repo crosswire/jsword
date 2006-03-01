@@ -98,8 +98,7 @@ public class CustomHandler extends DefaultHandler
         int size = current.getContentSize();
 
         // what we are adding
-        String text = 
-            new String(data, offset, length);
+        String text = new String(data, offset, length);
         // If the last element in the list is a string then we should add
         // this string on to the end of it rather than add a new list item
         // because (probably as an atrifact of the HTML/XSL transform we get
@@ -145,20 +144,20 @@ public class CustomHandler extends DefaultHandler
     private Tag getTag(String localname, String qname)
     {
         Tag t = (Tag) TAG_MAP.get(qname);
-    
+
         // Some of the THML books are broken in that they use uppercase
         // element names, which the spec disallows, but we might as well
         // look out for them
         if (t == null)
         {
             t = (Tag) TAG_MAP.get(qname.toLowerCase());
-    
+
             if (t == null)
             {
                 log.warn("unknown thml element: " + localname + " qname=" + qname); //$NON-NLS-1$ //$NON-NLS-2$
                 return t;
             }
-    
+
             DataPolice.report("Wrong case used in thml element: " + qname); //$NON-NLS-1$
         }
         return t;

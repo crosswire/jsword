@@ -17,7 +17,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/jar/lucene-1.9-final/lucene-1.9-final.jar!/" />
+          <root url="jar://$MODULE_DIR$/jar/lucene-1.9-final/lucene-core-1.9-final.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
