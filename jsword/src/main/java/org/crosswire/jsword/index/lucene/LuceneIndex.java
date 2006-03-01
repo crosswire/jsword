@@ -348,10 +348,8 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                 if (text != null && text.length() > 0)
                 {
                     doc = new Document();
-                    doc.add(Field.UnIndexed(FIELD_NAME, subkey.getOsisRef()));
-                    doc.add(Field.Text(FIELD_BODY, new StringReader(text)));
-                    // Lucene 1.9/2.0 doc.add(new Field(FIELD_NAME, subkey.getOsisRef(), Field.Store.YES, Field.Index.NO));
-//                  // Lucene 1.9/2.0 doc.add(new Field(FIELD_BODY, new StringReader(text)));
+                    doc.add(new Field(FIELD_NAME, subkey.getOsisRef(), Field.Store.YES, Field.Index.NO));
+                    doc.add(new Field(FIELD_BODY, new StringReader(text)));
                     writer.addDocument(doc);
                 }
 
