@@ -21,12 +21,9 @@
  */
 package org.crosswire.jsword.book.install.sword;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -321,8 +318,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                             internal = internal.substring(7);
                         }
 
-                        Reader rin = new InputStreamReader(new ByteArrayInputStream(buffer));
-                        SwordBookMetaData sbmd = new SwordBookMetaData(rin, internal);
+                        SwordBookMetaData sbmd = new SwordBookMetaData(buffer, internal);
                         sbmd.setDriver(fake);
                         Book book = new SwordBook(sbmd, null);
                         entries.put(book.getName(), book);

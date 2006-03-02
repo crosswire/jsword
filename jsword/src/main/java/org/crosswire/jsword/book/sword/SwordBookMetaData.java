@@ -21,9 +21,11 @@
  */
 package org.crosswire.jsword.book.sword;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -61,31 +63,43 @@ public class SwordBookMetaData extends AbstractBookMetaData
      * The returned BookMetaData object will not be associated with a Book so
      * setBook() should be called before getBook() is expected to return
      * anything other than null.
+     * 
+     * @param file
+     * @param internal
+     * @throws IOException
      */
     public SwordBookMetaData(File file, String internal) throws IOException
     {
-        this(new FileReader(file), internal);
+        Reader in = new InputStreamReader(new FileInputStream(file), ENCODING_LATIN1);
+        cet = new ConfigEntryTable(in, internal);
+        if (!ENCODING_LATIN1.equals(getBookCharset()))
+        {
+            in = new InputStreamReader(new FileInputStream(file), ENCODING_UTF8);
+            cet = new ConfigEntryTable(in, internal);
+        }
+        buildProperties();
     }
 
     /**
-     * Loads a sword config from a given Reader.
+     * Loads a sword config from a buffer.
      * The returned BookMetaData object will not be associated with a Book so
      * setBook() should be called before getBook() is expected to return
      * anything other than null.
+     * 
+     * @param buffer
+     * @param internal
+     * @throws IOException
      */
-    public SwordBookMetaData(Reader in, String internal) throws IOException
+    public SwordBookMetaData(byte[] buffer, String internal) throws IOException
     {
+        Reader in = new InputStreamReader(new ByteArrayInputStream(buffer), ENCODING_LATIN1);
         cet = new ConfigEntryTable(in, internal);
+        if (!ENCODING_LATIN1.equals(getBookCharset()))
+        {
+            in = new InputStreamReader(new ByteArrayInputStream(buffer), ENCODING_UTF8);
+            cet = new ConfigEntryTable(in, internal);
+        }
         buildProperties();
-//        Element ele = cet.toOSIS();
-//        SAXEventProvider sep = new JDOMSAXEventProvider(new Document(ele));
-//        try
-//        {
-//        System.out.println(XMLUtil.writeToString(sep));
-//        }
-//        catch(Exception e)
-//        {
-//        }
     }
 
     /* (non-Javadoc)
@@ -268,18 +282,32 @@ public class SwordBookMetaData extends AbstractBookMetaData
 
             putProperty(key.toString(), value.toString());
         }
+//        Element ele = cet.toOSIS();
+//        SAXEventProvider sep = new JDOMSAXEventProvider(new Document(ele));
+//        try
+//        {
+//            System.out.println(XMLUtil.writeToString(sep));
+//        }
+//        catch(Exception e)
+//        {
+//        }
     }
+
+    /**
+     * Sword only recognizes two encodings for its modules: UTF-8 and LATIN1
+     * Sword uses MS Windows cp1252 for Latin 1 not the standard. Arrgh!
+     */
+    private static String ENCODING_UTF8 = "UTF-8"; //$NON-NLS-1$
+    private static String ENCODING_LATIN1 = "WINDOWS-1252"; //$NON-NLS-1$
 
     /**
      * The language strings need to be converted to Java charsets
      */
-    static final Map ENCODING_JAVA = new HashMap();
+    private static final Map ENCODING_JAVA = new HashMap();
     static
     {
-        //ENCODING_JAVA.put("Latin-1", "ISO-8859-1"); //$NON-NLS-1$ //$NON-NLS-2$
-        // Sword uses MS Windows cp1252 for Latin 1 not the standard. Arrgh!
-        ENCODING_JAVA.put("Latin-1", "WINDOWS-1252"); //$NON-NLS-1$ //$NON-NLS-2$
-        ENCODING_JAVA.put("UTF-8", "UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
+        ENCODING_JAVA.put("Latin-1", ENCODING_LATIN1); //$NON-NLS-1$
+        ENCODING_JAVA.put("UTF-8", ENCODING_UTF8); //$NON-NLS-1$
     }
 
     private ConfigEntryTable cet;
