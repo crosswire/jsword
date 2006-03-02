@@ -182,6 +182,7 @@ public class DefaultLeafKeyList implements Key
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString()
     {
         return getName();
@@ -190,6 +191,7 @@ public class DefaultLeafKeyList implements Key
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(Object obj)
     {
         // Since this can not be null
@@ -216,6 +218,7 @@ public class DefaultLeafKeyList implements Key
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode()
     {
         return name.hashCode();
@@ -233,6 +236,7 @@ public class DefaultLeafKeyList implements Key
     /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone()
     {
         DefaultLeafKeyList clone = null;

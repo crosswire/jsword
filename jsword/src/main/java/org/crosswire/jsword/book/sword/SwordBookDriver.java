@@ -132,6 +132,7 @@ public class SwordBookDriver extends AbstractBookDriver
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookDriver#isDeletable(org.crosswire.jsword.book.BookMetaData)
      */
+    @Override
     public boolean isDeletable(Book dead)
     {
         SwordBookMetaData sbmd = (SwordBookMetaData) dead.getBookMetaData();
@@ -145,6 +146,7 @@ public class SwordBookDriver extends AbstractBookDriver
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookDriver#delete(org.crosswire.jsword.book.BookMetaData)
      */
+    @Override
     public void delete(Book dead) throws BookException
     {
         SwordBookMetaData sbmd = (SwordBookMetaData) dead.getBookMetaData();

@@ -376,6 +376,7 @@ final class ReadOnlyPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(Object obj)
     {
         return ref.equals(obj);
@@ -384,6 +385,7 @@ final class ReadOnlyPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode()
     {
         return ref.hashCode();
@@ -392,6 +394,7 @@ final class ReadOnlyPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString()
     {
         return ref.toString();
@@ -400,6 +403,7 @@ final class ReadOnlyPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone()
     {
         ReadOnlyPassage clone = null;

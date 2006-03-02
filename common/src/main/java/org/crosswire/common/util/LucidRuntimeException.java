@@ -82,7 +82,7 @@ public class LucidRuntimeException extends RuntimeException
     {
         super(msg.toString(), cause);
 
-        this.params = (Object[]) params.clone();
+        this.params = params.clone();
     }
 
     /**

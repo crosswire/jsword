@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.text.FieldPosition;
+import java.text.MessageFormat;
 import java.util.Iterator;
 
 import org.crosswire.jsword.book.Book;
@@ -161,25 +163,27 @@ public class ModToOsis
 
     private void buildDocumentOpen(StringBuffer buf, BookMetaData bmd, String range)
     {
-        buf.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"); //$NON-NLS-1$
-        buf.append("<osis"); //$NON-NLS-1$
-        buf.append("\n  xmlns=\"http://www.bibletechnologies.net/2003/OSIS/namespace\""); //$NON-NLS-1$
-        buf.append("\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");  //$NON-NLS-1$
-        buf.append("\n  xsi:schemaLocation=\"http://www.bibletechnologies.net/2003/OSIS/namespace osisCore.2.1.xsd\">"); //$NON-NLS-1$
-        buf.append("\n    <osisText osisIDWork=\"").append(bmd.getInitials()).append('"').append(" osisRefWork=\"defaultReferenceScheme\">"); //$NON-NLS-1$ //$NON-NLS-2$
-        buf.append("\n    <header>"); //$NON-NLS-1$
-        buf.append("\n      <work osisWork=\"").append(bmd.getInitials()).append("\">"); //$NON-NLS-1$ //$NON-NLS-2$
-        buf.append("\n      <title>").append(bmd.getName()).append("</title>"); //$NON-NLS-1$ //$NON-NLS-2$
-        buf.append("\n      <identifier type=\"OSIS\">Bible.").append(bmd.getInitials()).append("</identifier>"); //$NON-NLS-1$ //$NON-NLS-2$
-        buf.append("\n      <refSystem>Bible.KJV</refSystem>"); //$NON-NLS-1$
-        buf.append("\n      <scope>").append(range).append("</scope>"); //$NON-NLS-1$ //$NON-NLS-2$
-        buf.append("\n    </work>"); //$NON-NLS-1$
-        buf.append("\n    <work osisWork=\"defaultReferenceScheme\">"); //$NON-NLS-1$
-        buf.append("\n      <refSystem>Bible.KJV</refSystem>"); //$NON-NLS-1$
-        buf.append("\n    </work>"); //$NON-NLS-1$
-        buf.append("\n  </header>"); //$NON-NLS-1$
-        buf.append('\n');
-
+        StringBuffer docBuffer = new StringBuffer();
+        docBuffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"); //$NON-NLS-1$
+        docBuffer.append("\n<osis"); //$NON-NLS-1$
+        docBuffer.append("\n  xmlns=\"http://www.bibletechnologies.net/2003/OSIS/namespace\""); //$NON-NLS-1$
+        docBuffer.append("\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");  //$NON-NLS-1$
+        docBuffer.append("\n  xsi:schemaLocation=\"http://www.bibletechnologies.net/2003/OSIS/namespace osisCore.2.1.xsd\">"); //$NON-NLS-1$
+        docBuffer.append("\n    <osisText osisIDWork=\"{0}\" osisRefWork=\"defaultReferenceScheme\">"); //$NON-NLS-1$
+        docBuffer.append("\n    <header>"); //$NON-NLS-1$
+        docBuffer.append("\n      <work osisWork=\"{0}\">"); //$NON-NLS-1$
+        docBuffer.append("\n      <title>{1}</title>"); //$NON-NLS-1$
+        docBuffer.append("\n      <identifier type=\"OSIS\">Bible.{0}</identifier>"); //$NON-NLS-1$
+        docBuffer.append("\n      <refSystem>Bible.KJV</refSystem>"); //$NON-NLS-1$
+        docBuffer.append("\n      <scope>{2}</scope>"); //$NON-NLS-1$
+        docBuffer.append("\n    </work>"); //$NON-NLS-1$
+        docBuffer.append("\n    <work osisWork=\"defaultReferenceScheme\">"); //$NON-NLS-1$
+        docBuffer.append("\n      <refSystem>Bible.KJV</refSystem>"); //$NON-NLS-1$
+        docBuffer.append("\n    </work>"); //$NON-NLS-1$
+        docBuffer.append("\n  </header>"); //$NON-NLS-1$
+        docBuffer.append('\n');
+        MessageFormat msgFormat = new MessageFormat(docBuffer.toString()); //$NON-NLS-1$
+        msgFormat.format(new Object[] { bmd.getInitials(), bmd.getName(), range }, buf, pos);
     }
 
     private void buildDocumentClose(StringBuffer buf)
@@ -189,7 +193,8 @@ public class ModToOsis
 
     private void buildBookOpen(StringBuffer buf, String bookName)
     {
-        buf.append("<div type=\"book\" osisID=\"").append(bookName).append("\">\n"); //$NON-NLS-1$ //$NON-NLS-2$
+        MessageFormat msgFormat = new MessageFormat("<div type=\"book\" osisID=\"{0}\">\n"); //$NON-NLS-1$
+        msgFormat.format(new Object[] { bookName}, buf, pos);
     }
 
     private void buildBookClose(StringBuffer buf)
@@ -204,12 +209,14 @@ public class ModToOsis
 
     private void buildChapterOpen(StringBuffer buf, String bookName, int chapter)
     {
-        buf.append("<chapter osisID=\"").append(bookName).append('.').append(chapter).append("\">"); //$NON-NLS-1$ //$NON-NLS-2$
+        MessageFormat msgFormat = new MessageFormat("<chapter osisID=\"{0}.{1}\">\n"); //$NON-NLS-1$
+        msgFormat.format(new Object[] { bookName, new Integer(chapter)}, buf, pos);
     }
 
     private void buildPreVerseOpen(StringBuffer buf, String preVerse)
     {
-        buf.append("<div type=\"section\"><title>").append(preVerse).append("</title>"); //$NON-NLS-1$ //$NON-NLS-2$
+        MessageFormat msgFormat = new MessageFormat("<div type=\"section\"><title>{0}</title>"); //$NON-NLS-1$
+        msgFormat.format(new Object[] { preVerse }, buf, pos);
     }
 
     private void buildPreVerseClose(StringBuffer buf)
@@ -219,12 +226,14 @@ public class ModToOsis
 
     private void buildVerseOpen(StringBuffer buf, String osisID)
     {
-        buf.append("<verse sID=\"").append(osisID).append("\" osisID=\"").append(osisID).append("\"/>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        MessageFormat msgFormat = new MessageFormat("<verse sID=\"{0}\" osisID=\"{0}\"/>"); //$NON-NLS-1$
+        msgFormat.format(new Object[] { osisID }, buf, pos);
     }
 
     private void buildVerseClose(StringBuffer buf, String osisID)
     {
-        buf.append("<verse eID=\"").append(osisID).append("\"/>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        MessageFormat msgFormat = new MessageFormat("<verse eID=\"{0}\"/>"); //$NON-NLS-1$
+        msgFormat.format(new Object[] { osisID }, buf, pos);
     }
     
     private void writeDocument(StringBuffer buf, String filename) throws IOException
@@ -233,4 +242,6 @@ public class ModToOsis
         writer.write(buf.toString());
         writer.close();
     }
+    
+    private static FieldPosition pos = new FieldPosition(0);
 }

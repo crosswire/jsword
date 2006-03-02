@@ -37,10 +37,18 @@ public class BookDriverParentTst extends TestCase
         super(s);
     }
 
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#setUp()
+     */
+    @Override
     protected void setUp()
     {
     }
 
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#tearDown()
+     */
+    @Override
     protected void tearDown()
     {
     }

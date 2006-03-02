@@ -57,7 +57,8 @@ public class SyncTag extends AbstractTag
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
      */
-    public Element processTag(Element ele, Attributes attrs)
+    @Override
+   public Element processTag(Element ele, Attributes attrs)
     {
         // Strongs reference
         String type = attrs.getValue("type"); //$NON-NLS-1$

@@ -89,6 +89,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#allowsContinuation()
          */
+        @Override
         public boolean allowsContinuation()
         {
             return true;
@@ -97,6 +98,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#allowsRTF()
          */
+        @Override
         public boolean allowsRTF()
         {
             return true;
@@ -116,6 +118,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
          */
+        @Override
         public boolean isAllowed(String aValue)
         {
             try
@@ -132,6 +135,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
          */
+        @Override
         public Object getDefault()
         {
             return defaultValue;
@@ -153,6 +157,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
          */
+        @Override
         public boolean isAllowed(String value)
         {
             return choices.contains(filter(value));
@@ -161,6 +166,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#filter(java.lang.String)
          */
+        @Override
         public String filter(String value)
         {
             return value.toUpperCase();
@@ -169,6 +175,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
          */
+        @Override
         protected boolean hasChoices()
         {
             return true;
@@ -177,6 +184,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
          */
+        @Override
         public Object getDefault()
         {
             return "CHAPTER"; //$NON-NLS-1$
@@ -206,6 +214,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
          */
+        @Override
         public boolean isAllowed(String value)
         {
             return choices.contains(value);
@@ -214,6 +223,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
          */
+        @Override
         protected boolean hasChoices()
         {
             return true;
@@ -222,6 +232,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
          */
+        @Override
         public Object getDefault()
         {
             return "Other"; //$NON-NLS-1$
@@ -265,6 +276,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
          */
+        @Override
         public boolean isAllowed(String value)
         {
             return choices.contains(filter(value));
@@ -273,6 +285,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#filter(java.lang.String)
          */
+        @Override
         public String filter(String value)
         {
             return value.toUpperCase();
@@ -281,6 +294,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
          */
+        @Override
         protected boolean hasChoices()
         {
             return true;
@@ -289,6 +303,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
          */
+        @Override
         public Object getDefault()
         {
             return "LZSS"; //$NON-NLS-1$
@@ -317,6 +332,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#allowsContinuation()
          */
+        @Override
         public boolean allowsContinuation()
         {
             return true;
@@ -336,6 +352,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#allowsContinuation()
          */
+        @Override
         public boolean allowsContinuation()
         {
             return true;
@@ -344,6 +361,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#allowsRTF()
          */
+        @Override
         public boolean allowsRTF()
         {
             return true;
@@ -368,6 +386,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#allowsContinuation()
          */
+        @Override
         public boolean allowsContinuation()
         {
             return true;
@@ -376,6 +395,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#allowsRTF()
          */
+        @Override
         public boolean allowsRTF()
         {
             return true;
@@ -395,6 +415,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
          */
+        @Override
         public boolean isAllowed(String value)
         {
             return validDatePattern.matcher(value).matches();
@@ -421,6 +442,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#allowsContinuation()
          */
+        @Override
         public boolean allowsContinuation()
         {
             return true;
@@ -429,6 +451,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#allowsRTF()
          */
+        @Override
         public boolean allowsRTF()
         {
             return true;
@@ -448,6 +471,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
          */
+        @Override
         public boolean isAllowed(String value)
         {
             return true;
@@ -473,6 +497,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
          */
+        @Override
         public boolean isAllowed(String value)
         {
             return choices.contains(value);
@@ -481,6 +506,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
          */
+        @Override
         protected boolean hasChoices()
         {
             return true;
@@ -489,6 +515,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
          */
+        @Override
         public Object getDefault()
         {
             return DIRECTION_LTOR;
@@ -518,6 +545,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
          */
+        @Override
         public boolean isAllowed(String value)
         {
             try
@@ -545,6 +573,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
          */
+        @Override
         public boolean isAllowed(String value)
         {
             return choices.contains(value);
@@ -553,6 +582,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
          */
+        @Override
         protected boolean hasChoices()
         {
             return true;
@@ -561,6 +591,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
          */
+        @Override
         public Object getDefault()
         {
             return "Public Domain"; //$NON-NLS-1$
@@ -591,6 +622,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#allowsContinuation()
          */
+        @Override
         public boolean allowsContinuation()
         {
             return true;
@@ -611,6 +643,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#allowsContinuation()
          */
+        @Override
         public boolean allowsContinuation()
         {
             return true;
@@ -630,6 +663,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
          */
+        @Override
         public boolean isAllowed(String value)
         {
             return choices.contains(value);
@@ -638,6 +672,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
          */
+        @Override
         protected boolean hasChoices()
         {
             return true;
@@ -646,6 +681,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
          */
+        @Override
         public Object getDefault()
         {
             return "Latin-1"; //$NON-NLS-1$
@@ -675,6 +711,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
          */
+        @Override
         public boolean isAllowed(String value)
         {
             return choices.contains(value);
@@ -683,6 +720,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
          */
+        @Override
         protected boolean hasChoices()
         {
             return true;
@@ -691,6 +729,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#mayRepeat()
          */
+        @Override
         public boolean mayRepeat()
         {
             return true;
@@ -752,6 +791,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#mayRepeat()
          */
+        @Override
         public boolean mayRepeat()
         {
             return true;
@@ -760,6 +800,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#reportDetails()
          */
+        @Override
         public boolean reportDetails()
         {
             return false;
@@ -779,6 +820,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
          */
+        @Override
         public boolean isAllowed(String value)
         {
             try
@@ -808,6 +850,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
          */
+        @Override
         public boolean isAllowed(String value)
         {
             return choices.contains(value);
@@ -816,6 +859,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
          */
+        @Override
         protected boolean hasChoices()
         {
             return true;
@@ -824,6 +868,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#mayRepeat()
          */
+        @Override
         public boolean mayRepeat()
         {
             return true;
@@ -864,6 +909,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
          */
+        @Override
         public Object getDefault()
         {
             return AbstractBookMetaData.DEFAULT_LANG_CODE;
@@ -889,6 +935,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
          */
+        @Override
         public boolean isAllowed(String value)
         {
             return choices.contains(value);
@@ -897,6 +944,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
          */
+        @Override
         protected boolean hasChoices()
         {
             return true;
@@ -934,6 +982,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
          */
+        @Override
         public Object getDefault()
         {
             // This value is unimportant to JSword, but is to Sword
@@ -955,6 +1004,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#mayRepeat()
          */
+        @Override
         public boolean mayRepeat()
         {
             return true;
@@ -963,6 +1013,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#reportDetails()
          */
+        @Override
         public boolean reportDetails()
         {
             return false;
@@ -982,6 +1033,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
          */
+        @Override
         public boolean isAllowed(String value)
         {
             return choices.contains(filter(value));
@@ -990,6 +1042,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#filter(java.lang.String)
          */
+        @Override
         public String filter(String value)
         {
 
@@ -1006,6 +1059,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
          */
+        @Override
         protected boolean hasChoices()
         {
             return true;
@@ -1014,6 +1068,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
          */
+        @Override
         public Object getDefault()
         {
             return "Plaintext"; //$NON-NLS-1$
@@ -1048,6 +1103,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
          */
+        @Override
         public boolean isAllowed(String value)
         {
             return validDatePattern.matcher(value).matches();
@@ -1069,6 +1125,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#allowsContinuation()
          */
+        @Override
         public boolean allowsContinuation()
         {
             return true;
@@ -1085,6 +1142,10 @@ public class ConfigEntryType implements Serializable
      */
     public static final ConfigEntryType VERSION = new ConfigEntryType("Version") //$NON-NLS-1$
     {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
+         */
+        @Override
         public boolean isAllowed(String aValue)
         {
             try
@@ -1102,6 +1163,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
          */
+        @Override
         public Object getDefault()
         {
             return "1.0"; //$NON-NLS-1$
@@ -1121,6 +1183,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
          */
+        @Override
         public boolean isAllowed(String aValue)
         {
             return aValue != null
@@ -1131,6 +1194,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
          */
+        @Override
         public Object getDefault()
         {
             return Boolean.TRUE; //$NON-NLS-1$
@@ -1151,6 +1215,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#isSynthetic()
          */
+        @Override
         public boolean isSynthetic()
         {
             return true;
@@ -1172,6 +1237,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#isSynthetic()
          */
+        @Override
         public boolean isSynthetic()
         {
             return true;
@@ -1191,6 +1257,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#isSynthetic()
          */
+        @Override
         public boolean isSynthetic()
         {
             return true;
@@ -1210,6 +1277,7 @@ public class ConfigEntryType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#isSynthetic()
          */
+        @Override
         public boolean isSynthetic()
         {
             return true;
@@ -1377,6 +1445,7 @@ public class ConfigEntryType implements Serializable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public final boolean equals(Object o)
     {
         return super.equals(o);
@@ -1386,6 +1455,7 @@ public class ConfigEntryType implements Serializable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public final int hashCode()
     {
         return super.hashCode();
@@ -1394,6 +1464,7 @@ public class ConfigEntryType implements Serializable
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString()
     {
         return name;

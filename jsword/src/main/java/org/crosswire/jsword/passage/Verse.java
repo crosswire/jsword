@@ -147,6 +147,7 @@ public final class Verse implements VerseBase, Comparable
      * simply an alias for getName();
      * @return The string representation
      */
+    @Override
     public String toString()
     {
         return getName();
@@ -280,6 +281,7 @@ public final class Verse implements VerseBase, Comparable
      *   If this is not cloneable then writing cloneable children is harder
      * @return A complete copy of ourselves
      */
+    @Override
     public Object clone()
     {
         Verse copy = null;
@@ -308,6 +310,7 @@ public final class Verse implements VerseBase, Comparable
      * @param obj The thing to test against
      * @return True/False is we are or are not equal to obj
      */
+    @Override
     public boolean equals(Object obj)
     {
         // Since this can not be null
@@ -350,6 +353,7 @@ public final class Verse implements VerseBase, Comparable
      * <p><b>However should should not reply on this being true</b>
      * @return The hashing number
      */
+    @Override
     public int hashCode()
     {
         return getOrdinal();

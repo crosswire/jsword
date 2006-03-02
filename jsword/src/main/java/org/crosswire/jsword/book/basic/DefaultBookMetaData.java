@@ -200,6 +200,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#toOSIS()
      */
+    @Override
     public Document toOSIS()
     {
         OSISUtil.OSISFactory factory = OSISUtil.factory();

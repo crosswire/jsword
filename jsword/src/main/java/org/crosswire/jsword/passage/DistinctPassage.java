@@ -83,6 +83,7 @@ public class DistinctPassage extends AbstractPassage
      * </ul>
      * @return A complete copy of ourselves
      */
+    @Override
     public Object clone()
     {
         // This gets us a shallow copy
@@ -109,6 +110,7 @@ public class DistinctPassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#isEmpty()
      */
+    @Override
     public boolean isEmpty()
     {
         return store.isEmpty();
@@ -117,6 +119,7 @@ public class DistinctPassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#countVerses()
      */
+    @Override
     public int countVerses()
     {
         return store.size();
@@ -187,6 +190,7 @@ public class DistinctPassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#clear()
      */
+    @Override
     public void clear()
     {
         optimizeWrites();

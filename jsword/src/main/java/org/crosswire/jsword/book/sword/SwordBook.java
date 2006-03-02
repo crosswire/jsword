@@ -57,6 +57,7 @@ public class SwordBook extends AbstractPassageBook
     /* (non-Javadoc)
      * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
      */
+    @Override
     public final void activate(Lock lock)
     {
         super.activate(lock);
@@ -68,6 +69,7 @@ public class SwordBook extends AbstractPassageBook
     /* (non-Javadoc)
      * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
      */
+    @Override
     public final void deactivate(Lock lock)
     {
         super.deactivate(lock);
@@ -78,6 +80,7 @@ public class SwordBook extends AbstractPassageBook
     /**
      * Read the unfiltered data for a given key
      */
+    @Override
     protected String getText(Key key) throws BookException
     {
         if (backend == null)
@@ -94,6 +97,7 @@ public class SwordBook extends AbstractPassageBook
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.basic.AbstractPassageBook#addOSIS(org.crosswire.jsword.passage.Key, org.jdom.Element, java.util.List)
      */
+    @Override
     public void addOSIS(Key key, Element div, List osisContent)
     {
         // See if the text is marked up with verses
@@ -124,6 +128,7 @@ public class SwordBook extends AbstractPassageBook
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.basic.AbstractPassageBook#setText(org.crosswire.jsword.passage.Verse, java.lang.String)
      */
+    @Override
     protected void setText(Verse verse, String text) throws BookException
     {
         throw new BookException(Msg.DRIVER_READONLY);
@@ -132,6 +137,7 @@ public class SwordBook extends AbstractPassageBook
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.basic.AbstractPassageBook#getFilter()
      */
+    @Override
     protected Filter getFilter()
     {
         return sbmd.getFilter();

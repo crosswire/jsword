@@ -115,6 +115,7 @@ public final class BookCategory implements Serializable, Comparable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(Object o)
     {
         return super.equals(o);
@@ -124,6 +125,7 @@ public final class BookCategory implements Serializable, Comparable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode()
     {
         return super.hashCode();
@@ -132,6 +134,7 @@ public final class BookCategory implements Serializable, Comparable
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString()
     {
         return name;

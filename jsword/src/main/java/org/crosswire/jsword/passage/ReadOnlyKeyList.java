@@ -205,6 +205,7 @@ public class ReadOnlyKeyList implements Key
     /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone()
     {
         ReadOnlyKeyList clone = null;

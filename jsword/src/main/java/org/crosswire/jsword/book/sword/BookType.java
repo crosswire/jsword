@@ -43,11 +43,13 @@ public abstract class BookType implements Serializable
      */
     public static final BookType RAW_TEXT = new BookType("RawText", BookCategory.BIBLE) //$NON-NLS-1$ //$NON-NLS-2$
     {
+        @Override
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             return new SwordBook(sbmd, backend);
         }
 
+        @Override
         protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new RawBackend(sbmd, rootPath);
@@ -64,16 +66,19 @@ public abstract class BookType implements Serializable
      */
     public static final BookType Z_TEXT = new BookType("zText", BookCategory.BIBLE) //$NON-NLS-1$ //$NON-NLS-2$
     {
+        @Override
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             return new SwordBook(sbmd, backend);
         }
 
+        @Override
         protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return getCompressedBackend(sbmd, rootPath);
         }
 
+        @Override
         protected boolean isBackendSupported(SwordBookMetaData sbmd)
         {
             return isCompressedBackendSupported(sbmd);
@@ -90,11 +95,13 @@ public abstract class BookType implements Serializable
      */
     public static final BookType RAW_COM = new BookType("RawCom", BookCategory.COMMENTARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
+        @Override
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             return new SwordBook(sbmd, backend);
         }
 
+        @Override
         protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new RawBackend(sbmd, rootPath);
@@ -111,16 +118,19 @@ public abstract class BookType implements Serializable
      */
     public static final BookType Z_COM = new BookType("zCom", BookCategory.COMMENTARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
+        @Override
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             return new SwordBook(sbmd, backend);
         }
 
+        @Override
         protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return getCompressedBackend(sbmd, rootPath);
         }
 
+        @Override
         protected boolean isBackendSupported(SwordBookMetaData sbmd)
         {
             return isCompressedBackendSupported(sbmd);
@@ -137,11 +147,13 @@ public abstract class BookType implements Serializable
      */
     public static final BookType HREF_COM = new BookType("HREFCom", BookCategory.COMMENTARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
+        @Override
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             return new SwordBook(sbmd, backend);
         }
 
+        @Override
         protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new RawBackend(sbmd, rootPath);
@@ -158,11 +170,13 @@ public abstract class BookType implements Serializable
      */
     public static final BookType RAW_FILES = new BookType("RawFiles", BookCategory.COMMENTARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
+        @Override
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             return new SwordBook(sbmd, backend);
         }
 
+        @Override
         protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new RawBackend(sbmd, rootPath);
@@ -179,6 +193,7 @@ public abstract class BookType implements Serializable
      */
     public static final BookType RAW_LD = new BookType("RawLD", BookCategory.DICTIONARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
+        @Override
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             if (sbmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS))
@@ -188,6 +203,7 @@ public abstract class BookType implements Serializable
             return new SwordDictionary(sbmd, backend);
         }
 
+        @Override
         protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new RawLDBackend(sbmd, rootPath, 2);
@@ -204,6 +220,7 @@ public abstract class BookType implements Serializable
      */
     public static final BookType RAW_LD4 = new BookType("RawLD4", BookCategory.DICTIONARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
+        @Override
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             if (sbmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS))
@@ -213,6 +230,7 @@ public abstract class BookType implements Serializable
             return new SwordDictionary(sbmd, backend);
         }
 
+        @Override
         protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new RawLDBackend(sbmd, rootPath, 4);
@@ -229,6 +247,7 @@ public abstract class BookType implements Serializable
      */
     public static final BookType Z_LD = new BookType("zLD", BookCategory.DICTIONARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
+        @Override
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             if (sbmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS))
@@ -238,11 +257,13 @@ public abstract class BookType implements Serializable
             return new SwordDictionary(sbmd, backend);
         }
 
+        @Override
         protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new ZLDBackend(sbmd, rootPath);
         }
 
+        @Override
         protected boolean isBackendSupported(SwordBookMetaData sbmd)
         {
             return false;
@@ -259,16 +280,19 @@ public abstract class BookType implements Serializable
      */
     public static final BookType RAW_GEN_BOOK = new BookType("RawGenBook", BookCategory.OTHER) //$NON-NLS-1$ //$NON-NLS-2$
     {
+        @Override
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             return new SwordBook(sbmd, backend);
         }
 
+        @Override
         protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new GenBookBackend(sbmd, rootPath);
         }
 
+        @Override
         protected boolean isBackendSupported(SwordBookMetaData sbmd)
         {
             return false;
@@ -414,6 +438,7 @@ public abstract class BookType implements Serializable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public final boolean equals(Object o)
     {
         return super.equals(o);
@@ -423,6 +448,7 @@ public abstract class BookType implements Serializable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public final int hashCode()
     {
         return super.hashCode();
@@ -431,6 +457,7 @@ public abstract class BookType implements Serializable
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString()
     {
         return name;

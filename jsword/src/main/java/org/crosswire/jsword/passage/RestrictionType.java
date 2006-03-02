@@ -41,6 +41,7 @@ public abstract class RestrictionType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.RestrictionType#isSameScope(org.crosswire.jsword.passage.Verse, org.crosswire.jsword.passage.Verse)
          */
+        @Override
         public boolean isSameScope(Verse start, Verse end)
         {
             return true;
@@ -49,6 +50,7 @@ public abstract class RestrictionType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword.passage.VerseRange, int, int)
          */
+        @Override
         public VerseRange blur(VerseRange range, int blurDown, int blurUp)
         {
             Verse start = range.getStart().subtract(blurDown);
@@ -59,6 +61,7 @@ public abstract class RestrictionType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword.passage.Verse, int, int)
          */
+        @Override
         public VerseRange blur(Verse verse, int blurDown, int blurUp)
         {
             Verse start = verse.subtract(blurDown);
@@ -69,6 +72,7 @@ public abstract class RestrictionType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword.passage.Verse, int, int)
          */
+        @Override
         public VerseRange toRange(Verse verse, int count)
         {
             Verse end = verse;
@@ -136,6 +140,7 @@ public abstract class RestrictionType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.RestrictionType#isSameScope(org.crosswire.jsword.passage.Verse, org.crosswire.jsword.passage.Verse)
          */
+        @Override
         public boolean isSameScope(Verse start, Verse end)
         {
             return start.isSameChapter(end);
@@ -144,6 +149,7 @@ public abstract class RestrictionType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword.passage.VerseRange, int, int)
          */
+        @Override
         public VerseRange blur(VerseRange range, int blurDown, int blurUp)
         {
             try
@@ -175,6 +181,7 @@ public abstract class RestrictionType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword.passage.Verse, int, int)
          */
+        @Override
         public VerseRange blur(Verse verse, int blurDown, int blurUp)
         {
             try
@@ -210,6 +217,7 @@ public abstract class RestrictionType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.RestrictionType#toRange(org.crosswire.jsword.passage.Verse, int)
          */
+        @Override
         public VerseRange toRange(Verse verse, int count)
         {
             Verse end = verse.add(count - 1);
@@ -313,6 +321,7 @@ public abstract class RestrictionType implements Serializable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public final boolean equals(Object o)
     {
         return super.equals(o);
@@ -322,6 +331,7 @@ public abstract class RestrictionType implements Serializable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public final int hashCode()
     {
         return super.hashCode();
@@ -330,6 +340,7 @@ public abstract class RestrictionType implements Serializable
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString()
     {
         return name;

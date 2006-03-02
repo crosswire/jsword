@@ -41,11 +41,19 @@ public class BibleInfoTest extends TestCase
 
     private CaseType storedCase;
 
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#setUp()
+     */
+    @Override
     protected void setUp()
     {
         storedCase = BibleInfo.getDefaultCase();
     }
 
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#tearDown()
+     */
+    @Override
     protected void tearDown()
     {
         BibleInfo.setCase(storedCase);

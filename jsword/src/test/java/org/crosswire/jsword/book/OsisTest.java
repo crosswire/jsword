@@ -40,10 +40,18 @@ public class OsisTest extends TestCase
         super(s);
     }
 
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#setUp()
+     */
+    @Override
     protected void setUp() throws Exception
     {
     }
 
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#tearDown()
+     */
+    @Override
     protected void tearDown() throws Exception
     {
     }

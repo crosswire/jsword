@@ -37,11 +37,19 @@ public class PassageConstantsTest extends TestCase
         super(s);
     }
 
-    protected void setUp()
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#setUp()
+     */
+    @Override
+    protected void setUp() throws Exception
     {
     }
 
-    protected void tearDown()
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#tearDown()
+     */
+    @Override
+    protected void tearDown() throws Exception
     {
     }
 

@@ -335,7 +335,7 @@ public final class BookFilters
          */
         public CustomBookFilter(String match)
         {
-            List cache = new ArrayList();
+            List cache = new ArrayList<Test>();
             String[] filters = match.split(";"); //$NON-NLS-1$
             for (int i = 0; i < filters.length; i++)
             {
@@ -350,7 +350,7 @@ public final class BookFilters
                 String gettername = "get" + Character.toTitleCase(parts[0].charAt(0)) + parts[0].substring(1); //$NON-NLS-1$
                 try
                 {
-                    test.property = Book.class.getMethod(gettername, null);
+                    test.property = Book.class.getMethod(gettername, (Class[]) null);
                     test.result = parts[1];
                 }
                 catch (Exception ex)
@@ -374,7 +374,7 @@ public final class BookFilters
                 Test test = tests[i];
                 try
                 {
-                    Object result = test.property.invoke(book, null);
+                    Object result = test.property.invoke(book, (Object[]) null);
                     if (!test.result.equals(result.toString()))
                     {
                         return false;

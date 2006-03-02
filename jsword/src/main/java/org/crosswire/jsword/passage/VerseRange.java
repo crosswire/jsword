@@ -361,6 +361,7 @@ public final class VerseRange implements VerseBase
      * type of string to return.
      * @return A string like 'Gen 1:1-2'
      */
+    @Override
     public String toString()
     {
         return getName();
@@ -443,6 +444,7 @@ public final class VerseRange implements VerseBase
     /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone()
     {
         // This gets us a shallow copy
@@ -467,6 +469,7 @@ public final class VerseRange implements VerseBase
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(Object obj)
     {
         // Since this can not be null
@@ -504,6 +507,7 @@ public final class VerseRange implements VerseBase
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode()
     {
         return (start.getOrdinal() << 16) + verseCount;

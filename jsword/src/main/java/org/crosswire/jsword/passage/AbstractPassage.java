@@ -104,6 +104,7 @@ public abstract class AbstractPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone()
     {
         // This gets us a shallow copy
@@ -129,6 +130,7 @@ public abstract class AbstractPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(Object obj)
     {
         // Since this can not be null
@@ -161,6 +163,7 @@ public abstract class AbstractPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode()
     {
         return getName().hashCode();
@@ -248,6 +251,7 @@ public abstract class AbstractPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString()
     {
         return getName();

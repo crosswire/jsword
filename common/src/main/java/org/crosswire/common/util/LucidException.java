@@ -93,7 +93,7 @@ public class LucidException extends Exception
         this.deprecated = false;
         if (params != null)
         {
-            this.params = (Object[]) params.clone();
+            this.params = params.clone();
         }
         else
         {

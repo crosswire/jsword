@@ -38,6 +38,7 @@ public abstract class BlockType implements Serializable
      */
     public static final BlockType BLOCK_BOOK = new BlockType("BOOK") //$NON-NLS-1$
     {
+        @Override
         public char getIndicator()
         {
             return 'b';
@@ -54,6 +55,7 @@ public abstract class BlockType implements Serializable
      */
     public static final BlockType BLOCK_CHAPTER = new BlockType("CHAPTER") //$NON-NLS-1$
     {
+        @Override
         public char getIndicator()
         {
             return 'c';
@@ -70,6 +72,7 @@ public abstract class BlockType implements Serializable
      */
     public static final BlockType BLOCK_VERSE = new BlockType("VERSE") //$NON-NLS-1$
     {
+        @Override
         public char getIndicator()
         {
             return 'v';
@@ -126,6 +129,7 @@ public abstract class BlockType implements Serializable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public final boolean equals(Object o)
     {
         return super.equals(o);
@@ -135,6 +139,7 @@ public abstract class BlockType implements Serializable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public final int hashCode()
     {
         return super.hashCode();
@@ -143,6 +148,7 @@ public abstract class BlockType implements Serializable
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString()
     {
         return name;

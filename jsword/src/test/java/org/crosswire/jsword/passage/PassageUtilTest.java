@@ -42,11 +42,19 @@ public class PassageUtilTest extends TestCase
      */
     private static KeyFactory keyf = PassageKeyFactory.instance();
 
-    protected void setUp()
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#setUp()
+     */
+    @Override
+    protected void setUp() throws Exception
     {
     }
 
-    protected void tearDown()
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#tearDown()
+     */
+    @Override
+    protected void tearDown() throws Exception
     {
     }
 

@@ -65,6 +65,7 @@ public class SwordDictionary extends AbstractBook
     /* (non-Javadoc)
      * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
      */
+    @Override
     public final void activate(Lock lock)
     {
         super.activate(lock);
@@ -89,6 +90,7 @@ public class SwordDictionary extends AbstractBook
     /* (non-Javadoc)
      * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
      */
+    @Override
     public final void deactivate(Lock lock)
     {
         super.deactivate(lock);

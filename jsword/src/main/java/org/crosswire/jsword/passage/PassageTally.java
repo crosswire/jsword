@@ -106,6 +106,7 @@ public class PassageTally extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.AbstractPassage#isEmpty()
      */
+    @Override
     public boolean isEmpty()
     {
         return size == 0;
@@ -114,6 +115,7 @@ public class PassageTally extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.AbstractPassage#countVerses()
      */
+    @Override
     public int countVerses()
     {
         return size;
@@ -149,12 +151,13 @@ public class PassageTally extends AbstractPassage
      * Get a copy of ourselves.
      * @return A complete copy of ourselves
      */
+    @Override
     public Object clone()
     {
         // This gets us a shallow copy
         PassageTally copy = (PassageTally) super.clone();
 
-        copy.board = (int[]) board.clone();
+        copy.board = board.clone();
 
         return copy;
     }
@@ -163,6 +166,7 @@ public class PassageTally extends AbstractPassage
      * Simply bounce to getName() to help String concatenation.
      * @return a String containing a description of the verses
      */
+    @Override
     public String toString()
     {
         return getName(0);
@@ -173,6 +177,7 @@ public class PassageTally extends AbstractPassage
      * Uses short books names, and the shortest possible rendering eg "Mat 3:1-4"
      * @return a String containing a description of the verses
      */
+    @Override
     public String getName()
     {
         return getName(0);
@@ -318,6 +323,7 @@ public class PassageTally extends AbstractPassage
      * Iterate through the range elements in the current sort order
      * @return A range Iterator
      */
+    @Override
     public Iterator rangeIterator(RestrictionType restrict)
     {
         if (order == ORDER_BIBLICAL)
@@ -428,10 +434,10 @@ public class PassageTally extends AbstractPassage
         fireIntervalRemoved(this, null, null);
     }
 
-    /**
-     * Add/Increment these verses in the rankings
-     * @param that The verses to add/increment
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#addAll(org.crosswire.jsword.passage.Key)
      */
+    @Override
     public void addAll(Key that)
     {
         optimizeWrites();
@@ -504,6 +510,7 @@ public class PassageTally extends AbstractPassage
      * Remove/Decrement these verses in the rankings
      * @param key The verses to remove/decrement
      */
+    @Override
     public void removeAll(Key key)
     {
         Passage that = KeyUtil.getPassage(key);
@@ -544,6 +551,7 @@ public class PassageTally extends AbstractPassage
     /**
      * Removes all of the Verses from this Passage.
      */
+    @Override
     public void clear()
     {
         optimizeWrites();
@@ -570,6 +578,7 @@ public class PassageTally extends AbstractPassage
      * @return A new Passage conatining the remaining verses or null
      * @see Verse
      */
+    @Override
     public Passage trimVerses(int count)
     {
         optimizeWrites();
@@ -631,6 +640,7 @@ public class PassageTally extends AbstractPassage
      * @param restrict How should we restrict the blurring?
      * @see Passage
      */
+    @Override
     public void blur(int verses, RestrictionType restrict)
     {
         assert verses > 0;

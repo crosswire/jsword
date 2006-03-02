@@ -257,6 +257,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(Object obj)
     {
         // Since this can not be null
@@ -284,6 +285,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode()
     {
         return getName().hashCode();
@@ -306,6 +308,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString()
     {
         if (displayName == null)

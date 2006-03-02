@@ -52,6 +52,10 @@ public class BooksTest extends TestCase
     {
     };
 
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#setUp()
+     */
+    @Override
     protected void setUp() throws Exception
     {
         List lbmds = Books.installed().getBooks(BookFilters.getBibles());
@@ -70,6 +74,10 @@ public class BooksTest extends TestCase
         }
     }
 
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#tearDown()
+     */
+    @Override
     protected void tearDown() throws Exception
     {
     }

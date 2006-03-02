@@ -233,6 +233,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
         return new DefaultKeyList();
     }
 
+    @Override
     public boolean hasFeature(FeatureType feature)
     {
         return feature == FeatureType.DAILY_DEVOTIONS;

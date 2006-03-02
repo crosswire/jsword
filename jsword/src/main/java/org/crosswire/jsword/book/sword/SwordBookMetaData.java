@@ -105,6 +105,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#isQuestionable()
      */
+    @Override
     public boolean isQuestionable()
     {
         return cet.isQuestionable();
@@ -113,6 +114,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#isSupported()
      */
+    @Override
     public boolean isSupported()
     {
         return cet.isSupported() && cet.getBookType().isSupported(this);
@@ -121,6 +123,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#isEnciphered()
      */
+    @Override
     public boolean isEnciphered()
     {
         return cet.isEnciphered();
@@ -205,6 +208,10 @@ public class SwordBookMetaData extends AbstractBookMetaData
         return type;
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#toOSIS()
+     */
+    @Override
     public Document toOSIS()
     {
         return new Document(cet.toOSIS());
@@ -243,6 +250,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#hasFeature(org.crosswire.jsword.book.FeatureType)
      */
+    @Override
     public boolean hasFeature(FeatureType feature)
     {
         return cet.match(ConfigEntryType.FEATURE, feature.toString());

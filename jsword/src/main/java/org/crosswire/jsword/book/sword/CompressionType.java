@@ -41,10 +41,16 @@ public abstract class CompressionType implements Serializable
      */
     public static final CompressionType COMPRESSION_ZIP = new CompressionType("ZIP") //$NON-NLS-1$
     {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.CompressionType#isSupported()
+         */
+        @Override
         public boolean isSupported()
         {
             return true;
         }
+
+        @Override
         protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             BlockType blockType = BlockType.fromString(sbmd.getProperty(ConfigEntryType.BLOCK_TYPE));
@@ -62,10 +68,13 @@ public abstract class CompressionType implements Serializable
      */
     public static final CompressionType COMPRESSION_LZSS = new CompressionType("LZSS") //$NON-NLS-1$
     {
+        @Override
         public boolean isSupported()
         {
             return false;
         }
+
+        @Override
         protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new LZSSBackend(sbmd, rootPath);
@@ -123,6 +132,7 @@ public abstract class CompressionType implements Serializable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public final boolean equals(Object o)
     {
         return super.equals(o);
@@ -132,6 +142,7 @@ public abstract class CompressionType implements Serializable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public final int hashCode()
     {
         return super.hashCode();
@@ -140,6 +151,7 @@ public abstract class CompressionType implements Serializable
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString()
     {
         return name;

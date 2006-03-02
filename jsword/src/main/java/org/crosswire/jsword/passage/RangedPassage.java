@@ -88,6 +88,7 @@ public class RangedPassage extends AbstractPassage
     /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone()
     {
         // This gets us a shallow copy
@@ -106,6 +107,7 @@ public class RangedPassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#countRanges(int)
      */
+    @Override
     public int countRanges(RestrictionType restrict)
     {
         if (restrict.equals(RestrictionType.NONE))
@@ -119,6 +121,7 @@ public class RangedPassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#countVerses()
      */
+    @Override
     public int countVerses()
     {
         Iterator it = rangeIterator(RestrictionType.NONE);
@@ -144,6 +147,7 @@ public class RangedPassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#rangeIterator(int)
      */
+    @Override
     public Iterator rangeIterator(RestrictionType restrict)
     {
         if (restrict.equals(RestrictionType.NONE))
@@ -157,6 +161,7 @@ public class RangedPassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#isEmpty()
      */
+    @Override
     public boolean isEmpty()
     {
         return store.isEmpty();
@@ -211,6 +216,7 @@ public class RangedPassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#clear()
      */
+    @Override
     public void clear()
     {
         optimizeWrites();
@@ -270,6 +276,7 @@ public class RangedPassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#retainAll(org.crosswire.jsword.passage.Passage)
      */
+    @Override
     public void retainAll(Key key)
     {
         Passage that = KeyUtil.getPassage(key);
@@ -323,6 +330,7 @@ public class RangedPassage extends AbstractPassage
      * however this is safe, and I don't think there is a cost associated with
      * a double synchronize. (?)
      */
+    @Override
     protected void normalize()
     {
         if (skipNormalization != 0)

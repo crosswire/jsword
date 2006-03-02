@@ -337,6 +337,7 @@ final class SynchronizedPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
+    @Override
     public synchronized Object clone()
     {
         SynchronizedPassage clone = null;

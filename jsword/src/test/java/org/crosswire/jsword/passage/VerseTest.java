@@ -54,6 +54,10 @@ public class VerseTest extends TestCase
     Verse pro11 = null;
     Verse ch111 = null;
 
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#setUp()
+     */
+    @Override
     protected void setUp() throws Exception
     {
         gen11 = new Verse(1, 1, 1);
@@ -74,6 +78,10 @@ public class VerseTest extends TestCase
         ch111 = new Verse(13, 1, 1);
     }
 
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#tearDown()
+     */
+    @Override
     protected void tearDown()
     {
     }

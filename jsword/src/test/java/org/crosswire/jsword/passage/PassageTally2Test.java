@@ -72,6 +72,10 @@ public class PassageTally2Test extends TestCase
     PassageTally empty = new PassageTally();
     PassageTally temp = null;
 
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#setUp()
+     */
+    @Override
     protected void setUp() throws Exception
     {
         gen11_1 = RestrictionType.NONE.toRange(new Verse(1, 1, 1), 1);
@@ -102,6 +106,10 @@ public class PassageTally2Test extends TestCase
         tally.addAll(gen1_157);
     }
 
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#tearDown()
+     */
+    @Override
     protected void tearDown()
     {
     }

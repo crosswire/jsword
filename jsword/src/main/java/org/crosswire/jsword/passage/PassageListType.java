@@ -38,6 +38,10 @@ public abstract class PassageListType implements Serializable
      */
     public static final PassageListType VERSES = new PassageListType("VERSES") //$NON-NLS-1$
     {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.passage.PassageListType#getElementAt(org.crosswire.jsword.passage.Passage, int, org.crosswire.jsword.passage.RestrictionType)
+         */
+        @Override
         public Object getElementAt(Passage ref, int index, RestrictionType restrict)
         {
             if (ref == null)
@@ -47,6 +51,10 @@ public abstract class PassageListType implements Serializable
             return ref.getVerseAt(index);
         }
 
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.passage.PassageListType#count(org.crosswire.jsword.passage.Passage, org.crosswire.jsword.passage.RestrictionType)
+         */
+        @Override
         public int count(Passage ref, RestrictionType restrict)
         {
             if (ref == null)
@@ -67,6 +75,10 @@ public abstract class PassageListType implements Serializable
      */
     public static final PassageListType RANGES = new PassageListType("RANGES") //$NON-NLS-1$
     {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.passage.PassageListType#getElementAt(org.crosswire.jsword.passage.Passage, int, org.crosswire.jsword.passage.RestrictionType)
+         */
+        @Override
         public Object getElementAt(Passage ref, int index, RestrictionType restrict)
         {
             if (ref == null)
@@ -76,6 +88,10 @@ public abstract class PassageListType implements Serializable
             return ref.getRangeAt(index, restrict);
         }
 
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.passage.PassageListType#count(org.crosswire.jsword.passage.Passage, org.crosswire.jsword.passage.RestrictionType)
+         */
+        @Override
         public int count(Passage ref, RestrictionType restrict)
         {
             if (ref == null)
@@ -132,6 +148,7 @@ public abstract class PassageListType implements Serializable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public final boolean equals(Object o)
     {
         return super.equals(o);
@@ -141,6 +158,7 @@ public abstract class PassageListType implements Serializable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public final int hashCode()
     {
         return super.hashCode();
@@ -149,6 +167,7 @@ public abstract class PassageListType implements Serializable
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString()
     {
         return name;

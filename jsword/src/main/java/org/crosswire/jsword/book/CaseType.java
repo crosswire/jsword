@@ -35,6 +35,10 @@ public abstract class CaseType implements Serializable
 {
     public static final CaseType LOWER = new CaseType("LOWER") //$NON-NLS-1$
     {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.CaseType#setCase(java.lang.String)
+         */
+        @Override
         public String setCase(String word)
         {
             return word.toLowerCase();
@@ -48,6 +52,10 @@ public abstract class CaseType implements Serializable
 
     public static final CaseType SENTENCE = new CaseType("SENTENCE") //$NON-NLS-1$
     {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.CaseType#setCase(java.lang.String)
+         */
+        @Override
         public String setCase(String word)
         {
             int index = word.indexOf('-');
@@ -85,6 +93,10 @@ public abstract class CaseType implements Serializable
 
     public static final CaseType UPPER = new CaseType("UPPER") //$NON-NLS-1$
     {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.CaseType#setCase(java.lang.String)
+         */
+        @Override
         public String setCase(String word)
         {
             return word.toUpperCase();
@@ -210,6 +222,10 @@ public abstract class CaseType implements Serializable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
     public final boolean equals(Object o)
     {
         return super.equals(o);
@@ -219,6 +235,7 @@ public abstract class CaseType implements Serializable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public final int hashCode()
     {
         return super.hashCode();
@@ -227,6 +244,7 @@ public abstract class CaseType implements Serializable
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString()
     {
         return name;

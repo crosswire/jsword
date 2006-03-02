@@ -43,6 +43,7 @@ public abstract class SearchType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.index.search.SearchType#decorate(java.lang.String)
          */
+        @Override
         public String decorate(String queryWords)
         {
             return SEARCH_SYNTAX.decoratePhrase(queryWords);
@@ -62,6 +63,7 @@ public abstract class SearchType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.index.search.SearchType#decorate(java.lang.String)
          */
+        @Override
         public String decorate(String queryWords)
         {
             return SEARCH_SYNTAX.decorateAllWords(queryWords);
@@ -81,6 +83,7 @@ public abstract class SearchType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.index.search.SearchType#decorate(java.lang.String)
          */
+        @Override
         public String decorate(String queryWords)
         {
             return SEARCH_SYNTAX.decorateAnyWords(queryWords);
@@ -101,6 +104,7 @@ public abstract class SearchType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.index.search.SearchType#decorate(java.lang.String)
          */
+        @Override
         public String decorate(String queryWords)
         {
             return SEARCH_SYNTAX.decorateNotWords(queryWords);
@@ -120,6 +124,7 @@ public abstract class SearchType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.index.search.SearchType#decorate(java.lang.String)
          */
+        @Override
         public String decorate(String queryWords)
         {
             return SEARCH_SYNTAX.decorateStartWords(queryWords);
@@ -139,6 +144,7 @@ public abstract class SearchType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.index.search.SearchType#decorate(java.lang.String)
          */
+        @Override
         public String decorate(String queryWords)
         {
             return SEARCH_SYNTAX.decorateSpellWords(queryWords);
@@ -158,6 +164,7 @@ public abstract class SearchType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.index.search.SearchType#decorate(java.lang.String)
          */
+        @Override
         public String decorate(String queryWords)
         {
             return SEARCH_SYNTAX.decorateRange(queryWords);
@@ -210,6 +217,7 @@ public abstract class SearchType implements Serializable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public final boolean equals(Object o)
     {
         return super.equals(o);
@@ -219,6 +227,7 @@ public abstract class SearchType implements Serializable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public final int hashCode()
     {
         return super.hashCode();
@@ -227,6 +236,7 @@ public abstract class SearchType implements Serializable
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString()
     {
         return name;

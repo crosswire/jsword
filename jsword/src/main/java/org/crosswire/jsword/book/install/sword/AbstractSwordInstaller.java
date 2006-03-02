@@ -172,6 +172,10 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         // background so we create a job for it.
         final Thread worker = new Thread("DisplayPreLoader") //$NON-NLS-1$
         {
+            /* (non-Javadoc)
+             * @see java.lang.Runnable#run()
+             */
+            @Override
             public void run()
             {
                 URL predicturl = Project.instance().getWritablePropertiesURL("sword-install"); //$NON-NLS-1$
@@ -458,6 +462,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(Object object)
     {
         if (!(object instanceof AbstractSwordInstaller))
@@ -497,6 +502,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode()
     {
         return host.hashCode() + directory.hashCode();

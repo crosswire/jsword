@@ -74,6 +74,7 @@ public abstract class AccuracyType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#isVerse()
          */
+        @Override
         public boolean isVerse()
         {
             return true;
@@ -82,6 +83,7 @@ public abstract class AccuracyType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createStartVerse(java.lang.String, org.crosswire.jsword.passage.VerseRange, java.lang.String[])
          */
+        @Override
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException
         {
             int book = BibleInfo.getBookNumber(parts[0]);
@@ -103,6 +105,7 @@ public abstract class AccuracyType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createEndVerse(java.lang.String, org.crosswire.jsword.passage.Verse, java.lang.String[])
          */
+        @Override
         public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException
         {
             // A fully specified verse is the same regardless of whether it is a start or an end to a range.
@@ -123,6 +126,7 @@ public abstract class AccuracyType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#isChapter()
          */
+        @Override
         public boolean isChapter()
         {
             return true;
@@ -131,6 +135,7 @@ public abstract class AccuracyType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createStartVerse(java.lang.String, org.crosswire.jsword.passage.VerseRange, java.lang.String[])
          */
+        @Override
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException
         {
             int book = BibleInfo.getBookNumber(parts[0]);
@@ -142,6 +147,7 @@ public abstract class AccuracyType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createEndVerse(java.lang.String, org.crosswire.jsword.passage.Verse, java.lang.String[])
          */
+        @Override
         public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException
         {
             // Very similar to the start verse but we want the end of the chapter
@@ -164,6 +170,7 @@ public abstract class AccuracyType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#isBook()
          */
+        @Override
         public boolean isBook()
         {
             return true;
@@ -172,6 +179,7 @@ public abstract class AccuracyType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createStartVerse(java.lang.String, org.crosswire.jsword.passage.VerseRange, java.lang.String[])
          */
+        @Override
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException
         {
             int book = BibleInfo.getBookNumber(parts[0]);
@@ -181,6 +189,7 @@ public abstract class AccuracyType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createEndVerse(java.lang.String, org.crosswire.jsword.passage.Verse, java.lang.String[])
          */
+        @Override
         public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException
         {
                // And we end with a book, so we need to encompass the lot
@@ -205,6 +214,7 @@ public abstract class AccuracyType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#isVerse()
          */
+        @Override
         public boolean isVerse()
         {
             return true;
@@ -213,6 +223,7 @@ public abstract class AccuracyType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createStartVerse(java.lang.String, org.crosswire.jsword.passage.VerseRange, java.lang.String[])
          */
+        @Override
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException
         {
             int book = verseRangeBasis.getEnd().getBook();
@@ -225,6 +236,7 @@ public abstract class AccuracyType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createEndVerse(java.lang.String, org.crosswire.jsword.passage.Verse, java.lang.String[])
          */
+        @Override
         public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException
         {
             // Very similar to the start verse but use the verse as a basis
@@ -248,6 +260,7 @@ public abstract class AccuracyType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#isChapter()
          */
+        @Override
         public boolean isChapter()
         {
             return true;
@@ -256,6 +269,7 @@ public abstract class AccuracyType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createStartVerse(java.lang.String, org.crosswire.jsword.passage.VerseRange, java.lang.String[])
          */
+        @Override
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException
         {
             int book = verseRangeBasis.getEnd().getBook();
@@ -266,6 +280,7 @@ public abstract class AccuracyType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createEndVerse(java.lang.String, org.crosswire.jsword.passage.Verse, java.lang.String[])
          */
+        @Override
         public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException
         {
             // Very similar to the start verse but use the verse as a basis
@@ -290,6 +305,7 @@ public abstract class AccuracyType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#isVerse()
          */
+        @Override
         public boolean isVerse()
         {
             return true;
@@ -298,6 +314,7 @@ public abstract class AccuracyType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createStartVerse(java.lang.String, org.crosswire.jsword.passage.VerseRange, java.lang.String[])
          */
+        @Override
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException
         {
             int book = verseRangeBasis.getEnd().getBook();
@@ -309,6 +326,7 @@ public abstract class AccuracyType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createEndVerse(java.lang.String, org.crosswire.jsword.passage.Verse, java.lang.String[])
          */
+        @Override
         public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException
         {
             // Very similar to the start verse but use the verse as a basis
@@ -739,6 +757,7 @@ public abstract class AccuracyType implements Serializable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public final boolean equals(Object o)
     {
         return super.equals(o);
@@ -748,6 +767,7 @@ public abstract class AccuracyType implements Serializable
      * Prevent subclasses from overriding canonical identity based Object methods
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public final int hashCode()
     {
         return super.hashCode();
@@ -756,6 +776,7 @@ public abstract class AccuracyType implements Serializable
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString()
     {
         return name;

@@ -18,5 +18,6 @@
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="lib" path="jar/xerces-2.7.1/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="jar/xerces-2.7.1/xml-apis.jar"/>
+	<classpathentry sourcepath="jar/xalan-2.7.0/xalan-j_2.7.0-src.zip" kind="lib" path="jar/xalan-2.7.0/xalan.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
