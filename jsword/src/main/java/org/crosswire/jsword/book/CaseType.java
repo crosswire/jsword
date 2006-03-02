@@ -164,7 +164,7 @@ public abstract class CaseType implements Serializable
     }
 
     /**
-     * Get an integer representation for this RestrictionType
+     * Get an integer representation for this CaseType
      */
     public int toInteger()
     {
