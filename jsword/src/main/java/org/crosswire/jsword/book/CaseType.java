@@ -21,7 +21,7 @@
  */
 package org.crosswire.jsword.book;
 
-import java.io.Serializable;
+
 
 /**
  * Types of Sentence Case.
@@ -31,9 +31,9 @@ import java.io.Serializable;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public abstract class CaseType implements Serializable
+public enum CaseType
 {
-    public static final CaseType LOWER = new CaseType("LOWER") //$NON-NLS-1$
+    LOWER //$NON-NLS-1$
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.CaseType#setCase(java.lang.String)
@@ -43,14 +43,9 @@ public abstract class CaseType implements Serializable
         {
             return word.toLowerCase();
         }
+    },
 
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3546637707360286256L;
-    };
-
-    public static final CaseType SENTENCE = new CaseType("SENTENCE") //$NON-NLS-1$
+    SENTENCE //$NON-NLS-1$
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.CaseType#setCase(java.lang.String)
@@ -84,14 +79,9 @@ public abstract class CaseType implements Serializable
             return toSentenceCase(word.substring(0, index))
                    + "-" + toSentenceCase(word.substring(index + 1)); //$NON-NLS-1$
         }
+    },
 
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3905520510312985138L;
-    };
-
-    public static final CaseType UPPER = new CaseType("UPPER") //$NON-NLS-1$
+    UPPER //$NON-NLS-1$
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.CaseType#setCase(java.lang.String)
@@ -101,22 +91,9 @@ public abstract class CaseType implements Serializable
         {
             return word.toUpperCase();
         }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3257002163871035698L;
     };
 
     public abstract String setCase(String word);
-
-    /**
-     * Simple ctor
-     */
-    public CaseType(String name)
-    {
-        this.name = name;
-    }
 
     /**
      * Change to sentence case - ie first character in caps, the rest in lower.
@@ -175,99 +152,16 @@ public abstract class CaseType implements Serializable
         return SENTENCE;
     }
 
-    /**
-     * Get an integer representation for this CaseType
-     */
-    public int toInteger()
-    {
-        for (int i = 0; i < VALUES.length; i++)
-        {
-            if (equals(VALUES[i]))
-            {
-                return i;
-            }
-        }
-        // cannot get here
-        assert false;
-        return -1;
-    }
-
-    /**
-     * Lookup method to convert from a String
-     */
-    public static CaseType fromString(String name)
-    {
-        for (int i = 0; i < VALUES.length; i++)
-        {
-            CaseType o = VALUES[i];
-            if (o.name.equalsIgnoreCase(name))
-            {
-                return o;
-            }
-        }
-        // cannot get here
-        assert false;
-        return null;
-    }
-
-    /**
-     * Lookup method to convert from an integer
-     */
     public static CaseType fromInteger(int i)
     {
-        return VALUES[i];
+        for (CaseType t : CaseType.values())
+        {
+            if (t.ordinal() == i)
+            {
+                return t;
+            }
+        }
+        return SENTENCE;
     }
 
-    /**
-     * Prevent subclasses from overriding canonical identity based Object methods
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-    public final boolean equals(Object o)
-    {
-        return super.equals(o);
-    }
-
-    /**
-     * Prevent subclasses from overriding canonical identity based Object methods
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public final int hashCode()
-    {
-        return super.hashCode();
-    }
-
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString()
-    {
-        return name;
-    }
-
-    /**
-     * The name of the type
-     */
-    private String name;
-
-    // Support for serialization
-    private static int nextObj;
-    private final int obj = nextObj++;
-
-    Object readResolve()
-    {
-        return VALUES[obj];
-    }
-
-    private static final CaseType[] VALUES =
-    {
-        LOWER,
-        SENTENCE,
-        UPPER,
-    };
 }

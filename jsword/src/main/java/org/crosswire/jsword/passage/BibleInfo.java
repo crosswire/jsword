@@ -159,7 +159,7 @@ public final class BibleInfo
      */
     public static int getCase()
     {
-        return BibleInfo.bookCase.toInteger();
+        return BibleInfo.bookCase.ordinal();
     }
 
     /**

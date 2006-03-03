@@ -508,7 +508,7 @@ public class ConfigEntryTable
             return;
         }
 
-        bookType = BookType.getBookType(modTypeName);
+        bookType = BookType.fromString(modTypeName);
         if (getBookType() == null)
         {
             log.error("Book not supported: malformed conf file for " + internal + " no book type found"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
