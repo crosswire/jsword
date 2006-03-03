@@ -36,7 +36,7 @@ import java.util.Set;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class SortedListSet extends ArrayList implements Set
+public class SortedListSet<E extends Comparable<E>> extends ArrayList<E> implements Set<E>
 {
     /**
      * Create an empty SortedListSet of default size.
@@ -58,7 +58,7 @@ public class SortedListSet extends ArrayList implements Set
     /**
      * @param c
      */
-    public SortedListSet(Collection c)
+    public SortedListSet(Collection<? extends E> c)
     {
         this(c.size());
         // Might be better to add all then sort.
@@ -68,7 +68,8 @@ public class SortedListSet extends ArrayList implements Set
     /* (non-Javadoc)
      * @see java.util.List#add(int, java.lang.Object)
      */
-    public void add(int index, Object element)
+    @Override
+    public void add(int index, E element)
     {
         // ignore the requested index
         add(element);
@@ -77,7 +78,8 @@ public class SortedListSet extends ArrayList implements Set
     /* (non-Javadoc)
      * @see java.util.Collection#add(java.lang.Object)
      */
-    public boolean add(Object o)
+    @Override
+    public boolean add(E o)
     {
         // Add the item only if it is not in the list.
         // Add it into the list so that it is in sorted order.
@@ -93,16 +95,16 @@ public class SortedListSet extends ArrayList implements Set
     /* (non-Javadoc)
      * @see java.util.Collection#addAll(java.util.Collection)
      */
-    public boolean addAll(Collection c)
+    @Override
+    public boolean addAll(Collection<? extends E> c)
     {
         // Might be better to add the list to the end
         // and then sort the list.
         // This can be revisited if the list performs badly.
         boolean added = false;
-        Iterator bmdIter = c.iterator();
-        while (bmdIter.hasNext())
+        for (E e : c)
         {
-            if (add(bmdIter.next()))
+            if (add(e))
             {
                 added = true;
             }
@@ -113,7 +115,8 @@ public class SortedListSet extends ArrayList implements Set
     /* (non-Javadoc)
      * @see java.util.List#addAll(int, java.util.Collection)
      */
-    public boolean addAll(int index, Collection c)
+    @Override
+    public boolean addAll(int index, Collection<? extends E> c)
     {
         // Ignore the index
         return addAll(c);
@@ -122,11 +125,12 @@ public class SortedListSet extends ArrayList implements Set
     /* (non-Javadoc)
      * @see java.util.List#set(int, java.lang.Object)
      */
-    public Object set(int index, Object element)
+    @Override
+    public E set(int index, E element)
     {
         // remove the item at the index (keep it to return it),
         // then insert the item into the sorted list.
-        Object item = remove(index);
+        E item = remove(index);
         add(element);
         return item;
     }

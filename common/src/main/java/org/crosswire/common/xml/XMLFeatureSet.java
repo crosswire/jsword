@@ -42,6 +42,11 @@
  */
 package org.crosswire.common.xml;
 
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.XMLReader;
 
 /**
@@ -54,96 +59,61 @@ import org.xml.sax.XMLReader;
 public final class XMLFeatureSet
 {
 
-    public void setFeatures(XMLReader parser, String[] argv)
+    public XMLFeatureSet()
+    {
+        features.put("n", new XMLFeatureState(XMLFeature.NAMESPACES, true)); //$NON-NLS-1$
+        features.put("np", new XMLFeatureState(XMLFeature.NAMESPACE_PREFIX)); //$NON-NLS-1$
+        features.put("v", new XMLFeatureState(XMLFeature.VALIDATION)); //$NON-NLS-1$
+        features.put("xd", new XMLFeatureState(XMLFeature.LOAD_EXTERNAL_DTD, true)); //$NON-NLS-1$
+        features.put("s", new XMLFeatureState(XMLFeature.SCHEMA_VALIDATION)); //$NON-NLS-1$
+        features.put("f", new XMLFeatureState(XMLFeature.SCHEMA_FULL_CHECKING)); //$NON-NLS-1$
+        features.put("va", new XMLFeatureState(XMLFeature.VALIDATE_ANNOTATIONS)); //$NON-NLS-1$
+        features.put("dv", new XMLFeatureState(XMLFeature.DYNAMIC_VALIDATION)); //$NON-NLS-1$
+        features.put("xi", new XMLFeatureState(XMLFeature.XINCLUDE)); //$NON-NLS-1$
+        features.put("xb", new XMLFeatureState(XMLFeature.XINCLUDE_FIXUP_BASE_URIS, true)); //$NON-NLS-1$
+        features.put("xl", new XMLFeatureState(XMLFeature.XINCLUDE_FIXUP_LANGUAGE, true)); //$NON-NLS-1$
+
+        for (Map.Entry<String, XMLFeatureState> entry : features.entrySet())
+        {
+            states.put(entry.getValue().getFeature(), entry.getKey());
+        }
+    }
+
+    public void setFeatureState(XMLFeature feature, boolean state)
+    {
+       features.get(states.get(feature)).setState(state);
+    }
+    
+    public void setFeatureStates(String... argv)
     {
         // process arguments
-        for (int i = 0; i < argv.length; i++)
+        for (String arg : argv)
         {
-            String arg = argv[i];
             if (arg.startsWith("-")) //$NON-NLS-1$
             {
                 String option = arg.substring(1);
-                if (option.equalsIgnoreCase("n")) //$NON-NLS-1$
+                String key = option.toLowerCase();
+                XMLFeatureState feature = features.get(key);
+                if (feature != null)
                 {
-                    namespacesFeature.setState(option.equals("n")); //$NON-NLS-1$
-                    continue;
-                }
-                if (option.equalsIgnoreCase("np")) //$NON-NLS-1$
-                {
-                    namespacePrefixFeature.setState(option.equals("np")); //$NON-NLS-1$
-                    continue;
-                }
-                if (option.equalsIgnoreCase("v")) //$NON-NLS-1$
-                {
-                    validationFeature.setState(option.equals("v")); //$NON-NLS-1$
-                    continue;
-                }
-                if (option.equalsIgnoreCase("xd")) //$NON-NLS-1$
-                {
-                    loadExternalDTDFeature.setState(option.equals("xd")); //$NON-NLS-1$
-                    continue;
-                }
-                if (option.equalsIgnoreCase("s")) //$NON-NLS-1$
-                {
-                    schemaValidationFeature.setState(option.equals("s")); //$NON-NLS-1$
-                    continue;
-                }
-                if (option.equalsIgnoreCase("f")) //$NON-NLS-1$
-                {
-                    schemaFullCheckingFeature.setState(option.equals("f")); //$NON-NLS-1$
-                    continue;
-                }
-                if (option.equalsIgnoreCase("va")) //$NON-NLS-1$
-                {
-                    validateAnnotationsFeature.setState(option.equals("va")); //$NON-NLS-1$
-                    continue;
-                }
-                if (option.equalsIgnoreCase("dv")) //$NON-NLS-1$
-                {
-                    dynamicValidationFeature.setState(option.equals("dv")); //$NON-NLS-1$
-                    continue;
-                }
-                if (option.equalsIgnoreCase("xi")) //$NON-NLS-1$
-                {
-                    xincludeFeature.setState(option.equals("xi")); //$NON-NLS-1$
-                    continue;
-                }
-                if (option.equalsIgnoreCase("xb")) //$NON-NLS-1$
-                {
-                    xincludeFixupBaseURIsFeature.setState(option.equals("xb")); //$NON-NLS-1$
-                    continue;
-                }
-                if (option.equalsIgnoreCase("xl")) //$NON-NLS-1$
-                {
-                    xincludeFixupLanguageFeature.setState(option.equals("xl")); //$NON-NLS-1$
-                    continue;
-                }
-                if (option.equals("h")) //$NON-NLS-1$
-                {
-                    printUsage();
-                    continue;
+                    feature.setState(option.equals(key));
                 }
             }
         }
-
-        setFeatures(parser);
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
     public String toString()
     {
         StringBuffer buf = new StringBuffer();
         buf.append('\n');
-        buf.append(namespacesFeature.toString()).append('\n');
-        buf.append(namespacePrefixFeature.toString()).append('\n');
-        buf.append(validationFeature.toString()).append('\n');
-        buf.append(schemaValidationFeature.toString()).append('\n');
-        buf.append(schemaFullCheckingFeature.toString()).append('\n');
-        buf.append(validateAnnotationsFeature.toString()).append('\n');
-        buf.append(dynamicValidationFeature.toString()).append('\n');
-        buf.append(loadExternalDTDFeature.toString()).append('\n');
-        buf.append(xincludeFeature.toString()).append('\n');
-        buf.append(xincludeFixupBaseURIsFeature.toString()).append('\n');
-        buf.append(xincludeFixupLanguageFeature.toString());
+        for (XMLFeatureState state : features.values())
+        {
+            buf.append(state.getFeature().toString()).append('\n');
+        }
         return buf.toString();
     }
 
@@ -171,91 +141,80 @@ public final class XMLFeatureSet
         System.err.println("              NOTE: Requires use of -xi and not supported by all parsers."); //$NON-NLS-1$
         System.err.println("  -xl | -XL   Turn on/off language fixup during XInclude processing."); //$NON-NLS-1$
         System.err.println("              NOTE: Requires use of -xi and not supported by all parsers."); //$NON-NLS-1$
-        System.err.println();
-
-        System.err.println("defaults:"); //$NON-NLS-1$
-        System.err.println(new XMLFeatureSet().toString());
     }
 
-    private void setFeatures(XMLReader parser)
+    public void setFeatures(XMLReader parser)
     {
-        namespacesFeature.setFeature(parser);
-        namespacePrefixFeature.setFeature(parser);
-        validationFeature.setFeature(parser);
-        schemaValidationFeature.setFeature(parser);
-        schemaFullCheckingFeature.setFeature(parser);
-        validateAnnotationsFeature.setFeature(parser);
-        dynamicValidationFeature.setFeature(parser);
-        loadExternalDTDFeature.setFeature(parser);
-        xincludeFeature.setFeature(parser);
-        xincludeFixupBaseURIsFeature.setFeature(parser);
-        xincludeFixupLanguageFeature.setFeature(parser);
+        for (XMLFeatureState state : features.values())
+        {
+            state.setFeature(parser);
+        }
     }
 
-    /**
-     * Namespaces feature id
-     */
-    private XMLFeature namespacesFeature =
-        new XMLFeature("Namespaces", "http://xml.org/sax/features/namespaces", true); //$NON-NLS-1$ //$NON-NLS-2$
+    private class XMLFeatureState
+    {
+        public XMLFeatureState(XMLFeature feature, boolean state)
+        {
+            this.feature = feature;
+            this.state = state;
+        }
 
-    /**
-     * Namespace prefixes feature id
-     */
-    private XMLFeature namespacePrefixFeature =
-        new XMLFeature("Prefixes", "http://xml.org/sax/features/namespace-prefixes"); //$NON-NLS-1$ //$NON-NLS-2$
+        public XMLFeatureState(XMLFeature feature)
+        {
+            this(feature, false);
+        }
+       
+        /**
+         * @return Returns the feature.
+         */
+        public XMLFeature getFeature()
+        {
+            return feature;
+        }
 
-    /**
-     * Validation feature id
-     */
-    private XMLFeature validationFeature =
-        new XMLFeature("Validation", "http://xml.org/sax/features/validation"); //$NON-NLS-1$ //$NON-NLS-2$
+        /**
+         * @return Returns the state.
+         */
+        public boolean getState()
+        {
+            return state;
+        }
 
-    /**
-     * Schema validation feature id
-     */
-    private XMLFeature schemaValidationFeature =
-        new XMLFeature("Schema", "http://apache.org/xml/features/validation/schema"); //$NON-NLS-1$ //$NON-NLS-2$
+        /**
+         * Set the new state
+         * @param newState
+         */
+        public void setState(boolean newState)
+        {
+            state = newState;
+        }
 
-    /**
-     * Schema full checking feature id
-     */
-    private XMLFeature schemaFullCheckingFeature =
-        new XMLFeature("Schema full checking", "http://apache.org/xml/features/validation/schema-full-checking"); //$NON-NLS-1$ //$NON-NLS-2$
+        /**
+         * Set the control state on the parser.
+         * 
+         * @param parser
+         */
+        public void setFeature(XMLReader parser)
+        {
+            String control = feature.getControl();
+            try
+            {
+                parser.setFeature(control, state);
+            }
+            catch (SAXNotRecognizedException e)
+            {
+                System.err.println("warning: Parser does not recognize feature (" + control + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+            catch (SAXNotSupportedException e)
+            {
+                System.err.println("warning: Parser does not support feature (" + control + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+        }
 
-    /**
-     * Validate schema annotations feature id
-     */
-    private XMLFeature validateAnnotationsFeature =
-        new XMLFeature("Validate Annotations", "http://apache.org/xml/features/validate-annotations"); //$NON-NLS-1$ //$NON-NLS-2$
+        private boolean state;
+        private XMLFeature feature;
+    }
 
-    /**
-     * Dynamic validation feature id
-     */
-    private XMLFeature dynamicValidationFeature =
-        new XMLFeature("Dynamic Validation", "http://apache.org/xml/features/validation/dynamic"); //$NON-NLS-1$ //$NON-NLS-2$
-
-    /**
-     * Load external DTD feature id
-     */
-    private XMLFeature loadExternalDTDFeature =
-        new XMLFeature("Load External DTD", "http://apache.org/xml/features/nonvalidating/load-external-dtd", true); //$NON-NLS-1$ //$NON-NLS-2$
-
-    /**
-     * XInclude feature id
-     */
-    private XMLFeature xincludeFeature =
-        new XMLFeature("XInclude", "http://apache.org/xml/features/xinclude"); //$NON-NLS-1$ //$NON-NLS-2$
-
-    /**
-     * XInclude fixup base URIs feature id
-     */
-    private XMLFeature xincludeFixupBaseURIsFeature =
-        new XMLFeature("XInclude base URI fixup", "http://apache.org/xml/features/xinclude/fixup-base-uris", true); //$NON-NLS-1$ //$NON-NLS-2$
-
-    /**
-     * XInclude fixup language feature id
-     */
-    private XMLFeature xincludeFixupLanguageFeature =
-        new XMLFeature("XInclude language fixup", "http://apache.org/xml/features/xinclude/fixup-language", true); //$NON-NLS-1$ //$NON-NLS-2$
-
+    private Map<String, XMLFeatureState> features = new TreeMap<String, XMLFeatureState>();
+    private Map<XMLFeature, String> states = new TreeMap<XMLFeature, String>();
 }

@@ -77,6 +77,7 @@ public class PrettySerializingContentHandler implements ContentHandler
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString()
     {
         return writer.toString();

@@ -120,7 +120,7 @@ public final class JobManager
      */
     public static synchronized void addWorkListener(WorkListener li)
     {
-        List temp = new ArrayList();
+        List<WorkListener> temp = new ArrayList<WorkListener>();
         temp.addAll(listeners);
 
         if (!temp.contains(li))
@@ -137,7 +137,7 @@ public final class JobManager
     {
         if (listeners.contains(li))
         {
-            List temp = new ArrayList();
+            List<WorkListener> temp = new ArrayList<WorkListener>();
             temp.addAll(listeners);
             temp.remove(li);
             listeners = temp;
@@ -147,9 +147,9 @@ public final class JobManager
     /**
      * Accessor for the currently known jobs
      */
-    public static synchronized Set getJobs()
+    public static synchronized Set<Job> getJobs()
     {
-        Set reply = new HashSet();
+        Set<Job> reply = new HashSet<Job>();
         reply.addAll(jobs);
         return reply;
     }
@@ -164,7 +164,7 @@ public final class JobManager
         // we need to keep the synchronized section very small to avoid deadlock
         // certainly keep the event dispatch clear of the synchronized block or
         // there will be a deadlock
-        final List temp = new ArrayList();
+        final List<WorkListener> temp = new ArrayList<WorkListener>();
         synchronized (JobManager.class)
         {
             temp.addAll(listeners);
@@ -174,10 +174,9 @@ public final class JobManager
         // list of jobs so we need to fire before delete.
         if (listeners != null)
         {
-            int count = temp.size();
-            for (int i = 0; i < count; i++)
+            for (WorkListener worker: temp)
             {
-                ((WorkListener) temp.get(i)).workProgressed(ev);
+                worker.workProgressed(ev);
             }
         }
 
@@ -197,12 +196,12 @@ public final class JobManager
     /**
      * List of listeners
      */
-    private static List listeners = new ArrayList();
+    private static List<WorkListener> listeners = new ArrayList<WorkListener>();
 
     /**
      * List of current jobs
      */
-    private static Set jobs = new HashSet();
+    private static Set<Job> jobs = new HashSet<Job>();
 
     /**
      * The log stream

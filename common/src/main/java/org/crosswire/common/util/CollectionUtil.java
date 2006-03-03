@@ -50,7 +50,7 @@ public final class CollectionUtil
      */
     public static List createList(Iterator it)
     {
-        List reply = new ArrayList();
+        List<Object> reply = new ArrayList<Object>();
         while (it.hasNext())
         {
             reply.add(it.next());
@@ -58,6 +58,7 @@ public final class CollectionUtil
 
         return reply;
     }
+
     /**
      * Create a Set from an Iterator.
      * @param it The source of data for the list
@@ -65,7 +66,7 @@ public final class CollectionUtil
      */
     public static Set createSet(Iterator it)
     {
-        Set reply = new HashSet();
+        Set<Object> reply = new HashSet<Object>();
         while (it.hasNext())
         {
             reply.add(it.next());

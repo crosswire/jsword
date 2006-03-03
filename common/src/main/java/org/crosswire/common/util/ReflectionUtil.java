@@ -62,18 +62,17 @@ public final class ReflectionUtil
         // called_class.getMethod(called_method_name, called_types);
         // because it does not cope with inheritance (at least in the MVM)
         // so we have to search ourselves...
-        Method[] testMethods = clazz.getMethods();
     outer:
-        for (int i = 0; i < testMethods.length; i++)
+        for (Method testMethod : clazz.getMethods())
         {
             // This this the right method name?
-            if (!testMethods[i].getName().equals(methodName))
+            if (!testMethod.getName().equals(methodName))
             {
                 continue outer;
             }
 
             // The right number of params
-            Class[] testTypes = testMethods[i].getParameterTypes();
+            Class[] testTypes = testMethod.getParameterTypes();
             if (testTypes.length != calledTypes.length)
             {
                 continue;
@@ -89,7 +88,7 @@ public final class ReflectionUtil
             }
 
             // So this is a match
-            return testMethods[i].invoke(base, params);
+            return testMethod.invoke(base, params);
         }
 
         throw new NoSuchMethodException(methodName);
@@ -121,18 +120,17 @@ public final class ReflectionUtil
         // clazz.getMethod(called_method_name, called_types);
         // because it does not cope with inheritance (at least in the MVM)
         // so we have to search ourselves...
-        Method[] testMethods = clazz.getMethods();
     outer:
-        for (int i = 0; i < testMethods.length; i++)
+        for (Method testMethod : clazz.getMethods())
         {
             // This this the right method name?
-            if (!testMethods[i].getName().equals(methodName))
+            if (!testMethod.getName().equals(methodName))
             {
                 continue outer;
             }
 
             // The right number of params
-            Class[] testTypes = testMethods[i].getParameterTypes();
+            Class[] testTypes = testMethod.getParameterTypes();
             if (testTypes.length != calledTypes.length)
             {
                 continue;
@@ -148,7 +146,7 @@ public final class ReflectionUtil
             }
 
             // So this is a match
-            return testMethods[i].invoke(null, params);
+            return testMethod.invoke(null, params);
         }
 
         throw new NoSuchMethodException(methodName);

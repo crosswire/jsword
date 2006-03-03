@@ -164,12 +164,10 @@ public class Config
      */
     public Iterator getPaths()
     {
-        List paths = new ArrayList();
+        List<String> paths = new ArrayList<String>();
 
-        Iterator it = models.iterator();
-        while (it.hasNext())
+        for (Choice choice: models)
         {
-            Choice choice = (Choice) it.next();
             String path = getPath(choice.getFullPath());
 
             if (!paths.contains(path))
@@ -202,7 +200,7 @@ public class Config
             return null;
         }
 
-        return (Choice) models.get(index);
+        return models.get(index);
     }
 
     /**
@@ -266,10 +264,8 @@ public class Config
      */
     public void localToApplication()
     {
-        Iterator it = keys.iterator();
-        while (it.hasNext())
+        for (String key : keys)
         {
-            String key = (String) it.next();
             Choice choice = getChoice(key);
 
             String oldValue = choice.getString();
@@ -556,12 +552,12 @@ public class Config
     /**
      * The array that stores the keys
      */
-    protected List keys = new ArrayList();
+    protected List<String> keys = new ArrayList<String>();
 
     /**
      * The array that stores the models
      */
-    protected List models = new ArrayList();
+    protected List<Choice> models = new ArrayList<Choice>();
 
     /**
      * The set of local values

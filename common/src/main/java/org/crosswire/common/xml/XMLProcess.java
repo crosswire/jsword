@@ -81,7 +81,7 @@ public class XMLProcess
 
     }
 
-    private void initialize(String[] argv)
+    private void initialize(String... argv)
     {
         // process arguments
         int i = 0;
@@ -118,13 +118,15 @@ public class XMLProcess
             }
         }
 
+        features.setFeatureStates(argv);
+
         createParser(DEFAULT_PARSER_NAME);
         createAdapter(DEFAULT_HANDLER_NAME);
 
         // Now that we have a parser and a handler
         // make the parser use them.
         setHandlers();
-        features.setFeatures(parser, argv);
+        features.setFeatures(parser);
 
     }
 

@@ -54,7 +54,7 @@ public final class Books implements BookList
     private Books()
     {
         books = new BookSet();
-        drivers = new HashSet();
+        drivers = new HashSet<BookDriver>();
         listeners = new EventListenerList();
         threaded = false;
 
@@ -73,7 +73,7 @@ public final class Books implements BookList
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookList#getBooks()
      */
-    public synchronized List getBooks()
+    public synchronized List<Book> getBooks()
     {
         return new BookSet(books);
     }
@@ -85,9 +85,9 @@ public final class Books implements BookList
     {
         // Check name first
         // First check for exact matches
-        for (Iterator it = books.iterator(); it.hasNext(); )
+        for (Object obj : books)
         {
-            Book book = (Book) it.next();
+            Book book = (Book) obj;
             if (name.equals(book.getName()))
             {
                 return book;
@@ -95,9 +95,9 @@ public final class Books implements BookList
         }
 
         // Next check for case-insensitive matches
-        for (Iterator it = books.iterator(); it.hasNext(); )
+        for (Object obj : books)
         {
-            Book book = (Book) it.next();
+            Book book = (Book) obj;
             if (name.equalsIgnoreCase(book.getName()))
             {
                 return book;
@@ -106,9 +106,9 @@ public final class Books implements BookList
 
         // Then check initials
         // First check for exact matches
-        for (Iterator it = books.iterator(); it.hasNext(); )
+        for (Object obj : books)
         {
-            Book book = (Book) it.next();
+            Book book = (Book) obj;
             BookMetaData bmd = book.getBookMetaData();
             if (name.equals(bmd.getInitials()))
             {
@@ -117,9 +117,9 @@ public final class Books implements BookList
         }
 
         // Next check for case-insensitive matches
-        for (Iterator it = books.iterator(); it.hasNext(); )
+        for (Object obj : books)
         {
-            Book book = (Book) it.next();
+            Book book = (Book) obj;
             if (name.equalsIgnoreCase(book.getInitials()))
             {
                 return book;
@@ -131,9 +131,9 @@ public final class Books implements BookList
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookList#getBooks(org.crosswire.jsword.book.BookFilter)
      */
-    public synchronized List getBooks(BookFilter filter)
+    public synchronized List<Book> getBooks(BookFilter filter)
     {
-        List temp = CollectionUtil.createList(new BookFilterIterator(getBooks().iterator(), filter));
+        List<Book> temp = CollectionUtil.createList(new BookFilterIterator(getBooks().iterator(), filter));
         return new BookSet(temp);
     }
 
@@ -299,7 +299,7 @@ public final class Books implements BookList
      */
     public synchronized BookDriver[] getDriversByClass(Class type)
     {
-        List matches = new ArrayList();
+        List<BookDriver> matches = new ArrayList<BookDriver>();
         for (Iterator it = drivers.iterator(); it.hasNext(); )
         {
             BookDriver driver = (BookDriver) it.next();
@@ -309,7 +309,7 @@ public final class Books implements BookList
             }
         }
 
-        return (BookDriver[]) matches.toArray(new BookDriver[matches.size()]);
+        return matches.toArray(new BookDriver[matches.size()]);
     }
 
     /**
@@ -318,7 +318,7 @@ public final class Books implements BookList
      */
     public synchronized BookDriver[] getDrivers()
     {
-        return (BookDriver[]) drivers.toArray(new BookDriver[drivers.size()]);
+        return drivers.toArray(new BookDriver[drivers.size()]);
     }
 
     /**
@@ -425,7 +425,7 @@ public final class Books implements BookList
     /**
      * An array of BookDrivers
      */
-    private Set drivers;
+    private Set<BookDriver> drivers;
 
     /**
      * The list of listeners

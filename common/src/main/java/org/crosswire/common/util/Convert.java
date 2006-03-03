@@ -22,7 +22,6 @@
 package org.crosswire.common.util;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -158,19 +157,19 @@ public final class Convert
      * @param data the thing to convert
      * @return the converted data
      */
-    public static Map string2Hashtable(String data, Class superclass)
+    public static Map<String, String> string2Hashtable(String data, Class superclass)
     {
-        Map commands = new HashMap();
+        Map<String, String> commands = new HashMap<String, String>();
 
         String[] data_arr = StringUtil.split(data, " "); //$NON-NLS-1$
 
-        for (int i = 0; i < data_arr.length; i++)
+        for (String entry : data_arr)
         {
             try
             {
-                int equ_pos = data_arr[i].indexOf('=');
-                String key = data_arr[i].substring(0, equ_pos);
-                String value = data_arr[i].substring(equ_pos + 1);
+                int equ_pos = entry.indexOf('=');
+                String key = entry.substring(0, equ_pos);
+                String value = entry.substring(equ_pos + 1);
                 Class clazz = Class.forName(value);
 
                 if (clazz.isAssignableFrom(superclass))
@@ -184,7 +183,7 @@ public final class Convert
             }
             catch (Exception ex)
             {
-                log.warn("Invalid config file entry: " + data_arr[i] + " System message: " + ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+                log.warn("Invalid config file entry: " + entry + " System message: " + ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
                 Reporter.informUser(Convert.class, ex);
             }
         }
@@ -197,7 +196,7 @@ public final class Convert
      * @param data the thing to convert
      * @return the converted data
      */
-    public static Map string2Map(String data)
+    public static Map<String, String> string2Map(String data)
     {
         return string2Hashtable(data, Object.class);
     }
@@ -207,15 +206,12 @@ public final class Convert
      * @param commands the thing to convert
      * @return the converted data
      */
-    public static String map2String(Map commands)
+    public static String map2String(Map<String, String> commands)
     {
-        Iterator it = commands.entrySet().iterator();
         StringBuffer retcode = new StringBuffer();
 
-        while (it.hasNext())
+        for (Map.Entry<String, String> entry: commands.entrySet())
         {
-            Map.Entry entry = (Map.Entry) it.next();
-
             retcode.append(entry.getKey());
             retcode.append('=');
             retcode.append(entry.getValue());

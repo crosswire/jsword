@@ -69,7 +69,7 @@ public interface Choice
      * choice to the user.
      * @return The Class that this Choice works using.
      */
-    Class getConvertionClass();
+    Class getConversionClass();
 
     /**
      * String value to associate with the name (key)

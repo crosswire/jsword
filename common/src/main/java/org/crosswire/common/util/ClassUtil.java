@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -137,14 +136,13 @@ public final class ClassUtil
     {
         try
         {
-            List matches = new ArrayList();
+            List<Class> matches = new ArrayList<Class>();
             Properties props = ResourceUtil.getProperties(clazz);
-            Iterator it = props.values().iterator();
-            while (it.hasNext())
+            for (Object obj : props.values())
             {
                 try
                 {
-                    String name = (String) it.next();
+                    String name = (String) obj;
                     Class impl = Class.forName(name);
                     if (clazz.isAssignableFrom(impl))
                     {
@@ -162,7 +160,7 @@ public final class ClassUtil
             }
 
             log.debug("Found " + matches.size() + " implementors of " + clazz.getName()); //$NON-NLS-1$ //$NON-NLS-2$
-            return (Class[]) matches.toArray(new Class[matches.size()]);
+            return matches.toArray(new Class[matches.size()]);
         }
         catch (Exception ex)
         {
@@ -182,19 +180,18 @@ public final class ClassUtil
      * @param clazz The class or interface to find implementors of.
      * @return The map of implementing classes.
      */
-    public static Map getImplementorsMap(Class clazz)
+    public static Map<String, Class> getImplementorsMap(Class clazz)
     {
-        Map matches = new HashMap();
+        Map<String, Class> matches = new HashMap<String, Class>();
 
         try
         {
             Properties props = ResourceUtil.getProperties(clazz);
-            Iterator it = props.keySet().iterator();
-            while (it.hasNext())
+            for (Object obj : props.keySet())
             {
                 try
                 {
-                    String key = (String) it.next();
+                    String key = (String) obj;
                     String value = props.getProperty(key);
                     Class impl = Class.forName(value);
                     if (clazz.isAssignableFrom(impl))

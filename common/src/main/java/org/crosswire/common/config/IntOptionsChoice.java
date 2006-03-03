@@ -41,6 +41,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements Multipl
     /* (non-Javadoc)
      * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
      */
+    @Override
     public void init(Element option, ResourceBundle configResources) throws StartupException
     {
         assert configResources != null;
@@ -49,7 +50,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements Multipl
 
         String prefix = option.getAttributeValue("key") + ".alternative."; //$NON-NLS-1$  //$NON-NLS-2$
 
-        List list = new ArrayList();
+        List<String> list = new ArrayList<String>();
         List alts = option.getChildren("alternative"); //$NON-NLS-1$
         Iterator it = alts.iterator();
         while (it.hasNext())
@@ -60,7 +61,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements Multipl
             list.add(number, name);
         }
 
-        options = (String[]) list.toArray(new String[list.size()]);
+        options = list.toArray(new String[list.size()]);
     }
 
     /* (non-Javadoc)
@@ -76,7 +77,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements Multipl
     /* (non-Javadoc)
      * @see org.crosswire.common.config.Choice#getConvertionClass()
      */
-    public Class getConvertionClass()
+    public Class getConversionClass()
     {
         return Integer.TYPE;
     }
@@ -84,6 +85,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements Multipl
     /* (non-Javadoc)
      * @see org.crosswire.common.config.AbstractReflectedChoice#convertToString(java.lang.Object)
      */
+    @Override
     public String convertToString(Object orig)
     {
         return options[((Integer) orig).intValue()];
@@ -92,6 +94,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements Multipl
     /* (non-Javadoc)
      * @see org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java.lang.String)
      */
+    @Override
     public Object convertToObject(String orig)
     {
         // First check to see if this is a number

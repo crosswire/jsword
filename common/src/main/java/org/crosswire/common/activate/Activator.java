@@ -22,7 +22,6 @@
 package org.crosswire.common.activate;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -62,45 +61,34 @@ public final class Activator
     /**
      * If we need to tighten things up a bit we can save memory with this
      */
-    public static void reduceMemoryUsage(int amount)
+    public static void reduceMemoryUsage(Kill amount)
     {
-        switch (amount)
-        {
-        case KILL_EVERYTHING:
-            for (Iterator it = activated.iterator(); it.hasNext(); )
-            {
-                Activatable subject = (Activatable) it.next();
-                deactivate(subject);
-            }
-            break;
-
-        case KILL_LEAST_USED:
-            // LATER(joe): implement
-            throw new IllegalArgumentException(Msg.NOT_IMPLEMENTED.toString());
-
-        case KILL_ONLY_IF_TIGHT:
-            // LATER(joe): implement
-            throw new IllegalArgumentException(Msg.NOT_IMPLEMENTED.toString());
-
-        default:
-            throw new IllegalArgumentException();
-        }
+        amount.reduceMemoryUsage();
     }
 
-    /**
-     * Try as hard as possible to conserve memory
-     */
-    public static final int KILL_EVERYTHING = 0;
+    public enum Kill {
+        /** Try as hard as possible to conserve memory */
+        EVERYTHING
+        {
+            @Override
+            public void reduceMemoryUsage()
+            {
+                for (Activatable subject : activated)
+                {
+                    deactivate(subject);
+                }
+            }
+        },
+        /** Reduce memory usage, but only where sensible */
+        LEAST_USED,
+        /** Reduce memory usage, but only if we really need to */
+        ONLY_IF_TIGHT;
 
-    /**
-     * Reduce memory usage, but only where sensible
-     */
-    public static final int KILL_LEAST_USED = 1;
-
-    /**
-     * Reduce memory usage, but only if we really need to
-     */
-    public static final int KILL_ONLY_IF_TIGHT = 2;
+        public void reduceMemoryUsage()
+        {
+            throw new IllegalArgumentException(Msg.NOT_IMPLEMENTED.toString());
+        }
+    }
 
     /**
      * Deactivate an Activatable object.
@@ -122,7 +110,7 @@ public final class Activator
     /**
      * The list of things that we have activated
      */
-    private static Set activated = new HashSet();
+    protected static Set<Activatable> activated = new HashSet<Activatable>();
 
     /**
      * The object we use to prevent others from

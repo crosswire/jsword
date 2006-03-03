@@ -66,13 +66,13 @@ public class SyncTag extends AbstractTag
 
         if ("Strongs".equals(type)) //$NON-NLS-1$
         {
-            List siblings = ele.getContent();
+            List<Content> siblings = ele.getContent();
             int size = siblings.size();
             if (size == 0)
             {
                 return null;
             }
-            Content lastEle = (Content) siblings.get(size - 1);
+            Content lastEle = siblings.get(size - 1);
             if (lastEle instanceof Text)
             {
                 Element w = OSISUtil.factory().createW();
@@ -102,13 +102,13 @@ public class SyncTag extends AbstractTag
 
         if ("morph".equals(type)) //$NON-NLS-1$
         {
-            List siblings = ele.getContent();
+            List<Content> siblings = ele.getContent();
             int size = siblings.size();
             if (size == 0)
             {
                 return null;
             }
-            Content lastEle = (Content) siblings.get(size - 1);
+            Content lastEle = siblings.get(size - 1);
             if (lastEle instanceof Text)
             {
                 Element w = OSISUtil.factory().createW();

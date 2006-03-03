@@ -48,7 +48,7 @@ public class LucidRuntimeException extends RuntimeException
      */
     public LucidRuntimeException(MsgBase msg)
     {
-        this(msg, null, null);
+        this(msg, null, (Object[]) null);
     }
 
     /**
@@ -58,7 +58,7 @@ public class LucidRuntimeException extends RuntimeException
      */
     public LucidRuntimeException(MsgBase msg, Throwable cause)
     {
-        this(msg, cause, null);
+        this(msg, cause, (Object[]) null);
     }
 
     /**
@@ -67,7 +67,7 @@ public class LucidRuntimeException extends RuntimeException
      * @param msg The resource id to read
      * @param params An array of parameters
      */
-    public LucidRuntimeException(MsgBase msg, Object[] params)
+    public LucidRuntimeException(MsgBase msg, Object... params)
     {
         this(msg, null, params);
     }
@@ -78,7 +78,7 @@ public class LucidRuntimeException extends RuntimeException
      * @param msg The resource id to read
      * @param params An array of parameters
      */
-    public LucidRuntimeException(MsgBase msg, Throwable cause, Object[] params)
+    public LucidRuntimeException(MsgBase msg, Throwable cause, Object... params)
     {
         super(msg.toString(), cause);
 
@@ -89,6 +89,7 @@ public class LucidRuntimeException extends RuntimeException
      * We only unravel the message when we need to to save time
      * @return The unraveled i18n string
      */
+    @Override
     public String getMessage()
     {
         String out = super.getMessage();

@@ -23,7 +23,7 @@ package org.crosswire.common.util;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Enumeration;
+import java.util.Iterator;
 
 /**
  * Unscramble the current stack, and present the data from it to the
@@ -186,14 +186,22 @@ public final class StackTrace
     /**
      * Base class for the real enumeration implementations below
      */
-    public abstract class AbstractStackEnumeration implements Enumeration
+    public abstract class AbstractStackIterator implements Iterator
     {
-        /**
-         * Are there more stack levels
+        /* (non-Javadoc)
+         * @see java.util.Iterator#hasNext()
          */
-        public boolean hasMoreElements()
+        public boolean hasNext()
         {
             return level < getClassCount();
+        }
+
+        /* (non-Javadoc)
+         * @see java.util.Iterator#remove()
+         */
+        public void remove()
+        {
+            throw new UnsupportedOperationException();
         }
 
         /**
@@ -211,13 +219,13 @@ public final class StackTrace
     }
 
     /**
-     * To itterate over the class names
+     * To iterate over the class names
      */
-    public Enumeration getClassNameElements()
+    public Iterator getClassNameElements()
     {
-        return new AbstractStackEnumeration()
+        return new AbstractStackIterator()
         {
-            public Object nextElement()
+            public Object next()
             {
                 return getClassName(getAndIncrementLevel());
             }
@@ -225,13 +233,13 @@ public final class StackTrace
     }
 
     /**
-     * To itterate over the function names
+     * To iterate over the function names
      */
-    public Enumeration getFunctionNameElements()
+    public Iterator getFunctionNameElements()
     {
-        return new AbstractStackEnumeration()
+        return new AbstractStackIterator()
         {
-            public Object nextElement()
+            public Object next()
             {
                 return getFunctionName(getAndIncrementLevel());
             }
@@ -239,13 +247,13 @@ public final class StackTrace
     }
 
     /**
-     * To itterate over the full function names
+     * To iterate over the full function names
      */
-    public Enumeration getFullFunctionNameElements()
+    public Iterator getFullFunctionNameElements()
     {
-        return new AbstractStackEnumeration()
+        return new AbstractStackIterator()
         {
-            public Object nextElement()
+            public Object next()
             {
                 return getFullFunctionName(getAndIncrementLevel());
             }

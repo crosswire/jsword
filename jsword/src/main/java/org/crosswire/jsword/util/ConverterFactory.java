@@ -50,7 +50,7 @@ public final class ConverterFactory
     {
         try
         {
-            Class clazz = (Class) ClassUtil.getImplementorsMap(Converter.class).get(name);
+            Class clazz = ClassUtil.getImplementorsMap(Converter.class).get(name);
             assert clazz != null : Msg.NO_CONVERTER.toString(name);
             Converter converter = (Converter) clazz.newInstance();
             return converter;

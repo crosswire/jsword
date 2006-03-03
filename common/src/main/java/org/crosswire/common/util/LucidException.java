@@ -57,7 +57,7 @@ public class LucidException extends Exception
      */
     public LucidException(MsgBase msg)
     {
-        this(msg, null, null);
+        this(msg, null, (Object[]) null);
     }
 
     /**
@@ -67,7 +67,7 @@ public class LucidException extends Exception
      */
     public LucidException(MsgBase msg, Throwable cause)
     {
-        this(msg, cause, null);
+        this(msg, cause, (Object[]) null);
     }
 
     /**
@@ -76,7 +76,7 @@ public class LucidException extends Exception
      * @param msg The resource id to read
      * @param params An array of parameters
      */
-    public LucidException(MsgBase msg, Object[] params)
+    public LucidException(MsgBase msg, Object... params)
     {
         this(msg, null, params);
     }
@@ -87,7 +87,7 @@ public class LucidException extends Exception
      * @param msg The resource id to read
      * @param params An array of parameters
      */
-    public LucidException(MsgBase msg, Throwable cause, Object[] params)
+    public LucidException(MsgBase msg, Throwable cause, Object... params)
     {
         super(msg.toString(), cause);
         this.deprecated = false;
@@ -105,6 +105,7 @@ public class LucidException extends Exception
      * We only unravel the message when we need to to save time
      * @return The unraveled i18n string
      */
+    @Override
     public String getMessage()
     {
         String out = super.getMessage();

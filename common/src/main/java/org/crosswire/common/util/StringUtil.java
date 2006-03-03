@@ -219,7 +219,7 @@ public final class StringUtil
         {
             return EMPTY_STRING_ARRAY;
         }
-        List list = new ArrayList();
+        List<String> list = new ArrayList<String>();
         int i = 0;
         int start = 0;
         boolean match = false;
@@ -242,7 +242,7 @@ public final class StringUtil
         {
             list.add(str.substring(start, i));
         }
-        return (String[]) list.toArray(new String[list.size()]);
+        return list.toArray(new String[list.size()]);
     }
 
     /**
@@ -283,7 +283,7 @@ public final class StringUtil
         {
             return EMPTY_STRING_ARRAY;
         }
-        List list = new ArrayList();
+        List<String> list = new ArrayList<String>();
         int i = 0;
         int start = 0;
         boolean match = false;
@@ -303,7 +303,7 @@ public final class StringUtil
         {
             list.add(str.substring(start, i));
         }
-        return (String[]) list.toArray(new String[list.size()]);
+        return list.toArray(new String[list.size()]);
     }
 
     /**
@@ -376,7 +376,7 @@ public final class StringUtil
         {
             return EMPTY_STRING_ARRAY;
         }
-        List list = new ArrayList();
+        List<String> list = new ArrayList<String>();
         int sizePlus1 = 1;
         int i = 0;
         int start = 0;
@@ -455,7 +455,7 @@ public final class StringUtil
         {
             list.add(str.substring(start, i));
         }
-        return (String[]) list.toArray(new String[list.size()]);
+        return list.toArray(new String[list.size()]);
     }
 
     /**

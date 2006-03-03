@@ -510,8 +510,8 @@ public final class Defaults
      */
     private static String[] getFullNameArray(BookFilter filter)
     {
-        List books = Books.installed().getBooks(filter);
-        List names = new ArrayList();
+        List<Book> books = Books.installed().getBooks(filter);
+        List<String> names = new ArrayList<String>();
 
         for (Iterator it = books.iterator(); it.hasNext(); )
         {
@@ -519,7 +519,7 @@ public final class Defaults
             names.add(book.getFullName());
         }
 
-        return (String[]) names.toArray(new String[names.size()]);
+        return names.toArray(new String[names.size()]);
     }
 
     /**

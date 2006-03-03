@@ -27,7 +27,7 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -62,7 +62,7 @@ public final class Job
         this.reportedpc = 0;
         this.finished = false;
         this.interruptable = work != null;
-        this.listeners = new ArrayList();
+        this.listeners = new ArrayList<WorkListener>();
         this.start = -1;
         this.predictedlen = -1;
 
@@ -79,7 +79,7 @@ public final class Job
         }
 
         // And the predictions for next time
-        current = new Properties();
+        current = new HashMap<String, Integer>();
         start = System.currentTimeMillis();
 
         JobManager.fireWorkProgressed(this, false);
@@ -253,7 +253,7 @@ public final class Job
      */
     public synchronized void addWorkListener(WorkListener li)
     {
-        List temp = new ArrayList();
+        List<WorkListener> temp = new ArrayList<WorkListener>();
         temp.addAll(listeners);
 
         if (!temp.contains(li))
@@ -270,7 +270,7 @@ public final class Job
     {
         if (listeners.contains(li))
         {
-            List temp = new ArrayList();
+            List<WorkListener> temp = new ArrayList<WorkListener>();
             temp.addAll(listeners);
             temp.remove(li);
             listeners = temp;
@@ -284,7 +284,7 @@ public final class Job
         // we need to keep the synchronized section very small to avoid deadlock
         // certainly keep the event dispatch clear of the synchronized block or
         // there will be a deadlock
-        final List temp = new ArrayList();
+        final List<WorkListener> temp = new ArrayList<WorkListener>();
         synchronized (this)
         {
             temp.addAll(listeners);
@@ -297,7 +297,7 @@ public final class Job
             int count = temp.size();
             for (int i = 0; i < count; i++)
             {
-                ((WorkListener) temp.get(i)).workStateChanged(ev);
+                temp.get(i).workStateChanged(ev);
             }
         }
     }
@@ -305,14 +305,14 @@ public final class Job
     /**
      * Predict a percentage complete
      */
-    private synchronized int getAgeFromMap(Map props, String message)
+    private synchronized int getAgeFromMap(Map<String, Integer> props, String message)
     {
         if (props == null)
         {
             return 0;
         }
 
-        Integer time = (Integer) props.get(message);
+        Integer time = props.get(message);
         if (time != null)
         {
             return time.intValue();
@@ -382,10 +382,9 @@ public final class Job
         int predsectend = Integer.MAX_VALUE;
 
         // find better values for predsectend and predallend
-        for (Iterator it = predicted.keySet().iterator(); it.hasNext(); )
+        for (String title : predicted.keySet())
         {
-            String title = (String) it.next();
-            int age = ((Integer) predicted.get(title)).intValue();
+            int age = predicted.get(title).intValue();
 
             // if this is a later section (than the current) but early than the current earliest
             if (age > predsectstart && age < predsectend)
@@ -417,13 +416,13 @@ public final class Job
             InputStream in = predicturl.openStream();
             if (in != null)
             {
-                predicted = new Properties();
+                predicted = new HashMap<String, Integer>();
                 Properties temp = new Properties();
                 temp.load(in);
 
-                for (Iterator it = temp.keySet().iterator(); it.hasNext(); )
+                for (Object obj : temp.keySet())
                 {
-                    String title = (String) it.next();
+                    String title = (String) obj;
                     String timestr = temp.getProperty(title);
 
                     try
@@ -458,9 +457,9 @@ public final class Job
     {
         // We need to create a new prediction file. Work out the end point
         long end = start;
-        for (Iterator it = current.keySet().iterator(); it.hasNext(); )
+        for (Object obj : current.keySet())
         {
-            String message = (String) it.next();
+            String message = (String) obj;
             int age = getAgeFromMap(current, message);
             if (age > end)
             {
@@ -471,9 +470,8 @@ public final class Job
 
         // Now we know the start and the end we can convert all times to percents
         Properties predictions = new Properties();
-        for (Iterator it = current.keySet().iterator(); it.hasNext(); )
+        for (String message : current.keySet())
         {
-            String message = (String) it.next();
             int age = getAgeFromMap(current, message);
             predictions.setProperty(message, Integer.toString(age));
         }
@@ -548,12 +546,12 @@ public final class Job
     /**
      * The timings as measured this time
      */
-    private Map current;
+    private Map<String, Integer> current;
 
     /**
      * The timings loaded from where they were saved after the last run
      */
-    private Map predicted;
+    private Map<String, Integer> predicted;
 
     /**
      * How long to we predict this job is going to last?
@@ -573,7 +571,7 @@ public final class Job
     /**
      * People that want to know about "interruptable" changes
      */
-    private List listeners;
+    private List<WorkListener> listeners;
 
     /**
      * So we can fake progress for Jobs that don't tell us how they are doing
@@ -583,6 +581,7 @@ public final class Job
         /* (non-Javadoc)
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
+        @Override
         public void run()
         {
             guessProgress();

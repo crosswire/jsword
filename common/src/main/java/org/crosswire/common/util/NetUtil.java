@@ -507,7 +507,7 @@ public final class NetUtil
         String contents = StringUtil.read(new InputStreamReader(in));
 
         // We still need to do the filtering
-        List list = new ArrayList();
+        List<String> list = new ArrayList<String>();
         String[] names = StringUtil.split(contents, "\n"); //$NON-NLS-1$
         for (int i = 0; i < names.length; i++)
         {
@@ -525,7 +525,7 @@ public final class NetUtil
             }
         }
 
-        return (String[]) list.toArray(new String[list.size()]);
+        return list.toArray(new String[list.size()]);
     }
 
     /**

@@ -98,20 +98,20 @@ public final class ThreadUtil
      */
     public static String[] getListing(ThreadGroup base)
     {
-        List vec = new ArrayList();
+        List<String> list = new ArrayList<String>();
 
-        listThreads(vec, 0, base);
+        listThreads(list, 0, base);
 
-        return (String[]) vec.toArray(new String[vec.size()]);
+        return list.toArray(new String[list.size()]);
     }
 
     /**
-     * Private, used by getListing. Adds to a Vector the sub-threads
-     * @param vec The Vector to add to.
+     * Private, used by getListing. Adds to a List the sub-threads
+     * @param list The List to add to.
      * @param depth The current recursion depth
      * @param group The ThreadGroup to detail
      */
-    private static void listThreads(List vec, int depth, ThreadGroup group)
+    private static void listThreads(List<String> list, int depth, ThreadGroup group)
     {
         if (group == null)
         {
@@ -131,36 +131,36 @@ public final class ThreadUtil
 
             try
             {
-                addItem(vec, depth, group.getName());
+                addItem(list, depth, group.getName());
             }
             catch (SecurityException ex)
             {
-                addItem(vec, depth, Msg.UNAVILABLE.toString());
+                addItem(list, depth, Msg.UNAVILABLE.toString());
             }
 
             for (int i = 0; i < num_threads; i++)
             {
-                listThread(vec, depth + 1, threads[i]);
+                listThread(list, depth + 1, threads[i]);
             }
 
             for (int i = 0; i < num_groups; i++)
             {
-                listThreads(vec, depth + 1, groups[i]);
+                listThreads(list, depth + 1, groups[i]);
             }
         }
         catch (Exception ex)
         {
-            addItem(vec, depth, ex.toString());
+            addItem(list, depth, ex.toString());
         }
     }
 
     /**
-     * Private, used by getListing. Adds to a Vector the sub-threads
-     * @param vec The List to add to.
+     * Private, used by getListing. Adds to a List the sub-threads
+     * @param list The List to add to.
      * @param depth The current recursion depth
      * @param thread The Thread to detail
      */
-    private static void listThread(List vec, int depth, Thread thread)
+    private static void listThread(List<String> list, int depth, Thread thread)
     {
         if (thread == null)
         {
@@ -169,22 +169,22 @@ public final class ThreadUtil
 
         try
         {
-            addItem(vec, depth, thread.getName() + " (" + thread.getPriority() + ')'); //$NON-NLS-1$
+            addItem(list, depth, thread.getName() + " (" + thread.getPriority() + ')'); //$NON-NLS-1$
         }
         catch (SecurityException ex)
         {
-            addItem(vec, depth, Msg.UNAVILABLE.toString());
+            addItem(list, depth, Msg.UNAVILABLE.toString());
         }
     }
 
     /**
-     * Private, used by getListing. Adds to a Vector the sub-threads
-     * @param vec The List to add to.
+     * Private, used by getListing. Adds to a List the sub-threads
+     * @param list The List to add to.
      * @param depth The current recursion depth
      */
-    private static void addItem(List vec, int depth, String item)
+    private static void addItem(List<String> list, int depth, String item)
     {
-        vec.add(PADDING.substring(0, depth * 2) + item); //$NON-NLS-1$
+        list.add(PADDING.substring(0, depth * 2) + item); //$NON-NLS-1$
     }
 
     private static final String PADDING = "                                                                "; //$NON-NLS-1$

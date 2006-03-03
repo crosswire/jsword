@@ -52,7 +52,7 @@ public class CustomHandler extends DefaultHandler
      */
     public CustomHandler()
     {
-        stack = new LinkedList();
+        stack = new LinkedList<Content>();
     }
 
     /* (non-Javadoc)
@@ -146,14 +146,14 @@ public class CustomHandler extends DefaultHandler
 
     private Tag getTag(String localname, String qname)
     {
-        Tag t = (Tag) TAG_MAP.get(qname);
+        Tag t = TAG_MAP.get(qname);
 
         // Some of the THML books are broken in that they use uppercase
         // element names, which the spec disallows, but we might as well
         // look out for them
         if (t == null)
         {
-            t = (Tag) TAG_MAP.get(qname.toLowerCase());
+            t = TAG_MAP.get(qname.toLowerCase());
 
             if (t == null)
             {
@@ -175,12 +175,12 @@ public class CustomHandler extends DefaultHandler
     /**
      * The stack of elements that we have created
      */
-    private LinkedList stack;
+    private LinkedList<Content> stack;
 
     /**
      * The known tag types
      */
-    private static final Map TAG_MAP = new HashMap();
+    private static final Map<String, Tag> TAG_MAP = new HashMap<String, Tag>();
 
     static {
         Tag[] tags = new Tag[]

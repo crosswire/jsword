@@ -132,7 +132,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookList#getBooks()
      */
-    public List getBooks()
+    public List<Book> getBooks()
     {
         try
         {
@@ -143,14 +143,14 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
             // We need to create a List from the Set returned by
             // entries.values() so we can create an unmodifiable list from it.
-            List mutable = new ArrayList();
+            List<Book> mutable = new ArrayList<Book>();
             mutable.addAll(entries.values());
             return Collections.unmodifiableList(mutable);
         }
         catch (InstallException ex)
         {
             log.error("Failed to reload cached index file", ex); //$NON-NLS-1$
-            return new ArrayList();
+            return new ArrayList<Book>();
         }
     }
 
@@ -533,7 +533,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /**
      * A map of the entries in this download area
      */
-    protected Map entries = new HashMap();
+    protected Map<String, Book> entries = new HashMap<String, Book>();
 
     /**
      * The remote hostname.

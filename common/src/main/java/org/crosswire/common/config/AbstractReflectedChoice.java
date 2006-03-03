@@ -88,11 +88,11 @@ public abstract class AbstractReflectedChoice implements Choice
 
         try
         {
-            setter = clazz.getMethod("set" + propertyname, new Class[] { getConvertionClass() }); //$NON-NLS-1$
+            setter = clazz.getMethod("set" + propertyname, new Class[] { getConversionClass() }); //$NON-NLS-1$
         }
         catch (NoSuchMethodException ex)
         {
-            throw new StartupException(Msg.CONFIG_NOSETTER, ex, new Object[] { clazz.getName(), propertyname, getConvertionClass().getName() });
+            throw new StartupException(Msg.CONFIG_NOSETTER, ex, new Object[] { clazz.getName(), propertyname, getConversionClass().getName() });
         }
 
         try
@@ -111,10 +111,10 @@ public abstract class AbstractReflectedChoice implements Choice
             throw new StartupException(Msg.CONFIG_NOGETTER, ex, new Object[] { clazz.getName(), propertyname });
         }
 
-        if (getter.getReturnType() != getConvertionClass())
+        if (getter.getReturnType() != getConversionClass())
         {
-            log.debug("Not using " + propertyname + " from " + clazz.getName() + " because the return type of the getter is not " + getConvertionClass().getName()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            throw new StartupException(Msg.CONFIG_NORETURN, new Object[] { getter.getReturnType(), getConvertionClass() });
+            log.debug("Not using " + propertyname + " from " + clazz.getName() + " because the return type of the getter is not " + getConversionClass().getName()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            throw new StartupException(Msg.CONFIG_NORETURN, new Object[] { getter.getReturnType(), getConversionClass() });
         }
 
         // 2 optional config attrubites

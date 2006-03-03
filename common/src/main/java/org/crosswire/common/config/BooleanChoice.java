@@ -35,7 +35,7 @@ public class BooleanChoice extends AbstractReflectedChoice
     /* (non-Javadoc)
      * @see org.crosswire.common.config.Choice#getConvertionClass()
      */
-    public Class getConvertionClass()
+    public Class getConversionClass()
     {
         return Boolean.TYPE;
     }
@@ -43,6 +43,7 @@ public class BooleanChoice extends AbstractReflectedChoice
     /* (non-Javadoc)
      * @see org.crosswire.common.config.AbstractReflectedChoice#convertToString(java.lang.Object)
      */
+    @Override
     public String convertToString(Object orig)
     {
         return Convert.boolean2String(((Boolean) orig).booleanValue());
@@ -51,11 +52,9 @@ public class BooleanChoice extends AbstractReflectedChoice
     /* (non-Javadoc)
      * @see org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java.lang.String)
      */
+    @Override
     public Object convertToObject(String orig)
     {
-        return Convert.string2Boolean(orig) ? Boolean.TRUE : Boolean.FALSE;
-
-        // JDK: At 14 this could be simplified
-        // return Boolean.valueOf(Convert.string2Boolean(orig));
+        return Boolean.valueOf(Convert.string2Boolean(orig));
     }
 }
