@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -36,7 +37,7 @@ import java.util.Set;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class SortedListSet<E extends Comparable<E>> extends ArrayList<E> implements Set<E>
+public class SortedListSet<E extends Comparable<E>> extends ArrayList<E> implements Set<E>, List<E>
 {
     /**
      * Create an empty SortedListSet of default size.
@@ -140,11 +141,12 @@ public class SortedListSet<E extends Comparable<E>> extends ArrayList<E> impleme
      * @param filter The criteria by which to filter.
      * @return a filtered SortedListSet.
      */
-    public SortedListSet filter(Filter filter)
+    @SuppressWarnings("unchecked")
+    public SortedListSet<E> filter(Filter filter)
     {
         // create a copy of the list and
         // remove everything that fails the test.
-        SortedListSet listSet = (SortedListSet) clone();
+        SortedListSet<E> listSet = (SortedListSet) clone();
         Iterator iter = listSet.iterator();
         while (iter.hasNext())
         {
