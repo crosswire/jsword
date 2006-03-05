@@ -442,4 +442,5 @@ final class ReadOnlyPassage implements Passage
      * Serialization ID
      */
     private static final long serialVersionUID = 3257853173036102193L;
+
 }

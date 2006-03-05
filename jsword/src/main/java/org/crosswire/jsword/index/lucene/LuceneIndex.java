@@ -125,7 +125,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                 // create argument set to true.
                 IndexWriter writer = new IndexWriter(tempPath.getCanonicalPath(), new SimpleAnalyzer(), true);
 
-                List errors = new ArrayList();
+                List<Key> errors = new ArrayList<Key>();
                 generateSearchIndexImpl(job, errors, writer, book.getGlobalKeyList());
 
                 job.setProgress(95, Msg.OPTIMIZING.toString());
@@ -311,7 +311,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
     /**
      * Dig down into a Key indexing as we go.
      */
-    private void generateSearchIndexImpl(Job job, List errors, IndexWriter writer, Key key) throws BookException, IOException
+    private void generateSearchIndexImpl(Job job, List<Key> errors, IndexWriter writer, Key key) throws BookException, IOException
     {
         int bookNum = 0;
         int oldBookNum = -1;

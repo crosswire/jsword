@@ -21,7 +21,7 @@
  */
 package org.crosswire.jsword.book.basic;
 
-import java.util.Properties;
+import java.util.Map;
 
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.common.xml.XMLUtil;
@@ -53,14 +53,14 @@ public class DefaultBookMetaData extends AbstractBookMetaData
      * Ctor with a properties from which to get values.
      * A call to setBook() is still required after this ctor is called
      */
-    public DefaultBookMetaData(BookDriver driver, Book book, Properties prop)
+    public DefaultBookMetaData(BookDriver driver, Book book, Map<String, String> prop)
     {
         setDriver(driver);
 
         setProperties(prop);
-        setName(prop.getProperty(BookMetaData.KEY_NAME));
-        setType(prop.getProperty(BookMetaData.KEY_CATEGORY));
-        setLanguage(prop.getProperty(BookMetaData.KEY_LANGUAGE));
+        setName(prop.get(BookMetaData.KEY_NAME));
+        setType(prop.get(BookMetaData.KEY_CATEGORY));
+        setLanguage(prop.get(BookMetaData.KEY_LANGUAGE));
 
         IndexManager imanager = IndexManagerFactory.getIndexManager();
         if (imanager.isIndexed(book))

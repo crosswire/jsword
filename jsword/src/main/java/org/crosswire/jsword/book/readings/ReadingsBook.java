@@ -143,7 +143,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
             div.addContent(title);
             text.addContent(div);
 
-            String readings = (String) hash.get(key);
+            String readings = hash.get(key);
             if (readings == null)
             {
                 throw new BookException(Msg.NOT_FOUND, new Object[] { key.getName() });
@@ -247,7 +247,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
     /**
      * The store of keys and data
      */
-    private Map hash = new TreeMap();
+    private Map<Key, String> hash = new TreeMap<Key, String>();
 
     /**
      * The log stream

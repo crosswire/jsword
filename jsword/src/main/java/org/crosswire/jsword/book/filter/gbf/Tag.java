@@ -23,6 +23,8 @@ package org.crosswire.jsword.book.filter.gbf;
 
 import java.util.LinkedList;
 
+import org.jdom.Content;
+
 /**
  * GBF Tag interface.
  * 
@@ -35,5 +37,5 @@ public interface Tag
     /**
      * Sub-classes should implement this method to generate OSIS Object
      */
-    void updateOsisStack(LinkedList osisStack);
+    void updateOsisStack(LinkedList<Content> osisStack);
 }

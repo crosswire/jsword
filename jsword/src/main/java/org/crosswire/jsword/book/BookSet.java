@@ -38,7 +38,7 @@ import org.crosswire.common.util.SortedListSet;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class BookSet extends SortedListSet
+public class BookSet<E extends Comparable<E>> extends SortedListSet<E>
 {
 
     public BookSet()
@@ -46,7 +46,7 @@ public class BookSet extends SortedListSet
         super();
     }
 
-    public BookSet(Collection books)
+    public BookSet(Collection<? extends E> books)
     {
         super(books);
     }
@@ -56,9 +56,9 @@ public class BookSet extends SortedListSet
      * These are all the property keys across the BookMetaDatas in this list.
      * @return the set of all keys which can be used for grouping.
      */
-    public Set getGroups()
+    public Set<String> getGroups()
     {
-        Set results = new TreeSet();
+        Set<String> results = new TreeSet<String>();
         Iterator bookIter = iterator();
         while (bookIter.hasNext())
         {
@@ -79,9 +79,9 @@ public class BookSet extends SortedListSet
      * @param key
      * @return the values for a particular key.
      */
-    public Set getGroup(String key)
+    public Set<String> getGroup(String key)
     {
-        Set results = new TreeSet();
+        Set<String> results = new TreeSet<String>();
         Iterator bookIter = iterator();
         while (bookIter.hasNext())
         {
@@ -93,7 +93,7 @@ public class BookSet extends SortedListSet
         return results;
     }
 
-    public BookSet filter(String key, String value)
+    public BookSet<E> filter(String key, String value)
     {
         return (BookSet) filter(new GroupFilter(key, value));
     }

@@ -56,7 +56,7 @@ public final class SentenceUtil
      */
     public static String[] tokenize(String sentence)
     {
-        List tokens = new ArrayList();
+        List<String> tokens = new ArrayList<String>();
 
         int pos = 0;
         String temp;

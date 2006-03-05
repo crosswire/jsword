@@ -33,6 +33,7 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseFactory;
+import org.jdom.Content;
 import org.jdom.Element;
 import org.jdom.Parent;
 import org.jdom.Text;
@@ -182,7 +183,7 @@ public final class OSISUtil
      */
     private static final String OSISID_PREFIX_BIBLE = "Bible."; //$NON-NLS-1$
 
-    private static final Set EXTRA_BIBLICAL_ELEMENTS = new HashSet(Arrays.asList(new String[]
+    private static final Set<String> EXTRA_BIBLICAL_ELEMENTS = new HashSet<String>(Arrays.asList(new String[]
     {
         OSIS_ELEMENT_NOTE,
     }));
@@ -504,7 +505,7 @@ public final class OSISUtil
         StringBuffer buffer = new StringBuffer();
 
         Element osisText = root.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
-        List divs = osisText.getChildren(OSISUtil.OSIS_ELEMENT_DIV);
+        List<Element> divs = osisText.getChildren(OSISUtil.OSIS_ELEMENT_DIV);
 
         for (Iterator oit = divs.iterator(); oit.hasNext(); )
         {
@@ -567,7 +568,7 @@ public final class OSISUtil
     {
         StringBuffer buffer = new StringBuffer();
 
-        List content = ele.getContent();
+        List<Content> content = ele.getContent();
         for (Iterator it = content.iterator(); it.hasNext(); )
         {
             Object next = it.next();
@@ -583,7 +584,7 @@ public final class OSISUtil
      */
     public static Collection getDeepContent(Element div, String name)
     {
-        List reply = new ArrayList();
+        List<Content> reply = new ArrayList<Content>();
         recurseDeepContent(div, name, reply);
         return reply;
     }
@@ -647,7 +648,7 @@ public final class OSISUtil
      * Find all the instances of elements of type <code>find</code> under
      * the element <code>div</code>. For internal use only.
      */
-    private static void recurseDeepContent(Element start, String name, List reply)
+    private static void recurseDeepContent(Element start, String name, List<Content> reply)
     {
         if (start.getName().equals(name))
         {

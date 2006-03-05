@@ -72,7 +72,7 @@ public class SwordDictionary extends AbstractBook
 
         set = backend.readIndex();
 
-        map = new HashMap();
+        map = new HashMap<String, Key>();
         for (Iterator it = set.iterator(); it.hasNext(); )
         {
             Key key = (Key) it.next();
@@ -191,7 +191,7 @@ public class SwordDictionary extends AbstractBook
     {
         checkActive();
 
-        Key key = (Key) map.get(text);
+        Key key = map.get(text);
         if (key != null)
         {
             return key;
@@ -212,7 +212,7 @@ public class SwordDictionary extends AbstractBook
             String keyName = (String) it.next();
             if (keyName.equalsIgnoreCase(text))
             {
-                return (Key) map.get(keyName);
+                return map.get(keyName);
             }
         }
 
@@ -222,7 +222,7 @@ public class SwordDictionary extends AbstractBook
             String keyName = (String) it.next();
             if (keyName.startsWith(text))
             {
-                return (Key) map.get(keyName);
+                return map.get(keyName);
             }
         }
 
@@ -232,7 +232,7 @@ public class SwordDictionary extends AbstractBook
             String keyName = (String) it.next();
             if (keyName.indexOf(text) != -1)
             {
-                return (Key) map.get(keyName);
+                return map.get(keyName);
             }
         }
 
@@ -263,11 +263,11 @@ public class SwordDictionary extends AbstractBook
         String internalName = sbmd.getInitials();
         if (internalName.equals("StrongsGreek")) //$NON-NLS-1$
         {
-            key = (Key) map.get(ZERO_PAD.format(strongsNumber));
+            key = map.get(ZERO_PAD.format(strongsNumber));
         }
         else if (internalName.equals("StrongsHebrew")) //$NON-NLS-1$
         {
-            key = (Key) map.get(ZERO_PAD.format(strongsNumber));
+            key = map.get(ZERO_PAD.format(strongsNumber));
         }
         return key;
     }
@@ -308,7 +308,7 @@ public class SwordDictionary extends AbstractBook
     /**
      * So we can quickly find a Key given the text for the key
      */
-    private Map map;
+    private Map<String, Key> map;
 
     /**
      * So we can implement getIndex() easily

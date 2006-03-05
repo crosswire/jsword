@@ -156,7 +156,7 @@ public interface BookMetaData extends Comparable
      * The returned Properties will be read-only so any attempts to alter it
      * will fail.
      */
-    Map getProperties();
+    Map<String, String> getProperties();
 
     /**
      * Has anyone generated a search index for this Book?

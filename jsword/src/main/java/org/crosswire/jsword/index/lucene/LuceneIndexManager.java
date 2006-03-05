@@ -74,7 +74,7 @@ public class LuceneIndexManager implements IndexManager
     {
         try
         {
-            Index reply = (Index) INDEXES.get(book);
+            Index reply = INDEXES.get(book);
             if (reply == null)
             {
                 URL storage = getStorageArea(book);
@@ -196,7 +196,7 @@ public class LuceneIndexManager implements IndexManager
     /**
      * The created indexes
      */
-    protected static final Map INDEXES = new HashMap();
+    protected static final Map<Book, Index> INDEXES = new HashMap<Book, Index>();
 
     /**
      * The segments directory

@@ -222,7 +222,7 @@ public class ConfigEntry
             if (values == null)
             {
                 histogram.increment(confEntryName);
-                values = new ArrayList();
+                values = new ArrayList<String>();
             }
             if (reportDetails())
             {
@@ -393,9 +393,9 @@ public class ConfigEntry
         return copy;
     }
 
-    private List processLines(OSISUtil.OSISFactory factory, String aValue)
+    private List<Element> processLines(OSISUtil.OSISFactory factory, String aValue)
     {
-        List list = new ArrayList();
+        List<Element> list = new ArrayList<Element>();
         String [] lines = StringUtil.splitAll(aValue, '\n');
         for (int i = 0; i < lines.length; i++)
         {
@@ -418,6 +418,6 @@ public class ConfigEntry
     private ConfigEntryType type;
     private String internal;
     private String name;
-    private List values;
+    private List<String> values;
     private String value;
 }

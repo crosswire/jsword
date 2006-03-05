@@ -143,7 +143,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
      */
     public String getBookCharset()
     {
-        return (String) ENCODING_JAVA.get(getProperty(ConfigEntryType.ENCODING));
+        return ENCODING_JAVA.get(getProperty(ConfigEntryType.ENCODING));
     }
 
     /**
@@ -311,7 +311,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
     /**
      * The language strings need to be converted to Java charsets
      */
-    private static final Map ENCODING_JAVA = new HashMap();
+    private static final Map<String, String> ENCODING_JAVA = new HashMap<String, String>();
     static
     {
         ENCODING_JAVA.put("Latin-1", ENCODING_LATIN1); //$NON-NLS-1$

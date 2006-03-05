@@ -182,7 +182,7 @@ public enum ConfigEntryType
         /**
          * The set of choices.
          */
-        private final Set choices = new HashSet(Arrays.asList(new String[]
+        private final Set<String> choices = new HashSet<String>(Arrays.asList(new String[]
         {
             "BOOK", //$NON-NLS-1$
             "CHAPTER", //$NON-NLS-1$
@@ -225,7 +225,7 @@ public enum ConfigEntryType
         /**
          * The set of choices.
          */
-        private final Set choices = new HashSet(Arrays.asList(new String[]
+        private final Set<String> choices = new HashSet<String>(Arrays.asList(new String[]
         {
             "Daily Devotional", //$NON-NLS-1$
             "Glossaries", //$NON-NLS-1$
@@ -290,7 +290,7 @@ public enum ConfigEntryType
         /**
          * The set of choices.
          */
-        private final Set choices = new HashSet(Arrays.asList(new String[]
+        private final Set<String> choices = new HashSet<String>(Arrays.asList(new String[]
         {
             "LZSS", //$NON-NLS-1$
             "ZIP", //$NON-NLS-1$
@@ -467,7 +467,7 @@ public enum ConfigEntryType
         /**
          * The set of choices.
          */
-        private final Set choices = new HashSet(Arrays.asList(new String[]
+        private final Set<String> choices = new HashSet<String>(Arrays.asList(new String[]
         {
             DIRECTION_LTOR,
             DIRECTION_RTOL,
@@ -533,7 +533,7 @@ public enum ConfigEntryType
         /**
          * The set of choices.
          */
-        private final Set choices = new HashSet(Arrays.asList(new String[]
+        private final Set<String> choices = new HashSet<String>(Arrays.asList(new String[]
         {
             "Public Domain", //$NON-NLS-1$
             "Copyrighted; Free non-commercial distribution", //$NON-NLS-1$
@@ -608,7 +608,7 @@ public enum ConfigEntryType
         /**
          * The set of choices.
          */
-        private final Set choices = new HashSet(Arrays.asList(new String[]
+        private final Set<String> choices = new HashSet<String>(Arrays.asList(new String[]
         {
             "Latin-1", //$NON-NLS-1$
             "UTF-8", //$NON-NLS-1$
@@ -651,7 +651,7 @@ public enum ConfigEntryType
         /**
          * The set of choices.
          */
-        private final Set choices = new HashSet(Arrays.asList(new String[]
+        private final Set<String> choices = new HashSet<String>(Arrays.asList(new String[]
         {
             "GBFStrongs", //$NON-NLS-1$
             "GBFFootnotes", //$NON-NLS-1$
@@ -775,7 +775,7 @@ public enum ConfigEntryType
         /**
          * The set of choices.
          */
-        private final Set choices = new HashSet(Arrays.asList(new String[]
+        private final Set<String> choices = new HashSet<String>(Arrays.asList(new String[]
         {
             "StrongsNumbers", //$NON-NLS-1$
             "GreekDef", //$NON-NLS-1$
@@ -841,7 +841,7 @@ public enum ConfigEntryType
         /**
          * The set of choices.
          */
-        private final Set choices = new HashSet(Arrays.asList(new String[]
+        private final Set<String> choices = new HashSet<String>(Arrays.asList(new String[]
         {
             "RawText",  //$NON-NLS-1$
             "zText",  //$NON-NLS-1$
@@ -961,7 +961,7 @@ public enum ConfigEntryType
         /**
          * The set of choices.
          */
-        private final Set choices = new HashSet(Arrays.asList(choiceArray));
+        private final Set<String> choices = new HashSet<String>(Arrays.asList(choiceArray));
     },
 
     /**

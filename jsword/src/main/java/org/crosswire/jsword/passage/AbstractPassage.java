@@ -33,7 +33,6 @@ import java.util.BitSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Vector;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.StringUtil;
@@ -119,7 +118,7 @@ public abstract class AbstractPassage implements Passage
             assert false : e;
         }
 
-        copy.listeners = new ArrayList();
+        copy.listeners = new ArrayList<PassageListener>();
         copy.listeners.addAll(listeners);
 
         copy.originalName  = originalName;
@@ -876,17 +875,17 @@ public abstract class AbstractPassage implements Passage
         PassageEvent ev = new PassageEvent(source, PassageEvent.VERSES_ADDED, start, end);
 
         // Copy listener vector so it won't change while firing
-        List temp;
+        List<PassageListener> temp;
         synchronized (listeners)
         {
-            temp = new ArrayList();
+            temp = new ArrayList<PassageListener>();
             temp.addAll(listeners);
         }
 
         // And run throught the list shouting
         for (int i = 0; i < temp.size(); i++)
         {
-            PassageListener rl = (PassageListener) temp.get(i);
+            PassageListener rl = temp.get(i);
             rl.versesAdded(ev);
         }
     }
@@ -911,17 +910,17 @@ public abstract class AbstractPassage implements Passage
         PassageEvent ev = new PassageEvent(source, PassageEvent.VERSES_REMOVED, start, end);
 
         // Copy listener vector so it won't change while firing
-        List temp;
+        List<PassageListener> temp;
         synchronized (listeners)
         {
-            temp = new ArrayList();
+            temp = new ArrayList<PassageListener>();
             temp.addAll(listeners);
         }
 
         // And run throught the list shouting
         for (int i = 0; i < temp.size(); i++)
         {
-            PassageListener rl = (PassageListener) temp.get(i);
+            PassageListener rl = temp.get(i);
             rl.versesRemoved(ev);
         }
     }
@@ -946,17 +945,17 @@ public abstract class AbstractPassage implements Passage
         PassageEvent ev = new PassageEvent(source, PassageEvent.VERSES_CHANGED, start, end);
 
         // Copy listener vector so it won't change while firing
-        List temp;
+        List<PassageListener> temp;
         synchronized (listeners)
         {
-            temp = new ArrayList();
+            temp = new ArrayList<PassageListener>();
             temp.addAll(listeners);
         }
 
         // And run throught the list shouting
         for (int i = 0; i < temp.size(); i++)
         {
-            PassageListener rl = (PassageListener) temp.get(i);
+            PassageListener rl = temp.get(i);
             rl.versesChanged(ev);
         }
     }
@@ -1342,7 +1341,7 @@ public abstract class AbstractPassage implements Passage
         in.defaultReadObject();
 
         // Setup
-        listeners = new Vector();
+        listeners = new ArrayList<PassageListener>();
 
         try
         {
@@ -1432,7 +1431,7 @@ public abstract class AbstractPassage implements Passage
     /**
      * Support for change notification
      */
-    protected transient List listeners = new Vector();
+    protected transient List<PassageListener> listeners = new ArrayList<PassageListener>();
 
     /**
      * The original string for picky users

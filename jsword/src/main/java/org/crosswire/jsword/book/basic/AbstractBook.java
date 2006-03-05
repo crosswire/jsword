@@ -191,7 +191,7 @@ public abstract class AbstractBook implements Book
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getProperties()
      */
-    public Map getProperties()
+    public Map<String, String> getProperties()
     {
         return bmd.getProperties();
     }

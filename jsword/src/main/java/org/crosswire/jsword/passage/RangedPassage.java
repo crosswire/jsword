@@ -60,7 +60,7 @@ public class RangedPassage extends AbstractPassage
      */
     protected RangedPassage()
     {
-        store = new TreeSet();
+        store = new TreeSet<VerseRange>();
     }
 
     /**
@@ -80,7 +80,7 @@ public class RangedPassage extends AbstractPassage
     {
         super(refs);
 
-        store = new TreeSet();
+        store = new TreeSet<VerseRange>();
         addVerses(refs);
         normalize();
     }
@@ -98,7 +98,7 @@ public class RangedPassage extends AbstractPassage
         //   copy.store = (SortedSet) store.clone();
         // However SortedSet is not Clonable so I can't
         // Watch out for this, I'm not sure if it breaks anything.
-        copy.store = new TreeSet();
+        copy.store = new TreeSet<VerseRange>();
         copy.store.addAll(store);
 
         return copy;
@@ -236,7 +236,7 @@ public class RangedPassage extends AbstractPassage
         boolean removed = false;
 
         // This allows us to modify store which iterating through a copy
-        SortedSet new_store = new TreeSet();
+        SortedSet<VerseRange> new_store = new TreeSet<VerseRange>();
         new_store.addAll(store);
         Iterator it = new_store.iterator();
 
@@ -283,7 +283,7 @@ public class RangedPassage extends AbstractPassage
 
         optimizeWrites();
 
-        SortedSet new_store = new TreeSet();
+        SortedSet<VerseRange> new_store = new TreeSet<VerseRange>();
 
         Iterator that_it = null;
         if (that instanceof RangedPassage)
@@ -340,7 +340,7 @@ public class RangedPassage extends AbstractPassage
 
         VerseRange last = null;
         VerseRange next = null;
-        SortedSet new_store = new TreeSet();
+        SortedSet<VerseRange> new_store = new TreeSet<VerseRange>();
 
         Iterator it = rangeIterator(RestrictionType.NONE);
         while (it.hasNext())
@@ -385,7 +385,7 @@ public class RangedPassage extends AbstractPassage
         {
             try
             {
-                SortedSet temp = new TreeSet();
+                SortedSet<Verse> temp = new TreeSet<Verse>();
 
                 while (it.hasNext())
                 {
@@ -554,7 +554,7 @@ public class RangedPassage extends AbstractPassage
     {
         optimizeWrites();
 
-        store = new TreeSet();
+        store = new TreeSet<VerseRange>();
         readObjectSupport(in);
     }
 
@@ -566,5 +566,5 @@ public class RangedPassage extends AbstractPassage
     /**
      * The place the real data is stored
      */
-    private transient SortedSet store;
+    private transient SortedSet<VerseRange> store;
 }

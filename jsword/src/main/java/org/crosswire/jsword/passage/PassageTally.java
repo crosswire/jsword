@@ -950,7 +950,7 @@ public class PassageTally extends AbstractPassage
          */
         protected OrderedVerseIterator(int[] board)
         {
-            TreeSet output = new TreeSet();
+            TreeSet<TalliedVerse> output = new TreeSet<TalliedVerse>();
 
             int vib = BibleInfo.versesInBible();
             for (int i = 0; i < vib; i++)
@@ -1078,7 +1078,7 @@ public class PassageTally extends AbstractPassage
          */
         public OrderedVerseRangeIterator(Iterator vit, int[] board)
         {
-            TreeSet output = new TreeSet();
+            TreeSet<TalliedVerseRange> output = new TreeSet<TalliedVerseRange>();
 
             Iterator rit = new VerseRangeIterator(vit, RestrictionType.NONE);
             while (rit.hasNext())

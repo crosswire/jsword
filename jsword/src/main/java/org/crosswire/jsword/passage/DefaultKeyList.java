@@ -125,7 +125,7 @@ public class DefaultKeyList extends AbstractKeyList implements Key
      */
     public Key get(int index)
     {
-        return (Key) keys.get(index);
+        return keys.get(index);
     }
 
     /* (non-Javadoc)
@@ -160,7 +160,7 @@ public class DefaultKeyList extends AbstractKeyList implements Key
     /**
      * The store of Keys
      */
-    private List keys = new ArrayList();
+    private List<Key> keys = new ArrayList<Key>();
 
     /**
      * The log stream

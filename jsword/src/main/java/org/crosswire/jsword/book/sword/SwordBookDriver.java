@@ -74,7 +74,7 @@ public class SwordBookDriver extends AbstractBookDriver
     {
         ConfigEntry.resetStatistics();
 
-        List valid = new ArrayList();
+        List<Book> valid = new ArrayList<Book>();
 
         // Loop through the dirs in the lookup path
         for (int j = 0; j < dirs.length; j++)
@@ -126,7 +126,7 @@ public class SwordBookDriver extends AbstractBookDriver
 
         ConfigEntry.dumpStatistics();
 
-        return (Book[]) valid.toArray(new Book[valid.size()]);
+        return valid.toArray(new Book[valid.size()]);
     }
 
     /* (non-Javadoc)
@@ -329,7 +329,7 @@ public class SwordBookDriver extends AbstractBookDriver
      */
     private static File[] getDefaultPaths()
     {
-        List reply = new ArrayList();
+        List<File> reply = new ArrayList<File>();
 
         // .jsword in the users home directory is the first location
         reply.add(new File(System.getProperty(PROPERTY_USER_HOME) + File.separator + Project.DIR_PROJECT));
@@ -371,14 +371,14 @@ public class SwordBookDriver extends AbstractBookDriver
         // mods.d in the current directory?
         testDefaultPath(reply, new File(".").getAbsolutePath()); //$NON-NLS-1$
 
-        return (File[]) reply.toArray(new File[reply.size()]);
+        return reply.toArray(new File[reply.size()]);
     }
 
     /**
      * Check to see if the given directory is a Sword mods.d directory
      * and then add it to the list if it is.
      */
-    private static void testDefaultPath(List reply, String path)
+    private static void testDefaultPath(List<File> reply, String path)
     {
         File where = new File(path);
         File mods = new File(path, SwordConstants.DIR_CONF);

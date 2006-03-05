@@ -30,6 +30,7 @@ import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterException;
 import org.crosswire.jsword.passage.Key;
+import org.jdom.Content;
 import org.jdom.Element;
 
 /**
@@ -51,7 +52,7 @@ public class GBFFilter implements Filter
     {
         DataPolice.setKey(key);
         Element ele = OSISUtil.factory().createDiv();
-        LinkedList stack = new LinkedList();
+        LinkedList<Content> stack = new LinkedList<Content>();
         stack.addFirst(ele);
 
         List taglist = parseTags(plain.trim());
@@ -78,7 +79,7 @@ public class GBFFilter implements Filter
     private List parseTags(String aRemains)
     {
         String remains = aRemains;
-        List taglist = new ArrayList();
+        List<Tag> taglist = new ArrayList<Tag>();
 
         while (true)
         {

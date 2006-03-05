@@ -40,7 +40,7 @@ public class SetKeyList extends AbstractKeyList implements Key
     /**
      * Simple ctor
      */
-    public SetKeyList(Set set)
+    public SetKeyList(Set<Key> set)
     {
         list.addAll(set);
     }
@@ -48,7 +48,7 @@ public class SetKeyList extends AbstractKeyList implements Key
     /**
      * Simple ctor
      */
-    public SetKeyList(Set set, String name)
+    public SetKeyList(Set<Key> set, String name)
     {
         list.addAll(set);
         setName(name);
@@ -57,7 +57,7 @@ public class SetKeyList extends AbstractKeyList implements Key
     /**
      * Simple ctor
      */
-    public SetKeyList(Set set, Key parent)
+    public SetKeyList(Set<Key> set, Key parent)
     {
         list.addAll(set);
         this.parent = parent;
@@ -66,7 +66,7 @@ public class SetKeyList extends AbstractKeyList implements Key
     /**
      * Simple ctor
      */
-    public SetKeyList(Set set, Key parent, String name)
+    public SetKeyList(Set<Key> set, Key parent, String name)
     {
         list.addAll(set);
         this.parent = parent;
@@ -162,7 +162,7 @@ public class SetKeyList extends AbstractKeyList implements Key
      */
     public Key get(int index)
     {
-        return (Key) list.get(index);
+        return list.get(index);
     }
 
     /* (non-Javadoc)
@@ -197,7 +197,7 @@ public class SetKeyList extends AbstractKeyList implements Key
     /**
      * The Set that we are proxying to
      */
-    private List list = new ArrayList();
+    private List<Key> list = new ArrayList<Key>();
 
     /**
      * The log stream

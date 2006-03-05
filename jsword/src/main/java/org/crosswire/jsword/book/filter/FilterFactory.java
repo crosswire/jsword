@@ -52,7 +52,7 @@ public final class FilterFactory
     /**
      * The lookup table of filters
      */
-    private static Map filters = new HashMap();
+    private static Map<String, Filter> filters = new HashMap<String, Filter>();
 
     /**
      * The lookup table of filters
@@ -65,12 +65,12 @@ public final class FilterFactory
      */
     static
     {
-        Map map = ClassUtil.getImplementorsMap(Filter.class);
+        Map<String, Class> map = ClassUtil.getImplementorsMap(Filter.class);
 
         // the default value
         try
         {
-            Class cdeft = (Class) map.remove("default"); //$NON-NLS-1$
+            Class cdeft = map.remove("default"); //$NON-NLS-1$
             deft = (Filter) cdeft.newInstance();
         }
         catch (Exception ex)
@@ -79,14 +79,13 @@ public final class FilterFactory
         }
 
         // the lookup table
-        for (Iterator it = map.entrySet().iterator(); it.hasNext(); )
+        for (Map.Entry<String, Class> entry : map.entrySet())
         {
             try
             {
-                Map.Entry entry = (Map.Entry) it.next();
-                Class clazz = (Class) entry.getValue();
+                Class clazz = entry.getValue();
                 Filter instance = (Filter) clazz.newInstance();
-                addFilter((String) entry.getKey(), instance);
+                addFilter(entry.getKey(), instance);
             }
             catch (Exception ex)
             {
@@ -97,7 +96,7 @@ public final class FilterFactory
         // if the default didn't work then make a stab at an answer
         if (deft == null)
         {
-            deft = (Filter) filters.values().iterator().next();
+            deft = filters.values().iterator().next();
         }
     }
 
@@ -113,7 +112,7 @@ public final class FilterFactory
             String key = (String) it.next();
             if (key.equalsIgnoreCase(lookup))
             {
-                reply = (Filter) filters.get(key);
+                reply = filters.get(key);
                 break;
             }
         }

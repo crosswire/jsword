@@ -65,7 +65,7 @@ public final class ConverterFactory
     /**
      * Get a map of the known converters, by looking up the answers in Project
      */
-    public static Map getKnownConverters()
+    public static Map<String, Class> getKnownConverters()
     {
         return ClassUtil.getImplementorsMap(Converter.class);
     }
