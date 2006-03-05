@@ -227,7 +227,7 @@ public class DefaultLeafKeyList implements Key
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object obj)
+    public int compareTo(Key obj)
     {
         DefaultLeafKeyList that = (DefaultLeafKeyList) obj;
         return name.compareTo(that.name);

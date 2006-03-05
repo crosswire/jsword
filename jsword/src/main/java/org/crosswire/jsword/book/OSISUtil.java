@@ -500,6 +500,7 @@ public final class OSISUtil
      * the markup stripped out.
      * @return The Bible text without markup
      */
+    @SuppressWarnings("unchecked")
     public static String getPlainText(Element root)
     {
         StringBuffer buffer = new StringBuffer();
@@ -564,6 +565,7 @@ public final class OSISUtil
         }
     }
 
+    @SuppressWarnings("unchecked")
     private static String getTextContent(Element ele)
     {
         StringBuffer buffer = new StringBuffer();

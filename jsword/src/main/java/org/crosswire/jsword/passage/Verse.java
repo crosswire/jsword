@@ -58,7 +58,7 @@ import org.crosswire.common.util.Logger;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public final class Verse implements VerseBase, Comparable
+public final class Verse implements VerseBase
 {
     /**
      * The default Verse is Genesis 1:1. I didn't want to provide this
@@ -364,7 +364,7 @@ public final class Verse implements VerseBase, Comparable
      * @param obj The thing to compare against
      * @return 1 means he is earlier than me, -1 means he is later ...
      */
-    public int compareTo(Object obj)
+    public int compareTo(Key obj)
     {
         Verse that = null;
         if (obj instanceof Verse)

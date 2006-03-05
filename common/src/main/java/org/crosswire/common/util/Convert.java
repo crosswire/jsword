@@ -157,7 +157,7 @@ public final class Convert
      * @param data the thing to convert
      * @return the converted data
      */
-    public static Map<String, String> string2Hashtable(String data, Class superclass)
+    public static Map<String, String> string2Hashtable(String data, Class<?> superclass)
     {
         Map<String, String> commands = new HashMap<String, String>();
 
@@ -170,7 +170,7 @@ public final class Convert
                 int equ_pos = entry.indexOf('=');
                 String key = entry.substring(0, equ_pos);
                 String value = entry.substring(equ_pos + 1);
-                Class clazz = Class.forName(value);
+                Class<?> clazz = Class.forName(value);
 
                 if (clazz.isAssignableFrom(superclass))
                 {

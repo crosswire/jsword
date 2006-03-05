@@ -49,7 +49,7 @@ public abstract class AbstractBookList implements BookList
      */
     public List<Book> getBooks(BookFilter filter)
     {
-        List<Book> temp = CollectionUtil.createList(new BookFilterIterator(getBooks().iterator(), filter));
+        List<Book> temp = CollectionUtil.createList(new BookFilterIterator(getBooks(), filter));
         return Collections.unmodifiableList(temp);
     }
 

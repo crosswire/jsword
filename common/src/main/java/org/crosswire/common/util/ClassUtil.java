@@ -132,7 +132,7 @@ public final class ClassUtil
      * @param clazz The class or interface to find implementors of.
      * @return The list of implementing classes.
      */
-    public static Class[] getImplementors(Class clazz)
+    public static Class[] getImplementors(Class<?> clazz)
     {
         try
         {
@@ -143,7 +143,7 @@ public final class ClassUtil
                 try
                 {
                     String name = (String) obj;
-                    Class impl = Class.forName(name);
+                    Class<?> impl = Class.forName(name);
                     if (clazz.isAssignableFrom(impl))
                     {
                         matches.add(impl);
@@ -180,7 +180,7 @@ public final class ClassUtil
      * @param clazz The class or interface to find implementors of.
      * @return The map of implementing classes.
      */
-    public static Map<String, Class> getImplementorsMap(Class clazz)
+    public static Map<String, Class> getImplementorsMap(Class<?> clazz)
     {
         Map<String, Class> matches = new HashMap<String, Class>();
 
@@ -193,7 +193,7 @@ public final class ClassUtil
                 {
                     String key = (String) obj;
                     String value = props.getProperty(key);
-                    Class impl = Class.forName(value);
+                    Class<?> impl = Class.forName(value);
                     if (clazz.isAssignableFrom(impl))
                     {
                         matches.put(key, impl);
@@ -232,12 +232,12 @@ public final class ClassUtil
      * @throws ClassCastException if the read contents are not valid
      * @see ClassUtil#getImplementors(Class)
      */
-    public static Class getImplementor(Class clazz) throws IOException, ClassNotFoundException, ClassCastException
+    public static Class getImplementor(Class<?> clazz) throws IOException, ClassNotFoundException, ClassCastException
     {
         Properties props = ResourceUtil.getProperties(clazz);
         String name = props.getProperty(DEFAULT);
 
-        Class impl = Class.forName(name);
+        Class<?> impl = Class.forName(name);
         if (!clazz.isAssignableFrom(impl))
         {
             throw new ClassCastException(Msg.NOT_ASSIGNABLE.toString(new Object[] { impl.getName(), clazz.getName() }));

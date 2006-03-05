@@ -24,7 +24,6 @@ package org.crosswire.jsword.book;
 import java.util.Map;
 
 import org.crosswire.jsword.index.IndexStatus;
-import org.crosswire.jsword.index.IndexStatusListener;
 import org.jdom.Document;
 
 /**
@@ -44,7 +43,7 @@ import org.jdom.Document;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public interface BookMetaData extends Comparable
+public interface BookMetaData extends Comparable<BookMetaData>
 {
     /**
      * The name of the book, for example "King James Version" or
@@ -175,20 +174,6 @@ public interface BookMetaData extends Comparable
      * Get an OSIS representation of information concerning this Book.
      */
     Document toOSIS();
-
-    /**
-     * Adds a <code>IndexStatusListener</code> to the listener list.
-     * <p>A <code>IndexStatusEvent</code> will get fired in response
-     * to <code>setIndexStatus</code>.
-     * @param li the <code>IndexStatusListener</code> to be added
-     */
-    void addIndexStatusListener(IndexStatusListener li);
-
-    /**
-     * Removes a <code>IndexStatusListener</code> from the listener list.
-     * @param li the <code>IndexStatusListener</code> to be removed
-     */
-    void removeIndexStatusListener(IndexStatusListener li);
 
     /**
      * The key for the type in the properties map

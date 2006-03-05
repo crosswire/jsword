@@ -152,9 +152,9 @@ public abstract class AbstractKeyList implements Key
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object obj)
+    public int compareTo(Key obj)
     {
-        Key that = (Key) obj;
+        Key that = obj;
 
         Key thisfirst = (Key) this.iterator().next();
         Key thatfirst = (Key) that.iterator().next();

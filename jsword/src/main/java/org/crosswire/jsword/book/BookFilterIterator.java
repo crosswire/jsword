@@ -32,16 +32,24 @@ import java.util.NoSuchElementException;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class BookFilterIterator implements Iterator
+public class BookFilterIterator implements Iterable<Book>, Iterator<Book>
 {
     /**
      * Simple ctor
      * @param filter The filter to use, if null, will iterate over all values
      */
-    public BookFilterIterator(Iterator it, BookFilter filter)
+    public BookFilterIterator(Iterable<Book> books, BookFilter filter)
     {
-        this.it = it;
+        this.it    = books.iterator();
         this.filter = filter;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Iterable#iterator()
+     */
+    public Iterator<Book> iterator()
+    {
+        return this;
     }
 
     /* (non-Javadoc)
@@ -56,7 +64,7 @@ public class BookFilterIterator implements Iterator
     /* (non-Javadoc)
      * @see java.util.Iterator#next()
      */
-    public Object next()
+    public Book next()
     {
         if (next == null)
         {
@@ -95,13 +103,11 @@ public class BookFilterIterator implements Iterator
      */
     private Book next;
 
-    /**
-     * The source of filtered values
-     */
     private Iterator it;
 
     /**
      * The value filter
      */
     private BookFilter filter;
+
 }

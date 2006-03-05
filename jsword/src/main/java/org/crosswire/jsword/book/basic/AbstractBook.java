@@ -21,7 +21,10 @@
  */
 package org.crosswire.jsword.book.basic;
 
+import java.beans.PropertyChangeListener;
 import java.util.Map;
+
+import javax.swing.event.EventListenerList;
 
 import org.crosswire.common.activate.Lock;
 import org.crosswire.jsword.book.Book;
@@ -31,6 +34,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.index.IndexStatus;
+import org.crosswire.jsword.index.IndexStatusEvent;
 import org.crosswire.jsword.index.IndexStatusListener;
 import org.crosswire.jsword.index.search.DefaultSearchRequest;
 import org.crosswire.jsword.index.search.SearchRequest;
@@ -151,9 +155,11 @@ public abstract class AbstractBook implements Book
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#setIndexStatus(org.crosswire.jsword.book.IndexStatus)
      */
-    public void setIndexStatus(IndexStatus status)
+    public void setIndexStatus(IndexStatus newStatus)
     {
-        bmd.setIndexStatus(status);
+        IndexStatus oldStatus = bmd.getIndexStatus();
+        bmd.setIndexStatus(newStatus);
+        firePropertyChange(oldStatus, newStatus);
     }
 
     /* (non-Javadoc)
@@ -245,19 +251,61 @@ public abstract class AbstractBook implements Book
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#removeIndexStatusListener(org.crosswire.jsword.index.IndexStatusListener)
+     * @see org.crosswire.jsword.book.Book#addIndexStatusListener(org.crosswire.jsword.index.IndexStatusListener)
      */
-    public void removeIndexStatusListener(IndexStatusListener li)
+    public void addIndexStatusListener(IndexStatusListener listener)
     {
-        bmd.removeIndexStatusListener(li);
+        if (listeners == null)
+        {
+            listeners = new EventListenerList();
+        }
+        listeners.add(IndexStatusListener.class, listener);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#addIndexStatusListener(org.crosswire.jsword.index.IndexStatusListener)
+     * @see org.crosswire.jsword.book.Book#removeIndexStatusListener(org.crosswire.jsword.index.IndexStatusListener)
      */
-    public void addIndexStatusListener(IndexStatusListener li)
+    public void removeIndexStatusListener(IndexStatusListener listener)
     {
-        bmd.addIndexStatusListener(li);
+        if (listeners == null)
+        {
+            return;
+        }
+
+        listeners.remove(IndexStatusListener.class, listener);
+    }
+
+    /**
+     * Reports bound property changes.
+     * If <code>oldValue</code> and <code>newValue</code> are not equal and the
+     * <code>PropertyChangeEvent</code> listener list isn't empty,
+     * then fire a <code>PropertyChange</code> event to each listener.
+     * @param oldStatus the old value of the property (as an Object)
+     * @param newStatus the new value of the property (as an Object)
+     */
+    protected void firePropertyChange(IndexStatus oldStatus, IndexStatus newStatus)
+    {
+        if (listeners != null)
+        {
+            if (oldStatus != null && newStatus != null && oldStatus.equals(newStatus))
+            {
+                return;
+            }
+
+            if (listeners != null)
+            {
+                Object[] listenerList = listeners.getListenerList();
+                for (int i = 0; i <= listenerList.length - 2; i += 2)
+                {
+                    if (listenerList[i] == PropertyChangeListener.class)
+                    {
+                        IndexStatusEvent ev = new IndexStatusEvent(this, newStatus);
+                        IndexStatusListener li = (IndexStatusListener) listenerList[i + 1];
+                        li.statusChanged(ev);
+                    }
+                }
+            }
+        }
     }
 
     /* (non-Javadoc)
@@ -308,10 +356,9 @@ public abstract class AbstractBook implements Book
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object obj)
+    public int compareTo(Book obj)
     {
-        Book that = (Book) obj;
-        return this.bmd.compareTo(that.getBookMetaData());
+        return this.bmd.compareTo(obj.getBookMetaData());
     }
 
     /* (non-Javadoc)
@@ -332,4 +379,9 @@ public abstract class AbstractBook implements Book
      * The meta data for this book
      */
     private BookMetaData bmd;
+
+    /**
+     * The list of property change listeners
+     */
+    private transient EventListenerList listeners;
 }

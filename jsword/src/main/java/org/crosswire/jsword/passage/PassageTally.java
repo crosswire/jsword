@@ -1028,7 +1028,7 @@ public class PassageTally extends AbstractPassage
      * JDK: Hack to make this work with J2SE 1.1 as well as J2SE 1.2
      * This compared 2 Integers
      */
-    private static class TalliedVerse implements Comparable
+    private static class TalliedVerse implements Comparable<TalliedVerse>
     {
         /**
          * Convenience ctor to set the public variables
@@ -1044,10 +1044,8 @@ public class PassageTally extends AbstractPassage
         /* (non-Javadoc)
          * @see java.lang.Comparable#compareTo(java.lang.Object)
          */
-        public int compareTo(Object obj)
+        public int compareTo(TalliedVerse that)
         {
-            TalliedVerse that = (TalliedVerse) obj;
-
             if (that.tally == this.tally)
             {
                 return this.ord - that.ord;

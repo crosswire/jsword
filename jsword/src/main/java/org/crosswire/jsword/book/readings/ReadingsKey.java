@@ -118,7 +118,7 @@ public class ReadingsKey extends DefaultLeafKeyList
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     @Override
-    public int compareTo(Object obj)
+    public int compareTo(Key obj)
     {
         ReadingsKey that = (ReadingsKey) obj;
         return this.date.compareTo(that.date);

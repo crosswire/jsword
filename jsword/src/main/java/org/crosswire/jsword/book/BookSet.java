@@ -21,13 +21,15 @@
  */
 package org.crosswire.jsword.book;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 import org.crosswire.common.util.Filter;
-import org.crosswire.common.util.SortedListSet;
 
 /**
  * BookSet represents a collection of descriptions about Books
@@ -38,17 +40,16 @@ import org.crosswire.common.util.SortedListSet;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class BookSet<E extends Comparable<E>> extends SortedListSet<E>
+public class BookSet extends ArrayList<Book> implements List<Book>, Set<Book>
 {
-
     public BookSet()
     {
-        super();
-    }
+     }
 
-    public BookSet(Collection<? extends E> books)
+    public BookSet(Collection<? extends Book> books)
     {
-        super(books);
+        this();
+        addAll(books);
     }
 
     /**
@@ -59,10 +60,8 @@ public class BookSet<E extends Comparable<E>> extends SortedListSet<E>
     public Set<String> getGroups()
     {
         Set<String> results = new TreeSet<String>();
-        Iterator bookIter = iterator();
-        while (bookIter.hasNext())
+        for (Book book : this)
         {
-            Book book = (Book) bookIter.next();
             results.addAll(book.getProperties().keySet());
         }
         return results;
@@ -82,10 +81,8 @@ public class BookSet<E extends Comparable<E>> extends SortedListSet<E>
     public Set<String> getGroup(String key)
     {
         Set<String> results = new TreeSet<String>();
-        Iterator bookIter = iterator();
-        while (bookIter.hasNext())
+        for (Book book : this)
         {
-            Book book = (Book) bookIter.next();
             Object property = book.getProperties().get(key);
             String propertyValue = property == null ? Msg.BOOK_METADATA_SET_OTHER.toString() : property.toString();
             results.add(propertyValue);
@@ -93,9 +90,96 @@ public class BookSet<E extends Comparable<E>> extends SortedListSet<E>
         return results;
     }
 
-    public BookSet<E> filter(String key, String value)
+    public BookSet filter(String key, String value)
     {
-        return (BookSet) filter(new GroupFilter(key, value));
+        return filter(new GroupFilter(key, value));
+    }
+
+    /* (non-Javadoc)
+     * @see java.util.List#add(int, java.lang.Object)
+     */
+    @Override
+    public void add(int index, Book element)
+    {
+        // ignore the requested index
+        add(element);
+    }
+
+    /* (non-Javadoc)
+     * @see java.util.Collection#add(java.lang.Object)
+     */
+    @Override
+    public boolean add(Book book)
+    {
+        // Add the item only if it is not in the list.
+        // Add it into the list so that it is in sorted order.
+        int pos = Collections.binarySearch(this, book);
+        if (pos < 0)
+        {
+            super.add(-pos - 1, book);
+            return true;
+        }
+        return false;
+    }
+
+    /* (non-Javadoc)
+     * @see java.util.Collection#addAll(java.util.Collection)
+     */
+    @Override
+    public boolean addAll(Collection<? extends Book> c)
+    {
+        // Might be better to add the list to the end
+        // and then sort the list.
+        // This can be revisited if the list performs badly.
+        boolean added = false;
+        for (Book book : c)
+        {
+            if (add(book))
+            {
+                added = true;
+            }
+        }
+        return added;
+    }
+
+    /* (non-Javadoc)
+     * @see java.util.List#addAll(int, java.util.Collection)
+     */
+    @Override
+    public boolean addAll(int index, Collection<? extends Book> c)
+    {
+        // Ignore the index
+        return addAll(c);
+    }
+
+    /* (non-Javadoc)
+     * @see java.util.List#set(int, java.lang.Object)
+     */
+    @Override
+    public Book set(int index, Book element)
+    {
+        // remove the item at the index (keep it to return it),
+        // then insert the item into the sorted list.
+        Book item = remove(index);
+        add(element);
+        return item;
+    }
+
+    public BookSet filter(Filter filter)
+    {
+        // create a copy of the list and
+        // remove everything that fails the test.
+        BookSet listSet = (BookSet) clone();
+        Iterator iter = listSet.iterator();
+        while (iter.hasNext())
+        {
+            Object obj = iter.next();
+            if (!filter.test(obj))
+            {
+                iter.remove();
+            }
+        }
+        return listSet;
     }
 
     /**
@@ -122,4 +206,5 @@ public class BookSet<E extends Comparable<E>> extends SortedListSet<E>
      * Serialization ID
      */
     private static final long serialVersionUID = 3258688806185154867L;
+
 }

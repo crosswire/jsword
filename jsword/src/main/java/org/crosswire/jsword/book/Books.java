@@ -133,7 +133,7 @@ public final class Books implements BookList
      */
     public synchronized List<Book> getBooks(BookFilter filter)
     {
-        List<Book> temp = CollectionUtil.createList(new BookFilterIterator(getBooks().iterator(), filter));
+        List<Book> temp = CollectionUtil.createList(new BookFilterIterator(getBooks(), filter));
         return new BookSet(temp);
     }
 
@@ -241,7 +241,7 @@ public final class Books implements BookList
         // Go through all the books and add all the new ones.
         // Remove those that are not known to the driver, but used to be.
         Book[] bookArray = driver.getBooks();
-        Set current = CollectionUtil.createSet(new BookFilterIterator(getBooks().iterator(), BookFilters.getBooksByDriver(driver)));
+        Set current = CollectionUtil.createSet(new BookFilterIterator(getBooks(), BookFilters.getBooksByDriver(driver)));
 
         for (int j = 0; j < bookArray.length; j++)
         {

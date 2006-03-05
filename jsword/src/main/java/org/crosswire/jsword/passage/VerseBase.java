@@ -31,7 +31,7 @@ import java.util.Iterator;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public interface VerseBase extends Cloneable, Comparable, Serializable, Key
+public interface VerseBase extends Cloneable, Serializable, Key
 {
     /**
      * Translate the Passage into a human readable string

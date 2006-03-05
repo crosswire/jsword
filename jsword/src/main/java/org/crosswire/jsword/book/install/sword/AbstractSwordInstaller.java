@@ -63,7 +63,7 @@ import com.ice.tar.TarInputStream;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public abstract class AbstractSwordInstaller extends AbstractBookList implements Installer
+public abstract class AbstractSwordInstaller extends AbstractBookList implements Installer, Comparable
 {
     /**
      * Utility to download a file from a remote site

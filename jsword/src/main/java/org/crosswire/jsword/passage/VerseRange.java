@@ -516,7 +516,7 @@ public final class VerseRange implements VerseBase
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object obj)
+    public int compareTo(Key obj)
     {
         // This ensures a ClassCastException without further test
         Verse that = null;

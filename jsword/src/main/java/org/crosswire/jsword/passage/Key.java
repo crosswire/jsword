@@ -34,7 +34,7 @@ import java.util.Iterator;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public interface Key extends Comparable, Cloneable
+public interface Key extends Comparable<Key>, Cloneable
 {
     /**
      * A Human readable version of the Key.

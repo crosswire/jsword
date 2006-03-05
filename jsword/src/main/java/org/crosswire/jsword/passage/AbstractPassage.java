@@ -68,7 +68,7 @@ public abstract class AbstractPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object obj)
+    public int compareTo(Key obj)
     {
         if (!(obj instanceof Passage))
         {

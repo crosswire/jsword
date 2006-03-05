@@ -49,7 +49,7 @@ public final class ReflectionUtil
     public static Object invoke(Object base, String methodName, Object[] params) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
     {
         // Create a Class array describing the params
-        Class[] calledTypes = new Class[params.length];
+        Class<?>[] calledTypes = new Class[params.length];
         for (int i = 0; i < params.length; i++)
         {
             calledTypes[i] = params[i].getClass();
@@ -72,7 +72,7 @@ public final class ReflectionUtil
             }
 
             // The right number of params
-            Class[] testTypes = testMethod.getParameterTypes();
+            Class<?>[] testTypes = testMethod.getParameterTypes();
             if (testTypes.length != calledTypes.length)
             {
                 continue;
@@ -107,14 +107,14 @@ public final class ReflectionUtil
         String methodName = call.substring(lastDot + 1);
 
         // Create a Class array describing the params
-        Class[] calledTypes = new Class[params.length];
+        Class<?>[] calledTypes = new Class[params.length];
         for (int i = 0; i < params.length; i++)
         {
             calledTypes[i] = params[i].getClass();
         }
 
         // Reflection
-        Class clazz = Class.forName(className);
+        Class<?> clazz = Class.forName(className);
 
         // The bad news is that we can't use something like:
         // clazz.getMethod(called_method_name, called_types);
@@ -130,7 +130,7 @@ public final class ReflectionUtil
             }
 
             // The right number of params
-            Class[] testTypes = testMethod.getParameterTypes();
+            Class<?>[] testTypes = testMethod.getParameterTypes();
             if (testTypes.length != calledTypes.length)
             {
                 continue;

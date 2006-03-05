@@ -160,7 +160,7 @@ public class ReadOnlyKeyList implements Key
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object o)
+    public int compareTo(Key o)
     {
         return keys.compareTo(o);
     }

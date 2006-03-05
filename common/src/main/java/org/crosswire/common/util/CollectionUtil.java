@@ -49,32 +49,32 @@ public final class CollectionUtil
     }
 
     /**
-     * Create a List from an Iterator.
+     * Create a List from an Iterable.
      * @param it The source of data for the list
      * @return List
      */
-    public static List createList(Iterator it)
+    public static <T> List<T> createList(Iterable<T> it)
     {
-        List<Object> reply = new ArrayList<Object>();
-        while (it.hasNext())
+        List<T> reply = new ArrayList<T>();
+        for (T t : it)
         {
-            reply.add(it.next());
+            reply.add(t);
         }
 
         return reply;
     }
 
     /**
-     * Create a Set from an Iterator.
+     * Create a Set from an Iterable.
      * @param it The source of data for the list
      * @return the created set
      */
-    public static Set createSet(Iterator it)
+    public static <T> Set<T> createSet(Iterable<T> it)
     {
-        Set<Object> reply = new HashSet<Object>();
-        while (it.hasNext())
+        Set<T> reply = new HashSet<T>();
+        for (T t : it)
         {
-            reply.add(it.next());
+            reply.add(t);
         }
 
         return reply;

@@ -356,7 +356,7 @@ final class SynchronizedPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public synchronized int compareTo(Object o)
+    public synchronized int compareTo(Key o)
     {
         return ref.compareTo(o);
     }

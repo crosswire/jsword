@@ -423,7 +423,7 @@ final class ReadOnlyPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object o)
+    public int compareTo(Key o)
     {
         return ref.compareTo(o);
     }
