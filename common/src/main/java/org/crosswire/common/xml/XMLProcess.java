@@ -43,6 +43,14 @@ public class XMLProcess
     }
 
     /**
+     * @return Returns the features.
+     */
+    public XMLFeatureSet getFeatures()
+    {
+        return features;
+    }
+
+    /**
      * Process an xml file according to the arguments.
      * @param argv
      */
@@ -76,7 +84,6 @@ public class XMLProcess
         }
 
         checker.initialize(argv);
-
         checker.parse(arg);
 
     }
@@ -119,7 +126,10 @@ public class XMLProcess
         }
 
         features.setFeatureStates(argv);
+    }
 
+    private void bind()
+    {
         createParser(DEFAULT_PARSER_NAME);
         createAdapter(DEFAULT_HANDLER_NAME);
 
@@ -191,8 +201,9 @@ public class XMLProcess
         }
     }
 
-    private void parse(String xmlFile)
+    public void parse(String xmlFile)
     {
+        bind();
         // parse file
         try
         {

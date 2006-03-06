@@ -9,7 +9,10 @@ import java.io.Writer;
 import java.text.FieldPosition;
 import java.text.MessageFormat;
 import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.crosswire.common.xml.XMLProcess;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
@@ -80,6 +83,9 @@ public class ModToOsis
                         buildBookClose(buf);
                         buildDocumentClose(buf);
                         writeDocument(buf, lastBookName);
+                        XMLProcess parser = new XMLProcess();
+                        parser.getFeatures().setFeatureStates("-s", "-f", "-va", "-dv"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                        parser.parse(lastBookName + ".xml"); //$NON-NLS-1$
                     }
 
                     buf = new StringBuffer();
@@ -91,6 +97,11 @@ public class ModToOsis
                 {
                     if (currentChapter != 1)
                     {
+                        if (inPreVerse)
+                        {
+                            buildPreVerseClose(buf);
+                            inPreVerse = false;
+                        }
                         buildChapterClose(buf);
                     }
                     buildChapterOpen(buf, currentBookName, currentChapter);
@@ -98,25 +109,42 @@ public class ModToOsis
 
                 /* Output the verse */
                 
-                /* TODO(DMS):
+                /*
                  * If the "raw" verse contains a "preverse" pull it out.
                  * If there were a former preverse then close the "section" div
                  * before outputting it before the verse.
                  */
                 boolean foundPreVerse = false;
-                String preVerseText = "title"; //$NON-NLS-1$
+                String preVerseText = ""; //$NON-NLS-1$
+                if (raw.contains(preVerseStart))
+                {
+                    Matcher preVerseStartMatcher = preVerseStartPattern.matcher(raw);
+                    if (preVerseStartMatcher.find())
+                    {
+                        int start = preVerseStartMatcher.start();
+                        Matcher preVerseEndMatcher = preVerseEndPattern.matcher(raw);
+                        if (preVerseEndMatcher.find(1 + preVerseStartMatcher.end()))
+                        {
+                            int end = preVerseEndMatcher.end();
+                            foundPreVerse = true;
+                            preVerseText = raw.substring(start, end);
+                            raw = raw.replace(preVerseText, ""); //$NON-NLS-1$
+                            preVerseText = preVerseText.substring(preVerseStart.length(), preVerseText.length()-preVerseEnd.length());
+                        }
+                    }
+                }
                 if (foundPreVerse)
                 {
                     if (inPreVerse)
                     {
                         buildPreVerseClose(buf);
                     }
-                    buildPreVerseOpen(buf, preVerseText); //$NON-NLS-1$
+                    buildPreVerseOpen(buf, cleanup(osisID, preVerseText)); //$NON-NLS-1$
                     inPreVerse = true;
                 }
 
                 buildVerseOpen(buf, osisID);
-                buf.append(raw);
+                buf.append(cleanup(osisID, raw));
                 buildVerseClose(buf, osisID);
 
                 lastChapter = currentChapter;
@@ -134,6 +162,7 @@ public class ModToOsis
             buildBookClose(buf);
             buildDocumentClose(buf);
             writeDocument(buf, lastBookName);
+            new XMLProcess().parse(lastBookName + ".xml"); //$NON-NLS-1$
         }
         catch (BookException e)
         {
@@ -169,13 +198,13 @@ public class ModToOsis
         docBuffer.append("\n  xmlns=\"http://www.bibletechnologies.net/2003/OSIS/namespace\""); //$NON-NLS-1$
         docBuffer.append("\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");  //$NON-NLS-1$
         docBuffer.append("\n  xsi:schemaLocation=\"http://www.bibletechnologies.net/2003/OSIS/namespace osisCore.2.1.xsd\">"); //$NON-NLS-1$
-        docBuffer.append("\n    <osisText osisIDWork=\"{0}\" osisRefWork=\"defaultReferenceScheme\">"); //$NON-NLS-1$
+        docBuffer.append("\n    <osisText osisIDWork=\"{0}\" osisRefWork=\"defaultReferenceScheme\" xml:lang=\"en\">"); //$NON-NLS-1$
         docBuffer.append("\n    <header>"); //$NON-NLS-1$
         docBuffer.append("\n      <work osisWork=\"{0}\">"); //$NON-NLS-1$
         docBuffer.append("\n      <title>{1}</title>"); //$NON-NLS-1$
         docBuffer.append("\n      <identifier type=\"OSIS\">Bible.{0}</identifier>"); //$NON-NLS-1$
         docBuffer.append("\n      <refSystem>Bible.KJV</refSystem>"); //$NON-NLS-1$
-        docBuffer.append("\n      <scope>{2}</scope>"); //$NON-NLS-1$
+//        docBuffer.append("\n      <scope>{2}</scope>"); //$NON-NLS-1$
         docBuffer.append("\n    </work>"); //$NON-NLS-1$
         docBuffer.append("\n    <work osisWork=\"defaultReferenceScheme\">"); //$NON-NLS-1$
         docBuffer.append("\n      <refSystem>Bible.KJV</refSystem>"); //$NON-NLS-1$
@@ -242,6 +271,70 @@ public class ModToOsis
         writer.write(buf.toString());
         writer.close();
     }
-    
+    private String cleanup(@SuppressWarnings("unused") String osisID, String input)
+    {
+        // Fix up bad notes
+        while (true)
+        {
+            if (input.contains("note type=\"strongsMarkup\"")) //$NON-NLS-1$
+            {
+                Matcher badNoteMatcher = badNotePattern.matcher(input);
+                if (!badNoteMatcher.find())
+                {
+                    break;
+                }
+                String note = badNoteMatcher.group();
+                String fixed = note.substring(0, note.length()-2) + '>';
+                fixed = fixed.replaceAll("strongsMarkup", "x-strongsMarkup"); //$NON-NLS-1$ //$NON-NLS-2$
+                fixed = fixed.replaceAll(" name=\"[^\"]*\"", ""); //$NON-NLS-1$ //$NON-NLS-2$
+                fixed = fixed.replaceAll(" date=\"[^\"]*\"", ""); //$NON-NLS-1$ //$NON-NLS-2$
+                input = input.replace(note, fixed);
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        // Fix up bad w tags
+        Matcher wMatcher = wPattern.matcher(input);
+        while (wMatcher.find())
+        {
+            String whole = wMatcher.group(0);
+            String fixed = whole.replaceAll(" (src |w |morph )", " "); //$NON-NLS-1$ //$NON-NLS-2$
+            fixed = fixed.replaceAll("\\|", " "); //$NON-NLS-1$ //$NON-NLS-2$
+            fixed = fixed.replaceAll("x-Strongs", "strong"); //$NON-NLS-1$ //$NON-NLS-2$
+            fixed = fixed.replaceAll("x-StrongsMorph", "morph"); //$NON-NLS-1$ //$NON-NLS-2$
+            fixed = fixed.replaceAll("x-Robinson", "robinson"); //$NON-NLS-1$ //$NON-NLS-2$
+            fixed = fixed.replaceAll("splitID=\"", "type=\"x-split\" subType=\"x-"); //$NON-NLS-1$ //$NON-NLS-2$
+            if ( !whole.equals(fixed))
+            {
+                input = input.replace(whole, fixed); //$NON-NLS-1$
+            }
+        }
+
+input = input.replaceAll("\"transChange\"", "\"x-transChange\""); //$NON-NLS-1$ //$NON-NLS-2$
+input = input.replaceAll("\"type:", "\"x-"); //$NON-NLS-1$ //$NON-NLS-2$
+input = input.replaceAll("<resp\\s[^>]*/>", ""); //$NON-NLS-1$ //$NON-NLS-2$
+input = input.replaceAll("changeType=\"", "type=\""); //$NON-NLS-1$ //$NON-NLS-2$
+input = input.replaceAll("<p/>", "<lb/>"); //$NON-NLS-1$ //$NON-NLS-2$
+if (osisID.equals("Matt.24.38")) //$NON-NLS-1$
+{
+    input = input.replace("<w src=\"18\" lemma=\"strong:G3739\" morph=\"robinson:R-GSF\"><w src=\"7\" lemma=\"strong:G3588\" morph=\"robinson:T-DPF\">that</w></w>", //$NON-NLS-1$
+                          "<w src=\"18\" lemma=\"strong:G3739\" morph=\"robinson:R-GSF\"></w><w src=\"7\" lemma=\"strong:G3588\" morph=\"robinson:T-DPF\">that</w>"); //$NON-NLS-1$
+}
+        return input;
+    }
     private static FieldPosition pos = new FieldPosition(0);
+
+    private static String preVerseStart = "<title subtype=\"x-preverse\" type=\"section\">"; //$NON-NLS-1$
+    private static String preVerseEnd = "</title>"; //$NON-NLS-1$
+    private static Pattern preVerseStartPattern = Pattern.compile(preVerseStart);
+    private static Pattern preVerseEndPattern = Pattern.compile(preVerseEnd); //$NON-NLS-1$
+
+    private static String badNote = "<note type=\"[^\"]*\" name=\"[^\"]*\" date=\"[^\"]*\"/>"; //$NON-NLS-1$
+    private static Pattern badNotePattern = Pattern.compile(badNote);
+
+    private static String wElement = "<w\\s[^>]*>"; //$NON-NLS-1$
+    private static Pattern wPattern = Pattern.compile(wElement);
 }
