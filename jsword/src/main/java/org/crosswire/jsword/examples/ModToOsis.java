@@ -30,6 +30,7 @@ public class ModToOsis
      */
     private static final String BIBLE_NAME = "KJV"; //$NON-NLS-1$
     private static final String BIBLE_RANGE = "Gen-Rev"; //$NON-NLS-1$
+    private static final boolean BY_CHAPTER = true;
 
     /**
      * @param args
@@ -46,13 +47,20 @@ public class ModToOsis
         BookMetaData bmd = bible.getBookMetaData();
         String lastBookName = ""; //$NON-NLS-1$
         int lastChapter = -1;
-        StringBuffer buf = null;
+        StringBuffer buf = new StringBuffer();
         boolean inPreVerse = false;
         
 
         try
         {
             Key key = bible.getKey(range);
+
+            openOutputFile(bmd.getInitials(), !BY_CHAPTER);
+            buildDocumentOpen(buf, bmd, range, !BY_CHAPTER);
+            if (!BY_CHAPTER)
+            {
+                writeDocument(buf);
+            }
 
             // Get a verse iterator
             Iterator iter = key.iterator();
@@ -81,15 +89,14 @@ public class ModToOsis
                             buildChapterClose(buf);
                         }
                         buildBookClose(buf);
-                        buildDocumentClose(buf);
-                        writeDocument(buf, lastBookName);
-                        XMLProcess parser = new XMLProcess();
-                        parser.getFeatures().setFeatureStates("-s", "-f", "-va", "-dv"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                        parser.parse(lastBookName + ".xml"); //$NON-NLS-1$
+                        buildDocumentClose(buf, BY_CHAPTER);
+                        openOutputFile(lastBookName, BY_CHAPTER);
+                        writeDocument(buf);
+                        closeOutputFile(BY_CHAPTER);
                     }
 
                     buf = new StringBuffer();
-                    buildDocumentOpen(buf, bmd, currentBookName);
+                    buildDocumentOpen(buf, bmd, currentBookName, BY_CHAPTER);
                     buildBookOpen(buf, currentBookName);
                 }
 
@@ -160,11 +167,10 @@ public class ModToOsis
 
             buildChapterClose(buf);
             buildBookClose(buf);
-            buildDocumentClose(buf);
-            writeDocument(buf, lastBookName);
-            XMLProcess parser = new XMLProcess();
-            parser.getFeatures().setFeatureStates("-s", "-f", "-va", "-dv"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-            parser.parse(lastBookName + ".xml"); //$NON-NLS-1$
+            buildDocumentClose(buf, true);
+            openOutputFile(lastBookName, BY_CHAPTER);
+            writeDocument(buf);
+            closeOutputFile(true);
         }
         catch (BookException e)
         {
@@ -192,8 +198,13 @@ public class ModToOsis
         }
     }
 
-    private void buildDocumentOpen(StringBuffer buf, BookMetaData bmd, String range)
+    private void buildDocumentOpen(StringBuffer buf, BookMetaData bmd, String range, boolean force)
     {
+        if (!force)
+        {
+            return;
+        }
+
         StringBuffer docBuffer = new StringBuffer();
         docBuffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"); //$NON-NLS-1$
         docBuffer.append("\n<osis"); //$NON-NLS-1$
@@ -217,9 +228,12 @@ public class ModToOsis
         msgFormat.format(new Object[] { bmd.getInitials(), bmd.getName(), range }, buf, pos);
     }
 
-    private void buildDocumentClose(StringBuffer buf)
+    private void buildDocumentClose(StringBuffer buf, boolean force)
     {
-        buf.append("</osisText>\n</osis>\n"); //$NON-NLS-1$
+        if (force)
+        {
+            buf.append("</osisText>\n</osis>\n"); //$NON-NLS-1$
+        }
     }
 
     private void buildBookOpen(StringBuffer buf, String bookName)
@@ -257,21 +271,46 @@ public class ModToOsis
 
     private void buildVerseOpen(StringBuffer buf, String osisID)
     {
-        MessageFormat msgFormat = new MessageFormat("<verse sID=\"{0}\" osisID=\"{0}\"/>"); //$NON-NLS-1$
+//        MessageFormat msgFormat = new MessageFormat("<verse sID=\"{0}\" osisID=\"{0}\"/>"); //$NON-NLS-1$
+        MessageFormat msgFormat = new MessageFormat("<verse osisID=\"{0}\">"); //$NON-NLS-1$
         msgFormat.format(new Object[] { osisID }, buf, pos);
     }
 
     private void buildVerseClose(StringBuffer buf, String osisID)
     {
-        MessageFormat msgFormat = new MessageFormat("<verse eID=\"{0}\"/>"); //$NON-NLS-1$
+//        MessageFormat msgFormat = new MessageFormat("<verse eID=\"{0}\"/>"); //$NON-NLS-1$
+        MessageFormat msgFormat = new MessageFormat("</verse>"); //$NON-NLS-1$
         msgFormat.format(new Object[] { osisID }, buf, pos);
     }
     
-    private void writeDocument(StringBuffer buf, String filename) throws IOException
+    private void openOutputFile(String newFilename, boolean open) throws IOException
     {
-        Writer writer = new OutputStreamWriter(new FileOutputStream(filename + ".xml"), "UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (open)
+        {
+            filename = newFilename;
+            writer = new OutputStreamWriter(new FileOutputStream(filename + ".xml"), "UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+    }
+
+    private void writeDocument(StringBuffer buf) throws IOException
+    {
         writer.write(buf.toString());
-        writer.close();
+    }
+
+    private void closeOutputFile(boolean close) throws IOException
+    {
+        if (close)
+        {
+            writer.close();
+            parse();
+        }
+    }
+
+    private void parse()
+    {
+        XMLProcess parser = new XMLProcess();
+        parser.getFeatures().setFeatureStates("-s", "-f", "-va", "-dv"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        parser.parse(filename + ".xml"); //$NON-NLS-1$
     }
 
     private String cleanup(String osisID, String input)
@@ -322,7 +361,8 @@ public class ModToOsis
         input = input.replaceAll("<resp\\s[^>]*/>", ""); //$NON-NLS-1$ //$NON-NLS-2$
         input = input.replaceAll("changeType=\"", "type=\""); //$NON-NLS-1$ //$NON-NLS-2$
         input = input.replaceAll("<p/>", "<lb/>"); //$NON-NLS-1$ //$NON-NLS-2$
-
+        input = input.replaceAll("x-StudyNote", "study"); //$NON-NLS-1$ //$NON-NLS-2$
+        input = input.replaceAll("\\s*</q>", "</q>"); //$NON-NLS-1$ //$NON-NLS-2$
         if (osisID.equals("Matt.24.38")) //$NON-NLS-1$
         {
             input = input.replace("<w src=\"18\" lemma=\"strong:G3739\" morph=\"robinson:R-GSF\"><w src=\"7\" lemma=\"strong:G3588\" morph=\"robinson:T-DPF\">that</w></w>", //$NON-NLS-1$
@@ -903,4 +943,7 @@ public class ModToOsis
 
     private static String wElement = "<w\\s[^>]*>"; //$NON-NLS-1$
     private static Pattern wPattern = Pattern.compile(wElement);
+    
+    private Writer writer;
+    private String filename;
 }
