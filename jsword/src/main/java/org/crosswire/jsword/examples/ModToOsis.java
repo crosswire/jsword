@@ -37,7 +37,7 @@ public class ModToOsis
      */
     private static final String BIBLE_NAME = "KJV"; //$NON-NLS-1$
     private static final String BIBLE_RANGE = "Gen-Rev"; //$NON-NLS-1$
-    private static final boolean BY_CHAPTER = true;
+    private static final boolean BY_CHAPTER = false;
 
     /**
      * @param args
@@ -1093,11 +1093,20 @@ public class ModToOsis
             }
         }
 
+        // For each G3588 <w> element that is empty
+        // Take its src attribute and grab its morph which should be
+        // of the form T-xxx.
+        // Find the <w> element with src+1, if it is N-xxx, then
+        // merge this to that element, removing the G3588 one.
         for (Map.Entry<Integer, String> entry: wMap.entrySet())
         {
             if (entry.getValue().contains("G3588")) //$NON-NLS-1$
             {
-                
+                String found = wMap.get(entry.getKey() + 1);
+                if (found != null)
+                {
+                    System.err.println("found following entry:\n\t" + entry.getValue() + "\n\t" + found);
+                }
             }
         }
 
