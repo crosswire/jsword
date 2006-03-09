@@ -316,7 +316,7 @@ public class ModToOsis
 
     private void buildBookOpen(StringBuffer buf, String bookName)
     {
-        MessageFormat msgFormat = new MessageFormat("<div type=\"book\" osisID=\"{0}\">\n"); //$NON-NLS-1$
+        MessageFormat msgFormat = new MessageFormat("<div type=\"book\" osisID=\"{0}\" canonical=\"true\">\n"); //$NON-NLS-1$
         msgFormat.format(new Object[] { bookName}, buf, pos);
     }
 
@@ -338,7 +338,7 @@ public class ModToOsis
 
     private void buildPreVerseOpen(StringBuffer buf, String preVerse)
     {
-        MessageFormat msgFormat = new MessageFormat("<div type=\"section\"><title>{0}</title>"); //$NON-NLS-1$
+        MessageFormat msgFormat = new MessageFormat("<div type=\"section\" canonical=\"true\"><title canonical=\"true\">{0}</title>"); //$NON-NLS-1$
         msgFormat.format(new Object[] { preVerse }, buf, pos);
     }
 
