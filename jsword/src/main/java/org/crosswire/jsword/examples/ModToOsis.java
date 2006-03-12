@@ -453,7 +453,6 @@ public class ModToOsis
             fixed = fixed.replaceAll("\\|", " "); //$NON-NLS-1$ //$NON-NLS-2$
             fixed = fixed.replaceAll("\\s+", " "); //$NON-NLS-1$ //$NON-NLS-2$
             fixed = fixed.replaceAll("x-Strongs", "strong"); //$NON-NLS-1$ //$NON-NLS-2$
-            fixed = fixed.replaceAll("x-StrongsMorph", "morph"); //$NON-NLS-1$ //$NON-NLS-2$
             fixed = fixed.replaceAll("x-Robinson", "robinson"); //$NON-NLS-1$ //$NON-NLS-2$
             fixed = fixed.replaceAll("split(ID|id)=\"", "type=\"x-split\" subType=\"x-"); //$NON-NLS-1$ //$NON-NLS-2$
             if ( !whole.equals(fixed))
@@ -488,7 +487,8 @@ public class ModToOsis
         input = input.replaceAll("\"transChange\"", "\"x-transChange\""); //$NON-NLS-1$ //$NON-NLS-2$
         input = input.replaceAll("\"type:", "\"x-"); //$NON-NLS-1$ //$NON-NLS-2$
         input = input.replaceAll("changeType=\"", "type=\""); //$NON-NLS-1$ //$NON-NLS-2$
-        input = input.replaceAll("<p/>", "<lb/><lb/><milestone type=\"x-p\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
+        input = input.replaceAll("<milestone type=\"x-p\"/>", "<milestone type=\"x-p\" marker=\"&#182;\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
+        input = input.replaceAll("<p/>", "<milestone type=\"x-p\" marker=\"&#182;\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
         input = input.replaceAll("x-StudyNote", "study"); //$NON-NLS-1$ //$NON-NLS-2$
         input = input.replaceAll("\\s*</q>", "</q>"); //$NON-NLS-1$ //$NON-NLS-2$
         if (osisID.equals("Matt.24.38")) //$NON-NLS-1$
@@ -1077,10 +1077,6 @@ public class ModToOsis
                     // then all those w elements must have a split id.
                     if (whole.contains("x-split")) //$NON-NLS-1$
                     {
-                        if (split.contains(src))
-                        {
-                            System.err.println(osisID + " split for src=" + src); //$NON-NLS-1$
-                        }
                         split.add(src);
                     }
 
@@ -1100,12 +1096,33 @@ public class ModToOsis
         // merge this to that element, removing the G3588 one.
         for (Map.Entry<Integer, String> entry: wMap.entrySet())
         {
-            if (entry.getValue().contains("G3588")) //$NON-NLS-1$
+            String definiteArticle = entry.getValue() + "</w>";
+            if (input.contains(definiteArticle) && definiteArticle.contains("G3588")) //$NON-NLS-1$
             {
-                String found = wMap.get(entry.getKey() + 1);
-                if (found != null)
+                Matcher morphTMatcher = morphTPattern.matcher(definiteArticle);
+                if (morphTMatcher.find())
                 {
-                    System.err.println("found following entry:\n\t" + entry.getValue() + "\n\t" + found);
+                    String tType = morphTMatcher.group(1);
+                    Integer here = entry.getKey();
+                    Integer next = here + 1;
+                    String found = wMap.get(next);
+                    if (found != null)
+                    {
+                        Matcher morphNMatcher = morphNPattern.matcher(found);
+                        if (morphNMatcher.find())
+                        {
+                            String nType = morphNMatcher.group(1);
+                            if (tType.equals(nType) && input.contains("src=\"" + next + "\""))
+                            {
+                                String changed = found;
+                                changed = changed.replace("src=\"", "src=\"" + here + " ");
+                                changed = changed.replace("lemma=\"", "lemma=\"strongs:3588 ");
+                                changed = changed.replace("morph=\"", "morph=\"robinson:T-" + tType + " ");
+                                input = input.replace(definiteArticle, "");
+                                input = input.replace(found, changed);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -1141,6 +1158,8 @@ public class ModToOsis
     private static String wElement = "<w\\s[^>]*>"; //$NON-NLS-1$
     private static Pattern wPattern = Pattern.compile(wElement);
     private static Pattern srcPattern = Pattern.compile("src=\"([^\"]*)\""); //$NON-NLS-1$
+    private static Pattern morphNPattern = Pattern.compile("morph=\"robinson:N-([^\"]*)\""); //$NON-NLS-1$
+    private static Pattern morphTPattern = Pattern.compile("morph=\"robinson:T-([^\"]*)\""); //$NON-NLS-1$
 
     private static String nameDate = "type=\"strongsMarkup\"[ ]+name=\"([^\"]*)\"[ ]+date=\"([^\"]*)\""; //$NON-NLS-1$
     private static Pattern nameDatePattern = Pattern.compile(nameDate);
