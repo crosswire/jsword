@@ -133,7 +133,7 @@ public class APIExamples
         // like it - in the real world you want to call hasNext() on an iterator
         // before next() but the point is the same:
         Key keys = dict.getGlobalKeyList();
-        Key first = (Key) keys.iterator().next();
+        Key first = keys.iterator().next();
 
         System.out.println("The first Key in the default dictionary is " + first); //$NON-NLS-1$
 

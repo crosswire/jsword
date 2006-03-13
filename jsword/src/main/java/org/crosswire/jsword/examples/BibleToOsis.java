@@ -30,7 +30,7 @@ import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
 
-public class ModToOsis
+public class BibleToOsis
 {
     /**
      * The name of a Bible to find
@@ -44,7 +44,7 @@ public class ModToOsis
      */
     public static void main(String[] args)
     {
-        new ModToOsis().dump(BIBLE_NAME, BIBLE_RANGE);
+        new BibleToOsis().dump(BIBLE_NAME, BIBLE_RANGE);
     }
 
     public void dump(String name, String range)
@@ -1096,7 +1096,7 @@ public class ModToOsis
         // merge this to that element, removing the G3588 one.
         for (Map.Entry<Integer, String> entry: wMap.entrySet())
         {
-            String definiteArticle = entry.getValue() + "</w>";
+            String definiteArticle = entry.getValue() + "</w>"; //$NON-NLS-1$
             if (input.contains(definiteArticle) && definiteArticle.contains("G3588")) //$NON-NLS-1$
             {
                 Matcher morphTMatcher = morphTPattern.matcher(definiteArticle);
@@ -1104,7 +1104,7 @@ public class ModToOsis
                 {
                     String tType = morphTMatcher.group(1);
                     Integer here = entry.getKey();
-                    Integer next = here + 1;
+                    Integer next = new Integer(here.intValue() + 1);
                     String found = wMap.get(next);
                     if (found != null)
                     {
@@ -1112,13 +1112,13 @@ public class ModToOsis
                         if (morphNMatcher.find())
                         {
                             String nType = morphNMatcher.group(1);
-                            if (tType.equals(nType) && input.contains("src=\"" + next + "\""))
+                            if (tType.equals(nType) && input.contains("src=\"" + next + "\"")) //$NON-NLS-1$ //$NON-NLS-2$
                             {
                                 String changed = found;
-                                changed = changed.replace("src=\"", "src=\"" + here + " ");
-                                changed = changed.replace("lemma=\"", "lemma=\"strongs:3588 ");
-                                changed = changed.replace("morph=\"", "morph=\"robinson:T-" + tType + " ");
-                                input = input.replace(definiteArticle, "");
+                                changed = changed.replace("src=\"", "src=\"" + here + " "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                changed = changed.replace("lemma=\"", "lemma=\"strongs:3588 "); //$NON-NLS-1$ //$NON-NLS-2$
+                                changed = changed.replace("morph=\"", "morph=\"robinson:T-" + tType + " "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                input = input.replace(definiteArticle, ""); //$NON-NLS-1$
                                 input = input.replace(found, changed);
                             }
                         }

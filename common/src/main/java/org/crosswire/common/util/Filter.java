@@ -29,12 +29,12 @@ package org.crosswire.common.util;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public interface Filter
+public interface Filter<T>
 {
     /**
      * Does this given object pass the test implemented by this filter
      * @param obj The object to test
      * @return boolean true if it passes, false otherwise
      */
-    boolean test(Object obj);
+    boolean test(T obj);
 }

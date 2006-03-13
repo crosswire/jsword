@@ -856,7 +856,7 @@ public final class Verse implements VerseBase
     /**
      * Iterator over 1 verse - For being a VerseBase.
      */
-    private class VerseIterator implements Iterator
+    private class VerseIterator implements Iterator<Key>
     {
         /* (non-Javadoc)
          * @see java.util.Iterator#hasNext()
@@ -869,7 +869,7 @@ public final class Verse implements VerseBase
         /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
-        public Object next()
+        public Key next()
         {
             if (done)
             {
@@ -926,9 +926,9 @@ public final class Verse implements VerseBase
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#iterator()
      */
-    public Iterator iterator()
+    public Iterator<Key> iterator()
     {
-        return new EmptyIterator();
+        return new EmptyIterator<Key>();
     }
 
     /* (non-Javadoc)

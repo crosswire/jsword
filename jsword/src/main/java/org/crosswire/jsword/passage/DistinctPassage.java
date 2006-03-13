@@ -70,7 +70,7 @@ public class DistinctPassage extends AbstractPassage
     {
         super(refs);
 
-        store = Collections.synchronizedSortedSet(new TreeSet<Verse>());
+        store = Collections.synchronizedSortedSet(new TreeSet<Key>());
         addVerses(refs);
     }
 
@@ -93,7 +93,7 @@ public class DistinctPassage extends AbstractPassage
         //   copy.store = (SortedSet) store.clone();
         // However SortedSet is not Clonable so I can't
         // Watch out for this, I'm not sure if it breaks anything.
-        copy.store = new TreeSet<Verse>();
+        copy.store = new TreeSet<Key>();
         copy.store.addAll(store);
 
         return copy;
@@ -102,7 +102,7 @@ public class DistinctPassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#verseIterator()
      */
-    public Iterator iterator()
+    public Iterator<Key> iterator()
     {
         return store.iterator();
     }
@@ -223,7 +223,7 @@ public class DistinctPassage extends AbstractPassage
     {
         optimizeWrites();
 
-        store = new TreeSet<Verse>();
+        store = new TreeSet<Key>();
         readObjectSupport(in);
     }
 
@@ -235,5 +235,5 @@ public class DistinctPassage extends AbstractPassage
     /**
      * The place the real data is stored
      */
-    private transient SortedSet<Verse> store = new TreeSet<Verse>();
+    private transient SortedSet<Key> store = new TreeSet<Key>();
 }

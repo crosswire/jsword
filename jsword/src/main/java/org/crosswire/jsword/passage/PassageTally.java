@@ -310,7 +310,7 @@ public class PassageTally extends AbstractPassage
      * Iterate through the verse elements in the current sort order
      * @return A verse Iterator
      */
-    public Iterator iterator()
+    public Iterator<Key> iterator()
     {
         if (order == ORDER_BIBLICAL)
         {
@@ -873,7 +873,7 @@ public class PassageTally extends AbstractPassage
      * Iterate over the Verses in normal verse order
      * @author Joe Walker
      */
-    private final class VerseIterator implements Iterator
+    private final class VerseIterator implements Iterator<Key>
     {
         /**
          * Find the first unused verse
@@ -894,7 +894,7 @@ public class PassageTally extends AbstractPassage
         /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
-        public Object next() throws NoSuchElementException
+        public Key next() throws NoSuchElementException
         {
             try
             {
@@ -903,7 +903,7 @@ public class PassageTally extends AbstractPassage
                     throw new NoSuchElementException();
                 }
 
-                Object retcode = new Verse(next);
+                Key retcode = new Verse(next);
                 calculateNext();
 
                 return retcode;
@@ -943,7 +943,7 @@ public class PassageTally extends AbstractPassage
      * Iterate over the Verses in order of their rank in the tally
      * @author Joe Walker
      */
-    private static final class OrderedVerseIterator implements Iterator
+    private static final class OrderedVerseIterator implements Iterator<Key>
     {
         /**
          * Find the first unused verse
@@ -975,7 +975,7 @@ public class PassageTally extends AbstractPassage
         /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
-        public Object next() throws NoSuchElementException
+        public Key next() throws NoSuchElementException
         {
             try
             {

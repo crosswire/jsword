@@ -34,7 +34,7 @@ import java.util.Iterator;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public interface Key extends Comparable<Key>, Cloneable
+public interface Key extends Comparable<Key>, Cloneable, Iterable<Key>
 {
     /**
      * A Human readable version of the Key.
@@ -101,7 +101,7 @@ public interface Key extends Comparable<Key>, Cloneable
     /**
      * @return an iterator over the elements in this set.
      */
-    Iterator iterator();
+    Iterator<Key> iterator();
 
     /**
      * Adds the specified element to this set if it is not already present.

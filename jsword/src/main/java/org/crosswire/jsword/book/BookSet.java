@@ -165,15 +165,15 @@ public class BookSet extends ArrayList<Book> implements List<Book>, Set<Book>
         return item;
     }
 
-    public BookSet filter(Filter filter)
+    public BookSet filter(Filter<Book> filter)
     {
         // create a copy of the list and
         // remove everything that fails the test.
         BookSet listSet = (BookSet) clone();
-        Iterator iter = listSet.iterator();
+        Iterator<Book> iter = listSet.iterator();
         while (iter.hasNext())
         {
-            Object obj = iter.next();
+            Book obj = iter.next();
             if (!filter.test(obj))
             {
                 iter.remove();
@@ -185,7 +185,7 @@ public class BookSet extends ArrayList<Book> implements List<Book>, Set<Book>
     /**
      * GroupFilter does the SQL traditional group by.
      */
-    private static final class GroupFilter implements Filter
+    private static final class GroupFilter implements Filter<Book>
     {
         public GroupFilter(String aKey, String aValue)
         {
@@ -193,9 +193,8 @@ public class BookSet extends ArrayList<Book> implements List<Book>, Set<Book>
             value = aValue;
         }
 
-        public boolean test(Object obj)
+        public boolean test(Book book)
         {
-            Book book = (Book) obj;
             return book.getProperties().get(key) == value;
         }
         private String key;

@@ -128,7 +128,7 @@ public class SetKeyList extends AbstractKeyList implements Key
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#iterator()
      */
-    public Iterator iterator()
+    public Iterator<Key> iterator()
     {
         return list.iterator();
     }

@@ -97,7 +97,7 @@ final class SynchronizedPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#iterator()
      */
-    public synchronized Iterator iterator()
+    public synchronized Iterator<Key> iterator()
     {
         return ref.iterator();
     }

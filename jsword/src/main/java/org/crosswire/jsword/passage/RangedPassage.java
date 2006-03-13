@@ -139,7 +139,7 @@ public class RangedPassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#verseIterator()
      */
-    public Iterator iterator()
+    public Iterator<Key> iterator()
     {
         return new VerseIterator(rangeIterator(RestrictionType.NONE));
     }
@@ -375,7 +375,7 @@ public class RangedPassage extends AbstractPassage
      * synchronization. Everything is final so to save the proxying performace
      * hit.
      */
-    private static final class VerseIterator implements Iterator
+    private static final class VerseIterator implements Iterator<Key>
     {
         /**
          * Create a basic iterator that is a proxy for the RangedPassage Passages
@@ -385,7 +385,7 @@ public class RangedPassage extends AbstractPassage
         {
             try
             {
-                SortedSet<Verse> temp = new TreeSet<Verse>();
+                SortedSet<Key> temp = new TreeSet<Key>();
 
                 while (it.hasNext())
                 {
@@ -416,7 +416,7 @@ public class RangedPassage extends AbstractPassage
         /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
-        public Object next() throws NoSuchElementException
+        public Key next() throws NoSuchElementException
         {
             return real.next();
         }
@@ -432,7 +432,7 @@ public class RangedPassage extends AbstractPassage
         /**
          * The Iterator that we are proxying to
          */
-        private Iterator real;
+        private Iterator<Key> real;
     }
 
     /**

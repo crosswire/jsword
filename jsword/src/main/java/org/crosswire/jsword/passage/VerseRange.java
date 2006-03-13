@@ -1078,9 +1078,9 @@ public final class VerseRange implements VerseBase
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#iterator()
      */
-    public Iterator iterator()
+    public Iterator<Key> iterator()
     {
-        return new EmptyIterator();
+        return new EmptyIterator<Key>();
     }
 
     /* (non-Javadoc)

@@ -138,7 +138,7 @@ public class RocketPassage extends BitwisePassage
      * @see org.crosswire.jsword.passage.Passage#verseIterator()
      */
     @Override
-    public Iterator iterator()
+    public Iterator<Key> iterator()
     {
         if (distinct != null)
         {

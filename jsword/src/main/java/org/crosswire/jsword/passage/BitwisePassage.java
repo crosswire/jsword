@@ -115,7 +115,7 @@ public class BitwisePassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#verseIterator()
      */
-    public Iterator iterator()
+    public Iterator<Key> iterator()
     {
         return new VerseIterator();
     }
@@ -344,7 +344,7 @@ public class BitwisePassage extends AbstractPassage
      * @author Joe Walker
      * @author DM Smith
      */
-    private final class VerseIterator implements Iterator
+    private final class VerseIterator implements Iterator<Key>
     {
         /**
          * Find the first unused verse
@@ -366,7 +366,7 @@ public class BitwisePassage extends AbstractPassage
         /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
-        public Object next() throws NoSuchElementException
+        public Key next() throws NoSuchElementException
         {
             try
             {
@@ -375,7 +375,7 @@ public class BitwisePassage extends AbstractPassage
                     throw new NoSuchElementException();
                 }
 
-                Object retcode = new Verse(next);
+                Key retcode = new Verse(next);
                 calculateNext();
 
                 return retcode;

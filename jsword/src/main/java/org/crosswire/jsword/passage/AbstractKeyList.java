@@ -156,8 +156,8 @@ public abstract class AbstractKeyList implements Key
     {
         Key that = obj;
 
-        Key thisfirst = (Key) this.iterator().next();
-        Key thatfirst = (Key) that.iterator().next();
+        Key thisfirst = this.iterator().next();
+        Key thatfirst = that.iterator().next();
 
         if (thisfirst == null)
         {

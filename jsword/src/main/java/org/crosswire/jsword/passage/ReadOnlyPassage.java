@@ -113,7 +113,7 @@ final class ReadOnlyPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#iterator()
      */
-    public Iterator iterator()
+    public Iterator<Key> iterator()
     {
         return ref.iterator();
     }

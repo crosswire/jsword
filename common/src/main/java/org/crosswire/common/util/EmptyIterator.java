@@ -24,6 +24,7 @@ package org.crosswire.common.util;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+
 /**
  * An <code>EmptyIterator</code> is an <code>Iterator</code> that iterates
  * over nothing.
@@ -32,7 +33,7 @@ import java.util.NoSuchElementException;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
-public class EmptyIterator implements Iterator
+public class EmptyIterator<T> implements Iterator<T>
 {
 
     /**
@@ -61,7 +62,7 @@ public class EmptyIterator implements Iterator
     /* (non-Javadoc)
      * @see java.util.Iterator#next()
      */
-    public Object next()
+    public T next()
     {
         throw new NoSuchElementException();
     }
