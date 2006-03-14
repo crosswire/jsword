@@ -324,7 +324,7 @@ public class PassageTally extends AbstractPassage
      * @return A range Iterator
      */
     @Override
-    public Iterator rangeIterator(RestrictionType restrict)
+    public Iterator<Key> rangeIterator(RestrictionType restrict)
     {
         if (order == ORDER_BIBLICAL)
         {
@@ -456,11 +456,9 @@ public class PassageTally extends AbstractPassage
         }
         else
         {
-            Iterator it = that.iterator();
-
-            while (it.hasNext())
+            for (Key key : that)
             {
-                Verse verse = (Verse) it.next();
+                Verse verse = (Verse) key;
                 increment(verse.getOrdinal(), 1);
             }
 
@@ -490,11 +488,9 @@ public class PassageTally extends AbstractPassage
         }
         else
         {
-            Iterator it = that.iterator();
-
-            while (it.hasNext())
+            for (Key key : that)
             {
-                Verse verse = (Verse) it.next();
+                Verse verse = (Verse) key;
                 increment(verse.getOrdinal(), -1);
             }
         }
@@ -532,11 +528,9 @@ public class PassageTally extends AbstractPassage
         }
         else
         {
-            Iterator it = that.iterator();
-
-            while (it.hasNext())
+            for (Key vkey : that)
             {
-                Verse verse = (Verse) it.next();
+                Verse verse = (Verse) vkey;
                 kill(verse.getOrdinal());
             }
         }
@@ -1069,12 +1063,12 @@ public class PassageTally extends AbstractPassage
      * Iterate over the Ranges in order of their rank in the tally
      * @author Joe Walker
      */
-    private static final class OrderedVerseRangeIterator implements Iterator
+    private static final class OrderedVerseRangeIterator implements Iterator<Key>
     {
         /**
          * Find the first unused verse
          */
-        public OrderedVerseRangeIterator(Iterator vit, int[] board)
+        public OrderedVerseRangeIterator(Iterator<Key> vit, int[] board)
         {
             TreeSet<TalliedVerseRange> output = new TreeSet<TalliedVerseRange>();
 
@@ -1113,7 +1107,7 @@ public class PassageTally extends AbstractPassage
         /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
-        public Object next() throws NoSuchElementException
+        public Key next() throws NoSuchElementException
         {
             last = (TalliedVerseRange) it.next();
             return last.range;

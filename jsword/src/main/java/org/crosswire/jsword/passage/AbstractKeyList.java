@@ -45,9 +45,8 @@ public abstract class AbstractKeyList implements Key
      */
     public boolean contains(Key key)
     {
-        for (Iterator it = iterator(); it.hasNext(); )
+        for (Key temp : key)
         {
-            Key temp = (Key) it.next();
             if (key.equals(temp))
             {
                 return true;

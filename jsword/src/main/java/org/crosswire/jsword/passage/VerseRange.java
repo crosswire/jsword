@@ -791,7 +791,7 @@ public final class VerseRange implements VerseBase
      * Enumerate over the verse in this range
      * @return A verse iterator
      */
-    public Iterator verseIterator()
+    public Iterator<Key> verseIterator()
     {
         return new VerseIterator(this);
     }
@@ -987,7 +987,7 @@ public final class VerseRange implements VerseBase
     /**
      * Iterate over the Verses in the VerseRange
      */
-    private static final class VerseIterator implements Iterator
+    private static final class VerseIterator implements Iterator<Key>
     {
         /**
          * Ctor
@@ -1009,7 +1009,7 @@ public final class VerseRange implements VerseBase
         /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
-        public Object next() throws NoSuchElementException
+        public Key next() throws NoSuchElementException
         {
             if (next > last)
             {

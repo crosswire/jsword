@@ -291,10 +291,8 @@ public abstract class AbstractPassage implements Passage
     {
         int count = 0;
 
-        Iterator it = iterator();
-        while (it.hasNext())
+        for (Iterator iter = iterator(); iter.hasNext(); iter.next())
         {
-            it.next();
             count++;
         }
 
@@ -326,10 +324,9 @@ public abstract class AbstractPassage implements Passage
         int current_book = 0;
         int book_count = 0;
 
-        Iterator it = iterator();
-        while (it.hasNext())
+        for (Key key : this)
         {
-            Verse verse = (Verse) it.next();
+            Verse verse = (Verse) key;
             if (current_book != verse.getBook())
             {
                 current_book = verse.getBook();
@@ -353,10 +350,9 @@ public abstract class AbstractPassage implements Passage
         int current_chapter = 0;
         int chapter_count = 0;
 
-        Iterator it = iterator();
-        while (it.hasNext())
+        for (Key key : this)
         {
-            Verse verse = (Verse) it.next();
+            Verse verse = (Verse) key;
 
             if ((book == 0 || verse.getBook() == book) && current_chapter != verse.getChapter())
             {
@@ -377,10 +373,9 @@ public abstract class AbstractPassage implements Passage
 
         int verse_count = 0;
 
-        Iterator it = iterator();
-        while (it.hasNext())
+        for (Key key : this)
         {
-            Verse verse = (Verse) it.next();
+            Verse verse = (Verse) key;
 
             if ((book == 0 || verse.getBook() == book) && (chapter == 0 || verse.getChapter() == chapter))
             {
@@ -438,7 +433,7 @@ public abstract class AbstractPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#rangeIterator()
      */
-    public Iterator rangeIterator(RestrictionType restrict)
+    public Iterator<Key> rangeIterator(RestrictionType restrict)
     {
         return new VerseRangeIterator(iterator(), restrict);
     }
@@ -806,10 +801,9 @@ public abstract class AbstractPassage implements Passage
     {
         int index = 0;
 
-        for (Iterator it = iterator(); it.hasNext(); )
+        for (Key key : this)
         {
-            Verse verse = (Verse) it.next();
-            if (verse.equals(that))
+            if (key.equals(that))
             {
                 return index;
             }
@@ -1128,12 +1122,12 @@ public abstract class AbstractPassage implements Passage
     /**
      * Skip over verses that are part of a range
      */
-    protected static final class VerseRangeIterator implements Iterator
+    protected static final class VerseRangeIterator implements Iterator<Key>
     {
         /**
          * iterate, amalgumating Verses into VerseRanges
          */
-        protected VerseRangeIterator(Iterator it, RestrictionType restrict)
+        protected VerseRangeIterator(Iterator<Key> it, RestrictionType restrict)
         {
             this.it = it;
             this.restrict = restrict;
@@ -1157,9 +1151,9 @@ public abstract class AbstractPassage implements Passage
         /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
-        public Object next() throws NoSuchElementException
+        public Key next() throws NoSuchElementException
         {
-            Object retcode = next_range;
+            Key retcode = next_range;
 
             if (retcode == null)
             {
@@ -1279,10 +1273,9 @@ public abstract class AbstractPassage implements Passage
             out.writeInt(BITWISE);
 
             BitSet store = new BitSet(BibleInfo.versesInBible());
-            Iterator it = iterator();
-            while (it.hasNext())
+            for (Key key : this)
             {
-                Verse verse = (Verse) it.next();
+                Verse verse = (Verse) key;
                 store.set(verse.getOrdinal() - 1);
             }
 
@@ -1296,10 +1289,9 @@ public abstract class AbstractPassage implements Passage
             out.writeInt(countVerses());
 
             // write the verse ordinals in a loop
-            Iterator it = iterator();
-            while (it.hasNext())
+            for (Key key : this)
             {
-                Verse verse = (Verse) it.next();
+                Verse verse = (Verse) key;
                 out.writeInt(verse.getOrdinal());
             }
         }

@@ -87,10 +87,8 @@ public class ReadEverything
         long start = System.currentTimeMillis();
         int entries = 0;
 
-        Iterator it = set.iterator();
-        while (it.hasNext())
+        for (Key subset : set)
         {
-            Key subset = (Key) it.next();
             if (subset.canHaveChildren())
             {
                 testReadSingle(bmd, book, subset);

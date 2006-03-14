@@ -124,7 +124,7 @@ public class BitwisePassage extends AbstractPassage
      * @see org.crosswire.jsword.passage.AbstractPassage#rangeIterator()
      */
     @Override
-    public Iterator rangeIterator(RestrictionType restrict)
+    public Iterator<Key> rangeIterator(RestrictionType restrict)
     {
         return new VerseRangeIterator(iterator(), restrict);
     }
@@ -267,10 +267,10 @@ public class BitwisePassage extends AbstractPassage
         {
             thatStore = new BitSet(BibleInfo.versesInBible() + 1);
 
-            Iterator it = that.iterator();
-            while (it.hasNext())
+            for (Key vkey : that)
             {
-                int ord = ((Verse) it.next()).getOrdinal();
+                Verse verse = (Verse) vkey;
+                int ord = verse.getOrdinal();
                 if (store.get(ord))
                 {
                     thatStore.set(ord);

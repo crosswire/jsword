@@ -26,7 +26,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -83,11 +82,9 @@ public final class CollectionUtil
     public static Map<String, String> properties2Map(Properties prop)
     {
         Map<String, String> propMap = new HashMap<String, String>();
-        Iterator it = prop.entrySet().iterator();
-        while (it.hasNext())
+        for (Map.Entry entry : prop.entrySet())
         {
-            Map.Entry entry = (Map.Entry) it.next();
-            propMap.put((String)entry.getKey(), (String)entry.getValue());
+            propMap.put((String) entry.getKey(), (String) entry.getValue());
         }
         return propMap;
     }

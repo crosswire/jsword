@@ -60,7 +60,7 @@ public class RangedPassage extends AbstractPassage
      */
     protected RangedPassage()
     {
-        store = new TreeSet<VerseRange>();
+        store = new TreeSet<Key>();
     }
 
     /**
@@ -80,7 +80,7 @@ public class RangedPassage extends AbstractPassage
     {
         super(refs);
 
-        store = new TreeSet<VerseRange>();
+        store = new TreeSet<Key>();
         addVerses(refs);
         normalize();
     }
@@ -98,7 +98,7 @@ public class RangedPassage extends AbstractPassage
         //   copy.store = (SortedSet) store.clone();
         // However SortedSet is not Clonable so I can't
         // Watch out for this, I'm not sure if it breaks anything.
-        copy.store = new TreeSet<VerseRange>();
+        copy.store = new TreeSet<Key>();
         copy.store.addAll(store);
 
         return copy;
@@ -148,7 +148,7 @@ public class RangedPassage extends AbstractPassage
      * @see org.crosswire.jsword.passage.Passage#rangeIterator(int)
      */
     @Override
-    public Iterator rangeIterator(RestrictionType restrict)
+    public Iterator<Key> rangeIterator(RestrictionType restrict)
     {
         if (restrict.equals(RestrictionType.NONE))
         {
@@ -236,7 +236,7 @@ public class RangedPassage extends AbstractPassage
         boolean removed = false;
 
         // This allows us to modify store which iterating through a copy
-        SortedSet<VerseRange> new_store = new TreeSet<VerseRange>();
+        SortedSet<Key> new_store = new TreeSet<Key>();
         new_store.addAll(store);
         Iterator it = new_store.iterator();
 
@@ -283,7 +283,7 @@ public class RangedPassage extends AbstractPassage
 
         optimizeWrites();
 
-        SortedSet<VerseRange> new_store = new TreeSet<VerseRange>();
+        SortedSet<Key> new_store = new TreeSet<Key>();
 
         Iterator that_it = null;
         if (that instanceof RangedPassage)
@@ -340,7 +340,7 @@ public class RangedPassage extends AbstractPassage
 
         VerseRange last = null;
         VerseRange next = null;
-        SortedSet<VerseRange> new_store = new TreeSet<VerseRange>();
+        SortedSet<Key> new_store = new TreeSet<Key>();
 
         Iterator it = rangeIterator(RestrictionType.NONE);
         while (it.hasNext())
@@ -438,7 +438,7 @@ public class RangedPassage extends AbstractPassage
     /**
      * Loop over the VerseRanges and check that they do not require digging into
      */
-    private static final class VerseRangeIterator implements Iterator
+    private static final class VerseRangeIterator implements Iterator<Key>
     {
         /**
          * Simple ctor
@@ -468,7 +468,7 @@ public class RangedPassage extends AbstractPassage
         /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
-        public Object next()
+        public Key next()
         {
             if (next == null)
             {
@@ -492,7 +492,7 @@ public class RangedPassage extends AbstractPassage
         /**
          * The next object is correct, use that one
          */
-        private Object replyNext()
+        private Key replyNext()
         {
             VerseRange reply = next;
             next = null;
@@ -502,7 +502,7 @@ public class RangedPassage extends AbstractPassage
         /**
          * The next object is too big, so cut it up
          */
-        private Object splitNext()
+        private Key splitNext()
         {
             Iterator chop = next.rangeIterator(restrict);
             VerseRange first = (VerseRange) chop.next();
@@ -554,7 +554,7 @@ public class RangedPassage extends AbstractPassage
     {
         optimizeWrites();
 
-        store = new TreeSet<VerseRange>();
+        store = new TreeSet<Key>();
         readObjectSupport(in);
     }
 
@@ -566,5 +566,5 @@ public class RangedPassage extends AbstractPassage
     /**
      * The place the real data is stored
      */
-    private transient SortedSet<VerseRange> store;
+    private transient SortedSet<Key> store;
 }

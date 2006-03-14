@@ -33,11 +33,6 @@ import java.util.Iterator;
  */
 public interface VerseBase extends Cloneable, Serializable, Key
 {
-    /**
-     * Translate the Passage into a human readable string
-     * @return The string representation
-     */
-    String getName();
 
     /**
      * Translate the Passage into a human readable string, with the
@@ -48,13 +43,6 @@ public interface VerseBase extends Cloneable, Serializable, Key
      * @return The string representation
      */
     String getName(Verse base);
-
-    /**
-     * The OSIS defined specification for this Verse/VerseRange.
-     * Uses short books names, with "." as a verse part separator.
-     * @return a String containing the OSIS description of the verses
-     */
-    String getOsisRef();
 
     /**
      * Create an array of Verses.

@@ -55,6 +55,6 @@ public enum BlockType
     {
         return indicator;
     }
-    
+
     private char indicator;
 }

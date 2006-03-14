@@ -166,7 +166,7 @@ public class Config
     {
         List<String> paths = new ArrayList<String>();
 
-        for (Choice choice: models)
+        for (Choice choice : models)
         {
             String path = getPath(choice.getFullPath());
 

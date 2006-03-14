@@ -319,12 +319,10 @@ public class LuceneIndex extends AbstractIndex implements Activatable
         String name = ""; //$NON-NLS-1$
         String text = ""; //$NON-NLS-1$
         BookData data = null;
-        Key subkey = null;
         Verse verse = null;
         Document doc = null;
-        for (Iterator it = key.iterator(); it.hasNext(); )
+        for (Key subkey : key)
         {
-            subkey = (Key) it.next();
             if (subkey.canHaveChildren())
             {
                 generateSearchIndexImpl(job, errors, writer, subkey);

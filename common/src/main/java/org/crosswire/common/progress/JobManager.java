@@ -174,7 +174,7 @@ public final class JobManager
         // list of jobs so we need to fire before delete.
         if (listeners != null)
         {
-            for (WorkListener worker: temp)
+            for (WorkListener worker : temp)
             {
                 worker.workProgressed(ev);
             }

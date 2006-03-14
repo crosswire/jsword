@@ -1,3 +1,24 @@
+/**
+ * Distribution License:
+ * JSword is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License, version 2.1 as published by
+ * the Free Software Foundation. This program is distributed in the hope
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * The License is available on the internet at:
+ *       http://www.gnu.org/copyleft/lgpl.html
+ * or by writing to:
+ *      Free Software Foundation, Inc.
+ *      59 Temple Place - Suite 330
+ *      Boston, MA 02111-1307, USA
+ *
+ * Copyright: 2005
+ *     The copyright to this program is held by it's authors.
+ *
+ * ID: $Id: APIExamples.java 1046 2006-03-12 21:31:48 -0500 (Sun, 12 Mar 2006) dmsmith $
+ */
 package org.crosswire.jsword.examples;
 
 import java.io.FileNotFoundException;
@@ -10,7 +31,6 @@ import java.text.FieldPosition;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -30,6 +50,13 @@ import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
 
+/**
+ * Start of a mechanism to extract a Bible module to OSIS.
+ * 
+ * @see gnu.lgpl.License for license details.
+ *      The copyright to this program is held by it's authors.
+ * @author DM Smith [dmsmith555 at yahoo dot com]
+ */
 public class BibleToOsis
 {
     /**
@@ -56,11 +83,10 @@ public class BibleToOsis
         int lastChapter = -1;
         StringBuffer buf = new StringBuffer();
         boolean inPreVerse = false;
-        
 
         try
         {
-            Key key = bible.getKey(range);
+            Key keys = bible.getKey(range);
 
             openOutputFile(bmd.getInitials(), !BY_CHAPTER);
             buildDocumentOpen(buf, bmd, range, !BY_CHAPTER);
@@ -70,10 +96,9 @@ public class BibleToOsis
             }
 
             // Get a verse iterator
-            Iterator iter = key.iterator();
-            while (iter.hasNext())
+            for (Key key : keys)
             {
-                Verse verse = (Verse) iter.next();
+                Verse verse = (Verse) key;
                 String raw = bible.getRawData(verse);
                 String osisID = verse.getOsisID();
 
@@ -122,7 +147,7 @@ public class BibleToOsis
                 }
 
                 /* Output the verse */
-                
+
                 /*
                  * If the "raw" verse contains a "preverse" pull it out.
                  * If there were a former preverse then close the "section" div
@@ -143,7 +168,7 @@ public class BibleToOsis
                             foundPreVerse = true;
                             preVerseText = raw.substring(start, end);
                             raw = raw.replace(preVerseText, ""); //$NON-NLS-1$
-                            preVerseText = preVerseText.substring(preVerseStart.length(), preVerseText.length()-preVerseEnd.length());
+                            preVerseText = preVerseText.substring(preVerseStart.length(), preVerseText.length() - preVerseEnd.length());
                         }
                     }
                 }
@@ -215,16 +240,20 @@ public class BibleToOsis
         StringBuffer sbuf = new StringBuffer();
         int l = s.length();
         int ch = -1;
-        int b, sumb = 0;
-        for (int i = 0, more = -1; i < l; i++ )
+        int b = 0;
+        int sumb = 0;
+        int i = 0;
+        int more = -1;
+        for (i = 0; i < l; i++)
         {
             /* Get next byte b from URL segment s */
-            switch (ch = s.charAt(i))
+            ch = s.charAt(i);
+            switch (ch)
             {
               case '%':
-                ch = s.charAt( ++i);
+                ch = s.charAt(++i);
                 int hb = (Character.isDigit((char) ch) ? ch - '0' : 10 + Character.toLowerCase((char) ch) - 'a') & 0xF;
-                ch = s.charAt( ++i);
+                ch = s.charAt(++i);
                 int lb = (Character.isDigit((char) ch) ? ch - '0' : 10 + Character.toLowerCase((char) ch) - 'a') & 0xF;
                 b = (hb << 4) | lb;
                 break;
@@ -238,7 +267,7 @@ public class BibleToOsis
             if ((b & 0xc0) == 0x80)
             { // 10xxxxxx (continuation byte)
                 sumb = (sumb << 6) | (b & 0x3f); // Add 6 bits to sumb
-                if ( --more == 0)
+                if (--more == 0)
                 {
                     sbuf.append((char) sumb); // Add char to sbuf
                 }
@@ -248,27 +277,32 @@ public class BibleToOsis
                 sbuf.append((char) b); // Store in sbuf
             }
             else if ((b & 0xe0) == 0xc0)
-            { // 110xxxxx (yields 5 bits)
+            {
+                // 110xxxxx (yields 5 bits)
                 sumb = b & 0x1f;
                 more = 1; // Expect 1 more byte
             }
             else if ((b & 0xf0) == 0xe0)
-            { // 1110xxxx (yields 4 bits)
+            {
+                // 1110xxxx (yields 4 bits)
                 sumb = b & 0x0f;
                 more = 2; // Expect 2 more bytes
             }
             else if ((b & 0xf8) == 0xf0)
-            { // 11110xxx (yields 3 bits)
+            {
+                // 11110xxx (yields 3 bits)
                 sumb = b & 0x07;
                 more = 3; // Expect 3 more bytes
             }
             else if ((b & 0xfc) == 0xf8)
-            { // 111110xx (yields 2 bits)
+            {
+                // 111110xx (yields 2 bits)
                 sumb = b & 0x03;
                 more = 4; // Expect 4 more bytes
             }
-            else
-            /* if ((b & 0xfe) == 0xfc) */{ // 1111110x (yields 1 bit)
+            else /* if ((b & 0xfe) == 0xfc) */
+            {
+                // 1111110x (yields 1 bit)
                 sumb = b & 0x01;
                 more = 5; // Expect 5 more bytes
             }
@@ -360,7 +394,7 @@ public class BibleToOsis
         MessageFormat msgFormat = new MessageFormat("</verse>"); //$NON-NLS-1$
         msgFormat.format(new Object[] { osisID }, buf, pos);
     }
-    
+
     private void openOutputFile(String newFilename, boolean open) throws IOException
     {
         if (open)
@@ -455,7 +489,7 @@ public class BibleToOsis
             fixed = fixed.replaceAll("x-Strongs", "strong"); //$NON-NLS-1$ //$NON-NLS-2$
             fixed = fixed.replaceAll("x-Robinson", "robinson"); //$NON-NLS-1$ //$NON-NLS-2$
             fixed = fixed.replaceAll("split(ID|id)=\"", "type=\"x-split\" subType=\"x-"); //$NON-NLS-1$ //$NON-NLS-2$
-            if ( !whole.equals(fixed))
+            if (!whole.equals(fixed))
             {
                 input = input.replace(whole, fixed); //$NON-NLS-1$
             }
@@ -476,7 +510,7 @@ public class BibleToOsis
             int j = number.intValue();
             if (i != j)
             {
-                for (; i < j; i++)
+                for ( ; i < j; i++)
                 {
                     System.out.println(osisID + " missing src=" + i); //$NON-NLS-1$
                 }
@@ -1094,36 +1128,44 @@ public class BibleToOsis
         // of the form T-xxx.
         // Find the <w> element with src+1, if it is N-xxx, then
         // merge this to that element, removing the G3588 one.
-        for (Map.Entry<Integer, String> entry: wMap.entrySet())
+        for (Map.Entry<Integer, String> entry : wMap.entrySet())
         {
             String definiteArticle = entry.getValue() + "</w>"; //$NON-NLS-1$
-            if (input.contains(definiteArticle) && definiteArticle.contains("G3588")) //$NON-NLS-1$
+            if (!(input.contains(definiteArticle) && definiteArticle.contains("G3588"))) //$NON-NLS-1$
             {
-                Matcher morphTMatcher = morphTPattern.matcher(definiteArticle);
-                if (morphTMatcher.find())
-                {
-                    String tType = morphTMatcher.group(1);
-                    Integer here = entry.getKey();
-                    Integer next = new Integer(here.intValue() + 1);
-                    String found = wMap.get(next);
-                    if (found != null)
-                    {
-                        Matcher morphNMatcher = morphNPattern.matcher(found);
-                        if (morphNMatcher.find())
-                        {
-                            String nType = morphNMatcher.group(1);
-                            if (tType.equals(nType) && input.contains("src=\"" + next + "\"")) //$NON-NLS-1$ //$NON-NLS-2$
-                            {
-                                String changed = found;
-                                changed = changed.replace("src=\"", "src=\"" + here + " "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                changed = changed.replace("lemma=\"", "lemma=\"strongs:3588 "); //$NON-NLS-1$ //$NON-NLS-2$
-                                changed = changed.replace("morph=\"", "morph=\"robinson:T-" + tType + " "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                input = input.replace(definiteArticle, ""); //$NON-NLS-1$
-                                input = input.replace(found, changed);
-                            }
-                        }
-                    }
-                }
+                continue;
+            }
+
+            Matcher morphTMatcher = morphTPattern.matcher(definiteArticle);
+            if (!morphTMatcher.find())
+            {
+                continue;
+            }
+
+            String tType = morphTMatcher.group(1);
+            Integer here = entry.getKey();
+            Integer next = new Integer(here.intValue() + 1);
+            String found = wMap.get(next);
+            if (found == null)
+            {
+                continue;
+            }
+
+            Matcher morphNMatcher = morphNPattern.matcher(found);
+            if (!morphNMatcher.find())
+            {
+                continue;
+            }
+
+            String nType = morphNMatcher.group(1);
+            if (tType.equals(nType) && input.contains("src=\"" + next + "\"")) //$NON-NLS-1$ //$NON-NLS-2$
+            {
+                String changed = found;
+                changed = changed.replace("src=\"", "src=\"" + here + " "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                changed = changed.replace("lemma=\"", "lemma=\"strongs:3588 "); //$NON-NLS-1$ //$NON-NLS-2$
+                changed = changed.replace("morph=\"", "morph=\"robinson:T-" + tType + " "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                input = input.replace(definiteArticle, ""); //$NON-NLS-1$
+                input = input.replace(found, changed);
             }
         }
 
@@ -1163,7 +1205,7 @@ public class BibleToOsis
 
     private static String nameDate = "type=\"strongsMarkup\"[ ]+name=\"([^\"]*)\"[ ]+date=\"([^\"]*)\""; //$NON-NLS-1$
     private static Pattern nameDatePattern = Pattern.compile(nameDate);
-    
+
     private Writer writer;
     private String filename;
 }

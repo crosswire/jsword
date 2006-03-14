@@ -21,8 +21,6 @@
  */
 package org.crosswire.jsword.passage;
 
-import java.util.Iterator;
-
 import org.crosswire.common.util.Logger;
 
 /**
@@ -48,9 +46,8 @@ public final class KeyUtil
      */
     public static void visit(Key key, KeyVisitor visitor)
     {
-        for (Iterator it = key.iterator(); it.hasNext(); )
+        for (Key subkey : key)
         {
-            Key subkey = (Key) it.next();
             if (subkey.canHaveChildren())
             {
                 visitor.visitBranch(subkey);

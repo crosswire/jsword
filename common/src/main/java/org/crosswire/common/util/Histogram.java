@@ -72,7 +72,7 @@ public class Histogram
     public String toString()
     {
         StringBuffer buf = new StringBuffer();
-        for (Map.Entry<String, Counter> entry: hist.entrySet())
+        for (Map.Entry<String, Counter> entry : hist.entrySet())
         {
             buf.append(entry.getKey());
             buf.append('\t');

@@ -240,12 +240,11 @@ public class APIExamples
     public void export() throws NoSuchKeyException, BookException
     {
         Book bible = Books.installed().getBook(BIBLE_NAME);
-        Key key = bible.getKey("Gen"); //$NON-NLS-1$
+        Key keys = bible.getKey("Gen"); //$NON-NLS-1$
         // Get a verse iterator
-        Iterator iter = key.iterator();
-        while (iter.hasNext())
+        for (Key key : keys)
         {
-            Verse verse = (Verse) iter.next();
+            Verse verse = (Verse) key;
             BookData data = bible.getData(verse);
             System.out.println('|' + BibleInfo.getBookName(verse.getBook()) + '|' + verse.getChapter() + '|' + verse.getVerse() + '|' + data.getVerseText());
         }

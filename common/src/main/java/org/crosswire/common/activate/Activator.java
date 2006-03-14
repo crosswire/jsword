@@ -66,7 +66,12 @@ public final class Activator
         amount.reduceMemoryUsage();
     }
 
-    public enum Kill {
+    /**
+     * Enumeration of how memory is returned.
+     *
+     */
+    public enum Kill
+    {
         /** Try as hard as possible to conserve memory */
         EVERYTHING
         {

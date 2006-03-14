@@ -83,7 +83,7 @@ public final class XMLFeatureSet
     {
        features.get(states.get(feature)).setState(state);
     }
-    
+
     public void setFeatureStates(String... argv)
     {
         // process arguments
@@ -151,6 +151,9 @@ public final class XMLFeatureSet
         }
     }
 
+    /**
+     * A holder of the boolean state for a feature.
+     */
     private class XMLFeatureState
     {
         public XMLFeatureState(XMLFeature feature, boolean state)
@@ -163,7 +166,7 @@ public final class XMLFeatureSet
         {
             this(feature, false);
         }
-       
+
         /**
          * @return Returns the feature.
          */

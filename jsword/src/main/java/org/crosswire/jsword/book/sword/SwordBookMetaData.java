@@ -305,8 +305,8 @@ public class SwordBookMetaData extends AbstractBookMetaData
      * Sword only recognizes two encodings for its modules: UTF-8 and LATIN1
      * Sword uses MS Windows cp1252 for Latin 1 not the standard. Arrgh!
      */
-    private static String ENCODING_UTF8 = "UTF-8"; //$NON-NLS-1$
-    private static String ENCODING_LATIN1 = "WINDOWS-1252"; //$NON-NLS-1$
+    private static final String ENCODING_UTF8 = "UTF-8"; //$NON-NLS-1$
+    private static final String ENCODING_LATIN1 = "WINDOWS-1252"; //$NON-NLS-1$
 
     /**
      * The language strings need to be converted to Java charsets

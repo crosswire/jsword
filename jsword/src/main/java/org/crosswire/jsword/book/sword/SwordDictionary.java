@@ -73,9 +73,8 @@ public class SwordDictionary extends AbstractBook
         set = backend.readIndex();
 
         map = new HashMap<String, Key>();
-        for (Iterator it = set.iterator(); it.hasNext(); )
+        for (Key key : set)
         {
-            Key key = (Key) it.next();
             map.put(key.getName(), key);
         }
 

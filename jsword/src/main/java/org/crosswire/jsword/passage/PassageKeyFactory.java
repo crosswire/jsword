@@ -294,10 +294,9 @@ public final class PassageKeyFactory implements KeyFactory
 
             index += toBinary(buffer, index, AbstractPassage.BITWISE, AbstractPassage.METHOD_COUNT);
 
-            Iterator it = ref.iterator();
-            while (it.hasNext())
+            for (Key key : ref)
             {
-                Verse verse = (Verse) it.next();
+                Verse verse = (Verse) key;
                 int ord = verse.getOrdinal();
 
                 // Which byte should we be altering

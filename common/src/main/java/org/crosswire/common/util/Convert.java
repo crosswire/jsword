@@ -210,7 +210,7 @@ public final class Convert
     {
         StringBuffer retcode = new StringBuffer();
 
-        for (Map.Entry<String, String> entry: commands.entrySet())
+        for (Map.Entry<String, String> entry : commands.entrySet())
         {
             retcode.append(entry.getKey());
             retcode.append('=');

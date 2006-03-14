@@ -87,7 +87,7 @@ public interface Book extends Activatable, KeyFactory, Comparable<Book>
      * @throws BookException If anything goes wrong with this method
      */
     Key find(String request) throws BookException;
-    
+
     /**
      * The name of the book, for example "King James Version" or
      * "Bible in Basic English" or "Greek".
