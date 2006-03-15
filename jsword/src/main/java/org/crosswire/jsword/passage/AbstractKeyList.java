@@ -45,7 +45,7 @@ public abstract class AbstractKeyList implements Key
      */
     public boolean contains(Key key)
     {
-        for (Key temp : key)
+        for (Key temp : this)
         {
             if (key.equals(temp))
             {
@@ -126,6 +126,14 @@ public abstract class AbstractKeyList implements Key
         DefaultKeyVisitor visitor = new NameVisitor();
         KeyUtil.visit(this, visitor);
         return visitor.toString();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage.Key)
+     */
+    public String getName(Key base)
+    {
+        return getName();
     }
 
     /* (non-Javadoc)

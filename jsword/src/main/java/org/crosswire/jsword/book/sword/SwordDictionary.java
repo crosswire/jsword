@@ -23,7 +23,6 @@ package org.crosswire.jsword.book.sword;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -206,9 +205,8 @@ public class SwordDictionary extends AbstractBook
         }
 
         // First check for keys that match ignoring case
-        for (Iterator it = map.keySet().iterator(); it.hasNext(); )
+        for (String keyName : map.keySet())
         {
-            String keyName = (String) it.next();
             if (keyName.equalsIgnoreCase(text))
             {
                 return map.get(keyName);
@@ -216,9 +214,8 @@ public class SwordDictionary extends AbstractBook
         }
 
         // Next keys that start with the given text
-        for (Iterator it = map.keySet().iterator(); it.hasNext(); )
+        for (String keyName : map.keySet())
         {
-            String keyName = (String) it.next();
             if (keyName.startsWith(text))
             {
                 return map.get(keyName);
@@ -226,9 +223,8 @@ public class SwordDictionary extends AbstractBook
         }
 
         // Next try keys that contain the given text
-        for (Iterator it = map.keySet().iterator(); it.hasNext(); )
+        for (String keyName : map.keySet())
         {
-            String keyName = (String) it.next();
             if (keyName.indexOf(text) != -1)
             {
                 return map.get(keyName);

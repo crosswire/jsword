@@ -69,6 +69,14 @@ public class DefaultLeafKeyList implements Key
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage.Key)
+     */
+    public String getName(Key base)
+    {
+        return getName();
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getOSISRef()
      */
     public String getOsisRef()

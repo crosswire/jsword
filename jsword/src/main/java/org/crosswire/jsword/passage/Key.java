@@ -21,7 +21,6 @@
  */
 package org.crosswire.jsword.passage;
 
-import java.util.Iterator;
 
 /**
  * A Key is a Key that can contain other Keys.
@@ -43,6 +42,16 @@ public interface Key extends Comparable<Key>, Cloneable, Iterable<Key>
      * @return a String containing a description of the Key
      */
     String getName();
+
+    /**
+     * Translate the Key into a human readable string, with the
+     * assumption that the specified Key has just been output, so if we
+     * are in the same region, we do not need to display the region name, and
+     * so on.
+     * @param base The key to use to cut down unnecessary output.
+     * @return The string representation
+     */
+    String getName(Key base);
 
     /**
      * The OSIS defined reference specification for this Key.
@@ -97,11 +106,6 @@ public interface Key extends Comparable<Key>, Cloneable, Iterable<Key>
      * @return <tt>true</tt> if this set contains the specified element.
      */
     boolean contains(Key key);
-
-    /**
-     * @return an iterator over the elements in this set.
-     */
-    Iterator<Key> iterator();
 
     /**
      * Adds the specified element to this set if it is not already present.

@@ -21,7 +21,6 @@
  */
 package org.crosswire.jsword.book.sword;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.crosswire.common.activate.Activator;
@@ -32,6 +31,7 @@ import org.crosswire.jsword.book.basic.AbstractPassageBook;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.Verse;
+import org.jdom.Content;
 import org.jdom.Element;
 
 /**
@@ -98,17 +98,15 @@ public class SwordBook extends AbstractPassageBook
      * @see org.crosswire.jsword.book.basic.AbstractPassageBook#addOSIS(org.crosswire.jsword.passage.Key, org.jdom.Element, java.util.List)
      */
     @Override
-    public void addOSIS(Key key, Element div, List osisContent)
+    public void addOSIS(Key key, Element div, List<Content> osisContent)
     {
         // See if the text is marked up with verses
         // If it is then just add it.
-        Iterator iter = osisContent.iterator();
-        while (iter.hasNext())
+        for (Content content : osisContent)
         {
-            Object obj = iter.next();
-            if (obj instanceof Element)
+            if (content instanceof Element)
             {
-                Element ele = (Element) obj;
+                Element ele = (Element) content;
                 if (ele.getName().equals(OSISUtil.OSIS_ELEMENT_VERSE))
                 {
                     super.addOSIS(key, div, osisContent);

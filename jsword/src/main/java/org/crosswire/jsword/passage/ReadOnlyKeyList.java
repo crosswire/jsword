@@ -142,6 +142,14 @@ public class ReadOnlyKeyList implements Key
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage.Key)
+     */
+    public String getName(Key base)
+    {
+        return keys.getName(base);
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getOSISRef()
      */
     public String getOsisRef()

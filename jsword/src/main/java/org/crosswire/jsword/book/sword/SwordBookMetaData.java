@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -259,9 +258,8 @@ public class SwordBookMetaData extends AbstractBookMetaData
     private void buildProperties()
     {
         // merge entries into properties file
-        for (Iterator kit = cet.getKeys(); kit.hasNext(); )
+        for (ConfigEntryType key : cet.getKeys())
         {
-            ConfigEntryType key = (ConfigEntryType) kit.next();
 
             Object value = cet.getValue(key);
             // value is null if the config entry was rejected.
@@ -274,9 +272,9 @@ public class SwordBookMetaData extends AbstractBookMetaData
                 List list = (List) value;
                 StringBuffer combined = new StringBuffer();
                 boolean appendSeparator = false;
-                for (Iterator vit = list.iterator(); vit.hasNext(); )
+                for (Object obj : list)
                 {
-                    String element = (String) vit.next();
+                    String element = (String) obj;
                     if (appendSeparator)
                     {
                         combined.append('\n');

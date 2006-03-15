@@ -326,10 +326,9 @@ public final class PassageKeyFactory implements KeyFactory
             index += toBinary(buffer, index, verses, BibleInfo.versesInBible());
 
             // write the verse ordinals in a loop
-            Iterator it = ref.iterator();
-            while (it.hasNext())
+            for (Key key : ref)
             {
-                Verse verse = (Verse) it.next();
+                Verse verse = (Verse) key;
                 int ord = verse.getOrdinal();
                 index += toBinary(buffer, index, ord, BibleInfo.versesInBible());
             }

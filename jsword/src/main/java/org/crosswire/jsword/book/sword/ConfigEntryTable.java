@@ -26,9 +26,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookCategory;
@@ -101,9 +101,9 @@ public class ConfigEntryTable
     /**
      * Returns an Enumeration of all the keys found in the config file.
      */
-    public Iterator getKeys()
+    public Set<ConfigEntryType> getKeys()
     {
-        return table.keySet().iterator();
+        return table.keySet();
     }
 
     /**

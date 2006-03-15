@@ -40,7 +40,7 @@ public class BookFilterIterator implements Iterable<Book>, Iterator<Book>
      */
     public BookFilterIterator(Iterable<Book> books, BookFilter filter)
     {
-        this.it    = books.iterator();
+        this.it = books.iterator();
         this.filter = filter;
     }
 

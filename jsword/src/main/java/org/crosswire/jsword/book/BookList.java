@@ -37,12 +37,12 @@ import java.util.List;
 public interface BookList
 {
     /**
-     * Get an iterator over all the Books of all types.
+     * Get a list of all the Books of all types.
      */
     List<Book> getBooks();
 
     /**
-     * Get a filtered iterator over all the Books.
+     * Get a filtered list of all the Books.
      * @see BookFilters
      */
     List<Book> getBooks(BookFilter filter);

@@ -27,7 +27,6 @@ import java.io.ObjectOutputStream;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.crosswire.common.util.EmptyIterator;
 import org.crosswire.common.util.Logger;
 
 /**
@@ -58,7 +57,7 @@ import org.crosswire.common.util.Logger;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public final class Verse implements VerseBase
+public final class Verse implements Key
 {
     /**
      * The default Verse is Genesis 1:1. I didn't want to provide this
@@ -191,7 +190,7 @@ public final class Verse implements VerseBase
      * @param base The verse to use to cut down unnecessary output.
      * @return The string representation
      */
-    public String getName(Verse base)
+    public String getName(Key base)
     {
         if (base == null)
         {
@@ -205,10 +204,11 @@ public final class Verse implements VerseBase
                 return originalName;
             }
 
+            Verse verseBase = (Verse) base;
             // To cope with thing like Jude 2...
             if (BibleInfo.chaptersInBook(book) == 1)
             {
-                if (base.book != book)
+                if (verseBase.book != book)
                 {
                     return BibleInfo.getBookName(book)
                         + Verse.VERSE_PREF_DELIM1
@@ -218,7 +218,7 @@ public final class Verse implements VerseBase
                 return String.valueOf(verse);
             }
 
-            if (base.book != book)
+            if (verseBase.book != book)
             {
                 return BibleInfo.getBookName(book)
                     + Verse.VERSE_PREF_DELIM1
@@ -227,7 +227,7 @@ public final class Verse implements VerseBase
                     + verse;
             }
 
-            if (base.chapter != chapter)
+            if (verseBase.chapter != chapter)
             {
                 return chapter
                     + Verse.VERSE_PREF_DELIM2
@@ -625,18 +625,6 @@ public final class Verse implements VerseBase
     }
 
     /**
-     * Enumerate over the verse in this verse!.
-     * This may seem silly, however is is very useful to be able to treat
-     * Verses and Ranges the same (VerseBase) and this is a common accessor.
-     * @return A verse iterator
-     * @see org.crosswire.jsword.passage.VerseBase#verseIterator()
-     */
-    public Iterator verseIterator()
-    {
-        return new VerseIterator();
-    }
-
-    /**
      * Create a new Verse being the last verse in the current book
      * @return The last verse in this book
      */
@@ -928,7 +916,7 @@ public final class Verse implements VerseBase
      */
     public Iterator<Key> iterator()
     {
-        return new EmptyIterator<Key>();
+        return new VerseIterator();
     }
 
     /* (non-Javadoc)

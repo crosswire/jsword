@@ -135,7 +135,7 @@ public class RocketPassage extends BitwisePassage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#verseIterator()
+     * @see java.lang.Iterable#iterator()
      */
     @Override
     public Iterator<Key> iterator()

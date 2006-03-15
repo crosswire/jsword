@@ -151,6 +151,14 @@ final class ReadOnlyPassage implements Passage
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage.Key)
+     */
+    public String getName(Key base)
+    {
+        return ref.getName(base);
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#getOSISName()
      */
     public String getOsisRef()
@@ -257,23 +265,15 @@ final class ReadOnlyPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#rangeIterator(int)
      */
-    public Iterator rangeIterator(RestrictionType restrict)
+    public Iterator<Key> rangeIterator(RestrictionType restrict)
     {
         return ref.rangeIterator(restrict);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#contains(org.crosswire.jsword.passage.VerseBase)
-     */
-    public boolean contains(VerseBase that)
-    {
-        return ref.contains(that);
-    }
-
-    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#add(org.crosswire.jsword.passage.VerseBase)
      */
-    public void add(VerseBase that)
+    public void add(Key that)
     {
         if (ignore)
         {
@@ -286,7 +286,7 @@ final class ReadOnlyPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#remove(org.crosswire.jsword.passage.VerseBase)
      */
-    public void remove(VerseBase that)
+    public void remove(Key that)
     {
         if (ignore)
         {

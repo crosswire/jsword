@@ -607,7 +607,7 @@ public class VerseRangeTest extends TestCase
 
     public void testVerseElements() throws Exception
     {
-        Iterator it = gen11_1.verseIterator();
+        Iterator it = gen11_1.iterator();
         while (it.hasNext())
         {
             assertTrue(it.hasNext());
@@ -615,7 +615,7 @@ public class VerseRangeTest extends TestCase
             assertEquals(v, gen11);
             assertTrue(!it.hasNext());
         }
-        it = gen11_2.verseIterator();
+        it = gen11_2.iterator();
         while (it.hasNext())
         {
             assertTrue(it.hasNext());

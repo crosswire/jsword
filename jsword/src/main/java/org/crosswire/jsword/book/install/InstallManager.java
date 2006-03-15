@@ -61,9 +61,8 @@ public class InstallManager
             Properties sitemap = ResourceUtil.getProperties(getClass());
             factories = ClassUtil.getImplementorsMap(InstallerFactory.class);
 
-            for (Iterator it = sitemap.entrySet().iterator(); it.hasNext(); )
+            for (Map.Entry entry : sitemap.entrySet())
             {
-                Map.Entry entry = (Map.Entry) it.next();
                 String installerDefinition = (String) entry.getValue();
 
                 try

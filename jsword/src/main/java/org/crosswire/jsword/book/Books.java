@@ -24,7 +24,6 @@ package org.crosswire.jsword.book;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -241,7 +240,7 @@ public final class Books implements BookList
         // Go through all the books and add all the new ones.
         // Remove those that are not known to the driver, but used to be.
         Book[] bookArray = driver.getBooks();
-        Set current = CollectionUtil.createSet(new BookFilterIterator(getBooks(), BookFilters.getBooksByDriver(driver)));
+        Set<Book> current = CollectionUtil.createSet(new BookFilterIterator(getBooks(), BookFilters.getBooksByDriver(driver)));
 
         for (int j = 0; j < bookArray.length; j++)
         {
@@ -261,10 +260,9 @@ public final class Books implements BookList
 
         // Remove the books from the previous version of the driver
         // that are not in this version.
-        Iterator iter = current.iterator();
-        while (iter.hasNext())
+        for (Book book : current)
         {
-            removeBook((Book) iter.next());
+            removeBook(book);
         }
 
         log.debug("end registering driver: " + driver.getClass().getName()); //$NON-NLS-1$
@@ -300,9 +298,8 @@ public final class Books implements BookList
     public synchronized BookDriver[] getDriversByClass(Class type)
     {
         List<BookDriver> matches = new ArrayList<BookDriver>();
-        for (Iterator it = drivers.iterator(); it.hasNext(); )
+        for (BookDriver driver : drivers)
         {
-            BookDriver driver = (BookDriver) it.next();
             if (driver.getClass() == type)
             {
                 matches.add(driver);
@@ -328,9 +325,8 @@ public final class Books implements BookList
     public synchronized BookDriver[] getWritableDrivers()
     {
         int i = 0;
-        for (Iterator it = drivers.iterator(); it.hasNext(); )
+        for (BookDriver driver : drivers)
         {
-            BookDriver driver = (BookDriver) it.next();
             if (driver.isWritable())
             {
                 i++;
@@ -340,9 +336,8 @@ public final class Books implements BookList
         BookDriver[] reply = new BookDriver[i];
 
         i = 0;
-        for (Iterator it = drivers.iterator(); it.hasNext(); )
+        for (BookDriver driver : drivers)
         {
-            BookDriver driver = (BookDriver) it.next();
             if (driver.isWritable())
             {
                 reply[i++] = driver;

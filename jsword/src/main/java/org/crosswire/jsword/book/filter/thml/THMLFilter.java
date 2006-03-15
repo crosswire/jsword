@@ -36,6 +36,7 @@ import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.passage.Key;
+import org.jdom.Content;
 import org.jdom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -58,7 +59,8 @@ public class THMLFilter implements Filter
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.filter.BookDataListener, java.lang.String)
      */
-    public List toOSIS(Key key, String plain)
+    @SuppressWarnings("unchecked")
+    public List<Content> toOSIS(Key key, String plain)
     {
         DataPolice.setKey(key);
         Element ele = null;

@@ -22,7 +22,6 @@
 package org.crosswire.jsword.book;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.crosswire.common.util.StringUtil;
@@ -109,9 +108,9 @@ public final class SentenceUtil
         // Create a String[]
         String[] retcode = new String[tokens.size()];
         int i = 0;
-        for (Iterator it = tokens.iterator(); it.hasNext(); )
+        for (String token : tokens)
         {
-            retcode[i++] = (String) it.next();
+            retcode[i++] = token;
         }
 
         return retcode;

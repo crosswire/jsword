@@ -124,10 +124,9 @@ public class Config
         // We are going to assume a DTD has validated the config file and
         // just assume that everything is laid out properly.
         Element root = xmlconfig.getRootElement();
-        Iterator it = root.getChildren().iterator();
-        while (it.hasNext())
+        for (Object obj : root.getChildren())
         {
-            Element element = (Element) it.next();
+            Element element = (Element) obj;
             String key = element.getAttributeValue("key"); //$NON-NLS-1$
 
             try
@@ -183,7 +182,7 @@ public class Config
      * The set of Choice Names that we are controlling
      * @return An enumeration over the keys
      */
-    public Iterator getNames()
+    public Iterator<String> getNames()
     {
         return keys.iterator();
     }
@@ -239,11 +238,8 @@ public class Config
      */
     public void applicationToLocal()
     {
-        Iterator it = keys.iterator();
-        while (it.hasNext())
+        for (String key : keys)
         {
-            String key = (String) it.next();
-
             try
             {
                 Choice model = getChoice(key);
@@ -369,10 +365,9 @@ public class Config
      */
     public void setProperties(Properties prop)
     {
-        Iterator it = prop.keySet().iterator();
-        while (it.hasNext())
+        for (Object obj : prop.keySet())
         {
-            String key = (String) it.next();
+            String key = (String) obj;
             String value = prop.getProperty(key);
 
             if (value != null)
@@ -389,10 +384,8 @@ public class Config
     {
         Properties prop = new Properties();
 
-        Iterator it = keys.iterator();
-        while (it.hasNext())
+        for (String key : keys)
         {
-            String key = (String) it.next();
             String value = local.getProperty(key);
 
             Choice model = getChoice(key);

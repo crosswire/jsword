@@ -135,6 +135,14 @@ final class SynchronizedPassage implements Passage
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage.Key)
+     */
+    public synchronized String getName(Key base)
+    {
+        return ref.getName(base);
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#getOSISName()
      */
     public synchronized String getOsisRef()
@@ -241,23 +249,15 @@ final class SynchronizedPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#rangeIterator(int)
      */
-    public synchronized Iterator rangeIterator(RestrictionType restrict)
+    public synchronized Iterator<Key> rangeIterator(RestrictionType restrict)
     {
         return ref.rangeIterator(restrict);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#contains(org.crosswire.jsword.passage.VerseBase)
-     */
-    public synchronized boolean contains(VerseBase that)
-    {
-        return ref.contains(that);
-    }
-
-    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#add(org.crosswire.jsword.passage.VerseBase)
      */
-    public synchronized void add(VerseBase that)
+    public synchronized void add(Key that)
     {
         ref.add(that);
     }
@@ -265,7 +265,7 @@ final class SynchronizedPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#remove(org.crosswire.jsword.passage.VerseBase)
      */
-    public synchronized void remove(VerseBase that)
+    public synchronized void remove(Key that)
     {
         ref.remove(that);
     }

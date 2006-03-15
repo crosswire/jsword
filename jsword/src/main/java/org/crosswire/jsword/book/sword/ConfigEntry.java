@@ -22,7 +22,6 @@
 package org.crosswire.jsword.book.sword;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.crosswire.common.util.Histogram;
@@ -293,12 +292,11 @@ public class ConfigEntry
             Element listEle = factory.createLG();
             valueElement.addContent(listEle);
 
-            Iterator iter = values.iterator();
-            while (iter.hasNext())
+            for (String text : values)
             {
                 Element itemEle = factory.createL();
                 listEle.addContent(itemEle);
-                itemEle.addContent(XMLUtil.escape(iter.next().toString()));
+                itemEle.addContent(XMLUtil.escape(text));
             }
         }
         return rowEle;

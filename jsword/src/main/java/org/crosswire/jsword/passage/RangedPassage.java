@@ -137,7 +137,7 @@ public class RangedPassage extends AbstractPassage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#verseIterator()
+     * @see java.lang.Iterable#iterator()
      */
     public Iterator<Key> iterator()
     {
@@ -170,7 +170,8 @@ public class RangedPassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#contains(org.crosswire.jsword.passage.VerseBase)
      */
-    public boolean contains(VerseBase obj)
+    @Override
+    public boolean contains(Key obj)
     {
         // Even for the conatins(VerseRange) case, the simple
         // 'return store.contains(that);' will not work because
@@ -196,7 +197,7 @@ public class RangedPassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#add(org.crosswire.jsword.passage.VerseBase)
      */
-    public void add(VerseBase obj)
+    public void add(Key obj)
     {
         optimizeWrites();
 
@@ -228,7 +229,7 @@ public class RangedPassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#remove(org.crosswire.jsword.passage.VerseBase)
      */
-    public void remove(VerseBase obj)
+    public void remove(Key obj)
     {
         optimizeWrites();
 
@@ -238,13 +239,12 @@ public class RangedPassage extends AbstractPassage
         // This allows us to modify store which iterating through a copy
         SortedSet<Key> new_store = new TreeSet<Key>();
         new_store.addAll(store);
-        Iterator it = new_store.iterator();
 
         // go through all the VerseRanges
-        while (it.hasNext())
+        for (Key key : new_store)
         {
             // if this range touches the range to be removed ...
-            VerseRange this_range = (VerseRange) it.next();
+            VerseRange this_range = (VerseRange) key;
             if (this_range.overlaps(that_range))
             {
                 // ... remove it and add the remainder

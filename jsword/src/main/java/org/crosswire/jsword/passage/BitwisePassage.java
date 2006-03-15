@@ -113,7 +113,7 @@ public class BitwisePassage extends AbstractPassage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#verseIterator()
+     * @see java.lang.Iterable#iterator()
      */
     public Iterator<Key> iterator()
     {
@@ -132,13 +132,13 @@ public class BitwisePassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#contains(org.crosswire.jsword.passage.VerseBase)
      */
-    public boolean contains(VerseBase obj)
+    @Override
+    public boolean contains(Key obj)
     {
-        Verse[] verses = toVerseArray(obj);
-
-        for (int i = 0; i < verses.length; i++)
+        for (Key key : obj)
         {
-            if (!store.get(verses[i].getOrdinal()))
+            Verse verse = (Verse) key;
+            if (!store.get(verse.getOrdinal()))
             {
                 return false;
             }
@@ -150,44 +150,54 @@ public class BitwisePassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#add(org.crosswire.jsword.passage.VerseBase)
      */
-    public void add(VerseBase obj)
+    public void add(Key obj)
     {
         optimizeWrites();
 
-        Verse[] verses = toVerseArray(obj);
-
-        for (int i = 0; i < verses.length; i++)
+        Verse firstVerse = null;
+        Verse lastVerse = null;
+        for (Key key : obj)
         {
-            store.set(verses[i].getOrdinal());
+            lastVerse = (Verse) key;
+            if (firstVerse == null)
+            {
+                firstVerse = lastVerse;
+            }
+            store.set(lastVerse.getOrdinal());
         }
 
         // we do an extra check here because the cost of calculating the
         // params is non-zero and may be wasted
         if (suppressEvents == 0)
         {
-            fireIntervalAdded(this, verses[0], verses[verses.length - 1]);
+            fireIntervalAdded(this, firstVerse, lastVerse);
         }
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#remove(org.crosswire.jsword.passage.VerseBase)
      */
-    public void remove(VerseBase obj)
+    public void remove(Key obj)
     {
         optimizeWrites();
 
-        Verse[] verses = toVerseArray(obj);
-
-        for (int i = 0; i < verses.length; i++)
+        Verse firstVerse = null;
+        Verse lastVerse = null;
+        for (Key key : obj)
         {
-            store.clear(verses[i].getOrdinal());
+            lastVerse = (Verse) key;
+            if (firstVerse == null)
+            {
+                firstVerse = lastVerse;
+            }
+            store.clear(lastVerse.getOrdinal());
         }
 
         // we do an extra check here because the cost of calculating the
         // params is non-zero and may be wasted
         if (suppressEvents == 0)
         {
-            fireIntervalRemoved(this, verses[0], verses[verses.length - 1]);
+            fireIntervalAdded(this, firstVerse, lastVerse);
         }
     }
 

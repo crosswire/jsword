@@ -200,6 +200,14 @@ public abstract class AbstractPassage implements Passage
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage.Key)
+     */
+    public String getName(Key base)
+    {
+        return getName();
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#getOSISName()
      */
     public String getOsisRef()
@@ -456,7 +464,7 @@ public abstract class AbstractPassage implements Passage
 
         while (that_it.hasNext())
         {
-            if (!contains((VerseBase) that_it.next()))
+            if (!contains((Key) that_it.next()))
             {
                 return false;
             }
@@ -478,11 +486,9 @@ public abstract class AbstractPassage implements Passage
 
         Passage remainder = (Passage) this.clone();
 
-        Iterator it = iterator();
-        while (it.hasNext())
+        for (Key verse : this)
         {
             i++;
-            Verse verse = (Verse) it.next();
 
             if (i > count)
             {
@@ -570,7 +576,7 @@ public abstract class AbstractPassage implements Passage
         while (that_it.hasNext())
         {
             // Avoid touching store to make thread safety easier.
-            add((VerseBase) that_it.next());
+            add((Key) that_it.next());
         }
 
         lowerNormalizeProtection();
@@ -605,7 +611,7 @@ public abstract class AbstractPassage implements Passage
         while (that_it.hasNext())
         {
             // Avoid touching store to make thread safety easier.
-            remove((VerseBase) that_it.next());
+            remove((Key) that_it.next());
         }
 
         lowerNormalizeProtection();
@@ -627,11 +633,9 @@ public abstract class AbstractPassage implements Passage
         raiseNormalizeProtection();
 
         Passage temp = (Passage) this.clone();
-        Iterator it = temp.iterator();
 
-        while (it.hasNext())
+        for (Key verse : temp)
         {
-            Verse verse = (Verse) it.next();
             if (!that.contains(verse))
             {
                 remove(verse);
@@ -1090,30 +1094,6 @@ public abstract class AbstractPassage implements Passage
         else if (base instanceof Verse)
         {
             return new VerseRange((Verse) base);
-        }
-
-        throw new ClassCastException(Msg.ABSTRACT_CAST.toString());
-    }
-
-    /**
-     * Convert the Object to an array of Verses. If base is a VerseRange then return a
-     * Verse array of the VersesRanges Verses.
-     * @param base The Object to be cast
-     * @return The Verse array
-     * @exception java.lang.ClassCastException If this is not a Verse or a VerseRange
-     */
-    protected static Verse[] toVerseArray(VerseBase base) throws ClassCastException
-    {
-        assert base != null;
-
-        if (base instanceof VerseRange)
-        {
-            VerseRange range = (VerseRange) base;
-            return range.toVerseArray();
-        }
-        else if (base instanceof Verse)
-        {
-            return new Verse[] { (Verse) base };
         }
 
         throw new ClassCastException(Msg.ABSTRACT_CAST.toString());

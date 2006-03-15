@@ -338,13 +338,13 @@ public class PassageTally extends AbstractPassage
      * @param that The verses to test for
      * @return true if all the verses exist in this tally
      */
-    public boolean contains(VerseBase that)
+    @Override
+    public boolean contains(Key that)
     {
-        Verse[] verses = toVerseArray(that);
-
-        for (int i = 0; i < verses.length; i++)
+        for (Key key : that)
         {
-            if (board[verses[i].getOrdinal() - 1] == 0)
+            Verse verse = (Verse) key;
+            if (board[verse.getOrdinal() - 1] == 0)
             {
                 return false;
             }
@@ -379,7 +379,7 @@ public class PassageTally extends AbstractPassage
      * Add/Increment this verses in the rankings
      * @param that The verses to add/increment
      */
-    public void add(VerseBase that)
+    public void add(Key that)
     {
         optimizeWrites();
 
@@ -395,7 +395,7 @@ public class PassageTally extends AbstractPassage
      * @param that The verses to add/increment
      * @param count The amount to increment by
      */
-    public void add(VerseBase that, int count)
+    public void add(Key that, int count)
     {
         optimizeWrites();
 
@@ -407,7 +407,7 @@ public class PassageTally extends AbstractPassage
      * Remove/Decrement this verses in the rankings
      * @param that The verses to remove/decrement
      */
-    public void unAdd(VerseBase that)
+    public void unAdd(Key that)
     {
         optimizeWrites();
 
@@ -420,15 +420,14 @@ public class PassageTally extends AbstractPassage
      * their rank to zero.
      * @param that The verses to remove/decrement
      */
-    public void remove(VerseBase that)
+    public void remove(Key that)
     {
         optimizeWrites();
 
-        Verse[] verses = toVerseArray(that);
-
-        for (int i = 0; i < verses.length; i++)
+        for (Key key : that)
         {
-            kill(verses[i].getOrdinal());
+            Verse verse = (Verse) key;
+            kill(verse.getOrdinal());
         }
 
         fireIntervalRemoved(this, null, null);
@@ -582,10 +581,9 @@ public class PassageTally extends AbstractPassage
 
         Passage remainder = (Passage) this.clone();
 
-        Iterator it = iterator();
-        while (it.hasNext())
+        for (Key key : this)
         {
-            Verse verse = (Verse) it.next();
+            Verse verse = (Verse) key;
 
             if (i > count)
             {
@@ -744,13 +742,12 @@ public class PassageTally extends AbstractPassage
      * @param that The verses to add/increment
      * @param tally The amount to increment/decrement by
      */
-    private void alterVerseBase(VerseBase that, int tally)
+    private void alterVerseBase(Key that, int tally)
     {
-        Verse[] verses = toVerseArray(that);
-
-        for (int i = 0; i < verses.length; i++)
+        for (Key key : that)
         {
-            increment(verses[i].getOrdinal(), tally);
+            Verse verse = (Verse) key;
+            increment(verse.getOrdinal(), tally);
         }
 
         if (tally > 0)
@@ -1072,17 +1069,16 @@ public class PassageTally extends AbstractPassage
         {
             TreeSet<TalliedVerseRange> output = new TreeSet<TalliedVerseRange>();
 
-            Iterator rit = new VerseRangeIterator(vit, RestrictionType.NONE);
+            Iterator<Key> rit = new VerseRangeIterator(vit, RestrictionType.NONE);
             while (rit.hasNext())
             {
                 VerseRange range = (VerseRange) rit.next();
 
                 // Calculate the maximum rank for a verse
                 int rank = 0;
-                Iterator vit2 = range.verseIterator();
-                while (vit2.hasNext())
+                for (Key key : range)
                 {
-                    Verse verse = (Verse) vit2.next();
+                    Verse verse = (Verse) key;
                     int temp = board[verse.getOrdinal() - 1];
                     if (temp > rank)
                     {

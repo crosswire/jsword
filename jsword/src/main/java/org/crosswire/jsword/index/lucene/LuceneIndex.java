@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.lucene.analysis.Analyzer;
@@ -146,10 +145,9 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                 if (errors.size() > 0)
                 {
                     StringBuffer buf = new StringBuffer();
-                    Iterator iter = errors.iterator();
-                    while (iter.hasNext())
+                    for (Key key : errors)
                     {
-                        buf.append(iter.next());
+                        buf.append(key);
                         buf.append('\n');
                     }
                     Reporter.informUser(this, Msg.BAD_VERSE, buf);

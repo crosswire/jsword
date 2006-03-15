@@ -22,7 +22,6 @@
 package org.crosswire.jsword.book.filter;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.crosswire.common.util.ClassUtil;
@@ -107,9 +106,8 @@ public final class FilterFactory
     public static Filter getFilter(String lookup)
     {
         Filter reply = null;
-        for (Iterator it = filters.keySet().iterator(); it.hasNext(); )
+        for (String key : filters.keySet())
         {
-            String key = (String) it.next();
             if (key.equalsIgnoreCase(lookup))
             {
                 reply = filters.get(key);

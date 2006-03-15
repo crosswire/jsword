@@ -27,7 +27,6 @@ import java.io.ObjectOutputStream;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.crosswire.common.util.EmptyIterator;
 import org.crosswire.common.util.Logger;
 
 /**
@@ -43,7 +42,7 @@ import org.crosswire.common.util.Logger;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class VerseRange implements VerseBase
+public final class VerseRange implements Key
 {
     /**
      * The default VerseRange is a single verse - Genesis 1:1. I didn't
@@ -140,7 +139,7 @@ public final class VerseRange implements VerseBase
      * @param base A reference to allow things like Gen 1:1,3,5 as an output
      * @return A string like 'Gen 1:1-2'
      */
-    public String getName(Verse base)
+    public String getName(Key base)
     {
         if (PassageUtil.isPersistentNaming() && originalName != null)
         {
@@ -788,21 +787,12 @@ public final class VerseRange implements VerseBase
     }
 
     /**
-     * Enumerate over the verse in this range
-     * @return A verse iterator
-     */
-    public Iterator<Key> verseIterator()
-    {
-        return new VerseIterator(this);
-    }
-
-    /**
      * Enumerate the subranges in this range
      * @return a range iterator
      */
-    public Iterator rangeIterator(RestrictionType restrict)
+    public Iterator<Key> rangeIterator(RestrictionType restrict)
     {
-        return new AbstractPassage.VerseRangeIterator(verseIterator(), restrict);
+        return new AbstractPassage.VerseRangeIterator(iterator(), restrict);
     }
 
     /* (non-Javadoc)
@@ -1080,7 +1070,7 @@ public final class VerseRange implements VerseBase
      */
     public Iterator<Key> iterator()
     {
-        return new EmptyIterator<Key>();
+        return new VerseIterator(this);
     }
 
     /* (non-Javadoc)

@@ -508,14 +508,10 @@ public final class OSISUtil
         Element osisText = root.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
         List<Element> divs = osisText.getChildren(OSISUtil.OSIS_ELEMENT_DIV);
 
-        for (Iterator oit = divs.iterator(); oit.hasNext(); )
+        for (Element div : divs)
         {
-            Element div = (Element) oit.next();
-
-            Iterator dit = div.getContent().iterator();
-            while (dit.hasNext())
+           for (Object data : div.getContent())
             {
-                Object data = dit.next();
                 if (data instanceof Element)
                 {
                     Element ele = (Element) data;
@@ -571,9 +567,8 @@ public final class OSISUtil
         StringBuffer buffer = new StringBuffer();
 
         List<Content> content = ele.getContent();
-        for (Iterator it = content.iterator(); it.hasNext(); )
+        for (Content next : content)
         {
-            Object next = it.next();
             recurseElement(next, buffer);
         }
 
@@ -657,10 +652,9 @@ public final class OSISUtil
             reply.add(start);
         }
 
-        Iterator it = start.getContent().iterator();
-        while (it.hasNext())
+        for (Object obj : start.getContent())
         {
-            Element ele = (Element) it.next();
+            Element ele = (Element) obj;
             recurseDeepContent(ele, name, reply);
         }
     }
@@ -695,10 +689,8 @@ public final class OSISUtil
         // ele is a JDOM Element that might have a getContent() method
         try
         {
-            List content = ele.getContent();
-            for (Iterator it = content.iterator(); it.hasNext(); )
+            for (Object sub : ele.getContent())
             {
-                Object sub = it.next();
                 recurseElement(sub, buffer);
             }
         }

@@ -131,11 +131,8 @@ public class DefaultBook
             return;
         }
 
-        List bookList = books.getBooks(filter);
-        Iterator it = bookList.iterator();
-        while (it.hasNext())
+        for (Book aBook : books.getBooks(filter))
         {
-            Book aBook = (Book) it.next();
             if (name.equals(aBook.getFullName()))
             {
                 setDefault(aBook);
@@ -152,12 +149,12 @@ public class DefaultBook
      */
     protected void checkReplacement()
     {
-        List bookList = books.getBooks(filter);
+        List<Book> bookList = books.getBooks(filter);
 
-        Iterator it = bookList.iterator();
+        Iterator<Book> it = bookList.iterator();
         if (it.hasNext())
         {
-            book = (Book) it.next();
+            book = it.next();
         }
     }
 

@@ -48,7 +48,8 @@ public class GBFFilter implements Filter
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.filter.BookDataListener, java.lang.String)
      */
-    public List toOSIS(Key key, String plain) throws FilterException
+    @SuppressWarnings("unchecked")
+    public List<Content> toOSIS(Key key, String plain) throws FilterException
     {
         DataPolice.setKey(key);
         Element ele = OSISUtil.factory().createDiv();

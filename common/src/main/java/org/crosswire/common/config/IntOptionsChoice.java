@@ -22,7 +22,6 @@
 package org.crosswire.common.config;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -51,11 +50,9 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements Multipl
         String prefix = option.getAttributeValue("key") + ".alternative."; //$NON-NLS-1$  //$NON-NLS-2$
 
         List<String> list = new ArrayList<String>();
-        List alts = option.getChildren("alternative"); //$NON-NLS-1$
-        Iterator it = alts.iterator();
-        while (it.hasNext())
+        for (Object obj : option.getChildren("alternative")) //$NON-NLS-1$
         {
-            Element alternative = (Element) it.next();
+            Element alternative = (Element) obj;
             int number = Integer.parseInt(alternative.getAttributeValue("number")); //$NON-NLS-1$
             String name = configResources.getString(prefix + number);
             list.add(number, name);

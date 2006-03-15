@@ -175,26 +175,26 @@ public interface Passage extends Key, Serializable
      * @param restrict Do we break ranges over chapters
      * @return A list enumerator
      */
-    Iterator rangeIterator(RestrictionType restrict);
+    Iterator<Key> rangeIterator(RestrictionType restrict);
 
     /**
      * Returns true if this collection contains all the specified Verse
      * @param that Verse or VerseRange that may exist in this Passage
      * @return true if this collection contains that
      */
-    boolean contains(VerseBase that);
+    boolean contains(Key that);
 
     /**
      * Add this Verse/VerseRange to this Passage
      * @param that The Verses to be removed from this Passage
      */
-    void add(VerseBase that);
+    void add(Key that);
 
     /**
      * Remove this Verse/VerseRange from this Passage
      * @param that The Verses to be removed from this Passage
      */
-    void remove(VerseBase that);
+    void remove(Key that);
 
     /**
      * Returns true if this Passage contains all of the verses in that Passage
