@@ -44,11 +44,13 @@ import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
+import org.crosswire.jsword.book.sword.SwordConstants;
 import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.passage.VerseFactory;
 
 /**
  * Start of a mechanism to extract a Bible module to OSIS.
@@ -310,6 +312,7 @@ public class BibleToOsis
         }
         return sbuf.toString();
     }
+
     private void buildDocumentOpen(StringBuffer buf, BookMetaData bmd, String range, boolean force)
     {
         if (!force)
@@ -1162,7 +1165,7 @@ public class BibleToOsis
             {
                 String changed = found;
                 changed = changed.replace("src=\"", "src=\"" + here + " "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                changed = changed.replace("lemma=\"", "lemma=\"strongs:3588 "); //$NON-NLS-1$ //$NON-NLS-2$
+                changed = changed.replace("lemma=\"", "lemma=\"strongs:G3588 "); //$NON-NLS-1$ //$NON-NLS-2$
                 changed = changed.replace("morph=\"", "morph=\"robinson:T-" + tType + " "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 input = input.replace(definiteArticle, ""); //$NON-NLS-1$
                 input = input.replace(found, changed);
@@ -1181,6 +1184,83 @@ public class BibleToOsis
             before.removeAll(after);
             System.err.println(osisID + ": Problems with w src attribute. Missing: " + before); //$NON-NLS-1$
         }
+        return analyzeApostrophe(osisID, input);
+    }
+
+    private String analyzeApostrophe(String osisID, String input)
+    {
+        if (input.indexOf('\'') == -1)
+        {
+            return input;
+        }
+
+        Matcher a1Matcher = a1Pattern.matcher(input);
+        while (a1Matcher.find())
+        {
+            input = input.replace(a1Matcher.group(), a1Matcher.group(1) + ' ' + a1Matcher.group(2));
+        }
+
+        Matcher a2Matcher = a2Pattern.matcher(input);
+        if (a2Matcher.find())
+        {
+            input = input.replace(a2Matcher.group(), a2Matcher.group(1) + 'S' + a2Matcher.group(2));
+        }
+
+        Matcher a3Matcher = a3Pattern.matcher(input);
+        if (a3Matcher.find())
+        {
+            input = input.replace(a3Matcher.group(), a3Matcher.group(1) + 's' + a3Matcher.group(2));
+        }
+
+        Matcher a4Matcher = a4Pattern.matcher(input);
+        if (a4Matcher.find())
+        {
+            input = input.replace(a4Matcher.group(), a4Matcher.group(1) + a4Matcher.group(2) + "</w> "); //$NON-NLS-1$
+        }
+
+        // for the ot only
+        Matcher a5Matcher = a5Pattern.matcher(input);
+        if (a5Matcher.find())
+        {
+            input = input.replace(a5Matcher.group(), a5Matcher.group(1) + "S "); //$NON-NLS-1$
+        }
+
+        Verse v = null;
+        try
+        {
+            v = VerseFactory.fromString(osisID);
+        }
+        catch (NoSuchVerseException e)
+        {
+            return input;
+        }
+
+        // for the ot only
+        if (SwordConstants.getTestament(v) == SwordConstants.TESTAMENT_OLD)
+        {
+            Matcher a6Matcher = a6Pattern.matcher(input);
+            if (a6Matcher.find())
+            {
+                input = input.replace(a6Matcher.group(), a6Matcher.group(1) + "s "); //$NON-NLS-1$
+            }
+        }
+
+        Matcher a7Matcher = a7Pattern.matcher(input);
+        if (a7Matcher.find())
+        {
+            input = input.replace(a7Matcher.group(), a7Matcher.group(1) + "S " + a7Matcher.group(2)); //$NON-NLS-1$
+        }
+
+        if (SwordConstants.getTestament(v) == SwordConstants.TESTAMENT_OLD)
+        {
+            Matcher a8Matcher = a8Pattern.matcher(input);
+            if (a8Matcher.find())
+            {
+                input = input.replace(a8Matcher.group(), a8Matcher.group(1) + "s " + a8Matcher.group(2)); //$NON-NLS-1$
+                System.err.println(osisID + " suspect ' in :" + a8Matcher.group()); //$NON-NLS-1$
+            }
+        }
+        
         return input;
     }
 
@@ -1205,6 +1285,15 @@ public class BibleToOsis
 
     private static String nameDate = "type=\"strongsMarkup\"[ ]+name=\"([^\"]*)\"[ ]+date=\"([^\"]*)\""; //$NON-NLS-1$
     private static Pattern nameDatePattern = Pattern.compile(nameDate);
+
+    private static Pattern a1Pattern = Pattern.compile("(\\w+s')(\\w\\w+)"); //$NON-NLS-1$
+    private static Pattern a2Pattern = Pattern.compile("(LORD')(</w>)"); //$NON-NLS-1$
+    private static Pattern a3Pattern = Pattern.compile("(\\w*[^s]')(</w>)"); //$NON-NLS-1$
+    private static Pattern a4Pattern = Pattern.compile("(\\w*[^s])</w>('s)"); //$NON-NLS-1$
+    private static Pattern a5Pattern = Pattern.compile("(LORD') "); //$NON-NLS-1$
+    private static Pattern a6Pattern = Pattern.compile("(\\w*[^s>]') "); //$NON-NLS-1$
+    private static Pattern a7Pattern = Pattern.compile("(LORD')([.:])"); //$NON-NLS-1$
+    private static Pattern a8Pattern = Pattern.compile("(\\w+[^s>]')([.:])"); //$NON-NLS-1$
 
     private Writer writer;
     private String filename;
