@@ -85,22 +85,22 @@ public final class SwordConstants
     /**
      * constant for the introduction
      */
-    static final int TESTAMENT_INTRO = 0;
+    public static final int TESTAMENT_INTRO = 0;
 
     /**
      * constant for the old testament
      */
-    static final int TESTAMENT_OLD = 1;
+    public static final int TESTAMENT_OLD = 1;
 
     /**
      * constant for the new testament
      */
-    static final int TESTAMENT_NEW = 2;
+    public static final int TESTAMENT_NEW = 2;
 
     /**
      * Get the testament of a given verse
      */
-    static int getTestament(Verse v)
+    public static int getTestament(Verse v)
     {
         int ord = v.getOrdinal();
 
