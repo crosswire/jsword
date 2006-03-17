@@ -1165,7 +1165,7 @@ public class BibleToOsis
             {
                 String changed = found;
                 changed = changed.replace("src=\"", "src=\"" + here + " "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                changed = changed.replace("lemma=\"", "lemma=\"strongs:G3588 "); //$NON-NLS-1$ //$NON-NLS-2$
+                changed = changed.replace("lemma=\"", "lemma=\"strong:G3588 "); //$NON-NLS-1$ //$NON-NLS-2$
                 changed = changed.replace("morph=\"", "morph=\"robinson:T-" + tType + " "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 input = input.replace(definiteArticle, ""); //$NON-NLS-1$
                 input = input.replace(found, changed);
