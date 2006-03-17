@@ -66,7 +66,7 @@ public class BibleToOsis
      */
     private static final String BIBLE_NAME = "KJV"; //$NON-NLS-1$
     private static final String BIBLE_RANGE = "Gen-Rev"; //$NON-NLS-1$
-    private static final boolean BY_CHAPTER = false;
+    private static final boolean BY_CHAPTER = true;
 
     /**
      * @param args
@@ -524,8 +524,8 @@ public class BibleToOsis
         input = input.replaceAll("\"transChange\"", "\"x-transChange\""); //$NON-NLS-1$ //$NON-NLS-2$
         input = input.replaceAll("\"type:", "\"x-"); //$NON-NLS-1$ //$NON-NLS-2$
         input = input.replaceAll("changeType=\"", "type=\""); //$NON-NLS-1$ //$NON-NLS-2$
-        input = input.replaceAll("<milestone type=\"x-p\"/>", "<milestone type=\"x-p\" marker=\"&#182;\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
-        input = input.replaceAll("<p/>", "<milestone type=\"x-p\" marker=\"&#182;\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
+        input = input.replaceAll("<milestone type=\"x-p\"\\s*/>", "<milestone type=\"x-p\" marker=\"\u00B6\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
+        input = input.replaceAll("<p/>", "<milestone type=\"x-p\" marker=\"\u00B6\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
         input = input.replaceAll("x-StudyNote", "study"); //$NON-NLS-1$ //$NON-NLS-2$
         input = input.replaceAll("\\s*</q>", "</q>"); //$NON-NLS-1$ //$NON-NLS-2$
         if (osisID.equals("Matt.24.38")) //$NON-NLS-1$
@@ -1189,40 +1189,58 @@ public class BibleToOsis
 
     private String analyzeApostrophe(String osisID, String input)
     {
+        Matcher matcher;
+        boolean changed = false;
+
         if (input.indexOf('\'') == -1)
         {
             return input;
         }
 
-        Matcher a1Matcher = a1Pattern.matcher(input);
-        while (a1Matcher.find())
+        matcher = a1Pattern.matcher(input);
+        while (matcher.find())
         {
-            input = input.replace(a1Matcher.group(), a1Matcher.group(1) + ' ' + a1Matcher.group(2));
+            String replace = matcher.group(1) + ' ' + matcher.group(2);
+            input = input.replace(matcher.group(), replace);
+            changed = true;
+//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        Matcher a2Matcher = a2Pattern.matcher(input);
-        if (a2Matcher.find())
+        matcher = a2Pattern.matcher(input);
+        if (matcher.find())
         {
-            input = input.replace(a2Matcher.group(), a2Matcher.group(1) + 'S' + a2Matcher.group(2));
+            String replace = matcher.group(1) + 'S' + matcher.group(2);
+            input = input.replace(matcher.group(), replace);
+            changed = true;
+//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        Matcher a3Matcher = a3Pattern.matcher(input);
-        if (a3Matcher.find())
+        matcher = a3Pattern.matcher(input);
+        if (matcher.find())
         {
-            input = input.replace(a3Matcher.group(), a3Matcher.group(1) + 's' + a3Matcher.group(2));
+            String replace = matcher.group(1) + 's' + matcher.group(2);
+            input = input.replace(matcher.group(), replace);
+            changed = true;
+//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        Matcher a4Matcher = a4Pattern.matcher(input);
-        if (a4Matcher.find())
+        matcher = a4Pattern.matcher(input);
+        if (matcher.find())
         {
-            input = input.replace(a4Matcher.group(), a4Matcher.group(1) + a4Matcher.group(2) + "</w> "); //$NON-NLS-1$
+            String replace = matcher.group(1) + matcher.group(2) + "</w> "; //$NON-NLS-1$
+            input = input.replace(matcher.group(), replace);
+            changed = true;
+//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         // for the ot only
-        Matcher a5Matcher = a5Pattern.matcher(input);
-        if (a5Matcher.find())
+        matcher = a5Pattern.matcher(input);
+        if (matcher.find())
         {
-            input = input.replace(a5Matcher.group(), a5Matcher.group(1) + "S "); //$NON-NLS-1$
+            String replace = matcher.group(1) + "S "; //$NON-NLS-1$
+            input = input.replace(matcher.group(), replace);
+            changed = true;
+//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         Verse v = null;
@@ -1238,29 +1256,123 @@ public class BibleToOsis
         // for the ot only
         if (SwordConstants.getTestament(v) == SwordConstants.TESTAMENT_OLD)
         {
-            Matcher a6Matcher = a6Pattern.matcher(input);
-            if (a6Matcher.find())
+            matcher = a6Pattern.matcher(input);
+            if (matcher.find())
             {
-                input = input.replace(a6Matcher.group(), a6Matcher.group(1) + "s "); //$NON-NLS-1$
+                String replace = matcher.group(1) + "s "; //$NON-NLS-1$
+                input = input.replace(matcher.group(), replace);
+                changed = true;
+//                System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 
-        Matcher a7Matcher = a7Pattern.matcher(input);
-        if (a7Matcher.find())
+        matcher = a7Pattern.matcher(input);
+        if (matcher.find())
         {
-            input = input.replace(a7Matcher.group(), a7Matcher.group(1) + "S " + a7Matcher.group(2)); //$NON-NLS-1$
+            String replace = matcher.group(1) + "S " + matcher.group(2); //$NON-NLS-1$
+            input = input.replace(matcher.group(), replace);
+            changed = true;
+//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (SwordConstants.getTestament(v) == SwordConstants.TESTAMENT_OLD)
         {
-            Matcher a8Matcher = a8Pattern.matcher(input);
-            if (a8Matcher.find())
+            matcher = a8Pattern.matcher(input);
+            if (matcher.find())
             {
-                input = input.replace(a8Matcher.group(), a8Matcher.group(1) + "s " + a8Matcher.group(2)); //$NON-NLS-1$
-                System.err.println(osisID + " suspect ' in :" + a8Matcher.group()); //$NON-NLS-1$
+                String replace = matcher.group(1) + "s " + matcher.group(2); //$NON-NLS-1$
+                input = input.replace(matcher.group(), replace);
+                changed = true;
+//                System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
         
+        matcher = a9Pattern.matcher(input);
+        if (matcher.find())
+        {
+            String replace = matcher.group(1) + "'</w> <"; //$NON-NLS-1$
+            input = input.replace(matcher.group(), replace);
+            changed = true;
+//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        matcher = a10Pattern.matcher(input);
+        if (matcher.find())
+        {
+            String replace = matcher.group(1) + "'</w> " + matcher.group(2); //$NON-NLS-1$
+            input = input.replace(matcher.group(), replace);
+            changed = true;
+//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        matcher = a11Pattern.matcher(input);
+        if (matcher.find())
+        {
+            String replace = matcher.group(2) + "</w> " + matcher.group(1); //$NON-NLS-1$
+            input = input.replace(matcher.group(), replace);
+            changed = true;
+//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        matcher = a12Pattern.matcher(input);
+        if (matcher.find())
+        {
+            String replace = "'</w> "; //$NON-NLS-1$
+            input = input.replace(matcher.group(), replace);
+            changed = true;
+//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        matcher = a13Pattern.matcher(input);
+        if (matcher.find())
+        {
+            String replace = "'</w> "; //$NON-NLS-1$
+            input = input.replace(matcher.group(), replace);
+            changed = true;
+//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        matcher = a14Pattern.matcher(input);
+        if (matcher.find())
+        {
+            String replace = matcher.group(1) + "s</w>" + matcher.group(2); //$NON-NLS-1$
+//            input = input.replace(matcher.group(), replace);
+            changed = true;
+            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        matcher = a15Pattern.matcher(input);
+        if (matcher.find())
+        {
+            String replace = matcher.group(1) + "s "; //$NON-NLS-1$
+            input = input.replace(matcher.group(), replace);
+            changed = true;
+//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Isa.59.5")) //$NON-NLS-1$
+        {
+            matcher = a16Pattern.matcher(input);
+            if (matcher.find())
+            {
+                String replace = matcher.group(1) + ' ';
+                input = input.replace(matcher.group(), replace);
+                changed = true;
+//                System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+        }
+
+//        matcher = axPattern.matcher(input);
+//        if (matcher.find())
+//        {
+//            System.err.println(osisID + " LOOK ' in :" + matcher.group()); //$NON-NLS-1$
+//        }
+
+//        if (changed)
+//        {
+//            System.err.println(osisID + ": " + input); //$NON-NLS-1$
+//        }
+
         return input;
     }
 
@@ -1294,6 +1406,15 @@ public class BibleToOsis
     private static Pattern a6Pattern = Pattern.compile("(\\w*[^s>]') "); //$NON-NLS-1$
     private static Pattern a7Pattern = Pattern.compile("(LORD')([.:])"); //$NON-NLS-1$
     private static Pattern a8Pattern = Pattern.compile("(\\w+[^s>]')([.:])"); //$NON-NLS-1$
+    private static Pattern a9Pattern = Pattern.compile("(\\w+)</w>'<"); //$NON-NLS-1$
+    private static Pattern a10Pattern = Pattern.compile("(\\w+)</w>'(s\\w+)"); //$NON-NLS-1$
+    private static Pattern a11Pattern = Pattern.compile("</w>(<w[^>]*>)('s?) "); //$NON-NLS-1$
+    private static Pattern a12Pattern = Pattern.compile("</w>' "); //$NON-NLS-1$
+    private static Pattern a13Pattern = Pattern.compile("</w>'"); //$NON-NLS-1$
+    private static Pattern a14Pattern = Pattern.compile("(\\w+[^Ss]')</w>(.)"); //$NON-NLS-1$
+    private static Pattern a15Pattern = Pattern.compile("(husband') "); //$NON-NLS-1$
+    private static Pattern a16Pattern = Pattern.compile("(cockatrice')s"); //$NON-NLS-1$
+    private static Pattern axPattern = Pattern.compile(".....s'[^ < ].........."); //$NON-NLS-1$
 
     private Writer writer;
     private String filename;
