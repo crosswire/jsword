@@ -174,18 +174,44 @@ public class BibleToOsis
                         }
                     }
                 }
-                if (foundPreVerse)
+
+                boolean foundPsalmTitle = false;
+                String psalmTitleText = ""; //$NON-NLS-1$
+                if (raw.contains(psalmTitleStart))
+                {
+                    Matcher psalmTitleStartMatcher = psalmTitleStartPattern.matcher(raw);
+                    if (psalmTitleStartMatcher.find())
+                    {
+                        int start = psalmTitleStartMatcher.start();
+                        Matcher psalmTitleEndMatcher = psalmTitleEndPattern.matcher(raw);
+                        if (psalmTitleEndMatcher.find(1 + psalmTitleStartMatcher.end()))
+                        {
+                            int end = psalmTitleEndMatcher.end();
+                            foundPsalmTitle = true;
+                            psalmTitleText = raw.substring(start, end);
+                            psalmTitleText = psalmTitleText.substring(psalmTitleStart.length(), psalmTitleText.length() - psalmTitleEnd.length());
+                            raw = raw.replace(raw.substring(start, end), ""); //$NON-NLS-1$
+                        }
+                    }
+                }
+
+                if (foundPsalmTitle)
+                {
+                    buildPsalmTitle(buf, cleanup(osisID, preVerseText, false)); //$NON-NLS-1$
+                }
+
+                if (foundPreVerse && !preVerseText.equals(psalmTitleText))
                 {
                     if (inPreVerse)
                     {
                         buildPreVerseClose(buf);
                     }
-                    buildPreVerseOpen(buf, cleanup(osisID, preVerseText)); //$NON-NLS-1$
+                    buildPreVerseOpen(buf, cleanup(osisID, preVerseText, false)); //$NON-NLS-1$
                     inPreVerse = true;
                 }
 
                 buildVerseOpen(buf, osisID);
-                buf.append(cleanup(osisID, raw));
+                buf.append(cleanup(osisID, raw, true));
                 buildVerseClose(buf, osisID);
 
                 lastChapter = currentChapter;
@@ -326,18 +352,18 @@ public class BibleToOsis
         docBuffer.append("\n  xmlns=\"http://www.bibletechnologies.net/2003/OSIS/namespace\""); //$NON-NLS-1$
         docBuffer.append("\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");  //$NON-NLS-1$
         docBuffer.append("\n  xsi:schemaLocation=\"http://www.bibletechnologies.net/2003/OSIS/namespace osisCore.2.1.xsd\">"); //$NON-NLS-1$
-        docBuffer.append("\n    <osisText osisIDWork=\"{0}\" osisRefWork=\"defaultReferenceScheme\" xml:lang=\"en\">"); //$NON-NLS-1$
-        docBuffer.append("\n    <header>"); //$NON-NLS-1$
-        docBuffer.append("\n      <work osisWork=\"{0}\">"); //$NON-NLS-1$
-        docBuffer.append("\n      <title>{1}</title>"); //$NON-NLS-1$
-        docBuffer.append("\n      <identifier type=\"OSIS\">Bible.{0}</identifier>"); //$NON-NLS-1$
-        docBuffer.append("\n      <scope>{2}</scope>"); //$NON-NLS-1$
-        docBuffer.append("\n      <refSystem>Bible.KJV</refSystem>"); //$NON-NLS-1$
-        docBuffer.append("\n    </work>"); //$NON-NLS-1$
-        docBuffer.append("\n    <work osisWork=\"defaultReferenceScheme\">"); //$NON-NLS-1$
-        docBuffer.append("\n      <refSystem>Bible.KJV</refSystem>"); //$NON-NLS-1$
-        docBuffer.append("\n    </work>"); //$NON-NLS-1$
-        docBuffer.append("\n  </header>"); //$NON-NLS-1$
+        docBuffer.append("\n<osisText osisIDWork=\"{0}\" osisRefWork=\"defaultReferenceScheme\" xml:lang=\"en\">"); //$NON-NLS-1$
+        docBuffer.append("\n<header>"); //$NON-NLS-1$
+        docBuffer.append("\n  <work osisWork=\"{0}\">"); //$NON-NLS-1$
+        docBuffer.append("\n    <title>{1}</title>"); //$NON-NLS-1$
+        docBuffer.append("\n    <identifier type=\"OSIS\">Bible.{0}</identifier>"); //$NON-NLS-1$
+        docBuffer.append("\n    <scope>{2}</scope>"); //$NON-NLS-1$
+        docBuffer.append("\n    <refSystem>Bible.KJV</refSystem>"); //$NON-NLS-1$
+        docBuffer.append("\n  </work>"); //$NON-NLS-1$
+        docBuffer.append("\n  <work osisWork=\"defaultReferenceScheme\">"); //$NON-NLS-1$
+        docBuffer.append("\n    <refSystem>Bible.KJV</refSystem>"); //$NON-NLS-1$
+        docBuffer.append("\n  </work>"); //$NON-NLS-1$
+        docBuffer.append("\n</header>"); //$NON-NLS-1$
         docBuffer.append('\n');
         MessageFormat msgFormat = new MessageFormat(docBuffer.toString()); //$NON-NLS-1$
         msgFormat.format(new Object[] { bmd.getInitials(), bmd.getName(), range }, buf, pos);
@@ -373,6 +399,12 @@ public class BibleToOsis
         msgFormat.format(new Object[] { bookName, new Integer(chapter)}, buf, pos);
     }
 
+    private void buildPsalmTitle(StringBuffer buf, String psalmTitle)
+    {
+        MessageFormat msgFormat = new MessageFormat("<title type=\"psalm\" canonical=\"true\">{0}</title>"); //$NON-NLS-1$
+        msgFormat.format(new Object[] { psalmTitle }, buf, pos);
+    }
+
     private void buildPreVerseOpen(StringBuffer buf, String preVerse)
     {
         MessageFormat msgFormat = new MessageFormat("<div type=\"section\" canonical=\"true\"><title canonical=\"true\">{0}</title>"); //$NON-NLS-1$
@@ -394,7 +426,7 @@ public class BibleToOsis
     private void buildVerseClose(StringBuffer buf, String osisID)
     {
 //        MessageFormat msgFormat = new MessageFormat("<verse eID=\"{0}\"/>"); //$NON-NLS-1$
-        MessageFormat msgFormat = new MessageFormat("</verse>"); //$NON-NLS-1$
+        MessageFormat msgFormat = new MessageFormat("</verse>\n"); //$NON-NLS-1$
         msgFormat.format(new Object[] { osisID }, buf, pos);
     }
 
@@ -428,7 +460,7 @@ public class BibleToOsis
         parser.parse(filename + ".xml"); //$NON-NLS-1$
     }
 
-    private String cleanup(String osisID, String input)
+    private String cleanup(String osisID, String input, boolean inVerse)
     {
         // Fix up bad notes
         MessageFormat noteCleanupFormat = new MessageFormat("<note type=\"x-strongsMarkup\" resp=\"{0} {1}\">{2}</note>"); //$NON-NLS-1$
@@ -525,8 +557,10 @@ public class BibleToOsis
         input = input.replaceAll("\"type:", "\"x-"); //$NON-NLS-1$ //$NON-NLS-2$
         input = input.replaceAll("changeType=\"", "type=\""); //$NON-NLS-1$ //$NON-NLS-2$
         input = input.replaceAll("x-StudyNote", "study"); //$NON-NLS-1$ //$NON-NLS-2$
-        input = input.replaceAll("\\s*</q>", "</q>"); //$NON-NLS-1$ //$NON-NLS-2$
-        
+        input = input.replaceAll("\\s+</q>", "</q>"); //$NON-NLS-1$ //$NON-NLS-2$
+        input = input.replaceAll("\\s+</transChange>", "</transChange> "); //$NON-NLS-1$ //$NON-NLS-2$
+        input = input.replaceAll("<transChange type=\"added\">\\s+", " <transChange type=\"added\">"); //$NON-NLS-1$ //$NON-NLS-2$
+
         // normalize paragraph markers and move them from the end of a verse to the beginning of the next
         input = input.replaceAll("<milestone type=\"x-p\"\\s*/>", "<milestone type=\"x-p\" marker=\"\u00B6\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
         input = input.replaceAll("<p/>", "<milestone type=\"x-p\" marker=\"\u00B6\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -536,7 +570,7 @@ public class BibleToOsis
             moveP = true;
 //            System.err.println(osisID + " remove \u00b6"); //$NON-NLS-1$
         }
-        else if (moveP)
+        else if (moveP && inVerse)
         {
             input = "<milestone type=\"x-p\" marker=\"\u00B6\"/>" + input; //$NON-NLS-1$
             moveP = false;
@@ -1533,6 +1567,11 @@ public class BibleToOsis
     private static String preVerseEnd = "</title>"; //$NON-NLS-1$
     private static Pattern preVerseStartPattern = Pattern.compile(preVerseStart);
     private static Pattern preVerseEndPattern = Pattern.compile(preVerseEnd); //$NON-NLS-1$
+
+    private static String psalmTitleStart = "<title type=\"psalm\">"; //$NON-NLS-1$
+    private static String psalmTitleEnd = "</title>"; //$NON-NLS-1$
+    private static Pattern psalmTitleStartPattern = Pattern.compile(psalmTitleStart);
+    private static Pattern psalmTitleEndPattern = Pattern.compile(psalmTitleEnd); //$NON-NLS-1$
 
     private static String badNote = "<note type=\"[^\"]*\" (name=\"([^\"]*)\" date=\"([^\"]*)\"/)>([^<]*)</note>"; //$NON-NLS-1$
     private static Pattern badNotePattern = Pattern.compile(badNote);
