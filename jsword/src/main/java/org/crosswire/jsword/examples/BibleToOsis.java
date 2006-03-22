@@ -524,10 +524,58 @@ public class BibleToOsis
         input = input.replaceAll("\"transChange\"", "\"x-transChange\""); //$NON-NLS-1$ //$NON-NLS-2$
         input = input.replaceAll("\"type:", "\"x-"); //$NON-NLS-1$ //$NON-NLS-2$
         input = input.replaceAll("changeType=\"", "type=\""); //$NON-NLS-1$ //$NON-NLS-2$
-        input = input.replaceAll("<milestone type=\"x-p\"\\s*/>", "<milestone type=\"x-p\" marker=\"\u00B6\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
-        input = input.replaceAll("<p/>", "<milestone type=\"x-p\" marker=\"\u00B6\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
         input = input.replaceAll("x-StudyNote", "study"); //$NON-NLS-1$ //$NON-NLS-2$
         input = input.replaceAll("\\s*</q>", "</q>"); //$NON-NLS-1$ //$NON-NLS-2$
+        
+        // normalize paragraph markers and move them from the end of a verse to the beginning of the next
+        input = input.replaceAll("<milestone type=\"x-p\"\\s*/>", "<milestone type=\"x-p\" marker=\"\u00B6\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
+        input = input.replaceAll("<p/>", "<milestone type=\"x-p\" marker=\"\u00B6\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("<milestone type=\"x-p\" marker=\"\u00B6\"/>")) //$NON-NLS-1$
+        {
+            input = input.replaceAll("<milestone type=\"x-p\" marker=\"\u00B6\"/>", ""); //$NON-NLS-1$ //$NON-NLS-2$
+            moveP = true;
+//            System.err.println(osisID + " remove \u00b6"); //$NON-NLS-1$
+        }
+        else if (moveP)
+        {
+            input = "<milestone type=\"x-p\" marker=\"\u00B6\"/>" + input; //$NON-NLS-1$
+            moveP = false;
+        }
+
+        // # is used in a note for a greek strong's #
+        input = input.replace('#', 'G');
+        // used in a note as a quotation mark at the beginning of a word. i.e. `not'
+        input = input.replace('`', '\'');
+        // used in notes as a space
+        input = input.replace('_', ' ');
+        // used in notes to indicate italics. These are incomplete GBF codes.
+        input = input.replaceAll("[{][Ff][iI][}]", ""); //$NON-NLS-1$ //$NON-NLS-2$
+        // found an email address in a note
+        input = input.replace("@hotmail.", "at hotmail dot "); //$NON-NLS-1$ //$NON-NLS-2$
+
+        if (osisID.equals("Exod.32.32")) //$NON-NLS-1$
+        {
+            input = input.replace("<w morph=\"strongMorph:TH8798\" lemma=\"strong:H04229\">--; ", //$NON-NLS-1$
+                                  "\u2015; <w morph=\"strongMorph:TH8798\" lemma=\"strong:H04229\">"); //$NON-NLS-1$
+        }
+
+        if (osisID.equals("Ezek.26.16")) //$NON-NLS-1$
+        {
+            input = input.replace("\\pa", ""); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Matt.5.30")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"10\" lemma=\"strong:G846\" morph=\"robinson:P-ASF\">if</w>", //$NON-NLS-1$
+                                  "<w src=\"10\" lemma=\"strong:G846\" morph=\"robinson:P-ASF\">it</w>"); //$NON-NLS-1$
+        }
+
+        if (osisID.equals("Matt.16.17")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"10\" lemma=\"strong:G920\" morph=\"robinson:ARAM\">Bar</w><w src=\"11\" lemma=\"strong:G920\" morph=\"robinson:ARAM\">jona</w>", //$NON-NLS-1$
+                                  "<w src=\"10 11\" lemma=\"strong:G920\" morph=\"robinson:ARAM\">Bar\u2013jona</w>"); //$NON-NLS-1$
+        }
+
         if (osisID.equals("Matt.24.38")) //$NON-NLS-1$
         {
             input = input.replace("<w src=\"18\" lemma=\"strong:G3739\" morph=\"robinson:R-GSF\"><w src=\"7\" lemma=\"strong:G3588\" morph=\"robinson:T-DPF\">that</w></w>", //$NON-NLS-1$
@@ -1184,13 +1232,25 @@ public class BibleToOsis
             before.removeAll(after);
             System.err.println(osisID + ": Problems with w src attribute. Missing: " + before); //$NON-NLS-1$
         }
-        return analyzeApostrophe(osisID, input);
+        input = fixApostrophe(osisID, input);
+        input = fixPunctuation(osisID, input);
+        return input;
     }
 
-    private String analyzeApostrophe(String osisID, String input)
+    private String fixApostrophe(String osisID, String input)
     {
         Matcher matcher;
         boolean changed = false;
+        Verse v = null;
+
+        try
+        {
+            v = VerseFactory.fromString(osisID);
+        }
+        catch (NoSuchVerseException e)
+        {
+            return input;
+        }
 
         if (input.indexOf('\'') == -1)
         {
@@ -1241,16 +1301,6 @@ public class BibleToOsis
             input = input.replace(matcher.group(), replace);
             changed = true;
 //            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        Verse v = null;
-        try
-        {
-            v = VerseFactory.fromString(osisID);
-        }
-        catch (NoSuchVerseException e)
-        {
-            return input;
         }
 
         // for the ot only
@@ -1336,9 +1386,9 @@ public class BibleToOsis
         if (matcher.find())
         {
             String replace = matcher.group(1) + "s</w>" + matcher.group(2); //$NON-NLS-1$
-//            input = input.replace(matcher.group(), replace);
+            input = input.replace(matcher.group(), replace);
             changed = true;
-            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
+//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         matcher = a15Pattern.matcher(input);
@@ -1362,6 +1412,15 @@ public class BibleToOsis
             }
         }
 
+        matcher = a17Pattern.matcher(input);
+        if (matcher.find())
+        {
+            String replace = matcher.group(1) + 's' + matcher.group(2);
+            input = input.replace(matcher.group(), replace);
+            changed = true;
+//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
 //        matcher = axPattern.matcher(input);
 //        if (matcher.find())
 //        {
@@ -1372,6 +1431,98 @@ public class BibleToOsis
 //        {
 //            System.err.println(osisID + ": " + input); //$NON-NLS-1$
 //        }
+
+        return input;
+    }
+
+    private String fixPunctuation(String osisID, String input)
+    {
+        Matcher matcher = w1Pattern.matcher(input);
+        while (matcher.find())
+        {
+            String replace = matcher.group(1);
+            input = input.replace(matcher.group(), replace);
+//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        matcher = w2Pattern.matcher(input);
+        while (matcher.find())
+        {
+            String replace = ") "; //$NON-NLS-1$
+            input = input.replace(matcher.group(), replace);
+//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        matcher = w3Pattern.matcher(input);
+        while (matcher.find())
+        {
+            String replace = " "; //$NON-NLS-1$
+            input = input.replace(matcher.group(), replace);
+//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        matcher = w4Pattern.matcher(input);
+        while (matcher.find())
+        {
+            String replace = "</w>" + matcher.group(1); //$NON-NLS-1$
+            input = input.replace(matcher.group(), replace);
+//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        matcher = w5Pattern.matcher(input);
+        if (matcher.find())
+        {
+            String replace = matcher.group(2) + matcher.group(1);
+            input = input.replace(matcher.group(), replace);
+//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        // strip trailing spaces
+        int length = input.length();
+        int here = length;
+        while (input.charAt(here - 1) == ' ')
+        {
+            here--;
+        }
+
+        if (here < length)
+        {
+            input = input.substring(0, here);
+//            if (length - here > 1)
+//            {
+//                System.err.println(osisID + " remove " + (length - here) + " trailing spaces"); //$NON-NLS-1$ //$NON-NLS-2$
+//            }
+        }
+
+        matcher = w6Pattern.matcher(input);
+        while (matcher.find())
+        {
+            String replace = matcher.group(2) + matcher.group(1);
+            input = input.replace(matcher.group(), replace);
+//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
+            matcher.reset(input);
+        }
+
+        // strip leading spaces
+        here = 0;
+        while (input.charAt(here) == ' ')
+        {
+            here++;
+        }
+        
+        if (here > 0)
+        {
+            input = input.substring(here);
+//            System.err.println(osisID + " remove " + here + " leading spaces"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        matcher = wnPattern.matcher(input);
+        if (matcher.find())
+        {
+            String replace = " "; //$NON-NLS-1$
+            input = input.replace(matcher.group(), replace);
+//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
+        }
 
         return input;
     }
@@ -1414,7 +1565,19 @@ public class BibleToOsis
     private static Pattern a14Pattern = Pattern.compile("(\\w+[^Ss]')</w>(.)"); //$NON-NLS-1$
     private static Pattern a15Pattern = Pattern.compile("(husband') "); //$NON-NLS-1$
     private static Pattern a16Pattern = Pattern.compile("(cockatrice')s"); //$NON-NLS-1$
-    private static Pattern axPattern = Pattern.compile(".....s'[^ < ].........."); //$NON-NLS-1$
+    private static Pattern a17Pattern = Pattern.compile("(ass')([^s])"); //$NON-NLS-1$
+//    private static Pattern axPattern = Pattern.compile(".....[sS]'[^sS< \\.].........."); //$NON-NLS-1$
+
+    private static Pattern w1Pattern = Pattern.compile("\\s([,;:.?!])"); //$NON-NLS-1$
+    private static Pattern w2Pattern = Pattern.compile("\\s\\)"); //$NON-NLS-1$
+    private static Pattern w3Pattern = Pattern.compile("[\n\r\t]"); //$NON-NLS-1$
+    private static Pattern w4Pattern = Pattern.compile("(\\{Punct}|\\s)+</w>"); //$NON-NLS-1$
+    private static Pattern wxxPattern = Pattern.compile("([!\"#$%&'()*+,-./:;=?@^_`{|}~])"); //$NON-NLS-1$
+    private static Pattern w5Pattern = Pattern.compile("(<w\\s[^>]*>)([!\"#$%&'()*+,-./:;=?@^_`{|}~ ]+)"); //$NON-NLS-1$
+    private static Pattern w6Pattern = Pattern.compile("(<w\\s[^>]*></w>)([!\"#$%&'()*+,-./:;=?@^_`{|}~ ]+)"); //$NON-NLS-1$
+    private static Pattern wnPattern = Pattern.compile("\\s\\s+"); //$NON-NLS-1$
+
+    private boolean moveP = false;
 
     private Writer writer;
     private String filename;
