@@ -138,7 +138,7 @@ public class BibleToOsis
                             }
                             buildChapterClose(buf);
                         }
-                        buildBookClose(buf);
+                        buildBookClose(buf, lastBookName);
                         buildDocumentClose(buf, BY_CHAPTER);
                         openOutputFile(lastBookName, BY_CHAPTER);
                         writeDocument(buf);
@@ -260,7 +260,7 @@ public class BibleToOsis
             }
 
             buildChapterClose(buf);
-            buildBookClose(buf);
+            buildBookClose(buf, lastBookName);
             buildDocumentClose(buf, true);
             openOutputFile(lastBookName, BY_CHAPTER);
             writeDocument(buf);
@@ -425,15 +425,28 @@ public class BibleToOsis
         MessageFormat msgFormat = new MessageFormat("<div type=\"book\" osisID=\"{0}\" canonical=\"true\">\n"); //$NON-NLS-1$
         msgFormat.format(new Object[] { bookName}, buf, pos);
 
+        MessageFormat titleFormat = new MessageFormat("<title type=\"main\">{0}</title>\n"); //$NON-NLS-1$
         if (bookTitle.length() > 0)
         {
-            MessageFormat titleFormat = new MessageFormat("<title type=\"main\">{0}</title>\n"); //$NON-NLS-1$
             titleFormat.format(new Object[] { bookTitle }, buf, pos);
+        }
+        else
+        {
+            String title = bookTitles.get(bookName);
+            if (title != null)
+            {
+                titleFormat.format(new Object[] { title }, buf, pos);
+            }
         }
     }
 
-    private void buildBookClose(StringBuffer buf)
+    private void buildBookClose(StringBuffer buf, String bookName)
     {
+        String colophon = colophons.get(bookName);
+        if (colophon != null)
+        {
+            buf.append(colophon);
+        }
         buf.append("</div>\n"); //$NON-NLS-1$
     }
 
@@ -1743,6 +1756,96 @@ public class BibleToOsis
     private static Pattern w8Pattern = Pattern.compile("(<milestone type=\"x-p\" marker=\"\u00B6\"/>)\\s+"); //$NON-NLS-1$
     private static Pattern w9Pattern = Pattern.compile("(<title\\s[^>]*>)\\s+"); //$NON-NLS-1$
     private static Pattern wnPattern = Pattern.compile("\\s\\s+"); //$NON-NLS-1$
+    
+    private static Map<String, String> bookTitles = new HashMap<String, String>();
+    
+    static {
+        bookTitles.put("Gen", "THE FIRST BOOK OF MOSES, CALLED GENESIS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Exod", "THE SECOND BOOK OF MOSES, CALLED EXODUS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Lev", "THE THIRD BOOK OF MOSES, CALLED LEVITICUS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Num", "THE FOURTH BOOK OF MOSES, CALLED NUMBERS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Deut", "THE FIFTH BOOK OF MOSES, CALLED DEUTERONOMY"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Josh", "THE BOOK OF JOSHUA"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Judg", "THE BOOK OF JUDGES"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Ruth", "THE BOOK OF RUTH"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("1Sam", "THE FIRST BOOK OF SAMUEL OTHERWISE CALLED THE FIRST BOOK OF THE KINGS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("2Sam", "THE SECOND BOOK OF SAMUEL OTHERWISE CALLED THE SECOND BOOK OF THE KINGS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("1Kgs", "THE FIRST BOOK OF THE KINGS COMMONLY CALLED THE THIRD BOOK OF THE KINGS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("2Kgs", "THE SECOND BOOK OF THE KINGS COMMONLY CALLED THE FOURTH BOOK OF THE KINGS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("1Chr", "THE FIRST BOOK OF THE CHRONICLES"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("2Chr", "THE SECOND BOOK OF THE CHRONICLES"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Ezra", "EZRA"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Neh", "THE BOOK OF NEHEMIAH"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Esth", "THE BOOK OF ESTHER"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Job", "THE BOOK OF JOB"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Ps", "THE BOOK OF PSALMS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Prov", "THE PROVERBS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Eccl", "ECCLESIASTES OR, THE PREACHER"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Song", "THE SONG OF SOLOMON"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Isa", "THE BOOK OF THE PROPHET ISAIAH"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Jer", "THE BOOK OF THE PROPHET JEREMIAH"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Lam", "THE LAMENTATIONS OF JEREMIAH"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Ezek", "THE BOOK OF THE PROPHET EZEKIEL"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Dan", "THE BOOK OF DANIEL"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Hos", "HOSEA"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Joel", "JOEL"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Amos", "AMOS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Obad", "OBADIAH"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Jonah", "JONAH"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Mic", "MICAH"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Nah", "NAHUM"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Hab", "HABAKKUK"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Zeph", "ZEPHANIAH"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Hag", "HAGGAI"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Zech", "ZECHARIAH"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Mal", "MALACHI"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Matt", "THE GOSPEL ACCORDING TO SAINT MATTHEW"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Mark", "THE GOSPEL ACCORDING TO SAINT MARK"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Luke", "THE GOSPEL ACCORDING TO SAINT LUKE"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("John", "THE GOSPEL ACCORDING TO SAINT JOHN"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Acts", "THE ACTS OF THE APOSTLES"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Rom", "THE EPISTLE OF PAUL THE APOSTLE TO THE ROMANS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("1Cor", "THE FIRST EPISTLE OF PAUL THE APOSTLE TO THE CORINTHIANS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("2Cor", "THE SECOND EPISTLE OF PAUL THE APOSTLE TO THE CORINTHIANS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Gal", "THE EPISTLE OF PAUL THE APOSTLE TO THE GALATIANS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Eph", "THE EPISTLE OF PAUL THE APOSTLE TO THE EPHESIANS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Phil", "THE EPISTLE OF PAUL THE APOSTLE TO THE PHILIPPIANS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Col", "THE EPISTLE OF PAUL THE APOSTLE TO THE COLOSSIANS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("1Thess", "THE FIRST EPISTLE OF PAUL THE APOSTLE TO THE THESSALONIANS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("2Thess", "THE SECOND EPISTLE OF PAUL THE APOSTLE TO THE THESSALONIANS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("1Tim", "THE FIRST EPISTLE OF PAUL THE APOSTLE TO TIMOTHY"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("2Tim", "THE SECOND EPISTLE OF PAUL THE APOSTLE TO TIMOTHY"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Titus", "THE EPISTLE OF PAUL TO TITUS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Phlm", "THE EPISTLE OF PAUL TO PHILEMON"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Heb", "THE EPISTLE OF PAUL THE APOSTLE TO THE HEBREWS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Jas", "THE GENERAL EPISTLE OF JAMES"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("1Pet", "THE FIRST EPISTLE GENERAL OF PETER"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("2Pet", "THE SECOND EPISTLE GENERAL OF PETER"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("1John", "THE FIRST EPISTLE GENERAL OF JOHN"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("2John", "THE SEOND EPISTLE OF JOHN"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("3John", "THE THIRD EPISTLE OF JOHN"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Jude", "THE GENERAL EPISTLE OF JUDE"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Rev", "THE REVELATION OF SAINT JOHN THE DIVINE"); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    private static Map<String, String> colophons = new HashMap<String, String>();
+    
+    static {
+        colophons.put("Rom", "<div type=\"colophon\" osisID=\"Rom.c\">Written to the Romans from Corinthus, <transChange type=\"added\">and sent</transChange> by Phebe servant of the church at Cenchrea.</div>\n"); //$NON-NLS-1$ //$NON-NLS-2$
+        colophons.put("1Cor", "<div type=\"colophon\" osisID=\"1Cor.c\">The first <transChange type=\"added\">epistle</transChange> to the Corinthians was written from Philippi by Stephanas, and Fortunatus, and Achaicus, and Timotheus.</div>\n"); //$NON-NLS-1$ //$NON-NLS-2$
+        colophons.put("2Cor", "<div type=\"colophon\" osisID=\"2Cor.c\">The second <transChange type=\"added\">epistle</transChange> to the Corinthians was written from Philippi, <transChange type=\"added\">a city</transChange> of Macedonia, by Titus and Lucas.</div>\n"); //$NON-NLS-1$ //$NON-NLS-2$
+        colophons.put("Gal", "<div type=\"colophon\" osisID=\"Gal.c\">Unto the Galatians written from Rome.</div>\n"); //$NON-NLS-1$ //$NON-NLS-2$
+        colophons.put("Eph", "<div type=\"colophon\" osisID=\"Eph.c\">Written from Rome unto the Ephesians by Tychicus.</div>\n"); //$NON-NLS-1$ //$NON-NLS-2$
+        colophons.put("Phil", "<div type=\"colophon\" osisID=\"Phil.c\">It was written to the Philippians from Rome by Epaphroditus.</div>\n"); //$NON-NLS-1$ //$NON-NLS-2$
+        colophons.put("Col", "<div type=\"colophon\" osisID=\"Col.c\">Written from Rome to the Colossians by Tychicus and Onesimus.</div>\n"); //$NON-NLS-1$ //$NON-NLS-2$
+        colophons.put("1Thess", "<div type=\"colophon\" osisID=\"1Thess.c\">The first <transChange type=\"added\">epistle</transChange> unto the Thessalonians was written from Athens.</div>\n"); //$NON-NLS-1$ //$NON-NLS-2$
+        colophons.put("2Thess", "<div type=\"colophon\" osisID=\"2Thess.c\">The second <transChange type=\"added\">epistle</transChange> to the Thessalonians was written from Athens.</div>\n"); //$NON-NLS-1$ //$NON-NLS-2$
+        colophons.put("1Tim", "<div type=\"colophon\" osisID=\"1Tim.c\">The first to Timothy was written from Laodicea, which is the chiefest city of Phrygia Pacatiana.</div>\n"); //$NON-NLS-1$ //$NON-NLS-2$
+        colophons.put("2Tim", "<div type=\"colophon\" osisID=\"2Tim.c\">The second <transChange type=\"added\">epistle</transChange> unto Timotheus, ordained the first bishop of the church of the Ephesians, was written from Rome, when Paul was brought before Nero the second time.</div>\n"); //$NON-NLS-1$ //$NON-NLS-2$
+        colophons.put("Titus", "<div type=\"colophon\" osisID=\"Titus.c\">It was written to Titus, ordained the first bishop of the church of the Cretians, from Nicopolis of Macedonia.</div>\n"); //$NON-NLS-1$ //$NON-NLS-2$
+        colophons.put("Phlm", "<div type=\"colophon\" osisID=\"Phlm.c\">Written from Rome to Philemon, by Onesimus, a servant.</div>\n"); //$NON-NLS-1$ //$NON-NLS-2$
+        colophons.put("Heb", "<div type=\"colophon\" osisID=\"Heb.c\">Written to the Hebrews from Italy by Timothy.</div>\n"); //$NON-NLS-1$ //$NON-NLS-2$
+    }
 
     private boolean moveP = false;
 
