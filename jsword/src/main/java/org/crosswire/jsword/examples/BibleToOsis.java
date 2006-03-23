@@ -426,18 +426,18 @@ public class BibleToOsis
         msgFormat.format(new Object[] { bookName}, buf, pos);
 
         MessageFormat titleFormat = new MessageFormat("<title type=\"main\">{0}</title>\n"); //$NON-NLS-1$
-        if (bookTitle.length() > 0)
-        {
-            titleFormat.format(new Object[] { bookTitle }, buf, pos);
-        }
-        else
-        {
+//        if (bookTitle.length() > 0)
+//        {
+//            titleFormat.format(new Object[] { bookTitle }, buf, pos);
+//        }
+//        else
+//        {
             String title = bookTitles.get(bookName);
             if (title != null)
             {
                 titleFormat.format(new Object[] { title }, buf, pos);
             }
-        }
+//        }
     }
 
     private void buildBookClose(StringBuffer buf, String bookName)
@@ -457,8 +457,14 @@ public class BibleToOsis
 
     private void buildChapterOpen(StringBuffer buf, String bookName, int chapter)
     {
-        MessageFormat msgFormat = new MessageFormat("<chapter osisID=\"{0}.{1}\">\n"); //$NON-NLS-1$
-        msgFormat.format(new Object[] { bookName, new Integer(chapter)}, buf, pos);
+        String chapterName = "CHAPTER"; //$NON-NLS-1$
+        if (bookName.equals("Ps")) //$NON-NLS-1$
+        {
+            chapterName = "PSALM"; //$NON-NLS-1$
+        }
+        
+        MessageFormat msgFormat = new MessageFormat("<chapter osisID=\"{0}.{1}\" chapterTitle=\"{2} {1}.\">\n<title type=\"chapter\">{2} {1}.</title>\n"); //$NON-NLS-1$
+        msgFormat.format(new Object[] { bookName, new Integer(chapter), chapterName }, buf, pos);
     }
 
     private void buildPsalmTitle(StringBuffer buf, String psalmTitle)
@@ -1760,11 +1766,11 @@ public class BibleToOsis
     private static Map<String, String> bookTitles = new HashMap<String, String>();
     
     static {
-        bookTitles.put("Gen", "THE FIRST BOOK OF MOSES, CALLED GENESIS"); //$NON-NLS-1$ //$NON-NLS-2$
-        bookTitles.put("Exod", "THE SECOND BOOK OF MOSES, CALLED EXODUS"); //$NON-NLS-1$ //$NON-NLS-2$
-        bookTitles.put("Lev", "THE THIRD BOOK OF MOSES, CALLED LEVITICUS"); //$NON-NLS-1$ //$NON-NLS-2$
-        bookTitles.put("Num", "THE FOURTH BOOK OF MOSES, CALLED NUMBERS"); //$NON-NLS-1$ //$NON-NLS-2$
-        bookTitles.put("Deut", "THE FIFTH BOOK OF MOSES, CALLED DEUTERONOMY"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Gen", "THE FIRST BOOK OF MOSES CALLED GENESIS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Exod", "THE SECOND BOOK OF MOSES CALLED EXODUS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Lev", "THE THIRD BOOK OF MOSES CALLED LEVITICUS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Num", "THE FOURTH BOOK OF MOSES CALLED NUMBERS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Deut", "THE FIFTH BOOK OF MOSES CALLED DEUTERONOMY"); //$NON-NLS-1$ //$NON-NLS-2$
         bookTitles.put("Josh", "THE BOOK OF JOSHUA"); //$NON-NLS-1$ //$NON-NLS-2$
         bookTitles.put("Judg", "THE BOOK OF JUDGES"); //$NON-NLS-1$ //$NON-NLS-2$
         bookTitles.put("Ruth", "THE BOOK OF RUTH"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1799,10 +1805,10 @@ public class BibleToOsis
         bookTitles.put("Hag", "HAGGAI"); //$NON-NLS-1$ //$NON-NLS-2$
         bookTitles.put("Zech", "ZECHARIAH"); //$NON-NLS-1$ //$NON-NLS-2$
         bookTitles.put("Mal", "MALACHI"); //$NON-NLS-1$ //$NON-NLS-2$
-        bookTitles.put("Matt", "THE GOSPEL ACCORDING TO SAINT MATTHEW"); //$NON-NLS-1$ //$NON-NLS-2$
-        bookTitles.put("Mark", "THE GOSPEL ACCORDING TO SAINT MARK"); //$NON-NLS-1$ //$NON-NLS-2$
-        bookTitles.put("Luke", "THE GOSPEL ACCORDING TO SAINT LUKE"); //$NON-NLS-1$ //$NON-NLS-2$
-        bookTitles.put("John", "THE GOSPEL ACCORDING TO SAINT JOHN"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Matt", "THE GOSPEL ACCORDING TO ST. MATTHEW"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Mark", "THE GOSPEL ACCORDING TO ST. MARK"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Luke", "THE GOSPEL ACCORDING TO ST. LUKE"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("John", "THE GOSPEL ACCORDING TO ST. JOHN"); //$NON-NLS-1$ //$NON-NLS-2$
         bookTitles.put("Acts", "THE ACTS OF THE APOSTLES"); //$NON-NLS-1$ //$NON-NLS-2$
         bookTitles.put("Rom", "THE EPISTLE OF PAUL THE APOSTLE TO THE ROMANS"); //$NON-NLS-1$ //$NON-NLS-2$
         bookTitles.put("1Cor", "THE FIRST EPISTLE OF PAUL THE APOSTLE TO THE CORINTHIANS"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1815,17 +1821,17 @@ public class BibleToOsis
         bookTitles.put("2Thess", "THE SECOND EPISTLE OF PAUL THE APOSTLE TO THE THESSALONIANS"); //$NON-NLS-1$ //$NON-NLS-2$
         bookTitles.put("1Tim", "THE FIRST EPISTLE OF PAUL THE APOSTLE TO TIMOTHY"); //$NON-NLS-1$ //$NON-NLS-2$
         bookTitles.put("2Tim", "THE SECOND EPISTLE OF PAUL THE APOSTLE TO TIMOTHY"); //$NON-NLS-1$ //$NON-NLS-2$
-        bookTitles.put("Titus", "THE EPISTLE OF PAUL TO TITUS"); //$NON-NLS-1$ //$NON-NLS-2$
-        bookTitles.put("Phlm", "THE EPISTLE OF PAUL TO PHILEMON"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Titus", "THE EPISTLE OF PAUL THE APOSTLE TO TITUS"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Phlm", "THE EPISTLE OF PAUL THE APOSTLE TO PHILEMON"); //$NON-NLS-1$ //$NON-NLS-2$
         bookTitles.put("Heb", "THE EPISTLE OF PAUL THE APOSTLE TO THE HEBREWS"); //$NON-NLS-1$ //$NON-NLS-2$
         bookTitles.put("Jas", "THE GENERAL EPISTLE OF JAMES"); //$NON-NLS-1$ //$NON-NLS-2$
         bookTitles.put("1Pet", "THE FIRST EPISTLE GENERAL OF PETER"); //$NON-NLS-1$ //$NON-NLS-2$
         bookTitles.put("2Pet", "THE SECOND EPISTLE GENERAL OF PETER"); //$NON-NLS-1$ //$NON-NLS-2$
         bookTitles.put("1John", "THE FIRST EPISTLE GENERAL OF JOHN"); //$NON-NLS-1$ //$NON-NLS-2$
-        bookTitles.put("2John", "THE SEOND EPISTLE OF JOHN"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("2John", "THE SECOND EPISTLE OF JOHN"); //$NON-NLS-1$ //$NON-NLS-2$
         bookTitles.put("3John", "THE THIRD EPISTLE OF JOHN"); //$NON-NLS-1$ //$NON-NLS-2$
         bookTitles.put("Jude", "THE GENERAL EPISTLE OF JUDE"); //$NON-NLS-1$ //$NON-NLS-2$
-        bookTitles.put("Rev", "THE REVELATION OF SAINT JOHN THE DIVINE"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Rev", "THE REVELATION OF ST. JOHN THE DIVINE"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     private static Map<String, String> colophons = new HashMap<String, String>();
