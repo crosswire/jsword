@@ -66,7 +66,7 @@ public class BibleToOsis
      */
     private static final String BIBLE_NAME = "KJV"; //$NON-NLS-1$
     private static final String BIBLE_RANGE = "Gen-Rev"; //$NON-NLS-1$
-    private static final boolean BY_CHAPTER = false;
+    private static final boolean BY_BOOK = false;
 
     /**
      * @param args
@@ -91,9 +91,9 @@ public class BibleToOsis
         {
             Key keys = bible.getKey(range);
 
-            openOutputFile(bmd.getInitials(), !BY_CHAPTER);
-            buildDocumentOpen(buf, bmd, range, !BY_CHAPTER);
-            if (!BY_CHAPTER)
+            openOutputFile(bmd.getInitials(), !BY_BOOK);
+            buildDocumentOpen(buf, bmd, range, !BY_BOOK);
+            if (!BY_BOOK)
             {
                 writeDocument(buf);
             }
@@ -139,14 +139,14 @@ public class BibleToOsis
                             buildChapterClose(buf);
                         }
                         buildBookClose(buf, lastBookName);
-                        buildDocumentClose(buf, BY_CHAPTER);
-                        openOutputFile(lastBookName, BY_CHAPTER);
+                        buildDocumentClose(buf, BY_BOOK);
+                        openOutputFile(lastBookName, BY_BOOK);
                         writeDocument(buf);
-                        closeOutputFile(BY_CHAPTER);
+                        closeOutputFile(BY_BOOK);
                     }
 
                     buf = new StringBuffer();
-                    buildDocumentOpen(buf, bmd, currentBookName, BY_CHAPTER);
+                    buildDocumentOpen(buf, bmd, currentBookName, BY_BOOK);
                     buildBookOpen(buf, currentBookName, bookTitle);
                     bookTitle = ""; //$NON-NLS-1$
                 }
@@ -262,7 +262,7 @@ public class BibleToOsis
             buildChapterClose(buf);
             buildBookClose(buf, lastBookName);
             buildDocumentClose(buf, true);
-            openOutputFile(lastBookName, BY_CHAPTER);
+            openOutputFile(lastBookName, BY_BOOK);
             writeDocument(buf);
             closeOutputFile(true);
         }
@@ -422,6 +422,7 @@ public class BibleToOsis
 
     private void buildBookOpen(StringBuffer buf, String bookName, String bookTitle)
     {
+        System.err.println("processing " + bookName); //$NON-NLS-1$
         MessageFormat msgFormat = new MessageFormat("<div type=\"book\" osisID=\"{0}\" canonical=\"true\">\n"); //$NON-NLS-1$
         msgFormat.format(new Object[] { bookName}, buf, pos);
 
@@ -1417,7 +1418,7 @@ public class BibleToOsis
         }
 
         matcher = a2Pattern.matcher(input);
-        if (matcher.find())
+        while (matcher.find())
         {
             String replace = matcher.group(1) + 'S' + matcher.group(2);
             input = input.replace(matcher.group(), replace);
@@ -1426,7 +1427,7 @@ public class BibleToOsis
         }
 
         matcher = a3Pattern.matcher(input);
-        if (matcher.find())
+        while (matcher.find())
         {
             String replace = matcher.group(1) + 's' + matcher.group(2);
             input = input.replace(matcher.group(), replace);
@@ -1434,8 +1435,13 @@ public class BibleToOsis
 //            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
+//        if (osisID.equals("Gen.31.1")) //$NON-NLS-1$
+//        {
+//            System.err.println(osisID + ':' + input);
+//        }
+
         matcher = a4Pattern.matcher(input);
-        if (matcher.find())
+        while (matcher.find())
         {
             String replace = matcher.group(1) + matcher.group(2) + "</w> "; //$NON-NLS-1$
             input = input.replace(matcher.group(), replace);
@@ -1445,7 +1451,7 @@ public class BibleToOsis
 
         // for the ot only
         matcher = a5Pattern.matcher(input);
-        if (matcher.find())
+        while (matcher.find())
         {
             String replace = matcher.group(1) + "S "; //$NON-NLS-1$
             input = input.replace(matcher.group(), replace);
@@ -1457,7 +1463,7 @@ public class BibleToOsis
         if (SwordConstants.getTestament(v) == SwordConstants.TESTAMENT_OLD)
         {
             matcher = a6Pattern.matcher(input);
-            if (matcher.find())
+            while (matcher.find())
             {
                 String replace = matcher.group(1) + "s "; //$NON-NLS-1$
                 input = input.replace(matcher.group(), replace);
@@ -1467,7 +1473,7 @@ public class BibleToOsis
         }
 
         matcher = a7Pattern.matcher(input);
-        if (matcher.find())
+        while (matcher.find())
         {
             String replace = matcher.group(1) + "S " + matcher.group(2); //$NON-NLS-1$
             input = input.replace(matcher.group(), replace);
@@ -1478,7 +1484,7 @@ public class BibleToOsis
         if (SwordConstants.getTestament(v) == SwordConstants.TESTAMENT_OLD)
         {
             matcher = a8Pattern.matcher(input);
-            if (matcher.find())
+            while (matcher.find())
             {
                 String replace = matcher.group(1) + "s " + matcher.group(2); //$NON-NLS-1$
                 input = input.replace(matcher.group(), replace);
@@ -1488,7 +1494,7 @@ public class BibleToOsis
         }
         
         matcher = a9Pattern.matcher(input);
-        if (matcher.find())
+        while (matcher.find())
         {
             String replace = matcher.group(1) + "'</w> <"; //$NON-NLS-1$
             input = input.replace(matcher.group(), replace);
@@ -1497,7 +1503,7 @@ public class BibleToOsis
         }
 
         matcher = a10Pattern.matcher(input);
-        if (matcher.find())
+        while (matcher.find())
         {
             String replace = matcher.group(1) + "'</w> " + matcher.group(2); //$NON-NLS-1$
             input = input.replace(matcher.group(), replace);
@@ -1506,7 +1512,7 @@ public class BibleToOsis
         }
 
         matcher = a11Pattern.matcher(input);
-        if (matcher.find())
+        while (matcher.find())
         {
             String replace = matcher.group(2) + "</w> " + matcher.group(1); //$NON-NLS-1$
             input = input.replace(matcher.group(), replace);
@@ -1515,7 +1521,7 @@ public class BibleToOsis
         }
 
         matcher = a12Pattern.matcher(input);
-        if (matcher.find())
+        while (matcher.find())
         {
             String replace = "'</w> "; //$NON-NLS-1$
             input = input.replace(matcher.group(), replace);
@@ -1524,7 +1530,7 @@ public class BibleToOsis
         }
 
         matcher = a13Pattern.matcher(input);
-        if (matcher.find())
+        while (matcher.find())
         {
             String replace = "'</w> "; //$NON-NLS-1$
             input = input.replace(matcher.group(), replace);
@@ -1533,7 +1539,7 @@ public class BibleToOsis
         }
 
         matcher = a14Pattern.matcher(input);
-        if (matcher.find())
+        while (matcher.find())
         {
             String replace = matcher.group(1) + "s</w>" + matcher.group(2); //$NON-NLS-1$
             input = input.replace(matcher.group(), replace);
@@ -1542,7 +1548,7 @@ public class BibleToOsis
         }
 
         matcher = a15Pattern.matcher(input);
-        if (matcher.find())
+        while (matcher.find())
         {
             String replace = matcher.group(1) + "s "; //$NON-NLS-1$
             input = input.replace(matcher.group(), replace);
@@ -1553,7 +1559,7 @@ public class BibleToOsis
         if (osisID.equals("Isa.59.5")) //$NON-NLS-1$
         {
             matcher = a16Pattern.matcher(input);
-            if (matcher.find())
+            while (matcher.find())
             {
                 String replace = matcher.group(1) + ' ';
                 input = input.replace(matcher.group(), replace);
@@ -1563,7 +1569,7 @@ public class BibleToOsis
         }
 
         matcher = a17Pattern.matcher(input);
-        if (matcher.find())
+        while (matcher.find())
         {
             String replace = matcher.group(1) + 's' + matcher.group(2);
             input = input.replace(matcher.group(), replace);
@@ -1572,7 +1578,7 @@ public class BibleToOsis
         }
 
 //        matcher = axPattern.matcher(input);
-//        if (matcher.find())
+//        while (matcher.find())
 //        {
 //            System.err.println(osisID + " LOOK ' in :" + matcher.group()); //$NON-NLS-1$
 //        }
@@ -1612,7 +1618,7 @@ public class BibleToOsis
         }
 
         matcher = w6Pattern.matcher(input);
-        if (matcher.find())
+        while (matcher.find())
         {
             String replace = matcher.group(2) + matcher.group(1);
             input = input.replace(matcher.group(), replace);
@@ -1693,7 +1699,7 @@ public class BibleToOsis
         }
 
         matcher = wnPattern.matcher(input);
-        if (matcher.find())
+        while (matcher.find())
         {
             String replace = " "; //$NON-NLS-1$
             input = input.replace(matcher.group(), replace);
