@@ -474,6 +474,12 @@ public class BibleToOsis
         msgFormat.format(new Object[] { psalmTitle }, buf, pos);
     }
 
+//    private void buildPsalmAcrostic(StringBuffer buf, String psalmTitle)
+//    {
+//        MessageFormat msgFormat = new MessageFormat("<title type=\"acrostic\" canonical=\"true\">{0}</title>"); //$NON-NLS-1$
+//        msgFormat.format(new Object[] { psalmTitle }, buf, pos);
+//    }
+
     private void buildPreVerseOpen(StringBuffer buf, String preVerse)
     {
         MessageFormat msgFormat = new MessageFormat("<div type=\"section\" canonical=\"true\"><title canonical=\"true\">{0}</title>"); //$NON-NLS-1$
@@ -531,6 +537,14 @@ public class BibleToOsis
 
     private String cleanup(String osisID, String input, boolean inVerse)
     {
+        String acrostic = acrostics.get(osisID);
+        if (acrostic != null)
+        {
+            MessageFormat msgFormat = new MessageFormat("<title type=\"acrostic\" canonical=\"true\">{0}</title>"); //$NON-NLS-1$
+            input = input.replace(acrostic, ""); //$NON-NLS-1$
+            input = msgFormat.format(new Object[] { acrostic }) + input;
+        }
+
         // Fix up bad notes
         MessageFormat noteCleanupFormat = new MessageFormat("<note type=\"x-strongsMarkup\" resp=\"{0} {1}\">{2}</note>"); //$NON-NLS-1$
         while (true)
@@ -1435,11 +1449,6 @@ public class BibleToOsis
 //            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-//        if (osisID.equals("Gen.31.1")) //$NON-NLS-1$
-//        {
-//            System.err.println(osisID + ':' + input);
-//        }
-
         matcher = a4Pattern.matcher(input);
         while (matcher.find())
         {
@@ -1556,7 +1565,7 @@ public class BibleToOsis
 //            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        if (osisID.equals("Isa.59.5")) //$NON-NLS-1$
+        if (osisID.equals("Isa.59.5") || osisID.equals("Isa.11.8")) //$NON-NLS-1$ //$NON-NLS-2$
         {
             matcher = a16Pattern.matcher(input);
             while (matcher.find())
@@ -1593,6 +1602,36 @@ public class BibleToOsis
 
     private String fixPunctuation(String osisID, String input)
     {
+        if (osisID.equals("Lev.2.3") || osisID.equals("Lev.2.10")) //$NON-NLS-1$ //$NON-NLS-2$
+        {
+            input = input.replace("sons'", "sons':"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Lev.7.31")) //$NON-NLS-1$
+        {
+            input = input.replace("sons'", "sons'."); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Lev.24.9") || osisID.equals("Ezek.46.16")) //$NON-NLS-1$ //$NON-NLS-2$
+        {
+            input = input.replace("sons'", "sons';"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("1Sam.6.9")) //$NON-NLS-1$
+        {
+            input = input.replace("us:", "us;"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("2Kgs.12.16")) //$NON-NLS-1$
+        {
+            input = input.replace("priests'", "priests'."); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Ps.119.9")) //$NON-NLS-1$
+        {
+            System.err.println(osisID + ':' + input);
+        }
+
         Matcher matcher = w1Pattern.matcher(input);
         while (matcher.find())
         {
@@ -1741,7 +1780,7 @@ public class BibleToOsis
 
     private static Pattern a1Pattern = Pattern.compile("(\\w+s')(\\w\\w+)"); //$NON-NLS-1$
     private static Pattern a2Pattern = Pattern.compile("(LORD')(</w>)"); //$NON-NLS-1$
-    private static Pattern a3Pattern = Pattern.compile("(\\w*[^s]')(</w>)"); //$NON-NLS-1$
+    private static Pattern a3Pattern = Pattern.compile("(\\w*[^s]')(</w>|</note>|</seg>|</transChange>)"); //$NON-NLS-1$
     private static Pattern a4Pattern = Pattern.compile("(\\w*[^s])</w>('s)"); //$NON-NLS-1$
     private static Pattern a5Pattern = Pattern.compile("(LORD') "); //$NON-NLS-1$
     private static Pattern a6Pattern = Pattern.compile("(\\w*[^s>]') "); //$NON-NLS-1$
@@ -1858,6 +1897,33 @@ public class BibleToOsis
         colophons.put("Phlm", "<div type=\"colophon\" osisID=\"Phlm.c\">Written from Rome to Philemon, by Onesimus, a servant.</div>\n"); //$NON-NLS-1$ //$NON-NLS-2$
         colophons.put("Heb", "<div type=\"colophon\" osisID=\"Heb.c\">Written to the Hebrews from Italy by Timothy.</div>\n"); //$NON-NLS-1$ //$NON-NLS-2$
     }
+
+    private static Map<String, String> acrostics = new HashMap<String, String>();
+    
+    static {
+        acrostics.put("Ps.119.1", "ALEPH."); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.9", "BETH."); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.17", "GIMEL."); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.25", "DALETH."); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.33", "HE."); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.41", "VAU."); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.49", "ZAIN."); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.57", "CHETH."); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.65", "TETH."); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.73", "JOD."); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.81", "CAPH."); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.89", "LAMED."); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.97", "MEM."); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.105", "NUN."); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.113", "SAMECH."); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.121", "AIN."); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.129", "PE."); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.137", "TZADDI."); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.145", "KOPH."); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.153", "RESH."); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.161", "SCHIN."); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.169", "TAU."); //$NON-NLS-1$ //$NON-NLS-2$
+    };
 
     private boolean moveP = false;
 
