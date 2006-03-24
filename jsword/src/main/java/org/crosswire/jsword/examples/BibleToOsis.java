@@ -115,11 +115,6 @@ public class BibleToOsis
                     // does not happen
                 }
 
-//                if (osisID.equals("Ps.72.1")) //$NON-NLS-1$
-//                {
-//                    System.err.println(osisID + ':' + raw);
-//                }
-
                 String currentBookName = BibleInfo.getOSISName(verse.getBook());
                 int currentChapter = verse.getChapter();
 
@@ -172,6 +167,12 @@ public class BibleToOsis
                  * If there were a former preverse then close the "section" div
                  * before outputting it before the verse.
                  */
+                if (osisID.equals("Ps.132.1")) //$NON-NLS-1$
+                {
+                    raw = raw.replace("<w lemma=\"x-Strongs:H07892\">A Song</w> <w lemma=\"x-Strongs:H04609\">of degrees</w>. ", //$NON-NLS-1$
+                                      "<title type=\"psalm\"><w lemma=\"x-Strongs:H07892\">A Song</w> <w lemma=\"x-Strongs:H04609\">of degrees</w>.</title>"); //$NON-NLS-1$
+                }
+
                 boolean foundPreVerse = false;
                 String preVerseText = ""; //$NON-NLS-1$
                 if (raw.contains(preVerseStart))
@@ -214,7 +215,7 @@ public class BibleToOsis
 
                 if (foundPsalmTitle)
                 {
-                    buildPsalmTitle(buf, cleanup(osisID, preVerseText, false)); //$NON-NLS-1$
+                    buildPsalmTitle(buf, cleanup(osisID, psalmTitleText, false)); //$NON-NLS-1$
                 }
 
                 if (foundPreVerse && !preVerseText.equals(psalmTitleText))
@@ -458,6 +459,17 @@ public class BibleToOsis
 
     private void buildChapterOpen(StringBuffer buf, String bookName, int chapter)
     {
+        if (bookName.equals("Obad") || //$NON-NLS-1$
+            bookName.equals("Phlm") || //$NON-NLS-1$
+            bookName.equals("2John") || //$NON-NLS-1$
+            bookName.equals("3John") || //$NON-NLS-1$
+            bookName.equals("Jude")) //$NON-NLS-1$
+        {
+            MessageFormat msgSingleFormat = new MessageFormat("<chapter osisID=\"{0}.{1}\" chapterTitle=\"{2} {1}.\">\n"); //$NON-NLS-1$
+            msgSingleFormat.format(new Object[] { bookName, new Integer(chapter) }, buf, pos);
+            return;
+        }
+
         String chapterName = "CHAPTER"; //$NON-NLS-1$
         if (bookName.equals("Ps")) //$NON-NLS-1$
         {
@@ -1399,6 +1411,7 @@ public class BibleToOsis
         }
         input = fixApostrophe(osisID, input);
         input = fixPunctuation(osisID, input);
+        input = fixOther(osisID, input);
         return input;
     }
 
@@ -1627,10 +1640,10 @@ public class BibleToOsis
             input = input.replace("priests'", "priests'."); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        if (osisID.equals("Ps.119.9")) //$NON-NLS-1$
-        {
-            System.err.println(osisID + ':' + input);
-        }
+//        if (osisID.equals("Ps.119.9")) //$NON-NLS-1$
+//        {
+//            System.err.println(osisID + ':' + input);
+//        }
 
         Matcher matcher = w1Pattern.matcher(input);
         while (matcher.find())
@@ -1685,11 +1698,16 @@ public class BibleToOsis
         // strip trailing spaces
         int length = input.length();
         int here = length;
+        try {
         while (input.charAt(here - 1) == ' ')
         {
             here--;
         }
-
+        } catch (StringIndexOutOfBoundsException ex)
+        {
+            System.err.println(osisID + ':' + input);
+            System.exit(0);
+        }
         if (here < length)
         {
             input = input.substring(0, here);
@@ -1743,6 +1761,396 @@ public class BibleToOsis
             String replace = " "; //$NON-NLS-1$
             input = input.replace(matcher.group(), replace);
 //            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        return input;
+    }
+
+    private String fixOther(String osisID, String input)
+    {
+        if (examine.contains(osisID))
+        {
+            System.err.println(osisID + ':' + input);
+        }
+
+        if (osisID.equals("Matt.2.6")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"4\" lemma=\"strong:G1093\" morph=\"robinson:N-VSF\">in ", "<transChange type=\"added\">in</transChange> <w src=\"4\" lemma=\"strong:G1093\" morph=\"robinson:N-VSF\">"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Matt.5.10")) //$NON-NLS-1$
+        {
+            input = input.replace("righteousness", "righteousness'"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Matt.5.30")) //$NON-NLS-1$
+        {
+            input = input.replace("cast it</w>", "cast</w> <transChange type=\"added\">it</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Matt.8.13")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"11\" lemma=\"strong:G1096\" morph=\"robinson:V-AOM-3S\">so ", "<transChange type=\"added\">so</transChange> <w src=\"11\" lemma=\"strong:G1096\" morph=\"robinson:V-AOM-3S\">"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Matt.15.39")) //$NON-NLS-1$
+        {
+            input = input.replace("Magdala</w>,", "Magdala</w>."); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Matt.20.11")) //$NON-NLS-1$
+        {
+            input = input.replace(" it</w>", "</w> <transChange type=\"added\">it</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Matt.24.26")) //$NON-NLS-1$
+        {
+            input = input.replaceFirst("<w src=\"9\" lemma=\"strong:G2076\" morph=\"robinson:V-PXI-3S\">he is</w>", "<transChange type=\"added\">he is</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replaceFirst("<transChange type=\"added\">he is</transChange>", "<w src=\"9\" lemma=\"strong:G2076\" morph=\"robinson:V-PXI-3S\">he is</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Matt.24.32")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"21\" lemma=\"strong:G1451\" morph=\"robinson:ADV\">is ", "<transChange type=\"added\">is</transChange> <w src=\"21\" lemma=\"strong:G1451\" morph=\"robinson:ADV\">"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Matt.26.39")) //$NON-NLS-1$
+        {
+            input = input.replace("farther", "further"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Matt.26.56")) //$NON-NLS-1$
+        {
+            input = input.replace(".</q>", ".</q> "); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Matt.27.3")) //$NON-NLS-1$
+        {
+            input = input.replace("betrayeth", "betrayed"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Mark.1.19")) //$NON-NLS-1$
+        {
+            input = input.replace("farther", "further"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Mark.4.11")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"20\" lemma=\"strong:G3956\" morph=\"robinson:A-NPN\">all these</w> <transChange type=\"added\">things</transChange>", "<w src=\"20\" lemma=\"strong:G3956\" morph=\"robinson:A-NPN\" type=\"x-split\" subType=\"x-20\">all</w> <transChange type=\"added\">these</transChange> <w src=\"20\" lemma=\"strong:G3956\" morph=\"robinson:A-NPN\" type=\"x-split\" subType=\"x-20\">things</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Mark.12.30")) //$NON-NLS-1$
+        {
+            input = input.replace(" is</w>", "</w> <transChange type=\"added\">is</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Mark.12.36")) //$NON-NLS-1$
+        {
+            input = input.replaceFirst("Lord", "LORD"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Mark.14.43")) //$NON-NLS-1$
+        {
+            input = input.replace("priest", "priests"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Luke.4.18")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"3\" lemma=\"strong:G1909\" morph=\"robinson:PREP\">is ", "<transChange type=\"added\">is</transChange> <w src=\"3\" lemma=\"strong:G1909\" morph=\"robinson:PREP\">"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Luke.7.25")) //$NON-NLS-1$
+        {
+            input = input.replace("kings", "kings'"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Luke.8.47")) //$NON-NLS-1$
+        {
+            input = input.replace(" <w src=\"24", ", <w src=\"24"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Luke.11.27")) //$NON-NLS-1$
+        {
+            input = input.replace(" is</w> <w src=\"18", "</w> <transChange type=\"added\">is</transChange> <w src=\"18"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Luke.11.31")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"31\" lemma=\"strong:G5602\" morph=\"robinson:ADV\">is ", "<transChange type=\"added\">is</transChange> <w src=\"31\" lemma=\"strong:G5602\" morph=\"robinson:ADV\">"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Luke.12.49")) //$NON-NLS-1$
+        {
+            input = input.replace("will I</w>", "will I</w>,"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Luke.15.24")) //$NON-NLS-1$
+        {
+            input = input.replace("For</w>", "For</w> "); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replace("this</w>", "this</w> "); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Luke.17.37")) //$NON-NLS-1$
+        {
+            input = input.replace(" is</w>,", "</w> <transChange type=\"added\">is</transChange>,"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Luke.18.1")) //$NON-NLS-1$
+        {
+            input = input.replace("<transChange type=\"added\"><w src=\"6\" lemma=\"strong:G4314\" morph=\"robinson:PREP\">", "<w src=\"6\" lemma=\"strong:G4314\" morph=\"robinson:PREP\"></w><transChange type=\"added\">"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replace("</w>,</transChange>", "</transChange>,"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Luke.21.34")) //$NON-NLS-1$
+        {
+            input = input.replace(" so</w>", "</w> <transChange type=\"added\">so</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Luke.23.32")) //$NON-NLS-1$
+        {
+            input = input.replace("others", "other"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("John.10.38")) //$NON-NLS-1$
+        {
+            input = input.replace("</w> is <w", "</w> <transChange type=\"added\">is</transChange> <w"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("John.13.13")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"12\" lemma=\"strong:G1510\" morph=\"robinson:V-PXI-1S\">so ", "<transChange type=\"added\">so</transChange> <w src=\"12\" lemma=\"strong:G1510\" morph=\"robinson:V-PXI-1S\">"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("John.14.2")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"12\" lemma=\"strong:G3361\" morph=\"robinson:PRT-N\">not</w> <w src=\"11\" lemma=\"strong:G1161\" morph=\"robinson:CONJ\">so</w>", "<w src=\"11\" lemma=\"strong:G1161\" morph=\"robinson:CONJ\"></w><w src=\"12\" lemma=\"strong:G3361\" morph=\"robinson:PRT-N\">not</w> <transChange type=\"added\">so</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("John.15.18")) //$NON-NLS-1$
+        {
+            input = input.replaceFirst("<w src=\"12\" lemma=\"strong:G3404\" morph=\"robinson:V-RAI-3S\">it hated</w>", "<transChange type=\"added\">it hated</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replaceFirst("<transChange type=\"added\">it hated</transChange>", "<w src=\"12\" lemma=\"strong:G3404\" morph=\"robinson:V-RAI-3S\">it hated</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("John.19.18")) //$NON-NLS-1$
+        {
+            input = input.replace("others", "other"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("John.20.27")) //$NON-NLS-1$
+        {
+            input = input.replaceFirst("reach", "Reach"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("John.21.11")) //$NON-NLS-1$
+        {
+            input = input.replace("and hundred", "an hundred"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Acts.2.17")) //$NON-NLS-1$
+        {
+            input = input.replace("God</w>,<w", "God</w>, <w"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Acts.5.21")) //$NON-NLS-1$
+        {
+            input = input.replace("Israel</w>", "Israel</w>,"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Acts.6.9")) //$NON-NLS-1$
+        {
+            input = input.replaceFirst("<w src=\"6 7\" lemma=\"strong:G3588 strong:G4864\" morph=\"robinson:T-GSF robinson:N-GSF\">the synagogue</w>", "<transChange type=\"added\">the synagogue</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replaceFirst("<transChange type=\"added\">the synagogue</transChange>", "<w src=\"6 7\" lemma=\"strong:G3588 strong:G4864\" morph=\"robinson:T-GSF robinson:N-GSF\">the synagogue</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Acts.10.2")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"1\" lemma=\"strong:G2152\" morph=\"robinson:A-NSM\">A ", "<transChange type=\"added\">A</transChange> <w src=\"1\" lemma=\"strong:G2152\" morph=\"robinson:A-NSM\">"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Acts.16.11")) //$NON-NLS-1$
+        {
+            input = input.replace(" day</w>", "</w> <transChange type=\"added\">day</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Acts.16.23")) //$NON-NLS-1$
+        {
+            input = input.replace("jailer", "jailor"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Acts.16.40")) //$NON-NLS-1$
+        {
+            input = input.replace("Lydia</w>", "Lydia</w>:"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Acts.19.19")) //$NON-NLS-1$
+        {
+            input = input.replace("found it</w>", "found</w> <transChange type=\"added\">it</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Acts.22.3")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"9 10\" lemma=\"strong:G3588 strong:G2791\" morph=\"robinson:T-GSF robinson:N-GSF\">a city ", "<transChange type=\"added\">a city</transChange> <w src=\"9 10\" lemma=\"strong:G3588 strong:G2791\" morph=\"robinson:T-GSF robinson:N-GSF\">"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Acts.24.25")) //$NON-NLS-1$
+        {
+            input = input.replace("come</w>", "come</w>,"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Acts.28.15")) //$NON-NLS-1$
+        {
+            input = input.replace("Forum", "forum"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Rom.4.19") || osisID.equals("Rom.9.9") || osisID.equals("1Pet.3.6")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        {
+            input = input.replace("Sarah", "Sara"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Rom.6.5")) //$NON-NLS-1$
+        {
+            input = input.replace("<transChange type=\"added\">in the likeness of his</transChange>", "<transChange type=\"added\">in the likeness</transChange> of <transChange type=\"added\">his</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Rom.12.2")) //$NON-NLS-1$
+        {
+            input = input.replace(" is</w>", "</w> <transChange type=\"added\">is</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("1Cor.11.26")) //$NON-NLS-1$
+        {
+            input = input.replace("</w><transChange type=\"added\">this</transChange>", "this</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("1Cor.11.27")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"10 11\" lemma=\"strong:G3588 strong:G4221\" morph=\"robinson:T-ASN robinson:N-ASN\">this ", "<transChange type=\"added\">this</transChange> <w src=\"10 11\" lemma=\"strong:G3588 strong:G4221\" morph=\"robinson:T-ASN robinson:N-ASN\">"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("1Cor.15.10")) //$NON-NLS-1$
+        {
+            input = input.replace("<transChange type=\"added\">which was bestowed</transChange>", "which <transChange type=\"added\">was bestowed</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("1Cor.15.58")) //$NON-NLS-1$
+        {
+            input = input.replace("unmovable", "unmoveable"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("2Cor.1.2")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"2\" lemma=\"strong:G5213\" morph=\"robinson:P-2DP\">be ", "<transChange type=\"added\">be</transChange> <w src=\"2\" lemma=\"strong:G5213\" morph=\"robinson:P-2DP\">"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("2Cor.2.6")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"6\" lemma=\"strong:G3778\" morph=\"robinson:D-NSF\">is ", "<transChange type=\"added\">is</transChange> <w src=\"6\" lemma=\"strong:G3778\" morph=\"robinson:D-NSF\">"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("2Cor.8.18")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"10\" lemma=\"strong:G1722\" morph=\"robinson:PREP\">is ", "<transChange type=\"added\">is</transChange> <w src=\"10\" lemma=\"strong:G1722\" morph=\"robinson:PREP\">"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("2Cor.9.13")) //$NON-NLS-1$
+        {
+            input = input.replace("into", "unto"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("2Cor.11.9")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"28\" lemma=\"strong:G5083\" morph=\"robinson:V-FAI-1S\">so ", "<transChange type=\"added\">so</transChange> <w src=\"28\" lemma=\"strong:G5083\" morph=\"robinson:V-FAI-1S\">"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Gal.4.30")) //$NON-NLS-1$
+        {
+            input = input.replace("free woman", "freewoman"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Eph.5.9")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"6\" lemma=\"strong:G1722\" morph=\"robinson:PREP\">is ", "<transChange type=\"added\">is</transChange> <w src=\"6\" lemma=\"strong:G1722\" morph=\"robinson:PREP\">"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Phil.2.25")) //$NON-NLS-1$
+        {
+            input = input.replace("fellow soldier", "fellowsoldier"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Col.4.11")) //$NON-NLS-1$
+        {
+            input = input.replace("fellow workers", "fellowworkers"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("1Tim.3.11")) //$NON-NLS-1$
+        {
+            input = input.replace("</w> be <w", "</w> <transChange type=\"added\">be</transChange> <w"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Phlm.1.1")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"7\" lemma=\"strong:G3588\" morph=\"robinson:T-NSM\">our</w> <w src=\"8\" lemma=\"strong:G80\" morph=\"robinson:N-NSM\">", "<transChange type=\"added\">our</transChange> <w src=\"7 8\" lemma=\"strong:G3588 strong:G80\" morph=\"robinson:T-NSM robinson:N-NSM\">"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Heb.1.13")) //$NON-NLS-1$
+        {
+            input = input.replace("times", "time"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Heb.10.23")) //$NON-NLS-1$
+        {
+            input = input.replace("he is</w>", "he</w> <transChange type=\"added\">is</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Heb.12.1")) //$NON-NLS-1$
+        {
+            input = input.replace("</w> us,", "</w> <transChange type=\"added\">us</transChange>,"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Heb.12.19")) //$NON-NLS-1$
+        {
+            input = input.replace("<transChange type=\"added\">which</transChange> <w src=\"7\" lemma=\"strong:G3739\" morph=\"robinson:R-GSF\">voice</w>", "<w src=\"7\" lemma=\"strong:G3739\" morph=\"robinson:R-GSF\">which</w> <transChange type=\"added\">voice</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Jas.2.16")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"10\" lemma=\"strong:G2328\" morph=\"robinson:V-PEM-2P\">be ye warmed</w>", "<w src=\"10\" lemma=\"strong:G2328\" morph=\"robinson:V-PEM-2P\" type=\"x-split\" subType=\"x-10\">be</w> <transChange type=\"added\">ye</transChange> <w src=\"10\" lemma=\"strong:G2328\" morph=\"robinson:V-PEM-2P\" type=\"x-split\" subType=\"x-10\">warmed</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("2Pet.2.6")) //$NON-NLS-1$
+        {
+            input = input.replace("Gomorrah", "Gomorrha"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("2Pet.2.13")) //$NON-NLS-1$
+        {
+            input = input.replace("daytime", "day time"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("1John.2.23")) //$NON-NLS-1$
+        {
+            input = input.replace("(<transChange type=\"added\">", "<transChange type=\"added\">("); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("1John.5.19")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"1\" lemma=\"strong:G1492\" morph=\"robinson:V-RAI-1P\">And ", "<transChange type=\"added\">And</transChange> <w src=\"1\" lemma=\"strong:G1492\" morph=\"robinson:V-RAI-1P\">"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("1John.5.20")) //$NON-NLS-1$
+        {
+            input = input.replace("<transChange type=\"added\"><w src=\"2\" lemma=\"strong:G1161\" morph=\"robinson:CONJ\">And</w></transChange>", "<w src=\"2\" lemma=\"strong:G1161\" morph=\"robinson:CONJ\">And</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Rev.22.2")) //$NON-NLS-1$
+        {
+            input = input.replace("</transChange> <w src=\"15\" lemma=\"strong:G2590\" morph=\"robinson:N-APM\">of ", " of</transChange> <w src=\"15\" lemma=\"strong:G2590\" morph=\"robinson:N-APM\">"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Rev.22.7")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"5\" lemma=\"strong:G3588\" morph=\"robinson:T-NSM\">is ", "<transChange type=\"added\">is</transChange> <w src=\"5\" lemma=\"strong:G3588\" morph=\"robinson:T-NSM\">"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         return input;
@@ -1898,6 +2306,93 @@ public class BibleToOsis
         colophons.put("Heb", "<div type=\"colophon\" osisID=\"Heb.c\">Written to the Hebrews from Italy by Timothy.</div>\n"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
+    private static Set<String> examine = new HashSet<String>();
+
+//    static
+//    {
+//        examine.add("Matt.2.6"); //$NON-NLS-1$ 
+//        examine.add("Matt.5.10"); //$NON-NLS-1$ 
+//        examine.add("Matt.5.30"); //$NON-NLS-1$ 
+//        examine.add("Matt.8.13"); //$NON-NLS-1$ 
+//        examine.add("Matt.15.39"); //$NON-NLS-1$ 
+//        examine.add("Matt.20.11"); //$NON-NLS-1$ 
+//        examine.add("Matt.24.26"); //$NON-NLS-1$ 
+//        examine.add("Matt.24.32"); //$NON-NLS-1$ 
+//        examine.add("Matt.26.39"); //$NON-NLS-1$ 
+//        examine.add("Matt.26.56"); //$NON-NLS-1$ 
+//        examine.add("Matt.27.3"); //$NON-NLS-1$ 
+//        examine.add("Mark.1.19"); //$NON-NLS-1$ 
+//        examine.add("Mark.4.11"); //$NON-NLS-1$ 
+//        examine.add("Mark.12.30"); //$NON-NLS-1$ 
+//        examine.add("Mark.12.36"); //$NON-NLS-1$ 
+//        examine.add("Mark.14.43"); //$NON-NLS-1$ 
+//        examine.add("Luke.4.18"); //$NON-NLS-1$ 
+//        examine.add("Luke.7.25"); //$NON-NLS-1$ 
+//        examine.add("Luke.8.47"); //$NON-NLS-1$ 
+//        examine.add("Luke.11.27"); //$NON-NLS-1$ 
+//        examine.add("Luke.11.31"); //$NON-NLS-1$ 
+//        examine.add("Luke.12.49"); //$NON-NLS-1$ 
+//        examine.add("Luke.15.24"); //$NON-NLS-1$ 
+//        examine.add("Luke.17.37"); //$NON-NLS-1$ 
+//        examine.add("Luke.18.1"); //$NON-NLS-1$ 
+//        examine.add("Luke.21.34"); //$NON-NLS-1$ 
+//        examine.add("Luke.23.32"); //$NON-NLS-1$ 
+//        examine.add("John.10.38"); //$NON-NLS-1$ 
+//        examine.add("John.13.13"); //$NON-NLS-1$ 
+//        examine.add("John.14.2"); //$NON-NLS-1$ 
+//        examine.add("John.15.18"); //$NON-NLS-1$ 
+//        examine.add("John.19.18"); //$NON-NLS-1$ 
+//        examine.add("John.20.27"); //$NON-NLS-1$ 
+//        examine.add("John.21.11"); //$NON-NLS-1$ 
+//        examine.add("Acts.2.17"); //$NON-NLS-1$ 
+//        examine.add("Acts.5.21"); //$NON-NLS-1$ 
+//        examine.add("Acts.6.9"); //$NON-NLS-1$ 
+//        examine.add("Acts.10.2"); //$NON-NLS-1$ 
+//        examine.add("Acts.16.11"); //$NON-NLS-1$ 
+//        examine.add("Acts.16.23"); //$NON-NLS-1$ 
+//        examine.add("Acts.16.40"); //$NON-NLS-1$ 
+//        examine.add("Acts.19.19"); //$NON-NLS-1$ 
+//        examine.add("Acts.22.3"); //$NON-NLS-1$ 
+//        examine.add("Acts.24.25"); //$NON-NLS-1$ 
+//        examine.add("Acts.28.15"); //$NON-NLS-1$ 
+//        examine.add("Rom.4.19"); //$NON-NLS-1$ 
+//        examine.add("Rom.6.5"); //$NON-NLS-1$ 
+//        examine.add("Rom.9.9"); //$NON-NLS-1$ 
+//        examine.add("Rom.12.2"); //$NON-NLS-1$ 
+//        examine.add("1Cor.11.26"); //$NON-NLS-1$ 
+//        examine.add("1Cor.11.27"); //$NON-NLS-1$ 
+//        examine.add("1Cor.11.26"); //$NON-NLS-1$ 
+//        examine.add("1Cor.11.27"); //$NON-NLS-1$ 
+//        examine.add("1Cor.15.10"); //$NON-NLS-1$ 
+//        examine.add("1Cor.15.58"); //$NON-NLS-1$ 
+//        examine.add("2Cor.1.2"); //$NON-NLS-1$ 
+//        examine.add("2Cor.2.6"); //$NON-NLS-1$ 
+//        examine.add("2Cor.8.18"); //$NON-NLS-1$ 
+//        examine.add("2Cor.9.13"); //$NON-NLS-1$ 
+//        examine.add("2Cor.11.9"); //$NON-NLS-1$ 
+//        examine.add("Gal.4.30"); //$NON-NLS-1$ 
+//        examine.add("Eph.5.9"); //$NON-NLS-1$ 
+//        examine.add("Phil.2.25"); //$NON-NLS-1$ 
+//        examine.add("Col.4.11"); //$NON-NLS-1$ 
+//        examine.add("1Tim.3.11"); //$NON-NLS-1$ 
+//        examine.add("Phlm.1.1"); //$NON-NLS-1$ 
+//        examine.add("Heb.1.13"); //$NON-NLS-1$ 
+//        examine.add("Heb.10.23"); //$NON-NLS-1$ 
+//        examine.add("Heb.12.1"); //$NON-NLS-1$ 
+//        examine.add("Heb.12.19"); //$NON-NLS-1$ 
+//        examine.add("Jas.2.16"); //$NON-NLS-1$ 
+//        examine.add("1Pet.3.6"); //$NON-NLS-1$ 
+//        examine.add("2Pet.2.6"); //$NON-NLS-1$ 
+//        examine.add("2Pet.2.13"); //$NON-NLS-1$ 
+//        examine.add("1John.2.23"); //$NON-NLS-1$ 
+//        examine.add("1John.5.19"); //$NON-NLS-1$ 
+//        examine.add("1John.5.20"); //$NON-NLS-1$ 
+//        examine.add("1John.5.19"); //$NON-NLS-1$ 
+//        examine.add("1John.5.20"); //$NON-NLS-1$ 
+//        examine.add("Rev.22.2"); //$NON-NLS-1$ 
+//        examine.add("Rev.22.7"); //$NON-NLS-1$ 
+//    }
+
     private static Map<String, String> acrostics = new HashMap<String, String>();
     
     static {
@@ -1923,7 +2418,7 @@ public class BibleToOsis
         acrostics.put("Ps.119.153", "RESH."); //$NON-NLS-1$ //$NON-NLS-2$
         acrostics.put("Ps.119.161", "SCHIN."); //$NON-NLS-1$ //$NON-NLS-2$
         acrostics.put("Ps.119.169", "TAU."); //$NON-NLS-1$ //$NON-NLS-2$
-    };
+    }
 
     private boolean moveP = false;
 
