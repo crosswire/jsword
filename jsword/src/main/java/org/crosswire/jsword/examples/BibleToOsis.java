@@ -66,7 +66,7 @@ public class BibleToOsis
      */
     private static final String BIBLE_NAME = "KJV"; //$NON-NLS-1$
     private static final String BIBLE_RANGE = "Gen-Rev"; //$NON-NLS-1$
-    private static final boolean BY_BOOK = true;
+    private static final boolean BY_BOOK = false;
 
     /**
      * @param args
@@ -85,7 +85,6 @@ public class BibleToOsis
         int lastChapter = -1;
         StringBuffer buf = new StringBuffer();
         boolean inPreVerse = false;
-        String bookTitle = ""; //$NON-NLS-1$
 
         try
         {
@@ -142,8 +141,7 @@ public class BibleToOsis
 
                     buf = new StringBuffer();
                     buildDocumentOpen(buf, bmd, currentBookName, BY_BOOK);
-                    buildBookOpen(buf, currentBookName, bookTitle);
-                    bookTitle = ""; //$NON-NLS-1$
+                    buildBookOpen(buf, currentBookName);
                 }
 
                 if (newBookFound || lastChapter != currentChapter)
@@ -177,40 +175,32 @@ public class BibleToOsis
                 String preVerseText = ""; //$NON-NLS-1$
                 if (raw.contains(preVerseStart))
                 {
-                    Matcher preVerseStartMatcher = preVerseStartPattern.matcher(raw);
-                    if (preVerseStartMatcher.find())
+                    Matcher matcher = preVersePattern.matcher(raw);
+                    StringBuffer rawbuf = new StringBuffer();
+                    if (matcher.find())
                     {
-                        int start = preVerseStartMatcher.start();
-                        Matcher preVerseEndMatcher = preVerseEndPattern.matcher(raw);
-                        if (preVerseEndMatcher.find(1 + preVerseStartMatcher.end()))
-                        {
-                            int end = preVerseEndMatcher.end();
-                            foundPreVerse = true;
-                            preVerseText = raw.substring(start, end);
-                            raw = raw.replace(preVerseText, ""); //$NON-NLS-1$
-                            preVerseText = preVerseText.substring(preVerseStart.length(), preVerseText.length() - preVerseEnd.length());
-                        }
+                        foundPreVerse = true;
+                        preVerseText = matcher.group(1);
+                        matcher.appendReplacement(rawbuf, ""); //$NON-NLS-1$
                     }
+                    matcher.appendTail(rawbuf);
+                    raw = rawbuf.toString();
                 }
 
                 boolean foundPsalmTitle = false;
                 String psalmTitleText = ""; //$NON-NLS-1$
                 if (raw.contains(psalmTitleStart))
                 {
-                    Matcher psalmTitleStartMatcher = psalmTitleStartPattern.matcher(raw);
-                    if (psalmTitleStartMatcher.find())
+                    Matcher matcher = psalmTitlePattern.matcher(raw);
+                    StringBuffer rawbuf = new StringBuffer();
+                    if (matcher.find())
                     {
-                        int start = psalmTitleStartMatcher.start();
-                        Matcher psalmTitleEndMatcher = psalmTitleEndPattern.matcher(raw);
-                        if (psalmTitleEndMatcher.find(1 + psalmTitleStartMatcher.end()))
-                        {
-                            int end = psalmTitleEndMatcher.end();
-                            foundPsalmTitle = true;
-                            psalmTitleText = raw.substring(start, end);
-                            psalmTitleText = psalmTitleText.substring(psalmTitleStart.length(), psalmTitleText.length() - psalmTitleEnd.length());
-                            raw = raw.replace(raw.substring(start, end), ""); //$NON-NLS-1$
-                        }
+                        foundPsalmTitle = true;
+                        psalmTitleText = matcher.group(1);
+                        matcher.appendReplacement(rawbuf, ""); //$NON-NLS-1$
                     }
+                    matcher.appendTail(rawbuf);
+                    raw = rawbuf.toString();
                 }
 
                 if (foundPsalmTitle)
@@ -232,16 +222,17 @@ public class BibleToOsis
                 // And they contain junk!
                 if (SwordConstants.getTestament(v) == SwordConstants.TESTAMENT_NEW)
                 {
-                    int start = raw.indexOf("<title"); //$NON-NLS-1$
-                    if (start != -1)
+                    if (raw.contains("<title")) //$NON-NLS-1$
                     {
-                        int end = raw.indexOf("</title>", start); //$NON-NLS-1$
-                        bookTitle = raw.substring(start, end + 8);
-                        raw = raw.replace(bookTitle, ""); //$NON-NLS-1$
-                        bookTitle = bookTitle.substring(bookTitle.indexOf('>') + 1, bookTitle.indexOf(" </title>")); //$NON-NLS-1$
-                        bookTitle = bookTitle.replaceAll("<p/>", ""); //$NON-NLS-1$ //$NON-NLS-2$
-                        bookTitle = bookTitle.replaceAll("</w>", ""); //$NON-NLS-1$ //$NON-NLS-2$
-                        bookTitle = bookTitle.replaceAll("<w[^>]*>", ""); //$NON-NLS-1$ //$NON-NLS-2$
+                        Pattern p = Pattern.compile("<title.*?>(.*?)</title>"); //$NON-NLS-1$
+                        Matcher matcher = p.matcher(raw);
+                        StringBuffer rawbuf = new StringBuffer();
+                        while (matcher.find())
+                        {
+                            matcher.appendReplacement(rawbuf, ""); //$NON-NLS-1$
+                        }
+                        matcher.appendTail(rawbuf);
+                        raw = rawbuf.toString();
                     }
                 }
 
@@ -291,8 +282,6 @@ public class BibleToOsis
         {
             e.printStackTrace();
         }
-        
-        System.err.println("There were " + divineNameCount + " YHWH");
     }
 
     /**
@@ -423,25 +412,18 @@ public class BibleToOsis
         }
     }
 
-    private void buildBookOpen(StringBuffer buf, String bookName, String bookTitle)
+    private void buildBookOpen(StringBuffer buf, String bookName)
     {
         System.err.println("processing " + bookName); //$NON-NLS-1$
         MessageFormat msgFormat = new MessageFormat("<div type=\"book\" osisID=\"{0}\" canonical=\"true\">\n"); //$NON-NLS-1$
         msgFormat.format(new Object[] { bookName}, buf, pos);
 
         MessageFormat titleFormat = new MessageFormat("<title type=\"main\">{0}</title>\n"); //$NON-NLS-1$
-//        if (bookTitle.length() > 0)
-//        {
-//            titleFormat.format(new Object[] { bookTitle }, buf, pos);
-//        }
-//        else
-//        {
-            String title = bookTitles.get(bookName);
-            if (title != null)
-            {
-                titleFormat.format(new Object[] { title }, buf, pos);
-            }
-//        }
+        String title = bookTitles.get(bookName);
+        if (title != null)
+        {
+            titleFormat.format(new Object[] { title }, buf, pos);
+        }
     }
 
     private void buildBookClose(StringBuffer buf, String bookName)
@@ -560,53 +542,31 @@ public class BibleToOsis
         }
 
         // Fix up bad notes
-        MessageFormat noteCleanupFormat = new MessageFormat("<note type=\"x-strongsMarkup\" resp=\"{0} {1}\">{2}</note>"); //$NON-NLS-1$
-        while (true)
+        if (input.contains("note type=\"strongsMarkup\"")) //$NON-NLS-1$
         {
-            if (input.contains("note type=\"strongsMarkup\"")) //$NON-NLS-1$
+            MessageFormat noteCleanupFormat = new MessageFormat("<note type=\"x-strongsMarkup\" resp=\"{0} {1}\">{2}</note>"); //$NON-NLS-1$
+            Matcher matcher = badNotePattern.matcher(input);
+            StringBuffer buf = new StringBuffer();
+            while (matcher.find())
             {
-                Matcher badNoteMatcher = badNotePattern.matcher(input);
-                if (!badNoteMatcher.find())
-                {
-                    System.err.println("This was unexpected!"); //$NON-NLS-1$
-                    break;
-                }
-                String content = XMLUtil.escape(unescape(badNoteMatcher.group(4)));
-                input = input.replace(badNoteMatcher.group(),
-                                      noteCleanupFormat.format(new Object[] { badNoteMatcher.group(2), badNoteMatcher.group(3), content}));
+                String content = XMLUtil.escape(unescape(matcher.group(4)));
+                String replacement = noteCleanupFormat.format(new Object[] { matcher.group(2), matcher.group(3), content});
+                matcher.appendReplacement(buf, replacement);
             }
-            else
-            {
-                break;
-            }
+            matcher.appendTail(buf);
+            input = buf.toString();
         }
 
-        MessageFormat respCleanupFormat = new MessageFormat("<milestone type=\"x-strongsMarkup\" resp=\"{0} {1}\"/>"); //$NON-NLS-1$
-        while (true)
+        if (input.contains("<resp")) //$NON-NLS-1$
         {
-            if (input.contains("<resp")) //$NON-NLS-1$
+            Matcher matcher = respPattern.matcher(input);
+            StringBuffer buf = new StringBuffer();
+            while (matcher.find())
             {
-                Matcher respMatcher = respPattern.matcher(input);
-                if (!respMatcher.find())
-                {
-                    System.err.println("This was unexpected!"); //$NON-NLS-1$
-                    break;
-                }
-                String resp = respMatcher.group();
-
-                Matcher nameDateMatcher = nameDatePattern.matcher(resp);
-                if (!nameDateMatcher.find())
-                {
-                    System.err.println("This was unexpected!"); //$NON-NLS-1$
-                    break;
-                }
-                String fixed = respCleanupFormat.format(new Object[] { nameDateMatcher.group(1), nameDateMatcher.group(2)});
-                input = input.replace(resp, fixed);
+                matcher.appendReplacement(buf, "<milestone type=\"x-strongsMarkup\" resp=\"$1 $2\"/>"); //$NON-NLS-1$
             }
-            else
-            {
-                break;
-            }
+            matcher.appendTail(buf);
+            input = buf.toString();
         }
 
         // Add in missing w
@@ -672,11 +632,19 @@ public class BibleToOsis
         if (osisID.startsWith("Ps")) //$NON-NLS-1$
         {
             Matcher matcher = transChangeSegPattern.matcher(input);
+            StringBuffer buf = null;
             while (matcher.find())
             {
-                String replace = "<transChange type=\"added\">" + matcher.group(1) + "</transChange>"; //$NON-NLS-1$ //$NON-NLS-2$
-                input = input.replace(matcher.group(), replace);
-//                System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
+                if (buf == null)
+                {
+                    buf = new StringBuffer();
+                }
+                matcher.appendReplacement(buf, "<transChange type=\"added\">$1</transChange>"); //$NON-NLS-1$
+            }
+            if (buf != null)
+            {
+                matcher.appendTail(buf);
+                input = buf.toString();
             }
         }
         input = input.replaceAll("\"transChange\"", "\"x-transChange\""); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1422,8 +1390,6 @@ public class BibleToOsis
 
     private String fixApostrophe(String osisID, String input)
     {
-        Matcher matcher;
-        boolean changed = false;
         Verse v = null;
 
         try
@@ -1440,169 +1406,50 @@ public class BibleToOsis
             return input;
         }
 
-        matcher = a1Pattern.matcher(input);
-        while (matcher.find())
-        {
-            String replace = matcher.group(1) + ' ' + matcher.group(2);
-            input = input.replace(matcher.group(), replace);
-            changed = true;
-//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-        }
+        input = a1Pattern.matcher(input).replaceAll("$1 $2"); //$NON-NLS-1$
 
-        matcher = a2Pattern.matcher(input);
-        while (matcher.find())
-        {
-            String replace = matcher.group(1) + 'S' + matcher.group(2);
-            input = input.replace(matcher.group(), replace);
-            changed = true;
-//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-        }
+        input = a2Pattern.matcher(input).replaceAll("$1S$2"); //$NON-NLS-1$
 
-        matcher = a3Pattern.matcher(input);
-        while (matcher.find())
-        {
-            String replace = matcher.group(1) + 's' + matcher.group(2);
-            input = input.replace(matcher.group(), replace);
-            changed = true;
-//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-        }
+        input = a3Pattern.matcher(input).replaceAll("$1s$2"); //$NON-NLS-1$
 
-        matcher = a4Pattern.matcher(input);
-        while (matcher.find())
-        {
-            String replace = matcher.group(1) + matcher.group(2) + "</w> "; //$NON-NLS-1$
-            input = input.replace(matcher.group(), replace);
-            changed = true;
-//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-        }
+        input = a4Pattern.matcher(input).replaceAll("$1$2</w>"); //$NON-NLS-1$
 
         // for the ot only
-        matcher = a5Pattern.matcher(input);
-        while (matcher.find())
-        {
-            String replace = matcher.group(1) + "S "; //$NON-NLS-1$
-            input = input.replace(matcher.group(), replace);
-            changed = true;
-//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-        }
+        input = a5Pattern.matcher(input).replaceAll("$1S "); //$NON-NLS-1$
 
         // for the ot only
         if (SwordConstants.getTestament(v) == SwordConstants.TESTAMENT_OLD)
         {
-            matcher = a6Pattern.matcher(input);
-            while (matcher.find())
-            {
-                String replace = matcher.group(1) + "s "; //$NON-NLS-1$
-                input = input.replace(matcher.group(), replace);
-                changed = true;
-//                System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-            }
+            input = a6Pattern.matcher(input).replaceAll("$1s "); //$NON-NLS-1$
         }
 
-        matcher = a7Pattern.matcher(input);
-        while (matcher.find())
-        {
-            String replace = matcher.group(1) + "S " + matcher.group(2); //$NON-NLS-1$
-            input = input.replace(matcher.group(), replace);
-            changed = true;
-//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-        }
+        input = a7Pattern.matcher(input).replaceAll("$1S $2"); //$NON-NLS-1$
 
         if (SwordConstants.getTestament(v) == SwordConstants.TESTAMENT_OLD)
         {
-            matcher = a8Pattern.matcher(input);
-            while (matcher.find())
-            {
-                String replace = matcher.group(1) + "s " + matcher.group(2); //$NON-NLS-1$
-                input = input.replace(matcher.group(), replace);
-                changed = true;
-//                System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-            }
+            input = a8Pattern.matcher(input).replaceAll("$1s $2"); //$NON-NLS-1$
         }
         
-        matcher = a9Pattern.matcher(input);
-        while (matcher.find())
-        {
-            String replace = matcher.group(1) + "'</w> <"; //$NON-NLS-1$
-            input = input.replace(matcher.group(), replace);
-            changed = true;
-//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-        }
+        input = a9Pattern.matcher(input).replaceAll("$1'</w> <"); //$NON-NLS-1$
 
-        matcher = a10Pattern.matcher(input);
-        while (matcher.find())
-        {
-            String replace = matcher.group(1) + "'</w> " + matcher.group(2); //$NON-NLS-1$
-            input = input.replace(matcher.group(), replace);
-            changed = true;
-//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-        }
+        input = a10Pattern.matcher(input).replaceAll("$1'</w> $2"); //$NON-NLS-1$
 
-        matcher = a11Pattern.matcher(input);
-        while (matcher.find())
-        {
-            String replace = matcher.group(2) + "</w> " + matcher.group(1); //$NON-NLS-1$
-            input = input.replace(matcher.group(), replace);
-            changed = true;
-//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-        }
+        input = a11Pattern.matcher(input).replaceAll("$2</w> $1"); //$NON-NLS-1$
 
-        matcher = a12Pattern.matcher(input);
-        while (matcher.find())
-        {
-            String replace = "'</w> "; //$NON-NLS-1$
-            input = input.replace(matcher.group(), replace);
-            changed = true;
-//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-        }
+        input = a12Pattern.matcher(input).replaceAll("'</w> "); //$NON-NLS-1$
 
-        matcher = a13Pattern.matcher(input);
-        while (matcher.find())
-        {
-            String replace = "'</w> "; //$NON-NLS-1$
-            input = input.replace(matcher.group(), replace);
-            changed = true;
-//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-        }
+        input = a13Pattern.matcher(input).replaceAll("'</w> "); //$NON-NLS-1$
 
-        matcher = a14Pattern.matcher(input);
-        while (matcher.find())
-        {
-            String replace = matcher.group(1) + "s</w>" + matcher.group(2); //$NON-NLS-1$
-            input = input.replace(matcher.group(), replace);
-            changed = true;
-//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-        }
+        input = a14Pattern.matcher(input).replaceAll("$1s</w>$2"); //$NON-NLS-1$
 
-        matcher = a15Pattern.matcher(input);
-        while (matcher.find())
-        {
-            String replace = matcher.group(1) + "s "; //$NON-NLS-1$
-            input = input.replace(matcher.group(), replace);
-            changed = true;
-//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-        }
+        input = a15Pattern.matcher(input).replaceAll("$1s "); //$NON-NLS-1$
 
         if (osisID.equals("Isa.59.5") || osisID.equals("Isa.11.8")) //$NON-NLS-1$ //$NON-NLS-2$
         {
-            matcher = a16Pattern.matcher(input);
-            while (matcher.find())
-            {
-                String replace = matcher.group(1) + ' ';
-                input = input.replace(matcher.group(), replace);
-                changed = true;
-//                System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-            }
+            input = a16Pattern.matcher(input).replaceAll("$1 "); //$NON-NLS-1$
         }
 
-        matcher = a17Pattern.matcher(input);
-        while (matcher.find())
-        {
-            String replace = matcher.group(1) + 's' + matcher.group(2);
-            input = input.replace(matcher.group(), replace);
-            changed = true;
-//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-        }
+        input = a17Pattern.matcher(input).replaceAll("$1s$2"); //$NON-NLS-1$
 
 //        matcher = axPattern.matcher(input);
 //        while (matcher.find())
@@ -1650,102 +1497,31 @@ public class BibleToOsis
 //            System.err.println(osisID + ':' + input);
 //        }
 
-        Matcher matcher = w1Pattern.matcher(input);
-        while (matcher.find())
-        {
-            String replace = matcher.group(1);
-            input = input.replace(matcher.group(), replace);
-//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        matcher = w4Pattern.matcher(input);
-        while (matcher.find())
-        {
-            String replace = " "; //$NON-NLS-1$
-            input = input.replace(matcher.group(), replace);
-//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        matcher = w5Pattern.matcher(input);
-        while (matcher.find())
-        {
-            String replace = matcher.group(2) + matcher.group(1); //$NON-NLS-1$
-            input = input.replace(matcher.group(), replace);
-//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        matcher = w6Pattern.matcher(input);
-        while (matcher.find())
-        {
-            String replace = matcher.group(2) + matcher.group(1);
-            input = input.replace(matcher.group(), replace);
-//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        matcher = w2Pattern.matcher(input);
-        while (matcher.find())
-        {
-            String replace = ") "; //$NON-NLS-1$
-            input = input.replace(matcher.group(), replace);
-//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        matcher = w3Pattern.matcher(input);
-        while (matcher.find())
-        {
-            String replace = " ("; //$NON-NLS-1$
-            input = input.replace(matcher.group(), replace);
-//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-        }
+        input = w1Pattern.matcher(input).replaceAll("$1"); //$NON-NLS-1$
+        input = w4Pattern.matcher(input).replaceAll(" "); //$NON-NLS-1$
+        input = w5Pattern.matcher(input).replaceAll("$2$1"); //$NON-NLS-1$
+        input = w6Pattern.matcher(input).replaceAll("$2$1"); //$NON-NLS-1$
+        input = w2Pattern.matcher(input).replaceAll(") "); //$NON-NLS-1$
+        input = w3Pattern.matcher(input).replaceAll(" ("); //$NON-NLS-1$
 
         input = input.replaceAll("\\s+</q>", "</q>"); //$NON-NLS-1$ //$NON-NLS-2$
 
         // strip trailing spaces
         int length = input.length();
         int here = length;
-        try {
         while (input.charAt(here - 1) == ' ')
         {
             here--;
         }
-        } catch (StringIndexOutOfBoundsException ex)
-        {
-            System.err.println(osisID + ':' + input);
-            System.exit(0);
-        }
+        
         if (here < length)
         {
             input = input.substring(0, here);
-//            if (length - here > 1)
-//            {
-//                System.err.println(osisID + " remove " + (length - here) + " trailing spaces"); //$NON-NLS-1$ //$NON-NLS-2$
-//            }
         }
 
-        matcher = w7Pattern.matcher(input);
-        while (matcher.find())
-        {
-            String replace = matcher.group(2) + matcher.group(1);
-            input = input.replace(matcher.group(), replace);
-//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-            matcher.reset(input);
-        }
-
-        matcher = w8Pattern.matcher(input);
-        while (matcher.find())
-        {
-            String replace = matcher.group(1);
-            input = input.replace(matcher.group(), replace);
-//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        matcher = w9Pattern.matcher(input);
-        while (matcher.find())
-        {
-            String replace = matcher.group(2) + matcher.group(1);
-            input = input.replace(matcher.group(), replace);
-//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-        }
+        input = w7Pattern.matcher(input).replaceAll("$2$1"); //$NON-NLS-1$
+        input = w8Pattern.matcher(input).replaceAll("$1"); //$NON-NLS-1$
+        input = w9Pattern.matcher(input).replaceAll("$2$1"); //$NON-NLS-1$
 
         // strip leading spaces
         here = 0;
@@ -1760,13 +1536,7 @@ public class BibleToOsis
 //            System.err.println(osisID + " remove " + here + " leading spaces"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        matcher = wnPattern.matcher(input);
-        while (matcher.find())
-        {
-            String replace = " "; //$NON-NLS-1$
-            input = input.replace(matcher.group(), replace);
-//            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
-        }
+        input = wnPattern.matcher(input).replaceAll(" "); //$NON-NLS-1$
 
         if (osisID.equals("Matt.15.39")) //$NON-NLS-1$
         {
@@ -2767,75 +2537,42 @@ public class BibleToOsis
         return input;
     }
 
-    private static int divineNameCount = 0;
     private String fixDivineName(String osisID, String input)
     {
-        if (input.contains(divineNameEnd))
+        if (input.contains("divineName")) //$NON-NLS-1$
         {
-            Matcher divineNameStartMatcher = divineNameStartPattern.matcher(input);
-            int begin = 0;
             StringBuffer buf = new StringBuffer();
-            while (divineNameStartMatcher.find())
+            Matcher matcher = divineNamePattern.matcher(input);
+            while (matcher.find())
             {
-                //divineNameCount++;
-                int start = divineNameStartMatcher.start();
-                Matcher divineNameEndMatcher = divineNameEndPattern.matcher(input);
-                if (divineNameEndMatcher.find(1 + divineNameStartMatcher.end()))
-                {
-                    int end = divineNameEndMatcher.end();
-                    String preDivineNameText = input.substring(begin, start);
-                    String divineNameElement = input.substring(start, end);
-                    String divineNameText = divineNameElement.substring(divineNameStartMatcher.group().length(), divineNameElement.length() - divineNameEnd.length());
-                    Matcher lordMatcher = lordPattern.matcher(divineNameText);
-                    buf.append(preDivineNameText);
-                    if (lordMatcher.find())
-                    {
-                        buf.append(lordMatcher.group(1));
-                        buf.append("<seg>"); //$NON-NLS-1$
-                        buf.append(divineNameStartMatcher.group());
-                        buf.append(lordMatcher.group(2));
-                        buf.append(divineNameEndMatcher.group());
-                        buf.append("</seg>"); //$NON-NLS-1$
-                        buf.append(lordMatcher.group(3));
-                        begin = start + divineNameElement.length();
-                    }
-                    else //if (divineNameText.indexOf("LORD") == -1) //$NON-NLS-1$
-                    {
-                        System.err.println(osisID + ':' + divineNameText);
-                    }
-                }
+                matcher.appendReplacement(buf, divineNameReplace);
             }
-            buf.append(input.substring(begin));
+            matcher.appendTail(buf);
             input = buf.toString();
         }
 
-            Matcher divineNameStartMatcher = divineNameStrongPattern.matcher(input);
-            while (divineNameStartMatcher.find())
-            {
-                divineNameCount++;
-            }
         return input;
     }
 
     private static FieldPosition pos = new FieldPosition(0);
 
     private static String preVerseStart = "<title subtype=\"x-preverse\" type=\"section\">"; //$NON-NLS-1$
-    private static String preVerseEnd = "</title>"; //$NON-NLS-1$
-    private static Pattern preVerseStartPattern = Pattern.compile(preVerseStart);
-    private static Pattern preVerseEndPattern = Pattern.compile(preVerseEnd); //$NON-NLS-1$
+    private static String preVerseElement = "<title subtype=\"x-preverse\" type=\"section\">(.*?)</title>"; //$NON-NLS-1$
+    private static Pattern preVersePattern = Pattern.compile(preVerseElement);
+//    private static String preVerseEnd = "</title>"; //$NON-NLS-1$
+//    private static Pattern preVerseStartPattern = Pattern.compile(preVerseStart);
+//    private static Pattern preVerseEndPattern = Pattern.compile(preVerseEnd); //$NON-NLS-1$
 
     private static String psalmTitleStart = "<title type=\"psalm\">"; //$NON-NLS-1$
-    private static String psalmTitleEnd = "</title>"; //$NON-NLS-1$
-    private static Pattern psalmTitleStartPattern = Pattern.compile(psalmTitleStart);
-    private static Pattern psalmTitleEndPattern = Pattern.compile(psalmTitleEnd);
+    private static String psalmTitleElement = "<title type=\"psalm\">(.*?)</title>"; //$NON-NLS-1$
+    private static Pattern psalmTitlePattern = Pattern.compile(psalmTitleElement);
+//    private static String psalmTitleEnd = "</title>"; //$NON-NLS-1$
+//    private static Pattern psalmTitleStartPattern = Pattern.compile(psalmTitleStart);
+//    private static Pattern psalmTitleEndPattern = Pattern.compile(psalmTitleEnd);
 
-    private static String divineNameStart = "<divineName[^>]*>"; //$NON-NLS-1$
-    private static String divineNameEnd = "</divineName>"; //$NON-NLS-1$
-    private static Pattern divineNameStartPattern = Pattern.compile(divineNameStart);
-    private static Pattern divineNameEndPattern = Pattern.compile(divineNameEnd);
-    private static Pattern lordPattern = Pattern.compile("(.*)(LORD'|LORD'S|LORD|GOD|JEHOVAH)(.*)"); //$NON-NLS-1$
-    private static String divineNameStrong = "(LORD'|LORD'S|LORD|GOD|JEHOVAH)"; //$NON-NLS-1$
-    private static Pattern divineNameStrongPattern = Pattern.compile(divineNameStrong);
+    private static String divineNameElement = "(<divineName.*?>)(.*?)(LORD'|LORD'S|LORD|GOD|JEHOVAH)(.*?)(</divineName>)"; //$NON-NLS-1$
+    private static String divineNameReplace = "$2<seg><divineName>$3</divineName></seg>$4"; //$NON-NLS-1$
+    private static Pattern divineNamePattern = Pattern.compile(divineNameElement);
 
     private static String transChangeSeg = "<seg type=\"transChange\" subType=\"type:added\">([^<]*)</seg>"; //$NON-NLS-1$
     private static Pattern transChangeSegPattern = Pattern.compile(transChangeSeg);
@@ -2843,7 +2580,7 @@ public class BibleToOsis
     private static String badNote = "<note type=\"[^\"]*\" (name=\"([^\"]*)\" date=\"([^\"]*)\"/)>([^<]*)</note>"; //$NON-NLS-1$
     private static Pattern badNotePattern = Pattern.compile(badNote);
 
-    private static String respElement = "<resp\\s[^>]*>"; //$NON-NLS-1$
+    private static String respElement = "<resp.*?name=\"(.*?)\".*?date=\"(.*?)\".*?>"; //$NON-NLS-1$
     private static Pattern respPattern = Pattern.compile(respElement);
 
     private static String wElement = "<w\\s[^>]*>"; //$NON-NLS-1$
