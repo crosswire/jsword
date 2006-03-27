@@ -66,7 +66,7 @@ public class BibleToOsis
      */
     private static final String BIBLE_NAME = "KJV"; //$NON-NLS-1$
     private static final String BIBLE_RANGE = "Gen-Rev"; //$NON-NLS-1$
-    private static final boolean BY_BOOK = false;
+    private static final boolean BY_BOOK = true;
 
     /**
      * @param args
@@ -291,6 +291,8 @@ public class BibleToOsis
         {
             e.printStackTrace();
         }
+        
+        System.err.println("There were " + divineNameCount + " YHWH");
     }
 
     /**
@@ -1411,7 +1413,10 @@ public class BibleToOsis
         }
         input = fixApostrophe(osisID, input);
         input = fixPunctuation(osisID, input);
-        input = fixOther(osisID, input);
+        input = fixDivineName(osisID, input);
+        input = fixSpelling(osisID, input);
+        input = fixTransChange(osisID, input);
+        input = fixHyphenatedNames(osisID, input);
         return input;
     }
 
@@ -1763,60 +1768,9 @@ public class BibleToOsis
 //            System.err.println(osisID + " replace |" + matcher.group() + "| with |" + replace + '|'); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        return input;
-    }
-
-    private String fixOther(String osisID, String input)
-    {
-        if (examine.contains(osisID))
-        {
-            System.err.println(osisID + ':' + input);
-        }
-
-        if (osisID.equals("Matt.2.6")) //$NON-NLS-1$
-        {
-            input = input.replace("<w src=\"4\" lemma=\"strong:G1093\" morph=\"robinson:N-VSF\">in ", "<transChange type=\"added\">in</transChange> <w src=\"4\" lemma=\"strong:G1093\" morph=\"robinson:N-VSF\">"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Matt.5.10")) //$NON-NLS-1$
-        {
-            input = input.replace("righteousness", "righteousness'"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Matt.5.30")) //$NON-NLS-1$
-        {
-            input = input.replace("cast it</w>", "cast</w> <transChange type=\"added\">it</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Matt.8.13")) //$NON-NLS-1$
-        {
-            input = input.replace("<w src=\"11\" lemma=\"strong:G1096\" morph=\"robinson:V-AOM-3S\">so ", "<transChange type=\"added\">so</transChange> <w src=\"11\" lemma=\"strong:G1096\" morph=\"robinson:V-AOM-3S\">"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
         if (osisID.equals("Matt.15.39")) //$NON-NLS-1$
         {
             input = input.replace("Magdala</w>,", "Magdala</w>."); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Matt.20.11")) //$NON-NLS-1$
-        {
-            input = input.replace(" it</w>", "</w> <transChange type=\"added\">it</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Matt.24.26")) //$NON-NLS-1$
-        {
-            input = input.replaceFirst("<w src=\"9\" lemma=\"strong:G2076\" morph=\"robinson:V-PXI-3S\">he is</w>", "<transChange type=\"added\">he is</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
-            input = input.replaceFirst("<transChange type=\"added\">he is</transChange>", "<w src=\"9\" lemma=\"strong:G2076\" morph=\"robinson:V-PXI-3S\">he is</w>"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Matt.24.32")) //$NON-NLS-1$
-        {
-            input = input.replace("<w src=\"21\" lemma=\"strong:G1451\" morph=\"robinson:ADV\">is ", "<transChange type=\"added\">is</transChange> <w src=\"21\" lemma=\"strong:G1451\" morph=\"robinson:ADV\">"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Matt.26.39")) //$NON-NLS-1$
-        {
-            input = input.replace("farther", "further"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (osisID.equals("Matt.26.56")) //$NON-NLS-1$
@@ -1824,59 +1778,14 @@ public class BibleToOsis
             input = input.replace(".</q>", ".</q> "); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        if (osisID.equals("Matt.27.3")) //$NON-NLS-1$
+        if (osisID.equals("Mark.2.1")) //$NON-NLS-1$
         {
-            input = input.replace("betrayeth", "betrayed"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Mark.1.19")) //$NON-NLS-1$
-        {
-            input = input.replace("farther", "further"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Mark.4.11")) //$NON-NLS-1$
-        {
-            input = input.replace("<w src=\"20\" lemma=\"strong:G3956\" morph=\"robinson:A-NPN\">all these</w> <transChange type=\"added\">things</transChange>", "<w src=\"20\" lemma=\"strong:G3956\" morph=\"robinson:A-NPN\" type=\"x-split\" subType=\"x-20\">all</w> <transChange type=\"added\">these</transChange> <w src=\"20\" lemma=\"strong:G3956\" morph=\"robinson:A-NPN\" type=\"x-split\" subType=\"x-20\">things</w>"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Mark.12.30")) //$NON-NLS-1$
-        {
-            input = input.replace(" is</w>", "</w> <transChange type=\"added\">is</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Mark.12.36")) //$NON-NLS-1$
-        {
-            input = input.replaceFirst("Lord", "LORD"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Mark.14.43")) //$NON-NLS-1$
-        {
-            input = input.replace("priest", "priests"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Luke.4.18")) //$NON-NLS-1$
-        {
-            input = input.replace("<w src=\"3\" lemma=\"strong:G1909\" morph=\"robinson:PREP\">is ", "<transChange type=\"added\">is</transChange> <w src=\"3\" lemma=\"strong:G1909\" morph=\"robinson:PREP\">"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Luke.7.25")) //$NON-NLS-1$
-        {
-            input = input.replace("kings", "kings'"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replace(",", ""); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (osisID.equals("Luke.8.47")) //$NON-NLS-1$
         {
             input = input.replace(" <w src=\"24", ", <w src=\"24"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Luke.11.27")) //$NON-NLS-1$
-        {
-            input = input.replace(" is</w> <w src=\"18", "</w> <transChange type=\"added\">is</transChange> <w src=\"18"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Luke.11.31")) //$NON-NLS-1$
-        {
-            input = input.replace("<w src=\"31\" lemma=\"strong:G5602\" morph=\"robinson:ADV\">is ", "<transChange type=\"added\">is</transChange> <w src=\"31\" lemma=\"strong:G5602\" morph=\"robinson:ADV\">"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (osisID.equals("Luke.12.49")) //$NON-NLS-1$
@@ -1895,6 +1804,231 @@ public class BibleToOsis
             input = input.replace(" is</w>,", "</w> <transChange type=\"added\">is</transChange>,"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
+        if (osisID.equals("Acts.2.17")) //$NON-NLS-1$
+        {
+            input = input.replace("God</w>,<w", "God</w>, <w"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Acts.5.21")) //$NON-NLS-1$
+        {
+            input = input.replace("Israel</w>", "Israel</w>,"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Acts.2.1")) //$NON-NLS-1$
+        {
+            input = input.replace(",", ""); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Acts.16.40")) //$NON-NLS-1$
+        {
+            input = input.replace("Lydia</w>", "Lydia</w>:"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Acts.24.25")) //$NON-NLS-1$
+        {
+            input = input.replace("come</w>", "come</w>,"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("1Cor.15.27")) //$NON-NLS-1$
+        {
+            input = input.replace("</w>,", "</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        return input;
+    }
+
+    private String fixSpelling(String osisID, String input)
+    {
+        if (osisID.equals("Matt.5.10")) //$NON-NLS-1$
+        {
+            input = input.replace("righteousness", "righteousness'"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Matt.26.39")) //$NON-NLS-1$
+        {
+            input = input.replace("farther", "further"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Matt.27.3")) //$NON-NLS-1$
+        {
+            input = input.replace("betrayeth", "betrayed"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Mark.1.19")) //$NON-NLS-1$
+        {
+            input = input.replace("farther", "further"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Mark.12.36")) //$NON-NLS-1$
+        {
+            input = input.replaceFirst("Lord", "LORD"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Mark.14.43")) //$NON-NLS-1$
+        {
+            input = input.replace("priest", "priests"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Luke.7.25")) //$NON-NLS-1$
+        {
+            input = input.replace("kings", "kings'"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Luke.23.32")) //$NON-NLS-1$
+        {
+            input = input.replace("others", "other"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("John.19.18")) //$NON-NLS-1$
+        {
+            input = input.replace("others", "other"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("John.20.27")) //$NON-NLS-1$
+        {
+            input = input.replaceFirst("reach", "Reach"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("John.21.11")) //$NON-NLS-1$
+        {
+            input = input.replace("and hundred", "an hundred"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Acts.11.12") || osisID.equals("Acts.11.28") || osisID.equals("1John.5.8")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        {
+            input = input.replace("spirit", "Spirit"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Acts.16.23")) //$NON-NLS-1$
+        {
+            input = input.replace("jailer", "jailor"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Acts.28.15")) //$NON-NLS-1$
+        {
+            input = input.replace("Forum", "forum"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Rom.4.15")) //$NON-NLS-1$
+        {
+            input = input.replace("instructers", "instructors"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Rom.4.19") || osisID.equals("Rom.9.9") || osisID.equals("1Pet.3.6")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        {
+            input = input.replace("Sarah", "Sara"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("1Cor.15.58")) //$NON-NLS-1$
+        {
+            input = input.replace("unmovable", "unmoveable"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("2Cor.9.13")) //$NON-NLS-1$
+        {
+            input = input.replace("into", "unto"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Gal.4.30")) //$NON-NLS-1$
+        {
+            input = input.replace("free woman", "freewoman"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Phil.2.25")) //$NON-NLS-1$
+        {
+            input = input.replace("fellow soldier", "fellowsoldier"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Col.4.11")) //$NON-NLS-1$
+        {
+            input = input.replace("fellow workers", "fellowworkers"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Heb.1.13")) //$NON-NLS-1$
+        {
+            input = input.replace("times", "time"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("2Pet.2.6")) //$NON-NLS-1$
+        {
+            input = input.replace("Gomorrah", "Gomorrha"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("2Pet.2.13")) //$NON-NLS-1$
+        {
+            input = input.replace("daytime", "day time"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Rev.2.6") || osisID.equals("Rev.2.5")) //$NON-NLS-1$ //$NON-NLS-2$
+        {
+            input = input.replace("Nicolaitanes", "Nicolaitans"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        return input;
+    }
+
+    private String fixTransChange(String osisID, String input)
+    {
+        if (osisID.equals("Matt.2.6")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"4\" lemma=\"strong:G1093\" morph=\"robinson:N-VSF\">in ", "<transChange type=\"added\">in</transChange> <w src=\"4\" lemma=\"strong:G1093\" morph=\"robinson:N-VSF\">"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Matt.5.30")) //$NON-NLS-1$
+        {
+            input = input.replace("cast it</w>", "cast</w> <transChange type=\"added\">it</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Matt.8.13")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"11\" lemma=\"strong:G1096\" morph=\"robinson:V-AOM-3S\">so ", "<transChange type=\"added\">so</transChange> <w src=\"11\" lemma=\"strong:G1096\" morph=\"robinson:V-AOM-3S\">"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Matt.20.11")) //$NON-NLS-1$
+        {
+            input = input.replace(" it</w>", "</w> <transChange type=\"added\">it</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Matt.24.26")) //$NON-NLS-1$
+        {
+            input = input.replaceFirst("<w src=\"9\" lemma=\"strong:G2076\" morph=\"robinson:V-PXI-3S\">he is</w>", "<transChange type=\"added\">he is</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replaceFirst("<transChange type=\"added\">he is</transChange>", "<w src=\"9\" lemma=\"strong:G2076\" morph=\"robinson:V-PXI-3S\">he is</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Matt.24.32")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"21\" lemma=\"strong:G1451\" morph=\"robinson:ADV\">is ", "<transChange type=\"added\">is</transChange> <w src=\"21\" lemma=\"strong:G1451\" morph=\"robinson:ADV\">"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Mark.4.11")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"20\" lemma=\"strong:G3956\" morph=\"robinson:A-NPN\">all these</w> <transChange type=\"added\">things</transChange>", "<w src=\"20\" lemma=\"strong:G3956\" morph=\"robinson:A-NPN\" type=\"x-split\" subType=\"x-20\">all</w> <transChange type=\"added\">these</transChange> <w src=\"20\" lemma=\"strong:G3956\" morph=\"robinson:A-NPN\" type=\"x-split\" subType=\"x-20\">things</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Mark.12.30")) //$NON-NLS-1$
+        {
+            input = input.replace(" is</w>", "</w> <transChange type=\"added\">is</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        if (osisID.equals("Luke.4.18")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"3\" lemma=\"strong:G1909\" morph=\"robinson:PREP\">is ", "<transChange type=\"added\">is</transChange> <w src=\"3\" lemma=\"strong:G1909\" morph=\"robinson:PREP\">"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Luke.11.27")) //$NON-NLS-1$
+        {
+            input = input.replace(" is</w> <w src=\"18", "</w> <transChange type=\"added\">is</transChange> <w src=\"18"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Luke.11.31")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"31\" lemma=\"strong:G5602\" morph=\"robinson:ADV\">is ", "<transChange type=\"added\">is</transChange> <w src=\"31\" lemma=\"strong:G5602\" morph=\"robinson:ADV\">"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Luke.17.37")) //$NON-NLS-1$
+        {
+            input = input.replace(" is</w>,", "</w> <transChange type=\"added\">is</transChange>,"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
         if (osisID.equals("Luke.18.1")) //$NON-NLS-1$
         {
             input = input.replace("<transChange type=\"added\"><w src=\"6\" lemma=\"strong:G4314\" morph=\"robinson:PREP\">", "<w src=\"6\" lemma=\"strong:G4314\" morph=\"robinson:PREP\"></w><transChange type=\"added\">"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1904,11 +2038,6 @@ public class BibleToOsis
         if (osisID.equals("Luke.21.34")) //$NON-NLS-1$
         {
             input = input.replace(" so</w>", "</w> <transChange type=\"added\">so</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Luke.23.32")) //$NON-NLS-1$
-        {
-            input = input.replace("others", "other"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (osisID.equals("John.10.38")) //$NON-NLS-1$
@@ -1932,55 +2061,15 @@ public class BibleToOsis
             input = input.replaceFirst("<transChange type=\"added\">it hated</transChange>", "<w src=\"12\" lemma=\"strong:G3404\" morph=\"robinson:V-RAI-3S\">it hated</w>"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        if (osisID.equals("John.19.18")) //$NON-NLS-1$
-        {
-            input = input.replace("others", "other"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("John.20.27")) //$NON-NLS-1$
-        {
-            input = input.replaceFirst("reach", "Reach"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("John.21.11")) //$NON-NLS-1$
-        {
-            input = input.replace("and hundred", "an hundred"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Acts.2.17")) //$NON-NLS-1$
-        {
-            input = input.replace("God</w>,<w", "God</w>, <w"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Acts.5.21")) //$NON-NLS-1$
-        {
-            input = input.replace("Israel</w>", "Israel</w>,"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
         if (osisID.equals("Acts.6.9")) //$NON-NLS-1$
         {
             input = input.replaceFirst("<w src=\"6 7\" lemma=\"strong:G3588 strong:G4864\" morph=\"robinson:T-GSF robinson:N-GSF\">the synagogue</w>", "<transChange type=\"added\">the synagogue</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
             input = input.replaceFirst("<transChange type=\"added\">the synagogue</transChange>", "<w src=\"6 7\" lemma=\"strong:G3588 strong:G4864\" morph=\"robinson:T-GSF robinson:N-GSF\">the synagogue</w>"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        if (osisID.equals("Acts.10.2")) //$NON-NLS-1$
-        {
-            input = input.replace("<w src=\"1\" lemma=\"strong:G2152\" morph=\"robinson:A-NSM\">A ", "<transChange type=\"added\">A</transChange> <w src=\"1\" lemma=\"strong:G2152\" morph=\"robinson:A-NSM\">"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
         if (osisID.equals("Acts.16.11")) //$NON-NLS-1$
         {
             input = input.replace(" day</w>", "</w> <transChange type=\"added\">day</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Acts.16.23")) //$NON-NLS-1$
-        {
-            input = input.replace("jailer", "jailor"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Acts.16.40")) //$NON-NLS-1$
-        {
-            input = input.replace("Lydia</w>", "Lydia</w>:"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (osisID.equals("Acts.19.19")) //$NON-NLS-1$
@@ -1993,21 +2082,6 @@ public class BibleToOsis
             input = input.replace("<w src=\"9 10\" lemma=\"strong:G3588 strong:G2791\" morph=\"robinson:T-GSF robinson:N-GSF\">a city ", "<transChange type=\"added\">a city</transChange> <w src=\"9 10\" lemma=\"strong:G3588 strong:G2791\" morph=\"robinson:T-GSF robinson:N-GSF\">"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        if (osisID.equals("Acts.24.25")) //$NON-NLS-1$
-        {
-            input = input.replace("come</w>", "come</w>,"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Acts.28.15")) //$NON-NLS-1$
-        {
-            input = input.replace("Forum", "forum"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Rom.4.19") || osisID.equals("Rom.9.9") || osisID.equals("1Pet.3.6")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        {
-            input = input.replace("Sarah", "Sara"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
         if (osisID.equals("Rom.6.5")) //$NON-NLS-1$
         {
             input = input.replace("<transChange type=\"added\">in the likeness of his</transChange>", "<transChange type=\"added\">in the likeness</transChange> of <transChange type=\"added\">his</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -2016,6 +2090,11 @@ public class BibleToOsis
         if (osisID.equals("Rom.12.2")) //$NON-NLS-1$
         {
             input = input.replace(" is</w>", "</w> <transChange type=\"added\">is</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("1Cor.10.20")) //$NON-NLS-1$
+        {
+            input = input.replace("<transChange type=\"added\">I say</transChange>", "I <transChange type=\"added\">say</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (osisID.equals("1Cor.11.26")) //$NON-NLS-1$
@@ -2033,11 +2112,6 @@ public class BibleToOsis
             input = input.replace("<transChange type=\"added\">which was bestowed</transChange>", "which <transChange type=\"added\">was bestowed</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        if (osisID.equals("1Cor.15.58")) //$NON-NLS-1$
-        {
-            input = input.replace("unmovable", "unmoveable"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
         if (osisID.equals("2Cor.1.2")) //$NON-NLS-1$
         {
             input = input.replace("<w src=\"2\" lemma=\"strong:G5213\" morph=\"robinson:P-2DP\">be ", "<transChange type=\"added\">be</transChange> <w src=\"2\" lemma=\"strong:G5213\" morph=\"robinson:P-2DP\">"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -2053,34 +2127,14 @@ public class BibleToOsis
             input = input.replace("<w src=\"10\" lemma=\"strong:G1722\" morph=\"robinson:PREP\">is ", "<transChange type=\"added\">is</transChange> <w src=\"10\" lemma=\"strong:G1722\" morph=\"robinson:PREP\">"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        if (osisID.equals("2Cor.9.13")) //$NON-NLS-1$
-        {
-            input = input.replace("into", "unto"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
         if (osisID.equals("2Cor.11.9")) //$NON-NLS-1$
         {
             input = input.replace("<w src=\"28\" lemma=\"strong:G5083\" morph=\"robinson:V-FAI-1S\">so ", "<transChange type=\"added\">so</transChange> <w src=\"28\" lemma=\"strong:G5083\" morph=\"robinson:V-FAI-1S\">"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        if (osisID.equals("Gal.4.30")) //$NON-NLS-1$
-        {
-            input = input.replace("free woman", "freewoman"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
         if (osisID.equals("Eph.5.9")) //$NON-NLS-1$
         {
             input = input.replace("<w src=\"6\" lemma=\"strong:G1722\" morph=\"robinson:PREP\">is ", "<transChange type=\"added\">is</transChange> <w src=\"6\" lemma=\"strong:G1722\" morph=\"robinson:PREP\">"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Phil.2.25")) //$NON-NLS-1$
-        {
-            input = input.replace("fellow soldier", "fellowsoldier"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Col.4.11")) //$NON-NLS-1$
-        {
-            input = input.replace("fellow workers", "fellowworkers"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (osisID.equals("1Tim.3.11")) //$NON-NLS-1$
@@ -2091,11 +2145,6 @@ public class BibleToOsis
         if (osisID.equals("Phlm.1.1")) //$NON-NLS-1$
         {
             input = input.replace("<w src=\"7\" lemma=\"strong:G3588\" morph=\"robinson:T-NSM\">our</w> <w src=\"8\" lemma=\"strong:G80\" morph=\"robinson:N-NSM\">", "<transChange type=\"added\">our</transChange> <w src=\"7 8\" lemma=\"strong:G3588 strong:G80\" morph=\"robinson:T-NSM robinson:N-NSM\">"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Heb.1.13")) //$NON-NLS-1$
-        {
-            input = input.replace("times", "time"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (osisID.equals("Heb.10.23")) //$NON-NLS-1$
@@ -2116,16 +2165,6 @@ public class BibleToOsis
         if (osisID.equals("Jas.2.16")) //$NON-NLS-1$
         {
             input = input.replace("<w src=\"10\" lemma=\"strong:G2328\" morph=\"robinson:V-PEM-2P\">be ye warmed</w>", "<w src=\"10\" lemma=\"strong:G2328\" morph=\"robinson:V-PEM-2P\" type=\"x-split\" subType=\"x-10\">be</w> <transChange type=\"added\">ye</transChange> <w src=\"10\" lemma=\"strong:G2328\" morph=\"robinson:V-PEM-2P\" type=\"x-split\" subType=\"x-10\">warmed</w>"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("2Pet.2.6")) //$NON-NLS-1$
-        {
-            input = input.replace("Gomorrah", "Gomorrha"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("2Pet.2.13")) //$NON-NLS-1$
-        {
-            input = input.replace("daytime", "day time"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (osisID.equals("1John.2.23")) //$NON-NLS-1$
@@ -2156,6 +2195,628 @@ public class BibleToOsis
         return input;
     }
 
+    private String fixHyphenatedNames(String osisID, String input)
+    {
+        Verse v = null;
+
+        try
+        {
+            v = VerseFactory.fromString(osisID);
+        }
+        catch (NoSuchVerseException e)
+        {
+            // does not happen
+        }
+
+        if (osisID.equals("Gen.49.17")) //$NON-NLS-1$
+        {
+            input = input.replace("arrow-snake", "arrow\u2013snake"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Exod.18.19") || osisID.equals("2Cor.3.4")) //$NON-NLS-1$ //$NON-NLS-2$
+        {
+//            System.err.println(osisID + ':' + input);
+            input = input.replace("God-ward", "God\u2013ward"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("1Sam.19.4")) //$NON-NLS-1$
+        {
+            input = input.replace("thee-ward", "thee\u2013ward"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Ps.49.5") || osisID.equals("Eph.1.19") || osisID.equals("2Pet.3.9")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        {
+            input = input.replace("us-ward", "us\u2013ward"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Song.5.10")) //$NON-NLS-1$
+        {
+            input = input.replace("standard-bearer", "standard\u2013bearer"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Jer.22.14")) //$NON-NLS-1$
+        {
+            input = input.replace("through-aired", "through\u2013aired"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Acts.13.6")) //$NON-NLS-1$
+        {
+            input = input.replace("Bar-jesus", "Bar\u2013jesus"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Rom.8.17")) //$NON-NLS-1$
+        {
+            input = input.replace("joint-heirs", "joint\u2013heirs"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("2Cor.1.12") || osisID.equals("2Cor.13.3")) //$NON-NLS-1$ //$NON-NLS-2$
+        {
+            input = input.replace("you-ward", "you\u2013ward"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("1Thess.1.8")) //$NON-NLS-1$
+        {
+            input = input.replace("</w>-<w", "</w>\u2013<w"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (input.contains("Abednego")) //$NON-NLS-1$
+            input = input.replaceAll("\\bAbednego\\b", "Abed\u2013nego"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Abelbethmaachah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bAbelbethmaachah\\b", "Abel\u2013beth\u2013maachah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Abelmaim")) //$NON-NLS-1$
+            input = input.replaceAll("\\bAbelmaim\\b", "Abel\u2013maim"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Abelmeholah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bAbelmeholah\\b", "Abel\u2013meholah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Abelmizraim")) //$NON-NLS-1$
+            input = input.replaceAll("\\bAbelmizraim\\b", "Abel\u2013mizraim"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Abelshittim")) //$NON-NLS-1$
+            input = input.replaceAll("\\bAbelshittim\\b", "Abel\u2013shittim"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Abialbon")) //$NON-NLS-1$
+            input = input.replaceAll("\\bAbialbon\\b", "Abi\u2013albon"); //$NON-NLS-1$ //$NON-NLS-2$
+        if ((osisID.equals("Judg.6.34") || //$NON-NLS-1$
+             osisID.equals("Judg.8.2") || //$NON-NLS-1$
+             osisID.equals("1Chr.11.28") || //$NON-NLS-1$
+             osisID.equals("1Chr.27.12") //$NON-NLS-1$
+             )&& input.contains("Abiezer")) //$NON-NLS-1$
+        {
+            input = input.replaceAll("\\bAbiezer\\b", "Abi\u2013ezer"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        if (input.contains("Abiezrites")) //$NON-NLS-1$
+            input = input.replaceAll("\\bAbiezrites\\b", "Abi\u2013ezrites"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Abiezrite")) //$NON-NLS-1$
+            input = input.replaceAll("\\bAbiezrite\\b", "Abi\u2013ezrite"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Adonibezek")) //$NON-NLS-1$
+            input = input.replaceAll("\\bAdonibezek\\b", "Adoni\u2013bezek"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Adonizedek")) //$NON-NLS-1$
+            input = input.replaceAll("\\bAdonizedek\\b", "Adoni\u2013zedek"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Allonbachuth")) //$NON-NLS-1$
+            input = input.replaceAll("\\bAllonbachuth\\b", "Allon\u2013bachuth"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Almondiblathaim")) //$NON-NLS-1$
+            input = input.replaceAll("\\bAlmondiblathaim\\b", "Almon\u2013diblathaim"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Ashdothpisgah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bAshdothpisgah\\b", "Ashdoth\u2013pisgah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Atarothadar")) //$NON-NLS-1$
+            input = input.replaceAll("\\bAtarothadar\\b", "Ataroth\u2013adar"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Atarothaddar")) //$NON-NLS-1$
+            input = input.replaceAll("\\bAtarothaddar\\b", "Ataroth\u2013addar"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Aznothtabor")) //$NON-NLS-1$
+            input = input.replaceAll("\\bAznothtabor\\b", "Aznoth\u2013tabor"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Baalathbeer")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBaalathbeer\\b", "Baalath\u2013beer"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Baalberith")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBaalberith\\b", "Baal\u2013berith"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Baalgad")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBaalgad\\b", "Baal\u2013gad"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Baalhamon")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBaalhamon\\b", "Baal\u2013hamon"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Baalhanan")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBaalhanan\\b", "Baal\u2013hanan"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Baalhazor")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBaalhazor\\b", "Baal\u2013hazor"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Baalhermon")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBaalhermon\\b", "Baal\u2013hermon"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Baalmeon")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBaalmeon\\b", "Baal\u2013meon"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Baalpeor")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBaalpeor\\b", "Baal\u2013peor"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Baalperazim")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBaalperazim\\b", "Baal\u2013perazim"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Baalshalisha")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBaalshalisha\\b", "Baal\u2013shalisha"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Baaltamar")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBaaltamar\\b", "Baal\u2013tamar"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Baalzebub")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBaalzebub\\b", "Baal\u2013zebub"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Baalzephon")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBaalzephon\\b", "Baal\u2013zephon"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bamothbaal")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBamothbaal\\b", "Bamoth\u2013baal"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bashanhavothjair")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBashanhavothjair\\b", "Bashan\u2013havoth\u2013jair"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bathrabbim")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBathrabbim\\b", "Bath\u2013rabbim"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bathsheba")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBathsheba\\b", "Bath\u2013sheba"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bathshua")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBathshua\\b", "Bath\u2013shua"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Beerelim")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBeerelim\\b", "Beer\u2013elim"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Beerlahairoi")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBeerlahairoi\\b", "Beer\u2013lahai\u2013roi"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Beersheba")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBeersheba\\b", "Beer\u2013sheba"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Beeshterah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBeeshterah\\b", "Beesh\u2013terah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Benammi")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBenammi\\b", "Ben\u2013ammi"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Beneberak")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBeneberak\\b", "Bene\u2013berak"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Benejaakan")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBenejaakan\\b", "Bene\u2013jaakan"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        if (input.contains("Benhadad")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBenhadad\\b", "Ben\u2013hadad"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Benhail")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBenhail\\b", "Ben\u2013hail"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Benhanan")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBenhanan\\b", "Ben\u2013hanan"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Benoni")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBenoni\\b", "Ben\u2013oni"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Benzoheth")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBenzoheth\\b", "Ben\u2013zoheth"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Berodachbaladan")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBerodachbaladan\\b", "Berodach\u2013baladan"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethanath")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethanath\\b", "Beth\u2013anath"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethanoth")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethanoth\\b", "Beth\u2013anoth"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Betharabah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBetharabah\\b", "Beth\u2013arabah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Betharam")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBetharam\\b", "Beth\u2013aram"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Betharbel")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBetharbel\\b", "Beth\u2013arbel"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethaven")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethaven\\b", "Beth\u2013aven"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethazmaveth")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethazmaveth\\b", "Beth\u2013azmaveth"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethbaalmeon")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethbaalmeon\\b", "Beth\u2013baal\u2013meon"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethbarah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethbarah\\b", "Beth\u2013barah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethbirei")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethbirei\\b", "Beth\u2013birei"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethcar")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethcar\\b", "Beth\u2013car"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethdagon")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethdagon\\b", "Beth\u2013dagon"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethdiblathaim")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethdiblathaim\\b", "Beth\u2013diblathaim"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethel")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethel\\b", "Beth\u2013el"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethemek")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethemek\\b", "Beth\u2013emek"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethezel")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethezel\\b", "Beth\u2013ezel"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethgader")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethgader\\b", "Beth\u2013gader"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethgamul")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethgamul\\b", "Beth\u2013gamul"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethhaccerem")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethhaccerem\\b", "Beth\u2013haccerem"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethharan")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethharan\\b", "Beth\u2013haran"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethhoglah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethhoglah\\b", "Beth\u2013hoglah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethhogla")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethhogla\\b", "Beth\u2013hogla"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethhoron")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethhoron\\b", "Beth\u2013horon"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethjeshimoth")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethjeshimoth\\b", "Beth\u2013jeshimoth"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethjesimoth")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethjesimoth\\b", "Beth\u2013jesimoth"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethlebaoth")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethlebaoth\\b", "Beth\u2013lebaoth"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethlehemjudah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethlehemjudah\\b", "Beth\u2013lehem\u2013judah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethlehem") && SwordConstants.getTestament(v) == SwordConstants.TESTAMENT_OLD) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethlehem\\b", "Beth\u2013lehem"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethmaachah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethmaachah\\b", "Beth\u2013maachah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethmarcaboth")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethmarcaboth\\b", "Beth\u2013marcaboth"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethmeon")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethmeon\\b", "Beth\u2013meon"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethnimrah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethnimrah\\b", "Beth\u2013nimrah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethpalet")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethpalet\\b", "Beth\u2013palet"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethpazzez")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethpazzez\\b", "Beth\u2013pazzez"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethpeor")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethpeor\\b", "Beth\u2013peor"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethphelet")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethphelet\\b", "Beth\u2013phelet"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethrapha")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethrapha\\b", "Beth\u2013rapha"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethrehob")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethrehob\\b", "Beth\u2013rehob"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethshan")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethshan\\b", "Beth\u2013shan"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethshean")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethshean\\b", "Beth\u2013shean"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethshemesh")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethshemesh\\b", "Beth\u2013shemesh"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethshemite")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethshemite\\b", "Beth\u2013shemite"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethshittah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethshittah\\b", "Beth\u2013shittah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethtappuah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethtappuah\\b", "Beth\u2013tappuah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethzur")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethzur\\b", "Beth\u2013zur"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Calebephratah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bCalebephratah\\b", "Caleb\u2013ephratah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Chepharhaammonai")) //$NON-NLS-1$
+            input = input.replaceAll("\\bChepharhaammonai\\b", "Chephar\u2013haammonai"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Chislothtabor")) //$NON-NLS-1$
+            input = input.replaceAll("\\bChislothtabor\\b", "Chisloth\u2013tabor"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Chorashan")) //$NON-NLS-1$
+            input = input.replaceAll("\\bChorashan\\b", "Chor\u2013ashan"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Chushanrishathaim")) //$NON-NLS-1$
+            input = input.replaceAll("\\bChushanrishathaim\\b", "Chushan\u2013rishathaim"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Colhozeh")) //$NON-NLS-1$
+            input = input.replaceAll("\\bColhozeh\\b", "Col\u2013hozeh"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Danjaan")) //$NON-NLS-1$
+            input = input.replaceAll("\\bDanjaan\\b", "Dan\u2013jaan"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Dibongad")) //$NON-NLS-1$
+            input = input.replaceAll("\\bDibongad\\b", "Dibon\u2013gad"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Ebedmelech")) //$NON-NLS-1$
+            input = input.replaceAll("\\bEbedmelech\\b", "Ebed\u2013melech"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Ebenezer")) //$NON-NLS-1$
+            input = input.replaceAll("\\bEbenezer\\b", "Eben\u2013ezer"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Elbethel")) //$NON-NLS-1$
+            input = input.replaceAll("\\bElbethel\\b", "El\u2013beth\u2013el"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Elelohe-Israel")) //$NON-NLS-1$
+            input = input.replaceAll("\\bElelohe-Israel\\b", "El\u2013elohe\u2013Israel"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Elonbethhanan")) //$NON-NLS-1$
+            input = input.replaceAll("\\bElonbethhanan\\b", "Elon\u2013beth\u2013hanan"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Elparan")) //$NON-NLS-1$
+            input = input.replaceAll("\\bElparan\\b", "El\u2013paran"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Eneglaim")) //$NON-NLS-1$
+            input = input.replaceAll("\\bEneglaim\\b", "En\u2013eglaim"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Engannim")) //$NON-NLS-1$
+            input = input.replaceAll("\\bEngannim\\b", "En\u2013gannim"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Engedi")) //$NON-NLS-1$
+            input = input.replaceAll("\\bEngedi\\b", "En\u2013gedi"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Enhaddah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bEnhaddah\\b", "En\u2013haddah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Enhakkore")) //$NON-NLS-1$
+            input = input.replaceAll("\\bEnhakkore\\b", "En\u2013hakkore"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Enhazor")) //$NON-NLS-1$
+            input = input.replaceAll("\\bEnhazor\\b", "En\u2013hazor"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Enmishpat")) //$NON-NLS-1$
+            input = input.replaceAll("\\bEnmishpat\\b", "En\u2013mishpat"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Enrimmon")) //$NON-NLS-1$
+            input = input.replaceAll("\\bEnrimmon\\b", "En\u2013rimmon"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Enrogel")) //$NON-NLS-1$
+            input = input.replaceAll("\\bEnrogel\\b", "En\u2013rogel"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Enshemesh")) //$NON-NLS-1$
+            input = input.replaceAll("\\bEnshemesh\\b", "En\u2013shemesh"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Entappuah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bEntappuah\\b", "En\u2013tappuah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Ephesdammim")) //$NON-NLS-1$
+            input = input.replaceAll("\\bEphesdammim\\b", "Ephes\u2013dammim"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Esarhaddon")) //$NON-NLS-1$
+            input = input.replaceAll("\\bEsarhaddon\\b", "Esar\u2013haddon"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Eshbaal")) //$NON-NLS-1$
+            input = input.replaceAll("\\bEshbaal\\b", "Esh\u2013baal"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Evilmerodach")) //$NON-NLS-1$
+            input = input.replaceAll("\\bEvilmerodach\\b", "Evil\u2013merodach"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Eziongaber")) //$NON-NLS-1$
+            input = input.replaceAll("\\bEziongaber\\b", "Ezion\u2013gaber"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Eziongeber")) //$NON-NLS-1$
+            input = input.replaceAll("\\bEziongeber\\b", "Ezion\u2013geber"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Gathhepher")) //$NON-NLS-1$
+            input = input.replaceAll("\\bGathhepher\\b", "Gath\u2013hepher"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Gathrimmon")) //$NON-NLS-1$
+            input = input.replaceAll("\\bGathrimmon\\b", "Gath\u2013rimmon"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Gibeah-haaraloth")) //$NON-NLS-1$
+            input = input.replaceAll("\\bGibeah-haaraloth\\b", "Gibeah\u2013haaraloth"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Gittahhepher")) //$NON-NLS-1$
+            input = input.replaceAll("\\bGittahhepher\\b", "Gittah\u2013hepher"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Gurbaal")) //$NON-NLS-1$
+            input = input.replaceAll("\\bGurbaal\\b", "Gur\u2013baal"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Hamathzobah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bHamathzobah\\b", "Hamath\u2013zobah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Hammothdor")) //$NON-NLS-1$
+            input = input.replaceAll("\\bHammothdor\\b", "Hammoth\u2013dor"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Hamongog")) //$NON-NLS-1$
+            input = input.replaceAll("\\bHamongog\\b", "Hamon\u2013gog"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Havothjair")) //$NON-NLS-1$
+            input = input.replaceAll("\\bHavothjair\\b", "Havoth\u2013jair"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Hazaraddar")) //$NON-NLS-1$
+            input = input.replaceAll("\\bHazaraddar\\b", "Hazar\u2013addar"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Hazarenan")) //$NON-NLS-1$
+            input = input.replaceAll("\\bHazarenan\\b", "Hazar\u2013enan"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Hazargaddah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bHazargaddah\\b", "Hazar\u2013gaddah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Hazarhatticon")) //$NON-NLS-1$
+            input = input.replaceAll("\\bHazarhatticon\\b", "Hazar\u2013hatticon"); //$NON-NLS-1$ //$NON-NLS-2$
+//        if (input.contains("Hazarmaveth")) //$NON-NLS-1$
+//          input = input.replaceAll("\\bHazarmaveth\\b", "Hazar\u2013maveth"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Hazarshual")) //$NON-NLS-1$
+            input = input.replaceAll("\\bHazarshual\\b", "Hazar\u2013shual"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Hazarsusah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bHazarsusah\\b", "Hazar\u2013susah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Hazarsusim")) //$NON-NLS-1$
+            input = input.replaceAll("\\bHazarsusim\\b", "Hazar\u2013susim"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Hazazontamar")) //$NON-NLS-1$
+            input = input.replaceAll("\\bHazazontamar\\b", "Hazazon\u2013tamar"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Hazezontamar")) //$NON-NLS-1$
+            input = input.replaceAll("\\bHazezontamar\\b", "Hazezon\u2013tamar"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Helkathhazzurim")) //$NON-NLS-1$
+            input = input.replaceAll("\\bHelkathhazzurim\\b", "Helkath\u2013hazzurim"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Hephzibah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bHephzibah\\b", "Hephzi\u2013bah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Horhagidgad")) //$NON-NLS-1$
+            input = input.replaceAll("\\bHorhagidgad\\b", "Hor\u2013hagidgad"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Ichabod")) //$NON-NLS-1$
+            input = input.replaceAll("\\bIchabod\\b", "I\u2013chabod"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Ijeabarim")) //$NON-NLS-1$
+            input = input.replaceAll("\\bIjeabarim\\b", "Ije\u2013abarim"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Irnahash")) //$NON-NLS-1$
+            input = input.replaceAll("\\bIrnahash\\b", "Ir\u2013nahash"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Irshemesh")) //$NON-NLS-1$
+            input = input.replaceAll("\\bIrshemesh\\b", "Ir\u2013shemesh"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Ishbibenob")) //$NON-NLS-1$
+            input = input.replaceAll("\\bIshbibenob\\b", "Ishbi\u2013benob"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Ishbosheth")) //$NON-NLS-1$
+            input = input.replaceAll("\\bIshbosheth\\b", "Ish\u2013bosheth"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Ishtob")) //$NON-NLS-1$
+            input = input.replaceAll("\\bIshtob\\b", "Ish\u2013tob"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Ittahkazin")) //$NON-NLS-1$
+            input = input.replaceAll("\\bIttahkazin\\b", "Ittah\u2013kazin"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Jaareoregim")) //$NON-NLS-1$
+            input = input.replaceAll("\\bJaareoregim\\b", "Jaare\u2013oregim"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Jabeshgilead")) //$NON-NLS-1$
+            input = input.replaceAll("\\bJabeshgilead\\b", "Jabesh\u2013gilead"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Jashubilehem")) //$NON-NLS-1$
+            input = input.replaceAll("\\bJashubilehem\\b", "Jashubi\u2013lehem"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Jegarsahadutha")) //$NON-NLS-1$
+            input = input.replaceAll("\\bJegarsahadutha\\b", "Jegar\u2013sahadutha"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Jehovahjireh")) //$NON-NLS-1$
+            input = input.replaceAll("\\bJehovahjireh\\b", "Jehovah\u2013jireh"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Jehovahnissi")) //$NON-NLS-1$
+            input = input.replaceAll("\\bJehovahnissi\\b", "Jehovah\u2013nissi"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Jehovahshalom")) //$NON-NLS-1$
+            input = input.replaceAll("\\bJehovahshalom\\b", "Jehovah\u2013shalom"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Jiphthahel")) //$NON-NLS-1$
+            input = input.replaceAll("\\bJiphthahel\\b", "Jiphthah\u2013el"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Jushabhesed")) //$NON-NLS-1$
+            input = input.replaceAll("\\bJushabhesed\\b", "Jushab\u2013hesed"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Kadeshbarnea")) //$NON-NLS-1$
+            input = input.replaceAll("\\bKadeshbarnea\\b", "Kadesh\u2013barnea"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Kedeshnaphtali")) //$NON-NLS-1$
+            input = input.replaceAll("\\bKedeshnaphtali\\b", "Kedesh\u2013naphtali"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Kerenhappuch")) //$NON-NLS-1$
+            input = input.replaceAll("\\bKerenhappuch\\b", "Keren\u2013happuch"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Kibrothhattaavah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bKibrothhattaavah\\b", "Kibroth\u2013hattaavah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Kirharaseth")) //$NON-NLS-1$
+            input = input.replaceAll("\\bKirharaseth\\b", "Kir\u2013haraseth"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Kirhareseth")) //$NON-NLS-1$
+            input = input.replaceAll("\\bKirhareseth\\b", "Kir\u2013hareseth"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Kirharesh")) //$NON-NLS-1$
+            input = input.replaceAll("\\bKirharesh\\b", "Kir\u2013haresh"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Kirheres")) //$NON-NLS-1$
+            input = input.replaceAll("\\bKirheres\\b", "Kir\u2013heres"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Kirjatharba")) //$NON-NLS-1$
+            input = input.replaceAll("\\bKirjatharba\\b", "Kirjath\u2013arba"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Kirjatharim")) //$NON-NLS-1$
+            input = input.replaceAll("\\bKirjatharim\\b", "Kirjath\u2013arim"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Kirjathbaal")) //$NON-NLS-1$
+            input = input.replaceAll("\\bKirjathbaal\\b", "Kirjath\u2013baal"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Kirjathhuzoth")) //$NON-NLS-1$
+            input = input.replaceAll("\\bKirjathhuzoth\\b", "Kirjath\u2013huzoth"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Kirjathjearim")) //$NON-NLS-1$
+            input = input.replaceAll("\\bKirjathjearim\\b", "Kirjath\u2013jearim"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Kirjathsannah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bKirjathsannah\\b", "Kirjath\u2013sannah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Kirjathsepher")) //$NON-NLS-1$
+            input = input.replaceAll("\\bKirjathsepher\\b", "Kirjath\u2013sepher"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Lahairoi")) //$NON-NLS-1$
+            input = input.replaceAll("\\bLahairoi\\b", "Lahai\u2013roi"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Loammi")) //$NON-NLS-1$
+            input = input.replaceAll("\\bLoammi\\b", "Lo\u2013ammi"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Lodebar")) //$NON-NLS-1$
+            input = input.replaceAll("\\bLodebar\\b", "Lo\u2013debar"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Loruhamah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bLoruhamah\\b", "Lo\u2013ruhamah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Maalehacrabbim")) //$NON-NLS-1$
+            input = input.replaceAll("\\bMaalehacrabbim\\b", "Maaleh\u2013acrabbim"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Magormissabib")) //$NON-NLS-1$
+            input = input.replaceAll("\\bMagormissabib\\b", "Magor\u2013missabib"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Mahanehdan")) //$NON-NLS-1$
+            input = input.replaceAll("\\bMahanehdan\\b", "Mahaneh\u2013dan"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Mahershalalhashbaz")) //$NON-NLS-1$
+            input = input.replaceAll("\\bMahershalalhashbaz\\b", "Maher\u2013shalal-hash-baz"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Malchishua")) //$NON-NLS-1$
+            input = input.replaceAll("\\bMalchishua\\b", "Malchi\u2013shua"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Mejarkon")) //$NON-NLS-1$
+            input = input.replaceAll("\\bMejarkon\\b", "Me\u2013jarkon"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Melchishua")) //$NON-NLS-1$
+            input = input.replaceAll("\\bMelchishua\\b", "Melchi\u2013shua"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Meribah-Kadesh")) //$NON-NLS-1$
+            input = input.replaceAll("\\bMeribah-Kadesh\\b", "Meribah\u2013Kadesh"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Meribbaal")) //$NON-NLS-1$
+            input = input.replaceAll("\\bMeribbaal\\b", "Merib\u2013baal"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Merodachbaladan")) //$NON-NLS-1$
+            input = input.replaceAll("\\bMerodachbaladan\\b", "Merodach\u2013baladan"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Methegammah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bMethegammah\\b", "Metheg\u2013ammah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Migdalel")) //$NON-NLS-1$
+            input = input.replaceAll("\\bMigdalel\\b", "Migdal\u2013el"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Migdalgad")) //$NON-NLS-1$
+            input = input.replaceAll("\\bMigdalgad\\b", "Migdal\u2013gad"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Misrephothmaim")) //$NON-NLS-1$
+            input = input.replaceAll("\\bMisrephothmaim\\b", "Misrephoth\u2013maim"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Moreshethgath")) //$NON-NLS-1$
+            input = input.replaceAll("\\bMoreshethgath\\b", "Moresheth\u2013gath"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Nathanmelech")) //$NON-NLS-1$
+            input = input.replaceAll("\\bNathanmelech\\b", "Nathan\u2013melech"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Nebuzaradan")) //$NON-NLS-1$
+            input = input.replaceAll("\\bNebuzaradan\\b", "Nebuzar\u2013adan"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Nergalsharezer")) //$NON-NLS-1$
+            input = input.replaceAll("\\bNergalsharezer\\b", "Nergal\u2013sharezer"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Obededom")) //$NON-NLS-1$
+            input = input.replaceAll("\\bObededom\\b", "Obed\u2013edom"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Padanaram")) //$NON-NLS-1$
+            input = input.replaceAll("\\bPadanaram\\b", "Padan\u2013aram"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Pahathmoab")) //$NON-NLS-1$
+            input = input.replaceAll("\\bPahathmoab\\b", "Pahath\u2013moab"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Pasdammim")) //$NON-NLS-1$
+            input = input.replaceAll("\\bPasdammim\\b", "Pas\u2013dammim"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Perezuzzah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bPerezuzzah\\b", "Perez\u2013uzzah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Perezuzza")) //$NON-NLS-1$
+            input = input.replaceAll("\\bPerezuzza\\b", "Perez\u2013uzza"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Pharaohhophra")) //$NON-NLS-1$
+            input = input.replaceAll("\\bPharaohhophra\\b", "Pharaoh\u2013hophra"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Pharaohnechoh")) //$NON-NLS-1$
+            input = input.replaceAll("\\bPharaohnechoh\\b", "Pharaoh\u2013nechoh"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Pharaohnecho")) //$NON-NLS-1$
+            input = input.replaceAll("\\bPharaohnecho\\b", "Pharaoh\u2013necho"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Pibeseth")) //$NON-NLS-1$
+            input = input.replaceAll("\\bPibeseth\\b", "Pi\u2013beseth"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Pihahiroth")) //$NON-NLS-1$
+            input = input.replaceAll("\\bPihahiroth\\b", "Pi\u2013hahiroth"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Potipherah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bPotipherah\\b", "Poti\u2013pherah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Rabsaris")) //$NON-NLS-1$
+            input = input.replaceAll("\\bRabsaris\\b", "Rab\u2013saris"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Rabshakeh")) //$NON-NLS-1$
+            input = input.replaceAll("\\bRabshakeh\\b", "Rab\u2013shakeh"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Ramathaimzophim")) //$NON-NLS-1$
+            input = input.replaceAll("\\bRamathaimzophim\\b", "Ramathaim\u2013zophim"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Ramathlehi")) //$NON-NLS-1$
+            input = input.replaceAll("\\bRamathlehi\\b", "Ramath\u2013lehi"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Ramathmizpeh")) //$NON-NLS-1$
+            input = input.replaceAll("\\bRamathmizpeh\\b", "Ramath\u2013mizpeh"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Ramothgilead")) //$NON-NLS-1$
+            input = input.replaceAll("\\bRamothgilead\\b", "Ramoth\u2013gilead"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Regemmelech")) //$NON-NLS-1$
+            input = input.replaceAll("\\bRegemmelech\\b", "Regem\u2013melech"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Remmonmethoar")) //$NON-NLS-1$
+            input = input.replaceAll("\\bRemmonmethoar\\b", "Remmon\u2013methoar"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Rimmonparez")) //$NON-NLS-1$
+            input = input.replaceAll("\\bRimmonparez\\b", "Rimmon\u2013parez"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Romamtiezer")) //$NON-NLS-1$
+            input = input.replaceAll("\\bRomamtiezer\\b", "Romamti\u2013ezer"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Ruhamah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bRuhamah\\b", "Ru\u2013hamah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Samgarnebo")) //$NON-NLS-1$
+            input = input.replaceAll("\\bSamgarnebo\\b", "Samgar\u2013nebo"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Selahammahlekoth")) //$NON-NLS-1$
+            input = input.replaceAll("\\bSelahammahlekoth\\b", "Sela\u2013hammahlekoth"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Shearjashub")) //$NON-NLS-1$
+            input = input.replaceAll("\\bShearjashub\\b", "Shear\u2013jashub"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Shetharboznai")) //$NON-NLS-1$
+            input = input.replaceAll("\\bShetharboznai\\b", "Shethar\u2013boznai"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Shihorlibnath")) //$NON-NLS-1$
+            input = input.replaceAll("\\bShihorlibnath\\b", "Shihor\u2013libnath"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Shimronmeron")) //$NON-NLS-1$
+            input = input.replaceAll("\\bShimronmeron\\b", "Shimron\u2013meron"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Succothbenoth")) //$NON-NLS-1$
+            input = input.replaceAll("\\bSuccothbenoth\\b", "Succoth\u2013benoth"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Syriadamascus")) //$NON-NLS-1$
+            input = input.replaceAll("\\bSyriadamascus\\b", "Syria\u2013damascus"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Syriamaachah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bSyriamaachah\\b", "Syria\u2013maachah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Taanathshiloh")) //$NON-NLS-1$
+            input = input.replaceAll("\\bTaanathshiloh\\b", "Taanath\u2013shiloh"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Tahtimhodshi")) //$NON-NLS-1$
+            input = input.replaceAll("\\bTahtimhodshi\\b", "Tahtim\u2013hodshi"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Telabib")) //$NON-NLS-1$
+            input = input.replaceAll("\\bTelabib\\b", "Tel\u2013abib"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Telharesha")) //$NON-NLS-1$
+            input = input.replaceAll("\\bTelharesha\\b", "Tel\u2013haresha"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Telharsa")) //$NON-NLS-1$
+            input = input.replaceAll("\\bTelharsa\\b", "Tel\u2013harsa"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Telmelah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bTelmelah\\b", "Tel\u2013melah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Tiglathpileser")) //$NON-NLS-1$
+            input = input.replaceAll("\\bTiglathpileser\\b", "Tiglath\u2013pileser"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Tilgathpilneser")) //$NON-NLS-1$
+            input = input.replaceAll("\\bTilgathpilneser\\b", "Tilgath\u2013pilneser"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Timnathheres")) //$NON-NLS-1$
+            input = input.replaceAll("\\bTimnathheres\\b", "Timnath\u2013heres"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Timnathserah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bTimnathserah\\b", "Timnath\u2013serah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Tobadonijah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bTobadonijah\\b", "Tob\u2013adonijah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Tubalcain")) //$NON-NLS-1$
+            input = input.replaceAll("\\bTubalcain\\b", "Tubal\u2013cain"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Uzzensherah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bUzzensherah\\b", "Uzzen\u2013sherah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Zarethshahar")) //$NON-NLS-1$
+            input = input.replaceAll("\\bZarethshahar\\b", "Zareth\u2013shahar"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Zaphnathpaaneah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bZaphnathpaaneah\\b", "Zaphnath\u2013paaneah"); //$NON-NLS-1$ //$NON-NLS-2$
+        return input;
+    }
+
+    private static int divineNameCount = 0;
+    private String fixDivineName(String osisID, String input)
+    {
+        if (input.contains(divineNameEnd))
+        {
+            Matcher divineNameStartMatcher = divineNameStartPattern.matcher(input);
+            int begin = 0;
+            StringBuffer buf = new StringBuffer();
+            while (divineNameStartMatcher.find())
+            {
+                //divineNameCount++;
+                int start = divineNameStartMatcher.start();
+                Matcher divineNameEndMatcher = divineNameEndPattern.matcher(input);
+                if (divineNameEndMatcher.find(1 + divineNameStartMatcher.end()))
+                {
+                    int end = divineNameEndMatcher.end();
+                    String preDivineNameText = input.substring(begin, start);
+                    String divineNameElement = input.substring(start, end);
+                    String divineNameText = divineNameElement.substring(divineNameStartMatcher.group().length(), divineNameElement.length() - divineNameEnd.length());
+                    Matcher lordMatcher = lordPattern.matcher(divineNameText);
+                    buf.append(preDivineNameText);
+                    if (lordMatcher.find())
+                    {
+                        buf.append(lordMatcher.group(1));
+                        buf.append("<seg>"); //$NON-NLS-1$
+                        buf.append(divineNameStartMatcher.group());
+                        buf.append(lordMatcher.group(2));
+                        buf.append(divineNameEndMatcher.group());
+                        buf.append("</seg>"); //$NON-NLS-1$
+                        buf.append(lordMatcher.group(3));
+                        begin = start + divineNameElement.length();
+                    }
+                    else //if (divineNameText.indexOf("LORD") == -1) //$NON-NLS-1$
+                    {
+                        System.err.println(osisID + ':' + divineNameText);
+                    }
+                }
+            }
+            buf.append(input.substring(begin));
+            input = buf.toString();
+        }
+
+            Matcher divineNameStartMatcher = divineNameStrongPattern.matcher(input);
+            while (divineNameStartMatcher.find())
+            {
+                divineNameCount++;
+            }
+        return input;
+    }
+
     private static FieldPosition pos = new FieldPosition(0);
 
     private static String preVerseStart = "<title subtype=\"x-preverse\" type=\"section\">"; //$NON-NLS-1$
@@ -2166,7 +2827,15 @@ public class BibleToOsis
     private static String psalmTitleStart = "<title type=\"psalm\">"; //$NON-NLS-1$
     private static String psalmTitleEnd = "</title>"; //$NON-NLS-1$
     private static Pattern psalmTitleStartPattern = Pattern.compile(psalmTitleStart);
-    private static Pattern psalmTitleEndPattern = Pattern.compile(psalmTitleEnd); //$NON-NLS-1$
+    private static Pattern psalmTitleEndPattern = Pattern.compile(psalmTitleEnd);
+
+    private static String divineNameStart = "<divineName[^>]*>"; //$NON-NLS-1$
+    private static String divineNameEnd = "</divineName>"; //$NON-NLS-1$
+    private static Pattern divineNameStartPattern = Pattern.compile(divineNameStart);
+    private static Pattern divineNameEndPattern = Pattern.compile(divineNameEnd);
+    private static Pattern lordPattern = Pattern.compile("(.*)(LORD'|LORD'S|LORD|GOD|JEHOVAH)(.*)"); //$NON-NLS-1$
+    private static String divineNameStrong = "(LORD'|LORD'S|LORD|GOD|JEHOVAH)"; //$NON-NLS-1$
+    private static Pattern divineNameStrongPattern = Pattern.compile(divineNameStrong);
 
     private static String transChangeSeg = "<seg type=\"transChange\" subType=\"type:added\">([^<]*)</seg>"; //$NON-NLS-1$
     private static Pattern transChangeSegPattern = Pattern.compile(transChangeSeg);
@@ -2215,6 +2884,8 @@ public class BibleToOsis
     private static Pattern w8Pattern = Pattern.compile("(<milestone type=\"x-p\" marker=\"\u00B6\"/>)\\s+"); //$NON-NLS-1$
     private static Pattern w9Pattern = Pattern.compile("(<title\\s[^>]*>)\\s+"); //$NON-NLS-1$
     private static Pattern wnPattern = Pattern.compile("\\s\\s+"); //$NON-NLS-1$
+
+    private static Pattern hyphenatedNamePattern = Pattern.compile("\\w+[a-z](-)\\w\\w+"); //$NON-NLS-1$
     
     private static Map<String, String> bookTitles = new HashMap<String, String>();
     
@@ -2305,93 +2976,6 @@ public class BibleToOsis
         colophons.put("Phlm", "<div type=\"colophon\" osisID=\"Phlm.c\">Written from Rome to Philemon, by Onesimus, a servant.</div>\n"); //$NON-NLS-1$ //$NON-NLS-2$
         colophons.put("Heb", "<div type=\"colophon\" osisID=\"Heb.c\">Written to the Hebrews from Italy by Timothy.</div>\n"); //$NON-NLS-1$ //$NON-NLS-2$
     }
-
-    private static Set<String> examine = new HashSet<String>();
-
-//    static
-//    {
-//        examine.add("Matt.2.6"); //$NON-NLS-1$ 
-//        examine.add("Matt.5.10"); //$NON-NLS-1$ 
-//        examine.add("Matt.5.30"); //$NON-NLS-1$ 
-//        examine.add("Matt.8.13"); //$NON-NLS-1$ 
-//        examine.add("Matt.15.39"); //$NON-NLS-1$ 
-//        examine.add("Matt.20.11"); //$NON-NLS-1$ 
-//        examine.add("Matt.24.26"); //$NON-NLS-1$ 
-//        examine.add("Matt.24.32"); //$NON-NLS-1$ 
-//        examine.add("Matt.26.39"); //$NON-NLS-1$ 
-//        examine.add("Matt.26.56"); //$NON-NLS-1$ 
-//        examine.add("Matt.27.3"); //$NON-NLS-1$ 
-//        examine.add("Mark.1.19"); //$NON-NLS-1$ 
-//        examine.add("Mark.4.11"); //$NON-NLS-1$ 
-//        examine.add("Mark.12.30"); //$NON-NLS-1$ 
-//        examine.add("Mark.12.36"); //$NON-NLS-1$ 
-//        examine.add("Mark.14.43"); //$NON-NLS-1$ 
-//        examine.add("Luke.4.18"); //$NON-NLS-1$ 
-//        examine.add("Luke.7.25"); //$NON-NLS-1$ 
-//        examine.add("Luke.8.47"); //$NON-NLS-1$ 
-//        examine.add("Luke.11.27"); //$NON-NLS-1$ 
-//        examine.add("Luke.11.31"); //$NON-NLS-1$ 
-//        examine.add("Luke.12.49"); //$NON-NLS-1$ 
-//        examine.add("Luke.15.24"); //$NON-NLS-1$ 
-//        examine.add("Luke.17.37"); //$NON-NLS-1$ 
-//        examine.add("Luke.18.1"); //$NON-NLS-1$ 
-//        examine.add("Luke.21.34"); //$NON-NLS-1$ 
-//        examine.add("Luke.23.32"); //$NON-NLS-1$ 
-//        examine.add("John.10.38"); //$NON-NLS-1$ 
-//        examine.add("John.13.13"); //$NON-NLS-1$ 
-//        examine.add("John.14.2"); //$NON-NLS-1$ 
-//        examine.add("John.15.18"); //$NON-NLS-1$ 
-//        examine.add("John.19.18"); //$NON-NLS-1$ 
-//        examine.add("John.20.27"); //$NON-NLS-1$ 
-//        examine.add("John.21.11"); //$NON-NLS-1$ 
-//        examine.add("Acts.2.17"); //$NON-NLS-1$ 
-//        examine.add("Acts.5.21"); //$NON-NLS-1$ 
-//        examine.add("Acts.6.9"); //$NON-NLS-1$ 
-//        examine.add("Acts.10.2"); //$NON-NLS-1$ 
-//        examine.add("Acts.16.11"); //$NON-NLS-1$ 
-//        examine.add("Acts.16.23"); //$NON-NLS-1$ 
-//        examine.add("Acts.16.40"); //$NON-NLS-1$ 
-//        examine.add("Acts.19.19"); //$NON-NLS-1$ 
-//        examine.add("Acts.22.3"); //$NON-NLS-1$ 
-//        examine.add("Acts.24.25"); //$NON-NLS-1$ 
-//        examine.add("Acts.28.15"); //$NON-NLS-1$ 
-//        examine.add("Rom.4.19"); //$NON-NLS-1$ 
-//        examine.add("Rom.6.5"); //$NON-NLS-1$ 
-//        examine.add("Rom.9.9"); //$NON-NLS-1$ 
-//        examine.add("Rom.12.2"); //$NON-NLS-1$ 
-//        examine.add("1Cor.11.26"); //$NON-NLS-1$ 
-//        examine.add("1Cor.11.27"); //$NON-NLS-1$ 
-//        examine.add("1Cor.11.26"); //$NON-NLS-1$ 
-//        examine.add("1Cor.11.27"); //$NON-NLS-1$ 
-//        examine.add("1Cor.15.10"); //$NON-NLS-1$ 
-//        examine.add("1Cor.15.58"); //$NON-NLS-1$ 
-//        examine.add("2Cor.1.2"); //$NON-NLS-1$ 
-//        examine.add("2Cor.2.6"); //$NON-NLS-1$ 
-//        examine.add("2Cor.8.18"); //$NON-NLS-1$ 
-//        examine.add("2Cor.9.13"); //$NON-NLS-1$ 
-//        examine.add("2Cor.11.9"); //$NON-NLS-1$ 
-//        examine.add("Gal.4.30"); //$NON-NLS-1$ 
-//        examine.add("Eph.5.9"); //$NON-NLS-1$ 
-//        examine.add("Phil.2.25"); //$NON-NLS-1$ 
-//        examine.add("Col.4.11"); //$NON-NLS-1$ 
-//        examine.add("1Tim.3.11"); //$NON-NLS-1$ 
-//        examine.add("Phlm.1.1"); //$NON-NLS-1$ 
-//        examine.add("Heb.1.13"); //$NON-NLS-1$ 
-//        examine.add("Heb.10.23"); //$NON-NLS-1$ 
-//        examine.add("Heb.12.1"); //$NON-NLS-1$ 
-//        examine.add("Heb.12.19"); //$NON-NLS-1$ 
-//        examine.add("Jas.2.16"); //$NON-NLS-1$ 
-//        examine.add("1Pet.3.6"); //$NON-NLS-1$ 
-//        examine.add("2Pet.2.6"); //$NON-NLS-1$ 
-//        examine.add("2Pet.2.13"); //$NON-NLS-1$ 
-//        examine.add("1John.2.23"); //$NON-NLS-1$ 
-//        examine.add("1John.5.19"); //$NON-NLS-1$ 
-//        examine.add("1John.5.20"); //$NON-NLS-1$ 
-//        examine.add("1John.5.19"); //$NON-NLS-1$ 
-//        examine.add("1John.5.20"); //$NON-NLS-1$ 
-//        examine.add("Rev.22.2"); //$NON-NLS-1$ 
-//        examine.add("Rev.22.7"); //$NON-NLS-1$ 
-//    }
 
     private static Map<String, String> acrostics = new HashMap<String, String>();
     
