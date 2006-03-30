@@ -537,7 +537,7 @@ public class BibleToOsis
         if (acrostic != null)
         {
             MessageFormat msgFormat = new MessageFormat("<title type=\"acrostic\" canonical=\"true\">{0}</title>"); //$NON-NLS-1$
-            input = input.replace(acrostic, ""); //$NON-NLS-1$
+            input = input.replaceFirst(acrostic, ""); //$NON-NLS-1$ //$NON-NLS-2$
             input = msgFormat.format(new Object[] { acrostic }) + input;
         }
 
@@ -851,7 +851,6 @@ public class BibleToOsis
 
         if (osisID.equals("Luke.15.24")) //$NON-NLS-1$
         {
-            input = input.replace("</q>", ""); //$NON-NLS-1$ //$NON-NLS-2$
             input = input.replace("<w src=\"16\" lemma=\"strong:G756\" morph=\"robinson:V-ADI-3P\"></w><w src=\"14\" lemma=\"strong:G2147\" morph=\"robinson:V-API-3S\"></w><w src=\"9\" lemma=\"strong:G326\" morph=\"robinson:V-AAI-3S\"></w><w src=\"3\" lemma=\"strong:G3588\" morph=\"robinson:T-NSM\"></w><w morph=\"robinson:T-NSM\" src=\"3\" lemma=\"strong:G3588\"></w><w morph=\"robinson:CONJ\" src=\"1\" lemma=\"strong:G3754\"></w>F", //$NON-NLS-1$
                                   ""); //$NON-NLS-1$
             input = input.replace("<w src=\"2\" lemma=\"strong:G3778\" morph=\"robinson:D-NSM\">or</w> </w>", //$NON-NLS-1$
@@ -868,6 +867,7 @@ public class BibleToOsis
                                   "<w morph=\"robinson:CONJ\" src=\"10\" lemma=\"strong:G2532\"></w><w morph=\"robinson:V-IXI-3S\" src=\"12\" lemma=\"strong:G2258\">he was</w> "); //$NON-NLS-1$
             input = input.replace("<w morph=\"robinson:V-API-3S\" src=\"14\" lemma=\"strong:G2147\">i<w src=\"17\" lemma=\"strong:G2165\" morph=\"robinson:V-PPN\">s found</w></w>", //$NON-NLS-1$
                                   "<w morph=\"robinson:V-API-3S\" src=\"14\" lemma=\"strong:G2147\">is found</w>"); //$NON-NLS-1$
+            input = "<q who=\"Jesus\">" + input; //$NON-NLS-1$
         }
 
         if (osisID.equals("Luke.19.30")) //$NON-NLS-1$
@@ -1491,6 +1491,10 @@ public class BibleToOsis
         {
             input = input.replace("priests'", "priests'."); //$NON-NLS-1$ //$NON-NLS-2$
         }
+        if (osisID.equals("Isa.30.14")) //$NON-NLS-1$
+        {
+            input = input.replace("..:", "...:"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
 
 //        if (osisID.equals("Ps.119.9")) //$NON-NLS-1$
 //        {
@@ -1522,6 +1526,8 @@ public class BibleToOsis
         input = w7Pattern.matcher(input).replaceAll("$2$1"); //$NON-NLS-1$
         input = w8Pattern.matcher(input).replaceAll("$1"); //$NON-NLS-1$
         input = w9Pattern.matcher(input).replaceAll("$2$1"); //$NON-NLS-1$
+        input = w10Pattern.matcher(input).replaceAll("$1"); //$NON-NLS-1$
+        input = w11Pattern.matcher(input).replaceAll("$1"); //$NON-NLS-1$
 
         // strip leading spaces
         here = 0;
@@ -1537,6 +1543,8 @@ public class BibleToOsis
         }
 
         input = wnPattern.matcher(input).replaceAll(" "); //$NON-NLS-1$
+
+        input = p1Pattern.matcher(input).replaceAll("\u2026"); //$NON-NLS-1$
 
         if (osisID.equals("Matt.15.39")) //$NON-NLS-1$
         {
@@ -1584,10 +1592,11 @@ public class BibleToOsis
             input = input.replace("Israel</w>", "Israel</w>,"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        if (osisID.equals("Acts.2.1")) //$NON-NLS-1$
-        {
-            input = input.replace(",", ""); //$NON-NLS-1$ //$NON-NLS-2$
-        }
+//        if (osisID.equals("Acts.2.1")) //$NON-NLS-1$
+//        {
+//            System.err.println(osisID + ':' + input);
+//            input = input.replace(",", ""); //$NON-NLS-1$ //$NON-NLS-2$
+//        }
 
         if (osisID.equals("Acts.16.40")) //$NON-NLS-1$
         {
@@ -1631,7 +1640,7 @@ public class BibleToOsis
 
         if (osisID.equals("Mark.12.36")) //$NON-NLS-1$
         {
-            input = input.replaceFirst("Lord", "LORD"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replaceFirst("Lord", "<seg><divineName>LORD</divineName></seg>"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (osisID.equals("Mark.14.43")) //$NON-NLS-1$
@@ -1729,9 +1738,74 @@ public class BibleToOsis
             input = input.replace("daytime", "day time"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        if (osisID.equals("Rev.2.6") || osisID.equals("Rev.2.5")) //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Rev.2.6") || osisID.equals("Rev.2.15")) //$NON-NLS-1$ //$NON-NLS-2$
         {
             input = input.replace("Nicolaitanes", "Nicolaitans"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.startsWith("Acts.9.33") || osisID.equals("Acts.9.34")) //$NON-NLS-1$ //$NON-NLS-2$
+        {
+            input = input.replace("Aeneas", "\u00C6neas"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.startsWith("John.3.23")) //$NON-NLS-1$
+        {
+            input = input.replace("Aenon", "\u00C6non"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Mark.2.14") || osisID.equals("Luke.6.15")) //$NON-NLS-1$ //$NON-NLS-2$
+        {
+            input = input.replace("Alphaeus", "Alph\u00E6us"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.startsWith("Matt.27.57") || osisID.equals("Luke.23.51")) //$NON-NLS-1$ //$NON-NLS-2$
+        {
+            input = input.replace("Arimathaea", "Arimath\u00E6a"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.startsWith("Mark.10.46")) //$NON-NLS-1$
+        {
+            input = input.replace("Bartimaeus", "Bartim\u00E6us"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (!osisID.equals("Matt.22.17") && //$NON-NLS-1$
+            !osisID.equals("Phil.4.22") && //$NON-NLS-1$
+            !osisID.equals("Matt.16.13")) //$NON-NLS-1$
+        {
+            input = input.replace("Caesar", "C\u00E6sar"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Acts.7.4")) //$NON-NLS-1$ //$NON-NLS-2$
+        {
+            input = input.replace("Chaldaeans", "Chald\u00E6ans"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.startsWith("Mark") || //$NON-NLS-1$
+            osisID.startsWith("Luke") || //$NON-NLS-1$
+            osisID.startsWith("John") || //$NON-NLS-1$
+            osisID.startsWith("Acts")) //$NON-NLS-1$
+        {
+            input = input.replace("Judaea", "Jud\u00E6a"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (!osisID.equals("Mark.14.70")) //$NON-NLS-1$ //$NON-NLS-2$
+        {
+            input = input.replace("Galilaean", "Galil\u00E6an"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Mark.15.16")) //$NON-NLS-1$ //$NON-NLS-2$
+        {
+            input = input.replace("Praetorium", "Pr\u00E6torium"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Mark.10.46")) //$NON-NLS-1$ //$NON-NLS-2$
+        {
+            input = input.replace("Timaeus", "Tim\u00E6us"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.startsWith("Luke.19")) //$NON-NLS-1$ //$NON-NLS-2$
+        {
+            input = input.replace("Zacchaeus", "Zacch\u00E6us"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         return input;
@@ -1835,6 +1909,11 @@ public class BibleToOsis
         {
             input = input.replaceFirst("<w src=\"6 7\" lemma=\"strong:G3588 strong:G4864\" morph=\"robinson:T-GSF robinson:N-GSF\">the synagogue</w>", "<transChange type=\"added\">the synagogue</transChange>"); //$NON-NLS-1$ //$NON-NLS-2$
             input = input.replaceFirst("<transChange type=\"added\">the synagogue</transChange>", "<w src=\"6 7\" lemma=\"strong:G3588 strong:G4864\" morph=\"robinson:T-GSF robinson:N-GSF\">the synagogue</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Acts.10.2")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"1\" lemma=\"strong:G2152\" morph=\"robinson:A-NSM\">A ", "<transChange type=\"added\">A </transChange> <w src=\"1\" lemma=\"strong:G2152\" morph=\"robinson:A-NSM\">"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (osisID.equals("Acts.16.11")) //$NON-NLS-1$
@@ -1980,55 +2059,61 @@ public class BibleToOsis
 
         if (osisID.equals("Gen.49.17")) //$NON-NLS-1$
         {
-            input = input.replace("arrow-snake", "arrow\u2013snake"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replace("arrow-snake", "arrow\u2010snake"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (osisID.equals("Exod.18.19") || osisID.equals("2Cor.3.4")) //$NON-NLS-1$ //$NON-NLS-2$
         {
 //            System.err.println(osisID + ':' + input);
-            input = input.replace("God-ward", "God\u2013ward"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replace("God-ward", "God\u2010ward"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (osisID.equals("1Sam.19.4")) //$NON-NLS-1$
         {
-            input = input.replace("thee-ward", "thee\u2013ward"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replace("thee-ward", "thee\u2010ward"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (osisID.equals("Ps.49.5") || osisID.equals("Eph.1.19") || osisID.equals("2Pet.3.9")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         {
-            input = input.replace("us-ward", "us\u2013ward"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replace("us-ward", "us\u2010ward"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (osisID.equals("Song.5.10")) //$NON-NLS-1$
         {
-            input = input.replace("standard-bearer", "standard\u2013bearer"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replace("standard-bearer", "standard\u2010bearer"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (osisID.equals("Jer.22.14")) //$NON-NLS-1$
         {
-            input = input.replace("through-aired", "through\u2013aired"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replace("through-aired", "through\u2010aired"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (osisID.equals("Acts.13.6")) //$NON-NLS-1$
         {
-            input = input.replace("Bar-jesus", "Bar\u2013jesus"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replace("Bar-jesus", "Bar\u2010jesus"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (osisID.equals("Rom.8.17")) //$NON-NLS-1$
         {
-            input = input.replace("joint-heirs", "joint\u2013heirs"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replace("joint-heirs", "joint\u2010heirs"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (osisID.equals("2Cor.1.12") || osisID.equals("2Cor.13.3")) //$NON-NLS-1$ //$NON-NLS-2$
         {
-            input = input.replace("you-ward", "you\u2013ward"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replace("you-ward", "you\u2010ward"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Eph.3.2")) //$NON-NLS-1$
+        {
+            input = input.replace("youward", "you\u2010ward"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (osisID.equals("1Thess.1.8")) //$NON-NLS-1$
         {
-            input = input.replace("</w>-<w", "</w>\u2013<w"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replace("</w>-<w", "</w>\u2010<w"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
+        // The following are confirmed
         if (input.contains("Abednego")) //$NON-NLS-1$
             input = input.replaceAll("\\bAbednego\\b", "Abed\u2013nego"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Abelbethmaachah")) //$NON-NLS-1$
@@ -2124,6 +2209,7 @@ public class BibleToOsis
         if (input.contains("Benejaakan")) //$NON-NLS-1$
             input = input.replaceAll("\\bBenejaakan\\b", "Bene\u2013jaakan"); //$NON-NLS-1$ //$NON-NLS-2$
 
+        // Unconfirmed
         if (input.contains("Benhadad")) //$NON-NLS-1$
             input = input.replaceAll("\\bBenhadad\\b", "Ben\u2013hadad"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Benhail")) //$NON-NLS-1$
@@ -2314,6 +2400,8 @@ public class BibleToOsis
             input = input.replaceAll("\\bHazargaddah\\b", "Hazar\u2013gaddah"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Hazarhatticon")) //$NON-NLS-1$
             input = input.replaceAll("\\bHazarhatticon\\b", "Hazar\u2013hatticon"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        // Confirmed
 //        if (input.contains("Hazarmaveth")) //$NON-NLS-1$
 //          input = input.replaceAll("\\bHazarmaveth\\b", "Hazar\u2013maveth"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Hazarshual")) //$NON-NLS-1$
@@ -2411,7 +2499,9 @@ public class BibleToOsis
         if (input.contains("Mahanehdan")) //$NON-NLS-1$
             input = input.replaceAll("\\bMahanehdan\\b", "Mahaneh\u2013dan"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Mahershalalhashbaz")) //$NON-NLS-1$
-            input = input.replaceAll("\\bMahershalalhashbaz\\b", "Maher\u2013shalal-hash-baz"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replaceAll("\\bMahershalalhashbaz\\b", "Maher\u2013shalal\u2013hash\u2013baz"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Maher–shalal–hash–baz")) //$NON-NLS-1$
+            input = input.replaceAll("\\bMaher–shalal–hash–baz\\b", "Maher\u2013shalal\u2013hash\u2013baz"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Malchishua")) //$NON-NLS-1$
             input = input.replaceAll("\\bMalchishua\\b", "Malchi\u2013shua"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Mejarkon")) //$NON-NLS-1$
@@ -2420,8 +2510,13 @@ public class BibleToOsis
             input = input.replaceAll("\\bMelchishua\\b", "Melchi\u2013shua"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Meribah-Kadesh")) //$NON-NLS-1$
             input = input.replaceAll("\\bMeribah-Kadesh\\b", "Meribah\u2013Kadesh"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        // Confirmed
+        if (input.contains("Meribaal")) //$NON-NLS-1$
+            input = input.replaceAll("\\bMeribaal\\b", "Meri\u2013baal"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Meribbaal")) //$NON-NLS-1$
             input = input.replaceAll("\\bMeribbaal\\b", "Merib\u2013baal"); //$NON-NLS-1$ //$NON-NLS-2$
+
         if (input.contains("Merodachbaladan")) //$NON-NLS-1$
             input = input.replaceAll("\\bMerodachbaladan\\b", "Merodach\u2013baladan"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Methegammah")) //$NON-NLS-1$
@@ -2464,9 +2559,9 @@ public class BibleToOsis
             input = input.replaceAll("\\bPihahiroth\\b", "Pi\u2013hahiroth"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Potipherah")) //$NON-NLS-1$
             input = input.replaceAll("\\bPotipherah\\b", "Poti\u2013pherah"); //$NON-NLS-1$ //$NON-NLS-2$
-        if (input.contains("Rabsaris")) //$NON-NLS-1$
+        if (input.contains("Rabsaris") && !osisID.equals("2Kgs.18.17")) //$NON-NLS-1$ //$NON-NLS-2$
             input = input.replaceAll("\\bRabsaris\\b", "Rab\u2013saris"); //$NON-NLS-1$ //$NON-NLS-2$
-        if (input.contains("Rabshakeh")) //$NON-NLS-1$
+        if (input.contains("Rabshakeh") && osisID.startsWith("2Kgs")) //$NON-NLS-1$ //$NON-NLS-2$
             input = input.replaceAll("\\bRabshakeh\\b", "Rab\u2013shakeh"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Ramathaimzophim")) //$NON-NLS-1$
             input = input.replaceAll("\\bRamathaimzophim\\b", "Ramathaim\u2013zophim"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -2534,6 +2629,57 @@ public class BibleToOsis
             input = input.replaceAll("\\bZarethshahar\\b", "Zareth\u2013shahar"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Zaphnathpaaneah")) //$NON-NLS-1$
             input = input.replaceAll("\\bZaphnathpaaneah\\b", "Zaphnath\u2013paaneah"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        // The following are confirmed
+        if (input.contains("Altaschith")) //$NON-NLS-1$
+            input = input.replaceAll("\\bAltaschith\\b", "Al\u2013taschith"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Aramnaharaim")) //$NON-NLS-1$
+            input = input.replaceAll("\\bAramnaharaim\\b", "Aramnaharaim"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Aramzobah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bAramzobah\\b", ""); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Jonathelemrechokim")) //$NON-NLS-1$
+            input = input.replaceAll("\\bJonathelemrechokim\\b", "Jonath\u2013elem\u2013rechokim"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        // This next block are unconfirmed and are in margin notes
+        if (input.contains("Bathshuah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBathshuah\\b", "Bath\u2013shuah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Benabinadab")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBenabinadab\\b", "Ben\u2013abinadab"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bendekar")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBendekar\\b", "Ben\u2013dekar"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bengeber")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBengeber\\b", "Ben\u2013geber"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Benhesed")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBenhesed\\b", "Ben\u2013hesed"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Benhur")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBenhur\\b", "Ben\u2013hur"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Betheden")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBetheden\\b", "Beth\u2013eden"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Hatsihammenuchoth")) //$NON-NLS-1$
+            input = input.replaceAll("\\bHatsihammenuchoth\\b", "Hatsi\u2013ham\u2013menuchoth"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Jehovahshammah")) //$NON-NLS-1$
+            input = input.replaceAll("\\bJehovahshammah\\b", "Jehovah\u2013shammah"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Jehovahtsidkenu")) //$NON-NLS-1$
+            input = input.replaceAll("\\bJehovahtsidkenu\\b", "Jehovaht\u2013sidkenu"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Meribahkadesh")) //$NON-NLS-1$
+            input = input.replaceAll("\\bMeribahkadesh\\b", "Meribah\u2013kadesh"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Shoshannimeduth")) //$NON-NLS-1$
+            input = input.replaceAll("\\bShoshannimeduth\\b", "Shoshannim\u2013eduth"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Shushaneduth")) //$NON-NLS-1$
+            input = input.replaceAll("\\bShushaneduth\\b", "Shushan\u2013eduth"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        // The following are confirmed.
+//        if (input.contains("Amminadib")) //$NON-NLS-1$
+//            input = input.replaceAll("\\bAmminadib\\b", "Ammi\u2013nadib"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethelite")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethelite\\b", "Beth\u2013elite"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Bethlehemite")) //$NON-NLS-1$
+            input = input.replaceAll("\\bBethlehemite\\b", "Beth\u2013lehemite"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.contains("Rabmag")) //$NON-NLS-1$
+            input = input.replaceAll("\\bRabmag\\b", "Rab\u2013mag"); //$NON-NLS-1$ //$NON-NLS-2$
+//        if (input.contains("Endor")) //$NON-NLS-1$
+//            input = input.replaceAll("\\bEndor\\b", "En\u2013dor"); //$NON-NLS-1$ //$NON-NLS-2$
+                        
         return input;
     }
 
@@ -2546,10 +2692,34 @@ public class BibleToOsis
             while (matcher.find())
             {
                 matcher.appendReplacement(buf, divineNameReplace);
+//                if (osisID.equals("Gen.4.15"))
+//                {
+//                    System.err.println(osisID + ':' + buf);
+//                }
             }
+            matcher.appendTail(buf);
+//            if (osisID.equals("Gen.4.15"))
+//            {
+//                System.err.println(osisID + ':' + buf);
+//            }
+            input = buf.toString();
+        }
+
+        if (input.contains("H03069")) //$NON-NLS-1$
+        {
+            StringBuffer buf = new StringBuffer();
+            Matcher matcher = divineNameAnalysisPattern.matcher(input);
+            while (matcher.find())
+            {
+                matcher.appendReplacement(buf, divineGodNameReplace);
+            }            
             matcher.appendTail(buf);
             input = buf.toString();
         }
+
+        input = dn1Pattern.matcher(input).replaceAll(dn1Replace);
+
+        input = dn2Pattern.matcher(input).replaceAll(dn2Replace);
 
         return input;
     }
@@ -2573,6 +2743,12 @@ public class BibleToOsis
     private static String divineNameElement = "(<divineName.*?>)(.*?)(LORD'|LORD'S|LORD|GOD|JEHOVAH)(.*?)(</divineName>)"; //$NON-NLS-1$
     private static String divineNameReplace = "$2<seg><divineName>$3</divineName></seg>$4"; //$NON-NLS-1$
     private static Pattern divineNamePattern = Pattern.compile(divineNameElement);
+    private static Pattern divineNameAnalysisPattern = Pattern.compile("(<w\\s+lemma=\"strong:H03069\"\\s*>.*?)(GOD|LORD)(.*?</w>)"); //$NON-NLS-1$
+    private static String divineGodNameReplace = "$1<seg><divineName>$2</divineName></seg>$3"; //$NON-NLS-1$
+    private static Pattern dn1Pattern = Pattern.compile("<divineName>LORD</divineName>"); //$NON-NLS-1$
+    private static String dn1Replace = "<divineName type=\"x-yhwh\">Lord</divineName>"; //$NON-NLS-1$
+    private static Pattern dn2Pattern = Pattern.compile("<divineName>GOD</divineName>"); //$NON-NLS-1$
+    private static String dn2Replace = "<divineName type=\"x-yhwh\">God</divineName>"; //$NON-NLS-1$
 
     private static String transChangeSeg = "<seg type=\"transChange\" subType=\"type:added\">([^<]*)</seg>"; //$NON-NLS-1$
     private static Pattern transChangeSegPattern = Pattern.compile(transChangeSeg);
@@ -2620,7 +2796,10 @@ public class BibleToOsis
     private static Pattern w3Pattern = Pattern.compile("\\(\\s"); //$NON-NLS-1$
     private static Pattern w8Pattern = Pattern.compile("(<milestone type=\"x-p\" marker=\"\u00B6\"/>)\\s+"); //$NON-NLS-1$
     private static Pattern w9Pattern = Pattern.compile("(<title\\s[^>]*>)\\s+"); //$NON-NLS-1$
+    private static Pattern w10Pattern = Pattern.compile("(</title>) "); //$NON-NLS-1$
+    private static Pattern w11Pattern = Pattern.compile(" (<note)"); //$NON-NLS-1$
     private static Pattern wnPattern = Pattern.compile("\\s\\s+"); //$NON-NLS-1$
+    private static Pattern p1Pattern = Pattern.compile("\\.\\.\\."); //$NON-NLS-1$
 
     private static Pattern hyphenatedNamePattern = Pattern.compile("\\w+[a-z](-)\\w\\w+"); //$NON-NLS-1$
     
