@@ -65,7 +65,7 @@ public class BibleToOsis
      * The name of a Bible to find
      */
     private static final String BIBLE_NAME = "KJV"; //$NON-NLS-1$
-    private static final String BIBLE_RANGE = "Gen-Rev"; //$NON-NLS-1$
+    private static final String BIBLE_RANGE = "Ps"; //$NON-NLS-1$
     private static final boolean BY_BOOK = true;
 
     /**
@@ -2058,55 +2058,60 @@ public class BibleToOsis
             // does not happen
         }
 
-        if (osisID.equals("Gen.49.17")) //$NON-NLS-1$
-        {
-            input = input.replace("arrow-snake", "arrow\u2010snake"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Exod.18.19") || osisID.equals("2Cor.3.4")) //$NON-NLS-1$ //$NON-NLS-2$
-        {
-//            System.err.println(osisID + ':' + input);
-            input = input.replace("God-ward", "God\u2010ward"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("1Sam.19.4")) //$NON-NLS-1$
-        {
-            input = input.replace("thee-ward", "thee\u2010ward"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Ps.49.5") || osisID.equals("Eph.1.19") || osisID.equals("2Pet.3.9")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        {
-            input = input.replace("us-ward", "us\u2010ward"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Song.5.10")) //$NON-NLS-1$
-        {
-            input = input.replace("standard-bearer", "standard\u2010bearer"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Jer.22.14")) //$NON-NLS-1$
-        {
-            input = input.replace("through-aired", "through\u2010aired"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Acts.13.6")) //$NON-NLS-1$
-        {
-            input = input.replace("Bar-jesus", "Bar\u2010jesus"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("Rom.8.17")) //$NON-NLS-1$
-        {
-            input = input.replace("joint-heirs", "joint\u2010heirs"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("2Cor.1.12") || osisID.equals("2Cor.13.3")) //$NON-NLS-1$ //$NON-NLS-2$
-        {
-            input = input.replace("you-ward", "you\u2010ward"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
+//        if (osisID.equals("Gen.49.17")) //$NON-NLS-1$
+//        {
+//            input = input.replace("arrow-snake", "arrow\u2010snake"); //$NON-NLS-1$ //$NON-NLS-2$
+//        }
+//
+//        if (osisID.equals("Exod.18.19") || osisID.equals("2Cor.3.4")) //$NON-NLS-1$ //$NON-NLS-2$
+//        {
+////            System.err.println(osisID + ':' + input);
+//            input = input.replace("God-ward", "God\u2010ward"); //$NON-NLS-1$ //$NON-NLS-2$
+//        }
+//
+//        if (osisID.equals("1Sam.19.4")) //$NON-NLS-1$
+//        {
+//            input = input.replace("thee-ward", "thee\u2010ward"); //$NON-NLS-1$ //$NON-NLS-2$
+//        }
+//
+//        if (osisID.equals("Ps.49.5") || osisID.equals("Eph.1.19") || osisID.equals("2Pet.3.9")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+//        {
+//            input = input.replace("us-ward", "us\u2010ward"); //$NON-NLS-1$ //$NON-NLS-2$
+//        }
+//
+//        if (osisID.equals("Song.5.10")) //$NON-NLS-1$
+//        {
+//            input = input.replace("standard-bearer", "standard\u2010bearer"); //$NON-NLS-1$ //$NON-NLS-2$
+//        }
+//
+//        if (osisID.equals("Jer.22.14")) //$NON-NLS-1$
+//        {
+//            input = input.replace("through-aired", "through\u2010aired"); //$NON-NLS-1$ //$NON-NLS-2$
+//        }
+//
+//        if (osisID.equals("Acts.13.6")) //$NON-NLS-1$
+//        {
+//            input = input.replace("Bar-jesus", "Bar\u2010jesus"); //$NON-NLS-1$ //$NON-NLS-2$
+//        }
+//
+//        if (osisID.equals("Rom.8.17")) //$NON-NLS-1$
+//        {
+//            input = input.replace("joint-heirs", "joint\u2010heirs"); //$NON-NLS-1$ //$NON-NLS-2$
+//        }
+//
+//        if (osisID.equals("2Cor.1.12") || osisID.equals("2Cor.13.3")) //$NON-NLS-1$ //$NON-NLS-2$
+//        {
+//            input = input.replace("you-ward", "you\u2010ward"); //$NON-NLS-1$ //$NON-NLS-2$
+//        }
+//
+//        if (osisID.equals("Eph.3.2")) //$NON-NLS-1$
+//        {
+//            input = input.replace("youward", "you\u2010ward"); //$NON-NLS-1$ //$NON-NLS-2$
+//        }
 
         if (osisID.equals("Eph.3.2")) //$NON-NLS-1$
         {
-            input = input.replace("youward", "you\u2010ward"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replace("youward", "you-ward"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (osisID.equals("1Thess.1.8")) //$NON-NLS-1$
@@ -2114,7 +2119,7 @@ public class BibleToOsis
             input = input.replace("</w>-<w", "</w>\u2010<w"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        // The following are confirmed
+        // Confirmed
         if (input.contains("Abednego")) //$NON-NLS-1$
             input = input.replaceAll("\\bAbednego\\b", "Abed\u2013nego"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Abelbethmaachah")) //$NON-NLS-1$
@@ -2249,8 +2254,12 @@ public class BibleToOsis
             input = input.replaceAll("\\bBethdagon\\b", "Beth\u2013dagon"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Bethdiblathaim")) //$NON-NLS-1$
             input = input.replaceAll("\\bBethdiblathaim\\b", "Beth\u2013diblathaim"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        // Confirmed
         if (input.contains("Bethel")) //$NON-NLS-1$
             input = input.replaceAll("\\bBethel\\b", "Beth\u2013el"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        // Unconfirmed
         if (input.contains("Bethemek")) //$NON-NLS-1$
             input = input.replaceAll("\\bBethemek\\b", "Beth\u2013emek"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Bethezel")) //$NON-NLS-1$
@@ -2275,10 +2284,14 @@ public class BibleToOsis
             input = input.replaceAll("\\bBethjesimoth\\b", "Beth\u2013jesimoth"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Bethlebaoth")) //$NON-NLS-1$
             input = input.replaceAll("\\bBethlebaoth\\b", "Beth\u2013lebaoth"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        // Confirmed
         if (input.contains("Bethlehemjudah")) //$NON-NLS-1$
             input = input.replaceAll("\\bBethlehemjudah\\b", "Beth\u2013lehem\u2013judah"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Bethlehem") && SwordConstants.getTestament(v) == SwordConstants.TESTAMENT_OLD) //$NON-NLS-1$
             input = input.replaceAll("\\bBethlehem\\b", "Beth\u2013lehem"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        // Unconfirmed
         if (input.contains("Bethmaachah")) //$NON-NLS-1$
             input = input.replaceAll("\\bBethmaachah\\b", "Beth\u2013maachah"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Bethmarcaboth")) //$NON-NLS-1$
@@ -2335,8 +2348,12 @@ public class BibleToOsis
             input = input.replaceAll("\\bEbenezer\\b", "Eben\u2013ezer"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Elbethel")) //$NON-NLS-1$
             input = input.replaceAll("\\bElbethel\\b", "El\u2013beth\u2013el"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        // Confirmed
         if (input.contains("Elelohe-Israel")) //$NON-NLS-1$
             input = input.replaceAll("\\bElelohe-Israel\\b", "El\u2013elohe\u2013Israel"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        // Unconfirmed
         if (input.contains("Elonbethhanan")) //$NON-NLS-1$
             input = input.replaceAll("\\bElonbethhanan\\b", "Elon\u2013beth\u2013hanan"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Elparan")) //$NON-NLS-1$
@@ -2405,6 +2422,8 @@ public class BibleToOsis
         // Confirmed
 //        if (input.contains("Hazarmaveth")) //$NON-NLS-1$
 //          input = input.replaceAll("\\bHazarmaveth\\b", "Hazar\u2013maveth"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        // Unconfirmed
         if (input.contains("Hazarshual")) //$NON-NLS-1$
             input = input.replaceAll("\\bHazarshual\\b", "Hazar\u2013shual"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Hazarsusah")) //$NON-NLS-1$
@@ -2518,6 +2537,7 @@ public class BibleToOsis
         if (input.contains("Meribbaal")) //$NON-NLS-1$
             input = input.replaceAll("\\bMeribbaal\\b", "Merib\u2013baal"); //$NON-NLS-1$ //$NON-NLS-2$
 
+        // Unconfirmed
         if (input.contains("Merodachbaladan")) //$NON-NLS-1$
             input = input.replaceAll("\\bMerodachbaladan\\b", "Merodach\u2013baladan"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Methegammah")) //$NON-NLS-1$
@@ -2631,7 +2651,7 @@ public class BibleToOsis
         if (input.contains("Zaphnathpaaneah")) //$NON-NLS-1$
             input = input.replaceAll("\\bZaphnathpaaneah\\b", "Zaphnath\u2013paaneah"); //$NON-NLS-1$ //$NON-NLS-2$
 
-        // The following are confirmed
+        // Confirmed
         if (input.contains("Altaschith")) //$NON-NLS-1$
             input = input.replaceAll("\\bAltaschith\\b", "Al\u2013taschith"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Aramnaharaim")) //$NON-NLS-1$
@@ -2641,7 +2661,7 @@ public class BibleToOsis
         if (input.contains("Jonathelemrechokim")) //$NON-NLS-1$
             input = input.replaceAll("\\bJonathelemrechokim\\b", "Jonath\u2013elem\u2013rechokim"); //$NON-NLS-1$ //$NON-NLS-2$
 
-        // This next block are unconfirmed and are in margin notes
+        // Unconfirmed and are in margin notes
         if (input.contains("Bathshuah")) //$NON-NLS-1$
             input = input.replaceAll("\\bBathshuah\\b", "Bath\u2013shuah"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Benabinadab")) //$NON-NLS-1$
@@ -2669,7 +2689,7 @@ public class BibleToOsis
         if (input.contains("Shushaneduth")) //$NON-NLS-1$
             input = input.replaceAll("\\bShushaneduth\\b", "Shushan\u2013eduth"); //$NON-NLS-1$ //$NON-NLS-2$
 
-        // The following are confirmed.
+        // Confirmed.
 //        if (input.contains("Amminadib")) //$NON-NLS-1$
 //            input = input.replaceAll("\\bAmminadib\\b", "Ammi\u2013nadib"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Bethelite")) //$NON-NLS-1$
@@ -2693,13 +2713,16 @@ public class BibleToOsis
 
         if (input.contains("H03069")) //$NON-NLS-1$
         {
-            input = dna1Pattern.matcher(input).replaceAll(dnaReplace);
+            input = dna1Pattern.matcher(input).replaceAll(dna1Replace);
         }
 
         if (input.contains("H03050")) //$NON-NLS-1$
         {
-            input = dna2Pattern.matcher(input).replaceAll(dnaReplace);
+            input = dna2Pattern.matcher(input).replaceAll(dna1Replace);
         }
+
+        input = dna3Pattern.matcher(input).replaceAll(dna2Replace);
+        input = dna4Pattern.matcher(input).replaceAll(dna2Replace);
 
         input = dn1Pattern.matcher(input).replaceAll(dn1Replace);
         input = dn2Pattern.matcher(input).replaceAll(dn2Replace);
@@ -2784,15 +2807,13 @@ public class BibleToOsis
         {
             input = input.replace("<w morph=\"strongMorph:TH8752\" lemma=\"strong:H08625\">TEKEL</w>", //$NON-NLS-1$
                                   "<inscription><w morph=\"strongMorph:TH8752\" lemma=\"strong:H08625\">Tekel</w></inscription>"); //$NON-NLS-1$
-            
         }
 
         if (osisID.equals("Dan.5.28")) //$NON-NLS-1$ //$NON-NLS-2$
         {
             input = input.replace("<w morph=\"strongMorph:TH8752\" lemma=\"strong:H06537\">PERES</w>", //$NON-NLS-1$
                                   "<inscription><w morph=\"strongMorph:TH8752\" lemma=\"strong:H06537\">Peres</w></inscription>"); //$NON-NLS-1$
-
-            }
+        }
 
         if (osisID.equals("Rev.17.5")) //$NON-NLS-1$ //$NON-NLS-2$
         {
@@ -2824,7 +2845,10 @@ public class BibleToOsis
     private static Pattern divineNamePattern = Pattern.compile(divineNameElement);
     private static Pattern dna1Pattern = Pattern.compile("(<w\\s+lemma=\"strong:H03069\"\\s*>.*?)(GOD|LORD|LORD'S)(.*?</w>)"); //$NON-NLS-1$
     private static Pattern dna2Pattern = Pattern.compile("(<w\\s+lemma=\"strong:H03050\"\\s*>.*?)(GOD|LORD|LORD'S|JAH)(.*?</w>)"); //$NON-NLS-1$
-    private static String dnaReplace = "$1<seg><divineName>$2</divineName></seg>$3"; //$NON-NLS-1$
+    private static String dna1Replace = "$1<seg><divineName>$2</divineName></seg>$3"; //$NON-NLS-1$
+    private static Pattern dna3Pattern = Pattern.compile("(<transChange\\s+lemma=\"strong:H03050\"\\s*>.*?)(GOD|LORD|LORD'S|JAH)(.*?</transChange>)"); //$NON-NLS-1$
+    private static Pattern dna4Pattern = Pattern.compile("(<note\\s+lemma=\"strong:H03050\"\\s*>.*?)(GOD|LORD|LORD'S|JAH|JEHOVAH)(.*?</note>)"); //$NON-NLS-1$
+    private static String dna2Replace = "$1<divineName>$2</divineName>$3"; //$NON-NLS-1$
     private static Pattern dn1Pattern = Pattern.compile("<divineName>LORD</divineName>"); //$NON-NLS-1$
     private static String dn1Replace = "<divineName type=\"x-yhwh\">Lord</divineName>"; //$NON-NLS-1$
     private static Pattern dn2Pattern = Pattern.compile("<divineName>LORD'S</divineName>"); //$NON-NLS-1$
@@ -2835,6 +2859,8 @@ public class BibleToOsis
     private static String dn4Replace = "<divineName type=\"x-yhwh\">Jehovah</divineName>"; //$NON-NLS-1$
     private static Pattern dn5Pattern = Pattern.compile("<divineName>JAH</divineName>"); //$NON-NLS-1$
     private static String dn5Replace = "<divineName type=\"x-yhwh\">Jah</divineName>"; //$NON-NLS-1$
+    private static Pattern dn6Pattern = Pattern.compile("BRANCH"); //$NON-NLS-1$
+    private static String dn6Replace = "<divineName>Branch</divineName>"; //$NON-NLS-1$
 
     private static String transChangeSeg = "<seg type=\"transChange\" subType=\"type:added\">([^<]*)</seg>"; //$NON-NLS-1$
     private static Pattern transChangeSegPattern = Pattern.compile(transChangeSeg);
@@ -2885,9 +2911,9 @@ public class BibleToOsis
     private static Pattern p1Pattern = Pattern.compile("\\.\\.\\."); //$NON-NLS-1$
 
     private static Pattern hyphenatedNamePattern = Pattern.compile("\\w+[a-z](-)\\w\\w+"); //$NON-NLS-1$
-    
+
     private static Map<String, String> bookTitles = new HashMap<String, String>();
-    
+
     static {
         bookTitles.put("Gen", "THE FIRST BOOK OF MOSES CALLED GENESIS"); //$NON-NLS-1$ //$NON-NLS-2$
         bookTitles.put("Exod", "THE SECOND BOOK OF MOSES CALLED EXODUS"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -2928,10 +2954,10 @@ public class BibleToOsis
         bookTitles.put("Hag", "HAGGAI"); //$NON-NLS-1$ //$NON-NLS-2$
         bookTitles.put("Zech", "ZECHARIAH"); //$NON-NLS-1$ //$NON-NLS-2$
         bookTitles.put("Mal", "MALACHI"); //$NON-NLS-1$ //$NON-NLS-2$
-        bookTitles.put("Matt", "THE GOSPEL ACCORDING TO ST. MATTHEW"); //$NON-NLS-1$ //$NON-NLS-2$
-        bookTitles.put("Mark", "THE GOSPEL ACCORDING TO ST. MARK"); //$NON-NLS-1$ //$NON-NLS-2$
-        bookTitles.put("Luke", "THE GOSPEL ACCORDING TO ST. LUKE"); //$NON-NLS-1$ //$NON-NLS-2$
-        bookTitles.put("John", "THE GOSPEL ACCORDING TO ST. JOHN"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Matt", "THE GOSPEL ACCORDING TO <abbr expansion=\"Saint\">ST.</abbr> MATTHEW"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Mark", "THE GOSPEL ACCORDING TO <abbr expansion=\"Saint\">ST.</abbr> MARK"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Luke", "THE GOSPEL ACCORDING TO <abbr expansion=\"Saint\">ST.</abbr> LUKE"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("John", "THE GOSPEL ACCORDING TO <abbr expansion=\"Saint\">ST.</abbr> JOHN"); //$NON-NLS-1$ //$NON-NLS-2$
         bookTitles.put("Acts", "THE ACTS OF THE APOSTLES"); //$NON-NLS-1$ //$NON-NLS-2$
         bookTitles.put("Rom", "THE EPISTLE OF PAUL THE APOSTLE TO THE ROMANS"); //$NON-NLS-1$ //$NON-NLS-2$
         bookTitles.put("1Cor", "THE FIRST EPISTLE OF PAUL THE APOSTLE TO THE CORINTHIANS"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -2954,11 +2980,11 @@ public class BibleToOsis
         bookTitles.put("2John", "THE SECOND EPISTLE OF JOHN"); //$NON-NLS-1$ //$NON-NLS-2$
         bookTitles.put("3John", "THE THIRD EPISTLE OF JOHN"); //$NON-NLS-1$ //$NON-NLS-2$
         bookTitles.put("Jude", "THE GENERAL EPISTLE OF JUDE"); //$NON-NLS-1$ //$NON-NLS-2$
-        bookTitles.put("Rev", "THE REVELATION OF ST. JOHN THE DIVINE"); //$NON-NLS-1$ //$NON-NLS-2$
+        bookTitles.put("Rev", "THE REVELATION OF <abbr expansion=\"Saint\">ST.</abbr> JOHN THE DIVINE"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     private static Map<String, String> colophons = new HashMap<String, String>();
-    
+
     static {
         colophons.put("Rom", "<div type=\"colophon\" osisID=\"Rom.c\">Written to the Romans from Corinthus, <transChange type=\"added\">and sent</transChange> by Phebe servant of the church at Cenchrea.</div>\n"); //$NON-NLS-1$ //$NON-NLS-2$
         colophons.put("1Cor", "<div type=\"colophon\" osisID=\"1Cor.c\">The first <transChange type=\"added\">epistle</transChange> to the Corinthians was written from Philippi by Stephanas, and Fortunatus, and Achaicus, and Timotheus.</div>\n"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -2977,30 +3003,30 @@ public class BibleToOsis
     }
 
     private static Map<String, String> acrostics = new HashMap<String, String>();
-    
+
     static {
-        acrostics.put("Ps.119.1", "ALEPH."); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.9", "BETH."); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.17", "GIMEL."); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.25", "DALETH."); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.33", "HE."); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.41", "VAU."); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.49", "ZAIN."); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.57", "CHETH."); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.65", "TETH."); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.73", "JOD."); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.81", "CAPH."); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.89", "LAMED."); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.97", "MEM."); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.105", "NUN."); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.113", "SAMECH."); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.121", "AIN."); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.129", "PE."); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.137", "TZADDI."); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.145", "KOPH."); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.153", "RESH."); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.161", "SCHIN."); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.169", "TAU."); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.1", "<w xlit=\"\u05D0\">ALEPH.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.9", "<w xlit=\"\u05D1\">BETH.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.17", "<w xlit=\"\u05D2\">GIMEL.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.25", "<w xlit=\"\u05D3\">DALETH.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.33", "<w xlit=\"\u05D4\">HE.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.41", "<w xlit=\"\u05D5\">VAU.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.49", "<w xlit=\"\u05D6\">ZAIN.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.57", "<w xlit=\"\u05D7\">CHETH.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.65", "<w xlit=\"\u05D8\">TETH.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.73", "<w xlit=\"\u05D9\">JOD.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.81", "<w xlit=\"\u05DB\">CAPH.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.89", "<w xlit=\"\u05DC\">LAMED.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.97", "<w xlit=\"\u05DE\">MEM.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.105", "<w xlit=\"\u05E0\">NUN.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.113", "<w xlit=\"\u05E1\">SAMECH.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.121", "<w xlit=\"\u05E2\">AIN.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.129", "<w xlit=\"\u05E4\">PE.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.137", "<w xlit=\"\u05E6\">TZADDI.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.145", "<w xlit=\"\u05E7\">KOPH.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.153", "<w xlit=\"\u05E8\">RESH.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.161", "<w xlit=\"\u05E9\">SCHIN.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.169", "<w xlit=\"\u05Ea\">TAU.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     private boolean moveP = false;
