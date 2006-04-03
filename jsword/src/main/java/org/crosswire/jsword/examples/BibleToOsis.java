@@ -65,8 +65,8 @@ public class BibleToOsis
      * The name of a Bible to find
      */
     private static final String BIBLE_NAME = "KJV"; //$NON-NLS-1$
-    private static final String BIBLE_RANGE = "Ps"; //$NON-NLS-1$
-    private static final boolean BY_BOOK = true;
+    private static final String BIBLE_RANGE = "Gen-Rev"; //$NON-NLS-1$
+    private static final boolean BY_BOOK = false;
 
     /**
      * @param args
@@ -537,7 +537,7 @@ public class BibleToOsis
         if (acrostic != null)
         {
             MessageFormat msgFormat = new MessageFormat("<title type=\"acrostic\" canonical=\"true\">{0}</title>"); //$NON-NLS-1$
-            input = input.replaceFirst(acrostic, ""); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replaceFirst(hebLetters.get(osisID), ""); //$NON-NLS-1$ //$NON-NLS-2$
             input = msgFormat.format(new Object[] { acrostic }) + input;
         }
 
@@ -578,6 +578,12 @@ public class BibleToOsis
         if (osisID.equals("2Cor.13.14")) //$NON-NLS-1$
         {
             input += "<w src=\"26\" lemma=\"strong:G575\" morph=\"robinson:PREP\"></w><w src=\"22\" lemma=\"strongs:G4314\" morph=\"robinson:PREP\"></w>"; //$NON-NLS-1$
+        }
+
+        if (osisID.equals("1Thess.1.8")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"25\" lemma=\"strong:G4314\" morph=\"robinson:PREP\">to</w> <w src=\"26 27\" lemma=\"strong:G3588 strong:G2316\" morph=\"robinson:T-ASM robinson:N-ASM\">God</w>-<w src=\"25\" lemma=\"strong:G4314\" morph=\"robinson:PREP\" type=\"x-split\" subType=\"x-36\">ward</w>", //$NON-NLS-1$
+                                  "<w src=\"25 26 27\" lemma=\"strong:G4314 strong:G3588 strong:G2316\" morph=\"robinson:PREP robinson:T-ASM robinson:N-ASM\">to God-ward</w>"); //$NON-NLS-1$
         }
 
         if (osisID.equals("1Thess.5.28")) //$NON-NLS-1$
@@ -674,21 +680,29 @@ public class BibleToOsis
         
         input = input.replaceAll("x-StudyNote", "study"); //$NON-NLS-1$ //$NON-NLS-2$
 
-        // normalize paragraph markers and move them from the end of a verse to the beginning of the next
-        input = input.replaceAll("<milestone type=\"x-p\"\\s*/>", "<milestone type=\"x-p\" marker=\"\u00B6\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
-        input = input.replaceAll("<p/>", "<milestone type=\"x-p\" marker=\"\u00B6\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
-        if (input.contains("<milestone type=\"x-p\" marker=\"\u00B6\"/>")) //$NON-NLS-1$
-        {
-            input = input.replaceAll("<milestone type=\"x-p\" marker=\"\u00B6\"/>", ""); //$NON-NLS-1$ //$NON-NLS-2$
-            moveP = true;
-//            System.err.println(osisID + " remove \u00b6"); //$NON-NLS-1$
-        }
-        else if (moveP && inVerse)
-        {
-            input = "<milestone type=\"x-p\" marker=\"\u00B6\"/>" + input; //$NON-NLS-1$
-            moveP = false;
-        }
-
+//        // normalize paragraph markers and move them from the end of a verse to the beginning of the next
+//        input = input.replaceAll("<milestone type=\"x-p\"\\s*/>", "<milestone type=\"x-p\" marker=\"\u00B6\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
+//        String beforeChange = input;
+//        input = input.replaceAll("<p/>(?=<note)", "<milestone type=\"x-p\" marker=\"\u00B6\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
+//        input = input.replaceAll("<p/>(?=<milestone type=\"x-strongsMarkup\")", "<milestone type=\"x-p\" marker=\"\u00B6\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
+//        input = input.replaceAll("<p/>(?=$)", "<milestone type=\"x-p\" subType=\"x-end\" marker=\"\u00B6\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
+//        if (!beforeChange.equals(input) || osisID.equals("Matt.2.10")) //$NON-NLS-1$
+//        {
+//            System.err.println(osisID + "\nbefore: " + beforeChange + "\nafter: " + input); //$NON-NLS-1$ //$NON-NLS-2$
+//        }
+////        input = input.replaceAll("<p/>", "<milestone type=\"x-extra-p\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
+//        if (input.contains("<milestone type=\"x-p\" marker=\"\u00B6\"/>")) //$NON-NLS-1$
+//        {
+//            input = input.replaceAll("<milestone type=\"x-p\" marker=\"\u00B6\"/>", ""); //$NON-NLS-1$ //$NON-NLS-2$
+//            moveP = true;
+////            System.err.println(osisID + " remove \u00b6"); //$NON-NLS-1$
+//        }
+//        else if (moveP && inVerse)
+//        {
+//            input = "<milestone type=\"x-p\" marker=\"\u00B6\"/>" + input; //$NON-NLS-1$
+//            moveP = false;
+//        }
+//
         // # is used in a note for a greek strong's #
         input = input.replace('#', 'G');
         // used in a note as a quotation mark at the beginning of a word. i.e. `not'
@@ -1379,6 +1393,12 @@ public class BibleToOsis
             before.removeAll(after);
             System.err.println(osisID + ": Problems with w src attribute. Missing: " + before); //$NON-NLS-1$
         }
+
+//        if (osisID.equals("Ps.60.1")) //$NON-NLS-1$
+//        {
+//            System.err.println(osisID + ':' + input);
+//        }
+        
         input = fixApostrophe(osisID, input);
         input = fixPunctuation(osisID, input);
         input = fixDivineName(osisID, input);
@@ -1386,6 +1406,7 @@ public class BibleToOsis
         input = fixTransChange(osisID, input);
         input = fixHyphenatedNames(osisID, input);
         input = fixInscriptions(osisID, input);
+        input = fixParagraphs(osisID, input, inVerse);
         return input;
     }
 
@@ -1497,11 +1518,6 @@ public class BibleToOsis
             input = input.replace("..:", "...:"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-//        if (osisID.equals("Ps.119.9")) //$NON-NLS-1$
-//        {
-//            System.err.println(osisID + ':' + input);
-//        }
-
         input = w1Pattern.matcher(input).replaceAll("$1"); //$NON-NLS-1$
         input = w4Pattern.matcher(input).replaceAll(" "); //$NON-NLS-1$
         input = w5Pattern.matcher(input).replaceAll("$2$1"); //$NON-NLS-1$
@@ -1529,6 +1545,7 @@ public class BibleToOsis
         input = w9Pattern.matcher(input).replaceAll("$2$1"); //$NON-NLS-1$
         input = w10Pattern.matcher(input).replaceAll("$1"); //$NON-NLS-1$
         input = w11Pattern.matcher(input).replaceAll("$1"); //$NON-NLS-1$
+        input = w12Pattern.matcher(input).replaceAll("$1"); //$NON-NLS-1$
 
         // strip leading spaces
         here = 0;
@@ -1641,7 +1658,7 @@ public class BibleToOsis
 
         if (osisID.equals("Mark.12.36")) //$NON-NLS-1$
         {
-            input = input.replaceFirst("Lord", "<seg><divineName>LORD</divineName></seg>"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replaceFirst("Lord", "<seg><divineName>Lord</divineName></seg>"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (osisID.equals("Mark.14.43")) //$NON-NLS-1$
@@ -1914,7 +1931,7 @@ public class BibleToOsis
 
         if (osisID.equals("Acts.10.2")) //$NON-NLS-1$
         {
-            input = input.replace("<w src=\"1\" lemma=\"strong:G2152\" morph=\"robinson:A-NSM\">A ", "<transChange type=\"added\">A </transChange> <w src=\"1\" lemma=\"strong:G2152\" morph=\"robinson:A-NSM\">"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replace("<w src=\"1\" lemma=\"strong:G2152\" morph=\"robinson:A-NSM\">A ", "<transChange type=\"added\">A</transChange> <w src=\"1\" lemma=\"strong:G2152\" morph=\"robinson:A-NSM\">"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (osisID.equals("Acts.16.11")) //$NON-NLS-1$
@@ -2063,7 +2080,7 @@ public class BibleToOsis
 //            input = input.replace("arrow-snake", "arrow\u2010snake"); //$NON-NLS-1$ //$NON-NLS-2$
 //        }
 //
-//        if (osisID.equals("Exod.18.19") || osisID.equals("2Cor.3.4")) //$NON-NLS-1$ //$NON-NLS-2$
+//        if (osisID.equals("Exod.18.19") || osisID.equals("2Cor.3.4") || osisID.equals("1Thess.1.8")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 //        {
 ////            System.err.println(osisID + ':' + input);
 //            input = input.replace("God-ward", "God\u2010ward"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -2112,11 +2129,6 @@ public class BibleToOsis
         if (osisID.equals("Eph.3.2")) //$NON-NLS-1$
         {
             input = input.replace("youward", "you-ward"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
-        if (osisID.equals("1Thess.1.8")) //$NON-NLS-1$
-        {
-            input = input.replace("</w>-<w", "</w>\u2010<w"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         // Confirmed
@@ -2655,9 +2667,9 @@ public class BibleToOsis
         if (input.contains("Altaschith")) //$NON-NLS-1$
             input = input.replaceAll("\\bAltaschith\\b", "Al\u2013taschith"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Aramnaharaim")) //$NON-NLS-1$
-            input = input.replaceAll("\\bAramnaharaim\\b", "Aramnaharaim"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replaceAll("\\bAramnaharaim\\b", "Aram\u2013naharaim"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Aramzobah")) //$NON-NLS-1$
-            input = input.replaceAll("\\bAramzobah\\b", ""); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replaceAll("\\bAramzobah\\b", "Aram\u2013zobah"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Jonathelemrechokim")) //$NON-NLS-1$
             input = input.replaceAll("\\bJonathelemrechokim\\b", "Jonath\u2013elem\u2013rechokim"); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -2681,7 +2693,7 @@ public class BibleToOsis
         if (input.contains("Jehovahshammah")) //$NON-NLS-1$
             input = input.replaceAll("\\bJehovahshammah\\b", "Jehovah\u2013shammah"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Jehovahtsidkenu")) //$NON-NLS-1$
-            input = input.replaceAll("\\bJehovahtsidkenu\\b", "Jehovaht\u2013sidkenu"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replaceAll("\\bJehovahtsidkenu\\b", "Jehovah\u2013tsidkenu"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Meribahkadesh")) //$NON-NLS-1$
             input = input.replaceAll("\\bMeribahkadesh\\b", "Meribah\u2013kadesh"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.contains("Shoshannimeduth")) //$NON-NLS-1$
@@ -2721,8 +2733,8 @@ public class BibleToOsis
             input = dna2Pattern.matcher(input).replaceAll(dna1Replace);
         }
 
-        input = dna3Pattern.matcher(input).replaceAll(dna2Replace);
-        input = dna4Pattern.matcher(input).replaceAll(dna2Replace);
+//        input = dna3Pattern.matcher(input).replaceAll(dna2Replace);
+//        input = dna4Pattern.matcher(input).replaceAll(dna2Replace);
 
         input = dn1Pattern.matcher(input).replaceAll(dn1Replace);
         input = dn2Pattern.matcher(input).replaceAll(dn2Replace);
@@ -2733,7 +2745,8 @@ public class BibleToOsis
         if (osisID.equals("Exod.3.14")) //$NON-NLS-1$
         {
             input = input.replace("<w morph=\"strongMorph:TH8799\" lemma=\"strong:H01961\">I AM</w> <w morph=\"strongMorph:TH8799\" lemma=\"strong:H01961\">THAT I AM</w>", //$NON-NLS-1$
-                                  "<divineName type=\"x-yhwh-iam\"><w morph=\"strongMorph:TH8799\" lemma=\"strong:H01961\">I am</w> <w morph=\"strongMorph:TH8799\" lemma=\"strong:H01961\">that I am</w></divineName>"); //$NON-NLS-1$
+                                  "<divineName type=\"x-yhwh\" subType=\"x-iam\"><w morph=\"strongMorph:TH8799\" lemma=\"strong:H01961\">I am</w> <w morph=\"strongMorph:TH8799\" lemma=\"strong:H01961\">that I am</w></divineName>"); //$NON-NLS-1$
+            input = input.replace("I AM", "<seg><divineName type=\"x-yhwh\" subType=\"x-iam\">I am</divineName></seg>"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (osisID.equals("Deut.28.58")) //$NON-NLS-1$
@@ -2745,15 +2758,25 @@ public class BibleToOsis
         if (osisID.equals("Jer.23.6")) //$NON-NLS-1$
         {
             input = input.replace("<w lemma=\"strong:H03072\">THE LORD OUR RIGHTEOUSNESS</w>", //$NON-NLS-1$
-                                  "<w lemma=\"strong:H03072\"><seg><divineName type=\"x-yhwh-sidkenu\">The Lord our Righteousness</divineName></seg></w>"); //$NON-NLS-1$
+                                  "<w lemma=\"strong:H03072\"><seg><divineName type=\"x-yhwh\" subType=\"x-tsidkenu\">The Lord our Righteousness</divineName></seg></w>"); //$NON-NLS-1$
         }
-
+        if (osisID.equals("Jer.33.16")) //$NON-NLS-1$
+        {
+            input = input.replace("<w lemma=\"strong:H03072\">The LORD our righteousness</w>", //$NON-NLS-1$
+                                  "<w lemma=\"strong:H03072\"><seg><divineName type=\"x-yhwh\" subType=\"x-tsidkenu\">The Lord our Righteousness</divineName></seg></w>"); //$NON-NLS-1$
+        }
         if (osisID.equals("Matt.1.21") || //$NON-NLS-1$
             osisID.equals("Matt.1.25") || //$NON-NLS-1$
             osisID.equals("Luke.1.31") || //$NON-NLS-1$
             osisID.equals("Luke.2.21")) //$NON-NLS-1$
         {
             input = input.replace("JESUS", "<seg><divineName type=\"x-jesus\">Jesus</divineName></seg>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if (osisID.equals("Matt.22.44")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"2 3\" lemma=\"strong:G3588 strong:G2962\" morph=\"robinson:T-NSM robinson:N-NSM\">The LORD</w>", //$NON-NLS-1$
+                                  "<w src=\"2 3\" lemma=\"strong:G3588 strong:G2962\" morph=\"robinson:T-NSM robinson:N-NSM\">The <seg><divineName>Lord</divineName></seg></w>"); //$NON-NLS-1$
         }
 
         if (osisID.equals("Matt.27.37")) //$NON-NLS-1$
@@ -2764,8 +2787,14 @@ public class BibleToOsis
 
         if (osisID.equals("Luke.23.38")) //$NON-NLS-1$
         {
-            input = input.replace("<w src=\"14\" lemma=\"strong:G3778\" morph=\"robinson:D-NSM\">THIS</w> <w src=\"15\" lemma=\"strong:G2076\" morph=\"robinson:V-PXI-3S\">IS</w> <w src=\"16 17\" lemma=\"strong:G3588 strong:G93\" morph=\"robinson:T-NSM robinson:N-NSM\">THE KING</w> <w src=\"19\" lemma=\"strong:G2453\" morph=\"robinson:A-GPM\">OF THE JEWS</w>", //$NON-NLS-1$
-                                  "<inscription><w src=\"14\" lemma=\"strong:G3778\" morph=\"robinson:D-NSM\">This</w> <w src=\"15\" lemma=\"strong:G2076\" morph=\"robinson:V-PXI-3S\">is</w> <w src=\"16 17\" lemma=\"strong:G3588 strong:G93\" morph=\"robinson:T-NSM robinson:N-NSM\">the King</w> <w src=\"19\" lemma=\"strong:G2453\" morph=\"robinson:A-GPM\">of the Jews</w></inscription>"); //$NON-NLS-1$
+            input = input.replace("<w src=\"14\" lemma=\"strong:G3778\" morph=\"robinson:D-NSM\">THIS</w> <w src=\"15\" lemma=\"strong:G2076\" morph=\"robinson:V-PXI-3S\">IS</w> <w src=\"16 17\" lemma=\"strong:G3588 strong:G935\" morph=\"robinson:T-NSM robinson:N-NSM\">THE KING</w> <w src=\"19\" lemma=\"strong:G2453\" morph=\"robinson:A-GPM\">OF THE JEWS</w>", //$NON-NLS-1$
+                                  "<inscription><w src=\"14\" lemma=\"strong:G3778\" morph=\"robinson:D-NSM\">This</w> <w src=\"15\" lemma=\"strong:G2076\" morph=\"robinson:V-PXI-3S\">is</w> <w src=\"16 17\" lemma=\"strong:G3588 strong:G935\" morph=\"robinson:T-NSM robinson:N-NSM\">the King</w> <w src=\"19\" lemma=\"strong:G2453\" morph=\"robinson:A-GPM\">of the Jews</w></inscription>"); //$NON-NLS-1$
+        }
+
+        if (osisID.equals("Luke.20.42")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"9 10\" lemma=\"strong:G3588 strong:G2962\" morph=\"robinson:T-NSM robinson:N-NSM\">The LORD</w>", //$NON-NLS-1$
+                                  "<w src=\"9 10\" lemma=\"strong:G3588 strong:G2962\" morph=\"robinson:T-NSM robinson:N-NSM\">The <seg><divineName>Lord</divineName></seg></w>"); //$NON-NLS-1$
         }
 
         if (osisID.equals("John.19.19")) //$NON-NLS-1$
@@ -2774,18 +2803,39 @@ public class BibleToOsis
                                   "<inscription><w src=\"15\" lemma=\"strong:G2424\" morph=\"robinson:N-NSM\"><seg><divineName type=\"x-jesus\">Jesus</divineName></seg></w> <w src=\"16 17\" lemma=\"strong:G3588 strong:G3480\" morph=\"robinson:T-NSM robinson:N-NSM\">of Nazareth</w> <w src=\"18 19\" lemma=\"strong:G3588 strong:G935\" morph=\"robinson:T-NSM robinson:N-NSM\">the King</w> <w src=\"21\" lemma=\"strong:G2453\" morph=\"robinson:A-GPM\">of the Jews</w></inscription>"); //$NON-NLS-1$
         }
 
+        if (osisID.equals("Acts.2.34")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"12 13\" lemma=\"strong:G3588 strong:G2962\" morph=\"robinson:T-NSM robinson:N-NSM\">The LORD</w>", //$NON-NLS-1$
+                                  "<w src=\"12 13\" lemma=\"strong:G3588 strong:G2962\" morph=\"robinson:T-NSM robinson:N-NSM\">The <seg><divineName>Lord</divineName></seg></w>"); //$NON-NLS-1$
+        }
+
+        // The next is not a divineName, but it keeps it from being wrapped as such.
+        if (osisID.equals("Acts.17.23")) //$NON-NLS-1$ //$NON-NLS-2$
+        {
+            input = input.replace("<w src=\"14\" lemma=\"strong:G57\" morph=\"robinson:A-DSM\">TO THE UNKNOWN</w> <w src=\"15\" lemma=\"strong:G2316\" morph=\"robinson:N-DSM\">GOD</w>", //$NON-NLS-1$
+                                  "<inscription><w src=\"14\" lemma=\"strong:G57\" morph=\"robinson:A-DSM\">To the Unknown</w> <w src=\"15\" lemma=\"strong:G2316\" morph=\"robinson:N-DSM\">God</w></inscription>"); //$NON-NLS-1$
+        }
+
         if (osisID.equals("Rev.19.16")) //$NON-NLS-1$
         {
             input = input.replace("<w src=\"13\" lemma=\"strong:G1125\" morph=\"robinson:V-RPP-ASN\">KING</w> <w src=\"14\" lemma=\"strong:G935\" morph=\"robinson:N-NSM\">OF KINGS</w>, <w src=\"15\" lemma=\"strong:G935\" morph=\"robinson:N-GPM\">AND</w> <w src=\"16\" lemma=\"strong:G2532\" morph=\"robinson:CONJ\">LORD</w> <w src=\"17\" lemma=\"strong:G2962\" morph=\"robinson:N-NSM\">OF LORDS</w>", //$NON-NLS-1$
                                   "<inscription><divineName type=\"x-jesus\"><w src=\"13\" lemma=\"strong:G1125\" morph=\"robinson:V-RPP-ASN\">King</w> <w src=\"14\" lemma=\"strong:G935\" morph=\"robinson:N-NSM\">of kings</w>, <w src=\"15\" lemma=\"strong:G935\" morph=\"robinson:N-GPM\">and</w> <w src=\"16\" lemma=\"strong:G2532\" morph=\"robinson:CONJ\">Lord</w> <w src=\"17\" lemma=\"strong:G2962\" morph=\"robinson:N-NSM\">of lords</w></divineName></inscription>"); //$NON-NLS-1$
         }
 
+        input = dn6Pattern.matcher(input).replaceAll(dn6Replace);
+        input = dn7Pattern.matcher(input).replaceAll(dn7Replace);
+        input = dn8Pattern.matcher(input).replaceAll(dn8Replace);
+        input = dn9Pattern.matcher(input).replaceAll(dn9Replace);
+        input = dn10Pattern.matcher(input).replaceAll(dn10Replace);
+        input = dn11Pattern.matcher(input).replaceAll(dn11Replace);
+
         return input;
     }
 
     private String fixInscriptions(String osisID, String input)
     {
-        if (osisID.equals("Exod.28.36") || osisID.equals("Exod.39.30") || osisID.equals("Zech.14.20")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+        if (osisID.equals("Exod.28.36") || osisID.equals("Exod.39.30")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         {
             input = input.replace("<w lemma=\"strong:H06944\">HOLINESS</w> <w lemma=\"strong:H03068\">TO THE <seg><divineName type=\"x-yhwh\">Lord</divineName></seg></w>", //$NON-NLS-1$
                                   "<inscription><w lemma=\"strong:H06944\">Holiness</w> <w lemma=\"strong:H03068\">to the <seg><divineName type=\"x-yhwh\">Lord</divineName></seg></w></inscription>"); //$NON-NLS-1$
@@ -2815,11 +2865,100 @@ public class BibleToOsis
                                   "<inscription><w morph=\"strongMorph:TH8752\" lemma=\"strong:H06537\">Peres</w></inscription>"); //$NON-NLS-1$
         }
 
+        if (osisID.equals("Zech.14.20")) //$NON-NLS-1$
+        {
+            input = input.replace("<w lemma=\"strong:H06944\">HOLINESS</w> <w lemma=\"strong:H03068\">UNTO THE <seg><divineName type=\"x-yhwh\">Lord</divineName></seg></w>", //$NON-NLS-1$
+                                  "<inscription><w lemma=\"strong:H06944\">Holiness</w> <w lemma=\"strong:H03068\">unto the <seg><divineName type=\"x-yhwh\">Lord</divineName></seg></w></inscription>"); //$NON-NLS-1$
+        }
+
+        if (osisID.equals("Mark.15.26")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"9 10\" lemma=\"strong:G3588 strong:G935\" morph=\"robinson:T-NSM robinson:N-NSM\">THE KING</w> <w src=\"12\" lemma=\"strong:G2453\" morph=\"robinson:A-GPM\">OF THE JEWS</w>", //$NON-NLS-1$
+                                  "<inscription><w src=\"9 10\" lemma=\"strong:G3588 strong:G935\" morph=\"robinson:T-NSM robinson:N-NSM\">The King</w> <w src=\"12\" lemma=\"strong:G2453\" morph=\"robinson:A-GPM\">of the Jews</w></inscription>"); //$NON-NLS-1$
+        }
+
         if (osisID.equals("Rev.17.5")) //$NON-NLS-1$ //$NON-NLS-2$
         {
             input = input.replace("<w src=\"8\" lemma=\"strong:G3466\" morph=\"robinson:N-NSN\">MYSTERY</w>, <w src=\"9\" lemma=\"strong:G897\" morph=\"robinson:N-NSF\">BABYLON</w> <w src=\"11\" lemma=\"strong:G3173\" morph=\"robinson:A-NSF\">THE GREAT</w>, <w src=\"12 13\" lemma=\"strong:G3588 strong:G3384\" morph=\"robinson:T-NSF robinson:N-NSF\">THE MOTHER</w> <w src=\"14 15\" lemma=\"strong:G3588 strong:G4204\" morph=\"robinson:T-GPF robinson:N-GPF\">OF HARLOTS</w> <w src=\"16\" lemma=\"strong:G2532\" morph=\"robinson:CONJ\">AND</w> <w src=\"17 18\" lemma=\"strong:G3588 strong:G946\" morph=\"robinson:T-GPN robinson:N-GPN\">ABOMINATIONS</w> <w src=\"19 20\" lemma=\"strong:G3588 strong:G1093\" morph=\"robinson:T-GSF robinson:N-GSF\">OF THE EARTH</w>", //$NON-NLS-1$
                                   "<inscription><w src=\"8\" lemma=\"strong:G3466\" morph=\"robinson:N-NSN\">Mystery</w>, <w src=\"9\" lemma=\"strong:G897\" morph=\"robinson:N-NSF\">Babylon</w> <w src=\"11\" lemma=\"strong:G3173\" morph=\"robinson:A-NSF\">the Great</w>, <w src=\"12 13\" lemma=\"strong:G3588 strong:G3384\" morph=\"robinson:T-NSF robinson:N-NSF\">the Mother</w> <w src=\"14 15\" lemma=\"strong:G3588 strong:G4204\" morph=\"robinson:T-GPF robinson:N-GPF\">of Harlots</w> <w src=\"16\" lemma=\"strong:G2532\" morph=\"robinson:CONJ\">and</w> <w src=\"17 18\" lemma=\"strong:G3588 strong:G946\" morph=\"robinson:T-GPN robinson:N-GPN\">Abominations</w> <w src=\"19 20\" lemma=\"strong:G3588 strong:G1093\" morph=\"robinson:T-GSF robinson:N-GSF\">of the Earth</w></inscription>"); //$NON-NLS-1$
         }
+
+        return input;
+    }
+
+    private String fixParagraphs(String osisID, String input, boolean inVerse)
+    {
+        if (input.contains("<p/>")) //$NON-NLS-1$
+        {
+            input = input.replace("<p/></transChange>", "</transChange><p/>"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replace("<p/></q>", "</q><p/>"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replaceAll("<p/>\\s+", "<p/>"); //$NON-NLS-1$ //$NON-NLS-2$
+            
+            Matcher matcher = pPattern.matcher(input);
+            while (matcher.find())
+            {
+                input = matcher.replaceFirst("$2<p/>"); //$NON-NLS-1$
+                matcher.reset(input);
+            }
+            
+            // normalize paragraph markers
+            input = input.replaceAll("(<p/>\\s*)+", "<p/>"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replaceAll("<p/>(?=<note)", "<milestone type=\"x-p\" marker=\"\u00B6\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replaceAll("<p/>(?=<milestone type=\"x-strongsMarkup\")", "<milestone type=\"x-p\" marker=\"\u00B6\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replaceAll("<p/>(?=$)", "<milestone type=\"x-p\" subType=\"x-end\" marker=\"\u00B6\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replaceAll("<p/>", "<milestone type=\"x-extra-p\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        input = input.replaceAll("<milestone type=\"x-p\"\\s*/>", "<milestone type=\"x-p\" marker=\"\u00B6\"/>"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        boolean seenP = false;
+
+        //  And move them from the end of a verse to the beginning of the next
+        if (input.contains("<milestone type=\"x-p\" marker=\"\u00B6\"/>")) //$NON-NLS-1$
+        {
+            input = input.replaceAll("<milestone type=\"x-p\" marker=\"\u00B6\"/>", ""); //$NON-NLS-1$ //$NON-NLS-2$
+            moveP = true;
+        }
+        else if (moveP && inVerse)
+        {
+            Verse v = null;
+
+            try
+            {
+                v = VerseFactory.fromString(osisID);
+            }
+            catch (NoSuchVerseException e)
+            {
+                // does not happen
+            }
+
+            if (v.getVerse() != 1)
+            {
+                if (paragraphs.contains(osisID))
+                {
+                    input = "<milestone type=\"x-p\" marker=\"\u00B6\"/>" + input; //$NON-NLS-1$
+                }
+                else
+                {
+                    input = "<milestone type=\"x-extra-p\"/>" + input; //$NON-NLS-1$
+                }
+            }
+            seenP = true;
+            moveP = false;
+        }
+
+        if (inVerse && paragraphs.contains(osisID) && !seenP)
+        {
+            input = "<milestone type=\"x-p\" subType=\"x-added\" marker=\"\u00B6\"/>" + input; //$NON-NLS-1$
+        }
+      
+//        if (v.getBook() >= BibleInfo.Names.MATTHEW)
+//        {
+//            if (input.contains("x-p")) //$NON-NLS-1$
+//            {
+//                System.err.println(osisID + ": NT paragraph: " + input); //$NON-NLS-1$
+//            }
+//        }
 
         return input;
     }
@@ -2846,9 +2985,9 @@ public class BibleToOsis
     private static Pattern dna1Pattern = Pattern.compile("(<w\\s+lemma=\"strong:H03069\"\\s*>.*?)(GOD|LORD|LORD'S)(.*?</w>)"); //$NON-NLS-1$
     private static Pattern dna2Pattern = Pattern.compile("(<w\\s+lemma=\"strong:H03050\"\\s*>.*?)(GOD|LORD|LORD'S|JAH)(.*?</w>)"); //$NON-NLS-1$
     private static String dna1Replace = "$1<seg><divineName>$2</divineName></seg>$3"; //$NON-NLS-1$
-    private static Pattern dna3Pattern = Pattern.compile("(<transChange\\s+lemma=\"strong:H03050\"\\s*>.*?)(GOD|LORD|LORD'S|JAH)(.*?</transChange>)"); //$NON-NLS-1$
-    private static Pattern dna4Pattern = Pattern.compile("(<note\\s+lemma=\"strong:H03050\"\\s*>.*?)(GOD|LORD|LORD'S|JAH|JEHOVAH)(.*?</note>)"); //$NON-NLS-1$
-    private static String dna2Replace = "$1<divineName>$2</divineName>$3"; //$NON-NLS-1$
+//    private static Pattern dna3Pattern = Pattern.compile("(<transChange.*?>)(.*?)(GOD|LORD|LORD'S|JAH)(.*?)(</transChange>)"); //$NON-NLS-1$
+//    private static Pattern dna4Pattern = Pattern.compile("(<note.*?>)(.*?)(GOD|LORD|LORD'S|JAH|JEHOVAH)(.*?)(</note>)"); //$NON-NLS-1$
+//    private static String dna2Replace = "$1$2<divineName>$3</divineName>$4$5"; //$NON-NLS-1$
     private static Pattern dn1Pattern = Pattern.compile("<divineName>LORD</divineName>"); //$NON-NLS-1$
     private static String dn1Replace = "<divineName type=\"x-yhwh\">Lord</divineName>"; //$NON-NLS-1$
     private static Pattern dn2Pattern = Pattern.compile("<divineName>LORD'S</divineName>"); //$NON-NLS-1$
@@ -2859,8 +2998,18 @@ public class BibleToOsis
     private static String dn4Replace = "<divineName type=\"x-yhwh\">Jehovah</divineName>"; //$NON-NLS-1$
     private static Pattern dn5Pattern = Pattern.compile("<divineName>JAH</divineName>"); //$NON-NLS-1$
     private static String dn5Replace = "<divineName type=\"x-yhwh\">Jah</divineName>"; //$NON-NLS-1$
-    private static Pattern dn6Pattern = Pattern.compile("BRANCH"); //$NON-NLS-1$
-    private static String dn6Replace = "<divineName>Branch</divineName>"; //$NON-NLS-1$
+    private static Pattern dn6Pattern = Pattern.compile("LORD'S"); //$NON-NLS-1$
+    private static String dn6Replace = "<divineName>Lord's</divineName>"; //$NON-NLS-1$
+    private static Pattern dn7Pattern = Pattern.compile("LORD"); //$NON-NLS-1$
+    private static String dn7Replace = "<divineName>Lord</divineName>"; //$NON-NLS-1$
+    private static Pattern dn8Pattern = Pattern.compile("GOD"); //$NON-NLS-1$
+    private static String dn8Replace = "<divineName>God</divineName>"; //$NON-NLS-1$
+    private static Pattern dn9Pattern = Pattern.compile("JEHOVAH"); //$NON-NLS-1$
+    private static String dn9Replace = "<divineName type=\"x-yhwh\">Jehovah</divineName>"; //$NON-NLS-1$
+    private static Pattern dn10Pattern = Pattern.compile("JAH"); //$NON-NLS-1$
+    private static String dn10Replace = "<divineName type=\"x-yhwh\">Jah</divineName>"; //$NON-NLS-1$
+    private static Pattern dn11Pattern = Pattern.compile("(BRANCH)"); //$NON-NLS-1$
+    private static String dn11Replace = "<seg><divineName>Branch</divineName></seg>"; //$NON-NLS-1$
 
     private static String transChangeSeg = "<seg type=\"transChange\" subType=\"type:added\">([^<]*)</seg>"; //$NON-NLS-1$
     private static Pattern transChangeSegPattern = Pattern.compile(transChangeSeg);
@@ -2870,6 +3019,8 @@ public class BibleToOsis
 
     private static String respElement = "<resp.*?name=\"(.*?)\".*?date=\"(.*?)\".*?>"; //$NON-NLS-1$
     private static Pattern respPattern = Pattern.compile(respElement);
+
+    private static Pattern pPattern = Pattern.compile("(<p/>\\s*)+(<w[^>]+></w>)\\s*"); //$NON-NLS-1$
 
     private static String wElement = "<w\\s[^>]*>"; //$NON-NLS-1$
     private static Pattern wPattern = Pattern.compile(wElement);
@@ -2907,10 +3058,9 @@ public class BibleToOsis
     private static Pattern w9Pattern = Pattern.compile("(<title\\s[^>]*>)\\s+"); //$NON-NLS-1$
     private static Pattern w10Pattern = Pattern.compile("(</title>) "); //$NON-NLS-1$
     private static Pattern w11Pattern = Pattern.compile(" (<note)"); //$NON-NLS-1$
+    private static Pattern w12Pattern = Pattern.compile("\\s+(</note>)"); //$NON-NLS-1$
     private static Pattern wnPattern = Pattern.compile("\\s\\s+"); //$NON-NLS-1$
     private static Pattern p1Pattern = Pattern.compile("\\.\\.\\."); //$NON-NLS-1$
-
-    private static Pattern hyphenatedNamePattern = Pattern.compile("\\w+[a-z](-)\\w\\w+"); //$NON-NLS-1$
 
     private static Map<String, String> bookTitles = new HashMap<String, String>();
 
@@ -3003,6 +3153,7 @@ public class BibleToOsis
     }
 
     private static Map<String, String> acrostics = new HashMap<String, String>();
+    private static Map<String, String> hebLetters = new HashMap<String, String>();
 
     static {
         acrostics.put("Ps.119.1", "<w xlit=\"\u05D0\">ALEPH.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -3027,9 +3178,3027 @@ public class BibleToOsis
         acrostics.put("Ps.119.153", "<w xlit=\"\u05E8\">RESH.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
         acrostics.put("Ps.119.161", "<w xlit=\"\u05E9\">SCHIN.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
         acrostics.put("Ps.119.169", "<w xlit=\"\u05Ea\">TAU.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        hebLetters.put("Ps.119.1", "ALEPH. "); //$NON-NLS-1$ //$NON-NLS-2$
+        hebLetters.put("Ps.119.9", "BETH. "); //$NON-NLS-1$ //$NON-NLS-2$
+        hebLetters.put("Ps.119.17", "GIMEL. "); //$NON-NLS-1$ //$NON-NLS-2$
+        hebLetters.put("Ps.119.25", "DALETH. "); //$NON-NLS-1$ //$NON-NLS-2$
+        hebLetters.put("Ps.119.33", "HE. "); //$NON-NLS-1$ //$NON-NLS-2$
+        hebLetters.put("Ps.119.41", "VAU. "); //$NON-NLS-1$ //$NON-NLS-2$
+        hebLetters.put("Ps.119.49", "ZAIN. "); //$NON-NLS-1$ //$NON-NLS-2$
+        hebLetters.put("Ps.119.57", "CHETH. "); //$NON-NLS-1$ //$NON-NLS-2$
+        hebLetters.put("Ps.119.65", "TETH. "); //$NON-NLS-1$ //$NON-NLS-2$
+        hebLetters.put("Ps.119.73", "JOD. "); //$NON-NLS-1$ //$NON-NLS-2$
+        hebLetters.put("Ps.119.81", "CAPH. "); //$NON-NLS-1$ //$NON-NLS-2$
+        hebLetters.put("Ps.119.89", "LAMED. "); //$NON-NLS-1$ //$NON-NLS-2$
+        hebLetters.put("Ps.119.97", "MEM. "); //$NON-NLS-1$ //$NON-NLS-2$
+        hebLetters.put("Ps.119.105", "NUN. "); //$NON-NLS-1$ //$NON-NLS-2$
+        hebLetters.put("Ps.119.113", "SAMECH. "); //$NON-NLS-1$ //$NON-NLS-2$
+        hebLetters.put("Ps.119.121", "AIN. "); //$NON-NLS-1$ //$NON-NLS-2$
+        hebLetters.put("Ps.119.129", "PE. "); //$NON-NLS-1$ //$NON-NLS-2$
+        hebLetters.put("Ps.119.137", "TZADDI. "); //$NON-NLS-1$ //$NON-NLS-2$
+        hebLetters.put("Ps.119.145", "KOPH. "); //$NON-NLS-1$ //$NON-NLS-2$
+        hebLetters.put("Ps.119.153", "RESH. "); //$NON-NLS-1$ //$NON-NLS-2$
+        hebLetters.put("Ps.119.161", "SCHIN. "); //$NON-NLS-1$ //$NON-NLS-2$
+        hebLetters.put("Ps.119.169", "TAU. "); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     private boolean moveP = false;
+    private static Set<String> paragraphs = new HashSet<String>();
+    private Set<String> seenParagraphs = new HashSet<String>();
+
+    static {
+        paragraphs.add("Gen.1.6"); //$NON-NLS-1$
+        paragraphs.add("Gen.1.9"); //$NON-NLS-1$
+        paragraphs.add("Gen.1.14"); //$NON-NLS-1$
+        paragraphs.add("Gen.1.24"); //$NON-NLS-1$
+        paragraphs.add("Gen.1.26"); //$NON-NLS-1$
+        paragraphs.add("Gen.1.29"); //$NON-NLS-1$
+        paragraphs.add("Gen.2.4"); //$NON-NLS-1$
+        paragraphs.add("Gen.2.8"); //$NON-NLS-1$
+        paragraphs.add("Gen.2.18"); //$NON-NLS-1$
+        paragraphs.add("Gen.3.22"); //$NON-NLS-1$
+        paragraphs.add("Gen.4.9"); //$NON-NLS-1$
+        paragraphs.add("Gen.4.16"); //$NON-NLS-1$
+        paragraphs.add("Gen.4.19"); //$NON-NLS-1$
+        paragraphs.add("Gen.4.25"); //$NON-NLS-1$
+        paragraphs.add("Gen.5.3"); //$NON-NLS-1$
+        paragraphs.add("Gen.5.9"); //$NON-NLS-1$
+        paragraphs.add("Gen.5.12"); //$NON-NLS-1$
+        paragraphs.add("Gen.5.15"); //$NON-NLS-1$
+        paragraphs.add("Gen.5.18"); //$NON-NLS-1$
+        paragraphs.add("Gen.5.21"); //$NON-NLS-1$
+        paragraphs.add("Gen.5.28"); //$NON-NLS-1$
+        paragraphs.add("Gen.6.5"); //$NON-NLS-1$
+        paragraphs.add("Gen.6.9"); //$NON-NLS-1$
+        paragraphs.add("Gen.6.14"); //$NON-NLS-1$
+        paragraphs.add("Gen.7.7"); //$NON-NLS-1$
+        paragraphs.add("Gen.7.11"); //$NON-NLS-1$
+        paragraphs.add("Gen.8.6"); //$NON-NLS-1$
+        paragraphs.add("Gen.8.13"); //$NON-NLS-1$
+        paragraphs.add("Gen.8.15"); //$NON-NLS-1$
+        paragraphs.add("Gen.8.20"); //$NON-NLS-1$
+        paragraphs.add("Gen.9.8"); //$NON-NLS-1$
+        paragraphs.add("Gen.9.18"); //$NON-NLS-1$
+        paragraphs.add("Gen.9.28"); //$NON-NLS-1$
+        paragraphs.add("Gen.10.6"); //$NON-NLS-1$
+        paragraphs.add("Gen.10.15"); //$NON-NLS-1$
+        paragraphs.add("Gen.10.21"); //$NON-NLS-1$
+        paragraphs.add("Gen.11.10"); //$NON-NLS-1$
+        paragraphs.add("Gen.11.27"); //$NON-NLS-1$
+        paragraphs.add("Gen.12.6"); //$NON-NLS-1$
+        paragraphs.add("Gen.12.10"); //$NON-NLS-1$
+        paragraphs.add("Gen.12.14"); //$NON-NLS-1$
+        paragraphs.add("Gen.13.5"); //$NON-NLS-1$
+        paragraphs.add("Gen.13.14"); //$NON-NLS-1$
+        paragraphs.add("Gen.14.13"); //$NON-NLS-1$
+        paragraphs.add("Gen.14.17"); //$NON-NLS-1$
+        paragraphs.add("Gen.16.4"); //$NON-NLS-1$
+        paragraphs.add("Gen.16.7"); //$NON-NLS-1$
+        paragraphs.add("Gen.16.15"); //$NON-NLS-1$
+        paragraphs.add("Gen.17.9"); //$NON-NLS-1$
+        paragraphs.add("Gen.17.15"); //$NON-NLS-1$
+        paragraphs.add("Gen.17.23"); //$NON-NLS-1$
+        paragraphs.add("Gen.18.9"); //$NON-NLS-1$
+        paragraphs.add("Gen.18.16"); //$NON-NLS-1$
+        paragraphs.add("Gen.18.23"); //$NON-NLS-1$
+        paragraphs.add("Gen.19.4"); //$NON-NLS-1$
+        paragraphs.add("Gen.19.12"); //$NON-NLS-1$
+        paragraphs.add("Gen.19.15"); //$NON-NLS-1$
+        paragraphs.add("Gen.19.17"); //$NON-NLS-1$
+        paragraphs.add("Gen.19.23"); //$NON-NLS-1$
+        paragraphs.add("Gen.19.26"); //$NON-NLS-1$
+        paragraphs.add("Gen.19.27"); //$NON-NLS-1$
+        paragraphs.add("Gen.19.29"); //$NON-NLS-1$
+        paragraphs.add("Gen.19.30"); //$NON-NLS-1$
+        paragraphs.add("Gen.20.17"); //$NON-NLS-1$
+        paragraphs.add("Gen.21.6"); //$NON-NLS-1$
+        paragraphs.add("Gen.21.9"); //$NON-NLS-1$
+        paragraphs.add("Gen.21.12"); //$NON-NLS-1$
+        paragraphs.add("Gen.21.22"); //$NON-NLS-1$
+        paragraphs.add("Gen.21.33"); //$NON-NLS-1$
+        paragraphs.add("Gen.22.3"); //$NON-NLS-1$
+        paragraphs.add("Gen.22.15"); //$NON-NLS-1$
+        paragraphs.add("Gen.22.20"); //$NON-NLS-1$
+        paragraphs.add("Gen.23.3"); //$NON-NLS-1$
+        paragraphs.add("Gen.23.17"); //$NON-NLS-1$
+        paragraphs.add("Gen.24.7"); //$NON-NLS-1$
+        paragraphs.add("Gen.24.10"); //$NON-NLS-1$
+        paragraphs.add("Gen.24.15"); //$NON-NLS-1$
+        paragraphs.add("Gen.24.29"); //$NON-NLS-1$
+        paragraphs.add("Gen.24.32"); //$NON-NLS-1$
+        paragraphs.add("Gen.24.61"); //$NON-NLS-1$
+        paragraphs.add("Gen.25.5"); //$NON-NLS-1$
+        paragraphs.add("Gen.25.11"); //$NON-NLS-1$
+        paragraphs.add("Gen.25.12"); //$NON-NLS-1$
+        paragraphs.add("Gen.25.19"); //$NON-NLS-1$
+        paragraphs.add("Gen.25.24"); //$NON-NLS-1$
+        paragraphs.add("Gen.25.29"); //$NON-NLS-1$
+        paragraphs.add("Gen.26.6"); //$NON-NLS-1$
+        paragraphs.add("Gen.26.17"); //$NON-NLS-1$
+        paragraphs.add("Gen.26.26"); //$NON-NLS-1$
+        paragraphs.add("Gen.26.34"); //$NON-NLS-1$
+        paragraphs.add("Gen.27.6"); //$NON-NLS-1$
+        paragraphs.add("Gen.27.18"); //$NON-NLS-1$
+        paragraphs.add("Gen.27.30"); //$NON-NLS-1$
+        paragraphs.add("Gen.27.41"); //$NON-NLS-1$
+        paragraphs.add("Gen.28.6"); //$NON-NLS-1$
+        paragraphs.add("Gen.28.10"); //$NON-NLS-1$
+        paragraphs.add("Gen.28.16"); //$NON-NLS-1$
+        paragraphs.add("Gen.29.9"); //$NON-NLS-1$
+        paragraphs.add("Gen.29.15"); //$NON-NLS-1$
+        paragraphs.add("Gen.29.21"); //$NON-NLS-1$
+        paragraphs.add("Gen.29.31"); //$NON-NLS-1$
+        paragraphs.add("Gen.30.14"); //$NON-NLS-1$
+        paragraphs.add("Gen.30.22"); //$NON-NLS-1$
+        paragraphs.add("Gen.30.25"); //$NON-NLS-1$
+        paragraphs.add("Gen.30.37"); //$NON-NLS-1$
+        paragraphs.add("Gen.31.17"); //$NON-NLS-1$
+        paragraphs.add("Gen.31.25"); //$NON-NLS-1$
+        paragraphs.add("Gen.31.36"); //$NON-NLS-1$
+        paragraphs.add("Gen.31.43"); //$NON-NLS-1$
+        paragraphs.add("Gen.32.6"); //$NON-NLS-1$
+        paragraphs.add("Gen.32.9"); //$NON-NLS-1$
+        paragraphs.add("Gen.32.13"); //$NON-NLS-1$
+        paragraphs.add("Gen.32.24"); //$NON-NLS-1$
+        paragraphs.add("Gen.33.16"); //$NON-NLS-1$
+        paragraphs.add("Gen.33.18"); //$NON-NLS-1$
+        paragraphs.add("Gen.34.6"); //$NON-NLS-1$
+        paragraphs.add("Gen.34.20"); //$NON-NLS-1$
+        paragraphs.add("Gen.34.25"); //$NON-NLS-1$
+        paragraphs.add("Gen.35.6"); //$NON-NLS-1$
+        paragraphs.add("Gen.35.9"); //$NON-NLS-1$
+        paragraphs.add("Gen.35.16"); //$NON-NLS-1$
+        paragraphs.add("Gen.35.21"); //$NON-NLS-1$
+        paragraphs.add("Gen.35.27"); //$NON-NLS-1$
+        paragraphs.add("Gen.36.9"); //$NON-NLS-1$
+        paragraphs.add("Gen.36.14"); //$NON-NLS-1$
+        paragraphs.add("Gen.36.15"); //$NON-NLS-1$
+        paragraphs.add("Gen.36.17"); //$NON-NLS-1$
+        paragraphs.add("Gen.36.18"); //$NON-NLS-1$
+        paragraphs.add("Gen.36.20"); //$NON-NLS-1$
+        paragraphs.add("Gen.36.31"); //$NON-NLS-1$
+        paragraphs.add("Gen.37.5"); //$NON-NLS-1$
+        paragraphs.add("Gen.37.9"); //$NON-NLS-1$
+        paragraphs.add("Gen.37.12"); //$NON-NLS-1$
+        paragraphs.add("Gen.37.15"); //$NON-NLS-1$
+        paragraphs.add("Gen.37.23"); //$NON-NLS-1$
+        paragraphs.add("Gen.37.29"); //$NON-NLS-1$
+        paragraphs.add("Gen.38.12"); //$NON-NLS-1$
+        paragraphs.add("Gen.38.24"); //$NON-NLS-1$
+        paragraphs.add("Gen.38.27"); //$NON-NLS-1$
+        paragraphs.add("Gen.39.7"); //$NON-NLS-1$
+        paragraphs.add("Gen.39.21"); //$NON-NLS-1$
+        paragraphs.add("Gen.40.5"); //$NON-NLS-1$
+        paragraphs.add("Gen.40.20"); //$NON-NLS-1$
+        paragraphs.add("Gen.41.9"); //$NON-NLS-1$
+        paragraphs.add("Gen.41.14"); //$NON-NLS-1$
+        paragraphs.add("Gen.41.25"); //$NON-NLS-1$
+        paragraphs.add("Gen.41.37"); //$NON-NLS-1$
+        paragraphs.add("Gen.41.46"); //$NON-NLS-1$
+        paragraphs.add("Gen.41.53"); //$NON-NLS-1$
+        paragraphs.add("Gen.42.3"); //$NON-NLS-1$
+        paragraphs.add("Gen.42.21"); //$NON-NLS-1$
+        paragraphs.add("Gen.42.25"); //$NON-NLS-1$
+        paragraphs.add("Gen.42.29"); //$NON-NLS-1$
+        paragraphs.add("Gen.42.35"); //$NON-NLS-1$
+        paragraphs.add("Gen.43.15"); //$NON-NLS-1$
+        paragraphs.add("Gen.43.26"); //$NON-NLS-1$
+        paragraphs.add("Gen.44.6"); //$NON-NLS-1$
+        paragraphs.add("Gen.44.14"); //$NON-NLS-1$
+        paragraphs.add("Gen.44.18"); //$NON-NLS-1$
+        paragraphs.add("Gen.45.16"); //$NON-NLS-1$
+        paragraphs.add("Gen.45.25"); //$NON-NLS-1$
+        paragraphs.add("Gen.46.8"); //$NON-NLS-1$
+        paragraphs.add("Gen.46.10"); //$NON-NLS-1$
+        paragraphs.add("Gen.46.11"); //$NON-NLS-1$
+        paragraphs.add("Gen.46.12"); //$NON-NLS-1$
+        paragraphs.add("Gen.46.13"); //$NON-NLS-1$
+        paragraphs.add("Gen.46.14"); //$NON-NLS-1$
+        paragraphs.add("Gen.46.16"); //$NON-NLS-1$
+        paragraphs.add("Gen.46.17"); //$NON-NLS-1$
+        paragraphs.add("Gen.46.20"); //$NON-NLS-1$
+        paragraphs.add("Gen.46.21"); //$NON-NLS-1$
+        paragraphs.add("Gen.46.23"); //$NON-NLS-1$
+        paragraphs.add("Gen.46.24"); //$NON-NLS-1$
+        paragraphs.add("Gen.46.28"); //$NON-NLS-1$
+        paragraphs.add("Gen.47.11"); //$NON-NLS-1$
+        paragraphs.add("Gen.47.13"); //$NON-NLS-1$
+        paragraphs.add("Gen.47.27"); //$NON-NLS-1$
+        paragraphs.add("Gen.48.5"); //$NON-NLS-1$
+        paragraphs.add("Gen.48.15"); //$NON-NLS-1$
+        paragraphs.add("Gen.49.3"); //$NON-NLS-1$
+        paragraphs.add("Gen.49.5"); //$NON-NLS-1$
+        paragraphs.add("Gen.49.8"); //$NON-NLS-1$
+        paragraphs.add("Gen.49.13"); //$NON-NLS-1$
+        paragraphs.add("Gen.49.14"); //$NON-NLS-1$
+        paragraphs.add("Gen.49.16"); //$NON-NLS-1$
+        paragraphs.add("Gen.49.19"); //$NON-NLS-1$
+        paragraphs.add("Gen.49.20"); //$NON-NLS-1$
+        paragraphs.add("Gen.49.21"); //$NON-NLS-1$
+        paragraphs.add("Gen.49.22"); //$NON-NLS-1$
+        paragraphs.add("Gen.49.27"); //$NON-NLS-1$
+        paragraphs.add("Gen.49.28"); //$NON-NLS-1$
+        paragraphs.add("Gen.50.7"); //$NON-NLS-1$
+        paragraphs.add("Gen.50.14"); //$NON-NLS-1$
+        paragraphs.add("Gen.50.15"); //$NON-NLS-1$
+        paragraphs.add("Gen.50.22"); //$NON-NLS-1$
+        paragraphs.add("Exod.1.7"); //$NON-NLS-1$
+        paragraphs.add("Exod.1.15"); //$NON-NLS-1$
+        paragraphs.add("Exod.2.5"); //$NON-NLS-1$
+        paragraphs.add("Exod.2.11"); //$NON-NLS-1$
+        paragraphs.add("Exod.2.23"); //$NON-NLS-1$
+        paragraphs.add("Exod.3.7"); //$NON-NLS-1$
+        paragraphs.add("Exod.3.11"); //$NON-NLS-1$
+        paragraphs.add("Exod.3.19"); //$NON-NLS-1$
+        paragraphs.add("Exod.4.6"); //$NON-NLS-1$
+        paragraphs.add("Exod.4.10"); //$NON-NLS-1$
+        paragraphs.add("Exod.4.18"); //$NON-NLS-1$
+        paragraphs.add("Exod.4.24"); //$NON-NLS-1$
+        paragraphs.add("Exod.4.27"); //$NON-NLS-1$
+        paragraphs.add("Exod.4.29"); //$NON-NLS-1$
+        paragraphs.add("Exod.5.10"); //$NON-NLS-1$
+        paragraphs.add("Exod.5.15"); //$NON-NLS-1$
+        paragraphs.add("Exod.5.20"); //$NON-NLS-1$
+        paragraphs.add("Exod.6.9"); //$NON-NLS-1$
+        paragraphs.add("Exod.6.14"); //$NON-NLS-1$
+        paragraphs.add("Exod.6.16"); //$NON-NLS-1$
+        paragraphs.add("Exod.6.21"); //$NON-NLS-1$
+        paragraphs.add("Exod.6.28"); //$NON-NLS-1$
+        paragraphs.add("Exod.7.8"); //$NON-NLS-1$
+        paragraphs.add("Exod.7.10"); //$NON-NLS-1$
+        paragraphs.add("Exod.7.14"); //$NON-NLS-1$
+        paragraphs.add("Exod.7.19"); //$NON-NLS-1$
+        paragraphs.add("Exod.8.5"); //$NON-NLS-1$
+        paragraphs.add("Exod.8.8"); //$NON-NLS-1$
+        paragraphs.add("Exod.8.16"); //$NON-NLS-1$
+        paragraphs.add("Exod.8.20"); //$NON-NLS-1$
+        paragraphs.add("Exod.8.25"); //$NON-NLS-1$
+        paragraphs.add("Exod.9.8"); //$NON-NLS-1$
+        paragraphs.add("Exod.9.13"); //$NON-NLS-1$
+        paragraphs.add("Exod.9.22"); //$NON-NLS-1$
+        paragraphs.add("Exod.9.27"); //$NON-NLS-1$
+        paragraphs.add("Exod.10.12"); //$NON-NLS-1$
+        paragraphs.add("Exod.10.16"); //$NON-NLS-1$
+        paragraphs.add("Exod.10.21"); //$NON-NLS-1$
+        paragraphs.add("Exod.10.24"); //$NON-NLS-1$
+        paragraphs.add("Exod.10.27"); //$NON-NLS-1$
+        paragraphs.add("Exod.12.3"); //$NON-NLS-1$
+        paragraphs.add("Exod.12.11"); //$NON-NLS-1$
+        paragraphs.add("Exod.12.18"); //$NON-NLS-1$
+        paragraphs.add("Exod.12.21"); //$NON-NLS-1$
+        paragraphs.add("Exod.12.29"); //$NON-NLS-1$
+        paragraphs.add("Exod.12.31"); //$NON-NLS-1$
+        paragraphs.add("Exod.12.37"); //$NON-NLS-1$
+        paragraphs.add("Exod.12.40"); //$NON-NLS-1$
+        paragraphs.add("Exod.12.43"); //$NON-NLS-1$
+        paragraphs.add("Exod.13.3"); //$NON-NLS-1$
+        paragraphs.add("Exod.13.5"); //$NON-NLS-1$
+        paragraphs.add("Exod.13.8"); //$NON-NLS-1$
+        paragraphs.add("Exod.13.11"); //$NON-NLS-1$
+        paragraphs.add("Exod.13.14"); //$NON-NLS-1$
+        paragraphs.add("Exod.13.17"); //$NON-NLS-1$
+        paragraphs.add("Exod.13.20"); //$NON-NLS-1$
+        paragraphs.add("Exod.14.5"); //$NON-NLS-1$
+        paragraphs.add("Exod.14.10"); //$NON-NLS-1$
+        paragraphs.add("Exod.14.13"); //$NON-NLS-1$
+        paragraphs.add("Exod.14.15"); //$NON-NLS-1$
+        paragraphs.add("Exod.14.19"); //$NON-NLS-1$
+        paragraphs.add("Exod.14.23"); //$NON-NLS-1$
+        paragraphs.add("Exod.14.26"); //$NON-NLS-1$
+        paragraphs.add("Exod.15.20"); //$NON-NLS-1$
+        paragraphs.add("Exod.15.23"); //$NON-NLS-1$
+        paragraphs.add("Exod.15.27"); //$NON-NLS-1$
+        paragraphs.add("Exod.16.4"); //$NON-NLS-1$
+        paragraphs.add("Exod.16.9"); //$NON-NLS-1$
+        paragraphs.add("Exod.16.11"); //$NON-NLS-1$
+        paragraphs.add("Exod.16.16"); //$NON-NLS-1$
+        paragraphs.add("Exod.16.22"); //$NON-NLS-1$
+        paragraphs.add("Exod.16.27"); //$NON-NLS-1$
+        paragraphs.add("Exod.16.32"); //$NON-NLS-1$
+        paragraphs.add("Exod.17.8"); //$NON-NLS-1$
+        paragraphs.add("Exod.18.7"); //$NON-NLS-1$
+        paragraphs.add("Exod.18.13"); //$NON-NLS-1$
+        paragraphs.add("Exod.18.27"); //$NON-NLS-1$
+        paragraphs.add("Exod.19.7"); //$NON-NLS-1$
+        paragraphs.add("Exod.19.10"); //$NON-NLS-1$
+        paragraphs.add("Exod.19.14"); //$NON-NLS-1$
+        paragraphs.add("Exod.19.16"); //$NON-NLS-1$
+        paragraphs.add("Exod.20.12"); //$NON-NLS-1$
+        paragraphs.add("Exod.20.18"); //$NON-NLS-1$
+        paragraphs.add("Exod.20.22"); //$NON-NLS-1$
+        paragraphs.add("Exod.20.24"); //$NON-NLS-1$
+        paragraphs.add("Exod.21.7"); //$NON-NLS-1$
+        paragraphs.add("Exod.21.12"); //$NON-NLS-1$
+        paragraphs.add("Exod.21.15"); //$NON-NLS-1$
+        paragraphs.add("Exod.21.16"); //$NON-NLS-1$
+        paragraphs.add("Exod.21.17"); //$NON-NLS-1$
+        paragraphs.add("Exod.21.18"); //$NON-NLS-1$
+        paragraphs.add("Exod.21.20"); //$NON-NLS-1$
+        paragraphs.add("Exod.21.22"); //$NON-NLS-1$
+        paragraphs.add("Exod.21.26"); //$NON-NLS-1$
+        paragraphs.add("Exod.21.28"); //$NON-NLS-1$
+        paragraphs.add("Exod.21.33"); //$NON-NLS-1$
+        paragraphs.add("Exod.21.35"); //$NON-NLS-1$
+        paragraphs.add("Exod.22.2"); //$NON-NLS-1$
+        paragraphs.add("Exod.22.5"); //$NON-NLS-1$
+        paragraphs.add("Exod.22.6"); //$NON-NLS-1$
+        paragraphs.add("Exod.22.7"); //$NON-NLS-1$
+        paragraphs.add("Exod.22.14"); //$NON-NLS-1$
+        paragraphs.add("Exod.22.16"); //$NON-NLS-1$
+        paragraphs.add("Exod.22.18"); //$NON-NLS-1$
+        paragraphs.add("Exod.22.19"); //$NON-NLS-1$
+        paragraphs.add("Exod.22.20"); //$NON-NLS-1$
+        paragraphs.add("Exod.22.21"); //$NON-NLS-1$
+        paragraphs.add("Exod.22.22"); //$NON-NLS-1$
+        paragraphs.add("Exod.22.25"); //$NON-NLS-1$
+        paragraphs.add("Exod.22.28"); //$NON-NLS-1$
+        paragraphs.add("Exod.22.29"); //$NON-NLS-1$
+        paragraphs.add("Exod.22.31"); //$NON-NLS-1$
+        paragraphs.add("Exod.23.2"); //$NON-NLS-1$
+        paragraphs.add("Exod.23.3"); //$NON-NLS-1$
+        paragraphs.add("Exod.23.4"); //$NON-NLS-1$
+        paragraphs.add("Exod.23.8"); //$NON-NLS-1$
+        paragraphs.add("Exod.23.9"); //$NON-NLS-1$
+        paragraphs.add("Exod.23.14"); //$NON-NLS-1$
+        paragraphs.add("Exod.23.20"); //$NON-NLS-1$
+        paragraphs.add("Exod.23.26"); //$NON-NLS-1$
+        paragraphs.add("Exod.24.3"); //$NON-NLS-1$
+        paragraphs.add("Exod.24.9"); //$NON-NLS-1$
+        paragraphs.add("Exod.24.12"); //$NON-NLS-1$
+        paragraphs.add("Exod.25.10"); //$NON-NLS-1$
+        paragraphs.add("Exod.25.23"); //$NON-NLS-1$
+        paragraphs.add("Exod.25.31"); //$NON-NLS-1$
+        paragraphs.add("Exod.26.7"); //$NON-NLS-1$
+        paragraphs.add("Exod.26.15"); //$NON-NLS-1$
+        paragraphs.add("Exod.26.26"); //$NON-NLS-1$
+        paragraphs.add("Exod.26.31"); //$NON-NLS-1$
+        paragraphs.add("Exod.26.33"); //$NON-NLS-1$
+        paragraphs.add("Exod.27.9"); //$NON-NLS-1$
+        paragraphs.add("Exod.27.12"); //$NON-NLS-1$
+        paragraphs.add("Exod.27.16"); //$NON-NLS-1$
+        paragraphs.add("Exod.27.18"); //$NON-NLS-1$
+        paragraphs.add("Exod.27.20"); //$NON-NLS-1$
+        paragraphs.add("Exod.28.6"); //$NON-NLS-1$
+        paragraphs.add("Exod.28.13"); //$NON-NLS-1$
+        paragraphs.add("Exod.28.15"); //$NON-NLS-1$
+        paragraphs.add("Exod.28.22"); //$NON-NLS-1$
+        paragraphs.add("Exod.28.26"); //$NON-NLS-1$
+        paragraphs.add("Exod.28.30"); //$NON-NLS-1$
+        paragraphs.add("Exod.28.31"); //$NON-NLS-1$
+        paragraphs.add("Exod.28.33"); //$NON-NLS-1$
+        paragraphs.add("Exod.28.36"); //$NON-NLS-1$
+        paragraphs.add("Exod.28.39"); //$NON-NLS-1$
+        paragraphs.add("Exod.28.40"); //$NON-NLS-1$
+        paragraphs.add("Exod.29.15"); //$NON-NLS-1$
+        paragraphs.add("Exod.29.19"); //$NON-NLS-1$
+        paragraphs.add("Exod.29.29"); //$NON-NLS-1$
+        paragraphs.add("Exod.29.31"); //$NON-NLS-1$
+        paragraphs.add("Exod.29.38"); //$NON-NLS-1$
+        paragraphs.add("Exod.29.45"); //$NON-NLS-1$
+        paragraphs.add("Exod.30.11"); //$NON-NLS-1$
+        paragraphs.add("Exod.30.17"); //$NON-NLS-1$
+        paragraphs.add("Exod.30.22"); //$NON-NLS-1$
+        paragraphs.add("Exod.30.34"); //$NON-NLS-1$
+        paragraphs.add("Exod.31.12"); //$NON-NLS-1$
+        paragraphs.add("Exod.31.18"); //$NON-NLS-1$
+        paragraphs.add("Exod.32.7"); //$NON-NLS-1$
+        paragraphs.add("Exod.32.15"); //$NON-NLS-1$
+        paragraphs.add("Exod.32.19"); //$NON-NLS-1$
+        paragraphs.add("Exod.32.25"); //$NON-NLS-1$
+        paragraphs.add("Exod.32.30"); //$NON-NLS-1$
+        paragraphs.add("Exod.33.4"); //$NON-NLS-1$
+        paragraphs.add("Exod.33.12"); //$NON-NLS-1$
+        paragraphs.add("Exod.34.4"); //$NON-NLS-1$
+        paragraphs.add("Exod.34.10"); //$NON-NLS-1$
+        paragraphs.add("Exod.34.18"); //$NON-NLS-1$
+        paragraphs.add("Exod.34.21"); //$NON-NLS-1$
+        paragraphs.add("Exod.34.22"); //$NON-NLS-1$
+        paragraphs.add("Exod.34.23"); //$NON-NLS-1$
+        paragraphs.add("Exod.34.29"); //$NON-NLS-1$
+        paragraphs.add("Exod.35.4"); //$NON-NLS-1$
+        paragraphs.add("Exod.35.20"); //$NON-NLS-1$
+        paragraphs.add("Exod.35.30"); //$NON-NLS-1$
+        paragraphs.add("Exod.36.5"); //$NON-NLS-1$
+        paragraphs.add("Exod.36.8"); //$NON-NLS-1$
+        paragraphs.add("Exod.36.14"); //$NON-NLS-1$
+        paragraphs.add("Exod.36.20"); //$NON-NLS-1$
+        paragraphs.add("Exod.36.31"); //$NON-NLS-1$
+        paragraphs.add("Exod.36.35"); //$NON-NLS-1$
+        paragraphs.add("Exod.36.37"); //$NON-NLS-1$
+        paragraphs.add("Exod.37.6"); //$NON-NLS-1$
+        paragraphs.add("Exod.37.10"); //$NON-NLS-1$
+        paragraphs.add("Exod.37.17"); //$NON-NLS-1$
+        paragraphs.add("Exod.37.25"); //$NON-NLS-1$
+        paragraphs.add("Exod.37.29"); //$NON-NLS-1$
+        paragraphs.add("Exod.38.8"); //$NON-NLS-1$
+        paragraphs.add("Exod.38.9"); //$NON-NLS-1$
+        paragraphs.add("Exod.38.21"); //$NON-NLS-1$
+        paragraphs.add("Exod.39.6"); //$NON-NLS-1$
+        paragraphs.add("Exod.39.8"); //$NON-NLS-1$
+        paragraphs.add("Exod.39.22"); //$NON-NLS-1$
+        paragraphs.add("Exod.39.27"); //$NON-NLS-1$
+        paragraphs.add("Exod.39.30"); //$NON-NLS-1$
+        paragraphs.add("Exod.39.32"); //$NON-NLS-1$
+        paragraphs.add("Exod.39.33"); //$NON-NLS-1$
+        paragraphs.add("Exod.40.17"); //$NON-NLS-1$
+        paragraphs.add("Exod.40.20"); //$NON-NLS-1$
+        paragraphs.add("Exod.40.22"); //$NON-NLS-1$
+        paragraphs.add("Exod.40.24"); //$NON-NLS-1$
+        paragraphs.add("Exod.40.26"); //$NON-NLS-1$
+        paragraphs.add("Exod.40.28"); //$NON-NLS-1$
+        paragraphs.add("Exod.40.30"); //$NON-NLS-1$
+        paragraphs.add("Exod.40.34"); //$NON-NLS-1$
+        paragraphs.add("Lev.1.10"); //$NON-NLS-1$
+        paragraphs.add("Lev.1.14"); //$NON-NLS-1$
+        paragraphs.add("Lev.2.4"); //$NON-NLS-1$
+        paragraphs.add("Lev.2.5"); //$NON-NLS-1$
+        paragraphs.add("Lev.2.7"); //$NON-NLS-1$
+        paragraphs.add("Lev.2.12"); //$NON-NLS-1$
+        paragraphs.add("Lev.3.6"); //$NON-NLS-1$
+        paragraphs.add("Lev.3.12"); //$NON-NLS-1$
+        paragraphs.add("Lev.4.13"); //$NON-NLS-1$
+        paragraphs.add("Lev.4.22"); //$NON-NLS-1$
+        paragraphs.add("Lev.4.27"); //$NON-NLS-1$
+        paragraphs.add("Lev.5.11"); //$NON-NLS-1$
+        paragraphs.add("Lev.5.14"); //$NON-NLS-1$
+        paragraphs.add("Lev.5.17"); //$NON-NLS-1$
+        paragraphs.add("Lev.6.8"); //$NON-NLS-1$
+        paragraphs.add("Lev.6.14"); //$NON-NLS-1$
+        paragraphs.add("Lev.6.19"); //$NON-NLS-1$
+        paragraphs.add("Lev.6.24"); //$NON-NLS-1$
+        paragraphs.add("Lev.7.22"); //$NON-NLS-1$
+        paragraphs.add("Lev.7.28"); //$NON-NLS-1$
+        paragraphs.add("Lev.7.35"); //$NON-NLS-1$
+        paragraphs.add("Lev.8.18"); //$NON-NLS-1$
+        paragraphs.add("Lev.8.22"); //$NON-NLS-1$
+        paragraphs.add("Lev.8.31"); //$NON-NLS-1$
+        paragraphs.add("Lev.9.5"); //$NON-NLS-1$
+        paragraphs.add("Lev.9.8"); //$NON-NLS-1$
+        paragraphs.add("Lev.9.15"); //$NON-NLS-1$
+        paragraphs.add("Lev.10.8"); //$NON-NLS-1$
+        paragraphs.add("Lev.10.12"); //$NON-NLS-1$
+        paragraphs.add("Lev.10.16"); //$NON-NLS-1$
+        paragraphs.add("Lev.11.9"); //$NON-NLS-1$
+        paragraphs.add("Lev.11.13"); //$NON-NLS-1$
+        paragraphs.add("Lev.11.29"); //$NON-NLS-1$
+        paragraphs.add("Lev.13.9"); //$NON-NLS-1$
+        paragraphs.add("Lev.13.18"); //$NON-NLS-1$
+        paragraphs.add("Lev.13.24"); //$NON-NLS-1$
+        paragraphs.add("Lev.13.29"); //$NON-NLS-1$
+        paragraphs.add("Lev.13.38"); //$NON-NLS-1$
+        paragraphs.add("Lev.13.47"); //$NON-NLS-1$
+        paragraphs.add("Lev.14.33"); //$NON-NLS-1$
+        paragraphs.add("Lev.15.19"); //$NON-NLS-1$
+        paragraphs.add("Lev.16.15"); //$NON-NLS-1$
+        paragraphs.add("Lev.16.20"); //$NON-NLS-1$
+        paragraphs.add("Lev.16.29"); //$NON-NLS-1$
+        paragraphs.add("Lev.17.8"); //$NON-NLS-1$
+        paragraphs.add("Lev.17.10"); //$NON-NLS-1$
+        paragraphs.add("Lev.18.6"); //$NON-NLS-1$
+        paragraphs.add("Lev.19.3"); //$NON-NLS-1$
+        paragraphs.add("Lev.19.4"); //$NON-NLS-1$
+        paragraphs.add("Lev.19.5"); //$NON-NLS-1$
+        paragraphs.add("Lev.19.9"); //$NON-NLS-1$
+        paragraphs.add("Lev.19.11"); //$NON-NLS-1$
+        paragraphs.add("Lev.19.12"); //$NON-NLS-1$
+        paragraphs.add("Lev.19.13"); //$NON-NLS-1$
+        paragraphs.add("Lev.19.14"); //$NON-NLS-1$
+        paragraphs.add("Lev.19.15"); //$NON-NLS-1$
+        paragraphs.add("Lev.19.16"); //$NON-NLS-1$
+        paragraphs.add("Lev.19.17"); //$NON-NLS-1$
+        paragraphs.add("Lev.19.18"); //$NON-NLS-1$
+        paragraphs.add("Lev.19.19"); //$NON-NLS-1$
+        paragraphs.add("Lev.19.20"); //$NON-NLS-1$
+        paragraphs.add("Lev.19.23"); //$NON-NLS-1$
+        paragraphs.add("Lev.19.26"); //$NON-NLS-1$
+        paragraphs.add("Lev.19.29"); //$NON-NLS-1$
+        paragraphs.add("Lev.19.30"); //$NON-NLS-1$
+        paragraphs.add("Lev.19.31"); //$NON-NLS-1$
+        paragraphs.add("Lev.19.32"); //$NON-NLS-1$
+        paragraphs.add("Lev.19.33"); //$NON-NLS-1$
+        paragraphs.add("Lev.19.35"); //$NON-NLS-1$
+        paragraphs.add("Lev.20.6"); //$NON-NLS-1$
+        paragraphs.add("Lev.20.7"); //$NON-NLS-1$
+        paragraphs.add("Lev.20.9"); //$NON-NLS-1$
+        paragraphs.add("Lev.20.10"); //$NON-NLS-1$
+        paragraphs.add("Lev.20.22"); //$NON-NLS-1$
+        paragraphs.add("Lev.20.27"); //$NON-NLS-1$
+        paragraphs.add("Lev.21.9"); //$NON-NLS-1$
+        paragraphs.add("Lev.21.16"); //$NON-NLS-1$
+        paragraphs.add("Lev.22.14"); //$NON-NLS-1$
+        paragraphs.add("Lev.22.17"); //$NON-NLS-1$
+        paragraphs.add("Lev.22.26"); //$NON-NLS-1$
+        paragraphs.add("Lev.23.4"); //$NON-NLS-1$
+        paragraphs.add("Lev.23.9"); //$NON-NLS-1$
+        paragraphs.add("Lev.23.15"); //$NON-NLS-1$
+        paragraphs.add("Lev.23.22"); //$NON-NLS-1$
+        paragraphs.add("Lev.23.23"); //$NON-NLS-1$
+        paragraphs.add("Lev.23.26"); //$NON-NLS-1$
+        paragraphs.add("Lev.23.33"); //$NON-NLS-1$
+        paragraphs.add("Lev.24.5"); //$NON-NLS-1$
+        paragraphs.add("Lev.24.10"); //$NON-NLS-1$
+        paragraphs.add("Lev.24.17"); //$NON-NLS-1$
+        paragraphs.add("Lev.24.23"); //$NON-NLS-1$
+        paragraphs.add("Lev.25.8"); //$NON-NLS-1$
+        paragraphs.add("Lev.25.18"); //$NON-NLS-1$
+        paragraphs.add("Lev.25.23"); //$NON-NLS-1$
+        paragraphs.add("Lev.25.25"); //$NON-NLS-1$
+        paragraphs.add("Lev.25.35"); //$NON-NLS-1$
+        paragraphs.add("Lev.25.39"); //$NON-NLS-1$
+        paragraphs.add("Lev.25.47"); //$NON-NLS-1$
+        paragraphs.add("Lev.26.2"); //$NON-NLS-1$
+        paragraphs.add("Lev.26.3"); //$NON-NLS-1$
+        paragraphs.add("Lev.26.14"); //$NON-NLS-1$
+        paragraphs.add("Lev.26.21"); //$NON-NLS-1$
+        paragraphs.add("Lev.27.14"); //$NON-NLS-1$
+        paragraphs.add("Lev.27.26"); //$NON-NLS-1$
+        paragraphs.add("Num.1.5"); //$NON-NLS-1$
+        paragraphs.add("Num.1.17"); //$NON-NLS-1$
+        paragraphs.add("Num.1.22"); //$NON-NLS-1$
+        paragraphs.add("Num.1.24"); //$NON-NLS-1$
+        paragraphs.add("Num.1.26"); //$NON-NLS-1$
+        paragraphs.add("Num.1.28"); //$NON-NLS-1$
+        paragraphs.add("Num.1.30"); //$NON-NLS-1$
+        paragraphs.add("Num.1.32"); //$NON-NLS-1$
+        paragraphs.add("Num.1.34"); //$NON-NLS-1$
+        paragraphs.add("Num.1.36"); //$NON-NLS-1$
+        paragraphs.add("Num.1.38"); //$NON-NLS-1$
+        paragraphs.add("Num.1.40"); //$NON-NLS-1$
+        paragraphs.add("Num.1.42"); //$NON-NLS-1$
+        paragraphs.add("Num.1.47"); //$NON-NLS-1$
+        paragraphs.add("Num.2.10"); //$NON-NLS-1$
+        paragraphs.add("Num.2.17"); //$NON-NLS-1$
+        paragraphs.add("Num.2.18"); //$NON-NLS-1$
+        paragraphs.add("Num.2.25"); //$NON-NLS-1$
+        paragraphs.add("Num.2.29"); //$NON-NLS-1$
+        paragraphs.add("Num.2.32"); //$NON-NLS-1$
+        paragraphs.add("Num.3.5"); //$NON-NLS-1$
+        paragraphs.add("Num.3.14"); //$NON-NLS-1$
+        paragraphs.add("Num.3.27"); //$NON-NLS-1$
+        paragraphs.add("Num.3.33"); //$NON-NLS-1$
+        paragraphs.add("Num.3.38"); //$NON-NLS-1$
+        paragraphs.add("Num.3.40"); //$NON-NLS-1$
+        paragraphs.add("Num.3.44"); //$NON-NLS-1$
+        paragraphs.add("Num.4.5"); //$NON-NLS-1$
+        paragraphs.add("Num.4.16"); //$NON-NLS-1$
+        paragraphs.add("Num.4.17"); //$NON-NLS-1$
+        paragraphs.add("Num.4.21"); //$NON-NLS-1$
+        paragraphs.add("Num.4.29"); //$NON-NLS-1$
+        paragraphs.add("Num.4.34"); //$NON-NLS-1$
+        paragraphs.add("Num.4.42"); //$NON-NLS-1$
+        paragraphs.add("Num.5.5"); //$NON-NLS-1$
+        paragraphs.add("Num.5.11"); //$NON-NLS-1$
+        paragraphs.add("Num.6.13"); //$NON-NLS-1$
+        paragraphs.add("Num.6.22"); //$NON-NLS-1$
+        paragraphs.add("Num.7.10"); //$NON-NLS-1$
+        paragraphs.add("Num.7.12"); //$NON-NLS-1$
+        paragraphs.add("Num.7.18"); //$NON-NLS-1$
+        paragraphs.add("Num.7.24"); //$NON-NLS-1$
+        paragraphs.add("Num.7.30"); //$NON-NLS-1$
+        paragraphs.add("Num.7.36"); //$NON-NLS-1$
+        paragraphs.add("Num.7.42"); //$NON-NLS-1$
+        paragraphs.add("Num.7.48"); //$NON-NLS-1$
+        paragraphs.add("Num.7.54"); //$NON-NLS-1$
+        paragraphs.add("Num.7.60"); //$NON-NLS-1$
+        paragraphs.add("Num.7.66"); //$NON-NLS-1$
+        paragraphs.add("Num.7.72"); //$NON-NLS-1$
+        paragraphs.add("Num.7.78"); //$NON-NLS-1$
+        paragraphs.add("Num.8.5"); //$NON-NLS-1$
+        paragraphs.add("Num.8.23"); //$NON-NLS-1$
+        paragraphs.add("Num.9.6"); //$NON-NLS-1$
+        paragraphs.add("Num.9.9"); //$NON-NLS-1$
+        paragraphs.add("Num.9.15"); //$NON-NLS-1$
+        paragraphs.add("Num.10.11"); //$NON-NLS-1$
+        paragraphs.add("Num.10.14"); //$NON-NLS-1$
+        paragraphs.add("Num.10.18"); //$NON-NLS-1$
+        paragraphs.add("Num.10.22"); //$NON-NLS-1$
+        paragraphs.add("Num.10.25"); //$NON-NLS-1$
+        paragraphs.add("Num.10.29"); //$NON-NLS-1$
+        paragraphs.add("Num.10.33"); //$NON-NLS-1$
+        paragraphs.add("Num.11.4"); //$NON-NLS-1$
+        paragraphs.add("Num.11.10"); //$NON-NLS-1$
+        paragraphs.add("Num.11.16"); //$NON-NLS-1$
+        paragraphs.add("Num.11.24"); //$NON-NLS-1$
+        paragraphs.add("Num.11.31"); //$NON-NLS-1$
+        paragraphs.add("Num.12.14"); //$NON-NLS-1$
+        paragraphs.add("Num.13.17"); //$NON-NLS-1$
+        paragraphs.add("Num.13.21"); //$NON-NLS-1$
+        paragraphs.add("Num.13.26"); //$NON-NLS-1$
+        paragraphs.add("Num.14.6"); //$NON-NLS-1$
+        paragraphs.add("Num.14.11"); //$NON-NLS-1$
+        paragraphs.add("Num.14.13"); //$NON-NLS-1$
+        paragraphs.add("Num.14.15"); //$NON-NLS-1$
+        paragraphs.add("Num.14.26"); //$NON-NLS-1$
+        paragraphs.add("Num.14.40"); //$NON-NLS-1$
+        paragraphs.add("Num.15.17"); //$NON-NLS-1$
+        paragraphs.add("Num.15.22"); //$NON-NLS-1$
+        paragraphs.add("Num.15.27"); //$NON-NLS-1$
+        paragraphs.add("Num.15.30"); //$NON-NLS-1$
+        paragraphs.add("Num.15.32"); //$NON-NLS-1$
+        paragraphs.add("Num.15.37"); //$NON-NLS-1$
+        paragraphs.add("Num.16.12"); //$NON-NLS-1$
+        paragraphs.add("Num.16.23"); //$NON-NLS-1$
+        paragraphs.add("Num.16.31"); //$NON-NLS-1$
+        paragraphs.add("Num.16.36"); //$NON-NLS-1$
+        paragraphs.add("Num.16.41"); //$NON-NLS-1$
+        paragraphs.add("Num.16.44"); //$NON-NLS-1$
+        paragraphs.add("Num.16.46"); //$NON-NLS-1$
+        paragraphs.add("Num.17.6"); //$NON-NLS-1$
+        paragraphs.add("Num.17.10"); //$NON-NLS-1$
+        paragraphs.add("Num.18.8"); //$NON-NLS-1$
+        paragraphs.add("Num.18.20"); //$NON-NLS-1$
+        paragraphs.add("Num.18.25"); //$NON-NLS-1$
+        paragraphs.add("Num.19.11"); //$NON-NLS-1$
+        paragraphs.add("Num.20.7"); //$NON-NLS-1$
+        paragraphs.add("Num.20.12"); //$NON-NLS-1$
+        paragraphs.add("Num.20.14"); //$NON-NLS-1$
+        paragraphs.add("Num.20.22"); //$NON-NLS-1$
+        paragraphs.add("Num.21.4"); //$NON-NLS-1$
+        paragraphs.add("Num.21.7"); //$NON-NLS-1$
+        paragraphs.add("Num.21.10"); //$NON-NLS-1$
+        paragraphs.add("Num.21.12"); //$NON-NLS-1$
+        paragraphs.add("Num.21.17"); //$NON-NLS-1$
+        paragraphs.add("Num.21.21"); //$NON-NLS-1$
+        paragraphs.add("Num.21.31"); //$NON-NLS-1$
+        paragraphs.add("Num.21.33"); //$NON-NLS-1$
+        paragraphs.add("Num.22.2"); //$NON-NLS-1$
+        paragraphs.add("Num.22.15"); //$NON-NLS-1$
+        paragraphs.add("Num.22.22"); //$NON-NLS-1$
+        paragraphs.add("Num.22.36"); //$NON-NLS-1$
+        paragraphs.add("Num.23.14"); //$NON-NLS-1$
+        paragraphs.add("Num.23.25"); //$NON-NLS-1$
+        paragraphs.add("Num.23.27"); //$NON-NLS-1$
+        paragraphs.add("Num.24.10"); //$NON-NLS-1$
+        paragraphs.add("Num.24.15"); //$NON-NLS-1$
+        paragraphs.add("Num.24.20"); //$NON-NLS-1$
+        paragraphs.add("Num.25.6"); //$NON-NLS-1$
+        paragraphs.add("Num.25.10"); //$NON-NLS-1$
+        paragraphs.add("Num.25.16"); //$NON-NLS-1$
+        paragraphs.add("Num.26.5"); //$NON-NLS-1$
+        paragraphs.add("Num.26.12"); //$NON-NLS-1$
+        paragraphs.add("Num.26.15"); //$NON-NLS-1$
+        paragraphs.add("Num.26.19"); //$NON-NLS-1$
+        paragraphs.add("Num.26.23"); //$NON-NLS-1$
+        paragraphs.add("Num.26.26"); //$NON-NLS-1$
+        paragraphs.add("Num.26.28"); //$NON-NLS-1$
+        paragraphs.add("Num.26.33"); //$NON-NLS-1$
+        paragraphs.add("Num.26.35"); //$NON-NLS-1$
+        paragraphs.add("Num.26.38"); //$NON-NLS-1$
+        paragraphs.add("Num.26.42"); //$NON-NLS-1$
+        paragraphs.add("Num.26.44"); //$NON-NLS-1$
+        paragraphs.add("Num.26.48"); //$NON-NLS-1$
+        paragraphs.add("Num.26.52"); //$NON-NLS-1$
+        paragraphs.add("Num.26.57"); //$NON-NLS-1$
+        paragraphs.add("Num.26.63"); //$NON-NLS-1$
+        paragraphs.add("Num.27.6"); //$NON-NLS-1$
+        paragraphs.add("Num.27.12"); //$NON-NLS-1$
+        paragraphs.add("Num.27.15"); //$NON-NLS-1$
+        paragraphs.add("Num.27.18"); //$NON-NLS-1$
+        paragraphs.add("Num.28.9"); //$NON-NLS-1$
+        paragraphs.add("Num.28.11"); //$NON-NLS-1$
+        paragraphs.add("Num.28.26"); //$NON-NLS-1$
+        paragraphs.add("Num.29.7"); //$NON-NLS-1$
+        paragraphs.add("Num.29.12"); //$NON-NLS-1$
+        paragraphs.add("Num.29.17"); //$NON-NLS-1$
+        paragraphs.add("Num.29.20"); //$NON-NLS-1$
+        paragraphs.add("Num.29.23"); //$NON-NLS-1$
+        paragraphs.add("Num.29.26"); //$NON-NLS-1$
+        paragraphs.add("Num.29.29"); //$NON-NLS-1$
+        paragraphs.add("Num.29.32"); //$NON-NLS-1$
+        paragraphs.add("Num.29.35"); //$NON-NLS-1$
+        paragraphs.add("Num.31.13"); //$NON-NLS-1$
+        paragraphs.add("Num.31.21"); //$NON-NLS-1$
+        paragraphs.add("Num.31.25"); //$NON-NLS-1$
+        paragraphs.add("Num.31.48"); //$NON-NLS-1$
+        paragraphs.add("Num.32.6"); //$NON-NLS-1$
+        paragraphs.add("Num.32.16"); //$NON-NLS-1$
+        paragraphs.add("Num.32.20"); //$NON-NLS-1$
+        paragraphs.add("Num.32.34"); //$NON-NLS-1$
+        paragraphs.add("Num.33.50"); //$NON-NLS-1$
+        paragraphs.add("Num.34.9"); //$NON-NLS-1$
+        paragraphs.add("Num.35.9"); //$NON-NLS-1$
+        paragraphs.add("Deut.1.9"); //$NON-NLS-1$
+        paragraphs.add("Deut.1.19"); //$NON-NLS-1$
+        paragraphs.add("Deut.1.22"); //$NON-NLS-1$
+        paragraphs.add("Deut.2.16"); //$NON-NLS-1$
+        paragraphs.add("Deut.2.24"); //$NON-NLS-1$
+        paragraphs.add("Deut.2.26"); //$NON-NLS-1$
+        paragraphs.add("Deut.3.18"); //$NON-NLS-1$
+        paragraphs.add("Deut.3.21"); //$NON-NLS-1$
+        paragraphs.add("Deut.4.14"); //$NON-NLS-1$
+        paragraphs.add("Deut.4.25"); //$NON-NLS-1$
+        paragraphs.add("Deut.4.41"); //$NON-NLS-1$
+        paragraphs.add("Deut.4.44"); //$NON-NLS-1$
+        paragraphs.add("Deut.5.6"); //$NON-NLS-1$
+        paragraphs.add("Deut.5.16"); //$NON-NLS-1$
+        paragraphs.add("Deut.5.22"); //$NON-NLS-1$
+        paragraphs.add("Deut.6.3"); //$NON-NLS-1$
+        paragraphs.add("Deut.6.16"); //$NON-NLS-1$
+        paragraphs.add("Deut.7.12"); //$NON-NLS-1$
+        paragraphs.add("Deut.9.7"); //$NON-NLS-1$
+        paragraphs.add("Deut.10.6"); //$NON-NLS-1$
+        paragraphs.add("Deut.10.8"); //$NON-NLS-1$
+        paragraphs.add("Deut.10.12"); //$NON-NLS-1$
+        paragraphs.add("Deut.11.10"); //$NON-NLS-1$
+        paragraphs.add("Deut.11.13"); //$NON-NLS-1$
+        paragraphs.add("Deut.11.18"); //$NON-NLS-1$
+        paragraphs.add("Deut.11.22"); //$NON-NLS-1$
+        paragraphs.add("Deut.11.26"); //$NON-NLS-1$
+        paragraphs.add("Deut.12.17"); //$NON-NLS-1$
+        paragraphs.add("Deut.12.20"); //$NON-NLS-1$
+        paragraphs.add("Deut.12.29"); //$NON-NLS-1$
+        paragraphs.add("Deut.13.6"); //$NON-NLS-1$
+        paragraphs.add("Deut.13.12"); //$NON-NLS-1$
+        paragraphs.add("Deut.14.3"); //$NON-NLS-1$
+        paragraphs.add("Deut.14.9"); //$NON-NLS-1$
+        paragraphs.add("Deut.14.11"); //$NON-NLS-1$
+        paragraphs.add("Deut.14.21"); //$NON-NLS-1$
+        paragraphs.add("Deut.14.28"); //$NON-NLS-1$
+        paragraphs.add("Deut.15.7"); //$NON-NLS-1$
+        paragraphs.add("Deut.15.12"); //$NON-NLS-1$
+        paragraphs.add("Deut.15.19"); //$NON-NLS-1$
+        paragraphs.add("Deut.16.9"); //$NON-NLS-1$
+        paragraphs.add("Deut.16.13"); //$NON-NLS-1$
+        paragraphs.add("Deut.16.16"); //$NON-NLS-1$
+        paragraphs.add("Deut.16.18"); //$NON-NLS-1$
+        paragraphs.add("Deut.16.21"); //$NON-NLS-1$
+        paragraphs.add("Deut.17.2"); //$NON-NLS-1$
+        paragraphs.add("Deut.17.8"); //$NON-NLS-1$
+        paragraphs.add("Deut.17.14"); //$NON-NLS-1$
+        paragraphs.add("Deut.18.3"); //$NON-NLS-1$
+        paragraphs.add("Deut.18.6"); //$NON-NLS-1$
+        paragraphs.add("Deut.18.9"); //$NON-NLS-1$
+        paragraphs.add("Deut.18.15"); //$NON-NLS-1$
+        paragraphs.add("Deut.19.4"); //$NON-NLS-1$
+        paragraphs.add("Deut.19.11"); //$NON-NLS-1$
+        paragraphs.add("Deut.19.14"); //$NON-NLS-1$
+        paragraphs.add("Deut.19.15"); //$NON-NLS-1$
+        paragraphs.add("Deut.19.16"); //$NON-NLS-1$
+        paragraphs.add("Deut.20.5"); //$NON-NLS-1$
+        paragraphs.add("Deut.20.10"); //$NON-NLS-1$
+        paragraphs.add("Deut.20.19"); //$NON-NLS-1$
+        paragraphs.add("Deut.21.10"); //$NON-NLS-1$
+        paragraphs.add("Deut.21.15"); //$NON-NLS-1$
+        paragraphs.add("Deut.21.18"); //$NON-NLS-1$
+        paragraphs.add("Deut.21.22"); //$NON-NLS-1$
+        paragraphs.add("Deut.22.4"); //$NON-NLS-1$
+        paragraphs.add("Deut.22.5"); //$NON-NLS-1$
+        paragraphs.add("Deut.22.6"); //$NON-NLS-1$
+        paragraphs.add("Deut.22.8"); //$NON-NLS-1$
+        paragraphs.add("Deut.22.9"); //$NON-NLS-1$
+        paragraphs.add("Deut.22.10"); //$NON-NLS-1$
+        paragraphs.add("Deut.22.11"); //$NON-NLS-1$
+        paragraphs.add("Deut.22.12"); //$NON-NLS-1$
+        paragraphs.add("Deut.22.13"); //$NON-NLS-1$
+        paragraphs.add("Deut.22.22"); //$NON-NLS-1$
+        paragraphs.add("Deut.22.23"); //$NON-NLS-1$
+        paragraphs.add("Deut.22.25"); //$NON-NLS-1$
+        paragraphs.add("Deut.22.28"); //$NON-NLS-1$
+        paragraphs.add("Deut.22.30"); //$NON-NLS-1$
+        paragraphs.add("Deut.23.7"); //$NON-NLS-1$
+        paragraphs.add("Deut.23.9"); //$NON-NLS-1$
+        paragraphs.add("Deut.23.10"); //$NON-NLS-1$
+        paragraphs.add("Deut.23.12"); //$NON-NLS-1$
+        paragraphs.add("Deut.23.15"); //$NON-NLS-1$
+        paragraphs.add("Deut.23.17"); //$NON-NLS-1$
+        paragraphs.add("Deut.23.19"); //$NON-NLS-1$
+        paragraphs.add("Deut.23.21"); //$NON-NLS-1$
+        paragraphs.add("Deut.23.24"); //$NON-NLS-1$
+        paragraphs.add("Deut.24.5"); //$NON-NLS-1$
+        paragraphs.add("Deut.24.6"); //$NON-NLS-1$
+        paragraphs.add("Deut.24.7"); //$NON-NLS-1$
+        paragraphs.add("Deut.24.8"); //$NON-NLS-1$
+        paragraphs.add("Deut.24.10"); //$NON-NLS-1$
+        paragraphs.add("Deut.24.14"); //$NON-NLS-1$
+        paragraphs.add("Deut.24.17"); //$NON-NLS-1$
+        paragraphs.add("Deut.24.19"); //$NON-NLS-1$
+        paragraphs.add("Deut.25.4"); //$NON-NLS-1$
+        paragraphs.add("Deut.25.5"); //$NON-NLS-1$
+        paragraphs.add("Deut.25.11"); //$NON-NLS-1$
+        paragraphs.add("Deut.25.13"); //$NON-NLS-1$
+        paragraphs.add("Deut.25.17"); //$NON-NLS-1$
+        paragraphs.add("Deut.26.12"); //$NON-NLS-1$
+        paragraphs.add("Deut.26.16"); //$NON-NLS-1$
+        paragraphs.add("Deut.27.9"); //$NON-NLS-1$
+        paragraphs.add("Deut.27.11"); //$NON-NLS-1$
+        paragraphs.add("Deut.27.14"); //$NON-NLS-1$
+        paragraphs.add("Deut.28.15"); //$NON-NLS-1$
+        paragraphs.add("Deut.29.2"); //$NON-NLS-1$
+        paragraphs.add("Deut.29.10"); //$NON-NLS-1$
+        paragraphs.add("Deut.30.11"); //$NON-NLS-1$
+        paragraphs.add("Deut.30.15"); //$NON-NLS-1$
+        paragraphs.add("Deut.31.7"); //$NON-NLS-1$
+        paragraphs.add("Deut.31.9"); //$NON-NLS-1$
+        paragraphs.add("Deut.31.14"); //$NON-NLS-1$
+        paragraphs.add("Deut.31.16"); //$NON-NLS-1$
+        paragraphs.add("Deut.31.22"); //$NON-NLS-1$
+        paragraphs.add("Deut.31.24"); //$NON-NLS-1$
+        paragraphs.add("Deut.31.28"); //$NON-NLS-1$
+        paragraphs.add("Deut.32.7"); //$NON-NLS-1$
+        paragraphs.add("Deut.32.15"); //$NON-NLS-1$
+        paragraphs.add("Deut.32.44"); //$NON-NLS-1$
+        paragraphs.add("Deut.33.6"); //$NON-NLS-1$
+        paragraphs.add("Deut.33.7"); //$NON-NLS-1$
+        paragraphs.add("Deut.33.8"); //$NON-NLS-1$
+        paragraphs.add("Deut.33.12"); //$NON-NLS-1$
+        paragraphs.add("Deut.33.13"); //$NON-NLS-1$
+        paragraphs.add("Deut.33.18"); //$NON-NLS-1$
+        paragraphs.add("Deut.33.20"); //$NON-NLS-1$
+        paragraphs.add("Deut.33.22"); //$NON-NLS-1$
+        paragraphs.add("Deut.33.23"); //$NON-NLS-1$
+        paragraphs.add("Deut.33.24"); //$NON-NLS-1$
+        paragraphs.add("Deut.33.26"); //$NON-NLS-1$
+        paragraphs.add("Deut.34.5"); //$NON-NLS-1$
+        paragraphs.add("Deut.34.7"); //$NON-NLS-1$
+        paragraphs.add("Deut.34.8"); //$NON-NLS-1$
+        paragraphs.add("Deut.34.9"); //$NON-NLS-1$
+        paragraphs.add("Deut.34.10"); //$NON-NLS-1$
+        paragraphs.add("Josh.1.10"); //$NON-NLS-1$
+        paragraphs.add("Josh.1.12"); //$NON-NLS-1$
+        paragraphs.add("Josh.1.16"); //$NON-NLS-1$
+        paragraphs.add("Josh.2.8"); //$NON-NLS-1$
+        paragraphs.add("Josh.2.23"); //$NON-NLS-1$
+        paragraphs.add("Josh.3.7"); //$NON-NLS-1$
+        paragraphs.add("Josh.3.9"); //$NON-NLS-1$
+        paragraphs.add("Josh.3.14"); //$NON-NLS-1$
+        paragraphs.add("Josh.4.10"); //$NON-NLS-1$
+        paragraphs.add("Josh.4.14"); //$NON-NLS-1$
+        paragraphs.add("Josh.4.19"); //$NON-NLS-1$
+        paragraphs.add("Josh.5.2"); //$NON-NLS-1$
+        paragraphs.add("Josh.5.10"); //$NON-NLS-1$
+        paragraphs.add("Josh.5.12"); //$NON-NLS-1$
+        paragraphs.add("Josh.5.13"); //$NON-NLS-1$
+        paragraphs.add("Josh.6.6"); //$NON-NLS-1$
+        paragraphs.add("Josh.6.8"); //$NON-NLS-1$
+        paragraphs.add("Josh.6.9"); //$NON-NLS-1$
+        paragraphs.add("Josh.6.12"); //$NON-NLS-1$
+        paragraphs.add("Josh.6.17"); //$NON-NLS-1$
+        paragraphs.add("Josh.6.26"); //$NON-NLS-1$
+        paragraphs.add("Josh.7.6"); //$NON-NLS-1$
+        paragraphs.add("Josh.7.10"); //$NON-NLS-1$
+        paragraphs.add("Josh.7.16"); //$NON-NLS-1$
+        paragraphs.add("Josh.7.22"); //$NON-NLS-1$
+        paragraphs.add("Josh.8.3"); //$NON-NLS-1$
+        paragraphs.add("Josh.8.9"); //$NON-NLS-1$
+        paragraphs.add("Josh.8.14"); //$NON-NLS-1$
+        paragraphs.add("Josh.8.30"); //$NON-NLS-1$
+        paragraphs.add("Josh.8.32"); //$NON-NLS-1$
+        paragraphs.add("Josh.9.3"); //$NON-NLS-1$
+        paragraphs.add("Josh.9.16"); //$NON-NLS-1$
+        paragraphs.add("Josh.9.22"); //$NON-NLS-1$
+        paragraphs.add("Josh.10.6"); //$NON-NLS-1$
+        paragraphs.add("Josh.10.8"); //$NON-NLS-1$
+        paragraphs.add("Josh.10.12"); //$NON-NLS-1$
+        paragraphs.add("Josh.10.15"); //$NON-NLS-1$
+        paragraphs.add("Josh.10.28"); //$NON-NLS-1$
+        paragraphs.add("Josh.10.31"); //$NON-NLS-1$
+        paragraphs.add("Josh.10.33"); //$NON-NLS-1$
+        paragraphs.add("Josh.10.34"); //$NON-NLS-1$
+        paragraphs.add("Josh.10.38"); //$NON-NLS-1$
+        paragraphs.add("Josh.10.40"); //$NON-NLS-1$
+        paragraphs.add("Josh.11.6"); //$NON-NLS-1$
+        paragraphs.add("Josh.11.10"); //$NON-NLS-1$
+        paragraphs.add("Josh.11.15"); //$NON-NLS-1$
+        paragraphs.add("Josh.11.21"); //$NON-NLS-1$
+        paragraphs.add("Josh.12.4"); //$NON-NLS-1$
+        paragraphs.add("Josh.12.7"); //$NON-NLS-1$
+        paragraphs.add("Josh.12.9"); //$NON-NLS-1$
+        paragraphs.add("Josh.13.15"); //$NON-NLS-1$
+        paragraphs.add("Josh.13.22"); //$NON-NLS-1$
+        paragraphs.add("Josh.13.29"); //$NON-NLS-1$
+        paragraphs.add("Josh.14.6"); //$NON-NLS-1$
+        paragraphs.add("Josh.15.13"); //$NON-NLS-1$
+        paragraphs.add("Josh.15.16"); //$NON-NLS-1$
+        paragraphs.add("Josh.15.48"); //$NON-NLS-1$
+        paragraphs.add("Josh.15.63"); //$NON-NLS-1$
+        paragraphs.add("Josh.16.5"); //$NON-NLS-1$
+        paragraphs.add("Josh.17.3"); //$NON-NLS-1$
+        paragraphs.add("Josh.17.7"); //$NON-NLS-1$
+        paragraphs.add("Josh.18.8"); //$NON-NLS-1$
+        paragraphs.add("Josh.18.10"); //$NON-NLS-1$
+        paragraphs.add("Josh.18.11"); //$NON-NLS-1$
+        paragraphs.add("Josh.19.10"); //$NON-NLS-1$
+        paragraphs.add("Josh.19.17"); //$NON-NLS-1$
+        paragraphs.add("Josh.19.24"); //$NON-NLS-1$
+        paragraphs.add("Josh.19.32"); //$NON-NLS-1$
+        paragraphs.add("Josh.19.40"); //$NON-NLS-1$
+        paragraphs.add("Josh.19.49"); //$NON-NLS-1$
+        paragraphs.add("Josh.20.7"); //$NON-NLS-1$
+        paragraphs.add("Josh.21.9"); //$NON-NLS-1$
+        paragraphs.add("Josh.21.13"); //$NON-NLS-1$
+        paragraphs.add("Josh.21.20"); //$NON-NLS-1$
+        paragraphs.add("Josh.21.27"); //$NON-NLS-1$
+        paragraphs.add("Josh.21.34"); //$NON-NLS-1$
+        paragraphs.add("Josh.21.43"); //$NON-NLS-1$
+        paragraphs.add("Josh.22.7"); //$NON-NLS-1$
+        paragraphs.add("Josh.22.9"); //$NON-NLS-1$
+        paragraphs.add("Josh.22.10"); //$NON-NLS-1$
+        paragraphs.add("Josh.22.11"); //$NON-NLS-1$
+        paragraphs.add("Josh.22.15"); //$NON-NLS-1$
+        paragraphs.add("Josh.22.21"); //$NON-NLS-1$
+        paragraphs.add("Josh.22.30"); //$NON-NLS-1$
+        paragraphs.add("Josh.22.32"); //$NON-NLS-1$
+        paragraphs.add("Josh.24.14"); //$NON-NLS-1$
+        paragraphs.add("Josh.24.26"); //$NON-NLS-1$
+        paragraphs.add("Josh.24.29"); //$NON-NLS-1$
+        paragraphs.add("Josh.24.32"); //$NON-NLS-1$
+        paragraphs.add("Judg.1.9"); //$NON-NLS-1$
+        paragraphs.add("Judg.1.16"); //$NON-NLS-1$
+        paragraphs.add("Judg.1.22"); //$NON-NLS-1$
+        paragraphs.add("Judg.1.27"); //$NON-NLS-1$
+        paragraphs.add("Judg.1.29"); //$NON-NLS-1$
+        paragraphs.add("Judg.1.30"); //$NON-NLS-1$
+        paragraphs.add("Judg.1.31"); //$NON-NLS-1$
+        paragraphs.add("Judg.1.33"); //$NON-NLS-1$
+        paragraphs.add("Judg.2.6"); //$NON-NLS-1$
+        paragraphs.add("Judg.2.11"); //$NON-NLS-1$
+        paragraphs.add("Judg.2.14"); //$NON-NLS-1$
+        paragraphs.add("Judg.2.16"); //$NON-NLS-1$
+        paragraphs.add("Judg.2.20"); //$NON-NLS-1$
+        paragraphs.add("Judg.3.5"); //$NON-NLS-1$
+        paragraphs.add("Judg.3.8"); //$NON-NLS-1$
+        paragraphs.add("Judg.3.12"); //$NON-NLS-1$
+        paragraphs.add("Judg.3.31"); //$NON-NLS-1$
+        paragraphs.add("Judg.4.4"); //$NON-NLS-1$
+        paragraphs.add("Judg.4.10"); //$NON-NLS-1$
+        paragraphs.add("Judg.4.18"); //$NON-NLS-1$
+        paragraphs.add("Judg.6.7"); //$NON-NLS-1$
+        paragraphs.add("Judg.6.11"); //$NON-NLS-1$
+        paragraphs.add("Judg.6.19"); //$NON-NLS-1$
+        paragraphs.add("Judg.6.21"); //$NON-NLS-1$
+        paragraphs.add("Judg.6.25"); //$NON-NLS-1$
+        paragraphs.add("Judg.6.28"); //$NON-NLS-1$
+        paragraphs.add("Judg.6.33"); //$NON-NLS-1$
+        paragraphs.add("Judg.6.36"); //$NON-NLS-1$
+        paragraphs.add("Judg.7.9"); //$NON-NLS-1$
+        paragraphs.add("Judg.7.15"); //$NON-NLS-1$
+        paragraphs.add("Judg.7.19"); //$NON-NLS-1$
+        paragraphs.add("Judg.7.24"); //$NON-NLS-1$
+        paragraphs.add("Judg.8.4"); //$NON-NLS-1$
+        paragraphs.add("Judg.8.6"); //$NON-NLS-1$
+        paragraphs.add("Judg.8.8"); //$NON-NLS-1$
+        paragraphs.add("Judg.8.10"); //$NON-NLS-1$
+        paragraphs.add("Judg.8.11"); //$NON-NLS-1$
+        paragraphs.add("Judg.8.13"); //$NON-NLS-1$
+        paragraphs.add("Judg.8.18"); //$NON-NLS-1$
+        paragraphs.add("Judg.8.22"); //$NON-NLS-1$
+        paragraphs.add("Judg.8.24"); //$NON-NLS-1$
+        paragraphs.add("Judg.8.28"); //$NON-NLS-1$
+        paragraphs.add("Judg.8.29"); //$NON-NLS-1$
+        paragraphs.add("Judg.8.32"); //$NON-NLS-1$
+        paragraphs.add("Judg.9.7"); //$NON-NLS-1$
+        paragraphs.add("Judg.9.22"); //$NON-NLS-1$
+        paragraphs.add("Judg.9.30"); //$NON-NLS-1$
+        paragraphs.add("Judg.9.34"); //$NON-NLS-1$
+        paragraphs.add("Judg.9.46"); //$NON-NLS-1$
+        paragraphs.add("Judg.9.50"); //$NON-NLS-1$
+        paragraphs.add("Judg.9.56"); //$NON-NLS-1$
+        paragraphs.add("Judg.10.3"); //$NON-NLS-1$
+        paragraphs.add("Judg.10.6"); //$NON-NLS-1$
+        paragraphs.add("Judg.10.10"); //$NON-NLS-1$
+        paragraphs.add("Judg.10.15"); //$NON-NLS-1$
+        paragraphs.add("Judg.11.4"); //$NON-NLS-1$
+        paragraphs.add("Judg.11.12"); //$NON-NLS-1$
+        paragraphs.add("Judg.11.29"); //$NON-NLS-1$
+        paragraphs.add("Judg.11.32"); //$NON-NLS-1$
+        paragraphs.add("Judg.11.34"); //$NON-NLS-1$
+        paragraphs.add("Judg.12.8"); //$NON-NLS-1$
+        paragraphs.add("Judg.12.11"); //$NON-NLS-1$
+        paragraphs.add("Judg.12.13"); //$NON-NLS-1$
+        paragraphs.add("Judg.13.2"); //$NON-NLS-1$
+        paragraphs.add("Judg.13.6"); //$NON-NLS-1$
+        paragraphs.add("Judg.13.8"); //$NON-NLS-1$
+        paragraphs.add("Judg.13.15"); //$NON-NLS-1$
+        paragraphs.add("Judg.13.24"); //$NON-NLS-1$
+        paragraphs.add("Judg.14.5"); //$NON-NLS-1$
+        paragraphs.add("Judg.14.8"); //$NON-NLS-1$
+        paragraphs.add("Judg.14.10"); //$NON-NLS-1$
+        paragraphs.add("Judg.14.12"); //$NON-NLS-1$
+        paragraphs.add("Judg.14.19"); //$NON-NLS-1$
+        paragraphs.add("Judg.15.3"); //$NON-NLS-1$
+        paragraphs.add("Judg.15.6"); //$NON-NLS-1$
+        paragraphs.add("Judg.15.7"); //$NON-NLS-1$
+        paragraphs.add("Judg.15.9"); //$NON-NLS-1$
+        paragraphs.add("Judg.15.14"); //$NON-NLS-1$
+        paragraphs.add("Judg.15.18"); //$NON-NLS-1$
+        paragraphs.add("Judg.16.4"); //$NON-NLS-1$
+        paragraphs.add("Judg.16.6"); //$NON-NLS-1$
+        paragraphs.add("Judg.16.15"); //$NON-NLS-1$
+        paragraphs.add("Judg.16.21"); //$NON-NLS-1$
+        paragraphs.add("Judg.17.7"); //$NON-NLS-1$
+        paragraphs.add("Judg.18.7"); //$NON-NLS-1$
+        paragraphs.add("Judg.18.11"); //$NON-NLS-1$
+        paragraphs.add("Judg.18.14"); //$NON-NLS-1$
+        paragraphs.add("Judg.18.22"); //$NON-NLS-1$
+        paragraphs.add("Judg.18.30"); //$NON-NLS-1$
+        paragraphs.add("Judg.19.5"); //$NON-NLS-1$
+        paragraphs.add("Judg.19.16"); //$NON-NLS-1$
+        paragraphs.add("Judg.19.22"); //$NON-NLS-1$
+        paragraphs.add("Judg.19.29"); //$NON-NLS-1$
+        paragraphs.add("Judg.20.8"); //$NON-NLS-1$
+        paragraphs.add("Judg.20.12"); //$NON-NLS-1$
+        paragraphs.add("Judg.20.18"); //$NON-NLS-1$
+        paragraphs.add("Judg.20.26"); //$NON-NLS-1$
+        paragraphs.add("Judg.21.8"); //$NON-NLS-1$
+        paragraphs.add("Judg.21.16"); //$NON-NLS-1$
+        paragraphs.add("Ruth.1.6"); //$NON-NLS-1$
+        paragraphs.add("Ruth.1.19"); //$NON-NLS-1$
+        paragraphs.add("Ruth.2.4"); //$NON-NLS-1$
+        paragraphs.add("Ruth.2.18"); //$NON-NLS-1$
+        paragraphs.add("Ruth.3.6"); //$NON-NLS-1$
+        paragraphs.add("Ruth.3.8"); //$NON-NLS-1$
+        paragraphs.add("Ruth.3.14"); //$NON-NLS-1$
+        paragraphs.add("Ruth.4.6"); //$NON-NLS-1$
+        paragraphs.add("Ruth.4.9"); //$NON-NLS-1$
+        paragraphs.add("Ruth.4.13"); //$NON-NLS-1$
+        paragraphs.add("Ruth.4.18"); //$NON-NLS-1$
+        paragraphs.add("1Sam.1.4"); //$NON-NLS-1$
+        paragraphs.add("1Sam.1.9"); //$NON-NLS-1$
+        paragraphs.add("1Sam.1.19"); //$NON-NLS-1$
+        paragraphs.add("1Sam.1.24"); //$NON-NLS-1$
+        paragraphs.add("1Sam.2.12"); //$NON-NLS-1$
+        paragraphs.add("1Sam.2.18"); //$NON-NLS-1$
+        paragraphs.add("1Sam.2.20"); //$NON-NLS-1$
+        paragraphs.add("1Sam.2.22"); //$NON-NLS-1$
+        paragraphs.add("1Sam.2.27"); //$NON-NLS-1$
+        paragraphs.add("1Sam.3.11"); //$NON-NLS-1$
+        paragraphs.add("1Sam.3.15"); //$NON-NLS-1$
+        paragraphs.add("1Sam.3.19"); //$NON-NLS-1$
+        paragraphs.add("1Sam.4.3"); //$NON-NLS-1$
+        paragraphs.add("1Sam.4.10"); //$NON-NLS-1$
+        paragraphs.add("1Sam.4.12"); //$NON-NLS-1$
+        paragraphs.add("1Sam.4.19"); //$NON-NLS-1$
+        paragraphs.add("1Sam.5.3"); //$NON-NLS-1$
+        paragraphs.add("1Sam.5.10"); //$NON-NLS-1$
+        paragraphs.add("1Sam.6.10"); //$NON-NLS-1$
+        paragraphs.add("1Sam.6.19"); //$NON-NLS-1$
+        paragraphs.add("1Sam.6.21"); //$NON-NLS-1$
+        paragraphs.add("1Sam.7.3"); //$NON-NLS-1$
+        paragraphs.add("1Sam.7.9"); //$NON-NLS-1$
+        paragraphs.add("1Sam.7.13"); //$NON-NLS-1$
+        paragraphs.add("1Sam.8.6"); //$NON-NLS-1$
+        paragraphs.add("1Sam.8.10"); //$NON-NLS-1$
+        paragraphs.add("1Sam.8.19"); //$NON-NLS-1$
+        paragraphs.add("1Sam.9.11"); //$NON-NLS-1$
+        paragraphs.add("1Sam.9.15"); //$NON-NLS-1$
+        paragraphs.add("1Sam.9.25"); //$NON-NLS-1$
+        paragraphs.add("1Sam.10.9"); //$NON-NLS-1$
+        paragraphs.add("1Sam.10.14"); //$NON-NLS-1$
+        paragraphs.add("1Sam.10.17"); //$NON-NLS-1$
+        paragraphs.add("1Sam.10.26"); //$NON-NLS-1$
+        paragraphs.add("1Sam.11.4"); //$NON-NLS-1$
+        paragraphs.add("1Sam.11.12"); //$NON-NLS-1$
+        paragraphs.add("1Sam.12.6"); //$NON-NLS-1$
+        paragraphs.add("1Sam.12.16"); //$NON-NLS-1$
+        paragraphs.add("1Sam.12.20"); //$NON-NLS-1$
+        paragraphs.add("1Sam.13.5"); //$NON-NLS-1$
+        paragraphs.add("1Sam.13.8"); //$NON-NLS-1$
+        paragraphs.add("1Sam.13.11"); //$NON-NLS-1$
+        paragraphs.add("1Sam.13.17"); //$NON-NLS-1$
+        paragraphs.add("1Sam.13.19"); //$NON-NLS-1$
+        paragraphs.add("1Sam.14.4"); //$NON-NLS-1$
+        paragraphs.add("1Sam.14.19"); //$NON-NLS-1$
+        paragraphs.add("1Sam.14.24"); //$NON-NLS-1$
+        paragraphs.add("1Sam.14.33"); //$NON-NLS-1$
+        paragraphs.add("1Sam.14.36"); //$NON-NLS-1$
+        paragraphs.add("1Sam.14.47"); //$NON-NLS-1$
+        paragraphs.add("1Sam.15.6"); //$NON-NLS-1$
+        paragraphs.add("1Sam.15.10"); //$NON-NLS-1$
+        paragraphs.add("1Sam.15.24"); //$NON-NLS-1$
+        paragraphs.add("1Sam.15.32"); //$NON-NLS-1$
+        paragraphs.add("1Sam.15.34"); //$NON-NLS-1$
+        paragraphs.add("1Sam.16.6"); //$NON-NLS-1$
+        paragraphs.add("1Sam.16.14"); //$NON-NLS-1$
+        paragraphs.add("1Sam.16.19"); //$NON-NLS-1$
+        paragraphs.add("1Sam.17.4"); //$NON-NLS-1$
+        paragraphs.add("1Sam.17.12"); //$NON-NLS-1$
+        paragraphs.add("1Sam.17.20"); //$NON-NLS-1$
+        paragraphs.add("1Sam.17.28"); //$NON-NLS-1$
+        paragraphs.add("1Sam.17.30"); //$NON-NLS-1$
+        paragraphs.add("1Sam.17.32"); //$NON-NLS-1$
+        paragraphs.add("1Sam.17.38"); //$NON-NLS-1$
+        paragraphs.add("1Sam.17.55"); //$NON-NLS-1$
+        paragraphs.add("1Sam.18.5"); //$NON-NLS-1$
+        paragraphs.add("1Sam.18.10"); //$NON-NLS-1$
+        paragraphs.add("1Sam.18.12"); //$NON-NLS-1$
+        paragraphs.add("1Sam.18.17"); //$NON-NLS-1$
+        paragraphs.add("1Sam.18.22"); //$NON-NLS-1$
+        paragraphs.add("1Sam.18.28"); //$NON-NLS-1$
+        paragraphs.add("1Sam.19.4"); //$NON-NLS-1$
+        paragraphs.add("1Sam.19.8"); //$NON-NLS-1$
+        paragraphs.add("1Sam.19.12"); //$NON-NLS-1$
+        paragraphs.add("1Sam.19.18"); //$NON-NLS-1$
+        paragraphs.add("1Sam.20.11"); //$NON-NLS-1$
+        paragraphs.add("1Sam.20.24"); //$NON-NLS-1$
+        paragraphs.add("1Sam.20.35"); //$NON-NLS-1$
+        paragraphs.add("1Sam.20.41"); //$NON-NLS-1$
+        paragraphs.add("1Sam.21.8"); //$NON-NLS-1$
+        paragraphs.add("1Sam.21.10"); //$NON-NLS-1$
+        paragraphs.add("1Sam.22.3"); //$NON-NLS-1$
+        paragraphs.add("1Sam.22.5"); //$NON-NLS-1$
+        paragraphs.add("1Sam.22.6"); //$NON-NLS-1$
+        paragraphs.add("1Sam.22.9"); //$NON-NLS-1$
+        paragraphs.add("1Sam.22.17"); //$NON-NLS-1$
+        paragraphs.add("1Sam.22.20"); //$NON-NLS-1$
+        paragraphs.add("1Sam.23.7"); //$NON-NLS-1$
+        paragraphs.add("1Sam.23.9"); //$NON-NLS-1$
+        paragraphs.add("1Sam.23.13"); //$NON-NLS-1$
+        paragraphs.add("1Sam.23.16"); //$NON-NLS-1$
+        paragraphs.add("1Sam.23.19"); //$NON-NLS-1$
+        paragraphs.add("1Sam.23.27"); //$NON-NLS-1$
+        paragraphs.add("1Sam.23.29"); //$NON-NLS-1$
+        paragraphs.add("1Sam.24.9"); //$NON-NLS-1$
+        paragraphs.add("1Sam.24.16"); //$NON-NLS-1$
+        paragraphs.add("1Sam.25.4"); //$NON-NLS-1$
+        paragraphs.add("1Sam.25.10"); //$NON-NLS-1$
+        paragraphs.add("1Sam.25.14"); //$NON-NLS-1$
+        paragraphs.add("1Sam.25.18"); //$NON-NLS-1$
+        paragraphs.add("1Sam.25.32"); //$NON-NLS-1$
+        paragraphs.add("1Sam.25.36"); //$NON-NLS-1$
+        paragraphs.add("1Sam.25.39"); //$NON-NLS-1$
+        paragraphs.add("1Sam.25.44"); //$NON-NLS-1$
+        paragraphs.add("1Sam.26.5"); //$NON-NLS-1$
+        paragraphs.add("1Sam.26.13"); //$NON-NLS-1$
+        paragraphs.add("1Sam.26.21"); //$NON-NLS-1$
+        paragraphs.add("1Sam.27.5"); //$NON-NLS-1$
+        paragraphs.add("1Sam.27.8"); //$NON-NLS-1$
+        paragraphs.add("1Sam.28.3"); //$NON-NLS-1$
+        paragraphs.add("1Sam.28.7"); //$NON-NLS-1$
+        paragraphs.add("1Sam.28.15"); //$NON-NLS-1$
+        paragraphs.add("1Sam.28.21"); //$NON-NLS-1$
+        paragraphs.add("1Sam.29.6"); //$NON-NLS-1$
+        paragraphs.add("1Sam.29.8"); //$NON-NLS-1$
+        paragraphs.add("1Sam.30.3"); //$NON-NLS-1$
+        paragraphs.add("1Sam.30.11"); //$NON-NLS-1$
+        paragraphs.add("1Sam.30.16"); //$NON-NLS-1$
+        paragraphs.add("1Sam.30.21"); //$NON-NLS-1$
+        paragraphs.add("1Sam.30.26"); //$NON-NLS-1$
+        paragraphs.add("1Sam.31.7"); //$NON-NLS-1$
+        paragraphs.add("1Sam.31.11"); //$NON-NLS-1$
+        paragraphs.add("2Sam.1.13"); //$NON-NLS-1$
+        paragraphs.add("2Sam.1.17"); //$NON-NLS-1$
+        paragraphs.add("2Sam.2.5"); //$NON-NLS-1$
+        paragraphs.add("2Sam.2.8"); //$NON-NLS-1$
+        paragraphs.add("2Sam.2.12"); //$NON-NLS-1$
+        paragraphs.add("2Sam.2.18"); //$NON-NLS-1$
+        paragraphs.add("2Sam.2.25"); //$NON-NLS-1$
+        paragraphs.add("2Sam.2.32"); //$NON-NLS-1$
+        paragraphs.add("2Sam.3.2"); //$NON-NLS-1$
+        paragraphs.add("2Sam.3.6"); //$NON-NLS-1$
+        paragraphs.add("2Sam.3.12"); //$NON-NLS-1$
+        paragraphs.add("2Sam.3.13"); //$NON-NLS-1$
+        paragraphs.add("2Sam.3.17"); //$NON-NLS-1$
+        paragraphs.add("2Sam.3.22"); //$NON-NLS-1$
+        paragraphs.add("2Sam.3.28"); //$NON-NLS-1$
+        paragraphs.add("2Sam.3.31"); //$NON-NLS-1$
+        paragraphs.add("2Sam.4.9"); //$NON-NLS-1$
+        paragraphs.add("2Sam.5.4"); //$NON-NLS-1$
+        paragraphs.add("2Sam.5.6"); //$NON-NLS-1$
+        paragraphs.add("2Sam.5.11"); //$NON-NLS-1$
+        paragraphs.add("2Sam.5.13"); //$NON-NLS-1$
+        paragraphs.add("2Sam.5.17"); //$NON-NLS-1$
+        paragraphs.add("2Sam.5.22"); //$NON-NLS-1$
+        paragraphs.add("2Sam.6.6"); //$NON-NLS-1$
+        paragraphs.add("2Sam.6.12"); //$NON-NLS-1$
+        paragraphs.add("2Sam.6.17"); //$NON-NLS-1$
+        paragraphs.add("2Sam.6.20"); //$NON-NLS-1$
+        paragraphs.add("2Sam.7.4"); //$NON-NLS-1$
+        paragraphs.add("2Sam.7.12"); //$NON-NLS-1$
+        paragraphs.add("2Sam.7.18"); //$NON-NLS-1$
+        paragraphs.add("2Sam.8.3"); //$NON-NLS-1$
+        paragraphs.add("2Sam.8.9"); //$NON-NLS-1$
+        paragraphs.add("2Sam.8.14"); //$NON-NLS-1$
+        paragraphs.add("2Sam.9.5"); //$NON-NLS-1$
+        paragraphs.add("2Sam.9.7"); //$NON-NLS-1$
+        paragraphs.add("2Sam.9.9"); //$NON-NLS-1$
+        paragraphs.add("2Sam.10.6"); //$NON-NLS-1$
+        paragraphs.add("2Sam.10.15"); //$NON-NLS-1$
+        paragraphs.add("2Sam.11.2"); //$NON-NLS-1$
+        paragraphs.add("2Sam.11.6"); //$NON-NLS-1$
+        paragraphs.add("2Sam.11.14"); //$NON-NLS-1$
+        paragraphs.add("2Sam.11.18"); //$NON-NLS-1$
+        paragraphs.add("2Sam.11.22"); //$NON-NLS-1$
+        paragraphs.add("2Sam.11.26"); //$NON-NLS-1$
+        paragraphs.add("2Sam.12.7"); //$NON-NLS-1$
+        paragraphs.add("2Sam.12.15"); //$NON-NLS-1$
+        paragraphs.add("2Sam.12.24"); //$NON-NLS-1$
+        paragraphs.add("2Sam.12.26"); //$NON-NLS-1$
+        paragraphs.add("2Sam.13.6"); //$NON-NLS-1$
+        paragraphs.add("2Sam.13.15"); //$NON-NLS-1$
+        paragraphs.add("2Sam.13.19"); //$NON-NLS-1$
+        paragraphs.add("2Sam.13.21"); //$NON-NLS-1$
+        paragraphs.add("2Sam.13.23"); //$NON-NLS-1$
+        paragraphs.add("2Sam.13.28"); //$NON-NLS-1$
+        paragraphs.add("2Sam.13.30"); //$NON-NLS-1$
+        paragraphs.add("2Sam.13.37"); //$NON-NLS-1$
+        paragraphs.add("2Sam.14.4"); //$NON-NLS-1$
+        paragraphs.add("2Sam.14.21"); //$NON-NLS-1$
+        paragraphs.add("2Sam.14.25"); //$NON-NLS-1$
+        paragraphs.add("2Sam.14.28"); //$NON-NLS-1$
+        paragraphs.add("2Sam.15.7"); //$NON-NLS-1$
+        paragraphs.add("2Sam.15.10"); //$NON-NLS-1$
+        paragraphs.add("2Sam.15.13"); //$NON-NLS-1$
+        paragraphs.add("2Sam.15.19"); //$NON-NLS-1$
+        paragraphs.add("2Sam.15.24"); //$NON-NLS-1$
+        paragraphs.add("2Sam.15.30"); //$NON-NLS-1$
+        paragraphs.add("2Sam.15.31"); //$NON-NLS-1$
+        paragraphs.add("2Sam.15.32"); //$NON-NLS-1$
+        paragraphs.add("2Sam.16.5"); //$NON-NLS-1$
+        paragraphs.add("2Sam.16.9"); //$NON-NLS-1$
+        paragraphs.add("2Sam.16.15"); //$NON-NLS-1$
+        paragraphs.add("2Sam.16.20"); //$NON-NLS-1$
+        paragraphs.add("2Sam.17.15"); //$NON-NLS-1$
+        paragraphs.add("2Sam.17.23"); //$NON-NLS-1$
+        paragraphs.add("2Sam.17.25"); //$NON-NLS-1$
+        paragraphs.add("2Sam.17.27"); //$NON-NLS-1$
+        paragraphs.add("2Sam.18.6"); //$NON-NLS-1$
+        paragraphs.add("2Sam.18.9"); //$NON-NLS-1$
+        paragraphs.add("2Sam.18.18"); //$NON-NLS-1$
+        paragraphs.add("2Sam.18.19"); //$NON-NLS-1$
+        paragraphs.add("2Sam.18.33"); //$NON-NLS-1$
+        paragraphs.add("2Sam.19.9"); //$NON-NLS-1$
+        paragraphs.add("2Sam.19.11"); //$NON-NLS-1$
+        paragraphs.add("2Sam.19.16"); //$NON-NLS-1$
+        paragraphs.add("2Sam.19.24"); //$NON-NLS-1$
+        paragraphs.add("2Sam.19.31"); //$NON-NLS-1$
+        paragraphs.add("2Sam.19.41"); //$NON-NLS-1$
+        paragraphs.add("2Sam.20.3"); //$NON-NLS-1$
+        paragraphs.add("2Sam.20.4"); //$NON-NLS-1$
+        paragraphs.add("2Sam.20.14"); //$NON-NLS-1$
+        paragraphs.add("2Sam.20.16"); //$NON-NLS-1$
+        paragraphs.add("2Sam.20.23"); //$NON-NLS-1$
+        paragraphs.add("2Sam.21.10"); //$NON-NLS-1$
+        paragraphs.add("2Sam.21.12"); //$NON-NLS-1$
+        paragraphs.add("2Sam.21.15"); //$NON-NLS-1$
+        paragraphs.add("2Sam.23.6"); //$NON-NLS-1$
+        paragraphs.add("2Sam.23.8"); //$NON-NLS-1$
+        paragraphs.add("2Sam.24.5"); //$NON-NLS-1$
+        paragraphs.add("2Sam.24.10"); //$NON-NLS-1$
+        paragraphs.add("2Sam.24.15"); //$NON-NLS-1$
+        paragraphs.add("2Sam.24.18"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.1.5"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.1.11"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.1.15"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.1.22"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.1.28"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.1.32"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.1.41"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.1.50"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.2.12"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.2.13"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.2.19"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.2.26"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.2.28"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.2.35"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.2.36"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.3.5"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.3.16"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.4.7"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.4.20"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.4.22"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.4.26"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.4.29"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.5.7"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.5.13"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.6.5"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.6.11"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.6.23"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.6.31"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.6.36"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.6.37"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.7.2"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.7.6"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.7.7"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.7.8"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.7.13"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.7.23"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.7.27"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.7.38"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.7.40"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.8.12"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.8.22"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.8.31"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.8.33"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.8.35"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.8.37"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.8.44"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.8.62"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.9.10"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.9.15"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.9.24"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.9.25"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.9.26"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.10.14"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.10.16"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.10.18"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.10.21"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.10.24"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.10.26"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.10.28"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.11.9"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.11.14"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.11.23"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.11.26"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.11.41"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.12.6"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.12.12"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.12.16"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.12.21"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.12.25"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.13.11"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.13.20"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.13.23"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.13.33"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.14.5"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.14.17"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.14.21"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.14.25"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.14.29"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.15.9"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.15.16"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.15.25"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.15.27"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.15.31"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.16.8"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.16.11"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.16.15"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.16.21"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.16.23"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.16.25"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.16.29"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.16.34"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.17.8"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.17.17"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.17.24"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.18.7"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.18.17"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.18.41"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.19.4"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.19.9"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.19.19"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.20.13"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.20.22"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.20.28"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.20.31"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.20.35"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.21.5"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.21.15"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.21.17"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.21.25"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.22.15"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.22.37"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.22.41"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.22.50"); //$NON-NLS-1$
+        paragraphs.add("1Kgs.22.51"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.1.5"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.1.13"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.1.17"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.2.9"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.2.12"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.2.16"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.2.19"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.2.23"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.3.4"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.3.6"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.3.21"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.3.26"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.4.8"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.4.18"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.4.38"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.4.42"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.5.8"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.5.15"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.5.20"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.6.8"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.6.13"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.6.19"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.6.24"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.6.30"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.7.3"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.7.12"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.7.17"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.8.7"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.8.16"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.8.20"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.8.25"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.8.28"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.9.4"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.9.11"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.9.27"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.9.30"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.10.8"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.10.12"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.10.15"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.10.18"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.10.29"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.10.32"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.11.4"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.11.13"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.11.17"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.12.4"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.12.17"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.12.19"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.13.3"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.13.8"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.13.10"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.13.14"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.13.20"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.13.22"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.14.5"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.14.8"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.14.15"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.14.17"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.14.21"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.14.23"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.14.28"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.15.5"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.15.8"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.15.13"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.15.16"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.15.21"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.15.23"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.15.27"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.15.32"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.15.35"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.15.36"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.16.5"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.16.10"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.16.17"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.16.19"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.17.3"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.17.5"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.17.6"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.17.24"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.18.4"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.18.9"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.18.13"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.18.17"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.19.6"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.19.8"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.19.14"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.19.20"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.19.35"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.20.8"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.20.12"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.20.14"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.20.20"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.21.10"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.21.17"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.21.19"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.21.23"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.22.3"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.22.8"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.22.15"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.23.3"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.23.15"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.23.21"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.23.24"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.23.26"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.23.29"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.23.31"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.23.36"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.24.5"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.24.8"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.24.10"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.24.17"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.25.4"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.25.8"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.25.18"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.25.22"); //$NON-NLS-1$
+        paragraphs.add("2Kgs.25.27"); //$NON-NLS-1$
+        paragraphs.add("1Chr.1.5"); //$NON-NLS-1$
+        paragraphs.add("1Chr.1.8"); //$NON-NLS-1$
+        paragraphs.add("1Chr.1.17"); //$NON-NLS-1$
+        paragraphs.add("1Chr.1.24"); //$NON-NLS-1$
+        paragraphs.add("1Chr.1.29"); //$NON-NLS-1$
+        paragraphs.add("1Chr.1.32"); //$NON-NLS-1$
+        paragraphs.add("1Chr.1.35"); //$NON-NLS-1$
+        paragraphs.add("1Chr.1.43"); //$NON-NLS-1$
+        paragraphs.add("1Chr.1.51"); //$NON-NLS-1$
+        paragraphs.add("1Chr.2.3"); //$NON-NLS-1$
+        paragraphs.add("1Chr.2.13"); //$NON-NLS-1$
+        paragraphs.add("1Chr.2.18"); //$NON-NLS-1$
+        paragraphs.add("1Chr.2.21"); //$NON-NLS-1$
+        paragraphs.add("1Chr.2.25"); //$NON-NLS-1$
+        paragraphs.add("1Chr.2.34"); //$NON-NLS-1$
+        paragraphs.add("1Chr.2.42"); //$NON-NLS-1$
+        paragraphs.add("1Chr.2.50"); //$NON-NLS-1$
+        paragraphs.add("1Chr.3.10"); //$NON-NLS-1$
+        paragraphs.add("1Chr.3.17"); //$NON-NLS-1$
+        paragraphs.add("1Chr.4.5"); //$NON-NLS-1$
+        paragraphs.add("1Chr.4.9"); //$NON-NLS-1$
+        paragraphs.add("1Chr.4.11"); //$NON-NLS-1$
+        paragraphs.add("1Chr.4.21"); //$NON-NLS-1$
+        paragraphs.add("1Chr.4.24"); //$NON-NLS-1$
+        paragraphs.add("1Chr.4.39"); //$NON-NLS-1$
+        paragraphs.add("1Chr.5.11"); //$NON-NLS-1$
+        paragraphs.add("1Chr.5.18"); //$NON-NLS-1$
+        paragraphs.add("1Chr.5.23"); //$NON-NLS-1$
+        paragraphs.add("1Chr.5.25"); //$NON-NLS-1$
+        paragraphs.add("1Chr.6.4"); //$NON-NLS-1$
+        paragraphs.add("1Chr.6.16"); //$NON-NLS-1$
+        paragraphs.add("1Chr.6.49"); //$NON-NLS-1$
+        paragraphs.add("1Chr.6.54"); //$NON-NLS-1$
+        paragraphs.add("1Chr.7.6"); //$NON-NLS-1$
+        paragraphs.add("1Chr.7.13"); //$NON-NLS-1$
+        paragraphs.add("1Chr.7.14"); //$NON-NLS-1$
+        paragraphs.add("1Chr.7.20"); //$NON-NLS-1$
+        paragraphs.add("1Chr.7.21"); //$NON-NLS-1$
+        paragraphs.add("1Chr.7.23"); //$NON-NLS-1$
+        paragraphs.add("1Chr.7.28"); //$NON-NLS-1$
+        paragraphs.add("1Chr.7.30"); //$NON-NLS-1$
+        paragraphs.add("1Chr.8.33"); //$NON-NLS-1$
+        paragraphs.add("1Chr.9.2"); //$NON-NLS-1$
+        paragraphs.add("1Chr.9.10"); //$NON-NLS-1$
+        paragraphs.add("1Chr.9.27"); //$NON-NLS-1$
+        paragraphs.add("1Chr.9.35"); //$NON-NLS-1$
+        paragraphs.add("1Chr.10.8"); //$NON-NLS-1$
+        paragraphs.add("1Chr.10.11"); //$NON-NLS-1$
+        paragraphs.add("1Chr.10.13"); //$NON-NLS-1$
+        paragraphs.add("1Chr.11.4"); //$NON-NLS-1$
+        paragraphs.add("1Chr.11.10"); //$NON-NLS-1$
+        paragraphs.add("1Chr.11.15"); //$NON-NLS-1$
+        paragraphs.add("1Chr.11.20"); //$NON-NLS-1$
+        paragraphs.add("1Chr.11.26"); //$NON-NLS-1$
+        paragraphs.add("1Chr.12.23"); //$NON-NLS-1$
+        paragraphs.add("1Chr.13.9"); //$NON-NLS-1$
+        paragraphs.add("1Chr.14.3"); //$NON-NLS-1$
+        paragraphs.add("1Chr.14.8"); //$NON-NLS-1$
+        paragraphs.add("1Chr.15.25"); //$NON-NLS-1$
+        paragraphs.add("1Chr.15.29"); //$NON-NLS-1$
+        paragraphs.add("1Chr.16.4"); //$NON-NLS-1$
+        paragraphs.add("1Chr.16.7"); //$NON-NLS-1$
+        paragraphs.add("1Chr.16.37"); //$NON-NLS-1$
+        paragraphs.add("1Chr.17.3"); //$NON-NLS-1$
+        paragraphs.add("1Chr.17.11"); //$NON-NLS-1$
+        paragraphs.add("1Chr.17.16"); //$NON-NLS-1$
+        paragraphs.add("1Chr.18.3"); //$NON-NLS-1$
+        paragraphs.add("1Chr.18.9"); //$NON-NLS-1$
+        paragraphs.add("1Chr.18.11"); //$NON-NLS-1$
+        paragraphs.add("1Chr.18.13"); //$NON-NLS-1$
+        paragraphs.add("1Chr.18.14"); //$NON-NLS-1$
+        paragraphs.add("1Chr.19.6"); //$NON-NLS-1$
+        paragraphs.add("1Chr.19.16"); //$NON-NLS-1$
+        paragraphs.add("1Chr.20.4"); //$NON-NLS-1$
+        paragraphs.add("1Chr.21.5"); //$NON-NLS-1$
+        paragraphs.add("1Chr.21.9"); //$NON-NLS-1$
+        paragraphs.add("1Chr.21.14"); //$NON-NLS-1$
+        paragraphs.add("1Chr.21.18"); //$NON-NLS-1$
+        paragraphs.add("1Chr.21.28"); //$NON-NLS-1$
+        paragraphs.add("1Chr.22.6"); //$NON-NLS-1$
+        paragraphs.add("1Chr.22.17"); //$NON-NLS-1$
+        paragraphs.add("1Chr.23.2"); //$NON-NLS-1$
+        paragraphs.add("1Chr.23.7"); //$NON-NLS-1$
+        paragraphs.add("1Chr.23.12"); //$NON-NLS-1$
+        paragraphs.add("1Chr.23.21"); //$NON-NLS-1$
+        paragraphs.add("1Chr.23.24"); //$NON-NLS-1$
+        paragraphs.add("1Chr.24.20"); //$NON-NLS-1$
+        paragraphs.add("1Chr.24.27"); //$NON-NLS-1$
+        paragraphs.add("1Chr.25.8"); //$NON-NLS-1$
+        paragraphs.add("1Chr.26.13"); //$NON-NLS-1$
+        paragraphs.add("1Chr.26.20"); //$NON-NLS-1$
+        paragraphs.add("1Chr.26.29"); //$NON-NLS-1$
+        paragraphs.add("1Chr.27.16"); //$NON-NLS-1$
+        paragraphs.add("1Chr.27.23"); //$NON-NLS-1$
+        paragraphs.add("1Chr.27.25"); //$NON-NLS-1$
+        paragraphs.add("1Chr.28.9"); //$NON-NLS-1$
+        paragraphs.add("1Chr.28.11"); //$NON-NLS-1$
+        paragraphs.add("1Chr.29.6"); //$NON-NLS-1$
+        paragraphs.add("1Chr.29.10"); //$NON-NLS-1$
+        paragraphs.add("1Chr.29.20"); //$NON-NLS-1$
+        paragraphs.add("1Chr.29.26"); //$NON-NLS-1$
+        paragraphs.add("2Chr.1.7"); //$NON-NLS-1$
+        paragraphs.add("2Chr.1.13"); //$NON-NLS-1$
+        paragraphs.add("2Chr.2.3"); //$NON-NLS-1$
+        paragraphs.add("2Chr.2.11"); //$NON-NLS-1$
+        paragraphs.add("2Chr.2.17"); //$NON-NLS-1$
+        paragraphs.add("2Chr.3.3"); //$NON-NLS-1$
+        paragraphs.add("2Chr.3.11"); //$NON-NLS-1$
+        paragraphs.add("2Chr.3.14"); //$NON-NLS-1$
+        paragraphs.add("2Chr.4.2"); //$NON-NLS-1$
+        paragraphs.add("2Chr.4.6"); //$NON-NLS-1$
+        paragraphs.add("2Chr.4.9"); //$NON-NLS-1$
+        paragraphs.add("2Chr.4.19"); //$NON-NLS-1$
+        paragraphs.add("2Chr.5.2"); //$NON-NLS-1$
+        paragraphs.add("2Chr.5.11"); //$NON-NLS-1$
+        paragraphs.add("2Chr.6.12"); //$NON-NLS-1$
+        paragraphs.add("2Chr.6.22"); //$NON-NLS-1$
+        paragraphs.add("2Chr.6.24"); //$NON-NLS-1$
+        paragraphs.add("2Chr.6.26"); //$NON-NLS-1$
+        paragraphs.add("2Chr.6.28"); //$NON-NLS-1$
+        paragraphs.add("2Chr.6.32"); //$NON-NLS-1$
+        paragraphs.add("2Chr.7.4"); //$NON-NLS-1$
+        paragraphs.add("2Chr.7.8"); //$NON-NLS-1$
+        paragraphs.add("2Chr.7.12"); //$NON-NLS-1$
+        paragraphs.add("2Chr.8.7"); //$NON-NLS-1$
+        paragraphs.add("2Chr.8.11"); //$NON-NLS-1$
+        paragraphs.add("2Chr.8.12"); //$NON-NLS-1$
+        paragraphs.add("2Chr.8.14"); //$NON-NLS-1$
+        paragraphs.add("2Chr.8.17"); //$NON-NLS-1$
+        paragraphs.add("2Chr.9.13"); //$NON-NLS-1$
+        paragraphs.add("2Chr.9.15"); //$NON-NLS-1$
+        paragraphs.add("2Chr.9.20"); //$NON-NLS-1$
+        paragraphs.add("2Chr.9.23"); //$NON-NLS-1$
+        paragraphs.add("2Chr.9.25"); //$NON-NLS-1$
+        paragraphs.add("2Chr.9.26"); //$NON-NLS-1$
+        paragraphs.add("2Chr.9.29"); //$NON-NLS-1$
+        paragraphs.add("2Chr.10.6"); //$NON-NLS-1$
+        paragraphs.add("2Chr.10.16"); //$NON-NLS-1$
+        paragraphs.add("2Chr.11.5"); //$NON-NLS-1$
+        paragraphs.add("2Chr.11.13"); //$NON-NLS-1$
+        paragraphs.add("2Chr.11.18"); //$NON-NLS-1$
+        paragraphs.add("2Chr.12.5"); //$NON-NLS-1$
+        paragraphs.add("2Chr.12.13"); //$NON-NLS-1$
+        paragraphs.add("2Chr.13.4"); //$NON-NLS-1$
+        paragraphs.add("2Chr.13.13"); //$NON-NLS-1$
+        paragraphs.add("2Chr.13.21"); //$NON-NLS-1$
+        paragraphs.add("2Chr.14.6"); //$NON-NLS-1$
+        paragraphs.add("2Chr.14.9"); //$NON-NLS-1$
+        paragraphs.add("2Chr.15.16"); //$NON-NLS-1$
+        paragraphs.add("2Chr.15.18"); //$NON-NLS-1$
+        paragraphs.add("2Chr.16.7"); //$NON-NLS-1$
+        paragraphs.add("2Chr.16.11"); //$NON-NLS-1$
+        paragraphs.add("2Chr.16.13"); //$NON-NLS-1$
+        paragraphs.add("2Chr.17.7"); //$NON-NLS-1$
+        paragraphs.add("2Chr.17.10"); //$NON-NLS-1$
+        paragraphs.add("2Chr.17.12"); //$NON-NLS-1$
+        paragraphs.add("2Chr.18.4"); //$NON-NLS-1$
+        paragraphs.add("2Chr.19.5"); //$NON-NLS-1$
+        paragraphs.add("2Chr.19.8"); //$NON-NLS-1$
+        paragraphs.add("2Chr.20.5"); //$NON-NLS-1$
+        paragraphs.add("2Chr.20.14"); //$NON-NLS-1$
+        paragraphs.add("2Chr.20.20"); //$NON-NLS-1$
+        paragraphs.add("2Chr.20.22"); //$NON-NLS-1$
+        paragraphs.add("2Chr.20.26"); //$NON-NLS-1$
+        paragraphs.add("2Chr.20.31"); //$NON-NLS-1$
+        paragraphs.add("2Chr.20.35"); //$NON-NLS-1$
+        paragraphs.add("2Chr.21.5"); //$NON-NLS-1$
+        paragraphs.add("2Chr.21.8"); //$NON-NLS-1$
+        paragraphs.add("2Chr.21.12"); //$NON-NLS-1$
+        paragraphs.add("2Chr.21.16"); //$NON-NLS-1$
+        paragraphs.add("2Chr.21.18"); //$NON-NLS-1$
+        paragraphs.add("2Chr.22.5"); //$NON-NLS-1$
+        paragraphs.add("2Chr.22.10"); //$NON-NLS-1$
+        paragraphs.add("2Chr.23.12"); //$NON-NLS-1$
+        paragraphs.add("2Chr.23.16"); //$NON-NLS-1$
+        paragraphs.add("2Chr.24.4"); //$NON-NLS-1$
+        paragraphs.add("2Chr.24.15"); //$NON-NLS-1$
+        paragraphs.add("2Chr.24.23"); //$NON-NLS-1$
+        paragraphs.add("2Chr.24.27"); //$NON-NLS-1$
+        paragraphs.add("2Chr.25.3"); //$NON-NLS-1$
+        paragraphs.add("2Chr.25.5"); //$NON-NLS-1$
+        paragraphs.add("2Chr.25.11"); //$NON-NLS-1$
+        paragraphs.add("2Chr.25.13"); //$NON-NLS-1$
+        paragraphs.add("2Chr.25.14"); //$NON-NLS-1$
+        paragraphs.add("2Chr.25.17"); //$NON-NLS-1$
+        paragraphs.add("2Chr.25.25"); //$NON-NLS-1$
+        paragraphs.add("2Chr.25.27"); //$NON-NLS-1$
+        paragraphs.add("2Chr.26.16"); //$NON-NLS-1$
+        paragraphs.add("2Chr.26.22"); //$NON-NLS-1$
+        paragraphs.add("2Chr.27.5"); //$NON-NLS-1$
+        paragraphs.add("2Chr.27.7"); //$NON-NLS-1$
+        paragraphs.add("2Chr.27.9"); //$NON-NLS-1$
+        paragraphs.add("2Chr.28.6"); //$NON-NLS-1$
+        paragraphs.add("2Chr.28.16"); //$NON-NLS-1$
+        paragraphs.add("2Chr.28.22"); //$NON-NLS-1$
+        paragraphs.add("2Chr.28.26"); //$NON-NLS-1$
+        paragraphs.add("2Chr.29.3"); //$NON-NLS-1$
+        paragraphs.add("2Chr.29.12"); //$NON-NLS-1$
+        paragraphs.add("2Chr.29.20"); //$NON-NLS-1$
+        paragraphs.add("2Chr.30.13"); //$NON-NLS-1$
+        paragraphs.add("2Chr.30.27"); //$NON-NLS-1$
+        paragraphs.add("2Chr.31.2"); //$NON-NLS-1$
+        paragraphs.add("2Chr.31.5"); //$NON-NLS-1$
+        paragraphs.add("2Chr.31.11"); //$NON-NLS-1$
+        paragraphs.add("2Chr.31.20"); //$NON-NLS-1$
+        paragraphs.add("2Chr.32.9"); //$NON-NLS-1$
+        paragraphs.add("2Chr.32.21"); //$NON-NLS-1$
+        paragraphs.add("2Chr.32.24"); //$NON-NLS-1$
+        paragraphs.add("2Chr.32.27"); //$NON-NLS-1$
+        paragraphs.add("2Chr.32.31"); //$NON-NLS-1$
+        paragraphs.add("2Chr.32.32"); //$NON-NLS-1$
+        paragraphs.add("2Chr.33.3"); //$NON-NLS-1$
+        paragraphs.add("2Chr.33.11"); //$NON-NLS-1$
+        paragraphs.add("2Chr.33.18"); //$NON-NLS-1$
+        paragraphs.add("2Chr.33.20"); //$NON-NLS-1$
+        paragraphs.add("2Chr.33.21"); //$NON-NLS-1$
+        paragraphs.add("2Chr.33.25"); //$NON-NLS-1$
+        paragraphs.add("2Chr.34.3"); //$NON-NLS-1$
+        paragraphs.add("2Chr.34.8"); //$NON-NLS-1$
+        paragraphs.add("2Chr.34.14"); //$NON-NLS-1$
+        paragraphs.add("2Chr.34.23"); //$NON-NLS-1$
+        paragraphs.add("2Chr.34.29"); //$NON-NLS-1$
+        paragraphs.add("2Chr.35.20"); //$NON-NLS-1$
+        paragraphs.add("2Chr.35.25"); //$NON-NLS-1$
+        paragraphs.add("2Chr.36.5"); //$NON-NLS-1$
+        paragraphs.add("2Chr.36.9"); //$NON-NLS-1$
+        paragraphs.add("2Chr.36.11"); //$NON-NLS-1$
+        paragraphs.add("2Chr.36.14"); //$NON-NLS-1$
+        paragraphs.add("2Chr.36.22"); //$NON-NLS-1$
+        paragraphs.add("Ezra.1.5"); //$NON-NLS-1$
+        paragraphs.add("Ezra.1.7"); //$NON-NLS-1$
+        paragraphs.add("Ezra.2.36"); //$NON-NLS-1$
+        paragraphs.add("Ezra.2.40"); //$NON-NLS-1$
+        paragraphs.add("Ezra.2.41"); //$NON-NLS-1$
+        paragraphs.add("Ezra.2.42"); //$NON-NLS-1$
+        paragraphs.add("Ezra.2.43"); //$NON-NLS-1$
+        paragraphs.add("Ezra.2.55"); //$NON-NLS-1$
+        paragraphs.add("Ezra.2.61"); //$NON-NLS-1$
+        paragraphs.add("Ezra.2.64"); //$NON-NLS-1$
+        paragraphs.add("Ezra.2.68"); //$NON-NLS-1$
+        paragraphs.add("Ezra.3.8"); //$NON-NLS-1$
+        paragraphs.add("Ezra.4.7"); //$NON-NLS-1$
+        paragraphs.add("Ezra.4.11"); //$NON-NLS-1$
+        paragraphs.add("Ezra.4.17"); //$NON-NLS-1$
+        paragraphs.add("Ezra.4.23"); //$NON-NLS-1$
+        paragraphs.add("Ezra.5.3"); //$NON-NLS-1$
+        paragraphs.add("Ezra.5.6"); //$NON-NLS-1$
+        paragraphs.add("Ezra.6.13"); //$NON-NLS-1$
+        paragraphs.add("Ezra.6.16"); //$NON-NLS-1$
+        paragraphs.add("Ezra.7.11"); //$NON-NLS-1$
+        paragraphs.add("Ezra.7.27"); //$NON-NLS-1$
+        paragraphs.add("Ezra.8.15"); //$NON-NLS-1$
+        paragraphs.add("Ezra.8.21"); //$NON-NLS-1$
+        paragraphs.add("Ezra.8.24"); //$NON-NLS-1$
+        paragraphs.add("Ezra.8.31"); //$NON-NLS-1$
+        paragraphs.add("Ezra.8.33"); //$NON-NLS-1$
+        paragraphs.add("Ezra.8.36"); //$NON-NLS-1$
+        paragraphs.add("Ezra.9.5"); //$NON-NLS-1$
+        paragraphs.add("Ezra.10.6"); //$NON-NLS-1$
+        paragraphs.add("Ezra.10.9"); //$NON-NLS-1$
+        paragraphs.add("Ezra.10.15"); //$NON-NLS-1$
+        paragraphs.add("Ezra.10.18"); //$NON-NLS-1$
+        paragraphs.add("Neh.1.4"); //$NON-NLS-1$
+        paragraphs.add("Neh.2.9"); //$NON-NLS-1$
+        paragraphs.add("Neh.2.12"); //$NON-NLS-1$
+        paragraphs.add("Neh.2.17"); //$NON-NLS-1$
+        paragraphs.add("Neh.4.7"); //$NON-NLS-1$
+        paragraphs.add("Neh.4.13"); //$NON-NLS-1$
+        paragraphs.add("Neh.4.19"); //$NON-NLS-1$
+        paragraphs.add("Neh.5.6"); //$NON-NLS-1$
+        paragraphs.add("Neh.5.14"); //$NON-NLS-1$
+        paragraphs.add("Neh.6.15"); //$NON-NLS-1$
+        paragraphs.add("Neh.6.17"); //$NON-NLS-1$
+        paragraphs.add("Neh.7.5"); //$NON-NLS-1$
+        paragraphs.add("Neh.7.39"); //$NON-NLS-1$
+        paragraphs.add("Neh.7.43"); //$NON-NLS-1$
+        paragraphs.add("Neh.7.44"); //$NON-NLS-1$
+        paragraphs.add("Neh.7.45"); //$NON-NLS-1$
+        paragraphs.add("Neh.7.46"); //$NON-NLS-1$
+        paragraphs.add("Neh.7.57"); //$NON-NLS-1$
+        paragraphs.add("Neh.7.63"); //$NON-NLS-1$
+        paragraphs.add("Neh.7.66"); //$NON-NLS-1$
+        paragraphs.add("Neh.7.70"); //$NON-NLS-1$
+        paragraphs.add("Neh.8.9"); //$NON-NLS-1$
+        paragraphs.add("Neh.8.13"); //$NON-NLS-1$
+        paragraphs.add("Neh.8.16"); //$NON-NLS-1$
+        paragraphs.add("Neh.9.4"); //$NON-NLS-1$
+        paragraphs.add("Neh.10.28"); //$NON-NLS-1$
+        paragraphs.add("Neh.11.3"); //$NON-NLS-1$
+        paragraphs.add("Neh.11.20"); //$NON-NLS-1$
+        paragraphs.add("Neh.12.10"); //$NON-NLS-1$
+        paragraphs.add("Neh.12.22"); //$NON-NLS-1$
+        paragraphs.add("Neh.12.27"); //$NON-NLS-1$
+        paragraphs.add("Neh.12.44"); //$NON-NLS-1$
+        paragraphs.add("Neh.13.4"); //$NON-NLS-1$
+        paragraphs.add("Neh.13.10"); //$NON-NLS-1$
+        paragraphs.add("Neh.13.15"); //$NON-NLS-1$
+        paragraphs.add("Neh.13.23"); //$NON-NLS-1$
+        paragraphs.add("Esth.1.10"); //$NON-NLS-1$
+        paragraphs.add("Esth.1.13"); //$NON-NLS-1$
+        paragraphs.add("Esth.2.5"); //$NON-NLS-1$
+        paragraphs.add("Esth.2.8"); //$NON-NLS-1$
+        paragraphs.add("Esth.2.12"); //$NON-NLS-1$
+        paragraphs.add("Esth.2.15"); //$NON-NLS-1$
+        paragraphs.add("Esth.2.21"); //$NON-NLS-1$
+        paragraphs.add("Esth.3.7"); //$NON-NLS-1$
+        paragraphs.add("Esth.3.8"); //$NON-NLS-1$
+        paragraphs.add("Esth.4.4"); //$NON-NLS-1$
+        paragraphs.add("Esth.4.10"); //$NON-NLS-1$
+        paragraphs.add("Esth.4.15"); //$NON-NLS-1$
+        paragraphs.add("Esth.5.6"); //$NON-NLS-1$
+        paragraphs.add("Esth.5.9"); //$NON-NLS-1$
+        paragraphs.add("Esth.5.14"); //$NON-NLS-1$
+        paragraphs.add("Esth.6.4"); //$NON-NLS-1$
+        paragraphs.add("Esth.6.12"); //$NON-NLS-1$
+        paragraphs.add("Esth.7.5"); //$NON-NLS-1$
+        paragraphs.add("Esth.7.7"); //$NON-NLS-1$
+        paragraphs.add("Esth.8.3"); //$NON-NLS-1$
+        paragraphs.add("Esth.8.7"); //$NON-NLS-1$
+        paragraphs.add("Esth.8.15"); //$NON-NLS-1$
+        paragraphs.add("Esth.9.12"); //$NON-NLS-1$
+        paragraphs.add("Esth.9.20"); //$NON-NLS-1$
+        paragraphs.add("Job.1.6"); //$NON-NLS-1$
+        paragraphs.add("Job.1.13"); //$NON-NLS-1$
+        paragraphs.add("Job.2.7"); //$NON-NLS-1$
+        paragraphs.add("Job.2.9"); //$NON-NLS-1$
+        paragraphs.add("Job.2.11"); //$NON-NLS-1$
+        paragraphs.add("Job.40.3"); //$NON-NLS-1$
+        paragraphs.add("Job.40.6"); //$NON-NLS-1$
+        paragraphs.add("Job.40.15"); //$NON-NLS-1$
+        paragraphs.add("Job.42.7"); //$NON-NLS-1$
+        //paragraphs.add("Ps.119.9"); //$NON-NLS-1$
+        //paragraphs.add("Ps.119.17"); //$NON-NLS-1$
+        //paragraphs.add("Ps.119.25"); //$NON-NLS-1$
+        //paragraphs.add("Ps.119.33"); //$NON-NLS-1$
+        //paragraphs.add("Ps.119.41"); //$NON-NLS-1$
+        //paragraphs.add("Ps.119.49"); //$NON-NLS-1$
+        //paragraphs.add("Ps.119.57"); //$NON-NLS-1$
+        //paragraphs.add("Ps.119.65"); //$NON-NLS-1$
+        //paragraphs.add("Ps.119.73"); //$NON-NLS-1$
+        //paragraphs.add("Ps.119.81"); //$NON-NLS-1$
+        //paragraphs.add("Ps.119.89"); //$NON-NLS-1$
+        //paragraphs.add("Ps.119.97"); //$NON-NLS-1$
+        //paragraphs.add("Ps.119.105"); //$NON-NLS-1$
+        //paragraphs.add("Ps.119.113"); //$NON-NLS-1$
+        //paragraphs.add("Ps.119.121"); //$NON-NLS-1$
+        //paragraphs.add("Ps.119.129"); //$NON-NLS-1$
+        //paragraphs.add("Ps.119.137"); //$NON-NLS-1$
+        //paragraphs.add("Ps.119.145"); //$NON-NLS-1$
+        //paragraphs.add("Ps.119.153"); //$NON-NLS-1$
+        //paragraphs.add("Ps.119.161"); //$NON-NLS-1$
+        //paragraphs.add("Ps.119.169"); //$NON-NLS-1$
+        paragraphs.add("Prov.1.7"); //$NON-NLS-1$
+        paragraphs.add("Prov.1.10"); //$NON-NLS-1$
+        paragraphs.add("Prov.1.20"); //$NON-NLS-1$
+        paragraphs.add("Prov.1.24"); //$NON-NLS-1$
+        paragraphs.add("Prov.2.10"); //$NON-NLS-1$
+        paragraphs.add("Prov.3.5"); //$NON-NLS-1$
+        paragraphs.add("Prov.3.7"); //$NON-NLS-1$
+        paragraphs.add("Prov.3.11"); //$NON-NLS-1$
+        paragraphs.add("Prov.3.13"); //$NON-NLS-1$
+        paragraphs.add("Prov.3.21"); //$NON-NLS-1$
+        paragraphs.add("Prov.3.27"); //$NON-NLS-1$
+        paragraphs.add("Prov.3.30"); //$NON-NLS-1$
+        paragraphs.add("Prov.3.31"); //$NON-NLS-1$
+        paragraphs.add("Prov.3.33"); //$NON-NLS-1$
+        paragraphs.add("Prov.4.14"); //$NON-NLS-1$
+        paragraphs.add("Prov.4.20"); //$NON-NLS-1$
+        paragraphs.add("Prov.4.23"); //$NON-NLS-1$
+        paragraphs.add("Prov.5.3"); //$NON-NLS-1$
+        paragraphs.add("Prov.5.15"); //$NON-NLS-1$
+        paragraphs.add("Prov.5.22"); //$NON-NLS-1$
+        paragraphs.add("Prov.6.6"); //$NON-NLS-1$
+        paragraphs.add("Prov.6.12"); //$NON-NLS-1$
+        paragraphs.add("Prov.6.16"); //$NON-NLS-1$
+        paragraphs.add("Prov.6.20"); //$NON-NLS-1$
+        paragraphs.add("Prov.7.6"); //$NON-NLS-1$
+        paragraphs.add("Prov.7.24"); //$NON-NLS-1$
+        paragraphs.add("Prov.9.13"); //$NON-NLS-1$
+        paragraphs.add("Prov.31.10"); //$NON-NLS-1$
+        paragraphs.add("Eccl.1.12"); //$NON-NLS-1$
+        paragraphs.add("Eccl.2.12"); //$NON-NLS-1$
+        paragraphs.add("Eccl.2.18"); //$NON-NLS-1$
+        paragraphs.add("Eccl.2.24"); //$NON-NLS-1$
+        paragraphs.add("Eccl.3.16"); //$NON-NLS-1$
+        paragraphs.add("Eccl.4.4"); //$NON-NLS-1$
+        paragraphs.add("Eccl.4.7"); //$NON-NLS-1$
+        paragraphs.add("Eccl.4.9"); //$NON-NLS-1$
+        paragraphs.add("Eccl.4.13"); //$NON-NLS-1$
+        paragraphs.add("Eccl.5.8"); //$NON-NLS-1$
+        paragraphs.add("Eccl.5.9"); //$NON-NLS-1$
+        paragraphs.add("Eccl.5.18"); //$NON-NLS-1$
+        paragraphs.add("Eccl.6.3"); //$NON-NLS-1$
+        paragraphs.add("Eccl.6.6"); //$NON-NLS-1$
+        paragraphs.add("Eccl.6.9"); //$NON-NLS-1$
+        paragraphs.add("Eccl.6.11"); //$NON-NLS-1$
+        paragraphs.add("Eccl.7.2"); //$NON-NLS-1$
+        paragraphs.add("Eccl.7.7"); //$NON-NLS-1$
+        paragraphs.add("Eccl.7.11"); //$NON-NLS-1$
+        paragraphs.add("Eccl.7.23"); //$NON-NLS-1$
+        paragraphs.add("Eccl.8.6"); //$NON-NLS-1$
+        paragraphs.add("Eccl.8.12"); //$NON-NLS-1$
+        paragraphs.add("Eccl.8.16"); //$NON-NLS-1$
+        paragraphs.add("Eccl.9.4"); //$NON-NLS-1$
+        paragraphs.add("Eccl.9.7"); //$NON-NLS-1$
+        paragraphs.add("Eccl.9.11"); //$NON-NLS-1$
+        paragraphs.add("Eccl.9.13"); //$NON-NLS-1$
+        paragraphs.add("Eccl.10.16"); //$NON-NLS-1$
+        paragraphs.add("Eccl.10.18"); //$NON-NLS-1$
+        paragraphs.add("Eccl.10.19"); //$NON-NLS-1$
+        paragraphs.add("Eccl.10.20"); //$NON-NLS-1$
+        paragraphs.add("Eccl.11.7"); //$NON-NLS-1$
+        paragraphs.add("Eccl.11.9"); //$NON-NLS-1$
+        paragraphs.add("Eccl.12.8"); //$NON-NLS-1$
+        paragraphs.add("Eccl.12.13"); //$NON-NLS-1$
+        paragraphs.add("Song.1.8"); //$NON-NLS-1$
+        paragraphs.add("Song.1.12"); //$NON-NLS-1$
+        paragraphs.add("Song.2.8"); //$NON-NLS-1$
+        paragraphs.add("Song.2.14"); //$NON-NLS-1$
+        paragraphs.add("Song.2.16"); //$NON-NLS-1$
+        paragraphs.add("Song.3.6"); //$NON-NLS-1$
+        paragraphs.add("Song.4.8"); //$NON-NLS-1$
+        paragraphs.add("Song.4.16"); //$NON-NLS-1$
+        paragraphs.add("Song.5.2"); //$NON-NLS-1$
+        paragraphs.add("Song.5.9"); //$NON-NLS-1$
+        paragraphs.add("Song.6.4"); //$NON-NLS-1$
+        paragraphs.add("Song.6.10"); //$NON-NLS-1$
+        paragraphs.add("Song.7.10"); //$NON-NLS-1$
+        paragraphs.add("Song.8.6"); //$NON-NLS-1$
+        paragraphs.add("Song.8.8"); //$NON-NLS-1$
+        paragraphs.add("Song.8.14"); //$NON-NLS-1$
+        paragraphs.add("Isa.1.5"); //$NON-NLS-1$
+        paragraphs.add("Isa.1.10"); //$NON-NLS-1$
+        paragraphs.add("Isa.1.16"); //$NON-NLS-1$
+        paragraphs.add("Isa.1.21"); //$NON-NLS-1$
+        paragraphs.add("Isa.1.25"); //$NON-NLS-1$
+        paragraphs.add("Isa.1.28"); //$NON-NLS-1$
+        paragraphs.add("Isa.2.6"); //$NON-NLS-1$
+        paragraphs.add("Isa.2.10"); //$NON-NLS-1$
+        paragraphs.add("Isa.3.9"); //$NON-NLS-1$
+        paragraphs.add("Isa.3.12"); //$NON-NLS-1$
+        paragraphs.add("Isa.3.16"); //$NON-NLS-1$
+        paragraphs.add("Isa.5.8"); //$NON-NLS-1$
+        paragraphs.add("Isa.5.11"); //$NON-NLS-1$
+        paragraphs.add("Isa.5.13"); //$NON-NLS-1$
+        paragraphs.add("Isa.5.20"); //$NON-NLS-1$
+        paragraphs.add("Isa.5.26"); //$NON-NLS-1$
+        paragraphs.add("Isa.6.5"); //$NON-NLS-1$
+        paragraphs.add("Isa.6.9"); //$NON-NLS-1$
+        paragraphs.add("Isa.6.13"); //$NON-NLS-1$
+        paragraphs.add("Isa.7.10"); //$NON-NLS-1$
+        paragraphs.add("Isa.7.17"); //$NON-NLS-1$
+        paragraphs.add("Isa.8.5"); //$NON-NLS-1$
+        paragraphs.add("Isa.8.9"); //$NON-NLS-1$
+        paragraphs.add("Isa.8.11"); //$NON-NLS-1$
+        paragraphs.add("Isa.8.19"); //$NON-NLS-1$
+        paragraphs.add("Isa.9.8"); //$NON-NLS-1$
+        paragraphs.add("Isa.9.13"); //$NON-NLS-1$
+        paragraphs.add("Isa.9.18"); //$NON-NLS-1$
+        paragraphs.add("Isa.10.5"); //$NON-NLS-1$
+        paragraphs.add("Isa.10.20"); //$NON-NLS-1$
+        paragraphs.add("Isa.10.24"); //$NON-NLS-1$
+        paragraphs.add("Isa.11.10"); //$NON-NLS-1$
+        paragraphs.add("Isa.13.6"); //$NON-NLS-1$
+        paragraphs.add("Isa.13.19"); //$NON-NLS-1$
+        paragraphs.add("Isa.14.4"); //$NON-NLS-1$
+        paragraphs.add("Isa.14.24"); //$NON-NLS-1$
+        paragraphs.add("Isa.14.29"); //$NON-NLS-1$
+        paragraphs.add("Isa.16.6"); //$NON-NLS-1$
+        paragraphs.add("Isa.16.9"); //$NON-NLS-1$
+        paragraphs.add("Isa.16.12"); //$NON-NLS-1$
+        paragraphs.add("Isa.17.6"); //$NON-NLS-1$
+        paragraphs.add("Isa.17.9"); //$NON-NLS-1$
+        paragraphs.add("Isa.17.12"); //$NON-NLS-1$
+        paragraphs.add("Isa.18.7"); //$NON-NLS-1$
+        paragraphs.add("Isa.19.11"); //$NON-NLS-1$
+        paragraphs.add("Isa.19.18"); //$NON-NLS-1$
+        paragraphs.add("Isa.19.23"); //$NON-NLS-1$
+        paragraphs.add("Isa.21.11"); //$NON-NLS-1$
+        paragraphs.add("Isa.21.13"); //$NON-NLS-1$
+        paragraphs.add("Isa.22.8"); //$NON-NLS-1$
+        paragraphs.add("Isa.22.15"); //$NON-NLS-1$
+        paragraphs.add("Isa.22.20"); //$NON-NLS-1$
+        paragraphs.add("Isa.23.17"); //$NON-NLS-1$
+        paragraphs.add("Isa.24.13"); //$NON-NLS-1$
+        paragraphs.add("Isa.24.16"); //$NON-NLS-1$
+        paragraphs.add("Isa.25.6"); //$NON-NLS-1$
+        paragraphs.add("Isa.25.9"); //$NON-NLS-1$
+        paragraphs.add("Isa.26.5"); //$NON-NLS-1$
+        paragraphs.add("Isa.26.12"); //$NON-NLS-1$
+        paragraphs.add("Isa.26.20"); //$NON-NLS-1$
+        paragraphs.add("Isa.27.7"); //$NON-NLS-1$
+        paragraphs.add("Isa.27.12"); //$NON-NLS-1$
+        paragraphs.add("Isa.28.5"); //$NON-NLS-1$
+        paragraphs.add("Isa.28.7"); //$NON-NLS-1$
+        paragraphs.add("Isa.28.9"); //$NON-NLS-1$
+        paragraphs.add("Isa.28.14"); //$NON-NLS-1$
+        paragraphs.add("Isa.28.16"); //$NON-NLS-1$
+        paragraphs.add("Isa.28.18"); //$NON-NLS-1$
+        paragraphs.add("Isa.28.23"); //$NON-NLS-1$
+        paragraphs.add("Isa.29.7"); //$NON-NLS-1$
+        paragraphs.add("Isa.29.9"); //$NON-NLS-1$
+        paragraphs.add("Isa.29.13"); //$NON-NLS-1$
+        paragraphs.add("Isa.29.18"); //$NON-NLS-1$
+        paragraphs.add("Isa.30.8"); //$NON-NLS-1$
+        paragraphs.add("Isa.30.18"); //$NON-NLS-1$
+        paragraphs.add("Isa.30.27"); //$NON-NLS-1$
+        paragraphs.add("Isa.31.6"); //$NON-NLS-1$
+        paragraphs.add("Isa.31.8"); //$NON-NLS-1$
+        paragraphs.add("Isa.32.9"); //$NON-NLS-1$
+        paragraphs.add("Isa.33.13"); //$NON-NLS-1$
+        paragraphs.add("Isa.34.11"); //$NON-NLS-1$
+        paragraphs.add("Isa.34.16"); //$NON-NLS-1$
+        paragraphs.add("Isa.35.3"); //$NON-NLS-1$
+        paragraphs.add("Isa.36.4"); //$NON-NLS-1$
+        paragraphs.add("Isa.36.11"); //$NON-NLS-1$
+        paragraphs.add("Isa.36.12"); //$NON-NLS-1$
+        paragraphs.add("Isa.36.22"); //$NON-NLS-1$
+        paragraphs.add("Isa.37.6"); //$NON-NLS-1$
+        paragraphs.add("Isa.37.8"); //$NON-NLS-1$
+        paragraphs.add("Isa.37.14"); //$NON-NLS-1$
+        paragraphs.add("Isa.37.21"); //$NON-NLS-1$
+        paragraphs.add("Isa.37.37"); //$NON-NLS-1$
+        paragraphs.add("Isa.38.4"); //$NON-NLS-1$
+        paragraphs.add("Isa.38.9"); //$NON-NLS-1$
+        paragraphs.add("Isa.39.3"); //$NON-NLS-1$
+        paragraphs.add("Isa.40.3"); //$NON-NLS-1$
+        paragraphs.add("Isa.40.9"); //$NON-NLS-1$
+        paragraphs.add("Isa.40.12"); //$NON-NLS-1$
+        paragraphs.add("Isa.40.18"); //$NON-NLS-1$
+        paragraphs.add("Isa.40.28"); //$NON-NLS-1$
+        paragraphs.add("Isa.41.10"); //$NON-NLS-1$
+        paragraphs.add("Isa.42.5"); //$NON-NLS-1$
+        paragraphs.add("Isa.42.17"); //$NON-NLS-1$
+        paragraphs.add("Isa.43.8"); //$NON-NLS-1$
+        paragraphs.add("Isa.43.14"); //$NON-NLS-1$
+        paragraphs.add("Isa.43.18"); //$NON-NLS-1$
+        paragraphs.add("Isa.43.22"); //$NON-NLS-1$
+        paragraphs.add("Isa.44.9"); //$NON-NLS-1$
+        paragraphs.add("Isa.44.21"); //$NON-NLS-1$
+        paragraphs.add("Isa.45.5"); //$NON-NLS-1$
+        paragraphs.add("Isa.45.20"); //$NON-NLS-1$
+        paragraphs.add("Isa.46.3"); //$NON-NLS-1$
+        paragraphs.add("Isa.46.5"); //$NON-NLS-1$
+        paragraphs.add("Isa.46.12"); //$NON-NLS-1$
+        paragraphs.add("Isa.47.6"); //$NON-NLS-1$
+        paragraphs.add("Isa.47.7"); //$NON-NLS-1$
+        paragraphs.add("Isa.47.10"); //$NON-NLS-1$
+        paragraphs.add("Isa.47.11"); //$NON-NLS-1$
+        paragraphs.add("Isa.48.9"); //$NON-NLS-1$
+        paragraphs.add("Isa.48.12"); //$NON-NLS-1$
+        paragraphs.add("Isa.48.16"); //$NON-NLS-1$
+        paragraphs.add("Isa.48.20"); //$NON-NLS-1$
+        paragraphs.add("Isa.49.5"); //$NON-NLS-1$
+        paragraphs.add("Isa.49.13"); //$NON-NLS-1$
+        paragraphs.add("Isa.49.18"); //$NON-NLS-1$
+        paragraphs.add("Isa.49.24"); //$NON-NLS-1$
+        paragraphs.add("Isa.50.5"); //$NON-NLS-1$
+        paragraphs.add("Isa.50.7"); //$NON-NLS-1$
+        paragraphs.add("Isa.50.10"); //$NON-NLS-1$
+        paragraphs.add("Isa.51.4"); //$NON-NLS-1$
+        paragraphs.add("Isa.51.7"); //$NON-NLS-1$
+        paragraphs.add("Isa.51.9"); //$NON-NLS-1$
+        paragraphs.add("Isa.51.17"); //$NON-NLS-1$
+        paragraphs.add("Isa.51.21"); //$NON-NLS-1$
+        paragraphs.add("Isa.52.7"); //$NON-NLS-1$
+        paragraphs.add("Isa.52.9"); //$NON-NLS-1$
+        paragraphs.add("Isa.52.11"); //$NON-NLS-1$
+        paragraphs.add("Isa.52.13"); //$NON-NLS-1$
+        paragraphs.add("Isa.53.4"); //$NON-NLS-1$
+        paragraphs.add("Isa.53.10"); //$NON-NLS-1$
+        paragraphs.add("Isa.54.11"); //$NON-NLS-1$
+        paragraphs.add("Isa.54.17"); //$NON-NLS-1$
+        paragraphs.add("Isa.55.6"); //$NON-NLS-1$
+        paragraphs.add("Isa.55.8"); //$NON-NLS-1$
+        paragraphs.add("Isa.56.3"); //$NON-NLS-1$
+        paragraphs.add("Isa.56.9"); //$NON-NLS-1$
+        paragraphs.add("Isa.57.3"); //$NON-NLS-1$
+        paragraphs.add("Isa.57.13"); //$NON-NLS-1$
+        paragraphs.add("Isa.58.3"); //$NON-NLS-1$
+        paragraphs.add("Isa.58.8"); //$NON-NLS-1$
+        paragraphs.add("Isa.58.13"); //$NON-NLS-1$
+        paragraphs.add("Isa.59.9"); //$NON-NLS-1$
+        paragraphs.add("Isa.59.16"); //$NON-NLS-1$
+        paragraphs.add("Isa.59.20"); //$NON-NLS-1$
+        paragraphs.add("Isa.61.4"); //$NON-NLS-1$
+        paragraphs.add("Isa.61.7"); //$NON-NLS-1$
+        paragraphs.add("Isa.62.5"); //$NON-NLS-1$
+        paragraphs.add("Isa.62.10"); //$NON-NLS-1$
+        paragraphs.add("Isa.63.7"); //$NON-NLS-1$
+        paragraphs.add("Isa.63.10"); //$NON-NLS-1$
+        paragraphs.add("Isa.63.15"); //$NON-NLS-1$
+        paragraphs.add("Isa.63.17"); //$NON-NLS-1$
+        paragraphs.add("Isa.64.9"); //$NON-NLS-1$
+        paragraphs.add("Isa.65.8"); //$NON-NLS-1$
+        paragraphs.add("Isa.65.11"); //$NON-NLS-1$
+        paragraphs.add("Isa.65.17"); //$NON-NLS-1$
+        paragraphs.add("Isa.66.5"); //$NON-NLS-1$
+        paragraphs.add("Jer.1.7"); //$NON-NLS-1$
+        paragraphs.add("Jer.1.11"); //$NON-NLS-1$
+        paragraphs.add("Jer.1.17"); //$NON-NLS-1$
+        paragraphs.add("Jer.2.5"); //$NON-NLS-1$
+        paragraphs.add("Jer.2.9"); //$NON-NLS-1$
+        paragraphs.add("Jer.2.14"); //$NON-NLS-1$
+        paragraphs.add("Jer.2.20"); //$NON-NLS-1$
+        paragraphs.add("Jer.2.31"); //$NON-NLS-1$
+        paragraphs.add("Jer.3.6"); //$NON-NLS-1$
+        paragraphs.add("Jer.3.12"); //$NON-NLS-1$
+        paragraphs.add("Jer.3.20"); //$NON-NLS-1$
+        paragraphs.add("Jer.4.3"); //$NON-NLS-1$
+        paragraphs.add("Jer.4.19"); //$NON-NLS-1$
+        paragraphs.add("Jer.5.7"); //$NON-NLS-1$
+        paragraphs.add("Jer.5.10"); //$NON-NLS-1$
+        paragraphs.add("Jer.5.19"); //$NON-NLS-1$
+        paragraphs.add("Jer.5.25"); //$NON-NLS-1$
+        paragraphs.add("Jer.5.30"); //$NON-NLS-1$
+        paragraphs.add("Jer.6.6"); //$NON-NLS-1$
+        paragraphs.add("Jer.6.9"); //$NON-NLS-1$
+        paragraphs.add("Jer.6.18"); //$NON-NLS-1$
+        paragraphs.add("Jer.6.26"); //$NON-NLS-1$
+        paragraphs.add("Jer.7.8"); //$NON-NLS-1$
+        paragraphs.add("Jer.7.17"); //$NON-NLS-1$
+        paragraphs.add("Jer.7.21"); //$NON-NLS-1$
+        paragraphs.add("Jer.7.29"); //$NON-NLS-1$
+        paragraphs.add("Jer.7.32"); //$NON-NLS-1$
+        paragraphs.add("Jer.8.4"); //$NON-NLS-1$
+        paragraphs.add("Jer.8.13"); //$NON-NLS-1$
+        paragraphs.add("Jer.8.18"); //$NON-NLS-1$
+        paragraphs.add("Jer.9.9"); //$NON-NLS-1$
+        paragraphs.add("Jer.9.12"); //$NON-NLS-1$
+        paragraphs.add("Jer.9.17"); //$NON-NLS-1$
+        paragraphs.add("Jer.9.23"); //$NON-NLS-1$
+        paragraphs.add("Jer.9.25"); //$NON-NLS-1$
+        paragraphs.add("Jer.10.17"); //$NON-NLS-1$
+        paragraphs.add("Jer.10.19"); //$NON-NLS-1$
+        paragraphs.add("Jer.10.23"); //$NON-NLS-1$
+        paragraphs.add("Jer.11.11"); //$NON-NLS-1$
+        paragraphs.add("Jer.11.18"); //$NON-NLS-1$
+        paragraphs.add("Jer.12.5"); //$NON-NLS-1$
+        paragraphs.add("Jer.12.7"); //$NON-NLS-1$
+        paragraphs.add("Jer.12.14"); //$NON-NLS-1$
+        paragraphs.add("Jer.13.12"); //$NON-NLS-1$
+        paragraphs.add("Jer.13.15"); //$NON-NLS-1$
+        paragraphs.add("Jer.13.22"); //$NON-NLS-1$
+        paragraphs.add("Jer.14.7"); //$NON-NLS-1$
+        paragraphs.add("Jer.14.10"); //$NON-NLS-1$
+        paragraphs.add("Jer.14.13"); //$NON-NLS-1$
+        paragraphs.add("Jer.14.17"); //$NON-NLS-1$
+        paragraphs.add("Jer.15.10"); //$NON-NLS-1$
+        paragraphs.add("Jer.15.15"); //$NON-NLS-1$
+        paragraphs.add("Jer.15.19"); //$NON-NLS-1$
+        paragraphs.add("Jer.16.10"); //$NON-NLS-1$
+        paragraphs.add("Jer.16.14"); //$NON-NLS-1$
+        paragraphs.add("Jer.16.16"); //$NON-NLS-1$
+        paragraphs.add("Jer.17.5"); //$NON-NLS-1$
+        paragraphs.add("Jer.17.9"); //$NON-NLS-1$
+        paragraphs.add("Jer.17.12"); //$NON-NLS-1$
+        paragraphs.add("Jer.17.15"); //$NON-NLS-1$
+        paragraphs.add("Jer.17.19"); //$NON-NLS-1$
+        paragraphs.add("Jer.18.11"); //$NON-NLS-1$
+        paragraphs.add("Jer.18.18"); //$NON-NLS-1$
+        paragraphs.add("Jer.20.7"); //$NON-NLS-1$
+        paragraphs.add("Jer.20.10"); //$NON-NLS-1$
+        paragraphs.add("Jer.20.14"); //$NON-NLS-1$
+        paragraphs.add("Jer.21.3"); //$NON-NLS-1$
+        paragraphs.add("Jer.21.8"); //$NON-NLS-1$
+        paragraphs.add("Jer.21.11"); //$NON-NLS-1$
+        paragraphs.add("Jer.22.10"); //$NON-NLS-1$
+        paragraphs.add("Jer.22.13"); //$NON-NLS-1$
+        paragraphs.add("Jer.22.20"); //$NON-NLS-1$
+        paragraphs.add("Jer.23.5"); //$NON-NLS-1$
+        paragraphs.add("Jer.23.9"); //$NON-NLS-1$
+        paragraphs.add("Jer.23.33"); //$NON-NLS-1$
+        paragraphs.add("Jer.24.4"); //$NON-NLS-1$
+        paragraphs.add("Jer.24.8"); //$NON-NLS-1$
+        paragraphs.add("Jer.25.8"); //$NON-NLS-1$
+        paragraphs.add("Jer.25.12"); //$NON-NLS-1$
+        paragraphs.add("Jer.25.15"); //$NON-NLS-1$
+        paragraphs.add("Jer.25.34"); //$NON-NLS-1$
+        paragraphs.add("Jer.26.8"); //$NON-NLS-1$
+        paragraphs.add("Jer.26.10"); //$NON-NLS-1$
+        paragraphs.add("Jer.26.12"); //$NON-NLS-1$
+        paragraphs.add("Jer.26.16"); //$NON-NLS-1$
+        paragraphs.add("Jer.27.12"); //$NON-NLS-1$
+        paragraphs.add("Jer.27.19"); //$NON-NLS-1$
+        paragraphs.add("Jer.28.5"); //$NON-NLS-1$
+        paragraphs.add("Jer.28.10"); //$NON-NLS-1$
+        paragraphs.add("Jer.28.12"); //$NON-NLS-1$
+        paragraphs.add("Jer.28.15"); //$NON-NLS-1$
+        paragraphs.add("Jer.29.8"); //$NON-NLS-1$
+        paragraphs.add("Jer.29.10"); //$NON-NLS-1$
+        paragraphs.add("Jer.29.15"); //$NON-NLS-1$
+        paragraphs.add("Jer.29.20"); //$NON-NLS-1$
+        paragraphs.add("Jer.29.24"); //$NON-NLS-1$
+        paragraphs.add("Jer.29.30"); //$NON-NLS-1$
+        paragraphs.add("Jer.30.4"); //$NON-NLS-1$
+        paragraphs.add("Jer.30.10"); //$NON-NLS-1$
+        paragraphs.add("Jer.30.18"); //$NON-NLS-1$
+        paragraphs.add("Jer.31.10"); //$NON-NLS-1$
+        paragraphs.add("Jer.31.15"); //$NON-NLS-1$
+        paragraphs.add("Jer.31.18"); //$NON-NLS-1$
+        paragraphs.add("Jer.31.22"); //$NON-NLS-1$
+        paragraphs.add("Jer.31.27"); //$NON-NLS-1$
+        paragraphs.add("Jer.31.31"); //$NON-NLS-1$
+        paragraphs.add("Jer.31.35"); //$NON-NLS-1$
+        paragraphs.add("Jer.31.38"); //$NON-NLS-1$
+        paragraphs.add("Jer.32.6"); //$NON-NLS-1$
+        paragraphs.add("Jer.32.13"); //$NON-NLS-1$
+        paragraphs.add("Jer.32.16"); //$NON-NLS-1$
+        paragraphs.add("Jer.32.26"); //$NON-NLS-1$
+        paragraphs.add("Jer.32.36"); //$NON-NLS-1$
+        paragraphs.add("Jer.33.9"); //$NON-NLS-1$
+        paragraphs.add("Jer.33.15"); //$NON-NLS-1$
+        paragraphs.add("Jer.33.17"); //$NON-NLS-1$
+        paragraphs.add("Jer.33.19"); //$NON-NLS-1$
+        paragraphs.add("Jer.34.8"); //$NON-NLS-1$
+        paragraphs.add("Jer.34.12"); //$NON-NLS-1$
+        paragraphs.add("Jer.35.12"); //$NON-NLS-1$
+        paragraphs.add("Jer.35.18"); //$NON-NLS-1$
+        paragraphs.add("Jer.36.11"); //$NON-NLS-1$
+        paragraphs.add("Jer.36.20"); //$NON-NLS-1$
+        paragraphs.add("Jer.36.27"); //$NON-NLS-1$
+        paragraphs.add("Jer.36.32"); //$NON-NLS-1$
+        paragraphs.add("Jer.37.6"); //$NON-NLS-1$
+        paragraphs.add("Jer.37.11"); //$NON-NLS-1$
+        paragraphs.add("Jer.37.16"); //$NON-NLS-1$
+        paragraphs.add("Jer.38.7"); //$NON-NLS-1$
+        paragraphs.add("Jer.38.14"); //$NON-NLS-1$
+        paragraphs.add("Jer.38.24"); //$NON-NLS-1$
+        paragraphs.add("Jer.39.4"); //$NON-NLS-1$
+        paragraphs.add("Jer.39.8"); //$NON-NLS-1$
+        paragraphs.add("Jer.39.11"); //$NON-NLS-1$
+        paragraphs.add("Jer.39.15"); //$NON-NLS-1$
+        paragraphs.add("Jer.40.7"); //$NON-NLS-1$
+        paragraphs.add("Jer.40.13"); //$NON-NLS-1$
+        paragraphs.add("Jer.41.11"); //$NON-NLS-1$
+        paragraphs.add("Jer.42.7"); //$NON-NLS-1$
+        paragraphs.add("Jer.42.13"); //$NON-NLS-1$
+        paragraphs.add("Jer.42.19"); //$NON-NLS-1$
+        paragraphs.add("Jer.43.8"); //$NON-NLS-1$
+        paragraphs.add("Jer.44.11"); //$NON-NLS-1$
+        paragraphs.add("Jer.44.15"); //$NON-NLS-1$
+        paragraphs.add("Jer.44.20"); //$NON-NLS-1$
+        paragraphs.add("Jer.44.29"); //$NON-NLS-1$
+        paragraphs.add("Jer.45.4"); //$NON-NLS-1$
+        paragraphs.add("Jer.46.13"); //$NON-NLS-1$
+        paragraphs.add("Jer.46.27"); //$NON-NLS-1$
+        paragraphs.add("Jer.48.7"); //$NON-NLS-1$
+        paragraphs.add("Jer.48.11"); //$NON-NLS-1$
+        paragraphs.add("Jer.48.14"); //$NON-NLS-1$
+        paragraphs.add("Jer.48.26"); //$NON-NLS-1$
+        paragraphs.add("Jer.48.47"); //$NON-NLS-1$
+        paragraphs.add("Jer.49.7"); //$NON-NLS-1$
+        paragraphs.add("Jer.49.23"); //$NON-NLS-1$
+        paragraphs.add("Jer.49.28"); //$NON-NLS-1$
+        paragraphs.add("Jer.49.30"); //$NON-NLS-1$
+        paragraphs.add("Jer.49.34"); //$NON-NLS-1$
+        paragraphs.add("Jer.49.39"); //$NON-NLS-1$
+        paragraphs.add("Jer.50.4"); //$NON-NLS-1$
+        paragraphs.add("Jer.50.9"); //$NON-NLS-1$
+        paragraphs.add("Jer.50.17"); //$NON-NLS-1$
+        paragraphs.add("Jer.50.21"); //$NON-NLS-1$
+        paragraphs.add("Jer.50.33"); //$NON-NLS-1$
+        paragraphs.add("Jer.50.35"); //$NON-NLS-1$
+        paragraphs.add("Jer.51.59"); //$NON-NLS-1$
+        paragraphs.add("Jer.52.4"); //$NON-NLS-1$
+        paragraphs.add("Jer.52.8"); //$NON-NLS-1$
+        paragraphs.add("Jer.52.12"); //$NON-NLS-1$
+        paragraphs.add("Jer.52.24"); //$NON-NLS-1$
+        paragraphs.add("Jer.52.31"); //$NON-NLS-1$
+        paragraphs.add("Lam.1.12"); //$NON-NLS-1$
+        paragraphs.add("Lam.1.18"); //$NON-NLS-1$
+        paragraphs.add("Lam.2.20"); //$NON-NLS-1$
+        paragraphs.add("Lam.3.22"); //$NON-NLS-1$
+        paragraphs.add("Lam.3.37"); //$NON-NLS-1$
+        paragraphs.add("Lam.3.55"); //$NON-NLS-1$
+        paragraphs.add("Lam.3.64"); //$NON-NLS-1$
+        paragraphs.add("Lam.4.13"); //$NON-NLS-1$
+        paragraphs.add("Lam.4.21"); //$NON-NLS-1$
+        paragraphs.add("Lam.4.22"); //$NON-NLS-1$
+        paragraphs.add("Ezek.1.4"); //$NON-NLS-1$
+        paragraphs.add("Ezek.1.15"); //$NON-NLS-1$
+        paragraphs.add("Ezek.1.26"); //$NON-NLS-1$
+        paragraphs.add("Ezek.2.6"); //$NON-NLS-1$
+        paragraphs.add("Ezek.2.9"); //$NON-NLS-1$
+        paragraphs.add("Ezek.3.4"); //$NON-NLS-1$
+        paragraphs.add("Ezek.3.15"); //$NON-NLS-1$
+        paragraphs.add("Ezek.3.22"); //$NON-NLS-1$
+        paragraphs.add("Ezek.4.9"); //$NON-NLS-1$
+        paragraphs.add("Ezek.5.5"); //$NON-NLS-1$
+        paragraphs.add("Ezek.5.12"); //$NON-NLS-1$
+        paragraphs.add("Ezek.6.8"); //$NON-NLS-1$
+        paragraphs.add("Ezek.6.11"); //$NON-NLS-1$
+        paragraphs.add("Ezek.7.16"); //$NON-NLS-1$
+        paragraphs.add("Ezek.7.20"); //$NON-NLS-1$
+        paragraphs.add("Ezek.7.23"); //$NON-NLS-1$
+        paragraphs.add("Ezek.8.5"); //$NON-NLS-1$
+        paragraphs.add("Ezek.8.7"); //$NON-NLS-1$
+        paragraphs.add("Ezek.8.13"); //$NON-NLS-1$
+        paragraphs.add("Ezek.8.15"); //$NON-NLS-1$
+        paragraphs.add("Ezek.8.17"); //$NON-NLS-1$
+        paragraphs.add("Ezek.9.5"); //$NON-NLS-1$
+        paragraphs.add("Ezek.9.8"); //$NON-NLS-1$
+        paragraphs.add("Ezek.10.8"); //$NON-NLS-1$
+        paragraphs.add("Ezek.11.4"); //$NON-NLS-1$
+        paragraphs.add("Ezek.11.13"); //$NON-NLS-1$
+        paragraphs.add("Ezek.11.22"); //$NON-NLS-1$
+        paragraphs.add("Ezek.11.24"); //$NON-NLS-1$
+        paragraphs.add("Ezek.12.8"); //$NON-NLS-1$
+        paragraphs.add("Ezek.12.17"); //$NON-NLS-1$
+        paragraphs.add("Ezek.12.21"); //$NON-NLS-1$
+        paragraphs.add("Ezek.12.26"); //$NON-NLS-1$
+        paragraphs.add("Ezek.13.10"); //$NON-NLS-1$
+        paragraphs.add("Ezek.13.17"); //$NON-NLS-1$
+        paragraphs.add("Ezek.14.6"); //$NON-NLS-1$
+        paragraphs.add("Ezek.14.12"); //$NON-NLS-1$
+        paragraphs.add("Ezek.14.15"); //$NON-NLS-1$
+        paragraphs.add("Ezek.14.17"); //$NON-NLS-1$
+        paragraphs.add("Ezek.14.19"); //$NON-NLS-1$
+        paragraphs.add("Ezek.14.22"); //$NON-NLS-1$
+        paragraphs.add("Ezek.15.6"); //$NON-NLS-1$
+        paragraphs.add("Ezek.16.6"); //$NON-NLS-1$
+        paragraphs.add("Ezek.16.15"); //$NON-NLS-1$
+        paragraphs.add("Ezek.16.35"); //$NON-NLS-1$
+        paragraphs.add("Ezek.16.44"); //$NON-NLS-1$
+        paragraphs.add("Ezek.16.60"); //$NON-NLS-1$
+        paragraphs.add("Ezek.17.11"); //$NON-NLS-1$
+        paragraphs.add("Ezek.17.22"); //$NON-NLS-1$
+        paragraphs.add("Ezek.18.5"); //$NON-NLS-1$
+        paragraphs.add("Ezek.18.10"); //$NON-NLS-1$
+        paragraphs.add("Ezek.18.14"); //$NON-NLS-1$
+        paragraphs.add("Ezek.18.19"); //$NON-NLS-1$
+        paragraphs.add("Ezek.18.24"); //$NON-NLS-1$
+        paragraphs.add("Ezek.18.25"); //$NON-NLS-1$
+        paragraphs.add("Ezek.18.31"); //$NON-NLS-1$
+        paragraphs.add("Ezek.19.10"); //$NON-NLS-1$
+        paragraphs.add("Ezek.20.5"); //$NON-NLS-1$
+        paragraphs.add("Ezek.20.10"); //$NON-NLS-1$
+        paragraphs.add("Ezek.20.27"); //$NON-NLS-1$
+        paragraphs.add("Ezek.20.33"); //$NON-NLS-1$
+        paragraphs.add("Ezek.20.45"); //$NON-NLS-1$
+        paragraphs.add("Ezek.21.8"); //$NON-NLS-1$
+        paragraphs.add("Ezek.21.18"); //$NON-NLS-1$
+        paragraphs.add("Ezek.21.25"); //$NON-NLS-1$
+        paragraphs.add("Ezek.21.28"); //$NON-NLS-1$
+        paragraphs.add("Ezek.22.13"); //$NON-NLS-1$
+        paragraphs.add("Ezek.22.23"); //$NON-NLS-1$
+        paragraphs.add("Ezek.23.22"); //$NON-NLS-1$
+        paragraphs.add("Ezek.23.36"); //$NON-NLS-1$
+        paragraphs.add("Ezek.23.45"); //$NON-NLS-1$
+        paragraphs.add("Ezek.24.6"); //$NON-NLS-1$
+        paragraphs.add("Ezek.24.15"); //$NON-NLS-1$
+        paragraphs.add("Ezek.24.19"); //$NON-NLS-1$
+        paragraphs.add("Ezek.25.8"); //$NON-NLS-1$
+        paragraphs.add("Ezek.25.12"); //$NON-NLS-1$
+        paragraphs.add("Ezek.25.15"); //$NON-NLS-1$
+        paragraphs.add("Ezek.26.7"); //$NON-NLS-1$
+        paragraphs.add("Ezek.26.15"); //$NON-NLS-1$
+        paragraphs.add("Ezek.27.26"); //$NON-NLS-1$
+        paragraphs.add("Ezek.28.11"); //$NON-NLS-1$
+        paragraphs.add("Ezek.28.20"); //$NON-NLS-1$
+        paragraphs.add("Ezek.28.24"); //$NON-NLS-1$
+        paragraphs.add("Ezek.29.8"); //$NON-NLS-1$
+        paragraphs.add("Ezek.29.13"); //$NON-NLS-1$
+        paragraphs.add("Ezek.29.17"); //$NON-NLS-1$
+        paragraphs.add("Ezek.29.21"); //$NON-NLS-1$
+        paragraphs.add("Ezek.30.20"); //$NON-NLS-1$
+        paragraphs.add("Ezek.31.3"); //$NON-NLS-1$
+        paragraphs.add("Ezek.31.10"); //$NON-NLS-1$
+        paragraphs.add("Ezek.31.18"); //$NON-NLS-1$
+        paragraphs.add("Ezek.32.11"); //$NON-NLS-1$
+        paragraphs.add("Ezek.32.17"); //$NON-NLS-1$
+        paragraphs.add("Ezek.33.7"); //$NON-NLS-1$
+        paragraphs.add("Ezek.33.17"); //$NON-NLS-1$
+        paragraphs.add("Ezek.33.20"); //$NON-NLS-1$
+        paragraphs.add("Ezek.33.21"); //$NON-NLS-1$
+        paragraphs.add("Ezek.33.30"); //$NON-NLS-1$
+        paragraphs.add("Ezek.34.7"); //$NON-NLS-1$
+        paragraphs.add("Ezek.34.11"); //$NON-NLS-1$
+        paragraphs.add("Ezek.34.20"); //$NON-NLS-1$
+        paragraphs.add("Ezek.36.8"); //$NON-NLS-1$
+        paragraphs.add("Ezek.36.16"); //$NON-NLS-1$
+        paragraphs.add("Ezek.36.21"); //$NON-NLS-1$
+        paragraphs.add("Ezek.36.25"); //$NON-NLS-1$
+        paragraphs.add("Ezek.37.11"); //$NON-NLS-1$
+        paragraphs.add("Ezek.37.15"); //$NON-NLS-1$
+        paragraphs.add("Ezek.37.18"); //$NON-NLS-1$
+        paragraphs.add("Ezek.37.20"); //$NON-NLS-1$
+        paragraphs.add("Ezek.38.8"); //$NON-NLS-1$
+        paragraphs.add("Ezek.38.14"); //$NON-NLS-1$
+        paragraphs.add("Ezek.39.8"); //$NON-NLS-1$
+        paragraphs.add("Ezek.39.11"); //$NON-NLS-1$
+        paragraphs.add("Ezek.39.17"); //$NON-NLS-1$
+        paragraphs.add("Ezek.39.23"); //$NON-NLS-1$
+        paragraphs.add("Ezek.40.6"); //$NON-NLS-1$
+        paragraphs.add("Ezek.40.20"); //$NON-NLS-1$
+        paragraphs.add("Ezek.40.24"); //$NON-NLS-1$
+        paragraphs.add("Ezek.40.32"); //$NON-NLS-1$
+        paragraphs.add("Ezek.40.35"); //$NON-NLS-1$
+        paragraphs.add("Ezek.40.39"); //$NON-NLS-1$
+        paragraphs.add("Ezek.40.44"); //$NON-NLS-1$
+        paragraphs.add("Ezek.40.48"); //$NON-NLS-1$
+        paragraphs.add("Ezek.42.13"); //$NON-NLS-1$
+        paragraphs.add("Ezek.42.19"); //$NON-NLS-1$
+        paragraphs.add("Ezek.43.7"); //$NON-NLS-1$
+        paragraphs.add("Ezek.43.10"); //$NON-NLS-1$
+        paragraphs.add("Ezek.43.13"); //$NON-NLS-1$
+        paragraphs.add("Ezek.43.18"); //$NON-NLS-1$
+        paragraphs.add("Ezek.44.4"); //$NON-NLS-1$
+        paragraphs.add("Ezek.44.9"); //$NON-NLS-1$
+        paragraphs.add("Ezek.44.15"); //$NON-NLS-1$
+        paragraphs.add("Ezek.44.17"); //$NON-NLS-1$
+        paragraphs.add("Ezek.45.6"); //$NON-NLS-1$
+        paragraphs.add("Ezek.45.7"); //$NON-NLS-1$
+        paragraphs.add("Ezek.45.9"); //$NON-NLS-1$
+        paragraphs.add("Ezek.46.9"); //$NON-NLS-1$
+        paragraphs.add("Ezek.46.16"); //$NON-NLS-1$
+        paragraphs.add("Ezek.46.19"); //$NON-NLS-1$
+        paragraphs.add("Ezek.47.6"); //$NON-NLS-1$
+        paragraphs.add("Ezek.47.13"); //$NON-NLS-1$
+        paragraphs.add("Ezek.47.22"); //$NON-NLS-1$
+        paragraphs.add("Ezek.48.8"); //$NON-NLS-1$
+        paragraphs.add("Ezek.48.15"); //$NON-NLS-1$
+        paragraphs.add("Ezek.48.21"); //$NON-NLS-1$
+        paragraphs.add("Ezek.48.30"); //$NON-NLS-1$
+        paragraphs.add("Dan.1.3"); //$NON-NLS-1$
+        paragraphs.add("Dan.1.8"); //$NON-NLS-1$
+        paragraphs.add("Dan.1.17"); //$NON-NLS-1$
+        paragraphs.add("Dan.2.10"); //$NON-NLS-1$
+        paragraphs.add("Dan.2.14"); //$NON-NLS-1$
+        paragraphs.add("Dan.2.19"); //$NON-NLS-1$
+        paragraphs.add("Dan.2.24"); //$NON-NLS-1$
+        paragraphs.add("Dan.2.31"); //$NON-NLS-1$
+        paragraphs.add("Dan.2.36"); //$NON-NLS-1$
+        paragraphs.add("Dan.2.46"); //$NON-NLS-1$
+        paragraphs.add("Dan.3.8"); //$NON-NLS-1$
+        paragraphs.add("Dan.3.13"); //$NON-NLS-1$
+        paragraphs.add("Dan.3.19"); //$NON-NLS-1$
+        paragraphs.add("Dan.3.26"); //$NON-NLS-1$
+        paragraphs.add("Dan.4.4"); //$NON-NLS-1$
+        paragraphs.add("Dan.4.8"); //$NON-NLS-1$
+        paragraphs.add("Dan.4.19"); //$NON-NLS-1$
+        paragraphs.add("Dan.4.28"); //$NON-NLS-1$
+        paragraphs.add("Dan.5.5"); //$NON-NLS-1$
+        paragraphs.add("Dan.5.10"); //$NON-NLS-1$
+        paragraphs.add("Dan.5.17"); //$NON-NLS-1$
+        paragraphs.add("Dan.5.25"); //$NON-NLS-1$
+        paragraphs.add("Dan.5.30"); //$NON-NLS-1$
+        paragraphs.add("Dan.6.4"); //$NON-NLS-1$
+        paragraphs.add("Dan.6.10"); //$NON-NLS-1$
+        paragraphs.add("Dan.6.18"); //$NON-NLS-1$
+        paragraphs.add("Dan.6.24"); //$NON-NLS-1$
+        paragraphs.add("Dan.6.25"); //$NON-NLS-1$
+        paragraphs.add("Dan.7.9"); //$NON-NLS-1$
+        paragraphs.add("Dan.7.15"); //$NON-NLS-1$
+        paragraphs.add("Dan.8.13"); //$NON-NLS-1$
+        paragraphs.add("Dan.8.15"); //$NON-NLS-1$
+        paragraphs.add("Dan.9.3"); //$NON-NLS-1$
+        paragraphs.add("Dan.9.16"); //$NON-NLS-1$
+        paragraphs.add("Dan.9.20"); //$NON-NLS-1$
+        paragraphs.add("Dan.10.10"); //$NON-NLS-1$
+        paragraphs.add("Dan.11.5"); //$NON-NLS-1$
+        paragraphs.add("Dan.11.30"); //$NON-NLS-1$
+        paragraphs.add("Dan.12.5"); //$NON-NLS-1$
+        paragraphs.add("Hos.1.6"); //$NON-NLS-1$
+        paragraphs.add("Hos.1.8"); //$NON-NLS-1$
+        paragraphs.add("Hos.1.10"); //$NON-NLS-1$
+        paragraphs.add("Hos.2.6"); //$NON-NLS-1$
+        paragraphs.add("Hos.2.14"); //$NON-NLS-1$
+        paragraphs.add("Hos.4.6"); //$NON-NLS-1$
+        paragraphs.add("Hos.4.12"); //$NON-NLS-1$
+        paragraphs.add("Hos.4.15"); //$NON-NLS-1$
+        paragraphs.add("Hos.5.15"); //$NON-NLS-1$
+        paragraphs.add("Hos.6.4"); //$NON-NLS-1$
+        paragraphs.add("Hos.7.11"); //$NON-NLS-1$
+        paragraphs.add("Hos.8.5"); //$NON-NLS-1$
+        paragraphs.add("Hos.11.5"); //$NON-NLS-1$
+        paragraphs.add("Hos.12.3"); //$NON-NLS-1$
+        paragraphs.add("Hos.12.7"); //$NON-NLS-1$
+        paragraphs.add("Hos.13.5"); //$NON-NLS-1$
+        paragraphs.add("Hos.13.9"); //$NON-NLS-1$
+        paragraphs.add("Hos.13.15"); //$NON-NLS-1$
+        paragraphs.add("Hos.14.4"); //$NON-NLS-1$
+        paragraphs.add("Joel.1.8"); //$NON-NLS-1$
+        paragraphs.add("Joel.1.14"); //$NON-NLS-1$
+        paragraphs.add("Joel.2.12"); //$NON-NLS-1$
+        paragraphs.add("Joel.2.15"); //$NON-NLS-1$
+        paragraphs.add("Joel.2.18"); //$NON-NLS-1$
+        paragraphs.add("Joel.2.21"); //$NON-NLS-1$
+        paragraphs.add("Joel.2.28"); //$NON-NLS-1$
+        paragraphs.add("Joel.3.9"); //$NON-NLS-1$
+        paragraphs.add("Joel.3.18"); //$NON-NLS-1$
+        paragraphs.add("Amos.1.6"); //$NON-NLS-1$
+        paragraphs.add("Amos.1.9"); //$NON-NLS-1$
+        paragraphs.add("Amos.1.11"); //$NON-NLS-1$
+        paragraphs.add("Amos.1.13"); //$NON-NLS-1$
+        paragraphs.add("Amos.2.4"); //$NON-NLS-1$
+        paragraphs.add("Amos.2.6"); //$NON-NLS-1$
+        paragraphs.add("Amos.2.9"); //$NON-NLS-1$
+        paragraphs.add("Amos.3.9"); //$NON-NLS-1$
+        paragraphs.add("Amos.4.4"); //$NON-NLS-1$
+        paragraphs.add("Amos.4.6"); //$NON-NLS-1$
+        paragraphs.add("Amos.5.4"); //$NON-NLS-1$
+        paragraphs.add("Amos.5.21"); //$NON-NLS-1$
+        paragraphs.add("Amos.6.7"); //$NON-NLS-1$
+        paragraphs.add("Amos.6.12"); //$NON-NLS-1$
+        paragraphs.add("Amos.7.4"); //$NON-NLS-1$
+        paragraphs.add("Amos.7.7"); //$NON-NLS-1$
+        paragraphs.add("Amos.7.10"); //$NON-NLS-1$
+        paragraphs.add("Amos.7.14"); //$NON-NLS-1$
+        paragraphs.add("Amos.7.16"); //$NON-NLS-1$
+        paragraphs.add("Amos.8.4"); //$NON-NLS-1$
+        paragraphs.add("Amos.8.11"); //$NON-NLS-1$
+        paragraphs.add("Amos.9.11"); //$NON-NLS-1$
+        paragraphs.add("Obad.1.3"); //$NON-NLS-1$
+        paragraphs.add("Obad.1.10"); //$NON-NLS-1$
+        paragraphs.add("Obad.1.17"); //$NON-NLS-1$
+        paragraphs.add("Jonah.1.4"); //$NON-NLS-1$
+        paragraphs.add("Jonah.1.11"); //$NON-NLS-1$
+        paragraphs.add("Jonah.1.17"); //$NON-NLS-1$
+        paragraphs.add("Jonah.2.10"); //$NON-NLS-1$
+        paragraphs.add("Jonah.3.5"); //$NON-NLS-1$
+        paragraphs.add("Jonah.3.10"); //$NON-NLS-1$
+        paragraphs.add("Jonah.4.4"); //$NON-NLS-1$
+        paragraphs.add("Mic.1.10"); //$NON-NLS-1$
+        paragraphs.add("Mic.2.4"); //$NON-NLS-1$
+        paragraphs.add("Mic.2.7"); //$NON-NLS-1$
+        paragraphs.add("Mic.2.12"); //$NON-NLS-1$
+        paragraphs.add("Mic.3.5"); //$NON-NLS-1$
+        paragraphs.add("Mic.3.8"); //$NON-NLS-1$
+        paragraphs.add("Mic.4.3"); //$NON-NLS-1$
+        paragraphs.add("Mic.4.8"); //$NON-NLS-1$
+        paragraphs.add("Mic.4.11"); //$NON-NLS-1$
+        paragraphs.add("Mic.5.4"); //$NON-NLS-1$
+        paragraphs.add("Mic.5.8"); //$NON-NLS-1$
+        paragraphs.add("Mic.6.6"); //$NON-NLS-1$
+        paragraphs.add("Mic.6.10"); //$NON-NLS-1$
+        paragraphs.add("Mic.6.16"); //$NON-NLS-1$
+        paragraphs.add("Mic.7.3"); //$NON-NLS-1$
+        paragraphs.add("Mic.7.5"); //$NON-NLS-1$
+        paragraphs.add("Mic.7.8"); //$NON-NLS-1$
+        paragraphs.add("Mic.7.14"); //$NON-NLS-1$
+        paragraphs.add("Mic.7.16"); //$NON-NLS-1$
+        paragraphs.add("Hab.1.5"); //$NON-NLS-1$
+        paragraphs.add("Hab.1.12"); //$NON-NLS-1$
+        paragraphs.add("Hab.2.5"); //$NON-NLS-1$
+        paragraphs.add("Hab.2.9"); //$NON-NLS-1$
+        paragraphs.add("Hab.2.12"); //$NON-NLS-1$
+        paragraphs.add("Hab.2.15"); //$NON-NLS-1$
+        paragraphs.add("Hab.2.18"); //$NON-NLS-1$
+        paragraphs.add("Hab.3.17"); //$NON-NLS-1$
+        paragraphs.add("Zeph.2.4"); //$NON-NLS-1$
+        paragraphs.add("Zeph.2.8"); //$NON-NLS-1$
+        paragraphs.add("Zeph.2.12"); //$NON-NLS-1$
+        paragraphs.add("Zeph.3.8"); //$NON-NLS-1$
+        paragraphs.add("Zeph.3.14"); //$NON-NLS-1$
+        paragraphs.add("Hag.1.7"); //$NON-NLS-1$
+        paragraphs.add("Hag.1.12"); //$NON-NLS-1$
+        paragraphs.add("Hag.2.10"); //$NON-NLS-1$
+        paragraphs.add("Hag.2.20"); //$NON-NLS-1$
+        paragraphs.add("Zech.1.7"); //$NON-NLS-1$
+        paragraphs.add("Zech.1.12"); //$NON-NLS-1$
+        paragraphs.add("Zech.1.18"); //$NON-NLS-1$
+        paragraphs.add("Zech.2.6"); //$NON-NLS-1$
+        paragraphs.add("Zech.2.10"); //$NON-NLS-1$
+        paragraphs.add("Zech.4.11"); //$NON-NLS-1$
+        paragraphs.add("Zech.5.5"); //$NON-NLS-1$
+        paragraphs.add("Zech.6.9"); //$NON-NLS-1$
+        paragraphs.add("Zech.7.4"); //$NON-NLS-1$
+        paragraphs.add("Zech.7.8"); //$NON-NLS-1$
+        paragraphs.add("Zech.8.9"); //$NON-NLS-1$
+        paragraphs.add("Zech.8.16"); //$NON-NLS-1$
+        paragraphs.add("Zech.8.18"); //$NON-NLS-1$
+        paragraphs.add("Zech.9.9"); //$NON-NLS-1$
+        paragraphs.add("Zech.9.12"); //$NON-NLS-1$
+        paragraphs.add("Zech.10.5"); //$NON-NLS-1$
+        paragraphs.add("Zech.11.3"); //$NON-NLS-1$
+        paragraphs.add("Zech.11.10"); //$NON-NLS-1$
+        paragraphs.add("Zech.11.15"); //$NON-NLS-1$
+        paragraphs.add("Zech.12.3"); //$NON-NLS-1$
+        paragraphs.add("Zech.12.6"); //$NON-NLS-1$
+        paragraphs.add("Zech.12.9"); //$NON-NLS-1$
+        paragraphs.add("Zech.13.2"); //$NON-NLS-1$
+        paragraphs.add("Zech.13.7"); //$NON-NLS-1$
+        paragraphs.add("Zech.14.4"); //$NON-NLS-1$
+        paragraphs.add("Zech.14.12"); //$NON-NLS-1$
+        paragraphs.add("Zech.14.16"); //$NON-NLS-1$
+        paragraphs.add("Zech.14.20"); //$NON-NLS-1$
+        paragraphs.add("Mal.1.6"); //$NON-NLS-1$
+        paragraphs.add("Mal.1.12"); //$NON-NLS-1$
+        paragraphs.add("Mal.2.11"); //$NON-NLS-1$
+        paragraphs.add("Mal.2.14"); //$NON-NLS-1$
+        paragraphs.add("Mal.2.17"); //$NON-NLS-1$
+        paragraphs.add("Mal.3.7"); //$NON-NLS-1$
+        paragraphs.add("Mal.3.8"); //$NON-NLS-1$
+        paragraphs.add("Mal.3.13"); //$NON-NLS-1$
+        paragraphs.add("Mal.3.16"); //$NON-NLS-1$
+        paragraphs.add("Mal.4.2"); //$NON-NLS-1$
+        paragraphs.add("Mal.4.4"); //$NON-NLS-1$
+        paragraphs.add("Mal.4.5"); //$NON-NLS-1$
+        paragraphs.add("Matt.1.18"); //$NON-NLS-1$
+        paragraphs.add("Matt.2.11"); //$NON-NLS-1$
+        paragraphs.add("Matt.2.16"); //$NON-NLS-1$
+        paragraphs.add("Matt.2.19"); //$NON-NLS-1$
+        paragraphs.add("Matt.3.7"); //$NON-NLS-1$
+        paragraphs.add("Matt.3.13"); //$NON-NLS-1$
+        paragraphs.add("Matt.4.12"); //$NON-NLS-1$
+        paragraphs.add("Matt.4.17"); //$NON-NLS-1$
+        paragraphs.add("Matt.4.18"); //$NON-NLS-1$
+        paragraphs.add("Matt.4.23"); //$NON-NLS-1$
+        paragraphs.add("Matt.5.13"); //$NON-NLS-1$
+        paragraphs.add("Matt.5.17"); //$NON-NLS-1$
+        paragraphs.add("Matt.5.21"); //$NON-NLS-1$
+        paragraphs.add("Matt.5.27"); //$NON-NLS-1$
+        paragraphs.add("Matt.5.33"); //$NON-NLS-1$
+        paragraphs.add("Matt.5.38"); //$NON-NLS-1$
+        paragraphs.add("Matt.5.43"); //$NON-NLS-1$
+        paragraphs.add("Matt.6.5"); //$NON-NLS-1$
+        paragraphs.add("Matt.6.16"); //$NON-NLS-1$
+        paragraphs.add("Matt.6.19"); //$NON-NLS-1$
+        paragraphs.add("Matt.6.24"); //$NON-NLS-1$
+        paragraphs.add("Matt.7.6"); //$NON-NLS-1$
+        paragraphs.add("Matt.7.7"); //$NON-NLS-1$
+        paragraphs.add("Matt.7.13"); //$NON-NLS-1$
+        paragraphs.add("Matt.7.15"); //$NON-NLS-1$
+        paragraphs.add("Matt.7.21"); //$NON-NLS-1$
+        paragraphs.add("Matt.7.24"); //$NON-NLS-1$
+        paragraphs.add("Matt.8.5"); //$NON-NLS-1$
+        paragraphs.add("Matt.8.14"); //$NON-NLS-1$
+        paragraphs.add("Matt.8.16"); //$NON-NLS-1$
+        paragraphs.add("Matt.8.18"); //$NON-NLS-1$
+        paragraphs.add("Matt.8.23"); //$NON-NLS-1$
+        paragraphs.add("Matt.8.28"); //$NON-NLS-1$
+        paragraphs.add("Matt.9.9"); //$NON-NLS-1$
+        paragraphs.add("Matt.9.10"); //$NON-NLS-1$
+        paragraphs.add("Matt.9.14"); //$NON-NLS-1$
+        paragraphs.add("Matt.9.18"); //$NON-NLS-1$
+        paragraphs.add("Matt.9.20"); //$NON-NLS-1$
+        paragraphs.add("Matt.9.27"); //$NON-NLS-1$
+        paragraphs.add("Matt.9.32"); //$NON-NLS-1$
+        paragraphs.add("Matt.9.36"); //$NON-NLS-1$
+        paragraphs.add("Matt.10.16"); //$NON-NLS-1$
+        paragraphs.add("Matt.10.40"); //$NON-NLS-1$
+        paragraphs.add("Matt.11.7"); //$NON-NLS-1$
+        paragraphs.add("Matt.11.16"); //$NON-NLS-1$
+        paragraphs.add("Matt.11.20"); //$NON-NLS-1$
+        paragraphs.add("Matt.11.25"); //$NON-NLS-1$
+        paragraphs.add("Matt.11.28"); //$NON-NLS-1$
+        paragraphs.add("Matt.12.10"); //$NON-NLS-1$
+        paragraphs.add("Matt.12.14"); //$NON-NLS-1$
+        paragraphs.add("Matt.12.22"); //$NON-NLS-1$
+        paragraphs.add("Matt.12.31"); //$NON-NLS-1$
+        paragraphs.add("Matt.12.38"); //$NON-NLS-1$
+        paragraphs.add("Matt.12.46"); //$NON-NLS-1$
+        paragraphs.add("Matt.13.18"); //$NON-NLS-1$
+        paragraphs.add("Matt.13.24"); //$NON-NLS-1$
+        paragraphs.add("Matt.13.31"); //$NON-NLS-1$
+        paragraphs.add("Matt.13.33"); //$NON-NLS-1$
+        paragraphs.add("Matt.13.44"); //$NON-NLS-1$
+        paragraphs.add("Matt.13.45"); //$NON-NLS-1$
+        paragraphs.add("Matt.13.47"); //$NON-NLS-1$
+        paragraphs.add("Matt.13.53"); //$NON-NLS-1$
+        paragraphs.add("Matt.14.3"); //$NON-NLS-1$
+        paragraphs.add("Matt.14.13"); //$NON-NLS-1$
+        paragraphs.add("Matt.14.15"); //$NON-NLS-1$
+        paragraphs.add("Matt.14.22"); //$NON-NLS-1$
+        paragraphs.add("Matt.14.34"); //$NON-NLS-1$
+        paragraphs.add("Matt.15.10"); //$NON-NLS-1$
+        paragraphs.add("Matt.15.21"); //$NON-NLS-1$
+        paragraphs.add("Matt.15.32"); //$NON-NLS-1$
+        paragraphs.add("Matt.16.6"); //$NON-NLS-1$
+        paragraphs.add("Matt.16.13"); //$NON-NLS-1$
+        paragraphs.add("Matt.16.21"); //$NON-NLS-1$
+        paragraphs.add("Matt.16.24"); //$NON-NLS-1$
+        paragraphs.add("Matt.17.14"); //$NON-NLS-1$
+        paragraphs.add("Matt.17.22"); //$NON-NLS-1$
+        paragraphs.add("Matt.17.24"); //$NON-NLS-1$
+        paragraphs.add("Matt.18.7"); //$NON-NLS-1$
+        paragraphs.add("Matt.18.15"); //$NON-NLS-1$
+        paragraphs.add("Matt.18.21"); //$NON-NLS-1$
+        paragraphs.add("Matt.18.23"); //$NON-NLS-1$
+        paragraphs.add("Matt.19.3"); //$NON-NLS-1$
+        paragraphs.add("Matt.19.10"); //$NON-NLS-1$
+        paragraphs.add("Matt.19.13"); //$NON-NLS-1$
+        paragraphs.add("Matt.19.16"); //$NON-NLS-1$
+        paragraphs.add("Matt.19.23"); //$NON-NLS-1$
+        paragraphs.add("Matt.19.27"); //$NON-NLS-1$
+        paragraphs.add("Matt.20.17"); //$NON-NLS-1$
+        paragraphs.add("Matt.20.20"); //$NON-NLS-1$
+        paragraphs.add("Matt.20.30"); //$NON-NLS-1$
+        paragraphs.add("Matt.21.12"); //$NON-NLS-1$
+        paragraphs.add("Matt.21.17"); //$NON-NLS-1$
+        paragraphs.add("Matt.21.23"); //$NON-NLS-1$
+        paragraphs.add("Matt.21.28"); //$NON-NLS-1$
+        paragraphs.add("Matt.21.33"); //$NON-NLS-1$
+        paragraphs.add("Matt.22.11"); //$NON-NLS-1$
+        paragraphs.add("Matt.22.15"); //$NON-NLS-1$
+        paragraphs.add("Matt.22.23"); //$NON-NLS-1$
+        paragraphs.add("Matt.22.34"); //$NON-NLS-1$
+        paragraphs.add("Matt.22.41"); //$NON-NLS-1$
+        paragraphs.add("Matt.23.13"); //$NON-NLS-1$
+        paragraphs.add("Matt.23.34"); //$NON-NLS-1$
+        paragraphs.add("Matt.24.3"); //$NON-NLS-1$
+        paragraphs.add("Matt.24.29"); //$NON-NLS-1$
+        paragraphs.add("Matt.24.36"); //$NON-NLS-1$
+        paragraphs.add("Matt.24.42"); //$NON-NLS-1$
+        paragraphs.add("Matt.25.14"); //$NON-NLS-1$
+        paragraphs.add("Matt.25.31"); //$NON-NLS-1$
+        paragraphs.add("Matt.26.6"); //$NON-NLS-1$
+        paragraphs.add("Matt.26.14"); //$NON-NLS-1$
+        paragraphs.add("Matt.26.17"); //$NON-NLS-1$
+        paragraphs.add("Matt.26.26"); //$NON-NLS-1$
+        paragraphs.add("Matt.26.36"); //$NON-NLS-1$
+        paragraphs.add("Matt.26.47"); //$NON-NLS-1$
+        paragraphs.add("Matt.26.57"); //$NON-NLS-1$
+        paragraphs.add("Matt.26.69"); //$NON-NLS-1$
+        paragraphs.add("Matt.27.3"); //$NON-NLS-1$
+        paragraphs.add("Matt.27.19"); //$NON-NLS-1$
+        paragraphs.add("Matt.27.24"); //$NON-NLS-1$
+        paragraphs.add("Matt.27.26"); //$NON-NLS-1$
+        paragraphs.add("Matt.27.29"); //$NON-NLS-1$
+        paragraphs.add("Matt.27.34"); //$NON-NLS-1$
+        paragraphs.add("Matt.27.39"); //$NON-NLS-1$
+        paragraphs.add("Matt.27.50"); //$NON-NLS-1$
+        paragraphs.add("Matt.27.62"); //$NON-NLS-1$
+        paragraphs.add("Matt.28.9"); //$NON-NLS-1$
+        paragraphs.add("Matt.28.11"); //$NON-NLS-1$
+        paragraphs.add("Matt.28.16"); //$NON-NLS-1$
+        paragraphs.add("Matt.28.19"); //$NON-NLS-1$
+        paragraphs.add("Mark.3.22"); //$NON-NLS-1$
+        paragraphs.add("Mark.3.31"); //$NON-NLS-1$
+        paragraphs.add("Mark.4.14"); //$NON-NLS-1$
+        paragraphs.add("Mark.4.21"); //$NON-NLS-1$
+        paragraphs.add("Mark.4.26"); //$NON-NLS-1$
+        paragraphs.add("Mark.4.30"); //$NON-NLS-1$
+        paragraphs.add("Mark.6.7"); //$NON-NLS-1$
+        paragraphs.add("Mark.7.14"); //$NON-NLS-1$
+        paragraphs.add("Mark.7.24"); //$NON-NLS-1$
+        paragraphs.add("Mark.7.31"); //$NON-NLS-1$
+        paragraphs.add("Mark.8.10"); //$NON-NLS-1$
+        paragraphs.add("Mark.8.14"); //$NON-NLS-1$
+        paragraphs.add("Mark.8.22"); //$NON-NLS-1$
+        paragraphs.add("Mark.8.27"); //$NON-NLS-1$
+        paragraphs.add("Mark.8.34"); //$NON-NLS-1$
+        paragraphs.add("Mark.9.2"); //$NON-NLS-1$
+        paragraphs.add("Mark.9.11"); //$NON-NLS-1$
+        paragraphs.add("Mark.9.14"); //$NON-NLS-1$
+        paragraphs.add("Mark.9.30"); //$NON-NLS-1$
+        paragraphs.add("Mark.9.33"); //$NON-NLS-1$
+        paragraphs.add("Mark.9.38"); //$NON-NLS-1$
+        paragraphs.add("Mark.10.2"); //$NON-NLS-1$
+        paragraphs.add("Mark.10.13"); //$NON-NLS-1$
+        paragraphs.add("Mark.10.17"); //$NON-NLS-1$
+        paragraphs.add("Mark.10.23"); //$NON-NLS-1$
+        paragraphs.add("Mark.10.28"); //$NON-NLS-1$
+        paragraphs.add("Mark.10.32"); //$NON-NLS-1$
+        paragraphs.add("Mark.10.35"); //$NON-NLS-1$
+        paragraphs.add("Mark.10.46"); //$NON-NLS-1$
+        paragraphs.add("Mark.11.12"); //$NON-NLS-1$
+        paragraphs.add("Mark.11.15"); //$NON-NLS-1$
+        paragraphs.add("Mark.11.20"); //$NON-NLS-1$
+        paragraphs.add("Mark.11.27"); //$NON-NLS-1$
+        paragraphs.add("Mark.12.13"); //$NON-NLS-1$
+        paragraphs.add("Mark.12.18"); //$NON-NLS-1$
+        paragraphs.add("Mark.12.28"); //$NON-NLS-1$
+        paragraphs.add("Mark.12.35"); //$NON-NLS-1$
+        paragraphs.add("Mark.12.38"); //$NON-NLS-1$
+        paragraphs.add("Mark.12.41"); //$NON-NLS-1$
+        paragraphs.add("Mark.13.9"); //$NON-NLS-1$
+        paragraphs.add("Mark.13.14"); //$NON-NLS-1$
+        paragraphs.add("Mark.13.24"); //$NON-NLS-1$
+        paragraphs.add("Mark.13.32"); //$NON-NLS-1$
+        paragraphs.add("Mark.14.3"); //$NON-NLS-1$
+        paragraphs.add("Mark.14.10"); //$NON-NLS-1$
+        paragraphs.add("Mark.14.12"); //$NON-NLS-1$
+        paragraphs.add("Mark.14.22"); //$NON-NLS-1$
+        paragraphs.add("Mark.14.26"); //$NON-NLS-1$
+        paragraphs.add("Mark.14.43"); //$NON-NLS-1$
+        paragraphs.add("Mark.14.46"); //$NON-NLS-1$
+        paragraphs.add("Mark.14.53"); //$NON-NLS-1$
+        paragraphs.add("Mark.14.66"); //$NON-NLS-1$
+        paragraphs.add("Mark.15.15"); //$NON-NLS-1$
+        paragraphs.add("Mark.15.39"); //$NON-NLS-1$
+        paragraphs.add("Mark.15.42"); //$NON-NLS-1$
+        paragraphs.add("Mark.16.9"); //$NON-NLS-1$
+        paragraphs.add("Mark.16.12"); //$NON-NLS-1$
+        paragraphs.add("Mark.16.14"); //$NON-NLS-1$
+        paragraphs.add("Mark.16.19"); //$NON-NLS-1$
+        paragraphs.add("Luke.1.5"); //$NON-NLS-1$
+        paragraphs.add("Luke.4.14"); //$NON-NLS-1$
+        paragraphs.add("Luke.4.16"); //$NON-NLS-1$
+        paragraphs.add("Luke.4.33"); //$NON-NLS-1$
+        paragraphs.add("Luke.4.38"); //$NON-NLS-1$
+        paragraphs.add("Luke.4.40"); //$NON-NLS-1$
+        paragraphs.add("Luke.5.12"); //$NON-NLS-1$
+        paragraphs.add("Luke.5.16"); //$NON-NLS-1$
+        paragraphs.add("Luke.5.18"); //$NON-NLS-1$
+        paragraphs.add("Luke.5.27"); //$NON-NLS-1$
+        paragraphs.add("Luke.5.33"); //$NON-NLS-1$
+        paragraphs.add("Luke.5.36"); //$NON-NLS-1$
+        paragraphs.add("Luke.6.13"); //$NON-NLS-1$
+        paragraphs.add("Luke.6.17"); //$NON-NLS-1$
+        paragraphs.add("Luke.6.20"); //$NON-NLS-1$
+        paragraphs.add("Luke.6.27"); //$NON-NLS-1$
+        paragraphs.add("Luke.6.46"); //$NON-NLS-1$
+        paragraphs.add("Luke.7.11"); //$NON-NLS-1$
+        paragraphs.add("Luke.7.19"); //$NON-NLS-1$
+        paragraphs.add("Luke.7.24"); //$NON-NLS-1$
+        paragraphs.add("Luke.7.31"); //$NON-NLS-1$
+        paragraphs.add("Luke.7.36"); //$NON-NLS-1$
+        paragraphs.add("Luke.8.4"); //$NON-NLS-1$
+        paragraphs.add("Luke.8.16"); //$NON-NLS-1$
+        paragraphs.add("Luke.8.19"); //$NON-NLS-1$
+        paragraphs.add("Luke.8.22"); //$NON-NLS-1$
+        paragraphs.add("Luke.8.26"); //$NON-NLS-1$
+        paragraphs.add("Luke.8.37"); //$NON-NLS-1$
+        paragraphs.add("Luke.8.41"); //$NON-NLS-1$
+        paragraphs.add("Luke.8.43"); //$NON-NLS-1$
+        paragraphs.add("Luke.8.49"); //$NON-NLS-1$
+        paragraphs.add("Luke.9.7"); //$NON-NLS-1$
+        paragraphs.add("Luke.9.10"); //$NON-NLS-1$
+        paragraphs.add("Luke.9.18"); //$NON-NLS-1$
+        paragraphs.add("Luke.9.23"); //$NON-NLS-1$
+        paragraphs.add("Luke.9.28"); //$NON-NLS-1$
+        paragraphs.add("Luke.9.37"); //$NON-NLS-1$
+        paragraphs.add("Luke.9.43"); //$NON-NLS-1$
+        paragraphs.add("Luke.9.46"); //$NON-NLS-1$
+        paragraphs.add("Luke.9.49"); //$NON-NLS-1$
+        paragraphs.add("Luke.9.51"); //$NON-NLS-1$
+        paragraphs.add("Luke.9.57"); //$NON-NLS-1$
+        paragraphs.add("Luke.10.17"); //$NON-NLS-1$
+        paragraphs.add("Luke.10.21"); //$NON-NLS-1$
+        paragraphs.add("Luke.10.23"); //$NON-NLS-1$
+        paragraphs.add("Luke.10.25"); //$NON-NLS-1$
+        paragraphs.add("Luke.10.38"); //$NON-NLS-1$
+        paragraphs.add("Luke.11.14"); //$NON-NLS-1$
+        paragraphs.add("Luke.11.27"); //$NON-NLS-1$
+        paragraphs.add("Luke.11.29"); //$NON-NLS-1$
+        paragraphs.add("Luke.11.37"); //$NON-NLS-1$
+        paragraphs.add("Luke.11.45"); //$NON-NLS-1$
+        paragraphs.add("Luke.12.13"); //$NON-NLS-1$
+        paragraphs.add("Luke.12.22"); //$NON-NLS-1$
+        paragraphs.add("Luke.12.31"); //$NON-NLS-1$
+        paragraphs.add("Luke.12.41"); //$NON-NLS-1$
+        paragraphs.add("Luke.12.49"); //$NON-NLS-1$
+        paragraphs.add("Luke.12.54"); //$NON-NLS-1$
+        paragraphs.add("Luke.12.58"); //$NON-NLS-1$
+        paragraphs.add("Luke.13.6"); //$NON-NLS-1$
+        paragraphs.add("Luke.13.11"); //$NON-NLS-1$
+        paragraphs.add("Luke.13.18"); //$NON-NLS-1$
+        paragraphs.add("Luke.13.24"); //$NON-NLS-1$
+        paragraphs.add("Luke.13.31"); //$NON-NLS-1$
+        paragraphs.add("Luke.14.7"); //$NON-NLS-1$
+        paragraphs.add("Luke.14.12"); //$NON-NLS-1$
+        paragraphs.add("Luke.14.15"); //$NON-NLS-1$
+        paragraphs.add("Luke.14.25"); //$NON-NLS-1$
+        paragraphs.add("Luke.14.34"); //$NON-NLS-1$
+        paragraphs.add("Luke.15.3"); //$NON-NLS-1$
+        paragraphs.add("Luke.15.8"); //$NON-NLS-1$
+        paragraphs.add("Luke.15.11"); //$NON-NLS-1$
+        paragraphs.add("Luke.16.13"); //$NON-NLS-1$
+        paragraphs.add("Luke.16.19"); //$NON-NLS-1$
+        paragraphs.add("Luke.17.3"); //$NON-NLS-1$
+        paragraphs.add("Luke.17.11"); //$NON-NLS-1$
+        paragraphs.add("Luke.17.20"); //$NON-NLS-1$
+        paragraphs.add("Luke.18.31"); //$NON-NLS-1$
+        paragraphs.add("Luke.18.35"); //$NON-NLS-1$
+        paragraphs.add("Luke.19.28"); //$NON-NLS-1$
+        paragraphs.add("Luke.19.41"); //$NON-NLS-1$
+        paragraphs.add("Luke.20.19"); //$NON-NLS-1$
+        paragraphs.add("Luke.20.27"); //$NON-NLS-1$
+        paragraphs.add("Luke.20.39"); //$NON-NLS-1$
+        paragraphs.add("Luke.20.45"); //$NON-NLS-1$
+        paragraphs.add("Luke.21.5"); //$NON-NLS-1$
+        paragraphs.add("Luke.21.25"); //$NON-NLS-1$
+        paragraphs.add("Luke.21.34"); //$NON-NLS-1$
+        paragraphs.add("Luke.22.3"); //$NON-NLS-1$
+        paragraphs.add("Luke.22.7"); //$NON-NLS-1$
+        paragraphs.add("Luke.22.19"); //$NON-NLS-1$
+        paragraphs.add("Luke.22.21"); //$NON-NLS-1$
+        paragraphs.add("Luke.22.24"); //$NON-NLS-1$
+        paragraphs.add("Luke.22.31"); //$NON-NLS-1$
+        paragraphs.add("Luke.22.39"); //$NON-NLS-1$
+        paragraphs.add("Luke.22.47"); //$NON-NLS-1$
+        paragraphs.add("Luke.22.50"); //$NON-NLS-1$
+        paragraphs.add("Luke.22.54"); //$NON-NLS-1$
+        paragraphs.add("Luke.22.63"); //$NON-NLS-1$
+        paragraphs.add("Luke.22.66"); //$NON-NLS-1$
+        paragraphs.add("Luke.23.8"); //$NON-NLS-1$
+        paragraphs.add("Luke.23.12"); //$NON-NLS-1$
+        paragraphs.add("Luke.23.13"); //$NON-NLS-1$
+        paragraphs.add("Luke.23.27"); //$NON-NLS-1$
+        paragraphs.add("Luke.23.34"); //$NON-NLS-1$
+        paragraphs.add("Luke.23.39"); //$NON-NLS-1$
+        paragraphs.add("Luke.23.46"); //$NON-NLS-1$
+        paragraphs.add("Luke.23.50"); //$NON-NLS-1$
+        paragraphs.add("Luke.24.13"); //$NON-NLS-1$
+        paragraphs.add("Luke.24.36"); //$NON-NLS-1$
+        paragraphs.add("Luke.24.49"); //$NON-NLS-1$
+        paragraphs.add("Luke.24.50"); //$NON-NLS-1$
+        paragraphs.add("John.1.6"); //$NON-NLS-1$
+        paragraphs.add("John.1.15"); //$NON-NLS-1$
+        paragraphs.add("John.1.19"); //$NON-NLS-1$
+        paragraphs.add("John.1.29"); //$NON-NLS-1$
+        paragraphs.add("John.1.35"); //$NON-NLS-1$
+        paragraphs.add("John.1.43"); //$NON-NLS-1$
+        paragraphs.add("John.2.12"); //$NON-NLS-1$
+        paragraphs.add("John.2.13"); //$NON-NLS-1$
+        paragraphs.add("John.2.18"); //$NON-NLS-1$
+        paragraphs.add("John.2.23"); //$NON-NLS-1$
+        paragraphs.add("John.3.14"); //$NON-NLS-1$
+        paragraphs.add("John.3.16"); //$NON-NLS-1$
+        paragraphs.add("John.3.18"); //$NON-NLS-1$
+        paragraphs.add("John.3.22"); //$NON-NLS-1$
+        paragraphs.add("John.3.23"); //$NON-NLS-1$
+        paragraphs.add("John.3.25"); //$NON-NLS-1$
+        paragraphs.add("John.4.27"); //$NON-NLS-1$
+        paragraphs.add("John.4.31"); //$NON-NLS-1$
+        paragraphs.add("John.4.39"); //$NON-NLS-1$
+        paragraphs.add("John.4.43"); //$NON-NLS-1$
+        paragraphs.add("John.5.10"); //$NON-NLS-1$
+        paragraphs.add("John.5.17"); //$NON-NLS-1$
+        paragraphs.add("John.5.32"); //$NON-NLS-1$
+        paragraphs.add("John.5.36"); //$NON-NLS-1$
+        paragraphs.add("John.5.39"); //$NON-NLS-1$
+        paragraphs.add("John.6.5"); //$NON-NLS-1$
+        paragraphs.add("John.6.15"); //$NON-NLS-1$
+        paragraphs.add("John.6.22"); //$NON-NLS-1$
+        paragraphs.add("John.6.66"); //$NON-NLS-1$
+        paragraphs.add("John.7.10"); //$NON-NLS-1$
+        paragraphs.add("John.7.14"); //$NON-NLS-1$
+        paragraphs.add("John.7.32"); //$NON-NLS-1$
+        paragraphs.add("John.7.40"); //$NON-NLS-1$
+        paragraphs.add("John.7.45"); //$NON-NLS-1$
+        paragraphs.add("John.8.12"); //$NON-NLS-1$
+        paragraphs.add("John.8.33"); //$NON-NLS-1$
+        paragraphs.add("John.9.8"); //$NON-NLS-1$
+        paragraphs.add("John.9.13"); //$NON-NLS-1$
+        paragraphs.add("John.9.39"); //$NON-NLS-1$
+        paragraphs.add("John.10.19"); //$NON-NLS-1$
+        paragraphs.add("John.10.22"); //$NON-NLS-1$
+        paragraphs.add("John.11.47"); //$NON-NLS-1$
+        paragraphs.add("John.11.55"); //$NON-NLS-1$
+        paragraphs.add("John.12.10"); //$NON-NLS-1$
+        paragraphs.add("John.12.12"); //$NON-NLS-1$
+        paragraphs.add("John.12.20"); //$NON-NLS-1$
+        paragraphs.add("John.12.23"); //$NON-NLS-1$
+        paragraphs.add("John.12.37"); //$NON-NLS-1$
+        paragraphs.add("John.12.42"); //$NON-NLS-1$
+        paragraphs.add("John.12.44"); //$NON-NLS-1$
+        paragraphs.add("John.13.18"); //$NON-NLS-1$
+        paragraphs.add("John.13.31"); //$NON-NLS-1$
+        paragraphs.add("John.13.36"); //$NON-NLS-1$
+        paragraphs.add("John.14.15"); //$NON-NLS-1$
+        paragraphs.add("John.18.15"); //$NON-NLS-1$
+        paragraphs.add("John.18.19"); //$NON-NLS-1$
+        paragraphs.add("John.18.28"); //$NON-NLS-1$
+        paragraphs.add("John.19.8"); //$NON-NLS-1$
+        paragraphs.add("John.19.13"); //$NON-NLS-1$
+        paragraphs.add("John.19.19"); //$NON-NLS-1$
+        paragraphs.add("John.19.23"); //$NON-NLS-1$
+        paragraphs.add("John.19.25"); //$NON-NLS-1$
+        paragraphs.add("John.19.28"); //$NON-NLS-1$
+        paragraphs.add("John.19.38"); //$NON-NLS-1$
+        paragraphs.add("John.20.11"); //$NON-NLS-1$
+        paragraphs.add("John.20.19"); //$NON-NLS-1$
+        paragraphs.add("John.20.24"); //$NON-NLS-1$
+        paragraphs.add("John.20.26"); //$NON-NLS-1$
+        paragraphs.add("John.20.30"); //$NON-NLS-1$
+        paragraphs.add("John.21.15"); //$NON-NLS-1$
+        paragraphs.add("Acts.1.15"); //$NON-NLS-1$
+        paragraphs.add("Acts.2.14"); //$NON-NLS-1$
+        paragraphs.add("Acts.2.37"); //$NON-NLS-1$
+        paragraphs.add("Acts.2.41"); //$NON-NLS-1$
+        paragraphs.add("Acts.3.12"); //$NON-NLS-1$
+        paragraphs.add("Acts.3.19"); //$NON-NLS-1$
+        paragraphs.add("Acts.4.5"); //$NON-NLS-1$
+        paragraphs.add("Acts.4.13"); //$NON-NLS-1$
+        paragraphs.add("Acts.4.23"); //$NON-NLS-1$
+        paragraphs.add("Acts.4.31"); //$NON-NLS-1$
+        paragraphs.add("Acts.5.12"); //$NON-NLS-1$
+        paragraphs.add("Acts.5.17"); //$NON-NLS-1$
+        paragraphs.add("Acts.5.29"); //$NON-NLS-1$
+        paragraphs.add("Acts.5.33"); //$NON-NLS-1$
+        paragraphs.add("Acts.5.41"); //$NON-NLS-1$
+        paragraphs.add("Acts.6.5"); //$NON-NLS-1$
+        paragraphs.add("Acts.6.9"); //$NON-NLS-1$
+        paragraphs.add("Acts.7.37"); //$NON-NLS-1$
+        paragraphs.add("Acts.7.51"); //$NON-NLS-1$
+        paragraphs.add("Acts.7.54"); //$NON-NLS-1$
+        paragraphs.add("Acts.9.10"); //$NON-NLS-1$
+        paragraphs.add("Acts.9.23"); //$NON-NLS-1$
+        paragraphs.add("Acts.9.32"); //$NON-NLS-1$
+        paragraphs.add("Acts.9.36"); //$NON-NLS-1$
+        paragraphs.add("Acts.10.9"); //$NON-NLS-1$
+        paragraphs.add("Acts.10.19"); //$NON-NLS-1$
+        paragraphs.add("Acts.10.34"); //$NON-NLS-1$
+        paragraphs.add("Acts.10.44"); //$NON-NLS-1$
+        paragraphs.add("Acts.11.19"); //$NON-NLS-1$
+        paragraphs.add("Acts.11.22"); //$NON-NLS-1$
+        paragraphs.add("Acts.11.27"); //$NON-NLS-1$
+        paragraphs.add("Acts.12.20"); //$NON-NLS-1$
+        paragraphs.add("Acts.12.24"); //$NON-NLS-1$
+        paragraphs.add("Acts.13.4"); //$NON-NLS-1$
+        paragraphs.add("Acts.13.14"); //$NON-NLS-1$
+        paragraphs.add("Acts.13.38"); //$NON-NLS-1$
+        paragraphs.add("Acts.13.44"); //$NON-NLS-1$
+        paragraphs.add("Acts.14.8"); //$NON-NLS-1$
+        paragraphs.add("Acts.14.19"); //$NON-NLS-1$
+        paragraphs.add("Acts.15.6"); //$NON-NLS-1$
+        paragraphs.add("Acts.15.12"); //$NON-NLS-1$
+        paragraphs.add("Acts.15.13"); //$NON-NLS-1$
+        paragraphs.add("Acts.15.36"); //$NON-NLS-1$
+        paragraphs.add("Acts.16.14"); //$NON-NLS-1$
+        paragraphs.add("Acts.16.16"); //$NON-NLS-1$
+        paragraphs.add("Acts.16.19"); //$NON-NLS-1$
+        paragraphs.add("Acts.16.25"); //$NON-NLS-1$
+        paragraphs.add("Acts.17.5"); //$NON-NLS-1$
+        paragraphs.add("Acts.17.10"); //$NON-NLS-1$
+        paragraphs.add("Acts.17.16"); //$NON-NLS-1$
+        paragraphs.add("Acts.17.22"); //$NON-NLS-1$
+        paragraphs.add("Acts.17.32"); //$NON-NLS-1$
+        paragraphs.add("Acts.18.7"); //$NON-NLS-1$
+        paragraphs.add("Acts.18.12"); //$NON-NLS-1$
+        paragraphs.add("Acts.18.18"); //$NON-NLS-1$
+        paragraphs.add("Acts.18.24"); //$NON-NLS-1$
+        paragraphs.add("Acts.19.13"); //$NON-NLS-1$
+        paragraphs.add("Acts.19.21"); //$NON-NLS-1$
+        paragraphs.add("Acts.20.13"); //$NON-NLS-1$
+        paragraphs.add("Acts.20.17"); //$NON-NLS-1$
+        paragraphs.add("Acts.20.28"); //$NON-NLS-1$
+        paragraphs.add("Acts.20.36"); //$NON-NLS-1$
+    }
 
     private Writer writer;
     private String filename;
