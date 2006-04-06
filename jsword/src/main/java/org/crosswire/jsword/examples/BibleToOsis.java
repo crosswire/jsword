@@ -1407,6 +1407,7 @@ public class BibleToOsis
         input = fixHyphenatedNames(osisID, input);
         input = fixInscriptions(osisID, input);
         input = fixParagraphs(osisID, input, inVerse);
+        input = fixNotes(osisID, input);
         return input;
     }
 
@@ -2765,30 +2766,18 @@ public class BibleToOsis
             input = input.replace("<w lemma=\"strong:H03072\">The LORD our righteousness</w>", //$NON-NLS-1$
                                   "<w lemma=\"strong:H03072\"><seg><divineName type=\"x-yhwh\" subType=\"x-tsidkenu\">The Lord our Righteousness</divineName></seg></w>"); //$NON-NLS-1$
         }
-        if (osisID.equals("Matt.1.21") || //$NON-NLS-1$
-            osisID.equals("Matt.1.25") || //$NON-NLS-1$
-            osisID.equals("Luke.1.31") || //$NON-NLS-1$
-            osisID.equals("Luke.2.21")) //$NON-NLS-1$
-        {
-            input = input.replace("JESUS", "<seg><divineName type=\"x-jesus\">Jesus</divineName></seg>"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
+//        if (osisID.equals("Matt.1.21") || //$NON-NLS-1$
+//            osisID.equals("Matt.1.25") || //$NON-NLS-1$
+//            osisID.equals("Luke.1.31") || //$NON-NLS-1$
+//            osisID.equals("Luke.2.21")) //$NON-NLS-1$
+//        {
+//            input = input.replace("JESUS", "<seg><divineName type=\"x-jesus\">Jesus</divineName></seg>"); //$NON-NLS-1$ //$NON-NLS-2$
+//        }
 
         if (osisID.equals("Matt.22.44")) //$NON-NLS-1$
         {
             input = input.replace("<w src=\"2 3\" lemma=\"strong:G3588 strong:G2962\" morph=\"robinson:T-NSM robinson:N-NSM\">The LORD</w>", //$NON-NLS-1$
                                   "<w src=\"2 3\" lemma=\"strong:G3588 strong:G2962\" morph=\"robinson:T-NSM robinson:N-NSM\">The <seg><divineName>Lord</divineName></seg></w>"); //$NON-NLS-1$
-        }
-
-        if (osisID.equals("Matt.27.37")) //$NON-NLS-1$
-        {
-            input = input.replace("<w src=\"11\" lemma=\"strong:G3778\" morph=\"robinson:D-NSM\">THIS</w> <w src=\"12\" lemma=\"strong:G2076\" morph=\"robinson:V-PXI-3S\">IS</w> <w src=\"13\" lemma=\"strong:G2424\" morph=\"robinson:N-NSM\">JESUS</w> <w src=\"14 15\" lemma=\"strong:G3588 strong:G935\" morph=\"robinson:T-NSM robinson:N-NSM\">THE KING</w> <w src=\"16\" lemma=\"strong:G3588\" morph=\"robinson:T-GPM\"></w><w src=\"17\" lemma=\"strong:G2453\" morph=\"robinson:A-GPM\">OF THE JEWS</w>", //$NON-NLS-1$
-                                  "<inscription><w src=\"11\" lemma=\"strong:G3778\" morph=\"robinson:D-NSM\">This</w> <w src=\"12\" lemma=\"strong:G2076\" morph=\"robinson:V-PXI-3S\">is</w> <w src=\"13\" lemma=\"strong:G2424\" morph=\"robinson:N-NSM\"><seg><divineName type=\"x-jesus\">Jesus</divineName></seg></w> <w src=\"14 15\" lemma=\"strong:G3588 strong:G935\" morph=\"robinson:T-NSM robinson:N-NSM\">the King</w> <w src=\"16\" lemma=\"strong:G3588\" morph=\"robinson:T-GPM\"></w><w src=\"17\" lemma=\"strong:G2453\" morph=\"robinson:A-GPM\">of the Jews</w></inscription>"); //$NON-NLS-1$
-        }
-
-        if (osisID.equals("Luke.23.38")) //$NON-NLS-1$
-        {
-            input = input.replace("<w src=\"14\" lemma=\"strong:G3778\" morph=\"robinson:D-NSM\">THIS</w> <w src=\"15\" lemma=\"strong:G2076\" morph=\"robinson:V-PXI-3S\">IS</w> <w src=\"16 17\" lemma=\"strong:G3588 strong:G935\" morph=\"robinson:T-NSM robinson:N-NSM\">THE KING</w> <w src=\"19\" lemma=\"strong:G2453\" morph=\"robinson:A-GPM\">OF THE JEWS</w>", //$NON-NLS-1$
-                                  "<inscription><w src=\"14\" lemma=\"strong:G3778\" morph=\"robinson:D-NSM\">This</w> <w src=\"15\" lemma=\"strong:G2076\" morph=\"robinson:V-PXI-3S\">is</w> <w src=\"16 17\" lemma=\"strong:G3588 strong:G935\" morph=\"robinson:T-NSM robinson:N-NSM\">the King</w> <w src=\"19\" lemma=\"strong:G2453\" morph=\"robinson:A-GPM\">of the Jews</w></inscription>"); //$NON-NLS-1$
         }
 
         if (osisID.equals("Luke.20.42")) //$NON-NLS-1$
@@ -2797,29 +2786,10 @@ public class BibleToOsis
                                   "<w src=\"9 10\" lemma=\"strong:G3588 strong:G2962\" morph=\"robinson:T-NSM robinson:N-NSM\">The <seg><divineName>Lord</divineName></seg></w>"); //$NON-NLS-1$
         }
 
-        if (osisID.equals("John.19.19")) //$NON-NLS-1$
-        {
-            input = input.replace("<w src=\"15\" lemma=\"strong:G2424\" morph=\"robinson:N-NSM\">JESUS</w> <w src=\"16 17\" lemma=\"strong:G3588 strong:G3480\" morph=\"robinson:T-NSM robinson:N-NSM\">OF NAZARETH</w> <w src=\"18 19\" lemma=\"strong:G3588 strong:G935\" morph=\"robinson:T-NSM robinson:N-NSM\">THE KING</w> <w src=\"21\" lemma=\"strong:G2453\" morph=\"robinson:A-GPM\">OF THE JEWS</w>", //$NON-NLS-1$
-                                  "<inscription><w src=\"15\" lemma=\"strong:G2424\" morph=\"robinson:N-NSM\"><seg><divineName type=\"x-jesus\">Jesus</divineName></seg></w> <w src=\"16 17\" lemma=\"strong:G3588 strong:G3480\" morph=\"robinson:T-NSM robinson:N-NSM\">of Nazareth</w> <w src=\"18 19\" lemma=\"strong:G3588 strong:G935\" morph=\"robinson:T-NSM robinson:N-NSM\">the King</w> <w src=\"21\" lemma=\"strong:G2453\" morph=\"robinson:A-GPM\">of the Jews</w></inscription>"); //$NON-NLS-1$
-        }
-
         if (osisID.equals("Acts.2.34")) //$NON-NLS-1$
         {
             input = input.replace("<w src=\"12 13\" lemma=\"strong:G3588 strong:G2962\" morph=\"robinson:T-NSM robinson:N-NSM\">The LORD</w>", //$NON-NLS-1$
                                   "<w src=\"12 13\" lemma=\"strong:G3588 strong:G2962\" morph=\"robinson:T-NSM robinson:N-NSM\">The <seg><divineName>Lord</divineName></seg></w>"); //$NON-NLS-1$
-        }
-
-        // The next is not a divineName, but it keeps it from being wrapped as such.
-        if (osisID.equals("Acts.17.23")) //$NON-NLS-1$ //$NON-NLS-2$
-        {
-            input = input.replace("<w src=\"14\" lemma=\"strong:G57\" morph=\"robinson:A-DSM\">TO THE UNKNOWN</w> <w src=\"15\" lemma=\"strong:G2316\" morph=\"robinson:N-DSM\">GOD</w>", //$NON-NLS-1$
-                                  "<inscription><w src=\"14\" lemma=\"strong:G57\" morph=\"robinson:A-DSM\">To the Unknown</w> <w src=\"15\" lemma=\"strong:G2316\" morph=\"robinson:N-DSM\">God</w></inscription>"); //$NON-NLS-1$
-        }
-
-        if (osisID.equals("Rev.19.16")) //$NON-NLS-1$
-        {
-            input = input.replace("<w src=\"13\" lemma=\"strong:G1125\" morph=\"robinson:V-RPP-ASN\">KING</w> <w src=\"14\" lemma=\"strong:G935\" morph=\"robinson:N-NSM\">OF KINGS</w>, <w src=\"15\" lemma=\"strong:G935\" morph=\"robinson:N-GPM\">AND</w> <w src=\"16\" lemma=\"strong:G2532\" morph=\"robinson:CONJ\">LORD</w> <w src=\"17\" lemma=\"strong:G2962\" morph=\"robinson:N-NSM\">OF LORDS</w>", //$NON-NLS-1$
-                                  "<inscription><divineName type=\"x-jesus\"><w src=\"13\" lemma=\"strong:G1125\" morph=\"robinson:V-RPP-ASN\">King</w> <w src=\"14\" lemma=\"strong:G935\" morph=\"robinson:N-NSM\">of kings</w>, <w src=\"15\" lemma=\"strong:G935\" morph=\"robinson:N-GPM\">and</w> <w src=\"16\" lemma=\"strong:G2532\" morph=\"robinson:CONJ\">Lord</w> <w src=\"17\" lemma=\"strong:G2962\" morph=\"robinson:N-NSM\">of lords</w></divineName></inscription>"); //$NON-NLS-1$
         }
 
         input = dn6Pattern.matcher(input).replaceAll(dn6Replace);
@@ -2827,7 +2797,7 @@ public class BibleToOsis
         input = dn8Pattern.matcher(input).replaceAll(dn8Replace);
         input = dn9Pattern.matcher(input).replaceAll(dn9Replace);
         input = dn10Pattern.matcher(input).replaceAll(dn10Replace);
-        input = dn11Pattern.matcher(input).replaceAll(dn11Replace);
+//        input = dn11Pattern.matcher(input).replaceAll(dn11Replace);
 
         return input;
     }
@@ -2835,52 +2805,83 @@ public class BibleToOsis
     private String fixInscriptions(String osisID, String input)
     {
 
-        if (osisID.equals("Exod.28.36") || osisID.equals("Exod.39.30")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        if (osisID.equals("Exod.28.36") || osisID.equals("Exod.39.30")) //$NON-NLS-1$ //$NON-NLS-2$
         {
             input = input.replace("<w lemma=\"strong:H06944\">HOLINESS</w> <w lemma=\"strong:H03068\">TO THE <seg><divineName type=\"x-yhwh\">Lord</divineName></seg></w>", //$NON-NLS-1$
-                                  "<inscription><w lemma=\"strong:H06944\">Holiness</w> <w lemma=\"strong:H03068\">to the <seg><divineName type=\"x-yhwh\">Lord</divineName></seg></w></inscription>"); //$NON-NLS-1$
+                                  "<inscription><w lemma=\"strong:H06944\">HOLINESS</w> <w lemma=\"strong:H03068\">TO THE <seg><divineName type=\"x-yhwh\">Lord</divineName></seg></w></inscription>"); //$NON-NLS-1$
         }
 
         if (osisID.equals("Dan.5.25")) //$NON-NLS-1$ //$NON-NLS-2$
         {
             input = input.replace("<w morph=\"strongMorph:TH8752\" lemma=\"strong:H04484\">MENE</w>, <w morph=\"strongMorph:TH8752\" lemma=\"strong:H04484\">MENE</w>, <w morph=\"strongMorph:TH8752\" lemma=\"strong:H08625\">TEKEL</w>, <w morph=\"strongMorph:TH8751\" lemma=\"strong:H06537\">UPHARSIN</w>", //$NON-NLS-1$
-                                  "<inscription><w morph=\"strongMorph:TH8752\" lemma=\"strong:H04484\">Mene</w>, <w morph=\"strongMorph:TH8752\" lemma=\"strong:H04484\">Mene</w>, <w morph=\"strongMorph:TH8752\" lemma=\"strong:H08625\">Tekel</w>, <w morph=\"strongMorph:TH8751\" lemma=\"strong:H06537\">Upharsin</w></inscription>"); //$NON-NLS-1$
+                                  "<inscription><w morph=\"strongMorph:TH8752\" lemma=\"strong:H04484\">MENE</w>, <w morph=\"strongMorph:TH8752\" lemma=\"strong:H04484\">MENE</w>, <w morph=\"strongMorph:TH8752\" lemma=\"strong:H08625\">TEKEL</w>, <w morph=\"strongMorph:TH8751\" lemma=\"strong:H06537\">UPHARSIN</w></inscription>"); //$NON-NLS-1$
         }
 
         if (osisID.equals("Dan.5.26")) //$NON-NLS-1$ //$NON-NLS-2$
         {
             input = input.replace("<w morph=\"strongMorph:TH8752\" lemma=\"strong:H04484\">MENE</w>", //$NON-NLS-1$
-                                  "<inscription><w morph=\"strongMorph:TH8752\" lemma=\"strong:H04484\">Mene</w></inscription>"); //$NON-NLS-1$
+                                  "<inscription><w morph=\"strongMorph:TH8752\" lemma=\"strong:H04484\">MENE</w></inscription>"); //$NON-NLS-1$
         }
 
         if (osisID.equals("Dan.5.27")) //$NON-NLS-1$ //$NON-NLS-2$
         {
             input = input.replace("<w morph=\"strongMorph:TH8752\" lemma=\"strong:H08625\">TEKEL</w>", //$NON-NLS-1$
-                                  "<inscription><w morph=\"strongMorph:TH8752\" lemma=\"strong:H08625\">Tekel</w></inscription>"); //$NON-NLS-1$
+                                  "<inscription><w morph=\"strongMorph:TH8752\" lemma=\"strong:H08625\">TEKEL</w></inscription>"); //$NON-NLS-1$
         }
 
         if (osisID.equals("Dan.5.28")) //$NON-NLS-1$ //$NON-NLS-2$
         {
             input = input.replace("<w morph=\"strongMorph:TH8752\" lemma=\"strong:H06537\">PERES</w>", //$NON-NLS-1$
-                                  "<inscription><w morph=\"strongMorph:TH8752\" lemma=\"strong:H06537\">Peres</w></inscription>"); //$NON-NLS-1$
+                                  "<inscription><w morph=\"strongMorph:TH8752\" lemma=\"strong:H06537\">PERES</w></inscription>"); //$NON-NLS-1$
         }
 
         if (osisID.equals("Zech.14.20")) //$NON-NLS-1$
         {
             input = input.replace("<w lemma=\"strong:H06944\">HOLINESS</w> <w lemma=\"strong:H03068\">UNTO THE <seg><divineName type=\"x-yhwh\">Lord</divineName></seg></w>", //$NON-NLS-1$
-                                  "<inscription><w lemma=\"strong:H06944\">Holiness</w> <w lemma=\"strong:H03068\">unto the <seg><divineName type=\"x-yhwh\">Lord</divineName></seg></w></inscription>"); //$NON-NLS-1$
+                                  "<inscription><w lemma=\"strong:H06944\">HOLINESS</w> <w lemma=\"strong:H03068\">UNTO THE <seg><divineName type=\"x-yhwh\">Lord</divineName></seg></w></inscription>"); //$NON-NLS-1$
+        }
+
+        if (osisID.equals("Matt.27.37")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"11\" lemma=\"strong:G3778\" morph=\"robinson:D-NSM\">THIS</w> <w src=\"12\" lemma=\"strong:G2076\" morph=\"robinson:V-PXI-3S\">IS</w> <w src=\"13\" lemma=\"strong:G2424\" morph=\"robinson:N-NSM\">JESUS</w> <w src=\"14 15\" lemma=\"strong:G3588 strong:G935\" morph=\"robinson:T-NSM robinson:N-NSM\">THE KING</w> <w src=\"16\" lemma=\"strong:G3588\" morph=\"robinson:T-GPM\"></w><w src=\"17\" lemma=\"strong:G2453\" morph=\"robinson:A-GPM\">OF THE JEWS</w>", //$NON-NLS-1$
+                                  "<inscription><w src=\"11\" lemma=\"strong:G3778\" morph=\"robinson:D-NSM\">THIS</w> <w src=\"12\" lemma=\"strong:G2076\" morph=\"robinson:V-PXI-3S\">IS</w> <w src=\"13\" lemma=\"strong:G2424\" morph=\"robinson:N-NSM\">JESUS</w> <w src=\"14 15\" lemma=\"strong:G3588 strong:G935\" morph=\"robinson:T-NSM robinson:N-NSM\">THE KING</w> <w src=\"16\" lemma=\"strong:G3588\" morph=\"robinson:T-GPM\"></w><w src=\"17\" lemma=\"strong:G2453\" morph=\"robinson:A-GPM\">OF THE JEWS</w></inscription>"); //$NON-NLS-1$
+        }
+
+        if (osisID.equals("Luke.23.38")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"14\" lemma=\"strong:G3778\" morph=\"robinson:D-NSM\">THIS</w> <w src=\"15\" lemma=\"strong:G2076\" morph=\"robinson:V-PXI-3S\">IS</w> <w src=\"16 17\" lemma=\"strong:G3588 strong:G935\" morph=\"robinson:T-NSM robinson:N-NSM\">THE KING</w> <w src=\"19\" lemma=\"strong:G2453\" morph=\"robinson:A-GPM\">OF THE JEWS</w>", //$NON-NLS-1$
+                                  "<inscription><w src=\"14\" lemma=\"strong:G3778\" morph=\"robinson:D-NSM\">THIS</w> <w src=\"15\" lemma=\"strong:G2076\" morph=\"robinson:V-PXI-3S\">IS</w> <w src=\"16 17\" lemma=\"strong:G3588 strong:G935\" morph=\"robinson:T-NSM robinson:N-NSM\">THE KING</w> <w src=\"19\" lemma=\"strong:G2453\" morph=\"robinson:A-GPM\">OF THE JEWS</w></inscription>"); //$NON-NLS-1$
+        }
+
+        if (osisID.equals("John.19.19")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"15\" lemma=\"strong:G2424\" morph=\"robinson:N-NSM\">JESUS</w> <w src=\"16 17\" lemma=\"strong:G3588 strong:G3480\" morph=\"robinson:T-NSM robinson:N-NSM\">OF NAZARETH</w> <w src=\"18 19\" lemma=\"strong:G3588 strong:G935\" morph=\"robinson:T-NSM robinson:N-NSM\">THE KING</w> <w src=\"21\" lemma=\"strong:G2453\" morph=\"robinson:A-GPM\">OF THE JEWS</w>", //$NON-NLS-1$
+                                  "<inscription><w src=\"15\" lemma=\"strong:G2424\" morph=\"robinson:N-NSM\">JESUS</w> <w src=\"16 17\" lemma=\"strong:G3588 strong:G3480\" morph=\"robinson:T-NSM robinson:N-NSM\">OF NAZARETH</w> <w src=\"18 19\" lemma=\"strong:G3588 strong:G935\" morph=\"robinson:T-NSM robinson:N-NSM\">THE KING</w> <w src=\"21\" lemma=\"strong:G2453\" morph=\"robinson:A-GPM\">OF THE JEWS</w></inscription>"); //$NON-NLS-1$
+        }
+
+        // The next undoes an incorrect application of divineName
+        if (osisID.equals("Acts.17.23")) //$NON-NLS-1$ //$NON-NLS-2$
+        {
+            input = input.replace("<w src=\"14\" lemma=\"strong:G57\" morph=\"robinson:A-DSM\">TO THE UNKNOWN</w> <w src=\"15\" lemma=\"strong:G2316\" morph=\"robinson:N-DSM\"><divineName>God</divineName></w>", //$NON-NLS-1$
+                                  "<inscription><w src=\"14\" lemma=\"strong:G57\" morph=\"robinson:A-DSM\">TO THE UNKNOWN</w> <w src=\"15\" lemma=\"strong:G2316\" morph=\"robinson:N-DSM\">GOD</w></inscription>"); //$NON-NLS-1$
+        }
+
+        if (osisID.equals("Rev.19.16")) //$NON-NLS-1$
+        {
+            input = input.replace("<w src=\"13\" lemma=\"strong:G1125\" morph=\"robinson:V-RPP-ASN\">KING</w> <w src=\"14\" lemma=\"strong:G935\" morph=\"robinson:N-NSM\">OF KINGS</w>, <w src=\"15\" lemma=\"strong:G935\" morph=\"robinson:N-GPM\">AND</w> <w src=\"16\" lemma=\"strong:G2532\" morph=\"robinson:CONJ\"><divineName>Lord</divineName></w> <w src=\"17\" lemma=\"strong:G2962\" morph=\"robinson:N-NSM\">OF <divineName>Lord</divineName>S</w>", //$NON-NLS-1$
+                                  "<inscription><w src=\"13\" lemma=\"strong:G1125\" morph=\"robinson:V-RPP-ASN\">KING</w> <w src=\"14\" lemma=\"strong:G935\" morph=\"robinson:N-NSM\">OF KINGS</w>, <w src=\"15\" lemma=\"strong:G935\" morph=\"robinson:N-GPM\">AND</w> <w src=\"16\" lemma=\"strong:G2532\" morph=\"robinson:CONJ\">LORD</w> <w src=\"17\" lemma=\"strong:G2962\" morph=\"robinson:N-NSM\">OF LORDS</w></inscription>"); //$NON-NLS-1$
         }
 
         if (osisID.equals("Mark.15.26")) //$NON-NLS-1$
         {
             input = input.replace("<w src=\"9 10\" lemma=\"strong:G3588 strong:G935\" morph=\"robinson:T-NSM robinson:N-NSM\">THE KING</w> <w src=\"12\" lemma=\"strong:G2453\" morph=\"robinson:A-GPM\">OF THE JEWS</w>", //$NON-NLS-1$
-                                  "<inscription><w src=\"9 10\" lemma=\"strong:G3588 strong:G935\" morph=\"robinson:T-NSM robinson:N-NSM\">The King</w> <w src=\"12\" lemma=\"strong:G2453\" morph=\"robinson:A-GPM\">of the Jews</w></inscription>"); //$NON-NLS-1$
+                                  "<inscription><w src=\"9 10\" lemma=\"strong:G3588 strong:G935\" morph=\"robinson:T-NSM robinson:N-NSM\">THE KING</w> <w src=\"12\" lemma=\"strong:G2453\" morph=\"robinson:A-GPM\">OF THE JEWS</w></inscription>"); //$NON-NLS-1$
         }
 
         if (osisID.equals("Rev.17.5")) //$NON-NLS-1$ //$NON-NLS-2$
         {
             input = input.replace("<w src=\"8\" lemma=\"strong:G3466\" morph=\"robinson:N-NSN\">MYSTERY</w>, <w src=\"9\" lemma=\"strong:G897\" morph=\"robinson:N-NSF\">BABYLON</w> <w src=\"11\" lemma=\"strong:G3173\" morph=\"robinson:A-NSF\">THE GREAT</w>, <w src=\"12 13\" lemma=\"strong:G3588 strong:G3384\" morph=\"robinson:T-NSF robinson:N-NSF\">THE MOTHER</w> <w src=\"14 15\" lemma=\"strong:G3588 strong:G4204\" morph=\"robinson:T-GPF robinson:N-GPF\">OF HARLOTS</w> <w src=\"16\" lemma=\"strong:G2532\" morph=\"robinson:CONJ\">AND</w> <w src=\"17 18\" lemma=\"strong:G3588 strong:G946\" morph=\"robinson:T-GPN robinson:N-GPN\">ABOMINATIONS</w> <w src=\"19 20\" lemma=\"strong:G3588 strong:G1093\" morph=\"robinson:T-GSF robinson:N-GSF\">OF THE EARTH</w>", //$NON-NLS-1$
-                                  "<inscription><w src=\"8\" lemma=\"strong:G3466\" morph=\"robinson:N-NSN\">Mystery</w>, <w src=\"9\" lemma=\"strong:G897\" morph=\"robinson:N-NSF\">Babylon</w> <w src=\"11\" lemma=\"strong:G3173\" morph=\"robinson:A-NSF\">the Great</w>, <w src=\"12 13\" lemma=\"strong:G3588 strong:G3384\" morph=\"robinson:T-NSF robinson:N-NSF\">the Mother</w> <w src=\"14 15\" lemma=\"strong:G3588 strong:G4204\" morph=\"robinson:T-GPF robinson:N-GPF\">of Harlots</w> <w src=\"16\" lemma=\"strong:G2532\" morph=\"robinson:CONJ\">and</w> <w src=\"17 18\" lemma=\"strong:G3588 strong:G946\" morph=\"robinson:T-GPN robinson:N-GPN\">Abominations</w> <w src=\"19 20\" lemma=\"strong:G3588 strong:G1093\" morph=\"robinson:T-GSF robinson:N-GSF\">of the Earth</w></inscription>"); //$NON-NLS-1$
+                                  "<inscription><w src=\"8\" lemma=\"strong:G3466\" morph=\"robinson:N-NSN\">MYSTERY</w>, <w src=\"9\" lemma=\"strong:G897\" morph=\"robinson:N-NSF\">BABYLON</w> <w src=\"11\" lemma=\"strong:G3173\" morph=\"robinson:A-NSF\">THE GREAT</w>, <w src=\"12 13\" lemma=\"strong:G3588 strong:G3384\" morph=\"robinson:T-NSF robinson:N-NSF\">THE MOTHER</w> <w src=\"14 15\" lemma=\"strong:G3588 strong:G4204\" morph=\"robinson:T-GPF robinson:N-GPF\">OF HARLOTS</w> <w src=\"16\" lemma=\"strong:G2532\" morph=\"robinson:CONJ\">AND</w> <w src=\"17 18\" lemma=\"strong:G3588 strong:G946\" morph=\"robinson:T-GPN robinson:N-GPN\">ABOMINATIONS</w> <w src=\"19 20\" lemma=\"strong:G3588 strong:G1093\" morph=\"robinson:T-GSF robinson:N-GSF\">OF THE EARTH</w></inscription>"); //$NON-NLS-1$
         }
 
         return input;
@@ -2963,6 +2964,76 @@ public class BibleToOsis
         return input;
     }
 
+    private String fixNotes(String osisID, String input)
+    {
+        String original = input;
+        if (osisID.equals("Deut.3.17")) //$NON-NLS-1$
+            input = input.replace("Ashdoth\u2013pisgah;", "Ashdoth\u2013pisgah:"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Josh.15.3")) //$NON-NLS-1$
+            input = input.replace("Maalehacrebbim", "Maaleh\u2013acrabbim"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Judg.2.9")) //$NON-NLS-1$
+            input = input.replace("Timnathhares", "Timnath\u2013heres"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("2Sam.19.6")) //$NON-NLS-1$
+            input = input.replace("in\u2026:", "In\u2026:"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("1Kgs.5.18")) //$NON-NLS-1$
+            input = input.replace("stonesquares", "stonesquarers"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("1Kgs.6.38")) //$NON-NLS-1$
+            input = input.replace("through out", "throughout"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Neh.7.70")) //$NON-NLS-1$
+            input = input.replace("the Tirshatha", "The Tirshatha"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Ps.40.12")) //$NON-NLS-1$
+            input = input.replace("falleth", "faileth"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Ps.65.3")) //$NON-NLS-1$
+            input = input.replace("iniquities:", "Iniquities:"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Ps.73.22")) //$NON-NLS-1$
+            input = input.replace("before Heb. with", "before: Heb. with"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Ps.78.31")) //$NON-NLS-1$
+            input = input.replace("Chosen\u2026:", "chosen\u2026:"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Ps.89.33")) //$NON-NLS-1$
+            input = input.replace("to fall", "to fail"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Ps.103.8")) //$NON-NLS-1$
+            input = input.replace("plentious", "plenteous"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Ps.106.27")) //$NON-NLS-1$
+            input = input.replace("to overthrow:", "To overthrow:"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Ps.106.27")) //$NON-NLS-1$
+            input = input.replace("to make them", "To make them"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Prov.18.8")) //$NON-NLS-1$
+            input = input.replace("most\u2026:", "innermost\u2026:"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Prov.24.18")) //$NON-NLS-1$
+            input = input.replace("displeaseth\u2026:", "displease\u2026:"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Prov.31.5")) //$NON-NLS-1$
+            input = input.replace("prevert:", "pervert:"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Eccl.5.8")) //$NON-NLS-1$
+            input = input.replace("at the\u2026 Heb.", "at the\u2026: Heb."); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Eccl.5.18")) //$NON-NLS-1$
+            input = input.replace("It is good\u2026", "it is good\u2026"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Isa.8.9")) //$NON-NLS-1$
+            input = input.replace("people and:", "people, and:"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Isa.11.8")) //$NON-NLS-1$
+            input = input.replace("cockatrice' or", "cockatrice': or"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Isa.34.14")) //$NON-NLS-1$
+            input = input.replace("The wild\u2026desert", "The wild beasts of the desert"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Isa.34.14")) //$NON-NLS-1$
+            input = input.replace("the wild\u2026island", "the wild beasts of the island"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Isa.59.5")) //$NON-NLS-1$
+            input = input.replace("cockatrice' or", "cockatrice': or"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Jer.50.16")) //$NON-NLS-1$
+            input = input.replace("sickle; or, scythe", "sickle: or, scythe"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Ezek.43.15")) //$NON-NLS-1$
+            input = input.replace("the altar (first)", "the altar shall"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Ezek.43.15")) //$NON-NLS-1$
+            input = input.replace("the altar (second)", "the altar and"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Ezek.48.23")) //$NON-NLS-1$
+            input = input.replace("A portion:", "a portion:"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Mic.5.4")) //$NON-NLS-1$
+            input = input.replace("feed or, rule", "feed: or, rule"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Zeph.1.2")) //$NON-NLS-1$
+            input = input.replace("I will\u2026; Heb.", "I will\u2026: Heb."); //$NON-NLS-1$ //$NON-NLS-2$
+        if (!original.equals(input))
+            System.err.println(osisID + ':' + input);
+        return input;
+    }
+
     private static FieldPosition pos = new FieldPosition(0);
 
     private static String preVerseStart = "<title subtype=\"x-preverse\" type=\"section\">"; //$NON-NLS-1$
@@ -3008,8 +3079,8 @@ public class BibleToOsis
     private static String dn9Replace = "<divineName type=\"x-yhwh\">Jehovah</divineName>"; //$NON-NLS-1$
     private static Pattern dn10Pattern = Pattern.compile("JAH"); //$NON-NLS-1$
     private static String dn10Replace = "<divineName type=\"x-yhwh\">Jah</divineName>"; //$NON-NLS-1$
-    private static Pattern dn11Pattern = Pattern.compile("(BRANCH)"); //$NON-NLS-1$
-    private static String dn11Replace = "<seg><divineName>Branch</divineName></seg>"; //$NON-NLS-1$
+//    private static Pattern dn11Pattern = Pattern.compile("(BRANCH)"); //$NON-NLS-1$
+//    private static String dn11Replace = "<seg><divineName>Branch</divineName></seg>"; //$NON-NLS-1$
 
     private static String transChangeSeg = "<seg type=\"transChange\" subType=\"type:added\">([^<]*)</seg>"; //$NON-NLS-1$
     private static Pattern transChangeSegPattern = Pattern.compile(transChangeSeg);
@@ -3156,28 +3227,28 @@ public class BibleToOsis
     private static Map<String, String> hebLetters = new HashMap<String, String>();
 
     static {
-        acrostics.put("Ps.119.1", "<w xlit=\"\u05D0\">ALEPH.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.9", "<w xlit=\"\u05D1\">BETH.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.17", "<w xlit=\"\u05D2\">GIMEL.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.25", "<w xlit=\"\u05D3\">DALETH.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.33", "<w xlit=\"\u05D4\">HE.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.41", "<w xlit=\"\u05D5\">VAU.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.49", "<w xlit=\"\u05D6\">ZAIN.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.57", "<w xlit=\"\u05D7\">CHETH.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.65", "<w xlit=\"\u05D8\">TETH.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.73", "<w xlit=\"\u05D9\">JOD.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.81", "<w xlit=\"\u05DB\">CAPH.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.89", "<w xlit=\"\u05DC\">LAMED.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.97", "<w xlit=\"\u05DE\">MEM.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.105", "<w xlit=\"\u05E0\">NUN.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.113", "<w xlit=\"\u05E1\">SAMECH.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.121", "<w xlit=\"\u05E2\">AIN.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.129", "<w xlit=\"\u05E4\">PE.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.137", "<w xlit=\"\u05E6\">TZADDI.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.145", "<w xlit=\"\u05E7\">KOPH.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.153", "<w xlit=\"\u05E8\">RESH.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.161", "<w xlit=\"\u05E9\">SCHIN.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
-        acrostics.put("Ps.119.169", "<w xlit=\"\u05Ea\">TAU.</w>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.1", "<foreign n=\"\u05D0\">ALEPH.</foreign>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.9", "<foreign n=\"\u05D1\">BETH.</foreign>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.17", "<foreign n=\"\u05D2\">GIMEL.</foreign>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.25", "<foreign n=\"\u05D3\">DALETH.</foreign>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.33", "<foreign n=\"\u05D4\">HE.</foreign>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.41", "<foreign n=\"\u05D5\">VAU.</foreign>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.49", "<foreign n=\"\u05D6\">ZAIN.</foreign>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.57", "<foreign n=\"\u05D7\">CHETH.</foreign>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.65", "<foreign n=\"\u05D8\">TETH.</foreign>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.73", "<foreign n=\"\u05D9\">JOD.</foreign>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.81", "<foreign n=\"\u05DB\">CAPH.</foreign>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.89", "<foreign n=\"\u05DC\">LAMED.</foreign>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.97", "<foreign n=\"\u05DE\">MEM.</foreign>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.105", "<foreign n=\"\u05E0\">NUN.</foreign>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.113", "<foreign n=\"\u05E1\">SAMECH.</foreign>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.121", "<foreign n=\"\u05E2\">AIN.</foreign>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.129", "<foreign n=\"\u05E4\">PE.</foreign>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.137", "<foreign n=\"\u05E6\">TZADDI.</foreign>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.145", "<foreign n=\"\u05E7\">KOPH.</foreign>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.153", "<foreign n=\"\u05E8\">RESH.</foreign>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.161", "<foreign n=\"\u05E9\">SCHIN.</foreign>"); //$NON-NLS-1$ //$NON-NLS-2$
+        acrostics.put("Ps.119.169", "<foreign n=\"\u05Ea\">TAU.</foreign>"); //$NON-NLS-1$ //$NON-NLS-2$
         hebLetters.put("Ps.119.1", "ALEPH. "); //$NON-NLS-1$ //$NON-NLS-2$
         hebLetters.put("Ps.119.9", "BETH. "); //$NON-NLS-1$ //$NON-NLS-2$
         hebLetters.put("Ps.119.17", "GIMEL. "); //$NON-NLS-1$ //$NON-NLS-2$
