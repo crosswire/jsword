@@ -133,7 +133,7 @@ public class APIExamples
         // like it - in the real world you want to call hasNext() on an iterator
         // before next() but the point is the same:
         Key keys = dict.getGlobalKeyList();
-        Key first = keys.iterator().next();
+        Key first = (Key) keys.iterator().next();
 
         System.out.println("The first Key in the default dictionary is " + first); //$NON-NLS-1$
 
@@ -242,9 +242,10 @@ public class APIExamples
         Book bible = Books.installed().getBook(BIBLE_NAME);
         Key keys = bible.getKey("Gen"); //$NON-NLS-1$
         // Get a verse iterator
-        for (Key key : keys)
+        Iterator iter = keys.iterator();
+        while (iter.hasNext())
         {
-            Verse verse = (Verse) key;
+            Verse verse = (Verse) iter.next();
             BookData data = bible.getData(verse);
             System.out.println('|' + BibleInfo.getBookName(verse.getBook()) + '|' + verse.getChapter() + '|' + verse.getVerse() + '|' + data.getVerseText());
         }

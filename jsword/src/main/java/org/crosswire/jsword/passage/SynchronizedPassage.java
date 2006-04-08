@@ -97,7 +97,7 @@ final class SynchronizedPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#iterator()
      */
-    public synchronized Iterator<Key> iterator()
+    public synchronized Iterator iterator()
     {
         return ref.iterator();
     }
@@ -249,7 +249,7 @@ final class SynchronizedPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#rangeIterator(int)
      */
-    public synchronized Iterator<Key> rangeIterator(RestrictionType restrict)
+    public synchronized Iterator rangeIterator(RestrictionType restrict)
     {
         return ref.rangeIterator(restrict);
     }
@@ -337,7 +337,7 @@ final class SynchronizedPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
-    @Override
+    /* @Override */
     public synchronized Object clone()
     {
         SynchronizedPassage clone = null;
@@ -356,7 +356,7 @@ final class SynchronizedPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public synchronized int compareTo(Key o)
+    public synchronized int compareTo(Object o)
     {
         return ref.compareTo(o);
     }

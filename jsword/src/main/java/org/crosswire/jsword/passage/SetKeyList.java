@@ -40,7 +40,7 @@ public class SetKeyList extends AbstractKeyList implements Key
     /**
      * Simple ctor
      */
-    public SetKeyList(Set<Key> set)
+    public SetKeyList(Set set)
     {
         list.addAll(set);
     }
@@ -48,7 +48,7 @@ public class SetKeyList extends AbstractKeyList implements Key
     /**
      * Simple ctor
      */
-    public SetKeyList(Set<Key> set, String name)
+    public SetKeyList(Set set, String name)
     {
         list.addAll(set);
         setName(name);
@@ -57,7 +57,7 @@ public class SetKeyList extends AbstractKeyList implements Key
     /**
      * Simple ctor
      */
-    public SetKeyList(Set<Key> set, Key parent)
+    public SetKeyList(Set set, Key parent)
     {
         list.addAll(set);
         this.parent = parent;
@@ -66,7 +66,7 @@ public class SetKeyList extends AbstractKeyList implements Key
     /**
      * Simple ctor
      */
-    public SetKeyList(Set<Key> set, Key parent, String name)
+    public SetKeyList(Set set, Key parent, String name)
     {
         list.addAll(set);
         this.parent = parent;
@@ -92,7 +92,7 @@ public class SetKeyList extends AbstractKeyList implements Key
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
      */
-    @Override
+    /* @Override */
     public boolean contains(Key key)
     {
         return list.contains(key);
@@ -101,7 +101,7 @@ public class SetKeyList extends AbstractKeyList implements Key
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    @Override
+    /* @Override */
     public boolean equals(Object obj)
     {
         return list.equals(obj);
@@ -110,7 +110,7 @@ public class SetKeyList extends AbstractKeyList implements Key
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
-    @Override
+    /* @Override */
     public int hashCode()
     {
         return list.hashCode();
@@ -119,7 +119,7 @@ public class SetKeyList extends AbstractKeyList implements Key
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#isEmpty()
      */
-    @Override
+    /* @Override */
     public boolean isEmpty()
     {
         return list.isEmpty();
@@ -128,7 +128,7 @@ public class SetKeyList extends AbstractKeyList implements Key
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#iterator()
      */
-    public Iterator<Key> iterator()
+    public Iterator iterator()
     {
         return list.iterator();
     }
@@ -162,7 +162,7 @@ public class SetKeyList extends AbstractKeyList implements Key
      */
     public Key get(int index)
     {
-        return list.get(index);
+        return (Key) list.get(index);
     }
 
     /* (non-Javadoc)
@@ -197,7 +197,7 @@ public class SetKeyList extends AbstractKeyList implements Key
     /**
      * The Set that we are proxying to
      */
-    private List<Key> list = new ArrayList<Key>();
+    private List list = new ArrayList();
 
     /**
      * The log stream

@@ -42,8 +42,10 @@
  */
 package org.crosswire.common.xml;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
@@ -73,27 +75,30 @@ public final class XMLFeatureSet
         features.put("xb", new XMLFeatureState(XMLFeature.XINCLUDE_FIXUP_BASE_URIS, true)); //$NON-NLS-1$
         features.put("xl", new XMLFeatureState(XMLFeature.XINCLUDE_FIXUP_LANGUAGE, true)); //$NON-NLS-1$
 
-        for (Map.Entry<String, XMLFeatureState> entry : features.entrySet())
+        Iterator iter = features.entrySet().iterator();
+        while (iter.hasNext())
         {
-            states.put(entry.getValue().getFeature(), entry.getKey());
+            Map.Entry entry = (Entry) iter.next();
+            states.put(((XMLFeatureState) entry.getValue()).getFeature(), entry.getKey());
         }
     }
 
     public void setFeatureState(XMLFeature feature, boolean state)
     {
-       features.get(states.get(feature)).setState(state);
+       ((XMLFeatureState) features.get(states.get(feature))).setState(state);
     }
 
-    public void setFeatureStates(String... argv)
+    public void setFeatureStates(String[] argv)
     {
         // process arguments
-        for (String arg : argv)
+        for (int i = 0; i < argv.length; i++)
         {
+            String arg = argv[i];
             if (arg.startsWith("-")) //$NON-NLS-1$
             {
                 String option = arg.substring(1);
                 String key = option.toLowerCase();
-                XMLFeatureState feature = features.get(key);
+                XMLFeatureState feature = (XMLFeatureState) features.get(key);
                 if (feature != null)
                 {
                     feature.setState(option.equals(key));
@@ -105,13 +110,15 @@ public final class XMLFeatureSet
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
-    @Override
+    /* @Override */
     public String toString()
     {
         StringBuffer buf = new StringBuffer();
         buf.append('\n');
-        for (XMLFeatureState state : features.values())
+        Iterator iter = features.values().iterator();
+        while (iter.hasNext())
         {
+            XMLFeatureState state = (XMLFeatureState) iter.next();
             buf.append(state.getFeature().toString()).append('\n');
         }
         return buf.toString();
@@ -145,8 +152,10 @@ public final class XMLFeatureSet
 
     public void setFeatures(XMLReader parser)
     {
-        for (XMLFeatureState state : features.values())
+        Iterator iter = features.values().iterator();
+        while (iter.hasNext())
         {
+            XMLFeatureState state = (XMLFeatureState) iter.next();
             state.setFeature(parser);
         }
     }
@@ -218,6 +227,6 @@ public final class XMLFeatureSet
         private XMLFeature feature;
     }
 
-    private Map<String, XMLFeatureState> features = new TreeMap<String, XMLFeatureState>();
-    private Map<XMLFeature, String> states = new TreeMap<XMLFeature, String>();
+    private Map features = new TreeMap();
+    private Map states = new TreeMap();
 }

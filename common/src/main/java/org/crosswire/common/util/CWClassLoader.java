@@ -61,7 +61,7 @@ public class CWClassLoader extends ClassLoader
     /* (non-Javadoc)
      * @see java.lang.ClassLoader#findResource(java.lang.String)
      */
-    @Override
+    /* @Override */
     public URL findResource(String search)
     {
         URL resource = null;

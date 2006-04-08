@@ -38,7 +38,7 @@ public class StringArrayChoice extends AbstractReflectedChoice
     /* (non-Javadoc)
      * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
      */
-    @Override
+    /* @Override */
     public void init(Element option, ResourceBundle configResources) throws StartupException
     {
         super.init(option, configResources);
@@ -56,7 +56,7 @@ public class StringArrayChoice extends AbstractReflectedChoice
     /* (non-Javadoc)
      * @see org.crosswire.common.config.AbstractReflectedChoice#convertToString(java.lang.Object)
      */
-    @Override
+    /* @Override */
     public String convertToString(Object orig)
     {
         return Convert.stringArray2String((String[]) orig, separator);
@@ -65,7 +65,7 @@ public class StringArrayChoice extends AbstractReflectedChoice
     /* (non-Javadoc)
      * @see org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java.lang.String)
      */
-    @Override
+    /* @Override */
     public Object convertToObject(String orig)
     {
         return Convert.string2StringArray(orig, separator);

@@ -76,7 +76,7 @@ public class ReadOnlyKeyList implements Key
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#iterator()
      */
-    public Iterator<Key> iterator()
+    public Iterator iterator()
     {
         return keys.iterator();
     }
@@ -168,7 +168,7 @@ public class ReadOnlyKeyList implements Key
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Key o)
+    public int compareTo(Object o)
     {
         return keys.compareTo(o);
     }
@@ -213,7 +213,7 @@ public class ReadOnlyKeyList implements Key
     /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
-    @Override
+    /* @Override */
     public Object clone()
     {
         ReadOnlyKeyList clone = null;

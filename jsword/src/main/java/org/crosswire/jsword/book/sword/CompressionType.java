@@ -22,6 +22,7 @@
 package org.crosswire.jsword.book.sword;
 
 import java.io.File;
+import java.io.Serializable;
 
 import org.crosswire.jsword.book.BookException;
 
@@ -33,47 +34,56 @@ import org.crosswire.jsword.book.BookException;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public enum CompressionType
+public abstract class CompressionType implements Serializable
 {
     /**
      * The level of compression is the Book
      */
-    ZIP
+    public static final CompressionType COMPRESSION_ZIP = new CompressionType("ZIP") //$NON-NLS-1$
     {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.CompressionType#isSupported()
-         */
-        @Override
         public boolean isSupported()
         {
             return true;
         }
-
-        @Override
         protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
-            BlockType blockType = Enum.valueOf(BlockType.class, sbmd.getProperty(ConfigEntryType.BLOCK_TYPE));
+            BlockType blockType = BlockType.fromString(sbmd.getProperty(ConfigEntryType.BLOCK_TYPE));
             return new GZIPBackend(sbmd, rootPath, blockType);
         }
-    },
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3977014063492642096L;
+    };
 
     /**
      * The level of compression is the Book
      */
-    LZSS
+    public static final CompressionType COMPRESSION_LZSS = new CompressionType("LZSS") //$NON-NLS-1$
     {
-        @Override
         public boolean isSupported()
         {
             return false;
         }
-
-        @Override
         protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new LZSSBackend(sbmd, rootPath);
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3257847692691517494L;
     };
+
+    /**
+     * Simple ctor
+     */
+    public CompressionType(String name)
+    {
+        this.name = name;
+    }
 
     /**
      * Returns whether this compression is implemented at this time.
@@ -84,4 +94,74 @@ public enum CompressionType
 
     abstract AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException;
 
+    /**
+     * Lookup method to convert from a String
+     */
+    public static CompressionType fromString(String name)
+    {
+        for (int i = 0; i < VALUES.length; i++)
+        {
+            CompressionType obj = VALUES[i];
+            if (obj.name.equalsIgnoreCase(name))
+            {
+                return obj;
+            }
+        }
+
+        throw new ClassCastException(Msg.UNDEFINED_DATATYPE.toString(name));
+    }
+
+    /**
+     * Lookup method to convert from an integer
+     */
+    public static CompressionType fromInteger(int i)
+    {
+        return VALUES[i];
+    }
+
+    /**
+     * Prevent subclasses from overriding canonical identity based Object methods
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public final boolean equals(Object o)
+    {
+        return super.equals(o);
+    }
+
+    /**
+     * Prevent subclasses from overriding canonical identity based Object methods
+     * @see java.lang.Object#hashCode()
+     */
+    public final int hashCode()
+    {
+        return super.hashCode();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        return name;
+    }
+
+    /**
+     * The name of the CompressionType
+     */
+    private String name;
+
+    // Support for serialization
+    private static int nextObj;
+    private final int obj = nextObj++;
+
+    Object readResolve()
+    {
+        return VALUES[obj];
+    }
+
+    private static final CompressionType[] VALUES =
+    {
+        COMPRESSION_ZIP,
+        COMPRESSION_LZSS,
+    };
 }

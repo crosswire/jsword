@@ -62,7 +62,7 @@ public class MsgBase
     /* (non-Javadoc)
      * @see org.apache.commons.lang.enum.Enum#toString()
      */
-    @Override
+    /* @Override */
     public String toString()
     {
         try
@@ -85,13 +85,13 @@ public class MsgBase
      */
     public String toString(Object param)
     {
-        return MessageFormat.format(toString(), param);
+        return MessageFormat.format(toString(), new Object[] { param });
     }
 
     /**
      * Formats the message with the given parameters.
      */
-    public String toString(Object... params)
+    public String toString(Object[] params)
     {
         return MessageFormat.format(toString(), params);
     }
@@ -108,7 +108,7 @@ public class MsgBase
         synchronized (MsgBase.class)
         {
             // see if it is in the cache
-            resources = resourceMap.get(className);
+            resources = (ResourceBundle) resourceMap.get(className);
 
             // if not then create it and put it into the cache
             if (resources == null)
@@ -132,7 +132,7 @@ public class MsgBase
     /**
      * resource map maintains a mapping of class names to resources found by that name.
      */
-    private static Map<String, ResourceBundle> resourceMap = new HashMap<String, ResourceBundle>();
+    private static Map resourceMap = new HashMap();
 
     /**
      * If there is any internationalization to be done, it is thru this

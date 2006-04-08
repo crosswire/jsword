@@ -61,7 +61,7 @@ public final class ChoiceFactory
         }
         else
         {
-            clazz = map.get(type);
+            clazz = (Class) map.get(type);
         }
 
         Choice choice = (Choice) clazz.newInstance();
@@ -72,7 +72,7 @@ public final class ChoiceFactory
     /**
      * Method getDataMap.
      */
-    public static Map<String, String[]> getDataMap()
+    public static Map getDataMap()
     {
         return datamap;
     }
@@ -80,12 +80,12 @@ public final class ChoiceFactory
     /**
      * Storage of various registered objects
      */
-    private static Map<String, String[]> datamap = new HashMap<String, String[]>();
+    private static Map datamap = new HashMap();
 
     /**
      * Store of the known ChoiceTypes
      */
-    private static Map<String, Class> map;
+    private static Map map;
 
     /**
      * Setup the map of Choices

@@ -101,7 +101,7 @@ public class ConfigEntryTable
     /**
      * Returns an Enumeration of all the keys found in the config file.
      */
-    public Set<ConfigEntryType> getKeys()
+    public Set getKeys()
     {
         return table.keySet();
     }
@@ -121,7 +121,7 @@ public class ConfigEntryTable
      */
     public Object getValue(ConfigEntryType type)
     {
-        ConfigEntry ce = table.get(type);
+        ConfigEntry ce = (ConfigEntry) table.get(type);
         if (ce != null)
         {
             return ce.getValue();
@@ -139,7 +139,7 @@ public class ConfigEntryTable
      */
     public boolean match(ConfigEntryType type, Object search)
     {
-        ConfigEntry ce = table.get(type);
+        ConfigEntry ce = (ConfigEntry) table.get(type);
         return ce != null && ce.match(search);
     }
 
@@ -206,7 +206,7 @@ public class ConfigEntryTable
             // Create a configEntry so that the name is normalized.
             ConfigEntry configEntry = new ConfigEntry(internal, key);
 
-            ConfigEntry e = table.get(configEntry.getType());
+            ConfigEntry e = (ConfigEntry) table.get(configEntry.getType());
 
             if (e == null)
             {
@@ -565,7 +565,7 @@ public class ConfigEntryTable
         Element title = null;
         for (int i = 0; i < category.length; i++)
         {
-            ConfigEntry entry = table.get(category[i]);
+            ConfigEntry entry = (ConfigEntry) table.get(category[i]);
             Element configElement = null;
 
             if (entry != null)
@@ -682,7 +682,7 @@ public class ConfigEntryTable
     /**
      * A map of lists of known config entries.
      */
-    private Map<ConfigEntryType, ConfigEntry> table = new HashMap<ConfigEntryType, ConfigEntry>();
+    private Map table = new HashMap();
 
     /**
      * The original name of this config file from mods.d.

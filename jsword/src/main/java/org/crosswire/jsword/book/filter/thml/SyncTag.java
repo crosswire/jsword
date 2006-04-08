@@ -57,8 +57,6 @@ public class SyncTag extends AbstractTag
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
      */
-    @SuppressWarnings("unchecked")
-    @Override
    public Element processTag(Element ele, Attributes attrs)
     {
         // Strongs reference
@@ -67,13 +65,13 @@ public class SyncTag extends AbstractTag
 
         if ("Strongs".equals(type)) //$NON-NLS-1$
         {
-            List<Content> siblings = ele.getContent();
+            List siblings = ele.getContent();
             int size = siblings.size();
             if (size == 0)
             {
                 return null;
             }
-            Content lastEle = siblings.get(size - 1);
+            Content lastEle = (Content) siblings.get(size - 1);
             if (lastEle instanceof Text)
             {
                 Element w = OSISUtil.factory().createW();
@@ -103,13 +101,13 @@ public class SyncTag extends AbstractTag
 
         if ("morph".equals(type)) //$NON-NLS-1$
         {
-            List<Content> siblings = ele.getContent();
+            List siblings = ele.getContent();
             int size = siblings.size();
             if (size == 0)
             {
                 return null;
             }
-            Content lastEle = siblings.get(size - 1);
+            Content lastEle = (Content) siblings.get(size - 1);
             if (lastEle instanceof Text)
             {
                 Element w = OSISUtil.factory().createW();

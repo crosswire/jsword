@@ -144,7 +144,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getProperties()
      */
-    public Map<String, String> getProperties()
+    public Map getProperties()
     {
         return prop;
     }
@@ -152,7 +152,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
     /**
      * @param newProperties
      */
-    public void setProperties(Map<String, String> newProperties)
+    public void setProperties(Map newProperties)
     {
         prop = newProperties;
     }
@@ -189,7 +189,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
     public void setIndexStatus(IndexStatus newValue)
     {
         indexStatus = newValue;
-        prop.put(KEY_INDEXSTATUS, newValue.name());
+        prop.put(KEY_INDEXSTATUS, newValue.toString());
     }
 
     /* (non-Javadoc)
@@ -250,7 +250,6 @@ public abstract class AbstractBookMetaData implements BookMetaData
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    @Override
     public boolean equals(Object obj)
     {
         // Since this can not be null
@@ -278,7 +277,6 @@ public abstract class AbstractBookMetaData implements BookMetaData
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
-    @Override
     public int hashCode()
     {
         return getName().hashCode();
@@ -287,12 +285,12 @@ public abstract class AbstractBookMetaData implements BookMetaData
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(BookMetaData obj)
+    public int compareTo(Object obj)
     {
-        int result = this.getBookCategory().compareTo(obj.getBookCategory());
+        int result = this.getBookCategory().compareTo(((BookMetaData) obj).getBookCategory());
         if (result == 0)
         {
-            result = this.getInitials().compareTo(obj.getInitials());
+            result = this.getInitials().compareTo(((BookMetaData) obj).getInitials());
         }
         return result;
     }
@@ -300,7 +298,6 @@ public abstract class AbstractBookMetaData implements BookMetaData
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
-    @Override
     public String toString()
     {
         if (displayName == null)
@@ -338,7 +335,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
     /**
      * The single key version of the properties
      */
-    private Map<String, String> prop = new LinkedHashMap<String, String>();
+    private Map prop = new LinkedHashMap();
 
     private BookDriver driver;
     private String fullName;

@@ -123,7 +123,6 @@ public final class Reporter
      * @param message The message to pass to the user
      * @deprecated Use informUser(Object source, MsgBase message) instead
      */
-    @Deprecated
     public static void informUser(Object source, String message)
     {
         log.debug(message);

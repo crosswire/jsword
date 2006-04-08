@@ -52,13 +52,13 @@ public class CustomHandler extends DefaultHandler
      */
     public CustomHandler()
     {
-        stack = new LinkedList<Content>();
+        stack = new LinkedList();
     }
 
     /* (non-Javadoc)
      * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
-    @Override
+    /* @Override */
     public void startElement(String uri, String localname, String qname, Attributes attrs) throws SAXException
     {
         Element ele = null;
@@ -84,7 +84,7 @@ public class CustomHandler extends DefaultHandler
     /* (non-Javadoc)
      * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
      */
-    @Override
+    /* @Override */
     public void characters(char[] data, int offset, int length)
     {
         // What we are adding to
@@ -122,7 +122,7 @@ public class CustomHandler extends DefaultHandler
     /* (non-Javadoc)
      * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
      */
-    @Override
+    /* @Override */
     public void endElement(String uri, String localname, String qname)
     {
         // When we are done processing an element we need to remove
@@ -146,14 +146,14 @@ public class CustomHandler extends DefaultHandler
 
     private Tag getTag(String localname, String qname)
     {
-        Tag t = TAG_MAP.get(qname);
+        Tag t = (Tag) TAG_MAP.get(qname);
 
         // Some of the THML books are broken in that they use uppercase
         // element names, which the spec disallows, but we might as well
         // look out for them
         if (t == null)
         {
-            t = TAG_MAP.get(qname.toLowerCase());
+            t = (Tag) TAG_MAP.get(qname.toLowerCase());
 
             if (t == null)
             {
@@ -175,12 +175,12 @@ public class CustomHandler extends DefaultHandler
     /**
      * The stack of elements that we have created
      */
-    private LinkedList<Content> stack;
+    private LinkedList stack;
 
     /**
      * The known tag types
      */
-    private static final Map<String, Tag> TAG_MAP = new HashMap<String, Tag>();
+    private static final Map TAG_MAP = new HashMap();
 
     static {
         Tag[] tags = new Tag[]

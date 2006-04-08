@@ -106,7 +106,6 @@ public class PassageTally extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.AbstractPassage#isEmpty()
      */
-    @Override
     public boolean isEmpty()
     {
         return size == 0;
@@ -115,7 +114,6 @@ public class PassageTally extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.AbstractPassage#countVerses()
      */
-    @Override
     public int countVerses()
     {
         return size;
@@ -151,13 +149,12 @@ public class PassageTally extends AbstractPassage
      * Get a copy of ourselves.
      * @return A complete copy of ourselves
      */
-    @Override
     public Object clone()
     {
         // This gets us a shallow copy
         PassageTally copy = (PassageTally) super.clone();
 
-        copy.board = board.clone();
+        copy.board = (int[]) board.clone();
 
         return copy;
     }
@@ -166,7 +163,6 @@ public class PassageTally extends AbstractPassage
      * Simply bounce to getName() to help String concatenation.
      * @return a String containing a description of the verses
      */
-    @Override
     public String toString()
     {
         return getName(0);
@@ -177,7 +173,6 @@ public class PassageTally extends AbstractPassage
      * Uses short books names, and the shortest possible rendering eg "Mat 3:1-4"
      * @return a String containing a description of the verses
      */
-    @Override
     public String getName()
     {
         return getName(0);
@@ -226,12 +221,12 @@ public class PassageTally extends AbstractPassage
                 }
 
                 Iterator it = new OrderedVerseIterator(board);
-                Verse current = null;
+                Key current = null;
                 int count = 0;
 
                 while (it.hasNext() && count < max_count)
                 {
-                    Verse verse = (Verse) it.next();
+                    Key verse = (Key) it.next();
                     retcode.append(verse.getName(current));
 
                     current = verse;
@@ -284,7 +279,7 @@ public class PassageTally extends AbstractPassage
 
             while (it.hasNext() && count < max_count)
             {
-                Verse verse = (Verse) it.next();
+                Key verse = (Key) it.next();
                 retcode.append(verse.getName());
                 retcode.append(" ("); //$NON-NLS-1$
                 retcode.append(100 * it.lastRank() / max);
@@ -310,7 +305,7 @@ public class PassageTally extends AbstractPassage
      * Iterate through the verse elements in the current sort order
      * @return A verse Iterator
      */
-    public Iterator<Key> iterator()
+    public Iterator iterator()
     {
         if (order == ORDER_BIBLICAL)
         {
@@ -323,8 +318,7 @@ public class PassageTally extends AbstractPassage
      * Iterate through the range elements in the current sort order
      * @return A range Iterator
      */
-    @Override
-    public Iterator<Key> rangeIterator(RestrictionType restrict)
+    public Iterator rangeIterator(RestrictionType restrict)
     {
         if (order == ORDER_BIBLICAL)
         {
@@ -338,12 +332,13 @@ public class PassageTally extends AbstractPassage
      * @param that The verses to test for
      * @return true if all the verses exist in this tally
      */
-    @Override
     public boolean contains(Key that)
     {
-        for (Key key : that)
+        Iterator it = that.iterator();
+
+        while (it.hasNext())
         {
-            Verse verse = (Verse) key;
+            Verse verse = (Verse) it.next();
             if (board[verse.getOrdinal() - 1] == 0)
             {
                 return false;
@@ -424,9 +419,11 @@ public class PassageTally extends AbstractPassage
     {
         optimizeWrites();
 
-        for (Key key : that)
+        Iterator it = that.iterator();
+
+        while (it.hasNext())
         {
-            Verse verse = (Verse) key;
+            Verse verse = (Verse) it.next();
             kill(verse.getOrdinal());
         }
 
@@ -436,7 +433,6 @@ public class PassageTally extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#addAll(org.crosswire.jsword.passage.Key)
      */
-    @Override
     public void addAll(Key that)
     {
         optimizeWrites();
@@ -455,9 +451,11 @@ public class PassageTally extends AbstractPassage
         }
         else
         {
-            for (Key key : that)
+            Iterator it = that.iterator();
+
+            while (it.hasNext())
             {
-                Verse verse = (Verse) key;
+                Verse verse = (Verse) it.next();
                 increment(verse.getOrdinal(), 1);
             }
 
@@ -487,9 +485,11 @@ public class PassageTally extends AbstractPassage
         }
         else
         {
-            for (Key key : that)
+            Iterator it = that.iterator();
+
+            while (it.hasNext())
             {
-                Verse verse = (Verse) key;
+                Verse verse = (Verse) it.next();
                 increment(verse.getOrdinal(), -1);
             }
         }
@@ -505,7 +505,6 @@ public class PassageTally extends AbstractPassage
      * Remove/Decrement these verses in the rankings
      * @param key The verses to remove/decrement
      */
-    @Override
     public void removeAll(Key key)
     {
         Passage that = KeyUtil.getPassage(key);
@@ -527,9 +526,11 @@ public class PassageTally extends AbstractPassage
         }
         else
         {
-            for (Key vkey : that)
+            Iterator it = that.iterator();
+
+            while (it.hasNext())
             {
-                Verse verse = (Verse) vkey;
+                Verse verse = (Verse) it.next();
                 kill(verse.getOrdinal());
             }
         }
@@ -544,7 +545,6 @@ public class PassageTally extends AbstractPassage
     /**
      * Removes all of the Verses from this Passage.
      */
-    @Override
     public void clear()
     {
         optimizeWrites();
@@ -571,7 +571,6 @@ public class PassageTally extends AbstractPassage
      * @return A new Passage conatining the remaining verses or null
      * @see Verse
      */
-    @Override
     public Passage trimVerses(int count)
     {
         optimizeWrites();
@@ -581,9 +580,10 @@ public class PassageTally extends AbstractPassage
 
         Passage remainder = (Passage) this.clone();
 
-        for (Key key : this)
+        Iterator it = iterator();
+        while (it.hasNext())
         {
-            Verse verse = (Verse) key;
+            Key verse = (Key) it.next();
 
             if (i > count)
             {
@@ -632,7 +632,6 @@ public class PassageTally extends AbstractPassage
      * @param restrict How should we restrict the blurring?
      * @see Passage
      */
-    @Override
     public void blur(int verses, RestrictionType restrict)
     {
         assert verses > 0;
@@ -744,9 +743,11 @@ public class PassageTally extends AbstractPassage
      */
     private void alterVerseBase(Key that, int tally)
     {
-        for (Key key : that)
+        Iterator it = that.iterator();
+
+        while (it.hasNext())
         {
-            Verse verse = (Verse) key;
+            Verse verse = (Verse) it.next();
             increment(verse.getOrdinal(), tally);
         }
 
@@ -864,7 +865,7 @@ public class PassageTally extends AbstractPassage
      * Iterate over the Verses in normal verse order
      * @author Joe Walker
      */
-    private final class VerseIterator implements Iterator<Key>
+    private final class VerseIterator implements Iterator
     {
         /**
          * Find the first unused verse
@@ -885,7 +886,7 @@ public class PassageTally extends AbstractPassage
         /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
-        public Key next() throws NoSuchElementException
+        public Object next() throws NoSuchElementException
         {
             try
             {
@@ -934,14 +935,14 @@ public class PassageTally extends AbstractPassage
      * Iterate over the Verses in order of their rank in the tally
      * @author Joe Walker
      */
-    private static final class OrderedVerseIterator implements Iterator<Key>
+    private static final class OrderedVerseIterator implements Iterator
     {
         /**
          * Find the first unused verse
          */
         protected OrderedVerseIterator(int[] board)
         {
-            TreeSet<TalliedVerse> output = new TreeSet<TalliedVerse>();
+            TreeSet output = new TreeSet();
 
             int vib = BibleInfo.versesInBible();
             for (int i = 0; i < vib; i++)
@@ -966,7 +967,7 @@ public class PassageTally extends AbstractPassage
         /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
-        public Key next() throws NoSuchElementException
+        public Object next() throws NoSuchElementException
         {
             try
             {
@@ -1019,7 +1020,7 @@ public class PassageTally extends AbstractPassage
      * JDK: Hack to make this work with J2SE 1.1 as well as J2SE 1.2
      * This compared 2 Integers
      */
-    private static class TalliedVerse implements Comparable<TalliedVerse>
+    private static class TalliedVerse implements Comparable
     {
         /**
          * Convenience ctor to set the public variables
@@ -1035,8 +1036,10 @@ public class PassageTally extends AbstractPassage
         /* (non-Javadoc)
          * @see java.lang.Comparable#compareTo(java.lang.Object)
          */
-        public int compareTo(TalliedVerse that)
+        public int compareTo(Object obj)
         {
+            TalliedVerse that = (TalliedVerse) obj;
+
             if (that.tally == this.tally)
             {
                 return this.ord - that.ord;
@@ -1060,25 +1063,27 @@ public class PassageTally extends AbstractPassage
      * Iterate over the Ranges in order of their rank in the tally
      * @author Joe Walker
      */
-    private static final class OrderedVerseRangeIterator implements Iterator<Key>
+    private static final class OrderedVerseRangeIterator implements Iterator
     {
         /**
          * Find the first unused verse
          */
-        public OrderedVerseRangeIterator(Iterator<Key> vit, int[] board)
+        public OrderedVerseRangeIterator(Iterator vit, int[] board)
         {
-            TreeSet<TalliedVerseRange> output = new TreeSet<TalliedVerseRange>();
+            TreeSet output = new TreeSet();
 
-            Iterator<Key> rit = new VerseRangeIterator(vit, RestrictionType.NONE);
+            Iterator rit = new VerseRangeIterator(vit, RestrictionType.NONE);
             while (rit.hasNext())
             {
                 VerseRange range = (VerseRange) rit.next();
 
                 // Calculate the maximum rank for a verse
                 int rank = 0;
-                for (Key key : range)
+                Iterator iter = range.iterator();
+
+                while (iter.hasNext())
                 {
-                    Verse verse = (Verse) key;
+                    Verse verse = (Verse) iter.next();
                     int temp = board[verse.getOrdinal() - 1];
                     if (temp > rank)
                     {
@@ -1103,7 +1108,7 @@ public class PassageTally extends AbstractPassage
         /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
-        public Key next() throws NoSuchElementException
+        public Object next() throws NoSuchElementException
         {
             last = (TalliedVerseRange) it.next();
             return last.range;

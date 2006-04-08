@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -104,7 +105,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#isQuestionable()
      */
-    @Override
+    /* @Override */
     public boolean isQuestionable()
     {
         return cet.isQuestionable();
@@ -113,7 +114,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#isSupported()
      */
-    @Override
+    /* @Override */
     public boolean isSupported()
     {
         return cet.isSupported() && cet.getBookType().isSupported(this);
@@ -122,7 +123,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#isEnciphered()
      */
-    @Override
+    /* @Override */
     public boolean isEnciphered()
     {
         return cet.isEnciphered();
@@ -142,7 +143,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
      */
     public String getBookCharset()
     {
-        return ENCODING_JAVA.get(getProperty(ConfigEntryType.ENCODING));
+        return (String) ENCODING_JAVA.get(getProperty(ConfigEntryType.ENCODING));
     }
 
     /**
@@ -210,7 +211,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#toOSIS()
      */
-    @Override
+    /* @Override */
     public Document toOSIS()
     {
         return new Document(cet.toOSIS());
@@ -249,7 +250,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#hasFeature(org.crosswire.jsword.book.FeatureType)
      */
-    @Override
+    /* @Override */
     public boolean hasFeature(FeatureType feature)
     {
         return cet.match(ConfigEntryType.FEATURE, feature.toString());
@@ -258,9 +259,10 @@ public class SwordBookMetaData extends AbstractBookMetaData
     private void buildProperties()
     {
         // merge entries into properties file
-        for (ConfigEntryType key : cet.getKeys())
+        Iterator iter = cet.getKeys().iterator();
+        while (iter.hasNext())
         {
-
+            ConfigEntryType key = (ConfigEntryType) iter.next();
             Object value = cet.getValue(key);
             // value is null if the config entry was rejected.
             if (value == null)
@@ -272,9 +274,10 @@ public class SwordBookMetaData extends AbstractBookMetaData
                 List list = (List) value;
                 StringBuffer combined = new StringBuffer();
                 boolean appendSeparator = false;
-                for (Object obj : list)
+                Iterator it = list.iterator();
+                while (it.hasNext())
                 {
-                    String element = (String) obj;
+                    String element = (String) it.next();
                     if (appendSeparator)
                     {
                         combined.append('\n');
@@ -309,7 +312,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
     /**
      * The language strings need to be converted to Java charsets
      */
-    private static final Map<String, String> ENCODING_JAVA = new HashMap<String, String>();
+    private static final Map ENCODING_JAVA = new HashMap();
     static
     {
         ENCODING_JAVA.put("Latin-1", ENCODING_LATIN1); //$NON-NLS-1$

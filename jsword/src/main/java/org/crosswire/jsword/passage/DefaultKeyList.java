@@ -73,7 +73,7 @@ public class DefaultKeyList extends AbstractKeyList implements Key
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#isEmpty()
      */
-    @Override
+    /* @Override */
     public boolean isEmpty()
     {
         return keys.isEmpty();
@@ -82,7 +82,7 @@ public class DefaultKeyList extends AbstractKeyList implements Key
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
      */
-    @Override
+    /* @Override */
     public boolean contains(Key key)
     {
         return keys.contains(key);
@@ -91,7 +91,7 @@ public class DefaultKeyList extends AbstractKeyList implements Key
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#iterator()
      */
-    public Iterator<Key> iterator()
+    public Iterator iterator()
     {
         return keys.iterator();
     }
@@ -125,7 +125,7 @@ public class DefaultKeyList extends AbstractKeyList implements Key
      */
     public Key get(int index)
     {
-        return keys.get(index);
+        return (Key) keys.get(index);
     }
 
     /* (non-Javadoc)
@@ -160,7 +160,7 @@ public class DefaultKeyList extends AbstractKeyList implements Key
     /**
      * The store of Keys
      */
-    private List<Key> keys = new ArrayList<Key>();
+    private List keys = new ArrayList();
 
     /**
      * The log stream

@@ -21,6 +21,7 @@
  */
 package org.crosswire.jsword.passage;
 
+import java.io.Serializable;
 
 
 /**
@@ -31,15 +32,16 @@ package org.crosswire.jsword.passage;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public enum RestrictionType
+public abstract class RestrictionType implements Serializable
 {
-    /** There is no restriction on blurring. */
-    NONE
+    /**
+     * There is no restriction on blurring.
+     */
+    public static final RestrictionType NONE = new RestrictionType("NONE") //$NON-NLS-1$
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.RestrictionType#isSameScope(org.crosswire.jsword.passage.Verse, org.crosswire.jsword.passage.Verse)
          */
-        @Override
         public boolean isSameScope(Verse start, Verse end)
         {
             return true;
@@ -48,7 +50,6 @@ public enum RestrictionType
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword.passage.VerseRange, int, int)
          */
-        @Override
         public VerseRange blur(VerseRange range, int blurDown, int blurUp)
         {
             Verse start = range.getStart().subtract(blurDown);
@@ -59,7 +60,6 @@ public enum RestrictionType
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword.passage.Verse, int, int)
          */
-        @Override
         public VerseRange blur(Verse verse, int blurDown, int blurUp)
         {
             Verse start = verse.subtract(blurDown);
@@ -70,7 +70,6 @@ public enum RestrictionType
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword.passage.Verse, int, int)
          */
-        @Override
         public VerseRange toRange(Verse verse, int count)
         {
             Verse end = verse;
@@ -80,15 +79,64 @@ public enum RestrictionType
             }
             return new VerseRange(verse, end);
         }
-    },
 
-    /** Blurring is restricted to the chapter */
-    CHAPTER
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3905246714754643248L;
+    };
+
+//    /**
+//     * Blurring is restricted to the book.
+//     */
+//    public static final RestrictionType BOOK = new RestrictionType("BOOK") //$NON-NLS-1$
+//    {
+//        /* (non-Javadoc)
+//         * @see org.crosswire.jsword.passage.RestrictionType#isSameScope(org.crosswire.jsword.passage.Verse, org.crosswire.jsword.passage.Verse)
+//         */
+//        public boolean isSameScope(Verse start, Verse end)
+//        {
+//            return start.isSameBook(end);
+//        }
+//
+//        /* (non-Javadoc)
+//         * @see org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword.passage.VerseRange, int, int)
+//         */
+//        public VerseRange blur(VerseRange range, int blurDown, int blurUp)
+//        {
+//            throw new IllegalArgumentException(Msg.RANGE_BLURBOOK.toString());
+//        }
+//
+//        /* (non-Javadoc)
+//         * @see org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword.passage.Verse, int, int)
+//         */
+//        public VerseRange blur(Verse verse, int blurDown, int blurUp)
+//        {
+//            throw new IllegalArgumentException(Msg.RANGE_BLURBOOK.toString());
+//        }
+//
+//        /* (non-Javadoc)
+//         * @see org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword.passage.Verse, int, int)
+//         */
+//        public VerseRange toRange(Verse verse, int count)
+//        {
+//            throw new IllegalArgumentException(Msg.RANGE_BLURBOOK.toString());
+//        }
+//
+//        /**
+//         * Serialization ID
+//         */
+//        private static final long serialVersionUID = 3978142166633820472L;
+//    };
+
+    /**
+     * Blurring is restricted to the chapter
+     */
+    public static final RestrictionType CHAPTER = new RestrictionType("CHAPTER") //$NON-NLS-1$
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.RestrictionType#isSameScope(org.crosswire.jsword.passage.Verse, org.crosswire.jsword.passage.Verse)
          */
-        @Override
         public boolean isSameScope(Verse start, Verse end)
         {
             return start.isSameChapter(end);
@@ -97,7 +145,6 @@ public enum RestrictionType
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword.passage.VerseRange, int, int)
          */
-        @Override
         public VerseRange blur(VerseRange range, int blurDown, int blurUp)
         {
             try
@@ -129,7 +176,6 @@ public enum RestrictionType
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword.passage.Verse, int, int)
          */
-        @Override
         public VerseRange blur(Verse verse, int blurDown, int blurUp)
         {
             try
@@ -165,7 +211,6 @@ public enum RestrictionType
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.RestrictionType#toRange(org.crosswire.jsword.passage.Verse, int)
          */
-        @Override
         public VerseRange toRange(Verse verse, int count)
         {
             Verse end = verse.add(count - 1);
@@ -176,46 +221,6 @@ public enum RestrictionType
          * Serialization ID
          */
         private static final long serialVersionUID = 3257284751327768626L;
-    },
-
-    /** Blurring is restricted to the book. */
-    BOOK
-    {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.passage.RestrictionType#isSameScope(org.crosswire.jsword.passage.Verse, org.crosswire.jsword.passage.Verse)
-         */
-        @Override
-        public boolean isSameScope(Verse start, Verse end)
-        {
-            return start.isSameBook(end);
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword.passage.VerseRange, int, int)
-         */
-        @Override
-        public VerseRange blur(VerseRange range, int blurDown, int blurUp)
-        {
-            throw new IllegalArgumentException(Msg.RANGE_BLURBOOK.toString());
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword.passage.Verse, int, int)
-         */
-        @Override
-        public VerseRange blur(Verse verse, int blurDown, int blurUp)
-        {
-            throw new IllegalArgumentException(Msg.RANGE_BLURBOOK.toString());
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword.passage.Verse, int, int)
-         */
-        @Override
-        public VerseRange toRange(Verse verse, int count)
-        {
-            throw new IllegalArgumentException(Msg.RANGE_BLURBOOK.toString());
-        }
     };
 
     /**
@@ -255,18 +260,80 @@ public enum RestrictionType
     public abstract VerseRange toRange(Verse verse, int count);
 
     /**
+     * Simple ctor
+     */
+    public RestrictionType(String name)
+    {
+        this.name = name;
+    }
+
+    /**
+     * Get an integer representation for this RestrictionType
+     */
+    public int toInteger()
+    {
+        for (int i = 0; i < VALUES.length; i++)
+        {
+            if (equals(VALUES[i]))
+            {
+                return i;
+            }
+        }
+        // cannot get here
+        assert false;
+        return -1;
+    }
+
+    /**
+     * Lookup method to convert from a String
+     */
+    public static RestrictionType fromString(String name)
+    {
+        for (int i = 0; i < VALUES.length; i++)
+        {
+            RestrictionType o = VALUES[i];
+            if (o.name.equalsIgnoreCase(name))
+            {
+                return o;
+            }
+        }
+        // cannot get here
+        assert false;
+        return null;
+    }
+
+    /**
      * Lookup method to convert from an integer
      */
     public static RestrictionType fromInteger(int i)
     {
-        for (RestrictionType rt : RestrictionType.values())
-        {
-            if (rt.ordinal() == i)
-            {
-                return rt;
-            }
-        }
-        return defaultBlurRestriction;
+        return VALUES[i];
+    }
+
+    /**
+     * Prevent subclasses from overriding canonical identity based Object methods
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public final boolean equals(Object o)
+    {
+        return super.equals(o);
+    }
+
+    /**
+     * Prevent subclasses from overriding canonical identity based Object methods
+     * @see java.lang.Object#hashCode()
+     */
+    public final int hashCode()
+    {
+        return super.hashCode();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        return name;
     }
 
     /**
@@ -285,7 +352,7 @@ public enum RestrictionType
      */
     public static int getBlurRestriction()
     {
-        return getDefaultBlurRestriction().ordinal();
+        return getDefaultBlurRestriction().toInteger();
     }
 
     /**
@@ -305,4 +372,25 @@ public enum RestrictionType
      * A default restriction type for blurring.
      */
     private static RestrictionType defaultBlurRestriction;
+
+    /**
+     * The name of the PassageListType
+     */
+    private String name;
+
+    // Support for serialization
+    private static int nextObj;
+    private final int obj = nextObj++;
+
+    Object readResolve()
+    {
+        return VALUES[obj];
+    }
+
+    private static final RestrictionType[] VALUES =
+    {
+        NONE,
+        CHAPTER,
+//      BOOK,
+    };
 }

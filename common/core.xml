@@ -10,7 +10,7 @@
     == These are the standard locations that this build file uses.
     == This assumes that the build file is in the root of the project.
     =========================================================================-->
-  <property name="release.version" value="1.0"/>
+  <property name="release.version" value="1.0.1"/>
   <property name="source.root"     value="src"/>
   <property name="source.etc"      value="etc"/>
   <property name="source.jar"      value="jar"/>
@@ -296,7 +296,7 @@
     <javac debug="on"
            includes="**/*.java"
            destdir="${target.classes}"
-           source="1.5">
+           source="1.4">
       <src refid="source.path"/>
       <classpath refid="runtime.jarpath"/>
     </javac>
@@ -345,7 +345,7 @@
     <javac debug="on"
            includes="**/*.java"
            destdir="${test.classes}"
-           source="1.5">
+           source="1.4">
       <src refid="testsource.path"/>
       <classpath refid="test.jarpath"/>
     </javac>

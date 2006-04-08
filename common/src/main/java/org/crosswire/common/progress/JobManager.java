@@ -24,6 +24,7 @@ package org.crosswire.common.progress;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -120,7 +121,7 @@ public final class JobManager
      */
     public static synchronized void addWorkListener(WorkListener li)
     {
-        List<WorkListener> temp = new ArrayList<WorkListener>();
+        List temp = new ArrayList();
         temp.addAll(listeners);
 
         if (!temp.contains(li))
@@ -137,7 +138,7 @@ public final class JobManager
     {
         if (listeners.contains(li))
         {
-            List<WorkListener> temp = new ArrayList<WorkListener>();
+            List temp = new ArrayList();
             temp.addAll(listeners);
             temp.remove(li);
             listeners = temp;
@@ -147,9 +148,9 @@ public final class JobManager
     /**
      * Accessor for the currently known jobs
      */
-    public static synchronized Set<Job> getJobs()
+    public static synchronized Set getJobs()
     {
-        Set<Job> reply = new HashSet<Job>();
+        Set reply = new HashSet();
         reply.addAll(jobs);
         return reply;
     }
@@ -164,7 +165,7 @@ public final class JobManager
         // we need to keep the synchronized section very small to avoid deadlock
         // certainly keep the event dispatch clear of the synchronized block or
         // there will be a deadlock
-        final List<WorkListener> temp = new ArrayList<WorkListener>();
+        final List temp = new ArrayList();
         synchronized (JobManager.class)
         {
             temp.addAll(listeners);
@@ -174,8 +175,10 @@ public final class JobManager
         // list of jobs so we need to fire before delete.
         if (listeners != null)
         {
-            for (WorkListener worker : temp)
+            Iterator iter = temp.iterator();
+            while (iter.hasNext())
             {
+                WorkListener worker = (WorkListener) iter.next();
                 worker.workProgressed(ev);
             }
         }
@@ -196,12 +199,12 @@ public final class JobManager
     /**
      * List of listeners
      */
-    private static List<WorkListener> listeners = new ArrayList<WorkListener>();
+    private static List listeners = new ArrayList();
 
     /**
      * List of current jobs
      */
-    private static Set<Job> jobs = new HashSet<Job>();
+    private static Set jobs = new HashSet();
 
     /**
      * The log stream

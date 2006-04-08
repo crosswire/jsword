@@ -113,7 +113,7 @@ final class ReadOnlyPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#iterator()
      */
-    public Iterator<Key> iterator()
+    public Iterator iterator()
     {
         return ref.iterator();
     }
@@ -265,7 +265,7 @@ final class ReadOnlyPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#rangeIterator(int)
      */
-    public Iterator<Key> rangeIterator(RestrictionType restrict)
+    public Iterator rangeIterator(RestrictionType restrict)
     {
         return ref.rangeIterator(restrict);
     }
@@ -376,7 +376,6 @@ final class ReadOnlyPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    @Override
     public boolean equals(Object obj)
     {
         return ref.equals(obj);
@@ -385,7 +384,6 @@ final class ReadOnlyPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
-    @Override
     public int hashCode()
     {
         return ref.hashCode();
@@ -394,7 +392,6 @@ final class ReadOnlyPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
-    @Override
     public String toString()
     {
         return ref.toString();
@@ -403,7 +400,6 @@ final class ReadOnlyPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
-    @Override
     public Object clone()
     {
         ReadOnlyPassage clone = null;
@@ -423,7 +419,7 @@ final class ReadOnlyPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Key o)
+    public int compareTo(Object o)
     {
         return ref.compareTo(o);
     }

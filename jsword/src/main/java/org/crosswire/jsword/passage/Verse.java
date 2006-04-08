@@ -146,7 +146,7 @@ public final class Verse implements Key
      * simply an alias for getName();
      * @return The string representation
      */
-    @Override
+    /* @Override */
     public String toString()
     {
         return getName();
@@ -281,7 +281,7 @@ public final class Verse implements Key
      *   If this is not cloneable then writing cloneable children is harder
      * @return A complete copy of ourselves
      */
-    @Override
+    /* @Override */
     public Object clone()
     {
         Verse copy = null;
@@ -310,7 +310,7 @@ public final class Verse implements Key
      * @param obj The thing to test against
      * @return True/False is we are or are not equal to obj
      */
-    @Override
+    /* @Override */
     public boolean equals(Object obj)
     {
         // Since this can not be null
@@ -353,7 +353,7 @@ public final class Verse implements Key
      * <p><b>However should should not reply on this being true</b>
      * @return The hashing number
      */
-    @Override
+    /* @Override */
     public int hashCode()
     {
         return getOrdinal();
@@ -364,7 +364,7 @@ public final class Verse implements Key
      * @param obj The thing to compare against
      * @return 1 means he is earlier than me, -1 means he is later ...
      */
-    public int compareTo(Key obj)
+    public int compareTo(Object obj)
     {
         Verse that = null;
         if (obj instanceof Verse)
@@ -844,7 +844,7 @@ public final class Verse implements Key
     /**
      * Iterator over 1 verse - For being a VerseBase.
      */
-    private class VerseIterator implements Iterator<Key>
+    private class VerseIterator implements Iterator
     {
         /* (non-Javadoc)
          * @see java.util.Iterator#hasNext()
@@ -857,7 +857,7 @@ public final class Verse implements Key
         /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
-        public Key next()
+        public Object next()
         {
             if (done)
             {
@@ -914,7 +914,7 @@ public final class Verse implements Key
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#iterator()
      */
-    public Iterator<Key> iterator()
+    public Iterator iterator()
     {
         return new VerseIterator();
     }

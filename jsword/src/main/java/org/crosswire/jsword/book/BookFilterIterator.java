@@ -22,7 +22,10 @@
 package org.crosswire.jsword.book;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
+
+import org.crosswire.common.util.Iterable;
 
 /**
  * An iterator that filters as it goes.
@@ -32,13 +35,13 @@ import java.util.NoSuchElementException;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class BookFilterIterator implements Iterable<Book>, Iterator<Book>
+public class BookFilterIterator implements Iterable, Iterator
 {
     /**
      * Simple ctor
      * @param filter The filter to use, if null, will iterate over all values
      */
-    public BookFilterIterator(Iterable<Book> books, BookFilter filter)
+    public BookFilterIterator(List books, BookFilter filter)
     {
         this.it = books.iterator();
         this.filter = filter;
@@ -47,7 +50,7 @@ public class BookFilterIterator implements Iterable<Book>, Iterator<Book>
     /* (non-Javadoc)
      * @see java.lang.Iterable#iterator()
      */
-    public Iterator<Book> iterator()
+    public Iterator iterator()
     {
         return this;
     }
@@ -64,7 +67,7 @@ public class BookFilterIterator implements Iterable<Book>, Iterator<Book>
     /* (non-Javadoc)
      * @see java.util.Iterator#next()
      */
-    public Book next()
+    public Object next()
     {
         if (next == null)
         {

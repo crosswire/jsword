@@ -183,7 +183,7 @@ public final class OSISUtil
      */
     private static final String OSISID_PREFIX_BIBLE = "Bible."; //$NON-NLS-1$
 
-    private static final Set<String> EXTRA_BIBLICAL_ELEMENTS = new HashSet<String>(Arrays.asList(new String[]
+    private static final Set EXTRA_BIBLICAL_ELEMENTS = new HashSet(Arrays.asList(new String[]
     {
         OSIS_ELEMENT_NOTE,
     }));
@@ -500,18 +500,22 @@ public final class OSISUtil
      * the markup stripped out.
      * @return The Bible text without markup
      */
-    @SuppressWarnings("unchecked")
     public static String getPlainText(Element root)
     {
         StringBuffer buffer = new StringBuffer();
 
         Element osisText = root.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
-        List<Element> divs = osisText.getChildren(OSISUtil.OSIS_ELEMENT_DIV);
+        List divs = osisText.getChildren(OSISUtil.OSIS_ELEMENT_DIV);
 
-        for (Element div : divs)
+        Iterator divIter = divs.iterator();
+        while (divIter.hasNext())
         {
-           for (Object data : div.getContent())
+            Element div = (Element) divIter.next();
+
+            Iterator contentIter = div.getContent().iterator();
+            while (contentIter.hasNext())
             {
+                Object data = contentIter.next();
                 if (data instanceof Element)
                 {
                     Element ele = (Element) data;
@@ -561,14 +565,14 @@ public final class OSISUtil
         }
     }
 
-    @SuppressWarnings("unchecked")
     private static String getTextContent(Element ele)
     {
         StringBuffer buffer = new StringBuffer();
 
-        List<Content> content = ele.getContent();
-        for (Content next : content)
+        Iterator contentIter = ele.getContent().iterator();
+        while (contentIter.hasNext())
         {
+            Content next = (Content) contentIter.next();
             recurseElement(next, buffer);
         }
 
@@ -581,7 +585,7 @@ public final class OSISUtil
      */
     public static Collection getDeepContent(Element div, String name)
     {
-        List<Content> reply = new ArrayList<Content>();
+        List reply = new ArrayList();
         recurseDeepContent(div, name, reply);
         return reply;
     }
@@ -645,16 +649,17 @@ public final class OSISUtil
      * Find all the instances of elements of type <code>find</code> under
      * the element <code>div</code>. For internal use only.
      */
-    private static void recurseDeepContent(Element start, String name, List<Content> reply)
+    private static void recurseDeepContent(Element start, String name, List reply)
     {
         if (start.getName().equals(name))
         {
             reply.add(start);
         }
 
-        for (Object obj : start.getContent())
+        Iterator contentIter = start.getContent().iterator();
+        while (contentIter.hasNext())
         {
-            Element ele = (Element) obj;
+            Element ele = (Element) contentIter.next();
             recurseDeepContent(ele, name, reply);
         }
     }
@@ -689,8 +694,10 @@ public final class OSISUtil
         // ele is a JDOM Element that might have a getContent() method
         try
         {
-            for (Object sub : ele.getContent())
+            Iterator contentIter = ele.getContent().iterator();
+            while (contentIter.hasNext())
             {
+                Object sub = contentIter.next();
                 recurseElement(sub, buffer);
             }
         }

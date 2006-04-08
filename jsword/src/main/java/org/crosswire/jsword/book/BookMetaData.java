@@ -43,7 +43,7 @@ import org.jdom.Document;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public interface BookMetaData extends Comparable<BookMetaData>
+public interface BookMetaData extends Comparable
 {
     /**
      * The name of the book, for example "King James Version" or
@@ -155,7 +155,7 @@ public interface BookMetaData extends Comparable<BookMetaData>
      * The returned Properties will be read-only so any attempts to alter it
      * will fail.
      */
-    Map<String, String> getProperties();
+    Map getProperties();
 
     /**
      * Has anyone generated a search index for this Book?

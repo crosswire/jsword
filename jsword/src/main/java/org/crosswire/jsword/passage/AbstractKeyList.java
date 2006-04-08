@@ -45,8 +45,9 @@ public abstract class AbstractKeyList implements Key
      */
     public boolean contains(Key key)
     {
-        for (Key temp : this)
+        for (Iterator it = iterator(); it.hasNext(); )
         {
+            Key temp = (Key) it.next();
             if (key.equals(temp))
             {
                 return true;
@@ -97,7 +98,6 @@ public abstract class AbstractKeyList implements Key
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
-    @Override
     public String toString()
     {
         return getName();
@@ -159,12 +159,12 @@ public abstract class AbstractKeyList implements Key
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Key obj)
+    public int compareTo(Object obj)
     {
-        Key that = obj;
+        Key that = (Key) obj;
 
-        Key thisfirst = this.iterator().next();
-        Key thatfirst = that.iterator().next();
+        Key thisfirst = (Key) this.iterator().next();
+        Key thatfirst = (Key) that.iterator().next();
 
         if (thisfirst == null)
         {
@@ -189,7 +189,6 @@ public abstract class AbstractKeyList implements Key
     /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
-    @Override
     public Object clone()
     {
         Object clone = null;
@@ -221,7 +220,6 @@ public abstract class AbstractKeyList implements Key
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.KeyVisitor#visitLeaf(org.crosswire.jsword.passage.Key)
          */
-        @Override
         public void visitLeaf(Key key)
         {
             buffer.append(key.getName());
@@ -231,7 +229,6 @@ public abstract class AbstractKeyList implements Key
         /* (non-Javadoc)
          * @see java.lang.Object#toString()
          */
-        @Override
         public String toString()
         {
             String reply = buffer.toString();
@@ -256,7 +253,6 @@ public abstract class AbstractKeyList implements Key
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.KeyVisitor#visitLeaf(org.crosswire.jsword.passage.Key)
          */
-        @Override
         public void visitLeaf(Key key)
         {
             buffer.append(key.getOsisRef());
@@ -273,7 +269,6 @@ public abstract class AbstractKeyList implements Key
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.KeyVisitor#visitLeaf(org.crosswire.jsword.passage.Key)
          */
-        @Override
         public void visitLeaf(Key key)
         {
             buffer.append(key.getOsisID());
@@ -282,7 +277,6 @@ public abstract class AbstractKeyList implements Key
         /* (non-Javadoc)
          * @see java.lang.Object#toString()
          */
-        @Override
         public String toString()
         {
             String reply = super.toString();

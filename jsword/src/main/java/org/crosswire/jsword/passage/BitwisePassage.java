@@ -83,7 +83,6 @@ public class BitwisePassage extends AbstractPassage
      *   If this is not cloneable then writing cloneable children is harder
      * @return A complete copy of ourselves
      */
-    @Override
     public Object clone()
     {
         // This gets us a shallow copy
@@ -97,7 +96,6 @@ public class BitwisePassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#countVerses()
      */
-    @Override
     public int countVerses()
     {
         return store.cardinality();
@@ -106,7 +104,6 @@ public class BitwisePassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#isEmpty()
      */
-    @Override
     public boolean isEmpty()
     {
         return store.isEmpty();
@@ -115,7 +112,7 @@ public class BitwisePassage extends AbstractPassage
     /* (non-Javadoc)
      * @see java.lang.Iterable#iterator()
      */
-    public Iterator<Key> iterator()
+    public Iterator iterator()
     {
         return new VerseIterator();
     }
@@ -123,8 +120,7 @@ public class BitwisePassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.AbstractPassage#rangeIterator()
      */
-    @Override
-    public Iterator<Key> rangeIterator(RestrictionType restrict)
+    public Iterator rangeIterator(RestrictionType restrict)
     {
         return new VerseRangeIterator(iterator(), restrict);
     }
@@ -132,12 +128,12 @@ public class BitwisePassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#contains(org.crosswire.jsword.passage.VerseBase)
      */
-    @Override
     public boolean contains(Key obj)
     {
-        for (Key key : obj)
+        Iterator iter = obj.iterator();
+        while (iter.hasNext())
         {
-            Verse verse = (Verse) key;
+            Verse verse = (Verse) iter.next();
             if (!store.get(verse.getOrdinal()))
             {
                 return false;
@@ -156,9 +152,10 @@ public class BitwisePassage extends AbstractPassage
 
         Verse firstVerse = null;
         Verse lastVerse = null;
-        for (Key key : obj)
+        Iterator iter = obj.iterator();
+        while (iter.hasNext())
         {
-            lastVerse = (Verse) key;
+            lastVerse = (Verse) iter.next();
             if (firstVerse == null)
             {
                 firstVerse = lastVerse;
@@ -183,9 +180,10 @@ public class BitwisePassage extends AbstractPassage
 
         Verse firstVerse = null;
         Verse lastVerse = null;
-        for (Key key : obj)
+        Iterator iter = obj.iterator();
+        while (iter.hasNext())
         {
-            lastVerse = (Verse) key;
+            lastVerse = (Verse) iter.next();
             if (firstVerse == null)
             {
                 firstVerse = lastVerse;
@@ -204,7 +202,6 @@ public class BitwisePassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#addAll(org.crosswire.jsword.passage.Passage)
      */
-    @Override
     public void addAll(Key key)
     {
         Passage that = KeyUtil.getPassage(key);
@@ -232,7 +229,6 @@ public class BitwisePassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#removeAll(org.crosswire.jsword.passage.Passage)
      */
-    @Override
     public void removeAll(Key key)
     {
         Passage that = KeyUtil.getPassage(key);
@@ -261,7 +257,6 @@ public class BitwisePassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#retainAll(org.crosswire.jsword.passage.Passage)
      */
-    @Override
     public void retainAll(Key key)
     {
         Passage that = KeyUtil.getPassage(key);
@@ -277,10 +272,10 @@ public class BitwisePassage extends AbstractPassage
         {
             thatStore = new BitSet(BibleInfo.versesInBible() + 1);
 
-            for (Key vkey : that)
+            Iterator it = that.iterator();
+            while (it.hasNext())
             {
-                Verse verse = (Verse) vkey;
-                int ord = verse.getOrdinal();
+                int ord = ((Verse) it.next()).getOrdinal();
                 if (store.get(ord))
                 {
                     thatStore.set(ord);
@@ -295,7 +290,6 @@ public class BitwisePassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#clear()
      */
-    @Override
     public void clear()
     {
         optimizeWrites();
@@ -308,7 +302,6 @@ public class BitwisePassage extends AbstractPassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#blur(int, int)
      */
-    @Override
     public void blur(int verses, RestrictionType restrict)
     {
         assert verses > 0;
@@ -354,7 +347,7 @@ public class BitwisePassage extends AbstractPassage
      * @author Joe Walker
      * @author DM Smith
      */
-    private final class VerseIterator implements Iterator<Key>
+    private final class VerseIterator implements Iterator
     {
         /**
          * Find the first unused verse
@@ -376,7 +369,7 @@ public class BitwisePassage extends AbstractPassage
         /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
-        public Key next() throws NoSuchElementException
+        public Object next() throws NoSuchElementException
         {
             try
             {

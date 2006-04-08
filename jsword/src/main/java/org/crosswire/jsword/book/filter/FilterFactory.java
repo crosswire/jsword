@@ -22,6 +22,7 @@
 package org.crosswire.jsword.book.filter;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.crosswire.common.util.ClassUtil;
@@ -51,7 +52,7 @@ public final class FilterFactory
     /**
      * The lookup table of filters
      */
-    private static Map<String, Filter> filters = new HashMap<String, Filter>();
+    private static Map filters = new HashMap();
 
     /**
      * The lookup table of filters
@@ -64,12 +65,12 @@ public final class FilterFactory
      */
     static
     {
-        Map<String, Class> map = ClassUtil.getImplementorsMap(Filter.class);
+        Map map = ClassUtil.getImplementorsMap(Filter.class);
 
         // the default value
         try
         {
-            Class cdeft = map.remove("default"); //$NON-NLS-1$
+            Class cdeft = (Class) map.remove("default"); //$NON-NLS-1$
             deft = (Filter) cdeft.newInstance();
         }
         catch (Exception ex)
@@ -78,13 +79,14 @@ public final class FilterFactory
         }
 
         // the lookup table
-        for (Map.Entry<String, Class> entry : map.entrySet())
+        for (Iterator it = map.entrySet().iterator(); it.hasNext(); )
         {
             try
             {
-                Class clazz = entry.getValue();
+                Map.Entry entry = (Map.Entry) it.next();
+                Class clazz = (Class) entry.getValue();
                 Filter instance = (Filter) clazz.newInstance();
-                addFilter(entry.getKey(), instance);
+                addFilter((String) entry.getKey(), instance);
             }
             catch (Exception ex)
             {
@@ -95,7 +97,7 @@ public final class FilterFactory
         // if the default didn't work then make a stab at an answer
         if (deft == null)
         {
-            deft = filters.values().iterator().next();
+            deft = (Filter) filters.values().iterator().next();
         }
     }
 
@@ -106,11 +108,12 @@ public final class FilterFactory
     public static Filter getFilter(String lookup)
     {
         Filter reply = null;
-        for (String key : filters.keySet())
+        for (Iterator it = filters.keySet().iterator(); it.hasNext(); )
         {
+            String key = (String) it.next();
             if (key.equalsIgnoreCase(lookup))
             {
-                reply = filters.get(key);
+                reply = (Filter) filters.get(key);
                 break;
             }
         }

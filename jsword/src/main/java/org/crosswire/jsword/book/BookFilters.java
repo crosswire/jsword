@@ -335,7 +335,7 @@ public final class BookFilters
          */
         public CustomBookFilter(String match)
         {
-            List<Test> cache = new ArrayList<Test>();
+            List cache = new ArrayList();
             String[] filters = match.split(";"); //$NON-NLS-1$
             for (int i = 0; i < filters.length; i++)
             {
@@ -361,7 +361,7 @@ public final class BookFilters
                 cache.add(test);
             }
 
-            tests = cache.toArray(new Test[cache.size()]);
+            tests = (Test[]) cache.toArray(new Test[cache.size()]);
         }
 
         /* (non-Javadoc)

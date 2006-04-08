@@ -88,7 +88,7 @@ public class XMLProcess
 
     }
 
-    private void initialize(String... argv)
+    private void initialize(String[] argv)
     {
         // process arguments
         int i = 0;

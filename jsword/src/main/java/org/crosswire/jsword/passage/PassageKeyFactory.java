@@ -294,9 +294,10 @@ public final class PassageKeyFactory implements KeyFactory
 
             index += toBinary(buffer, index, AbstractPassage.BITWISE, AbstractPassage.METHOD_COUNT);
 
-            for (Key key : ref)
+            Iterator it = ref.iterator();
+            while (it.hasNext())
             {
-                Verse verse = (Verse) key;
+                Verse verse = (Verse) it.next();
                 int ord = verse.getOrdinal();
 
                 // Which byte should we be altering
@@ -326,9 +327,10 @@ public final class PassageKeyFactory implements KeyFactory
             index += toBinary(buffer, index, verses, BibleInfo.versesInBible());
 
             // write the verse ordinals in a loop
-            for (Key key : ref)
+            Iterator it = ref.iterator();
+            while (it.hasNext())
             {
-                Verse verse = (Verse) key;
+                Verse verse = (Verse) it.next();
                 int ord = verse.getOrdinal();
                 index += toBinary(buffer, index, ord, BibleInfo.versesInBible());
             }

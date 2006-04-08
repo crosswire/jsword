@@ -64,7 +64,7 @@ public final class CallContext extends SecurityManager
      * (non-Javadoc)
      * @see java.lang.SecurityManager#getClassContext()
      */
-    @Override
+    /* @Override */
     protected Class[] getClassContext()
     {
         return super.getClassContext();

@@ -68,7 +68,7 @@ public interface Installer extends BookList
      * remote source. See notes on reload for more information.
      * @see Installer#reloadBookList()
      */
-    List<Book> getBooks();
+    List getBooks();
 
     /**
      * Return true if the book is not installed or there is a newer

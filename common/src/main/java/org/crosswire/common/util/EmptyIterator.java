@@ -29,13 +29,12 @@ import java.util.NoSuchElementException;
  * An <code>EmptyIterator</code> is an <code>Iterator</code> that iterates
  * over nothing.
  * 
- * @param <T> the return type for next
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
-public class EmptyIterator<T> implements Iterator<T>
+public class EmptyIterator implements Iterator
 {
 
     /**
@@ -64,7 +63,7 @@ public class EmptyIterator<T> implements Iterator<T>
     /* (non-Javadoc)
      * @see java.util.Iterator#next()
      */
-    public T next()
+    public Object next()
     {
         throw new NoSuchElementException();
     }

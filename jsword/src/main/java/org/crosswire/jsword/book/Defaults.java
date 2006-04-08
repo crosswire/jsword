@@ -22,6 +22,7 @@
 package org.crosswire.jsword.book;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.crosswire.common.config.ChoiceFactory;
@@ -478,8 +479,10 @@ public final class Defaults
      */
     protected static void checkAllPreferable()
     {
-        for (Book book : Books.installed().getBooks())
+        Iterator iter = Books.installed().getBooks().iterator();
+        while (iter.hasNext())
         {
+            Book book = (Book) iter.next();
             checkPreferable(book);
         }
     }
@@ -507,14 +510,16 @@ public final class Defaults
      */
     private static String[] getFullNameArray(BookFilter filter)
     {
-        List<String> names = new ArrayList<String>();
+        List names = new ArrayList();
 
-        for (Book book : Books.installed().getBooks(filter))
+        Iterator iter = Books.installed().getBooks(filter).iterator();
+        while (iter.hasNext())
         {
+            Book book = (Book) iter.next();
             names.add(book.getFullName());
         }
 
-        return names.toArray(new String[names.size()]);
+        return (String[]) names.toArray(new String[names.size()]);
     }
 
     /**

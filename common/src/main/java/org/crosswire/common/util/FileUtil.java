@@ -46,9 +46,9 @@ public final class FileUtil
      * @param file or directory to delete
      * @return the list of files that could not be deleted
      */
-    public static List<File> delete(File file)
+    public static List delete(File file)
     {
-        List<File> failures = new ArrayList<File>();
+        List failures = new ArrayList();
         if (file.isDirectory())
         {
             deleteContents(file, failures);
@@ -65,7 +65,7 @@ public final class FileUtil
      * @param dirPath  directory of files to delete
      * @param failures the list of files that could not be deleted
     */
-    private static void deleteContents(File dirPath, List<File> failures)
+    private static void deleteContents(File dirPath, List failures)
     {
         String[] ls = dirPath.list();
 

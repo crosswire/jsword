@@ -21,7 +21,7 @@
  */
 package org.crosswire.jsword.book;
 
-
+import java.io.Serializable;
 
 /**
  * Types of Sentence Case.
@@ -31,26 +31,23 @@ package org.crosswire.jsword.book;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public enum CaseType
+public abstract class CaseType implements Serializable
 {
-    LOWER //$NON-NLS-1$
+    public static final CaseType LOWER = new CaseType("LOWER") //$NON-NLS-1$
     {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.CaseType#setCase(java.lang.String)
-         */
-        @Override
         public String setCase(String word)
         {
             return word.toLowerCase();
         }
-    },
 
-    SENTENCE //$NON-NLS-1$
-    {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.CaseType#setCase(java.lang.String)
+        /**
+         * Serialization ID
          */
-        @Override
+        private static final long serialVersionUID = 3546637707360286256L;
+    };
+
+    public static final CaseType SENTENCE = new CaseType("SENTENCE") //$NON-NLS-1$
+    {
         public String setCase(String word)
         {
             int index = word.indexOf('-');
@@ -79,21 +76,35 @@ public enum CaseType
             return toSentenceCase(word.substring(0, index))
                    + "-" + toSentenceCase(word.substring(index + 1)); //$NON-NLS-1$
         }
-    },
 
-    UPPER //$NON-NLS-1$
-    {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.CaseType#setCase(java.lang.String)
+        /**
+         * Serialization ID
          */
-        @Override
+        private static final long serialVersionUID = 3905520510312985138L;
+    };
+
+    public static final CaseType UPPER = new CaseType("UPPER") //$NON-NLS-1$
+    {
         public String setCase(String word)
         {
             return word.toUpperCase();
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3257002163871035698L;
     };
 
     public abstract String setCase(String word);
+
+    /**
+     * Simple ctor
+     */
+    public CaseType(String name)
+    {
+        this.name = name;
+    }
 
     /**
      * Change to sentence case - ie first character in caps, the rest in lower.
@@ -152,16 +163,93 @@ public enum CaseType
         return SENTENCE;
     }
 
-    public static CaseType fromInteger(int i)
+    /**
+     * Get an integer representation for this CaseType
+     */
+    public int toInteger()
     {
-        for (CaseType t : CaseType.values())
+        for (int i = 0; i < VALUES.length; i++)
         {
-            if (t.ordinal() == i)
+            if (equals(VALUES[i]))
             {
-                return t;
+                return i;
             }
         }
-        return SENTENCE;
+        // cannot get here
+        assert false;
+        return -1;
     }
 
+    /**
+     * Lookup method to convert from a String
+     */
+    public static CaseType fromString(String name)
+    {
+        for (int i = 0; i < VALUES.length; i++)
+        {
+            CaseType o = VALUES[i];
+            if (o.name.equalsIgnoreCase(name))
+            {
+                return o;
+            }
+        }
+        // cannot get here
+        assert false;
+        return null;
+    }
+
+    /**
+     * Lookup method to convert from an integer
+     */
+    public static CaseType fromInteger(int i)
+    {
+        return VALUES[i];
+    }
+
+    /**
+     * Prevent subclasses from overriding canonical identity based Object methods
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public final boolean equals(Object o)
+    {
+        return super.equals(o);
+    }
+
+    /**
+     * Prevent subclasses from overriding canonical identity based Object methods
+     * @see java.lang.Object#hashCode()
+     */
+    public final int hashCode()
+    {
+        return super.hashCode();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        return name;
+    }
+
+    /**
+     * The name of the type
+     */
+    private String name;
+
+    // Support for serialization
+    private static int nextObj;
+    private final int obj = nextObj++;
+
+    Object readResolve()
+    {
+        return VALUES[obj];
+    }
+
+    private static final CaseType[] VALUES =
+    {
+        LOWER,
+        SENTENCE,
+        UPPER,
+    };
 }

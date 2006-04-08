@@ -49,7 +49,7 @@ public final class ReflectionUtil
     public static Object invoke(Object base, String methodName, Object[] params) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
     {
         // Create a Class array describing the params
-        Class<?>[] calledTypes = new Class[params.length];
+        Class[] calledTypes = new Class[params.length];
         for (int i = 0; i < params.length; i++)
         {
             calledTypes[i] = params[i].getClass();
@@ -62,17 +62,18 @@ public final class ReflectionUtil
         // called_class.getMethod(called_method_name, called_types);
         // because it does not cope with inheritance (at least in the MVM)
         // so we have to search ourselves...
+        Method[] testMethods = clazz.getMethods();
     outer:
-        for (Method testMethod : clazz.getMethods())
+        for (int i = 0; i < testMethods.length; i++)
         {
             // This this the right method name?
-            if (!testMethod.getName().equals(methodName))
+            if (!testMethods[i].getName().equals(methodName))
             {
                 continue outer;
             }
 
             // The right number of params
-            Class<?>[] testTypes = testMethod.getParameterTypes();
+            Class[] testTypes = testMethods[i].getParameterTypes();
             if (testTypes.length != calledTypes.length)
             {
                 continue;
@@ -88,7 +89,7 @@ public final class ReflectionUtil
             }
 
             // So this is a match
-            return testMethod.invoke(base, params);
+            return testMethods[i].invoke(base, params);
         }
 
         throw new NoSuchMethodException(methodName);
@@ -107,30 +108,31 @@ public final class ReflectionUtil
         String methodName = call.substring(lastDot + 1);
 
         // Create a Class array describing the params
-        Class<?>[] calledTypes = new Class[params.length];
+        Class[] calledTypes = new Class[params.length];
         for (int i = 0; i < params.length; i++)
         {
             calledTypes[i] = params[i].getClass();
         }
 
         // Reflection
-        Class<?> clazz = Class.forName(className);
+        Class clazz = Class.forName(className);
 
         // The bad news is that we can't use something like:
         // clazz.getMethod(called_method_name, called_types);
         // because it does not cope with inheritance (at least in the MVM)
         // so we have to search ourselves...
+        Method[] testMethods = clazz.getMethods();
     outer:
-        for (Method testMethod : clazz.getMethods())
+        for (int i = 0; i < testMethods.length; i++)
         {
             // This this the right method name?
-            if (!testMethod.getName().equals(methodName))
+            if (!testMethods[i].getName().equals(methodName))
             {
                 continue outer;
             }
 
             // The right number of params
-            Class<?>[] testTypes = testMethod.getParameterTypes();
+            Class[] testTypes = testMethods[i].getParameterTypes();
             if (testTypes.length != calledTypes.length)
             {
                 continue;
@@ -146,7 +148,7 @@ public final class ReflectionUtil
             }
 
             // So this is a match
-            return testMethod.invoke(null, params);
+            return testMethods[i].invoke(null, params);
         }
 
         throw new NoSuchMethodException(methodName);

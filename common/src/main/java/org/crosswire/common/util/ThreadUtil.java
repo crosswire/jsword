@@ -98,11 +98,11 @@ public final class ThreadUtil
      */
     public static String[] getListing(ThreadGroup base)
     {
-        List<String> list = new ArrayList<String>();
+        List list = new ArrayList();
 
         listThreads(list, 0, base);
 
-        return list.toArray(new String[list.size()]);
+        return (String[]) list.toArray(new String[list.size()]);
     }
 
     /**
@@ -111,7 +111,7 @@ public final class ThreadUtil
      * @param depth The current recursion depth
      * @param group The ThreadGroup to detail
      */
-    private static void listThreads(List<String> list, int depth, ThreadGroup group)
+    private static void listThreads(List list, int depth, ThreadGroup group)
     {
         if (group == null)
         {
@@ -160,7 +160,7 @@ public final class ThreadUtil
      * @param depth The current recursion depth
      * @param thread The Thread to detail
      */
-    private static void listThread(List<String> list, int depth, Thread thread)
+    private static void listThread(List list, int depth, Thread thread)
     {
         if (thread == null)
         {
@@ -182,7 +182,7 @@ public final class ThreadUtil
      * @param list The List to add to.
      * @param depth The current recursion depth
      */
-    private static void addItem(List<String> list, int depth, String item)
+    private static void addItem(List list, int depth, String item)
     {
         list.add(PADDING.substring(0, depth * 2) + item); //$NON-NLS-1$
     }

@@ -82,11 +82,11 @@ public final class GBFTagBuilders
             TagBuilder builder = null;
             if (length == 2)
             {
-                builder = BUILDERS.get(name);
+                builder = (TagBuilder) BUILDERS.get(name);
             }
             else
             {
-                builder = BUILDERS.get(name.substring(0, 2));
+                builder = (TagBuilder) BUILDERS.get(name.substring(0, 2));
             }
 
             Tag reply = null;
@@ -406,7 +406,7 @@ public final class GBFTagBuilders
     /**
      * The <code>BUILDERS</code> maps the 2 letter GBF tag to a class that proxies for the tag.
      */
-    private static final Map<String, TagBuilder> BUILDERS = new HashMap<String, TagBuilder>();
+    private static final Map BUILDERS = new HashMap();
     static
     {
         TagBuilder defaultEndTagBuilder = new DefaultEndTagBuilder();

@@ -22,6 +22,7 @@
 package org.crosswire.common.config;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -40,7 +41,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements Multipl
     /* (non-Javadoc)
      * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
      */
-    @Override
+    /* @Override */
     public void init(Element option, ResourceBundle configResources) throws StartupException
     {
         assert configResources != null;
@@ -49,16 +50,17 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements Multipl
 
         String prefix = option.getAttributeValue("key") + ".alternative."; //$NON-NLS-1$  //$NON-NLS-2$
 
-        List<String> list = new ArrayList<String>();
-        for (Object obj : option.getChildren("alternative")) //$NON-NLS-1$
+        List list = new ArrayList();
+        Iterator iter = option.getChildren("alternative").iterator(); //$NON-NLS-1$
+        while (iter.hasNext())
         {
-            Element alternative = (Element) obj;
+            Element alternative = (Element) iter.next();
             int number = Integer.parseInt(alternative.getAttributeValue("number")); //$NON-NLS-1$
             String name = configResources.getString(prefix + number);
             list.add(number, name);
         }
 
-        options = list.toArray(new String[list.size()]);
+        options = (String[]) list.toArray(new String[list.size()]);
     }
 
     /* (non-Javadoc)
@@ -82,7 +84,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements Multipl
     /* (non-Javadoc)
      * @see org.crosswire.common.config.AbstractReflectedChoice#convertToString(java.lang.Object)
      */
-    @Override
+    /* @Override */
     public String convertToString(Object orig)
     {
         return options[((Integer) orig).intValue()];
@@ -91,7 +93,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements Multipl
     /* (non-Javadoc)
      * @see org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java.lang.String)
      */
-    @Override
+    /* @Override */
     public Object convertToObject(String orig)
     {
         // First check to see if this is a number

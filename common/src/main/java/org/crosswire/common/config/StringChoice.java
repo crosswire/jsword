@@ -41,7 +41,7 @@ public class StringChoice extends AbstractReflectedChoice
     /* (non-Javadoc)
      * @see org.crosswire.common.config.AbstractReflectedChoice#convertToString(java.lang.Object)
      */
-    @Override
+    /* @Override */
     public String convertToString(Object orig)
     {
         return (String) orig;
@@ -50,7 +50,7 @@ public class StringChoice extends AbstractReflectedChoice
     /* (non-Javadoc)
      * @see org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java.lang.String)
      */
-    @Override
+    /* @Override */
     public Object convertToObject(String orig)
     {
         return orig;

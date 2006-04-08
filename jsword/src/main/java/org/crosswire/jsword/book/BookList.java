@@ -39,13 +39,13 @@ public interface BookList
     /**
      * Get a list of all the Books of all types.
      */
-    List<Book> getBooks();
+    List getBooks();
 
     /**
      * Get a filtered list of all the Books.
      * @see BookFilters
      */
-    List<Book> getBooks(BookFilter filter);
+    List getBooks(BookFilter filter);
 
     /**
      * Remove a BibleListener from our list of listeners

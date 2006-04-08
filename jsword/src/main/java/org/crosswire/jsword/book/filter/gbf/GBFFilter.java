@@ -30,7 +30,6 @@ import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterException;
 import org.crosswire.jsword.passage.Key;
-import org.jdom.Content;
 import org.jdom.Element;
 
 /**
@@ -48,12 +47,11 @@ public class GBFFilter implements Filter
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.filter.BookDataListener, java.lang.String)
      */
-    @SuppressWarnings("unchecked")
-    public List<Content> toOSIS(Key key, String plain) throws FilterException
+    public List toOSIS(Key key, String plain) throws FilterException
     {
         DataPolice.setKey(key);
         Element ele = OSISUtil.factory().createDiv();
-        LinkedList<Content> stack = new LinkedList<Content>();
+        LinkedList stack = new LinkedList();
         stack.addFirst(ele);
 
         List taglist = parseTags(plain.trim());
@@ -80,7 +78,7 @@ public class GBFFilter implements Filter
     private List parseTags(String aRemains)
     {
         String remains = aRemains;
-        List<Tag> taglist = new ArrayList<Tag>();
+        List taglist = new ArrayList();
 
         while (true)
         {

@@ -212,7 +212,7 @@ public class GZIPBackend extends AbstractBackend
      * (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key, java.lang.String)
      */
-    @Override
+    /* @Override */
     public String getRawText(Key key) throws BookException
     {
         checkActive();
@@ -324,7 +324,7 @@ public class GZIPBackend extends AbstractBackend
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#readIndex()
      */
-    @Override
+    /* @Override */
     public Key readIndex()
     {
         // PENDING(joe): refactor to get rid of this
@@ -334,7 +334,7 @@ public class GZIPBackend extends AbstractBackend
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#isSupported()
      */
-    @Override
+    /* @Override */
     public boolean isSupported()
     {
         return true;

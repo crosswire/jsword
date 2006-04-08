@@ -68,7 +68,6 @@ public class RocketPassage extends BitwisePassage
      * optimizeReads() is a loss of time if you then persist in writing to the
      * Passage.
      */
-    @Override
     public void optimizeReads()
     {
         raiseEventSuppresion();
@@ -99,7 +98,6 @@ public class RocketPassage extends BitwisePassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.AbstractPassage#optimizeWrites()
      */
-    @Override
     protected void optimizeWrites()
     {
         distinct = null;
@@ -109,7 +107,6 @@ public class RocketPassage extends BitwisePassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#countRanges(int)
      */
-    @Override
     public int countRanges(RestrictionType restrict)
     {
         if (ranged != null)
@@ -123,7 +120,6 @@ public class RocketPassage extends BitwisePassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#countVerses()
      */
-    @Override
     public int countVerses()
     {
         if (distinct != null)
@@ -137,8 +133,7 @@ public class RocketPassage extends BitwisePassage
     /* (non-Javadoc)
      * @see java.lang.Iterable#iterator()
      */
-    @Override
-    public Iterator<Key> iterator()
+    public Iterator iterator()
     {
         if (distinct != null)
         {
@@ -151,8 +146,8 @@ public class RocketPassage extends BitwisePassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#rangeIterator(int)
      */
-    @Override
-    public Iterator<Key> rangeIterator(RestrictionType restrict)
+    /* @Override */
+    public Iterator rangeIterator(RestrictionType restrict)
     {
         if (ranged != null)
         {
@@ -165,7 +160,6 @@ public class RocketPassage extends BitwisePassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#isEmpty()
      */
-    @Override
     public boolean isEmpty()
     {
         if (distinct != null)
@@ -179,7 +173,6 @@ public class RocketPassage extends BitwisePassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#getVerseAt(int)
      */
-    @Override
     public Verse getVerseAt(int offset) throws ArrayIndexOutOfBoundsException
     {
         if (distinct != null)
@@ -193,7 +186,6 @@ public class RocketPassage extends BitwisePassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#getVerseRangeAt(int, int)
      */
-    @Override
     public VerseRange getRangeAt(int offset, RestrictionType restrict) throws ArrayIndexOutOfBoundsException
     {
         if (ranged != null)
@@ -207,7 +199,6 @@ public class RocketPassage extends BitwisePassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#booksInPassage()
      */
-    @Override
     public int booksInPassage()
     {
         if (distinct != null)
@@ -221,7 +212,6 @@ public class RocketPassage extends BitwisePassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#chaptersInPassage(int)
      */
-    @Override
     public int chaptersInPassage(int book) throws NoSuchVerseException
     {
         if (distinct != null)
@@ -235,7 +225,6 @@ public class RocketPassage extends BitwisePassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#versesInPassage(int, int)
      */
-    @Override
     public int versesInPassage(int book, int chapter) throws NoSuchVerseException
     {
         if (distinct != null)
@@ -249,7 +238,6 @@ public class RocketPassage extends BitwisePassage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#containsAll(org.crosswire.jsword.passage.Passage)
      */
-    @Override
     public boolean containsAll(Passage that)
     {
         if (ranged != null)

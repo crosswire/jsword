@@ -41,12 +41,12 @@ public class StringUtilTest extends TestCase
         super(s);
     }
 
-    @Override
+    /* @Override */
     protected void setUp() throws Exception
     {
     }
 
-    @Override
+    /* @Override */
     protected void tearDown() throws Exception
     {
     }

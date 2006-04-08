@@ -22,6 +22,7 @@
 package org.crosswire.jsword.book.sword;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.crosswire.common.util.Histogram;
@@ -221,7 +222,7 @@ public class ConfigEntry
             if (values == null)
             {
                 histogram.increment(confEntryName);
-                values = new ArrayList<String>();
+                values = new ArrayList();
             }
             if (reportDetails())
             {
@@ -292,8 +293,10 @@ public class ConfigEntry
             Element listEle = factory.createLG();
             valueElement.addContent(listEle);
 
-            for (String text : values)
+            Iterator iter = values.iterator();
+            while (iter.hasNext())
             {
+                String text = (String) iter.next();
                 Element itemEle = factory.createL();
                 listEle.addContent(itemEle);
                 itemEle.addContent(XMLUtil.escape(text));
@@ -316,7 +319,7 @@ public class ConfigEntry
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    @Override
+    /* @Override */
     public boolean equals(Object obj)
     {
         // Since this can not be null
@@ -339,7 +342,7 @@ public class ConfigEntry
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
-    @Override
+    /* @Override */
     public int hashCode()
     {
         return getName().hashCode();
@@ -348,7 +351,7 @@ public class ConfigEntry
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
-    @Override
+    /* @Override */
     public String toString()
     {
         return getName();
@@ -391,9 +394,9 @@ public class ConfigEntry
         return copy;
     }
 
-    private List<Element> processLines(OSISUtil.OSISFactory factory, String aValue)
+    private List processLines(OSISUtil.OSISFactory factory, String aValue)
     {
-        List<Element> list = new ArrayList<Element>();
+        List list = new ArrayList();
         String [] lines = StringUtil.splitAll(aValue, '\n');
         for (int i = 0; i < lines.length; i++)
         {
@@ -416,6 +419,6 @@ public class ConfigEntry
     private ConfigEntryType type;
     private String internal;
     private String name;
-    private List<String> values;
+    private List values;
     private String value;
 }

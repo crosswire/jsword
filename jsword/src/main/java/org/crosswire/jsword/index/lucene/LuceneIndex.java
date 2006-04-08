@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.lucene.analysis.Analyzer;
@@ -124,7 +125,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                 // create argument set to true.
                 IndexWriter writer = new IndexWriter(tempPath.getCanonicalPath(), new SimpleAnalyzer(), true);
 
-                List<Key> errors = new ArrayList<Key>();
+                List errors = new ArrayList();
                 generateSearchIndexImpl(job, errors, writer, book.getGlobalKeyList());
 
                 job.setProgress(95, Msg.OPTIMIZING.toString());
@@ -145,9 +146,10 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                 if (errors.size() > 0)
                 {
                     StringBuffer buf = new StringBuffer();
-                    for (Key key : errors)
+                    Iterator iter = errors.iterator();
+                    while (iter.hasNext())
                     {
-                        buf.append(key);
+                        buf.append(iter.next());
                         buf.append('\n');
                     }
                     Reporter.informUser(this, Msg.BAD_VERSE, buf);
@@ -309,7 +311,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
     /**
      * Dig down into a Key indexing as we go.
      */
-    private void generateSearchIndexImpl(Job job, List<Key> errors, IndexWriter writer, Key key) throws BookException, IOException
+    private void generateSearchIndexImpl(Job job, List errors, IndexWriter writer, Key key) throws BookException, IOException
     {
         int bookNum = 0;
         int oldBookNum = -1;
@@ -317,10 +319,12 @@ public class LuceneIndex extends AbstractIndex implements Activatable
         String name = ""; //$NON-NLS-1$
         String text = ""; //$NON-NLS-1$
         BookData data = null;
+        Key subkey = null;
         Verse verse = null;
         Document doc = null;
-        for (Key subkey : key)
+        for (Iterator it = key.iterator(); it.hasNext(); )
         {
+            subkey = (Key) it.next();
             if (subkey.canHaveChildren())
             {
                 generateSearchIndexImpl(job, errors, writer, subkey);

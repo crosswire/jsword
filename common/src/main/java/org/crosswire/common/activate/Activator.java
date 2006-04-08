@@ -67,35 +67,6 @@ public final class Activator
     }
 
     /**
-     * Enumeration of how memory is returned.
-     *
-     */
-    public enum Kill
-    {
-        /** Try as hard as possible to conserve memory */
-        EVERYTHING
-        {
-            @Override
-            public void reduceMemoryUsage()
-            {
-                for (Activatable subject : activated)
-                {
-                    deactivate(subject);
-                }
-            }
-        },
-        /** Reduce memory usage, but only where sensible */
-        LEAST_USED,
-        /** Reduce memory usage, but only if we really need to */
-        ONLY_IF_TIGHT;
-
-        public void reduceMemoryUsage()
-        {
-            throw new IllegalArgumentException(Msg.NOT_IMPLEMENTED.toString());
-        }
-    }
-
-    /**
      * Deactivate an Activatable object.
      * It is safe to activate() something and then forget to deactivate() it
      * since we keep a track of activated objects and will automatically
@@ -115,7 +86,7 @@ public final class Activator
     /**
      * The list of things that we have activated
      */
-    protected static Set<Activatable> activated = new HashSet<Activatable>();
+    protected static Set activated = new HashSet();
 
     /**
      * The object we use to prevent others from

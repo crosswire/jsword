@@ -22,6 +22,7 @@
 package org.crosswire.common.util;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -157,20 +158,21 @@ public final class Convert
      * @param data the thing to convert
      * @return the converted data
      */
-    public static Map<String, String> string2Hashtable(String data, Class<?> superclass)
+    public static Map string2Hashtable(String data, Class superclass)
     {
-        Map<String, String> commands = new HashMap<String, String>();
+        Map commands = new HashMap();
 
         String[] data_arr = StringUtil.split(data, " "); //$NON-NLS-1$
-
-        for (String entry : data_arr)
+        String entry = ""; //$NON-NLS-1$
+        for (int i = 0; i < data_arr.length; i++)
         {
             try
             {
+                entry = data_arr[i];
                 int equ_pos = entry.indexOf('=');
                 String key = entry.substring(0, equ_pos);
                 String value = entry.substring(equ_pos + 1);
-                Class<?> clazz = Class.forName(value);
+                Class clazz = Class.forName(value);
 
                 if (clazz.isAssignableFrom(superclass))
                 {
@@ -196,7 +198,7 @@ public final class Convert
      * @param data the thing to convert
      * @return the converted data
      */
-    public static Map<String, String> string2Map(String data)
+    public static Map string2Map(String data)
     {
         return string2Hashtable(data, Object.class);
     }
@@ -206,12 +208,15 @@ public final class Convert
      * @param commands the thing to convert
      * @return the converted data
      */
-    public static String map2String(Map<String, String> commands)
+    public static String map2String(Map commands)
     {
+        Iterator it = commands.entrySet().iterator();
         StringBuffer retcode = new StringBuffer();
 
-        for (Map.Entry<String, String> entry : commands.entrySet())
+        while (it.hasNext())
         {
+            Map.Entry entry = (Map.Entry) it.next();
+
             retcode.append(entry.getKey());
             retcode.append('=');
             retcode.append(entry.getValue());

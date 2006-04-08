@@ -21,6 +21,7 @@
  */
 package org.crosswire.jsword.passage;
 
+import java.io.Serializable;
 
 /**
  * Types of Accuracy for verse references.
@@ -63,15 +64,16 @@ package org.crosswire.jsword.passage;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public enum AccuracyType
+public abstract class AccuracyType implements Serializable
 {
-    /** The verse was specified as book, chapter and verse. For example, Gen 1:1, Jude 3 (which only has one chapter) */
-    BOOK_VERSE
+    /**
+     * The verse was specified as book, chapter and verse. For example, Gen 1:1, Jude 3 (which only has one chapter)
+     */
+    public static final AccuracyType BOOK_VERSE = new AccuracyType("BOOK_VERSE") //$NON-NLS-1$
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#isVerse()
          */
-        @Override
         public boolean isVerse()
         {
             return true;
@@ -80,7 +82,6 @@ public enum AccuracyType
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createStartVerse(java.lang.String, org.crosswire.jsword.passage.VerseRange, java.lang.String[])
          */
-        @Override
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException
         {
             int book = BibleInfo.getBookNumber(parts[0]);
@@ -102,21 +103,26 @@ public enum AccuracyType
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createEndVerse(java.lang.String, org.crosswire.jsword.passage.Verse, java.lang.String[])
          */
-        @Override
         public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException
         {
             // A fully specified verse is the same regardless of whether it is a start or an end to a range.
             return createStartVerse(endVerseDesc, null, endParts);
         }
-    },
 
-     /** The passage was specified to a book and chapter (no verse). For example, Gen 1 */
-    BOOK_CHAPTER
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3256719589483165495L;
+    };
+
+     /**
+      * The passage was specified to a book and chapter (no verse). For example, Gen 1
+      */
+    public static final AccuracyType BOOK_CHAPTER = new AccuracyType("BOOK_CHAPTER") //$NON-NLS-1$
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#isChapter()
          */
-        @Override
         public boolean isChapter()
         {
             return true;
@@ -125,7 +131,6 @@ public enum AccuracyType
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createStartVerse(java.lang.String, org.crosswire.jsword.passage.VerseRange, java.lang.String[])
          */
-        @Override
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException
         {
             int book = BibleInfo.getBookNumber(parts[0]);
@@ -137,7 +142,6 @@ public enum AccuracyType
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createEndVerse(java.lang.String, org.crosswire.jsword.passage.Verse, java.lang.String[])
          */
-        @Override
         public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException
         {
             // Very similar to the start verse but we want the end of the chapter
@@ -145,15 +149,21 @@ public enum AccuracyType
             // except that this gives us end at verse 1, and not the book end
             return end.getLastVerseInChapter();
         }
-    },
 
-    /** The passage was specified to a book only (no chapter or verse). For example, Gen */
-    BOOK_ONLY
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3258125864737911609L;
+    };
+
+    /**
+     * The passage was specified to a book only (no chapter or verse). For example, Gen
+     */
+    public static final AccuracyType BOOK_ONLY = new AccuracyType("BOOK_ONLY") //$NON-NLS-1$
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#isBook()
          */
-        @Override
         public boolean isBook()
         {
             return true;
@@ -162,7 +172,6 @@ public enum AccuracyType
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createStartVerse(java.lang.String, org.crosswire.jsword.passage.VerseRange, java.lang.String[])
          */
-        @Override
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException
         {
             int book = BibleInfo.getBookNumber(parts[0]);
@@ -172,7 +181,6 @@ public enum AccuracyType
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createEndVerse(java.lang.String, org.crosswire.jsword.passage.Verse, java.lang.String[])
          */
-        @Override
         public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException
         {
                // And we end with a book, so we need to encompass the lot
@@ -182,17 +190,21 @@ public enum AccuracyType
             // except that this gives us end at 1:1, and not the book end
             return end.getLastVerseInBook();
         }
-    },
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 4050486707419821620L;
+    };
 
     /**
      * The passage was specified to a chapter and verse (no book). For example, 1:1
      */
-    CHAPTER_VERSE
+    public static final AccuracyType CHAPTER_VERSE = new AccuracyType("CHAPTER_VERSE") //$NON-NLS-1$
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#isVerse()
          */
-        @Override
         public boolean isVerse()
         {
             return true;
@@ -201,7 +213,6 @@ public enum AccuracyType
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createStartVerse(java.lang.String, org.crosswire.jsword.passage.VerseRange, java.lang.String[])
          */
-        @Override
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException
         {
             int book = verseRangeBasis.getEnd().getBook();
@@ -214,7 +225,6 @@ public enum AccuracyType
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createEndVerse(java.lang.String, org.crosswire.jsword.passage.Verse, java.lang.String[])
          */
-        @Override
         public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException
         {
             // Very similar to the start verse but use the verse as a basis
@@ -223,15 +233,21 @@ public enum AccuracyType
             int verse = getVerse(book, chapter, endParts[1]);
             return new Verse(endVerseDesc, book, chapter, verse);
         }
-    },
 
-    /** There was only a chapter number */
-    CHAPTER_ONLY
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3691040958808668471L;
+    };
+
+    /**
+     * There was only a chapter number
+     */
+    public static final AccuracyType CHAPTER_ONLY = new AccuracyType("CHAPTER_ONLY") //$NON-NLS-1$
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#isChapter()
          */
-        @Override
         public boolean isChapter()
         {
             return true;
@@ -240,7 +256,6 @@ public enum AccuracyType
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createStartVerse(java.lang.String, org.crosswire.jsword.passage.VerseRange, java.lang.String[])
          */
-        @Override
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException
         {
             int book = verseRangeBasis.getEnd().getBook();
@@ -251,7 +266,6 @@ public enum AccuracyType
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createEndVerse(java.lang.String, org.crosswire.jsword.passage.Verse, java.lang.String[])
          */
-        @Override
         public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException
         {
             // Very similar to the start verse but use the verse as a basis
@@ -261,15 +275,21 @@ public enum AccuracyType
             Verse end = new Verse(endVerseDesc, book, chapter, 1);
             return end.getLastVerseInChapter();
         }
-    },
 
-    /** There was only a verse number */
-    VERSE_ONLY
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3689918357520463409L;
+    };
+
+    /**
+     * There was only a verse number
+     */
+    public static final AccuracyType VERSE_ONLY = new AccuracyType("VERSE_ONLY") //$NON-NLS-1$
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#isVerse()
          */
-        @Override
         public boolean isVerse()
         {
             return true;
@@ -278,7 +298,6 @@ public enum AccuracyType
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createStartVerse(java.lang.String, org.crosswire.jsword.passage.VerseRange, java.lang.String[])
          */
-        @Override
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException
         {
             int book = verseRangeBasis.getEnd().getBook();
@@ -290,7 +309,6 @@ public enum AccuracyType
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.AccuracyType#createEndVerse(java.lang.String, org.crosswire.jsword.passage.Verse, java.lang.String[])
          */
-        @Override
         public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException
         {
             // Very similar to the start verse but use the verse as a basis
@@ -300,7 +318,20 @@ public enum AccuracyType
             int verse = getVerse(book, chapter, endParts[0]);
             return new Verse(endVerseDesc, book, chapter, verse);
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3691034361722320178L;
     };
+
+    /**
+     * Simple ctor
+     */
+    public AccuracyType(String name)
+    {
+        this.name = name;
+    }
 
     /**
      * @param original the original verse reference as a string
@@ -375,6 +406,23 @@ public enum AccuracyType
             return BibleInfo.versesInChapter(lbook, lchapter);
         }
         return parseInt(verse);
+    }
+
+    /**
+     * Get an integer representation for this RestrictionType
+     */
+    public int toInteger()
+    {
+        for (int i = 0; i < VALUES.length; i++)
+        {
+            if (equals(VALUES[i]))
+            {
+                return i;
+            }
+        }
+        // cannot get here
+        assert false;
+        return -1;
     }
 
     /**
@@ -656,10 +704,90 @@ public enum AccuracyType
         return results;
     }
 
+
+    /**
+     * Lookup method to convert from a String
+     * @param name the name of the AccuracyType
+     * @return the AccuracyType
+     */
+    public static AccuracyType fromString(String name)
+    {
+        for (int i = 0; i < VALUES.length; i++)
+        {
+            AccuracyType o = VALUES[i];
+            if (o.name.equalsIgnoreCase(name))
+            {
+                return o;
+            }
+        }
+        // cannot get here
+        assert false;
+        return null;
+    }
+
+    /**
+     * Lookup method to convert from an integer
+     * @param i the i-th AccuracyType
+     * @return the AccuracyType
+     */
+    public static AccuracyType fromInteger(int i)
+    {
+        return VALUES[i];
+    }
+
+    /**
+     * Prevent subclasses from overriding canonical identity based Object methods
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public final boolean equals(Object o)
+    {
+        return super.equals(o);
+    }
+
+    /**
+     * Prevent subclasses from overriding canonical identity based Object methods
+     * @see java.lang.Object#hashCode()
+     */
+    public final int hashCode()
+    {
+        return super.hashCode();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        return name;
+    }
+
     /**
      * What characters can we use to separate parts to a verse
      */
     public static final String VERSE_ALLOWED_DELIMS = " :."; //$NON-NLS-1$
+
+    /**
+     * The name of the object
+     */
+    private String name;
+
+    // Support for serialization
+    private static int nextObj;
+    private final int obj = nextObj++;
+
+    Object readResolve()
+    {
+        return VALUES[obj];
+    }
+
+    private static final AccuracyType[] VALUES =
+    {
+        BOOK_CHAPTER,
+        BOOK_VERSE,
+        BOOK_ONLY,
+        CHAPTER_VERSE,
+        VERSE_ONLY,
+    };
 
     /**
      * Characters that are used to indicate end of verse/chapter, part 1

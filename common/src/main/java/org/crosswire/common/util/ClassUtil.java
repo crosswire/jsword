@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -132,18 +133,19 @@ public final class ClassUtil
      * @param clazz The class or interface to find implementors of.
      * @return The list of implementing classes.
      */
-    public static Class[] getImplementors(Class<?> clazz)
+    public static Class[] getImplementors(Class clazz)
     {
         try
         {
-            List<Class> matches = new ArrayList<Class>();
+            List matches = new ArrayList();
             Properties props = ResourceUtil.getProperties(clazz);
-            for (Object obj : props.values())
+            Iterator it = props.values().iterator();
+            while (it.hasNext())
             {
                 try
                 {
-                    String name = (String) obj;
-                    Class<?> impl = Class.forName(name);
+                    String name = (String) it.next();
+                    Class impl = Class.forName(name);
                     if (clazz.isAssignableFrom(impl))
                     {
                         matches.add(impl);
@@ -160,7 +162,7 @@ public final class ClassUtil
             }
 
             log.debug("Found " + matches.size() + " implementors of " + clazz.getName()); //$NON-NLS-1$ //$NON-NLS-2$
-            return matches.toArray(new Class[matches.size()]);
+            return (Class[]) matches.toArray(new Class[matches.size()]);
         }
         catch (Exception ex)
         {
@@ -180,20 +182,21 @@ public final class ClassUtil
      * @param clazz The class or interface to find implementors of.
      * @return The map of implementing classes.
      */
-    public static Map<String, Class> getImplementorsMap(Class<?> clazz)
+    public static Map getImplementorsMap(Class clazz)
     {
-        Map<String, Class> matches = new HashMap<String, Class>();
+        Map matches = new HashMap();
 
         try
         {
             Properties props = ResourceUtil.getProperties(clazz);
-            for (Object obj : props.keySet())
+            Iterator it = props.keySet().iterator();
+            while (it.hasNext())
             {
                 try
                 {
-                    String key = (String) obj;
+                    String key = (String) it.next();
                     String value = props.getProperty(key);
-                    Class<?> impl = Class.forName(value);
+                    Class impl = Class.forName(value);
                     if (clazz.isAssignableFrom(impl))
                     {
                         matches.put(key, impl);
@@ -232,12 +235,12 @@ public final class ClassUtil
      * @throws ClassCastException if the read contents are not valid
      * @see ClassUtil#getImplementors(Class)
      */
-    public static Class getImplementor(Class<?> clazz) throws IOException, ClassNotFoundException, ClassCastException
+    public static Class getImplementor(Class clazz) throws IOException, ClassNotFoundException, ClassCastException
     {
         Properties props = ResourceUtil.getProperties(clazz);
         String name = props.getProperty(DEFAULT);
 
-        Class<?> impl = Class.forName(name);
+        Class impl = Class.forName(name);
         if (!clazz.isAssignableFrom(impl))
         {
             throw new ClassCastException(Msg.NOT_ASSIGNABLE.toString(new Object[] { impl.getName(), clazz.getName() }));

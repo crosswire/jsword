@@ -330,7 +330,7 @@ public class EventListenerList implements Serializable
     /**
      * Return a string representation of the EventListenerList.
      */
-    @Override
+    /* @Override */
     public String toString()
     {
         Object[] lList = listenerList;

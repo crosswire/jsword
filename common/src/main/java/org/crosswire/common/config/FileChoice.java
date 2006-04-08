@@ -43,7 +43,7 @@ public class FileChoice extends AbstractReflectedChoice
     /* (non-Javadoc)
      * @see org.crosswire.common.config.AbstractReflectedChoice#convertToString(java.lang.Object)
      */
-    @Override
+    /* @Override */
     public String convertToString(Object orig)
     {
         if (orig == null)
@@ -57,7 +57,7 @@ public class FileChoice extends AbstractReflectedChoice
     /* (non-Javadoc)
      * @see org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java.lang.String)
      */
-    @Override
+    /* @Override */
     public Object convertToObject(String orig)
     {
         return new File(orig);

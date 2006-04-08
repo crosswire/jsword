@@ -74,7 +74,7 @@ public class SwordBookDriver extends AbstractBookDriver
     {
         ConfigEntry.resetStatistics();
 
-        List<Book> valid = new ArrayList<Book>();
+        List valid = new ArrayList();
 
         // Loop through the dirs in the lookup path
         for (int j = 0; j < dirs.length; j++)
@@ -126,13 +126,13 @@ public class SwordBookDriver extends AbstractBookDriver
 
         ConfigEntry.dumpStatistics();
 
-        return valid.toArray(new Book[valid.size()]);
+        return (Book[]) valid.toArray(new Book[valid.size()]);
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookDriver#isDeletable(org.crosswire.jsword.book.BookMetaData)
      */
-    @Override
+    /* @Override */
     public boolean isDeletable(Book dead)
     {
         SwordBookMetaData sbmd = (SwordBookMetaData) dead.getBookMetaData();
@@ -146,7 +146,7 @@ public class SwordBookDriver extends AbstractBookDriver
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookDriver#delete(org.crosswire.jsword.book.BookMetaData)
      */
-    @Override
+    /* @Override */
     public void delete(Book dead) throws BookException
     {
         SwordBookMetaData sbmd = (SwordBookMetaData) dead.getBookMetaData();
@@ -329,7 +329,7 @@ public class SwordBookDriver extends AbstractBookDriver
      */
     private static File[] getDefaultPaths()
     {
-        List<File> reply = new ArrayList<File>();
+        List reply = new ArrayList();
 
         // .jsword in the users home directory is the first location
         reply.add(new File(System.getProperty(PROPERTY_USER_HOME) + File.separator + Project.DIR_PROJECT));
@@ -371,14 +371,14 @@ public class SwordBookDriver extends AbstractBookDriver
         // mods.d in the current directory?
         testDefaultPath(reply, new File(".").getAbsolutePath()); //$NON-NLS-1$
 
-        return reply.toArray(new File[reply.size()]);
+        return (File[]) reply.toArray(new File[reply.size()]);
     }
 
     /**
      * Check to see if the given directory is a Sword mods.d directory
      * and then add it to the list if it is.
      */
-    private static void testDefaultPath(List<File> reply, String path)
+    private static void testDefaultPath(List reply, String path)
     {
         File where = new File(path);
         File mods = new File(path, SwordConstants.DIR_CONF);
@@ -424,7 +424,7 @@ public class SwordBookDriver extends AbstractBookDriver
     }
 
     /**
-     * An empty immutable <code>Rile</code> array.
+     * An empty immutable <code>File</code> array.
      */
     public static final File[] EMPTY_FILE_ARRAY = new File[0];
 

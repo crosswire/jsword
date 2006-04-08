@@ -26,6 +26,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -52,12 +53,13 @@ public final class CollectionUtil
      * @param it The source of data for the list
      * @return List
      */
-    public static <T> List<T> createList(Iterable<T> it)
+    public static  List createList(Iterable it)
     {
-        List<T> reply = new ArrayList<T>();
-        for (T t : it)
+        List reply = new ArrayList();
+        Iterator iter = it.iterator();
+        while (iter.hasNext())
         {
-            reply.add(t);
+            reply.add(iter.next());
         }
 
         return reply;
@@ -68,28 +70,31 @@ public final class CollectionUtil
      * @param it The source of data for the list
      * @return the created set
      */
-    public static <T> Set<T> createSet(Iterable<T> it)
+    public static  Set createSet(Iterable it)
     {
-        Set<T> reply = new HashSet<T>();
-        for (T t : it)
+        Set reply = new HashSet();
+        Iterator iter = it.iterator();
+        while (iter.hasNext())
         {
-            reply.add(t);
+            reply.add(iter.next());
         }
 
         return reply;
     }
 
-    public static Map<String, String> properties2Map(Properties prop)
+    public static Map properties2Map(Properties prop)
     {
-        Map<String, String> propMap = new HashMap<String, String>();
-        for (Map.Entry entry : prop.entrySet())
+        Map propMap = new HashMap();
+        Iterator iter = prop.entrySet().iterator();
+        while (iter.hasNext())
         {
-            propMap.put((String) entry.getKey(), (String) entry.getValue());
+            Map.Entry entry = (Map.Entry) iter.next();
+            propMap.put(entry.getKey(), entry.getValue());
         }
         return propMap;
     }
 
-    public static Map<String, String> properties2Map(URL propUrl) throws IOException
+    public static Map properties2Map(URL propUrl) throws IOException
     {
         Properties prop = new Properties();
         prop.load(propUrl.openStream());

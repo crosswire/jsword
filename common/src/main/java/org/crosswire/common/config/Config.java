@@ -124,9 +124,10 @@ public class Config
         // We are going to assume a DTD has validated the config file and
         // just assume that everything is laid out properly.
         Element root = xmlconfig.getRootElement();
-        for (Object obj : root.getChildren())
+        Iterator iter = root.getChildren().iterator();
+        while (iter.hasNext())
         {
-            Element element = (Element) obj;
+            Element element = (Element) iter.next();
             String key = element.getAttributeValue("key"); //$NON-NLS-1$
 
             try
@@ -163,10 +164,12 @@ public class Config
      */
     public Iterator getPaths()
     {
-        List<String> paths = new ArrayList<String>();
+        List paths = new ArrayList();
 
-        for (Choice choice : models)
+        Iterator iter = models.iterator();
+        while (iter.hasNext())
         {
+            Choice choice = (Choice) iter.next();
             String path = getPath(choice.getFullPath());
 
             if (!paths.contains(path))
@@ -182,7 +185,7 @@ public class Config
      * The set of Choice Names that we are controlling
      * @return An enumeration over the keys
      */
-    public Iterator<String> getNames()
+    public Iterator getNames()
     {
         return keys.iterator();
     }
@@ -199,7 +202,7 @@ public class Config
             return null;
         }
 
-        return models.get(index);
+        return (Choice) models.get(index);
     }
 
     /**
@@ -238,8 +241,10 @@ public class Config
      */
     public void applicationToLocal()
     {
-        for (String key : keys)
+        Iterator iter = keys.iterator();
+        while (iter.hasNext())
         {
+            String key = (String) iter.next();
             try
             {
                 Choice model = getChoice(key);
@@ -260,8 +265,10 @@ public class Config
      */
     public void localToApplication()
     {
-        for (String key : keys)
+        Iterator iter = keys.iterator();
+        while (iter.hasNext())
         {
+            String key = (String) iter.next();
             Choice choice = getChoice(key);
 
             String oldValue = choice.getString();
@@ -365,9 +372,10 @@ public class Config
      */
     public void setProperties(Properties prop)
     {
-        for (Object obj : prop.keySet())
+        Iterator iter = prop.keySet().iterator();
+        while (iter.hasNext())
         {
-            String key = (String) obj;
+            String key = (String) iter.next();
             String value = prop.getProperty(key);
 
             if (value != null)
@@ -384,8 +392,10 @@ public class Config
     {
         Properties prop = new Properties();
 
-        for (String key : keys)
+        Iterator iter = keys.iterator();
+        while (iter.hasNext())
         {
+            String key = (String) iter.next();
             String value = local.getProperty(key);
 
             Choice model = getChoice(key);
@@ -545,12 +555,12 @@ public class Config
     /**
      * The array that stores the keys
      */
-    protected List<String> keys = new ArrayList<String>();
+    protected List keys = new ArrayList();
 
     /**
      * The array that stores the models
      */
-    protected List<Choice> models = new ArrayList<Choice>();
+    protected List models = new ArrayList();
 
     /**
      * The set of local values

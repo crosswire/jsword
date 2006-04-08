@@ -64,19 +64,19 @@ public final class BibleInfo
         fullBooksUpper = new String[BOOKS_IN_BIBLE];
 
         shortBooks = new String[BOOKS_IN_BIBLE];
-        shortBooksMap = new HashMap<String, Integer>(BOOKS_IN_BIBLE);
+        shortBooksMap = new HashMap(BOOKS_IN_BIBLE);
         shortBooksLower = new String[BOOKS_IN_BIBLE];
         shortBooksUpper = new String[BOOKS_IN_BIBLE];
 
         altBooksLower = new String[BOOKS_IN_BIBLE][];
-        altBooksMap = new HashMap<String, Integer>(BOOKS_IN_BIBLE);
+        altBooksMap = new HashMap(BOOKS_IN_BIBLE);
 
         sections = new String[SECTIONS_IN_BIBLE];
         sectionsLower = new String[SECTIONS_IN_BIBLE];
         sectionsUpper = new String[SECTIONS_IN_BIBLE];
 
         osisBooks = new String[BOOKS_IN_BIBLE];
-        osisMap   = new HashMap<String, Integer>(BOOKS_IN_BIBLE);
+        osisMap   = new HashMap(BOOKS_IN_BIBLE);
 
         ResourceBundle resources = ResourceBundle.getBundle(BibleInfo.class.getName(), Locale.getDefault(), new CWClassLoader(BibleInfo.class));
 
@@ -159,7 +159,7 @@ public final class BibleInfo
      */
     public static int getCase()
     {
-        return BibleInfo.bookCase.ordinal();
+        return BibleInfo.bookCase.toInteger();
     }
 
     /**
@@ -322,13 +322,13 @@ public final class BibleInfo
         }
 
         // Favor OSIS names.
-        Integer bookNum = osisMap.get(find);
+        Integer bookNum = (Integer) osisMap.get(find);
         if (bookNum != null)
         {
             return bookNum.intValue();
         }
 
-        bookNum = osisMap.get(find.replaceFirst(" ", "")); //$//$NON-NLS-1$ //$NON-NLS-2$
+        bookNum = (Integer) osisMap.get(find.replaceFirst(" ", "")); //$//$NON-NLS-1$ //$NON-NLS-2$
         if (bookNum != null)
         {
             return bookNum.intValue();
@@ -336,13 +336,13 @@ public final class BibleInfo
 
         String match = find.toLowerCase();
 
-        bookNum = shortBooksMap.get(match);
+        bookNum = (Integer) shortBooksMap.get(match);
         if (bookNum != null)
         {
             return bookNum.intValue();
         }
 
-        bookNum = altBooksMap.get(match);
+        bookNum = (Integer) altBooksMap.get(match);
         if (bookNum != null)
         {
             return bookNum.intValue();
@@ -1062,7 +1062,7 @@ public final class BibleInfo
     private static String[] shortBooksLower;
 
     /** Standard shortened names for the book of the Bible, in lower case, generated at runtime. */
-    private static Map<String, Integer> shortBooksMap;
+    private static Map shortBooksMap;
 
     /** Standard shortened names for the book of the Bible, in upper case, generated at run time */
     private static String[] shortBooksUpper;
@@ -1071,13 +1071,13 @@ public final class BibleInfo
     private static String[][] altBooksLower;
 
     /** Alternative shortened names for the book of the Bible, in lower case, generated at run time */
-    private static Map<String, Integer> altBooksMap;
+    private static Map altBooksMap;
 
     /** Standard OSIS names for the book of the Bible, in mixed case */
     private static String[] osisBooks;
 
     /** Standard OSIS names for the book of the Bible, in mixed case */
-    private static Map<String, Integer> osisMap;
+    private static Map osisMap;
 
     /** Standard names for the sections */
     private static String[] sections;

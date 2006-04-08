@@ -22,6 +22,7 @@
 package org.crosswire.jsword.book.sword;
 
 import java.io.File;
+import java.io.Serializable;
 
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookCategory;
@@ -35,120 +36,149 @@ import org.crosswire.jsword.book.BookException;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public enum BookType
+public abstract class BookType implements Serializable
 {
-    /** Uncompressed Bibles */
-    RAW_TEXT ("RawText", BookCategory.BIBLE) //$NON-NLS-1$
+    /**
+     * Uncompressed Bibles
+     */
+    public static final BookType RAW_TEXT = new BookType("RawText", BookCategory.BIBLE) //$NON-NLS-1$ //$NON-NLS-2$
     {
-        @Override
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             return new SwordBook(sbmd, backend);
         }
 
-        @Override
         protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new RawBackend(sbmd, rootPath);
         }
-    },
 
-    /** Compressed Bibles */
-    Z_TEXT ("zText", BookCategory.BIBLE) //$NON-NLS-1$
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3544385920414529336L;
+    };
+
+    /**
+     * Compressed Bibles
+     */
+    public static final BookType Z_TEXT = new BookType("zText", BookCategory.BIBLE) //$NON-NLS-1$ //$NON-NLS-2$
     {
-        @Override
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             return new SwordBook(sbmd, backend);
         }
 
-        @Override
         protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return getCompressedBackend(sbmd, rootPath);
         }
 
-        @Override
         protected boolean isBackendSupported(SwordBookMetaData sbmd)
         {
             return isCompressedBackendSupported(sbmd);
         }
-    },
 
-    /** Uncompressed Commentaries */
-    RAW_COM ("RawCom", BookCategory.COMMENTARY) //$NON-NLS-1$
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3257846571620906039L;
+    };
+
+    /**
+     * Uncompressed Commentaries
+     */
+    public static final BookType RAW_COM = new BookType("RawCom", BookCategory.COMMENTARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
-        @Override
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             return new SwordBook(sbmd, backend);
         }
 
-        @Override
         protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new RawBackend(sbmd, rootPath);
         }
-    },
 
-    /** Compressed Commentaries */
-    Z_COM ("zCom", BookCategory.COMMENTARY) //$NON-NLS-1$
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3258129141898294837L;
+    };
+
+    /**
+     * Compressed Commentaries
+     */
+    public static final BookType Z_COM = new BookType("zCom", BookCategory.COMMENTARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
-        @Override
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             return new SwordBook(sbmd, backend);
         }
 
-        @Override
         protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return getCompressedBackend(sbmd, rootPath);
         }
 
-        @Override
         protected boolean isBackendSupported(SwordBookMetaData sbmd)
         {
             return isCompressedBackendSupported(sbmd);
         }
-    },
 
-    /** Uncompresses HREF Commentaries */
-    HREF_COM ("HREFCom", BookCategory.COMMENTARY) //$NON-NLS-1$
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3257569516166002487L;
+    };
+
+    /**
+     * Uncompresses HREF Commentaries
+     */
+    public static final BookType HREF_COM = new BookType("HREFCom", BookCategory.COMMENTARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
-        @Override
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             return new SwordBook(sbmd, backend);
         }
 
-        @Override
         protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new RawBackend(sbmd, rootPath);
         }
-    },
 
-    /** Uncompressed Commentaries */
-    RAW_FILES ("RawFiles", BookCategory.COMMENTARY) //$NON-NLS-1$
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3256439209706338354L;
+    };
+
+    /**
+     * Uncompressed Commentaries
+     */
+    public static final BookType RAW_FILES = new BookType("RawFiles", BookCategory.COMMENTARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
-        @Override
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             return new SwordBook(sbmd, backend);
         }
 
-        @Override
         protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new RawBackend(sbmd, rootPath);
         }
-    },
 
-    /** 2-Byte Index Uncompressed Dictionaries */
-    RAW_LD ("RawLD", BookCategory.DICTIONARY) //$NON-NLS-1$
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3256446901875325236L;
+    };
+
+    /**
+     * 2-Byte Index Uncompressed Dictionaries
+     */
+    public static final BookType RAW_LD = new BookType("RawLD", BookCategory.DICTIONARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
-        @Override
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             if (sbmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS))
@@ -158,17 +188,22 @@ public enum BookType
             return new SwordDictionary(sbmd, backend);
         }
 
-        @Override
         protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new RawLDBackend(sbmd, rootPath, 2);
         }
-    },
 
-    /** 4-Byte Index Uncompressed Dictionaries */
-    RAW_LD4 ("RawLD4", BookCategory.DICTIONARY) //$NON-NLS-1$
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3257290240195442745L;
+    };
+
+    /**
+     * 4-Byte Index Uncompressed Dictionaries
+     */
+    public static final BookType RAW_LD4 = new BookType("RawLD4", BookCategory.DICTIONARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
-        @Override
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             if (sbmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS))
@@ -178,17 +213,22 @@ public enum BookType
             return new SwordDictionary(sbmd, backend);
         }
 
-        @Override
         protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new RawLDBackend(sbmd, rootPath, 4);
         }
-    },
 
-    /** Compressed Dictionaries */
-    Z_LD ("zLD", BookCategory.DICTIONARY) //$NON-NLS-1$
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3689067356945331762L;
+    };
+
+    /**
+     * Compressed Dictionaries
+     */
+    public static final BookType Z_LD = new BookType("zLD", BookCategory.DICTIONARY) //$NON-NLS-1$ //$NON-NLS-2$
     {
-        @Override
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             if (sbmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS))
@@ -198,48 +238,74 @@ public enum BookType
             return new SwordDictionary(sbmd, backend);
         }
 
-        @Override
         protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new ZLDBackend(sbmd, rootPath);
         }
 
-        @Override
         protected boolean isBackendSupported(SwordBookMetaData sbmd)
         {
             return false;
         }
-    },
 
-    /** Generic Books */
-    RAW_GEN_BOOK ("RawGenBook", BookCategory.OTHER) //$NON-NLS-1$
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3691037673259414067L;
+    };
+
+    /**
+     * Generic Books
+     */
+    public static final BookType RAW_GEN_BOOK = new BookType("RawGenBook", BookCategory.OTHER) //$NON-NLS-1$ //$NON-NLS-2$
     {
-        @Override
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
             return new SwordBook(sbmd, backend);
         }
 
-        @Override
         protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
         {
             return new GenBookBackend(sbmd, rootPath);
         }
 
-        @Override
         protected boolean isBackendSupported(SwordBookMetaData sbmd)
         {
             return false;
         }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3257290218703892528L;
     };
 
     /**
      * Simple ctor
      */
-    private BookType(String name, BookCategory type)
+    public BookType(String name, BookCategory type)
     {
         this.name = name;
         this.type = type;
+    }
+
+    /**
+     * Find a BookType from a name.
+     * @param name The name of the BookType to look up
+     * @return The found BookType or null if the name is not found
+     */
+    public static BookType getBookType(String name)
+    {
+        for (int i = 0; i < VALUES.length; i++)
+        {
+            BookType mod = VALUES[i];
+            if (mod.name.equalsIgnoreCase(name))
+            {
+                return mod;
+            }
+        }
+
+        throw new IllegalArgumentException(Msg.UNDEFINED_BOOK_TYPE.toString(name));
     }
 
     /**
@@ -299,20 +365,20 @@ public enum BookType
         String cStr = sbmd.getProperty(ConfigEntryType.COMPRESS_TYPE);
         if (cStr != null)
         {
-            return Enum.valueOf(CompressionType.class, cStr).getBackend(sbmd, rootPath);
+            return CompressionType.fromString(cStr).getBackend(sbmd, rootPath);
         }
         throw new BookException(Msg.COMPRESSION_UNSUPPORTED, new Object[] { cStr });
     }
 
     /**
-     * Determine whether the SwordBookMetaData supports compression
+     * 
      */
     protected static boolean isCompressedBackendSupported(SwordBookMetaData sbmd)
     {
         String cStr = sbmd.getProperty(ConfigEntryType.COMPRESS_TYPE);
         if (cStr != null)
         {
-            return Enum.valueOf(CompressionType.class, cStr).isSupported();
+            return CompressionType.fromString(cStr).isSupported();
         }
         return false;
     }
@@ -332,23 +398,65 @@ public enum BookType
      */
     public static BookType fromString(String name)
     {
-        for (BookType t : BookType.values())
+        for (int i = 0; i < VALUES.length; i++)
         {
-            if (t.name.equalsIgnoreCase(name))
+            BookType mod = VALUES[i];
+            if (mod.name.equalsIgnoreCase(name))
             {
-                return t;
+                return mod;
             }
         }
 
         throw new ClassCastException(Msg.UNDEFINED_DATATYPE.toString(name));
     }
 
+    /**
+     * Prevent subclasses from overriding canonical identity based Object methods
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public final boolean equals(Object o)
+    {
+        return super.equals(o);
+    }
+
+    /**
+     * Prevent subclasses from overriding canonical identity based Object methods
+     * @see java.lang.Object#hashCode()
+     */
+    public final int hashCode()
+    {
+        return super.hashCode();
+    }
+
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
-    @Override
     public String toString()
     {
         return name;
     }
+
+    // Support for serialization
+    private static int nextObj;
+    private final int obj = nextObj++;
+
+    Object readResolve()
+    {
+        return VALUES[obj];
+    }
+
+    private static final BookType[] VALUES =
+    {
+        RAW_TEXT,
+        Z_TEXT,
+        RAW_COM,
+        Z_COM,
+        RAW_COM,
+        HREF_COM,
+        RAW_FILES,
+        RAW_LD,
+        RAW_LD4,
+        Z_LD,
+        RAW_GEN_BOOK,
+    };
 }

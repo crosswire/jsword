@@ -68,7 +68,7 @@ public abstract class AbstractPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Key obj)
+    public int compareTo(Object obj)
     {
         if (!(obj instanceof Passage))
         {
@@ -103,7 +103,6 @@ public abstract class AbstractPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
-    @Override
     public Object clone()
     {
         // This gets us a shallow copy
@@ -118,7 +117,7 @@ public abstract class AbstractPassage implements Passage
             assert false : e;
         }
 
-        copy.listeners = new ArrayList<PassageListener>();
+        copy.listeners = new ArrayList();
         copy.listeners.addAll(listeners);
 
         copy.originalName  = originalName;
@@ -129,7 +128,6 @@ public abstract class AbstractPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    @Override
     public boolean equals(Object obj)
     {
         // Since this can not be null
@@ -162,7 +160,6 @@ public abstract class AbstractPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
-    @Override
     public int hashCode()
     {
         return getName().hashCode();
@@ -218,7 +215,7 @@ public abstract class AbstractPassage implements Passage
         boolean hasNext = it.hasNext();
         while (hasNext)
         {
-            VerseRange range = (VerseRange) it.next();
+            Key range = (Key) it.next();
             retcode.append(range.getOsisRef());
 
             hasNext = it.hasNext();
@@ -242,7 +239,7 @@ public abstract class AbstractPassage implements Passage
         boolean hasNext = it.hasNext();
         while (hasNext)
         {
-            VerseRange range = (VerseRange) it.next();
+            Key range = (Key) it.next();
             retcode.append(range.getOsisID());
 
             hasNext = it.hasNext();
@@ -258,7 +255,6 @@ public abstract class AbstractPassage implements Passage
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
-    @Override
     public String toString()
     {
         return getName();
@@ -332,9 +328,10 @@ public abstract class AbstractPassage implements Passage
         int current_book = 0;
         int book_count = 0;
 
-        for (Key key : this)
+        Iterator it = iterator();
+        while (it.hasNext())
         {
-            Verse verse = (Verse) key;
+            Verse verse = (Verse) it.next();
             if (current_book != verse.getBook())
             {
                 current_book = verse.getBook();
@@ -358,9 +355,10 @@ public abstract class AbstractPassage implements Passage
         int current_chapter = 0;
         int chapter_count = 0;
 
-        for (Key key : this)
+        Iterator it = iterator();
+        while (it.hasNext())
         {
-            Verse verse = (Verse) key;
+            Verse verse = (Verse) it.next();
 
             if ((book == 0 || verse.getBook() == book) && current_chapter != verse.getChapter())
             {
@@ -381,9 +379,10 @@ public abstract class AbstractPassage implements Passage
 
         int verse_count = 0;
 
-        for (Key key : this)
+        Iterator it = iterator();
+        while (it.hasNext())
         {
-            Verse verse = (Verse) key;
+            Verse verse = (Verse) it.next();
 
             if ((book == 0 || verse.getBook() == book) && (chapter == 0 || verse.getChapter() == chapter))
             {
@@ -441,7 +440,7 @@ public abstract class AbstractPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#rangeIterator()
      */
-    public Iterator<Key> rangeIterator(RestrictionType restrict)
+    public Iterator rangeIterator(RestrictionType restrict)
     {
         return new VerseRangeIterator(iterator(), restrict);
     }
@@ -486,9 +485,11 @@ public abstract class AbstractPassage implements Passage
 
         Passage remainder = (Passage) this.clone();
 
-        for (Key verse : this)
+        Iterator it = iterator();
+        while (it.hasNext())
         {
             i++;
+            Key verse = (Key) it.next();
 
             if (i > count)
             {
@@ -528,7 +529,7 @@ public abstract class AbstractPassage implements Passage
         while (it.hasNext())
         {
             i++;
-            VerseRange range = (VerseRange) it.next();
+            Key range = (Key) it.next();
 
             if (i > count)
             {
@@ -633,9 +634,11 @@ public abstract class AbstractPassage implements Passage
         raiseNormalizeProtection();
 
         Passage temp = (Passage) this.clone();
+        Iterator it = temp.iterator();
 
-        for (Key verse : temp)
+        while (it.hasNext())
         {
+            Key verse = (Key) it.next();
             if (!that.contains(verse))
             {
                 remove(verse);
@@ -701,7 +704,7 @@ public abstract class AbstractPassage implements Passage
 
         while (it.hasNext())
         {
-            VerseRange range = (VerseRange) it.next();
+            Key range = (Key) it.next();
             bout.write(range.getName());
             bout.newLine();
         }
@@ -805,8 +808,9 @@ public abstract class AbstractPassage implements Passage
     {
         int index = 0;
 
-        for (Key key : this)
+        for (Iterator it = iterator(); it.hasNext(); )
         {
+            Key key = (Key) it.next();
             if (key.equals(that))
             {
                 return index;
@@ -873,17 +877,17 @@ public abstract class AbstractPassage implements Passage
         PassageEvent ev = new PassageEvent(source, PassageEvent.VERSES_ADDED, start, end);
 
         // Copy listener vector so it won't change while firing
-        List<PassageListener> temp;
+        List temp;
         synchronized (listeners)
         {
-            temp = new ArrayList<PassageListener>();
+            temp = new ArrayList();
             temp.addAll(listeners);
         }
 
         // And run throught the list shouting
         for (int i = 0; i < temp.size(); i++)
         {
-            PassageListener rl = temp.get(i);
+            PassageListener rl = (PassageListener) temp.get(i);
             rl.versesAdded(ev);
         }
     }
@@ -908,17 +912,17 @@ public abstract class AbstractPassage implements Passage
         PassageEvent ev = new PassageEvent(source, PassageEvent.VERSES_REMOVED, start, end);
 
         // Copy listener vector so it won't change while firing
-        List<PassageListener> temp;
+        List temp;
         synchronized (listeners)
         {
-            temp = new ArrayList<PassageListener>();
+            temp = new ArrayList();
             temp.addAll(listeners);
         }
 
         // And run throught the list shouting
         for (int i = 0; i < temp.size(); i++)
         {
-            PassageListener rl = temp.get(i);
+            PassageListener rl = (PassageListener) temp.get(i);
             rl.versesRemoved(ev);
         }
     }
@@ -943,17 +947,17 @@ public abstract class AbstractPassage implements Passage
         PassageEvent ev = new PassageEvent(source, PassageEvent.VERSES_CHANGED, start, end);
 
         // Copy listener vector so it won't change while firing
-        List<PassageListener> temp;
+        List temp;
         synchronized (listeners)
         {
-            temp = new ArrayList<PassageListener>();
+            temp = new ArrayList();
             temp.addAll(listeners);
         }
 
         // And run throught the list shouting
         for (int i = 0; i < temp.size(); i++)
         {
-            PassageListener rl = temp.get(i);
+            PassageListener rl = (PassageListener) temp.get(i);
             rl.versesChanged(ev);
         }
     }
@@ -1102,12 +1106,12 @@ public abstract class AbstractPassage implements Passage
     /**
      * Skip over verses that are part of a range
      */
-    protected static final class VerseRangeIterator implements Iterator<Key>
+    protected static final class VerseRangeIterator implements Iterator
     {
         /**
          * iterate, amalgumating Verses into VerseRanges
          */
-        protected VerseRangeIterator(Iterator<Key> it, RestrictionType restrict)
+        protected VerseRangeIterator(Iterator it, RestrictionType restrict)
         {
             this.it = it;
             this.restrict = restrict;
@@ -1131,9 +1135,9 @@ public abstract class AbstractPassage implements Passage
         /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
-        public Key next() throws NoSuchElementException
+        public Object next() throws NoSuchElementException
         {
-            Key retcode = next_range;
+            Object retcode = next_range;
 
             if (retcode == null)
             {
@@ -1253,9 +1257,10 @@ public abstract class AbstractPassage implements Passage
             out.writeInt(BITWISE);
 
             BitSet store = new BitSet(BibleInfo.versesInBible());
-            for (Key key : this)
+            Iterator it = iterator();
+            while (it.hasNext())
             {
-                Verse verse = (Verse) key;
+                Verse verse = (Verse) it.next();
                 store.set(verse.getOrdinal() - 1);
             }
 
@@ -1269,9 +1274,10 @@ public abstract class AbstractPassage implements Passage
             out.writeInt(countVerses());
 
             // write the verse ordinals in a loop
-            for (Key key : this)
+            Iterator it = iterator();
+            while (it.hasNext())
             {
-                Verse verse = (Verse) key;
+                Verse verse = (Verse) it.next();
                 out.writeInt(verse.getOrdinal());
             }
         }
@@ -1313,7 +1319,7 @@ public abstract class AbstractPassage implements Passage
         in.defaultReadObject();
 
         // Setup
-        listeners = new ArrayList<PassageListener>();
+        listeners = new ArrayList();
 
         try
         {
@@ -1403,7 +1409,7 @@ public abstract class AbstractPassage implements Passage
     /**
      * Support for change notification
      */
-    protected transient List<PassageListener> listeners = new ArrayList<PassageListener>();
+    protected transient List listeners = new ArrayList();
 
     /**
      * The original string for picky users

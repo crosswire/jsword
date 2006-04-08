@@ -47,8 +47,8 @@ public class History
      */
     public History()
     {
-        nav = new ArrayList<Object>();
-        history = new HashMap<Object, Long>();
+        nav = new ArrayList();
+        history = new HashMap();
         listeners = new EventListenerList();
     }
 
@@ -206,12 +206,12 @@ public class History
     /**
      * The elements that can be navigated.
      */
-    private List<Object> nav;
+    private List nav;
 
     /**
      * A map of elements that have been seen so far to when they have been seen.
      */
-    private Map<Object, Long> history;
+    private Map history;
 
     /**
      * The number of elements in the "back" list.

@@ -67,7 +67,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
         super(theFormat, theWriter);
     }
 
-    @Override
+    /* @Override */
     protected String decorateTagName(String tagName)
     {
         StringBuffer buf = new StringBuffer();
@@ -80,7 +80,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
     /* (non-Javadoc)
      * @see org.crosswire.common.xml.PrettySerializingContentHandler#decorateAttributeName(java.lang.String)
      */
-    @Override
+    /* @Override */
     protected String decorateAttributeName(String attrName)
     {
         StringBuffer buf = new StringBuffer();
@@ -93,7 +93,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
     /* (non-Javadoc)
      * @see org.crosswire.common.xml.PrettySerializingContentHandler#decorateAttributeValue(java.lang.String)
      */
-    @Override
+    /* @Override */
     protected String decorateAttributeValue(String attrValue)
     {
         StringBuffer buf = new StringBuffer();
@@ -106,7 +106,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
     /* (non-Javadoc)
      * @see org.crosswire.common.xml.PrettySerializingContentHandler#decorateCharacters(java.lang.String)
      */
-    @Override
+    /* @Override */
     protected String decorateCharacters(String characters)
     {
         StringBuffer buf = new StringBuffer();
@@ -119,7 +119,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
     /* (non-Javadoc)
      * @see org.crosswire.common.xml.PrettySerializingContentHandler#decorateIndent(int)
      */
-    @Override
+    /* @Override */
     protected String decorateIndent(int indentLevel)
     {
         StringBuffer buf = new StringBuffer();
@@ -132,7 +132,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
     /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#startDocument()
      */
-    @Override
+    /* @Override */
     public void startDocument()
     {
         StringBuffer buf = new StringBuffer();
@@ -153,7 +153,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
     /* (non-Javadoc)
      * @see org.xml.sax.ContentHandler#endDocument()
      */
-    @Override
+    /* @Override */
     public void endDocument()
     {
         write("</body></head>"); //$NON-NLS-1$
@@ -162,7 +162,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
     /* (non-Javadoc)
      * @see org.crosswire.common.xml.PrettySerializingContentHandler#getEmptyTagEnd()
      */
-    @Override
+    /* @Override */
     protected String getEmptyTagEnd()
     {
         return XMLUtil.escape(super.getEmptyTagEnd());
@@ -171,7 +171,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
     /* (non-Javadoc)
      * @see org.crosswire.common.xml.PrettySerializingContentHandler#getEndTagStart()
      */
-    @Override
+    /* @Override */
     protected String getEndTagStart()
     {
         return XMLUtil.escape(super.getEndTagStart());
@@ -180,7 +180,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
     /* (non-Javadoc)
      * @see org.crosswire.common.xml.PrettySerializingContentHandler#getPIEnd()
      */
-    @Override
+    /* @Override */
     protected String getPIEnd()
     {
         return XMLUtil.escape(super.getPIEnd());
@@ -189,7 +189,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
     /* (non-Javadoc)
      * @see org.crosswire.common.xml.PrettySerializingContentHandler#getPIStart()
      */
-    @Override
+    /* @Override */
     protected String getPIStart()
     {
         return XMLUtil.escape(super.getPIStart());
@@ -198,7 +198,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
     /* (non-Javadoc)
      * @see org.crosswire.common.xml.PrettySerializingContentHandler#getTagEnd()
      */
-    @Override
+    /* @Override */
     protected String getTagEnd()
     {
         return XMLUtil.escape(super.getTagEnd());
@@ -207,7 +207,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
     /* (non-Javadoc)
      * @see org.crosswire.common.xml.PrettySerializingContentHandler#getTagStart()
      */
-    @Override
+    /* @Override */
     protected String getTagStart()
     {
         return XMLUtil.escape(super.getTagStart());
@@ -216,7 +216,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
     /* (non-Javadoc)
      * @see org.crosswire.common.xml.PrettySerializingContentHandler#getNewline()
      */
-    @Override
+    /* @Override */
     protected String getNewline()
     {
         return "<br>"; //$NON-NLS-1$

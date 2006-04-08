@@ -1,3 +1,4 @@
+import java.util.Iterator;
 import java.util.List;
 
 import org.crosswire.common.util.Reporter;
@@ -76,8 +77,10 @@ public class Bench
     private static void versions()
     {
         System.out.println("  Available versions:"); //$NON-NLS-1$
-        for (Book book : Books.installed().getBooks())
+        List lbmds = Books.installed().getBooks();
+        for (Iterator it = lbmds.iterator(); it.hasNext();)
         {
+            Book book = (Book) it.next();
             System.out.println("    " + book.getName()); //$NON-NLS-1$
         }
     }

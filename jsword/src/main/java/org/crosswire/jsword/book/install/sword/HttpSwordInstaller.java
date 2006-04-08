@@ -76,7 +76,7 @@ public class HttpSwordInstaller extends AbstractSwordInstaller implements Compar
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.sword.AbstractSwordInstaller#download(java.lang.String, java.lang.String, java.net.URL)
      */
-    @Override
+    /* @Override */
     protected void download(Job job, String dir, String file, URL dest) throws InstallException
     {
         try
@@ -114,7 +114,7 @@ public class HttpSwordInstaller extends AbstractSwordInstaller implements Compar
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    @Override
+    /* @Override */
     public boolean equals(Object object)
     {
         if (!(object instanceof HttpSwordInstaller))
@@ -134,7 +134,7 @@ public class HttpSwordInstaller extends AbstractSwordInstaller implements Compar
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
-    @Override
+    /* @Override */
     public int hashCode()
     {
         return super.hashCode();

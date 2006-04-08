@@ -69,7 +69,7 @@ public class VerseRangeTest extends TestCase
     /* (non-Javadoc)
      * @see junit.framework.TestCase#setUp()
      */
-    @Override
+    /* @Override */
     protected void setUp() throws Exception
     {
         gen11_1 = RestrictionType.NONE.toRange(new Verse(1, 1, 1), 1);
@@ -103,7 +103,7 @@ public class VerseRangeTest extends TestCase
     /* (non-Javadoc)
      * @see junit.framework.TestCase#tearDown()
      */
-    @Override
+    /* @Override */
     protected void tearDown()
     {
     }

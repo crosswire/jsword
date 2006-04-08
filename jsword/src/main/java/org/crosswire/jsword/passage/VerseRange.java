@@ -360,7 +360,6 @@ public final class VerseRange implements Key
      * type of string to return.
      * @return A string like 'Gen 1:1-2'
      */
-    @Override
     public String toString()
     {
         return getName();
@@ -443,7 +442,6 @@ public final class VerseRange implements Key
     /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
-    @Override
     public Object clone()
     {
         // This gets us a shallow copy
@@ -468,7 +466,6 @@ public final class VerseRange implements Key
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    @Override
     public boolean equals(Object obj)
     {
         // Since this can not be null
@@ -506,7 +503,6 @@ public final class VerseRange implements Key
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
-    @Override
     public int hashCode()
     {
         return (start.getOrdinal() << 16) + verseCount;
@@ -515,7 +511,7 @@ public final class VerseRange implements Key
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Key obj)
+    public int compareTo(Object obj)
     {
         // This ensures a ClassCastException without further test
         Verse that = null;
@@ -790,7 +786,7 @@ public final class VerseRange implements Key
      * Enumerate the subranges in this range
      * @return a range iterator
      */
-    public Iterator<Key> rangeIterator(RestrictionType restrict)
+    public Iterator rangeIterator(RestrictionType restrict)
     {
         return new AbstractPassage.VerseRangeIterator(iterator(), restrict);
     }
@@ -977,7 +973,7 @@ public final class VerseRange implements Key
     /**
      * Iterate over the Verses in the VerseRange
      */
-    private static final class VerseIterator implements Iterator<Key>
+    private static final class VerseIterator implements Iterator
     {
         /**
          * Ctor
@@ -999,7 +995,7 @@ public final class VerseRange implements Key
         /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
-        public Key next() throws NoSuchElementException
+        public Object next() throws NoSuchElementException
         {
             if (next > last)
             {
@@ -1068,7 +1064,7 @@ public final class VerseRange implements Key
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#iterator()
      */
-    public Iterator<Key> iterator()
+    public Iterator iterator()
     {
         return new VerseIterator(this);
     }

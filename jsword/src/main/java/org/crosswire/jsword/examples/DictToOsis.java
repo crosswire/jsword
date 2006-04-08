@@ -29,6 +29,7 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.text.FieldPosition;
 import java.text.MessageFormat;
+import java.util.Iterator;
 
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.XMLProcess;
@@ -77,8 +78,10 @@ public class DictToOsis
             buildDocumentOpen(buf, bmd);
 
             // Get a verse iterator
-            for (Key key : keys)
+            Iterator iter = keys.iterator();
+            while (iter.hasNext())
             {
+                Key key = (Key) iter.next();
                 BookData bdata = book.getData(key);
                 SAXEventProvider osissep = bdata.getSAXEventProvider();
                 try
@@ -150,7 +153,7 @@ public class DictToOsis
 
     private void buildEntryOpen(StringBuffer buf, String entryName, String entryDef)
     {
-        if (entryName.contains(" ")) //$NON-NLS-1$
+        if (entryName.indexOf(' ') != -1) //$NON-NLS-1$
         {
             entryName = "x"; //$NON-NLS-1$
         }

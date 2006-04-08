@@ -22,6 +22,7 @@
 package org.crosswire.jsword.book;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.crosswire.common.util.StringUtil;
@@ -55,7 +56,7 @@ public final class SentenceUtil
      */
     public static String[] tokenize(String sentence)
     {
-        List<String> tokens = new ArrayList<String>();
+        List tokens = new ArrayList();
 
         int pos = 0;
         String temp;
@@ -108,9 +109,10 @@ public final class SentenceUtil
         // Create a String[]
         String[] retcode = new String[tokens.size()];
         int i = 0;
-        for (String token : tokens)
+        Iterator iter = tokens.iterator();
+        while (iter.hasNext())
         {
-            retcode[i++] = token;
+            retcode[i++] = (String) iter.next();
         }
 
         return retcode;

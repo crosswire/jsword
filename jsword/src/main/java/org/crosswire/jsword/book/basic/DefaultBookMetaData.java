@@ -53,14 +53,14 @@ public class DefaultBookMetaData extends AbstractBookMetaData
      * Ctor with a properties from which to get values.
      * A call to setBook() is still required after this ctor is called
      */
-    public DefaultBookMetaData(BookDriver driver, Book book, Map<String, String> prop)
+    public DefaultBookMetaData(BookDriver driver, Book book, Map prop)
     {
         setDriver(driver);
 
         setProperties(prop);
-        setName(prop.get(BookMetaData.KEY_NAME));
-        setType(prop.get(BookMetaData.KEY_CATEGORY));
-        setLanguage(prop.get(BookMetaData.KEY_LANGUAGE));
+        setName((String) prop.get(BookMetaData.KEY_NAME));
+        setType((String) prop.get(BookMetaData.KEY_CATEGORY));
+        setLanguage((String) prop.get(BookMetaData.KEY_LANGUAGE));
 
         IndexManager imanager = IndexManagerFactory.getIndexManager();
         if (imanager.isIndexed(book))
@@ -200,7 +200,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#toOSIS()
      */
-    @Override
+    /* @Override */
     public Document toOSIS()
     {
         OSISUtil.OSISFactory factory = OSISUtil.factory();

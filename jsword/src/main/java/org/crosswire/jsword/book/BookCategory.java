@@ -21,6 +21,8 @@
  */
 package org.crosswire.jsword.book;
 
+import java.io.Serializable;
+
 /**
  * An Enumeration of the possible types of Book.
  * 
@@ -29,34 +31,44 @@ package org.crosswire.jsword.book;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public enum BookCategory
+public final class BookCategory implements Serializable, Comparable
 {
-    /** Books that are Bibles */
-    BIBLE ("Bible"), //$NON-NLS-1$
+    /**
+     * Books that are Bibles
+     */
+    public static final BookCategory BIBLE = new BookCategory("Bible"); //$NON-NLS-1$
 
-    /** Books that are Dictionaries */
-    DICTIONARY ("Dictionary"), //$NON-NLS-1$
+    /**
+     * Books that are Dictionaries
+     */
+    public static final BookCategory DICTIONARY = new BookCategory("Dictionary"); //$NON-NLS-1$
 
-    /** Books that are Commentaries */
-    COMMENTARY ("Commentary"), //$NON-NLS-1$
+    /**
+     * Books that are Commentaries
+     */
+    public static final BookCategory COMMENTARY = new BookCategory("Commentary"); //$NON-NLS-1$
 
-    /** Books that are indexed by day. AKA, Daily Devotions */
-    DAILY_DEVOTIONS ("Daily Devotional"), //$NON-NLS-1$
+    /**
+     * Books that are indexed by day. AKA, Daily Devotions
+     */
+    public static final BookCategory DAILY_DEVOTIONS = new BookCategory("Daily Devotional"); //$NON-NLS-1$
 
-    /** Books that map words from one language to another. */
-    GLOSSARY ("Glossaries"), //$NON-NLS-1$
+    /**
+     * Books that map words from one language to another.
+     */
+    public static final BookCategory GLOSSARY = new BookCategory("Glossaries"); //$NON-NLS-1$
 
-    /** Books that are questionable. */
-    QUESTIONABLE ("Cults / Unorthodox / Questionable Material"), //$NON-NLS-1$
+    /**
+     * Books that are questionable.
+     */
+    public static final BookCategory QUESTIONABLE = new BookCategory("Cults / Unorthodox / Questionable Material"); //$NON-NLS-1$
 
     /**
      * Books that are not any of the above
      */
-    OTHER ("Other"); //$NON-NLS-1$
+    public static final BookCategory OTHER = new BookCategory("Other"); //$NON-NLS-1$
 
     /**
-     * A BookCategory has a user friendly name.
-     *
      * @param name The name of the BookCategory
      */
     private BookCategory(String name)
@@ -69,20 +81,55 @@ public enum BookCategory
      */
     public static BookCategory fromString(String name)
     {
-        for (BookCategory bc : BookCategory.values())
+        for (int i = 0; i < VALUES.length; i++)
         {
-            if (bc.name.equalsIgnoreCase(name))
+            BookCategory o = VALUES[i];
+            if (o.name.equalsIgnoreCase(name))
             {
-                return bc;
+                return o;
             }
         }
         return OTHER;
     }
 
+    /**
+     * Lookup method to convert from an integer
+     */
+    public static BookCategory fromInteger(int i)
+    {
+        return VALUES[i];
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    public int compareTo(Object o)
+    {
+        BookCategory that = (BookCategory) o;
+        return this.name.compareTo(that.name);
+    }
+
+    /**
+     * Prevent subclasses from overriding canonical identity based Object methods
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals(Object o)
+    {
+        return super.equals(o);
+    }
+
+    /**
+     * Prevent subclasses from overriding canonical identity based Object methods
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode()
+    {
+        return super.hashCode();
+    }
+
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
-    @Override
     public String toString()
     {
         return name;
@@ -92,6 +139,26 @@ public enum BookCategory
      * The name of the BookCategory
      */
     private String name;
+
+    // Support for serialization
+    private static int nextObj;
+    private final int obj = nextObj++;
+
+    Object readResolve()
+    {
+        return VALUES[obj];
+    }
+
+    private static final BookCategory[] VALUES =
+    {
+        BIBLE,
+        DICTIONARY,
+        COMMENTARY,
+        DAILY_DEVOTIONS,
+        GLOSSARY,
+        QUESTIONABLE,
+        OTHER,
+    };
 
     /**
      * Serialization ID

@@ -83,7 +83,7 @@ public final class GBFTags
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util.LinkedList)
          */
-        public void updateOsisStack(LinkedList<Content> stack)
+        public void updateOsisStack(LinkedList stack)
         {
             Element hi = OSIS_FACTORY.createHI();
             hi.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_BOLD);
@@ -107,7 +107,7 @@ public final class GBFTags
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util.LinkedList)
          */
-        public void updateOsisStack(LinkedList<Content> stack)
+        public void updateOsisStack(LinkedList stack)
         {
             Element seg = OSIS_FACTORY.createReference();
 
@@ -144,7 +144,7 @@ public final class GBFTags
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util.LinkedList)
          */
-        public void updateOsisStack(LinkedList<Content> stack)
+        public void updateOsisStack(LinkedList stack)
         {
 
             if (stack.size() == 0)
@@ -178,7 +178,7 @@ public final class GBFTags
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util.LinkedList)
          */
-        public void updateOsisStack(LinkedList<Content> stack)
+        public void updateOsisStack(LinkedList stack)
         {
             Element current = (Element) stack.get(0);
             Element note = OSIS_FACTORY.createNote();
@@ -241,7 +241,7 @@ public final class GBFTags
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util.LinkedList)
          */
-        public void updateOsisStack(LinkedList<Content> stack)
+        public void updateOsisStack(LinkedList stack)
         {
             Element title = OSIS_FACTORY.createTitle();
 
@@ -288,7 +288,7 @@ public final class GBFTags
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util.LinkedList)
          */
-        public void updateOsisStack(LinkedList<Content> stack)
+        public void updateOsisStack(LinkedList stack)
         {
             Element hi = OSIS_FACTORY.createHI();
             hi.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_ITALIC);
@@ -315,7 +315,7 @@ public final class GBFTags
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util.LinkedList)
          */
-        public void updateOsisStack(LinkedList<Content> stack)
+        public void updateOsisStack(LinkedList stack)
         {
             // LATER(joe): is div the right thing?
             Element seg = OSIS_FACTORY.createSeg();
@@ -364,7 +364,7 @@ public final class GBFTags
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util.LinkedList)
          */
-        public void updateOsisStack(LinkedList<Content> stack)
+        public void updateOsisStack(LinkedList stack)
         {
             Element q = OSIS_FACTORY.createQ();
 
@@ -390,7 +390,7 @@ public final class GBFTags
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util.LinkedList)
          */
-        public void updateOsisStack(LinkedList<Content> stack)
+        public void updateOsisStack(LinkedList stack)
         {
 
             if (stack.size() == 0)
@@ -423,7 +423,7 @@ public final class GBFTags
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util.LinkedList)
          */
-        public void updateOsisStack(LinkedList<Content> stack)
+        public void updateOsisStack(LinkedList stack)
         {
             // LATER(joe): is speech the right thing?
             Element speech = OSIS_FACTORY.createLG();
@@ -450,7 +450,7 @@ public final class GBFTags
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util.LinkedList)
          */
-        public void updateOsisStack(LinkedList<Content> stack)
+        public void updateOsisStack(LinkedList stack)
         {
             Element title = OSIS_FACTORY.createTitle();
 
@@ -476,7 +476,7 @@ public final class GBFTags
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util.LinkedList)
          */
-        public void updateOsisStack(LinkedList<Content> stack)
+        public void updateOsisStack(LinkedList stack)
         {
             Element speaker = OSIS_FACTORY.createSpeaker();
             speaker.setAttribute(OSISUtil.ATTRIBUTE_SPEAKER_WHO, Msg.NAME_JESUS.toString());
@@ -624,7 +624,7 @@ public final class GBFTags
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util.LinkedList)
          */
-        public void updateOsisStack(LinkedList<Content> stack)
+        public void updateOsisStack(LinkedList stack)
         {
             Element note = OSIS_FACTORY.createNote();
             note.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.NOTETYPE_STUDY);
@@ -651,7 +651,7 @@ public final class GBFTags
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util.LinkedList)
          */
-        public void updateOsisStack(LinkedList<Content> stack)
+        public void updateOsisStack(LinkedList stack)
         {
             if (stack.size() == 0)
             {
@@ -681,7 +681,7 @@ public final class GBFTags
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util.LinkedList)
          */
-        public void updateOsisStack(LinkedList<Content> stack)
+        public void updateOsisStack(LinkedList stack)
         {
             Element title = OSIS_FACTORY.createTitle();
 
@@ -707,7 +707,7 @@ public final class GBFTags
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util.LinkedList)
          */
-        public void updateOsisStack(LinkedList<Content> stack)
+        public void updateOsisStack(LinkedList stack)
         {
             Element hi = OSIS_FACTORY.createHI();
             hi.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_UNDERLINE);

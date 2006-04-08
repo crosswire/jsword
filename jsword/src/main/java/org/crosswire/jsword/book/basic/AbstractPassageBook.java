@@ -38,7 +38,6 @@ import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.RestrictionType;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
-import org.jdom.Content;
 import org.jdom.Element;
 
 /**
@@ -79,14 +78,16 @@ public abstract class AbstractPassageBook extends AbstractBook
                 div.addContent(title);
 
                 // For all the verses in this range
-                for (Key verse : range)
+                Iterator vit = range.iterator();
+                while (vit.hasNext())
                 {
+                    Key verse = (Key) vit.next();
                     String txt = getText(verse);
 
                     // If the verse is empty then we shouldn't add the verse tag
                     if (txt.length() > 0)
                     {
-                        List<Content> osisContent = getFilter().toOSIS(verse, txt);
+                        List osisContent = getFilter().toOSIS(verse, txt);
                         addOSIS(verse, div, osisContent);
 
                     }
@@ -109,7 +110,7 @@ public abstract class AbstractPassageBook extends AbstractBook
      * @param div The div element to which the key is being added
      * @param osisContent The OSIS representation of the key being added.
      */
-    public void addOSIS(Key key, Element div, List<Content> osisContent)
+    public void addOSIS(Key key, Element div, List osisContent)
     {
         assert key != null;
         div.addContent(osisContent);
@@ -142,8 +143,9 @@ public abstract class AbstractPassageBook extends AbstractBook
             Element div = (Element) sit.next();
 
             // For all of the Verses in the section
-            for (Object data : div.getContent())
+            for (Iterator vit = div.getContent().iterator(); vit.hasNext(); )
             {
+                Object data = vit.next();
                 if (data instanceof Element)
                 {
                     Element overse = (Element) data;
@@ -233,8 +235,10 @@ public abstract class AbstractPassageBook extends AbstractBook
                 VerseRange range = (VerseRange) rit.next();
 
                 // For all the verses in this range
-                for (Key verse : range)
+                Iterator vit = range.iterator();
+                while (vit.hasNext())
                 {
+                    Verse verse = (Verse) vit.next();
                     String txt = getText(verse);
 
                     // If the verse is empty then we shouldn't add the verse

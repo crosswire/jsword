@@ -127,9 +127,9 @@ public class DefaultLeafKeyList implements Key
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#iterator()
      */
-    public Iterator<Key> iterator()
+    public Iterator iterator()
     {
-        return new EmptyIterator<Key>();
+        return new EmptyIterator();
     }
 
     /* (non-Javadoc)
@@ -190,7 +190,6 @@ public class DefaultLeafKeyList implements Key
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
-    @Override
     public String toString()
     {
         return getName();
@@ -199,7 +198,6 @@ public class DefaultLeafKeyList implements Key
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    @Override
     public boolean equals(Object obj)
     {
         // Since this can not be null
@@ -226,7 +224,6 @@ public class DefaultLeafKeyList implements Key
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
-    @Override
     public int hashCode()
     {
         return name.hashCode();
@@ -235,7 +232,7 @@ public class DefaultLeafKeyList implements Key
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Key obj)
+    public int compareTo(Object obj)
     {
         DefaultLeafKeyList that = (DefaultLeafKeyList) obj;
         return name.compareTo(that.name);
@@ -244,7 +241,6 @@ public class DefaultLeafKeyList implements Key
     /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
-    @Override
     public Object clone()
     {
         DefaultLeafKeyList clone = null;

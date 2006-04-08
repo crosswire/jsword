@@ -21,6 +21,8 @@
  */
 package org.crosswire.common.xml;
 
+import java.io.Serializable;
+
 
 /**
  * Wraps an XML Feature. The "known" set of XML Features is found in
@@ -30,40 +32,40 @@ package org.crosswire.common.xml;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public enum XMLFeature
+public class XMLFeature implements Serializable
 {
     /** Namespaces feature id */
-    NAMESPACES ("http://xml.org/sax/features/namespaces"), //$NON-NLS-1$
+    public static final XMLFeature NAMESPACES = new XMLFeature("http://xml.org/sax/features/namespaces"); //$NON-NLS-1$
 
     /** Namespace prefixes feature id */
-    NAMESPACE_PREFIX ("http://xml.org/sax/features/namespace-prefixes"), //$NON-NLS-1$
+    public static final XMLFeature NAMESPACE_PREFIX = new XMLFeature("http://xml.org/sax/features/namespace-prefixes"); //$NON-NLS-1$
 
     /** Validation feature id */
-    VALIDATION ("http://xml.org/sax/features/validation"), //$NON-NLS-1$
+    public static final XMLFeature VALIDATION = new XMLFeature("http://xml.org/sax/features/validation"); //$NON-NLS-1$
 
     /** Schema validation feature id */
-    SCHEMA_VALIDATION ("http://apache.org/xml/features/validation/schema"), //$NON-NLS-1$
+    public static final XMLFeature SCHEMA_VALIDATION = new XMLFeature("http://apache.org/xml/features/validation/schema"); //$NON-NLS-1$
 
     /** Schema full checking feature id */
-    SCHEMA_FULL_CHECKING ("http://apache.org/xml/features/validation/schema-full-checking"), //$NON-NLS-1$
+    public static final XMLFeature SCHEMA_FULL_CHECKING = new XMLFeature("http://apache.org/xml/features/validation/schema-full-checking"); //$NON-NLS-1$
 
     /** Validate schema annotations feature id */
-    VALIDATE_ANNOTATIONS ("http://apache.org/xml/features/validate-annotations"), //$NON-NLS-1$
+    public static final XMLFeature VALIDATE_ANNOTATIONS = new XMLFeature("http://apache.org/xml/features/validate-annotations"); //$NON-NLS-1$
 
     /** Dynamic validation feature id */
-    DYNAMIC_VALIDATION ("http://apache.org/xml/features/validation/dynamic"), //$NON-NLS-1$
+    public static final XMLFeature DYNAMIC_VALIDATION = new XMLFeature("http://apache.org/xml/features/validation/dynamic"); //$NON-NLS-1$
 
     /** Load external DTD feature id */
-    LOAD_EXTERNAL_DTD ("http://apache.org/xml/features/nonvalidating/load-external-dtd"), //$NON-NLS-1$
+    public static final XMLFeature LOAD_EXTERNAL_DTD = new XMLFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd"); //$NON-NLS-1$
 
     /** XInclude feature id */
-    XINCLUDE ("http://apache.org/xml/features/xinclude"), //$NON-NLS-1$
+    public static final XMLFeature XINCLUDE = new XMLFeature("http://apache.org/xml/features/xinclude"); //$NON-NLS-1$
 
     /** XInclude fixup base URIs feature id */
-    XINCLUDE_FIXUP_BASE_URIS ("http://apache.org/xml/features/xinclude/fixup-base-uris", true), //$NON-NLS-1$
+    public static final XMLFeature XINCLUDE_FIXUP_BASE_URIS = new XMLFeature("http://apache.org/xml/features/xinclude/fixup-base-uris", true); //$NON-NLS-1$
 
     /** XInclude fixup language feature id */
-    XINCLUDE_FIXUP_LANGUAGE ("http://apache.org/xml/features/xinclude/fixup-language", true); //$NON-NLS-1$
+    public static final XMLFeature XINCLUDE_FIXUP_LANGUAGE = new XMLFeature("http://apache.org/xml/features/xinclude/fixup-language", true); //$NON-NLS-1$
 
     /**
      * Construct a feature for xml, setting the initial state
@@ -104,10 +106,53 @@ public enum XMLFeature
         return state;
     }
 
+    /**
+     * Lookup method to convert from a String
+     */
+    public static XMLFeature fromString(String name)
+    {
+        for (int i = 0; i < VALUES.length; i++)
+        {
+            XMLFeature o = VALUES[i];
+            if (o.name.equalsIgnoreCase(name))
+            {
+                return o;
+            }
+        }
+        // cannot get here
+        assert false;
+        return null;
+    }
+
+    /**
+     * Lookup method to convert from an integer
+     */
+    public static XMLFeature fromInteger(int i)
+    {
+        return VALUES[i];
+    }
+
+    /**
+     * Prevent subclasses from overriding canonical identity based Object methods
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public final boolean equals(Object o)
+    {
+        return super.equals(o);
+    }
+
+    /**
+     * Prevent subclasses from overriding canonical identity based Object methods
+     * @see java.lang.Object#hashCode()
+     */
+    public final int hashCode()
+    {
+        return super.hashCode();
+    }
+
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
-    @Override
     public String toString()
     {
         return (state ? "on  " : "off ") + control; //$NON-NLS-1$ //$NON-NLS-2$
@@ -115,4 +160,38 @@ public enum XMLFeature
 
     private String control;
     private boolean state;
+    /**
+     * The name of the PassageListType
+     */
+    private String name;
+
+    // Support for serialization
+    private static int nextObj;
+    private final int obj = nextObj++;
+
+    Object readResolve()
+    {
+        return VALUES[obj];
+    }
+
+    private static final XMLFeature[] VALUES =
+    {
+        NAMESPACES,
+        NAMESPACE_PREFIX,
+        VALIDATION,
+        SCHEMA_VALIDATION,
+        SCHEMA_FULL_CHECKING,
+        VALIDATE_ANNOTATIONS,
+        DYNAMIC_VALIDATION,
+        LOAD_EXTERNAL_DTD,
+        XINCLUDE,
+        XINCLUDE_FIXUP_BASE_URIS,
+        XINCLUDE_FIXUP_LANGUAGE
+    };
+
+    /**
+     * Serialization UID
+     */
+    private static final long serialVersionUID = -1972881391399216524L;
+
 }

@@ -23,6 +23,7 @@ package org.crosswire.jsword.book.sword;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -64,16 +65,18 @@ public class SwordDictionary extends AbstractBook
     /* (non-Javadoc)
      * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
      */
-    @Override
+    /* @Override */
     public final void activate(Lock lock)
     {
         super.activate(lock);
 
         set = backend.readIndex();
 
-        map = new HashMap<String, Key>();
-        for (Key key : set)
+        map = new HashMap();
+        Iterator iter = set.iterator();
+        while (iter.hasNext())
         {
+            Key key = (Key) iter.next();
             map.put(key.getName(), key);
         }
 
@@ -88,7 +91,7 @@ public class SwordDictionary extends AbstractBook
     /* (non-Javadoc)
      * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
      */
-    @Override
+    /* @Override */
     public final void deactivate(Lock lock)
     {
         super.deactivate(lock);
@@ -189,7 +192,7 @@ public class SwordDictionary extends AbstractBook
     {
         checkActive();
 
-        Key key = map.get(text);
+        Key key = (Key) map.get(text);
         if (key != null)
         {
             return key;
@@ -205,29 +208,35 @@ public class SwordDictionary extends AbstractBook
         }
 
         // First check for keys that match ignoring case
-        for (String keyName : map.keySet())
+        Iterator iter = map.keySet().iterator();
+        while (iter.hasNext())
         {
+            String keyName = (String) iter.next();
             if (keyName.equalsIgnoreCase(text))
             {
-                return map.get(keyName);
+                return (Key) map.get(keyName);
             }
         }
 
         // Next keys that start with the given text
-        for (String keyName : map.keySet())
+        iter = map.keySet().iterator();
+        while (iter.hasNext())
         {
+            String keyName = (String) iter.next();
             if (keyName.startsWith(text))
             {
-                return map.get(keyName);
+                return (Key) map.get(keyName);
             }
         }
 
         // Next try keys that contain the given text
-        for (String keyName : map.keySet())
+        iter = map.keySet().iterator();
+        while (iter.hasNext())
         {
+            String keyName = (String) iter.next();
             if (keyName.indexOf(text) != -1)
             {
-                return map.get(keyName);
+                return (Key) map.get(keyName);
             }
         }
 
@@ -258,11 +267,11 @@ public class SwordDictionary extends AbstractBook
         String internalName = sbmd.getInitials();
         if (internalName.equals("StrongsGreek")) //$NON-NLS-1$
         {
-            key = map.get(ZERO_PAD.format(strongsNumber));
+            key = (Key) map.get(ZERO_PAD.format(strongsNumber));
         }
         else if (internalName.equals("StrongsHebrew")) //$NON-NLS-1$
         {
-            key = map.get(ZERO_PAD.format(strongsNumber));
+            key = (Key) map.get(ZERO_PAD.format(strongsNumber));
         }
         return key;
     }
@@ -303,7 +312,7 @@ public class SwordDictionary extends AbstractBook
     /**
      * So we can quickly find a Key given the text for the key
      */
-    private Map<String, Key> map;
+    private Map map;
 
     /**
      * So we can implement getIndex() easily

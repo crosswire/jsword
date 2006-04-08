@@ -21,6 +21,7 @@
  */
 package org.crosswire.jsword.passage;
 
+import org.crosswire.common.util.Iterable;
 
 /**
  * A Key is a Key that can contain other Keys.
@@ -33,7 +34,7 @@ package org.crosswire.jsword.passage;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public interface Key extends Comparable<Key>, Cloneable, Iterable<Key>
+public interface Key extends Comparable, Cloneable, Iterable
 {
     /**
      * A Human readable version of the Key.

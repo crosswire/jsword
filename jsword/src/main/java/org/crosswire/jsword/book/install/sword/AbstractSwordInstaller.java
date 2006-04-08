@@ -132,7 +132,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookList#getBooks()
      */
-    public List<Book> getBooks()
+    public List getBooks()
     {
         try
         {
@@ -143,14 +143,14 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
             // We need to create a List from the Set returned by
             // entries.values() so we can create an unmodifiable list from it.
-            List<Book> mutable = new ArrayList<Book>();
+            List mutable = new ArrayList();
             mutable.addAll(entries.values());
             return Collections.unmodifiableList(mutable);
         }
         catch (InstallException ex)
         {
             log.error("Failed to reload cached index file", ex); //$NON-NLS-1$
-            return new ArrayList<Book>();
+            return new ArrayList();
         }
     }
 
@@ -175,7 +175,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
             /* (non-Javadoc)
              * @see java.lang.Runnable#run()
              */
-            @Override
+            /* @Override */
             public void run()
             {
                 URL predicturl = Project.instance().getWritablePropertiesURL("sword-install"); //$NON-NLS-1$
@@ -462,7 +462,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    @Override
+    /* @Override */
     public boolean equals(Object object)
     {
         if (!(object instanceof AbstractSwordInstaller))
@@ -502,7 +502,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
-    @Override
+    /* @Override */
     public int hashCode()
     {
         return host.hashCode() + directory.hashCode();
@@ -533,7 +533,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /**
      * A map of the entries in this download area
      */
-    protected Map<String, Book> entries = new HashMap<String, Book>();
+    protected Map entries = new HashMap();
 
     /**
      * The remote hostname.

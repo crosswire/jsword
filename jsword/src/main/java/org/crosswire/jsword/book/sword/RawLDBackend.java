@@ -131,7 +131,7 @@ public class RawLDBackend extends AbstractBackend
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.KeyBackend#readIndex()
      */
-    @Override
+    /* @Override */
     public Key readIndex()
     {
         checkActive();
@@ -228,7 +228,7 @@ public class RawLDBackend extends AbstractBackend
      * (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key, java.lang.String)
      */
-    @Override
+    /* @Override */
     public String getRawText(Key key) throws BookException
     {
         checkActive();
@@ -267,7 +267,7 @@ public class RawLDBackend extends AbstractBackend
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#isSupported()
      */
-    @Override
+    /* @Override */
     public boolean isSupported()
     {
         return true;
@@ -359,7 +359,6 @@ public class RawLDBackend extends AbstractBackend
         /* (non-Javadoc)
          * @see java.lang.Object#clone()
          */
-        @Override
         public Object clone()
         {
             return super.clone();
