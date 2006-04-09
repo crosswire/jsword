@@ -2537,8 +2537,8 @@ public class BibleToOsis
             input = input.replaceAll("\\bMahanehdan\\b", "Mahaneh\u2013dan"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.indexOf("Mahershalalhashbaz") != -1) //$NON-NLS-1$
             input = input.replaceAll("\\bMahershalalhashbaz\\b", "Maher\u2013shalal\u2013hash\u2013baz"); //$NON-NLS-1$ //$NON-NLS-2$
-        if (input.indexOf("Maher–shalal–hash–baz") != -1) //$NON-NLS-1$
-            input = input.replaceAll("\\bMaher–shalal–hash–baz\\b", "Maher\u2013shalal\u2013hash\u2013baz"); //$NON-NLS-1$ //$NON-NLS-2$
+        if (input.indexOf("Maher-shalal-hash-baz") != -1) //$NON-NLS-1$
+            input = input.replaceAll("\\bMaher-shalal-hash-baz\\b", "Maher\u2013shalal\u2013hash\u2013baz"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.indexOf("Malchishua") != -1) //$NON-NLS-1$
             input = input.replaceAll("\\bMalchishua\\b", "Malchi\u2013shua"); //$NON-NLS-1$ //$NON-NLS-2$
         if (input.indexOf("Mejarkon") != -1) //$NON-NLS-1$

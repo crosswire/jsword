@@ -32,7 +32,7 @@ import java.io.Serializable;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class XMLFeature implements Serializable
+public class XMLFeature implements Serializable, Comparable
 {
     /** Namespaces feature id */
     public static final XMLFeature NAMESPACES = new XMLFeature("http://xml.org/sax/features/namespaces"); //$NON-NLS-1$
@@ -156,6 +156,15 @@ public class XMLFeature implements Serializable
     public String toString()
     {
         return (state ? "on  " : "off ") + control; //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    public int compareTo(Object o)
+    {
+        XMLFeature feature = (XMLFeature) o;
+        return this.control.compareTo(feature.control);
     }
 
     private String control;
