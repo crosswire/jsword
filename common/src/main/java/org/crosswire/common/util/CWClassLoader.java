@@ -30,7 +30,7 @@ import java.net.URL;
  * in more places. This is needed so that ResourceBundle can find
  * resources that are not held in the same package as the class.
  *
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */

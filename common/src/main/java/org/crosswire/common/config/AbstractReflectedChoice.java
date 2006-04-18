@@ -31,7 +31,7 @@ import org.jdom.Element;
 /**
  * A helper for when we need to be a choice created dynamically.
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

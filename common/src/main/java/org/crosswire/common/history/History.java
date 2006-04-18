@@ -34,7 +34,7 @@ import org.crosswire.common.util.EventListenerList;
  * This maintains a dated list of objects and
  * a current navigation list.
  *
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at gmail dot com]
  */

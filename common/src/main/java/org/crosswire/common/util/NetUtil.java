@@ -43,7 +43,7 @@ import java.util.jar.JarEntry;
  * The NetUtil class looks after general utility stuff around the
  * java.net package.
  *
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author Mark Goodwin [goodwinster at gmail dot com]

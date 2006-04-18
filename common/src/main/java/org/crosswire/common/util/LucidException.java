@@ -43,7 +43,7 @@ import java.text.MessageFormat;
  * a constructor that allows us to specify no i18n lookup, which is useful
  * if this lookup may have been done already.</p>
  *
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @see LucidRuntimeException

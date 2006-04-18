@@ -25,7 +25,7 @@ package org.crosswire.common.activate;
  * This class only exists to disuade you from calling activate() directly on
  * an Activatable object.
  *
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

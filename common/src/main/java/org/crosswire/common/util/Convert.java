@@ -28,7 +28,7 @@ import java.util.Map;
 /**
  * Conversions between various types and Strings.
  *
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

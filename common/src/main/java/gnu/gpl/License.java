@@ -367,7 +367,7 @@ library.  If this is what you want to do, use the GNU Library General
 Public License instead of this License.
 </pre>
  *
- * @see gnu.gpl.License for license details.
+ * @see gnu.gpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]

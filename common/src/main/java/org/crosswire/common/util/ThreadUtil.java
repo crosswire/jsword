@@ -28,7 +28,7 @@ import java.util.List;
  * Various utilities for examining the running Threads and
  * controlling their execution.
  *
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

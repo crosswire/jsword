@@ -27,7 +27,7 @@ import java.io.Serializable;
 /**
  * The PrettySerializingContentHandler uses a FormatType to control its output.
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at gmail dot com]
  */

@@ -51,7 +51,7 @@ import org.xml.sax.SAXException;
  * A SAXEventProvider that gets its output data from an XSL stylesheet and
  * another SAXEventProvider (supplying input XML).
  *
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

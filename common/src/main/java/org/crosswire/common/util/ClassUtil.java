@@ -36,7 +36,7 @@ import java.util.zip.ZipFile;
 /**
  * Various Java Class Utilities.
  *
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

@@ -31,7 +31,7 @@ import java.util.List;
  * A generic class of String utils.
  * It would be good if we could put this stuff in java.lang ...
  *
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

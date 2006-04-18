@@ -30,7 +30,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
  * Runs an xml parser on an xml file using an xml handler.
  * The default behavior is to check that the xml file is well-formed.
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */

@@ -41,7 +41,7 @@ import org.crosswire.common.util.NetUtil;
 /**
  * A Generic method of keeping track of Threads and monitoring their progress.
  *
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */

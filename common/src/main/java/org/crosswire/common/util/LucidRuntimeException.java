@@ -34,7 +34,7 @@ import java.text.MessageFormat;
  * before you used it, however EventExceptions would be used directly.
  * </p>
  *
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @see LucidException

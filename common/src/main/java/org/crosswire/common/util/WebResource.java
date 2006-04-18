@@ -32,7 +32,7 @@ import org.apache.commons.httpclient.util.HttpURLConnection;
  * need go. It can get basic information about the resource and it can get the
  * resource.
  * 
- * @see gnu.lgpl.License for license details. The copyright to this program is
+ * @see gnu.lgpl.License for license details.<br> The copyright to this program is
  *      held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */

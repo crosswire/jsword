@@ -46,7 +46,7 @@ import java.util.Properties;
  *     because it makes the app more susceptible to the configuration of the
  *     things that listen to reports.</li>
  *
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
