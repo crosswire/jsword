@@ -412,7 +412,7 @@ public class SwordBookDriver extends AbstractBookDriver
      * Check that the directories in the version directory really
      * represent versions.
      */
-    private static class CustomFilenameFilter implements FilenameFilter
+    static class CustomFilenameFilter implements FilenameFilter
     {
         /* (non-Javadoc)
          * @see java.io.FilenameFilter#accept(java.io.File, java.lang.String)

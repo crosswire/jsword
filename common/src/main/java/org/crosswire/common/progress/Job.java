@@ -583,7 +583,7 @@ public final class Job
     /**
      * So we can fake progress for Jobs that don't tell us how they are doing
      */
-    private final class PredictTask extends TimerTask
+    final class PredictTask extends TimerTask
     {
         /* (non-Javadoc)
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)

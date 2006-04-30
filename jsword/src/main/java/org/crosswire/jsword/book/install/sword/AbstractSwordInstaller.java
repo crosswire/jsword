@@ -456,7 +456,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
      */
     private static String getTempFileExtension(String host, String directory)
     {
-        return DOWNLOAD_PREFIX + host + directory.replace('/', '_'); //$NON-NLS-1$
+        return DOWNLOAD_PREFIX + host + directory.replace('/', '_'); 
     }
 
     /* (non-Javadoc)

@@ -54,12 +54,12 @@ public final class BookFilters
     /**
      * Filter for all books
      */
-    private static BookFilter allBookFilter = new AllBookFilter();
+    static BookFilter allBookFilter = new AllBookFilter();
 
     /**
      * Filter for all books
      */
-    private static class AllBookFilter implements BookFilter
+    static class AllBookFilter implements BookFilter
     {
         public boolean test(Book book)
         {
@@ -83,7 +83,7 @@ public final class BookFilters
     /**
      * Filter for all Bibles
      */
-    private static class BiblesBookFilter implements BookFilter
+    static class BiblesBookFilter implements BookFilter
     {
         public boolean test(Book book)
         {
@@ -107,7 +107,7 @@ public final class BookFilters
     /**
      * Filter for all dictionaries
      */
-    private static class DictionariesBookFilter implements BookFilter
+    static class DictionariesBookFilter implements BookFilter
     {
         public boolean test(Book book)
         {
@@ -128,12 +128,12 @@ public final class BookFilters
     /**
      * Filter for all dictionaries
      */
-    private static BookFilter dailyDevotionalsBookFilter = new DailyDevotionalsBookFilter();
+    static BookFilter dailyDevotionalsBookFilter = new DailyDevotionalsBookFilter();
 
     /**
      * Filter for all dictionaries
      */
-    private static class DailyDevotionalsBookFilter implements BookFilter
+    static class DailyDevotionalsBookFilter implements BookFilter
     {
         public boolean test(Book book)
         {
@@ -158,7 +158,7 @@ public final class BookFilters
     /**
      * Filter for all commentaries
      */
-    private static class CommentariesBookFilter implements BookFilter
+    static class CommentariesBookFilter implements BookFilter
     {
         public boolean test(Book book)
         {
@@ -183,7 +183,7 @@ public final class BookFilters
     /**
      * Filter for all Greek Definition Dictionaries
      */
-    private static class GreekDefinitionsBookFilter implements BookFilter
+    static class GreekDefinitionsBookFilter implements BookFilter
     {
         public boolean test(Book book)
         {
@@ -208,7 +208,7 @@ public final class BookFilters
     /**
      * Filter for all Greek Parse/Morphology Dictionaries
      */
-    private static class GreekParseBookFilter implements BookFilter
+    static class GreekParseBookFilter implements BookFilter
     {
         public boolean test(Book book)
         {
@@ -233,7 +233,7 @@ public final class BookFilters
     /**
      * Filter for all Hebrew Definition Dictionaries
      */
-    private static class HebrewDefinitionsBookFilter implements BookFilter
+    static class HebrewDefinitionsBookFilter implements BookFilter
     {
         public boolean test(Book book)
         {
@@ -258,7 +258,7 @@ public final class BookFilters
     /**
      * Filter for all Hebrew Parse/Morphology Dictionaries
      */
-    private static class HebrewParseBookFilter implements BookFilter
+    static class HebrewParseBookFilter implements BookFilter
     {
         public boolean test(Book book)
         {
@@ -326,7 +326,7 @@ public final class BookFilters
     /**
      * Custom Filter
      */
-    private static class CustomBookFilter implements BookFilter
+    static class CustomBookFilter implements BookFilter
     {
         /**
          * Ctor
@@ -395,7 +395,7 @@ public final class BookFilters
         /**
          *
          */
-        private class Test
+        class Test
         {
             protected String result;
             protected Method property;

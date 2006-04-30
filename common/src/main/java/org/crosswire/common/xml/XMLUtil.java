@@ -106,7 +106,7 @@ public final class XMLUtil
 
         for (int i = 0; i < len; i++)
         {
-            char ch = s.charAt(i); //$NON-NLS-1$
+            char ch = s.charAt(i); 
             switch (ch)
             {
             case '<':

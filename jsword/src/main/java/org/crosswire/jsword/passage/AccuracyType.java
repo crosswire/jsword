@@ -479,7 +479,7 @@ public abstract class AccuracyType implements Serializable
      */
     public static AccuracyType fromText(String original, String[] parts, AccuracyType verseAccuracy, VerseRange basis) throws NoSuchVerseException
     {
-        String msg = original; //$NON-NLS-1$
+        String msg = original; 
         switch (parts.length)
         {
         case 1:

@@ -65,7 +65,7 @@ public final class ClassUtil
             {
                 try
                 {
-                    String file_name = classname.replace(',', '/') + EXTENSION_CLASS; //$NON-NLS-1$ //$NON-NLS-2$
+                    String file_name = classname.replace(',', '/') + EXTENSION_CLASS; 
                     ZipFile zip = new ZipFile(paths[i]);
                     ZipEntry entry = zip.getEntry(file_name);
 
@@ -89,7 +89,7 @@ public final class ClassUtil
             else
             {
                 // Search for the file
-                String extra = classname.replace('.', File.separatorChar); //$NON-NLS-1$
+                String extra = classname.replace('.', File.separatorChar); 
 
                 if (!paths[i].endsWith(File.separator))
                 {

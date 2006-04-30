@@ -118,7 +118,7 @@ public final class GBFTagBuilders
     /**
      *
      */
-    private static final class BoldStartTagBuilder implements TagBuilder
+    static final class BoldStartTagBuilder implements TagBuilder
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
@@ -132,7 +132,7 @@ public final class GBFTagBuilders
     /**
      *
      */
-    private static final class CrossRefStartTagBuilder implements TagBuilder
+    static final class CrossRefStartTagBuilder implements TagBuilder
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
@@ -146,7 +146,7 @@ public final class GBFTagBuilders
     /**
      *
      */
-    private static final class DefaultEndTagBuilder implements TagBuilder
+    static final class DefaultEndTagBuilder implements TagBuilder
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
@@ -160,7 +160,7 @@ public final class GBFTagBuilders
     /**
      *
      */
-    private static final class EndOfLineTagBuilder implements TagBuilder
+    static final class EndOfLineTagBuilder implements TagBuilder
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
@@ -175,7 +175,7 @@ public final class GBFTagBuilders
     /**
      *
      */
-    private static final class FootnoteStartTagBuilder implements TagBuilder
+    static final class FootnoteStartTagBuilder implements TagBuilder
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
@@ -189,7 +189,7 @@ public final class GBFTagBuilders
     /**
      *
      */
-    private static final class FootnoteEndTagBuilder implements TagBuilder
+    static final class FootnoteEndTagBuilder implements TagBuilder
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
@@ -203,7 +203,7 @@ public final class GBFTagBuilders
     /**
      *
      */
-    private static final class HeaderStartTagBuilder implements TagBuilder
+    static final class HeaderStartTagBuilder implements TagBuilder
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
@@ -217,7 +217,7 @@ public final class GBFTagBuilders
     /**
      *
      */
-    private static final class IgnoredTagBuilder implements TagBuilder
+    static final class IgnoredTagBuilder implements TagBuilder
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
@@ -231,7 +231,7 @@ public final class GBFTagBuilders
     /**
      *
      */
-    private static final class ItalicStartTagBuilder implements TagBuilder
+    static final class ItalicStartTagBuilder implements TagBuilder
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
@@ -245,7 +245,7 @@ public final class GBFTagBuilders
     /**
      *
      */
-    private static final class JustifyRightTagBuilder implements TagBuilder
+    static final class JustifyRightTagBuilder implements TagBuilder
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
@@ -259,7 +259,7 @@ public final class GBFTagBuilders
     /**
      *
      */
-    private static final class OTQuoteStartTagBuilder implements TagBuilder
+    static final class OTQuoteStartTagBuilder implements TagBuilder
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
@@ -273,7 +273,7 @@ public final class GBFTagBuilders
     /**
      *
      */
-    private static final class ParagraphTagBuilder implements TagBuilder
+    static final class ParagraphTagBuilder implements TagBuilder
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
@@ -287,7 +287,7 @@ public final class GBFTagBuilders
     /**
      *
      */
-    private static final class PoetryStartTagBuilder implements TagBuilder
+    static final class PoetryStartTagBuilder implements TagBuilder
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
@@ -302,7 +302,7 @@ public final class GBFTagBuilders
     /**
      *
      */
-    private static final class PsalmTitleStartTagBuilder implements TagBuilder
+    static final class PsalmTitleStartTagBuilder implements TagBuilder
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
@@ -317,7 +317,7 @@ public final class GBFTagBuilders
     /**
      *
      */
-    private static final class RedLetterStartTagBuilder implements TagBuilder
+    static final class RedLetterStartTagBuilder implements TagBuilder
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
@@ -331,7 +331,7 @@ public final class GBFTagBuilders
     /**
      *
      */
-    private static final class StrongsMorphTagBuilder implements TagBuilder
+    static final class StrongsMorphTagBuilder implements TagBuilder
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
@@ -345,7 +345,7 @@ public final class GBFTagBuilders
     /**
      *
      */
-    private static final class StrongsWordTagBuilder implements TagBuilder
+    static final class StrongsWordTagBuilder implements TagBuilder
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
@@ -359,7 +359,7 @@ public final class GBFTagBuilders
     /**
      *
      */
-    private static final class TextFootnoteTagBuilder implements TagBuilder
+    static final class TextFootnoteTagBuilder implements TagBuilder
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
@@ -373,7 +373,7 @@ public final class GBFTagBuilders
     /**
      *
      */
-    private static final class TitleStartTagBuilder implements TagBuilder
+    static final class TitleStartTagBuilder implements TagBuilder
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
@@ -387,7 +387,7 @@ public final class GBFTagBuilders
     /**
      *
      */
-    private static final class UnderlineStartTagBuilder implements TagBuilder
+    static final class UnderlineStartTagBuilder implements TagBuilder
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)

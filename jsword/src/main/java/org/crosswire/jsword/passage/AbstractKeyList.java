@@ -207,7 +207,7 @@ public abstract class AbstractKeyList implements Key
      * The <code>NameVisitor</code> constructs a readable representation
      * of the Passage.
      */
-    private static class NameVisitor extends DefaultKeyVisitor
+    static class NameVisitor extends DefaultKeyVisitor
     {
         /**
          * Create a <code>NameVisitor</code>.
@@ -248,7 +248,7 @@ public abstract class AbstractKeyList implements Key
      * The <code>OsisRefVisitor</code> constructs a readable representation
      * of the Passage, using OSIS names.
      */
-    private static class OsisRefVisitor extends NameVisitor
+    static class OsisRefVisitor extends NameVisitor
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.KeyVisitor#visitLeaf(org.crosswire.jsword.passage.Key)
@@ -264,7 +264,7 @@ public abstract class AbstractKeyList implements Key
      * The <code>OsisRefVisitor</code> constructs a readable representation
      * of the Passage, using OSIS names.
      */
-    private static class OsisIDVisitor extends NameVisitor
+    static class OsisIDVisitor extends NameVisitor
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.passage.KeyVisitor#visitLeaf(org.crosswire.jsword.passage.Key)

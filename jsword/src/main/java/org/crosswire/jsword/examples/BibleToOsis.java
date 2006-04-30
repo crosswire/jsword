@@ -207,7 +207,7 @@ public class BibleToOsis
 
                 if (foundPsalmTitle)
                 {
-                    buildPsalmTitle(buf, cleanup(osisID, psalmTitleText, false)); //$NON-NLS-1$
+                    buildPsalmTitle(buf, cleanup(osisID, psalmTitleText, false)); 
                 }
 
                 if (foundPreVerse && !preVerseText.equals(psalmTitleText))
@@ -216,7 +216,7 @@ public class BibleToOsis
                     {
                         buildPreVerseClose(buf);
                     }
-                    buildPreVerseOpen(buf, cleanup(osisID, preVerseText, false)); //$NON-NLS-1$
+                    buildPreVerseOpen(buf, cleanup(osisID, preVerseText, false)); 
                     inPreVerse = true;
                 }
 
@@ -402,7 +402,7 @@ public class BibleToOsis
         docBuffer.append("\n  </work>"); //$NON-NLS-1$
         docBuffer.append("\n</header>"); //$NON-NLS-1$
         docBuffer.append('\n');
-        MessageFormat msgFormat = new MessageFormat(docBuffer.toString()); //$NON-NLS-1$
+        MessageFormat msgFormat = new MessageFormat(docBuffer.toString()); 
         msgFormat.format(new Object[] { bmd.getInitials(), bmd.getName(), range }, buf, pos);
     }
 
@@ -539,7 +539,7 @@ public class BibleToOsis
         if (acrostic != null)
         {
             MessageFormat msgFormat = new MessageFormat("<title type=\"acrostic\" canonical=\"true\">{0}</title>"); //$NON-NLS-1$
-            input = input.replaceFirst((String) hebLetters.get(osisID), ""); //$NON-NLS-1$ //$NON-NLS-2$
+            input = input.replaceFirst((String) hebLetters.get(osisID), ""); //$NON-NLS-1$ 
             input = msgFormat.format(new Object[] { acrostic }) + input;
         }
 
@@ -608,7 +608,7 @@ public class BibleToOsis
             fixed = fixed.replaceAll("split(ID|id)=\"", "type=\"x-split\" subType=\"x-"); //$NON-NLS-1$ //$NON-NLS-2$
             if (!whole.equals(fixed))
             {
-                input = replace(input, whole, fixed); //$NON-NLS-1$
+                input = replace(input, whole, fixed); 
             }
 
             Matcher srcMatcher = srcPattern.matcher(fixed);
@@ -1798,7 +1798,7 @@ public class BibleToOsis
             input = replace(input, "Caesar", "C\u00E6sar"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        if (osisID.equals("Acts.7.4")) //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Acts.7.4")) //$NON-NLS-1$ 
         {
             input = replace(input, "Chaldaeans", "Chald\u00E6ans"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -1811,22 +1811,22 @@ public class BibleToOsis
             input = replace(input, "Judaea", "Jud\u00E6a"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        if (!osisID.equals("Mark.14.70")) //$NON-NLS-1$ //$NON-NLS-2$
+        if (!osisID.equals("Mark.14.70")) //$NON-NLS-1$ 
         {
             input = replace(input, "Galilaean", "Galil\u00E6an"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        if (osisID.equals("Mark.15.16")) //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Mark.15.16")) //$NON-NLS-1$ 
         {
             input = replace(input, "Praetorium", "Pr\u00E6torium"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        if (osisID.equals("Mark.10.46")) //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Mark.10.46")) //$NON-NLS-1$ 
         {
             input = replace(input, "Timaeus", "Tim\u00E6us"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        if (osisID.startsWith("Luke.19")) //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.startsWith("Luke.19")) //$NON-NLS-1$ 
         {
             input = replace(input, "Zacchaeus", "Zacch\u00E6us"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -2815,25 +2815,25 @@ public class BibleToOsis
                                   "<inscription><w lemma=\"strong:H06944\">HOLINESS</w> <w lemma=\"strong:H03068\">TO THE <seg><divineName type=\"x-yhwh\">Lord</divineName></seg></w></inscription>"); //$NON-NLS-1$
         }
 
-        if (osisID.equals("Dan.5.25")) //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Dan.5.25")) //$NON-NLS-1$ 
         {
             input = replace(input, "<w morph=\"strongMorph:TH8752\" lemma=\"strong:H04484\">MENE</w>, <w morph=\"strongMorph:TH8752\" lemma=\"strong:H04484\">MENE</w>, <w morph=\"strongMorph:TH8752\" lemma=\"strong:H08625\">TEKEL</w>, <w morph=\"strongMorph:TH8751\" lemma=\"strong:H06537\">UPHARSIN</w>", //$NON-NLS-1$
                                   "<inscription><w morph=\"strongMorph:TH8752\" lemma=\"strong:H04484\">MENE</w>, <w morph=\"strongMorph:TH8752\" lemma=\"strong:H04484\">MENE</w>, <w morph=\"strongMorph:TH8752\" lemma=\"strong:H08625\">TEKEL</w>, <w morph=\"strongMorph:TH8751\" lemma=\"strong:H06537\">UPHARSIN</w></inscription>"); //$NON-NLS-1$
         }
 
-        if (osisID.equals("Dan.5.26")) //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Dan.5.26")) //$NON-NLS-1$ 
         {
             input = replace(input, "<w morph=\"strongMorph:TH8752\" lemma=\"strong:H04484\">MENE</w>", //$NON-NLS-1$
                                   "<inscription><w morph=\"strongMorph:TH8752\" lemma=\"strong:H04484\">MENE</w></inscription>"); //$NON-NLS-1$
         }
 
-        if (osisID.equals("Dan.5.27")) //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Dan.5.27")) //$NON-NLS-1$ 
         {
             input = replace(input, "<w morph=\"strongMorph:TH8752\" lemma=\"strong:H08625\">TEKEL</w>", //$NON-NLS-1$
                                   "<inscription><w morph=\"strongMorph:TH8752\" lemma=\"strong:H08625\">TEKEL</w></inscription>"); //$NON-NLS-1$
         }
 
-        if (osisID.equals("Dan.5.28")) //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Dan.5.28")) //$NON-NLS-1$ 
         {
             input = replace(input, "<w morph=\"strongMorph:TH8752\" lemma=\"strong:H06537\">PERES</w>", //$NON-NLS-1$
                                   "<inscription><w morph=\"strongMorph:TH8752\" lemma=\"strong:H06537\">PERES</w></inscription>"); //$NON-NLS-1$
@@ -2864,7 +2864,7 @@ public class BibleToOsis
         }
 
         // The next undoes an incorrect application of divineName
-        if (osisID.equals("Acts.17.23")) //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Acts.17.23")) //$NON-NLS-1$ 
         {
             input = replace(input, "<w src=\"14\" lemma=\"strong:G57\" morph=\"robinson:A-DSM\">TO THE UNKNOWN</w> <w src=\"15\" lemma=\"strong:G2316\" morph=\"robinson:N-DSM\"><divineName>God</divineName></w>", //$NON-NLS-1$
                                   "<inscription><w src=\"14\" lemma=\"strong:G57\" morph=\"robinson:A-DSM\">TO THE UNKNOWN</w> <w src=\"15\" lemma=\"strong:G2316\" morph=\"robinson:N-DSM\">GOD</w></inscription>"); //$NON-NLS-1$
@@ -2882,7 +2882,7 @@ public class BibleToOsis
                                   "<inscription><w src=\"9 10\" lemma=\"strong:G3588 strong:G935\" morph=\"robinson:T-NSM robinson:N-NSM\">THE KING</w> <w src=\"12\" lemma=\"strong:G2453\" morph=\"robinson:A-GPM\">OF THE JEWS</w></inscription>"); //$NON-NLS-1$
         }
 
-        if (osisID.equals("Rev.17.5")) //$NON-NLS-1$ //$NON-NLS-2$
+        if (osisID.equals("Rev.17.5")) //$NON-NLS-1$ 
         {
             input = replace(input, "<w src=\"8\" lemma=\"strong:G3466\" morph=\"robinson:N-NSN\">MYSTERY</w>, <w src=\"9\" lemma=\"strong:G897\" morph=\"robinson:N-NSF\">BABYLON</w> <w src=\"11\" lemma=\"strong:G3173\" morph=\"robinson:A-NSF\">THE GREAT</w>, <w src=\"12 13\" lemma=\"strong:G3588 strong:G3384\" morph=\"robinson:T-NSF robinson:N-NSF\">THE MOTHER</w> <w src=\"14 15\" lemma=\"strong:G3588 strong:G4204\" morph=\"robinson:T-GPF robinson:N-GPF\">OF HARLOTS</w> <w src=\"16\" lemma=\"strong:G2532\" morph=\"robinson:CONJ\">AND</w> <w src=\"17 18\" lemma=\"strong:G3588 strong:G946\" morph=\"robinson:T-GPN robinson:N-GPN\">ABOMINATIONS</w> <w src=\"19 20\" lemma=\"strong:G3588 strong:G1093\" morph=\"robinson:T-GSF robinson:N-GSF\">OF THE EARTH</w>", //$NON-NLS-1$
                                   "<inscription><w src=\"8\" lemma=\"strong:G3466\" morph=\"robinson:N-NSN\">MYSTERY</w>, <w src=\"9\" lemma=\"strong:G897\" morph=\"robinson:N-NSF\">BABYLON</w> <w src=\"11\" lemma=\"strong:G3173\" morph=\"robinson:A-NSF\">THE GREAT</w>, <w src=\"12 13\" lemma=\"strong:G3588 strong:G3384\" morph=\"robinson:T-NSF robinson:N-NSF\">THE MOTHER</w> <w src=\"14 15\" lemma=\"strong:G3588 strong:G4204\" morph=\"robinson:T-GPF robinson:N-GPF\">OF HARLOTS</w> <w src=\"16\" lemma=\"strong:G2532\" morph=\"robinson:CONJ\">AND</w> <w src=\"17 18\" lemma=\"strong:G3588 strong:G946\" morph=\"robinson:T-GPN robinson:N-GPN\">ABOMINATIONS</w> <w src=\"19 20\" lemma=\"strong:G3588 strong:G1093\" morph=\"robinson:T-GSF robinson:N-GSF\">OF THE EARTH</w></inscription>"); //$NON-NLS-1$

@@ -1132,7 +1132,7 @@ public class ConfigEntryType implements Serializable
          */
         public Object getDefault()
         {
-            return Boolean.TRUE; //$NON-NLS-1$
+            return Boolean.TRUE; 
         }
 
         /**

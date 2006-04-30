@@ -844,7 +844,7 @@ public final class Verse implements Key
     /**
      * Iterator over 1 verse - For being a VerseBase.
      */
-    private class VerseIterator implements Iterator
+    class VerseIterator implements Iterator
     {
         /* (non-Javadoc)
          * @see java.util.Iterator#hasNext()

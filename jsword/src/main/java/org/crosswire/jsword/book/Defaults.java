@@ -525,7 +525,7 @@ public final class Defaults
     /**
      * To keep us up to date with changes in the available Books
      */
-    private static class DefaultsBookListener implements BooksListener
+    static class DefaultsBookListener implements BooksListener
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.BooksListener#bookAdded(org.crosswire.jsword.book.BooksEvent)

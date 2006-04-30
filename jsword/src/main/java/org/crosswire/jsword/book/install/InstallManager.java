@@ -120,7 +120,7 @@ public class InstallManager
             buf.append(installer.getInstallerDefinition());
             props.setProperty("Installer." + i++, buf.toString()); //$NON-NLS-1$
         }
-        URL outputURL = Project.instance().getWritablePropertiesURL(getClass().getName()); //$NON-NLS-1$
+        URL outputURL = Project.instance().getWritablePropertiesURL(getClass().getName()); 
         try
         {
             OutputStream out = NetUtil.getOutputStream(outputURL);
