@@ -659,6 +659,7 @@ public class BibleToOsis
         }
         input = input.replaceAll("\"transChange\"", "\"x-transChange\""); //$NON-NLS-1$ //$NON-NLS-2$
         input = input.replaceAll("type:", "x-"); //$NON-NLS-1$ //$NON-NLS-2$
+        input = input.replaceAll(" type=\"x-yhwh\"", ""); //$NON-NLS-1$ //$NON-NLS-2$
 
 //        if (input.indexOf(transSegStart) != -1)
 //        {
@@ -1294,11 +1295,6 @@ public class BibleToOsis
                                   "<w src=\"10\" lemma=\"strong:G630\" morph=\"robinson:V-AAN\">to put <seg type=\"x-transChange\" subType=\"x-added\">her</seg> away</w>"); //$NON-NLS-1$
         }
 
-        if (osisID.equals("")) //$NON-NLS-1$
-        {
-            input = replace(input, "", //$NON-NLS-1$
-                                  ""); //$NON-NLS-1$
-        }
 
         Set split = new TreeSet();
         Set dup = new TreeSet();
@@ -1494,6 +1490,8 @@ public class BibleToOsis
 
     private String fixPunctuation(String osisID, String input)
     {
+        input = input.replaceAll("<milestone type=\"line\"/>", "<lb/>"); //$NON-NLS-1$ //$NON-NLS-2$
+
         if (osisID.equals("Lev.2.3") || osisID.equals("Lev.2.10")) //$NON-NLS-1$ //$NON-NLS-2$
         {
             input = replace(input, "sons'", "sons':"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -2747,29 +2745,13 @@ public class BibleToOsis
         input = dn4Pattern.matcher(input).replaceAll(dn4Replace);
         input = dn5Pattern.matcher(input).replaceAll(dn5Replace);
 
-        if (osisID.equals("Exod.3.14")) //$NON-NLS-1$
-        {
-            input = replace(input, "<w morph=\"strongMorph:TH8799\" lemma=\"strong:H01961\">I AM</w> <w morph=\"strongMorph:TH8799\" lemma=\"strong:H01961\">THAT I AM</w>", //$NON-NLS-1$
-                                  "<divineName type=\"x-yhwh\" subType=\"x-iam\"><w morph=\"strongMorph:TH8799\" lemma=\"strong:H01961\">I am</w> <w morph=\"strongMorph:TH8799\" lemma=\"strong:H01961\">that I am</w></divineName>"); //$NON-NLS-1$
-            input = replace(input, "I AM", "<seg><divineName type=\"x-yhwh\" subType=\"x-iam\">I am</divineName></seg>"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
+//        if (osisID.equals("Exod.3.14")) //$NON-NLS-1$
+//        {
+//            input = replace(input, "<w morph=\"strongMorph:TH8799\" lemma=\"strong:H01961\">I AM</w> <w morph=\"strongMorph:TH8799\" lemma=\"strong:H01961\">THAT I AM</w>", //$NON-NLS-1$
+//                                  "<divineName><w morph=\"strongMorph:TH8799\" lemma=\"strong:H01961\">I am</w> <w morph=\"strongMorph:TH8799\" lemma=\"strong:H01961\">that I am</w></divineName>"); //$NON-NLS-1$
+//            input = replace(input, "I AM", "<seg><divineName>I am</divineName></seg>"); //$NON-NLS-1$ //$NON-NLS-2$
+//        }
 
-        if (osisID.equals("Deut.28.58")) //$NON-NLS-1$
-        {
-            input = replace(input, "<w lemma=\"strong:H03068\">THE <seg><divineName type=\"x-yhwh\">Lord</divineName></seg></w> <w lemma=\"strong:H0430\">THY GOD</w>", //$NON-NLS-1$
-                                  "<divineName><w lemma=\"strong:H03068\">The <seg><divineName type=\"x-yhwh\">Lord</divineName></seg></w> <w lemma=\"strong:H0430\">thy God</w></divineName>"); //$NON-NLS-1$
-        }
-
-        if (osisID.equals("Jer.23.6")) //$NON-NLS-1$
-        {
-            input = replace(input, "<w lemma=\"strong:H03072\">THE LORD OUR RIGHTEOUSNESS</w>", //$NON-NLS-1$
-                                  "<w lemma=\"strong:H03072\"><seg><divineName type=\"x-yhwh\" subType=\"x-tsidkenu\">The Lord our Righteousness</divineName></seg></w>"); //$NON-NLS-1$
-        }
-        if (osisID.equals("Jer.33.16")) //$NON-NLS-1$
-        {
-            input = replace(input, "<w lemma=\"strong:H03072\">The LORD our righteousness</w>", //$NON-NLS-1$
-                                  "<w lemma=\"strong:H03072\"><seg><divineName type=\"x-yhwh\" subType=\"x-tsidkenu\">The Lord our Righteousness</divineName></seg></w>"); //$NON-NLS-1$
-        }
 //        if (osisID.equals("Matt.1.21") || //$NON-NLS-1$
 //            osisID.equals("Matt.1.25") || //$NON-NLS-1$
 //            osisID.equals("Luke.1.31") || //$NON-NLS-1$
@@ -2803,6 +2785,18 @@ public class BibleToOsis
         input = dn10Pattern.matcher(input).replaceAll(dn10Replace);
 //        input = dn11Pattern.matcher(input).replaceAll(dn11Replace);
 
+        if (osisID.equals("Deut.28.58")) //$NON-NLS-1$
+        {
+            input = replace(input, "<divineName>God</divineName>", //$NON-NLS-1$
+                                   "GOD"); //$NON-NLS-1$
+        }
+
+        if (osisID.equals("Jer.23.6") || osisID.equals("Jer.33.16")) //$NON-NLS-1$ //$NON-NLS-2$
+        {
+            input = replace(input, "<divineName>Lord</divineName>", //$NON-NLS-1$
+                                   "<seg><divineName>Lord</divineName></seg>"); //$NON-NLS-1$
+        }
+
         return input;
     }
 
@@ -2811,8 +2805,8 @@ public class BibleToOsis
 
         if (osisID.equals("Exod.28.36") || osisID.equals("Exod.39.30")) //$NON-NLS-1$ //$NON-NLS-2$
         {
-            input = replace(input, "<w lemma=\"strong:H06944\">HOLINESS</w> <w lemma=\"strong:H03068\">TO THE <seg><divineName type=\"x-yhwh\">Lord</divineName></seg></w>", //$NON-NLS-1$
-                                  "<inscription><w lemma=\"strong:H06944\">HOLINESS</w> <w lemma=\"strong:H03068\">TO THE <seg><divineName type=\"x-yhwh\">Lord</divineName></seg></w></inscription>"); //$NON-NLS-1$
+            input = replace(input, "<w lemma=\"strong:H06944\">HOLINESS</w> <w lemma=\"strong:H03068\">TO THE <seg><divineName>Lord</divineName></seg></w>", //$NON-NLS-1$
+                                  "<inscription><w lemma=\"strong:H06944\">HOLINESS</w> <w lemma=\"strong:H03068\">TO THE <seg><divineName>Lord</divineName></seg></w></inscription>"); //$NON-NLS-1$
         }
 
         if (osisID.equals("Dan.5.25")) //$NON-NLS-1$ 
@@ -2841,8 +2835,8 @@ public class BibleToOsis
 
         if (osisID.equals("Zech.14.20")) //$NON-NLS-1$
         {
-            input = replace(input, "<w lemma=\"strong:H06944\">HOLINESS</w> <w lemma=\"strong:H03068\">UNTO THE <seg><divineName type=\"x-yhwh\">Lord</divineName></seg></w>", //$NON-NLS-1$
-                                  "<inscription><w lemma=\"strong:H06944\">HOLINESS</w> <w lemma=\"strong:H03068\">UNTO THE <seg><divineName type=\"x-yhwh\">Lord</divineName></seg></w></inscription>"); //$NON-NLS-1$
+            input = replace(input, "<w lemma=\"strong:H06944\">HOLINESS</w> <w lemma=\"strong:H03068\">UNTO THE <seg><divineName>Lord</divineName></seg></w>", //$NON-NLS-1$
+                                  "<inscription><w lemma=\"strong:H06944\">HOLINESS</w> <w lemma=\"strong:H03068\">UNTO THE <seg><divineName>Lord</divineName></seg></w></inscription>"); //$NON-NLS-1$
         }
 
         if (osisID.equals("Matt.27.37")) //$NON-NLS-1$
@@ -3033,8 +3027,8 @@ public class BibleToOsis
             input = replace(input, "feed or, rule", "feed: or, rule"); //$NON-NLS-1$ //$NON-NLS-2$
         if (osisID.equals("Zeph.1.2")) //$NON-NLS-1$
             input = replace(input, "I will\u2026; Heb.", "I will\u2026: Heb."); //$NON-NLS-1$ //$NON-NLS-2$
-        if (!original.equals(input))
-            System.err.println(osisID + ':' + input);
+//        if (!original.equals(input))
+//            System.err.println(osisID + ':' + input);
         return input;
     }
 
@@ -3090,15 +3084,15 @@ public class BibleToOsis
 //    private static Pattern dna4Pattern = Pattern.compile("(<note.*?>)(.*?)(GOD|LORD|LORD'S|JAH|JEHOVAH)(.*?)(</note>)"); //$NON-NLS-1$
 //    private static String dna2Replace = "$1$2<divineName>$3</divineName>$4$5"; //$NON-NLS-1$
     private static Pattern dn1Pattern = Pattern.compile("<divineName>LORD</divineName>"); //$NON-NLS-1$
-    private static String dn1Replace = "<divineName type=\"x-yhwh\">Lord</divineName>"; //$NON-NLS-1$
+    private static String dn1Replace = "<divineName>Lord</divineName>"; //$NON-NLS-1$
     private static Pattern dn2Pattern = Pattern.compile("<divineName>LORD'S</divineName>"); //$NON-NLS-1$
-    private static String dn2Replace = "<divineName type=\"x-yhwh\">Lord's</divineName>"; //$NON-NLS-1$
+    private static String dn2Replace = "<divineName>Lord's</divineName>"; //$NON-NLS-1$
     private static Pattern dn3Pattern = Pattern.compile("<divineName>GOD</divineName>"); //$NON-NLS-1$
-    private static String dn3Replace = "<divineName type=\"x-yhwh\">God</divineName>"; //$NON-NLS-1$
+    private static String dn3Replace = "<divineName>God</divineName>"; //$NON-NLS-1$
     private static Pattern dn4Pattern = Pattern.compile("<divineName>JEHOVAH</divineName>"); //$NON-NLS-1$
-    private static String dn4Replace = "<divineName type=\"x-yhwh\">Jehovah</divineName>"; //$NON-NLS-1$
+    private static String dn4Replace = "<divineName>Jehovah</divineName>"; //$NON-NLS-1$
     private static Pattern dn5Pattern = Pattern.compile("<divineName>JAH</divineName>"); //$NON-NLS-1$
-    private static String dn5Replace = "<divineName type=\"x-yhwh\">Jah</divineName>"; //$NON-NLS-1$
+    private static String dn5Replace = "<divineName>Jah</divineName>"; //$NON-NLS-1$
     private static Pattern dn6Pattern = Pattern.compile("LORD'S"); //$NON-NLS-1$
     private static String dn6Replace = "<divineName>Lord's</divineName>"; //$NON-NLS-1$
     private static Pattern dn7Pattern = Pattern.compile("LORD"); //$NON-NLS-1$
@@ -3106,9 +3100,9 @@ public class BibleToOsis
     private static Pattern dn8Pattern = Pattern.compile("GOD"); //$NON-NLS-1$
     private static String dn8Replace = "<divineName>God</divineName>"; //$NON-NLS-1$
     private static Pattern dn9Pattern = Pattern.compile("JEHOVAH"); //$NON-NLS-1$
-    private static String dn9Replace = "<divineName type=\"x-yhwh\">Jehovah</divineName>"; //$NON-NLS-1$
+    private static String dn9Replace = "<divineName>Jehovah</divineName>"; //$NON-NLS-1$
     private static Pattern dn10Pattern = Pattern.compile("JAH"); //$NON-NLS-1$
-    private static String dn10Replace = "<divineName type=\"x-yhwh\">Jah</divineName>"; //$NON-NLS-1$
+    private static String dn10Replace = "<divineName>Jah</divineName>"; //$NON-NLS-1$
 //    private static Pattern dn11Pattern = Pattern.compile("(BRANCH)"); //$NON-NLS-1$
 //    private static String dn11Replace = "<seg><divineName>Branch</divineName></seg>"; //$NON-NLS-1$
 
