@@ -379,7 +379,7 @@ public class BibleToOsis
         docBuffer.append("\n<osis"); //$NON-NLS-1$
         docBuffer.append("\n  xmlns=\"http://www.bibletechnologies.net/2003/OSIS/namespace\""); //$NON-NLS-1$
         docBuffer.append("\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");  //$NON-NLS-1$
-        docBuffer.append("\n  xsi:schemaLocation=\"http://www.bibletechnologies.net/2003/OSIS/namespace osisCore.2.1.xsd\">"); //$NON-NLS-1$
+        docBuffer.append("\n  xsi:schemaLocation=\"http://www.bibletechnologies.net/2003/OSIS/namespace http://www.bibletechnologies.net/osisCore.2.1.1.xsd\">"); //$NON-NLS-1$
         docBuffer.append("\n<osisText osisIDWork=\"{0}\" osisRefWork=\"defaultReferenceScheme\" xml:lang=\"en\">"); //$NON-NLS-1$
         docBuffer.append("\n<header>"); //$NON-NLS-1$
         docBuffer.append("\n  <work osisWork=\"{0}\">"); //$NON-NLS-1$
@@ -2964,7 +2964,6 @@ public class BibleToOsis
 
     private String fixNotes(String osisID, String input)
     {
-        String original = input;
         if (osisID.equals("Deut.3.17")) //$NON-NLS-1$
             input = replace(input, "Ashdoth\u2013pisgah;", "Ashdoth\u2013pisgah:"); //$NON-NLS-1$ //$NON-NLS-2$
         if (osisID.equals("Josh.15.3")) //$NON-NLS-1$
