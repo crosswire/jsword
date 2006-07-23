@@ -54,7 +54,7 @@ public final class BookFilters
     /**
      * Filter for all books
      */
-    static BookFilter allBookFilter = new AllBookFilter();
+    private static BookFilter allBookFilter = new AllBookFilter();
 
     /**
      * Filter for all books
@@ -87,7 +87,7 @@ public final class BookFilters
     {
         public boolean test(Book book)
         {
-            return book.getBookCategory().equals(BookCategory.BIBLE);
+            return book.getBookCategory().equals(BookCategory.BIBLE) && !book.isLocked();
         }
     }
 
@@ -112,8 +112,8 @@ public final class BookFilters
         public boolean test(Book book)
         {
             BookCategory category = book.getBookCategory();
-            return category.equals(BookCategory.DICTIONARY)
-                 || category.equals(BookCategory.GLOSSARY);
+            return (category.equals(BookCategory.DICTIONARY) || category.equals(BookCategory.GLOSSARY))
+                  && !book.isLocked();
         }
     }
 
@@ -128,7 +128,7 @@ public final class BookFilters
     /**
      * Filter for all dictionaries
      */
-    static BookFilter dailyDevotionalsBookFilter = new DailyDevotionalsBookFilter();
+    private static BookFilter dailyDevotionalsBookFilter = new DailyDevotionalsBookFilter();
 
     /**
      * Filter for all dictionaries
@@ -138,7 +138,7 @@ public final class BookFilters
         public boolean test(Book book)
         {
             BookCategory category = book.getBookCategory();
-            return category.equals(BookCategory.DAILY_DEVOTIONS);
+            return category.equals(BookCategory.DAILY_DEVOTIONS) && !book.isLocked();
         }
     }
 
@@ -162,7 +162,7 @@ public final class BookFilters
     {
         public boolean test(Book book)
         {
-            return book.getBookCategory().equals(BookCategory.COMMENTARY);
+            return book.getBookCategory().equals(BookCategory.COMMENTARY) && !book.isLocked();
         }
     }
 
@@ -187,7 +187,7 @@ public final class BookFilters
     {
         public boolean test(Book book)
         {
-            return book.hasFeature(FeatureType.GREEK_DEFINITIONS);
+            return book.hasFeature(FeatureType.GREEK_DEFINITIONS) && !book.isLocked();
         }
     }
 
@@ -212,7 +212,7 @@ public final class BookFilters
     {
         public boolean test(Book book)
         {
-            return book.hasFeature(FeatureType.GREEK_PARSE);
+            return book.hasFeature(FeatureType.GREEK_PARSE) && !book.isLocked();
         }
     }
 
@@ -237,7 +237,7 @@ public final class BookFilters
     {
         public boolean test(Book book)
         {
-            return book.hasFeature(FeatureType.HEBREW_DEFINITIONS);
+            return book.hasFeature(FeatureType.HEBREW_DEFINITIONS) && !book.isLocked();
         }
     }
 
@@ -262,7 +262,7 @@ public final class BookFilters
     {
         public boolean test(Book book)
         {
-            return book.hasFeature(FeatureType.HEBREW_PARSE);
+            return book.hasFeature(FeatureType.HEBREW_PARSE) && !book.isLocked();
         }
     }
 

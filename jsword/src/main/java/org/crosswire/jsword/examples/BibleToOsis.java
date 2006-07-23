@@ -207,7 +207,7 @@ public class BibleToOsis
 
                 if (foundPsalmTitle)
                 {
-                    buildPsalmTitle(buf, cleanup(osisID, psalmTitleText, false)); 
+                    buildPsalmTitle(buf, cleanup(osisID, psalmTitleText, false));
                 }
 
                 if (foundPreVerse && !preVerseText.equals(psalmTitleText))
@@ -216,7 +216,7 @@ public class BibleToOsis
                     {
                         buildPreVerseClose(buf);
                     }
-                    buildPreVerseOpen(buf, cleanup(osisID, preVerseText, false)); 
+                    buildPreVerseOpen(buf, cleanup(osisID, preVerseText, false));
                     inPreVerse = true;
                 }
 
@@ -402,7 +402,7 @@ public class BibleToOsis
         docBuffer.append("\n  </work>"); //$NON-NLS-1$
         docBuffer.append("\n</header>"); //$NON-NLS-1$
         docBuffer.append('\n');
-        MessageFormat msgFormat = new MessageFormat(docBuffer.toString()); 
+        MessageFormat msgFormat = new MessageFormat(docBuffer.toString());
         msgFormat.format(new Object[] { bmd.getInitials(), bmd.getName(), range }, buf, pos);
     }
 
@@ -608,7 +608,7 @@ public class BibleToOsis
             fixed = fixed.replaceAll("split(ID|id)=\"", "type=\"x-split\" subType=\"x-"); //$NON-NLS-1$ //$NON-NLS-2$
             if (!whole.equals(fixed))
             {
-                input = replace(input, whole, fixed); 
+                input = replace(input, whole, fixed);
             }
 
             Matcher srcMatcher = srcPattern.matcher(fixed);

@@ -32,7 +32,7 @@ package org.crosswire.common.xml;
  */
 public class RedLetterText
 {
-    public int rlt;
+    private int rlt;
 
     /**
      * Construct a RedLetterText.

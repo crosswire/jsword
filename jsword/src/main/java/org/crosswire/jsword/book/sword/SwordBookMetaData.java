@@ -21,12 +21,8 @@
  */
 package org.crosswire.jsword.book.sword;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -70,13 +66,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
      */
     public SwordBookMetaData(File file, String internal) throws IOException
     {
-        Reader in = new InputStreamReader(new FileInputStream(file), ENCODING_LATIN1);
-        cet = new ConfigEntryTable(in, internal);
-        if (!ENCODING_LATIN1.equals(getBookCharset()))
-        {
-            in = new InputStreamReader(new FileInputStream(file), ENCODING_UTF8);
-            cet = new ConfigEntryTable(in, internal);
-        }
+        cet = new ConfigEntryTable(file, internal);
         buildProperties();
     }
 
@@ -92,13 +82,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
      */
     public SwordBookMetaData(byte[] buffer, String internal) throws IOException
     {
-        Reader in = new InputStreamReader(new ByteArrayInputStream(buffer), ENCODING_LATIN1);
-        cet = new ConfigEntryTable(in, internal);
-        if (!ENCODING_LATIN1.equals(getBookCharset()))
-        {
-            in = new InputStreamReader(new ByteArrayInputStream(buffer), ENCODING_UTF8);
-            cet = new ConfigEntryTable(in, internal);
-        }
+        cet = new ConfigEntryTable(buffer, internal);
         buildProperties();
     }
 
@@ -127,6 +111,24 @@ public class SwordBookMetaData extends AbstractBookMetaData
     public boolean isEnciphered()
     {
         return cet.isEnciphered();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#isLocked()
+     */
+    /* @Override */
+    public boolean isLocked()
+    {
+        return cet.isLocked();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#unlock(String)
+     */
+    /* @Override */
+    public boolean unlock(String unlockKey)
+    {
+        return cet.unlock(unlockKey);
     }
 
     /* (non-Javadoc)
@@ -305,18 +307,13 @@ public class SwordBookMetaData extends AbstractBookMetaData
     /**
      * Sword only recognizes two encodings for its modules: UTF-8 and LATIN1
      * Sword uses MS Windows cp1252 for Latin 1 not the standard. Arrgh!
-     */
-    private static final String ENCODING_UTF8 = "UTF-8"; //$NON-NLS-1$
-    private static final String ENCODING_LATIN1 = "WINDOWS-1252"; //$NON-NLS-1$
-
-    /**
      * The language strings need to be converted to Java charsets
      */
     private static final Map ENCODING_JAVA = new HashMap();
     static
     {
-        ENCODING_JAVA.put("Latin-1", ENCODING_LATIN1); //$NON-NLS-1$
-        ENCODING_JAVA.put("UTF-8", ENCODING_UTF8); //$NON-NLS-1$
+        ENCODING_JAVA.put("Latin-1", "WINDOWS-1252"); //$NON-NLS-1$ //$NON-NLS-2$
+        ENCODING_JAVA.put("UTF-8", "UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     private ConfigEntryTable cet;

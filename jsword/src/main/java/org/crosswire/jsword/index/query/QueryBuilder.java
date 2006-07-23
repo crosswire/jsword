@@ -36,5 +36,5 @@ public interface QueryBuilder
      * @param aQuery The text to convert
      * @return a query.
      */
-    public Query parse(String aQuery);
+    Query parse(String aQuery);
 }

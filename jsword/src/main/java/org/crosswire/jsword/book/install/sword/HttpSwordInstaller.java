@@ -81,7 +81,7 @@ public class HttpSwordInstaller extends AbstractSwordInstaller implements Compar
     {
         try
         {
-            URL url = new URL(NetUtil.PROTOCOL_HTTP, host, dir + '/' + file); 
+            URL url = new URL(NetUtil.PROTOCOL_HTTP, host, dir + '/' + file);
             copy(job, url, dest);
         }
         catch (LucidException ex)

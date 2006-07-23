@@ -46,6 +46,7 @@ final class Msg extends MsgBase
     static final Msg DRIVER_READONLY = new Msg("SwordBook.DriverReadonly"); //$NON-NLS-1$
     static final Msg UNDEFINED_BOOK_TYPE = new Msg("BookType.UndefinedBookType"); //$NON-NLS-1$
     static final Msg UNDEFINED_DATATYPE = new Msg("BookType.UndefinedDatatype"); //$NON-NLS-1$
+    static final Msg UNLOCK_FAILED = new Msg("ConfigEntryTable.UnlockFailed"); //$NON-NLS-1$;
 
     /**
      * Passthrough ctor

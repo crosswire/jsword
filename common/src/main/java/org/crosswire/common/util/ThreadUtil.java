@@ -184,7 +184,7 @@ public final class ThreadUtil
      */
     private static void addItem(List list, int depth, String item)
     {
-        list.add(PADDING.substring(0, depth * 2) + item); 
+        list.add(PADDING.substring(0, depth * 2) + item);
     }
 
     private static final String PADDING = "                                                                "; //$NON-NLS-1$

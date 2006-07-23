@@ -25,8 +25,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -54,21 +54,18 @@ public class InstallManager
      */
     public InstallManager()
     {
-        installers = new HashMap();
+        installers = new LinkedHashMap();
 
         try
         {
             Properties sitemap = ResourceUtil.getProperties(getClass());
             factories = ClassUtil.getImplementorsMap(InstallerFactory.class);
-
-            for (Iterator it = sitemap.entrySet().iterator(); it.hasNext(); )
+            int i = 0;
+            for (String def = sitemap.getProperty(PREFIX + ++i); def != null; def = sitemap.getProperty(PREFIX + ++i))
             {
-                Map.Entry entry = (Map.Entry) it.next();
-                String installerDefinition = (String) entry.getValue();
-
                 try
                 {
-                    String[] parts = installerDefinition.split(",", 3); //$NON-NLS-1$
+                    String[] parts = def.split(",", 3); //$NON-NLS-1$
                     String type = parts[0];
                     String name = parts[1];
                     String rest = parts[2];
@@ -118,9 +115,9 @@ public class InstallManager
             buf.append(name);
             buf.append(',');
             buf.append(installer.getInstallerDefinition());
-            props.setProperty("Installer." + i++, buf.toString()); //$NON-NLS-1$
+            props.setProperty(PREFIX + i++, buf.toString());
         }
-        URL outputURL = Project.instance().getWritablePropertiesURL(getClass().getName()); 
+        URL outputURL = Project.instance().getWritablePropertiesURL(getClass().getName());
         try
         {
             OutputStream out = NetUtil.getOutputStream(outputURL);
@@ -346,6 +343,11 @@ public class InstallManager
             }
         }
     }
+
+    /**
+     * The prefix for the keys in the installer property file.
+     */
+    private static final String PREFIX = "Installer."; //$NON-NLS-1$
 
     /**
      * The map of installer factories

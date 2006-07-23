@@ -235,6 +235,22 @@ public abstract class AbstractBook implements Book
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#isLocked()
+     */
+    public boolean isLocked()
+    {
+        return bmd.isLocked();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#unlock(String)
+     */
+    public boolean unlock(String unlockKey)
+    {
+        return bmd.unlock(unlockKey);
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#isQuestionable()
      */
     public boolean isQuestionable()

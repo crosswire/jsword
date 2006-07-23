@@ -23,14 +23,21 @@ package org.crosswire.jsword.book.sword;
 
 import java.awt.ComponentOrientation;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.Reader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractBookMetaData;
@@ -58,15 +65,66 @@ import org.jdom.Element;
 public class ConfigEntryTable
 {
     /**
-     * Loads a sword config from a given Reader.
+     * Loads a sword config from a given file.
      * @throws IOException
      */
-    public ConfigEntryTable(Reader in, String bookName) throws IOException
+    public ConfigEntryTable(File file, String bookName) throws IOException
+    {
+        configFile = file;
+        internal = bookName;
+        supported = true;
+        table = new HashMap();
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), ENCODING_LATIN1));
+        loadInitials(in);
+        loadContents(in);
+        in.close();
+        if (getValue(ConfigEntryType.ENCODING).equals(ENCODING_UTF8))
+        {
+            supported = true;
+            bookType = null;
+            questionable = false;
+            readahead = null;
+            table.clear();
+            in = new BufferedReader(new InputStreamReader(new FileInputStream(file), ENCODING_UTF8));
+            loadInitials(in);
+            loadContents(in);
+            in.close();
+        }
+        adjustLanguage();
+        adjustBookType();
+        adjustName();
+        validate();
+    }
+
+    /**
+     * Loads a sword config from a given buffer.
+     * This is used to load conf entries from the mods.d.tar.gz file.
+     * 
+     * @throws IOException
+     */
+    public ConfigEntryTable(byte[] buffer, String bookName) throws IOException
     {
         internal = bookName;
         supported = true;
+        table = new HashMap();
 
-        loadFile(in);
+        BufferedReader in = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer), ENCODING_LATIN1));
+        loadInitials(in);
+        loadContents(in);
+        in.close();
+        if (getValue(ConfigEntryType.ENCODING).equals(ENCODING_UTF8))
+        {
+            supported = true;
+            bookType = null;
+            questionable = false;
+            readahead = null;
+            table.clear();
+            in = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer), ENCODING_UTF8));
+            loadInitials(in);
+            loadContents(in);
+            in.close();
+        }
         adjustLanguage();
         adjustBookType();
         adjustName();
@@ -90,14 +148,48 @@ public class ConfigEntryTable
     }
 
     /**
-     * Determines whether the Sword Book is enciphered and without a key.
+     * Determines whether the Sword Book is enciphered.
      * @return true if enciphered
      */
     public boolean isEnciphered()
     {
         String cipher = (String) getValue(ConfigEntryType.CIPHER_KEY);
+        return cipher != null;
+    }
+
+    /**
+     * Determines whether the Sword Book is enciphered and without a key.
+     * @return true if enciphered
+     */
+    public boolean isLocked()
+    {
+        String cipher = (String) getValue(ConfigEntryType.CIPHER_KEY);
         return cipher != null && cipher.length() == 0;
     }
+
+    /**
+     * Unlocks a book with the given key.
+     * 
+     * @param unlockKey the key to try
+     * @return true if the unlock key worked.
+     */
+    public boolean unlock(String unlockKey)
+    {
+        add(ConfigEntryType.CIPHER_KEY, unlockKey);
+        if (configFile != null)
+        {
+            try
+            {
+                save();
+            }
+            catch (IOException e)
+            {
+                Reporter.informUser(this, Msg.UNLOCK_FAILED, e);
+            }
+        }
+        return true;
+    }
+
     /**
      * Returns an Enumeration of all the keys found in the config file.
      */
@@ -159,12 +251,42 @@ public class ConfigEntryTable
         return ele;
     }
 
-    private void loadFile(Reader in) throws IOException
+    /**
+     * Build's a SWORD conf file as a string. The result is not identical
+     * to the original, cleaning up problems in the original and re-arranging
+     * the entries into a predictable order.
+     * @return the well-formed conf.
+     */
+    public String toConf()
     {
-        // read the config file
-        BufferedReader bin = new BufferedReader(in);
-        loadInitials(bin);
-        loadContents(bin);
+        StringBuffer buf = new StringBuffer();
+        buf.append('[');
+        buf.append(getValue(ConfigEntryType.INITIALS));
+        buf.append(']');
+        buf.append('\n');
+        toConf(buf, BASIC_INFO);
+        toConf(buf, SYSTEM_INFO);
+        toConf(buf, HIDDEN);
+        toConf(buf, FEATURE_INFO);
+        toConf(buf, LANG_INFO);
+        toConf(buf, COPYRIGHT_INFO);
+        return buf.toString();
+    }
+
+    public void save() throws IOException
+    {
+        if (configFile != null)
+        {
+            // The encoding of the conf must match the encoding of the module.
+            String encoding = ENCODING_LATIN1;
+            if (getValue(ConfigEntryType.ENCODING).equals(ENCODING_UTF8))
+            {
+                encoding = ENCODING_UTF8;
+            }
+            Writer writer = new OutputStreamWriter(new FileOutputStream(configFile), encoding);
+            writer.write(toConf());
+            writer.close();
+        }
     }
 
     private void loadContents(BufferedReader in) throws IOException
@@ -312,6 +434,10 @@ public class ConfigEntryTable
             }
             else
             {
+                if (continuation_expected)
+                {
+                    buf.append('\n');
+                }
                 buf.append(line);
             }
         }
@@ -549,12 +675,12 @@ public class ConfigEntryTable
      */
     private void validate()
     {
-        if (isEnciphered())
-        {
-            log.debug("Book not supported: " + internal + " because it is locked and there is no key."); //$NON-NLS-1$ //$NON-NLS-2$
-            supported = false;
-            return;
-        }
+//        if (isEnciphered())
+//        {
+//            log.debug("Book not supported: " + internal + " because it is locked and there is no key."); //$NON-NLS-1$ //$NON-NLS-2$
+//            supported = false;
+//            return;
+//        }
     }
 
     /**
@@ -587,6 +713,31 @@ public class ConfigEntryTable
             }
         }
     }
+
+    private void toConf(StringBuffer buf, ConfigEntryType[] category)
+    {
+        for (int i = 0; i < category.length; i++)
+        {
+
+            ConfigEntry entry = (ConfigEntry) table.get(category[i]);
+
+            if (entry != null && !entry.getType().isSynthetic())
+            {
+                String text = entry.toConf();
+                if (text != null && text.length() > 0)
+                {
+                    buf.append(entry.toConf());
+                }
+            }
+        }
+    }
+
+   /**
+     * Sword only recognizes two encodings for its modules: UTF-8 and LATIN1
+     * Sword uses MS Windows cp1252 for Latin 1 not the standard. Arrgh!
+     */
+    private static final String ENCODING_UTF8 = "UTF-8"; //$NON-NLS-1$
+    private static final String ENCODING_LATIN1 = "WINDOWS-1252"; //$NON-NLS-1$
 
     /**
      * These are the elements that JSword requires.
@@ -659,30 +810,15 @@ public class ConfigEntryTable
         ConfigEntryType.DIRECTION,
     };
 
+    public static final ConfigEntryType[] HIDDEN =
+    {
+        ConfigEntryType.CIPHER_KEY,
+    };
+
     /**
      * The log stream
      */
     private static final Logger log = Logger.getLogger(ConfigEntryTable.class);
-
-    /**
-     * True if this book is considered questionable.
-     */
-    private boolean questionable;
-
-    /**
-     * True if this book's config type can be used by JSword.
-     */
-    private boolean supported;
-
-    /**
-     * The BookType for this ConfigEntry
-     */
-    private BookType bookType;
-
-    /**
-     * A map of lists of known config entries.
-     */
-    private Map table = new HashMap();
 
     /**
      * The original name of this config file from mods.d.
@@ -691,7 +827,33 @@ public class ConfigEntryTable
     private String internal;
 
     /**
+     * A map of lists of known config entries.
+     */
+    private Map table;
+
+    /**
+     * The BookType for this ConfigEntry
+     */
+    private BookType bookType;
+
+    /**
+     * True if this book's config type can be used by JSword.
+     */
+    private boolean supported;
+
+    /**
+     * True if this book is considered questionable.
+     */
+    private boolean questionable;
+
+    /**
      * A helper for the reading of the conf file.
      */
     private String readahead;
+
+    /**
+     * If the module's config is tied to a file remember it
+     * so that it can be updated.
+     */
+    private File configFile;
 }

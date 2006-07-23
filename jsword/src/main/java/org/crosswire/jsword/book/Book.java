@@ -149,7 +149,17 @@ public interface Book extends Activatable, KeyFactory, Comparable
      * 
      * @return true if the book is supported
      */
-    public boolean isSupported();
+    boolean isSupported();
+
+    /**
+     * Indicate whether this book is enciphered.
+     * Since the expectation is that most books are unenciphered,
+     * abstract implementations should return false and let
+     * specific implementations return true otherwise.
+     * 
+     * @return true if the book is enciphered
+     */
+    boolean isEnciphered();
 
     /**
      * Indicate whether this book is enciphered and without a key.
@@ -157,9 +167,17 @@ public interface Book extends Activatable, KeyFactory, Comparable
      * abstract implementations should return false and let
      * specific implementations return true otherwise.
      * 
-     * @return true if the book is enciphered
+     * @return true if the book is locked
      */
-    public boolean isEnciphered();
+    boolean isLocked();
+
+    /**
+     * Unlocks a book with the given key.
+     * 
+     * @param unlockKey the key to try
+     * @return true if the unlock key worked.
+     */
+    boolean unlock(String unlockKey);
 
     /**
      * Indicate whether this book is questionable. A book may
@@ -171,7 +189,7 @@ public interface Book extends Activatable, KeyFactory, Comparable
      * 
      * @return true if the book is questionable
      */
-    public boolean isQuestionable();
+    boolean isQuestionable();
 
     /**
      * Calculated field: The name of the name, which could be helpful to

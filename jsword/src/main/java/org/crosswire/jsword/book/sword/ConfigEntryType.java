@@ -1132,7 +1132,7 @@ public class ConfigEntryType implements Serializable
          */
         public Object getDefault()
         {
-            return Boolean.TRUE; 
+            return Boolean.TRUE;
         }
 
         /**

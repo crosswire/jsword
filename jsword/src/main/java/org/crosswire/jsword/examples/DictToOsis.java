@@ -142,7 +142,7 @@ public class DictToOsis
         docBuffer.append("\n  </header>"); //$NON-NLS-1$
         docBuffer.append("\n<div>"); //$NON-NLS-1$
         docBuffer.append('\n');
-        MessageFormat msgFormat = new MessageFormat(docBuffer.toString()); 
+        MessageFormat msgFormat = new MessageFormat(docBuffer.toString());
         msgFormat.format(new Object[] { bmd.getInitials(), bmd.getName() }, buf, pos);
     }
 
@@ -153,7 +153,7 @@ public class DictToOsis
 
     private void buildEntryOpen(StringBuffer buf, String entryName, String entryDef)
     {
-        if (entryName.indexOf(' ') != -1) 
+        if (entryName.indexOf(' ') != -1)
         {
             entryName = "x"; //$NON-NLS-1$
         }

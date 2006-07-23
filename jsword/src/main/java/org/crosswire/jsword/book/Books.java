@@ -201,11 +201,8 @@ public final class Books implements BookList
     {
         //log.debug("registering book: "+bmd.getName());
 
-        if (!books.contains(book))
-        {
-            books.add(book);
-            fireBooksChanged(instance, book, true);
-        }
+        books.add(book);
+        fireBooksChanged(instance, book, true);
     }
 
     /**

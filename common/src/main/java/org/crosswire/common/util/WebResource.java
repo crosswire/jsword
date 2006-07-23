@@ -60,9 +60,15 @@ public class WebResource
         }
     }
 
+    /**
+     * Determine the size of this WebResource.
+     * <p>Note that the http client may read the entire file to determine this.</p>
+     * 
+     * @return the size of the file
+     */
     public int getSize()
     {
-        HttpMethod method = new GetMethod(url.getQuery());
+        HttpMethod method = new GetMethod(url.getPath());
 
         try
         {
@@ -85,9 +91,15 @@ public class WebResource
         return 0;
     }
 
+    /**
+     * Determine the last modified date of this WebResource.
+     * <p>Note that the http client may read the entire file.</p>
+     * 
+     * @return the size of the file
+     */
     public long getLastModified()
     {
-        HttpMethod method = new GetMethod(url.getQuery());
+        HttpMethod method = new GetMethod(url.getPath());
 
         try
         {

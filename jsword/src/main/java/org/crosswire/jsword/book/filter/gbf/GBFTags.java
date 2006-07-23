@@ -603,7 +603,7 @@ public final class GBFTags
                 newLemma.append(existingLemma).append('|');
             }
 
-            newLemma.append(OSISUtil.LEMMA_STRONGS).append(name.substring(2)); 
+            newLemma.append(OSISUtil.LEMMA_STRONGS).append(name.substring(2));
             word.setAttribute(OSISUtil.ATTRIBUTE_W_LEMMA, newLemma.toString());
         }
     }

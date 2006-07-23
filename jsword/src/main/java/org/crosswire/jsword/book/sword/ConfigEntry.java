@@ -38,7 +38,7 @@ import org.jdom.Element;
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @see gnu.lgpl.License
- * @author DM Smith [ dmsmith555 at hotmail dot com]
+ * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
 public class ConfigEntry
 {
@@ -216,7 +216,10 @@ public class ConfigEntry
         {
             aValue = type.filter(aValue);
         }
-        aValue = handleRTF(aValue);
+
+        // call handleRTF for error reporting, but don't use the result
+        handleRTF(aValue);
+
         if (mayRepeat())
         {
             if (values == null)
@@ -277,7 +280,13 @@ public class ConfigEntry
 
         if (value != null)
         {
-            String expandedValue = XMLUtil.escape(value);
+            String text = value;
+            if (allowsRTF())
+            {
+                text = handleRTF(text);
+            }
+
+            String expandedValue = XMLUtil.escape(text);
             if (allowsContinuation() || allowsRTF())
             {
                 valueElement.addContent(processLines(factory, expandedValue));
@@ -297,6 +306,10 @@ public class ConfigEntry
             while (iter.hasNext())
             {
                 String text = (String) iter.next();
+                if (allowsRTF())
+                {
+                    text = handleRTF(text);
+                }
                 Element itemEle = factory.createL();
                 listEle.addContent(itemEle);
                 itemEle.addContent(XMLUtil.escape(text));
@@ -355,6 +368,80 @@ public class ConfigEntry
     public String toString()
     {
         return getName();
+    }
+
+    /**
+     * Build's a SWORD conf file as a string. The result is not identical
+     * to the original, cleaning up problems in the original and re-arranging
+     * the entries into a predictable order.
+     * @return the well-formed conf.
+     */
+    public String toConf()
+    {
+        StringBuffer buf = new StringBuffer();
+
+        if (value != null)
+        {
+            buf.append(getName());
+            buf.append('=');
+            if (allowsContinuation())
+            {
+                String [] lines = StringUtil.splitAll(value, '\n');
+                for (int i = 0; i < lines.length; i++)
+                {
+                    if (i > 0)
+                    {
+                        buf.append("\\\n"); //$NON-NLS-1$
+                    }
+                    buf.append(lines[i]);
+                }
+                buf.append('\n');
+            }
+            else
+            {
+                buf.append(value);
+                buf.append('\n');
+            }
+        }
+        // CipherKey is empty to indicate that it is encrypted and locked.
+        else if (type.equals(ConfigEntryType.CIPHER_KEY))
+        {
+            buf.append(getName());
+            buf.append('=');
+        }
+
+
+        if (values != null)
+        {
+            // History values begin with the history value, e.g. 1.2
+            // followed by a space.
+            // These are to joined to the key.
+            if (type.equals(ConfigEntryType.HISTORY))
+            {
+                Iterator iter = values.iterator();
+                while (iter.hasNext())
+                {
+                    String text = (String) iter.next();
+                    buf.append(getName());
+                    buf.append('_');
+                    buf.append(text.replaceFirst(" ", "=")); //$NON-NLS-1$ //$NON-NLS-2$;
+                    buf.append('\n');
+                }
+            }
+            else
+            {
+                Iterator iter = values.iterator();
+                while (iter.hasNext())
+                {
+                    String text = (String) iter.next();
+                    buf.append(getName());
+                    buf.append('=');
+                    buf.append(text);
+                    buf.append('\n');
+                }
+            }
+        }
+        return buf.toString();
     }
 
     private String handleRTF(String aValue)

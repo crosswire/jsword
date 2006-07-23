@@ -10,7 +10,7 @@
     == These are the standard locations that this build file uses.
     == This assumes that the build file is in the root of the project.
     =========================================================================-->
-  <property name="release.version" value="1.0.2"/>
+  <property name="release.version" value="1.0.3"/>
   <property name="source.root"     value="src"/>
   <property name="source.etc"      value="etc"/>
   <property name="source.jar"      value="jar"/>
