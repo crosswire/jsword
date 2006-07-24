@@ -1,0 +1,797 @@
+Release 3.0.1 
+-------------------
+Changes since Release 3.0:
+ 
+ * 38636 - Calling HttpState.clearCookies() is now safe from a different thread.
+           Contributed by Peter Dolberg <observewisdom at yahoo.com>
+ 
+ * 38385 - Fixed NPE when creating URI from scheme specific part with null fragment
+           Contributed by Michele Vivoda <vivodamichele at hotmail.com>
+
+ * 38043 - Digest URI changed to include query parameters
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 38004 - Fixed bug causing cyclic redirects when virtual host is set
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 38139 - Calling deprecated MultiThreadedHttpConnectionManager.setMaxTotalConnections(int) 
+           had no effect
+           Contributed by Ortwin Glueck <oglueck at apache.org>
+
+ * 37988 - Fixed bug in URI#toString() causing user name / password to 
+           stripped from the resultant String
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+Release 3.0 
+-------------------
+Changes since Release Candidate 4:
+
+ * 37526 - Fixed incorrect processing of HTTP parameters with an 
+           empty name
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 37256 - Fixed bug causing MultipartRequestEntity to miscalculate the 
+           total content length if any of the parts returns a negative
+           content length value
+           Contributed by Loïc Péron <loic.peron at bigfoot.com>
+
+ * 37197 - Preemptive auth flag no longer disregarded when tunneling 
+           SSL connections via a proxy
+           Contributed by wynand <wolman at gmail.com>
+
+ * 37154 - UsernamePasswordCredentials.equals(null) no longer causes NPE
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 37129 - HttpConnection changed to use a protocol socket factory registered 
+           for 'http' protocol instead of DefaultProtocolSocketFactory when 
+           connecting to a proxy to establish a secure tunnel
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+Release 3.0 Release Candidate 4
+-------------------
+Changes since Release Candidate 3:
+
+ * 36882 - Max connections per host setting did not work
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 36791 - Fixed HttpConnection#isOpen flag concurrency problem
+           Contributed by Jean-Marie White <jmwhite5 at yahoo.com>
+
+ * 36339 - Request is no longer retried if preemptive authentication fails
+           and Basic is the only supported authentication scheme advertised
+           by the target server
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 36372 - nonce-count in digest auth should not be quoted
+           Contributed by Ortwin Glueck <oglueck at apache.org>
+           
+ * 36369 - Custom Proxy-Connection header no longer gets overwritten
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 36595 - Do not attempt to retry aborted methods
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 36140 - ParameterParser changed to correctly differentiate between empty and 
+           null (no value) parameters
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 35085 - HTTP 204 "NO CONTENT" response no longer results in dropped 
+           connection.
+           Contributed by Ian Bray <Ian.Bray at logicacmg.com>
+
+ * 35944 - Connection always gets released back to the pool even if an unchecked 
+           exception is thrown in HttpMethod#releaseConnection method.
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 35642 - Do not retry if host is unreachable. This ensures a connection timeout
+           will be obeyed.
+           Contributed by Ortwin Glueck <oglueck at apache.org>
+           
+ * 35815 - SimpleHttpConnectionManager now logs warnings when it detects it is
+           being used incorrectly. 
+           Contributed by Michael Becke <mbecke at apache.org>
+
+Release 3.0 Release Candidate 3
+-------------------
+Changes since Release Candidate 2:
+
+ * 35365 - Added #hashCode and #equals methods for Credentials implementations
+           Contributed by Eric Johnson <eric at tibco.com>
+
+ * 35322 - Stale connection check now correctly works with IBM JSSE/JRE 1.4.x
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 35225 - Fixed a major problem with the browser compatibility policy leaking cookies 
+           to 3rd party domains (.mydomain.com -> .notmydomain.com)
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 35328 - DateUtil#formatDate changed to US locale instead of system default
+           Contributed by Yannick <yannick at meudal.net>
+
+ * 34960 - DigestScheme changed to take into account charset attribute when available 
+           (Known to be used by Microsoft implementation of the Digest auth scheme)
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 35148 - HttpClient now correctly handles relative URIs beginning with a colon.
+           Contributed by Gordon Mohr <gojomo at archive.org>
+
+ * 34961 - HttpClient now correctly handles escaped characters in HTTP header elements
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 34780 - HttpClient now always overrides the host of HostConfiguration if an absolute 
+           request URI is given
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 34740 - Connection with the proxy is not reopened if an proxy auth failure occurs 
+           while SSL tunnel is being established
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 34721 - Virtual host setting is now correctly applied when parsing and matching 
+           cookies
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 34583 - DateUtil.formatDate() changed to use GMT instead of the default timezone
+           Contributed by Fred Bierhaus <fred.bierhaus at vodafone.com>
+
+ * 34459 - Always use the chunk encoding when request content length cannot be 
+           determined (is negative)
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 34427 - Fixed the bug causing an IllegalStateException in AuthState
+           triggered by the combination of preemptive proxy authentication 
+           and a cross-site redirect
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+Release 3.0 Release Candidate 2
+-------------------
+Changes since Release Candidate 1:
+
+ * 34255 - Preemptive authentication no longer causes NTLM auth scheme to fail
+           Contributed by Michael Becke <mbecke at apache.org>
+
+ * 33720 - Fixed the problem with HttpMethod#getURI applying URL escaped encoding to
+           already encoded URIs
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 34262 - Fixed broken handling of responses that may not include an entity body
+           (status code 204, 304)
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * ----- - Fixed broken InputStreamRequestEntity#isRepeatable method
+           Contributed by Matthew-J Watson <matthew-j.watson at db.com>
+
+ * 33677 - Fixed the bug preventing the HTTP retry handler from handling
+           ConnectionExceptions
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 33988 - All classes overriding Object#hashCode & Object#equals methods have been reviewed 
+           regarding their hashCode/equals contract compliance
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 33947 - Exception in HttpConnection because of unchecked buffer size
+           Contributed by Ortwin Glueck <oglueck at apache.org>
+ 
+ * 33856 - Fixed the problem with the credential-charset parameter not having an effect on
+           the encoding of the NTLM credentials
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+ 
+ * 33541 - Fixed the problem with host level parameters having no effect on HTTP CONNECT 
+           methods
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 33468 - HttpClient no longer flushes the request line and request headers prior to 
+           writing the request body if the 'expect: continue' handshake is not used
+           Contributed by Peter Tolmachov <peter.tolmachov at agfa.com>
+
+Release 3.0 Release Candidate 1
+-------------------
+Changes since Beta 1:
+
+ * 32833 - Cookie with domain .mydomain.com were not sent to host mydomain.com
+           in the browser compatibility mode
+           Contributed by David D. Kilzer <ddkilzer at kilzer.net>
+
+ * 33021 - Fixed the bug causing the circular redirect if different query parameters
+           are used in the redirect location.
+           Contributed by Ilya Kharmatsky <ilyak at mainsoft.com>
+
+ * 32955 - Fixed the bug effectively disabling the stale connection check
+           Contributed by Oliver Koell <oko at newbase.de>
+
+ * 32835 - The two digit year greater than 20 no longer causes the cookie expiry date 
+           to be interpreted as a date between 1920 and 1999
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 32607 - Fixed the problem with ReflectionSocketFactory ignoring the local address of 
+           HostConfiguration
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 32409 - HttpState now has new methods for clearing all cookies and credentials.
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 32558 - Fixed retry count bug in DefaultMethodRetryHandler
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 32333 - Connection is now closed upon "Connection: close" request,
+           if the server does not include an explicit connection 
+           directive in the response.
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+ 
+ * 32765 - Fixed NullPointerException in HostConfiguration.setHost(Sting)
+           Contributed by Stuart Herring <apache at stuartherring.com>
+
+ * 32742 - Fixed the problem with SO_TIMEOUT parameter having no effect
+           on the method level.
+           Contributed by Ilya Kharmatsky <ilyak at mainsoft.com>
+
+Release 3.0 Beta 1
+-------------------
+Changes since Alpha 2:
+
+ * 31929 - Added support for formatting dates. Deprecated DateParser in 
+           favor of DateUtil.
+           Contributed by Michael Becke <mbecke at apache.org>
+
+ * ----- - HostConfiguration.isHostSet() and Hostconfiguration.isProxySet() have been 
+           deprecated.
+
+ * 31981 - Fixed the bug causing an infinite loop in HttpMethodDirector
+           when using SSL + proxy + host auth + keep alive off
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 31607 - Catch SocketTimeoutException not InterruptedIOException when running 
+           in JRE >=1.4
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 31471 - HostConfiguration refactored
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * ----- - ContentLengthInputStream no longer supports mark() & reset() methods. Old 
+           broken implementation removed.
+           Contributed by Eric Johnson <eric at tibco.com>
+
+Release 3.0 Alpha 2
+-------------------
+Changes since Alpha 1:
+
+ * 10793 - Configurable default headers
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+           
+ * 30652 - Configurable SO_LINGER
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+           
+ * 31163 - CookieSpec classes made stateful
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+           
+ * 21329 - Added input buffering to improve performance
+           Contributed by Bjarne Rasmussen <brasmussen at novell.com>
+
+ * 29897 - Connection output buffer is set to a value not greater than 2k
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 29636 - MultiThreadedHttpConnectionManager now support configuring the maximum
+           number of connections on a per host basis.
+           Contributed by Michael Becke <mbecke at apache.org>
+
+ * 29874 - Deprecated old HTTP method retry handler based on HttpRecoverableException
+           and replaced it with a new one that acts upon plain IOExceptions
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 29883 - Fixed handling of multi-byte characters in the StringRequestEntity class
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 29383 - Added method to delete closed connections from the connection pool
+           Contributed by Michael Becke <mbecke at apache.org>
+
+ * 29549 - Split wire log into header and body parts
+           Contributed by Michael Becke <mbecke at apache.org>
+
+ * 29540 - Fixed credentials scope matching algorithm in HttpState#matchCredentials.
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 29439 - Cleaner interface to define authentication scope, handle credentials in HttpState.
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 29377 - Cookies with names containing blanks or starting with $ rejected by RFC2109 spec only.
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+Release 3.0 Alpha 1
+-------------------
+
+New features:
+-------------
+
+(1) Architecture
+
+ * New preference architecture
+
+ * Improved exception handling framework
+
+ * Granular non-standards configuration and tracking
+ 
+ * Improved HTTP Version configuration and tracking
+ 
+ * Support for streaming entities
+
+ * Support for tunneled HTTP proxies via the ProxyClient
+
+ * Ability to abort execution of HTTP methods
+
+(2) Connection management
+
+ * Support for closing idle connections
+
+ * Support for JDK1.4 connect timeout through reflection
+
+ * Support for connection manager shutdown
+ 
+(3) Authentication
+
+ * Improved authentication framework
+
+ * Plug-in mechanism for authentication modules
+ 
+ * Interactive authentication support
+ 
+ * Alternate authentication support
+
+(4) Cookie management
+
+ * Cookie specification plug-in mechanism
+
+ * 'Ignore cookies' cookie policy
+
+ * Improved Netscape cookie support
+
+(5) Redirects
+
+ * Cross-site redirect support
+
+Changes on the CVS trunk:
+-------------------------
+
+ * 29265 - HttpConnection.isOpen() no longer logs closed connections as stale.
+
+ * 28645 - Moved/added content type handling to the RequestEntity.
+           Contributed by Michael Becke <mbecke at apache.org>, Oleg Kalnichevski <olegk at apache.org>
+
+ * 20288 - Added ability to abort execution of HTTP methods
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 24154 - Socket timeout can be specified at the connection manager, connection or method level
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 16124 - HTTP protocol version can be specified at the client, host or method level
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 28728 - HttpUrl now accepts unescaped passwords
+           Contributed by Michael Becke <mbecke at apache.org>
+
+ * 28626 - Fixed ArrayIndexOutOfBoundsException in HttpStatus.getStatusText()
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 26070 - Added support for streaming entities
+           Contributed by Michael Becke <mbecke at apache.org>
+
+ * 28566 - CookieSpec interface extended to expose path & domain matching methods; browser compatibility domain
+           matching algorithm modified to mimic the (mis-)behavior of common browsers
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 25372 - Added support for closing idle connections
+           Contributed by Michael Becke <mbecke at apache.org>, Oleg Kalnichevski <olegk at apache.org>
+
+ * 28322 - Redesign of connect timeout logic; Added support for JDK1.4 connect timeout through reflection
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 28151 - Added stand-alone support for tunneled HTTP proxies via the ProxyClient
+           Contributed by Michael Sample <m_sample at canada.com>, Michael Becke <mbecke at apache.org>
+
+ * 21216 - Fixed the problem of redirect 302 to the same URL causing max redirects exception: circular redirect 
+           check added; the circular redirect check is on per default and in lenient mode, is off in strict mode
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 27589 - Added MultiThreadedHttpConnectionManager shutdown() and shutdownAll()
+           Contributed by Michael Becke <mbecke at apache.org>
+ 
+ * 25529 - Redesign of HTTP authentication framework
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * Better implementation of ChunkedOutputStream: writes are buffered to an internal buffer (2048 default size); 
+   chunks are guaranteed to be at least as large as the buffer size (except for the last chunk) 
+           Contributed by Mohammad Rezaei <mohammad.rezaei at gs.com>, Goldman, Sachs & Co
+
+ * HttpMethod#getResponseBody & HttpMethod#getResponseBodyAsString changed to propagate IOException to the caller 
+   instead of logging and discarding it
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 10794 - Added interactive authentication support; Authentication realm key is now comprised of host name, port, 
+           realm name and authentication type
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 15297 - Added ability to perform alternate authentication
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 16881 - HttpClient made dependent on Commons-codec to perform Base64 and URL encoding/decoding
+           Contributed by Michael Becke <mbecke at apache.org>, Oleg Kalnichevski <olegk at apache.org>
+
+ * 24560 - Fixed the problem of HttpClient looping endlessly while trying to retrieve status line
+           Contributed by Christian Kohlschuetter <ck at rrzn.uni-hannover.de>
+
+ * 24671 - Added support for configuring charsets in credentials and HTTP headers
+           Contributed by Michael Becke <mbecke at apache.org>
+
+ * Plug-in mechanism for authentication modules
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * Added infrastructure to create test cases that involve use of a proxy
+           Contributed by Ortwin Glueck <oglueck at apache.org>
+
+ * UserNamePasswordCredentials & NTCredentials made immutable
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 24869 - DigestScheme now only accepts a challenge if all fields required by RFC 2617 are present
+           Contributed by Ortwin Glueck <oglueck at apache.org>
+
+ * New framework for server based tests
+           Contributed by Christian Kohlschuetter <ck at rrzn.uni-hannover.de>, Ortwin Glueck <oglueck at apache.org>
+
+ * Socket input stream now wrapped with a wrapper class that re-throws certain type of generic IO exceptions as HttpClient
+   specific exceptions. Improved handling of 'used' connections (known to have successfully completed an I/O operation).
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+ 
+ * 24012 - Added IgnoreCookiesSpec.
+           Contributed by Michael Becke <mbecke at apache.org>
+
+ * 24018 - Cookie and Authorization headers can now be set manually.
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 21151 - Cookie specification plug-in mechanism
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * Reworked DigestScheme: the qop Parameter is parsed correctly and not just ignored; missing qop is handled correctly
+           Contributed by Ortwin Glueck <oglueck at apache.org>
+
+ * 10790 - Implemented granular non-standards configuration and tracking.
+           Contributed by Oleg Kalnichevski <olegk at apache.org>, Michael Becke <mbecke at apache.org>,
+           Roland Weber <rolweber at de.ibm.com>, Ortwin Glueck <oglueck at apache.org>, 
+           Adrian Sutton <adrian.sutton at ephox.com>
+
+ * 15435 - Implemented new preference architecture.
+           Contributed by Oleg Kalnichevski <olegk at apache.org>, Michael Becke <mbecke at apache.org>,
+           Roland Weber <rolweber at de.ibm.com>, Ortwin Glueck <oglueck at apache.org>, 
+           Adrian Sutton <adrian.sutton at ephox.com>
+
+ * Deprecated the use of system properties: 'httpclient.useragent', 
+   'httpclient.authentication.preemptive'. 
+
+ * Refactored NameValuePair#equals method.
+           Contributed by Ortwin Glueck <oglueck at apache.org>
+
+ * 16729 - Refactored retry/redirect/authentication logic.
+           Contributed by Michael Becke <mbecke at apache.org>
+
+ * Added support for disabling HttpConnection.isStale()
+           Contributed by Michael Becke <mbecke at apache.org>
+
+ * 10791 - Improved HTTP Version configuration and tracking.
+           Contributed Oleg Kalnichevski <olegk at apache.org>, Laura Werner <laura at lwerner.org>, 
+           Michael Becke <mbecke at apache.org>
+
+ * 21880 - Content-Length & Transfer-Encoding request headers formerly set by abstract 
+           HttpMethodBase class are handled by entity enclosing methods.
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 17947 - HttpMethod#setURI method added.
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 19618 - URI constructors refactored.
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 11240 - Fixed the problem of cookies with ',' in the value string not parsed correctly in some cases
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+ * 21323 - Support for large(long) content added
+           Contributed by Michael Becke <mbecke at apache.org>
+
+ * 19868 - Exception handling framework reworked.
+           Contributed by Adrian Sutton <adrian.sutton at ephox.com>, Laura Werner <laura at lwerner.org>, 
+           Oleg Kalnichevski <olegk at apache.org>, Michael Becke <mbecke at apache.org>
+
+ * 21210 - Header parser completely rewritten.
+           Improved handling of Netscape draft compatible cookies
+           Contributed by Oleg Kalnichevski <olegk at apache.org>
+
+Release 2.0.1
+-------------------
+Changes since Release 2.0
+
+ * 30175 - Fixed StringIndexOutOfBoundsException in StatusLine
+
+ * 29897 - Connection output buffer is set to a value not greater than 2k
+
+ * 29549 - Split wire log into header and body parts
+
+ * 29377 - Cookies with names containing blanks or starting with $ rejected by RFC2109
+   spec only.
+
+ * 29265 - HttpConnection.isOpen() no longer logs closed connections as stale.
+
+ * 28728 - HttpUrl now accepts unescaped passwords
+
+ * 28626 - Fixed ArrayIndexOutOfBoundsException in HttpStatus.getStatusText()
+
+ * 27589 - Added MultiThreadedHttpConnectionManager shutdown() and shutdownAll().
+ 
+ * HttpMethod#recycle() has been deprecated.
+
+Release 2.0
+-------------------
+Changes since Release Candidate 3:
+
+ * 26500 - Socket timeout is now correctly set on open connections
+ 
+ * 26328 - Fixed getScheme() and getPort() returning wrong defaults for HttpsURL
+
+ * 26139 - Fixed possible connection leak caused by lack of equals() and hashCode() on protocol
+   socket factories
+   
+ * 26688 - Fixed the problem with HttpURL creating wrong authority String when user info is changed
+
+Release 2.0 Release Candidate 3
+-------------------
+Changes since Release Candidate 2:
+
+ * HTTP status line parser changed to be more robust when dealing with non-compliant 
+   HTTP responses (leading blanks before 'HTTP' signature).
+
+ * Fixed NPE in HttpMethodBase#responseBodyConsumed().
+
+ * 24309 - Changed MultiThreadedHttpConnectionManager to move to a single connection 
+   GC thread.  Fixed memory and thread leaks.
+
+ * 24327 - Fixed a bug where HttpClient did not reset the 'force-close connection' 
+   flag, when an HTTP method was automatically retried (for instance, when automatically 
+   handling an authentication challenge).
+
+ * 24352 - Fixed the bug causing basic authentication via NLTM Proxy to fail.
+
+ * 25370  - Connections are now closed and released automatically when an unrecoverable 
+   exception occurs in HttpMethodBase.processRequest().
+
+ * 23866 - Fixed possible uncaught IllegalArgumentException in Cookie parsing.
+
+ * 25264 - Added support for cookies with a domain attribute '.domain.com' issued by 
+   host 'domain.com' in the browser compatibility mode. Even though the cookie violates 
+   RFC 2109 it still gets accepted by mainstream browsers (tested with Mozilla Firebird and IE).
+
+ * 24869 - Changed DigestScheme to only accept a challenge if all fields required 
+   by RFC 2617 are present.
+
+ * 24671 - Added ISO-8859-1 support for digest authentication passwords, and basic authentication 
+   user names and passwords.
+
+ * Javadoc enhancements.
+
+Release 2.0 Release Candidate 2
+-------------------
+Changes since Release Candidate 1:
+
+ * Javadoc enhancements.
+
+ * 23284 - Fixed bug with URI.isIPv4address(). 
+
+ * 22969 - PostMethod#setParameter fixed to correctly overwrite existing parameters. 
+
+ * 22970 - Fixed bug with PostMethod#removeParameter return value. 
+
+ * Improved compliance to RFC 2617
+ 
+ * Added support for digest auth MD5-sess. 
+
+ * 22655 - Added support for stale digest nonce values. 
+
+ * 22968 - HttpConnection.isResponseAvailable() made a little more robust, particularly when 
+   used by HeadMethod. 
+
+ * 22941 - Switched the order in which socket streams are closed: output stream closed first,
+   followed by input stream. 
+
+ * Added debugging for connection reclaiming. 
+
+ * Removed JCE initialization code specific to the Sun's implementation. 
+
+ * Fixed problem of Basic, Digest & NTLM authentication schemes under certain circumstances 
+   leaking passwords in clear text to the DEBUG log. 
+
+ * Fixed the problem with incorrect selection of the proxy authentication realm. 
+
+ * Changed URI.normalize() to ignore relative path normalization. 
+
+Release 2.0 Release Candidate 1
+-------------------
+Changes since Release 2.0 Beta 2:
+
+ * Option to disable 'stale' connection check that may lead to a slight
+   performance improvement at the cost of reduced reliability
+
+ * Improved debug logging in multi-threaded connection manager
+
+ * URI.normalize() no longer has an effect on relative URIs.
+
+ * 21532 - Removed use of sun.* class in URI.java 
+
+ * 20481 - Changed query param encoding to UTF-8.
+
+ * 21378 - Multiple transfer encoding headers are now handled properly. Non chunked transfer 
+   encodings are now handled correctly.
+
+Release 2.0 Beta 2
+-------------------
+Changes since Release 2.0 Beta 1:
+
+ * 20240 - Cookies with null path are no longer rejected in the
+   browser compatibility mode.
+
+ * 20481 - Query parameters set via HttpMethodBase.setQueryString(NameValuePair[])
+   now correctly use 'application/x-www-form-urlencoded' encoding.
+
+ * 20481 - POST method correctly applies 'application/x-www-form-urlencoded'
+   encoding.
+
+ * 20569 - Duplicate connection headers are now handled.
+
+ * 20646 - Fixed NTLM proxy authentication via SSL. 
+
+ * 20665 - Changed URI to correctly handle path resolution according to 
+   http://www.apache.org/~fielding/uri/rev-2002/issues.html.  In 
+   particular dot-segments are removed when not necessary.
+
+ * 20938 - Connections are now closed when the request is missing a content 
+   length and is not chunked.
+
+ * 20942 - Requests with DIGEST authentication are now correctly handled 
+   when redirected.
+
+ * 21130 - DEFAULT_MAX_HOST_CONNECTIONS and DEFAULT_MAX_TOTAL_CONNECTIONS are
+   now public in MultiThreadedHttpConnectionManager.
+
+ * 21201 - URIs are now correctly rebuilt following a call to URI.normalize().
+
+ * 21202 - WireLogInputStream.read(byte[]) now logs the correct number of bytes.
+
+ * Fixed path parsing in RFC2109 cookie spec.
+
+ * Fixed possible NPE when reading an empty response body.
+
+ * The various to*Charset() methods of URIUtil have been deprecated.
+
+Release 2.0 Beta 1
+-------------------
+Changes since Release 2.0 Alpha 3:
+
+ * Changed HttpConnection to use socket timeout instead of busy 
+   waiting while expecting input.
+
+ * Added a getResponseContentLength() method to HttpMethod.
+
+ * Changed HttpClient to accept correctly encoded URLs instead of 
+   attempting to encode them within HttpClient.
+
+ * 'Expect: 100-continue' logic factored out into an abstract 
+   ExpectContinueMethod class
+
+ * 'Expect: 100-Continue' handshake disabled per default, as it may not work 
+   properly with older HTTP/1.0 servers or proxies.
+
+ * Reengineered authentication code.  This includes a fix for 
+   HttpClient continually attempting to authenticate to digest realms and 
+   provides for better future extensibility.
+
+ * Authenticator class deprecated
+
+ * Improved user documentation and example code.
+
+ * Added ability to differentiate between different hosts using the 
+   same realm names.
+
+ * Added support for specifying a virtual host name to use.
+
+ * Fixed problem with half-closed connections causing a 
+   HttpRecoverableException to be thrown when HttpClient attempts to read 
+   from a socket.
+
+ * Improved reliability with the HEAD method and servers that 
+   incorrectly include a response body.
+
+ * Improved support for connection keep-alive when communicating via a proxy
+
+ * Added an override of HttpClient.executeMethod that lets the
+   caller specify an HttpState object.
+
+ * HttpConnectionManager is now a property of the HttpClient class, 
+   not of the HttpState class
+
+ * Added ability to specify the local address that HttpClient should 
+   create connections from.
+
+
+Release 2.0 Alpha 3
+-------------------
+Changes since Release 2.0 Alpha 2:
+
+ * Abstract EntityEnclosingMethod class has been introduced to encapsulate
+   common behaviour of all entity enclosing methods
+
+ * "Expect: 100-continue" handshake support added for POST, PUT & multipart POST
+
+ * Added support for chunked requests for POST and PUT.
+
+ * Added support for 303 See Other redirections.
+
+ * Changed input and output streams to use buffering to improve performance.
+
+ * Improved handling of multivalue headers. Order is now preserved and 
+   convenience methods have been added to access each value.
+
+ * In non-strict mode each cookie sent with the request is put on a separate 
+   request header. In strict mode all cookies are crammed into one request header, 
+   as before.
+
+ * ResponseInputStream class deprecated.
+
+ * RequestOutputStream class deprecated.
+
+ * Custom character set can be specified for all multipart classes. 
+
+ * Custom content type can be specified for FilePart derived multipart classes.
+
+ * The useDisk methods in GetMethod class deprecated.
+
+
+Release 2.0 Alpha 2
+------------------
+Changes since Release 2.0 Alpha 1:
+
+ * Mavenized builds.
+ 
+ * Digest authentication.  NTLM authentication.
+ 
+ * Multipart post.
+ 
+ * Added a StatusLine class to manage the status line of a
+   http response.
+
+ * Added ability to cusomize SocketFactory for http and https. 
+   New Protocol class to allow for more protocols than just http/s.
+
+ * Removed the HttpMultiClient, added multi-thread support to 
+   HttpClient.
+ 
+ * Revamp the streaming policy.  Added AutoCloseInputStream,
+   ChunkedInputStream, ChunkedOutputStream, ContentLengthInputStream,
+   ResponseConsumedWatcher
+ 
+ * Commons Logging.  Dependancy on the commons-logging.jar
+ 
+ * Added httpclient.util package.  Move Base64 and URIUtil classs 
+   into util.
+
+ * Added a HttpURLConnection wrapper.  Allows for wrapping 
+   HttpClient into the java standard library.  Partial support only.
+
+ * Added httpclient.cookie package.  Complete overhaul of cookie
+   handling.  Allows for user specified CookiePolicy and 
+   various cookie specification classes.
+  
+ * Removed previously deprecated Cookie.createCookieHeader(String,
+   String,boolean,Cookie[]) method (port number is required for
+   future compatibility).
+
+ * Also removed Cookie.createCookieHeader(String,String,Cookie[])
+   method, which should have been deprecated (port number is
+   required for future compatibility)
+
+ * Renamed HttpMethod.followRedirects to getFollowRedirects,
+   for consistency (and made the corresponding change to
+   HttpMethodBase)
+

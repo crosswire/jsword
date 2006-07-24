@@ -1,0 +1,222 @@
+<!--
+
+ Copyright 2005,2006 The Apache Software Foundation.
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+      http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+
+-->
+
+$Id: RELEASE-NOTES.txt 399403 2006-05-03 20:16:16Z rdonkin $
+
+                           Commons Logging Package
+                                Version 1.1.0
+                                Release Notes
+
+INTRODUCTION:
+============
+
+This release of Jakarta Commons Logging (JCL) is a maintenance release, with a
+few new configuration features but no major changes in services provided.
+
+This release introduces significant changes in the way that discovery of
+logging implementations occurs, and how errors are handled. A number of
+problems that have troubled users in past releases (particularly the
+"Log4JLogger does not implement Log" problem) will hopefully be 
+significantly reduced or cured.
+
+This release is 100% compatible with existing code that calls 
+commons-logging. There are some incompatibilities with code that extends
+commons-logging, for example to implement custom logging adapters. See
+the compatibility section for details.
+
+All core classes were compiled with a 1.2.x JDK. JCL may work on some 
+augmented 1.1 series JREs but it is recommended that those wish to run
+on 1.1 JREs download the source and create a custom implementation by
+stripping out all the complex classloader management code.
+
+For further details, please see the Jakarta Commons Logging website:
+  http://jakarta.apache.org/commons/logging.
+
+For the very latest news, hints, FAQs etc. please see the
+Jakarta Commons Logging wiki site:
+  http://wiki.apache.org/jakarta-commons/Logging
+
+Note that some containers (some versions of Apache Tomcat and JBoss in
+particular) prevent webapps, ejbs, etc from overriding the commons-logging
+implementation provided by the container. This means that bundling this
+updated implementation with a deployed application may not have any effect.
+See the commons-logging site and/or the wiki for more information.
+
+== New Features ==
+
+* Jar files now have release-numbers embedded in the names, for easier management.
+
+* New jar file commons-logging-adapters-xxx.jar is now provided. This can be
+  used to resolve class cast conflicts where parts of commons-logging are
+  deployed via different classloaders. It is not expected to be frequently
+  used; it is only necessary in situations where a container has deployed
+  commons-logging-api.jar and a webapp wants to bind to a third-party
+  logging implementation such as log4j. In this case, the webapp can
+  experience problems if it deploys commons-logging.jar as this causes
+  duplicates of the core commons-logging classes, but commons-logging-adapters
+  can be safely used.
+
+* New internal diagnostics feature. If commons-logging is behaving in an
+  unexpected manner, you can now set system property
+    org.apache.commons.logging.diagnostics.dest
+  to the value STDOUT, STDERR or a filename. As commons-logging initialises
+  itself for each new contextClassLoader it detects, useful information will
+  be output about which logging library is bound to and why.
+  
+* JCL now prefers to "make a best attempt" in problem scenarios rather than
+  report an error and fail to initialise. New configurable attributes
+  ALLOW_FLAWED_HIERARCHY, ALLOW_FLAWED_DISCOVERY and ALLOW_FLAWED_CONTEXT are
+  provided to control startup behavior. The default values for these are all
+  true, meaning that commons-logging attempts to recover from bad logging
+  configuration situations by finding *some* logger to use even when it isn't
+  quite the one that might be expected. This will significantly reduce the
+  occurrence of the dreaded LogConfigurationException on application/webapp
+  startup at the cost of slightly more ambiguity about where output will go.
+  In cases where no logging output is generated or wanted (which is the case
+  99% of the time) this is definitely a more convenient approach. Users who
+  cannot figure out where logging went or why it went to an unexpected
+  destination can enable diagnostics to find out, or set the ALLOW_FLAWED_
+  settings to false to force LogConfigurationException to be thrown as in
+  earlier releases.
+  
+* Fix for the problem where memory was not being released under some circumstances
+  when a webapp was undeployed. An internal change fixes some situations where
+  that occurs (by using weak references); this requires no action on the part of
+  users of this library. In addition, a utility class ServletContextCleaner is
+  provided in the jar file which is expected to resolve this problem in all
+  situations; however it is necessary for an application to define this class as
+  a ServletContextListener in the web.xml in order for this to be invoked.
+
+* Prioritised commons-logging.properties files. A file with the name
+  "commons-logging.properties" placed in the classpath can be used to set
+  various JCL configuration options. In previous releases, the first
+  such file found in the classpath was used to configure JCL. Now, each file
+  can have an entry "priority", and the file with the highest priority is used.
+  Where two files have equal priority, the first one in the classpath is used;
+  this maintains backwards compatibility.
+
+* New feature to disable loading of logging classes via the thread context
+  classloader (TCCL), on a per-webapp basis. Simply putting an entry
+  "use_tccl=false" in a commons-logging.properties file will ensure that
+  all classes used for logging are loaded via the same classloader that
+  loads the LogFactory class. This resolves any "class cast" issues with
+  JCL, though at the price of losing some control over logging configuration.
+
+* The log4j logging adapter now supports the TRACE level (added to log4j 1.2.12).
+  Formerly, any calls to log.trace were output at the log4j debug level.
+
+* Better behaviour for systems with null classloaders (generally embedded systems).
+
+* New zip file containing source and javadocs for those using modern IDEs.
+
+== Incompatibilities ==
+
+There are no changes for code that calls LogFactory or Log methods. This means
+that any application which is a simple "user" of the JCL library can safely
+upgrade to this version.
+
+All changes to JCL configuration are backwards compatible.
+
+Classes Log4JCategoryLog and Log4jFactory have been removed; these were both
+deprecated in the 1.0.3 release (April 2003).
+
+For code that extends the JCL LogFactoryImpl class, the isXXXAvailable methods
+in org.apache.commons.logging.impl.LogFactoryImpl are no longer called during
+discovery by that class. Therefore classes which subclass LogFactoryImpl and
+override those methods will not have their methods called. This is a pretty
+unusual thing to do, so it isn't expected that any apps will actually be
+affected by this.
+
+AvalonLog is no longer serializable. The semantics were always deeply 
+unsatisfactory. It is cleaner and clearer to admit the truth.
+
+== Deprecation Note ==
+
+Previous releases of commons-logging-api.jar contained the Jdk14Logger class;
+this is now deprecated. It will be removed from the API jar in some future 
+release. 
+
+== Dependencies ==
+
+Commons-logging has no mandatory dependencies.
+
+Java 1.2 and later are supported. It may be possible to use this release with
+java 1.1 but this has not been tested; the unit tests certainly don't run on
+that version.
+
+== Distributed Jar Files ==
+
+File commons-logging-nn.jar is the one most people will want. It provides the
+base implementation and adapters to a number of popular logging libraries.
+
+File commons-logging-adapters-nn.jar includes only the adapters to various
+concrete logging libraries. When commons-logging-nn.jar or
+commons-logging-api-nn.jar is deployed in a container classpath, then this
+adapters-only jar file should be deployed in the webapp, not the complete JCL
+distribution. This ensures that the core Log/LogFactory classes are only
+deployed via one classloader, thus avoiding "Log4JLogger does not implement Log"
+and similar problems.
+
+File commons-logging-api-nn.jar provides minimal adapters to external logging
+libraries, just the internally implemented SimpleLog and NoOpLog classes
+plus Jdk14Logger (which is currently required by Apache Tomcat).
+
+This jar file may be used as a declared dependency for projects that care about
+"transitive dependencies" and can't handle jar files such as commons-logging-nn.jar
+which have "optional" dependencies depending on how they are used. In addition,
+this jar file can be useful for "rebundlers" of JCL who recompile the source-code
+but who may not be able to recompile against the full set of supported adapters;
+such projects should be able to at least recreate an equivalent of this jar file.
+
+== General Notes ==
+
+The jakarta commons project has migrated to the Subversion version control system
+(previously, CVS was used). There should be no effect on users of the JCL
+library, but obviously the process of examining the latest source code, and of
+creating patches for JCL has now changed. Please see the jakarta commons
+website for details (http://jakarta.apache.org/commons).
+
+== Bugs Fixed ==
+
+* 31597: problem where log4j adapter was in parent classloader but log4j.jar was
+  in child classloader led to failure to initialise logging has been
+  fixed.
+
+* 31710, 10825: commons-logging now works better in systems where getClassLoader
+  returns null. This essentially means embedded systems.
+  
+* 31818: workaround for bug in java1.2 compiler; code now compiles under 1.2
+
+* Log4JCategoryLog has been removed from the main distribution jar; it has been
+  deprecated for a long while. Replacement class Log4JLogger should be a completely
+  transparent replacement for all commons-logging users.
+
+* package.html files are no longer present in the jar files, removing nuisance
+  javadoc warnings when building javadoc for apps using jcl.
+  
+* In several cases, LogConfigurationException objects were being wrapped in
+  other LogConfigurationException objects. These have (hopefully) all been
+  fixed.
+
+DEPRECATIONS:
+============
+
+    (These are carried forward from Version 1.0.4)
+
+[LogSource]        Previously deprecated, replaced by LogFactory.
+
