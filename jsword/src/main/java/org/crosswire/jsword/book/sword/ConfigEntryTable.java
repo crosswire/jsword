@@ -169,12 +169,17 @@ public class ConfigEntryTable
 
     /**
      * Unlocks a book with the given key.
+     * The key is trimmed of any leading or trailing whitespace.
      * 
      * @param unlockKey the key to try
      * @return true if the unlock key worked.
      */
     public boolean unlock(String unlockKey)
     {
+        if (unlockKey != null)
+        {
+            unlockKey = unlockKey.trim();
+        }
         add(ConfigEntryType.CIPHER_KEY, unlockKey);
         if (configFile != null)
         {
@@ -188,6 +193,16 @@ public class ConfigEntryTable
             }
         }
         return true;
+    }
+
+    /**
+     * Gets the unlock key for the module.
+     * 
+     * @return the unlock key, if any, null otherwise.
+     */
+    public String getUnlockKey()
+    {
+        return (String) getValue(ConfigEntryType.CIPHER_KEY);
     }
 
     /**

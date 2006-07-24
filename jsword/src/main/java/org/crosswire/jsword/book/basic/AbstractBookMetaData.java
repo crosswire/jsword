@@ -142,6 +142,14 @@ public abstract class AbstractBookMetaData implements BookMetaData
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getUnlockKey()
+     */
+    public String getUnlockKey()
+    {
+        return null;
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#isQuestionable()
      */
     public boolean isQuestionable()

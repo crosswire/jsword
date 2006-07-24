@@ -137,6 +137,13 @@ public interface BookMetaData extends Comparable
     boolean unlock(String unlockKey);
 
     /**
+     * Gets the unlock key for the module.
+     * 
+     * @return the unlock key, if any, null otherwise.
+     */
+    public String getUnlockKey();
+
+    /**
      * Indicate whether this book is questionable. A book may
      * be deemed questionable if it's quality or content has not
      * been confirmed.

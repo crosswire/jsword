@@ -132,6 +132,14 @@ public class SwordBookMetaData extends AbstractBookMetaData
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getUnlockKey()
+     */
+    public String getUnlockKey()
+    {
+        return cet.getUnlockKey();
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getName()
      */
     public String getName()
