@@ -1,15 +1,23 @@
 /**
- * Distribution License: JSword is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public License, version
- * 2.1 as published by the Free Software Foundation. This program is distributed
- * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Lesser General Public License for more details. The License is
- * available on the internet at: http://www.gnu.org/copyleft/lgpl.html or by
- * writing to: Free Software Foundation, Inc. 59 Temple Place - Suite 330
- * Boston, MA 02111-1307, USA Copyright: 2005 The copyright to this program is
- * held by it's authors. ID: $Id: URLFilter.java,v 1.5 2005/07/27 23:26:42
- * dmsmith Exp $
+ * Distribution License:
+ * BibleDesktop is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, version 2 as published by
+ * the Free Software Foundation. This program is distributed in the hope
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * The License is available on the internet at:
+ *       http://www.gnu.org/copyleft/gpl.html
+ * or by writing to:
+ *      Free Software Foundation, Inc.
+ *      59 Temple Place - Suite 330
+ *      Boston, MA 02111-1307, USA
+ *
+ * Copyright: 2005
+ *     The copyright to this program is held by it's authors.
+ *
+ * ID: $Id$
  */
 package org.crosswire.common.util;
 
@@ -25,6 +33,7 @@ import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.ProxyHost;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.HeadMethod;
 import org.apache.commons.httpclient.util.HttpURLConnection;
 
 /**
@@ -68,16 +77,19 @@ public class WebResource
      */
     public int getSize()
     {
-        HttpMethod method = new GetMethod(url.getPath());
+        HttpMethod method = new HeadMethod(url.getPath());
 
         try
         {
             // Execute the method.
-            if (client.executeMethod(method) == HttpStatus.SC_OK)
+            int status = client.executeMethod(method);
+            if (status == HttpStatus.SC_OK)
             {
                 HttpURLConnection connection = new HttpURLConnection(method, url);
                 return connection.getContentLength();
             }
+            String reason = HttpStatus.getStatusText(status);
+            Reporter.informUser(this, reason + ": " + url.getFile()); //$NON-NLS-1$
         }
         catch (Exception e)
         {
@@ -95,11 +107,11 @@ public class WebResource
      * Determine the last modified date of this WebResource.
      * <p>Note that the http client may read the entire file.</p>
      * 
-     * @return the size of the file
+     * @return the last mod date of the file
      */
     public long getLastModified()
     {
-        HttpMethod method = new GetMethod(url.getPath());
+        HttpMethod method = new HeadMethod(url.getPath());
 
         try
         {
