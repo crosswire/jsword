@@ -32,6 +32,7 @@ import java.util.Properties;
 
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
@@ -268,7 +269,7 @@ public class SwordBookDriver extends AbstractBookDriver
         // If there is no change then there is nothing to do
         if (Arrays.equals(files, SwordBookDriver.dirs))
         {
-            return EMPTY_FILE_ARRAY;
+            return null;
         }
 
         if (useDefaultPaths)
@@ -337,24 +338,16 @@ public class SwordBookDriver extends AbstractBookDriver
         if (System.getProperty("os.name").startsWith("Windows")) //$NON-NLS-1$ //$NON-NLS-2$
         {
             testDefaultPath(reply, DIR_WINDOWS_DEFAULT);
+            // how about in the library, just next door?
+            testDefaultPath(reply, DIR_WINDOWS_DEFAULT + File.separator + ".." + File.separator + DIR_SWORD_LIBRARY); //$NON-NLS-1$
         }
         else
         {
             // If it isn't unix then assume some sort of unix
-            File sysconfig = new File(DIR_UNIX_GLOBAL_CONF);
-            if (sysconfig.canRead())
+            String [] sysconfigPaths = StringUtil.split(DIR_UNIX_GLOBAL_CONF, ':');
+            for (int i = 0; i < sysconfigPaths.length; i++)
             {
-                try
-                {
-                    Properties prop = new Properties();
-                    prop.load(new FileInputStream(sysconfig));
-                    String datapath = prop.getProperty(ConfigEntryType.DATA_PATH.toString());
-                    testDefaultPath(reply, datapath);
-                }
-                catch (IOException ex)
-                {
-                    log.warn("Failed to read system config file", ex); //$NON-NLS-1$
-                }
+                readSwordConf(reply, sysconfigPaths[i]);
             }
         }
 
@@ -363,6 +356,8 @@ public class SwordBookDriver extends AbstractBookDriver
         if (swordhome != null)
         {
             testDefaultPath(reply, swordhome);
+            // how about in the library, just next door?
+            testDefaultPath(reply, swordhome + File.separator + ".." + File.separator + DIR_SWORD_LIBRARY); //$NON-NLS-1$
         }
 
         // .sword in the users home directory?
@@ -370,8 +365,31 @@ public class SwordBookDriver extends AbstractBookDriver
 
         // mods.d in the current directory?
         testDefaultPath(reply, new File(".").getAbsolutePath()); //$NON-NLS-1$
+        // how about in the library, just next door?
+        testDefaultPath(reply, new File("..").getAbsolutePath() + File.separator + DIR_SWORD_LIBRARY); //$NON-NLS-1$
 
         return (File[]) reply.toArray(new File[reply.size()]);
+    }
+
+    private static void readSwordConf(List reply, String swordConf)
+    {
+        File sysconfig = new File(swordConf);
+        if (sysconfig.canRead())
+        {
+            try
+            {
+                Properties prop = new Properties();
+                prop.load(new FileInputStream(sysconfig));
+                String datapath = prop.getProperty(DATA_PATH);
+                testDefaultPath(reply, datapath);
+                datapath = prop.getProperty(AUGMENT_PATH);
+                testDefaultPath(reply, datapath);
+            }
+            catch (IOException ex)
+            {
+                log.warn("Failed to read system config file", ex); //$NON-NLS-1$
+            }
+        }
     }
 
     /**
@@ -380,9 +398,14 @@ public class SwordBookDriver extends AbstractBookDriver
      */
     private static void testDefaultPath(List reply, String path)
     {
+        if (path == null)
+        {
+            return;
+        }
+
         File where = new File(path);
         File mods = new File(path, SwordConstants.DIR_CONF);
-        if (mods.isDirectory())
+        if (mods.isDirectory() && mods.canRead())
         {
             reply.add(where);
         }
@@ -424,14 +447,14 @@ public class SwordBookDriver extends AbstractBookDriver
     }
 
     /**
-     * An empty immutable <code>File</code> array.
-     */
-    public static final File[] EMPTY_FILE_ARRAY = new File[0];
-
-    /**
      * Default windows installation directory
      */
     private static final String DIR_WINDOWS_DEFAULT = "C:\\Program Files\\CrossWire\\The SWORD Project"; //$NON-NLS-1$
+
+    /**
+     * Library may be a sibling of DIR_WINDOWS_DEFAULT or SWORD_HOME or CWD
+     */
+    private static final String DIR_SWORD_LIBRARY = "library"; //$NON-NLS-1$
 
     /**
      * Users config directory for Sword in Unix
@@ -441,7 +464,17 @@ public class SwordBookDriver extends AbstractBookDriver
     /**
      * Sword global config file
      */
-    private static final String DIR_UNIX_GLOBAL_CONF = "/etc/sword.conf"; //$NON-NLS-1$
+    private static final String DIR_UNIX_GLOBAL_CONF = "/etc/sword.conf:/usr/local/etc/sword.conf"; //$NON-NLS-1$
+
+    /**
+     * Sword global config file's path to where mods can be found
+     */
+    private static final String DATA_PATH = "DataPath"; //$NON-NLS-1$
+
+    /**
+     * Sword global config file's path to where mods can be found
+     */
+    private static final String AUGMENT_PATH = "AugmentPath"; //$NON-NLS-1$
 
     /**
      * System property for sword home directory
