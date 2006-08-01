@@ -48,19 +48,67 @@ import org.jdom.Text;
 public final class OSISUtil
 {
     /**
-     * Constant to help narrow down what we use "hi" for. In this case the bold tag
+     * The following are values for the type attribute on the hi element.
+     */
+    /**
+     * Constant for acrostic highlighting
+     */
+    public static final String HI_ACROSTIC = "acrostic"; //$NON-NLS-1$
+
+    /**
+     * Constant for rendering bold text
      */
     public static final String HI_BOLD = "bold"; //$NON-NLS-1$
 
     /**
-     * Constant to help narrow down what we use "hi" for. In this case the italic tag
+     * Constant for rendering emphatic text
+     */
+    public static final String HI_EMPHASIS = "emphasis"; //$NON-NLS-1$
+
+    /**
+     * Constant for rendering illuminated text.
+     */
+    public static final String HI_ILLUMINATED = "illuminated"; //$NON-NLS-1$
+
+    /**
+     * Constant for rendering italic text.
      */
     public static final String HI_ITALIC = "italic"; //$NON-NLS-1$
 
     /**
-     * Constant to help narrow down what we use "hi" for. In this case the underline tag
+     * Constant for rendering strike-through text
+     */
+    public static final String HI_LINETHROUGH = "line-through"; //$NON-NLS-1$
+
+    /**
+     * Constant for rendering normal text.
+     */
+    public static final String HI_NORMAL = "normal"; //$NON-NLS-1$
+
+    /**
+     * Constant for rendering small caps
+     */
+    public static final String HI_SMALL_CAPS = "small-caps"; //$NON-NLS-1$
+
+    /**
+     * Constant for rendering subscripts
+     */
+    public static final String HI_SUB = "sub"; //$NON-NLS-1$
+
+    /**
+     * Constant for rendering superscripts
+     */
+    public static final String HI_SUPER = "super"; //$NON-NLS-1$
+
+    /**
+     * Constant for rendering underlined text
      */
     public static final String HI_UNDERLINE = "underline"; //$NON-NLS-1$
+
+    /**
+     * Constant for rendering uppercase text
+     */
+    public static final String HI_X_CAPS = "x-caps"; //$NON-NLS-1$
 
     /**
      * Constant to help narrow down what we use seg for. In this case the justify right tag
@@ -73,16 +121,6 @@ public final class OSISUtil
     public static final String SEG_CENTER = "text-align: center;"; //$NON-NLS-1$
 
     /**
-     * Constant to help narrow down what we use seg for. In this case the small tag
-     */
-    public static final String SEG_SMALL = "font-size: small;"; //$NON-NLS-1$
-
-    /**
-     * Constant to help narrow down what we use seg for. In this case the sup tag
-     */
-    public static final String SEG_SUPERSCRIPT = "vertical-align: super;"; //$NON-NLS-1$
-
-    /**
      * Constant to help narrow down what we use seg for. In this case the color tag
      */
     public static final String SEG_COLORPREFIX = "color: "; //$NON-NLS-1$
@@ -91,6 +129,11 @@ public final class OSISUtil
      * Constant to help narrow down what we use seg for. In this case the font-size tag
      */
     public static final String SEG_SIZEPREFIX = "font-size: "; //$NON-NLS-1$
+
+    /**
+     * Constant for x- types
+     */
+    public static final String TYPE_X_PREFIX = "x-"; //$NON-NLS-1$
 
     /**
      * Constant for the study note type
@@ -102,6 +145,16 @@ public final class OSISUtil
      */
     public static final String VARIANT_TYPE = "x-variant"; //$NON-NLS-1$
     public static final String VARIANT_CLASS = "x-class"; //$NON-NLS-1$
+
+    /**
+     * Constant for the pos (part of speech) type.
+     */
+    public static final String POS_TYPE = "x-pos"; //$NON-NLS-1$
+
+    /**
+     * Constant for the def (dictionary definition) type
+     */
+    public static final String DEF_TYPE = "x-def"; //$NON-NLS-1$
 
     /**
      * Constant for a Strongs numbering lemma
@@ -130,7 +183,7 @@ public final class OSISUtil
     public static final String Q_EMBEDDED = "embedded"; //$NON-NLS-1$
 
     /**
-     * Constant to help narrow down what we use "list" for.
+     * Constant to help narrow down what dvwe use "list" for.
      */
     public static final String LIST_ORDERED = "x-ordered"; //$NON-NLS-1$
     public static final String LIST_UNORDERED = "x-unordered"; //$NON-NLS-1$

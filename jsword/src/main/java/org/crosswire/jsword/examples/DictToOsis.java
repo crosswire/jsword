@@ -54,7 +54,7 @@ public class DictToOsis
     /**
      * The name of a Bible to find
      */
-    private static final String BOOK_NAME = "Thayer"; //$NON-NLS-1$
+    private static final String BOOK_NAME = "WebstersDict"; //$NON-NLS-1$
 
     /**
      * @param args

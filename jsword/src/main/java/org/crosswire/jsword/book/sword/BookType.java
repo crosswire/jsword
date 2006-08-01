@@ -243,11 +243,6 @@ public abstract class BookType implements Serializable
             return new ZLDBackend(sbmd, rootPath);
         }
 
-        protected boolean isBackendSupported(SwordBookMetaData sbmd)
-        {
-            return false;
-        }
-
         /**
          * Serialization ID
          */

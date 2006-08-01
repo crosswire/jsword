@@ -206,9 +206,12 @@ public class CustomHandler extends DefaultHandler
             new ScriptureTag(),
             new ScripRefTag(),
             new SmallTag(),
+            new SubTag(),
             new SupTag(),
             new SyncTag(),
             new TableTag(),
+            new RowTag(),
+            new ColTag(),
             new TdTag(),
             new TermTag(),
             new ThTag(),
@@ -226,6 +229,91 @@ public class CustomHandler extends DefaultHandler
             new IgnoreTag("span"), //$NON-NLS-1$
             new IgnoreTag("dir"), //$NON-NLS-1$
             new IgnoreTag("pre"), //$NON-NLS-1$
+            // all the following are from Webster's Dict
+            // Don't know what to do with them
+            // They are not ThML!
+            new AnonymousTag("def"), //$NON-NLS-1$
+            new AnonymousTag("pos"), //$NON-NLS-1$
+            new AnonymousTag("hpos"), //$NON-NLS-1$
+            new AnonymousTag("org"), //$NON-NLS-1$
+            new AnonymousTag("wf"), //$NON-NLS-1$
+            new AnonymousTag("cd"), //$NON-NLS-1$
+            new AnonymousTag("sd"), //$NON-NLS-1$
+            new AnonymousTag("tran"), //$NON-NLS-1$
+            new AnonymousTag("itran"), //$NON-NLS-1$
+            new AnonymousTag("qpers"), //$NON-NLS-1$
+            new AnonymousTag("fract"), //$NON-NLS-1$
+            new AnonymousTag("sn"), //$NON-NLS-1$
+            new AnonymousTag("singw"), //$NON-NLS-1$
+            new AnonymousTag("universbold"), //$NON-NLS-1$
+            new AnonymousTag("plw"), //$NON-NLS-1$
+            new AnonymousTag("matrix"), //$NON-NLS-1$
+            new AnonymousTag("ttitle"), //$NON-NLS-1$
+            new AnonymousTag("englishtype"), //$NON-NLS-1$
+            new AnonymousTag("figcap"), //$NON-NLS-1$
+            new AnonymousTag("extendedtype"), //$NON-NLS-1$
+            new AnonymousTag("musfig"), //$NON-NLS-1$
+            new AnonymousTag("stageof"), //$NON-NLS-1$
+            new AnonymousTag("wns"), //$NON-NLS-1$
+            new AnonymousTag("subs"), //$NON-NLS-1$
+            new AnonymousTag("sups"), //$NON-NLS-1$
+            new AnonymousTag("nonpareiltype"), //$NON-NLS-1$
+            new AnonymousTag("gothictype"), //$NON-NLS-1$
+            new AnonymousTag("sanserif"), //$NON-NLS-1$
+            new AnonymousTag("sansserif"), //$NON-NLS-1$
+            new AnonymousTag("headrow"), //$NON-NLS-1$
+            new AnonymousTag("figure"), //$NON-NLS-1$
+            new AnonymousTag("srow"), //$NON-NLS-1$
+            new AnonymousTag("longprimertype"), //$NON-NLS-1$
+            new AnonymousTag("greatprimertype"), //$NON-NLS-1$
+            new AnonymousTag("est"), //$NON-NLS-1$
+            new AnonymousTag("chname"), //$NON-NLS-1$
+            new AnonymousTag("miniontype"), //$NON-NLS-1$
+            new AnonymousTag("supr"), //$NON-NLS-1$
+            new AnonymousTag("sansserif"), //$NON-NLS-1$
+            new AnonymousTag("funct"), //$NON-NLS-1$
+            new AnonymousTag("item"), //$NON-NLS-1$
+            new AnonymousTag("mitem"), //$NON-NLS-1$
+            new AnonymousTag("mtable"), //$NON-NLS-1$
+            new AnonymousTag("figtitle"), //$NON-NLS-1$
+            new AnonymousTag("ct"), //$NON-NLS-1$
+            new AnonymousTag("defwf"), //$NON-NLS-1$
+            new AnonymousTag("umac"), //$NON-NLS-1$
+            new AnonymousTag("pearltype"), //$NON-NLS-1$
+            new AnonymousTag("vertical"), //$NON-NLS-1$
+            new AnonymousTag("title"), //$NON-NLS-1$
+            new AnonymousTag("picatype"), //$NON-NLS-1$
+            new AnonymousTag("point18"), //$NON-NLS-1$
+            new AnonymousTag("matrix2x5"), //$NON-NLS-1$
+            new AnonymousTag("oldenglishtype"), //$NON-NLS-1$
+            new AnonymousTag("oldstyletype"), //$NON-NLS-1$
+            new AnonymousTag("smpicatype"), //$NON-NLS-1$
+            new AnonymousTag("frenchelzevirtype"), //$NON-NLS-1$
+            new AnonymousTag("typewritertype"), //$NON-NLS-1$
+            new AnonymousTag("scripttype"), //$NON-NLS-1$
+            new AnonymousTag("point1"), //$NON-NLS-1$
+            new AnonymousTag("point1.5"), //$NON-NLS-1$
+            new AnonymousTag("point2"), //$NON-NLS-1$
+            new AnonymousTag("point2.5"), //$NON-NLS-1$
+            new AnonymousTag("point3"), //$NON-NLS-1$
+            new AnonymousTag("point3.5"), //$NON-NLS-1$
+            new AnonymousTag("point4"), //$NON-NLS-1$
+            new AnonymousTag("point4.5"), //$NON-NLS-1$
+            new AnonymousTag("point5"), //$NON-NLS-1$
+            new AnonymousTag("point5.5"), //$NON-NLS-1$
+            new AnonymousTag("point6"), //$NON-NLS-1$
+            new AnonymousTag("point7"), //$NON-NLS-1$
+            new AnonymousTag("point8"), //$NON-NLS-1$
+            new AnonymousTag("point9"), //$NON-NLS-1$
+            new AnonymousTag("point10"), //$NON-NLS-1$
+            new AnonymousTag("point11"), //$NON-NLS-1$
+            new AnonymousTag("point12"), //$NON-NLS-1$
+            new AnonymousTag("point14"), //$NON-NLS-1$
+            new AnonymousTag("point16"), //$NON-NLS-1$
+            new AnonymousTag("point18"), //$NON-NLS-1$
+            new AnonymousTag("point20"), //$NON-NLS-1$
+           new AnonymousTag("tt"), //$NON-NLS-1$
+            new AnonymousTag("hw"), //$NON-NLS-1$
         };
         for (int i = 0; i < tags.length; i++)
         {

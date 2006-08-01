@@ -136,7 +136,8 @@ public class RawLDBackend extends AbstractBackend
     {
         checkActive();
 
-        BookMetaData bmd = getBookMetaData();
+        SwordBookMetaData bmd = getBookMetaData();
+        String charset = bmd.getBookCharset();
         Key reply = new DefaultKeyList(null, bmd.getName());
 
         boolean isDailyDevotional = bmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS);
@@ -191,7 +192,7 @@ public class RawLDBackend extends AbstractBackend
                 byte[] keydata = new byte[keyend];
                 System.arraycopy(data, 0, keydata, 0, keyend);
 
-                String keytitle = new String(keydata).trim();
+                String keytitle = SwordUtil.decode(reply, keydata, charset).trim();
                 // for some wierd reason plain text (i.e. SourceType=0) dicts
                 // all get \ added to the ends of the index entries.
                 if (keytitle.endsWith("\\")) //$NON-NLS-1$
@@ -256,7 +257,7 @@ public class RawLDBackend extends AbstractBackend
             byte[] reply = new byte[remainder];
             System.arraycopy(data, keyend + 1, reply, 0, remainder);
 
-            return SwordUtil.decode(key, reply, charset);
+            return SwordUtil.decode(key, reply, charset).trim();
         }
         catch (IOException ex)
         {

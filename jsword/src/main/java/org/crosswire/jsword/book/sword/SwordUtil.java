@@ -21,11 +21,15 @@
  */
 package org.crosswire.jsword.book.sword;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
+import java.util.zip.InflaterInputStream;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
@@ -155,6 +159,31 @@ public final class SwordUtil
         }
 
         return uncompressed;
+    }
+    /**
+     * Uncompress a block of GZIP compressed data
+     * @param compressed The data to uncompress
+     * @param endsize The expected resultant data size
+     * @return The uncompressed data
+     * @throws IOException 
+     */
+    public static byte[] uncompress(byte[] compressed) throws IOException
+    {
+        final int BUFFER = 2048;
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        BufferedOutputStream out = new BufferedOutputStream(bos, BUFFER);
+        ByteArrayInputStream bis = new ByteArrayInputStream(compressed);
+        InflaterInputStream in = new InflaterInputStream(bis, new Inflater(), BUFFER);
+        byte[] buf = new byte[BUFFER];
+        int count;
+        while ((count = in.read(buf)) != -1)
+        {
+            out.write(buf, 0, count);
+        }
+        in.close();
+        out.flush();
+        out.close();
+        return bos.toByteArray();
     }
 
     /**

@@ -17,7 +17,7 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
+ * ID: $Id: BTag.java 1068 2006-04-08 02:20:41Z dmsmith $
  */
 package org.crosswire.jsword.book.filter.thml;
 
@@ -26,20 +26,20 @@ import org.jdom.Element;
 import org.xml.sax.Attributes;
 
 /**
- * THML Tag to process the superscript element.
+ * THML Tag to process the bold element.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class SupTag extends AbstractTag
+public class SubTag extends AbstractTag
 {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
     public String getTagName()
     {
-        return "sup"; //$NON-NLS-1$
+        return "sub"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)
@@ -49,7 +49,7 @@ public class SupTag extends AbstractTag
     public Element processTag(Element ele, Attributes attrs)
     {
         Element hi = OSISUtil.factory().createHI();
-        hi.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_SUPER);
+        hi.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_SUB);
         ele.addContent(hi);
         return hi;
     }
