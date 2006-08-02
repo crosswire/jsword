@@ -22,7 +22,6 @@
 package org.crosswire.jsword.book.sword;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.text.DateFormat;
@@ -39,9 +38,7 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.DataPolice;
-import org.crosswire.jsword.book.sword.RawLDBackend.IndexKey;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.DefaultLeafKeyList;
 import org.crosswire.jsword.passage.Key;
@@ -84,7 +81,7 @@ public class ZLDBackend extends AbstractBackend
      * The compressed index.
      */
     private File zdxFile;
- 
+
     /**
      * The compressed text.
      */
@@ -97,8 +94,8 @@ public class ZLDBackend extends AbstractBackend
     private boolean active;
     private Key keys;
     private int lastBlockNum = -1;
-    private static final byte[] emptyBytes = new byte[0];
-    private byte[] lastUncompressed = emptyBytes;
+    private static final byte[] EMPTY_BYTES = new byte[0];
+    private byte[] lastUncompressed = EMPTY_BYTES;
 
     /**
      * Simple ctor
@@ -337,9 +334,9 @@ public class ZLDBackend extends AbstractBackend
                 int blockSize = SwordUtil.decodeLittleEndian32(temp, 4);
 
                 temp = SwordUtil.readRAF(zdtRaf, blockStart, blockSize);
-                
+
                 decipher(temp);
-                
+
                 uncompressed = SwordUtil.uncompress(temp);
 
                 // cache the uncompressed data for next time
@@ -353,13 +350,13 @@ public class ZLDBackend extends AbstractBackend
             {
                 return ""; //$NON-NLS-1$
             }
-            int entryOffset = BLOCK_ENTRY_COUNT + (BLOCK_ENTRY_SIZE*entry);
+            int entryOffset = BLOCK_ENTRY_COUNT + (BLOCK_ENTRY_SIZE * entry);
             int entryStart = SwordUtil.decodeLittleEndian32(uncompressed, entryOffset);
             // Note: the actual entry is '\0' terminated
             int entrySize = SwordUtil.decodeLittleEndian32(uncompressed, entryOffset + 4);
             byte[] entryBytes = new byte[entrySize];
             System.arraycopy(uncompressed, entryStart, entryBytes, 0, entrySize);
-            
+
             String ret = SwordUtil.decode(key, entryBytes, charset).trim();
             return ret;
         }

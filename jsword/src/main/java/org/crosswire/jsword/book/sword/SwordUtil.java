@@ -138,7 +138,7 @@ public final class SwordUtil
     }
 
     /**
-     * Uncompress a block of GZIP compressed data
+     * Uncompress a block of (G)ZIP compressed data
      * @param compressed The data to uncompress
      * @param endsize The expected resultant data size
      * @return The uncompressed data
@@ -160,21 +160,22 @@ public final class SwordUtil
 
         return uncompressed;
     }
+
     /**
-     * Uncompress a block of GZIP compressed data
+     * Uncompress a block of (G)ZIP compressed data,
+     * when the resulting size is not known.
+     * 
      * @param compressed The data to uncompress
-     * @param endsize The expected resultant data size
      * @return The uncompressed data
      * @throws IOException 
      */
     public static byte[] uncompress(byte[] compressed) throws IOException
     {
-        final int BUFFER = 2048;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        BufferedOutputStream out = new BufferedOutputStream(bos, BUFFER);
+        BufferedOutputStream out = new BufferedOutputStream(bos, ZBUF_SIZE);
         ByteArrayInputStream bis = new ByteArrayInputStream(compressed);
-        InflaterInputStream in = new InflaterInputStream(bis, new Inflater(), BUFFER);
-        byte[] buf = new byte[BUFFER];
+        InflaterInputStream in = new InflaterInputStream(bis, new Inflater(), ZBUF_SIZE);
+        byte[] buf = new byte[ZBUF_SIZE];
         int count;
         while ((count = in.read(buf)) != -1)
         {
@@ -240,4 +241,9 @@ public final class SwordUtil
      * The log stream
      */
     private static final Logger log = Logger.getLogger(SwordUtil.class);
+
+    /**
+     * The size to read/write when unzipping a compressed byte array of unknown size.
+     */
+    final static int ZBUF_SIZE = 2048;
 }
