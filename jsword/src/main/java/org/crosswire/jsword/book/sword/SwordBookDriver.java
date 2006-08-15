@@ -80,54 +80,59 @@ public class SwordBookDriver extends AbstractBookDriver
         // Loop through the dirs in the lookup path
         for (int j = 0; j < dirs.length; j++)
         {
-            File mods = new File(dirs[j], SwordConstants.DIR_CONF);
-            if (mods.isDirectory())
-            {
-                String[] bookdirs = mods.list(new CustomFilenameFilter());
-
-                // Loop through the entries in this mods.d directory
-                for (int i = 0; i < bookdirs.length; i++)
-                {
-                    String bookdir = bookdirs[i];
-                    try
-                    {
-                        File configfile = new File(mods, bookdir);
-                        String internal = bookdir;
-                        if (internal.endsWith(SwordConstants.EXTENSION_CONF))
-                        {
-                            internal = internal.substring(0, internal.length() - 5);
-                        }
-                        SwordBookMetaData sbmd = new SwordBookMetaData(configfile, internal);
-                        sbmd.setDriver(this);
-
-                        Book book = createBook(sbmd, dirs[j]);
-                        valid.add(book);
-
-                        IndexManager imanager = IndexManagerFactory.getIndexManager();
-                        if (imanager.isIndexed(book))
-                        {
-                            sbmd.setIndexStatus(IndexStatus.DONE);
-                        }
-                        else
-                        {
-                            sbmd.setIndexStatus(IndexStatus.UNDONE);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        log.warn("Couldn't create SwordBookMetaData", ex); //$NON-NLS-1$
-                    }
-                }
-            }
-            else
-            {
-                log.debug("mods.d directory at " + mods + " does not exist"); //$NON-NLS-1$ //$NON-NLS-2$
-            }
+            getBooks(valid, dirs[j]);
         }
 
         ConfigEntry.dumpStatistics();
 
         return (Book[]) valid.toArray(new Book[valid.size()]);
+    }
+
+    private void getBooks(List valid, File moduleDir)
+    {
+        File mods = new File(moduleDir, SwordConstants.DIR_CONF);
+        if (mods.isDirectory())
+        {
+            String[] bookdirs = mods.list(new CustomFilenameFilter());
+    
+            // Loop through the entries in this mods.d directory
+            for (int i = 0; i < bookdirs.length; i++)
+            {
+                String bookdir = bookdirs[i];
+                try
+                {
+                    File configfile = new File(mods, bookdir);
+                    String internal = bookdir;
+                    if (internal.endsWith(SwordConstants.EXTENSION_CONF))
+                    {
+                        internal = internal.substring(0, internal.length() - 5);
+                    }
+                    SwordBookMetaData sbmd = new SwordBookMetaData(configfile, internal);
+                    sbmd.setDriver(this);
+    
+                    Book book = createBook(sbmd, moduleDir);
+                    valid.add(book);
+    
+                    IndexManager imanager = IndexManagerFactory.getIndexManager();
+                    if (imanager.isIndexed(book))
+                    {
+                        sbmd.setIndexStatus(IndexStatus.DONE);
+                    }
+                    else
+                    {
+                        sbmd.setIndexStatus(IndexStatus.UNDONE);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.warn("Couldn't create SwordBookMetaData", ex); //$NON-NLS-1$
+                }
+            }
+        }
+        else
+        {
+            log.debug("mods.d directory at " + mods + " does not exist"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
     }
 
     /* (non-Javadoc)
@@ -192,7 +197,7 @@ public class SwordBookDriver extends AbstractBookDriver
     }
 
     /**
-     * A helper class for the FtpSwordInstaller to tell us that it has copied a
+     * A helper class for the SwordInstaller to tell us that it has copied a
      * new Book into our install directory
      * @param sbmd The SwordBookMetaData object for the new Book
      * @param bookpath The path that we have installed to
@@ -326,14 +331,33 @@ public class SwordBookDriver extends AbstractBookDriver
     }
 
     /**
-     * Have an OS dependent guess at where Sword might be installed
+     * Have a guess at where mods.d might be found.
+     * Remember all the locations.
      */
     private static File[] getDefaultPaths()
     {
         List reply = new ArrayList();
 
-        // .jsword in the users home directory is the first location
-        reply.add(new File(System.getProperty(PROPERTY_USER_HOME) + File.separator + Project.DIR_PROJECT));
+        String home = System.getProperty(PROPERTY_USER_HOME);
+
+        // Is sword.conf in the current diretory?
+        readSwordConf(reply, "."); //$NON-NLS-1$
+        
+        // mods.d in the current directory?
+        testDefaultPath(reply, "."); //$NON-NLS-1$
+
+        // how about in the library, just next door?
+        testDefaultPath(reply, ".." + File.separator + DIR_SWORD_LIBRARY); //$NON-NLS-1$
+
+        // if there is a property set for the sword home directory
+        String swordhome = System.getProperty(PROPERTY_SWORD_HOME);
+        if (swordhome != null)
+        {
+            testDefaultPath(reply, swordhome);
+
+            // how about in the library, just next door?
+            testDefaultPath(reply, swordhome + File.separator + ".." + File.separator + DIR_SWORD_LIBRARY); //$NON-NLS-1$
+        }
 
         if (System.getProperty("os.name").startsWith("Windows")) //$NON-NLS-1$ //$NON-NLS-2$
         {
@@ -341,39 +365,29 @@ public class SwordBookDriver extends AbstractBookDriver
             // how about in the library, just next door?
             testDefaultPath(reply, DIR_WINDOWS_DEFAULT + File.separator + ".." + File.separator + DIR_SWORD_LIBRARY); //$NON-NLS-1$
         }
-        else
-        {
-            // If it isn't unix then assume some sort of unix
-            String [] sysconfigPaths = StringUtil.split(DIR_UNIX_GLOBAL_CONF, ':');
-            for (int i = 0; i < sysconfigPaths.length; i++)
-            {
-                readSwordConf(reply, sysconfigPaths[i]);
-            }
-        }
-
-        // if there is a property set for the sword home directory
-        String swordhome = System.getProperty(PROPERTY_SWORD_HOME);
-        if (swordhome != null)
-        {
-            testDefaultPath(reply, swordhome);
-            // how about in the library, just next door?
-            testDefaultPath(reply, swordhome + File.separator + ".." + File.separator + DIR_SWORD_LIBRARY); //$NON-NLS-1$
-        }
 
         // .sword in the users home directory?
-        testDefaultPath(reply, System.getProperty(PROPERTY_USER_HOME) + File.separator + DIR_SWORD_CONF);
+        readSwordConf(reply, home + File.separator + DIR_SWORD_CONF);
 
-        // mods.d in the current directory?
-        testDefaultPath(reply, new File(".").getAbsolutePath()); //$NON-NLS-1$
-        // how about in the library, just next door?
-        testDefaultPath(reply, new File("..").getAbsolutePath() + File.separator + DIR_SWORD_LIBRARY); //$NON-NLS-1$
+        // Check for sword.conf in the usual places
+        String [] sysconfigPaths = StringUtil.split(DIR_SWORD_GLOBAL_CONF, ':');
+        for (int i = 0; i < sysconfigPaths.length; i++)
+        {
+            readSwordConf(reply, sysconfigPaths[i]);
+        }
+
+        // finally look for mods.d in ~/.sword
+        testDefaultPath(reply, home + File.separator + DIR_SWORD_CONF);
+
+        // .jsword in the users home directory is the last location
+        reply.add(new File(home + File.separator + Project.DIR_PROJECT));
 
         return (File[]) reply.toArray(new File[reply.size()]);
     }
 
-    private static void readSwordConf(List reply, String swordConf)
+    private static void readSwordConf(List reply, File swordConfDir)
     {
-        File sysconfig = new File(swordConf);
+        File sysconfig = new File(swordConfDir, SWORD_GLOBAL_CONF);
         if (sysconfig.canRead())
         {
             try
@@ -392,6 +406,29 @@ public class SwordBookDriver extends AbstractBookDriver
         }
     }
 
+    private static void readSwordConf(List reply, String swordConfDir)
+    {
+        readSwordConf(reply, new File(swordConfDir));
+    }
+
+    /**
+     * Check to see if the given directory is a Sword mods.d directory
+     * and then add it to the list if it is.
+     */
+    private static void testDefaultPath(List reply, File path)
+    {
+        if (path == null)
+        {
+            return;
+        }
+
+        File mods = new File(path, SwordConstants.DIR_CONF);
+        if (mods.isDirectory() && mods.canRead())
+        {
+            reply.add(path);
+        }
+    }
+
     /**
      * Check to see if the given directory is a Sword mods.d directory
      * and then add it to the list if it is.
@@ -403,12 +440,7 @@ public class SwordBookDriver extends AbstractBookDriver
             return;
         }
 
-        File where = new File(path);
-        File mods = new File(path, SwordConstants.DIR_CONF);
-        if (mods.isDirectory() && mods.canRead())
-        {
-            reply.add(where);
-        }
+        testDefaultPath(reply, new File(path));
     }
 
     /**
@@ -464,7 +496,12 @@ public class SwordBookDriver extends AbstractBookDriver
     /**
      * Sword global config file
      */
-    private static final String DIR_UNIX_GLOBAL_CONF = "/etc/sword.conf:/usr/local/etc/sword.conf"; //$NON-NLS-1$
+    private static final String SWORD_GLOBAL_CONF = "sword.conf"; //$NON-NLS-1$
+
+    /**
+     * Sword global config file locations
+     */
+    private static final String DIR_SWORD_GLOBAL_CONF = "/etc:/usr/local/etc"; //$NON-NLS-1$
 
     /**
      * Sword global config file's path to where mods can be found
