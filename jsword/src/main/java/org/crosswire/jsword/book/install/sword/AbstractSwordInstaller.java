@@ -306,10 +306,20 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                     try
                     {
                         int size = (int) entry.getSize();
+
+                        // Every now and then an empty entry sneaks in
+                        if (size == 0)
+                        {
+                            log.error("Empty entry: " + internal); //$NON-NLS-1$
+                            continue;
+                        }
+
                         byte[] buffer = new byte[size];
                         if (tin.read(buffer) != size)
                         {
-                            log.warn("Did not read all that was expected " + internal); //$NON-NLS-1$
+                            // This should not happen, but if it does then skip it.
+                            log.error("Did not read all that was expected " + internal); //$NON-NLS-1$
+                            continue;
                         }
 
                         if (internal.endsWith(SwordConstants.EXTENSION_CONF))
@@ -329,7 +339,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                     }
                     catch (Exception ex)
                     {
-                        log.warn("Failed to load config for entry: " + internal, ex); //$NON-NLS-1$
+                        log.error("Failed to load config for entry: " + internal, ex); //$NON-NLS-1$
                     }
                 }
             }
