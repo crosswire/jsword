@@ -33,10 +33,27 @@ import org.crosswire.common.util.NetUtil;
 
 /**
  * The Project class looks after the source of project files.
+ * These are per user files and as such have a different location
+ * on different operating systems. These are:<br/>
+ * 
+ * <table>
+ * <tr><td>Mac OS X</td><td>~/Library/JSword</td></tr>
+ * <tr><td>Win NT/2000/XP</td><td>%APPDATA%/JSword</td></tr>
+ * <tr><td>Win 9x/ME with profiles enabled</td><td>%WINDIR%/profiles/Application Data/JSword</td></tr>
+ * <tr><td>Win 9x/ME</td><td>%WINDIR%/Application Data/JSword</td></tr>
+ * <tr><td>Unix and otherwise</td><td>~/.jsword</td></tr>
+ * </table>
+ * 
+ * <p>
+ * Previously the location was ~/.jsword, which is unfriendly in the Windows and Mac world.
+ * If this location is found on Mac or Windows, it will be moved to the new location,
+ * if different and possible.
+ * </p>
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public final class Project
 {
@@ -49,6 +66,21 @@ public final class Project
      * The JSword user settings directory
      */
     public static final String DIR_PROJECT = ".jsword"; //$NON-NLS-1$
+
+    /**
+     * The JSword user settings directory for Mac and Windows
+     */
+    public static final String DIR_PROJECT_ALT = "JSword"; //$NON-NLS-1$
+
+    /**
+     * The Windows user settings parent directory
+     */
+    public static final String WIN32_USER_DATA_AREA = "Application Data"; //$NON-NLS-1$
+
+    /**
+     * The Mac user settings parent directory
+     */
+    public static final String MAC_USER_DATA_AREA = "Library"; //$NON-NLS-1$
 
     /**
      * Accessor for the resource singleton.
@@ -69,8 +101,7 @@ public final class Project
     {
         try
         {
-            String path = System.getProperty("user.home") + File.separator + DIR_PROJECT; //$NON-NLS-1$
-            home = new URL(NetUtil.PROTOCOL_FILE, null, path);
+            establishUserProjectDir();
             CWClassLoader.setHome(home);
         }
         catch (MalformedURLException ex)
@@ -94,9 +125,89 @@ public final class Project
     }
 
     /**
+     * Establishes the user's project directory.
+     * @throws MalformedURLException
+     */
+    private void establishUserProjectDir() throws MalformedURLException
+    {
+        String user = System.getProperty("user.home"); //$NON-NLS-1$
+        String osName = System.getProperty("os.name"); //$NON-NLS-1$
+
+        URL path = new URL(NetUtil.PROTOCOL_FILE, null, user);
+        
+        String projectDir = DIR_PROJECT_ALT;
+    
+        if (osName.startsWith("Mac OS X")) //$NON-NLS-1$
+        {
+            path = NetUtil.lengthenURL(path, MAC_USER_DATA_AREA);
+        }
+        else if (osName.startsWith("Windows")) //$NON-NLS-1$
+        {
+            path = NetUtil.lengthenURL(path, WIN32_USER_DATA_AREA);
+        }
+        else
+        {
+            projectDir = DIR_PROJECT;
+        }
+
+        path = NetUtil.lengthenURL(path, projectDir);
+
+        URL oldPath = getDeprecatedUserProjectDir();
+        if (!migrateUserProjectDir(oldPath, path))
+        {
+            path = oldPath;
+        }
+
+        home = path;
+    }
+
+    /**
+     * Get the location where the project dir used to be.
+     * @return ~/.jsword
+     * @throws MalformedURLException
+     */
+    private URL getDeprecatedUserProjectDir() throws MalformedURLException
+    {
+        String user = System.getProperty("user.home"); //$NON-NLS-1$
+
+        URL path = new URL(NetUtil.PROTOCOL_FILE, null, user);
+        
+        path = NetUtil.lengthenURL(path, DIR_PROJECT);
+
+        return path;
+    }
+
+    /**
+     * Migrates the user's project dir, if necessary and possible.
+     * 
+     * @param oldPath the path to the old, deprecated location
+     * @param newPath the path to the new location
+     * @return true if the migration was possible or not needed.
+     */
+    private boolean migrateUserProjectDir(URL oldPath, URL newPath)
+    {
+        boolean result = true;
+        try
+        {
+            if (!oldPath.equals(newPath) && NetUtil.isDirectory(oldPath))
+            {
+                File oldDir = NetUtil.getAsFile(oldPath);
+                File newDir = NetUtil.getAsFile(newPath);
+                result = oldDir.renameTo(newDir);
+            }
+        }
+        catch (IOException e)
+        {
+            log.warn("Failed to move user's project directory", e); //$NON-NLS-1$
+            result = false;
+        }
+        return result;
+    }
+
+    /**
      * Get a the URL of a (potentially non-existant) properties file that we can
      * write to. This method of aquiring properties files is preferred over
-     * getResourceProperties() as this iw writable and can take into account
+     * getResourceProperties() as this is writable and can take into account
      * user preferences.
      * This method makes no promise that the URL returned is valid. It is
      * totally untested, so reading may well cause errors.
@@ -122,7 +233,7 @@ public final class Project
      * <p>As a result of these limitations it could be OK to use {@link File} in
      * place of {@link URL} (which is the norm for this project), however there
      * doesn't seem to be a good reason to relax this rule here.
-     * @param subject A moniker for the are to write to. This will be converted into a directory name.
+     * @param subject A moniker for the area to write to. This will be converted into a directory name.
      * @return A file: URL pointing at a local writable directory.
      */
     public URL getTempScratchSpace(String subject, boolean create) throws IOException
