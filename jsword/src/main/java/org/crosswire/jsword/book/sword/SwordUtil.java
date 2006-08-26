@@ -245,5 +245,5 @@ public final class SwordUtil
     /**
      * The size to read/write when unzipping a compressed byte array of unknown size.
      */
-    final static int ZBUF_SIZE = 2048;
+    private static final int ZBUF_SIZE = 2048;
 }

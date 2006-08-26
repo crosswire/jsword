@@ -37,7 +37,7 @@ import org.crosswire.common.util.NetUtil;
  * on different operating systems. These are:<br/>
  * 
  * <table>
- * <tr><td>Mac OS X</td><td>~/Library/JSword</td></tr>
+ * <tr><td>Mac OS X</td><td>~/Library/Application Support/JSword</td></tr>
  * <tr><td>Win NT/2000/XP</td><td>%APPDATA%/JSword</td></tr>
  * <tr><td>Win 9x/ME with profiles enabled</td><td>%WINDIR%/profiles/Application Data/JSword</td></tr>
  * <tr><td>Win 9x/ME</td><td>%WINDIR%/Application Data/JSword</td></tr>
@@ -80,7 +80,7 @@ public final class Project
     /**
      * The Mac user settings parent directory
      */
-    public static final String MAC_USER_DATA_AREA = "Library"; //$NON-NLS-1$
+    public static final String MAC_USER_DATA_AREA = "Library/Application Support"; //$NON-NLS-1$
 
     /**
      * Accessor for the resource singleton.
@@ -99,16 +99,7 @@ public final class Project
      */
     private Project()
     {
-        try
-        {
-            establishUserProjectDir();
-            CWClassLoader.setHome(home);
-        }
-        catch (MalformedURLException ex)
-        {
-            log.fatal("Failed to create home directory URL", ex); //$NON-NLS-1$
-            assert false : ex;
-        }
+        CWClassLoader.setHome(getUserProjectDir());
 
         try
         {
@@ -128,53 +119,83 @@ public final class Project
      * Establishes the user's project directory.
      * @throws MalformedURLException
      */
-    private void establishUserProjectDir() throws MalformedURLException
+    public URL getUserProjectDir(String unixDefault, String winMacDefault)
     {
-        String user = System.getProperty("user.home"); //$NON-NLS-1$
-        String osName = System.getProperty("os.name"); //$NON-NLS-1$
-
-        URL path = new URL(NetUtil.PROTOCOL_FILE, null, user);
-        
-        String projectDir = DIR_PROJECT_ALT;
-    
-        if (osName.startsWith("Mac OS X")) //$NON-NLS-1$
+        String projectDir = winMacDefault;
+        URL path = null;
+        try
         {
-            path = NetUtil.lengthenURL(path, MAC_USER_DATA_AREA);
+            if (userArea == null)
+            {
+                String user = System.getProperty("user.home"); //$NON-NLS-1$
+                String osName = System.getProperty("os.name"); //$NON-NLS-1$
+
+                path = new URL(NetUtil.PROTOCOL_FILE, null, user);
+
+                if (osName.startsWith("Mac OS X")) //$NON-NLS-1$
+                {
+                    path = NetUtil.lengthenURL(path, MAC_USER_DATA_AREA);
+                }
+                else if (osName.startsWith("Windows")) //$NON-NLS-1$
+                {
+                    path = NetUtil.lengthenURL(path, WIN32_USER_DATA_AREA);
+                }
+                else
+                {
+                    projectDir = unixDefault;
+                }
+                userArea = path;
+            }
+            path = NetUtil.lengthenURL(userArea, projectDir);
         }
-        else if (osName.startsWith("Windows")) //$NON-NLS-1$
+        catch (MalformedURLException ex)
         {
-            path = NetUtil.lengthenURL(path, WIN32_USER_DATA_AREA);
-        }
-        else
-        {
-            projectDir = DIR_PROJECT;
+            log.fatal("Failed to find user's private data area", ex); //$NON-NLS-1$
+            assert false : ex;
         }
 
-        path = NetUtil.lengthenURL(path, projectDir);
+        return path;
+    }
 
-        URL oldPath = getDeprecatedUserProjectDir();
-        if (!migrateUserProjectDir(oldPath, path))
+    /**
+     * Establishes the user's project directory.
+     * @throws MalformedURLException
+     */
+    public URL getUserProjectDir()
+    {
+        if (home == null)
         {
-            path = oldPath;
+            URL path = getUserProjectDir(DIR_PROJECT, DIR_PROJECT_ALT);
+            URL oldPath = getDeprecatedUserProjectDir();
+            home = migrateUserProjectDir(oldPath, path);
         }
 
-        home = path;
+        return home;
     }
 
     /**
      * Get the location where the project dir used to be.
+     * 
      * @return ~/.jsword
      * @throws MalformedURLException
      */
-    private URL getDeprecatedUserProjectDir() throws MalformedURLException
+    public URL getDeprecatedUserProjectDir()
     {
-        String user = System.getProperty("user.home"); //$NON-NLS-1$
+        try
+        {
+            String user = System.getProperty("user.home"); //$NON-NLS-1$
 
-        URL path = new URL(NetUtil.PROTOCOL_FILE, null, user);
-        
-        path = NetUtil.lengthenURL(path, DIR_PROJECT);
+            URL path = new URL(NetUtil.PROTOCOL_FILE, null, user);
+            path = NetUtil.lengthenURL(path, DIR_PROJECT);
 
-        return path;
+            return path;
+        }
+        catch (MalformedURLException ex)
+        {
+            log.fatal("Failed to create home directory URL", ex); //$NON-NLS-1$
+            assert false : ex;
+        }
+        return null;
     }
 
     /**
@@ -182,26 +203,26 @@ public final class Project
      * 
      * @param oldPath the path to the old, deprecated location
      * @param newPath the path to the new location
-     * @return true if the migration was possible or not needed.
+     * @return newPath if the migration was possible or not needed.
      */
-    private boolean migrateUserProjectDir(URL oldPath, URL newPath)
+    private URL migrateUserProjectDir(URL oldPath, URL newPath)
     {
-        boolean result = true;
-        try
+        if (oldPath.equals(newPath))
         {
-            if (!oldPath.equals(newPath) && NetUtil.isDirectory(oldPath))
+            return newPath;
+        }
+
+        if (NetUtil.isDirectory(oldPath))
+        {
+            File oldDir = new File(oldPath.getFile());
+            File newDir = new File(newPath.getFile());
+            if (oldDir.renameTo(newDir))
             {
-                File oldDir = NetUtil.getAsFile(oldPath);
-                File newDir = NetUtil.getAsFile(newPath);
-                result = oldDir.renameTo(newDir);
+                return newPath;
             }
+            return oldPath;
         }
-        catch (IOException e)
-        {
-            log.warn("Failed to move user's project directory", e); //$NON-NLS-1$
-            result = false;
-        }
-        return result;
+        return newPath;
     }
 
     /**
@@ -216,7 +237,7 @@ public final class Project
      */
     public URL getWritablePropertiesURL(String subject)
     {
-        return NetUtil.lengthenURL(home, subject + FileUtil.EXTENSION_PROPERTIES);
+        return NetUtil.lengthenURL(getUserProjectDir(), subject + FileUtil.EXTENSION_PROPERTIES);
     }
 
     /**
@@ -238,7 +259,7 @@ public final class Project
      */
     public URL getTempScratchSpace(String subject, boolean create) throws IOException
     {
-        URL temp = NetUtil.lengthenURL(home, subject);
+        URL temp = NetUtil.lengthenURL(getUserProjectDir(), subject);
 
         if (create && !NetUtil.isDirectory(temp))
         {
@@ -247,6 +268,11 @@ public final class Project
 
         return temp;
     }
+
+    /**
+     * The parent directory for the home of this application
+     */
+    private URL userArea;
 
     /**
      * The home for this application
