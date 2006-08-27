@@ -38,9 +38,7 @@ import org.crosswire.common.util.NetUtil;
  * 
  * <table>
  * <tr><td>Mac OS X</td><td>~/Library/Application Support/JSword</td></tr>
- * <tr><td>Win NT/2000/XP</td><td>%APPDATA%/JSword</td></tr>
- * <tr><td>Win 9x/ME with profiles enabled</td><td>%WINDIR%/profiles/Application Data/JSword</td></tr>
- * <tr><td>Win 9x/ME</td><td>%WINDIR%/Application Data/JSword</td></tr>
+ * <tr><td>Win NT/2000/XP/ME/9x</td><td>~/Application Data/JSword (~ is all over the place, but Java figures it out)</td></tr>
  * <tr><td>Unix and otherwise</td><td>~/.jsword</td></tr>
  * </table>
  * 
