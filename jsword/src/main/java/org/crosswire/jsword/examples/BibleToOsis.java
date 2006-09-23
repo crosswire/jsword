@@ -579,7 +579,7 @@ public class BibleToOsis
 
         if (osisID.equals("2Cor.13.14")) //$NON-NLS-1$
         {
-            input += "<w src=\"26\" lemma=\"strong:G575\" morph=\"robinson:PREP\"></w><w src=\"22\" lemma=\"strongs:G4314\" morph=\"robinson:PREP\"></w>"; //$NON-NLS-1$
+            input += "<w src=\"26\" lemma=\"strong:G575\" morph=\"robinson:PREP\"></w><w src=\"22\" lemma=\"strong:G4314\" morph=\"robinson:PREP\"></w>"; //$NON-NLS-1$
         }
 
         if (osisID.equals("1Thess.1.8")) //$NON-NLS-1$
@@ -606,6 +606,7 @@ public class BibleToOsis
             fixed = fixed.replaceAll("x-Strongs", "strong"); //$NON-NLS-1$ //$NON-NLS-2$
             fixed = fixed.replaceAll("x-Robinson", "robinson"); //$NON-NLS-1$ //$NON-NLS-2$
             fixed = fixed.replaceAll("split(ID|id)=\"", "type=\"x-split\" subType=\"x-"); //$NON-NLS-1$ //$NON-NLS-2$
+            fixed = fixed.replaceAll("strong:H00 ", ""); //$NON-NLS-1$ //$NON-NLS-2$
             if (!whole.equals(fixed))
             {
                 input = replace(input, whole, fixed);
