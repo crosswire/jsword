@@ -26,6 +26,7 @@ import java.util.NoSuchElementException;
 import java.util.TreeSet;
 
 import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.versification.BibleInfo;
 
 /**
  * Similar to a Passage, but that stores a ranking for each of the

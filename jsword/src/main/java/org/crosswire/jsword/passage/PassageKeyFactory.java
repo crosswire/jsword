@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Iterator;
 
+import org.crosswire.jsword.versification.BibleInfo;
+
 /**
  * An implementation of KeyFactory that works for most Bibles that contain all
  * the verses in the Bible.

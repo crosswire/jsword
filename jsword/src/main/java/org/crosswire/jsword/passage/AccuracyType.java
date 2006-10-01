@@ -23,6 +23,8 @@ package org.crosswire.jsword.passage;
 
 import java.io.Serializable;
 
+import org.crosswire.jsword.versification.BibleInfo;
+
 /**
  * Types of Accuracy for verse references.
  * For example:

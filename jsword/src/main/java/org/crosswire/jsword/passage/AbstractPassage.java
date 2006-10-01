@@ -36,6 +36,7 @@ import java.util.NoSuchElementException;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.StringUtil;
+import org.crosswire.jsword.versification.BibleInfo;
 
 /**
  * This is a base class to help with some of the common implementation

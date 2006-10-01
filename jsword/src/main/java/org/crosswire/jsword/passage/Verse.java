@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.versification.BibleInfo;
 
 /**
  * A Passage is a pointer to a single verse. Externally its unique

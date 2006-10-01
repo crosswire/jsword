@@ -28,6 +28,8 @@ import java.util.BitSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.crosswire.jsword.versification.BibleInfo;
+
 /**
  * A Passage that is implemented using a BitSet - one for each verse.
  * The attributes of the style are:<ul>
