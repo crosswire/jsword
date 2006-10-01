@@ -30,7 +30,6 @@ import java.util.regex.Pattern;
 import org.crosswire.common.util.CWClassLoader;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.CaseType;
-import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 
 /**

@@ -28,7 +28,6 @@ import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
 import org.crosswire.common.util.CWClassLoader;
-import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 
 /**
