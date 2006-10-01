@@ -163,7 +163,7 @@ public final class BibleInfo
      */
     public static String getOSISName(int book) throws NoSuchVerseException
     {
-        return bibleNames.getOSISName(book);
+        return OSISNames.getName(book);
     }
 
     /**
@@ -174,18 +174,20 @@ public final class BibleInfo
     public static int getBookNumber(String find)
     {
         int bookNum = -1;
-        if (!containsLetter(find))
+        if (containsLetter(find))
         {
-            return bookNum;
+            bookNum = OSISNames.getBookNumber(find);
+
+            if (bookNum == -1)
+            {
+                bookNum = bibleNames.getBookNumber(find);
+            }
+
+            if (bookNum == -1 && englishBibleNames != null)
+            {
+                bookNum = englishBibleNames.getBookNumber(find);
+            }
         }
-
-        bookNum = bibleNames.getBookNumber(find);
-
-        if (bookNum == -1 && englishBibleNames != null)
-        {
-            bookNum = englishBibleNames.getBookNumber(find);
-        }
-
         return bookNum;        
     }
 
@@ -463,7 +465,7 @@ public final class BibleInfo
             // If they are too big
             if (ref[BOOK] > BOOKS_IN_BIBLE)
             {
-                ref[BOOK] = BibleNames.Names.REVELATION;
+                ref[BOOK] = BibleNames.REVELATION;
                 ref[CHAPTER] = chaptersInBook(ref[BOOK]);
                 ref[VERSE] = versesInChapter(ref[BOOK], ref[CHAPTER]);
                 return ref;
@@ -476,7 +478,7 @@ public final class BibleInfo
 
                 if (ref[BOOK] > BOOKS_IN_BIBLE)
                 {
-                    ref[BOOK] = BibleNames.Names.REVELATION;
+                    ref[BOOK] = BibleNames.REVELATION;
                     ref[CHAPTER] = chaptersInBook(ref[BOOK]);
                     ref[VERSE] = versesInChapter(ref[BOOK], ref[CHAPTER]);
                     return ref;
@@ -495,7 +497,7 @@ public final class BibleInfo
 
                     if (ref[BOOK] > BOOKS_IN_BIBLE)
                     {
-                        ref[BOOK] = BibleNames.Names.REVELATION;
+                        ref[BOOK] = BibleNames.REVELATION;
                         ref[CHAPTER] = chaptersInBook(ref[BOOK]);
                         ref[VERSE] = versesInChapter(ref[BOOK], ref[CHAPTER]);
                         return ref;
@@ -568,7 +570,7 @@ public final class BibleInfo
      */
     public static String getSectionName(int section) throws NoSuchVerseException
     {
-        return bibleNames.getSectionName(section);
+        return sectionNames.getSectionName(section);
     }
 
     /**
@@ -596,12 +598,15 @@ public final class BibleInfo
     {
         Locale locale = Locale.getDefault();
         bibleNames = new BibleNames(locale);
+
         // If the locale is not the program's default get it for alternates
         Locale englishLocale = new Locale("en"); //$NON-NLS-1$
         if (!locale.getLanguage().equals(englishLocale.getLanguage()))
         {
             englishBibleNames = new BibleNames(englishLocale);
         }
+
+        sectionNames = new SectionNames();
     }
 
     /** Localized BibleNames */
@@ -609,6 +614,9 @@ public final class BibleInfo
 
     /** English BibleNames, or null when using the program's default locale */
     private static BibleNames englishBibleNames;
+
+    /** Localized Bible SectionNames */
+    private static SectionNames sectionNames;
 
     /**
      * How the book names are reported.
