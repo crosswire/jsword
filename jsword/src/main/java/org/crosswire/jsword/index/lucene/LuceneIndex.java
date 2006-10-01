@@ -54,7 +54,6 @@ import org.crosswire.jsword.index.AbstractIndex;
 import org.crosswire.jsword.index.IndexStatus;
 import org.crosswire.jsword.index.search.SearchModifier;
 import org.crosswire.jsword.passage.AbstractPassage;
-import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.NoSuchKeyException;
@@ -62,6 +61,7 @@ import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.PassageTally;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseFactory;
+import org.crosswire.jsword.versification.BibleInfo;
 
 /**
  * Implement the SearchEngine using Lucene as the search engine.
