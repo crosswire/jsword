@@ -21,6 +21,8 @@
  */
 package org.crosswire.jsword.passage;
 
+import org.crosswire.jsword.versification.BibleInfo;
+
 import junit.framework.TestCase;
 
 /**

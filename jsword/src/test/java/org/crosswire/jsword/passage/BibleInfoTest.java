@@ -24,6 +24,8 @@ package org.crosswire.jsword.passage;
 import junit.framework.TestCase;
 
 import org.crosswire.jsword.book.CaseType;
+import org.crosswire.jsword.versification.BibleInfo;
+import org.crosswire.jsword.versification.BibleNames;
 
 /**
  * JUnit Test.
@@ -462,8 +464,8 @@ public class BibleInfoTest extends TestCase
 
     public void testNames() throws Exception
     {
-        assertEquals(BibleInfo.Names.GENESIS, 1);
-        assertEquals(BibleInfo.Names.REVELATION, 66);
+        assertEquals(BibleNames.GENESIS, 1);
+        assertEquals(BibleNames.REVELATION, 66);
     }
 
     /**
