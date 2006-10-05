@@ -101,13 +101,11 @@ public class GZIPBackend extends AbstractBackend
     /**
      * Simple ctor
      */
-    public GZIPBackend(SwordBookMetaData sbmd, File rootPath, BlockType blockType) throws BookException
+    public GZIPBackend(SwordBookMetaData sbmd, BlockType blockType) throws BookException
     {
-        super(sbmd, rootPath);
+        super(sbmd);
 
-        String dataPath = sbmd.getProperty(ConfigEntryType.DATA_PATH);
-        File baseurl = new File(rootPath, dataPath);
-        String path = baseurl.getAbsolutePath();
+        String path = getExpandedDataPath();
         String otAllButLast = path + File.separator + SwordConstants.FILE_OT + '.' + blockType.getIndicator() + SUFFIX_PART1;
         idxFile[SwordConstants.TESTAMENT_OLD] = new File(otAllButLast + SUFFIX_INDEX);
         textFile[SwordConstants.TESTAMENT_OLD] = new File(otAllButLast + SUFFIX_TEXT);

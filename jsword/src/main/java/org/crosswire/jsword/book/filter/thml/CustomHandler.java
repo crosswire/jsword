@@ -195,6 +195,7 @@ public class CustomHandler extends DefaultHandler
             new ForeignTag(),
             new FontTag(),
             new HrTag(),
+            new ImgTag(),
             new ITag(),
             new LiTag(),
             new NoteTag(),
@@ -225,7 +226,6 @@ public class CustomHandler extends DefaultHandler
             new AliasTag("dl", new UlTag()), //$NON-NLS-1$
             new AliasTag("dd", new LiTag()), //$NON-NLS-1$
             new AliasTag("dt", new LiTag()), //$NON-NLS-1$
-            new IgnoreTag("img"), //$NON-NLS-1$
             new IgnoreTag("span"), //$NON-NLS-1$
             new IgnoreTag("dir"), //$NON-NLS-1$
             new IgnoreTag("pre"), //$NON-NLS-1$

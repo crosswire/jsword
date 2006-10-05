@@ -56,9 +56,9 @@ public class RawLDBackend extends AbstractBackend
      * Simple ctor
      * @param datasize We need to know how many bytes in the size portion of the index
      */
-    public RawLDBackend(SwordBookMetaData sbmd, File rootPath, int datasize) throws BookException
+    public RawLDBackend(SwordBookMetaData sbmd, int datasize) throws BookException
     {
-        super(sbmd, rootPath);
+        super(sbmd);
         this.datasize = datasize;
 
         if (datasize != 2 && datasize != 4)
@@ -66,9 +66,8 @@ public class RawLDBackend extends AbstractBackend
             throw new BookException(Msg.TYPE_UNKNOWN);
         }
 
-        String dataPath = sbmd.getProperty(ConfigEntryType.DATA_PATH);
-        File baseurl = new File(rootPath, dataPath);
-        String path = baseurl.getAbsolutePath();
+        String path = getExpandedDataPath();
+
 
         idxFile = new File(path + SwordConstants.EXTENSION_INDEX);
         datFile = new File(path + SwordConstants.EXTENSION_DATA);

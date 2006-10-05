@@ -245,7 +245,7 @@ public final class SectionNames
         return null;
     }
 
-    private static final String SECTION_KEY = "BibleNames.Sections."; //$NON-NLS-1$
+    private static final String SECTION_KEY = "Sections."; //$NON-NLS-1$
 
     /**
      * Handy section finder. There is a bit of moderately bad programming

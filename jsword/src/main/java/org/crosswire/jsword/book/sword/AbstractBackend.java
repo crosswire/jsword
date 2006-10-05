@@ -22,9 +22,11 @@
 package org.crosswire.jsword.book.sword;
 
 import java.io.File;
+import java.net.URL;
 
 import org.crosswire.common.activate.Activatable;
 import org.crosswire.common.crypt.Sapphire;
+import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
 
@@ -42,18 +44,9 @@ public abstract class AbstractBackend implements Activatable
      * @param sbmd
      * @param location
      */
-    public AbstractBackend(SwordBookMetaData sbmd, File location)
+    public AbstractBackend(SwordBookMetaData sbmd)
     {
         bmd = sbmd;
-        rootPath = location;
-    }
-
-    /**
-     * @return Returns the root path.
-     */
-    public File getRootPath()
-    {
-        return rootPath;
     }
 
     /**
@@ -82,6 +75,25 @@ public abstract class AbstractBackend implements Activatable
         }
     }
 
+    public String getExpandedDataPath() throws BookException
+    {
+        URL loc = NetUtil.lengthenURL(bmd.getLibrary(), bmd.getProperty(ConfigEntryType.DATA_PATH));
+
+        if (loc == null)
+        {
+            throw new BookException(Msg.MISSING_FILE);
+        }
+
+        try
+        {
+            return new File(loc.getFile()).getAbsolutePath();
+        }
+        catch (Exception e)
+        {
+            throw new BookException(Msg.MISSING_FILE, e);
+        }
+    }
+
     /**
      * Initialise a AbstractBackend before use. This method needs to call addKey() a
      * number of times on SwordDictionary
@@ -103,5 +115,4 @@ public abstract class AbstractBackend implements Activatable
     public abstract boolean isSupported();
 
     private SwordBookMetaData bmd;
-    private File rootPath;
 }

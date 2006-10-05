@@ -21,8 +21,6 @@
  */
 package org.crosswire.jsword.book.sword;
 
-import java.io.File;
-
 import org.crosswire.common.activate.Lock;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
@@ -39,9 +37,9 @@ public class LZSSBackend extends AbstractBackend
     /**
      * Simple ctor
      */
-    public LZSSBackend(SwordBookMetaData sbmd, File rootPath)
+    public LZSSBackend(SwordBookMetaData sbmd)
     {
-        super(sbmd, rootPath);
+        super(sbmd);
     }
 
     /* (non-Javadoc)

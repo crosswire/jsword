@@ -21,6 +21,8 @@
  */
 package org.crosswire.jsword.book.basic;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -163,6 +165,48 @@ public abstract class AbstractBookMetaData implements BookMetaData
     public String getLanguage()
     {
         return (String) getProperty(KEY_LANGUAGE);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getLibrary()
+     */
+    public URL getLibrary()
+    {
+        URL url = null;
+        try
+        {
+            String loc = (String) getProperty(KEY_LIBRARY_URL);
+            if (loc != null)
+            {
+                url = new URL(loc);
+            }
+            return url;
+        }
+        catch (MalformedURLException e)
+        {
+            return null;
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getLocation()
+     */
+    public URL getLocation()
+    {
+        URL url = null;
+        try
+        {
+            String loc = (String) getProperty(KEY_LOCATION_URL);
+            if (loc != null)
+            {
+                url = new URL(loc);
+            }
+            return url;
+        }
+        catch (MalformedURLException e)
+        {
+            return null;
+        }
     }
 
     /* (non-Javadoc)

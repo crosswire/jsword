@@ -118,19 +118,16 @@ public final class OSISNames
     private static void initialize()
     {
         int booksInBible = BibleInfo.booksInBible();
-        if (osisBooks == null)
+        osisBooks = new String[booksInBible];
+        osisMap = new HashMap(booksInBible);
+
+        // Get all the OSIS standard book names
+        ResourceBundle resources = ResourceBundle.getBundle(OSISNames.class.getName(), Locale.getDefault(), new CWClassLoader(OSISNames.class));
+
+        for (int i = 0; i < osisBooks.length; i++ )
         {
-            osisBooks = new String[booksInBible];
-            osisMap   = new HashMap(booksInBible);
-
-            // Get all the OSIS standard book names
-            ResourceBundle resources = ResourceBundle.getBundle(OSIS_PROPERTIES, Locale.getDefault(), new CWClassLoader(OSISNames.class));
-
-            for (int i = 0; i < osisBooks.length; i++)
-            {
-                osisBooks[i] = getString(resources, OSIS_KEY + (i + 1));
-                osisMap.put(normalize(osisBooks[i]), new Integer(i + 1));
-            }
+            osisBooks[i] = getString(resources, OSIS_KEY + (i + 1));
+            osisMap.put(normalize(osisBooks[i]), new Integer(i + 1));
         }
     }
 
@@ -150,20 +147,19 @@ public final class OSISNames
         return null;
     }
 
+    /** remove spaces and punctuation in Bible Names */
+    private static Pattern      normPattern    = Pattern.compile("[. ]"); //$NON-NLS-1$
+
     /**
      * A singleton used to do initialization. Could be used to change static methods to non-static
      */
     protected static final OSISNames instance = new OSISNames();
 
-    private static final String OSIS_KEY = "BibleNames.OSIS."; //$NON-NLS-1$
-    private static final String OSIS_PROPERTIES = "OSISNames"; //$NON-NLS-1$
+    private static final String OSIS_KEY = "OSIS."; //$NON-NLS-1$
 
     /** Standard OSIS names for the book of the Bible, in mixed case */
     private static String[] osisBooks;
 
     /** Standard OSIS names for the book of the Bible, in lowercase, generated at runtime  */
     private static Map osisMap;
-
-    private static Pattern normPattern = Pattern.compile("[. ]"); //$NON-NLS-1$
-
 }

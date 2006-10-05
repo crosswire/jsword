@@ -21,8 +21,6 @@
  */
 package org.crosswire.jsword.book.sword;
 
-import java.io.File;
-
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
 import org.crosswire.jsword.book.BookException;
@@ -40,9 +38,9 @@ public class GenBookBackend extends AbstractBackend
     /**
      * Simple ctor
      */
-    public GenBookBackend(SwordBookMetaData sbmd, File rootPath)
+    public GenBookBackend(SwordBookMetaData sbmd)
     {
-        super(sbmd, rootPath);
+        super(sbmd);
     }
 
     /* (non-Javadoc)

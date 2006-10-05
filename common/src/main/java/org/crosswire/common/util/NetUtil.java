@@ -347,7 +347,7 @@ public final class NetUtil
         String extra = anExtra;
         try
         {
-            char firstChar = extra.charAt(extra.length() - 1);
+            char firstChar = extra.charAt(0);
             if (isSeparator(firstChar))
             {
                 extra = extra.substring(1);

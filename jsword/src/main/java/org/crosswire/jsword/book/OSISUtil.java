@@ -200,6 +200,7 @@ public final class OSISUtil
     public static final String OSIS_ELEMENT_LIST = "list"; //$NON-NLS-1$
     public static final String OSIS_ELEMENT_P = "p"; //$NON-NLS-1$
     public static final String OSIS_ELEMENT_ITEM = "item"; //$NON-NLS-1$
+    public static final String OSIS_ELEMENT_FIGURE = "figure"; //$NON-NLS-1$
     public static final String OSIS_ELEMENT_FOREIGN = "foreign"; //$NON-NLS-1$
     public static final String OSIS_ELEMENT_W = "w"; //$NON-NLS-1$
     public static final String OSIS_ELEMENT_CHAPTER = "chapter"; //$NON-NLS-1$
@@ -222,6 +223,7 @@ public final class OSISUtil
     public static final String OSIS_ATTR_SID = "sID"; //$NON-NLS-1$
     public static final String OSIS_ATTR_EID = "eID"; //$NON-NLS-1$
     public static final String ATTRIBUTE_W_LEMMA = "lemma"; //$NON-NLS-1$
+    public static final String ATTRIBUTE_FIGURE_SRC = "src"; //$NON-NLS-1$
     public static final String OSIS_ATTR_TYPE = "type"; //$NON-NLS-1$
     public static final String OSIS_ATTR_SUBTYPE = "subType"; //$NON-NLS-1$
     public static final String OSIS_ATTR_REF = "osisRef"; //$NON-NLS-1$
@@ -338,6 +340,14 @@ public final class OSISUtil
         public Element createW()
         {
             return new Element(OSIS_ELEMENT_W);
+        }
+
+        /**
+         * 
+         */
+        public Element createFigure()
+        {
+            return new Element(OSIS_ELEMENT_FIGURE);
         }
 
         /**

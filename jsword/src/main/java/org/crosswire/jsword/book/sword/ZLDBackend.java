@@ -101,13 +101,11 @@ public class ZLDBackend extends AbstractBackend
      * Simple ctor
      * @throws BookException 
      */
-    public ZLDBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
+    public ZLDBackend(SwordBookMetaData sbmd) throws BookException
     {
-        super(sbmd, rootPath);
+        super(sbmd);
 
-        String dataPath = sbmd.getProperty(ConfigEntryType.DATA_PATH);
-        File baseurl = new File(rootPath, dataPath);
-        String path = baseurl.getAbsolutePath();
+        String path = getExpandedDataPath();
 
         idxFile = new File(path + EXTENSION_INDEX);
         datFile = new File(path + EXTENSION_DATA);

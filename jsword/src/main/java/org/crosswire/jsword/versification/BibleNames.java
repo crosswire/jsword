@@ -281,9 +281,9 @@ public final class BibleNames
         return null;
     }
 
-    private static final String FULL_KEY       = "BibleNames.Full.";     //$NON-NLS-1$
-    private static final String SHORT_KEY      = "BibleNames.Short.";    //$NON-NLS-1$
-    private static final String ALT_KEY        = "BibleNames.Alt.";      //$NON-NLS-1$
+    private static final String FULL_KEY       = "Full.";     //$NON-NLS-1$
+    private static final String SHORT_KEY      = "Short.";    //$NON-NLS-1$
+    private static final String ALT_KEY        = "Alt.";      //$NON-NLS-1$
 
     /**
      * Handy book finder
@@ -355,6 +355,9 @@ public final class BibleNames
     public static final byte    JUDE           = 65;
     public static final byte    REVELATION     = 66;
 
+    /** remove spaces and punctuation in Bible Names */
+    private static Pattern      normPattern    = Pattern.compile("[. ]"); //$NON-NLS-1$
+
     /** The locale for the Bible Names */
     private Locale              locale;
 
@@ -393,6 +396,4 @@ public final class BibleNames
      * generated at runtime
      */
     private Map                 altBooksMap;
-
-    private static Pattern      normPattern    = Pattern.compile("[. ]"); //$NON-NLS-1$
 }

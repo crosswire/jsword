@@ -1231,6 +1231,44 @@ public class ConfigEntryType implements Serializable
     public static final ConfigEntryType SHORT_COPYRIGHT = new ConfigEntryType("ShortCopyright"); //$NON-NLS-1$
 
     /**
+     * The location of a collection of modules. JSword uses this to install and delete a module.
+     */
+    public static final ConfigEntryType LIBRARY_URL = new ConfigEntryType("LibraryURL") //$NON-NLS-1$
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.ConfigEntryType#isSynthetic()
+         */
+        public boolean isSynthetic()
+        {
+            return true;
+        }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = -2468890875139856087L;
+    };
+
+    /**
+     * The location of the module. JSword uses this to access a module.
+     */
+    public static final ConfigEntryType LOCATION_URL = new ConfigEntryType("LocationURL") //$NON-NLS-1$
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.ConfigEntryType#isSynthetic()
+         */
+        public boolean isSynthetic()
+        {
+            return true;
+        }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = -2468890875139856087L;
+    };
+
+    /**
      * Simple ctor
      */
     protected ConfigEntryType(String name)
@@ -1470,5 +1508,6 @@ public class ConfigEntryType implements Serializable
         LANGUAGE_TO,
         SHORT_PROMO,
         SHORT_COPYRIGHT,
+        LOCATION_URL,
     };
 }

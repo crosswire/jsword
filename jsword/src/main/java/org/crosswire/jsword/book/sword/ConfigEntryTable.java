@@ -91,6 +91,7 @@ public class ConfigEntryTable
             loadContents(in);
             in.close();
         }
+        adjustDataPath();
         adjustLanguage();
         adjustBookType();
         adjustName();
@@ -125,6 +126,7 @@ public class ConfigEntryTable
             loadContents(in);
             in.close();
         }
+        adjustDataPath();
         adjustLanguage();
         adjustBookType();
         adjustName();
@@ -521,11 +523,19 @@ public class ConfigEntryTable
      * @param type
      * @param aValue
      */
-    private void add(ConfigEntryType type, String aValue)
+    public void add(ConfigEntryType type, String aValue)
     {
         table.put(type, new ConfigEntry(internal, type, aValue));
     }
 
+    private void adjustDataPath()
+    {
+        String datapath = (String) getValue(ConfigEntryType.DATA_PATH);
+        if (datapath.startsWith("./")) //$NON-NLS-1$
+        {
+            add(ConfigEntryType.DATA_PATH, datapath.substring(2));
+        }
+    }
     private void adjustLanguage()
     {
         // Java thinks it is LtoR but it is stated to be something else

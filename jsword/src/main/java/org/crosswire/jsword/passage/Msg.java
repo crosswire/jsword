@@ -42,16 +42,6 @@ public final class Msg extends MsgBase
     static final Msg ABSTRACT_BOOK_SINGULAR = new Msg("AbstractPassage.BookSingular"); //$NON-NLS-1$
     static final Msg ABSTRACT_BOOK_PLURAL = new Msg("AbstractPassage.BookPlural"); //$NON-NLS-1$
 
-    static final Msg BOOKS_BOOK = new Msg("BibleInfo.Book"); //$NON-NLS-1$
-    static final Msg BOOKS_SECTION = new Msg("BibleInfo.Section"); //$NON-NLS-1$
-    static final Msg BOOKS_NUMBER = new Msg("BibleInfo.Number"); //$NON-NLS-1$
-    static final Msg BOOKS_FIND = new Msg("BibleInfo.Find"); //$NON-NLS-1$
-    static final Msg BOOKS_BOOKCHAP = new Msg("BibleInfo.BookChap"); //$NON-NLS-1$
-    static final Msg BOOKS_ORDINAL = new Msg("BibleInfo.Ordinal"); //$NON-NLS-1$
-    static final Msg BOOKS_DECODE = new Msg("BibleInfo.Decode"); //$NON-NLS-1$
-    static final Msg BOOKS_CHAPTER = new Msg("BibleInfo.Chapter"); //$NON-NLS-1$
-    static final Msg BOOKS_VERSE = new Msg("BibleInfo.Verse"); //$NON-NLS-1$
-
     static final Msg RANGE_BLURBOOK = new Msg("VerseRange.BlurBook"); //$NON-NLS-1$
     static final Msg RANGE_BLURNONE = new Msg("VerseRange.BlurNone"); //$NON-NLS-1$
     static final Msg RANGE_HICOUNT = new Msg("VerseRange.HiCount"); //$NON-NLS-1$

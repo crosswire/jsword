@@ -21,6 +21,7 @@
  */
 package org.crosswire.jsword.book;
 
+import java.net.URL;
 import java.util.Map;
 
 import org.crosswire.jsword.index.IndexStatus;
@@ -176,6 +177,20 @@ public interface BookMetaData extends Comparable
     boolean hasFeature(FeatureType feature);
 
     /**
+     * Get the base URL for library of this module.
+     * 
+     * @return the base URL or null if there is none
+     */
+    URL getLibrary();
+
+    /**
+     * Get the base URL for relative urls in the document.
+     * 
+     * @return the base URL or null if there is none
+     */
+    URL getLocation();
+
+    /**
      * Get a list of all the properties available to do with this Book.
      * The returned Properties will be read-only so any attempts to alter it
      * will fail.
@@ -229,6 +244,16 @@ public interface BookMetaData extends Comparable
      * The key for the initials in the properties map
      */
     String KEY_INITIALS = "Initials"; //$NON-NLS-1$
+
+    /**
+     * The key for the URL locating where this book is installed
+     */
+    String KEY_LIBRARY_URL = "LibraryURL"; //$NON-NLS-1$
+
+    /**
+     * The key for the URL locating this book
+     */
+    String KEY_LOCATION_URL = "LocationURL"; //$NON-NLS-1$
 
     /**
      * The key for the indexed status in the properties map

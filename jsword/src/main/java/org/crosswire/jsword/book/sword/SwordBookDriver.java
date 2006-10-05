@@ -22,11 +22,13 @@
 package org.crosswire.jsword.book.sword;
 
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
@@ -100,11 +102,11 @@ public class SwordBookDriver extends AbstractBookDriver
                     {
                         internal = internal.substring(0, internal.length() - 5);
                     }
-                    SwordBookMetaData sbmd = new SwordBookMetaData(configfile, internal);
+                    SwordBookMetaData sbmd = new SwordBookMetaData(configfile, internal, NetUtil.getURL(bookDir));
                     sbmd.setDriver(this);
 
                     // Only take the first "installation" of the Book
-                    Book book = createBook(sbmd, bookDir);
+                    Book book = createBook(sbmd);
                     if (!valid.contains(book))
                     {
                         valid.add(book);
@@ -162,8 +164,6 @@ public class SwordBookDriver extends AbstractBookDriver
             throw new BookException(Msg.DELETE_FAILED, new Object [] {confFile});
         }
 
-        File bookDir = new File(dlDir, sbmd.getBookPath());
-
         // Delete the conf
         List failures = FileUtil.delete(confFile);
         if (failures.size() == 0)
@@ -173,8 +173,21 @@ public class SwordBookDriver extends AbstractBookDriver
             // But if the conf is present and the book is gone,
             // then we get errors.
             // Delete the download book's dir
-            failures = FileUtil.delete(bookDir);
-            Books.installed().removeBook(dead);
+            try
+            {
+                URL loc = sbmd.getLocation();
+                if (loc == null)
+                {
+                    throw new BookException(Msg.DELETE_FAILED, new Object [] {confFile});
+                }
+                File bookDir = new File(loc.getFile());
+                failures = FileUtil.delete(bookDir);
+                Books.installed().removeBook(dead);
+            }
+            catch (Exception e)
+            {
+            }
+
         }
 
         // TODO(DM): list all that failed
@@ -200,13 +213,13 @@ public class SwordBookDriver extends AbstractBookDriver
      * @param bookpath The path that we have installed to
      * @throws BookException
      */
-    public static void registerNewBook(SwordBookMetaData sbmd, File bookpath) throws BookException
+    public static void registerNewBook(SwordBookMetaData sbmd) throws BookException
     {
         BookDriver[] drivers = Books.installed().getDriversByClass(SwordBookDriver.class);
         for (int i = 0; i < drivers.length; i++)
         {
             SwordBookDriver sdriver = (SwordBookDriver) drivers[i];
-            Book book = sdriver.createBook(sbmd, bookpath);
+            Book book = sdriver.createBook(sbmd);
             Books.installed().addBook(book);
         }
     }
@@ -214,7 +227,7 @@ public class SwordBookDriver extends AbstractBookDriver
     /**
      * Create a Book appropriate for the BookMetaData
      */
-    private Book createBook(SwordBookMetaData sbmd, File progdir) throws BookException
+    private Book createBook(SwordBookMetaData sbmd) throws BookException
     {
         BookType modtype = sbmd.getBookType();
         if (modtype.getBookCategory() == null)
@@ -224,7 +237,7 @@ public class SwordBookDriver extends AbstractBookDriver
             throw new BookException(Msg.TYPE_UNSUPPORTED);
         }
 
-        return modtype.createBook(sbmd, progdir);
+        return modtype.createBook(sbmd);
     }
 
     /**

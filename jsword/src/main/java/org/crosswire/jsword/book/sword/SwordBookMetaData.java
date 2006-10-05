@@ -23,11 +23,14 @@ package org.crosswire.jsword.book.sword;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.basic.AbstractBookMetaData;
@@ -64,9 +67,15 @@ public class SwordBookMetaData extends AbstractBookMetaData
      * @param internal
      * @throws IOException
      */
-    public SwordBookMetaData(File file, String internal) throws IOException
+    public SwordBookMetaData(File file, String internal, URL bookRootPath) throws IOException
     {
         cet = new ConfigEntryTable(file, internal);
+        cet.add(ConfigEntryType.LIBRARY_URL, bookRootPath.toExternalForm());
+        // Currently all DATA_PATH entries end in / to indicate dirs or not to indicate file prefixes
+        String datapath = getProperty(ConfigEntryType.DATA_PATH);
+        datapath = datapath.substring(0, datapath.lastIndexOf('/'));
+        URL location = NetUtil.lengthenURL(bookRootPath, datapath);
+        cet.add(ConfigEntryType.LOCATION_URL, location.toExternalForm());
         buildProperties();
     }
 
@@ -182,24 +191,24 @@ public class SwordBookMetaData extends AbstractBookMetaData
     }
 
     /**
-     * @return the relative path of the book.
+     * @return the absolute path of the book as an URL.
      */
-    public String getBookPath()
+    public URL getLocation()
     {
-        // The path begins with ./
-        String dataPath = getProperty(ConfigEntryType.DATA_PATH).substring(2);
-        // Dictionaries and Daily Devotionals end with the prefix of the data
-        // files name, not a directory name.
-        // Lots of paths end with '/'
-        BookCategory bc = getBookCategory();
-        if (bc == BookCategory.DICTIONARY
-            || bc == BookCategory.GLOSSARY
-            || bc == BookCategory.DAILY_DEVOTIONS
-            || dataPath.charAt(dataPath.length() - 1) == '/')
+        URL url = null;
+        try
         {
-            dataPath = dataPath.substring(0, dataPath.lastIndexOf('/'));
+            String loc = getProperty(ConfigEntryType.LOCATION_URL);
+            if (loc != null)
+            {
+                url = new URL(loc);
+            }
+            return url;
         }
-        return dataPath;
+        catch (MalformedURLException e)
+        {
+            return null;
+        }
     }
 
     /* (non-Javadoc)

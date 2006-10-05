@@ -21,7 +21,6 @@
  */
 package org.crosswire.jsword.book.sword;
 
-import java.io.File;
 import java.io.Serializable;
 
 import org.crosswire.jsword.book.Book;
@@ -48,9 +47,9 @@ public abstract class BookType implements Serializable
             return new SwordBook(sbmd, backend);
         }
 
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
         {
-            return new RawBackend(sbmd, rootPath);
+            return new RawBackend(sbmd);
         }
 
         /**
@@ -69,9 +68,9 @@ public abstract class BookType implements Serializable
             return new SwordBook(sbmd, backend);
         }
 
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
         {
-            return getCompressedBackend(sbmd, rootPath);
+            return getCompressedBackend(sbmd);
         }
 
         protected boolean isBackendSupported(SwordBookMetaData sbmd)
@@ -95,9 +94,9 @@ public abstract class BookType implements Serializable
             return new SwordBook(sbmd, backend);
         }
 
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
         {
-            return new RawBackend(sbmd, rootPath);
+            return new RawBackend(sbmd);
         }
 
         /**
@@ -116,9 +115,9 @@ public abstract class BookType implements Serializable
             return new SwordBook(sbmd, backend);
         }
 
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
         {
-            return getCompressedBackend(sbmd, rootPath);
+            return getCompressedBackend(sbmd);
         }
 
         protected boolean isBackendSupported(SwordBookMetaData sbmd)
@@ -142,9 +141,9 @@ public abstract class BookType implements Serializable
             return new SwordBook(sbmd, backend);
         }
 
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
         {
-            return new RawBackend(sbmd, rootPath);
+            return new RawBackend(sbmd);
         }
 
         /**
@@ -163,9 +162,9 @@ public abstract class BookType implements Serializable
             return new SwordBook(sbmd, backend);
         }
 
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
         {
-            return new RawBackend(sbmd, rootPath);
+            return new RawBackend(sbmd);
         }
 
         /**
@@ -188,9 +187,9 @@ public abstract class BookType implements Serializable
             return new SwordDictionary(sbmd, backend);
         }
 
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
         {
-            return new RawLDBackend(sbmd, rootPath, 2);
+            return new RawLDBackend(sbmd, 2);
         }
 
         /**
@@ -213,9 +212,9 @@ public abstract class BookType implements Serializable
             return new SwordDictionary(sbmd, backend);
         }
 
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
         {
-            return new RawLDBackend(sbmd, rootPath, 4);
+            return new RawLDBackend(sbmd, 4);
         }
 
         /**
@@ -238,9 +237,9 @@ public abstract class BookType implements Serializable
             return new SwordDictionary(sbmd, backend);
         }
 
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
         {
-            return new ZLDBackend(sbmd, rootPath);
+            return new ZLDBackend(sbmd);
         }
 
         /**
@@ -259,9 +258,9 @@ public abstract class BookType implements Serializable
             return new SwordBook(sbmd, backend);
         }
 
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
         {
-            return new GenBookBackend(sbmd, rootPath);
+            return new GenBookBackend(sbmd);
         }
 
         protected boolean isBackendSupported(SwordBookMetaData sbmd)
@@ -335,9 +334,9 @@ public abstract class BookType implements Serializable
      * Create a Book appropriate for the BookMetaData
      * @throws BookException
      */
-    public Book createBook(SwordBookMetaData sbmd, File progdir) throws BookException
+    public Book createBook(SwordBookMetaData sbmd) throws BookException
     {
-        AbstractBackend backend = getBackend(sbmd, progdir);
+        AbstractBackend backend = getBackend(sbmd);
         Book book = getBook(sbmd, backend);
         return book;
     }
@@ -350,17 +349,17 @@ public abstract class BookType implements Serializable
     /**
      * Create a the appropriate backend for this type of book
      */
-    protected abstract AbstractBackend getBackend(SwordBookMetaData sbmd, File rootPath) throws BookException;
+    protected abstract AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException;
 
     /**
      * 
      */
-    protected static AbstractBackend getCompressedBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
+    protected static AbstractBackend getCompressedBackend(SwordBookMetaData sbmd) throws BookException
     {
         String cStr = sbmd.getProperty(ConfigEntryType.COMPRESS_TYPE);
         if (cStr != null)
         {
-            return CompressionType.fromString(cStr).getBackend(sbmd, rootPath);
+            return CompressionType.fromString(cStr).getBackend(sbmd);
         }
         throw new BookException(Msg.COMPRESSION_UNSUPPORTED, new Object[] { cStr });
     }

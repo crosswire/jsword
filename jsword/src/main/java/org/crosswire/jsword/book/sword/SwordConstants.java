@@ -21,8 +21,8 @@
  */
 package org.crosswire.jsword.book.sword;
 
-import org.crosswire.jsword.passage.BibleInfo;
 import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.versification.BibleNames;
 
 /**
  * A Constants to help the SwordBookDriver to read Sword format data.
@@ -128,7 +128,7 @@ public final class SwordConstants
         {
             // This is an NT verse
             testament = SwordConstants.TESTAMENT_NEW;
-            book = book - BibleInfo.Names.MALACHI;
+            book = book - BibleNames.MALACHI;
         }
         else
         {
@@ -145,7 +145,7 @@ public final class SwordConstants
     /**
      * The start of the new testament
      */
-    static final int ORDINAL_MAT11 = new Verse(BibleInfo.Names.MATTHEW, 1, 1, true).getOrdinal();
+    static final int ORDINAL_MAT11 = new Verse(BibleNames.MATTHEW, 1, 1, true).getOrdinal();
 
     /**
      * array containing LUT of offsets in the chapter table.

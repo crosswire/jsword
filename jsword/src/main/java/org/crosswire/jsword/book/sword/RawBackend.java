@@ -48,12 +48,11 @@ public class RawBackend extends AbstractBackend
     /**
      * Simple ctor
      */
-    public RawBackend(SwordBookMetaData sbmd, File rootPath) throws BookException
+    public RawBackend(SwordBookMetaData sbmd) throws BookException
     {
-        super(sbmd, rootPath);
-        String dataPath = sbmd.getProperty(ConfigEntryType.DATA_PATH);
-        File baseurl = new File(rootPath, dataPath);
-        String path = baseurl.getAbsolutePath();
+        super(sbmd);
+
+        String path = getExpandedDataPath();
 
         idxFile[SwordConstants.TESTAMENT_OLD] = new File(path + File.separator + SwordConstants.FILE_OT + SwordConstants.EXTENSION_VSS);
         txtFile[SwordConstants.TESTAMENT_OLD] = new File(path + File.separator + SwordConstants.FILE_OT);

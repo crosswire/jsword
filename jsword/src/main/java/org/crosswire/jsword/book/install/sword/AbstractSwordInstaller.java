@@ -199,7 +199,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                     {
                         IOUtil.unpackZip(NetUtil.getAsFile(temp), dldir);
                         job.setProgress(Msg.JOB_CONFIG.toString());
-                        SwordBookDriver.registerNewBook(sbmd, dldir);
+                        SwordBookDriver.registerNewBook(sbmd);
                     }
 
                 }
