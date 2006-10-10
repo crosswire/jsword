@@ -21,6 +21,8 @@
  */
 package org.crosswire.common.xml;
 
+import java.io.IOException;
+
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
@@ -151,7 +153,7 @@ public class XMLProcess
         {
             parser = XMLReaderFactory.createXMLReader(parserName);
         }
-        catch (Exception e)
+        catch (SAXException e)
         {
             System.err.println("error: Unable to instantiate parser (" + parserName + ")"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -169,7 +171,15 @@ public class XMLProcess
         {
             adapter = (XMLHandlerAdapter) Class.forName(adapterName).newInstance();
         }
-        catch (Exception e)
+        catch (ClassNotFoundException e)
+        {
+            System.err.println("error: Unable to instantiate XMLHandlerAdpater (" + adapterName + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        catch (InstantiationException e)
+        {
+            System.err.println("error: Unable to instantiate XMLHandlerAdpater (" + adapterName + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        catch (IllegalAccessException e)
         {
             System.err.println("error: Unable to instantiate XMLHandlerAdpater (" + adapterName + ")"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -213,17 +223,21 @@ public class XMLProcess
         {
             // ignore
         }
-        catch (Exception e)
+        catch (SAXException e)
         {
             System.err.println("error: Parse error occurred - " + e.getMessage()); //$NON-NLS-1$
-            if (e instanceof SAXException)
+            Exception nested = e.getException();
+            if (nested != null)
             {
-                Exception nested = ((SAXException) e).getException();
-                if (nested != null)
-                {
-                    e = nested;
-                }
+                nested.printStackTrace(System.err);
             }
+            else
+            {
+                e.printStackTrace(System.err);
+            }
+        }
+        catch (IOException e)
+        {
             e.printStackTrace(System.err);
         }
     }

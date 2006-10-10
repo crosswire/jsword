@@ -33,6 +33,8 @@ import java.util.EventListener;
  * This code is lifted from javax.sw*ng.event.EventListnerList. It is
  * very useful in non GUI code which does not need the rest of sw*ng.
  * BORROWED: From javax.sw*ng.event.EventListnerList
+ * 
+ * <p>It differs in that it is fully synchronized, thus thread safe.
  *
  * <p>If you inculde sw*ng code in non-gui code then you can end up not being
  * able to run your code in a headerless environment because X includes Y which
@@ -54,8 +56,7 @@ import java.util.EventListener;
  *
  * The main benefits which this class provides are that it is relatively
  * cheap in the case of no listeners, and provides serialization for
- * eventlistener lists in a single place, as well as a degree of MT safety
- * (when used correctly).
+ * eventlistener lists in a single place, as well as MT safety.
  *
  * Usage example:
  *    Say one is defining a class which sends out FooEvents, and wantds
@@ -115,25 +116,19 @@ public class EventListenerList implements Serializable
 {
     /**
      * This passes back the event listener list as an array
-     * of ListenerType - listener pairs.  Note that for
-     * performance reasons, this implementation passes back
-     * the actual data structure in which the listner data
-     * is stored internally!
+     * of ListenerType - listener pairs.
+     * 
      * This method is guaranteed to pass back a non-null
      * array, so that no null-checking is required in
      * fire methods.  A zero-length array of Object should
      * be returned if there are currently no listeners.
-     *
-     * WARNING!!! Absolutely NO modification of
-     * the data contained in this array should be made -- if
-     * any such manipulation is necessary, it should be done
-     * on a copy of the array returned rather than the array
-     * itself.
      */
-    public Object[] getListenerList()
+    public synchronized Object[] getListenerList()
     {
-        Object[] lList = listenerList;
-        return lList;
+        int i = listenerList.length;
+        Object[] tmp = new Object[i];
+        System.arraycopy(listenerList, 0, tmp, 0, i);
+        return tmp;
     }
 
     /**
@@ -146,7 +141,7 @@ public class EventListenerList implements Serializable
      */
     public EventListener[] getListeners(Class t)
     {
-        Object[] lList = listenerList;
+        Object[] lList = getListenerList();
         int n = getListenerCount(lList, t);
         EventListener[] result = (EventListener[]) Array.newInstance(t, n);
         int j = 0;
@@ -163,7 +158,7 @@ public class EventListenerList implements Serializable
     /**
      * Returns the total number of listeners for this listener list.
      */
-    public int getListenerCount()
+    public synchronized int getListenerCount()
     {
         return listenerList.length / 2;
     }
@@ -174,7 +169,7 @@ public class EventListenerList implements Serializable
      */
     public int getListenerCount(Class t)
     {
-        Object[] lList = listenerList;
+        Object[] lList = getListenerList();
         return getListenerCount(lList, t);
     }
 
@@ -288,7 +283,7 @@ public class EventListenerList implements Serializable
      */
     private void writeObject(ObjectOutputStream oos) throws IOException
     {
-        Object[] lList = listenerList;
+        Object[] lList = getListenerList();
         oos.defaultWriteObject();
 
         // Save the non-null event listeners:

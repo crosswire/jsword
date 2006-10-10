@@ -65,18 +65,11 @@ public class PatternFormatter extends Formatter
         String throwable = ""; //$NON-NLS-1$
         if (record.getThrown() != null)
         {
-            try
-            {
-                StringWriter sw = new StringWriter();
-                PrintWriter pw = new PrintWriter(sw);
-                record.getThrown().printStackTrace(pw);
-                pw.close();
-                throwable = sw.toString();
-            }
-            catch (Exception ex)
-            {
-                assert false;
-            }
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            record.getThrown().printStackTrace(pw);
+            pw.close();
+            throwable = sw.toString();
         }
 
         String format = LogManager.getLogManager().getProperty(PatternFormatter.class.getName() + ".format"); //$NON-NLS-1$

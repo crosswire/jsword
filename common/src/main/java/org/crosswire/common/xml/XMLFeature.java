@@ -114,7 +114,7 @@ public class XMLFeature implements Serializable, Comparable
         for (int i = 0; i < VALUES.length; i++)
         {
             XMLFeature o = VALUES[i];
-            if (o.name.equalsIgnoreCase(name))
+            if (o.control.equalsIgnoreCase(name))
             {
                 return o;
             }
@@ -169,10 +169,6 @@ public class XMLFeature implements Serializable, Comparable
 
     private String control;
     private boolean state;
-    /**
-     * The name of the PassageListType
-     */
-    private String name;
 
     // Support for serialization
     private static int nextObj;

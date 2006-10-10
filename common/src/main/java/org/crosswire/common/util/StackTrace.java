@@ -24,6 +24,7 @@ package org.crosswire.common.util;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Unscramble the current stack, and present the data from it to the
@@ -99,7 +100,7 @@ public final class StackTrace
                     lineNumbers[i] = 0;
                 }
             }
-            catch (Exception ex2)
+            catch (NumberFormatException ex2)
             {
                 classNames[i] = "ParseError: "; //$NON-NLS-1$
                 methodNames[i] = call;
@@ -207,7 +208,7 @@ public final class StackTrace
         /**
          * @return Returns the level.
          */
-        public int getAndIncrementLevel()
+        public int getAndIncrementLevel() throws NoSuchElementException
         {
             return level++;
         }
@@ -225,8 +226,12 @@ public final class StackTrace
     {
         return new AbstractStackIterator()
         {
-            public Object next()
+            public Object next() throws NoSuchElementException
             {
+                if (!hasNext())
+                {
+                    throw new NoSuchElementException();
+                }
                 return getClassName(getAndIncrementLevel());
             }
         };
@@ -239,8 +244,12 @@ public final class StackTrace
     {
         return new AbstractStackIterator()
         {
-            public Object next()
+            public Object next() throws NoSuchElementException
             {
+                if (!hasNext())
+                {
+                    throw new NoSuchElementException();
+                }
                 return getFunctionName(getAndIncrementLevel());
             }
         };
@@ -253,8 +262,12 @@ public final class StackTrace
     {
         return new AbstractStackIterator()
         {
-            public Object next()
+            public Object next() throws NoSuchElementException
             {
+                if (!hasNext())
+                {
+                    throw new NoSuchElementException();
+                }
                 return getFullFunctionName(getAndIncrementLevel());
             }
         };

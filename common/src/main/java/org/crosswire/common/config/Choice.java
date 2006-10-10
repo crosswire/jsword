@@ -83,7 +83,7 @@ public interface Choice
      * point. The Config dialog ought to cope with any errors.
      * @param value The new value for this Choice
      */
-    void setString(String value) throws Exception;
+    void setString(String value) throws ConfigException;
 
     /**
      * Gets a brief description of what is going on

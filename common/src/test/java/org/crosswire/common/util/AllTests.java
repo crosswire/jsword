@@ -39,7 +39,6 @@ public class AllTests
         //$JUnit-BEGIN$
         suite.addTest(new TestSuite(HelpDeskTest.class));
         suite.addTest(new TestSuite(StringUtilTest.class));
-        suite.addTest(new TestSuite(ThreadUtilTest.class));
         //$JUnit-END$
         return suite;
     }

@@ -101,7 +101,7 @@ public abstract class AbstractReflectedChoice implements Choice
             {
                 getter = clazz.getMethod("get" + propertyname, new Class[0]); //$NON-NLS-1$
             }
-            catch (Exception ex)
+            catch (NoSuchMethodException e)
             {
                 getter = clazz.getMethod("is" + propertyname, new Class[0]); //$NON-NLS-1$
             }
@@ -242,31 +242,35 @@ public abstract class AbstractReflectedChoice implements Choice
     /* (non-Javadoc)
      * @see org.crosswire.common.config.Choice#setString(java.lang.String)
      */
-    public void setString(String value) throws Exception
+    public void setString(String value) throws ConfigException
     {
+        Exception ex = null;
         try
         {
             Object object = convertToObject(value);
             setter.invoke(null, new Object[] { object });
         }
-        catch (InvocationTargetException ex)
+        catch (InvocationTargetException e)
+        {
+            ex = e;
+        }
+        catch (IllegalArgumentException e)
+        {
+            ex = e;
+        }
+        catch (IllegalAccessException e)
+        {
+            ex = e;
+        }
+
+        if (ex != null)
         {
             log.info("Exception while attempting to execute: " + setter.toString()); //$NON-NLS-1$
 
-            Throwable orig = ex.getTargetException();
-            if (orig instanceof Exception)
-            {
-                throw (Exception) orig;
-            }
 
             // So we can't re-throw the original exception because it wasn't an
             // Exception so we will have to re-throw the InvocationTargetException
-            throw ex;
-        }
-        catch (Exception ex)
-        {
-            log.info("Exception while attempting to execute: " + setter.toString()); //$NON-NLS-1$
-            throw ex;
+            throw new ConfigException(Msg.CONFIG_SETFAIL, ex, new Object[] { setter });
         }
     }
 

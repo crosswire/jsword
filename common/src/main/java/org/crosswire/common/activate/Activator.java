@@ -22,6 +22,7 @@
 package org.crosswire.common.activate;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -83,10 +84,19 @@ public final class Activator
         }
     }
 
+    public static void deactivateAll()
+    {
+        Iterator iter = activated.iterator();
+        while (iter.hasNext())
+        {
+            deactivate((Activatable) iter.next());
+        }
+    }
+
     /**
      * The list of things that we have activated
      */
-    protected static Set activated = new HashSet();
+    private static Set activated = new HashSet();
 
     /**
      * The object we use to prevent others from

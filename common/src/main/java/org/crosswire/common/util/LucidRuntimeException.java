@@ -48,7 +48,7 @@ public class LucidRuntimeException extends RuntimeException
      */
     public LucidRuntimeException(MsgBase msg)
     {
-        this(msg, null, (Object[]) null);
+        this(msg, null, null);
     }
 
     /**
@@ -58,7 +58,7 @@ public class LucidRuntimeException extends RuntimeException
      */
     public LucidRuntimeException(MsgBase msg, Throwable cause)
     {
-        this(msg, cause, (Object[]) null);
+        this(msg, cause, null);
     }
 
     /**
@@ -78,11 +78,11 @@ public class LucidRuntimeException extends RuntimeException
      * @param msg The resource id to read
      * @param params An array of parameters
      */
-    public LucidRuntimeException(MsgBase msg, Throwable cause, Object[] params)
+    public LucidRuntimeException(MsgBase msg, Throwable cause, Object[] newParams)
     {
         super(msg.toString(), cause);
 
-        this.params = (Object[]) params.clone();
+        this.params = newParams == null ? null : (Object[]) newParams.clone();
     }
 
     /**

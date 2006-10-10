@@ -183,7 +183,7 @@ public final class Convert
                     commands.put(key, value);
                 }
             }
-            catch (Exception ex)
+            catch (ClassNotFoundException ex)
             {
                 log.warn("Invalid config file entry: " + entry + " System message: " + ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
                 Reporter.informUser(Convert.class, ex);

@@ -228,22 +228,13 @@ public final class Reporter
             if (liArr[i] == ReporterListener.class)
             {
                 ReporterListener li = (ReporterListener) liArr[i + 1];
-                try
+                if (ev.getException() != null)
                 {
-                    if (ev.getException() != null)
-                    {
-                        li.reportException(ev);
-                    }
-                    else
-                    {
-                        li.reportMessage(ev);
-                    }
+                    li.reportException(ev);
                 }
-                catch (Exception ex)
+                else
                 {
-                    LISTENERS.remove(ReporterListener.class, li);
-
-                    log.warn("Dispatch failure", ex); //$NON-NLS-1$
+                    li.reportMessage(ev);
                 }
             }
         }

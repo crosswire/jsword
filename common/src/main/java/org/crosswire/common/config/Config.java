@@ -33,6 +33,7 @@ import java.util.ResourceBundle;
 
 import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.LucidException;
 import org.crosswire.common.util.Reporter;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -130,12 +131,30 @@ public class Config
             Element element = (Element) iter.next();
             String key = element.getAttributeValue("key"); //$NON-NLS-1$
 
+            Exception ex = null;
             try
             {
                 Choice choice = ChoiceFactory.getChoice(element, configResources);
                 add(key, choice);
             }
-            catch (Exception ex)
+            catch (StartupException e)
+            {
+                ex = e;
+            }
+            catch (ClassNotFoundException e)
+            {
+                ex = e;
+            }
+            catch (IllegalAccessException e)
+            {
+                ex = e;
+            }
+            catch (InstantiationException e)
+            {
+                ex = e;
+            }
+
+            if (ex != null)
             {
                 log.warn("Error creating config element, key=" + key, ex); //$NON-NLS-1$
             }
@@ -144,6 +163,7 @@ public class Config
 
     /**
      * Remove a key/model pairing
+     * 
      * @param key The name to kill
      */
     public void remove(String key)
@@ -245,17 +265,9 @@ public class Config
         while (iter.hasNext())
         {
             String key = (String) iter.next();
-            try
-            {
-                Choice model = getChoice(key);
-                String value = model.getString();
-                local.put(key, value);
-            }
-            catch (Exception ex)
-            {
-                log.warn("Failure with setting " + key); //$NON-NLS-1$
-                Reporter.informUser(this, ex);
-            }
+            Choice model = getChoice(key);
+            String value = model.getString();
+            local.put(key, value);
         }
     }
 
@@ -286,21 +298,21 @@ public class Config
                 newValue = oldValue;
             }
 
-            try
+            // If a value has not changed, we only call setString()
+            // if force==true or if a higher priority choice has
+            // changed.
+            if (!newValue.equals(oldValue))
             {
-                // If a value has not changed, we only call setString()
-                // if force==true or if a higher priority choice has
-                // changed.
-                if (!newValue.equals(oldValue))
+                log.info("Setting " + key + "=" + newValue + " (was " + oldValue + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                try
                 {
-                    log.info("Setting " + key + "=" + newValue + " (was " + oldValue + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                     choice.setString(newValue);
                 }
-            }
-            catch (Exception ex)
-            {
-                log.warn("Failure setting " + key + "=" + newValue, ex);  //$NON-NLS-1$ //$NON-NLS-2$
-                Reporter.informUser(this, new ConfigException(Msg.CONFIG_SETFAIL, ex, new Object[] { choice.getFullPath() }));
+                catch (LucidException ex)
+                {
+                    log.warn("Failure setting " + key + "=" + newValue, ex);  //$NON-NLS-1$ //$NON-NLS-2$
+                    Reporter.informUser(this, new ConfigException(Msg.CONFIG_SETFAIL, ex, new Object[] { choice.getFullPath() }));
+                }
             }
         }
 //        int highestChange = Choice.PRIORITY_LOWEST;

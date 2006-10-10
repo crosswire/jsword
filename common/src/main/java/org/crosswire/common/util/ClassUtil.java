@@ -155,7 +155,7 @@ public final class ClassUtil
                         log.warn("Class " + impl.getName() + " does not implement " + clazz.getName() + ". Ignoring."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     }
                 }
-                catch (Exception ex)
+                catch (ClassNotFoundException ex)
                 {
                     log.warn("Failed to add class to list: " + clazz.getName(), ex); //$NON-NLS-1$
                 }
@@ -164,7 +164,7 @@ public final class ClassUtil
             log.debug("Found " + matches.size() + " implementors of " + clazz.getName()); //$NON-NLS-1$ //$NON-NLS-2$
             return (Class[]) matches.toArray(new Class[matches.size()]);
         }
-        catch (Exception ex)
+        catch (IOException ex)
         {
             log.error("Failed to get any classes.", ex); //$NON-NLS-1$
             return new Class[0];
@@ -206,7 +206,7 @@ public final class ClassUtil
                         log.warn("Class " + impl.getName() + " does not implement " + clazz.getName() + ". Ignoring."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     }
                 }
-                catch (Exception ex)
+                catch (ClassNotFoundException ex)
                 {
                     log.warn("Failed to add class to list: " + clazz.getName(), ex); //$NON-NLS-1$
                 }
@@ -214,7 +214,7 @@ public final class ClassUtil
 
             log.debug("Found " + matches.size() + " implementors of " + clazz.getName()); //$NON-NLS-1$ //$NON-NLS-2$
         }
-        catch (Exception ex)
+        catch (IOException ex)
         {
             log.error("Failed to get any classes.", ex); //$NON-NLS-1$
         }

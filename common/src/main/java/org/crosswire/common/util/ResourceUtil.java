@@ -54,7 +54,7 @@ public final class ResourceUtil
      */
     public static URL getResource(String search) throws MissingResourceException
     {
-        return getResource(CallContext.instance().getCallingClass(), search);
+        return getResource(CallContext.getCallingClass(), search);
     }
 
     /**
@@ -84,7 +84,7 @@ public final class ResourceUtil
      */
     public static InputStream getResourceAsStream(String search) throws IOException, MissingResourceException
     {
-        return getResourceAsStream(CallContext.instance().getCallingClass(), search);
+        return getResourceAsStream(CallContext.getCallingClass(), search);
     }
 
     /**
@@ -109,7 +109,7 @@ public final class ResourceUtil
      */
     public static Properties getProperties(String subject) throws IOException, MissingResourceException
     {
-        return getProperties(CallContext.instance().getCallingClass(), subject);
+        return getProperties(CallContext.getCallingClass(), subject);
     }
 
     /**

@@ -288,18 +288,18 @@ public final class Job
         final List temp = new ArrayList();
         synchronized (this)
         {
-            temp.addAll(listeners);
+            if (listeners != null)
+            {
+                temp.addAll(listeners);
+            }
         }
 
         // We ought only to tell listeners about jobs that are in our
         // list of jobs so we need to fire before delete.
-        if (listeners != null)
+        int count = temp.size();
+        for (int i = 0; i < count; i++)
         {
-            int count = temp.size();
-            for (int i = 0; i < count; i++)
-            {
-                ((WorkListener) temp.get(i)).workStateChanged(ev);
-            }
+            ((WorkListener) temp.get(i)).workStateChanged(ev);
         }
     }
 

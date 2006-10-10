@@ -74,7 +74,7 @@ public final class CallContext extends SecurityManager
      * When called from a method it will return the class
      * calling that method.
       */
-    public Class getCallingClass()
+    public static Class getCallingClass()
     {
         return getCallingClass(1); // add 1 for this method
     }
@@ -86,9 +86,9 @@ public final class CallContext extends SecurityManager
      * -2 and -3 will return this class
      * @throws ArrayIndexOutOfBoundsException if the index is not valid
      */
-    public Class getCallingClass(int i)
+    public static Class getCallingClass(int i)
     {
-        return resolver.getClassContext()[CALL_CONTEXT_OFFSET + i];
+        return instance().getClassContext()[CALL_CONTEXT_OFFSET + i];
     }
 
     // may need to change if this class is redesigned

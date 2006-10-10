@@ -55,7 +55,7 @@ public class CWClassLoader extends ClassLoader
      */
     public CWClassLoader()
     {
-        owner = CallContext.instance().getCallingClass();
+        owner = CallContext.getCallingClass();
     }
 
     /* (non-Javadoc)

@@ -373,7 +373,7 @@ public final class XMLUtil
     /**
      * The log stream
      */
-    protected static final Logger log = Logger.getLogger(XMLUtil.class);
+    private static final Logger log = Logger.getLogger(XMLUtil.class);
 
     private static Pattern validCharacterEntityPattern = Pattern.compile("^&#x?\\d{2,4};"); //$NON-NLS-1$
 }

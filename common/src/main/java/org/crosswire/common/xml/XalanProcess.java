@@ -21,6 +21,7 @@
  */
 package org.crosswire.common.xml;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -63,10 +64,17 @@ public class XalanProcess
                 clazz = Class.forName("com.sun.org.apache.xalan.internal.xslt.Process"); //$NON-NLS-1$
                 main = clazz.getMethod("_main", new Class[] {String[].class}); //$NON-NLS-1$
             }
-            catch (Exception e1)
+            catch (ClassNotFoundException e1)
             {
                 e1.printStackTrace();
-                return;
+            }
+            catch (SecurityException e1)
+            {
+                e1.printStackTrace();
+            }
+            catch (NoSuchMethodException e1)
+            {
+                e1.printStackTrace();
             }
         }
         catch (NoSuchMethodException e)
@@ -77,9 +85,20 @@ public class XalanProcess
 
         try
         {
-            main.invoke(null, new Object[] { args });
+            if (main != null)
+            {
+                main.invoke(null, new Object[] { args });
+            }
         }
-        catch (Exception e)
+        catch (IllegalArgumentException e)
+        {
+             e.printStackTrace();
+        }
+        catch (IllegalAccessException e)
+        {
+            e.printStackTrace();
+        }
+        catch (InvocationTargetException e)
         {
             e.printStackTrace();
         }

@@ -21,8 +21,6 @@
  */
 package org.crosswire.common.activate;
 
-import java.util.Iterator;
-
 /**
  * Enumeration of how memory is returned.
  *
@@ -38,11 +36,7 @@ public class Kill
         /* @Override */
         public void reduceMemoryUsage()
         {
-            Iterator iter = Activator.activated.iterator();
-            while (iter.hasNext())
-            {
-                Activator.deactivate((Activatable) iter.next());
-            }
+            Activator.deactivateAll();
         }
     };
 

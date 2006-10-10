@@ -21,6 +21,7 @@
  */
 package org.crosswire.common.util;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
@@ -89,9 +90,9 @@ public class WebResource
                 return connection.getContentLength();
             }
             String reason = HttpStatus.getStatusText(status);
-            Reporter.informUser(this, reason + ": " + url.getFile()); //$NON-NLS-1$
+            Reporter.informUser(this, Msg.MISSING_FILE, new Object[] { reason + ':' + url.getFile() });
         }
-        catch (Exception e)
+        catch (IOException e)
         {
             return 0;
         }
@@ -122,7 +123,7 @@ public class WebResource
                 return connection.getLastModified();
             }
         }
-        catch (Exception e)
+        catch (IOException e)
         {
             return new Date().getTime();
         }
@@ -166,7 +167,7 @@ public class WebResource
                 }
             }
         }
-        catch (Exception e)
+        catch (IOException e)
         {
             throw new LucidException(Msg.MISSING_FILE, e);
         }
