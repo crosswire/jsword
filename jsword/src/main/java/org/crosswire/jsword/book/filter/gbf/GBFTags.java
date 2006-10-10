@@ -721,10 +721,10 @@ public final class GBFTags
     /**
      * To convert strings into Biblical keys.
      */
-    protected static final KeyFactory KEY_FACTORY = PassageKeyFactory.instance();
+    static final KeyFactory KEY_FACTORY = PassageKeyFactory.instance();
 
     /**
      * To create OSIS DOM nodes.
      */
-    protected static final OSISFactory OSIS_FACTORY = OSISUtil.factory();
+    static final OSISFactory OSIS_FACTORY = OSISUtil.factory();
 }

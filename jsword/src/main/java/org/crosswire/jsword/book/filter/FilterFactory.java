@@ -73,9 +73,13 @@ public final class FilterFactory
             Class cdeft = (Class) map.remove("default"); //$NON-NLS-1$
             deft = (Filter) cdeft.newInstance();
         }
-        catch (Exception ex)
+        catch (InstantiationException e)
         {
-            log.fatal("Failed to get default filter, will attempt to use first", ex); //$NON-NLS-1$
+            log.fatal("Failed to get default filter, will attempt to use first", e); //$NON-NLS-1$
+        }
+        catch (IllegalAccessException e)
+        {
+            log.fatal("Failed to get default filter, will attempt to use first", e); //$NON-NLS-1$
         }
 
         // the lookup table
@@ -88,7 +92,11 @@ public final class FilterFactory
                 Filter instance = (Filter) clazz.newInstance();
                 addFilter((String) entry.getKey(), instance);
             }
-            catch (Exception ex)
+            catch (InstantiationException ex)
+            {
+                log.error("Failed to add filter", ex); //$NON-NLS-1$
+            }
+            catch (IllegalAccessException ex)
             {
                 log.error("Failed to add filter", ex); //$NON-NLS-1$
             }

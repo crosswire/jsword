@@ -217,6 +217,10 @@ public abstract class AccuracyType implements Serializable
          */
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException
         {
+            if (verseRangeBasis == null)
+            {
+                throw new NoSuchVerseException(Msg.ACCURACY_BOOK);
+            }
             int book = verseRangeBasis.getEnd().getBook();
             int chapter = getChapter(book, parts[0]);
             int verse = getVerse(book, chapter, parts[1]);
@@ -260,6 +264,10 @@ public abstract class AccuracyType implements Serializable
          */
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException
         {
+            if (verseRangeBasis == null)
+            {
+                throw new NoSuchVerseException(Msg.ACCURACY_BOOK);
+            }
             int book = verseRangeBasis.getEnd().getBook();
             int chapter = getChapter(book, parts[0]);
             return new Verse(original, book, chapter, 1);
@@ -302,6 +310,10 @@ public abstract class AccuracyType implements Serializable
          */
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException
         {
+            if (verseRangeBasis == null)
+            {
+                throw new NoSuchVerseException(Msg.ACCURACY_BOOK_CHAPTER);
+            }
             int book = verseRangeBasis.getEnd().getBook();
             int chapter = verseRangeBasis.getEnd().getChapter();
             int verse = getVerse(book, chapter, parts[0]);
@@ -555,9 +567,9 @@ public abstract class AccuracyType implements Serializable
         StringBuffer buffer = new StringBuffer(original);
         for (int i = 0; i < parts.length; i++)
         {
-            buffer.append(", ").append(parts[i]);//$NON-NLS-1$
+            buffer.append(", ").append(parts[i]); //$NON-NLS-1$
         }
-        return new NoSuchVerseException(Msg.VERSE_PARTS, new Object[] { buffer.toString() });        
+        return new NoSuchVerseException(Msg.VERSE_PARTS, new Object[] { buffer.toString() });
     }
 
     /**

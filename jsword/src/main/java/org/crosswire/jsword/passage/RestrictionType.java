@@ -376,7 +376,7 @@ public abstract class RestrictionType implements Serializable
     private static RestrictionType defaultBlurRestriction;
 
     /**
-     * The name of the PassageListType
+     * The name of the RestrictionType
      */
     private String name;
 

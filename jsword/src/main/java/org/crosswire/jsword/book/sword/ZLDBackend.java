@@ -356,9 +356,9 @@ public class ZLDBackend extends AbstractBackend
             String ret = SwordUtil.decode(key, entryBytes, charset).trim();
             return ret;
         }
-        catch (Exception ex)
+        catch (IOException e)
         {
-            throw new BookException(Msg.READ_FAIL, ex);
+            throw new BookException(Msg.READ_FAIL, e);
         }
     }
 

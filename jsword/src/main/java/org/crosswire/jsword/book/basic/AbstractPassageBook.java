@@ -27,8 +27,10 @@ import java.util.List;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
+import org.crosswire.jsword.book.filter.FilterException;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyFactory;
 import org.crosswire.jsword.passage.KeyUtil;
@@ -50,6 +52,11 @@ import org.jdom.Element;
  */
 public abstract class AbstractPassageBook extends AbstractBook
 {
+    public AbstractPassageBook(BookMetaData bmd)
+    {
+        super(bmd);
+    }
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getData(org.crosswire.jsword.passage.Key)
      */
@@ -97,7 +104,7 @@ public abstract class AbstractPassageBook extends AbstractBook
             BookData bdata = new BookData(osis, this, key);
             return bdata;
         }
-        catch (Exception ex)
+        catch (FilterException ex)
         {
             throw new BookException(Msg.FILTER_FAIL, ex);
         }
@@ -191,7 +198,7 @@ public abstract class AbstractPassageBook extends AbstractBook
         {
             return getKey(name);
         }
-        catch (Exception e)
+        catch (NoSuchKeyException e)
         {
             return createEmptyKeyList();
         }
@@ -222,39 +229,32 @@ public abstract class AbstractPassageBook extends AbstractBook
     {
         assert key != null;
 
-        try
+        StringBuffer buffer = new StringBuffer();
+
+        // For all the ranges in this Passage
+        Passage ref = KeyUtil.getPassage(key);
+        Iterator rit = ref.rangeIterator(RestrictionType.CHAPTER);
+
+        while (rit.hasNext())
         {
-            StringBuffer buffer = new StringBuffer();
+            VerseRange range = (VerseRange) rit.next();
 
-            // For all the ranges in this Passage
-            Passage ref = KeyUtil.getPassage(key);
-            Iterator rit = ref.rangeIterator(RestrictionType.CHAPTER);
-
-            while (rit.hasNext())
+            // For all the verses in this range
+            Iterator vit = range.iterator();
+            while (vit.hasNext())
             {
-                VerseRange range = (VerseRange) rit.next();
+                Verse verse = (Verse) vit.next();
+                String txt = getText(verse);
 
-                // For all the verses in this range
-                Iterator vit = range.iterator();
-                while (vit.hasNext())
+                // If the verse is empty then we shouldn't add the verse
+                if (txt.length() > 0)
                 {
-                    Verse verse = (Verse) vit.next();
-                    String txt = getText(verse);
-
-                    // If the verse is empty then we shouldn't add the verse
-                    if (txt.length() > 0)
-                    {
-                        buffer.append(txt);
-                        buffer.append('\n');
-                    }
+                    buffer.append(txt);
+                    buffer.append('\n');
                 }
             }
+        }
 
-            return buffer.toString();
-        }
-        catch (Exception ex)
-        {
-            throw new BookException(Msg.FILTER_FAIL, ex);
-        }
+        return buffer.toString();
     }
 }

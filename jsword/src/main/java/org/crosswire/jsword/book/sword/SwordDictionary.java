@@ -35,6 +35,7 @@ import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractBook;
+import org.crosswire.jsword.book.filter.FilterException;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
@@ -56,10 +57,14 @@ public class SwordDictionary extends AbstractBook
      */
     protected SwordDictionary(SwordBookMetaData sbmd, AbstractBackend backend)
     {
-        setBookMetaData(sbmd);
+        super(sbmd);
 
         this.sbmd = sbmd;
         this.backend = backend;
+        map = null;
+        set = null;
+        global = null;
+        active = false;
     }
 
     /* (non-Javadoc)
@@ -134,7 +139,7 @@ public class SwordDictionary extends AbstractBook
             BookData bdata = new BookData(osis, this, key);
             return bdata;
         }
-        catch (Exception ex)
+        catch (FilterException ex)
         {
             throw new BookException(Msg.FILTER_FAIL, ex);
         }
@@ -150,14 +155,7 @@ public class SwordDictionary extends AbstractBook
         assert key != null;
         assert backend != null;
 
-        try
-        {
-            return backend.getRawText(key);
-        }
-        catch (Exception ex)
-        {
-            throw new BookException(Msg.FILTER_FAIL, ex);
-        }
+        return backend.getRawText(key);
     }
 
     /* (non-Javadoc)
@@ -179,7 +177,7 @@ public class SwordDictionary extends AbstractBook
         {
             return getKey(name);
         }
-        catch (Exception e)
+        catch (NoSuchKeyException e)
         {
             return createEmptyKeyList();
         }

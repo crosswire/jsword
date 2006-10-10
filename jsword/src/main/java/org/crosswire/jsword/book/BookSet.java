@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -40,7 +39,7 @@ import org.crosswire.common.util.Filter;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class BookSet extends ArrayList implements List, Set
+public class BookSet extends ArrayList implements Set
 {
     public BookSet()
     {

@@ -21,6 +21,8 @@
  */
 package org.crosswire.jsword.index.query;
 
+import java.io.IOException;
+
 import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
 
@@ -68,9 +70,25 @@ public final class QueryDecoratorFactory
             Class impl = ClassUtil.getImplementor(QueryDecorator.class);
             instance = (QueryDecorator) impl.newInstance();
         }
-        catch (Exception ex)
+        catch (IOException e)
         {
-            log.error("create Query Decorator failed", ex); //$NON-NLS-1$
+            log.error("create QueryDecorator failed", e); //$NON-NLS-1$
+        }
+        catch (ClassCastException e)
+        {
+            log.error("create QueryDecorator failed", e); //$NON-NLS-1$
+        }
+        catch (ClassNotFoundException e)
+        {
+            log.error("create QueryDecorator failed", e); //$NON-NLS-1$
+        }
+        catch (InstantiationException e)
+        {
+            log.error("create QueryDecorator failed", e); //$NON-NLS-1$
+        }
+        catch (IllegalAccessException e)
+        {
+            log.error("create QueryDecorator failed", e); //$NON-NLS-1$
         }
     }
 }

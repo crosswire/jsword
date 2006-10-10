@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +67,7 @@ public class SwordBookPath
             return;
         }
 
-        SwordBookPath.augmentPath = newDirs;
+        SwordBookPath.augmentPath = (File[]) newDirs.clone();
 
         // Now we need to (re)register ourselves
         Books.installed().registerDriver(SwordBookDriver.instance());
@@ -78,7 +79,7 @@ public class SwordBookPath
      */
     public static File[] getAugmentPath()
     {
-        return augmentPath;
+        return (File[]) augmentPath.clone();
     }
 
     /**
@@ -196,10 +197,12 @@ public class SwordBookPath
         File sysconfig = new File(swordConfDir, SWORD_GLOBAL_CONF);
         if (sysconfig.canRead())
         {
+            InputStream is = null;
             try
             {
                 Properties prop = new Properties();
-                prop.load(new FileInputStream(sysconfig));
+                is = new FileInputStream(sysconfig);
+                prop.load(is);
                 String datapath = prop.getProperty(DATA_PATH);
                 testDefaultPath(bookDirs, datapath);
                 datapath = prop.getProperty(AUGMENT_PATH);
@@ -208,6 +211,20 @@ public class SwordBookPath
             catch (IOException ex)
             {
                 log.warn("Failed to read system config file", ex); //$NON-NLS-1$
+            }
+            finally
+            {
+                if (is != null)
+                {
+                    try
+                    {
+                        is.close();
+                    }
+                    catch (IOException e)
+                    {
+                        log.warn("Failed to close system config file", e); //$NON-NLS-1$
+                    }
+                }
             }
         }
     }

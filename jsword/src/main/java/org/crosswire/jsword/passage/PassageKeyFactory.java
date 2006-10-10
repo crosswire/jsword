@@ -91,7 +91,7 @@ public final class PassageKeyFactory implements KeyFactory
         {
             return getKey(name);
         }
-        catch (Exception e)
+        catch (NoSuchKeyException e)
         {
             return createEmptyKeyList();
         }
@@ -119,7 +119,7 @@ public final class PassageKeyFactory implements KeyFactory
 
             return whole;
         }
-        catch (Exception ex)
+        catch (NoSuchKeyException ex)
         {
             assert false : ex;
             return createPassage();

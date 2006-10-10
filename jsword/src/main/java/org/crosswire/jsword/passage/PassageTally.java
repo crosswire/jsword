@@ -195,62 +195,56 @@ public class PassageTally extends AbstractPassage
 
         StringBuffer retcode = new StringBuffer();
 
-        try
+        if (order == ORDER_BIBLICAL)
         {
-            if (order == ORDER_BIBLICAL)
+            Iterator it = rangeIterator(RestrictionType.NONE);
+            Verse current = null;
+            while (it.hasNext())
             {
-                Iterator it = rangeIterator(RestrictionType.NONE);
-                Verse current = null;
-                while (it.hasNext())
-                {
-                    VerseRange range = (VerseRange) it.next();
-                    retcode.append(range.getName(current));
+                VerseRange range = (VerseRange) it.next();
+                retcode.append(range.getName(current));
 
-                    if (it.hasNext())
-                    {
-                        retcode.append(AbstractPassage.REF_PREF_DELIM);
-                    }
-
-                    current = range.getStart();
-                }
-            }
-            else
-            {
-                if (max_count == 0)
+                if (it.hasNext())
                 {
-                    max_count = Integer.MAX_VALUE;
+                    retcode.append(AbstractPassage.REF_PREF_DELIM);
                 }
 
-                Iterator it = new OrderedVerseIterator(board);
-                Key current = null;
-                int count = 0;
-
-                while (it.hasNext() && count < max_count)
-                {
-                    Key verse = (Key) it.next();
-                    retcode.append(verse.getName(current));
-
-                    current = verse;
-                    count++;
-
-                    if (it.hasNext() && count < max_count)
-                    {
-                        retcode.append(AbstractPassage.REF_PREF_DELIM);
-                    }
-                }
+                current = range.getStart();
             }
         }
-        catch (Exception ex)
+        else
         {
-            assert false : ex;
+            if (max_count == 0)
+            {
+                max_count = Integer.MAX_VALUE;
+            }
+
+            Iterator it = new OrderedVerseIterator(board);
+            Key current = null;
+            int count = 0;
+
+            while (it.hasNext() && count < max_count)
+            {
+                Key verse = (Key) it.next();
+                retcode.append(verse.getName(current));
+
+                current = verse;
+                count++;
+
+                if (it.hasNext() && count < max_count)
+                {
+                    retcode.append(AbstractPassage.REF_PREF_DELIM);
+                }
+            }
         }
 
         return retcode.toString();
     }
 
     /**
-     * A Human readable version of the PassageTally.
-     * Uses short books names, and the shortest possible rendering eg "Mat 3:1-4"
+     * A Human readable version of the PassageTally. Uses short books names, and
+     * the shortest possible rendering eg "Mat 3:1-4"
+     * 
      * @return a String containing a description of the verses
      */
     public String getNameAndTally()
@@ -273,30 +267,23 @@ public class PassageTally extends AbstractPassage
             max_count = Integer.MAX_VALUE;
         }
 
-        try
-        {
-            OrderedVerseIterator it = new OrderedVerseIterator(board);
-            int count = 0;
+        OrderedVerseIterator it = new OrderedVerseIterator(board);
+        int count = 0;
 
-            while (it.hasNext() && count < max_count)
+        while (it.hasNext() && count < max_count)
+        {
+            Key verse = (Key) it.next();
+            retcode.append(verse.getName());
+            retcode.append(" ("); //$NON-NLS-1$
+            retcode.append(100 * it.lastRank() / max);
+            retcode.append("%)"); //$NON-NLS-1$
+
+            count++;
+
+            if (it.hasNext() && count < max_count)
             {
-                Key verse = (Key) it.next();
-                retcode.append(verse.getName());
-                retcode.append(" ("); //$NON-NLS-1$
-                retcode.append(100 * it.lastRank() / max);
-                retcode.append("%)"); //$NON-NLS-1$
-
-                count++;
-
-                if (it.hasNext() && count < max_count)
-                {
-                    retcode.append(AbstractPassage.REF_PREF_DELIM);
-                }
+                retcode.append(AbstractPassage.REF_PREF_DELIM);
             }
-        }
-        catch (Exception ex)
-        {
-            assert false : ex;
         }
 
         return retcode.toString();
@@ -304,6 +291,7 @@ public class PassageTally extends AbstractPassage
 
     /**
      * Iterate through the verse elements in the current sort order
+     * 
      * @return A verse Iterator
      */
     public Iterator iterator()
@@ -955,6 +943,7 @@ public class PassageTally extends AbstractPassage
             }
 
             it = output.iterator();
+            last = null;
         }
 
         /* (non-Javadoc)
@@ -1096,6 +1085,7 @@ public class PassageTally extends AbstractPassage
             }
 
             this.it = output.iterator();
+            last = null;
         }
 
         /* (non-Javadoc)

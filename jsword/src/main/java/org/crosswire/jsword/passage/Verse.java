@@ -179,7 +179,7 @@ public final class Verse implements Key
                 + Verse.VERSE_PREF_DELIM2
                 + verse;
         }
-        catch (Exception ex)
+        catch (NoSuchKeyException ex)
         {
             assert false : ex;
             return "!Error!"; //$NON-NLS-1$
@@ -193,7 +193,7 @@ public final class Verse implements Key
      */
     public String getName(Key base)
     {
-        if (base == null)
+        if (base == null || !(base instanceof Verse))
         {
             return getName();
         }
@@ -237,7 +237,7 @@ public final class Verse implements Key
 
             return String.valueOf(verse);
         }
-        catch (Exception ex)
+        catch (NoSuchKeyException ex)
         {
             assert false : ex;
             return "!Error!"; //$NON-NLS-1$

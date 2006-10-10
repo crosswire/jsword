@@ -21,9 +21,9 @@
  */
 package org.crosswire.jsword.passage;
 
-import org.crosswire.jsword.versification.BibleInfo;
-
 import junit.framework.TestCase;
+
+import org.crosswire.jsword.versification.BibleInfo;
 
 /**
  * JUnit Test.
@@ -209,7 +209,10 @@ public class VerseTest extends TestCase
             VerseFactory.fromString(null);
             fail();
         }
-        catch (Exception ex)
+        catch (NullPointerException ex)
+        {
+        }
+        catch (NoSuchKeyException ex)
         {
         }
         assertEquals(jude1, VerseFactory.fromString("jude 1")); //$NON-NLS-1$

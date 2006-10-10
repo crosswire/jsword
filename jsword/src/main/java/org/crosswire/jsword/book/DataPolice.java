@@ -95,5 +95,5 @@ public final class DataPolice
     /**
      * The log stream
      */
-    protected static final Logger log = Logger.getLogger(DataPolice.class);
+    private static final Logger log = Logger.getLogger(DataPolice.class);
 }

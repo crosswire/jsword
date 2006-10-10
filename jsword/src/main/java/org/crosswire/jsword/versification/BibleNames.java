@@ -24,6 +24,7 @@ package org.crosswire.jsword.versification;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
@@ -239,7 +240,7 @@ public final class BibleNames
 
         ResourceBundle resources = ResourceBundle.getBundle(BibleNames.class.getName(), locale, new CWClassLoader(BibleNames.class));
 
-        for (int i = 0; i < booksInBible; i++ )
+        for (int i = 0; i < booksInBible; i++)
         {
             Integer bookNum = new Integer(i + 1);
             String fullBook = getString(resources, FULL_KEY + (i + 1));
@@ -258,7 +259,7 @@ public final class BibleNames
             String[] alternates = StringUtil.split(altBook, ',');
             altBooks[i] = alternates;
 
-            for (int j = 0; j < alternates.length; j++ )
+            for (int j = 0; j < alternates.length; j++)
             {
                 altBooksMap.put(alternates[j], bookNum);
             }
@@ -274,7 +275,7 @@ public final class BibleNames
         {
             return resources.getString(key);
         }
-        catch (Exception e)
+        catch (MissingResourceException e)
         {
             assert false;
         }

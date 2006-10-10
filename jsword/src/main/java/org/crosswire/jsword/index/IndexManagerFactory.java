@@ -21,6 +21,8 @@
  */
 package org.crosswire.jsword.index;
 
+import java.io.IOException;
+
 import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
 
@@ -69,9 +71,25 @@ public final class IndexManagerFactory
             Class impl = ClassUtil.getImplementor(IndexManager.class);
             instance = (IndexManager) impl.newInstance();
         }
-        catch (Exception ex)
+        catch (IOException e)
         {
-            log.error("createIndexManager failed", ex); //$NON-NLS-1$
+            log.error("createIndexManager failed", e); //$NON-NLS-1$
+        }
+        catch (ClassCastException e)
+        {
+            log.error("createIndexManager failed", e); //$NON-NLS-1$
+        }
+        catch (ClassNotFoundException e)
+        {
+            log.error("createIndexManager failed", e); //$NON-NLS-1$
+        }
+        catch (IllegalAccessException e)
+        {
+            log.error("createIndexManager failed", e); //$NON-NLS-1$
+        }
+        catch (InstantiationException e)
+        {
+            log.error("createIndexManager failed", e); //$NON-NLS-1$
         }
     }
 }

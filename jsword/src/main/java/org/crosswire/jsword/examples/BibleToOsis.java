@@ -2921,30 +2921,28 @@ public class BibleToOsis
         }
         else if (moveP && inVerse)
         {
-            Verse v = null;
-
             try
             {
-                v = VerseFactory.fromString(osisID);
+                Verse v = VerseFactory.fromString(osisID);
+                if (v.getVerse() != 1)
+                {
+                    if (paragraphs.contains(osisID))
+                    {
+                        input = "<milestone type=\"x-p\" marker=\"\u00B6\"/>" + input; //$NON-NLS-1$
+                    }
+                    else
+                    {
+                        input = "<milestone type=\"x-extra-p\"/>" + input; //$NON-NLS-1$
+                    }
+                }
+                seenP = true;
+                moveP = false;
             }
             catch (NoSuchVerseException e)
             {
                 // does not happen
             }
 
-            if (v.getVerse() != 1)
-            {
-                if (paragraphs.contains(osisID))
-                {
-                    input = "<milestone type=\"x-p\" marker=\"\u00B6\"/>" + input; //$NON-NLS-1$
-                }
-                else
-                {
-                    input = "<milestone type=\"x-extra-p\"/>" + input; //$NON-NLS-1$
-                }
-            }
-            seenP = true;
-            moveP = false;
         }
 
         if (inVerse && paragraphs.contains(osisID) && !seenP)

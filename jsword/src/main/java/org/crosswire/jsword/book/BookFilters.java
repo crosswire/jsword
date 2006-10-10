@@ -21,6 +21,7 @@
  */
 package org.crosswire.jsword.book;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -353,7 +354,7 @@ public final class BookFilters
                     test.property = Book.class.getMethod(gettername, (Class[]) null);
                     test.result = parts[1];
                 }
-                catch (Exception ex)
+                catch (NoSuchMethodException ex)
                 {
                     throw new IllegalArgumentException("Missing property: " + parts[0] + " in Book"); //$NON-NLS-1$ //$NON-NLS-2$
                 }
@@ -380,9 +381,19 @@ public final class BookFilters
                         return false;
                     }
                 }
-                catch (Exception ex)
+                catch (IllegalArgumentException e)
                 {
-                    log.warn("Error while testing property " + test.property.getName() + " on " + book.getName(), ex); //$NON-NLS-1$ //$NON-NLS-2$
+                    log.warn("Error while testing property " + test.property.getName() + " on " + book.getName(), e); //$NON-NLS-1$ //$NON-NLS-2$
+                    return false;
+                }
+                catch (IllegalAccessException e)
+                {
+                    log.warn("Error while testing property " + test.property.getName() + " on " + book.getName(), e); //$NON-NLS-1$ //$NON-NLS-2$
+                    return false;
+                }
+                catch (InvocationTargetException e)
+                {
+                    log.warn("Error while testing property " + test.property.getName() + " on " + book.getName(), e); //$NON-NLS-1$ //$NON-NLS-2$
                     return false;
                 }
             }
@@ -395,7 +406,7 @@ public final class BookFilters
         /**
          *
          */
-        class Test
+        static class Test
         {
             protected String result;
             protected Method property;
@@ -405,5 +416,5 @@ public final class BookFilters
     /**
      * The log stream
      */
-    protected static final Logger log = Logger.getLogger(BookFilters.class);
+    static final Logger log = Logger.getLogger(BookFilters.class);
 }

@@ -24,6 +24,7 @@ package org.crosswire.jsword.versification;
 import java.util.Locale;
 
 import org.crosswire.jsword.book.CaseType;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 
 /**
@@ -188,7 +189,7 @@ public final class BibleInfo
                 bookNum = englishBibleNames.getBookNumber(find);
             }
         }
-        return bookNum;        
+        return bookNum;
     }
 
     /**
@@ -507,7 +508,7 @@ public final class BibleInfo
 
             return ref;
         }
-        catch (Exception ex)
+        catch (NoSuchKeyException ex)
         {
             assert false : ex;
             return ref;
@@ -884,7 +885,7 @@ public final class BibleInfo
     /**
      * A singleton used to do initialization. Could be used to change static methods to non-static
      */
-    protected static final BibleInfo instance = new BibleInfo();
+    static final BibleInfo instance = new BibleInfo();
 
     /**
      * This is the code used to create ORDINAL_AT_START_OF_CHAPTER and

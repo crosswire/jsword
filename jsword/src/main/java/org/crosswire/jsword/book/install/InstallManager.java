@@ -83,9 +83,13 @@ public class InstallManager
                         internalAdd(name, installer);
                     }
                 }
-                catch (Exception ex)
+                catch (InstantiationException e)
                 {
-                    Reporter.informUser(this, ex);
+                    Reporter.informUser(this, e);
+                }
+                catch (IllegalAccessException e)
+                {
+                    Reporter.informUser(this, e);
                 }
             }
         }
@@ -160,9 +164,13 @@ public class InstallManager
                     return name;
                 }
             }
-            catch (Exception ex)
+            catch (InstantiationException e)
             {
-                log.warn("Failed to instansiate installer factory: " + name + "=" + factclazz.getName(), ex); //$NON-NLS-1$ //$NON-NLS-2$
+                log.warn("Failed to instantiate installer factory: " + name + "=" + factclazz.getName(), e); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+            catch (IllegalAccessException e)
+            {
+                log.warn("Failed to instantiate installer factory: " + name + "=" + factclazz.getName(), e); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 
@@ -204,17 +212,20 @@ public class InstallManager
      */
     public InstallerFactory getInstallerFactory(String name)
     {
+        Class clazz = (Class) factories.get(name);
         try
         {
-            Class clazz = (Class) factories.get(name);
-            InstallerFactory ifactory = (InstallerFactory) clazz.newInstance();
-            return ifactory;
+            return (InstallerFactory) clazz.newInstance();
         }
-        catch (Exception ex)
+        catch (InstantiationException e)
         {
-            assert false : ex;
-            return null;
+            assert false : e;
         }
+        catch (IllegalAccessException e)
+        {
+            assert false : e;
+        }
+        return null;
     }
 
     /**

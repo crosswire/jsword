@@ -755,19 +755,11 @@ public final class OSISUtil
     private static void recurseChildren(Element ele, StringBuffer buffer)
     {
         // ele is a JDOM Element that might have a getContent() method
-        try
+        Iterator contentIter = ele.getContent().iterator();
+        while (contentIter.hasNext())
         {
-            Iterator contentIter = ele.getContent().iterator();
-            while (contentIter.hasNext())
-            {
-                Object sub = contentIter.next();
-                recurseElement(sub, buffer);
-            }
-        }
-        catch (Exception ex)
-        {
-            // We can continue, but we should report a problem
-            log.error("Error interrogating: " + ele.getClass().getName(), ex); //$NON-NLS-1$
+            Object sub = contentIter.next();
+            recurseElement(sub, buffer);
         }
     }
 }

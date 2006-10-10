@@ -22,6 +22,7 @@
 package org.crosswire.jsword.book.sword;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -122,9 +123,13 @@ public class SwordBookDriver extends AbstractBookDriver
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (IOException e)
                 {
-                    log.warn("Couldn't create SwordBookMetaData", ex); //$NON-NLS-1$
+                    log.warn("Couldn't create SwordBookMetaData", e); //$NON-NLS-1$
+                }
+                catch (BookException e)
+                {
+                    log.warn("Couldn't create SwordBookMetaData", e); //$NON-NLS-1$
                 }
             }
         }
@@ -168,24 +173,12 @@ public class SwordBookDriver extends AbstractBookDriver
         List failures = FileUtil.delete(confFile);
         if (failures.size() == 0)
         {
-            // If the conf is gone, then we cannot get to the book
-            // and then we can download it again.
-            // But if the conf is present and the book is gone,
-            // then we get errors.
-            // Delete the download book's dir
-            try
+            URL loc = sbmd.getLocation();
+            if (loc != null)
             {
-                URL loc = sbmd.getLocation();
-                if (loc == null)
-                {
-                    throw new BookException(Msg.DELETE_FAILED, new Object [] {confFile});
-                }
                 File bookDir = new File(loc.getFile());
                 failures = FileUtil.delete(bookDir);
                 Books.installed().removeBook(dead);
-            }
-            catch (Exception e)
-            {
             }
 
         }

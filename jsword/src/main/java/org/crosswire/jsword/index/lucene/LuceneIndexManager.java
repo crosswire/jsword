@@ -114,9 +114,13 @@ public class LuceneIndexManager implements IndexManager
                         INDEXES.put(book, index);
                     }
                 }
-                catch (Exception ex)
+                catch (IOException e)
                 {
-                    Reporter.informUser(LuceneIndexManager.this, ex);
+                    Reporter.informUser(LuceneIndexManager.this, e);
+                }
+                catch (BookException e)
+                {
+                    Reporter.informUser(LuceneIndexManager.this, e);
                 }
                 finally
                 {

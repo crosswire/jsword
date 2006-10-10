@@ -49,7 +49,7 @@ public class SwordBook extends AbstractPassageBook
      */
     public SwordBook(SwordBookMetaData sbmd, AbstractBackend backend)
     {
-        setBookMetaData(sbmd);
+        super(sbmd);
 
         this.sbmd = sbmd;
         this.backend = backend;

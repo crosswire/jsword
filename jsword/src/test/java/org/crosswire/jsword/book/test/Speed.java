@@ -23,8 +23,10 @@ package org.crosswire.jsword.book.test;
 
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageTally;
 
@@ -97,7 +99,11 @@ public class Speed implements Runnable
 
             end_time = System.currentTimeMillis();
         }
-        catch (Exception ex)
+        catch (BookException ex)
+        {
+            Reporter.informUser(this, ex);
+        }
+        catch (NoSuchKeyException ex)
         {
             Reporter.informUser(this, ex);
         }
@@ -106,8 +112,9 @@ public class Speed implements Runnable
     /**
      * Dummy display routine. We might want to add some XSL styling to this.
      * @param ref The passage to format for display
+     * @throws BookException 
      */
-    private void dummyDisplay(Passage ref) throws Exception
+    private void dummyDisplay(Passage ref) throws BookException
     {
         book.getData(ref);
     }

@@ -67,6 +67,8 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
      */
     public ReadingsBook(ReadingsBookDriver driver, BookCategory type)
     {
+        super(null); // set the book metadata later
+
         String setname = ReadingsBookDriver.getReadingsSet();
 
         Locale defaultLocale = Locale.getDefault();
@@ -177,7 +179,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
             BookData bdata = new BookData(osis, this, key);
             return bdata;
         }
-        catch (Exception ex)
+        catch (NoSuchKeyException ex)
         {
             throw new BookException(Msg.FILTER_FAIL, ex);
         }
@@ -201,7 +203,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
         {
             return getKey(name);
         }
-        catch (Exception e)
+        catch (NoSuchKeyException e)
         {
             return createEmptyKeyList();
         }

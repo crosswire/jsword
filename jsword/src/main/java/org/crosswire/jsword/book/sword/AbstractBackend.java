@@ -84,14 +84,7 @@ public abstract class AbstractBackend implements Activatable
             throw new BookException(Msg.MISSING_FILE);
         }
 
-        try
-        {
-            return new File(loc.getFile()).getAbsolutePath();
-        }
-        catch (Exception e)
-        {
-            throw new BookException(Msg.MISSING_FILE, e);
-        }
+        return new File(loc.getFile()).getAbsolutePath();
     }
 
     /**

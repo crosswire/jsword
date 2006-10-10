@@ -5,6 +5,7 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.Books;
+import org.crosswire.jsword.book.filter.FilterException;
 import org.crosswire.jsword.book.test.Speed;
 
 /**
@@ -30,34 +31,14 @@ public class Bench
             System.exit(1);
         }
 
-        try
-        {
-            List dicts = Books.installed().getBooks(BookFilters.getBibles());
-            version = (Book) dicts.get(0);
-        }
-        catch (Exception ex)
-        {
-            Reporter.informUser(Bench.class, ex);
-
-            System.out.println("Failed to load version '" + args[0] + "'"); //$NON-NLS-1$ //$NON-NLS-2$
-            System.out.println("System message: " + ex); //$NON-NLS-1$
-            System.out.println(""); //$NON-NLS-1$
-            usage();
-            System.exit(1);
-        }
+        List dicts = Books.installed().getBooks(BookFilters.getBibles());
+        version = (Book) dicts.get(0);
 
         Speed speed = new Speed(version);
         speed.run();
 
-        try
-        {
-            float time = speed.getBenchmark() / 1000;
-            System.out.println("CBench mark for '" + args[0] + "': " + time + "s"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        }
-        catch (Exception ex)
-        {
-            System.out.println("Benchmark failed. No timing available."); //$NON-NLS-1$
-        }
+        float time = speed.getBenchmark() / 1000;
+        System.out.println("CBench mark for '" + args[0] + "': " + time + "s"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     /**

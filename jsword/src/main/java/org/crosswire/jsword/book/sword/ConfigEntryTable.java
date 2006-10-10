@@ -300,9 +300,19 @@ public class ConfigEntryTable
             {
                 encoding = ENCODING_UTF8;
             }
-            Writer writer = new OutputStreamWriter(new FileOutputStream(configFile), encoding);
-            writer.write(toConf());
-            writer.close();
+            Writer writer = null;
+            try
+            {
+                writer = new OutputStreamWriter(new FileOutputStream(configFile), encoding);
+                writer.write(toConf());
+            }
+            finally
+            {
+                if (writer != null)
+                {
+                    writer.close();
+                }
+            }
         }
     }
 
@@ -768,7 +778,8 @@ public class ConfigEntryTable
      * These are the elements that JSword requires.
      * They are a superset of those that Sword requires.
      */
-    public static final ConfigEntryType[] REQUIRED =
+    /* For documentation purposes at this time.
+    private static final ConfigEntryType[] REQUIRED =
     {
         ConfigEntryType.INITIALS,
         ConfigEntryType.DESCRIPTION,
@@ -776,8 +787,9 @@ public class ConfigEntryTable
         ConfigEntryType.DATA_PATH,
         ConfigEntryType.MOD_DRV,
     };
+    */
 
-    public static final ConfigEntryType[] BASIC_INFO =
+    private static final ConfigEntryType[] BASIC_INFO =
     {
         ConfigEntryType.INITIALS,
         ConfigEntryType.DESCRIPTION,
@@ -788,7 +800,7 @@ public class ConfigEntryTable
         ConfigEntryType.HISTORY,
     };
 
-    public static final ConfigEntryType[] LANG_INFO =
+    private static final ConfigEntryType[] LANG_INFO =
     {
         ConfigEntryType.LANGUAGE,
         ConfigEntryType.LANG,
@@ -798,7 +810,7 @@ public class ConfigEntryTable
         ConfigEntryType.GLOSSARY_TO,
     };
 
-    public static final ConfigEntryType[] COPYRIGHT_INFO =
+    private static final ConfigEntryType[] COPYRIGHT_INFO =
     {
         ConfigEntryType.ABOUT,
         ConfigEntryType.SHORT_PROMO,
@@ -816,14 +828,14 @@ public class ConfigEntryTable
         ConfigEntryType.TEXT_SOURCE,
     };
 
-    public static final ConfigEntryType[] FEATURE_INFO =
+    private static final ConfigEntryType[] FEATURE_INFO =
     {
         ConfigEntryType.FEATURE,
         ConfigEntryType.GLOBAL_OPTION_FILTER,
         ConfigEntryType.FONT,
     };
 
-    public static final ConfigEntryType[] SYSTEM_INFO =
+    private static final ConfigEntryType[] SYSTEM_INFO =
     {
         ConfigEntryType.DATA_PATH,
         ConfigEntryType.MOD_DRV,
@@ -835,7 +847,7 @@ public class ConfigEntryTable
         ConfigEntryType.DIRECTION,
     };
 
-    public static final ConfigEntryType[] HIDDEN =
+    private static final ConfigEntryType[] HIDDEN =
     {
         ConfigEntryType.CIPHER_KEY,
     };

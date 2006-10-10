@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
 
-import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -62,53 +61,81 @@ public class THMLFilter implements Filter
     {
         DataPolice.setKey(key);
         Element ele = null;
+        Exception ex = null;
         try
         {
             ele = parse(XMLUtil.cleanAllEntities(plain));
         }
-        catch (Exception ex1)
+        catch (SAXException e)
         {
-            DataPolice.report("Parse failed: " + ex1.getMessage() + //$NON-NLS-1$
-                              "\non: " + plain); //$NON-NLS-1$
-
-            // So just try to strip out all XML looking things
-            String shawn = XMLUtil.cleanAllTags(plain);
-
-            try
-            {
-                ele = parse(shawn);
-            }
-            catch (Exception ex2)
-            {
-                log.warn("Could not fix it by cleaning tags: " + ex2.getMessage()); //$NON-NLS-1$
-
-                try
-                {
-                    ele = OSISUtil.factory().createP();
-                    ele.addContent(plain);
-                }
-                catch (Exception ex4)
-                {
-                    log.warn("no way. say it ain't so! " + ex4.getMessage()); //$NON-NLS-1$
-                }
-            }
+            ex = e;
+        }
+        catch (IOException e)
+        {
+            ex = e;
+        }
+        catch (ParserConfigurationException e)
+        {
+            ex = e;
         }
         finally
         {
-            if (ele == null)
+            if (ex != null)
             {
-                ele = OSISUtil.factory().createP();
+                DataPolice.report("Parse failed: " + ex.getMessage() + //$NON-NLS-1$
+                                  "\non: " + plain); //$NON-NLS-1$
             }
             // Make sure that other places don't report this problem
             DataPolice.setKey(null);
         }
+
+        if (ex != null)
+        {
+            ele = cleanTags(plain);
+        }
+
+        if (ele == null)
+        {
+            ele = OSISUtil.factory().createP();
+        }
+
         return ele.removeContent();
+    }
+
+    private Element cleanTags(String plain)
+    {
+        // So just try to strip out all XML looking things
+        String shawn = XMLUtil.cleanAllTags(plain);
+        Exception ex = null;
+        try
+        {
+            return parse(shawn);
+        }
+        catch (SAXException e)
+        {
+            ex = e;
+        }
+        catch (IOException e)
+        {
+            ex = e;
+        }
+        catch (ParserConfigurationException e)
+        {
+            ex = e;
+        }
+
+        if (ex != null)
+        {
+            log.warn("Could not fix it by cleaning tags: " + ex.getMessage()); //$NON-NLS-1$
+        }
+
+        return null;
     }
 
     /**
      * Parse a string by creating a StringReader and all the other gubbins.
      */
-    private Element parse(String toparse) throws FactoryConfigurationError, ParserConfigurationException, SAXException, IOException
+    private Element parse(String toparse) throws ParserConfigurationException, SAXException, IOException
     {
         // We need to create a root element to house our document fragment
         StringReader in = new StringReader("<" + RootTag.TAG_ROOT + ">" + toparse + "</" + RootTag.TAG_ROOT + ">"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$

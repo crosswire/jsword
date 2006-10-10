@@ -22,6 +22,7 @@
 package org.crosswire.jsword.versification;
 
 import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.crosswire.common.util.CWClassLoader;
@@ -238,7 +239,7 @@ public final class SectionNames
         {
             return resources.getString(key);
         }
-        catch (Exception e)
+        catch (MissingResourceException e)
         {
             assert false;
         }

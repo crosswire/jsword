@@ -55,11 +55,15 @@ public final class ConverterFactory
             Converter converter = (Converter) clazz.newInstance();
             return converter;
         }
-        catch (Exception ex)
+        catch (InstantiationException e)
         {
-            assert false : ex;
-            return null;
+            assert false : e;
         }
+        catch (IllegalAccessException e)
+        {
+            assert false : e;
+        }
+        return null;
     }
 
     /**

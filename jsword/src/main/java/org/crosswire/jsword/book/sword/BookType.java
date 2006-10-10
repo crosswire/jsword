@@ -361,7 +361,8 @@ public abstract class BookType implements Serializable
         {
             return CompressionType.fromString(cStr).getBackend(sbmd);
         }
-        throw new BookException(Msg.COMPRESSION_UNSUPPORTED, new Object[] { cStr });
+        assert false;
+        throw new BookException(Msg.COMPRESSION_UNSUPPORTED, new Object[] { "no compression given" }); //$NON-NLS-1$
     }
 
     /**

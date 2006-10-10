@@ -54,6 +54,11 @@ import org.jdom.Document;
  */
 public abstract class AbstractBook implements Book
 {
+    public AbstractBook(BookMetaData bmd)
+    {
+        setBookMetaData(bmd);
+    }
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getBookMetaData()
      */
@@ -125,7 +130,7 @@ public abstract class AbstractBook implements Book
      */
     public BookDriver getDriver()
     {
-        return bmd.getDriver();
+        return bmd == null ? null : bmd.getDriver();
     }
 
     /* (non-Javadoc)
@@ -133,7 +138,7 @@ public abstract class AbstractBook implements Book
      */
     public String getDriverName()
     {
-        return bmd.getDriverName();
+        return bmd == null ? null : bmd.getDriverName();
     }
 
     /* (non-Javadoc)
@@ -316,23 +321,22 @@ public abstract class AbstractBook implements Book
                 return;
             }
 
-            if (listeners != null)
+            Object[] listenerList = listeners.getListenerList();
+            for (int i = 0; i <= listenerList.length - 2; i += 2)
             {
-                Object[] listenerList = listeners.getListenerList();
-                for (int i = 0; i <= listenerList.length - 2; i += 2)
+                if (listenerList[i] == PropertyChangeListener.class)
                 {
-                    if (listenerList[i] == PropertyChangeListener.class)
-                    {
-                        IndexStatusEvent ev = new IndexStatusEvent(this, newStatus);
-                        IndexStatusListener li = (IndexStatusListener) listenerList[i + 1];
-                        li.statusChanged(ev);
-                    }
+                    IndexStatusEvent ev = new IndexStatusEvent(this, newStatus);
+                    IndexStatusListener li = (IndexStatusListener) listenerList[i + 1];
+                    li.statusChanged(ev);
                 }
             }
         }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#toOSIS()
      */
     public Document toOSIS()

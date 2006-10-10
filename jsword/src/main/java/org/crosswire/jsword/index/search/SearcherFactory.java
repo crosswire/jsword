@@ -21,9 +21,12 @@
  */
 package org.crosswire.jsword.index.search;
 
+import java.io.IOException;
+
 import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.index.Index;
 import org.crosswire.jsword.index.IndexManager;
 import org.crosswire.jsword.index.IndexManagerFactory;
@@ -60,9 +63,29 @@ public final class SearcherFactory
 
             return parser;
         }
-        catch (Exception ex)
+        catch (IOException e)
         {
-            log.error("createSearcher failed", ex); //$NON-NLS-1$
+            log.error("createSearcher failed", e); //$NON-NLS-1$
+            throw new InstantiationException();
+        }
+        catch (BookException e)
+        {
+            log.error("createSearcher failed", e); //$NON-NLS-1$
+            throw new InstantiationException();
+        }
+        catch (ClassCastException e)
+        {
+            log.error("createSearcher failed", e); //$NON-NLS-1$
+            throw new InstantiationException();
+        }
+        catch (ClassNotFoundException e)
+        {
+            log.error("createSearcher failed", e); //$NON-NLS-1$
+            throw new InstantiationException();
+        }
+        catch (IllegalAccessException e)
+        {
+            log.error("createSearcher failed", e); //$NON-NLS-1$
             throw new InstantiationException();
         }
     }

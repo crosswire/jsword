@@ -41,6 +41,7 @@ import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
+import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.basic.AbstractBookList;
 import org.crosswire.jsword.book.install.InstallException;
@@ -203,9 +204,19 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                     }
 
                 }
-                catch (Exception ex)
+                catch (IOException e)
                 {
-                    Reporter.informUser(this, ex);
+                    Reporter.informUser(this, e);
+                    job.ignoreTimings();
+                }
+                catch (InstallException e)
+                {
+                    Reporter.informUser(this, e);
+                    job.ignoreTimings();
+                }
+                catch (BookException e)
+                {
+                    Reporter.informUser(this, e);
                     job.ignoreTimings();
                 }
                 finally
@@ -255,10 +266,10 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         {
             download(job, directory + '/' + SEARCH_DIR, book.getInitials() + ZIP_SUFFIX, localDest);
         }
-        catch (Exception ex)
+        catch (InstallException ex)
         {
             job.ignoreTimings();
-            throw new InstallException(Msg.UNKNOWN_ERROR, ex);
+            throw ex;
         }
         finally
         {
@@ -338,7 +349,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                         Book book = new SwordBook(sbmd, null);
                         entries.put(book.getName(), book);
                     }
-                    catch (Exception ex)
+                    catch (IOException ex)
                     {
                         log.error("Failed to load config for entry: " + internal, ex); //$NON-NLS-1$
                     }

@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.zip.DataFormatException;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
@@ -313,9 +314,13 @@ public class GZIPBackend extends AbstractBackend
             endsize = swordtoarch32(endsize);
             /**/
         }
-        catch (Exception ex)
+        catch (IOException e)
         {
-            throw new BookException(Msg.READ_FAIL, ex, new Object[] { verse.getName() });
+            throw new BookException(Msg.READ_FAIL, e, new Object[] { verse.getName() });
+        }
+        catch (DataFormatException e)
+        {
+            throw new BookException(Msg.READ_FAIL, e, new Object[] { verse.getName() });
         }
     }
 

@@ -24,6 +24,7 @@ package org.crosswire.jsword.versification;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
@@ -124,7 +125,7 @@ public final class OSISNames
         // Get all the OSIS standard book names
         ResourceBundle resources = ResourceBundle.getBundle(OSISNames.class.getName(), Locale.getDefault(), new CWClassLoader(OSISNames.class));
 
-        for (int i = 0; i < osisBooks.length; i++ )
+        for (int i = 0; i < osisBooks.length; i++)
         {
             osisBooks[i] = getString(resources, OSIS_KEY + (i + 1));
             osisMap.put(normalize(osisBooks[i]), new Integer(i + 1));
@@ -140,7 +141,7 @@ public final class OSISNames
         {
             return resources.getString(key);
         }
-        catch (Exception e)
+        catch (MissingResourceException e)
         {
             assert false;
         }
@@ -153,7 +154,7 @@ public final class OSISNames
     /**
      * A singleton used to do initialization. Could be used to change static methods to non-static
      */
-    protected static final OSISNames instance = new OSISNames();
+    static final OSISNames instance = new OSISNames();
 
     private static final String OSIS_KEY = "OSIS."; //$NON-NLS-1$
 

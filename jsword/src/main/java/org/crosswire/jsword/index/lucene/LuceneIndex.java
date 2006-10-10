@@ -34,6 +34,7 @@ import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
@@ -157,7 +158,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
 
             }
         }
-        catch (Exception ex)
+        catch (IOException ex)
         {
             job.ignoreTimings();
             throw new BookException(Msg.LUCENE_INIT, ex);
@@ -230,9 +231,17 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                     }
                 }
             }
-            catch (Exception ex)
+            catch (IOException e)
             {
-                throw new BookException(Msg.SEARCH_FAILED, ex);
+                throw new BookException(Msg.SEARCH_FAILED, e);
+            }
+            catch (NoSuchVerseException e)
+            {
+                throw new BookException(Msg.SEARCH_FAILED, e);
+            }
+            catch (ParseException e)
+            {
+                throw new BookException(Msg.SEARCH_FAILED, e);
             }
             finally
             {

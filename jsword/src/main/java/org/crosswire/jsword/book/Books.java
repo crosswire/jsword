@@ -21,6 +21,7 @@
  */
 package org.crosswire.jsword.book;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -388,37 +389,47 @@ public final class Books implements BookList
      */
     protected void autoRegister()
     {
-        // URL predicturl = Project.instance().getWritablePropertiesURL("books"); //$NON-NLS-1$
-        // Job job = JobManager.createJob(Msg.JOB_TITLE.toString(), predicturl, null, true);
+        // URL predicturl =
+        // Project.instance().getWritablePropertiesURL("books"); //$NON-NLS-1$
+        // Job job = JobManager.createJob(Msg.JOB_TITLE.toString(), predicturl,
+        // null, true);
 
-        try
+        // This will classload them all and they will register themselves.
+        Class[] types = ClassUtil.getImplementors(BookDriver.class);
+
+        log.debug("begin auto-registering " + types.length + " drivers:"); //$NON-NLS-1$ //$NON-NLS-2$
+
+        for (int i = 0; i < types.length; i++)
         {
-            // This will classload them all and they will register themselves.
-            Class[] types = ClassUtil.getImplementors(BookDriver.class);
+            // job.setProgress(Msg.JOB_DRIVER.toString() +
+            // ClassUtils.getShortClassName(types[i]));
 
-            log.debug("begin auto-registering " + types.length + " drivers:"); //$NON-NLS-1$ //$NON-NLS-2$
-
-            for (int i = 0; i < types.length; i++)
+            try
             {
-                //job.setProgress(Msg.JOB_DRIVER.toString() + ClassUtils.getShortClassName(types[i]));
-
-                try
-                {
-                    Method driverInstance = types[i].getMethod("instance", new Class[0]); //$NON-NLS-1$
-//                    Object retval = driverInstance.invoke(null, new Object[0]);
-                    BookDriver driver = (BookDriver) driverInstance.invoke(null, new Object[0]); //types[i].newInstance();
-                    registerDriver(driver);
-                }
-                catch (Exception ex)
-                {
-                    Reporter.informUser(Books.class, ex);
-                }
+                Method driverInstance = types[i].getMethod("instance", new Class[0]); //$NON-NLS-1$
+                BookDriver driver = (BookDriver) driverInstance.invoke(null, new Object[0]); // types[i].newInstance();
+                registerDriver(driver);
             }
-        }
-        catch (Exception ex)
-        {
-            log.debug("Unexpected exception: " + ex); //$NON-NLS-1$
-            // job.ignoreTimings();
+            catch (NoSuchMethodException e)
+            {
+                Reporter.informUser(Books.class, e);
+            }
+            catch (IllegalArgumentException e)
+            {
+                Reporter.informUser(Books.class, e);
+            }
+            catch (IllegalAccessException e)
+            {
+                Reporter.informUser(Books.class, e);
+            }
+            catch (InvocationTargetException e)
+            {
+                Reporter.informUser(Books.class, e);
+            }
+            catch (BookException e)
+            {
+                Reporter.informUser(Books.class, e);
+            }
         }
     }
 
@@ -448,7 +459,7 @@ public final class Books implements BookList
     /**
      * The log stream
      */
-    protected static final Logger log = Logger.getLogger(Books.class);
+    private static final Logger log = Logger.getLogger(Books.class);
 
     /**
      * The singleton instance.

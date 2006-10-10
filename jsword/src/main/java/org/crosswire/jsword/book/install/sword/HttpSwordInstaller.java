@@ -40,7 +40,7 @@ import org.crosswire.jsword.book.install.InstallException;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class HttpSwordInstaller extends AbstractSwordInstaller implements Comparable
+public class HttpSwordInstaller extends AbstractSwordInstaller
 {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#getType()

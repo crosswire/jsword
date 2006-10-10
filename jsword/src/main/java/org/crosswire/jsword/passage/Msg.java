@@ -32,6 +32,9 @@ import org.crosswire.common.util.MsgBase;
  */
 public final class Msg extends MsgBase
 {
+    static final Msg ACCURACY_BOOK = new Msg("AccuracyType.Book"); //$NON-NLS-1$
+    static final Msg ACCURACY_BOOK_CHAPTER = new Msg("AccuracyType.BookChapter"); //$NON-NLS-1$
+
     static final Msg TALLY_ERROR_ENUM = new Msg("PassageTally.ErrorEnum"); //$NON-NLS-1$
     static final Msg TALLY_ERROR_ORDER = new Msg("PassageTally.ErrorOrder"); //$NON-NLS-1$
 
