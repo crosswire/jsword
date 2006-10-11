@@ -20,7 +20,6 @@
 package org.crosswire.jsword.book.sword;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.crosswire.jsword.book.sword.RawLDBackend.IndexKey;
@@ -54,7 +53,7 @@ public class SwordDailyDevotion extends SwordDictionary implements PreferredKey
     }
 
     /**
-     * Date formatter
+     * Date formatter, fully internationalized.
      */
-    private static final DateFormat NAME_DF = new SimpleDateFormat("d MMMM"); //$NON-NLS-1$
+    private static final DateFormat NAME_DF = DateFormat.getDateInstance(DateFormat.MEDIUM);
 }

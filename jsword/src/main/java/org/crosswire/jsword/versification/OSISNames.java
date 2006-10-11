@@ -109,7 +109,7 @@ public final class OSISNames
      */
     private static String normalize(String str)
     {
-        return normPattern.matcher(str).replaceAll("").toLowerCase(); //$NON-NLS-1$
+        return normPattern.matcher(str).replaceAll("").toLowerCase(OSIS_LOCALE); //$NON-NLS-1$
     }
 
     /**
@@ -123,7 +123,7 @@ public final class OSISNames
         osisMap = new HashMap(booksInBible);
 
         // Get all the OSIS standard book names
-        ResourceBundle resources = ResourceBundle.getBundle(OSISNames.class.getName(), Locale.getDefault(), new CWClassLoader(OSISNames.class));
+        ResourceBundle resources = ResourceBundle.getBundle(OSISNames.class.getName(), OSIS_LOCALE, new CWClassLoader(OSISNames.class));
 
         for (int i = 0; i < osisBooks.length; i++)
         {
@@ -150,6 +150,9 @@ public final class OSISNames
 
     /** remove spaces and punctuation in Bible Names */
     private static Pattern      normPattern    = Pattern.compile("[. ]"); //$NON-NLS-1$
+
+    /** The Locale of OSIS Names */
+    private static final Locale OSIS_LOCALE = new Locale("en"); //$NON-NLS-1$
 
     /**
      * A singleton used to do initialization. Could be used to change static methods to non-static

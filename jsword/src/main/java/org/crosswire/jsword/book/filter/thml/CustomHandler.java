@@ -23,6 +23,7 @@ package org.crosswire.jsword.book.filter.thml;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.Map;
 
 import org.crosswire.common.util.Logger;
@@ -153,7 +154,7 @@ public class CustomHandler extends DefaultHandler
         // look out for them
         if (t == null)
         {
-            t = (Tag) TAG_MAP.get(qname.toLowerCase());
+            t = (Tag) TAG_MAP.get(qname.toLowerCase(Locale.ENGLISH));
 
             if (t == null)
             {

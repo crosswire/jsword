@@ -22,6 +22,7 @@
 package org.crosswire.jsword.book;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 /**
  * Types of Sentence Case.
@@ -37,7 +38,7 @@ public abstract class CaseType implements Serializable
     {
         public String setCase(String word)
         {
-            return word.toLowerCase();
+            return word.toLowerCase(Locale.getDefault());
         }
 
         /**
@@ -87,7 +88,7 @@ public abstract class CaseType implements Serializable
     {
         public String setCase(String word)
         {
-            return word.toUpperCase();
+            return word.toUpperCase(Locale.getDefault());
         }
 
         /**
@@ -120,7 +121,7 @@ public abstract class CaseType implements Serializable
             return ""; //$NON-NLS-1$
         }
 
-        return Character.toUpperCase(word.charAt(0)) + word.substring(1).toLowerCase();
+        return Character.toUpperCase(word.charAt(0)) + word.substring(1).toLowerCase(Locale.getDefault());
     }
 
     /**
@@ -147,14 +148,14 @@ public abstract class CaseType implements Serializable
         }
 
         // Lower case?
-        if (word.equals(word.toLowerCase()))
+        if (word.equals(word.toLowerCase(Locale.getDefault())))
         {
             return LOWER;
         }
 
         // Upper case?
         // A string length of 1 is no good ('I' or 'A' is sentence case)
-        if (word.equals(word.toUpperCase()) && word.length() != 1)
+        if (word.equals(word.toUpperCase(Locale.getDefault())) && word.length() != 1)
         {
             return UPPER;
         }

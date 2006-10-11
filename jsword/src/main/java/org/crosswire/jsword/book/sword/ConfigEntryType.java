@@ -24,6 +24,7 @@ package org.crosswire.jsword.book.sword;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -163,7 +164,7 @@ public class ConfigEntryType implements Serializable
          */
         public String filter(String value)
         {
-            return value.toUpperCase();
+            return value.toUpperCase(Locale.ENGLISH);
         }
 
         /* (non-Javadoc)
@@ -274,7 +275,7 @@ public class ConfigEntryType implements Serializable
          */
         public String filter(String value)
         {
-            return value.toUpperCase();
+            return value.toUpperCase(Locale.ENGLISH);
         }
 
         /* (non-Javadoc)

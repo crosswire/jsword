@@ -71,16 +71,6 @@ public final class Project
     public static final String DIR_PROJECT_ALT = "JSword"; //$NON-NLS-1$
 
     /**
-     * The Windows user settings parent directory
-     */
-    public static final String WIN32_USER_DATA_AREA = "Application Data"; //$NON-NLS-1$
-
-    /**
-     * The Mac user settings parent directory
-     */
-    public static final String MAC_USER_DATA_AREA = "Library/Application Support"; //$NON-NLS-1$
-
-    /**
      * Accessor for the resource singleton.
      */
     public static Project instance()
@@ -117,42 +107,9 @@ public final class Project
      * Establishes the user's project directory.
      * @throws MalformedURLException
      */
-    public URL getUserProjectDir(String unixDefault, String winMacDefault)
+    public URL getUserProjectDir(String hiddenFolderName, String visibleFolderName)
     {
-        String projectDir = winMacDefault;
-        URL path = null;
-        try
-        {
-            if (userArea == null)
-            {
-                String user = System.getProperty("user.home"); //$NON-NLS-1$
-                String osName = System.getProperty("os.name"); //$NON-NLS-1$
-
-                path = new URL(NetUtil.PROTOCOL_FILE, null, user);
-
-                if (osName.startsWith("Mac OS X")) //$NON-NLS-1$
-                {
-                    path = NetUtil.lengthenURL(path, MAC_USER_DATA_AREA);
-                }
-                else if (osName.startsWith("Windows")) //$NON-NLS-1$
-                {
-                    path = NetUtil.lengthenURL(path, WIN32_USER_DATA_AREA);
-                }
-                else
-                {
-                    projectDir = unixDefault;
-                }
-                userArea = path;
-            }
-            path = NetUtil.lengthenURL(userArea, projectDir);
-        }
-        catch (MalformedURLException ex)
-        {
-            log.fatal("Failed to find user's private data area", ex); //$NON-NLS-1$
-            assert false : ex;
-        }
-
-        return path;
+        return OSType.getOSType().getUserAreaFolder(hiddenFolderName, visibleFolderName);
     }
 
     /**
@@ -179,21 +136,7 @@ public final class Project
      */
     public URL getDeprecatedUserProjectDir()
     {
-        try
-        {
-            String user = System.getProperty("user.home"); //$NON-NLS-1$
-
-            URL path = new URL(NetUtil.PROTOCOL_FILE, null, user);
-            path = NetUtil.lengthenURL(path, DIR_PROJECT);
-
-            return path;
-        }
-        catch (MalformedURLException ex)
-        {
-            log.fatal("Failed to create home directory URL", ex); //$NON-NLS-1$
-            assert false : ex;
-        }
-        return null;
+        return OSType.DEFAULT.getUserAreaFolder(DIR_PROJECT, DIR_PROJECT_ALT);
     }
 
     /**
@@ -266,11 +209,6 @@ public final class Project
 
         return temp;
     }
-
-    /**
-     * The parent directory for the home of this application
-     */
-    private URL userArea;
 
     /**
      * The home for this application

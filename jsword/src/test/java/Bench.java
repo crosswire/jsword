@@ -1,11 +1,9 @@
 import java.util.Iterator;
 import java.util.List;
 
-import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.Books;
-import org.crosswire.jsword.book.filter.FilterException;
 import org.crosswire.jsword.book.test.Speed;
 
 /**

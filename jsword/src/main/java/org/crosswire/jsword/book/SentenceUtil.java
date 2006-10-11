@@ -24,6 +24,7 @@ package org.crosswire.jsword.book;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import org.crosswire.common.util.StringUtil;
 
@@ -212,7 +213,7 @@ public final class SentenceUtil
         // Remove the punctuation from the ends of the words.
         for (int i = 0; i < words.length; i++)
         {
-            retcode[i] = stripPunctuationWord(words[i]).toLowerCase();
+            retcode[i] = stripPunctuationWord(words[i]).toLowerCase(Locale.ENGLISH);
         }
 
         return retcode;

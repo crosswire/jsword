@@ -194,12 +194,12 @@ public final class SectionNames
 
             if (bookCase.equals(CaseType.LOWER))
             {
-                return sections[section - 1].toLowerCase();
+                return sections[section - 1].toLowerCase(Locale.getDefault());
             }
 
             if (bookCase.equals(CaseType.UPPER))
             {
-                return sections[section - 1].toUpperCase();
+                return sections[section - 1].toUpperCase(Locale.getDefault());
             }
 
             return sections[section - 1];
@@ -250,7 +250,7 @@ public final class SectionNames
 
     /**
      * Handy section finder. There is a bit of moderately bad programming
-     * here because org.crosswire.jsword.control.map.sw*ng.GroupVerseColor
+     * here because org.crosswire.biblemapper.sw*ng.GroupVerseColor
      * uses these numbers as an index into an array, so we shouldn't
      * change these numbers without fixing that, however I don't imagine
      * that this section could ever change without breaking

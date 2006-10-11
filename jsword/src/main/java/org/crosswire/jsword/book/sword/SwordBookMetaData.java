@@ -28,6 +28,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.crosswire.common.util.NetUtil;
@@ -187,7 +188,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
      */
     public String getConfPath()
     {
-        return SwordConstants.DIR_CONF + '/' + getInitials().toLowerCase() + SwordConstants.EXTENSION_CONF;
+        return SwordConstants.DIR_CONF + '/' + getInitials().toLowerCase(Locale.ENGLISH) + SwordConstants.EXTENSION_CONF;
     }
 
     /**

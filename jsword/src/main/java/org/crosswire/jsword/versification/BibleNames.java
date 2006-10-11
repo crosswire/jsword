@@ -85,12 +85,12 @@ public final class BibleNames
 
             if (bookCase == CaseType.LOWER)
             {
-                return fullBooks[book - 1].toLowerCase();
+                return fullBooks[book - 1].toLowerCase(locale);
             }
 
             if (bookCase == CaseType.UPPER)
             {
-                return fullBooks[book - 1].toUpperCase();
+                return fullBooks[book - 1].toUpperCase(locale);
             }
 
             return fullBooks[book - 1];
@@ -119,12 +119,12 @@ public final class BibleNames
 
             if (bookCase.equals(CaseType.LOWER))
             {
-                return shortBooks[book - 1].toLowerCase();
+                return shortBooks[book - 1].toLowerCase(locale);
             }
 
             if (bookCase.equals(CaseType.UPPER))
             {
-                return shortBooks[book - 1].toUpperCase();
+                return shortBooks[book - 1].toUpperCase(locale);
             }
 
             return shortBooks[book - 1];
@@ -215,7 +215,7 @@ public final class BibleNames
      */
     private String normalize(String str)
     {
-        return normPattern.matcher(str).replaceAll("").toLowerCase(); //$NON-NLS-1$
+        return normPattern.matcher(str).replaceAll("").toLowerCase(locale); //$NON-NLS-1$
     }
 
     /**

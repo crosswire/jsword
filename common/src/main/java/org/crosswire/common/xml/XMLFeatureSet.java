@@ -43,6 +43,7 @@
 package org.crosswire.common.xml;
 
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.Map.Entry;
@@ -97,7 +98,7 @@ public final class XMLFeatureSet
             if (arg.startsWith("-")) //$NON-NLS-1$
             {
                 String option = arg.substring(1);
-                String key = option.toLowerCase();
+                String key = option.toLowerCase(Locale.ENGLISH);
                 XMLFeatureState feature = (XMLFeatureState) features.get(key);
                 if (feature != null)
                 {
