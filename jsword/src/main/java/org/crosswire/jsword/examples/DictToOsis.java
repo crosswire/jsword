@@ -21,11 +21,8 @@
  */
 package org.crosswire.jsword.examples;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.text.FieldPosition;
 import java.text.MessageFormat;
@@ -36,7 +33,6 @@ import org.crosswire.common.xml.XMLProcess;
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
-import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.passage.Key;
@@ -59,81 +55,62 @@ public class DictToOsis
     /**
      * @param args
      */
-    public static void main(String[] args)
+    public static void main(String[] args) throws Exception
     {
         new DictToOsis().dump(BOOK_NAME);
     }
 
-    public void dump(String name)
+    public void dump(String name) throws Exception
     {
         Books books = Books.installed();
         Book book = books.getBook(name);
         BookMetaData bmd = book.getBookMetaData();
         StringBuffer buf = new StringBuffer();
 
-        try
+        Key keys = book.getGlobalKeyList();
+
+        buildDocumentOpen(buf, bmd);
+
+        // Get a verse iterator
+        Iterator iter = keys.iterator();
+        while (iter.hasNext())
         {
-            Key keys = book.getGlobalKeyList();
-
-            buildDocumentOpen(buf, bmd);
-
-            // Get a verse iterator
-            Iterator iter = keys.iterator();
-            while (iter.hasNext())
-            {
-                Key key = (Key) iter.next();
-                BookData bdata = book.getData(key);
-                SAXEventProvider osissep = bdata.getSAXEventProvider();
-                try
-                {
-                    buildEntryOpen(buf, key.getName(), XMLUtil.writeToString(osissep));
-                }
-                catch (SAXException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-
-            buildDocumentClose(buf);
-
-            Writer writer = null;
+            Key key = (Key) iter.next();
+            BookData bdata = book.getData(key);
+            SAXEventProvider osissep = bdata.getSAXEventProvider();
             try
             {
-                writer = new OutputStreamWriter(new FileOutputStream(bmd.getInitials() + ".xml"), "UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
-                writer.write(buf.toString());
+                buildEntryOpen(buf, key.getName(), XMLUtil.writeToString(osissep));
             }
-            finally
+            catch (SAXException e)
             {
-                if (writer != null)
-                {
-                    writer.close();
-                }
+                e.printStackTrace();
             }
-            XMLProcess parser = new XMLProcess();
-//            parser.getFeatures().setFeatureStates("-s", "-f", "-va", "-dv"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-            parser.parse(bmd.getInitials() + ".xml"); //$NON-NLS-1$
         }
-        catch (BookException e)
+
+        buildDocumentClose(buf);
+
+        Writer writer = null;
+        try
         {
-            e.printStackTrace();
+            writer = new OutputStreamWriter(new FileOutputStream(bmd.getInitials() + ".xml"), "UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
+            writer.write(buf.toString());
         }
-        catch (UnsupportedEncodingException e)
+        finally
         {
-            e.printStackTrace();
+            if (writer != null)
+            {
+                writer.close();
+            }
         }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+        XMLProcess parser = new XMLProcess();
+        // parser.getFeatures().setFeatureStates("-s", "-f", "-va", "-dv"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        parser.parse(bmd.getInitials() + ".xml"); //$NON-NLS-1$
     }
 
     private void buildDocumentOpen(StringBuffer buf, BookMetaData bmd)
     {
-        StringBuffer docBuffer = new StringBuffer();
+        StringBuffer docBuffer = new StringBuffer(200);
         docBuffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"); //$NON-NLS-1$
         docBuffer.append("\n<osis"); //$NON-NLS-1$
         docBuffer.append("\n  xmlns=\"http://www.bibletechnologies.net/2003/OSIS/namespace\""); //$NON-NLS-1$
