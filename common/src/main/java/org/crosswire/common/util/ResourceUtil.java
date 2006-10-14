@@ -66,7 +66,7 @@ public final class ResourceUtil
      */
     public static URL getResource(Class clazz, String resourceName) throws MissingResourceException
     {
-        URL resource = new CWClassLoader(clazz).findResource(resourceName);
+        URL resource = CWClassLoader.instance(clazz).findResource(resourceName);
 
         if (resource == null)
         {

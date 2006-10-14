@@ -392,7 +392,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
     {
         try
         {
-            languages = ResourceBundle.getBundle("iso639", Locale.getDefault(), new CWClassLoader()); //$NON-NLS-1$;
+            languages = ResourceBundle.getBundle("iso639", Locale.getDefault(), CWClassLoader.instance()); //$NON-NLS-1$;
         }
         catch (MissingResourceException e)
         {

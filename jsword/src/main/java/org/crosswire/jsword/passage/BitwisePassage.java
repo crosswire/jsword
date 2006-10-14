@@ -423,6 +423,8 @@ public class BitwisePassage extends AbstractPassage
      */
     private void writeObject(ObjectOutputStream out) throws IOException
     {
+        out.defaultWriteObject();
+
         writeObjectSupport(out);
     }
 
@@ -439,6 +441,9 @@ public class BitwisePassage extends AbstractPassage
         optimizeWrites();
 
         store = new BitSet(BibleInfo.versesInBible() + 1);
+
+        in.defaultReadObject();
+
         readObjectSupport(in);
     }
 

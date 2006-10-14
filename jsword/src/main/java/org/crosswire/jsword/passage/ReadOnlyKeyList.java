@@ -238,4 +238,9 @@ public class ReadOnlyKeyList implements Key
      * The Key to which we proxy
      */
     private Key keys;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = -7947159638198641657L;
 }

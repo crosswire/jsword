@@ -24,6 +24,8 @@ package org.crosswire.common.util;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 /**
  * CWClassLoader extends the regular class loader by using looking
@@ -34,7 +36,7 @@ import java.net.URL;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class CWClassLoader extends ClassLoader
+public final class CWClassLoader extends ClassLoader
 {
     /**
      * Creates a class loader that finds resources
@@ -43,7 +45,7 @@ public class CWClassLoader extends ClassLoader
      * to load resources for a derived class.
      * @param resourceOwner is the owner of the resource
      */
-    public CWClassLoader(Class resourceOwner)
+    CWClassLoader(Class resourceOwner)
     {
         owner = resourceOwner;
     }
@@ -53,9 +55,32 @@ public class CWClassLoader extends ClassLoader
      * for the calling class that may not be in the class' package.
      * Use this only within classes that are directly looking up their resources.
      */
-    public CWClassLoader()
+    CWClassLoader()
     {
         owner = CallContext.getCallingClass();
+    }
+
+    /**
+     * Creates a privleged class loader that finds resources
+     * for the supplied class that may not be in the class' package.
+     * You can use this within base classes by passing getClass()
+     * to load resources for a derived class.
+     * @param resourceOwner is the owner of the resource
+     */
+    public static CWClassLoader instance(Class resourceOwner)
+    {
+        return (CWClassLoader) AccessController.doPrivileged(new PrivilegedLoader(resourceOwner));
+    }
+
+    /**
+     * Creates a privileged class loader that finds resources
+     * for the calling class that may not be in the class' package.
+     * Use this only within classes that are directly looking up their resources.
+     */
+    public static CWClassLoader instance()
+    {
+        Class resourceOwner = CallContext.getCallingClass();
+        return instance(resourceOwner);
     }
 
     /* (non-Javadoc)
@@ -287,6 +312,46 @@ public class CWClassLoader extends ClassLoader
         }
 
         return reply;
+    }
+
+    /**
+     * PrivilegedLoader creates a CWClassLoader if it is
+     * able to obtain java security permissions to do so.
+     */
+    private static class PrivilegedLoader implements PrivilegedAction
+    {
+        /**
+         * Creates a privleged class loader that finds resources
+         * for the supplied class that may not be in the class' package.
+         * You can use this within base classes by passing getClass()
+         * to load resources for a derived class.
+         * @param resourceOwner is the owner of the resource
+         */
+        public PrivilegedLoader(Class resourceOwner)
+        {
+            owningClass = resourceOwner;
+        }
+
+        /**
+         * Creates a privleged class loader that finds resources
+         * for the calling class that may not be in the class' package.
+         * Use this only within classes that are directly looking up their resources.
+         */
+        public PrivilegedLoader()
+        {
+            owningClass = CallContext.getCallingClass();
+        }
+
+
+        /* (non-Javadoc)
+         * @see java.security.PrivilegedAction#run()
+         */
+        public Object run()
+        {
+            return new CWClassLoader(owningClass);
+        }
+
+        private Class owningClass;
     }
 
     /**

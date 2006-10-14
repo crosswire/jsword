@@ -163,6 +163,11 @@ public class DefaultKeyList extends AbstractKeyList
     private List keys = new ArrayList();
 
     /**
+     *  Serialization ID
+     */
+    private static final long serialVersionUID = -1633375337613230599L;
+
+    /**
      * The log stream
      */
     private static final Logger log = Logger.getLogger(DefaultKeyList.class);

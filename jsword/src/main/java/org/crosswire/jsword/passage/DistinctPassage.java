@@ -215,6 +215,8 @@ public class DistinctPassage extends AbstractPassage
      */
     private void writeObject(ObjectOutputStream out) throws IOException
     {
+        out.defaultWriteObject();
+
         writeObjectSupport(out);
     }
 
@@ -231,6 +233,9 @@ public class DistinctPassage extends AbstractPassage
         optimizeWrites();
 
         store = new TreeSet();
+
+        in.defaultReadObject();
+
         readObjectSupport(in);
     }
 

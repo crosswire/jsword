@@ -24,6 +24,7 @@ package org.crosswire.jsword.passage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -58,7 +59,7 @@ import org.crosswire.jsword.versification.BibleInfo;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public final class Verse implements Key
+public final class Verse implements Key, Serializable
 {
     /**
      * The default Verse is Genesis 1:1. I didn't want to provide this

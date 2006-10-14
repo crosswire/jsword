@@ -40,7 +40,6 @@ import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.passage.DefaultKeyList;
-import org.crosswire.jsword.passage.DefaultLeafKeyList;
 import org.crosswire.jsword.passage.Key;
 
 /**
@@ -288,7 +287,7 @@ public class ZLDBackend extends AbstractBackend
 
         try
         {
-            byte[] data = SwordUtil.readRAF(datRaf, ikey.offset, ikey.size);
+            byte[] data = SwordUtil.readRAF(datRaf, ikey.getOffset(), ikey.getSize());
 
             int keyend = SwordUtil.findByte(data, SEPARATOR);
             if (keyend == -1)
@@ -381,44 +380,4 @@ public class ZLDBackend extends AbstractBackend
             Activator.activate(this);
         }
     }
-
-    /**
-     * A Key that knows where the data is in the real file.
-     */
-    static class IndexKey extends DefaultLeafKeyList
-    {
-        /**
-         * Setup with the key name and positions of data in the file
-         */
-        protected IndexKey(String text, int offset, int size, Key parent)
-        {
-            super(text, text, parent);
-
-            this.offset = offset;
-            this.size = size;
-        }
-
-        /**
-         * Setup with the key name. Use solely for searching.
-         */
-        protected IndexKey(String text)
-        {
-            super(text, text, null);
-
-            this.offset = -1;
-            this.size = -1;
-        }
-
-        /* (non-Javadoc)
-         * @see java.lang.Object#clone()
-         */
-        public Object clone()
-        {
-            return super.clone();
-        }
-
-        protected int offset;
-        protected int size;
-    }
-
 }

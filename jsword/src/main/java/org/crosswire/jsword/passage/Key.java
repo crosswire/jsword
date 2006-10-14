@@ -21,6 +21,8 @@
  */
 package org.crosswire.jsword.passage;
 
+import java.io.Serializable;
+
 import org.crosswire.common.util.Iterable;
 
 /**
@@ -34,7 +36,7 @@ import org.crosswire.common.util.Iterable;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public interface Key extends Comparable, Cloneable, Iterable
+public interface Key extends Comparable, Cloneable, Iterable, Serializable
 {
     /**
      * A Human readable version of the Key.

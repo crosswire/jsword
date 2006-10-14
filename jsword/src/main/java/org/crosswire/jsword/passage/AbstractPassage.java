@@ -55,15 +55,17 @@ public abstract class AbstractPassage implements Passage
      */
     protected AbstractPassage()
     {
+        this(null);
     }
 
     /**
      * Setup the original name of this reference
-     * @param original_name The text originally used to create this Passage.
+     * @param passageName The text originally used to create this Passage.
      */
-    protected AbstractPassage(String original_name)
+    protected AbstractPassage(String passageName)
     {
-        this.originalName = original_name;
+        originalName = passageName;
+        listeners = new ArrayList();
     }
 
     /* (non-Javadoc)
@@ -1243,10 +1245,6 @@ public abstract class AbstractPassage implements Passage
      */
     protected void writeObjectSupport(ObjectOutputStream out) throws IOException
     {
-        // This allows our children to have default serializable fields
-        // even though we have none.
-        out.defaultWriteObject();
-
         // the size in bits of teach storage method
         int bitwise_size = BibleInfo.versesInBible();
         int ranged_size =  8 * countRanges(RestrictionType.NONE);
@@ -1305,30 +1303,41 @@ public abstract class AbstractPassage implements Passage
     }
 
     /**
+     * Serialization support.
+     * 
+     * @param in
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    private void readObject(ObjectInputStream is) throws IOException, ClassNotFoundException
+    {
+        listeners = new ArrayList();
+        originalName = null;
+        parent = null;
+        skipNormalization = 0;
+        suppressEvents = 0;
+
+        is.defaultReadObject();
+    }
+
+    /**
      * Write out the object to the given ObjectOutputStream
-     * @param in The stream to read our state from
+     * @param is The stream to read our state from
      * @throws IOException if the read fails
      * @throws ClassNotFoundException If the read data is incorrect
      */
-    protected void readObjectSupport(ObjectInputStream in) throws IOException, ClassNotFoundException
+    protected void readObjectSupport(ObjectInputStream is) throws IOException, ClassNotFoundException
     {
         raiseEventSuppresion();
         raiseNormalizeProtection();
 
-        // This allows our children to have default serializable fields
-        // even though we have none.
-        in.defaultReadObject();
-
-        // Setup
-        listeners = new ArrayList();
-
         try
         {
-            int type = in.readInt();
+            int type = is.readInt();
             switch (type)
             {
             case BITWISE:
-                BitSet store = (BitSet) in.readObject();
+                BitSet store = (BitSet) is.readObject();
                 for (int i = 0; i < BibleInfo.versesInBible(); i++)
                 {
                     if (store.get(i))
@@ -1339,20 +1348,20 @@ public abstract class AbstractPassage implements Passage
                 break;
 
             case DISTINCT:
-                int verses = in.readInt();
+                int verses = is.readInt();
                 for (int i = 0; i < verses; i++)
                 {
-                    int ord = in.readInt();
+                    int ord = is.readInt();
                     add(new Verse(ord));
                 }
                 break;
 
             case RANGED:
-                int ranges = in.readInt();
+                int ranges = is.readInt();
                 for (int i = 0; i < ranges; i++)
                 {
-                    int ord = in.readInt();
-                    int count = in.readInt();
+                    int ord = is.readInt();
+                    int count = is.readInt();
                     add(RestrictionType.NONE.toRange(new Verse(ord), count));
                 }
                 break;
@@ -1410,7 +1419,7 @@ public abstract class AbstractPassage implements Passage
     /**
      * Support for change notification
      */
-    protected transient List listeners = new ArrayList();
+    protected transient List listeners;
 
     /**
      * The original string for picky users

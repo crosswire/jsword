@@ -540,6 +540,8 @@ public class RangedPassage extends AbstractPassage
      */
     private void writeObject(ObjectOutputStream out) throws IOException
     {
+        out.defaultWriteObject();
+
         writeObjectSupport(out);
     }
 
@@ -556,6 +558,9 @@ public class RangedPassage extends AbstractPassage
         optimizeWrites();
 
         store = new TreeSet();
+
+        in.defaultReadObject();
+
         readObjectSupport(in);
     }
 

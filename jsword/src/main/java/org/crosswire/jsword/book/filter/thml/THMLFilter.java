@@ -80,17 +80,14 @@ public class THMLFilter implements Filter
         }
         finally
         {
-            if (ex != null)
-            {
-                DataPolice.report("Parse failed: " + ex.getMessage() + //$NON-NLS-1$
-                                  "\non: " + plain); //$NON-NLS-1$
-            }
             // Make sure that other places don't report this problem
             DataPolice.setKey(null);
         }
 
         if (ex != null)
         {
+            DataPolice.report("Parse failed: " + ex.getMessage() + //$NON-NLS-1$
+                              "\non: " + plain); //$NON-NLS-1$
             ele = cleanTags(plain);
         }
 

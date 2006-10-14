@@ -56,7 +56,7 @@ public class IndexStatusEvent extends EventObject
     /**
      * The indexStatus of the book.
      */
-    private transient IndexStatus indexStatus;
+    private IndexStatus indexStatus;
 
     /**
      * Serialization ID

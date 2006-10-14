@@ -72,7 +72,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
         String setname = ReadingsBookDriver.getReadingsSet();
 
         Locale defaultLocale = Locale.getDefault();
-        ResourceBundle prop = ResourceBundle.getBundle(setname, defaultLocale, new CWClassLoader(ReadingsBookDriver.class));
+        ResourceBundle prop = ResourceBundle.getBundle(setname, defaultLocale, CWClassLoader.instance(ReadingsBookDriver.class));
 
         String name = Msg.TITLE.toString();
         try

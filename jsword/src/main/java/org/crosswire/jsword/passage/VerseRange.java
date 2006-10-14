@@ -24,6 +24,7 @@ package org.crosswire.jsword.passage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -43,7 +44,7 @@ import org.crosswire.jsword.versification.BibleInfo;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class VerseRange implements Key
+public final class VerseRange implements Key, Serializable
 {
     /**
      * The default VerseRange is a single verse - Genesis 1:1. I didn't

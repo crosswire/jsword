@@ -200,6 +200,11 @@ public class SetKeyList extends AbstractKeyList
     private List list = new ArrayList();
 
     /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = -1460162676283475117L;
+
+    /**
      * The log stream
      */
     private static final Logger log = Logger.getLogger(SetKeyList.class);

@@ -123,7 +123,7 @@ public final class OSISNames
         osisMap = new HashMap(booksInBible);
 
         // Get all the OSIS standard book names
-        ResourceBundle resources = ResourceBundle.getBundle(OSISNames.class.getName(), OSIS_LOCALE, new CWClassLoader(OSISNames.class));
+        ResourceBundle resources = ResourceBundle.getBundle(OSISNames.class.getName(), OSIS_LOCALE, CWClassLoader.instance(OSISNames.class));
 
         for (int i = 0; i < osisBooks.length; i++)
         {

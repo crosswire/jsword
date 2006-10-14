@@ -77,7 +77,7 @@ public class BibleToOsis
 
         openOutputFile(bmd.getInitials(), !BY_BOOK);
         buildDocumentOpen(buf, bmd, range, !BY_BOOK);
-        if ( !BY_BOOK)
+        if (!BY_BOOK)
         {
             writeDocument(buf);
         }

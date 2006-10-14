@@ -21,13 +21,15 @@
  */
 package org.crosswire.jsword.passage;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Iterator;
 
 /**
  * A RocketPassage is a bit and heavy implementation of Passage that goes
  * fairly quickly once let of the leash. It manages its speed by creating
  * contained instances of DistinctPassage and RangedPassage and selects
- * the fastest implementation for each fo its methods from the 3 available.
+ * the fastest implementation for each of its methods from the 3 available.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
@@ -246,6 +248,18 @@ public class RocketPassage extends BitwisePassage
         }
 
         return super.containsAll(that);
+    }
+
+    /**
+     * Serialization support
+     * @param is The stream to read our state from
+     * @throws IOException if the read fails
+     * @throws ClassNotFoundException If the read data is incorrect
+     */
+    private void readObject(ObjectInputStream is) throws IOException, ClassNotFoundException
+    {
+        optimizeWrites();
+        is.defaultReadObject();
     }
 
     /**

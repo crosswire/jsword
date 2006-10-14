@@ -411,5 +411,5 @@ public abstract class AbstractBook implements Book
     /**
      * The list of property change listeners
      */
-    private transient EventListenerList listeners;
+    private EventListenerList listeners;
 }

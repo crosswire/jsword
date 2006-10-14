@@ -143,6 +143,11 @@ public class ReadingsKey extends DefaultLeafKeyList
     private Date date;
 
     /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = -5500401548068844993L;
+
+    /**
      * Date formatter
      */
     private static final DateFormat NAME_DF = new SimpleDateFormat("d MMMM"); //$NON-NLS-1$

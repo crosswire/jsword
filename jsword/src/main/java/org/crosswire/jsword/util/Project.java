@@ -23,7 +23,6 @@ package org.crosswire.jsword.util;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.crosswire.common.util.CWClassLoader;
@@ -105,7 +104,6 @@ public final class Project
 
     /**
      * Establishes the user's project directory.
-     * @throws MalformedURLException
      */
     public URL getUserProjectDir(String hiddenFolderName, String visibleFolderName)
     {
@@ -114,7 +112,6 @@ public final class Project
 
     /**
      * Establishes the user's project directory.
-     * @throws MalformedURLException
      */
     public URL getUserProjectDir()
     {
@@ -132,7 +129,6 @@ public final class Project
      * Get the location where the project dir used to be.
      * 
      * @return ~/.jsword
-     * @throws MalformedURLException
      */
     public URL getDeprecatedUserProjectDir()
     {

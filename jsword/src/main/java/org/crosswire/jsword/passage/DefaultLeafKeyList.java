@@ -273,4 +273,10 @@ public class DefaultLeafKeyList implements Key
      * The OSIS version of this Key
      */
     private String osisName;
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -7462556005744186622L;
+
 }

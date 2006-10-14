@@ -238,7 +238,7 @@ public final class BibleNames
         altBooks = new String[booksInBible][];
         altBooksMap = new HashMap(booksInBible);
 
-        ResourceBundle resources = ResourceBundle.getBundle(BibleNames.class.getName(), locale, new CWClassLoader(BibleNames.class));
+        ResourceBundle resources = ResourceBundle.getBundle(BibleNames.class.getName(), locale, CWClassLoader.instance(BibleNames.class));
 
         for (int i = 0; i < booksInBible; i++)
         {

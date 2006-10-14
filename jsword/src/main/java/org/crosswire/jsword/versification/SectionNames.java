@@ -219,7 +219,7 @@ public final class SectionNames
      */
     private void initialize()
     {
-        ResourceBundle resources = ResourceBundle.getBundle(SectionNames.class.getName(), Locale.getDefault(), new CWClassLoader(SectionNames.class));
+        ResourceBundle resources = ResourceBundle.getBundle(SectionNames.class.getName(), Locale.getDefault(), CWClassLoader.instance(SectionNames.class));
 
         sections = new String[SECTIONS_IN_BIBLE];
 

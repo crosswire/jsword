@@ -22,7 +22,6 @@ package org.crosswire.jsword.book.sword;
 import java.text.DateFormat;
 import java.util.Date;
 
-import org.crosswire.jsword.book.sword.RawLDBackend.IndexKey;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.PreferredKey;
 

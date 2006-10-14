@@ -74,7 +74,7 @@ public abstract class OSType implements Serializable
         {
             if (userArea == null)
             {
-                userArea = NetUtil.lengthenURL(userHome, WIN32_USER_DATA_AREA);
+                userArea = NetUtil.lengthenURL(getUserHome(), WIN32_USER_DATA_AREA);
             }
             return userArea;
         }
@@ -100,7 +100,7 @@ public abstract class OSType implements Serializable
          */
         public URL getUserArea()
         {
-            return userHome;
+            return getUserHome();
         }
 
         /* (non-Javadoc)
@@ -280,7 +280,7 @@ public abstract class OSType implements Serializable
     /**
      * The user's home directory.
      */
-    protected static URL userHome;
+    private static URL userHome;
 
     /**
      * The log stream

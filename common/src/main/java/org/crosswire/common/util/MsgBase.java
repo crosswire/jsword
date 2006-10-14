@@ -116,7 +116,7 @@ public class MsgBase
                 Locale defaultLocale = Locale.getDefault();
                 try
                 {
-                    resources = ResourceBundle.getBundle(className, defaultLocale, new CWClassLoader(implementingClass));
+                    resources = ResourceBundle.getBundle(className, defaultLocale, CWClassLoader.instance(implementingClass));
                     resourceMap.put(className, resources);
                 }
                 catch (MissingResourceException ex)
