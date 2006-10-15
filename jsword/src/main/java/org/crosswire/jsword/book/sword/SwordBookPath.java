@@ -237,6 +237,8 @@ public class SwordBookPath
     /**
      * Check to see if the given directory is a Sword mods.d directory
      * and then add it to the list if it is.
+     * @param bookDirs The list to add good paths
+     * @param path the path to check 
      */
     private static void testDefaultPath(List bookDirs, File path)
     {
@@ -255,7 +257,8 @@ public class SwordBookPath
     /**
      * Check to see if the given directory is a Sword mods.d directory
      * and then add it to the list if it is.
-     * @param readonly 
+     * @param bookDirs The list to add good paths
+     * @param path the path to check 
      */
     private static void testDefaultPath(List bookDirs, String path)
     {
@@ -367,7 +370,7 @@ public class SwordBookPath
     }
 
     /**
-     * @param downloadDir The download directory to set.
+     * @param dlDir The download directory to set.
      */
     public static void setDownloadDir(File dlDir)
     {

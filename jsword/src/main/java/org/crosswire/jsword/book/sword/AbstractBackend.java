@@ -42,7 +42,6 @@ public abstract class AbstractBackend implements Activatable
     /**
      * Construct a minimal backend
      * @param sbmd
-     * @param location
      */
     public AbstractBackend(SwordBookMetaData sbmd)
     {

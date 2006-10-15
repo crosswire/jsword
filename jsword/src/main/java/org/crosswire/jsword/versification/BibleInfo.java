@@ -54,7 +54,6 @@ public final class BibleInfo
      * This is only used by config.
      * @param bookCase The new case to use for reporting book names
      * @exception IllegalArgumentException If the case is not between 0 and 2
-     * @see Passage
      * @see #getCase()
      */
     public static void setCase(int bookCase)
@@ -65,8 +64,7 @@ public final class BibleInfo
     /**
      * This is only used by config
      * @return The current case setting
-     * @see Passage
-     * @see BibleInfo#setCase(CaseType)
+     * @see #setCase(CaseType)
      */
     public static int getCase()
     {
@@ -81,7 +79,6 @@ public final class BibleInfo
      * BibleInfo.MIXED is not allowed
      * @param newBookCase The new case to use for reporting book names
      * @exception IllegalArgumentException If the case is not between 0 and 2
-     * @see Passage
      * @see #getCase()
      */
     public static void setCase(CaseType newBookCase)
@@ -92,7 +89,7 @@ public final class BibleInfo
     /**
      * This is only used by config
      * @return Whether the name is long or short. Default is Full (true).
-     * @see BibleInfo#setFullBookName(boolean)
+     * @see #setFullBookName(boolean)
      */
     public static boolean isFullBookName()
     {
@@ -112,8 +109,7 @@ public final class BibleInfo
     /**
      * How do we report the names of the books?.
      * @return The current case setting
-     * @see Passage
-     * @see BibleInfo#setCase(int)
+     * @see #setCase(int)
      */
     public static CaseType getDefaultCase()
     {
@@ -555,7 +551,7 @@ public final class BibleInfo
      * How many books are there in each of the above sections
      * @param section The section
      * @return The number of books in the given section
-     * @see #getSection(int)
+     * @see SectionNames#getSection(int)
      */
     public static int booksInSection(int section)
     {

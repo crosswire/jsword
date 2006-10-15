@@ -30,7 +30,7 @@ import org.crosswire.jsword.book.CaseType;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 
 /**
- * SectionNames is a class that deals with sections of the Bible.
+ * SectionNames deals with traditional sections of the Bible.
  *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
@@ -40,7 +40,7 @@ import org.crosswire.jsword.passage.NoSuchVerseException;
 public final class SectionNames
 {
     /**
-     * Ensure that we can not be instantiated
+     * Create a SectionNames object
      */
     public SectionNames()
     {
@@ -131,7 +131,6 @@ public final class SectionNames
      * What section is this book a part of?
      * @param book The book to test
      * @return True The section
-     * @see SectionNames.Section
      */
     public static int getSection(int book)
     {

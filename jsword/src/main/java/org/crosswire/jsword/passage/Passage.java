@@ -62,7 +62,7 @@ import java.util.Iterator;
  * </ul>
  *
  * <p>The upshot of all this is that I am removing the Collections interface from
- * Passage, but writing a PassageSet as a proxy.
+ * Passage.
  *
  * <p>I considered giving Passages names to allow for a CLI that could
  * use named RangedPassages, however that is perhaps better left to another class.

@@ -208,6 +208,22 @@ public abstract class AbstractBook implements Book
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getProperty(java.lang.String)
+     */
+    public String getProperty(String key)
+    {
+        return bmd.getProperty(key);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#putProperty(java.lang.String, java.lang.String)
+     */
+    public void putProperty(String key, String value)
+    {
+        bmd.putProperty(key, value);
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getType()
      */
     public BookCategory getBookCategory()

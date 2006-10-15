@@ -86,8 +86,8 @@ public class BookSet extends ArrayList implements Set
         while (iter.hasNext())
         {
             Book book = (Book) iter.next();
-            Object property = book.getProperties().get(key);
-            String propertyValue = property == null ? Msg.BOOK_METADATA_SET_OTHER.toString() : property.toString();
+            String property = book.getProperty(key);
+            String propertyValue = property == null ? Msg.BOOK_METADATA_SET_OTHER.toString() : property;
             results.add(propertyValue);
         }
         return results;
@@ -196,7 +196,8 @@ public class BookSet extends ArrayList implements Set
         public boolean test(Object obj)
         {
             Book book = (Book) obj;
-            return book.getProperties().get(key) == value;
+            String property = book.getProperty(key);
+            return property != null && property.equals(value);
         }
         private String key;
         private String value;

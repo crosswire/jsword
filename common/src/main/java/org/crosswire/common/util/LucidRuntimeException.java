@@ -76,7 +76,7 @@ public class LucidRuntimeException extends RuntimeException
      * All LucidRuntimeException are constructed with references to resources in
      * an i18n properties file. This version allows us to add parameters
      * @param msg The resource id to read
-     * @param params An array of parameters
+     * @param newParams An array of parameters
      */
     public LucidRuntimeException(MsgBase msg, Throwable cause, Object[] newParams)
     {

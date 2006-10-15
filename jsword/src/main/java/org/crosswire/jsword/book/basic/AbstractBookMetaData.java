@@ -23,6 +23,7 @@ package org.crosswire.jsword.book.basic;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -164,7 +165,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
      */
     public String getLanguage()
     {
-        return (String) getProperty(KEY_LANGUAGE);
+        return getProperty(KEY_LANGUAGE);
     }
 
     /* (non-Javadoc)
@@ -175,7 +176,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
         URL url = null;
         try
         {
-            String loc = (String) getProperty(KEY_LIBRARY_URL);
+            String loc = getProperty(KEY_LIBRARY_URL);
             if (loc != null)
             {
                 url = new URL(loc);
@@ -196,7 +197,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
         URL url = null;
         try
         {
-            String loc = (String) getProperty(KEY_LOCATION_URL);
+            String loc = getProperty(KEY_LOCATION_URL);
             if (loc != null)
             {
                 url = new URL(loc);
@@ -214,7 +215,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
      */
     public Map getProperties()
     {
-        return prop;
+        return Collections.unmodifiableMap(prop);
     }
 
     /**
@@ -225,20 +226,18 @@ public abstract class AbstractBookMetaData implements BookMetaData
         prop = newProperties;
     }
 
-    /**
-     * @param key
-     * @return the object found by the key
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getProperty(java.lang.String)
      */
-    protected Object getProperty(String key)
+    public String getProperty(String key)
     {
-        return prop.get(key);
+        return (String) prop.get(key);
     }
 
-    /**
-     * @param key
-     * @param value
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#putProperty(java.lang.String, java.lang.String)
      */
-    protected void putProperty(String key, String value)
+    public void putProperty(String key, String value)
     {
         prop.put(key, value);
     }

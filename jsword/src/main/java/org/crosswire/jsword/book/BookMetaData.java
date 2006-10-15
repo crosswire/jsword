@@ -198,6 +198,18 @@ public interface BookMetaData extends Comparable
     Map getProperties();
 
     /**
+     * @param key the key of the property.
+     * @return the value of the property
+     */
+    String getProperty(String key);
+
+    /**
+     * @param key the key of the property to set
+     * @param value the value of the property
+     */
+    void putProperty(String key, String value);
+
+    /**
      * Has anyone generated a search index for this Book?
      * @see org.crosswire.jsword.index.IndexManager
      */

@@ -203,7 +203,6 @@ public class SwordBookDriver extends AbstractBookDriver
      * A helper class for the SwordInstaller to tell us that it has copied a
      * new Book into our install directory
      * @param sbmd The SwordBookMetaData object for the new Book
-     * @param bookpath The path that we have installed to
      * @throws BookException
      */
     public static void registerNewBook(SwordBookMetaData sbmd) throws BookException
