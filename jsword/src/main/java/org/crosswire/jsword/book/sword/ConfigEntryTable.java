@@ -65,72 +65,103 @@ import org.jdom.Element;
 public class ConfigEntryTable
 {
     /**
-     * Loads a sword config from a given file.
-     * @throws IOException
+     * Create an empty Sword config for the named book.
+     * @param bookName the name of the book
      */
-    public ConfigEntryTable(File file, String bookName) throws IOException
+    public ConfigEntryTable(String bookName)
     {
-        configFile = file;
+        table = new HashMap();
         internal = bookName;
         supported = true;
-        table = new HashMap();
-
-        BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), ENCODING_LATIN1));
-        loadInitials(in);
-        loadContents(in);
-        in.close();
-        if (getValue(ConfigEntryType.ENCODING).equals(ENCODING_UTF8))
-        {
-            supported = true;
-            bookType = null;
-            questionable = false;
-            readahead = null;
-            table.clear();
-            in = new BufferedReader(new InputStreamReader(new FileInputStream(file), ENCODING_UTF8));
-            loadInitials(in);
-            loadContents(in);
-            in.close();
-        }
-        adjustDataPath();
-        adjustLanguage();
-        adjustBookType();
-        adjustName();
-        validate();
     }
 
     /**
-     * Loads a sword config from a given buffer.
-     * This is used to load conf entries from the mods.d.tar.gz file.
-     * 
+     * Load the conf from a file.
+     * @param file the file to load
      * @throws IOException
      */
-    public ConfigEntryTable(byte[] buffer, String bookName) throws IOException
+    public void load(File file) throws IOException
     {
-        internal = bookName;
-        supported = true;
-        table = new HashMap();
+        configFile = file;
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer), ENCODING_LATIN1));
-        loadInitials(in);
-        loadContents(in);
-        in.close();
-        if (getValue(ConfigEntryType.ENCODING).equals(ENCODING_UTF8))
+        BufferedReader in = null;
+        try
         {
-            supported = true;
-            bookType = null;
-            questionable = false;
-            readahead = null;
-            table.clear();
-            in = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer), ENCODING_UTF8));
+            in = new BufferedReader(new InputStreamReader(new FileInputStream(file), ENCODING_LATIN1));
             loadInitials(in);
             loadContents(in);
             in.close();
+            in = null;
+            if (getValue(ConfigEntryType.ENCODING).equals(ENCODING_UTF8))
+            {
+                supported = true;
+                bookType = null;
+                questionable = false;
+                readahead = null;
+                table.clear();
+                in = new BufferedReader(new InputStreamReader(new FileInputStream(file), ENCODING_UTF8));
+                loadInitials(in);
+                loadContents(in);
+                in.close();
+                in = null;
+            }
+            adjustDataPath();
+            adjustLanguage();
+            adjustBookType();
+            adjustName();
+            validate();
         }
-        adjustDataPath();
-        adjustLanguage();
-        adjustBookType();
-        adjustName();
-        validate();
+        finally
+        {
+            if (in != null)
+            {
+                in.close();
+            }
+        }
+    }
+
+    /**
+     * Load the conf from a buffer.
+     * This is used to load conf entries from the mods.d.tar.gz file.
+     * @param buffer the buffer to load
+     * @throws IOException
+     */
+    public void load(byte[] buffer) throws IOException
+    {
+        BufferedReader in = null;
+        try
+        {
+            in = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer), ENCODING_LATIN1));
+            loadInitials(in);
+            loadContents(in);
+            in.close();
+            in = null;
+            if (getValue(ConfigEntryType.ENCODING).equals(ENCODING_UTF8))
+            {
+                supported = true;
+                bookType = null;
+                questionable = false;
+                readahead = null;
+                table.clear();
+                in = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer), ENCODING_UTF8));
+                loadInitials(in);
+                loadContents(in);
+                in.close();
+                in = null;
+            }
+            adjustDataPath();
+            adjustLanguage();
+            adjustBookType();
+            adjustName();
+            validate();
+        }
+        finally
+        {
+            if (in != null)
+            {
+                in.close();
+            }
+        }
     }
 
     /**

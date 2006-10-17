@@ -70,7 +70,8 @@ public class SwordBookMetaData extends AbstractBookMetaData
      */
     public SwordBookMetaData(File file, String internal, URL bookRootPath) throws IOException
     {
-        cet = new ConfigEntryTable(file, internal);
+        cet = new ConfigEntryTable(internal);
+        cet.load(file);
         cet.add(ConfigEntryType.LIBRARY_URL, bookRootPath.toExternalForm());
         // Currently all DATA_PATH entries end in / to indicate dirs or not to indicate file prefixes
         String datapath = getProperty(ConfigEntryType.DATA_PATH);
@@ -92,7 +93,8 @@ public class SwordBookMetaData extends AbstractBookMetaData
      */
     public SwordBookMetaData(byte[] buffer, String internal) throws IOException
     {
-        cet = new ConfigEntryTable(buffer, internal);
+        cet = new ConfigEntryTable(internal);
+        cet.load(buffer);
         buildProperties();
     }
 
