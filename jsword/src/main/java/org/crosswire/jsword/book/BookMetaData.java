@@ -184,11 +184,25 @@ public interface BookMetaData extends Comparable
     URL getLibrary();
 
     /**
+     * Set the base URL for library of this module.
+     * 
+     * @param library the base URL or null if there is none
+     */
+    void setLibrary(URL library);
+
+    /**
      * Get the base URL for relative urls in the document.
      * 
      * @return the base URL or null if there is none
      */
     URL getLocation();
+
+    /**
+     * Set the base URL for relative urls in the document.
+     * 
+     * @param library the base URL or null if there is none
+     */
+    void setLocation(URL library);
 
     /**
      * Get a list of all the properties available to do with this Book.

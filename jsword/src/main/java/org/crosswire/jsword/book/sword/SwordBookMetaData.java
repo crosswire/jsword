@@ -23,7 +23,6 @@ package org.crosswire.jsword.book.sword;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -72,12 +71,7 @@ public class SwordBookMetaData extends AbstractBookMetaData
     {
         cet = new ConfigEntryTable(internal);
         cet.load(file);
-        cet.add(ConfigEntryType.LIBRARY_URL, bookRootPath.toExternalForm());
-        // Currently all DATA_PATH entries end in / to indicate dirs or not to indicate file prefixes
-        String datapath = getProperty(ConfigEntryType.DATA_PATH);
-        datapath = datapath.substring(0, datapath.lastIndexOf('/'));
-        URL location = NetUtil.lengthenURL(bookRootPath, datapath);
-        cet.add(ConfigEntryType.LOCATION_URL, location.toExternalForm());
+        setLibrary(bookRootPath);
         buildProperties();
     }
 
@@ -193,29 +187,24 @@ public class SwordBookMetaData extends AbstractBookMetaData
         return SwordConstants.DIR_CONF + '/' + getInitials().toLowerCase(Locale.ENGLISH) + SwordConstants.EXTENSION_CONF;
     }
 
-    /**
-     * @return the absolute path of the book as an URL.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#setLibrary(java.net.URL)
      */
-    public URL getLocation()
+    public void setLibrary(URL library)
     {
-        URL url = null;
-        try
-        {
-            String loc = getProperty(ConfigEntryType.LOCATION_URL);
-            if (loc != null)
-            {
-                url = new URL(loc);
-            }
-            return url;
-        }
-        catch (MalformedURLException e)
-        {
-            return null;
-        }
+        cet.add(ConfigEntryType.LIBRARY_URL, library.toExternalForm());
+        super.setLibrary(library);
+
+        // Currently all DATA_PATH entries end in / to indicate dirs or not to indicate file prefixes
+        String datapath = getProperty(ConfigEntryType.DATA_PATH);
+        datapath = datapath.substring(0, datapath.lastIndexOf('/'));
+        URL location = NetUtil.lengthenURL(library, datapath);
+        cet.add(ConfigEntryType.LOCATION_URL, location.toExternalForm());
+        super.setLocation(location);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getType()
+     * @see org.crosswire.jsword.book.BookMetaData#getBookCategory()
      */
     public BookCategory getBookCategory()
     {

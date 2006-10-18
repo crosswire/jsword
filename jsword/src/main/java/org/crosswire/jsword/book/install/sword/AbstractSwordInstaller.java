@@ -50,8 +50,8 @@ import org.crosswire.jsword.book.sword.ConfigEntry;
 import org.crosswire.jsword.book.sword.SwordBook;
 import org.crosswire.jsword.book.sword.SwordBookDriver;
 import org.crosswire.jsword.book.sword.SwordBookMetaData;
-import org.crosswire.jsword.book.sword.SwordConstants;
 import org.crosswire.jsword.book.sword.SwordBookPath;
+import org.crosswire.jsword.book.sword.SwordConstants;
 import org.crosswire.jsword.util.Project;
 
 import com.ice.tar.TarEntry;
@@ -195,11 +195,12 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
                     // Once the unzipping is started, we need to continue
                     job.setInterruptable(false);
-                    File dldir = SwordBookPath.getDownloadDir();
                     if (!job.isFinished())
                     {
+                        File dldir = SwordBookPath.getDownloadDir();
                         IOUtil.unpackZip(NetUtil.getAsFile(temp), dldir);
                         job.setProgress(Msg.JOB_CONFIG.toString());
+                        sbmd.setLibrary(NetUtil.getURL(dldir));
                         SwordBookDriver.registerNewBook(sbmd);
                     }
 

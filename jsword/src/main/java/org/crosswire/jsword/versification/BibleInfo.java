@@ -387,7 +387,7 @@ public final class BibleInfo
             Object[] params = new Object[]
             {
                 new Integer(chaptersInBook(book)),
-                getBookName(book - 1), new Integer(chapter),
+                getBookName(book), new Integer(chapter),
             };
             throw new NoSuchVerseException(Msg.BOOKS_CHAPTER, params);
         }
@@ -398,7 +398,7 @@ public final class BibleInfo
             Object[] params = new Object[]
             {
                 new Integer(versesInChapter(book, chapter)),
-                getBookName(book - 1),
+                getBookName(book),
                 new Integer(chapter),
                 new Integer(verse),
             };

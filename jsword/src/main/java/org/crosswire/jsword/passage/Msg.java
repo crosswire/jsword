@@ -54,7 +54,6 @@ public final class Msg extends MsgBase
     static final Msg VERSE_PARTS = new Msg("Verse.Parts"); //$NON-NLS-1$
     static final Msg VERSE_PARSE = new Msg("Verse.Parse"); //$NON-NLS-1$
 
-    static final Msg ERROR_CASE = new Msg("BibleInfo.ErrorCase"); //$NON-NLS-1$
     static final Msg ERROR_PATCH = new Msg("Verse.ErrorPatch"); //$NON-NLS-1$
 
     static final Msg PASSAGE_UNKNOWN = new Msg("PassageUtil.Unknown"); //$NON-NLS-1$

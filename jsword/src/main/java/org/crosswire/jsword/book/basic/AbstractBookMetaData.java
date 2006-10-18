@@ -190,6 +190,22 @@ public abstract class AbstractBookMetaData implements BookMetaData
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#setLibrary(java.net.URL)
+     */
+    public void setLibrary(URL library)
+    {
+        putProperty(KEY_LIBRARY_URL, library.toExternalForm());        
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#setLocation(java.net.URL)
+     */
+    public void setLocation(URL location)
+    {
+        putProperty(KEY_LOCATION_URL, location.toExternalForm());        
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getLocation()
      */
     public URL getLocation()

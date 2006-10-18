@@ -149,17 +149,17 @@ public final class VerseRange implements Key, Serializable
         }
 
         // Cache these we're going to be using them a lot.
-        int start_book = start.getBook();
-        int start_chapter = start.getChapter();
-        int start_verse = start.getVerse();
-        int end_book = end.getBook();
-        int end_chapter = end.getChapter();
-        int end_verse = end.getVerse();
+        int startBook = start.getBook();
+        int startChapter = start.getChapter();
+        int startVerse = start.getVerse();
+        int endBook = end.getBook();
+        int endChapter = end.getChapter();
+        int endVerse = end.getVerse();
 
         try
         {
             // If this is in 2 separate books
-            if (start_book != end_book)
+            if (startBook != endBook)
             {
                 // This range is exactly a whole book
                 if (isWholeBooks())
@@ -167,19 +167,19 @@ public final class VerseRange implements Key, Serializable
                     // Just report the name of the book, we don't need to worry about the
                     // base since we start at the start of a book, and should have been
                     // recently normalized()
-                    return BibleInfo.getBookName(start_book)
+                    return BibleInfo.getBookName(startBook)
                          + VerseRange.RANGE_PREF_DELIM
-                         + BibleInfo.getBookName(end_book);
+                         + BibleInfo.getBookName(endBook);
                 }
 
                 // If this range is exactly a whole chapter
                 if (isWholeChapters())
                 {
                     // Just report book and chapter names
-                    return BibleInfo.getBookName(start_book)
-                         + Verse.VERSE_PREF_DELIM1 + start_chapter
-                         + VerseRange.RANGE_PREF_DELIM + BibleInfo.getBookName(end_book)
-                         + Verse.VERSE_PREF_DELIM1 + end_chapter;
+                    return BibleInfo.getBookName(startBook)
+                         + Verse.VERSE_PREF_DELIM1 + startChapter
+                         + VerseRange.RANGE_PREF_DELIM + BibleInfo.getBookName(endBook)
+                         + Verse.VERSE_PREF_DELIM1 + endChapter;
                 }
 
                 return start.getName(base) + VerseRange.RANGE_PREF_DELIM + end.getName(base);
@@ -191,39 +191,39 @@ public final class VerseRange implements Key, Serializable
                 // Just report the name of the book, we don't need to worry about the
                 // base since we start at the start of a book, and should have been
                 // recently normalized()
-                return BibleInfo.getBookName(start_book);
+                return BibleInfo.getBookName(startBook);
             }
 
             // If this is 2 separate chapters
-            if (start_chapter != end_chapter)
+            if (startChapter != endChapter)
             {
                 // If this range is a whole number of chapters
                 if (isWholeChapters())
                 {
                     // Just report the name of the book and the chapters
-                    return BibleInfo.getBookName(start_book)
-                         + Verse.VERSE_PREF_DELIM1 + start_chapter
-                         + VerseRange.RANGE_PREF_DELIM + end_chapter;
+                    return BibleInfo.getBookName(startBook)
+                         + Verse.VERSE_PREF_DELIM1 + startChapter
+                         + VerseRange.RANGE_PREF_DELIM + endChapter;
                 }
 
                 return start.getName(base)
-                     + VerseRange.RANGE_PREF_DELIM + end_chapter
-                     + Verse.VERSE_PREF_DELIM2 + end_verse;
+                     + VerseRange.RANGE_PREF_DELIM + endChapter
+                     + Verse.VERSE_PREF_DELIM2 + endVerse;
             }
 
             // If this range is exactly a whole chapter
             if (isWholeChapter())
             {
                 // Just report the name of the book and the chapter
-                return BibleInfo.getBookName(start_book)
-                     + Verse.VERSE_PREF_DELIM1 + start_chapter;
+                return BibleInfo.getBookName(startBook)
+                     + Verse.VERSE_PREF_DELIM1 + startChapter;
             }
 
             // If this is 2 separate verses
-            if (start_verse != end_verse)
+            if (startVerse != endVerse)
             {
                 return start.getName(base)
-                     + VerseRange.RANGE_PREF_DELIM + end_verse;
+                     + VerseRange.RANGE_PREF_DELIM + endVerse;
             }
 
             // The range is a single verse
