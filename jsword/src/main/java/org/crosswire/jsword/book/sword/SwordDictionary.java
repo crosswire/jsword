@@ -136,8 +136,7 @@ public class SwordDictionary extends AbstractBook
             List osisContent = sbmd.getFilter().toOSIS(key, txt);
             div.addContent(osisContent);
 
-            BookData bdata = new BookData(osis, this, key);
-            return bdata;
+            return new BookData(osis, this, key);
         }
         catch (FilterException ex)
         {
@@ -263,11 +262,11 @@ public class SwordDictionary extends AbstractBook
 
         Key key = null;
         String internalName = sbmd.getInitials();
-        if (internalName.equals("StrongsGreek")) //$NON-NLS-1$
+        if ("StrongsGreek".equals(internalName)) //$NON-NLS-1$
         {
             key = (Key) map.get(ZERO_PAD.format(strongsNumber));
         }
-        else if (internalName.equals("StrongsHebrew")) //$NON-NLS-1$
+        else if ("StrongsHebrew".equals(internalName)) //$NON-NLS-1$
         {
             key = (Key) map.get(ZERO_PAD.format(strongsNumber));
         }

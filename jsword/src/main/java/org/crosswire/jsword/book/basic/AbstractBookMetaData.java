@@ -106,7 +106,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
 
         if (getDriver() != null)
         {
-            buf.append(" (").append(getDriverName()).append(")"); //$NON-NLS-1$ //$NON-NLS-2$
+            buf.append(" (").append(getDriverName()).append(')'); //$NON-NLS-1$
         }
 
         return buf.toString();
@@ -194,7 +194,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
      */
     public void setLibrary(URL library)
     {
-        putProperty(KEY_LIBRARY_URL, library.toExternalForm());        
+        putProperty(KEY_LIBRARY_URL, library.toExternalForm());
     }
 
     /* (non-Javadoc)
@@ -202,7 +202,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
      */
     public void setLocation(URL location)
     {
-        putProperty(KEY_LOCATION_URL, location.toExternalForm());        
+        putProperty(KEY_LOCATION_URL, location.toExternalForm());
     }
 
     /* (non-Javadoc)

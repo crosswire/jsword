@@ -62,7 +62,7 @@ import org.jdom.Element;
  * @author Jacky Cheung
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class ConfigEntryTable
+public final class ConfigEntryTable
 {
     /**
      * Create an empty Sword config for the named book.
@@ -209,11 +209,12 @@ public class ConfigEntryTable
      */
     public boolean unlock(String unlockKey)
     {
-        if (unlockKey != null)
+        String tmpKey = unlockKey;
+        if (tmpKey != null)
         {
-            unlockKey = unlockKey.trim();
+            tmpKey = tmpKey.trim();
         }
-        add(ConfigEntryType.CIPHER_KEY, unlockKey);
+        add(ConfigEntryType.CIPHER_KEY, tmpKey);
         if (configFile != null)
         {
             try
@@ -310,8 +311,7 @@ public class ConfigEntryTable
         StringBuffer buf = new StringBuffer();
         buf.append('[');
         buf.append(getValue(ConfigEntryType.INITIALS));
-        buf.append(']');
-        buf.append('\n');
+        buf.append("]\n"); //$NON-NLS-1$
         toConf(buf, BASIC_INFO);
         toConf(buf, SYSTEM_INFO);
         toConf(buf, HIDDEN);
@@ -367,7 +367,7 @@ public class ConfigEntryTable
                 continue;
             }
 
-            int eqpos = line.indexOf("="); //$NON-NLS-1$
+            int eqpos = line.indexOf('=');
             if (eqpos == -1)
             {
                 log.warn("Expected to see '=' in " + internal + ": " + line); //$NON-NLS-1$ //$NON-NLS-2$
@@ -475,7 +475,7 @@ public class ConfigEntryTable
             {
                 if (continuation_expected)
                 {
-                    log.warn("Continuation followed by key for " + configEntry.getName() + " in " + internal + ": " + line); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    log.warn(report("Continuation followed by key for", configEntry.getName(), line)); //$NON-NLS-1$
                 }
 
                 backup(line);
@@ -483,12 +483,12 @@ public class ConfigEntryTable
             }
             else if (!continuation_expected)
             {
-                log.warn("Line without previous continuation for " + configEntry.getName()  + " in " + internal + ": " + line); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                log.warn(report("Line without previous continuation for", configEntry.getName(), line)); //$NON-NLS-1$
             }
 
             if (!configEntry.allowsContinuation())
             {
-                log.warn("Ignoring unexpected additional line for " + configEntry.getName()  + " in " + internal + ": " + line); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                log.warn(report("Ignoring unexpected additional line for", configEntry.getName(), line)); //$NON-NLS-1$
             }
             else
             {
@@ -609,7 +609,7 @@ public class ConfigEntryTable
 
             if (langFromEntry == null)
             {
-                log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_FROM.getName() + "=" + AbstractBookMetaData.DEFAULT_LANG_CODE);  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_FROM.getName() + '=' + AbstractBookMetaData.DEFAULT_LANG_CODE);  //$NON-NLS-1$ //$NON-NLS-2$
             }
             else
             {
@@ -618,7 +618,7 @@ public class ConfigEntryTable
 
             if (langToEntry == null)
             {
-                log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_TO.getName() + "=" + AbstractBookMetaData.DEFAULT_LANG_CODE);  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_TO.getName() + '=' + AbstractBookMetaData.DEFAULT_LANG_CODE);  //$NON-NLS-1$ //$NON-NLS-2$
             }
             else
             {
@@ -797,6 +797,20 @@ public class ConfigEntryTable
             }
         }
     }
+    private String report(String issue, String confEntryName, String line)
+    {
+        StringBuffer buf = new StringBuffer(100);
+        buf.append(issue);
+        buf.append(' ');
+        buf.append(confEntryName);
+        buf.append(" in "); //$NON-NLS-1$
+        buf.append(internal);
+        buf.append(": "); //$NON-NLS-1$
+        buf.append(line);
+
+        return buf.toString();
+    }
+
 
    /**
      * Sword only recognizes two encodings for its modules: UTF-8 and LATIN1

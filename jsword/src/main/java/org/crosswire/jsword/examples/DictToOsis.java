@@ -22,6 +22,7 @@
 package org.crosswire.jsword.examples;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.text.FieldPosition;
@@ -33,6 +34,7 @@ import org.crosswire.common.xml.XMLProcess;
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
+import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.passage.Key;
@@ -55,12 +57,12 @@ public class DictToOsis
     /**
      * @param args
      */
-    public static void main(String[] args) throws Exception
+    public static void main(String[] args) throws BookException, IOException
     {
         new DictToOsis().dump(BOOK_NAME);
     }
 
-    public void dump(String name) throws Exception
+    public void dump(String name) throws BookException, IOException
     {
         Books books = Books.installed();
         Book book = books.getBook(name);
@@ -84,7 +86,7 @@ public class DictToOsis
             }
             catch (SAXException e)
             {
-                e.printStackTrace();
+                e.printStackTrace(System.err);
             }
         }
 
@@ -110,26 +112,7 @@ public class DictToOsis
 
     private void buildDocumentOpen(StringBuffer buf, BookMetaData bmd)
     {
-        StringBuffer docBuffer = new StringBuffer(200);
-        docBuffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"); //$NON-NLS-1$
-        docBuffer.append("\n<osis"); //$NON-NLS-1$
-        docBuffer.append("\n  xmlns=\"http://www.bibletechnologies.net/2003/OSIS/namespace\""); //$NON-NLS-1$
-        docBuffer.append("\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");  //$NON-NLS-1$
-        docBuffer.append("\n  xsi:schemaLocation=\"http://www.bibletechnologies.net/2003/OSIS/namespace osisCore.2.1.xsd\">"); //$NON-NLS-1$
-        docBuffer.append("\n<osisText osisIDWork=\"{0}\" osisRefWork=\"defaultReferenceScheme\" xml:lang=\"en\">"); //$NON-NLS-1$
-        docBuffer.append("\n  <header>"); //$NON-NLS-1$
-        docBuffer.append("\n    <work osisWork=\"{0}\">"); //$NON-NLS-1$
-        docBuffer.append("\n      <title>{1}</title>"); //$NON-NLS-1$
-        docBuffer.append("\n      <identifier type=\"OSIS\">Dict.{0}</identifier>"); //$NON-NLS-1$
-        docBuffer.append("\n      <refSystem>Dict.{0}</refSystem>"); //$NON-NLS-1$
-        docBuffer.append("\n    </work>"); //$NON-NLS-1$
-        docBuffer.append("\n    <work osisWork=\"defaultReferenceScheme\">"); //$NON-NLS-1$
-        docBuffer.append("\n      <refSystem>Dict.{0}</refSystem>"); //$NON-NLS-1$
-        docBuffer.append("\n    </work>"); //$NON-NLS-1$
-        docBuffer.append("\n  </header>"); //$NON-NLS-1$
-        docBuffer.append("\n<div>"); //$NON-NLS-1$
-        docBuffer.append('\n');
-        MessageFormat msgFormat = new MessageFormat(docBuffer.toString());
+        MessageFormat msgFormat = new MessageFormat("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<osis\n  xmlns=\"http://www.bibletechnologies.net/2003/OSIS/namespace\"\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n  xsi:schemaLocation=\"http://www.bibletechnologies.net/2003/OSIS/namespace osisCore.2.1.xsd\">\n<osisText osisIDWork=\"{0}\" osisRefWork=\"defaultReferenceScheme\" xml:lang=\"en\">\n  <header>\n    <work osisWork=\"{0}\">\n      <title>{1}</title>\n      <identifier type=\"OSIS\">Dict.{0}</identifier>\n      <refSystem>Dict.{0}</refSystem>\n    </work>\n    <work osisWork=\"defaultReferenceScheme\">\n      <refSystem>Dict.{0}</refSystem>\n    </work>\n  </header>\n<div>\n"); //$NON-NLS-1$
         msgFormat.format(new Object[] { bmd.getInitials(), bmd.getName() }, buf, pos);
     }
 
@@ -140,12 +123,13 @@ public class DictToOsis
 
     private void buildEntryOpen(StringBuffer buf, String entryName, String entryDef)
     {
-        if (entryName.indexOf(' ') != -1)
+        String tmp = entryName;
+        if (tmp.indexOf(' ') != -1)
         {
-            entryName = "x"; //$NON-NLS-1$
+            tmp = "x"; //$NON-NLS-1$
         }
         MessageFormat msgFormat = new MessageFormat("<div type=\"entry\" osisID=\"{0}\" canonical=\"true\"><seg type=\"x-form\"><seg type=\"x-orth\">{0}</seg></seg><seg type=\"x-def\">{1}</seg></div>\n"); //$NON-NLS-1$
-        msgFormat.format(new Object[] { entryName, entryDef }, buf, pos);
+        msgFormat.format(new Object[] { tmp, entryDef }, buf, pos);
     }
 
     private static FieldPosition pos = new FieldPosition(0);

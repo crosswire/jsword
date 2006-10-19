@@ -282,8 +282,7 @@ public abstract class AccuracyType implements Serializable
             // and it gets the end of the chapter
             int book = verseBasis.getBook();
             int chapter = getChapter(book, endParts[0]);
-            Verse end = new Verse(endVerseDesc, book, chapter, 1);
-            return end.getLastVerseInChapter();
+            return new Verse(endVerseDesc, book, chapter, 1).getLastVerseInChapter();
         }
 
         /**

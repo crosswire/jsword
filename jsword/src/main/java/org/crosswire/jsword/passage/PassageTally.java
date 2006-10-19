@@ -985,14 +985,11 @@ public class PassageTally extends AbstractPassage
          */
         public int lastRank() throws NoSuchElementException
         {
-            try
+            if (last != null)
             {
                 return last.tally;
             }
-            catch (NullPointerException ex)
-            {
-                throw new NoSuchElementException(Msg.TALLY_ERROR_ENUM.toString());
-            }
+            throw new NoSuchElementException(Msg.TALLY_ERROR_ENUM.toString());
         }
 
         /**
@@ -1119,14 +1116,11 @@ public class PassageTally extends AbstractPassage
          */
         public int lastRank() throws NoSuchElementException
         {
-            try
+            if (last != null)
             {
                 return last.tally;
             }
-            catch (NullPointerException ex)
-            {
-                throw new NoSuchElementException(Msg.TALLY_ERROR_ENUM.toString());
-            }
+            throw new NoSuchElementException(Msg.TALLY_ERROR_ENUM.toString());
         }
 
         /**

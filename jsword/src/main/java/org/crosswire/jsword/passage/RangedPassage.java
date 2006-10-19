@@ -148,7 +148,7 @@ public class RangedPassage extends AbstractPassage
      * @see org.crosswire.jsword.passage.Passage#rangeIterator(int)
      */
     /* @Override */
-    public Iterator rangeIterator(RestrictionType restrict)
+    public final Iterator rangeIterator(RestrictionType restrict)
     {
         if (restrict.equals(RestrictionType.NONE))
         {
@@ -332,7 +332,7 @@ public class RangedPassage extends AbstractPassage
      * a double synchronize. (?)
      */
     /* @Override */
-    protected void normalize()
+    /*protected*/ final void normalize()
     {
         if (skipNormalization != 0)
         {

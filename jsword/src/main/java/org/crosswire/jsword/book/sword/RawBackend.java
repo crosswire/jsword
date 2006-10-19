@@ -72,24 +72,36 @@ public class RawBackend extends AbstractBackend
      */
     public final void activate(Lock lock)
     {
-        try
+        if (idxFile[SwordConstants.TESTAMENT_OLD].canRead())
         {
-            idxRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_OLD], FileUtil.MODE_READ);
-            txtRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(txtFile[SwordConstants.TESTAMENT_OLD], FileUtil.MODE_READ);
-        }
-        catch (FileNotFoundException ex)
-        {
-            // Ignore this might be NT only
+            try
+            {
+                idxRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_OLD], FileUtil.MODE_READ);
+                txtRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(txtFile[SwordConstants.TESTAMENT_OLD], FileUtil.MODE_READ);
+            }
+            catch (FileNotFoundException ex)
+            {
+                assert false : ex;
+                log.error("Could not open OT", ex); //$NON-NLS-1$
+                idxRaf[SwordConstants.TESTAMENT_OLD] = null;
+                txtRaf[SwordConstants.TESTAMENT_OLD] = null;
+            }
         }
 
-        try
+        if (idxFile[SwordConstants.TESTAMENT_NEW].canRead())
         {
-            idxRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_NEW], FileUtil.MODE_READ);
-            txtRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(txtFile[SwordConstants.TESTAMENT_NEW], FileUtil.MODE_READ);
-        }
-        catch (FileNotFoundException ex)
-        {
-            // Ignore this might be OT only
+            try
+            {
+                idxRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_NEW], FileUtil.MODE_READ);
+                txtRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(txtFile[SwordConstants.TESTAMENT_NEW], FileUtil.MODE_READ);
+            }
+            catch (FileNotFoundException ex)
+            {
+                assert false : ex;
+                log.error("Could not open NT", ex); //$NON-NLS-1$
+                idxRaf[SwordConstants.TESTAMENT_NEW] = null;
+                txtRaf[SwordConstants.TESTAMENT_NEW] = null;
+            }
         }
 
         active = true;
@@ -110,14 +122,16 @@ public class RawBackend extends AbstractBackend
         }
         catch (IOException ex)
         {
-            log.error("failed to close files", ex); //$NON-NLS-1$
+            log.error("Failed to close files", ex); //$NON-NLS-1$
         }
+        finally
+        {
+            idxRaf[SwordConstants.TESTAMENT_OLD] = null;
+            txtRaf[SwordConstants.TESTAMENT_OLD] = null;
 
-        idxRaf[SwordConstants.TESTAMENT_OLD] = null;
-        txtRaf[SwordConstants.TESTAMENT_OLD] = null;
-
-        idxRaf[SwordConstants.TESTAMENT_NEW] = null;
-        txtRaf[SwordConstants.TESTAMENT_NEW] = null;
+            idxRaf[SwordConstants.TESTAMENT_NEW] = null;
+            txtRaf[SwordConstants.TESTAMENT_NEW] = null;
+        }
 
         active = false;
     }

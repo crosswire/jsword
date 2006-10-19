@@ -66,7 +66,7 @@ public final class SentenceUtil
         while (alive)
         {
             // Find the next space and double dash
-            int nextSpace = sentence.indexOf(" ", pos); //$NON-NLS-1$
+            int nextSpace = sentence.indexOf(' ', pos);
             int nextDDash = sentence.indexOf("--", pos); //$NON-NLS-1$
 
             // If there is a space just after the ddash then ignore the ddash

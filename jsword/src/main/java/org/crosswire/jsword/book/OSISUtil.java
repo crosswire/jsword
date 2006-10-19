@@ -676,7 +676,7 @@ public final class OSISUtil
         }
         // So we just walk up the tree trying to find a verse
         Parent parent = ele.getParent();
-        if (parent != null && parent instanceof Element)
+        if (parent instanceof Element)
         {
             return getVerse((Element) parent);
         }

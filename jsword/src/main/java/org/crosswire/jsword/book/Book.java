@@ -184,7 +184,7 @@ public interface Book extends Activatable, KeyFactory, Comparable
      * 
      * @return the unlock key, if any, null otherwise.
      */
-    public String getUnlockKey();
+    String getUnlockKey();
 
     /**
      * Indicate whether this book is questionable. A book may
@@ -268,5 +268,4 @@ public interface Book extends Activatable, KeyFactory, Comparable
      * @param li the <code>IndexStatusListener</code> to be removed
      */
     void removeIndexStatusListener(IndexStatusListener li);
-
 }

@@ -82,8 +82,7 @@ public final class KeyUtil
 
         try
         {
-            Verse verse = VerseFactory.fromString(key.getName());
-            return verse;
+            return VerseFactory.fromString(key.getName());
         }
         catch (NoSuchVerseException ex)
         {

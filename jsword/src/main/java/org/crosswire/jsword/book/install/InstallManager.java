@@ -47,7 +47,7 @@ import org.crosswire.jsword.util.Project;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class InstallManager
+public final class InstallManager
 {
     /**
      * Simple ctor

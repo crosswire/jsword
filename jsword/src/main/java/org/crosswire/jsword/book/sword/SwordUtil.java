@@ -196,7 +196,7 @@ public final class SwordUtil
      */
     public static String decode(Key key, byte[] data, String charset)
     {
-        if (charset.equals("WINDOWS-1252")) //$NON-NLS-1$
+        if ("WINDOWS-1252".equals(charset)) //$NON-NLS-1$
         {
             clean1252(key, data);
         }

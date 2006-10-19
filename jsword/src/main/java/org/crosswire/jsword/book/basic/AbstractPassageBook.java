@@ -101,8 +101,7 @@ public abstract class AbstractPassageBook extends AbstractBook
                 }
             }
 
-            BookData bdata = new BookData(osis, this, key);
-            return bdata;
+            return new BookData(osis, this, key);
         }
         catch (FilterException ex)
         {

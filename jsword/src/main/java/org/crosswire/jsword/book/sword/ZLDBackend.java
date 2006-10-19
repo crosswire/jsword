@@ -162,18 +162,26 @@ public class ZLDBackend extends AbstractBackend
     {
         try
         {
-            idxRaf.close();
-            datRaf.close();
-            zdxRaf.close();
-            zdtRaf.close();
+            if (idxRaf != null)
+            {
+                idxRaf.close();
+            }
+            if (datRaf != null)
+            {
+                datRaf.close();
+            }
+            if (zdxRaf != null)
+            {
+                zdxRaf.close();
+            }
+            if (zdtRaf != null)
+            {
+                zdtRaf.close();
+            }
         }
         catch (IOException ex)
         {
             log.error("failed to close nt files", ex); //$NON-NLS-1$
-        }
-        catch (NullPointerException ex)
-        {
-            // ignore this might be OT only
         }
         finally
         {
@@ -352,8 +360,7 @@ public class ZLDBackend extends AbstractBackend
             byte[] entryBytes = new byte[entrySize];
             System.arraycopy(uncompressed, entryStart, entryBytes, 0, entrySize);
 
-            String ret = SwordUtil.decode(key, entryBytes, charset).trim();
-            return ret;
+            return SwordUtil.decode(key, entryBytes, charset).trim();
         }
         catch (IOException e)
         {

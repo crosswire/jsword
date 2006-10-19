@@ -277,39 +277,59 @@ public class APIExamples
         // the BookFilters class
 
         // If you are wanting to get really fancy you can implement your own
-        // Bookfilter easily
-        List test = Books.installed().getBooks(new BookFilter()
-        {
-            public boolean test(Book bk)
-            {
-                return bk.getName().equals("My Favorite Version"); //$NON-NLS-1$
-            }
-        });
+        // BookFilter easily
+        List test = Books.installed().getBooks(new MyBookFilter());
         book = (Book) test.get(0);
 
-        // If you want to know about new books as they arrive:
-        Books.installed().addBooksListener(new BooksListener()
+        if (book != null)
         {
-            /* (non-Javadoc)
-             * @see org.crosswire.jsword.book.BooksListener#bookAdded(org.crosswire.jsword.book.BooksEvent)
-             */
-            public void bookAdded(BooksEvent ev)
-            {
-            }
+            System.out.println(book.getInitials());
+        }
 
-            /* (non-Javadoc)
-             * @see org.crosswire.jsword.book.BooksListener#bookRemoved(org.crosswire.jsword.book.BooksEvent)
-             */
-            public void bookRemoved(BooksEvent ev)
-            {
-            }
-        });
+
+        // If you want to know about new books as they arrive:
+        Books.installed().addBooksListener(new MyBooksListener());
+    }
+
+    /**
+     * A simple BookFilter that looks for a Bible by name.
+     */
+    static class MyBookFilter implements BookFilter
+    {
+        public boolean test(Book bk)
+        {
+            return bk.getName().equals("My Favorite Version"); //$NON-NLS-1$
+        }
+    }
+
+    /**
+     * A simple BooksListener that actually does nothing.
+     */
+    static class MyBooksListener implements BooksListener
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.BooksListener#bookAdded(org.crosswire.jsword.book.BooksEvent)
+         */
+        public void bookAdded(BooksEvent ev)
+        {
+        }
+
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.BooksListener#bookRemoved(org.crosswire.jsword.book.BooksEvent)
+         */
+        public void bookRemoved(BooksEvent ev)
+        {
+        }
     }
 
     /**
      * Quick Demo
+     * @throws NoSuchKeyException 
+     * @throws BookException 
+     * @throws SAXException 
+     * @throws TransformerException 
      */
-    public static void main(String[] args) throws Exception
+    public static void main(String[] args) throws BookException, NoSuchKeyException, TransformerException, SAXException
     {
         APIExamples examples = new APIExamples();
 

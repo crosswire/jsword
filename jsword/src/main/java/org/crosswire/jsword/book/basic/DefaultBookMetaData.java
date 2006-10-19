@@ -47,7 +47,7 @@ import org.jdom.Element;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class DefaultBookMetaData extends AbstractBookMetaData
+public final class DefaultBookMetaData extends AbstractBookMetaData
 {
     /**
      * Ctor with a properties from which to get values.

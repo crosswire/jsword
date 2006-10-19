@@ -1005,7 +1005,7 @@ public abstract class AbstractPassage implements Passage
      * synchronised, however this is safe, and I don't think there is
      * a cost associated with a double synchronize. (?)
      */
-    protected void normalize()
+    /*protected*/ void normalize()
     {
         // before doing any normalization we should be checking that
         // skip_normalization == 0, and just returning if so.
@@ -1027,7 +1027,7 @@ public abstract class AbstractPassage implements Passage
             // chance to fix the error
             //   throw new LogicError();
 
-            log.warn("skip_normalization=" + skipNormalization, new Exception()); //$NON-NLS-1$
+            log.warn("skip_normalization=" + skipNormalization); //$NON-NLS-1$
         }
     }
 
@@ -1065,7 +1065,7 @@ public abstract class AbstractPassage implements Passage
             // chance to fix the error
             //   throw new LogicError();
 
-            log.warn("suppress_events=" + suppressEvents, new Exception()); //$NON-NLS-1$
+            log.warn("suppress_events=" + suppressEvents); //$NON-NLS-1$
         }
     }
 

@@ -88,52 +88,11 @@ public abstract class RestrictionType implements Serializable
         private static final long serialVersionUID = 3905246714754643248L;
     };
 
-//    /**
-//     * Blurring is restricted to the book.
-//     */
-//    public static final RestrictionType BOOK = new RestrictionType("BOOK") //$NON-NLS-1$
-//    {
-//        /* (non-Javadoc)
-//         * @see org.crosswire.jsword.passage.RestrictionType#isSameScope(org.crosswire.jsword.passage.Verse, org.crosswire.jsword.passage.Verse)
-//         */
-//        public boolean isSameScope(Verse start, Verse end)
-//        {
-//            return start.isSameBook(end);
-//        }
-//
-//        /* (non-Javadoc)
-//         * @see org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword.passage.VerseRange, int, int)
-//         */
-//        public VerseRange blur(VerseRange range, int blurDown, int blurUp)
-//        {
-//            throw new IllegalArgumentException(Msg.RANGE_BLURBOOK.toString());
-//        }
-//
-//        /* (non-Javadoc)
-//         * @see org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword.passage.Verse, int, int)
-//         */
-//        public VerseRange blur(Verse verse, int blurDown, int blurUp)
-//        {
-//            throw new IllegalArgumentException(Msg.RANGE_BLURBOOK.toString());
-//        }
-//
-//        /* (non-Javadoc)
-//         * @see org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword.passage.Verse, int, int)
-//         */
-//        public VerseRange toRange(Verse verse, int count)
-//        {
-//            throw new IllegalArgumentException(Msg.RANGE_BLURBOOK.toString());
-//        }
-//
-//        /**
-//         * Serialization ID
-//         */
-//        private static final long serialVersionUID = 3978142166633820472L;
-//    };
-
     /**
      * Blurring is restricted to the chapter
      */
+    // Note: FindBugs wrongly reports an initialization circularity.
+    // Turns out that it is the exception handling that causes it.
     public static final RestrictionType CHAPTER = new RestrictionType("CHAPTER") //$NON-NLS-1$
     {
         /* (non-Javadoc)
@@ -393,6 +352,5 @@ public abstract class RestrictionType implements Serializable
     {
         NONE,
         CHAPTER,
-//      BOOK,
     };
 }

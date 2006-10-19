@@ -131,26 +131,40 @@ public class GZIPBackend extends AbstractBackend
      */
     public final void activate(Lock lock)
     {
-        try
+        if (idxFile[SwordConstants.TESTAMENT_OLD].canRead())
         {
-            idxRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_OLD], FileUtil.MODE_READ);
-            textRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(textFile[SwordConstants.TESTAMENT_OLD], FileUtil.MODE_READ);
-            compRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(compFile[SwordConstants.TESTAMENT_OLD], FileUtil.MODE_READ);
-        }
-        catch (FileNotFoundException ex)
-        {
-            // Ignore this might be NT only
+            try
+            {
+                idxRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_OLD], FileUtil.MODE_READ);
+                textRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(textFile[SwordConstants.TESTAMENT_OLD], FileUtil.MODE_READ);
+                compRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(compFile[SwordConstants.TESTAMENT_OLD], FileUtil.MODE_READ);
+            }
+            catch (FileNotFoundException ex)
+            {
+                assert false : ex;
+                log.error("Could not open OT", ex); //$NON-NLS-1$
+                idxRaf[SwordConstants.TESTAMENT_OLD] = null;
+                textRaf[SwordConstants.TESTAMENT_OLD] = null;
+                compRaf[SwordConstants.TESTAMENT_OLD] = null;
+            }
         }
 
-        try
+        if (idxFile[SwordConstants.TESTAMENT_NEW].canRead())
         {
-            idxRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_NEW], FileUtil.MODE_READ);
-            textRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(textFile[SwordConstants.TESTAMENT_NEW], FileUtil.MODE_READ);
-            compRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(compFile[SwordConstants.TESTAMENT_NEW], FileUtil.MODE_READ);
-        }
-        catch (FileNotFoundException ex)
-        {
-            // Ignore this might be OT only
+            try
+            {
+                idxRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_NEW], FileUtil.MODE_READ);
+                textRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(textFile[SwordConstants.TESTAMENT_NEW], FileUtil.MODE_READ);
+                compRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(compFile[SwordConstants.TESTAMENT_NEW], FileUtil.MODE_READ);
+            }
+            catch (FileNotFoundException ex)
+            {
+                assert false : ex;
+                log.error("Could not open NT", ex); //$NON-NLS-1$
+                idxRaf[SwordConstants.TESTAMENT_NEW] = null;
+                textRaf[SwordConstants.TESTAMENT_NEW] = null;
+                compRaf[SwordConstants.TESTAMENT_NEW] = null;
+            }
         }
 
         active = true;
@@ -161,47 +175,44 @@ public class GZIPBackend extends AbstractBackend
      */
     public final void deactivate(Lock lock)
     {
-        try
+        if (idxRaf[SwordConstants.TESTAMENT_NEW] != null)
         {
-            idxRaf[SwordConstants.TESTAMENT_NEW].close();
-            textRaf[SwordConstants.TESTAMENT_NEW].close();
-            compRaf[SwordConstants.TESTAMENT_NEW].close();
-        }
-        catch (IOException ex)
-        {
-            log.error("failed to close nt files", ex); //$NON-NLS-1$
-        }
-        catch (NullPointerException ex)
-        {
-            // ignore this might be OT only
-        }
-        finally
-        {
-            idxRaf[SwordConstants.TESTAMENT_NEW] = null;
-            textRaf[SwordConstants.TESTAMENT_NEW] = null;
-            compRaf[SwordConstants.TESTAMENT_NEW] = null;
+            try
+            {
+                idxRaf[SwordConstants.TESTAMENT_NEW].close();
+                textRaf[SwordConstants.TESTAMENT_NEW].close();
+                compRaf[SwordConstants.TESTAMENT_NEW].close();
+            }
+            catch (IOException ex)
+            {
+                log.error("failed to close nt files", ex); //$NON-NLS-1$
+            }
+            finally
+            {
+                idxRaf[SwordConstants.TESTAMENT_NEW] = null;
+                textRaf[SwordConstants.TESTAMENT_NEW] = null;
+                compRaf[SwordConstants.TESTAMENT_NEW] = null;
+            }
         }
 
-        try
+        if (idxRaf[SwordConstants.TESTAMENT_OLD] != null)
         {
-            idxRaf[SwordConstants.TESTAMENT_OLD].close();
-            textRaf[SwordConstants.TESTAMENT_OLD].close();
-            compRaf[SwordConstants.TESTAMENT_OLD].close();
-
-        }
-        catch (IOException ex)
-        {
-            log.error("failed to close ot files", ex); //$NON-NLS-1$
-        }
-        catch (NullPointerException ex)
-        {
-            // ignore this might be NT only
-        }
-        finally
-        {
-            idxRaf[SwordConstants.TESTAMENT_OLD] = null;
-            textRaf[SwordConstants.TESTAMENT_OLD] = null;
-            compRaf[SwordConstants.TESTAMENT_OLD] = null;
+            try
+            {
+                idxRaf[SwordConstants.TESTAMENT_OLD].close();
+                textRaf[SwordConstants.TESTAMENT_OLD].close();
+                compRaf[SwordConstants.TESTAMENT_OLD].close();
+            }
+            catch (IOException ex)
+            {
+                log.error("failed to close ot files", ex); //$NON-NLS-1$
+            }
+            finally
+            {
+                idxRaf[SwordConstants.TESTAMENT_OLD] = null;
+                textRaf[SwordConstants.TESTAMENT_OLD] = null;
+                compRaf[SwordConstants.TESTAMENT_OLD] = null;
+            }
         }
 
         active = false;

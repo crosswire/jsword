@@ -57,7 +57,9 @@ public class ReadingsBookDriver extends AbstractBookDriver
      */
     public Book[] getBooks()
     {
-        return books;
+        Book[] copy = new Book[books.length];
+        System.arraycopy(books, 0, copy, 0, books.length);
+        return copy;
     }
 
     /* (non-Javadoc)

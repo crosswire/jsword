@@ -40,7 +40,7 @@ import org.jdom.Element;
  * @see gnu.lgpl.License
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
-public class ConfigEntry
+public final class ConfigEntry
 {
 
     /**
@@ -233,7 +233,7 @@ public class ConfigEntry
             }
             if (!isAllowed(aValue))
             {
-                log.info("Ignoring unknown config value for " + confEntryName + " in " + internal + ": " + aValue); //$NON-NLS-1$ //$NON-NLS-2$  //$NON-NLS-3$
+                log.info(report("Ignoring unknown config value for", confEntryName, aValue)); //$NON-NLS-1$
                 return;
             }
             values.add(aValue);
@@ -242,7 +242,7 @@ public class ConfigEntry
         {
             if (value != null)
             {
-                log.info("Ignoring unexpected additional entry for " + confEntryName + " in " + internal + ": " + aValue); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                log.info(report("Ignoring unexpected additional entry for", confEntryName, aValue)); //$NON-NLS-1$
             }
             else
             {
@@ -253,7 +253,7 @@ public class ConfigEntry
                 }
                 if (!isAllowed(aValue))
                 {
-                    log.info("Ignoring unknown config value for " + confEntryName + " in " + internal + ": " + aValue); //$NON-NLS-1$ //$NON-NLS-2$  //$NON-NLS-3$
+                    log.info(report("Ignoring unknown config value for", confEntryName, aValue)); //$NON-NLS-1$
                     return;
                 }
                 value = aValue;
@@ -473,7 +473,7 @@ public class ConfigEntry
         {
             if (!copy.equals(aValue))
             {
-                log.info("Ignoring unexpected RTF for " + getName() + " in " + internal + ": " + aValue); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                log.info(report("Ignoring unexpected RTF for", getName(), aValue)); //$NON-NLS-1$
             }
             return aValue;
         }
@@ -492,6 +492,20 @@ public class ConfigEntry
             list.add(lineElement);
         }
         return list;
+    }
+
+    private String report(String issue, String confEntryName, String aValue)
+    {
+        StringBuffer buf = new StringBuffer(100);
+        buf.append(issue);
+        buf.append(' ');
+        buf.append(confEntryName);
+        buf.append(" in "); //$NON-NLS-1$
+        buf.append(internal);
+        buf.append(": "); //$NON-NLS-1$
+        buf.append(aValue);
+
+        return buf.toString();
     }
 
     /**

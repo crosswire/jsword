@@ -58,12 +58,12 @@ public abstract class CaseType implements Serializable
             }
 
             // So there is a "-", however first some exceptions
-            if (word.equalsIgnoreCase("maher-shalal-hash-baz")) //$NON-NLS-1$
+            if ("maher-shalal-hash-baz".equalsIgnoreCase(word)) //$NON-NLS-1$
             {
                 return "Maher-Shalal-Hash-Baz"; //$NON-NLS-1$
             }
 
-            if (word.equalsIgnoreCase("no-one")) //$NON-NLS-1$
+            if ("no-one".equalsIgnoreCase(word)) //$NON-NLS-1$
             {
                 return "No-one"; //$NON-NLS-1$
             }
@@ -116,7 +116,7 @@ public abstract class CaseType implements Serializable
     {
         assert word != null;
 
-        if (word.equals("")) //$NON-NLS-1$
+        if (word.length() == 0)
         {
             return ""; //$NON-NLS-1$
         }
@@ -142,7 +142,7 @@ public abstract class CaseType implements Serializable
         assert word != null;
 
         // Blank word
-        if (word.equals("")) //$NON-NLS-1$
+        if (word.length() == 0)
         {
             return LOWER;
         }

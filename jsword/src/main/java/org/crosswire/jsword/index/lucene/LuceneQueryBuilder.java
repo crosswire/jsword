@@ -46,13 +46,6 @@ import org.crosswire.jsword.index.query.RangeQuery;
  */
 public final class LuceneQueryBuilder implements QueryBuilder
 {
-    /**
-     * Prevent Instansiation
-     */
-    public LuceneQueryBuilder()
-    {
-    }
-
     /* (non-Javadoc)
      * @see org.crosswire.jsword.index.query.QueryBuilder#parse(java.lang.String)
      */
@@ -88,7 +81,7 @@ public final class LuceneQueryBuilder implements QueryBuilder
             String blur = blurMatcher.group(1);
             if (blur.length() > 0)
             {
-                blurFactor = Integer.valueOf(blur).intValue();
+                blurFactor = Integer.parseInt(blur);
             }
             Query left = new BaseQuery(sought.substring(i, blurMatcher.start()));
             Query right = new BaseQuery(sought.substring(blurMatcher.end()));

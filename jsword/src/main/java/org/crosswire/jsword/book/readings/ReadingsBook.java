@@ -69,6 +69,8 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
     {
         super(null); // set the book metadata later
 
+        hash = new TreeMap();
+
         String setname = ReadingsBookDriver.getReadingsSet();
 
         Locale defaultLocale = Locale.getDefault();
@@ -176,8 +178,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
                 div.addContent(Msg.DECODE_ERROR.toString(readings));
             }
 
-            BookData bdata = new BookData(osis, this, key);
-            return bdata;
+            return new BookData(osis, this, key);
         }
         catch (NoSuchKeyException ex)
         {
@@ -190,8 +191,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
      */
     public String getRawData(Key key) throws BookException
     {
-        StringBuffer buffer = new StringBuffer();
-        return buffer.toString();
+        return ""; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)
@@ -249,7 +249,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
     /**
      * The store of keys and data
      */
-    private Map hash = new TreeMap();
+    private Map hash;
 
     /**
      * The log stream

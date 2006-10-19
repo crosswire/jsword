@@ -55,7 +55,7 @@ import org.jdom.Document;
  * @author Jacky Cheung
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class SwordBookMetaData extends AbstractBookMetaData
+public final class SwordBookMetaData extends AbstractBookMetaData
 {
     /**
      * Loads a sword config from a given File.

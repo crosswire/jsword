@@ -33,9 +33,11 @@ import java.util.regex.Pattern;
 
 import org.crosswire.common.xml.XMLProcess;
 import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.versification.BibleInfo;
 
@@ -58,12 +60,19 @@ public class BibleToOsis
     /**
      * @param args
      */
-    public static void main(String[] args) throws Exception
+    public static void main(String[] args)
     {
-        new BibleToOsis().dump(BIBLE_NAME, BIBLE_RANGE);
+        try
+        {
+            new BibleToOsis().dump(BIBLE_NAME, BIBLE_RANGE);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace(System.err);
+        }
     }
 
-    public void dump(String name, String range) throws Exception
+    public void dump(String name, String range) throws NoSuchKeyException, IOException, BookException
     {
         Books books = Books.installed();
         Book bible = books.getBook(name);
@@ -212,35 +221,7 @@ public class BibleToOsis
             return;
         }
 
-        StringBuffer docBuffer = new StringBuffer(400);
-        docBuffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"); //$NON-NLS-1$
-        docBuffer.append("\n<osis"); //$NON-NLS-1$
-        docBuffer.append("\n  xmlns=\"http://www.bibletechnologies.net/2003/OSIS/namespace\""); //$NON-NLS-1$
-        docBuffer.append("\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");  //$NON-NLS-1$
-        docBuffer.append("\n  xsi:schemaLocation=\"http://www.bibletechnologies.net/2003/OSIS/namespace http://www.bibletechnologies.net/osisCore.2.1.1.xsd\">"); //$NON-NLS-1$
-        docBuffer.append("\n<osisText osisIDWork=\"{0}\" osisRefWork=\"defaultReferenceScheme\" xml:lang=\"en\">"); //$NON-NLS-1$
-        docBuffer.append("\n<header>"); //$NON-NLS-1$
-        docBuffer.append("\n  <work osisWork=\"{0}\">"); //$NON-NLS-1$
-        docBuffer.append("\n    <title>{1}</title>"); //$NON-NLS-1$
-        docBuffer.append("\n    <identifier type=\"OSIS\">Bible.{0}</identifier>"); //$NON-NLS-1$
-        docBuffer.append("\n    <scope>{2}</scope>"); //$NON-NLS-1$
-        docBuffer.append("\n    <refSystem>Bible.KJV</refSystem>"); //$NON-NLS-1$
-        docBuffer.append("\n  </work>"); //$NON-NLS-1$
-        docBuffer.append("\n  <work osisWork=\"defaultReferenceScheme\">"); //$NON-NLS-1$
-        docBuffer.append("\n    <refSystem>Bible.KJV</refSystem>"); //$NON-NLS-1$
-        docBuffer.append("\n  </work>"); //$NON-NLS-1$
-        docBuffer.append("\n  <work osisWork=\"strong\">"); //$NON-NLS-1$
-        docBuffer.append("\n    <refSystem>Dict.Strongs</refSystem>"); //$NON-NLS-1$
-        docBuffer.append("\n  </work>"); //$NON-NLS-1$
-        docBuffer.append("\n  <work osisWork=\"robinson\">"); //$NON-NLS-1$
-        docBuffer.append("\n    <refSystem>Dict.Robinsons</refSystem>"); //$NON-NLS-1$
-        docBuffer.append("\n  </work>"); //$NON-NLS-1$
-        docBuffer.append("\n  <work osisWork=\"strongMorph\">"); //$NON-NLS-1$
-        docBuffer.append("\n    <refSystem>Dict.strongMorph</refSystem>"); //$NON-NLS-1$
-        docBuffer.append("\n  </work>"); //$NON-NLS-1$
-        docBuffer.append("\n</header>"); //$NON-NLS-1$
-        docBuffer.append('\n');
-        MessageFormat msgFormat = new MessageFormat(docBuffer.toString());
+        MessageFormat msgFormat = new MessageFormat("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<osis\n  xmlns=\"http://www.bibletechnologies.net/2003/OSIS/namespace\"\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n  xsi:schemaLocation=\"http://www.bibletechnologies.net/2003/OSIS/namespace http://www.bibletechnologies.net/osisCore.2.1.1.xsd\">\n<osisText osisIDWork=\"{0}\" osisRefWork=\"defaultReferenceScheme\" xml:lang=\"en\">\n<header>\n  <work osisWork=\"{0}\">\n    <title>{1}</title>\n    <identifier type=\"OSIS\">Bible.{0}</identifier>\n    <scope>{2}</scope>\n    <refSystem>Bible.KJV</refSystem>\n  </work>\n  <work osisWork=\"defaultReferenceScheme\">\n    <refSystem>Bible.KJV</refSystem>\n  </work>\n  <work osisWork=\"strong\">\n    <refSystem>Dict.Strongs</refSystem>\n  </work>\n  <work osisWork=\"robinson\">\n    <refSystem>Dict.Robinsons</refSystem>\n  </work>\n  <work osisWork=\"strongMorph\">\n    <refSystem>Dict.strongMorph</refSystem>\n  </work>\n</header>\n"); //$NON-NLS-1$
         msgFormat.format(new Object[] { bmd.getInitials(), bmd.getName(), range }, buf, pos);
     }
 
@@ -272,17 +253,17 @@ public class BibleToOsis
     private void buildChapterOpen(StringBuffer buf, String bookName, int chapter)
     {
         MessageFormat msgFormat = new MessageFormat("<chapter osisID=\"{0}.{1}\" chapterTitle=\"{2} {1}.\">\n"); //$NON-NLS-1$
-        if (bookName.equals("Obad") || //$NON-NLS-1$
-            bookName.equals("Phlm") || //$NON-NLS-1$
-            bookName.equals("2John") || //$NON-NLS-1$
-            bookName.equals("3John") || //$NON-NLS-1$
-            bookName.equals("Jude")) //$NON-NLS-1$
+        if ("Obad".equals(bookName) || //$NON-NLS-1$
+            "Phlm".equals(bookName) || //$NON-NLS-1$
+            "2John".equals(bookName) || //$NON-NLS-1$
+            "3John".equals(bookName) || //$NON-NLS-1$
+            "Jude".equals(bookName)) //$NON-NLS-1$
         {
             return;
         }
 
         String chapterName = "CHAPTER"; //$NON-NLS-1$
-        if (bookName.equals("Ps")) //$NON-NLS-1$
+        if ("Ps".equals(bookName)) //$NON-NLS-1$
         {
             chapterName = "PSALM"; //$NON-NLS-1$
         }

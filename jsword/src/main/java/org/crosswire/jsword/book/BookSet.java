@@ -110,7 +110,7 @@ public class BookSet extends ArrayList implements Set
     /* (non-Javadoc)
      * @see java.util.Collection#add(java.lang.Object)
      */
-    public boolean add(Object book)
+    public final boolean add(Object book)
     {
         // Add the item only if it is not in the list.
         // Add it into the list so that it is in sorted order.
@@ -126,7 +126,7 @@ public class BookSet extends ArrayList implements Set
     /* (non-Javadoc)
      * @see java.util.Collection#addAll(java.util.Collection)
      */
-    public boolean addAll(Collection c)
+    public final boolean addAll(Collection c)
     {
         // Might be better to add the list to the end
         // and then sort the list.
@@ -147,7 +147,7 @@ public class BookSet extends ArrayList implements Set
     /* (non-Javadoc)
      * @see java.util.List#addAll(int, java.util.Collection)
      */
-    public boolean addAll(int index, Collection c)
+    public final boolean addAll(int index, Collection c)
     {
         // Ignore the index
         return addAll(c);

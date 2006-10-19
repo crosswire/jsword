@@ -194,7 +194,7 @@ public final class Verse implements Key, Serializable
      */
     public String getName(Key base)
     {
-        if (base == null || !(base instanceof Verse))
+        if (!(base instanceof Verse))
         {
             return getName();
         }
