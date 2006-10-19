@@ -175,15 +175,13 @@ public final class NetUtil
     {
         if (url.getProtocol().equals(PROTOCOL_FILE))
         {
-            File file = new File(url.getFile());
-            return file.isFile();
+            return new File(url.getFile()).isFile();
         }
 
         try
         {
             // This will throw if the resource does not exist
-            InputStream is = url.openStream();
-            is.close();
+            url.openStream().close();
             return true;
         }
         catch (IOException ex)
@@ -206,8 +204,7 @@ public final class NetUtil
             return false;
         }
 
-        File file = new File(orig.getFile());
-        return file.isDirectory();
+        return new File(orig.getFile()).isDirectory();
     }
 
     /**
@@ -236,8 +233,7 @@ public final class NetUtil
     {
         checkFileURL(orig);
 
-        File file = new File(orig.getFile());
-        return file.delete();
+        return new File(orig.getFile()).delete();
     }
 
     /**
@@ -534,7 +530,7 @@ public final class NetUtil
      */
     public static int getSize(URL url)
     {
-        return getSize(url, null);
+        return getSize(url, null, null);
     }
     public static int getSize(URL url, String proxyHost)
     {
@@ -544,15 +540,12 @@ public final class NetUtil
     {
         if (url.getProtocol().equals(PROTOCOL_HTTP))
         {
-            WebResource wr = new WebResource(url, proxyHost, proxyPort);
-            return wr.getSize();
+            return new WebResource(url, proxyHost, proxyPort).getSize();
         }
 
         try
         {
-            URLConnection urlConnection = url.openConnection();
-            int size = urlConnection.getContentLength();
-            return size;
+            return url.openConnection().getContentLength();
         }
         catch (IOException e)
         {
@@ -566,7 +559,7 @@ public final class NetUtil
      */
     public static long getLastModified(URL url)
     {
-        return getLastModified(url, null);
+        return getLastModified(url, null, null);
     }
 
     public static long getLastModified(URL url, String proxyHost)
@@ -578,8 +571,7 @@ public final class NetUtil
     {
         if (url.getProtocol().equals(PROTOCOL_HTTP))
         {
-            WebResource wr = new WebResource(url, proxyHost, proxyPort);
-            return wr.getLastModified();
+            return new WebResource(url, proxyHost, proxyPort).getLastModified();
         }
 
         try
@@ -614,7 +606,7 @@ public final class NetUtil
      */
     public static boolean isNewer(URL left, URL right)
     {
-        return isNewer(left, right, null);
+        return isNewer(left, right, null, null);
     }
     public static boolean isNewer(URL left, URL right, String proxyHost)
     {

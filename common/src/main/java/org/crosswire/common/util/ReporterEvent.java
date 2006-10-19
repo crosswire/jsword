@@ -77,7 +77,7 @@ public class ReporterEvent extends EventObject
         }
 
         String full = clazz.getName();
-        int lastDot = full.lastIndexOf("."); //$NON-NLS-1$
+        int lastDot = full.lastIndexOf('.');
         if (lastDot == -1)
         {
             return full;

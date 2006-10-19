@@ -95,8 +95,7 @@ public final class ResourceUtil
      */
     public static InputStream getResourceAsStream(Class clazz, String search) throws IOException, MissingResourceException
     {
-        URL url = ResourceUtil.getResource(clazz, search);
-        return url.openStream();
+        return ResourceUtil.getResource(clazz, search).openStream();
     }
 
     /**

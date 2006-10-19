@@ -308,7 +308,7 @@ public class PrettySerializingContentHandler implements ContentHandler
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
         }
     }
 
@@ -320,7 +320,7 @@ public class PrettySerializingContentHandler implements ContentHandler
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
         }
     }
 

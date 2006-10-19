@@ -352,7 +352,7 @@ public final class XMLUtil
                         // attribute, so this must be the beginning of the next
                         // NOTE(joe): no - spaces can exist in attr values
                         String value = working.substring(startattr, i);
-                        if (value.indexOf("=") == -1) //$NON-NLS-1$
+                        if (value.indexOf('=') == -1)
                         {
                             // this 'attribute' does not contain an equals so
                             // we call it a word and end the parse

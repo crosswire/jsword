@@ -95,7 +95,7 @@ public final class XMLFeatureSet
         for (int i = 0; i < argv.length; i++)
         {
             String arg = argv[i];
-            if (arg.startsWith("-")) //$NON-NLS-1$
+            if (arg.charAt(0) == '=')
             {
                 String option = arg.substring(1);
                 String key = option.toLowerCase(Locale.ENGLISH);

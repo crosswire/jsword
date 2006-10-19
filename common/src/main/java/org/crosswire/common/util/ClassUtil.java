@@ -65,13 +65,13 @@ public final class ClassUtil
             {
                 try
                 {
-                    String file_name = classname.replace(',', '/') + EXTENSION_CLASS;
+                    String fileName = classname.replace(',', '/') + EXTENSION_CLASS;
                     ZipFile zip = new ZipFile(paths[i]);
-                    ZipEntry entry = zip.getEntry(file_name);
+                    ZipEntry entry = zip.getEntry(fileName);
 
                     if (entry != null && !entry.isDirectory())
                     {
-                        if (full != null && !full.equals(file_name))
+                        if (full != null && !full.equals(fileName))
                         {
                             log.warn("Warning duplicate " + classname + " found: " + full + " and " + paths[i]); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                         }
@@ -83,24 +83,30 @@ public final class ClassUtil
                 }
                 catch (IOException ex)
                 {
-                    // If that zip file failed, then ignore it and more on.
+                    // If that zip file failed, then ignore it and move on.
+                    log.warn("Missing zip file for " + classname + " and " + paths[i]); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
             else
             {
+                StringBuffer path = new StringBuffer(256);
+
                 // Search for the file
                 String extra = classname.replace('.', File.separatorChar);
 
-                if (!paths[i].endsWith(File.separator))
+                path.append(paths[i]);
+                if (paths[i].charAt(paths[i].length() - 1) != File.separatorChar)
                 {
-                    paths[i] += File.separator;
+                    path.append(File.separatorChar);
                 }
 
-                String file_name = paths[i] + extra + EXTENSION_CLASS;
+                path.append(extra);
+                path.append(EXTENSION_CLASS);
+                String fileName = path.toString();
 
-                if (new File(file_name).isFile())
+                if (new File(fileName).isFile())
                 {
-                    if (full != null && !full.equals(file_name))
+                    if (full != null && !full.equals(fileName))
                     {
                         log.warn("Warning duplicate " + classname + " found: " + full + " and " + paths[i]); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     }
@@ -263,8 +269,7 @@ public final class ClassUtil
      */
     public static Object getImplementation(Class clazz) throws MalformedURLException, ClassCastException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
     {
-        Class impl = getImplementor(clazz);
-        return impl.newInstance();
+        return getImplementor(clazz).newInstance();
     }
 
     /**

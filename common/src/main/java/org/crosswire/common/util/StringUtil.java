@@ -212,12 +212,12 @@ public final class StringUtil
 
         if (str == null)
         {
-            return EMPTY_STRING_ARRAY;
+            return (String[]) EMPTY_STRING_ARRAY.clone();
         }
         int len = str.length();
         if (len == 0)
         {
-            return EMPTY_STRING_ARRAY;
+            return (String[]) EMPTY_STRING_ARRAY.clone();
         }
         List list = new ArrayList();
         int i = 0;
@@ -276,12 +276,12 @@ public final class StringUtil
 
         if (str == null)
         {
-            return EMPTY_STRING_ARRAY;
+            return (String[]) EMPTY_STRING_ARRAY.clone();
         }
         int len = str.length();
         if (len == 0)
         {
-            return EMPTY_STRING_ARRAY;
+            return (String[]) EMPTY_STRING_ARRAY.clone();
         }
         List list = new ArrayList();
         int i = 0;
@@ -369,12 +369,12 @@ public final class StringUtil
 
         if (str == null)
         {
-            return EMPTY_STRING_ARRAY;
+            return (String[]) EMPTY_STRING_ARRAY.clone();
         }
         int len = str.length();
         if (len == 0)
         {
-            return EMPTY_STRING_ARRAY;
+            return (String[]) EMPTY_STRING_ARRAY.clone();
         }
         List list = new ArrayList();
         int sizePlus1 = 1;

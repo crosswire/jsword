@@ -77,14 +77,11 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
         TemplateInfo tinfo = (TemplateInfo) txers.get(xslurl);
 
         // But check it is up to date
-        if (tinfo != null)
+        if (tinfo != null && modtime > tinfo.getModtime())
         {
-            if (modtime > tinfo.getModtime())
-            {
-                txers.remove(xslurl);
-                tinfo = null;
-                log.debug("updated style, re-caching. xsl=" + xslurl.toExternalForm()); //$NON-NLS-1$
-            }
+            txers.remove(xslurl);
+            tinfo = null;
+            log.debug("updated style, re-caching. xsl=" + xslurl.toExternalForm()); //$NON-NLS-1$
         }
 
         if (tinfo == null)

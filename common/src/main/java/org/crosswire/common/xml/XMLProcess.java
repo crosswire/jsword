@@ -24,7 +24,6 @@ package org.crosswire.common.xml;
 import java.io.IOException;
 
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
@@ -74,10 +73,10 @@ public class XMLProcess
         for (int i = 0; i < argv.length; i++)
         {
             arg = argv[i];
-            if (arg.startsWith("-")) //$NON-NLS-1$
+            if (arg.charAt(0) == '-')
             {
                 String option = arg.substring(1);
-                if (option.equals("h")) //$NON-NLS-1$
+                if ("h".equals(option)) //$NON-NLS-1$
                 {
                     checker.usage();
                     System.exit(0);
@@ -97,10 +96,10 @@ public class XMLProcess
         for (i = 0; i < argv.length; i++)
         {
             String arg = argv[i];
-            if (arg.startsWith("-")) //$NON-NLS-1$
+            if (arg.charAt(0) == '-')
             {
                 String option = arg.substring(1);
-                if (option.equals("p")) //$NON-NLS-1$
+                if ("p".equals(option)) //$NON-NLS-1$
                 {
                     // get parser name
                     if (++i == argv.length)
@@ -112,7 +111,7 @@ public class XMLProcess
                     createParser(parserName);
                     continue;
                 }
-                if (option.equals("a")) //$NON-NLS-1$
+                if ("a".equals(option)) //$NON-NLS-1$
                 {
                     // get parser name
                     if (++i == argv.length)
@@ -218,10 +217,6 @@ public class XMLProcess
         try
         {
             parser.parse(xmlFile);
-        }
-        catch (SAXParseException e)
-        {
-            // ignore
         }
         catch (SAXException e)
         {

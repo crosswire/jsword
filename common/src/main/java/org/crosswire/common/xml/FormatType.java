@@ -134,24 +134,6 @@ public final class FormatType implements Serializable
         return VALUES[i];
     }
 
-    /**
-     * Prevent subclasses from overriding canonical identity based Object methods
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    public boolean equals(Object o)
-    {
-        return super.equals(o);
-    }
-
-    /**
-     * Prevent subclasses from overriding canonical identity based Object methods
-     * @see java.lang.Object#hashCode()
-     */
-    public int hashCode()
-    {
-        return super.hashCode();
-    }
-
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */

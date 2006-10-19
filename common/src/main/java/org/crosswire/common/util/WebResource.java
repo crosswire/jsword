@@ -86,8 +86,7 @@ public class WebResource
             int status = client.executeMethod(method);
             if (status == HttpStatus.SC_OK)
             {
-                HttpURLConnection connection = new HttpURLConnection(method, url);
-                return connection.getContentLength();
+                return new HttpURLConnection(method, url).getContentLength();
             }
             String reason = HttpStatus.getStatusText(status);
             Reporter.informUser(this, Msg.MISSING_FILE, new Object[] { reason + ':' + url.getFile() });
@@ -119,8 +118,7 @@ public class WebResource
             // Execute the method.
             if (client.executeMethod(method) == HttpStatus.SC_OK)
             {
-                HttpURLConnection connection = new HttpURLConnection(method, url);
-                return connection.getLastModified();
+                return new HttpURLConnection(method, url).getLastModified();
             }
         }
         catch (IOException e)

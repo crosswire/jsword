@@ -66,20 +66,20 @@ public class XalanProcess
             }
             catch (ClassNotFoundException e1)
             {
-                e1.printStackTrace();
+                e1.printStackTrace(System.err);
             }
             catch (SecurityException e1)
             {
-                e1.printStackTrace();
+                e1.printStackTrace(System.err);
             }
             catch (NoSuchMethodException e1)
             {
-                e1.printStackTrace();
+                e1.printStackTrace(System.err);
             }
         }
         catch (NoSuchMethodException e)
         {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
             return;
         }
 
@@ -92,15 +92,15 @@ public class XalanProcess
         }
         catch (IllegalArgumentException e)
         {
-             e.printStackTrace();
+             e.printStackTrace(System.err);
         }
         catch (IllegalAccessException e)
         {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
         }
         catch (InvocationTargetException e)
         {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
         }
     }
 }
