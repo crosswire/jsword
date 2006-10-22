@@ -111,14 +111,34 @@ public final class OSISUtil
     public static final String HI_X_CAPS = "x-caps"; //$NON-NLS-1$
 
     /**
+     * Constant for rendering big text
+     */
+    public static final String HI_X_BIG = "x-big"; //$NON-NLS-1$
+
+    /**
+     * Constant for rendering small text
+     */
+    public static final String HI_X_SMALL = "x-small"; //$NON-NLS-1$
+
+    /**
+     * Constant for rendering tt text
+     */
+    public static final String HI_X_TT = "x-tt"; //$NON-NLS-1$
+
+    /**
      * Constant to help narrow down what we use seg for. In this case the justify right tag
      */
     public static final String SEG_JUSTIFYRIGHT = "text-align: right;"; //$NON-NLS-1$
 
     /**
-     * Constant to help narrow down what we use seg for. In this case the justify right tag
+     * Constant to help narrow down what we use seg for. In this case the thml center tag
      */
     public static final String SEG_CENTER = "text-align: center;"; //$NON-NLS-1$
+
+    /**
+     * Constant to help narrow down what we use div for. In this case the thml pre tag
+     */
+    public static final String DIV_PRE = "x-pre"; //$NON-NLS-1$
 
     /**
      * Constant to help narrow down what we use seg for. In this case the color tag

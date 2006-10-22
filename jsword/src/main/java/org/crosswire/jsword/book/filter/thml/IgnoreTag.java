@@ -23,7 +23,7 @@ package org.crosswire.jsword.book.filter.thml;
 
 
 /**
- * THML Tag to process the pb element.
+ * THML Tag to process the content of an element but to ignore the tag itself.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.

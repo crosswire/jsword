@@ -190,8 +190,10 @@ public class CustomHandler extends DefaultHandler
             new BlockquoteTag(),
             new BrTag(),
             new BTag(),
+            new BigTag(),
             new CenterTag(),
             new CitationTag(),
+            new ColTag(),
             new DivTag(),
             new ForeignTag(),
             new FontTag(),
@@ -205,6 +207,7 @@ public class CustomHandler extends DefaultHandler
             new PTag(),
             new PbTag(),
             new RootTag(),
+            new RowTag(),
             new ScriptureTag(),
             new ScripRefTag(),
             new SmallTag(),
@@ -212,14 +215,15 @@ public class CustomHandler extends DefaultHandler
             new SupTag(),
             new SyncTag(),
             new TableTag(),
-            new RowTag(),
-            new ColTag(),
             new TdTag(),
             new TermTag(),
             new ThTag(),
             new TrTag(),
+            new TtTag(),
             new UTag(),
             new UlTag(),
+            new AliasTag("em", new ITag()), //$NON-NLS-1$
+            new AliasTag("strong", new BTag()), //$NON-NLS-1$
             new AliasTag("h1", new BTag()), //$NON-NLS-1$
             new AliasTag("h2", new BTag()), //$NON-NLS-1$
             new AliasTag("h3", new BTag()), //$NON-NLS-1$
@@ -313,7 +317,6 @@ public class CustomHandler extends DefaultHandler
             new AnonymousTag("point16"), //$NON-NLS-1$
             new AnonymousTag("point18"), //$NON-NLS-1$
             new AnonymousTag("point20"), //$NON-NLS-1$
-           new AnonymousTag("tt"), //$NON-NLS-1$
             new AnonymousTag("hw"), //$NON-NLS-1$
         };
         for (int i = 0; i < tags.length; i++)
