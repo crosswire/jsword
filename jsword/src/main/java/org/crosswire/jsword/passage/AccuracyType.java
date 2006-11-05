@@ -641,8 +641,9 @@ public abstract class AccuracyType implements Serializable
      * number that stands alone.</p>
      * @param input The string to parse.
      * @return The string array
+     * @throws NoSuchVerseException 
      */
-    public static String[] tokenize(String input)
+    public static String[] tokenize(String input) throws NoSuchVerseException
     {
         // The results are expected to be no more than 3 parts
         String [] args = { null, null, null, null, null, null, null, null};
@@ -682,6 +683,11 @@ public abstract class AccuracyType implements Serializable
                     // Letters always continue a previous token
                     if (charIsDigit)
                     {
+                        if (tokenCount >= args.length)
+                        {
+                            throw new NoSuchVerseException(Msg.VERSE_PARTS, new Object[] { input });
+                        }
+
                         token = new String(normalized, startIndex, normalizedLength - startIndex);
                         args[tokenCount++] = token;
                         normalizedLength = 0;
@@ -700,6 +706,12 @@ public abstract class AccuracyType implements Serializable
                 lastChar = curChar;
             }
         }
+
+        if (tokenCount >= args.length)
+        {
+            throw new NoSuchVerseException(Msg.VERSE_PARTS, new Object[] { input });
+        }
+
         token = new String(normalized, startIndex, normalizedLength - startIndex);
         args[tokenCount++] = token;
 

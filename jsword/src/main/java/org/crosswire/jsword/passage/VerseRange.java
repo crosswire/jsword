@@ -1135,9 +1135,9 @@ public final class VerseRange implements Key, Serializable
     public static final String RANGE_ALLOWED_DELIMS = "-"; //$NON-NLS-1$
 
     /**
-     * What characters should we use to separate VerseRange parts
+     * What characters should we use to separate VerseRange parts on output
      */
-    public static final String RANGE_PREF_DELIM = "-"; //$NON-NLS-1$
+    public static final String RANGE_PREF_DELIM = RANGE_ALLOWED_DELIMS;
 
     /**
      * To make serialization work across new versions

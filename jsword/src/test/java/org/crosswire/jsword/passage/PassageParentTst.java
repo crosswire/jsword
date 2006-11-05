@@ -30,9 +30,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Iterator;
 
-import org.crosswire.jsword.versification.BibleInfo;
-
 import junit.framework.TestCase;
+
+import org.crosswire.jsword.versification.BibleInfo;
 
 /**
  * This would be called TestPassage however then people might think it was
@@ -50,11 +50,11 @@ public class PassageParentTst extends TestCase
         super(s);
     }
 
-    public PassageParentTst(String s, int ptype, boolean optimize)
+    public PassageParentTst(String s, PassageType ptype, boolean optimize)
     {
         super(s);
 
-        PassageKeyFactory.setDefaultPassage(ptype);
+        PassageKeyFactory.setDefaultPassage(PassageType.toInteger(ptype));
         this.optimize = optimize;
     }
 
@@ -101,7 +101,7 @@ public class PassageParentTst extends TestCase
     protected void setUp() throws Exception
     {
         start = System.currentTimeMillis();
-
+        BibleInfo.setFullBookName(false);
         gen1_135 = (Passage) keyf.getKey("Gen 1:1, Gen 1:3, Gen 1:5"); //$NON-NLS-1$
         exo2a_3b = (Passage) keyf.getKey("Exo 2:1-10, Exo 3:1-11"); //$NON-NLS-1$
         gen_rev = (Passage) keyf.getKey("Gen 1:1-Rev 22:21"); //$NON-NLS-1$
@@ -144,7 +144,6 @@ public class PassageParentTst extends TestCase
         exo23 = new Verse(2, 2, 3);
         exo3b = new Verse(2, 3, 11);
         rev99 = VerseFactory.fromString("Rev 22:21"); //$NON-NLS-1$
-        BibleInfo.setFullBookName(false);
     }
 
     /* (non-Javadoc)
@@ -156,7 +155,7 @@ public class PassageParentTst extends TestCase
         // float secs = (System.currentTimeMillis() - start) / 1000F;
         // log(type+" total = "+secs+"s =======================");
 
-        PassageKeyFactory.setDefaultPassage(PassageKeyFactory.SPEED);
+        PassageKeyFactory.setDefaultPassage(PassageType.toInteger(PassageType.SPEED));
     }
 
     public void testReadAddPassageListener() throws Exception
@@ -421,6 +420,8 @@ public class PassageParentTst extends TestCase
         assertEquals(keyf.getKey("exo 1:1, 4").getName(), "Exo 1:1, 4"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(keyf.getKey("exo 1:1, 4, 2-3, 11-ff, 6-10").getName(), "Exo 1:1-4, 6-22"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(keyf.getKey("Num 1, 2").getName(), "Num 1-2"); //$NON-NLS-1$ //$NON-NLS-2$
+        // Test for the sepaator being a space. This comes from "Clarke"
+        assertEquals(keyf.getKey("Ge 1:26  3:22  11:7  20:13  31:7, 53  35:7").getName(), "Gen 1:26, 3:22, 11:7, 20:13, 31:7, 53, 35:7"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void testWriteBlur() throws Exception

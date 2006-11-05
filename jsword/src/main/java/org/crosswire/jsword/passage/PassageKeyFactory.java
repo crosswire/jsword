@@ -34,34 +34,10 @@ import org.crosswire.jsword.versification.BibleInfo;
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public final class PassageKeyFactory implements KeyFactory
 {
-    /**
-     * Optimize the Passage for speed
-     */
-    public static final int SPEED = 0;
-
-    /**
-     * Optimize the Passage for speed
-     */
-    public static final int WRITE_SPEED = 1;
-
-    /**
-     * Optimize the Passage for size
-     */
-    public static final int SIZE = 2;
-
-    /**
-     * Optimize the Passage for a mix
-     */
-    public static final int MIX = 3;
-
-    /**
-     * Optimize the Passage for tally operations
-     */
-    public static final int TALLY = 4;
-
     /**
      * This class implements a Singleton pattern. So the ctor is private
      */
@@ -79,7 +55,7 @@ public final class PassageKeyFactory implements KeyFactory
      */
     public Key createEmptyKeyList()
     {
-        return createPassage();
+        return defaultType.createEmptyPassage();
     }
 
     /* (non-Javadoc)
@@ -102,7 +78,16 @@ public final class PassageKeyFactory implements KeyFactory
      */
     public Key getKey(String name) throws NoSuchKeyException
     {
-        return createPassage(name);
+        // since normalization is relatively expensive
+        // don't try it unless it solves a problem.
+        try
+        {
+            return defaultType.createPassage(name);
+        }
+        catch (Exception e)
+        {
+            return defaultType.createPassage(normalize(name));
+        }
     }
 
     /* (non-Javadoc)
@@ -114,7 +99,7 @@ public final class PassageKeyFactory implements KeyFactory
         {
             if (whole == null)
             {
-                whole = new ReadOnlyPassage(createPassage("Gen 1:1-Rev 22:21"), true); //$NON-NLS-1$
+                whole = new ReadOnlyPassage(defaultType.createPassage("Gen 1:1-Rev 22:21"), true); //$NON-NLS-1$
             }
 
             return whole;
@@ -122,117 +107,23 @@ public final class PassageKeyFactory implements KeyFactory
         catch (NoSuchKeyException ex)
         {
             assert false : ex;
-            return createPassage();
-        }
-    }
-
-    /**
-     * Create an empty Passage using the default type.
-     * @return The new Passage
-     */
-    protected Passage createPassage()
-    {
-        return createPassage(defaultType);
-    }
-
-    /**
-     * Create an empty Passage using the default type. And set the
-     * contents of the Passage using a string.
-     * @param name The Passage description.
-     * @return The new Passage
-     * @throws NoSuchVerseException if the name is invalid
-     */
-    protected Passage createPassage(String name) throws NoSuchVerseException
-    {
-        if (name == null)
-        {
-            createPassage(defaultType);
-        }
-
-        return createPassage(defaultType, name);
-    }
-
-    /**
-     * Create an empty Passage using a specified type.
-     * @param type The type of Passage to create.
-     * @return The new Passage
-     * @see PassageKeyFactory#setDefaultPassage(int)
-     */
-    protected Passage createPassage(int type)
-    {
-        switch (type)
-        {
-        case PassageKeyFactory.MIX:
-            return new RangedPassage();
-
-        case PassageKeyFactory.WRITE_SPEED:
-            return new BitwisePassage();
-
-        case PassageKeyFactory.SPEED:
-            return new RocketPassage();
-
-        case PassageKeyFactory.SIZE:
-            return new DistinctPassage();
-
-        case PassageKeyFactory.TALLY:
-            return new PassageTally();
-
-        default :
-            throw new IllegalArgumentException(Integer.toString(type));
-        }
-    }
-
-    /**
-     * Create an empty Passage using a specified type. And set the
-     * contents of the Passage using a string.
-     * @param type The type of Passage to create.
-     * @param name The Passage description.
-     * @return The new Passage
-     * @throws NoSuchVerseException if the name is invalid
-     * @see PassageKeyFactory#setDefaultPassage(int)
-     */
-    protected Passage createPassage(int type, String name) throws NoSuchVerseException
-    {
-        if (name == null)
-        {
-            createPassage(type);
-        }
-
-        switch (type)
-        {
-        case PassageKeyFactory.MIX:
-            return new RangedPassage(name);
-
-        case PassageKeyFactory.WRITE_SPEED:
-            return new BitwisePassage(name);
-
-        case PassageKeyFactory.SPEED:
-            return new RocketPassage(name);
-
-        case PassageKeyFactory.SIZE:
-            return new DistinctPassage(name);
-
-        case PassageKeyFactory.TALLY:
-            return new PassageTally(name);
-
-        default:
-            throw new IllegalArgumentException(Integer.toString(type));
+            return defaultType.createEmptyPassage();
         }
     }
 
     /**
      * Set the default reference type. Must be one of:<ul>
-     * <li>PassageFactory.SPEED
-     * <li>PassageFactory.WRITE_SPEED
-     * <li>PassageFactory.SIZE
-     * <li>PassageFactory.MIX
-     * <li>PassageFactory.TALLY
+     * <li>PassageType.SPEED
+     * <li>PassageType.WRITE_SPEED
+     * <li>PassageType.SIZE
+     * <li>PassageType.MIX
+     * <li>PassageType.TALLY
      * </ul>
-     * @param defaultType The new default type.
+     * @param newDefaultType The new default type.
      */
-    public static void setDefaultPassage(int defaultType)
+    public static void setDefaultPassage(int newDefaultType)
     {
-        PassageKeyFactory.defaultType = defaultType;
+        PassageKeyFactory.defaultType = PassageType.fromInteger(newDefaultType);
     }
 
     /**
@@ -242,7 +133,7 @@ public final class PassageKeyFactory implements KeyFactory
      */
     public static int getDefaultPassage()
     {
-        return defaultType;
+        return PassageType.toInteger(defaultType);
     }
 
     /**
@@ -270,7 +161,7 @@ public final class PassageKeyFactory implements KeyFactory
 
     /**
      * Convert us to a binary representation.
-     * There are sme distinctly endianist happenings here, but that is OK
+     * There are some distinctly endianist happenings here, but that is OK
      * because we are reading the stuff we write here just below.
      * @param ref The Passage to convert
      * @return a byte array
@@ -571,6 +462,103 @@ public final class PassageKeyFactory implements KeyFactory
     }
 
     /**
+     * The internals of a Passage require that references are separated with a reference delimiter.
+     * However, people and other systems may not be so stringent.
+     * So we want to allow for "Ge 1:26  3:22  11:7  20:13  31:7, 53  35:7" (which is from Clarke)
+     * This should become "Ge 1:26, 3:22, 11:7, 20:13, 31:7, 53, 35:7"
+     * Basically, the rule of thumb is that if two numbers are found separated by whitespace
+     * then add a comma between them. One note $, and ff are taken to be numbers.
+     * But it is complicated by Book names that are like 1 Cor
+     * And by verse references like Gen 1.2 Gen.1.2 Gen 1 2 which are all equivalent.
+     * So we use a counter when we see a number, if the counter reaches 2 and then we see a name
+     * or a number we emit a reference delimiter.
+     * 
+     * @param name
+     * @return the normalized value
+     */
+    private String normalize(String name)
+    {
+        if (name == null)
+        {
+            return null;
+        }
+
+        // Note this has a lot in common with AccuracyType.tokenize
+        int size = name.length();
+        StringBuffer buf = new StringBuffer(size * 2);
+
+        char curChar = ' ';
+        boolean isNumber = false;
+        boolean wasNumber = false;
+        int i = 0;
+        while (i < size)
+        {
+            curChar = name.charAt(i);
+
+            // Determine whether we are starting a number
+            isNumber = curChar == '$' || Character.isDigit(curChar) || (curChar == 'f' && (i + 1 < size ? name.charAt(i + 1) : ' ') == 'f');
+
+            // If the last thing we saw was a number and the next thing we see is another number or a word
+            // then we want to put in a ',' or a ' '
+            if (wasNumber)
+            {
+                if (isNumber)
+                {
+                    buf.append(AbstractPassage.REF_PREF_DELIM);
+                }
+                else if (Character.isLetter(curChar))
+                {
+                    buf.append(' ');
+                }
+
+                // Having handled the condition, we now set it to false
+                wasNumber = false;
+            }
+
+            if (isNumber)
+            {
+                wasNumber = true;
+                buf.append(curChar);
+                i++;
+
+                // If it started with an 'f' it was also followed by another.
+                if (curChar == 'f')
+                {
+                    buf.append('f');
+                    i++;
+                }
+                // If it wasn't an 'f' or a '$' then it was digits
+                else if (curChar != '$')
+                {
+                    while (i < size)
+                    {
+                       curChar = name.charAt(i);
+                       if (!Character.isDigit(curChar))
+                        {
+                            break;
+                        }
+                        buf.append(curChar);
+                        i++;
+                    }
+                }
+
+                // skip all following whitespace, it will be added back in as needed
+                while (i < size && Character.isWhitespace(name.charAt(i)))
+                {
+                    i++;
+                }
+            }
+            else
+            {
+                buf.append(curChar);
+                i++;
+            }
+        }
+
+        return buf.toString();
+    }
+
+    /**
      * How we create Passages
      */
     private static KeyFactory keyf = new PassageKeyFactory();
@@ -583,5 +571,5 @@ public final class PassageKeyFactory implements KeyFactory
     /**
      * The default type
      */
-    private static int defaultType = PassageKeyFactory.SPEED;
+    private static PassageType defaultType = PassageType.SPEED;
 }

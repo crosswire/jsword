@@ -32,6 +32,6 @@ public class PassageMixTest extends PassageParentTst
 {
     public PassageMixTest(String s)
     {
-        super(s, PassageKeyFactory.MIX, false);
+        super(s, PassageType.MIX, false);
     }
 }

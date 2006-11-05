@@ -32,6 +32,6 @@ public class PassageSizeTest extends PassageParentTst
 {
     public PassageSizeTest(String s)
     {
-        super(s, PassageKeyFactory.SIZE, false);
+        super(s, PassageType.SIZE, false);
     }
 }
