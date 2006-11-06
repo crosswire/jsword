@@ -290,17 +290,16 @@ public final class Verse implements Key, Serializable
         try
         {
             copy = (Verse) super.clone();
+            copy.book = book;
+            copy.chapter = chapter;
+            copy.verse = verse;
+            //copy.ord = ord;
+            copy.originalName = originalName;
         }
         catch (CloneNotSupportedException e)
         {
             assert false : e;
         }
-
-        copy.book = book;
-        copy.chapter = chapter;
-        copy.verse = verse;
-        //copy.ord = ord;
-        copy.originalName = originalName;
 
         return copy;
     }

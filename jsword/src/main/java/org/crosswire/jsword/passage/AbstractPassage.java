@@ -114,16 +114,15 @@ public abstract class AbstractPassage implements Passage
         try
         {
             copy = (AbstractPassage) super.clone();
+            copy.listeners = new ArrayList();
+            copy.listeners.addAll(listeners);
+
+            copy.originalName  = originalName;
         }
         catch (CloneNotSupportedException e)
         {
             assert false : e;
         }
-
-        copy.listeners = new ArrayList();
-        copy.listeners.addAll(listeners);
-
-        copy.originalName  = originalName;
 
         return copy;
     }

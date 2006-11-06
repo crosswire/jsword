@@ -220,12 +220,12 @@ public class ReadOnlyKeyList implements Key
         try
         {
             clone = (ReadOnlyKeyList) super.clone();
+            clone.keys = (Key) keys.clone();
         }
         catch (CloneNotSupportedException e)
         {
             assert false : e;
         }
-        clone.keys = (Key) keys.clone();
         return clone;
     }
 

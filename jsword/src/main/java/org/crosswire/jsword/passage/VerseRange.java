@@ -451,16 +451,15 @@ public final class VerseRange implements Key, Serializable
         try
         {
             copy = (VerseRange) super.clone();
+            copy.start = (Verse) start.clone();
+            copy.end = (Verse) end.clone();
+            copy.verseCount = verseCount;
+            copy.originalName = originalName;
         }
         catch (CloneNotSupportedException e)
         {
             assert false : e;
         }
-
-        copy.start = (Verse) start.clone();
-        copy.end = (Verse) end.clone();
-        copy.verseCount = verseCount;
-        copy.originalName = originalName;
 
         return copy;
     }

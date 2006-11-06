@@ -121,10 +121,7 @@ public class THMLFilter implements Filter
             ex = e;
         }
 
-        if (ex != null)
-        {
-            log.warn("Could not fix it by cleaning tags: " + ex.getMessage()); //$NON-NLS-1$
-        }
+        log.warn("Could not fix it by cleaning tags: " + ex.getMessage()); //$NON-NLS-1$
 
         return null;
     }

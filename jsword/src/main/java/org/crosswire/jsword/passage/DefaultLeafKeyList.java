@@ -247,14 +247,14 @@ public class DefaultLeafKeyList implements Key
         try
         {
             clone = (DefaultLeafKeyList) super.clone();
+            if (parent != null)
+            {
+                clone.parent = (Key) parent.clone();
+            }
         }
         catch (CloneNotSupportedException e)
         {
             assert false : e;
-        }
-        if (parent != null)
-        {
-            clone.parent = (Key) this.parent.clone();
         }
         return clone;
     }

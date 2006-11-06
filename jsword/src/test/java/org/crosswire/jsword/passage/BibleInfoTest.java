@@ -486,6 +486,9 @@ public class BibleInfoTest extends TestCase
 
         int count = 0;
 
+        int ch1 = chapter1;
+        int ver1 = verse1;
+
         // If we are in different books, count the verses until the books are the same
         if (book1 != book2)
         {
@@ -501,17 +504,16 @@ public class BibleInfoTest extends TestCase
                 count += BibleInfo.versesInBook(b);
 
             // The new position
-            book1 = book2;
-            chapter1 = 1;
-            verse1 = 1;
+            ch1 = 1;
+            ver1 = 1;
         }
 
         // Count the verses in the chapters so that we are in the same chapter
-        for (int c = chapter1; c < chapter2; c++)
+        for (int c = ch1; c < chapter2; c++)
             count += BibleInfo.versesInChapter(book2, c);
 
         // And finally the verses in the final chapter
-        count += verse2 - verse1 + 1;
+        count += verse2 - ver1 + 1;
 
         return count;
     }

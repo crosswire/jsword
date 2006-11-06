@@ -26,7 +26,6 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.passage.Key;
 
 /**
@@ -43,7 +42,6 @@ public class BooksTest extends TestCase
         super(s);
     }
 
-    private static final Logger log = Logger.getLogger(BooksTest.class);
     protected Key[] gen11 = null;
     protected BookMetaData[] bmds = null;
     protected Book[] bibles = null;
@@ -87,7 +85,6 @@ public class BooksTest extends TestCase
         for (int i = 0; i < bibles.length; i++)
         {
             Book bible = bibles[i];
-            log.debug("testing bible: " + bible.getFullName()); //$NON-NLS-1$
             assertTrue(bible != null);
         }
     }

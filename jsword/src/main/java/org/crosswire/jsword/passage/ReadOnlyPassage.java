@@ -406,13 +406,14 @@ final class ReadOnlyPassage implements Passage
         try
         {
             clone = (ReadOnlyPassage) super.clone();
+            clone.ref = this.ref;
+            clone.ignore = this.ignore;
         }
         catch (CloneNotSupportedException e)
         {
             assert false : e;
         }
-        clone.ref = this.ref;
-        clone.ignore = this.ignore;
+
         return clone;
     }
 
