@@ -243,19 +243,32 @@ public final class BibleNames
         for (int i = 0; i < booksInBible; i++)
         {
             Integer bookNum = new Integer(i + 1);
-            String fullBook = getString(resources, FULL_KEY + (i + 1));
+            String osisName = ""; //$NON-NLS-1$
+            try
+            {
+                osisName = OSISNames.getName(i+1);
+            }
+            catch (NoSuchVerseException e)
+            {
+                assert false; 
+            }
+            String fullBook = getString(resources, osisName + FULL_KEY);
             String normalized = normalize(fullBook);
             fullBooks[i] = fullBook;
             fullBooksSearch[i] = normalized;
             fullBooksMap.put(normalized, bookNum);
 
-            String shortBook = getString(resources, SHORT_KEY + (i + 1));
+            String shortBook = getString(resources, osisName + SHORT_KEY );
+            if (shortBook.length() == 0)
+            {
+                shortBook = fullBook;
+            }
             normalized = normalize(shortBook);
             shortBooks[i] = shortBook;
             shortBooksSearch[i] = normalized;
             shortBooksMap.put(normalized, bookNum);
 
-            String altBook = getString(resources, ALT_KEY + (i + 1));
+            String altBook = getString(resources, osisName + ALT_KEY);
             String[] alternates = StringUtil.split(altBook, ',');
             altBooks[i] = alternates;
 
@@ -282,9 +295,9 @@ public final class BibleNames
         return null;
     }
 
-    private static final String FULL_KEY       = "Full.";     //$NON-NLS-1$
-    private static final String SHORT_KEY      = "Short.";    //$NON-NLS-1$
-    private static final String ALT_KEY        = "Alt.";      //$NON-NLS-1$
+    private static final String FULL_KEY       = ".Full";     //$NON-NLS-1$
+    private static final String SHORT_KEY      = ".Short";    //$NON-NLS-1$
+    private static final String ALT_KEY        = ".Alt";      //$NON-NLS-1$
 
     /**
      * Handy book finder
