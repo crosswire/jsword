@@ -246,19 +246,20 @@ public final class BibleNames
             String osisName = ""; //$NON-NLS-1$
             try
             {
-                osisName = OSISNames.getName(i+1);
+                osisName = OSISNames.getName(i + 1);
             }
             catch (NoSuchVerseException e)
             {
-                assert false; 
+                assert false;
             }
+
             String fullBook = getString(resources, osisName + FULL_KEY);
             String normalized = normalize(fullBook);
             fullBooks[i] = fullBook;
             fullBooksSearch[i] = normalized;
             fullBooksMap.put(normalized, bookNum);
 
-            String shortBook = getString(resources, osisName + SHORT_KEY );
+            String shortBook = getString(resources, osisName + SHORT_KEY);
             if (shortBook.length() == 0)
             {
                 shortBook = fullBook;
