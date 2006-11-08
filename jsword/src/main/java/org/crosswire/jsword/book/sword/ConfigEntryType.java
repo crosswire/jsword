@@ -388,6 +388,33 @@ public class ConfigEntryType implements Serializable
     };
 
     /**
+     * Copyright info. Informational only.
+     */
+    public static final ConfigEntryType COPYRIGHT_CONTACT_NOTES = new ConfigEntryType("CopyrightContactNotes") //$NON-NLS-1$
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.ConfigEntryType#allowsContinuation()
+         */
+        public boolean allowsContinuation()
+        {
+            return true;
+        }
+
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.ConfigEntryType#allowsRTF()
+         */
+        public boolean allowsRTF()
+        {
+            return true;
+        }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3257001060181620787L;
+    };
+
+    /**
      * Copyright info. Informational only. This is a year, a year range or a comma separated list of these.
      */
     public static final ConfigEntryType COPYRIGHT_DATE = new ConfigEntryType("CopyrightDate") //$NON-NLS-1$
@@ -1143,6 +1170,28 @@ public class ConfigEntryType implements Serializable
     };
 
     /**
+     * single value version number, lowest sword c++ version that can read this book
+     * JSword does not use this value.
+     */
+    public static final ConfigEntryType OSIS_VERSION = new ConfigEntryType("OSISVersion") //$NON-NLS-1$
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
+         */
+        public Object getDefault()
+        {
+            // This value is unimportant to JSword, but is to Sword
+            return "1.5.1a"; //$NON-NLS-1$
+        }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = -6381507058727637134L;
+    };
+
+
+    /**
      * The abbreviated name by which this book is known. This is in the [] on the first non-blank
      * line of the conf. JSword uses this for display and access purposes.
      */
@@ -1475,6 +1524,7 @@ public class ConfigEntryType implements Serializable
         COPYRIGHT_CONTACT_ADDRESS,
         COPYRIGHT_CONTACT_EMAIL,
         COPYRIGHT_CONTACT_NAME,
+        COPYRIGHT_CONTACT_NOTES,
         COPYRIGHT_DATE,
         COPYRIGHT_HOLDER,
         COPYRIGHT_NOTES,
@@ -1503,6 +1553,7 @@ public class ConfigEntryType implements Serializable
         TEXT_SOURCE,
         VERSION,
         OSIS_Q_TO_TICK,
+        OSIS_VERSION,
         INITIALS,
         LANGUAGE,
         LANGUAGE_FROM,

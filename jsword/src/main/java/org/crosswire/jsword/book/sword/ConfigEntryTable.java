@@ -577,6 +577,18 @@ public final class ConfigEntryTable
             add(ConfigEntryType.DATA_PATH, datapath.substring(2));
         }
     }
+
+    private boolean isLeftToRight(String lang)
+    {
+        // Java does not know that the following languages are right to left
+        if (lang.equals("fa") || lang.equals("syr"))  //$NON-NLS-1$ //$NON-NLS-2$
+        {
+            return false;
+        }
+
+        return ComponentOrientation.getOrientation(new Locale(lang)).isLeftToRight();
+    }
+
     private void adjustLanguage()
     {
         // Java thinks it is LtoR but it is stated to be something else
@@ -587,12 +599,12 @@ public final class ConfigEntryTable
         String lang = AbstractBookMetaData.getLanguage(internal, langEntry);
         add(ConfigEntryType.LANGUAGE, lang);
 
-        // This returns ComponentOrientation.LEFT_TO_RIGHT if
+        // This returns Left to Right if
         // it does not know what it is.
         boolean leftToRight = true;
         if (langEntry != null)
         {
-            leftToRight = ComponentOrientation.getOrientation(new Locale(langEntry)).isLeftToRight();
+            leftToRight = isLeftToRight(langEntry);
         }
 
         String langFromEntry = (String) getValue(ConfigEntryType.GLOSSARY_FROM);
@@ -613,7 +625,7 @@ public final class ConfigEntryTable
             }
             else
             {
-                fromLeftToRight = ComponentOrientation.getOrientation(new Locale(langFromEntry)).isLeftToRight();
+                fromLeftToRight = isLeftToRight(langFromEntry);
             }
 
             if (langToEntry == null)
@@ -622,7 +634,7 @@ public final class ConfigEntryTable
             }
             else
             {
-                toLeftToRight = ComponentOrientation.getOrientation(new Locale(langToEntry)).isLeftToRight();
+                toLeftToRight = isLeftToRight(langToEntry);
             }
 
             // At least one of the two languages should match the lang entry
@@ -840,9 +852,10 @@ public final class ConfigEntryTable
         ConfigEntryType.DESCRIPTION,
         ConfigEntryType.CATEGORY,
         ConfigEntryType.LCSH,
-        ConfigEntryType.VERSION,
         ConfigEntryType.SWORD_VERSION_DATE,
+        ConfigEntryType.VERSION,
         ConfigEntryType.HISTORY,
+        ConfigEntryType.OBSOLETES,
     };
 
     private static final ConfigEntryType[] LANG_INFO =
@@ -869,6 +882,7 @@ public final class ConfigEntryTable
         ConfigEntryType.COPYRIGHT_CONTACT_NAME,
         ConfigEntryType.COPYRIGHT_CONTACT_ADDRESS,
         ConfigEntryType.COPYRIGHT_CONTACT_EMAIL,
+        ConfigEntryType.COPYRIGHT_CONTACT_NOTES,
         ConfigEntryType.COPYRIGHT_NOTES,
         ConfigEntryType.TEXT_SOURCE,
     };
@@ -889,6 +903,7 @@ public final class ConfigEntryTable
         ConfigEntryType.COMPRESS_TYPE,
         ConfigEntryType.ENCODING,
         ConfigEntryType.MINIMUM_VERSION,
+        ConfigEntryType.OSIS_VERSION,
         ConfigEntryType.DIRECTION,
     };
 

@@ -310,11 +310,10 @@ public abstract class AbstractBookMetaData implements BookMetaData
             return getLanguage(ident, locale[0]);
         }
 
-        char firstLangChar = lookup.charAt(0);
         // If the language begins w/ an x then it is "Undetermined"
         // Also if it is not a 2 or 3 character code then it is not a valid
         // iso639 code.
-        if (firstLangChar == 'x' || firstLangChar == 'X' || lookup.length() > 3)
+        if (lookup.startsWith("x-") || lookup.startsWith("X-") || lookup.length() > 3) //$NON-NLS-1$ //$NON-NLS-2$
         {
             return getLanguage(ident, UNKNOWN_LANG_CODE);
         }
