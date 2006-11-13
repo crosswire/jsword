@@ -169,9 +169,9 @@ public class RawBackend extends AbstractBackend
             int start = SwordUtil.decodeLittleEndian32(read, 0);
             int size = SwordUtil.decodeLittleEndian16(read, 4);
 
-            if (size < 1)
+            if (size < 0)
             {
-                log.error("Verse " + verse.getName() + " has a bad index size of " + size); //$NON-NLS-1$ //$NON-NLS-2$
+                log.error("In " + getBookMetaData().getInitials() + ": Verse " + verse.getName() + " has a bad index size of " + size); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
 
             // Read from the data file.

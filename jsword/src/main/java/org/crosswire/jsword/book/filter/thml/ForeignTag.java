@@ -23,6 +23,7 @@ package org.crosswire.jsword.book.filter.thml;
 
 import org.crosswire.jsword.book.OSISUtil;
 import org.jdom.Element;
+import org.jdom.Namespace;
 import org.xml.sax.Attributes;
 
 /**
@@ -53,10 +54,15 @@ public class ForeignTag extends AbstractTag
         String lang = attrs.getValue("lang"); //$NON-NLS-1$
         if (lang != null)
         {
-            div.setAttribute(OSISUtil.OSIS_ATTR_LANG, lang);
+            // OSIS defines the long attribute as the one from the xml namespace
+            div.setAttribute(OSISUtil.OSIS_ATTR_LANG, lang, Namespace.XML_NAMESPACE);
         }
 
-        ele.addContent(div);
+        if (ele != null)
+        {
+            ele.addContent(div);
+        }
+
         return div;
     }
 }

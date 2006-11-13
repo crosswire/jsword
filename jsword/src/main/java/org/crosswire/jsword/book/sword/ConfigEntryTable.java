@@ -596,19 +596,21 @@ public final class ConfigEntryTable
         String newDir = dir == null ? (String) ConfigEntryType.DIRECTION.getDefault() : dir;
 
         String langEntry = (String) getValue(ConfigEntryType.LANG);
+        String langFromEntry = (String) getValue(ConfigEntryType.GLOSSARY_FROM);
+        String langToEntry = (String) getValue(ConfigEntryType.GLOSSARY_TO);
+
+        // The LANG field should match the GLOSSARY_FROM field
+        if (langFromEntry != null && !langFromEntry.equals(langEntry))
+        {
+            langEntry = langFromEntry;
+        }
+
         String lang = AbstractBookMetaData.getLanguage(internal, langEntry);
         add(ConfigEntryType.LANGUAGE, lang);
 
         // This returns Left to Right if
         // it does not know what it is.
-        boolean leftToRight = true;
-        if (langEntry != null)
-        {
-            leftToRight = isLeftToRight(langEntry);
-        }
-
-        String langFromEntry = (String) getValue(ConfigEntryType.GLOSSARY_FROM);
-        String langToEntry = (String) getValue(ConfigEntryType.GLOSSARY_TO);
+        boolean leftToRight = isLeftToRight(langEntry);
 
         if (langFromEntry != null || langToEntry != null)
         {

@@ -139,7 +139,12 @@ public class SyncTag extends AbstractTag
         {
             Element div = OSISUtil.factory().createDiv();
             div.setAttribute(OSISUtil.OSIS_ATTR_OSISID, "dict://" + value); //$NON-NLS-1$
-            ele.addContent(div);
+
+            if (ele != null)
+            {
+                ele.addContent(div);
+            }
+
             return div;
         }
 

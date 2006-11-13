@@ -80,7 +80,11 @@ public class FontTag extends AbstractTag
             XMLUtil.debugSAXAttributes(attrs);
         }
 
-        ele.addContent(seg);
+        if (ele != null)
+        {
+            ele.addContent(seg);
+        }
+
         return seg;
     }
 }

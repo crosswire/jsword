@@ -50,7 +50,12 @@ public class CenterTag extends AbstractTag
     {
         Element seg = OSISUtil.factory().createSeg();
         seg.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.SEG_CENTER);
-        ele.addContent(seg);
+
+        if (ele != null)
+        {
+            ele.addContent(seg);
+        }
+
         return seg;
     }
 }

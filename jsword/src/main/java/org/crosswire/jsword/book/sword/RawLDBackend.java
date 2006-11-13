@@ -197,7 +197,8 @@ public class RawLDBackend extends AbstractBackend
                     keytitle = keytitle.substring(0, keytitle.length() - 1);
                 }
 
-                if (isDailyDevotional)
+                // Massage keytitle if can be.
+                if (isDailyDevotional && keytitle.length() >= 3)
                 {
                     String[] parts = StringUtil.splitAll(keytitle, '.');
                     greg.set(Calendar.MONTH, Integer.parseInt(parts[0]) - 1);

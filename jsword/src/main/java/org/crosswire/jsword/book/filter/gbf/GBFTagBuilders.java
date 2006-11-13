@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.filter.gbf.GBFTags.BoldStartTag;
 import org.crosswire.jsword.book.filter.gbf.GBFTags.CrossRefStartTag;
 import org.crosswire.jsword.book.filter.gbf.GBFTags.DefaultEndTag;
@@ -46,6 +47,7 @@ import org.crosswire.jsword.book.filter.gbf.GBFTags.TextFootnoteTag;
 import org.crosswire.jsword.book.filter.gbf.GBFTags.TextTag;
 import org.crosswire.jsword.book.filter.gbf.GBFTags.TitleStartTag;
 import org.crosswire.jsword.book.filter.gbf.GBFTags.UnderlineStartTag;
+import org.crosswire.jsword.passage.Key;
 
 /**
  * This class is a convienence to get GBF Tags.
@@ -71,7 +73,7 @@ public final class GBFTagBuilders
      * @param name
      * @return return a GBF Tag for the given tag name
      */
-    public static Tag getTag(String name)
+    public static Tag getTag(Book book, Key key, String name)
     {
         Tag tag = null;
         int length = name.length();
@@ -99,7 +101,7 @@ public final class GBFTagBuilders
             {
                 // I'm not confident enough that we handle all the GBF tags
                 // that I will blame the book instead of the program
-                log.warn("Ignoring tag of <" + name + ">"); //$NON-NLS-1$ //$NON-NLS-2$
+                log.warn("In " + book.getInitials() + "(" + key.getName() + ") ignoring tag of <" + name + ">"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                 //DataPolice.report("Ignoring tag of <" + name + ">");
             }
         }
@@ -171,6 +173,27 @@ public final class GBFTagBuilders
         }
 
     }
+
+    /**
+    *
+    */
+   static final class EscapeTagBuilder implements TagBuilder
+   {
+       /* (non-Javadoc)
+        * @see org.crosswire.jsword.book.filter.gbf.TagBuilder#createTag(java.lang.String)
+        */
+       public Tag createTag(final String name)
+       {
+           if (name.equals("CG")) //$NON-NLS-1$
+           {
+               return new TextTag("&gt;"); //$NON-NLS-1$
+           }
+
+           // else "CT"
+           return new TextTag("&lt;"); //$NON-NLS-1$
+       }
+
+   }
 
     /**
      *
@@ -463,5 +486,8 @@ public final class GBFTagBuilders
         BUILDERS.put("WH", builder); //$NON-NLS-1$
         BUILDERS.put("WG", builder); //$NON-NLS-1$
         BUILDERS.put("WT", new StrongsMorphTagBuilder()); //$NON-NLS-1$
+
+        BUILDERS.put("CG", new EscapeTagBuilder()); //$NON-NLS-1$
+        BUILDERS.put("CT", new EscapeTagBuilder()); //$NON-NLS-1$
     }
 }

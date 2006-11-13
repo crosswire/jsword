@@ -49,7 +49,12 @@ public class BrTag extends AbstractTag
     public Element processTag(Element ele, Attributes attrs)
     {
         Element lb = OSISUtil.factory().createLB();
-        ele.addContent(lb);
+
+        if (ele != null)
+        {
+            ele.addContent(lb);
+        }
+
         return lb;
     }
 }

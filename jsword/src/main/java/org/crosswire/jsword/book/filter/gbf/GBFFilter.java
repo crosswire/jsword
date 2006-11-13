@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
@@ -45,16 +46,16 @@ import org.jdom.Element;
 public class GBFFilter implements Filter
 {
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.filter.BookDataListener, java.lang.String)
+     * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.Book, org.crosswire.jsword.passage.Key, java.lang.String)
      */
-    public List toOSIS(Key key, String plain) throws FilterException
+    public List toOSIS(Book book, Key key, String plain) throws FilterException
     {
         DataPolice.setKey(key);
         Element ele = OSISUtil.factory().createDiv();
         LinkedList stack = new LinkedList();
         stack.addFirst(ele);
 
-        List taglist = parseTags(plain.trim());
+        List taglist = parseTags(book, key, plain.trim());
         while (true)
         {
             if (taglist.isEmpty())
@@ -71,11 +72,27 @@ public class GBFFilter implements Filter
         return ele.removeContent();
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#clone()
+     */
+    public Object clone()
+    {
+        try
+        {
+            return super.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            assert false : e;
+        }
+        return null;
+    }
+
     /**
      * Turn the string into a list of tags in the order that they appear in the
      * original string.
      */
-    private List parseTags(String aRemains)
+    private List parseTags(Book book, Key key, String aRemains)
     {
         String remains = aRemains;
         List taglist = new ArrayList();
@@ -96,7 +113,7 @@ public class GBFFilter implements Filter
             // check that we don't have unmatched tags
             if (ltpos == -1 || gtpos == -1)
             {
-                DataPolice.report("ignoring unmatched '<' or '>' in gbf: " + remains); //$NON-NLS-1$
+                DataPolice.report("In " + book.getInitials() + "(" + key.getName() + ") ignoring unmatched '<' or '>' in gbf: " + remains); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 taglist.add(GBFTagBuilders.getTextTag(remains));
                 remains = null;
                 break;
@@ -105,7 +122,7 @@ public class GBFFilter implements Filter
             // check that the tags are in a sensible order
             if (ltpos > gtpos)
             {
-                DataPolice.report("ignoring transposed '<' or '>' in gbf: " + remains); //$NON-NLS-1$
+                DataPolice.report("In " + book.getInitials() + "(" + key.getName() + ") ignoring transposed '<' or '>' in gbf: " + remains); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 taglist.add(GBFTagBuilders.getTextTag(remains));
                 remains = null;
                 break;
@@ -142,7 +159,7 @@ public class GBFFilter implements Filter
             int length = tag.length();
             if (length > 0)
             {
-                Tag reply = GBFTagBuilders.getTag(tag);
+                Tag reply = GBFTagBuilders.getTag(book, key, tag);
                 if (reply != null)
                 {
                     taglist.add(reply);

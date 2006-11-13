@@ -50,7 +50,11 @@ public class BigTag extends AbstractTag
     {
         Element hiEle = OSISUtil.factory().createHI();
         hiEle.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_X_BIG);
-        ele.addContent(hiEle);
+        if (ele != null)
+        {
+            ele.addContent(hiEle);
+        }
+
         return hiEle;
     }
 }

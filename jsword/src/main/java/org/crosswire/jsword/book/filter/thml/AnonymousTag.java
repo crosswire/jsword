@@ -56,7 +56,12 @@ public class AnonymousTag extends AbstractTag
     {
         Element seg = OSISUtil.factory().createSeg();
         seg.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.TYPE_X_PREFIX + getTagName());
-        ele.addContent(seg);
+
+        if (ele != null)
+        {
+            ele.addContent(seg);
+        }
+
         return seg;
     }
     /**

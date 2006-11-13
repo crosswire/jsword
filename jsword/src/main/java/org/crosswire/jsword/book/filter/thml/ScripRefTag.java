@@ -58,17 +58,20 @@ public class ScripRefTag extends AbstractTag
         String refstr = attrs.getValue("passage"); //$NON-NLS-1$
         if (refstr != null)
         {
-            reference = OSISUtil.factory().createReference();
+            Passage ref = null;
             try
             {
-                Passage ref = (Passage) keyf.getKey(refstr);
-                String osisname = ref.getOsisRef();
-                reference.setAttribute(OSISUtil.OSIS_ATTR_REF, osisname);
+                ref = (Passage) keyf.getKey(refstr);
             }
             catch (NoSuchKeyException ex)
             {
-                DataPolice.report("Unparsable passage:" + refstr + " due to " + ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+                DataPolice.report("Unparsable passage: (" + refstr + ") due to " + ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
             }
+
+            // If we don't have a Passage then use the origial string
+            String osisname = ref != null ? ref.getOsisRef() : refstr;
+            reference = OSISUtil.factory().createReference();
+            reference.setAttribute(OSISUtil.OSIS_ATTR_REF, osisname);
         }
         else
         {
@@ -76,7 +79,10 @@ public class ScripRefTag extends AbstractTag
             reference = OSISUtil.factory().createReference();
         }
 
-        ele.addContent(reference);
+        if (ele != null)
+        {
+            ele.addContent(reference);
+        }
 
         return reference;
     }
@@ -90,13 +96,16 @@ public class ScripRefTag extends AbstractTag
         String refstr = ele.getValue();
         try
         {
-            Passage ref = (Passage) keyf.getKey(refstr);
-            String osisname = ref.getOsisRef();
-            ele.setAttribute(OSISUtil.OSIS_ATTR_REF, osisname);
+            if (ele.getAttribute(OSISUtil.OSIS_ATTR_REF) == null)
+            {
+                Passage ref = (Passage) keyf.getKey(refstr);
+                String osisname = ref.getOsisRef();
+                ele.setAttribute(OSISUtil.OSIS_ATTR_REF, osisname);
+            }
         }
         catch (NoSuchKeyException ex)
         {
-            DataPolice.report("Unparsable passage:" + refstr + " due to " + ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+            DataPolice.report("scripRef ahs no passage attribute, unable to guess: (" + refstr + ") due to " + ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 

@@ -49,7 +49,12 @@ public class TrTag extends AbstractTag
     public Element processTag(Element ele, Attributes attrs)
     {
         Element row = OSISUtil.factory().createRow();
-        ele.addContent(row);
+
+        if (ele != null)
+        {
+            ele.addContent(row);
+        }
+
         return row;
     }
 }

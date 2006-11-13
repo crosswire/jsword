@@ -250,7 +250,9 @@ public final class OSISUtil
     public static final String ATTRIBUTE_SPEAKER_WHO = "who"; //$NON-NLS-1$
     public static final String ATTRIBUTE_W_MORPH = "morph"; //$NON-NLS-1$
     public static final String ATTRIBUTE_OSISTEXT_OSISIDWORK = "osisIDWork"; //$NON-NLS-1$
-    public static final String OSIS_ATTR_LANG = "xml:lang"; //$NON-NLS-1$
+    // OSIS defines the long attribute as the one from the xml namespace
+    // Typical usage element.setAttribute(OSISUtil.OSIS_ATTR_LANG, lang, Namespace.XML_NAMESPACE);
+    public static final String OSIS_ATTR_LANG = "lang"; //$NON-NLS-1$
     public static final String ATTRIBUTE_DIV_BOOK = "book"; //$NON-NLS-1$
 
     /**

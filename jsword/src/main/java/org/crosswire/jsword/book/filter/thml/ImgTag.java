@@ -50,7 +50,12 @@ public class ImgTag extends AbstractTag
     {
         Element img = OSISUtil.factory().createFigure();
         img.setAttribute(OSISUtil.ATTRIBUTE_FIGURE_SRC, attrs.getValue("src")); //$NON-NLS-1$
-        ele.addContent(img);
+
+        if (ele != null)
+        {
+            ele.addContent(img);
+        }
+
         return img;
     }
 }

@@ -49,7 +49,12 @@ public class RowTag extends AbstractTag
     public Element processTag(Element ele, Attributes attrs)
     {
         Element hi = OSISUtil.factory().createRow();
-        ele.addContent(hi);
+
+        if (ele != null)
+        {
+            ele.addContent(hi);
+        }
+
         return hi;
     }
 }

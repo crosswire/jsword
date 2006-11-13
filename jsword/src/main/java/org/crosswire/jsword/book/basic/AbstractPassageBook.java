@@ -94,7 +94,7 @@ public abstract class AbstractPassageBook extends AbstractBook
                     // If the verse is empty then we shouldn't add the verse tag
                     if (txt.length() > 0)
                     {
-                        List osisContent = getFilter().toOSIS(verse, txt);
+                        List osisContent = getFilter().toOSIS(this, verse, txt);
                         addOSIS(verse, div, osisContent);
 
                     }

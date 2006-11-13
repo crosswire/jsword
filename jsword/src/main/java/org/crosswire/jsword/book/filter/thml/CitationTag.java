@@ -49,8 +49,13 @@ public class CitationTag extends AbstractTag
     public Element processTag(Element ele, Attributes attrs)
     {
         Element q = OSISUtil.factory().createQ();
-        ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.Q_BLOCK);
-        ele.addContent(q);
+        q.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.Q_BLOCK);
+
+        if (ele != null)
+        {
+            ele.addContent(q);
+        }
+
         return q;
     }
 }

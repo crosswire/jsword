@@ -60,6 +60,7 @@ public class JSwordAllTests extends TestCase
         suite.addTestSuite(org.crosswire.jsword.book.BooksTest.class);
         suite.addTestSuite(org.crosswire.jsword.book.BookMetaDataTest.class);
         suite.addTestSuite(org.crosswire.jsword.book.SentanceUtilTest.class);
+        // run independently: suite.addTestSuite(org.crosswire.jsword.book.ReadEverything.class);
         // commented out because the tests were very poor.
         //suite.addTestSuite(org.crosswire.jsword.book.OsisTest.class);
 

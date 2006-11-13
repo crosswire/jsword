@@ -27,7 +27,9 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.DataPolice;
+import org.crosswire.jsword.passage.Key;
 import org.jdom.Content;
 import org.jdom.Element;
 import org.jdom.Text;
@@ -51,8 +53,10 @@ public class CustomHandler extends DefaultHandler
     /**
      * Simple ctor
      */
-    public CustomHandler()
+    public CustomHandler(Book book, Key key)
     {
+        this.book = book;
+        this.key = key;
         stack = new LinkedList();
     }
 
@@ -68,18 +72,27 @@ public class CustomHandler extends DefaultHandler
         // then the stack is empty
         if (stack.size() > 0)
         {
-            ele = (Element) stack.getFirst();
-            // If the element and its descendants are to be ignored
-            // then there is a null element on the stack
-            if (ele == null)
+            Object top = stack.getFirst();
+
+            if (top instanceof Element) // It might be a text element
             {
-                return;
+                ele = (Element) stack.getFirst();
+
+                // If the element and its descendants are to be ignored
+                // then there is a null element on the stack
+                if (ele == null)
+                {
+                    return;
+                }
             }
         }
 
         Tag t = getTag(localname, qname);
 
-        stack.addFirst(t.processTag(ele, attrs));
+        if (t != null)
+        {
+            stack.addFirst(t.processTag(ele, attrs));
+        }
     }
 
     /* (non-Javadoc)
@@ -88,6 +101,15 @@ public class CustomHandler extends DefaultHandler
     /* @Override */
     public void characters(char[] data, int offset, int length)
     {
+        // what we are adding
+        String text = new String(data, offset, length);
+
+        if (stack.isEmpty())
+        {
+            stack.addFirst(new Text(text));
+            return;
+        }
+
         // What we are adding to
         Element current = (Element) stack.getFirst();
 
@@ -100,8 +122,6 @@ public class CustomHandler extends DefaultHandler
 
         int size = current.getContentSize();
 
-        // what we are adding
-        String text = new String(data, offset, length);
         // If the last element in the list is a string then we should add
         // this string on to the end of it rather than add a new list item
         // because (probably as an atrifact of the HTML/XSL transform we get
@@ -126,11 +146,19 @@ public class CustomHandler extends DefaultHandler
     /* @Override */
     public void endElement(String uri, String localname, String qname)
     {
+        if (stack.isEmpty())
+        {
+            return;
+        }
         // When we are done processing an element we need to remove
         // it from the stack so that nothing more is attached to it.
         Element finished = (Element) stack.removeFirst();
         Tag t = getTag(localname, qname);
-        t.processContent(finished);
+
+        if (t != null)
+        {
+            t.processContent(finished);
+        }
 
         // If it was the last element then it was the root element
         // so save it
@@ -158,14 +186,24 @@ public class CustomHandler extends DefaultHandler
 
             if (t == null)
             {
-                log.warn("unknown thml element: " + localname + " qname=" + qname); //$NON-NLS-1$ //$NON-NLS-2$
+                log.warn("In " + book.getInitials() + "(" + key.getName() + ") unknown thml element: " + localname + " qname=" + qname); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                 return t;
             }
 
-            DataPolice.report("Wrong case used in thml element: " + qname); //$NON-NLS-1$
+            DataPolice.report("In " + book.getInitials() + "(" + key.getName() + ") Wrong case used in thml element: " + qname); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         return t;
     }
+
+    /**
+     * The book containing the data.
+     */
+    private Book book;
+
+    /**
+     * The key for the data.
+     */
+    private Key key;
 
     /**
      * When the document is parsed,

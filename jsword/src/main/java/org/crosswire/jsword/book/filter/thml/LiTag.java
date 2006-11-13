@@ -49,7 +49,12 @@ public class LiTag extends AbstractTag
     public Element processTag(Element ele, Attributes attrs)
     {
         Element item = OSISUtil.factory().createItem();
-        ele.addContent(item);
+
+        if (ele != null)
+        {
+            ele.addContent(item);
+        }
+
         return item;
     }
 }

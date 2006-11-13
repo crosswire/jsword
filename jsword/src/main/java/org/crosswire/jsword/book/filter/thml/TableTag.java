@@ -49,7 +49,12 @@ public class TableTag extends AbstractTag
     public Element processTag(Element ele, Attributes attrs)
     {
         Element table = OSISUtil.factory().createTable();
-        ele.addContent(table);
+
+        if (ele != null)
+        {
+            ele.addContent(table);
+        }
+
         return table;
     }
 }

@@ -131,7 +131,7 @@ public final class FilterFactory
             reply = deft;
         }
 
-        return reply;
+        return (Filter) reply.clone();
     }
 
     /**
@@ -139,7 +139,7 @@ public final class FilterFactory
      */
     public static Filter getDefaultFilter()
     {
-        return deft;
+        return (Filter) deft.clone();
     }
 
     /**

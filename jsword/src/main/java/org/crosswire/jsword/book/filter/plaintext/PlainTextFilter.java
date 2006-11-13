@@ -24,6 +24,7 @@ package org.crosswire.jsword.book.filter.plaintext;
 import java.util.List;
 
 import org.crosswire.common.util.StringUtil;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.passage.Key;
@@ -42,9 +43,9 @@ import org.jdom.Element;
 public class PlainTextFilter implements Filter
 {
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.filter.BookDataListener, java.lang.String)
+     * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.Book, org.crosswire.jsword.passage.Key, java.lang.String)
      */
-    public List toOSIS(Key key, String plain)
+    public List toOSIS(Book book, Key key, String plain)
     {
         OSISUtil.OSISFactory factory = OSISUtil.factory();
         Element ele = factory.createDiv();
@@ -64,5 +65,21 @@ public class PlainTextFilter implements Filter
         }
 
         return ele.removeContent();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#clone()
+     */
+    public Object clone()
+    {
+        try
+        {
+            return super.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            assert false : e;
+        }
+        return null;
     }
 }

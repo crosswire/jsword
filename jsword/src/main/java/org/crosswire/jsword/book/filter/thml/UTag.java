@@ -50,7 +50,12 @@ public class UTag extends AbstractTag
     {
         Element hi = OSISUtil.factory().createHI();
         hi.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_UNDERLINE);
-        ele.addContent(hi);
+
+        if (ele != null)
+        {
+            ele.addContent(hi);
+        }
+
         return hi;
     }
 }

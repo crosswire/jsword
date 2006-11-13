@@ -31,13 +31,16 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.xml.XMLUtil;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
+import org.crosswire.jsword.book.filter.FilterException;
 import org.crosswire.jsword.passage.Key;
 import org.jdom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 /**
  * Filter to convert THML to OSIS format.
@@ -55,58 +58,107 @@ import org.xml.sax.SAXException;
 public class THMLFilter implements Filter
 {
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.filter.BookDataListener, java.lang.String)
+     * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.Book, org.crosswire.jsword.passage.Key, java.lang.String)
      */
-    public List toOSIS(Key key, String plain)
+    public List toOSIS(Book book, Key key, String plain) throws FilterException
     {
         DataPolice.setKey(key);
-        Element ele = null;
-        Exception ex = null;
-        try
-        {
-            ele = parse(XMLUtil.cleanAllEntities(plain));
-        }
-        catch (SAXException e)
-        {
-            ex = e;
-        }
-        catch (IOException e)
-        {
-            ex = e;
-        }
-        catch (ParserConfigurationException e)
-        {
-            ex = e;
-        }
-        finally
-        {
-            // Make sure that other places don't report this problem
-            DataPolice.setKey(null);
-        }
-
-        if (ex != null)
-        {
-            DataPolice.report("Parse failed: " + ex.getMessage() + //$NON-NLS-1$
-                              "\non: " + plain); //$NON-NLS-1$
-            ele = cleanTags(plain);
-        }
+        Element ele = cleanParse(book, key, plain);
+        DataPolice.setKey(null);
 
         if (ele == null)
         {
+            if (error instanceof SAXParseException)
+            {
+                int colNumber = ((SAXParseException) error).getColumnNumber();
+                int start = Math.max(0, colNumber - 40);
+                int stop = Math.min(finalInput.length(), colNumber + 40);
+                int here = stop - start;
+                log.warn("Could not fix " + book.getInitials() + '(' + key.getName() + ") by " +   //$NON-NLS-1$ //$NON-NLS-2$
+                         errorMessage + ": Error here(" + colNumber + ',' + finalInput.length() +',' + here +"): " + finalInput.substring(start, stop)); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+            else
+            {
+                log.warn("Could not fix " + book.getInitials() + "(" + key.getName() + ") by " + errorMessage + ": " + error.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            }
             ele = OSISUtil.factory().createP();
         }
 
         return ele.removeContent();
     }
 
-    private Element cleanTags(String plain)
+    /* (non-Javadoc)
+     * @see java.lang.Object#clone()
+     */
+    public Object clone()
     {
-        // So just try to strip out all XML looking things
-        String shawn = XMLUtil.cleanAllTags(plain);
-        Exception ex = null;
         try
         {
-            return parse(shawn);
+            return super.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            assert false : e;
+        }
+        return null;
+    }
+
+    private Element cleanParse(Book book, Key key, String plain)
+    {
+        // So just try to strip out all XML looking things
+        String clean = XMLUtil.cleanAllEntities(plain);
+        Element ele = parse(book, key, clean, "cleaning entities"); //$NON-NLS-1$
+
+        if (ele == null)
+        {
+            ele = cleanText(book, key, clean);
+        }
+
+        return ele;
+    }
+
+    private Element cleanText(Book book, Key key, String plain)
+    {
+        // So just try to strip out all XML looking things
+        String clean = XMLUtil.cleanAllCharacters(plain);
+        Element ele = parse(book, key, clean, "cleaning text"); //$NON-NLS-1$
+
+        if (ele == null)
+        {
+            ele = cleanTags(book, key, clean);
+        }
+
+        return ele;
+    }
+
+    private Element cleanTags(Book book, Key key, String plain)
+    {
+        // So just try to strip out all XML looking things
+        String clean = XMLUtil.cleanAllTags(plain);
+        return parse(book, key, clean, "cleaning tags"); //$NON-NLS-1$
+    }
+
+    private Element parse(Book book, Key key, String plain, String failMessage)
+    {
+        Exception ex = null;
+        // We need to create a root element to house our document fragment
+        StringBuffer buf = new StringBuffer(15 + plain.length()); // 15 for the tags we add
+        buf.append('<').append(RootTag.TAG_ROOT).append('>').append(plain).append("</").append(RootTag.TAG_ROOT).append('>'); //$NON-NLS-1$
+        finalInput = buf.toString();
+        try
+        {
+            StringReader in = new StringReader(finalInput);
+            InputSource is = new InputSource(in);
+            SAXParserFactory spf = SAXParserFactory.newInstance();
+            SAXParser parser = spf.newSAXParser();
+            CustomHandler handler = new CustomHandler(book, key);
+
+            parser.parse(is, handler);
+            return handler.getRootElement();
+        }
+        catch (SAXParseException e)
+        {
+            ex = e;
         }
         catch (SAXException e)
         {
@@ -121,31 +173,14 @@ public class THMLFilter implements Filter
             ex = e;
         }
 
-        log.warn("Could not fix it by cleaning tags: " + ex.getMessage()); //$NON-NLS-1$
-
+        errorMessage = failMessage;
+        error = ex;
         return null;
     }
 
-    /**
-     * Parse a string by creating a StringReader and all the other gubbins.
-     */
-    private Element parse(String toparse) throws ParserConfigurationException, SAXException, IOException
-    {
-        // We need to create a root element to house our document fragment
-        StringReader in = new StringReader("<" + RootTag.TAG_ROOT + ">" + toparse + "</" + RootTag.TAG_ROOT + ">"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-        InputSource is = new InputSource(in);
-
-        SAXParser parser = spf.newSAXParser();
-        CustomHandler handler = new CustomHandler();
-
-        parser.parse(is, handler);
-        return handler.getRootElement();
-    }
-
-    /**
-     * The SAX parser factory
-     */
-    private SAXParserFactory spf = SAXParserFactory.newInstance();
+    private String errorMessage;
+    private Exception error;
+    private String finalInput;
 
     /**
      * The log stream

@@ -59,12 +59,22 @@ public class DivTag extends AbstractTag
             {
                 seg.setAttribute(OSISUtil.OSIS_ATTR_SUBTYPE, OSISUtil.VARIANT_CLASS + classAttr);
             }
-            ele.addContent(seg);
+
+            if (ele != null)
+            {
+                ele.addContent(seg);
+            }
+
             return seg;
         }
 
         Element div = OSISUtil.factory().createDiv();
-        ele.addContent(div);
+
+        if (ele != null)
+        {
+            ele.addContent(div);
+        }
+
         return div;
     }
 }

@@ -50,7 +50,12 @@ public class NoteTag extends AbstractTag
     {
         Element note = OSISUtil.factory().createNote();
         note.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.NOTETYPE_STUDY);
-        ele.addContent(note);
+
+        if (ele != null)
+        {
+            ele.addContent(note);
+        }
+
         return note;
     }
 }

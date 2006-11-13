@@ -49,7 +49,12 @@ public class ColTag extends AbstractTag
     public Element processTag(Element ele, Attributes attrs)
     {
         Element hi = OSISUtil.factory().createCell();
-        ele.addContent(hi);
+
+        if (ele != null)
+        {
+            ele.addContent(hi);
+        }
+
         return hi;
     }
 }

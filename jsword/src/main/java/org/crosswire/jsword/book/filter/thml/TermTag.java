@@ -50,7 +50,12 @@ public class TermTag extends AbstractTag
     {
         // A term in a definition.
         Element name = OSISUtil.factory().createName();
-        ele.addContent(name);
+
+        if (ele != null)
+        {
+            ele.addContent(name);
+        }
+
         return name;
     }
 }

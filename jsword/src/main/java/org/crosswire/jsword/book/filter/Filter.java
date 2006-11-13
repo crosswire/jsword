@@ -23,6 +23,7 @@ package org.crosswire.jsword.book.filter;
 
 import java.util.List;
 
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.passage.Key;
 
 /**
@@ -32,7 +33,7 @@ import org.crosswire.jsword.passage.Key;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public interface Filter
+public interface Filter extends Cloneable
 {
     /**
      * Converter from plain (encoded) text to OSIS data
@@ -40,5 +41,12 @@ public interface Filter
      * @param plain The encoded text
      * @return a List of OSIS Elements
      */
-    List toOSIS(Key key, String plain) throws FilterException;
+    List toOSIS(Book book, Key key, String plain) throws FilterException;
+
+    /**
+     * This needs to be declared here so that it is visible as a method
+     * on a derived Key.
+     * @return A complete copy of ourselves
+     */
+    Object clone();
 }

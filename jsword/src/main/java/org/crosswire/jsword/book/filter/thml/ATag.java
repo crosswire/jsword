@@ -51,7 +51,11 @@ public class ATag extends AbstractTag
         Element reference = OSISUtil.factory().createReference();
 
         // LATER(joe): put the correct reference here
-        ele.addContent(reference);
+        if (ele != null)
+        {
+            ele.addContent(reference);
+        }
+
         return reference;
     }
 }

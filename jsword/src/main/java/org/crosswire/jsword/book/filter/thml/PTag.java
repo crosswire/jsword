@@ -49,7 +49,12 @@ public class PTag extends AbstractTag
     public Element processTag(Element ele, Attributes attrs)
     {
         Element p = OSISUtil.factory().createP();
-        ele.addContent(p);
+
+        if (ele != null)
+        {
+            ele.addContent(p);
+        }
+
         return p;
     }
 }

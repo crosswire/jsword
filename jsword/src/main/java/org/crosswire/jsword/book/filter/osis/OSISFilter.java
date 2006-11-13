@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.xml.XMLUtil;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
@@ -47,16 +48,17 @@ import org.xml.sax.InputSource;
 public class OSISFilter implements Filter
 {
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.filter.BookDataListener, java.lang.String)
+     * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.Book, org.crosswire.jsword.passage.Key, java.lang.String)
      */
-    public List toOSIS(Key key, String plain)
+    public List toOSIS(Book book, Key key, String plain)
     {
         DataPolice.setKey(key);
         Element ele = null;
         Exception ex = null;
+        String clean = XMLUtil.cleanAllEntities(plain);
         try
         {
-            ele = parse(XMLUtil.cleanAllEntities(plain));
+            ele = parse(clean);
         }
         catch (JDOMException e)
         {
@@ -74,9 +76,9 @@ public class OSISFilter implements Filter
 
         if (ex != null)
         {
-            DataPolice.report("Parse failed: " + ex.getMessage() + //$NON-NLS-1$
+            DataPolice.report("Parse " + book.getInitials() + "(" + key.getName() + ") failed: " + ex.getMessage() + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                               "\non: " + plain); //$NON-NLS-1$
-            ele = cleanTags(plain);
+            ele = cleanTags(book, key, clean);
         }
 
         if (ele == null)
@@ -87,7 +89,23 @@ public class OSISFilter implements Filter
         return ele.removeContent();
     }
 
-    private Element cleanTags(String plain)
+    /* (non-Javadoc)
+     * @see java.lang.Object#clone()
+     */
+    public Object clone()
+    {
+        try
+        {
+            return super.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            assert false : e;
+        }
+        return null;
+    }
+
+    private Element cleanTags(Book book, Key key, String plain)
     {
         // So just try to strip out all XML looking things
         String shawn = XMLUtil.cleanAllTags(plain);
@@ -105,7 +123,7 @@ public class OSISFilter implements Filter
             ex = e;
         }
 
-        log.warn("Could not fix it by cleaning tags: " + ex.getMessage()); //$NON-NLS-1$
+        log.warn("Could not fix " + book.getInitials() + "(" + key.getName() + ")  by cleaning tags: " + ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
         return null;
     }
@@ -119,22 +137,12 @@ public class OSISFilter implements Filter
         // create a root element to house our document fragment
         StringReader in = new StringReader("<div>" + plain + "</div>"); //$NON-NLS-1$ //$NON-NLS-2$
         InputSource is = new InputSource(in);
-
+        SAXBuilder builder = new SAXBuilder();
         Document doc = builder.build(is);
         Element div = doc.getRootElement();
 
-        // data is the div we added above so the input was a well formed
-        // XML so we need to add the content of the div and not the div
-        // itself
-
-//        List data = div.removeContent();
         return div;
     }
-
-    /**
-     * The JDOM parser
-     */
-    private SAXBuilder builder = new SAXBuilder();
 
     /**
      * The log stream

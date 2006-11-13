@@ -49,7 +49,12 @@ public class TdTag extends AbstractTag
     public Element processTag(Element ele, Attributes attrs)
     {
         Element cell = OSISUtil.factory().createCell();
-        ele.addContent(cell);
+
+        if (ele != null)
+        {
+            ele.addContent(cell);
+        }
+
         return cell;
     }
 }
