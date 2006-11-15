@@ -86,7 +86,15 @@ public final class PassageKeyFactory implements KeyFactory
         }
         catch (Exception e)
         {
-            return defaultType.createPassage(normalize(name));
+            try
+            {
+                return defaultType.createPassage(normalize(name));
+            }
+            catch (Exception e1)
+            {
+                // TODO(DM): Parser should allow valid osis refs!
+                return defaultType.createPassage(mungOsisRef(name));
+            }
         }
     }
 
@@ -459,6 +467,16 @@ public final class PassageKeyFactory implements KeyFactory
         // 4 bytes (2^32)
         int b3 = buffer[index[0]++] & 0x000000ff;
         return (b0 << 24) + (b1 << 16) + (b2 << 8) + (b3 << 0);
+    }
+
+    /**
+     * Replace spaces with semi-colons, because the parser expects them.
+     * @param name
+     * @return the munged value
+     */
+    private String mungOsisRef(String name)
+    {
+        return name.replace(' ', ';');
     }
 
     /**
