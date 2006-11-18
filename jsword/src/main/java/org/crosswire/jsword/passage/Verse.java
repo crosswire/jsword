@@ -755,17 +755,6 @@ public final class Verse implements Key, Serializable
         this.verse = ref[VERSE];
     }
 
-    /*
-     * Mutate into this reference and fix the reference if needed.
-     * This must only be called from a ctor to maintain immutability
-     * @param ref An array of the book, chapter and verse to set
-     *
-    private final void setAndPatch(int[] ref)
-    {
-        setAndPatch(ref[BOOK], ref[CHAPTER], ref[VERSE]);
-    }
-    */
-
     /**
      * Verify and set the references.
      * This must only be called from a ctor to maintain immutability

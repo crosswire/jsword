@@ -62,6 +62,7 @@ public class VerseTest extends TestCase
     /* @Override */
     protected void setUp() throws Exception
     {
+        BibleInfo.setFullBookName(false);
         gen11 = new Verse(1, 1, 1);
         gen11a = new Verse(1, 1, 1);
         gen12 = new Verse(1, 1, 2);
@@ -500,7 +501,7 @@ public class VerseTest extends TestCase
         assertEquals(AccuracyType.fromText("1", AccuracyType.tokenize("1"), vr), AccuracyType.VERSE_ONLY); //$NON-NLS-1$ //$NON-NLS-2$
         try
         {
-            AccuracyType.fromText("complete and utter rubbish", AccuracyType.tokenize("complete and utter rubbish"), vr); //$NON-NLS-1$ //$NON-NLS-2$
+            AccuracyType.fromText("Komplete and utter rubbish", AccuracyType.tokenize("Komplete and utter rubbish"), vr); //$NON-NLS-1$ //$NON-NLS-2$
             fail();
         }
         catch (NoSuchVerseException ex)
