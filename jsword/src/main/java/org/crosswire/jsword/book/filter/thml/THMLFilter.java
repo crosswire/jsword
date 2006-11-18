@@ -70,12 +70,13 @@ public class THMLFilter implements Filter
         {
             if (error instanceof SAXParseException)
             {
-                int colNumber = ((SAXParseException) error).getColumnNumber();
+                SAXParseException spe = (SAXParseException) error;
+                int colNumber = spe.getColumnNumber();
                 int start = Math.max(0, colNumber - 40);
                 int stop = Math.min(finalInput.length(), colNumber + 40);
                 int here = stop - start;
                 log.warn("Could not fix " + book.getInitials() + '(' + key.getName() + ") by " +   //$NON-NLS-1$ //$NON-NLS-2$
-                         errorMessage + ": Error here(" + colNumber + ',' + finalInput.length() +',' + here +"): " + finalInput.substring(start, stop)); //$NON-NLS-1$ //$NON-NLS-2$
+                         errorMessage + ": Error here(" + colNumber + ',' + finalInput.length() + ',' + here + "): " + finalInput.substring(start, stop)); //$NON-NLS-1$ //$NON-NLS-2$
             }
             else
             {

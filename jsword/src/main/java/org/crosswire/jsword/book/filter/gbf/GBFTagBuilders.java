@@ -184,7 +184,7 @@ public final class GBFTagBuilders
         */
        public Tag createTag(final String name)
        {
-           if (name.equals("CG")) //$NON-NLS-1$
+           if ("CG".equals(name)) //$NON-NLS-1$
            {
                return new TextTag("&gt;"); //$NON-NLS-1$
            }

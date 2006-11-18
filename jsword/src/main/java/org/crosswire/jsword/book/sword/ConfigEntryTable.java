@@ -581,7 +581,7 @@ public final class ConfigEntryTable
     private boolean isLeftToRight(String lang)
     {
         // Java does not know that the following languages are right to left
-        if (lang.equals("fa") || lang.equals("syr"))  //$NON-NLS-1$ //$NON-NLS-2$
+        if ("fa".equals(lang) || "syr".equals(lang))  //$NON-NLS-1$ //$NON-NLS-2$
         {
             return false;
         }

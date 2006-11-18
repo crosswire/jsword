@@ -345,8 +345,8 @@ public final class XMLUtil
     }
 
     // Map entities to their unicode equivalent
-    static Set goodEntities = new HashSet();
-    static Map badEntities = new HashMap();
+    private static Set goodEntities = new HashSet();
+    private static Map badEntities = new HashMap();
     static
     {
         // pre-defined XML entities
@@ -470,7 +470,7 @@ public final class XMLUtil
     private static Pattern validCharacterEntityPattern = Pattern.compile("^&#x?\\d{2,4};"); //$NON-NLS-1$
 
     /**
-     * Pattern that negates the allowable XML unicode characters in the range of \u0000-\uFFFF.
+     * Pattern that negates the allowable XML 4 byte unicode characters.
      * Valid are: #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]
      */
     private static Pattern invalidCharacterPattern = Pattern.compile("[^\t\r\n\u0020-\uD7FF\uE000-\uFFFD]"); //$NON-NLS-1$
