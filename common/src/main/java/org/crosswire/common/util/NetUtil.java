@@ -208,6 +208,22 @@ public final class NetUtil
     }
 
     /**
+     * If there is a writable directory or file at the other end of this URL return true.
+     * Note non file: type URLs will always return false
+     * @param orig The URL to check
+     * @return true if the URL points at a file: directory
+     */
+    public static boolean canWrite(URL orig)
+    {
+        if (!orig.getProtocol().equals(PROTOCOL_FILE))
+        {
+            return false;
+        }
+
+        return new File(orig.getFile()).canWrite();
+    }
+
+    /**
      * Move a URL from one place to another. Currently this only works for
      * file: URLs, however the interface should not need to change to
      * handle more complex URLs

@@ -84,7 +84,7 @@ public class SwordBookPath
 
     /**
      * Obtain a prioritized path of Book locations.
-     * This contains the downloadDir as the first location,
+     * This contains the download dir as the first location,
      * the user's augment path and finally all the discovered
      * standard locations.
      * 
@@ -95,7 +95,7 @@ public class SwordBookPath
         ArrayList swordPath = new ArrayList();
 
         // The first place to look for Books
-        swordPath.add(downloadDir);
+        swordPath.add(getDownloadDir());
 
         // Then all the user's augments
         if (augmentPath != null)
@@ -366,7 +366,11 @@ public class SwordBookPath
      */
     public static File getDownloadDir()
     {
-        return downloadDir;
+        if (overrideDownloadDir != null)
+        {
+            return overrideDownloadDir;
+        }
+        return defaultDownloadDir;
     }
 
     /**
@@ -376,7 +380,7 @@ public class SwordBookPath
     {
         if (!dlDir.getPath().equals("")) //$NON-NLS-1$
         {
-            downloadDir = dlDir;
+            overrideDownloadDir = dlDir;
             log.debug("Setting sword download directory to: " + dlDir); //$NON-NLS-1$
         }
     }
@@ -459,7 +463,12 @@ public class SwordBookPath
     /**
      * The directory URL
      */
-    private static File downloadDir = getDefaultDownloadPath();
+    private static File defaultDownloadDir = getDefaultDownloadPath();
+
+    /**
+     * The directory URL
+     */
+    private static File overrideDownloadDir = null;
 
     /**
      * The log stream

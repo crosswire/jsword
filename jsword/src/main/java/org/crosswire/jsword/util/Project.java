@@ -23,6 +23,7 @@ package org.crosswire.jsword.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.crosswire.common.util.CWClassLoader;
@@ -45,6 +46,12 @@ import org.crosswire.common.util.NetUtil;
  * Previously the location was ~/.jsword, which is unfriendly in the Windows and Mac world.
  * If this location is found on Mac or Windows, it will be moved to the new location,
  * if different and possible.
+ * </p>
+ * 
+ * <p>
+ * Note: If the Java System property jsword.home is set and it exists and is writeable
+ * then it will be used instead of the above location. This is useful for USB Drives
+ * and other portable implementations of JSword. I is recommended that this name be JSword.
  * </p>
  * 
  * @see gnu.lgpl.License for license details.
@@ -115,6 +122,27 @@ public final class Project
      */
     public URL getUserProjectDir()
     {
+        if (home == null)
+        {
+            // if there is a property set for the jsword home directory
+            String jswordhome = System.getProperty(PROPERTY_JSWORD_HOME);
+            if (jswordhome != null)
+            {
+                try
+                {
+                    home = new URL(NetUtil.PROTOCOL_FILE, null, jswordhome);
+                    if (!NetUtil.canWrite(home))
+                    {
+                        home = null;
+                    }
+                }
+                catch (MalformedURLException e)
+                {
+                    home = null;
+                }
+            }
+        }
+
         if (home == null)
         {
             URL path = getUserProjectDir(DIR_PROJECT, DIR_PROJECT_ALT);
@@ -205,6 +233,11 @@ public final class Project
 
         return temp;
     }
+
+    /**
+     * System property for jsword home directory
+     */
+    private static final String PROPERTY_JSWORD_HOME = "jsword.home"; //$NON-NLS-1$
 
     /**
      * The home for this application
