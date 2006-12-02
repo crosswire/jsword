@@ -146,7 +146,7 @@ public class SwordBookDriver extends AbstractBookDriver
     public boolean isDeletable(Book dead)
     {
         SwordBookMetaData sbmd = (SwordBookMetaData) dead.getBookMetaData();
-        File dlDir = SwordBookPath.getDownloadDir();
+        File dlDir = SwordBookPath.getSwordDownloadDir();
         File confFile = new File(dlDir, sbmd.getConfPath());
 
         // We can only uninstall what we download into our download dir.
@@ -160,7 +160,7 @@ public class SwordBookDriver extends AbstractBookDriver
     public void delete(Book dead) throws BookException
     {
         SwordBookMetaData sbmd = (SwordBookMetaData) dead.getBookMetaData();
-        File dlDir = SwordBookPath.getDownloadDir();
+        File dlDir = SwordBookPath.getSwordDownloadDir();
         File confFile = new File(dlDir, sbmd.getConfPath());
 
         // We can only uninstall what we download into our download dir.

@@ -102,7 +102,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
      */
     public boolean isNewer(Book book)
     {
-        File dldir = SwordBookPath.getDownloadDir();
+        File dldir = SwordBookPath.getSwordDownloadDir();
 
         SwordBookMetaData sbmd = (SwordBookMetaData) book.getBookMetaData();
         File conf = new File(dldir, sbmd.getConfPath());
@@ -197,7 +197,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                     job.setInterruptable(false);
                     if (!job.isFinished())
                     {
-                        File dldir = SwordBookPath.getDownloadDir();
+                        File dldir = SwordBookPath.getSwordDownloadDir();
                         IOUtil.unpackZip(NetUtil.getAsFile(temp), dldir);
                         job.setProgress(Msg.JOB_CONFIG.toString());
                         sbmd.setLibrary(NetUtil.getURL(dldir));

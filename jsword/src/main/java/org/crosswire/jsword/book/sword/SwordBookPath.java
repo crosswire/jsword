@@ -95,7 +95,7 @@ public class SwordBookPath
         ArrayList swordPath = new ArrayList();
 
         // The first place to look for Books
-        swordPath.add(getDownloadDir());
+        swordPath.add(getSwordDownloadDir());
 
         // Then all the user's augments
         if (augmentPath != null)
@@ -362,9 +362,11 @@ public class SwordBookPath
     }
 
     /**
+     * Get the download directory, which is either the one that the user chose
+     * or that JSword picked for the user.
      * @return Returns the download directory.
      */
-    public static File getDownloadDir()
+    public static File getSwordDownloadDir()
     {
         if (overrideDownloadDir != null)
         {
@@ -374,7 +376,15 @@ public class SwordBookPath
     }
 
     /**
-     * @param dlDir The download directory to set.
+     * @return Returns the download directory that the user chose.
+     */
+    public static File getDownloadDir()
+    {
+        return overrideDownloadDir;
+    }
+
+    /**
+     * @param dlDir The download directory that the user specifies.
      */
     public static void setDownloadDir(File dlDir)
     {
