@@ -27,7 +27,7 @@ import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
 
 /**
- * A way of managing a way of creating a search index for a book.
+ * Manages the life-cycle of an Index.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.

@@ -29,7 +29,7 @@ package org.crosswire.jsword.index.query;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public abstract class AbstractBinaryQuery implements Query
+public abstract class AbstractBinaryQuery implements BinaryQuery
 {
     /**
      * Create a query consisting of two queries.
