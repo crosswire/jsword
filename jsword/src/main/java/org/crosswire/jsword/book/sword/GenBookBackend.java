@@ -21,8 +21,14 @@
  */
 package org.crosswire.jsword.book.sword;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
+import org.crosswire.common.util.FileUtil;
+import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
 
@@ -38,9 +44,17 @@ public class GenBookBackend extends AbstractBackend
     /**
      * Simple ctor
      */
-    public GenBookBackend(SwordBookMetaData sbmd)
+    public GenBookBackend(SwordBookMetaData sbmd) throws BookException
     {
         super(sbmd);
+        String path = getExpandedDataPath();
+        bdtFile = new File(path + EXTENSION_BDT);
+
+        if (!bdtFile.canRead())
+        {
+            throw new BookException(Msg.READ_FAIL, new Object[] { bdtFile.getAbsolutePath() });
+        }
+
     }
 
     /* (non-Javadoc)
@@ -48,6 +62,15 @@ public class GenBookBackend extends AbstractBackend
      */
     public final void activate(Lock lock)
     {
+        try
+        {
+            bdtRaf = new RandomAccessFile(bdtFile, FileUtil.MODE_READ);
+        }
+        catch (IOException ex)
+        {
+            log.error("failed to open files", ex); //$NON-NLS-1$
+            bdtRaf = null;
+        }
         active = true;
     }
 
@@ -56,6 +79,21 @@ public class GenBookBackend extends AbstractBackend
      */
     public final void deactivate(Lock lock)
     {
+        try
+        {
+            if (bdtRaf != null)
+            {
+                bdtRaf.close();
+            }
+        }
+        catch (IOException ex)
+        {
+            log.error("failed to close gen book files", ex); //$NON-NLS-1$
+        }
+        finally
+        {
+            bdtRaf = null;
+        }
         active = false;
     }
 
@@ -84,7 +122,7 @@ public class GenBookBackend extends AbstractBackend
     /* @Override */
     public boolean isSupported()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -99,8 +137,27 @@ public class GenBookBackend extends AbstractBackend
     }
 
     /**
+     * Raw GenBook file extensions
+     */
+    private static final String EXTENSION_BDT = ".bdt"; //$NON-NLS-1$
+
+    /**
+     * The raw data file
+     */
+    private File bdtFile;
+
+    /**
+     * The random access file for the raw data
+     */
+    private RandomAccessFile bdtRaf;
+
+    /**
      * Are we active
      */
     private boolean active;
 
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(GenBookBackend.class);
 }

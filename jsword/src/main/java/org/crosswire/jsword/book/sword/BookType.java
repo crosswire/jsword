@@ -265,7 +265,7 @@ public abstract class BookType implements Serializable
 
         protected boolean isBackendSupported(SwordBookMetaData sbmd)
         {
-            return false;
+            return true;
         }
 
         /**
