@@ -92,7 +92,7 @@ public class ZLDBackend extends AbstractBackend
     private RandomAccessFile zdtRaf;
     private boolean active;
     private Key keys;
-    private int lastBlockNum = -1;
+    private long lastBlockNum = -1;
     private static final byte[] EMPTY_BYTES = new byte[0];
     private byte[] lastUncompressed = EMPTY_BYTES;
 
@@ -221,7 +221,7 @@ public class ZLDBackend extends AbstractBackend
             return keys;
         }
 
-        for (int entry = 0; entry < entries; entry++)
+        for (long entry = 0; entry < entries; entry++)
         {
             try
             {
@@ -316,7 +316,7 @@ public class ZLDBackend extends AbstractBackend
                 return getRawText(ikey);
             }
 
-            int blockNum = SwordUtil.decodeLittleEndian32(temp, 0);
+            long blockNum = SwordUtil.decodeLittleEndian32(temp, 0);
             int entry = SwordUtil.decodeLittleEndian32(temp, 4);
 
             // Can we get the data from the cache

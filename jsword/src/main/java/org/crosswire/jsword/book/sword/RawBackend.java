@@ -150,7 +150,7 @@ public class RawBackend extends AbstractBackend
         try
         {
             int testament = SwordConstants.getTestament(verse);
-            int index = SwordConstants.getIndex(verse);
+            long index = SwordConstants.getIndex(verse);
 
             // If this is a single testament Bible, return nothing.
             if (idxRaf[testament] == null)
@@ -166,7 +166,7 @@ public class RawBackend extends AbstractBackend
             }
 
             // The data is little endian - extract the start and size
-            int start = SwordUtil.decodeLittleEndian32(read, 0);
+            long start = SwordUtil.decodeLittleEndian32(read, 0);
             int size = SwordUtil.decodeLittleEndian16(read, 4);
 
             if (size < 0)

@@ -24,7 +24,7 @@ package org.crosswire.jsword.book.install.sword;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.crosswire.common.progress.Job;
+import org.crosswire.common.progress.Progress;
 import org.crosswire.common.util.LucidException;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.WebResource;
@@ -77,7 +77,7 @@ public class HttpSwordInstaller extends AbstractSwordInstaller
      * @see org.crosswire.jsword.book.install.sword.AbstractSwordInstaller#download(java.lang.String, java.lang.String, java.net.URL)
      */
     /* @Override */
-    protected void download(Job job, String dir, String file, URL dest) throws InstallException
+    protected void download(Progress job, String dir, String file, URL dest) throws InstallException
     {
         try
         {
@@ -100,11 +100,11 @@ public class HttpSwordInstaller extends AbstractSwordInstaller
      * @param dest
      * @throws LucidException
      */
-    private void copy(Job job, URL url, URL dest) throws LucidException
+    private void copy(Progress job, URL url, URL dest) throws LucidException
     {
         if (job != null)
         {
-            job.setProgress(Msg.JOB_DOWNLOADING.toString());
+            job.setSectionName(Msg.JOB_DOWNLOADING.toString());
         }
 
         WebResource wr = new WebResource(url, proxyHost, proxyPort);

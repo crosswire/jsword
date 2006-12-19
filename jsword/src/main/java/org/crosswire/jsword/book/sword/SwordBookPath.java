@@ -478,7 +478,7 @@ public class SwordBookPath
     /**
      * The directory URL
      */
-    private static File overrideDownloadDir = null;
+    private static File overrideDownloadDir;
 
     /**
      * The log stream

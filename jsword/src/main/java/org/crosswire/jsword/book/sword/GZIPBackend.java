@@ -234,7 +234,7 @@ public class GZIPBackend extends AbstractBackend
         try
         {
             int testament = SwordConstants.getTestament(verse);
-            int index = SwordConstants.getIndex(verse);
+            long index = SwordConstants.getIndex(verse);
 
             // If Bible does not contain the desired testament, return nothing.
             if (compRaf[testament] == null)
@@ -254,7 +254,7 @@ public class GZIPBackend extends AbstractBackend
             }
 
             // The data is little endian - extract the blockNum, verseStart and verseSize
-            int blockNum = SwordUtil.decodeLittleEndian32(temp, 0);
+            long blockNum = SwordUtil.decodeLittleEndian32(temp, 0);
             int verseStart = SwordUtil.decodeLittleEndian32(temp, 4);
             int verseSize = SwordUtil.decodeLittleEndian16(temp, 8);
 
@@ -373,7 +373,7 @@ public class GZIPBackend extends AbstractBackend
     /**
      * 
      */
-    private int lastBlockNum = -1;
+    private long lastBlockNum = -1;
 
     /**
      * 

@@ -43,8 +43,8 @@ import org.apache.lucene.search.Searcher;
 import org.crosswire.common.activate.Activatable;
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
-import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.JobManager;
+import org.crosswire.common.progress.Progress;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
@@ -112,7 +112,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
             throw new BookException(Msg.LUCENE_INIT, ex);
         }
 
-        Job job = JobManager.createJob(Msg.INDEX_START.toString(), Thread.currentThread(), false);
+        Progress job = JobManager.createJob(Msg.INDEX_START.toString(), Thread.currentThread(), false);
 
         IndexStatus finalStatus = IndexStatus.UNDONE;
         try
@@ -129,12 +129,13 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                 List errors = new ArrayList();
                 generateSearchIndexImpl(job, errors, writer, book.getGlobalKeyList());
 
-                job.setProgress(95, Msg.OPTIMIZING.toString());
+                job.setSectionName(Msg.OPTIMIZING.toString());
+                job.setWork(95);
 
                 writer.optimize();
                 writer.close();
 
-                job.setInterruptable(false);
+                job.setCancelable(false);
                 if (!job.isFinished())
                 {
                     tempPath.renameTo(finalPath);
@@ -160,7 +161,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
         }
         catch (IOException ex)
         {
-            job.ignoreTimings();
+            job.cancel();
             throw new BookException(Msg.LUCENE_INIT, ex);
         }
         finally
@@ -320,7 +321,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
     /**
      * Dig down into a Key indexing as we go.
      */
-    private void generateSearchIndexImpl(Job job, List errors, IndexWriter writer, Key key) throws BookException, IOException
+    private void generateSearchIndexImpl(Progress job, List errors, IndexWriter writer, Key key) throws BookException, IOException
     {
         int bookNum = 0;
         int oldBookNum = -1;
@@ -382,7 +383,8 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                     name = subkey.getName();
                 }
 
-                job.setProgress(percent, Msg.INDEXING.toString(name));
+                job.setSectionName(Msg.INDEXING.toString(name));
+                job.setWork(percent);
 
                 // This could take a long time ...
                 Thread.yield();

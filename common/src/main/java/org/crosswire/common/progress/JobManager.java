@@ -41,7 +41,7 @@ import org.crosswire.common.util.Logger;
  *     public void run()
  *     {
  *         URL predicturl = Project.instance().getWritablePropertiesURL("save-name");
- *         Job job = JobManager.createJob("Job Title", predicturl, this, true);
+ *         Progress job = JobManager.createJob("Job Title", predicturl, this, true);
  * 
  *         try
  *         {
@@ -82,12 +82,12 @@ public final class JobManager
     /**
      * Create a new Job
      */
-    public static Job createJob(String description, URL predicturl, Thread work, boolean fakeupdates)
+    public static Progress createJob(String description, URL predicturl, Thread work, boolean fakeupdates)
     {
-        Job job = new Job(description, predicturl, work, fakeupdates);
+        Progress job = new Job(description, predicturl, work, fakeupdates ? Progress.UNKNOWN : 100);
         jobs.add(job);
 
-        log.debug("job starting: " + job.getJobDescription()); //$NON-NLS-1$
+        log.debug("job starting: " + job.getJobName()); //$NON-NLS-1$
 
         return job;
     }
@@ -95,7 +95,7 @@ public final class JobManager
     /**
      * Create a new Job
      */
-    public static Job createJob(String description, Thread work, boolean fakeupdates)
+    public static Progress createJob(String description, Thread work, boolean fakeupdates)
     {
         return createJob(description, null, work, fakeupdates);
     }
@@ -103,7 +103,7 @@ public final class JobManager
     /**
      * Create a new Job
      */
-    public static Job createJob(String description, URL predicturl, boolean fakeupdates)
+    public static Progress createJob(String description, URL predicturl, boolean fakeupdates)
     {
         return createJob(description, predicturl, null, fakeupdates);
     }
@@ -111,7 +111,7 @@ public final class JobManager
     /**
      * Create a new Job
      */
-    public static Job createJob(String description, boolean fakeupdates)
+    public static Progress createJob(String description, boolean fakeupdates)
     {
         return createJob(description, null, null, fakeupdates);
     }
@@ -158,9 +158,9 @@ public final class JobManager
     /**
      * Inform the listeners that a title has changed.
      */
-    protected static void fireWorkProgressed(Job job, boolean predicted)
+    protected static void fireWorkProgressed(Progress job)
     {
-        final WorkEvent ev = new WorkEvent(job, predicted);
+        final WorkEvent ev = new WorkEvent(job);
 
         // we need to keep the synchronized section very small to avoid deadlock
         // certainly keep the event dispatch clear of the synchronized block or
@@ -190,7 +190,7 @@ public final class JobManager
         {
             if (job.isFinished())
             {
-                log.debug("job finished: " + job.getJobDescription()); //$NON-NLS-1$
+                log.debug("job finished: " + job.getJobName()); //$NON-NLS-1$
                 jobs.remove(job);
             }
         }

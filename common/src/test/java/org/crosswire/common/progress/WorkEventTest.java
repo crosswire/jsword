@@ -43,11 +43,10 @@ public class WorkEventTest extends TestCase
 
     public void testGetJob()
     {
-        Job job = JobManager.createJob("wibble", false); //$NON-NLS-1$
-        WorkEvent ev = new WorkEvent(job, false);
+        Progress job = JobManager.createJob("wibble", false); //$NON-NLS-1$
+        WorkEvent ev = new WorkEvent(job);
 
         assertEquals(ev.getJob(), job);
         assertEquals(ev.getSource(), job);
-        assertEquals(ev.isPredicted(), false);
     }
 }

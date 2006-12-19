@@ -36,16 +36,7 @@ public class WorkEvent extends EventObject
     /**
      * Initialize a WorkEvent
      */
-    public WorkEvent(Job source, boolean predicted)
-    {
-        super(source);
-        this.predicted = predicted;
-    }
-
-    /**
-     * Initialize a WorkEvent
-     */
-    public WorkEvent(Job source)
+    public WorkEvent(Progress source)
     {
         super(source);
     }
@@ -53,23 +44,10 @@ public class WorkEvent extends EventObject
     /**
      * Accessor for the Job
      */
-    public Job getJob()
+    public Progress getJob()
     {
-        return (Job) getSource();
+        return (Progress) getSource();
     }
-
-    /**
-     * Is this a predicted or actual progress report?
-     */
-    public boolean isPredicted()
-    {
-        return predicted;
-    }
-
-    /**
-     * Is this a predicted or actual progress report?
-     */
-    private boolean predicted;
 
     /**
      * Serialization ID

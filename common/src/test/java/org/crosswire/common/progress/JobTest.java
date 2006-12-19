@@ -51,60 +51,52 @@ public class JobTest extends TestCase
 
     public void testJob() throws IOException
     {
-        Job job;
+        Progress job;
         File tempfile = File.createTempFile("jobtest", "tmp"); //$NON-NLS-1$ //$NON-NLS-2$
         URL url = new URL(NetUtil.PROTOCOL_FILE, null, tempfile.getAbsolutePath());
 
         job = JobManager.createJob(WIBBLE, false);
-        assertEquals(job.getJobDescription(), WIBBLE);
+        assertEquals(job.getJobName(), WIBBLE);
         assertEquals(job.isFinished(), false);
-        assertEquals(job.isInterruptable(), false);
-        assertEquals(job.getStateDescription(), WIBBLE);
-        assertEquals(job.getPercent(), 0);
-        assertEquals(job.getReportedPercent(), 0);
+        assertEquals(job.isCancelable(), false);
+        assertEquals(job.getSectionName(), WIBBLE);
+        assertEquals(job.getWork(), 0);
         job.done();
         assertEquals(job.isFinished(), true);
-        assertEquals(job.getPercent(), 100);
-        assertEquals(job.getReportedPercent(), 100);
-        assertEquals(job.isInterruptable(), false);
+        assertEquals(job.getWork(), 100);
+        assertEquals(job.isCancelable(), false);
 
         job = JobManager.createJob(WIBBLE, Thread.currentThread(), false);
-        assertEquals(job.getJobDescription(), WIBBLE);
+        assertEquals(job.getJobName(), WIBBLE);
         assertEquals(job.isFinished(), false);
-        assertEquals(job.isInterruptable(), true);
-        assertEquals(job.getStateDescription(), WIBBLE);
-        assertEquals(job.getPercent(), 0);
-        assertEquals(job.getReportedPercent(), 0);
+        assertEquals(job.isCancelable(), true);
+        assertEquals(job.getSectionName(), WIBBLE);
+        assertEquals(job.getWork(), 0);
         job.done();
         assertEquals(job.isFinished(), true);
-        assertEquals(job.getPercent(), 100);
-        assertEquals(job.getReportedPercent(), 100);
-//        assertEquals(job.isInterruptable(), false);
+        assertEquals(job.getWork(), 100);
+//        assertEquals(job.isCancelable(), false);
 
         job = JobManager.createJob(WIBBLE, url, false);
-        assertEquals(job.getJobDescription(), WIBBLE);
+        assertEquals(job.getJobName(), WIBBLE);
         assertEquals(job.isFinished(), false);
-        assertEquals(job.isInterruptable(), false);
-        assertEquals(job.getStateDescription(), WIBBLE);
-        assertEquals(job.getPercent(), 0);
-        assertEquals(job.getReportedPercent(), 0);
+        assertEquals(job.isCancelable(), false);
+        assertEquals(job.getSectionName(), WIBBLE);
+        assertEquals(job.getWork(), 0);
         job.done();
         assertEquals(job.isFinished(), true);
-        assertEquals(job.getPercent(), 100);
-        assertEquals(job.getReportedPercent(), 100);
-//        assertEquals(job.isInterruptable(), false);
+        assertEquals(job.getWork(), 100);
+//        assertEquals(job.isCancelable(), false);
 
         job = JobManager.createJob(WIBBLE, url, Thread.currentThread(), false);
-        assertEquals(job.getJobDescription(), WIBBLE);
+        assertEquals(job.getJobName(), WIBBLE);
         assertEquals(job.isFinished(), false);
-        assertEquals(job.isInterruptable(), true);
-        assertEquals(job.getStateDescription(), WIBBLE);
-        assertEquals(job.getPercent(), 0);
-        assertEquals(job.getReportedPercent(), 0);
+        assertEquals(job.isCancelable(), true);
+        assertEquals(job.getSectionName(), WIBBLE);
+        assertEquals(job.getWork(), 0);
         job.done();
         assertEquals(job.isFinished(), true);
-        assertEquals(job.getPercent(), 100);
-        assertEquals(job.getReportedPercent(), 100);
-//        assertEquals(job.isInterruptable(), false);
+        assertEquals(job.getWork(), 100);
+//        assertEquals(job.isCancelable(), false);
     }
 }

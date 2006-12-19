@@ -111,7 +111,6 @@ public final class SwordUtil
     /**
      * Read a RandomAccessFile until a particular byte is seen
      * @param raf The file to read
-     * @param offset The start of the record to read
      * @param stopByte The point at which to stop reading
      * @return the read data
      */

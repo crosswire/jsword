@@ -33,8 +33,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
-import org.crosswire.common.progress.Job;
 import org.crosswire.common.progress.JobManager;
+import org.crosswire.common.progress.Progress;
 import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
@@ -74,7 +74,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
      * @param file The file to download
      * @throws InstallException
      */
-    protected abstract void download(Job job, String dir, String file, URL dest) throws InstallException;
+    protected abstract void download(Progress job, String dir, String file, URL dest) throws InstallException;
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#getURL()
@@ -181,25 +181,25 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
             public void run()
             {
                 URL predicturl = Project.instance().getWritablePropertiesURL("sword-install"); //$NON-NLS-1$
-                Job job = JobManager.createJob(Msg.INSTALLING.toString(sbmd.getName()), predicturl, this, true);
+                Progress job = JobManager.createJob(Msg.INSTALLING.toString(sbmd.getName()), predicturl, this, true);
 
                 yield();
 
                 try
                 {
-                    job.setProgress(Msg.JOB_INIT.toString());
+                    job.setSectionName(Msg.JOB_INIT.toString());
 
                     URL temp = NetUtil.getTemporaryURL("swd", ZIP_SUFFIX); //$NON-NLS-1$
 
                     download(job, directory + '/' + PACKAGE_DIR, sbmd.getInitials() + ZIP_SUFFIX, temp);
 
                     // Once the unzipping is started, we need to continue
-                    job.setInterruptable(false);
+                    job.setCancelable(false);
                     if (!job.isFinished())
                     {
                         File dldir = SwordBookPath.getSwordDownloadDir();
                         IOUtil.unpackZip(NetUtil.getAsFile(temp), dldir);
-                        job.setProgress(Msg.JOB_CONFIG.toString());
+                        job.setSectionName(Msg.JOB_CONFIG.toString());
                         sbmd.setLibrary(NetUtil.getURL(dldir));
                         SwordBookDriver.registerNewBook(sbmd);
                     }
@@ -208,17 +208,17 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                 catch (IOException e)
                 {
                     Reporter.informUser(this, e);
-                    job.ignoreTimings();
+                    job.cancel();
                 }
                 catch (InstallException e)
                 {
                     Reporter.informUser(this, e);
-                    job.ignoreTimings();
+                    job.cancel();
                 }
                 catch (BookException e)
                 {
                     Reporter.informUser(this, e);
-                    job.ignoreTimings();
+                    job.cancel();
                 }
                 finally
                 {
@@ -237,7 +237,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
      */
     public void reloadBookList() throws InstallException
     {
-        Job job = JobManager.createJob(Msg.JOB_DOWNLOADING.toString(), Thread.currentThread(), false);
+        Progress job = JobManager.createJob(Msg.JOB_DOWNLOADING.toString(), Thread.currentThread(), false);
 
         try
         {
@@ -247,7 +247,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         }
         catch (InstallException ex)
         {
-            job.ignoreTimings();
+            job.cancel();
             throw ex;
         }
         finally
@@ -261,7 +261,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
      */
     public void downloadSearchIndex(Book book, URL localDest) throws InstallException
     {
-        Job job = JobManager.createJob(Msg.JOB_DOWNLOADING.toString(), Thread.currentThread(), false);
+        Progress job = JobManager.createJob(Msg.JOB_DOWNLOADING.toString(), Thread.currentThread(), false);
 
         try
         {
@@ -269,7 +269,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         }
         catch (InstallException ex)
         {
-            job.ignoreTimings();
+            job.cancel();
             throw ex;
         }
         finally

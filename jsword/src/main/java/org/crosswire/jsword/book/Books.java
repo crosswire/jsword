@@ -391,8 +391,7 @@ public final class Books implements BookList
     {
         // URL predicturl =
         // Project.instance().getWritablePropertiesURL("books"); //$NON-NLS-1$
-        // Job job = JobManager.createJob(Msg.JOB_TITLE.toString(), predicturl,
-        // null, true);
+        // Progress job = JobManager.createJob(Msg.JOB_TITLE.toString(), predicturl, null, true);
 
         // This will classload them all and they will register themselves.
         Class[] types = ClassUtil.getImplementors(BookDriver.class);

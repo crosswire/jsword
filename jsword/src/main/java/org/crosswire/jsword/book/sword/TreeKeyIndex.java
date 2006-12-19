@@ -154,7 +154,7 @@ public class TreeKeyIndex implements Activatable
 
         buffer = SwordUtil.readUntilRAF(datRaf, (byte) 0);
         int size = buffer.length;
-        if (buffer[size-1] == 0)
+        if (buffer[size - 1] == 0)
         {
             size--;
         }
@@ -169,7 +169,7 @@ public class TreeKeyIndex implements Activatable
             node.setUserData(SwordUtil.readNextRAF(datRaf, userDataSize));
         }
 
-        return node;        
+        return node;
     }
 
     /* (non-Javadoc)
