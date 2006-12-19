@@ -506,7 +506,7 @@ public final class OSISUtil
     }
 
     /**
-     * Get the verse text from an osis document consisting of a single verse.
+     * Get the canonical text from an osis document consisting of a single fragment.
      * The document is assumed to be valid OSIS2.0 XML. While xml valid
      * is rigidly defined as meaning that an xml parser can validate the document,
      * it does not mean that the document is valid OSIS. This is a semantic
@@ -521,14 +521,14 @@ public final class OSISUtil
      * <p>The osisText element contains a div element that is either
      * a container or a milestone. Again, JSword is providing the
      * div element and it will be provided as a container. It is this div
-     * that "contains" the verse element.</p>
-     * <p>The verse element may either be
+     * that "contains" the actual fragment.</p>
+     * <p>A verse element may either be
      * a container or a milestone. Sword OSIS books differ in whether
      * they provide the verse element. Most do not. The few that do are
      * using the container model, but it has been proposed that milestones
      * are the best practice.</p>
      * 
-     * <p>The verse may contain elements that are not a part of the
+     * <p>The fragment may contain elements that are not a part of the
      * original text. These are things such as notes.</p>
      * 
      * <p>Milestones require special handling. Beginning milestones
@@ -539,9 +539,9 @@ public final class OSISUtil
      * as if they were container elements.</p>
      * 
      * @param root the whole osis document.
-     * @return The Bible text without markup
+     * @return The canonical text without markup
      */
-    public static String getVerseText(Element root)
+    public static String getCanonicalText(Element root)
     {
         StringBuffer buffer = new StringBuffer();
 
@@ -549,7 +549,7 @@ public final class OSISUtil
         Element div = osisText.getChild(OSISUtil.OSIS_ELEMENT_DIV);
 
         Iterator dit = div.getContent().iterator();
-        String sid = null;
+        String sID = null;
         Object data = null;
         Element ele = null;
         while (dit.hasNext())
@@ -558,18 +558,18 @@ public final class OSISUtil
             if (data instanceof Element)
             {
                 ele = (Element) data;
-                if (ele.getName().equals(OSISUtil.OSIS_ELEMENT_VERSE))
-                {
-                    sid = ele.getAttributeValue(OSISUtil.OSIS_ATTR_SID);
-                    if (sid != null)
+//                if (ele.getName().equals(OSISUtil.OSIS_ELEMENT_VERSE))
+//                {
+                    sID = ele.getAttributeValue(OSISUtil.OSIS_ATTR_SID);
+                    if (sID != null)
                     {
-                        getVerseContent(dit, buffer);
+                        getCanonicalContent(ele.getName(), sID, dit, buffer);
                     }
                     else
                     {
-                        getVerseContent(ele.getContent().iterator(), buffer);
+                        getCanonicalContent(ele.getName(), null, ele.getContent().iterator(), buffer);
                     }
-                }
+//                }
             }
             else if (data instanceof Text)
             {
@@ -616,23 +616,23 @@ public final class OSISUtil
         return buffer.toString().trim();
     }
 
-    private static void getVerseContent(Iterator iter, StringBuffer buffer)
+    private static void getCanonicalContent(String sName, String sID, Iterator iter, StringBuffer buffer)
     {
         Object data = null;
         Element ele = null;
         String eleName = null;
+        String eID = null;
         while (iter.hasNext())
         {
             data = iter.next();
             if (data instanceof Element)
             {
                 ele = (Element) data;
-                // If the verse is done then quit.
-                // This should be a verse eID=, that matches sID, but it does not matter.
-                // Since this gets the text of one verse, any verse element that follows
-                // is the end of the previous verse.
+                // If the milestoned element is done then quit.
+                // This should be a eID=, that matches sID, from the same element.
                 eleName = ele.getName();
-                if (eleName.equals(OSISUtil.OSIS_ELEMENT_VERSE))
+                eID = ele.getAttributeValue(OSISUtil.OSIS_ATTR_SID);
+                if (eID != null && eID.equals(sID) && eleName.equals(sName))
                 {
                     break;
                 }
@@ -640,7 +640,7 @@ public final class OSISUtil
                 // Ignore extra-biblical text
                 if (!EXTRA_BIBLICAL_ELEMENTS.contains(eleName))
                 {
-                    OSISUtil.getVerseContent(ele.getContent().iterator(), buffer);
+                    OSISUtil.getCanonicalContent(sName, sID, ele.getContent().iterator(), buffer);
                 }
             }
             else if (data instanceof Text)

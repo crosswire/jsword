@@ -146,9 +146,8 @@ public class PassageTally extends AbstractPassage
         return order;
     }
 
-    /**
-     * Get a copy of ourselves.
-     * @return A complete copy of ourselves
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.AbstractPassage#clone()
      */
     public Object clone()
     {
@@ -160,19 +159,16 @@ public class PassageTally extends AbstractPassage
         return copy;
     }
 
-    /**
-     * Simply bounce to getName() to help String concatenation.
-     * @return a String containing a description of the verses
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.AbstractPassage#toString()
      */
     public String toString()
     {
         return getName(0);
     }
 
-    /**
-     * A Human readable version of the PassageTally.
-     * Uses short books names, and the shortest possible rendering eg "Mat 3:1-4"
-     * @return a String containing a description of the verses
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.AbstractPassage#getName()
      */
     public String getName()
     {

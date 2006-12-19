@@ -206,6 +206,18 @@ public abstract class AbstractPassage implements Passage
         return getName();
     }
 
+    public String getRootName()
+    {
+        Iterator it = rangeIterator(RestrictionType.NONE);
+        while (it.hasNext())
+        {
+            VerseRange range = (VerseRange) it.next();
+            return range.getRootName();
+        }
+
+        return getName();
+    }
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#getOSISName()
      */

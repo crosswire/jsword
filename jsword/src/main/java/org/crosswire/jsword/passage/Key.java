@@ -47,6 +47,15 @@ public interface Key extends Comparable, Cloneable, Iterable, Serializable
     String getName();
 
     /**
+     * A Human readable version of the Key's top level name.
+     * For Biblical passages this uses short books names. For
+     * a dictionary it might return A-Z.
+     * 
+     * @return a String containing a description of the Key
+     */
+    String getRootName();
+
+    /**
      * Translate the Key into a human readable string, with the
      * assumption that the specified Key has just been output, so if we
      * are in the same region, we do not need to display the region name, and

@@ -56,7 +56,7 @@ public interface Book extends Activatable, KeyFactory, Comparable
     /**
      * Retrieval: Add to the given document some mark-up for the specified
      * Verses.
-     * @param key The verses to search for
+     * @param key The item to locate
      * @return The found Book data
      * @throws BookException If anything goes wrong with this method
      */
@@ -64,7 +64,7 @@ public interface Book extends Activatable, KeyFactory, Comparable
 
     /**
      * Returns the raw text that getData(Key key) builds into OSIS.
-     * @param key The verses to search for
+     * @param key The item to locate
      * @return The found Book data
      * @throws BookException If anything goes wrong with this method
      */

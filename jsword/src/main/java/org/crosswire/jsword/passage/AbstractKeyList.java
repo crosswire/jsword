@@ -137,6 +137,14 @@ public abstract class AbstractKeyList implements Key
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getRootName()
+     */
+    public String getRootName()
+    {
+        return getName();
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getOSISRef()
      */
     public String getOsisRef()

@@ -69,18 +69,17 @@ public class BookData
     }
 
     /**
-     * Return the verse's text without any extra-biblical material.
-     * @return The Bible text without markup
+     * Return the text without any extra material.
+     * @return The Book's text without markup
      */
-    public String getVerseText()
+    public String getCanonicalText()
     {
-        return OSISUtil.getVerseText(getOsis());
+        return OSISUtil.getCanonicalText(getOsis());
     }
 
     /**
      * A simplified plain text version of the data in this document with all
      * the markup stripped out. This is not as simple as it seems.
-     * TODO(DMS): push this into OSISUtil
      * @return The text without markup
      */
     public String getPlainText()

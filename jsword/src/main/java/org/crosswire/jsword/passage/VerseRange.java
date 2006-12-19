@@ -127,19 +127,16 @@ public final class VerseRange implements Key, Serializable
         verseCount = calcVerseCount(start, end);
     }
 
-    /**
-     * Fetch a more sensible shortened version of the name
-     * @return A string like 'Gen 1:1-2'
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getName()
      */
     public String getName()
     {
         return getName(null);
     }
 
-    /**
-     * Fetch a more sensible shortened version of the name
-     * @param base A reference to allow things like Gen 1:1,3,5 as an output
-     * @return A string like 'Gen 1:1-2'
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage.Key)
      */
     public String getName(Key base)
     {
@@ -236,10 +233,16 @@ public final class VerseRange implements Key, Serializable
         }
     }
 
-    /**
-     * The OSIS defined reference specification for this VerseRange.
-     * Uses osis books names, with "." as a verse part separator.
-     * @return a String containing the OSIS description of the verses
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getRootName()
+     */
+    public String getRootName()
+    {
+        return start.getRootName();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getOsisRef()
      */
     public String getOsisRef()
     {
@@ -293,11 +296,8 @@ public final class VerseRange implements Key, Serializable
         }
     }
 
-    /**
-     * The OSIS defined id specification for this VerseRange.
-     * Uses osis books names, with "." as a verse part separator.
-     * Each verse is separated by a space.
-     * @return a String containing the OSIS description of the verses
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getOsisID()
      */
     public String getOsisID()
     {
@@ -357,10 +357,8 @@ public final class VerseRange implements Key, Serializable
         return buf.toString();
     }
 
-    /**
-     * This just clones getName which seems the most sensible
-     * type of string to return.
-     * @return A string like 'Gen 1:1-2'
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
      */
     public String toString()
     {

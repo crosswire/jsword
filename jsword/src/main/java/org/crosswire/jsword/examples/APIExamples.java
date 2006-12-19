@@ -80,7 +80,7 @@ public class APIExamples
 
         Key key = bible.getKey("Gen 1 1"); //$NON-NLS-1$
         BookData data = bible.getData(key);
-        String text = data.getVerseText();
+        String text = data.getCanonicalText();
 
         System.out.println("The plain text of Gen 1:1 is " + text); //$NON-NLS-1$
     }
@@ -247,7 +247,7 @@ public class APIExamples
         {
             Verse verse = (Verse) iter.next();
             BookData data = bible.getData(verse);
-            System.out.println('|' + BibleInfo.getBookName(verse.getBook()) + '|' + verse.getChapter() + '|' + verse.getVerse() + '|' + data.getVerseText());
+            System.out.println('|' + BibleInfo.getBookName(verse.getBook()) + '|' + verse.getChapter() + '|' + verse.getVerse() + '|' + data.getCanonicalText());
         }
     }
 

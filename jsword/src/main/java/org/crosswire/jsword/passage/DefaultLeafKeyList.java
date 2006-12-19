@@ -69,7 +69,7 @@ public class DefaultLeafKeyList implements Key
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Key#getText()
+     * @see org.crosswire.jsword.passage.Key#getName()
      */
     public String getName()
     {
@@ -80,6 +80,14 @@ public class DefaultLeafKeyList implements Key
      * @see org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage.Key)
      */
     public String getName(Key base)
+    {
+        return getName();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getRootName()
+     */
+    public String getRootName()
     {
         return getName();
     }

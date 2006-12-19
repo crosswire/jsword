@@ -167,6 +167,14 @@ final class ReadOnlyPassage implements Passage
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getRootName()
+     */
+    public String getRootName()
+    {
+        return ref.getRootName();
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#getOSISName()
      */
     public String getOsisRef()

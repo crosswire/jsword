@@ -51,7 +51,7 @@ public final class DataPolice
     }
 
     /**
-     * Set the current verse to enhance error reports
+     * Set the current item to enhance error reports
      */
     public static void setKey(Key key)
     {
@@ -59,7 +59,7 @@ public final class DataPolice
     }
 
     /**
-     * Report a message against the current verse
+     * Report a message against the current item
      */
     public static void report(String message)
     {
@@ -83,7 +83,7 @@ public final class DataPolice
     }
 
     /**
-     * the last known verse
+     * the last known item
      */
     private static Key key;
 

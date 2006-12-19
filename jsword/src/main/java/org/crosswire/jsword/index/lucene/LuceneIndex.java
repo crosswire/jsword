@@ -56,13 +56,11 @@ import org.crosswire.jsword.index.IndexStatus;
 import org.crosswire.jsword.index.search.SearchModifier;
 import org.crosswire.jsword.passage.AbstractPassage;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.PassageTally;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseFactory;
-import org.crosswire.jsword.versification.BibleInfo;
 
 /**
  * Implement the SearchEngine using Lucene as the search engine.
@@ -127,7 +125,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                 IndexWriter writer = new IndexWriter(tempPath.getCanonicalPath(), new SimpleAnalyzer(), true);
 
                 List errors = new ArrayList();
-                generateSearchIndexImpl(job, errors, writer, book.getGlobalKeyList());
+                generateSearchIndexImpl(job, errors, writer, book.getGlobalKeyList(), 0);
 
                 job.setSectionName(Msg.OPTIMIZING.toString());
                 job.setWork(95);
@@ -321,23 +319,23 @@ public class LuceneIndex extends AbstractIndex implements Activatable
     /**
      * Dig down into a Key indexing as we go.
      */
-    private void generateSearchIndexImpl(Progress job, List errors, IndexWriter writer, Key key) throws BookException, IOException
+    private void generateSearchIndexImpl(Progress job, List errors, IndexWriter writer, Key key, int count) throws BookException, IOException
     {
-        int bookNum = 0;
-        int oldBookNum = -1;
+        String oldRootName = ""; //$NON-NLS-1$
         int percent = 0;
-        String name = ""; //$NON-NLS-1$
+        String rootName = ""; //$NON-NLS-1$
         String text = ""; //$NON-NLS-1$
         BookData data = null;
         Key subkey = null;
-        Verse verse = null;
         Document doc = null;
+        int size = key.getCardinality();
+        int subCount = count;
         for (Iterator it = key.iterator(); it.hasNext(); )
         {
             subkey = (Key) it.next();
             if (subkey.canHaveChildren())
             {
-                generateSearchIndexImpl(job, errors, writer, subkey);
+                generateSearchIndexImpl(job, errors, writer, subkey, subCount);
             }
             else
             {
@@ -352,7 +350,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                     continue;
                 }
 
-                text = data.getVerseText();
+                text = data.getCanonicalText();
 
                 // Do the actual indexing
                 if (text != null && text.length() > 0)
@@ -364,26 +362,16 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                 }
 
                 // report progress
-                verse = KeyUtil.getVerse(subkey);
-
-                try
+                rootName = subkey.getRootName();
+                if (!rootName.equals(oldRootName))
                 {
-                    percent = 95 * verse.getOrdinal() / BibleInfo.versesInBible();
-                    bookNum = verse.getBook();
-                    if (oldBookNum != bookNum)
-                    {
-                        name = BibleInfo.getBookName(bookNum);
-                        oldBookNum = bookNum;
-                    }
-                }
-                catch (NoSuchVerseException ex)
-                {
-                    log.error("Failed to get book name from verse: " + verse, ex); //$NON-NLS-1$
-                    assert false;
-                    name = subkey.getName();
+                    oldRootName = rootName;
+                    job.setSectionName(Msg.INDEXING.toString(rootName));
                 }
 
-                job.setSectionName(Msg.INDEXING.toString(name));
+                subCount++;
+                percent = 95 * subCount / size;
+
                 job.setWork(percent);
 
                 // This could take a long time ...
@@ -415,12 +403,12 @@ public class LuceneIndex extends AbstractIndex implements Activatable
      * sharing indexes.
      */
     /**
-     * The Lucene field for the verse name
+     * The Lucene field for the osisID
      */
     protected static final String FIELD_NAME = "key"; //$NON-NLS-1$
 
     /**
-     * The Lucene field for the verse contents
+     * The Lucene field for the text contents
      */
     protected static final String FIELD_BODY = "content"; //$NON-NLS-1$
 

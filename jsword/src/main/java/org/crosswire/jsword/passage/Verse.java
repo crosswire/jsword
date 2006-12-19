@@ -143,10 +143,8 @@ public final class Verse implements Key, Serializable
         set(ordinal);
     }
 
-    /**
-     * Translate the Passage into a human readable string. This is
-     * simply an alias for getName();
-     * @return The string representation
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
      */
     /* @Override */
     public String toString()
@@ -154,9 +152,8 @@ public final class Verse implements Key, Serializable
         return getName();
     }
 
-    /**
-     * Translate the Passage into a human readable string
-     * @return The string representation
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getName()
      */
     public String getName()
     {
@@ -187,10 +184,8 @@ public final class Verse implements Key, Serializable
         }
     }
 
-    /**
-     * Translate the Passage into a human readable string
-     * @param base The verse to use to cut down unnecessary output.
-     * @return The string representation
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage.Key)
      */
     public String getName(Key base)
     {
@@ -245,10 +240,24 @@ public final class Verse implements Key, Serializable
         }
     }
 
-    /**
-     * The OSIS defined specification for this Verse.
-     * Uses short books names, with "." as a verse part separator.
-     * @return a String containing the OSIS description of the verses
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getRootName()
+     */
+    public String getRootName()
+    {
+        try
+        {
+            return BibleInfo.getBookName(book);
+        }
+        catch (NoSuchKeyException ex)
+        {
+            assert false : ex;
+            return "!Error!"; //$NON-NLS-1$
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getOsisRef()
      */
     public String getOsisRef()
     {
@@ -275,13 +284,8 @@ public final class Verse implements Key, Serializable
         return getOsisRef();
     }
 
-    /**
-     * Get a copy of ourselves. Points to note:
-     *   Call clone() not new() on member Objects, and on us.
-     *   Do not use Copy Constructors! - they do not inherit well.
-     *   Think about this needing to be synchronized
-     *   If this is not cloneable then writing cloneable children is harder
-     * @return A complete copy of ourselves
+    /* (non-Javadoc)
+     * @see java.lang.Object#clone()
      */
     /* @Override */
     public Object clone()
@@ -304,12 +308,8 @@ public final class Verse implements Key, Serializable
         return copy;
     }
 
-    /**
-     * Is this Object equal to us. Points to note:
-     *   If you override equals(), you must override hashCode() too.
-     *   If you are doing this it is a good idea to be immutable.
-     * @param obj The thing to test against
-     * @return True/False is we are or are not equal to obj
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     /* @Override */
     public boolean equals(Object obj)
@@ -348,11 +348,8 @@ public final class Verse implements Key, Serializable
         return true;
     }
 
-    /**
-     * This returns the ordinal number of the verse
-     * so <code>new Verse("Rev 22:21").hashCode() = 31104</code>.
-     * <p><b>However should should not reply on this being true</b>
-     * @return The hashing number
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
      */
     /* @Override */
     public int hashCode()
@@ -360,10 +357,8 @@ public final class Verse implements Key, Serializable
         return getOrdinal();
     }
 
-    /**
-     * Compare this to a given object
-     * @param obj The thing to compare against
-     * @return 1 means he is earlier than me, -1 means he is later ...
+    /* (non-Javadoc)
+     * @see java.lang.Comparable#compareTo(T)
      */
     public int compareTo(Object obj)
     {

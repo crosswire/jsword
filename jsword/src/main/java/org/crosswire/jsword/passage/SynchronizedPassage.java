@@ -81,7 +81,7 @@ final class SynchronizedPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getChildCount()
      */
-    public int getChildCount()
+    public synchronized int getChildCount()
     {
         return ref.getChildCount();
     }
@@ -97,7 +97,7 @@ final class SynchronizedPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#canHaveChildren()
      */
-    public boolean canHaveChildren()
+    public synchronized boolean canHaveChildren()
     {
         return ref.canHaveChildren();
     }
@@ -150,6 +150,11 @@ final class SynchronizedPassage implements Passage
         return ref.getName(base);
     }
 
+    public synchronized String getRootName()
+    {
+        return ref.getRootName();
+    }
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#getOSISName()
      */
@@ -161,7 +166,7 @@ final class SynchronizedPassage implements Passage
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getOSISId()
      */
-    public String getOsisID()
+    public synchronized String getOsisID()
     {
         return ref.getOsisID();
     }
