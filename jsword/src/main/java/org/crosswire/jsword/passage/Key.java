@@ -84,10 +84,15 @@ public interface Key extends Comparable, Cloneable, Iterable, Serializable
     Key getParent();
 
     /**
-     * Returns true if the receiver is a leaf node and can not have children.
+     * Returns false if the receiver is a leaf node and can not have children.
      * Any attempt to add()/remove() wlll throw
      */
     boolean canHaveChildren();
+
+    /**
+     * Returns the number of children that this node has. Leaf nodes return 0.
+     */
+    int getChildCount();
 
     /**
      * Returns the number of elements in this set (its cardinality).  If this
@@ -95,7 +100,7 @@ public interface Key extends Comparable, Cloneable, Iterable, Serializable
      * <tt>Integer.MAX_VALUE</tt>.
      * @return the number of elements in this set (its cardinality).
      */
-    int getChildCount();
+    int getCardinality();
 
     /**
      * Does this Passage have 0 members

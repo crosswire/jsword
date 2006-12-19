@@ -55,7 +55,7 @@ public class DefaultKeyList extends AbstractKeyList
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#isLeaf()
+     * @see org.crosswire.jsword.passage.Key#canHaveChildren()
      */
     public boolean canHaveChildren()
     {
@@ -63,9 +63,17 @@ public class DefaultKeyList extends AbstractKeyList
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#size()
+     * @see org.crosswire.jsword.passage.Key#getChildCount()
      */
     public int getChildCount()
+    {
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getCardinality()
+     */
+    public int getCardinality()
     {
         return keys.size();
     }

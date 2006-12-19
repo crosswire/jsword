@@ -130,7 +130,7 @@ public class RangedPassage extends AbstractPassage
         while (it.hasNext())
         {
             VerseRange range = (VerseRange) it.next();
-            count += range.getVerseCount();
+            count += range.getCardinality();
         }
 
         return count;
@@ -392,7 +392,7 @@ public class RangedPassage extends AbstractPassage
                 {
                     VerseRange range = (VerseRange) it.next();
 
-                    for (int i = 0; i < range.getVerseCount(); i++)
+                    for (int i = 0; i < range.getCardinality(); i++)
                     {
                         temp.add(new Verse(range.getStart().getOrdinal() + i));
                     }

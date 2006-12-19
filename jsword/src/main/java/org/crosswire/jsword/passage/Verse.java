@@ -878,11 +878,19 @@ public final class Verse implements Key, Serializable
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#size()
+     * @see org.crosswire.jsword.passage.Key#getChildCount()
      */
     public int getChildCount()
     {
         return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getCardinality()
+     */
+    public int getCardinality()
+    {
+        return 1;
     }
 
     /* (non-Javadoc)

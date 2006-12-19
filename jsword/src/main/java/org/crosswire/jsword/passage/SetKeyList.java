@@ -142,19 +142,27 @@ public class SetKeyList extends AbstractKeyList
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#size()
+     * @see org.crosswire.jsword.passage.Key#getCardinality()
      */
-    public int getChildCount()
+    public int getCardinality()
     {
         return list.size();
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#isLeaf()
+     * @see org.crosswire.jsword.passage.Key#canHaveChildren()
      */
     public boolean canHaveChildren()
     {
         return false;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getChildCount()
+     */
+    public int getChildCount()
+    {
+        return 0;
     }
 
     /* (non-Javadoc)

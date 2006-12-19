@@ -61,6 +61,14 @@ public class DefaultLeafKeyList implements Key
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getChildCount()
+     */
+    public int getChildCount()
+    {
+        return 0;
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Key#getText()
      */
     public String getName()
@@ -101,11 +109,11 @@ public class DefaultLeafKeyList implements Key
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#size()
+     * @see org.crosswire.jsword.passage.Key#getCardinality()
      */
-    public int getChildCount()
+    public int getCardinality()
     {
-        return 0;
+        return 1;
     }
 
     /* (non-Javadoc)

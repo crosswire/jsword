@@ -440,17 +440,17 @@ public class VerseRangeTest extends TestCase
 
     public void testGetVerseCount() throws Exception
     {
-        assertEquals(gen11_1.getVerseCount(), 1);
-        assertEquals(gen11_2.getVerseCount(), 2);
-        assertEquals(gen11_9.getVerseCount(), 31);
-        assertEquals(gen11_a.getVerseCount(), 32);
-        assertEquals(gen12_1.getVerseCount(), 1);
-        assertEquals(gen_all.getVerseCount(), 1533);
-        assertEquals(gen_ex1.getVerseCount(), 1534);
-        assertEquals(gen_rev.getVerseCount(), 31102);
-        assertEquals(rev99_9.getVerseCount(), 21);
-        assertEquals(rev11_9.getVerseCount(), 404);
-        assertEquals(rev99_1.getVerseCount(), 1);
+        assertEquals(gen11_1.getCardinality(), 1);
+        assertEquals(gen11_2.getCardinality(), 2);
+        assertEquals(gen11_9.getCardinality(), 31);
+        assertEquals(gen11_a.getCardinality(), 32);
+        assertEquals(gen12_1.getCardinality(), 1);
+        assertEquals(gen_all.getCardinality(), 1533);
+        assertEquals(gen_ex1.getCardinality(), 1534);
+        assertEquals(gen_rev.getCardinality(), 31102);
+        assertEquals(rev99_9.getCardinality(), 21);
+        assertEquals(rev11_9.getCardinality(), 404);
+        assertEquals(rev99_1.getCardinality(), 1);
     }
 
     public void testClone() throws Exception

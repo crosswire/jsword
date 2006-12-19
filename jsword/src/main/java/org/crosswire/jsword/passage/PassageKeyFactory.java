@@ -258,7 +258,7 @@ public final class PassageKeyFactory implements KeyFactory
             {
                 VerseRange range = (VerseRange) it.next();
                 index += toBinary(buffer, index, range.getStart().getOrdinal(), BibleInfo.versesInBible());
-                index += toBinary(buffer, index, range.getVerseCount(), BibleInfo.versesInBible());
+                index += toBinary(buffer, index, range.getCardinality(), BibleInfo.versesInBible());
             }
 
             // chop to size

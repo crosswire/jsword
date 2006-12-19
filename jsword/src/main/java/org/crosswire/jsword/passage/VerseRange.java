@@ -386,15 +386,6 @@ public final class VerseRange implements Key, Serializable
     }
 
     /**
-     * How many verses in this range
-     * @return The number of verses. Always >= 1.
-     */
-    public int getVerseCount()
-    {
-        return verseCount;
-    }
-
-    /**
      * How many chapters in this range
      * @return The number of chapters. Always >= 1.
      */
@@ -490,7 +481,7 @@ public final class VerseRange implements Key, Serializable
             return false;
         }
 
-        if (vr.getVerseCount() != getVerseCount())
+        if (vr.getCardinality() != getCardinality())
         {
             return false;
         }
@@ -536,15 +527,15 @@ public final class VerseRange implements Key, Serializable
         int that_length = 1;
         if (obj instanceof VerseRange)
         {
-            that_length = ((VerseRange) obj).getVerseCount();
+            that_length = ((VerseRange) obj).getCardinality();
         }
 
-        if (that_length == getVerseCount())
+        if (that_length == getCardinality())
         {
             return 0;
         }
 
-        if (that_length < getVerseCount())
+        if (that_length < getCardinality())
         {
             return 1;
         }
@@ -1035,11 +1026,19 @@ public final class VerseRange implements Key, Serializable
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#size()
+     * @see org.crosswire.jsword.passage.Key#getChildCount()
      */
     public int getChildCount()
     {
         return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getCardinality()
+     */
+    public int getCardinality()
+    {
+        return verseCount;
     }
 
     /* (non-Javadoc)

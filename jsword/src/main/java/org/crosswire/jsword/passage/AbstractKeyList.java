@@ -37,7 +37,7 @@ public abstract class AbstractKeyList implements Key
      */
     public boolean isEmpty()
     {
-        return getChildCount() == 0;
+        return getCardinality() == 0;
     }
 
     /* (non-Javadoc)

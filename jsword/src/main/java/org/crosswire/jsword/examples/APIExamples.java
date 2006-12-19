@@ -180,7 +180,7 @@ public class APIExamples
         modifier.setRanked(rank);
 
         Key results = bible.find(new DefaultSearchRequest("for god so loved the world", modifier)); //$NON-NLS-1$
-        int total = results.getChildCount();
+        int total = results.getCardinality();
         int partial = total;
 
         // we get PassageTallys for rank searches

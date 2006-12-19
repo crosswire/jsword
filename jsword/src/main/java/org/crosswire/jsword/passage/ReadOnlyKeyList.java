@@ -42,19 +42,27 @@ public class ReadOnlyKeyList implements Key
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#size()
+     * @see org.crosswire.jsword.passage.Key#getCardinality()
      */
-    public int getChildCount()
+    public int getCardinality()
     {
-        return keys.getChildCount();
+        return keys.getCardinality();
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#isLeaf()
+     * @see org.crosswire.jsword.passage.Key#canHaveChildren()
      */
     public boolean canHaveChildren()
     {
         return keys.canHaveChildren();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getChildCount()
+     */
+    public int getChildCount()
+    {
+        return keys.getChildCount();
     }
 
     /* (non-Javadoc)

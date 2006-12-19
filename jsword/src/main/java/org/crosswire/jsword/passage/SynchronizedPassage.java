@@ -79,15 +79,23 @@ final class SynchronizedPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#size()
+     * @see org.crosswire.jsword.passage.Key#getChildCount()
      */
-    public synchronized int getChildCount()
+    public int getChildCount()
     {
         return ref.getChildCount();
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#isLeaf()
+     * @see org.crosswire.jsword.passage.Key#getCardinality()
+     */
+    public synchronized int getCardinality()
+    {
+        return ref.getCardinality();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#canHaveChildren()
      */
     public boolean canHaveChildren()
     {
