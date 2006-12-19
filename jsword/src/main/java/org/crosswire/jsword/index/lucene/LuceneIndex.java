@@ -40,6 +40,8 @@ import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Searcher;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.RAMDirectory;
 import org.crosswire.common.activate.Activatable;
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
@@ -113,24 +115,38 @@ public class LuceneIndex extends AbstractIndex implements Activatable
         Progress job = JobManager.createJob(Msg.INDEX_START.toString(), Thread.currentThread(), false);
 
         IndexStatus finalStatus = IndexStatus.UNDONE;
+        Analyzer analyzer = new SimpleAnalyzer();
+        List errors = new ArrayList();
+        File tempPath = new File(path + '.' + IndexStatus.CREATING.toString());
+
         try
         {
             synchronized (CREATING)
             {
+
                 book.setIndexStatus(IndexStatus.CREATING);
-                File tempPath = new File(path + '.' + IndexStatus.CREATING.toString());
 
                 // An index is created by opening an IndexWriter with the
                 // create argument set to true.
-                IndexWriter writer = new IndexWriter(tempPath.getCanonicalPath(), new SimpleAnalyzer(), true);
+                //IndexWriter writer = new IndexWriter(tempPath.getCanonicalPath(), analyzer, true);
 
-                List errors = new ArrayList();
+                // Create the index in core.
+                RAMDirectory ramDir = new RAMDirectory();
+                IndexWriter  writer = new IndexWriter(ramDir, analyzer, true);
+
                 generateSearchIndexImpl(job, errors, writer, book.getGlobalKeyList(), 0);
 
                 job.setSectionName(Msg.OPTIMIZING.toString());
                 job.setWork(95);
 
+                // Consolidate the index into the minimum number of files.
                 writer.optimize();
+
+                // Write the core index to disk.
+                IndexWriter fsWriter = new IndexWriter(tempPath.getCanonicalPath(), analyzer, true);
+                fsWriter.addIndexes(new Directory[] { ramDir });
+                fsWriter.close();
+                
                 writer.close();
 
                 job.setCancelable(false);
@@ -143,6 +159,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                 {
                     finalStatus = IndexStatus.DONE;
                 }
+
                 if (errors.size() > 0)
                 {
                     StringBuffer buf = new StringBuffer();
