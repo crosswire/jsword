@@ -662,7 +662,7 @@ public abstract class AccuracyType implements Serializable
         for (int i = 0; i < length; i++)
         {
             curChar = input.charAt(i);
-            boolean charIsDigit = curChar == '$' || Character.isDigit(curChar) || (curChar == 'f' && (i + 1 < length ? input.charAt(i + 1) : ' ') == 'f');
+            boolean charIsDigit = curChar == '$' || Character.isDigit(curChar) || (curChar == 'f' && (i + 1 < length ? input.charAt(i + 1) : ' ') == 'f' && !Character.isLetter(lastChar));
             if (charIsDigit || Character.isLetter(curChar))
             {
                 foundBoundary = true;
