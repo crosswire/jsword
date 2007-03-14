@@ -4,6 +4,6 @@
 	<classpathentry exported="true" kind="src" path="/common"/>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/test/java"/>
-	<classpathentry kind="lib" path="jar/lucene-2.0.0/lucene-core-2.0.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="jar/lucene-2.1.0/lucene-core-2.1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
