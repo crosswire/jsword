@@ -181,4 +181,17 @@ public interface Key extends Comparable, Cloneable, Iterable, Serializable
      * @return A complete copy of ourselves
      */
     Object clone();
+    /**
+     * This needs to be declared here so that it is visible as a method
+     * on a derived Key.
+     * @return true if equal
+     */
+    boolean equals(Object obj);
+
+    /**
+     * This needs to be declared here so that it is visible as a method
+     * on a derived Key.
+     * @return the hashcode
+     */
+    int hashCode();
 }

@@ -66,6 +66,11 @@ public final class BookCategory implements Serializable, Comparable
     /**
      * Books that are not any of the above
      */
+    public static final BookCategory GENERAL_BOOK = new BookCategory("General Book"); //$NON-NLS-1$
+
+    /**
+     * Books that are not any of the above
+     */
     public static final BookCategory OTHER = new BookCategory("Other"); //$NON-NLS-1$
 
     /**
@@ -110,6 +115,22 @@ public final class BookCategory implements Serializable, Comparable
     }
 
     /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public final boolean equals(Object o)
+    {
+        return super.equals(o);
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    public final int hashCode()
+    {
+        return super.hashCode();
+    }
+
+    /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
     public String toString()
@@ -139,6 +160,7 @@ public final class BookCategory implements Serializable, Comparable
         DAILY_DEVOTIONS,
         GLOSSARY,
         QUESTIONABLE,
+        GENERAL_BOOK,
         OTHER,
     };
 

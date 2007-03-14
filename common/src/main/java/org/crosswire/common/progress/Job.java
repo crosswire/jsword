@@ -134,7 +134,7 @@ public final class Job implements Progress
                 }
             }
             predictSection(statedesc);
-            
+
             current.put(statedesc, new Integer((int) (System.currentTimeMillis() - start)));
         }
 

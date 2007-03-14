@@ -1017,6 +1017,37 @@ public class PassageTally extends AbstractPassage
         }
 
         /* (non-Javadoc)
+         * @see java.lang.Object#hashCode()
+         */
+        public int hashCode()
+        {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ord;
+            result = prime * result + tally;
+            return result;
+        }
+
+        /* (non-Javadoc)
+         * @see java.lang.Object#equals(java.lang.Object)
+         */
+        public boolean equals(Object obj)
+        {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            final TalliedVerse other = (TalliedVerse) obj;
+            if (tally != other.tally)
+                return false;
+            if (ord != other.ord)
+                return false;
+            return true;
+        }
+
+        /* (non-Javadoc)
          * @see java.lang.Comparable#compareTo(java.lang.Object)
          */
         public int compareTo(Object obj)
@@ -1145,6 +1176,42 @@ public class PassageTally extends AbstractPassage
         {
             this.range = range;
             this.tally = tally;
+        }
+
+        /* (non-Javadoc)
+         * @see java.lang.Object#hashCode()
+         */
+        public int hashCode()
+        {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + tally;
+            result = prime * result + ((range == null) ? 0 : range.hashCode());
+            return result;
+        }
+
+        /* (non-Javadoc)
+         * @see java.lang.Object#equals(java.lang.Object)
+         */
+        public boolean equals(Object obj)
+        {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            final TalliedVerseRange other = (TalliedVerseRange) obj;
+            if (tally != other.tally)
+                return false;
+            if (range == null)
+            {
+                if (other.range != null)
+                    return false;
+            }
+            else if (!range.equals(other.range))
+                return false;
+            return true;
         }
 
         /* (non-Javadoc)

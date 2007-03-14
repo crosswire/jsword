@@ -70,7 +70,7 @@ public class FontTag extends AbstractTag
         }
 
         String type = buf.toString();
-        if (type != null)
+        if (type.length() > 0)
         {
             seg.setAttribute(OSISUtil.OSIS_ATTR_TYPE, type);
         }

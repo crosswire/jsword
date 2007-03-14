@@ -367,6 +367,22 @@ final class SynchronizedPassage implements Passage
     }
 
     /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    public synchronized int hashCode()
+    {
+        return ref.hashCode();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public synchronized boolean equals(Object obj)
+    {
+        return ref.equals(obj);
+    }
+
+    /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public synchronized int compareTo(Object o)

@@ -165,6 +165,36 @@ public abstract class AbstractKeyList implements Key
     }
 
     /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    /* @Override */
+    public boolean equals(Object obj)
+    {
+        // Since this can not be null
+        if (obj == null)
+        {
+            return false;
+        }
+
+        // Check that that is the same as this
+        // Don't use instanceOf since that breaks inheritance
+        if (!obj.getClass().equals(this.getClass()))
+        {
+            return false;
+        }
+
+        return compareTo(obj) == 0;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode()
+    {
+        return getName().hashCode();
+    }
+
+    /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(Object obj)

@@ -172,7 +172,7 @@ public final class Project
      */
     private URL migrateUserProjectDir(URL oldPath, URL newPath)
     {
-        if (oldPath.equals(newPath))
+        if (oldPath.toExternalForm().equals(newPath.toExternalForm()))
         {
             return newPath;
         }

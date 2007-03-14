@@ -146,7 +146,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                 IndexWriter fsWriter = new IndexWriter(tempPath.getCanonicalPath(), analyzer, true);
                 fsWriter.addIndexes(new Directory[] { ramDir });
                 fsWriter.close();
-                
+
                 writer.close();
 
                 job.setCancelable(false);
