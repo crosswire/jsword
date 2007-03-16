@@ -66,7 +66,7 @@ public final class BookCategory implements Serializable, Comparable
     /**
      * Books that are not any of the above
      */
-    public static final BookCategory GENERAL_BOOK = new BookCategory("General Book"); //$NON-NLS-1$
+    public static final BookCategory GENERAL_BOOK = new BookCategory("General Books"); //$NON-NLS-1$
 
     /**
      * Books that are not any of the above

@@ -242,6 +242,7 @@ public class ConfigEntryType implements Serializable
             "Bible", //$NON-NLS-1$
             "Dictionary", //$NON-NLS-1$
             "Commentary", //$NON-NLS-1$
+            "General Books", //$NON-NLS-1$
         }));
 
         /**

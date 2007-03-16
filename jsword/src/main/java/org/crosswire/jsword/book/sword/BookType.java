@@ -251,7 +251,7 @@ public abstract class BookType implements Serializable
     /**
      * Generic Books
      */
-    public static final BookType RAW_GEN_BOOK = new BookType("RawGenBook", BookCategory.OTHER) //$NON-NLS-1$ 
+    public static final BookType RAW_GEN_BOOK = new BookType("RawGenBook", BookCategory.GENERAL_BOOK) //$NON-NLS-1$ 
     {
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
