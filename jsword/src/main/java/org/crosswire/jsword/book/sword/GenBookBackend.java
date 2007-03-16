@@ -30,6 +30,7 @@ import org.crosswire.common.activate.Lock;
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 
 /**
@@ -113,7 +114,10 @@ public class GenBookBackend extends AbstractBackend
     /* @Override */
     public Key readIndex()
     {
-        return null;
+        SwordBookMetaData bmd = getBookMetaData();
+        Key reply = new DefaultKeyList(null, bmd.getName());
+
+        return reply;
     }
 
     /* (non-Javadoc)

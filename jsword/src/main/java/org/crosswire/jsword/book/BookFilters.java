@@ -53,22 +53,6 @@ public final class BookFilters
     }
 
     /**
-     * Filter for all books
-     */
-    private static BookFilter allBookFilter = new AllBookFilter();
-
-    /**
-     * Filter for all books
-     */
-    static class AllBookFilter implements BookFilter
-    {
-        public boolean test(Book book)
-        {
-            return true;
-        }
-    }
-
-    /**
      * A filter that accepts everything that implements Bible
      */
     public static BookFilter getBibles()
@@ -77,19 +61,11 @@ public final class BookFilters
     }
 
     /**
-     * Filter for all Bibles
+     * A filter that accepts everything that's not a Bible
      */
-    private static BookFilter biblesBookFilter = new BiblesBookFilter();
-
-    /**
-     * Filter for all Bibles
-     */
-    static class BiblesBookFilter implements BookFilter
+    public static BookFilter getNonBibles()
     {
-        public boolean test(Book book)
-        {
-            return book.getBookCategory().equals(BookCategory.BIBLE) && !book.isLocked();
-        }
+        return noneBibleBookFilter;
     }
 
     /**
@@ -101,21 +77,11 @@ public final class BookFilters
     }
 
     /**
-     * Filter for all dictionaries
+     * A filter that accepts everything that implements Dictionary
      */
-    private static BookFilter dictionariesBookFilter = new DictionariesBookFilter();
-
-    /**
-     * Filter for all dictionaries
-     */
-    static class DictionariesBookFilter implements BookFilter
+    public static BookFilter getGlossaries()
     {
-        public boolean test(Book book)
-        {
-            BookCategory category = book.getBookCategory();
-            return (category.equals(BookCategory.DICTIONARY) || category.equals(BookCategory.GLOSSARY))
-                  && !book.isLocked();
-        }
+        return glossariesBookFilter;
     }
 
     /**
@@ -127,23 +93,6 @@ public final class BookFilters
     }
 
     /**
-     * Filter for all dictionaries
-     */
-    private static BookFilter dailyDevotionalsBookFilter = new DailyDevotionalsBookFilter();
-
-    /**
-     * Filter for all dictionaries
-     */
-    static class DailyDevotionalsBookFilter implements BookFilter
-    {
-        public boolean test(Book book)
-        {
-            BookCategory category = book.getBookCategory();
-            return category.equals(BookCategory.DAILY_DEVOTIONS) && !book.isLocked();
-        }
-    }
-
-    /**
      * A filter that accepts everything that implements Commentary
      */
     public static BookFilter getCommentaries()
@@ -152,19 +101,11 @@ public final class BookFilters
     }
 
     /**
-     * Filter for all commentaries
+     * A filter that accepts everything that implements GeneralBook
      */
-    private static BookFilter commentariesBookFilter = new CommentariesBookFilter();
-
-    /**
-     * Filter for all commentaries
-     */
-    static class CommentariesBookFilter implements BookFilter
+    public static BookFilter getGeneralBooks()
     {
-        public boolean test(Book book)
-        {
-            return book.getBookCategory().equals(BookCategory.COMMENTARY) && !book.isLocked();
-        }
+        return generalBookFilter;
     }
 
     /**
@@ -177,44 +118,12 @@ public final class BookFilters
     }
 
     /**
-     * Filter for all Greek Definition Dictionaries
-     */
-    private static BookFilter greekDefinitionsBookFilter = new GreekDefinitionsBookFilter();
-
-    /**
-     * Filter for all Greek Definition Dictionaries
-     */
-    static class GreekDefinitionsBookFilter implements BookFilter
-    {
-        public boolean test(Book book)
-        {
-            return book.hasFeature(FeatureType.GREEK_DEFINITIONS) && !book.isLocked();
-        }
-    }
-
-    /**
      * A filter that accepts everything that is a
      * Greek Parse/Morphology Dictionary
      */
     public static BookFilter getGreekParse()
     {
         return greekParseBookFilter;
-    }
-
-    /**
-     * Filter for all Greek Parse/Morphology Dictionaries
-     */
-    private static BookFilter greekParseBookFilter = new GreekParseBookFilter();
-
-    /**
-     * Filter for all Greek Parse/Morphology Dictionaries
-     */
-    static class GreekParseBookFilter implements BookFilter
-    {
-        public boolean test(Book book)
-        {
-            return book.hasFeature(FeatureType.GREEK_PARSE) && !book.isLocked();
-        }
     }
 
     /**
@@ -227,22 +136,6 @@ public final class BookFilters
     }
 
     /**
-     * Filter for all Hebrew Definition Dictionaries
-     */
-    private static BookFilter hebrewDefinitionsBookFilter = new HebrewDefinitionsBookFilter();
-
-    /**
-     * Filter for all Hebrew Definition Dictionaries
-     */
-    static class HebrewDefinitionsBookFilter implements BookFilter
-    {
-        public boolean test(Book book)
-        {
-            return book.hasFeature(FeatureType.HEBREW_DEFINITIONS) && !book.isLocked();
-        }
-    }
-
-    /**
      * A filter that accepts everything that is a
      * Hebrew Parse/Morphology Dictionary
      */
@@ -252,19 +145,140 @@ public final class BookFilters
     }
 
     /**
-     * Filter for all Hebrew Parse/Morphology Dictionaries
+     * Filter for all books
      */
-    private static BookFilter hebrewParseBookFilter = new HebrewParseBookFilter();
+    private static BookFilter allBookFilter = new AllBookFilter();
+
+    /**
+     * Filter for all Bibles
+     */
+    private static BookFilter biblesBookFilter = new BookCategoryFilter(BookCategory.BIBLE);
+
+    /**
+     * Filter for all non-Bibles
+     */
+    private static BookFilter noneBibleBookFilter = new NotBookCategoryFilter(BookCategory.BIBLE);
+
+    /**
+     * Filter for all dictionaries
+     */
+    private static BookFilter dictionariesBookFilter = new BookCategoryFilter(BookCategory.DICTIONARY);
+
+    /**
+     * Filter for all glossaries
+     */
+    private static BookFilter glossariesBookFilter = new BookCategoryFilter(BookCategory.GLOSSARY);
+
+    /**
+     * Filter for all dictionaries
+     */
+    private static BookFilter dailyDevotionalsBookFilter = new BookCategoryFilter(BookCategory.DAILY_DEVOTIONS);
+
+    /**
+     * Filter for all commentaries
+     */
+    private static BookFilter commentariesBookFilter = new BookCategoryFilter(BookCategory.COMMENTARY);
+
+    /**
+     * Filter for all commentaries
+     */
+    private static BookFilter generalBookFilter = new BookCategoryFilter(BookCategory.GENERAL_BOOK);
+
+    /**
+     * Filter for all Greek Definition Dictionaries
+     */
+    private static BookFilter greekDefinitionsBookFilter = new BookFeatureFilter(FeatureType.GREEK_DEFINITIONS);
+
+    /**
+     * Filter for all Greek Parse/Morphology Dictionaries
+     */
+    private static BookFilter greekParseBookFilter = new BookFeatureFilter(FeatureType.GREEK_PARSE);
+
+    /**
+     * Filter for all Hebrew Definition Dictionaries
+     */
+    private static BookFilter hebrewDefinitionsBookFilter = new BookFeatureFilter(FeatureType.HEBREW_DEFINITIONS);
 
     /**
      * Filter for all Hebrew Parse/Morphology Dictionaries
      */
-    static class HebrewParseBookFilter implements BookFilter
+    private static BookFilter hebrewParseBookFilter = new BookFeatureFilter(FeatureType.HEBREW_PARSE);
+
+    /**
+     * Filter for all books
+     */
+    static class AllBookFilter implements BookFilter
     {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.BookFilter#test(org.crosswire.jsword.book.Book)
+         */
         public boolean test(Book book)
         {
-            return book.hasFeature(FeatureType.HEBREW_PARSE) && !book.isLocked();
+            return true;
         }
+    }
+
+    /**
+     * Filter for books by category
+     */
+    static class BookCategoryFilter implements BookFilter
+    {
+        BookCategoryFilter(BookCategory category)
+        {
+            this.category = category;
+        }
+
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.BookFilter#test(org.crosswire.jsword.book.Book)
+         */
+        public boolean test(Book book)
+        {
+            return book.getBookCategory().equals(category) && !book.isLocked();
+        }
+
+        private BookCategory category;
+    }
+
+    /**
+     * Filter for books by category
+     */
+    static class NotBookCategoryFilter implements BookFilter
+    {
+        NotBookCategoryFilter(BookCategory category)
+        {
+            this.category = category;
+        }
+
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.BookFilter#test(org.crosswire.jsword.book.Book)
+         */
+        public boolean test(Book book)
+        {
+            return !book.getBookCategory().equals(category) && !book.isLocked();
+        }
+
+        private BookCategory category;
+    }
+
+    /**
+     * Filter for books by feature
+     */
+    static class BookFeatureFilter implements BookFilter
+    {
+        BookFeatureFilter(FeatureType feature)
+        {
+            this.feature = feature;
+        }
+
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.BookFilter#test(org.crosswire.jsword.book.Book)
+         */
+        public boolean test(Book book)
+        {
+            return book.hasFeature(feature) && !book.isLocked();
+        }
+
+        private FeatureType feature;
     }
 
     /**
@@ -296,7 +310,7 @@ public final class BookFilters
     }
 
     /**
-     * A filter that accepts Books that match either of two criteria.
+     * A filter that accepts Books that match by book driver.
      */
     public static BookFilter getBooksByDriver(final BookDriver driver)
     {

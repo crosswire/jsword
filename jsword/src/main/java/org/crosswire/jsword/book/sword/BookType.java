@@ -255,7 +255,7 @@ public abstract class BookType implements Serializable
     {
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
         {
-            return new SwordBook(sbmd, backend);
+            return new SwordGenBook(sbmd, backend);
         }
 
         protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
