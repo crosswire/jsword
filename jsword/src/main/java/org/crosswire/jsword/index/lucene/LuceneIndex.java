@@ -140,14 +140,16 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                 job.setWork(95);
 
                 // Consolidate the index into the minimum number of files.
-                writer.optimize();
+                // writer.optimize(); /* Optimize is done by addIndexes */
+                writer.close();
 
                 // Write the core index to disk.
                 IndexWriter fsWriter = new IndexWriter(tempPath.getCanonicalPath(), analyzer, true);
                 fsWriter.addIndexes(new Directory[] { ramDir });
                 fsWriter.close();
 
-                writer.close();
+                // Free up the space used by the ram directory
+                ramDir.close();
 
                 job.setCancelable(false);
                 if (!job.isFinished())

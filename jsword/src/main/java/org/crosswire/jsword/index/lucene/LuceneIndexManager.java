@@ -57,8 +57,7 @@ public class LuceneIndexManager implements IndexManager
         try
         {
             URL storage = getStorageArea(book);
-            URL longer = NetUtil.lengthenURL(storage, DIR_SEGMENTS);
-            return NetUtil.isFile(longer);
+            return NetUtil.isDirectory(storage);
         }
         catch (IOException ex)
         {
@@ -202,12 +201,7 @@ public class LuceneIndexManager implements IndexManager
      */
     protected static final Map INDEXES = new HashMap();
 
-    /**
-     * The segments directory
-     */
-    private static final String DIR_SEGMENTS = "segments"; //$NON-NLS-1$
-
-    /**
+   /**
      * The lucene search index directory
      */
     private static final String DIR_LUCENE = "lucene"; //$NON-NLS-1$
