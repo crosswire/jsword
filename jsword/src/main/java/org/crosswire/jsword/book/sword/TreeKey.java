@@ -30,25 +30,42 @@ import org.crosswire.jsword.passage.Key;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-class IndexKey extends DefaultLeafKeyList
+class TreeKey extends DefaultLeafKeyList
 {
     /**
      * Setup with the key name and positions of data in the file
      */
-    IndexKey(String text, int offset, int size, Key parent)
+    TreeKey(TreeNode node, Key parent)
     {
-        super(text, text, parent);
+        super(node.getName(), node.getName(), parent);
 
-        this.offset = offset;
-        this.size = size;
+        this.node = node;
     }
 
     /**
      * Setup with the key name. Use solely for searching.
      */
-    IndexKey(String text)
+    TreeKey(String text)
     {
-        this(text, -1, -1, null);
+        super(text, text, null);
+
+        this.node = null;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName()
+    {
+        return node.getName();
+    }
+
+    /**
+     * @param newName the offset to set
+     */
+    public void setName(String newName)
+    {
+        node.setName(newName);
     }
 
     /**
@@ -56,7 +73,7 @@ class IndexKey extends DefaultLeafKeyList
      */
     public int getOffset()
     {
-        return offset;
+        return node.getOffset();
     }
 
     /**
@@ -64,23 +81,7 @@ class IndexKey extends DefaultLeafKeyList
      */
     public void setOffset(int newOffset)
     {
-        offset = newOffset;
-    }
-
-    /**
-     * @return the size
-     */
-    public int getSize()
-    {
-        return size;
-    }
-
-    /**
-     * @param newSize the size to set
-     */
-    public void setSize(int newSize)
-    {
-        size = newSize;
+        node.setOffset(newOffset);
     }
 
     /* (non-Javadoc)
@@ -91,12 +92,11 @@ class IndexKey extends DefaultLeafKeyList
         return super.clone();
     }
 
-    private int offset;
-    private int size;
+    private TreeNode node;
 
     /**
      * Serialization ID
      */
-    private static final long serialVersionUID = -2472601787934480762L;
+    private static final long serialVersionUID = -6560408145705717977L;
 
 }

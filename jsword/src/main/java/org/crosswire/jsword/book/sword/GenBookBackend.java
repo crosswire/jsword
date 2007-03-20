@@ -48,6 +48,9 @@ public class GenBookBackend extends AbstractBackend
     public GenBookBackend(SwordBookMetaData sbmd) throws BookException
     {
         super(sbmd);
+
+        index = new TreeKeyIndex(sbmd);
+
         String path = getExpandedDataPath();
         bdtFile = new File(path + EXTENSION_BDT);
 
@@ -96,6 +99,9 @@ public class GenBookBackend extends AbstractBackend
             bdtRaf = null;
         }
         active = false;
+
+        // Also deactivate the index
+        Activator.deactivate(index);
     }
 
     /* (non-Javadoc)
@@ -117,6 +123,17 @@ public class GenBookBackend extends AbstractBackend
         SwordBookMetaData bmd = getBookMetaData();
         Key reply = new DefaultKeyList(null, bmd.getName());
 
+        try
+        {
+            TreeNode node = index.getRoot();
+            TreeKey key = new TreeKey(node, null);
+            reply.addAll(key);
+        }
+        catch (IOException e)
+        {
+            log.error("Could not get root of GenBook", e); //$NON-NLS-1$
+        }
+        
         return reply;
     }
 
@@ -155,6 +172,10 @@ public class GenBookBackend extends AbstractBackend
      */
     private RandomAccessFile bdtRaf;
 
+    /**
+     * The raw index file
+     */
+    private TreeKeyIndex index;
     /**
      * Are we active
      */

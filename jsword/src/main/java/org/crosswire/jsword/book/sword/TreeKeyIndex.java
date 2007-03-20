@@ -128,6 +128,7 @@ public class TreeKeyIndex implements Activatable
             return -1;
         }
 
+        checkActive();
         byte[] buffer = SwordUtil.readRAF(idxRaf, index, 4);
         return SwordUtil.decodeLittleEndian32(buffer, 0);
     }
@@ -147,6 +148,7 @@ public class TreeKeyIndex implements Activatable
             return node;
         }
 
+        checkActive();
         byte[] buffer = SwordUtil.readRAF(datRaf, offset, 12);
         node.setParent(SwordUtil.decodeLittleEndian32(buffer, 0));
         node.setNextSibling(SwordUtil.decodeLittleEndian32(buffer, 4));
