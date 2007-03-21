@@ -43,6 +43,7 @@ public class DefaultKeyList extends AbstractKeyList
      */
     public DefaultKeyList()
     {
+        super(null);
     }
 
     /**
@@ -50,8 +51,8 @@ public class DefaultKeyList extends AbstractKeyList
      */
     public DefaultKeyList(Key parent, String name)
     {
+        super(name);
         this.parent = parent;
-        setName(name);
     }
 
     /* (non-Javadoc)

@@ -42,7 +42,7 @@ public class SetKeyList extends AbstractKeyList
      */
     public SetKeyList(Set set)
     {
-        list.addAll(set);
+        this(set, null, null);
     }
 
     /**
@@ -50,8 +50,7 @@ public class SetKeyList extends AbstractKeyList
      */
     public SetKeyList(Set set, String name)
     {
-        list.addAll(set);
-        setName(name);
+        this(set, null, name);
     }
 
     /**
@@ -59,8 +58,7 @@ public class SetKeyList extends AbstractKeyList
      */
     public SetKeyList(Set set, Key parent)
     {
-        list.addAll(set);
-        this.parent = parent;
+        this(set, parent, null);
     }
 
     /**
@@ -68,9 +66,9 @@ public class SetKeyList extends AbstractKeyList
      */
     public SetKeyList(Set set, Key parent, String name)
     {
-        list.addAll(set);
+        super(name);
         this.parent = parent;
-        setName(name);
+        list.addAll(set);
     }
 
     /* (non-Javadoc)

@@ -32,6 +32,15 @@ import java.util.Iterator;
  */
 public abstract class AbstractKeyList implements Key
 {
+    /**
+     * Build an AbstractKeyList with the given name.
+     * @param name
+     */
+    protected AbstractKeyList(String name)
+    {
+        this.name = name;
+    }
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#isEmpty()
      */
@@ -201,8 +210,28 @@ public abstract class AbstractKeyList implements Key
     {
         Key that = (Key) obj;
 
-        Key thisfirst = (Key) this.iterator().next();
-        Key thatfirst = (Key) that.iterator().next();
+        int ret = this.getName().compareTo(that.getName());
+
+        if (ret != 0)
+        {
+            return ret;
+        }
+
+        Iterator thisIter = this.iterator();
+        Iterator thatIter = that.iterator();
+
+        Key thisfirst = null;
+        Key thatfirst = null;
+
+        if (thisIter.hasNext())
+        {
+            thisfirst = (Key) thisIter.next();
+        }
+
+        if (thatIter.hasNext())
+        {
+            thatfirst = (Key) thatIter.next();
+        }
 
         if (thisfirst == null)
         {

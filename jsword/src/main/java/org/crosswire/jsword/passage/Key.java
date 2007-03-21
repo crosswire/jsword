@@ -112,7 +112,7 @@ public interface Key extends Comparable, Cloneable, Iterable, Serializable
     int getCardinality();
 
     /**
-     * Does this Passage have 0 members
+     * Does this Key have 0 members
      * @return <tt>true</tt> if this set contains no elements.
      */
     boolean isEmpty();
@@ -153,14 +153,14 @@ public interface Key extends Comparable, Cloneable, Iterable, Serializable
     void clear();
 
     /**
-     * Gets a key from a specific point in this list.
+     * Gets a key from a specific point in this list of children.
      * @param index The index of the Key to retrieve
      * @return The specified key
      */
     Key get(int index);
 
     /**
-     * Reverse a Key into the position the key holds in the list
+     * Reverse a Key into the position the key holds in the list of children
      * @param that The Key to find
      * @return The index of the key or -1 if the key is not in the list
      */
@@ -181,6 +181,7 @@ public interface Key extends Comparable, Cloneable, Iterable, Serializable
      * @return A complete copy of ourselves
      */
     Object clone();
+
     /**
      * This needs to be declared here so that it is visible as a method
      * on a derived Key.

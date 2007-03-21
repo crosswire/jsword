@@ -20,8 +20,14 @@ package org.crosswire.jsword.book.sword;
  *
  * ID: $Id: LZSSBackend.java 1143 2006-10-04 22:07:23 -0400 (Wed, 04 Oct 2006) dmsmith $
  */
-import org.crosswire.jsword.passage.DefaultLeafKeyList;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.passage.AbstractKeyList;
 import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.RestrictionType;
 
 /**
  * A Key that knows where the data is in the real file.
@@ -30,16 +36,16 @@ import org.crosswire.jsword.passage.Key;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-class TreeKey extends DefaultLeafKeyList
+class TreeKey extends AbstractKeyList
 {
     /**
      * Setup with the key name and positions of data in the file
      */
-    TreeKey(TreeNode node, Key parent)
+    TreeKey(String name, Key parent)
     {
-        super(node.getName(), node.getName(), parent);
-
-        this.node = node;
+        super(name);
+        this.parent = parent;
+        this.children = new ArrayList();
     }
 
     /**
@@ -47,41 +53,136 @@ class TreeKey extends DefaultLeafKeyList
      */
     TreeKey(String text)
     {
-        super(text, text, null);
-
-        this.node = null;
+        this(text, null);
     }
 
-    /**
-     * @return the name
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#canHaveChildren()
      */
-    public String getName()
+    public boolean canHaveChildren()
     {
-        return node.getName();
+        return true;
     }
 
-    /**
-     * @param newName the offset to set
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getChildCount()
      */
-    public void setName(String newName)
+    public int getChildCount()
     {
-        node.setName(newName);
+        return children.size();
     }
 
-    /**
-     * @return the offset
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getCardinality()
      */
-    public int getOffset()
+    public int getCardinality()
     {
-        return node.getOffset();
+        int cardinality = 1; // count this node
+        Iterator iter = children.iterator();
+        while (iter.hasNext())
+        {
+            Key child = (Key) iter.next();
+            cardinality += child.getCardinality();
+        }
+
+        return cardinality;
     }
 
-    /**
-     * @param newOffset the offset to set
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#isEmpty()
      */
-    public void setOffset(int newOffset)
+    /* @Override */
+    public boolean isEmpty()
     {
-        node.setOffset(newOffset);
+        return children.isEmpty();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
+     */
+    /* @Override */
+    public boolean contains(Key key)
+    {
+        if (children.contains(key))
+        {
+            return true;
+        }
+
+        Iterator iter = children.iterator();
+        while (iter.hasNext())
+        {
+            Key child = (Key) iter.next();
+            if (child.contains(key))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#iterator()
+     */
+    public Iterator iterator()
+    {
+        return children.iterator();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#add(org.crosswire.jsword.passage.Key)
+     */
+    public void addAll(Key key)
+    {
+        children.add(key);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#remove(org.crosswire.jsword.passage.Key)
+     */
+    public void removeAll(Key key)
+    {
+        children.remove(key);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#clear()
+     */
+    public void clear()
+    {
+        children.clear();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#get(int)
+     */
+    public Key get(int index)
+    {
+        return (Key) children.get(index);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage.Key)
+     */
+    public int indexOf(Key that)
+    {
+        return children.indexOf(that);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getParent()
+     */
+    public Key getParent()
+    {
+        return parent;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#blur(int)
+     */
+    public void blur(int by, RestrictionType restrict)
+    {
+        log.warn("attempt to blur a non-blur-able list"); //$NON-NLS-1$
     }
 
     /* (non-Javadoc)
@@ -92,11 +193,17 @@ class TreeKey extends DefaultLeafKeyList
         return super.clone();
     }
 
-    private TreeNode node;
+    private Key parent;
+
+    private List children;
 
     /**
      * Serialization ID
      */
     private static final long serialVersionUID = -6560408145705717977L;
 
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(TreeKey.class);
 }

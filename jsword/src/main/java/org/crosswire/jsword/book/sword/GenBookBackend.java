@@ -126,17 +126,48 @@ public class GenBookBackend extends AbstractBackend
         try
         {
             TreeNode node = index.getRoot();
-            TreeKey key = new TreeKey(node, null);
-            reply.addAll(key);
+            reply = new TreeKey(node.getName(), null);
+            doReadIndex(node, reply);
         }
         catch (IOException e)
         {
-            log.error("Could not get root of GenBook", e); //$NON-NLS-1$
+            log.error("Could not get read GenBook index", e); //$NON-NLS-1$
         }
         
         return reply;
     }
 
+    /**
+     * A helper function to recursively read the entire tree.
+     * 
+     * @param parentNode the current node whose children are being sought
+     * @param parentKey
+     * @throws IOException 
+     */
+    private void doReadIndex(TreeNode parentNode, Key parentKey) throws IOException
+    {
+        TreeNode currentNode = parentNode;
+        if (currentNode.hasChildren())
+        {
+            TreeNode childNode = index.getFirstChild(currentNode);
+            do
+            {
+                TreeKey childKey = new TreeKey(childNode.getName(), parentKey);
+                parentKey.addAll(childKey);
+
+                // Build the tree as deep as possible
+                doReadIndex(childNode, childKey);
+
+                if (!childNode.hasNextSibling())
+                {
+                    break;
+                }
+
+                childNode = index.getNextSibling(childNode);
+            }
+            while (true);
+        }
+    }
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#isSupported()
      */

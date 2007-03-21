@@ -113,6 +113,14 @@ class TreeNode implements Cloneable, Serializable
     }
 
     /**
+     * @return whether there are children
+     */
+    public boolean hasChildren()
+    {
+        return firstChild != -1;
+    }
+
+    /**
      * @param firstChild the firstChild to set
      */
     public void setFirstChild(int firstChild)
@@ -126,6 +134,14 @@ class TreeNode implements Cloneable, Serializable
     public int getNextSibling()
     {
         return nextSibling;
+    }
+
+    /**
+     * @return if there are more siblings
+     */
+    public boolean hasNextSibling()
+    {
+        return nextSibling != -1;
     }
 
     /**
