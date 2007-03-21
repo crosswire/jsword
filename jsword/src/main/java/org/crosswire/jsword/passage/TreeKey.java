@@ -1,4 +1,4 @@
-package org.crosswire.jsword.book.sword;
+package org.crosswire.jsword.passage;
 /**
  * Distribution License:
  * JSword is free software; you can redistribute it and/or modify it under
@@ -25,9 +25,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.jsword.passage.AbstractKeyList;
-import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.RestrictionType;
 
 /**
  * A Key that knows where the data is in the real file.

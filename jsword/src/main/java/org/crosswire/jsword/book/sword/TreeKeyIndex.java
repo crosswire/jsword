@@ -162,7 +162,8 @@ public class TreeKeyIndex implements Activatable
         }
 
         Key key = new DefaultKeyList(null, bmd.getName());
-        node.setName(SwordUtil.decode(key, buffer, size, bmd.getBookCharset()));
+        // Some of the keys have extraneous whitespace, so remove it.
+        node.setName(SwordUtil.decode(key, buffer, size, bmd.getBookCharset()).trim());
 
         buffer = SwordUtil.readNextRAF(datRaf, 2);
         int userDataSize = SwordUtil.decodeLittleEndian16(buffer, 0);
