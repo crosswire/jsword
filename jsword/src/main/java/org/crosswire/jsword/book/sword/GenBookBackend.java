@@ -24,6 +24,8 @@ package org.crosswire.jsword.book.sword;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
@@ -32,6 +34,7 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.TreeKey;
 
 /**
  * Backend for General Books. These are currently not supported.
@@ -111,6 +114,60 @@ public class GenBookBackend extends AbstractBackend
     public String getRawText(Key key) throws BookException
     {
         checkActive();
+        List path = new ArrayList();
+        Key parentKey = key;
+        do
+        {
+            path.add(parentKey.getName());
+            parentKey = parentKey.getParent();
+        }
+        while (parentKey != null && parentKey.getName().length() > 0);
+
+        try
+        {
+            TreeNode node = index.getRoot();
+
+            node = index.getFirstChild(node);
+
+            for (int i = path.size() - 1; i >= 0; i--)
+            {
+                String name = (String) path.get(i);
+                
+//                System.err.println("--" + name + "--"); //$NON-NLS-1$ //$NON-NLS-2$
+                while (!name.equals(node.getName()))
+                {
+//                    System.err.println("compare to " + node.getName()); //$NON-NLS-1$
+                    if (node.hasNextSibling())
+                    {
+                        node = index.getNextSibling(node);
+                    }
+                    else
+                    {
+                        log.error("Could not find " + name); //$NON-NLS-1$
+                        break;
+                    }
+                }
+//                System.err.println("compare to " + node.getName()); //$NON-NLS-1$
+
+                if (name.equals(node.getName()))
+                {
+                    if (i > 0)
+                    {
+                        node = index.getFirstChild(node);
+                    }
+                }
+            }
+
+            if (node.getName().equals(key.getName()))
+            {
+                return "Content of " + key.getName(); //$NON-NLS-1$
+            }
+        }
+        catch (IOException e)
+        {
+            log.error("Could not get GenBook text", e); //$NON-NLS-1$
+        }
+        
         return ""; //$NON-NLS-1$
     }
 

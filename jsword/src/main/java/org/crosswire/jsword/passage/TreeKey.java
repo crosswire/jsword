@@ -31,14 +31,14 @@ import org.crosswire.common.util.Logger;
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
- * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-class TreeKey extends AbstractKeyList
+public class TreeKey extends AbstractKeyList
 {
     /**
      * Setup with the key name and positions of data in the file
      */
-    TreeKey(String name, Key parent)
+    public TreeKey(String name, Key parent)
     {
         super(name);
         this.parent = parent;
@@ -48,7 +48,7 @@ class TreeKey extends AbstractKeyList
     /**
      * Setup with the key name. Use solely for searching.
      */
-    TreeKey(String text)
+    public TreeKey(String text)
     {
         this(text, null);
     }
@@ -190,8 +190,14 @@ class TreeKey extends AbstractKeyList
         return super.clone();
     }
 
+    /**
+     * The parent of this key.
+     */
     private Key parent;
 
+    /**
+     * The immediate children of this tree node.
+     */
     private List children;
 
     /**
