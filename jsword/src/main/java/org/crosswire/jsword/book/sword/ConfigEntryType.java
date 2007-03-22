@@ -761,7 +761,6 @@ public class ConfigEntryType implements Serializable
 
     /**
      * Books with a Feature of Glossary are used to map words FROM one language TO another.
-     * TODO(DMS): layout the glossary based on the direction of the FROM.
      */
     public static final ConfigEntryType GLOSSARY_FROM = new ConfigEntryType("GlossaryFrom"); //$NON-NLS-1$
 

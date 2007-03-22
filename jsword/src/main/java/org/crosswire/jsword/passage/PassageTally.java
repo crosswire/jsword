@@ -1000,7 +1000,7 @@ public class PassageTally extends AbstractPassage
     }
 
     /**
-     * JDK: Hack to make this work with J2SE 1.1 as well as J2SE 1.2
+     * Hack to make this work with J2SE 1.1 as well as J2SE 1.2
      * This compared 2 Integers
      */
     private static class TalliedVerse implements Comparable

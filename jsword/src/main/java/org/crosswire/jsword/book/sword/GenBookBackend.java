@@ -37,7 +37,7 @@ import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.TreeKey;
 
 /**
- * Backend for General Books. These are currently not supported.
+ * Backend for General Books.
  *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.

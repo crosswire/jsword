@@ -224,8 +224,6 @@ public class SwordBookDriver extends AbstractBookDriver
         BookType modtype = sbmd.getBookType();
         if (modtype.getBookCategory() == null)
         {
-            // LATER(joe): how do we support books?
-            log.warn("No support for book type: DRIVER_RAW_GEN_BOOK"); //$NON-NLS-1$
             throw new BookException(Msg.TYPE_UNSUPPORTED);
         }
 
