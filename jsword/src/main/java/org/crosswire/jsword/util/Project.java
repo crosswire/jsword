@@ -181,7 +181,11 @@ public final class Project
         {
             File oldDir = new File(oldPath.getFile());
             File newDir = new File(newPath.getFile());
-            if (oldDir.renameTo(newDir))
+
+            // This will return false if it could not rename.
+            // This will happen if the directory already exists.
+            oldDir.renameTo(newDir);
+            if (NetUtil.isDirectory(newPath))
             {
                 return newPath;
             }

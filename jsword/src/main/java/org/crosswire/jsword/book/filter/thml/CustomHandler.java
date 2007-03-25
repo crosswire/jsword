@@ -262,10 +262,12 @@ public class CustomHandler extends DefaultHandler
             new UlTag(),
             new AliasTag("em", new ITag()), //$NON-NLS-1$
             new AliasTag("strong", new BTag()), //$NON-NLS-1$
-            new AliasTag("h1", new BTag()), //$NON-NLS-1$
-            new AliasTag("h2", new BTag()), //$NON-NLS-1$
-            new AliasTag("h3", new BTag()), //$NON-NLS-1$
-            new AliasTag("h4", new BTag()), //$NON-NLS-1$
+            new AliasTag("h1", new HTag(1)), //$NON-NLS-1$
+            new AliasTag("h2", new HTag(2)), //$NON-NLS-1$
+            new AliasTag("h3", new HTag(3)), //$NON-NLS-1$
+            new AliasTag("h4", new HTag(4)), //$NON-NLS-1$
+            new AliasTag("h5", new HTag(5)), //$NON-NLS-1$
+            new AliasTag("h6", new HTag(6)), //$NON-NLS-1$
             new AliasTag("dl", new UlTag()), //$NON-NLS-1$
             new AliasTag("dd", new LiTag()), //$NON-NLS-1$
             new AliasTag("dt", new LiTag()), //$NON-NLS-1$

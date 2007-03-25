@@ -247,6 +247,7 @@ public final class OSISUtil
     public static final String OSIS_ATTR_TYPE = "type"; //$NON-NLS-1$
     public static final String OSIS_ATTR_SUBTYPE = "subType"; //$NON-NLS-1$
     public static final String OSIS_ATTR_REF = "osisRef"; //$NON-NLS-1$
+    public static final String OSIS_ATTR_LEVEL = "level"; //$NON-NLS-1$
     public static final String ATTRIBUTE_SPEAKER_WHO = "who"; //$NON-NLS-1$
     public static final String ATTRIBUTE_W_MORPH = "morph"; //$NON-NLS-1$
     public static final String ATTRIBUTE_OSISTEXT_OSISIDWORK = "osisIDWork"; //$NON-NLS-1$

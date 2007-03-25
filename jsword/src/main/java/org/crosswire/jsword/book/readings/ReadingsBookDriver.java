@@ -23,6 +23,8 @@ package org.crosswire.jsword.book.readings;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.ResourceUtil;
@@ -46,10 +48,14 @@ public class ReadingsBookDriver extends AbstractBookDriver
      */
     public ReadingsBookDriver()
     {
-        books = new Book[]
+        List bookList = new ArrayList();
+        String[] installedBooks = getInstalledReadingsSets();
+        for (int i = 0; i < installedBooks.length; i++)
         {
-            new ReadingsBook(this, BookCategory.DAILY_DEVOTIONS),
-        };
+            bookList.add(new ReadingsBook(this, installedBooks[i], BookCategory.DAILY_DEVOTIONS));
+        }
+
+        books = (Book[]) bookList.toArray(new Book[bookList.size()]);
     }
 
     /* (non-Javadoc)
@@ -82,7 +88,7 @@ public class ReadingsBookDriver extends AbstractBookDriver
     /**
      * Get a list of the available readings sets
      */
-    public static String[] getInstalledReadingsSets()
+    public String[] getInstalledReadingsSets()
     {
         try
         {
@@ -102,31 +108,6 @@ public class ReadingsBookDriver extends AbstractBookDriver
     }
 
     /**
-     * Accessor for the current readings set
-     */
-    public static String getReadingsSet()
-    {
-        if (set == null)
-        {
-            String[] readings = getInstalledReadingsSets();
-            if (readings.length > 0)
-            {
-                set = readings[0];
-            }
-        }
-
-        return set;
-    }
-
-    /**
-     * Accessor for the current readings set
-     */
-    public static void setReadingsSet(String set)
-    {
-        ReadingsBookDriver.set = set;
-    }
-
-    /**
      * The meta data array
      */
     private Book[] books;
@@ -140,9 +121,4 @@ public class ReadingsBookDriver extends AbstractBookDriver
      * A shared instance of this driver.
      */
     private static final BookDriver INSTANCE = new ReadingsBookDriver();
-
-    /**
-     * The current readings set
-     */
-    private static String set;
 }

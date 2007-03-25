@@ -27,9 +27,12 @@ import java.util.logging.LogRecord;
 
 /**
  * This class is very similar to Commons-Logging except it should be even
- * smaller and have an API closer to the Log4J API (and even J2SE 1.4 logging)
- * to help us to move over.
- * Having our own class will also help with re-factoring.
+ * smaller and have an API closer to the Log4J API (and even J2SE 1.4 logging).
+ * 
+ * This implementation is lazy. The actual internal logger is not initialized
+ * until first use. Turns out that this class indirectly depends upon JSword's
+ * Project class to help find the logging configuration file. If it is not
+ * lazy, it looks in the wrong places for the configuration file.
  *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
@@ -51,7 +54,7 @@ public final class Logger
      */
     public static void outputNothing()
     {
-        java.util.logging.Logger.getLogger(ROOT_LOGGER).setLevel(Level.OFF);
+        level = Level.OFF;
     }
 
     /**
@@ -59,7 +62,7 @@ public final class Logger
      */
     public static void outputInfoMinimum()
     {
-        java.util.logging.Logger.getLogger(ROOT_LOGGER).setLevel(Level.WARNING);
+        level = Level.WARNING;
     }
 
     /**
@@ -67,7 +70,7 @@ public final class Logger
      */
     public static void outputEverything()
     {
-        java.util.logging.Logger.getLogger(ROOT_LOGGER).setLevel(Level.FINEST);
+        level = Level.FINEST;
     }
 
     /**
@@ -75,7 +78,7 @@ public final class Logger
      */
     private Logger(Class id)
     {
-        logger = java.util.logging.Logger.getLogger(id.getName());
+        clazz = id;
     }
 
     /**
@@ -156,17 +159,22 @@ public final class Logger
      */
     public void debug(String message)
     {
+        initialize();
         logger.fine(message);
     }
 
     // Private method to infer the caller's class and method names
-    private void doLogging(Level level, String message, Throwable th)
+    private void doLogging(Level theLevel, String message, Throwable th)
     {
+        initialize();
+
         String className = null;
         String methodName = null;
         int lineNumber = -1;
+ 
         // Get the stack trace.
         StackTraceElement[] stack = (new Throwable()).getStackTrace();
+
         // First, search back to a method in the Logger class.
         int ix = 0;
         while (ix < stack.length)
@@ -179,6 +187,7 @@ public final class Logger
             }
             ix++;
         }
+
         // Now search for the first frame before the "Logger" class.
         while (ix < stack.length)
         {
@@ -194,7 +203,8 @@ public final class Logger
             }
             ix++;
         }
-        LogRecord logRecord = new LogRecord(level, message);
+
+        LogRecord logRecord = new LogRecord(theLevel, message);
         logRecord.setLoggerName(logger.getName());
         logRecord.setSourceClassName(className);
         logRecord.setSourceMethodName(methodName);
@@ -205,13 +215,30 @@ public final class Logger
         logger.log(logRecord);
     }
 
-    static
+    private void initialize()
     {
         // Establish a class that will load logging properties into java.util.logging.LogManager
         System.setProperty("java.util.logging.config.class", LogConfig.class.getName()); //$NON-NLS-1$
+
+        // If we don't have a logger, create one now.
+        if (logger == null)
+        {
+            logger = java.util.logging.Logger.getLogger(clazz.getName());            
+        }
+    
+        // If there was a request to change the mimimum level of logging
+        // handle it now.
+        if (level != null)
+        {
+            java.util.logging.Logger.getLogger(ROOT_LOGGER).setLevel(level);
+            level = null;
+        }
     }
 
     private static final String ROOT_LOGGER = ""; //$NON-NLS-1$
     private static final String CLASS_NAME = Logger.class.getName();
+    private static Level level;
+
+    private Class clazz;
     private java.util.logging.Logger logger;
 }

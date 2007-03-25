@@ -65,13 +65,11 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
     /**
      * Constructor for ReadingsBook.
      */
-    public ReadingsBook(ReadingsBookDriver driver, BookCategory type)
+    public ReadingsBook(ReadingsBookDriver driver, String setname, BookCategory type)
     {
         super(null); // set the book metadata later
 
         hash = new TreeMap();
-
-        String setname = ReadingsBookDriver.getReadingsSet();
 
         Locale defaultLocale = Locale.getDefault();
         ResourceBundle prop = ResourceBundle.getBundle(setname, defaultLocale, CWClassLoader.instance(ReadingsBookDriver.class));

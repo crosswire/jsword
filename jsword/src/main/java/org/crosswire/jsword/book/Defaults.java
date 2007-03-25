@@ -454,7 +454,6 @@ public final class Defaults
         // Create the array of DailyDevotionals
         String[] rnames = getFullNameArray(BookFilters.getDailyDevotionals());
         ChoiceFactory.getDataMap().put(DAILY_DEVOTIONALS_KEY, rnames);
-        //ChoiceFactory.getDataMap().put(DAILY_DEVOTIONALS_KEY, ReadingsBookDriver.getInstalledReadingsSets());
 
         // Create the array of Dictionaries
         String[] greekDef = getFullNameArray(BookFilters.getGreekDefinitions());
