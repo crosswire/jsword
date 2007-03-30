@@ -51,8 +51,9 @@ public final class Job implements Progress
      * Create a new Job. This will automatically fire a workProgressed event to
      * all WorkListeners, with the work property of this job set to 0.
      * @param description Short description of this job
-     * @param predictURL Optional URL to save/load prediction times from
-     * @param workerThread Optional thread to use in request to stop workerThread
+     * @param predicturl Optional URL to save/load prediction times from
+     * @param worker Optional thread to use in request to stop worker
+     * @param totalwork the size of the work to do
      */
     protected Job(String description, URL predicturl, Thread worker, int totalWork)
     {
