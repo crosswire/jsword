@@ -171,7 +171,7 @@ public final class Logger
         String className = null;
         String methodName = null;
         int lineNumber = -1;
- 
+
         // Get the stack trace.
         StackTraceElement[] stack = (new Throwable()).getStackTrace();
 
@@ -223,9 +223,9 @@ public final class Logger
         // If we don't have a logger, create one now.
         if (logger == null)
         {
-            logger = java.util.logging.Logger.getLogger(clazz.getName());            
+            logger = java.util.logging.Logger.getLogger(clazz.getName());
         }
-    
+
         // If there was a request to change the mimimum level of logging
         // handle it now.
         if (level != null)
