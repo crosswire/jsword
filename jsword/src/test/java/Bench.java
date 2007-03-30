@@ -29,7 +29,7 @@ public class Bench
             System.exit(1);
         }
 
-        List dicts = Books.installed().getBooks(BookFilters.getBibles());
+        List dicts = Books.installed().getBooks(BookFilters.getOnlyBibles());
         version = (Book) dicts.get(0);
 
         Speed speed = new Speed(version);

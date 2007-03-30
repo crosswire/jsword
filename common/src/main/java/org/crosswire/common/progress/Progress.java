@@ -33,7 +33,7 @@ public interface Progress
     /**
      * Indicate that the total amount of work is unknown.
      */
-    static int UNKNOWN = -1;
+    int UNKNOWN = -1;
 
     /**
      * Start the task.
@@ -105,6 +105,5 @@ public interface Progress
      * @param newCancelable The state to set.
      */
     void setCancelable(boolean newCancelable);
-
 
 }

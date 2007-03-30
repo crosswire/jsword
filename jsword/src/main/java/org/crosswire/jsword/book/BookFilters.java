@@ -49,23 +49,41 @@ public final class BookFilters
      */
     public static BookFilter getAll()
     {
-        return allBookFilter;
+        return new AllBookFilter();
     }
 
     /**
      * A filter that accepts everything that implements Bible
+     * or Commentary, when commentaries are listed with Bibles.
      */
     public static BookFilter getBibles()
     {
-        return biblesBookFilter;
+        if (commentariesWithBibles)
+        {
+            return either(new BookCategoryFilter(BookCategory.BIBLE), new BookCategoryFilter(BookCategory.COMMENTARY));
+        }
+        return new BookCategoryFilter(BookCategory.BIBLE);
+    }
+
+    /**
+     * A filter that accepts everything that implements Bible.
+     */
+    public static BookFilter getOnlyBibles()
+    {
+        return new BookCategoryFilter(BookCategory.BIBLE);
     }
 
     /**
      * A filter that accepts everything that's not a Bible
+     * or a Commentary, when commentaries are listed with Bibles.
      */
     public static BookFilter getNonBibles()
     {
-        return noneBibleBookFilter;
+        if (commentariesWithBibles)
+        {
+            return both(new NotBookCategoryFilter(BookCategory.BIBLE), new NotBookCategoryFilter(BookCategory.COMMENTARY));
+        }
+        return new NotBookCategoryFilter(BookCategory.BIBLE);
     }
 
     /**
@@ -73,7 +91,7 @@ public final class BookFilters
      */
     public static BookFilter getDictionaries()
     {
-        return dictionariesBookFilter;
+        return new BookCategoryFilter(BookCategory.DICTIONARY);
     }
 
     /**
@@ -81,7 +99,7 @@ public final class BookFilters
      */
     public static BookFilter getGlossaries()
     {
-        return glossariesBookFilter;
+        return new BookCategoryFilter(BookCategory.GLOSSARY);
     }
 
     /**
@@ -89,7 +107,7 @@ public final class BookFilters
      */
     public static BookFilter getDailyDevotionals()
     {
-        return dailyDevotionalsBookFilter;
+        return new BookCategoryFilter(BookCategory.DAILY_DEVOTIONS);
     }
 
     /**
@@ -97,7 +115,7 @@ public final class BookFilters
      */
     public static BookFilter getCommentaries()
     {
-        return commentariesBookFilter;
+        return new BookCategoryFilter(BookCategory.COMMENTARY);
     }
 
     /**
@@ -105,7 +123,7 @@ public final class BookFilters
      */
     public static BookFilter getGeneralBooks()
     {
-        return generalBookFilter;
+        return new BookCategoryFilter(BookCategory.GENERAL_BOOK);
     }
 
     /**
@@ -114,7 +132,7 @@ public final class BookFilters
      */
     public static BookFilter getGreekDefinitions()
     {
-        return greekDefinitionsBookFilter;
+        return new BookFeatureFilter(FeatureType.GREEK_DEFINITIONS);
     }
 
     /**
@@ -123,7 +141,7 @@ public final class BookFilters
      */
     public static BookFilter getGreekParse()
     {
-        return greekParseBookFilter;
+        return new BookFeatureFilter(FeatureType.GREEK_PARSE);
     }
 
     /**
@@ -132,7 +150,7 @@ public final class BookFilters
      */
     public static BookFilter getHebrewDefinitions()
     {
-        return hebrewDefinitionsBookFilter;
+        return new BookFeatureFilter(FeatureType.HEBREW_DEFINITIONS);
     }
 
     /**
@@ -141,68 +159,34 @@ public final class BookFilters
      */
     public static BookFilter getHebrewParse()
     {
-        return hebrewParseBookFilter;
+        return new BookFeatureFilter(FeatureType.HEBREW_PARSE);
     }
 
     /**
-     * Filter for all books
+     * Determine whether the getBible should return the current Bible
+     * or the user's chosen default.
+     * @return true if the bible tracks the user's selection
      */
-    private static BookFilter allBookFilter = new AllBookFilter();
+    public static boolean isCommentariesWithBibles()
+    {
+        return commentariesWithBibles;
+    }
 
     /**
-     * Filter for all Bibles
+     * Establish whether the getBible should return the current Bible
+     * or the user's chosen default.
+     * @param current
      */
-    private static BookFilter biblesBookFilter = new BookCategoryFilter(BookCategory.BIBLE);
+    public static void setCommentariesWithBibles(boolean current)
+    {
+        commentariesWithBibles = current;
+    }
 
     /**
-     * Filter for all non-Bibles
+     * Whether biblesBookFilter includes commentaries. Initally false.
      */
-    private static BookFilter noneBibleBookFilter = new NotBookCategoryFilter(BookCategory.BIBLE);
+    private static boolean    commentariesWithBibles;
 
-    /**
-     * Filter for all dictionaries
-     */
-    private static BookFilter dictionariesBookFilter = new BookCategoryFilter(BookCategory.DICTIONARY);
-
-    /**
-     * Filter for all glossaries
-     */
-    private static BookFilter glossariesBookFilter = new BookCategoryFilter(BookCategory.GLOSSARY);
-
-    /**
-     * Filter for all dictionaries
-     */
-    private static BookFilter dailyDevotionalsBookFilter = new BookCategoryFilter(BookCategory.DAILY_DEVOTIONS);
-
-    /**
-     * Filter for all commentaries
-     */
-    private static BookFilter commentariesBookFilter = new BookCategoryFilter(BookCategory.COMMENTARY);
-
-    /**
-     * Filter for all commentaries
-     */
-    private static BookFilter generalBookFilter = new BookCategoryFilter(BookCategory.GENERAL_BOOK);
-
-    /**
-     * Filter for all Greek Definition Dictionaries
-     */
-    private static BookFilter greekDefinitionsBookFilter = new BookFeatureFilter(FeatureType.GREEK_DEFINITIONS);
-
-    /**
-     * Filter for all Greek Parse/Morphology Dictionaries
-     */
-    private static BookFilter greekParseBookFilter = new BookFeatureFilter(FeatureType.GREEK_PARSE);
-
-    /**
-     * Filter for all Hebrew Definition Dictionaries
-     */
-    private static BookFilter hebrewDefinitionsBookFilter = new BookFeatureFilter(FeatureType.HEBREW_DEFINITIONS);
-
-    /**
-     * Filter for all Hebrew Parse/Morphology Dictionaries
-     */
-    private static BookFilter hebrewParseBookFilter = new BookFeatureFilter(FeatureType.HEBREW_PARSE);
 
     /**
      * Filter for all books

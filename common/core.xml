@@ -10,7 +10,7 @@
     == These are the standard locations that this build file uses.
     == This assumes that the build file is in the root of the project.
     =========================================================================-->
-  <property name="release.version" value="1.0.5"/>
+  <property name="release.version" value="1.0.6"/>
   <property name="source.root"     value="src"/>
   <property name="source.etc"      value="etc"/>
   <property name="source.jar"      value="jar"/>
@@ -25,7 +25,7 @@
   <property name="test.classes"    value="${test.root}/classes"/>
   <property name="test.jar"        value="${test.root}"/>
   <property name="keystore.file"   value="../common/common.keystore"/>
-  <property name="keystore.alias"  value="test builds"/>
+  <property name="keystore.alias"  value="jsword"/>
   <property name="keystore.pswd"   value="p455w0rd"/>
   <available file="${source.jar}" type="dir" property="jardir.present"/>
   <available file="${source.res}" type="dir" property="resdir.present"/>
@@ -396,7 +396,7 @@
 	  <signjar
       	  storepass="${keystore.pswd}"
       	  alias="${keystore.alias}"
-      	  keystore="${keystore.file}"
+      	  keystore="../common/crosswire.keystore"
       	  keypass="${keystore.pswd}"
       	  jar="@{srcdir}/@{jar}"
       	  signedjar="@{destdir}/@{jar}"/>

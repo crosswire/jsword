@@ -270,7 +270,7 @@ public class APIExamples
         book = (Book) books.get(0);
 
         // Or you can narrow the range a bit
-        books = Books.installed().getBooks(BookFilters.getBibles());
+        books = Books.installed().getBooks(BookFilters.getOnlyBibles());
         book = (Book) books.get(0);
 
         // There are implementations of BookFilter for all sorts of things in

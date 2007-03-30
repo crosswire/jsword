@@ -117,7 +117,7 @@ public final class BookCategory implements Serializable, Comparable
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public final boolean equals(Object o)
+    public boolean equals(Object o)
     {
         return super.equals(o);
     }
@@ -125,7 +125,7 @@ public final class BookCategory implements Serializable, Comparable
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
-    public final int hashCode()
+    public int hashCode()
     {
         return super.hashCode();
     }

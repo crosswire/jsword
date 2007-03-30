@@ -233,8 +233,8 @@ public final class SwordUtil
         ByteArrayInputStream bis = new ByteArrayInputStream(compressed);
         InflaterInputStream in = new InflaterInputStream(bis, new Inflater(), ZBUF_SIZE);
         byte[] buf = new byte[ZBUF_SIZE];
-        int count;
-        while ((count = in.read(buf)) != -1)
+
+        for (int count = in.read(buf); count != -1; count = in.read(buf))
         {
             out.write(buf, 0, count);
         }

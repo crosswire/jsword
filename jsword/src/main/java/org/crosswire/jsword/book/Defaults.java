@@ -440,7 +440,7 @@ public final class Defaults
     public static void refreshBooks()
     {
         // Create the array of Bibles
-        String[] bnames = getFullNameArray(BookFilters.getBibles());
+        String[] bnames = getFullNameArray(BookFilters.getOnlyBibles());
         ChoiceFactory.getDataMap().put(BIBLE_KEY, bnames);
 
         // Create the array of Commentaries
@@ -571,7 +571,7 @@ public final class Defaults
     /**
      * The default Bible
      */
-    private static DefaultBook bibleDeft = new DefaultBook(Books.installed(), BookFilters.getBibles());
+    private static DefaultBook bibleDeft = new DefaultBook(Books.installed(), BookFilters.getOnlyBibles());
 
     /**
      * The default Commentary

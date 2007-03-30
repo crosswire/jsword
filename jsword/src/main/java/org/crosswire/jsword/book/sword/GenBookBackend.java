@@ -136,7 +136,6 @@ public class GenBookBackend extends AbstractBackend
         {
             throw new BookException(Msg.READ_FAIL);
         }
-        
     }
 
     /**
@@ -158,7 +157,7 @@ public class GenBookBackend extends AbstractBackend
 
         node = index.getFirstChild(node);
 
-        for (int i = path.size() - 1; i >= 0; i-- )
+        for (int i = path.size() - 1; i >= 0; i--)
         {
             String name = (String) path.get(i);
 
@@ -212,7 +211,7 @@ public class GenBookBackend extends AbstractBackend
         {
             log.error("Could not get read GenBook index", e); //$NON-NLS-1$
         }
-        
+
         return reply;
     }
 

@@ -49,7 +49,7 @@ public class BookParentTst extends TestCase
      */
     protected void setUp() throws Exception
     {
-        List lbmds = Books.installed().getBooks(BookFilters.getBibles());
+        List lbmds = Books.installed().getBooks(BookFilters.getOnlyBibles());
         bibles = new Book[lbmds.size()];
         bmds = new BookMetaData[lbmds.size()];
 

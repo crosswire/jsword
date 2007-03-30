@@ -67,45 +67,62 @@ public final class StackTrace
         String msg = new String(sout.getBuffer());
         String[] calls = StringUtil.split(msg, "\n\r"); //$NON-NLS-1$
 
-        classNames = new String[calls.length - discard];
-        methodNames = new String[calls.length - discard];
-        fileNames = new String[calls.length - discard];
-        lineNumbers = new int[calls.length - discard];
+        int total = 0;
+        for (int i = 0; i < calls.length - discard; i++)
+        {
+            String call = calls[i + discard];
 
-        for (int i = 0; i < classNames.length; i++)
+            if (!(call.startsWith("Caused") || call.indexOf("...") >= 0)) //$NON-NLS-1$ //$NON-NLS-2$
+            {
+                total++;
+            }
+        }
+
+        classNames = new String[total];
+        methodNames = new String[total];
+        fileNames = new String[total];
+        lineNumbers = new int[total];
+
+        int j = 0;
+        for (int i = 0; i < calls.length - discard; i++)
         {
             String call = calls[i + discard];
 
             try
             {
-                int spcIndex = call.indexOf(' ');
-                int lhsIndex = call.indexOf('(');
-                int clnIndex = call.indexOf(':');
-                int rhsIndex = call.indexOf(')');
-
-                String fullFn = call.substring(spcIndex + 1, lhsIndex).trim();
-                int lastDot = fullFn.lastIndexOf('.');
-
-                classNames[i] = fullFn.substring(0, lastDot).replace('/', '.');
-                methodNames[i] = fullFn.substring(lastDot + 1);
-
-                if (clnIndex != -1)
+                if (!(call.startsWith("Caused") || call.indexOf("...") >= 0)) //$NON-NLS-1$ //$NON-NLS-2$
                 {
-                    fileNames[i] = call.substring(lhsIndex + 1, clnIndex);
-                    lineNumbers[i] = Integer.parseInt(call.substring(clnIndex + 1, rhsIndex));
-                }
-                else
-                {
-                    fileNames[i] = call.substring(lhsIndex + 1, rhsIndex);
-                    lineNumbers[i] = 0;
+                    int spcIndex = call.indexOf(' ');
+                    int lhsIndex = call.indexOf('(');
+                    int clnIndex = call.indexOf(':');
+                    int rhsIndex = call.indexOf(')');
+
+                    String fullFn = call.substring(spcIndex + 1, lhsIndex).trim();
+                    int lastDot = fullFn.lastIndexOf('.');
+
+                    classNames[j] = fullFn.substring(0, lastDot).replace('/', '.');
+                    methodNames[j] = fullFn.substring(lastDot + 1);
+
+                    if (clnIndex != -1 && lhsIndex < clnIndex)
+                    {
+                        fileNames[j] = call.substring(lhsIndex + 1, clnIndex);
+                        lineNumbers[j] = Integer.parseInt(call.substring(clnIndex + 1, rhsIndex));
+                    }
+                    else
+                    {
+                        fileNames[j] = call.substring(lhsIndex + 1, rhsIndex);
+                        lineNumbers[j] = 0;
+                    }
+                    j++;
                 }
             }
             catch (NumberFormatException ex2)
             {
-                classNames[i] = "ParseError: "; //$NON-NLS-1$
-                methodNames[i] = call;
-                fileNames[i] = "Error"; //$NON-NLS-1$
-                lineNumbers[i] = 0;
+                classNames[j] = "ParseError: "; //$NON-NLS-1$
+                methodNames[j] = call;
+                fileNames[j] = "Error"; //$NON-NLS-1$
+                lineNumbers[j] = 0;
+                j++;
             }
         }
     }

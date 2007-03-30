@@ -56,7 +56,7 @@ public class BooksTest extends TestCase
     /* @Override */
     protected void setUp() throws Exception
     {
-        List lbmds = Books.installed().getBooks(BookFilters.getBibles());
+        List lbmds = Books.installed().getBooks(BookFilters.getOnlyBibles());
         int numBibles = lbmds.size();
         bibles = new Book[numBibles];
         bmds = new BookMetaData[numBibles];
