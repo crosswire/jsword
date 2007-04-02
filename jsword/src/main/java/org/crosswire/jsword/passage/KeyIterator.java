@@ -1,0 +1,151 @@
+/**
+ * Distribution License:
+ * JSword is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License, version 2.1 as published by
+ * the Free Software Foundation. This program is distributed in the hope
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * The License is available on the internet at:
+ *       http://www.gnu.org/copyleft/lgpl.html
+ * or by writing to:
+ *      Free Software Foundation, Inc.
+ *      59 Temple Place - Suite 330
+ *      Boston, MA 02111-1307, USA
+ *
+ * Copyright: 2005
+ *     The copyright to this program is held by it's authors.
+ *
+ * ID: $Id: KeyFactory.java 771 2005-08-13 14:41:41Z dmsmith $
+ */
+package org.crosswire.jsword.passage;
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Stack;
+
+/**
+ * This KeyIterator performs a depth first iteration over the subkeys
+ * in the key.
+ * 
+ * @see gnu.lgpl.License for license details.
+ *      The copyright to this program is held by it's authors.
+ * @author DM Smith [dmsmith555 at yahoo dot com]
+ */
+public class KeyIterator implements Iterator
+{
+    public KeyIterator(Key key)
+    {
+        stack = new Stack();
+        stack.push(new Locator(key));
+    }
+
+    protected void prepare()
+    {
+        // If there is nothing on the stack we have nothing to do.
+        if (stack.size() == 0)
+        {
+            return;
+        }
+
+        // Check to see if there are more children to process
+        Locator peek = (Locator) stack.peek();
+
+        if (peek.getParent().getChildCount() > peek.getPosition())
+        {
+            return;
+        }
+
+        // There are no more so we are done with this Locator.
+        stack.pop();
+
+        // Try the next
+        prepare();
+    }
+
+    public boolean hasNext()
+    {        
+        prepare();
+        return stack.size() != 0;
+    }
+
+    public Object next()
+    {
+        if (!hasNext())
+        {
+            throw new NoSuchElementException();
+        }
+
+        Locator peek = (Locator) stack.peek();
+
+        // Determine which child in the list of children to consider
+        int childNum = peek.getPosition();
+
+        // Advance to the next potential child
+        peek.setPosition(childNum + 1);
+
+        // If we have exhausted all the children,
+        // then return the parent key
+        if (childNum == -1)
+        {
+            return peek.getParent();
+        }        
+
+        stack.push(new Locator(peek.getParent().get(childNum)));
+
+        return next();
+    }
+
+    public void remove()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    public static class Locator
+    {
+        private Key parent;
+        private int position;
+
+        public Locator(Key parent)
+        {
+            this.parent = parent;
+            this.position = -1;
+        }
+
+        /**
+         * @return the parent
+         */
+        public Key getParent()
+        {
+            return parent;
+        }
+
+        /**
+         * @param parent the parent to set
+         */
+        public void setParent(Key children)
+        {
+            this.parent = children;
+        }
+
+        /**
+         * @return the position
+         */
+        public int getPosition()
+        {
+            return position;
+        }
+
+        /**
+         * @param position the position to set
+         */
+        public void setPosition(int position)
+        {
+            this.position = position;
+        }
+
+    }
+
+    private Stack stack = new Stack();
+}
