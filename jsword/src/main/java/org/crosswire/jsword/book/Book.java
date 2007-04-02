@@ -54,21 +54,65 @@ public interface Book extends Activatable, KeyFactory, Comparable
     void setBookMetaData(BookMetaData bmd);
 
     /**
-     * Retrieval: Add to the given document some mark-up for the specified
-     * Verses.
+     * Return the text for the key in OSIS.
+     * 
      * @param key The item to locate
      * @return The found Book data
      * @throws BookException If anything goes wrong with this method
      */
-    BookData getData(Key key) throws BookException;
+    BookData getText(Key key) throws BookException;
 
     /**
      * Returns the raw text that getData(Key key) builds into OSIS.
+     * 
      * @param key The item to locate
      * @return The found Book data
      * @throws BookException If anything goes wrong with this method
      */
-    String getRawData(Key key) throws BookException;
+    String getRawText(Key key) throws BookException;
+
+    /**
+     * A Book is writable if the file system allows the underlying files
+     * to be opened for writing and if the driver for the book allows
+     * writing. Ultimately, all drivers should allow writing.
+     * At this time writing is not supported by drivers, so
+     * abstract implementations should return false and let
+     * specific implementations return true otherwise.
+     * 
+     * @return true if the book is writable
+     */
+    boolean isWritable();
+
+    /**
+     * Store the raw text for the given key. This will replace/hide any
+     * raw text that already is present. Note: it is the responsibility
+     * of the calling program to ensure that the raw text matches the
+     * character set encoding and markup of the module.
+     * 
+     * @param key The item to locate
+     * @param rawData The text to store
+     * @throws BookException If anything goes wrong with this method
+     */
+    void setRawText(Key key, String rawData) throws BookException;
+
+    /**
+     * Store an alias of one key to another. Some Bibles do not have a verse by verse
+     * numbering system but rather meld several verses into one. Thus,
+     * any verse in the range refers to the same verse. Also it may apply
+     * to biblical commentaries that are indexed by Book, Chapter, Verse
+     * and that discuss the Bible at a verse range level. For a dictionary,
+     * it may be used for synonyms.
+     * <p>
+     * It should be an exception to set an alias when that alias already
+     * has raw text. Also, it should be an exception to set an alias to
+     * an alias. However, getRawText(Key) must be able to handle alias chains.
+     * </p>
+     * 
+     * @param alias the key that aliases another
+     * @param source the key that holds the text
+     * @throws BookException If anything goes wrong with this method
+     */
+    void setAliasKey(Key alias, Key source) throws BookException;
 
     /**
      * Retrieval: For a given search spec find a list of references to it.

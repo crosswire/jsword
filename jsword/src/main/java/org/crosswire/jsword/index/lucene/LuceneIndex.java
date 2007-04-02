@@ -61,7 +61,6 @@ import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.PassageTally;
-import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseFactory;
 
 /**
@@ -217,10 +216,10 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                     results = tally;
                     for (int i = 0; i < hits.length(); i++)
                     {
-                        Verse verse = VerseFactory.fromString(hits.doc(i).get(LuceneIndex.FIELD_NAME));
+                        Key key = VerseFactory.fromString(hits.doc(i).get(LuceneIndex.FIELD_NAME));
                         // PassageTally understands a score of 0 as the verse not participating
                         int score = (int) (hits.score(i) * 100 + 1);
-                        tally.add(verse, score);
+                        tally.add(key, score);
                     }
                     tally.lowerNormalizeProtection();
                     tally.lowerEventSuppresionAndTest();
@@ -239,8 +238,8 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                     }
                     for (int i = 0; i < hits.length(); i++)
                     {
-                        Verse verse = VerseFactory.fromString(hits.doc(i).get(LuceneIndex.FIELD_NAME));
-                        results.addAll(verse);
+                        Key key = VerseFactory.fromString(hits.doc(i).get(LuceneIndex.FIELD_NAME));
+                        results.addAll(key);
                     }
                     if (passage != null)
                     {
@@ -361,7 +360,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                 data = null;
                 try
                 {
-                    data = book.getData(subkey);
+                    data = book.getText(subkey);
                 }
                 catch (BookException e)
                 {

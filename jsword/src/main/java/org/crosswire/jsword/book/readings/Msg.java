@@ -38,6 +38,7 @@ final class Msg extends MsgBase
     static final Msg DECODE_ERROR = new Msg("ReadingsBook.DecodeError"); //$NON-NLS-1$
     static final Msg TITLE = new Msg("ReadingsBookDriver.Title"); //$NON-NLS-1$
     static final Msg PARSE_FAIL = new Msg("ReadingsKey.ParseFail"); //$NON-NLS-1$
+    static final Msg DRIVER_READONLY = new Msg("ReadingsKey.DriverReadonly"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

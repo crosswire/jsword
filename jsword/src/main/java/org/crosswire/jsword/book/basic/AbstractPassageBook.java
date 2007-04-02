@@ -38,7 +38,6 @@ import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.RestrictionType;
-import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
 import org.jdom.Element;
 
@@ -60,7 +59,7 @@ public abstract class AbstractPassageBook extends AbstractBook
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getData(org.crosswire.jsword.passage.Key)
      */
-    public BookData getData(Key key) throws BookException
+    public BookData getText(Key key) throws BookException
     {
         assert key != null;
 
@@ -89,7 +88,7 @@ public abstract class AbstractPassageBook extends AbstractBook
                 while (vit.hasNext())
                 {
                     Key verse = (Key) vit.next();
-                    String txt = getText(verse);
+                    String txt = getRawText(verse);
 
                     // If the verse is empty then we shouldn't add the verse tag
                     if (txt.length() > 0)
@@ -133,14 +132,9 @@ public abstract class AbstractPassageBook extends AbstractBook
     protected abstract Filter getFilter();
 
     /**
-     * Read the unfiltered data for a given key
-     */
-    protected abstract String getText(Key key) throws BookException;
-
-    /**
      * For when we want to add writing functionality
      */
-    public void setDocument(Verse verse, BookData bdata) throws BookException
+    public void setDocument(Key key, BookData bdata) throws BookException
     {
         // For all of the sections
         Iterator sit = bdata.getOsis().getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT).getChildren(OSISUtil.OSIS_ELEMENT_DIV).iterator();
@@ -157,7 +151,7 @@ public abstract class AbstractPassageBook extends AbstractBook
                     Element overse = (Element) data;
                     String text = OSISUtil.getPlainText(overse);
 
-                    setText(verse, text);
+                    setRawText(key, text);
                 }
                 else
                 {
@@ -167,10 +161,13 @@ public abstract class AbstractPassageBook extends AbstractBook
         }
     }
 
-    /**
-     * Set the unparsed text for a verse to permanent storage.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#isWritable()
      */
-    protected abstract void setText(Verse verse, String text) throws BookException;
+    public boolean isWritable()
+    {
+        return false;
+    }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getEmptyKeyList()
@@ -221,39 +218,39 @@ public abstract class AbstractPassageBook extends AbstractBook
      */
     private static final Logger log = Logger.getLogger(AbstractPassageBook.class);
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#getRawData(org.crosswire.jsword.passage.Key)
-     */
-    public String getRawData(Key key) throws BookException
-    {
-        assert key != null;
-
-        StringBuffer buffer = new StringBuffer();
-
-        // For all the ranges in this Passage
-        Passage ref = KeyUtil.getPassage(key);
-        Iterator rit = ref.rangeIterator(RestrictionType.CHAPTER);
-
-        while (rit.hasNext())
-        {
-            VerseRange range = (VerseRange) rit.next();
-
-            // For all the verses in this range
-            Iterator vit = range.iterator();
-            while (vit.hasNext())
-            {
-                Verse verse = (Verse) vit.next();
-                String txt = getText(verse);
-
-                // If the verse is empty then we shouldn't add the verse
-                if (txt.length() > 0)
-                {
-                    buffer.append(txt);
-                    buffer.append('\n');
-                }
-            }
-        }
-
-        return buffer.toString();
-    }
+//    /* (non-Javadoc)
+//     * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
+//     */
+//    public String getRawText(Key key) throws BookException
+//    {
+//        assert key != null;
+//
+//        StringBuffer buffer = new StringBuffer();
+//
+//        // For all the ranges in this Passage
+//        Passage ref = KeyUtil.getPassage(key);
+//        Iterator rit = ref.rangeIterator(RestrictionType.CHAPTER);
+//
+//        while (rit.hasNext())
+//        {
+//            VerseRange range = (VerseRange) rit.next();
+//
+//            // For all the verses in this range
+//            Iterator vit = range.iterator();
+//            while (vit.hasNext())
+//            {
+//                Key subkey = (Key) vit.next();
+//                String txt = getRawText(subkey);
+//
+//                // If the verse is empty then we shouldn't add the verse
+//                if (txt.length() > 0)
+//                {
+//                    buffer.append(txt);
+//                    buffer.append('\n');
+//                }
+//            }
+//        }
+//
+//        return buffer.toString();
+//    }
 }

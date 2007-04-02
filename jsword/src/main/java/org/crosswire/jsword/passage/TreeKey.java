@@ -123,7 +123,7 @@ public class TreeKey extends AbstractKeyList
      */
     public Iterator iterator()
     {
-        return children.iterator();
+        return new KeyIterator(this);
     }
 
     /* (non-Javadoc)

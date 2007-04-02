@@ -96,7 +96,7 @@ public class BibleToOsis
         while (iter.hasNext())
         {
             Verse verse = (Verse) iter.next();
-            String raw = bible.getRawData(verse);
+            String raw = bible.getRawText(verse);
             String osisID = verse.getOsisID();
             String currentBookName = BibleInfo.getOSISName(verse.getBook());
             int currentChapter = verse.getChapter();

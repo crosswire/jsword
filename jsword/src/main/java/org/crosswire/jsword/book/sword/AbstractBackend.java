@@ -106,5 +106,20 @@ public abstract class AbstractBackend implements Activatable
      */
     public abstract boolean isSupported();
 
+    /**
+     * A Backend is writable if the file system allows the underlying files
+     * to be opened for writing and if the backend has implemented
+     * writing. Ultimately, all drivers should allow writing.
+     * At this time writing is not supported by backends, so
+     * abstract implementations should return false and let
+     * specific implementations return true otherwise.
+     * 
+     * @return true if the book is writable
+     */
+    public boolean isWritable()
+    {
+        return false;
+    }
+
     private SwordBookMetaData bmd;
 }

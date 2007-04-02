@@ -79,7 +79,7 @@ public class APIExamples
         Book bible = books.getBook(BIBLE_NAME);
 
         Key key = bible.getKey("Gen 1 1"); //$NON-NLS-1$
-        BookData data = bible.getData(key);
+        BookData data = bible.getText(key);
         String text = data.getCanonicalText();
 
         System.out.println("The plain text of Gen 1:1 is " + text); //$NON-NLS-1$
@@ -97,7 +97,7 @@ public class APIExamples
         Book bible = Books.installed().getBook(BIBLE_NAME);
 
         Key key = bible.getKey("Gen 1 1"); //$NON-NLS-1$
-        BookData data = bible.getData(key);
+        BookData data = bible.getText(key);
         SAXEventProvider osissep = data.getSAXEventProvider();
 
         Converter styler = ConverterFactory.getConverter();
@@ -137,7 +137,7 @@ public class APIExamples
 
         System.out.println("The first Key in the default dictionary is " + first); //$NON-NLS-1$
 
-        BookData data = dict.getData(keys);
+        BookData data = dict.getText(keys);
         System.out.println("And the text against that key is " + data.getPlainText()); //$NON-NLS-1$
     }
 
@@ -223,7 +223,7 @@ public class APIExamples
         while (rangeIter.hasNext())
         {
             Key range = (Key) rangeIter.next();
-            BookData data = bible.getData(range);
+            BookData data = bible.getText(range);
             SAXEventProvider osissep = data.getSAXEventProvider();
             SAXEventProvider htmlsep = new TransformingSAXEventProvider(xslurl, osissep);
             String text = XMLUtil.writeToString(htmlsep);
@@ -246,7 +246,7 @@ public class APIExamples
         while (iter.hasNext())
         {
             Verse verse = (Verse) iter.next();
-            BookData data = bible.getData(verse);
+            BookData data = bible.getText(verse);
             System.out.println('|' + BibleInfo.getBookName(verse.getBook()) + '|' + verse.getChapter() + '|' + verse.getVerse() + '|' + data.getCanonicalText());
         }
     }

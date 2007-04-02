@@ -110,7 +110,7 @@ public class SwordGenBook extends AbstractBook
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getData(org.crosswire.jsword.passage.Key)
      */
-    public BookData getData(Key key) throws BookException
+    public BookData getText(Key key) throws BookException
     {
         checkActive();
 
@@ -142,9 +142,9 @@ public class SwordGenBook extends AbstractBook
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#getRawData(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
      */
-    public String getRawData(Key key) throws BookException
+    public String getRawText(Key key) throws BookException
     {
         checkActive();
 
@@ -152,6 +152,30 @@ public class SwordGenBook extends AbstractBook
         assert backend != null;
 
         return backend.getRawText(key);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#isWritable()
+     */
+    public boolean isWritable()
+    {
+        return backend.isWritable();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractPassageBook#setRawText(org.crosswire.jsword.passage.Key, java.lang.String)
+     */
+    public void setRawText(Key key, String rawData) throws BookException
+    {
+        throw new BookException(Msg.DRIVER_READONLY);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#setAliasKey(org.crosswire.jsword.passage.Key, org.crosswire.jsword.passage.Key)
+     */
+    public void setAliasKey(Key alias, Key source) throws BookException
+    {
+        throw new BookException(Msg.DRIVER_READONLY);
     }
 
     /* (non-Javadoc)

@@ -116,7 +116,7 @@ public class Speed implements Runnable
      */
     private void dummyDisplay(Passage ref) throws BookException
     {
-        book.getData(ref);
+        book.getText(ref);
     }
 
     /**

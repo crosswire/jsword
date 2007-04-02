@@ -31,7 +31,6 @@ import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractPassageBook;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.Verse;
 import org.jdom.Content;
 import org.jdom.Element;
 
@@ -76,10 +75,10 @@ public class SwordBook extends AbstractPassageBook
         Activator.deactivate(backend);
     }
 
-    /**
-     * Read the unfiltered data for a given key
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractPassageBook#getRawText(org.crosswire.jsword.passage.Key)
      */
-    protected String getText(Key key) throws BookException
+    public String getRawText(Key key) throws BookException
     {
         if (backend == null)
         {
@@ -123,9 +122,25 @@ public class SwordBook extends AbstractPassageBook
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.basic.AbstractPassageBook#setText(org.crosswire.jsword.passage.Verse, java.lang.String)
+     * @see org.crosswire.jsword.book.Book#isWritable()
      */
-    protected void setText(Verse verse, String text) throws BookException
+    public boolean isWritable()
+    {
+        return backend.isWritable();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractPassageBook#setRawText(org.crosswire.jsword.passage.Key, java.lang.String)
+     */
+    public void setRawText(Key key, String rawData) throws BookException
+    {
+        throw new BookException(Msg.DRIVER_READONLY);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#setAliasKey(org.crosswire.jsword.passage.Key, org.crosswire.jsword.passage.Key)
+     */
+    public void setAliasKey(Key alias, Key source) throws BookException
     {
         throw new BookException(Msg.DRIVER_READONLY);
     }

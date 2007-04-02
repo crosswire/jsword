@@ -140,7 +140,7 @@ public class GatherAllReferences
             String orig;
             try
             {
-                orig = book.getRawData(key);
+                orig = book.getRawText(key);
             }
             catch (BookException ex)
             {
