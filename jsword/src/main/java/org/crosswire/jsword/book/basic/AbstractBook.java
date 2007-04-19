@@ -21,7 +21,6 @@
  */
 package org.crosswire.jsword.book.basic;
 
-import java.beans.PropertyChangeListener;
 import java.util.Map;
 
 import javax.swing.event.EventListenerList;
@@ -340,7 +339,7 @@ public abstract class AbstractBook implements Book
             Object[] listenerList = listeners.getListenerList();
             for (int i = 0; i <= listenerList.length - 2; i += 2)
             {
-                if (listenerList[i] == PropertyChangeListener.class)
+                if (listenerList[i] == IndexStatusListener.class)
                 {
                     IndexStatusEvent ev = new IndexStatusEvent(this, newStatus);
                     IndexStatusListener li = (IndexStatusListener) listenerList[i + 1];
