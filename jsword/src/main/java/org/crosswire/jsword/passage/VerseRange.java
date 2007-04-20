@@ -248,12 +248,48 @@ public final class VerseRange implements Key, Serializable
     {
         try
         {
-            // If this is in 2 separate books
             int startBook = start.getBook();
             int endBook = end.getBook();
+            int startChapter = start.getChapter();
+            int endChapter = end.getChapter();
+
+            // If this is in 2 separate books
             if (startBook != endBook)
             {
-                return start.getOsisRef() + VerseRange.RANGE_PREF_DELIM + end.getOsisRef();
+                StringBuffer buf = new StringBuffer();
+                if (start.isStartOfBook())
+                {
+                    buf.append(BibleInfo.getOSISName(startBook));
+                }
+                else if (start.isStartOfChapter())
+                {
+                    buf.append(BibleInfo.getOSISName(startBook));
+                    buf.append(Verse.VERSE_OSIS_DELIM);
+                    buf.append(startChapter);
+                }
+                else
+                {
+                    buf.append(start.getOsisRef());
+                }
+
+                buf.append(VerseRange.RANGE_PREF_DELIM);
+
+                if (end.isEndOfBook())
+                {
+                    buf.append(BibleInfo.getOSISName(endBook));
+                }
+                else if (end.isEndOfChapter())
+                {
+                    buf.append(BibleInfo.getOSISName(endBook));
+                    buf.append(Verse.VERSE_OSIS_DELIM);
+                    buf.append(endChapter);
+                }
+                else
+                {
+                    buf.append(end.getOsisRef());
+                }
+
+                return buf.toString();
             }
 
             // This range is exactly a whole book
@@ -265,25 +301,56 @@ public final class VerseRange implements Key, Serializable
                 return BibleInfo.getOSISName(startBook);
             }
 
-            // If this is 2 separate chapters
-            int startChapter = start.getChapter();
-            int endChapter = end.getChapter();
+            // If this is 2 separate chapters in the same book
             if (startChapter != endChapter)
             {
-                return start.getOsisRef() + VerseRange.RANGE_PREF_DELIM + end.getOsisRef();
+                StringBuffer buf = new StringBuffer();
+                if (start.isStartOfChapter())
+                {
+                    buf.append(BibleInfo.getOSISName(startBook));
+                    buf.append(Verse.VERSE_OSIS_DELIM);
+                    buf.append(startChapter);
+                }
+                else
+                {
+                    buf.append(start.getOsisRef());
+                }
+
+                buf.append(VerseRange.RANGE_PREF_DELIM);
+
+                if (end.isEndOfChapter())
+                {
+                    buf.append(BibleInfo.getOSISName(endBook));
+                    buf.append(Verse.VERSE_OSIS_DELIM);
+                    buf.append(endChapter);
+                }
+                else
+                {
+                    buf.append(end.getOsisRef());
+                }
+
+                return buf.toString();
             }
 
             // If this range is exactly a whole chapter
             if (isWholeChapter())
             {
                 // Just report the name of the book and the chapter
-                return BibleInfo.getOSISName(startBook) + Verse.VERSE_OSIS_DELIM + startChapter;
+                StringBuffer buf = new StringBuffer();
+                buf.append(BibleInfo.getOSISName(startBook));
+                buf.append(Verse.VERSE_OSIS_DELIM);
+                buf.append(startChapter);
+                return buf.toString();
             }
 
             // If this is 2 separate verses
             if (start.getVerse() != end.getVerse())
             {
-                return start.getOsisRef() + VerseRange.RANGE_PREF_DELIM + end.getOsisRef();
+                StringBuffer buf = new StringBuffer();
+                buf.append(start.getOsisRef());
+                buf.append(VerseRange.RANGE_PREF_DELIM);
+                buf.append(end.getOsisRef());
+                return buf.toString();
             }
 
             // The range is a single verse
