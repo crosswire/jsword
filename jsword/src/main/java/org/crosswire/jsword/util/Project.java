@@ -30,6 +30,7 @@ import org.crosswire.common.util.CWClassLoader;
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
+import org.crosswire.common.util.OSType;
 
 /**
  * The Project class looks after the source of project files.

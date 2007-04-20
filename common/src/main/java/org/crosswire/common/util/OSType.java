@@ -19,14 +19,12 @@
  *
  * ID: $Id: CaseType.java 1068 2006-04-08 02:20:41Z dmsmith $
  */
-package org.crosswire.jsword.util;
+package org.crosswire.common.util;
 
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.NetUtil;
 
 /**
  * Types of Operating Systems for which specialized behavior is needed.
