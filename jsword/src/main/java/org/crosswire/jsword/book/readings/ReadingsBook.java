@@ -22,7 +22,6 @@
 package org.crosswire.jsword.book.readings;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.Locale;
@@ -88,9 +87,13 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
         bmd.setInitials(setname);
         setBookMetaData(bmd);
 
-        // We use 1972 because it is a leap year.
-        Calendar greg = new GregorianCalendar(1972, Calendar.JANUARY, 1);
-        while (greg.get(Calendar.YEAR) == 1972)
+        // Go through the current year
+        Calendar greg = new GregorianCalendar();
+        greg.set(Calendar.DAY_OF_MONTH, 1);
+        greg.set(Calendar.MONDAY, Calendar.JANUARY);
+        int currentYear = greg.get(Calendar.YEAR);
+
+        while (greg.get(Calendar.YEAR) == currentYear)
         {
             String internalKey = ReadingsKey.external2internal(greg);
             String readings = ""; //$NON-NLS-1$
@@ -98,13 +101,12 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
             try
             {
                 readings = prop.getString(internalKey);
+                hash.put(new ReadingsKey(greg.getTime()), readings);
             }
             catch (MissingResourceException e)
             {
                 log.warn("Missing resource: " + internalKey + " while parsing: " + setname); //$NON-NLS-1$ //$NON-NLS-2$
             }
-
-            hash.put(new ReadingsKey(greg.getTime()), readings);
 
             greg.add(Calendar.DATE, 1);
         }
@@ -117,10 +119,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
      */
     public Key getPreferred()
     {
-        GregorianCalendar now = new GregorianCalendar();
-        now.setTime(new Date());
-
-        GregorianCalendar greg = new GregorianCalendar(1972, now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
+        GregorianCalendar greg = new GregorianCalendar();
         return new ReadingsKey(greg.getTime());
     }
 
@@ -141,7 +140,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
 
             Element div = OSISUtil.factory().createDiv();
             Element title = OSISUtil.factory().createTitle();
-            title.addContent(Msg.HEADING.toString(key.getName()));
+            title.addContent(key.getName());
             div.addContent(title);
             text.addContent(div);
 

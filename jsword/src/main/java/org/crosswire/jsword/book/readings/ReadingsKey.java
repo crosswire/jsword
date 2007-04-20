@@ -77,6 +77,11 @@ public class ReadingsKey extends DefaultLeafKeyList
      */
     public boolean equals(Object obj)
     {
+        if (this == obj)
+        {
+            return true;
+        }
+
         // Since this can not be null
         if (obj == null)
         {
@@ -89,14 +94,6 @@ public class ReadingsKey extends DefaultLeafKeyList
         {
             return false;
         }
-
-        // If super does equals ...
-        /* Commented out because super.equals() always equals false
-        if (!super.equals(obj))
-        {
-            return false;
-        }
-        */
 
         // The real bit ...
         ReadingsKey that = (ReadingsKey) obj;
@@ -150,12 +147,8 @@ public class ReadingsKey extends DefaultLeafKeyList
     /**
      * Date formatter
      */
-    private static final DateFormat NAME_DF = new SimpleDateFormat("d MMMM"); //$NON-NLS-1$
+    private static final DateFormat NAME_DF = DateFormat.getDateInstance(DateFormat.MEDIUM);
     private static final DateFormat OSIS_DF = new SimpleDateFormat("d.MMMM"); //$NON-NLS-1$
-    static
-    {
-        NAME_DF.setLenient(true);
-    }
 
     private static final MessageFormat KEY_FORMAT = new MessageFormat("{0,number,00}.{1,number,00}"); //$NON-NLS-1$
 }
