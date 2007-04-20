@@ -216,6 +216,11 @@ public class DefaultLeafKeyList implements Key
      */
     public boolean equals(Object obj)
     {
+        if (this == obj)
+        {
+            return true;
+        }
+
         // Since this can not be null
         if (obj == null)
         {
@@ -234,7 +239,7 @@ public class DefaultLeafKeyList implements Key
 
         // The real bit ...
         DefaultLeafKeyList that = (DefaultLeafKeyList) obj;
-        return name.equals(that.name) && osisName.equals(that.osisName);
+        return name.equals(that.name);
     }
 
     /* (non-Javadoc)
@@ -244,6 +249,7 @@ public class DefaultLeafKeyList implements Key
     {
         return name.hashCode();
     }
+
 
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
