@@ -25,7 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -205,9 +204,9 @@ public class ZLDBackend extends AbstractBackend
         keys = new DefaultKeyList(null, bmd.getName());
 
         boolean isDailyDevotional = bmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS);
-        // We use 1972 because it is a leap year.
-        Calendar greg = new GregorianCalendar(1972, Calendar.JANUARY, 1);
-        DateFormat nameDF = new SimpleDateFormat("d MMMM"); //$NON-NLS-1$
+
+        Calendar greg = new GregorianCalendar();
+        DateFormat nameDF = DateFormat.getDateInstance(DateFormat.MEDIUM);
 
         long entries;
         try
@@ -260,6 +259,15 @@ public class ZLDBackend extends AbstractBackend
                 }
 
                 Key key = new IndexKey(keytitle, offset, size, keys);
+
+                // remove duplicates, keeping later one.
+                // This occurs under some conditions:
+                // For daily devotionals where 02.29 becomes calendarized to Mar 1 for non-leap years
+                // For modules that have been updated by appending new data.
+                if (keys.contains(key))
+                {
+                    keys.removeAll(key);
+                }
 
                 keys.addAll(key);
             }
