@@ -98,7 +98,7 @@ public class ReadingsKey extends DefaultLeafKeyList
         // The real bit ...
         ReadingsKey that = (ReadingsKey) obj;
 
-        return date.equals(that.date);
+        return getName().equals(that.getName());
     }
 
     /* (non-Javadoc)
@@ -149,6 +149,10 @@ public class ReadingsKey extends DefaultLeafKeyList
      */
     private static final DateFormat NAME_DF = DateFormat.getDateInstance(DateFormat.MEDIUM);
     private static final DateFormat OSIS_DF = new SimpleDateFormat("d.MMMM"); //$NON-NLS-1$
+    static
+    {
+        NAME_DF.setLenient(true);
+    }
 
     private static final MessageFormat KEY_FORMAT = new MessageFormat("{0,number,00}.{1,number,00}"); //$NON-NLS-1$
 }
