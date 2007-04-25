@@ -216,9 +216,10 @@ public class XMLProcess
         // parse file
         try
         {
-            System.out.println("Parsing with the following:"); //$NON-NLS-1$            printActual();
+            System.out.println("Parsing with the following:"); //$NON-NLS-1$
+            printActual();
             parser.parse(xmlFile);
-            System.out.println("Done parsing."); //$NON-NLS-1$
+            System.out.println("Done: no problems found."); //$NON-NLS-1$
         }
         catch (SAXException e)
         {
