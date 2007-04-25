@@ -106,9 +106,9 @@ public class XMLProcess
                     {
                         System.err.println("error: Missing argument to -p option."); //$NON-NLS-1$
                     }
-                    String parserName = argv[i];
+                    parserName = argv[i];
 
-                    createParser(parserName);
+                    createParser();
                     continue;
                 }
                 if ("a".equals(option)) //$NON-NLS-1$
@@ -118,9 +118,9 @@ public class XMLProcess
                     {
                         System.err.println("error: Missing argument to -a option."); //$NON-NLS-1$
                     }
-                    String adapterName = argv[i];
+                    adapterName = argv[i];
 
-                    createAdapter(adapterName);
+                    createAdapter();
                     continue;
                 }
             }
@@ -131,8 +131,8 @@ public class XMLProcess
 
     private void bind()
     {
-        createParser(DEFAULT_PARSER_NAME);
-        createAdapter(DEFAULT_HANDLER_NAME);
+        createParser();
+        createAdapter();
 
         // Now that we have a parser and a handler
         // make the parser use them.
@@ -141,7 +141,7 @@ public class XMLProcess
 
     }
 
-    private void createParser(String parserName)
+    private void createParser()
     {
         if (parser != null)
         {
@@ -159,7 +159,7 @@ public class XMLProcess
 
     }
 
-    private void createAdapter(String adapterName)
+    private void createAdapter()
     {
         if (adapter != null)
         {
@@ -216,7 +216,9 @@ public class XMLProcess
         // parse file
         try
         {
+            System.out.println("Parsing with the following:"); //$NON-NLS-1$            printActual();
             parser.parse(xmlFile);
+            System.out.println("Done parsing."); //$NON-NLS-1$
         }
         catch (SAXException e)
         {
@@ -266,6 +268,13 @@ public class XMLProcess
         System.err.println(new XMLFeatureSet().toString());
     }
 
+    public void printActual()
+    {
+        System.err.println("Parser:     " + parserName); //$NON-NLS-1$
+        System.err.println("Handler:    " + adapterName); //$NON-NLS-1$
+        System.err.println(new XMLFeatureSet().toString());
+    }
+
     // property ids
 
     /**
@@ -284,7 +293,9 @@ public class XMLProcess
     private static final String DEFAULT_PARSER_NAME = "org.apache.xerces.parsers.SAXParser"; //$NON-NLS-1$
     private static final String DEFAULT_HANDLER_NAME = "org.crosswire.common.xml.XMLHandlerAdapter"; //$NON-NLS-1$
 
+    private String parserName = DEFAULT_PARSER_NAME;
     private XMLReader parser;
+    private String adapterName = DEFAULT_HANDLER_NAME;
     private XMLHandlerAdapter adapter;
     private XMLFeatureSet features;
 }
