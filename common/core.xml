@@ -46,6 +46,7 @@
     <include name="**/lucene-*.jar"/>
     <include name="**/activation.jar"/>
     <include name="**/jlfgr-*.jar"/>
+    <include name="**/jsword-common-aqua-*.jar"/>
     <include name="**/rome-*.jar"/>
     <include name="**/xmlrpc-*.jar"/>
     <include name="**/gnu-regexp-*.jar"/>
