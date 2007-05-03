@@ -65,7 +65,7 @@ public class KeyIterator implements Iterator
     }
 
     public boolean hasNext()
-    {        
+    {
         prepare();
         return stack.size() != 0;
     }
@@ -90,7 +90,7 @@ public class KeyIterator implements Iterator
         if (childNum == -1)
         {
             return peek.getParent();
-        }        
+        }
 
         stack.push(new Locator(peek.getParent().get(childNum)));
 
@@ -102,6 +102,9 @@ public class KeyIterator implements Iterator
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * A helper class that remembers where we've been and where we are.
+     */
     public static class Locator
     {
         private Key parent;
@@ -124,9 +127,9 @@ public class KeyIterator implements Iterator
         /**
          * @param parent the parent to set
          */
-        public void setParent(Key children)
+        public void setParent(Key parent)
         {
-            this.parent = children;
+            this.parent = parent;
         }
 
         /**

@@ -22,6 +22,7 @@
 package org.crosswire.common.util;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -96,9 +97,19 @@ public final class CollectionUtil
 
     public static Map properties2Map(URI propUri) throws IOException
     {
-        Properties prop = new Properties();
-        prop.load(NetUtil.getInputStream(propUri));
-        return properties2Map(prop);
+        InputStream in = null;
+        try
+        {
+            in = NetUtil.getInputStream(propUri);
+            Properties prop = new Properties();
+            prop.load(in);
+            in.close();
+            return properties2Map(prop);
+        }
+        finally
+        {
+            IOUtil.close(in);
+        }
     }
 
 }

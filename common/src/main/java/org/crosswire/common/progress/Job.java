@@ -35,6 +35,7 @@ import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 
@@ -53,7 +54,7 @@ public final class Job implements Progress
      * @param description Short description of this job
      * @param predicturl Optional URI to save/load prediction times from
      * @param worker Optional thread to use in request to stop worker
-     * @param totalwork the size of the work to do
+     * @param totalWork the size of the work to do
      */
     protected Job(String description, URI predicturl, Thread worker, int totalWork)
     {
@@ -451,9 +452,10 @@ public final class Job implements Progress
      */
     private synchronized void loadPredictions()
     {
+        InputStream in = null;
         try
         {
-            InputStream in = NetUtil.getInputStream(predictURI);
+            in = NetUtil.getInputStream(predictURI);
             if (in != null)
             {
                 predicted = new HashMap();
@@ -488,6 +490,10 @@ public final class Job implements Progress
         catch (IOException ex)
         {
             log.debug("Failed to load prediction times - guessing"); //$NON-NLS-1$
+        }
+        finally
+        {
+            IOUtil.close(in);
         }
     }
 

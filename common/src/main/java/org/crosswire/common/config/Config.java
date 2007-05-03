@@ -23,9 +23,9 @@ package org.crosswire.common.config;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -33,8 +33,10 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 import org.crosswire.common.util.EventListenerList;
+import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LucidException;
+import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -428,13 +430,23 @@ public class Config
     /**
      * Take the data stored permanently and copy it to the local
      * storage area, using the configured storage area
+     * @throws IOException 
      */
-    public void permanentToLocal(URL url) throws IOException
+    public void permanentToLocal(URI uri) throws IOException
     {
-        Properties prop = new Properties();
-        prop.load(url.openStream());
-
-        setProperties(prop);
+        InputStream is = null;
+        try
+        {
+            is = NetUtil.getInputStream(uri);
+            Properties prop = new Properties();
+            prop.load(is);
+            is.close();
+            setProperties(prop);
+        }
+        finally
+        {
+            IOUtil.close(is);
+        }
     }
 
     /**

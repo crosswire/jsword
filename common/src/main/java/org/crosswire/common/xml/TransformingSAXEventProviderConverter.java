@@ -35,7 +35,7 @@ public class TransformingSAXEventProviderConverter implements Converter
 {
     /**
      * Simple ctor
-     * @param xslurl The url of the stylesheet
+     * @param xsluri The url of the stylesheet
      */
     public TransformingSAXEventProviderConverter(URI xsluri)
     {

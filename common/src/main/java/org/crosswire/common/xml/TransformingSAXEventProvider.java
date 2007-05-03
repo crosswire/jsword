@@ -42,6 +42,7 @@ import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamSource;
 
+import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.xml.sax.ContentHandler;
@@ -68,8 +69,9 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
 
     /**
      * Compile the XSL or retrieve it from the cache
+     * @throws IOException 
      */
-    private TemplateInfo getTemplateInfo() throws IOException, TransformerConfigurationException
+    private TemplateInfo getTemplateInfo() throws TransformerConfigurationException, IOException
     {
         long modtime = NetUtil.getLastModified(xsluri);
 
@@ -88,12 +90,20 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
         {
             log.debug("generating templates for " + xsluri); //$NON-NLS-1$
 
-            InputStream xsl_in = NetUtil.getInputStream(xsluri);
-            Templates templates = transfact.newTemplates(new StreamSource(xsl_in));
+            InputStream xslStream = null;
+            try
+            {
+                xslStream = NetUtil.getInputStream(xsluri);
+                Templates templates = transfact.newTemplates(new StreamSource(xslStream));
 
-            tinfo = new TemplateInfo(templates, modtime);
+                tinfo = new TemplateInfo(templates, modtime);
 
-            txers.put(xsluri, tinfo);
+                txers.put(xsluri, tinfo);
+            }
+            finally
+            {
+                IOUtil.close(xslStream);
+            }
         }
 
         return tinfo;

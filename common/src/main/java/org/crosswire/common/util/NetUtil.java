@@ -566,32 +566,41 @@ public final class NetUtil
     /**
      * List all the files specified by the index file passed in.
      * @return String[] Matching results.
+     * @throws FileNotFoundException 
      */
     public static String[] listByIndexFile(URI index, URLFilter filter) throws IOException
     {
-        InputStream in = NetUtil.getInputStream(index);
-        String contents = StringUtil.read(new InputStreamReader(in));
-
-        // We still need to do the filtering
-        List list = new ArrayList();
-        String[] names = StringUtil.split(contents, "\n"); //$NON-NLS-1$
-        for (int i = 0; i < names.length; i++)
+        InputStream in = null;
+        try
         {
-            // we need to trim, as we may have \r\n not \n
-            String name = names[i].trim();
+            in = NetUtil.getInputStream(index);
+            String contents = StringUtil.read(new InputStreamReader(in));
 
-            // to be acceptable it must be a non-0 length string, not commented
-            // with #, not the index file itself and acceptable by the filter.
-            if (name.length() > 0
-                && name.charAt(0) != '#'
-                && !name.equals(INDEX_FILE)
-                && filter.accept(name))
+            // We still need to do the filtering
+            List list = new ArrayList();
+            String[] names = StringUtil.split(contents, "\n"); //$NON-NLS-1$
+            for (int i = 0; i < names.length; i++)
             {
-                list.add(name);
-            }
-        }
+                // we need to trim, as we may have \r\n not \n
+                String name = names[i].trim();
 
-        return (String[]) list.toArray(new String[list.size()]);
+                // to be acceptable it must be a non-0 length string, not commented
+                // with #, not the index file itself and acceptable by the filter.
+                if (name.length() > 0
+                    && name.charAt(0) != '#'
+                    && !name.equals(INDEX_FILE)
+                    && filter.accept(name))
+                {
+                    list.add(name);
+                }
+            }
+
+            return (String[]) list.toArray(new String[list.size()]);
+        }
+        finally
+        {
+            IOUtil.close(in);
+        }
     }
 
     /**

@@ -96,7 +96,7 @@ public class HttpSwordInstaller extends AbstractSwordInstaller
 
     /**
      * @param job
-     * @param url
+     * @param uri
      * @param dest
      * @throws LucidException
      */
