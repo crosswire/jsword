@@ -26,7 +26,7 @@ import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -181,13 +181,13 @@ public class SwordBookPath
             readSwordConf(bookDirs, sysconfigPaths[i]);
         }
 
-        URL userDataArea = Project.instance().getUserProjectDir(DIR_SWORD_CONF, DIR_SWORD_CONF_ALT);
+        URI userDataArea = Project.instance().getUserProjectDir(DIR_SWORD_CONF, DIR_SWORD_CONF_ALT);
 
         // Check look for mods.d in the sword user data area
-        testDefaultPath(bookDirs, new File(userDataArea.getFile()));
+        testDefaultPath(bookDirs, new File(userDataArea.getPath()));
 
         // If the migration did not work then use the old area
-        testDefaultPath(bookDirs, new File(Project.instance().getUserProjectDir().getFile()));
+        testDefaultPath(bookDirs, new File(Project.instance().getUserProjectDir().getPath()));
 
         return (File[]) bookDirs.toArray(new File[bookDirs.size()]);
     }
@@ -291,8 +291,8 @@ public class SwordBookPath
         // If it is not found on the path then it doesn't exist yet and needs to be established
         if (path == null)
         {
-            URL userDataArea = Project.instance().getUserProjectDir(DIR_SWORD_CONF, DIR_SWORD_CONF_ALT);
-            path = new File(userDataArea.getFile());
+            URI userDataArea = Project.instance().getUserProjectDir(DIR_SWORD_CONF, DIR_SWORD_CONF_ALT);
+            path = new File(userDataArea.getPath());
         }
 
         return path;
@@ -301,13 +301,13 @@ public class SwordBookPath
     private static void migrateBookDir()
     {
         // Books should be on this path
-        URL userDataArea = Project.instance().getUserProjectDir(DIR_SWORD_CONF, DIR_SWORD_CONF_ALT);
+        URI userDataArea = Project.instance().getUserProjectDir(DIR_SWORD_CONF, DIR_SWORD_CONF_ALT);
 
-        File swordBookPath = new File(userDataArea.getFile());
+        File swordBookPath = new File(userDataArea.getPath());
 
         // The "old" Book location might be in one of two locations
         // It might be ~/.jsword or the new project dir
-        File oldPath = new File(Project.instance().getDeprecatedUserProjectDir().getFile());
+        File oldPath = new File(Project.instance().getDeprecatedUserProjectDir().getPath());
 
         if (oldPath.isDirectory())
         {
@@ -315,7 +315,7 @@ public class SwordBookPath
             return;
         }
 
-        oldPath = new File(Project.instance().getUserProjectDir().getFile());
+        oldPath = new File(Project.instance().getUserProjectDir().getPath());
 
         if (oldPath.isDirectory())
         {

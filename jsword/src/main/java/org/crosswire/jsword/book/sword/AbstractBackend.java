@@ -22,7 +22,7 @@
 package org.crosswire.jsword.book.sword;
 
 import java.io.File;
-import java.net.URL;
+import java.net.URI;
 
 import org.crosswire.common.activate.Activatable;
 import org.crosswire.common.crypt.Sapphire;
@@ -76,14 +76,14 @@ public abstract class AbstractBackend implements Activatable
 
     public String getExpandedDataPath() throws BookException
     {
-        URL loc = NetUtil.lengthenURL(bmd.getLibrary(), bmd.getProperty(ConfigEntryType.DATA_PATH));
+        URI loc = NetUtil.lengthenURI(bmd.getLibrary(), bmd.getProperty(ConfigEntryType.DATA_PATH));
 
         if (loc == null)
         {
             throw new BookException(Msg.MISSING_FILE);
         }
 
-        return new File(loc.getFile()).getAbsolutePath();
+        return new File(loc.getPath()).getAbsolutePath();
     }
 
     /**

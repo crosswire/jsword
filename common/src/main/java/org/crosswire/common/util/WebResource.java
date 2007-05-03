@@ -24,7 +24,7 @@ package org.crosswire.common.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
+import java.net.URI;
 import java.util.Date;
 
 import org.apache.commons.httpclient.HostConfiguration;
@@ -48,22 +48,22 @@ import org.apache.commons.httpclient.util.HttpURLConnection;
  */
 public class WebResource
 {
-    public WebResource(URL theURL)
+    public WebResource(URI theURI)
     {
-        this(theURL, null);
+        this(theURI, null);
     }
 
-    public WebResource(URL theURL, String theProxyHost)
+    public WebResource(URI theURI, String theProxyHost)
     {
-        this(theURL, theProxyHost, null);
+        this(theURI, theProxyHost, null);
     }
 
-    public WebResource(URL theURL, String theProxyHost, Integer theProxyPort)
+    public WebResource(URI theURI, String theProxyHost, Integer theProxyPort)
     {
-        url = theURL;
+        uri = theURI;
         client = new HttpClient();
         HostConfiguration config = client.getHostConfiguration();
-        config.setHost(new HttpHost(theURL.getHost(), theURL.getPort()));
+        config.setHost(new HttpHost(theURI.getHost(), theURI.getPort()));
         if (theProxyHost != null && theProxyHost.length() > 0)
         {
             config.setProxyHost(new ProxyHost(theProxyHost, theProxyPort == null ? -1 : theProxyPort.intValue()));
@@ -78,7 +78,7 @@ public class WebResource
      */
     public int getSize()
     {
-        HttpMethod method = new HeadMethod(url.getPath());
+        HttpMethod method = new HeadMethod(uri.getPath());
 
         try
         {
@@ -86,10 +86,10 @@ public class WebResource
             int status = client.executeMethod(method);
             if (status == HttpStatus.SC_OK)
             {
-                return new HttpURLConnection(method, url).getContentLength();
+                return new HttpURLConnection(method, NetUtil.toURL(uri)).getContentLength();
             }
             String reason = HttpStatus.getStatusText(status);
-            Reporter.informUser(this, Msg.MISSING_FILE, new Object[] { reason + ':' + url.getFile() });
+            Reporter.informUser(this, Msg.MISSING_FILE, new Object[] { reason + ':' + uri.getPath() });
         }
         catch (IOException e)
         {
@@ -111,14 +111,14 @@ public class WebResource
      */
     public long getLastModified()
     {
-        HttpMethod method = new HeadMethod(url.getPath());
+        HttpMethod method = new HeadMethod(uri.getPath());
 
         try
         {
             // Execute the method.
             if (client.executeMethod(method) == HttpStatus.SC_OK)
             {
-                return new HttpURLConnection(method, url).getLastModified();
+                return new HttpURLConnection(method, NetUtil.toURL(uri)).getLastModified();
             }
         }
         catch (IOException e)
@@ -139,12 +139,12 @@ public class WebResource
      * @param dest
      * @throws LucidException
      */
-    public void copy(URL dest) throws LucidException
+    public void copy(URI dest) throws LucidException
     {
         InputStream in = null;
         OutputStream out = null;
 
-        HttpMethod method = new GetMethod(url.getPath());
+        HttpMethod method = new GetMethod(uri.getPath());
 
         try
         {
@@ -179,6 +179,6 @@ public class WebResource
         }
     }
 
-    private URL url;
+    private URI uri;
     private HttpClient client;
 }

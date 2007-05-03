@@ -23,7 +23,7 @@ package org.crosswire.jsword.book.install;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URL;
+import java.net.URI;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -121,10 +121,10 @@ public final class InstallManager
             buf.append(installer.getInstallerDefinition());
             props.setProperty(PREFIX + i++, buf.toString());
         }
-        URL outputURL = Project.instance().getWritablePropertiesURL(getClass().getName());
+        URI outputURI = Project.instance().getWritablePropertiesURI(getClass().getName());
         try
         {
-            OutputStream out = NetUtil.getOutputStream(outputURL);
+            OutputStream out = NetUtil.getOutputStream(outputURI);
             props.store(out, "Saved Installer Sites"); //$NON-NLS-1$
         }
         catch (IOException e)

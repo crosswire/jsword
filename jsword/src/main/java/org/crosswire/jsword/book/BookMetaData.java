@@ -21,7 +21,7 @@
  */
 package org.crosswire.jsword.book;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.Map;
 
 import org.crosswire.jsword.index.IndexStatus;
@@ -177,32 +177,32 @@ public interface BookMetaData extends Comparable
     boolean hasFeature(FeatureType feature);
 
     /**
-     * Get the base URL for library of this module.
+     * Get the base URI for library of this module.
      * 
-     * @return the base URL or null if there is none
+     * @return the base URI or null if there is none
      */
-    URL getLibrary();
+    URI getLibrary();
 
     /**
-     * Set the base URL for library of this module.
+     * Set the base URI for library of this module.
      * 
-     * @param library the base URL or null if there is none
+     * @param library the base URI or null if there is none
      */
-    void setLibrary(URL library);
+    void setLibrary(URI library);
 
     /**
-     * Get the base URL for relative urls in the document.
+     * Get the base URI for relative URIs in the document.
      * 
-     * @return the base URL or null if there is none
+     * @return the base URI or null if there is none
      */
-    URL getLocation();
+    URI getLocation();
 
     /**
-     * Set the base URL for relative urls in the document.
+     * Set the base URI for relative URIs in the document.
      * 
-     * @param library the base URL or null if there is none
+     * @param library the base URI or null if there is none
      */
-    void setLocation(URL library);
+    void setLocation(URI library);
 
     /**
      * Get a list of all the properties available to do with this Book.
@@ -272,12 +272,12 @@ public interface BookMetaData extends Comparable
     String KEY_INITIALS = "Initials"; //$NON-NLS-1$
 
     /**
-     * The key for the URL locating where this book is installed
+     * The key for the URI locating where this book is installed
      */
     String KEY_LIBRARY_URL = "LibraryURL"; //$NON-NLS-1$
 
     /**
-     * The key for the URL locating this book
+     * The key for the URI locating this book
      */
     String KEY_LOCATION_URL = "LocationURL"; //$NON-NLS-1$
 

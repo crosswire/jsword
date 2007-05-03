@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -78,7 +78,7 @@ public final class IOUtil
                 }
             }
 
-            URL child = NetUtil.getURL(entryFile);
+            URI child = NetUtil.getURI(entryFile);
 
             OutputStream dataOut = NetUtil.getOutputStream(child);
             InputStream dataIn = zf.getInputStream(entry);

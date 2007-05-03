@@ -24,7 +24,7 @@ package org.crosswire.common.progress;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -51,13 +51,13 @@ public final class Job implements Progress
      * Create a new Job. This will automatically fire a workProgressed event to
      * all WorkListeners, with the work property of this job set to 0.
      * @param description Short description of this job
-     * @param predicturl Optional URL to save/load prediction times from
+     * @param predicturl Optional URI to save/load prediction times from
      * @param worker Optional thread to use in request to stop worker
      * @param totalwork the size of the work to do
      */
-    protected Job(String description, URL predicturl, Thread worker, int totalWork)
+    protected Job(String description, URI predicturl, Thread worker, int totalWork)
     {
-        this.predictURL = predicturl;
+        this.predictURI = predicturl;
         this.workerThread = worker;
         this.listeners = new ArrayList();
         this.start = -1;
@@ -89,7 +89,7 @@ public final class Job implements Progress
         }
 
         // Set-up the timings files. It's not a disaster if it doesn't load
-        if (predictURL != null)
+        if (predictURI != null)
         {
             loadPredictions();
         }
@@ -204,7 +204,7 @@ public final class Job implements Progress
 
         JobManager.fireWorkProgressed(this);
 
-        if (predictURL != null)
+        if (predictURI != null)
         {
             savePredictions();
         }
@@ -285,7 +285,7 @@ public final class Job implements Progress
      */
     private void ignoreTimings()
     {
-        predictURL = null;
+        predictURI = null;
     }
 
     /**
@@ -453,7 +453,7 @@ public final class Job implements Progress
     {
         try
         {
-            InputStream in = predictURL.openStream();
+            InputStream in = NetUtil.getInputStream(predictURI);
             if (in != null)
             {
                 predicted = new HashMap();
@@ -523,7 +523,7 @@ public final class Job implements Progress
         // And save. It's not a disaster if this goes wrong
         try
         {
-            OutputStream out = NetUtil.getOutputStream(predictURL);
+            OutputStream out = NetUtil.getOutputStream(predictURI);
             predictions.store(out, "Predicted Startup Times"); //$NON-NLS-1$
         }
         catch (IOException ex)
@@ -603,9 +603,9 @@ public final class Job implements Progress
     private int predictedLength;
 
     /**
-     * The URL to which we load and save timings
+     * The URI to which we load and save timings
      */
-    private URL predictURL;
+    private URI predictURI;
 
     /**
      * The timer that lets us post fake progress events

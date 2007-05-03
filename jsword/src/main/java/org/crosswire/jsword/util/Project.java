@@ -23,8 +23,8 @@ package org.crosswire.jsword.util;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.crosswire.common.util.CWClassLoader;
 import org.crosswire.common.util.FileUtil;
@@ -98,22 +98,22 @@ public final class Project
 
         try
         {
-            URL urlcache = getTempScratchSpace(DIR_NETCACHE, true);
-            File filecache = new File(urlcache.getFile());
-            NetUtil.setURLCacheDir(filecache);
+            URI urlcache = getTempScratchSpace(DIR_NETCACHE, true);
+            File filecache = new File(urlcache.getPath());
+            NetUtil.setURICacheDir(filecache);
         }
         catch (IOException ex)
         {
             // This isn't fatal, it just means that NetUtil will try to use $TMP
             // in place of a more permanent solution.
-            log.warn("Failed to get directory for NetUtil.setURLCacheDir()", ex); //$NON-NLS-1$
+            log.warn("Failed to get directory for NetUtil.setURICacheDir()", ex); //$NON-NLS-1$
         }
     }
 
     /**
      * Establishes the user's project directory.
      */
-    public URL getUserProjectDir(String hiddenFolderName, String visibleFolderName)
+    public URI getUserProjectDir(String hiddenFolderName, String visibleFolderName)
     {
         return OSType.getOSType().getUserAreaFolder(hiddenFolderName, visibleFolderName);
     }
@@ -121,7 +121,7 @@ public final class Project
     /**
      * Establishes the user's project directory.
      */
-    public URL getUserProjectDir()
+    public URI getUserProjectDir()
     {
         if (home == null)
         {
@@ -131,13 +131,13 @@ public final class Project
             {
                 try
                 {
-                    home = new URL(NetUtil.PROTOCOL_FILE, null, jswordhome);
+                    home = new URI(NetUtil.PROTOCOL_FILE, null, jswordhome, null);
                     if (!NetUtil.canWrite(home))
                     {
                         home = null;
                     }
                 }
-                catch (MalformedURLException e)
+                catch (URISyntaxException e)
                 {
                     home = null;
                 }
@@ -146,8 +146,8 @@ public final class Project
 
         if (home == null)
         {
-            URL path = getUserProjectDir(DIR_PROJECT, DIR_PROJECT_ALT);
-            URL oldPath = getDeprecatedUserProjectDir();
+            URI path = getUserProjectDir(DIR_PROJECT, DIR_PROJECT_ALT);
+            URI oldPath = getDeprecatedUserProjectDir();
             home = migrateUserProjectDir(oldPath, path);
         }
 
@@ -159,7 +159,7 @@ public final class Project
      * 
      * @return ~/.jsword
      */
-    public URL getDeprecatedUserProjectDir()
+    public URI getDeprecatedUserProjectDir()
     {
         return OSType.DEFAULT.getUserAreaFolder(DIR_PROJECT, DIR_PROJECT_ALT);
     }
@@ -171,17 +171,17 @@ public final class Project
      * @param newPath the path to the new location
      * @return newPath if the migration was possible or not needed.
      */
-    private URL migrateUserProjectDir(URL oldPath, URL newPath)
+    private URI migrateUserProjectDir(URI oldPath, URI newPath)
     {
-        if (oldPath.toExternalForm().equals(newPath.toExternalForm()))
+        if (oldPath.toString().equals(newPath.toString()))
         {
             return newPath;
         }
 
         if (NetUtil.isDirectory(oldPath))
         {
-            File oldDir = new File(oldPath.getFile());
-            File newDir = new File(newPath.getFile());
+            File oldDir = new File(oldPath.getPath());
+            File newDir = new File(newPath.getPath());
 
             // This will return false if it could not rename.
             // This will happen if the directory already exists.
@@ -196,18 +196,18 @@ public final class Project
     }
 
     /**
-     * Get a the URL of a (potentially non-existant) properties file that we can
+     * Get a the URI of a (potentially non-existant) properties file that we can
      * write to. This method of aquiring properties files is preferred over
      * getResourceProperties() as this is writable and can take into account
      * user preferences.
-     * This method makes no promise that the URL returned is valid. It is
+     * This method makes no promise that the URI returned is valid. It is
      * totally untested, so reading may well cause errors.
      * @param subject The name (minus the .properties extension)
-     * @return The resource as a URL
+     * @return The resource as a URI
      */
-    public URL getWritablePropertiesURL(String subject)
+    public URI getWritablePropertiesURI(String subject)
     {
-        return NetUtil.lengthenURL(getUserProjectDir(), subject + FileUtil.EXTENSION_PROPERTIES);
+        return NetUtil.lengthenURI(getUserProjectDir(), subject + FileUtil.EXTENSION_PROPERTIES);
     }
 
     /**
@@ -222,14 +222,14 @@ public final class Project
      * environment, so callers of this method should be prepared for that
      * eventuallity too.
      * <p>As a result of these limitations it could be OK to use {@link File} in
-     * place of {@link URL} (which is the norm for this project), however there
+     * place of {@link URI} (which is the norm for this project), however there
      * doesn't seem to be a good reason to relax this rule here.
      * @param subject A moniker for the area to write to. This will be converted into a directory name.
-     * @return A file: URL pointing at a local writable directory.
+     * @return A file: URI pointing at a local writable directory.
      */
-    public URL getTempScratchSpace(String subject, boolean create) throws IOException
+    public URI getTempScratchSpace(String subject, boolean create) throws IOException
     {
-        URL temp = NetUtil.lengthenURL(getUserProjectDir(), subject);
+        URI temp = NetUtil.lengthenURI(getUserProjectDir(), subject);
 
         if (create && !NetUtil.isDirectory(temp))
         {
@@ -247,7 +247,7 @@ public final class Project
     /**
      * The home for this application
      */
-    private URL home;
+    private URI home;
 
     /**
      * The log stream

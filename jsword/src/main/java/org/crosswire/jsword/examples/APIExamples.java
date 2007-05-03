@@ -27,6 +27,7 @@ import java.util.List;
 
 import javax.xml.transform.TransformerException;
 
+import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.common.xml.Converter;
 import org.crosswire.common.xml.SAXEventProvider;
@@ -225,7 +226,7 @@ public class APIExamples
             Key range = (Key) rangeIter.next();
             BookData data = bible.getText(range);
             SAXEventProvider osissep = data.getSAXEventProvider();
-            SAXEventProvider htmlsep = new TransformingSAXEventProvider(xslurl, osissep);
+            SAXEventProvider htmlsep = new TransformingSAXEventProvider(NetUtil.toURI(xslurl), osissep);
             String text = XMLUtil.writeToString(htmlsep);
             System.out.println("The html text of " + range.getName() + " is " + text); //$NON-NLS-1$ //$NON-NLS-2$
         }

@@ -22,7 +22,7 @@
 package org.crosswire.common.util;
 
 import java.io.File;
-import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -128,7 +128,11 @@ public final class CWClassLoader extends ClassLoader
         // See if it can be found in the home directory
         if (resource == null)
         {
-            resource = CWClassLoader.findHomeResource(search);
+            URI homeResource = CWClassLoader.findHomeResource(search);
+            if (homeResource != null)
+            {
+                resource = NetUtil.toURL(homeResource);
+            }
         }
 
         // See if it can be found by its own class.
@@ -261,19 +265,8 @@ public final class CWClassLoader extends ClassLoader
      * the application's home directory, otherwise it returns null.
      * @return Returns the home.
      */
-    public static synchronized URL getHome()
+    public static synchronized URI getHome()
     {
-        try
-        {
-            if (home != null)
-            {
-                return new URL(home.getProtocol(), home.getHost(), home.getPort(), home.getFile());
-            }
-        }
-        catch (MalformedURLException e)
-        {
-            assert false;
-        }
         return home;
     }
 
@@ -283,7 +276,7 @@ public final class CWClassLoader extends ClassLoader
      * end with the directory name, not '/'.
      * @param newhome The home to set.
      */
-    public static synchronized void setHome(URL newhome)
+    public static synchronized void setHome(URI newhome)
     {
         home = newhome;
     }
@@ -292,19 +285,19 @@ public final class CWClassLoader extends ClassLoader
      * Look for the resource in the home directory
      * @param search must be non-null, non-empty
      */
-    public static URL findHomeResource(String search)
+    public static URI findHomeResource(String search)
     {
-        URL reply = null;
+        URI reply = null;
 
-        URL homeURL = getHome();
+        URI homeURI = getHome();
 
         // Look at the application's home first to allow overrides
-        if (homeURL != null)
+        if (homeURI != null)
         {
-            URL override = NetUtil.lengthenURL(homeURL, search);
+            URI override = NetUtil.lengthenURI(homeURI, search);
 
             // Make sure the file exists and can be read
-            File file = new File(override.getFile());
+            File file = new File(override.getPath());
             if (file.canRead())
             {
                 reply = override;
@@ -362,5 +355,5 @@ public final class CWClassLoader extends ClassLoader
     /**
      * Notion of a project's home from where additional resources can be found.
      */
-    private static URL home;
+    private static URI home;
 }

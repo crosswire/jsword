@@ -23,7 +23,7 @@ package org.crosswire.common.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -60,9 +60,9 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
     /**
      * Simple ctor
      */
-    public TransformingSAXEventProvider(URL xslurl, SAXEventProvider xmlsep)
+    public TransformingSAXEventProvider(URI xsluri, SAXEventProvider xmlsep)
     {
-        this.xslurl = xslurl;
+        this.xsluri = xsluri;
         this.xmlsep = xmlsep;
     }
 
@@ -71,29 +71,29 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
      */
     private TemplateInfo getTemplateInfo() throws IOException, TransformerConfigurationException
     {
-        long modtime = NetUtil.getLastModified(xslurl);
+        long modtime = NetUtil.getLastModified(xsluri);
 
         // we may have one cached
-        TemplateInfo tinfo = (TemplateInfo) txers.get(xslurl);
+        TemplateInfo tinfo = (TemplateInfo) txers.get(xsluri);
 
         // But check it is up to date
         if (tinfo != null && modtime > tinfo.getModtime())
         {
-            txers.remove(xslurl);
+            txers.remove(xsluri);
             tinfo = null;
-            log.debug("updated style, re-caching. xsl=" + xslurl.toExternalForm()); //$NON-NLS-1$
+            log.debug("updated style, re-caching. xsl=" + xsluri); //$NON-NLS-1$
         }
 
         if (tinfo == null)
         {
-            log.debug("generating templates for " + xslurl.toExternalForm()); //$NON-NLS-1$
+            log.debug("generating templates for " + xsluri); //$NON-NLS-1$
 
-            InputStream xsl_in = xslurl.openStream();
+            InputStream xsl_in = NetUtil.getInputStream(xsluri);
             Templates templates = transfact.newTemplates(new StreamSource(xsl_in));
 
             tinfo = new TemplateInfo(templates, modtime);
 
-            txers.put(xslurl, tinfo);
+            txers.put(xsluri, tinfo);
         }
 
         return tinfo;
@@ -287,7 +287,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
     /**
      * The XSL stylesheet
      */
-    private URL xslurl;
+    private URI xsluri;
 
     /**
      * The XML input source

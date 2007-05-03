@@ -21,8 +21,8 @@
  */
 package org.crosswire.jsword.book.basic;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -171,56 +171,56 @@ public abstract class AbstractBookMetaData implements BookMetaData
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getLibrary()
      */
-    public URL getLibrary()
+    public URI getLibrary()
     {
-        URL url = null;
+        URI uri = null;
         try
         {
             String loc = getProperty(KEY_LIBRARY_URL);
             if (loc != null)
             {
-                url = new URL(loc);
+                uri = new URI(loc);
             }
-            return url;
+            return uri;
         }
-        catch (MalformedURLException e)
+        catch (URISyntaxException e)
         {
             return null;
         }
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#setLibrary(java.net.URL)
+     * @see org.crosswire.jsword.book.BookMetaData#setLibrary(java.net.URI)
      */
-    public void setLibrary(URL library)
+    public void setLibrary(URI library)
     {
-        putProperty(KEY_LIBRARY_URL, library.toExternalForm());
+        putProperty(KEY_LIBRARY_URL, library.toString());
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#setLocation(java.net.URL)
+     * @see org.crosswire.jsword.book.BookMetaData#setLocation(java.net.URI)
      */
-    public void setLocation(URL location)
+    public void setLocation(URI location)
     {
-        putProperty(KEY_LOCATION_URL, location.toExternalForm());
+        putProperty(KEY_LOCATION_URL, location.toString());
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getLocation()
      */
-    public URL getLocation()
+    public URI getLocation()
     {
-        URL url = null;
+        URI uri = null;
         try
         {
             String loc = getProperty(KEY_LOCATION_URL);
             if (loc != null)
             {
-                url = new URL(loc);
+                uri = new URI(loc);
             }
-            return url;
+            return uri;
         }
-        catch (MalformedURLException e)
+        catch (URISyntaxException e)
         {
             return null;
         }

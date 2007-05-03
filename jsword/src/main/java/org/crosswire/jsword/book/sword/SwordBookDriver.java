@@ -23,7 +23,7 @@ package org.crosswire.jsword.book.sword;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,7 +103,7 @@ public class SwordBookDriver extends AbstractBookDriver
                     {
                         internal = internal.substring(0, internal.length() - 5);
                     }
-                    SwordBookMetaData sbmd = new SwordBookMetaData(configfile, internal, NetUtil.getURL(bookDir));
+                    SwordBookMetaData sbmd = new SwordBookMetaData(configfile, internal, NetUtil.getURI(bookDir));
                     sbmd.setDriver(this);
 
                     // Only take the first "installation" of the Book
@@ -173,10 +173,10 @@ public class SwordBookDriver extends AbstractBookDriver
         List failures = FileUtil.delete(confFile);
         if (failures.size() == 0)
         {
-            URL loc = sbmd.getLocation();
+            URI loc = sbmd.getLocation();
             if (loc != null)
             {
-                File bookDir = new File(loc.getFile());
+                File bookDir = new File(loc.getPath());
                 failures = FileUtil.delete(bookDir);
                 Books.installed().removeBook(dead);
             }

@@ -21,7 +21,7 @@
  */
 package org.crosswire.common.xml;
 
-import java.net.URL;
+import java.net.URI;
 
 /**
  * An implementation of Converter that uses a TransformingSAXEventProvider to
@@ -37,9 +37,9 @@ public class TransformingSAXEventProviderConverter implements Converter
      * Simple ctor
      * @param xslurl The url of the stylesheet
      */
-    public TransformingSAXEventProviderConverter(URL xslurl)
+    public TransformingSAXEventProviderConverter(URI xsluri)
     {
-        this.xslurl = xslurl;
+        this.xsluri = xsluri;
     }
 
     /* (non-Javadoc)
@@ -47,11 +47,11 @@ public class TransformingSAXEventProviderConverter implements Converter
      */
     public SAXEventProvider convert(SAXEventProvider provider)
     {
-        return new TransformingSAXEventProvider(xslurl, provider);
+        return new TransformingSAXEventProvider(xsluri, provider);
     }
 
     /**
      * The URL of the stylesheet
      */
-    private URL xslurl;
+    private URI xsluri;
 }

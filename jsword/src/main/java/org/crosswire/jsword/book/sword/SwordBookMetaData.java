@@ -23,7 +23,7 @@ package org.crosswire.jsword.book.sword;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -67,7 +67,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData
      * @param internal
      * @throws IOException
      */
-    public SwordBookMetaData(File file, String internal, URL bookRootPath) throws IOException
+    public SwordBookMetaData(File file, String internal, URI bookRootPath) throws IOException
     {
         cet = new ConfigEntryTable(internal);
         cet.load(file);
@@ -188,18 +188,18 @@ public final class SwordBookMetaData extends AbstractBookMetaData
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#setLibrary(java.net.URL)
+     * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#setLibrary(java.net.URI)
      */
-    public void setLibrary(URL library)
+    public void setLibrary(URI library)
     {
-        cet.add(ConfigEntryType.LIBRARY_URL, library.toExternalForm());
+        cet.add(ConfigEntryType.LIBRARY_URL, library.toString());
         super.setLibrary(library);
 
         // Currently all DATA_PATH entries end in / to indicate dirs or not to indicate file prefixes
         String datapath = getProperty(ConfigEntryType.DATA_PATH);
         datapath = datapath.substring(0, datapath.lastIndexOf('/'));
-        URL location = NetUtil.lengthenURL(library, datapath);
-        cet.add(ConfigEntryType.LOCATION_URL, location.toExternalForm());
+        URI location = NetUtil.lengthenURI(library, datapath);
+        cet.add(ConfigEntryType.LOCATION_URL, location.toString());
         super.setLocation(location);
     }
 

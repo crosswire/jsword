@@ -24,7 +24,7 @@ package org.crosswire.jsword.book.sword;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.net.URL;
+import java.net.URI;
 
 import org.crosswire.common.activate.Activatable;
 import org.crosswire.common.activate.Activator;
@@ -235,14 +235,14 @@ public class TreeKeyIndex implements Activatable
 
     private String getExpandedDataPath() throws BookException
     {
-        URL loc = NetUtil.lengthenURL(bmd.getLibrary(), bmd.getProperty(ConfigEntryType.DATA_PATH));
+        URI loc = NetUtil.lengthenURI(bmd.getLibrary(), bmd.getProperty(ConfigEntryType.DATA_PATH));
 
         if (loc == null)
         {
             throw new BookException(Msg.MISSING_FILE);
         }
 
-        return new File(loc.getFile()).getAbsolutePath();
+        return new File(loc.getPath()).getAbsolutePath();
     }
 
     private static final String EXTENSION_INDEX = ".idx"; //$NON-NLS-1$

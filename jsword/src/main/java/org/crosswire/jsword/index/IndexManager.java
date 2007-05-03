@@ -21,7 +21,8 @@
  */
 package org.crosswire.jsword.index;
 
-import java.net.URL;
+
+import java.net.URI;
 
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
@@ -57,7 +58,7 @@ public interface IndexManager
      * @param book The book that we downloaded an index for
      * @param tempDest The URL of a zip file to install
      */
-    void installDownloadedIndex(Book book, URL tempDest) throws BookException;
+    void installDownloadedIndex(Book book, URI tempDest) throws BookException;
 
     /**
      * Tidy up after yourself and remove all the files that make up any indexes

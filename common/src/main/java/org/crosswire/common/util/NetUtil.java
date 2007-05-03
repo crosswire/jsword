@@ -22,6 +22,7 @@
 package org.crosswire.common.util;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
@@ -31,6 +32,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.JarURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -59,22 +62,22 @@ public final class NetUtil
     }
 
     /**
-     * Constant for the file: protocol
+     * Constant for the file: protocol or scheme
      */
     public static final String PROTOCOL_FILE = "file"; //$NON-NLS-1$
 
     /**
-     * Constant for the file: protocol
+     * Constant for the http: protocol or scheme
      */
     public static final String PROTOCOL_HTTP = "http"; //$NON-NLS-1$
 
     /**
-     * Constant for the file: protocol
+     * Constant for the ftp: protocol or scheme
      */
     public static final String PROTOCOL_FTP = "ftp"; //$NON-NLS-1$
 
     /**
-     * Constant for the jar: protocol
+     * Constant for the jar: protocol or scheme
      */
     public static final String PROTOCOL_JAR = "jar"; //$NON-NLS-1$
 
@@ -84,12 +87,12 @@ public final class NetUtil
     public static final String INDEX_FILE = "index.txt"; //$NON-NLS-1$
 
     /**
-     * URL separator
+     * URL/URI separator
      */
     public static final String SEPARATOR = "/"; //$NON-NLS-1$
 
     /**
-     * Separating the username from the rest of the URL
+     * Separating the username from the rest of the URL/URI
      */
     public static final String AUTH_SEPERATOR_USERNAME = "@"; //$NON-NLS-1$
 
@@ -104,16 +107,29 @@ public final class NetUtil
      */
     private static final String TEMP_SUFFIX = "tmp"; //$NON-NLS-1$
 
+    public static URI copy(URI uri)
+    {
+        try
+        {
+            return new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(), uri.getPath(), uri.getQuery(), uri.getFragment());
+        }
+        catch (URISyntaxException e)
+        {
+            assert false : e;
+            return null;
+        }
+    }
+
     /**
      * If the directory does not exist, create it.
-     * Note this currently only works with file: type URLs
-     * @param orig The URL to check
+     * Note this currently only works with file: type URIs
+     * @param orig The directory URI to create
      */
-    public static void makeDirectory(URL orig) throws MalformedURLException
+    public static void makeDirectory(URI orig) throws MalformedURLException
     {
-        checkFileURL(orig);
+        checkFileURI(orig);
 
-        File file = new File(orig.getFile());
+        File file = new File(orig.getPath());
 
         // If it is a file, except
         if (file.isFile())
@@ -136,14 +152,14 @@ public final class NetUtil
 
     /**
      * If the file does not exist, create it.
-     * Note this currently only works with file: type URLs
-     * @param orig The URL to check
+     * Note this currently only works with file: type URIs
+     * @param orig The file URI to create
      */
-    public static void makeFile(URL orig) throws MalformedURLException, IOException
+    public static void makeFile(URI orig) throws MalformedURLException, IOException
     {
-        checkFileURL(orig);
+        checkFileURI(orig);
 
-        File file = new File(orig.getFile());
+        File file = new File(orig.getPath());
 
         // If it is a file, except
         if (file.isDirectory())
@@ -166,22 +182,22 @@ public final class NetUtil
     }
 
     /**
-     * If there is a file at the other end of this URL return true.
-     * Note this currently only works with file: type URLs
-     * @param url The URL to check
-     * @return true if the URL points at a file
+     * If there is a file at the other end of this URI return true.
+     * Note this currently only works with file: type URIs
+     * @param uri The URI to check
+     * @return true if the URI points at a file
      */
-    public static boolean isFile(URL url)
+    public static boolean isFile(URI uri)
     {
-        if (url.getProtocol().equals(PROTOCOL_FILE))
+        if (uri.getScheme().equals(PROTOCOL_FILE))
         {
-            return new File(url.getFile()).isFile();
+            return new File(uri.getPath()).isFile();
         }
 
         try
         {
             // This will throw if the resource does not exist
-            url.openStream().close();
+            uri.toURL().openStream().close();
             return true;
         }
         catch (IOException ex)
@@ -192,84 +208,84 @@ public final class NetUtil
     }
 
     /**
-     * If there is a directory at the other end of this URL return true.
-     * Note non file: type URLs will always return false
-     * @param orig The URL to check
-     * @return true if the URL points at a file: directory
+     * If there is a directory at the other end of this URI return true.
+     * Note non file: type URI will always return false
+     * @param orig The URI to check
+     * @return true if the URI points at a file: directory
      */
-    public static boolean isDirectory(URL orig)
+    public static boolean isDirectory(URI orig)
     {
-        if (!orig.getProtocol().equals(PROTOCOL_FILE))
+        if (!orig.getScheme().equals(PROTOCOL_FILE))
         {
             return false;
         }
 
-        return new File(orig.getFile()).isDirectory();
+        return new File(orig.getPath()).isDirectory();
     }
 
     /**
-     * If there is a writable directory or file at the other end of this URL return true.
-     * Note non file: type URLs will always return false
-     * @param orig The URL to check
-     * @return true if the URL points at a file: directory
+     * If there is a writable directory or file at the other end of this URI return true.
+     * Note non file: type URIs will always return false
+     * @param orig The URI to check
+     * @return true if the URI points at a file: directory
      */
-    public static boolean canWrite(URL orig)
+    public static boolean canWrite(URI orig)
     {
-        if (!orig.getProtocol().equals(PROTOCOL_FILE))
+        if (!orig.getScheme().equals(PROTOCOL_FILE))
         {
             return false;
         }
 
-        return new File(orig.getFile()).canWrite();
+        return new File(orig.getPath()).canWrite();
     }
 
     /**
-     * Move a URL from one place to another. Currently this only works for
-     * file: URLs, however the interface should not need to change to
-     * handle more complex URLs
-     * @param oldUrl The URL to move
-     * @param newUrl The desitination URL
+     * Move a URI from one place to another. Currently this only works for
+     * file: URIs, however the interface should not need to change to
+     * handle more complex URIs
+     * @param oldUri The URI to move
+     * @param newUri The desitination URI
      */
-    public static boolean move(URL oldUrl, URL newUrl) throws IOException
+    public static boolean move(URI oldUri, URI newUri) throws IOException
     {
-        checkFileURL(oldUrl);
-        checkFileURL(newUrl);
+        checkFileURI(oldUri);
+        checkFileURI(newUri);
 
-        File oldFile = new File(oldUrl.getFile());
-        File newFile = new File(newUrl.getFile());
+        File oldFile = new File(oldUri.getPath());
+        File newFile = new File(newUri.getPath());
         return oldFile.renameTo(newFile);
     }
 
     /**
-     * Delete a URL. Currently this only works for file: URLs, however
-     * the interface should not need to change to handle more complex URLs
-     * @param orig The URL to delete
+     * Delete a URI. Currently this only works for file: URIs, however
+     * the interface should not need to change to handle more complex URIs
+     * @param orig The URI to delete
      */
-    public static boolean delete(URL orig) throws IOException
+    public static boolean delete(URI orig) throws IOException
     {
-        checkFileURL(orig);
+        checkFileURI(orig);
 
-        return new File(orig.getFile()).delete();
+        return new File(orig.getPath()).delete();
     }
 
     /**
-     * Return a File from the URL either by extracting from a file: URL or
+     * Return a File from the URI either by extracting from a file: URI or
      * by downloading to a temp dir first
-     * @param url The original URL to the file.
-     * @return The URL as a file
+     * @param uri The original URI to the file.
+     * @return The URI as a file
      * @throws IOException 
      */
-    public static File getAsFile(URL url) throws IOException
+    public static File getAsFile(URI uri) throws IOException
     {
-        // if the URL is already a file URL, return it
-        if (url.getProtocol().equals(PROTOCOL_FILE))
+        // if the URI is already a file URI, return it
+        if (uri.getScheme().equals(PROTOCOL_FILE))
         {
-            return new File(url.getFile());
+            return new File(uri.getPath());
         }
-        String hashString = (url.toExternalForm().hashCode() + "").replace('-', 'm'); //$NON-NLS-1$
+        String hashString = (uri.toString().hashCode() + "").replace('-', 'm'); //$NON-NLS-1$
 
         // get the location of the tempWorkingDir
-        File workingDir = getURLCacheDir();
+        File workingDir = getURICacheDir();
         File workingFile = null;
 
         if (workingDir != null && workingDir.isDirectory())
@@ -283,13 +299,13 @@ public final class NetUtil
         }
         workingFile.deleteOnExit();
 
-        // copy the contents of the URL to the file
+        // copy the contents of the URI to the file
         OutputStream output = null;
         InputStream input = null;
         try
         {
             output = new FileOutputStream(workingFile);
-            input = url.openStream();
+            input = uri.toURL().openStream();
             byte[] data = new byte[512];
             for (int read = 0; read != -1; read = input.read(data))
             {
@@ -314,20 +330,20 @@ public final class NetUtil
             }
         }
 
-        // return the new file in URL form
+        // return the new file in URI form
         return workingFile;
     }
 
     /**
-     * Utility to strip a string from the end of a URL.
-     * @param orig The URL to strip
-     * @param strip The text to strip from the end of the URL
-     * @return The stripped URL
-     * @exception MalformedURLException If the URL does not end in the given text
+     * Utility to strip a string from the end of a URI.
+     * @param orig The URI to strip
+     * @param strip The text to strip from the end of the URI
+     * @return The stripped URI
+     * @exception MalformedURLException If the URI does not end in the given text
      */
-    public static URL shortenURL(URL orig, String strip) throws MalformedURLException
+    public static URI shortenURI(URI orig, String strip) throws MalformedURLException
     {
-        String file = orig.getFile();
+        String file = orig.getPath();
         char lastChar = file.charAt(file.length() - 1);
         if (isSeparator(lastChar))
         {
@@ -342,19 +358,29 @@ public final class NetUtil
 
         String newFile = file.substring(0, file.length() - strip.length());
 
-        return new URL(orig.getProtocol(),
-                       orig.getHost(),
-                       orig.getPort(),
-                       newFile);
+        try
+        {
+            return new URI(orig.getScheme(),
+                           orig.getUserInfo(),
+                           orig.getHost(),
+                           orig.getPort(),
+                           newFile,
+                           orig.getQuery(),
+                           orig.getFragment());
+        }
+        catch (URISyntaxException e)
+        {
+            throw new MalformedURLException(Msg.CANT_STRIP.toString(new Object[] { orig, strip }));
+        }
     }
 
     /**
-     * Utility to add a string to the end of a URL.
-     * @param orig The URL to strip
-     * @param anExtra The text to add to the end of the URL
-     * @return The stripped URL
+     * Utility to add a string to the end of a URI.
+     * @param orig The URI to lengthen
+     * @param anExtra The text to add to the end of the URI
+     * @return The lengthened URI
      */
-    public static URL lengthenURL(URL orig, String anExtra)
+    public static URI lengthenURI(URI orig, String anExtra)
     {
         String extra = anExtra;
         try
@@ -365,28 +391,37 @@ public final class NetUtil
                 extra = extra.substring(1);
             }
 
-            if (orig.getProtocol().equals(PROTOCOL_FILE))
+            if (orig.getScheme().equals(PROTOCOL_FILE))
             {
-                String file = orig.toExternalForm();
+                String file = orig.toString();
                 char lastChar = file.charAt(file.length() - 1);
                 if (isSeparator(lastChar))
                 {
-                    return new URL(orig.getProtocol(),
+                    return new URI(orig.getScheme(),
+                                   orig.getUserInfo(),
                                    orig.getHost(),
                                    orig.getPort(),
-                                   orig.getFile() + extra);
+                                   orig.getPath() + extra,
+                                   orig.getQuery(),
+                                   orig.getFragment());
                 }
-                return new URL(orig.getProtocol(),
+                return new URI(orig.getScheme(),
+                               orig.getUserInfo(),
                                orig.getHost(),
                                orig.getPort(),
-                               orig.getFile() + File.separator + extra);
+                               orig.getPath() + File.separator + extra,
+                               orig.getQuery(),
+                               orig.getFragment());
             }
-            return new URL(orig.getProtocol(),
+            return new URI(orig.getScheme(),
+                           orig.getUserInfo(),
                            orig.getHost(),
                            orig.getPort(),
-                           orig.getFile() + SEPARATOR + extra);
+                           orig.getPath() + SEPARATOR + extra,
+                           orig.getQuery(),
+                           orig.getFragment());
         }
-        catch (MalformedURLException ex)
+        catch (URISyntaxException ex)
         {
             assert false : ex;
             return null;
@@ -399,84 +434,103 @@ public final class NetUtil
     }
 
     /**
-     * Attempt to obtain an OutputStream from a URL. The simple case will
-     * just call url.openConnection().getOutputStream(), however in some
+     * Attempt to obtain an InputStream from a URI. The simple case will
+     * just call uri.toURL().openConnection().getInputStream(), however in some
      * JVMs (MS at least this fails where new FileOutputStream(url) works.
      * So if openConnection().getOutputStream() fails and the protocol is
      * file, then the alternate version is used.
-     * @param url The URL to attempt to write to
+     * @param uri The URI to attempt to write to
      * @return An OutputStream connection
      */
-    public static OutputStream getOutputStream(URL url) throws IOException
+    public static InputStream getInputStream(URI uri) throws IOException
     {
-        return getOutputStream(url, false);
+        // We favour the FileOutputStream
+        if (uri.getScheme().equals(PROTOCOL_FILE))
+        {
+            return new FileInputStream(uri.getPath());
+        }
+        return uri.toURL().openStream();
     }
 
     /**
-     * Attempt to obtain an OutputStream from a URL. The simple case will
+     * Attempt to obtain an OutputStream from a URI. The simple case will
      * just call url.openConnection().getOutputStream(), however in some
      * JVMs (MS at least this fails where new FileOutputStream(url) works.
      * So if openConnection().getOutputStream() fails and the protocol is
      * file, then the alternate version is used.
-     * @param url The URL to attempt to write to
+     * @param uri The URI to attempt to write to
+     * @return An OutputStream connection
+     */
+    public static OutputStream getOutputStream(URI uri) throws IOException
+    {
+        return getOutputStream(uri, false);
+    }
+
+    /**
+     * Attempt to obtain an OutputStream from a URI. The simple case will
+     * just call uri.toURL().openConnection().getOutputStream(), however in some
+     * JVMs (MS at least this fails where new FileOutputStream(url) works.
+     * So if openConnection().getOutputStream() fails and the protocol is
+     * file, then the alternate version is used.
+     * @param uri The URI to attempt to write to
      * @param append Do we write to the end of the file instead of the beginning
      * @return An OutputStream connection
      */
-    public static OutputStream getOutputStream(URL url, boolean append) throws IOException
+    public static OutputStream getOutputStream(URI uri, boolean append) throws IOException
     {
         // We favour the FileOutputStream method here because append
         // is not well defined for the openConnection method
-        if (url.getProtocol().equals(PROTOCOL_FILE))
+        if (uri.getScheme().equals(PROTOCOL_FILE))
         {
-            return new FileOutputStream(url.getFile(), append);
+            return new FileOutputStream(uri.getPath(), append);
         }
-        URLConnection cnx = url.openConnection();
+        URLConnection cnx = uri.toURL().openConnection();
         cnx.setDoOutput(true);
         return cnx.getOutputStream();
     }
 
     /**
-     * List the items available assuming that this URL points to a directory.
-     * <p>There are 2 methods of calculating the answer - if the URL is a file:
-     * URL then we can just use File.list(), otherwise we ask for a file inside
+     * List the items available assuming that this URI points to a directory.
+     * <p>There are 2 methods of calculating the answer - if the URI is a file:
+     * URI then we can just use File.list(), otherwise we ask for a file inside
      * the directory called index.txt and assume the directories contents to be
      * listed one per line.
-     * <p>If the URL is a file: URL then we execute both methods and warn if
+     * <p>If the URI is a file: URI then we execute both methods and warn if
      * there is a difference, but returning the values from the index.txt
      * method.
      */
-    public static String[] list(URL url, URLFilter filter) throws MalformedURLException, IOException
+    public static String[] list(URI uri, URLFilter filter) throws MalformedURLException, IOException
     {
         // We should probably cache this in some way? This is going
         // to get very slow calling this often across a network
         String[] reply = {};
         try
         {
-            URL search = NetUtil.lengthenURL(url, INDEX_FILE);
+            URI search = NetUtil.lengthenURI(uri, INDEX_FILE);
             reply = listByIndexFile(search, filter);
         }
         catch (FileNotFoundException ex)
         {
             // So the index file was not found - this isn't going to work over
-            // JNLP or other systems that can't use file: URLs. But it is silly
+            // JNLP or other systems that can't use file: URIs. But it is silly
             // to get to picky so if there is a solution using file: then just
             // print a warning and carry on.
-            log.warn("index file for " + url.toExternalForm() + " was not found."); //$NON-NLS-1$ //$NON-NLS-2$
-            if (url.getProtocol().equals(PROTOCOL_FILE))
+            log.warn("index file for " + uri.toString() + " was not found."); //$NON-NLS-1$ //$NON-NLS-2$
+            if (uri.getScheme().equals(PROTOCOL_FILE))
             {
-                return listByFile(url, filter);
+                return listByFile(uri, filter);
             }
         }
 
         // if we can - check that the index file is up to date.
-        if (url.getProtocol().equals(PROTOCOL_FILE))
+        if (uri.getScheme().equals(PROTOCOL_FILE))
         {
-            String[] files = listByFile(url, filter);
+            String[] files = listByFile(uri, filter);
 
             // Check that the answers are the same
             if (files.length != reply.length)
             {
-                log.warn("index file for " + url.toExternalForm() + " has incorrect number of entries."); //$NON-NLS-1$ //$NON-NLS-2$
+                log.warn("index file for " + uri.toString() + " has incorrect number of entries."); //$NON-NLS-1$ //$NON-NLS-2$
             }
             else
             {
@@ -498,12 +552,12 @@ public final class NetUtil
      * List all the files specified by the index file passed in.
      * @return String[] Matching results.
      */
-    public static String[] listByFile(URL url, URLFilter filter) throws MalformedURLException
+    public static String[] listByFile(URI url, URLFilter filter) throws MalformedURLException
     {
-        File fdir = new File(url.getFile());
+        File fdir = new File(url.getPath());
         if (!fdir.isDirectory())
         {
-            throw new MalformedURLException(Msg.NOT_DIR.toString(url.toExternalForm()));
+            throw new MalformedURLException(Msg.NOT_DIR.toString(url.toString()));
         }
 
         return fdir.list(new URLFilterFilenameFilter(filter));
@@ -513,9 +567,9 @@ public final class NetUtil
      * List all the files specified by the index file passed in.
      * @return String[] Matching results.
      */
-    public static String[] listByIndexFile(URL index, URLFilter filter) throws IOException
+    public static String[] listByIndexFile(URI index, URLFilter filter) throws IOException
     {
-        InputStream in = index.openStream();
+        InputStream in = NetUtil.getInputStream(index);
         String contents = StringUtil.read(new InputStreamReader(in));
 
         // We still need to do the filtering
@@ -541,27 +595,27 @@ public final class NetUtil
     }
 
     /**
-     * @param url the resource whose size is wanted
+     * @param uri the resource whose size is wanted
      * @return the size of that resource
      */
-    public static int getSize(URL url)
+    public static int getSize(URI uri)
     {
-        return getSize(url, null, null);
+        return getSize(uri, null, null);
     }
-    public static int getSize(URL url, String proxyHost)
+    public static int getSize(URI uri, String proxyHost)
     {
-        return getSize(url, proxyHost, null);
+        return getSize(uri, proxyHost, null);
     }
-    public static int getSize(URL url, String proxyHost, Integer proxyPort)
+    public static int getSize(URI uri, String proxyHost, Integer proxyPort)
     {
-        if (url.getProtocol().equals(PROTOCOL_HTTP))
-        {
-            return new WebResource(url, proxyHost, proxyPort).getSize();
-        }
-
         try
         {
-            return url.openConnection().getContentLength();
+            if (uri.getScheme().equals(PROTOCOL_HTTP))
+            {
+                return new WebResource(uri, proxyHost, proxyPort).getSize();
+            }
+
+            return uri.toURL().openConnection().getContentLength();
         }
         catch (IOException e)
         {
@@ -573,26 +627,26 @@ public final class NetUtil
      * When was the given URL last modified. If no modification time is
      * available then this method return the current time.
      */
-    public static long getLastModified(URL url)
+    public static long getLastModified(URI uri)
     {
-        return getLastModified(url, null, null);
+        return getLastModified(uri, null, null);
     }
 
-    public static long getLastModified(URL url, String proxyHost)
+    public static long getLastModified(URI uri, String proxyHost)
     {
-        return getLastModified(url, proxyHost, null);
+        return getLastModified(uri, proxyHost, null);
     }
 
-    public static long getLastModified(URL url, String proxyHost, Integer proxyPort)
+    public static long getLastModified(URI uri, String proxyHost, Integer proxyPort)
     {
-        if (url.getProtocol().equals(PROTOCOL_HTTP))
-        {
-            return new WebResource(url, proxyHost, proxyPort).getLastModified();
-        }
-
         try
         {
-            URLConnection urlConnection = url.openConnection();
+            if (uri.getScheme().equals(PROTOCOL_HTTP))
+            {
+                return new WebResource(uri, proxyHost, proxyPort).getLastModified();
+            }
+
+            URLConnection urlConnection = uri.toURL().openConnection();
             long time = urlConnection.getLastModified();
 
             // If it were a jar then time contains the last modified date of the jar.
@@ -620,15 +674,15 @@ public final class NetUtil
      * @param right
      * @return true if the left is newer
      */
-    public static boolean isNewer(URL left, URL right)
+    public static boolean isNewer(URI left, URI right)
     {
         return isNewer(left, right, null, null);
     }
-    public static boolean isNewer(URL left, URL right, String proxyHost)
+    public static boolean isNewer(URI left, URI right, String proxyHost)
     {
         return isNewer(left, right, proxyHost, null);
     }
-    public static boolean isNewer(URL left, URL right, String proxyHost, Integer proxyPort)
+    public static boolean isNewer(URI left, URI right, String proxyHost, Integer proxyPort)
     {
         return NetUtil.getLastModified(left, proxyHost, proxyPort) > NetUtil.getLastModified(right, proxyHost, proxyPort);
     }
@@ -658,32 +712,32 @@ public final class NetUtil
     }
 
     /**
-     * Throw if the given URL does not use the 'file:' protocol
+     * Throw if the given URI does not use the 'file:' protocol
      * @param url The URL to check
      * @throws MalformedURLException If the protocol is not file:
      */
-    private static void checkFileURL(URL url) throws MalformedURLException
+    private static void checkFileURI(URI url) throws MalformedURLException
     {
-        if (!url.getProtocol().equals(PROTOCOL_FILE))
+        if (!url.getScheme().equals(PROTOCOL_FILE))
         {
             throw new MalformedURLException(Msg.NOT_FILE_URL.toString(url));
         }
     }
 
     /**
-     * Returns the URLCacheDir.
+     * Returns the cache directory.
      * @return File
      */
-    public static File getURLCacheDir()
+    public static File getURICacheDir()
     {
         return cachedir;
     }
 
     /**
      * Sets the cache directory.
-     * @param cachedir The URLCacheDir to set
+     * @param cachedir The cache directory to set
      */
-    public static void setURLCacheDir(File cachedir)
+    public static void setURICacheDir(File cachedir)
     {
         NetUtil.cachedir = cachedir;
     }
@@ -693,11 +747,11 @@ public final class NetUtil
      * @param file The File to turn into a URL
      * @return a URL for the given file
      */
-    public static URL getURL(File file)
+    public static URI getURI(File file)
     {
         try
         {
-            return new URL(PROTOCOL_FILE, null, -1, file.getCanonicalPath());
+            return new URI(PROTOCOL_FILE, null, null, -1, file.getCanonicalPath(), null, null);
         }
         catch (IOException ex)
         {
@@ -705,29 +759,69 @@ public final class NetUtil
             assert false;
             throw new IllegalArgumentException(ex.toString());
         }
+        catch (URISyntaxException ex)
+        {
+            log.error("Failed to create URI", ex); //$NON-NLS-1$
+            assert false;
+            throw new IllegalArgumentException(ex.toString());
+        }
     }
 
     /**
-     * A URL version of <code>File.createTempFile()</code>
-     * @return A new temporary URL
-     * @throws IOException If something goes wrong creating the temp URL
+     * A URI version of <code>File.createTempFile()</code>
+     * @return A new temporary URI
+     * @throws IOException If something goes wrong creating the temp URI
      */
-    public static URL getTemporaryURL(String prefix, String suffix) throws IOException
+    public static URI getTemporaryURI(String prefix, String suffix) throws IOException
     {
         File tempFile = File.createTempFile(prefix, suffix);
-        return getURL(tempFile);
+        return getURI(tempFile);
+    }
+
+    /**
+     * Convert an URL to an URI.
+     * @param url to convert
+     * @return the URI representation of the URL
+     */
+    public static URI toURI(URL url)
+    {
+        try
+        {
+            return new URI(url.toExternalForm());
+        }
+        catch (URISyntaxException e)
+        {
+            return null;
+        }
+    }
+
+    /**
+     * Convert an URI to an URL.
+     * @param uri to convert
+     * @return the URL representation of the URI
+     */
+    public static URL toURL(URI uri)
+    {
+        try
+        {
+            return uri.toURL();
+        }
+        catch (MalformedURLException e)
+        {
+            return null;
+        }
     }
 
     /**
      * Check that the directories in the version directory really
      * represent versions.
      */
-    public static class IsDirectoryURLFilter implements URLFilter
+    public static class IsDirectoryURIFilter implements URLFilter
     {
         /**
          * Simple ctor
          */
-        public IsDirectoryURLFilter(URL parent)
+        public IsDirectoryURIFilter(URI parent)
         {
             this.parent = parent;
         }
@@ -737,10 +831,10 @@ public final class NetUtil
          */
         public boolean accept(String name)
         {
-            return NetUtil.isDirectory(NetUtil.lengthenURL(parent, name));
+            return NetUtil.isDirectory(NetUtil.lengthenURI(parent, name));
         }
 
-        private URL parent;
+        private URI parent;
     }
 
     /**

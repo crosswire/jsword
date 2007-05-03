@@ -21,8 +21,8 @@
  */
 package org.crosswire.jsword.book.install.sword;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.crosswire.common.progress.Progress;
 import org.crosswire.common.util.LucidException;
@@ -55,40 +55,40 @@ public class HttpSwordInstaller extends AbstractSwordInstaller
      */
     public int getSize(Book book)
     {
-        return NetUtil.getSize(toRemoteURL(book), proxyHost, proxyPort);
+        return NetUtil.getSize(toRemoteURI(book), proxyHost, proxyPort);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.install.Installer#toURL(org.crosswire.jsword.book.BookMetaData)
+     * @see org.crosswire.jsword.book.install.Installer#toRemoteURL(org.crosswire.jsword.book.BookMetaData)
      */
-    public URL toRemoteURL(Book book)
+    public URI toRemoteURI(Book book)
     {
         try
         {
-            return new URL(NetUtil.PROTOCOL_HTTP, host, directory + '/' + PACKAGE_DIR + '/' + book.getInitials() + ZIP_SUFFIX);
+            return new URI(NetUtil.PROTOCOL_HTTP, host, directory + '/' + PACKAGE_DIR + '/' + book.getInitials() + ZIP_SUFFIX, null);
         }
-        catch (MalformedURLException ex)
+        catch (URISyntaxException e)
         {
             return null;
         }
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.install.sword.AbstractSwordInstaller#download(java.lang.String, java.lang.String, java.net.URL)
+     * @see org.crosswire.jsword.book.install.sword.AbstractSwordInstaller#download(java.lang.String, java.lang.String, java.net.URI)
      */
     /* @Override */
-    protected void download(Progress job, String dir, String file, URL dest) throws InstallException
+    protected void download(Progress job, String dir, String file, URI dest) throws InstallException
     {
         try
         {
-            URL url = new URL(NetUtil.PROTOCOL_HTTP, host, dir + '/' + file);
-            copy(job, url, dest);
+            URI uri = new URI(NetUtil.PROTOCOL_HTTP, host, dir + '/' + file, null);
+            copy(job, uri, dest);
         }
         catch (LucidException ex)
         {
             throw new InstallException(Msg.MISSING_FILE, ex);
         }
-        catch (MalformedURLException e)
+        catch (URISyntaxException e)
         {
             assert false : e;
         }
@@ -100,14 +100,14 @@ public class HttpSwordInstaller extends AbstractSwordInstaller
      * @param dest
      * @throws LucidException
      */
-    private void copy(Progress job, URL url, URL dest) throws LucidException
+    private void copy(Progress job, URI uri, URI dest) throws LucidException
     {
         if (job != null)
         {
             job.setSectionName(Msg.JOB_DOWNLOADING.toString());
         }
 
-        WebResource wr = new WebResource(url, proxyHost, proxyPort);
+        WebResource wr = new WebResource(uri, proxyHost, proxyPort);
         wr.copy(dest);
     }
 

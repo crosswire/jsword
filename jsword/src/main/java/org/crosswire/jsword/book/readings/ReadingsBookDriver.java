@@ -93,7 +93,7 @@ public class ReadingsBookDriver extends AbstractBookDriver
         try
         {
             URL index = ResourceUtil.getResource(ReadingsBookDriver.class, "readings.txt"); //$NON-NLS-1$
-            return NetUtil.listByIndexFile(index, new URLFilter()
+            return NetUtil.listByIndexFile(NetUtil.toURI(index), new URLFilter()
             {
                 public boolean accept(String name)
                 {

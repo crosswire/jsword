@@ -24,7 +24,7 @@ package org.crosswire.jsword.index.lucene;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
-import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -77,7 +77,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
      * Read an existing index and use it.
      * @throws BookException If we fail to read the index files
      */
-    public LuceneIndex(Book book, URL storage) throws BookException
+    public LuceneIndex(Book book, URI storage) throws BookException
     {
         this.book = book;
 
@@ -95,7 +95,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
      * Generate an index to use, telling the job about progress as you go.
      * @throws BookException If we fail to read the index files
      */
-    public LuceneIndex(Book book, URL storage, boolean create) throws BookException
+    public LuceneIndex(Book book, URI storage, boolean create) throws BookException
     {
         assert create;
 

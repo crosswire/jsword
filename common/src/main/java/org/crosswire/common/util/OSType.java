@@ -22,8 +22,8 @@
 package org.crosswire.common.util;
 
 import java.io.Serializable;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 
 /**
@@ -40,11 +40,11 @@ public abstract class OSType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.util.OSType#getUserArea()
          */
-        public URL getUserArea()
+        public URI getUserArea()
         {
             if (userArea == null)
             {
-                userArea = NetUtil.lengthenURL(getUserHome(), MAC_USER_DATA_AREA);
+                userArea = NetUtil.lengthenURI(getUserHome(), MAC_USER_DATA_AREA);
             }
             return userArea;
         }
@@ -52,9 +52,9 @@ public abstract class OSType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.util.OSType#getUserAreaFolder(java.lang.String, java.lang.String)
          */
-        public URL getUserAreaFolder(String hiddenFolderName, String visibleFolderName)
+        public URI getUserAreaFolder(String hiddenFolderName, String visibleFolderName)
         {
-            return NetUtil.lengthenURL(getUserArea(), visibleFolderName);
+            return NetUtil.lengthenURI(getUserArea(), visibleFolderName);
         }
 
         /**
@@ -68,11 +68,11 @@ public abstract class OSType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.util.OSType#getUserArea()
          */
-        public URL getUserArea()
+        public URI getUserArea()
         {
             if (userArea == null)
             {
-                userArea = NetUtil.lengthenURL(getUserHome(), WIN32_USER_DATA_AREA);
+                userArea = NetUtil.lengthenURI(getUserHome(), WIN32_USER_DATA_AREA);
             }
             return userArea;
         }
@@ -80,9 +80,9 @@ public abstract class OSType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.util.OSType#getUserAreaFolder(java.lang.String, java.lang.String)
          */
-        public URL getUserAreaFolder(String hiddenFolderName, String visibleFolderName)
+        public URI getUserAreaFolder(String hiddenFolderName, String visibleFolderName)
         {
-            return NetUtil.lengthenURL(getUserArea(), visibleFolderName);
+            return NetUtil.lengthenURI(getUserArea(), visibleFolderName);
         }
 
         /**
@@ -96,7 +96,7 @@ public abstract class OSType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.util.OSType#getUserArea()
          */
-        public URL getUserArea()
+        public URI getUserArea()
         {
             return getUserHome();
         }
@@ -104,9 +104,9 @@ public abstract class OSType implements Serializable
         /* (non-Javadoc)
          * @see org.crosswire.jsword.util.OSType#getUserAreaFolder(java.lang.String, java.lang.String)
          */
-        public URL getUserAreaFolder(String hiddenFolderName, String visibleFolderName)
+        public URI getUserAreaFolder(String hiddenFolderName, String visibleFolderName)
         {
-            return NetUtil.lengthenURL(getUserArea(), hiddenFolderName);
+            return NetUtil.lengthenURI(getUserArea(), hiddenFolderName);
         }
 
         /**
@@ -127,28 +127,28 @@ public abstract class OSType implements Serializable
      * Get the user area for this OSType.
      * @return the user area
      */
-    public abstract URL getUserArea();
+    public abstract URI getUserArea();
 
     /**
      * A folder in the user area. This osType will determine which to use in constructing
-     * the URL to the folder.
+     * the URI to the folder.
      * 
      * @param hiddenFolderName is typically a "unix" hidden folder name such as .jsword.
      * @param visibleFolderName is an visible folder name, such as JSword.
      * 
      * @return the user area folder
      */
-    public abstract URL getUserAreaFolder(String hiddenFolderName, String visibleFolderName);
+    public abstract URI getUserAreaFolder(String hiddenFolderName, String visibleFolderName);
 
-    public static URL getUserHome()
+    public static URI getUserHome()
     {
         if (userHome == null)
         {
             try
             {
-                userHome = new URL(NetUtil.PROTOCOL_FILE, null, System.getProperty("user.home")); //$NON-NLS-1$
+                userHome = new URI(NetUtil.PROTOCOL_FILE, null, System.getProperty("user.home"), null); //$NON-NLS-1$
             }
-            catch (MalformedURLException e)
+            catch (URISyntaxException e)
             {
                 log.fatal("Failed to find user's home folder", e); //$NON-NLS-1$
                 assert false : e;
@@ -258,7 +258,7 @@ public abstract class OSType implements Serializable
     /**
      * The user's private data area.
      */
-    protected URL userArea;
+    protected URI userArea;
 
     /**
      * The Windows user settings parent directory
@@ -278,7 +278,7 @@ public abstract class OSType implements Serializable
     /**
      * The user's home directory.
      */
-    private static URL userHome;
+    private static URI userHome;
 
     /**
      * The log stream

@@ -24,8 +24,8 @@ package org.crosswire.jsword.book.install.sword;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -74,7 +74,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
      * @param file The file to download
      * @throws InstallException
      */
-    protected abstract void download(Progress job, String dir, String file, URL dest) throws InstallException;
+    protected abstract void download(Progress job, String dir, String file, URI dest) throws InstallException;
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#getURL()
@@ -114,20 +114,20 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
             return false;
         }
 
-        URL configurl = null;
+        URI configurl = null;
         try
         {
-            configurl = new URL(NetUtil.PROTOCOL_FILE, null, conf.getAbsolutePath());
+            configurl = new URI(NetUtil.PROTOCOL_FILE, null, conf.getAbsolutePath(), null);
 
         }
-        catch (MalformedURLException ex)
+        catch (URISyntaxException ex)
         {
             log.error("Failed to create URL for file: " + conf, ex); //$NON-NLS-1$
             assert false;
             return false;
         }
 
-        URL remote = toRemoteURL(book);
+        URI remote = toRemoteURI(book);
         return NetUtil.isNewer(remote, configurl, proxyHost, proxyPort);
     }
 
@@ -180,7 +180,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
             /* @Override */
             public void run()
             {
-                URL predicturl = Project.instance().getWritablePropertiesURL("sword-install"); //$NON-NLS-1$
+                URI predicturl = Project.instance().getWritablePropertiesURI("sword-install"); //$NON-NLS-1$
                 Progress job = JobManager.createJob(Msg.INSTALLING.toString(sbmd.getName()), predicturl, this, true);
 
                 yield();
@@ -189,7 +189,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                 {
                     job.setSectionName(Msg.JOB_INIT.toString());
 
-                    URL temp = NetUtil.getTemporaryURL("swd", ZIP_SUFFIX); //$NON-NLS-1$
+                    URI temp = NetUtil.getTemporaryURI("swd", ZIP_SUFFIX); //$NON-NLS-1$
 
                     download(job, directory + '/' + PACKAGE_DIR, sbmd.getInitials() + ZIP_SUFFIX, temp);
 
@@ -200,7 +200,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                         File dldir = SwordBookPath.getSwordDownloadDir();
                         IOUtil.unpackZip(NetUtil.getAsFile(temp), dldir);
                         job.setSectionName(Msg.JOB_CONFIG.toString());
-                        sbmd.setLibrary(NetUtil.getURL(dldir));
+                        sbmd.setLibrary(NetUtil.getURI(dldir));
                         SwordBookDriver.registerNewBook(sbmd);
                     }
 
@@ -241,7 +241,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
         try
         {
-            URL scratchfile = getCachedIndexFile();
+            URI scratchfile = getCachedIndexFile();
             download(job, directory + '/' + LIST_DIR, FILE_LIST_GZ, scratchfile);
             loaded = false;
         }
@@ -259,7 +259,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#downloadSearchIndex(org.crosswire.jsword.book.BookMetaData, java.net.URL)
      */
-    public void downloadSearchIndex(Book book, URL localDest) throws InstallException
+    public void downloadSearchIndex(Book book, URI localDest) throws InstallException
     {
         Progress job = JobManager.createJob(Msg.JOB_DOWNLOADING.toString(), Thread.currentThread(), false);
 
@@ -289,7 +289,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
         entries.clear();
 
-        URL cache = getCachedIndexFile();
+        URI cache = getCachedIndexFile();
         if (!NetUtil.isFile(cache))
         {
             reloadBookList();
@@ -302,7 +302,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         {
             ConfigEntry.resetStatistics();
 
-            in = cache.openStream();
+            in = NetUtil.getInputStream(cache);
             gin = new GZIPInputStream(in);
             tin = new TarInputStream(gin);
             while (true)
@@ -461,12 +461,12 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /**
      * The URL for the cached index file for this installer
      */
-    protected URL getCachedIndexFile() throws InstallException
+    protected URI getCachedIndexFile() throws InstallException
     {
         try
         {
-            URL scratchdir = Project.instance().getTempScratchSpace(getTempFileExtension(host, directory), true);
-            return NetUtil.lengthenURL(scratchdir, FILE_LIST_GZ);
+            URI scratchdir = Project.instance().getTempScratchSpace(getTempFileExtension(host, directory), true);
+            return NetUtil.lengthenURI(scratchdir, FILE_LIST_GZ);
         }
         catch (IOException ex)
         {

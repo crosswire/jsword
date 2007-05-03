@@ -21,7 +21,7 @@
  */
 package org.crosswire.jsword.book.install;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.List;
 
 import org.crosswire.jsword.book.Book;
@@ -50,16 +50,16 @@ public interface Installer extends BookList
     String getType();
 
     /**
-     * Accessor for the URL
-     * @return the source url
+     * Accessor for the URI
+     * @return the source uri
      */
     String getInstallerDefinition();
 
     /**
-     * @param book The book meta-data to get a URL from.
-     * @return the remote url for the BookMetaData
+     * @param book The book meta-data to get a URI from.
+     * @return the remote uri for the BookMetaData
      */
-    URL toRemoteURL(Book book);
+    URI toRemoteURI(Book book);
 
     /**
      * Get a list of BookMetaData objects that represent downloadable books.
@@ -107,8 +107,8 @@ public interface Installer extends BookList
      * The installation of the search index is the responsibility of the
      * IndexManager.
      * @param book The book to download a search index for.
-     * @param tempDest A temporary URL for downloading to. Passed to the
+     * @param tempDest A temporary URI for downloading to. Passed to the
      * IndexManager for installation.
      */
-    void downloadSearchIndex(Book book, URL tempDest) throws InstallException;
+    void downloadSearchIndex(Book book, URI tempDest) throws InstallException;
 }

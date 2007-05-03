@@ -22,7 +22,7 @@
 package org.crosswire.jsword.util;
 
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
 
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.Book;
@@ -55,7 +55,7 @@ public final class IndexDownloader
     public static void downloadIndex(Book book, Installer installer) throws IOException, InstallException, BookException
     {
         // Get a temp home
-        URL tempDownload = NetUtil.getTemporaryURL(TEMP_PREFIX, TEMP_SUFFIX);
+        URI tempDownload = NetUtil.getTemporaryURI(TEMP_PREFIX, TEMP_SUFFIX);
 
         try
         {

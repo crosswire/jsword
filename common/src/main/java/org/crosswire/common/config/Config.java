@@ -24,6 +24,7 @@ package org.crosswire.common.config;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -59,7 +60,7 @@ import org.jdom.Element;
  * The Config class stored the current Choices, and moves the data
  * between the various places that it is stored. There are 4 storage
  * areas:<ul>
- * <li><b>Permanent:</b> This can be local file, a URL, or a remote server
+ * <li><b>Permanent:</b> This can be local file, a URI, or a remote server
  *     Data is stored here between invocations of the program.
  * <li><b>Application:</b> This is the actual working copy of the data.
  * <li><b>Screen:</b> This copy of the data is shown on screen whist a
@@ -440,13 +441,13 @@ public class Config
      * Take the data in the local storage area and store it permanently,
      * using the configured storage area.
      */
-    public void localToPermanent(URL url) throws IOException
+    public void localToPermanent(URI url) throws IOException
     {
         OutputStream out = null;
 
         try
         {
-            out = new FileOutputStream(url.getFile());
+            out = new FileOutputStream(url.getPath());
             getProperties().store(out, title);
         }
         finally

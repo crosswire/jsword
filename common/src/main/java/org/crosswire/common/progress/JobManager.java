@@ -21,7 +21,7 @@
  */
 package org.crosswire.common.progress;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -82,9 +82,9 @@ public final class JobManager
     /**
      * Create a new Job
      */
-    public static Progress createJob(String description, URL predicturl, Thread work, boolean fakeupdates)
+    public static Progress createJob(String description, URI predictURI, Thread work, boolean fakeupdates)
     {
-        Progress job = new Job(description, predicturl, work, fakeupdates ? Progress.UNKNOWN : 100);
+        Progress job = new Job(description, predictURI, work, fakeupdates ? Progress.UNKNOWN : 100);
         jobs.add(job);
 
         log.debug("job starting: " + job.getJobName()); //$NON-NLS-1$
@@ -103,9 +103,9 @@ public final class JobManager
     /**
      * Create a new Job
      */
-    public static Progress createJob(String description, URL predicturl, boolean fakeupdates)
+    public static Progress createJob(String description, URI predictURI, boolean fakeupdates)
     {
-        return createJob(description, predicturl, null, fakeupdates);
+        return createJob(description, predictURI, null, fakeupdates);
     }
 
     /**

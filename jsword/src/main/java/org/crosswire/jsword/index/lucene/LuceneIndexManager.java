@@ -23,7 +23,7 @@ package org.crosswire.jsword.index.lucene;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,7 +56,7 @@ public class LuceneIndexManager implements IndexManager
     {
         try
         {
-            URL storage = getStorageArea(book);
+            URI storage = getStorageArea(book);
             return NetUtil.isDirectory(storage);
         }
         catch (IOException ex)
@@ -76,7 +76,7 @@ public class LuceneIndexManager implements IndexManager
             Index reply = (Index) INDEXES.get(book);
             if (reply == null)
             {
-                URL storage = getStorageArea(book);
+                URI storage = getStorageArea(book);
                 reply = new LuceneIndex(book, storage);
                 INDEXES.put(book, reply);
             }
@@ -101,10 +101,10 @@ public class LuceneIndexManager implements IndexManager
             public void run()
             {
                 IndexStatus finalStatus = IndexStatus.UNDONE;
-                URL storage = null;
+
                 try
                 {
-                    storage = getStorageArea(book);
+                    URI storage = getStorageArea(book);
                     Index index = new LuceneIndex(book, storage, true);
                     // We were successful if the directory exists.
                     if (NetUtil.getAsFile(storage).exists())
@@ -133,11 +133,11 @@ public class LuceneIndexManager implements IndexManager
     /* (non-Javadoc)
      * @see org.crosswire.jsword.index.search.IndexManager#installDownloadedIndex(org.crosswire.jsword.book.Book, java.net.URL)
      */
-    public void installDownloadedIndex(Book book, URL tempDest) throws BookException
+    public void installDownloadedIndex(Book book, URI tempDest) throws BookException
     {
         try
         {
-            URL storage = getStorageArea(book);
+            URI storage = getStorageArea(book);
             File zip = NetUtil.getAsFile(tempDest);
             IOUtil.unpackZip(zip, NetUtil.getAsFile(storage));
         }
@@ -181,7 +181,7 @@ public class LuceneIndexManager implements IndexManager
      * @return A URL to store stuff in
      * @throws IOException If there is a problem in finding where to store stuff
      */
-    protected URL getStorageArea(Book book) throws IOException
+    protected URI getStorageArea(Book book) throws IOException
     {
         BookMetaData bmd = book.getBookMetaData();
         String driverName = bmd.getDriverName();
@@ -190,10 +190,10 @@ public class LuceneIndexManager implements IndexManager
         assert driverName != null;
         assert bookName != null;
 
-        URL base = Project.instance().getTempScratchSpace(DIR_LUCENE, false);
-        URL driver = NetUtil.lengthenURL(base, driverName);
+        URI base = Project.instance().getTempScratchSpace(DIR_LUCENE, false);
+        URI driver = NetUtil.lengthenURI(base, driverName);
 
-        return NetUtil.lengthenURL(driver, bookName);
+        return NetUtil.lengthenURI(driver, bookName);
     }
 
     /**

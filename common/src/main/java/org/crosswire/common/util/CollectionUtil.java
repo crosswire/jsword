@@ -22,7 +22,7 @@
 package org.crosswire.common.util;
 
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -94,10 +94,11 @@ public final class CollectionUtil
         return propMap;
     }
 
-    public static Map properties2Map(URL propUrl) throws IOException
+    public static Map properties2Map(URI propUri) throws IOException
     {
         Properties prop = new Properties();
-        prop.load(propUrl.openStream());
+        prop.load(NetUtil.getInputStream(propUri));
         return properties2Map(prop);
     }
+
 }

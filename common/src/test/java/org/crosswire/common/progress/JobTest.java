@@ -23,7 +23,8 @@ package org.crosswire.common.progress;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import junit.framework.TestCase;
 
@@ -49,11 +50,11 @@ public class JobTest extends TestCase
         super(arg0);
     }
 
-    public void testJob() throws IOException
+    public void testJob() throws IOException, URISyntaxException
     {
         Progress job;
         File tempfile = File.createTempFile("jobtest", "tmp"); //$NON-NLS-1$ //$NON-NLS-2$
-        URL url = new URL(NetUtil.PROTOCOL_FILE, null, tempfile.getAbsolutePath());
+        URI uri = new URI(NetUtil.PROTOCOL_FILE, null, tempfile.getAbsolutePath(), null);
 
         job = JobManager.createJob(WIBBLE, false);
         assertEquals(job.getJobName(), WIBBLE);
@@ -77,7 +78,7 @@ public class JobTest extends TestCase
         assertEquals(job.getWork(), 100);
 //        assertEquals(job.isCancelable(), false);
 
-        job = JobManager.createJob(WIBBLE, url, false);
+        job = JobManager.createJob(WIBBLE, uri, false);
         assertEquals(job.getJobName(), WIBBLE);
         assertEquals(job.isFinished(), false);
         assertEquals(job.isCancelable(), false);
@@ -88,7 +89,7 @@ public class JobTest extends TestCase
         assertEquals(job.getWork(), 100);
 //        assertEquals(job.isCancelable(), false);
 
-        job = JobManager.createJob(WIBBLE, url, Thread.currentThread(), false);
+        job = JobManager.createJob(WIBBLE, uri, Thread.currentThread(), false);
         assertEquals(job.getJobName(), WIBBLE);
         assertEquals(job.isFinished(), false);
         assertEquals(job.isCancelable(), true);
