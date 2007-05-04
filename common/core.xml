@@ -24,7 +24,8 @@
   <property name="test.root"       value="${target.root}/test"/>
   <property name="test.classes"    value="${test.root}/classes"/>
   <property name="test.jar"        value="${test.root}"/>
-  <property name="keystore.file"   value="../common/common.keystore"/>
+  <property name="keystore.devfile"   value="../common/crosswire.keystore"/>
+  <property name="keystore.file"   value="${keystore.devfile}"/>
   <property name="keystore.alias"  value="jsword"/>
   <property name="keystore.pswd"   value="p455w0rd"/>
   <available file="${source.jar}" type="dir" property="jardir.present"/>
@@ -397,7 +398,7 @@
 	  <signjar
       	  storepass="${keystore.pswd}"
       	  alias="${keystore.alias}"
-      	  keystore="../common/crosswire.keystore"
+      	  keystore="${keystore.file}"
       	  keypass="${keystore.pswd}"
       	  jar="@{srcdir}/@{jar}"
       	  signedjar="@{destdir}/@{jar}"/>
@@ -415,7 +416,7 @@
     <echo message="Generating keystore for signing jars"/>
     <genkey alias="${keystore.alias}"
           storepass="${keystore.pswd}"
-          keystore="${keystore.file}">
+          keystore="${keystore.devfile}">
       <dname>
         <param name="CN" value="JSword Project"/>
         <param name="OU" value="Test Builds"/>
@@ -428,7 +429,7 @@
           description="Check the keystore is there">
     <available
         property="keygen.uptodate"
-        file="${keystore.file}"/>
+        file="${keystore.devfile}"/>
   </target>
 
   <!--=======================================================================
