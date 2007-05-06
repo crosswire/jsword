@@ -401,7 +401,7 @@ public final class VerseRange implements Key, Serializable
         // Estimate the size of the buffer: book.dd.dd (where book is 3-5, 3 typical)
         StringBuffer buf = new StringBuffer((endOrdinal - startOrdinal + 1) * 10);
         buf.append(start.getOsisID());
-        for (int i = startOrdinal; i < endOrdinal; i++)
+        for (int i = startOrdinal + 1; i < endOrdinal; i++)
         {
             try
             {
