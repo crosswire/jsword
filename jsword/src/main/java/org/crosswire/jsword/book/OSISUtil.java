@@ -28,9 +28,15 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyFactory;
+import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
+import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseFactory;
 import org.jdom.Content;
@@ -617,6 +623,86 @@ public final class OSISUtil
         return buffer.toString().trim();
     }
 
+    /**
+     * A space separate string containing Strong's numbers.
+     * @return The Strong's numbers in the text
+     */
+    public static String getStrongsNumbers(Element root)
+    {
+        StringBuffer buffer = new StringBuffer();
+
+        Iterator contentIter = getDeepContent(root, OSISUtil.OSIS_ELEMENT_W).iterator();
+        while (contentIter.hasNext())
+        {
+            Element ele = (Element) contentIter.next();
+            String attr = ele.getAttributeValue(OSISUtil.ATTRIBUTE_W_LEMMA);
+            if (attr != null)
+            {
+                if (buffer.length() > 0)
+                {
+                    buffer.append(' ');
+                }
+
+                buffer.append(attr);
+            }
+        }
+
+        String lemmas = buffer.toString();
+
+        // Clear out the buffer for re-use
+        int len = buffer.length();
+        if (len > 0)
+        {
+            buffer.delete(0, len);
+        }
+
+        Matcher matcher = strongsNumberPattern.matcher(lemmas);
+        while (matcher.find())
+        {
+            String strongType = matcher.group(1);
+            String strongsNum = matcher.group(2);
+            if (buffer.length() > 0)
+            {
+                buffer.append(' ');
+            }
+            buffer.append(strongType);
+            buffer.append(strongsNum);
+        }
+         
+        return buffer.toString().trim();
+    }
+
+    /**
+     * A space separate string containing osisID from the reference element.
+     * @return The references in the text
+     */
+    public static String getReferences(Element root)
+    {
+        KeyFactory keyf = PassageKeyFactory.instance();
+        Key collector = keyf.createEmptyKeyList();
+
+        Iterator contentIter = getDeepContent(root, OSISUtil.OSIS_ELEMENT_REFERENCE).iterator();
+        while (contentIter.hasNext())
+        {
+            Element ele = (Element) contentIter.next();
+            String attr = ele.getAttributeValue(OSISUtil.OSIS_ATTR_REF);
+            if (attr != null)
+            {
+                try
+                {
+                    Key key = keyf.getKey(attr);
+                    collector.addAll(key);
+                }
+                catch (NoSuchKeyException e)
+                {
+                    log.warn("Unable to parse: " + attr, e); //$NON-NLS-1$
+                }
+            }
+        }
+
+        return collector.getOsisID();
+    }
+
     private static void getCanonicalContent(String sName, String sID, Iterator iter, StringBuffer buffer)
     {
         Object data = null;
@@ -697,6 +783,7 @@ public final class OSISUtil
                 throw new BookException(Msg.OSIS_BADID, ex, new Object[] { osisid });
             }
         }
+
         // So we just walk up the tree trying to find a verse
         Parent parent = ele.getParent();
         if (parent instanceof Element)
@@ -742,11 +829,17 @@ public final class OSISUtil
             reply.add(start);
         }
 
+        Object data = null;
+        Element ele = null;
         Iterator contentIter = start.getContent().iterator();
         while (contentIter.hasNext())
         {
-            Element ele = (Element) contentIter.next();
-            recurseDeepContent(ele, name, reply);
+            data = contentIter.next();
+            if (data instanceof Element)
+            {
+                ele = (Element) data;
+                recurseDeepContent(ele, name, reply);
+            }
         }
     }
 
@@ -785,4 +878,7 @@ public final class OSISUtil
             recurseElement(sub, buffer);
         }
     }
+
+    private static String strongsNumber = "strong:([GH])0*([0-9]+)"; //$NON-NLS-1$
+    private static Pattern strongsNumberPattern = Pattern.compile(strongsNumber);
 }

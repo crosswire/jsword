@@ -88,6 +88,24 @@ public class BookData
     }
 
     /**
+     * Return just the Strong's numbers.
+     * @return The Book's Strong's numbers as a space separated string.
+     */
+    public String getStrongsNumbers()
+    {
+        return OSISUtil.getStrongsNumbers(getOsis());
+    }
+
+    /**
+     * Return just the scripture references in the book.
+     * @return The Book's scripture references
+     */
+    public String getReferences()
+    {
+        return OSISUtil.getReferences(getOsis());
+    }
+
+    /**
      * Check that a BibleData is valid.
      * Currently, this does nothing, and isn't used. it was broken when we used
      * JAXB, however it wasn't much use then becuase JAXB did a lot to keep the

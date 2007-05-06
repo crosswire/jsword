@@ -52,7 +52,6 @@ public final class FeatureType implements Serializable
      */
     public static final FeatureType HEBREW_PARSE = new FeatureType("HebrewParse"); //$NON-NLS-1$
 
-
     /**
      * The book is one of Daily Devotions. 
      */
@@ -64,7 +63,37 @@ public final class FeatureType implements Serializable
     public static final FeatureType GLOSSARY = new FeatureType("Glossary"); //$NON-NLS-1$
 
     /**
-     * @param name The name of the BookCategory
+     * The book contains Strong's Numbers
+     */
+    public static final FeatureType STRONGS_NUMBERS = new FeatureType("StrongsNumbers"); //$NON-NLS-1$
+
+    /**
+     * The book contains footnotes
+     */
+    public static final FeatureType FOOTNOTES = new FeatureType("Footnotes"); //$NON-NLS-1$
+
+    /**
+     * The book contains Scripture cross references
+     */
+    public static final FeatureType SCRIPTURE_REFERENCES = new FeatureType("Scripref"); //$NON-NLS-1$
+
+    /**
+     * The book marks the Word's of Christ
+     */
+    public static final FeatureType WORDS_OF_CHRIST = new FeatureType("RedLetterText"); //$NON-NLS-1$
+
+    /**
+     * The book contains Morphology info
+     */
+    public static final FeatureType MORPHOLOGY = new FeatureType("Morph"); //$NON-NLS-1$
+
+    /**
+     * The book contains Headings
+     */
+    public static final FeatureType HEADINGS = new FeatureType("Headings"); //$NON-NLS-1$
+
+    /**
+     * @param name The name of the FeatureType
      */
     private FeatureType(String name)
     {
@@ -106,7 +135,7 @@ public final class FeatureType implements Serializable
     }
 
     /**
-     * The name of the BookCategory
+     * The name of the FeatureType
      */
     private String name;
 
@@ -127,6 +156,12 @@ public final class FeatureType implements Serializable
         HEBREW_PARSE,
         DAILY_DEVOTIONS,
         GLOSSARY,
+        STRONGS_NUMBERS,
+        FOOTNOTES,
+        SCRIPTURE_REFERENCES,
+        WORDS_OF_CHRIST,
+        MORPHOLOGY,
+        HEADINGS,
     };
 
     /**

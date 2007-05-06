@@ -30,7 +30,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
@@ -53,6 +52,7 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.index.AbstractIndex;
 import org.crosswire.jsword.index.IndexStatus;
 import org.crosswire.jsword.index.search.SearchModifier;
@@ -114,7 +114,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
         Progress job = JobManager.createJob(Msg.INDEX_START.toString(), Thread.currentThread(), false);
 
         IndexStatus finalStatus = IndexStatus.UNDONE;
-        Analyzer analyzer = new SimpleAnalyzer();
+        Analyzer analyzer = new LuceneAnalyzer();
         List errors = new ArrayList();
         File tempPath = new File(path + '.' + IndexStatus.CREATING.toString());
 
@@ -202,7 +202,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
             try
             {
 
-                Analyzer analyzer = new SimpleAnalyzer();
+                Analyzer analyzer = new LuceneAnalyzer();
                 QueryParser parser = new QueryParser(LuceneIndex.FIELD_BODY, analyzer);
                 Query query = parser.parse(search);
                 Hits hits = searcher.search(query);
@@ -216,7 +216,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                     results = tally;
                     for (int i = 0; i < hits.length(); i++)
                     {
-                        Key key = VerseFactory.fromString(hits.doc(i).get(LuceneIndex.FIELD_NAME));
+                        Key key = VerseFactory.fromString(hits.doc(i).get(LuceneIndex.FIELD_KEY));
                         // PassageTally understands a score of 0 as the verse not participating
                         int score = (int) (hits.score(i) * 100 + 1);
                         tally.add(key, score);
@@ -238,7 +238,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                     }
                     for (int i = 0; i < hits.length(); i++)
                     {
-                        Key key = VerseFactory.fromString(hits.doc(i).get(LuceneIndex.FIELD_NAME));
+                        Key key = VerseFactory.fromString(hits.doc(i).get(LuceneIndex.FIELD_KEY));
                         results.addAll(key);
                     }
                     if (passage != null)
@@ -339,10 +339,15 @@ public class LuceneIndex extends AbstractIndex implements Activatable
      */
     private void generateSearchIndexImpl(Progress job, List errors, IndexWriter writer, Key key, int count) throws BookException, IOException
     {
+        boolean hasStrongs = book.getBookMetaData().hasFeature(FeatureType.STRONGS_NUMBERS);
+        boolean hasXRefs = book.getBookMetaData().hasFeature(FeatureType.SCRIPTURE_REFERENCES);
+
         String oldRootName = ""; //$NON-NLS-1$
         int percent = 0;
         String rootName = ""; //$NON-NLS-1$
         String text = ""; //$NON-NLS-1$
+        String strongs = ""; //$NON-NLS-1$
+        String xrefs = ""; //$NON-NLS-1$
         BookData data = null;
         Key subkey = null;
         Document doc = null;
@@ -369,13 +374,36 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                 }
 
                 text = data.getCanonicalText();
+                if (hasStrongs)
+                {
+                    strongs = data.getStrongsNumbers();
+                }
 
                 // Do the actual indexing
                 if (text != null && text.length() > 0)
                 {
                     doc = new Document();
-                    doc.add(new Field(FIELD_NAME, subkey.getOsisRef(), Field.Store.YES, Field.Index.NO));
+                    doc.add(new Field(FIELD_KEY, subkey.getOsisRef(), Field.Store.YES, Field.Index.UN_TOKENIZED));
                     doc.add(new Field(FIELD_BODY, new StringReader(text)));
+
+                    if (hasStrongs)
+                    {
+                        strongs = data.getStrongsNumbers();
+                        if (strongs != null && strongs.length() > 0)
+                        {
+                            doc.add(new Field(FIELD_STRONG, strongs, Field.Store.NO, Field.Index.TOKENIZED));
+                        }
+                    }
+
+                    if (hasXRefs)
+                    {
+                        xrefs = data.getReferences();
+                        if (xrefs != null && xrefs.length() > 0)
+                        {
+                            doc.add(new Field(FIELD_XREF, xrefs, Field.Store.NO, Field.Index.TOKENIZED));
+                        }
+                    }
+
                     writer.addDocument(doc);
                 }
 
@@ -423,7 +451,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
     /**
      * The Lucene field for the osisID
      */
-    protected static final String FIELD_NAME = "key"; //$NON-NLS-1$
+    protected static final String FIELD_KEY = "key"; //$NON-NLS-1$
 
     /**
      * The Lucene field for the text contents
@@ -434,6 +462,16 @@ public class LuceneIndex extends AbstractIndex implements Activatable
      * The Lucene field for the strong numbers
      */
     protected static final String FIELD_STRONG = "strong"; //$NON-NLS-1$
+
+    /**
+     * The Lucene field for cross references
+     */
+    protected static final String FIELD_XREF = "xref"; //$NON-NLS-1$
+
+    /**
+     * The Lucene field for notes
+     */
+    protected static final String FIELD_NOTES = "note"; //$NON-NLS-1$
 
     /**
      * The Book that we are indexing
