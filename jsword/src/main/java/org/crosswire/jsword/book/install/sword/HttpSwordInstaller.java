@@ -65,7 +65,7 @@ public class HttpSwordInstaller extends AbstractSwordInstaller
     {
         try
         {
-            return new URI(NetUtil.PROTOCOL_HTTP, host, directory + '/' + PACKAGE_DIR + '/' + book.getInitials() + ZIP_SUFFIX, null);
+            return new URI(NetUtil.PROTOCOL_HTTP, host, packageDirectory + '/' + book.getInitials() + ZIP_SUFFIX, null);
         }
         catch (URISyntaxException e)
         {

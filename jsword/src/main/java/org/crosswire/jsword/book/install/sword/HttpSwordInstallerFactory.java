@@ -21,6 +21,8 @@
  */
 package org.crosswire.jsword.book.install.sword;
 
+import java.util.regex.Pattern;
+
 import org.crosswire.jsword.book.install.Installer;
 import org.crosswire.jsword.book.install.InstallerFactory;
 
@@ -48,20 +50,49 @@ public class HttpSwordInstallerFactory implements InstallerFactory
      */
     public Installer createInstaller(String installerDefinition)
     {
-        String[] parts = installerDefinition.split(",", 4); //$NON-NLS-1$
-        if (parts.length < 4)
+        String[] parts = commaPattern.split(installerDefinition, 6);
+        switch (parts.length)
         {
-            throw new IllegalArgumentException(Msg.INVALID_DEFINITION.toString(installerDefinition));
+            case 4:
+                return createOldInstaller(parts);
+            case 6:
+                return createInstaller(parts);
+            default:
+                throw new IllegalArgumentException(Msg.INVALID_DEFINITION.toString(installerDefinition));
         }
 
-        HttpSwordInstaller reply = new HttpSwordInstaller();
+    }
+
+    private Installer createInstaller(String[] parts)
+    {
+        AbstractSwordInstaller reply = new HttpSwordInstaller();
 
         reply.setHost(parts[0]);
-        reply.setDirectory(parts[1]);
+        reply.setPackageDirectory(parts[1]);
+        reply.setCatalogDirectory(parts[2]);
+        if (parts[3].length() > 0)
+        {
+            reply.setProxyHost(parts[3]);
+            if (parts[4].length() > 0)
+            {
+                reply.setProxyPort(Integer.valueOf(parts[4]));
+            }
+        }
+
+        return reply;
+    }
+
+    private Installer createOldInstaller(String[] parts)
+    {
+        AbstractSwordInstaller reply = new HttpSwordInstaller();
+
+        reply.setHost(parts[0]);
+        reply.setPackageDirectory(parts[1] + '/' + PACKAGE_DIR);
+        reply.setCatalogDirectory(parts[1] + '/' + LIST_DIR);
         if (parts[2].length() > 0)
         {
             reply.setProxyHost(parts[2]);
-            if (parts[5].length() > 0)
+            if (parts[3].length() > 0)
             {
                 reply.setProxyPort(Integer.valueOf(parts[3]));
             }
@@ -69,4 +100,17 @@ public class HttpSwordInstallerFactory implements InstallerFactory
 
         return reply;
     }
+
+    /**
+     * The relative path of the dir holding the zip files
+     */
+    protected static final String PACKAGE_DIR = "packages/rawzip"; //$NON-NLS-1$
+
+    /**
+     * The relative path of the dir holding the index file
+     */
+    private static final String LIST_DIR = "raw"; //$NON-NLS-1$
+
+
+    private Pattern commaPattern = Pattern.compile(","); //$NON-NLS-1$
 }

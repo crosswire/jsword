@@ -83,7 +83,11 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     {
         StringBuffer buf = new StringBuffer(host);
         buf.append(',');
-        buf.append(directory);
+        buf.append(packageDirectory);
+        buf.append(',');
+        buf.append(catalogDirectory);
+        buf.append(',');
+        buf.append(indexDirectory);
         buf.append(',');
         if (proxyHost != null)
         {
@@ -191,7 +195,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
                     URI temp = NetUtil.getTemporaryURI("swd", ZIP_SUFFIX); //$NON-NLS-1$
 
-                    download(job, directory + '/' + PACKAGE_DIR, sbmd.getInitials() + ZIP_SUFFIX, temp);
+                    download(job, packageDirectory, sbmd.getInitials() + ZIP_SUFFIX, temp);
 
                     // Once the unzipping is started, we need to continue
                     job.setCancelable(false);
@@ -242,7 +246,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         try
         {
             URI scratchfile = getCachedIndexFile();
-            download(job, directory + '/' + LIST_DIR, FILE_LIST_GZ, scratchfile);
+            download(job, catalogDirectory, FILE_LIST_GZ, scratchfile);
             loaded = false;
         }
         catch (InstallException ex)
@@ -265,7 +269,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
         try
         {
-            download(job, directory + '/' + SEARCH_DIR, book.getInitials() + ZIP_SUFFIX, localDest);
+            download(job, packageDirectory + '/' + SEARCH_DIR, book.getInitials() + ZIP_SUFFIX, localDest);
         }
         catch (InstallException ex)
         {
@@ -374,23 +378,55 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     }
 
     /**
+     * @return the catologDirectory
+     */
+    public String getCatalogDirectory()
+    {
+        return catalogDirectory;
+    }
+
+    /**
+     * @param catologDirectory the catologDirectory to set
+     */
+    public void setCatalogDirectory(String catologDirectory)
+    {
+        this.catalogDirectory = catologDirectory;
+    }
+
+    /**
      * @return Returns the directory.
      */
-    public String getDirectory()
+    public String getPackageDirectory()
     {
-        return directory;
+        return packageDirectory;
     }
 
     /**
      * @param newDirectory The directory to set.
      */
-    public void setDirectory(String newDirectory)
+    public void setPackageDirectory(String newDirectory)
     {
-        if (directory == null || !directory.equals(newDirectory))
+        if (packageDirectory == null || !packageDirectory.equals(newDirectory))
         {
-            directory = newDirectory;
+            packageDirectory = newDirectory;
             loaded = false;
         }
+    }
+
+    /**
+     * @return the indexDirectory
+     */
+    public String getIndexDirectory()
+    {
+        return indexDirectory;
+    }
+
+    /**
+     * @param indexDirectory the indexDirectory to set
+     */
+    public void setIndexDirectory(String indexDirectory)
+    {
+        this.indexDirectory = indexDirectory;
     }
 
     /**
@@ -465,7 +501,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     {
         try
         {
-            URI scratchdir = Project.instance().getTempScratchSpace(getTempFileExtension(host, directory), true);
+            URI scratchdir = Project.instance().getTempScratchSpace(getTempFileExtension(host, catalogDirectory), true);
             return NetUtil.lengthenURI(scratchdir, FILE_LIST_GZ);
         }
         catch (IOException ex)
@@ -477,9 +513,9 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /**
      * What are we using as a temp filename?
      */
-    private static String getTempFileExtension(String host, String directory)
+    private static String getTempFileExtension(String host, String catalogDir)
     {
-        return DOWNLOAD_PREFIX + host + directory.replace('/', '_');
+        return DOWNLOAD_PREFIX + host + catalogDir.replace('/', '_');
     }
 
     /* (non-Javadoc)
@@ -499,7 +535,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
             return false;
         }
 
-        if (!equals(this.directory, that.directory))
+        if (!equals(this.packageDirectory, that.packageDirectory))
         {
             return false;
         }
@@ -517,7 +553,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         int ret = host.compareTo(myClass.host);
         if (ret != 0)
         {
-            ret = directory.compareTo(myClass.directory);
+            ret = packageDirectory.compareTo(myClass.packageDirectory);
         }
         return ret;
     }
@@ -528,7 +564,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /* @Override */
     public int hashCode()
     {
-        return host.hashCode() + directory.hashCode();
+        return host.hashCode() + packageDirectory.hashCode();
     }
 
     /**
@@ -542,16 +578,6 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         }
         return string1.equals(string2);
     }
-
-    /**
-     * The relative path of the dir holding the zip files
-     */
-    protected static final String PACKAGE_DIR = "packages/rawzip"; //$NON-NLS-1$
-
-    /**
-     * The relative path of the dir holding the index file
-     */
-    private static final String LIST_DIR = "raw"; //$NON-NLS-1$
 
     /**
      * A map of the entries in this download area
@@ -574,9 +600,19 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     protected Integer proxyPort;
 
     /**
-     * The directory containing books on the <code>host</code>.
+     * The directory containing zipped books on the <code>host</code>.
      */
-    protected String directory = "/"; //$NON-NLS-1$
+    protected String packageDirectory = ""; //$NON-NLS-1$
+
+    /**
+     * The directory containing the catalog of all books on the <code>host</code>.
+     */
+    protected String catalogDirectory = ""; //$NON-NLS-1$
+
+    /**
+     * The directory containing the catalog of all books on the <code>host</code>.
+     */
+    protected String indexDirectory = ""; //$NON-NLS-1$
 
     /**
      * Do we need to reload the index file
@@ -607,4 +643,5 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
      * When we cache a download index
      */
     protected static final String DOWNLOAD_PREFIX = "download-"; //$NON-NLS-1$
+
 }
