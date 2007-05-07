@@ -210,6 +210,18 @@ public abstract class AbstractKeyList implements Key
     {
         Key that = (Key) obj;
 
+        if (this == that)
+        {
+            return 0;
+        }
+
+        if (that == null)
+        {
+            // he is empty, we are not so he is greater
+            return -1;
+        }
+
+
         int ret = this.getName().compareTo(that.getName());
 
         if (ret != 0)
@@ -217,6 +229,7 @@ public abstract class AbstractKeyList implements Key
             return ret;
         }
 
+        // Compare the contents.
         Iterator thisIter = this.iterator();
         Iterator thatIter = that.iterator();
 
@@ -250,7 +263,7 @@ public abstract class AbstractKeyList implements Key
             return -1;
         }
 
-        return thisfirst.compareTo(thatfirst);
+        return thisfirst.getName().compareTo(thatfirst.getName());
     }
 
     /* (non-Javadoc)
