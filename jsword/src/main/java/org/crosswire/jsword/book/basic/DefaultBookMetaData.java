@@ -23,6 +23,7 @@ package org.crosswire.jsword.book.basic;
 
 import java.util.Map;
 
+import org.crosswire.common.util.Languages;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.Book;
@@ -123,7 +124,7 @@ public final class DefaultBookMetaData extends AbstractBookMetaData
      */
     public void setLanguage(String language)
     {
-        putProperty(KEY_LANGUAGE, getLanguage(initials, language));
+        putProperty(KEY_LANGUAGE, Languages.getLanguage(initials, language));
     }
 
     /**

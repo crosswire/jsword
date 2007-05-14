@@ -28,7 +28,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.crosswire.jsword.book.basic.AbstractBookMetaData;
+import org.crosswire.common.util.Languages;
 
 
 /**
@@ -893,7 +893,7 @@ public class ConfigEntryType implements Serializable
          */
         public Object getDefault()
         {
-            return AbstractBookMetaData.DEFAULT_LANG_CODE;
+            return Languages.DEFAULT_LANG_CODE;
         }
 
         /**

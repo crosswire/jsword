@@ -36,11 +36,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.crosswire.common.util.Languages;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.OSISUtil;
-import org.crosswire.jsword.book.basic.AbstractBookMetaData;
 import org.jdom.Element;
 
 /**
@@ -605,7 +605,7 @@ public final class ConfigEntryTable
             langEntry = langFromEntry;
         }
 
-        String lang = AbstractBookMetaData.getLanguage(internal, langEntry);
+        String lang = Languages.getLanguage(internal, langEntry);
         add(ConfigEntryType.LANGUAGE, lang);
 
         // This returns Left to Right if
@@ -614,16 +614,16 @@ public final class ConfigEntryTable
 
         if (langFromEntry != null || langToEntry != null)
         {
-            String langFrom = AbstractBookMetaData.getLanguage(internal, langFromEntry);
+            String langFrom = Languages.getLanguage(internal, langFromEntry);
             add(ConfigEntryType.LANGUAGE_FROM, langFrom);
-            String langTo = AbstractBookMetaData.getLanguage(internal, langToEntry);
+            String langTo = Languages.getLanguage(internal, langToEntry);
             add(ConfigEntryType.LANGUAGE_TO, langTo);
             boolean fromLeftToRight = true;
             boolean toLeftToRight = true;
 
             if (langFromEntry == null)
             {
-                log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_FROM.getName() + '=' + AbstractBookMetaData.DEFAULT_LANG_CODE);  //$NON-NLS-1$ //$NON-NLS-2$
+                log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_FROM.getName() + '=' + Languages.DEFAULT_LANG_CODE);  //$NON-NLS-1$ //$NON-NLS-2$
             }
             else
             {
@@ -632,7 +632,7 @@ public final class ConfigEntryTable
 
             if (langToEntry == null)
             {
-                log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_TO.getName() + '=' + AbstractBookMetaData.DEFAULT_LANG_CODE);  //$NON-NLS-1$ //$NON-NLS-2$
+                log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_TO.getName() + '=' + Languages.DEFAULT_LANG_CODE);  //$NON-NLS-1$ //$NON-NLS-2$
             }
             else
             {

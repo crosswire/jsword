@@ -25,14 +25,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.Locale;
 import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
-import org.crosswire.common.util.CWClassLoader;
-import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.FeatureType;
@@ -291,44 +285,6 @@ public abstract class AbstractBookMetaData implements BookMetaData
         this.driver = driver;
     }
 
-    /**
-     * Get the language name from the language code. Note, this code does not support dialects.
-     * @param iso639Code
-     * @return the name of the language
-     */
-    public static String getLanguage(String ident, String iso639Code)
-    {
-        String lookup = iso639Code;
-        if (lookup == null || lookup.length() == 0)
-        {
-            return getLanguage(ident, DEFAULT_LANG_CODE);
-        }
-
-        if (lookup.indexOf('_') != -1)
-        {
-            String[] locale = StringUtil.split(lookup, '_');
-            return getLanguage(ident, locale[0]);
-        }
-
-        // If the language begins w/ an x then it is "Undetermined"
-        // Also if it is not a 2 or 3 character code then it is not a valid
-        // iso639 code.
-        if (lookup.startsWith("x-") || lookup.startsWith("X-") || lookup.length() > 3) //$NON-NLS-1$ //$NON-NLS-2$
-        {
-            return getLanguage(ident, UNKNOWN_LANG_CODE);
-        }
-
-        try
-        {
-            return languages.getString(lookup);
-        }
-        catch (MissingResourceException e)
-        {
-            log.error("Not a valid language code:" + iso639Code + " in book " + ident); //$NON-NLS-1$ //$NON-NLS-2$
-            return getLanguage(ident, UNKNOWN_LANG_CODE);
-        }
-    }
-
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
@@ -391,27 +347,6 @@ public abstract class AbstractBookMetaData implements BookMetaData
             displayName = buf.toString();
         }
         return displayName;
-    }
-
-    /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(AbstractBookMetaData.class);
-
-    public static final String DEFAULT_LANG_CODE = "en"; //$NON-NLS-1$
-    private static final String UNKNOWN_LANG_CODE = "und"; //$NON-NLS-1$
-
-    private static/*final*/ResourceBundle languages;
-    static
-    {
-        try
-        {
-            languages = ResourceBundle.getBundle("iso639", Locale.getDefault(), CWClassLoader.instance()); //$NON-NLS-1$;
-        }
-        catch (MissingResourceException e)
-        {
-            assert false;
-        }
     }
 
     /**
