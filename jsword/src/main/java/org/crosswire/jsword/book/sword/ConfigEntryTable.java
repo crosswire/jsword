@@ -605,7 +605,7 @@ public final class ConfigEntryTable
             langEntry = langFromEntry;
         }
 
-        String lang = Languages.getLanguage(internal, langEntry);
+        String lang = getLanguage(internal, langEntry);
         add(ConfigEntryType.LANGUAGE, lang);
 
         // This returns Left to Right if
@@ -614,9 +614,9 @@ public final class ConfigEntryTable
 
         if (langFromEntry != null || langToEntry != null)
         {
-            String langFrom = Languages.getLanguage(internal, langFromEntry);
+            String langFrom = getLanguage(internal, langFromEntry);
             add(ConfigEntryType.LANGUAGE_FROM, langFrom);
-            String langTo = Languages.getLanguage(internal, langToEntry);
+            String langTo = getLanguage(internal, langToEntry);
             add(ConfigEntryType.LANGUAGE_TO, langTo);
             boolean fromLeftToRight = true;
             boolean toLeftToRight = true;
@@ -763,6 +763,15 @@ public final class ConfigEntryTable
 //        }
     }
 
+    private String getLanguage(String initials, String iso639Code)
+    {
+        if (!Languages.isValidLanguage(iso639Code))
+        {
+            log.warn("Unknown language " + iso639Code + " in book " + initials); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        return Languages.getLanguage(iso639Code);
+    }
+
     /**
      * Build an ordered map so that it displays in a consistent order.
      */
@@ -811,6 +820,7 @@ public final class ConfigEntryTable
             }
         }
     }
+
     private String report(String issue, String confEntryName, String line)
     {
         StringBuffer buf = new StringBuffer(100);

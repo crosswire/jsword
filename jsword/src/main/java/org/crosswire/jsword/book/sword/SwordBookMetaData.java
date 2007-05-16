@@ -263,7 +263,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData
      */
     /* @Override */
     public boolean hasFeature(FeatureType feature)
-    {        
+    {
         if (cet.match(ConfigEntryType.FEATURE, feature.toString()))
         {
             return true;

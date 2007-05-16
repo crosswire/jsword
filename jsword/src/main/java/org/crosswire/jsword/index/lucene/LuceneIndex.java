@@ -69,7 +69,6 @@ import org.crosswire.jsword.passage.VerseFactory;
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
-
  */
 public class LuceneIndex extends AbstractIndex implements Activatable
 {
@@ -341,6 +340,8 @@ public class LuceneIndex extends AbstractIndex implements Activatable
     {
         boolean hasStrongs = book.getBookMetaData().hasFeature(FeatureType.STRONGS_NUMBERS);
         boolean hasXRefs = book.getBookMetaData().hasFeature(FeatureType.SCRIPTURE_REFERENCES);
+        boolean hasNotes = book.getBookMetaData().hasFeature(FeatureType.FOOTNOTES);
+        boolean hasHeadings = book.getBookMetaData().hasFeature(FeatureType.HEADINGS);
 
         String oldRootName = ""; //$NON-NLS-1$
         int percent = 0;
@@ -348,6 +349,8 @@ public class LuceneIndex extends AbstractIndex implements Activatable
         String text = ""; //$NON-NLS-1$
         String strongs = ""; //$NON-NLS-1$
         String xrefs = ""; //$NON-NLS-1$
+        String notes = ""; //$NON-NLS-1$
+        String headings = ""; //$NON-NLS-1$
         BookData data = null;
         Key subkey = null;
         Document doc = null;
@@ -401,6 +404,24 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                         if (xrefs != null && xrefs.length() > 0)
                         {
                             doc.add(new Field(FIELD_XREF, xrefs, Field.Store.NO, Field.Index.TOKENIZED));
+                        }
+                    }
+
+                    if (hasNotes)
+                    {
+                        notes = data.getNotes();
+                        if (notes != null && notes.length() > 0)
+                        {
+                            doc.add(new Field(FIELD_NOTE, notes, Field.Store.NO, Field.Index.TOKENIZED));
+                        }
+                    }
+
+                    if (hasHeadings)
+                    {
+                        headings = data.getHeadings();
+                        if (headings != null && headings.length() > 0)
+                        {
+                            doc.add(new Field(FIELD_HEADING, headings, Field.Store.NO, Field.Index.TOKENIZED));
                         }
                     }
 
@@ -464,14 +485,19 @@ public class LuceneIndex extends AbstractIndex implements Activatable
     protected static final String FIELD_STRONG = "strong"; //$NON-NLS-1$
 
     /**
+     * The Lucene field for headings
+     */
+    protected static final String FIELD_HEADING = "heading"; //$NON-NLS-1$
+
+    /**
      * The Lucene field for cross references
      */
     protected static final String FIELD_XREF = "xref"; //$NON-NLS-1$
 
     /**
-     * The Lucene field for notes
+     * The Lucene field for the notes
      */
-    protected static final String FIELD_NOTES = "note"; //$NON-NLS-1$
+    protected static final String FIELD_NOTE = "note"; //$NON-NLS-1$
 
     /**
      * The Book that we are indexing

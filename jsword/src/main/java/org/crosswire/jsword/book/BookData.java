@@ -106,6 +106,24 @@ public class BookData
     }
 
     /**
+     * Return just the notes in the book.
+     * @return The Book's notes
+     */
+    public String getNotes()
+    {
+        return OSISUtil.getNotes(getOsis());
+    }
+
+    /**
+     * Return just the headings, both canonical and non-canonical, in the book.
+     * @return The Book's headings
+     */
+    public String getHeadings()
+    {
+        return OSISUtil.getHeadings(getOsis());
+    }
+
+    /**
      * Check that a BibleData is valid.
      * Currently, this does nothing, and isn't used. it was broken when we used
      * JAXB, however it wasn't much use then becuase JAXB did a lot to keep the

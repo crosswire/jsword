@@ -167,6 +167,11 @@ public final class OSISUtil
     public static final String NOTETYPE_STUDY = "x-StudyNote"; //$NON-NLS-1$
 
     /**
+     * Constant for the cross reference note type
+     */
+    public static final String NOTETYPE_REFERENCE = "crossReference"; //$NON-NLS-1$
+
+    /**
      * Constant for the variant type segment
      */
     public static final String VARIANT_TYPE = "x-variant"; //$NON-NLS-1$
@@ -257,7 +262,7 @@ public final class OSISUtil
     public static final String ATTRIBUTE_SPEAKER_WHO = "who"; //$NON-NLS-1$
     public static final String ATTRIBUTE_W_MORPH = "morph"; //$NON-NLS-1$
     public static final String ATTRIBUTE_OSISTEXT_OSISIDWORK = "osisIDWork"; //$NON-NLS-1$
-    // OSIS defines the long attribute as the one from the xml namespace
+    // OSIS defines the lang attribute as the one from the xml namespace
     // Typical usage element.setAttribute(OSISUtil.OSIS_ATTR_LANG, lang, Namespace.XML_NAMESPACE);
     public static final String OSIS_ATTR_LANG = "lang"; //$NON-NLS-1$
     public static final String ATTRIBUTE_DIV_BOOK = "book"; //$NON-NLS-1$
@@ -668,7 +673,7 @@ public final class OSISUtil
             buffer.append(strongType);
             buffer.append(strongsNum);
         }
-         
+
         return buffer.toString().trim();
     }
 
@@ -701,6 +706,48 @@ public final class OSISUtil
         }
 
         return collector.getOsisID();
+    }
+
+    /**
+     * The text of non-reference notes.
+     * 
+     * @return The references in the text
+     */
+    public static String getNotes(Element root)
+    {
+        StringBuffer buffer = new StringBuffer();
+
+        Iterator contentIter = getDeepContent(root, OSISUtil.OSIS_ELEMENT_NOTE).iterator();
+        while (contentIter.hasNext())
+        {
+            Element ele = (Element) contentIter.next();
+            String attr = ele.getAttributeValue(OSISUtil.OSIS_ATTR_TYPE);
+            if (attr == null || !attr.equals(NOTETYPE_REFERENCE))
+            {
+                buffer.append(OSISUtil.getTextContent(ele));
+            }
+        }
+
+        return buffer.toString();
+    }
+
+    /**
+     * The text of non-reference notes.
+     * 
+     * @return The references in the text
+     */
+    public static String getHeadings(Element root)
+    {
+        StringBuffer buffer = new StringBuffer();
+
+        Iterator contentIter = getDeepContent(root, OSISUtil.OSIS_ELEMENT_TITLE).iterator();
+        while (contentIter.hasNext())
+        {
+            Element ele = (Element) contentIter.next();
+            getCanonicalContent(ele.getName(), null, ele.getContent().iterator(), buffer);
+        }
+
+        return buffer.toString();
     }
 
     private static void getCanonicalContent(String sName, String sID, Iterator iter, StringBuffer buffer)

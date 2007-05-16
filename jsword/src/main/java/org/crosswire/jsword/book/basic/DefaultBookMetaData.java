@@ -124,7 +124,7 @@ public final class DefaultBookMetaData extends AbstractBookMetaData
      */
     public void setLanguage(String language)
     {
-        putProperty(KEY_LANGUAGE, Languages.getLanguage(initials, language));
+        putProperty(KEY_LANGUAGE, Languages.getLanguage(language));
     }
 
     /**
