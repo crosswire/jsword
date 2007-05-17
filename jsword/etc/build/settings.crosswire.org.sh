@@ -5,9 +5,9 @@ export WEBAPP_BIBLEDESKTOP=/home/jsword/bibledesktop/html
 export FTP_BASE=/home/ftp/pub/jsword
 export FTP_PREFIX=http://www.crosswire.org/ftpmirror/pub/jsword
 export JNLP_HOMEPAGE=http://www.crosswire.org/bibledesktop
-
 export JNLP_CODEBASE=$JNLP_HOMEPAGE/nightly
-export JNLP_INSTALLED=$WEBAPP_BIBLEDESKTOP/nightly
+
+export TARGET_INSTALLED=$WEBAPP_BIBLEDESKTOP/nightly
 export KEYSTORE_FILE=../common/crosswire.keystore
 
 export EMAIL="joe@eireneh.com dmsmith555@yahoo.com"

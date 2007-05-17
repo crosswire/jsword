@@ -10,28 +10,28 @@
     == These are the standard locations that this build file uses.
     == This assumes that the build file is in the root of the project.
     =========================================================================-->
-  <property name="release.version" value="1.0.6"/>
-  <property name="source.root"     value="src"/>
-  <property name="source.etc"      value="etc"/>
-  <property name="source.jar"      value="jar"/>
-  <property name="source.java"     value="${source.root}/main/java"/>
-  <property name="source.res"      value="${source.root}/main/resources"/>
-  <property name="source.test"     value="${source.root}/test"/>
-  <property name="target.root"     value="target"/>
-  <property name="target.classes"  value="${target.root}/classes"/>
-  <property name="target.jar"      value="${target.root}/jar"/>
-  <property name="target.signed"   value="${target.root}/signed"/>
-  <property name="test.root"       value="${target.root}/test"/>
-  <property name="test.classes"    value="${test.root}/classes"/>
-  <property name="test.jar"        value="${test.root}"/>
-  <property name="keystore.devfile"   value="../common/crosswire.keystore"/>
-  <property name="keystore.file"   value="${keystore.devfile}"/>
-  <property name="keystore.alias"  value="jsword"/>
-  <property name="keystore.pswd"   value="p455w0rd"/>
-  <available file="${source.jar}" type="dir" property="jardir.present"/>
-  <available file="${source.res}" type="dir" property="resdir.present"/>
-	
-  <property name="verbose.copy"    value="false"/>
+  <property name="release.version"  value="1.0.6"/>
+  <property name="source.root"      value="src"/>
+  <property name="source.etc"       value="etc"/>
+  <property name="source.jar"       value="jar"/>
+  <property name="source.java"      value="${source.root}/main/java"/>
+  <property name="source.res"       value="${source.root}/main/resources"/>
+  <property name="source.test"      value="${source.root}/test"/>
+  <property name="target.root"      value="target"/>
+  <property name="target.classes"   value="${target.root}/classes"/>
+  <property name="target.jar"       value="${target.root}/jar"/>
+  <property name="target.installed" value="${target.root}/installed"/> <!-- override -->
+  <property name="test.root"        value="${target.root}/test"/>
+  <property name="test.classes"     value="${test.root}/classes"/>
+  <property name="test.jar"         value="${test.root}"/>
+  <property name="keystore.devfile" value="../common/crosswire.keystore"/>
+  <property name="keystore.file"    value="${keystore.devfile}"/>
+  <property name="keystore.alias"   value="jsword"/>
+  <property name="keystore.pswd"    value="p455w0rd"/>
+  <available file="${source.jar}"   type="dir" property="jardir.present"/>
+  <available file="${source.res}"   type="dir" property="resdir.present"/>
+
+  <property name="verbose.copy"     value="false"/>
 
   <!--=======================================================================
     == These jars are built by the various JSword projects.
@@ -60,7 +60,7 @@
     <include name="**/jlfgr-*.jar"/>
     <include name="**/jsword-common-aqua-*.jar"/>
     <include name="**/javatar-*/*.jar"/>
-  	<!--
+    <!--
     <include name="**/activation.jar"/>
     <include name="**/servlet.jar"/>
     <include name="**/rome-*.jar"/>
@@ -236,8 +236,8 @@
   </target>
 
   <!--=======================================================================
-	== Copy all the local 3rd party jars to a single locaton.
-	=========================================================================-->
+    == Copy all the local 3rd party jars to a single locaton.
+    =========================================================================-->
   <target name="prepare.jars"
           if="jardir.present">
     <!-- Copy the jars from the std location to the target jar directory -->
@@ -250,15 +250,15 @@
   </target>
 
   <!--=======================================================================
-	== Copy all the resources to a single locaton.
-	=========================================================================-->
+    == Copy all the resources to a single locaton.
+    =========================================================================-->
   <target name="prepare.resources"
           if="resdir.present">
-	<!-- Copy the resources from the std location to the target classes directory -->
-	<mkdir dir="${target.classes}"/>
-	<copy verbose="${verbose.copy}" todir="${target.classes}" flatten="false" failonerror="false" preservelastmodified="true">
-	  <fileset dir="${source.res}" includes="**"/>
-	</copy>
+    <!-- Copy the resources from the std location to the target classes directory -->
+    <mkdir dir="${target.classes}"/>
+    <copy verbose="${verbose.copy}" todir="${target.classes}" flatten="false" failonerror="false" preservelastmodified="true">
+      <fileset dir="${source.res}" includes="**"/>
+    </copy>
   </target>
 
   <!--=======================================================================
@@ -319,14 +319,14 @@
     <!-- Copy the adjacent property files to the proper org/crosswire directory.
       == The path separator could be either / or \
       -->
-	<copy verbose="${verbose.copy}"
-	      todir="${target.classes}"
-	      includeEmptyDirs="false"
-	      preservelastmodified="true">
-	  <fileset dir="${source.java}">
-	    <patternset refid="java.non.compile"/>
-	  </fileset>
-	</copy>
+    <copy verbose="${verbose.copy}"
+          todir="${target.classes}"
+          includeEmptyDirs="false"
+          preservelastmodified="true">
+      <fileset dir="${source.java}">
+        <patternset refid="java.non.compile"/>
+      </fileset>
+    </copy>
     <antcall target="compile.extra"/>
   </target>
   <target name="compile.check">
@@ -408,14 +408,14 @@
     <attribute name="srcdir"/>
     <attribute name="destdir"/>
     <sequential>
-	  <mkdir dir="@{destdir}"/>
-	  <signjar
-      	  storepass="${keystore.pswd}"
-      	  alias="${keystore.alias}"
-      	  keystore="${keystore.file}"
-      	  keypass="${keystore.pswd}"
-      	  jar="@{srcdir}/@{jar}"
-      	  signedjar="@{destdir}/@{jar}"/>
+      <mkdir dir="@{destdir}"/>
+      <signjar
+            storepass="${keystore.pswd}"
+            alias="${keystore.alias}"
+            keystore="${keystore.file}"
+            keypass="${keystore.pswd}"
+            jar="@{srcdir}/@{jar}"
+            signedjar="@{destdir}/@{jar}"/>
     </sequential>
   </macrodef>
 
