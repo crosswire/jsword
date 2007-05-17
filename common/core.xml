@@ -34,6 +34,18 @@
   <property name="verbose.copy"    value="false"/>
 
   <!--=======================================================================
+    == These jars are built by the various JSword projects.
+    == It excludes jsword-common-aqua which is treated as an external jar.
+    =========================================================================-->
+  <patternset id="internal.built.jars">
+    <include name="**/bibledesktop-${release.version}.jar"/>
+    <include name="**/jsword-${release.version}.jar"/>
+    <include name="**/jsword-common-${release.version}.jar"/>
+    <include name="**/jsword-common-swing-${release.version}.jar"/>
+    <include name="**/jsword-${release.version}.jar"/>
+  </patternset>
+
+  <!--=======================================================================
     == These jars are necessary for Bible Desktop to be compiled and run.
     == The version numbers in jar files is replaced w/ *.
     == This way we can upgrade without impacting this ant build file.
@@ -44,18 +56,20 @@
     <include name="**/commons-httpclient-*.jar"/>
     <include name="**/commons-logging-*.jar"/>
     <include name="**/commons-net-*.jar"/>
-    <include name="**/lucene-*.jar"/>
-    <include name="**/activation.jar"/>
+    <include name="**/lucene-core-*.jar"/>
     <include name="**/jlfgr-*.jar"/>
     <include name="**/jsword-common-aqua-*.jar"/>
+    <include name="**/javatar-*/*.jar"/>
+  	<!--
+    <include name="**/activation.jar"/>
+    <include name="**/servlet.jar"/>
     <include name="**/rome-*.jar"/>
     <include name="**/xmlrpc-*.jar"/>
     <include name="**/gnu-regexp-*.jar"/>
     <include name="**/werx-*.jar"/>
     <include name="**/blogapps-*.jar"/>
     <include name="**/kafenio-*/*.jar"/>
-    <include name="**/servlet.jar"/>
-    <include name="**/javatar-*/*.jar"/>
+    -->
   </patternset>
 
   <!--=======================================================================
