@@ -78,7 +78,7 @@ public class DictToOsis
         while (iter.hasNext())
         {
             Key key = (Key) iter.next();
-            BookData bdata = book.getText(key);
+            BookData bdata = book.getBookData(key);
             SAXEventProvider osissep = bdata.getSAXEventProvider();
             try
             {

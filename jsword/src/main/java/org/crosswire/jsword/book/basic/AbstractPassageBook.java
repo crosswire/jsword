@@ -21,6 +21,7 @@
  */
 package org.crosswire.jsword.book.basic;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -57,18 +58,14 @@ public abstract class AbstractPassageBook extends AbstractBook
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#getData(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage.Key, boolean)
      */
-    public BookData getText(Key key) throws BookException
+    public Iterator getOsisIterator(Key key, boolean allowEmpty) throws BookException
     {
-        assert key != null;
-
+        // TODO(DMS): make the iterator be demand driven
         try
         {
-            Element osis = OSISUtil.createOsisFramework(getBookMetaData());
-            Element text = osis.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
-            Element div = OSISUtil.factory().createDiv();
-            text.addContent(div);
+            List content = new ArrayList();
 
             // For all the ranges in this Passage
             Passage ref = KeyUtil.getPassage(key);
@@ -84,7 +81,7 @@ public abstract class AbstractPassageBook extends AbstractBook
                 {
                     Element title = OSISUtil.factory().createTitle();
                     title.addContent(range.getName());
-                    div.addContent(title);
+                    content.add(title);
                 }
 
                 // For all the verses in this range
@@ -95,21 +92,30 @@ public abstract class AbstractPassageBook extends AbstractBook
                     String txt = getRawText(verse);
 
                     // If the verse is empty then we shouldn't add the verse tag
-                    if (txt.length() > 0)
+                    if (allowEmpty || txt.length() > 0)
                     {
                         List osisContent = getFilter().toOSIS(this, verse, txt);
-                        addOSIS(verse, div, osisContent);
-
+                        addOSIS(verse, content, osisContent);
                     }
                 }
             }
 
-            return new BookData(osis, this, key);
+            return content.iterator();
         }
         catch (FilterException ex)
         {
             throw new BookException(Msg.FILTER_FAIL, ex);
         }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getData(org.crosswire.jsword.passage.Key)
+     */
+    public BookData getBookData(Key key)
+    {
+        assert key != null;
+
+        return new BookData(this, key);
     }
 
     /**
@@ -123,6 +129,19 @@ public abstract class AbstractPassageBook extends AbstractBook
     {
         assert key != null;
         div.addContent(osisContent);
+    }
+
+    /**
+     * Add the OSIS elements to the div element. Note, this assumes that
+     * the data is fully marked up.
+     * @param key The key being added
+     * @param div The div element to which the key is being added
+     * @param osisContent The OSIS representation of the key being added.
+     */
+    public void addOSIS(Key key, List content, List osisContent)
+    {
+        assert key != null;
+        content.addAll(osisContent);
     }
 
     /**

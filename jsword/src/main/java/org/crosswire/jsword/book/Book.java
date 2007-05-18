@@ -21,6 +21,7 @@
  */
 package org.crosswire.jsword.book;
 
+import java.util.Iterator;
 import java.util.Map;
 
 import org.crosswire.common.activate.Activatable;
@@ -54,13 +55,21 @@ public interface Book extends Activatable, KeyFactory, Comparable
     void setBookMetaData(BookMetaData bmd);
 
     /**
-     * Return the text for the key in OSIS.
+     * Return an iterator that returns each key's OSIS in turn.
+     * 
+     * $param key the Items to locate
+     * @param allowEmpty indicates whether empty keys should be present.
+     */
+    Iterator getOsisIterator(Key key, boolean allowEmpty) throws BookException;
+
+    /**
+     * Return the BookData for the key.
      * 
      * @param key The item to locate
      * @return The found Book data
      * @throws BookException If anything goes wrong with this method
      */
-    BookData getText(Key key) throws BookException;
+    BookData getBookData(Key key);
 
     /**
      * Returns the raw text that getData(Key key) builds into OSIS.

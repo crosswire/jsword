@@ -42,6 +42,7 @@ import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.BooksEvent;
 import org.crosswire.jsword.book.BooksListener;
+import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.index.search.DefaultSearchModifier;
 import org.crosswire.jsword.index.search.DefaultSearchRequest;
 import org.crosswire.jsword.passage.Key;
@@ -80,8 +81,8 @@ public class APIExamples
         Book bible = books.getBook(BIBLE_NAME);
 
         Key key = bible.getKey("Gen 1 1"); //$NON-NLS-1$
-        BookData data = bible.getText(key);
-        String text = data.getCanonicalText();
+        BookData data = bible.getBookData(key);
+        String text = OSISUtil.getCanonicalText(data.getOsis());
 
         System.out.println("The plain text of Gen 1:1 is " + text); //$NON-NLS-1$
     }
@@ -98,7 +99,7 @@ public class APIExamples
         Book bible = Books.installed().getBook(BIBLE_NAME);
 
         Key key = bible.getKey("Gen 1 1"); //$NON-NLS-1$
-        BookData data = bible.getText(key);
+        BookData data = bible.getBookData(key);
         SAXEventProvider osissep = data.getSAXEventProvider();
 
         Converter styler = ConverterFactory.getConverter();
@@ -138,8 +139,8 @@ public class APIExamples
 
         System.out.println("The first Key in the default dictionary is " + first); //$NON-NLS-1$
 
-        BookData data = dict.getText(keys);
-        System.out.println("And the text against that key is " + data.getPlainText()); //$NON-NLS-1$
+        BookData data = dict.getBookData(keys);
+        System.out.println("And the text against that key is " + OSISUtil.getPlainText(data.getOsis())); //$NON-NLS-1$
     }
 
     /**
@@ -224,7 +225,7 @@ public class APIExamples
         while (rangeIter.hasNext())
         {
             Key range = (Key) rangeIter.next();
-            BookData data = bible.getText(range);
+            BookData data = bible.getBookData(range);
             SAXEventProvider osissep = data.getSAXEventProvider();
             SAXEventProvider htmlsep = new TransformingSAXEventProvider(NetUtil.toURI(xslurl), osissep);
             String text = XMLUtil.writeToString(htmlsep);
@@ -247,8 +248,8 @@ public class APIExamples
         while (iter.hasNext())
         {
             Verse verse = (Verse) iter.next();
-            BookData data = bible.getText(verse);
-            System.out.println('|' + BibleInfo.getBookName(verse.getBook()) + '|' + verse.getChapter() + '|' + verse.getVerse() + '|' + data.getCanonicalText());
+            BookData data = bible.getBookData(verse);
+            System.out.println('|' + BibleInfo.getBookName(verse.getBook()) + '|' + verse.getChapter() + '|' + verse.getVerse() + '|' + OSISUtil.getCanonicalText(data.getOsis()));
         }
     }
 

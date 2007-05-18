@@ -121,6 +121,33 @@ public class SwordBook extends AbstractPassageBook
         super.addOSIS(key, everse, osisContent);
     }
 
+    public void addOSIS(Key key, List contentList, List osisContent)
+    {
+        // See if the text is marked up with verses
+        // If it is then just add it.
+        Iterator iter = osisContent.iterator();
+        while (iter.hasNext())
+        {
+            Content content = (Content) iter.next();
+            if (content instanceof Element)
+            {
+                Element ele = (Element) content;
+                if (ele.getName().equals(OSISUtil.OSIS_ELEMENT_VERSE))
+                {
+                    super.addOSIS(key, contentList, osisContent);
+                    return;
+                }
+            }
+        }
+
+        // If we get here then the text is not marked up with verse
+        // In this case we add the verse markup.
+        Element everse = OSISUtil.factory().createVerse();
+        everse.setAttribute(OSISUtil.OSIS_ATTR_OSISID, key.getOsisID());
+        super.addOSIS(key, everse, osisContent);
+        contentList.add(everse);
+    }
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#isWritable()
      */

@@ -53,6 +53,7 @@ import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.FeatureType;
+import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.index.AbstractIndex;
 import org.crosswire.jsword.index.IndexStatus;
 import org.crosswire.jsword.index.search.SearchModifier;
@@ -62,6 +63,7 @@ import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.PassageTally;
 import org.crosswire.jsword.passage.VerseFactory;
+import org.jdom.Element;
 
 /**
  * Implement the SearchEngine using Lucene as the search engine.
@@ -347,13 +349,10 @@ public class LuceneIndex extends AbstractIndex implements Activatable
         int percent = 0;
         String rootName = ""; //$NON-NLS-1$
         String text = ""; //$NON-NLS-1$
-        String strongs = ""; //$NON-NLS-1$
-        String xrefs = ""; //$NON-NLS-1$
-        String notes = ""; //$NON-NLS-1$
-        String headings = ""; //$NON-NLS-1$
         BookData data = null;
         Key subkey = null;
         Document doc = null;
+        Element osis = null;
         int size = key.getCardinality();
         int subCount = count;
         for (Iterator it = key.iterator(); it.hasNext(); )
@@ -365,10 +364,12 @@ public class LuceneIndex extends AbstractIndex implements Activatable
             }
             else
             {
-                data = null;
+                data = book.getBookData(subkey);
+                osis = null;
+
                 try
                 {
-                    data = book.getText(subkey);
+                    osis = data.getOsis();
                 }
                 catch (BookException e)
                 {
@@ -376,55 +377,37 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                     continue;
                 }
 
-                text = data.getCanonicalText();
-                if (hasStrongs)
-                {
-                    strongs = data.getStrongsNumbers();
-                }
-
                 // Do the actual indexing
+                text = OSISUtil.getCanonicalText(osis);
                 if (text != null && text.length() > 0)
                 {
                     doc = new Document();
                     doc.add(new Field(FIELD_KEY, subkey.getOsisRef(), Field.Store.YES, Field.Index.UN_TOKENIZED));
                     doc.add(new Field(FIELD_BODY, new StringReader(text)));
+                }
 
-                    if (hasStrongs)
-                    {
-                        strongs = data.getStrongsNumbers();
-                        if (strongs != null && strongs.length() > 0)
-                        {
-                            doc.add(new Field(FIELD_STRONG, strongs, Field.Store.NO, Field.Index.TOKENIZED));
-                        }
-                    }
+                if (hasStrongs)
+                {
+                    doc = addField(doc, FIELD_STRONG, OSISUtil.getStrongsNumbers(osis));
+                }
 
-                    if (hasXRefs)
-                    {
-                        xrefs = data.getReferences();
-                        if (xrefs != null && xrefs.length() > 0)
-                        {
-                            doc.add(new Field(FIELD_XREF, xrefs, Field.Store.NO, Field.Index.TOKENIZED));
-                        }
-                    }
+                if (hasXRefs)
+                {
+                    doc = addField(doc, FIELD_XREF, OSISUtil.getReferences(osis));
+                }
 
-                    if (hasNotes)
-                    {
-                        notes = data.getNotes();
-                        if (notes != null && notes.length() > 0)
-                        {
-                            doc.add(new Field(FIELD_NOTE, notes, Field.Store.NO, Field.Index.TOKENIZED));
-                        }
-                    }
+                if (hasNotes)
+                {
+                    doc = addField(doc, FIELD_NOTE, OSISUtil.getNotes(osis));
+                }
 
-                    if (hasHeadings)
-                    {
-                        headings = data.getHeadings();
-                        if (headings != null && headings.length() > 0)
-                        {
-                            doc.add(new Field(FIELD_HEADING, headings, Field.Store.NO, Field.Index.TOKENIZED));
-                        }
-                    }
+                if (hasHeadings)
+                {
+                    doc = addField(doc, FIELD_HEADING, OSISUtil.getHeadings(osis));
+                }
 
+                if (doc != null)
+                {
                     writer.addDocument(doc);
                 }
 
@@ -449,6 +432,20 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                 }
             }
         }
+    }
+
+    private Document addField(Document theDoc, String field, String text)
+    {
+        Document doc = theDoc;
+        if (text != null && text.length() > 0)
+        {
+            if (doc == null)
+            {
+                doc = new Document();
+            }
+            doc.add(new Field(field, text, Field.Store.NO, Field.Index.TOKENIZED));
+        }
+        return doc;
     }
 
     /**

@@ -120,14 +120,6 @@ public class BitwisePassage extends AbstractPassage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.AbstractPassage#rangeIterator()
-     */
-    public Iterator rangeIterator(RestrictionType restrict)
-    {
-        return new VerseRangeIterator(iterator(), restrict);
-    }
-
-    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#contains(org.crosswire.jsword.passage.VerseBase)
      */
     public boolean contains(Key obj)

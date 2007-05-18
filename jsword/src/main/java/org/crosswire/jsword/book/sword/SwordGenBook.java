@@ -21,6 +21,7 @@
  */
 package org.crosswire.jsword.book.sword;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -28,16 +29,13 @@ import java.util.Map;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
-import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractBook;
 import org.crosswire.jsword.book.filter.FilterException;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.ReadOnlyKeyList;
-import org.jdom.Element;
 
 /**
  * A Sword version of Dictionary.
@@ -108,9 +106,9 @@ public class SwordGenBook extends AbstractBook
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#getData(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage.Key, boolean)
      */
-    public BookData getText(Key key) throws BookException
+    public Iterator getOsisIterator(Key key, boolean allowEmpty) throws BookException
     {
         checkActive();
 
@@ -119,18 +117,14 @@ public class SwordGenBook extends AbstractBook
 
         try
         {
-            Element osis = OSISUtil.createOsisFramework(getBookMetaData());
-            Element text = osis.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
-
-            Element div = OSISUtil.factory().createDiv();
-            text.addContent(div);
+            List content = new ArrayList();
 
             String txt = backend.getRawText(key);
 
             List osisContent = sbmd.getFilter().toOSIS(this, key, txt);
-            div.addContent(osisContent);
+            content.addAll(osisContent);
 
-            return new BookData(osis, this, key);
+            return content.iterator();
         }
         catch (FilterException ex)
         {

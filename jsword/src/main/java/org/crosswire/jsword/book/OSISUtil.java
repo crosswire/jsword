@@ -515,6 +515,14 @@ public final class OSISUtil
         {
             return new Element(OSIS_ELEMENT_HI);
         }
+
+        /**
+         * Text
+         */
+        public Text createText(String text)
+        {
+            return new Text(text);
+        }
     }
 
     /**

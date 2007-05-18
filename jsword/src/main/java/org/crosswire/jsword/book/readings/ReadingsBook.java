@@ -21,9 +21,11 @@
  */
 package org.crosswire.jsword.book.readings;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -33,7 +35,6 @@ import java.util.TreeMap;
 import org.crosswire.common.util.CWClassLoader;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookCategory;
-import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.OSISUtil;
@@ -43,7 +44,6 @@ import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyFactory;
 import org.crosswire.jsword.passage.NoSuchKeyException;
-import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.PreferredKey;
@@ -123,64 +123,52 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
         return new ReadingsKey(greg.getTime());
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#getData(org.crosswire.jsword.passage.Key)
-     */
-    public BookData getText(Key key) throws BookException
+    public Iterator getOsisIterator(Key key, boolean allowEmpty) throws BookException
     {
         if (!(key instanceof ReadingsKey))
         {
             throw new BookException(Msg.NOT_FOUND, new Object[] { key.getName() });
         }
 
+        // TODO(DMS): make the iterator be demand driven
+        List content = new ArrayList();
+
+        Element title = OSISUtil.factory().createTitle();
+        title.addContent(key.getName());
+        content.add(title);
+
+        String readings = (String) hash.get(key);
+        if (readings == null)
+        {
+            throw new BookException(Msg.NOT_FOUND, new Object[] { key.getName() });
+        }
+
         try
         {
-            Element osis = OSISUtil.createOsisFramework(getBookMetaData());
-            Element text = osis.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
+            KeyFactory keyf = PassageKeyFactory.instance();
+            Passage ref = (Passage) keyf.getKey(readings);
 
-            Element div = OSISUtil.factory().createDiv();
-            Element title = OSISUtil.factory().createTitle();
-            title.addContent(key.getName());
-            div.addContent(title);
-            text.addContent(div);
-
-            String readings = (String) hash.get(key);
-            if (readings == null)
+            Element list = OSISUtil.factory().createList();
+            content.add(list);
+            for (Iterator it = ref.rangeIterator(RestrictionType.NONE); it.hasNext(); )
             {
-                throw new BookException(Msg.NOT_FOUND, new Object[] { key.getName() });
+                VerseRange range = (VerseRange) it.next();
+
+                Element reading = OSISUtil.factory().createReference();
+                reading.setAttribute(OSISUtil.OSIS_ATTR_REF, range.getOsisRef());
+                reading.addContent(range.getName());
+
+                Element item = OSISUtil.factory().createItem();
+                item.addContent(reading);
+                list.addContent(item);
             }
-
-            try
-            {
-                KeyFactory keyf = PassageKeyFactory.instance();
-                Passage ref = (Passage) keyf.getKey(readings);
-
-                Element list = OSISUtil.factory().createList();
-                div.addContent(list);
-                for (Iterator it = ref.rangeIterator(RestrictionType.NONE); it.hasNext(); )
-                {
-                    VerseRange range = (VerseRange) it.next();
-
-                    Element reading = OSISUtil.factory().createReference();
-                    reading.setAttribute(OSISUtil.OSIS_ATTR_REF, range.getOsisRef());
-                    reading.addContent(range.getName());
-
-                    Element item = OSISUtil.factory().createItem();
-                    item.addContent(reading);
-                    list.addContent(item);
-                }
-            }
-            catch (NoSuchVerseException ex)
-            {
-                div.addContent(Msg.DECODE_ERROR.toString(readings));
-            }
-
-            return new BookData(osis, this, key);
         }
         catch (NoSuchKeyException ex)
         {
-            throw new BookException(Msg.FILTER_FAIL, ex);
+            content.add(OSISUtil.factory().createText(Msg.DECODE_ERROR.toString(readings)));
         }
+
+        return content.iterator();
     }
 
     /* (non-Javadoc)

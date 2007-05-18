@@ -134,7 +134,7 @@ public class ReadEverything
         {
             //log.debug("reading: "+bmd.getInitials()+"/"+key.getText());
 
-            BookData data = book.getText(key);
+            BookData data = book.getBookData(key);
             if (data.getOsis() == null)
             {
                 log.warn("No output from: "+book.getInitials()+", "+key.getName()); //$NON-NLS-1$ //$NON-NLS-2$
@@ -142,16 +142,6 @@ public class ReadEverything
 
             // This might be a useful extra test, except that a failure gives you no help at all.
             //data.validate();
-        }
-        /*
-        catch (ValidationException ex)
-        {
-            log.warn("Validation error reading: "+book.getInitials()+", "+key.getText()+", code:"+ex.getErrorCode()+" reason: "+ex.getMessage());
-        }
-        */
-        catch (BookException ex)
-        {
-            log.warn("Failed to read: "+book.getInitials()+", "+key.getName()+", reason: "+ex.getMessage(), ex); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         catch (Throwable ex)
         {

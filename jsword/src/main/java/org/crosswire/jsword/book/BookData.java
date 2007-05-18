@@ -21,13 +21,14 @@
  */
 package org.crosswire.jsword.book;
 
+import java.util.Iterator;
+
 import org.crosswire.common.xml.JDOMSAXEventProvider;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.passage.Key;
+import org.jdom.Content;
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.input.SAXHandler;
-import org.xml.sax.SAXException;
 
 /**
  * Basic section of BookData.
@@ -41,21 +42,8 @@ public class BookData
     /**
      * Ctor
      */
-    public BookData(Element osis, Book book, Key key)
+    public BookData(Book book, Key key)
     {
-        this.osis = osis;
-        this.book = book;
-        this.key = key;
-    }
-
-    /**
-     * Create a BibleData from a SAXEventProvider
-     */
-    public BookData(SAXEventProvider provider, Book book, Key key) throws SAXException
-    {
-        SAXHandler handler = new SAXHandler();
-        provider.provideSAXEvents(handler);
-        this.osis = handler.getDocument().getRootElement();
         this.book = book;
         this.key = key;
     }
@@ -63,64 +51,24 @@ public class BookData
     /**
      * Accessor for the root OSIS element
      */
-    public Element getOsis()
+    public Element getOsis() throws BookException
     {
+        if (osis == null)
+        {
+            osis = OSISUtil.createOsisFramework(book.getBookMetaData());
+            Element text = osis.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
+            Element div = OSISUtil.factory().createDiv();
+            text.addContent(div);
+
+            Iterator iter = book.getOsisIterator(key, false);
+            while (iter.hasNext())
+            {
+                Content content = (Content) iter.next();
+                div.addContent(content);
+            }
+        }
+
         return osis;
-    }
-
-    /**
-     * Return the text without any extra material.
-     * @return The Book's text without markup
-     */
-    public String getCanonicalText()
-    {
-        return OSISUtil.getCanonicalText(getOsis());
-    }
-
-    /**
-     * A simplified plain text version of the data in this document with all
-     * the markup stripped out. This is not as simple as it seems.
-     * @return The text without markup
-     */
-    public String getPlainText()
-    {
-        return OSISUtil.getPlainText(getOsis());
-    }
-
-    /**
-     * Return just the Strong's numbers.
-     * @return The Book's Strong's numbers as a space separated string.
-     */
-    public String getStrongsNumbers()
-    {
-        return OSISUtil.getStrongsNumbers(getOsis());
-    }
-
-    /**
-     * Return just the scripture references in the book.
-     * @return The Book's scripture references
-     */
-    public String getReferences()
-    {
-        return OSISUtil.getReferences(getOsis());
-    }
-
-    /**
-     * Return just the notes in the book.
-     * @return The Book's notes
-     */
-    public String getNotes()
-    {
-        return OSISUtil.getNotes(getOsis());
-    }
-
-    /**
-     * Return just the headings, both canonical and non-canonical, in the book.
-     * @return The Book's headings
-     */
-    public String getHeadings()
-    {
-        return OSISUtil.getHeadings(getOsis());
     }
 
     /**
@@ -138,9 +86,9 @@ public class BookData
      * Output the current data as a SAX stream.
      * @return A way of posting SAX events
      */
-    public SAXEventProvider getSAXEventProvider()
+    public SAXEventProvider getSAXEventProvider() throws BookException
     {
-        return new JDOMSAXEventProvider(new Document(osis));
+        return new JDOMSAXEventProvider(new Document(getOsis()));
     }
 
     /**
@@ -174,7 +122,7 @@ public class BookData
     private Key key;
 
     /**
-     * The root where we read data from
+     * The complete osis container for the element
      */
     private Element osis;
 }

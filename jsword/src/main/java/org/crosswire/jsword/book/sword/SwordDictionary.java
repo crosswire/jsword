@@ -22,6 +22,7 @@
 package org.crosswire.jsword.book.sword;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -31,7 +32,6 @@ import java.util.regex.Pattern;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
-import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractBook;
@@ -111,9 +111,9 @@ public class SwordDictionary extends AbstractBook
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#getData(org.crosswire.jsword.passage.Key)
+     * @see org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage.Key, boolean)
      */
-    public BookData getText(Key key) throws BookException
+    public Iterator getOsisIterator(Key key, boolean allowEmpty) throws BookException
     {
         checkActive();
 
@@ -122,21 +122,17 @@ public class SwordDictionary extends AbstractBook
 
         try
         {
-            Element osis = OSISUtil.createOsisFramework(getBookMetaData());
-            Element text = osis.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
-
-            Element div = OSISUtil.factory().createDiv();
+            List content = new ArrayList();
             Element title = OSISUtil.factory().createTitle();
             title.addContent(key.getName());
-            div.addContent(title);
-            text.addContent(div);
+            content.add(title);
 
             String txt = backend.getRawText(key);
 
             List osisContent = sbmd.getFilter().toOSIS(this, key, txt);
-            div.addContent(osisContent);
+            content.addAll(osisContent);
 
-            return new BookData(osis, this, key);
+            return content.iterator();
         }
         catch (FilterException ex)
         {
