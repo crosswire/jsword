@@ -67,21 +67,25 @@ public abstract class AbstractPassageBook extends AbstractBook
         {
             Element osis = OSISUtil.createOsisFramework(getBookMetaData());
             Element text = osis.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
+            Element div = OSISUtil.factory().createDiv();
+            text.addContent(div);
 
             // For all the ranges in this Passage
             Passage ref = KeyUtil.getPassage(key);
+            boolean hasRanges = ref.hasRanges(RestrictionType.CHAPTER);
             Iterator rit = ref.rangeIterator(RestrictionType.CHAPTER);
 
             while (rit.hasNext())
             {
                 VerseRange range = (VerseRange) rit.next();
 
-                Element div = OSISUtil.factory().createDiv();
-                text.addContent(div);
-
-                Element title = OSISUtil.factory().createTitle();
-                title.addContent(range.getName());
-                div.addContent(title);
+                // Only add the title if there are multiple ranges
+                if (hasRanges)
+                {
+                    Element title = OSISUtil.factory().createTitle();
+                    title.addContent(range.getName());
+                    div.addContent(title);
+                }
 
                 // For all the verses in this range
                 Iterator vit = range.iterator();

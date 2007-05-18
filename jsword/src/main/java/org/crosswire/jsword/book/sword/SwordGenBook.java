@@ -123,9 +123,6 @@ public class SwordGenBook extends AbstractBook
             Element text = osis.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
 
             Element div = OSISUtil.factory().createDiv();
-            Element title = OSISUtil.factory().createTitle();
-            title.addContent(key.getName());
-            div.addContent(title);
             text.addContent(div);
 
             String txt = backend.getRawText(key);

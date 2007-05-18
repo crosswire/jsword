@@ -90,6 +90,15 @@ public interface Passage extends Key, Serializable
     int countVerses();
 
     /**
+     * Determine whether there are two or more ranges.
+     * 
+     * @param restrict Do we break ranges at chapter/book boundries
+     * @return whether there are two or more ranges
+     * @see VerseRange
+     */
+    boolean hasRanges(RestrictionType restrict);
+
+    /**
      * Like countVerses() that counts VerseRanges instead of Verses
      * Returns the number of fragments in this collection.
      * This does not mean the Passage needs to use VerseRanges, just that it

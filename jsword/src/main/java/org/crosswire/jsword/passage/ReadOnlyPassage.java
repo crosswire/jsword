@@ -215,7 +215,15 @@ final class ReadOnlyPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#countRanges(int)
+     * @see org.crosswire.jsword.passage.Passage#hasRanges(org.crosswire.jsword.passage.RestrictionType)
+     */
+    public boolean hasRanges(RestrictionType restrict)
+    {
+        return ref.hasRanges(restrict);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#countRanges(org.crosswire.jsword.passage.RestrictionType)
      */
     public int countRanges(RestrictionType restrict)
     {
@@ -231,7 +239,7 @@ final class ReadOnlyPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#trimRanges(int, int)
+     * @see org.crosswire.jsword.passage.Passage#trimRanges(int, org.crosswire.jsword.passage.RestrictionType)
      */
     public Passage trimRanges(int count, RestrictionType restrict)
     {

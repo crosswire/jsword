@@ -196,7 +196,15 @@ final class SynchronizedPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#countRanges(int)
+     * @see org.crosswire.jsword.passage.Passage#hasRanges(org.crosswire.jsword.passage.RestrictionType)
+     */
+    public synchronized boolean hasRanges(RestrictionType restrict)
+    {
+        return ref.hasRanges(restrict);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#countRanges(org.crosswire.jsword.passage.RestrictionType)
      */
     public synchronized int countRanges(RestrictionType restrict)
     {
@@ -212,7 +220,7 @@ final class SynchronizedPassage implements Passage
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#trimRanges(int, int)
+     * @see org.crosswire.jsword.passage.Passage#trimRanges(int, org.crosswire.jsword.passage.RestrictionType)
      */
     public synchronized Passage trimRanges(int count, RestrictionType restrict)
     {

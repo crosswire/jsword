@@ -318,6 +318,27 @@ public abstract class AbstractPassage implements Passage
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#hasRanges(int)
+     */
+    public boolean hasRanges(RestrictionType restrict)
+    {
+        int count = 0;
+
+        Iterator it = rangeIterator(restrict);
+        while (it.hasNext())
+        {
+            it.next();
+            count++;
+            if (count == 2)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#countRanges(int)
      */
     public int countRanges(RestrictionType restrict)
