@@ -31,7 +31,13 @@ import org.jdom.Document;
 import org.jdom.Element;
 
 /**
- * Basic section of BookData.
+ * BookData is the assembler of the osis that is returned by the filters.
+ * As such it puts that into an OSIS document. When several books are
+ * supplied, it gets the data from each and puts it into a parallel or
+ * interlinear view.
+ * Note: it is critical that all the books are able to understand the same key.
+ * That does not mean that each has to have content for each key. Missing keys
+ * are represented by empty cells.
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
@@ -44,7 +50,37 @@ public class BookData
      */
     public BookData(Book book, Key key)
     {
-        this.book = book;
+        assert book != null;
+        assert key != null;
+
+        this.key = key;
+
+        Book defaultBible = Defaults.getBible();
+        if (defaultBible != null &&
+            BookCategory.BIBLE.equals(book.getBookCategory()) &&
+            !defaultBible.equals(book)
+           )
+        {
+            books = new Book[2];
+            books[0] = defaultBible;
+            books[1] = book;
+        }
+        else
+        {
+            books = new Book[1];
+            books[0] = book;
+        }
+    }
+
+    /**
+     * Create BookData for multiple books.
+     */
+    public BookData(Book[] books, Key key)
+    {
+        assert books != null && books.length > 0;
+        assert key != null;
+
+        this.books = (Book[]) books.clone();
         this.key = key;
     }
 
@@ -55,17 +91,11 @@ public class BookData
     {
         if (osis == null)
         {
-            osis = OSISUtil.createOsisFramework(book.getBookMetaData());
+            // TODO(DMS): Determine the proper representation of the OSISWork name for multiple books.
+            osis = OSISUtil.createOsisFramework(books[0].getBookMetaData());
             Element text = osis.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
-            Element div = OSISUtil.factory().createDiv();
+            Element div = getOsisContent();
             text.addContent(div);
-
-            Iterator iter = book.getOsisIterator(key, false);
-            while (iter.hasNext())
-            {
-                Content content = (Content) iter.next();
-                div.addContent(content);
-            }
         }
 
         return osis;
@@ -97,13 +127,11 @@ public class BookData
      */
     public Book getBook()
     {
-        return book;
+        return books[0];
     }
 
     /**
-     * What key was used to create this data.
-     * It should be true that bookdata.getBook().getBookData(bookdata.getKey())
-     * equals (but not necessarily ==) the original bookdata.
+     * The key used to obtain data from one or more books.
      * @return Returns the key.
      */
     public Key getKey()
@@ -111,15 +139,77 @@ public class BookData
         return key;
     }
 
-    /**
-     * Who created this data
-     */
-    private Book book;
+    private Element getOsisContent() throws BookException
+    {
+        Element div = OSISUtil.factory().createDiv();
+
+        if (books.length == 1)
+        {
+            Iterator iter = books[0].getOsisIterator(key, false);
+            while (iter.hasNext())
+            {
+                Content content = (Content) iter.next();
+                div.addContent(content);
+            }
+        }
+        else
+        {
+            Iterator[] iters = new Iterator[books.length];
+            for (int i = 0; i < books.length; i++)
+            {
+                iters[i] = books[i].getOsisIterator(key, true);
+            }
+
+            Content content = null;
+            Element table = OSISUtil.factory().createTable();
+            Element row = null;
+            Element cell = null;
+            int cellCount = 0;
+            int rowCount = 0;
+            while (true)
+            {
+                cellCount = 0;
+
+                row = OSISUtil.factory().createRow();
+
+                for (int i = 0; i < iters.length; i++)
+                {
+                    cell = OSISUtil.factory().createCell();
+                    row.addContent(cell);
+                    if (iters[i].hasNext())
+                    {
+                        content = (Content) iters[i].next();
+                        cell.addContent(content);
+                        cellCount++;
+                    }
+                }
+
+                if (cellCount == 0)
+                {
+                    break;
+                }
+
+                table.addContent(row);
+                rowCount++;
+            }
+            if (rowCount > 0)
+            {
+                div.addContent(table);
+            }
+        }
+
+        return div;
+    }
 
     /**
      * What key was used to create this data
      */
     private Key key;
+
+    /**
+     * The books to which the key should be applied.
+     */
+    private Book[] books;
 
     /**
      * The complete osis container for the element

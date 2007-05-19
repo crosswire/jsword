@@ -132,7 +132,7 @@ public class BooksTest extends TestCase
         {
             Book bible = bibles[i];
             Key key = bible.getKey("Gen 1:1"); //$NON-NLS-1$
-            BookData data = bible.getBookData(key);
+            BookData data = new BookData(bible, key);
             assertNotNull(data);
         }
     }
@@ -142,8 +142,8 @@ public class BooksTest extends TestCase
         for (int i = 0; i < bibles.length; i++)
         {
             Book bible = bibles[i];
-            BookData data = bible.getBookData(gen11[i]);
-            assertNotNull(data);
+            BookData data = new BookData(bible, gen11[i]);
+            assertNotNull(data.getOsis());
         }
     }
 

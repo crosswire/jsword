@@ -108,16 +108,6 @@ public abstract class AbstractPassageBook extends AbstractBook
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#getData(org.crosswire.jsword.passage.Key)
-     */
-    public BookData getBookData(Key key)
-    {
-        assert key != null;
-
-        return new BookData(this, key);
-    }
-
     /**
      * Add the OSIS elements to the div element. Note, this assumes that
      * the data is fully marked up.

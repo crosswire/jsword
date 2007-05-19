@@ -99,11 +99,11 @@ public abstract class AbstractReflectedChoice implements Choice
         {
             try
             {
-                getter = clazz.getMethod("get" + propertyname, new Class[0]); //$NON-NLS-1$
+                getter = clazz.getMethod("is" + propertyname, new Class[0]); //$NON-NLS-1$
             }
             catch (NoSuchMethodException e)
             {
-                getter = clazz.getMethod("is" + propertyname, new Class[0]); //$NON-NLS-1$
+                getter = clazz.getMethod("get" + propertyname, new Class[0]); //$NON-NLS-1$
             }
         }
         catch (NoSuchMethodException ex)

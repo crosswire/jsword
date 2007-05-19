@@ -81,7 +81,7 @@ public class APIExamples
         Book bible = books.getBook(BIBLE_NAME);
 
         Key key = bible.getKey("Gen 1 1"); //$NON-NLS-1$
-        BookData data = bible.getBookData(key);
+        BookData data = new BookData(bible, key);
         String text = OSISUtil.getCanonicalText(data.getOsis());
 
         System.out.println("The plain text of Gen 1:1 is " + text); //$NON-NLS-1$
@@ -99,7 +99,7 @@ public class APIExamples
         Book bible = Books.installed().getBook(BIBLE_NAME);
 
         Key key = bible.getKey("Gen 1 1"); //$NON-NLS-1$
-        BookData data = bible.getBookData(key);
+        BookData data = new BookData(bible, key);
         SAXEventProvider osissep = data.getSAXEventProvider();
 
         Converter styler = ConverterFactory.getConverter();
@@ -139,7 +139,7 @@ public class APIExamples
 
         System.out.println("The first Key in the default dictionary is " + first); //$NON-NLS-1$
 
-        BookData data = dict.getBookData(keys);
+        BookData data = new BookData(dict, keys);
         System.out.println("And the text against that key is " + OSISUtil.getPlainText(data.getOsis())); //$NON-NLS-1$
     }
 
@@ -225,7 +225,7 @@ public class APIExamples
         while (rangeIter.hasNext())
         {
             Key range = (Key) rangeIter.next();
-            BookData data = bible.getBookData(range);
+            BookData data = new BookData(bible, range);
             SAXEventProvider osissep = data.getSAXEventProvider();
             SAXEventProvider htmlsep = new TransformingSAXEventProvider(NetUtil.toURI(xslurl), osissep);
             String text = XMLUtil.writeToString(htmlsep);
@@ -248,7 +248,7 @@ public class APIExamples
         while (iter.hasNext())
         {
             Verse verse = (Verse) iter.next();
-            BookData data = bible.getBookData(verse);
+            BookData data = new BookData(bible, verse);
             System.out.println('|' + BibleInfo.getBookName(verse.getBook()) + '|' + verse.getChapter() + '|' + verse.getVerse() + '|' + OSISUtil.getCanonicalText(data.getOsis()));
         }
     }

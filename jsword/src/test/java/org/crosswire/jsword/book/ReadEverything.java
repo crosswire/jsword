@@ -134,7 +134,7 @@ public class ReadEverything
         {
             //log.debug("reading: "+bmd.getInitials()+"/"+key.getText());
 
-            BookData data = book.getBookData(key);
+            BookData data = new BookData(book, key);
             if (data.getOsis() == null)
             {
                 log.warn("No output from: "+book.getInitials()+", "+key.getName()); //$NON-NLS-1$ //$NON-NLS-2$

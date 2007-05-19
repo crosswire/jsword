@@ -23,6 +23,7 @@ package org.crosswire.jsword.book.test;
 
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
@@ -116,7 +117,7 @@ public class Speed implements Runnable
      */
     private void dummyDisplay(Passage ref) throws BookException
     {
-        book.getBookData(ref).getOsis();
+        new BookData(book, ref).getOsis();
     }
 
     /**

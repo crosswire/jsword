@@ -28,7 +28,6 @@ import javax.swing.event.EventListenerList;
 import org.crosswire.common.activate.Lock;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookCategory;
-import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
@@ -80,16 +79,6 @@ public abstract class AbstractBook implements Book
      */
     public void activate(Lock lock)
     {
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#getData(org.crosswire.jsword.passage.Key)
-     */
-    public BookData getBookData(Key key)
-    {
-        assert key != null;
-
-        return new BookData(this, key);
     }
 
     /* (non-Javadoc)

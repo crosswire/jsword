@@ -50,7 +50,7 @@ public final class Defaults
      */
     public static boolean isCurrentBible()
     {
-        return currentBible;
+        return trackBible;
     }
 
     /**
@@ -60,7 +60,7 @@ public final class Defaults
      */
     public static void setCurrentBible(boolean current)
     {
-        currentBible = current;
+        trackBible = current;
     }
 
     /**
@@ -73,8 +73,17 @@ public final class Defaults
         BookCategory type = book.getBookCategory();
         if (type.equals(BookCategory.BIBLE) && isCurrentBible())
         {
-            setBible(book);
+            currentBible = book;
         }
+    }
+
+    public static Book getCurrentBible()
+    {
+        if (currentBible == null)
+        {
+            return bibleDeft.getDefault();
+        }
+        return currentBible;
     }
 
     /* (non-Javadoc)
@@ -566,7 +575,12 @@ public final class Defaults
     /**
      * Indicates whether the last book of each type is used next time.
      */
-    private static boolean currentBible = true;
+    private static boolean trackBible = true;
+
+    /**
+     * The current bible being tracked.
+     */
+    private static Book currentBible = null;
 
     /**
      * The default Bible

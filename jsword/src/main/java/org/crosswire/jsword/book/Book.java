@@ -63,15 +63,6 @@ public interface Book extends Activatable, KeyFactory, Comparable
     Iterator getOsisIterator(Key key, boolean allowEmpty) throws BookException;
 
     /**
-     * Return the BookData for the key.
-     * 
-     * @param key The item to locate
-     * @return The found Book data
-     * @throws BookException If anything goes wrong with this method
-     */
-    BookData getBookData(Key key);
-
-    /**
      * Returns the raw text that getData(Key key) builds into OSIS.
      * 
      * @param key The item to locate

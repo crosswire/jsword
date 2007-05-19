@@ -364,7 +364,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
             }
             else
             {
-                data = book.getBookData(subkey);
+                data = new BookData(book, subkey);
                 osis = null;
 
                 try
