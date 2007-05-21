@@ -54,13 +54,12 @@ public class Match
         if (!text.substring(newLoc, newLoc + pattern.length()).equals(pattern))
         {
             // Do a fuzzy compare.
-            return Match.bitap(text, pattern, newLoc);
+            return bitap(text, pattern, newLoc);
         }
 
         // else Perfect match at the perfect spot!  (Includes case of null pattern)
         return newLoc;
     }
-
 
     // Locate the best instance of 'pattern' in 'text' near 'loc' using the Bitap algorithm.
     private static int bitap(String text, String pattern, int loc)
@@ -82,8 +81,7 @@ public class Match
         {
             score_threshold = Math.min(Match.bitap_score(pattern, score_text_length, loc, 0, best_loc), score_threshold);
         }
-
-        
+  
        // What about in the other direction? (speedup)
         best_loc = text.lastIndexOf(pattern, loc + pattern.length());
         if (best_loc != -1)
@@ -118,7 +116,7 @@ public class Match
                 {
                     bin_max = bin_mid;
                 }
-                bin_mid = (int) Math.floor((bin_max - bin_min) / 2 + bin_min);
+                bin_mid = (bin_max - bin_min) / 2 + bin_min;
             }
 
             bin_max = bin_mid; // Use the result from this iteration as the maximum for the next.
@@ -136,7 +134,8 @@ public class Match
 
             for (int j = finish - 1; j >= start; j--)
             {
-                int mask = ((Integer) s.get(new Character(text.charAt(j)))).intValue();
+                Character curChar = new Character(text.charAt(j));
+                int mask = s.containsKey(curChar) ? ((Integer) s.get(curChar)).intValue() : 0;
                 if (d == 0) // First pass: exact match.
                 {
                     rd[j] = ((rd[j + 1] << 1) | 1) & mask;
@@ -171,6 +170,7 @@ public class Match
 
             if (Match.bitap_score(pattern, score_text_length, loc, d + 1, loc) > score_threshold) // No hope for a (better) match at greater error levels.
             {
+                // No hope for a (better) match at greater error levels.
                 break;
             }
 
@@ -184,7 +184,7 @@ public class Match
     {
         // Compute and return the score for a match with e errors and x location.
         int d = Math.abs(loc - x);
-        return (e / pattern.length() / Match.BALANCE) + (d / score_text_length / (1.0 - Match.BALANCE));
+        return (e / (float)pattern.length() / Match.BALANCE) + (d / (float) score_text_length / (1.0 - Match.BALANCE));
     }
 
     // Initialize the alphabet for the Bitap algorithm.

@@ -3,225 +3,112 @@ package org.crosswire.common.diff;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Patch
 {
-    //  Constructor for a patch object.
-    public Patch()
+    /**
+     * Compute a list of patches to turn text1 into text2.
+     * A set of diffs will be computed.
+     * @param text1 Old text
+     * @param text2 New text
+     * @return List of PatchEntry objects.
+     */
+    public static List make(String text1, String text2)
     {
-        this.diffs = new ArrayList();
-        this.start1 = 0;
-        this.start2 = 0;
-        this.length1 = 0;
-        this.length2 = 0;
+        List diffs = Diff.main(text1, text2, true);
+        if (diffs.size() > 2)
+        {
+            Diff.cleanup_semantic(diffs);
+            Diff.cleanup_efficiency(diffs);
+        }
+        return make(text1, text2, diffs);
     }
 
-    //  Emmulate GNU diff's format.
-    //  Header: @@ -382,8 +481,9 @@
-    //  Indicies are printed as 1-based, not 0-based.
-    public String toString()
-    {
-        StringBuffer txt = new StringBuffer();
-        txt.append("@@ -"); //$NON-NLS-1$
-        txt.append(getCoordinates(start1, length1));
-        txt.append(" +"); //$NON-NLS-1$
-        txt.append(getCoordinates(start2, length2));
-        txt.append(" @@\n"); //$NON-NLS-1$
-
-        Iterator iter = diffs.iterator();
-        while (iter.hasNext())
-        {
-            Difference diff = (Difference) iter.next();
-            txt.append(diff.getEditType().getSymbol());
-            txt.append(diff.getText());
-            txt.append('\n');
-        }
-        return txt.toString();
-    }
-
-    private String getCoordinates(int start, int length)
-    {
-        StringBuffer buf = new StringBuffer();
-
-        buf.append(start);
-        if (length == 0)
-        {
-            buf.append(start);
-            buf.append(".0"); //$NON-NLS-1$
-        }
-        else if (length == 1)
-        {
-            buf.append(start1 + 1);
-        }
-        else
-        {
-            buf.append(start + 1);
-            buf.append(',');
-            buf.append(length);
-        }
-
-        return buf.toString();
-    }
-
-    //  Compute and return the source text (all equalities and deletions).
-    private String getText1()
-    {
-        StringBuffer txt = new StringBuffer();
-        Iterator iter = diffs.iterator();
-        while (iter.hasNext())
-        {
-            Difference diff = (Difference) iter.next();
-            if (!EditType.INSERT.equals(diff.getEditType()))
-            {
-                txt.append(diff.getText());
-            }
-        }
-        return txt.toString();
-    }
-
-    // Compute and return the destination text (all equalities and insertions).
-    private String getText2()
-    {
-        StringBuffer txt = new StringBuffer();
-        Iterator iter = diffs.iterator();
-        while (iter.hasNext())
-        {
-            Difference diff = (Difference) iter.next();
-            if (!EditType.DELETE.equals(diff.getEditType()))
-            {
-                txt.append(diff.getText());
-            }
-        }
-        return txt.toString();
-    }
-
-
-    private void addContext(String text)
-    {
-        String pattern = text.substring(start2, start2+length1);
-        int padding = 0;
-
-        // Increase the context until we're unique (but don't let the pattern expand beyond Match.MAXBITS).
-        int end = Match.MAXBITS - Patch.MARGIN - Patch.MARGIN;
-        while (text.indexOf(pattern) != text.lastIndexOf(pattern) && pattern.length() < end)
-        {
-            padding += Patch.MARGIN;
-            pattern = text.substring(start2 - padding, start2 + length1 + padding);
-        }
-
-        // Add one chunk for good luck.
-        padding += Patch.MARGIN;
-
-        // Add the prefix.
-        String prefix = text.substring(start2 - padding, start2);
-        int prefixLength = prefix.length();
-        if (prefixLength > 0)
-        {
-            diffs.add(0, new Difference(EditType.EQUAL, prefix));
-        }
-
-        // Add the suffix
-        String suffix = text.substring(start2 + length1, start2 + length1 + padding);
-        int suffixLength = suffix.length();
-        if (suffixLength > 0)
-        {
-            diffs.add(new Difference(EditType.EQUAL, suffix));
-        }
-
-        // Roll back the start points.
-        start1 -= prefixLength;
-        start2 -= prefixLength;
-
-        // Extend the lengths.
-        length1 += prefixLength + suffixLength;
-        length2 += prefixLength + suffixLength;
-    }
-
-    // Compute a list of patches to turn text1 into text2.
+    /**
+     * Compute a list of patches to turn text1 into text2.
+     * Use the diffs provided.
+     * @param text1 Old text
+     * @param text2 New text
+     * @param diffs Optional array of diff tuples for text1 to text2.
+     * @return LinkedList of Patch objects.
+     */
     public static List make(String text1, String text2, List diffList)
     {
         List patches = new ArrayList();
         List diffs = diffList;
 
-        // Use diff if provided, otherwise compute it ourselves.
-        if (diffs == null)
-        {
-            diffs = Diff.main(text1, text2, true);
-            if (diffs.size() > 2)
-            {
-                Diff.cleanup_semantic(diffs);
-                Diff.cleanup_efficiency(diffs);
-            }
-        }
+        assert diffs != null;
 
         if (diffs.size() == 0)
         {
             return patches; // Get rid of the null case.
         }
 
-        Patch patch = new Patch();
+        PatchEntry patch = new PatchEntry();
         int char_count1 = 0; // Number of characters into the text1 string.
         int char_count2 = 0; // Number of characters into the text2 string.
-        String prepatch_text = text1; // Recreate the patches to determine context info.
+        // Recreate the patches to determine context info.
+        String prepatch_text = text1;
         String postpatch_text = text1;
         Iterator iter = diffs.iterator();
         int x = 0;
         while (iter.hasNext())
         {
             Difference diff = (Difference) iter.next();
-            EditType diff_type = diff.getEditType();
-            String diff_text = diff.getText();
-            int len = diff_text.length();
+            EditType editType = diff.getEditType();
+            String diffText = diff.getText();
+            int len = diffText.length();
 
-            if (patch.diffs.size() == 0 && !EditType.EQUAL.equals(diff_type))
+            if (!patch.hasDifferences() && !EditType.EQUAL.equals(editType))
             {
                 // A new patch starts here.
-                patch.start1 = char_count1;
-                patch.start2 = char_count2;
+                patch.setLeftStart(char_count1);
+                patch.setRightStart(char_count2);
             }
 
-            if (EditType.INSERT.equals(diff_type))
+            if (EditType.INSERT.equals(editType))
             {
                 // Insertion
-                patch.diffs.add(diff);
-                patch.length2 += len;
-                postpatch_text = postpatch_text.substring(0, char_count2) + diff_text + postpatch_text.substring(char_count2);
+                patch.addDifference(diff);
+                patch.adjustLength2(len);
+                postpatch_text = postpatch_text.substring(0, char_count2) + diffText + postpatch_text.substring(char_count2);
             }
-            else if (EditType.DELETE.equals(diff_type))
+            else if (EditType.DELETE.equals(editType))
             {
                 // Deletion.
-                patch.length1 += len;
-                patch.diffs.add(diff);
+                patch.adjustLength1(len);
+                patch.addDifference(diff);
                 postpatch_text = postpatch_text.substring(0, char_count2) + postpatch_text.substring(char_count2 + len);
             }
-            else if (EditType.EQUAL.equals(diff_type) && len <= 2 * Patch.MARGIN && patch.diffs.size() != 0 && diffs.size() != x + 1)
+            else if (EditType.EQUAL.equals(editType) && len <= 2 * Patch.MARGIN && patch.hasDifferences() && diffs.size() != x + 1)
             {
                 // Small equality inside a patch.
-                patch.diffs.add(diff);
-                patch.length1 += len;
-                patch.length2 += len;
+                patch.addDifference(diff);
+                patch.adjustLength1(len);
+                patch.adjustLength2(len);
             }
 
-            if (EditType.EQUAL.equals(diff_type) && len >= 2 * Patch.MARGIN) {
+            if (EditType.EQUAL.equals(editType) && len >= 2 * Patch.MARGIN) {
                 // Time for a new patch.
-                if (patch.diffs.size() != 0)
+                if (patch.hasDifferences())
                 {
                     patch.addContext(prepatch_text);
                     patches.add(patch);
-                    patch = new Patch();
+                    patch = new PatchEntry();
                     prepatch_text = postpatch_text;
                 }
             }
 
             // Update the current character count.
-            if (!EditType.INSERT.equals(diff_type))
+            if (!EditType.INSERT.equals(editType))
             {
                 char_count1 += len;
             }
 
-            if (!EditType.DELETE.equals(diff_type))
+            if (!EditType.DELETE.equals(editType))
             {
                 char_count2 += len;
             }
@@ -230,7 +117,8 @@ public class Patch
         }
 
         // Pick up the leftover patch if not empty.
-        if (patch.diffs.size() != 0) {
+        if (patch.hasDifferences())
+        {
             patch.addContext(prepatch_text);
             patches.add(patch);
         }
@@ -239,195 +127,203 @@ public class Patch
     }
 
 
-    //  Merge a set of patches onto the text.
-    //  Return a patched text, as well as a list of true/false values indicating which patches were applied.
+    /**
+     * Merge a set of patches onto the text.  Return a patched text, as well
+     * as an array of true/false values indicating which patches were applied.
+     * @param patches Array of patch objects
+     * @param text Old text
+     * @return the patch result
+     */
     public static PatchResults apply(List patches, String text)
     {
-        patches = Patch.splitmax(patches);
-        List results = new ArrayList();
+        Patch.splitMax(patches);
+        boolean[] results = new boolean[patches.size()];
+        String resultText = text;
         int delta = 0;
         int expected_loc = 0;
         int start_loc = -1;
         String text1 = ""; //$NON-NLS-1$
         String text2 = ""; //$NON-NLS-1$
-        List diff;
-        Difference mod = null;
+        List diffs;
         int index1 = 0;
         int index2 = 0;
-        for (int x = 0; x < patches.size(); x++)
+        int x = 0;
+        Iterator patchIter = patches.iterator();
+        while (patchIter.hasNext())
         {
-            Patch curPatch = (Patch) patches.get(x);
-            expected_loc = curPatch.start2 + delta;
-            text1 = curPatch.getText1();
-            start_loc = Match.main(text, text1, expected_loc);
+            PatchEntry aPatch = (PatchEntry) patchIter.next();
+            expected_loc = aPatch.getRightStart() + delta;
+            text1 = aPatch.getLeftText();
+            start_loc = Match.main(resultText, text1, expected_loc);
             if (start_loc == -1)
             {
                 // No match found.  :(
-                results.add(Boolean.FALSE);
+                results[x] = false;
             }
             else
             {
                 // Found a match.  :)
-                results.add(Boolean.TRUE);
+                results[x] = true;
                 delta = start_loc - expected_loc;
-                text2 = text.substring(start_loc, start_loc + text1.length());
-                if (text1 == text2)
+                text2 = resultText.substring(start_loc, start_loc + text1.length());
+                if (text1.equals(text2))
                 {
                     // Perfect match, just shove the replacement text in.
-                    text = text.substring(0, start_loc) + curPatch.getText2() + text.substring(start_loc + text1.length());
+                    resultText = resultText.substring(0, start_loc) + aPatch.getRightText() + resultText.substring(start_loc + text1.length());
                 }
                 else
                 {
                     // Imperfect match.  Run a diff to get a framework of equivalent indicies.
-                    diff = Diff.main(text1, text2, false);
+                    diffs = Diff.main(text1, text2, false);
                     index1 = 0;
-                    for (int y = 0; y < curPatch.diffs.size(); y++) {
-                        mod = (Difference) curPatch.diffs.get(y);
-                        EditType diff_type = mod.getEditType();
-                        if (!EditType.EQUAL.equals(diff_type))
+                    Iterator diffIter = aPatch.iterator();
+                    while (diffIter.hasNext())
+                    {
+                        Difference aDiff = (Difference) diffIter.next();
+                        EditType editType = aDiff.getEditType();
+                        if (!EditType.EQUAL.equals(editType))
                         {
-                            index2 = Diff.xindex(diff, index1);
+                            index2 = Diff.xindex(diffs, index1);
                         }
 
-                        if (EditType.INSERT.equals(diff_type)) // Insertion
+                        if (EditType.INSERT.equals(editType)) // Insertion
                         {
-                            text = text.substring(0, start_loc + index2) + mod.getText() + text.substring(start_loc + index2);
+                            resultText = resultText.substring(0, start_loc + index2) + aDiff.getText() + resultText.substring(start_loc + index2);
                         }
-                        else if (EditType.DELETE.equals(diff_type)) // Deletion
+                        else if (EditType.DELETE.equals(editType)) // Deletion
                         {
-                            text = text.substring(0, start_loc + index2) + text.substring(start_loc + Diff.xindex(diff, index1 + mod.getText().length()));
+                            resultText = resultText.substring(0, start_loc + index2) + resultText.substring(start_loc + Diff.xindex(diffs, index1 + aDiff.getText().length()));
                         }
 
-                        if (!EditType.DELETE.equals(diff_type))
+                        if (!EditType.DELETE.equals(editType))
                         {
-                            index1 += mod.getText().length();
+                            index1 += aDiff.getText().length();
                         }
                     }
                 }
             }
         }
-        return new PatchResults(text, results);
+        return new PatchResults(resultText, results);
     }
 
-
-    //Look through the patches and break up any which are longer than the maximum limit of the match algorithm.
-    static public List splitmax(List patches)
+    /**
+     * Look through the patches and break up any which are longer than the maximum
+     * limit of the match algorithm.
+     * @param patches List of Patch objects.
+     */
+    static public void splitMax(List patches)
     {
-        Patch bigpatch = null;
-        Patch patch = null;
-        int patch_size = 0;
-        EditType diff_type = null;
-        int start1 = 0;
-        int start2 = 0;
-        String diff_text = ""; //$NON-NLS-1$
-        String precontext = ""; //$NON-NLS-1$
-        String postcontext = ""; //$NON-NLS-1$
-        boolean empty = true;
-        for (int x = 0; x < patches.size(); x++)
+        ListIterator pointer = patches.listIterator();
+        PatchEntry bigpatch = pointer.hasNext() ? (PatchEntry) pointer.next() : null;
+        while (bigpatch != null)
         {
-            Patch curPatch = (Patch) patches.get(x);
-            if (curPatch.length1 > Match.MAXBITS)
+            if (bigpatch.getLeftLength() <= Match.MAXBITS)
             {
-                bigpatch = curPatch;
-                // Remove the big old patch.
-                patches.remove(x);
-                patch_size = Match.MAXBITS;
-                start1 = bigpatch.start1;
-                start2 = bigpatch.start2;
-                precontext = ""; //$NON-NLS-1$
-                while (bigpatch.diffs.size() != 0)
+                bigpatch = pointer.hasNext() ? (PatchEntry) pointer.next() : null;
+            }
+
+            // Remove the big old patch.
+            pointer.remove();
+            int patch_size = Match.MAXBITS;
+            int start1 = bigpatch.getLeftStart();
+            int start2 = bigpatch.getRightStart();
+            String precontext = ""; //$NON-NLS-1$
+            while (bigpatch.hasDifferences())
+            {
+                // Create one of several smaller patches.
+                PatchEntry patch = new PatchEntry();
+                boolean empty = true;
+
+                int len = precontext.length();
+                patch.setLeftStart(start1 - len);
+                patch.setRightStart(start2 - len);
+                if (len > 0)
                 {
-                    // Create one of several smaller patches.
-                    patch = new Patch();
-                    empty = true;
+                    patch.setLeftLength(len);
+                    patch.setRightLength(len);
+                    patch.addDifference(new Difference(EditType.EQUAL, precontext));
+                }
 
-                    int len = precontext.length();
-                    patch.start1 = start1 - len;
-                    patch.start2 = start2 - len;
-                    if (len > 0)
+                while (bigpatch.hasDifferences() && patch.getLeftLength() < patch_size - Patch.MARGIN)
+                {
+                    Difference bigDiff = bigpatch.getFirstDifference();
+                    EditType diff_type = bigDiff.getEditType();
+                    String diff_text = bigDiff.getText();
+                    if (EditType.INSERT.equals(diff_type))
                     {
-                        patch.length1 = len;
-                        patch.length2 = len;
-                        patch.diffs.add(new Difference(EditType.EQUAL, precontext));
+                        // Insertions are harmless.
+                        len = diff_text.length();
+                        patch.adjustLength2(len);
+                        start2 += len;
+                        patch.addDifference(bigpatch.removeFirstDifference());
+                        empty = false;
                     }
-
-                    while (bigpatch.diffs.size() != 0 && patch.length1 < patch_size - Patch.MARGIN)
+                    else
                     {
-                        Difference bigDiff = (Difference) bigpatch.diffs.get(0);
-                        diff_type = bigDiff.getEditType();
-                        diff_text = bigDiff.getText();
-                        if (EditType.INSERT.equals(diff_type))
+                        // Deletion or equality.  Only take as much as we can stomach.
+                        len = diff_text.length();
+                        diff_text = diff_text.substring(0, Math.min(len, patch_size - patch.getLeftLength() - Patch.MARGIN));
+                        patch.adjustLength1(len);
+                        start1 += len;
+                        if (EditType.EQUAL.equals(diff_type))
                         {
-                            // Insertions are harmless.
-                            len = diff_text.length();
-                            patch.length2 += len;
+                            patch.adjustLength2(len);
                             start2 += len;
-                            patch.diffs.add(bigpatch.diffs.remove(0));
+                        }
+                        else
+                        {
                             empty = false;
                         }
-                        else
+
+                        patch.addDifference(new Difference(diff_type, diff_text));
+
+                        if (diff_text.equals(bigDiff.getText()))
                         {
-                            // Deletion or equality.  Only take as much as we can stomach.
-                            diff_text = diff_text.substring(0, patch_size - patch.length1 - Patch.MARGIN);
-                            len = diff_text.length();
-                            patch.length1 += len;
-                            start1 += len;
-                            if (EditType.EQUAL.equals(diff_type))
-                            {
-                                patch.length2 += len;
-                                start2 += len;
-                            }
-                            else
-                            {
-                                empty = false;
-                            }
-
-                            patch.diffs.add(new Difference(diff_type, diff_text));
-
-                            if (diff_text.equals(bigDiff.getText()))
-                            {
-                                bigpatch.diffs.remove(0);
-                            }
-                            else
-                            {
-                                bigDiff.setText(bigDiff.getText().substring(len));
-                            }
-                        }
-                    }
-
-                    // Compute the head context for the next patch.
-                    precontext = patch.getText2();
-                    precontext = precontext.substring(precontext.length() - Patch.MARGIN);
-
-                    // Append the end context for this patch.
-                    postcontext = bigpatch.getText1().substring(0, Patch.MARGIN);
-                    if (postcontext.length() > 0)
-                    {
-                        patch.length1 += postcontext.length();
-                        patch.length2 += postcontext.length();
-                        if (patch.diffs.size() > 0 && EditType.EQUAL.equals(((Difference) patch.diffs.get(patch.diffs.size() - 1)).getEditType()))
-                        {
-                            Difference diff = (Difference) patch.diffs.get(patch.diffs.size() - 1);
-                            diff.appendText(postcontext);
+                            bigpatch.removeFirstDifference();
                         }
                         else
                         {
-                            patch.diffs.add(new Difference(EditType.EQUAL, postcontext));
+                            bigDiff.setText(bigDiff.getText().substring(len));
                         }
-                    }
-
-                    if (!empty)
-                    {
-                        patches.add(x++, patch);
                     }
                 }
-            }
-        }
 
-        return patches;
+                // Compute the head context for the next patch.
+                precontext = patch.getRightText();
+                precontext = precontext.substring(precontext.length() - Patch.MARGIN);
+
+                // Append the end context for this patch.
+                String postcontext = bigpatch.getLeftText().substring(0, Patch.MARGIN);
+                if (postcontext.length() > 0)
+                {
+                    patch.adjustLength1(postcontext.length());
+                    patch.adjustLength2(postcontext.length());
+                    if (patch.getDifferenceCount() > 0 && EditType.EQUAL.equals(patch.getLastDifference().getEditType()))
+                    {
+                        Difference diff = patch.getLastDifference();
+                        diff.appendText(postcontext);
+                    }
+                    else
+                    {
+                        patch.addDifference(new Difference(EditType.EQUAL, postcontext));
+                    }
+                }
+
+                if (!empty)
+                {
+                    pointer.add(patch);
+                }
+            }
+
+            bigpatch = pointer.hasNext() ? (PatchEntry) pointer.next() : null;
+        }
     }
 
-    // Take a list of patches and return a textual representation.
+    /**
+     * Take a list of patches and return a textual representation.
+     * @param patches List of Patch objects.
+     * @return Text representation of patches.
+     */
     public static String toText(List patches) {
         StringBuffer text = new StringBuffer();
         Iterator iter = patches.iterator();
@@ -438,12 +334,17 @@ public class Patch
         return text.toString();
     }
 
-    // Take a textual representation of patches and return a list of patch objects.
+    /**
+     * Parse a textual representation of patches and return a List of Patch
+     * objects.
+     * @param textline Text representation of patches
+     * @return List of Patch objects
+     */
     public static List fromText(String input)
     {
         List patches = new ArrayList();
         String[] text = input.split("\n"); //$NON-NLS-1$
-        Patch patch = null;
+        PatchEntry patch = null;
         char sign = '\0';
         String line = ""; //$NON-NLS-1$
 
@@ -451,83 +352,72 @@ public class Patch
         while (lineCount < text.length)
         {
             Matcher matcher = patchPattern.matcher(text[lineCount]);
-            if (!matcher.find())
-            {
-                throw new RuntimeException("Invalid patch string:\n"+text[lineCount]); //$NON-NLS-1$
-            }
+            matcher.matches();
+            assert matcher.groupCount() == 4 : "Invalid patch string:\n"+text[lineCount]; //$NON-NLS-1$
             // m = text[0].match(/^@@ -(\d+),?(\d*) \+(\d+),?(\d*) @@$/);
 
-
-            patch = new Patch();
+            patch = new PatchEntry();
             patches.add(patch);
-            patch.start1 = Integer.parseInt(matcher.group(1));
+            patch.setLeftStart(Integer.parseInt(matcher.group(1)));
 
             if (matcher.group(2).length() == 0)
             {
-                patch.start1--;
-                patch.length1 = 1;
+                patch.adjustStart1(-1);
+                patch.setLeftLength(1);
             }
             else if (matcher.group(2).charAt(0) == '0')
             {
-                patch.length1 = 0;
+                patch.setLeftLength(0);
             }
             else
             {
-                patch.start1--;
-                patch.length1 = Integer.parseInt(matcher.group(2));
+                patch.adjustStart1(-1);
+                patch.setLeftLength(Integer.parseInt(matcher.group(2)));
             }
 
-            patch.start2 = Integer.parseInt(matcher.group(3));
+            patch.setRightStart(Integer.parseInt(matcher.group(3)));
             if (matcher.group(4).length() == 0)
             {
-                patch.start2--;
-                patch.length2 = 1;
+                patch.adjustStart2(-1);
+                patch.setRightLength(1);
             }
             else if (matcher.group(4).charAt(0) == '0')
             {
-                patch.length2 = 0;
+                patch.setRightLength(0);
             }
             else
             {
-                patch.start2--;
-                patch.length2 = Integer.parseInt(matcher.group(4));
+                patch.adjustStart2(-1);
+                patch.setRightLength(Integer.parseInt(matcher.group(4)));
             }
             lineCount++;
 
-            while (lineCount < text.length)
-            {
-                if (text[lineCount].length() > 0)
+            consume:
+                while (lineCount < text.length)
                 {
-                    sign = text[lineCount].charAt(0);
-                    line = text[lineCount].substring(1);
-                    if (sign == '-')
+                    if (text[lineCount].length() > 0)
                     {
-                        // Deletion.
-                        patch.diffs.add(new Difference(EditType.DELETE, line));
+                        sign = text[lineCount].charAt(0);
+                        line = text[lineCount].substring(1);
+                        switch (sign)
+                        {
+                            case '-': // Deletion.
+                                patch.addDifference(new Difference(EditType.DELETE, line));
+                                break;
+                            case '+': // Insertion.
+                                patch.addDifference(new Difference(EditType.INSERT, line));
+                                break;
+                            case ' ': // Minor equality.
+                                patch.addDifference(new Difference(EditType.EQUAL, line));
+                                break;
+                            case '@': // start of next patch
+                                break consume;
+                            default: // What!!!
+                                assert false : "Invalid patch mode: '"+sign+"'\n"+line; //$NON-NLS-1$ //$NON-NLS-2$
+                        }
                     }
-                    else if (sign == '+')
-                    {
-                        // Insertion.
-                        patch.diffs.add(new Difference(EditType.INSERT, line));
-                    }
-                    else if (sign == ' ')
-                    {
-                        // Minor equality.
-                        patch.diffs.add(new Difference(EditType.EQUAL, line));
-                    }
-                    else if (sign == '@')
-                    {
-                        // Start of next patch.
-                        break;
-                    }
-                    else
-                    {
-                        // What!!!
-                        throw new RuntimeException("Invalid patch mode: '"+sign+"'\n"+line); //$NON-NLS-1$ //$NON-NLS-2$
-                    }
+                    lineCount++;
                 }
-                lineCount++;
-            }
         }
         return patches;
     }
@@ -538,18 +428,18 @@ public class Patch
          * @param text
          * @param results
          */
-        public PatchResults(String text, List results)
+        public PatchResults(String text, boolean[] results)
         {
             this.text = text;
-            this.results = results;
+            this.results = (boolean[]) results.clone();
         }
 
         /**
          * @return the results
          */
-        public List getResults()
+        public boolean[] getResults()
         {
-            return results;
+            return (boolean[]) results.clone();
         }
 
         /**
@@ -561,19 +451,14 @@ public class Patch
         }
 
         private String text;
-        private List results;
+        private boolean[] results;
     }
+
     /**
      * Chunk size for context length.
      */
     public static final int MARGIN = 4;
 
-    private List diffs;
-    private int start1;
-    private int start2;
-    private int length1;
-    private int length2;
-    
     private static String patchRE = "^@@ -(\\d+),?(\\d*) \\+(\\d+),?(\\d*) @@$"; //$NON-NLS-1$
     private static Pattern patchPattern = Pattern.compile(patchRE);
 
