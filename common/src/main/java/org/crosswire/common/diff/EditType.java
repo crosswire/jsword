@@ -35,22 +35,22 @@ public final class EditType implements Serializable
     /**
      * Delete a sequence.
      */
-    public static final EditType DELETE = new EditType("Delete", "-"); //$NON-NLS-1$ //$NON-NLS-2$
+    public static final EditType DELETE = new EditType("Delete", '-'); //$NON-NLS-1$
 
     /**
      * Insert a sequence
      */
-    public static final EditType INSERT = new EditType("Insert", "+"); //$NON-NLS-1$ //$NON-NLS-2$
+    public static final EditType INSERT = new EditType("Insert", '+'); //$NON-NLS-1$
 
     /**
      * Equal sequences
      */
-    public static final EditType EQUAL = new EditType("Equal", " "); //$NON-NLS-1$ //$NON-NLS-2$
+    public static final EditType EQUAL = new EditType("Equal", ' '); //$NON-NLS-1$
 
     /**
      * @param name The name of the FeatureType
      */
-    private EditType(String name, String symbol)
+    private EditType(String name, char symbol)
     {
         this.name = name;
         this.symbol = symbol;
@@ -59,7 +59,7 @@ public final class EditType implements Serializable
     /**
      * @return te symbol for this EditType
      */
-    public String getSymbol()
+    public char getSymbol()
     {
         return symbol;
     }
@@ -73,6 +73,24 @@ public final class EditType implements Serializable
         {
             EditType o = VALUES[i];
             if (o.name.equalsIgnoreCase(name))
+            {
+                return o;
+            }
+        }
+        // cannot get here
+        assert false;
+        return null;
+    }
+
+    /**
+     * Lookup method to convert from a String
+     */
+    public static EditType fromSymbol(char symbol)
+    {
+        for (int i = 0; i < VALUES.length; i++)
+        {
+            EditType o = VALUES[i];
+            if (o.symbol == symbol)
             {
                 return o;
             }
@@ -106,7 +124,7 @@ public final class EditType implements Serializable
     /**
      * The symbol representing the EditType
      */
-    private String symbol;
+    private char symbol;
 
     // Support for serialization
     private static int nextObj;

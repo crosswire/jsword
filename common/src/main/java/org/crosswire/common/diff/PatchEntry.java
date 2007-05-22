@@ -169,11 +169,13 @@ public class PatchEntry
 
     public void addContext(String text)
     {
-        String pattern = text.substring(rightStart, rightStart + leftLength);
+        int maxPatternLength = new Match().maxPatternLength();
         int padding = 0;
+        String pattern = text.substring(rightStart, rightStart + leftLength);
 
-        // Increase the context until we're unique (but don't let the pattern expand beyond Match.MAXBITS).
-        int end = Match.MAXBITS - PatchEntry.MARGIN - PatchEntry.MARGIN;
+        // Increase the context until we're unique
+        // (but don't let the pattern expand beyond the maximum length our Locator can handle).
+        int end = maxPatternLength - PatchEntry.MARGIN - PatchEntry.MARGIN;
         while (text.indexOf(pattern) != text.lastIndexOf(pattern) && pattern.length() < end)
         {
             padding += PatchEntry.MARGIN;
