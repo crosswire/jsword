@@ -21,8 +21,8 @@ public class Patch
         List diffs = Diff.main(text1, text2, true);
         if (diffs.size() > 2)
         {
-            Diff.cleanup_semantic(diffs);
-            Diff.cleanup_efficiency(diffs);
+            Diff.cleanupSemantic(diffs);
+            Diff.cleanupEfficiency(diffs);
         }
         return make(text1, text2, diffs);
     }
@@ -183,7 +183,7 @@ public class Patch
                         EditType editType = aDiff.getEditType();
                         if (!EditType.EQUAL.equals(editType))
                         {
-                            index2 = Diff.xindex(diffs, index1);
+                            index2 = Diff.xIndex(diffs, index1);
                         }
 
                         if (EditType.INSERT.equals(editType)) // Insertion
@@ -192,7 +192,7 @@ public class Patch
                         }
                         else if (EditType.DELETE.equals(editType)) // Deletion
                         {
-                            resultText = resultText.substring(0, start_loc + index2) + resultText.substring(start_loc + Diff.xindex(diffs, index1 + aDiff.getText().length()));
+                            resultText = resultText.substring(0, start_loc + index2) + resultText.substring(start_loc + Diff.xIndex(diffs, index1 + aDiff.getText().length()));
                         }
 
                         if (!EditType.DELETE.equals(editType))

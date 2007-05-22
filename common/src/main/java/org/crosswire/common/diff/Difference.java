@@ -50,7 +50,7 @@ public class Difference
      */
     public void setEditType(EditType newEditType)
     {
-        this.editType = newEditType;
+        editType = newEditType;
     }
 
     /**
@@ -66,7 +66,7 @@ public class Difference
      */
     public void setText(String newText)
     {
-        this.text = newText;
+        text = newText;
     }
 
     /**
@@ -82,7 +82,7 @@ public class Difference
      */
     public void setIndex(int newIndex)
     {
-        this.index = newIndex;
+        index = newIndex;
     }
 
     /**
@@ -90,7 +90,31 @@ public class Difference
      */
     public void appendText(String addText)
     {
-        this.text += addText;
+        text += addText;
+    }
+
+    /**
+     * @param text the text to set
+     */
+    public void appendText(char addText)
+    {
+        text += addText;
+    }
+
+    /**
+     * @param text the text to set
+     */
+    public void prependText(String addText)
+    {
+        text = addText + text;
+    }
+
+    /**
+     * @param text the text to set
+     */
+    public void prependText(char addText)
+    {
+        text = addText + text;
     }
 
     /**
