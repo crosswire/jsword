@@ -91,7 +91,8 @@ public class Patch
                 patch.adjustLength2(len);
             }
 
-            if (EditType.EQUAL.equals(editType) && len >= 2 * Patch.MARGIN) {
+            if (EditType.EQUAL.equals(editType) && len >= 2 * Patch.MARGIN)
+            {
                 // Time for a new patch.
                 if (patch.hasDifferences())
                 {
@@ -211,7 +212,7 @@ public class Patch
      * limit of the match algorithm.
      * @param patches List of Patch objects.
      */
-    static public void splitMax(List patches)
+    public static void splitMax(List patches)
     {
         ListIterator pointer = patches.listIterator();
         PatchEntry bigpatch = pointer.hasNext() ? (PatchEntry) pointer.next() : null;
@@ -324,7 +325,8 @@ public class Patch
      * @param patches List of Patch objects.
      * @return Text representation of patches.
      */
-    public static String toText(List patches) {
+    public static String toText(List patches)
+    {
         StringBuffer text = new StringBuffer();
         Iterator iter = patches.iterator();
         while (iter.hasNext())
@@ -353,7 +355,7 @@ public class Patch
         {
             Matcher matcher = patchPattern.matcher(text[lineCount]);
             matcher.matches();
-            assert matcher.groupCount() == 4 : "Invalid patch string:\n"+text[lineCount]; //$NON-NLS-1$
+            assert matcher.groupCount() == 4 : "Invalid patch string:\n" + text[lineCount]; //$NON-NLS-1$
             // m = text[0].match(/^@@ -(\d+),?(\d*) \+(\d+),?(\d*) @@$/);
 
             patch = new PatchEntry();
@@ -413,7 +415,7 @@ public class Patch
                             case '@': // start of next patch
                                 break consume;
                             default: // What!!!
-                                assert false : "Invalid patch mode: '"+sign+"'\n"+line; //$NON-NLS-1$ //$NON-NLS-2$
+                                assert false : "Invalid patch mode: '" + sign + "'\n" + line; //$NON-NLS-1$ //$NON-NLS-2$
                         }
                     }
                     lineCount++;

@@ -55,7 +55,7 @@ public class Diff
      */
     public static List main(String text1, String text2)
     {
-      return main(text1, text2, true);
+        return main(text1, text2, true);
     }
 
     /**
@@ -70,43 +70,44 @@ public class Diff
      */
     public static List main(String text1, String text2, boolean checklines)
     {
-      // Check for equality (speedup)
-      List diffs;
-      if (text1.equals(text2)) {
-        diffs = new LinkedList();
-        diffs.add(new Difference(EditType.EQUAL, text1));
+        // Check for equality (speedup)
+        List diffs;
+        if (text1.equals(text2))
+        {
+            diffs = new LinkedList();
+            diffs.add(new Difference(EditType.EQUAL, text1));
+            return diffs;
+        }
+
+        // Trim off common prefix (speedup)
+        int commonlength = commonPrefix(text1, text2);
+        String commonprefix = text1.substring(0, commonlength);
+        String work1 = text1.substring(commonlength);
+        String work2 = text2.substring(commonlength);
+
+        // Trim off common suffix (speedup)
+        commonlength = commonSuffix(work1, work2);
+        String commonsuffix = work1.substring(work1.length() - commonlength);
+        work1 = work1.substring(0, work1.length() - commonlength);
+        work2 = work2.substring(0, work2.length() - commonlength);
+
+        // Compute the diff on the middle block
+        diffs = compute(work1, work2, checklines);
+
+        // Restore the prefix and suffix
+        if (!commonprefix.equals("")) //$NON-NLS-1$
+        {
+            diffs.add(0, new Difference(EditType.EQUAL, commonprefix));
+        }
+
+        if (!commonsuffix.equals("")) //$NON-NLS-1$
+        {
+            diffs.add(new Difference(EditType.EQUAL, commonsuffix));
+        }
+
+        cleanupMerge(diffs);
+
         return diffs;
-      }
-
-      // Trim off common prefix (speedup)
-      int commonlength = commonPrefix(text1, text2);
-      String commonprefix = text1.substring(0, commonlength);
-      String work1 = text1.substring(commonlength);
-      String work2 = text2.substring(commonlength);
-
-      // Trim off common suffix (speedup)
-      commonlength = commonSuffix(work1, work2);
-      String commonsuffix = work1.substring(work1.length() - commonlength);
-      work1 = work1.substring(0, work1.length() - commonlength);
-      work2 = work2.substring(0, work2.length() - commonlength);
-
-      // Compute the diff on the middle block
-      diffs = compute(work1, work2, checklines);
-
-      // Restore the prefix and suffix
-      if (!commonprefix.equals("")) //$NON-NLS-1$
-      {
-        diffs.add(0, new Difference(EditType.EQUAL, commonprefix));
-      }
-
-      if (!commonsuffix.equals("")) //$NON-NLS-1$
-      {
-        diffs.add(new Difference(EditType.EQUAL, commonsuffix));
-      }
-
-      cleanupMerge(diffs);
-
-      return diffs;
     }
 
     /**
@@ -118,135 +119,138 @@ public class Diff
      *     If true, then run a faster slightly less optimal diff
      * @return Linked List of Diff objects
      */
-    public static List compute(String text1, String text2,
-                                      boolean checklines) {
-      List diffs = new ArrayList();
+    public static List compute(String text1, String text2, boolean checklines)
+    {
+        List diffs = new ArrayList();
 
-      if (text1.equals("")) //$NON-NLS-1$
-      {
-        // Just add some text (speedup)
-        diffs.add(new Difference(EditType.INSERT, text2));
-        return diffs;
-      }
-
-      if (text2.equals("")) //$NON-NLS-1$
-      {
-        // Just delete some text (speedup)
-        diffs.add(new Difference(EditType.DELETE, text1));
-        return diffs;
-      }
-
-      String longtext = text1.length() > text2.length() ? text1 : text2;
-      String shorttext = text1.length() > text2.length() ? text2 : text1;
-      int i = longtext.indexOf(shorttext);
-      if (i != -1) {
-        // Shorter text is inside the longer text (speedup)
-        EditType op = (text1.length() > text2.length()) ?
-                       EditType.DELETE : EditType.INSERT;
-        diffs.add(new Difference(op, longtext.substring(0, i)));
-        diffs.add(new Difference(EditType.EQUAL, shorttext));
-        diffs.add(new Difference(op, longtext.substring(i + shorttext.length())));
-      }
-      longtext = shorttext = null; // Garbage collect
-
-      // Check to see if the problem can be split in two.
-      CommonMiddle hm = halfMatch(text1, text2);
-      if (hm != null)
-      {
-        // A half-match was found, sort out the return data.
-        // Send both pairs off for separate processing.
-        List diffs_a = main(hm.getLeftStart(), hm.getRightStart(), checklines);
-        List diffs_b = main(hm.getLeftEnd(), hm.getRightEnd(), checklines);
-        // Merge the results.
-        diffs = diffs_a;
-        diffs.add(new Difference(EditType.EQUAL, hm.getCommonality()));
-        diffs.addAll(diffs_b);
-        return diffs;
-      }
-
-      // Perform a real diff.
-      if (checklines && text1.length() + text2.length() < 250)
-      {
-        checklines = false; // Too trivial for the overhead.
-      }
-
-      ArrayList linearray = null;
-      if (checklines)
-      {
-        // Scan the text on a line-by-line basis first.
-        Object b[] = linesToChars(text1, text2);
-        text1 = (String) b[0];
-        text2 = (String) b[1];
-        linearray = (ArrayList) b[2];
-       }
-
-      diffs = map(text1, text2);
-      if (diffs == null)
-      {
-        // No acceptable result.
-        diffs = new ArrayList();
-        diffs.add(new Difference(EditType.DELETE, text1));
-        diffs.add(new Difference(EditType.INSERT, text2));
-      }
-
-      if (checklines)
-      {
-        // Convert the diff back to original text.
-        charsToLines(diffs, linearray);
-        // Eliminate freak matches (e.g. blank lines)
-        cleanupSemantic(diffs);
-
-        // Rediff any replacement blocks, this time character-by-character.
-        // Add a dummy entry at the end.
-        diffs.add(new Difference(EditType.EQUAL, "")); //$NON-NLS-1$
-        int count_delete = 0;
-        int count_insert = 0;
-        String text_delete = ""; //$NON-NLS-1$
-        String text_insert = ""; //$NON-NLS-1$
-        ListIterator pointer = diffs.listIterator();
-        Difference thisDiff = (Difference) pointer.next();
-        while (thisDiff != null)
+        if (text1.equals("")) //$NON-NLS-1$
         {
-          if (thisDiff.getEditType() == EditType.INSERT)
-          {
-            count_insert++;
-            text_insert += thisDiff.getText();
-          }
-          else if (thisDiff.getEditType() == EditType.DELETE)
-          {
-            count_delete++;
-            text_delete += thisDiff.getText();
-          }
-          else
-          {
-            // Upon reaching an equality, check for prior redundancies.
-            if (count_delete >= 1 && count_insert >= 1)
-            {
-              // Delete the offending records and add the merged ones.
-              pointer.previous();
-              for (int j = 0; j < count_delete + count_insert; j++) {
-                pointer.previous();
-                pointer.remove();
-              }
-              List newDiffs = main(text_delete, text_insert, false);
-              Iterator iter = newDiffs.iterator();
-              while (iter.hasNext())
-              {
-                pointer.add(iter.next());
-              }
-            }
-            count_insert = 0;
-            count_delete = 0;
-            text_delete = ""; //$NON-NLS-1$
-            text_insert = ""; //$NON-NLS-1$
-          }
-          thisDiff = pointer.hasNext() ? (Difference) pointer.next() : null;
+            // Just add some text (speedup)
+            diffs.add(new Difference(EditType.INSERT, text2));
+            return diffs;
         }
-        diffs.remove(diffs.size() - 1);  // Remove the dummy entry at the end.
-      }
-      return diffs;
-    }
 
+        if (text2.equals("")) //$NON-NLS-1$
+        {
+            // Just delete some text (speedup)
+            diffs.add(new Difference(EditType.DELETE, text1));
+            return diffs;
+        }
+
+        String longtext = text1.length() > text2.length() ? text1 : text2;
+        String shorttext = text1.length() > text2.length() ? text2 : text1;
+        int i = longtext.indexOf(shorttext);
+        if (i != -1)
+        {
+            // Shorter text is inside the longer text (speedup)
+            EditType op = (text1.length() > text2.length()) ? EditType.DELETE : EditType.INSERT;
+            diffs.add(new Difference(op, longtext.substring(0, i)));
+            diffs.add(new Difference(EditType.EQUAL, shorttext));
+            diffs.add(new Difference(op, longtext.substring(i + shorttext.length())));
+        }
+
+        // Garbage collect
+        longtext = null;
+        shorttext = null;
+
+        // Check to see if the problem can be split in two.
+        CommonMiddle hm = halfMatch(text1, text2);
+        if (hm != null)
+        {
+            // A half-match was found, sort out the return data.
+            // Send both pairs off for separate processing.
+            List diffs_a = main(hm.getLeftStart(), hm.getRightStart(), checklines);
+            List diffs_b = main(hm.getLeftEnd(), hm.getRightEnd(), checklines);
+            // Merge the results.
+            diffs = diffs_a;
+            diffs.add(new Difference(EditType.EQUAL, hm.getCommonality()));
+            diffs.addAll(diffs_b);
+            return diffs;
+        }
+
+        // Perform a real diff.
+        if (checklines && text1.length() + text2.length() < 250)
+        {
+            checklines = false; // Too trivial for the overhead.
+        }
+
+        ArrayList linearray = null;
+        if (checklines)
+        {
+            // Scan the text on a line-by-line basis first.
+            Object[] b = linesToChars(text1, text2);
+            text1 = (String) b[0];
+            text2 = (String) b[1];
+            linearray = (ArrayList) b[2];
+        }
+
+        diffs = map(text1, text2);
+        if (diffs == null)
+        {
+            // No acceptable result.
+            diffs = new ArrayList();
+            diffs.add(new Difference(EditType.DELETE, text1));
+            diffs.add(new Difference(EditType.INSERT, text2));
+        }
+
+        if (checklines)
+        {
+            // Convert the diff back to original text.
+            charsToLines(diffs, linearray);
+            // Eliminate freak matches (e.g. blank lines)
+            cleanupSemantic(diffs);
+
+            // Rediff any replacement blocks, this time character-by-character.
+            // Add a dummy entry at the end.
+            diffs.add(new Difference(EditType.EQUAL, "")); //$NON-NLS-1$
+            int count_delete = 0;
+            int count_insert = 0;
+            String text_delete = ""; //$NON-NLS-1$
+            String text_insert = ""; //$NON-NLS-1$
+            ListIterator pointer = diffs.listIterator();
+            Difference thisDiff = (Difference) pointer.next();
+            while (thisDiff != null)
+            {
+                if (thisDiff.getEditType() == EditType.INSERT)
+                {
+                    count_insert++;
+                    text_insert += thisDiff.getText();
+                }
+                else if (thisDiff.getEditType() == EditType.DELETE)
+                {
+                    count_delete++;
+                    text_delete += thisDiff.getText();
+                }
+                else
+                {
+                    // Upon reaching an equality, check for prior redundancies.
+                    if (count_delete >= 1 && count_insert >= 1)
+                    {
+                        // Delete the offending records and add the merged ones.
+                        pointer.previous();
+                        for (int j = 0; j < count_delete + count_insert; j++)
+                        {
+                            pointer.previous();
+                            pointer.remove();
+                        }
+                        List newDiffs = main(text_delete, text_insert, false);
+                        Iterator iter = newDiffs.iterator();
+                        while (iter.hasNext())
+                        {
+                            pointer.add(iter.next());
+                        }
+                    }
+                    count_insert = 0;
+                    count_delete = 0;
+                    text_delete = ""; //$NON-NLS-1$
+                    text_insert = ""; //$NON-NLS-1$
+                }
+                thisDiff = pointer.hasNext() ? (Difference) pointer.next() : null;
+            }
+            diffs.remove(diffs.size() - 1); // Remove the dummy entry at the end.
+        }
+        return diffs;
+    }
 
     /**
      * Split two texts into a list of strings.  Reduce the texts to a string of
@@ -270,7 +274,10 @@ public class Diff
 
         String chars1 = linesToCharsMunge(text1, linearray, linehash);
         String chars2 = linesToCharsMunge(text2, linearray, linehash);
-        return new Object[]{chars1, chars2, linearray};
+        return new Object[]
+        {
+                        chars1, chars2, linearray
+        };
     }
 
     /**
@@ -353,13 +360,14 @@ public class Diff
         Map v2 = new HashMap();
         v1.put(new Integer(1), new Integer(0));
         v2.put(new Integer(1), new Integer(0));
-        int x, y;
+        int x;
+        int y;
         String footstep; // Used to track overlapping paths.
         Map footsteps = new HashMap();
         boolean done = false;
         // If the total number of characters is odd, then the front path will
         // collide with the reverse path.
-        boolean front = ((text1.length() + text2.length()) % 2 == 1);
+        boolean front = (text1.length() + text2.length()) % 2 == 1;
         for (int d = 0; d < max_d; d++)
         {
             // Bail out if timeout reached.
@@ -394,13 +402,12 @@ public class Diff
                 {
                     footsteps.put(footstep, new Integer(d));
                 }
-                while (!done && x < text1.length() && y < text2.length()
-                                && text1.charAt(x) == text2.charAt(y))
+                while (!done && x < text1.length() && y < text2.length() && text1.charAt(x) == text2.charAt(y))
                 {
                     x++;
                     y++;
                     footstep = x + "," + y; //$NON-NLS-1$
-                    if (front && (footsteps.containsKey(footstep)))
+                    if (front && footsteps.containsKey(footstep))
                     {
                         done = true;
                     }
@@ -417,8 +424,7 @@ public class Diff
                     // Front path ran over reverse path.
                     Integer footstepValue = (Integer) footsteps.get(footstep);
                     v_map2 = v_map2.subList(0, footstepValue.intValue() + 1);
-                    List a = path1(v_map1, text1.substring(0, x),
-                                   text2.substring(0, y));
+                    List a = path1(v_map1, text1.substring(0, x), text2.substring(0, y));
                     a.addAll(path2(v_map2, text1.substring(x), text2.substring(y)));
                     return a;
                 }
@@ -450,9 +456,7 @@ public class Diff
                 {
                     footsteps.put(footstep, new Integer(d));
                 }
-                while (!done && x < text1.length() && y < text2.length()
-                                && text1.charAt(text1.length() - x - 1)
-                                == text2.charAt(text2.length() - y - 1))
+                while (!done && x < text1.length() && y < text2.length() && text1.charAt(text1.length() - x - 1) == text2.charAt(text2.length() - y - 1))
                 {
                     x++;
                     y++;
@@ -475,11 +479,8 @@ public class Diff
                     // Reverse path ran over front path.
                     Integer footstepValue = (Integer) footsteps.get(footstep);
                     v_map1 = v_map1.subList(0, footstepValue.intValue() + 1);
-                    List a
-                    = path1(v_map1, text1.substring(0, text1.length() - x),
-                            text2.substring(0, text2.length() - y));
-                    a.addAll(path2(v_map2, text1.substring(text1.length() - x),
-                                   text2.substring(text2.length() - y)));
+                    List a = path1(v_map1, text1.substring(0, text1.length() - x), text2.substring(0, text2.length() - y));
+                    a.addAll(path2(v_map2, text1.substring(text1.length() - x), text2.substring(text2.length() - y)));
                     return a;
                 }
             }
@@ -541,7 +542,7 @@ public class Diff
                 {
                     x--;
                     y--;
-                    assert (text1.charAt(x) == text2.charAt(y)) : "No diagonal.  Can't happen. (diff_path1)"; //$NON-NLS-1$
+                    assert text1.charAt(x) == text2.charAt(y) : "No diagonal.  Can't happen. (diff_path1)"; //$NON-NLS-1$
                     if (last_op == EditType.EQUAL)
                     {
                         Difference firstDiff = (Difference) path.get(0);
@@ -557,7 +558,6 @@ public class Diff
         }
         return path;
     }
-
 
     /**
      * Work from the middle back to the end to determine the path.
@@ -587,8 +587,7 @@ public class Diff
                     }
                     else
                     {
-                        path.add(new Difference(EditType.DELETE,
-                                                text1.substring(text1.length() - x - 1, text1.length() - x)));
+                        path.add(new Difference(EditType.DELETE, text1.substring(text1.length() - x - 1, text1.length() - x)));
                     }
                     last_op = EditType.DELETE;
                     break;
@@ -603,8 +602,7 @@ public class Diff
                     }
                     else
                     {
-                        path.add(new Difference(EditType.INSERT,
-                                                text2.substring(text2.length() - y - 1, text2.length() - y)));
+                        path.add(new Difference(EditType.INSERT, text2.substring(text2.length() - y - 1, text2.length() - y)));
                     }
                     last_op = EditType.INSERT;
                     break;
@@ -613,9 +611,7 @@ public class Diff
                 {
                     x--;
                     y--;
-                    assert (text1.charAt(text1.length() - x - 1)
-                            == text2.charAt(text2.length() - y - 1))
-                            : "No diagonal.  Can't happen. (diff_path2)"; //$NON-NLS-1$
+                    assert text1.charAt(text1.length() - x - 1) == text2.charAt(text2.length() - y - 1) : "No diagonal.  Can't happen. (diff_path2)"; //$NON-NLS-1$
 
                     if (last_op == EditType.EQUAL)
                     {
@@ -624,8 +620,7 @@ public class Diff
                     }
                     else
                     {
-                        path.add(new Difference(EditType.EQUAL,
-                                                text1.substring(text1.length() - x - 1, text1.length() - x)));
+                        path.add(new Difference(EditType.EQUAL, text1.substring(text1.length() - x - 1, text1.length() - x)));
                     }
                     last_op = EditType.EQUAL;
                 }
@@ -660,7 +655,6 @@ public class Diff
         return pointermid;
     }
 
-
     /**
      * Trim off common suffix
      * @param text1 First string
@@ -687,7 +681,6 @@ public class Diff
         return pointermid;
     }
 
-
     /**
      * Do the two texts share a substring which is at least half the length of the
      * longer text?
@@ -708,9 +701,9 @@ public class Diff
         }
 
         // First check if the second quarter is the seed for a half-match.
-        CommonMiddle hm1 = halfMatch_i(longtext, shorttext, (int) Math.ceil(longtextLength/4));
+        CommonMiddle hm1 = halfMatchI(longtext, shorttext, (int) Math.ceil(longtextLength / 4));
         // Check again based on the third quarter.
-        CommonMiddle hm2 = halfMatch_i(longtext, shorttext, (int) Math.ceil(longtextLength/2));
+        CommonMiddle hm2 = halfMatchI(longtext, shorttext, (int) Math.ceil(longtextLength / 2));
         CommonMiddle hm = null;
         if (hm1 == null && hm2 == null)
         {
@@ -724,7 +717,8 @@ public class Diff
         {
             hm = hm2;
         }
-        else // Both matched.  Select the longest.
+        else
+        // Both matched.  Select the longest.
         {
             hm = hm1.getCommonality().length() > hm2.getCommonality().length() ? hm1 : hm2;
         }
@@ -747,10 +741,10 @@ public class Diff
      *     suffix of longtext, the prefix of shorttext, the suffix of shorttext
      *     and the common middle.  Or null if there was no match.
      */
-    private static CommonMiddle halfMatch_i(String longtext, String shorttext, int i)
+    private static CommonMiddle halfMatchI(String longtext, String shorttext, int i)
     {
         // Start with a 1/4 length substring at position i as a seed.
-        String seed = longtext.substring(i, i + (longtext.length()/4));
+        String seed = longtext.substring(i, i + (longtext.length() / 4));
         int j = -1;
         String best_common = ""; //$NON-NLS-1$
         String best_longtext_a = ""; //$NON-NLS-1$
@@ -771,14 +765,13 @@ public class Diff
             }
         }
 
-        if (best_common.length() >= longtext.length()/2)
+        if (best_common.length() >= longtext.length() / 2)
         {
             return new CommonMiddle(best_longtext_a, best_longtext_b, best_common, best_shorttext_a, best_shorttext_b);
         }
 
         return null;
     }
-
 
     /**
      * Reduce the number of edits by eliminating semantically trivial equalities.
@@ -795,7 +788,7 @@ public class Diff
         Difference curDiff = pointer.hasNext() ? (Difference) pointer.next() : null;
         while (curDiff != null)
         {
-            EditType editType =  curDiff.getEditType();
+            EditType editType = curDiff.getEditType();
             if (EditType.EQUAL.equals(editType))
             {
                 // equality found
@@ -822,7 +815,7 @@ public class Diff
                     pointer.set(new Difference(EditType.DELETE, lastequality));
                     // Insert a coresponding an insert.
                     pointer.add(new Difference(EditType.INSERT, lastequality));
-                    equalities.pop();  // Throw away the equality we just deleted;
+                    equalities.pop(); // Throw away the equality we just deleted;
                     if (!equalities.empty())
                     {
                         // Throw away the previous equality (it needs to be reevaluated).
@@ -842,7 +835,7 @@ public class Diff
                         curDiff = (Difference) equalities.lastElement();
                         while (curDiff != pointer.previous())
                         {
-                          // Intentionally empty loop.
+                            // Intentionally empty loop.
                         }
                     }
 
@@ -925,10 +918,12 @@ public class Diff
                 // <ins>A</ins><del>B</del>X<ins>C</ins>
                 // <ins>A</del>X<ins>C</ins><del>D</del>
                 // <ins>A</ins><del>B</del>X<del>C</del>
-                if (lastequality != null && (((pre_ins + pre_del + post_ins + post_del) > 0) || ((lastequality.length() < EDIT_COST/2) && (pre_ins + pre_del + post_ins + post_del) == 3)))
+                if (lastequality != null
+                    && (((pre_ins + pre_del + post_ins + post_del) > 0) || ((lastequality.length() < EDIT_COST / 2) && (pre_ins + pre_del + post_ins + post_del) == 3)))
                 {
                     // position pointer to the element after the one at the end of the stack
-                    while (curDiff != equalities.lastElement()) {
+                    while (curDiff != equalities.lastElement())
+                    {
                         curDiff = (Difference) pointer.previous();
                     }
                     pointer.next();
@@ -939,7 +934,7 @@ public class Diff
                     curDiff = new Difference(EditType.INSERT, lastequality);
                     pointer.add(curDiff);
 
-                    equalities.pop();  // Throw away the equality we just deleted;
+                    equalities.pop(); // Throw away the equality we just deleted;
                     lastequality = null;
                     if (pre_ins == 1 && pre_del == 1)
                     {
@@ -987,7 +982,6 @@ public class Diff
         }
     }
 
-
     /**
      * Reorder and merge like edit sections.  Merge equalities.
      * Any edit section can move as long as it doesn't cross an equality.
@@ -996,7 +990,7 @@ public class Diff
     public static void cleanupMerge(List diffs)
     {
         // Add a dummy entry at the end.
-        diffs.add(new Difference(EditType.EQUAL, ""));  //$NON-NLS-1$
+        diffs.add(new Difference(EditType.EQUAL, "")); //$NON-NLS-1$
 
         int count_delete = 0;
         int count_insert = 0;
@@ -1030,13 +1024,15 @@ public class Diff
                 {
                     // Delete the offending records.
                     pointer.previous(); // Reverse direction.
-                    while (count_delete-- > 0) {
-                      pointer.previous();
-                      pointer.remove();
+                    while (count_delete-- > 0)
+                    {
+                        pointer.previous();
+                        pointer.remove();
                     }
-                    while (count_insert-- > 0) {
-                      pointer.previous();
-                      pointer.remove();
+                    while (count_insert-- > 0)
+                    {
+                        pointer.previous();
+                        pointer.remove();
                     }
 
                     if (count_delete != 0 && count_insert != 0)
@@ -1107,7 +1103,7 @@ public class Diff
         Difference lastDiff = (Difference) diffs.get(diffs.size() - 1);
         if (lastDiff.getText().length() == 0)
         {
-            diffs.remove(diffs.size() - 1);  // Remove the dummy entry at the end.
+            diffs.remove(diffs.size() - 1); // Remove the dummy entry at the end.
         }
     }
 
@@ -1297,11 +1293,11 @@ public class Diff
     /**
      * Number of seconds to map a diff before giving up.  (0 for infinity)
      */
-    public static final double TIMEOUT = 1.0;
+    public static final double TIMEOUT   = 1.0;
 
     /**
      * Cost of an empty edit operation in terms of edit characters.
      */
-    public static final int EDIT_COST = 4;
+    public static final int    EDIT_COST = 4;
 
 }

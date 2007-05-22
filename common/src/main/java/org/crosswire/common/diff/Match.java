@@ -39,10 +39,11 @@ public class Match
     // Locate the best instance of 'pattern' in 'text' near 'loc'.
     public static int main(String text, String pattern, int loc)
     {
-        if (text.length() == 0) {
+        if (text.length() == 0)
+        {
             // Nothing to match.
             return -1;
-        } 
+        }
         
         if (text.equals(pattern))
         {
@@ -79,14 +80,14 @@ public class Match
         int best_loc = text.indexOf(pattern, loc);
         if (best_loc != -1)
         {
-            score_threshold = Math.min(Match.bitap_score(pattern, score_text_length, loc, 0, best_loc), score_threshold);
+            score_threshold = Math.min(Match.bitapScore(pattern, score_text_length, loc, 0, best_loc), score_threshold);
         }
-  
+
        // What about in the other direction? (speedup)
         best_loc = text.lastIndexOf(pattern, loc + pattern.length());
         if (best_loc != -1)
         {
-            score_threshold = Math.min(Match.bitap_score(pattern, score_text_length, loc, 0, best_loc), score_threshold);
+            score_threshold = Math.min(Match.bitapScore(pattern, score_text_length, loc, 0, best_loc), score_threshold);
         }
 
         // Initialise the bit arrays.
@@ -108,7 +109,7 @@ public class Match
             bin_mid = bin_max;
             while (bin_min < bin_mid)
             {
-                if (Match.bitap_score(pattern, score_text_length, loc, d, bin_mid) < score_threshold)
+                if (Match.bitapScore(pattern, score_text_length, loc, d, bin_mid) < score_threshold)
                 {
                     bin_min = bin_mid;
                 }
@@ -147,7 +148,7 @@ public class Match
 
                 if ((rd[j] & matchmask) != 0)
                 {
-                    double score = Match.bitap_score(pattern, score_text_length, loc, d, j);
+                    double score = Match.bitapScore(pattern, score_text_length, loc, d, j);
                     // This match will almost certainly be better than any existing match.  But check anyway.
                     if (score <= score_threshold)
                     {
@@ -168,7 +169,7 @@ public class Match
                 }
             }
 
-            if (Match.bitap_score(pattern, score_text_length, loc, d + 1, loc) > score_threshold) // No hope for a (better) match at greater error levels.
+            if (Match.bitapScore(pattern, score_text_length, loc, d + 1, loc) > score_threshold) // No hope for a (better) match at greater error levels.
             {
                 // No hope for a (better) match at greater error levels.
                 break;
@@ -180,11 +181,11 @@ public class Match
         return best_loc;
     }
 
-    private static double bitap_score(String pattern, int score_text_length, int loc, int e, int x)
+    private static double bitapScore(String pattern, int score_text_length, int loc, int e, int x)
     {
         // Compute and return the score for a match with e errors and x location.
         int d = Math.abs(loc - x);
-        return (e / (float)pattern.length() / Match.BALANCE) + (d / (float) score_text_length / (1.0 - Match.BALANCE));
+        return (e / (float) pattern.length() / Match.BALANCE) + (d / (float) score_text_length / (1.0 - Match.BALANCE));
     }
 
     // Initialize the alphabet for the Bitap algorithm.
