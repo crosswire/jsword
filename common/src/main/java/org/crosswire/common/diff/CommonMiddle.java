@@ -33,41 +33,41 @@ public class CommonMiddle
     /**
      * A CommonMiddle represents an overlap between a baseline/source text and a changed/target text.
      * 
-     * @param sourceStart The text before the commonality form the source
-     * @param targetStart The text before the commonality form the target
+     * @param sourcePrefix The text before the commonality form the source
+     * @param sourceSuffix The text after the commonality form the source
+     * @param targetPrefix The text before the commonality form the target
+     * @param targetSuffix The text after the commonality form the target
      * @param commonality The text in common
-     * @param sourceEnd The text after the commonality form the source
-     * @param targetEnd The text after the commonality form the target
      */
-    public CommonMiddle(String sourceStart, String targetStart, String commonality, String sourceEnd, String targetEnd)
+    public CommonMiddle(String sourcePrefix, String sourceSuffix, String targetPrefix, String targetSuffix, String commonality)
     {
-        assert sourceStart != null;
-        assert targetStart != null;
+        assert sourcePrefix != null;
+        assert targetPrefix != null;
         assert commonality != null;
-        assert sourceEnd != null;
-        assert targetEnd != null;
+        assert sourceSuffix != null;
+        assert targetSuffix != null;
 
-        this.sourceStart = sourceStart;
-        this.targetStart = targetStart;
+        this.sourcePrefix = sourcePrefix;
+        this.sourceSuffix = sourceSuffix;
+        this.targetPrefix = targetPrefix;
+        this.targetSuffix = targetSuffix;
         this.commonality = commonality;
-        this.sourceEnd = sourceEnd;
-        this.targetEnd = targetEnd;
     }
 
     /**
      * @return the source start
      */
-    public String getSourceStart()
+    public String getSourcePrefix()
     {
-        return sourceStart;
+        return sourcePrefix;
     }
 
     /**
      * @return the target start
      */
-    public String getTargetStart()
+    public String getTargetPrefix()
     {
-        return targetStart;
+        return targetPrefix;
     }
 
     /**
@@ -81,17 +81,17 @@ public class CommonMiddle
     /**
      * @return the source end
      */
-    public String getSourceEnd()
+    public String getSourceSuffix()
     {
-        return sourceEnd;
+        return sourceSuffix;
     }
 
     /**
      * @return the target end
      */
-    public String getTargetEnd()
+    public String getTargetSuffix()
     {
-        return targetEnd;
+        return targetSuffix;
     }
 
     
@@ -101,15 +101,15 @@ public class CommonMiddle
     public String toString()
     {
         StringBuffer buf = new StringBuffer();
-        buf.append(sourceStart);
+        buf.append(sourcePrefix);
         buf.append(',');
-        buf.append(targetStart);
+        buf.append(sourceSuffix);
+        buf.append(',');
+        buf.append(targetPrefix);
+        buf.append(',');
+        buf.append(targetSuffix);
         buf.append(',');
         buf.append(commonality);
-        buf.append(',');
-        buf.append(sourceEnd);
-        buf.append(',');
-        buf.append(targetEnd);
         return buf.toString();
     }
 
@@ -120,12 +120,12 @@ public class CommonMiddle
     {
         final int PRIME = 31;
         int result = 1;
+        result = PRIME * result + ((sourcePrefix == null) ? 0 : sourcePrefix.hashCode());
+        result = PRIME * result + ((sourceSuffix == null) ? 0 : sourceSuffix.hashCode());
+        result = PRIME * result + ((targetPrefix == null) ? 0 : targetPrefix.hashCode());
+        result = PRIME * result + ((targetSuffix == null) ? 0 : targetSuffix.hashCode());
         result = PRIME * result + ((commonality == null) ? 0 : commonality.hashCode());
-        result = PRIME * result + ((sourceEnd == null) ? 0 : sourceEnd.hashCode());
-        result = PRIME * result + ((sourceStart == null) ? 0 : sourceStart.hashCode());
-        result = PRIME * result + ((targetEnd == null) ? 0 : targetEnd.hashCode());
-        result = PRIME * result + ((targetStart == null) ? 0 : targetStart.hashCode());
-        return result;
+       return result;
     }
 
     /* (non-Javadoc)
@@ -145,17 +145,16 @@ public class CommonMiddle
 
         final CommonMiddle other = (CommonMiddle) obj;
 
-        return commonality.equals(other.commonality)
-            && sourceEnd.equals(other.sourceEnd)
-            && sourceStart.equals(other.sourceStart)
-            && targetEnd.equals(other.targetEnd)
-            && targetStart.equals(other.targetStart);
+        return sourcePrefix.equals(other.sourcePrefix)
+            && sourceSuffix.equals(other.sourceSuffix)
+            && targetPrefix.equals(other.targetPrefix)
+            && targetSuffix.equals(other.targetSuffix)
+            && commonality.equals(other.commonality);
     }
 
-    private String sourceStart;
-    private String targetStart;
+    private String sourcePrefix;
+    private String sourceSuffix;
+    private String targetPrefix;
+    private String targetSuffix;
     private String commonality;
-    private String sourceEnd;
-    private String targetEnd;
-
 }

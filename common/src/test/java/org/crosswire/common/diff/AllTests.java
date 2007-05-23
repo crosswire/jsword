@@ -17,13 +17,12 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
+ * ID: $Id: AllTests.java 763 2005-07-27 23:26:43Z dmsmith $
  */
-// package default;
+package org.crosswire.common.diff;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import junit.textui.TestRunner;
 
 /**
  * JUnit Test.
@@ -34,20 +33,21 @@ import junit.textui.TestRunner;
  */
 public class AllTests
 {
-    public static void main(String[] args)
-    {
-        TestRunner.run(suite());
-    }
-
     public static Test suite()
     {
-        TestSuite suite = new TestSuite();
-
-        suite.addTest(org.crosswire.common.util.AllTests.suite());
-        suite.addTest(org.crosswire.common.progress.AllTests.suite());
-        suite.addTest(org.crosswire.common.diff.AllTests.suite());
-        suite.addTest(org.crosswire.common.xml.AllTests.suite());
-
+        TestSuite suite = new TestSuite("Test for org.crosswire.common.diff"); //$NON-NLS-1$
+        //$JUnit-BEGIN$
+        suite.addTest(new TestSuite(BitapTest.class));
+        suite.addTest(new TestSuite(Commonality.class));
+        suite.addTest(new TestSuite(DiffCleanupTest.class));
+        suite.addTest(new TestSuite(DifferenceEngine.class));
+        suite.addTest(new TestSuite(DifferenceTest.class));
+        suite.addTest(new TestSuite(DiffTest.class));
+        suite.addTest(new TestSuite(LineMapTest.class));
+        suite.addTest(new TestSuite(MatchTest.class));
+        suite.addTest(new TestSuite(PatchEntry.class));
+        suite.addTest(new TestSuite(Patch.class));
+        //$JUnit-END$
         return suite;
     }
 }

@@ -121,6 +121,14 @@ public class Difference
     }
 
     /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        return editType.toString() + ':' + text;
+    }
+
+    /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
     public int hashCode()

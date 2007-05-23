@@ -103,9 +103,11 @@ public class Commonality
      */
     public static CommonMiddle halfMatch(final String source, final String target)
     {
-        String longText = source.length() > target.length() ? source : target;
-        String shortText = source.length() > target.length() ? target : source;
-        int longTextLength = longText.length();
+        int sourceLength = source.length();
+        int targetLength = target.length();
+        String longText = sourceLength > targetLength ? source : target;
+        String shortText = sourceLength > targetLength ? target : source;
+        int longTextLength = Math.max(sourceLength, targetLength);
         if (longTextLength < 10 || shortText.length() < 1)
         {
             return null; // Pointless.
@@ -129,17 +131,18 @@ public class Commonality
             hm = hm2;
         }
         else
-        // Both matched.  Select the longest.
         {
+            // Both matched.  Select the longest.
             hm = hm1.getCommonality().length() > hm2.getCommonality().length() ? hm1 : hm2;
         }
 
         // A half-match was found, sort out the return data.
-        if (source.length() > target.length())
+        if (sourceLength > targetLength)
         {
             return hm;
         }
-        return new CommonMiddle(hm.getTargetEnd(), hm.getTargetEnd(), hm.getCommonality(), hm.getSourceStart(), hm.getTargetStart());
+
+        return new CommonMiddle(hm.getTargetPrefix(), hm.getTargetSuffix(), hm.getSourcePrefix(), hm.getSourceSuffix(), hm.getCommonality());
     }
 
     /**
@@ -157,28 +160,28 @@ public class Commonality
         // Start with a 1/4 length substring at position i as a seed.
         String seed = longText.substring(startIndex, startIndex + (longText.length() / 4));
         int j = -1;
-        String bestCommon = ""; //$NON-NLS-1$
-        String bestLongTextA = ""; //$NON-NLS-1$
-        String bestLongTextB = ""; //$NON-NLS-1$
-        String bestShortTextA = ""; //$NON-NLS-1$
-        String bestShortTextB = ""; //$NON-NLS-1$
+        String common = ""; //$NON-NLS-1$
+        String longTextPrefix = ""; //$NON-NLS-1$
+        String longTextSuffix = ""; //$NON-NLS-1$
+        String shortTextPrefix = ""; //$NON-NLS-1$
+        String shortTextSuffix = ""; //$NON-NLS-1$
         while ((j = shortText.indexOf(seed, j + 1)) != -1)
         {
             int prefixLength = Commonality.prefix(longText.substring(startIndex), shortText.substring(j));
             int suffixLength = Commonality.suffix(longText.substring(0, startIndex), shortText.substring(0, j));
-            if (bestCommon.length() < (prefixLength + suffixLength))
+            if (common.length() < (prefixLength + suffixLength))
             {
-                bestCommon = shortText.substring(j - suffixLength, j) + shortText.substring(j, j + prefixLength);
-                bestLongTextA = longText.substring(0, startIndex - suffixLength);
-                bestLongTextB = longText.substring(startIndex + prefixLength);
-                bestShortTextA = shortText.substring(0, j - suffixLength);
-                bestShortTextB = shortText.substring(j + prefixLength);
+                common = shortText.substring(j - suffixLength, j) + shortText.substring(j, j + prefixLength);
+                longTextPrefix = longText.substring(0, startIndex - suffixLength);
+                longTextSuffix = longText.substring(startIndex + prefixLength);
+                shortTextPrefix = shortText.substring(0, j - suffixLength);
+                shortTextSuffix = shortText.substring(j + prefixLength);
             }
         }
 
-        if (bestCommon.length() >= longText.length() / 2)
+        if (common.length() >= longText.length() / 2)
         {
-            return new CommonMiddle(bestLongTextA, bestLongTextB, bestCommon, bestShortTextA, bestShortTextB);
+            return new CommonMiddle(longTextPrefix, longTextSuffix, shortTextPrefix, shortTextSuffix, common);
         }
 
         return null;

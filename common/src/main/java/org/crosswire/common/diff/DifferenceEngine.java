@@ -41,30 +41,54 @@ import java.util.Set;
 public class DifferenceEngine
 {
     /**
+     * Empty Difference Engine, which won't find anything.
+     */
+    public DifferenceEngine()
+    {
+        this("",""); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    /**
      * Find the differences between two texts.  Simplifies the problem by
      * stripping any common prefix or suffix off the texts before diffing.
-     * @param text1 Old string to be diffed
-     * @param text2 New string to be diffed
+     * @param source Old string to be diffed
+     * @param target New string to be diffed
      * @param checkLines Speedup flag.  If false, then don't run a
      *     line-level diff first to identify the changed areas.
      *     If true, then run a faster slightly less optimal diff
      */
-    public DifferenceEngine(final String text1, final String text2)
+    public DifferenceEngine(final String source, final String target)
     {
-        this.text1 = text1;
-        this.text2 = text2;
+        this.source = source;
+        this.target = target;
+    }
+
+    /**
+     * @param newSource the source to set
+     */
+    public void setSource(String newSource)
+    {
+        this.source = newSource;
+    }
+
+    /**
+     * @param newTarget the target to set
+     */
+    public void setTarget(String newTarget)
+    {
+        this.target = newTarget;
     }
 
     /**
      * Explore the intersection points between the two texts.
-     * @param text1 Old string to be diffed
-     * @param text2 New string to be diffed
+     * @param source Old string to be diffed
+     * @param target New string to be diffed
      * @return List of Difference objects or null if no diff available
      */
     public List generate()
     {
-        long msEnd = System.currentTimeMillis() + (long) (TIMEOUT * 1000);
-        int maxD = (text1.length() + text2.length()) / 2;
+        long msEnd = System.currentTimeMillis() + (long) (timeout * 1000);
+        int maxD = (source.length() + target.length()) / 2;
         List vMap1 = new ArrayList();
         List vMap2 = new ArrayList();
         Map v1 = new HashMap();
@@ -78,11 +102,11 @@ public class DifferenceEngine
         boolean done = false;
         // If the total number of characters is odd, then the front path will
         // collide with the reverse path.
-        boolean front = (text1.length() + text2.length()) % 2 == 1;
+        boolean front = (source.length() + target.length()) % 2 == 1;
         for (int d = 0; d < maxD; d++)
         {
             // Bail out if timeout reached.
-            if (TIMEOUT > 0 && System.currentTimeMillis() > msEnd)
+            if (timeout > 0 && System.currentTimeMillis() > msEnd)
             {
                 return null;
             }
@@ -93,7 +117,7 @@ public class DifferenceEngine
             {
                 Integer kPlus1Key = new Integer(k + 1);
                 Integer kPlus1Value = (Integer) v1.get(kPlus1Key);
-                Integer kMinus1Key = new Integer(k + 1);
+                Integer kMinus1Key = new Integer(k - 1);
                 Integer kMinus1Value = (Integer) v1.get(kMinus1Key);
                 if (k == -d || k != d && kMinus1Value.intValue() < kPlus1Value.intValue())
                 {
@@ -113,7 +137,7 @@ public class DifferenceEngine
                 {
                     footsteps.put(footstep, new Integer(d));
                 }
-                while (!done && x < text1.length() && y < text2.length() && text1.charAt(x) == text2.charAt(y))
+                while (!done && x < source.length() && y < target.length() && source.charAt(x) == target.charAt(y))
                 {
                     x++;
                     y++;
@@ -135,8 +159,8 @@ public class DifferenceEngine
                     // Front path ran over reverse path.
                     Integer footstepValue = (Integer) footsteps.get(footstep);
                     vMap2 = vMap2.subList(0, footstepValue.intValue() + 1);
-                    List a = path1(vMap1, text1.substring(0, x), text2.substring(0, y));
-                    a.addAll(path2(vMap2, text1.substring(x), text2.substring(y)));
+                    List a = path1(vMap1, source.substring(0, x), target.substring(0, y));
+                    a.addAll(path2(vMap2, source.substring(x), target.substring(y)));
                     return a;
                 }
             }
@@ -147,7 +171,7 @@ public class DifferenceEngine
             {
                 Integer kPlus1Key = new Integer(k + 1);
                 Integer kPlus1Value = (Integer) v2.get(kPlus1Key);
-                Integer kMinus1Key = new Integer(k + 1);
+                Integer kMinus1Key = new Integer(k - 1);
                 Integer kMinus1Value = (Integer) v2.get(kMinus1Key);
                 if (k == -d || k != d && kMinus1Value.intValue() < kPlus1Value.intValue())
                 {
@@ -158,7 +182,7 @@ public class DifferenceEngine
                     x = kMinus1Value.intValue() + 1;
                 }
                 y = x - k;
-                footstep = (text1.length() - x) + "," + (text2.length() - y); //$NON-NLS-1$
+                footstep = (source.length() - x) + "," + (target.length() - y); //$NON-NLS-1$
                 if (!front && (footsteps.containsKey(footstep)))
                 {
                     done = true;
@@ -167,11 +191,11 @@ public class DifferenceEngine
                 {
                     footsteps.put(footstep, new Integer(d));
                 }
-                while (!done && x < text1.length() && y < text2.length() && text1.charAt(text1.length() - x - 1) == text2.charAt(text2.length() - y - 1))
+                while (!done && x < source.length() && y < target.length() && source.charAt(source.length() - x - 1) == target.charAt(target.length() - y - 1))
                 {
                     x++;
                     y++;
-                    footstep = (text1.length() - x) + "," + (text2.length() - y); //$NON-NLS-1$
+                    footstep = (source.length() - x) + "," + (target.length() - y); //$NON-NLS-1$
                     if (!front && (footsteps.containsKey(footstep)))
                     {
                         done = true;
@@ -190,8 +214,8 @@ public class DifferenceEngine
                     // Reverse path ran over front path.
                     Integer footstepValue = (Integer) footsteps.get(footstep);
                     vMap1 = vMap1.subList(0, footstepValue.intValue() + 1);
-                    List a = path1(vMap1, text1.substring(0, text1.length() - x), text2.substring(0, text2.length() - y));
-                    a.addAll(path2(vMap2, text1.substring(text1.length() - x), text2.substring(text2.length() - y)));
+                    List a = path1(vMap1, source.substring(0, source.length() - x), target.substring(0, target.length() - y));
+                    a.addAll(path2(vMap2, source.substring(source.length() - x), target.substring(target.length() - y)));
                     return a;
                 }
             }
@@ -208,7 +232,7 @@ public class DifferenceEngine
      * @param right New string fragment to be diffed
      * @return List of Difference objects
      */
-    private List path1(final List vMap, final String left, final String right)
+    protected List path1(final List vMap, final String left, final String right)
     {
         List path = new ArrayList();
         int x = left.length();
@@ -277,7 +301,7 @@ public class DifferenceEngine
      * @param right New string fragment to be diffed
      * @return List of Difference objects
      */
-    private List path2(final List vMap, final String left, final String right)
+    protected List path2(final List vMap, final String left, final String right)
     {
         List path = new ArrayList();
         int x = left.length();
@@ -340,18 +364,23 @@ public class DifferenceEngine
         return path;
     }
 
+    public static void setTimeout(float newTimeout)
+    {
+        timeout = newTimeout;
+    }
+
     /**
      * Number of seconds to map a diff before giving up.  (0 for infinity)
      */
-    private static final double TIMEOUT   = 1.0;
-
+    private static final float TIMEOUT   = 1.0f;
+    private static float timeout = TIMEOUT;
     /**
      * The baseline text.
      */
-    private String text1;
+    private String source;
 
     /**
      * The changed text.
      */
-    private String text2;
+    private String target;
 }

@@ -169,8 +169,8 @@ public class Diff
         {
             // A half-match was found, sort out the return data.
             // Send both pairs off for separate processing.
-            Diff startDiff = new Diff(middleMatch.getSourceStart(), middleMatch.getTargetStart(), checkLines);
-            Diff endDiff = new Diff(middleMatch.getSourceEnd(), middleMatch.getTargetEnd(), checkLines);
+            Diff startDiff = new Diff(middleMatch.getSourcePrefix(), middleMatch.getTargetPrefix(), checkLines);
+            Diff endDiff = new Diff(middleMatch.getSourceSuffix(), middleMatch.getTargetSuffix(), checkLines);
             // Merge the results.
             diffs = startDiff.compare();
             diffs.add(new Difference(EditType.EQUAL, middleMatch.getCommonality()));

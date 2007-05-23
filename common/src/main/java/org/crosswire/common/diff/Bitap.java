@@ -66,11 +66,11 @@ public class Bitap implements Locator
         alphabet();
 
         // Coerce the text length between reasonable maximums and minimums.
-        scoreTextLength = Math.max(text.length(), Bitap.MINLENGTH);
-        scoreTextLength = Math.min(scoreTextLength, Bitap.MAXLENGTH);
+        scoreTextLength = Math.max(text.length(), Bitap.minLength);
+        scoreTextLength = Math.min(scoreTextLength, Bitap.maxLength);
 
         // Highest score beyond which we give up.
-        double scoreThreshold = Bitap.THRESHOLD;
+        double scoreThreshold = Bitap.threshold;
 
         // Is there a nearby exact match? (speedup)
         int bestLoc = text.indexOf(pattern, loc);
@@ -192,7 +192,7 @@ public class Bitap implements Locator
     {
         // Compute and return the score for a match with e errors and x location.
         int d = Math.abs(loc - x);
-        return (e / (float) pattern.length() / Bitap.BALANCE) + (d / (float) scoreTextLength / (1.0 - Bitap.BALANCE));
+        return (e / (float) pattern.length() / Bitap.balance) + (d / (float) scoreTextLength / (1.0 - Bitap.balance));
     }
 
     // Initialize the alphabet for the Bitap algorithm.
@@ -213,6 +213,26 @@ public class Bitap implements Locator
         }
     }
 
+    public static void setBalance(float newBalance)
+    {
+        balance = newBalance;
+    }
+
+    public static void setThreshold(float newThreshold)
+    {
+        threshold = newThreshold;
+    }
+
+    public static void setMinLength(int newMinLength)
+    {
+        minLength = newMinLength;
+    }
+
+    public static void setMaxLength(int newMaxLength)
+    {
+        maxLength = newMaxLength;
+    }
+
     /**
      * The maximum number of bits in an int.
      * Change this to 64 if long is used by alphabet.
@@ -222,18 +242,22 @@ public class Bitap implements Locator
     /**
      * Tweak the relative importance (0.0 = accuracy, 1.0 = proximity)
      */
-    private static final double BALANCE = 0.5;
+    private static final float BALANCE = 0.5f;
+    private static float balance = BALANCE;
 
     /**
      * At what point is no match declared (0.0 = perfection, 1.0 = very loose)
      */
-    private static final double THRESHOLD = 0.5;
+    private static final float THRESHOLD = 0.5f;
+    private static float threshold = THRESHOLD;
 
     /**
      * The min and max cutoffs used when computing text lengths.
      */
     private static final int MINLENGTH = 100;
+    private static int minLength = MINLENGTH;
     private static final int MAXLENGTH = 1000;
+    private static int maxLength = MAXLENGTH;
 
     /**
      * The text to search.

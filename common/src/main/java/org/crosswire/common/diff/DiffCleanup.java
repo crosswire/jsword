@@ -46,7 +46,7 @@ public class DiffCleanup
     {
         boolean changes = false;
         Stack equalities = new Stack(); // Stack of indices where equalities are found.
-        String lastEquality = ""; //$NON-NLS-1$ // Always equal to equalities.lastElement().getText()
+        String lastEquality = null; // Always equal to equalities.lastElement().getText()
         int lengthChangesPre = 0; // Number of characters that changed prior to the equality.
         int lengthChangesPost = 0; // Number of characters that changed after the equality.
         ListIterator pointer = diffs.listIterator();
@@ -159,7 +159,7 @@ public class DiffCleanup
                 {
                     // Not a candidate, and can never become one.
                     equalities.clear();
-                    lastEquality = ""; //$NON-NLS-1$
+                    lastEquality = null;
                     safeDiff = curDiff;
                 }
                 postInsert = 0;
