@@ -38,15 +38,15 @@ public class AllTests
         TestSuite suite = new TestSuite("Test for org.crosswire.common.diff"); //$NON-NLS-1$
         //$JUnit-BEGIN$
         suite.addTest(new TestSuite(BitapTest.class));
-        suite.addTest(new TestSuite(Commonality.class));
+        suite.addTest(new TestSuite(CommonalityTest.class));
         suite.addTest(new TestSuite(DiffCleanupTest.class));
-        suite.addTest(new TestSuite(DifferenceEngine.class));
+        suite.addTest(new TestSuite(DifferenceEngineTest.class));
         suite.addTest(new TestSuite(DifferenceTest.class));
         suite.addTest(new TestSuite(DiffTest.class));
         suite.addTest(new TestSuite(LineMapTest.class));
         suite.addTest(new TestSuite(MatchTest.class));
-        suite.addTest(new TestSuite(PatchEntry.class));
-        suite.addTest(new TestSuite(Patch.class));
+        suite.addTest(new TestSuite(PatchEntryTest.class));
+        suite.addTest(new TestSuite(PatchTest.class));
         //$JUnit-END$
         return suite;
     }
