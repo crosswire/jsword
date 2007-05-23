@@ -203,7 +203,7 @@ public class Diff
             diffs.add(new Difference(EditType.INSERT, text2));
         }
 
-        if (checkLines)
+        if (checkLines && lineMap != null)
         {
             // Convert the diff back to original text.
             lineMap.restore(diffs);
