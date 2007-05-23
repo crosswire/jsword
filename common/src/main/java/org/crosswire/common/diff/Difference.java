@@ -33,6 +33,9 @@ public class Difference
 {
     public Difference(EditType edit, String text)
     {
+        assert editType != null;
+        assert text != null;
+
         this.editType = edit;
         this.text = text;
     }
@@ -117,10 +120,39 @@ public class Difference
         text = addText + text;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode()
+    {
+        return 31 * editType.hashCode() + text.hashCode();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass())
+        {
+            return false;
+        }
+
+        final Difference other = (Difference) obj;
+
+        return editType.equals(other.editType) && text.equals(other.text);
+    }
+
     /**
      * The edit to perform
      */
     private EditType editType;
     private String text;
     private int index;
+
 }

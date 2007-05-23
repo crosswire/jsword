@@ -147,7 +147,7 @@ public class DiffCleanup
             EditType editType = curDiff.getEditType();
             if (EditType.EQUAL.equals(editType)) // equality found
             {
-                if (curDiff.getText().length() < EDIT_COST && (postInsert + postDelete) > 0)
+                if (curDiff.getText().length() < editCost && (postInsert + postDelete) > 0)
                 {
                     // Candidate found.
                     equalities.push(curDiff);
@@ -184,8 +184,9 @@ public class DiffCleanup
                 // <ins>A</del>X<ins>C</ins><del>D</del>
                 // <ins>A</ins><del>B</del>X<del>C</del>
                 if (lastEquality != null
-                    && (((preInsert + preDelete + postInsert + postDelete) > 0) || ((lastEquality.length() < EDIT_COST / 2) && (preInsert + preDelete
-                                                                                                                                + postInsert + postDelete) == 3)))
+                    && (((preInsert + preDelete + postInsert + postDelete) > 0)
+                    || ((lastEquality.length() < editCost / 2)
+                    && (preInsert + preDelete + postInsert + postDelete) == 3)))
                 {
                     // position pointer to the element after the one at the end of the stack
                     while (curDiff != equalities.lastElement())
@@ -374,8 +375,17 @@ public class DiffCleanup
     }
 
     /**
+     * Set the edit cost for efficiency
+     * @param newEditCost
+     */
+    public static void setEditCost(int newEditCost)
+    {
+        editCost = newEditCost;        
+    }
+
+    /**
      * Cost of an empty edit operation in terms of edit characters.
      */
     private static final int EDIT_COST = 4;
-
+    private static int editCost = EDIT_COST;
 }

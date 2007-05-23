@@ -21,7 +21,6 @@
  */
 package org.crosswire.common.diff;
 
-
 /**
  * A Commonality is shared text at the beginning, middle or end of two strings.
  * 
@@ -54,7 +53,7 @@ public class Commonality
         int pointermid = pointermax;
         while (pointermin < pointermid)
         {
-            if (source.substring(0, pointermid) == target.substring(0, pointermid))
+            if (source.regionMatches(0, target, 0, pointermid))
             {
                 pointermin = pointermid;
             }
@@ -81,7 +80,7 @@ public class Commonality
         int pointermid = pointermax;
         while (pointermin < pointermid)
         {
-            if (source.substring(source.length() - pointermid) == target.substring(target.length() - pointermid))
+            if (source.regionMatches(source.length() - pointermid, target, target.length() - pointermid, pointermid))
             {
                 pointermin = pointermid;
             }

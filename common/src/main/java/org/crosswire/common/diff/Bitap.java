@@ -36,7 +36,6 @@ import java.util.Map;
  */
 public class Bitap implements Locator
 {
-
     /**
      * Locate the best instance of 'pattern' in 'text' near 'loc'.
      * @param text The text to search
@@ -178,7 +177,7 @@ public class Bitap implements Locator
         return bestLoc;
     }
 
-    public Map getAlphabet()
+    protected Map getAlphabet()
     {
         return alphabet;
     }
@@ -197,7 +196,7 @@ public class Bitap implements Locator
     }
 
     // Initialize the alphabet for the Bitap algorithm.
-    public void alphabet()
+    protected void alphabet()
     {
         int len = pattern.length();
 

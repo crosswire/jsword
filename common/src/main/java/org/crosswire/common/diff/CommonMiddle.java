@@ -41,7 +41,12 @@ public class CommonMiddle
      */
     public CommonMiddle(String sourceStart, String targetStart, String commonality, String sourceEnd, String targetEnd)
     {
-        super();
+        assert sourceStart != null;
+        assert targetStart != null;
+        assert commonality != null;
+        assert sourceEnd != null;
+        assert targetEnd != null;
+
         this.sourceStart = sourceStart;
         this.targetStart = targetStart;
         this.commonality = commonality;
@@ -89,9 +94,68 @@ public class CommonMiddle
         return targetEnd;
     }
 
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        StringBuffer buf = new StringBuffer();
+        buf.append(sourceStart);
+        buf.append(',');
+        buf.append(targetStart);
+        buf.append(',');
+        buf.append(commonality);
+        buf.append(',');
+        buf.append(sourceEnd);
+        buf.append(',');
+        buf.append(targetEnd);
+        return buf.toString();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode()
+    {
+        final int PRIME = 31;
+        int result = 1;
+        result = PRIME * result + ((commonality == null) ? 0 : commonality.hashCode());
+        result = PRIME * result + ((sourceEnd == null) ? 0 : sourceEnd.hashCode());
+        result = PRIME * result + ((sourceStart == null) ? 0 : sourceStart.hashCode());
+        result = PRIME * result + ((targetEnd == null) ? 0 : targetEnd.hashCode());
+        result = PRIME * result + ((targetStart == null) ? 0 : targetStart.hashCode());
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass())
+        {
+            return false;
+        }
+
+        final CommonMiddle other = (CommonMiddle) obj;
+
+        return commonality.equals(other.commonality)
+            && sourceEnd.equals(other.sourceEnd)
+            && sourceStart.equals(other.sourceStart)
+            && targetEnd.equals(other.targetEnd)
+            && targetStart.equals(other.targetStart);
+    }
+
     private String sourceStart;
     private String targetStart;
     private String commonality;
     private String sourceEnd;
     private String targetEnd;
+
 }
