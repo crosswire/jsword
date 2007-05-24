@@ -96,14 +96,15 @@ public abstract class AbstractBookMetaData implements BookMetaData
      */
     private String computeFullName()
     {
-        StringBuffer buf = new StringBuffer(getName());
-
-        if (getDriver() != null)
-        {
-            buf.append(" (").append(getDriverName()).append(')'); //$NON-NLS-1$
-        }
-
-        return buf.toString();
+//        StringBuffer buf = new StringBuffer(getName());
+//
+//        if (getDriver() != null)
+//        {
+//            buf.append(" (").append(getDriverName()).append(')'); //$NON-NLS-1$
+//        }
+//
+//        return buf.toString();
+        return getName();
     }
 
     /* (non-Javadoc)
@@ -328,7 +329,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
         int result = this.getBookCategory().compareTo(((BookMetaData) obj).getBookCategory());
         if (result == 0)
         {
-            result = this.getInitials().compareTo(((BookMetaData) obj).getInitials());
+            result = this.getName().compareTo(((BookMetaData) obj).getName());
         }
         return result;
     }
