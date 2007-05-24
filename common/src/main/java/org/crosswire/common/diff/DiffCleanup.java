@@ -19,7 +19,6 @@
  *
  * ID: $Id$
  */
-
 package org.crosswire.common.diff;
 
 import java.util.List;
@@ -38,6 +37,13 @@ import java.util.Stack;
  */
 public class DiffCleanup
 {
+    /**
+     * Utility class constructor.
+     */
+    private DiffCleanup()
+    {
+    }
+
     /**
      * Reduce the number of edits by eliminating semantically trivial equalities.
      * @param diffs List of Difference objects
@@ -67,7 +73,7 @@ public class DiffCleanup
                 // an insertion or deletion
                 lengthChangesPost += curDiff.getText().length();
                 int lastLen = lastEquality != null ? lastEquality.length() : 0;
-                if (lastEquality != null && (lastLen <= lengthChangesPre) && (lastLen <= lengthChangesPost))
+                if (lastEquality != null && lastLen <= lengthChangesPre && lastLen <= lengthChangesPost)
                 {
                     // position pointer to the element after the one at the end of the stack
                     while (curDiff != equalities.lastElement())
@@ -81,7 +87,7 @@ public class DiffCleanup
                     // Insert a coresponding an insert.
                     pointer.add(new Difference(EditType.INSERT, lastEquality));
                     equalities.pop(); // Throw away the equality we just deleted;
-                    if ( !equalities.empty())
+                    if (!equalities.empty())
                     {
                         // Throw away the previous equality (it needs to be reevaluated).
                         equalities.pop();
@@ -213,7 +219,7 @@ public class DiffCleanup
                     }
                     else
                     {
-                        if ( !equalities.empty())
+                        if (!equalities.empty())
                         {
                             // Throw away the previous equality;
                             equalities.pop();
@@ -274,13 +280,13 @@ public class DiffCleanup
             EditType editType = curDiff.getEditType();
             if (EditType.INSERT.equals(editType))
             {
-                countInsert++ ;
+                countInsert++;
                 textInsert += curDiff.getText();
                 prevEqual = null;
             }
             else if (EditType.DELETE.equals(editType))
             {
-                countDelete++ ;
+                countDelete++;
                 textDelete += curDiff.getText();
                 prevEqual = null;
             }
@@ -380,7 +386,7 @@ public class DiffCleanup
      */
     public static void setEditCost(int newEditCost)
     {
-        editCost = newEditCost;        
+        editCost = newEditCost;
     }
 
     /**

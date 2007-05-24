@@ -1,3 +1,24 @@
+/**
+ * Distribution License:
+ * JSword is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License, version 2.1 as published by
+ * the Free Software Foundation. This program is distributed in the hope
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * The License is available on the internet at:
+ *       http://www.gnu.org/copyleft/lgpl.html
+ * or by writing to:
+ *      Free Software Foundation, Inc.
+ *      59 Temple Place - Suite 330
+ *      Boston, MA 02111-1307, USA
+ *
+ * Copyright: 2007
+ *     The copyright to this program is held by it's authors.
+ *
+ * ID: $Id$
+ */
 package org.crosswire.common.diff;
 
 import java.util.ArrayList;
@@ -6,6 +27,16 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.regex.Pattern;
 
+/**
+ * Marshals a patch to a list of Differences, Differences to a patch and applies a list of differences to text to patch it.
+ * 
+ * Based on the LGPL Diff_Match_Patch v1.5 javascript of Neil Fraser, Copyright (C) 2006
+ * <a href="http://neil.fraser.name/software/diff_match_patch/">http://neil.fraser.name/software/diff_match_patch/</a>
+ * 
+ * @see gnu.lgpl.License for license details.<br>
+ *      The copyright to this program is held by it's authors.
+ * @author DM Smith [dmsmith555 at yahoo dot com]
+ */
 public class Patch
 {
     /**
@@ -397,6 +428,10 @@ public class Patch
         return this;
     }
 
+    /**
+     * A holder of the results of a patch, with a results indicating
+     * which patch entries were able to be applied.
+     */
     public static class PatchResults
     {
         /**

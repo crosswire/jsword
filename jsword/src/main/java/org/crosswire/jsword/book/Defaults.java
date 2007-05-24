@@ -580,7 +580,7 @@ public final class Defaults
     /**
      * The current bible being tracked.
      */
-    private static Book currentBible = null;
+    private static Book currentBible;
 
     /**
      * The default Bible

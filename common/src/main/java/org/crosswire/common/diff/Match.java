@@ -21,7 +21,6 @@
  */
 package org.crosswire.common.diff;
 
-
 /**
  * Computes the difference between two texts to create a patch.
  * Applies the patch onto another text, allowing for errors.
@@ -72,7 +71,7 @@ public class Match implements Locator
             // Nothing to match.
             return -1;
         }
-        
+
         if (text.equals(pattern))
         {
             // Shortcut (potentially not guaranteed by the algorithm)
@@ -108,6 +107,4 @@ public class Match implements Locator
      * The strategy for locating a best match.
      */
     private Locator locator;
-
-
 }

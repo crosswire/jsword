@@ -22,13 +22,17 @@
 package org.crosswire.jsword.book;
 
 import java.util.Iterator;
+import java.util.List;
 
+import org.crosswire.common.diff.Diff;
+import org.crosswire.common.diff.DiffCleanup;
 import org.crosswire.common.xml.JDOMSAXEventProvider;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.passage.Key;
 import org.jdom.Content;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.Text;
 
 /**
  * BookData is the assembler of the osis that is returned by the filters.
@@ -56,9 +60,9 @@ public class BookData
         this.key = key;
 
         Book defaultBible = Defaults.getBible();
-        if (defaultBible != null &&
-            BookCategory.BIBLE.equals(book.getBookCategory()) &&
-            !defaultBible.equals(book)
+        if (defaultBible != null
+            && BookCategory.BIBLE.equals(book.getBookCategory())
+            && !defaultBible.equals(book)
            )
         {
             books = new Book[2];
@@ -154,16 +158,52 @@ public class BookData
         }
         else
         {
+            Element table = OSISUtil.factory().createTable();
+            Element row = OSISUtil.factory().createRow();
+            Element cell = null;
+
+            table.addContent(row);
+
             Iterator[] iters = new Iterator[books.length];
+            boolean[] showDiffs = new boolean[books.length - 1];
+            boolean doDiffs = false;
+
             for (int i = 0; i < books.length; i++)
             {
-                iters[i] = books[i].getOsisIterator(key, true);
+                Book book = books[i];
+
+                cell = OSISUtil.factory().createHeaderCell();
+
+                if (i > 0)
+                {
+                    Book prevBook = books[i - 1];
+                    BookCategory category = book.getBookCategory();
+
+                    BookCategory prevCategory = prevBook.getBookCategory();
+                    showDiffs[i - 1] = BookCategory.BIBLE.equals(category)
+                    && category.equals(prevCategory)
+                    && book.getLanguage().equals(prevBook.getLanguage());
+                    if (showDiffs[i - 1])
+                    {
+                        doDiffs = true;
+                        StringBuffer buf = new StringBuffer(prevBook.getInitials());
+                        buf.append(" ==> "); //$NON-NLS-1$
+                        buf.append(book.getInitials());
+
+                        cell.addContent(OSISUtil.factory().createText(buf.toString()));
+                        row.addContent(cell);
+                        cell = OSISUtil.factory().createHeaderCell();
+                    }
+                }
+
+                cell.addContent(OSISUtil.factory().createText(book.getInitials()));
+                row.addContent(cell);
+
+                iters[i] = book.getOsisIterator(key, true);
             }
 
             Content content = null;
-            Element table = OSISUtil.factory().createTable();
-            Element row = null;
-            Element cell = null;
+
             int cellCount = 0;
             int rowCount = 0;
             while (true)
@@ -172,6 +212,8 @@ public class BookData
 
                 row = OSISUtil.factory().createRow();
 
+                String lastText = ""; //$NON-NLS-1$
+
                 for (int i = 0; i < iters.length; i++)
                 {
                     cell = OSISUtil.factory().createCell();
@@ -179,6 +221,31 @@ public class BookData
                     if (iters[i].hasNext())
                     {
                         content = (Content) iters[i].next();
+
+                        if (doDiffs)
+                        {
+                            String thisText = ""; //$NON-NLS-1$                        
+                            if (content instanceof Element)
+                            {
+                                thisText = OSISUtil.getCanonicalText((Element)content);
+                            }
+                            else if (content instanceof Text)
+                            {
+                                thisText = ((Text) content).getText();
+                            }
+
+                            if (i > 0 && showDiffs[i - 1])
+                            {
+                                List diffs = new Diff(lastText, thisText, false).compare();
+                                DiffCleanup.cleanupSemantic(diffs);
+                                cell.addContent(OSISUtil.diffToOsis(diffs));
+
+                                // Since we used that cell create another
+                                cell = OSISUtil.factory().createCell();
+                                row.addContent(cell);
+                            }
+                            lastText = thisText;
+                        }
                         cell.addContent(content);
                         cellCount++;
                     }

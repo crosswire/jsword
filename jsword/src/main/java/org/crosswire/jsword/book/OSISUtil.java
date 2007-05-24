@@ -31,6 +31,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.crosswire.common.diff.Difference;
+import org.crosswire.common.diff.EditType;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyFactory;
@@ -214,10 +216,25 @@ public final class OSISUtil
     public static final String Q_EMBEDDED = "embedded"; //$NON-NLS-1$
 
     /**
-     * Constant to help narrow down what dvwe use "list" for.
+     * Constant to help narrow down what we use "list" for.
      */
     public static final String LIST_ORDERED = "x-ordered"; //$NON-NLS-1$
     public static final String LIST_UNORDERED = "x-unordered"; //$NON-NLS-1$
+
+    /**
+     * Table roles (on table, row and cell elements) can be "data", the default, or label.
+     */
+    public static final String TABLE_ROLE_LABEL = "label"; //$NON-NLS-1$
+
+    /**
+     * Possible cell alignments
+     */
+    public static final String CELL_ALIGN_LEFT = "left"; //$NON-NLS-1$
+    public static final String CELL_ALIGN_RIGHT = "right"; //$NON-NLS-1$
+    public static final String CELL_ALIGN_CENTER = "center"; //$NON-NLS-1$
+    public static final String CELL_ALIGN_JUSTIFY = "justify"; //$NON-NLS-1$
+    public static final String CELL_ALIGN_START = "start"; //$NON-NLS-1$
+    public static final String CELL_ALIGN_END = "end"; //$NON-NLS-1$
 
     public static final String OSIS_ELEMENT_TITLE = "title"; //$NON-NLS-1$
     public static final String OSIS_ELEMENT_TABLE = "table"; //$NON-NLS-1$
@@ -255,7 +272,10 @@ public final class OSISUtil
     public static final String OSIS_ATTR_EID = "eID"; //$NON-NLS-1$
     public static final String ATTRIBUTE_W_LEMMA = "lemma"; //$NON-NLS-1$
     public static final String ATTRIBUTE_FIGURE_SRC = "src"; //$NON-NLS-1$
+    public static final String ATTRIBUTE_TABLE_ROLE = "role"; //$NON-NLS-1$
+    public static final String ATTRIBUTE_CELL_ALIGN = "align"; //$NON-NLS-1$
     public static final String OSIS_ATTR_TYPE = "type"; //$NON-NLS-1$
+    public static final String OSIS_ATTR_CANONICAL = "canonical"; //$NON-NLS-1$
     public static final String OSIS_ATTR_SUBTYPE = "subType"; //$NON-NLS-1$
     public static final String OSIS_ATTR_REF = "osisRef"; //$NON-NLS-1$
     public static final String OSIS_ATTR_LEVEL = "level"; //$NON-NLS-1$
@@ -274,7 +294,7 @@ public final class OSISUtil
 
     private static final Set EXTRA_BIBLICAL_ELEMENTS = new HashSet(Arrays.asList(new String[]
     {
-        OSIS_ELEMENT_NOTE,
+        OSIS_ELEMENT_NOTE, OSIS_ELEMENT_TITLE, OSIS_ELEMENT_REFERENCE
     }));
 
     /**
@@ -358,6 +378,17 @@ public final class OSISUtil
         public Element createCell()
         {
             return new Element(OSIS_ELEMENT_CELL);
+        }
+
+        /**
+         * 
+         */
+        public Element createHeaderCell()
+        {
+            Element ele = new Element(OSIS_ELEMENT_CELL);
+            ele.setAttribute(ATTRIBUTE_TABLE_ROLE, TABLE_ROLE_LABEL);
+            ele.setAttribute(ATTRIBUTE_CELL_ALIGN, CELL_ALIGN_CENTER);
+            return ele;
         }
 
         /**
@@ -608,18 +639,24 @@ public final class OSISUtil
             if (data instanceof Element)
             {
                 ele = (Element) data;
-//                if (ele.getName().equals(OSISUtil.OSIS_ELEMENT_VERSE))
-//                {
+                if (!isCanonical(ele))
+                {
+                    continue;
+                }
+
+                if (ele.getName().equals(OSISUtil.OSIS_ELEMENT_VERSE))
+                {
                     sID = ele.getAttributeValue(OSISUtil.OSIS_ATTR_SID);
-                    if (sID != null)
-                    {
-                        getCanonicalContent(ele.getName(), sID, dit, buffer);
-                    }
-                    else
-                    {
-                        getCanonicalContent(ele.getName(), null, ele.getContent().iterator(), buffer);
-                    }
-//                }
+                }
+
+                if (sID != null)
+                {
+                    getCanonicalContent(ele, sID, dit, buffer);
+                }
+                else
+                {
+                    getCanonicalContent(ele, null, ele.getContent().iterator(), buffer);
+                }
             }
             else if (data instanceof Text)
             {
@@ -761,14 +798,19 @@ public final class OSISUtil
         while (contentIter.hasNext())
         {
             Element ele = (Element) contentIter.next();
-            getCanonicalContent(ele.getName(), null, ele.getContent().iterator(), buffer);
+            getCanonicalContent(ele, null, ele.getContent().iterator(), buffer);
         }
 
         return buffer.toString();
     }
 
-    private static void getCanonicalContent(String sName, String sID, Iterator iter, StringBuffer buffer)
+    private static void getCanonicalContent(Element parent, String sID, Iterator iter, StringBuffer buffer)
     {
+        if (!isCanonical(parent))
+        {
+            return;
+        }
+
         Object data = null;
         Element ele = null;
         String eleName = null;
@@ -783,22 +825,35 @@ public final class OSISUtil
                 // This should be a eID=, that matches sID, from the same element.
                 eleName = ele.getName();
                 eID = ele.getAttributeValue(OSISUtil.OSIS_ATTR_SID);
-                if (eID != null && eID.equals(sID) && eleName.equals(sName))
+                if (eID != null && eID.equals(sID) && eleName.equals(parent.getName()))
                 {
                     break;
                 }
-
-                // Ignore extra-biblical text
-                if (!EXTRA_BIBLICAL_ELEMENTS.contains(eleName))
-                {
-                    OSISUtil.getCanonicalContent(sName, sID, ele.getContent().iterator(), buffer);
-                }
+                OSISUtil.getCanonicalContent(ele, sID, ele.getContent().iterator(), buffer);
             }
             else if (data instanceof Text)
             {
                 buffer.append(((Text) data).getText());
             }
         }
+    }
+
+    private static boolean isCanonical(Content content)
+    {
+        boolean result = true;
+        if (content instanceof Element)
+        {
+            Element element = (Element) content;
+            
+            // Ignore extra-biblical text
+            if (EXTRA_BIBLICAL_ELEMENTS.contains(element.getName()))
+            {
+                String canonical = element.getAttributeValue(OSISUtil.OSIS_ATTR_CANONICAL);
+                result = Boolean.valueOf(canonical).booleanValue();
+            }
+        }
+        
+        return result;
     }
 
     private static String getTextContent(List fragment)
@@ -880,6 +935,43 @@ public final class OSISUtil
         osis.addContent(text);
 
         return osis;
+    }
+
+    /**
+     * Convert a Difference list into a pretty HTML report.
+     * @param diffs List of Difference objects
+     * @return HTML representation
+     */
+    public static List diffToOsis(List diffs)
+    {
+        Element div = factory().createDiv();
+        
+        for (int x = 0; x < diffs.size(); x++)
+        {
+            Difference diff = (Difference) diffs.get(x);
+            EditType editType = diff.getEditType(); // Mode (delete, equal, insert)
+            Text text = factory.createText(diff.getText()); // Text of change.
+
+            if (EditType.DELETE.equals(editType))
+            {
+                Element hi = factory().createHI();
+                hi.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_LINETHROUGH);
+                hi.addContent(text);
+                div.addContent(hi);
+            }
+            else if (EditType.INSERT.equals(editType))
+            {
+                Element hi = factory().createHI();
+                hi.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_UNDERLINE);
+                hi.addContent(text);
+                div.addContent(hi);
+            }
+            else
+            {
+                div.addContent(text);
+            }
+        }
+        return div.cloneContent();
     }
 
     /**

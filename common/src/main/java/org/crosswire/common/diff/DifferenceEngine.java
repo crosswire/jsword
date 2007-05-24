@@ -45,7 +45,7 @@ public class DifferenceEngine
      */
     public DifferenceEngine()
     {
-        this("",""); //$NON-NLS-1$ //$NON-NLS-2$
+        this("", ""); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**

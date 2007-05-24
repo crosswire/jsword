@@ -88,7 +88,6 @@ public class CommonMiddle
         return targetSuffix;
     }
 
-    
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
@@ -112,13 +111,13 @@ public class CommonMiddle
      */
     public int hashCode()
     {
-        final int PRIME = 31;
+        final int prime = 31;
         int result = 1;
-        result = PRIME * result + ((sourcePrefix == null) ? 0 : sourcePrefix.hashCode());
-        result = PRIME * result + ((sourceSuffix == null) ? 0 : sourceSuffix.hashCode());
-        result = PRIME * result + ((targetPrefix == null) ? 0 : targetPrefix.hashCode());
-        result = PRIME * result + ((targetSuffix == null) ? 0 : targetSuffix.hashCode());
-        result = PRIME * result + ((commonality == null) ? 0 : commonality.hashCode());
+        result = prime * result + ((sourcePrefix == null) ? 0 : sourcePrefix.hashCode());
+        result = prime * result + ((sourceSuffix == null) ? 0 : sourceSuffix.hashCode());
+        result = prime * result + ((targetPrefix == null) ? 0 : targetPrefix.hashCode());
+        result = prime * result + ((targetSuffix == null) ? 0 : targetSuffix.hashCode());
+        result = prime * result + ((commonality == null) ? 0 : commonality.hashCode());
        return result;
     }
 
