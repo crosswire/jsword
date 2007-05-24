@@ -526,6 +526,36 @@ public final class OSISUtil
     }
 
     /**
+     * Dig past the osis and osisText element, if present, to get the meaningful content of the document.
+     * 
+     * @return a fragment
+     */
+    public static List getFragment(Element root)
+    {
+        Element content = root;
+        if (OSISUtil.OSIS_ELEMENT_OSIS.equals(root.getName()))
+        {
+            content = root.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
+        }
+
+        // At this point we are at something interesting, possibly null.
+        // If this was a semantically valid OSIS document then it is a div.
+        // As long as this node has one child dig deeper.
+        while (content != null && content.getContentSize() == 1)
+        {
+            Content firstChild = content.getContent(0);
+            if (firstChild instanceof Element && OSISUtil.OSIS_ELEMENT_DIV.equals(((Element) firstChild).getName()))
+            {
+                content = (Element) firstChild;
+            }
+            break;
+        }
+
+        assert content != null;
+        return content.getContent();
+    }
+
+    /**
      * Get the canonical text from an osis document consisting of a single fragment.
      * The document is assumed to be valid OSIS2.0 XML. While xml valid
      * is rigidly defined as meaning that an xml parser can validate the document,
@@ -565,10 +595,10 @@ public final class OSISUtil
     {
         StringBuffer buffer = new StringBuffer();
 
-        Element osisText = root.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
-        Element div = osisText.getChild(OSISUtil.OSIS_ELEMENT_DIV);
+        // Dig past osis, osisText, if present, to get to the real content.
+        List frag = OSISUtil.getFragment(root);
 
-        Iterator dit = div.getContent().iterator();
+        Iterator dit = frag.iterator();
         String sID = null;
         Object data = null;
         Element ele = null;
@@ -607,33 +637,8 @@ public final class OSISUtil
      */
     public static String getPlainText(Element root)
     {
-        StringBuffer buffer = new StringBuffer();
-
-        Element osisText = root.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
-        List divs = osisText.getChildren(OSISUtil.OSIS_ELEMENT_DIV);
-
-        Iterator divIter = divs.iterator();
-        while (divIter.hasNext())
-        {
-            Element div = (Element) divIter.next();
-
-            Iterator contentIter = div.getContent().iterator();
-            while (contentIter.hasNext())
-            {
-                Object data = contentIter.next();
-                if (data instanceof Element)
-                {
-                    Element ele = (Element) data;
-                    if (ele.getName().equals(OSISUtil.OSIS_ELEMENT_VERSE))
-                    {
-                        String txt = OSISUtil.getTextContent((Element) data);
-                        buffer.append(txt);
-                    }
-                }
-            }
-        }
-
-        return buffer.toString().trim();
+        // Dig past osis, osisText, if present, to get to the real content.
+        return getTextContent(OSISUtil.getFragment(root));
     }
 
     /**
@@ -732,7 +737,11 @@ public final class OSISUtil
             String attr = ele.getAttributeValue(OSISUtil.OSIS_ATTR_TYPE);
             if (attr == null || !attr.equals(NOTETYPE_REFERENCE))
             {
-                buffer.append(OSISUtil.getTextContent(ele));
+                if (buffer.length() > 0)
+                {
+                    buffer.append(' ');
+                }
+                buffer.append(OSISUtil.getTextContent(ele.getContent()));
             }
         }
 
@@ -792,11 +801,11 @@ public final class OSISUtil
         }
     }
 
-    private static String getTextContent(Element ele)
+    private static String getTextContent(List fragment)
     {
         StringBuffer buffer = new StringBuffer();
 
-        Iterator contentIter = ele.getContent().iterator();
+        Iterator contentIter = fragment.iterator();
         while (contentIter.hasNext())
         {
             Content next = (Content) contentIter.next();

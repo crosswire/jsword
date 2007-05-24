@@ -145,12 +145,12 @@ public abstract class AbstractPassageBook extends AbstractBook
     protected abstract Filter getFilter();
 
     /**
-     * For when we want to add writing functionality
+     * For when we want to add writing functionality. This does not work.
      */
     public void setDocument(Key key, BookData bdata) throws BookException
     {
         // For all of the sections
-        Iterator sit = bdata.getOsis().getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT).getChildren(OSISUtil.OSIS_ELEMENT_DIV).iterator();
+        Iterator sit = OSISUtil.getFragment(bdata.getOsis()).iterator();
         while (sit.hasNext())
         {
             Element div = (Element) sit.next();
