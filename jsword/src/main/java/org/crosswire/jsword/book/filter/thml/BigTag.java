@@ -17,7 +17,7 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: CenterTag.java 1068 2006-04-07 22:20:41 -0400 (Fri, 07 Apr 2006) dmsmith $
+ * ID: $Id$
  */
 package org.crosswire.jsword.book.filter.thml;
 

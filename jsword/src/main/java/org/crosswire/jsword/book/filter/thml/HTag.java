@@ -17,7 +17,7 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: BTag.java 1185 2006-11-13 08:32:18 -0500 (Mon, 13 Nov 2006) dmsmith $
+ * ID: $Id$
  */
 package org.crosswire.jsword.book.filter.thml;
 

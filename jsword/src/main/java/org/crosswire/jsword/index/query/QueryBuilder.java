@@ -17,7 +17,7 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: Query.java 763 2005-07-27 19:26:43 -0400 (Wed, 27 Jul 2005) dmsmith $
+ * ID: $Id$
  */
 package org.crosswire.jsword.index.query;
 

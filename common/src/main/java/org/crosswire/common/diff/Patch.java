@@ -72,8 +72,6 @@ public class Patch
             }
         }
 
-        assert diffs != null;
-
         patches.clear();
 
         if (diffs.size() == 0)

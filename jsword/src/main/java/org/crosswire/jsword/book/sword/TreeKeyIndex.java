@@ -17,7 +17,7 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: SwordUtil.java 1169 2006-10-19 17:48:21 -0400 (Thu, 19 Oct 2006) dmsmith $
+ * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 

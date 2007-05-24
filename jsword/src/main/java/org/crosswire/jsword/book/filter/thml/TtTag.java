@@ -17,7 +17,7 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: SmallTag.java 1113 2006-08-01 12:17:46 +0000 (Tue, 01 Aug 2006) dmsmith $
+ * ID: $Id$
  */
 package org.crosswire.jsword.book.filter.thml;
 

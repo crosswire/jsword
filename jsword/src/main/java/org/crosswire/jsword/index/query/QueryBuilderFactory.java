@@ -17,7 +17,7 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: QueryDecoratorFactory.java 763 2005-07-27 23:26:43Z dmsmith $
+ * ID: $Id$
  */
 package org.crosswire.jsword.index.query;
 

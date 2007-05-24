@@ -17,7 +17,7 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: APIExamples.java 1046 2006-03-12 21:31:48 -0500 (Sun, 12 Mar 2006) dmsmith $
+ * ID: $Id$
  */
 package org.crosswire.jsword.examples;
 

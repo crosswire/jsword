@@ -17,7 +17,7 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: OrQuery.java 964 2006-01-22 10:10:00 -0500 (Sun, 22 Jan 2006) dmsmith $
+ * ID: $Id$
  */
 package org.crosswire.jsword.index.query;
 

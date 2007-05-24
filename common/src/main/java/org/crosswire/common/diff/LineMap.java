@@ -17,7 +17,7 @@
  * Copyright: 2007
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: org.eclipse.jdt.ui.prefs 1178 2006-11-06 12:48:02Z dmsmith $
+ * ID: $Id$
  */
 package org.crosswire.common.diff;
 

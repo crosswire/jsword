@@ -17,7 +17,7 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: KeyFactory.java 771 2005-08-13 14:41:41Z dmsmith $
+ * ID: $Id$
  */
 package org.crosswire.jsword.passage;
 

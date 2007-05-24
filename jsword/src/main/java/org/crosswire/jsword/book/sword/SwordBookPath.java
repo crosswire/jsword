@@ -17,7 +17,7 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: SwordBookDriver.java 1117 2006-08-15 16:41:29 -0400 (Tue, 15 Aug 2006) dmsmith $
+ * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 

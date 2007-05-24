@@ -17,7 +17,7 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: DivTag.java 1068 2006-04-08 02:20:41Z dmsmith $
+ * ID: $Id$
  */
 package org.crosswire.jsword.book.filter.thml;
 

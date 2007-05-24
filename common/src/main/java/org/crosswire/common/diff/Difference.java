@@ -17,7 +17,7 @@
  * Copyright: 2007
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: FeatureType.java 1318 2007-05-06 11:36:35 -0400 (Sun, 06 May 2007) dmsmith $
+ * ID: $Id$
  */
 package org.crosswire.common.diff;
 
@@ -33,9 +33,6 @@ public class Difference
 {
     public Difference(EditType edit, String text)
     {
-        assert editType != null;
-        assert text != null;
-
         this.editType = edit;
         this.text = text;
     }

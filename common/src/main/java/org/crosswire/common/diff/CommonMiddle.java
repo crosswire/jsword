@@ -17,7 +17,7 @@
  * Copyright: 2007
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: CallContext.java 1150 2006-10-10 19:28:31 -0400 (Tue, 10 Oct 2006) dmsmith $
+ * ID: $Id$
  */
 package org.crosswire.common.diff;
 
@@ -41,12 +41,6 @@ public class CommonMiddle
      */
     public CommonMiddle(String sourcePrefix, String sourceSuffix, String targetPrefix, String targetSuffix, String commonality)
     {
-        assert sourcePrefix != null;
-        assert targetPrefix != null;
-        assert commonality != null;
-        assert sourceSuffix != null;
-        assert targetSuffix != null;
-
         this.sourcePrefix = sourcePrefix;
         this.sourceSuffix = sourceSuffix;
         this.targetPrefix = targetPrefix;

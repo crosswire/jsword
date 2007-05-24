@@ -17,7 +17,7 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: RedLetterText.java 1086 2006-04-30 23:51:48 +0000 (Sun, 30 Apr 2006) dmsmith $
+ * ID: $Id$
  */
 package org.crosswire.common.xml;
 

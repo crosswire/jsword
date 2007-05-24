@@ -17,7 +17,7 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: LZSSBackend.java 1143 2006-10-04 22:07:23 -0400 (Wed, 04 Oct 2006) dmsmith $
+ * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
