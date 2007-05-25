@@ -185,6 +185,15 @@ public interface Book extends Activatable, KeyFactory, Comparable
     String getFullName();
 
     /**
+     * Return the likelihood that we have a match.
+     * This allows for calling the book different things
+     * and still be found.
+     * @param name
+     * @return true if we have a match.
+     */
+    boolean match(String name);
+
+    /**
      * Indicate whether this book is supported by JSword.
      * Since the expectation is that all books are supported,
      * abstract implementations should return true and let

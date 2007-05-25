@@ -149,6 +149,66 @@ public abstract class AbstractBook implements Book
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#match(java.lang.String)
+     */
+    public boolean match(String name)
+    {
+        if (name == null)
+        {
+            return false;
+        }
+        if (name.equals(getInitials()))
+        {
+            return true;
+        }
+        if (name.equals(getName()))
+        {
+            return true;
+        }
+        if (name.equals(getFullName()))
+        {
+            return true;
+        }
+        if (name.equals(toString()))
+        {
+            return true;
+        }
+        if (name.equalsIgnoreCase(getInitials()))
+        {
+            return true;
+        }
+        if (name.equalsIgnoreCase(getName()))
+        {
+            return true;
+        }
+        if (name.equalsIgnoreCase(getFullName()))
+        {
+            return true;
+        }
+        if (name.equalsIgnoreCase(toString()))
+        {
+            return true;
+        }
+        if (name.startsWith(getInitials()))
+        {
+            return true;
+        }
+        if (name.startsWith(getName()))
+        {
+            return true;
+        }
+        if (name.startsWith(getFullName()))
+        {
+            return true;
+        }
+        if (name.startsWith(toString()))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getIndexStatus()
      */
     public IndexStatus getIndexStatus()

@@ -135,7 +135,7 @@ public class DefaultBook
         while (iter.hasNext())
         {
             Book aBook = (Book) iter.next();
-            if (name.equals(aBook.getFullName()))
+            if (aBook.match(name))
             {
                 setDefault(aBook);
                 return;
