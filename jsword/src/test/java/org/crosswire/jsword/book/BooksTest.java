@@ -105,13 +105,10 @@ public class BooksTest extends TestCase
         {
             BookMetaData bmd = bmds[i];
 
-            assertTrue(bmd.getFullName() != null);
-            assertTrue(bmd.getFullName().length() > 0);
             assertTrue(bmd.getInitials() != null);
             assertTrue(bmd.getInitials().length() > 0);
             assertTrue(bmd.getName() != null);
             assertTrue(bmd.getName().length() > 0);
-            assertTrue(bmd.getFullName().length() > bmd.getName().length());
             assertTrue(bmd.getName().length() > bmd.getInitials().length());
         }
     }

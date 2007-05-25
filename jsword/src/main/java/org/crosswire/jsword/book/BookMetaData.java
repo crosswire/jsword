@@ -92,13 +92,6 @@ public interface BookMetaData extends Comparable
     String getOsisID();
 
     /**
-     * Calculated field: The full name of the book, for example
-     * The format is "name, (Driver)"
-     * @return The full name of this book
-     */
-    String getFullName();
-
-    /**
      * Indicate whether this book is supported by JSword.
      * Since the expectation is that all books are supported,
      * abstract implementations should return true and let

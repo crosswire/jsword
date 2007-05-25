@@ -83,7 +83,7 @@ public class BookMetaDataTest extends TestCase
         test(v1.getName(), "a");
         test(v1.getEdition(), "b");
         test(v1.getFirstPublished(), new Date(631152000000L)); // 1 1 1990
-        test(v1.getFullName(), "a,b");
+        test(v1.getName(), "a,b");
         test(v1.getInitials(), "initials");
         test(v1.getLicense(), new URL("http://localhost/file.txt"));
         test(v1.getOpenness(), Version.STATUS_PD);
@@ -91,7 +91,7 @@ public class BookMetaDataTest extends TestCase
         test(v1.getName(), "a");
         test(v1.getEdition(), "");
         test(v1.getFirstPublished(), null);
-        test(v1.getFullName(), "a");
+        test(v1.getName(), "a");
         test(v1.getInitials(), "i");
         test(v1.getLicense(), null);
         test(v1.getOpenness(), Version.STATUS_UNKNOWN);
@@ -99,7 +99,7 @@ public class BookMetaDataTest extends TestCase
         test(v1.getName(), "abcabc");
         test(v1.getEdition(), "");
         test(v1.getFirstPublished(), null);
-        test(v1.getFullName(), "abcabc");
+        test(v1.getName(), "abcabc");
         test(v1.getInitials(), "a");
         test(v1.getLicense(), null);
         test(v1.getOpenness(), Version.STATUS_UNKNOWN);
@@ -129,11 +129,11 @@ public class BookMetaDataTest extends TestCase
         test(VersionFactory.getEdition(" ab , b "), "b");
         test(VersionFactory.getEdition(" ab "), "");
 
-        log("VersionFactory.getFullName(String, String)");
-        test(VersionFactory.getFullName("a", "b"), "a,b");
-        test(VersionFactory.getFullName("a", null), "a");
-        test(VersionFactory.getFullName("a", ""), "a");
-        test(VersionFactory.getFullName("a", " "), "a");
+        log("VersionFactory.getName(String, String)");
+        test(VersionFactory.getName("a", "b"), "a,b");
+        test(VersionFactory.getName("a", null), "a");
+        test(VersionFactory.getName("a", ""), "a");
+        test(VersionFactory.getName("a", " "), "a");
         */
     }
 }

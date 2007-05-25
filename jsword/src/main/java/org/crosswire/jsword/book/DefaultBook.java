@@ -98,7 +98,7 @@ public class DefaultBook
     }
 
     /**
-     * This method is identical to <code>getDefault().getFullName()</code>
+     * This method is identical to <code>getDefault().getName()</code>
      * and is only used by Config which works best with strings under reflection.
      */
     public String getDefaultName()
@@ -108,7 +108,7 @@ public class DefaultBook
             return null;
         }
 
-        return book.getFullName();
+        return book.getName();
     }
 
     /**

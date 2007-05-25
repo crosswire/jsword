@@ -177,14 +177,7 @@ public interface Book extends Activatable, KeyFactory, Comparable
      */
     String getOsisID();
 
-    /**
-     * Calculated field: The full name of the book, for example
-     * The format is "name, (Driver)"
-     * @return The full name of this book
-     */
-    String getFullName();
-
-    /**
+   /**
      * Return the likelihood that we have a match.
      * This allows for calling the book different things
      * and still be found.

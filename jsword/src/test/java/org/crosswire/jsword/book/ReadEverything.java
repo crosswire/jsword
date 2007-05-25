@@ -107,7 +107,7 @@ public class ReadEverything
     {
         DataPolice.setBook(book.getBookMetaData());
 
-        //log.info("Testing: "+bmd.getInitials()+"="+bmd.getFullName());
+        //log.info("Testing: "+bmd.getInitials()+"="+bmd.getName());
         long start = System.currentTimeMillis();
         int entries = 0;
 

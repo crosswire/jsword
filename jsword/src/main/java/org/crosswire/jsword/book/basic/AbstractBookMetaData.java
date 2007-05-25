@@ -80,34 +80,6 @@ public abstract class AbstractBookMetaData implements BookMetaData
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#getFullName()
-     */
-    public String getFullName()
-    {
-        if (fullName == null)
-        {
-            fullName = computeFullName();
-        }
-        return fullName;
-    }
-
-    /**
-     * 
-     */
-    private String computeFullName()
-    {
-//        StringBuffer buf = new StringBuffer(getName());
-//
-//        if (getDriver() != null)
-//        {
-//            buf.append(" (").append(getDriverName()).append(')'); //$NON-NLS-1$
-//        }
-//
-//        return buf.toString();
-        return getName();
-    }
-
-    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#isSupported()
      */
     public boolean isSupported()
@@ -339,15 +311,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
      */
     public String toString()
     {
-        if (displayName == null)
-        {
-            StringBuffer buf = new StringBuffer("["); //$NON-NLS-1$
-            buf.append(getInitials());
-            buf.append("] - "); //$NON-NLS-1$
-            buf.append(getFullName());
-            displayName = buf.toString();
-        }
-        return displayName;
+        return getName();
     }
 
     /**
@@ -356,7 +320,5 @@ public abstract class AbstractBookMetaData implements BookMetaData
     private Map prop = new LinkedHashMap();
 
     private BookDriver driver;
-    private String fullName;
-    private String displayName;
     private IndexStatus indexStatus = IndexStatus.UNDONE;
 }

@@ -449,35 +449,35 @@ public final class Defaults
     public static void refreshBooks()
     {
         // Create the array of Bibles
-        String[] bnames = getFullNameArray(BookFilters.getOnlyBibles());
+        String[] bnames = getNameArray(BookFilters.getOnlyBibles());
         ChoiceFactory.getDataMap().put(BIBLE_KEY, bnames);
 
         // Create the array of Commentaries
-        String[] cnames = getFullNameArray(BookFilters.getCommentaries());
+        String[] cnames = getNameArray(BookFilters.getCommentaries());
         ChoiceFactory.getDataMap().put(COMMENTARY_KEY, cnames);
 
         // Create the array of Dictionaries
-        String[] dnames = getFullNameArray(BookFilters.getDictionaries());
+        String[] dnames = getNameArray(BookFilters.getDictionaries());
         ChoiceFactory.getDataMap().put(DICTIONARY_KEY, dnames);
 
         // Create the array of DailyDevotionals
-        String[] rnames = getFullNameArray(BookFilters.getDailyDevotionals());
+        String[] rnames = getNameArray(BookFilters.getDailyDevotionals());
         ChoiceFactory.getDataMap().put(DAILY_DEVOTIONALS_KEY, rnames);
 
         // Create the array of Dictionaries
-        String[] greekDef = getFullNameArray(BookFilters.getGreekDefinitions());
+        String[] greekDef = getNameArray(BookFilters.getGreekDefinitions());
         ChoiceFactory.getDataMap().put(GREEKDEF_KEY, greekDef);
 
         // Create the array of Dictionaries
-        String[] hebrewDef = getFullNameArray(BookFilters.getHebrewDefinitions());
+        String[] hebrewDef = getNameArray(BookFilters.getHebrewDefinitions());
         ChoiceFactory.getDataMap().put(HEBREWDEF_KEY, hebrewDef);
 
         // Create the array of Dictionaries
-        String[] greekParse = getFullNameArray(BookFilters.getGreekParse());
+        String[] greekParse = getNameArray(BookFilters.getGreekParse());
         ChoiceFactory.getDataMap().put(GREEKPARSE_KEY, greekParse);
 
         // Create the array of Dictionaries
-        String[] hebrewParse = getFullNameArray(BookFilters.getHebrewParse());
+        String[] hebrewParse = getNameArray(BookFilters.getHebrewParse());
         ChoiceFactory.getDataMap().put(HEBREWPARSE_KEY, hebrewParse);
     }
 
@@ -516,7 +516,7 @@ public final class Defaults
     /**
      * Convert a filter into an array of names of Books that pass the filter.
      */
-    private static String[] getFullNameArray(BookFilter filter)
+    private static String[] getNameArray(BookFilter filter)
     {
         List names = new ArrayList();
 
@@ -524,7 +524,7 @@ public final class Defaults
         while (iter.hasNext())
         {
             Book book = (Book) iter.next();
-            names.add(book.getFullName());
+            names.add(book.getName());
         }
 
         return (String[]) names.toArray(new String[names.size()]);
