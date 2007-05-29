@@ -84,16 +84,22 @@ package org.crosswire.common.compress;
  */
 public class LZSS
 {
-    public LZSS()
+    /**
+     * Create an LZSS that is capable of transforming the input.
+     * 
+     * @param input to compress or uncompress.
+     */
+    public LZSS(byte[] input)
     {
+        readBuffer = input;
     }
 
     /**
      * Encodes the input stream into the output stream.
-     * The GetChars() and SendChars() functions are used to separate
-     * this method from the actual i/o.
+     * 
+     * @return the encoded result
      */
-   public void encode()
+   public byte[] encode()
    {
        short i;                        // an iterator
        int r;                          // node number in the binary tree
@@ -152,7 +158,7 @@ public class LZSS
        // Make sure there is something to be compressed.
        if (len == 0)
        {
-           return;
+           return new byte[0];
        }
 
        // Insert the MAX_STORE_LENGTH strings, each of which begins with one or more
@@ -312,14 +318,16 @@ public class LZSS
            // code_buf_ptr is the number of characters.
            sendBytes(codeBuff, codeBufPos);
        }
+
+       return writeBuffer;
    }
 
    /**
     * Decode the input stream into the output stream.
-    * The GetChars() and SendChars() functions are used to separate
-    * this method from the actual i/o.
+    * 
+    * @return the decoded result
     */
-   public void decode()
+   public byte[] decode()
    {
        byte[] c = new byte[MAX_STORE_LENGTH];     // an array of chars
        byte flags;                               // 8 bits of flags
@@ -433,6 +441,7 @@ public class LZSS
                }
            }
        }
+       return writeBuffer;
    }
 
    /**
