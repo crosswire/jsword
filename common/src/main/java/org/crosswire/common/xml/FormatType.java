@@ -29,7 +29,7 @@ import java.io.Serializable;
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
- * @author DM Smith [dmsmith555 at gmail dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public final class FormatType implements Serializable
 {

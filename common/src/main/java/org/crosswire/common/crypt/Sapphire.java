@@ -409,7 +409,7 @@ package org.crosswire.common.crypt;
  *      The copyright to this program is held by it's authors.
  * @author Michael Paul Johnson [ kahunapule at mpj dot cx] Original code
  * @author unascribed Sword's C++ implementation
- * @author DM Smith [ dmsmith555 at hotmail dot com] Java port from Sword's C++ implementation
+ * @author DM Smith [ dmsmith555 at yahoo dot com] Java port from Sword's C++ implementation
  */
 public class Sapphire
 {
