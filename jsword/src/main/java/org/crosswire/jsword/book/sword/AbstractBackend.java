@@ -104,7 +104,10 @@ public abstract class AbstractBackend implements Activatable
      * Returns whether this AbstractBackend is implemented.
      * @return true if this AbstractBackend is implemented.
      */
-    public abstract boolean isSupported();
+    public boolean isSupported()
+    {
+        return true;
+    }
 
     /**
      * A Backend is writable if the file system allows the underlying files

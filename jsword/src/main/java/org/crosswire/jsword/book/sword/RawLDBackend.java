@@ -271,15 +271,6 @@ public class RawLDBackend extends AbstractBackend
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.AbstractBackend#isSupported()
-     */
-    /* @Override */
-    public boolean isSupported()
-    {
-        return true;
-    }
-
     /**
      * Helper method so we can quickly activate ourselves on access
      */

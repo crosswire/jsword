@@ -199,15 +199,6 @@ public class RawBackend extends AbstractBackend
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.AbstractBackend#isSupported()
-     */
-    /* @Override */
-    public boolean isSupported()
-    {
-        return true;
-    }
-
     /**
      * Helper method so we can quickly activate ourselves on access
      */
