@@ -82,7 +82,7 @@ package org.crosswire.common.compress;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class LZSS
+public class LZSS extends AbstractCompressor
 {
     /**
      * Create an LZSS that is capable of transforming the input.
@@ -91,360 +91,369 @@ public class LZSS
      */
     public LZSS(byte[] input)
     {
-        readBuffer = input;
+        super(input);
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see org.crosswire.common.compress.Compressor#compress()
+     */
+    public byte[] compress()
+    {
+        short i;                        // an iterator
+        int r;                          // node number in the binary tree
+        short s;                        // position in the ring buffer
+        int len;                        // len of initial string
+        int lastMatchLength;            // length of last match
+        int codeBufPos;                 // position in the output buffer
+        byte[] codeBuff = new byte[17]; // the output buffer
+        byte mask;                      // bit mask for byte 0 of out readBuffer
+        byte c;                         // character read from string
+
+        // Start with a clean tree.
+        initTree();
+
+        // code_buf[0] works as eight flags.  A "1" represents that the
+        // unit is an unencoded letter (1 byte), and a "0" represents
+        // that the next unit is a <position,length> pair (2 bytes).
+        //
+        // code_buf[1..16] stores eight units of code.  Since the best
+        // we can do is store eight <position,length> pairs, at most 16 
+        // bytes are needed to store this.
+        //
+        // This is why the maximum size of the code buffer is 17 bytes.
+        codeBuff[0] = 0;
+        codeBufPos = 1;
+
+        // Mask iterates over the 8 bits in the code buffer.  The first
+        // character ends up being stored in the low bit.
+        //
+        //  bit   8   7   6   5   4   3   2   1
+        //        |                           |
+        //        |             first sequence in code buffer
+        //        |
+        //      last sequence in code buffer        
+        mask = 1;
+
+        s = 0;
+        r = RING_SIZE - MAX_STORE_LENGTH;
+
+        // Initialize the ring buffer with spaces...
+
+        // Note that the last MAX_STORE_LENGTH bytes of the ring buffer are not filled.
+        // This is because those MAX_STORE_LENGTH bytes will be filled in immediately
+        // with bytes from the input stream.
+        for (i = 0; i < r; i++)
+        {
+            ringBuffer[i] = ' ';
+        }
+
+        // Read MAX_STORE_LENGTH bytes into the last MAX_STORE_LENGTH bytes of the ring buffer.
+        //
+        // This function loads the buffer with X characters and returns
+        // the actual amount loaded.
+        len = getBytes(ringBuffer, r, MAX_STORE_LENGTH);
+
+        // Make sure there is something to be compressed.
+        if (len == 0)
+        {
+            return new byte[0];
+        }
+
+        // Insert the MAX_STORE_LENGTH strings, each of which begins with one or more
+        // 'space' characters.  Note the order in which these strings
+        // are inserted.  This way, degenerate trees will be less likely
+        // to occur.
+        for (i = 1; i <= MAX_STORE_LENGTH; i++)
+        {
+            insertNode((short) (r - i));
+        }
+
+        // Finally, insert the whole string just read.  The
+        // member variables match_length and match_position are set.
+        insertNode((short) r);
+
+        // Now that we're preloaded, continue till done.
+        do
+        {
+
+            // matchLength may be spuriously long near the end of text.
+            if (matchLength > len)
+            {
+                matchLength = len;
+            }
+
+            // Is it cheaper to store this as a single character?  If so, make it so.
+            if (matchLength < THRESHOLD)
+            {
+                // Send one character.  Remember that code_buf[0] is the
+                // set of flags for the next eight items.
+                matchLength = 1;     
+                codeBuff[0] |= mask;  
+                codeBuff[codeBufPos++] = ringBuffer[r];
+            }
+            else
+            {
+                // Otherwise, we do indeed have a string that can be stored
+                // compressed to save space.
+
+                // The next 16 bits need to contain the position (12 bits)
+                // and the length (4 bits).
+                codeBuff[codeBufPos++] = (byte) matchPosition;
+                codeBuff[codeBufPos++] = (byte) (((matchPosition >> 4) & 0xf0) | (matchLength - THRESHOLD));
+            }
+
+            // Shift the mask one bit to the left so that it will be ready
+            // to store the new bit.
+            mask = (byte) (mask << 1);
+
+            // If the mask is now 0, then we know that we have a full set
+            // of flags and items in the code buffer.  These need to be
+            // output.
+            if (mask == 0)
+            {
+                // code_buf is the buffer of characters to be output.
+                // code_buf_pos is the number of characters it contains.
+                sendBytes(codeBuff, codeBufPos);
+
+                // Reset for next buffer...
+                codeBuff[0] = 0;
+                codeBufPos = 1;
+                mask = 1;
+            }
+
+            lastMatchLength = matchLength;
+
+            // Delete old strings and read new bytes...
+            for (i = 0; i < lastMatchLength; i++)
+            {
+
+                // Get next character...
+                try
+                {
+                    c = getByte();
+                }
+                catch (ArrayIndexOutOfBoundsException e)
+                {
+                    break;
+                }
+
+                // Delete "old strings"
+                deleteNode(s);
+
+                // Put this character into the ring buffer.
+                //          
+                // The original comment here says "If the position is near
+                // the end of the buffer, extend the buffer to make
+                // string comparison easier."
+                //
+                // That's a little misleading, because the "end" of the 
+                // buffer is really what we consider to be the "beginning"
+                // of the buffer, that is, positions 0 through MAX_STORE_LENGTH.
+                //
+                // The idea is that the front end of the buffer is duplicated
+                // into the back end so that when you're looking at characters
+                // at the back end of the buffer, you can index ahead (beyond
+                // the normal end of the buffer) and see the characters
+                // that are at the front end of the buffer wihtout having
+                // to adjust the index.
+                //
+                // That is...
+                //
+                //      1234xxxxxxxxxxxxxxxxxxxxxxxxxxxxx1234
+                //      |                               |  |
+                //      position 0          end of buffer  |
+                //                                         |
+                //                  duplicate of front of buffer
+                ringBuffer[s] = c;
+
+                if (s < MAX_STORE_LENGTH - 1)
+                {
+                    ringBuffer[s + RING_SIZE] = c;
+                }
+
+                // Increment the position, and wrap around when we're at
+                // the end.  Note that this relies on RING_SIZE being a power of 2.
+                s = (short) ((s + 1) & (RING_SIZE - 1));
+                r = (short) ((r + 1) & (RING_SIZE - 1));
+
+                // Register the string that is found in 
+                // ringBuffer[r..r + MAX_STORE_LENGTH - 1].
+                insertNode((short) r);
+            }
+
+            // If we didn't quit because we hit the last_match_length,
+            // then we must have quit because we ran out of characters
+            // to process.
+            while (i++ < lastMatchLength)
+            {                              
+                deleteNode(s);
+
+                s = (short) ((s + 1) & (RING_SIZE - 1));
+                r = (short) ((r + 1) & (RING_SIZE - 1));
+
+                // Note that len hitting 0 is the key that causes the
+                // do...while() to terminate.  This is the only place
+                // within the loop that len is modified.
+                //
+                // Its original value is MAX_STORE_LENGTH (or a number less than MAX_STORE_LENGTH for
+                // short strings).
+                if (--len != 0)
+                {
+                    insertNode((short) r);       /* buffer may not be empty. */
+                }
+            }
+
+            // End of do...while() loop.  Continue processing until there
+            // are no more characters to be compressed.  The variable
+            // "len" is used to signal this condition.
+        }
+        while (len > 0);
+
+        // There could still be something in the output buffer.  Send it now.
+        if (codeBufPos > 1)
+        {
+            // code_buf is the encoded string to send.
+            // code_buf_ptr is the number of characters.
+            sendBytes(codeBuff, codeBufPos);
+        }
+
+        return writeBuffer;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see org.crosswire.common.compress.Compressor#uncompress(int)
+     */
+    public byte[] uncompress(int expectedSize)
+    {
+        writeBufferSizeIncrement = expectedSize;
+        writeBuffer = new byte[expectedSize];
+        return uncompress();
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see org.crosswire.common.compress.Compressor#uncompress()
+     */
+    public byte[] uncompress()
+    {
+        byte[] c = new byte[MAX_STORE_LENGTH];     // an array of chars
+        byte flags;                               // 8 bits of flags
+
+        // Initialize the ring buffer with a common string.
+        //
+        // Note that the last MAX_STORE_LENGTH bytes of the ring buffer are not filled.
+        // r is a nodeNumber
+        int r = RING_SIZE - MAX_STORE_LENGTH;
+        for (int i = 0; i < r; i++)
+        {
+            ringBuffer[i] = ' ';
+        }
+
+        flags = 0;
+        int flagCount = 0;                     // which flag we're on
+
+        while (true)
+        {
+
+            // If there are more bits of interest in this flag, then
+            // shift that next interesting bit into the 1's position.
+            //
+            // If this flag has been exhausted, the next byte must be a flag.
+            if (flagCount > 0)
+            {
+                flags = (byte) (flags >> 1);
+                flagCount--;
+            }
+            else
+            {
+                // Next byte must be a flag.
+                if (!hasMoreToRead())
+                {
+                    break;
+                }
+
+                flags = getByte();
+
+                // Set the flag counter.  While at first it might appear
+                // that this should be an 8 since there are 8 bits in the
+                // flag, it should really be a 7 because the shift must
+                // be performed 7 times in order to see all 8 bits.
+                flagCount = 7;
+            }
+
+            // If the low order bit of the flag is now set, then we know
+            // that the next byte is a single, unencoded character.
+            if ((flags & 1) != 0)
+            {
+                if (getBytes(c, 1) != 1)
+                {
+                    break;
+                }
+
+                if (sendBytes(c, 1) != 1)
+                {
+                    break;
+                }
+
+                // Add to buffer, and increment to next spot. Wrap at end.
+                ringBuffer[r] = c[0];
+                r = (short) ((r + 1) & (RING_SIZE - 1));
+            }
+            else
+            {
+                // Otherwise, we know that the next two bytes are a
+                // <position,length> pair.  The position is in 12 bits and
+                // the length is in 4 bits.
+
+                // Original code:
+                //  if ((i = getc(infile)) == EOF)
+                //      break;
+                //  if ((j = getc(infile)) == EOF)
+                //      break;
+                //  i |= ((j & 0xf0) << 4);    
+                //  j = (j & 0x0f) + THRESHOLD;
+                //
+                // I've modified this to only make one input call, and
+                // have changed the variable names to something more
+                // obvious.
+
+                if (getBytes(c, 2) != 2)
+                {
+                    break;
+                }
+
+                // Convert these two characters into the position and
+                // length in the ringBuffer.  Note that the length is always at least
+                // THRESHOLD, which is why we're able to get a length
+                // of 18 out of only 4 bits.
+                int pos = (short) (c[0] | ((c[1] & 0xF0) << 4));
+                int len = (short) ((c[1] & 0x0F) + THRESHOLD);
+
+                // There are now "len" characters at position "pos" in
+                // the ring buffer that can be pulled out.  Note that
+                // len is never more than MAX_STORE_LENGTH.
+                for (int k = 0; k < len; k++)
+                {
+                    c[k] = ringBuffer[(pos + k) & (RING_SIZE - 1)];
+
+                    // Add to buffer, and increment to next spot. Wrap at end.
+                    ringBuffer[r] = c[k];
+                    r = (short) ((r + 1) & (RING_SIZE - 1));
+                }
+
+                // Add the "len" characters to the output stream.
+                if (sendBytes(c, len) != len)
+                {
+                    break;
+                }
+            }
+        }
+        return writeBuffer;
     }
 
     /**
-     * Encodes the input stream into the output stream.
-     * 
-     * @return the encoded result
-     */
-   public byte[] encode()
-   {
-       short i;                        // an iterator
-       int r;                          // node number in the binary tree
-       short s;                        // position in the ring buffer
-       int len;                        // len of initial string
-       int lastMatchLength;            // length of last match
-       int codeBufPos;                 // position in the output buffer
-       byte[] codeBuff = new byte[17]; // the output buffer
-       byte mask;                      // bit mask for byte 0 of out readBuffer
-       byte c;                         // character read from string
-
-       // Start with a clean tree.
-       initTree();
-
-       // code_buf[0] works as eight flags.  A "1" represents that the
-       // unit is an unencoded letter (1 byte), and a "0" represents
-       // that the next unit is a <position,length> pair (2 bytes).
-       //
-       // code_buf[1..16] stores eight units of code.  Since the best
-       // we can do is store eight <position,length> pairs, at most 16 
-       // bytes are needed to store this.
-       //
-       // This is why the maximum size of the code buffer is 17 bytes.
-       codeBuff[0] = 0;
-       codeBufPos = 1;
-
-       // Mask iterates over the 8 bits in the code buffer.  The first
-       // character ends up being stored in the low bit.
-       //
-       //  bit   8   7   6   5   4   3   2   1
-       //        |                           |
-       //        |             first sequence in code buffer
-       //        |
-       //      last sequence in code buffer        
-       mask = 1;
-
-       s = 0;
-       r = RING_SIZE - MAX_STORE_LENGTH;
-
-       // Initialize the ring buffer with spaces...
-
-       // Note that the last MAX_STORE_LENGTH bytes of the ring buffer are not filled.
-       // This is because those MAX_STORE_LENGTH bytes will be filled in immediately
-       // with bytes from the input stream.
-       for (i = 0; i < r; i++)
-       {
-           ringBuffer[i] = ' ';
-       }
-       
-       // Read MAX_STORE_LENGTH bytes into the last MAX_STORE_LENGTH bytes of the ring buffer.
-       //
-       // This function loads the buffer with X characters and returns
-       // the actual amount loaded.
-       len = getBytes(ringBuffer, r, MAX_STORE_LENGTH);
-
-       // Make sure there is something to be compressed.
-       if (len == 0)
-       {
-           return new byte[0];
-       }
-
-       // Insert the MAX_STORE_LENGTH strings, each of which begins with one or more
-       // 'space' characters.  Note the order in which these strings
-       // are inserted.  This way, degenerate trees will be less likely
-       // to occur.
-       for (i = 1; i <= MAX_STORE_LENGTH; i++)
-       {
-           insertNode((short) (r - i));
-       }
-
-       // Finally, insert the whole string just read.  The
-       // member variables match_length and match_position are set.
-       insertNode((short) r);
-
-       // Now that we're preloaded, continue till done.
-       do
-       {
-
-           // matchLength may be spuriously long near the end of text.
-           if (matchLength > len)
-           {
-               matchLength = len;
-           }
-
-           // Is it cheaper to store this as a single character?  If so, make it so.
-           if (matchLength < THRESHOLD)
-           {
-               // Send one character.  Remember that code_buf[0] is the
-               // set of flags for the next eight items.
-               matchLength = 1;     
-               codeBuff[0] |= mask;  
-               codeBuff[codeBufPos++] = ringBuffer[r];
-           }
-           else
-           {
-               // Otherwise, we do indeed have a string that can be stored
-               // compressed to save space.
-
-               // The next 16 bits need to contain the position (12 bits)
-               // and the length (4 bits).
-               codeBuff[codeBufPos++] = (byte) matchPosition;
-               codeBuff[codeBufPos++] = (byte) (((matchPosition >> 4) & 0xf0) | (matchLength - THRESHOLD));
-           }
-
-           // Shift the mask one bit to the left so that it will be ready
-           // to store the new bit.
-           mask = (byte) (mask << 1);
-
-           // If the mask is now 0, then we know that we have a full set
-           // of flags and items in the code buffer.  These need to be
-           // output.
-           if (mask == 0)
-           {
-               // code_buf is the buffer of characters to be output.
-               // code_buf_pos is the number of characters it contains.
-               sendBytes(codeBuff, codeBufPos);
-
-               // Reset for next buffer...
-               codeBuff[0] = 0;
-               codeBufPos = 1;
-               mask = 1;
-           }
-
-           lastMatchLength = matchLength;
-
-           // Delete old strings and read new bytes...
-           for (i = 0; i < lastMatchLength; i++)
-           {
-
-               // Get next character...
-               try
-               {
-                   c = getByte();
-               }
-               catch (ArrayIndexOutOfBoundsException e)
-               {
-                   break;
-               }
-
-               // Delete "old strings"
-               deleteNode(s);
-
-               // Put this character into the ring buffer.
-               //          
-               // The original comment here says "If the position is near
-               // the end of the buffer, extend the buffer to make
-               // string comparison easier."
-               //
-               // That's a little misleading, because the "end" of the 
-               // buffer is really what we consider to be the "beginning"
-               // of the buffer, that is, positions 0 through MAX_STORE_LENGTH.
-               //
-               // The idea is that the front end of the buffer is duplicated
-               // into the back end so that when you're looking at characters
-               // at the back end of the buffer, you can index ahead (beyond
-               // the normal end of the buffer) and see the characters
-               // that are at the front end of the buffer wihtout having
-               // to adjust the index.
-               //
-               // That is...
-               //
-               //      1234xxxxxxxxxxxxxxxxxxxxxxxxxxxxx1234
-               //      |                               |  |
-               //      position 0          end of buffer  |
-               //                                         |
-               //                  duplicate of front of buffer
-               ringBuffer[s] = c;
-
-               if (s < MAX_STORE_LENGTH - 1)
-               {
-                   ringBuffer[s + RING_SIZE] = c;
-               }
-
-               // Increment the position, and wrap around when we're at
-               // the end.  Note that this relies on RING_SIZE being a power of 2.
-               s = (short) ((s + 1) & (RING_SIZE - 1));
-               r = (short) ((r + 1) & (RING_SIZE - 1));
-
-               // Register the string that is found in 
-               // ringBuffer[r..r + MAX_STORE_LENGTH - 1].
-               insertNode((short) r);
-           }
-
-           // If we didn't quit because we hit the last_match_length,
-           // then we must have quit because we ran out of characters
-           // to process.
-           while (i++ < lastMatchLength)
-           {                              
-               deleteNode(s);
-
-               s = (short) ((s + 1) & (RING_SIZE - 1));
-               r = (short) ((r + 1) & (RING_SIZE - 1));
-
-               // Note that len hitting 0 is the key that causes the
-               // do...while() to terminate.  This is the only place
-               // within the loop that len is modified.
-               //
-               // Its original value is MAX_STORE_LENGTH (or a number less than MAX_STORE_LENGTH for
-               // short strings).
-               if (--len != 0)
-               {
-                   insertNode((short) r);       /* buffer may not be empty. */
-               }
-           }
-
-           // End of do...while() loop.  Continue processing until there
-           // are no more characters to be compressed.  The variable
-           // "len" is used to signal this condition.
-       }
-       while (len > 0);
-
-       // There could still be something in the output buffer.  Send it now.
-       if (codeBufPos > 1)
-       {
-           // code_buf is the encoded string to send.
-           // code_buf_ptr is the number of characters.
-           sendBytes(codeBuff, codeBufPos);
-       }
-
-       return writeBuffer;
-   }
-
-   /**
-    * Decode the input stream into the output stream.
-    * 
-    * @return the decoded result
-    */
-   public byte[] decode()
-   {
-       byte[] c = new byte[MAX_STORE_LENGTH];     // an array of chars
-       byte flags;                               // 8 bits of flags
-
-       // Initialize the ring buffer with a common string.
-       //
-       // Note that the last MAX_STORE_LENGTH bytes of the ring buffer are not filled.
-       // r is a nodeNumber
-       int r = RING_SIZE - MAX_STORE_LENGTH;
-       for (int i = 0; i < r; i++)
-       {
-           ringBuffer[i] = ' ';
-       }
-
-       flags = 0;
-       int flagCount = 0;                     // which flag we're on
-
-       while (true)
-       {
-
-           // If there are more bits of interest in this flag, then
-           // shift that next interesting bit into the 1's position.
-           //
-           // If this flag has been exhausted, the next byte must be a flag.
-           if (flagCount > 0)
-           {
-               flags = (byte) (flags >> 1);
-               flagCount--;
-           }
-           else
-           {
-               // Next byte must be a flag.
-               if (!hasMoreToRead())
-               {
-                   break;
-               }
-
-               flags = getByte();
-
-               // Set the flag counter.  While at first it might appear
-               // that this should be an 8 since there are 8 bits in the
-               // flag, it should really be a 7 because the shift must
-               // be performed 7 times in order to see all 8 bits.
-               flagCount = 7;
-           }
-
-           // If the low order bit of the flag is now set, then we know
-           // that the next byte is a single, unencoded character.
-           if ((flags & 1) != 0)
-           {
-               if (getBytes(c, 1) != 1)
-               {
-                   break;
-               }
-
-               if (sendBytes(c, 1) != 1)
-               {
-                   break;
-               }
-
-               // Add to buffer, and increment to next spot. Wrap at end.
-               ringBuffer[r] = c[0];
-               r = (short) ((r + 1) & (RING_SIZE - 1));
-           }
-           else
-           {
-               // Otherwise, we know that the next two bytes are a
-               // <position,length> pair.  The position is in 12 bits and
-               // the length is in 4 bits.
-
-               // Original code:
-               //  if ((i = getc(infile)) == EOF)
-               //      break;
-               //  if ((j = getc(infile)) == EOF)
-               //      break;
-               //  i |= ((j & 0xf0) << 4);    
-               //  j = (j & 0x0f) + THRESHOLD;
-               //
-               // I've modified this to only make one input call, and
-               // have changed the variable names to something more
-               // obvious.
-
-               if (getBytes(c, 2) != 2)
-               {
-                   break;
-               }
-
-               // Convert these two characters into the position and
-               // length in the ringBuffer.  Note that the length is always at least
-               // THRESHOLD, which is why we're able to get a length
-               // of 18 out of only 4 bits.
-               int pos = (short) (c[0] | ((c[1] & 0xF0) << 4));
-               int len = (short) ((c[1] & 0x0F) + THRESHOLD);
-
-               // There are now "len" characters at position "pos" in
-               // the ring buffer that can be pulled out.  Note that
-               // len is never more than MAX_STORE_LENGTH.
-               for (int k = 0; k < len; k++)
-               {
-                   c[k] = ringBuffer[(pos + k) & (RING_SIZE - 1)];
-
-                   // Add to buffer, and increment to next spot. Wrap at end.
-                   ringBuffer[r] = c[k];
-                   r = (short) ((r + 1) & (RING_SIZE - 1));
-               }
-
-               // Add the "len" characters to the output stream.
-               if (sendBytes(c, len) != len)
-               {
-                   break;
-               }
-           }
-       }
-       return writeBuffer;
-   }
-
-   /**
      * Initializes the tree nodes to "empty" states.
      */
     private void initTree()
@@ -690,7 +699,7 @@ public class LZSS
 
         return realLen;
     }
-        
+
     /**
      * Return whether there are more bytes to read.
      * 
@@ -723,27 +732,27 @@ public class LZSS
         return len;
     }
 
-    private byte[] ensureCapacity(byte[] input, int currentPosition, int length)
+    private byte[] ensureCapacity(byte[] inputBuf, int currentPosition, int length)
     {
         // Make sure the buffer is more than big enough
-        if (input != null)
+        int biggerLength = currentPosition + length + writeBufferSizeIncrement;
+        if (inputBuf != null)
         {
-            int inputLength = readBuffer.length;
+            int inputLength = inputBuf.length;
             if ((currentPosition + length) > inputLength)
             {
-                int biggerLength = currentPosition + length + 1024;
                 byte[] biggerBuf = new byte[biggerLength];
-                System.arraycopy(readBuffer, 0, biggerBuf, 0, inputLength);
+                System.arraycopy(inputBuf, 0, biggerBuf, 0, inputLength);
                 for (int i = inputLength; i < biggerLength; i++)
                 {
                     biggerBuf[i] = '\0';
                 }
                 return biggerBuf;
             }
-            return input;
+            return inputBuf;
         }
 
-        return new byte[length + 1024];
+        return new byte[length + writeBufferSizeIncrement];
     }
 
     /**
@@ -835,6 +844,11 @@ public class LZSS
      * The current offset into readBuffer.
      */
     private int readOffset;
+
+    /**
+     * The incremental size of the writeBuffer to use.
+     */
+    private int writeBufferSizeIncrement = 1024;
 
     /**
      * The buffer to get or send, when compressed.
