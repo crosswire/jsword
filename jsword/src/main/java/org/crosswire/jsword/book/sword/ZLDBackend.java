@@ -30,6 +30,7 @@ import java.util.GregorianCalendar;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
+import org.crosswire.common.compress.CompressorType;
 import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
@@ -291,7 +292,10 @@ public class ZLDBackend extends AbstractBackend
     public String getRawText(Key key) throws BookException
     {
         checkActive();
-        String charset = getBookMetaData().getBookCharset();
+
+        SwordBookMetaData sbmd = getBookMetaData();
+        String charset = sbmd.getBookCharset();
+        String compressType = sbmd.getProperty(ConfigEntryType.COMPRESS_TYPE);
 
         if (!(key instanceof IndexKey))
         {
@@ -347,7 +351,7 @@ public class ZLDBackend extends AbstractBackend
 
                 decipher(temp);
 
-                uncompressed = SwordUtil.uncompress(temp);
+                uncompressed = CompressorType.fromString(compressType).getCompressor(temp).uncompress();
 
                 // cache the uncompressed data for next time
                 lastBlockNum = blockNum;

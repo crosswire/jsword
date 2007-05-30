@@ -21,18 +21,11 @@
  */
 package org.crosswire.jsword.book.sword;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
-import java.util.zip.DataFormatException;
-import java.util.zip.Inflater;
-import java.util.zip.InflaterInputStream;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.passage.Key;
 
@@ -195,56 +188,6 @@ public final class SwordUtil
     }
 
     /**
-     * Uncompress a block of (G)ZIP compressed data
-     * @param compressed The data to uncompress
-     * @param endsize The expected resultant data size
-     * @return The uncompressed data
-     */
-    public static byte[] uncompress(byte[] compressed, int endsize) throws DataFormatException, BookException
-    {
-        // Create the decompressor and give it the data to compress
-        Inflater decompressor = new Inflater();
-        decompressor.setInput(compressed);
-
-        // Decompress the data
-        byte[] uncompressed = new byte[endsize];
-        int realendsize = decompressor.inflate(uncompressed);
-
-        if (!decompressor.finished() || realendsize != endsize)
-        {
-            throw new BookException(Msg.GZIP_FORMAT);
-        }
-
-        return uncompressed;
-    }
-
-    /**
-     * Uncompress a block of (G)ZIP compressed data,
-     * when the resulting size is not known.
-     * 
-     * @param compressed The data to uncompress
-     * @return The uncompressed data
-     * @throws IOException 
-     */
-    public static byte[] uncompress(byte[] compressed) throws IOException
-    {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        BufferedOutputStream out = new BufferedOutputStream(bos, ZBUF_SIZE);
-        ByteArrayInputStream bis = new ByteArrayInputStream(compressed);
-        InflaterInputStream in = new InflaterInputStream(bis, new Inflater(), ZBUF_SIZE);
-        byte[] buf = new byte[ZBUF_SIZE];
-
-        for (int count = in.read(buf); count != -1; count = in.read(buf))
-        {
-            out.write(buf, 0, count);
-        }
-        in.close();
-        out.flush();
-        out.close();
-        return bos.toByteArray();
-    }
-
-    /**
      * Transform a byte array into a string given the encoding.
      * If the encoding is bad then it just does it as a string.
      * @param data The byte array to be converted
@@ -321,9 +264,4 @@ public final class SwordUtil
      * The log stream
      */
     private static final Logger log = Logger.getLogger(SwordUtil.class);
-
-    /**
-     * The size to read/write when unzipping a compressed byte array of unknown size.
-     */
-    private static final int ZBUF_SIZE = 2048;
 }

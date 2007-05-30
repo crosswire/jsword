@@ -25,10 +25,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.zip.DataFormatException;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
+import org.crosswire.common.compress.CompressorType;
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
@@ -37,8 +37,8 @@ import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.Verse;
 
 /**
- * A backend to read GZIPped data files. While the text file contains
- * data compressed with GZIP, it cannot be uncompressed using a stand
+ * A backend to read compressed data verse based files. While the text file contains
+ * data compressed with ZIP or LZSS, it cannot be uncompressed using a stand
  * alone zip utility, such as WinZip or gzip. The reason for this is
  * that the data file is a concatenation of blocks of compressed data.
  * 
@@ -47,25 +47,25 @@ import org.crosswire.jsword.passage.Verse;
  * to uncompress a block into memory. Having it at the book level is
  * very memory expensive. Having it at the verse level is very disk
  * expensive, but takes the least amount of memory. The most common is
- * chapter.
+ * chapter.</p>
  * 
  * <p>In order to find the data in the text file, we need to find the 
  * block. The first index (comp) is used for this. Each verse is indexed
  * to a tuple (block number, verse start, verse size). This data allows
  * us to find the correct block, and to extract the verse from the
- * uncompressed block, but it does not help us uncompress the block.
+ * uncompressed block, but it does not help us uncompress the block.</p>
  * 
  * <p>Once the block is known, then the next index (idx) gives the location
- * of the compressed block, its compressed size and its uncompressed size.
+ * of the compressed block, its compressed size and its uncompressed size.</p>
  * 
  * <p>There are 3 files for each testament, 2 (comp and idx) are indexes into
  * the third (text) which contains the data. The key into each index is the
  * verse index within that testament, which is determined by book, chapter
- * and verse of that key.
+ * and verse of that key.</p>
  * 
- * <p>All numbers are stored 2-complement, little endian.
+ * <p>All numbers are stored 2-complement, little endian.</p>
  * <p>Then proceed as follows, at all times working on the set of files for the
- * testament in question:
+ * testament in question:</p>
  * 
  * <pre>
  * in the comp file, seek to the index * 10
@@ -81,7 +81,7 @@ import org.crosswire.jsword.passage.Verse;
  * 
  * in the text file seek to the text-block-index
  * read data-size bytes
- * //decipher them if they are encrypted
+ * decipher them if they are encrypted
  * unGZIP them into a byte array of uncompressed-size
  * </pre>
  * 
@@ -227,7 +227,9 @@ public class GZIPBackend extends AbstractBackend
     {
         checkActive();
 
-        String charset = getBookMetaData().getBookCharset();
+        SwordBookMetaData sbmd = getBookMetaData();
+        String charset = sbmd.getBookCharset();
+        String compressType = sbmd.getProperty(ConfigEntryType.COMPRESS_TYPE);
 
         Verse verse = KeyUtil.getVerse(key);
 
@@ -282,7 +284,7 @@ public class GZIPBackend extends AbstractBackend
 
                 decipher(data);
 
-                uncompressed = SwordUtil.uncompress(data, uncompressedSize);
+                uncompressed = CompressorType.fromString(compressType).getCompressor(data).uncompress(uncompressedSize);
 
                 // cache the uncompressed data for next time
                 lastBlockNum = blockNum;
@@ -295,41 +297,8 @@ public class GZIPBackend extends AbstractBackend
             System.arraycopy(uncompressed, verseStart, chopped, 0, verseSize);
 
             return SwordUtil.decode(key, chopped, charset);
-
-            /* The code converted from Sword looked like this, but we can do better
-            // buffer number
-            comp_raf[testament].seek(offset);
-            long buffernum = comp_raf[testament - 1].readInt();
-            buffernum = swordtoarch32(buffernum);
-
-            // verse offset within buffer
-            // long versestart =
-                comp_raf[testament - 1].readInt();
-            // versestart = swordtoarch32(versestart);
-            // short versesize =
-                comp_raf[testament - 1].readShort();
-            //versesize = swordtoarch16(versesize);
-
-            idx_raf[testament].seek(buffernum * 12);
-
-            // compressed buffer start
-            long start = idx_raf[testament - 1].readInt();
-            start = swordtoarch32(start);
-
-            // buffer size compressed (was long but can't use long as array index)
-            int size = idx_raf[testament - 1].readInt();
-            size = swordtoarch32(size);
-
-            // buffer size uncompressed (was long but can't use long as array index)
-            int endsize = idx_raf[testament - 1].readInt();
-            endsize = swordtoarch32(endsize);
-            /**/
         }
         catch (IOException e)
-        {
-            throw new BookException(Msg.READ_FAIL, e, new Object[] { verse.getName() });
-        }
-        catch (DataFormatException e)
         {
             throw new BookException(Msg.READ_FAIL, e, new Object[] { verse.getName() });
         }
@@ -392,7 +361,7 @@ public class GZIPBackend extends AbstractBackend
     private RandomAccessFile[] textRaf = new RandomAccessFile[3];
 
     /**
-     * The array of compressed random access files?
+     * The array of compressed random access files
      */
     private RandomAccessFile[] compRaf = new RandomAccessFile[3];
 
@@ -407,7 +376,7 @@ public class GZIPBackend extends AbstractBackend
     private File[] textFile = new File[3];
 
     /**
-     * The array of compressed random access files?
+     * The array of compressed random access files
      */
     private File[] compFile = new File[3];
 
