@@ -92,7 +92,7 @@ import org.crosswire.jsword.passage.Verse;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class GZIPBackend extends AbstractBackend
+public class ZVerseBackend extends AbstractBackend
 {
     private static final String SUFFIX_COMP = "v"; //$NON-NLS-1$
     private static final String SUFFIX_INDEX = "s"; //$NON-NLS-1$
@@ -102,7 +102,7 @@ public class GZIPBackend extends AbstractBackend
     /**
      * Simple ctor
      */
-    public GZIPBackend(SwordBookMetaData sbmd, BlockType blockType) throws BookException
+    public ZVerseBackend(SwordBookMetaData sbmd, BlockType blockType) throws BookException
     {
         super(sbmd);
 
@@ -348,7 +348,7 @@ public class GZIPBackend extends AbstractBackend
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(GZIPBackend.class);
+    private static final Logger log = Logger.getLogger(ZVerseBackend.class);
 
     /**
      * The array of index random access files

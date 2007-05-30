@@ -70,12 +70,8 @@ public abstract class BookType implements Serializable
 
         protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
         {
-            return getCompressedBackend(sbmd);
-        }
-
-        protected boolean isBackendSupported(SwordBookMetaData sbmd)
-        {
-            return isCompressedBackendSupported(sbmd);
+            BlockType blockType = BlockType.fromString(sbmd.getProperty(ConfigEntryType.BLOCK_TYPE));
+            return new ZVerseBackend(sbmd, blockType);
         }
 
         /**
@@ -117,12 +113,8 @@ public abstract class BookType implements Serializable
 
         protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
         {
-            return getCompressedBackend(sbmd);
-        }
-
-        protected boolean isBackendSupported(SwordBookMetaData sbmd)
-        {
-            return isCompressedBackendSupported(sbmd);
+            BlockType blockType = BlockType.fromString(sbmd.getProperty(ConfigEntryType.BLOCK_TYPE));
+            return new ZVerseBackend(sbmd, blockType);
         }
 
         /**
@@ -263,11 +255,6 @@ public abstract class BookType implements Serializable
             return new GenBookBackend(sbmd);
         }
 
-        protected boolean isBackendSupported(SwordBookMetaData sbmd)
-        {
-            return true;
-        }
-
         /**
          * Serialization ID
          */
@@ -318,16 +305,7 @@ public abstract class BookType implements Serializable
      */
     public boolean isSupported(SwordBookMetaData sbmd)
     {
-        return type != null && isBackendSupported(sbmd);
-    }
-
-    /**
-     * By default the backend is supported if the BookMetaData is not null.
-     * @return true if this is a useable BackEnd
-     */
-    protected boolean isBackendSupported(SwordBookMetaData sbmd)
-    {
-        return sbmd != null;
+        return type != null && sbmd != null;
     }
 
     /**
@@ -348,33 +326,6 @@ public abstract class BookType implements Serializable
      * Create a the appropriate backend for this type of book
      */
     protected abstract AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException;
-
-    /**
-     * 
-     */
-    protected static AbstractBackend getCompressedBackend(SwordBookMetaData sbmd) throws BookException
-    {
-        String cStr = sbmd.getProperty(ConfigEntryType.COMPRESS_TYPE);
-        if (cStr != null)
-        {
-            return CompressionType.fromString(cStr).getBackend(sbmd);
-        }
-        assert false;
-        throw new BookException(Msg.COMPRESSION_UNSUPPORTED, new Object[] { "no compression given" }); //$NON-NLS-1$
-    }
-
-    /**
-     * 
-     */
-    protected static boolean isCompressedBackendSupported(SwordBookMetaData sbmd)
-    {
-        String cStr = sbmd.getProperty(ConfigEntryType.COMPRESS_TYPE);
-        if (cStr != null)
-        {
-            return CompressionType.fromString(cStr).isSupported();
-        }
-        return false;
-    }
 
     /**
      * The name of the BookType

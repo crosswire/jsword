@@ -36,8 +36,8 @@ final class Msg extends MsgBase
     static final Msg BAD_KEY = new Msg("RawLDBackend.BadKey"); //$NON-NLS-1$
     static final Msg GZIP_FORMAT = new Msg("SwordUtil.GZIPFormat"); //$NON-NLS-1$
     static final Msg FILTER_FAIL = new Msg("SwordDictionary.FilterFail"); //$NON-NLS-1$
-    static final Msg MISSING_FILE = new Msg("GZIPBackend.MissingFile"); //$NON-NLS-1$
-    static final Msg READ_FAIL = new Msg("GZIPBackend.ReadFail"); //$NON-NLS-1$
+    static final Msg MISSING_FILE = new Msg("ZVerseBackend.MissingFile"); //$NON-NLS-1$
+    static final Msg READ_FAIL = new Msg("ZVerseBackend.ReadFail"); //$NON-NLS-1$
     static final Msg COMPRESSION_UNSUPPORTED = new Msg("BookType.CompressionUnsupported"); //$NON-NLS-1$
     static final Msg TYPE_UNSUPPORTED = new Msg("SwordBookDriver.TypeUnsuported"); //$NON-NLS-1$
     static final Msg DELETE_FAILED = new Msg("SwordBookDriver.DeleteFailed"); //$NON-NLS-1$
