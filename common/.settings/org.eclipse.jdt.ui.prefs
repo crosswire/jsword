@@ -1,7 +1,7 @@
-#Thu Mar 15 12:58:25 EDT 2007
+#Wed May 16 11:08:29 EDT 2007
 eclipse.preferences.version=1
 formatter_profile=_JSword Style Formatting
-formatter_settings_version=10
+formatter_settings_version=11
 internal.default.compliance=user
 org.eclipse.jdt.ui.exception.name=e
 org.eclipse.jdt.ui.gettersetter.use.is=true
