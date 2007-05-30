@@ -55,13 +55,13 @@ public class XMLUtilTest extends TestCase
         assertEquals("aa &amp;a", XMLUtil.cleanAllEntities("aa &a")); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals("aa &amp;", XMLUtil.cleanAllEntities("aa &")); //$NON-NLS-1$ //$NON-NLS-2$
 
-        assertEquals("aa Ê aa", XMLUtil.cleanAllEntities("aa &nbsp; aa")); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals("aa \u00A0 aa", XMLUtil.cleanAllEntities("aa &nbsp; aa")); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals("aa &amp;nbsp aa", XMLUtil.cleanAllEntities("aa &nbsp aa")); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals("aa &amp;nb-sp aa", XMLUtil.cleanAllEntities("aa &nb-sp aa")); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals("aa  aa", XMLUtil.cleanAllEntities("aa &nb; aa")); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals("aa &amp;nb aa", XMLUtil.cleanAllEntities("aa &nb aa")); //$NON-NLS-1$ //$NON-NLS-2$
 
-        assertEquals("-&amp;-Ê-&lt;-&gt;-&quot;-£-Û-", XMLUtil.cleanAllEntities("-&amp;-&nbsp;-&lt;-&gt;-&quot;-&pound;-&euro;-")); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals("-&amp;-\u00A0-&lt;-&gt;-&quot;-\u00A3-\u20AC-", XMLUtil.cleanAllEntities("-&amp;-&nbsp;-&lt;-&gt;-&quot;-&pound;-&euro;-")); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void testCleanAllTags()
