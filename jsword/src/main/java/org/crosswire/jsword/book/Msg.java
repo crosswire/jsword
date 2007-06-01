@@ -45,27 +45,11 @@ final class Msg extends MsgBase
     static final Msg MISSING_VERSE = new Msg("OSISUtil.MissingVerse"); //$NON-NLS-1$
     static final Msg OSIS_BADID = new Msg("OSISUtil.OSISBadID"); //$NON-NLS-1$
 
-    static final Msg OPEN_UNKNOWN = new Msg("Openness.Unknown"); //$NON-NLS-1$
-    static final Msg OPEN_PD = new Msg("Openness.PD"); //$NON-NLS-1$
-    static final Msg OPEN_FREE = new Msg("Openness.Free"); //$NON-NLS-1$
-    static final Msg OPEN_COPYABLE = new Msg("Openness.Copyable"); //$NON-NLS-1$
-    static final Msg OPEN_COMMERCIAL = new Msg("Openness.Commercial"); //$NON-NLS-1$
-
     static final Msg BOOK_METADATA_SET_OTHER = new Msg("BookSet.Other"); //$NON-NLS-1$
 
     static final Msg STRONGS_GREEK = new Msg("Strongs.Greek"); //$NON-NLS-1$
     static final Msg STRONGS_HEBREW = new Msg("Strongs.Hebrew"); //$NON-NLS-1$
     static final Msg STRONGS_PARSING = new Msg("Strongs.Parsing"); //$NON-NLS-1$
-
-    static final Msg STRONGS_ERROR_PARSE = new Msg("Strongs.ErrorParse"); //$NON-NLS-1$
-    static final Msg STRONGS_ERROR_NUMBER = new Msg("Strongs.ErrorNumber"); //$NON-NLS-1$
-    static final Msg STRONGS_ERROR_HEBREW = new Msg("Strongs.ErrorHebrew"); //$NON-NLS-1$
-    static final Msg STRONGS_ERROR_GREEK = new Msg("Strongs.ErrorGreek"); //$NON-NLS-1$
-    static final Msg STRONGS_ERROR_PARSING = new Msg("Strongs.ErrorParsing"); //$NON-NLS-1$
-    static final Msg STRONGS_ERROR_TYPE = new Msg("Strongs.ErrorType"); //$NON-NLS-1$
-
-    static final Msg ERROR_MIXED = new Msg("SentenceUtil.ErrorMixed"); //$NON-NLS-1$
-    static final Msg ERROR_BADCASE = new Msg("SentenceUtil.ErrorBadcase"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

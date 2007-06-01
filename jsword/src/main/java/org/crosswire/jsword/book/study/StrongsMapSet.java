@@ -35,7 +35,6 @@ import java.util.TreeSet;
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
- * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class StrongsMapSet
@@ -63,7 +62,7 @@ public class StrongsMapSet
             reps = new TreeSet();
             map.put(strongsNumber, reps);
         }
-        reps.add(representation);
+        reps.add(representation.toLowerCase());
     }
 
     /**

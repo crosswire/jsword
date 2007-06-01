@@ -14,49 +14,33 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2007
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id:LuceneIndex.java 984 2006-01-23 14:18:33 -0500 (Mon, 23 Jan 2006) dmsmith $
+ * ID: $Id$
  */
 package org.crosswire.jsword.index.lucene;
 
 import java.io.Reader;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.PerFieldAnalyzerWrapper;
-import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.WhitespaceTokenizer;
 
 /**
- * A specialized analyzer for Books that analyzes different fields differently.
+ * A specialized analyzer that normalizes Strong's Numbers.
  *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class LuceneAnalyzer extends Analyzer
+public class XRefAnalyzer extends Analyzer
 {
-
-    public LuceneAnalyzer()
-    {
-        // The default analysis
-        analyzer = new PerFieldAnalyzerWrapper(new SimpleAnalyzer());
-
-        // Keywords are normalized to osisIDs
-        analyzer.addAnalyzer(LuceneIndex.FIELD_KEY, new KeyAnalyzer());
-
-        // Strong's Numbers are normalized to a consistent representation
-        analyzer.addAnalyzer(LuceneIndex.FIELD_STRONG, new StrongsNumberAnalyzer());
-
-        // XRefs are normalized from ranges into a list of osisIDs
-        analyzer.addAnalyzer(LuceneIndex.FIELD_XREF, new XRefAnalyzer());
-    }
-
+    /* (non-Javadoc)
+     * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String, java.io.Reader)
+     */
     public TokenStream tokenStream(String fieldName, Reader reader)
     {
-        return analyzer.tokenStream(fieldName, reader);
+        return new KeyFilter(new WhitespaceTokenizer(reader));
     }
-
-    private PerFieldAnalyzerWrapper analyzer;
 }
