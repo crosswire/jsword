@@ -52,13 +52,13 @@ public final class Job implements Progress
      * Create a new Job. This will automatically fire a workProgressed event to
      * all WorkListeners, with the work property of this job set to 0.
      * @param description Short description of this job
-     * @param predicturl Optional URI to save/load prediction times from
+     * @param predictURI Optional URI to save/load prediction times from
      * @param worker Optional thread to use in request to stop worker
      * @param totalWork the size of the work to do
      */
-    protected Job(String description, URI predicturl, Thread worker, int totalWork)
+    protected Job(String description, URI predictURI, Thread worker, int totalWork)
     {
-        this.predictURI = predicturl;
+        this.predictURI = predictURI;
         this.workerThread = worker;
         this.listeners = new ArrayList();
         this.start = -1;

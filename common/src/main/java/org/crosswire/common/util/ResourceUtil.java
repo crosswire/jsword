@@ -28,7 +28,7 @@ import java.util.MissingResourceException;
 import java.util.Properties;
 
 /**
- * Better implemenetations of the getResource methods with less ambiguity and
+ * Better implementations of the getResource methods with less ambiguity and
  * that are less dependent on the specific classloader situation.
  *
  * @see gnu.lgpl.License for license details.<br>
@@ -39,7 +39,7 @@ import java.util.Properties;
 public final class ResourceUtil
 {
     /**
-     * Prevent Instansiation
+     * Prevent Instantiation
      */
     private ResourceUtil()
     {

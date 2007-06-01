@@ -40,7 +40,7 @@ final class Msg extends MsgBase
     static final Msg IS_DIR = new Msg("NetUtil.IsDir"); //$NON-NLS-1$
     static final Msg IS_FILE = new Msg("NetUtil.IsFile"); //$NON-NLS-1$
     static final Msg NOT_DIR = new Msg("NetUtil.NotDir"); //$NON-NLS-1$
-    static final Msg NOT_FILE_URL = new Msg("NetUtil.NotFileURL"); //$NON-NLS-1$
+    static final Msg NOT_FILE_URI = new Msg("NetUtil.NotFileURI"); //$NON-NLS-1$
     static final Msg NO_RESOURCE = new Msg("ResourceUtil.NoResource"); //$NON-NLS-1$
     static final Msg NOT_ASSIGNABLE = new Msg("ResourceUtil.NotAssignable"); //$NON-NLS-1$
     static final Msg UNAVILABLE = new Msg("ThreadUtil.Unavailable"); //$NON-NLS-1$

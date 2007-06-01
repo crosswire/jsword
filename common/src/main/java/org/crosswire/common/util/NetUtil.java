@@ -111,7 +111,7 @@ public final class NetUtil
     {
         try
         {
-            return new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(), uri.getPath(), uri.getQuery(), uri.getFragment());
+            return new URI(uri.toString());
         }
         catch (URISyntaxException e)
         {
@@ -183,7 +183,6 @@ public final class NetUtil
 
     /**
      * If there is a file at the other end of this URI return true.
-     * Note this currently only works with file: type URIs
      * @param uri The URI to check
      * @return true if the URI points at a file
      */
@@ -434,17 +433,14 @@ public final class NetUtil
     }
 
     /**
-     * Attempt to obtain an InputStream from a URI. The simple case will
-     * just call uri.toURL().openConnection().getInputStream(), however in some
-     * JVMs (MS at least this fails where new FileOutputStream(url) works.
-     * So if openConnection().getOutputStream() fails and the protocol is
-     * file, then the alternate version is used.
-     * @param uri The URI to attempt to write to
-     * @return An OutputStream connection
+     * Attempt to obtain an InputStream from a URI. If the URI is a file
+     * scheme then just open it directly. Otherwise, call uri.toURL().openStream().
+     * @param uri The URI to attempt to read from
+     * @return An InputStream connection
      */
     public static InputStream getInputStream(URI uri) throws IOException
     {
-        // We favour the FileOutputStream
+        // We favor the FileOutputStream
         if (uri.getScheme().equals(PROTOCOL_FILE))
         {
             return new FileInputStream(uri.getPath());
@@ -454,10 +450,8 @@ public final class NetUtil
 
     /**
      * Attempt to obtain an OutputStream from a URI. The simple case will
-     * just call url.openConnection().getOutputStream(), however in some
+     * open it if it is local. Otherwise, it will call uri.toURL().openConnection().getOutputStream(), however in some
      * JVMs (MS at least this fails where new FileOutputStream(url) works.
-     * So if openConnection().getOutputStream() fails and the protocol is
-     * file, then the alternate version is used.
      * @param uri The URI to attempt to write to
      * @return An OutputStream connection
      */
@@ -468,17 +462,15 @@ public final class NetUtil
 
     /**
      * Attempt to obtain an OutputStream from a URI. The simple case will
-     * just call uri.toURL().openConnection().getOutputStream(), however in some
+     * open it if it is local. Otherwise, it will call uri.toURL().openConnection().getOutputStream(), however in some
      * JVMs (MS at least this fails where new FileOutputStream(url) works.
-     * So if openConnection().getOutputStream() fails and the protocol is
-     * file, then the alternate version is used.
      * @param uri The URI to attempt to write to
      * @param append Do we write to the end of the file instead of the beginning
      * @return An OutputStream connection
      */
     public static OutputStream getOutputStream(URI uri, boolean append) throws IOException
     {
-        // We favour the FileOutputStream method here because append
+        // We favor the FileOutputStream method here because append
         // is not well defined for the openConnection method
         if (uri.getScheme().equals(PROTOCOL_FILE))
         {
@@ -499,7 +491,7 @@ public final class NetUtil
      * there is a difference, but returning the values from the index.txt
      * method.
      */
-    public static String[] list(URI uri, URLFilter filter) throws MalformedURLException, IOException
+    public static String[] list(URI uri, URIFilter filter) throws MalformedURLException, IOException
     {
         // We should probably cache this in some way? This is going
         // to get very slow calling this often across a network
@@ -552,15 +544,15 @@ public final class NetUtil
      * List all the files specified by the index file passed in.
      * @return String[] Matching results.
      */
-    public static String[] listByFile(URI url, URLFilter filter) throws MalformedURLException
+    public static String[] listByFile(URI uri, URIFilter filter) throws MalformedURLException
     {
-        File fdir = new File(url.getPath());
+        File fdir = new File(uri.getPath());
         if (!fdir.isDirectory())
         {
-            throw new MalformedURLException(Msg.NOT_DIR.toString(url.toString()));
+            throw new MalformedURLException(Msg.NOT_DIR.toString(uri.toString()));
         }
 
-        return fdir.list(new URLFilterFilenameFilter(filter));
+        return fdir.list(new URIFilterFilenameFilter(filter));
     }
 
     /**
@@ -568,7 +560,7 @@ public final class NetUtil
      * @return String[] Matching results.
      * @throws FileNotFoundException 
      */
-    public static String[] listByIndexFile(URI index, URLFilter filter) throws IOException
+    public static String[] listByIndexFile(URI index, URIFilter filter) throws IOException
     {
         InputStream in = null;
         try
@@ -633,7 +625,7 @@ public final class NetUtil
     }
 
     /**
-     * When was the given URL last modified. If no modification time is
+     * When was the given URI last modified. If no modification time is
      * available then this method return the current time.
      */
     public static long getLastModified(URI uri)
@@ -697,14 +689,14 @@ public final class NetUtil
     }
 
     /**
-     * Quick implementation of FilenameFilter that uses a URLFilter
+     * Quick implementation of FilenameFilter that uses a URIFilter
      */
-    public static class URLFilterFilenameFilter implements FilenameFilter
+    public static class URIFilterFilenameFilter implements FilenameFilter
     {
         /**
          * Simple ctor
          */
-        public URLFilterFilenameFilter(URLFilter filter)
+        public URIFilterFilenameFilter(URIFilter filter)
         {
             this.filter = filter;
         }
@@ -717,19 +709,19 @@ public final class NetUtil
             return filter.accept(name);
         }
 
-        private URLFilter filter;
+        private URIFilter filter;
     }
 
     /**
      * Throw if the given URI does not use the 'file:' protocol
-     * @param url The URL to check
+     * @param uri The URI to check
      * @throws MalformedURLException If the protocol is not file:
      */
-    private static void checkFileURI(URI url) throws MalformedURLException
+    private static void checkFileURI(URI uri) throws MalformedURLException
     {
-        if (!url.getScheme().equals(PROTOCOL_FILE))
+        if (!uri.getScheme().equals(PROTOCOL_FILE))
         {
-            throw new MalformedURLException(Msg.NOT_FILE_URL.toString(url));
+            throw new MalformedURLException(Msg.NOT_FILE_URI.toString(uri));
         }
     }
 
@@ -752,28 +744,13 @@ public final class NetUtil
     }
 
     /**
-     * Get a URL version of the given file.
-     * @param file The File to turn into a URL
-     * @return a URL for the given file
+     * Get a URI version of the given file.
+     * @param file The File to turn into a URI
+     * @return a URI for the given file
      */
     public static URI getURI(File file)
     {
-        try
-        {
-            return new URI(PROTOCOL_FILE, null, null, -1, file.getCanonicalPath(), null, null);
-        }
-        catch (IOException ex)
-        {
-            log.error("Failed to create URL", ex); //$NON-NLS-1$
-            assert false;
-            throw new IllegalArgumentException(ex.toString());
-        }
-        catch (URISyntaxException ex)
-        {
-            log.error("Failed to create URI", ex); //$NON-NLS-1$
-            assert false;
-            throw new IllegalArgumentException(ex.toString());
-        }
+        return file.toURI();
     }
 
     /**
@@ -825,7 +802,7 @@ public final class NetUtil
      * Check that the directories in the version directory really
      * represent versions.
      */
-    public static class IsDirectoryURIFilter implements URLFilter
+    public static class IsDirectoryURIFilter implements URIFilter
     {
         /**
          * Simple ctor

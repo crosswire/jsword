@@ -40,8 +40,8 @@ import org.crosswire.common.util.Logger;
  * {
  *     public void run()
  *     {
- *         URL predicturl = Project.instance().getWritablePropertiesURL("save-name");
- *         Progress job = JobManager.createJob("Job Title", predicturl, this, true);
+ *         URL predictURI = Project.instance().getWritablePropertiesURI("save-name");
+ *         Progress job = JobManager.createJob("Job Title", predictURI, this, true);
  * 
  *         try
  *         {

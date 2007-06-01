@@ -22,14 +22,14 @@
 package org.crosswire.common.util;
 
 /**
- * This is the URL equivalent of FilenameFilter in the java.io package.
+ * This is the URI equivalent of FilenameFilter in the java.io package.
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @see java.io.FilenameFilter
  */
-public interface URLFilter
+public interface URIFilter
 {
     /**
      * Tests if a specified file should be included in a file list.

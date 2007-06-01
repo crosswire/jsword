@@ -256,15 +256,15 @@ public final class ClassUtil
     }
 
     /**
-     * Get and instansiate the preferred implementor of some interface or abstract class.
+     * Get and instantiate the preferred implementor of some interface or abstract class.
      * @param clazz The class or interface to find an implementation of.
      * @return The configured implementing class.
      * @throws MalformedURLException if the properties file can not be found
      * @throws IOException if there is a problem reading the found file
      * @throws ClassNotFoundException if the read contents are not found
      * @throws ClassCastException if the read contents are not valid
-     * @throws InstantiationException if the new object can not be instansiated
-     * @throws IllegalAccessException if the new object can not be instansiated
+     * @throws InstantiationException if the new object can not be instantiated
+     * @throws IllegalAccessException if the new object can not be instantiated
      * @see ClassUtil#getImplementors(Class)
      */
     public static Object getImplementation(Class clazz) throws MalformedURLException, ClassCastException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException

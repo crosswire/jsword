@@ -21,6 +21,7 @@
  */
 package org.crosswire.common.util;
 
+import java.io.File;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -144,15 +145,8 @@ public abstract class OSType implements Serializable
     {
         if (userHome == null)
         {
-            try
-            {
-                userHome = new URI(NetUtil.PROTOCOL_FILE, null, System.getProperty("user.home"), null); //$NON-NLS-1$
-            }
-            catch (URISyntaxException e)
-            {
-                log.fatal("Failed to find user's home folder", e); //$NON-NLS-1$
-                assert false : e;
-            }
+            File home = new File(System.getProperty("user.home")); //$NON-NLS-1$
+            userHome = NetUtil.getURI(home);
         }
         return userHome;
     }
