@@ -77,7 +77,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     protected abstract void download(Progress job, String dir, String file, URI dest) throws InstallException;
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.install.Installer#getURL()
+     * @see org.crosswire.jsword.book.install.Installer#getInstallerDefinition()
      */
     public String getInstallerDefinition()
     {
@@ -118,21 +118,11 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
             return false;
         }
 
-        URI configurl = null;
-        try
-        {
-            configurl = new URI(NetUtil.PROTOCOL_FILE, null, conf.getAbsolutePath(), null);
-
-        }
-        catch (URISyntaxException ex)
-        {
-            log.error("Failed to create URL for file: " + conf, ex); //$NON-NLS-1$
-            assert false;
-            return false;
-        }
+        URI configURI = NetUtil.getURI(conf);
+        
 
         URI remote = toRemoteURI(book);
-        return NetUtil.isNewer(remote, configurl, proxyHost, proxyPort);
+        return NetUtil.isNewer(remote, configURI, proxyHost, proxyPort);
     }
 
     /* (non-Javadoc)
@@ -184,8 +174,8 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
             /* @Override */
             public void run()
             {
-                URI predicturl = Project.instance().getWritablePropertiesURI("sword-install"); //$NON-NLS-1$
-                Progress job = JobManager.createJob(Msg.INSTALLING.toString(sbmd.getName()), predicturl, this, true);
+                URI predictURI = Project.instance().getWritablePropertiesURI("sword-install"); //$NON-NLS-1$
+                Progress job = JobManager.createJob(Msg.INSTALLING.toString(sbmd.getName()), predictURI, this, true);
 
                 yield();
 
@@ -261,7 +251,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.install.Installer#downloadSearchIndex(org.crosswire.jsword.book.BookMetaData, java.net.URL)
+     * @see org.crosswire.jsword.book.install.Installer#downloadSearchIndex(org.crosswire.jsword.book.BookMetaData, java.net.URI)
      */
     public void downloadSearchIndex(Book book, URI localDest) throws InstallException
     {

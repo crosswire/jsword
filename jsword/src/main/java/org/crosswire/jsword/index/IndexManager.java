@@ -56,7 +56,7 @@ public interface IndexManager
      * We have downloaded a search index to a zip file. It should be installed
      * from here.
      * @param book The book that we downloaded an index for
-     * @param tempDest The URL of a zip file to install
+     * @param tempDest The URI of a zip file to install
      */
     void installDownloadedIndex(Book book, URI tempDest) throws BookException;
 

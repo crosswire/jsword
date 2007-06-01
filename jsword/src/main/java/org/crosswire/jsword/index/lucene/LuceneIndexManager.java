@@ -131,7 +131,7 @@ public class LuceneIndexManager implements IndexManager
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.IndexManager#installDownloadedIndex(org.crosswire.jsword.book.Book, java.net.URL)
+     * @see org.crosswire.jsword.index.search.IndexManager#installDownloadedIndex(org.crosswire.jsword.book.Book, java.net.URI)
      */
     public void installDownloadedIndex(Book book, URI tempDest) throws BookException
     {
@@ -178,7 +178,7 @@ public class LuceneIndexManager implements IndexManager
     /**
      * Determine where an index should be stored
      * @param book The book to be indexed
-     * @return A URL to store stuff in
+     * @return A URI to store stuff in
      * @throws IOException If there is a problem in finding where to store stuff
      */
     protected URI getStorageArea(Book book) throws IOException

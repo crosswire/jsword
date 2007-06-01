@@ -267,12 +267,12 @@ public interface BookMetaData extends Comparable
     /**
      * The key for the URI locating where this book is installed
      */
-    String KEY_LIBRARY_URL = "LibraryURL"; //$NON-NLS-1$
+    String KEY_LIBRARY_URI = "LibraryURI"; //$NON-NLS-1$
 
     /**
      * The key for the URI locating this book
      */
-    String KEY_LOCATION_URL = "LocationURL"; //$NON-NLS-1$
+    String KEY_LOCATION_URI = "LocationURI"; //$NON-NLS-1$
 
     /**
      * The key for the indexed status in the properties map

@@ -98,8 +98,8 @@ public final class Project
 
         try
         {
-            URI urlcache = getTempScratchSpace(DIR_NETCACHE, true);
-            File filecache = new File(urlcache.getPath());
+            URI uricache = getTempScratchSpace(DIR_NETCACHE, true);
+            File filecache = new File(uricache.getPath());
             NetUtil.setURICacheDir(filecache);
         }
         catch (IOException ex)

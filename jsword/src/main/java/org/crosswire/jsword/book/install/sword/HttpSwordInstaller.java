@@ -59,7 +59,7 @@ public class HttpSwordInstaller extends AbstractSwordInstaller
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.install.Installer#toRemoteURL(org.crosswire.jsword.book.BookMetaData)
+     * @see org.crosswire.jsword.book.install.Installer#toRemoteURI(org.crosswire.jsword.book.Book)
      */
     public URI toRemoteURI(Book book)
     {

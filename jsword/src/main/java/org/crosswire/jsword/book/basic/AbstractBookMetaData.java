@@ -143,7 +143,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
         URI uri = null;
         try
         {
-            String loc = getProperty(KEY_LIBRARY_URL);
+            String loc = getProperty(KEY_LIBRARY_URI);
             if (loc != null)
             {
                 uri = new URI(loc);
@@ -161,7 +161,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
      */
     public void setLibrary(URI library)
     {
-        putProperty(KEY_LIBRARY_URL, library.toString());
+        putProperty(KEY_LIBRARY_URI, library.toString());
     }
 
     /* (non-Javadoc)
@@ -169,7 +169,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
      */
     public void setLocation(URI location)
     {
-        putProperty(KEY_LOCATION_URL, location.toString());
+        putProperty(KEY_LOCATION_URI, location.toString());
     }
 
     /* (non-Javadoc)
@@ -180,7 +180,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
         URI uri = null;
         try
         {
-            String loc = getProperty(KEY_LOCATION_URL);
+            String loc = getProperty(KEY_LOCATION_URI);
             if (loc != null)
             {
                 uri = new URI(loc);

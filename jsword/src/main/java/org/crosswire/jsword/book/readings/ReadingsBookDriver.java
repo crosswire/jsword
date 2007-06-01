@@ -28,7 +28,7 @@ import java.util.List;
 
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.ResourceUtil;
-import org.crosswire.common.util.URLFilter;
+import org.crosswire.common.util.URIFilter;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookDriver;
@@ -93,7 +93,7 @@ public class ReadingsBookDriver extends AbstractBookDriver
         try
         {
             URL index = ResourceUtil.getResource(ReadingsBookDriver.class, "readings.txt"); //$NON-NLS-1$
-            return NetUtil.listByIndexFile(NetUtil.toURI(index), new URLFilter()
+            return NetUtil.listByIndexFile(NetUtil.toURI(index), new URIFilter()
             {
                 public boolean accept(String name)
                 {
