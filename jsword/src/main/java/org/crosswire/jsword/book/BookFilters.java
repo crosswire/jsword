@@ -247,9 +247,9 @@ public final class BookFilters
     /**
      * Filter for books by feature
      */
-    static class BookFeatureFilter implements BookFilter
+    public static class BookFeatureFilter implements BookFilter
     {
-        BookFeatureFilter(FeatureType feature)
+        public BookFeatureFilter(FeatureType feature)
         {
             this.feature = feature;
         }
