@@ -24,8 +24,6 @@ package org.crosswire.common.util;
 import java.io.File;
 import java.io.Serializable;
 import java.net.URI;
-import java.net.URISyntaxException;
-
 
 /**
  * Types of Operating Systems for which specialized behavior is needed.
@@ -273,9 +271,4 @@ public abstract class OSType implements Serializable
      * The user's home directory.
      */
     private static URI userHome;
-
-    /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(OSType.class);
 }
