@@ -167,9 +167,12 @@ public class BookData
                     BookCategory category = book.getBookCategory();
 
                     BookCategory prevCategory = prevBook.getBookCategory();
+                    String prevName = prevBook.getInitials();
                     showDiffs[i - 1] = BookCategory.BIBLE.equals(category)
-                    && category.equals(prevCategory)
-                    && book.getLanguage().equals(prevBook.getLanguage());
+                                            && category.equals(prevCategory)
+                                            && book.getLanguage().equals(prevBook.getLanguage())
+                                            && !book.getInitials().equals(prevName);
+
                     if (showDiffs[i - 1])
                     {
                         doDiffs = true;
