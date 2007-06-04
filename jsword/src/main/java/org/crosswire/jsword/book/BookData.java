@@ -59,21 +59,8 @@ public class BookData
 
         this.key = key;
 
-        Book defaultBible = Defaults.getBible();
-        if (defaultBible != null
-            && BookCategory.BIBLE.equals(book.getBookCategory())
-            && !defaultBible.equals(book)
-           )
-        {
-            books = new Book[2];
-            books[0] = defaultBible;
-            books[1] = book;
-        }
-        else
-        {
-            books = new Book[1];
-            books[0] = book;
-        }
+        books = new Book[1];
+        books[0] = book;
     }
 
     /**
@@ -106,7 +93,7 @@ public class BookData
     }
 
     /**
-     * Check that a BibleData is valid.
+     * Check that a BookData is valid.
      * Currently, this does nothing, and isn't used. it was broken when we used
      * JAXB, however it wasn't much use then becuase JAXB did a lot to keep the
      * document valid anyway. Under JDOM there is more point, but I don't think

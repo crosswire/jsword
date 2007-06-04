@@ -194,7 +194,7 @@ public final class Books implements BookList
     }
 
     /**
-     * Add a Bible to the current list of Books.
+     * Add a Book to the current list of Books.
      * This method should only be called by BibleDrivers, it is not a method for
      * general consumption.
      */
@@ -207,7 +207,7 @@ public final class Books implements BookList
     }
 
     /**
-     * Remove a Bible from the current list of Books.
+     * Remove a Book from the current list of Books.
      * This method should only be called by BibleDrivers, it is not a method for
      * general consumption.
      */

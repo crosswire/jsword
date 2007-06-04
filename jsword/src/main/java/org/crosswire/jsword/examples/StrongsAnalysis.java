@@ -12,7 +12,6 @@ import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.Books;
-import org.crosswire.jsword.book.Defaults;
 import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.study.StrongsMapSet;
