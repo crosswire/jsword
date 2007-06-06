@@ -48,7 +48,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements Multipl
 
         super.init(option, configResources);
 
-        String prefix = option.getAttributeValue("key") + ".alternative."; //$NON-NLS-1$  //$NON-NLS-2$
+        String prefix = getKey() + ".alternative."; //$NON-NLS-1$
 
         List list = new ArrayList();
         Iterator iter = option.getChildren("alternative").iterator(); //$NON-NLS-1$

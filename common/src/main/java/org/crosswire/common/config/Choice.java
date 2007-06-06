@@ -47,6 +47,12 @@ public interface Choice
     void init(Element option, ResourceBundle configResources) throws StartupException;
 
     /**
+     * The key of the option.
+     * @return String The key string as supplied in config.xml
+     */
+    String getKey();
+
+    /**
      * The full path of the option.
      * @return String The path string as supplied in config.properties
      */

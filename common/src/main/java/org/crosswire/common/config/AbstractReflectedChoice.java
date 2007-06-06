@@ -42,7 +42,7 @@ public abstract class AbstractReflectedChoice implements Choice
      */
     public void init(Element option, ResourceBundle configResources) throws StartupException
     {
-        String key = option.getAttributeValue("key"); //$NON-NLS-1$
+        key = option.getAttributeValue("key"); //$NON-NLS-1$
 
         assert configResources != null;
 
@@ -127,6 +127,14 @@ public abstract class AbstractReflectedChoice implements Choice
         {
             priority = Integer.parseInt(priorityname);
         }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.Choice#getKey()
+     */
+    public String getKey()
+    {
+        return key;
     }
 
     /* (non-Javadoc)
@@ -273,6 +281,11 @@ public abstract class AbstractReflectedChoice implements Choice
             throw new ConfigException(Msg.CONFIG_SETFAIL, ex, new Object[] { setter });
         }
     }
+
+    /**
+     * The key of the option.
+     */
+    private String key;
 
     /**
      * The type that we reflect to

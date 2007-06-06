@@ -21,6 +21,9 @@
  */
 package org.crosswire.common.config;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -85,6 +88,10 @@ public class Config
     public Config(String title)
     {
         this.title = title;
+        keys = new ArrayList();
+        models = new ArrayList();
+        local = new Properties();
+        listenerList = new EventListenerList();
     }
 
     /**
@@ -310,6 +317,10 @@ public class Config
                 try
                 {
                     choice.setString(newValue);
+                    if (changeListeners != null)
+                    {
+                        changeListeners.firePropertyChange(new PropertyChangeEvent(choice, choice.getKey(), oldValue, newValue));
+                    }
                 }
                 catch (LucidException ex)
                 {
@@ -500,6 +511,69 @@ public class Config
     }
 
     /**
+     * Add a PropertyChangeListener to the listener list.
+     * The listener is registered for all properties.
+     *
+     * @param listener  The PropertyChangeListener to be added
+     */
+    public void addPropertyChangeListener(PropertyChangeListener listener)
+    {
+        if (changeListeners == null)
+        {
+            changeListeners = new PropertyChangeSupport(this);
+        }
+        changeListeners.addPropertyChangeListener(listener);
+    }
+
+    /**
+     * Remove a PropertyChangeListener from the listener list.
+     * This removes a PropertyChangeListener that was registered
+     * for all properties.
+     *
+     * @param listener  The PropertyChangeListener to be removed
+     */
+    public void removePropertyChangeListener(PropertyChangeListener listener)
+    {
+        if (changeListeners != null)
+        {
+            changeListeners.removePropertyChangeListener(listener);
+        }
+    }
+
+    /**
+     * Add a PropertyChangeListener for a specific property.  The listener
+     * will be invoked only when a call on firePropertyChange names that
+     * specific property.
+     *
+     * @param propertyName  The name of the property to listen on.
+     * @param listener  The PropertyChangeListener to be added
+     */
+
+    public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener)
+    {
+        if (changeListeners == null)
+        {
+            changeListeners = new PropertyChangeSupport(this);
+        }
+        changeListeners.addPropertyChangeListener(propertyName, listener);
+    }
+
+    /**
+     * Remove a PropertyChangeListener for a specific property.
+     *
+     * @param propertyName  The name of the property that was listened on.
+     * @param listener  The PropertyChangeListener to be removed
+     */
+
+    public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener)
+    {
+        if (changeListeners != null)
+        {
+            changeListeners.removePropertyChangeListener(propertyName, listener);
+        }
+    }
+
+    /**
      * Add an Exception listener to the list of things wanting
      * to know whenever we capture an Exception
      */
@@ -568,11 +642,6 @@ public class Config
     }
 
     /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(Config.class);
-
-    /**
      * The name for dialog boxes and properties files
      */
     protected String title;
@@ -593,7 +662,18 @@ public class Config
     protected Properties local = new Properties();
 
     /**
+     * The set of property change listeners.
+     */
+    protected PropertyChangeSupport changeListeners;
+
+    /**
      * The list of listeners
      */
     protected EventListenerList listenerList = new EventListenerList();
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(Config.class);
+
 }
