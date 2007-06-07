@@ -106,8 +106,9 @@ public class Config
      * @param key The new name
      * @param model The Field model to map to the key
      */
-    public void add(String key, Choice model)
+    public void add(Choice model)
     {
+        String key = model.getKey();
         //log.debug("Adding key=" + key);
 
         keys.add(key);
@@ -145,7 +146,7 @@ public class Config
             try
             {
                 Choice choice = ChoiceFactory.getChoice(element, configResources);
-                add(key, choice);
+                add(choice);
             }
             catch (StartupException e)
             {
@@ -189,40 +190,17 @@ public class Config
     }
 
     /**
-     * The set of Choice Names that we are controlling
-     * @return An enumeration over the keys
+     * The set of Choice that we are controlling
+     * @return An enumeration over the choices
      */
-    public Iterator getPaths()
+    public Iterator iterator()
     {
-        List paths = new ArrayList();
-
-        Iterator iter = models.iterator();
-        while (iter.hasNext())
-        {
-            Choice choice = (Choice) iter.next();
-            String path = getPath(choice.getFullPath());
-
-            if (!paths.contains(path))
-            {
-                paths.add(path);
-            }
-        }
-
-        return paths.iterator();
+        return models.iterator();
     }
 
     /**
-     * The set of Choice Names that we are controlling
-     * @return An enumeration over the keys
-     */
-    public Iterator getNames()
-    {
-        return keys.iterator();
-    }
-
-    /**
-     * Step through the keys
-     * @return an enum of the keys
+     * Get the Choice for a given key
+     * @return the requested choice
      */
     public Choice getChoice(String key)
     {

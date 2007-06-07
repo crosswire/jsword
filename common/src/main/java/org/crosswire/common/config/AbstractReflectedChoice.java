@@ -42,9 +42,12 @@ public abstract class AbstractReflectedChoice implements Choice
      */
     public void init(Element option, ResourceBundle configResources) throws StartupException
     {
+        assert configResources != null;
+
         key = option.getAttributeValue("key"); //$NON-NLS-1$
 
-        assert configResources != null;
+        String hiddenState = option.getAttributeValue("hidden"); //$NON-NLS-1$
+        hidden = Boolean.valueOf(hiddenState).booleanValue();
 
         String helpText = configResources.getString(key + ".help"); //$NON-NLS-1$
         assert helpText != null;
@@ -195,11 +198,16 @@ public abstract class AbstractReflectedChoice implements Choice
         return true;
     }
 
-    /**
-     * Sometimes we need to ensure that we configure items in a certain
-     * order, the config package moves the changes to the application
-     * starting with the highest priority, moving to the lowest
-     * @return A priority level
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.Choice#isHidden()
+     */
+    public boolean isHidden()
+    {
+        return hidden;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.config.Choice#getPriority()
      */
     public int getPriority()
     {
@@ -321,6 +329,11 @@ public abstract class AbstractReflectedChoice implements Choice
      * The full path of this item
      */
     private String fullPath;
+
+    /**
+     * Whether this choice should be visible or hidden
+     */
+    private boolean hidden;
 
     /**
      * The priority of this config level

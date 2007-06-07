@@ -122,6 +122,12 @@ public interface Choice
     int getPriority();
 
     /**
+     * Whether this should be visible in a Config Editor.
+     * @return hidden or visible
+     */
+    boolean isHidden();
+
+    /**
      * Do we need to restart the program in order for this change to have
      * effect?
      * @return True if a restart is required
