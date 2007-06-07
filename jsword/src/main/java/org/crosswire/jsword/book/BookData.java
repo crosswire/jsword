@@ -83,7 +83,7 @@ public class BookData
         if (osis == null)
         {
             // TODO(DMS): Determine the proper representation of the OSISWork name for multiple books.
-            osis = OSISUtil.createOsisFramework(books[0].getBookMetaData());
+            osis = OSISUtil.createOsisFramework(getFirstBook().getBookMetaData());
             Element text = osis.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
             Element div = getOsisContent();
             text.addContent(div);
@@ -116,9 +116,17 @@ public class BookData
      * Who created this data.
      * @return Returns the book.
      */
-    public Book getBook()
+    public Book[] getBooks()
     {
-        return books[0];
+        return books;
+    }
+
+    /**
+     * Get the first book.
+     */
+    public Book getFirstBook()
+    {
+        return books != null && books.length > 0 ? books[0] : null;
     }
 
     /**
