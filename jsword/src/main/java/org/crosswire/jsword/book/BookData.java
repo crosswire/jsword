@@ -66,13 +66,14 @@ public class BookData
     /**
      * Create BookData for multiple books.
      */
-    public BookData(Book[] books, Key key)
+    public BookData(Book[] books, Key key, boolean compare)
     {
         assert books != null && books.length > 0;
         assert key != null;
 
         this.books = (Book[]) books.clone();
         this.key = key;
+        this.comparingBooks = compare;
     }
 
     /**
@@ -138,6 +139,14 @@ public class BookData
         return key;
     }
 
+    /**
+     * @return whether the books should be compared.
+     */
+    public boolean isComparingBooks()
+    {
+        return comparingBooks;
+    }
+
     private Element getOsisContent() throws BookException
     {
         Element div = OSISUtil.factory().createDiv();
@@ -176,7 +185,8 @@ public class BookData
 
                     BookCategory prevCategory = prevBook.getBookCategory();
                     String prevName = prevBook.getInitials();
-                    showDiffs[i - 1] = BookCategory.BIBLE.equals(category)
+                    showDiffs[i - 1] = comparingBooks
+                                            && BookCategory.BIBLE.equals(category)
                                             && category.equals(prevCategory)
                                             && book.getLanguage().equals(prevBook.getLanguage())
                                             && !book.getInitials().equals(prevName);
@@ -275,6 +285,11 @@ public class BookData
      * The books to which the key should be applied.
      */
     private Book[] books;
+
+    /**
+     * Whether the Books should be compared.
+     */
+    private boolean comparingBooks;
 
     /**
      * The complete osis container for the element
