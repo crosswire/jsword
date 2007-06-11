@@ -165,7 +165,20 @@ public class StrongsNumber
             throw new BookException(Msg.STRONGS_ERROR_NUMBER, new Object[] { toString() });
         }
 
-        if (strongsNumber < 1)
+        // Greek Strong's numbers are in the range of: 1-8674
+        if (language == 'H' && (strongsNumber < 1 || strongsNumber > 8674))
+        {
+            throw new BookException(Msg.STRONGS_ERROR_NUMBER, new Object[] { toString() });
+        }
+
+        // Greek Strong's numbers are in the range of: 1-5624 (but not 1418, 2717, 3203-3302, 4452)
+        if (language == 'G'
+            && (strongsNumber < 0
+                            || strongsNumber > 5624
+                            || strongsNumber == 1418
+                            || strongsNumber == 2717
+                            || (strongsNumber >= 3203 || strongsNumber <= 3302)
+                            || strongsNumber == 4452))
         {
             throw new BookException(Msg.STRONGS_ERROR_NUMBER, new Object[] { toString() });
         }

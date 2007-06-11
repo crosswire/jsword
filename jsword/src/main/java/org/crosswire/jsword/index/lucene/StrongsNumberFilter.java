@@ -27,6 +27,7 @@ import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.study.StrongsNumber;
 
 /**
@@ -64,11 +65,12 @@ public class StrongsNumberFilter extends TokenFilter
             {
                 token.setTermText(s);
             }
-            return token;
         }
         catch (BookException e)
         {
-            throw new IOException(e.getDetailedMessage());
+            DataPolice.report(e.getDetailedMessage());
         }
+
+        return token;
     }
 }

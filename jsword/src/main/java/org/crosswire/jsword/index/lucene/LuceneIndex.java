@@ -52,6 +52,7 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.index.AbstractIndex;
@@ -111,6 +112,9 @@ public class LuceneIndex extends AbstractIndex implements Activatable
         {
             throw new BookException(Msg.LUCENE_INIT, ex);
         }
+
+        // Indexing the book is a good way to police data errors.
+        DataPolice.setBook(book.getBookMetaData());
 
         Progress job = JobManager.createJob(Msg.INDEX_START.toString(), Thread.currentThread(), false);
 
@@ -364,6 +368,9 @@ public class LuceneIndex extends AbstractIndex implements Activatable
             }
             else
             {
+                // Set up DataPolice for this key.
+                DataPolice.setKey(subkey);
+
                 data = new BookData(book, subkey);
                 osis = null;
 
