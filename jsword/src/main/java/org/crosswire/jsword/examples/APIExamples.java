@@ -249,7 +249,7 @@ public class APIExamples
         {
             Verse verse = (Verse) iter.next();
             BookData data = new BookData(bible, verse);
-            System.out.println('|' + BibleInfo.getBookName(verse.getBook()) + '|' + verse.getChapter() + '|' + verse.getVerse() + '|' + OSISUtil.getCanonicalText(data.getOsisFragment()));
+            System.out.println('|' + BibleInfo.getPreferredBookName(verse.getBook()) + '|' + verse.getChapter() + '|' + verse.getVerse() + '|' + OSISUtil.getCanonicalText(data.getOsisFragment()));
         }
     }
 

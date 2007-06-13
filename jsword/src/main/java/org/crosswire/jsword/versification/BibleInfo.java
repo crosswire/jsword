@@ -117,15 +117,26 @@ public final class BibleInfo
     }
 
     /**
+     * Get the BookName.
+     * @param book The book number (1-66)
+     * @return The requested BookName
+     * @exception NoSuchVerseException If the book number is not valid
+     */
+    public static BookName getBookName(int book) throws NoSuchVerseException
+    {
+        return bibleNames.getName(book);
+    }
+
+    /**
      * Get the preferred name of a book.
      * Altered by the case setting (see setBookCase() and isLongBookName())
      * @param book The book number (1-66)
      * @return The full name of the book
      * @exception NoSuchVerseException If the book number is not valid
      */
-    public static String getBookName(int book) throws NoSuchVerseException
+    public static String getPreferredBookName(int book) throws NoSuchVerseException
     {
-        return bibleNames.getBookName(book);
+        return bibleNames.getPreferredName(book);
     }
 
     /**
@@ -137,7 +148,7 @@ public final class BibleInfo
      */
     public static String getLongBookName(int book) throws NoSuchVerseException
     {
-        return bibleNames.getLongBookName(book);
+        return bibleNames.getLongName(book);
     }
 
     /**
@@ -149,7 +160,7 @@ public final class BibleInfo
      */
     public static String getShortBookName(int book) throws NoSuchVerseException
     {
-        return bibleNames.getShortBookName(book);
+        return bibleNames.getShortName(book);
     }
 
     /**
@@ -173,16 +184,16 @@ public final class BibleInfo
         int bookNum = -1;
         if (containsLetter(find))
         {
-            bookNum = OSISNames.getBookNumber(find);
+            bookNum = OSISNames.getNumber(find);
 
             if (bookNum == -1)
             {
-                bookNum = bibleNames.getBookNumber(find);
+                bookNum = bibleNames.getNumber(find);
             }
 
             if (bookNum == -1 && englishBibleNames != null)
             {
-                bookNum = englishBibleNames.getBookNumber(find);
+                bookNum = englishBibleNames.getNumber(find);
             }
         }
         return bookNum;
@@ -387,7 +398,7 @@ public final class BibleInfo
             Object[] params = new Object[]
             {
                 new Integer(chaptersInBook(book)),
-                getBookName(book), new Integer(chapter),
+                getPreferredBookName(book), new Integer(chapter),
             };
             throw new NoSuchVerseException(Msg.BOOKS_CHAPTER, params);
         }
@@ -398,7 +409,7 @@ public final class BibleInfo
             Object[] params = new Object[]
             {
                 new Integer(versesInChapter(book, chapter)),
-                getBookName(book),
+                getPreferredBookName(book),
                 new Integer(chapter),
                 new Integer(verse),
             };

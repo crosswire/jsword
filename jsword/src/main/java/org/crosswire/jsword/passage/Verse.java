@@ -167,11 +167,11 @@ public final class Verse implements Key, Serializable
             // To cope with thing like Jude 2...
             if (BibleInfo.chaptersInBook(book) == 1)
             {
-                return BibleInfo.getBookName(book)
+                return BibleInfo.getPreferredBookName(book)
                     + Verse.VERSE_PREF_DELIM1
                     + verse;
             }
-            return BibleInfo.getBookName(book)
+            return BibleInfo.getPreferredBookName(book)
                 + Verse.VERSE_PREF_DELIM1
                 + chapter
                 + Verse.VERSE_PREF_DELIM2
@@ -207,7 +207,7 @@ public final class Verse implements Key, Serializable
             {
                 if (verseBase.book != book)
                 {
-                    return BibleInfo.getBookName(book)
+                    return BibleInfo.getPreferredBookName(book)
                         + Verse.VERSE_PREF_DELIM1
                         + verse;
                 }
@@ -217,7 +217,7 @@ public final class Verse implements Key, Serializable
 
             if (verseBase.book != book)
             {
-                return BibleInfo.getBookName(book)
+                return BibleInfo.getPreferredBookName(book)
                     + Verse.VERSE_PREF_DELIM1
                     + chapter
                     + Verse.VERSE_PREF_DELIM2
@@ -247,7 +247,7 @@ public final class Verse implements Key, Serializable
     {
         try
         {
-            return BibleInfo.getBookName(book);
+            return BibleInfo.getPreferredBookName(book);
         }
         catch (NoSuchKeyException ex)
         {

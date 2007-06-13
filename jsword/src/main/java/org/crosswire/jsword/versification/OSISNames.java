@@ -26,7 +26,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import java.util.regex.Pattern;
 
 import org.crosswire.common.util.CWClassLoader;
 import org.crosswire.jsword.passage.NoSuchVerseException;
@@ -77,11 +76,10 @@ public final class OSISNames
      * @param find The string to identify
      * @return The book number (1 to 66) On error -1
      */
-    public static int getBookNumber(String find)
+    public static int getNumber(String find)
     {
-        String match = normalize(find);
+        String match = BookName.normalize(find, OSIS_LOCALE);
 
-        // Favor OSIS names.
         Integer bookNum = (Integer) osisMap.get(match);
         if (bookNum != null)
         {
@@ -99,17 +97,7 @@ public final class OSISNames
      */
     public static boolean isBookName(String find)
     {
-        return getBookNumber(find) != -1;
-    }
-
-    /**
-     * Normalize by stripping punctuation and whitespace.
-     * @param str the string to normalize
-     * @return the normalized string
-     */
-    private static String normalize(String str)
-    {
-        return normPattern.matcher(str).replaceAll("").toLowerCase(OSIS_LOCALE); //$NON-NLS-1$
+        return getNumber(find) != -1;
     }
 
     /**
@@ -128,7 +116,7 @@ public final class OSISNames
         for (int i = 0; i < osisBooks.length; i++)
         {
             osisBooks[i] = getString(resources, OSIS_KEY + (i + 1));
-            osisMap.put(normalize(osisBooks[i]), new Integer(i + 1));
+            osisMap.put(BookName.normalize(osisBooks[i], OSIS_LOCALE), new Integer(i + 1));
         }
     }
 
@@ -147,9 +135,6 @@ public final class OSISNames
         }
         return null;
     }
-
-    /** remove spaces and punctuation in Bible Names */
-    private static Pattern      normPattern    = Pattern.compile("[. ]"); //$NON-NLS-1$
 
     /** The Locale of OSIS Names */
     private static final Locale OSIS_LOCALE = new Locale("en"); //$NON-NLS-1$

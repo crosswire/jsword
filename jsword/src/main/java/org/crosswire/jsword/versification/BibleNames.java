@@ -26,11 +26,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import java.util.regex.Pattern;
 
 import org.crosswire.common.util.CWClassLoader;
 import org.crosswire.common.util.StringUtil;
-import org.crosswire.jsword.book.CaseType;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 
 /**
@@ -46,12 +44,27 @@ import org.crosswire.jsword.passage.NoSuchVerseException;
 public final class BibleNames
 {
     /**
-     * Ensure that we can not be instantiated
+     * Create BibleNames for the given locale
      */
     public BibleNames(Locale locale)
     {
         this.locale = locale;
         initialize();
+    }
+
+    public BookName getName(int book) throws NoSuchVerseException
+    {
+        try
+        {
+            return books[book - 1];
+        }
+        catch (ArrayIndexOutOfBoundsException ex)
+        {
+            // This is faster than doing the check explicitly, unless
+            // The exception is actually thrown, then it is a lot slower
+            // I'd like to think that the norm is to get it right
+            throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] { new Integer(book) });
+        }
     }
 
     /**
@@ -61,13 +74,9 @@ public final class BibleNames
      * @return The full name of the book
      * @exception NoSuchVerseException If the book number is not valid
      */
-    public String getBookName(int book) throws NoSuchVerseException
+    public String getPreferredName(int book) throws NoSuchVerseException
     {
-        if (BibleInfo.isFullBookName())
-        {
-            return getLongBookName(book);
-        }
-        return getShortBookName(book);
+        return getName(book).getPreferredName();
     }
 
     /**
@@ -77,31 +86,9 @@ public final class BibleNames
      * @return The full name of the book
      * @exception NoSuchVerseException If the book number is not valid
      */
-    public String getLongBookName(int book) throws NoSuchVerseException
+    public String getLongName(int book) throws NoSuchVerseException
     {
-        try
-        {
-            CaseType bookCase = BibleInfo.getDefaultCase();
-
-            if (bookCase == CaseType.LOWER)
-            {
-                return fullBooks[book - 1].toLowerCase(locale);
-            }
-
-            if (bookCase == CaseType.UPPER)
-            {
-                return fullBooks[book - 1].toUpperCase(locale);
-            }
-
-            return fullBooks[book - 1];
-        }
-        catch (ArrayIndexOutOfBoundsException ex)
-        {
-            // This is faster than doing the check explicitly, unless
-            // The exception is actually thrown, then it is a lot slower
-            // I'd like to think that the norm is to get it right
-            throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] { new Integer(book) });
-        }
+        return getName(book).getLongName();
     }
 
     /**
@@ -111,31 +98,9 @@ public final class BibleNames
      * @return The short name of the book
      * @exception NoSuchVerseException If the book number is not valid
      */
-    public String getShortBookName(int book) throws NoSuchVerseException
+    public String getShortName(int book) throws NoSuchVerseException
     {
-        try
-        {
-            CaseType bookCase = BibleInfo.getDefaultCase();
-
-            if (bookCase.equals(CaseType.LOWER))
-            {
-                return shortBooks[book - 1].toLowerCase(locale);
-            }
-
-            if (bookCase.equals(CaseType.UPPER))
-            {
-                return shortBooks[book - 1].toUpperCase(locale);
-            }
-
-            return shortBooks[book - 1];
-        }
-        catch (ArrayIndexOutOfBoundsException ex)
-        {
-            // This is faster than doing the check explicitly, unless
-            // The exception is actually thrown, then it is a lot slower
-            // I'd like to think that the norm is to get it right
-            throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] { new Integer(book) });
-        }
+        return getName(book).getShortName();
     }
 
     /**
@@ -143,54 +108,34 @@ public final class BibleNames
      * @param find The string to identify
      * @return The book number (1 to 66) On error -1
      */
-    public int getBookNumber(String find)
+    public int getNumber(String find)
     {
-        String match = normalize(find);
+        String match = BookName.normalize(find, locale);
 
-        Integer bookNum = (Integer) fullBooksMap.get(match);
-        if (bookNum != null)
+        BookName bookName = (BookName) fullBooksMap.get(match);
+        if (bookName != null)
         {
-            return bookNum.intValue();
+            return bookName.getNumber();
         }
 
-        bookNum = (Integer) shortBooksMap.get(match);
-        if (bookNum != null)
+        bookName = (BookName) shortBooksMap.get(match);
+        if (bookName != null)
         {
-            return bookNum.intValue();
+            return bookName.getNumber();
         }
 
-        bookNum = (Integer) altBooksMap.get(match);
-        if (bookNum != null)
+        bookName = (BookName) altBooksMap.get(match);
+        if (bookName != null)
         {
-            return bookNum.intValue();
+            return bookName.getNumber();
         }
 
-        // Or does it match one of the alternative versions
-        for (int i = 0; i < altBooks.length; i++)
+        for (int i = 0; i < books.length; i++)
         {
-            for (int j = 0; j < altBooks[i].length; j++)
+            bookName = books[i];
+            if (bookName.match(match))
             {
-                String targetBookName = altBooks[i][j];
-                if (targetBookName.startsWith(match) || match.startsWith(targetBookName))
-                {
-                    return i + 1;
-                }
-            }
-        }
-
-        // Does it match a long version of the book or a short version
-        for (int i = 0; i < fullBooksSearch.length; i++)
-        {
-            String targetBookName = fullBooksSearch[i];
-            if (targetBookName.startsWith(match))
-            {
-                return i + 1;
-            }
-
-            targetBookName = shortBooksSearch[i];
-            if (targetBookName.startsWith(match) || match.startsWith(targetBookName))
-            {
-                return i + 1;
+                return bookName.getNumber();
             }
         }
 
@@ -205,17 +150,7 @@ public final class BibleNames
      */
     public boolean isBookName(String find)
     {
-        return getBookNumber(find) != -1;
-    }
-
-    /**
-     * Normalize by stripping punctuation and whitespace.
-     * @param str the string to normalize
-     * @return the normalized string
-     */
-    private String normalize(String str)
-    {
-        return normPattern.matcher(str).replaceAll("").toLowerCase(locale); //$NON-NLS-1$
+        return getNumber(find) != -1;
     }
 
     /**
@@ -226,23 +161,18 @@ public final class BibleNames
     {
         int booksInBible = BibleInfo.booksInBible();
 
-        // Create the book name arrays
-        fullBooks = new String[booksInBible];
-        fullBooksSearch = new String[booksInBible];
-        fullBooksMap = new HashMap(booksInBible);
+        books = new BookName[booksInBible];
 
-        shortBooks = new String[booksInBible];
-        shortBooksSearch = new String[booksInBible];
+        // Create the book name maps
+        fullBooksMap = new HashMap(booksInBible);
         shortBooksMap = new HashMap(booksInBible);
 
-        altBooks = new String[booksInBible][];
         altBooksMap = new HashMap(booksInBible);
 
         ResourceBundle resources = ResourceBundle.getBundle(BibleNames.class.getName(), locale, CWClassLoader.instance(BibleNames.class));
 
         for (int i = 0; i < booksInBible; i++)
         {
-            Integer bookNum = new Integer(i + 1);
             String osisName = ""; //$NON-NLS-1$
             try
             {
@@ -254,29 +184,29 @@ public final class BibleNames
             }
 
             String fullBook = getString(resources, osisName + FULL_KEY);
-            String normalized = normalize(fullBook);
-            fullBooks[i] = fullBook;
-            fullBooksSearch[i] = normalized;
-            fullBooksMap.put(normalized, bookNum);
 
             String shortBook = getString(resources, osisName + SHORT_KEY);
             if (shortBook.length() == 0)
             {
                 shortBook = fullBook;
             }
-            normalized = normalize(shortBook);
-            shortBooks[i] = shortBook;
-            shortBooksSearch[i] = normalized;
-            shortBooksMap.put(normalized, bookNum);
 
             String altBook = getString(resources, osisName + ALT_KEY);
+
+            BookName bookName = new BookName(locale, i + 1, fullBook, shortBook, altBook);
+            books[i] = bookName;
+
+            fullBooksMap.put(bookName.getNormalizedLongName(), bookName);
+
+            shortBooksMap.put(bookName.getNormalizedShortName(), bookName);
+
             String[] alternates = StringUtil.split(altBook, ',');
-            altBooks[i] = alternates;
 
             for (int j = 0; j < alternates.length; j++)
             {
-                altBooksMap.put(alternates[j], bookNum);
+                altBooksMap.put(alternates[j], bookName);
             }
+
         }
     }
 
@@ -370,41 +300,19 @@ public final class BibleNames
     public static final byte    JUDE           = 65;
     public static final byte    REVELATION     = 66;
 
-    /** remove spaces and punctuation in Bible Names */
-    private static Pattern      normPattern    = Pattern.compile("[. ]"); //$NON-NLS-1$
+    private BookName[]          books;
 
     /** The locale for the Bible Names */
     private Locale              locale;
 
-    /** The full names of the book of the Bible, in mixed case */
-    private String[]            fullBooks;
-
-    /** The full names of the book of the Bible, normalized, generated at runtime */
-    private String[]            fullBooksSearch;
-
     /** The full names of the book of the Bible, normalized, generated at runtime */
     private Map                 fullBooksMap;
-
-    /** Standard shortened names for the book of the Bible, in mixed case */
-    private String[]            shortBooks;
-
-    /**
-     * Standard shortened names for the book of the Bible, normalized, generated
-     * at runtime.
-     */
-    private String[]            shortBooksSearch;
 
     /**
      * Standard shortened names for the book of the Bible, normalized, generated
      * at runtime.
      */
     private Map                 shortBooksMap;
-
-    /**
-     * Alternative shortened names for the book of the Bible, expected to be
-     * normalized
-     */
-    private String[][]          altBooks;
 
     /**
      * Alternative shortened names for the book of the Bible, normalized,

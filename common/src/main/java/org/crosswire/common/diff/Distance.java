@@ -38,7 +38,7 @@ public class Distance
      * @param target the changed text
      * @return the distance
      */
-    public static int getLevenshteinDistance (String source, String target)
+    public static int getLevenshteinDistance(String source, String target)
     {
         if (source == null || target == null)
         {

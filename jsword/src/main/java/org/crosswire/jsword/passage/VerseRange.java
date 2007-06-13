@@ -164,18 +164,18 @@ public final class VerseRange implements Key, Serializable
                     // Just report the name of the book, we don't need to worry about the
                     // base since we start at the start of a book, and should have been
                     // recently normalized()
-                    return BibleInfo.getBookName(startBook)
+                    return BibleInfo.getPreferredBookName(startBook)
                          + VerseRange.RANGE_PREF_DELIM
-                         + BibleInfo.getBookName(endBook);
+                         + BibleInfo.getPreferredBookName(endBook);
                 }
 
                 // If this range is exactly a whole chapter
                 if (isWholeChapters())
                 {
                     // Just report book and chapter names
-                    return BibleInfo.getBookName(startBook)
+                    return BibleInfo.getPreferredBookName(startBook)
                          + Verse.VERSE_PREF_DELIM1 + startChapter
-                         + VerseRange.RANGE_PREF_DELIM + BibleInfo.getBookName(endBook)
+                         + VerseRange.RANGE_PREF_DELIM + BibleInfo.getPreferredBookName(endBook)
                          + Verse.VERSE_PREF_DELIM1 + endChapter;
                 }
 
@@ -188,7 +188,7 @@ public final class VerseRange implements Key, Serializable
                 // Just report the name of the book, we don't need to worry about the
                 // base since we start at the start of a book, and should have been
                 // recently normalized()
-                return BibleInfo.getBookName(startBook);
+                return BibleInfo.getPreferredBookName(startBook);
             }
 
             // If this is 2 separate chapters
@@ -198,7 +198,7 @@ public final class VerseRange implements Key, Serializable
                 if (isWholeChapters())
                 {
                     // Just report the name of the book and the chapters
-                    return BibleInfo.getBookName(startBook)
+                    return BibleInfo.getPreferredBookName(startBook)
                          + Verse.VERSE_PREF_DELIM1 + startChapter
                          + VerseRange.RANGE_PREF_DELIM + endChapter;
                 }
@@ -212,7 +212,7 @@ public final class VerseRange implements Key, Serializable
             if (isWholeChapter())
             {
                 // Just report the name of the book and the chapter
-                return BibleInfo.getBookName(startBook)
+                return BibleInfo.getPreferredBookName(startBook)
                      + Verse.VERSE_PREF_DELIM1 + startChapter;
             }
 
