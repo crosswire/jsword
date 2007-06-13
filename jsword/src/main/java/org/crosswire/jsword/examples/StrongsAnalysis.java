@@ -66,7 +66,7 @@ public class StrongsAnalysis
 
                 try
                 {
-                    osis = data.getOsis();
+                    osis = data.getOsisFragment();
                 }
                 catch (BookException e)
                 {

@@ -150,7 +150,7 @@ public abstract class AbstractPassageBook extends AbstractBook
     public void setDocument(Key key, BookData bdata) throws BookException
     {
         // For all of the sections
-        Iterator sit = OSISUtil.getFragment(bdata.getOsis()).iterator();
+        Iterator sit = OSISUtil.getFragment(bdata.getOsisFragment()).iterator();
         while (sit.hasNext())
         {
             Element div = (Element) sit.next();

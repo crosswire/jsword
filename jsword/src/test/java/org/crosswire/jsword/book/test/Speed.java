@@ -117,7 +117,7 @@ public class Speed implements Runnable
      */
     private void dummyDisplay(Passage ref) throws BookException
     {
-        new BookData(book, ref).getOsis();
+        new BookData(book, ref).getOsisFragment();
     }
 
     /**

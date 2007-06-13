@@ -140,7 +140,7 @@ public class BooksTest extends TestCase
         {
             Book bible = bibles[i];
             BookData data = new BookData(bible, gen11[i]);
-            assertNotNull(data.getOsis());
+            assertNotNull(data.getOsisFragment());
         }
     }
 

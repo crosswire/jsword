@@ -569,6 +569,11 @@ public final class OSISUtil
             content = root.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
         }
 
+        if (OSISUtil.OSIS_ELEMENT_OSISTEXT.equals(root.getName()))
+        {
+            content = root.getChild(OSISUtil.OSIS_ELEMENT_DIV);
+        }
+
         // At this point we are at something interesting, possibly null.
         // If this was a semantically valid OSIS document then it is a div.
         // As long as this node has one child dig deeper.

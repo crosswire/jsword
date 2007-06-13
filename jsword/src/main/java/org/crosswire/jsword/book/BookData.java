@@ -32,6 +32,7 @@ import org.crosswire.jsword.passage.Key;
 import org.jdom.Content;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.Namespace;
 import org.jdom.Text;
 
 /**
@@ -86,7 +87,7 @@ public class BookData
             // TODO(DMS): Determine the proper representation of the OSISWork name for multiple books.
             osis = OSISUtil.createOsisFramework(getFirstBook().getBookMetaData());
             Element text = osis.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
-            Element div = getOsisContent();
+            Element div = getOsisFragment();
             text.addContent(div);
         }
 
@@ -94,14 +95,16 @@ public class BookData
     }
 
     /**
-     * Check that a BookData is valid.
-     * Currently, this does nothing, and isn't used. it was broken when we used
-     * JAXB, however it wasn't much use then becuase JAXB did a lot to keep the
-     * document valid anyway. Under JDOM there is more point, but I don't think
-     * JDOM supports this out of the box.
+     * Accessor for the root OSIS element
      */
-    public void validate()
+    public Element getOsisFragment() throws BookException
     {
+        if (fragment == null)
+        {
+            fragment = getOsisContent();
+        }
+
+        return fragment;
     }
 
     /**
@@ -110,7 +113,14 @@ public class BookData
      */
     public SAXEventProvider getSAXEventProvider() throws BookException
     {
-        return new JDOMSAXEventProvider(new Document(getOsis()));
+        // If the fragment is already in a document, then use that.
+        Element frag = getOsisFragment();
+        Document doc = frag.getDocument();
+        if (doc == null)
+        {
+            doc = new Document(frag);
+        }
+        return new JDOMSAXEventProvider(doc);
     }
 
     /**
@@ -199,12 +209,14 @@ public class BookData
                         buf.append(book.getInitials());
 
                         cell.addContent(OSISUtil.factory().createText(buf.toString()));
+                        cell.setAttribute(OSISUtil.OSIS_ATTR_LANG, prevBook.getProperty(BookMetaData.KEY_XML_LANG), Namespace.XML_NAMESPACE);
                         row.addContent(cell);
                         cell = OSISUtil.factory().createHeaderCell();
                     }
                 }
 
                 cell.addContent(OSISUtil.factory().createText(book.getInitials()));
+                cell.setAttribute(OSISUtil.OSIS_ATTR_LANG, book.getProperty(BookMetaData.KEY_XML_LANG), Namespace.XML_NAMESPACE);
                 row.addContent(cell);
 
                 iters[i] = book.getOsisIterator(key, true);
@@ -295,4 +307,9 @@ public class BookData
      * The complete osis container for the element
      */
     private Element osis;
+
+    /**
+     * Just the element
+     */
+    private Element fragment;
 }

@@ -376,7 +376,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
 
                 try
                 {
-                    osis = data.getOsis();
+                    osis = data.getOsisFragment();
                 }
                 catch (BookException e)
                 {
@@ -386,6 +386,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
 
                 // Do the actual indexing
                 text = OSISUtil.getCanonicalText(osis);
+                doc = null;
                 if (text != null && text.length() > 0)
                 {
                     doc = new Document();

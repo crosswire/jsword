@@ -82,7 +82,7 @@ public class APIExamples
 
         Key key = bible.getKey("Gen 1 1"); //$NON-NLS-1$
         BookData data = new BookData(bible, key);
-        String text = OSISUtil.getCanonicalText(data.getOsis());
+        String text = OSISUtil.getCanonicalText(data.getOsisFragment());
 
         System.out.println("The plain text of Gen 1:1 is " + text); //$NON-NLS-1$
     }
@@ -140,7 +140,7 @@ public class APIExamples
         System.out.println("The first Key in the default dictionary is " + first); //$NON-NLS-1$
 
         BookData data = new BookData(dict, keys);
-        System.out.println("And the text against that key is " + OSISUtil.getPlainText(data.getOsis())); //$NON-NLS-1$
+        System.out.println("And the text against that key is " + OSISUtil.getPlainText(data.getOsisFragment())); //$NON-NLS-1$
     }
 
     /**
@@ -249,7 +249,7 @@ public class APIExamples
         {
             Verse verse = (Verse) iter.next();
             BookData data = new BookData(bible, verse);
-            System.out.println('|' + BibleInfo.getBookName(verse.getBook()) + '|' + verse.getChapter() + '|' + verse.getVerse() + '|' + OSISUtil.getCanonicalText(data.getOsis()));
+            System.out.println('|' + BibleInfo.getBookName(verse.getBook()) + '|' + verse.getChapter() + '|' + verse.getVerse() + '|' + OSISUtil.getCanonicalText(data.getOsisFragment()));
         }
     }
 
