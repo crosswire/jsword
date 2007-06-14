@@ -849,7 +849,7 @@ public final class OSISUtil
         if (content instanceof Element)
         {
             Element element = (Element) content;
-            
+
             // Ignore extra-biblical text
             if (EXTRA_BIBLICAL_ELEMENTS.contains(element.getName()))
             {
@@ -857,7 +857,7 @@ public final class OSISUtil
                 result = Boolean.valueOf(canonical).booleanValue();
             }
         }
-        
+
         return result;
     }
 
@@ -950,7 +950,7 @@ public final class OSISUtil
     public static List diffToOsis(List diffs)
     {
         Element div = factory().createDiv();
-        
+
         for (int x = 0; x < diffs.size(); x++)
         {
             Difference diff = (Difference) diffs.get(x);

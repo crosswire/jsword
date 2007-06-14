@@ -82,7 +82,7 @@ public abstract class CompressorType implements Serializable
      * Get a compressor.
      */
     public abstract Compressor getCompressor(byte[] input);
-    
+
     /**
      * Lookup method to convert from a String
      */

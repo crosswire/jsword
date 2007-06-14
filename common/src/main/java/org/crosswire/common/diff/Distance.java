@@ -32,6 +32,13 @@ package org.crosswire.common.diff;
 public class Distance
 {
     /**
+     * Prevent instantiation.
+     */
+    private Distance()
+    {
+    }
+
+    /**
      * Compute the LevenshteinDistance between two strings.
      * See <a href="http://www.merriampark.com/ldjava.htm">www.merriampark.com/ldjava.htm</a> for original implementation.
      * @param source the baseline text
@@ -52,7 +59,7 @@ public class Distance
            is the 'current working' distance array that maintains the newest distance cost
            counts as we iterate through the characters of String s.  Each time we increment
            the index of String t we are comparing, d is copied to p, the second int[].  Doing so
-           allows us to retain the previous cost counts as required by the algorithm (taking 
+           allows us to retain the previous cost counts as required by the algorithm (taking
            the minimum of the cost count to the left, up one, and diagonally up and to the left
            of the current cost count being calculated).  (Note that the arrays aren't really 
            copied anymore, just switched...this is clearly much better than cloning an array 
@@ -60,7 +67,7 @@ public class Distance
 
            Effectively, the difference between the two implementations is this one does not 
            cause an out of memory condition when calculating the LD over two very large strings.        
-         */      
+         */
 
         int sourceLength = source.length(); // length of source
         int targetLength = target.length(); // length of target
@@ -74,9 +81,9 @@ public class Distance
             return sourceLength;
         }
 
-        int prevDist[] = new int[sourceLength + 1]; //'previous' cost array, horizontally
-        int dist[] = new int[sourceLength + 1]; // cost array, horizontally
-        int swap[]; //placeholder to assist in swapping prevDist and dist
+        int[] prevDist = new int[sourceLength + 1]; //'previous' cost array, horizontally
+        int[] dist = new int[sourceLength + 1]; // cost array, horizontally
+        int[] swap; //placeholder to assist in swapping prevDist and dist
 
         // indexes into strings source and target
         int i; // iterates through source

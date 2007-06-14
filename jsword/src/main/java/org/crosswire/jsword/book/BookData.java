@@ -248,7 +248,7 @@ public class BookData
                             String thisText = ""; //$NON-NLS-1$                        
                             if (content instanceof Element)
                             {
-                                thisText = OSISUtil.getCanonicalText((Element)content);
+                                thisText = OSISUtil.getCanonicalText((Element) content);
                             }
                             else if (content instanceof Text)
                             {

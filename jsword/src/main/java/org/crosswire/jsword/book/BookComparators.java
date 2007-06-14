@@ -50,9 +50,8 @@ public final class BookComparators
         {
             public int compare(Object o1, Object o2)
             {
-                return ((Book)o1).compareTo(o2);
+                return ((Book) o1).compareTo(o2);
             }
-            
         };
     }
 

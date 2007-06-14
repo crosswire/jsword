@@ -118,7 +118,6 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         }
 
         URI configURI = NetUtil.getURI(conf);
-        
 
         URI remote = toRemoteURI(book);
         return NetUtil.isNewer(remote, configURI, proxyHost, proxyPort);

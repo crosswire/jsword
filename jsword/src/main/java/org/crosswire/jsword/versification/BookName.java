@@ -26,7 +26,6 @@ import java.util.regex.Pattern;
 
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.CaseType;
-import org.crosswire.jsword.passage.NoSuchVerseException;
 
 /**
  * BookName represents the different ways a book of the bible is named.
@@ -159,7 +158,6 @@ public final class BookName
      */
     public boolean match(String normalizedName)
     {
-        
         // Does it match one of the alternative versions
         for (int j = 0; j < alternateNames.length; j++)
         {

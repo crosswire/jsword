@@ -188,8 +188,8 @@ public class LZSS extends AbstractCompressor
             {
                 // Send one character.  Remember that code_buf[0] is the
                 // set of flags for the next eight items.
-                matchLength = 1;     
-                codeBuff[0] |= mask;  
+                matchLength = 1;
+                codeBuff[0] |= mask;
                 codeBuff[codeBufPos++] = ringBuffer[r];
             }
             else
@@ -286,7 +286,7 @@ public class LZSS extends AbstractCompressor
             // then we must have quit because we ran out of characters
             // to process.
             while (i++ < lastMatchLength)
-            {                              
+            {
                 deleteNode(s);
 
                 s = (short) ((s + 1) & (RING_SIZE - 1));
@@ -606,7 +606,7 @@ public class LZSS extends AbstractCompressor
     private void deleteNode(short node)
     {
         assert node >= 0;
-        assert node < (RING_SIZE+1);
+        assert node < (RING_SIZE + 1);
 
         short q;
 
@@ -670,7 +670,7 @@ public class LZSS extends AbstractCompressor
     private int getBytes(byte[] ibuf, int start, int len)
     {
         int slen = readBuffer.length;
-        int realLen = (((slen - readOffset) > len) ? len : slen - readOffset);
+        int realLen = slen - readOffset > len ? len : slen - readOffset;
         if (realLen > 0)
         {
             System.arraycopy(readBuffer, readOffset, ibuf, start, realLen);
@@ -690,7 +690,7 @@ public class LZSS extends AbstractCompressor
     private int getBytes(byte[] ibuf, int len)
     {
         int slen = readBuffer.length;
-        int realLen = (((slen - readOffset) > len) ? len : slen - readOffset);
+        int realLen = slen - readOffset > len ? len : slen - readOffset;
         if (realLen > 0)
         {
             System.arraycopy(readBuffer, readOffset, ibuf, 0, realLen);

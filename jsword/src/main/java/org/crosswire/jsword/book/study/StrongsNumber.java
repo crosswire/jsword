@@ -152,6 +152,8 @@ public class StrongsNumber
             case 'h':
                 language = 'H';
                 break;
+            default:
+                assert false : "Cannot get here"; //$NON-NLS-1$
         }
 
         // Get the number after the G or H
