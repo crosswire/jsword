@@ -55,6 +55,7 @@ public class History
     /**
      * Make a particular element in the navigation list the current
      * item in history.
+     * 
      * @param index the index of item to make the last one in the back list,
      *          -1 (or lower) will put everything in the forward list.
      *          Indexes beyond the end of the list will put everything
@@ -63,8 +64,10 @@ public class History
     public Object select(int index)
     {
         int i = index;
+
         // Adjust to be 1 based
         int size = nav.size();
+
         if (i > size)
         {
             i = size;
@@ -73,28 +76,64 @@ public class History
         {
             i = 1;
         }
-        backCount = i;
-        fireHistoryChanged();
+
+        // Only fire history changes when there is a change.
+        if (i != backCount)
+        {
+            backCount = i;
+            fireHistoryChanged();
+        }
+
         return getCurrent();
     }
 
     /**
-     * Add an element to history. If there is any "forward" list, the element
-     * replaces it.
-     * @param obj
+     * Add an element to history. If the element is in the forward list,
+     * then it replaces everything in the forward list upto it.
+     * Otherwise, it replaces the forward list.
+     * 
+     * @param obj the object to add
      */
     public void add(Object obj)
     {
-        // everything after backCount is blown away.
-        if (nav.size() > 0)
+        Object current = getCurrent();
+
+        // Don't add null objects or the same object.
+        if (obj == null || obj.equals(current))
         {
-            nav.subList(backCount, nav.size()).clear();
+            return;
         }
-        // then we add it
-        nav.add(obj);
-        backCount++; // or nav.size();
+
+        // If we are adding the next element, then just advance
+        // otherwise ...
+//        Object next = peek(1);
+//        if (!obj.equals(next))
+//        {
+            int size = nav.size();
+            if (size > backCount)
+            {
+                int pos = backCount;
+                while (pos < size && !obj.equals(nav.get(pos)))
+                {
+                    pos++;
+                }
+                // At this point pos either == size or the element at pos matches what we are navigating to.
+                nav.subList(backCount, Math.min(pos++, size)).clear();
+            }
+
+            // If it matches, then we don't have to do anything more
+            if (!obj.equals(peek(1)))
+            {
+                // then we add it
+                nav.add(backCount, obj);
+            }
+//        }
+
+        backCount++;
+
         // and remember when we saw it
         visit(obj);
+
         fireHistoryChanged();
     }
 
@@ -147,6 +186,21 @@ public class History
         if (nav.size() > 0 && backCount > 0)
         {
             return nav.get(backCount - 1);
+        }
+        return null;
+    }
+
+    /**
+     * Get the current item in the "back" list
+     * @param i the distance to travel
+     * @return the requested item in the navigation list.
+     */
+    private Object peek(int i)
+    {
+        int size = nav.size();
+        if (size > 0 && backCount > 0 && backCount + i <= size)
+        {
+            return nav.get(backCount + i - 1);
         }
         return null;
     }

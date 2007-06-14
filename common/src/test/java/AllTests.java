@@ -46,6 +46,7 @@ public class AllTests
         suite.addTest(org.crosswire.common.util.AllTests.suite());
         suite.addTest(org.crosswire.common.progress.AllTests.suite());
         suite.addTest(org.crosswire.common.diff.AllTests.suite());
+        suite.addTest(org.crosswire.common.history.AllTests.suite());
         suite.addTest(org.crosswire.common.xml.AllTests.suite());
 
         return suite;

@@ -19,7 +19,7 @@
  *
  * ID: $Id$
  */
-package org.crosswire.common.diff;
+package org.crosswire.common.history;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -29,24 +29,15 @@ import junit.framework.TestSuite;
  * 
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
- * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class AllTests
 {
     public static Test suite()
     {
-        TestSuite suite = new TestSuite("Test for org.crosswire.common.diff"); //$NON-NLS-1$
+        TestSuite suite = new TestSuite("Test for org.crosswire.common.history"); //$NON-NLS-1$
         //$JUnit-BEGIN$
-        suite.addTest(new TestSuite(BitapTest.class));
-        suite.addTest(new TestSuite(CommonalityTest.class));
-        suite.addTest(new TestSuite(DiffCleanupTest.class));
-        suite.addTest(new TestSuite(DifferenceEngineTest.class));
-        suite.addTest(new TestSuite(DifferenceTest.class));
-        suite.addTest(new TestSuite(DiffTest.class));
-        suite.addTest(new TestSuite(LineMapTest.class));
-        suite.addTest(new TestSuite(MatchTest.class));
-        suite.addTest(new TestSuite(PatchEntryTest.class));
-        suite.addTest(new TestSuite(PatchTest.class));
+        suite.addTest(new TestSuite(HistoryTest.class));
         //$JUnit-END$
         return suite;
     }
