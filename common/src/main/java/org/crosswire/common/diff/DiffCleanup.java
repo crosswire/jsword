@@ -267,8 +267,8 @@ public class DiffCleanup
 
         int countDelete = 0;
         int countInsert = 0;
-        String textDelete = ""; //$NON-NLS-1$
-        String textInsert = ""; //$NON-NLS-1$
+        StringBuffer textDelete = new StringBuffer();
+        StringBuffer textInsert = new StringBuffer();
 
         int commonLength = 0;
 
@@ -281,13 +281,13 @@ public class DiffCleanup
             if (EditType.INSERT.equals(editType))
             {
                 countInsert++;
-                textInsert += curDiff.getText();
+                textInsert.append(curDiff.getText());
                 prevEqual = null;
             }
             else if (EditType.DELETE.equals(editType))
             {
                 countDelete++;
-                textDelete += curDiff.getText();
+                textDelete.append(curDiff.getText());
                 prevEqual = null;
             }
             else if (EditType.EQUAL.equals(editType))
@@ -311,7 +311,7 @@ public class DiffCleanup
                     if (countDelete != 0 && countInsert != 0)
                     {
                         // Factor out any common prefixies.
-                        commonLength = Commonality.prefix(textInsert, textDelete);
+                        commonLength = Commonality.prefix(textInsert.toString(), textDelete.toString());
                         if (commonLength > 0)
                         {
                             if (pointer.hasPrevious())
@@ -325,18 +325,18 @@ public class DiffCleanup
                             {
                                 pointer.add(new Difference(EditType.EQUAL, textInsert.substring(0, commonLength)));
                             }
-                            textInsert = textInsert.substring(commonLength);
-                            textDelete = textDelete.substring(commonLength);
+                            textInsert.replace(0, textInsert.length(), textInsert.substring(commonLength));
+                            textDelete.replace(0, textDelete.length(), textDelete.substring(commonLength));
                         }
 
                         // Factor out any common suffixies.
-                        commonLength = Commonality.suffix(textInsert, textDelete);
+                        commonLength = Commonality.suffix(textInsert.toString(), textDelete.toString());
                         if (commonLength > 0)
                         {
                             curDiff = (Difference) pointer.next();
                             curDiff.prependText(textInsert.substring(textInsert.length() - commonLength));
-                            textInsert = textInsert.substring(0, textInsert.length() - commonLength);
-                            textDelete = textDelete.substring(0, textDelete.length() - commonLength);
+                            textInsert.replace(0, textInsert.length(), textInsert.substring(0, textInsert.length() - commonLength));
+                            textDelete.replace(0, textDelete.length(), textDelete.substring(0, textDelete.length() - commonLength));
                             pointer.previous();
                         }
                     }
@@ -344,12 +344,12 @@ public class DiffCleanup
                     // Insert the merged records.
                     if (textDelete.length() != 0)
                     {
-                        pointer.add(new Difference(EditType.DELETE, textDelete));
+                        pointer.add(new Difference(EditType.DELETE, textDelete.toString()));
                     }
 
                     if (textInsert.length() != 0)
                     {
-                        pointer.add(new Difference(EditType.INSERT, textInsert));
+                        pointer.add(new Difference(EditType.INSERT, textInsert.toString()));
                     }
 
                     // Step forward to the equality.
@@ -366,8 +366,8 @@ public class DiffCleanup
 
                 countInsert = 0;
                 countDelete = 0;
-                textDelete = ""; //$NON-NLS-1$
-                textInsert = ""; //$NON-NLS-1$
+                textDelete.delete(0, textDelete.length());
+                textInsert.delete(0, textInsert.length());
                 prevEqual = curDiff;
             }
             curDiff = pointer.hasNext() ? (Difference) pointer.next() : null;

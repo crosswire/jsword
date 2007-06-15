@@ -35,12 +35,12 @@ public interface Locator
      * 
      * @return Best match index or -1, if no match found
      */
-    public int locate();
+    int locate();
 
     /**
      * The maximum length a pattern can be.
      * 
      * @return maximum pattern length.
      */
-    public int maxPatternLength();
+    int maxPatternLength();
 }

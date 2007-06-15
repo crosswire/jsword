@@ -118,7 +118,7 @@ public class History
                     pos++;
                 }
                 // At this point pos either == size or the element at pos matches what we are navigating to.
-                nav.subList(backCount, Math.min(pos++, size)).clear();
+                nav.subList(backCount, Math.min(pos, size)).clear();
             }
 
             // If it matches, then we don't have to do anything more

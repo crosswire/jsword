@@ -104,12 +104,12 @@ public class Diff
         diffs = compute();
 
         // Restore the prefix and suffix
-        if (!commonPrefix.equals("")) //$NON-NLS-1$
+        if (!"".equals(commonPrefix)) //$NON-NLS-1$
         {
             diffs.add(0, new Difference(EditType.EQUAL, commonPrefix));
         }
 
-        if (!commonSuffix.equals("")) //$NON-NLS-1$
+        if (!"".equals(commonSuffix)) //$NON-NLS-1$
         {
             diffs.add(new Difference(EditType.EQUAL, commonSuffix));
         }
@@ -132,14 +132,14 @@ public class Diff
     {
         List diffs = new ArrayList();
 
-        if (text1.equals("")) //$NON-NLS-1$
+        if ("".equals(text1)) //$NON-NLS-1$
         {
             // Just add some text (speedup)
             diffs.add(new Difference(EditType.INSERT, text2));
             return diffs;
         }
 
-        if (text2.equals("")) //$NON-NLS-1$
+        if ("".equals(text2)) //$NON-NLS-1$
         {
             // Just delete some text (speedup)
             diffs.add(new Difference(EditType.DELETE, text1));
@@ -158,10 +158,6 @@ public class Diff
             diffs.add(new Difference(editType, longText.substring(i + shortText.length())));
             return diffs;
         }
-
-        // Garbage collect
-        longText = null;
-        shortText = null;
 
         // Check to see if the problem can be split in two.
         CommonMiddle middleMatch = Commonality.halfMatch(text1, text2);
@@ -215,8 +211,8 @@ public class Diff
             diffs.add(new Difference(EditType.EQUAL, "")); //$NON-NLS-1$
             int countDeletes = 0;
             int countInserts = 0;
-            String textDelete = ""; //$NON-NLS-1$
-            String textInsert = ""; //$NON-NLS-1$
+            StringBuffer textDelete = new StringBuffer();
+            StringBuffer textInsert = new StringBuffer();
             ListIterator pointer = diffs.listIterator();
             Difference curDiff = (Difference) pointer.next();
             while (curDiff != null)
@@ -225,12 +221,12 @@ public class Diff
                 if (EditType.INSERT.equals(editType))
                 {
                     countInserts++;
-                    textInsert += curDiff.getText();
+                    textInsert.append(curDiff.getText());
                 }
                 else if (EditType.DELETE.equals(editType))
                 {
                     countDeletes++;
-                    textDelete += curDiff.getText();
+                    textDelete.append(curDiff.getText());
                 }
                 else
                 {
@@ -244,7 +240,7 @@ public class Diff
                             pointer.previous();
                             pointer.remove();
                         }
-                        Diff newDiff = new Diff(textDelete, textInsert, false);
+                        Diff newDiff = new Diff(textDelete.toString(), textInsert.toString(), false);
                         Iterator iter = newDiff.compare().iterator();
                         while (iter.hasNext())
                         {
@@ -253,8 +249,8 @@ public class Diff
                     }
                     countInserts = 0;
                     countDeletes = 0;
-                    textDelete = ""; //$NON-NLS-1$
-                    textInsert = ""; //$NON-NLS-1$
+                    textDelete.delete(0, textDelete.length());
+                    textInsert.delete(0, textInsert.length());
                 }
                 curDiff = pointer.hasNext() ? (Difference) pointer.next() : null;
             }

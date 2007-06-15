@@ -22,6 +22,8 @@
 
 package org.crosswire.common.compress;
 
+import java.io.InputStream;
+
 /**
  * A compressor provides the ability to compress and uncompress text.
  * 
@@ -31,10 +33,10 @@ package org.crosswire.common.compress;
  */
 public abstract class AbstractCompressor implements Compressor
 {
-    public AbstractCompressor(byte[] input)
+    public AbstractCompressor(InputStream input)
     {
         this.input = input;
     }
 
-    protected byte[] input;
+    protected InputStream input;
 }

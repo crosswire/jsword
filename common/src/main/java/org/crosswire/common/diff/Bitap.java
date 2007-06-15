@@ -47,6 +47,7 @@ public class Bitap implements Locator
         this.text = text;
         this.pattern = pattern;
         this.loc = loc;
+        alphabet = new HashMap();
     }
 
     /* (non-Javadoc)
@@ -202,7 +203,6 @@ public class Bitap implements Locator
 
         assert len <= Bitap.MAXBITS : "Pattern too long for this application."; //$NON-NLS-1$
 
-        alphabet = new HashMap();
         for (int i = 0; i < len; i++)
         {
             Character c = new Character(pattern.charAt(i));

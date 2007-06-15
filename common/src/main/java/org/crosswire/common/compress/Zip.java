@@ -24,9 +24,9 @@ package org.crosswire.common.compress;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.Inflater;
@@ -48,7 +48,7 @@ public class Zip extends AbstractCompressor
      * 
      * @param input to compress or uncompress.
      */
-    public Zip(byte[] input)
+    public Zip(InputStream input)
     {
         super(input);
     }
@@ -56,13 +56,12 @@ public class Zip extends AbstractCompressor
     /* (non-Javadoc)
      * @see org.crosswire.common.compress.Compressor#compress()
      */
-    public byte[] compress() throws IOException
+    public ByteArrayOutputStream compress() throws IOException
     {
-        ByteArrayInputStream bis = new ByteArrayInputStream(input);
-        BufferedInputStream in = new BufferedInputStream(bis);
+        BufferedInputStream in = new BufferedInputStream(input);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        DeflaterOutputStream out = new DeflaterOutputStream(bos, new Deflater(), ZBUF_SIZE);
-        byte[] buf = new byte[ZBUF_SIZE];
+        DeflaterOutputStream out = new DeflaterOutputStream(bos, new Deflater(), BUF_SIZE);
+        byte[] buf = new byte[BUF_SIZE];
 
         for (int count = in.read(buf); count != -1; count = in.read(buf))
         {
@@ -71,26 +70,25 @@ public class Zip extends AbstractCompressor
         in.close();
         out.flush();
         out.close();
-        return bos.toByteArray();
+        return bos;
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.common.compress.Compressor#uncompress()
      */
-    public byte[] uncompress() throws IOException
+    public ByteArrayOutputStream uncompress() throws IOException
     {
-        return uncompress(ZBUF_SIZE);
+        return uncompress(BUF_SIZE);
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.common.compress.Compressor#uncompress(int)
      */
-    public byte[] uncompress(int expectedLength) throws IOException
+    public ByteArrayOutputStream uncompress(int expectedLength) throws IOException
     {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         BufferedOutputStream out = new BufferedOutputStream(bos, expectedLength);
-        ByteArrayInputStream bis = new ByteArrayInputStream(input);
-        InflaterInputStream in = new InflaterInputStream(bis, new Inflater(), expectedLength);
+        InflaterInputStream in = new InflaterInputStream(input, new Inflater(), expectedLength);
         byte[] buf = new byte[expectedLength];
 
         for (int count = in.read(buf); count != -1; count = in.read(buf))
@@ -100,11 +98,7 @@ public class Zip extends AbstractCompressor
         in.close();
         out.flush();
         out.close();
-        return bos.toByteArray();
+        return bos;
     }
 
-    /**
-     * The size to read/write when unzipping a compressed byte array of unknown size.
-     */
-    private static final int ZBUF_SIZE = 2048;
 }

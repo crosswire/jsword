@@ -76,36 +76,38 @@ public final class Job implements Progress
             return;
         }
 
-        this.totalWork = workToDo;
-        this.sectionName = name;
-        this.jobName = name;
-        this.work = 0;
-        this.finished = false;
-        this.cancelable = workerThread != null;
-
-        if (totalWork == UNKNOWN)
+        synchronized (this)
         {
-            updater = new Timer();
-            updater.schedule(new PredictTask(), 0, 100);
+            this.totalWork = workToDo;
+            this.sectionName = name;
+            this.jobName = name;
+            this.work = 0;
+            this.finished = false;
+            this.cancelable = workerThread != null;
+
+            if (totalWork == UNKNOWN)
+            {
+                updater = new Timer();
+                updater.schedule(new PredictTask(), 0, 100);
+            }
+
+            // Set-up the timings files. It's not a disaster if it doesn't load
+            if (predictURI != null)
+            {
+                loadPredictions();
+            }
+
+            // And the predictions for next time
+            current = new HashMap();
+            start = System.currentTimeMillis();
         }
-
-        // Set-up the timings files. It's not a disaster if it doesn't load
-        if (predictURI != null)
-        {
-            loadPredictions();
-        }
-
-        // And the predictions for next time
-        current = new HashMap();
-        start = System.currentTimeMillis();
-
         JobManager.fireWorkProgressed(this);
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.common.progress.Progress#getTotalWork()
      */
-    public int getTotalWork()
+    public synchronized int getTotalWork()
     {
         return totalWork;
     }
@@ -120,11 +122,13 @@ public final class Job implements Progress
             return;
         }
 
+        boolean doUpdate = false;
         synchronized (this)
         {
             this.sectionName = statedesc;
 
-            if (updater != null)
+            doUpdate = updater != null;
+            if (doUpdate)
             {
                 if (predictedLength != 0)
                 {
@@ -140,7 +144,7 @@ public final class Job implements Progress
             current.put(statedesc, new Integer((int) (System.currentTimeMillis() - start)));
         }
 
-        if (updater != null)
+        if (doUpdate)
         {
             JobManager.fireWorkProgressed(this);
         }
@@ -275,7 +279,7 @@ public final class Job implements Progress
     /* (non-Javadoc)
      * @see org.crosswire.common.progress.Progress#getJobName()
      */
-    public String getJobName()
+    public synchronized String getJobName()
     {
         return jobName;
     }

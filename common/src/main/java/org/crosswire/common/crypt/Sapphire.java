@@ -552,10 +552,11 @@ public class Sapphire
         lastPlain = cards[7];
         lastCipher = cards[rsum];
 
+        // ensure that these have no useful values to those that snoop
         toswap = 0;
-        swaptemp = 0;
-        rsum = 0;
-        keypos = 0;
+        swaptemp = toswap;
+        rsum = swaptemp;
+        keypos = rsum;
     }
 
     /**

@@ -102,7 +102,7 @@ public class DifferenceEngine
         boolean done = false;
         // If the total number of characters is odd, then the front path will
         // collide with the reverse path.
-        boolean front = (source.length() + target.length()) % 2 == 1;
+        boolean front = (source.length() + target.length()) % 2 != 0;
         for (int d = 0; d < maxD; d++)
         {
             // Bail out if timeout reached.

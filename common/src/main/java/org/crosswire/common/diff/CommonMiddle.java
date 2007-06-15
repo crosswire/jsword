@@ -111,14 +111,11 @@ public class CommonMiddle
      */
     public int hashCode()
     {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((sourcePrefix == null) ? 0 : sourcePrefix.hashCode());
-        result = prime * result + ((sourceSuffix == null) ? 0 : sourceSuffix.hashCode());
-        result = prime * result + ((targetPrefix == null) ? 0 : targetPrefix.hashCode());
-        result = prime * result + ((targetSuffix == null) ? 0 : targetSuffix.hashCode());
-        result = prime * result + ((commonality == null) ? 0 : commonality.hashCode());
-       return result;
+        int result = 31 + ((sourcePrefix == null) ? 0 : sourcePrefix.hashCode());
+        result = 31 * result + ((sourceSuffix == null) ? 0 : sourceSuffix.hashCode());
+        result = 31 * result + ((targetPrefix == null) ? 0 : targetPrefix.hashCode());
+        result = 31 * result + ((targetSuffix == null) ? 0 : targetSuffix.hashCode());
+        return 31 * result + ((commonality == null) ? 0 : commonality.hashCode());
     }
 
     /* (non-Javadoc)

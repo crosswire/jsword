@@ -21,6 +21,7 @@
  */
 package org.crosswire.common.compress;
 
+import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 
 /**
@@ -42,7 +43,7 @@ public abstract class CompressorType implements Serializable
          */
         public Compressor getCompressor(byte[] input)
         {
-            return new Zip(input);
+            return new Zip(new ByteArrayInputStream(input));
         }
 
         /**
@@ -61,7 +62,7 @@ public abstract class CompressorType implements Serializable
          */
         public Compressor getCompressor(byte[] input)
         {
-            return new LZSS(input);
+            return new LZSS(new ByteArrayInputStream(input));
         }
 
         /**

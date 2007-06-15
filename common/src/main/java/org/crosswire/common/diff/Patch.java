@@ -154,16 +154,13 @@ public class Patch
                 patch.adjustLength2(len);
             }
 
-            if (EditType.EQUAL.equals(editType) && len >= 2 * margin)
+            // Time for a new patch.
+            if (EditType.EQUAL.equals(editType) && len >= 2 * margin && patch.hasDifferences())
             {
-                // Time for a new patch.
-                if (patch.hasDifferences())
-                {
-                    patch.addContext(prePatchText);
-                    patches.add(patch);
-                    patch = new PatchEntry();
-                    prePatchText = postPatchText;
-                }
+                patch.addContext(prePatchText);
+                patches.add(patch);
+                patch = new PatchEntry();
+                prePatchText = postPatchText;
             }
 
             // Update the current character count.
@@ -287,7 +284,12 @@ public class Patch
         {
             if (bigPatch.getLeftLength() <= maxPatternLength)
             {
-                bigPatch = pointer.hasNext() ? (PatchEntry) pointer.next() : null;
+                if (!pointer.hasNext())
+                {
+                    break;
+                }
+
+                bigPatch = (PatchEntry) pointer.next();
             }
 
             // Remove the big old patch.

@@ -22,6 +22,10 @@
 
 package org.crosswire.common.compress;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 
 /**
  * The LZSS compression is a port of code as implemented for STEP.
@@ -89,7 +93,7 @@ public class LZSS extends AbstractCompressor
      * 
      * @param input to compress or uncompress.
      */
-    public LZSS(byte[] input)
+    public LZSS(InputStream input)
     {
         super(input);
     }
@@ -98,8 +102,10 @@ public class LZSS extends AbstractCompressor
      * (non-Javadoc)
      * @see org.crosswire.common.compress.Compressor#compress()
      */
-    public byte[] compress()
+    public ByteArrayOutputStream compress() throws IOException
     {
+        out = new ByteArrayOutputStream(BUF_SIZE);
+
         short i;                        // an iterator
         int r;                          // node number in the binary tree
         short s;                        // position in the ring buffer
@@ -107,7 +113,7 @@ public class LZSS extends AbstractCompressor
         int lastMatchLength;            // length of last match
         int codeBufPos;                 // position in the output buffer
         byte[] codeBuff = new byte[17]; // the output buffer
-        byte mask;                      // bit mask for byte 0 of out readBuffer
+        byte mask;                      // bit mask for byte 0 of out input
         byte c;                         // character read from string
 
         // Start with a clean tree.
@@ -152,12 +158,12 @@ public class LZSS extends AbstractCompressor
         //
         // This function loads the buffer with X characters and returns
         // the actual amount loaded.
-        len = getBytes(ringBuffer, r, MAX_STORE_LENGTH);
+        len = input.read(ringBuffer, r, MAX_STORE_LENGTH);
 
         // Make sure there is something to be compressed.
         if (len == 0)
         {
-            return new byte[0];
+            return out;
         }
 
         // Insert the MAX_STORE_LENGTH strings, each of which begins with one or more
@@ -214,7 +220,7 @@ public class LZSS extends AbstractCompressor
             {
                 // code_buf is the buffer of characters to be output.
                 // code_buf_pos is the number of characters it contains.
-                sendBytes(codeBuff, codeBufPos);
+                out.write(codeBuff, 0, codeBufPos);
 
                 // Reset for next buffer...
                 codeBuff[0] = 0;
@@ -229,11 +235,8 @@ public class LZSS extends AbstractCompressor
             {
 
                 // Get next character...
-                try
-                {
-                    c = getByte();
-                }
-                catch (ArrayIndexOutOfBoundsException e)
+                c = (byte) input.read();
+                if (c == -1)
                 {
                     break;
                 }
@@ -313,31 +316,31 @@ public class LZSS extends AbstractCompressor
         // There could still be something in the output buffer.  Send it now.
         if (codeBufPos > 1)
         {
-            // code_buf is the encoded string to send.
-            // code_buf_ptr is the number of characters.
-            sendBytes(codeBuff, codeBufPos);
+            // codeBuff is the encoded string to send.
+            // codeBufPos is the number of characters.
+            out.write(codeBuff, 0, codeBufPos);
         }
 
-        return writeBuffer;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see org.crosswire.common.compress.Compressor#uncompress(int)
-     */
-    public byte[] uncompress(int expectedSize)
-    {
-        writeBufferSizeIncrement = expectedSize;
-        writeBuffer = new byte[expectedSize];
-        return uncompress();
+        return out;
     }
 
     /*
      * (non-Javadoc)
      * @see org.crosswire.common.compress.Compressor#uncompress()
      */
-    public byte[] uncompress()
+    public ByteArrayOutputStream uncompress() throws IOException
     {
+        return uncompress(BUF_SIZE);
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see org.crosswire.common.compress.Compressor#uncompress(int)
+     */
+    public ByteArrayOutputStream uncompress(int expectedSize) throws IOException
+    {
+        out = new ByteArrayOutputStream(expectedSize);
+
         byte[] c = new byte[MAX_STORE_LENGTH];     // an array of chars
         byte flags;                               // 8 bits of flags
 
@@ -369,12 +372,12 @@ public class LZSS extends AbstractCompressor
             else
             {
                 // Next byte must be a flag.
-                if (!hasMoreToRead())
+                flags = (byte) input.read();
+
+                if (flags == -1)
                 {
                     break;
                 }
-
-                flags = getByte();
 
                 // Set the flag counter.  While at first it might appear
                 // that this should be an 8 since there are 8 bits in the
@@ -387,15 +390,12 @@ public class LZSS extends AbstractCompressor
             // that the next byte is a single, unencoded character.
             if ((flags & 1) != 0)
             {
-                if (getBytes(c, 1) != 1)
+                if (input.read(c, 0, 1) != 1)
                 {
                     break;
                 }
 
-                if (sendBytes(c, 1) != 1)
-                {
-                    break;
-                }
+                out.write(c[0]);
 
                 // Add to buffer, and increment to next spot. Wrap at end.
                 ringBuffer[r] = c[0];
@@ -418,8 +418,7 @@ public class LZSS extends AbstractCompressor
                 // I've modified this to only make one input call, and
                 // have changed the variable names to something more
                 // obvious.
-
-                if (getBytes(c, 2) != 2)
+                if (input.read(c, 0, 2) != 2)
                 {
                     break;
                 }
@@ -444,13 +443,10 @@ public class LZSS extends AbstractCompressor
                 }
 
                 // Add the "len" characters to the output stream.
-                if (sendBytes(c, len) != len)
-                {
-                    break;
-                }
+                out.write(c, 0, len);
             }
         }
-        return writeBuffer;
+        return out;
     }
 
     /**
@@ -659,101 +655,101 @@ public class LZSS extends AbstractCompressor
         dad[node] = NOT_USED;
     }
 
-    /**
-     * Fill a buffer with some bytes from the input stream.
-     * 
-     * @param readBuffer the buffer to fill
-     * @param start the position in the buffer to start filling
-     * @param count the number of bytes to get
-     * @return the number of bytes added to the buffer
-     */
-    private int getBytes(byte[] ibuf, int start, int len)
-    {
-        int slen = readBuffer.length;
-        int realLen = slen - readOffset > len ? len : slen - readOffset;
-        if (realLen > 0)
-        {
-            System.arraycopy(readBuffer, readOffset, ibuf, start, realLen);
-            readOffset += realLen;
-        }
+//    /**
+//     * Fill a buffer with some bytes from the input stream.
+//     * 
+//     * @param ibuf the buffer to fill
+//     * @param start the position in the buffer to start filling
+//     * @param len the number of bytes to get
+//     * @return the number of bytes added to the buffer
+//     */
+//    private int getBytes(byte[] ibuf, int start, int len)
+//    {
+//        int slen = input.length;
+//        int realLen = slen - readOffset > len ? len : slen - readOffset;
+//        if (realLen > 0)
+//        {
+//            System.arraycopy(input, readOffset, ibuf, start, realLen);
+//            readOffset += realLen;
+//        }
+//
+//        return realLen;
+//    }
+//
+//    /**
+//     * Fill a buffer with some bytes from the input stream.
+//     * 
+//     * @param ibuf the buffer to fill
+//     * @param len the number of bytes to get
+//     * @return the number of bytes added to the buffer
+//     */
+//    private int getBytes(byte[] ibuf, int len)
+//    {
+//        int slen = input.length;
+//        int realLen = slen - readOffset > len ? len : slen - readOffset;
+//        if (realLen > 0)
+//        {
+//            System.arraycopy(input, readOffset, ibuf, 0, realLen);
+//            readOffset += realLen;
+//        }
+//
+//        return realLen;
+//    }
+//
+//    /**
+//     * Return whether there are more bytes to read.
+//     * 
+//     * @return whether there are more bytes to read.
+//     */
+//    private boolean hasMoreToRead()
+//    {
+//        return readOffset < input.length;
+//    }
+//
+//    /**
+//     * Get the next byte from the stream.
+//     * 
+//     * @return the the next byte from the stream
+//     */
+//    private byte getByte()
+//    {
+//        return input[readOffset++];
+//    }
 
-        return realLen;
-    }
-
-    /**
-     * Fill a buffer with some bytes from the input stream.
-     * 
-     * @param readBuffer the buffer to fill
-     * @param count the number of bytes to get
-     * @return the number of bytes added to the buffer
-     */
-    private int getBytes(byte[] ibuf, int len)
-    {
-        int slen = readBuffer.length;
-        int realLen = slen - readOffset > len ? len : slen - readOffset;
-        if (realLen > 0)
-        {
-            System.arraycopy(readBuffer, readOffset, ibuf, 0, realLen);
-            readOffset += realLen;
-        }
-
-        return realLen;
-    }
-
-    /**
-     * Return whether there are more bytes to read.
-     * 
-     * @return whether there are more bytes to read.
-     */
-    private boolean hasMoreToRead()
-    {
-        return readOffset < readBuffer.length;
-    }
-
-    /**
-     * Get the next byte from the stream.
-     * 
-     * @return the the next byte from the stream
-     */
-    private byte getByte()
-    {
-        return readBuffer[readOffset++];
-    }
-
-    private int sendBytes(byte[] ibuf, int len)
-    {
-        // Make sure the buffer is more than big enough
-        writeBuffer = ensureCapacity(writeBuffer, writeOffset, len);
-
-        // Copy the new contents
-        System.arraycopy(ibuf, 0, writeBuffer, writeOffset, len);
-        writeOffset += len;
-
-        return len;
-    }
-
-    private byte[] ensureCapacity(byte[] inputBuf, int currentPosition, int length)
-    {
-        // Make sure the buffer is more than big enough
-        int biggerLength = currentPosition + length + writeBufferSizeIncrement;
-        if (inputBuf != null)
-        {
-            int inputLength = inputBuf.length;
-            if ((currentPosition + length) > inputLength)
-            {
-                byte[] biggerBuf = new byte[biggerLength];
-                System.arraycopy(inputBuf, 0, biggerBuf, 0, inputLength);
-                for (int i = inputLength; i < biggerLength; i++)
-                {
-                    biggerBuf[i] = '\0';
-                }
-                return biggerBuf;
-            }
-            return inputBuf;
-        }
-
-        return new byte[length + writeBufferSizeIncrement];
-    }
+//    private int sendBytes(byte[] ibuf, int len)
+//    {
+//        // Make sure the buffer is more than big enough
+//        bos = ensureCapacity(bos, writeOffset, len);
+//
+//        // Copy the new contents
+//        System.arraycopy(ibuf, 0, bos, writeOffset, len);
+//        writeOffset += len;
+//
+//        return len;
+//    }
+//
+//    private byte[] ensureCapacity(byte[] inputBuf, int currentPosition, int length)
+//    {
+//        // Make sure the buffer is more than big enough
+//        int biggerLength = currentPosition + length + writeBufferSizeIncrement;
+//        if (inputBuf != null)
+//        {
+//            int inputLength = inputBuf.length;
+//            if ((currentPosition + length) > inputLength)
+//            {
+//                byte[] biggerBuf = new byte[biggerLength];
+//                System.arraycopy(inputBuf, 0, biggerBuf, 0, inputLength);
+//                for (int i = inputLength; i < biggerLength; i++)
+//                {
+//                    biggerBuf[i] = '\0';
+//                }
+//                return biggerBuf;
+//            }
+//            return inputBuf;
+//        }
+//
+//        return new byte[length + writeBufferSizeIncrement];
+//    }
 
     /**
      * This is the size of the ring buffer.  It is set to 4K. 
@@ -836,27 +832,7 @@ public class LZSS extends AbstractCompressor
     private short[] rightSon = new short[RING_SIZE + 257];
 
     /**
-     * The buffer to get or send, when uncompressed.
+     * The output stream containing the result.
      */
-    private byte[] readBuffer;
-
-    /**
-     * The current offset into readBuffer.
-     */
-    private int readOffset;
-
-    /**
-     * The incremental size of the writeBuffer to use.
-     */
-    private int writeBufferSizeIncrement = 1024;
-
-    /**
-     * The buffer to get or send, when compressed.
-     */
-    private byte[] writeBuffer;
-
-    /**
-     * The current offset into writeBuffer.
-     */
-    private int writeOffset;
+    private ByteArrayOutputStream out;
 }

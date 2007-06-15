@@ -114,9 +114,9 @@ public class Commonality
         }
 
         // First check if the second quarter is the seed for a half-match.
-        CommonMiddle hm1 = halfMatch(longText, shortText, (int) Math.ceil(longTextLength / 4));
+        CommonMiddle hm1 = halfMatch(longText, shortText, ceil(longTextLength, 4));
         // Check again based on the third quarter.
-        CommonMiddle hm2 = halfMatch(longText, shortText, (int) Math.ceil(longTextLength / 2));
+        CommonMiddle hm2 = halfMatch(longText, shortText, ceil(longTextLength, 2));
         CommonMiddle hm = null;
         if (hm1 == null && hm2 == null)
         {
@@ -143,6 +143,14 @@ public class Commonality
         }
 
         return new CommonMiddle(hm.getTargetPrefix(), hm.getTargetSuffix(), hm.getSourcePrefix(), hm.getSourceSuffix(), hm.getCommonality());
+    }
+
+    private static int ceil(int number, int divisor)
+    {
+        assert divisor > 0;
+        int result = number / divisor + ((number % divisor) > 0 ? 1 : 0);
+        // assert result == (int) Math.ceil(((double) number) / ((double) divisor));
+        return result;
     }
 
     /**

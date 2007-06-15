@@ -22,6 +22,7 @@
 
 package org.crosswire.common.compress;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 /**
@@ -35,18 +36,23 @@ import java.io.IOException;
 public interface Compressor
 {
     /**
+     * The size to read/write when unzipping a compressed byte array of unknown size.
+     */
+    int BUF_SIZE = 2048;
+
+    /**
      * Compresses the input and provides the result.
      * 
      * @return the compressed result
      */
-    byte[] compress() throws IOException;
+    ByteArrayOutputStream compress() throws IOException;
 
     /**
      * Uncompresses the input and provides the result.
      * 
      * @return the uncompressed result
      */
-    byte[] uncompress() throws IOException;
+    ByteArrayOutputStream uncompress() throws IOException;
 
     /**
      * Uncompresses the input and provides the result.
@@ -54,5 +60,5 @@ public interface Compressor
      * @param expectedSize the size of the result buffer
      * @return the uncompressed result
      */
-    byte[] uncompress(int expectedLength) throws IOException;
+    ByteArrayOutputStream uncompress(int expectedLength) throws IOException;
 }

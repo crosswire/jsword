@@ -517,6 +517,54 @@ public final class StringUtil
     }
 
     /**
+     * Returns a string representation of the contents of the specified array.
+     * If the array contains other arrays as elements, they are converted to
+     * strings by the {@link Object#toString} method inherited from
+     * <tt>Object</tt>, which describes their <i>identities</i> rather than
+     * their contents.
+     *
+     * <p>The value returned by this method is equal to the value that would
+     * be returned by <tt>Arrays.asList(a).toString()</tt>, unless <tt>a</tt>
+     * is <tt>null</tt>, in which case <tt>"null"</tt> is returned.
+     *
+     * @param a the array whose string representation to return
+     * @return a string representation of <tt>a</tt>
+     * @see #deepToString(Object[])
+     * @since 1.5
+    */
+    public static String toString(Object[] a)
+    {
+        if (a == null)
+        {
+            return "null"; //$NON-NLS-1$
+        }
+
+        if (a.length == 0)
+        {
+            return "[]"; //$NON-NLS-1$
+        }
+ 
+        StringBuffer buf = new StringBuffer();
+ 
+        for (int i = 0; i < a.length; i++)
+        {
+            if (i == 0)
+            {
+                buf.append('[');
+            }
+            else
+            {
+                buf.append(", "); //$NON-NLS-1$
+            }
+ 
+            buf.append(String.valueOf(a[i]));
+        }
+ 
+        buf.append("]"); //$NON-NLS-1$
+        return buf.toString();
+    }
+
+    /**
      * An empty immutable <code>String</code> array.
      */
     public static final String[] EMPTY_STRING_ARRAY = new String[0];
