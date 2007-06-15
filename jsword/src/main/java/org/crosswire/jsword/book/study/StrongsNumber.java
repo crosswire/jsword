@@ -91,11 +91,8 @@ public class StrongsNumber
      */
     public int hashCode()
     {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + language;
-        result = prime * result + strongsNumber;
-        return result;
+        int result = 31 + language;
+        return 31 * result + strongsNumber;
     }
 
     /* (non-Javadoc)

@@ -42,17 +42,11 @@ public class SwordDailyDevotion extends SwordDictionary implements PreferredKey
         super(sbmd, backend);
     }
 
-
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.PreferredKey#getPreferred()
      */
     public Key getPreferred()
     {
-        return new IndexKey(NAME_DF.format(new Date()));
+        return new IndexKey(DateFormat.getDateInstance(DateFormat.MEDIUM).format(new Date()));
     }
-
-    /**
-     * Date formatter, fully internationalized.
-     */
-    private static final DateFormat NAME_DF = DateFormat.getDateInstance(DateFormat.MEDIUM);
 }

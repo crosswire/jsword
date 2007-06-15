@@ -54,7 +54,9 @@ public class ReadingsKey extends DefaultLeafKeyList
 
         try
         {
-            date = NAME_DF.parse(text);
+            DateFormat nameDF = DateFormat.getDateInstance(DateFormat.MEDIUM);
+            nameDF.setLenient(true);
+            date = nameDF.parse(text);
         }
         catch (ParseException ex)
         {
@@ -68,7 +70,7 @@ public class ReadingsKey extends DefaultLeafKeyList
      */
     protected ReadingsKey(Date date)
     {
-        super(NAME_DF.format(date), OSIS_DF.format(date));
+        super(DateFormat.getDateInstance(DateFormat.MEDIUM).format(date), new SimpleDateFormat("d.MMMM").format(date)); //$NON-NLS-1$
         this.date = date;
     }
 
@@ -147,12 +149,5 @@ public class ReadingsKey extends DefaultLeafKeyList
     /**
      * Date formatter
      */
-    private static final DateFormat NAME_DF = DateFormat.getDateInstance(DateFormat.MEDIUM);
-    private static final DateFormat OSIS_DF = new SimpleDateFormat("d.MMMM"); //$NON-NLS-1$
-    static
-    {
-        NAME_DF.setLenient(true);
-    }
-
     private static final MessageFormat KEY_FORMAT = new MessageFormat("{0,number,00}.{1,number,00}"); //$NON-NLS-1$
 }

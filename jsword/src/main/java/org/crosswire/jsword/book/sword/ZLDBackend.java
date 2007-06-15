@@ -351,7 +351,7 @@ public class ZLDBackend extends AbstractBackend
 
                 decipher(temp);
 
-                uncompressed = CompressorType.fromString(compressType).getCompressor(temp).uncompress();
+                uncompressed = CompressorType.fromString(compressType).getCompressor(temp).uncompress().toByteArray();
 
                 // cache the uncompressed data for next time
                 lastBlockNum = blockNum;

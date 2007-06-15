@@ -66,4 +66,14 @@ public abstract class AbstractBookDriver implements BookDriver
     {
         throw new BookException(Msg.DRIVER_READONLY);
     }
+
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookProvider#getFirstBook()
+     */
+    public Book getFirstBook()
+    {
+        Book[] books = getBooks();
+        return books == null || books.length == 0 ? null : books[0];
+    }
 }

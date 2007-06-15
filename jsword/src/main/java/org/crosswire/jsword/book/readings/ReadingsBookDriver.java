@@ -63,9 +63,7 @@ public class ReadingsBookDriver extends AbstractBookDriver
      */
     public Book[] getBooks()
     {
-        Book[] copy = new Book[books.length];
-        System.arraycopy(books, 0, copy, 0, books.length);
-        return copy;
+        return books == null ? null : (Book[]) books.clone();
     }
 
     /* (non-Javadoc)
@@ -93,17 +91,22 @@ public class ReadingsBookDriver extends AbstractBookDriver
         try
         {
             URL index = ResourceUtil.getResource(ReadingsBookDriver.class, "readings.txt"); //$NON-NLS-1$
-            return NetUtil.listByIndexFile(NetUtil.toURI(index), new URIFilter()
-            {
-                public boolean accept(String name)
-                {
-                    return true;
-                }
-            });
+            return NetUtil.listByIndexFile(NetUtil.toURI(index), new ReadingsFilter());
         }
         catch (IOException ex)
         {
             return new String[0];
+        }
+    }
+
+    /**
+     * Get all files mentioned by readings.txt
+     */
+    static final class ReadingsFilter implements URIFilter
+    {
+        public boolean accept(String name)
+        {
+            return true;
         }
     }
 

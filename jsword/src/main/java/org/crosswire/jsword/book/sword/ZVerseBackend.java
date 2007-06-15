@@ -284,7 +284,7 @@ public class ZVerseBackend extends AbstractBackend
 
                 decipher(data);
 
-                uncompressed = CompressorType.fromString(compressType).getCompressor(data).uncompress(uncompressedSize);
+                uncompressed = CompressorType.fromString(compressType).getCompressor(data).uncompress(uncompressedSize).toByteArray();
 
                 // cache the uncompressed data for next time
                 lastBlockNum = blockNum;

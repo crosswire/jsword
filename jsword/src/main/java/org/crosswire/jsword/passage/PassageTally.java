@@ -1021,11 +1021,8 @@ public class PassageTally extends AbstractPassage
          */
         public int hashCode()
         {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + ord;
-            result = prime * result + tally;
-            return result;
+            int result = 31 + ord;
+            return 31 * result + tally;
         }
 
         /* (non-Javadoc)
@@ -1193,11 +1190,8 @@ public class PassageTally extends AbstractPassage
          */
         public int hashCode()
         {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + tally;
-            result = prime * result + ((range == null) ? 0 : range.hashCode());
-            return result;
+            int result = 31 + tally;
+            return 31 * result + ((range == null) ? 0 : range.hashCode());
         }
 
         /* (non-Javadoc)

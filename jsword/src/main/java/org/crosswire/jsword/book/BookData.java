@@ -49,7 +49,7 @@ import org.jdom.Text;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith at yahoo dot com]
  */
-public class BookData
+public class BookData implements BookProvider
 {
     /**
      * Ctor
@@ -130,7 +130,7 @@ public class BookData
      */
     public Book[] getBooks()
     {
-        return books;
+        return books == null ? null : (Book[]) books.clone();
     }
 
     /**

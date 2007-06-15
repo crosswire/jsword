@@ -28,17 +28,8 @@ package org.crosswire.jsword.book;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public interface BookDriver
+public interface BookDriver extends BookProvider
 {
-    /**
-     * This method should only be used by Bibles at startup to register the
-     * Bibles known at start time.
-     * Generally there will be a better way of doing whatever you want to do if
-     * you use this method.
-     * @return A list of the known Bibles
-     */
-    Book[] getBooks();
-
     /**
      * Is this name capable of creating writing data in the correct format
      * as well as reading it?

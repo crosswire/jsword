@@ -22,6 +22,7 @@
 package org.crosswire.jsword.book.study;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -62,7 +63,8 @@ public class StrongsMapSet
             reps = new TreeSet();
             map.put(strongsNumber, reps);
         }
-        reps.add(representation.toLowerCase());
+        // TODO(DMS): change parameter to include the locale of the Book.
+        reps.add(representation.toLowerCase(Locale.getDefault()));
     }
 
     /**
