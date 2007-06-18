@@ -150,7 +150,7 @@ public class StrongsNumber
                 language = 'H';
                 break;
             default:
-                assert false : "Cannot get here"; //$NON-NLS-1$
+                // pass through
         }
 
         // Get the number after the G or H
