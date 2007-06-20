@@ -62,7 +62,6 @@ public class LineMap
      * Rehydrate the text in a diff from a string of line hashes to real lines of
      * text.
      * @param diffs List of Difference objects
-     * @param linearray List of unique strings
      */
     public void restore(final List diffs)
     {

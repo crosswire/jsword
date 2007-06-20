@@ -527,11 +527,12 @@ public final class StringUtil
      * be returned by <tt>Arrays.asList(a).toString()</tt>, unless <tt>a</tt>
      * is <tt>null</tt>, in which case <tt>"null"</tt> is returned.
      *
+     * <p>This is borrowed from Java 1.5, but uses StringBuffer.
+     *
      * @param a the array whose string representation to return
      * @return a string representation of <tt>a</tt>
-     * @see #deepToString(Object[])
      * @since 1.5
-    */
+     */
     public static String toString(Object[] a)
     {
         if (a == null)
@@ -543,9 +544,9 @@ public final class StringUtil
         {
             return "[]"; //$NON-NLS-1$
         }
- 
+
         StringBuffer buf = new StringBuffer();
- 
+
         for (int i = 0; i < a.length; i++)
         {
             if (i == 0)
@@ -556,10 +557,10 @@ public final class StringUtil
             {
                 buf.append(", "); //$NON-NLS-1$
             }
- 
+
             buf.append(String.valueOf(a[i]));
         }
- 
+
         buf.append("]"); //$NON-NLS-1$
         return buf.toString();
     }

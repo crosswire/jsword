@@ -103,8 +103,7 @@ public class Config
 
     /**
      * Add a key/model pairing
-     * @param key The new name
-     * @param model The Field model to map to the key
+     * @param model The Choice model to map to its key
      */
     public void add(Choice model)
     {

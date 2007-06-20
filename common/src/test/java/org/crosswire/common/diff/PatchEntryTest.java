@@ -24,13 +24,13 @@ public class PatchEntryTest extends TestCase
     {
         // Patch Object
         PatchEntry p = new PatchEntry();
-        p.setLeftStart(20);
-        p.setRightStart(21);
-        p.setLeftLength(18);
-        p.setRightLength(17);
+        p.setSourceStart(20);
+        p.setTargetStart(21);
+        p.setSourceLength(18);
+        p.setTargetLength(17);
         p.setDifferences(diffList(new Object[] { new Difference(EditType.EQUAL, "jump"), new Difference(EditType.DELETE, "s"), new Difference(EditType.INSERT, "ed"), new Difference(EditType.EQUAL, " over "), new Difference(EditType.DELETE, "the"), new Difference(EditType.INSERT, "a"), new Difference(EditType.EQUAL, " laz") })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-        assertEquals("Patch: text1.", "jumps over the laz", p.getLeftText()); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("Patch: text2.", "jumped over a laz", p.getRightText()); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals("Patch: text1.", "jumps over the laz", p.getSourceText()); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals("Patch: text2.", "jumped over a laz", p.getTargetText()); //$NON-NLS-1$ //$NON-NLS-2$
         String strp = "@@ -21,18 +22,17 @@\n jump\n-s\n+ed\n  over \n-the\n+a\n  laz\n"; //$NON-NLS-1$
         assertEquals("Patch: toString.", strp, p.toString()); //$NON-NLS-1$
     }

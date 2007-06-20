@@ -44,10 +44,10 @@ public class PatchEntry
     public PatchEntry()
     {
         this.diffs = new ArrayList();
-        this.leftStart = 0;
-        this.rightStart = 0;
-        this.leftLength = 0;
-        this.rightLength = 0;
+        this.sourceStart = 0;
+        this.targetStart = 0;
+        this.sourceLength = 0;
+        this.targetLength = 0;
     }
 
     //  Constructor for a patch object.
@@ -58,99 +58,99 @@ public class PatchEntry
     }
 
     /**
-     * @return the leftStart
+     * @return the sourceStart
      */
-    public int getLeftStart()
+    public int getSourceStart()
     {
-        return leftStart;
+        return sourceStart;
     }
 
     /**
-     * @param leftStart the leftStart to set
+     * @param start the sourceStart to set
      */
-    public void setLeftStart(int start1)
+    public void setSourceStart(int start)
     {
-        this.leftStart = start1;
+        this.sourceStart = start;
     }
 
     /**
-     * @param adjustment the adjustment to leftStart
+     * @param adjustment the adjustment to sourceStart
      */
-    public void adjustLeftStart(int adjustment)
+    public void adjustSourceStart(int adjustment)
     {
-        this.leftStart += adjustment;
+        this.sourceStart += adjustment;
     }
 
     /**
-     * @return the rightStart
+     * @return the targetStart
      */
-    public int getRightStart()
+    public int getTargetStart()
     {
-        return rightStart;
+        return targetStart;
     }
 
     /**
-     * @param rightStart the rightStart to set
+     * @param start the targetStart to set
      */
-    public void setRightStart(int start2)
+    public void setTargetStart(int start)
     {
-        this.rightStart = start2;
+        this.targetStart = start;
     }
 
     /**
-     * @param adjustment the adjustment to rightStart
+     * @param adjustment the adjustment to targetStart
      */
-    public void adjustRightStart(int adjustment)
+    public void adjustTargetStart(int adjustment)
     {
-        this.rightStart += adjustment;
+        this.targetStart += adjustment;
     }
 
     /**
-     * @return the leftLength
+     * @return the sourceLength
      */
-    public int getLeftLength()
+    public int getSourceLength()
     {
-        return leftLength;
+        return sourceLength;
     }
 
     /**
-     * @param leftLength the leftLength to set
+     * @param length the sourceLength to set
      */
-    public void setLeftLength(int length1)
+    public void setSourceLength(int length)
     {
-        this.leftLength = length1;
+        this.sourceLength = length;
     }
 
     /**
-     * @param adjustment the adjustment to leftLength
+     * @param adjustment the adjustment to sourceLength
      */
-    public void adjustLength1(int adjustment)
+    public void adjustSourceLength(int adjustment)
     {
-        this.leftLength += adjustment;
+        this.sourceLength += adjustment;
     }
 
     /**
-     * @return the rightLength
+     * @return the targetLength
      */
-    public int getRightLength()
+    public int getTargetLength()
     {
-        return rightLength;
+        return targetLength;
     }
 
     /**
-     * @param rightLength the rightLength to set
+     * @param length the targetLength to set
      */
-    public void setRightLength(int length2)
+    public void setTargetLength(int length)
     {
-        this.rightLength = length2;
+        this.targetLength = length;
     }
 
     /**
-     * @param adjustment the adjustment to rightLength
+     * @param adjustment the adjustment to targetLength
      */
-    public void adjustLength2(int adjustment)
+    public void adjustTargetLength(int adjustment)
     {
-        this.rightLength += adjustment;
+        this.targetLength += adjustment;
     }
 
     //  Emmulate GNU diff's format.
@@ -160,9 +160,9 @@ public class PatchEntry
     {
         StringBuffer txt = new StringBuffer();
         txt.append("@@ -"); //$NON-NLS-1$
-        txt.append(getCoordinates(leftStart, leftLength));
+        txt.append(getCoordinates(sourceStart, sourceLength));
         txt.append(" +"); //$NON-NLS-1$
-        txt.append(getCoordinates(rightStart, rightLength));
+        txt.append(getCoordinates(targetStart, targetLength));
         txt.append(" @@\n"); //$NON-NLS-1$
 
         Iterator iter = diffs.iterator();
@@ -175,6 +175,7 @@ public class PatchEntry
         }
         return txt.toString();
     }
+
     /**
      * Parse a textual representation of a patch entry and populate this patch entry.
      * @param input Text representation of this patch entry
@@ -192,37 +193,37 @@ public class PatchEntry
         assert matcher.groupCount() == 4 : "Invalid patch string:\n" + text[0]; //$NON-NLS-1$
         // m = text[0].match(/^@@ -(\d+),?(\d*) \+(\d+),?(\d*) @@$/);
 
-        leftStart = Integer.parseInt(matcher.group(1));
+        sourceStart = Integer.parseInt(matcher.group(1));
 
         if (matcher.group(2).length() == 0)
         {
-            leftStart--;
-            leftLength = 1;
+            sourceStart--;
+            sourceLength = 1;
         }
         else if (matcher.group(2).charAt(0) == '0')
         {
-            setLeftLength(0);
+            setSourceLength(0);
         }
         else
         {
-            leftStart--;
-            leftLength = Integer.parseInt(matcher.group(2));
+            sourceStart--;
+            sourceLength = Integer.parseInt(matcher.group(2));
         }
 
-        rightStart = Integer.parseInt(matcher.group(3));
+        targetStart = Integer.parseInt(matcher.group(3));
         if (matcher.group(4).length() == 0)
         {
-            rightStart--;
-            rightLength = 1;
+            targetStart--;
+            targetLength = 1;
         }
         else if (matcher.group(4).charAt(0) == '0')
         {
-            rightLength = 0;
+            targetLength = 0;
         }
         else
         {
-            rightStart--;
-            rightLength = Integer.parseInt(matcher.group(4));
+            targetStart--;
+            targetLength = Integer.parseInt(matcher.group(4));
         }
 
         for (int lineCount = 1; lineCount < text.length; lineCount++)
@@ -238,7 +239,7 @@ public class PatchEntry
     }
 
     //  Compute and return the source text (all equalities and deletions).
-    public String getLeftText()
+    public String getSourceText()
     {
         StringBuffer txt = new StringBuffer();
         Iterator iter = diffs.iterator();
@@ -254,7 +255,7 @@ public class PatchEntry
     }
 
     // Compute and return the destination text (all equalities and insertions).
-    public String getRightText()
+    public String getTargetText()
     {
         StringBuffer txt = new StringBuffer();
         Iterator iter = diffs.iterator();
@@ -273,7 +274,7 @@ public class PatchEntry
     {
         int maxPatternLength = new Match().maxPatternLength();
         int padding = 0;
-        String pattern = text.substring(rightStart, rightStart + leftLength);
+        String pattern = text.substring(targetStart, targetStart + sourceLength);
         int textLength = text.length();
 
         // Increase the context until we're unique
@@ -282,14 +283,14 @@ public class PatchEntry
         while (text.indexOf(pattern) != text.lastIndexOf(pattern) && pattern.length() < end)
         {
             padding += PatchEntry.margin;
-            pattern = text.substring(Math.max(0, rightStart - padding), Math.min(textLength, rightStart + leftLength + padding));
+            pattern = text.substring(Math.max(0, targetStart - padding), Math.min(textLength, targetStart + sourceLength + padding));
         }
 
         // Add one chunk for good luck.
         padding += PatchEntry.margin;
 
         // Add the prefix.
-        String prefix = text.substring(Math.max(0, rightStart - padding), rightStart);
+        String prefix = text.substring(Math.max(0, targetStart - padding), targetStart);
         int prefixLength = prefix.length();
         if (prefixLength > 0)
         {
@@ -297,7 +298,7 @@ public class PatchEntry
         }
 
         // Add the suffix
-        String suffix = text.substring(rightStart + leftLength, Math.min(textLength, rightStart + leftLength + padding));
+        String suffix = text.substring(targetStart + sourceLength, Math.min(textLength, targetStart + sourceLength + padding));
         int suffixLength = suffix.length();
         if (suffixLength > 0)
         {
@@ -305,12 +306,12 @@ public class PatchEntry
         }
 
         // Roll back the start points.
-        leftStart -= prefixLength;
-        rightStart -= prefixLength;
+        sourceStart -= prefixLength;
+        targetStart -= prefixLength;
 
         // Extend the lengths.
-        leftLength += prefixLength + suffixLength;
-        rightLength += prefixLength + suffixLength;
+        sourceLength += prefixLength + suffixLength;
+        targetLength += prefixLength + suffixLength;
     }
 
     public void addDifference(Difference diff)
@@ -392,7 +393,7 @@ public class PatchEntry
         }
         else if (length == 1)
         {
-            buf.append(leftStart + 1);
+            buf.append(sourceStart + 1);
         }
         else
         {
@@ -413,8 +414,8 @@ public class PatchEntry
     private static Pattern patchPattern = Pattern.compile("^@@ -(\\d+),?(\\d*) \\+(\\d+),?(\\d*) @@$"); //$NON-NLS-1$
 
     private List diffs;
-    private int leftStart;
-    private int rightStart;
-    private int leftLength;
-    private int rightLength;
+    private int sourceStart;
+    private int targetStart;
+    private int sourceLength;
+    private int targetLength;
 }

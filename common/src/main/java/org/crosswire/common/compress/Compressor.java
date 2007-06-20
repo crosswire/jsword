@@ -57,7 +57,7 @@ public interface Compressor
     /**
      * Uncompresses the input and provides the result.
      * 
-     * @param expectedSize the size of the result buffer
+     * @param expectedLength the size of the result buffer
      * @return the uncompressed result
      */
     ByteArrayOutputStream uncompress(int expectedLength) throws IOException;

@@ -39,66 +39,60 @@ import java.util.ListIterator;
 public class Diff
 {
     /**
-     * Find the differences between two texts.
+     * Construct an object that can find the differences between two texts.
      * Run a faster slightly less optimal diff.
-     * This method allows the 'checkLines' of main() to be optional.
+     * This constructor allows the 'checkLines' to be optional.
      * Most of the time checkLines is wanted, so default to true.
-     * @param text1 Old string to be diffed
-     * @param text2 New string to be diffed
+     * @param source Old string to be diffed
+     * @param target New string to be diffed
      */
-    public Diff(final String text1, final String text2)
+    public Diff(final String source, final String target)
     {
-        this(text1, text2, true);
+        this(source, target, true);
     }
 
     /**
-     * Find the differences between two texts.  Simplifies the problem by
-     * stripping any common prefix or suffix off the texts before diffing.
-     * @param text1 Old string to be diffed
-     * @param text2 New string to be diffed
+     * Construct an object that can find the differences between two texts.
+     * @param source Old string to be diffed
+     * @param target New string to be diffed
      * @param checkLines Speedup flag.  If false, then don't run a
      *     line-level diff first to identify the changed areas.
      *     If true, then run a faster slightly less optimal diff
      */
-    public Diff(final String text1, final String text2, final boolean checkLines)
+    public Diff(final String source, final String target, final boolean checkLines)
     {
-        this.text1 = text1;
-        this.text2 = text2;
+        this.source = source;
+        this.target = target;
         this.checkLines = checkLines;
     }
 
     /**
      * Find the differences between two texts.  Simplifies the problem by
      * stripping any common prefix or suffix off the texts before diffing.
-     * @param text1 Old string to be diffed
-     * @param text2 New string to be diffed
-     * @param checkLines Speedup flag.  If false, then don't run a
-     *     line-level diff first to identify the changed areas.
-     *     If true, then run a faster slightly less optimal diff
      * @return List of Difference objects
      */
     public List compare()
     {
         // Check for equality (speedup)
         List diffs;
-        if (text1.equals(text2))
+        if (source.equals(target))
         {
             diffs = new ArrayList();
-            diffs.add(new Difference(EditType.EQUAL, text1));
+            diffs.add(new Difference(EditType.EQUAL, source));
             return diffs;
         }
 
         // Trim off common prefix (speedup)
-        int commonLength = Commonality.prefix(text1, text2);
-        String commonPrefix = text1.substring(0, commonLength);
-        text1 = text1.substring(commonLength);
-        text2 = text2.substring(commonLength);
+        int commonLength = Commonality.prefix(source, target);
+        String commonPrefix = source.substring(0, commonLength);
+        source = source.substring(commonLength);
+        target = target.substring(commonLength);
 
         // Trim off common suffix (speedup)
-        commonLength = Commonality.suffix(text1, text2);
-        String commonSuffix = text1.substring(text1.length() - commonLength);
-        text1 = text1.substring(0, text1.length() - commonLength);
-        text2 = text2.substring(0, text2.length() - commonLength);
+        commonLength = Commonality.suffix(source, target);
+        String commonSuffix = source.substring(source.length() - commonLength);
+        source = source.substring(0, source.length() - commonLength);
+        target = target.substring(0, target.length() - commonLength);
 
         // Compute the diff on the middle block
         diffs = compute();
@@ -121,38 +115,33 @@ public class Diff
 
     /**
      * Find the differences between two texts.
-     * @param text1 Old string to be diffed
-     * @param text2 New string to be diffed
-     * @param checkLines Speedup flag.  If false, then don't run a
-     *     line-level diff first to identify the changed areas.
-     *     If true, then run a faster slightly less optimal diff
      * @return List of Difference objects
      */
     private List compute()
     {
         List diffs = new ArrayList();
 
-        if ("".equals(text1)) //$NON-NLS-1$
+        if ("".equals(source)) //$NON-NLS-1$
         {
             // Just add some text (speedup)
-            diffs.add(new Difference(EditType.INSERT, text2));
+            diffs.add(new Difference(EditType.INSERT, target));
             return diffs;
         }
 
-        if ("".equals(text2)) //$NON-NLS-1$
+        if ("".equals(target)) //$NON-NLS-1$
         {
             // Just delete some text (speedup)
-            diffs.add(new Difference(EditType.DELETE, text1));
+            diffs.add(new Difference(EditType.DELETE, source));
             return diffs;
         }
 
-        String longText = text1.length() > text2.length() ? text1 : text2;
-        String shortText = text1.length() > text2.length() ? text2 : text1;
+        String longText = source.length() > target.length() ? source : target;
+        String shortText = source.length() > target.length() ? target : source;
         int i = longText.indexOf(shortText);
         if (i != -1)
         {
             // Shorter text is inside the longer text (speedup)
-            EditType editType = (text1.length() > text2.length()) ? EditType.DELETE : EditType.INSERT;
+            EditType editType = (source.length() > target.length()) ? EditType.DELETE : EditType.INSERT;
             diffs.add(new Difference(editType, longText.substring(0, i)));
             diffs.add(new Difference(EditType.EQUAL, shortText));
             diffs.add(new Difference(editType, longText.substring(i + shortText.length())));
@@ -160,7 +149,7 @@ public class Diff
         }
 
         // Check to see if the problem can be split in two.
-        CommonMiddle middleMatch = Commonality.halfMatch(text1, text2);
+        CommonMiddle middleMatch = Commonality.halfMatch(source, target);
         if (middleMatch != null)
         {
             // A half-match was found, sort out the return data.
@@ -175,7 +164,7 @@ public class Diff
         }
 
         // Perform a real diff.
-        if (checkLines && text1.length() + text2.length() < 250)
+        if (checkLines && source.length() + target.length() < 250)
         {
             checkLines = false; // Too trivial for the overhead.
         }
@@ -184,19 +173,19 @@ public class Diff
         if (checkLines)
         {
             // Scan the text on a line-by-line basis first.
-            lineMap = new LineMap(text1, text2);
-            text1 = lineMap.getSourceMap();
-            text2 = lineMap.getTargetMap();
+            lineMap = new LineMap(source, target);
+            source = lineMap.getSourceMap();
+            target = lineMap.getTargetMap();
         }
 
-        diffs = new DifferenceEngine(text1, text2).generate();
+        diffs = new DifferenceEngine(source, target).generate();
 
         if (diffs == null)
         {
             // No acceptable result.
             diffs = new ArrayList();
-            diffs.add(new Difference(EditType.DELETE, text1));
-            diffs.add(new Difference(EditType.INSERT, text2));
+            diffs.add(new Difference(EditType.DELETE, source));
+            diffs.add(new Difference(EditType.INSERT, target));
         }
 
         if (checkLines && lineMap != null)
@@ -260,12 +249,12 @@ public class Diff
     }
 
     /**
-     * loc is a location in text1, compute and return the equivalent location in
-     * text2.
+     * loc is a location in source, compute and return the equivalent location in
+     * target.
      * e.g. "The cat" vs "The big cat", 1->1, 5->8
      * @param diffs List of Difference objects
-     * @param loc Location within text1
-     * @return Location within text2
+     * @param loc Location within source
+     * @return Location within target
      */
     public int xIndex(final List diffs, final int loc)
     {
@@ -349,12 +338,12 @@ public class Diff
     /**
      * The baseline text.
      */
-    private String text1;
+    private String source;
 
     /**
      * The changed text.
      */
-    private String text2;
+    private String target;
 
     /**
      * Whether a slightly faster less optimal diff should be run.

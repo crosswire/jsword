@@ -46,7 +46,7 @@ public class Difference
     }
 
     /**
-     * @param edit the EditType to set
+     * @param newEditType the EditType to set
      */
     public void setEditType(EditType newEditType)
     {
@@ -62,7 +62,7 @@ public class Difference
     }
 
     /**
-     * @param text the text to set
+     * @param newText the text to set
      */
     public void setText(String newText)
     {
@@ -78,7 +78,7 @@ public class Difference
     }
 
     /**
-     * @param index the index to set
+     * @param newIndex the index to set
      */
     public void setIndex(int newIndex)
     {
@@ -86,7 +86,7 @@ public class Difference
     }
 
     /**
-     * @param text the text to set
+     * @param addText the text to set
      */
     public void appendText(String addText)
     {
@@ -94,7 +94,7 @@ public class Difference
     }
 
     /**
-     * @param text the text to set
+     * @param addText the text to set
      */
     public void appendText(char addText)
     {
@@ -102,7 +102,7 @@ public class Difference
     }
 
     /**
-     * @param text the text to set
+     * @param addText the text to set
      */
     public void prependText(String addText)
     {
@@ -110,7 +110,7 @@ public class Difference
     }
 
     /**
-     * @param text the text to set
+     * @param addText the text to set
      */
     public void prependText(char addText)
     {

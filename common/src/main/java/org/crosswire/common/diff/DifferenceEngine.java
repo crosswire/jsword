@@ -53,9 +53,6 @@ public class DifferenceEngine
      * stripping any common prefix or suffix off the texts before diffing.
      * @param source Old string to be diffed
      * @param target New string to be diffed
-     * @param checkLines Speedup flag.  If false, then don't run a
-     *     line-level diff first to identify the changed areas.
-     *     If true, then run a faster slightly less optimal diff
      */
     public DifferenceEngine(final String source, final String target)
     {
@@ -81,8 +78,6 @@ public class DifferenceEngine
 
     /**
      * Explore the intersection points between the two texts.
-     * @param source Old string to be diffed
-     * @param target New string to be diffed
      * @return List of Difference objects or null if no diff available
      */
     public List generate()
@@ -228,15 +223,15 @@ public class DifferenceEngine
     /**
      * Work from the middle back to the start to determine the path.
      * @param vMap List of path sets.
-     * @param left Old string fragment to be diffed
-     * @param right New string fragment to be diffed
+     * @param newSource Old string fragment to be diffed
+     * @param newTarget New string fragment to be diffed
      * @return List of Difference objects
      */
-    protected List path1(final List vMap, final String left, final String right)
+    protected List path1(final List vMap, final String newSource, final String newTarget)
     {
         List path = new ArrayList();
-        int x = left.length();
-        int y = right.length();
+        int x = newSource.length();
+        int y = newTarget.length();
         EditType lastEditType = null;
         for (int d = vMap.size() - 2; d >= 0; d--)
         {
@@ -249,11 +244,11 @@ public class DifferenceEngine
                     if (EditType.DELETE.equals(lastEditType))
                     {
                         Difference firstDiff = (Difference) path.get(0);
-                        firstDiff.prependText(left.charAt(x));
+                        firstDiff.prependText(newSource.charAt(x));
                     }
                     else
                     {
-                        path.add(0, new Difference(EditType.DELETE, left.substring(x, x + 1)));
+                        path.add(0, new Difference(EditType.DELETE, newSource.substring(x, x + 1)));
                     }
                     lastEditType = EditType.DELETE;
                     break;
@@ -264,11 +259,11 @@ public class DifferenceEngine
                     if (EditType.INSERT.equals(lastEditType))
                     {
                         Difference firstDiff = (Difference) path.get(0);
-                        firstDiff.prependText(right.charAt(y));
+                        firstDiff.prependText(newTarget.charAt(y));
                     }
                     else
                     {
-                        path.add(0, new Difference(EditType.INSERT, right.substring(y, y + 1)));
+                        path.add(0, new Difference(EditType.INSERT, newTarget.substring(y, y + 1)));
                     }
                     lastEditType = EditType.INSERT;
                     break;
@@ -277,15 +272,15 @@ public class DifferenceEngine
                 {
                     x--;
                     y--;
-                    assert left.charAt(x) == right.charAt(y) : "No diagonal.  Can't happen. (path1)"; //$NON-NLS-1$
+                    assert newSource.charAt(x) == newTarget.charAt(y) : "No diagonal.  Can't happen. (path1)"; //$NON-NLS-1$
                     if (EditType.EQUAL.equals(lastEditType))
                     {
                         Difference firstDiff = (Difference) path.get(0);
-                        firstDiff.prependText(left.charAt(x));
+                        firstDiff.prependText(newSource.charAt(x));
                     }
                     else
                     {
-                        path.add(0, new Difference(EditType.EQUAL, left.substring(x, x + 1)));
+                        path.add(0, new Difference(EditType.EQUAL, newSource.substring(x, x + 1)));
                     }
                     lastEditType = EditType.EQUAL;
                 }
@@ -297,15 +292,15 @@ public class DifferenceEngine
     /**
      * Work from the middle back to the end to determine the path.
      * @param vMap List of path sets.
-     * @param left Old string fragment to be diffed
-     * @param right New string fragment to be diffed
+     * @param newSource Old string fragment to be diffed
+     * @param newTarget New string fragment to be diffed
      * @return List of Difference objects
      */
-    protected List path2(final List vMap, final String left, final String right)
+    protected List path2(final List vMap, final String newSource, final String newTarget)
     {
         List path = new ArrayList();
-        int x = left.length();
-        int y = right.length();
+        int x = newSource.length();
+        int y = newTarget.length();
         EditType lastEditType = null;
         for (int d = vMap.size() - 2; d >= 0; d--)
         {
@@ -318,11 +313,11 @@ public class DifferenceEngine
                     if (EditType.DELETE.equals(lastEditType))
                     {
                         Difference lastDiff = (Difference) path.get(path.size() - 1);
-                        lastDiff.appendText(left.charAt(left.length() - x - 1));
+                        lastDiff.appendText(newSource.charAt(newSource.length() - x - 1));
                     }
                     else
                     {
-                        path.add(new Difference(EditType.DELETE, left.substring(left.length() - x - 1, left.length() - x)));
+                        path.add(new Difference(EditType.DELETE, newSource.substring(newSource.length() - x - 1, newSource.length() - x)));
                     }
                     lastEditType = EditType.DELETE;
                     break;
@@ -333,11 +328,11 @@ public class DifferenceEngine
                     if (EditType.INSERT.equals(lastEditType))
                     {
                         Difference lastDiff = (Difference) path.get(path.size() - 1);
-                        lastDiff.appendText(right.charAt(right.length() - y - 1));
+                        lastDiff.appendText(newTarget.charAt(newTarget.length() - y - 1));
                     }
                     else
                     {
-                        path.add(new Difference(EditType.INSERT, right.substring(right.length() - y - 1, right.length() - y)));
+                        path.add(new Difference(EditType.INSERT, newTarget.substring(newTarget.length() - y - 1, newTarget.length() - y)));
                     }
                     lastEditType = EditType.INSERT;
                     break;
@@ -346,16 +341,16 @@ public class DifferenceEngine
                 {
                     x--;
                     y--;
-                    assert left.charAt(left.length() - x - 1) == right.charAt(right.length() - y - 1) : "No diagonal.  Can't happen. (path2)"; //$NON-NLS-1$
+                    assert newSource.charAt(newSource.length() - x - 1) == newTarget.charAt(newTarget.length() - y - 1) : "No diagonal.  Can't happen. (path2)"; //$NON-NLS-1$
 
                     if (EditType.EQUAL.equals(lastEditType))
                     {
                         Difference lastDiff = (Difference) path.get(path.size() - 1);
-                        lastDiff.appendText(left.charAt(left.length() - x - 1));
+                        lastDiff.appendText(newSource.charAt(newSource.length() - x - 1));
                     }
                     else
                     {
-                        path.add(new Difference(EditType.EQUAL, left.substring(left.length() - x - 1, left.length() - x)));
+                        path.add(new Difference(EditType.EQUAL, newSource.substring(newSource.length() - x - 1, newSource.length() - x)));
                     }
                     lastEditType = EditType.EQUAL;
                 }
@@ -364,6 +359,11 @@ public class DifferenceEngine
         return path;
     }
 
+    /**
+     * Set the timeout for the diff operation. 0 for infinity. Default is 1 second.
+     * 
+     * @param newTimeout
+     */
     public static void setTimeout(float newTimeout)
     {
         timeout = newTimeout;
