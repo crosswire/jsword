@@ -205,20 +205,23 @@ class TreeNode implements Cloneable, Serializable
     private byte[]            userData;
 
     /**
-     * The offset of the parent record in the offset.<br/>-1 means that there are no
-     * parents and this TreeNode is a root.
+     * The offset of the parent record in the offset.
+     * Root nodes are indicated with a value of -1.
+     * That is, this TreeNode does not hava a parent.
      */
     private int               parent;
 
     /**
-     * The offset of the next sibling record in the offset.<br/>-1 means that there is
-     * no next sibling.
+     * The offset of the next sibling record in the offset.
+     * Final siblings are indicated with a value of -1.
+     * That is, this TreeNode does not have a next sibling.
      */
     private int               nextSibling;
 
     /**
-     * The offset of the first child record in the offset.<br/>-1 means that there are
-     * no children and this TreeNode is a leaf.
+     * The offset of the first child record in the offset.
+     * Leaf nodes are indicated with a value of -1.
+     * That is, this TreeNode does not have any children.
      */
     private int               firstChild;
 

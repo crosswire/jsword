@@ -43,7 +43,7 @@ public final class BookName
      * @param bookNumber the Book's canonical number
      * @param longName the Book's long name
      * @param shortName the Book's short name, if any
-     * @param alternateNames optional alternates for the Book
+     * @param alternateNames optional comma separated list of alternates for the Book
      */
     public BookName(Locale locale, int bookNumber, String longName, String shortName, String alternateNames)
     {
@@ -72,9 +72,7 @@ public final class BookName
     /**
      * Get the preferred name of a book.
      * Altered by the case setting (see setBookCase() and isLongBookName())
-     * @param book The book number (1-66)
-     * @return The full name of the book
-     * @exception NoSuchVerseException If the book number is not valid
+     * @return The preferred name of the book
      */
     public String getPreferredName()
     {

@@ -360,7 +360,7 @@ public class DifferenceEngine
     }
 
     /**
-     * Set the timeout for the diff operation. 0 for infinity. Default is 1 second.
+     * Set the timeout for the diff operation. The default is 1 second. Use 0 for infinity.
      * 
      * @param newTimeout
      */
@@ -370,7 +370,7 @@ public class DifferenceEngine
     }
 
     /**
-     * Number of seconds to map a diff before giving up.  (0 for infinity)
+     * Number of seconds to map a diff before giving up. Use 0 for infinity.
      */
     private static final float TIMEOUT   = 1.0f;
     private static float timeout = TIMEOUT;

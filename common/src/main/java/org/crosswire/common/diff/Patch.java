@@ -86,7 +86,7 @@ public class Patch
      * Use the diffs provided.
      * @param source Old text
      * @param target New text
-     * @param diffs Optional array of diff tuples for text1 to text2.
+     * @param diffList Optional array of diff tuples for text1 to text2.
      * @return this patch
      */
     public Patch make(String source, String target, List diffList)
@@ -189,9 +189,8 @@ public class Patch
 
 
     /**
-     * Merge a set of patches onto the text.  Return a patched text, as well
+     * Merge this patch onto the text.  Return a patched text, as well
      * as an array of true/false values indicating which patches were applied.
-     * @param patches Array of patch objects
      * @param text Old text
      * @return the patch result
      */

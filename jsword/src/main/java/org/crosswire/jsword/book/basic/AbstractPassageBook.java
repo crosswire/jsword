@@ -112,7 +112,7 @@ public abstract class AbstractPassageBook extends AbstractBook
      * Add the OSIS elements to the div element. Note, this assumes that
      * the data is fully marked up.
      * @param key The key being added
-     * @param div The div element to which the key is being added
+     * @param div The div element to which the key's OSIS representation is being added
      * @param osisContent The OSIS representation of the key being added.
      */
     public void addOSIS(Key key, Element div, List osisContent)
@@ -125,7 +125,7 @@ public abstract class AbstractPassageBook extends AbstractBook
      * Add the OSIS elements to the div element. Note, this assumes that
      * the data is fully marked up.
      * @param key The key being added
-     * @param div The div element to which the key is being added
+     * @param content The list to which the key's OSIS representation is being added
      * @param osisContent The OSIS representation of the key being added.
      */
     public void addOSIS(Key key, List content, List osisContent)
@@ -231,39 +231,4 @@ public abstract class AbstractPassageBook extends AbstractBook
      */
     private static final Logger log = Logger.getLogger(AbstractPassageBook.class);
 
-//    /* (non-Javadoc)
-//     * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
-//     */
-//    public String getRawText(Key key) throws BookException
-//    {
-//        assert key != null;
-//
-//        StringBuffer buffer = new StringBuffer();
-//
-//        // For all the ranges in this Passage
-//        Passage ref = KeyUtil.getPassage(key);
-//        Iterator rit = ref.rangeIterator(RestrictionType.CHAPTER);
-//
-//        while (rit.hasNext())
-//        {
-//            VerseRange range = (VerseRange) rit.next();
-//
-//            // For all the verses in this range
-//            Iterator vit = range.iterator();
-//            while (vit.hasNext())
-//            {
-//                Key subkey = (Key) vit.next();
-//                String txt = getRawText(subkey);
-//
-//                // If the verse is empty then we shouldn't add the verse
-//                if (txt.length() > 0)
-//                {
-//                    buffer.append(txt);
-//                    buffer.append('\n');
-//                }
-//            }
-//        }
-//
-//        return buffer.toString();
-//    }
 }
