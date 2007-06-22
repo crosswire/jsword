@@ -43,7 +43,6 @@ final class Msg extends MsgBase
     static final Msg NOT_FILE_URI = new Msg("NetUtil.NotFileURI"); //$NON-NLS-1$
     static final Msg NO_RESOURCE = new Msg("ResourceUtil.NoResource"); //$NON-NLS-1$
     static final Msg NOT_ASSIGNABLE = new Msg("ResourceUtil.NotAssignable"); //$NON-NLS-1$
-    static final Msg UNAVILABLE = new Msg("ThreadUtil.Unavailable"); //$NON-NLS-1$
     static final Msg MISSING_FILE = new Msg("WebResource.MissingFile"); //$NON-NLS-1$
     static final Msg UNEXPECTED_ERROR = new Msg("Reporter.Unexpected"); //$NON-NLS-1$
 

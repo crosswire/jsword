@@ -298,15 +298,16 @@ public final class Reporter
          */
         public void handle(Throwable ex)
         {
-            // Only allow one to be reported.
-            // TODO(DMS): change this to be once with in an interval.
-            if (!handled)
+            // Only allow one to be reported every so often.
+            // This interval control was needed because AWT exceptions
+            // were causing recursive AWT exceptions
+            // and way too many dialogs were being thrown up on the screen.
+            if (gate.open())
             {
-                handled = true;
                 Reporter.informUser(this, new LucidException(Msg.UNEXPECTED_ERROR, ex));
             }
         }
 
-        private static boolean handled;
+        private static TimeGate gate = new TimeGate(2000);
     }
 }
