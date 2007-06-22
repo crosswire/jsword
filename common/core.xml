@@ -400,26 +400,6 @@
   </target>
 
   <!--=======================================================================
-    == This is merely syntatic sugar.
-    == Calls signjar for one jar file.
-    =========================================================================-->
-  <macrodef name="jar.sign" description="Signs a jar">
-    <attribute name="jar"/>
-    <attribute name="srcdir"/>
-    <attribute name="destdir"/>
-    <sequential>
-      <mkdir dir="@{destdir}"/>
-      <signjar
-            storepass="${keystore.pswd}"
-            alias="${keystore.alias}"
-            keystore="${keystore.file}"
-            keypass="${keystore.pswd}"
-            jar="@{srcdir}/@{jar}"
-            signedjar="@{destdir}/@{jar}"/>
-    </sequential>
-  </macrodef>
-
-  <!--=======================================================================
     == A keystore is needed to sign jars.
     == It does not need to be build very often and can be shared.
     =========================================================================-->
