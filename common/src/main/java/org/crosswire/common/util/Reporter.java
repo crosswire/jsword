@@ -40,7 +40,7 @@ import java.util.Properties;
  *     still valid.)</li>
  * However in many of the times this class is used, this is the reason:
  * <li>Within UI specific code - to throw up a dialog box (or whatever). Now
- *     this use is currently tollerated, however it is probably a poor idea to
+ *     this use is currently tolerated, however it is probably a poor idea to
  *     use GUI agnostic messaging in a GUI specific context. But I'm not
  *     bothered enough to change it now. Specifically this use is deprecated
  *     because it makes the app more susceptible to the configuration of the
@@ -298,7 +298,15 @@ public final class Reporter
          */
         public void handle(Throwable ex)
         {
-            Reporter.informUser(this, ex);
+            // Only allow one to be reported.
+            // TODO(DMS): change this to be once with in an interval.
+            if (!handled)
+            {
+                handled = true;
+                Reporter.informUser(this, new LucidException(Msg.UNEXPECTED_ERROR, ex));
+            }
         }
+
+        private static boolean handled;
     }
 }
