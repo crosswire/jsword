@@ -55,7 +55,14 @@ public class OSISFilter implements Filter
         DataPolice.setKey(key);
         Element ele = null;
         Exception ex = null;
-        String clean = XMLUtil.cleanAllEntities(plain);
+        String clean = plain;
+
+        // FIXME(dms): this is a major HACK handling a problem with a badly encoded module.
+        if (book.getInitials().startsWith("NET") && plain.endsWith("</div>")) //$NON-NLS-1$ //$NON-NLS-2$
+        {
+            clean = clean.substring(0, plain.length() - 6);
+        }
+
         try
         {
             ele = parse(clean);
@@ -68,10 +75,28 @@ public class OSISFilter implements Filter
         {
             ex = e;
         }
-        finally
+
+        if (ele == null)
         {
-            // Make sure that other places don't report this problem
-            DataPolice.setKey(null);
+            clean = XMLUtil.cleanAllEntities(clean);
+    
+            try
+            {
+                ele = parse(clean);
+            }
+            catch (JDOMException e)
+            {
+                ex = e;
+            }
+            catch (IOException e)
+            {
+                ex = e;
+            }
+            finally
+            {
+                // Make sure that other places don't report this problem
+                DataPolice.setKey(null);
+            }
         }
 
         if (ex != null)
