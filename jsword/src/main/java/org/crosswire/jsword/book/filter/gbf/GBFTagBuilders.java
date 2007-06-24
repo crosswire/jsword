@@ -91,13 +91,12 @@ public final class GBFTagBuilders
                 builder = (TagBuilder) BUILDERS.get(name.substring(0, 2));
             }
 
-            Tag reply = null;
             if (builder != null)
             {
-                reply = builder.createTag(name);
+                tag = builder.createTag(name);
             }
 
-            if (reply == null)
+            if (tag == null)
             {
                 // I'm not confident enough that we handle all the GBF tags
                 // that I will blame the book instead of the program
