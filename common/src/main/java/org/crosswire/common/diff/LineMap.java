@@ -29,7 +29,7 @@ import java.util.Map;
 /**
  * LineMap is a heuristic algorithm that allows the differencing of a representation of lines.
  * A Diff of the source and target maps can be reconstituted with restore.
- * 
+ *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
@@ -39,7 +39,7 @@ public class LineMap
     /**
      * Split two texts into a list of strings.  Reduce the texts to a string of
      * hashes where each Unicode character represents one line. The result
-     * is that text1 is encoded into 
+     * is that text1 is encoded into
      * @param source Baseline string
      * @param target Changed string
      */

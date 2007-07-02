@@ -33,7 +33,7 @@ import java.util.EventListener;
  * This code is lifted from javax.sw*ng.event.EventListnerList. It is
  * very useful in non GUI code which does not need the rest of sw*ng.
  * BORROWED: From javax.sw*ng.event.EventListnerList
- * 
+ *
  * <p>It differs in that it is fully synchronized, thus thread safe.
  *
  * <p>If you inculde sw*ng code in non-gui code then you can end up not being
@@ -117,7 +117,7 @@ public class EventListenerList implements Serializable
     /**
      * This passes back the event listener list as an array
      * of ListenerType - listener pairs.
-     * 
+     *
      * This method is guaranteed to pass back a non-null
      * array, so that no null-checking is required in
      * fire methods.  A zero-length array of Object should
@@ -132,11 +132,11 @@ public class EventListenerList implements Serializable
     }
 
     /**
-     * Return an array of all the listeners of the given type. 
-     * @return all of the listeners of the specified type. 
+     * Return an array of all the listeners of the given type.
+     * @return all of the listeners of the specified type.
      * @exception  ClassCastException if the supplied class
      *      is not assignable to EventListener
-     * 
+     *
      * @since 1.3
      */
     public EventListener[] getListeners(Class t)
@@ -164,7 +164,7 @@ public class EventListenerList implements Serializable
     }
 
     /**
-     * Returns the total number of listeners of the supplied type 
+     * Returns the total number of listeners of the supplied type
      * for this listener list.
      */
     public int getListenerCount(Class t)

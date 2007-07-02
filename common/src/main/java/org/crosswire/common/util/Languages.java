@@ -28,7 +28,7 @@ import java.util.ResourceBundle;
 
 /**
  * A utility class that converts ISO-639 codes or locales to their "friendly" language name.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
@@ -48,7 +48,7 @@ public class Languages
      * The code is valid if it is in iso639.properties.
      * If a locale is used for the iso639Code, it will use the part before the '_'.
      * Thus, this code does not support dialects, except as found in the iso639.
-     * 
+     *
      * @param iso639Code
      * @return true if the language is valid.
      */
@@ -90,7 +90,7 @@ public class Languages
      * Otherwise, it will generate a log message and return unknown.
      * If a locale is used for the iso639Code, it will use the part before the '_'.
      * Thus, this code does not support dialects, except as found in the iso639.
-     * 
+     *
      * @param iso639Code
      * @return the name of the language
      */

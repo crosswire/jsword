@@ -27,7 +27,7 @@ import java.io.Serializable;
 /**
  * Wraps an XML Feature. The "known" set of XML Features is found in
  * XMLFeatureSet.
- * 
+ *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
@@ -69,7 +69,7 @@ public class XMLFeature implements Serializable, Comparable
 
     /**
      * Construct a feature for xml, setting the initial state
-     * 
+     *
      * @param control
      * @param initialState
      */
@@ -81,7 +81,7 @@ public class XMLFeature implements Serializable, Comparable
 
     /**
      * Construct a feature for xml, setting the initial state set to false.
-     * 
+     *
      * @param control
      */
     private XMLFeature(String control)

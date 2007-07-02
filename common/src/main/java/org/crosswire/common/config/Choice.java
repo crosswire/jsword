@@ -27,14 +27,14 @@ import org.jdom.Element;
 
 /**
  * Choice is the fundamental building block of the config system.
- * 
+ *
  * Every Choice must be able to:<ul>
  * <li>get and set itself using a String</li>
  * <li>provide some simple help about itself</li>
  * <li>elect a user level for itself (Beginner, Intermediate, Advanced)</li>
  * <li>provide a GUI editor for itself</li>
  * </ul>
- * 
+ *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

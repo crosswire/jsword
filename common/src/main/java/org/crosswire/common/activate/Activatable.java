@@ -25,7 +25,7 @@ package org.crosswire.common.activate;
  * A class can be Activatable if it needs a significant amount of memory on an
  * irregular basis, and so would benefit from being told when to wake-up and
  * when to conserver memory.
- * 
+ *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

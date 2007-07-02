@@ -143,7 +143,7 @@ public final class XMLUtil
      * For each entity in the input that is not allowed in XML, replace the entity with its unicode equivalent or remove it.
      * For each instance of a bare &, replace it with &amp;<br/>
      * XML only allows 4 entities: &amp;amp;, &amp;quot;, &amp;lt; and &amp;gt;.
-     * 
+     *
      * @param broken the string to handle entities
      * @return the string with entities appropriately fixed up
      */
@@ -228,7 +228,7 @@ public final class XMLUtil
      * The set of allowable characters are:<br />
      * #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]<br/>
      * Note: Java handles to \uFFFF
-     * 
+     *
      * @param broken the string to be cleaned
      * @return the cleaned string
      */
@@ -324,7 +324,7 @@ public final class XMLUtil
      * Replace entity with its unicode equivalent, if it is not a valid XML entity.
      * Otherwise strip it out.
      * XML only allows 4 entities: &amp;amp;, &amp;quot;, &amp;lt; and &amp;gt;.
-     * 
+     *
      * @param entity the entity to be replaced
      * @return the substitution for the entity, either itself, the unicode equivalent or an empty string.
      */

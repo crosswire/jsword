@@ -24,7 +24,7 @@ package org.crosswire.common.util;
 
 /**
  * A TimeGate when entered will cause the gate to be closed for a specified period of time.
- * 
+ *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]

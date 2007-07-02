@@ -27,7 +27,7 @@ import java.net.URI;
 
 /**
  * Types of Operating Systems for which specialized behavior is needed.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
@@ -131,10 +131,10 @@ public abstract class OSType implements Serializable
     /**
      * A folder in the user area. This osType will determine which to use in constructing
      * the URI to the folder.
-     * 
+     *
      * @param hiddenFolderName is typically a "unix" hidden folder name such as .jsword.
      * @param visibleFolderName is an visible folder name, such as JSword.
-     * 
+     *
      * @return the user area folder
      */
     public abstract URI getUserAreaFolder(String hiddenFolderName, String visibleFolderName);
@@ -168,7 +168,7 @@ public abstract class OSType implements Serializable
 
     /**
      * Get the machine's OSType.
-     * 
+     *
      * @return the machine's OSType
      */
     public static OSType getOSType()

@@ -272,7 +272,7 @@ public final class NetUtil
      * by downloading to a temp dir first
      * @param uri The original URI to the file.
      * @return The URI as a file
-     * @throws IOException 
+     * @throws IOException
      */
     public static File getAsFile(URI uri) throws IOException
     {
@@ -558,7 +558,7 @@ public final class NetUtil
     /**
      * List all the files specified by the index file passed in.
      * @return String[] Matching results.
-     * @throws FileNotFoundException 
+     * @throws FileNotFoundException
      */
     public static String[] listByIndexFile(URI index, URIFilter filter) throws IOException
     {

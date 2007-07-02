@@ -25,7 +25,7 @@ import java.util.EventObject;
 
 /**
  * An event indicating that some bit of data needs capturing.
- * 
+ *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

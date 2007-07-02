@@ -69,7 +69,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
 
     /**
      * Compile the XSL or retrieve it from the cache
-     * @throws IOException 
+     * @throws IOException
      */
     private TemplateInfo getTemplateInfo() throws TransformerConfigurationException, IOException
     {

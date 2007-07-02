@@ -22,9 +22,9 @@
 package org.crosswire.common.diff;
 
 /**
- * 
+ *
  * Represents a single difference, consisting of an EditType and associated text.
- * 
+ *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]

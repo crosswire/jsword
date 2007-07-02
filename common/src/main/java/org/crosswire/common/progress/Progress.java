@@ -60,7 +60,7 @@ public interface Progress
 
     /**
      * We have moved onto another section so update the section title.
-     * 
+     *
      * @param name the name of the section
      */
     void setSectionName(String name);
@@ -72,7 +72,7 @@ public interface Progress
 
     /**
      * Indicate progress toward the whole.
-     * 
+     *
      * @param progress a part of the whole.
      */
     void setWork(int progress);
@@ -85,7 +85,7 @@ public interface Progress
     /**
      * Cancel the job (if possible). If isCancelable() is false, then the job
      * will be canceled if cancelable becomes true. There is no guarantee that
-     * 
+     *
      */
     void cancel();
 
@@ -101,7 +101,7 @@ public interface Progress
 
     /**
      * Indicates whether the job is cancelable or not.
-     * 
+     *
      * @param newCancelable The state to set.
      */
     void setCancelable(boolean newCancelable);

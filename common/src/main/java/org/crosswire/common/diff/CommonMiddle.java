@@ -23,7 +23,7 @@ package org.crosswire.common.diff;
 
 /**
  * A CommonMiddle represents an overlap between a baseline/source text and a changed/target text.
- * 
+ *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
@@ -32,7 +32,7 @@ public class CommonMiddle
 {
     /**
      * A CommonMiddle represents an overlap between a baseline/source text and a changed/target text.
-     * 
+     *
      * @param sourcePrefix The text before the commonality form the source
      * @param sourceSuffix The text after the commonality form the source
      * @param targetPrefix The text before the commonality form the target

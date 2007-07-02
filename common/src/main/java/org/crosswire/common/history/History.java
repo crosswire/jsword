@@ -55,7 +55,7 @@ public class History
     /**
      * Make a particular element in the navigation list the current
      * item in history.
-     * 
+     *
      * @param index the index of item to make the last one in the back list,
      *          -1 (or lower) will put everything in the forward list.
      *          Indexes beyond the end of the list will put everything
@@ -91,7 +91,7 @@ public class History
      * Add an element to history. If the element is in the forward list,
      * then it replaces everything in the forward list upto it.
      * Otherwise, it replaces the forward list.
-     * 
+     *
      * @param obj the object to add
      */
     public void add(Object obj)

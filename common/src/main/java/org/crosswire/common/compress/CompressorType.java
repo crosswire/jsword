@@ -26,7 +26,7 @@ import java.io.Serializable;
 
 /**
  * An Enumeration of the possible Edits.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]

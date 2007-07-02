@@ -30,10 +30,10 @@ import java.util.Set;
 
 /**
  * Builds a map of a baseline/source text and a changed/target text, navigating it to determine differences.
- * 
+ *
  * Based on the LGPL Diff_Match_Patch v1.5 javascript of Neil Fraser, Copyright (C) 2006
  * <a href="http://neil.fraser.name/software/diff_match_patch/">http://neil.fraser.name/software/diff_match_patch/</a>
- * 
+ *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
@@ -361,7 +361,7 @@ public class DifferenceEngine
 
     /**
      * Set the timeout for the diff operation. The default is 1 second. Use 0 for infinity.
-     * 
+     *
      * @param newTimeout
      */
     public static void setTimeout(float newTimeout)

@@ -41,7 +41,7 @@ import org.apache.commons.httpclient.util.HttpURLConnection;
  * A WebResource is backed by an URL and potentially the proxy through which it
  * need go. It can get basic information about the resource and it can get the
  * resource.
- * 
+ *
  * @see gnu.lgpl.License for license details.<br> The copyright to this program is
  *      held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
@@ -73,7 +73,7 @@ public class WebResource
     /**
      * Determine the size of this WebResource.
      * <p>Note that the http client may read the entire file to determine this.</p>
-     * 
+     *
      * @return the size of the file
      */
     public int getSize()
@@ -106,7 +106,7 @@ public class WebResource
     /**
      * Determine the last modified date of this WebResource.
      * <p>Note that the http client may read the entire file.</p>
-     * 
+     *
      * @return the last mod date of the file
      */
     public long getLastModified()
@@ -135,7 +135,7 @@ public class WebResource
 
     /**
      * Copy this WebResource to the destination.
-     * 
+     *
      * @param dest
      * @throws LucidException
      */

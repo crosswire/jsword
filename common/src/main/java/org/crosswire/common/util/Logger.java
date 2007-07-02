@@ -28,7 +28,7 @@ import java.util.logging.LogRecord;
 /**
  * This class is very similar to Commons-Logging except it should be even
  * smaller and have an API closer to the Log4J API (and even J2SE 1.4 logging).
- * 
+ *
  * This implementation is lazy. The actual internal logger is not initialized
  * until first use. Turns out that this class indirectly depends upon JSword's
  * Project class to help find the logging configuration file. If it is not

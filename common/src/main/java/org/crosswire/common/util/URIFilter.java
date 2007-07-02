@@ -23,7 +23,7 @@ package org.crosswire.common.util;
 
 /**
  * This is the URI equivalent of FilenameFilter in the java.io package.
- * 
+ *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

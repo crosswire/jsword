@@ -173,7 +173,7 @@ public class Config
 
     /**
      * Remove a key/model pairing
-     * 
+     *
      * @param key The name to kill
      */
     public void remove(String key)
@@ -418,7 +418,7 @@ public class Config
     /**
      * Take the data stored permanently and copy it to the local
      * storage area, using the configured storage area
-     * @throws IOException 
+     * @throws IOException
      */
     public void permanentToLocal(URI uri) throws IOException
     {

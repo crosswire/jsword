@@ -46,7 +46,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
      * A formatting serializer that adds whitespace to the document
      * according to the specified <code>FormatType</code>. This uses
      * a StringWriter and the toString method will return its content.
-     * 
+     *
      * @param theFormat the formatting to use
      */
     public HTMLSerializingContentHandler(FormatType theFormat)
@@ -58,7 +58,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
      * A formatting serializer that adds whitespace to the document
      * according to the specified <code>FormatType</code>. As the document
      * is serialized it is written to the provided <code>Writer</code>.
-     * 
+     *
      * @param theFormat the formatting to use
      * @param theWriter the writer to use
      */

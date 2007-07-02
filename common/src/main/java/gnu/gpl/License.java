@@ -384,7 +384,7 @@ public class License
 
     /**
      * Get the Warranty.
-     * 
+     *
      * @return the warranty for this program
      */
     public String getWarranty()
@@ -394,7 +394,7 @@ public class License
 
     /**
      * Get the license distribution terms.
-     * 
+     *
      * @return the details of this program's distribution license
      */
     public String getDetails()

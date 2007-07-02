@@ -26,7 +26,7 @@ import java.io.InputStream;
 
 /**
  * A compressor provides the ability to compress and uncompress text.
- * 
+ *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]

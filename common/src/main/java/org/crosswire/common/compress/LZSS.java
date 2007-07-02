@@ -30,55 +30,55 @@ import java.io.InputStream;
 /**
  * The LZSS compression is a port of code as implemented for STEP.
  * The following information gives the history of this implementation.
- * 
+ *
  * <p>Compression Info, 10-11-95<br/>
  * Jeff Wheeler</p>
- * 
+ *
  * <h2><u>Source of Algorithm</u></h2>
- * 
- * <p>The compression algorithms used here are based upon the algorithms developed and published by Haruhiko Okumura in a paper entitled "Data Compression Algorithms of LARC and LHarc."  This paper discusses three compression algorithms, LSZZ, LZARI, and LZHUF.  LZSS is described as the "first" of these, and is described as providing moderate compression with good speed.  LZARI is described as an improved LZSS, a combination of the LZSS algorithm with adaptive arithmetic compression.  It is described as being slower than LZSS but with better compression.  LZHUF (the basis of the common LHA compression program) was included in the paper, however, a free usage license was not included.</p> 
- * 
+ *
+ * <p>The compression algorithms used here are based upon the algorithms developed and published by Haruhiko Okumura in a paper entitled "Data Compression Algorithms of LARC and LHarc."  This paper discusses three compression algorithms, LSZZ, LZARI, and LZHUF.  LZSS is described as the "first" of these, and is described as providing moderate compression with good speed.  LZARI is described as an improved LZSS, a combination of the LZSS algorithm with adaptive arithmetic compression.  It is described as being slower than LZSS but with better compression.  LZHUF (the basis of the common LHA compression program) was included in the paper, however, a free usage license was not included.</p>
+ *
  * <p>The following are copies of the statements included at the beginning of each source code listing that was supplied in the working paper.</p>
- * 
+ *
  *         <blockquote>LZSS, dated 4/6/89, marked as "Use, distribute and
  *         modify this program freely."</blockquote>
- * 
+ *
  *         <blockquote>LZARI, dated 4/7/89, marked as "Use, distribute and
  *         modify this program freely."</blockquote>
- * 
+ *
  *         <blockquote>LZHUF, dated 11/20/88, written by Haruyasu Yoshizaki,
  *         translated by Haruhiko Okumura on 4/7/89.  Not
  *         expressly marked as redistributable or modifiable.</blockquote>
- * 
+ *
  * <p>Since both LZSS and LZARI are marked as "use, distribute and modify freely" we have felt at liberty basing our compression algorithm on either of these.</p>
- * 
+ *
  * <h2><u>Selection of Algorithm</u></h2>
- * 
+ *
  * <p>Working samples of three possible compression algorithms are supplied in Okumura's paper.  Which should be used?</p>
- * 
+ *
  * <p>LZSS is the fastest at decompression, but does not generated as small a compressed file as the other methods. The other two methods provided, perhaps, a 15% improvement in compression.  Or, put another way, on a 100K file, LZSS might compress it to 50K while the others might approach 40-45K.  For STEP purposes, it was decided that decoding speed was of more importance than tighter compression. For these reasons, the first compression algorithm implemented is the LZSS algorithm.</p>
- * 
+ *
  * <h2><u>About LZSS Encoding</u></h2>
- * 
+ *
  * <p>(adapted from Haruhiko Okumura's paper)</p>
- * 
+ *
  * <p>This scheme was proposed by Ziv and Lempel [1].  A slightly modified version is described by Storer and Szymanski [2]. An implementation using a binary tree has been proposed by Bell [3].</p>
- * 
+ *
  * The algorithm is quite simple.<br/>
  * <ol>
  * <li>Keep a ring buffer which initially contains all space characters.</li>
  * <li>Read several letters from the file to the buffer.</li>
  * <li>Search the buffer for the longest string that matches the letters just read, and send its length and position into the buffer.</li>
  * </ol>
- * 
+ *
  * <p>If the ring buffer is 4096 bytes, the position can be stored in 12 bits.  If the length is represented in 4 bits, the <position, length> pair is two bytes long.  If the longest match is no more than two characters, then just one character is sent without encoding.  The process starts again with the next character.  An extra bit is sent each time to tell the decoder whether the next item is a character of a <position, length> pair.</p>
- * 
+ *
  * <p>
  * [1] J. Ziv and A. Lempel, IEEE Transactions IT-23, 337-343 (1977).<br/>
  * [2] J. A. Storer and T. G. Szymanski, J. ACM, 29, 928-951 (1982).<br/>
  * [3] T.C. Gell, IEEE Transactions COM-34, 1176-1182 (1986).
  * </p>
- * 
+ *
  * Regarding this port to Java and not the original code, the following license
  * applies:
  *
@@ -90,7 +90,7 @@ public class LZSS extends AbstractCompressor
 {
     /**
      * Create an LZSS that is capable of transforming the input.
-     * 
+     *
      * @param input to compress or uncompress.
      */
     public LZSS(InputStream input)
@@ -124,7 +124,7 @@ public class LZSS extends AbstractCompressor
         // that the next unit is a <position,length> pair (2 bytes).
         //
         // code_buf[1..16] stores eight units of code.  Since the best
-        // we can do is store eight <position,length> pairs, at most 16 
+        // we can do is store eight <position,length> pairs, at most 16
         // bytes are needed to store this.
         //
         // This is why the maximum size of the code buffer is 17 bytes.
@@ -138,7 +138,7 @@ public class LZSS extends AbstractCompressor
         //        |                           |
         //        |             first sequence in code buffer
         //        |
-        //      last sequence in code buffer        
+        //      last sequence in code buffer
         mask = 1;
 
         s = 0;
@@ -245,12 +245,12 @@ public class LZSS extends AbstractCompressor
                 deleteNode(s);
 
                 // Put this character into the ring buffer.
-                //          
+                //
                 // The original comment here says "If the position is near
                 // the end of the buffer, extend the buffer to make
                 // string comparison easier."
                 //
-                // That's a little misleading, because the "end" of the 
+                // That's a little misleading, because the "end" of the
                 // buffer is really what we consider to be the "beginning"
                 // of the buffer, that is, positions 0 through MAX_STORE_LENGTH.
                 //
@@ -280,7 +280,7 @@ public class LZSS extends AbstractCompressor
                 s = (short) ((s + 1) & (RING_SIZE - 1));
                 r = (short) ((r + 1) & (RING_SIZE - 1));
 
-                // Register the string that is found in 
+                // Register the string that is found in
                 // ringBuffer[r..r + MAX_STORE_LENGTH - 1].
                 insertNode((short) r);
             }
@@ -412,7 +412,7 @@ public class LZSS extends AbstractCompressor
                 //      break;
                 //  if ((j = getc(infile)) == EOF)
                 //      break;
-                //  i |= ((j & 0xf0) << 4);    
+                //  i |= ((j & 0xf0) << 4);
                 //  j = (j & 0x0f) + THRESHOLD;
                 //
                 // I've modified this to only make one input call, and
@@ -488,15 +488,15 @@ public class LZSS extends AbstractCompressor
      * Inserts a string from the ring buffer into one of the trees.
      * It loads the match position and length member variables
      * for the longest match.
-     * 
+     *
      * <p>The string to be inserted is identified by the parameter Pos,
      * A full MAX_STORE_LENGTH bytes are inserted.  So, ringBuffer[Pos ... Pos+MAX_STORE_LENGTH-1]
      * are inserted.</p>
-     * 
+     *
      * <p>If the matched length is exactly MAX_STORE_LENGTH, then an old node is removed
      * in favor of the new one (because the old one will be deleted
      * sooner).</p>
-     * 
+     *
      * @param pos plays a dual role.  It is used as both a position
      * in the ring buffer and also as a tree node.  ringBuffer[Pos]
      * defines a character that is used to identify a tree node.
@@ -596,7 +596,7 @@ public class LZSS extends AbstractCompressor
 
     /**
      * Remove a node from the tree.
-     * 
+     *
      * @param node the node to remove
      */
     private void deleteNode(short node)
@@ -657,7 +657,7 @@ public class LZSS extends AbstractCompressor
 
 //    /**
 //     * Fill a buffer with some bytes from the input stream.
-//     * 
+//     *
 //     * @param ibuf the buffer to fill
 //     * @param start the position in the buffer to start filling
 //     * @param len the number of bytes to get
@@ -678,7 +678,7 @@ public class LZSS extends AbstractCompressor
 //
 //    /**
 //     * Fill a buffer with some bytes from the input stream.
-//     * 
+//     *
 //     * @param ibuf the buffer to fill
 //     * @param len the number of bytes to get
 //     * @return the number of bytes added to the buffer
@@ -698,7 +698,7 @@ public class LZSS extends AbstractCompressor
 //
 //    /**
 //     * Return whether there are more bytes to read.
-//     * 
+//     *
 //     * @return whether there are more bytes to read.
 //     */
 //    private boolean hasMoreToRead()
@@ -708,7 +708,7 @@ public class LZSS extends AbstractCompressor
 //
 //    /**
 //     * Get the next byte from the stream.
-//     * 
+//     *
 //     * @return the the next byte from the stream
 //     */
 //    private byte getByte()
@@ -752,8 +752,8 @@ public class LZSS extends AbstractCompressor
 //    }
 
     /**
-     * This is the size of the ring buffer.  It is set to 4K. 
-     * It is important to note that a position within the ring buffer requires 12 bits.  
+     * This is the size of the ring buffer.  It is set to 4K.
+     * It is important to note that a position within the ring buffer requires 12 bits.
      */
     private static final int RING_SIZE = 4096;
 
@@ -768,7 +768,7 @@ public class LZSS extends AbstractCompressor
      */
     private static final int MAX_STORE_LENGTH = 18;
 
-    /** 
+    /**
      * It takes 2 bytes to store an offset and a length.
      * If a character sequence only requires 1 or 2 characters to store uncompressed,
      * then it is better to store it uncompressed than as an offset into the ring buffer.
@@ -787,7 +787,7 @@ public class LZSS extends AbstractCompressor
      * and a length.  When decoding, the compressed text may contain
      * a position in the ring buffer and a count of the number of
      * bytes from the ring buffer that are to be moved into the
-     * uncompressed buffer.  
+     * uncompressed buffer.
      *
      * <p>This ring buffer is not maintained as part of the compressed
      * text.  Instead, it is reconstructed dynamically.  That is,
@@ -813,18 +813,18 @@ public class LZSS extends AbstractCompressor
      * a tree structure.  The dad is the parent and it has a right and
      * left son (child).
      *
-     * <p>For i = 0 to RING_SIZE-1, rightSon[i] and leftSon[i] will be the right 
+     * <p>For i = 0 to RING_SIZE-1, rightSon[i] and leftSon[i] will be the right
      * and left children of node i.</p>
      *
      * <p>For i = 0 to RING_SIZE-1, dad[i] is the parent of node i.</p>
      *
-     * <p>For i = 0 to 255, rightSon[RING_SIZE + i + 1] is the root of the tree for 
-     * strings that begin with the character i.  Note that this requires 
+     * <p>For i = 0 to 255, rightSon[RING_SIZE + i + 1] is the root of the tree for
+     * strings that begin with the character i.  Note that this requires
      * one byte characters.</p>
      *
      * <p>These nodes store values of 0...(RING_SIZE-1).  Memory requirements
      * can be reduces by using 2-byte integers instead of full 4-byte
-     * integers (for 32-bit applications).  Therefore, these are 
+     * integers (for 32-bit applications).  Therefore, these are
      * defined as "shorts."</p>
      */
     private short[] dad = new short[RING_SIZE + 1];
