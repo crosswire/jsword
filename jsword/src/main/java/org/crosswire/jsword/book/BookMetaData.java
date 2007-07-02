@@ -159,7 +159,7 @@ public interface BookMetaData extends Comparable
     /**
      * Return the orientation of the language of the Book. If a book contains more than one language,
      * it refers to the dominate language of the book. This will be used to present
-     * Arabic and Hebrew in their propper orientation.
+     * Arabic and Hebrew in their proper orientation.
      * @return true if the orientation for the dominate language is LeftToRight.
      */
     boolean isLeftToRight();

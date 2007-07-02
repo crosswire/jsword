@@ -493,7 +493,7 @@ public class ConfigEntryType implements Serializable
     public static final ConfigEntryType DESCRIPTION = new ConfigEntryType("Description"); //$NON-NLS-1$
 
     /**
-     * The layout direction of the text in the book. Hebrew and Arabic is RtoL. Most are 'LtoR'.
+     * The layout direction of the text in the book. Hebrew, Arabic and Farsi RtoL. Most are 'LtoR'.
      * Some are 'bidi', bi-directional. E.g. hebrew-english glossary.
      */
     public static final ConfigEntryType DIRECTION = new ConfigEntryType("Direction") //$NON-NLS-1$

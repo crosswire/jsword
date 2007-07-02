@@ -572,6 +572,10 @@ public final class ConfigEntryTable
     private void adjustDataPath()
     {
         String datapath = (String) getValue(ConfigEntryType.DATA_PATH);
+        if (datapath == null)
+        {
+            datapath = ""; //$NON-NLS-1$
+        }
         if (datapath.startsWith("./")) //$NON-NLS-1$
         {
             add(ConfigEntryType.DATA_PATH, datapath.substring(2));

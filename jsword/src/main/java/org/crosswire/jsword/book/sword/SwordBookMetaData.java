@@ -59,9 +59,6 @@ public final class SwordBookMetaData extends AbstractBookMetaData
 {
     /**
      * Loads a sword config from a given File.
-     * The returned BookMetaData object will not be associated with a Book so
-     * setBook() should be called before getBook() is expected to return
-     * anything other than null.
      * 
      * @param file
      * @param internal
@@ -71,15 +68,13 @@ public final class SwordBookMetaData extends AbstractBookMetaData
     {
         cet = new ConfigEntryTable(internal);
         cet.load(file);
+        
         setLibrary(bookRootPath);
         buildProperties();
     }
 
     /**
      * Loads a sword config from a buffer.
-     * The returned BookMetaData object will not be associated with a Book so
-     * setBook() should be called before getBook() is expected to return
-     * anything other than null.
      * 
      * @param buffer
      * @param internal
@@ -192,6 +187,9 @@ public final class SwordBookMetaData extends AbstractBookMetaData
      */
     public void setLibrary(URI library)
     {
+        cet.add(ConfigEntryType.LIBRARY_URL, library.toString());
+        super.setLibrary(library);
+
         // Currently all DATA_PATH entries end in / to indicate dirs or not to indicate file prefixes
         String datapath = getProperty(ConfigEntryType.DATA_PATH);
         int lastSlash = datapath.lastIndexOf('/');
@@ -205,9 +203,6 @@ public final class SwordBookMetaData extends AbstractBookMetaData
 
         datapath = datapath.substring(0, lastSlash);
         URI location = NetUtil.lengthenURI(library, datapath);
-
-        cet.add(ConfigEntryType.LIBRARY_URL, library.toString());
-        super.setLibrary(library);
 
         cet.add(ConfigEntryType.LOCATION_URL, location.toString());
         super.setLocation(location);
