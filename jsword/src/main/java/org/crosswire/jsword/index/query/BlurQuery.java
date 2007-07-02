@@ -29,7 +29,7 @@ import org.crosswire.jsword.passage.RestrictionType;
 /**
  * A blur query specifies how much to blur the results of the right query
  * before ANDing it to the left.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
@@ -39,7 +39,7 @@ public class BlurQuery extends AbstractBinaryQuery
     /**
      * Create a query that specifies how much to blur the results of the right query
      * before ANDing it to the left.
-     * 
+     *
      * @param theLeftQuery
      * @param theRightQuery
      */

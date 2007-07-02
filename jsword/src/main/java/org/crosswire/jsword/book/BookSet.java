@@ -34,7 +34,7 @@ import org.crosswire.common.util.Filter;
  * BookSet represents a collection of descriptions about Books
  * which may be subsetted into other BookMetaDataSets.
  * Each set is naturally ordered.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]

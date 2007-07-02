@@ -33,7 +33,7 @@ import java.util.TreeSet;
  * actual number, zero padded to 4 digits. The value for a MapEntry
  * is a Set of Strings, which are the various ways a Strong's Number
  * is marked up.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
@@ -51,7 +51,7 @@ public class StrongsMapSet
     /**
      * Add a String representing the content of an instance of a Strong's Number
      * in a text.
-     * 
+     *
      * @param strongsNumber the Strong's Number
      * @param representation a way the Strong's number is represented.
      */

@@ -25,7 +25,7 @@ package org.crosswire.jsword.passage;
  * For any time when a component wishes to express a preferrence for a Key.
  * This interface will often be optional to allow objects to not specify a
  * preferrence.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

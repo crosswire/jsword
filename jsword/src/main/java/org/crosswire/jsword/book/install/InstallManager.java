@@ -41,7 +41,7 @@ import org.crosswire.jsword.util.Project;
 
 /**
  * A manager to abstract out the non-view specific book installation tasks.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -264,7 +264,7 @@ public final class InstallManager
 
     /**
      * InstallManager is a Map, however we demand that both names and installers
-     * are unique (so we can lookup a name from an installer) 
+     * are unique (so we can lookup a name from an installer)
      * @param name The name of the new installer
      * @param installer The installer to associate with the given name
      */

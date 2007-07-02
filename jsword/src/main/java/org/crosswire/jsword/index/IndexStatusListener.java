@@ -27,7 +27,7 @@ import java.util.EventListener;
 /**
  * IndexStatusListeners are able to be notified about changes to the
  * IndexStatus of a book.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]

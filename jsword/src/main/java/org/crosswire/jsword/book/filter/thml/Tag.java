@@ -27,7 +27,7 @@ import org.xml.sax.Attributes;
 /**
  * THML Tag interface - there should be one implementation of this class for
  * each THML tag.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

@@ -38,7 +38,7 @@ public final class BookName
 {
     /**
      * Create a BookName for a Book of the Bible in a given language.
-     * 
+     *
      * @param locale the language of this BookName
      * @param bookNumber the Book's canonical number
      * @param longName the Book's long name

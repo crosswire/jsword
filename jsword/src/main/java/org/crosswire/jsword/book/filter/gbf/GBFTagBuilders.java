@@ -51,10 +51,10 @@ import org.crosswire.jsword.passage.Key;
 
 /**
  * This class is a convienence to get GBF Tags.
- * 
+ *
  * The best place to go for more information about the GBF spec that I have
  * found is: <a href="http://ebible.org/bible/gbf.htm">http://ebible.org/bible/gbf.htm</a>
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -63,7 +63,7 @@ import org.crosswire.jsword.passage.Key;
 public final class GBFTagBuilders
 {
     /**
-     * 
+     *
      */
     private GBFTagBuilders()
     {

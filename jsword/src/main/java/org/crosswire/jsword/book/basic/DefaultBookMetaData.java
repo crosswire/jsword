@@ -43,7 +43,7 @@ import org.jdom.Element;
  * available in AbstractBookMetaData where the complexity is in the setup rather
  * than the inheritance. DefaultBookMetaData is probably the preferred
  * implementation.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

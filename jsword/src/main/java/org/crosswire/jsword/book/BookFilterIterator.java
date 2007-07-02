@@ -29,7 +29,7 @@ import org.crosswire.common.util.Iterable;
 
 /**
  * An iterator that filters as it goes.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

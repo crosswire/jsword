@@ -59,7 +59,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData
 {
     /**
      * Loads a sword config from a given File.
-     * 
+     *
      * @param file
      * @param internal
      * @throws IOException
@@ -68,14 +68,14 @@ public final class SwordBookMetaData extends AbstractBookMetaData
     {
         cet = new ConfigEntryTable(internal);
         cet.load(file);
-        
+
         setLibrary(bookRootPath);
         buildProperties();
     }
 
     /**
      * Loads a sword config from a buffer.
-     * 
+     *
      * @param buffer
      * @param internal
      * @throws IOException

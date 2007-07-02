@@ -23,7 +23,7 @@ package org.crosswire.jsword.book.filter.gbf;
 
 /**
  * A class that packages start and end Tags together.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

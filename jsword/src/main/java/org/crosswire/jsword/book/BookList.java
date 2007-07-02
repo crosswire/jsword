@@ -28,7 +28,7 @@ import java.util.List;
  * Books, however there may be others like the available books or books from
  * a specific driver.
  * This interface provides a common method of accessing all of them.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @see gnu.lgpl.License

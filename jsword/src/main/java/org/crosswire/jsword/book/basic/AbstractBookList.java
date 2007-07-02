@@ -37,7 +37,7 @@ import org.crosswire.jsword.book.BooksListener;
  * A basic implementation of BookList.
  * The methods in this abstract class are duplicates of those in Books, so
  * bugs fixed in one should be fixed in the other too.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

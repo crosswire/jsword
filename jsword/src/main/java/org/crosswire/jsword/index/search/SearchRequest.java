@@ -23,7 +23,7 @@ package org.crosswire.jsword.index.search;
 
 /**
  * A SearchRequest consists of a string and modifiers for the search.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]

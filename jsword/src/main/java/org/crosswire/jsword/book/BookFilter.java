@@ -23,7 +23,7 @@ package org.crosswire.jsword.book;
 
 /**
  * A method of filtering Books.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

@@ -25,7 +25,7 @@ import java.io.Serializable;
 
 /**
  * Block types indicates the grain of compression.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

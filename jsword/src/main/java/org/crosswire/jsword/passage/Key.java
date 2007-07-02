@@ -27,11 +27,11 @@ import org.crosswire.common.util.Iterable;
 
 /**
  * A Key is a Key that can contain other Keys.
- * 
+ *
  * The interface is modelled on the java.util.Set interface customized because
  * KeyLists can only store other Keys and simplified by making add() and remove()
  * return void and not a boolean.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -50,7 +50,7 @@ public interface Key extends Comparable, Cloneable, Iterable, Serializable
      * A Human readable version of the Key's top level name.
      * For Biblical passages this uses short books names. For
      * a dictionary it might return A-Z.
-     * 
+     *
      * @return a String containing a description of the Key
      */
     String getRootName();
@@ -68,7 +68,7 @@ public interface Key extends Comparable, Cloneable, Iterable, Serializable
     /**
      * The OSIS defined reference specification for this Key.
      * When the key is a single element, it is an OSIS book name with '.'
-     * separating the parts. When the key is multiple elements, it 
+     * separating the parts. When the key is multiple elements, it
      * uses a range notation. Note, this will create a comma separated
      * list of ranges, which is improper OSIS.
      *
@@ -79,7 +79,7 @@ public interface Key extends Comparable, Cloneable, Iterable, Serializable
     /**
      * The OSIS defined id specification for this Key.
      * When the key is a single element, it is an OSIS book name with '.'
-     * separating the parts. When the key is multiple elements, it 
+     * separating the parts. When the key is multiple elements, it
      * uses a space to separate each.
      *
      * @return a String containing the OSIS description of the verses

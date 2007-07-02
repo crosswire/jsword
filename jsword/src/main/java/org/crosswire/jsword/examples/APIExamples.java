@@ -235,7 +235,7 @@ public class APIExamples
 
     /**
      * An example of how to get the text of a book for export.
-     * 
+     *
      * @throws NoSuchKeyException
      * @throws BookException
      */
@@ -326,10 +326,10 @@ public class APIExamples
 
     /**
      * Quick Demo
-     * @throws NoSuchKeyException 
-     * @throws BookException 
-     * @throws SAXException 
-     * @throws TransformerException 
+     * @throws NoSuchKeyException
+     * @throws BookException
+     * @throws SAXException
+     * @throws TransformerException
      */
     public static void main(String[] args) throws BookException, NoSuchKeyException, TransformerException, SAXException
     {

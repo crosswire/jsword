@@ -56,7 +56,7 @@ public interface Book extends Activatable, KeyFactory, Comparable
 
     /**
      * Return an iterator that returns each key's OSIS in turn.
-     * 
+     *
      * $param key the Items to locate
      * @param allowEmpty indicates whether empty keys should be present.
      */
@@ -64,7 +64,7 @@ public interface Book extends Activatable, KeyFactory, Comparable
 
     /**
      * Returns the raw text that getData(Key key) builds into OSIS.
-     * 
+     *
      * @param key The item to locate
      * @return The found Book data
      * @throws BookException If anything goes wrong with this method
@@ -78,7 +78,7 @@ public interface Book extends Activatable, KeyFactory, Comparable
      * At this time writing is not supported by drivers, so
      * abstract implementations should return false and let
      * specific implementations return true otherwise.
-     * 
+     *
      * @return true if the book is writable
      */
     boolean isWritable();
@@ -88,7 +88,7 @@ public interface Book extends Activatable, KeyFactory, Comparable
      * raw text that already is present. Note: it is the responsibility
      * of the calling program to ensure that the raw text matches the
      * character set encoding and markup of the module.
-     * 
+     *
      * @param key The item to locate
      * @param rawData The text to store
      * @throws BookException If anything goes wrong with this method
@@ -107,7 +107,7 @@ public interface Book extends Activatable, KeyFactory, Comparable
      * has raw text. Also, it should be an exception to set an alias to
      * an alias. However, getRawText(Key) must be able to handle alias chains.
      * </p>
-     * 
+     *
      * @param alias the key that aliases another
      * @param source the key that holds the text
      * @throws BookException If anything goes wrong with this method
@@ -192,7 +192,7 @@ public interface Book extends Activatable, KeyFactory, Comparable
      * abstract implementations should return true and let
      * specific implementations return false if they cannot
      * support the book.
-     * 
+     *
      * @return true if the book is supported
      */
     boolean isSupported();
@@ -202,7 +202,7 @@ public interface Book extends Activatable, KeyFactory, Comparable
      * Since the expectation is that most books are unenciphered,
      * abstract implementations should return false and let
      * specific implementations return true otherwise.
-     * 
+     *
      * @return true if the book is enciphered
      */
     boolean isEnciphered();
@@ -212,14 +212,14 @@ public interface Book extends Activatable, KeyFactory, Comparable
      * Since the expectation is that most books are unenciphered,
      * abstract implementations should return false and let
      * specific implementations return true otherwise.
-     * 
+     *
      * @return true if the book is locked
      */
     boolean isLocked();
 
     /**
      * Unlocks a book with the given key.
-     * 
+     *
      * @param unlockKey the key to try
      * @return true if the unlock key worked.
      */
@@ -227,7 +227,7 @@ public interface Book extends Activatable, KeyFactory, Comparable
 
     /**
      * Gets the unlock key for the module.
-     * 
+     *
      * @return the unlock key, if any, null otherwise.
      */
     String getUnlockKey();
@@ -239,7 +239,7 @@ public interface Book extends Activatable, KeyFactory, Comparable
      * Since the expectation is that all books are not questionable,
      * abstract implementations should return false and let
      * specific implementations return true if the book is questionable.
-     * 
+     *
      * @return true if the book is questionable
      */
     boolean isQuestionable();

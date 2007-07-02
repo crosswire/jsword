@@ -39,7 +39,7 @@ import org.xml.sax.Attributes;
  * element then this is added to it. As a simplifying assumption, we will
  * assume that the text element is not contained by anything except perhaps
  * by a w element.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

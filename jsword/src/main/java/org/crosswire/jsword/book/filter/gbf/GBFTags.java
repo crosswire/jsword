@@ -37,7 +37,7 @@ import org.jdom.Text;
 
 /**
  * A holder of all of the GBF Tag Handler classes.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

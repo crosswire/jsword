@@ -87,7 +87,7 @@ public class SwordBookPath
      * This contains the download dir as the first location,
      * the user's augment path and finally all the discovered
      * standard locations.
-     * 
+     *
      * @return the array of Book locations.
      */
     public static File[] getSwordPath()
@@ -238,7 +238,7 @@ public class SwordBookPath
      * Check to see if the given directory is a Sword mods.d directory
      * and then add it to the list if it is.
      * @param bookDirs The list to add good paths
-     * @param path the path to check 
+     * @param path the path to check
      */
     private static void testDefaultPath(List bookDirs, File path)
     {
@@ -258,7 +258,7 @@ public class SwordBookPath
      * Check to see if the given directory is a Sword mods.d directory
      * and then add it to the list if it is.
      * @param bookDirs The list to add good paths
-     * @param path the path to check 
+     * @param path the path to check
      */
     private static void testDefaultPath(List bookDirs, String path)
     {

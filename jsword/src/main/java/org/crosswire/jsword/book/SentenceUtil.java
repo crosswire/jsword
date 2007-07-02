@@ -30,10 +30,10 @@ import org.crosswire.common.util.StringUtil;
 
 /**
  * The SentenceUtil class provide utility functions for the various Books.
- * 
+ *
  * It is not designed to be used outside of the book package, so using it
  * outside of these bounds is at your own risk.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

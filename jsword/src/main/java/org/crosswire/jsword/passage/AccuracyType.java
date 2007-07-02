@@ -641,7 +641,7 @@ public abstract class AccuracyType implements Serializable
      * number that stands alone.</p>
      * @param input The string to parse.
      * @return The string array
-     * @throws NoSuchVerseException 
+     * @throws NoSuchVerseException
      */
     public static String[] tokenize(String input) throws NoSuchVerseException
     {

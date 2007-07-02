@@ -27,7 +27,7 @@ import org.xml.sax.Attributes;
 
 /**
  * THML Tag to process the H1, h2, h3, h4, h5, and h6 elements.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith at yahoo dot com]

@@ -203,7 +203,7 @@ public final class ConfigEntryTable
     /**
      * Unlocks a book with the given key.
      * The key is trimmed of any leading or trailing whitespace.
-     * 
+     *
      * @param unlockKey the key to try
      * @return true if the unlock key worked.
      */
@@ -231,7 +231,7 @@ public final class ConfigEntryTable
 
     /**
      * Gets the unlock key for the module.
-     * 
+     *
      * @return the unlock key, if any, null otherwise.
      */
     public String getUnlockKey()
@@ -273,7 +273,7 @@ public final class ConfigEntryTable
     /**
      * Determine whether this ConfigEntryTable has the ConfigEntry
      * and it matches the value.
-     * 
+     *
      * @param type The kind of ConfigEntry to look for
      * @param search the value to match against
      * @return true if there is a matching ConfigEntry matching the value
@@ -721,7 +721,7 @@ public final class ConfigEntryTable
         bookType = BookType.fromString(modTypeName);
         if (getBookType() == null)
         {
-            log.error("Book not supported: malformed conf file for " + internal + " no book type found"); //$NON-NLS-1$ //$NON-NLS-2$ 
+            log.error("Book not supported: malformed conf file for " + internal + " no book type found"); //$NON-NLS-1$ //$NON-NLS-2$
             supported = false;
             return;
         }

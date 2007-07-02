@@ -26,7 +26,7 @@ import org.xml.sax.Attributes;
 
 /**
  * The AbstractTag ignores the tag.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]

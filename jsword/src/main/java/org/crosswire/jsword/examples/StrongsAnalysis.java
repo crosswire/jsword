@@ -42,7 +42,7 @@ import org.jdom.Element;
 
 /**
  * Analyze Strong's Numbers in a module.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
@@ -50,7 +50,7 @@ import org.jdom.Element;
 public class StrongsAnalysis
 {
     /**
-     * 
+     *
      */
     public StrongsAnalysis()
     {

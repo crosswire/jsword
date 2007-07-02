@@ -41,53 +41,53 @@ import org.crosswire.jsword.passage.Verse;
  * data compressed with ZIP or LZSS, it cannot be uncompressed using a stand
  * alone zip utility, such as WinZip or gzip. The reason for this is
  * that the data file is a concatenation of blocks of compressed data.
- * 
+ *
  * <p>The blocks can either be "b", book (aka testament); "c", chapter
  * or "v", verse. The choice is a matter of trade offs. The program needs
  * to uncompress a block into memory. Having it at the book level is
  * very memory expensive. Having it at the verse level is very disk
  * expensive, but takes the least amount of memory. The most common is
  * chapter.</p>
- * 
- * <p>In order to find the data in the text file, we need to find the 
+ *
+ * <p>In order to find the data in the text file, we need to find the
  * block. The first index (comp) is used for this. Each verse is indexed
  * to a tuple (block number, verse start, verse size). This data allows
  * us to find the correct block, and to extract the verse from the
  * uncompressed block, but it does not help us uncompress the block.</p>
- * 
+ *
  * <p>Once the block is known, then the next index (idx) gives the location
  * of the compressed block, its compressed size and its uncompressed size.</p>
- * 
+ *
  * <p>There are 3 files for each testament, 2 (comp and idx) are indexes into
  * the third (text) which contains the data. The key into each index is the
  * verse index within that testament, which is determined by book, chapter
  * and verse of that key.</p>
- * 
+ *
  * <p>All numbers are stored 2-complement, little endian.</p>
  * <p>Then proceed as follows, at all times working on the set of files for the
  * testament in question:</p>
- * 
+ *
  * <pre>
  * in the comp file, seek to the index * 10
  * read 10 bytes.
  * the block-index is the first 4 bytes (32-bit number)
  * the next bytes are the verse offset and length of the uncompressed block.
- * 
+ *
  * in the idx file seek to block-index * 12
  * read 12 bytes
  * the text-block-index is the first 4 bytes
  * the data-size is the next 4 bytes
  * the uncompressed-size is the next 4 bytes
- * 
+ *
  * in the text file seek to the text-block-index
  * read data-size bytes
  * decipher them if they are encrypted
  * unGZIP them into a byte array of uncompressed-size
  * </pre>
- * 
+ *
  * TODO(DM): Testament 0 is used to index an README file for the bible.
  * At this time it is ignored.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -326,17 +326,17 @@ public class ZVerseBackend extends AbstractBackend
     }
 
     /**
-     * 
+     *
      */
     private int lastTestament = -1;
 
     /**
-     * 
+     *
      */
     private long lastBlockNum = -1;
 
     /**
-     * 
+     *
      */
     private byte[] lastUncompressed;
 

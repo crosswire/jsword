@@ -1344,7 +1344,7 @@ public abstract class AbstractPassage implements Passage
 
     /**
      * Serialization support.
-     * 
+     *
      * @param is
      * @throws IOException
      * @throws ClassNotFoundException

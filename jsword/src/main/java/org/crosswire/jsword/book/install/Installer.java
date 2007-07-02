@@ -31,7 +31,7 @@ import org.crosswire.jsword.book.BookList;
  * An interface that allows us to download from a specific source of Bible data.
  * It is important that implementor of this interface define equals() and
  * hashcode() properly.
- * 
+ *
  * <p>To start with I only envisage that we use Sword sourced Bible data
  * however the rest of the system is designed to be able to use data from
  * e-Sword, OLB, etc.</p>

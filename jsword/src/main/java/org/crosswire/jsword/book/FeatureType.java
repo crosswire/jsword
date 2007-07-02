@@ -25,7 +25,7 @@ import java.io.Serializable;
 
 /**
  * An Enumeration of the possible Features a Book may have.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -53,12 +53,12 @@ public final class FeatureType implements Serializable
     public static final FeatureType HEBREW_PARSE = new FeatureType("HebrewParse"); //$NON-NLS-1$
 
     /**
-     * The book is one of Daily Devotions. 
+     * The book is one of Daily Devotions.
      */
     public static final FeatureType DAILY_DEVOTIONS = new FeatureType("DailyDevotions"); //$NON-NLS-1$
 
     /**
-     * The book is glossary of translations from one language to another. 
+     * The book is glossary of translations from one language to another.
      */
     public static final FeatureType GLOSSARY = new FeatureType("Glossary"); //$NON-NLS-1$
 

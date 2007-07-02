@@ -27,7 +27,7 @@ import org.crosswire.common.util.EmptyIterator;
 
 /**
  * A simple default implementation of the Key interface.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -297,7 +297,7 @@ public class DefaultLeafKeyList implements Key
     private String osisName;
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -7462556005744186622L;
 

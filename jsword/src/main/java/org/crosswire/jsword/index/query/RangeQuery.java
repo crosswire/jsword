@@ -29,7 +29,7 @@ import org.crosswire.jsword.passage.NoSuchKeyException;
 /**
  * A range query specifies how a range should be included in the search.
  * It provides a range, a modifier (AND [+] or AND NOT [-]).
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]
@@ -39,7 +39,7 @@ public class RangeQuery extends AbstractQuery
 
     /**
      * Construct a query from the range specification.
-     * 
+     *
      * @param theRange
      */
     public RangeQuery(String theRange)

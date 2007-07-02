@@ -35,10 +35,10 @@ import org.jdom.Element;
 
 /**
  * Filter to convert GBF data to OSIS format.
- * 
+ *
  * The best place to go for more information about the GBF spec that I have
  * found is: <a href="http://ebible.org/bible/gbf.htm">http://ebible.org/bible/gbf.htm</a>
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

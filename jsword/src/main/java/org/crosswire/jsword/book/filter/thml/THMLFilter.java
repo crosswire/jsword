@@ -44,13 +44,13 @@ import org.xml.sax.SAXParseException;
 
 /**
  * Filter to convert THML to OSIS format.
- * 
+ *
  * <p>I used the THML ref page:
  * <a href="http://www.ccel.org/ThML/ThML1.04.htm">http://www.ccel.org/ThML/ThML1.04.htm</a>
  * to work out what the tags meant.
- * 
+ *
  * LATER(joe): check nesting on these THML elements
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

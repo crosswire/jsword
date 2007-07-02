@@ -23,7 +23,7 @@ package org.crosswire.jsword.book;
 
 /**
  * The BibleDriver class allows creation of new Books.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

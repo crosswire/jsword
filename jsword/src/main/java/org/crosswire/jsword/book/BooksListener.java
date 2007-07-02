@@ -26,7 +26,7 @@ import java.util.EventListener;
 /**
  * BiblesListeners are able to be notified about changes to the numbers
  * of Bibles installed on the system.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

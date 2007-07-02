@@ -42,7 +42,7 @@ import org.crosswire.jsword.versification.BibleInfo;
  * Bible. This would waste 1 bit per BitSet but since this doesn't
  * cause BitSet to need an extra long it doesn't, and it saves us some
  * maths.</p>
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

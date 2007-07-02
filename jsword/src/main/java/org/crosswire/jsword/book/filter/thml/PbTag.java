@@ -25,7 +25,7 @@ package org.crosswire.jsword.book.filter.thml;
 /**
  * THML Tag to process the pb (page break) element.
  * Do nothing since pages are a hard copy kind of thing.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

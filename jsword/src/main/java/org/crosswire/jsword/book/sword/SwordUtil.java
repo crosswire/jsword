@@ -31,7 +31,7 @@ import org.crosswire.jsword.passage.Key;
 
 /**
  * Various utilities used by different Sword classes.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -60,7 +60,7 @@ public final class SwordUtil
 
     /**
      * Read a RandomAccessFile from the current location in the file.
-     * 
+     *
      * @param raf The file to read
      * @param theSize The number of bytes to read
      * @return the read data

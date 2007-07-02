@@ -36,25 +36,25 @@ import org.crosswire.common.util.OSType;
  * The Project class looks after the source of project files.
  * These are per user files and as such have a different location
  * on different operating systems. These are:<br/>
- * 
+ *
  * <table>
  * <tr><td>Mac OS X</td><td>~/Library/Application Support/JSword</td></tr>
  * <tr><td>Win NT/2000/XP/ME/9x</td><td>~/Application Data/JSword (~ is all over the place, but Java figures it out)</td></tr>
  * <tr><td>Unix and otherwise</td><td>~/.jsword</td></tr>
  * </table>
- * 
+ *
  * <p>
  * Previously the location was ~/.jsword, which is unfriendly in the Windows and Mac world.
  * If this location is found on Mac or Windows, it will be moved to the new location,
  * if different and possible.
  * </p>
- * 
+ *
  * <p>
  * Note: If the Java System property jsword.home is set and it exists and is writeable
  * then it will be used instead of the above location. This is useful for USB Drives
  * and other portable implementations of JSword. I is recommended that this name be JSword.
  * </p>
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -156,7 +156,7 @@ public final class Project
 
     /**
      * Get the location where the project dir used to be.
-     * 
+     *
      * @return ~/.jsword
      */
     public URI getDeprecatedUserProjectDir()
@@ -166,7 +166,7 @@ public final class Project
 
     /**
      * Migrates the user's project dir, if necessary and possible.
-     * 
+     *
      * @param oldPath the path to the old, deprecated location
      * @param newPath the path to the new location
      * @return newPath if the migration was possible or not needed.

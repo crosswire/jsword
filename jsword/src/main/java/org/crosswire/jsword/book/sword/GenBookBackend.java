@@ -217,10 +217,10 @@ public class GenBookBackend extends AbstractBackend
 
     /**
      * A helper function to recursively read the entire tree.
-     * 
+     *
      * @param parentNode the current node whose children are being sought
      * @param parentKey
-     * @throws IOException 
+     * @throws IOException
      */
     private void doReadIndex(TreeNode parentNode, Key parentKey) throws IOException
     {

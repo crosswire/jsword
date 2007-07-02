@@ -47,7 +47,7 @@ import java.util.TreeSet;
  * </ul>
  * I'm not sure which will be best. So I'm starting with 1 and
  * optimizing later ... Maybe the best is to allow the user to choose?
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

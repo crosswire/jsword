@@ -30,7 +30,7 @@ import org.crosswire.jsword.versification.BibleInfo;
 /**
  * An implementation of KeyFactory that works for most Bibles that contain all
  * the verses in the Bible.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -490,7 +490,7 @@ public final class PassageKeyFactory implements KeyFactory
      * And by verse references like Gen 1.2 Gen.1.2 Gen 1 2 which are all equivalent.
      * So we use a counter when we see a number, if the counter reaches 2 and then we see a name
      * or a number we emit a reference delimiter.
-     * 
+     *
      * @param name
      * @return the normalized value
      */

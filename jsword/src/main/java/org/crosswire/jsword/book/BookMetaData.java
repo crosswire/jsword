@@ -39,7 +39,7 @@ import org.jdom.Document;
  * instead of ==. A Bible must have the ability to handle a book unknown to
  * JSword. So Books must be able to add versions to the system, and the system
  * must cope with books that already exist.</p>
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -97,7 +97,7 @@ public interface BookMetaData extends Comparable
      * abstract implementations should return true and let
      * specific implementations return false if they cannot
      * support the book.
-     * 
+     *
      * @return true if the book is supported
      */
     boolean isSupported();
@@ -107,7 +107,7 @@ public interface BookMetaData extends Comparable
      * Since the expectation is that most books are unenciphered,
      * abstract implementations should return false and let
      * specific implementations return true otherwise.
-     * 
+     *
      * @return true if the book is enciphered
      */
     boolean isEnciphered();
@@ -117,14 +117,14 @@ public interface BookMetaData extends Comparable
      * Since the expectation is that most books are unenciphered,
      * abstract implementations should return false and let
      * specific implementations return true otherwise.
-     * 
+     *
      * @return true if the book is locked
      */
     boolean isLocked();
 
     /**
      * Unlocks a book with the given key.
-     * 
+     *
      * @param unlockKey the key to try
      * @return true if the unlock key worked.
      */
@@ -132,7 +132,7 @@ public interface BookMetaData extends Comparable
 
     /**
      * Gets the unlock key for the module.
-     * 
+     *
      * @return the unlock key, if any, null otherwise.
      */
     String getUnlockKey();
@@ -144,7 +144,7 @@ public interface BookMetaData extends Comparable
      * Since the expectation is that all books are not questionable,
      * abstract implementations should return false and let
      * specific implementations return true if the book is questionable.
-     * 
+     *
      * @return true if the book is questionable
      */
     boolean isQuestionable();
@@ -171,28 +171,28 @@ public interface BookMetaData extends Comparable
 
     /**
      * Get the base URI for library of this module.
-     * 
+     *
      * @return the base URI or null if there is none
      */
     URI getLibrary();
 
     /**
      * Set the base URI for library of this module.
-     * 
+     *
      * @param library the base URI or null if there is none
      */
     void setLibrary(URI library);
 
     /**
      * Get the base URI for relative URIs in the document.
-     * 
+     *
      * @return the base URI or null if there is none
      */
     URI getLocation();
 
     /**
      * Set the base URI for relative URIs in the document.
-     * 
+     *
      * @param library the base URI or null if there is none
      */
     void setLocation(URI library);

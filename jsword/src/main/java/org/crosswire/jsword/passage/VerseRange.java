@@ -38,7 +38,7 @@ import org.crosswire.jsword.versification.BibleInfo;
  * necessary from a collections point of view. A VerseRange should always
  * be valid, although some versions may not return any text for verses
  * that they consider to be mis-translated in some way.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

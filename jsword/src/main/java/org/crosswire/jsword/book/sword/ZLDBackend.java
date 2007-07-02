@@ -44,7 +44,7 @@ import org.crosswire.jsword.passage.Key;
 
 /**
  * An implementation KeyBackend to read Z format files.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -97,7 +97,7 @@ public class ZLDBackend extends AbstractBackend
 
     /**
      * Simple ctor
-     * @throws BookException 
+     * @throws BookException
      */
     public ZLDBackend(SwordBookMetaData sbmd) throws BookException
     {

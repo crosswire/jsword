@@ -23,7 +23,7 @@ package org.crosswire.jsword.passage;
 
 /**
  * An interface for components wanting to visit all the nodes in a Key tree.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

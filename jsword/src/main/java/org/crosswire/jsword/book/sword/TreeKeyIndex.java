@@ -41,7 +41,7 @@ import org.crosswire.jsword.passage.Key;
  * Paths are of the form /a/b/c, and can be of any depth.
  * The ultimate output of a TreeKeyIndex is the offset and
  * length of a chunk of data in another file that can be read.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
@@ -50,7 +50,7 @@ public class TreeKeyIndex implements Activatable
 {
     /**
      * Simple ctor
-     * @throws BookException 
+     * @throws BookException
      */
     public TreeKeyIndex(SwordBookMetaData sbmd) throws BookException
     {

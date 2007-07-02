@@ -45,8 +45,8 @@ import org.jdom.Document;
 /**
  * AbstractBook implements a few of the more generic methods of Book.
  * This class does a lot of work in helping make search easier, and implementing
- * some basic write methods. 
- * 
+ * some basic write methods.
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -379,7 +379,7 @@ public abstract class AbstractBook implements Book
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.crosswire.jsword.book.BookMetaData#toOSIS()
      */
     public Document toOSIS()

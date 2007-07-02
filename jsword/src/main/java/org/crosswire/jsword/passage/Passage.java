@@ -66,7 +66,7 @@ import java.util.Iterator;
  *
  * <p>I considered giving Passages names to allow for a CLI that could
  * use named RangedPassages, however that is perhaps better left to another class.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -91,7 +91,7 @@ public interface Passage extends Key, Serializable
 
     /**
      * Determine whether there are two or more ranges.
-     * 
+     *
      * @param restrict Do we break ranges at chapter/book boundries
      * @return whether there are two or more ranges
      * @see VerseRange

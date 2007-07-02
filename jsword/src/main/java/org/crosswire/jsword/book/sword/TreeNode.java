@@ -26,7 +26,7 @@ import java.io.Serializable;
 /**
  * A node that knows where the data is in the real file and where it is in
  * relationship to other nodes.
- * 
+ *
  * @see gnu.lgpl.License for license details. The copyright to this program is
  *      held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
@@ -43,7 +43,7 @@ class TreeNode implements Cloneable, Serializable
 
     /**
      * Setup with the positions of data in the file
-     * 
+     *
      * @param theOffset
      */
     TreeNode(int theOffset)
@@ -170,7 +170,7 @@ class TreeNode implements Cloneable, Serializable
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#clone()
      */
     public Object clone()

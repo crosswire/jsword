@@ -25,7 +25,7 @@ import java.util.Iterator;
 
 /**
  * An implementation of some of the easier methods from Key.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -324,7 +324,7 @@ public abstract class AbstractKeyList implements Key
         protected StringBuffer buffer;
     }
 
-    /** 
+    /**
      * The <code>OsisRefVisitor</code> constructs a readable representation
      * of the Passage, using OSIS names.
      */
@@ -340,7 +340,7 @@ public abstract class AbstractKeyList implements Key
         }
     }
 
-    /** 
+    /**
      * The <code>OsisRefVisitor</code> constructs a readable representation
      * of the Passage, using OSIS names.
      */

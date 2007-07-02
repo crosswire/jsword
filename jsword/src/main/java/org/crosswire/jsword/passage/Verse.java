@@ -54,7 +54,7 @@ import org.crosswire.jsword.versification.BibleInfo;
  * Removing the default initialization of the ints took the time down by
  * about 0.25s also.
  * </p>
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -988,7 +988,7 @@ public final class Verse implements Key, Serializable
     private static final int VERSE = 2;
 
     /**
-     * What characters should we use to separate parts of an OSIS verse reference 
+     * What characters should we use to separate parts of an OSIS verse reference
      */
     public static final String VERSE_OSIS_DELIM = "."; //$NON-NLS-1$
 

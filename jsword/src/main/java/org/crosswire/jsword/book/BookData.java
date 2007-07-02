@@ -43,7 +43,7 @@ import org.jdom.Text;
  * Note: it is critical that all the books are able to understand the same key.
  * That does not mean that each has to have content for each key. Missing keys
  * are represented by empty cells.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -245,7 +245,7 @@ public class BookData implements BookProvider
 
                         if (doDiffs)
                         {
-                            String thisText = ""; //$NON-NLS-1$                        
+                            String thisText = ""; //$NON-NLS-1$
                             if (content instanceof Element)
                             {
                                 thisText = OSISUtil.getCanonicalText((Element) content);

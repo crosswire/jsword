@@ -28,7 +28,7 @@ import org.crosswire.jsword.passage.Key;
  * When we can't convert some source data then the user doesn't really care and
  * just wants it to work, but it would be good to have some way to get the
  * problems fixed, so as a start point we report them through this class.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

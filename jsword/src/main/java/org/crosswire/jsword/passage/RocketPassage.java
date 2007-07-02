@@ -30,7 +30,7 @@ import java.util.Iterator;
  * fairly quickly once let of the leash. It manages its speed by creating
  * contained instances of DistinctPassage and RangedPassage and selects
  * the fastest implementation for each of its methods from the 3 available.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

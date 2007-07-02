@@ -32,16 +32,16 @@ import org.crosswire.jsword.book.BookException;
  * This class can parse Strong's Numbers that begin with G, g, H or h and are immediately
  * followed by a number. That number can have leading 0's. It can be followed by an OSISref
  * extension of !a, !b, which is ignored.
- * 
+ *
  * <p>The canonical representation of the number is a G or H followed by 4 digits,
  * with leading 0's as needed.</p>
- * 
+ *
  * <p>Numbers that exist:<ul>
  * <li>Hebrew: 1-8674
  * <li>Greek: 1-5624 (but not 1418, 2717, 3203-3302, 4452)
  * </ul>
  * </p>
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]

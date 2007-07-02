@@ -23,7 +23,7 @@ package org.crosswire.jsword.passage;
 
 /**
  * A Factory for new Keys and KeyLists.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -42,7 +42,7 @@ public interface KeyFactory
 
     /**
      * Get a Key for the name, if possible. Otherwise return an empty Key.
-     * 
+     *
      * @param name
      * @return a valid key.
      */

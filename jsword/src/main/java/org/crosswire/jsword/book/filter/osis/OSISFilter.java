@@ -40,7 +40,7 @@ import org.xml.sax.InputSource;
 
 /**
  * Filter to convert an OSIS XML string to OSIS format.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -79,7 +79,7 @@ public class OSISFilter implements Filter
         if (ele == null)
         {
             clean = XMLUtil.cleanAllEntities(clean);
-    
+
             try
             {
                 ele = parse(clean);

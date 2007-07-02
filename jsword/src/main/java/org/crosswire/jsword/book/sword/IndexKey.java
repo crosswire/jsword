@@ -25,7 +25,7 @@ import org.crosswire.jsword.passage.Key;
 
 /**
  * A Key that knows where the data is in the real file.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

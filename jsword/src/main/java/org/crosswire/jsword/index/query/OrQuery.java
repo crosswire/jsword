@@ -27,7 +27,7 @@ import org.crosswire.jsword.passage.Key;
 
 /**
  * An OR query specifies that a result is the union of the left and the right query results.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]
@@ -36,7 +36,7 @@ public class OrQuery extends AbstractBinaryQuery
 {
 
     /**
-     * 
+     *
      */
     public OrQuery(Query theLeftQuery, Query theRightQuery)
     {

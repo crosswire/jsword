@@ -32,7 +32,7 @@ import org.crosswire.jsword.passage.Key;
 
 /**
  * A generic way to read data from disk for later formatting.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -116,7 +116,7 @@ public abstract class AbstractBackend implements Activatable
      * At this time writing is not supported by backends, so
      * abstract implementations should return false and let
      * specific implementations return true otherwise.
-     * 
+     *
      * @return true if the book is writable
      */
     public boolean isWritable()

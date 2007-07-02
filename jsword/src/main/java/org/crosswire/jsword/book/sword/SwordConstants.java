@@ -26,7 +26,7 @@ import org.crosswire.jsword.versification.BibleNames;
 
 /**
  * A Constants to help the SwordBookDriver to read Sword format data.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Mark Goodwin [mark at thorubio dot org]
@@ -163,14 +163,14 @@ public final class SwordConstants
     /**
      * initialise our LUTs with data shamelessly stolen from our sister project (Sword)
      * taken from canon.h.
-     * 
+     *
      * The basic feature of an index is that starting at 4 for Gen 1.1 and Mat 1.1,
      * increment 1 for each subsequent verse. At a chapter boundary, skip 1. At a book
      * boundary skip 1 for the book and 1 for the chapter.
-     * 
+     *
      * Book 0.0 gives the index for the book's info. ( == index of Book 1.1 - 2)
      * Book ch.0 gives the index for the chapter's info in the book. ( == index of Book 1.1 - 1)
-     * 
+     *
      * There are arrays of data like this in BibleInfo. I guess we could merge
      * them at some stage.
      * @see org.crosswire.jsword.passage.BibleInfo

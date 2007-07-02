@@ -35,7 +35,7 @@ import org.jdom.Element;
  * Plain text is nothing more than lines without markup.
  * Unfortunately, it often uses whitespace for markup.
  * We will use OSIS lb to mark lines.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]

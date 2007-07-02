@@ -73,12 +73,12 @@ import org.crosswire.jsword.versification.BibleInfo;
  * memory than a BitSet sytle PassageTally) And the intuative result
  * that the BitSet will be faster, I'm going to start by implementing
  * the latter only.</p>
- * 
+ *
  * <p>To think about - I've upped the MAX_TALLY to 20000 to help the new
  * mapper program. I'm not sure why it was originally 100?
- * 
+ *
  * <p>LATER(joe): Specify how passage ranks work.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -240,7 +240,7 @@ public class PassageTally extends AbstractPassage
     /**
      * A Human readable version of the PassageTally. Uses short books names, and
      * the shortest possible rendering eg "Mat 3:1-4"
-     * 
+     *
      * @return a String containing a description of the verses
      */
     public String getNameAndTally()
@@ -287,7 +287,7 @@ public class PassageTally extends AbstractPassage
 
     /**
      * Iterate through the verse elements in the current sort order
-     * 
+     *
      * @return A verse Iterator
      */
     public Iterator iterator()

@@ -48,7 +48,7 @@ import org.jdom.Text;
 
 /**
  * Some simple utilities to help working with OSIS classes.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -325,7 +325,7 @@ public final class OSISUtil
     public static class OSISFactory
     {
         /**
-         * 
+         *
          */
         public Element createSeg()
         {
@@ -333,7 +333,7 @@ public final class OSISUtil
         }
 
         /**
-         * 
+         *
          */
         public Element createOsisText()
         {
@@ -341,7 +341,7 @@ public final class OSISUtil
         }
 
         /**
-         * 
+         *
          */
         public Element createHeader()
         {
@@ -349,7 +349,7 @@ public final class OSISUtil
         }
 
         /**
-         * 
+         *
          */
         public Element createWork()
         {
@@ -357,7 +357,7 @@ public final class OSISUtil
         }
 
         /**
-         * 
+         *
          */
         public Element createOsis()
         {
@@ -365,7 +365,7 @@ public final class OSISUtil
         }
 
         /**
-         * 
+         *
          */
         public Element createDiv()
         {
@@ -373,7 +373,7 @@ public final class OSISUtil
         }
 
         /**
-         * 
+         *
          */
         public Element createCell()
         {
@@ -381,7 +381,7 @@ public final class OSISUtil
         }
 
         /**
-         * 
+         *
          */
         public Element createHeaderCell()
         {
@@ -392,7 +392,7 @@ public final class OSISUtil
         }
 
         /**
-         * 
+         *
          */
         public Element createVerse()
         {
@@ -400,7 +400,7 @@ public final class OSISUtil
         }
 
         /**
-         * 
+         *
          */
         public Element createW()
         {
@@ -408,7 +408,7 @@ public final class OSISUtil
         }
 
         /**
-         * 
+         *
          */
         public Element createFigure()
         {
@@ -416,7 +416,7 @@ public final class OSISUtil
         }
 
         /**
-         * 
+         *
          */
         public Element createForeign()
         {
@@ -424,7 +424,7 @@ public final class OSISUtil
         }
 
         /**
-         * 
+         *
          */
         public Element createItem()
         {
@@ -432,7 +432,7 @@ public final class OSISUtil
         }
 
         /**
-         * 
+         *
          */
         public Element createP()
         {
@@ -440,7 +440,7 @@ public final class OSISUtil
         }
 
         /**
-         * 
+         *
          */
         public Element createList()
         {
@@ -448,7 +448,7 @@ public final class OSISUtil
         }
 
         /**
-         * 
+         *
          */
         public Element createQ()
         {
@@ -456,7 +456,7 @@ public final class OSISUtil
         }
 
         /**
-         * 
+         *
          */
         public Element createName()
         {
@@ -464,7 +464,7 @@ public final class OSISUtil
         }
 
         /**
-         * 
+         *
          */
         public Element createNote()
         {
@@ -472,7 +472,7 @@ public final class OSISUtil
         }
 
         /**
-         * 
+         *
          */
         public Element createReference()
         {
@@ -480,7 +480,7 @@ public final class OSISUtil
         }
 
         /**
-         * 
+         *
          */
         public Element createRow()
         {
@@ -488,7 +488,7 @@ public final class OSISUtil
         }
 
         /**
-         * 
+         *
          */
         public Element createSpeaker()
         {
@@ -496,7 +496,7 @@ public final class OSISUtil
         }
 
         /**
-         * 
+         *
          */
         public Element createSpeech()
         {
@@ -504,7 +504,7 @@ public final class OSISUtil
         }
 
         /**
-         * 
+         *
          */
         public Element createTable()
         {
@@ -512,7 +512,7 @@ public final class OSISUtil
         }
 
         /**
-         * 
+         *
          */
         public Element createTitle()
         {
@@ -558,7 +558,7 @@ public final class OSISUtil
 
     /**
      * Dig past the osis and osisText element, if present, to get the meaningful content of the document.
-     * 
+     *
      * @return a fragment
      */
     public static List getFragment(Element root)
@@ -598,7 +598,7 @@ public final class OSISUtil
      * it does not mean that the document is valid OSIS. This is a semantic
      * problem that is not validated. This method assumes that the
      * root element is also semantically valid.
-     * 
+     *
      * <p>This means that the top level element's tagname is osis.
      * This can contain either a osisText or an osisCorpus.
      * If it is an osisCorpus, then it contains an osisText.
@@ -613,17 +613,17 @@ public final class OSISUtil
      * they provide the verse element. Most do not. The few that do are
      * using the container model, but it has been proposed that milestones
      * are the best practice.</p>
-     * 
+     *
      * <p>The fragment may contain elements that are not a part of the
      * original text. These are things such as notes.</p>
-     * 
+     *
      * <p>Milestones require special handling. Beginning milestones
      * elements have an sID attribute, while ending milestones have
      * an eID with the same value as the opening. So everything between
      * the start and the corresponding end is the content of the element.
      * Also, for a given element, say div, they have to be properly nested
      * as if they were container elements.</p>
-     * 
+     *
      * @param root the whole osis document.
      * @return The canonical text without markup
      */
@@ -765,7 +765,7 @@ public final class OSISUtil
 
     /**
      * The text of non-reference notes.
-     * 
+     *
      * @return The references in the text
      */
     public static String getNotes(Element root)
@@ -792,7 +792,7 @@ public final class OSISUtil
 
     /**
      * The text of non-reference notes.
-     * 
+     *
      * @return The references in the text
      */
     public static String getHeadings(Element root)

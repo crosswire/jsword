@@ -28,7 +28,7 @@ import org.crosswire.jsword.passage.Key;
 
 /**
  * A generic interface for things that can convert a String into OSIS data.
- * 
+ *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
