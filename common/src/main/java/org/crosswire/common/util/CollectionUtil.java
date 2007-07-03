@@ -22,7 +22,6 @@
 package org.crosswire.common.util;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,6 +82,12 @@ public final class CollectionUtil
         return reply;
     }
 
+    /**
+     * Convert a <code>Properties</code> into a <code>Map</code>.
+     * 
+     * @param prop The Properties to convert
+     * @return The map
+     */
     public static Map properties2Map(Properties prop)
     {
         Map propMap = new HashMap();
@@ -95,21 +100,15 @@ public final class CollectionUtil
         return propMap;
     }
 
+    /**
+     * Convert a <code>Properties</code> located at <code>propURI</code> into a <code>Map</code>.
+     * 
+     * @param propUri The URI of the Properties to convert
+     * @return The map
+     */
     public static Map properties2Map(URI propUri) throws IOException
     {
-        InputStream in = null;
-        try
-        {
-            in = NetUtil.getInputStream(propUri);
-            Properties prop = new Properties();
-            prop.load(in);
-            in.close();
-            return properties2Map(prop);
-        }
-        finally
-        {
-            IOUtil.close(in);
-        }
+        return properties2Map(NetUtil.loadProperties(propUri));
     }
 
 }

@@ -24,10 +24,7 @@ package org.crosswire.common.config;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -36,7 +33,6 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 import org.crosswire.common.util.EventListenerList;
-import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LucidException;
 import org.crosswire.common.util.NetUtil;
@@ -422,41 +418,16 @@ public class Config
      */
     public void permanentToLocal(URI uri) throws IOException
     {
-        InputStream is = null;
-        try
-        {
-            is = NetUtil.getInputStream(uri);
-            Properties prop = new Properties();
-            prop.load(is);
-            is.close();
-            setProperties(prop);
-        }
-        finally
-        {
-            IOUtil.close(is);
-        }
+        setProperties(NetUtil.loadProperties(uri));
     }
 
     /**
      * Take the data in the local storage area and store it permanently,
      * using the configured storage area.
      */
-    public void localToPermanent(URI url) throws IOException
+    public void localToPermanent(URI uri) throws IOException
     {
-        OutputStream out = null;
-
-        try
-        {
-            out = new FileOutputStream(url.getPath());
-            getProperties().store(out, title);
-        }
-        finally
-        {
-            if (out != null)
-            {
-                out.close();
-            }
-        }
+        NetUtil.storeProperties(getProperties(), uri, title);
     }
 
     /**

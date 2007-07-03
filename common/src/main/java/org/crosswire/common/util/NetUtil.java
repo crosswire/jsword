@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.jar.JarEntry;
 
 /**
@@ -592,6 +593,53 @@ public final class NetUtil
         finally
         {
             IOUtil.close(in);
+        }
+    }
+
+    /**
+     * Load up properties given by a URI.
+     * 
+     * @param uri the location of the properties
+     * @return the properties given by the URI
+     * @throws IOException
+     */
+    public static Properties loadProperties(URI uri) throws IOException
+    {
+        InputStream is = null;
+        try
+        {
+            is = NetUtil.getInputStream(uri);
+            Properties prop = new Properties();
+            prop.load(is);
+            is.close();
+            return prop;
+        }
+        finally
+        {
+            IOUtil.close(is);
+        }
+    }
+
+    /**
+     * Store the properties at the location given by the uri using the supplied title.
+     * 
+     * @param properties the properties to store
+     * @param uri the location of the store
+     * @param title the label held in the properties file
+     * @throws IOException
+     */
+    public static void storeProperties(Properties properties, URI uri, String title) throws IOException
+    {
+        OutputStream out = null;
+
+        try
+        {
+            out = NetUtil.getOutputStream(uri);
+            properties.store(out, title);
+        }
+        finally
+        {
+            IOUtil.close(out);
         }
     }
 

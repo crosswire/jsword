@@ -22,8 +22,6 @@
 package org.crosswire.common.progress;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,7 +33,6 @@ import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 
@@ -456,48 +453,38 @@ public final class Job implements Progress
      */
     private synchronized void loadPredictions()
     {
-        InputStream in = null;
         try
         {
-            in = NetUtil.getInputStream(predictURI);
-            if (in != null)
+            predicted = new HashMap();
+            Properties temp = NetUtil.loadProperties(predictURI);
+
+            Iterator iter = temp.keySet().iterator();
+            while (iter.hasNext())
             {
-                predicted = new HashMap();
-                Properties temp = new Properties();
-                temp.load(in);
+                String title = (String) iter.next();
+                String timestr = temp.getProperty(title);
 
-                Iterator iter = temp.keySet().iterator();
-                while (iter.hasNext())
+                try
                 {
-                    String title = (String) iter.next();
-                    String timestr = temp.getProperty(title);
+                    Integer time = new Integer(timestr);
+                    predicted.put(title, time);
 
-                    try
+                    // if this time is later than the latest
+                    int age = time.intValue();
+                    if (age > predictedLength)
                     {
-                        Integer time = new Integer(timestr);
-                        predicted.put(title, time);
-
-                        // if this time is later than the latest
-                        int age = time.intValue();
-                        if (age > predictedLength)
-                        {
-                            predictedLength = age;
-                        }
+                        predictedLength = age;
                     }
-                    catch (NumberFormatException ex)
-                    {
-                        log.error("Time format error", ex); //$NON-NLS-1$
-                    }
+                }
+                catch (NumberFormatException ex)
+                {
+                    log.error("Time format error", ex); //$NON-NLS-1$
                 }
             }
         }
         catch (IOException ex)
         {
             log.debug("Failed to load prediction times - guessing"); //$NON-NLS-1$
-        }
-        finally
-        {
-            IOUtil.close(in);
         }
     }
 
@@ -533,8 +520,7 @@ public final class Job implements Progress
         // And save. It's not a disaster if this goes wrong
         try
         {
-            OutputStream out = NetUtil.getOutputStream(predictURI);
-            predictions.store(out, "Predicted Startup Times"); //$NON-NLS-1$
+            NetUtil.storeProperties(predictions, predictURI, "Predicted Startup Times"); //$NON-NLS-1$
         }
         catch (IOException ex)
         {
