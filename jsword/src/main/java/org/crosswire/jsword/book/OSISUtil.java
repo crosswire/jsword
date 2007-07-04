@@ -190,13 +190,13 @@ public final class OSISUtil
     public static final String DEF_TYPE = "x-def"; //$NON-NLS-1$
 
     /**
-     * Constant for a Strongs numbering lemma
+     * Constant for a Strong's numbering lemma
      */
     public static final String LEMMA_STRONGS = "strong:"; //$NON-NLS-1$
     public static final String MORPH_ROBINSONS = "robinson:"; //$NON-NLS-1$
 
     /**
-     * Constant for Strongs numbering morphology
+     * Constant for Strong's numbering morphology
      */
     public static final String MORPH_STRONGS = "x-StrongsMorph:T"; //$NON-NLS-1$
 

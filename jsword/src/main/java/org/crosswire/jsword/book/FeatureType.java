@@ -33,7 +33,7 @@ import java.io.Serializable;
 public final class FeatureType implements Serializable
 {
     /**
-     * The book is one of Greek Definitions. AKA, Strongs.
+     * The book is one of Greek Definitions. AKA, Strong's.
      */
     public static final FeatureType GREEK_DEFINITIONS = new FeatureType("GreekDef"); //$NON-NLS-1$
 
@@ -43,7 +43,7 @@ public final class FeatureType implements Serializable
     public static final FeatureType GREEK_PARSE = new FeatureType("GreekParse"); //$NON-NLS-1$
 
     /**
-     * The book is one of Hebrew Definitions. AKA, Strongs.
+     * The book is one of Hebrew Definitions. AKA, Strong's.
      */
     public static final FeatureType HEBREW_DEFINITIONS = new FeatureType("HebrewDef"); //$NON-NLS-1$
 

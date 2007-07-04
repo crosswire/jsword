@@ -32,7 +32,7 @@ import org.xml.sax.Attributes;
 
 /**
  * THML Tag to process the sync element. A sync tag is always empty and
- * immediately follows what it marks. With types of Strongs and morph
+ * immediately follows what it marks. With types of Strong's and morph
  * these are to become w elements that surround the word that they modify.
  * This requires that we find the last text element and surround it with
  * a w element. If the last text element is already surrounded with a w
@@ -59,7 +59,7 @@ public class SyncTag extends AbstractTag
      */
    public Element processTag(Element ele, Attributes attrs)
     {
-        // Strongs reference
+        // Strong's reference
         String type = attrs.getValue("type"); //$NON-NLS-1$
         String value = attrs.getValue("value"); //$NON-NLS-1$
 

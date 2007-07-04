@@ -827,7 +827,7 @@ public class ConfigEntryType implements Serializable
 
     /**
      * A Feature describes a characteristic of the Book.
-     * TODO(DMS): use this to present the user with a pick list of books for Strongs,
+     * TODO(DMS): use this to present the user with a pick list of books for Strong's,
      * and Heb/Greek Def/Parse. We should also use DailyDevotional to map the days to a date.
      */
     public static final ConfigEntryType FEATURE = new ConfigEntryType("Feature") //$NON-NLS-1$
