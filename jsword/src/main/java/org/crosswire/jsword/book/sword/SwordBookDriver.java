@@ -104,6 +104,13 @@ public class SwordBookDriver extends AbstractBookDriver
                         internal = internal.substring(0, internal.length() - 5);
                     }
                     SwordBookMetaData sbmd = new SwordBookMetaData(configfile, internal, NetUtil.getURI(bookDir));
+
+                    // skip any book that is not supported.
+                    if (!sbmd.isSupported())
+                    {
+                        continue;
+                    }
+
                     sbmd.setDriver(this);
 
                     // Only take the first "installation" of the Book
@@ -222,7 +229,7 @@ public class SwordBookDriver extends AbstractBookDriver
     private Book createBook(SwordBookMetaData sbmd) throws BookException
     {
         BookType modtype = sbmd.getBookType();
-        if (modtype.getBookCategory() == null)
+        if (modtype == null || modtype.getBookCategory() == null)
         {
             throw new BookException(Msg.TYPE_UNSUPPORTED);
         }

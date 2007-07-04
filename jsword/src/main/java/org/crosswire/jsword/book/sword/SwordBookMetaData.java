@@ -187,11 +187,18 @@ public final class SwordBookMetaData extends AbstractBookMetaData
      */
     public void setLibrary(URI library)
     {
+        // Ignore it if it is not supported.
+        if (!isSupported())
+        {
+            return;
+        }
+
         cet.add(ConfigEntryType.LIBRARY_URL, library.toString());
         super.setLibrary(library);
 
         // Currently all DATA_PATH entries end in / to indicate dirs or not to indicate file prefixes
         String datapath = getProperty(ConfigEntryType.DATA_PATH);
+
         int lastSlash = datapath.lastIndexOf('/');
 
         // There were modules that did not have a valid datapath.
