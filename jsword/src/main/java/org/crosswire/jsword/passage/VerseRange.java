@@ -28,6 +28,7 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.crosswire.common.icu.NumberShaper;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.versification.BibleInfo;
 
@@ -37,7 +38,7 @@ import org.crosswire.jsword.versification.BibleInfo;
  * and an end. A VerseRange is designed to be immutable. This is a
  * necessary from a collections point of view. A VerseRange should always
  * be valid, although some versions may not return any text for verses
- * that they consider to be mis-translated in some way.
+ * that they consider to be miss-translated in some way.
  *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
@@ -86,6 +87,7 @@ public final class VerseRange implements Key, Serializable
         assert end != null;
 
         this.originalName = original;
+        shaper = new NumberShaper();
 
         switch (start.compareTo(end))
         {
@@ -116,12 +118,13 @@ public final class VerseRange implements Key, Serializable
 
     /**
      * Merge 2 VerseRanges together. The resulting range will encompass
-     * Everying in-between the extremities of the 2 ranges.
+     * Everything in-between the extremities of the 2 ranges.
      * @param a The first verse range to be merged
      * @param b The second verse range to be merged
      */
     public VerseRange(VerseRange a, VerseRange b)
     {
+        shaper = new NumberShaper();
         start = Verse.min(a.getStart(), b.getStart());
         end = Verse.max(a.getEnd(), b.getEnd());
         verseCount = calcVerseCount(start, end);
@@ -145,86 +148,16 @@ public final class VerseRange implements Key, Serializable
             return originalName;
         }
 
-        // Cache these we're going to be using them a lot.
-        int startBook = start.getBook();
-        int startChapter = start.getChapter();
-        int startVerse = start.getVerse();
-        int endBook = end.getBook();
-        int endChapter = end.getChapter();
-        int endVerse = end.getVerse();
-
         try
         {
-            // If this is in 2 separate books
-            if (startBook != endBook)
+            String rangeName = doGetName(base);
+            // Only shape it if it can be unshaped.
+            if (shaper.canUnshape())
             {
-                // This range is exactly a whole book
-                if (isWholeBooks())
-                {
-                    // Just report the name of the book, we don't need to worry about the
-                    // base since we start at the start of a book, and should have been
-                    // recently normalized()
-                    return BibleInfo.getPreferredBookName(startBook)
-                         + VerseRange.RANGE_PREF_DELIM
-                         + BibleInfo.getPreferredBookName(endBook);
-                }
-
-                // If this range is exactly a whole chapter
-                if (isWholeChapters())
-                {
-                    // Just report book and chapter names
-                    return BibleInfo.getPreferredBookName(startBook)
-                         + Verse.VERSE_PREF_DELIM1 + startChapter
-                         + VerseRange.RANGE_PREF_DELIM + BibleInfo.getPreferredBookName(endBook)
-                         + Verse.VERSE_PREF_DELIM1 + endChapter;
-                }
-
-                return start.getName(base) + VerseRange.RANGE_PREF_DELIM + end.getName(base);
+                return shaper.shape(rangeName);
             }
-
-            // This range is exactly a whole book
-            if (isWholeBook())
-            {
-                // Just report the name of the book, we don't need to worry about the
-                // base since we start at the start of a book, and should have been
-                // recently normalized()
-                return BibleInfo.getPreferredBookName(startBook);
-            }
-
-            // If this is 2 separate chapters
-            if (startChapter != endChapter)
-            {
-                // If this range is a whole number of chapters
-                if (isWholeChapters())
-                {
-                    // Just report the name of the book and the chapters
-                    return BibleInfo.getPreferredBookName(startBook)
-                         + Verse.VERSE_PREF_DELIM1 + startChapter
-                         + VerseRange.RANGE_PREF_DELIM + endChapter;
-                }
-
-                return start.getName(base)
-                     + VerseRange.RANGE_PREF_DELIM + endChapter
-                     + Verse.VERSE_PREF_DELIM2 + endVerse;
-            }
-
-            // If this range is exactly a whole chapter
-            if (isWholeChapter())
-            {
-                // Just report the name of the book and the chapter
-                return BibleInfo.getPreferredBookName(startBook)
-                     + Verse.VERSE_PREF_DELIM1 + startChapter;
-            }
-
-            // If this is 2 separate verses
-            if (startVerse != endVerse)
-            {
-                return start.getName(base)
-                     + VerseRange.RANGE_PREF_DELIM + endVerse;
-            }
-
-            // The range is a single verse
-            return start.getName(base);
+    
+            return rangeName;
         }
         catch (NoSuchVerseException ex)
         {
@@ -511,6 +444,7 @@ public final class VerseRange implements Key, Serializable
             copy.end = (Verse) end.clone();
             copy.verseCount = verseCount;
             copy.originalName = originalName;
+            copy.shaper = new NumberShaper();
         }
         catch (CloneNotSupportedException e)
         {
@@ -609,8 +543,8 @@ public final class VerseRange implements Key, Serializable
     }
 
     /**
-     * Are the 2 VerseRanges in question contigious.
-     * ie - could they be represented by a single VerseRange. Note that one
+     * Are the 2 VerseRanges in question contiguous.
+     * that is - could they be represented by a single VerseRange. Note that one
      * range could be entirely contained within the other and they would be
      * considered adjacentTo()
      * For example Gen 1:1-2 is adjacent to Gen 1:1-5 and Gen 1:3-4 but
@@ -871,7 +805,7 @@ public final class VerseRange implements Key, Serializable
      * Create a DistinctPassage that is the stuff left of VerseRange a
      * when you remove the stuff in VerseRange b.
      * @param a The verses that you might want
-     * @param b The verses that you definately don't
+     * @param b The verses that you definitely don't
      * @return A list of the Verses outstanding
      */
     public static VerseRange[] remainder(VerseRange a, VerseRange b)
@@ -911,7 +845,7 @@ public final class VerseRange implements Key, Serializable
      * Create a DistinctPassage that is the stuff in VerseRange a
      * that is also in VerseRange b.
      * @param a The verses that you might want
-     * @param b The verses that you definately don't
+     * @param b The verses that you definitely don't
      * @return A list of the Verses outstanding
      */
     public static VerseRange intersection(VerseRange a, VerseRange b)
@@ -949,6 +883,88 @@ public final class VerseRange implements Key, Serializable
         return whole;
     }
 
+    private String doGetName(Key base) throws NoSuchVerseException
+    {
+        // Cache these we're going to be using them a lot.
+        int startBook = start.getBook();
+        int startChapter = start.getChapter();
+        int startVerse = start.getVerse();
+        int endBook = end.getBook();
+        int endChapter = end.getChapter();
+        int endVerse = end.getVerse();
+
+        // If this is in 2 separate books
+        if (startBook != endBook)
+        {
+            // This range is exactly a whole book
+            if (isWholeBooks())
+            {
+                // Just report the name of the book, we don't need to worry about the
+                // base since we start at the start of a book, and should have been
+                // recently normalized()
+                return BibleInfo.getPreferredBookName(startBook)
+                + VerseRange.RANGE_PREF_DELIM
+                + BibleInfo.getPreferredBookName(endBook);
+            }
+
+            // If this range is exactly a whole chapter
+            if (isWholeChapters())
+            {
+                // Just report book and chapter names
+                return BibleInfo.getPreferredBookName(startBook)
+                + Verse.VERSE_PREF_DELIM1 + startChapter
+                + VerseRange.RANGE_PREF_DELIM + BibleInfo.getPreferredBookName(endBook)
+                + Verse.VERSE_PREF_DELIM1 + endChapter;
+            }
+
+            return start.getName(base) + VerseRange.RANGE_PREF_DELIM + end.getName(base);
+        }
+
+        // This range is exactly a whole book
+        if (isWholeBook())
+        {
+            // Just report the name of the book, we don't need to worry about the
+            // base since we start at the start of a book, and should have been
+            // recently normalized()
+            return BibleInfo.getPreferredBookName(startBook);
+        }
+
+        // If this is 2 separate chapters
+        if (startChapter != endChapter)
+        {
+            // If this range is a whole number of chapters
+            if (isWholeChapters())
+            {
+                // Just report the name of the book and the chapters
+                return BibleInfo.getPreferredBookName(startBook)
+                + Verse.VERSE_PREF_DELIM1 + startChapter
+                + VerseRange.RANGE_PREF_DELIM + endChapter;
+            }
+
+            return start.getName(base)
+            + VerseRange.RANGE_PREF_DELIM + endChapter
+            + Verse.VERSE_PREF_DELIM2 + endVerse;
+        }
+
+        // If this range is exactly a whole chapter
+        if (isWholeChapter())
+        {
+            // Just report the name of the book and the chapter
+            return BibleInfo.getPreferredBookName(startBook)
+            + Verse.VERSE_PREF_DELIM1 + startChapter;
+        }
+
+        // If this is 2 separate verses
+        if (startVerse != endVerse)
+        {
+            return start.getName(base)
+            + VerseRange.RANGE_PREF_DELIM + endVerse;
+        }
+
+        // The range is a single verse
+        return start.getName(base);
+    }
+
     /**
      * Calculate the last verse in this range.
      * @param start The first verse in the range
@@ -961,7 +977,7 @@ public final class VerseRange implements Key, Serializable
     }
 
     /**
-     * Calcualte how many verses in this range
+     * Calculate how many verses in this range
      * @param start The first verse in the range
      * @param end The last verse in the range
      * @return The number of verses. Always >= 1.
@@ -1015,6 +1031,7 @@ public final class VerseRange implements Key, Serializable
             start = new Verse(in.readInt());
             verseCount = in.readInt();
             end = calcEnd(start, verseCount);
+            shaper = new NumberShaper();
 
             verifyData();
         }
@@ -1224,6 +1241,11 @@ public final class VerseRange implements Key, Serializable
      * All ctors init this so leave default
      */
     private transient Verse end;
+
+    /**
+     * Allow the conversion to and from other number representations.
+     */
+    private transient NumberShaper shaper;
 
     /**
      * The parent key. See the key interface for more information.

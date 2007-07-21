@@ -28,6 +28,7 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.crosswire.common.icu.NumberShaper;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.versification.BibleInfo;
 
@@ -68,8 +69,9 @@ public final class Verse implements Key, Serializable
      */
     public Verse()
     {
+        shaper = new NumberShaper();
         originalName = null;
-
+        
         book = DEFAULT.book;
         chapter = DEFAULT.chapter;
         verse = DEFAULT.verse;
@@ -87,6 +89,7 @@ public final class Verse implements Key, Serializable
      */
     /*package*/ Verse(String original, int book, int chapter, int verse) throws NoSuchVerseException
     {
+        shaper = new NumberShaper();
         originalName = original;
         set(book, chapter, verse);
     }
@@ -119,6 +122,7 @@ public final class Verse implements Key, Serializable
      */
     public Verse(int book, int chapter, int verse, boolean patch_up)
     {
+        shaper = new NumberShaper();
         if (!patch_up)
         {
             throw new IllegalArgumentException(Msg.ERROR_PATCH.toString());
@@ -139,6 +143,7 @@ public final class Verse implements Key, Serializable
      */
     public Verse(int ordinal) throws NoSuchVerseException
     {
+        shaper = new NumberShaper();
         originalName = null;
         set(ordinal);
     }
@@ -157,31 +162,7 @@ public final class Verse implements Key, Serializable
      */
     public String getName()
     {
-        try
-        {
-            if (PassageUtil.isPersistentNaming() && originalName != null)
-            {
-                return originalName;
-            }
-
-            // To cope with thing like Jude 2...
-            if (BibleInfo.chaptersInBook(book) == 1)
-            {
-                return BibleInfo.getPreferredBookName(book)
-                    + Verse.VERSE_PREF_DELIM1
-                    + verse;
-            }
-            return BibleInfo.getPreferredBookName(book)
-                + Verse.VERSE_PREF_DELIM1
-                + chapter
-                + Verse.VERSE_PREF_DELIM2
-                + verse;
-        }
-        catch (NoSuchKeyException ex)
-        {
-            assert false : ex;
-            return "!Error!"; //$NON-NLS-1$
-        }
+        return getName(null);
     }
 
     /* (non-Javadoc)
@@ -189,7 +170,7 @@ public final class Verse implements Key, Serializable
      */
     public String getName(Key base)
     {
-        if (!(base instanceof Verse))
+        if (base != null && !(base instanceof Verse))
         {
             return getName();
         }
@@ -201,37 +182,14 @@ public final class Verse implements Key, Serializable
                 return originalName;
             }
 
-            Verse verseBase = (Verse) base;
-            // To cope with thing like Jude 2...
-            if (BibleInfo.chaptersInBook(book) == 1)
+            String verseName = doGetName((Verse) base);
+            // Only shape it if it can be unshaped.
+            if (shaper.canUnshape())
             {
-                if (verseBase.book != book)
-                {
-                    return BibleInfo.getPreferredBookName(book)
-                        + Verse.VERSE_PREF_DELIM1
-                        + verse;
-                }
-
-                return String.valueOf(verse);
+                return shaper.shape(verseName);
             }
 
-            if (verseBase.book != book)
-            {
-                return BibleInfo.getPreferredBookName(book)
-                    + Verse.VERSE_PREF_DELIM1
-                    + chapter
-                    + Verse.VERSE_PREF_DELIM2
-                    + verse;
-            }
-
-            if (verseBase.chapter != chapter)
-            {
-                return chapter
-                    + Verse.VERSE_PREF_DELIM2
-                    + verse;
-            }
-
-            return String.valueOf(verse);
+            return verseName;
         }
         catch (NoSuchKeyException ex)
         {
@@ -299,6 +257,7 @@ public final class Verse implements Key, Serializable
             copy.verse = verse;
             //copy.ord = ord;
             copy.originalName = originalName;
+            shaper = new NumberShaper();
         }
         catch (CloneNotSupportedException e)
         {
@@ -713,6 +672,46 @@ public final class Verse implements Key, Serializable
     }
 
     /**
+     * Compute the verse representation given the context.
+     * @param verseBase the context or null if there is none
+     * @return the verse representation
+     * @throws NoSuchVerseException
+     */
+    private String doGetName(Verse verseBase) throws NoSuchVerseException
+    {
+        // To cope with thing like Jude 2...
+        if (BibleInfo.chaptersInBook(book) == 1)
+        {
+            if (verseBase == null || verseBase.book != book)
+            {
+                return BibleInfo.getPreferredBookName(book)
+                    + Verse.VERSE_PREF_DELIM1
+                    + verse;
+            }
+
+            return String.valueOf(verse);
+        }
+
+        if (verseBase == null || verseBase.book != book)
+        {
+            return BibleInfo.getPreferredBookName(book)
+                + Verse.VERSE_PREF_DELIM1
+                + chapter
+                + Verse.VERSE_PREF_DELIM2
+                + verse;
+        }
+
+        if (verseBase.chapter != chapter)
+        {
+            return chapter
+                + Verse.VERSE_PREF_DELIM2
+                + verse;
+        }
+
+        return String.valueOf(verse);
+    }
+
+    /**
      * This is simply a convenience function to wrap Integer.parseInt()
      * and give us a reasonable exception on failure. It is called by
      * VerseRange hence protected, however I would prefer private
@@ -734,7 +733,7 @@ public final class Verse implements Key, Serializable
 
     /**
      * Mutate into this reference and fix the reference if needed.
-     * This nust only be called from a ctor to maintain immutability
+     * This must only be called from a ctor to maintain immutability
      * @param book The book to set (Genesis = 1)
      * @param chapter The chapter to set
      * @param verse The verse to set
@@ -973,17 +972,17 @@ public final class Verse implements Key, Serializable
     static final long serialVersionUID = -4033921076023185171L;
 
     /**
-     * To make the code more readible, the book is the first part of a int[]
+     * To make the code more readable, the book is the first part of a int[]
      */
     private static final int BOOK = 0;
 
     /**
-     * To make the code more readible, the chapter is the second part of a int[]
+     * To make the code more readable, the chapter is the second part of a int[]
      */
     private static final int CHAPTER = 1;
 
     /**
-     * To make the code more readible, the verse is the third part of a int[]
+     * To make the code more readable, the verse is the third part of a int[]
      */
     private static final int VERSE = 2;
 
@@ -1006,6 +1005,11 @@ public final class Verse implements Key, Serializable
      * The default verse
      */
     public static final Verse DEFAULT = new Verse(1, 1, 1, true);
+
+    /**
+     * Allow the conversion to and from other number representations.
+     */
+    private transient NumberShaper shaper;
 
     /**
      * The parent key. See the key interface for more information.
