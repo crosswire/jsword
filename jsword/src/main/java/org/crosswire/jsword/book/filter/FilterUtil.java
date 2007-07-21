@@ -35,7 +35,7 @@ package org.crosswire.jsword.book.filter;
 public final class FilterUtil
 {
     /**
-     * Prevent Instansiation
+     * Prevent instantiation
      */
     private FilterUtil()
     {

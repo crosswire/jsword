@@ -73,7 +73,7 @@ import org.crosswire.common.util.Logger;
 public final class JobManager
 {
     /**
-     * Prevent Instansiation
+     * Prevent instantiation
      */
     private JobManager()
     {

@@ -43,7 +43,7 @@ import java.util.zip.ZipFile;
 public final class ClassUtil
 {
     /**
-     * Prevent Instansiation
+     * Prevent instantiation
      */
     private ClassUtil()
     {

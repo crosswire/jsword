@@ -38,7 +38,7 @@ import java.util.List;
 public final class StringUtil
 {
     /**
-     * Prevent Instansiation
+     * Prevent instantiation
      */
     private StringUtil()
     {

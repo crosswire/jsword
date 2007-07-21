@@ -37,7 +37,7 @@ import org.crosswire.common.util.Logger;
 public final class IndexManagerFactory
 {
     /**
-     * Prevent Instansiation
+     * Prevent instantiation
      */
     private IndexManagerFactory()
     {

@@ -31,7 +31,7 @@ package org.crosswire.jsword.passage;
 public final class PassageUtil
 {
     /**
-     * Prevent Instansiation
+     * Prevent instantiation
      */
     private PassageUtil()
     {

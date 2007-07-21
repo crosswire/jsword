@@ -41,7 +41,7 @@ import org.crosswire.jsword.index.IndexManagerFactory;
 public final class SearcherFactory
 {
     /**
-     * Prevent Instansiation
+     * Prevent instantiation
      */
     private SearcherFactory()
     {

@@ -38,7 +38,7 @@ import org.crosswire.common.util.Logger;
 public final class FilterFactory
 {
     /**
-     * Prevent instansiation
+     * Prevent instantiation
      */
     private FilterFactory()
     {

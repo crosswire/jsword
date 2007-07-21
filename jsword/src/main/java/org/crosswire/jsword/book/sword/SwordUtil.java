@@ -39,7 +39,7 @@ import org.crosswire.jsword.passage.Key;
 public final class SwordUtil
 {
     /**
-     * Prevent Instansiation
+     * Prevent instantiation
      */
     private SwordUtil()
     {

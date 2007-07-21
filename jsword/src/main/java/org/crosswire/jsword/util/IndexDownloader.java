@@ -42,7 +42,7 @@ import org.crosswire.jsword.index.IndexManagerFactory;
 public final class IndexDownloader
 {
     /**
-     * Prevent instansiation
+     * Prevent instantiation
      */
     private IndexDownloader()
     {

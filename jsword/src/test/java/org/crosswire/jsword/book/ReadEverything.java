@@ -48,7 +48,7 @@ import org.jdom.JDOMException;
 public class ReadEverything
 {
     /**
-     * Prevent instansiation
+     * Prevent instantiation
      */
     private ReadEverything()
     {

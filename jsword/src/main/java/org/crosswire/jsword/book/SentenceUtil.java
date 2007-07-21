@@ -41,7 +41,7 @@ import org.crosswire.common.util.StringUtil;
 public final class SentenceUtil
 {
     /**
-     * Ensure we can not be instansiated
+     * Ensure we can not be instantiated
      */
     private SentenceUtil()
     {

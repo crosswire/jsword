@@ -86,7 +86,7 @@ public final class Project
     }
 
     /**
-     * Prevent Instansiation.
+     * Prevent instantiation.
      * <p>The biggest job is trying to work out which resource bundle to
      * load to work out where the config and data files are stored.
      * We construct a name from the projectname, hostname and any other
@@ -98,7 +98,7 @@ public final class Project
 
         try
         {
-            URI uricache = getTempScratchSpace(DIR_NETCACHE, true);
+            URI uricache = getUserSubProjectDir(DIR_NETCACHE, true);
             File filecache = new File(uricache.getPath());
             NetUtil.setURICacheDir(filecache);
         }
@@ -211,23 +211,12 @@ public final class Project
     }
 
     /**
-     * When we need a directory to write stuff to.
-     * <p>This directory should be used as a cache for something that could also
-     * be got at runtime by some other means.
-     * <p>So it is not for config data, and not for program files. If someone
-     * were to delete all the files in this directory while you weren't looking
-     * then life should not stop, but should carry on albeit with a slower
-     * service.
-     * <p>This method may well return null if we are running in a restricted
-     * environment, so callers of this method should be prepared for that
-     * eventuallity too.
-     * <p>As a result of these limitations it could be OK to use {@link File} in
-     * place of {@link URI} (which is the norm for this project), however there
-     * doesn't seem to be a good reason to relax this rule here.
-     * @param subject A moniker for the area to write to. This will be converted into a directory name.
+     * A directory within the project dir.
+     * 
+     * @param subject A name for the subdirectory of the Project directory.
      * @return A file: URI pointing at a local writable directory.
      */
-    public URI getTempScratchSpace(String subject, boolean create) throws IOException
+    public URI getUserSubProjectDir(String subject, boolean create) throws IOException
     {
         URI temp = NetUtil.lengthenURI(getUserProjectDir(), subject);
 

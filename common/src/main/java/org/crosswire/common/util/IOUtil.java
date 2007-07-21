@@ -43,7 +43,7 @@ import java.util.zip.ZipFile;
 public final class IOUtil
 {
     /**
-     * Prevent instansiation
+     * Prevent instantiation
      */
     private IOUtil()
     {

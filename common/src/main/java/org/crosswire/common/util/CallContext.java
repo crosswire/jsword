@@ -34,7 +34,7 @@ package org.crosswire.common.util;
 public final class CallContext extends SecurityManager
 {
     /**
-     * Prevent instansiation
+     * Prevent instantiation
      */
     private CallContext()
     {

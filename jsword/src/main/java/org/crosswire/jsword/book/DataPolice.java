@@ -36,7 +36,7 @@ import org.crosswire.jsword.passage.Key;
 public final class DataPolice
 {
     /**
-     * Prevent instansiation
+     * Prevent instantiation
      */
     private DataPolice()
     {

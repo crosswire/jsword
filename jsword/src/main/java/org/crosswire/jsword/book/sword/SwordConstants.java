@@ -36,7 +36,7 @@ import org.crosswire.jsword.versification.BibleNames;
 public final class SwordConstants
 {
     /**
-     * Prevent Instansiation
+     * Prevent instantiation
      */
     private SwordConstants()
     {

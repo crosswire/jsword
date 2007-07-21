@@ -50,7 +50,7 @@ import org.xml.sax.SAXException;
 public final class XMLUtil
 {
     /**
-     * Prevent Instansiation
+     * Prevent instantiation
      */
     private XMLUtil()
     {

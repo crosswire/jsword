@@ -36,7 +36,7 @@ import org.crosswire.common.util.Logger;
 public final class QueryDecoratorFactory
 {
     /**
-     * Prevent Instansiation
+     * Prevent instantiation
      */
     private QueryDecoratorFactory()
     {

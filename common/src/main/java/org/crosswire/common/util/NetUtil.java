@@ -56,7 +56,7 @@ import java.util.jar.JarEntry;
 public final class NetUtil
 {
     /**
-     * Basic constructor - ensure that we can't be instansiated
+     * Basic constructor - ensure that we can't be instantiated
      */
     private NetUtil()
     {

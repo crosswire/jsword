@@ -14,31 +14,31 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2007
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
+ * ID: $Id: AllTests.java 1405 2007-06-14 12:22:52 -0400 (Thu, 14 Jun 2007) dmsmith $
  */
-package org.crosswire.common.activate;
+package org.crosswire.common.icu;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
- * This class only exists to disuade you from calling activate() directly on
- * an Activatable object.
- *
- * @see gnu.lgpl.License for license details.<br>
+ * JUnit Test.
+ * 
+ * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
- * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class Lock
+public class AllTests
 {
-    /**
-     * You might be wanting to construct a Lock if you want to call
-     * Activatable.activate() directly, in which case you stand a chance of
-     * breaking the Activator, so let the activator call activate(), and just
-     * ask the Activator to do the job for you.
-     */
-    Lock()
+    public static Test suite()
     {
-        // no instantiation needed
+        TestSuite suite = new TestSuite("Test for org.crosswire.common.icu"); //$NON-NLS-1$
+        //$JUnit-BEGIN$
+        suite.addTest(new TestSuite(NumberShaper.class));
+        //$JUnit-END$
+        return suite;
     }
 }

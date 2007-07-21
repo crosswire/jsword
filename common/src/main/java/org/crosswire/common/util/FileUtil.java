@@ -35,7 +35,7 @@ import java.util.List;
 public final class FileUtil
 {
     /**
-     * Prevent Instansiation
+     * Prevent instantiation
      */
     private FileUtil()
     {

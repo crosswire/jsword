@@ -39,7 +39,7 @@ import java.util.Set;
 public final class Activator
 {
     /**
-     * Prevent instansiation
+     * Prevent instantiation
      */
     private Activator()
     {

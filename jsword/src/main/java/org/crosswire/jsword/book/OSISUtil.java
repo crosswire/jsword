@@ -303,7 +303,7 @@ public final class OSISUtil
     private static final Logger log = Logger.getLogger(OSISUtil.class);
 
     /**
-     * Prevent Instansiation
+     * Prevent instantiation
      */
     private OSISUtil()
     {

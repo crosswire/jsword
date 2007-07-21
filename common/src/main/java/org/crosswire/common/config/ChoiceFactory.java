@@ -38,7 +38,7 @@ import org.jdom.Element;
 public final class ChoiceFactory
 {
     /**
-     * Prevent Instansiation
+     * Prevent instantiation
      */
     private ChoiceFactory()
     {

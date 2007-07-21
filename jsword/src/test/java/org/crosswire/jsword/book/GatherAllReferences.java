@@ -56,7 +56,7 @@ import org.jdom.JDOMException;
 public class GatherAllReferences
 {
     /**
-     * Prevent instansiation
+     * Prevent instantiation
      */
     private GatherAllReferences()
     {
