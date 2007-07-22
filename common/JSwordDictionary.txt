@@ -3,3 +3,8 @@ locales
 persian
 classpath
 indic
+genesis
+picky
+javadoc
+unshaped
+combo

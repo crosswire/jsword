@@ -61,7 +61,7 @@ public final class CWClassLoader extends ClassLoader
     }
 
     /**
-     * Creates a privleged class loader that finds resources
+     * Creates a privileged class loader that finds resources
      * for the supplied class that may not be in the class' package.
      * You can use this within base classes by passing getClass()
      * to load resources for a derived class.
@@ -314,7 +314,7 @@ public final class CWClassLoader extends ClassLoader
     private static class PrivilegedLoader implements PrivilegedAction
     {
         /**
-         * Creates a privleged class loader that finds resources
+         * Creates a privileged class loader that finds resources
          * for the supplied class that may not be in the class' package.
          * You can use this within base classes by passing getClass()
          * to load resources for a derived class.
@@ -326,7 +326,7 @@ public final class CWClassLoader extends ClassLoader
         }
 
         /**
-         * Creates a privleged class loader that finds resources
+         * Creates a privileged class loader that finds resources
          * for the calling class that may not be in the class' package.
          * Use this only within classes that are directly looking up their resources.
          */
