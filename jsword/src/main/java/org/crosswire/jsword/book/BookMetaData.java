@@ -265,6 +265,11 @@ public interface BookMetaData extends Comparable
     String KEY_XML_LANG = "Lang"; //$NON-NLS-1$
 
     /**
+     * The key for the name in the properties map
+     */
+    String KEY_FONT = "Font"; //$NON-NLS-1$
+
+    /**
      * The key for the initials in the properties map
      */
     String KEY_INITIALS = "Initials"; //$NON-NLS-1$
