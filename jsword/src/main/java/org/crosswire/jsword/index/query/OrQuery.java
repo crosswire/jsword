@@ -24,6 +24,7 @@ package org.crosswire.jsword.index.query;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.index.Index;
 import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.PassageTally;
 
 /**
  * An OR query specifies that a result is the union of the left and the right query results.
@@ -59,6 +60,13 @@ public class OrQuery extends AbstractBinaryQuery
         if (right.isEmpty())
         {
             return left;
+        }
+
+        // If ranking was requested then prioritize it.
+        if (right instanceof PassageTally)
+        {
+            right.addAll(left);
+            return right;
         }
 
         left.addAll(right);

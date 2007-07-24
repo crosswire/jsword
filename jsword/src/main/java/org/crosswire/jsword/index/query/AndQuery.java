@@ -24,6 +24,7 @@ package org.crosswire.jsword.index.query;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.index.Index;
 import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.PassageTally;
 
 /**
  * An AND query specifies that a result needs to be in both the left and the right query results.
@@ -64,8 +65,14 @@ public class AndQuery extends AbstractBinaryQuery
             return right;
         }
 
-        left.retainAll(right);
+        // If ranking was requested then prioritize it.
+        if (right instanceof PassageTally)
+        {
+            right.retainAll(left);
+            return right;
+        }
 
+        left.retainAll(right);
         return left;
     }
 }
