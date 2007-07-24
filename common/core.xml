@@ -60,6 +60,7 @@
     <include name="**/jlfgr-*.jar"/>
     <include name="**/jsword-common-aqua-*.jar"/>
     <include name="**/javatar-*.jar"/>
+    <include name="**/icu4j_*.jar"/>
     <!--
     <include name="**/activation.jar"/>
     <include name="**/servlet.jar"/>
