@@ -22,13 +22,12 @@
 
 package org.crosswire.common.icu;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.crosswire.common.util.ReflectionUtil;
-
-import com.ibm.icu.text.DateFormat;
 
 /**
  * DateFormat provides a wrapper of some of DateFormat and SimpleDateFormat
