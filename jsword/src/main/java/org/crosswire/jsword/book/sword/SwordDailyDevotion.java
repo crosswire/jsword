@@ -19,9 +19,9 @@
 
 package org.crosswire.jsword.book.sword;
 
-import java.text.DateFormat;
 import java.util.Date;
 
+import org.crosswire.common.icu.DateFormatter;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.PreferredKey;
 
@@ -47,6 +47,6 @@ public class SwordDailyDevotion extends SwordDictionary implements PreferredKey
      */
     public Key getPreferred()
     {
-        return new IndexKey(DateFormat.getDateInstance(DateFormat.MEDIUM).format(new Date()));
+        return new IndexKey(DateFormatter.getDateInstance().format(new Date()));
     }
 }

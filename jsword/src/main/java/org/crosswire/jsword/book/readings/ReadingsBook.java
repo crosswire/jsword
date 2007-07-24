@@ -22,8 +22,7 @@
 package org.crosswire.jsword.book.readings;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -88,12 +87,12 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
         setBookMetaData(bmd);
 
         // Go through the current year
-        Calendar greg = new GregorianCalendar();
-        greg.set(Calendar.DAY_OF_MONTH, 1);
-        greg.set(Calendar.MONDAY, Calendar.JANUARY);
-        int currentYear = greg.get(Calendar.YEAR);
+        java.util.Calendar greg = new java.util.GregorianCalendar();
+        greg.set(java.util.Calendar.DAY_OF_MONTH, 1);
+        greg.set(java.util.Calendar.MONDAY, java.util.Calendar.JANUARY);
+        int currentYear = greg.get(java.util.Calendar.YEAR);
 
-        while (greg.get(Calendar.YEAR) == currentYear)
+        while (greg.get(java.util.Calendar.YEAR) == currentYear)
         {
             String internalKey = ReadingsKey.external2internal(greg);
             String readings = ""; //$NON-NLS-1$
@@ -108,7 +107,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
                 log.warn("Missing resource: " + internalKey + " while parsing: " + setname); //$NON-NLS-1$ //$NON-NLS-2$
             }
 
-            greg.add(Calendar.DATE, 1);
+            greg.add(java.util.Calendar.DATE, 1);
         }
 
         global = new SetKeyList(hash.keySet(), getName());
@@ -119,8 +118,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
      */
     public Key getPreferred()
     {
-        GregorianCalendar greg = new GregorianCalendar();
-        return new ReadingsKey(greg.getTime());
+        return new ReadingsKey(new Date());
     }
 
     public Iterator getOsisIterator(Key key, boolean allowEmpty) throws BookException

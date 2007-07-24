@@ -122,6 +122,11 @@ public class NumberShaper
      */
     public String shape(String input)
     {
+        if (input == null)
+        {
+            return input;
+        }
+
         if (arabicShaper != null)
         {
             Object[] params = { input };

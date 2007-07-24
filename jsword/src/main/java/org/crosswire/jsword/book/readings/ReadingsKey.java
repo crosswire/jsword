@@ -21,13 +21,12 @@
  */
 package org.crosswire.jsword.book.readings;
 
-import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.crosswire.common.icu.DateFormatter;
 import org.crosswire.jsword.passage.DefaultLeafKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
@@ -38,6 +37,7 @@ import org.crosswire.jsword.passage.NoSuchKeyException;
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class ReadingsKey extends DefaultLeafKeyList
 {
@@ -54,9 +54,9 @@ public class ReadingsKey extends DefaultLeafKeyList
 
         try
         {
-            DateFormat nameDF = DateFormat.getDateInstance(DateFormat.MEDIUM);
-            nameDF.setLenient(true);
-            date = nameDF.parse(text);
+            DateFormatter formatter = DateFormatter.getDateInstance();
+            formatter.setLenient(true);
+            date = formatter.parse(text);
         }
         catch (ParseException ex)
         {
@@ -70,7 +70,7 @@ public class ReadingsKey extends DefaultLeafKeyList
      */
     protected ReadingsKey(Date date)
     {
-        super(DateFormat.getDateInstance(DateFormat.MEDIUM).format(date), new SimpleDateFormat("d.MMMM").format(date)); //$NON-NLS-1$
+        super(DateFormatter.getDateInstance().format(date), DateFormatter.getSimpleDateInstance("d.MMMM").format(date)); //$NON-NLS-1$
         this.date = date;
     }
 
@@ -128,6 +128,11 @@ public class ReadingsKey extends DefaultLeafKeyList
         return super.clone();
     }
 
+    /**
+     * Convert the Gregorian Calendar to a string.
+     * @param externalKey
+     * @return
+     */
     public static String external2internal(Calendar externalKey)
     {
         Object[] objs = {new Integer(1 + externalKey.get(Calendar.MONTH)),

@@ -28,6 +28,8 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.crosswire.common.icu.NumberShaper;
+
 /**
  * A base class for implementing type safe internationalization (i18n) that is
  * easy for most cases. See {@link org.crosswire.common.util.Msg} for an
@@ -56,6 +58,7 @@ public class MsgBase
     protected MsgBase(String name)
     {
         this.name = name;
+        this.shaper = new NumberShaper();
         loadResources();
     }
 
@@ -65,19 +68,7 @@ public class MsgBase
     /* @Override */
     public String toString()
     {
-        try
-        {
-            if (resources != null)
-            {
-                return resources.getString(name);
-            }
-        }
-        catch (MissingResourceException ex)
-        {
-            log.error("Missing resource: Locale=" + Locale.getDefault().toString() + " name=" + name + " package=" + getClass().getName()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        }
-
-        return name;
+        return shaper.shape(obtainString());
     }
 
     /**
@@ -85,7 +76,7 @@ public class MsgBase
      */
     public String toString(Object param)
     {
-        return MessageFormat.format(toString(), new Object[] { param });
+        return shaper.shape(MessageFormat.format(obtainString(), new Object[] { param }));
     }
 
     /**
@@ -93,11 +84,11 @@ public class MsgBase
      */
     public String toString(Object[] params)
     {
-        return MessageFormat.format(toString(), params);
+        return shaper.shape(MessageFormat.format(obtainString(), params));
     }
 
     /**
-     * Initialise any resource bundles
+     * Initialize any resource bundles
      */
     protected final void loadResources()
     {
@@ -127,6 +118,23 @@ public class MsgBase
         }
     }
 
+    private String obtainString()
+    {
+        try
+        {
+            if (resources != null)
+            {
+                return resources.getString(name);
+            }
+        }
+        catch (MissingResourceException ex)
+        {
+            log.error("Missing resource: Locale=" + Locale.getDefault().toString() + " name=" + name + " package=" + getClass().getName()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        }
+
+        return name;
+    }
+
     private String name;
 
     /**
@@ -138,6 +146,9 @@ public class MsgBase
      * If there is any internationalization to be done, it is thru this
      */
     private ResourceBundle resources;
+
+    /** Internationalize numbers */
+    private NumberShaper shaper;
 
     /**
      * The log stream

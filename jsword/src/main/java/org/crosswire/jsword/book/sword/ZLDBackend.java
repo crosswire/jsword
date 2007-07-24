@@ -24,13 +24,13 @@ package org.crosswire.jsword.book.sword;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
 import org.crosswire.common.compress.CompressorType;
+import org.crosswire.common.icu.DateFormatter;
 import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
@@ -207,7 +207,7 @@ public class ZLDBackend extends AbstractBackend
         boolean isDailyDevotional = bmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS);
 
         Calendar greg = new GregorianCalendar();
-        DateFormat nameDF = DateFormat.getDateInstance(DateFormat.MEDIUM);
+        DateFormatter nameDF = DateFormatter.getDateInstance();
 
         long entries;
         try

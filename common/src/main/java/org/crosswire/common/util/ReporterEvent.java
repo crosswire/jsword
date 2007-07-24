@@ -23,6 +23,8 @@ package org.crosswire.common.util;
 
 import java.util.EventObject;
 
+import org.crosswire.common.icu.NumberShaper;
+
 /**
  * An event indicating that some bit of data needs capturing.
  *
@@ -55,7 +57,7 @@ public class ReporterEvent extends EventObject
         super(source);
 
         this.ex = null;
-        this.message = message;
+        this.message = new NumberShaper().shape(message);
     }
 
     /**
