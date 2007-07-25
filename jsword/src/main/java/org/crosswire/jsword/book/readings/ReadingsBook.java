@@ -84,6 +84,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
 
         DefaultBookMetaData bmd = new DefaultBookMetaData(driver, name, type);
         bmd.setInitials(setname);
+        bmd.setLanguage(Locale.getDefault().getLanguage());
         setBookMetaData(bmd);
 
         // Go through the current year

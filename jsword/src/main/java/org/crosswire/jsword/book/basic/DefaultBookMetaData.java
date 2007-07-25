@@ -21,6 +21,8 @@
  */
 package org.crosswire.jsword.book.basic;
 
+import java.awt.ComponentOrientation;
+import java.util.Locale;
 import java.util.Map;
 
 import org.crosswire.common.util.Languages;
@@ -48,7 +50,7 @@ import org.jdom.Element;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public final class DefaultBookMetaData extends AbstractBookMetaData
+public class DefaultBookMetaData extends AbstractBookMetaData
 {
     /**
      * Ctor with a properties from which to get values.
@@ -61,7 +63,9 @@ public final class DefaultBookMetaData extends AbstractBookMetaData
         setProperties(prop);
         setName((String) prop.get(BookMetaData.KEY_NAME));
         setType((String) prop.get(BookMetaData.KEY_CATEGORY));
-        setLanguage((String) prop.get(BookMetaData.KEY_LANGUAGE));
+        String lang = (String) prop.get(BookMetaData.KEY_LANGUAGE);
+        putProperty(BookMetaData.KEY_XML_LANG, lang);
+        setLanguage(lang);
 
         IndexManager imanager = IndexManagerFactory.getIndexManager();
         if (imanager.isIndexed(book))
@@ -115,8 +119,15 @@ public final class DefaultBookMetaData extends AbstractBookMetaData
      */
     public boolean isLeftToRight()
     {
-        // TODO(joe): Do this correctly
-        return true;
+        String lang = getProperty(BookMetaData.KEY_XML_LANG);
+
+        // Java does not know that the following languages are right to left
+        if ("fa".equals(lang) || "syr".equals(lang))  //$NON-NLS-1$ //$NON-NLS-2$
+        {
+            return false;
+        }
+        
+        return ComponentOrientation.getOrientation(new Locale(lang)).isLeftToRight();
     }
 
     /**
@@ -124,6 +135,7 @@ public final class DefaultBookMetaData extends AbstractBookMetaData
      */
     public void setLanguage(String language)
     {
+        putProperty(BookMetaData.KEY_XML_LANG, language);
         putProperty(KEY_LANGUAGE, Languages.getLanguage(language));
     }
 
