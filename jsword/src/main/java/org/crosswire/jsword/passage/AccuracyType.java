@@ -23,6 +23,7 @@ package org.crosswire.jsword.passage;
 
 import java.io.Serializable;
 
+import org.crosswire.common.icu.NumberShaper;
 import org.crosswire.jsword.versification.BibleInfo;
 
 /**
@@ -596,7 +597,7 @@ public abstract class AccuracyType implements Serializable
     {
         try
         {
-            return Integer.parseInt(text);
+            return Integer.parseInt(new NumberShaper().unshape(text));
         }
         catch (NumberFormatException ex)
         {

@@ -69,7 +69,6 @@ public final class Verse implements Key, Serializable
      */
     public Verse()
     {
-        shaper = new NumberShaper();
         originalName = null;
         
         book = DEFAULT.book;
@@ -89,7 +88,6 @@ public final class Verse implements Key, Serializable
      */
     /*package*/ Verse(String original, int book, int chapter, int verse) throws NoSuchVerseException
     {
-        shaper = new NumberShaper();
         originalName = original;
         set(book, chapter, verse);
     }
@@ -122,7 +120,6 @@ public final class Verse implements Key, Serializable
      */
     public Verse(int book, int chapter, int verse, boolean patch_up)
     {
-        shaper = new NumberShaper();
         if (!patch_up)
         {
             throw new IllegalArgumentException(Msg.ERROR_PATCH.toString());
@@ -143,7 +140,6 @@ public final class Verse implements Key, Serializable
      */
     public Verse(int ordinal) throws NoSuchVerseException
     {
-        shaper = new NumberShaper();
         originalName = null;
         set(ordinal);
     }
@@ -257,7 +253,6 @@ public final class Verse implements Key, Serializable
             copy.verse = verse;
             //copy.ord = ord;
             copy.originalName = originalName;
-            shaper = new NumberShaper();
         }
         catch (CloneNotSupportedException e)
         {
@@ -723,7 +718,7 @@ public final class Verse implements Key, Serializable
     {
         try
         {
-            return Integer.parseInt(text);
+            return Integer.parseInt(shaper.unshape(text));
         }
         catch (NumberFormatException ex)
         {
@@ -1009,7 +1004,7 @@ public final class Verse implements Key, Serializable
     /**
      * Allow the conversion to and from other number representations.
      */
-    private transient NumberShaper shaper;
+    private static NumberShaper shaper = new NumberShaper();
 
     /**
      * The parent key. See the key interface for more information.

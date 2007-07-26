@@ -25,6 +25,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.crosswire.common.icu.NumberShaper;
+
 /**
  * Conversions between various types and Strings.
  *
@@ -95,7 +97,7 @@ public final class Convert
     {
         try
         {
-            return Integer.parseInt(data);
+            return Integer.parseInt(new NumberShaper().unshape(data));
         }
         catch (NumberFormatException ex)
         {
@@ -110,7 +112,7 @@ public final class Convert
      */
     public static String int2String(int data)
     {
-        return Integer.toString(data);
+        return new NumberShaper().shape(Integer.toString(data));
     }
 
     /**
