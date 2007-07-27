@@ -25,7 +25,7 @@ import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 
 /**
- * An Enumeration of the possible Edits.
+ * An Enumeration of the possible Compressions.
  *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
@@ -119,7 +119,7 @@ public abstract class CompressorType implements Serializable
     }
 
     /**
-     * The name of the EditType
+     * The name of the CompressorType
      */
     private String name;
 
