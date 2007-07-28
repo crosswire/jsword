@@ -23,9 +23,11 @@ package org.crosswire.common.config;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.StringUtil;
 import org.jdom.Element;
 
 /**
@@ -34,6 +36,7 @@ import org.jdom.Element;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public abstract class AbstractReflectedChoice implements Choice
 {
@@ -46,16 +49,54 @@ public abstract class AbstractReflectedChoice implements Choice
 
         key = option.getAttributeValue("key"); //$NON-NLS-1$
 
-        String hiddenState = option.getAttributeValue("hidden"); //$NON-NLS-1$
-        hidden = Boolean.valueOf(hiddenState).booleanValue();
+        // Hidden is an optional field so it is ok for the resource to be missing.
+        try
+        {
+            String hiddenState = option.getAttributeValue("hidden"); //$NON-NLS-1$
+            hidden = Boolean.valueOf(hiddenState).booleanValue();
+        }
+        catch (MissingResourceException e)
+        {
+            hidden = false;
+        }
 
+        // Ignore is an optional field so it is ok for the resource to be missing.
+        try
+        {
+            String ignoreState = configResources.getString(key + ".ignore"); //$NON-NLS-1$
+            ignored = Boolean.valueOf(ignoreState).booleanValue();
+            if (ignored)
+            {
+                hidden = true;
+                return;
+            }
+        }
+        catch (MissingResourceException e)
+        {
+            ignored = false;
+        }
+        
         String helpText = configResources.getString(key + ".help"); //$NON-NLS-1$
         assert helpText != null;
         setHelpText(helpText);
 
-        String path = configResources.getString(key + ".path"); //$NON-NLS-1$
-        assert path != null;
-        setFullPath(path);
+        // OPTIMIZE(dms): This is poorly done (by me!)
+        String[] pathParts = StringUtil.split(key, '.');
+        StringBuffer parentKey = new StringBuffer();
+        StringBuffer path = new StringBuffer();
+        for (int i = 0; i < pathParts.length; i++)
+        {
+            if (i > 0)
+            {
+                parentKey.append('.');
+                path.append('.');
+            }
+            parentKey.append(pathParts[i]);
+            String parent = configResources.getString(parentKey + ".name"); //$NON-NLS-1$
+            assert parent != null;
+            path.append(parent);
+        }
+        setFullPath(path.toString());
 
         type = option.getAttributeValue("type"); //$NON-NLS-1$
 
@@ -119,17 +160,6 @@ public abstract class AbstractReflectedChoice implements Choice
             log.debug("Not using " + propertyname + " from " + clazz.getName() + " because the return type of the getter is not " + getConversionClass().getName()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             throw new StartupException(Msg.CONFIG_NORETURN, new Object[] { getter.getReturnType(), getConversionClass() });
         }
-
-        // 2 optional config attrubites
-        String priorityname = option.getAttributeValue("priority"); //$NON-NLS-1$
-        if (priorityname == null)
-        {
-            priority = Choice.PRIORITY_NORMAL;
-        }
-        else
-        {
-            priority = Integer.parseInt(priorityname);
-        }
     }
 
     /* (non-Javadoc)
@@ -154,7 +184,7 @@ public abstract class AbstractReflectedChoice implements Choice
     public abstract String convertToString(Object orig);
 
     /**
-     * Convert from a stored string to an object to use with relfection
+     * Convert from a stored string to an object to use with reflection
      */
     public abstract Object convertToObject(String orig);
 
@@ -207,22 +237,11 @@ public abstract class AbstractReflectedChoice implements Choice
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.common.config.Choice#getPriority()
+     * @see org.crosswire.common.config.Choice#isIgnored()
      */
-    public int getPriority()
+    public boolean isIgnored()
     {
-        return priority;
-    }
-
-    /**
-     * Sometimes we need to ensure that we configure items in a certain
-     * order, the config package moves the changes to the application
-     * starting with the highest priority, moving to the lowest
-     * @param priority A priority level
-     */
-    public void setPriority(int priority)
-    {
-        this.priority = priority;
+        return ignored;
     }
 
     /* (non-Javadoc)
@@ -336,9 +355,9 @@ public abstract class AbstractReflectedChoice implements Choice
     private boolean hidden;
 
     /**
-     * The priority of this config level
+     * Whether this choice should be ignored altogether.
      */
-    private int priority = PRIORITY_NORMAL;
+    private boolean ignored;
 
     /**
      * The log stream

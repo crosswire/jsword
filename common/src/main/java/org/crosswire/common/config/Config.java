@@ -141,7 +141,10 @@ public class Config
             try
             {
                 Choice choice = ChoiceFactory.getChoice(element, configResources);
-                add(choice);
+                if (!choice.isIgnored())
+                {
+                    add(choice);
+                }
             }
             catch (StartupException e)
             {
@@ -302,71 +305,10 @@ public class Config
                 }
             }
         }
-//        int highestChange = Choice.PRIORITY_LOWEST;
-//
-//        if (force)
-//        {
-//            log.info("Force=true, all changes will propagate regardless"); //$NON-NLS-1$
-//        }
-//
-//        for (int priority = Choice.PRIORITY_SYSTEM; priority >= Choice.PRIORITY_LOWEST; priority--)
-//        {
-//            log.info("Settings for priority level=" + priority); //$NON-NLS-1$
-//
-//            Iterator it = keys.iterator();
-//            while (it.hasNext())
-//            {
-//                String key = (String) it.next();
-//                Choice choice = getChoice(key);
-//
-//                if (choice.getPriority() == priority)
-//                {
-//                    String oldValue = choice.getString();
-//                    String newValue = local.getProperty(key);
-//
-//                    // The new value shouldn't really be blank - obviously this
-//                    // choice has just been added, substitute the default.
-//                    if (newValue == null)
-//                    {
-//                        local.put(key, oldValue);
-//                        newValue = oldValue;
-//                    }
-//
-//                    try
-//                    {
-//                        // If a value has not changed, we only call setString()
-//                        // if force==true or if a higher priority choice has
-//                        // changed.
-//                        if (force
-//                            || priority < highestChange
-//                            || !newValue.equals(oldValue))
-//                        {
-//                            log.info("Setting " + key + "=" + newValue + " (was " + oldValue + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-//                            choice.setString(newValue);
-//
-//                            if (priority > highestChange)
-//                            {
-//                                highestChange = priority;
-//
-//                                if (!force)
-//                                {
-//                                    log.info("Change at level " + highestChange + ", all changes will propagate regardless"); //$NON-NLS-1$ //$NON-NLS-2$
-//                                }
-//                            }
-//                        }
-//                    }
-//                    catch (Exception ex)
-//                    {
-//                        log.warn("Failure setting " + key + "=" + newValue, ex);  //$NON-NLS-1$ //$NON-NLS-2$
-//                        Reporter.informUser(this, new ConfigException(Msg.CONFIG_SETFAIL, ex, new Object[] { choice.getFullPath() } ));
-//                    }
-//                }
-//            }
-//        }
     }
 
     /**
-     * Take the data stored permanetly and copy it to the local
+     * Take the data stored permanently and copy it to the local
      * storage area, using the specified stream
      */
     public void setProperties(Properties prop)

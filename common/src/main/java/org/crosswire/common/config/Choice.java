@@ -112,20 +112,16 @@ public interface Choice
     boolean isSaveable();
 
     /**
-     * Sometimes we need to ensure that we configure items in a certain
-     * order, the config package moves the changes to the application
-     * starting with the highest priority, moving to the lowest. The
-     * normal priorities are 0-10 or the PRIORITY_* constants, the default
-     * being PRIORITY_NORMAL
-     * @return A priority level
-     */
-    int getPriority();
-
-    /**
      * Whether this should be visible in a Config Editor.
      * @return hidden or visible
      */
     boolean isHidden();
+
+    /**
+     * Whether this should be ignored altogether in a Config Editor.
+     * @return hidden or visible
+     */
+    boolean isIgnored();
 
     /**
      * Do we need to restart the program in order for this change to have
@@ -133,39 +129,4 @@ public interface Choice
      * @return True if a restart is required
      */
     boolean requiresRestart();
-
-    /**
-     * The highest level priority generally for system level stuff
-     */
-    int PRIORITY_SYSTEM = 10;
-
-    /**
-     * The priority level for important but non system level stuff
-     */
-    int PRIORITY_EXTENDER = 9;
-
-    /**
-     * The priority level for important but non system level stuff
-     */
-    int PRIORITY_HIGHEST = 8;
-
-    /**
-     * The priority level for normal use
-     */
-    int PRIORITY_NORMAL = 6;
-
-    /**
-     * The priority level for creating items for later configuring
-     */
-    int PRIORITY_CTOR = 4;
-
-    /**
-     * The priority level for configuring previously created items
-     */
-    int PRIORITY_ACCESSOR = 2;
-
-    /**
-     * The lowest level priority generally for system level stuff
-     */
-    int PRIORITY_LOWEST = 0;
 }

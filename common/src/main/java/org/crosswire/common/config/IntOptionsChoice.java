@@ -87,7 +87,8 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements Multipl
     /* @Override */
     public String convertToString(Object orig)
     {
-        return options[((Integer) orig).intValue()];
+//        return options[((Integer) orig).intValue()];
+        return orig.toString();
     }
 
     /* (non-Javadoc)

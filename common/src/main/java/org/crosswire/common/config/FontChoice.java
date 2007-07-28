@@ -44,7 +44,7 @@ public class FontChoice extends AbstractReflectedChoice
     /* @Override */
     public String convertToString(Object orig)
     {
-        // PENDING: object=font? is this right? isn't there a converter somewhere
+        // This is a string representation of the font in the form:name.style.size
         return (String) orig;
     }
 
