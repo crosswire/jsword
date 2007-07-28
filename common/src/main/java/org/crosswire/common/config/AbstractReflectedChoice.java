@@ -52,7 +52,7 @@ public abstract class AbstractReflectedChoice implements Choice
         // Hidden is an optional field so it is ok for the resource to be missing.
         try
         {
-            String hiddenState = option.getAttributeValue("hidden"); //$NON-NLS-1$
+            String hiddenState = configResources.getString(key + ".hidden"); //$NON-NLS-1$
             hidden = Boolean.valueOf(hiddenState).booleanValue();
         }
         catch (MissingResourceException e)
