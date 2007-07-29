@@ -17,7 +17,7 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
+ * ID: $Id: IntOptionsChoice.java 1575 2007-07-28 16:18:14Z dmsmith $
  */
 package org.crosswire.common.config;
 
@@ -37,7 +37,7 @@ import org.jdom.Element;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class IntOptionsChoice extends AbstractReflectedChoice implements MappedChoice
+public class MappedOptionsChoice extends AbstractReflectedChoice implements MappedChoice
 {
     /* (non-Javadoc)
      * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
@@ -48,17 +48,21 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements MappedC
         assert configResources != null;
 
         super.init(option, configResources);
-
-        String prefix = getKey() + ".alternative."; //$NON-NLS-1$
-
-        options = new TreeMap();
-        Iterator iter = option.getChildren("alternative").iterator(); //$NON-NLS-1$
-        while (iter.hasNext())
+        Element mapElement = option.getChild("map"); //$NON-NLS-1$
+        if (mapElement == null)
         {
-            Element alternative = (Element) iter.next();
-            int number = Integer.parseInt(alternative.getAttributeValue("number")); //$NON-NLS-1$
-            String name = configResources.getString(prefix + number);
-            options.put(new Integer(number), name);
+            throw new StartupException(Msg.CONFIG_NOMAP);
+        }
+
+        String name = mapElement.getAttributeValue("name"); //$NON-NLS-1$
+        Object map = ChoiceFactory.getDataMap().get(name);
+        if (map instanceof Map)
+        {
+            options = (Map) map;
+        }
+        else
+        {
+            options = new TreeMap();
         }
     }
 
@@ -75,7 +79,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements MappedC
      */
     public Class getConversionClass()
     {
-        return Integer.TYPE;
+        return String.class;
     }
 
     /* (non-Javadoc)
@@ -93,25 +97,17 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements MappedC
     /* @Override */
     public Object convertToObject(String orig)
     {
-        // First check to see if this is a number
-        try
+        Iterator iter = options.entrySet().iterator();
+        while (iter.hasNext())
         {
-            return new Integer(orig);
-        }
-        catch (NumberFormatException ex)
-        {
-            Iterator iter = options.entrySet().iterator();
-            while (iter.hasNext())
+            Map.Entry mapEntry = (Map.Entry) iter.next();
+            if (mapEntry.getValue().equals(orig))
             {
-                Map.Entry mapEntry = (Map.Entry) iter.next();
-                if (mapEntry.getValue().equals(orig))
-                {
-                    return mapEntry.getKey();
-                }
+                return mapEntry.getKey();
             }
-            Reporter.informUser(this, Msg.IGNORE, new Object[] { orig });
-            return null;
         }
+        Reporter.informUser(this, Msg.IGNORE, new Object[] { orig });
+        return ""; //$NON-NLS-1$
     }
 
     private Map options;

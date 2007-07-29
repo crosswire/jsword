@@ -9,3 +9,4 @@ javadoc
 unshaped
 combo
 tabbed
+locale
