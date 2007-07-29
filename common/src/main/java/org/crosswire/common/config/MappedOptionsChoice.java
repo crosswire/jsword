@@ -88,7 +88,7 @@ public class MappedOptionsChoice extends AbstractReflectedChoice implements Mapp
     /* @Override */
     public String convertToString(Object orig)
     {
-        return orig.toString();
+        return orig != null ? orig.toString() : ""; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)
@@ -98,10 +98,11 @@ public class MappedOptionsChoice extends AbstractReflectedChoice implements Mapp
     public Object convertToObject(String orig)
     {
         Iterator iter = options.entrySet().iterator();
+        Map.Entry mapEntry = null;
         while (iter.hasNext())
         {
-            Map.Entry mapEntry = (Map.Entry) iter.next();
-            if (mapEntry.getValue().equals(orig))
+            mapEntry = (Map.Entry) iter.next();
+            if (mapEntry.getValue().toString().equals(orig) || mapEntry.getKey().toString().equals(orig))
             {
                 return mapEntry.getKey();
             }

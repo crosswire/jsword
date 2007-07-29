@@ -119,7 +119,7 @@ public class DefaultBook
      * Book objects.
      * <p>This method is picky in that it only matches when the driver and the
      * version are the same. The user (probably) only cares about the version
-     * though, and so might be dissapointed when we fail to match AV (FooDriver)
+     * though, and so might be disappointed when we fail to match AV (FooDriver)
      * against AV (BarDriver).
      * @param name The version to use as default.
      */

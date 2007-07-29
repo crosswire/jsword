@@ -311,7 +311,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
      */
     public String toString()
     {
-        return getName();
+        return getInitials();
     }
 
     /**
