@@ -283,7 +283,10 @@ public abstract class AbstractReflectedChoice implements Choice
         try
         {
             Object object = convertToObject(value);
-            setter.invoke(null, new Object[] { object.toString() });
+            if (object != null)
+            {
+                setter.invoke(null, new Object[] { object });
+            }
         }
         catch (InvocationTargetException e)
         {
@@ -294,6 +297,10 @@ public abstract class AbstractReflectedChoice implements Choice
             ex = e;
         }
         catch (IllegalAccessException e)
+        {
+            ex = e;
+        }
+        catch (NullPointerException e)
         {
             ex = e;
         }

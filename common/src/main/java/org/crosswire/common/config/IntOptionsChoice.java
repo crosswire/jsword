@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 
-import org.crosswire.common.util.Reporter;
 import org.jdom.Element;
 
 /**
@@ -109,8 +108,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements MappedC
                     return mapEntry.getKey();
                 }
             }
-            Reporter.informUser(this, Msg.IGNORE, new Object[] { orig });
-            return null;
+            return new Integer(0);
         }
     }
 

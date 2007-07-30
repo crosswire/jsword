@@ -104,7 +104,7 @@ public class MappedOptionsChoice extends AbstractReflectedChoice implements Mapp
             mapEntry = (Map.Entry) iter.next();
             if (mapEntry.getValue().toString().equals(orig) || mapEntry.getKey().toString().equals(orig))
             {
-                return mapEntry.getKey();
+                return mapEntry.getKey().toString();
             }
         }
         Reporter.informUser(this, Msg.IGNORE, new Object[] { orig });
