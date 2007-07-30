@@ -48,7 +48,7 @@ public final class Convert
      */
     public static boolean string2Boolean(String data)
     {
-        if (data.equalsIgnoreCase("true")) //$NON-NLS-1$
+        if (Boolean.valueOf(data).booleanValue())
         {
             return true;
         }
@@ -83,7 +83,7 @@ public final class Convert
      */
     public static String boolean2String(boolean data)
     {
-        return data ? "True" : "False"; //$NON-NLS-1$ //$NON-NLS-2$
+        return Boolean.toString(data);
     }
 
     /**
