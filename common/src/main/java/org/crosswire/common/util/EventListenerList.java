@@ -38,7 +38,7 @@ import java.util.EventListener;
  *
  * <p>If you inculde sw*ng code in non-gui code then you can end up not being
  * able to run your code in a headerless environment because X includes Y which
- * inculdes Font which tries to lookup font metrics and then everything dies.
+ * includes Font which tries to lookup font metrics and then everything dies.
  * I appreciate the Headerless changes in 1.4, but my rule (from before 1.4)
  * was "Don't inculde sw*ng code from non-sw*ng code", and I enforced that by
  * making sure all my sw*ng code was in a package with sw*ng in the name and by
