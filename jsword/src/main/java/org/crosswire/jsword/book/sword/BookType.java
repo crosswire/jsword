@@ -49,7 +49,7 @@ public abstract class BookType implements Serializable
 
         protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
         {
-            return new RawBackend(sbmd);
+            return new RawBackend(sbmd, 2);
         }
 
         /**
@@ -92,7 +92,7 @@ public abstract class BookType implements Serializable
 
         protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
         {
-            return new RawBackend(sbmd);
+            return new RawBackend(sbmd, 2);
         }
 
         /**
@@ -101,6 +101,23 @@ public abstract class BookType implements Serializable
         private static final long serialVersionUID = 3258129141898294837L;
     };
 
+    public static final BookType RAW_COM4 = new BookType("RawCom4", BookCategory.COMMENTARY) //$NON-NLS-1$
+    {
+        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
+        {
+            return new SwordBook(sbmd, backend);
+        }
+
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
+        {
+            return new RawBackend(sbmd, 4);
+        }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3258129141898294838L;
+    };
     /**
      * Compressed Commentaries
      */
@@ -135,7 +152,7 @@ public abstract class BookType implements Serializable
 
         protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
         {
-            return new RawBackend(sbmd);
+            return new RawBackend(sbmd, 2);
         }
 
         /**
@@ -156,7 +173,7 @@ public abstract class BookType implements Serializable
 
         protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
         {
-            return new RawBackend(sbmd);
+            return new RawBackend(sbmd, 2);
         }
 
         /**
@@ -394,6 +411,7 @@ public abstract class BookType implements Serializable
         RAW_TEXT,
         Z_TEXT,
         RAW_COM,
+        RAW_COM4,
         Z_COM,
         RAW_COM,
         HREF_COM,

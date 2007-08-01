@@ -48,9 +48,15 @@ public class RawBackend extends AbstractBackend
     /**
      * Simple ctor
      */
-    public RawBackend(SwordBookMetaData sbmd) throws BookException
+    public RawBackend(SwordBookMetaData sbmd, int datasize) throws BookException
     {
         super(sbmd);
+        this.datasize = datasize;
+
+        if (datasize != 2 && datasize != 4)
+        {
+            throw new BookException(Msg.TYPE_UNKNOWN);
+        }
 
         String path = getExpandedDataPath();
 
@@ -158,8 +164,10 @@ public class RawBackend extends AbstractBackend
                 return ""; //$NON-NLS-1$
             }
 
-            // Read the next ENTRY_SIZE byes.
-            byte[] read = SwordUtil.readRAF(idxRaf[testament], index * ENTRY_SIZE, ENTRY_SIZE);
+            int entrysize = datasize + OFFSETSIZE;
+            
+            // Read the next entrysize byes.
+            byte[] read = SwordUtil.readRAF(idxRaf[testament], index * entrysize, entrysize);
             if (read == null || read.length == 0)
             {
                 return ""; //$NON-NLS-1$
@@ -167,7 +175,18 @@ public class RawBackend extends AbstractBackend
 
             // The data is little endian - extract the start and size
             long start = SwordUtil.decodeLittleEndian32(read, 0);
-            int size = SwordUtil.decodeLittleEndian16(read, 4);
+            int size = -1;
+            switch (datasize)
+            {
+            case 2:
+                size = SwordUtil.decodeLittleEndian16(read, 4);
+                break;
+            case 4:
+                size = SwordUtil.decodeLittleEndian32(read, 4);
+                break;
+            default:
+                assert false : datasize;
+            }
 
             if (size < 0)
             {
@@ -241,7 +260,12 @@ public class RawBackend extends AbstractBackend
     private File[] txtFile = new File[3];
 
     /**
-     * How many bytes in an index?
+     * How many bytes in the offset pointers in the index
      */
-    private static final int ENTRY_SIZE = 6;
+    private static final int OFFSETSIZE = 4;
+
+    /**
+     * How many bytes in the size count in the index
+     */
+    private int datasize = -1;   
 }

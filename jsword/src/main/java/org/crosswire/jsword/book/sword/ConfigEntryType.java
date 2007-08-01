@@ -937,6 +937,7 @@ public class ConfigEntryType implements Serializable
             "RawText",  //$NON-NLS-1$
             "zText",  //$NON-NLS-1$
             "RawCom", //$NON-NLS-1$
+            "RawCom4", //$NON-NLS-1$
             "zCom", //$NON-NLS-1$
             "HREFCom", //$NON-NLS-1$
             "RawFiles", //$NON-NLS-1$
