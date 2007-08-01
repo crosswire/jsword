@@ -10,3 +10,6 @@ unshaped
 combo
 tabbed
 locale
+fallback
+yahoo
+com
