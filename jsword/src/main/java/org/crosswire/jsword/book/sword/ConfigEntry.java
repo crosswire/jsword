@@ -256,7 +256,7 @@ public final class ConfigEntry
                     log.info(report("Ignoring unknown config value for", confEntryName, aValue)); //$NON-NLS-1$
                     return;
                 }
-                value = aValue;
+                value = type.convert(aValue);
             }
         }
     }
@@ -280,7 +280,7 @@ public final class ConfigEntry
 
         if (value != null)
         {
-            String text = value;
+            String text = value.toString();
             if (allowsRTF())
             {
                 text = handleRTF(text);
@@ -386,7 +386,8 @@ public final class ConfigEntry
             buf.append('=');
             if (allowsContinuation())
             {
-                String [] lines = StringUtil.splitAll(value, '\n');
+                String text = value.toString();
+                String [] lines = StringUtil.splitAll(text, '\n');
                 for (int i = 0; i < lines.length; i++)
                 {
                     if (i > 0)
@@ -399,7 +400,7 @@ public final class ConfigEntry
             }
             else
             {
-                buf.append(value);
+                buf.append(value.toString());
                 buf.append('\n');
             }
         }
@@ -521,5 +522,5 @@ public final class ConfigEntry
     private String internal;
     private String name;
     private List values;
-    private String value;
+    private Object value;
 }

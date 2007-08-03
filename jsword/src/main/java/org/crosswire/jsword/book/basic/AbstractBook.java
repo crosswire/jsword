@@ -26,6 +26,7 @@ import java.util.Map;
 import javax.swing.event.EventListenerList;
 
 import org.crosswire.common.activate.Lock;
+import org.crosswire.common.util.Language;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookDriver;
@@ -205,7 +206,7 @@ public abstract class AbstractBook implements Book
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getLanguage()
      */
-    public String getLanguage()
+    public Language getLanguage()
     {
         return bmd.getLanguage();
     }
@@ -237,7 +238,7 @@ public abstract class AbstractBook implements Book
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getProperty(java.lang.String)
      */
-    public String getProperty(String key)
+    public Object getProperty(String key)
     {
         return bmd.getProperty(key);
     }
@@ -245,7 +246,7 @@ public abstract class AbstractBook implements Book
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#putProperty(java.lang.String, java.lang.String)
      */
-    public void putProperty(String key, String value)
+    public void putProperty(String key, Object value)
     {
         bmd.putProperty(key, value);
     }

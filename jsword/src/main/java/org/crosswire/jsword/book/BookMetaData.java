@@ -24,6 +24,7 @@ package org.crosswire.jsword.book;
 import java.net.URI;
 import java.util.Map;
 
+import org.crosswire.common.util.Language;
 import org.crosswire.jsword.index.IndexStatus;
 import org.jdom.Document;
 
@@ -71,10 +72,10 @@ public interface BookMetaData extends Comparable
     BookDriver getDriver();
 
     /**
-     * The language of the book is the common name for the iso639 code.
-     * @return the common name for the language
+     * The language of the book.
+     * @return the book's language
      */
-    String getLanguage();
+    Language getLanguage();
 
     /**
      * The initials of this book - how people familiar with this book will know
@@ -208,13 +209,13 @@ public interface BookMetaData extends Comparable
      * @param key the key of the property.
      * @return the value of the property
      */
-    String getProperty(String key);
+    Object getProperty(String key);
 
     /**
      * @param key the key of the property to set
      * @param value the value of the property
      */
-    void putProperty(String key, String value);
+    void putProperty(String key, Object value);
 
     /**
      * Has anyone generated a search index for this Book?
@@ -255,17 +256,12 @@ public interface BookMetaData extends Comparable
     String KEY_NAME = "Description"; //$NON-NLS-1$
 
     /**
-     * The key for the name in the properties map
-     */
-    String KEY_LANGUAGE = "Language"; //$NON-NLS-1$
-
-    /**
-     * The key for the name in the properties map
+     * The key for the language in the properties map
      */
     String KEY_XML_LANG = "Lang"; //$NON-NLS-1$
 
     /**
-     * The key for the name in the properties map
+     * The key for the font in the properties map
      */
     String KEY_FONT = "Font"; //$NON-NLS-1$
 

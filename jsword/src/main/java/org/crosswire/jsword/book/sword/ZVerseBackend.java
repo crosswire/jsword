@@ -229,7 +229,7 @@ public class ZVerseBackend extends AbstractBackend
 
         SwordBookMetaData sbmd = getBookMetaData();
         String charset = sbmd.getBookCharset();
-        String compressType = sbmd.getProperty(ConfigEntryType.COMPRESS_TYPE);
+        String compressType = (String) sbmd.getProperty(ConfigEntryType.COMPRESS_TYPE);
 
         Verse verse = KeyUtil.getVerse(key);
 

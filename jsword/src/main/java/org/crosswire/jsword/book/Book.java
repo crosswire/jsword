@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.crosswire.common.activate.Activatable;
+import org.crosswire.common.util.Language;
 import org.crosswire.jsword.index.IndexStatus;
 import org.crosswire.jsword.index.IndexStatusListener;
 import org.crosswire.jsword.index.search.SearchRequest;
@@ -57,7 +58,7 @@ public interface Book extends Activatable, KeyFactory, Comparable
     /**
      * Return an iterator that returns each key's OSIS in turn.
      *
-     * $param key the Items to locate
+     * @param key the Items to locate
      * @param allowEmpty indicates whether empty keys should be present.
      */
     Iterator getOsisIterator(Key key, boolean allowEmpty) throws BookException;
@@ -157,10 +158,10 @@ public interface Book extends Activatable, KeyFactory, Comparable
     BookDriver getDriver();
 
     /**
-     * The language of the book is the common name for the iso639 code.
+     * The language of the book.
      * @return the common name for the language
      */
-    String getLanguage();
+    Language getLanguage();
 
     /**
      * The initials of this book - how people familiar with this book will know
@@ -254,7 +255,7 @@ public interface Book extends Activatable, KeyFactory, Comparable
     /**
      * Return the orientation of the language of the Book. If a book contains more than one language,
      * it refers to the dominate language of the book. This will be used to present
-     * Arabic and Hebrew in their propper orientation.
+     * Arabic and Hebrew in their proper orientation.
      * @return true if the orientation for the dominate language is LeftToRight.
      */
     boolean isLeftToRight();
@@ -275,13 +276,13 @@ public interface Book extends Activatable, KeyFactory, Comparable
      * @param key the key of the property.
      * @return the value of the property
      */
-    String getProperty(String key);
+    Object getProperty(String key);
 
     /**
      * @param key the key of the property.
      * @param value the value of the property
       */
-    void putProperty(String key, String value);
+    void putProperty(String key, Object value);
 
     /**
      * Has anyone generated a search index for this Book?

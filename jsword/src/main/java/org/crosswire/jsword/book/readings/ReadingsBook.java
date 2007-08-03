@@ -32,6 +32,7 @@ import java.util.ResourceBundle;
 import java.util.TreeMap;
 
 import org.crosswire.common.util.CWClassLoader;
+import org.crosswire.common.util.Language;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookException;
@@ -84,7 +85,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
 
         DefaultBookMetaData bmd = new DefaultBookMetaData(driver, name, type);
         bmd.setInitials(setname);
-        bmd.setLanguage(Locale.getDefault().getLanguage());
+        bmd.setLanguage(new Language(Locale.getDefault().getLanguage()));
         setBookMetaData(bmd);
 
         // Go through the current year

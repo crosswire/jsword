@@ -28,7 +28,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.crosswire.common.util.Languages;
+import org.crosswire.common.util.Language;
 
 
 /**
@@ -47,7 +47,7 @@ import org.crosswire.common.util.Languages;
  *     // will be the result of several constants ORed. See the
  *     // DISTRIBUTION_LICENSE* constants in SwordConstants. It appears some
  *     // versions do not stick to this convention, because of this, there is an
- *     // additional menber distributionLicenseAdditionInfo, to store additional
+ *     // additional member distributionLicenseAdditionInfo, to store additional
  *     // information.
  *     private int distributionLicense;
  *     private String distributionLicenseAdditionalInfo = "";
@@ -127,6 +127,21 @@ public class ConfigEntryType implements Serializable
             catch (NumberFormatException e)
             {
                 return false;
+            }
+        }
+
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang.String)
+         */
+        public Object convert(String input)
+        {
+            try
+            {
+                return new Integer(input);
+            }
+            catch (NumberFormatException e)
+            {
+                return defaultValue;
             }
         }
 
@@ -559,6 +574,21 @@ public class ConfigEntryType implements Serializable
             }
         }
 
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang.String)
+         */
+        public Object convert(String input)
+        {
+            try
+            {
+                return new Integer(input);
+            }
+            catch (NumberFormatException e)
+            {
+                return null;
+            }
+        }
+
         /**
          * Serialization ID
          */
@@ -762,12 +792,41 @@ public class ConfigEntryType implements Serializable
     /**
      * Books with a Feature of Glossary are used to map words FROM one language TO another.
      */
-    public static final ConfigEntryType GLOSSARY_FROM = new ConfigEntryType("GlossaryFrom"); //$NON-NLS-1$
+    public static final ConfigEntryType GLOSSARY_FROM = new ConfigEntryType("GlossaryFrom") //$NON-NLS-1$
+    {
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 6619179970516935818L;
+
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang.String)
+         */
+        public Object convert(String input)
+        {
+            return new Language(input);
+        }
+
+    };
 
     /**
      * Books with a Feature of Glossary are used to map words FROM one language TO another.
      */
-    public static final ConfigEntryType GLOSSARY_TO = new ConfigEntryType("GlossaryTo"); //$NON-NLS-1$
+    public static final ConfigEntryType GLOSSARY_TO = new ConfigEntryType("GlossaryTo") //$NON-NLS-1$
+    {
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang.String)
+         */
+        public Object convert(String input)
+        {
+            return new Language(input);
+        }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 3273532519245386866L;
+    };
 
     /**
      * multiple values starting with History, some sort of change-log.
@@ -816,6 +875,21 @@ public class ConfigEntryType implements Serializable
             catch (NumberFormatException e)
             {
                 return false;
+            }
+        }
+
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang.String)
+         */
+        public Object convert(String input)
+        {
+            try
+            {
+                return new Integer(input);
+            }
+            catch (NumberFormatException e)
+            {
+                return null;
             }
         }
 
@@ -893,8 +967,18 @@ public class ConfigEntryType implements Serializable
          */
         public Object getDefault()
         {
-            return Languages.DEFAULT_LANG_CODE;
+            return defaultLanguage;
         }
+
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang.String)
+         */
+        public Object convert(String input)
+        {
+            return new Language(input);
+        }
+
+        private Language defaultLanguage = new Language(null);
 
         /**
          * Serialization ID
@@ -1157,6 +1241,14 @@ public class ConfigEntryType implements Serializable
         }
 
         /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang.String)
+         */
+        public Object convert(String input)
+        {
+            return Boolean.valueOf(input);
+        }
+
+        /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
          */
         public Object getDefault()
@@ -1210,65 +1302,6 @@ public class ConfigEntryType implements Serializable
          * Serialization ID
          */
         private static final long serialVersionUID = 3257009838994108467L;
-    };
-
-    /**
-     * single value string, unknown use
-     * While Lang is an IS0-639 or ethnolog value, this is a friendly representation
-     * of the same.
-     */
-    public static final ConfigEntryType LANGUAGE = new ConfigEntryType("Language") //$NON-NLS-1$
-    {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#isSynthetic()
-         */
-        public boolean isSynthetic()
-        {
-            return true;
-        }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3834029147533226546L;
-    };
-
-    /**
-     * For a GLOSSARY_FROM, this is the friendly version of the same.
-     */
-    public static final ConfigEntryType LANGUAGE_FROM = new ConfigEntryType("LanguageFrom") //$NON-NLS-1$
-    {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#isSynthetic()
-         */
-        public boolean isSynthetic()
-        {
-            return true;
-        }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3905243407495214134L;
-    };
-
-    /**
-     * For a GLOSSARY_TO, this is the friendly version of the same.
-     */
-    public static final ConfigEntryType LANGUAGE_TO = new ConfigEntryType("LanguageTo") //$NON-NLS-1$
-    {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#isSynthetic()
-         */
-        public boolean isSynthetic()
-        {
-            return true;
-        }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3257850961078007856L;
     };
 
     /**
@@ -1426,6 +1459,16 @@ public class ConfigEntryType implements Serializable
     }
 
     /**
+     * Convert the string value from the conf into the representation
+     * of this ConfigEntryType.
+     * @return the converted object
+     */
+    public Object convert(String input)
+    {
+        return input;
+    }
+
+    /**
      * Lookup method to convert from a String
      */
     public static ConfigEntryType fromString(String name)
@@ -1556,9 +1599,6 @@ public class ConfigEntryType implements Serializable
         OSIS_Q_TO_TICK,
         OSIS_VERSION,
         INITIALS,
-        LANGUAGE,
-        LANGUAGE_FROM,
-        LANGUAGE_TO,
         SHORT_PROMO,
         SHORT_COPYRIGHT,
         LOCATION_URL,

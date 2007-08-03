@@ -43,7 +43,7 @@ public class BookSet extends ArrayList implements Set
 {
     public BookSet()
     {
-     }
+    }
 
     public BookSet(Collection books)
     {
@@ -86,14 +86,16 @@ public class BookSet extends ArrayList implements Set
         while (iter.hasNext())
         {
             Book book = (Book) iter.next();
-            String property = book.getProperty(key);
-            String propertyValue = property == null ? Msg.BOOK_METADATA_SET_OTHER.toString() : property;
-            results.add(propertyValue);
+            Object property = book.getProperty(key);
+            if (property != null)
+            {
+                results.add(property);
+            }
         }
         return results;
     }
 
-    public BookSet filter(String key, String value)
+    public BookSet filter(String key, Object value)
     {
         return filter(new GroupFilter(key, value));
     }
@@ -187,7 +189,7 @@ public class BookSet extends ArrayList implements Set
      */
     private static final class GroupFilter implements Filter
     {
-        public GroupFilter(String aKey, String aValue)
+        public GroupFilter(String aKey, Object aValue)
         {
             key = aKey;
             value = aValue;
@@ -196,11 +198,11 @@ public class BookSet extends ArrayList implements Set
         public boolean test(Object obj)
         {
             Book book = (Book) obj;
-            String property = book.getProperty(key);
+            Object property = book.getProperty(key);
             return property != null && property.equals(value);
         }
         private String key;
-        private String value;
+        private Object value;
     }
 
     /**

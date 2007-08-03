@@ -145,7 +145,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData
      */
     public String getName()
     {
-        return getProperty(ConfigEntryType.DESCRIPTION);
+        return (String) getProperty(ConfigEntryType.DESCRIPTION);
     }
 
     /**
@@ -170,7 +170,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData
      */
     public Filter getFilter()
     {
-        String sourcetype = getProperty(ConfigEntryType.SOURCE_TYPE);
+        String sourcetype = (String) getProperty(ConfigEntryType.SOURCE_TYPE);
         return FilterFactory.getFilter(sourcetype);
     }
 
@@ -197,7 +197,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData
         super.setLibrary(library);
 
         // Currently all DATA_PATH entries end in / to indicate dirs or not to indicate file prefixes
-        String datapath = getProperty(ConfigEntryType.DATA_PATH);
+        String datapath = (String) getProperty(ConfigEntryType.DATA_PATH);
 
         int lastSlash = datapath.lastIndexOf('/');
 
@@ -222,7 +222,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData
     {
         if (type == null)
         {
-            type = BookCategory.fromString(getProperty(ConfigEntryType.CATEGORY));
+            type = BookCategory.fromString((String) getProperty(ConfigEntryType.CATEGORY));
             if (type == BookCategory.OTHER)
             {
                 type = getBookType().getBookCategory();
@@ -245,7 +245,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData
      */
     public String getInitials()
     {
-        return getProperty(ConfigEntryType.INITIALS);
+        return (String) getProperty(ConfigEntryType.INITIALS);
     }
 
     /**
@@ -254,11 +254,9 @@ public final class SwordBookMetaData extends AbstractBookMetaData
      * @param entry the ConfigEntryType
      * @return the property or null
      */
-    public String getProperty(ConfigEntryType entry)
+    public Object getProperty(ConfigEntryType entry)
     {
-        Object obj = cet.getValue(entry);
-
-        return obj != null ? obj.toString() : null;
+        return cet.getValue(entry);
     }
 
     /* (non-Javadoc)
@@ -266,7 +264,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData
      */
     public boolean isLeftToRight()
     {
-        String dir = getProperty(ConfigEntryType.DIRECTION);
+        String dir = (String) getProperty(ConfigEntryType.DIRECTION);
         return dir == null || dir.equals(ConfigEntryType.DIRECTION.getDefault());
     }
 
@@ -283,7 +281,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData
         // Many "features" are GlobalOptionFilters, which in the Sword C++ API
         // indicate a class to use for filtering.
         // These mostly have the source type prepended to the feature
-        StringBuffer buffer = new StringBuffer(getProperty(ConfigEntryType.SOURCE_TYPE));
+        StringBuffer buffer = new StringBuffer((String) getProperty(ConfigEntryType.SOURCE_TYPE));
         buffer.append(feature);
         if (cet.match(ConfigEntryType.GLOBAL_OPTION_FILTER, buffer.toString()))
         {
@@ -326,7 +324,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData
                 value = combined.toString();
             }
 
-            putProperty(key.toString(), value.toString());
+            putProperty(key.toString(), value);
         }
 //        Element ele = cet.toOSIS();
 //        SAXEventProvider sep = new JDOMSAXEventProvider(new Document(ele));

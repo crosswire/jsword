@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.crosswire.common.diff.Diff;
 import org.crosswire.common.diff.DiffCleanup;
+import org.crosswire.common.util.Language;
 import org.crosswire.common.xml.JDOMSAXEventProvider;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.passage.Key;
@@ -210,14 +211,16 @@ public class BookData implements BookProvider
                         buf.append(book.getInitials());
 
                         cell.addContent(OSISUtil.factory().createText(buf.toString()));
-                        cell.setAttribute(OSISUtil.OSIS_ATTR_LANG, prevBook.getProperty(BookMetaData.KEY_XML_LANG), Namespace.XML_NAMESPACE);
+                        Language prevLang = (Language) book.getProperty(BookMetaData.KEY_XML_LANG);
+                        cell.setAttribute(OSISUtil.OSIS_ATTR_LANG, prevLang.getCode(), Namespace.XML_NAMESPACE);
                         row.addContent(cell);
                         cell = OSISUtil.factory().createHeaderCell();
                     }
                 }
 
                 cell.addContent(OSISUtil.factory().createText(book.getInitials()));
-                cell.setAttribute(OSISUtil.OSIS_ATTR_LANG, book.getProperty(BookMetaData.KEY_XML_LANG), Namespace.XML_NAMESPACE);
+                Language lang = (Language) book.getProperty(BookMetaData.KEY_XML_LANG);
+                cell.setAttribute(OSISUtil.OSIS_ATTR_LANG, lang.getCode(), Namespace.XML_NAMESPACE);
                 row.addContent(cell);
 
                 iters[i] = book.getOsisIterator(key, true);

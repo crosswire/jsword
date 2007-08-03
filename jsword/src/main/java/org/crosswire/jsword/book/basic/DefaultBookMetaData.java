@@ -25,7 +25,7 @@ import java.awt.ComponentOrientation;
 import java.util.Locale;
 import java.util.Map;
 
-import org.crosswire.common.util.Languages;
+import org.crosswire.common.util.Language;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.Book;
@@ -63,9 +63,8 @@ public class DefaultBookMetaData extends AbstractBookMetaData
         setProperties(prop);
         setName((String) prop.get(BookMetaData.KEY_NAME));
         setType((String) prop.get(BookMetaData.KEY_CATEGORY));
-        String lang = (String) prop.get(BookMetaData.KEY_LANGUAGE);
-        putProperty(BookMetaData.KEY_XML_LANG, lang);
-        setLanguage(lang);
+        String lang = (String) prop.get(BookMetaData.KEY_XML_LANG);
+        setLanguage(new Language(lang));
 
         IndexManager imanager = IndexManagerFactory.getIndexManager();
         if (imanager.isIndexed(book))
@@ -87,7 +86,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData
         setDriver(driver);
         setName(name);
         setBookCategory(type);
-        setLanguage(null); // Default language
+        setLanguage(new Language(null)); // Default language
     }
 
     /* (non-Javadoc)
@@ -119,7 +118,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData
      */
     public boolean isLeftToRight()
     {
-        String lang = getProperty(BookMetaData.KEY_XML_LANG);
+        String lang = getLanguage().getName();
 
         // Java does not know that the following languages are right to left
         if ("fa".equals(lang) || "syr".equals(lang))  //$NON-NLS-1$ //$NON-NLS-2$
@@ -128,15 +127,6 @@ public class DefaultBookMetaData extends AbstractBookMetaData
         }
         
         return ComponentOrientation.getOrientation(new Locale(lang)).isLeftToRight();
-    }
-
-    /**
-     * @param language The language to set.
-     */
-    public void setLanguage(String language)
-    {
-        putProperty(BookMetaData.KEY_XML_LANG, language);
-        putProperty(KEY_LANGUAGE, Languages.getLanguage(language));
     }
 
     /**
@@ -221,7 +211,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData
         addRow(ele, "Initials", getInitials()); //$NON-NLS-1$
         addRow(ele, "Description", getName()); //$NON-NLS-1$
         addRow(ele, "Key", getBookCategory().toString()); //$NON-NLS-1$
-        addRow(ele, "Language", getLanguage()); //$NON-NLS-1$
+        addRow(ele, "Language", getLanguage().getName()); //$NON-NLS-1$
         return new Document(ele);
     }
 

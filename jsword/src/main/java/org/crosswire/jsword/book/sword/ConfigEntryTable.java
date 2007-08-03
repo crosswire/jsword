@@ -36,6 +36,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.crosswire.common.util.Language;
 import org.crosswire.common.util.Languages;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
@@ -582,8 +583,9 @@ public final class ConfigEntryTable
         }
     }
 
-    private boolean isLeftToRight(String lang)
+    private boolean isLeftToRight(Language language)
     {
+        String lang = language.getCode();
         // Java does not know that the following languages are right to left
         if ("fa".equals(lang) || "syr".equals(lang))  //$NON-NLS-1$ //$NON-NLS-2$
         {
@@ -599,48 +601,44 @@ public final class ConfigEntryTable
         String dir = (String) getValue(ConfigEntryType.DIRECTION);
         String newDir = dir == null ? (String) ConfigEntryType.DIRECTION.getDefault() : dir;
 
-        String langEntry = (String) getValue(ConfigEntryType.LANG);
-        String langFromEntry = (String) getValue(ConfigEntryType.GLOSSARY_FROM);
-        String langToEntry = (String) getValue(ConfigEntryType.GLOSSARY_TO);
-
+        Language lang = (Language) getValue(ConfigEntryType.LANG);
+        Language langFrom = (Language) getValue(ConfigEntryType.GLOSSARY_FROM);
+        Language langTo = (Language) getValue(ConfigEntryType.GLOSSARY_TO);
+        testLanguage(internal, lang);
+        testLanguage(internal, langFrom);
+        testLanguage(internal, langTo);
+        
         // The LANG field should match the GLOSSARY_FROM field
-        if (langFromEntry != null && !langFromEntry.equals(langEntry))
+        if (langFrom != null && !langFrom.equals(lang))
         {
-            langEntry = langFromEntry;
+            lang = langFrom;
         }
-
-        String lang = getLanguage(internal, langEntry);
-        add(ConfigEntryType.LANGUAGE, lang);
 
         // This returns Left to Right if
         // it does not know what it is.
-        boolean leftToRight = isLeftToRight(langEntry);
+        boolean leftToRight = isLeftToRight(lang);
 
-        if (langFromEntry != null || langToEntry != null)
+        if (langFrom != null || langTo != null)
         {
-            String langFrom = getLanguage(internal, langFromEntry);
-            add(ConfigEntryType.LANGUAGE_FROM, langFrom);
-            String langTo = getLanguage(internal, langToEntry);
-            add(ConfigEntryType.LANGUAGE_TO, langTo);
             boolean fromLeftToRight = true;
             boolean toLeftToRight = true;
 
-            if (langFromEntry == null)
+            if (langFrom == null)
             {
                 log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_FROM.getName() + '=' + Languages.DEFAULT_LANG_CODE);  //$NON-NLS-1$ //$NON-NLS-2$
             }
             else
             {
-                fromLeftToRight = isLeftToRight(langFromEntry);
+                fromLeftToRight = isLeftToRight(langFrom);
             }
 
-            if (langToEntry == null)
+            if (langTo == null)
             {
                 log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_TO.getName() + '=' + Languages.DEFAULT_LANG_CODE);  //$NON-NLS-1$ //$NON-NLS-2$
             }
             else
             {
-                toLeftToRight = isLeftToRight(langToEntry);
+                toLeftToRight = isLeftToRight(langTo);
             }
 
             // At least one of the two languages should match the lang entry
@@ -767,13 +765,12 @@ public final class ConfigEntryTable
 //        }
     }
 
-    private String getLanguage(String initials, String iso639Code)
+    private void testLanguage(String initials, Language lang)
     {
-        if (!Languages.isValidLanguage(iso639Code))
+        if (lang != null && !lang.isValidLanguage())
         {
-            log.warn("Unknown language " + iso639Code + " in book " + initials); //$NON-NLS-1$ //$NON-NLS-2$
+            log.warn("Unknown language " + lang.getCode() + " in book " + initials); //$NON-NLS-1$ //$NON-NLS-2$
         }
-        return Languages.getLanguage(iso639Code);
     }
 
     /**
@@ -839,7 +836,6 @@ public final class ConfigEntryTable
         return buf.toString();
     }
 
-
    /**
      * Sword only recognizes two encodings for its modules: UTF-8 and LATIN1
      * Sword uses MS Windows cp1252 for Latin 1 not the standard. Arrgh!
@@ -876,11 +872,8 @@ public final class ConfigEntryTable
 
     private static final ConfigEntryType[] LANG_INFO =
     {
-        ConfigEntryType.LANGUAGE,
         ConfigEntryType.LANG,
-        ConfigEntryType.LANGUAGE_FROM,
         ConfigEntryType.GLOSSARY_FROM,
-        ConfigEntryType.LANGUAGE_TO,
         ConfigEntryType.GLOSSARY_TO,
     };
 

@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.crosswire.common.util.Language;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.FeatureType;
@@ -34,7 +35,7 @@ import org.crosswire.jsword.index.IndexStatus;
 import org.jdom.Document;
 
 /**
- * An implementaion of the Propery Change methods from BookMetaData.
+ * An implementation of the Property Change methods from BookMetaData.
  *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
@@ -130,9 +131,17 @@ public abstract class AbstractBookMetaData implements BookMetaData
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getLanguage()
      */
-    public String getLanguage()
+    public Language getLanguage()
     {
-        return getProperty(KEY_LANGUAGE);
+        return lang;
+    }
+
+    /**
+     * @param language The language to set.
+     */
+    public void setLanguage(Language language)
+    {
+        lang = language;
     }
 
     /* (non-Javadoc)
@@ -143,7 +152,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
         URI uri = null;
         try
         {
-            String loc = getProperty(KEY_LIBRARY_URI);
+            String loc = (String) getProperty(KEY_LIBRARY_URI);
             if (loc != null)
             {
                 uri = new URI(loc);
@@ -180,7 +189,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
         URI uri = null;
         try
         {
-            String loc = getProperty(KEY_LOCATION_URI);
+            String loc = (String) getProperty(KEY_LOCATION_URI);
             if (loc != null)
             {
                 uri = new URI(loc);
@@ -212,15 +221,15 @@ public abstract class AbstractBookMetaData implements BookMetaData
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getProperty(java.lang.String)
      */
-    public String getProperty(String key)
+    public Object getProperty(String key)
     {
-        return (String) prop.get(key);
+        return prop.get(key);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#putProperty(java.lang.String, java.lang.String)
+     * @see org.crosswire.jsword.book.BookMetaData#putProperty(java.lang.String, java.lang.Object)
      */
-    public void putProperty(String key, String value)
+    public void putProperty(String key, Object value)
     {
         prop.put(key, value);
     }
@@ -270,7 +279,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
         }
 
         // We might consider checking for equality against all BookMetaDatas?
-        // However currently we dont.
+        // However currently we don't.
 
         // Check that that is the same as this
         // Don't use instanceof since that breaks inheritance
@@ -318,6 +327,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
      * The single key version of the properties
      */
     private Map prop = new LinkedHashMap();
+    private Language lang;
 
     private BookDriver driver;
     private IndexStatus indexStatus = IndexStatus.UNDONE;

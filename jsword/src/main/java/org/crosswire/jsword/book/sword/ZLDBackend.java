@@ -295,7 +295,7 @@ public class ZLDBackend extends AbstractBackend
 
         SwordBookMetaData sbmd = getBookMetaData();
         String charset = sbmd.getBookCharset();
-        String compressType = sbmd.getProperty(ConfigEntryType.COMPRESS_TYPE);
+        String compressType = (String) sbmd.getProperty(ConfigEntryType.COMPRESS_TYPE);
 
         if (!(key instanceof IndexKey))
         {
