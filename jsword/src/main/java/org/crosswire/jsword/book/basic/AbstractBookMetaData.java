@@ -133,7 +133,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
      */
     public Language getLanguage()
     {
-        return lang;
+        return (Language) getProperty(KEY_XML_LANG);
     }
 
     /**
@@ -141,7 +141,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
      */
     public void setLanguage(Language language)
     {
-        lang = language;
+        putProperty(KEY_XML_LANG, language);
     }
 
     /* (non-Javadoc)
@@ -327,7 +327,6 @@ public abstract class AbstractBookMetaData implements BookMetaData
      * The single key version of the properties
      */
     private Map prop = new LinkedHashMap();
-    private Language lang;
 
     private BookDriver driver;
     private IndexStatus indexStatus = IndexStatus.UNDONE;
