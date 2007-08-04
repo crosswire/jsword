@@ -118,7 +118,7 @@ public class SerializingContentHandler implements ContentHandler
         for (int i = 0; i < attrs.getLength(); i++)
         {
             buffer.append(' ');
-            buffer.append(attrs.getLocalName(i));
+            buffer.append(XMLUtil.getAttributeName(attrs, i));
             buffer.append("=\""); //$NON-NLS-1$
             buffer.append(attrs.getValue(i));
             buffer.append('\"');

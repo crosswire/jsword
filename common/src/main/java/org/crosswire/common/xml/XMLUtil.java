@@ -87,6 +87,21 @@ public final class XMLUtil
     }
 
     /**
+     * Get the full name of the attribute, including the namespace if any.
+     * @param attrs the collection of attributes
+     * @param index the index of the desired attribute
+     * @return
+     */
+    public static String getAttributeName(Attributes attrs, int index)
+    {
+        String qName = attrs.getQName(index);
+        if (qName != null)
+        {
+            return qName;
+        }
+        return attrs.getLocalName(index);
+    }
+    /**
      * Show the attributes of an element as debug
      */
     public static void debugSAXAttributes(Attributes attrs)

@@ -13,3 +13,8 @@ locale
 fallback
 yahoo
 com
+installable
+accessor
+interlinear
+serializer
+namespace

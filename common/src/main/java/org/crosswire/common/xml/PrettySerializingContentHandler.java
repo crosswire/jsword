@@ -135,7 +135,7 @@ public class PrettySerializingContentHandler implements ContentHandler
         for (int i = 0; i < attrs.getLength(); i++)
         {
             write(' ');
-            write(decorateAttributeName(attrs.getLocalName(i)));
+            write(decorateAttributeName(XMLUtil.getAttributeName(attrs, i)));
             write("='"); //$NON-NLS-1$
             write(decorateAttributeValue(XMLUtil.escape(attrs.getValue(i))));
             write('\'');

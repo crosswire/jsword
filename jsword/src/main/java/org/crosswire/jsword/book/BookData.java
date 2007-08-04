@@ -37,7 +37,7 @@ import org.jdom.Namespace;
 import org.jdom.Text;
 
 /**
- * BookData is the assembler of the osis that is returned by the filters.
+ * BookData is the assembler of the OSIS that is returned by the filters.
  * As such it puts that into an OSIS document. When several books are
  * supplied, it gets the data from each and puts it into a parallel or
  * interlinear view.
@@ -48,7 +48,7 @@ import org.jdom.Text;
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
- * @author DM Smith [dmsmith at yahoo dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class BookData implements BookProvider
 {
@@ -211,16 +211,12 @@ public class BookData implements BookProvider
                         buf.append(book.getInitials());
 
                         cell.addContent(OSISUtil.factory().createText(buf.toString()));
-                        Language prevLang = (Language) book.getProperty(BookMetaData.KEY_XML_LANG);
-                        cell.setAttribute(OSISUtil.OSIS_ATTR_LANG, prevLang.getCode(), Namespace.XML_NAMESPACE);
                         row.addContent(cell);
                         cell = OSISUtil.factory().createHeaderCell();
                     }
                 }
 
                 cell.addContent(OSISUtil.factory().createText(book.getInitials()));
-                Language lang = (Language) book.getProperty(BookMetaData.KEY_XML_LANG);
-                cell.setAttribute(OSISUtil.OSIS_ATTR_LANG, lang.getCode(), Namespace.XML_NAMESPACE);
                 row.addContent(cell);
 
                 iters[i] = book.getOsisIterator(key, true);
@@ -240,7 +236,10 @@ public class BookData implements BookProvider
 
                 for (int i = 0; i < iters.length; i++)
                 {
+                    Book book = books[i];
                     cell = OSISUtil.factory().createCell();
+                    Language lang = (Language) book.getProperty(BookMetaData.KEY_XML_LANG);
+                    cell.setAttribute(OSISUtil.OSIS_ATTR_LANG, lang.getCode(), Namespace.XML_NAMESPACE);
                     row.addContent(cell);
                     if (iters[i].hasNext())
                     {
@@ -266,6 +265,8 @@ public class BookData implements BookProvider
 
                                 // Since we used that cell create another
                                 cell = OSISUtil.factory().createCell();
+                                lang = (Language) book.getProperty(BookMetaData.KEY_XML_LANG);
+                                cell.setAttribute(OSISUtil.OSIS_ATTR_LANG, lang.getCode(), Namespace.XML_NAMESPACE);
                                 row.addContent(cell);
                             }
                             lastText = thisText;
@@ -308,7 +309,7 @@ public class BookData implements BookProvider
     private boolean comparingBooks;
 
     /**
-     * The complete osis container for the element
+     * The complete OSIS container for the element
      */
     private Element osis;
 
