@@ -37,7 +37,7 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 
 /**
- * The Bibles class (along with Bible) is the central point of contact
+ * The Books class (along with Book) is the central point of contact
  * between the rest of the world and this set of packages.
  *
  * @see gnu.lgpl.License for license details.
@@ -140,6 +140,47 @@ public final class Books implements BookList
     {
         List temp = CollectionUtil.createList(new BookFilterIterator(getBooks(), filter));
         return new BookSet(temp);
+    }
+
+    /**
+     * Get the maximum string length of a property
+     * @param propertyKey The desired property
+     * @return -1 if there is no match, otherwise the maximum length.
+     */
+    public int getMaxLength(String propertyKey)
+    {
+        int max = -1;
+        List bookList = getBooks();
+        Iterator iter = bookList.iterator();
+        while (iter.hasNext())
+        {
+            Book book = (Book) iter.next();
+            Object property = book.getProperty(propertyKey);
+            String value = property instanceof String ? (String) property : property.toString();
+            max = Math.max(max, value == null ? -1 : value.length());
+        }
+        return max;
+    }
+
+    /**
+     * Get the maximum string length of a property on a subset of books.
+     * @param propertyKey The desired property
+     * @param filter The filter
+     * @return -1 if there is no match, otherwise the maximum length.
+     */
+    public int getMaxLength(String propertyKey, BookFilter filter)
+    {
+        int max = -1;
+        List bookList = getBooks(filter);
+        Iterator iter = bookList.iterator();
+        while (iter.hasNext())
+        {
+            Book book = (Book) iter.next();
+            Object property = book.getProperty(propertyKey);
+            String value = property instanceof String ? (String) property : property.toString();
+            max = Math.max(max, value == null ? -1 : value.length());
+        }
+        return max;
     }
 
     /* (non-Javadoc)

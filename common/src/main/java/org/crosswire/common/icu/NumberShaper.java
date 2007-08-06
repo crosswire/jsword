@@ -22,10 +22,7 @@
 
 package org.crosswire.common.icu;
 
-import java.awt.font.NumericShaper;
 import java.util.Locale;
-
-import org.crosswire.common.util.ReflectionUtil;
 
 /**
  * NumberShaper changes numbers from one number system to another.
@@ -36,6 +33,14 @@ import org.crosswire.common.util.ReflectionUtil;
  * Internally, numbers will be represented with 0-9, but externally
  * they should show as a user wishes. Further user input may, optionally,
  * use the external form.
+ * </p>
+ * <p>
+ * This shaper has special behavior for Arabic numbers that are in the form "12:34"
+ * as this is taken as chapter:verse. Normally, a ':' is treated as a numeric
+ * separator, this results in "12:34", but for verses it should be "34:12".
+ * That is, Arabic, numbers are left-to-right (even though the rest of the language
+ * is right-to-left) and the ':' as a numeric separator does not change that.
+ * So to get around this we mark the ':' as a right-to-left character.
  * </p>
  * @see java.awt.font.NumericShaper
  * @see com.ibm.icu.text.ArabicShaping
@@ -62,46 +67,6 @@ public class NumberShaper
     {
         this.locale = locale;
         this.nineShape = '\u0000';
-
-        if (locale.getLanguage().equals("fa")) //$NON-NLS-1$
-        {
-            try
-            {
-                Class[] classTypes = { int.class };
-                Object[] shape = { new Integer(ICU_DIGIT_TYPE_AN_EXTENDED | ICU_DIGITS_EN2AN) };
-                Object[] unshape = { new Integer(ICU_DIGIT_TYPE_AN_EXTENDED | ICU_DIGITS_AN2EN) };
-                arabicShaper = ReflectionUtil.construct("com.ibm.icu.text.ArabicShaping", shape, classTypes); //$NON-NLS-1$
-                unArabicShaper = ReflectionUtil.construct("com.ibm.icu.text.ArabicShaping", unshape, classTypes); //$NON-NLS-1$
-            }
-            catch (Exception e)
-            {
-                // This is OK. The jar is not on the classpath
-            }
-            if (arabicShaper == null)
-            {
-                numericShaper = NumericShaper.getShaper(NumericShaper.EASTERN_ARABIC);
-            }
-        }
-
-        if (locale.getLanguage().equals("ar")) //$NON-NLS-1$
-        {
-            try
-            {
-                Class[] classTypes = { int.class };
-                Object[] shape = { new Integer(ICU_DIGIT_TYPE_AN | ICU_DIGITS_EN2AN) };
-                Object[] unshape = { new Integer(ICU_DIGIT_TYPE_AN | ICU_DIGITS_AN2EN) };
-                arabicShaper = ReflectionUtil.construct("com.ibm.icu.text.ArabicShaping", shape, classTypes); //$NON-NLS-1$
-                unArabicShaper = ReflectionUtil.construct("com.ibm.icu.text.ArabicShaping", unshape, classTypes); //$NON-NLS-1$
-            }
-            catch (Exception e)
-            {
-                // This is OK. The jar is not on the classpath
-            }
-            if (arabicShaper == null)
-            {
-                numericShaper = NumericShaper.getShaper(NumericShaper.EASTERN_ARABIC);
-            }
-        }
     }
 
     /**
@@ -111,7 +76,8 @@ public class NumberShaper
      */
     public boolean canShape()
     {
-        return arabicShaper != null || numericShaper != null || getNine() != '9';
+        //return arabicShaper != null || numericShaper != null || getNine() != '9';
+        return getNine() != '9';
     }
 
     /**
@@ -127,30 +93,13 @@ public class NumberShaper
             return input;
         }
 
-        if (arabicShaper != null)
-        {
-            Object[] params = { input };
-            try
-            {
-                return (String) ReflectionUtil.invoke(arabicShaper, "shape", params); //$NON-NLS-1$
-            }
-            catch (Exception e)
-            {
-                // do nothing as it is OK for jar to not be present.
-            }
-        }
-
-        if (numericShaper != null)
-        {
-            char[] src = input.toCharArray();
-            numericShaper.shape(src, 0, src.length);
-            return new String(src);
-        }
-
         char[] src = input.toCharArray();
-        if (shape(src, 0, src.length))
+        boolean[] transformed = new boolean[1];
+        transformed[0] = false;
+        char[] dest = shaped(src, transformed);
+        if (transformed[0])
         {
-            return new String(src);
+            return new String(dest);
         }
 
         return input;
@@ -174,82 +123,178 @@ public class NumberShaper
      */
     public String unshape(String input)
     {
-        if (unArabicShaper != null)
-        {
-            Object[] params = { input };
-            try
-            {
-                return (String) ReflectionUtil.invoke(unArabicShaper, "shape", params); //$NON-NLS-1$
-            }
-            catch (Exception e)
-            {
-                // do nothing as it is OK for jar to not be present.
-            }
-        }
-
         char[] src = input.toCharArray();
-        if (unshape(src, 0, src.length))
+        boolean[] transformed = new boolean[1];
+        transformed[0] = false;
+        char[] dest = unshaped(src, transformed);
+        if (transformed[0])
         {
-            return new String(src);
+            return new String(dest);
         }
         
         return input;
     }
 
     /**
-     * Perform shaping from 0-9 into target script.
-     */
-    private boolean shape(char[] src, int start, int count)
-    {
-        char nine = getNine();
-        if (nine == '9')
-        {
-            return false;
-        }
-
-        return transform(src, start, count, '0', '9', nine - '9');
-    }
-
-    /**
      * Perform shaping back to 0-9.
      */
-    private boolean unshape(char[] src, int start, int count)
+    private char[] unshaped(char[] src, boolean[] transformed)
     {
         int nine = getNine();
         if (nine == '9')
         {
-            return false;
+            return src;
         }
 
         int zero = nine - 9;
-        return transform(src, start, count, zero, nine, '9' - nine);
+        return transform(src, zero, nine, '9' - nine, transformed);
     }
 
     /**
-     * Transform in place either to or from 0-9 and the script representation, returning true when at least one character is transformed.
-     * 
-     * @param src the text to transform
-     * @param start the place in the string in which to start
-     * @param count the number of characters to consume
-     * @param zero zero in the source representation
-     * @param nine nine in the source representation
-     * @param offset the distance between zeros in the source and target representation 
+     * @param src
+     * @param transformed
      * @return
      */
-    private boolean transform(char[] src, int start, int count, int zero, int nine, int offset)
+    private char[] shaped(char[] src, boolean[] transformed)
+    {
+        char nine = getNine();
+        if (nine == '9')
+        {
+            return src;
+        }
+
+        return transform(src, '0', '9', nine - '9', transformed);
+    }
+
+    /**
+     * Transform either to or from 0-9 and the script representation, returning the result and true when at least one character is transformed.
+     * 
+     * @param src the text to transform
+     * @param zero zero in the source representation
+     * @param nine nine in the source representation
+     * @param offset the distance between zeros in the source and target representation
+     * @param transformed an input parameter of one boolean that can hold whether there was a transformation
+     * @return
+     */
+    private char[] transform(char[] src, int zero, int nine, int offset, boolean[] transformed)
     {
         char[] text = src;
-        boolean transformed = false;
-        for (int i = start, e = start + count; i < e; ++i)
+        int srcLen = text.length;
+        int destLen = srcLen;
+
+        // offset > 0 when we are going from 0-9
+        if (offset > 0 && srcLen > 3)
+        {
+            // count the number of ':' flanked by '0' to '9'
+            // each one of these is going
+            // to be bracketed with RLO and PDF.
+            for (int i = 1; i < srcLen - 1; i++)
+            {
+                char prevChar = text[i - 1];
+                char curChar = text[i];
+                char nextChar = text[i + 1];
+                if (curChar == ':' && prevChar >= '0' && prevChar <= '9' && nextChar >= '0' && nextChar <= '9')
+                {
+                    destLen += 2;
+                }
+            }
+
+            // Did we actually see a ':'
+            if (destLen != srcLen)
+            {
+                transformed[0] = true;
+                int sPos = 0;
+                int dPos = 0;
+                int stop = srcLen - 1; // ensure look-ahead
+                char[] dest = new char[destLen];
+                dest[dPos++] = text[sPos++];
+                while (sPos < stop)
+                {
+                    char prevChar = text[sPos - 1];
+                    char nextChar = text[sPos + 1];
+                    char curChar = text[sPos++];
+                    if (curChar == ':' && prevChar >= '0' && prevChar <= '9' && nextChar >= '0' && nextChar <= '9')
+                    {
+                        dest[dPos++] = '\u202E'; // RLO
+                        dest[dPos++] = curChar;
+                        dest[dPos++] = '\u202C'; // PDF
+                    }
+                    else if (curChar >= zero && curChar <= nine)
+                    {
+                        dest[dPos++] = (char)(curChar + offset);
+                    }
+                    else
+                    {
+                        dest[dPos++] = curChar;
+                    }
+                }
+                // copy the rest
+                while (sPos < srcLen)
+                {
+                    dest[dPos++] = text[sPos++];
+                }
+                return dest;
+            }
+        }
+        // Are we going to '0' - '9' with embedded, specially marked ':'
+        else if (offset < 0 && srcLen > 3)
+        {
+            for (int sPos = 0; sPos < srcLen - 2; sPos++)
+            {
+                if (text[sPos] == '\u202E' && text[sPos + 1] == ':' && text[sPos + 2] == '\u202C')
+                {
+                    destLen -= 2;
+                    sPos += 2;
+                }
+            }
+
+            // Did we actually see a '\u202E:\u202C'
+            if (destLen != srcLen)
+            {
+                transformed[0] = true;
+                char[] dest = new char[destLen];
+                int sPos = 0;
+                int dPos = 0;
+                int stop = srcLen - 2; // ensure look-ahead
+                while (sPos < stop)
+                {
+                    char curChar = text[sPos++];
+                    if (curChar == '\u202E' && text[sPos] == ':' && text[sPos + 1] == '\u202C')
+                    {
+                        dest[dPos++] = ':';
+                        sPos += 2; // skip the whole pattern
+                    }
+                    else if (curChar >= zero && curChar <= nine)
+                    {
+                        dest[dPos++] = (char)(curChar + offset);
+                    }
+                    else
+                    {
+                        dest[dPos++] = curChar;
+                    }
+                }
+
+                // copy the rest
+                while (sPos < srcLen)
+                {
+                    dest[dPos++] = text[sPos++];
+                }
+                
+                return dest;
+            }
+        }
+
+        for (int i = 0, e = src.length; i < e; i++)
         {
             char c = text[i];
             if (c >= zero && c <= nine)
             {
                 text[i] = (char)(c + offset);
-                transformed = true;
+                transformed[0] = true;
             }
         }
-        return transformed;
+
+        return text;
     }
 
     /**
@@ -262,44 +307,17 @@ public class NumberShaper
         if (nineShape == '\u0000')
         {
             nineShape = '9';
-            if (locale.getLanguage().equals("fa")) //$NON-NLS-1$
+            if ("fa".equals(locale.getLanguage())) //$NON-NLS-1$
             {
                 nineShape = '\u06f9';
             }
-            else if (locale.getLanguage().equals("ar")) //$NON-NLS-1$
+            else if ("ar".equals(locale.getLanguage())) //$NON-NLS-1$
             {
                 nineShape = '\u0669';
             }
         }
         return nineShape;
     }
-
-    // The following 4 values are replicated here from ArabicShaper.
-    // This is needed for the sake of reflection.
-    // If any of these change in ArabicShaper, they will need to be changed here as well.
-    /**
-     * Digit shaping option: Replace European digits (U+0030...U+0039) by Arabic-Indic digits.
-     * @stable ICU 2.0
-     */
-    private static final int ICU_DIGITS_EN2AN = 0x20;
-
-    /**
-     * Digit shaping option: Replace Arabic-Indic digits by European digits (U+0030...U+0039).
-     * @stable ICU 2.0
-     */
-    private static final int ICU_DIGITS_AN2EN = 0x40;
-
-    /** 
-     * Digit type option: Use Arabic-Indic digits (U+0660...U+0669). 
-     * @stable ICU 2.0
-     */
-    private static final int ICU_DIGIT_TYPE_AN = 0;
-
-    /** 
-     * Digit type option: Use Eastern (Extended) Arabic-Indic digits (U+06f0...U+06f9). 
-     * @stable ICU 2.0
-     */
-    private static final int ICU_DIGIT_TYPE_AN_EXTENDED = 0x100;
 
     /**
      * The locale for this shaper.
@@ -310,14 +328,4 @@ public class NumberShaper
      * Nine for this shaper.
      */
     private char nineShape;
-
-    /**
-     * Convert 0-9 to \u06f0-\u06f9 for Persian, and \u0660-\u0669 for Arabic
-     */
-    private Object arabicShaper;
-    /**
-     * Revert \u06f0-\u06f9 for Persian, and \u0660-\u0669 for Arabic to 0-9
-     */
-    private Object unArabicShaper;
-    private NumericShaper numericShaper;
 }

@@ -60,12 +60,12 @@ public final class VerseRangeFactory
      * range of 5 verses starting at Gen 1:1.
      * <p>This constructor is different from the (String, Verse) constructor in that
      * if the basis is a range that exactly covers a chapter and the string is a
-     * single number, then we assume that the number referrs to a chapter and not to
+     * single number, then we assume that the number refers to a chapter and not to
      * a verse. This allows us to have a Passage like "Gen 1,2" and have the 2
-     * understood as chapter 2 and not verse 2 of Gen 1, which would have occured
+     * understood as chapter 2 and not verse 2 of Gen 1, which would have occurred
      * otherwise.
      * @param original The string describing the verse e.g "2:2"
-     * @param basis The verse that forms the basis by which to understand the orginal.
+     * @param basis The verse that forms the basis by which to understand the original.
      * @exception NoSuchVerseException If the reference is illegal
      */
     public static VerseRange fromString(String original, VerseRange basis) throws NoSuchVerseException
