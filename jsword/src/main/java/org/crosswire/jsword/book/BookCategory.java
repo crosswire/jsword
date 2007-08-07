@@ -31,54 +31,62 @@ import java.io.Serializable;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
+/**
+ *
+ *
+ * @see gnu.lgpl.License for license details.<br>
+ *      The copyright to this program is held by it's authors.
+ * @author DM Smith [dmsmith555 at yahoo dot com]
+ */
 public final class BookCategory implements Serializable, Comparable
 {
     /**
      * Books that are Bibles
      */
-    public static final BookCategory BIBLE = new BookCategory(Msg.BIBLE);
+    public static final BookCategory BIBLE = new BookCategory("Bible", Msg.BIBLE); //$NON-NLS-1$
 
     /**
      * Books that are Dictionaries
      */
-    public static final BookCategory DICTIONARY = new BookCategory(Msg.DICTIONARY);
+    public static final BookCategory DICTIONARY = new BookCategory("Dictionary", Msg.DICTIONARY); //$NON-NLS-1$
 
     /**
      * Books that are Commentaries
      */
-    public static final BookCategory COMMENTARY = new BookCategory(Msg.COMMENTARY);
+    public static final BookCategory COMMENTARY = new BookCategory("Commentary", Msg.COMMENTARY); //$NON-NLS-1$
 
     /**
      * Books that are indexed by day. AKA, Daily Devotions
      */
-    public static final BookCategory DAILY_DEVOTIONS = new BookCategory(Msg.READINGS);
+    public static final BookCategory DAILY_DEVOTIONS = new BookCategory("Daily Devotional", Msg.READINGS); //$NON-NLS-1$
 
     /**
      * Books that map words from one language to another.
      */
-    public static final BookCategory GLOSSARY = new BookCategory(Msg.GLOSSARIES);
+    public static final BookCategory GLOSSARY = new BookCategory("Glossaries", Msg.GLOSSARIES); //$NON-NLS-1$
 
     /**
      * Books that are questionable.
      */
-    public static final BookCategory QUESTIONABLE = new BookCategory(Msg.UNORTHODOX);
+    public static final BookCategory QUESTIONABLE = new BookCategory("Cults / Unorthodox / Questionable Material", Msg.UNORTHODOX); //$NON-NLS-1$
 
     /**
      * Books that are not any of the above
      */
-    public static final BookCategory GENERAL_BOOK = new BookCategory(Msg.GENERAL);
+    public static final BookCategory GENERAL_BOOK = new BookCategory("General Books", Msg.GENERAL); //$NON-NLS-1$
 
     /**
      * Books that are not any of the above
      */
-    public static final BookCategory OTHER = new BookCategory(Msg.OTHER);
+    public static final BookCategory OTHER = new BookCategory("Other", Msg.OTHER); //$NON-NLS-1$
 
     /**
      * @param name The name of the BookCategory
      */
-    private BookCategory(Msg name)
+    private BookCategory(String name, Msg externalName)
     {
         this.name = name;
+        this.externalName = externalName;
     }
 
     /**
@@ -89,7 +97,23 @@ public final class BookCategory implements Serializable, Comparable
         for (int i = 0; i < VALUES.length; i++)
         {
             BookCategory o = VALUES[i];
-            if (o.name.toString().equalsIgnoreCase(name))
+            if (o.name.equalsIgnoreCase(name))
+            {
+                return o;
+            }
+        }
+        return OTHER;
+    }
+
+    /**
+     * Lookup method to convert from a String
+     */
+    public static BookCategory fromExternalString(String name)
+    {
+        for (int i = 0; i < VALUES.length; i++)
+        {
+            BookCategory o = VALUES[i];
+            if (o.externalName.toString().equalsIgnoreCase(name))
             {
                 return o;
             }
@@ -111,7 +135,7 @@ public final class BookCategory implements Serializable, Comparable
     public int compareTo(Object o)
     {
         BookCategory that = (BookCategory) o;
-        return this.name.toString().compareTo(that.name.toString());
+        return this.name.compareTo(that.name);
     }
 
     /* (non-Javadoc)
@@ -130,18 +154,27 @@ public final class BookCategory implements Serializable, Comparable
         return super.hashCode();
     }
 
+    /**
+     * @return the internal name.
+     */
+    public String getName()
+    {
+        return name;
+    }
+
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
     public String toString()
     {
-        return name.toString();
+        return externalName.toString();
     }
 
     /**
-     * The name of the BookCategory
+     * The names of the BookCategory
      */
-    private Msg name;
+    private String name;
+    private Msg externalName;
 
     // Support for serialization
     private static int nextObj;

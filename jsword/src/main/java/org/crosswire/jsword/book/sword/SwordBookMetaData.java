@@ -222,7 +222,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData
     {
         if (type == null)
         {
-            type = BookCategory.fromString((String) getProperty(ConfigEntryType.CATEGORY));
+            type = (BookCategory) getProperty(ConfigEntryType.CATEGORY);
             if (type == BookCategory.OTHER)
             {
                 type = getBookType().getBookCategory();

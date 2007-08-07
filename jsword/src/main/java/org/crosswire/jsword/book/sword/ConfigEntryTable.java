@@ -704,7 +704,7 @@ public final class ConfigEntryTable
     {
         // The book type represents the underlying category of book.
         // Fine tune it here.
-        BookCategory focusedCategory = BookCategory.fromString(getValue(ConfigEntryType.CATEGORY).toString());
+        BookCategory focusedCategory = (BookCategory) getValue(ConfigEntryType.CATEGORY);
         questionable = focusedCategory == BookCategory.QUESTIONABLE;
 
         // From the config map, extract the important bean properties
@@ -738,7 +738,7 @@ public final class ConfigEntryTable
             focusedCategory = getBookType().getBookCategory();
         }
 
-        add(ConfigEntryType.CATEGORY, focusedCategory.toString());
+        add(ConfigEntryType.CATEGORY, focusedCategory.getName());
     }
 
     private void adjustName()

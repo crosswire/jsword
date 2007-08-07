@@ -183,7 +183,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData
         }
         type = t;
 
-        putProperty(KEY_CATEGORY, type.toString());
+        putProperty(KEY_CATEGORY, type);
     }
 
     /**

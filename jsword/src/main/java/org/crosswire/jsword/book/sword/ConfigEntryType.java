@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.crosswire.common.util.Language;
+import org.crosswire.jsword.book.BookCategory;
 
 
 /**
@@ -240,7 +241,15 @@ public class ConfigEntryType implements Serializable
          */
         public Object getDefault()
         {
-            return "Other"; //$NON-NLS-1$
+            return BookCategory.OTHER;
+        }
+
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang.String)
+         */
+        public Object convert(String input)
+        {
+            return BookCategory.fromString(input);
         }
 
         /**
