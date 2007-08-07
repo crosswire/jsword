@@ -36,47 +36,47 @@ public final class BookCategory implements Serializable, Comparable
     /**
      * Books that are Bibles
      */
-    public static final BookCategory BIBLE = new BookCategory("Bible"); //$NON-NLS-1$
+    public static final BookCategory BIBLE = new BookCategory(Msg.BIBLE);
 
     /**
      * Books that are Dictionaries
      */
-    public static final BookCategory DICTIONARY = new BookCategory("Dictionary"); //$NON-NLS-1$
+    public static final BookCategory DICTIONARY = new BookCategory(Msg.DICTIONARY);
 
     /**
      * Books that are Commentaries
      */
-    public static final BookCategory COMMENTARY = new BookCategory("Commentary"); //$NON-NLS-1$
+    public static final BookCategory COMMENTARY = new BookCategory(Msg.COMMENTARY);
 
     /**
      * Books that are indexed by day. AKA, Daily Devotions
      */
-    public static final BookCategory DAILY_DEVOTIONS = new BookCategory("Daily Devotional"); //$NON-NLS-1$
+    public static final BookCategory DAILY_DEVOTIONS = new BookCategory(Msg.READINGS);
 
     /**
      * Books that map words from one language to another.
      */
-    public static final BookCategory GLOSSARY = new BookCategory("Glossaries"); //$NON-NLS-1$
+    public static final BookCategory GLOSSARY = new BookCategory(Msg.GLOSSARIES);
 
     /**
      * Books that are questionable.
      */
-    public static final BookCategory QUESTIONABLE = new BookCategory("Cults / Unorthodox / Questionable Material"); //$NON-NLS-1$
+    public static final BookCategory QUESTIONABLE = new BookCategory(Msg.UNORTHODOX);
 
     /**
      * Books that are not any of the above
      */
-    public static final BookCategory GENERAL_BOOK = new BookCategory("General Books"); //$NON-NLS-1$
+    public static final BookCategory GENERAL_BOOK = new BookCategory(Msg.GENERAL);
 
     /**
      * Books that are not any of the above
      */
-    public static final BookCategory OTHER = new BookCategory("Other"); //$NON-NLS-1$
+    public static final BookCategory OTHER = new BookCategory(Msg.OTHER);
 
     /**
      * @param name The name of the BookCategory
      */
-    private BookCategory(String name)
+    private BookCategory(Msg name)
     {
         this.name = name;
     }
@@ -89,7 +89,7 @@ public final class BookCategory implements Serializable, Comparable
         for (int i = 0; i < VALUES.length; i++)
         {
             BookCategory o = VALUES[i];
-            if (o.name.equalsIgnoreCase(name))
+            if (o.name.toString().equalsIgnoreCase(name))
             {
                 return o;
             }
@@ -111,7 +111,7 @@ public final class BookCategory implements Serializable, Comparable
     public int compareTo(Object o)
     {
         BookCategory that = (BookCategory) o;
-        return this.name.compareTo(that.name);
+        return this.name.toString().compareTo(that.name.toString());
     }
 
     /* (non-Javadoc)
@@ -135,13 +135,13 @@ public final class BookCategory implements Serializable, Comparable
      */
     public String toString()
     {
-        return name;
+        return name.toString();
     }
 
     /**
      * The name of the BookCategory
      */
-    private String name;
+    private Msg name;
 
     // Support for serialization
     private static int nextObj;
