@@ -77,7 +77,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
      */
     public String getOsisID()
     {
-        return getBookCategory().toString() + '.' + getInitials();
+        return getBookCategory().getName() + '.' + getInitials();
     }
 
     /* (non-Javadoc)
