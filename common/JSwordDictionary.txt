@@ -18,3 +18,9 @@ accessor
 interlinear
 serializer
 namespace
+jsword
+mac
+joe
+eireneh
+subdirectory
+deprecated
