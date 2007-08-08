@@ -24,7 +24,6 @@ package org.crosswire.jsword.util;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import org.crosswire.common.util.CWClassLoader;
 import org.crosswire.common.util.FileUtil;
@@ -50,7 +49,7 @@ import org.crosswire.common.util.OSType;
  * </p>
  *
  * <p>
- * Note: If the Java System property jsword.home is set and it exists and is writeable
+ * Note: If the Java System property jsword.home is set and it exists and is writable
  * then it will be used instead of the above location. This is useful for USB Drives
  * and other portable implementations of JSword. I is recommended that this name be JSword.
  * </p>
@@ -129,15 +128,8 @@ public final class Project
             String jswordhome = System.getProperty(PROPERTY_JSWORD_HOME);
             if (jswordhome != null)
             {
-                try
-                {
-                    home = new URI(NetUtil.PROTOCOL_FILE, null, jswordhome, null);
-                    if (!NetUtil.canWrite(home))
-                    {
-                        home = null;
-                    }
-                }
-                catch (URISyntaxException e)
+                home = NetUtil.getURI(new File(jswordhome));
+                if (!NetUtil.canWrite(home))
                 {
                     home = null;
                 }
@@ -196,8 +188,8 @@ public final class Project
     }
 
     /**
-     * Get a the URI of a (potentially non-existant) properties file that we can
-     * write to. This method of aquiring properties files is preferred over
+     * Get a the URI of a (potentially non-existent) properties file that we can
+     * write to. This method of acquiring properties files is preferred over
      * getResourceProperties() as this is writable and can take into account
      * user preferences.
      * This method makes no promise that the URI returned is valid. It is
