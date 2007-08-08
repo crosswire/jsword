@@ -45,9 +45,6 @@ final class Msg extends MsgBase
     static final Msg NOT_ASSIGNABLE = new Msg("ResourceUtil.NotAssignable"); //$NON-NLS-1$
     static final Msg MISSING_FILE = new Msg("WebResource.MissingFile"); //$NON-NLS-1$
     static final Msg UNEXPECTED_ERROR = new Msg("Reporter.Unexpected"); //$NON-NLS-1$
-    static final Msg INTERNET_WARNING = new Msg("Internet.Warning"); //$NON-NLS-1$
-    static final Msg INTERNET_SHOW_WARNING = new Msg("Internet.ShowWarning"); //$NON-NLS-1$
-    static final Msg INTERNET_SWITCH = new Msg("Internet.Switch"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

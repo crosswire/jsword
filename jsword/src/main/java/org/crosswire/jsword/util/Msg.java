@@ -29,10 +29,14 @@ import org.crosswire.common.util.MsgBase;
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public final class Msg extends MsgBase
 {
-    static final Msg NO_CONVERTER = new Msg("ConverterFactory.NoConverter"); //$NON-NLS-1$
+    static final Msg NO_CONVERTER     = new Msg("ConverterFactory.NoConverter"); //$NON-NLS-1$
+    static final Msg WEB_WARNING      = new Msg("WebWarning.Warning");          //$NON-NLS-1$
+    static final Msg WEB_SHOW_WARNING = new Msg("WebWarning.ShowWarning");      //$NON-NLS-1$
+    static final Msg WEB_SWITCH       = new Msg("WebWarning.Switch");           //$NON-NLS-1$
 
     /**
      * Passthrough ctor
