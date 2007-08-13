@@ -12,11 +12,7 @@
 	<classpathentry exported="true" kind="lib" path="jar/commons-logging-1.1/commons-logging-1.1.jar" sourcepath="jar/commons-logging-1.1/commons-logging-1.1-src.zip"/>
 	<classpathentry exported="true" kind="lib" path="jar/commons-httpclient-3.0.1/commons-httpclient-3.0.1.jar" sourcepath="jar/commons-httpclient-3.0.1/commons-httpclient-3.0.1-src.zip"/>
 	<classpathentry exported="true" kind="lib" path="jar/icu4j-3.6.1/icu4j_3_6_1.jar" sourcepath="jar/icu4j-3.6.1/icu4jsrc_3_6_1.jar"/>
-	<classpathentry exported="true" kind="lib" path="jar/junit-3.8.1/junit.jar" sourcepath="jar/junit-3.8.1/junit-3.8.1-src.jar"/>
-	<classpathentry kind="lib" path="jar/xerces-2.7.1/xercesImpl.jar" sourcepath="jar/xerces-2.7.1/Xerces-J-src.2.7.1.zip"/>
-	<classpathentry kind="lib" path="jar/xerces-2.7.1/xml-apis.jar" sourcepath="jar/xerces-2.7.1/Xerces-J-src.2.7.1.zip"/>
-	<classpathentry kind="lib" path="jar/xalan-2.7.0/xalan.jar" sourcepath="jar/xalan-2.7.0/xalan-j_2.7.0-src.zip"/>
-	<classpathentry kind="lib" path="jar/jaf-1.1/activation.jar"/>
+	<classpathentry kind="lib" path="jar/junit-3.8.1/junit.jar"/>
 	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/test/java"/>
