@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -419,20 +420,30 @@ public class Patch
     public Patch fromText(String input)
     {
         patches.clear();
-        String[] text = patchBoundaryPattern.split(input);
-        StringBuffer buf = new StringBuffer();
-        for (int patchCount = 0; patchCount < text.length; patchCount++)
+
+        Matcher m = patchBoundaryPattern.matcher(input);
+
+        // Add segments before each match found
+        int index = 0;
+        while (m.find())
         {
-            // Splitting removed @@ from the start of patches,
-            // so it needs to be added back in.
-            if (patchCount > 0)
-            {
-                // re-use the string buffer by using replace
-                buf.replace(0, buf.length(), "@@").append(text[patchCount]); //$NON-NLS-1$
-                text[patchCount] = buf.toString();
-            }
-            patches.add(new PatchEntry(text[patchCount]));
+            int start = m.start();
+            String match = input.substring(index, start);
+            patches.add(new PatchEntry(match));
+            index = start + 1;
         }
+
+        if (index == 0)
+        {
+            // No match was found, the patch consists of the entire string
+            patches.add(new PatchEntry(input));
+        }
+        else
+        {
+            // Add remaining segment
+            patches.add(new PatchEntry(input.substring(index)));
+        }
+
         return this;
     }
 

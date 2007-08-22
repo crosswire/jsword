@@ -66,16 +66,16 @@ public class Match implements Locator
      */
     public int locate()
     {
-        if (text.length() == 0)
-        {
-            // Nothing to match.
-            return -1;
-        }
-
         if (text.equals(pattern))
         {
             // Shortcut (potentially not guaranteed by the algorithm)
             return 0;
+        }
+
+        if (text.length() == 0)
+        {
+            // Nothing to match.
+            return -1;
         }
 
         loc = Math.max(0, Math.min(loc, text.length() - pattern.length()));

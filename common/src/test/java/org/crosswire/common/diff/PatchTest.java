@@ -61,6 +61,18 @@ public class PatchTest extends TestCase
         boolArray = results.getResults();
         resultStr = results.getText() + "\t" + boolArray[0] + "\t" + boolArray[1]; //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals("patch_apply: Failed match.", "I am the very model of a modern major general.\tfalse\tfalse", resultStr); //$NON-NLS-1$ //$NON-NLS-2$
+
+        p = new Patch("", "test"); //$NON-NLS-1$ //$NON-NLS-2$
+        results = p.apply(""); //$NON-NLS-1$
+        boolArray = results.getResults();
+        resultStr = results.getText() + "\t" + boolArray[0]; //$NON-NLS-1$
+        assertEquals("patch_apply: Exact match against empty string.", "test\ttrue", resultStr); //$NON-NLS-1$ //$NON-NLS-2$
+
+        p = new Patch("test", ""); //$NON-NLS-1$ //$NON-NLS-2$
+        results = p.apply("test"); //$NON-NLS-1$
+        boolArray = results.getResults();
+        resultStr = results.getText() + "\t" + boolArray[0]; //$NON-NLS-1$
+        assertEquals("patch_apply: Exact match against empty string.", "\ttrue", resultStr); //$NON-NLS-1$ //$NON-NLS-2$
     }
   
 }
