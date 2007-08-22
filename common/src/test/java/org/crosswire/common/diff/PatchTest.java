@@ -25,6 +25,7 @@ public class PatchTest extends TestCase
         assertEquals("patch_fromText: #2.", "@@ -1 +1 @@\n-a\n+b\n", new Patch("@@ -1 +1 @@\n-a\n+b\n").toText()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         assertEquals("patch_fromText: #3.", "@@ -1,3 +0,0 @@\n-abc\n", new Patch("@@ -1,3 +0,0 @@\n-abc\n").toText()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         assertEquals("patch_fromText: #4.", "@@ -0,0 +1,3 @@\n+abc\n", new Patch("@@ -0,0 +1,3 @@\n+abc\n").toText()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals("patch_fromText: #5.", "@@ -1,9 +1,9 @@\n-f\n+F\n oo fooba\n@@ -7,9 +7,9 @@\n obar\n-,\n+.\n  tes\n", new Patch("@@ -1,9 +1,9 @@\n-f\n+F\n oo fooba\n@@ -7,9 +7,9 @@\n obar\n-,\n+.\n  tes\n").toText()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     public void testMatchMake()

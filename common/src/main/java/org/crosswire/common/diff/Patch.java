@@ -420,8 +420,17 @@ public class Patch
     {
         patches.clear();
         String[] text = patchBoundaryPattern.split(input);
+        StringBuffer buf = new StringBuffer();
         for (int patchCount = 0; patchCount < text.length; patchCount++)
         {
+            // Splitting removed @@ from the start of patches,
+            // so it needs to be added back in.
+            if (patchCount > 0)
+            {
+                // re-use the string buffer by using replace
+                buf.replace(0, buf.length(), "@@").append(text[patchCount]); //$NON-NLS-1$
+                text[patchCount] = buf.toString();
+            }
             patches.add(new PatchEntry(text[patchCount]));
         }
         return this;
@@ -463,6 +472,8 @@ public class Patch
         private boolean[] results;
     }
 
+    // Ideally we'd like to have the @@ be merely a look-ahead, but it doesn't
+    // work that way with split.
     private static Pattern patchBoundaryPattern = Pattern.compile("\n@@"); //$NON-NLS-1$
 
     private List patches;
