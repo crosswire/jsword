@@ -84,7 +84,7 @@ public class DiffCleanup
 
                     // Replace equality with a delete.
                     pointer.set(new Difference(EditType.DELETE, lastEquality));
-                    // Insert a coresponding an insert.
+                    // Insert a corresponding an insert.
                     pointer.add(new Difference(EditType.INSERT, lastEquality));
                     equalities.pop(); // Throw away the equality we just deleted;
                     if (!equalities.empty())
@@ -203,7 +203,7 @@ public class DiffCleanup
 
                     // Replace equality with a delete.
                     pointer.set(new Difference(EditType.DELETE, lastEquality));
-                    // Insert a coresponding an insert.
+                    // Insert a corresponding an insert.
                     curDiff = new Difference(EditType.INSERT, lastEquality);
                     pointer.add(curDiff);
 
@@ -310,7 +310,7 @@ public class DiffCleanup
 
                     if (countDelete != 0 && countInsert != 0)
                     {
-                        // Factor out any common prefixies.
+                        // Factor out any common prefixes.
                         commonLength = Commonality.prefix(textInsert.toString(), textDelete.toString());
                         if (commonLength > 0)
                         {
@@ -329,7 +329,7 @@ public class DiffCleanup
                             textDelete.replace(0, textDelete.length(), textDelete.substring(commonLength));
                         }
 
-                        // Factor out any common suffixies.
+                        // Factor out any common suffixes.
                         commonLength = Commonality.suffix(textInsert.toString(), textDelete.toString());
                         if (commonLength > 0)
                         {

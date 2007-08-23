@@ -232,6 +232,11 @@ public class PatchEntry
             {
                 sign = text[lineCount].charAt(0);
                 line = text[lineCount].substring(1);
+                // Lines with zero length are the difference of a new line.
+                if (line.length() == 0)
+                {
+                    line = "\n"; //$NON-NLS-1$
+                }
                 diffs.add(new Difference(EditType.fromSymbol(sign), line));
             }
         }
