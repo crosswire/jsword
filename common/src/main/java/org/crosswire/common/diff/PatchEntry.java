@@ -21,6 +21,8 @@
  */
 package org.crosswire.common.diff;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -170,9 +172,17 @@ public class PatchEntry
         {
             Difference diff = (Difference) iter.next();
             txt.append(diff.getEditType().getSymbol());
-            txt.append(diff.getText());
+            txt.append(encode(diff.getText()));
             txt.append('\n');
         }
+//        String result = txt.toString();
+//        // Replicate the JavaScript encodeURI() function (not including %20)
+//        result = result.replace("%3D", "=").replace("%3B", ";").replace("%27", "'")
+//                 .replace("%2C", ",").replace("%2F", "/").replace("%7E", "~")
+//                 .replace("%21", "!").replace("%40", "@").replace("%23", "#")
+//                 .replace("%24", "$").replace("%26", "&").replace("%28", "(")
+//                 .replace("%29", ")").replace("%2B", "+").replace("%3A", ":")
+//                 .replace("%3F", "?");
         return txt.toString();
     }
 
@@ -228,15 +238,11 @@ public class PatchEntry
 
         for (int lineCount = 1; lineCount < text.length; lineCount++)
         {
-            if (text[lineCount].length() > 0)
+            line = text[lineCount];
+            if (line.length() > 0)
             {
-                sign = text[lineCount].charAt(0);
-                line = text[lineCount].substring(1);
-                // Lines with zero length are the difference of a new line.
-                if (line.length() == 0)
-                {
-                    line = "\n"; //$NON-NLS-1$
-                }
+                sign = line.charAt(0);
+                line = decode(line.substring(1));
                 diffs.add(new Difference(EditType.fromSymbol(sign), line));
             }
         }
@@ -407,6 +413,67 @@ public class PatchEntry
             buf.append(length);
         }
 
+        return buf.toString();
+    }
+
+    /**
+     * This algorithm allows for \n to be included in a difference.
+     * Thus it needs to be escaped. We will use URL encoding of \n.
+     * But this makes % a meta-character, thus it needs to be encoded too.
+     * @param str
+     * @return
+     */
+    private String encode(String str)
+    {
+        int strlen = str.length();
+        StringBuffer buf = new StringBuffer(2 * strlen);
+        for (int i = 0; i < strlen; i++)
+        {
+            char c = str.charAt(i);
+            switch (c)
+            {
+                case '%':
+                    buf.append("%25"); //$NON-NLS-1$
+                    break;
+                case '\n':
+                    buf.append("%0A"); //$NON-NLS-1$
+                    break;
+                default:
+                    buf.append(c);
+            }    
+        }
+        return buf.toString();
+    }
+
+    /**
+     * Undo encoding
+     * @param str the encoded string
+     * @return the un-encoded string
+     */
+    private String decode(String str)
+    {
+        int strlen = str.length();
+        StringBuffer buf = new StringBuffer(2 * strlen);
+        for (int i = 0; i < strlen; i++)
+        {
+            char c = str.charAt(i);
+            if (c == '%')
+            {
+                if ("%0A".equals(str.substring(i, i + 3))) //$NON-NLS-1$
+                {
+                    buf.append('\n');
+                }
+                else // if ("%25".equals(str.substring(i, i + 3))
+                {
+                    buf.append('%');
+                }
+                i += 2;
+            }
+            else
+            {
+                buf.append(c);
+            }
+        }
         return buf.toString();
     }
 

@@ -42,21 +42,13 @@ public class PatchEntryTest extends TestCase
         assertEquals("PatchEntry.fromText: #2.", "@@ -1 +1 @@\n-a\n+b\n", new PatchEntry("@@ -1 +1 @@\n-a\n+b\n").toString()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         assertEquals("PatchEntry.fromText: #3.", "@@ -1,3 +0,0 @@\n-abc\n", new PatchEntry("@@ -1,3 +0,0 @@\n-abc\n").toString()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         assertEquals("PatchEntry.fromText: #4.", "@@ -0,0 +1,3 @@\n+abc\n", new PatchEntry("@@ -0,0 +1,3 @@\n+abc\n").toString()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals("PatchEntry.fromText: #4.", "@@ -1,7 +1,6 @@\n foo\n-\n\n bar\n", new PatchEntry("@@ -1,7 +1,6 @@\n foo\n-\n\n bar\n").toString()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        String text1 = "foo\nbar";
-        String text2 = "foobar";
-        Patch patch = new Patch(text1, text2);
-        String patchText = patch.toText();
-        //@@ -1,7 +1,6 @@
-        // foo
-        //-
-        //
-        // bar
-
-        Patch patch2 = new Patch();
-        patch2 = patch2.fromText(patchText);
-        System.out.println(patch2.apply(text1).getText());
-        // should print "foobar" but prints "bar"
+        assertEquals("PatchEntry.fromText: #5.", "@@ -1,7 +1,6 @@\n foo\n-%0A\n bar\n", new PatchEntry("@@ -1,7 +1,6 @@\n foo\n-%0A\n bar\n").toString()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals("PatchEntry.fromText: #6.", "@@ -1,4 +1,3 @@\n foo\n-%0A\n", new PatchEntry("@@ -1,4 +1,3 @@\n foo\n-%0A\n").toString()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals("PatchEntry.fromText: #7.", "@@ -1,4 +1,3 @@\n-%0A\n foo\n", new PatchEntry("@@ -1,4 +1,3 @@\n-%0A\n foo\n").toString()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals("PatchEntry.fromText: #8.", "@@ -1,3 +1,4 @@\n foo\n+%0A\n", new PatchEntry("@@ -1,3 +1,4 @@\n foo\n+%0A\n").toString()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals("PatchEntry.fromText: #9.", "@@ -1,3 +1,4 @@\n+%0A\n foo\n", new PatchEntry("@@ -1,3 +1,4 @@\n+%0A\n foo\n").toString()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals("PatchEntry.fromText: #10.", "@@ -1,4 +1,4 @@\n-foo%0A\n+%0Afoo\n", new PatchEntry("@@ -1,4 +1,4 @@\n-foo%0A\n+%0Afoo\n").toString()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals("PatchEntry.fromText: #11.", "@@ -1,4 +1,4 @@\n-%0Afoo\n+foo%0A\n", new PatchEntry("@@ -1,4 +1,4 @@\n-%0Afoo\n+foo%0A\n").toString()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     public void testMatchAddContext()
