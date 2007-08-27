@@ -227,7 +227,7 @@ public final class NetUtil
      * If there is a writable directory or file at the other end of this URI return true.
      * Note non file: type URIs will always return false
      * @param orig The URI to check
-     * @return true if the URI points at a file: directory
+     * @return true if the URI points at a writable file or directory
      */
     public static boolean canWrite(URI orig)
     {
@@ -237,6 +237,22 @@ public final class NetUtil
         }
 
         return new File(orig.getPath()).canWrite();
+    }
+
+    /**
+     * If there is a readable directory or file at the other end of this URI return true.
+     * Note non file: type URIs will always return false
+     * @param orig The URI to check
+     * @return true if the URI points at a readable file or directory
+     */
+    public static boolean canRead(URI orig)
+    {
+        if (!orig.getScheme().equals(PROTOCOL_FILE))
+        {
+            return false;
+        }
+
+        return new File(orig.getPath()).canRead();
     }
 
     /**

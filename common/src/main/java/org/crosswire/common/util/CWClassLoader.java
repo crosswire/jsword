@@ -21,7 +21,6 @@
  */
 package org.crosswire.common.util;
 
-import java.io.File;
 import java.net.URI;
 import java.net.URL;
 import java.security.AccessController;
@@ -31,6 +30,8 @@ import java.security.PrivilegedAction;
  * CWClassLoader extends the regular class loader by using looking
  * in more places. This is needed so that ResourceBundle can find
  * resources that are not held in the same package as the class.
+ * This is expressed as a list of locations, called homes, that
+ * the program will look in.
  *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
@@ -125,7 +126,7 @@ public final class CWClassLoader extends ClassLoader
             }
         }
 
-        // See if it can be found in the home directory
+        // See if it can be found in a home directory
         if (resource == null)
         {
             URI homeResource = CWClassLoader.findHomeResource(search);
@@ -261,50 +262,58 @@ public final class CWClassLoader extends ClassLoader
     }
 
     /**
-     * If the application has set the home, it will return
-     * the application's home directory, otherwise it returns null.
+     * If the application has set the homes, it will return
+     * the application's requested home directory, otherwise it returns null.
      * @return Returns the home.
      */
-    public static synchronized URI getHome()
+    public static synchronized URI getHome(int i)
     {
-        return home;
+        if (i > 0 && i < homes.length)
+        {
+            return homes[i];
+        }
+        return null;
     }
 
     /**
      * Establish the applications home directory from where
      * additional resources can be found. URL is expected to
      * end with the directory name, not '/'.
-     * @param newhome The home to set.
+     * @param newHomes The home to set.
      */
-    public static synchronized void setHome(URI newhome)
+    public static synchronized void setHome(URI[] newHomes)
     {
-        home = newhome;
+        homes = new URI[newHomes.length];
+        System.arraycopy(newHomes, 0, homes, 0, newHomes.length);
     }
 
     /**
-     * Look for the resource in the home directory
+     * Look for the resource in the home directories, returning the first
+     * readable file.
+     * 
      * @param search must be non-null, non-empty
      */
     public static URI findHomeResource(String search)
     {
-        URI reply = null;
-
-        URI homeURI = getHome();
-
-        // Look at the application's home first to allow overrides
-        if (homeURI != null)
+        if (homes == null)
         {
+            return null;
+        }
+
+        for (int i = 0; i < homes.length; i++)
+        {
+            URI homeURI = homes[i];
+
             URI override = NetUtil.lengthenURI(homeURI, search);
 
             // Make sure the file exists and can be read
-            File file = new File(override.getPath());
-            if (file.canRead())
+            if (NetUtil.canRead(override))
             {
-                reply = override;
+                return override;
             }
         }
 
-        return reply;
+        return null;
     }
 
     /**
@@ -355,5 +364,5 @@ public final class CWClassLoader extends ClassLoader
     /**
      * Notion of a project's home from where additional resources can be found.
      */
-    private static URI home;
+    private static URI[] homes;
 }

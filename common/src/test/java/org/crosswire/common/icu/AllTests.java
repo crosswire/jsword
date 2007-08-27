@@ -37,7 +37,7 @@ public class AllTests
     {
         TestSuite suite = new TestSuite("Test for org.crosswire.common.icu"); //$NON-NLS-1$
         //$JUnit-BEGIN$
-        suite.addTest(new TestSuite(NumberShaper.class));
+        suite.addTest(new TestSuite(NumberShaperTest.class));
         //$JUnit-END$
         return suite;
     }

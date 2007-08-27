@@ -190,7 +190,7 @@ public class LuceneIndexManager implements IndexManager
         assert driverName != null;
         assert bookName != null;
 
-        URI base = Project.instance().getUserSubProjectDir(DIR_LUCENE, false);
+        URI base = Project.instance().getWriteableProjectSubdir(DIR_LUCENE, false);
         URI driver = NetUtil.lengthenURI(base, driverName);
 
         return NetUtil.lengthenURI(driver, bookName);

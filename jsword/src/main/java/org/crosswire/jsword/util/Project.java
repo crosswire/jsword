@@ -93,11 +93,11 @@ public final class Project
      */
     private Project()
     {
-        CWClassLoader.setHome(getUserProjectDir());
+        CWClassLoader.setHome(getProjectResourceDirs());
 
         try
         {
-            URI uricache = getUserSubProjectDir(DIR_NETCACHE, true);
+            URI uricache = getWriteableProjectSubdir(DIR_NETCACHE, true);
             File filecache = new File(uricache.getPath());
             NetUtil.setURICacheDir(filecache);
         }
@@ -110,48 +110,33 @@ public final class Project
     }
 
     /**
-     * Establishes the user's project directory.
+     * Get the writable user project directory.
+     * 
+     * @return the writable user project directory.
      */
-    public URI getUserProjectDir(String hiddenFolderName, String visibleFolderName)
+    public URI getWritableProjectDir()
     {
-        return OSType.getOSType().getUserAreaFolder(hiddenFolderName, visibleFolderName);
+        establishProjectHome();
+        return writeHome;
     }
 
     /**
-     * Establishes the user's project directory.
+     * Get the locations where project resources can be found.
+     * 
+     * @return an array of URIs which can be used to look up resources.
      */
-    public URI getUserProjectDir()
+    public URI[] getProjectResourceDirs()
     {
-        if (home == null)
-        {
-            // if there is a property set for the jsword home directory
-            String jswordhome = System.getProperty(PROPERTY_JSWORD_HOME);
-            if (jswordhome != null)
-            {
-                home = NetUtil.getURI(new File(jswordhome));
-                if (!NetUtil.canWrite(home))
-                {
-                    home = null;
-                }
-            }
-        }
-
-        if (home == null)
-        {
-            URI path = getUserProjectDir(DIR_PROJECT, DIR_PROJECT_ALT);
-            URI oldPath = getDeprecatedUserProjectDir();
-            home = migrateUserProjectDir(oldPath, path);
-        }
-
-        return home;
+        establishProjectHome();
+        return homes;
     }
 
     /**
-     * Get the location where the project dir used to be.
+     * Get the location where the project directory used to be.
      *
      * @return ~/.jsword
      */
-    public URI getDeprecatedUserProjectDir()
+    public URI getDeprecatedWritableProjectDir()
     {
         return OSType.DEFAULT.getUserAreaFolder(DIR_PROJECT, DIR_PROJECT_ALT);
     }
@@ -199,18 +184,18 @@ public final class Project
      */
     public URI getWritablePropertiesURI(String subject)
     {
-        return NetUtil.lengthenURI(getUserProjectDir(), subject + FileUtil.EXTENSION_PROPERTIES);
+        return NetUtil.lengthenURI(getWritableProjectDir(), subject + FileUtil.EXTENSION_PROPERTIES);
     }
 
     /**
-     * A directory within the project dir.
+     * A directory within the project directory.
      * 
      * @param subject A name for the subdirectory of the Project directory.
      * @return A file: URI pointing at a local writable directory.
      */
-    public URI getUserSubProjectDir(String subject, boolean create) throws IOException
+    public URI getWriteableProjectSubdir(String subject, boolean create) throws IOException
     {
-        URI temp = NetUtil.lengthenURI(getUserProjectDir(), subject);
+        URI temp = NetUtil.lengthenURI(getWritableProjectDir(), subject);
 
         if (create && !NetUtil.isDirectory(temp))
         {
@@ -219,6 +204,62 @@ public final class Project
 
         return temp;
     }
+    /**
+     * Establishes the user's project directory.
+     * In a CD installation, the home directory on the CD will be read-only.
+     * This is not sufficient. We also need a writable home directory. And
+     * in looking up resources, the ones in the writable directory trump
+     * those in the readable directory, allowing the read-only resources
+     * to be overridden.
+     * <p>Here is the lookup order:
+     * <ol>
+     * <li>Check first to see if the jsword.home property is set.</li>
+     * <li>Check for the existence of a platform specific project area and for the existence of a deprecated project area (~/.jsword on Windows and Mac)
+     * and if it exists and it is possible "upgrade" to the platform specific project area. Of these "two" only one is the folder to check.</li>
+     * </ol>
+     * In checking these areas, if the one is read-only, add it to the list and keep going.
+     * However, if it is also writable, then use it alone.
+     */
+    private void establishProjectHome()
+    {
+        if (writeHome == null && readHome == null)
+        {
+            // if there is a property set for the jsword home directory
+            String jswordhome = System.getProperty(PROPERTY_JSWORD_HOME);
+            if (jswordhome != null)
+            {
+                URI home = NetUtil.getURI(new File(jswordhome));
+                if (NetUtil.canWrite(home))
+                {
+                    writeHome = home;
+                }
+                else if (NetUtil.canRead(home))
+                {
+                    readHome = home;
+                }
+                // otherwise jsword.home is not usable.
+            }
+        }
+
+        if (writeHome == null)
+        {
+            URI path = OSType.getOSType().getUserAreaFolder(DIR_PROJECT, DIR_PROJECT_ALT);
+            URI oldPath = getDeprecatedWritableProjectDir();
+            writeHome = migrateUserProjectDir(oldPath, path);
+        }
+
+        if (homes == null)
+        {
+            if (readHome == null)
+            {
+                homes = new URI[] { writeHome };
+            }
+            else
+            {
+                homes = new URI[] { writeHome, readHome };
+            }
+        }
+    }
 
     /**
      * System property for jsword home directory
@@ -226,9 +267,19 @@ public final class Project
     private static final String PROPERTY_JSWORD_HOME = "jsword.home"; //$NON-NLS-1$
 
     /**
-     * The home for this application
+     * The homes for this application: first is writable, second (if present) is read-only and specified by the system property jsword.home.
      */
-    private URI home;
+    private URI[] homes;
+
+    /**
+     * The writable home for this application.
+     */
+    private URI writeHome;
+
+    /**
+     * The readable home for this application, specified by the system property jsword.home. Null, if jsword.home is also writable.
+     */
+    private URI readHome;
 
     /**
      * The log stream

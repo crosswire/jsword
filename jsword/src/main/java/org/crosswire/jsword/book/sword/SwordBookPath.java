@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.OSType;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Books;
@@ -181,13 +182,13 @@ public class SwordBookPath
             readSwordConf(bookDirs, sysconfigPaths[i]);
         }
 
-        URI userDataArea = Project.instance().getUserProjectDir(DIR_SWORD_CONF, DIR_SWORD_CONF_ALT);
+        URI userDataArea = OSType.getOSType().getUserAreaFolder(DIR_SWORD_CONF, DIR_SWORD_CONF_ALT);
 
         // Check look for mods.d in the sword user data area
         testDefaultPath(bookDirs, new File(userDataArea.getPath()));
 
         // If the migration did not work then use the old area
-        testDefaultPath(bookDirs, new File(Project.instance().getUserProjectDir().getPath()));
+        testDefaultPath(bookDirs, new File(Project.instance().getWritableProjectDir().getPath()));
 
         return (File[]) bookDirs.toArray(new File[bookDirs.size()]);
     }
@@ -291,7 +292,7 @@ public class SwordBookPath
         // If it is not found on the path then it doesn't exist yet and needs to be established
         if (path == null)
         {
-            URI userDataArea = Project.instance().getUserProjectDir(DIR_SWORD_CONF, DIR_SWORD_CONF_ALT);
+            URI userDataArea = OSType.getOSType().getUserAreaFolder(DIR_SWORD_CONF, DIR_SWORD_CONF_ALT);
             path = new File(userDataArea.getPath());
         }
 
@@ -301,13 +302,13 @@ public class SwordBookPath
     private static void migrateBookDir()
     {
         // Books should be on this path
-        URI userDataArea = Project.instance().getUserProjectDir(DIR_SWORD_CONF, DIR_SWORD_CONF_ALT);
+        URI userDataArea = OSType.getOSType().getUserAreaFolder(DIR_SWORD_CONF, DIR_SWORD_CONF_ALT);
 
         File swordBookPath = new File(userDataArea.getPath());
 
         // The "old" Book location might be in one of two locations
         // It might be ~/.jsword or the new project dir
-        File oldPath = new File(Project.instance().getDeprecatedUserProjectDir().getPath());
+        File oldPath = new File(Project.instance().getDeprecatedWritableProjectDir().getPath());
 
         if (oldPath.isDirectory())
         {
@@ -315,7 +316,7 @@ public class SwordBookPath
             return;
         }
 
-        oldPath = new File(Project.instance().getUserProjectDir().getPath());
+        oldPath = new File(Project.instance().getWritableProjectDir().getPath());
 
         if (oldPath.isDirectory())
         {

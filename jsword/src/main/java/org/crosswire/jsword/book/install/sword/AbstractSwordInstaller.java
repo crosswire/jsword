@@ -489,7 +489,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     {
         try
         {
-            URI scratchdir = Project.instance().getUserSubProjectDir(getTempFileExtension(host, catalogDirectory), true);
+            URI scratchdir = Project.instance().getWriteableProjectSubdir(getTempFileExtension(host, catalogDirectory), true);
             return NetUtil.lengthenURI(scratchdir, FILE_LIST_GZ);
         }
         catch (IOException ex)
