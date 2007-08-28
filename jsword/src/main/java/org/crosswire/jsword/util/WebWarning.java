@@ -25,7 +25,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Properties;
 
+import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
+import org.crosswire.common.util.ResourceUtil;
 
 /**
  * Provide a configurable warning that the Internet is going to be accessed.
@@ -45,8 +47,7 @@ public class WebWarning
     {
         try
         {
-            URI inputURI = Project.instance().getWritablePropertiesURI(getClass().getName());
-            Properties props = NetUtil.loadProperties(inputURI);
+            Properties props = ResourceUtil.getProperties(getClass().getName());
             shown = Boolean.valueOf(props.getProperty(SHOWN_KEY, Boolean.valueOf(DEFAULT_SHOWN).toString())).booleanValue();
         }
         catch (IOException e)
@@ -70,7 +71,18 @@ public class WebWarning
      */
     public void setShown(boolean newShown)
     {
-        shown = newShown;
+        try
+        {
+            shown = newShown;
+            Properties props = new Properties();
+            props.put(SHOWN_KEY, Boolean.valueOf(shown).toString());
+            URI outputURI = Project.instance().getWritablePropertiesURI(getClass().getName());
+            NetUtil.storeProperties(props, outputURI, "JSword WebWarning"); //$NON-NLS-1$
+        }
+        catch (IOException ex)
+        {
+            log.error("Failed to save JSword WebWarning", ex); //$NON-NLS-1$
+        }
     }
 
     /**
@@ -118,4 +130,9 @@ public class WebWarning
     private static final String  SHOWN_KEY     = "shown"; //$NON-NLS-1$
     private static final boolean DEFAULT_SHOWN = true;
     private boolean              shown;
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(WebWarning.class);
 }

@@ -106,7 +106,7 @@ public final class ResourceUtil
      * @throws IOException if the resource can not be loaded
      * @throws MissingResourceException if the resource can not be found
      */
-    public static Properties getProperties(String subject) throws IOException, MissingResourceException
+    public static Properties getProperties(String subject) throws IOException
     {
         return getProperties(CallContext.getCallingClass(), subject);
     }
@@ -119,7 +119,7 @@ public final class ResourceUtil
      * @throws IOException if the resource can not be loaded
      * @throws MissingResourceException if the resource can not be found
      */
-    public static Properties getProperties(Class clazz) throws IOException, MissingResourceException
+    public static Properties getProperties(Class clazz) throws IOException
     {
         return getProperties(clazz, ClassUtil.getShortClassName(clazz));
     }
@@ -132,14 +132,20 @@ public final class ResourceUtil
      * @throws IOException if the resource can not be loaded
      * @throws MissingResourceException if the resource can not be found
      */
-    private static Properties getProperties(Class clazz, String subject) throws IOException, MissingResourceException
+    private static Properties getProperties(Class clazz, String subject) throws IOException
     {
-        String lookup = subject + FileUtil.EXTENSION_PROPERTIES;
-        InputStream in = getResourceAsStream(clazz, lookup);
-
-        Properties prop = new Properties();
-        prop.load(in);
-
-        return prop;
+        try
+        {
+            String lookup = subject + FileUtil.EXTENSION_PROPERTIES;
+            InputStream in = getResourceAsStream(clazz, lookup);
+    
+            Properties prop = new Properties();
+            prop.load(in);
+            return prop;
+        }
+        catch (MissingResourceException e)
+        {
+            return new Properties();
+        }
     }
 }
