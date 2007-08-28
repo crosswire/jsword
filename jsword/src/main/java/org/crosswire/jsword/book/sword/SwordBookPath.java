@@ -56,8 +56,8 @@ public class SwordBookPath
     }
 
     /**
-     * Accessor for the Sword directory
-     * @param theNewDirs The new Sword directory
+     * Establish additional locations that Sword may hold books.
+     * @param theNewDirs The new Sword directories
      * @throws BookException
      */
     public static void setAugmentPath(File[] theNewDirs) throws BookException
@@ -75,7 +75,7 @@ public class SwordBookPath
     }
 
     /**
-     * Accessor for the Sword directory
+     * Retrieve the additional locations that Sword may hold Books.
      * @return The new Sword directory
      */
     public static File[] getAugmentPath()
@@ -128,6 +128,11 @@ public class SwordBookPath
         return (File[]) swordPath.toArray(new File[swordPath.size()]);
     }
 
+    /**
+     * Get a list of books in a given location.
+     * @param bookDir the directory in which to look
+     * @return the list of books in that location
+     */
     public static String[] getBookList(File bookDir)
     {
         return bookDir.list(new CustomFilenameFilter());
@@ -146,7 +151,7 @@ public class SwordBookPath
 
         String home = System.getProperty(PROPERTY_USER_HOME);
 
-        // Is sword.conf in the current diretory?
+        // Is sword.conf in the current directory?
         readSwordConf(bookDirs, "."); //$NON-NLS-1$
 
         // mods.d in the current directory?
@@ -156,6 +161,7 @@ public class SwordBookPath
         testDefaultPath(bookDirs, ".." + File.separator + DIR_SWORD_LIBRARY); //$NON-NLS-1$
 
         // if there is a property set for the sword home directory
+        // The Sword project defines SWORD_HOME, but JSword expects this to be transformed into sword.home.
         String swordhome = System.getProperty(PROPERTY_SWORD_HOME);
         if (swordhome != null)
         {
@@ -187,6 +193,8 @@ public class SwordBookPath
         // Check look for mods.d in the sword user data area
         testDefaultPath(bookDirs, new File(userDataArea.getPath()));
 
+        // JSword used to hold books in ~/.jsword (or its equivalent) but has code that will
+        // migrate it to ~/.sword (or its equivalent)
         // If the migration did not work then use the old area
         testDefaultPath(bookDirs, new File(Project.instance().getWritableProjectDir().getPath()));
 
