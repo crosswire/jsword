@@ -26,3 +26,5 @@ subdirectory
 deprecated
 primordial
 filesystem
+download
+config
