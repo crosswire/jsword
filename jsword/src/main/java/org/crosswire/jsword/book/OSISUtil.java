@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -976,6 +977,167 @@ public final class OSISUtil
                 div.addContent(text);
             }
         }
+        return div.cloneContent();
+    }
+    
+    public static List rtfToOsis(String rtf)
+    {
+        Element div = factory().createDiv();
+        Stack stack = new Stack();
+        stack.push(div);
+
+        int strlen = rtf.length();
+
+        StringBuffer text = new StringBuffer(strlen);
+
+        int i = 0;
+        for (i = 0; i < strlen; i++)
+        {
+            char curChar = rtf.charAt(i);
+            if (curChar != '\\')
+            {
+                text.append(curChar);
+                continue;
+            }
+
+            String remaining = rtf.substring(i);
+
+            // The following are ordered from most to least common
+            // and when one is a prefix of another, it follows.
+
+            // Used to end all open attributes. Only \qc in our implementation.
+            if (remaining.startsWith("\\pard")) //$NON-NLS-1$
+            {
+                Element currentElement = (Element) stack.pop();
+                currentElement.addContent(text.toString());
+                text.delete(0, text.length());
+                stack.clear();
+                stack.push(div);
+                i += (i + 5 < strlen && rtf.charAt(i + 5) == ' ') ? 5 : 4;
+                continue;
+            }
+
+            // Simulate a paragraph break.
+            if (remaining.startsWith("\\par")) //$NON-NLS-1$
+            {
+
+                Element currentElement = (Element) stack.peek();
+                currentElement.addContent(text.toString());
+                text.delete(0, text.length());
+                currentElement.addContent(OSISUtil.factory.createLB());
+                i += (i + 4 < strlen && rtf.charAt(i + 4) == ' ') ? 4 : 3;
+                continue;
+            }
+
+            // OSIS does not have the notion of centered text.
+            // So we define our own
+            if (remaining.startsWith("\\qc")) //$NON-NLS-1$
+            {
+                Element centerDiv = OSISUtil.factory.createDiv();
+                centerDiv.setAttribute(OSIS_ATTR_TYPE, "x-center"); //$NON-NLS-1$
+                Element currentElement = (Element) stack.peek();
+                currentElement.addContent(text.toString());
+                text.delete(0, text.length());
+                currentElement.addContent(centerDiv);
+                stack.push(centerDiv);
+                // skip following space, if any
+                i += (i + 3 < strlen && rtf.charAt(i + 3) == ' ') ? 3 : 2;
+                continue;
+            }
+
+            // convert Unicode representations to Unicode
+            if (remaining.startsWith("\\u")) //$NON-NLS-1$
+            {
+                StringBuffer buf = new StringBuffer();
+                i += 2;
+                while (i < strlen)
+                {
+                    char curDigit = rtf.charAt(i);
+                    if (curDigit != '-' && !Character.isDigit(curDigit))
+                    {
+                        break;
+                    }
+                    buf.append(curDigit);
+                    i++;
+                }
+                // At this point:
+                // buf contains the numeric representation of the number, 16-bit signed
+                // charAt(i) is the substitution character if Unicode is not supported
+                int value = Integer.parseInt(buf.toString());
+                if (value < 0)
+                {
+                    value += 65536;
+                }
+                text.append((char) value);
+                // don't advance since i is on the substitute character.
+                continue;
+            }
+
+            // close italic and bold
+            if (remaining.startsWith("\\i0") || remaining.startsWith("\\b0")) //$NON-NLS-1$ //$NON-NLS-2$
+            {
+                Element currentElement = (Element) stack.pop();
+                currentElement.addContent(text.toString());
+                text.delete(0, text.length());
+                i += (i + 3 < strlen && rtf.charAt(i + 3) == ' ') ? 3 : 2;
+                continue;
+            }
+
+            // Skip escaped whitespace
+            if (remaining.startsWith(" ") || remaining.startsWith("\n")) //$NON-NLS-1$ //$NON-NLS-2$
+            {
+                i += 1;
+                continue;
+            }
+
+            // start italic
+            if (remaining.startsWith("\\i")) //$NON-NLS-1$
+            {
+                Element hiElement = OSISUtil.factory.createHI();
+                hiElement.setAttribute(OSIS_ATTR_TYPE, HI_ITALIC);
+                Element currentElement = (Element) stack.peek();
+                currentElement.addContent(text.toString());
+                text.delete(0, text.length());
+                currentElement.addContent(hiElement);
+                stack.push(hiElement);
+                i += (i + 2 < strlen && rtf.charAt(i + 2) == ' ') ? 2 : 1;
+                continue;
+            }
+
+            // start bold
+            if (remaining.startsWith("\\b")) //$NON-NLS-1$
+            {
+                Element hiElement = OSISUtil.factory.createHI();
+                hiElement.setAttribute(OSIS_ATTR_TYPE, HI_BOLD);
+                Element currentElement = (Element) stack.peek();
+                currentElement.addContent(text.toString());
+                text.delete(0, text.length());
+                currentElement.addContent(hiElement);
+                stack.push(hiElement);
+                i += (i + 2 < strlen && rtf.charAt(i + 2) == ' ') ? 2 : 1;
+                continue;
+            }
+
+        }
+//        div.addContent(text.toString());
+//        // If the fragment is already in a document, then use that.
+//        Document doc = div.getDocument();
+//        if (doc == null)
+//        {
+//            doc = new Document(div);
+//        }
+//        SAXEventProvider ep = new JDOMSAXEventProvider(doc);
+//        ContentHandler osis = new PrettySerializingContentHandler(FormatType.CLASSIC_INDENT);
+//        try
+//        {
+//            ep.provideSAXEvents(osis);
+//        }
+//        catch (SAXException e)
+//        {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+//        System.err.println(osis.toString());
         return div.cloneContent();
     }
 

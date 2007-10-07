@@ -269,7 +269,7 @@ public final class ConfigEntry
 
         Element nameEle = factory.createCell();
         Element hiEle = factory.createHI();
-        hiEle.setAttribute("rend", "bold"); //$NON-NLS-1$ //$NON-NLS-2$
+        hiEle.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_BOLD);
         nameEle.addContent(hiEle);
         Element valueElement = factory.createCell();
         rowEle.addContent(nameEle);
@@ -281,19 +281,18 @@ public final class ConfigEntry
         if (value != null)
         {
             String text = value.toString();
+            text = XMLUtil.escape(text);
             if (allowsRTF())
             {
-                text = handleRTF(text);
+                valueElement.addContent(OSISUtil.rtfToOsis(text));
             }
-
-            String expandedValue = XMLUtil.escape(text);
-            if (allowsContinuation() || allowsRTF())
+            else if (allowsContinuation())
             {
-                valueElement.addContent(processLines(factory, expandedValue));
+                valueElement.addContent(processLines(factory, text));
             }
             else
             {
-                valueElement.addContent(expandedValue);
+                valueElement.addContent(text);
             }
         }
 
@@ -306,13 +305,17 @@ public final class ConfigEntry
             while (iter.hasNext())
             {
                 String text = (String) iter.next();
-                if (allowsRTF())
-                {
-                    text = handleRTF(text);
-                }
+                text = XMLUtil.escape(text);
                 Element itemEle = factory.createL();
                 listEle.addContent(itemEle);
-                itemEle.addContent(XMLUtil.escape(text));
+                if (allowsRTF())
+                {
+                    itemEle.addContent(OSISUtil.rtfToOsis(text));
+                }
+                else
+                {
+                    itemEle.addContent(text);
+                }
             }
         }
         return rowEle;

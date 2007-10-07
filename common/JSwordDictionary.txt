@@ -28,3 +28,4 @@ primordial
 filesystem
 download
 config
+internationalize
