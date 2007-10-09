@@ -19,12 +19,16 @@
  *
  * ID: $Id: Bookmark.java 1605 2007-08-03 21:34:46Z dmsmith $
  */
-package org.crosswire.jsword.book;
+package org.crosswire.jsword.book.basic;
 
-import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookData;
+import org.crosswire.jsword.book.Bookmark;
 import org.crosswire.jsword.index.search.SearchRequest;
+
 
 /**
  * A Bookmark remembers a particular view of one or more Books.
@@ -35,7 +39,7 @@ import org.crosswire.jsword.index.search.SearchRequest;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public interface Bookmark extends Serializable, Cloneable
+public class DefaultBookmark implements Bookmark
 {
     /**
      * Add a Book to this Bookmark.
@@ -43,13 +47,19 @@ public interface Bookmark extends Serializable, Cloneable
      * 
      * @param book the Book to add.
      */
-    void addBook(Book book);
+    public void addBook(Book book)
+    {
+        books.add(book);
+    }
 
     /**
      * Return the ordered set of books.
      * @return
      */
-    List getBooks();
+    public List getBooks()
+    {
+        return Collections.unmodifiableList(books);
+    }
 
     /**
      * Set the SearchRequest for this Bookmark. A copy of the SearchRequest will be stored.
@@ -57,14 +67,21 @@ public interface Bookmark extends Serializable, Cloneable
      * 
      * @param request the SearchRequest
      */
-    void setSearchRequest(SearchRequest request);
+    public void setSearchRequest(SearchRequest request)
+    {
+        searchRequest = request;
+        lookupRequest = null;
+    }
 
     /**
      * Get the SearchRequest for this Bookmark.
      * 
      * @return a copy of the SearchRequest, or null.
      */
-    SearchRequest getSearchRequest();
+    public SearchRequest getSearchRequest()
+    {
+        return searchRequest;
+    }
 
     /**
      * Set the lookup request for this Bookmark.
@@ -72,14 +89,21 @@ public interface Bookmark extends Serializable, Cloneable
      * 
      * @param request the lookup request.
      */
-    void setLookupRequest(String request);
+    public void setLookupRequest(String request)
+    {
+        lookupRequest = request;
+        searchRequest = null;
+    }
 
     /**
      * Get the lookup request.
      * 
      * @return the lookup request or null.
      */
-    String getLookupRequest();
+    public String getLookupRequest()
+    {
+        return lookupRequest;
+    }
 
     /**
      * Convert this Bookmark into a BookData by converting the SearchReqeust or lookup request
@@ -87,12 +111,38 @@ public interface Bookmark extends Serializable, Cloneable
      * 
      * @return the resulting BookData
      */
-    BookData getBookData();
+    public BookData getBookData()
+    {
+        return null;
+    }
 
     /**
      * This needs to be declared here so that it is visible as a method
      * on a derived Bookmark.
      * @return A complete copy of ourselves
      */
-    Object clone();
+    public Object clone()
+    {
+        return null;
+    }
+
+    /**
+     * The list of books.
+     */
+    private List books;
+
+    /**
+     * The lookup request.
+     */
+    private String lookupRequest;
+
+    /**
+     * The search request.
+     */
+    private SearchRequest searchRequest;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 6959196267292499574L;
 }
