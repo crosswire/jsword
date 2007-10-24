@@ -165,7 +165,7 @@ public class RawBackend extends AbstractBackend
             }
 
             int entrysize = datasize + OFFSETSIZE;
-            
+
             // Read the next entrysize byes.
             byte[] read = SwordUtil.readRAF(idxRaf[testament], index * entrysize, entrysize);
             if (read == null || read.length == 0)
@@ -267,5 +267,5 @@ public class RawBackend extends AbstractBackend
     /**
      * How many bytes in the size count in the index
      */
-    private int datasize = -1;   
+    private int datasize = -1;
 }

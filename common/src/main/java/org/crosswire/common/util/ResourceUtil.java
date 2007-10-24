@@ -138,7 +138,7 @@ public final class ResourceUtil
         {
             String lookup = subject + FileUtil.EXTENSION_PROPERTIES;
             InputStream in = getResourceAsStream(clazz, lookup);
-    
+
             Properties prop = new Properties();
             prop.load(in);
             return prop;

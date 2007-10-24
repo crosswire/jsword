@@ -979,7 +979,7 @@ public final class OSISUtil
         }
         return div.cloneContent();
     }
-    
+
     public static List rtfToOsis(String rtf)
     {
         Element div = factory().createDiv();

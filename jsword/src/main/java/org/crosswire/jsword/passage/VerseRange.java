@@ -156,7 +156,7 @@ public final class VerseRange implements Key, Serializable
             {
                 return shaper.shape(rangeName);
             }
-    
+
             return rangeName;
         }
         catch (NoSuchVerseException ex)

@@ -131,7 +131,7 @@ public class NumberShaper
         {
             return new String(dest);
         }
-        
+
         return input;
     }
 
@@ -285,12 +285,13 @@ public class NumberShaper
 //            }
 //        }
 
-        for (int i = 0, e = src.length; i < e; i++)
+        int len = src.length;
+        for (int i = 0; i < len; i++)
         {
             char c = text[i];
             if (c >= zero && c <= nine)
             {
-                text[i] = (char)(c + offset);
+                text[i] = (char) (c + offset);
                 transformed[0] = true;
             }
         }

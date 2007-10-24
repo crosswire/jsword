@@ -156,8 +156,11 @@ public final class Books implements BookList
         {
             Book book = (Book) iter.next();
             Object property = book.getProperty(propertyKey);
-            String value = property instanceof String ? (String) property : property.toString();
-            max = Math.max(max, value == null ? -1 : value.length());
+            if (property != null)
+            {
+                String value = property instanceof String ? (String) property : property.toString();
+                max = Math.max(max, value.length());
+            }
         }
         return max;
     }
@@ -177,8 +180,11 @@ public final class Books implements BookList
         {
             Book book = (Book) iter.next();
             Object property = book.getProperty(propertyKey);
-            String value = property instanceof String ? (String) property : property.toString();
-            max = Math.max(max, value == null ? -1 : value.length());
+            if (property != null)
+            {
+                String value = property instanceof String ? (String) property : property.toString();
+                max = Math.max(max, value.length());
+            }
         }
         return max;
     }

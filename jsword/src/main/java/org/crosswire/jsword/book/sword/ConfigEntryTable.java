@@ -607,7 +607,7 @@ public final class ConfigEntryTable
         testLanguage(internal, lang);
         testLanguage(internal, langFrom);
         testLanguage(internal, langTo);
-        
+
         // The LANG field should match the GLOSSARY_FROM field
         if (langFrom != null && !langFrom.equals(lang))
         {

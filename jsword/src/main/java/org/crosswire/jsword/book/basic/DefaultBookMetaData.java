@@ -41,7 +41,7 @@ import org.jdom.Element;
 
 /**
  * DefaultBookMetaData is an implementation of the of the BookMetaData
- * interface. A less complete implementation design for imheritance is
+ * interface. A less complete implementation design for inheritance is
  * available in AbstractBookMetaData where the complexity is in the setup rather
  * than the inheritance. DefaultBookMetaData is probably the preferred
  * implementation.
@@ -125,7 +125,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData
         {
             return false;
         }
-        
+
         return ComponentOrientation.getOrientation(new Locale(lang)).isLeftToRight();
     }
 

@@ -27,10 +27,11 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.PerFieldAnalyzerWrapper;
 import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.analysis.TokenStream;
+import org.crosswire.jsword.index.lucene.analysis.AnalyzerFactory;
 
 /**
  * A specialized analyzer for Books that analyzes different fields differently.
- *
+ * Uses AnalyzerFactory for InstalledIndexVersion > 1.1
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
@@ -40,8 +41,21 @@ public class LuceneAnalyzer extends Analyzer
 
     public LuceneAnalyzer()
     {
+        this(AnalyzerFactory.DEFAULT_ID);
+    }
+
+    public LuceneAnalyzer(String naturalLanguageID)
+    {
         // The default analysis
         analyzer = new PerFieldAnalyzerWrapper(new SimpleAnalyzer());
+
+        if (IndexMetadata.instance().getInstalledIndexVersion() > IndexMetadata.INDEX_VERSION_1_1)
+        {
+            // Content is analyzed using natural language analyzer
+            // (stemming, stopword etc)
+            Analyzer myNaturalLanguageAnalyzer = AnalyzerFactory.getInstance().createAnalyzer(naturalLanguageID);
+            analyzer.addAnalyzer(LuceneIndex.FIELD_BODY, myNaturalLanguageAnalyzer);
+        }
 
         // Keywords are normalized to osisIDs
         analyzer.addAnalyzer(LuceneIndex.FIELD_KEY, new KeyAnalyzer());

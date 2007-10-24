@@ -25,7 +25,6 @@ import java.io.IOException;
 
 import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
-import org.crosswire.jsword.index.IndexManager;
 
 /**
  * A Factory class for Bookmarks.
@@ -49,8 +48,7 @@ public final class BookmarkFactory
      */
     public static Bookmark getBookmark()
     {
-        return (Bookmark) 
-        instance.clone();
+        return (Bookmark) instance.clone();
     }
 
     /**

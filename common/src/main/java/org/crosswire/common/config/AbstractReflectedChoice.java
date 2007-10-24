@@ -75,7 +75,7 @@ public abstract class AbstractReflectedChoice implements Choice
         {
             ignored = false;
         }
-        
+
         String helpText = configResources.getString(key + ".help"); //$NON-NLS-1$
         assert helpText != null;
         setHelpText(helpText);

@@ -123,7 +123,16 @@ public class DefaultBookmark implements Bookmark
      */
     public Object clone()
     {
-        return null;
+        Object clone = null;
+        try
+        {
+            clone = super.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            assert false : e;
+        }
+        return clone;
     }
 
     /**

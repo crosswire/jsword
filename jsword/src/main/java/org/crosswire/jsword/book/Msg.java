@@ -33,7 +33,7 @@ import org.crosswire.common.util.MsgBase;
  */
 final class Msg extends MsgBase
 {
-    
+
     static final Msg BIBLE_NOTFOUND = new Msg("Defaults.BibleNotFound"); //$NON-NLS-1$
     static final Msg DICTIONARY_NOTFOUND = new Msg("Defaults.DictionaryNotFound"); //$NON-NLS-1$
     static final Msg COMMENTARY_NOTFOUND = new Msg("Defaults.CommentaryNotFound"); //$NON-NLS-1$

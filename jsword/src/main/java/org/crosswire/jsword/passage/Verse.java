@@ -70,7 +70,7 @@ public final class Verse implements Key, Serializable
     public Verse()
     {
         originalName = null;
-        
+
         book = DEFAULT.book;
         chapter = DEFAULT.chapter;
         verse = DEFAULT.verse;

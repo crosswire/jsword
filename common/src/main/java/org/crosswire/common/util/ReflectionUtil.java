@@ -72,10 +72,10 @@ public final class ReflectionUtil
      * @throws InstantiationException
      */
     public static Object construct(String className, Object[] params) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException
-    {        
+    {
         Class[] paramTypes = describeParameters(params);
         Class clazz = Class.forName(className);
-        final Constructor c = clazz.getConstructor(paramTypes);        
+        final Constructor c = clazz.getConstructor(paramTypes);
         return c.newInstance(params);
     }
 
@@ -93,14 +93,14 @@ public final class ReflectionUtil
      * @throws InstantiationException
      */
     public static Object construct(String className, Object[] params, Class[] paramTypes) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException
-    {        
+    {
         Class[] calledTypes = paramTypes;
         if (calledTypes == null)
         {
             calledTypes = describeParameters(params);
         }
         Class clazz = Class.forName(className);
-        final Constructor c = clazz.getConstructor(calledTypes);        
+        final Constructor c = clazz.getConstructor(calledTypes);
         return c.newInstance(params);
     }
 

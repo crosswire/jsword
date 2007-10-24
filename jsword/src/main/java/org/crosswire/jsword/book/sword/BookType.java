@@ -70,7 +70,7 @@ public abstract class BookType implements Serializable
 
         protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
         {
-            BlockType blockType = BlockType.fromString((String)sbmd.getProperty(ConfigEntryType.BLOCK_TYPE));
+            BlockType blockType = BlockType.fromString((String) sbmd.getProperty(ConfigEntryType.BLOCK_TYPE));
             return new ZVerseBackend(sbmd, blockType);
         }
 
@@ -130,7 +130,7 @@ public abstract class BookType implements Serializable
 
         protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
         {
-            BlockType blockType = BlockType.fromString((String)sbmd.getProperty(ConfigEntryType.BLOCK_TYPE));
+            BlockType blockType = BlockType.fromString((String) sbmd.getProperty(ConfigEntryType.BLOCK_TYPE));
             return new ZVerseBackend(sbmd, blockType);
         }
 

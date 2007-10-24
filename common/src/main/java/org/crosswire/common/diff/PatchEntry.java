@@ -438,7 +438,7 @@ public class PatchEntry
                     break;
                 default:
                     buf.append(c);
-            }    
+            }
         }
         return buf.toString();
     }
@@ -452,7 +452,8 @@ public class PatchEntry
     {
         int strlen = str.length();
         StringBuffer buf = new StringBuffer(2 * strlen);
-        for (int i = 0; i < strlen; i++)
+        int i = 0;
+        for (i = 0; i < strlen; i++)
         {
             char c = str.charAt(i);
             if (c == '%')

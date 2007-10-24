@@ -119,7 +119,10 @@ public class LuceneIndex extends AbstractIndex implements Activatable
         Progress job = JobManager.createJob(Msg.INDEX_START.toString(), Thread.currentThread(), false);
 
         IndexStatus finalStatus = IndexStatus.UNDONE;
-        Analyzer analyzer = new LuceneAnalyzer();
+
+        String bookLang = book.getLanguage().getName();
+        Analyzer analyzer = new LuceneAnalyzer(bookLang);
+
         List errors = new ArrayList();
         File tempPath = new File(path + '.' + IndexStatus.CREATING.toString());
 
@@ -130,8 +133,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
 
                 book.setIndexStatus(IndexStatus.CREATING);
 
-                // An index is created by opening an IndexWriter with the
-                // create argument set to true.
+                // An index is created by opening an IndexWriter with the create argument set to true.
                 //IndexWriter writer = new IndexWriter(tempPath.getCanonicalPath(), analyzer, true);
 
                 // Create the index in core.
@@ -206,10 +208,12 @@ public class LuceneIndex extends AbstractIndex implements Activatable
         {
             try
             {
+                String bookLang = book.getLanguage().getName();
+                Analyzer analyzer = new LuceneAnalyzer(bookLang);
 
-                Analyzer analyzer = new LuceneAnalyzer();
                 QueryParser parser = new QueryParser(LuceneIndex.FIELD_BODY, analyzer);
                 Query query = parser.parse(search);
+                log.info("ParsedQuery-" + query.toString()); //$NON-NLS-1$
                 Hits hits = searcher.search(query);
 
                 // For ranking we use a PassageTally
