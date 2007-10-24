@@ -35,6 +35,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.crosswire.common.util.Language;
 import org.crosswire.common.util.Languages;
@@ -287,7 +289,6 @@ public final class ConfigEntryTable
 
     /**
      * Sort the keys for a more meaningful presentation order.
-     * TODO(DM): Replace this with a conversion of the properties to XML and then by XSLT to HTML.
      */
     public Element toOSIS()
     {
@@ -368,15 +369,15 @@ public final class ConfigEntryTable
                 continue;
             }
 
-            int eqpos = line.indexOf('=');
-            if (eqpos == -1)
+            Matcher matcher = KEY_VALUE_PATTERN.matcher(line);
+            if (!matcher.matches())
             {
                 log.warn("Expected to see '=' in " + internal + ": " + line); //$NON-NLS-1$ //$NON-NLS-2$
                 continue;
             }
 
-            String key = line.substring(0, eqpos).trim();
-            String value = line.substring(eqpos + 1).trim();
+            String key = matcher.group(1).trim();
+            String value = matcher.group(2).trim();
             // Only CIPHER_KEYS that are empty are not ignored
             if (value.length() == 0 && !ConfigEntryType.CIPHER_KEY.getName().equals(key))
             {
@@ -557,7 +558,7 @@ public final class ConfigEntryTable
      */
     private boolean isKeyLine(String line)
     {
-        return line.indexOf('=') != -1;
+        return KEY_VALUE_PATTERN.matcher(line).matches();
     }
 
     /**
@@ -579,8 +580,9 @@ public final class ConfigEntryTable
         }
         if (datapath.startsWith("./")) //$NON-NLS-1$
         {
-            add(ConfigEntryType.DATA_PATH, datapath.substring(2));
+            datapath = datapath.substring(2);
         }
+        add(ConfigEntryType.DATA_PATH, datapath);
     }
 
     private boolean isLeftToRight(Language language)
@@ -962,4 +964,14 @@ public final class ConfigEntryTable
      * so that it can be updated.
      */
     private File configFile;
+
+    /**
+     * Pattern that matches a key=value.
+     * The key can contain ascii letters, numbers, underscore and period.
+     * The key must begin at the beginning of the line.
+     * The = sign following the key may be surrounded by whitespace.
+     * The value may contain anything, including an = sign.
+     */
+    private static final Pattern KEY_VALUE_PATTERN = Pattern.compile("^([A-Za-z0-9_.]+)\\s*=\\s*(.*)$"); //$NON-NLS-1$
+
 }

@@ -29,3 +29,7 @@ filesystem
 download
 config
 internationalize
+osis
+html
+stylesheet
+stylesheets
