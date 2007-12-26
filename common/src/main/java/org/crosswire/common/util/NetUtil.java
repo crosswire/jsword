@@ -573,7 +573,21 @@ public final class NetUtil
     }
 
     /**
+     * List all the strings specified by the index file passed in.
+     * To be acceptable it must be a non-0 length string, not commented
+     * with #, and not the index file itself.
+     * @return String[] Matching results.
+     * @throws FileNotFoundException
+     */
+    public static String[] listByIndexFile(URI index) throws IOException
+    {
+        return listByIndexFile(index, new DefaultURIFilter());
+    }
+
+    /**
      * List all the files specified by the index file passed in.
+     * To be acceptable it must be a non-0 length string, not commented
+     * with #, not the index file itself and acceptable by the filter.
      * @return String[] Matching results.
      * @throws FileNotFoundException
      */
