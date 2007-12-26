@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <launchConfiguration type="org.eclipse.ant.AntLaunchConfigurationType">
 <booleanAttribute key="org.eclipse.ant.ui.DEFAULT_VM_INSTALL" value="true"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
@@ -11,7 +11,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.ant.ui.AntClasspathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.eclipse.ant.internal.ui.antsupport.InternalAntRunner"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="jsword"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_INSTALL_NAME" value="jre1.6.0_01"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_INSTALL_NAME" value="java-1.5.0-sun-1.5.0.10"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_INSTALL_TYPE_ID" value="org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType"/>
 <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:/jsword}"/>
 <stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="${workspace_loc:/jsword/build.xml}"/>
