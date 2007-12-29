@@ -33,3 +33,4 @@ osis
 html
 stylesheet
 stylesheets
+externalize
