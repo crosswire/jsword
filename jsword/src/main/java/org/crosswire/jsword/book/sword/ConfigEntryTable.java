@@ -589,7 +589,7 @@ public final class ConfigEntryTable
     {
         String lang = language.getCode();
         // Java does not know that the following languages are right to left
-        if ("fa".equals(lang) || "syr".equals(lang))  //$NON-NLS-1$ //$NON-NLS-2$
+        if ("fa".equals(lang) || "syr".equals(lang) || "ug".equals(lang) || "uig".equals(lang))  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         {
             return false;
         }
