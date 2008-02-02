@@ -23,7 +23,6 @@ package org.crosswire.jsword.index.lucene;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -356,11 +355,19 @@ public class LuceneIndex extends AbstractIndex implements Activatable
         String oldRootName = ""; //$NON-NLS-1$
         int percent = 0;
         String rootName = ""; //$NON-NLS-1$
-        String text = ""; //$NON-NLS-1$
         BookData data = null;
         Key subkey = null;
-        Document doc = null;
         Element osis = null;
+
+        // Set up for reuse.
+        Document doc = new Document();
+        Field keyField = new Field(FIELD_KEY, "", Field.Store.YES, Field.Index.UN_TOKENIZED, Field.TermVector.NO); //$NON-NLS-1$
+        Field bodyField = new Field(FIELD_BODY, "", Field.Store.NO, Field.Index.TOKENIZED, Field.TermVector.NO); //$NON-NLS-1$
+        Field strongField = new Field(FIELD_STRONG, "", Field.Store.NO, Field.Index.TOKENIZED, Field.TermVector.NO); //$NON-NLS-1$
+        Field xrefField = new Field(FIELD_XREF, "", Field.Store.NO, Field.Index.TOKENIZED, Field.TermVector.NO); //$NON-NLS-1$
+        Field noteField = new Field(FIELD_NOTE, "", Field.Store.NO, Field.Index.TOKENIZED, Field.TermVector.NO); //$NON-NLS-1$
+        Field headingField = new Field(FIELD_HEADING, "", Field.Store.NO, Field.Index.TOKENIZED, Field.TermVector.NO); //$NON-NLS-1$
+
         int size = key.getCardinality();
         int subCount = count;
         for (Iterator it = key.iterator(); it.hasNext(); )
@@ -388,37 +395,38 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                     continue;
                 }
 
+                // Remove all fields from the document
+                doc.getFields().clear();
+
                 // Do the actual indexing
-                text = OSISUtil.getCanonicalText(osis);
-                doc = null;
-                if (text != null && text.length() > 0)
-                {
-                    doc = new Document();
-                    doc.add(new Field(FIELD_KEY, subkey.getOsisRef(), Field.Store.YES, Field.Index.UN_TOKENIZED));
-                    doc.add(new Field(FIELD_BODY, new StringReader(text)));
-                }
+                // Always add the key
+                keyField.setValue(subkey.getOsisRef());
+                doc.add(keyField);
+
+                addField(doc, bodyField, OSISUtil.getCanonicalText(osis));
 
                 if (hasStrongs)
                 {
-                    doc = addField(doc, FIELD_STRONG, OSISUtil.getStrongsNumbers(osis));
+                    addField(doc, strongField, OSISUtil.getStrongsNumbers(osis));
                 }
 
                 if (hasXRefs)
                 {
-                    doc = addField(doc, FIELD_XREF, OSISUtil.getReferences(osis));
+                    addField(doc, xrefField, OSISUtil.getReferences(osis));
                 }
 
                 if (hasNotes)
                 {
-                    doc = addField(doc, FIELD_NOTE, OSISUtil.getNotes(osis));
+                    addField(doc, noteField, OSISUtil.getNotes(osis));
                 }
 
                 if (hasHeadings)
                 {
-                    doc = addField(doc, FIELD_HEADING, OSISUtil.getHeadings(osis));
+                    addField(doc, headingField, OSISUtil.getHeadings(osis));
                 }
 
-                if (doc != null)
+                // Add the document if we added more than just the key.
+                if (doc.getFields().size() > 1)
                 {
                     writer.addDocument(doc);
                 }
@@ -428,7 +436,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                 if (!rootName.equals(oldRootName))
                 {
                     oldRootName = rootName;
-                    job.setSectionName(Msg.INDEXING.toString(rootName));
+                    job.setSectionName(rootName);
                 }
 
                 subCount++;
@@ -446,18 +454,13 @@ public class LuceneIndex extends AbstractIndex implements Activatable
         }
     }
 
-    private Document addField(Document theDoc, String field, String text)
+    private void addField(Document doc, Field field, String text)
     {
-        Document doc = theDoc;
         if (text != null && text.length() > 0)
         {
-            if (doc == null)
-            {
-                doc = new Document();
-            }
-            doc.add(new Field(field, text, Field.Store.NO, Field.Index.TOKENIZED));
+            field.setValue(text);
+            doc.add(field);
         }
-        return doc;
     }
 
     /**

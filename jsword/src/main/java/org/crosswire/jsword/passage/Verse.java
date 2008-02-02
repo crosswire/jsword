@@ -201,7 +201,7 @@ public final class Verse implements Key, Serializable
     {
         try
         {
-            return BibleInfo.getPreferredBookName(book);
+            return BibleInfo.getShortBookName(book);
         }
         catch (NoSuchKeyException ex)
         {
