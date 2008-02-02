@@ -24,6 +24,7 @@ package org.crosswire.jsword.examples;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.transform.TransformerException;
 
@@ -43,6 +44,9 @@ import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.BooksEvent;
 import org.crosswire.jsword.book.BooksListener;
 import org.crosswire.jsword.book.OSISUtil;
+import org.crosswire.jsword.book.install.InstallException;
+import org.crosswire.jsword.book.install.InstallManager;
+import org.crosswire.jsword.book.install.Installer;
 import org.crosswire.jsword.index.search.DefaultSearchModifier;
 import org.crosswire.jsword.index.search.DefaultSearchRequest;
 import org.crosswire.jsword.passage.Key;
@@ -280,7 +284,7 @@ public class APIExamples
 
         // If you are wanting to get really fancy you can implement your own
         // BookFilter easily
-        List test = Books.installed().getBooks(new MyBookFilter());
+        List test = Books.installed().getBooks(new MyBookFilter("ESV")); //$NON-NLS-1$
         book = (Book) test.get(0);
 
         if (book != null)
@@ -293,15 +297,97 @@ public class APIExamples
         Books.installed().addBooksListener(new MyBooksListener());
     }
 
+    public void installBook()
+    {
+        // An installer knows how to install books
+        Installer installer = null;
+        
+        InstallManager imanager = new InstallManager();
+
+        // Ask the Install Manager for a map of all known module sites
+        Map installers = imanager.getInstallers();
+
+        // Get all the installers one after the other
+        Iterator iter = installers.keySet().iterator();
+        while (iter.hasNext())
+        {
+            String name = (String) iter.next();
+            installer = (Installer) installers.get(name);
+            
+        }
+
+        // If we know the name of the installer we can get it directly
+        installer = imanager.getInstaller("Crosswire"); //$NON-NLS-1$
+
+        // Now we can get the list of books
+        try
+        {
+            installer.reloadBookList();
+        }
+        catch (InstallException e)
+        {
+            e.printStackTrace();
+        }
+
+        // Get a list of all the available books
+        List availableBooks = installer.getBooks();
+
+        // get some available books. In this case, just one book.
+        availableBooks = installer.getBooks(new MyBookFilter("ESV")); //$NON-NLS-1$
+
+        Book book = (Book) availableBooks.get(0);
+
+        if (book != null)
+        {
+            System.out.println("Book " + book.getInitials() + " is available"); //$NON-NLS-1$ //$NON-NLS-2$
+
+            // Delete the book, if present
+            // At the moment, JSword will not re-install. Later it will, if the remote version is greater.
+            try
+            {
+                if (Books.installed().getBook("ESV") != null) //$NON-NLS-1$
+                {
+                    // Make the book unavailable.
+                    // This is normally done via listeners.
+                    Books.installed().removeBook(book);
+
+                    // Actually do the delete
+                    // This should be a call on installer.
+                    book.getDriver().delete(book);
+                }
+            }
+            catch (BookException e1)
+            {
+                e1.printStackTrace();
+            }
+
+            try
+            {
+                // Now install it. Note this is a background task.
+                installer.install(book);
+            }
+            catch (InstallException e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
     /**
      * A simple BookFilter that looks for a Bible by name.
      */
     static class MyBookFilter implements BookFilter
     {
+        public MyBookFilter(String bookName)
+        {
+            name = bookName;
+        }
+
         public boolean test(Book bk)
         {
-            return bk.getName().equals("My Favorite Version"); //$NON-NLS-1$
+            return bk.getInitials().equals(name);
         }
+
+        private String name;
     }
 
     /**
@@ -335,6 +421,7 @@ public class APIExamples
     {
         APIExamples examples = new APIExamples();
 
+        examples.installBook();
         examples.readPlainText();
         examples.readStyledText();
         examples.readDictionary();
