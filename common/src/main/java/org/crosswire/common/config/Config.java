@@ -269,14 +269,14 @@ public class Config
             String key = (String) iter.next();
             Choice choice = getChoice(key);
 
-            String oldValue = choice.getString();
+            String oldValue = choice.getString();   // never returns null
             String newValue = local.getProperty(key);
 
             // The new value shouldn't really be blank - obviously this
             // choice has just been added, substitute the default.
-            if (newValue == null || newValue.length() == 0)
+            if ((newValue == null) || (newValue.length() == 0))
             {
-                if (oldValue == null)
+                if ((oldValue == null) || (oldValue.length() == 0))
                 {
                     continue;
                 }

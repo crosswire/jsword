@@ -446,6 +446,9 @@ public final class Defaults
         return hebrewParseDeft;
     }
 
+    /**
+     * Create book lists for every type of book.
+     */
     public static void refreshBooks()
     {
         // Create the array of Bibles
