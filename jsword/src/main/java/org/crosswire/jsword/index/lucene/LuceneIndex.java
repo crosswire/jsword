@@ -211,6 +211,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                 Analyzer analyzer = new LuceneAnalyzer(bookLang);
 
                 QueryParser parser = new QueryParser(LuceneIndex.FIELD_BODY, analyzer);
+                parser.setAllowLeadingWildcard(true);
                 Query query = parser.parse(search);
                 log.info("ParsedQuery-" + query.toString()); //$NON-NLS-1$
                 Hits hits = searcher.search(query);
