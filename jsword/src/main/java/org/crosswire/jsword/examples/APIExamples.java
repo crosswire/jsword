@@ -317,7 +317,7 @@ public class APIExamples
         }
 
         // If we know the name of the installer we can get it directly
-        installer = imanager.getInstaller("Crosswire"); //$NON-NLS-1$
+        installer = imanager.getInstaller("CrossWire"); //$NON-NLS-1$
 
         // Now we can get the list of books
         try

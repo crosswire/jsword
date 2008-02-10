@@ -670,7 +670,7 @@ public class ConfigEntryType implements Serializable
     };
 
     /**
-     * Similar to DataPath. It gives where on the Crosswire server the book can be found.
+     * Similar to DataPath. It gives where on the CrossWire server the book can be found.
      * Informational only.
      */
     public static final ConfigEntryType DISTRIBUTION_SOURCE = new ConfigEntryType("DistributionSource") //$NON-NLS-1$
