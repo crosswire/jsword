@@ -34,3 +34,5 @@ html
 stylesheet
 stylesheets
 externalize
+tooltip
+awt
