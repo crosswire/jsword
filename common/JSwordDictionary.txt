@@ -36,3 +36,6 @@ stylesheets
 externalize
 tooltip
 awt
+toolbar
+ctrl
+alt

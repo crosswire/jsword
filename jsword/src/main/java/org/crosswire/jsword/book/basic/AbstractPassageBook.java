@@ -62,6 +62,7 @@ public abstract class AbstractPassageBook extends AbstractBook
      */
     public Iterator getOsisIterator(Key key, boolean allowEmpty) throws BookException
     {
+        // Note: allowEmpty indicates parallel view
         // TODO(DMS): make the iterator be demand driven
         try
         {
@@ -69,17 +70,17 @@ public abstract class AbstractPassageBook extends AbstractBook
 
             // For all the ranges in this Passage
             Passage ref = KeyUtil.getPassage(key);
-            boolean hasRanges = ref.hasRanges(RestrictionType.CHAPTER);
+            boolean showTitles = ref.hasRanges(RestrictionType.CHAPTER) || !allowEmpty;
             Iterator rit = ref.rangeIterator(RestrictionType.CHAPTER);
 
             while (rit.hasNext())
             {
                 VerseRange range = (VerseRange) rit.next();
 
-                // Only add the title if there are multiple ranges
-                if (hasRanges)
+                if (showTitles)
                 {
                     Element title = OSISUtil.factory().createTitle();
+                    title.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.GENERATED_CONTENT);
                     title.addContent(range.getName());
                     content.add(title);
                 }

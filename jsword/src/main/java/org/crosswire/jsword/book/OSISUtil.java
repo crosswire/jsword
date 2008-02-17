@@ -181,6 +181,11 @@ public final class OSISUtil
     public static final String VARIANT_CLASS = "x-class"; //$NON-NLS-1$
 
     /**
+     * Constant for JSword generated content. Used for type or subType.
+     */
+    public static final String GENERATED_CONTENT = "x-gen"; //$NON-NLS-1$
+
+    /**
      * Constant for the pos (part of speech) type.
      */
     public static final String POS_TYPE = "x-pos"; //$NON-NLS-1$
