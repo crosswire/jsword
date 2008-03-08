@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import org.crosswire.common.util.ClassUtil;
+import org.crosswire.common.util.PluginUtil;
 import org.jdom.Element;
 
 /**
@@ -92,6 +92,6 @@ public final class ChoiceFactory
      */
     static
     {
-        map = ClassUtil.getImplementorsMap(Choice.class);
+        map = PluginUtil.getImplementorsMap(Choice.class);
     }
 }
