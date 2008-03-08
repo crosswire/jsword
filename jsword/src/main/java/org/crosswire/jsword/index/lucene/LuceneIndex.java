@@ -115,7 +115,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
         // Indexing the book is a good way to police data errors.
         DataPolice.setBook(book.getBookMetaData());
 
-        Progress job = JobManager.createJob(UserMsg.INDEX_START.toString(), Thread.currentThread(), false);
+        Progress job = JobManager.createJob(UserMsg.INDEX_START.toString(book.getInitials()), Thread.currentThread(), false);
 
         IndexStatus finalStatus = IndexStatus.UNDONE;
 

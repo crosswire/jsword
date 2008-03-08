@@ -32,7 +32,7 @@ import org.crosswire.common.util.MsgBase;
  */
 final class UserMsg extends MsgBase
 {
-    static final UserMsg INDEX_START = new UserMsg("LuceneIndexManager.Indexing"); //$NON-NLS-1$
+    static final UserMsg INDEX_START = new UserMsg("LuceneIndex.Indexing"); //$NON-NLS-1$
     static final UserMsg LUCENE_INIT = new UserMsg("LuceneIndex.LuceneInit"); //$NON-NLS-1$
     static final UserMsg SEARCH_FAILED = new UserMsg("LuceneIndex.SearchFailed"); //$NON-NLS-1$
     static final UserMsg OPTIMIZING = new UserMsg("LuceneIndex.Optimizing"); //$NON-NLS-1$
