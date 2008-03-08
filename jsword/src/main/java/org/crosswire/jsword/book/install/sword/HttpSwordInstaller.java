@@ -86,7 +86,7 @@ public class HttpSwordInstaller extends AbstractSwordInstaller
         }
         catch (LucidException ex)
         {
-            throw new InstallException(Msg.MISSING_FILE, ex);
+            throw new InstallException(UserMsg.MISSING_FILE, ex);
         }
         catch (URISyntaxException e)
         {
@@ -104,7 +104,7 @@ public class HttpSwordInstaller extends AbstractSwordInstaller
     {
         if (job != null)
         {
-            job.setSectionName(Msg.JOB_DOWNLOADING.toString());
+            job.setSectionName(UserMsg.JOB_DOWNLOADING.toString());
         }
 
         WebResource wr = new WebResource(uri, proxyHost, proxyPort);

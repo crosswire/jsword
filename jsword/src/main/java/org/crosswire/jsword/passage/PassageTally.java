@@ -976,7 +976,7 @@ public class PassageTally extends AbstractPassage
         }
 
         /**
-         * @return the next Verse in the interation
+         * @return the next Verse in the iteration
          * @throws NoSuchElementException if hasNext() == false
          */
         public int lastRank() throws NoSuchElementException

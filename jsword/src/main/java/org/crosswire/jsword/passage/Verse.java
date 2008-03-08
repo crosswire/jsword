@@ -722,7 +722,7 @@ public final class Verse implements Key, Serializable
         }
         catch (NumberFormatException ex)
         {
-            throw new NoSuchVerseException(Msg.VERSE_PARSE, new Object[] { text });
+            throw new NoSuchVerseException(UserMsg.VERSE_PARSE, new Object[] { text });
         }
     }
 

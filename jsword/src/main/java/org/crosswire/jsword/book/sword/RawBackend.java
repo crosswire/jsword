@@ -53,10 +53,7 @@ public class RawBackend extends AbstractBackend
         super(sbmd);
         this.datasize = datasize;
 
-        if (datasize != 2 && datasize != 4)
-        {
-            throw new BookException(Msg.TYPE_UNKNOWN);
-        }
+        assert (datasize == 2 || datasize == 4);
 
         String path = getExpandedDataPath();
 
@@ -204,7 +201,7 @@ public class RawBackend extends AbstractBackend
         }
         catch (IOException ex)
         {
-            throw new BookException(Msg.READ_FAIL, ex, new Object[] { verse.getName() });
+            throw new BookException(UserMsg.READ_FAIL, ex, new Object[] { verse.getName() });
         }
     }
 

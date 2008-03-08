@@ -36,7 +36,7 @@ public class AccuracyTypeTest extends TestCase
         }
         catch (NoSuchVerseException nsve)
         {
-            NoSuchVerseException correctException = new NoSuchVerseException(Msg.VERSE_PARTS, new Object[] {"1:2:3:4, 1, 2, 3, 4"});  //$NON-NLS-1$
+            NoSuchVerseException correctException = new NoSuchVerseException(UserMsg.VERSE_PARTS, new Object[] {"1:2:3:4, 1, 2, 3, 4"});  //$NON-NLS-1$
             assertEquals("Unexpected exception message", correctException.getMessage(), nsve.getMessage()); //$NON-NLS-1$
             caught = true;
         }
@@ -59,7 +59,7 @@ public class AccuracyTypeTest extends TestCase
         }
         catch (NoSuchVerseException nsve)
         {
-            NoSuchVerseException correctException = new NoSuchVerseException(Msg.VERSE_PARTS, new Object[] {"-1:2:3, -1, 2, 3"});  //$NON-NLS-1$
+            NoSuchVerseException correctException = new NoSuchVerseException(UserMsg.VERSE_PARTS, new Object[] {"-1:2:3, -1, 2, 3"});  //$NON-NLS-1$
             assertEquals("Unexpected exception message", correctException.getMessage(), nsve.getMessage()); //$NON-NLS-1$
             caught = true;
         }

@@ -23,7 +23,7 @@ package org.crosswire.jsword.util;
 
 import java.util.Map;
 
-import org.crosswire.common.util.ClassUtil;
+import org.crosswire.common.util.PluginUtil;
 import org.crosswire.common.xml.Converter;
 
 /**
@@ -50,7 +50,7 @@ public final class ConverterFactory
     {
         try
         {
-            Class clazz = (Class) ClassUtil.getImplementorsMap(Converter.class).get(name);
+            Class clazz = (Class) PluginUtil.getImplementorsMap(Converter.class).get(name);
             assert clazz != null : Msg.NO_CONVERTER.toString(name);
             return (Converter) clazz.newInstance();
         }
@@ -70,7 +70,7 @@ public final class ConverterFactory
      */
     public static Map getKnownConverters()
     {
-        return ClassUtil.getImplementorsMap(Converter.class);
+        return PluginUtil.getImplementorsMap(Converter.class);
     }
 
     /**
@@ -90,7 +90,7 @@ public final class ConverterFactory
     }
 
     /**
-     * Current default converter implentation
+     * Current default converter implementation
      */
     private static String name = "Configurable"; //$NON-NLS-1$
 }

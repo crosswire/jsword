@@ -88,7 +88,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
         }
         catch (IOException ex)
         {
-            throw new BookException(Msg.LUCENE_INIT, ex);
+            throw new BookException(UserMsg.LUCENE_INIT, ex);
         }
     }
 
@@ -109,13 +109,13 @@ public class LuceneIndex extends AbstractIndex implements Activatable
         }
         catch (IOException ex)
         {
-            throw new BookException(Msg.LUCENE_INIT, ex);
+            throw new BookException(UserMsg.LUCENE_INIT, ex);
         }
 
         // Indexing the book is a good way to police data errors.
         DataPolice.setBook(book.getBookMetaData());
 
-        Progress job = JobManager.createJob(Msg.INDEX_START.toString(), Thread.currentThread(), false);
+        Progress job = JobManager.createJob(UserMsg.INDEX_START.toString(), Thread.currentThread(), false);
 
         IndexStatus finalStatus = IndexStatus.UNDONE;
 
@@ -141,7 +141,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
 
                 generateSearchIndexImpl(job, errors, writer, book.getGlobalKeyList(), 0);
 
-                job.setSectionName(Msg.OPTIMIZING.toString());
+                job.setSectionName(UserMsg.OPTIMIZING.toString());
                 job.setWork(95);
 
                 // Consolidate the index into the minimum number of files.
@@ -176,7 +176,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                         buf.append(iter.next());
                         buf.append('\n');
                     }
-                    Reporter.informUser(this, Msg.BAD_VERSE, buf);
+                    Reporter.informUser(this, UserMsg.BAD_VERSE, buf);
                 }
 
             }
@@ -184,7 +184,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
         catch (IOException ex)
         {
             job.cancel();
-            throw new BookException(Msg.LUCENE_INIT, ex);
+            throw new BookException(UserMsg.LUCENE_INIT, ex);
         }
         finally
         {
@@ -259,15 +259,15 @@ public class LuceneIndex extends AbstractIndex implements Activatable
             }
             catch (IOException e)
             {
-                throw new BookException(Msg.SEARCH_FAILED, e);
+                throw new BookException(UserMsg.SEARCH_FAILED, e);
             }
             catch (NoSuchVerseException e)
             {
-                throw new BookException(Msg.SEARCH_FAILED, e);
+                throw new BookException(UserMsg.SEARCH_FAILED, e);
             }
             catch (ParseException e)
             {
-                throw new BookException(Msg.SEARCH_FAILED, e);
+                throw new BookException(UserMsg.SEARCH_FAILED, e);
             }
             finally
             {

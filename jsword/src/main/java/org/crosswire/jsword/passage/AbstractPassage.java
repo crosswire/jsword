@@ -279,18 +279,7 @@ public abstract class AbstractPassage implements Passage
      */
     public String getOverview()
     {
-        int verse_count = countVerses();
-        int book_count = booksInPassage();
-
-        String verses = (verse_count == 1)
-                      ? Msg.ABSTRACT_VERSE_SINGULAR.toString()
-                      : Msg.ABSTRACT_VERSE_PLURAL.toString();
-
-        String books = (book_count == 1)
-                     ? Msg.ABSTRACT_BOOK_SINGULAR.toString()
-                     : Msg.ABSTRACT_BOOK_PLURAL.toString();
-
-        return verse_count + " " + verses + " " + book_count + " " + books; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        return UserMsg.ABSTRACT_REF_SUMMARY.toString(new Object[] {new Integer(countVerses()), new Integer(booksInPassage())});
     }
 
     /* (non-Javadoc)

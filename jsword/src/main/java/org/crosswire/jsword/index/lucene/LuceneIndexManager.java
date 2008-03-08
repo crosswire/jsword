@@ -85,7 +85,7 @@ public class LuceneIndexManager implements IndexManager
         }
         catch (IOException ex)
         {
-            throw new BookException(Msg.LUCENE_INIT, ex);
+            throw new BookException(UserMsg.LUCENE_INIT, ex);
         }
     }
 
@@ -143,7 +143,7 @@ public class LuceneIndexManager implements IndexManager
         }
         catch (IOException ex)
         {
-            throw new BookException(Msg.INSTALL_FAIL, ex);
+            throw new BookException(UserMsg.INSTALL_FAIL, ex);
         }
     }
 
@@ -169,7 +169,7 @@ public class LuceneIndexManager implements IndexManager
         }
         catch (IOException ex)
         {
-            throw new BookException(Msg.DELETE_FAILED, ex);
+            throw new BookException(UserMsg.DELETE_FAILED, ex);
         }
 
         FileUtil.delete(tempPath);

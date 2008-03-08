@@ -73,7 +73,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
         Locale defaultLocale = Locale.getDefault();
         ResourceBundle prop = ResourceBundle.getBundle(setname, defaultLocale, CWClassLoader.instance(ReadingsBookDriver.class));
 
-        String name = Msg.TITLE.toString();
+        String name = UserMsg.TITLE.toString();
         try
         {
             name = prop.getString("title"); //$NON-NLS-1$
@@ -127,7 +127,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
     {
         if (!(key instanceof ReadingsKey))
         {
-            throw new BookException(Msg.NOT_FOUND, new Object[] { key.getName() });
+            throw new BookException(UserMsg.NOT_FOUND, new Object[] { key.getName() });
         }
 
         // TODO(DMS): make the iterator be demand driven
@@ -140,7 +140,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
         String readings = (String) hash.get(key);
         if (readings == null)
         {
-            throw new BookException(Msg.NOT_FOUND, new Object[] { key.getName() });
+            throw new BookException(UserMsg.NOT_FOUND, new Object[] { key.getName() });
         }
 
         try
@@ -165,7 +165,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
         }
         catch (NoSuchKeyException ex)
         {
-            content.add(OSISUtil.factory().createText(Msg.DECODE_ERROR.toString(readings)));
+            content.add(OSISUtil.factory().createText(Msg.PARSE_FAIL.toString(readings)));
         }
 
         return content.iterator();

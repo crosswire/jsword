@@ -173,13 +173,13 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
             public void run()
             {
                 URI predictURI = Project.instance().getWritablePropertiesURI("sword-install"); //$NON-NLS-1$
-                Progress job = JobManager.createJob(Msg.INSTALLING.toString(sbmd.getName()), predictURI, this, true);
+                Progress job = JobManager.createJob(UserMsg.INSTALLING.toString(sbmd.getName()), predictURI, this, true);
 
                 yield();
 
                 try
                 {
-                    job.setSectionName(Msg.JOB_INIT.toString());
+                    job.setSectionName(UserMsg.JOB_INIT.toString());
 
                     URI temp = NetUtil.getTemporaryURI("swd", ZIP_SUFFIX); //$NON-NLS-1$
 
@@ -191,7 +191,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                     {
                         File dldir = SwordBookPath.getSwordDownloadDir();
                         IOUtil.unpackZip(NetUtil.getAsFile(temp), dldir);
-                        job.setSectionName(Msg.JOB_CONFIG.toString());
+                        job.setSectionName(UserMsg.JOB_CONFIG.toString());
                         sbmd.setLibrary(NetUtil.getURI(dldir));
                         SwordBookDriver.registerNewBook(sbmd);
                     }
@@ -229,7 +229,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
      */
     public void reloadBookList() throws InstallException
     {
-        Progress job = JobManager.createJob(Msg.JOB_DOWNLOADING.toString(), Thread.currentThread(), false);
+        Progress job = JobManager.createJob(UserMsg.JOB_DOWNLOADING.toString(), Thread.currentThread(), false);
 
         try
         {
@@ -253,7 +253,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
      */
     public void downloadSearchIndex(Book book, URI localDest) throws InstallException
     {
-        Progress job = JobManager.createJob(Msg.JOB_DOWNLOADING.toString(), Thread.currentThread(), false);
+        Progress job = JobManager.createJob(UserMsg.JOB_DOWNLOADING.toString(), Thread.currentThread(), false);
 
         try
         {

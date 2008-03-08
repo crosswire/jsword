@@ -23,8 +23,8 @@ package org.crosswire.jsword.index;
 
 import java.io.IOException;
 
-import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.PluginUtil;
 
 /**
  * A Factory class for IndexManagers.
@@ -68,8 +68,7 @@ public final class IndexManagerFactory
     {
         try
         {
-            Class impl = ClassUtil.getImplementor(IndexManager.class);
-            instance = (IndexManager) impl.newInstance();
+            instance = (IndexManager) PluginUtil.getImplementation(IndexManager.class);
         }
         catch (IOException e)
         {

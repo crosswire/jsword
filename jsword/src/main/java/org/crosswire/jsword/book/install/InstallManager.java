@@ -30,10 +30,10 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
+import org.crosswire.common.util.PluginUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.util.Project;
@@ -58,7 +58,7 @@ public final class InstallManager
         try
         {
             Properties sitemap = ResourceUtil.getProperties(getClass());
-            factories = ClassUtil.getImplementorsMap(InstallerFactory.class);
+            factories = PluginUtil.getImplementorsMap(InstallerFactory.class);
             int i = 0;
             for (String def = sitemap.getProperty(PREFIX + ++i); def != null; def = sitemap.getProperty(PREFIX + ++i))
             {

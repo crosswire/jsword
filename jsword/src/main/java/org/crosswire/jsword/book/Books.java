@@ -30,10 +30,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.crosswire.common.activate.Activator;
-import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.CollectionUtil;
 import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.PluginUtil;
 import org.crosswire.common.util.Reporter;
 
 /**
@@ -437,7 +437,7 @@ public final class Books implements BookList
     protected void autoRegister()
     {
         // This will classload them all and they will register themselves.
-        Class[] types = ClassUtil.getImplementors(BookDriver.class);
+        Class[] types = PluginUtil.getImplementors(BookDriver.class);
 
         log.debug("begin auto-registering " + types.length + " drivers:"); //$NON-NLS-1$ //$NON-NLS-2$
 

@@ -23,13 +23,6 @@ package org.crosswire.common.util;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -132,147 +125,6 @@ public final class ClassUtil
     }
 
     /**
-     * Get the known implementors of some interface or abstract class.
-     * This is currently done by looking up a properties file by the name of
-     * the given class, and assuming that values are implementors of said
-     * class. Those that are not are warned, but ignored.
-     * @param clazz The class or interface to find implementors of.
-     * @return The list of implementing classes.
-     */
-    public static Class[] getImplementors(Class clazz)
-    {
-        try
-        {
-            List matches = new ArrayList();
-            Properties props = ResourceUtil.getProperties(clazz);
-            Iterator it = props.values().iterator();
-            while (it.hasNext())
-            {
-                try
-                {
-                    String name = (String) it.next();
-                    Class impl = Class.forName(name);
-                    if (clazz.isAssignableFrom(impl))
-                    {
-                        matches.add(impl);
-                    }
-                    else
-                    {
-                        log.warn("Class " + impl.getName() + " does not implement " + clazz.getName() + ". Ignoring."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    }
-                }
-                catch (ClassNotFoundException ex)
-                {
-                    log.warn("Failed to add class to list: " + clazz.getName(), ex); //$NON-NLS-1$
-                }
-            }
-
-            log.debug("Found " + matches.size() + " implementors of " + clazz.getName()); //$NON-NLS-1$ //$NON-NLS-2$
-            return (Class[]) matches.toArray(new Class[matches.size()]);
-        }
-        catch (IOException ex)
-        {
-            log.error("Failed to get any classes.", ex); //$NON-NLS-1$
-            return new Class[0];
-        }
-    }
-
-    /**
-     * Get a map of known implementors of some interface or abstract class.
-     * This is currently done by looking up a properties file by the name of
-     * the given class, and assuming that values are implementors of said
-     * class. Those that are not are warned, but ignored. The reply is in the
-     * form of a map of keys=strings, and values=classes in case you need to get
-     * at the names given to the classes in the properties file.
-     * @see ClassUtil#getImplementors(Class)
-     * @param clazz The class or interface to find implementors of.
-     * @return The map of implementing classes.
-     */
-    public static Map getImplementorsMap(Class clazz)
-    {
-        Map matches = new HashMap();
-
-        try
-        {
-            Properties props = ResourceUtil.getProperties(clazz);
-            Iterator it = props.keySet().iterator();
-            while (it.hasNext())
-            {
-                try
-                {
-                    String key = (String) it.next();
-                    String value = props.getProperty(key);
-                    Class impl = Class.forName(value);
-                    if (clazz.isAssignableFrom(impl))
-                    {
-                        matches.put(key, impl);
-                    }
-                    else
-                    {
-                        log.warn("Class " + impl.getName() + " does not implement " + clazz.getName() + ". Ignoring."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    }
-                }
-                catch (ClassNotFoundException ex)
-                {
-                    log.warn("Failed to add class to list: " + clazz.getName(), ex); //$NON-NLS-1$
-                }
-            }
-
-            log.debug("Found " + matches.size() + " implementors of " + clazz.getName()); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        catch (IOException ex)
-        {
-            log.error("Failed to get any classes.", ex); //$NON-NLS-1$
-        }
-
-        return matches;
-    }
-
-    /**
-     * Get the preferred implementor of some interface or abstract class.
-     * This is currently done by looking up a properties file by the name of
-     * the given class, and assuming that the "default" key is an implemention
-     * of said class. Warnings are given otherwise.
-     * @param clazz The class or interface to find an implementation of.
-     * @return The configured implementing class.
-     * @throws MalformedURLException if the properties file can not be found
-     * @throws IOException if there is a problem reading the found file
-     * @throws ClassNotFoundException if the read contents are not found
-     * @throws ClassCastException if the read contents are not valid
-     * @see ClassUtil#getImplementors(Class)
-     */
-    public static Class getImplementor(Class clazz) throws IOException, ClassNotFoundException, ClassCastException
-    {
-        Properties props = ResourceUtil.getProperties(clazz);
-        String name = props.getProperty(DEFAULT);
-
-        Class impl = Class.forName(name);
-        if (!clazz.isAssignableFrom(impl))
-        {
-            throw new ClassCastException(Msg.NOT_ASSIGNABLE.toString(new Object[] { impl.getName(), clazz.getName() }));
-        }
-
-        return impl;
-    }
-
-    /**
-     * Get and instantiate the preferred implementor of some interface or abstract class.
-     * @param clazz The class or interface to find an implementation of.
-     * @return The configured implementing class.
-     * @throws MalformedURLException if the properties file can not be found
-     * @throws IOException if there is a problem reading the found file
-     * @throws ClassNotFoundException if the read contents are not found
-     * @throws ClassCastException if the read contents are not valid
-     * @throws InstantiationException if the new object can not be instantiated
-     * @throws IllegalAccessException if the new object can not be instantiated
-     * @see ClassUtil#getImplementors(Class)
-     */
-    public static Object getImplementation(Class clazz) throws MalformedURLException, ClassCastException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
-    {
-        return getImplementor(clazz).newInstance();
-    }
-
-    /**
      * <p>Gets the class name minus the package name for an <code>Object</code>.</p>
      *
      * @param object  the class to get the short name for, may be null
@@ -355,8 +207,4 @@ public final class ClassUtil
      * The log stream
      */
     private static final Logger log = Logger.getLogger(ClassUtil.class);
-    /**
-     * The string for default implementations
-     */
-    private static final String DEFAULT = "default"; //$NON-NLS-1$
 }

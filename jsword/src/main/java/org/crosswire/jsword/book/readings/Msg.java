@@ -32,11 +32,6 @@ import org.crosswire.common.util.MsgBase;
  */
 final class Msg extends MsgBase
 {
-    static final Msg NOT_FOUND = new Msg("ReadingsBook.NotFound"); //$NON-NLS-1$
-    static final Msg FILTER_FAIL = new Msg("ReadingsBook.FilterFail"); //$NON-NLS-1$
-    static final Msg HEADING = new Msg("ReadingsBook.Heading"); //$NON-NLS-1$
-    static final Msg DECODE_ERROR = new Msg("ReadingsBook.DecodeError"); //$NON-NLS-1$
-    static final Msg TITLE = new Msg("ReadingsBookDriver.Title"); //$NON-NLS-1$
     static final Msg PARSE_FAIL = new Msg("ReadingsKey.ParseFail"); //$NON-NLS-1$
     static final Msg DRIVER_READONLY = new Msg("ReadingsKey.DriverReadonly"); //$NON-NLS-1$
 

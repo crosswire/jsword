@@ -23,8 +23,8 @@ package org.crosswire.jsword.book;
 
 import java.io.IOException;
 
-import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.PluginUtil;
 
 /**
  * A Factory class for Bookmarks.
@@ -68,8 +68,7 @@ public final class BookmarkFactory
     {
         try
         {
-            Class impl = ClassUtil.getImplementor(Bookmark.class);
-            instance = (Bookmark) impl.newInstance();
+            instance = (Bookmark) PluginUtil.getImplementation(Bookmark.class);
         }
         catch (IOException e)
         {

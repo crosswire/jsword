@@ -59,7 +59,7 @@ public class RangeQuery extends AbstractQuery
         }
         catch (NoSuchKeyException e)
         {
-            throw new BookException(Msg.ILLEGAL_PASSAGE, e, new Object[] { range });
+            throw new BookException(UserMsg.ILLEGAL_PASSAGE, e, new Object[] { range });
         }
     }
 }

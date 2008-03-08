@@ -23,8 +23,8 @@ package org.crosswire.jsword.index.query;
 
 import java.io.IOException;
 
-import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.PluginUtil;
 
 /**
  * A Factory class for QueryBuilder.
@@ -67,8 +67,7 @@ public final class QueryBuilderFactory
     {
         try
         {
-            Class impl = ClassUtil.getImplementor(QueryBuilder.class);
-            instance = (QueryBuilder) impl.newInstance();
+            instance = (QueryBuilder) PluginUtil.getImplementation(QueryBuilder.class);
         }
         catch (IOException e)
         {

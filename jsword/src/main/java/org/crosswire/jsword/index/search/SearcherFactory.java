@@ -23,8 +23,8 @@ package org.crosswire.jsword.index.search;
 
 import java.io.IOException;
 
-import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.PluginUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.index.Index;
@@ -57,8 +57,7 @@ public final class SearcherFactory
             IndexManager imanager = IndexManagerFactory.getIndexManager();
             Index index = imanager.getIndex(book);
 
-            Class impl = ClassUtil.getImplementor(Searcher.class);
-            Searcher parser = (Searcher) impl.newInstance();
+            Searcher parser = (Searcher) PluginUtil.getImplementation(Searcher.class);
             parser.init(index);
 
             return parser;

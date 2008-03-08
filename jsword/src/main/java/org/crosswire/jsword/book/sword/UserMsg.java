@@ -17,9 +17,9 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
+ * ID: $Id: Msg.java 1466 2007-07-02 02:48:09Z dmsmith $
  */
-package org.crosswire.jsword.book.study;
+package org.crosswire.jsword.book.sword;
 
 import org.crosswire.common.util.MsgBase;
 
@@ -30,14 +30,18 @@ import org.crosswire.common.util.MsgBase;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-final class Msg extends MsgBase
+final class UserMsg extends MsgBase
 {
-    static final Msg STRONGS_ERROR_NUMBER = new Msg("Strongs.ErrorNumber"); //$NON-NLS-1$
+    static final UserMsg NO_KEY = new UserMsg("SwordDictionary.NoKey"); //$NON-NLS-1$
+    static final UserMsg MISSING_FILE = new UserMsg("ZVerseBackend.MissingFile"); //$NON-NLS-1$
+    static final UserMsg READ_FAIL = new UserMsg("ZVerseBackend.ReadFail"); //$NON-NLS-1$
+    static final UserMsg DELETE_FAILED = new UserMsg("SwordBookDriver.DeleteFailed"); //$NON-NLS-1$
+    static final UserMsg UNLOCK_FAILED = new UserMsg("ConfigEntryTable.UnlockFailed"); //$NON-NLS-1$;
 
     /**
      * Passthrough ctor
      */
-    private Msg(String name)
+    private UserMsg(String name)
     {
         super(name);
     }

@@ -240,7 +240,7 @@ public class SwordGenBook extends AbstractBook
             }
         }
 
-        throw new NoSuchKeyException(Msg.NO_KEY, new Object[] { text, getInitials() });
+        throw new NoSuchKeyException(UserMsg.NO_KEY, new Object[] { text, getInitials() });
     }
 
     /* (non-Javadoc)

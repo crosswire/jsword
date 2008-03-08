@@ -81,7 +81,7 @@ public final class VerseRangeFactory
             return fromText(original, parts[0], parts[1], basis);
 
         default:
-            throw new NoSuchVerseException(Msg.RANGE_PARTS, new Object[] { VerseRange.RANGE_ALLOWED_DELIMS, original });
+            throw new NoSuchVerseException(UserMsg.RANGE_PARTS, new Object[] { VerseRange.RANGE_ALLOWED_DELIMS, original });
         }
     }
 

@@ -257,7 +257,7 @@ public class SwordDictionary extends AbstractBook
             }
         }
 
-        throw new NoSuchKeyException(Msg.NO_KEY, new Object[] { text, getInitials() });
+        throw new NoSuchKeyException(UserMsg.NO_KEY, new Object[] { text, getInitials() });
     }
 
     // TODO(DM): Hack alert!!! This is not in the right place!!!

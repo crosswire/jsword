@@ -23,8 +23,8 @@ package org.crosswire.jsword.index.query;
 
 import java.io.IOException;
 
-import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.PluginUtil;
 
 /**
  * A Factory class for QueryDecorator.
@@ -67,8 +67,7 @@ public final class QueryDecoratorFactory
     {
         try
         {
-            Class impl = ClassUtil.getImplementor(QueryDecorator.class);
-            instance = (QueryDecorator) impl.newInstance();
+            instance = (QueryDecorator) PluginUtil.getImplementation(QueryDecorator.class);
         }
         catch (IOException e)
         {

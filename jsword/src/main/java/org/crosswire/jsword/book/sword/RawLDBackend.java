@@ -59,10 +59,7 @@ public class RawLDBackend extends AbstractBackend
         super(sbmd);
         this.datasize = datasize;
 
-        if (datasize != 2 && datasize != 4)
-        {
-            throw new BookException(Msg.TYPE_UNKNOWN);
-        }
+        assert (datasize == 2 || datasize == 4);
 
         String path = getExpandedDataPath();
 
@@ -72,12 +69,12 @@ public class RawLDBackend extends AbstractBackend
 
         if (!idxFile.canRead())
         {
-            throw new BookException(Msg.READ_FAIL, new Object[] { idxFile.getAbsolutePath() });
+            throw new BookException(UserMsg.READ_FAIL, new Object[] { idxFile.getAbsolutePath() });
         }
 
         if (!datFile.canRead())
         {
-            throw new BookException(Msg.READ_FAIL, new Object[] { datFile.getAbsolutePath() });
+            throw new BookException(UserMsg.READ_FAIL, new Object[] { datFile.getAbsolutePath() });
         }
     }
 
@@ -256,7 +253,7 @@ public class RawLDBackend extends AbstractBackend
             int keyend = SwordUtil.findByte(data, SEPARATOR);
             if (keyend == -1)
             {
-                throw new BookException(Msg.READ_FAIL);
+                throw new BookException(UserMsg.READ_FAIL);
             }
 
             int remainder = data.length - (keyend + 1);
@@ -267,7 +264,7 @@ public class RawLDBackend extends AbstractBackend
         }
         catch (IOException ex)
         {
-            throw new BookException(Msg.READ_FAIL, ex);
+            throw new BookException(UserMsg.READ_FAIL, ex);
         }
     }
 

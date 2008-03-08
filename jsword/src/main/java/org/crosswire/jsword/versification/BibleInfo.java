@@ -333,7 +333,7 @@ public final class BibleInfo
     {
         if (ref.length != 3)
         {
-            throw new NoSuchVerseException(Msg.BOOKS_ORDINAL);
+            throw new NoSuchVerseException(Msg.REF_PARTS);
         }
 
         return verseOrdinal(ref[0], ref[1], ref[2]);
@@ -400,7 +400,7 @@ public final class BibleInfo
                 new Integer(chaptersInBook(book)),
                 getPreferredBookName(book), new Integer(chapter),
             };
-            throw new NoSuchVerseException(Msg.BOOKS_CHAPTER, params);
+            throw new NoSuchVerseException(UserMsg.BOOKS_CHAPTER, params);
         }
 
         // Check the verse
@@ -413,7 +413,7 @@ public final class BibleInfo
                 new Integer(chapter),
                 new Integer(verse),
             };
-            throw new NoSuchVerseException(Msg.BOOKS_VERSE, params);
+            throw new NoSuchVerseException(UserMsg.BOOKS_VERSE, params);
         }
     }
 
@@ -426,7 +426,7 @@ public final class BibleInfo
     {
         if (ref.length != 3)
         {
-            throw new NoSuchVerseException(Msg.BOOKS_ORDINAL);
+            throw new NoSuchVerseException(Msg.REF_PARTS);
         }
 
         validate(ref[BOOK], ref[CHAPTER], ref[VERSE]);
@@ -552,7 +552,7 @@ public final class BibleInfo
     {
         if (ref1.length != 3 || ref2.length != 3)
         {
-            throw new IllegalArgumentException(Msg.BOOKS_ORDINAL.toString());
+            throw new IllegalArgumentException(Msg.REF_PARTS.toString());
         }
 
         return verseCount(ref1[0], ref1[1], ref1[2], ref2[0], ref2[1], ref2[2]);

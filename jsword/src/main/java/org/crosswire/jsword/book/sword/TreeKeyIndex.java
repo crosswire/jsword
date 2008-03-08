@@ -63,12 +63,12 @@ public class TreeKeyIndex implements Activatable
 
         if (!idxFile.canRead())
         {
-            throw new BookException(Msg.READ_FAIL, new Object[] { idxFile.getAbsolutePath() });
+            throw new BookException(UserMsg.READ_FAIL, new Object[] { idxFile.getAbsolutePath() });
         }
 
         if (!datFile.canRead())
         {
-            throw new BookException(Msg.READ_FAIL, new Object[] { datFile.getAbsolutePath() });
+            throw new BookException(UserMsg.READ_FAIL, new Object[] { datFile.getAbsolutePath() });
         }
 
     }

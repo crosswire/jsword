@@ -17,9 +17,9 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
+ * ID: $Id: Msg.java 1466 2007-07-02 02:48:09Z dmsmith $
  */
-package org.crosswire.jsword.index.lucene;
+package org.crosswire.jsword.versification;
 
 import org.crosswire.common.util.MsgBase;
 
@@ -30,23 +30,15 @@ import org.crosswire.common.util.MsgBase;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-final class Msg extends MsgBase
+public final class UserMsg extends MsgBase
 {
-    static final Msg TYPE_INDEXGEN = new Msg("LuceneIndexManager.TypeIndexGen"); //$NON-NLS-1$
-    static final Msg INDEX_START = new Msg("LuceneIndexManager.Indexing"); //$NON-NLS-1$
-
-    static final Msg LUCENE_INIT = new Msg("LuceneIndex.LuceneInit"); //$NON-NLS-1$
-    static final Msg SEARCH_FAILED = new Msg("LuceneIndex.SearchFailed"); //$NON-NLS-1$
-    static final Msg INDEXING = new Msg("LuceneIndex.Indexing"); //$NON-NLS-1$
-    static final Msg OPTIMIZING = new Msg("LuceneIndex.Optimizing"); //$NON-NLS-1$
-    static final Msg DELETE_FAILED = new Msg("LuceneIndex.DeleteFailed"); //$NON-NLS-1$
-    static final Msg INSTALL_FAIL = new Msg("LuceneIndex.InstallFailed"); //$NON-NLS-1$
-    static final Msg BAD_VERSE = new Msg("LuceneIndex.BadVerse"); //$NON-NLS-1$
+    static final UserMsg BOOKS_CHAPTER = new UserMsg("BibleInfo.Chapter"); //$NON-NLS-1$
+    static final UserMsg BOOKS_VERSE = new UserMsg("BibleInfo.Verse"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor
      */
-    private Msg(String name)
+    private UserMsg(String name)
     {
         super(name);
     }

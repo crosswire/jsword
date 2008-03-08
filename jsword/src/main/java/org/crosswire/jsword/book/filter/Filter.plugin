@@ -1,8 +1,7 @@
 
-# This value should be here, and duplicated with its real name below
 default=org.crosswire.jsword.book.filter.plaintext.PlainTextFilter
-
 gbf=org.crosswire.jsword.book.filter.gbf.GBFFilter
-thml=org.crosswire.jsword.book.filter.thml.THMLFilter
 osis=org.crosswire.jsword.book.filter.osis.OSISFilter
 plaintext=org.crosswire.jsword.book.filter.plaintext.PlainTextFilter
+tei=org.crosswire.jsword.book.filter.osis.OSISFilter
+thml=org.crosswire.jsword.book.filter.thml.THMLFilter

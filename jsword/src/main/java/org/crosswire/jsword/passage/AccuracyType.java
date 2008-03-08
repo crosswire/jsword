@@ -220,7 +220,7 @@ public abstract class AccuracyType implements Serializable
         {
             if (verseRangeBasis == null)
             {
-                throw new NoSuchVerseException(Msg.ACCURACY_BOOK);
+                throw new NoSuchVerseException(UserMsg.ACCURACY_BOOK);
             }
             int book = verseRangeBasis.getEnd().getBook();
             int chapter = getChapter(book, parts[0]);
@@ -267,7 +267,7 @@ public abstract class AccuracyType implements Serializable
         {
             if (verseRangeBasis == null)
             {
-                throw new NoSuchVerseException(Msg.ACCURACY_BOOK);
+                throw new NoSuchVerseException(UserMsg.ACCURACY_BOOK);
             }
             int book = verseRangeBasis.getEnd().getBook();
             int chapter = getChapter(book, parts[0]);
@@ -312,7 +312,7 @@ public abstract class AccuracyType implements Serializable
         {
             if (verseRangeBasis == null)
             {
-                throw new NoSuchVerseException(Msg.ACCURACY_BOOK_CHAPTER);
+                throw new NoSuchVerseException(UserMsg.ACCURACY_BOOK_CHAPTER);
             }
             int book = verseRangeBasis.getEnd().getBook();
             int chapter = verseRangeBasis.getEnd().getChapter();
@@ -569,7 +569,7 @@ public abstract class AccuracyType implements Serializable
         {
             buffer.append(", ").append(parts[i]); //$NON-NLS-1$
         }
-        return new NoSuchVerseException(Msg.VERSE_PARTS, new Object[] { buffer.toString() });
+        return new NoSuchVerseException(UserMsg.VERSE_PARTS, new Object[] { buffer.toString() });
     }
 
     /**
@@ -601,7 +601,7 @@ public abstract class AccuracyType implements Serializable
         }
         catch (NumberFormatException ex)
         {
-            throw new NoSuchVerseException(Msg.VERSE_PARSE, new Object[] { text });
+            throw new NoSuchVerseException(UserMsg.VERSE_PARSE, new Object[] { text });
         }
     }
 
@@ -686,7 +686,7 @@ public abstract class AccuracyType implements Serializable
                     {
                         if (tokenCount >= args.length)
                         {
-                            throw new NoSuchVerseException(Msg.VERSE_PARTS, new Object[] { input });
+                            throw new NoSuchVerseException(UserMsg.VERSE_PARTS, new Object[] { input });
                         }
 
                         token = new String(normalized, startIndex, normalizedLength - startIndex);
@@ -710,7 +710,7 @@ public abstract class AccuracyType implements Serializable
 
         if (tokenCount >= args.length)
         {
-            throw new NoSuchVerseException(Msg.VERSE_PARTS, new Object[] { input });
+            throw new NoSuchVerseException(UserMsg.VERSE_PARTS, new Object[] { input });
         }
 
         token = new String(normalized, startIndex, normalizedLength - startIndex);

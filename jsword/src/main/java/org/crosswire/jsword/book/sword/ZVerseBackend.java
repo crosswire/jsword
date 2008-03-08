@@ -300,7 +300,7 @@ public class ZVerseBackend extends AbstractBackend
         }
         catch (IOException e)
         {
-            throw new BookException(Msg.READ_FAIL, e, new Object[] { verse.getName() });
+            throw new BookException(UserMsg.READ_FAIL, e, new Object[] { verse.getName() });
         }
     }
 

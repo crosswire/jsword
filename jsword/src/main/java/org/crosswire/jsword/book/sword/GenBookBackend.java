@@ -59,7 +59,7 @@ public class GenBookBackend extends AbstractBackend
 
         if (!bdtFile.canRead())
         {
-            throw new BookException(Msg.READ_FAIL, new Object[] { bdtFile.getAbsolutePath() });
+            throw new BookException(UserMsg.READ_FAIL, new Object[] { bdtFile.getAbsolutePath() });
         }
 
     }
@@ -134,7 +134,7 @@ public class GenBookBackend extends AbstractBackend
         }
         catch (IOException e)
         {
-            throw new BookException(Msg.READ_FAIL);
+            throw new BookException(UserMsg.READ_FAIL);
         }
     }
 

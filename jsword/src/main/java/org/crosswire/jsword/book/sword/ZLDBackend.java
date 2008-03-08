@@ -112,22 +112,22 @@ public class ZLDBackend extends AbstractBackend
 
         if (!idxFile.canRead())
         {
-            throw new BookException(Msg.READ_FAIL, new Object[] { idxFile.getAbsolutePath() });
+            throw new BookException(UserMsg.READ_FAIL, new Object[] { idxFile.getAbsolutePath() });
         }
 
         if (!datFile.canRead())
         {
-            throw new BookException(Msg.READ_FAIL, new Object[] { datFile.getAbsolutePath() });
+            throw new BookException(UserMsg.READ_FAIL, new Object[] { datFile.getAbsolutePath() });
         }
 
         if (!zdxFile.canRead())
         {
-            throw new BookException(Msg.READ_FAIL, new Object[] { zdxFile.getAbsolutePath() });
+            throw new BookException(UserMsg.READ_FAIL, new Object[] { zdxFile.getAbsolutePath() });
         }
 
         if (!zdtFile.canRead())
         {
-            throw new BookException(Msg.READ_FAIL, new Object[] { zdtFile.getAbsolutePath() });
+            throw new BookException(UserMsg.READ_FAIL, new Object[] { zdtFile.getAbsolutePath() });
         }
     }
 
@@ -311,7 +311,7 @@ public class ZLDBackend extends AbstractBackend
             int keyend = SwordUtil.findByte(data, SEPARATOR);
             if (keyend == -1)
             {
-                throw new BookException(Msg.READ_FAIL);
+                throw new BookException(UserMsg.READ_FAIL);
             }
 
             int remainder = data.length - (keyend + 1);
@@ -375,7 +375,7 @@ public class ZLDBackend extends AbstractBackend
         }
         catch (IOException e)
         {
-            throw new BookException(Msg.READ_FAIL, e);
+            throw new BookException(UserMsg.READ_FAIL, e);
         }
     }
 

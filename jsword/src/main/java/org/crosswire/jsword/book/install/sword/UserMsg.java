@@ -17,9 +17,9 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
+ * ID: $Id: Msg.java 1466 2007-07-02 02:48:09Z dmsmith $
  */
-package org.crosswire.jsword.index.query;
+package org.crosswire.jsword.book.install.sword;
 
 import org.crosswire.common.util.MsgBase;
 
@@ -28,16 +28,20 @@ import org.crosswire.common.util.MsgBase;
  *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
- * @author DM Smith [dmsmith555 at yahoo dot com]
+ * @author Joe Walker [joe at eireneh dot com]
  */
-final class Msg extends MsgBase
+final class UserMsg extends MsgBase
 {
-    static final Msg ILLEGAL_PASSAGE = new Msg("RangeQuery.IllegalPassage"); //$NON-NLS-1$
+    static final UserMsg INSTALLING = new UserMsg("SwordInstaller.Installing"); //$NON-NLS-1$
+    static final UserMsg JOB_INIT = new UserMsg("SwordInstaller.JobInit"); //$NON-NLS-1$
+    static final UserMsg JOB_CONFIG = new UserMsg("SwordInstaller.JobConfig"); //$NON-NLS-1$
+    static final UserMsg JOB_DOWNLOADING = new UserMsg("SwordInstaller.JobDownloading"); //$NON-NLS-1$
+    static final UserMsg MISSING_FILE = new UserMsg("HttpSwordInstaller.MissingFile"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor
      */
-    private Msg(String name)
+    private UserMsg(String name)
     {
         super(name);
     }

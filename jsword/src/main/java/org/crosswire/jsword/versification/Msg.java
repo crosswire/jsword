@@ -32,18 +32,11 @@ import org.crosswire.common.util.MsgBase;
  */
 public final class Msg extends MsgBase
 {
-    static final Msg BOOKS_BOOK = new Msg("BibleInfo.Book"); //$NON-NLS-1$
     static final Msg BOOKS_SECTION = new Msg("BibleInfo.Section"); //$NON-NLS-1$
-    static final Msg BOOKS_NUMBER = new Msg("BibleInfo.Number"); //$NON-NLS-1$
-    static final Msg BOOKS_FIND = new Msg("BibleInfo.Find"); //$NON-NLS-1$
+    static final Msg BOOKS_BOOK = new Msg("BibleInfo.Book"); //$NON-NLS-1$
     static final Msg BOOKS_BOOKCHAP = new Msg("BibleInfo.BookChap"); //$NON-NLS-1$
-    static final Msg BOOKS_ORDINAL = new Msg("BibleInfo.Ordinal"); //$NON-NLS-1$
     static final Msg BOOKS_DECODE = new Msg("BibleInfo.Decode"); //$NON-NLS-1$
-    static final Msg BOOKS_CHAPTER = new Msg("BibleInfo.Chapter"); //$NON-NLS-1$
-    static final Msg BOOKS_VERSE = new Msg("BibleInfo.Verse"); //$NON-NLS-1$
-
-    static final Msg ERROR_CASE = new Msg("BibleInfo.ErrorCase"); //$NON-NLS-1$
-
+    static final Msg REF_PARTS = new Msg("BibleInfo.RefParts"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor

@@ -1149,6 +1149,7 @@ public class ConfigEntryType implements Serializable
             "GBF", //$NON-NLS-1$
             "ThML", //$NON-NLS-1$
             "OSIS", //$NON-NLS-1$
+            "TEI", //$NON-NLS-1$
         };
         /**
          * The set of choices.

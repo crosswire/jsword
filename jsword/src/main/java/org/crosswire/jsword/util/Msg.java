@@ -34,10 +34,6 @@ import org.crosswire.common.util.MsgBase;
 public final class Msg extends MsgBase
 {
     static final Msg NO_CONVERTER     = new Msg("ConverterFactory.NoConverter"); //$NON-NLS-1$
-    static final Msg WEB_WARNING      = new Msg("WebWarning.Warning");          //$NON-NLS-1$
-    static final Msg WEB_SHOW_WARNING = new Msg("WebWarning.ShowWarning");      //$NON-NLS-1$
-    static final Msg WEB_SWITCH       = new Msg("WebWarning.Switch");           //$NON-NLS-1$
-
     /**
      * Passthrough ctor
      */

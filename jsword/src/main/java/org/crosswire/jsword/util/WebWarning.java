@@ -114,7 +114,7 @@ public class WebWarning
      */
     public String getWarning()
     {
-        return Msg.WEB_WARNING.toString();
+        return UserMsg.WEB_WARNING.toString();
     }
 
     /**
@@ -122,7 +122,7 @@ public class WebWarning
      */
     public String getShownWarningLabel()
     {
-        return Msg.WEB_SHOW_WARNING.toString();
+        return UserMsg.WEB_SHOW_WARNING.toString();
     }
 
     private static WebWarning instance = new WebWarning();

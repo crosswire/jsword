@@ -226,7 +226,7 @@ public final class ConfigEntryTable
             }
             catch (IOException e)
             {
-                Reporter.informUser(this, Msg.UNLOCK_FAILED, e);
+                Reporter.informUser(this, UserMsg.UNLOCK_FAILED, e);
             }
         }
         return true;

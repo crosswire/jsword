@@ -173,7 +173,7 @@ public class SwordBookDriver extends AbstractBookDriver
         // We can only uninstall what we download into our download dir.
         if (!confFile.exists())
         {
-            throw new BookException(Msg.DELETE_FAILED, new Object [] {confFile});
+            throw new BookException(UserMsg.DELETE_FAILED, new Object [] {confFile});
         }
 
         // Delete the conf
@@ -193,7 +193,7 @@ public class SwordBookDriver extends AbstractBookDriver
         // TODO(DM): list all that failed
         if (failures.size() > 0)
         {
-            throw new BookException(Msg.DELETE_FAILED, new Object [] {failures.get(0)});
+            throw new BookException(UserMsg.DELETE_FAILED, new Object [] {failures.get(0)});
         }
     }
 
