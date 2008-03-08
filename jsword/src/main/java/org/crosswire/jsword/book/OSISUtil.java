@@ -1137,7 +1137,6 @@ public final class OSISUtil
 //        }
 //        catch (SAXException e)
 //        {
-//            // TODO Auto-generated catch block
 //            e.printStackTrace();
 //        }
 //        System.err.println(osis.toString());

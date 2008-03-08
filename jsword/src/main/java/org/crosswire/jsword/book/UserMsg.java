@@ -17,7 +17,7 @@
  * Copyright: 2007
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
+ * ID: $Id: Msg.java 1701 2007-10-24 20:15:07Z dmsmith $
  */
 package org.crosswire.jsword.book;
 
@@ -31,18 +31,22 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-final class Msg extends MsgBase
+final class UserMsg extends MsgBase
 {
 
-    static final Msg MISSING_VERSE = new Msg("OSISUtil.MissingVerse"); //$NON-NLS-1$
-    static final Msg OSIS_BADID = new Msg("OSISUtil.OSISBadID"); //$NON-NLS-1$
-    static final Msg BOOK_NOREMOVE = new Msg("Books.BookNoRemove"); //$NON-NLS-1$
-    static final Msg DRIVER_NOREMOVE = new Msg("Books.DriverNoRemove"); //$NON-NLS-1$
+    static final UserMsg BIBLE = new UserMsg("BookCategory.Bible"); //$NON-NLS-1$
+    static final UserMsg DICTIONARY = new UserMsg("BookCategory.Dictionary"); //$NON-NLS-1$
+    static final UserMsg COMMENTARY = new UserMsg("BookCategory.Commentary"); //$NON-NLS-1$
+    static final UserMsg READINGS = new UserMsg("BookCategory.Readings"); //$NON-NLS-1$
+    static final UserMsg GLOSSARIES = new UserMsg("BookCategory.Glossaries"); //$NON-NLS-1$
+    static final UserMsg UNORTHODOX = new UserMsg("BookCategory.Unorthodox"); //$NON-NLS-1$
+    static final UserMsg GENERAL = new UserMsg("BookCategory.General"); //$NON-NLS-1$
+    static final UserMsg OTHER = new UserMsg("BookCategory.Other"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor
      */
-    private Msg(String name)
+    private UserMsg(String name)
     {
         super(name);
     }

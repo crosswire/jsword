@@ -135,7 +135,7 @@ public final class NetUtil
         // If it is a file, except
         if (file.isFile())
         {
-            throw new MalformedURLException(Msg.IS_FILE.toString(orig));
+            throw new MalformedURLException(UserMsg.IS_FILE.toString(orig));
         }
 
         // Is it already a directory ?
@@ -146,7 +146,7 @@ public final class NetUtil
             // Did that work?
             if (!file.isDirectory())
             {
-                throw new MalformedURLException(Msg.CREATE_DIR_FAIL.toString(orig));
+                throw new MalformedURLException(UserMsg.CREATE_DIR_FAIL.toString(orig));
             }
         }
     }
@@ -165,7 +165,7 @@ public final class NetUtil
         // If it is a file, except
         if (file.isDirectory())
         {
-            throw new MalformedURLException(Msg.IS_DIR.toString(orig));
+            throw new MalformedURLException(UserMsg.IS_DIR.toString(orig));
         }
 
         // Is it already a directory ?
@@ -177,7 +177,7 @@ public final class NetUtil
             // Did that work?
             if (!file.isFile())
             {
-                throw new MalformedURLException(Msg.CREATE_FILE_FAIL.toString(orig));
+                throw new MalformedURLException(UserMsg.CREATE_FILE_FAIL.toString(orig));
             }
         }
     }
@@ -381,8 +381,8 @@ public final class NetUtil
                            orig.getHost(),
                            orig.getPort(),
                            newFile,
-                           orig.getQuery(),
-                           orig.getFragment());
+                           "", //$NON-NLS-1$
+                           ""); //$NON-NLS-1$
         }
         catch (URISyntaxException e)
         {
@@ -566,7 +566,7 @@ public final class NetUtil
         File fdir = new File(uri.getPath());
         if (!fdir.isDirectory())
         {
-            throw new MalformedURLException(Msg.NOT_DIR.toString(uri.toString()));
+            throw new MalformedURLException(UserMsg.NOT_DIR.toString(uri.toString()));
         }
 
         return fdir.list(new URIFilterFilenameFilter(filter));
@@ -799,7 +799,7 @@ public final class NetUtil
     {
         if (!uri.getScheme().equals(PROTOCOL_FILE))
         {
-            throw new MalformedURLException(Msg.NOT_FILE_URI.toString(uri));
+            throw new MalformedURLException(UserMsg.NOT_FILE_URI.toString(uri));
         }
     }
 

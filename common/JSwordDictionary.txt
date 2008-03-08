@@ -39,3 +39,8 @@ awt
 toolbar
 ctrl
 alt
+plugins
+plugin
+thesaurus
+stretchy
+internet

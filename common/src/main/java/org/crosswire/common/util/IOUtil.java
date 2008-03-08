@@ -76,7 +76,7 @@ public final class IOUtil
                 // Did that work?
                 if (!parentDir.isDirectory())
                 {
-                    throw new MalformedURLException(Msg.CREATE_DIR_FAIL.toString(parentDir.toString()));
+                    throw new MalformedURLException(UserMsg.CREATE_DIR_FAIL.toString(parentDir.toString()));
                 }
             }
 

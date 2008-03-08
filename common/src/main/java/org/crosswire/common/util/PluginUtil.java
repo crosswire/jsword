@@ -198,7 +198,7 @@ public final class PluginUtil
      * @throws IOException if the resource can not be loaded
      * @throws MissingResourceException if the resource can not be found
      */
-    private static Properties getPlugin(Class clazz) throws IOException
+    public static Properties getPlugin(Class clazz) throws IOException
     {
         String subject = ClassUtil.getShortClassName(clazz);
 

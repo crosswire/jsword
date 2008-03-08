@@ -35,7 +35,6 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PluginUtil;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.util.Project;
 
 /**
@@ -57,7 +56,7 @@ public final class InstallManager
 
         try
         {
-            Properties sitemap = ResourceUtil.getProperties(getClass());
+            Properties sitemap = PluginUtil.getPlugin(getClass());
             factories = PluginUtil.getImplementorsMap(InstallerFactory.class);
             int i = 0;
             for (String def = sitemap.getProperty(PREFIX + ++i); def != null; def = sitemap.getProperty(PREFIX + ++i))

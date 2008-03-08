@@ -192,7 +192,7 @@ public final class Job implements Progress
         synchronized (this)
         {
             finished = true;
-            sectionName = Msg.DONE.toString();
+            sectionName = UserMsg.DONE.toString();
             work = 100;
 
             if (updater != null)

@@ -23,6 +23,8 @@ package org.crosswire.jsword.book;
 
 import java.io.Serializable;
 
+import org.crosswire.common.util.MsgBase;
+
 /**
  * An Enumeration of the possible types of Book.
  *
@@ -43,47 +45,47 @@ public final class BookCategory implements Serializable, Comparable
     /**
      * Books that are Bibles
      */
-    public static final BookCategory BIBLE = new BookCategory("Bible", Msg.BIBLE); //$NON-NLS-1$
+    public static final BookCategory BIBLE = new BookCategory("Bible", UserMsg.BIBLE); //$NON-NLS-1$
 
     /**
      * Books that are Dictionaries
      */
-    public static final BookCategory DICTIONARY = new BookCategory("Dictionary", Msg.DICTIONARY); //$NON-NLS-1$
+    public static final BookCategory DICTIONARY = new BookCategory("Dictionary", UserMsg.DICTIONARY); //$NON-NLS-1$
 
     /**
      * Books that are Commentaries
      */
-    public static final BookCategory COMMENTARY = new BookCategory("Commentary", Msg.COMMENTARY); //$NON-NLS-1$
+    public static final BookCategory COMMENTARY = new BookCategory("Commentary", UserMsg.COMMENTARY); //$NON-NLS-1$
 
     /**
      * Books that are indexed by day. AKA, Daily Devotions
      */
-    public static final BookCategory DAILY_DEVOTIONS = new BookCategory("Daily Devotional", Msg.READINGS); //$NON-NLS-1$
+    public static final BookCategory DAILY_DEVOTIONS = new BookCategory("Daily Devotional", UserMsg.READINGS); //$NON-NLS-1$
 
     /**
      * Books that map words from one language to another.
      */
-    public static final BookCategory GLOSSARY = new BookCategory("Glossaries", Msg.GLOSSARIES); //$NON-NLS-1$
+    public static final BookCategory GLOSSARY = new BookCategory("Glossaries", UserMsg.GLOSSARIES); //$NON-NLS-1$
 
     /**
      * Books that are questionable.
      */
-    public static final BookCategory QUESTIONABLE = new BookCategory("Cults / Unorthodox / Questionable Material", Msg.UNORTHODOX); //$NON-NLS-1$
+    public static final BookCategory QUESTIONABLE = new BookCategory("Cults / Unorthodox / Questionable Material", UserMsg.UNORTHODOX); //$NON-NLS-1$
 
     /**
      * Books that are not any of the above
      */
-    public static final BookCategory GENERAL_BOOK = new BookCategory("General Books", Msg.GENERAL); //$NON-NLS-1$
+    public static final BookCategory GENERAL_BOOK = new BookCategory("General Books", UserMsg.GENERAL); //$NON-NLS-1$
 
     /**
      * Books that are not any of the above
      */
-    public static final BookCategory OTHER = new BookCategory("Other", Msg.OTHER); //$NON-NLS-1$
+    public static final BookCategory OTHER = new BookCategory("Other", UserMsg.OTHER); //$NON-NLS-1$
 
     /**
      * @param name The name of the BookCategory
      */
-    private BookCategory(String name, Msg externalName)
+    private BookCategory(String name, MsgBase externalName)
     {
         this.name = name;
         this.externalName = externalName;
@@ -174,7 +176,7 @@ public final class BookCategory implements Serializable, Comparable
      * The names of the BookCategory
      */
     private String name;
-    private Msg externalName;
+    private MsgBase externalName;
 
     // Support for serialization
     private static int nextObj;

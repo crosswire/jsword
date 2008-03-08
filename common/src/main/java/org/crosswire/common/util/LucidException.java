@@ -141,9 +141,9 @@ public class LucidException extends Exception
         if (cause instanceof LucidException)
         {
             LucidException lex = (LucidException) cause;
-            return getMessage() + Msg.REASON + lex.getDetailedMessage();
+            return getMessage() + UserMsg.REASON + lex.getDetailedMessage();
         }
-        return getMessage() + Msg.REASON + cause.getMessage();
+        return getMessage() + UserMsg.REASON + cause.getMessage();
     }
 
     /**

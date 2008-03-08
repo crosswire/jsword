@@ -89,7 +89,7 @@ public class WebResource
                 return new HttpURLConnection(method, NetUtil.toURL(uri)).getContentLength();
             }
             String reason = HttpStatus.getStatusText(status);
-            Reporter.informUser(this, Msg.MISSING_FILE, new Object[] { reason + ':' + uri.getPath() });
+            Reporter.informUser(this, UserMsg.MISSING_FILE, new Object[] { reason + ':' + uri.getPath() });
         }
         catch (IOException e)
         {
@@ -167,7 +167,7 @@ public class WebResource
         }
         catch (IOException e)
         {
-            throw new LucidException(Msg.MISSING_FILE, e);
+            throw new LucidException(UserMsg.MISSING_FILE, e);
         }
         finally
         {

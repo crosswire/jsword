@@ -304,7 +304,7 @@ public final class Reporter
             // and way too many dialogs were being thrown up on the screen.
             if (gate.open())
             {
-                Reporter.informUser(this, new LucidException(Msg.UNEXPECTED_ERROR, ex));
+                Reporter.informUser(this, new LucidException(UserMsg.UNEXPECTED_ERROR, ex));
             }
         }
 
