@@ -30,15 +30,15 @@ import org.crosswire.common.util.MsgBase;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class Msg extends MsgBase
+public final class UserMsg extends MsgBase
 {
-    static final Msg WARRANTY = new Msg("License.warranty"); //$NON-NLS-1$
-    static final Msg DETAILS = new Msg("License.details"); //$NON-NLS-1$
+    static final UserMsg WARRANTY = new UserMsg("License.warranty"); //$NON-NLS-1$
+    static final UserMsg DETAILS = new UserMsg("License.details"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor
      */
-    private Msg(String name)
+    private UserMsg(String name)
     {
         super(name);
     }

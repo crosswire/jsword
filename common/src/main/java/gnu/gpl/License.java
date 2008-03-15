@@ -389,7 +389,7 @@ public class License
      */
     public String getWarranty()
     {
-        return Msg.WARRANTY.toString(name);
+        return UserMsg.WARRANTY.toString(name);
     }
 
     /**
@@ -399,7 +399,7 @@ public class License
      */
     public String getDetails()
     {
-        return Msg.DETAILS.toString(name);
+        return UserMsg.DETAILS.toString(name);
     }
 
     /**
