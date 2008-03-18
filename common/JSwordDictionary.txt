@@ -44,3 +44,5 @@ plugin
 thesaurus
 stretchy
 internet
+editable
+throwable
