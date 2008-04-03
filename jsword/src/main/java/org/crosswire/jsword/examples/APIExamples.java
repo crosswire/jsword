@@ -54,9 +54,7 @@ import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageTally;
 import org.crosswire.jsword.passage.RestrictionType;
-import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.util.ConverterFactory;
-import org.crosswire.jsword.versification.BibleInfo;
 import org.xml.sax.SAXException;
 
 /**
@@ -160,7 +158,7 @@ public class APIExamples
 
         System.out.println("The following verses contain both moses and aaron: " + key.getName()); //$NON-NLS-1$
 
-        // You can also trim the result to a more managable quantity.
+        // You can also trim the result to a more manageable quantity.
         // The test here is not necessary since we are working with a bible. It is necessary if we don't know what it is.
         if (key instanceof Passage)
         {
@@ -234,26 +232,6 @@ public class APIExamples
             SAXEventProvider htmlsep = new TransformingSAXEventProvider(NetUtil.toURI(xslurl), osissep);
             String text = XMLUtil.writeToString(htmlsep);
             System.out.println("The html text of " + range.getName() + " is " + text); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-    }
-
-    /**
-     * An example of how to get the text of a book for export.
-     *
-     * @throws NoSuchKeyException
-     * @throws BookException
-     */
-    public void export() throws NoSuchKeyException, BookException
-    {
-        Book bible = Books.installed().getBook(BIBLE_NAME);
-        Key keys = bible.getKey("Gen"); //$NON-NLS-1$
-        // Get a verse iterator
-        Iterator iter = keys.iterator();
-        while (iter.hasNext())
-        {
-            Verse verse = (Verse) iter.next();
-            BookData data = new BookData(bible, verse);
-            System.out.println('|' + BibleInfo.getPreferredBookName(verse.getBook()) + '|' + verse.getChapter() + '|' + verse.getVerse() + '|' + OSISUtil.getCanonicalText(data.getOsisFragment()));
         }
     }
 
@@ -428,6 +406,5 @@ public class APIExamples
         examples.search();
         examples.rankedSearch();
         examples.searchAndShow();
-        examples.export();
     }
 }

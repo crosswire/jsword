@@ -26,14 +26,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
 import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.progress.Progress;
+import org.crosswire.common.util.CollectionUtil;
 import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
@@ -41,6 +42,10 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookFilter;
+import org.crosswire.jsword.book.BookFilterIterator;
+import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.BookSet;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.basic.AbstractBookList;
 import org.crosswire.jsword.book.install.InstallException;
@@ -136,10 +141,8 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
             }
 
             // We need to create a List from the Set returned by
-            // entries.values() so we can create an unmodifiable list from it.
-            List mutable = new ArrayList();
-            mutable.addAll(entries.values());
-            return Collections.unmodifiableList(mutable);
+            // entries.values() so the underlying list is not modified.
+            return new ArrayList(entries.values());
         }
         catch (InstallException ex)
         {
@@ -148,6 +151,69 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         }
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookList#getBook(java.lang.String)
+     */
+    public synchronized Book getBook(String name)
+    {
+        // Check name first
+        // First check for exact matches
+        List books = getBooks();
+        Iterator iter = books.iterator();
+        while (iter.hasNext())
+        {
+            Book book = (Book) iter.next();
+            if (name.equals(book.getName()))
+            {
+                return book;
+            }
+        }
+
+        // Next check for case-insensitive matches
+        iter = books.iterator();
+        while (iter.hasNext())
+        {
+            Book book = (Book) iter.next();
+            if (name.equalsIgnoreCase(book.getName()))
+            {
+                return book;
+            }
+        }
+
+        // Then check initials
+        // First check for exact matches
+        iter = books.iterator();
+        while (iter.hasNext())
+        {
+            Book book = (Book) iter.next();
+            BookMetaData bmd = book.getBookMetaData();
+            if (name.equals(bmd.getInitials()))
+            {
+                return book;
+            }
+        }
+
+        // Next check for case-insensitive matches
+        iter = books.iterator();
+        while (iter.hasNext())
+        {
+            Book book = (Book) iter.next();
+            if (name.equalsIgnoreCase(book.getInitials()))
+            {
+                return book;
+            }
+        }
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookList#getBooks(org.crosswire.jsword.book.BookFilter)
+     */
+    public synchronized List getBooks(BookFilter filter)
+    {
+        List temp = CollectionUtil.createList(new BookFilterIterator(getBooks(), filter));
+        return new BookSet(temp);
+    }
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#install(org.crosswire.jsword.book.Book)
      */

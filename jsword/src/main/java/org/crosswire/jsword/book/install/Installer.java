@@ -71,6 +71,11 @@ public interface Installer extends BookList
     List getBooks();
 
     /**
+     * Get a Book matching the name from the local cache. Null if none is found.
+     */
+    Book getBook(String Book);
+
+    /**
      * Return true if the book is not installed or there is a newer
      * version to install.
      * @param book The book meta-data to check on.
@@ -105,10 +110,10 @@ public interface Installer extends BookList
     /**
      * Download a search index for the given Book.
      * The installation of the search index is the responsibility of the
-     * IndexManager.
+     * BookIndexer.
      * @param book The book to download a search index for.
      * @param tempDest A temporary URI for downloading to. Passed to the
-     * IndexManager for installation.
+     * BookIndexer for installation.
      */
     void downloadSearchIndex(Book book, URI tempDest) throws InstallException;
 }
