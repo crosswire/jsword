@@ -22,6 +22,11 @@
 
 package org.crosswire.common.options;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * GetOptions parses an argument list for requested arguments given by an
  * OptionList.<br/>
@@ -67,14 +72,212 @@ package org.crosswire.common.options;
  */
 public class GetOptions
 {
-    public GetOptions(String programName, String[] args, OptionList options)
+    public GetOptions(String programName, String[] args, OptionList programOptions)
     {
         this.programName = programName;
         this.args = args;
-        this.options = options;
+        this.programOptions = programOptions;
+        // Initially, we have not started to process an argument
+        this.nonOptionArgs = new ArrayList();
+        this.suppliedOptions = new LinkedHashMap();
+        
+        parse();
     }
+
+    private void parse()
+    {
+        int nargs = args.length;
+        for (int i = 0; i < nargs; i++)
+        {
+            String nextArg = args[i];
+            // All options are 2 or more characters long and begin with a '-'.
+            // If this is a non-option then note it and advance
+            if (nextArg.length() < 2 || nextArg.charAt(0) != '-')
+            {
+                nonOptionArgs.add(nextArg);
+                continue;
+            }
+
+            // If we are at the end of all options, '--', we need to skip this and copy what follows to the end
+            if ("--".equals(nextArg)) //$NON-NLS-1$
+            {
+               for (int j = i + 1; j < nargs; j++)
+               {
+                   nonOptionArgs.add(args[j]);
+               }
+               return;
+            }
+
+            // At this point we are on a short option, a short option sequence or a long option.
+            // Invariant: the length > 1.
+            if (nextArg.charAt(1) == '-')
+            {
+                // Process a long argument
+                // This can be of the form --flag or --flag argument or --flag=argument
+                int equalPos = nextArg.indexOf('=');
+                String flag = (equalPos != -1) ? nextArg.substring(2, equalPos) : nextArg.substring(2);
+                List opts = programOptions.getLongOptions(flag);
+                if (opts.size() == 0)
+                {
+                    throw new IllegalArgumentException("Illegal option --" + flag); //$NON-NLS-1$
+                }
+                if (opts.size() > 1)
+                {
+                    throw new IllegalArgumentException("Ambiguous option --" + flag); //$NON-NLS-1$
+                }
+                Option option = (Option) opts.get(0);
+                if (option.getArgumentType().equals(ArgumentType.NO_ARGUMENT))
+                {
+                    // Add option with null argument to options
+                    suppliedOptions.put(option, null);
+                    continue;
+                }
+                // An argument is allowed or required
+                if (equalPos != -1)
+                {
+                    // Add option with argument to options
+                    // Check for empty argument
+                    String argument = (equalPos + 1 < nextArg.length()) ? nextArg.substring(equalPos + 1) : ""; //$NON-NLS-1$
+                    suppliedOptions.put(option, argument);
+                    continue;
+                }
+                // An argument is required, so take the next one.
+                if (option.getArgumentType().equals(ArgumentType.REQUIRED_ARGUMENT))
+                {
+                    if (i + 1 < nargs)
+                    {
+                        // Add option with following argument to options
+                        String argument = args[i++];
+                        suppliedOptions.put(option, argument);
+                        continue;
+                    }
+                    throw new IllegalArgumentException("Option missing required argument"); //$NON-NLS-1$
+                }
+            }
+            else
+            {
+                // Process a short argument or short argument sequence
+                
+                // for each letter after the '-'
+                int shortSeqSize = nextArg.length();
+                for (int j = 1; j < shortSeqSize; j++)
+                {
+                    char curChar = nextArg.charAt(j);
+                    Option option = programOptions.getShortOption(curChar);
+                    if (option == null)
+                    {
+                        throw new IllegalArgumentException("Illegal option -" + curChar); //$NON-NLS-1$
+                    }
+                    if (option.getArgumentType().equals(ArgumentType.NO_ARGUMENT))
+                    {
+                        // Add option with null argument to options
+                        suppliedOptions.put(option, null);
+                        continue;
+                    }
+                    // This option allows or requires an argument
+                    if (j < shortSeqSize)
+                    {
+                        // since there is stuff that follows the flag, it is the argument.
+                        String argument = nextArg.substring(j + 1);
+                        suppliedOptions.put(option, argument);
+                        continue;
+                    }
+                    if (option.getArgumentType().equals(ArgumentType.REQUIRED_ARGUMENT))
+                    {
+                        if (i + 1 < nargs)
+                        {
+                            // Add option with following argument to options
+                            String argument = args[i++];
+                            suppliedOptions.put(option, argument);
+                            continue;
+                        }
+                        throw new IllegalArgumentException("Option missing required argument"); //$NON-NLS-1$
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Swap adjacent blocks in an array.
+     * 
+     * @param array The array to modify in place
+     * @param firstStart the index of the start of the first block
+     * @param firstEnd the index of the end of the first block
+     * @param secondEnd the index of the end of the second block. Note: the start of the second block is firstEnd + 1
+     */
+    public static void swap(Object[] array, int firstStart, int firstEnd, int secondEnd)
+    {
+        // Note: this is currently unused.
+        // If we implement the traditional GNU extensions GetOpts interface we will need it.
+        // We copy the smaller block to the longer block.
+        
+        // The performance of this is linear with respect to the size of the larger block.
+        // If the blocks are equal the number of swaps is equal to the "larger" block size otherwise it is one greater.
+
+        // if the first block is smaller we start at the start of both and swap 
+        // Otherwise we start at the end of both and swap from the end to the start
+
+        // Set variables for the second block to be larger
+        int sourcePos = firstStart;
+        int destPos = firstEnd + 1;
+        int increment = 1;
+        int destStop = secondEnd;
+        int firstSize = firstEnd - firstStart + 1;
+        int secondSize = secondEnd - firstEnd;
+        int swapCount = secondSize + 1;
+
+        if (firstSize > secondSize)
+        {
+            // first block is bigger or equal
+            sourcePos = secondEnd;
+            destPos = firstEnd;
+            destStop = firstStart;
+            increment = -1;
+            swapCount = firstSize + 1;
+        }
+        
+        if (firstSize == secondSize)
+        {
+            swapCount--;
+        }
+
+        while (swapCount-- > 0)
+        {
+            Object temp = array[destPos];
+            array[destPos] = array[sourcePos];
+            array[sourcePos] = temp;
+            if (sourcePos != destStop)
+            {
+                sourcePos += increment;
+            }
+            if (destPos != destStop)
+            {
+                destPos += increment;
+            }
+
+        }
+    }
+
+//    public static void main(String[] args)
+//    {
+//        String[] a = {"a","b","c","d","e"};
+//        swap(a, 0, 2, 4);
+//        swap(a, 0, 1, 4);
+//        swap(a, 0, 0, 1);
+//        swap(a, 0, 0, 1);
+//        swap(a, 1, 2, 4);
+//        swap(a, 1, 2, 4);
+//    }
 
     private String     programName;
     private String[]   args;
-    private OptionList options;
+    private OptionList programOptions;
+
+    /**
+     * The position in the array that is currently being studied.
+     */
+    private List nonOptionArgs;
+    private Map suppliedOptions;
+    
 }

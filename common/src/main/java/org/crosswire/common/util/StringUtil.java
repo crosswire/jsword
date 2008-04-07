@@ -52,7 +52,7 @@ public final class StringUtil
     /**
      * This method reads an InputStream <b>In its entirety</b>, and passes
      * The text back as a string. If you are reading from a source that can
-     * block then be preapred for a long wait for this to return.
+     * block then be prepared for a long wait for this to return.
      * @param in The Stream to read from.
      * @return A string containing all the text from the Stream.
      */
