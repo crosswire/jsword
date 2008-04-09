@@ -19,7 +19,7 @@
  *
  * ID: $Id: BookIndexer.java 1466 2007-07-02 02:48:09Z dmsmith $
  */
-package org.crosswire.jsword.examples;
+package org.crosswire.jsword.bridge;
 
 import java.util.Iterator;
 

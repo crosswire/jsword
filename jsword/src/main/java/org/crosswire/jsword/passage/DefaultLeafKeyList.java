@@ -23,7 +23,7 @@ package org.crosswire.jsword.passage;
 
 import java.util.Iterator;
 
-import org.crosswire.common.util.EmptyIterator;
+import org.crosswire.common.util.ItemIterator;
 
 /**
  * A simple default implementation of the Key interface.
@@ -129,7 +129,7 @@ public class DefaultLeafKeyList implements Key
      */
     public boolean isEmpty()
     {
-        return true;
+        return false;
     }
 
     /* (non-Javadoc)
@@ -137,7 +137,7 @@ public class DefaultLeafKeyList implements Key
      */
     public boolean contains(Key key)
     {
-        return false;
+        return this.equals(key);
     }
 
     /* (non-Javadoc)
@@ -145,7 +145,7 @@ public class DefaultLeafKeyList implements Key
      */
     public Iterator iterator()
     {
-        return new EmptyIterator();
+        return new ItemIterator(this);
     }
 
     /* (non-Javadoc)
@@ -184,6 +184,10 @@ public class DefaultLeafKeyList implements Key
      */
     public Key get(int index)
     {
+        if (index == 0)
+        {
+            return this;
+        }
         return null;
     }
 
@@ -192,6 +196,10 @@ public class DefaultLeafKeyList implements Key
      */
     public int indexOf(Key that)
     {
+        if (this.equals(that))
+        {
+            return 0;
+        }
         return -1;
     }
 

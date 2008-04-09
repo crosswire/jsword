@@ -19,7 +19,7 @@
  *
  * ID: $Id: BookIndexer.java 1466 2007-07-02 02:48:09Z dmsmith $
  */
-package org.crosswire.jsword.examples;
+package org.crosswire.jsword.bridge;
 
 import java.util.Iterator;
 import java.util.List;
@@ -27,6 +27,8 @@ import java.util.Map;
 
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookFilter;
+import org.crosswire.jsword.book.BookFilters;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.book.install.InstallManager;
@@ -81,9 +83,42 @@ public class BookInstaller
      * Get a list of all installed books.
      * @return the list of installed books
      */
-    public List getInstalledBooks()
+    public static List getInstalledBooks()
     {
         return Books.installed().getBooks();
+    }
+
+    /**
+     * Get a list of installed books by BookFilter.
+     * @param filter The book filter
+     * @see BookFilter
+     * @see Books
+     */
+    public static List getInstalledBooks(BookFilter filter)
+    {
+        return Books.installed().getBooks(filter);
+    }
+
+    /**
+     * Get a list of books by CustomFilter specification
+     * @param filter The filter string
+     * @see BookFilters#getCustom(java.lang.String)
+     * @see Books
+     */
+    public static List getInstalledBooks(String filterSpec)
+    {
+        return getInstalledBooks(BookFilters.getCustom(filterSpec));
+    }
+
+    /**
+     * Get a particular installed book by initials.
+     * 
+     * @param bookInitials The book name to search for
+     * @return The found book. Null otherwise.
+     */
+    public static Book getInstalledBook(String bookInitials)
+    {
+        return Books.installed().getBook(bookInitials);
     }
 
     /**
@@ -94,6 +129,39 @@ public class BookInstaller
     public List getRepositoryBooks(String repositoryName)
     {
         return installManager.getInstaller(repositoryName).getBooks();
+    }
+
+    /**
+     * Get a list of books in a repository by BookFilter.
+     * @param filter The book filter
+     * @see BookFilter
+     * @see Books
+     */
+    public List getRepositoryBooks(String repositoryName, BookFilter filter)
+    {
+        return installManager.getInstaller(repositoryName).getBooks(filter);
+    }
+
+    /**
+     * Get a list of books in a repository by CustomFilter specification
+     * @param filter The filter string
+     * @see BookFilters#getCustom(java.lang.String)
+     * @see Books
+     */
+    public List getRepositoryBooks(String repositoryName, String filterSpec)
+    {
+        return getRepositoryBooks(repositoryName, BookFilters.getCustom(filterSpec));
+    }
+
+    /**
+     * Get a particular installed book by initials.
+     * 
+     * @param bookInitials The book name to search for
+     * @return The found book. Null otherwise.
+     */
+    public Book getRepositoryBook(String repositoryName, String bookInitials)
+    {
+        return installManager.getInstaller(repositoryName).getBook(bookInitials);
     }
 
     /**
@@ -210,7 +278,7 @@ public class BookInstaller
         {
             if (args.length == 1)
             {
-                Iterator iter = installer.getInstalledBooks().iterator();
+                Iterator iter = BookInstaller.getInstalledBooks().iterator();
                 while (iter.hasNext())
                 {
                     Book book = (Book) iter.next();

@@ -35,6 +35,7 @@ import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.TransformingSAXEventProvider;
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookFilter;
@@ -72,53 +73,108 @@ public class APIExamples
     private static final String BIBLE_NAME = "KJV"; //$NON-NLS-1$
 
     /**
-     * The source to this method is an example of how to read the plain text of
-     * a verse, and print it to stdout. Reading from a Commentary is just the
-     * same as reading from a Bible.
-     * @see Book
+     * Get a particular installed book by initials.
+     * 
+     * @param bookInitials The book name to search for
+     * @return The found book. Null otherwise.
      */
-    public void readPlainText() throws BookException, NoSuchKeyException
+    public Book getBook(String bookInitials)
     {
-        Books books = Books.installed();
-        Book bible = books.getBook(BIBLE_NAME);
-
-        Key key = bible.getKey("Gen 1 1"); //$NON-NLS-1$
-        BookData data = new BookData(bible, key);
-        String text = OSISUtil.getCanonicalText(data.getOsisFragment());
-
-        System.out.println("The plain text of Gen 1:1 is " + text); //$NON-NLS-1$
+        return Books.installed().getBook(bookInitials);
     }
 
     /**
-     * This method demonstrates how to get styled text (in this case HTML) from
-     * a verse, and print it to stdout. Reading from a Commentary is just the
-     * same as reading from a Bible.
+     * Get just the canonical text of one or more book entries without any markup.
+     *
+     * @param bookInitials the book to use
+     * @param reference a reference, appropriate for the book, of one or more entries
+     */
+    public String getPlainText(String bookInitials, String reference) throws BookException, NoSuchKeyException
+    {
+        Book book = getBook(bookInitials);
+        if (book == null)
+        {
+            return ""; //$NON-NLS-1$
+        }
+
+        Key      key  = book.getKey(reference);
+        BookData data = new BookData(book, key);
+        return OSISUtil.getCanonicalText(data.getOsisFragment());
+    }
+
+    /**
+     * Obtain a SAX event provider for the OSIS document representation of one or more book entries.
+     *
+     * @param bookInitials the book to use
+     * @param reference a reference, appropriate for the book, of one or more entries
+     */
+    public SAXEventProvider getOSIS(String bookInitials, String reference, int maxKeyCount) throws BookException, NoSuchKeyException
+    {
+        if (bookInitials == null || reference == null)
+        {
+            return null;
+        }
+
+        Book book = getBook(bookInitials);
+
+        Key key = null;
+        if (BookCategory.BIBLE.equals(book.getBookCategory()))
+        {
+            key = book.getKey(reference);
+            key = ((Passage) key).trimVerses(maxKeyCount);
+        }
+        else
+        {
+            key = book.createEmptyKeyList();
+            
+            Iterator iter = book.getKey(reference).iterator();
+            int count = 0;
+            while (iter.hasNext())
+            {
+                if (++count >= maxKeyCount)
+                {
+                    break;
+                }
+                key.addAll((Key) iter.next());
+            }
+        }
+
+        BookData data = new BookData(book, key);
+
+        return data.getSAXEventProvider();
+    }
+
+    /**
+     * Obtain styled text (in this case HTML) for a book reference.
+     * 
+     * @param bookInitials the book to use
+     * @param reference a reference, appropriate for the book, of one or more entries
+     * @return the styled text
      * @see Book
      * @see SAXEventProvider
      */
-    public void readStyledText() throws NoSuchKeyException, BookException, TransformerException, SAXException
+    public String readStyledText(String bookInitials, String reference, int maxKeyCount) throws NoSuchKeyException, BookException, TransformerException, SAXException
     {
-        Book bible = Books.installed().getBook(BIBLE_NAME);
-
-        Key key = bible.getKey("Gen 1 1"); //$NON-NLS-1$
-        BookData data = new BookData(bible, key);
-        SAXEventProvider osissep = data.getSAXEventProvider();
+        Book book = getBook(bookInitials);
+        SAXEventProvider osissep = getOSIS(bookInitials, reference, maxKeyCount);
+        if (osissep == null)
+        {
+            return ""; //$NON-NLS-1$
+        }
 
         Converter styler = ConverterFactory.getConverter();
 
         TransformingSAXEventProvider htmlsep = (TransformingSAXEventProvider) styler.convert(osissep);
 
-        // You can also pass parameters to the xslt. What you pass depends upon what the xslt can use.
-        BookMetaData bmd = bible.getBookMetaData();
+        // You can also pass parameters to the XSLT. What you pass depends upon what the XSLT can use.
+        BookMetaData bmd = book.getBookMetaData();
         boolean direction = bmd.isLeftToRight();
         htmlsep.setParameter("direction", direction ? "ltr" : "rtl"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
         // Finally you can get the styled text.
-        String text = XMLUtil.writeToString(htmlsep);
-
-        System.out.println("The html text of Gen 1:1 is " + text); //$NON-NLS-1$
+        return XMLUtil.writeToString(htmlsep);
     }
-
+    
     /**
      * While Bible and Commentary are very similar, a Dictionary is read in a
      * slightly different way. It is also worth looking at the JavaDoc for
@@ -350,6 +406,7 @@ public class APIExamples
             }
         }
     }
+
     /**
      * A simple BookFilter that looks for a Bible by name.
      */
@@ -400,8 +457,8 @@ public class APIExamples
         APIExamples examples = new APIExamples();
 
         examples.installBook();
-        examples.readPlainText();
-        examples.readStyledText();
+        System.out.println("The plain text of Gen 1:1 is " + examples.getPlainText(BIBLE_NAME, "Gen 1:1")); //$NON-NLS-1$ //$NON-NLS-2$
+        System.out.println("The html text of Gen 1:1 is " + examples.readStyledText(BIBLE_NAME, "Gen 1:1", 100)); //$NON-NLS-1$ //$NON-NLS-2$
         examples.readDictionary();
         examples.search();
         examples.rankedSearch();

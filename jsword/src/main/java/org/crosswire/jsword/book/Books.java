@@ -84,6 +84,11 @@ public final class Books implements BookList
      */
     public synchronized Book getBook(String name)
     {
+        if (name == null)
+        {
+            return null;
+        }
+
         // Check name first
         // First check for exact matches
         Iterator iter = books.iterator();

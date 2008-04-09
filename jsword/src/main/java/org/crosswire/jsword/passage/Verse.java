@@ -26,9 +26,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 import org.crosswire.common.icu.NumberShaper;
+import org.crosswire.common.util.ItemIterator;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.versification.BibleInfo;
 
@@ -820,44 +820,6 @@ public final class Verse implements Key, Serializable
         // default ctor so I will ignore it here.
     }
 
-    /**
-     * Iterator over 1 verse - For being a VerseBase.
-     */
-    class VerseIterator implements Iterator
-    {
-        /* (non-Javadoc)
-         * @see java.util.Iterator#hasNext()
-         */
-        public boolean hasNext()
-        {
-            return !done;
-        }
-
-        /* (non-Javadoc)
-         * @see java.util.Iterator#next()
-         */
-        public Object next()
-        {
-            if (done)
-            {
-                throw new NoSuchElementException();
-            }
-
-            done = true;
-            return Verse.this;
-        }
-
-        /* (non-Javadoc)
-         * @see java.util.Iterator#remove()
-         */
-        public void remove() throws UnsupportedOperationException
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        private boolean done;
-    }
-
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#canHaveChildren()
      */
@@ -887,7 +849,7 @@ public final class Verse implements Key, Serializable
      */
     public boolean isEmpty()
     {
-        return true;
+        return false;
     }
 
     /* (non-Javadoc)
@@ -895,7 +857,7 @@ public final class Verse implements Key, Serializable
      */
     public boolean contains(Key key)
     {
-        return false;
+        return this.equals(key);
     }
 
     /* (non-Javadoc)
@@ -903,7 +865,7 @@ public final class Verse implements Key, Serializable
      */
     public Iterator iterator()
     {
-        return new VerseIterator();
+        return new ItemIterator(this);
     }
 
     /* (non-Javadoc)
@@ -942,6 +904,10 @@ public final class Verse implements Key, Serializable
      */
     public Key get(int index)
     {
+        if (index == 0)
+        {
+            return this;
+        }
         return null;
     }
 
@@ -950,6 +916,10 @@ public final class Verse implements Key, Serializable
      */
     public int indexOf(Key that)
     {
+        if (this.equals(that))
+        {
+            return 0;
+        }
         return -1;
     }
 

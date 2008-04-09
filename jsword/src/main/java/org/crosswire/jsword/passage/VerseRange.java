@@ -1128,7 +1128,7 @@ public final class VerseRange implements Key, Serializable
      */
     public boolean isEmpty()
     {
-        return true;
+        return verseCount == 0;
     }
 
     /* (non-Javadoc)
