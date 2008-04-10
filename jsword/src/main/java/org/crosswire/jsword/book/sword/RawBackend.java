@@ -25,11 +25,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.net.URI;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
@@ -55,13 +57,15 @@ public class RawBackend extends AbstractBackend
 
         assert (datasize == 2 || datasize == 4);
 
-        String path = getExpandedDataPath();
+        URI path = getExpandedDataPath();
 
-        idxFile[SwordConstants.TESTAMENT_OLD] = new File(path + File.separator + SwordConstants.FILE_OT + SwordConstants.EXTENSION_VSS);
-        txtFile[SwordConstants.TESTAMENT_OLD] = new File(path + File.separator + SwordConstants.FILE_OT);
+        URI otPath = NetUtil.lengthenURI(path, File.separator + SwordConstants.FILE_OT);
+        txtFile[SwordConstants.TESTAMENT_OLD] = new File(otPath.getPath());
+        idxFile[SwordConstants.TESTAMENT_OLD] = new File(otPath.getPath() + SwordConstants.EXTENSION_VSS);
 
-        idxFile[SwordConstants.TESTAMENT_NEW] = new File(path + File.separator + SwordConstants.FILE_NT + SwordConstants.EXTENSION_VSS);
-        txtFile[SwordConstants.TESTAMENT_NEW] = new File(path + File.separator + SwordConstants.FILE_NT);
+        URI ntPath = NetUtil.lengthenURI(path, File.separator + SwordConstants.FILE_NT);
+        txtFile[SwordConstants.TESTAMENT_NEW] = new File(ntPath.getPath());
+        idxFile[SwordConstants.TESTAMENT_NEW] = new File(ntPath.getPath() + SwordConstants.EXTENSION_VSS);
 
         // It is an error to be neither OT nor NT
         if (!txtFile[SwordConstants.TESTAMENT_OLD].canRead() && !txtFile[SwordConstants.TESTAMENT_NEW].canRead())
@@ -75,12 +79,14 @@ public class RawBackend extends AbstractBackend
      */
     public final void activate(Lock lock)
     {
+        String fileMode = isWritable() ? FileUtil.MODE_WRITE : FileUtil.MODE_READ;
+ 
         if (idxFile[SwordConstants.TESTAMENT_OLD].canRead())
         {
             try
             {
-                idxRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_OLD], FileUtil.MODE_READ);
-                txtRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(txtFile[SwordConstants.TESTAMENT_OLD], FileUtil.MODE_READ);
+                idxRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_OLD], fileMode);
+                txtRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(txtFile[SwordConstants.TESTAMENT_OLD], fileMode);
             }
             catch (FileNotFoundException ex)
             {
@@ -95,8 +101,8 @@ public class RawBackend extends AbstractBackend
         {
             try
             {
-                idxRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_NEW], FileUtil.MODE_READ);
-                txtRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(txtFile[SwordConstants.TESTAMENT_NEW], FileUtil.MODE_READ);
+                idxRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_NEW], fileMode);
+                txtRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(txtFile[SwordConstants.TESTAMENT_NEW], fileMode);
             }
             catch (FileNotFoundException ex)
             {
@@ -163,7 +169,7 @@ public class RawBackend extends AbstractBackend
 
             int entrysize = datasize + OFFSETSIZE;
 
-            // Read the next entrysize byes.
+            // Read the next entry size bytes.
             byte[] read = SwordUtil.readRAF(idxRaf[testament], index * entrysize, entrysize);
             if (read == null || read.length == 0)
             {
@@ -197,7 +203,7 @@ public class RawBackend extends AbstractBackend
 
             decipher(data);
 
-            return SwordUtil.decode(key, data, charset);
+            return SwordUtil.decode(key.getName(), data, charset);
         }
         catch (IOException ex)
         {
@@ -224,6 +230,35 @@ public class RawBackend extends AbstractBackend
         {
             Activator.activate(this);
         }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#isWritable()
+     */
+    public boolean isWritable()
+    {
+        // For the module to be writable either the old testament or the new testament needs to be present
+        // (i.e. readable) and both the index and the data files need to be readable
+        if (idxFile[SwordConstants.TESTAMENT_OLD].canRead()
+            && (idxFile[SwordConstants.TESTAMENT_OLD].canWrite() || !txtFile[SwordConstants.TESTAMENT_OLD].canWrite()))
+        {
+            return false;
+        }
+        if (idxFile[SwordConstants.TESTAMENT_NEW].canRead()
+            && (idxFile[SwordConstants.TESTAMENT_NEW].canWrite() || !txtFile[SwordConstants.TESTAMENT_NEW].canWrite()))
+        {
+            return false;
+        }
+        return idxFile[SwordConstants.TESTAMENT_OLD].canRead() || idxFile[SwordConstants.TESTAMENT_NEW].canRead();
+    }
+
+    public void create(String path)
+    {
+        idxFile[SwordConstants.TESTAMENT_OLD] = new File(path + File.separator + SwordConstants.FILE_OT + SwordConstants.EXTENSION_VSS);
+        txtFile[SwordConstants.TESTAMENT_OLD] = new File(path + File.separator + SwordConstants.FILE_OT);
+
+        idxFile[SwordConstants.TESTAMENT_NEW] = new File(path + File.separator + SwordConstants.FILE_NT + SwordConstants.EXTENSION_VSS);
+        txtFile[SwordConstants.TESTAMENT_NEW] = new File(path + File.separator + SwordConstants.FILE_NT);
     }
 
     /**

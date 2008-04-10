@@ -1,4 +1,3 @@
-package org.crosswire.jsword.book.sword;
 /**
  * Distribution License:
  * JSword is free software; you can redistribute it and/or modify it under
@@ -20,6 +19,8 @@ package org.crosswire.jsword.book.sword;
  *
  * ID: $Id$
  */
+package org.crosswire.jsword.book.sword;
+
 import org.crosswire.jsword.passage.DefaultLeafKeyList;
 import org.crosswire.jsword.passage.Key;
 

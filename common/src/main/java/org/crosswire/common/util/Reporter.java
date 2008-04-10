@@ -36,7 +36,7 @@ import java.util.Properties;
  *     in response to a single error.</li>
  * <li>The class being implemented may implement an interface that disallows
  *     nested exceptions and yet does not want to loose the root cause error
- *     information. (This is the weakest of the above arguements, but probably
+ *     information. (This is the weakest of the above arguments, but probably
  *     still valid.)</li>
  * However in many of the times this class is used, this is the reason:
  * <li>Within UI specific code - to throw up a dialog box (or whatever). Now

@@ -24,6 +24,7 @@ package org.crosswire.jsword.book.sword;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,8 +55,8 @@ public class GenBookBackend extends AbstractBackend
 
         index = new TreeKeyIndex(sbmd);
 
-        String path = getExpandedDataPath();
-        bdtFile = new File(path + EXTENSION_BDT);
+        URI path = getExpandedDataPath();
+        bdtFile = new File(path.getPath() + EXTENSION_BDT);
 
         if (!bdtFile.canRead())
         {
@@ -127,7 +128,7 @@ public class GenBookBackend extends AbstractBackend
                 int size = SwordUtil.decodeLittleEndian32(userData, 4);
                 byte[] data = SwordUtil.readRAF(bdtRaf, start, size);
                 decipher(data);
-                return SwordUtil.decode(key, data, getBookMetaData().getBookCharset());
+                return SwordUtil.decode(key.getName(), data, getBookMetaData().getBookCharset());
             }
 
             return ""; //$NON-NLS-1$

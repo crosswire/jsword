@@ -103,32 +103,6 @@ public class ZLDBackend extends AbstractBackend
     {
         super(sbmd);
 
-        String path = getExpandedDataPath();
-
-        idxFile = new File(path + EXTENSION_INDEX);
-        datFile = new File(path + EXTENSION_DATA);
-        zdxFile = new File(path + EXTENSION_Z_INDEX);
-        zdtFile = new File(path + EXTENSION_Z_DATA);
-
-        if (!idxFile.canRead())
-        {
-            throw new BookException(UserMsg.READ_FAIL, new Object[] { idxFile.getAbsolutePath() });
-        }
-
-        if (!datFile.canRead())
-        {
-            throw new BookException(UserMsg.READ_FAIL, new Object[] { datFile.getAbsolutePath() });
-        }
-
-        if (!zdxFile.canRead())
-        {
-            throw new BookException(UserMsg.READ_FAIL, new Object[] { zdxFile.getAbsolutePath() });
-        }
-
-        if (!zdtFile.canRead())
-        {
-            throw new BookException(UserMsg.READ_FAIL, new Object[] { zdtFile.getAbsolutePath() });
-        }
     }
 
     /* (non-Javadoc)
@@ -138,6 +112,46 @@ public class ZLDBackend extends AbstractBackend
     {
         try
         {
+            String path = null;
+            try
+            {
+                path = getExpandedDataPath().getPath();
+            }
+            catch (BookException e)
+            {
+                Reporter.informUser(this, e);
+                return;
+            }
+
+            idxFile = new File(path + EXTENSION_INDEX);
+            datFile = new File(path + EXTENSION_DATA);
+            zdxFile = new File(path + EXTENSION_Z_INDEX);
+            zdtFile = new File(path + EXTENSION_Z_DATA);
+
+            if (!idxFile.canRead())
+            {
+                Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] { idxFile.getAbsolutePath() }));
+                return;
+            }
+
+            if (!datFile.canRead())
+            {
+                Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] { datFile.getAbsolutePath() }));
+                return;
+            }
+
+            if (!zdxFile.canRead())
+            {
+                Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] { zdxFile.getAbsolutePath() }));
+                return;
+            }
+
+            if (!zdtFile.canRead())
+            {
+                Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] { zdtFile.getAbsolutePath() }));
+                return;
+            }
+
             idxRaf = new RandomAccessFile(idxFile, FileUtil.MODE_READ);
             datRaf = new RandomAccessFile(datFile, FileUtil.MODE_READ);
             zdxRaf = new RandomAccessFile(zdxFile, FileUtil.MODE_READ);
@@ -242,7 +256,7 @@ public class ZLDBackend extends AbstractBackend
                 byte[] keydata = new byte[keyend];
                 System.arraycopy(data, 0, keydata, 0, keyend);
 
-                String keytitle = SwordUtil.decode(keys, keydata, charset).trim();
+                String keytitle = SwordUtil.decode(keys.getName(), keydata, charset).trim();
 
                 // for some weird reason plain text (i.e. SourceType=0) dicts
                 // all get \ added to the ends of the index entries.
@@ -371,7 +385,7 @@ public class ZLDBackend extends AbstractBackend
             byte[] entryBytes = new byte[entrySize];
             System.arraycopy(uncompressed, entryStart, entryBytes, 0, entrySize);
 
-            return SwordUtil.decode(key, entryBytes, charset).trim();
+            return SwordUtil.decode(key.getName(), entryBytes, charset).trim();
         }
         catch (IOException e)
         {

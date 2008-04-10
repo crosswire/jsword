@@ -25,12 +25,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.net.URI;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
 import org.crosswire.common.compress.CompressorType;
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
@@ -102,28 +104,10 @@ public class ZVerseBackend extends AbstractBackend
     /**
      * Simple ctor
      */
-    public ZVerseBackend(SwordBookMetaData sbmd, BlockType blockType) throws BookException
+    public ZVerseBackend(SwordBookMetaData sbmd, BlockType blockType)
     {
         super(sbmd);
-
-        String path = getExpandedDataPath();
-        String otAllButLast = path + File.separator + SwordConstants.FILE_OT + '.' + blockType.getIndicator() + SUFFIX_PART1;
-        idxFile[SwordConstants.TESTAMENT_OLD] = new File(otAllButLast + SUFFIX_INDEX);
-        textFile[SwordConstants.TESTAMENT_OLD] = new File(otAllButLast + SUFFIX_TEXT);
-        compFile[SwordConstants.TESTAMENT_OLD] = new File(otAllButLast + SUFFIX_COMP);
-
-        String ntAllButLast = path + File.separator + SwordConstants.FILE_NT + '.' + blockType.getIndicator() + SUFFIX_PART1;
-        idxFile[SwordConstants.TESTAMENT_NEW] = new File(ntAllButLast + SUFFIX_INDEX);
-        textFile[SwordConstants.TESTAMENT_NEW] = new File(ntAllButLast + SUFFIX_TEXT);
-        compFile[SwordConstants.TESTAMENT_NEW] = new File(ntAllButLast + SUFFIX_COMP);
-
-        // It is an error to be neither OT nor NT
-        if (!textFile[SwordConstants.TESTAMENT_OLD].canRead()
-            && !textFile[SwordConstants.TESTAMENT_NEW].canRead())
-        {
-            log.error("Failed to find OT or NT files: '" + otAllButLast + SUFFIX_TEXT + "' and '" + ntAllButLast + SUFFIX_TEXT + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            throw new BookException(Msg.MISSING_FILE, new Object[] { path });
-        }
+        this.blockType = blockType;
     }
 
     /* (non-Javadoc)
@@ -131,6 +115,35 @@ public class ZVerseBackend extends AbstractBackend
      */
     public final void activate(Lock lock)
     {
+        try
+        {
+            if (idxFile[SwordConstants.TESTAMENT_OLD] == null)
+            {
+                URI path = getExpandedDataPath();
+                String otAllButLast = NetUtil.lengthenURI(path, File.separator + SwordConstants.FILE_OT + '.' + blockType.getIndicator() + SUFFIX_PART1).getPath();
+                idxFile[SwordConstants.TESTAMENT_OLD] = new File(otAllButLast + SUFFIX_INDEX);
+                textFile[SwordConstants.TESTAMENT_OLD] = new File(otAllButLast + SUFFIX_TEXT);
+                compFile[SwordConstants.TESTAMENT_OLD] = new File(otAllButLast + SUFFIX_COMP);
+    
+                String ntAllButLast = NetUtil.lengthenURI(path, File.separator + SwordConstants.FILE_NT + '.' + blockType.getIndicator() + SUFFIX_PART1).getPath();
+                idxFile[SwordConstants.TESTAMENT_NEW] = new File(ntAllButLast + SUFFIX_INDEX);
+                textFile[SwordConstants.TESTAMENT_NEW] = new File(ntAllButLast + SUFFIX_TEXT);
+                compFile[SwordConstants.TESTAMENT_NEW] = new File(ntAllButLast + SUFFIX_COMP);
+            }
+        }
+        catch (BookException e)
+        {
+            idxFile[SwordConstants.TESTAMENT_OLD] = null;
+            textFile[SwordConstants.TESTAMENT_OLD] = null;
+            compFile[SwordConstants.TESTAMENT_OLD] = null;
+
+            idxFile[SwordConstants.TESTAMENT_NEW] = null;
+            textFile[SwordConstants.TESTAMENT_NEW] = null;
+            compFile[SwordConstants.TESTAMENT_NEW] = null;
+
+            return;
+        }
+
         if (idxFile[SwordConstants.TESTAMENT_OLD].canRead())
         {
             try
@@ -244,7 +257,7 @@ public class ZVerseBackend extends AbstractBackend
                 return ""; //$NON-NLS-1$
             }
 
-            // 10 because we the index is 10 bytes long for each verse
+            // 10 because the index is 10 bytes long for each verse
             byte[] temp = SwordUtil.readRAF(compRaf[testament], index * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE);
 
             // If the Bible does not contain the desired verse, return nothing.
@@ -296,7 +309,7 @@ public class ZVerseBackend extends AbstractBackend
             byte[] chopped = new byte[verseSize];
             System.arraycopy(uncompressed, verseStart, chopped, 0, verseSize);
 
-            return SwordUtil.decode(key, chopped, charset);
+            return SwordUtil.decode(key.getName(), chopped, charset);
         }
         catch (IOException e)
         {
@@ -324,6 +337,11 @@ public class ZVerseBackend extends AbstractBackend
             Activator.activate(this);
         }
     }
+
+    /**
+     * Whether the book is blocked by Book, Chapter or Verse.
+     */
+    private BlockType blockType;
 
     /**
      *

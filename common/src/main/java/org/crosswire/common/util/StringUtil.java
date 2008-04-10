@@ -258,7 +258,7 @@ public final class StringUtil
      * StringUtils.split(null, *)         = null
      * StringUtils.split("", *)           = []
      * StringUtils.split("a.b.c", '.')    = ["a", "b", "c"]
-     * StringUtils.split("a..b.c", '.')   = ["a", "b", "c"]
+     * StringUtils.split("a..b.c", '.')   = ["a", "", "b", "c"]
      * StringUtils.split("a:b:c", '.')    = ["a:b:c"]
      * StringUtils.split("a\tb\nc", null) = ["a", "b", "c"]
      * StringUtils.split("a b c", ' ')    = ["a", "b", "c"]
@@ -291,6 +291,72 @@ public final class StringUtil
         {
             if (str.charAt(i) == separatorChar)
             {
+                list.add(str.substring(start, i));
+                start = ++i;
+                match = false;
+                continue;
+            }
+            match = true;
+            i++;
+        }
+        if (match)
+        {
+            list.add(str.substring(start, i));
+        }
+        return (String[]) list.toArray(new String[list.size()]);
+    }
+
+    /**
+     * <p>Splits the provided text into an array, separator specified.
+     * This is an alternative to using StringTokenizer.</p>
+     *
+     * <p>The separator is not included in the returned String array.
+     * Adjacent separators are treated individually.</p>
+     *
+     * <p>A <code>null</code> input String returns <code>null</code>.</p>
+     *
+     * <pre>
+     * StringUtils.split(null, *)         = null
+     * StringUtils.split("", *)           = []
+     * StringUtils.split("a.b.c", '.')    = ["a", "b", "c"]
+     * StringUtils.split("a..b.c", '.')   = ["a", "", "b", "c"]
+     * StringUtils.split("a:b:c", '.')    = ["a:b:c"]
+     * StringUtils.split("a b c", ' ')    = ["a", "b", "c"]
+     * </pre>
+     *
+     * @param str  the String to parse, may be null
+     * @param separatorChar  the character used as the delimiter
+     * @param max  the maximum number of elements to include in the
+     *  array. A zero or negative value implies no limit
+     * @return an array of parsed Strings
+     * @since 2.0
+     */
+    public static String[] splitAll(String str, char separatorChar, int max)
+    {
+        // Performance tuned for 2.0 (JDK1.4)
+
+        if (str == null)
+        {
+            return (String[]) EMPTY_STRING_ARRAY.clone();
+        }
+        int len = str.length();
+        if (len == 0)
+        {
+            return (String[]) EMPTY_STRING_ARRAY.clone();
+        }
+        List list = new ArrayList();
+        int sizePlus1 = 1;
+        int i = 0;
+        int start = 0;
+        boolean match = false;
+        while (i < len)
+        {
+            if (str.charAt(i) == separatorChar)
+            {
+                if (sizePlus1++ == max)
+                {
+                    i = len;
+                }
                 list.add(str.substring(start, i));
                 start = ++i;
                 match = false;
@@ -351,7 +417,7 @@ public final class StringUtil
      * StringUtils.split("ab de fg", null, 0)   = ["ab", "cd", "ef"]
      * StringUtils.split("ab   de fg", null, 0) = ["ab", "cd", "ef"]
      * StringUtils.split("ab:cd:ef", ":", 0)    = ["ab", "cd", "ef"]
-     * StringUtils.split("ab:cd:ef", ":", 2)    = ["ab", "cdef"]
+     * StringUtils.split("ab:cd:ef", ":", 2)    = ["ab", "cd:ef"]
      * </pre>
      *
      * @param str  the String to parse, may be null
@@ -406,7 +472,7 @@ public final class StringUtil
         }
         else if (separatorChars.length() == 1)
         {
-            // Optimise 1 character case
+            // Optimize 1 character case
             char sep = separatorChars.charAt(0);
             while (i < len)
             {
