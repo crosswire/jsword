@@ -261,17 +261,22 @@ public class DwrBridge
         }
         else
         {
-            key = book.createEmptyKeyList();
+            key = book.getKey(reference);
             
-            Iterator iter = book.getKey(reference).iterator();
-            int count = 0;
-            while (iter.hasNext())
+            // Do we need to trim?
+            if (key.getCardinality() > maxKeyCount)
             {
-                if (++count >= maxKeyCount)
+                Iterator iter = key.iterator();
+                key = book.createEmptyKeyList();
+                int count = 0;
+                while (iter.hasNext())
                 {
-                    break;
+                    if (++count >= maxKeyCount)
+                    {
+                        break;
+                    }
+                    key.addAll((Key) iter.next());
                 }
-                key.addAll((Key) iter.next());
             }
         }
 
