@@ -58,11 +58,11 @@ public class RawLDBackend extends AbstractBackend
     {
         super(sbmd);
         this.datasize = datasize;
+        this.entrysize = OFFSETSIZE + datasize;
 
         assert (datasize == 2 || datasize == 4);
 
         String path = getExpandedDataPath();
-
 
         idxFile = new File(path + SwordConstants.EXTENSION_INDEX);
         datFile = new File(path + SwordConstants.EXTENSION_DATA);
@@ -130,7 +130,6 @@ public class RawLDBackend extends AbstractBackend
         checkActive();
 
         SwordBookMetaData bmd = getBookMetaData();
-        String charset = bmd.getBookCharset();
         Key reply = new DefaultKeyList(null, bmd.getName());
 
         boolean isDailyDevotional = bmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS);
@@ -138,11 +137,10 @@ public class RawLDBackend extends AbstractBackend
         Calendar greg = new GregorianCalendar();
         DateFormatter nameDF = DateFormatter.getDateInstance();
 
-        int entrysize = OFFSETSIZE + datasize;
         long entries;
         try
         {
-            entries = idxRaf.length() / entrysize;
+            entries = getEntryCount();
         }
         catch (IOException ex)
         {
@@ -150,43 +148,24 @@ public class RawLDBackend extends AbstractBackend
             return reply;
         }
 
-        for (int entry = 0; entry < entries; entry++)
+        for (long entry = 0; entry < entries; entry++)
         {
             try
             {
                 // Read the offset and size for this key from the index
-                byte[] buffer = SwordUtil.readRAF(idxRaf, entry * entrysize, entrysize);
-                int offset = SwordUtil.decodeLittleEndian32(buffer, 0);
-                int size = -1;
-                switch (datasize)
-                {
-                case 2:
-                    size = SwordUtil.decodeLittleEndian16(buffer, 4);
-                    break;
-                case 4:
-                    size = SwordUtil.decodeLittleEndian32(buffer, 4);
-                    break;
-                default:
-                    assert false : datasize;
-                }
+                DataIndex index = getIndex(entry);
+                String rawData = getEntry(reply, index);
 
-                // Now read the data file for this key using the offset and size
-                byte[] data = SwordUtil.readRAF(datRaf, offset, size);
-
-                decipher(data);
-
-                int keyend = SwordUtil.findByte(data, SEPARATOR);
+                int keyend = rawData.indexOf(SEPARATOR);
                 if (keyend == -1)
                 {
-                    DataPolice.report("Failed to find keyname. offset=" + offset + " data='" + new String(data) + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    DataPolice.report("Failed to find keyname. offset=" + index.getOffset() + " data='" + rawData + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     continue;
                 }
 
-                byte[] keydata = new byte[keyend];
-                System.arraycopy(data, 0, keydata, 0, keyend);
+                String keytitle = rawData.substring(0, keyend).trim();
 
-                String keytitle = SwordUtil.decode(reply, keydata, charset).trim();
-                // for some wierd reason plain text (i.e. SourceType=0) dicts
+                // for some weird reason plain text (i.e. SourceType=0) dicts
                 // all get \ added to the ends of the index entries.
                 if (keytitle.endsWith("\\")) //$NON-NLS-1$
                 {
@@ -202,7 +181,7 @@ public class RawLDBackend extends AbstractBackend
                     keytitle = nameDF.format(greg.getTime());
                 }
 
-                Key key = new IndexKey(keytitle, offset, size, reply);
+                Key key = new IndexKey(keytitle, index, reply);
 
                 // remove duplicates, keeping later one.
                 // This occurs under some conditions:
@@ -228,6 +207,59 @@ public class RawLDBackend extends AbstractBackend
         return reply;
     }
 
+    /**
+     * Get the number of entries in the Book.
+     * @return the number of entries in the Book
+     * @throws IOException 
+     */
+    public long getEntryCount() throws IOException
+    {
+        checkActive();
+        return idxRaf.length() / entrysize;
+    }
+
+    /**
+     * Get the Index (that is offset and size) for an entry.
+     * @param entry
+     * @return
+     * @throws IOException 
+     */
+    public DataIndex getIndex(long entry) throws IOException
+    {
+        // Read the offset and size for this key from the index
+        byte[] buffer = SwordUtil.readRAF(idxRaf, entry * entrysize, entrysize);
+        int offset = SwordUtil.decodeLittleEndian32(buffer, 0);
+        int size = -1;
+        switch (datasize)
+        {
+        case 2:
+            size = SwordUtil.decodeLittleEndian16(buffer, 4);
+            break;
+        case 4:
+            size = SwordUtil.decodeLittleEndian32(buffer, 4);
+            break;
+        default:
+            assert false : datasize;
+        }
+        return new DataIndex(offset, size);
+    }
+
+    /**
+     * Get the text for an indexed entry in the book.
+     * 
+     * @param index the entry to get
+     * @return the text for the entry.
+     * @throws IOException 
+     */
+    public String getEntry(Key reply, DataIndex index) throws IOException
+    {
+        // Now read the data file for this key using the offset and size
+        byte[] data = SwordUtil.readRAF(datRaf, index.getOffset(), index.getSize());
+
+        decipher(data);
+
+        return SwordUtil.decode(reply, data, getBookMetaData().getBookCharset()).trim();
+    }
     /*
      * (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key, java.lang.String)
@@ -236,8 +268,6 @@ public class RawLDBackend extends AbstractBackend
     public String getRawText(Key key) throws BookException
     {
         checkActive();
-
-        String charset = getBookMetaData().getBookCharset();
 
         if (!(key instanceof IndexKey))
         {
@@ -248,19 +278,15 @@ public class RawLDBackend extends AbstractBackend
 
         try
         {
-            byte[] data = SwordUtil.readRAF(datRaf, ikey.getOffset(), ikey.getSize());
+            String data = getEntry(ikey, ikey.getDataIndex());
 
-            int keyend = SwordUtil.findByte(data, SEPARATOR);
+            int keyend = data.indexOf(SEPARATOR);
             if (keyend == -1)
             {
                 throw new BookException(UserMsg.READ_FAIL);
             }
 
-            int remainder = data.length - (keyend + 1);
-            byte[] reply = new byte[remainder];
-            System.arraycopy(data, keyend + 1, reply, 0, remainder);
-
-            return SwordUtil.decode(key, reply, charset).trim();
+            return data.substring(keyend + 1);
         }
         catch (IOException ex)
         {
@@ -297,7 +323,12 @@ public class RawLDBackend extends AbstractBackend
     /**
      * How many bytes in the size count in the index
      */
-    private int datasize = -1;
+    private int datasize;
+
+    /**
+     * How many bytes for each entry in the index: either 6 or 8
+     */
+    private int entrysize;
 
     /**
      * The data random access file

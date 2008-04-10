@@ -35,12 +35,11 @@ class IndexKey extends DefaultLeafKeyList
     /**
      * Setup with the key name and positions of data in the file
      */
-    IndexKey(String text, int offset, int size, Key parent)
+    IndexKey(String text, DataIndex position, Key parent)
     {
         super(text, text, parent);
 
-        this.offset = offset;
-        this.size = size;
+        this.position = position;
     }
 
     /**
@@ -48,7 +47,15 @@ class IndexKey extends DefaultLeafKeyList
      */
     IndexKey(String text)
     {
-        this(text, -1, -1, null);
+        this(text, NULL_INDEX, null);
+    }
+
+    /**
+     * @return
+     */
+    public DataIndex getDataIndex()
+    {
+        return position;
     }
 
     /**
@@ -56,15 +63,15 @@ class IndexKey extends DefaultLeafKeyList
      */
     public int getOffset()
     {
-        return offset;
+        return position.getOffset();
     }
 
     /**
      * @param newOffset the offset to set
      */
-    public void setOffset(int newOffset)
+    public void setIndex(DataIndex newPosition)
     {
-        offset = newOffset;
+        position = newPosition;
     }
 
     /**
@@ -72,15 +79,7 @@ class IndexKey extends DefaultLeafKeyList
      */
     public int getSize()
     {
-        return size;
-    }
-
-    /**
-     * @param newSize the size to set
-     */
-    public void setSize(int newSize)
-    {
-        size = newSize;
+        return position.getSize();
     }
 
     /* (non-Javadoc)
@@ -91,12 +90,18 @@ class IndexKey extends DefaultLeafKeyList
         return super.clone();
     }
 
-    private int offset;
-    private int size;
+    /**
+     * The position of the data in the data file.
+     */
+    private DataIndex position;
+
+    /**
+     * A marker used for search.
+     */
+    private static final DataIndex NULL_INDEX = new DataIndex(-1, -1);
 
     /**
      * Serialization ID
      */
     private static final long serialVersionUID = -2472601787934480762L;
-
 }

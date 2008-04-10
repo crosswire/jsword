@@ -244,7 +244,7 @@ public class ZLDBackend extends AbstractBackend
 
                 String keytitle = SwordUtil.decode(keys, keydata, charset).trim();
 
-                // for some wierd reason plain text (i.e. SourceType=0) dicts
+                // for some weird reason plain text (i.e. SourceType=0) dicts
                 // all get \ added to the ends of the index entries.
                 if (keytitle.endsWith("\\")) //$NON-NLS-1$
                 {
@@ -259,7 +259,7 @@ public class ZLDBackend extends AbstractBackend
                     keytitle = nameDF.format(greg.getTime());
                 }
 
-                Key key = new IndexKey(keytitle, offset, size, keys);
+                Key key = new IndexKey(keytitle, new DataIndex(offset, size), keys);
 
                 // remove duplicates, keeping later one.
                 // This occurs under some conditions:
