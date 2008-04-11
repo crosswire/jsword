@@ -162,7 +162,7 @@ public interface Key extends Comparable, Cloneable, Iterable, Serializable
     /**
      * Reverse a Key into the position the key holds in the list of children
      * @param that The Key to find
-     * @return The index of the key or -1 if the key is not in the list
+     * @return The index of the key or < 0 if the key is not in the list
      */
     int indexOf(Key that);
 

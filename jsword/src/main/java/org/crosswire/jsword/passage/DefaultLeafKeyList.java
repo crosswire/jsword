@@ -37,6 +37,14 @@ public class DefaultLeafKeyList implements Key
     /**
      * Default ctor
      */
+    public DefaultLeafKeyList(String name)
+    {
+        this(name, name, null);
+    }
+
+    /**
+     * Default ctor
+     */
     public DefaultLeafKeyList(String name, String osisName)
     {
         this(name, osisName, null);

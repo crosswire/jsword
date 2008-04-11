@@ -22,6 +22,7 @@ package org.crosswire.jsword.book.sword;
 import java.util.Date;
 
 import org.crosswire.common.icu.DateFormatter;
+import org.crosswire.jsword.passage.DefaultLeafKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.PreferredKey;
 
@@ -47,6 +48,6 @@ public class SwordDailyDevotion extends SwordDictionary implements PreferredKey
      */
     public Key getPreferred()
     {
-        return new IndexKey(DateFormatter.getDateInstance().format(new Date()));
+        return new DefaultLeafKeyList(DateFormatter.getDateInstance().format(new Date()));
     }
 }

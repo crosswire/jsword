@@ -23,10 +23,8 @@ package org.crosswire.jsword.book.sword;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,9 +35,9 @@ import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractBook;
 import org.crosswire.jsword.book.filter.FilterException;
 import org.crosswire.jsword.passage.DefaultKeyList;
+import org.crosswire.jsword.passage.DefaultLeafKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
-import org.crosswire.jsword.passage.ReadOnlyKeyList;
 import org.jdom.Element;
 
 /**
@@ -60,53 +58,7 @@ public class SwordDictionary extends AbstractBook
         super(sbmd);
 
         this.sbmd = sbmd;
-        this.backend = backend;
-        map = null;
-        set = null;
-        global = null;
-        active = false;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
-     */
-    /* @Override */
-    public final void activate(Lock lock)
-    {
-        super.activate(lock);
-
-        set = backend.readIndex();
-
-        map = new HashMap();
-        Iterator iter = set.iterator();
-        while (iter.hasNext())
-        {
-            Key key = (Key) iter.next();
-            map.put(key.getName(), key);
-        }
-
-        global = new ReadOnlyKeyList(set, false);
-
-        active = true;
-
-        // We don't need to activate the backend because it should be capable
-        // of doing it for itself.
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
-     */
-    /* @Override */
-    public final void deactivate(Lock lock)
-    {
-        super.deactivate(lock);
-
-        map = null;
-        set = null;
-        global = null;
-
-        Activator.deactivate(backend);
-
+        this.backend = (AbstractKeyBackend) backend;
         active = false;
     }
 
@@ -184,7 +136,7 @@ public class SwordDictionary extends AbstractBook
     {
         checkActive();
 
-        return global;
+        return backend;
     }
 
     /* (non-Javadoc)
@@ -209,55 +161,25 @@ public class SwordDictionary extends AbstractBook
     {
         checkActive();
 
-        Key key = (Key) map.get(text);
-        if (key != null)
-        {
-            return key;
-        }
-
         // So we need to find a matching key.
         // TODO(DM): This is a hack.
-        key = getStrongsKey(text);
+        Key key = getStrongsKey(text);
 
         if (key != null)
         {
             return key;
         }
 
-        // First check for keys that match ignoring case
-        Iterator iter = map.keySet().iterator();
-        while (iter.hasNext())
+        int pos = backend.indexOf(new DefaultLeafKeyList(text));
+        if (pos < 0)
         {
-            String keyName = (String) iter.next();
-            if (keyName.equalsIgnoreCase(text))
+            if (backend.getCardinality() > -pos - 1)
             {
-                return (Key) map.get(keyName);
+                return backend.get(-pos - 1);
             }
+            return backend.get(backend.getCardinality() - 1);
         }
-
-        // Next keys that start with the given text
-        iter = map.keySet().iterator();
-        while (iter.hasNext())
-        {
-            String keyName = (String) iter.next();
-            if (keyName.startsWith(text))
-            {
-                return (Key) map.get(keyName);
-            }
-        }
-
-        // Next try keys that contain the given text
-        iter = map.keySet().iterator();
-        while (iter.hasNext())
-        {
-            String keyName = (String) iter.next();
-            if (keyName.indexOf(text) != -1)
-            {
-                return (Key) map.get(keyName);
-            }
-        }
-
-        throw new NoSuchKeyException(UserMsg.NO_KEY, new Object[] { text, getInitials() });
+        return backend.get(pos);
     }
 
     // TODO(DM): Hack alert!!! This is not in the right place!!!
@@ -277,6 +199,7 @@ public class SwordDictionary extends AbstractBook
         {
             text = text.substring(0, pos);
         }
+
         // Get the number after the G or H
         int strongsNumber = Integer.parseInt(text.substring(1));
 
@@ -284,11 +207,11 @@ public class SwordDictionary extends AbstractBook
         String internalName = sbmd.getInitials();
         if ("StrongsGreek".equals(internalName)) //$NON-NLS-1$
         {
-            key = (Key) map.get(ZERO_PAD.format(strongsNumber));
+            key = backend.get(backend.indexOf(new DefaultLeafKeyList(ZERO_PAD.format(strongsNumber))));
         }
         else if ("StrongsHebrew".equals(internalName)) //$NON-NLS-1$
         {
-            key = (Key) map.get(ZERO_PAD.format(strongsNumber));
+            key = backend.get(backend.indexOf(new DefaultLeafKeyList(ZERO_PAD.format(strongsNumber))));
         }
         return key;
     }
@@ -299,6 +222,30 @@ public class SwordDictionary extends AbstractBook
     public Key createEmptyKeyList()
     {
         return new DefaultKeyList();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
+     */
+    /* @Override */
+    public final void activate(Lock lock)
+    {
+        super.activate(lock);
+        active = true;
+
+        // We don't need to activate the backend because it should be capable
+        // of doing it for itself.
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
+     */
+    /* @Override */
+    public final void deactivate(Lock lock)
+    {
+        super.deactivate(lock);
+        Activator.deactivate(backend);
+        active = false;
     }
 
     /**
@@ -317,29 +264,14 @@ public class SwordDictionary extends AbstractBook
     private static final DecimalFormat ZERO_PAD = new DecimalFormat("00000"); //$NON-NLS-1$
 
     /**
-     * The global key list
-     */
-    private Key global;
-
-    /**
      * Are we active
      */
     private boolean active;
 
     /**
-     * So we can quickly find a Key given the text for the key
-     */
-    private Map map;
-
-    /**
-     * So we can implement getIndex() easily
-     */
-    private Key set;
-
-    /**
      * To read the data from the disk
      */
-    private AbstractBackend backend;
+    private AbstractKeyBackend backend;
 
     /**
      * The Sword configuration file

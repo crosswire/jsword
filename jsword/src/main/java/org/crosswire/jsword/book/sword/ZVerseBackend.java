@@ -317,16 +317,6 @@ public class ZVerseBackend extends AbstractBackend
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.AbstractBackend#readIndex()
-     */
-    /* @Override */
-    public Key readIndex()
-    {
-        // PENDING(joe): refactor to get rid of this
-        return null;
-    }
-
     /**
      * Helper method so we can quickly activate ourselves on access
      */

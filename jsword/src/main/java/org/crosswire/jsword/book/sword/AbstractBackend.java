@@ -101,9 +101,13 @@ public abstract class AbstractBackend implements Activatable
 
     /**
      * Initialize a AbstractBackend before use. This method needs to call addKey() a
-     * number of times on SwordDictionary
+     * number of times on GenBookBackend
      */
-    public abstract Key readIndex();
+    public Key readIndex()
+    {
+        // TODO(dms): Eliminate readIndex by deriving GenBookBackend from AbstractKeyBackend
+        return null;
+    }
 
     /**
      * Get the text allotted for the given entry

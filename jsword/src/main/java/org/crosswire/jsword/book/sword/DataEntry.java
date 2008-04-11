@@ -21,10 +21,15 @@
  */
 package org.crosswire.jsword.book.sword;
 
+import org.crosswire.common.crypt.Sapphire;
 import org.crosswire.jsword.book.DataPolice;
 
 /**
  * Data entry represents an entry in a Data file.
+ * The entry consists of a key and an optional payload.
+ * The payload may be the content, aka rawtext.
+ * The payload may be an alias for another entry.
+ * The payload may be a block locator.
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
@@ -44,6 +49,15 @@ public class DataEntry
         this.name    = name;
         this.data    = data;
         this.charset = charset;
+    }
+
+    /**
+     * Get the name, that is, the diagnostic label, for this DataEntry.
+     * @return the diagnostic name.
+     */
+    public String getName()
+    {
+        return name;
     }
 
     /**
@@ -77,6 +91,10 @@ public class DataEntry
         return key;
     }
 
+    /**
+     * Determine whether this entry is an alias for another.
+     * @return whether this is an alias entry
+     */
     public boolean isLinkEntry()
     {
         String linkCheck = SwordUtil.decode(name, data, getKeyEnd() + 1, 5, charset);
@@ -99,12 +117,25 @@ public class DataEntry
     /**
      * Get the raw text from this entry.
      * 
+     * @param cipherKey the key, if any, to (un)lock the text
      * @return the raw text
      */
-    public String getRawText()
+    public String getRawText(byte[] cipherKey)
     {
-        int textEnd = getKeyEnd() + 1;
-        return SwordUtil.decode(name, data, textEnd, data.length - textEnd, charset).trim();
+        int textStart = getKeyEnd() + 1;
+        cipher(cipherKey, textStart);
+        return SwordUtil.decode(name, data, textStart, data.length - textStart, charset).trim();
+    }
+
+    /**
+     * Get the block start and entry position.
+     * @return
+     */
+    public DataIndex getBlockIndex()
+    {
+        int start = getKeyEnd() + 1;
+        return new DataIndex(SwordUtil.decodeLittleEndian32(data, start),
+                             SwordUtil.decodeLittleEndian32(data, start + 4));
     }
 
     /**
@@ -136,6 +167,26 @@ public class DataEntry
         }
         return linkEnd;
     }
+
+    /**
+     * Decipher/Encipher the data in place, if there
+     * is a cipher key.
+     * @param cipherKey the key to the cipher
+     */
+    public void cipher(byte[] cipherKey, int offset)
+    {
+        if (cipherKey != null && cipherKey.length > 0)
+        {
+            Sapphire cipherEngine = new Sapphire(cipherKey);
+            for (int i = offset; i < data.length; i++)
+            {
+                data[i] = cipherEngine.cipher(data[i]);
+            }
+            // destroy any evidence!
+            cipherEngine.burn();
+        }
+    }
+
 
     /**
      * Used to separate the key name from the key value

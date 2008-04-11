@@ -119,16 +119,6 @@ public class RawBackend extends AbstractBackend
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.AbstractBackend#readIndex()
-     */
-    /* @Override */
-    public Key readIndex()
-    {
-        // PENDING(joe): refactor to get rid of this
-        return null;
-    }
-
-    /* (non-Javadoc)
      * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
      */
     public final void activate(Lock lock)

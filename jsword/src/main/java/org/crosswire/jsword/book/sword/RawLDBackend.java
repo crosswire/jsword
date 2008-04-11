@@ -38,17 +38,18 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.passage.DefaultKeyList;
+import org.crosswire.jsword.passage.DefaultLeafKeyList;
 import org.crosswire.jsword.passage.Key;
 
 /**
- * An implementation KeyBackend to read RAW format files.
+ * An implementation AbstractKeyBackend to read RAW format files.
  *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class RawLDBackend extends AbstractBackend
+public class RawLDBackend extends AbstractKeyBackend
 {
     /**
      * Simple ctor
@@ -57,27 +58,9 @@ public class RawLDBackend extends AbstractBackend
     public RawLDBackend(SwordBookMetaData sbmd, int datasize)
     {
         super(sbmd);
+        this.size = -1;
         this.datasize = datasize;
         this.entrysize = OFFSETSIZE + datasize;
-        this.size = -1;
-
-        assert (datasize == 2 || datasize == 4);
-
-    }
-
-    /**
-     * Get the number of entries in the Book.
-     * @return the number of entries in the Book
-     * @throws IOException 
-     */
-    public long getSize() throws IOException
-    {
-        checkActive();
-        if (size == -1)
-        {
-            size = idxRaf.length() / entrysize;
-        }
-        return size;
     }
 
     /*
@@ -92,19 +75,22 @@ public class RawLDBackend extends AbstractBackend
 
     public String getRawText(String key) throws BookException
     {
-        checkActive();
+        if (!checkActive())
+        {
+            return ""; //$NON-NLS-1$
+        }
 
         try
         {
-            long pos = search(key);
+            int pos = search(key);
             if (pos >= 0)
             {
-                DataEntry entry = getEntry(key, pos, true);
+                DataEntry entry = getEntry(key, pos);
                 if (entry.isLinkEntry())
                 {
                     return getRawText(entry.getLinkTarget());
                 }
-                return entry.getRawText();
+                return getRawText(entry);
             }
             throw new BookException(UserMsg.READ_FAIL);
         }
@@ -114,93 +100,99 @@ public class RawLDBackend extends AbstractBackend
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.KeyBackend#readIndex()
-     */
-    /* @Override */
-    public Key readIndex()
+    protected String getRawText(DataEntry entry)
     {
-        checkActive();
+        String cipherKeyString = (String) getBookMetaData().getProperty(ConfigEntryType.CIPHER_KEY);
+        return entry.getRawText((cipherKeyString != null) ? cipherKeyString.getBytes() : null);
+    }
 
-        SwordBookMetaData bmd = getBookMetaData();
-        Key reply = new DefaultKeyList(null, bmd.getName());
-
-        boolean isDailyDevotional = bmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS);
-
-        Calendar greg = new GregorianCalendar();
-        DateFormatter nameDF = DateFormatter.getDateInstance();
-
-        long entries;
-        try
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getCardinality()
+     */
+    public int getCardinality()
+    {
+        if (!checkActive())
         {
-            entries = getSize();
-        }
-        catch (IOException ex)
-        {
-            Reporter.informUser(this, ex);
-            return reply;
+            return 0;
         }
 
-        for (long entry = 0; entry < entries; entry++)
+        if (size == -1)
         {
             try
             {
-                // Read the offset and size for this key from the index
-                DataEntry dataEntry = getEntry(reply.getName(), entry, true);
-                String keytitle = dataEntry.getKey();
-
-                if (isDailyDevotional && keytitle.length() >= 3)
-                {
-                    String[] spec = StringUtil.splitAll(keytitle, '.');
-                    greg.set(Calendar.MONTH, Integer.parseInt(spec[0]) - 1);
-                    greg.set(Calendar.DATE, Integer.parseInt(spec[1]));
-                    keytitle = nameDF.format(greg.getTime());
-                }
-
-                Key key = new IndexKey(keytitle);
-
-                // remove duplicates, keeping later one.
-                // This occurs under some conditions:
-                // For daily devotionals where 02.29 becomes calendarized to Mar 1 for non-leap years
-                // For modules that have been updated by appending new data.
-                if (reply.contains(key))
-                {
-                    reply.removeAll(key);
-                }
-
-                reply.addAll(key);
+                size = (int) (idxRaf.length() / entrysize);
             }
-            catch (IOException ex)
+            catch (IOException e)
             {
-                log.error("Ignoring entry", ex); //$NON-NLS-1$
-            }
-            catch (NumberFormatException e)
-            {
-                log.error("Ignoring entry", e); //$NON-NLS-1$
+                size = 0;
             }
         }
+        return size;
+    }
 
-        return reply;
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#get(int)
+     */
+    public Key get(int index)
+    {
+        if (checkActive())
+        {
+            try
+            {
+                if (index < getCardinality())
+                {
+                    DataEntry entry = getEntry(getBookMetaData().getInitials(), index);
+                    return new DefaultLeafKeyList(entry.getKey());
+                }
+            }
+            catch (IOException e)
+            {
+                // fall through
+            }
+        }
+        throw new ArrayIndexOutOfBoundsException(index);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage.Key)
+     */
+    public int indexOf(Key that)
+    {
+        try
+        {
+            return search(that.getName());
+        }
+        catch (IOException e)
+        {
+            return -getCardinality() - 1;
+        }
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
      */
-    public final void activate(Lock lock)
+    public void activate(Lock lock)
     {
+        active           = false;
+        size             = -1;
+        idxFile          = null;
+        datFile          = null;
+        idxRaf           = null;
+        datRaf           = null;
+
+        URI path = null;
         try
         {
-            URI path = null;
-            try
-            {
-                path = getExpandedDataPath();
-            }
-            catch (BookException e)
-            {
-                Reporter.informUser(this, e);
-                return;
-            }
+            path = getExpandedDataPath();
+        }
+        catch (BookException e)
+        {
+            Reporter.informUser(this, e);
+            return;
+        }
 
+        try
+        {
             idxFile = new File(path.getPath() + SwordConstants.EXTENSION_INDEX);
             datFile = new File(path.getPath() + SwordConstants.EXTENSION_DATA);
 
@@ -223,9 +215,9 @@ public class RawLDBackend extends AbstractBackend
         catch (IOException ex)
         {
             log.error("failed to open files", ex); //$NON-NLS-1$
-
             idxRaf = null;
             datRaf = null;
+            return;
         }
 
         active = true;
@@ -234,21 +226,29 @@ public class RawLDBackend extends AbstractBackend
     /* (non-Javadoc)
      * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
      */
-    public final void deactivate(Lock lock)
+    public void deactivate(Lock lock)
     {
+        size             = -1;
         try
         {
-            idxRaf.close();
-            datRaf.close();
+            if (idxRaf != null)
+            {
+                idxRaf.close();
+            }
+            if (datRaf != null)
+            {
+                datRaf.close();
+            }
         }
         catch (IOException ex)
         {
             log.error("failed to close files", ex); //$NON-NLS-1$
         }
-
-        idxRaf = null;
-        datRaf = null;
-        size   = -1;
+        finally
+        {
+            idxRaf = null;
+            datRaf = null;
+        }
 
         active = false;
     }
@@ -256,14 +256,23 @@ public class RawLDBackend extends AbstractBackend
     /**
      * Helper method so we can quickly activate ourselves on access
      */
-    protected final void checkActive()
+    protected boolean checkActive()
     {
-        if (!active)
+        if (!isActive())
         {
             Activator.activate(this);
         }
+        return isActive();
     }
 
+    /**
+     * Determine whether we are active.
+     */
+    protected boolean isActive()
+    {
+        return active;
+    }
+    
     /**
      * Get the Index (that is offset and size) for an entry.
      * @param entry
@@ -297,16 +306,11 @@ public class RawLDBackend extends AbstractBackend
      * @return the text for the entry.
      * @throws IOException 
      */
-    private DataEntry getEntry(String reply, long index, boolean decipher) throws IOException
+    private DataEntry getEntry(String reply, int index) throws IOException
     {
         DataIndex dataIndex = getIndex(index);
         // Now read the data file for this key using the offset and size
         byte[] data = SwordUtil.readRAF(datRaf, dataIndex.getOffset(), dataIndex.getSize());
-
-        if (decipher)
-        {
-            decipher(data);
-        }
 
         return new DataEntry(reply, data, getBookMetaData().getBookCharset());
     }
@@ -318,8 +322,13 @@ public class RawLDBackend extends AbstractBackend
      * @return
      * @throws IOException
      */
-    private long search(String key) throws IOException
+    private int search(String key) throws IOException
     {
+        if (!checkActive())
+        {
+            return -1;
+        }
+
         SwordBookMetaData bmd = getBookMetaData();
 
         boolean isDailyDevotional = bmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS);
@@ -329,15 +338,15 @@ public class RawLDBackend extends AbstractBackend
 
         String target = key.toUpperCase(Locale.US);
 
-        long low = 1;
-        long high = getSize() - 1;
+        int low = 1;
+        int high = getCardinality() - 1;
 
         while (low <= high)
         {
-            long mid = (low + high) >> 1;
+            int mid = (low + high) >> 1;
 
             // Get the key for the item at "mid"
-            DataEntry entry = getEntry(key, mid, true);
+            DataEntry entry = getEntry(key, mid);
             String midVal = entry.getKey();
 
             // Massage midVal if can be.
@@ -367,7 +376,7 @@ public class RawLDBackend extends AbstractBackend
 
         // Strong's Greek And Hebrew dictionaries have an introductory entry, so check it for a match.
         // Get the key for the item at "mid"
-        DataEntry entry = getEntry(key, 0, true);
+        DataEntry entry = getEntry(key, 0);
         String midVal = entry.getKey();
 
         // Massage midVal if can be.
@@ -411,7 +420,7 @@ public class RawLDBackend extends AbstractBackend
     /**
      * The number of entries in the book.
      */
-    private long size;
+    private int size;
 
     /**
      * The index file
@@ -432,6 +441,11 @@ public class RawLDBackend extends AbstractBackend
      * The data random access file
      */
     private RandomAccessFile datRaf;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 818089833394450383L;
 
     /**
      * The log stream
