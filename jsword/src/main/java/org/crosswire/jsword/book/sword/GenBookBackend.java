@@ -32,6 +32,7 @@ import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
@@ -49,20 +50,10 @@ public class GenBookBackend extends AbstractBackend
     /**
      * Simple ctor
      */
-    public GenBookBackend(SwordBookMetaData sbmd) throws BookException
+    public GenBookBackend(SwordBookMetaData sbmd)
     {
         super(sbmd);
-
         index = new TreeKeyIndex(sbmd);
-
-        URI path = getExpandedDataPath();
-        bdtFile = new File(path.getPath() + EXTENSION_BDT);
-
-        if (!bdtFile.canRead())
-        {
-            throw new BookException(UserMsg.READ_FAIL, new Object[] { bdtFile.getAbsolutePath() });
-        }
-
     }
 
     /* (non-Javadoc)
@@ -70,6 +61,27 @@ public class GenBookBackend extends AbstractBackend
      */
     public final void activate(Lock lock)
     {
+        Activator.activate(index);
+
+        URI path = null;
+        try
+        {
+            path = getExpandedDataPath();
+        }
+        catch (BookException e)
+        {
+            Reporter.informUser(this, e);
+            return;
+        }
+
+        bdtFile = new File(path.getPath() + EXTENSION_BDT);
+
+        if (!bdtFile.canRead())
+        {
+            Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] { bdtFile.getAbsolutePath() }));
+            return;
+        }
+
         try
         {
             bdtRaf = new RandomAccessFile(bdtFile, FileUtil.MODE_READ);

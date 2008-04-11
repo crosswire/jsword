@@ -99,7 +99,7 @@ public class ZLDBackend extends AbstractBackend
      * Simple ctor
      * @throws BookException
      */
-    public ZLDBackend(SwordBookMetaData sbmd) throws BookException
+    public ZLDBackend(SwordBookMetaData sbmd)
     {
         super(sbmd);
 

@@ -32,6 +32,7 @@ import org.crosswire.common.activate.Lock;
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
+import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
@@ -50,14 +51,99 @@ public class RawBackend extends AbstractBackend
     /**
      * Simple ctor
      */
-    public RawBackend(SwordBookMetaData sbmd, int datasize) throws BookException
+    public RawBackend(SwordBookMetaData sbmd, int datasize)
     {
         super(sbmd);
         this.datasize = datasize;
+        this.entrysize = OFFSETSIZE + datasize;
 
         assert (datasize == 2 || datasize == 4);
+    }
 
-        URI path = getExpandedDataPath();
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key, java.lang.String)
+     */
+    /* @Override */
+    public String getRawText(Key key) throws BookException
+    {
+        checkActive();
+
+        Verse verse = KeyUtil.getVerse(key);
+
+        try
+        {
+            int testament = SwordConstants.getTestament(verse);
+            long index = SwordConstants.getIndex(verse);
+
+            // If this is a single testament Bible, return nothing.
+            if (idxRaf[testament] == null)
+            {
+                return ""; //$NON-NLS-1$
+            }
+
+            return getEntry(key.getName(), testament, index);
+        }
+        catch (IOException ex)
+        {
+            throw new BookException(UserMsg.READ_FAIL, ex, new Object[] { verse.getName() });
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#isWritable()
+     */
+    public boolean isWritable()
+    {
+        // For the module to be writable either the old testament or the new testament needs to be present
+        // (i.e. readable) and both the index and the data files need to be readable
+        if (idxFile[SwordConstants.TESTAMENT_OLD].canRead()
+            && (idxFile[SwordConstants.TESTAMENT_OLD].canWrite() || !txtFile[SwordConstants.TESTAMENT_OLD].canWrite()))
+        {
+            return false;
+        }
+        if (idxFile[SwordConstants.TESTAMENT_NEW].canRead()
+            && (idxFile[SwordConstants.TESTAMENT_NEW].canWrite() || !txtFile[SwordConstants.TESTAMENT_NEW].canWrite()))
+        {
+            return false;
+        }
+        return idxFile[SwordConstants.TESTAMENT_OLD].canRead() || idxFile[SwordConstants.TESTAMENT_NEW].canRead();
+    }
+
+    public void create(String path)
+    {
+        idxFile[SwordConstants.TESTAMENT_OLD] = new File(path + File.separator + SwordConstants.FILE_OT + SwordConstants.EXTENSION_VSS);
+        txtFile[SwordConstants.TESTAMENT_OLD] = new File(path + File.separator + SwordConstants.FILE_OT);
+
+        idxFile[SwordConstants.TESTAMENT_NEW] = new File(path + File.separator + SwordConstants.FILE_NT + SwordConstants.EXTENSION_VSS);
+        txtFile[SwordConstants.TESTAMENT_NEW] = new File(path + File.separator + SwordConstants.FILE_NT);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#readIndex()
+     */
+    /* @Override */
+    public Key readIndex()
+    {
+        // PENDING(joe): refactor to get rid of this
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
+     */
+    public final void activate(Lock lock)
+    {
+
+        URI path = null;
+        try
+        {
+            path = getExpandedDataPath();
+        }
+        catch (BookException e)
+        {
+            Reporter.informUser(this, e);
+            return;
+        }
 
         URI otPath = NetUtil.lengthenURI(path, File.separator + SwordConstants.FILE_OT);
         txtFile[SwordConstants.TESTAMENT_OLD] = new File(otPath.getPath());
@@ -70,15 +156,10 @@ public class RawBackend extends AbstractBackend
         // It is an error to be neither OT nor NT
         if (!txtFile[SwordConstants.TESTAMENT_OLD].canRead() && !txtFile[SwordConstants.TESTAMENT_NEW].canRead())
         {
-            throw new BookException(Msg.MISSING_FILE, new Object[] { path });
+            Reporter.informUser(this, new BookException(Msg.MISSING_FILE, new Object[] { path }));
+            return;
         }
-    }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
-     */
-    public final void activate(Lock lock)
-    {
         String fileMode = isWritable() ? FileUtil.MODE_WRITE : FileUtil.MODE_READ;
  
         if (idxFile[SwordConstants.TESTAMENT_OLD].canRead())
@@ -145,82 +226,6 @@ public class RawBackend extends AbstractBackend
         active = false;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key, java.lang.String)
-     */
-    /* @Override */
-    public String getRawText(Key key) throws BookException
-    {
-        checkActive();
-        String charset = getBookMetaData().getBookCharset();
-
-        Verse verse = KeyUtil.getVerse(key);
-
-        try
-        {
-            int testament = SwordConstants.getTestament(verse);
-            long index = SwordConstants.getIndex(verse);
-
-            // If this is a single testament Bible, return nothing.
-            if (idxRaf[testament] == null)
-            {
-                return ""; //$NON-NLS-1$
-            }
-
-            int entrysize = datasize + OFFSETSIZE;
-
-            // Read the next entry size bytes.
-            byte[] read = SwordUtil.readRAF(idxRaf[testament], index * entrysize, entrysize);
-            if (read == null || read.length == 0)
-            {
-                return ""; //$NON-NLS-1$
-            }
-
-            // The data is little endian - extract the start and size
-            long start = SwordUtil.decodeLittleEndian32(read, 0);
-            int size = -1;
-            switch (datasize)
-            {
-            case 2:
-                size = SwordUtil.decodeLittleEndian16(read, 4);
-                break;
-            case 4:
-                size = SwordUtil.decodeLittleEndian32(read, 4);
-                break;
-            default:
-                assert false : datasize;
-            }
-
-            if (size < 0)
-            {
-                log.error("In " + getBookMetaData().getInitials() + ": Verse " + verse.getName() + " has a bad index size of " + size); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            }
-
-            // Read from the data file.
-            // I wonder if it would be safe to do a readLine() from here.
-            // Probably be safer not to risk it since we know how long it is.
-            byte[] data = SwordUtil.readRAF(txtRaf[testament], start, size);
-
-            decipher(data);
-
-            return SwordUtil.decode(key.getName(), data, charset);
-        }
-        catch (IOException ex)
-        {
-            throw new BookException(UserMsg.READ_FAIL, ex, new Object[] { verse.getName() });
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.AbstractBackend#readIndex()
-     */
-    /* @Override */
-    public Key readIndex()
-    {
-        // PENDING(joe): refactor to get rid of this
-        return null;
-    }
-
     /**
      * Helper method so we can quickly activate ourselves on access
      */
@@ -232,39 +237,81 @@ public class RawBackend extends AbstractBackend
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.AbstractBackend#isWritable()
+    /**
+     * Get the Index (that is offset and size) for an entry.
+     * @param entry
+     * @return
+     * @throws IOException 
      */
-    public boolean isWritable()
+    private DataIndex getIndex(RandomAccessFile raf, long entry) throws IOException
     {
-        // For the module to be writable either the old testament or the new testament needs to be present
-        // (i.e. readable) and both the index and the data files need to be readable
-        if (idxFile[SwordConstants.TESTAMENT_OLD].canRead()
-            && (idxFile[SwordConstants.TESTAMENT_OLD].canWrite() || !txtFile[SwordConstants.TESTAMENT_OLD].canWrite()))
+        // Read the offset and size for this key from the index
+        byte[] buffer = SwordUtil.readRAF(raf, entry * entrysize, entrysize);
+        if (buffer == null || buffer.length == 0)
         {
-            return false;
+            return new DataIndex(0, 0);
         }
-        if (idxFile[SwordConstants.TESTAMENT_NEW].canRead()
-            && (idxFile[SwordConstants.TESTAMENT_NEW].canWrite() || !txtFile[SwordConstants.TESTAMENT_NEW].canWrite()))
+
+        int entryOffset = SwordUtil.decodeLittleEndian32(buffer, 0);
+        int entrySize = -1;
+        switch (datasize)
         {
-            return false;
+        case 2:
+            entrySize = SwordUtil.decodeLittleEndian16(buffer, 4);
+            break;
+        case 4:
+            entrySize = SwordUtil.decodeLittleEndian32(buffer, 4);
+            break;
+        default:
+            assert false : datasize;
         }
-        return idxFile[SwordConstants.TESTAMENT_OLD].canRead() || idxFile[SwordConstants.TESTAMENT_NEW].canRead();
+        return new DataIndex(entryOffset, entrySize);
     }
 
-    public void create(String path)
+    /**
+     * Get the text for an indexed entry in the book.
+     * 
+     * @param index the entry to get
+     * @return the text for the entry.
+     * @throws IOException 
+     */
+    private String getEntry(String name, int testament, long index) throws IOException
     {
-        idxFile[SwordConstants.TESTAMENT_OLD] = new File(path + File.separator + SwordConstants.FILE_OT + SwordConstants.EXTENSION_VSS);
-        txtFile[SwordConstants.TESTAMENT_OLD] = new File(path + File.separator + SwordConstants.FILE_OT);
+        DataIndex dataIndex = getIndex(idxRaf[testament], index);
 
-        idxFile[SwordConstants.TESTAMENT_NEW] = new File(path + File.separator + SwordConstants.FILE_NT + SwordConstants.EXTENSION_VSS);
-        txtFile[SwordConstants.TESTAMENT_NEW] = new File(path + File.separator + SwordConstants.FILE_NT);
+        int size = dataIndex.getSize();
+        if (size == 0)
+        {
+            return ""; //$NON-NLS-1$
+        }
+
+        if (size < 0)
+        {
+            log.error("In " + getBookMetaData().getInitials() + ": Verse " + name + " has a bad index size of " + size); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            return ""; //$NON-NLS-1$
+        }
+
+        byte[] data = SwordUtil.readRAF(txtRaf[testament], dataIndex.getOffset(), size);
+
+        decipher(data);
+
+        return SwordUtil.decode(name, data, getBookMetaData().getBookCharset());
     }
 
     /**
      * Are we active
      */
     private boolean active;
+
+    /**
+     * How many bytes in the size count in the index
+     */
+    private int datasize;
+
+    /**
+     * The number of bytes for each entry in the index: either 6 or 8
+     */
+    private int entrysize;
 
     /**
      * The log stream
@@ -295,9 +342,4 @@ public class RawBackend extends AbstractBackend
      * How many bytes in the offset pointers in the index
      */
     private static final int OFFSETSIZE = 4;
-
-    /**
-     * How many bytes in the size count in the index
-     */
-    private int datasize = -1;
 }

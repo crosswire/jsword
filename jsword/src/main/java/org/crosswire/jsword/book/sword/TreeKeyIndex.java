@@ -32,6 +32,7 @@ import org.crosswire.common.activate.Lock;
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
+import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
@@ -52,25 +53,9 @@ public class TreeKeyIndex implements Activatable
      * Simple ctor
      * @throws BookException
      */
-    public TreeKeyIndex(SwordBookMetaData sbmd) throws BookException
+    public TreeKeyIndex(SwordBookMetaData sbmd)
     {
         bmd = sbmd;
-
-        String path = getExpandedDataPath();
-
-        idxFile = new File(path + EXTENSION_INDEX);
-        datFile = new File(path + EXTENSION_DATA);
-
-        if (!idxFile.canRead())
-        {
-            throw new BookException(UserMsg.READ_FAIL, new Object[] { idxFile.getAbsolutePath() });
-        }
-
-        if (!datFile.canRead())
-        {
-            throw new BookException(UserMsg.READ_FAIL, new Object[] { datFile.getAbsolutePath() });
-        }
-
     }
 
     /**
@@ -180,6 +165,32 @@ public class TreeKeyIndex implements Activatable
      */
     public final void activate(Lock lock)
     {
+        String path = null;
+        try
+        {
+            path = getExpandedDataPath();
+        }
+        catch (BookException e)
+        {
+            Reporter.informUser(this, e);
+            return;
+        }
+
+        idxFile = new File(path + EXTENSION_INDEX);
+        datFile = new File(path + EXTENSION_DATA);
+
+        if (!idxFile.canRead())
+        {
+            Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] { idxFile.getAbsolutePath() }));
+            return;
+        }
+
+        if (!datFile.canRead())
+        {
+            Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] { datFile.getAbsolutePath() }));
+            return;
+        }
+
         try
         {
             idxRaf = new RandomAccessFile(idxFile, FileUtil.MODE_READ);

@@ -65,74 +65,53 @@ public class RawLDBackend extends AbstractBackend
 
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
+    /**
+     * Get the number of entries in the Book.
+     * @return the number of entries in the Book
+     * @throws IOException 
      */
-    public final void activate(Lock lock)
+    public long getSize() throws IOException
     {
-        try
+        checkActive();
+        if (size == -1)
         {
-            URI path = null;
-            try
-            {
-                path = getExpandedDataPath();
-            }
-            catch (BookException e)
-            {
-                Reporter.informUser(this, e);
-                return;
-            }
-
-            idxFile = new File(path.getPath() + SwordConstants.EXTENSION_INDEX);
-            datFile = new File(path.getPath() + SwordConstants.EXTENSION_DATA);
-
-            if (!idxFile.canRead())
-            {
-                Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] { idxFile.getAbsolutePath() }));
-                return;
-            }
-
-            if (!datFile.canRead())
-            {
-                Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] { datFile.getAbsolutePath() }));
-                return;
-            }
-
-            // Open the files
-            idxRaf = new RandomAccessFile(idxFile, FileUtil.MODE_READ);
-            datRaf = new RandomAccessFile(datFile, FileUtil.MODE_READ);
+            size = idxRaf.length() / entrysize;
         }
-        catch (IOException ex)
-        {
-            log.error("failed to open files", ex); //$NON-NLS-1$
-
-            idxRaf = null;
-            datRaf = null;
-        }
-
-        active = true;
+        return size;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
+    /*
+     * (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key, java.lang.String)
      */
-    public final void deactivate(Lock lock)
+    /* @Override */
+    public String getRawText(Key key) throws BookException
     {
+        return getRawText(key.getName());
+    }
+
+    public String getRawText(String key) throws BookException
+    {
+        checkActive();
+
         try
         {
-            idxRaf.close();
-            datRaf.close();
+            long pos = search(key);
+            if (pos >= 0)
+            {
+                DataEntry entry = getEntry(key, pos, true);
+                if (entry.isLinkEntry())
+                {
+                    return getRawText(entry.getLinkTarget());
+                }
+                return entry.getRawText();
+            }
+            throw new BookException(UserMsg.READ_FAIL);
         }
         catch (IOException ex)
         {
-            log.error("failed to close files", ex); //$NON-NLS-1$
+            throw new BookException(UserMsg.READ_FAIL, ex);
         }
-
-        idxRaf = null;
-        datRaf = null;
-        size   = -1;
-
-        active = false;
     }
 
     /* (non-Javadoc)
@@ -204,19 +183,85 @@ public class RawLDBackend extends AbstractBackend
         return reply;
     }
 
-    /**
-     * Get the number of entries in the Book.
-     * @return the number of entries in the Book
-     * @throws IOException 
+    /* (non-Javadoc)
+     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
      */
-    public long getSize() throws IOException
+    public final void activate(Lock lock)
     {
-        checkActive();
-        if (size == -1)
+        try
         {
-            size = idxRaf.length() / entrysize;
+            URI path = null;
+            try
+            {
+                path = getExpandedDataPath();
+            }
+            catch (BookException e)
+            {
+                Reporter.informUser(this, e);
+                return;
+            }
+
+            idxFile = new File(path.getPath() + SwordConstants.EXTENSION_INDEX);
+            datFile = new File(path.getPath() + SwordConstants.EXTENSION_DATA);
+
+            if (!idxFile.canRead())
+            {
+                Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] { idxFile.getAbsolutePath() }));
+                return;
+            }
+
+            if (!datFile.canRead())
+            {
+                Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] { datFile.getAbsolutePath() }));
+                return;
+            }
+
+            // Open the files
+            idxRaf = new RandomAccessFile(idxFile, FileUtil.MODE_READ);
+            datRaf = new RandomAccessFile(datFile, FileUtil.MODE_READ);
         }
-        return size;
+        catch (IOException ex)
+        {
+            log.error("failed to open files", ex); //$NON-NLS-1$
+
+            idxRaf = null;
+            datRaf = null;
+        }
+
+        active = true;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
+     */
+    public final void deactivate(Lock lock)
+    {
+        try
+        {
+            idxRaf.close();
+            datRaf.close();
+        }
+        catch (IOException ex)
+        {
+            log.error("failed to close files", ex); //$NON-NLS-1$
+        }
+
+        idxRaf = null;
+        datRaf = null;
+        size   = -1;
+
+        active = false;
+    }
+
+    /**
+     * Helper method so we can quickly activate ourselves on access
+     */
+    protected final void checkActive()
+    {
+        if (!active)
+        {
+            Activator.activate(this);
+        }
     }
 
     /**
@@ -225,7 +270,7 @@ public class RawLDBackend extends AbstractBackend
      * @return
      * @throws IOException 
      */
-    public DataIndex getIndex(long entry) throws IOException
+    private DataIndex getIndex(long entry) throws IOException
     {
         // Read the offset and size for this key from the index
         byte[] buffer = SwordUtil.readRAF(idxRaf, entry * entrysize, entrysize);
@@ -252,7 +297,7 @@ public class RawLDBackend extends AbstractBackend
      * @return the text for the entry.
      * @throws IOException 
      */
-    public DataEntry getEntry(String reply, long index, boolean decipher) throws IOException
+    private DataEntry getEntry(String reply, long index, boolean decipher) throws IOException
     {
         DataIndex dataIndex = getIndex(index);
         // Now read the data file for this key using the offset and size
@@ -264,59 +309,6 @@ public class RawLDBackend extends AbstractBackend
         }
 
         return new DataEntry(reply, data, getBookMetaData().getBookCharset());
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key, java.lang.String)
-     */
-    /* @Override */
-    public String getRawText(Key key) throws BookException
-    {
-        checkActive();
-
-        try
-        {
-            long pos = search(key.getName());
-            if (pos >= 0)
-            {
-                DataEntry entry = getEntry(key.getName(), pos, true);
-                if (entry.isLinkEntry())
-                {
-                    return getRawText(entry.getLinkTarget());
-                }
-                return entry.getRawText();
-            }
-            throw new BookException(UserMsg.READ_FAIL);
-        }
-        catch (IOException ex)
-        {
-            throw new BookException(UserMsg.READ_FAIL, ex);
-        }
-    }
-
-    public String getRawText(String key) throws BookException
-    {
-        checkActive();
-
-        try
-        {
-            long pos = search(key);
-            if (pos >= 0)
-            {
-                DataEntry entry = getEntry(key, pos, true);
-                if (entry.isLinkEntry())
-                {
-                    return getRawText(entry.getLinkTarget());
-                }
-                return entry.getRawText();
-            }
-            throw new BookException(UserMsg.READ_FAIL);
-        }
-        catch (IOException ex)
-        {
-            throw new BookException(UserMsg.READ_FAIL, ex);
-        }
     }
 
     /**
@@ -394,17 +386,6 @@ public class RawLDBackend extends AbstractBackend
         }
 
         return -(low + 1); // key not found
-    }
-
-    /**
-     * Helper method so we can quickly activate ourselves on access
-     */
-    protected final void checkActive()
-    {
-        if (!active)
-        {
-            Activator.activate(this);
-        }
     }
 
     /**
