@@ -58,3 +58,7 @@ uninstall
 proxying
 markup
 unicode
+deactivate
+servlet
+remoting
+tomcat
