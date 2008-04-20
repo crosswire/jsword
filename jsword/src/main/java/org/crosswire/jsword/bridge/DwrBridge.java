@@ -100,6 +100,25 @@ public class DwrBridge
     }
 
     /**
+     * Determine the size of this reference.
+     * 
+     * @param bookInitials the book to which the reference applies.
+     * @param reference the actual reference
+     * @return the number of entries for this reference.
+     * @throws NoSuchKeyException
+     */
+    public int getCardinality(String bookInitials, String reference) throws NoSuchKeyException
+    {
+        Book book = BookInstaller.getInstalledBook(bookInitials);
+        if (book != null)
+        {
+            Key key = book.getKey(reference);
+            return key.getCardinality();
+        }
+        return 0;
+    }
+
+    /**
      * Obtain the OSIS representation from a book for a reference, pruning a reference to a limited number of keys.
      *
      * @param bookInitials the book to use
