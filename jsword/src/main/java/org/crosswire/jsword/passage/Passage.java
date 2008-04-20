@@ -49,7 +49,7 @@ import java.util.Iterator;
  *     huge problem? Are there many syntax errors that would be lost? Probably not.
  * <li>The specific version would stop enhancements like add("Gen 1:1");
  *     (But this is just syntactical sugar anyway).
- * <li>The specific version allows funcionality by is-a as well as has-a.
+ * <li>The specific version allows functionality by is-a as well as has-a.
  *     But a Passage is fundamentally different so this is not that much use.
  * <li>At the end of the day I expect people to use getName() instead of toString()
  *     and blur(), both of which are Passage things not Collection things. So
@@ -92,7 +92,7 @@ public interface Passage extends Key, Serializable
     /**
      * Determine whether there are two or more ranges.
      *
-     * @param restrict Do we break ranges at chapter/book boundries
+     * @param restrict Do we break ranges at chapter/book boundaries
      * @return whether there are two or more ranges
      * @see VerseRange
      */
@@ -103,7 +103,7 @@ public interface Passage extends Key, Serializable
      * Returns the number of fragments in this collection.
      * This does not mean the Passage needs to use VerseRanges, just that it
      * understands the concept.
-     * @param restrict Do we break ranges at chapter/book boundries
+     * @param restrict Do we break ranges at chapter/book boundaries
      * @return the number of VerseRanges in this collection
      * @see VerseRange
      */
@@ -117,7 +117,7 @@ public interface Passage extends Key, Serializable
      * <code>count</code> in the Passage, then the passage remains
      * unchanged, and null is returned.
      * @param count The maximum number of Verses to allow in this collection
-     * @return A new Passage conatining the remaining verses or null
+     * @return A new Passage containing the remaining verses or null
      * @see Verse
      */
     Passage trimVerses(int count);
@@ -130,8 +130,8 @@ public interface Passage extends Key, Serializable
      * greater than <code>count</code> in the Passage, then the passage
      * remains unchanged, and null is returned.
      * @param count The maximum number of VerseRanges to allow in this collection
-     * @param restrict Do we break ranges at chapter/book boundries
-     * @return A new Passage conatining the remaining verses or null
+     * @param restrict Do we break ranges at chapter/book boundaries
+     * @return A new Passage containing the remaining verses or null
      * @see VerseRange
      */
     Passage trimRanges(int count, RestrictionType restrict);
@@ -171,7 +171,7 @@ public interface Passage extends Key, Serializable
     /**
      * Get a specific VerseRange from this collection
      * @param offset The verse range offset (legal values are 0 to countRanges()-1)
-     * @param restrict Do we break ranges at chapter/book boundries
+     * @param restrict Do we break ranges at chapter/book boundaries
      * @return The Verse Range
      * @throws ArrayIndexOutOfBoundsException If the offset is out of range
      */
@@ -230,7 +230,7 @@ public interface Passage extends Key, Serializable
     void writeDescription(Writer out) throws IOException;
 
     /**
-     * For preformance reasons we may well want to hint to the Passage that we
+     * For performance reasons we may well want to hint to the Passage that we
      * have done editing it for now and that it is safe to cache certain
      * values to speed up future reads. Any action taken by this method will be
      * undone simply by making a future edit, and the only loss in calling

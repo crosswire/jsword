@@ -105,12 +105,12 @@ public class DwrBridge
      * @param bookInitials the book to use
      * @param reference a reference, appropriate for the book, for one or more keys
      */
-    public String getOSISString(String bookInitials, String reference, int maxKeyCount) throws BookException, NoSuchKeyException
+    public String getOSISString(String bookInitials, String reference, int start, int count) throws BookException, NoSuchKeyException
     {
         String result = ""; //$NON-NLS-1$
         try
         {
-            SAXEventProvider sep = getOSISProvider(bookInitials, reference, maxKeyCount);
+            SAXEventProvider sep = getOSISProvider(bookInitials, reference, start, count);
             if (sep != null)
             {
                 ContentHandler ser = new SerializingContentHandler();
@@ -235,24 +235,31 @@ public class DwrBridge
      * 
      * @param bookInitials the book to use
      * @param reference a reference, appropriate for the book, of one or more entries
-     * @param maxKeyCount the maximum number of entries to use
+     * @param start the starting point where 0 is the first.
+     * @param count the maximum number of entries to use
      * 
      * @throws NoSuchKeyException 
      */
-    private BookData getBookData(String bookInitials, String reference, int maxKeyCount) throws NoSuchKeyException
+    private BookData getBookData(String bookInitials, String reference, int start, int count) throws NoSuchKeyException
     {
         Book book = BookInstaller.getInstalledBook(bookInitials);
-        if (book == null || reference == null || maxKeyCount < 1)
+        if (book == null || reference == null || count < 1)
         {
             return null;
         }
 
-        // TODO(dms): add trim to the key interface.
+        // TODO(dms): add trim(count) and trim(start, count) to the key interface.
         Key key = null;
         if (BookCategory.BIBLE.equals(book.getBookCategory()))
         {
             key = book.getKey(reference);
-            ((Passage) key).trimVerses(maxKeyCount);
+            Passage remainder = ((Passage) key);
+            if (start > 0)
+            {
+                remainder = remainder.trimVerses(start);
+            }
+            remainder.trimVerses(count);
+            key = remainder;
         }
         else if (BookCategory.GENERAL_BOOK.equals(book.getBookCategory()))
         {
@@ -264,14 +271,21 @@ public class DwrBridge
             key = book.getKey(reference);
             
             // Do we need to trim?
-            if (key.getCardinality() > maxKeyCount)
+            if (start > 0 || key.getCardinality() > count)
             {
                 Iterator iter = key.iterator();
                 key = book.createEmptyKeyList();
-                int count = 0;
+                int i = 0;
                 while (iter.hasNext())
                 {
-                    if (++count >= maxKeyCount)
+                    i++;
+                    if (i <= start)
+                    {
+                        // skip it
+                        iter.next();
+                        continue;
+                    }
+                    if (i >= count)
                     {
                         break;
                     }
@@ -289,9 +303,9 @@ public class DwrBridge
      * @param bookInitials the book to use
      * @param reference a reference, appropriate for the book, of one or more entries
      */
-    private SAXEventProvider getOSISProvider(String bookInitials, String reference, int maxKeyCount) throws BookException, NoSuchKeyException
+    private SAXEventProvider getOSISProvider(String bookInitials, String reference, int start, int count) throws BookException, NoSuchKeyException
     {
-        BookData data = getBookData(bookInitials, reference, maxKeyCount);
+        BookData data = getBookData(bookInitials, reference, start, count);
         SAXEventProvider provider = null;
         if (data != null)
         {
