@@ -109,6 +109,12 @@ public abstract class AbstractBackend implements Activatable
         return null;
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
+     */
+    /* @Override */
+    public abstract boolean contains(Key key);
+
     /**
      * Get the text allotted for the given entry
      * @param key The key to fetch

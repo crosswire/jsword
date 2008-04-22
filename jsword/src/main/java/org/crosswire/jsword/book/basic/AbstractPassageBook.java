@@ -140,7 +140,7 @@ public abstract class AbstractPassageBook extends AbstractBook
      * Book?.
      * In some ways this method is more suited to BookMetaData however we do not
      * have a specialization of BookMetaData to fit AbstractPassageBook and it
-     * doesn't like any higher in the hierachy at the moment so I will leave
+     * doesn't like any higher in the hierarchy at the moment so I will leave
      * this here.
      */
     protected abstract Filter getFilter();
@@ -196,7 +196,21 @@ public abstract class AbstractPassageBook extends AbstractBook
      */
     public final Key getGlobalKeyList()
     {
-        return keyf.getGlobalKeyList();
+        if (global == null)
+        {
+            global = keyf.createEmptyKeyList();
+            Key all = keyf.getGlobalKeyList();
+            Iterator iter = all.iterator();
+            while (iter.hasNext())
+            {
+                Key key = (Key) iter.next();
+                if (contains(key))
+                {
+                    global.addAll(key);
+                }
+            }
+        }
+        return global;
     }
 
     /* (non-Javadoc)
@@ -221,6 +235,11 @@ public abstract class AbstractPassageBook extends AbstractBook
     {
         return keyf.getKey(text);
     }
+
+    /**
+     * A cached representation of the global key list.
+     */
+    private Key global;
 
     /**
      * Our key manager

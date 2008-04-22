@@ -50,7 +50,7 @@ public class RocketPassage extends BitwisePassage
      * <code>RangedPassage v2 = new RangedPassage(v1.getName());</code>
      * Then <code>v1.equals(v2);</code>
      * Theoretically, since there are many ways of representing a RangedPassage as text
-     * string comparision along the lines of:
+     * string comparison along the lines of:
      * <code>v1.getName().equals(v2.getName())</code> could be false.
      * However since getName() is standardized this will be true.
      * We don't need to worry about thread safety in a ctor since we don't exist yet.
@@ -62,13 +62,8 @@ public class RocketPassage extends BitwisePassage
         super(refs);
     }
 
-    /**
-     * For preformance reasons we may well want to hint to the Passage that we
-     * have done editing it for now and that it is safe to cache certain
-     * values to speed up future reads. Any action taken by this method will be
-     * undone simply by making a future edit, and the only loss in calling
-     * optimizeReads() is a loss of time if you then persist in writing to the
-     * Passage.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.AbstractPassage#optimizeReads()
      */
     public void optimizeReads()
     {

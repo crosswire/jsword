@@ -64,7 +64,7 @@ public class BitwisePassage extends AbstractPassage
      * <code>DistinctPassage v2 = new BitwisePassage(v1.toString());</code>
      * Then <code>v1.equals(v2);</code>
      * Theoretically, since there are many ways of representing a BitwisePassage as text
-     * string comparision along the lines of:
+     * string comparison along the lines of:
      * <code>v1.toString().equals(v2.toString())</code> could be false.
      * Practically since toString() is standardized this will be true however.
      * We don't need to worry about thread safety in a ctor since we don't exist yet.
@@ -389,7 +389,7 @@ public class BitwisePassage extends AbstractPassage
          */
         public void remove() throws UnsupportedOperationException
         {
-            throw new UnsupportedOperationException();
+            store.clear(next);
         }
 
         /**

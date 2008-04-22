@@ -231,6 +231,41 @@ public class ZVerseBackend extends AbstractBackend
         active = false;
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
+     */
+    /* @Override */
+    public boolean contains(Key key)
+    {
+        checkActive();
+        Verse verse = KeyUtil.getVerse(key);
+
+        try
+        {
+            int testament = SwordConstants.getTestament(verse);
+            long index = SwordConstants.getIndex(verse);
+
+            // If Bible does not contain the desired testament, then false
+            if (compRaf[testament] == null)
+            {
+                return false;
+            }
+
+            // 10 because the index is 10 bytes long for each verse
+            byte[] temp = SwordUtil.readRAF(compRaf[testament], index * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE);
+
+            // If the Bible does not contain the desired verse, return nothing.
+            // Some Bibles have different versification, so the requested verse
+            // may not exist.
+            return (temp != null && temp.length > 0);
+        }
+        catch (IOException e)
+        {
+            return false;
+        }
+
+    }
+
     /*
      * (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key, java.lang.String)

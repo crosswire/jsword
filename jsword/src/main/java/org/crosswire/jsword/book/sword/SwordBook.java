@@ -35,7 +35,7 @@ import org.jdom.Content;
 import org.jdom.Element;
 
 /**
- * SwordBook is a base class for all sword type books.
+ * SwordBook is a base class for all verse based Sword type books.
  *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
@@ -73,6 +73,14 @@ public class SwordBook extends AbstractPassageBook
         super.deactivate(lock);
 
         Activator.deactivate(backend);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#contains(org.crosswire.jsword.passage.Key)
+     */
+    public boolean contains(Key key)
+    {
+        return (backend != null && backend.contains(key));
     }
 
     /* (non-Javadoc)

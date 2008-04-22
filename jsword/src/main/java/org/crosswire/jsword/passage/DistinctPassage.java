@@ -90,7 +90,7 @@ public class DistinctPassage extends AbstractPassage
 
         // I want to just do the following
         //   copy.store = (SortedSet) store.clone();
-        // However SortedSet is not Clonable so I can't
+        // However SortedSet is not Cloneable so I can't
         // Watch out for this, I'm not sure if it breaks anything.
         copy.store = new TreeSet();
         copy.store.addAll(store);

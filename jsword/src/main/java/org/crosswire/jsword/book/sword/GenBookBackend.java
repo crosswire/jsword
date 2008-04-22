@@ -121,6 +121,28 @@ public class GenBookBackend extends AbstractBackend
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
+     */
+    /* @Override */
+    public boolean contains(Key key)
+    {
+        checkActive();
+
+        try
+        {
+            TreeNode node = find(key);
+            byte [] userData = node.getUserData();
+
+            // Some entries may be empty.
+            return (userData.length == 8);
+        }
+        catch (IOException e)
+        {
+            return false;
+        }
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key, java.lang.String)
      */
     /* @Override */

@@ -64,6 +64,13 @@ public interface Book extends Activatable, KeyFactory, Comparable
     Iterator getOsisIterator(Key key, boolean allowEmpty) throws BookException;
 
     /**
+     * Returns <tt>true</tt> if this book contains the specified element.
+     * @param key element whose presence in this book is to be tested.
+     * @return <tt>true</tt> if this book contains the specified element.
+     */
+    boolean contains(Key key);
+
+   /**
      * Returns the raw text that getData(Key key) builds into OSIS.
      *
      * @param key The item to locate

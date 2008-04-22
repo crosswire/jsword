@@ -61,6 +61,37 @@ public class RawBackend extends AbstractBackend
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
+     */
+    /* @Override */
+    public boolean contains(Key key)
+    {
+        checkActive();
+
+        Verse verse = KeyUtil.getVerse(key);
+
+        try
+        {
+            int testament = SwordConstants.getTestament(verse);
+            long index = SwordConstants.getIndex(verse);
+
+            // If this is a single testament Bible, return nothing.
+            if (idxRaf[testament] == null)
+            {
+                return false;
+            }
+
+            DataIndex dataIndex = getIndex(idxRaf[testament], index);
+
+            return (dataIndex.getSize() > 0);
+        }
+        catch (IOException ex)
+        {
+            return false;
+        }
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key, java.lang.String)
      */
     /* @Override */
