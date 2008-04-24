@@ -63,3 +63,7 @@ deactivate
 servlet
 remoting
 tomcat
+cloneable
+tally
+mapper
+parsable
