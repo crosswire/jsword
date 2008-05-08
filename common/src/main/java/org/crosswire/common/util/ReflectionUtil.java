@@ -54,7 +54,7 @@ public final class ReflectionUtil
      */
     public static Object construct(String className) throws ClassNotFoundException, InstantiationException, IllegalAccessException
     {
-        Class clazz = Class.forName(className);
+        Class clazz = ClassUtil.forName(className);
         return clazz.newInstance();
     }
 
@@ -74,7 +74,7 @@ public final class ReflectionUtil
     public static Object construct(String className, Object[] params) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException
     {
         Class[] paramTypes = describeParameters(params);
-        Class clazz = Class.forName(className);
+        Class clazz = ClassUtil.forName(className);
         final Constructor c = clazz.getConstructor(paramTypes);
         return c.newInstance(params);
     }
@@ -99,7 +99,7 @@ public final class ReflectionUtil
         {
             calledTypes = describeParameters(params);
         }
-        Class clazz = Class.forName(className);
+        Class clazz = ClassUtil.forName(className);
         final Constructor c = clazz.getConstructor(calledTypes);
         return c.newInstance(params);
     }
@@ -129,7 +129,7 @@ public final class ReflectionUtil
         int lastDot = call.lastIndexOf('.');
         String className = call.substring(0, lastDot);
         String methodName = call.substring(lastDot + 1);
-        Class clazz = Class.forName(className);
+        Class clazz = ClassUtil.forName(className);
         return invoke(clazz, clazz, methodName, params);
     }
 

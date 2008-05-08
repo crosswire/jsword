@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.PluginUtil;
 import org.jdom.Element;
 
@@ -57,7 +58,7 @@ public final class ChoiceFactory
         if ("custom".equals(type)) //$NON-NLS-1$
         {
             String clazzstr = option.getAttributeValue("class"); //$NON-NLS-1$
-            clazz = Class.forName(clazzstr);
+            clazz = ClassUtil.forName(clazzstr);
         }
         else
         {

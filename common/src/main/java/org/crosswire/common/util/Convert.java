@@ -120,7 +120,7 @@ public final class Convert
      */
     public static Object string2Object(String data) throws InstantiationException, ClassNotFoundException, IllegalAccessException
     {
-        return Class.forName(data).newInstance();
+        return ClassUtil.forName(data).newInstance();
     }
 
     /**
@@ -140,7 +140,7 @@ public final class Convert
      */
     public static Class string2Class(String data) throws ClassNotFoundException
     {
-        return Class.forName(data);
+        return ClassUtil.forName(data);
     }
 
     /**
@@ -172,7 +172,7 @@ public final class Convert
                 int equ_pos = entry.indexOf('=');
                 String key = entry.substring(0, equ_pos);
                 String value = entry.substring(equ_pos + 1);
-                Class clazz = Class.forName(value);
+                Class clazz = ClassUtil.forName(value);
 
                 if (clazz.isAssignableFrom(superclass))
                 {

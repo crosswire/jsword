@@ -70,7 +70,7 @@ public final class PluginUtil
                 try
                 {
                     String name = (String) it.next();
-                    Class impl = Class.forName(name);
+                    Class impl = ClassUtil.forName(name);
                     if (clazz.isAssignableFrom(impl))
                     {
                         matches.add(impl);
@@ -121,7 +121,7 @@ public final class PluginUtil
                 {
                     String key = (String) it.next();
                     String value = props.getProperty(key);
-                    Class impl = Class.forName(value);
+                    Class impl = ClassUtil.forName(value);
                     if (clazz.isAssignableFrom(impl))
                     {
                         matches.put(key, impl);
@@ -165,7 +165,7 @@ public final class PluginUtil
         Properties props = getPlugin(clazz);
         String name = props.getProperty(DEFAULT);
 
-        Class impl = Class.forName(name);
+        Class impl = ClassUtil.forName(name);
         if (!clazz.isAssignableFrom(impl))
         {
             throw new ClassCastException(Msg.NOT_ASSIGNABLE.toString(new Object[] { impl.getName(), clazz.getName() }));

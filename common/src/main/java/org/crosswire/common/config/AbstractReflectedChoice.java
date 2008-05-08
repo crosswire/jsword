@@ -26,6 +26,7 @@ import java.lang.reflect.Method;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.StringUtil;
 import org.jdom.Element;
@@ -123,7 +124,7 @@ public abstract class AbstractReflectedChoice implements Choice
 
         try
         {
-            clazz = Class.forName(clazzname);
+            clazz = ClassUtil.forName(clazzname);
         }
         catch (ClassNotFoundException ex)
         {

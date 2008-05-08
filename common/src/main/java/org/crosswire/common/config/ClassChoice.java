@@ -21,6 +21,7 @@
  */
 package org.crosswire.common.config;
 
+import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
 
 /**
@@ -62,7 +63,7 @@ public class ClassChoice extends AbstractReflectedChoice
     {
         try
         {
-            return Class.forName(orig);
+            return ClassUtil.forName(orig);
         }
         catch (ClassNotFoundException ex)
         {

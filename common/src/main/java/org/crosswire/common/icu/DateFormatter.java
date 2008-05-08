@@ -27,6 +27,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.ReflectionUtil;
 
 /**
@@ -55,7 +56,7 @@ public class DateFormatter
         DateFormatter fmt = new DateFormatter();
         try
         {
-            fmt.formatterClass = Class.forName("com.ibm.icu.text.DateFormat"); //$NON-NLS-1$
+            fmt.formatterClass = ClassUtil.forName("com.ibm.icu.text.DateFormat"); //$NON-NLS-1$
             // To call a method taking a type of int, the type has to match but the object has to be wrapped
             Class[] instanceTypes = { int.class };
             Object[] instanceParams = { new Integer(format) };
@@ -85,7 +86,7 @@ public class DateFormatter
         DateFormatter fmt = new DateFormatter();
         try
         {
-            fmt.formatterClass = Class.forName("com.ibm.icu.text.SimpleDateFormat"); //$NON-NLS-1$
+            fmt.formatterClass = ClassUtil.forName("com.ibm.icu.text.SimpleDateFormat"); //$NON-NLS-1$
             Object[] instanceParams = { format };
             fmt.formatter = ReflectionUtil.construct("com.ibm.icu.text.SimpleDateFormat", instanceParams); //$NON-NLS-1$
         }

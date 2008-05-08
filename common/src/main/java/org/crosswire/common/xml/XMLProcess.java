@@ -23,6 +23,7 @@ package org.crosswire.common.xml;
 
 import java.io.IOException;
 
+import org.crosswire.common.util.ClassUtil;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
@@ -168,7 +169,7 @@ public class XMLProcess
 
         try
         {
-            adapter = (XMLHandlerAdapter) Class.forName(adapterName).newInstance();
+            adapter = (XMLHandlerAdapter) ClassUtil.forName(adapterName).newInstance();
         }
         catch (ClassNotFoundException e)
         {

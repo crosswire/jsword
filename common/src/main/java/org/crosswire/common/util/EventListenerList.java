@@ -318,7 +318,7 @@ public class EventListenerList implements Serializable
             }
 
             EventListener li = (EventListener) ois.readObject();
-            add(Class.forName((String) listenerTypeOrNull), li);
+            add(ClassUtil.forName((String) listenerTypeOrNull), li);
         }
     }
 

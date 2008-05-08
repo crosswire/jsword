@@ -24,6 +24,7 @@ package org.crosswire.jsword.index.lucene.analysis;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.ResourceUtil;
 
@@ -64,7 +65,7 @@ public class AnalyzerFactory
             {
                 try
                 {
-                    Class impl = Class.forName(aClass);
+                    Class impl = ClassUtil.forName(aClass);
 
                     newObject = (AbstractAnalyzer) impl.newInstance();
                 }

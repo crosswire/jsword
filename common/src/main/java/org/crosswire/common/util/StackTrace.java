@@ -192,7 +192,7 @@ public final class StackTrace
     {
         try
         {
-            return Class.forName(classNames[level]);
+            return ClassUtil.forName(classNames[level]);
         }
         catch (ClassNotFoundException ex)
         {

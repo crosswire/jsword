@@ -24,6 +24,8 @@ package org.crosswire.common.xml;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import org.crosswire.common.util.ClassUtil;
+
 /**
  * Allows xalan's xslt process class to be invoked as a command line
  * application. Java 5 has renamed the main routine to _main. This class
@@ -53,7 +55,7 @@ public class XalanProcess
         try
         {
             // Try for 1.4.x
-            clazz = Class.forName("org.apache.xalan.xslt.Process"); //$NON-NLS-1$
+            clazz = ClassUtil.forName("org.apache.xalan.xslt.Process"); //$NON-NLS-1$
             main = clazz.getMethod("main", new Class[] {String[].class}); //$NON-NLS-1$
         }
         catch (ClassNotFoundException e)
@@ -61,7 +63,7 @@ public class XalanProcess
             try
             {
                 // Try for 1.5.x
-                clazz = Class.forName("com.sun.org.apache.xalan.internal.xslt.Process"); //$NON-NLS-1$
+                clazz = ClassUtil.forName("com.sun.org.apache.xalan.internal.xslt.Process"); //$NON-NLS-1$
                 main = clazz.getMethod("_main", new Class[] {String[].class}); //$NON-NLS-1$
             }
             catch (ClassNotFoundException e1)

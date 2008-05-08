@@ -43,6 +43,18 @@ public final class ClassUtil
     }
 
     /**
+     * Gets the Class for the className in a way that works well for extensions.
+     * See: http://www.javageeks.com/Papers/ClassForName/ClassForName.pdf
+     * @param className the class to get
+     * @return the found Class
+     * @throws ClassNotFoundException
+     */
+    public static Class forName(String className) throws ClassNotFoundException
+    {
+      return Thread.currentThread().getContextClassLoader().loadClass(className);
+    }
+
+    /**
      * This function finds the first matching filename for a Java class
      * file from the classpath, if none is found it returns null.
      */
