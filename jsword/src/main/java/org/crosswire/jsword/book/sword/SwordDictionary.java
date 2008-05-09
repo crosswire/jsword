@@ -208,17 +208,19 @@ public class SwordDictionary extends AbstractBook
             text = text.substring(0, pos);
         }
 
-        // Get the number after the G or H
-        int strongsNumber = Integer.parseInt(text.substring(1));
 
         Key key = null;
         String internalName = sbmd.getInitials();
         if ("StrongsGreek".equals(internalName)) //$NON-NLS-1$
         {
+            // Get the number after the G or H
+            int strongsNumber = Integer.parseInt(text.substring(1));
             key = backend.get(backend.indexOf(new DefaultLeafKeyList(ZERO_PAD.format(strongsNumber))));
         }
         else if ("StrongsHebrew".equals(internalName)) //$NON-NLS-1$
         {
+            // Get the number after the G or H
+            int strongsNumber = Integer.parseInt(text.substring(1));
             key = backend.get(backend.indexOf(new DefaultLeafKeyList(ZERO_PAD.format(strongsNumber))));
         }
         return key;

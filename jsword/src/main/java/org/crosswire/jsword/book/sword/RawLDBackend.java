@@ -25,6 +25,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.URI;
+import java.util.Date;
+import java.text.MessageFormat;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
@@ -142,7 +145,23 @@ public class RawLDBackend extends AbstractKeyBackend
                 if (index < getCardinality())
                 {
                     DataEntry entry = getEntry(getBookMetaData().getInitials(), index);
-                    return new DefaultLeafKeyList(entry.getKey());
+                    SwordBookMetaData bmd = getBookMetaData();
+
+                    boolean isDailyDevotional = bmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS);
+
+                    Calendar greg = new GregorianCalendar();
+                    DateFormatter nameDF = DateFormatter.getDateInstance();
+                    String keytitle = entry.getKey();
+
+                    if (isDailyDevotional && keytitle.length() >= 3)
+                    {
+                        String[] spec = StringUtil.splitAll(keytitle, '.');
+                        greg.set(Calendar.MONTH, Integer.parseInt(spec[0]) - 1);
+                        greg.set(Calendar.DATE, Integer.parseInt(spec[1]));
+                        keytitle = nameDF.format(greg.getTime());
+                    }
+
+                    return new DefaultLeafKeyList(keytitle);
                 }
             }
             catch (IOException e)
@@ -333,10 +352,23 @@ public class RawLDBackend extends AbstractKeyBackend
 
         boolean isDailyDevotional = bmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS);
 
-        Calendar greg = new GregorianCalendar();
-        DateFormatter nameDF = DateFormatter.getDateInstance();
-
         String target = key.toUpperCase(Locale.US);
+        if (isDailyDevotional)
+        {
+            Calendar greg = new GregorianCalendar();
+            DateFormatter nameDF = DateFormatter.getDateInstance();
+            nameDF.setLenient(true);
+            try
+            {
+                Date date = nameDF.parse(key);
+                greg.setTime(date);
+                target = external2internal(greg);
+            }
+            catch (ParseException e)
+            {
+                assert false : e;
+            }
+        }
 
         int low = 1;
         int high = getCardinality() - 1;
@@ -348,15 +380,6 @@ public class RawLDBackend extends AbstractKeyBackend
             // Get the key for the item at "mid"
             DataEntry entry = getEntry(key, mid);
             String midVal = entry.getKey();
-
-            // Massage midVal if can be.
-            if (isDailyDevotional && midVal.length() >= 3)
-            {
-                String[] spec = StringUtil.splitAll(midVal, '.');
-                greg.set(Calendar.MONTH, Integer.parseInt(spec[0]) - 1);
-                greg.set(Calendar.DATE, Integer.parseInt(spec[1]));
-                midVal = nameDF.format(greg.getTime());
-            }
 
             int cmp = midVal.toUpperCase(Locale.US).compareTo(target);
 
@@ -379,15 +402,6 @@ public class RawLDBackend extends AbstractKeyBackend
         DataEntry entry = getEntry(key, 0);
         String midVal = entry.getKey();
 
-        // Massage midVal if can be.
-        if (isDailyDevotional && midVal.length() >= 3)
-        {
-            String[] spec = StringUtil.splitAll(midVal, '.');
-            greg.set(Calendar.MONTH, Integer.parseInt(spec[0]) - 1);
-            greg.set(Calendar.DATE, Integer.parseInt(spec[1]));
-            midVal = nameDF.format(greg.getTime());
-        }
-
         int cmp = midVal.toUpperCase(Locale.US).compareTo(target);
         if (cmp == 0)
         {
@@ -395,6 +409,19 @@ public class RawLDBackend extends AbstractKeyBackend
         }
 
         return -(low + 1); // key not found
+    }
+
+    /**
+     * Convert the Gregorian Calendar to a string.
+     * @param externalKey
+     * @return
+     */
+    public static String external2internal(Calendar externalKey)
+    {
+        Object[] objs = {new Integer(1 + externalKey.get(Calendar.MONTH)),
+                         new Integer(externalKey.get(Calendar.DATE))};
+        return KEY_FORMAT.format(objs);
+
     }
 
     /**
@@ -441,6 +468,11 @@ public class RawLDBackend extends AbstractKeyBackend
      * The data random access file
      */
     private RandomAccessFile datRaf;
+
+    /**
+     * Date formatter
+     */
+    private static final MessageFormat KEY_FORMAT = new MessageFormat("{0,number,00}.{1,number,00}"); //$NON-NLS-1$
 
     /**
      * Serialization ID
