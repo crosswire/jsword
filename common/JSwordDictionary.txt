@@ -67,3 +67,5 @@ cloneable
 tally
 mapper
 parsable
+gregorian
+downloaded

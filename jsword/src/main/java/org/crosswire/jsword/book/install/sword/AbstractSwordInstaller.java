@@ -34,6 +34,7 @@ import java.util.zip.GZIPInputStream;
 
 import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.progress.Progress;
+import org.crosswire.common.util.CWProject;
 import org.crosswire.common.util.CollectionUtil;
 import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Logger;
@@ -56,7 +57,6 @@ import org.crosswire.jsword.book.sword.SwordBookDriver;
 import org.crosswire.jsword.book.sword.SwordBookMetaData;
 import org.crosswire.jsword.book.sword.SwordBookPath;
 import org.crosswire.jsword.book.sword.SwordConstants;
-import org.crosswire.jsword.util.Project;
 
 import com.ice.tar.TarEntry;
 import com.ice.tar.TarInputStream;
@@ -238,7 +238,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
             /* @Override */
             public void run()
             {
-                URI predictURI = Project.instance().getWritablePropertiesURI("sword-install"); //$NON-NLS-1$
+                URI predictURI = CWProject.instance().getWritablePropertiesURI("sword-install"); //$NON-NLS-1$
                 Progress job = JobManager.createJob(UserMsg.INSTALLING.toString(sbmd.getName()), predictURI, this, true);
 
                 yield();
@@ -555,7 +555,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     {
         try
         {
-            URI scratchdir = Project.instance().getWriteableProjectSubdir(getTempFileExtension(host, catalogDirectory), true);
+            URI scratchdir = CWProject.instance().getWriteableProjectSubdir(getTempFileExtension(host, catalogDirectory), true);
             return NetUtil.lengthenURI(scratchdir, FILE_LIST_GZ);
         }
         catch (IOException ex)

@@ -31,12 +31,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.crosswire.common.util.CWProject;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.OSType;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Books;
-import org.crosswire.jsword.util.Project;
 
 /**
  * This represents all of the Sword Books (aka modules).
@@ -196,7 +196,7 @@ public class SwordBookPath
         // JSword used to hold books in ~/.jsword (or its equivalent) but has code that will
         // migrate it to ~/.sword (or its equivalent)
         // If the migration did not work then use the old area
-        testDefaultPath(bookDirs, new File(Project.instance().getWritableProjectDir().getPath()));
+        testDefaultPath(bookDirs, new File(CWProject.instance().getWritableProjectDir().getPath()));
 
         return (File[]) bookDirs.toArray(new File[bookDirs.size()]);
     }
@@ -316,7 +316,7 @@ public class SwordBookPath
 
         // The "old" Book location might be in one of two locations
         // It might be ~/.jsword or the new project dir
-        File oldPath = new File(Project.instance().getDeprecatedWritableProjectDir().getPath());
+        File oldPath = new File(CWProject.instance().getDeprecatedWritableProjectDir().getPath());
 
         if (oldPath.isDirectory())
         {
@@ -324,7 +324,7 @@ public class SwordBookPath
             return;
         }
 
-        oldPath = new File(Project.instance().getWritableProjectDir().getPath());
+        oldPath = new File(CWProject.instance().getWritableProjectDir().getPath());
 
         if (oldPath.isDirectory())
         {

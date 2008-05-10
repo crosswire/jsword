@@ -35,6 +35,7 @@ import java.util.regex.Pattern;
 import org.crosswire.common.config.ChoiceFactory;
 import org.crosswire.common.config.Config;
 import org.crosswire.common.util.CWClassLoader;
+import org.crosswire.common.util.CWProject;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.common.xml.XMLUtil;
@@ -42,7 +43,6 @@ import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyFactory;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.PassageKeyFactory;
-import org.crosswire.jsword.util.Project;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 
@@ -72,7 +72,7 @@ public class GatherAllReferences
         //     ~/.jsword
         // This will set it as a place to look for overrides for
         // ResourceBundles, properties and other resources
-        Project.instance();
+        CWProject.instance();
 
         // And the array of allowed osis>html converters
         ChoiceFactory.getDataMap().put("converters", new String[] {}); //$NON-NLS-1$

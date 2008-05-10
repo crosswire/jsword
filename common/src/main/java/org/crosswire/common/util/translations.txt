@@ -1,0 +1,10 @@
+# This is a listing of languages that BibleDesktop has been translated into.
+# Each language should be on a line to itself.
+# Note: This file is ordered by the English representation of the file.
+en
+zh_CN
+zh_TW
+de
+fa
+#tr
+vi

@@ -30,12 +30,12 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.crosswire.common.util.CWProject;
 import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PluginUtil;
 import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.util.Project;
 
 /**
  * A manager to abstract out the non-view specific book installation tasks.
@@ -119,7 +119,7 @@ public final class InstallManager
             buf.append(installer.getInstallerDefinition());
             props.setProperty(PREFIX + i++, buf.toString());
         }
-        URI outputURI = Project.instance().getWritablePropertiesURI(getClass().getName());
+        URI outputURI = CWProject.instance().getWritablePropertiesURI(getClass().getName());
         try
         {
             NetUtil.storeProperties(props, outputURI, "Saved Installer Sites"); //$NON-NLS-1$

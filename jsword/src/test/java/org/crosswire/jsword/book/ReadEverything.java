@@ -30,11 +30,11 @@ import java.util.ResourceBundle;
 import org.crosswire.common.config.ChoiceFactory;
 import org.crosswire.common.config.Config;
 import org.crosswire.common.util.CWClassLoader;
+import org.crosswire.common.util.CWProject;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.util.Project;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 
@@ -61,11 +61,11 @@ public class ReadEverything
     {
         Logger.outputEverything();
 
-        // Calling Project.instance() will set up the project's home directory
-        //     ~/.jsword
+        // This must be the first static in the program.
+        // To ensure this we place it at the top of the class!
         // This will set it as a place to look for overrides for
         // ResourceBundles, properties and other resources
-        Project.instance();
+        CWProject.instance().setHome("jsword.home", ".jsword", "JSword"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
         // And the array of allowed osis>html converters
         ChoiceFactory.getDataMap().put("converters", new String[] {}); //$NON-NLS-1$
