@@ -169,7 +169,7 @@ public class GenBookBackend extends AbstractBackend
         }
         catch (IOException e)
         {
-            throw new BookException(UserMsg.READ_FAIL);
+            throw new BookException(UserMsg.READ_FAIL, e, new Object[] { key.getName() });
         }
     }
 

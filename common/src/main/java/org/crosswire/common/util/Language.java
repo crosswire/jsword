@@ -30,6 +30,8 @@ package org.crosswire.common.util;
  */
 public class Language implements Comparable
 {
+    public static final Language DEFAULT_LANG = new Language(null);
+
     /**
      * A single language defined by an ISO-639 code.
      * If the code is null or empty then it is considered to be DEFAULT_LANG_CODE (that is, English).
@@ -38,12 +40,9 @@ public class Language implements Comparable
      */
     public Language(String iso639Code)
     {
-        this.code = iso639Code;
-        if (iso639Code == null || iso639Code.length() == 0)
-        {
-            this.code = Languages.DEFAULT_LANG_CODE;
-        }
+        this.code = Languages.getLanguageCode(iso639Code);
     }
+
     /**
      * Determine whether this language is valid.
      * The code is valid if it is in iso639.properties.
@@ -74,9 +73,31 @@ public class Language implements Comparable
     {
         if (name == null)
         {
-            name = Languages.getLanguage(code);
+            name = Languages.getLanguageName(code);
         }
         return name;
+    }
+
+    /**
+     * Determine whether this language is a Left-to-Right or a Right-to-Left language.
+     * @return true if the language is Left-to-Right.
+     */
+    public boolean isLeftToRight()
+    {
+        if (!knowsDirection)
+        {
+            ltor = ! ("he".equals(code)  || //$NON-NLS-1$ Hebrew
+                      "ar".equals(code)  || //$NON-NLS-1$ Arabic
+                      "fa".equals(code)  || //$NON-NLS-1$ Farsi/Persian
+                      "ur".equals(code)  || //$NON-NLS-1$ Uighur
+                      "uig".equals(code) || //$NON-NLS-1$ Uighur, too
+                      "syr".equals(code) || //$NON-NLS-1$ Syriac
+                      "iw".equals(code));   //$NON-NLS-1$ Java's notion of Hebrew
+
+            knowsDirection = true;
+        }
+
+        return ltor;
     }
 
     /* (non-Javadoc)
@@ -125,4 +146,6 @@ public class Language implements Comparable
 
     private String code;
     private String name;
+    private boolean knowsDirection;
+    private boolean ltor;
 }

@@ -54,28 +54,14 @@ public class Languages
      */
     public static boolean isValidLanguage(String iso639Code)
     {
-        String lookup = iso639Code;
-        if (lookup == null || lookup.length() == 0)
-        {
-            return true;
-        }
-
-        if (lookup.indexOf('_') != -1)
-        {
-            String[] locale = StringUtil.split(lookup, '_');
-            return isValidLanguage(locale[0]);
-        }
-
-        // These are not uncommon. Looking for them prevents exceptions
-        // and provides the same result.
-        if (lookup.startsWith("x-") || lookup.startsWith("X-") || lookup.length() > 3) //$NON-NLS-1$ //$NON-NLS-2$
-        {
-            return false;
-        }
-
         try
         {
-            languages.getString(lookup);
+            String code = getLanguageCode(iso639Code);
+            if (code == DEFAULT_LANG_CODE || code == UNKNOWN_LANG_CODE)
+            {
+                return true;
+            }
+            languages.getString(code);
             return true;
         }
         catch (MissingResourceException e)
@@ -87,42 +73,62 @@ public class Languages
     /**
      * Get the language name from the language code.
      * If the code is null or empty then it is considered to be DEFAULT_LANG_CODE (that is, English).
-     * Otherwise, it will generate a log message and return unknown.
+     * If it starts with x- or is too long then it will return unknown.
+     * If the code's name cannot be found, it will return the code.
      * If a locale is used for the iso639Code, it will use the part before the '_'.
      * Thus, this code does not support dialects, except as found in the iso639.
      *
      * @param iso639Code
      * @return the name of the language
      */
-    public static String getLanguage(String iso639Code)
+    public static String getLanguageName(String iso639Code)
     {
-        String lookup = iso639Code;
+        String code = getLanguageCode(iso639Code);
+        try
+        {
+            return languages.getString(code);
+        }
+        catch (MissingResourceException e)
+        {
+            return code;
+        }
+    }
+
+    /**
+     * Get the language code from the input.
+     * If the code is null or empty then it is considered to be DEFAULT_LANG_CODE (that is, English).
+     * If a locale is used for the iso639Code, it will use the part before the '_'.
+     * Thus, this code does not support dialects, except as found in the iso639.
+     * If it is known to be unknown then return unknown.
+     * Otherwise, return the 2 or 3 letter code.
+     * Note: it might not be valid.
+     *
+     * @param input
+     * @return the code for the language
+     */
+    public static String getLanguageCode(String input)
+    {
+        String lookup = input;
         if (lookup == null || lookup.length() == 0)
         {
-            return getLanguage(DEFAULT_LANG_CODE);
+            return DEFAULT_LANG_CODE;
         }
 
         if (lookup.indexOf('_') != -1)
         {
             String[] locale = StringUtil.split(lookup, '_');
-            return getLanguage(locale[0]);
+            // We need to check what stands before the _, it might be empty or unknown.
+            return getLanguageCode(locale[0]);
         }
 
         // These are not uncommon. Looking for them prevents exceptions
         // and provides the same result.
         if (lookup.startsWith("x-") || lookup.startsWith("X-") || lookup.length() > 3) //$NON-NLS-1$ //$NON-NLS-2$
         {
-            return getLanguage(UNKNOWN_LANG_CODE);
+            return UNKNOWN_LANG_CODE;
         }
 
-        try
-        {
-            return languages.getString(lookup);
-        }
-        catch (MissingResourceException e)
-        {
-            return getLanguage(UNKNOWN_LANG_CODE);
-        }
+        return lookup;
     }
 
     public static final String DEFAULT_LANG_CODE = "en"; //$NON-NLS-1$

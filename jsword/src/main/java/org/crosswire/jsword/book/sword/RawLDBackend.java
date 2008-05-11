@@ -25,12 +25,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.URI;
-import java.util.Date;
+import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
@@ -41,6 +44,7 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.passage.DefaultLeafKeyList;
 import org.crosswire.jsword.passage.Key;
 
@@ -95,11 +99,11 @@ public class RawLDBackend extends AbstractKeyBackend
                 }
                 return getRawText(entry);
             }
-            throw new BookException(UserMsg.READ_FAIL);
+            throw new BookException(UserMsg.READ_FAIL, new Object[] { key });
         }
         catch (IOException ex)
         {
-            throw new BookException(UserMsg.READ_FAIL, ex);
+            throw new BookException(UserMsg.READ_FAIL, ex, new Object[] { key });
         }
     }
 
@@ -145,22 +149,7 @@ public class RawLDBackend extends AbstractKeyBackend
                 if (index < getCardinality())
                 {
                     DataEntry entry = getEntry(getBookMetaData().getInitials(), index);
-                    SwordBookMetaData bmd = getBookMetaData();
-
-                    boolean isDailyDevotional = bmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS);
-
-                    Calendar greg = new GregorianCalendar();
-                    DateFormatter nameDF = DateFormatter.getDateInstance();
-                    String keytitle = entry.getKey();
-
-                    if (isDailyDevotional && keytitle.length() >= 3)
-                    {
-                        String[] spec = StringUtil.splitAll(keytitle, '.');
-                        greg.set(Calendar.MONTH, Integer.parseInt(spec[0]) - 1);
-                        greg.set(Calendar.DATE, Integer.parseInt(spec[1]));
-                        keytitle = nameDF.format(greg.getTime());
-                    }
-
+                    String keytitle = internal2external(entry.getKey());
                     return new DefaultLeafKeyList(keytitle);
                 }
             }
@@ -348,67 +337,43 @@ public class RawLDBackend extends AbstractKeyBackend
             return -1;
         }
 
-        SwordBookMetaData bmd = getBookMetaData();
+        String target = external2internal(key);
 
-        boolean isDailyDevotional = bmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS);
+        // Initialize to one beyond both ends.
+        int total = getCardinality();
+        int low = -1;
+        int high = total;
 
-        String target = key.toUpperCase(Locale.US);
-        if (isDailyDevotional)
+        while (high - low > 1)
         {
-            Calendar greg = new GregorianCalendar();
-            DateFormatter nameDF = DateFormatter.getDateInstance();
-            nameDF.setLenient(true);
-            try
-            {
-                Date date = nameDF.parse(key);
-                greg.setTime(date);
-                target = external2internal(greg);
-            }
-            catch (ParseException e)
-            {
-                assert false : e;
-            }
-        }
-
-        int low = 1;
-        int high = getCardinality() - 1;
-
-        while (low <= high)
-        {
-            int mid = (low + high) >> 1;
+            // use >>> to keep mid always in range
+            int mid = (low + high) >>> 1;
 
             // Get the key for the item at "mid"
-            DataEntry entry = getEntry(key, mid);
-            String midVal = entry.getKey();
-
-            int cmp = midVal.toUpperCase(Locale.US).compareTo(target);
-
-            if (cmp < 0)
+            if (normalizeForSearch(getEntry(key, mid).getKey()).compareTo(target) < 0)
             {
-                low = mid + 1;
-            }
-            else if (cmp > 0)
-            {
-                high = mid - 1;
+                low = mid;
             }
             else
             {
-                return mid; // key found
+                high = mid;
             }
+        }
+
+        // At this point high is what we are what is the candidate.        
+        if (high < total &&  normalizeForSearch(getEntry(key, high).getKey()).compareTo(target) == 0)
+        {
+            return high;
         }
 
         // Strong's Greek And Hebrew dictionaries have an introductory entry, so check it for a match.
         // Get the key for the item at "mid"
-        DataEntry entry = getEntry(key, 0);
-        String midVal = entry.getKey();
-
-        int cmp = midVal.toUpperCase(Locale.US).compareTo(target);
-        if (cmp == 0)
+        if (normalizeForSearch(getEntry(key, 0).getKey()).compareTo(target) == 0)
         {
             return 0;
         }
 
-        return -(low + 1); // key not found
+        return -(high - 1);
     }
 
     /**
@@ -416,14 +381,109 @@ public class RawLDBackend extends AbstractKeyBackend
      * @param externalKey
      * @return
      */
-    public static String external2internal(Calendar externalKey)
+    private String external2internal(String externalKey)
     {
-        Object[] objs = {new Integer(1 + externalKey.get(Calendar.MONTH)),
-                         new Integer(externalKey.get(Calendar.DATE))};
-        return KEY_FORMAT.format(objs);
+        SwordBookMetaData bmd = getBookMetaData();
+        String keytitle = externalKey;
+        if (BookCategory.DAILY_DEVOTIONS.equals(bmd.getBookCategory()))
+        {
+            Calendar greg = new GregorianCalendar();
+            DateFormatter nameDF = DateFormatter.getDateInstance();
+            nameDF.setLenient(true);
+            try
+            {
+                Date date = nameDF.parse(keytitle);
+                greg.setTime(date);
+                Object[] objs = {new Integer(1 + greg.get(Calendar.MONTH)),
+                                 new Integer(greg.get(Calendar.DATE))};
+                return DATE_KEY_FORMAT.format(objs);
+            }
+            catch (ParseException e)
+            {
+                assert false : e;
+            }
+        }
+        else if (bmd.hasFeature(FeatureType.GREEK_DEFINITIONS) || bmd.hasFeature(FeatureType.HEBREW_DEFINITIONS))
+        {
+            // Is the string valid?
+            Matcher m = STRONGS_PATTERN.matcher(keytitle);
+            if (!m.matches())
+            {
+                return keytitle.toUpperCase(Locale.US);
+            }
 
+            // NASB has trailing letters!
+            int pos = keytitle.length() - 1;
+            char lastLetter = keytitle.charAt(pos);
+            boolean hasTrailingLetter = Character.isLetter(lastLetter);
+            if (hasTrailingLetter)
+            {
+                keytitle = keytitle.substring(0, pos);
+                // And it might be preceded by a !
+                pos--;
+                if (pos > 0 && keytitle.charAt(pos) == '!')
+                {
+                    keytitle = keytitle.substring(0, pos);
+                }
+            }
+
+            // Get the G or the H.
+            char type = keytitle.charAt(0);
+
+            // Get the number after the G or H
+            int strongsNumber = Integer.parseInt(keytitle.substring(1));
+            if (bmd.hasFeature(FeatureType.GREEK_DEFINITIONS) && bmd.hasFeature(FeatureType.HEBREW_DEFINITIONS))
+            {
+                // The convention is that a Strong's dictionary with both Greek and Hebrew have G or H prefix
+                StringBuffer buf = new StringBuffer();
+                buf.append(Character.toUpperCase(type));
+                buf.append(ZERO_4PAD.format(strongsNumber));
+
+                // The NAS lexicon has some entries that end in A-Z, but it is not preceded by a !
+                if (hasTrailingLetter && "naslex".equalsIgnoreCase(bmd.getInitials())) //$NON-NLS-1$
+                {
+                    buf.append(Character.toUpperCase(lastLetter));
+                }
+                return buf.toString();
+            }
+            
+            return ZERO_5PAD.format(strongsNumber);
+        }
+        else
+        {
+            return keytitle.toUpperCase(Locale.US);
+        }
+
+        return keytitle;
     }
 
+    private String internal2external(String internalKey)
+    {
+        SwordBookMetaData bmd = getBookMetaData();
+        String keytitle = internalKey;
+        if (BookCategory.DAILY_DEVOTIONS.equals(bmd.getBookCategory()) && keytitle.length() >= 3)
+        {
+            Calendar greg = new GregorianCalendar();
+            DateFormatter nameDF = DateFormatter.getDateInstance();
+            String[] spec = StringUtil.splitAll(keytitle, '.');
+            greg.set(Calendar.MONTH, Integer.parseInt(spec[0]) - 1);
+            greg.set(Calendar.DATE, Integer.parseInt(spec[1]));
+            keytitle = nameDF.format(greg.getTime());
+        }
+        return keytitle;
+    }
+
+    private String normalizeForSearch(String internalKey)
+    {
+        SwordBookMetaData bmd = getBookMetaData();
+        String keytitle = internalKey;
+        if (!BookCategory.DAILY_DEVOTIONS.equals(bmd.getBookCategory()))
+        {
+            return keytitle.toUpperCase(Locale.US);
+        }
+
+        return keytitle;
+    }
     /**
      * How many bytes in the offset pointers in the index
      */
@@ -472,7 +532,20 @@ public class RawLDBackend extends AbstractKeyBackend
     /**
      * Date formatter
      */
-    private static final MessageFormat KEY_FORMAT = new MessageFormat("{0,number,00}.{1,number,00}"); //$NON-NLS-1$
+    private static final MessageFormat DATE_KEY_FORMAT = new MessageFormat("{0,number,00}.{1,number,00}"); //$NON-NLS-1$
+
+    /**
+     * This is the pattern of a Strong's Number. It begins with a G or H. Is followed by a number.
+     * It can be followed by a ! and a letter or just a letter.
+     */
+    private static final Pattern STRONGS_PATTERN = Pattern.compile("^([GH])(\\d+)((!)?([a-z])?)$"); //$NON-NLS-1$
+
+    /**
+     * A means to normalize Strong's Numbers.
+     */
+    private static final DecimalFormat ZERO_5PAD = new DecimalFormat("00000"); //$NON-NLS-1$
+
+    private static final DecimalFormat ZERO_4PAD = new DecimalFormat("0000"); //$NON-NLS-1$
 
     /**
      * Serialization ID

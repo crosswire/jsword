@@ -21,7 +21,6 @@
  */
 package org.crosswire.jsword.book.sword;
 
-import java.awt.ComponentOrientation;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -32,7 +31,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -585,18 +583,6 @@ public final class ConfigEntryTable
         add(ConfigEntryType.DATA_PATH, datapath);
     }
 
-    private boolean isLeftToRight(Language language)
-    {
-        String lang = language.getCode();
-        // Java does not know that the following languages are right to left
-        if ("fa".equals(lang) || "syr".equals(lang) || "ug".equals(lang) || "uig".equals(lang))  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-        {
-            return false;
-        }
-
-        return ComponentOrientation.getOrientation(new Locale(lang)).isLeftToRight();
-    }
-
     private void adjustLanguage()
     {
         // Java thinks it is LtoR but it is stated to be something else
@@ -604,44 +590,34 @@ public final class ConfigEntryTable
         String newDir = dir == null ? (String) ConfigEntryType.DIRECTION.getDefault() : dir;
 
         Language lang = (Language) getValue(ConfigEntryType.LANG);
+        if (lang == null)
+        {
+            lang = Language.DEFAULT_LANG;
+            add(ConfigEntryType.LANG, lang.toString());
+        }
+        testLanguage(internal, lang);
+
         Language langFrom = (Language) getValue(ConfigEntryType.GLOSSARY_FROM);
         Language langTo = (Language) getValue(ConfigEntryType.GLOSSARY_TO);
-        testLanguage(internal, lang);
-        testLanguage(internal, langFrom);
-        testLanguage(internal, langTo);
 
-        // The LANG field should match the GLOSSARY_FROM field
-        if (langFrom != null && !langFrom.equals(lang))
-        {
-            lang = langFrom;
-        }
-
-        // This returns Left to Right if
-        // it does not know what it is.
-        boolean leftToRight = isLeftToRight(lang);
-
+        // If we have either langFrom or langTo, we are dealing with a glossary
         if (langFrom != null || langTo != null)
         {
-            boolean fromLeftToRight = true;
-            boolean toLeftToRight = true;
-
             if (langFrom == null)
             {
                 log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_FROM.getName() + '=' + Languages.DEFAULT_LANG_CODE);  //$NON-NLS-1$ //$NON-NLS-2$
+                langFrom = Language.DEFAULT_LANG;
+                add(ConfigEntryType.GLOSSARY_FROM, lang.toString());
             }
-            else
-            {
-                fromLeftToRight = isLeftToRight(langFrom);
-            }
+            testLanguage(internal, langFrom);
 
             if (langTo == null)
             {
                 log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_TO.getName() + '=' + Languages.DEFAULT_LANG_CODE);  //$NON-NLS-1$ //$NON-NLS-2$
+                langTo = Language.DEFAULT_LANG;
+                add(ConfigEntryType.GLOSSARY_TO, lang.toString());
             }
-            else
-            {
-                toLeftToRight = isLeftToRight(langTo);
-            }
+            testLanguage(internal, langTo);
 
             // At least one of the two languages should match the lang entry
             if (!langFrom.equals(lang) && !langTo.equals(lang))
@@ -652,11 +628,23 @@ public final class ConfigEntryTable
                           " match " + ConfigEntryType.LANG.getName()); //$NON-NLS-1$
             }
 
-            if (fromLeftToRight != toLeftToRight)
+            // The LANG field should match the GLOSSARY_FROM field
+            else if (!langFrom.equals(lang))
+            {
+            /*
+                log.error("Data error in " + internal + //$NON-NLS-1$
+                          ". " + ConfigEntryType.GLOSSARY_FROM.getName() + //$NON-NLS-1$
+                          " (" + langFrom.getCode() + ") does not match " + ConfigEntryType.LANG.getName() + " (" + lang.getCode() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			*/
+                lang = langFrom;
+                add(ConfigEntryType.LANG, lang.toString());
+            }
+
+            if (langFrom.isLeftToRight() != langTo.isLeftToRight())
             {
                 newDir = ConfigEntryType.DIRECTION_BIDI;
             }
-            else if (fromLeftToRight)
+            else if (langFrom.isLeftToRight())
             {
                 newDir = ConfigEntryType.DIRECTION_LTOR;
             }
@@ -667,7 +655,7 @@ public final class ConfigEntryTable
         }
         else
         {
-            if (leftToRight)
+            if (lang.isLeftToRight())
             {
                 newDir = ConfigEntryType.DIRECTION_LTOR;
             }
@@ -769,7 +757,7 @@ public final class ConfigEntryTable
 
     private void testLanguage(String initials, Language lang)
     {
-        if (lang != null && !lang.isValidLanguage())
+        if (!lang.isValidLanguage())
         {
             log.warn("Unknown language " + lang.getCode() + " in book " + initials); //$NON-NLS-1$ //$NON-NLS-2$
         }

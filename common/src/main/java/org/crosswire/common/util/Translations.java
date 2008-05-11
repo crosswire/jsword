@@ -215,7 +215,7 @@ public class Translations
 
     public String toString(String translationCode)
     {
-        StringBuffer currentTranslation = new StringBuffer(Languages.getLanguage(translationCode));
+        StringBuffer currentTranslation = new StringBuffer(Languages.getLanguageName(translationCode));
 
         if (translationCode.indexOf('_') != -1)
         {

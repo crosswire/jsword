@@ -21,8 +21,6 @@
  */
 package org.crosswire.jsword.book.basic;
 
-import java.awt.ComponentOrientation;
-import java.util.Locale;
 import java.util.Map;
 
 import org.crosswire.common.util.Language;
@@ -118,15 +116,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData
      */
     public boolean isLeftToRight()
     {
-        String lang = getLanguage().getName();
-
-        // Java does not know that the following languages are right to left
-        if ("fa".equals(lang) || "syr".equals(lang))  //$NON-NLS-1$ //$NON-NLS-2$
-        {
-            return false;
-        }
-
-        return ComponentOrientation.getOrientation(new Locale(lang)).isLeftToRight();
+        return getLanguage().isLeftToRight();
     }
 
     /**

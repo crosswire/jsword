@@ -21,12 +21,9 @@
  */
 package org.crosswire.jsword.book.sword;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
@@ -169,15 +166,6 @@ public class SwordDictionary extends AbstractBook
     {
         checkActive();
 
-        // So we need to find a matching key.
-        // TODO(DM): This is a hack.
-        Key key = getStrongsKey(text);
-
-        if (key != null)
-        {
-            return key;
-        }
-
         int pos = backend.indexOf(new DefaultLeafKeyList(text));
         if (pos < 0)
         {
@@ -188,42 +176,6 @@ public class SwordDictionary extends AbstractBook
             return backend.get(backend.getCardinality() - 1);
         }
         return backend.get(pos);
-    }
-
-    // TODO(DM): Hack alert!!! This is not in the right place!!!
-    private Key getStrongsKey(String txt)
-    {
-        String text = txt;
-        // Is the string all digits?
-        Matcher m = STRONGS_PATTERN.matcher(text);
-        if (!m.matches())
-        {
-            return null;
-        }
-
-        // Hack alert!!! NASB has trailing letters!!!!
-        int pos = text.length() - 1;
-        if (Character.isLetter(text.charAt(pos)))
-        {
-            text = text.substring(0, pos);
-        }
-
-
-        Key key = null;
-        String internalName = sbmd.getInitials();
-        if ("StrongsGreek".equals(internalName)) //$NON-NLS-1$
-        {
-            // Get the number after the G or H
-            int strongsNumber = Integer.parseInt(text.substring(1));
-            key = backend.get(backend.indexOf(new DefaultLeafKeyList(ZERO_PAD.format(strongsNumber))));
-        }
-        else if ("StrongsHebrew".equals(internalName)) //$NON-NLS-1$
-        {
-            // Get the number after the G or H
-            int strongsNumber = Integer.parseInt(text.substring(1));
-            key = backend.get(backend.indexOf(new DefaultLeafKeyList(ZERO_PAD.format(strongsNumber))));
-        }
-        return key;
     }
 
     /* (non-Javadoc)
@@ -268,10 +220,6 @@ public class SwordDictionary extends AbstractBook
             Activator.activate(this);
         }
     }
-
-    // This should move along with getStrongsKey
-    private static final Pattern STRONGS_PATTERN = Pattern.compile("^[GH]\\d+[a-z]?$"); //$NON-NLS-1$
-    private static final DecimalFormat ZERO_PAD = new DecimalFormat("00000"); //$NON-NLS-1$
 
     /**
      * Are we active

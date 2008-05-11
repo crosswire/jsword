@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.crosswire.common.util.Language;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.FeatureType;
@@ -264,8 +265,10 @@ public final class SwordBookMetaData extends AbstractBookMetaData
      */
     public boolean isLeftToRight()
     {
-        String dir = (String) getProperty(ConfigEntryType.DIRECTION);
-        return dir == null || dir.equals(ConfigEntryType.DIRECTION.getDefault());
+        // Return the dominate direction based upon the Book's Language not Direction
+        // because Direction can be BiDi.
+        Language lang = (Language) getProperty(ConfigEntryType.LANG);
+        return lang.isLeftToRight();
     }
 
     /* (non-Javadoc)
