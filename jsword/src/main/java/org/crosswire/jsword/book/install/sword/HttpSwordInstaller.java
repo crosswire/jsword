@@ -79,18 +79,23 @@ public class HttpSwordInstaller extends AbstractSwordInstaller
     /* @Override */
     protected void download(Progress job, String dir, String file, URI dest) throws InstallException
     {
+        URI uri;
         try
         {
-            URI uri = new URI(NetUtil.PROTOCOL_HTTP, host, dir + '/' + file, null);
+            uri = new URI(NetUtil.PROTOCOL_HTTP, host, dir + '/' + file, null);
+        }
+        catch (URISyntaxException e1)
+        {
+            throw new InstallException(UserMsg.MISSING_FILE, e1, new Object[] { dir + '/' + file });
+        }
+
+        try
+        {
             copy(job, uri, dest);
         }
         catch (LucidException ex)
         {
-            throw new InstallException(UserMsg.MISSING_FILE, ex);
-        }
-        catch (URISyntaxException e)
-        {
-            assert false : e;
+            throw new InstallException(UserMsg.MISSING_FILE, ex, new Object[] { uri.toString() });
         }
     }
 

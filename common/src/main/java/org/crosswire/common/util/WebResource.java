@@ -149,7 +149,8 @@ public class WebResource
         try
         {
             // Execute the method.
-            if (client.executeMethod(method) == HttpStatus.SC_OK)
+            int status = client.executeMethod(method);
+            if (status == HttpStatus.SC_OK)
             {
                 in = method.getResponseBodyAsStream();
 
@@ -164,10 +165,15 @@ public class WebResource
                     count = in.read(buf);
                 }
             }
+            else
+            {
+                String reason = HttpStatus.getStatusText(status);
+                Reporter.informUser(this, UserMsg.MISSING_FILE, new Object[] { reason + ':' + uri.getPath() });
+            }
         }
         catch (IOException e)
         {
-            throw new LucidException(UserMsg.MISSING_FILE, e);
+            throw new LucidException(UserMsg.MISSING_FILE, e, new Object[] { uri.toString() });
         }
         finally
         {
