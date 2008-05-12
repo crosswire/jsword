@@ -373,13 +373,14 @@ public class RawLDBackend extends AbstractKeyBackend
             return 0;
         }
 
-        return -(high - 1);
+        return -(high + 1);
     }
 
     /**
-     * Convert the Gregorian Calendar to a string.
+     * Convert the supplied key to something that can be understood by the module.
+     * 
      * @param externalKey
-     * @return
+     * @return the internal representation of the key.
      */
     private String external2internal(String externalKey)
     {
