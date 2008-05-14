@@ -29,6 +29,7 @@ import java.util.Date;
 
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpConnectionManager;
 import org.apache.commons.httpclient.HttpHost;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpStatus;
@@ -62,8 +63,16 @@ public class WebResource
     {
         uri = theURI;
         client = new HttpClient();
+
+        // Set a 2 second timeout on getting a connection.
+        HttpConnectionManager connectMgr = client.getHttpConnectionManager();
+        connectMgr.getParams().setConnectionTimeout(TIMEOUT);
+
+        // Configure the host and port
         HostConfiguration config = client.getHostConfiguration();
         config.setHost(new HttpHost(theURI.getHost(), theURI.getPort()));
+
+        // Configure proxy info if necessary and defined
         if (theProxyHost != null && theProxyHost.length() > 0)
         {
             config.setProxyHost(new ProxyHost(theProxyHost, theProxyPort == null ? -1 : theProxyPort.intValue()));
@@ -185,6 +194,11 @@ public class WebResource
         }
     }
 
+    /**
+     * Define a 750 ms timeout to get a connection
+     */
+    private static final int TIMEOUT = 750;
+    
     private URI uri;
     private HttpClient client;
 }
