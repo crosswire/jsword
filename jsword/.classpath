@@ -4,8 +4,8 @@
 	<classpathentry exported="true" kind="src" path="/common"/>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/test/java"/>
-	<classpathentry kind="lib" path="jar/lucene-2.3.0/lucene-analyzers-2.3.0.jar" sourcepath="jar/lucene-2.3.0/lucene-2.3.0-src.zip"/>
-	<classpathentry kind="lib" path="jar/lucene-2.3.0/lucene-core-2.3.0.jar" sourcepath="jar/lucene-2.3.0/lucene-2.3.0-src.zip"/>
-	<classpathentry kind="lib" path="jar/lucene-2.3.0/lucene-snowball-2.3.0.jar" sourcepath="jar/lucene-2.3.0/lucene-2.3.0-src.zip"/>
+	<classpathentry kind="lib" path="jar/lucene-2.3.2/lucene-analyzers-2.3.2.jar" sourcepath="jar/lucene-2.3.2/lucene-2.3.2-src.zip"/>
+	<classpathentry kind="lib" path="jar/lucene-2.3.2/lucene-snowball-2.3.2.jar" sourcepath="jar/lucene-2.3.2/lucene-2.3.2-src.zip"/>
+	<classpathentry kind="lib" path="jar/lucene-2.3.2/lucene-core-2.3.2.jar" sourcepath="jar/lucene-2.3.2/lucene-2.3.2-src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
