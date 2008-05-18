@@ -27,6 +27,7 @@ import java.util.Properties;
 import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.ResourceUtil;
+import org.crosswire.jsword.book.Book;
 
 /**
  * A factory creating the appropriate Analyzer for natural language analysis of text for Lucene 
@@ -45,9 +46,10 @@ import org.crosswire.common.util.ResourceUtil;
  */
 public class AnalyzerFactory
 {
-    public AbstractAnalyzer createAnalyzer(String lang)
+    public AbstractBookAnalyzer createAnalyzer(Book book)
     {
-        AbstractAnalyzer newObject = null;
+        AbstractBookAnalyzer newObject = null;
+        String lang = book == null ? null : book.getLanguage().getName();
         if (lang != null)
         {
             String adjustLang = lang;
@@ -67,7 +69,7 @@ public class AnalyzerFactory
                 {
                     Class impl = ClassUtil.forName(aClass);
 
-                    newObject = (AbstractAnalyzer) impl.newInstance();
+                    newObject = (AbstractBookAnalyzer) impl.newInstance();
                 }
                 catch (ClassNotFoundException e)
                 {
@@ -90,6 +92,7 @@ public class AnalyzerFactory
         }
 
         // Configure the analyzer
+        newObject.setBook(book);
         newObject.setDoStemming(getDefaultStemmingProperty());
         newObject.setDoStopWords(getDefaultStopWordProperty());
         newObject.setNaturalLanguage(lang);

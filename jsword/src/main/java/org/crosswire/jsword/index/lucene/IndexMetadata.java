@@ -82,7 +82,7 @@ public class IndexMetadata
     public static final String   LATEST_INDEX_VERSION = "Latest.Index.Version";               //$NON-NLS-1$
     public static final String   LUCENE_VERSION       = "Lucene.Version";                     //$NON-NLS-1$
     public static final float    INDEX_VERSION_1_1    = 1.1f;
-    public static final float    INDEX_VERSION_1_2    = 1.1f;
+    public static final float    INDEX_VERSION_1_2    = 1.2f;
 
     private static final Logger  log                  = Logger.getLogger(IndexMetadata.class);
     private static IndexMetadata myInstance;

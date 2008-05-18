@@ -74,6 +74,6 @@ public class ThaiLuceneAnalyzerTest extends TestCase
        
     
     protected static final String field = "content"; //$NON-NLS-1$
-    private AbstractAnalyzer myAnalyzer;
+    private AbstractBookAnalyzer myAnalyzer;
     private QueryParser parser;
 }

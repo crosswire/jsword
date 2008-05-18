@@ -19,37 +19,43 @@
  *
  * ID: $Id$
  */
-package org.crosswire.jsword.index.lucene;
+package org.crosswire.jsword.index.lucene.analysis;
 
-import java.io.IOException;
+import java.io.Reader;
 
-import org.apache.lucene.analysis.Token;
-import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.WhitespaceTokenizer;
+import org.crosswire.jsword.book.Book;
 
 /**
- * A KeyFilter normalizes Key.
+ * A specialized analyzer that normalizes JSword keys.
  *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class KeyFilter extends TokenFilter
+public class StrongsNumberAnalyzer extends AbstractBookAnalyzer
 {
     /**
-     * Construct filtering <i>in</i>.
+     * Construct a default StrongsNumberAnalyzer.
      */
-    public KeyFilter(TokenStream in)
+    public StrongsNumberAnalyzer()
     {
-      super(in);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.lucene.analysis.TokenStream#next()
+    /**
+     * Construct an StrongsNumberAnalyzer tied to a book.
      */
-    public final Token next() throws IOException
+    public StrongsNumberAnalyzer(Book book)
     {
-        // TODO(DMS): actually normalize
-        return input.next();
+        setBook(book);
+    }
+    
+    /* (non-Javadoc)
+     * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String, java.io.Reader)
+     */
+    public TokenStream tokenStream(String fieldName, Reader reader)
+    {
+        return new StrongsNumberFilter(getBook(), new WhitespaceTokenizer(reader));
     }
 }

@@ -19,58 +19,43 @@
  *
  * ID: $Id$
  */
-package org.crosswire.jsword.index.lucene;
+package org.crosswire.jsword.index.lucene.analysis;
 
-import java.io.IOException;
+import java.io.Reader;
 
-import org.apache.lucene.analysis.Token;
-import org.apache.lucene.analysis.TokenFilter;
+import org.apache.lucene.analysis.KeywordTokenizer;
 import org.apache.lucene.analysis.TokenStream;
-import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.DataPolice;
-import org.crosswire.jsword.book.study.StrongsNumber;
+import org.crosswire.jsword.book.Book;
 
 /**
- * A StrongsNumberFilter normalizes Strong's Numbers.
+ * A specialized analyzer that normalizes Strong's Numbers.
  *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class StrongsNumberFilter extends TokenFilter
+public class KeyAnalyzer extends AbstractBookAnalyzer
 {
     /**
-     * Construct filtering <i>in</i>.
+     * Construct a default KeyAnalyzer.
      */
-    public StrongsNumberFilter(TokenStream in)
+    public KeyAnalyzer()
     {
-      super(in);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.lucene.analysis.TokenStream#next()
+    /**
+     * Construct an KeyAnalyzer tied to a book.
      */
-    public final Token next() throws IOException
+    public KeyAnalyzer(Book book)
     {
-        Token token = input.next();
-        if (token == null)
-        {
-            return null;
-        }
-
-        try
-        {
-            String s = new StrongsNumber(token.termText()).getStrongsNumber();
-            if (!s.equals(token.termText()))
-            {
-                token.setTermText(s);
-            }
-        }
-        catch (BookException e)
-        {
-            DataPolice.report(e.getDetailedMessage());
-        }
-
-        return token;
+        setBook(book);
+    }
+    
+    /* (non-Javadoc)
+     * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String, java.io.Reader)
+     */
+    public TokenStream tokenStream(String fieldName, Reader reader)
+    {
+        return new KeyFilter(getBook(), new KeywordTokenizer(reader));
     }
 }

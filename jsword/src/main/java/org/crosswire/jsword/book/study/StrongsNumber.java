@@ -69,13 +69,26 @@ public class StrongsNumber
      */
     public StrongsNumber(char language, short strongsNumber) throws BookException
     {
+        this(language, strongsNumber, null);
+    }
+
+    /**
+     * Build an immutable Strong's Number.
+     * If the language is not 'G' or 'H' or the number is invalid, a BookException.
+     * @param language
+     * @param strongsNumber
+     * @throws BookException
+     */
+    public StrongsNumber(char language, short strongsNumber, String part) throws BookException
+    {
         this.language = language;
         this.strongsNumber = strongsNumber;
+        this.part = part;
         validate();
     }
 
     /**
-     * Return the canonical form of a Strong's Number.
+     * Return the canonical form of a Strong's Number, without the part.
      * @return the strongsNumber
      */
     public String getStrongsNumber()
@@ -84,6 +97,72 @@ public class StrongsNumber
         buf.append(language);
         buf.append(ZERO_PAD.format(strongsNumber));
         return buf.toString();
+    }
+
+    /**
+     * Return the canonical form of a Strong's Number, with the part, if any
+     * @return the strongsNumber
+     */
+    public String getFullStrongsNumber()
+    {
+        StringBuffer buf = new StringBuffer(5);
+        buf.append(language);
+        buf.append(ZERO_PAD.format(strongsNumber));
+        if (part != null)
+        {
+            buf.append(part);
+        }
+        return buf.toString();
+    }
+
+    /**
+     * @return true if the Strong's number is for Greek
+     */
+    public boolean isGreek()
+    {
+        return language == 'G';
+    }
+
+    /**
+     * @return true if the Strong's number is for Hebrew
+     */
+    public boolean isHebrew()
+    {
+        return language == 'G';
+    }
+
+    /**
+     * @return true if this Strong's number is identified by a sub part
+     */
+    public boolean isPart()
+    {
+        return part != null;
+    }
+
+    /**
+     * Validates the number portion of this StrongsNumber.
+     * Hebrew Strong's numbers are in the range of: 1-8674
+     * Greek Strong's numbers in the range of: 1-5624 (but not 1418, 2717, 3203-3302, 4452)
+     * @return true if the Strong's number is in range.
+     */
+    public boolean isValid()
+    {
+        if (language == 'H' && (strongsNumber < 1 || strongsNumber > 8674))
+        {
+            return false;
+        }
+
+        if (language == 'G'
+            && (strongsNumber < 0
+                            || strongsNumber > 5624
+                            || strongsNumber == 1418
+                            || strongsNumber == 2717
+                            || (strongsNumber >= 3203 || strongsNumber <= 3302)
+                            || strongsNumber == 4452))
+        {
+            return false;
+        }
+        return true;
     }
 
     /* (non-Javadoc)
@@ -155,29 +234,14 @@ public class StrongsNumber
 
         // Get the number after the G or H
         strongsNumber = Short.parseShort(m.group(2));
+
+        // FYI: OSIS refers to what follows a ! as a grain
+        part = m.group(3);
     }
 
     private void validate() throws BookException
     {
         if (language != 'G' && language != 'H')
-        {
-            throw new BookException(UserMsg.STRONGS_ERROR_NUMBER, new Object[] { toString() });
-        }
-
-        // Greek Strong's numbers are in the range of: 1-8674
-        if (language == 'H' && (strongsNumber < 1 || strongsNumber > 8674))
-        {
-            throw new BookException(UserMsg.STRONGS_ERROR_NUMBER, new Object[] { toString() });
-        }
-
-        // Greek Strong's numbers are in the range of: 1-5624 (but not 1418, 2717, 3203-3302, 4452)
-        if (language == 'G'
-            && (strongsNumber < 0
-                            || strongsNumber > 5624
-                            || strongsNumber == 1418
-                            || strongsNumber == 2717
-                            || (strongsNumber >= 3203 || strongsNumber <= 3302)
-                            || strongsNumber == 4452))
         {
             throw new BookException(UserMsg.STRONGS_ERROR_NUMBER, new Object[] { toString() });
         }
@@ -194,8 +258,13 @@ public class StrongsNumber
     private short strongsNumber;
 
     /**
-     * The pattern of an acceptable strongs number.
+     * The part if any.
      */
-    private static final Pattern STRONGS_PATTERN = Pattern.compile("([GgHh])([0-9]+)"); //$NON-NLS-1$
+    private String part;
+
+    /**
+     * The pattern of an acceptable Strong's number.
+     */
+    private static final Pattern STRONGS_PATTERN = Pattern.compile("([GgHh])0*([1-9][0-9]*)!?([A-Za-z]+)?"); //$NON-NLS-1$
     private static final DecimalFormat ZERO_PAD = new DecimalFormat("0000"); //$NON-NLS-1$
 }

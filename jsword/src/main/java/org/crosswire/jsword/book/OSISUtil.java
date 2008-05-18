@@ -115,7 +115,7 @@ public final class OSISUtil
     public static final String HI_UNDERLINE = "underline"; //$NON-NLS-1$
 
     /**
-     * Constant for rendering uppercase text
+     * Constant for rendering upper case text
      */
     public static final String HI_X_CAPS = "x-caps"; //$NON-NLS-1$
 
@@ -704,35 +704,17 @@ public final class OSISUtil
             String attr = ele.getAttributeValue(OSISUtil.ATTRIBUTE_W_LEMMA);
             if (attr != null)
             {
-                if (buffer.length() > 0)
+                Matcher matcher = strongsNumberPattern.matcher(attr);
+                while (matcher.find())
                 {
-                    buffer.append(' ');
+                    String strongsNum = matcher.group(1);
+                    if (buffer.length() > 0)
+                    {
+                        buffer.append(' ');
+                    }
+                    buffer.append(strongsNum);
                 }
-
-                buffer.append(attr);
             }
-        }
-
-        String lemmas = buffer.toString();
-
-        // Clear out the buffer for re-use
-        int len = buffer.length();
-        if (len > 0)
-        {
-            buffer.delete(0, len);
-        }
-
-        Matcher matcher = strongsNumberPattern.matcher(lemmas);
-        while (matcher.find())
-        {
-            String strongType = matcher.group(1);
-            String strongsNum = matcher.group(2);
-            if (buffer.length() > 0)
-            {
-                buffer.append(' ');
-            }
-            buffer.append(strongType);
-            buffer.append(strongsNum);
         }
 
         return buffer.toString().trim();
@@ -1204,6 +1186,6 @@ public final class OSISUtil
         }
     }
 
-    private static String strongsNumber = "strong:([GH])0*([0-9]+)"; //$NON-NLS-1$
+    private static String strongsNumber = "strong:([GgHh][0-9]+!?[A-Za-z]*)"; //$NON-NLS-1$
     private static Pattern strongsNumberPattern = Pattern.compile(strongsNumber);
 }

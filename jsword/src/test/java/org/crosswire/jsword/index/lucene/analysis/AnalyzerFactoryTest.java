@@ -59,18 +59,16 @@ public class AnalyzerFactoryTest extends TestCase
      */
     public void testCreateAnalyzer()
     {
-        Analyzer myAnalyzer = AnalyzerFactory.getInstance().createAnalyzer(""); //$NON-NLS-1$
+        Analyzer myAnalyzer = AnalyzerFactory.getInstance().createAnalyzer(null);
         assertTrue(myAnalyzer!=null);
         
         myAnalyzer = AnalyzerFactory.getInstance().createAnalyzer(null);
-        assertTrue(myAnalyzer!=null);
-        myAnalyzer = AnalyzerFactory.getInstance().createAnalyzer("Unknown"); //$NON-NLS-1$
         assertTrue(myAnalyzer!=null);
     }
 
     public void testEngStemming() throws ParseException
     {
-        AbstractAnalyzer myAnalyzer = new EnglishLuceneAnalyzer();
+        AbstractBookAnalyzer myAnalyzer = new EnglishLuceneAnalyzer();
         
         QueryParser parser = new QueryParser(field, myAnalyzer);
         
@@ -105,7 +103,7 @@ public class AnalyzerFactoryTest extends TestCase
 
         System.out.println(query.toString());
     }
-    
+/*    
     public void testLatin1Language() throws ParseException {
         Analyzer myAnalyzer = AnalyzerFactory.getInstance().createAnalyzer("Latin"); //$NON-NLS-1$
         
@@ -124,6 +122,6 @@ public class AnalyzerFactoryTest extends TestCase
         
 
     }
-    
+*/
     protected static final String field = "content"; //$NON-NLS-1$
 }

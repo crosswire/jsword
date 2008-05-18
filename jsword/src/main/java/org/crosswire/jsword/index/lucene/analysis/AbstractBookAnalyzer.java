@@ -25,6 +25,7 @@ import java.util.Set;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.StopFilter;
+import org.crosswire.jsword.book.Book;
 
 /**
  * Base class for Analyzers. 
@@ -34,14 +35,37 @@ import org.apache.lucene.analysis.StopFilter;
  *      The copyright to this program is held by it's authors.
  * @author sijo cherian [sijocherian at yahoo dot com]
  */
-public abstract class AbstractAnalyzer extends Analyzer
+public abstract class AbstractBookAnalyzer extends Analyzer
 {
 
-    public AbstractAnalyzer()
+    public AbstractBookAnalyzer()
     {
+        this(null);
+    }
+
+    public AbstractBookAnalyzer(Book book)
+    {
+        this.book = book;
         doStopWords = false;
         doStemming = true;
         naturalLanguage = null;
+    }
+
+    /**
+     * The book for which analysis is being performed.
+     * @param newBook
+     */
+    public void setBook(Book newBook)
+    {
+        book = newBook;
+    }
+
+    /**
+     * @return the book for which analysis is being performed.
+     */
+    public Book getBook()
+    {
+        return book;
     }
 
     public void setDoStopWords(boolean doIt)
@@ -74,9 +98,14 @@ public abstract class AbstractAnalyzer extends Analyzer
         return naturalLanguage;
     }
 
+    /**
+     * The book against which analysis is performed.
+     */
+    protected Book    book;
+
     protected Set     stopSet;
 
-    // for turning on/off stopword removal during analysis
+    // for turning on/off stop word removal during analysis
     protected boolean doStopWords;
 
     // for turning on/off stemming

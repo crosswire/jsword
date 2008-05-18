@@ -36,7 +36,7 @@ import org.apache.lucene.analysis.de.GermanStemFilter;
  *      The copyright to this program is held by it's authors.
  * @author Sijo Cherian [sijocherian at yahoo dot com]
  */
-public class GermanLuceneAnalyzer extends AbstractAnalyzer
+public class GermanLuceneAnalyzer extends AbstractBookAnalyzer
 {
 
     public TokenStream tokenStream(String fieldName, Reader reader)

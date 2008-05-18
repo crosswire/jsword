@@ -43,7 +43,7 @@ import org.apache.lucene.analysis.TokenStream;
  *      The copyright to this program is held by it's authors.
  * @author Sijo Cherian [sijocherian at yahoo dot com]
  */
-public class SimpleLuceneAnalyzer extends AbstractAnalyzer
+public class SimpleLuceneAnalyzer extends AbstractBookAnalyzer
 {
 
     public SimpleLuceneAnalyzer()

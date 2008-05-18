@@ -19,7 +19,7 @@
  *
  * ID: $Id:LuceneIndex.java 984 2006-01-23 14:18:33 -0500 (Mon, 23 Jan 2006) dmsmith $
  */
-package org.crosswire.jsword.index.lucene;
+package org.crosswire.jsword.index.lucene.analysis;
 
 import java.io.Reader;
 
@@ -27,10 +27,14 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.PerFieldAnalyzerWrapper;
 import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.analysis.TokenStream;
-import org.crosswire.jsword.index.lucene.analysis.AnalyzerFactory;
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.index.lucene.IndexMetadata;
+import org.crosswire.jsword.index.lucene.LuceneIndex;
 
 /**
  * A specialized analyzer for Books that analyzes different fields differently.
+ * This is book specific since it is possible that each book has specialized search requirements.
+ * 
  * Uses AnalyzerFactory for InstalledIndexVersion > 1.1
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
@@ -39,12 +43,7 @@ import org.crosswire.jsword.index.lucene.analysis.AnalyzerFactory;
 public class LuceneAnalyzer extends Analyzer
 {
 
-    public LuceneAnalyzer()
-    {
-        this(AnalyzerFactory.DEFAULT_ID);
-    }
-
-    public LuceneAnalyzer(String naturalLanguageID)
+    public LuceneAnalyzer(Book book)
     {
         // The default analysis
         analyzer = new PerFieldAnalyzerWrapper(new SimpleAnalyzer());
@@ -53,7 +52,7 @@ public class LuceneAnalyzer extends Analyzer
         {
             // Content is analyzed using natural language analyzer
             // (stemming, stopword etc)
-            Analyzer myNaturalLanguageAnalyzer = AnalyzerFactory.getInstance().createAnalyzer(naturalLanguageID);
+            Analyzer myNaturalLanguageAnalyzer = AnalyzerFactory.getInstance().createAnalyzer(book);
             analyzer.addAnalyzer(LuceneIndex.FIELD_BODY, myNaturalLanguageAnalyzer);
         }
 

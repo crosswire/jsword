@@ -56,6 +56,7 @@ import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.index.AbstractIndex;
 import org.crosswire.jsword.index.IndexStatus;
+import org.crosswire.jsword.index.lucene.analysis.LuceneAnalyzer;
 import org.crosswire.jsword.index.search.SearchModifier;
 import org.crosswire.jsword.passage.AbstractPassage;
 import org.crosswire.jsword.passage.Key;
@@ -74,6 +75,39 @@ import org.jdom.Element;
  */
 public class LuceneIndex extends AbstractIndex implements Activatable
 {
+    /* The following fields are named the same as Sword in the hopes of
+     * sharing indexes.
+     */
+    /**
+     * The Lucene field for the osisID
+     */
+    public static final String FIELD_KEY = "key"; //$NON-NLS-1$
+
+    /**
+     * The Lucene field for the text contents
+     */
+    public static final String FIELD_BODY = "content"; //$NON-NLS-1$
+
+    /**
+     * The Lucene field for the strong numbers
+     */
+    public static final String FIELD_STRONG = "strong"; //$NON-NLS-1$
+
+    /**
+     * The Lucene field for headings
+     */
+    public static final String FIELD_HEADING = "heading"; //$NON-NLS-1$
+
+    /**
+     * The Lucene field for cross references
+     */
+    public static final String FIELD_XREF = "xref"; //$NON-NLS-1$
+
+    /**
+     * The Lucene field for the notes
+     */
+    public static final String FIELD_NOTE = "note"; //$NON-NLS-1$
+
     /**
      * Read an existing index and use it.
      * @throws BookException If we fail to read the index files
@@ -119,8 +153,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
 
         IndexStatus finalStatus = IndexStatus.UNDONE;
 
-        String bookLang = book.getLanguage().getName();
-        Analyzer analyzer = new LuceneAnalyzer(bookLang);
+        Analyzer analyzer = new LuceneAnalyzer(book);
 
         List errors = new ArrayList();
         File tempPath = new File(path + '.' + IndexStatus.CREATING.toString());
@@ -207,8 +240,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
         {
             try
             {
-                String bookLang = book.getLanguage().getName();
-                Analyzer analyzer = new LuceneAnalyzer(bookLang);
+                Analyzer analyzer = new LuceneAnalyzer(book);
 
                 QueryParser parser = new QueryParser(LuceneIndex.FIELD_BODY, analyzer);
                 parser.setAllowLeadingWildcard(true);
@@ -478,39 +510,6 @@ public class LuceneIndex extends AbstractIndex implements Activatable
      * The log stream
      */
     private static final Logger log = Logger.getLogger(LuceneIndex.class);
-
-    /* The following fields are named the same as Sword in the hopes of
-     * sharing indexes.
-     */
-    /**
-     * The Lucene field for the osisID
-     */
-    protected static final String FIELD_KEY = "key"; //$NON-NLS-1$
-
-    /**
-     * The Lucene field for the text contents
-     */
-    protected static final String FIELD_BODY = "content"; //$NON-NLS-1$
-
-    /**
-     * The Lucene field for the strong numbers
-     */
-    protected static final String FIELD_STRONG = "strong"; //$NON-NLS-1$
-
-    /**
-     * The Lucene field for headings
-     */
-    protected static final String FIELD_HEADING = "heading"; //$NON-NLS-1$
-
-    /**
-     * The Lucene field for cross references
-     */
-    protected static final String FIELD_XREF = "xref"; //$NON-NLS-1$
-
-    /**
-     * The Lucene field for the notes
-     */
-    protected static final String FIELD_NOTE = "note"; //$NON-NLS-1$
 
     /**
      * The Book that we are indexing

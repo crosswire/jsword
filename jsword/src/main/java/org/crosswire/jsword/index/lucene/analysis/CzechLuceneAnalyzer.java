@@ -35,7 +35,7 @@ import org.apache.lucene.analysis.cz.CzechAnalyzer;
  *      The copyright to this program is held by it's authors.
  * @author Sijo Cherian [sijocherian at yahoo dot com]
  */
-public class CzechLuceneAnalyzer extends AbstractAnalyzer
+public class CzechLuceneAnalyzer extends AbstractBookAnalyzer
 {
     public CzechLuceneAnalyzer()
     {

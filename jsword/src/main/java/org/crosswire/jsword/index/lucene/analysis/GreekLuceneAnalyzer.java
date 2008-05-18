@@ -35,7 +35,7 @@ import org.apache.lucene.analysis.el.GreekCharsets;
  *      The copyright to this program is held by it's authors.
  * @author Sijo Cherian [sijocherian at yahoo dot com]
  */
-public class GreekLuceneAnalyzer extends AbstractAnalyzer
+public class GreekLuceneAnalyzer extends AbstractBookAnalyzer
 {
     public GreekLuceneAnalyzer()
     {

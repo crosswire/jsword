@@ -38,7 +38,7 @@ import org.apache.lucene.analysis.cn.ChineseAnalyzer;
  *      The copyright to this program is held by it's authors.
  * @author Sijo Cherian [sijocherian at yahoo dot com]
  */
-public class ChineseLuceneAnalyzer extends AbstractAnalyzer
+public class ChineseLuceneAnalyzer extends AbstractBookAnalyzer
 {
     public ChineseLuceneAnalyzer()
     {

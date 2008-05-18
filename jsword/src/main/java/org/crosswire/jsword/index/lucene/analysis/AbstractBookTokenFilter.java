@@ -14,42 +14,63 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007
+ * Copyright: 2008
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
+ * ID: $Id: org.eclipse.jdt.ui.prefs 1178 2006-11-06 12:48:02Z dmsmith $
  */
-package org.crosswire.jsword.index.lucene;
+package org.crosswire.jsword.index.lucene.analysis;
 
-import java.io.IOException;
-
-import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
+import org.crosswire.jsword.book.Book;
 
 /**
- * A KeyFilter normalizes OSISrefs.
+ * An AbstractBookTokenFilter ties a Lucene TokenFilter to a Book.
  *
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class XRefFilter extends TokenFilter
+public class AbstractBookTokenFilter extends TokenFilter
 {
+
     /**
-     * Construct filtering <i>in</i>.
+     * Create a TokenFilter not tied to a Book.
+     * 
+     * @param input the token stream to filter
      */
-    public XRefFilter(TokenStream in)
+    public AbstractBookTokenFilter(TokenStream input)
     {
-      super(in);
+        this(null, input);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.lucene.analysis.TokenStream#next()
+    /**
+     * Create a TokenFilter tied to a Book.
+     * 
+     * @param input the token stream to filter
      */
-    public final Token next() throws IOException
+    public AbstractBookTokenFilter(Book book, TokenStream input)
     {
-        // TODO(DMS): actually normalize
-        return input.next();
+        super(input);
+        this.book = book;
     }
+
+    /**
+     * @return the book
+     */
+    public Book getBook()
+    {
+        return book;
+    }
+
+    /**
+     * @param book the book to set
+     */
+    public void setBook(Book book)
+    {
+        this.book = book;
+    }
+
+    private Book book;
 }

@@ -64,7 +64,7 @@ import org.apache.lucene.analysis.standard.StandardTokenizer;
  *      The copyright to this program is held by it's authors.
  * @author sijo cherian [sijocherian at yahoo dot com]
  */
-public class ConfigurableSnowballAnalyzer extends AbstractAnalyzer
+public class ConfigurableSnowballAnalyzer extends AbstractBookAnalyzer
 {
     public ConfigurableSnowballAnalyzer()
     {

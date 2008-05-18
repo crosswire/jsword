@@ -19,28 +19,48 @@
  *
  * ID: $Id$
  */
-package org.crosswire.jsword.index.lucene;
+package org.crosswire.jsword.index.lucene.analysis;
 
-import java.io.Reader;
+import java.io.IOException;
 
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.KeywordTokenizer;
+import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
+import org.crosswire.jsword.book.Book;
 
 /**
- * A specialized analyzer that normalizes Strong's Numbers.
+ * A KeyFilter normalizes Key.
  *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class KeyAnalyzer extends Analyzer
+public class KeyFilter extends AbstractBookTokenFilter
 {
-    /* (non-Javadoc)
-     * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String, java.io.Reader)
+    /**
+     * Construct a KeyFilter not tied to a Book.
+     * @param in the input TokenStream
      */
-    public TokenStream tokenStream(String fieldName, Reader reader)
+    public KeyFilter(TokenStream in)
     {
-        return new KeyFilter(new KeywordTokenizer(reader));
+      this(null, in);
+    }
+
+    /**
+     * Construct a KeyFilter tied to a Book.
+     * @param book the book to which this TokenFilter is tied.
+     * @param in the input TokenStream
+     */
+    public KeyFilter(Book book, TokenStream in)
+    {
+      super(book, in);
+    }
+
+    /* (non-Javadoc)
+     * @see org.apache.lucene.analysis.TokenStream#next(org.apache.lucene.analysis.Token)
+     */
+    public final Token next(Token result) throws IOException
+    {
+        // TODO(DMS): actually normalize
+        return input.next(result);
     }
 }

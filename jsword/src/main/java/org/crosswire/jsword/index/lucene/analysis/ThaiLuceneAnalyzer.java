@@ -36,7 +36,7 @@ import org.apache.lucene.analysis.th.ThaiWordFilter;
  *      The copyright to this program is held by it's authors.
  * @author sijo cherian [sijocherian at yahoo dot com]
  */
-public class ThaiLuceneAnalyzer extends AbstractAnalyzer
+public class ThaiLuceneAnalyzer extends AbstractBookAnalyzer
 {
 
     public TokenStream tokenStream(String fieldName, Reader reader)
