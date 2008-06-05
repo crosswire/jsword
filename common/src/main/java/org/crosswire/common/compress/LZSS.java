@@ -119,11 +119,11 @@ public class LZSS extends AbstractCompressor
         // Start with a clean tree.
         initTree();
 
-        // code_buf[0] works as eight flags.  A "1" represents that the
+        // codeBuff[0] works as eight flags.  A "1" represents that the
         // unit is an unencoded letter (1 byte), and a "0" represents
         // that the next unit is a <position,length> pair (2 bytes).
         //
-        // code_buf[1..16] stores eight units of code.  Since the best
+        // codeBuff[1..16] stores eight units of code.  Since the best
         // we can do is store eight <position,length> pairs, at most 16
         // bytes are needed to store this.
         //
@@ -161,7 +161,7 @@ public class LZSS extends AbstractCompressor
         len = input.read(ringBuffer, r, MAX_STORE_LENGTH);
 
         // Make sure there is something to be compressed.
-        if (len == 0)
+        if (len <= 0)
         {
             return out;
         }
@@ -192,7 +192,7 @@ public class LZSS extends AbstractCompressor
             // Is it cheaper to store this as a single character?  If so, make it so.
             if (matchLength < THRESHOLD)
             {
-                // Send one character.  Remember that code_buf[0] is the
+                // Send one character.  Remember that codeBuff[0] is the
                 // set of flags for the next eight items.
                 matchLength = 1;
                 codeBuff[0] |= mask;
@@ -218,8 +218,8 @@ public class LZSS extends AbstractCompressor
             // output.
             if (mask == 0)
             {
-                // code_buf is the buffer of characters to be output.
-                // code_buf_pos is the number of characters it contains.
+                // codeBuff is the buffer of characters to be output.
+                // codeBufPos is the number of characters it contains.
                 out.write(codeBuff, 0, codeBufPos);
 
                 // Reset for next buffer...
@@ -258,7 +258,7 @@ public class LZSS extends AbstractCompressor
                 // into the back end so that when you're looking at characters
                 // at the back end of the buffer, you can index ahead (beyond
                 // the normal end of the buffer) and see the characters
-                // that are at the front end of the buffer wihtout having
+                // that are at the front end of the buffer without having
                 // to adjust the index.
                 //
                 // That is...
@@ -473,7 +473,7 @@ public class LZSS extends AbstractCompressor
         // For i = 0 to 255, rightSon[RING_SIZE + i + 1] is the root of the tree
         // for strings that begin with the character i.  This is why
         // the right child array is larger than the left child array.
-        // These are also initialzied to a "not used" state.
+        // These are also initialized to a "not used" state.
         //
         // Note that there are 256 of these, one for each of the possible
         // 256 characters.
@@ -489,8 +489,8 @@ public class LZSS extends AbstractCompressor
      * It loads the match position and length member variables
      * for the longest match.
      *
-     * <p>The string to be inserted is identified by the parameter Pos,
-     * A full MAX_STORE_LENGTH bytes are inserted.  So, ringBuffer[Pos ... Pos+MAX_STORE_LENGTH-1]
+     * <p>The string to be inserted is identified by the parameter pos,
+     * A full MAX_STORE_LENGTH bytes are inserted.  So, ringBuffer[pos ... pos+MAX_STORE_LENGTH-1]
      * are inserted.</p>
      *
      * <p>If the matched length is exactly MAX_STORE_LENGTH, then an old node is removed
@@ -498,7 +498,7 @@ public class LZSS extends AbstractCompressor
      * sooner).</p>
      *
      * @param pos plays a dual role.  It is used as both a position
-     * in the ring buffer and also as a tree node.  ringBuffer[Pos]
+     * in the ring buffer and also as a tree node.  ringBuffer[pos]
      * defines a character that is used to identify a tree node.
      */
     private void insertNode(short pos)

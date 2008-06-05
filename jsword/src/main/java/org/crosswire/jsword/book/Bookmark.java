@@ -31,7 +31,7 @@ import org.crosswire.jsword.index.search.SearchRequest;
  * What is viewed regarding a book set is either a SearchRequest
  * or a key lookup request.
  *
- * @see gnu.gpl.License for license details.
+ * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
