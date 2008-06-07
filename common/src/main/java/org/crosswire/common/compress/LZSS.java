@@ -25,6 +25,7 @@ package org.crosswire.common.compress;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 
 
 /**
@@ -96,6 +97,10 @@ public class LZSS extends AbstractCompressor
     public LZSS(InputStream input)
     {
         super(input);
+        ringBuffer = new byte[RING_SIZE + MAX_STORE_LENGTH - 1];
+        dad = new short[RING_SIZE + 1];
+        leftSon = new short[RING_SIZE + 1];
+        rightSon = new short[RING_SIZE + 257];
     }
 
     /*
@@ -107,11 +112,11 @@ public class LZSS extends AbstractCompressor
         out = new ByteArrayOutputStream(BUF_SIZE);
 
         short i;                        // an iterator
-        int r;                          // node number in the binary tree
+        short r;                        // node number in the binary tree
         short s;                        // position in the ring buffer
-        int len;                        // len of initial string
-        int lastMatchLength;            // length of last match
-        int codeBufPos;                 // position in the output buffer
+        short len;                      // length of initial string
+        short lastMatchLength;          // length of last match
+        short codeBufPos;               // position in the output buffer
         byte[] codeBuff = new byte[17]; // the output buffer
         byte mask;                      // bit mask for byte 0 of out input
         byte c;                         // character read from string
@@ -149,22 +154,21 @@ public class LZSS extends AbstractCompressor
         // Note that the last MAX_STORE_LENGTH bytes of the ring buffer are not filled.
         // This is because those MAX_STORE_LENGTH bytes will be filled in immediately
         // with bytes from the input stream.
-        for (i = 0; i < r; i++)
-        {
-            ringBuffer[i] = ' ';
-        }
+        Arrays.fill(ringBuffer, 0, r, (byte)' ');
 
         // Read MAX_STORE_LENGTH bytes into the last MAX_STORE_LENGTH bytes of the ring buffer.
         //
-        // This function loads the buffer with X characters and returns
+        // This function loads the buffer with up to MAX_STORE_LENGTH characters and returns
         // the actual amount loaded.
-        len = input.read(ringBuffer, r, MAX_STORE_LENGTH);
+        int readResult = input.read(ringBuffer, r, MAX_STORE_LENGTH);
 
         // Make sure there is something to be compressed.
-        if (len <= 0)
+        if (readResult <= 0)
         {
             return out;
         }
+
+        len = (short) readResult;
 
         // Insert the MAX_STORE_LENGTH strings, each of which begins with one or more
         // 'space' characters.  Note the order in which these strings
@@ -176,8 +180,8 @@ public class LZSS extends AbstractCompressor
         }
 
         // Finally, insert the whole string just read.  The
-        // member variables match_length and match_position are set.
-        insertNode((short) r);
+        // member variables matchLength and matchPosition are set.
+        insertNode(r);
 
         // Now that we're preloaded, continue till done.
         do
@@ -206,12 +210,12 @@ public class LZSS extends AbstractCompressor
                 // The next 16 bits need to contain the position (12 bits)
                 // and the length (4 bits).
                 codeBuff[codeBufPos++] = (byte) matchPosition;
-                codeBuff[codeBufPos++] = (byte) (((matchPosition >> 4) & 0xf0) | (matchLength - THRESHOLD));
+                codeBuff[codeBufPos++] = (byte) (((matchPosition >> 4) & 0xF0) | (matchLength - THRESHOLD));
             }
 
             // Shift the mask one bit to the left so that it will be ready
             // to store the new bit.
-            mask = (byte) (mask << 1);
+            mask <<= 1;
 
             // If the mask is now 0, then we know that we have a full set
             // of flags and items in the code buffer.  These need to be
@@ -235,11 +239,12 @@ public class LZSS extends AbstractCompressor
             {
 
                 // Get next character...
-                c = (byte) input.read();
-                if (c == -1)
+                readResult = input.read();
+                if (readResult == -1)
                 {
                     break;
                 }
+                c = (byte) readResult;
 
                 // Delete "old strings"
                 deleteNode(s);
@@ -277,23 +282,23 @@ public class LZSS extends AbstractCompressor
 
                 // Increment the position, and wrap around when we're at
                 // the end.  Note that this relies on RING_SIZE being a power of 2.
-                s = (short) ((s + 1) & (RING_SIZE - 1));
-                r = (short) ((r + 1) & (RING_SIZE - 1));
+                s = (short) ((s + 1) & RING_WRAP);
+                r = (short) ((r + 1) & RING_WRAP);
 
                 // Register the string that is found in
                 // ringBuffer[r..r + MAX_STORE_LENGTH - 1].
-                insertNode((short) r);
+                insertNode(r);
             }
 
-            // If we didn't quit because we hit the last_match_length,
+            // If we didn't quit because we hit the lastMatchLength,
             // then we must have quit because we ran out of characters
             // to process.
             while (i++ < lastMatchLength)
             {
                 deleteNode(s);
 
-                s = (short) ((s + 1) & (RING_SIZE - 1));
-                r = (short) ((r + 1) & (RING_SIZE - 1));
+                s = (short) ((s + 1) & RING_WRAP);
+                r = (short) ((r + 1) & RING_WRAP);
 
                 // Note that len hitting 0 is the key that causes the
                 // do...while() to terminate.  This is the only place
@@ -303,7 +308,7 @@ public class LZSS extends AbstractCompressor
                 // short strings).
                 if (--len != 0)
                 {
-                    insertNode((short) r);       /* buffer may not be empty. */
+                    insertNode(r);       /* buffer may not be empty. */
                 }
             }
 
@@ -349,17 +354,13 @@ public class LZSS extends AbstractCompressor
         // Note that the last MAX_STORE_LENGTH bytes of the ring buffer are not filled.
         // r is a nodeNumber
         int r = RING_SIZE - MAX_STORE_LENGTH;
-        for (int i = 0; i < r; i++)
-        {
-            ringBuffer[i] = ' ';
-        }
+        Arrays.fill(ringBuffer, 0, r, (byte)' ');
 
         flags = 0;
         int flagCount = 0;                     // which flag we're on
 
         while (true)
         {
-
             // If there are more bits of interest in this flag, then
             // shift that next interesting bit into the 1's position.
             //
@@ -372,12 +373,13 @@ public class LZSS extends AbstractCompressor
             else
             {
                 // Next byte must be a flag.
-                flags = (byte) input.read();
-
-                if (flags == -1)
+                int readResult = input.read();
+                if (readResult == -1)
                 {
                     break;
                 }
+
+                flags = (byte) (readResult & 0xFF);
 
                 // Set the flag counter.  While at first it might appear
                 // that this should be an 8 since there are 8 bits in the
@@ -399,25 +401,13 @@ public class LZSS extends AbstractCompressor
 
                 // Add to buffer, and increment to next spot. Wrap at end.
                 ringBuffer[r] = c[0];
-                r = (short) ((r + 1) & (RING_SIZE - 1));
+                r = (short) ((r + 1) & RING_WRAP);
             }
             else
             {
                 // Otherwise, we know that the next two bytes are a
                 // <position,length> pair.  The position is in 12 bits and
                 // the length is in 4 bits.
-
-                // Original code:
-                //  if ((i = getc(infile)) == EOF)
-                //      break;
-                //  if ((j = getc(infile)) == EOF)
-                //      break;
-                //  i |= ((j & 0xf0) << 4);
-                //  j = (j & 0x0f) + THRESHOLD;
-                //
-                // I've modified this to only make one input call, and
-                // have changed the variable names to something more
-                // obvious.
                 if (input.read(c, 0, 2) != 2)
                 {
                     break;
@@ -427,19 +417,19 @@ public class LZSS extends AbstractCompressor
                 // length in the ringBuffer.  Note that the length is always at least
                 // THRESHOLD, which is why we're able to get a length
                 // of 18 out of only 4 bits.
-                int pos = (short) (c[0] | ((c[1] & 0xF0) << 4));
-                int len = (short) ((c[1] & 0x0F) + THRESHOLD);
+                short pos = (short) ((c[0] & 0xFF) | ((c[1] & 0xF0) << 4));
+                short len = (short) ((c[1] & 0x0F) + THRESHOLD);
 
                 // There are now "len" characters at position "pos" in
                 // the ring buffer that can be pulled out.  Note that
                 // len is never more than MAX_STORE_LENGTH.
                 for (int k = 0; k < len; k++)
                 {
-                    c[k] = ringBuffer[(pos + k) & (RING_SIZE - 1)];
+                    c[k] = ringBuffer[(pos + k) & RING_WRAP];
 
                     // Add to buffer, and increment to next spot. Wrap at end.
                     ringBuffer[r] = c[k];
-                    r = (short) ((r + 1) & (RING_SIZE - 1));
+                    r = ((r + 1) & RING_WRAP);
                 }
 
                 // Add the "len" characters to the output stream.
@@ -463,13 +453,6 @@ public class LZSS extends AbstractCompressor
         // For the same range of i, dad[i] is the parent of node i.
         // These are initialized to a known value that can represent
         // a "not used" state.
-        for (int i = 0; i < RING_SIZE; i++)
-        {
-            leftSon[i] = NOT_USED;
-            rightSon[i] = NOT_USED;
-            dad[i] = NOT_USED;
-        }
-
         // For i = 0 to 255, rightSon[RING_SIZE + i + 1] is the root of the tree
         // for strings that begin with the character i.  This is why
         // the right child array is larger than the left child array.
@@ -477,11 +460,9 @@ public class LZSS extends AbstractCompressor
         //
         // Note that there are 256 of these, one for each of the possible
         // 256 characters.
-        for (int i = RING_SIZE + 1; i <= (RING_SIZE + 256); i++)
-        {
-            rightSon[i] = NOT_USED;
-        }
-
+        Arrays.fill(dad, 0, dad.length, NOT_USED);
+        Arrays.fill(leftSon, 0, leftSon.length, NOT_USED);
+        Arrays.fill(rightSon, 0, rightSon.length, NOT_USED);
     }
 
     /**
@@ -503,8 +484,7 @@ public class LZSS extends AbstractCompressor
      */
     private void insertNode(short pos)
     {
-        assert pos >= 0;
-        assert pos < RING_SIZE;
+        assert pos >= 0 && pos < RING_SIZE;
 
         int cmp = 1;
         short key = pos;
@@ -512,7 +492,8 @@ public class LZSS extends AbstractCompressor
         // The last 256 entries in rightSon contain the root nodes for
         // strings that begin with a letter.  Get an index for the
         // first letter in this string.
-        short p = (short) (RING_SIZE + 1 + ringBuffer[key]);
+        short p = (short) (RING_SIZE + 1 + (ringBuffer[key] & 0xFF));
+        assert p > RING_SIZE;
 
         // Set the left and right tree nodes for this position to "not used."
         leftSon[pos] = NOT_USED;
@@ -555,7 +536,7 @@ public class LZSS extends AbstractCompressor
             short i = 0;
             for (i = 1; i < MAX_STORE_LENGTH; i++)
             {
-                cmp = ringBuffer[key + i] - ringBuffer[p + i];
+                cmp = (ringBuffer[key + i] & 0xFF) - (ringBuffer[p + i] & 0xFF);
                 if (cmp != 0)
                 {
                     break;
@@ -601,8 +582,7 @@ public class LZSS extends AbstractCompressor
      */
     private void deleteNode(short node)
     {
-        assert node >= 0;
-        assert node < (RING_SIZE + 1);
+        assert node >= 0 && node < (RING_SIZE + 1);
 
         short q;
 
@@ -655,107 +635,19 @@ public class LZSS extends AbstractCompressor
         dad[node] = NOT_USED;
     }
 
-//    /**
-//     * Fill a buffer with some bytes from the input stream.
-//     *
-//     * @param ibuf the buffer to fill
-//     * @param start the position in the buffer to start filling
-//     * @param len the number of bytes to get
-//     * @return the number of bytes added to the buffer
-//     */
-//    private int getBytes(byte[] ibuf, int start, int len)
-//    {
-//        int slen = input.length;
-//        int realLen = slen - readOffset > len ? len : slen - readOffset;
-//        if (realLen > 0)
-//        {
-//            System.arraycopy(input, readOffset, ibuf, start, realLen);
-//            readOffset += realLen;
-//        }
-//
-//        return realLen;
-//    }
-//
-//    /**
-//     * Fill a buffer with some bytes from the input stream.
-//     *
-//     * @param ibuf the buffer to fill
-//     * @param len the number of bytes to get
-//     * @return the number of bytes added to the buffer
-//     */
-//    private int getBytes(byte[] ibuf, int len)
-//    {
-//        int slen = input.length;
-//        int realLen = slen - readOffset > len ? len : slen - readOffset;
-//        if (realLen > 0)
-//        {
-//            System.arraycopy(input, readOffset, ibuf, 0, realLen);
-//            readOffset += realLen;
-//        }
-//
-//        return realLen;
-//    }
-//
-//    /**
-//     * Return whether there are more bytes to read.
-//     *
-//     * @return whether there are more bytes to read.
-//     */
-//    private boolean hasMoreToRead()
-//    {
-//        return readOffset < input.length;
-//    }
-//
-//    /**
-//     * Get the next byte from the stream.
-//     *
-//     * @return the the next byte from the stream
-//     */
-//    private byte getByte()
-//    {
-//        return input[readOffset++];
-//    }
-
-//    private int sendBytes(byte[] ibuf, int len)
-//    {
-//        // Make sure the buffer is more than big enough
-//        bos = ensureCapacity(bos, writeOffset, len);
-//
-//        // Copy the new contents
-//        System.arraycopy(ibuf, 0, bos, writeOffset, len);
-//        writeOffset += len;
-//
-//        return len;
-//    }
-//
-//    private byte[] ensureCapacity(byte[] inputBuf, int currentPosition, int length)
-//    {
-//        // Make sure the buffer is more than big enough
-//        int biggerLength = currentPosition + length + writeBufferSizeIncrement;
-//        if (inputBuf != null)
-//        {
-//            int inputLength = inputBuf.length;
-//            if ((currentPosition + length) > inputLength)
-//            {
-//                byte[] biggerBuf = new byte[biggerLength];
-//                System.arraycopy(inputBuf, 0, biggerBuf, 0, inputLength);
-//                for (int i = inputLength; i < biggerLength; i++)
-//                {
-//                    biggerBuf[i] = '\0';
-//                }
-//                return biggerBuf;
-//            }
-//            return inputBuf;
-//        }
-//
-//        return new byte[length + writeBufferSizeIncrement];
-//    }
-
     /**
      * This is the size of the ring buffer.  It is set to 4K.
      * It is important to note that a position within the ring buffer requires 12 bits.
      */
-    private static final int RING_SIZE = 4096;
+    private static final short RING_SIZE = 4096;
+
+    /**
+     * This is used to determine the next position in the ring buffer, from 0 to RING_SIZE - 1.
+     * The idiom s = (s + 1) & RING_WRAP; will ensure this.
+     * This only works if RING_SIZE is a power of 2.
+     * Note this is slightly faster than the equivalent: s = (s + 1) % RING_SIZE;
+     */
+    private static final short RING_WRAP = RING_SIZE - 1;
 
     /**
      * This is the maximum length of a character sequence that can be taken from the ring buffer.
@@ -778,7 +670,7 @@ public class LZSS extends AbstractCompressor
     /**
      * Used to mark nodes as not used.
      */
-    private static final int NOT_USED = RING_SIZE;
+    private static final short NOT_USED = RING_SIZE;
 
     /**
      * A text buffer.  It contains "nodes" of
@@ -796,7 +688,7 @@ public class LZSS extends AbstractCompressor
      * <p>The ring buffer contain RING_SIZE bytes, with an additional MAX_STORE_LENGTH - 1 bytes
      * to facilitate string comparison.</p>
      */
-    private byte[] ringBuffer = new byte[RING_SIZE + MAX_STORE_LENGTH - 1];
+    private byte[] ringBuffer;
 
     /**
      * The position in the ring buffer. Used by insertNode.
@@ -806,7 +698,7 @@ public class LZSS extends AbstractCompressor
     /**
      * The number of characters in the ring buffer at matchPosition that match a given string. Used by insertNode.
      */
-    private int matchLength;
+    private short matchLength;
 
     /**
      * leftSon, rightSon, and dad are the Japanese way of referring to
@@ -827,9 +719,9 @@ public class LZSS extends AbstractCompressor
      * integers (for 32-bit applications).  Therefore, these are
      * defined as "shorts."</p>
      */
-    private short[] dad = new short[RING_SIZE + 1];
-    private short[] leftSon = new short[RING_SIZE + 1];
-    private short[] rightSon = new short[RING_SIZE + 257];
+    private short[] dad;
+    private short[] leftSon;
+    private short[] rightSon;
 
     /**
      * The output stream containing the result.
