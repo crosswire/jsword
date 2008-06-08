@@ -70,3 +70,7 @@ parsable
 gregorian
 downloaded
 sidebar
+stopword
+lucene
+acrostic
+compressor
