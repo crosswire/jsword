@@ -671,7 +671,15 @@ public final class OSISUtil
             }
             else if (data instanceof Text)
             {
-                buffer.append(((Text) data).getText());
+                // make sure that adjacent text elements are separated by whitespace
+                // TODO(dms): verify that the xml parser does not split words containing entities.
+                int lastIndex = buffer.length() - 1;
+                String text = ((Text) data).getText();
+                if (lastIndex >= 0 && !Character.isWhitespace(buffer.charAt(lastIndex)) && !Character.isWhitespace(text.charAt(0)))
+                {
+                    buffer.append(' ');
+                }
+                buffer.append(text);
             }
         }
 
@@ -826,7 +834,15 @@ public final class OSISUtil
             }
             else if (data instanceof Text)
             {
-                buffer.append(((Text) data).getText());
+                // make sure that adjacent text elements are separated by whitespace
+                // TODO(dms): verify that the xml parser does not split words containing entities.
+                int lastIndex = buffer.length() - 1;
+                String text = ((Text) data).getText();
+                if (lastIndex >= 0 && !Character.isWhitespace(buffer.charAt(lastIndex)) && !Character.isWhitespace(text.charAt(0)))
+                {
+                    buffer.append(' ');
+                }
+                buffer.append(text);
             }
         }
     }
