@@ -99,6 +99,10 @@ public abstract class AbstractReflectedChoice implements Choice
         }
         setFullPath(path.toString());
 
+        external = Boolean.valueOf(option.getAttributeValue("external")).booleanValue(); //$NON-NLS-1$
+
+        restart = Boolean.valueOf(option.getAttributeValue("restart")).booleanValue(); //$NON-NLS-1$
+
         type = option.getAttributeValue("type"); //$NON-NLS-1$
 
         // The important 3 things saying what we update and how we describe ourselves
@@ -226,7 +230,7 @@ public abstract class AbstractReflectedChoice implements Choice
      */
     public boolean isSaveable()
     {
-        return true;
+        return !external;
     }
 
     /* (non-Javadoc)
@@ -250,7 +254,7 @@ public abstract class AbstractReflectedChoice implements Choice
      */
     public boolean requiresRestart()
     {
-        return false;
+        return restart;
     }
 
     /* (non-Javadoc)
@@ -366,6 +370,16 @@ public abstract class AbstractReflectedChoice implements Choice
      * Whether this choice should be ignored altogether.
      */
     private boolean ignored;
+
+    /**
+     * Whether this choice is managed externally, via setXXX and getXXX.
+     */
+    private boolean external;
+
+    /**
+     * Whether this choice is requires a restart to be seen.
+     */
+    private boolean restart;
 
     /**
      * The log stream

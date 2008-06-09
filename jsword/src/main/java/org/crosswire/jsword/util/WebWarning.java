@@ -95,6 +95,7 @@ public class WebWarning
     }
 
     /**
+     * From configuration set the state.
      * @param newShown Whether this WebWarning should be shown.
      */
     public static void setWarningShown(boolean newShown)
