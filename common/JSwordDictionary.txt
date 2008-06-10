@@ -70,6 +70,10 @@ parsable
 gregorian
 downloaded
 sidebar
+idiom
+unencoded
+redistributable
+preloaded
 stopword
 lucene
 acrostic

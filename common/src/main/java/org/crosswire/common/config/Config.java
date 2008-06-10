@@ -319,7 +319,9 @@ public class Config
             String key = (String) iter.next();
             String value = prop.getProperty(key);
 
-            if (value != null)
+            Choice model = getChoice(key);
+            // Only if a value was stored and it should be stored then we use it.
+            if (value != null && model.isSaveable())
             {
                 local.put(key, value);
             }
