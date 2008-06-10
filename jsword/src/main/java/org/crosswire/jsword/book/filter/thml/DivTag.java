@@ -57,7 +57,7 @@ public class DivTag extends AbstractTag
             String classAttr = attrs.getValue("class"); //$NON-NLS-1$
             if (classAttr != null)
             {
-                seg.setAttribute(OSISUtil.OSIS_ATTR_SUBTYPE, OSISUtil.VARIANT_CLASS + classAttr);
+                seg.setAttribute(OSISUtil.OSIS_ATTR_SUBTYPE, OSISUtil.VARIANT_CLASS + '-' + classAttr);
             }
 
             if (ele != null)
