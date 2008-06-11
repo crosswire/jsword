@@ -324,8 +324,18 @@ public class SwordBookPath
             return;
         }
 
+        // now trying the new project dir
         oldPath = new File(CWProject.instance().getWritableProjectDir().getPath());
 
+        if (oldPath.isDirectory())
+        {
+            migrateBookDir(oldPath, swordBookPath);
+            return;
+        }
+
+
+        // Finally, it might be ~/.sword
+        oldPath = new File(OSType.DEFAULT.getUserAreaFolder(DIR_SWORD_CONF, DIR_SWORD_CONF_ALT).getPath());
         if (oldPath.isDirectory())
         {
             migrateBookDir(oldPath, swordBookPath);

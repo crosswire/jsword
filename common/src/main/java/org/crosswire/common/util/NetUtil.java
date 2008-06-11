@@ -401,39 +401,33 @@ public final class NetUtil
         String extra = anExtra;
         try
         {
+            StringBuffer path = new StringBuffer(orig.getPath());
+            char lastChar = path.charAt(path.length() - 1);
             char firstChar = extra.charAt(0);
             if (isSeparator(firstChar))
             {
-                extra = extra.substring(1);
-            }
-
-            if (orig.getScheme().equals(PROTOCOL_FILE))
-            {
-                String file = orig.toString();
-                char lastChar = file.charAt(file.length() - 1);
                 if (isSeparator(lastChar))
                 {
-                    return new URI(orig.getScheme(),
-                                   orig.getUserInfo(),
-                                   orig.getHost(),
-                                   orig.getPort(),
-                                   orig.getPath() + extra,
-                                   orig.getQuery(),
-                                   orig.getFragment());
+                    path.append(extra.substring(1));
                 }
-                return new URI(orig.getScheme(),
-                               orig.getUserInfo(),
-                               orig.getHost(),
-                               orig.getPort(),
-                               orig.getPath() + File.separator + extra,
-                               orig.getQuery(),
-                               orig.getFragment());
+                else
+                {
+                    path.append(extra);
+                }
             }
+            else {
+                if (!isSeparator(lastChar))
+                {
+                    path.append(SEPARATOR);
+                }
+                path.append(extra);
+            }
+
             return new URI(orig.getScheme(),
                            orig.getUserInfo(),
                            orig.getHost(),
                            orig.getPort(),
-                           orig.getPath() + SEPARATOR + extra,
+                           path.toString(),
                            orig.getQuery(),
                            orig.getFragment());
         }

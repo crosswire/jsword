@@ -34,7 +34,7 @@ import java.net.URI;
  */
 public abstract class OSType implements Serializable
 {
-    public static final OSType MAC = new OSType("Mac OS X") //$NON-NLS-1$
+    public static final OSType MAC = new OSType("Mac") //$NON-NLS-1$
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.util.OSType#getUserArea()
@@ -62,7 +62,7 @@ public abstract class OSType implements Serializable
         private static final long serialVersionUID = -1575982665011980783L;
     };
 
-    public static final OSType WIN32 = new OSType("Windows") //$NON-NLS-1$
+    public static final OSType WIN32 = new OSType("Win") //$NON-NLS-1$
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.util.OSType#getUserArea()
@@ -184,7 +184,7 @@ public abstract class OSType implements Serializable
         for (int i = 0; i < VALUES.length; i++)
         {
             OSType o = VALUES[i];
-            if (o.name.startsWith(name))
+            if (name.startsWith(o.name))
             {
                 return o;
             }
@@ -271,4 +271,9 @@ public abstract class OSType implements Serializable
      * The user's home directory.
      */
     private static URI userHome;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = -3196320305857293885L;
 }
