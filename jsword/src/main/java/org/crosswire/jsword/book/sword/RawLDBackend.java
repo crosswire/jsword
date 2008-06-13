@@ -343,6 +343,7 @@ public class RawLDBackend extends AbstractKeyBackend
         int total = getCardinality();
         int low = -1;
         int high = total;
+        int match = -1;
 
         while (high - low > 1)
         {
@@ -350,24 +351,29 @@ public class RawLDBackend extends AbstractKeyBackend
             int mid = (low + high) >>> 1;
 
             // Get the key for the item at "mid"
-            if (normalizeForSearch(getEntry(key, mid).getKey()).compareTo(target) < 0)
+            int cmp = normalizeForSearch(getEntry(key, mid).getKey()).compareTo(target);
+            if (cmp < 0)
             {
                 low = mid;
             }
-            else
+            else if (cmp > 0)
             {
                 high = mid;
             }
+            else
+            {
+                match = mid;
+                break;
+            }
         }
 
-        // At this point high is what we are what is the candidate.        
-        if (high < total &&  normalizeForSearch(getEntry(key, high).getKey()).compareTo(target) == 0)
+        // Do we have an exact match?
+        if (match >= 0)
         {
-            return high;
+            return match;
         }
 
         // Strong's Greek And Hebrew dictionaries have an introductory entry, so check it for a match.
-        // Get the key for the item at "mid"
         if (normalizeForSearch(getEntry(key, 0).getKey()).compareTo(target) == 0)
         {
             return 0;
