@@ -257,7 +257,16 @@ public class ZVerseBackend extends AbstractBackend
             // If the Bible does not contain the desired verse, return nothing.
             // Some Bibles have different versification, so the requested verse
             // may not exist.
-            return (temp != null && temp.length > 0);
+            if (temp == null || temp.length == 0)
+            {
+                return false;
+            }
+
+            // The data is little endian - extract the blockNum, verseStart and verseSize
+            int verseSize = SwordUtil.decodeLittleEndian16(temp, 8);
+
+            return (verseSize > 0);
+
         }
         catch (IOException e)
         {

@@ -47,7 +47,6 @@ import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.BookFilterIterator;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.BookSet;
-import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.basic.AbstractBookList;
 import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.book.install.Installer;
@@ -219,12 +218,12 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
      */
     public void install(Book book)
     {
-        // Is the book already installed? Then nothing to do.
-        if (Books.installed().getBook(book.getName()) != null)
-        {
-            return;
-        }
-
+//        // Is the book already installed? Then nothing to do.
+//        if (Books.installed().getBook(book.getName()) != null)
+//        {
+//            return;
+//        }
+//
         final SwordBookMetaData sbmd = (SwordBookMetaData) book.getBookMetaData();
 
         // So now we know what we want to install - all we need to do
@@ -396,6 +395,11 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                         if (internal.endsWith(SwordConstants.EXTENSION_CONF))
                         {
                             internal = internal.substring(0, internal.length() - 5);
+                        }
+                        else
+                        {
+                            log.error("Not a SWORD config file: " + internal); //$NON-NLS-1$
+                            continue;
                         }
 
                         if (internal.startsWith(SwordConstants.DIR_CONF + '/'))

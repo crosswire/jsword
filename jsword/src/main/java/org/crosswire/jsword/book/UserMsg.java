@@ -41,6 +41,9 @@ final class UserMsg extends MsgBase
     static final UserMsg GLOSSARIES = new UserMsg("BookCategory.Glossaries"); //$NON-NLS-1$
     static final UserMsg UNORTHODOX = new UserMsg("BookCategory.Unorthodox"); //$NON-NLS-1$
     static final UserMsg GENERAL = new UserMsg("BookCategory.General"); //$NON-NLS-1$
+    static final UserMsg ESSAYS = new UserMsg("BookCategory.Essays"); //$NON-NLS-1$
+    static final UserMsg IMAGES = new UserMsg("BookCategory.Images"); //$NON-NLS-1$
+    static final UserMsg MAPS = new UserMsg("BookCategory.Maps"); //$NON-NLS-1$
     static final UserMsg OTHER = new UserMsg("BookCategory.Other"); //$NON-NLS-1$
 
     /**

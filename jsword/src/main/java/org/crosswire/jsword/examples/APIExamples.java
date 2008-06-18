@@ -121,7 +121,7 @@ public class APIExamples
         if (BookCategory.BIBLE.equals(book.getBookCategory()))
         {
             key = book.getKey(reference);
-            key = ((Passage) key).trimVerses(maxKeyCount);
+            ((Passage) key).trimVerses(maxKeyCount);
         }
         else
         {
@@ -197,7 +197,7 @@ public class APIExamples
 
         System.out.println("The first Key in the default dictionary is " + first); //$NON-NLS-1$
 
-        BookData data = new BookData(dict, keys);
+        BookData data = new BookData(dict, first);
         System.out.println("And the text against that key is " + OSISUtil.getPlainText(data.getOsisFragment())); //$NON-NLS-1$
     }
 

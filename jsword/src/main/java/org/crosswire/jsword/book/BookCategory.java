@@ -45,17 +45,17 @@ public final class BookCategory implements Serializable, Comparable
     /**
      * Books that are Bibles
      */
-    public static final BookCategory BIBLE = new BookCategory("Bible", UserMsg.BIBLE); //$NON-NLS-1$
+    public static final BookCategory BIBLE = new BookCategory("Biblical Texts", UserMsg.BIBLE); //$NON-NLS-1$
 
     /**
      * Books that are Dictionaries
      */
-    public static final BookCategory DICTIONARY = new BookCategory("Dictionary", UserMsg.DICTIONARY); //$NON-NLS-1$
+    public static final BookCategory DICTIONARY = new BookCategory("Lexicons / Dictionaries", UserMsg.DICTIONARY); //$NON-NLS-1$
 
     /**
      * Books that are Commentaries
      */
-    public static final BookCategory COMMENTARY = new BookCategory("Commentary", UserMsg.COMMENTARY); //$NON-NLS-1$
+    public static final BookCategory COMMENTARY = new BookCategory("Commentaries", UserMsg.COMMENTARY); //$NON-NLS-1$
 
     /**
      * Books that are indexed by day. AKA, Daily Devotions
@@ -73,9 +73,24 @@ public final class BookCategory implements Serializable, Comparable
     public static final BookCategory QUESTIONABLE = new BookCategory("Cults / Unorthodox / Questionable Material", UserMsg.UNORTHODOX); //$NON-NLS-1$
 
     /**
-     * Books that are not any of the above
+     * Books that are just essays.
      */
-    public static final BookCategory GENERAL_BOOK = new BookCategory("General Books", UserMsg.GENERAL); //$NON-NLS-1$
+    public static final BookCategory ESSAYS = new BookCategory("Essays", UserMsg.ESSAYS); //$NON-NLS-1$
+
+    /**
+     * Books that are predominately images.
+     */
+    public static final BookCategory IMAGES = new BookCategory("Images", UserMsg.IMAGES); //$NON-NLS-1$
+
+    /**
+     * Books that are a collection of maps.
+     */
+    public static final BookCategory MAPS = new BookCategory("Maps", UserMsg.MAPS); //$NON-NLS-1$
+
+    /**
+     * Books that are just books.
+     */
+    public static final BookCategory GENERAL_BOOK = new BookCategory("Generic Books", UserMsg.GENERAL); //$NON-NLS-1$
 
     /**
      * Books that are not any of the above
@@ -195,6 +210,9 @@ public final class BookCategory implements Serializable, Comparable
         DAILY_DEVOTIONS,
         GLOSSARY,
         QUESTIONABLE,
+        ESSAYS,
+        IMAGES,
+        MAPS,
         GENERAL_BOOK,
         OTHER,
     };

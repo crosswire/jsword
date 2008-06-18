@@ -92,6 +92,21 @@ public class BibleScope
         }
     }
 
+    public static void report(Book b)
+    {
+        if (!b.getBookCategory().equals(BookCategory.BIBLE) && !b.getBookCategory().equals(BookCategory.COMMENTARY))
+        {
+            System.err.println(b.getInitials() + " is not a Bible or Commentary"); //$NON-NLS-1$
+            //System.exit(1);
+        }
+
+        BibleScope scope = new BibleScope(b);
+        BibleInfo.setFullBookName(false); // use short names
+        System.out.println('[' + b.getInitials() + ']');
+        System.out.println("InScope=" + scope.getInScope().getOsisRef()); //$NON-NLS-1$
+        System.out.println("OutScope=" + scope.getOutOfScope().getOsisRef()); //$NON-NLS-1$        
+    }
+
     private Book book;
 
     /**
@@ -122,17 +137,19 @@ public class BibleScope
             System.exit(1);
         }
 
-        if (!b.getBookCategory().equals(BookCategory.BIBLE))
-        {
-            System.err.println(b.getInitials() + " is not a Bible"); //$NON-NLS-1$
-            System.exit(1);
-        }
+        report(b);
 
-        BibleScope scope = new BibleScope(b);
-        BibleInfo.setFullBookName(false); // use short names
-        System.out.println("Scope of KJV versification for " + b.getInitials()); //$NON-NLS-1$
-        System.out.println("In scope     = " + scope.getInScope().getName()); //$NON-NLS-1$
-        System.out.println("Out of scope = " + scope.getOutOfScope().getName()); //$NON-NLS-1$
+//        List books = Books.installed().getBooks(BookFilters.getCommentaries());
+//        Iterator iter = books.iterator();
+//        while (iter.hasNext())
+//        {
+//            try {
+//                report((Book) iter.next());
+//            } catch (Exception e) {
+//                System.out.println("exception " + e.toString());
+//            }
+//            System.out.println();
+//        }
     }
 
     public static void usage()

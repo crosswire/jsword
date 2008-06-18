@@ -22,10 +22,6 @@
 package org.crosswire.jsword.book.sword;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.crosswire.common.util.Language;
@@ -33,56 +29,287 @@ import org.crosswire.jsword.book.BookCategory;
 
 
 /**
- * Constants for the keys in a SwordConfig file.
+ * Constants for the keys in a Sword Config file.
  * Taken from
  * http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout
  * now located at
  * http://www.crosswire.org/ucgi-bin/twiki/view/Swordapi/ConfFileLayout
- *
- * <p>Keys that might be available that we are ignoring for now:
- * <li>DistributionLicense: single value coded string, a ';' separated string of license attributes
- *     There are mis-spellings, etc. so there is a need for a distributionLicenseAdditionalInfo field. (Ugh!)
- *     See also SwordConstants.DISTIBUTION_LICENSE_STRINGS.
- *     <pre>
- *     // Returns the distributionLicense - this is a 'flag type' field - the value
- *     // will be the result of several constants ORed. See the
- *     // DISTRIBUTION_LICENSE* constants in SwordConstants. It appears some
- *     // versions do not stick to this convention, because of this, there is an
- *     // additional member distributionLicenseAdditionInfo, to store additional
- *     // information.
- *     private int distributionLicense;
- *     private String distributionLicenseAdditionalInfo = "";
- *     String licensesString = reader.getFirstValue("DistributionLicense");
- *     if (licensesString != null)
- *     {
- *         StringTokenizer tok = new StringTokenizer(licensesString, ";");
- *         while (tok.hasMoreTokens())
- *         {
- *             String distributionLicenseString = tok.nextToken().trim();
- *             int index = matchingIndex(SwordConstants.DISTIBUTION_LICENSE_STRINGS, distributionLicenseString, -1);
- *             if (index != -1)
- *             {
- *                 distributionLicense |= 1 << index;
- *             }
- *             else
- *             {
- *                 if (!distributionLicenseAdditionalInfo.equals(""))
- *                 {
- *                     distributionLicenseAdditionalInfo += "; ";
- *                 }
- *                 distributionLicenseAdditionalInfo += distributionLicenseString;
- *             }
- *         }
- *     }
- *     </pre>
+ * now located at
+ * http://www.crosswire.org/wiki/index.php/DevTools:Modules
  *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
- * @author DM Smith [dmsmith555 at yahoo dot com\
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class ConfigEntryType implements Serializable
 {
+    /**
+     * Constants for direction
+     */
+    public static final String DIRECTION_LTOR = "LtoR"; //$NON-NLS-1$
+    public static final String DIRECTION_RTOL = "RtoL"; //$NON-NLS-1$
+    public static final String DIRECTION_BIDI = "bidi"; //$NON-NLS-1$
+
+    public static final String[] BLOCK_TYPE_PICKS
+        = new String[]
+          {
+              "BOOK", //$NON-NLS-1$
+              "CHAPTER", //$NON-NLS-1$
+              "VERSE", //$NON-NLS-1$
+          };
+
+    public static final String[] BOOLEAN_PICKS
+        = new String[]
+          {
+              "true", //$NON-NLS-1$
+              "false", //$NON-NLS-1$
+          };
+
+    public static final String[] KEY_TYPE_PICKS
+        = new String[]
+          {
+              "TreeKey", //$NON-NLS-1$
+              "VerseKey", //$NON-NLS-1$
+          };
+
+    public static final String[] CATEGORY_PICKS
+        = new String[]
+          {
+              "Daily Devotional", //$NON-NLS-1$
+              "Glossaries", //$NON-NLS-1$
+              "Cults / Unorthodox / Questionable Material", //$NON-NLS-1$
+              "Essays", //$NON-NLS-1$
+              "Maps", //$NON-NLS-1$
+              "Images", //$NON-NLS-1$
+              "Biblical Texts", //$NON-NLS-1$
+              "Commentaries", //$NON-NLS-1$
+              "Lexicons / Dictionaries", //$NON-NLS-1$
+              "Generic Books", //$NON-NLS-1$
+          };
+
+    public static final String[] COMPRESS_TYPE_PICKS
+        = new String[]
+          {
+              "LZSS", //$NON-NLS-1$
+              "ZIP", //$NON-NLS-1$
+          };
+
+    public static final String[] DIRECTION_PICKS
+        = new String[]
+          {
+              DIRECTION_LTOR,
+              DIRECTION_RTOL,
+              DIRECTION_BIDI,
+          };
+
+    public static final String[] LICENSE_PICKS
+        = new String[]
+          {
+              "Public Domain", //$NON-NLS-1$
+              "Copyrighted", //$NON-NLS-1$
+              "Copyrighted; Free non-commercial distribution", //$NON-NLS-1$
+              "Copyrighted; Permission to distribute granted to CrossWire", //$NON-NLS-1$
+              "Copyrighted; Freely distributable", //$NON-NLS-1$
+              "Creative Commons: by-nc-nd", //$NON-NLS-1$
+              "Creative Commons: by-nc-sa", //$NON-NLS-1$
+              "Creative Commons: by-nc", //$NON-NLS-1$
+              "Creative Commons: by-nd", //$NON-NLS-1$
+              "Creative Commons: by-sa", //$NON-NLS-1$
+              "Creative Commons: by", //$NON-NLS-1$
+              "GFDL", //$NON-NLS-1$
+              "GPL", //$NON-NLS-1$
+          };
+
+    public static final String[] ENCODING_PICKS
+        = new String[]
+          {
+              "Latin-1", //$NON-NLS-1$
+              "UTF-8", //$NON-NLS-1$
+          };
+
+    public static final String[] GLOBAL_OPTION_FILTER_PICKS
+        = new String[]
+          {
+              "GBFStrongs", //$NON-NLS-1$
+              "GBFFootnotes", //$NON-NLS-1$
+              "GBFScripref", //$NON-NLS-1$
+              "GBFMorph", //$NON-NLS-1$
+              "GBFHeadings", //$NON-NLS-1$
+              "GBFRedLetterWords", //$NON-NLS-1$
+              "ThMLStrongs", //$NON-NLS-1$
+              "ThMLFootnotes", //$NON-NLS-1$
+              "ThMLScripref", //$NON-NLS-1$
+              "ThMLMorph", //$NON-NLS-1$
+              "ThMLHeadings", //$NON-NLS-1$
+              "ThMLVariants", //$NON-NLS-1$
+              "ThMLLemma", //$NON-NLS-1$
+              "UTF8Cantillation", //$NON-NLS-1$
+              "UTF8GreekAccents", //$NON-NLS-1$
+              "UTF8HebrewPoints", //$NON-NLS-1$
+              "OSISFootnotes", //$NON-NLS-1$
+              "OSISHeadings", //$NON-NLS-1$
+              "OSISLemma", //$NON-NLS-1$
+              "OSISMorph", //$NON-NLS-1$
+              "OSISRedLetterWords", //$NON-NLS-1$
+              "OSISRuby", //$NON-NLS-1$
+              "OSISScripref", //$NON-NLS-1$
+              "OSISStrongs", //$NON-NLS-1$
+          };
+
+    public static final String[] FEATURE_PICKS
+        = new String[]
+          {
+              "StrongsNumbers", //$NON-NLS-1$
+              "GreekDef", //$NON-NLS-1$
+              "HebrewDef", //$NON-NLS-1$
+              "GreekParse", //$NON-NLS-1$
+              "HebrewParse", //$NON-NLS-1$
+              "DailyDevotion", //$NON-NLS-1$
+              "Glossary", //$NON-NLS-1$
+              "Images", //$NON-NLS-1$
+          };
+
+    public static final String[] MOD_DRV_PICKS
+        = new String[]
+          {
+              "RawText", //$NON-NLS-1$
+              "zText", //$NON-NLS-1$
+              "RawCom", //$NON-NLS-1$
+              "RawCom4", //$NON-NLS-1$
+              "zCom", //$NON-NLS-1$
+              "HREFCom", //$NON-NLS-1$
+              "RawFiles", //$NON-NLS-1$
+              "RawLD", //$NON-NLS-1$
+              "RawLD4", //$NON-NLS-1$
+              "zLD", //$NON-NLS-1$
+              "RawGenBook", //$NON-NLS-1$
+          };
+
+    public static final String[] SOURCE_TYPE_PICKS
+        = new String[]
+          {
+              "Plaintext", //$NON-NLS-1$
+              "GBF", //$NON-NLS-1$
+              "ThML", //$NON-NLS-1$
+              "OSIS", //$NON-NLS-1$
+              "TEI", //$NON-NLS-1$
+          };
+
+    /**
+     * A ConfigEntryPickType is a ConfigEntryType that allows values from a pick list.
+     * Matching is expected to be case-sensitive, but data problems dictate a more flexible approach. 
+     * 
+     */
+    public static class ConfigEntryPickType extends ConfigEntryType
+    {
+        /**
+         * Simple ctor
+         */
+        public ConfigEntryPickType(String name, String[] picks)
+        {
+            this(name, picks, null);
+        }
+
+        /**
+         * Simple ctor
+         */
+        public ConfigEntryPickType(String name, String[] picks, Object defaultPick)
+        {
+            super(name, defaultPick);
+            choiceArray = picks;
+        }
+
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
+         */
+        protected boolean hasChoices()
+        {
+            return true;
+        }
+
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
+         */
+        public boolean isAllowed(String value)
+        {
+            for (int i = 0; i < choiceArray.length; i++)
+            {
+                if (choiceArray[i].equalsIgnoreCase(value))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.ConfigEntryType#filter(java.lang.String)
+         */
+        public String filter(String value)
+        {
+            // Do we have an exact match?
+            for (int i = 0; i < choiceArray.length; i++)
+            {
+                if (choiceArray[i].equals(value))
+                {
+                    return value;
+                }
+            }
+
+            // Do we have a case insensitive match?
+            for (int i = 0; i < choiceArray.length; i++)
+            {
+                if (choiceArray[i].equalsIgnoreCase(value))
+                {
+                    return choiceArray[i];
+                }
+            }
+
+            // No match at all!
+            return value;
+        }
+
+        /**
+         * The array of choices.
+         */
+        private final String[] choiceArray;
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = 5642668733730291463L;
+    }
+
+    /**
+     * Represents a ConfigEntryType that is not actually represented by the Sword Config file.
+     *
+     */
+    public static class ConfigEntrySyntheticType extends ConfigEntryType
+    {
+        /**
+         * Simple ctor
+         */
+        public ConfigEntrySyntheticType(String name)
+        {
+            super(name);
+        }
+
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.ConfigEntryType#isSynthetic()
+         */
+        public boolean isSynthetic()
+        {
+            return true;
+        }
+
+        /**
+         * Serialization ID
+         */
+        private static final long serialVersionUID = -2468890875139856087L;
+    }
+
     /**
      * Contains rtf that describes the book.
      */
@@ -113,7 +340,7 @@ public class ConfigEntryType implements Serializable
     /**
      * single value integer, unknown use, some indications that we ought to be using it
      */
-    public static final ConfigEntryType BLOCK_COUNT = new ConfigEntryType("BlockCount") //$NON-NLS-1$
+    public static final ConfigEntryType BLOCK_COUNT = new ConfigEntryType("BlockCount", new Integer(200)) //$NON-NLS-1$
     {
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
@@ -142,19 +369,9 @@ public class ConfigEntryType implements Serializable
             }
             catch (NumberFormatException e)
             {
-                return defaultValue;
+                return getDefault();
             }
         }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
-         */
-        public Object getDefault()
-        {
-            return defaultValue;
-        }
-
-        private Integer defaultValue = new Integer(200);
 
         /**
          * Comment for <code>serialVersionUID</code>
@@ -165,109 +382,27 @@ public class ConfigEntryType implements Serializable
     /**
      * The level at which compression is applied, BOOK, CHAPTER, or VERSE
      */
-    public static final ConfigEntryType BLOCK_TYPE = new ConfigEntryType("BlockType") //$NON-NLS-1$
-    {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
-         */
-        public boolean isAllowed(String value)
-        {
-            return choices.contains(filter(value));
-        }
+    public static final ConfigEntryType BLOCK_TYPE = new ConfigEntryPickType("BlockType", BLOCK_TYPE_PICKS, BLOCK_TYPE_PICKS[0]);//$NON-NLS-1$
 
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#filter(java.lang.String)
-         */
-        public String filter(String value)
-        {
-            return value.toUpperCase(Locale.ENGLISH);
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
-         */
-        protected boolean hasChoices()
-        {
-            return true;
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
-         */
-        public Object getDefault()
-        {
-            return "CHAPTER"; //$NON-NLS-1$
-        }
-
-        /**
-         * The set of choices.
-         */
-        private final Set choices = new HashSet(Arrays.asList(new String[]
-        {
-            "BOOK", //$NON-NLS-1$
-            "CHAPTER", //$NON-NLS-1$
-            "VERSE", //$NON-NLS-1$
-        }));
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3763101864299935031L;
-    };
+    /**
+     * The kind of key that a Generic Book uses.
+     */
+    public static final ConfigEntryType KEY_TYPE = new ConfigEntryPickType("KeyType", KEY_TYPE_PICKS, KEY_TYPE_PICKS[0]); //$NON-NLS-1$
 
     /**
      * The Category of the book. Used on the web to classify books into a tree.
      */
-    public static final ConfigEntryType CATEGORY = new ConfigEntryType("Category") //$NON-NLS-1$
+    public static final ConfigEntryType CATEGORY = new ConfigEntryPickType("Category", CATEGORY_PICKS, BookCategory.OTHER) //$NON-NLS-1$
     {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
-         */
-        public boolean isAllowed(String value)
-        {
-            return choices.contains(value);
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
-         */
-        protected boolean hasChoices()
-        {
-            return true;
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
-         */
-        public Object getDefault()
-        {
-            return BookCategory.OTHER;
-        }
-
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang.String)
          */
         public Object convert(String input)
         {
             return BookCategory.fromString(input);
         }
-
-        /**
-         * The set of choices.
-         */
-        private final Set choices = new HashSet(Arrays.asList(new String[]
-        {
-            "Daily Devotional", //$NON-NLS-1$
-            "Glossaries", //$NON-NLS-1$
-            "Cults / Unorthodox / Questionable Material", //$NON-NLS-1$
-            "Essays", //$NON-NLS-1$
-            // The following are not actually in the conf,
-            // but are deduced from other fields
-            "Bible", //$NON-NLS-1$
-            "Dictionary", //$NON-NLS-1$
-            "Commentary", //$NON-NLS-1$
-            "General Books", //$NON-NLS-1$
-        }));
 
         /**
          * Serialization ID
@@ -281,58 +416,12 @@ public class ConfigEntryType implements Serializable
      */
     public static final ConfigEntryType CIPHER_KEY = new ConfigEntryType("CipherKey"); //$NON-NLS-1$
 
+    
     /**
      * The type of compression in use. JSword does not support LZSS. While it is the default,
      * it is not used. At least so far.
      */
-    public static final ConfigEntryType COMPRESS_TYPE = new ConfigEntryType("CompressType") //$NON-NLS-1$
-    {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
-         */
-        public boolean isAllowed(String value)
-        {
-            return choices.contains(filter(value));
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#filter(java.lang.String)
-         */
-        public String filter(String value)
-        {
-            return value.toUpperCase(Locale.ENGLISH);
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
-         */
-        protected boolean hasChoices()
-        {
-            return true;
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
-         */
-        public Object getDefault()
-        {
-            return "LZSS"; //$NON-NLS-1$
-        }
-
-        /**
-         * The set of choices.
-         */
-        private final Set choices = new HashSet(Arrays.asList(new String[]
-        {
-            "LZSS", //$NON-NLS-1$
-            "ZIP", //$NON-NLS-1$
-        }));
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3256726182190920496L;
-    };
+    public static final ConfigEntryType COMPRESS_TYPE = new ConfigEntryPickType("CompressType", COMPRESS_TYPE_PICKS, COMPRESS_TYPE_PICKS[0]); //$NON-NLS-1$
 
     /**
      * Informational copyright notice.
@@ -520,50 +609,11 @@ public class ConfigEntryType implements Serializable
      * The layout direction of the text in the book. Hebrew, Arabic and Farsi RtoL. Most are 'LtoR'.
      * Some are 'bidi', bi-directional. E.g. hebrew-english glossary.
      */
-    public static final ConfigEntryType DIRECTION = new ConfigEntryType("Direction") //$NON-NLS-1$
-    {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
-         */
-        public boolean isAllowed(String value)
-        {
-            return choices.contains(value);
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
-         */
-        protected boolean hasChoices()
-        {
-            return true;
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
-         */
-        public Object getDefault()
-        {
-            return DIRECTION_LTOR;
-        }
-
-        /**
-         * The set of choices.
-         */
-        private final Set choices = new HashSet(Arrays.asList(new String[]
-        {
-            DIRECTION_LTOR,
-            DIRECTION_RTOL,
-            DIRECTION_BIDI,
-        }));
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3257283651765940536L;
-    };
+    public static final ConfigEntryType DIRECTION = new ConfigEntryPickType("Direction", DIRECTION_PICKS, DIRECTION_PICKS[0]); //$NON-NLS-1$
 
     /**
-     * single value integer, unknown use, some indications that we ought to be using it
+     * Display level is used by GenBooks to do auto expansion in the tree.
+     * A level of 2 indicates that the first two levels should be shown.
      */
     public static final ConfigEntryType DISPLAY_LEVEL = new ConfigEntryType("DisplayLevel") //$NON-NLS-1$
     {
@@ -607,48 +657,7 @@ public class ConfigEntryType implements Serializable
     /**
      * Copyright info. Informational only.
      */
-    public static final ConfigEntryType DISTRIBUTION_LICENSE = new ConfigEntryType("DistributionLicense") //$NON-NLS-1$
-    {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
-         */
-        public boolean isAllowed(String value)
-        {
-            return choices.contains(value);
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
-         */
-        protected boolean hasChoices()
-        {
-            return true;
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
-         */
-        public Object getDefault()
-        {
-            return "Public Domain"; //$NON-NLS-1$
-        }
-
-        /**
-         * The set of choices.
-         */
-        private final Set choices = new HashSet(Arrays.asList(new String[]
-        {
-            "Public Domain", //$NON-NLS-1$
-            "Copyrighted; Free non-commercial distribution", //$NON-NLS-1$
-            "Copyrighted; Permission to distribute granted to CrossWire", //$NON-NLS-1$
-            "Copyrighted", //$NON-NLS-1$
-        }));
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3257289110669505585L;
-    };
+    public static final ConfigEntryType DISTRIBUTION_LICENSE = new ConfigEntryPickType("DistributionLicense", LICENSE_PICKS, LICENSE_PICKS[0]); //$NON-NLS-1$
 
     /**
      * Copyright info. Informational only.
@@ -692,69 +701,14 @@ public class ConfigEntryType implements Serializable
     /**
      * The character encoding. Only Latin-1 and UTF-8 are supported.
      */
-    public static final ConfigEntryType ENCODING = new ConfigEntryType("Encoding") //$NON-NLS-1$
-    {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
-         */
-        public boolean isAllowed(String value)
-        {
-            return choices.contains(value);
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
-         */
-        protected boolean hasChoices()
-        {
-            return true;
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
-         */
-        public Object getDefault()
-        {
-            return "Latin-1"; //$NON-NLS-1$
-        }
-
-        /**
-         * The set of choices.
-         */
-        private final Set choices = new HashSet(Arrays.asList(new String[]
-        {
-            "Latin-1", //$NON-NLS-1$
-            "UTF-8", //$NON-NLS-1$
-        }));
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3761121643874891315L;
-    };
+    public static final ConfigEntryType ENCODING = new ConfigEntryPickType("Encoding", ENCODING_PICKS, ENCODING_PICKS[0]); //$NON-NLS-1$
 
     /**
      * Global Option Filters are the names of routines in Sword that can be used to display the data.
      * These are not used by JSword.
      */
-    public static final ConfigEntryType GLOBAL_OPTION_FILTER = new ConfigEntryType("GlobalOptionFilter") //$NON-NLS-1$
+    public static final ConfigEntryType GLOBAL_OPTION_FILTER = new ConfigEntryPickType("GlobalOptionFilter", GLOBAL_OPTION_FILTER_PICKS)//$NON-NLS-1$
     {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
-         */
-        public boolean isAllowed(String value)
-        {
-            return choices.contains(value);
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
-         */
-        protected boolean hasChoices()
-        {
-            return true;
-        }
-
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#mayRepeat()
          */
@@ -762,35 +716,6 @@ public class ConfigEntryType implements Serializable
         {
             return true;
         }
-
-        /**
-         * The set of choices.
-         */
-        private final Set choices = new HashSet(Arrays.asList(new String[]
-        {
-            "GBFStrongs", //$NON-NLS-1$
-            "GBFFootnotes", //$NON-NLS-1$
-            "GBFScripref", //$NON-NLS-1$
-            "GBFMorph", //$NON-NLS-1$
-            "GBFHeadings", //$NON-NLS-1$
-            "GBFRedLetterWords", //$NON-NLS-1$
-            "ThMLStrongs", //$NON-NLS-1$
-            "ThMLFootnotes", //$NON-NLS-1$
-            "ThMLScripref", //$NON-NLS-1$
-            "ThMLMorph", //$NON-NLS-1$
-            "ThMLHeadings", //$NON-NLS-1$
-            "ThMLVariants", //$NON-NLS-1$
-            "ThMLLemma", //$NON-NLS-1$
-            "UTF8Cantillation", //$NON-NLS-1$
-            "UTF8GreekAccents", //$NON-NLS-1$
-            "UTF8HebrewPoints", //$NON-NLS-1$
-            "OSISStrongs", //$NON-NLS-1$
-            "OSISFootnotes", //$NON-NLS-1$
-            "OSISScripref", //$NON-NLS-1$
-            "OSISMorph", //$NON-NLS-1$
-            "OSISHeadings", //$NON-NLS-1$
-            "OSISRedLetterWords", //$NON-NLS-1$
-        }));
 
         /**
          * Serialization ID
@@ -910,27 +835,9 @@ public class ConfigEntryType implements Serializable
 
     /**
      * A Feature describes a characteristic of the Book.
-     * TODO(DMS): use this to present the user with a pick list of books for Strong's,
-     * and Heb/Greek Def/Parse. We should also use DailyDevotional to map the days to a date.
      */
-    public static final ConfigEntryType FEATURE = new ConfigEntryType("Feature") //$NON-NLS-1$
+    public static final ConfigEntryType FEATURE = new ConfigEntryPickType("Feature", FEATURE_PICKS) //$NON-NLS-1$
     {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
-         */
-        public boolean isAllowed(String value)
-        {
-            return choices.contains(value);
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
-         */
-        protected boolean hasChoices()
-        {
-            return true;
-        }
-
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#mayRepeat()
          */
@@ -940,20 +847,6 @@ public class ConfigEntryType implements Serializable
         }
 
         /**
-         * The set of choices.
-         */
-        private final Set choices = new HashSet(Arrays.asList(new String[]
-        {
-            "StrongsNumbers", //$NON-NLS-1$
-            "GreekDef", //$NON-NLS-1$
-            "HebrewDef", //$NON-NLS-1$
-            "GreekParse", //$NON-NLS-1$
-            "HebrewParse", //$NON-NLS-1$
-            "DailyDevotion", //$NON-NLS-1$
-            "Glossary", //$NON-NLS-1$
-        }));
-
-        /**
          * Serialization ID
          */
         private static final long serialVersionUID = 3833181424051172401L;
@@ -961,24 +854,14 @@ public class ConfigEntryType implements Serializable
 
     /**
      * A recommended font to use for the book.
-     * TODO(DMS): Use this font.
-     * TODO(DMS): Allow a user to associate a font with a book.
      */
     public static final ConfigEntryType FONT = new ConfigEntryType("Font"); //$NON-NLS-1$
 
     /**
      * single value string, defaults to en, the language of the book
      */
-    public static final ConfigEntryType LANG = new ConfigEntryType("Lang") //$NON-NLS-1$
+    public static final ConfigEntryType LANG = new ConfigEntryType("Lang", new Language(null)) //$NON-NLS-1$
     {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
-         */
-        public Object getDefault()
-        {
-            return defaultLanguage;
-        }
-
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang.String)
          */
@@ -986,8 +869,6 @@ public class ConfigEntryType implements Serializable
         {
             return new Language(input);
         }
-
-        private Language defaultLanguage = new Language(null);
 
         /**
          * Serialization ID
@@ -1004,72 +885,18 @@ public class ConfigEntryType implements Serializable
     /**
      * This indicates how the book was stored.
      */
-    public static final ConfigEntryType MOD_DRV = new ConfigEntryType("ModDrv") //$NON-NLS-1$
-    {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
-         */
-        public boolean isAllowed(String value)
-        {
-            return choices.contains(value);
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
-         */
-        protected boolean hasChoices()
-        {
-            return true;
-        }
-
-        /**
-         * The set of choices.
-         */
-        private final Set choices = new HashSet(Arrays.asList(new String[]
-        {
-            "RawText",  //$NON-NLS-1$
-            "zText",  //$NON-NLS-1$
-            "RawCom", //$NON-NLS-1$
-            "RawCom4", //$NON-NLS-1$
-            "zCom", //$NON-NLS-1$
-            "HREFCom", //$NON-NLS-1$
-            "RawFiles", //$NON-NLS-1$
-            "RawLD", //$NON-NLS-1$
-            "RawLD4", //$NON-NLS-1$
-            "zLD", //$NON-NLS-1$
-            "RawGenBook", //$NON-NLS-1$
-        }));
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3617569405685412913L;
-    };
+    public static final ConfigEntryType MOD_DRV = new ConfigEntryPickType("ModDrv", MOD_DRV_PICKS); //$NON-NLS-1$
 
     /**
-     * single value version number, lowest sword c++ version that can read this book
-     * JSword does not use this value.
+     * single value version number, lowest sword c++ version that can read this
+     * book JSword does not use this value.
      */
-    public static final ConfigEntryType MINIMUM_VERSION = new ConfigEntryType("MinimumVersion") //$NON-NLS-1$
-    {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
-         */
-        public Object getDefault()
-        {
-            // This value is unimportant to JSword, but is to Sword
-            return "1.5.1a"; //$NON-NLS-1$
-        }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 4051044181290266680L;
-    };
-
+    public static final ConfigEntryType MINIMUM_VERSION = new ConfigEntryType("MinimumVersion", "1.5.1a"); //$NON-NLS-1$ //$NON-NLS-2$
 
     /**
-     * A list of prior "initials" for the current book. Informational only.
+     * A list of prior "initials" for the current book.
+     * TODO(dms): when a user installs a book with an obsoletes that matches an installed book,
+     *            offer the user the opportunity to delete the old book.
      */
     public static final ConfigEntryType OBSOLETES = new ConfigEntryType("Obsoletes") //$NON-NLS-1$
     {
@@ -1098,69 +925,7 @@ public class ConfigEntryType implements Serializable
     /**
      * This indicates the kind of markup used for the book.
      */
-    public static final ConfigEntryType SOURCE_TYPE = new ConfigEntryType("SourceType") //$NON-NLS-1$
-    {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
-         */
-        public boolean isAllowed(String value)
-        {
-            return choices.contains(filter(value));
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#filter(java.lang.String)
-         */
-        public String filter(String value)
-        {
-
-            for (int i = 0; i < choiceArray.length; i++)
-            {
-                if (choiceArray[i].equalsIgnoreCase(value))
-                {
-                    return choiceArray[i];
-                }
-            }
-            return value;
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
-         */
-        protected boolean hasChoices()
-        {
-            return true;
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
-         */
-        public Object getDefault()
-        {
-            return "Plaintext"; //$NON-NLS-1$
-        }
-
-        /**
-         * The array of choices.
-         */
-        private final String[] choiceArray = new String[]
-        {
-            "Plaintext", //$NON-NLS-1$
-            "GBF", //$NON-NLS-1$
-            "ThML", //$NON-NLS-1$
-            "OSIS", //$NON-NLS-1$
-            "TEI", //$NON-NLS-1$
-        };
-        /**
-         * The set of choices.
-         */
-        private final Set choices = new HashSet(Arrays.asList(choiceArray));
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3834025853343774774L;
-    };
+    public static final ConfigEntryType SOURCE_TYPE = new ConfigEntryPickType("SourceType", SOURCE_TYPE_PICKS, SOURCE_TYPE_PICKS[0]); //$NON-NLS-1$
 
     /**
      * The date that this version of the book was last updated. Informational only.
@@ -1205,7 +970,7 @@ public class ConfigEntryType implements Serializable
     /**
      * An informational string indicating the current version of the book.
      */
-    public static final ConfigEntryType VERSION = new ConfigEntryType("Version") //$NON-NLS-1$
+    public static final ConfigEntryType VERSION = new ConfigEntryType("Version", "1.0") //$NON-NLS-1$ //$NON-NLS-2$
     {
         public boolean isAllowed(String aValue)
         {
@@ -1221,14 +986,6 @@ public class ConfigEntryType implements Serializable
 
         }
 
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
-         */
-        public Object getDefault()
-        {
-            return "1.0"; //$NON-NLS-1$
-        }
-
         /**
          * Serialization ID
          */
@@ -1238,32 +995,14 @@ public class ConfigEntryType implements Serializable
     /**
      * When false do not show quotation marks for OSIS text that has <q> elements.
      */
-    public static final ConfigEntryType OSIS_Q_TO_TICK = new ConfigEntryType("OSISqToTick") //$NON-NLS-1$
+    public static final ConfigEntryType OSIS_Q_TO_TICK = new ConfigEntryPickType("OSISqToTick", BOOLEAN_PICKS, Boolean.TRUE) //$NON-NLS-1$
     {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang.String)
-         */
-        public boolean isAllowed(String aValue)
-        {
-            return aValue != null
-                && (aValue.equalsIgnoreCase("true") //$NON-NLS-1$
-                || aValue.equalsIgnoreCase("false")); //$NON-NLS-1$
-        }
-
         /* (non-Javadoc)
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang.String)
          */
         public Object convert(String input)
         {
             return Boolean.valueOf(input);
-        }
-
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
-         */
-        public Object getDefault()
-        {
-            return Boolean.TRUE;
         }
 
         /**
@@ -1276,43 +1015,13 @@ public class ConfigEntryType implements Serializable
      * single value version number, lowest sword c++ version that can read this book
      * JSword does not use this value.
      */
-    public static final ConfigEntryType OSIS_VERSION = new ConfigEntryType("OSISVersion") //$NON-NLS-1$
-    {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#getDefault()
-         */
-        public Object getDefault()
-        {
-            // This value is unimportant to JSword, but is to Sword
-            return "1.5.1a"; //$NON-NLS-1$
-        }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = -6381507058727637134L;
-    };
-
+    public static final ConfigEntryType OSIS_VERSION = new ConfigEntryType("OSISVersion", "2.0"); //$NON-NLS-1$ //$NON-NLS-2$
 
     /**
      * The abbreviated name by which this book is known. This is in the [] on the first non-blank
      * line of the conf. JSword uses this for display and access purposes.
      */
-    public static final ConfigEntryType INITIALS = new ConfigEntryType("Initials") //$NON-NLS-1$
-    {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#isSynthetic()
-         */
-        public boolean isSynthetic()
-        {
-            return true;
-        }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3257009838994108467L;
-    };
+    public static final ConfigEntryType INITIALS = new ConfigEntrySyntheticType("Initials"); //$NON-NLS-1$
 
     /**
      * A one line promo statement, required by Lockman for NASB
@@ -1327,47 +1036,28 @@ public class ConfigEntryType implements Serializable
     /**
      * The location of a collection of modules. JSword uses this to install and delete a module.
      */
-    public static final ConfigEntryType LIBRARY_URL = new ConfigEntryType("LibraryURL") //$NON-NLS-1$
-    {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#isSynthetic()
-         */
-        public boolean isSynthetic()
-        {
-            return true;
-        }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = -2468890875139856087L;
-    };
+    public static final ConfigEntryType LIBRARY_URL = new ConfigEntrySyntheticType("LibraryURL"); //$NON-NLS-1$
 
     /**
      * The location of the module. JSword uses this to access a module.
      */
-    public static final ConfigEntryType LOCATION_URL = new ConfigEntryType("LocationURL") //$NON-NLS-1$
-    {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.sword.ConfigEntryType#isSynthetic()
-         */
-        public boolean isSynthetic()
-        {
-            return true;
-        }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = -2468890875139856087L;
-    };
+    public static final ConfigEntryType LOCATION_URL = new ConfigEntrySyntheticType("LocationURL"); //$NON-NLS-1$
 
     /**
      * Simple ctor
      */
     protected ConfigEntryType(String name)
     {
+        this(name, null);
+    }
+
+    /**
+     * Simple ctor
+     */
+    protected ConfigEntryType(String name, Object defaultValue)
+    {
         this.name = name;
+        this.defaultValue = defaultValue;
     }
 
     /**
@@ -1465,7 +1155,7 @@ public class ConfigEntryType implements Serializable
      */
     public Object getDefault()
     {
-        return null;
+        return defaultValue;
     }
 
     /**
@@ -1490,6 +1180,7 @@ public class ConfigEntryType implements Serializable
             {
                 return ConfigEntryType.HISTORY;
             }
+
             for (int i = 0; i < VALUES.length; i++)
             {
                 ConfigEntryType o = VALUES[i];
@@ -1499,6 +1190,7 @@ public class ConfigEntryType implements Serializable
                 }
             }
         }
+
         // should not get here.
         // But there are typos in the keys in the book conf files
         // And this allows for the addition of new fields in
@@ -1541,17 +1233,15 @@ public class ConfigEntryType implements Serializable
     }
 
     /**
-     * Constants for direction
-     */
-    public static final String DIRECTION_LTOR = "LtoR"; //$NON-NLS-1$
-    public static final String DIRECTION_RTOL = "RtoL"; //$NON-NLS-1$
-    public static final String DIRECTION_BIDI = "bidi"; //$NON-NLS-1$
-
-    /**
      * The name of the ConfigEntryType
      */
     private String name;
 
+    /**
+     * The default for the ConfigEntryType
+     */
+    private Object defaultValue;
+    
     /**
      * Serialization ID
      */
@@ -1612,5 +1302,6 @@ public class ConfigEntryType implements Serializable
         SHORT_PROMO,
         SHORT_COPYRIGHT,
         LOCATION_URL,
+        KEY_TYPE,
     };
 }

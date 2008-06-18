@@ -88,19 +88,19 @@ public final class ConfigEntryTable
         BufferedReader in = null;
         try
         {
-            in = new BufferedReader(new InputStreamReader(new FileInputStream(file), ENCODING_LATIN1));
+            in = new BufferedReader(new InputStreamReader(new FileInputStream(file), ENCODING_UTF8));
             loadInitials(in);
             loadContents(in);
             in.close();
             in = null;
-            if (getValue(ConfigEntryType.ENCODING).equals(ENCODING_UTF8))
+            if (getValue(ConfigEntryType.ENCODING).equals(ENCODING_LATIN1))
             {
                 supported = true;
                 bookType = null;
                 questionable = false;
                 readahead = null;
                 table.clear();
-                in = new BufferedReader(new InputStreamReader(new FileInputStream(file), ENCODING_UTF8));
+                in = new BufferedReader(new InputStreamReader(new FileInputStream(file), ENCODING_LATIN1));
                 loadInitials(in);
                 loadContents(in);
                 in.close();
@@ -132,19 +132,19 @@ public final class ConfigEntryTable
         BufferedReader in = null;
         try
         {
-            in = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer), ENCODING_LATIN1));
+            in = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer), ENCODING_UTF8));
             loadInitials(in);
             loadContents(in);
             in.close();
             in = null;
-            if (getValue(ConfigEntryType.ENCODING).equals(ENCODING_UTF8))
+            if (getValue(ConfigEntryType.ENCODING).equals(ENCODING_LATIN1))
             {
                 supported = true;
                 bookType = null;
                 questionable = false;
                 readahead = null;
                 table.clear();
-                in = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer), ENCODING_UTF8));
+                in = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer), ENCODING_LATIN1));
                 loadInitials(in);
                 loadContents(in);
                 in.close();
@@ -386,11 +386,12 @@ public final class ConfigEntryTable
             // Create a configEntry so that the name is normalized.
             ConfigEntry configEntry = new ConfigEntry(internal, key);
 
-            ConfigEntry e = (ConfigEntry) table.get(configEntry.getType());
+            ConfigEntryType type = configEntry.getType();
+
+            ConfigEntry e = (ConfigEntry) table.get(type);
 
             if (e == null)
             {
-                ConfigEntryType type = configEntry.getType();
                 if (type == null)
                 {
                     log.warn("Ignoring unexpected entry in " + internal  + " of " + configEntry.getName()); //$NON-NLS-1$ //$NON-NLS-2$
@@ -401,7 +402,7 @@ public final class ConfigEntryTable
                 }
                 else
                 {
-                    table.put(configEntry.getType(), configEntry);
+                    table.put(type, configEntry);
                 }
             }
             else
@@ -416,7 +417,7 @@ public final class ConfigEntryTable
             // The config entry is History without the x.x.
             // We want to put x.x at the beginning of the string
             value = buf.toString();
-            if (ConfigEntryType.HISTORY.equals(configEntry.getType()))
+            if (ConfigEntryType.HISTORY.equals(type))
             {
                 int pos = key.indexOf('_');
                 value = key.substring(pos + 1) + ' ' + value;
@@ -440,7 +441,7 @@ public final class ConfigEntryTable
             if (line.charAt(0) == '[' && line.charAt(line.length() - 1) == ']')
             {
                 // The conf file contains a leading line of the form [KJV]
-                // This is the acronymn by which Sword refers to it.
+                // This is the acronym by which Sword refers to it.
                 initials = line.substring(1, line.length() - 1);
                 break;
             }
@@ -858,6 +859,7 @@ public final class ConfigEntryTable
         ConfigEntryType.VERSION,
         ConfigEntryType.HISTORY,
         ConfigEntryType.OBSOLETES,
+        ConfigEntryType.INSTALL_SIZE,
     };
 
     private static final ConfigEntryType[] LANG_INFO =
@@ -899,13 +901,17 @@ public final class ConfigEntryTable
         ConfigEntryType.MOD_DRV,
         ConfigEntryType.SOURCE_TYPE,
         ConfigEntryType.BLOCK_TYPE,
+        ConfigEntryType.BLOCK_COUNT,
         ConfigEntryType.COMPRESS_TYPE,
         ConfigEntryType.ENCODING,
         ConfigEntryType.MINIMUM_VERSION,
         ConfigEntryType.OSIS_VERSION,
+        ConfigEntryType.OSIS_Q_TO_TICK,
         ConfigEntryType.DIRECTION,
+        ConfigEntryType.KEY_TYPE,
+        ConfigEntryType.DISPLAY_LEVEL,
     };
-
+    
     private static final ConfigEntryType[] HIDDEN =
     {
         ConfigEntryType.CIPHER_KEY,

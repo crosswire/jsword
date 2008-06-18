@@ -1120,6 +1120,12 @@ public final class OSISUtil
             }
 
         }
+
+        // If there is any text that has not been consumed
+        if (text.length() > 0)
+        {
+            div.addContent(text.toString());
+        }
 //        div.addContent(text.toString());
 //        // If the fragment is already in a document, then use that.
 //        Document doc = div.getDocument();
