@@ -47,8 +47,33 @@ public class Translations
     {
         try
         {
+            loadSupportedTranslations();
+            Locale defaultLocale = Locale.getDefault();
             Properties props = ResourceUtil.getProperties(getClass());
-            translation = props.getProperty(TRANSLATION_KEY, DEFAULT_TRANSLATION);
+            translation = props.getProperty(TRANSLATION_KEY);
+            if (translation == null)
+            {
+                for (int i = 0; i < translations.length; i++)
+                {
+                    Locale supportedLocale = new Locale(translations[i]);
+                    if (supportedLocale.getLanguage().equals(defaultLocale.getLanguage()) &&
+                                    supportedLocale.getCountry().equals(defaultLocale.getCountry()))
+                    {
+                        translation = translations[i];
+                        return;
+                    }
+                }
+                for (int i = 0; i < translations.length; i++)
+                {
+                    Locale supportedLocale = new Locale(translations[i]);
+                    if (supportedLocale.getLanguage().equals(defaultLocale.getLanguage()))
+                    {
+                        translation = translations[i];
+                        return;
+                    }
+                }
+                translation = DEFAULT_TRANSLATION;
+            }
         }
         catch (IOException e)
         {
@@ -240,7 +265,7 @@ public class Translations
     /**
      * The translation that BibleDesktop should use.
      */
-    private String translation = DEFAULT_TRANSLATION;
+    private String translation;
 
     /**
      * List of available translations.
