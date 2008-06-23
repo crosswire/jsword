@@ -237,32 +237,40 @@ public class BookInstaller
             usage();
         }
 
-        System.err.print("BookExporter" + args[0]); //$NON-NLS-1$
-        for (int i = 1; i < args.length; i++)
+        System.err.print("BookInstaller"); //$NON-NLS-1$
+        for (int i = 0; i < args.length; i++)
         {
             System.err.print(' ');
             System.err.print(args[i]);
         }
+        System.err.print('\n');
 
         BookInstaller installer = new BookInstaller();
 
         String operation = args[0];
         if (operation.equalsIgnoreCase("uninstall")) //$NON-NLS-1$
         {
-            Book b = Books.installed().getBook(args[1]);
-            if (b == null)
+            if (args.length == 2)
             {
-                System.err.println("Book not found"); //$NON-NLS-1$
-                System.exit(1);
+                Book b = Books.installed().getBook(args[1]);
+                if (b == null)
+                {
+                    System.err.println("Book not found"); //$NON-NLS-1$
+                    System.exit(1);
+                }
+                try
+                {
+                    installer.deleteBook(b);
+                }
+                catch (BookException e)
+                {
+                    e.printStackTrace();
+                }
             }
-            try
+            else
             {
-                installer.deleteBook(b);
-            }
-            catch (BookException e)
-            {
-                e.printStackTrace();
-            }
+                usage();
+            }            
         }
         else if (operation.equalsIgnoreCase("sources")) //$NON-NLS-1$
         {
@@ -359,7 +367,7 @@ public class BookInstaller
         System.err.println("    sources                            List remote source repositories"); //$NON-NLS-1$
         System.err.println("    list                               List installed books"); //$NON-NLS-1$
         System.err.println("    list      repositoryName           List available books from a repository"); //$NON-NLS-1$
-        System.err.println("    refresh   repositoryName           Reload local cache for a repository"); //$NON-NLS-1$
+        System.err.println("    reload    repositoryName           Reload local cache for a repository"); //$NON-NLS-1$
         System.err.println("    install   repositoryName bookName  Install a book from a repository"); //$NON-NLS-1$
         System.exit(1);
     }
