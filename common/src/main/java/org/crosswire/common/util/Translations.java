@@ -48,30 +48,35 @@ public class Translations
         try
         {
             loadSupportedTranslations();
-            Locale defaultLocale = Locale.getDefault();
             Properties props = ResourceUtil.getProperties(getClass());
             translation = props.getProperty(TRANSLATION_KEY);
-            if (translation == null)
+            if (translation == null || translation.length() == 0)
             {
+                // check for a match against language and country
+                // This pertains to zh_TW and zh_CN
                 for (int i = 0; i < translations.length; i++)
                 {
                     Locale supportedLocale = new Locale(translations[i]);
-                    if (supportedLocale.getLanguage().equals(defaultLocale.getLanguage()) &&
-                                    supportedLocale.getCountry().equals(defaultLocale.getCountry()))
+                    if (supportedLocale.getLanguage().equals(originalLocale.getLanguage()) &&
+                                    supportedLocale.getCountry().equals(originalLocale.getCountry()))
                     {
                         translation = translations[i];
                         return;
                     }
                 }
+
+                // check for a match against just language
                 for (int i = 0; i < translations.length; i++)
                 {
                     Locale supportedLocale = new Locale(translations[i]);
-                    if (supportedLocale.getLanguage().equals(defaultLocale.getLanguage()))
+                    if (supportedLocale.getLanguage().equals(originalLocale.getLanguage()))
                     {
                         translation = translations[i];
                         return;
                     }
                 }
+
+                // if we don't have a matching locale then just use the default.
                 translation = DEFAULT_TRANSLATION;
             }
         }
@@ -99,6 +104,7 @@ public class Translations
     public Map getSupported()
     {
         loadSupportedTranslations();
+
         // I18N(DMS) Collate these according to the current locale, putting the current locale's locale first.
         Map names = new LinkedHashMap();
 
@@ -116,11 +122,20 @@ public class Translations
      */
     public Locale getCurrentLocale()
     {
+        // If there is no particular translation, then return the default locale.
+        if (translation == null || translation == DEFAULT_TRANSLATION)
+        {
+            return DEFAULT_LOCALE;
+        }
+
+        // If the local consists of a language and a country then use both
         if (translation.indexOf('_') != -1)
         {
             String[] locale = StringUtil.split(translation, '_');
             return new Locale(locale[0], locale[1]);
         }
+
+        // otherwise just use the country.
         return new Locale(translation);
     }
 
@@ -159,7 +174,11 @@ public class Translations
         {
             translation = found;
             Properties props = new Properties();
-            props.put(TRANSLATION_KEY, translation);
+            if (translation != DEFAULT_TRANSLATION)
+            {
+                props.put(TRANSLATION_KEY, translation);
+            }
+
             URI outputURI = CWProject.instance().getWritablePropertiesURI(getClass().getName());
             NetUtil.storeProperties(props, outputURI, "BibleDesktop UI Translation"); //$NON-NLS-1$
         }
@@ -263,6 +282,11 @@ public class Translations
     public static final String DEFAULT_TRANSLATION = "en"; //$NON-NLS-1$
 
     /**
+     * The default Locale, it the user has not chosen anything else.
+     */
+    public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
+
+    /**
      * The translation that BibleDesktop should use.
      */
     private String translation;
@@ -271,6 +295,11 @@ public class Translations
      * List of available translations.
      */
     private String[] translations;
+
+    /**
+     * The locale that the program starts with. This needs to precede "instance."
+     */
+    private static Locale originalLocale = Locale.getDefault();
 
     private static Translations instance = new Translations();
 
