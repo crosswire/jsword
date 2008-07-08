@@ -573,6 +573,11 @@ public final class PassageKeyFactory implements KeyFactory
     }
 
     /**
+     * The default type
+     */
+    private static PassageType defaultType = PassageType.SPEED;
+
+    /**
      * How we create Passages
      */
     private static KeyFactory keyf = new PassageKeyFactory();
@@ -582,8 +587,4 @@ public final class PassageKeyFactory implements KeyFactory
      */
     private static Passage whole;
 
-    /**
-     * The default type
-     */
-    private static PassageType defaultType = PassageType.SPEED;
 }
