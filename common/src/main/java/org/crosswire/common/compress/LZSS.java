@@ -154,7 +154,7 @@ public class LZSS extends AbstractCompressor
         // Note that the last MAX_STORE_LENGTH bytes of the ring buffer are not filled.
         // This is because those MAX_STORE_LENGTH bytes will be filled in immediately
         // with bytes from the input stream.
-        Arrays.fill(ringBuffer, 0, r, (byte)' ');
+        Arrays.fill(ringBuffer, 0, r, (byte) ' ');
 
         // Read MAX_STORE_LENGTH bytes into the last MAX_STORE_LENGTH bytes of the ring buffer.
         //
@@ -354,7 +354,7 @@ public class LZSS extends AbstractCompressor
         // Note that the last MAX_STORE_LENGTH bytes of the ring buffer are not filled.
         // r is a nodeNumber
         int r = RING_SIZE - MAX_STORE_LENGTH;
-        Arrays.fill(ringBuffer, 0, r, (byte)' ');
+        Arrays.fill(ringBuffer, 0, r, (byte) ' ');
 
         flags = 0;
         int flagCount = 0;                     // which flag we're on
@@ -429,7 +429,7 @@ public class LZSS extends AbstractCompressor
 
                     // Add to buffer, and increment to next spot. Wrap at end.
                     ringBuffer[r] = c[k];
-                    r = ((r + 1) & RING_WRAP);
+                    r = (r + 1) & RING_WRAP;
                 }
 
                 // Add the "len" characters to the output stream.

@@ -57,8 +57,8 @@ public class Translations
                 for (int i = 0; i < translations.length; i++)
                 {
                     Locale supportedLocale = new Locale(translations[i]);
-                    if (supportedLocale.getLanguage().equals(originalLocale.getLanguage()) &&
-                                    supportedLocale.getCountry().equals(originalLocale.getCountry()))
+                    if (supportedLocale.getLanguage().equals(originalLocale.getLanguage())
+                        && supportedLocale.getCountry().equals(originalLocale.getCountry()))
                     {
                         translation = translations[i];
                         return;
@@ -123,7 +123,7 @@ public class Translations
     public Locale getCurrentLocale()
     {
         // If there is no particular translation, then return the default locale.
-        if (translation == null || translation == DEFAULT_TRANSLATION)
+        if (translation == null || DEFAULT_TRANSLATION.equals(translation))
         {
             return DEFAULT_LOCALE;
         }

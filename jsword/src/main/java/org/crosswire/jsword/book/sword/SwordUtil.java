@@ -164,10 +164,10 @@ public final class SwordUtil
      */
     protected static void encodeLittleEndian32(int val, byte[] data, int offset)
     {
-        data[0 + offset] = (byte)(val & 0xFF);
-        data[1 + offset] = (byte)((val >> 8) & 0xFF);
-        data[2 + offset] = (byte)((val >> 16) & 0xFF);
-        data[3 + offset] = (byte)((val >> 24) & 0xFF);
+        data[0 + offset] = (byte) (val & 0xFF);
+        data[1 + offset] = (byte) ((val >> 8) & 0xFF);
+        data[2 + offset] = (byte) ((val >> 16) & 0xFF);
+        data[3 + offset] = (byte) ((val >> 24) & 0xFF);
     }
 
     /**
@@ -194,8 +194,8 @@ public final class SwordUtil
      */
     protected static void encodeLittleEndian16(int val, byte[] data, int offset)
     {
-        data[0 + offset] = (byte)(val & 0xFF);
-        data[1 + offset] = (byte)((val >> 8) & 0xFF);
+        data[0 + offset] = (byte) (val & 0xFF);
+        data[1 + offset] = (byte) ((val >> 8) & 0xFF);
     }
 
     /**

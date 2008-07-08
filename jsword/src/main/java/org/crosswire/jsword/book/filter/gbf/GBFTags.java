@@ -46,6 +46,13 @@ import org.jdom.Text;
 public final class GBFTags
 {
     /**
+     * Prevent instantiation.
+     */
+    private GBFTags()
+    {
+    }
+
+    /**
      *
      */
     public static final class DefaultEndTag extends AbstractTag

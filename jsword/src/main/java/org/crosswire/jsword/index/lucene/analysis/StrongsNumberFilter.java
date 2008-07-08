@@ -71,7 +71,7 @@ public class StrongsNumberFilter extends AbstractBookTokenFilter
             {
                 return null;
             }
-    
+
             try
             {
                 char[] buf = result.termBuffer();
@@ -84,7 +84,7 @@ public class StrongsNumberFilter extends AbstractBookTokenFilter
                 {
                     result.setTermBuffer(s.toCharArray(), 0, s.length());
                 }
-    
+
                 if (number.isPart())
                 {
                     lastToken = result;

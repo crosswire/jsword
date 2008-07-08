@@ -57,7 +57,7 @@ public class RawBackend extends AbstractBackend
         this.datasize = datasize;
         this.entrysize = OFFSETSIZE + datasize;
 
-        assert (datasize == 2 || datasize == 4);
+        assert datasize == 2 || datasize == 4;
     }
 
     /* (non-Javadoc)
@@ -83,7 +83,7 @@ public class RawBackend extends AbstractBackend
 
             DataIndex dataIndex = getIndex(idxRaf[testament], index);
 
-            return (dataIndex.getSize() > 0);
+            return dataIndex.getSize() > 0;
         }
         catch (IOException ex)
         {
@@ -182,7 +182,7 @@ public class RawBackend extends AbstractBackend
         }
 
         String fileMode = isWritable() ? FileUtil.MODE_WRITE : FileUtil.MODE_READ;
- 
+
         if (idxFile[SwordConstants.TESTAMENT_OLD].canRead())
         {
             try

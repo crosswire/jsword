@@ -137,7 +137,7 @@ public class SwordGenBook extends AbstractBook
      */
     public boolean contains(Key key)
     {
-        return (backend != null && backend.contains(key));
+        return backend != null && backend.contains(key);
     }
 
     /* (non-Javadoc)

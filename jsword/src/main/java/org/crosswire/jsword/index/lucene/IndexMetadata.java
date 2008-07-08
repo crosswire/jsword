@@ -56,10 +56,6 @@ public class IndexMetadata
      */
     public static IndexMetadata instance()
     {
-        if (myInstance == null)
-        {
-            myInstance = new IndexMetadata();
-        }
         return myInstance;
     }
 
@@ -85,6 +81,6 @@ public class IndexMetadata
     public static final float    INDEX_VERSION_1_2    = 1.2f;
 
     private static final Logger  log                  = Logger.getLogger(IndexMetadata.class);
-    private static IndexMetadata myInstance;
+    private static IndexMetadata myInstance           = new IndexMetadata();
     private Properties           props;
 }

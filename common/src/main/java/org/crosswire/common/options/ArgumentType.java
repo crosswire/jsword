@@ -42,12 +42,12 @@ public class ArgumentType implements Serializable
      * The option is followed by an argument.
      */
     public static final ArgumentType REQUIRED_ARGUMENT = new ArgumentType("Required"); //$NON-NLS-1$
-    
+
     /**
      * The option may be followed by an argument.
      */
     public static final ArgumentType OPTIONAL_ARGUMENT = new ArgumentType("Optional"); //$NON-NLS-1$
-    
+
     /**
      * @param name The name of the DataType
      */

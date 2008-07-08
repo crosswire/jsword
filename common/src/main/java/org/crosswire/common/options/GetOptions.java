@@ -80,8 +80,24 @@ public class GetOptions
         // Initially, we have not started to process an argument
         this.nonOptionArgs = new ArrayList();
         this.suppliedOptions = new LinkedHashMap();
-        
+
         parse();
+    }
+
+    /**
+     * @return the programName
+     */
+    public String getProgramName()
+    {
+        return programName;
+    }
+
+    /**
+     * @param programName the programName to set
+     */
+    public void setProgramName(String programName)
+    {
+        this.programName = programName;
     }
 
     private void parse()
@@ -157,7 +173,7 @@ public class GetOptions
             else
             {
                 // Process a short argument or short argument sequence
-                
+
                 // for each letter after the '-'
                 int shortSeqSize = nextArg.length();
                 for (int j = 1; j < shortSeqSize; j++)
@@ -211,7 +227,7 @@ public class GetOptions
         // Note: this is currently unused.
         // If we implement the traditional GNU extensions GetOpts interface we will need it.
         // We copy the smaller block to the longer block.
-        
+
         // The performance of this is linear with respect to the size of the larger block.
         // If the blocks are equal the number of swaps is equal to the "larger" block size otherwise it is one greater.
 
@@ -236,7 +252,7 @@ public class GetOptions
             increment = -1;
             swapCount = firstSize + 1;
         }
-        
+
         if (firstSize == secondSize)
         {
             swapCount--;
@@ -279,5 +295,4 @@ public class GetOptions
      */
     private List nonOptionArgs;
     private Map suppliedOptions;
-    
 }

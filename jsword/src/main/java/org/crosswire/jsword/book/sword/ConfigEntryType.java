@@ -51,7 +51,7 @@ public class ConfigEntryType implements Serializable
     public static final String DIRECTION_RTOL = "RtoL"; //$NON-NLS-1$
     public static final String DIRECTION_BIDI = "bidi"; //$NON-NLS-1$
 
-    public static final String[] BLOCK_TYPE_PICKS
+    private static final String[] BLOCK_TYPE_PICKS
         = new String[]
           {
               "BOOK", //$NON-NLS-1$
@@ -59,21 +59,21 @@ public class ConfigEntryType implements Serializable
               "VERSE", //$NON-NLS-1$
           };
 
-    public static final String[] BOOLEAN_PICKS
+    private static final String[] BOOLEAN_PICKS
         = new String[]
           {
               "true", //$NON-NLS-1$
               "false", //$NON-NLS-1$
           };
 
-    public static final String[] KEY_TYPE_PICKS
+    private static final String[] KEY_TYPE_PICKS
         = new String[]
           {
               "TreeKey", //$NON-NLS-1$
               "VerseKey", //$NON-NLS-1$
           };
 
-    public static final String[] CATEGORY_PICKS
+    private static final String[] CATEGORY_PICKS
         = new String[]
           {
               "Daily Devotional", //$NON-NLS-1$
@@ -88,14 +88,14 @@ public class ConfigEntryType implements Serializable
               "Generic Books", //$NON-NLS-1$
           };
 
-    public static final String[] COMPRESS_TYPE_PICKS
+    private static final String[] COMPRESS_TYPE_PICKS
         = new String[]
           {
               "LZSS", //$NON-NLS-1$
               "ZIP", //$NON-NLS-1$
           };
 
-    public static final String[] DIRECTION_PICKS
+    private static final String[] DIRECTION_PICKS
         = new String[]
           {
               DIRECTION_LTOR,
@@ -103,7 +103,7 @@ public class ConfigEntryType implements Serializable
               DIRECTION_BIDI,
           };
 
-    public static final String[] LICENSE_PICKS
+    private static final String[] LICENSE_PICKS
         = new String[]
           {
               "Public Domain", //$NON-NLS-1$
@@ -121,14 +121,14 @@ public class ConfigEntryType implements Serializable
               "GPL", //$NON-NLS-1$
           };
 
-    public static final String[] ENCODING_PICKS
+    private static final String[] ENCODING_PICKS
         = new String[]
           {
               "Latin-1", //$NON-NLS-1$
               "UTF-8", //$NON-NLS-1$
           };
 
-    public static final String[] GLOBAL_OPTION_FILTER_PICKS
+    private static final String[] GLOBAL_OPTION_FILTER_PICKS
         = new String[]
           {
               "GBFStrongs", //$NON-NLS-1$
@@ -157,7 +157,7 @@ public class ConfigEntryType implements Serializable
               "OSISStrongs", //$NON-NLS-1$
           };
 
-    public static final String[] FEATURE_PICKS
+    private static final String[] FEATURE_PICKS
         = new String[]
           {
               "StrongsNumbers", //$NON-NLS-1$
@@ -170,7 +170,7 @@ public class ConfigEntryType implements Serializable
               "Images", //$NON-NLS-1$
           };
 
-    public static final String[] MOD_DRV_PICKS
+    private static final String[] MOD_DRV_PICKS
         = new String[]
           {
               "RawText", //$NON-NLS-1$
@@ -186,7 +186,7 @@ public class ConfigEntryType implements Serializable
               "RawGenBook", //$NON-NLS-1$
           };
 
-    public static final String[] SOURCE_TYPE_PICKS
+    private static final String[] SOURCE_TYPE_PICKS
         = new String[]
           {
               "Plaintext", //$NON-NLS-1$
@@ -382,7 +382,7 @@ public class ConfigEntryType implements Serializable
     /**
      * The level at which compression is applied, BOOK, CHAPTER, or VERSE
      */
-    public static final ConfigEntryType BLOCK_TYPE = new ConfigEntryPickType("BlockType", BLOCK_TYPE_PICKS, BLOCK_TYPE_PICKS[0]);//$NON-NLS-1$
+    public static final ConfigEntryType BLOCK_TYPE = new ConfigEntryPickType("BlockType", BLOCK_TYPE_PICKS, BLOCK_TYPE_PICKS[0]); //$NON-NLS-1$
 
     /**
      * The kind of key that a Generic Book uses.
@@ -416,7 +416,6 @@ public class ConfigEntryType implements Serializable
      */
     public static final ConfigEntryType CIPHER_KEY = new ConfigEntryType("CipherKey"); //$NON-NLS-1$
 
-    
     /**
      * The type of compression in use. JSword does not support LZSS. While it is the default,
      * it is not used. At least so far.
@@ -1241,7 +1240,7 @@ public class ConfigEntryType implements Serializable
      * The default for the ConfigEntryType
      */
     private Object defaultValue;
-    
+
     /**
      * Serialization ID
      */

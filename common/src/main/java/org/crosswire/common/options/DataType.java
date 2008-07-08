@@ -72,7 +72,7 @@ public abstract class DataType implements Serializable
          */
         private static final long serialVersionUID = -2521783846509171308L;
     };
-    
+
     /**
      * An boolean argument that allows various values for 'true'.
      */
@@ -91,7 +91,7 @@ public abstract class DataType implements Serializable
          */
         private static final long serialVersionUID = -2521783846509171308L;
     };
-    
+
     /**
      * @param name The name of the DataType
      */

@@ -47,7 +47,6 @@ public class XalanProcess
      * Run xalan's xslt process main.
      * @param args
      */
-    // This main is commented for checkstyle
     public static void main(String[] args)
     {
         Class clazz = null;

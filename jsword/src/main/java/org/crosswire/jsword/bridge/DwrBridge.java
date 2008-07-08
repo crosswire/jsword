@@ -33,8 +33,6 @@ import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookFilters;
-import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.book.sword.SwordBookPath;
 import org.crosswire.jsword.index.IndexManagerFactory;
 import org.crosswire.jsword.passage.Key;
@@ -63,7 +61,7 @@ public class DwrBridge
      */
     public String[][] getInstalledBooks(String filter)
     {
-        List reply = new ArrayList();        
+        List reply = new ArrayList();
 
         List books = BookInstaller.getInstalledBooks(filter);
 
@@ -227,7 +225,7 @@ public class DwrBridge
         File[] filePath = SwordBookPath.getSwordPath();
         if (filePath.length == 0)
         {
-            return new String[] { "No path" } ; //$NON-NLS-1$
+            return new String[] { "No path" }; //$NON-NLS-1$
         }
         String[] path = new String[filePath.length];
         for (int i = 0; i < filePath.length; i++)
@@ -272,7 +270,7 @@ public class DwrBridge
         if (BookCategory.BIBLE.equals(book.getBookCategory()))
         {
             key = book.getKey(reference);
-            Passage remainder = ((Passage) key);
+            Passage remainder = (Passage) key;
             if (start > 0)
             {
                 remainder = remainder.trimVerses(start);
@@ -288,7 +286,7 @@ public class DwrBridge
         else
         {
             key = book.getKey(reference);
-            
+
             // Do we need to trim?
             if (start > 0 || key.getCardinality() > count)
             {
@@ -313,7 +311,7 @@ public class DwrBridge
             }
         }
 
-        return new BookData(book, key);        
+        return new BookData(book, key);
     }
 
     /**

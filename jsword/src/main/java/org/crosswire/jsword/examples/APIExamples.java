@@ -126,7 +126,7 @@ public class APIExamples
         else
         {
             key = book.createEmptyKeyList();
-            
+
             Iterator iter = book.getKey(reference).iterator();
             int count = 0;
             while (iter.hasNext())
@@ -174,7 +174,7 @@ public class APIExamples
         // Finally you can get the styled text.
         return XMLUtil.writeToString(htmlsep);
     }
-    
+
     /**
      * While Bible and Commentary are very similar, a Dictionary is read in a
      * slightly different way. It is also worth looking at the JavaDoc for
@@ -335,7 +335,7 @@ public class APIExamples
     {
         // An installer knows how to install books
         Installer installer = null;
-        
+
         InstallManager imanager = new InstallManager();
 
         // Ask the Install Manager for a map of all known module sites
@@ -347,7 +347,6 @@ public class APIExamples
         {
             String name = (String) iter.next();
             installer = (Installer) installers.get(name);
-            
         }
 
         // If we know the name of the installer we can get it directly

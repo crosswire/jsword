@@ -156,6 +156,7 @@ public interface Key extends Comparable, Cloneable, Iterable, Serializable
      * Gets a key from a specific point in this list of children.
      * @param index The index of the Key to retrieve
      * @return The specified key
+     * @throws IndexOutOfBoundsException
      */
     Key get(int index);
 

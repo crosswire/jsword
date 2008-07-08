@@ -280,7 +280,7 @@ public class RawLDBackend extends AbstractKeyBackend
     {
         return active;
     }
-    
+
     /**
      * Get the Index (that is offset and size) for an entry.
      * @param entry
@@ -453,7 +453,7 @@ public class RawLDBackend extends AbstractKeyBackend
                 }
                 return buf.toString();
             }
-            
+
             return ZERO_5PAD.format(strongsNumber);
         }
         else

@@ -65,7 +65,6 @@ public class BookInstaller
         // Actually do the delete
         // This should be a call on installer.
         book.getDriver().delete(book);
-
     }
 
     /**
@@ -184,7 +183,7 @@ public class BookInstaller
      */
     public Book getBook(String repositoryName, String bookName)
     {
-        return installManager.getInstaller(repositoryName).getBook(bookName);     
+        return installManager.getInstaller(repositoryName).getBook(bookName);
     }
 
     /**
@@ -235,6 +234,7 @@ public class BookInstaller
         if (args.length < 1)
         {
             usage();
+            return;
         }
 
         System.err.print("BookInstaller"); //$NON-NLS-1$
@@ -256,7 +256,7 @@ public class BookInstaller
                 if (b == null)
                 {
                     System.err.println("Book not found"); //$NON-NLS-1$
-                    System.exit(1);
+                    return;
                 }
                 try
                 {
@@ -270,7 +270,7 @@ public class BookInstaller
             else
             {
                 usage();
-            }            
+            }
         }
         else if (operation.equalsIgnoreCase("sources")) //$NON-NLS-1$
         {
@@ -300,7 +300,7 @@ public class BookInstaller
                 {
                     Book book = (Book) iter.next();
                     System.out.println(book.getInitials());
-                }                
+                }
             }
             else
             {
@@ -333,7 +333,7 @@ public class BookInstaller
                 if (b == null)
                 {
                     System.err.println("Book not found"); //$NON-NLS-1$
-                    System.exit(1);
+                    return;
                 }
                 try
                 {
@@ -369,6 +369,5 @@ public class BookInstaller
         System.err.println("    list      repositoryName           List available books from a repository"); //$NON-NLS-1$
         System.err.println("    reload    repositoryName           Reload local cache for a repository"); //$NON-NLS-1$
         System.err.println("    install   repositoryName bookName  Install a book from a repository"); //$NON-NLS-1$
-        System.exit(1);
     }
 }

@@ -57,7 +57,7 @@ public class Languages
         try
         {
             String code = getLanguageCode(iso639Code);
-            if (code == DEFAULT_LANG_CODE || code == UNKNOWN_LANG_CODE)
+            if (DEFAULT_LANG_CODE.equals(code) || UNKNOWN_LANG_CODE.equals(code))
             {
                 return true;
             }

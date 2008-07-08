@@ -78,7 +78,7 @@ public final class Logger
      */
     private Logger(Class id)
     {
-        clazz = id;
+        logger = java.util.logging.Logger.getLogger(id.getName());
     }
 
     /**
@@ -220,13 +220,7 @@ public final class Logger
         // Establish a class that will load logging properties into java.util.logging.LogManager
         System.setProperty("java.util.logging.config.class", LogConfig.class.getName()); //$NON-NLS-1$
 
-        // If we don't have a logger, create one now.
-        if (logger == null)
-        {
-            logger = java.util.logging.Logger.getLogger(clazz.getName());
-        }
-
-        // If there was a request to change the mimimum level of logging
+        // If there was a request to change the minimum level of logging
         // handle it now.
         if (level != null)
         {
@@ -239,6 +233,5 @@ public final class Logger
     private static final String CLASS_NAME = Logger.class.getName();
     private static Level level;
 
-    private Class clazz;
     private java.util.logging.Logger logger;
 }

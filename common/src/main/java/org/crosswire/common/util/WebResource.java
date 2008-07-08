@@ -198,7 +198,7 @@ public class WebResource
      * Define a 750 ms timeout to get a connection
      */
     private static final int TIMEOUT = 750;
-    
+
     private URI uri;
     private HttpClient client;
 }

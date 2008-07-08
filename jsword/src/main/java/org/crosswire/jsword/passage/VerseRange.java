@@ -867,19 +867,6 @@ public final class VerseRange implements Key, Serializable
      */
     public static VerseRange getWholeBibleVerseRange()
     {
-        try
-        {
-            if (whole == null)
-            {
-                whole = new VerseRange(new Verse(1, 1, 1), new Verse(66, 22, 21));
-            }
-        }
-        catch (NoSuchVerseException ex)
-        {
-            assert false : ex;
-            return new VerseRange();
-        }
-
         return whole;
     }
 
@@ -1263,6 +1250,19 @@ public final class VerseRange implements Key, Serializable
      * The whole Bible VerseRange
      */
     private static transient VerseRange whole;
+    static
+    {
+        try
+        {
+            whole = new VerseRange(new Verse(1, 1, 1), new Verse(66, 22, 21));
+        }
+        catch (NoSuchVerseException ex)
+        {
+            assert false : ex;
+            whole = new VerseRange();
+        }
+    }
+
 
     /**
      * The log stream

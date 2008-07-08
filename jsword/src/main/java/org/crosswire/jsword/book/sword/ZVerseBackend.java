@@ -124,7 +124,7 @@ public class ZVerseBackend extends AbstractBackend
                 idxFile[SwordConstants.TESTAMENT_OLD] = new File(otAllButLast + SUFFIX_INDEX);
                 textFile[SwordConstants.TESTAMENT_OLD] = new File(otAllButLast + SUFFIX_TEXT);
                 compFile[SwordConstants.TESTAMENT_OLD] = new File(otAllButLast + SUFFIX_COMP);
-    
+
                 String ntAllButLast = NetUtil.lengthenURI(path, File.separator + SwordConstants.FILE_NT + '.' + blockType.getIndicator() + SUFFIX_PART1).getPath();
                 idxFile[SwordConstants.TESTAMENT_NEW] = new File(ntAllButLast + SUFFIX_INDEX);
                 textFile[SwordConstants.TESTAMENT_NEW] = new File(ntAllButLast + SUFFIX_TEXT);
@@ -265,7 +265,7 @@ public class ZVerseBackend extends AbstractBackend
             // The data is little endian - extract the blockNum, verseStart and verseSize
             int verseSize = SwordUtil.decodeLittleEndian16(temp, 8);
 
-            return (verseSize > 0);
+            return verseSize > 0;
 
         }
         catch (IOException e)

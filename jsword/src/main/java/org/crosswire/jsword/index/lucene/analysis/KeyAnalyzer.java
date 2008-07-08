@@ -50,7 +50,7 @@ public class KeyAnalyzer extends AbstractBookAnalyzer
     {
         setBook(book);
     }
-    
+
     /* (non-Javadoc)
      * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String, java.io.Reader)
      */

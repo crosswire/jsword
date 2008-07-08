@@ -74,12 +74,12 @@ public class DataEntry
 
             if (keyEnd < 0)
             {
-                DataPolice.report("Failed to find key. name='" + name + "' data='" + data + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                DataPolice.report("Failed to find key. name='" + name + "'"); //$NON-NLS-1$ //$NON-NLS-2$
                 return ""; //$NON-NLS-1$
             }
 
             key = SwordUtil.decode(name, data, keyEnd, charset).trim();
-            
+
             // for some weird reason plain text dictionaries
             // all get \ added to the ends of the index entries.
             if (key.endsWith("\\")) //$NON-NLS-1$

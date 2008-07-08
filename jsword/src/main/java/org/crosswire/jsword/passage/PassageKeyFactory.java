@@ -43,6 +43,15 @@ public final class PassageKeyFactory implements KeyFactory
      */
     private PassageKeyFactory()
     {
+        try
+        {
+            whole = new ReadOnlyPassage(defaultType.createPassage("Gen 1:1-Rev 22:21"), true); //$NON-NLS-1$
+        }
+        catch (NoSuchKeyException ex)
+        {
+            assert false : ex;
+            whole = defaultType.createEmptyPassage();
+        }
     }
 
     public static KeyFactory instance()
@@ -103,20 +112,7 @@ public final class PassageKeyFactory implements KeyFactory
      */
     public Key getGlobalKeyList()
     {
-        try
-        {
-            if (whole == null)
-            {
-                whole = new ReadOnlyPassage(defaultType.createPassage("Gen 1:1-Rev 22:21"), true); //$NON-NLS-1$
-            }
-
-            return whole;
-        }
-        catch (NoSuchKeyException ex)
-        {
-            assert false : ex;
-            return defaultType.createEmptyPassage();
-        }
+        return whole;
     }
 
     /**

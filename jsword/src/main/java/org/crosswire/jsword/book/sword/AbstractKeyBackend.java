@@ -22,6 +22,7 @@
 package org.crosswire.jsword.book.sword;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.RestrictionType;
@@ -96,8 +97,12 @@ public abstract class AbstractKeyBackend extends AbstractBackend implements Key
             /* (non-Javadoc)
              * @see java.util.Iterator#next()
              */
-            public Object next()
+            public Object next() throws NoSuchElementException
             {
+                if (here >= count)
+                {
+                    throw new NoSuchElementException();
+                }
                 return get(here++);
             }
 
@@ -108,9 +113,9 @@ public abstract class AbstractKeyBackend extends AbstractBackend implements Key
             {
                 throw new UnsupportedOperationException();
             }
-            
-            int here = 0;
-            int count = getCardinality();
+
+            private int here;
+            private int count = getCardinality();
         };
     }
 
@@ -151,6 +156,14 @@ public abstract class AbstractKeyBackend extends AbstractBackend implements Key
      */
     public Object clone()
     {
+        try
+        {
+            super.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            assert false : e;
+        }
         return this;
     }
 
@@ -200,6 +213,36 @@ public abstract class AbstractKeyBackend extends AbstractBackend implements Key
     public void retainAll(Key key)
     {
         throw new UnsupportedOperationException();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    /* @Override */
+    public boolean equals(Object obj)
+    {
+        // Since this can not be null
+        if (obj == null)
+        {
+            return false;
+        }
+
+        // Check that that is the same as this
+        // Don't use instanceOf since that breaks inheritance
+        if (!obj.getClass().equals(this.getClass()))
+        {
+            return false;
+        }
+
+        return compareTo(obj) == 0;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode()
+    {
+        return getName().hashCode();
     }
 
     /* (non-Javadoc)

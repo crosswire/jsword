@@ -91,6 +91,7 @@ public class BookLookup
         if (args.length != 2)
         {
             usage();
+            return;
         }
 
         System.err.print("BookLookup"); //$NON-NLS-1$
@@ -106,7 +107,7 @@ public class BookLookup
         if (b == null)
         {
             System.err.println("Book not found"); //$NON-NLS-1$
-            System.exit(1);
+            return;
         }
 
         BookLookup lookup = new BookLookup(b);
@@ -129,6 +130,5 @@ public class BookLookup
     public static void usage()
     {
         System.err.println("Usage: BookLookup book key"); //$NON-NLS-1$
-        System.exit(1);
     }
 }

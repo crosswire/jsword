@@ -41,6 +41,7 @@ public class OptionList
     public OptionList()
     {
         longOptions = new LinkedHashMap();
+        shortOptions = new LinkedHashMap();
     }
 
     /**
@@ -144,7 +145,7 @@ public class OptionList
         while (iter.hasNext())
         {
             Option match = (Option) iter.next();
-            if ( !matches.contains(match))
+            if (!matches.contains(match))
             {
                 matches.add(match);
             }

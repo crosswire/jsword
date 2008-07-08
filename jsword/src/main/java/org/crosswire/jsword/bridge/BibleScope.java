@@ -126,6 +126,7 @@ public class BibleScope
         if (args.length != 1)
         {
             usage();
+            return;
         }
 
         System.err.println("BibleScope " + args[0]); //$NON-NLS-1$
@@ -134,7 +135,7 @@ public class BibleScope
         if (b == null)
         {
             System.err.println("Book not found"); //$NON-NLS-1$
-            System.exit(1);
+            return;
         }
 
         report(b);
@@ -155,7 +156,6 @@ public class BibleScope
     public static void usage()
     {
         System.err.println("Usage: BibleScope book"); //$NON-NLS-1$
-        System.exit(1);
     }
 
     private Key inScope;

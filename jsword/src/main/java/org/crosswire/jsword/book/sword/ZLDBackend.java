@@ -146,13 +146,13 @@ public class ZLDBackend extends RawLDBackend
             zdxFile = new File(path.getPath() + EXTENSION_Z_INDEX);
             zdtFile = new File(path.getPath() + EXTENSION_Z_DATA);
 
-            if ( !zdxFile.canRead())
+            if (!zdxFile.canRead())
             {
                 Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] { zdtFile.getAbsolutePath() }));
                 return;
             }
 
-            if ( !zdtFile.canRead())
+            if (!zdtFile.canRead())
             {
                 Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] { zdtFile.getAbsolutePath() }));
                 return;

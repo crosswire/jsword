@@ -114,6 +114,9 @@ public class BookIndexer
     private IndexStatusListener isl;
     private boolean done;
 
+    /**
+     * Listen for the end of indexing.
+     */
     public static final class StatusListener implements IndexStatusListener
     {
         public StatusListener(BookIndexer indexer)
@@ -126,8 +129,7 @@ public class BookIndexer
             indexer.setDone(true);
         }
 
-        BookIndexer indexer;
-        
+        private BookIndexer indexer;
     }
 
     /**
@@ -147,6 +149,7 @@ public class BookIndexer
         if (args.length != 2)
         {
             usage();
+            return;
         }
 
         System.err.println("BookIndexer " + args[0] + " " + args[1]); //$NON-NLS-1$ //$NON-NLS-2$
@@ -156,7 +159,7 @@ public class BookIndexer
         if (b == null)
         {
             System.err.println("Book not found"); //$NON-NLS-1$
-            System.exit(1);
+            return;
         }
 
         BookIndexer indexer = new BookIndexer(b);
@@ -197,6 +200,5 @@ public class BookIndexer
     public static void usage()
     {
         System.err.println("Usage: BookIndexer operation book"); //$NON-NLS-1$
-        System.exit(1);
     }
 }

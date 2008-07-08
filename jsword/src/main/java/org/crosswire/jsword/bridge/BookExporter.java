@@ -91,6 +91,7 @@ public class BookExporter
         if (args.length != 1)
         {
             usage();
+            return;
         }
 
         System.err.println("BookExporter " + args[0]); //$NON-NLS-1$
@@ -99,7 +100,7 @@ public class BookExporter
         if (b == null)
         {
             System.err.println("Book not found"); //$NON-NLS-1$
-            System.exit(1);
+            return;
         }
 
         BookExporter exporter = new BookExporter(b);
@@ -117,6 +118,5 @@ public class BookExporter
     public static void usage()
     {
         System.err.println("Usage: BookExporter book"); //$NON-NLS-1$
-        System.exit(1);
     }
 }

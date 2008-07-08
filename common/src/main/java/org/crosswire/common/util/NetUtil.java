@@ -415,7 +415,8 @@ public final class NetUtil
                     path.append(extra);
                 }
             }
-            else {
+            else
+            {
                 if (!isSeparator(lastChar))
                 {
                     path.append(SEPARATOR);

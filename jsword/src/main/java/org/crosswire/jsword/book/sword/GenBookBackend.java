@@ -134,7 +134,7 @@ public class GenBookBackend extends AbstractBackend
             byte [] userData = node.getUserData();
 
             // Some entries may be empty.
-            return (userData.length == 8);
+            return userData.length == 8;
         }
         catch (IOException e)
         {

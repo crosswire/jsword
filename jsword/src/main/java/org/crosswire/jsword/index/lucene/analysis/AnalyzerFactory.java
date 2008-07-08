@@ -101,11 +101,6 @@ public class AnalyzerFactory
 
     public static AnalyzerFactory getInstance()
     {
-        if (myInstance == null)
-        {
-            myInstance = new AnalyzerFactory();
-        }
-
         return myInstance;
     }
 
@@ -134,7 +129,6 @@ public class AnalyzerFactory
 
     private void loadProperties()
     {
-
         try
         {
             myProperties = ResourceUtil.getProperties(getClass());
@@ -147,7 +141,7 @@ public class AnalyzerFactory
 
     public static final String     DEFAULT_ID = "Default";                              //$NON-NLS-1$
     private static final Logger    log        = Logger.getLogger(AnalyzerFactory.class);
-    private static AnalyzerFactory myInstance;
+    private static AnalyzerFactory myInstance = new AnalyzerFactory();
 
     private Properties             myProperties;
 

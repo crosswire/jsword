@@ -80,7 +80,7 @@ public class SwordBook extends AbstractPassageBook
      */
     public boolean contains(Key key)
     {
-        return (backend != null && backend.contains(key));
+        return backend != null && backend.contains(key);
     }
 
     /* (non-Javadoc)

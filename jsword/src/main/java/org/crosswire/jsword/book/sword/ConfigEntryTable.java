@@ -636,7 +636,7 @@ public final class ConfigEntryTable
                 log.error("Data error in " + internal + //$NON-NLS-1$
                           ". " + ConfigEntryType.GLOSSARY_FROM.getName() + //$NON-NLS-1$
                           " (" + langFrom.getCode() + ") does not match " + ConfigEntryType.LANG.getName() + " (" + lang.getCode() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-			*/
+             */
                 lang = langFrom;
                 add(ConfigEntryType.LANG, lang.toString());
             }
@@ -911,7 +911,7 @@ public final class ConfigEntryTable
         ConfigEntryType.KEY_TYPE,
         ConfigEntryType.DISPLAY_LEVEL,
     };
-    
+
     private static final ConfigEntryType[] HIDDEN =
     {
         ConfigEntryType.CIPHER_KEY,

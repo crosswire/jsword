@@ -41,11 +41,7 @@ public abstract class OSType implements Serializable
          */
         public URI getUserArea()
         {
-            if (userArea == null)
-            {
-                userArea = NetUtil.lengthenURI(getUserHome(), MAC_USER_DATA_AREA);
-            }
-            return userArea;
+            return NetUtil.lengthenURI(getUserHome(), MAC_USER_DATA_AREA);
         }
 
         /* (non-Javadoc)
@@ -69,11 +65,7 @@ public abstract class OSType implements Serializable
          */
         public URI getUserArea()
         {
-            if (userArea == null)
-            {
-                userArea = NetUtil.lengthenURI(getUserHome(), WIN32_USER_DATA_AREA);
-            }
-            return userArea;
+            return NetUtil.lengthenURI(getUserHome(), WIN32_USER_DATA_AREA);
         }
 
         /* (non-Javadoc)
@@ -141,12 +133,7 @@ public abstract class OSType implements Serializable
 
     public static URI getUserHome()
     {
-        if (userHome == null)
-        {
-            File home = new File(System.getProperty("user.home")); //$NON-NLS-1$
-            userHome = NetUtil.getURI(home);
-        }
-        return userHome;
+        return NetUtil.getURI(new File(System.getProperty("user.home"))); //$NON-NLS-1$;
     }
 
     /**
@@ -248,11 +235,6 @@ public abstract class OSType implements Serializable
     };
 
     /**
-     * The user's private data area.
-     */
-    protected URI userArea;
-
-    /**
      * The Windows user settings parent directory
      */
     private static final String WIN32_USER_DATA_AREA = "Application Data"; //$NON-NLS-1$
@@ -266,11 +248,6 @@ public abstract class OSType implements Serializable
      * The machine's osType
      */
     private static OSType osType = fromString(System.getProperty("os.name")); //$NON-NLS-1$
-
-    /**
-     * The user's home directory.
-     */
-    private static URI userHome;
 
     /**
      * Serialization ID

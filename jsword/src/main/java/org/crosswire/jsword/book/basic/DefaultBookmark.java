@@ -21,6 +21,7 @@
  */
 package org.crosswire.jsword.book.basic;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,6 +42,14 @@ import org.crosswire.jsword.index.search.SearchRequest;
  */
 public class DefaultBookmark implements Bookmark
 {
+    /**
+     * Create an empty default bookmark
+     */
+    public DefaultBookmark()
+    {
+        books = new ArrayList();
+    }
+
     /**
      * Add a Book to this Bookmark.
      * The books are maintained in the order they are added as a set.
