@@ -1483,4 +1483,9 @@ public abstract class AbstractPassage implements Passage
      * What characters should we use to separate VerseRanges in a Passage
      */
     public static final String REF_OSIS_DELIM = " "; //$NON-NLS-1$
+
+    /**
+     * Serialization ID
+     */
+    static final long serialVersionUID = -5931560451407396276L;
 }

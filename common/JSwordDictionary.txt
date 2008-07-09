@@ -78,3 +78,7 @@ stopword
 lucene
 acrostic
 compressor
+parented
+proxy
+inline
+clipboard

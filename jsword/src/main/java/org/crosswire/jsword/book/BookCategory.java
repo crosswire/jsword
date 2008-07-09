@@ -190,8 +190,8 @@ public final class BookCategory implements Serializable, Comparable
     /**
      * The names of the BookCategory
      */
-    private String name;
-    private MsgBase externalName;
+    private transient String name;
+    private transient MsgBase externalName;
 
     // Support for serialization
     private static int nextObj;

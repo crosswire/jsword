@@ -24,7 +24,6 @@ package org.crosswire.jsword.passage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.Iterator;
 
 import org.crosswire.common.icu.NumberShaper;
@@ -43,9 +42,9 @@ import org.crosswire.jsword.versification.BibleInfo;
  * be mis-translated in some way.</p>
  *
  * <p>Optimization information: I spent some time optimizing this class
- * because it is at the heart of things. My benchmark started st 11.25s.
+ * because it is at the heart of things. My benchmark started at 11.25s.
  * By taking the int[] and turning it into 3 ints and it took 10.8s.<br />
- * Cacheing the ordinal number just took the time from 12s to 12s! I guess
+ * Caching the ordinal number just took the time from 12s to 12s! I guess
  * that the time and extra memory taken up by the extra int overrode the
  * time it saved by repeated queries to the same verse. I guess this would
  * change if we were using a [Ranged|Distinct]Passage instead of a Bitwise
@@ -60,7 +59,7 @@ import org.crosswire.jsword.versification.BibleInfo;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public final class Verse implements Key, Serializable
+public final class Verse implements Key
 {
     /**
      * The default Verse is Genesis 1:1. I didn't want to provide this

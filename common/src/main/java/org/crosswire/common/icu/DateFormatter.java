@@ -22,6 +22,7 @@
 
 package org.crosswire.common.icu;
 
+import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -54,6 +55,7 @@ public class DateFormatter
     public static DateFormatter getDateInstance(int format)
     {
         DateFormatter fmt = new DateFormatter();
+        boolean oops = false;
         try
         {
             fmt.formatterClass = ClassUtil.forName("com.ibm.icu.text.DateFormat"); //$NON-NLS-1$
@@ -62,11 +64,29 @@ public class DateFormatter
             Object[] instanceParams = { new Integer(format) };
             fmt.formatter = ReflectionUtil.invoke(fmt.formatterClass, fmt.formatterClass, "getDateInstance", instanceParams, instanceTypes); //$NON-NLS-1$
         }
-        catch (Exception e)
+        catch (NoSuchMethodException e)
+        {
+            oops = true;
+        }
+        catch (IllegalAccessException e)
+        {
+            oops = true;
+        }
+        catch (InvocationTargetException e)
+        {
+            oops = true;
+        }
+        catch (ClassNotFoundException e)
+        {
+            oops = true;
+        }
+
+        if (oops)
         {
             fmt.formatterClass = DateFormat.class;
             fmt.formatter = DateFormat.getDateInstance(format);
         }
+ 
         return fmt;
     }
 
@@ -84,17 +104,40 @@ public class DateFormatter
     public static DateFormatter getSimpleDateInstance(String format)
     {
         DateFormatter fmt = new DateFormatter();
+        boolean oops = false;
         try
         {
             fmt.formatterClass = ClassUtil.forName("com.ibm.icu.text.SimpleDateFormat"); //$NON-NLS-1$
             Object[] instanceParams = { format };
             fmt.formatter = ReflectionUtil.construct("com.ibm.icu.text.SimpleDateFormat", instanceParams); //$NON-NLS-1$
         }
-        catch (Exception e)
+        catch (NoSuchMethodException e)
+        {
+            oops = true;
+        }
+        catch (IllegalAccessException e)
+        {
+            oops = true;
+        }
+        catch (InvocationTargetException e)
+        {
+            oops = true;
+        }
+        catch (ClassNotFoundException e)
+        {
+            oops = true;
+        }
+        catch (InstantiationException e)
+        {
+            oops = true;
+        }
+
+        if (oops)
         {
             fmt.formatterClass = SimpleDateFormat.class;
             fmt.formatter = new SimpleDateFormat(format);
         }
+
         return fmt;
     }
 
@@ -109,9 +152,16 @@ public class DateFormatter
             Object[] lenientParams = { Boolean.valueOf(lenient) };
             ReflectionUtil.invoke(formatterClass, formatter, "setLenient", lenientParams, lenientTypes); //$NON-NLS-1$
         }
-        catch (Exception e)
+        catch (NoSuchMethodException e)
         {
-            // silently fail
+            assert false : e;
+        }
+        catch (IllegalAccessException e)
+        {
+            assert false : e;
+        }
+        catch (InvocationTargetException e)
+        {
             assert false : e;
         }
     }

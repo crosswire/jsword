@@ -342,15 +342,18 @@ public class APIExamples
         Map installers = imanager.getInstallers();
 
         // Get all the installers one after the other
-        Iterator iter = installers.keySet().iterator();
+        Iterator iter = installers.entrySet().iterator();
+        String name = null;
         while (iter.hasNext())
         {
-            String name = (String) iter.next();
-            installer = (Installer) installers.get(name);
+            Map.Entry mapEntry = (Map.Entry) iter.next();
+            name = (String) mapEntry.getKey();
+            installer = (Installer) mapEntry.getValue();
         }
 
+        name = "CrossWire"; //$NON-NLS-1$
         // If we know the name of the installer we can get it directly
-        installer = imanager.getInstaller("CrossWire"); //$NON-NLS-1$
+        installer = imanager.getInstaller(name);
 
         // Now we can get the list of books
         try

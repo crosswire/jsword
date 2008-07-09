@@ -236,7 +236,7 @@ public abstract class CaseType implements Serializable
     /**
      * The name of the type
      */
-    private String name;
+    private transient String name;
 
     // Support for serialization
     private static int nextObj;

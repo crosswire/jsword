@@ -40,6 +40,13 @@ import org.crosswire.jsword.passage.Key;
 public abstract class AbstractBackend implements Activatable
 {
     /**
+     * Default constructor for the sake of serialization.
+     */
+    /* protected */ public AbstractBackend()
+    {
+    }
+
+    /**
      * Construct a minimal backend
      * @param sbmd
      */
@@ -74,7 +81,6 @@ public abstract class AbstractBackend implements Activatable
             // destroy any evidence!
             cipherEngine.burn();
         }
-        cipherKeyString = null;
     }
 
     /**

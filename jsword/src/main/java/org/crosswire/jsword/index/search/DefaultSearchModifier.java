@@ -33,7 +33,6 @@ package org.crosswire.jsword.index.search;
 
 public class DefaultSearchModifier implements SearchModifier
 {
-
     /* (non-Javadoc)
      * @see org.crosswire.jsword.index.search.SearchModifier#isRanked()
      */
@@ -55,4 +54,9 @@ public class DefaultSearchModifier implements SearchModifier
      * The indicator of whether the request should be ranked.
      */
     private boolean ranked;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 0L;
 }

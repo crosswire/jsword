@@ -22,6 +22,7 @@
 
 package org.crosswire.common.icu;
 
+import java.io.Serializable;
 import java.util.Locale;
 
 /**
@@ -48,7 +49,7 @@ import java.util.Locale;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class NumberShaper
+public class NumberShaper implements Serializable
 {
     /**
      * Create a shaper that is appropriate for the user's locale.
@@ -330,4 +331,9 @@ public class NumberShaper
      * Nine for this shaper.
      */
     private char nineShape;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = -8408052851113601251L;
 }

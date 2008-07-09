@@ -23,7 +23,6 @@ package org.crosswire.jsword.passage;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.io.Serializable;
 import java.io.Writer;
 import java.util.Iterator;
 
@@ -71,7 +70,7 @@ import java.util.Iterator;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public interface Passage extends Key, Serializable
+public interface Passage extends Key
 {
     /**
      * A summary of the verses in this Passage

@@ -31,7 +31,6 @@ package org.crosswire.jsword.index.search;
  */
 public class DefaultSearchRequest implements SearchRequest
 {
-
     /**
      * Create a DefaultSearchRequest for the provided request and
      * the provided modifiers.
@@ -78,4 +77,9 @@ public class DefaultSearchRequest implements SearchRequest
      * How the search is to be modified
      */
     private SearchModifier modifier;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = -5973134101547369187L;
 }

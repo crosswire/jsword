@@ -65,7 +65,7 @@ public class ReadEverything
         // To ensure this we place it at the top of the class!
         // This will set it as a place to look for overrides for
         // ResourceBundles, properties and other resources
-        CWProject.instance().setHome("jsword.home", ".jsword", "JSword"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        CWProject.setHome("jsword.home", ".jsword", "JSword"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
         // And the array of allowed osis>html converters
         ChoiceFactory.getDataMap().put("converters", new String[] {}); //$NON-NLS-1$

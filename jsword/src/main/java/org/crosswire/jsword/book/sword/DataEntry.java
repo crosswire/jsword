@@ -47,7 +47,7 @@ public class DataEntry
     public DataEntry(String name, byte[] data, String charset)
     {
         this.name    = name;
-        this.data    = data;
+        this.data    = (byte[]) data.clone();
         this.charset = charset;
     }
 

@@ -23,6 +23,7 @@ package org.crosswire.jsword.book.sword;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.RandomAccessFile;
 import java.net.URI;
 
@@ -216,6 +217,25 @@ public class ZLDBackend extends RawLDBackend
         return active && super.isActive();
     }
 
+    /**
+     * Serialization support.
+     * 
+     * @param is
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    private void readObject(ObjectInputStream is) throws IOException, ClassNotFoundException
+    {
+        active = false;
+        zdxFile = null;
+        zdtFile = null;
+        zdxRaf = null;
+        zdtRaf = null;
+        lastBlockNum = -1;
+        lastUncompressed = EMPTY_BYTES;
+        is.defaultReadObject();
+    }
+
     private static final String EXTENSION_Z_INDEX = ".zdx"; //$NON-NLS-1$
     private static final String EXTENSION_Z_DATA  = ".zdt"; //$NON-NLS-1$
 
@@ -227,37 +247,37 @@ public class ZLDBackend extends RawLDBackend
     /**
      * Flags whether there are open files or not
      */
-    private boolean             active;
+    private transient boolean             active;
 
     /**
      * The compressed index.
      */
-    private File                zdxFile;
+    private transient File                zdxFile;
 
     /**
      * The compressed index random access file.
      */
-    private RandomAccessFile    zdxRaf;
+    private transient RandomAccessFile    zdxRaf;
 
     /**
      * The compressed text.
      */
-    private File                zdtFile;
+    private transient File                zdtFile;
 
     /**
      * The compressed text random access file.
      */
-    private RandomAccessFile    zdtRaf;
+    private transient RandomAccessFile    zdtRaf;
 
     /**
      * The index of the block that is cached.
      */
-    private long                lastBlockNum;
+    private transient long                lastBlockNum;
 
     /**
      * The cache for a read of a compressed block.
      */
-    private byte[]              lastUncompressed;
+    private transient byte[]              lastUncompressed;
 
     /**
      * Serialization ID

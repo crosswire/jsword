@@ -75,7 +75,7 @@ public class GetOptions
     public GetOptions(String programName, String[] args, OptionList programOptions)
     {
         this.programName = programName;
-        this.args = args;
+        this.args = (String[]) args.clone();
         this.programOptions = programOptions;
         // Initially, we have not started to process an argument
         this.nonOptionArgs = new ArrayList();

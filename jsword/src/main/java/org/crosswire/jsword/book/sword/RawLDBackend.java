@@ -23,6 +23,7 @@ package org.crosswire.jsword.book.sword;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.RandomAccessFile;
 import java.net.URI;
 import java.text.DecimalFormat;
@@ -491,6 +492,25 @@ public class RawLDBackend extends AbstractKeyBackend
 
         return keytitle;
     }
+
+    /**
+     * Serialization support.
+     * 
+     * @param is
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    private void readObject(ObjectInputStream is) throws IOException, ClassNotFoundException
+    {
+        active = false;
+        size = -1;
+        idxFile = null;
+        datFile = null;
+        idxRaf = null;
+        datRaf = null;
+        is.defaultReadObject();
+    }
+
     /**
      * How many bytes in the offset pointers in the index
      */
@@ -499,7 +519,7 @@ public class RawLDBackend extends AbstractKeyBackend
     /**
      * Flags whether there are open files or not
      */
-    private boolean active;
+    private transient boolean active;
 
     /**
      * The number of bytes in the size count in the index
@@ -514,27 +534,27 @@ public class RawLDBackend extends AbstractKeyBackend
     /**
      * The number of entries in the book.
      */
-    private int size;
+    private transient int size;
 
     /**
      * The index file
      */
-    private File idxFile;
+    private transient File idxFile;
 
     /**
      * The index random access file
      */
-    private RandomAccessFile idxRaf;
+    private transient RandomAccessFile idxRaf;
 
     /**
      * The data file
      */
-    private File datFile;
+    private transient File datFile;
 
     /**
      * The data random access file
      */
-    private RandomAccessFile datRaf;
+    private transient RandomAccessFile datRaf;
 
     /**
      * Date formatter

@@ -21,6 +21,8 @@
  */
 package org.crosswire.jsword.index.search;
 
+import java.io.Serializable;
+
 /**
  * A SearchRequest consists of a string and modifiers for the search.
  *
@@ -28,7 +30,7 @@ package org.crosswire.jsword.index.search;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public interface SearchRequest
+public interface SearchRequest extends Serializable
 {
     /**
      * @return the modifications to this SearchRequest

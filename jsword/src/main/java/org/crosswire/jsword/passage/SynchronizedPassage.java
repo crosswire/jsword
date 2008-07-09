@@ -365,7 +365,10 @@ final class SynchronizedPassage implements Passage
         try
         {
             clone = (SynchronizedPassage) super.clone();
-            clone.ref = (Passage) ref.clone();
+            synchronized (clone)
+            {
+                clone.ref = (Passage) ref.clone();
+            }
         }
         catch (CloneNotSupportedException e)
         {

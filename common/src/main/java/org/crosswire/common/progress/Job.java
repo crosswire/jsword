@@ -206,9 +206,12 @@ public final class Job implements Progress
 
         JobManager.fireWorkProgressed(this);
 
-        if (predictURI != null)
+        synchronized (this)
         {
-            savePredictions();
+            if (predictURI != null)
+            {
+                savePredictions();
+            }
         }
     }
 
@@ -285,7 +288,7 @@ public final class Job implements Progress
      * Typically called from in a catch block, this ensures that we don't save
      * the timing file because we have a messed up run.
      */
-    private void ignoreTimings()
+    private synchronized void ignoreTimings()
     {
         predictURI = null;
     }

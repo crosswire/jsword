@@ -217,7 +217,7 @@ public class ConfigEntryType implements Serializable
         public ConfigEntryPickType(String name, String[] picks, Object defaultPick)
         {
             super(name, defaultPick);
-            choiceArray = picks;
+            choiceArray = (String[]) picks.clone();
         }
 
         /* (non-Javadoc)

@@ -73,12 +73,12 @@ public final class CWProject
      * @param altHomeDir the name of the directory to be used for other OSes. This should not be a hidden directory.
      *                Defaults to JSword.
      */
-    public void setHome(String homeProperty, String homeDir, String altHomeDir)
+    public static void setHome(String homeProperty, String homeDir, String altHomeDir)
     {
         CWProject.homeProperty = homeProperty;
         CWProject.homeDirectory = homeDir;
         CWProject.homeAltDirectory = altHomeDir;
-        establishProjectHome();
+        instance().establishProjectHome();
     }
 
     /**
@@ -100,7 +100,7 @@ public final class CWProject
     public URI[] getProjectResourceDirs()
     {
         establishProjectHome();
-        return homes;
+        return (URI[]) homes.clone();
     }
 
     /**
