@@ -11,10 +11,10 @@
 	<classpathentry exported="true" kind="lib" path="jar/commons-httpclient-3.1/commons-httpclient-3.1.jar" sourcepath="jar/commons-httpclient-3.1/commons-httpclient-3.1-src.zip"/>
 	<classpathentry exported="true" kind="lib" path="jar/commons-logging-1.1.1/commons-logging-1.1.1.jar" sourcepath="jar/commons-logging-1.1.1/commons-logging-1.1.1-src.zip"/>
 	<classpathentry exported="true" kind="lib" path="jar/commons-net-1.4.1/commons-net-1.4.1.jar" sourcepath="jar/commons-net-1.4.1/commons-net-1.4.1-src.zip"/>
-	<classpathentry exported="true" kind="lib" path="jar/icu4j-3.8.1/icu4j-3_8_1.jar" sourcepath="jar/icu4j-3.8.1/icu4j-3_8_1-src.zip"/>
 	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry exported="true" kind="lib" path="jar/junit-3.8.1/junit.jar"/>
+	<classpathentry kind="lib" path="jar/icu4j-4.0/icu4j-4_0.jar" sourcepath="jar/icu4j-4.0/icu4j-4_0-src.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
