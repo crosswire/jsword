@@ -10,7 +10,7 @@
     == These are the standard locations that this build file uses.
     == This assumes that the build file is in the root of the project.
     =========================================================================-->
-  <property name="release.version"  value="1.2"/>
+  <property name="release.version"  value="1.6"/>
   <property name="source.root"      value="src"/>
   <property name="source.etc"       value="etc"/>
   <property name="source.jar"       value="jar"/>
@@ -51,7 +51,6 @@
     == This way we can upgrade without impacting this ant build file.
     =========================================================================-->
   <patternset id="external.runtime.jars">
-    <exclude name="**/*-src.jar"/>
     <include name="**/jdom-*.jar"/>
     <include name="**/commons-codec-*.jar"/>
     <include name="**/commons-httpclient-*.jar"/>
@@ -63,9 +62,7 @@
     <include name="**/jlfgr-*.jar"/>
     <include name="**/jsword-common-aqua-*.jar"/>
     <include name="**/javatar-*.jar"/>
-    <!-- Exclude ICU4J for now.
-    <exclude name="**/icu4j-charsets-*.jar"/>
-  	<include name="**/icu4j-*.jar"/> -->
+    <include name="**/icu4j-*.jar"/>
     <!--
     <include name="**/activation.jar"/>
     <include name="**/servlet.jar"/>
