@@ -50,31 +50,24 @@ public class DefaultBookmark implements Bookmark
         books = new ArrayList();
     }
 
-    /**
-     * Add a Book to this Bookmark.
-     * The books are maintained in the order they are added as a set.
-     * 
-     * @param book the Book to add.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Bookmark#addBook(org.crosswire.jsword.book.Book)
      */
     public void addBook(Book book)
     {
         books.add(book);
     }
 
-    /**
-     * Return the ordered set of books.
-     * @return
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Bookmark#getBooks()
      */
     public List getBooks()
     {
         return Collections.unmodifiableList(books);
     }
 
-    /**
-     * Set the SearchRequest for this Bookmark. A copy of the SearchRequest will be stored.
-     * Note, setting this will clear the lookup request, if any.
-     * 
-     * @param request the SearchRequest
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Bookmark#setSearchRequest(org.crosswire.jsword.index.search.SearchRequest)
      */
     public void setSearchRequest(SearchRequest request)
     {
@@ -82,21 +75,16 @@ public class DefaultBookmark implements Bookmark
         lookupRequest = null;
     }
 
-    /**
-     * Get the SearchRequest for this Bookmark.
-     * 
-     * @return a copy of the SearchRequest, or null.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Bookmark#getSearchRequest()
      */
     public SearchRequest getSearchRequest()
     {
         return searchRequest;
     }
 
-    /**
-     * Set the lookup request for this Bookmark.
-     * Note, setting this will clear the SearchRequest, if any.
-     * 
-     * @param request the lookup request.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Bookmark#setLookupRequest(java.lang.String)
      */
     public void setLookupRequest(String request)
     {
@@ -104,21 +92,16 @@ public class DefaultBookmark implements Bookmark
         searchRequest = null;
     }
 
-    /**
-     * Get the lookup request.
-     * 
-     * @return the lookup request or null.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Bookmark#getLookupRequest()
      */
     public String getLookupRequest()
     {
         return lookupRequest;
     }
 
-    /**
-     * Convert this Bookmark into a BookData by converting the SearchReqeust or lookup request
-     * into a key list.
-     * 
-     * @return the resulting BookData
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Bookmark#getBookData()
      */
     public BookData getBookData()
     {

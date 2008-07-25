@@ -131,7 +131,7 @@ public class ReadingsKey extends DefaultLeafKeyList
     /**
      * Convert the Gregorian Calendar to a string.
      * @param externalKey
-     * @return
+     * @return the internal representation of the key
      */
     public static String external2internal(Calendar externalKey)
     {

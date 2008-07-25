@@ -62,9 +62,7 @@ public class DataEntry
 
     /**
      * Get the key from this DataEntry.
-     * @param name A diagnostic name. Either the module initials or the expected key name.
-     * @param charset The character encoding for the String
-     * @return the key
+    * @return the key
      */
     public String getKey()
     {
@@ -106,7 +104,7 @@ public class DataEntry
      * If the entry is not linked then it is an error to call this method.
      * 
      * @return the key to look up
-     * @see isLinkEntry
+     * @see #isLinkEntry()
      */
     public String getLinkTarget()
     {
@@ -129,7 +127,7 @@ public class DataEntry
 
     /**
      * Get the block start and entry position.
-     * @return
+     * @return the index of the block
      */
     public DataIndex getBlockIndex()
     {

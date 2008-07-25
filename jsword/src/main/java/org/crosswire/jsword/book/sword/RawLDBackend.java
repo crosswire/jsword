@@ -285,7 +285,7 @@ public class RawLDBackend extends AbstractKeyBackend
     /**
      * Get the Index (that is offset and size) for an entry.
      * @param entry
-     * @return
+     * @return the index of the entry
      * @throws IOException 
      */
     private DataIndex getIndex(long entry) throws IOException
@@ -328,7 +328,7 @@ public class RawLDBackend extends AbstractKeyBackend
      * Find a matching entry, returning it's index. Otherwise return < 0, such that
      * (-pos - 1) gives the insertion index.
      * @param key
-     * @return
+     * @return the match
      * @throws IOException
      */
     private int search(String key) throws IOException

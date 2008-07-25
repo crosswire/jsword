@@ -47,7 +47,7 @@ public interface Bookmark extends Serializable, Cloneable
 
     /**
      * Return the ordered set of books.
-     * @return
+     * @return the books
      */
     List getBooks();
 

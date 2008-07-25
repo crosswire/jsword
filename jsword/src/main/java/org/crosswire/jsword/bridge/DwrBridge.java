@@ -56,8 +56,7 @@ public class DwrBridge
      * 
      * @param filter The custom filter specification string
      * @return a list of (initial, name) string pairs
-     * @see BookFilters#getCustom(java.lang.String)
-     * @see Books
+     * @see BookInstaller#getInstalledBook(String)
      */
     public String[][] getInstalledBooks(String filter)
     {
@@ -144,9 +143,11 @@ public class DwrBridge
     }
 
     /**
+     * Get a reference list for a search result against a book.
+     * 
      * @param bookInitials
      * @param searchRequest
-     * @return
+     * @return The reference for the matching.
      * @throws BookException
      */
     public String search(String bookInitials, String searchRequest) throws BookException
@@ -218,7 +219,7 @@ public class DwrBridge
 
     /**
      * For the sake of diagnostics, return the locations that JSword will look for books.
-     * @return
+     * @return the SWORD path
      */
     public String[] getSwordPath()
     {

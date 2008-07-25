@@ -261,7 +261,7 @@ public class RawBackend extends AbstractBackend
     /**
      * Get the Index (that is offset and size) for an entry.
      * @param entry
-     * @return
+     * @return the index for the entry
      * @throws IOException 
      */
     private DataIndex getIndex(RandomAccessFile raf, long entry) throws IOException

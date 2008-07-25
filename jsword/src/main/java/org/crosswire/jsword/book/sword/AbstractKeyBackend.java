@@ -38,7 +38,7 @@ public abstract class AbstractKeyBackend extends AbstractBackend implements Key
 {
     /**
      * Simple ctor
-     * @param datasize We need to know how many bytes in the size portion of the index
+     * @param sbmd the book's metadata
      */
     public AbstractKeyBackend(SwordBookMetaData sbmd)
     {

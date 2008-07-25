@@ -68,9 +68,9 @@ public class BookInstaller
     }
 
     /**
-     * Get a list of all know installers.
+     * Get a list of all known installers.
      * 
-     * @return
+     * @return the list of installers
      */
     public Map getInstallers()
     {
@@ -100,7 +100,7 @@ public class BookInstaller
 
     /**
      * Get a list of books by CustomFilter specification
-     * @param filter The filter string
+     * @param filterSpec The filter string
      * @see BookFilters#getCustom(java.lang.String)
      * @see Books
      */
@@ -143,7 +143,7 @@ public class BookInstaller
 
     /**
      * Get a list of books in a repository by CustomFilter specification
-     * @param filter The filter string
+     * @param filterSpec The filter string
      * @see BookFilters#getCustom(java.lang.String)
      * @see Books
      */
@@ -179,7 +179,7 @@ public class BookInstaller
      * 
      * @param repositoryName the repository from which to get the book
      * @param bookName the name of the book to get
-     * @return
+     * @return the Book
      */
     public Book getBook(String repositoryName, String bookName)
     {
@@ -190,7 +190,7 @@ public class BookInstaller
      * Install a book, overwriting it if the book to be installed is newer.
      * 
      * @param repositoryName the name of the repository from which to get the book
-     * @param bookName the book to get
+     * @param book the book to get
      * @throws BookException 
      * @throws InstallException 
      */

@@ -43,7 +43,7 @@ import org.crosswire.jsword.versification.BibleInfo;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
- */ 
+ */
 public final class VerseRange implements Key
 {
     /**
