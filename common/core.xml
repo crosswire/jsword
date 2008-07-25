@@ -51,6 +51,7 @@
     == This way we can upgrade without impacting this ant build file.
     =========================================================================-->
   <patternset id="external.runtime.jars">
+  	<exclude name="**/*-src.jar"/>
     <include name="**/jdom-*.jar"/>
     <include name="**/commons-codec-*.jar"/>
     <include name="**/commons-httpclient-*.jar"/>
@@ -62,7 +63,9 @@
     <include name="**/jlfgr-*.jar"/>
     <include name="**/jsword-common-aqua-*.jar"/>
     <include name="**/javatar-*.jar"/>
-    <include name="**/icu4j-*.jar"/>
+    <!-- Exclude ICU4J for now.
+  	<exclude name="**/icu4j-charsets-*.jar"/>
+  	<include name="**/icu4j-*.jar"/> -->
     <!--
     <include name="**/activation.jar"/>
     <include name="**/servlet.jar"/>
