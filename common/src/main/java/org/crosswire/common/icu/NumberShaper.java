@@ -62,7 +62,7 @@ public class NumberShaper implements Serializable
     /**
      * Create a shaper that is appropriate for the given locale.
      * 
-     * @param the requested Locale
+     * @param locale the requested Locale
      */
     public NumberShaper(Locale locale)
     {
@@ -154,7 +154,7 @@ public class NumberShaper implements Serializable
     /**
      * @param src
      * @param transformed
-     * @return
+     * @return the shaped string
      */
     private char[] shaped(char[] src, boolean[] transformed)
     {
@@ -175,7 +175,7 @@ public class NumberShaper implements Serializable
      * @param nine nine in the source representation
      * @param offset the distance between zeros in the source and target representation
      * @param transformed an input parameter of one boolean that can hold whether there was a transformation
-     * @return
+     * @return the shaped string
      */
     private char[] transform(char[] src, int zero, int nine, int offset, boolean[] transformed)
     {
@@ -303,7 +303,7 @@ public class NumberShaper implements Serializable
     /**
      * Establish nine for the language. There are languages that don't have zeroes.
      * 
-     * @return
+     * @return the representation for 9 in the language
      */
     private char getNine()
     {

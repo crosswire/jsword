@@ -152,7 +152,7 @@ public class Translations
     /**
      * Set the current translation, using human readable string.
      * 
-     * @param translation the translation to use
+     * @param newTranslation the translation to use
      */
     public void setCurrent(String newTranslation)
     {
@@ -221,7 +221,7 @@ public class Translations
     /**
      * Set the current translation, using human readable string.
      * 
-     * @param translation the translation to use
+     * @param newTranslation the translation to use
      */
     public static void setCurrentTranslation(String newTranslation)
     {

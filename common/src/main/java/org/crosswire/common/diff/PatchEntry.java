@@ -418,8 +418,8 @@ public class PatchEntry
      * This algorithm allows for \n to be included in a difference.
      * Thus it needs to be escaped. We will use URL encoding of \n.
      * But this makes % a meta-character, thus it needs to be encoded too.
-     * @param str
-     * @return
+     * @param str the un-encoded string
+     * @return the encoded string
      */
     private String encode(String str)
     {

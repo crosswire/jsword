@@ -86,7 +86,7 @@ public class DateFormatter
             fmt.formatterClass = DateFormat.class;
             fmt.formatter = DateFormat.getDateInstance(format);
         }
- 
+
         return fmt;
     }
 

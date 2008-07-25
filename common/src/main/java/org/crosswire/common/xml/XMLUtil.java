@@ -90,7 +90,7 @@ public final class XMLUtil
      * Get the full name of the attribute, including the namespace if any.
      * @param attrs the collection of attributes
      * @param index the index of the desired attribute
-     * @return
+     * @return the requested attribute
      */
     public static String getAttributeName(Attributes attrs, int index)
     {
