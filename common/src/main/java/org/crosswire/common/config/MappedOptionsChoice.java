@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 
-import org.crosswire.common.util.Reporter;
+import org.crosswire.common.util.Logger;
 import org.jdom.Element;
 
 /**
@@ -107,9 +107,9 @@ public class MappedOptionsChoice extends AbstractReflectedChoice implements Mapp
                 return mapEntry.getKey().toString();
             }
         }
-        Reporter.informUser(this, Msg.IGNORE, new Object[] { orig });
+        logger.warn(Msg.IGNORE.toString(orig));
         return ""; //$NON-NLS-1$
     }
-
+    private static Logger logger = Logger.getLogger(MappedOptionsChoice.class);
     private Map options;
 }
