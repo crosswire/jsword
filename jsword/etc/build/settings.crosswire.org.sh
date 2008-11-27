@@ -12,7 +12,7 @@ export KEYSTORE_FILE=../common/crosswire.keystore
 
 export EMAIL="joe@eireneh.com dmsmith555@yahoo.com"
 export ANT_HOME=/home/jsword/ant
-export JAVA_HOME=/usr/local/java
+export JAVA_HOME=/opt/java
 
 export PATH=$PATH:/usr/local/bin
 export PATH=$PATH:/bin
