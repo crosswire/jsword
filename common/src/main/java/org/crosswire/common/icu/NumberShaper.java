@@ -39,7 +39,7 @@ import java.util.Locale;
  * This shaper has special behavior for Arabic numbers that are in the form "12:34"
  * as this is taken as chapter:verse. Normally, a ':' is treated as a numeric
  * separator, this results in "12:34", but for verses it should be "34:12".
- * That is, Arabic, numbers are left-to-right (even though the rest of the language
+ * That is, Arabic, numbers are left-to-right (even though the rest of the script
  * is right-to-left) and the ':' as a numeric separator does not change that.
  * So to get around this we mark the ':' as a right-to-left character.
  * </p>
@@ -301,9 +301,9 @@ public class NumberShaper implements Serializable
     }
 
     /**
-     * Establish nine for the language. There are languages that don't have zeroes.
+     * Establish nine for the script. There are scripts that don't have zeroes.
      * 
-     * @return the representation for 9 in the language
+     * @return the representation for 9 in the script
      */
     private char getNine()
     {

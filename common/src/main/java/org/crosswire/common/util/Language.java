@@ -80,12 +80,16 @@ public class Language implements Comparable
 
     /**
      * Determine whether this language is a Left-to-Right or a Right-to-Left language.
+     * Note: This is problematic. Languages do not have direction. Scripts do. Further,
+     * there are over 7000 living languages, many of which are written in Right-to-Left
+     * scripts and are not listed here.
      * @return true if the language is Left-to-Right.
      */
     public boolean isLeftToRight()
     {
         if (!knowsDirection)
         {
+            // TODO(DMS): Improve this.
             ltor = !("he".equals(code)  || //$NON-NLS-1$ Hebrew
                      "ar".equals(code)  || //$NON-NLS-1$ Arabic
                      "fa".equals(code)  || //$NON-NLS-1$ Farsi/Persian

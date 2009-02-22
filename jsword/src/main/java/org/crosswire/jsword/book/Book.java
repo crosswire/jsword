@@ -260,10 +260,11 @@ public interface Book extends Activatable, KeyFactory, Comparable
     String getDriverName();
 
     /**
-     * Return the orientation of the language of the Book. If a book contains more than one language,
-     * it refers to the dominate language of the book. This will be used to present
+     * Return the orientation of the script of the Book. If a book contains more than one script,
+     * it refers to the dominate script of the book. This will be used to present
      * Arabic and Hebrew in their proper orientation.
-     * @return true if the orientation for the dominate language is LeftToRight.
+     * Note: some languages have multiple scripts which don't have the same directionality.
+     * @return true if the orientation for the dominate script is LeftToRight.
      */
     boolean isLeftToRight();
 

@@ -261,14 +261,21 @@ public final class SwordBookMetaData extends AbstractBookMetaData
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#lsLeftToRight()
+     * @see org.crosswire.jsword.book.BookMetaData#isLeftToRight()
      */
     public boolean isLeftToRight()
     {
-        // Return the dominate direction based upon the Book's Language not Direction
-        // because Direction can be BiDi.
-        Language lang = (Language) getProperty(ConfigEntryType.LANG);
-        return lang.isLeftToRight();
+        // This should return the dominate direction of the text, if it is BiDi,
+        // then we have to guess.
+        String dir = (String) getProperty(ConfigEntryType.DIRECTION);
+        if (ConfigEntryType.DIRECTION_BIDI.equals(dir))
+        {
+            // When BiDi, return the dominate direction based upon the Book's Language not Direction
+            Language lang = (Language) getProperty(ConfigEntryType.LANG);
+            return lang.isLeftToRight();
+        }
+
+        return ConfigEntryType.DIRECTION_LTOR.equals(dir);
     }
 
     /* (non-Javadoc)

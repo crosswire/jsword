@@ -586,10 +586,6 @@ public final class ConfigEntryTable
 
     private void adjustLanguage()
     {
-        // Java thinks it is LtoR but it is stated to be something else
-        String dir = (String) getValue(ConfigEntryType.DIRECTION);
-        String newDir = dir == null ? (String) ConfigEntryType.DIRECTION.getDefault() : dir;
-
         Language lang = (Language) getValue(ConfigEntryType.LANG);
         if (lang == null)
         {
@@ -640,54 +636,6 @@ public final class ConfigEntryTable
                 lang = langFrom;
                 add(ConfigEntryType.LANG, lang.toString());
             }
-
-            if (langFrom.isLeftToRight() != langTo.isLeftToRight())
-            {
-                newDir = ConfigEntryType.DIRECTION_BIDI;
-            }
-            else if (langFrom.isLeftToRight())
-            {
-                newDir = ConfigEntryType.DIRECTION_LTOR;
-            }
-            else
-            {
-                newDir = ConfigEntryType.DIRECTION_RTOL;
-            }
-        }
-        else
-        {
-            if (lang.isLeftToRight())
-            {
-                newDir = ConfigEntryType.DIRECTION_LTOR;
-            }
-            else
-            {
-                newDir = ConfigEntryType.DIRECTION_RTOL;
-            }
-        }
-
-        if (newDir.equals(ConfigEntryType.DIRECTION_LTOR))
-        {
-            if (dir != null)
-            {
-                if (!newDir.equals(dir))
-                {
-                    log.warn("Fixing data for " + internal + ". Changing " + ConfigEntryType.DIRECTION.getName() + "=" + dir + " to " + newDir); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                }
-                table.remove(ConfigEntryType.DIRECTION);
-            }
-        }
-        else if (!newDir.equals(dir))
-        {
-            if (dir == null)
-            {
-                log.warn("Fixing data for " + internal + ". Adding " + ConfigEntryType.DIRECTION.getName() + "=" + newDir); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            }
-            else
-            {
-                log.warn("Fixing data for " + internal + ". Changing " + ConfigEntryType.DIRECTION.getName() + "=" + dir + " to " + newDir); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-            }
-            add(ConfigEntryType.DIRECTION, newDir);
         }
     }
 

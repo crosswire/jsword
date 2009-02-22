@@ -62,7 +62,7 @@ public class StrongsNumber
 
     /**
      * Build an immutable Strong's Number.
-     * If the language is not 'G' or 'H' or the number is invalid, a BookException.
+     * If the language is not 'G' or 'H' or the number is invalid, throw a BookException.
      * @param language
      * @param strongsNumber
      * @throws BookException
@@ -74,7 +74,7 @@ public class StrongsNumber
 
     /**
      * Build an immutable Strong's Number.
-     * If the language is not 'G' or 'H' or the number is invalid, a BookException.
+     * If the language is not 'G' or 'H' or the number is invalid, throw a BookException.
      * @param language
      * @param strongsNumber
      * @throws BookException
