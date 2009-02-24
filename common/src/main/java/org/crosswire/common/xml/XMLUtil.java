@@ -253,6 +253,23 @@ public final class XMLUtil
     }
 
     /**
+     * Common HTML tags such as &lt;br&gt;,&lt;hr&gt; and &lt;img&gt; may be
+     * left open causing XML parsing to fail. This method closes these tags.
+     * 
+     * @param broken the string to be cleaned
+     * @return the cleaned string
+     */
+    public static String closeEmptyTags(String broken) 
+    {
+        if (broken == null)
+        {
+            return null;
+        }
+
+        return openHTMLTagPattern.matcher(broken).replaceAll("<$1$2/>");  //$NON-NLS-1$
+    }
+
+    /**
      * XML parse failed, so we can try getting rid of all the tags and having
      * another go. We define a tag to start at a &lt; and end at the end of the
      * next word (where a word is what comes in between spaces) that does not
@@ -489,4 +506,9 @@ public final class XMLUtil
      * Valid are: #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]
      */
     private static Pattern invalidCharacterPattern = Pattern.compile("[^\t\r\n\u0020-\uD7FF\uE000-\uFFFD]"); //$NON-NLS-1$
+   
+    /**
+     * Pattern that matches open &lt;br&gt;,&lt;hr&gt; and &lt;img&gt; tags.
+     */
+    private static Pattern openHTMLTagPattern = Pattern.compile("<(img|hr|br)([^>]*)(?<!/)>"); //$NON-NLS-1$
 }
