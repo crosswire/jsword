@@ -109,7 +109,9 @@ public class DataEntry
     public String getLinkTarget()
     {
         // 6 represents the length of "@LINK" + 1 to skip the last separator.
-        return SwordUtil.decode(name, data, getKeyEnd() + 6, data.length - (getLinkEnd() + 1), charset).trim();
+        int linkStart = getKeyEnd() + 6;
+        int len = getLinkEnd() - linkStart + 1;
+        return SwordUtil.decode(name, data, linkStart, len, charset).trim();
     }
 
     /**

@@ -26,8 +26,7 @@ import org.jdom.Element;
 import org.xml.sax.Attributes;
 
 /**
- * THML Tag to process the pos element.
- * (Part of speech)
+ * THML Tag to process an element that does not map to OSIS.
  *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.

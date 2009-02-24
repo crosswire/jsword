@@ -92,12 +92,9 @@ public final class GBFTags
          */
         public void updateOsisStack(LinkedList stack)
         {
-            Element hi = OSIS_FACTORY.createHI();
-            hi.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_BOLD);
-
-            Element current = (Element) stack.get(0);
-            current.addContent(hi);
-            stack.addFirst(hi);
+            Element ele = OSIS_FACTORY.createHI();
+            ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_BOLD);
+            GBFTags.updateOsisStack(stack, ele);
         }
     }
 
@@ -116,22 +113,19 @@ public final class GBFTags
          */
         public void updateOsisStack(LinkedList stack)
         {
-            Element seg = OSIS_FACTORY.createReference();
+            Element ele = OSIS_FACTORY.createReference();
 
             String refstr = getName().substring(2);
             try
             {
                 Passage ref = (Passage) KEY_FACTORY.getKey(refstr);
-                seg.setAttribute(OSISUtil.OSIS_ATTR_REF, ref.getOsisRef());
+                ele.setAttribute(OSISUtil.OSIS_ATTR_REF, ref.getOsisRef());
             }
             catch (NoSuchKeyException ex)
             {
                 DataPolice.report("unable to parse reference: " + refstr); //$NON-NLS-1$
             }
-
-            Element current = (Element) stack.get(0);
-            current.addContent(seg);
-            stack.addFirst(seg);
+            GBFTags.updateOsisStack(stack, ele);
         }
     }
 
@@ -154,17 +148,19 @@ public final class GBFTags
         public void updateOsisStack(LinkedList stack)
         {
 
+            Element p = OSIS_FACTORY.createLB();
             if (stack.size() == 0)
             {
-                Element p = OSIS_FACTORY.createLB();
                 stack.addFirst(p);
-                // log.warn("failing to add to element on empty stack");
             }
             else
             {
-                Element p = OSIS_FACTORY.createP();
-                Element ele = (Element) stack.get(0);
-                ele.addContent(p);
+                Content top = (Content) stack.get(0);
+                if (top instanceof Element)
+                {
+                    Element current = (Element) top;
+                    current.addContent(p);
+                }
             }
         }
     }
@@ -187,12 +183,9 @@ public final class GBFTags
          */
         public void updateOsisStack(LinkedList stack)
         {
-            Element current = (Element) stack.get(0);
-            Element note = OSIS_FACTORY.createNote();
-            note.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.NOTETYPE_STUDY);
-
-            current.addContent(note);
-            stack.addFirst(note);
+            Element ele = OSIS_FACTORY.createNote();
+            ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.NOTETYPE_STUDY);
+            GBFTags.updateOsisStack(stack, ele);
         }
     }
 
@@ -221,8 +214,12 @@ public final class GBFTags
 
                 if (note.getContentSize() < 1)
                 {
-                    Element ele = (Element) stack.get(0);
-                    ele.removeContent(note);
+                    Content top = (Content) stack.get(0);
+                    if (top instanceof Element)
+                    {
+                        Element ele = (Element) top;
+                        ele.removeContent(note);
+                    }
                 }
             }
             else
@@ -250,11 +247,7 @@ public final class GBFTags
          */
         public void updateOsisStack(LinkedList stack)
         {
-            Element title = OSIS_FACTORY.createTitle();
-
-            Element current = (Element) stack.get(0);
-            current.addContent(title);
-            stack.addFirst(title);
+            GBFTags.updateOsisStack(stack, OSIS_FACTORY.createTitle());
         }
     }
 
@@ -297,12 +290,9 @@ public final class GBFTags
          */
         public void updateOsisStack(LinkedList stack)
         {
-            Element hi = OSIS_FACTORY.createHI();
-            hi.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_ITALIC);
-
-            Element current = (Element) stack.get(0);
-            current.addContent(hi);
-            stack.addFirst(hi);
+            Element ele = OSIS_FACTORY.createHI();
+            ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_ITALIC);
+            GBFTags.updateOsisStack(stack, ele);
         }
     }
 
@@ -324,13 +314,10 @@ public final class GBFTags
          */
         public void updateOsisStack(LinkedList stack)
         {
-            // LATER(joe): is div the right thing?
-            Element seg = OSIS_FACTORY.createSeg();
-            seg.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.SEG_JUSTIFYRIGHT);
-
-            Element current = (Element) stack.get(0);
-            current.addContent(seg);
-            stack.addFirst(seg);
+            // LATER(joe): is seg the right thing?
+            Element ele = OSIS_FACTORY.createSeg();
+            ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.SEG_JUSTIFYRIGHT);
+            GBFTags.updateOsisStack(stack, ele);
         }
     }
 
@@ -352,6 +339,9 @@ public final class GBFTags
          */
         public void updateOsisStack(LinkedList stack)
         {
+            Element ele = OSIS_FACTORY.createSeg();
+            ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.SEG_JUSTIFYLEFT);
+            GBFTags.updateOsisStack(stack, ele);
         }
     }
 
@@ -373,11 +363,7 @@ public final class GBFTags
          */
         public void updateOsisStack(LinkedList stack)
         {
-            Element q = OSIS_FACTORY.createQ();
-
-            Element current = (Element) stack.get(0);
-            current.addContent(q);
-            stack.addFirst(q);
+            GBFTags.updateOsisStack(stack, OSIS_FACTORY.createQ());
         }
     }
 
@@ -408,8 +394,12 @@ public final class GBFTags
             else
             {
                 Element p = OSIS_FACTORY.createP();
-                Element ele = (Element) stack.get(0);
-                ele.addContent(p);
+                Content top = (Content) stack.get(0);
+                if (top instanceof Element)
+                {
+                    Element current = (Element) top;
+                    current.addContent(p);
+                }
             }
         }
     }
@@ -432,12 +422,7 @@ public final class GBFTags
          */
         public void updateOsisStack(LinkedList stack)
         {
-            // LATER(joe): is speech the right thing?
-            Element speech = OSIS_FACTORY.createLG();
-
-            Element current = (Element) stack.get(0);
-            current.addContent(speech);
-            stack.addFirst(speech);
+            GBFTags.updateOsisStack(stack, OSIS_FACTORY.createLG());
         }
     }
 
@@ -459,11 +444,7 @@ public final class GBFTags
          */
         public void updateOsisStack(LinkedList stack)
         {
-            Element title = OSIS_FACTORY.createTitle();
-
-            Element current = (Element) stack.get(0);
-            current.addContent(title);
-            stack.addFirst(title);
+            GBFTags.updateOsisStack(stack, OSIS_FACTORY.createTitle());
         }
     }
 
@@ -485,12 +466,9 @@ public final class GBFTags
          */
         public void updateOsisStack(LinkedList stack)
         {
-            Element speaker = OSIS_FACTORY.createSpeaker();
-            speaker.setAttribute(OSISUtil.ATTRIBUTE_SPEAKER_WHO, Msg.NAME_JESUS.toString());
-
-            Element current = (Element) stack.get(0);
-            current.addContent(speaker);
-            stack.addFirst(speaker);
+            Element ele = OSIS_FACTORY.createQ();
+            ele.setAttribute(OSISUtil.ATTRIBUTE_Q_WHO, Msg.NAME_JESUS.toString());
+            GBFTags.updateOsisStack(stack, ele);
         }
     }
 
@@ -511,44 +489,48 @@ public final class GBFTags
         {
             String name = getName().trim();
 
-            Element ele = (Element) stack.get(0);
-            int size = ele.getContentSize();
-            if (size == 0)
+            Content top = (Content) stack.get(0);
+            if (top instanceof Element)
             {
-                DataPolice.report("No content to attach word to: <" + name + ">."); //$NON-NLS-1$ //$NON-NLS-2$
-                return;
-            }
+                Element ele = (Element) top;
+                int size = ele.getContentSize();
+                if (size == 0)
+                {
+                    DataPolice.report("No content to attach word to: <" + name + ">."); //$NON-NLS-1$ //$NON-NLS-2$
+                    return;
+                }
 
-            int lastIndex = size - 1;
-            Content prevObj = ele.getContent(lastIndex);
-            Element word = null;
+                int lastIndex = size - 1;
+                Content prevObj = ele.getContent(lastIndex);
+                Element word = null;
 
-            if (prevObj instanceof Text)
-            {
-                word = OSIS_FACTORY.createW();
-                ele.removeContent(prevObj);
-                word.addContent(prevObj);
-                ele.addContent(word);
-            }
-            else if (prevObj instanceof Element)
-            {
-                word = (Element) prevObj;
-            }
-            else
-            {
-                DataPolice.report("No words to attach word to: <" + name + ">."); //$NON-NLS-1$ //$NON-NLS-2$
-                return;
-            }
+                if (prevObj instanceof Text)
+                {
+                    word = OSIS_FACTORY.createW();
+                    ele.removeContent(prevObj);
+                    word.addContent(prevObj);
+                    ele.addContent(word);
+                }
+                else if (prevObj instanceof Element)
+                {
+                    word = (Element) prevObj;
+                }
+                else
+                {
+                    DataPolice.report("No words to attach word to: <" + name + ">."); //$NON-NLS-1$ //$NON-NLS-2$
+                    return;
+                }
 
-            String existingMorph = word.getAttributeValue(OSISUtil.ATTRIBUTE_W_MORPH);
-            StringBuffer newMorph = new StringBuffer();
+                String existingMorph = word.getAttributeValue(OSISUtil.ATTRIBUTE_W_MORPH);
+                StringBuffer newMorph = new StringBuffer();
 
-            if (existingMorph != null && existingMorph.length() > 0)
-            {
-                newMorph.append(existingMorph).append('|');
+                if (existingMorph != null && existingMorph.length() > 0)
+                {
+                    newMorph.append(existingMorph).append('|');
+                }
+                newMorph.append(OSISUtil.MORPH_STRONGS).append(name.substring(2));
+                word.setAttribute(OSISUtil.ATTRIBUTE_W_MORPH, newMorph.toString());
             }
-            newMorph.append(OSISUtil.MORPH_STRONGS).append(name.substring(2));
-            word.setAttribute(OSISUtil.ATTRIBUTE_W_MORPH, newMorph.toString());
         }
     }
 
@@ -572,46 +554,50 @@ public final class GBFTags
         {
             String name = getName().trim();
 
-            Element ele = (Element) stack.get(0);
-            int size = ele.getContentSize();
-            if (size == 0)
+            Content top = (Content) stack.get(0);
+            if (top instanceof Element)
             {
-                DataPolice.report("No content to attach word to: <" + name + ">."); //$NON-NLS-1$ //$NON-NLS-2$
-                return;
-            }
+                Element ele = (Element) top;
+                int size = ele.getContentSize();
+                if (size == 0)
+                {
+                    DataPolice.report("No content to attach word to: <" + name + ">."); //$NON-NLS-1$ //$NON-NLS-2$
+                    return;
+                }
 
-            int lastIndex = size - 1;
-            Content prevObj = ele.getContent(lastIndex);
-            Element word = null;
+                int lastIndex = size - 1;
+                Content prevObj = ele.getContent(lastIndex);
+                Element word = null;
 
-            if (prevObj instanceof Text)
-            {
-                Text textItem = (Text) prevObj;
-                word = OSIS_FACTORY.createW();
-                ele.removeContent(textItem);
-                word.addContent(textItem);
-                ele.addContent(word);
-            }
-            else if (prevObj instanceof Element)
-            {
-                word = (Element) prevObj;
-            }
-            else
-            {
-                DataPolice.report("No words to attach word to: <" + name + ">."); //$NON-NLS-1$ //$NON-NLS-2$
-                return;
-            }
+                if (prevObj instanceof Text)
+                {
+                    Text textItem = (Text) prevObj;
+                    word = OSIS_FACTORY.createW();
+                    ele.removeContent(textItem);
+                    word.addContent(textItem);
+                    ele.addContent(word);
+                }
+                else if (prevObj instanceof Element)
+                {
+                    word = (Element) prevObj;
+                }
+                else
+                {
+                    DataPolice.report("No words to attach word to: <" + name + ">."); //$NON-NLS-1$ //$NON-NLS-2$
+                    return;
+                }
 
-            String existingLemma = word.getAttributeValue(OSISUtil.ATTRIBUTE_W_LEMMA);
-            StringBuffer newLemma = new StringBuffer();
+                String existingLemma = word.getAttributeValue(OSISUtil.ATTRIBUTE_W_LEMMA);
+                StringBuffer newLemma = new StringBuffer();
 
-            if (existingLemma != null && existingLemma.length() > 0)
-            {
-                newLemma.append(existingLemma).append('|');
+                if (existingLemma != null && existingLemma.length() > 0)
+                {
+                    newLemma.append(existingLemma).append('|');
+                }
+
+                newLemma.append(OSISUtil.LEMMA_STRONGS).append(name.substring(2));
+                word.setAttribute(OSISUtil.ATTRIBUTE_W_LEMMA, newLemma.toString());
             }
-
-            newLemma.append(OSISUtil.LEMMA_STRONGS).append(name.substring(2));
-            word.setAttribute(OSISUtil.ATTRIBUTE_W_LEMMA, newLemma.toString());
         }
     }
 
@@ -633,12 +619,9 @@ public final class GBFTags
          */
         public void updateOsisStack(LinkedList stack)
         {
-            Element note = OSIS_FACTORY.createNote();
-            note.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.NOTETYPE_STUDY);
-
-            Element current = (Element) stack.get(0);
-            current.addContent(note);
-            stack.addFirst(note);
+            Element ele = OSIS_FACTORY.createNote();
+            ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.NOTETYPE_STUDY);
+            GBFTags.updateOsisStack(stack, ele);
         }
     }
 
@@ -666,8 +649,12 @@ public final class GBFTags
             }
             else
             {
-                Element ele = (Element) stack.get(0);
-                ele.addContent(getName());
+                Content top = (Content) stack.get(0);
+                if (top instanceof Element)
+                {
+                    Element ele = (Element) top;
+                    ele.addContent(getName());
+                }
             }
         }
     }
@@ -690,11 +677,7 @@ public final class GBFTags
          */
         public void updateOsisStack(LinkedList stack)
         {
-            Element title = OSIS_FACTORY.createTitle();
-
-            Element current = (Element) stack.get(0);
-            current.addContent(title);
-            stack.addFirst(title);
+            GBFTags.updateOsisStack(stack, OSIS_FACTORY.createTitle());
         }
     }
 
@@ -716,12 +699,20 @@ public final class GBFTags
          */
         public void updateOsisStack(LinkedList stack)
         {
-            Element hi = OSIS_FACTORY.createHI();
-            hi.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_UNDERLINE);
+            Element ele = OSIS_FACTORY.createHI();
+            ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_UNDERLINE);
+            GBFTags.updateOsisStack(stack, ele);
+        }
+    }
 
-            Element current = (Element) stack.get(0);
-            current.addContent(hi);
-            stack.addFirst(hi);
+    /* private */ static void updateOsisStack(LinkedList stack, Content content)
+    {
+        Content top = (Content) stack.get(0);
+        if (top instanceof Element)
+        {
+            Element current = (Element) top;
+            current.addContent(content);
+            stack.addFirst(content);
         }
     }
 

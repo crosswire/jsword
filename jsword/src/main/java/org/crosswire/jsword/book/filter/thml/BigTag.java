@@ -26,7 +26,7 @@ import org.jdom.Element;
 import org.xml.sax.Attributes;
 
 /**
- * THML Tag to process the center element.
+ * THML Tag to process the big element.
  *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.

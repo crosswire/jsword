@@ -21,34 +21,33 @@
  */
 package org.crosswire.jsword.book.filter.thml;
 
+import org.jdom.Element;
 
 /**
- * THML Tag to process the content of an element but to ignore the tag itself.
+ * Process the content of an element but to ignore the tag itself.
  *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
- * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class IgnoreTag extends AbstractTag
+public class IgnoreTag extends AnonymousTag
 {
     /**
      * Simple ctor
      */
     public IgnoreTag(String name)
     {
-        this.name = name;
+        super(name);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
+     * @see org.crosswire.jsword.book.filter.thml.AbstractTag#processContent(org.jdom.Element)
      */
-    public String getTagName()
+    public void processContent(Element ele)
     {
-        return name;
+        // Replace the parent with this element
+        Element parent = ele.getParentElement();
+        parent.removeContent(ele);
+        parent.addContent(ele.getChildren());
     }
-
-    /**
-     * The tag name that we are ignoring
-     */
-    private String name;
 }

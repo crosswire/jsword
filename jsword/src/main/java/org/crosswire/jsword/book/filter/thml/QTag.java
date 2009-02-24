@@ -17,7 +17,7 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
+ * ID: $Id: BlockquoteTag.java 1466 2007-07-02 02:48:09Z dmsmith $
  */
 package org.crosswire.jsword.book.filter.thml;
 
@@ -26,44 +26,20 @@ import org.jdom.Element;
 import org.xml.sax.Attributes;
 
 /**
- * THML Tag to process the div element.
+ * THML Tag to process the quote element.
  *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class DivTag extends AbstractTag
+public class QTag extends AbstractTag
 {
-    /**
-     * Create an div tag
-     * @param level
-     */
-    public DivTag()
-    {
-        super();
-        this.level = 0;
-    }
-
-    /**
-     * Create an div tag of the given level
-     * @param level
-     */
-    public DivTag(int level)
-    {
-        super();
-        this.level = level;
-    }
-
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
     public String getTagName()
     {
-        if (level == 0)
-        {
-            return "div"; //$NON-NLS-1$
-        }
-        return "div" + level; //$NON-NLS-1$
+        return "blockquote"; //$NON-NLS-1$
     }
 
     /* (non-Javadoc)
@@ -72,38 +48,13 @@ public class DivTag extends AbstractTag
     /* @Override */
     public Element processTag(Element ele, Attributes attrs)
     {
-        // See if there are variant readings e.g. WHNU Mat 1.9
-        String typeAttr = attrs.getValue("type"); //$NON-NLS-1$
-        if ("variant".equals(typeAttr)) //$NON-NLS-1$
-        {
-            Element seg = OSISUtil.factory().createSeg();
-            seg.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.VARIANT_TYPE);
-            String classAttr = attrs.getValue("class"); //$NON-NLS-1$
-            if (classAttr != null)
-            {
-                seg.setAttribute(OSISUtil.OSIS_ATTR_SUBTYPE, OSISUtil.VARIANT_CLASS + '-' + classAttr);
-            }
-
-            if (ele != null)
-            {
-                ele.addContent(seg);
-            }
-
-            return seg;
-        }
-
-        Element div = OSISUtil.factory().createDiv();
+        Element q = OSISUtil.factory().createQ();
 
         if (ele != null)
         {
-            ele.addContent(div);
+            ele.addContent(q);
         }
 
-        return div;
+        return q;
     }
-
-    /**
-     * The level of the division
-     */
-    private int level;
 }

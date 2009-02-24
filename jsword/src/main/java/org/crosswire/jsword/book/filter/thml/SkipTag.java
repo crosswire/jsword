@@ -17,45 +17,36 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
+ * ID: $Id: IgnoreTag.java 1466 2007-07-02 02:48:09Z dmsmith $
  */
 package org.crosswire.jsword.book.filter.thml;
 
-import org.crosswire.jsword.book.OSISUtil;
 import org.jdom.Element;
-import org.xml.sax.Attributes;
 
 /**
- * THML Tag to process the subscript element.
+ * Skip the tag and it's content.
  *
  * @see gnu.lgpl.License for license details.
  *      The copyright to this program is held by it's authors.
- * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class SubTag extends AbstractTag
+public class SkipTag extends AnonymousTag
 {
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
+    /**
+     * Simple ctor
      */
-    public String getTagName()
+    public SkipTag(String name)
     {
-        return "sub"; //$NON-NLS-1$
+        super(name);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
+     * @see org.crosswire.jsword.book.filter.thml.AbstractTag#processContent(org.jdom.Element)
      */
-    /* @Override */
-    public Element processTag(Element ele, Attributes attrs)
+    public void processContent(Element ele)
     {
-        Element hi = OSISUtil.factory().createHI();
-        hi.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_SUB);
-
-        if (ele != null)
-        {
-            ele.addContent(hi);
-        }
-
-        return hi;
+        // Remove this element and all it's children
+        Element parent = ele.getParentElement();
+        parent.removeContent(ele);
     }
 }

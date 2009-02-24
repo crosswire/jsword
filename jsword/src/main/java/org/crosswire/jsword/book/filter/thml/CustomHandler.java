@@ -76,7 +76,7 @@ public class CustomHandler extends DefaultHandler
 
             if (top instanceof Element) // It might be a text element
             {
-                ele = (Element) stack.getFirst();
+                ele = (Element) top;
 
                 // If the element and its descendants are to be ignored
                 // then there is a null element on the stack
@@ -111,33 +111,43 @@ public class CustomHandler extends DefaultHandler
         }
 
         // What we are adding to
-        Element current = (Element) stack.getFirst();
+        Content top = (Content) stack.getFirst();
 
         // If the element and its descendants are to be ignored
         // then there is a null element on the stack
-        if (current == null)
+        if (top == null)
         {
             return;
         }
 
-        int size = current.getContentSize();
-
-        // If the last element in the list is a string then we should add
-        // this string on to the end of it rather than add a new list item
-        // because (probably as an atrifact of the HTML/XSL transform we get
-        // a space inserted in the output even when 2 calls to this method
-        // split a word.
-        if (size > 0)
+        if (top instanceof Text)
         {
-            Content last = current.getContent(size - 1);
-            if (last instanceof Text)
-            {
-                current.removeContent(size - 1);
-                text = ((Text) last).getText() + text;
-            }
+            ((Text) top).append(text);
+            return;
         }
 
-        current.addContent(new Text(text));
+        if (top instanceof Element)
+        {
+            Element current = (Element) top;
+
+            int size = current.getContentSize();
+
+            // If the last element in the list is a string then we should add
+            // this string on to the end of it rather than add a new list item
+            // because (probably as an artifact of the HTML/XSL transform we get
+            // a space inserted in the output even when 2 calls to this method
+            // split a word.
+            if (size > 0)
+            {
+                Content last = current.getContent(size - 1);
+                if (last instanceof Text)
+                {
+                    ((Text) last).append(text);
+                    return;
+                }
+            }
+            current.addContent(new Text(text));
+        }
     }
 
     /* (non-Javadoc)
@@ -152,19 +162,23 @@ public class CustomHandler extends DefaultHandler
         }
         // When we are done processing an element we need to remove
         // it from the stack so that nothing more is attached to it.
-        Element finished = (Element) stack.removeFirst();
-        Tag t = getTag(localname, qname);
-
-        if (t != null)
+        Content top = (Content) stack.removeFirst();
+        if (top instanceof Element)
         {
-            t.processContent(finished);
-        }
+            Element finished = (Element) top;
+            Tag t = getTag(localname, qname);
 
-        // If it was the last element then it was the root element
-        // so save it
-        if (stack.size() == 0)
-        {
-            rootElement = finished;
+            if (t != null)
+            {
+                t.processContent(finished);
+            }
+
+            // If it was the last element then it was the root element
+            // so save it
+            if (stack.size() == 0)
+            {
+                rootElement = finished;
+            }
         }
     }
 
@@ -187,6 +201,10 @@ public class CustomHandler extends DefaultHandler
             if (t == null)
             {
                 log.warn("In " + book.getInitials() + "(" + key.getName() + ") unknown thml element: " + localname + " qname=" + qname); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+
+                // Report on it only once and make sure the content is output.
+                t = new AnonymousTag(qname);
+                TAG_MAP.put(qname, t);
                 return t;
             }
 
@@ -222,142 +240,131 @@ public class CustomHandler extends DefaultHandler
     private static final Map TAG_MAP = new HashMap();
 
     static {
+        /* ThML is based upon Voyager XHTML and all Voyager elements are allowed.
+         * However not all elements make sense.
+         */
         Tag[] tags = new Tag[]
         {
+            // The following are defined in Voyager xhtml 4.0
             new ATag(),
-            new BlockquoteTag(),
-            new BrTag(),
+            new AbbrTag(),
+            new AliasTag("acronym", new AbbrTag()), //$NON-NLS-1$
+            new AnonymousTag("address"), //$NON-NLS-1$
+            new SkipTag("applet"), //$NON-NLS-1$
+            new SkipTag("area"), //$NON-NLS-1$
             new BTag(),
+            new SkipTag("base"), //$NON-NLS-1$
+            new SkipTag("basefont"), //$NON-NLS-1$
+            new IgnoreTag("bdo"), //$NON-NLS-1$
             new BigTag(),
+            new BlockquoteTag(),
+            new IgnoreTag("body"), //$NON-NLS-1$
+            new BrTag(),
+            new SkipTag("button"), //$NON-NLS-1$
+            new AnonymousTag("caption"), //$NON-NLS-1$
             new CenterTag(),
-            new CitationTag(),
-            new ColTag(),
+            new AnonymousTag("cite"), //$NON-NLS-1$
+            new AnonymousTag("code"), //$NON-NLS-1$
+            new SkipTag("col"), //$NON-NLS-1$
+            new SkipTag("colgroup"), //$NON-NLS-1$
+            new AliasTag("dd", new LiTag()), //$NON-NLS-1$
+            new AnonymousTag("del"), //$NON-NLS-1$
+            new AnonymousTag("dfn"), //$NON-NLS-1$
             new DivTag(),
-            new ForeignTag(),
-            new FontTag(),
-            new HrTag(),
-            new ImgTag(),
-            new ITag(),
-            new LiTag(),
-            new NoteTag(),
-            new NameTag(),
-            new OlTag(),
-            new PTag(),
-            new PbTag(),
-            new RootTag(),
-            new RowTag(),
-            new ScriptureTag(),
-            new ScripRefTag(),
-            new SmallTag(),
-            new SubTag(),
-            new SupTag(),
-            new SyncTag(),
-            new TableTag(),
-            new TdTag(),
-            new TermTag(),
-            new ThTag(),
-            new TrTag(),
-            new TtTag(),
-            new UTag(),
-            new UlTag(),
+            new AliasTag("dl", new UlTag()), //$NON-NLS-1$
+            new AliasTag("dt", new LiTag()), //$NON-NLS-1$
             new AliasTag("em", new ITag()), //$NON-NLS-1$
-            new AliasTag("strong", new BTag()), //$NON-NLS-1$
+            new IgnoreTag("fieldset"), //$NON-NLS-1$
+            new FontTag(),
+            new SkipTag("form"), //$NON-NLS-1$
+            new SkipTag("frame"), //$NON-NLS-1$
+            new SkipTag("frameset"), //$NON-NLS-1$
             new AliasTag("h1", new HTag(1)), //$NON-NLS-1$
             new AliasTag("h2", new HTag(2)), //$NON-NLS-1$
             new AliasTag("h3", new HTag(3)), //$NON-NLS-1$
             new AliasTag("h4", new HTag(4)), //$NON-NLS-1$
             new AliasTag("h5", new HTag(5)), //$NON-NLS-1$
             new AliasTag("h6", new HTag(6)), //$NON-NLS-1$
-            new AliasTag("dl", new UlTag()), //$NON-NLS-1$
-            new AliasTag("dd", new LiTag()), //$NON-NLS-1$
-            new AliasTag("dt", new LiTag()), //$NON-NLS-1$
-            new IgnoreTag("span"), //$NON-NLS-1$
-            new IgnoreTag("dir"), //$NON-NLS-1$
+            new SkipTag("head"), //$NON-NLS-1$
+            new HrTag(),
+            new IgnoreTag("html"), //$NON-NLS-1$
+            new IgnoreTag("frameset"), //$NON-NLS-1$
+            new ITag(),
+            new SkipTag("iframe"), //$NON-NLS-1$
+            new ImgTag(),
+            new SkipTag("input"), //$NON-NLS-1$
+            new AnonymousTag("ins"), //$NON-NLS-1$
+            new AnonymousTag("kbd"), //$NON-NLS-1$
+            new AnonymousTag("label"), //$NON-NLS-1$
+            new AnonymousTag("legend"), //$NON-NLS-1$
+            new LiTag(),
+            new SkipTag("link"), //$NON-NLS-1$
+            new SkipTag("map"), //$NON-NLS-1$
+            new SkipTag("meta"), //$NON-NLS-1$
+            new SkipTag("noscript"), //$NON-NLS-1$
+            new SkipTag("object"), //$NON-NLS-1$
+            new OlTag(),
+            new SkipTag("optgroup"), //$NON-NLS-1$
+            new SkipTag("option"), //$NON-NLS-1$
+            new PTag(),
+            new SkipTag("param"), //$NON-NLS-1$
             new IgnoreTag("pre"), //$NON-NLS-1$
-            // all the following are from Webster's Dict
-            // Don't know what to do with them
-            // They are not ThML!
+            new QTag(),
+            new RootTag(),
+            new STag(),
+            new AnonymousTag("samp"), //$NON-NLS-1$
+            new SkipTag("script"), //$NON-NLS-1$
+            new SkipTag("select"), //$NON-NLS-1$
+            new SmallTag(),
+            new IgnoreTag("span"), //$NON-NLS-1$
+            new AliasTag("strong", new BTag()), //$NON-NLS-1$
+            new SkipTag("style"), //$NON-NLS-1$
+            new SubTag(),
+            new SupTag(),
+            new SyncTag(),
+            new TableTag(),
+            new IgnoreTag("tbody"), //$NON-NLS-1$
+            new TdTag(),
+            new IgnoreTag("tfoot"), //$NON-NLS-1$
+            new SkipTag("textarea"), //$NON-NLS-1$
+            new SkipTag("title"), //$NON-NLS-1$
+            new IgnoreTag("thead"), //$NON-NLS-1$
+            new ThTag(),
+            new TrTag(),
+            new TtTag(),
+            new UTag(),
+            new UlTag(),
+            new AnonymousTag("var"), //$NON-NLS-1$
+
+            // ThML adds the following to Voyager
+            // Note: hymn.mod is not here nor are additional head&DC elements
+            new AnonymousTag("added"), //$NON-NLS-1$
+            new AnonymousTag("attr"), //$NON-NLS-1$
+            new AnonymousTag("argument"), //$NON-NLS-1$
+            new CitationTag(),
+            new AnonymousTag("date"), //$NON-NLS-1$
+            new AnonymousTag("deleted"), //$NON-NLS-1$
             new AnonymousTag("def"), //$NON-NLS-1$
-            new AnonymousTag("pos"), //$NON-NLS-1$
-            new AnonymousTag("hpos"), //$NON-NLS-1$
-            new AnonymousTag("org"), //$NON-NLS-1$
-            new AnonymousTag("wf"), //$NON-NLS-1$
-            new AnonymousTag("cd"), //$NON-NLS-1$
-            new AnonymousTag("sd"), //$NON-NLS-1$
-            new AnonymousTag("tran"), //$NON-NLS-1$
-            new AnonymousTag("itran"), //$NON-NLS-1$
-            new AnonymousTag("qpers"), //$NON-NLS-1$
-            new AnonymousTag("fract"), //$NON-NLS-1$
-            new AnonymousTag("sn"), //$NON-NLS-1$
-            new AnonymousTag("singw"), //$NON-NLS-1$
-            new AnonymousTag("universbold"), //$NON-NLS-1$
-            new AnonymousTag("plw"), //$NON-NLS-1$
-            new AnonymousTag("matrix"), //$NON-NLS-1$
-            new AnonymousTag("ttitle"), //$NON-NLS-1$
-            new AnonymousTag("englishtype"), //$NON-NLS-1$
-            new AnonymousTag("figcap"), //$NON-NLS-1$
-            new AnonymousTag("extendedtype"), //$NON-NLS-1$
-            new AnonymousTag("musfig"), //$NON-NLS-1$
-            new AnonymousTag("stageof"), //$NON-NLS-1$
-            new AnonymousTag("wns"), //$NON-NLS-1$
-            new AnonymousTag("subs"), //$NON-NLS-1$
-            new AnonymousTag("sups"), //$NON-NLS-1$
-            new AnonymousTag("nonpareiltype"), //$NON-NLS-1$
-            new AnonymousTag("gothictype"), //$NON-NLS-1$
-            new AnonymousTag("sanserif"), //$NON-NLS-1$
-            new AnonymousTag("sansserif"), //$NON-NLS-1$
-            new AnonymousTag("headrow"), //$NON-NLS-1$
-            new AnonymousTag("figure"), //$NON-NLS-1$
-            new AnonymousTag("srow"), //$NON-NLS-1$
-            new AnonymousTag("longprimertype"), //$NON-NLS-1$
-            new AnonymousTag("greatprimertype"), //$NON-NLS-1$
-            new AnonymousTag("est"), //$NON-NLS-1$
-            new AnonymousTag("chname"), //$NON-NLS-1$
-            new AnonymousTag("miniontype"), //$NON-NLS-1$
-            new AnonymousTag("supr"), //$NON-NLS-1$
-            new AnonymousTag("sansserif"), //$NON-NLS-1$
-            new AnonymousTag("funct"), //$NON-NLS-1$
-            new AnonymousTag("item"), //$NON-NLS-1$
-            new AnonymousTag("mitem"), //$NON-NLS-1$
-            new AnonymousTag("mtable"), //$NON-NLS-1$
-            new AnonymousTag("figtitle"), //$NON-NLS-1$
-            new AnonymousTag("ct"), //$NON-NLS-1$
-            new AnonymousTag("defwf"), //$NON-NLS-1$
-            new AnonymousTag("umac"), //$NON-NLS-1$
-            new AnonymousTag("pearltype"), //$NON-NLS-1$
-            new AnonymousTag("vertical"), //$NON-NLS-1$
-            new AnonymousTag("title"), //$NON-NLS-1$
-            new AnonymousTag("picatype"), //$NON-NLS-1$
-            new AnonymousTag("point18"), //$NON-NLS-1$
-            new AnonymousTag("matrix2x5"), //$NON-NLS-1$
-            new AnonymousTag("oldenglishtype"), //$NON-NLS-1$
-            new AnonymousTag("oldstyletype"), //$NON-NLS-1$
-            new AnonymousTag("smpicatype"), //$NON-NLS-1$
-            new AnonymousTag("frenchelzevirtype"), //$NON-NLS-1$
-            new AnonymousTag("typewritertype"), //$NON-NLS-1$
-            new AnonymousTag("scripttype"), //$NON-NLS-1$
-            new AnonymousTag("point1"), //$NON-NLS-1$
-            new AnonymousTag("point1.5"), //$NON-NLS-1$
-            new AnonymousTag("point2"), //$NON-NLS-1$
-            new AnonymousTag("point2.5"), //$NON-NLS-1$
-            new AnonymousTag("point3"), //$NON-NLS-1$
-            new AnonymousTag("point3.5"), //$NON-NLS-1$
-            new AnonymousTag("point4"), //$NON-NLS-1$
-            new AnonymousTag("point4.5"), //$NON-NLS-1$
-            new AnonymousTag("point5"), //$NON-NLS-1$
-            new AnonymousTag("point5.5"), //$NON-NLS-1$
-            new AnonymousTag("point6"), //$NON-NLS-1$
-            new AnonymousTag("point7"), //$NON-NLS-1$
-            new AnonymousTag("point8"), //$NON-NLS-1$
-            new AnonymousTag("point9"), //$NON-NLS-1$
-            new AnonymousTag("point10"), //$NON-NLS-1$
-            new AnonymousTag("point11"), //$NON-NLS-1$
-            new AnonymousTag("point12"), //$NON-NLS-1$
-            new AnonymousTag("point14"), //$NON-NLS-1$
-            new AnonymousTag("point16"), //$NON-NLS-1$
-            new AnonymousTag("point18"), //$NON-NLS-1$
-            new AnonymousTag("point20"), //$NON-NLS-1$
-            new AnonymousTag("hw"), //$NON-NLS-1$
+            new AliasTag("div1", new DivTag(1)), //$NON-NLS-1$
+            new AliasTag("div2", new DivTag(2)), //$NON-NLS-1$
+            new AliasTag("div3", new DivTag(3)), //$NON-NLS-1$
+            new AliasTag("div4", new DivTag(4)), //$NON-NLS-1$
+            new AliasTag("div5", new DivTag(5)), //$NON-NLS-1$
+            new AliasTag("div6", new DivTag(6)), //$NON-NLS-1$
+            new ForeignTag(),
+            new AnonymousTag("index"), //$NON-NLS-1$
+            new AnonymousTag("insertIndex"), //$NON-NLS-1$
+            new AnonymousTag("glossary"), //$NON-NLS-1$
+            new NoteTag(),
+            new NameTag(),
+            new PbTag(),
+            new AnonymousTag("scripCom"), //$NON-NLS-1$
+            new AnonymousTag("scripContext"), //$NON-NLS-1$
+            new ScripRefTag(),
+            new ScriptureTag(),
+            new TermTag(),
+            new AnonymousTag("unclear"), //$NON-NLS-1$
+            new VerseTag(),
         };
         for (int i = 0; i < tags.length; i++)
         {

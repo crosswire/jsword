@@ -140,6 +140,11 @@ public final class OSISUtil
     public static final String SEG_JUSTIFYRIGHT = "text-align: right;"; //$NON-NLS-1$
 
     /**
+     * Constant to help narrow down what we use seg for. In this case the justify right tag
+     */
+    public static final String SEG_JUSTIFYLEFT = "text-align: left;"; //$NON-NLS-1$
+
+    /**
      * Constant to help narrow down what we use seg for. In this case the thml center tag
      */
     public static final String SEG_CENTER = "text-align: center;"; //$NON-NLS-1$
@@ -242,6 +247,7 @@ public final class OSISUtil
     public static final String CELL_ALIGN_START = "start"; //$NON-NLS-1$
     public static final String CELL_ALIGN_END = "end"; //$NON-NLS-1$
 
+    public static final String OSIS_ELEMENT_ABBR = "abbr"; //$NON-NLS-1$
     public static final String OSIS_ELEMENT_TITLE = "title"; //$NON-NLS-1$
     public static final String OSIS_ELEMENT_TABLE = "table"; //$NON-NLS-1$
     public static final String OSIS_ELEMENT_SPEECH = "speech"; //$NON-NLS-1$
@@ -286,6 +292,7 @@ public final class OSISUtil
     public static final String OSIS_ATTR_REF = "osisRef"; //$NON-NLS-1$
     public static final String OSIS_ATTR_LEVEL = "level"; //$NON-NLS-1$
     public static final String ATTRIBUTE_SPEAKER_WHO = "who"; //$NON-NLS-1$
+    public static final String ATTRIBUTE_Q_WHO = "who"; //$NON-NLS-1$
     public static final String ATTRIBUTE_W_MORPH = "morph"; //$NON-NLS-1$
     public static final String ATTRIBUTE_OSISTEXT_OSISIDWORK = "osisIDWork"; //$NON-NLS-1$
     // OSIS defines the lang attribute as the one from the xml namespace
@@ -331,12 +338,20 @@ public final class OSISUtil
     public static class OSISFactory
     {
         /**
-         *
-         */
-        public Element createSeg()
-        {
-            return new Element(OSIS_ELEMENT_SEG);
-        }
+        *
+        */
+       public Element createAbbr()
+       {
+           return new Element(OSIS_ELEMENT_ABBR);
+       }
+
+       /**
+       *
+       */
+      public Element createSeg()
+      {
+          return new Element(OSIS_ELEMENT_SEG);
+      }
 
         /**
          *

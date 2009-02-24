@@ -342,7 +342,10 @@ public class RawLDBackend extends AbstractKeyBackend
 
         // Initialize to one beyond both ends.
         int total = getCardinality();
-        int low = -1;
+        // Note: In some dictionaries, the first element is out of order and represents the title of the work.
+        // So, do the bin search from 1 to end and if not found, check the first element as a special case.
+        // If that does not match return the position found otherwise.
+        int low = 0;
         int high = total;
         int match = -1;
 

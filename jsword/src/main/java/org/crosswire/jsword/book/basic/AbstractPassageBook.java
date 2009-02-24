@@ -154,23 +154,31 @@ public abstract class AbstractPassageBook extends AbstractBook
         Iterator sit = OSISUtil.getFragment(bdata.getOsisFragment()).iterator();
         while (sit.hasNext())
         {
-            Element div = (Element) sit.next();
-
-            // For all of the Verses in the section
-            for (Iterator vit = div.getContent().iterator(); vit.hasNext(); )
+            Object nextElem = sit.next();
+            if (nextElem instanceof Element)
             {
-                Object data = vit.next();
-                if (data instanceof Element)
-                {
-                    Element overse = (Element) data;
-                    String text = OSISUtil.getPlainText(overse);
+                Element div = (Element) nextElem;
 
-                    setRawText(key, text);
-                }
-                else
+                // For all of the Verses in the section
+                for (Iterator vit = div.getContent().iterator(); vit.hasNext(); )
                 {
-                    log.error("Ignoring non OSIS/Verse content of DIV."); //$NON-NLS-1$
+                    Object data = vit.next();
+                    if (data instanceof Element)
+                    {
+                        Element overse = (Element) data;
+                        String text = OSISUtil.getPlainText(overse);
+    
+                        setRawText(key, text);
+                    }
+                    else
+                    {
+                        log.error("Ignoring non OSIS/Verse content of DIV."); //$NON-NLS-1$
+                    }
                 }
+            }
+            else
+            {
+                log.error("Ignoring non OSIS/Verse content of DIV."); //$NON-NLS-1$
             }
         }
     }
