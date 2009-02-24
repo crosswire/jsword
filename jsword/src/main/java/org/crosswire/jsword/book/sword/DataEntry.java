@@ -95,8 +95,12 @@ public class DataEntry
      */
     public boolean isLinkEntry()
     {
-        String linkCheck = SwordUtil.decode(name, data, getKeyEnd() + 1, 5, charset);
-        return "@LINK".equals(linkCheck); //$NON-NLS-1$
+        if (data.length >= 5)
+        {
+            String linkCheck = SwordUtil.decode(name, data, getKeyEnd() + 1, 5, charset);
+            return "@LINK".equals(linkCheck); //$NON-NLS-1$
+        }
+        return false;
     }
 
     /**
