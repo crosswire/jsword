@@ -58,6 +58,13 @@ public interface BookMetaData extends Comparable
     String getName();
 
     /**
+     * How this Book organizes it's keys.
+     * 
+     * @return the organization of keys of this Book
+     */
+    KeyType getKeyType();
+
+    /**
      * What category of content is this, a Bible or a reference work like a
      * Dictionary or Commentary.
      * @return The category of book

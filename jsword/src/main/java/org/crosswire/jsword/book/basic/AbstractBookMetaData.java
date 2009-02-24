@@ -31,6 +31,7 @@ import org.crosswire.common.util.Language;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.FeatureType;
+import org.crosswire.jsword.book.KeyType;
 import org.crosswire.jsword.index.IndexStatus;
 import org.jdom.Document;
 
@@ -43,6 +44,15 @@ import org.jdom.Document;
  */
 public abstract class AbstractBookMetaData implements BookMetaData
 {
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookMetaData#getKeyType()
+     */
+    public KeyType getKeyType()
+    {
+        return KeyType.LIST;
+    }
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getDriver()
      */

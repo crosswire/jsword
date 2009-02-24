@@ -34,6 +34,7 @@ import org.crosswire.common.util.Language;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.FeatureType;
+import org.crosswire.jsword.book.KeyType;
 import org.crosswire.jsword.book.basic.AbstractBookMetaData;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterFactory;
@@ -156,6 +157,19 @@ public final class SwordBookMetaData extends AbstractBookMetaData
     public String getBookCharset()
     {
         return (String) ENCODING_JAVA.get(getProperty(ConfigEntryType.ENCODING));
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#getKeyType()
+     */
+    public KeyType getKeyType()
+    {
+        BookType bookType = getBookType();
+        if (bookType == null)
+        {
+            return null;
+        }
+        return bookType.getKeyType();
     }
 
     /**

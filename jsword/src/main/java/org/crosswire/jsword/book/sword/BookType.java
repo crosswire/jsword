@@ -26,6 +26,7 @@ import java.io.Serializable;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.KeyType;
 
 /**
  * Data about book types.
@@ -52,6 +53,14 @@ public abstract class BookType implements Serializable
             return new RawBackend(sbmd, 2);
         }
 
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.BookType#getKeyType()
+         */
+        public KeyType getKeyType()
+        {
+            return KeyType.VERSE;
+        }
+
         /**
          * Serialization ID
          */
@@ -72,6 +81,14 @@ public abstract class BookType implements Serializable
         {
             BlockType blockType = BlockType.fromString((String) sbmd.getProperty(ConfigEntryType.BLOCK_TYPE));
             return new ZVerseBackend(sbmd, blockType);
+        }
+
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.BookType#getKeyType()
+         */
+        public KeyType getKeyType()
+        {
+            return KeyType.VERSE;
         }
 
         /**
@@ -95,6 +112,14 @@ public abstract class BookType implements Serializable
             return new RawBackend(sbmd, 2);
         }
 
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.BookType#getKeyType()
+         */
+        public KeyType getKeyType()
+        {
+            return KeyType.VERSE;
+        }
+
         /**
          * Serialization ID
          */
@@ -111,6 +136,14 @@ public abstract class BookType implements Serializable
         protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
         {
             return new RawBackend(sbmd, 4);
+        }
+
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.BookType#getKeyType()
+         */
+        public KeyType getKeyType()
+        {
+            return KeyType.VERSE;
         }
 
         /**
@@ -134,6 +167,14 @@ public abstract class BookType implements Serializable
             return new ZVerseBackend(sbmd, blockType);
         }
 
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.BookType#getKeyType()
+         */
+        public KeyType getKeyType()
+        {
+            return KeyType.VERSE;
+        }
+
         /**
          * Serialization ID
          */
@@ -155,6 +196,14 @@ public abstract class BookType implements Serializable
             return new RawBackend(sbmd, 2);
         }
 
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.BookType#getKeyType()
+         */
+        public KeyType getKeyType()
+        {
+            return KeyType.VERSE;
+        }
+
         /**
          * Serialization ID
          */
@@ -174,6 +223,14 @@ public abstract class BookType implements Serializable
         protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
         {
             return new RawBackend(sbmd, 2);
+        }
+
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.BookType#getKeyType()
+         */
+        public KeyType getKeyType()
+        {
+            return KeyType.VERSE;
         }
 
         /**
@@ -201,6 +258,14 @@ public abstract class BookType implements Serializable
             return new RawLDBackend(sbmd, 2);
         }
 
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.BookType#getKeyType()
+         */
+        public KeyType getKeyType()
+        {
+            return KeyType.LIST;
+        }
+
         /**
          * Serialization ID
          */
@@ -224,6 +289,14 @@ public abstract class BookType implements Serializable
         protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
         {
             return new RawLDBackend(sbmd, 4);
+        }
+
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.BookType#getKeyType()
+         */
+        public KeyType getKeyType()
+        {
+            return KeyType.LIST;
         }
 
         /**
@@ -251,6 +324,14 @@ public abstract class BookType implements Serializable
             return new ZLDBackend(sbmd);
         }
 
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.BookType#getKeyType()
+         */
+        public KeyType getKeyType()
+        {
+            return KeyType.LIST;
+        }
+
         /**
          * Serialization ID
          */
@@ -270,6 +351,14 @@ public abstract class BookType implements Serializable
         protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
         {
             return new GenBookBackend(sbmd);
+        }
+
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.sword.BookType#getKeyType()
+         */
+        public KeyType getKeyType()
+        {
+            return KeyType.TREE;
         }
 
         /**
@@ -318,7 +407,7 @@ public abstract class BookType implements Serializable
      * Given a SwordBookMetaData determine whether this BookType
      * will work for it.
      * @param sbmd the BookMetaData that this BookType works upon
-     * @return true if this is a useable BookType
+     * @return true if this is a usable BookType
      */
     public boolean isSupported(SwordBookMetaData sbmd)
     {
@@ -343,6 +432,12 @@ public abstract class BookType implements Serializable
      * Create a the appropriate backend for this type of book
      */
     protected abstract AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException;
+
+    /**
+     * Get the way this type of Book organizes it's keys.
+     * @return the organization of keys for this book
+     */
+    public abstract KeyType getKeyType();
 
     /**
      * The name of the BookType
@@ -421,4 +516,9 @@ public abstract class BookType implements Serializable
         Z_LD,
         RAW_GEN_BOOK,
     };
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 5597156322295331692L;
 }
