@@ -307,4 +307,9 @@ public abstract class PassageType implements Serializable
         MIX,
         TALLY,
     };
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 1678142015407980515L;
 }

@@ -353,4 +353,9 @@ public abstract class RestrictionType implements Serializable
         NONE,
         CHAPTER,
     };
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 5511668815596963817L;
 }

@@ -314,4 +314,9 @@ public abstract class AbstractKeyBackend extends AbstractBackend implements Key
     public void blur(int by, RestrictionType restrict)
     {
     }
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = -2782112117361556089L;
 }

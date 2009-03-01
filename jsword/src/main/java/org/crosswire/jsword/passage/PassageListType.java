@@ -173,4 +173,9 @@ public abstract class PassageListType implements Serializable
         VERSES,
         RANGES,
     };
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 1019448872358899522L;
 }

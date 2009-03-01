@@ -168,4 +168,9 @@ public abstract class BlockType implements Serializable
         BLOCK_CHAPTER,
         BLOCK_VERSE,
     };
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 1411226089933054161L;
 }

@@ -365,4 +365,9 @@ public abstract class AbstractKeyList implements Key
      * The common user visible name for this work
      */
     private String name;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3858640507828137034L;
 }

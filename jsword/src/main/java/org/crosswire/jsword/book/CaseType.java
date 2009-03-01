@@ -253,4 +253,9 @@ public abstract class CaseType implements Serializable
         SENTENCE,
         UPPER,
     };
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = -63772726311422060L;
 }
