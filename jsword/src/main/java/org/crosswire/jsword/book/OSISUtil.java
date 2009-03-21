@@ -850,10 +850,11 @@ public final class OSISUtil
             else if (data instanceof Text)
             {
                 // make sure that adjacent text elements are separated by whitespace
+                // Empty elements also produce whitespace.
                 // TODO(dms): verify that the xml parser does not split words containing entities.
                 int lastIndex = buffer.length() - 1;
                 String text = ((Text) data).getText();
-                if (lastIndex >= 0 && !Character.isWhitespace(buffer.charAt(lastIndex)) && !Character.isWhitespace(text.charAt(0)))
+                if (lastIndex >= 0 && !Character.isWhitespace(buffer.charAt(lastIndex)) && (text.length() == 0 || !Character.isWhitespace(text.charAt(0))))
                 {
                     buffer.append(' ');
                 }
