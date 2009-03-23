@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.crosswire.common.util.Histogram;
+import org.crosswire.common.util.Language;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.common.xml.XMLUtil;
@@ -389,7 +390,7 @@ public final class ConfigEntry
             buf.append('=');
             if (allowsContinuation())
             {
-                String text = value.toString();
+                String text = getConfValue(value);
                 String [] lines = StringUtil.splitAll(text, '\n');
                 for (int i = 0; i < lines.length; i++)
                 {
@@ -403,7 +404,7 @@ public final class ConfigEntry
             }
             else
             {
-                buf.append(value.toString());
+                buf.append(getConfValue(value));
                 buf.append('\n');
             }
         }
@@ -437,15 +438,32 @@ public final class ConfigEntry
                 Iterator iter = values.iterator();
                 while (iter.hasNext())
                 {
-                    String text = (String) iter.next();
                     buf.append(getName());
                     buf.append('=');
-                    buf.append(text);
+                    buf.append(getConfValue(iter.next()));
                     buf.append('\n');
                 }
             }
         }
         return buf.toString();
+    }
+
+    /**
+     * The conf value is the internal representation of the string. For Language, this is the code, not the localized name. Add others as needed.
+     * @param aValue either value or values[i]
+     * @return the conf value.
+     */
+    private String getConfValue(Object aValue)
+    {
+        if (aValue != null)
+        {
+            if (aValue instanceof Language)
+            {
+                return ((Language) value).getCode();
+            }
+            return aValue.toString();
+        }
+        return null;
     }
 
     private String handleRTF(String aValue)
