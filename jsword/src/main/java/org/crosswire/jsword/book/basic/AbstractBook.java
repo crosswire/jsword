@@ -296,7 +296,41 @@ public abstract class AbstractBook implements Book
      */
     public boolean unlock(String unlockKey)
     {
-        return bmd.unlock(unlockKey);
+        boolean state = bmd.unlock(unlockKey);
+        if (state)
+        {
+            // Double check.
+            return isUnlockKeyValid();
+        }
+        return state;
+    }
+
+    /**
+     * This is a heuristic that tries out the key.
+     * @return true if there were no exceptions in reading the enciphered module.
+     */
+    private boolean isUnlockKeyValid()
+    {
+        try
+        {
+            Key key = getGlobalKeyList();
+            if (key == null)
+            {
+                // weird key == null, assume it is valid
+                return true;
+            }
+
+            if (key.getCardinality() > 0)
+            {
+                key = key.get(0);
+            }
+            
+            getRawText(key);
+
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
     /* (non-Javadoc)
