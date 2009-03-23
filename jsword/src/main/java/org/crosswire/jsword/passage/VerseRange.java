@@ -869,6 +869,16 @@ public final class VerseRange implements Key
         return whole;
     }
 
+    public static VerseRange getOldTestamentVerseRange()
+    {
+        return otRange;
+    }
+
+    public static VerseRange getNewTestamentVerseRange()
+    {
+        return ntRange;
+    }
+
     private String doGetName(Key base) throws NoSuchVerseException
     {
         // Cache these we're going to be using them a lot.
@@ -1249,6 +1259,17 @@ public final class VerseRange implements Key
      * The whole Bible VerseRange
      */
     private static transient VerseRange whole;
+
+    /**
+     * The Old Testament VerseRange
+     */
+    private static transient VerseRange otRange;
+
+    /**
+     * The New Testament VerseRange
+     */
+    private static transient VerseRange ntRange;
+
     static
     {
         try
@@ -1259,6 +1280,26 @@ public final class VerseRange implements Key
         {
             assert false : ex;
             whole = new VerseRange();
+        }
+
+        try
+        {
+            otRange = new VerseRange(new Verse(1, 1, 1), new Verse(39, 4, 6));
+        }
+        catch (NoSuchVerseException ex)
+        {
+            assert false : ex;
+            otRange = new VerseRange();
+        }
+
+        try
+        {
+            ntRange = new VerseRange(new Verse(40, 1, 1), new Verse(66, 22, 21));
+        }
+        catch (NoSuchVerseException ex)
+        {
+            assert false : ex;
+            ntRange = new VerseRange();
         }
     }
 
