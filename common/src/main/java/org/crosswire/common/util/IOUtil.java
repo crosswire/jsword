@@ -71,10 +71,8 @@ public final class IOUtil
             // Is it already a directory ?
             if (!parentDir.isDirectory())
             {
-                parentDir.mkdirs();
-
-                // Did that work?
-                if (!parentDir.isDirectory())
+                // Create the directory and make sure it worked.
+                if (!parentDir.mkdirs())
                 {
                     throw new MalformedURLException(UserMsg.CREATE_DIR_FAIL.toString(parentDir.toString()));
                 }

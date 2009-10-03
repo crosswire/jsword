@@ -164,7 +164,10 @@ public class LuceneIndexManager implements IndexManager
             String finalCanonicalPath = storage.getCanonicalPath();
             tempPath = new File(finalCanonicalPath + '.' + IndexStatus.CREATING.toString());
             FileUtil.delete(tempPath);
-            storage.renameTo(tempPath);
+            if (!storage.renameTo(tempPath))
+            {
+                throw new BookException(UserMsg.DELETE_FAILED);
+            }
             book.setIndexStatus(IndexStatus.UNDONE);
         }
         catch (IOException ex)

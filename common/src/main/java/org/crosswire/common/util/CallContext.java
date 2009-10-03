@@ -99,5 +99,5 @@ public final class CallContext extends SecurityManager
      */
     private static final int CALL_CONTEXT_OFFSET = 3;
 
-    private static CallContext resolver;
+    private static volatile CallContext resolver;
 }

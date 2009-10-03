@@ -103,8 +103,10 @@ public class GetOptions
     private void parse()
     {
         int nargs = args.length;
-        for (int i = 0; i < nargs; i++)
+        int skip = 0;
+        for (int i = 0; i < nargs; i += 1 + skip)
         {
+            skip = 0;
             String nextArg = args[i];
             // All options are 2 or more characters long and begin with a '-'.
             // If this is a non-option then note it and advance
@@ -163,7 +165,8 @@ public class GetOptions
                     if (i + 1 < nargs)
                     {
                         // Add option with following argument to options
-                        String argument = args[i++];
+                        String argument = args[i];
+                        skip = 1;
                         suppliedOptions.put(option, argument);
                         continue;
                     }
@@ -203,7 +206,8 @@ public class GetOptions
                         if (i + 1 < nargs)
                         {
                             // Add option with following argument to options
-                            String argument = args[i++];
+                            String argument = args[i];
+                            skip = 1;
                             suppliedOptions.put(option, argument);
                             continue;
                         }

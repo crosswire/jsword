@@ -21,6 +21,8 @@
  */
 package org.crosswire.jsword.book.install;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.EventObject;
 
 /**
@@ -61,6 +63,20 @@ public class InstallerEvent extends EventObject
     public boolean isAddition()
     {
         return added;
+    }
+
+    /**
+     * Serialization support.
+     * 
+     * @param is
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    private void readObject(ObjectInputStream is) throws IOException, ClassNotFoundException
+    {
+        // Broken but we don't serialize events
+        installer = null;
+        is.defaultReadObject();
     }
 
     /**

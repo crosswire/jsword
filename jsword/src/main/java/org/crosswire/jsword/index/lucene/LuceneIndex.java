@@ -192,7 +192,10 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                 job.setCancelable(false);
                 if (!job.isFinished())
                 {
-                    tempPath.renameTo(finalPath);
+                    if (!tempPath.renameTo(finalPath))
+                    {
+                        throw new BookException(UserMsg.INSTALL_FAIL);
+                    }
                 }
 
                 if (finalPath.exists())

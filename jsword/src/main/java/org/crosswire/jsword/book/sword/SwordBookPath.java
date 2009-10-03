@@ -371,10 +371,11 @@ public class SwordBookPath
             return true;
         }
 
+        // make sure the parent exists
         File parent = newPath.getParentFile();
-        if (!parent.exists())
+        if (!parent.exists() && !parent.mkdirs())
         {
-            parent.mkdirs();
+            return false;
         }
 
         return oldPath.renameTo(newPath);

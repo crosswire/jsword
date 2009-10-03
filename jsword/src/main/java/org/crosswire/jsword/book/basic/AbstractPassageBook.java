@@ -167,7 +167,7 @@ public abstract class AbstractPassageBook extends AbstractBook
                     {
                         Element overse = (Element) data;
                         String text = OSISUtil.getPlainText(overse);
-    
+
                         setRawText(key, text);
                     }
                     else

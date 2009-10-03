@@ -124,7 +124,7 @@ public class THMLFilter implements Filter
         String clean = XMLUtil.cleanAllCharacters(plain);
         Element ele = parse(book, key, clean, "cleaning text"); //$NON-NLS-1$
 
-        if (ele == null) 
+        if (ele == null)
         {
             ele = parse(book, key, XMLUtil.closeEmptyTags(clean), "closing empty tags"); //$NON-NLS-1$
         }

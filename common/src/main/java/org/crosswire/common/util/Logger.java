@@ -231,7 +231,7 @@ public final class Logger
 
     private static final String ROOT_LOGGER = ""; //$NON-NLS-1$
     private static final String CLASS_NAME = Logger.class.getName();
-    private static Level level;
+    private static volatile Level level;
 
     private java.util.logging.Logger logger;
 }

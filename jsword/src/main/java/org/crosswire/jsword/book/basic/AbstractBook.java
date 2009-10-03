@@ -324,11 +324,13 @@ public abstract class AbstractBook implements Book
             {
                 key = key.get(0);
             }
-            
+
             getRawText(key);
 
             return true;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             return false;
         }
     }

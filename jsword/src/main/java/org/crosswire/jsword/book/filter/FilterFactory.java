@@ -57,7 +57,7 @@ public final class FilterFactory
     /**
      * The lookup table of filters
      */
-    private static Filter deft;
+    private static volatile Filter deft;
 
     /**
      * Populate the lookup table of filters and the default from the properties

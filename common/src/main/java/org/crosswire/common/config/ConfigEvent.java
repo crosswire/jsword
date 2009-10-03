@@ -21,6 +21,8 @@
  */
 package org.crosswire.common.config;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.EventObject;
 
 /**
@@ -69,6 +71,20 @@ public class ConfigEvent extends EventObject
     public Choice getPath()
     {
         return model;
+    }
+
+    /**
+     * Serialization support.
+     * 
+     * @param is
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    private void readObject(ObjectInputStream is) throws IOException, ClassNotFoundException
+    {
+        // Broken but we don't serialize events
+        model = null;
+        is.defaultReadObject();
     }
 
     /**

@@ -259,7 +259,7 @@ public final class XMLUtil
      * @param broken the string to be cleaned
      * @return the cleaned string
      */
-    public static String closeEmptyTags(String broken) 
+    public static String closeEmptyTags(String broken)
     {
         if (broken == null)
         {
@@ -506,7 +506,7 @@ public final class XMLUtil
      * Valid are: #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]
      */
     private static Pattern invalidCharacterPattern = Pattern.compile("[^\t\r\n\u0020-\uD7FF\uE000-\uFFFD]"); //$NON-NLS-1$
-   
+
     /**
      * Pattern that matches open &lt;br&gt;,&lt;hr&gt; and &lt;img&gt; tags.
      */

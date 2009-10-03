@@ -247,14 +247,17 @@ public final class CWProject
             File oldDir = new File(oldPath.getPath());
             File newDir = new File(newPath.getPath());
 
-            // This will return false if it could not rename.
+            // renameTo will return false if it could not rename.
             // This will happen if the directory already exists.
-            oldDir.renameTo(newDir);
-            if (NetUtil.isDirectory(newPath))
+            // So ensure that the directory does not currently exist.
+            if (!NetUtil.isDirectory(newPath))
             {
-                return newPath;
+                if (oldDir.renameTo(newDir))
+                {
+                    return newPath;
+                }
+                return oldPath;
             }
-            return oldPath;
         }
         return newPath;
     }

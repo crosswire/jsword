@@ -141,10 +141,8 @@ public final class NetUtil
         // Is it already a directory ?
         if (!file.isDirectory())
         {
-            file.mkdirs();
-
-            // Did that work?
-            if (!file.isDirectory())
+            // Create the directory and make sure it worked.
+            if (!file.mkdirs())
             {
                 throw new MalformedURLException(UserMsg.CREATE_DIR_FAIL.toString(orig));
             }

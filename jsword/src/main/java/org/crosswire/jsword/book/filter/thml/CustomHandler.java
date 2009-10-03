@@ -74,16 +74,16 @@ public class CustomHandler extends DefaultHandler
         {
             Object top = stack.getFirst();
 
+            // If the element and its descendants are to be ignored
+            // then there is a null element on the stack
+            if (top == null)
+            {
+                return;
+            }
+
             if (top instanceof Element) // It might be a text element
             {
                 ele = (Element) top;
-
-                // If the element and its descendants are to be ignored
-                // then there is a null element on the stack
-                if (ele == null)
-                {
-                    return;
-                }
             }
         }
 

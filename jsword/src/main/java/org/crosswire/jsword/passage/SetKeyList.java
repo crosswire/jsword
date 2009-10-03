@@ -102,7 +102,12 @@ public class SetKeyList extends AbstractKeyList
     /* @Override */
     public boolean equals(Object obj)
     {
-        return list.equals(obj);
+        if (obj instanceof SetKeyList)
+        {
+            SetKeyList that = (SetKeyList) obj;
+            return list.equals(that.list);
+        }
+        return false;
     }
 
     /* (non-Javadoc)
