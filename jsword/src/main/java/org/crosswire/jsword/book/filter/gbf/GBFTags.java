@@ -149,7 +149,7 @@ public final class GBFTags
         {
 
             Element p = OSIS_FACTORY.createLB();
-            if (stack.size() == 0)
+            if (stack.isEmpty())
             {
                 stack.addFirst(p);
             }
@@ -386,7 +386,7 @@ public final class GBFTags
         public void updateOsisStack(LinkedList stack)
         {
 
-            if (stack.size() == 0)
+            if (stack.isEmpty())
             {
                 Element p = OSIS_FACTORY.createLB();
                 stack.addFirst(p);
@@ -643,7 +643,7 @@ public final class GBFTags
          */
         public void updateOsisStack(LinkedList stack)
         {
-            if (stack.size() == 0)
+            if (stack.isEmpty())
             {
                 stack.addFirst(new Text(getName()));
             }

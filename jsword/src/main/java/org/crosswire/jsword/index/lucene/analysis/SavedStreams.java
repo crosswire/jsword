@@ -14,52 +14,25 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007
+ * Copyright: 2009
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
+ * ID: $Id: org.eclipse.jdt.ui.prefs 1178 2006-11-06 12:48:02Z dmsmith $
  */
 package org.crosswire.jsword.index.lucene.analysis;
 
-import java.io.IOException;
-
 import org.apache.lucene.analysis.TokenStream;
-import org.crosswire.jsword.book.Book;
+import org.apache.lucene.analysis.Tokenizer;
 
 /**
- * A KeyFilter normalizes OSISrefs.
+ * SavedStreams is used to make reusable Lucene analyzers.
  *
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class XRefFilter extends AbstractBookTokenFilter
+/* package */ class SavedStreams
 {
-    /**
-     * Construct filtering <i>in</i>.
-     */
-    public XRefFilter(TokenStream in)
-    {
-      this(null, in);
-    }
-
-    /**
-     * Construct an XRefFilter tied to a Book.
-     * @param book the book to which this TokenFilter is tied.
-     * @param in the input TokenStream
-     */
-    public XRefFilter(Book book, TokenStream in)
-    {
-      super(book, in);
-    }
-
-    /* (non-Javadoc)
-     * @see org.apache.lucene.analysis.TokenStream#incrementToken()
-     */
-    public boolean incrementToken() throws IOException
-    {
-        // TODO(DMS): actually normalize
-        return super.incrementToken();
-    }
-
+    Tokenizer source;
+    TokenStream result;
 }

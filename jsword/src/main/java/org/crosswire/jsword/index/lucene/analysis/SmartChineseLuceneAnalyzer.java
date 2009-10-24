@@ -14,52 +14,41 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007
+ * Copyright: 2009
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
+ * ID: $Id:  $
  */
 package org.crosswire.jsword.index.lucene.analysis;
 
-import java.io.IOException;
+import java.io.Reader;
 
 import org.apache.lucene.analysis.TokenStream;
-import org.crosswire.jsword.book.Book;
+import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 
 /**
- * A KeyFilter normalizes OSISrefs.
- *
- * @see gnu.lgpl.License for license details.
+ * A simple wrapper for {@link SmartChineseAnalyzer}, which takes overlapping
+ * two character tokenization approach which leads to larger index size, like {@link CJKAnalyzer}.
+ * This analyzer's stop list is merely of punctuation. It does stemming of English.
+ *  
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class XRefFilter extends AbstractBookTokenFilter
+public class SmartChineseLuceneAnalyzer extends AbstractBookAnalyzer
 {
-    /**
-     * Construct filtering <i>in</i>.
-     */
-    public XRefFilter(TokenStream in)
+    public SmartChineseLuceneAnalyzer()
     {
-      this(null, in);
-    }
-
-    /**
-     * Construct an XRefFilter tied to a Book.
-     * @param book the book to which this TokenFilter is tied.
-     * @param in the input TokenStream
-     */
-    public XRefFilter(Book book, TokenStream in)
-    {
-      super(book, in);
+        myAnalyzer = new SmartChineseAnalyzer();
     }
 
     /* (non-Javadoc)
-     * @see org.apache.lucene.analysis.TokenStream#incrementToken()
+     * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String, java.io.Reader)
      */
-    public boolean incrementToken() throws IOException
+    public final TokenStream tokenStream(String fieldName, Reader reader)
     {
-        // TODO(DMS): actually normalize
-        return super.incrementToken();
+        return myAnalyzer.tokenStream(fieldName, reader);
     }
 
+    private SmartChineseAnalyzer myAnalyzer;
 }

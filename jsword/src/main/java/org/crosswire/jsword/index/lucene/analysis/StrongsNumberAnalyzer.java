@@ -58,4 +58,5 @@ public class StrongsNumberAnalyzer extends AbstractBookAnalyzer
     {
         return new StrongsNumberFilter(getBook(), new WhitespaceTokenizer(reader));
     }
+
 }

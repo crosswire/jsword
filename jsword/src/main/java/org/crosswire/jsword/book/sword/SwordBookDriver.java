@@ -178,7 +178,7 @@ public class SwordBookDriver extends AbstractBookDriver
 
         // Delete the conf
         List failures = FileUtil.delete(confFile);
-        if (failures.size() == 0)
+        if (failures.isEmpty())
         {
             URI loc = sbmd.getLocation();
             if (loc != null)
@@ -191,7 +191,7 @@ public class SwordBookDriver extends AbstractBookDriver
         }
 
         // TODO(DM): list all that failed
-        if (failures.size() > 0)
+        if (!failures.isEmpty())
         {
             throw new BookException(UserMsg.DELETE_FAILED, new Object [] {failures.get(0)});
         }

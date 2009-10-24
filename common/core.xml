@@ -59,6 +59,7 @@
     <include name="**/commons-net-*.jar"/>
     <include name="**/lucene-core-*.jar"/>
     <include name="**/lucene-analyzers-*.jar"/>
+    <include name="**/lucene-smartcn-*.jar"/>
     <include name="**/lucene-snowball-*.jar"/>
     <include name="**/jlfgr-*.jar"/>
     <include name="**/jsword-common-aqua-*.jar"/>

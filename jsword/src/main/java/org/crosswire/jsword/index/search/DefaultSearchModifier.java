@@ -33,6 +33,16 @@ package org.crosswire.jsword.index.search;
 
 public class DefaultSearchModifier implements SearchModifier
 {
+
+    /**
+     * A default SearchModifier that returns all hits and does not rank the results.
+     */
+    public DefaultSearchModifier()
+    {
+        ranked     = false;
+        maxResults = Integer.MAX_VALUE;
+    }
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.index.search.SearchModifier#isRanked()
      */
@@ -50,10 +60,33 @@ public class DefaultSearchModifier implements SearchModifier
         ranked = newRanked;
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.index.search.SearchModifier#getMaxResults()
+     */
+    public int getMaxResults()
+    {
+        return maxResults;
+    }
+
+    /**
+     * The maximum number of results to provide. A value of Integer.MAX_VALUE, the default, means get all results.
+     * 
+     * @param maxResults the maxResults to set
+     */
+    public void setMaxResults(int newMaxResults)
+    {
+        maxResults = newMaxResults;
+    }
+
     /**
      * The indicator of whether the request should be ranked.
      */
     private boolean ranked;
+
+    /**
+     * The indicator of whether the request should be ranked.
+     */
+    private int maxResults;
 
     /**
      * Serialization ID

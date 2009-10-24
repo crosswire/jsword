@@ -43,9 +43,11 @@ public class ChineseLuceneAnalyzer extends AbstractBookAnalyzer
     public ChineseLuceneAnalyzer()
     {
         myAnalyzer = new ChineseAnalyzer();
-        setNaturalLanguage("Chinese"); //$NON-NLS-1$
     }
 
+    /* (non-Javadoc)
+     * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String, java.io.Reader)
+     */
     public final TokenStream tokenStream(String fieldName, Reader reader)
     {
         return myAnalyzer.tokenStream(fieldName, reader);

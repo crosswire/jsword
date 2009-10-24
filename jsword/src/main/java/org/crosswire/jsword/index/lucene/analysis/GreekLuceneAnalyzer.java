@@ -25,7 +25,6 @@ import java.io.Reader;
 
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.el.GreekAnalyzer;
-import org.apache.lucene.analysis.el.GreekCharsets;
 
 /**
  * Uses org.apache.lucene.analysis.el.GreekAnalyzer to do lowercasing and stopword(off by default).
@@ -40,8 +39,7 @@ public class GreekLuceneAnalyzer extends AbstractBookAnalyzer
     public GreekLuceneAnalyzer()
     {
         //Construct GreekAnalyzer that do not use stop words        
-        myAnalyzer = new GreekAnalyzer(GreekCharsets.UnicodeGreek, new String[0]);
-        setNaturalLanguage("Greek"); //$NON-NLS-1$
+        myAnalyzer = new GreekAnalyzer(new String[0]);
     }
 
     public final TokenStream tokenStream(String fieldName, Reader reader)
@@ -51,7 +49,7 @@ public class GreekLuceneAnalyzer extends AbstractBookAnalyzer
 
     public void setStopWords(String[] stopWords)
     {
-        myAnalyzer = new GreekAnalyzer(GreekCharsets.UnicodeGreek, stopWords);
+        myAnalyzer = new GreekAnalyzer(stopWords);
     }
 
     public void setDoStopWords(boolean doIt)

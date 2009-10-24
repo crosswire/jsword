@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.crosswire.common.util.ClassUtil;
+import org.crosswire.common.util.Language;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.book.Book;
@@ -33,7 +34,7 @@ import org.crosswire.jsword.book.Book;
  * A factory creating the appropriate Analyzer for natural language analysis of text for Lucene 
  * Indexing and Query Parsing.
  * Note: [Lang] refers to CommonName for ISO639 Language
- * Dependency: Analyzer from lucene contrib: lucene-analyzers-[version].jar, lucene-snowball-[version].jar
+ * Dependency: Analyzer from lucene contrib: lucene-analyzers-[version].jar, lucene-smartcn-[version].jar, lucene-snowball-[version].jar
  * 
  * Properties used:
  * <Key> : <Value> 
@@ -44,24 +45,17 @@ import org.crosswire.jsword.book.Book;
  *      The copyright to this program is held by it's authors.
  * @author Sijo Cherian [sijocherian at yahoo dot com]
  */
-public class AnalyzerFactory
+public final class AnalyzerFactory
 {
     public AbstractBookAnalyzer createAnalyzer(Book book)
     {
         AbstractBookAnalyzer newObject = null;
-        String lang = book == null ? null : book.getLanguage().getName();
+        Language lang = book == null ? null : book.getLanguage();
         if (lang != null)
         {
-            String adjustLang = lang;
-            // Deal with non-standard language names
-            if (adjustLang.startsWith("Greek, Modern")) //$NON-NLS-1$
-            {
-                adjustLang = "Greek"; //$NON-NLS-1$
-            }
+            String aClass = getAnalyzerValue(lang);
 
-            String aClass = getAnalyzerValue(adjustLang);
-
-            log.debug("Creating analyzer:" + aClass + " BookLang:" + adjustLang); //$NON-NLS-1$ //$NON-NLS-2$
+            log.debug("Creating analyzer:" + aClass + " BookLang:" + lang); //$NON-NLS-1$ //$NON-NLS-2$
 
             if (aClass != null)
             {
@@ -95,7 +89,6 @@ public class AnalyzerFactory
         newObject.setBook(book);
         newObject.setDoStemming(getDefaultStemmingProperty());
         newObject.setDoStopWords(getDefaultStopWordProperty());
-        newObject.setNaturalLanguage(lang);
         return newObject;
     }
 
@@ -109,9 +102,9 @@ public class AnalyzerFactory
         loadProperties();
     }
 
-    public String getAnalyzerValue(String lang)
+    public String getAnalyzerValue(Language lang)
     {
-        String key = lang + ".Analyzer"; //$NON-NLS-1$
+        String key = lang.getCode() + ".Analyzer"; //$NON-NLS-1$
         return myProperties.getProperty(key);
     }
 

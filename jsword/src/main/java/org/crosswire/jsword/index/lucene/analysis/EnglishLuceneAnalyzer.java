@@ -32,7 +32,7 @@ import org.apache.lucene.analysis.TokenStream;
 /**
  * English Analyzer works like lucene SimpleAnalyzer + Stemming. 
  * (LowerCaseTokenizer  > PorterStemFilter). 
- * Like the AbstractAnalyzer, Stop word filter is off by default. 
+ * Like the AbstractAnalyzer, {@link StopFilter} is off by default. 
  *
  *
  * @see gnu.lgpl.License for license details.<br>
@@ -44,8 +44,7 @@ public class EnglishLuceneAnalyzer extends AbstractBookAnalyzer
 
     public EnglishLuceneAnalyzer()
     {
-        stopSet = StopFilter.makeStopSet(StopAnalyzer.ENGLISH_STOP_WORDS);
-        setNaturalLanguage("English"); //$NON-NLS-1$
+        stopSet = StopAnalyzer.ENGLISH_STOP_WORDS_SET;
     }
 
     /**
@@ -58,7 +57,7 @@ public class EnglishLuceneAnalyzer extends AbstractBookAnalyzer
 
         if (doStopWords && stopSet != null)
         {
-            result = new StopFilter(result, stopSet);
+            result = new StopFilter(false, result, stopSet);
         }
 
         // Using Porter Stemmer

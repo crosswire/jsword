@@ -22,9 +22,8 @@
 package org.crosswire.jsword.index.lucene.analysis;
 
 import java.io.Reader;
-import java.util.regex.Pattern;
 
-import org.apache.lucene.analysis.ISOLatin1AccentFilter;
+import org.apache.lucene.analysis.ASCIIFoldingFilter;
 import org.apache.lucene.analysis.LowerCaseTokenizer;
 import org.apache.lucene.analysis.TokenStream;
 
@@ -53,16 +52,8 @@ public class SimpleLuceneAnalyzer extends AbstractBookAnalyzer
 
     public TokenStream tokenStream(String fieldName, Reader reader)
     {
-
         TokenStream result = new LowerCaseTokenizer(reader);
-
-        if (naturalLanguage != null && isoLatin1Langs.matcher(naturalLanguage).matches())
-        {
-            result = new ISOLatin1AccentFilter(result);
-        }
-
+        result = new ASCIIFoldingFilter(result);
         return result;
     }
-
-    private static Pattern isoLatin1Langs = Pattern.compile("(Afrikaans|Albanian|Basque|Breton|Catalan|Danish|Dutch|English|Estonian|Faroese|French|Finnish|Galician|German|Icelandic|Irish|Italian|Latin|Luxembourgish|Norwegian|Occitan|Portuguese|Romansh|Scottish Gaelic|Spanish|Swahili|Swedish|Walloon)"); //$NON-NLS-1$
 }

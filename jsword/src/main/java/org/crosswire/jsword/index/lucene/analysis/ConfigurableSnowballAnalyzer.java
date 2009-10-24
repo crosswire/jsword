@@ -25,7 +25,7 @@ import java.io.Reader;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
-import org.apache.lucene.analysis.LowerCaseFilter;
+import org.apache.lucene.analysis.LowerCaseTokenizer;
 import org.apache.lucene.analysis.StopAnalyzer;
 import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
@@ -33,13 +33,13 @@ import org.apache.lucene.analysis.de.GermanAnalyzer;
 import org.apache.lucene.analysis.fr.FrenchAnalyzer;
 import org.apache.lucene.analysis.nl.DutchAnalyzer;
 import org.apache.lucene.analysis.snowball.SnowballFilter;
-import org.apache.lucene.analysis.standard.StandardFilter;
-import org.apache.lucene.analysis.standard.StandardTokenizer;
+import org.crosswire.jsword.book.Book;
 
 /**
- * Analyzer class to use as a Snowball Analyzer 
+ * An Analyzer whose {@link TokenStream} is built from a {@link LowerCaseTokenizer}
+ * filtered with {@link SnowballFilter} (optional) and {@link StopFilter} (optional)
  * Default behavior: Stemming is done, Stop words not removed
- * A snowball stemmer can be configured by passing the stemmer name to setNaturalLanguage() method. 
+ * A snowball stemmer is configured according to the language of the Book. 
  * Currently it takes following stemmer names (available stemmers in lucene snowball package net.sf.snowball.ext)
     Danish
     Dutch
@@ -71,21 +71,18 @@ public class ConfigurableSnowballAnalyzer extends AbstractBookAnalyzer
     }
 
     /**
-     * Filters {@link StandardTokenizer} with {@link StandardFilter}, {@link
-     * LowerCaseFilter}, {@link StopFilter} if enabled and
+     * Filters {@link LowerCaseTokenizer} with {@link StopFilter} if enabled and
      * {@link SnowballFilter}.
      */
     public final TokenStream tokenStream(String fieldName, Reader reader)
     {
-        TokenStream result = new StandardTokenizer(reader);
-        result = new StandardFilter(result);
-        result = new LowerCaseFilter(result);
+        TokenStream result = new LowerCaseTokenizer(reader);
         if (doStopWords && stopSet != null)
         {
-            result = new StopFilter(result, stopSet);
+            result = new StopFilter(false, result, stopSet);
         }
 
-        // Configure Snowball filter based on language/stemmername
+        // Configure Snowball filter based on language/stemmerName
         if (doStemming)
         {
             result = new SnowballFilter(result, stemmerName);
@@ -94,40 +91,60 @@ public class ConfigurableSnowballAnalyzer extends AbstractBookAnalyzer
         return result;
     }
 
-    public void setNaturalLanguage(String name)
+    public void setBook(Book newBook)
     {
-        naturalLanguage = name;
-        // stemmer name are same as language name, in most cases
-        stemmerName = name;
-
-        // Check for allowed stemmers
-        if (!allowedStemmers.matcher(stemmerName).matches())
+        book = newBook;
+        stemmerName = null;
+        if (book != null)
         {
-            throw new IllegalArgumentException("SnowballAnalyzer configured for unavailable stemmer " + stemmerName); //$NON-NLS-1$
-        }
-
-        // Initialize the default stop words
-        if (defaultStopWordMap.containsKey(name))
-        {
-            stopSet = StopFilter.makeStopSet((String[]) defaultStopWordMap.get(name));
+            // stemmer name are same as language name, in most cases
+            pickStemmer(book.getLanguage().getName());
         }
     }
+
+    /**
+     * Given the name of a stemmer, use that one.
+     * 
+     * @param language
+     */
+    public void pickStemmer(String language)
+    {
+        stemmerName = language;
+        if (stemmerName != null)
+        {
+            // stemmer name are same as language name, in most cases
+            stemmerName = book.getLanguage().getName();
+    
+            // Check for allowed stemmers
+            if (!allowedStemmers.matcher(stemmerName).matches())
+            {
+                throw new IllegalArgumentException("SnowballAnalyzer configured for unavailable stemmer " + stemmerName); //$NON-NLS-1$
+            }
+    
+            // Initialize the default stop words
+            if (defaultStopWordMap.containsKey(stemmerName))
+            {
+                stopSet = StopFilter.makeStopSet((String[]) defaultStopWordMap.get(stemmerName));
+            }
+        }
+    }
+
+    /**
+     * The name of the stemmer to use.
+     */
+    private String stemmerName;
 
     private static Pattern allowedStemmers    = Pattern.compile("(Danish|Dutch|English|Finnish|French|German2|German|Italian|Kp|Lovins|Norwegian|Porter|Portuguese|Russian|Spanish|Swedish)"); //$NON-NLS-1$
 
     // Maps StemmerName > String array of standard stop words
     private static HashMap defaultStopWordMap = new HashMap();
-
-    private String        stemmerName;
-
     static
     {
         defaultStopWordMap.put("French", FrenchAnalyzer.FRENCH_STOP_WORDS); //$NON-NLS-1$
         defaultStopWordMap.put("German", GermanAnalyzer.GERMAN_STOP_WORDS); //$NON-NLS-1$
         defaultStopWordMap.put("German2", GermanAnalyzer.GERMAN_STOP_WORDS); //$NON-NLS-1$
         defaultStopWordMap.put("Dutch", DutchAnalyzer.DUTCH_STOP_WORDS); //$NON-NLS-1$
-        defaultStopWordMap.put("English", StopAnalyzer.ENGLISH_STOP_WORDS); //$NON-NLS-1$
-        defaultStopWordMap.put("Porter", StopAnalyzer.ENGLISH_STOP_WORDS); //$NON-NLS-1$
-
+        defaultStopWordMap.put("English", StopAnalyzer.ENGLISH_STOP_WORDS_SET); //$NON-NLS-1$
+        defaultStopWordMap.put("Porter", StopAnalyzer.ENGLISH_STOP_WORDS_SET); //$NON-NLS-1$
     }
 }

@@ -34,11 +34,13 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Searcher;
+import org.apache.lucene.search.TopScoreDocCollector;
 import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.RAMDirectory;
 import org.crosswire.common.activate.Activatable;
 import org.crosswire.common.activate.Activator;
@@ -169,8 +171,8 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                 //IndexWriter writer = new IndexWriter(tempPath.getCanonicalPath(), analyzer, true);
 
                 // Create the index in core.
-                RAMDirectory ramDir = new RAMDirectory();
-                IndexWriter  writer = new IndexWriter(ramDir, analyzer, true);
+                final RAMDirectory ramDir = new RAMDirectory();
+                IndexWriter  writer = new IndexWriter(ramDir, analyzer, true, IndexWriter.MaxFieldLength.UNLIMITED);
 
                 generateSearchIndexImpl(job, errors, writer, book.getGlobalKeyList(), 0);
 
@@ -182,8 +184,10 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                 writer.close();
 
                 // Write the core index to disk.
-                IndexWriter fsWriter = new IndexWriter(tempPath.getCanonicalPath(), analyzer, true);
-                fsWriter.addIndexes(new Directory[] { ramDir });
+                final Directory destination = FSDirectory.open(new File(tempPath.getCanonicalPath()));
+                IndexWriter fsWriter = new IndexWriter(destination, analyzer, true, IndexWriter.MaxFieldLength.UNLIMITED);
+                fsWriter.addIndexesNoOptimize(new Directory[] { ramDir });
+                fsWriter.optimize();
                 fsWriter.close();
 
                 // Free up the space used by the ram directory
@@ -203,7 +207,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                     finalStatus = IndexStatus.DONE;
                 }
 
-                if (errors.size() > 0)
+                if (!errors.isEmpty())
                 {
                     StringBuffer buf = new StringBuffer();
                     Iterator iter = errors.iterator();
@@ -249,7 +253,6 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                 parser.setAllowLeadingWildcard(true);
                 Query query = parser.parse(search);
                 log.info("ParsedQuery-" + query.toString()); //$NON-NLS-1$
-                Hits hits = searcher.search(query);
 
                 // For ranking we use a PassageTally
                 if (modifier != null && modifier.isRanked())
@@ -258,11 +261,17 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                     tally.raiseEventSuppresion();
                     tally.raiseNormalizeProtection();
                     results = tally;
-                    for (int i = 0; i < hits.length(); i++)
-                    {
-                        Key key = VerseFactory.fromString(hits.doc(i).get(LuceneIndex.FIELD_KEY));
+
+                    TopScoreDocCollector collector = TopScoreDocCollector.create(modifier.getMaxResults(), false);
+                    searcher.search(query, collector);
+                    tally.setTotal(collector.getTotalHits());
+                    ScoreDoc[] hits = collector.topDocs().scoreDocs;
+                    for (int i = 0; i < hits.length; i++) {
+                        int docId = hits[i].doc;
+                        Document doc = searcher.doc(docId);
+                        Key key = VerseFactory.fromString(doc.get(LuceneIndex.FIELD_KEY));
                         // PassageTally understands a score of 0 as the verse not participating
-                        int score = (int) (hits.score(i) * 100 + 1);
+                        int score = (int) (hits[i].score * 100 + 1);
                         tally.add(key, score);
                     }
                     tally.lowerNormalizeProtection();
@@ -280,11 +289,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                         passage.raiseEventSuppresion();
                         passage.raiseNormalizeProtection();
                     }
-                    for (int i = 0; i < hits.length(); i++)
-                    {
-                        Key key = VerseFactory.fromString(hits.doc(i).get(LuceneIndex.FIELD_KEY));
-                        results.addAll(key);
-                    }
+                    searcher.search(query, new VerseCollector(searcher, results));
                     if (passage != null)
                     {
                         passage.lowerNormalizeProtection();
@@ -294,6 +299,13 @@ public class LuceneIndex extends AbstractIndex implements Activatable
             }
             catch (IOException e)
             {
+                // The VerseCollector may throw IOExceptions that merely wrap a NoSuchVerseException
+                Throwable cause = e.getCause();
+                if (cause instanceof NoSuchVerseException)
+                {
+                    throw new BookException(UserMsg.SEARCH_FAILED, cause);
+                }
+
                 throw new BookException(UserMsg.SEARCH_FAILED, e);
             }
             catch (NoSuchVerseException e)
@@ -339,7 +351,8 @@ public class LuceneIndex extends AbstractIndex implements Activatable
     {
         try
         {
-            searcher = new IndexSearcher(path);
+            directory = FSDirectory.open(new File(path));
+            searcher = new IndexSearcher(directory, true);
         }
         catch (IOException ex)
         {
@@ -357,11 +370,16 @@ public class LuceneIndex extends AbstractIndex implements Activatable
         try
         {
             searcher.close();
-            searcher = null;
+            directory.close();
         }
         catch (IOException ex)
         {
             Reporter.informUser(this, ex);
+        }
+        finally
+        {
+            searcher = null;
+            directory = null;
         }
 
         active = false;
@@ -397,12 +415,12 @@ public class LuceneIndex extends AbstractIndex implements Activatable
 
         // Set up for reuse.
         Document doc = new Document();
-        Field keyField = new Field(FIELD_KEY, "", Field.Store.YES, Field.Index.UN_TOKENIZED, Field.TermVector.NO); //$NON-NLS-1$
-        Field bodyField = new Field(FIELD_BODY, "", Field.Store.NO, Field.Index.TOKENIZED, Field.TermVector.NO); //$NON-NLS-1$
-        Field strongField = new Field(FIELD_STRONG, "", Field.Store.NO, Field.Index.TOKENIZED, Field.TermVector.NO); //$NON-NLS-1$
-        Field xrefField = new Field(FIELD_XREF, "", Field.Store.NO, Field.Index.TOKENIZED, Field.TermVector.NO); //$NON-NLS-1$
-        Field noteField = new Field(FIELD_NOTE, "", Field.Store.NO, Field.Index.TOKENIZED, Field.TermVector.NO); //$NON-NLS-1$
-        Field headingField = new Field(FIELD_HEADING, "", Field.Store.NO, Field.Index.TOKENIZED, Field.TermVector.NO); //$NON-NLS-1$
+        Field keyField = new Field(FIELD_KEY, "", Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.NO); //$NON-NLS-1$
+        Field bodyField = new Field(FIELD_BODY, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO); //$NON-NLS-1$
+        Field strongField = new Field(FIELD_STRONG, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO); //$NON-NLS-1$
+        Field xrefField = new Field(FIELD_XREF, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO); //$NON-NLS-1$
+        Field noteField = new Field(FIELD_NOTE, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO); //$NON-NLS-1$
+        Field headingField = new Field(FIELD_HEADING, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO); //$NON-NLS-1$
 
         int size = key.getCardinality();
         int subCount = count;
@@ -523,6 +541,11 @@ public class LuceneIndex extends AbstractIndex implements Activatable
      * The location of this index
      */
     private String path;
+
+    /**
+     * The Lucene directory for the path.
+     */
+    protected Directory directory;
 
     /**
      * The Lucene search engine

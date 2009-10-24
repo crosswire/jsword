@@ -23,7 +23,6 @@ package org.crosswire.jsword.index.lucene.analysis;
 
 import java.io.IOException;
 
-import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
 import org.crosswire.jsword.book.Book;
 
@@ -56,11 +55,11 @@ public class KeyFilter extends AbstractBookTokenFilter
     }
 
     /* (non-Javadoc)
-     * @see org.apache.lucene.analysis.TokenStream#next(org.apache.lucene.analysis.Token)
+     * @see org.apache.lucene.analysis.TokenStream#incrementToken()
      */
-    public final Token next(Token result) throws IOException
+    public boolean incrementToken() throws IOException
     {
         // TODO(DMS): actually normalize
-        return input.next(result);
+        return super.incrementToken();
     }
 }

@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007
+ * Copyright: 2009
  *     The copyright to this program is held by it's authors.
  *
  * ID: $Id:  $
@@ -24,26 +24,31 @@ package org.crosswire.jsword.index.lucene.analysis;
 import java.io.IOException;
 import java.io.Reader;
 
-import org.apache.lucene.analysis.LowerCaseTokenizer;
+import org.apache.lucene.analysis.LowerCaseFilter;
 import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.cz.CzechAnalyzer;
+import org.apache.lucene.analysis.ar.ArabicAnalyzer;
+import org.apache.lucene.analysis.ar.ArabicLetterTokenizer;
+import org.apache.lucene.analysis.ar.ArabicNormalizationFilter;
+import org.apache.lucene.analysis.ar.ArabicStemFilter;
 
 /**
- * An Analyzer whose {@link TokenStream} is built from a {@link LowerCaseTokenizer}
- * filtered with {@link StopFilter} (optional).
- * Stemming not implemented yet
- *
+ * An Analyzer whose {@link TokenStream} is built from a {@link ArabicLetterTokenizer}
+ * filtered with {@link LowerCaseFilter}, 
+ * {@link ArabicNormalizationFilter},
+ * {@link ArabicStemFilter} (optional) and Arabic {@link StopFilter} (optional).
+ *  
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
- * @author Sijo Cherian [sijocherian at yahoo dot com]
- * @author DM SMITH [dmsmith555 at yahoo dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class CzechLuceneAnalyzer extends AbstractBookAnalyzer
+public class ArabicLuceneAnalyzer extends AbstractBookAnalyzer
 {
-    public CzechLuceneAnalyzer()
+    public ArabicLuceneAnalyzer() throws IOException
     {
-        stopSet = StopFilter.makeStopSet(CzechAnalyzer.CZECH_STOP_WORDS);
+        loadStopWords(ArabicAnalyzer.class,
+                      ArabicAnalyzer.DEFAULT_STOPWORD_FILE,
+                      ArabicAnalyzer.STOPWORDS_COMMENT);
     }
 
     /* (non-Javadoc)
@@ -51,11 +56,17 @@ public class CzechLuceneAnalyzer extends AbstractBookAnalyzer
      */
     public final TokenStream tokenStream(String fieldName, Reader reader)
     {
-        TokenStream result = new LowerCaseTokenizer(reader);
-
+        TokenStream result = new ArabicLetterTokenizer(reader);
+        result = new LowerCaseFilter(result);
+        result = new ArabicNormalizationFilter(result);
         if (doStopWords && stopSet != null)
         {
             result = new StopFilter(false, result, stopSet);
+        }
+
+        if (doStemming)
+        {
+            result = new ArabicStemFilter(result);
         }
 
         return result;
@@ -70,11 +81,17 @@ public class CzechLuceneAnalyzer extends AbstractBookAnalyzer
         if (streams == null)
         {
             streams = new SavedStreams();
-            streams.source = new LowerCaseTokenizer(reader);
-            streams.result = streams.source;
+            streams.source = new ArabicLetterTokenizer(reader);
+            streams.result = new LowerCaseFilter(streams.source);
+            streams.result = new ArabicNormalizationFilter(streams.result);
             if (doStopWords && stopSet != null)
             {
                 streams.result = new StopFilter(false, streams.result, stopSet);
+            }
+
+            if (doStemming)
+            {
+                streams.result = new ArabicStemFilter(streams.result);
             }
 
             setPreviousTokenStream(streams);
@@ -85,5 +102,4 @@ public class CzechLuceneAnalyzer extends AbstractBookAnalyzer
         }
         return streams.result;
     }
-
 }

@@ -54,10 +54,10 @@ public class ConfigurableSnowballAnalyzerTest extends TestCase
     {
         
         //valid
-        myAnalyzer.setNaturalLanguage("Finnish"); //$NON-NLS-1$
+        myAnalyzer.pickStemmer("Finnish"); //$NON-NLS-1$
         //invalid stemmer
         try {
-            myAnalyzer.setNaturalLanguage("test"); //$NON-NLS-1$
+            myAnalyzer.pickStemmer("test"); //$NON-NLS-1$
         }
         catch (IllegalArgumentException e) {
             assertTrue (e.getMessage().indexOf("SnowballAnalyzer") > -1); //$NON-NLS-1$
@@ -67,7 +67,7 @@ public class ConfigurableSnowballAnalyzerTest extends TestCase
     public void testStemming() throws ParseException
     {
         
-        myAnalyzer.setNaturalLanguage("French"); //$NON-NLS-1$
+        myAnalyzer.pickStemmer("French"); //$NON-NLS-1$
         
         String testInput=" tant aim� le monde qu 'il a donn� son"; //$NON-NLS-1$
       
@@ -81,7 +81,7 @@ public class ConfigurableSnowballAnalyzerTest extends TestCase
     public void testStopwords() throws ParseException
     {
         
-        myAnalyzer.setNaturalLanguage("French"); //$NON-NLS-1$
+        myAnalyzer.pickStemmer("French"); //$NON-NLS-1$
         myAnalyzer.setDoStopWords(true);        
         String testInput=" tant aim� le monde qu 'il a donn� son"; //$NON-NLS-1$
               
@@ -94,7 +94,7 @@ public class ConfigurableSnowballAnalyzerTest extends TestCase
     public void testStemmingOff() throws ParseException
     {
         
-        myAnalyzer.setNaturalLanguage("French"); //$NON-NLS-1$
+        myAnalyzer.pickStemmer("French"); //$NON-NLS-1$
         myAnalyzer.setDoStemming(false);
         
         String testInput=" tant aim� le monde qu 'il a donn� son"; //$NON-NLS-1$
@@ -109,7 +109,7 @@ public class ConfigurableSnowballAnalyzerTest extends TestCase
     public void testStemmerConfig() throws ParseException
     {
         
-        myAnalyzer.setNaturalLanguage("French"); //$NON-NLS-1$
+        myAnalyzer.pickStemmer("French"); //$NON-NLS-1$
         myAnalyzer.setDoStemming(false);
         
         String testInput=" tant aim� le monde qu 'il a donn� son"; //$NON-NLS-1$
@@ -124,7 +124,7 @@ public class ConfigurableSnowballAnalyzerTest extends TestCase
     public void testMultipleStemmers() throws ParseException
     {
         
-        myAnalyzer.setNaturalLanguage("German"); //$NON-NLS-1$
+        myAnalyzer.pickStemmer("German"); //$NON-NLS-1$
                
         String testInput="Denn also hat Gott die Welt geliebt, da� er seinen eingeborenen Sohn gab, auf da� jeder, der an ihn glaubt, nicht verloren gehe, sondern ewiges Leben habe"; //$NON-NLS-1$
               
@@ -141,6 +141,6 @@ public class ConfigurableSnowballAnalyzerTest extends TestCase
         
     }      
     protected static final String field = "content"; //$NON-NLS-1$
-    private AbstractBookAnalyzer myAnalyzer;
+    private ConfigurableSnowballAnalyzer myAnalyzer;
     private QueryParser parser;    
 }

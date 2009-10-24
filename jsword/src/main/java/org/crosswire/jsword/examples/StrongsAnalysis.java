@@ -60,7 +60,7 @@ public class StrongsAnalysis
             bible = null;
             List bibles = Books.installed().getBooks(new BookFilters.BookFeatureFilter(FeatureType.STRONGS_NUMBERS));
 
-            if (bibles.size() > 0)
+            if (!bibles.isEmpty())
             {
                 bible = (Book) bibles.get(0);
             }

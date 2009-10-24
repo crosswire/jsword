@@ -37,4 +37,9 @@ public interface SearchModifier extends Serializable
      * @return true if the results of the search request should be ranked
      */
     boolean isRanked();
+
+    /**
+     * @return the maximum number of results, with Integer.MAX_VALUE meaning all.
+     */
+    int getMaxResults();
 }

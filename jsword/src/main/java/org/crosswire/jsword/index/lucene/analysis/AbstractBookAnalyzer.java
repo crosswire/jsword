@@ -21,10 +21,15 @@
  */
 package org.crosswire.jsword.index.lucene.analysis;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Set;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.StopFilter;
+import org.apache.lucene.analysis.WordlistLoader;
+import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.book.Book;
 
 /**
@@ -34,6 +39,7 @@ import org.crosswire.jsword.book.Book;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author sijo cherian [sijocherian at yahoo dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public abstract class AbstractBookAnalyzer extends Analyzer
 {
@@ -48,7 +54,6 @@ public abstract class AbstractBookAnalyzer extends Analyzer
         this.book = book;
         doStopWords = false;
         doStemming = true;
-        naturalLanguage = null;
     }
 
     /**
@@ -83,19 +88,40 @@ public abstract class AbstractBookAnalyzer extends Analyzer
         stopSet = StopFilter.makeStopSet(stopWords);
     }
 
+    /**
+     * Load a stop word list as a resource. The list needs to be in a form described by {@link WordListLoader}.
+     * @param clazz the class that owns the resource
+     * @param resourceName the name of the resource
+     * @param commentChar The comment character in the stop word file.
+     * @throws IOException
+     */
+    public void loadStopWords(Class clazz, String resourceName, String commentChar) throws IOException
+    {
+        InputStream stream = null;
+        InputStreamReader reader = null;
+        try
+        {
+            stream = ResourceUtil.getResourceAsStream(clazz, resourceName);
+            reader = new InputStreamReader(stream, "UTF-8"); // //$NON-NLS-1$
+            stopSet = WordlistLoader.getWordSet(reader, commentChar);
+        }
+        finally
+        {
+            if (reader != null)
+            {
+                reader.close();
+            }
+
+            if (stream != null)
+            {
+                stream.close();
+            }
+        }
+    }
+
     public void setDoStemming(boolean stemming)
     {
         doStemming = stemming;
-    }
-
-    public void setNaturalLanguage(String lang)
-    {
-        naturalLanguage = lang;
-    }
-
-    public String getNaturalLanguage()
-    {
-        return naturalLanguage;
     }
 
     /**
@@ -110,8 +136,4 @@ public abstract class AbstractBookAnalyzer extends Analyzer
 
     // for turning on/off stemming
     protected boolean doStemming;
-
-    // Natural language of text that is being analyzed (optional parameter)
-    protected String  naturalLanguage;
-
 }

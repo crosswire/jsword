@@ -76,7 +76,7 @@ public class DwrBridge
         }
 
         // If we can't find a book, indicate that.
-        if (reply.size() == 0)
+        if (reply.isEmpty())
         {
             reply.add(new String[] { "", "No Books installed" }); //$NON-NLS-1$ //$NON-NLS-2$
         }

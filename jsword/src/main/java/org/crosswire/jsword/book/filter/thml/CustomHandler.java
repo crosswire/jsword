@@ -70,7 +70,7 @@ public class CustomHandler extends DefaultHandler
 
         // If we are looking at the root element
         // then the stack is empty
-        if (stack.size() > 0)
+        if (!stack.isEmpty())
         {
             Object top = stack.getFirst();
 
@@ -175,7 +175,7 @@ public class CustomHandler extends DefaultHandler
 
             // If it was the last element then it was the root element
             // so save it
-            if (stack.size() == 0)
+            if (stack.isEmpty())
             {
                 rootElement = finished;
             }

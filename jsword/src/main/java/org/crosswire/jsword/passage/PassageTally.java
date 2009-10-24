@@ -33,7 +33,7 @@ import org.crosswire.jsword.versification.BibleInfo;
  * Verses that it contains.
  *
  * <p>Currently there is no well defined spec for what the rank of a verse means
- * - it is just an int. Since this number is expoed in 2 places
+ * - it is just an int. Since this number is exposed in 2 places
  * (getNameAndTally() and getTallyFor()) we should specify what the numbers
  * mean. Trouble is most tallies come from searches where the numbers only have
  * relative meaning.</p>
@@ -144,6 +144,22 @@ public class PassageTally extends AbstractPassage
     public int getOrdering()
     {
         return order;
+    }
+
+    /**
+     * @return the total
+     */
+    public int getTotal()
+    {
+        return total;
+    }
+
+    /**
+     * @param total the total to set
+     */
+    public void setTotal(int total)
+    {
+        this.total = total;
     }
 
     /* (non-Javadoc)
@@ -553,7 +569,7 @@ public class PassageTally extends AbstractPassage
      * <code>count</code> in the Passage, then the passage remains
      * unchanged, and null is returned.
      * @param count The maximum number of Verses to allow in this collection
-     * @return A new Passage conatining the remaining verses or null
+     * @return A new Passage containing the remaining verses or null
      * @see Verse
      */
     public Passage trimVerses(int count)
@@ -821,6 +837,12 @@ public class PassageTally extends AbstractPassage
      * The number of verses in the tally.
      */
     private int size;
+
+    /*
+     * The total number of verses that this tally represents.
+     */
+    private int total;
+
     /**
      * The tallyboard itself
      */

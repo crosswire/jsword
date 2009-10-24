@@ -45,13 +45,12 @@ public class ThaiLuceneAnalyzer extends AbstractBookAnalyzer
         ts = new ThaiWordFilter(ts);
         if (doStopWords && stopSet != null)
         {
-            ts = new StopFilter(ts, stopSet);
+            ts = new StopFilter(false, ts, stopSet);
         }
         return ts;
     }
 
     public ThaiLuceneAnalyzer()
     {
-        setNaturalLanguage("Thai"); //$NON-NLS-1$
     }
 }

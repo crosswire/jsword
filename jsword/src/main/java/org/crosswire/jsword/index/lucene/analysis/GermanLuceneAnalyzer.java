@@ -38,6 +38,10 @@ import org.apache.lucene.analysis.de.GermanStemFilter;
  */
 public class GermanLuceneAnalyzer extends AbstractBookAnalyzer
 {
+    public GermanLuceneAnalyzer()
+    {
+        stopSet = StopFilter.makeStopSet(GermanAnalyzer.GERMAN_STOP_WORDS);
+    }
 
     public TokenStream tokenStream(String fieldName, Reader reader)
     {
@@ -45,7 +49,7 @@ public class GermanLuceneAnalyzer extends AbstractBookAnalyzer
 
         if (doStopWords && stopSet != null)
         {
-            result = new StopFilter(result, stopSet);
+            result = new StopFilter(false, result, stopSet);
         }
 
         if (doStemming)
@@ -56,9 +60,4 @@ public class GermanLuceneAnalyzer extends AbstractBookAnalyzer
         return result;
     }
 
-    public GermanLuceneAnalyzer()
-    {
-        stopSet = StopFilter.makeStopSet(GermanAnalyzer.GERMAN_STOP_WORDS);
-        setNaturalLanguage("German"); //$NON-NLS-1$
-    }
 }
