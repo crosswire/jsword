@@ -35,7 +35,7 @@ import java.util.Stack;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class DiffCleanup
+public final class DiffCleanup
 {
     /**
      * Utility class constructor.

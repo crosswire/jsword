@@ -1,0 +1,1 @@
+In order to keep ant from going against the w3c dtd on their website, maintain a local copy and point ant to it.

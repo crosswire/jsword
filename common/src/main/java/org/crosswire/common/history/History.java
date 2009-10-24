@@ -183,7 +183,7 @@ public class History
      */
     public Object getCurrent()
     {
-        if (nav.size() > 0 && backCount > 0)
+        if (!nav.isEmpty() && backCount > 0)
         {
             return nav.get(backCount - 1);
         }

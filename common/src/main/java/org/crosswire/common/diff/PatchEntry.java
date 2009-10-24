@@ -335,7 +335,7 @@ public class PatchEntry
 
     public boolean hasDifferences()
     {
-        return diffs.size() != 0;
+        return !diffs.isEmpty();
     }
 
     public Iterator iterator()
@@ -345,7 +345,7 @@ public class PatchEntry
 
     public Difference getFirstDifference()
     {
-        if (diffs.size() == 0)
+        if (diffs.isEmpty())
         {
             return null;
         }
@@ -354,7 +354,7 @@ public class PatchEntry
 
     public Difference removeFirstDifference()
     {
-        if (diffs.size() == 0)
+        if (diffs.isEmpty())
         {
             return null;
         }
@@ -363,7 +363,7 @@ public class PatchEntry
 
     public Difference getLastDifference()
     {
-        if (diffs.size() == 0)
+        if (diffs.isEmpty())
         {
             return null;
         }

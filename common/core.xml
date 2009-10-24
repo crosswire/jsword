@@ -58,7 +58,7 @@
     <include name="**/commons-logging-*.jar"/>
     <include name="**/commons-net-*.jar"/>
     <include name="**/lucene-core-*.jar"/>
-  	<include name="**/lucene-analyzers-*.jar"/>
+    <include name="**/lucene-analyzers-*.jar"/>
     <include name="**/lucene-snowball-*.jar"/>
     <include name="**/jlfgr-*.jar"/>
     <include name="**/jsword-common-aqua-*.jar"/>
@@ -122,6 +122,20 @@
     <exclude name="**/*.java"/>
     <exclude name="**/*.class"/>
   </patternset>
+
+  <!--=======================================================================
+    == These are local copies of DTDs used by ant xslt/style.
+    == This is necessary to prevent HTTPD 503 responses
+    == and it is useful to speed up the build.
+    =========================================================================-->
+  <xmlcatalog id="commonDTDs">
+    <dtd 
+      publicId="-//W3C//DTD XHTML 1.0 Strict//EN"
+      location="../common/etc/dtdcatalog/xhtml1-strict.dtd"/>
+    <dtd 
+      publicId="-//W3C//DTD XHTML 1.0 Transitional//EN"
+      location="../common/etc/dtdcatalog/xhtml1-transitional.dtd"/>
+  </xmlcatalog>
 
   <!--=======================================================================
     == Mark this build with the current timestamp

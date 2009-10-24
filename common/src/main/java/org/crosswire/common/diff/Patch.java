@@ -106,7 +106,7 @@ public class Patch
 
         patches.clear();
 
-        if (diffs.size() == 0)
+        if (diffs.isEmpty())
         {
             return this; // Get rid of the null case.
         }

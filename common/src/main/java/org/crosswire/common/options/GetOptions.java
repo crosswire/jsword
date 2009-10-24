@@ -135,11 +135,12 @@ public class GetOptions
                 int equalPos = nextArg.indexOf('=');
                 String flag = (equalPos != -1) ? nextArg.substring(2, equalPos) : nextArg.substring(2);
                 List opts = programOptions.getLongOptions(flag);
-                if (opts.size() == 0)
+                int count = opts.size();
+                if (count == 0)
                 {
                     throw new IllegalArgumentException("Illegal option --" + flag); //$NON-NLS-1$
                 }
-                if (opts.size() > 1)
+                if (count > 1)
                 {
                     throw new IllegalArgumentException("Ambiguous option --" + flag); //$NON-NLS-1$
                 }
