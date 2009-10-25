@@ -114,13 +114,13 @@ public class ConfigurableSnowballAnalyzer extends AbstractBookAnalyzer
         {
             // stemmer name are same as language name, in most cases
             stemmerName = book.getLanguage().getName();
-    
+
             // Check for allowed stemmers
             if (!allowedStemmers.matcher(stemmerName).matches())
             {
                 throw new IllegalArgumentException("SnowballAnalyzer configured for unavailable stemmer " + stemmerName); //$NON-NLS-1$
             }
-    
+
             // Initialize the default stop words
             if (defaultStopWordMap.containsKey(stemmerName))
             {

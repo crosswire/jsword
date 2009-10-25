@@ -70,20 +70,20 @@ public class CzechLuceneAnalyzer extends AbstractBookAnalyzer
         if (streams == null)
         {
             streams = new SavedStreams();
-            streams.source = new LowerCaseTokenizer(reader);
-            streams.result = streams.source;
+            streams.setSource(new LowerCaseTokenizer(reader));
+            streams.setResult(streams.getSource());
             if (doStopWords && stopSet != null)
             {
-                streams.result = new StopFilter(false, streams.result, stopSet);
+                streams.setResult(new StopFilter(false, streams.getResult(), stopSet));
             }
 
             setPreviousTokenStream(streams);
         }
         else
         {
-            streams.source.reset(reader);
+            streams.getSource().reset(reader);
         }
-        return streams.result;
+        return streams.getResult();
     }
 
 }

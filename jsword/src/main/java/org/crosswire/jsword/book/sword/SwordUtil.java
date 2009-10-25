@@ -96,13 +96,16 @@ public final class SwordUtil
      * @param data data to write
      * @throws IOException on error
      */
-    protected static void writeRAF(RandomAccessFile raf, long offset, byte[] data) throws IOException {
+    protected static void writeRAF(RandomAccessFile raf, long offset, byte[] data) throws IOException
+    {
         raf.seek(offset);
         writeNextRAF(raf, data);
     }
 
-    protected static void writeNextRAF(RandomAccessFile raf, byte[] data) throws IOException {
-        if(data == null) {
+    protected static void writeNextRAF(RandomAccessFile raf, byte[] data) throws IOException
+    {
+        if (data == null)
+        {
             return;
         }
         raf.write(data);

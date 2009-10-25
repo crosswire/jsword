@@ -89,7 +89,7 @@ public abstract class AbstractBookAnalyzer extends Analyzer
     }
 
     /**
-     * Load a stop word list as a resource. The list needs to be in a form described by {@link WordListLoader}.
+     * Load a stop word list as a resource. The list needs to be in a form described by {@link org.apache.lucene.analysis.WordListLoader}.
      * @param clazz the class that owns the resource
      * @param resourceName the name of the resource
      * @param commentChar The comment character in the stop word file.

@@ -156,7 +156,7 @@ public final class SwordConstants
      * array containing LUT of positions of initial verses per chapter.
      * This and all the cps* below were longs and then ints
      * This was an artifact of a port from C/C++ where int/long vary
-     * in size dependeing on architecture.
+     * in size depending on architecture.
      */
     private static short[][] cps;
 

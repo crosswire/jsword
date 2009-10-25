@@ -108,6 +108,18 @@ public class StrongsNumberFilter extends AbstractBookTokenFilter
         return true;
     }
 
+    /* Define to quite FindBugs */
+    public boolean equals(Object obj)
+    {
+        return super.equals(obj);
+    }
+
+    /* Define to quite FindBugs */
+    public int hashCode()
+    {
+        return super.hashCode();
+    }
+
     private TermAttribute termAtt;
     private StrongsNumber number;
 }

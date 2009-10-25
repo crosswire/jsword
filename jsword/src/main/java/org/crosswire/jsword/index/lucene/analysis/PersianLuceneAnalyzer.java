@@ -44,7 +44,7 @@ import org.apache.lucene.analysis.fa.PersianNormalizationFilter;
  */
 public class PersianLuceneAnalyzer extends AbstractBookAnalyzer
 {
-    public PersianLuceneAnalyzer() throws IOException 
+    public PersianLuceneAnalyzer() throws IOException
     {
         loadStopWords(PersianAnalyzer.class,
                       PersianAnalyzer.DEFAULT_STOPWORD_FILE,
@@ -87,25 +87,25 @@ public class PersianLuceneAnalyzer extends AbstractBookAnalyzer
           if (streams == null)
           {
               streams = new SavedStreams();
-              streams.source = new ArabicLetterTokenizer(reader);
-              streams.result = new LowerCaseFilter(streams.source);
-              streams.result = new ArabicNormalizationFilter(streams.result);
+              streams.setSource(new ArabicLetterTokenizer(reader));
+              streams.setResult(new LowerCaseFilter(streams.getSource()));
+              streams.setResult(new ArabicNormalizationFilter(streams.getResult()));
               /* additional persian-specific normalization */
-              streams.result = new PersianNormalizationFilter(streams.result);
+              streams.setResult(new PersianNormalizationFilter(streams.getResult()));
               /*
                * the order here is important: the stop set is normalized with the
                * above!
                */
               if (doStopWords && stopSet != null)
               {
-                  streams.result = new StopFilter(false, streams.result, stopSet);
+                  streams.setResult(new StopFilter(false, streams.getResult(), stopSet));
               }
               setPreviousTokenStream(streams);
           }
           else
           {
-              streams.source.reset(reader);
+              streams.getSource().reset(reader);
           }
-          return streams.result;
+          return streams.getResult();
       }
 }

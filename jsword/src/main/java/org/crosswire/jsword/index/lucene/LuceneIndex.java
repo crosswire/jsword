@@ -266,7 +266,8 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                     searcher.search(query, collector);
                     tally.setTotal(collector.getTotalHits());
                     ScoreDoc[] hits = collector.topDocs().scoreDocs;
-                    for (int i = 0; i < hits.length; i++) {
+                    for (int i = 0; i < hits.length; i++)
+                    {
                         int docId = hits[i].doc;
                         Document doc = searcher.doc(docId);
                         Key key = VerseFactory.fromString(doc.get(LuceneIndex.FIELD_KEY));

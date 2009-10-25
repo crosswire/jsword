@@ -71,7 +71,7 @@ public class DefaultSearchModifier implements SearchModifier
     /**
      * The maximum number of results to provide. A value of Integer.MAX_VALUE, the default, means get all results.
      * 
-     * @param maxResults the maxResults to set
+     * @param newMaxResults the maxResults to set
      */
     public void setMaxResults(int newMaxResults)
     {

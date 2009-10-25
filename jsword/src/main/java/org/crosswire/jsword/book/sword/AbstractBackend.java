@@ -117,10 +117,11 @@ public abstract class AbstractBackend implements Activatable
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
+    /**
+     * Determine whether this Book contains the key in question
+     * @param key The key whose presense is desired.
+     * @return true if the Book contains the key
      */
-    /* @Override */
     public abstract boolean contains(Key key);
 
     /**
@@ -142,10 +143,18 @@ public abstract class AbstractBackend implements Activatable
     {
     }
 
-    public void create() throws IOException, BookException {
+    /**
+     * Create the directory to hold the Book if it does not exist.
+     * @throws IOException
+     * @throws BookException
+     */
+    public void create() throws IOException, BookException
+    {
         File dataPath = new File(getExpandedDataPath());
-        if(!dataPath.exists()) {
-            if(!dataPath.mkdirs()) {
+        if (!dataPath.exists())
+        {
+            if (!dataPath.mkdirs())
+            {
                 throw new IOException("Unable to create module data path!"); //$NON-NLS-1$
             }
         }

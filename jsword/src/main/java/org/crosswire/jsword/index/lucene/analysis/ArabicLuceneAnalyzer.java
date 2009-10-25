@@ -81,25 +81,25 @@ public class ArabicLuceneAnalyzer extends AbstractBookAnalyzer
         if (streams == null)
         {
             streams = new SavedStreams();
-            streams.source = new ArabicLetterTokenizer(reader);
-            streams.result = new LowerCaseFilter(streams.source);
-            streams.result = new ArabicNormalizationFilter(streams.result);
+            streams.setSource(new ArabicLetterTokenizer(reader));
+            streams.setResult(new LowerCaseFilter(streams.getSource()));
+            streams.setResult(new ArabicNormalizationFilter(streams.getResult()));
             if (doStopWords && stopSet != null)
             {
-                streams.result = new StopFilter(false, streams.result, stopSet);
+                streams.setResult(new StopFilter(false, streams.getResult(), stopSet));
             }
 
             if (doStemming)
             {
-                streams.result = new ArabicStemFilter(streams.result);
+                streams.setResult(new ArabicStemFilter(streams.getResult()));
             }
 
             setPreviousTokenStream(streams);
         }
         else
         {
-            streams.source.reset(reader);
+            streams.getSource().reset(reader);
         }
-        return streams.result;
+        return streams.getResult();
     }
 }

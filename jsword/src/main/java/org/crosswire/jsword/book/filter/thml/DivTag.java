@@ -36,7 +36,6 @@ public class DivTag extends AbstractTag
 {
     /**
      * Create an div tag
-     * @param level
      */
     public DivTag()
     {

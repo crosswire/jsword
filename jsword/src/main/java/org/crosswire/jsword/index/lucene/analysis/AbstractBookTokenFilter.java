@@ -72,5 +72,17 @@ public class AbstractBookTokenFilter extends TokenFilter
         this.book = book;
     }
 
+    /* Define to quite FindBugs */
+    public boolean equals(Object obj)
+    {
+        return super.equals(obj);
+    }
+
+    /* Define to quite FindBugs */
+    public int hashCode()
+    {
+        return super.hashCode();
+    }
+
     private Book book;
 }

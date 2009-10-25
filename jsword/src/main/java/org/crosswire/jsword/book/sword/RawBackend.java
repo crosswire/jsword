@@ -119,7 +119,11 @@ public class RawBackend extends AbstractBackend
         }
     }
 
-    public void setRawText(Key key, String text) throws BookException, IOException {
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#setRawText(org.crosswire.jsword.passage.Key, java.lang.String)
+     */
+    public void setRawText(Key key, String text) throws BookException, IOException
+    {
     }
 
     /* (non-Javadoc)
@@ -142,7 +146,11 @@ public class RawBackend extends AbstractBackend
         return idxFile[SwordConstants.TESTAMENT_OLD].canRead() || idxFile[SwordConstants.TESTAMENT_NEW].canRead();
     }
 
-    public void create() throws IOException, BookException {
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#create()
+     */
+    public void create() throws IOException, BookException
+    {
         super.create();
     }
 
