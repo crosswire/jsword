@@ -50,6 +50,7 @@ public final class SwordUtil
      * @param offset The start of the record to read
      * @param theSize The number of bytes to read
      * @return the read data
+     * @throws IOException on error
      */
     protected static byte[] readRAF(RandomAccessFile raf, long offset, int theSize) throws IOException
     {
@@ -63,6 +64,7 @@ public final class SwordUtil
      * @param raf The file to read
      * @param theSize The number of bytes to read
      * @return the read data
+     * @throws IOException on error
      */
     protected static byte[] readNextRAF(RandomAccessFile raf, int theSize) throws IOException
     {
@@ -88,11 +90,31 @@ public final class SwordUtil
     }
 
     /**
+     * Writes "data" to a RandomAccessFile at the "offset" position
+     * @param raf RandomAvccessFile
+     * @param offset offset to write at
+     * @param data data to write
+     * @throws IOException on error
+     */
+    protected static void writeRAF(RandomAccessFile raf, long offset, byte[] data) throws IOException {
+        raf.seek(offset);
+        writeNextRAF(raf, data);
+    }
+
+    protected static void writeNextRAF(RandomAccessFile raf, byte[] data) throws IOException {
+        if(data == null) {
+            return;
+        }
+        raf.write(data);
+    }
+
+    /**
      * Read a RandomAccessFile until a particular byte is seen
      * @param raf The file to read
      * @param offset The start of the record to read
      * @param stopByte The point at which to stop reading
      * @return the read data
+     * @throws IOException on error
      */
     protected static byte[] readUntilRAF(RandomAccessFile raf, int offset, byte stopByte) throws IOException
     {
@@ -105,6 +127,7 @@ public final class SwordUtil
      * @param raf The file to read
      * @param stopByte The point at which to stop reading
      * @return the read data
+     * @throws IOException on error
      */
     protected static byte[] readUntilRAF(RandomAccessFile raf, byte stopByte) throws IOException
     {

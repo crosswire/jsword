@@ -347,6 +347,12 @@ public final class ConfigEntryTable
         }
     }
 
+    public void save(File file) throws IOException
+    {
+        this.configFile = file;
+        this.save();
+    }
+
     private void loadContents(BufferedReader in) throws IOException
     {
         StringBuffer buf = new StringBuffer();

@@ -100,7 +100,6 @@ public class RawBackend extends AbstractBackend
         checkActive();
 
         Verse verse = KeyUtil.getVerse(key);
-
         try
         {
             int testament = SwordConstants.getTestament(verse);
@@ -120,13 +119,16 @@ public class RawBackend extends AbstractBackend
         }
     }
 
+    public void setRawText(Key key, String text) throws BookException, IOException {
+    }
+
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.AbstractBackend#isWritable()
-     */
+    * @see org.crosswire.jsword.book.sword.AbstractBackend#isWritable()
+    */
     public boolean isWritable()
     {
         // For the module to be writable either the old testament or the new testament needs to be present
-        // (i.e. readable) and both the index and the data files need to be readable
+        // (i.e. readable) and both the index and the data files need to be writable
         if (idxFile[SwordConstants.TESTAMENT_OLD].canRead()
             && (idxFile[SwordConstants.TESTAMENT_OLD].canWrite() || !txtFile[SwordConstants.TESTAMENT_OLD].canWrite()))
         {
@@ -140,13 +142,8 @@ public class RawBackend extends AbstractBackend
         return idxFile[SwordConstants.TESTAMENT_OLD].canRead() || idxFile[SwordConstants.TESTAMENT_NEW].canRead();
     }
 
-    public void create(String path)
-    {
-        idxFile[SwordConstants.TESTAMENT_OLD] = new File(path + File.separator + SwordConstants.FILE_OT + SwordConstants.EXTENSION_VSS);
-        txtFile[SwordConstants.TESTAMENT_OLD] = new File(path + File.separator + SwordConstants.FILE_OT);
-
-        idxFile[SwordConstants.TESTAMENT_NEW] = new File(path + File.separator + SwordConstants.FILE_NT + SwordConstants.EXTENSION_VSS);
-        txtFile[SwordConstants.TESTAMENT_NEW] = new File(path + File.separator + SwordConstants.FILE_NT);
+    public void create() throws IOException, BookException {
+        super.create();
     }
 
     /* (non-Javadoc)
@@ -154,7 +151,6 @@ public class RawBackend extends AbstractBackend
      */
     public final void activate(Lock lock)
     {
-
         URI path = null;
         try
         {
@@ -262,9 +258,9 @@ public class RawBackend extends AbstractBackend
      * Get the Index (that is offset and size) for an entry.
      * @param entry
      * @return the index for the entry
-     * @throws IOException 
+     * @throws IOException
      */
-    private DataIndex getIndex(RandomAccessFile raf, long entry) throws IOException
+    protected DataIndex getIndex(RandomAccessFile raf, long entry) throws IOException
     {
         // Read the offset and size for this key from the index
         byte[] buffer = SwordUtil.readRAF(raf, entry * entrysize, entrysize);
@@ -293,10 +289,12 @@ public class RawBackend extends AbstractBackend
      * Get the text for an indexed entry in the book.
      * 
      * @param index the entry to get
+     * @param name name of the entry
+     * @param testament testament number 0, 1 or 2
      * @return the text for the entry.
-     * @throws IOException 
+     * @throws IOException on a IO problem
      */
-    private String getEntry(String name, int testament, long index) throws IOException
+    protected String getEntry(String name, int testament, long index) throws IOException
     {
         DataIndex dataIndex = getIndex(idxRaf[testament], index);
 
@@ -322,45 +320,30 @@ public class RawBackend extends AbstractBackend
     /**
      * Are we active
      */
-    private boolean active;
+    protected boolean active;
 
     /**
      * How many bytes in the size count in the index
      */
-    private int datasize;
+    protected int datasize;
 
     /**
      * The number of bytes for each entry in the index: either 6 or 8
      */
-    private int entrysize;
+    protected int entrysize;
 
     /**
      * The log stream
      */
     private static final Logger log = Logger.getLogger(RawBackend.class);
 
-    /**
-     * The array of index files
-     */
-    private RandomAccessFile[] idxRaf = new RandomAccessFile[3];
-
-    /**
-     * The array of data files
-     */
-    private RandomAccessFile[] txtRaf = new RandomAccessFile[3];
-
-    /**
-     * The array of index random access files
-     */
-    private File[] idxFile = new File[3];
-
-    /**
-     * The array of data random access files
-     */
-    private File[] txtFile = new File[3];
+    protected RandomAccessFile[] idxRaf = new RandomAccessFile[3];
+    protected RandomAccessFile[] txtRaf = new RandomAccessFile[3];
+    protected File[] idxFile = new File[3];
+    protected File[] txtFile = new File[3];
 
     /**
      * How many bytes in the offset pointers in the index
      */
-    private static final int OFFSETSIZE = 4;
+    protected static final int OFFSETSIZE = 4;
 }

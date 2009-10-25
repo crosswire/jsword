@@ -21,6 +21,8 @@
  */
 package org.crosswire.jsword.book.sword;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 
 import org.crosswire.common.activate.Activatable;
@@ -131,12 +133,22 @@ public abstract class AbstractBackend implements Activatable
 
     /**
      * Set the text allotted for the given verse
-     * @param key The key to fetch
+     * @param key The key to set text to
+     * @param text The text to be set for key
      * @throws BookException If the data can not be set.
+     * @throws IOException If the module data path could not be created.
      */
-    public void setRawText(Key key, String text) /* throws BookException */
+    public void setRawText(Key key, String text) throws BookException, IOException
     {
-        throw new UnsupportedOperationException("Could not set text (" + text + ") for " + key); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    public void create() throws IOException, BookException {
+        File dataPath = new File(getExpandedDataPath());
+        if(!dataPath.exists()) {
+            if(!dataPath.mkdirs()) {
+                throw new IOException("Unable to create module data path!"); //$NON-NLS-1$
+            }
+        }
     }
 
     /**
