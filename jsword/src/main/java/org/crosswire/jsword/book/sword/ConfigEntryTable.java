@@ -31,8 +31,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -72,6 +74,7 @@ public final class ConfigEntryTable
     public ConfigEntryTable(String bookName)
     {
         table = new HashMap();
+        extra = new TreeMap();
         internal = bookName;
         supported = true;
     }
@@ -100,6 +103,7 @@ public final class ConfigEntryTable
                 questionable = false;
                 readahead = null;
                 table.clear();
+                extra.clear();
                 in = new BufferedReader(new InputStreamReader(new FileInputStream(file), ENCODING_LATIN1));
                 loadInitials(in);
                 loadContents(in);
@@ -144,6 +148,7 @@ public final class ConfigEntryTable
                 questionable = false;
                 readahead = null;
                 table.clear();
+                extra.clear();
                 in = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer), ENCODING_LATIN1));
                 loadInitials(in);
                 loadContents(in);
@@ -241,11 +246,19 @@ public final class ConfigEntryTable
     }
 
     /**
-     * Returns an Enumeration of all the keys found in the config file.
+     * Returns an Enumeration of all the known keys found in the config file.
      */
     public Set getKeys()
     {
         return table.keySet();
+    }
+
+    /**
+     * Returns an Enumeration of all the unknown keys found in the config file.
+     */
+    public Set getExtraKeys()
+    {
+        return extra.keySet();
     }
 
     /**
@@ -286,6 +299,30 @@ public final class ConfigEntryTable
     }
 
     /**
+     * Gets a particular unknown entries value by its key
+     * @param key of the unknown entry
+     * @return the requested value or null (if there is no value)
+     */
+    public String getExtraValue(String key)
+    {
+        return (String) extra.get(key);
+    }
+
+    /**
+     * Determine whether this ConfigEntryTable has the ConfigEntry
+     * and it matches the value.
+     *
+     * @param key The kind of unknown entry to look for
+     * @param search the value to match against
+     * @return true if there is a unknown entry matching the value
+     */
+    public boolean matchExtra(String key, String search)
+    {
+        String ce = (String) extra.get(key);
+        return ce != null && ce.equalsIgnoreCase(search);
+    }
+
+    /**
      * Sort the keys for a more meaningful presentation order.
      */
     public Element toOSIS()
@@ -297,6 +334,7 @@ public final class ConfigEntryTable
         toOSIS(factory, ele, "LicenseInfo", COPYRIGHT_INFO); //$NON-NLS-1$
         toOSIS(factory, ele, "FeatureInfo", FEATURE_INFO); //$NON-NLS-1$
         toOSIS(factory, ele, "SysInfo", SYSTEM_INFO); //$NON-NLS-1$
+        toOSIS(factory, ele, "Extra", extra); //$NON-NLS-1$
         return ele;
     }
 
@@ -318,6 +356,7 @@ public final class ConfigEntryTable
         toConf(buf, FEATURE_INFO);
         toConf(buf, LANG_INFO);
         toConf(buf, COPYRIGHT_INFO);
+        toConf(buf, extra);
         return buf.toString();
     }
 
@@ -400,7 +439,8 @@ public final class ConfigEntryTable
             {
                 if (type == null)
                 {
-                    log.warn("Ignoring unexpected entry in " + internal  + " of " + configEntry.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+                    log.warn("Extra entry in " + internal  + " of " + configEntry.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+                    extra.put(key, configEntry);
                 }
                 else if (type.isSynthetic())
                 {
@@ -610,7 +650,7 @@ public final class ConfigEntryTable
             {
                 log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_FROM.getName() + '=' + Languages.DEFAULT_LANG_CODE);  //$NON-NLS-1$ //$NON-NLS-2$
                 langFrom = Language.DEFAULT_LANG;
-                add(ConfigEntryType.GLOSSARY_FROM, lang.toString());
+                add(ConfigEntryType.GLOSSARY_FROM, lang.getCode());
             }
             testLanguage(internal, langFrom);
 
@@ -618,7 +658,7 @@ public final class ConfigEntryTable
             {
                 log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_TO.getName() + '=' + Languages.DEFAULT_LANG_CODE);  //$NON-NLS-1$ //$NON-NLS-2$
                 langTo = Language.DEFAULT_LANG;
-                add(ConfigEntryType.GLOSSARY_TO, lang.toString());
+                add(ConfigEntryType.GLOSSARY_TO, lang.getCode());
             }
             testLanguage(internal, langTo);
 
@@ -640,7 +680,7 @@ public final class ConfigEntryTable
                           " (" + langFrom.getCode() + ") does not match " + ConfigEntryType.LANG.getName() + " (" + lang.getCode() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
              */
                 lang = langFrom;
-                add(ConfigEntryType.LANG, lang.toString());
+                add(ConfigEntryType.LANG, lang.getCode());
             }
         }
     }
@@ -767,6 +807,53 @@ public final class ConfigEntryTable
         }
     }
 
+    /**
+     * Build an ordered map so that it displays in a consistent order.
+     */
+    private void toOSIS(OSISUtil.OSISFactory factory, Element ele, String aTitle, Map map)
+    {
+        Element title = null;
+        Iterator iter = map.entrySet().iterator();
+        while (iter.hasNext())
+        {
+            Map.Entry mapEntry = (Map.Entry) iter.next();
+            ConfigEntry entry = (ConfigEntry) mapEntry.getValue();
+            Element configElement = null;
+
+            if (entry != null)
+            {
+                configElement = entry.toOSIS();
+            }
+
+            if (title == null && configElement != null)
+            {
+                // I18N(DMS): use aTitle to lookup translation.
+                title = factory.createHeader();
+                title.addContent(aTitle);
+                ele.addContent(title);
+            }
+
+            if (configElement != null)
+            {
+                ele.addContent(configElement);
+            }
+        }
+    }
+    private void toConf(StringBuffer buf, Map map)
+    {
+        Iterator iter = map.entrySet().iterator();
+        while (iter.hasNext())
+        {
+            Map.Entry mapEntry = (Map.Entry) iter.next();
+            ConfigEntry entry = (ConfigEntry) mapEntry.getValue();
+            String text = entry.toConf();
+            if (text != null && text.length() > 0)
+            {
+                buf.append(text);
+            }
+        }
+    }
+
     private String report(String issue, String confEntryName, String line)
     {
         StringBuffer buf = new StringBuffer(100);
@@ -886,6 +973,11 @@ public final class ConfigEntryTable
      * A map of lists of known config entries.
      */
     private Map table;
+
+    /**
+     * A map of lists of unknown config entries.
+     */
+    private Map extra;
 
     /**
      * The BookType for this ConfigEntry

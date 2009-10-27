@@ -24,6 +24,7 @@ package org.crosswire.jsword.book.sword;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.crosswire.common.util.Histogram;
 import org.crosswire.common.util.Language;
@@ -205,6 +206,7 @@ public final class ConfigEntry
         Object def = type.getDefault();
         return def != null && def.equals(search);
     }
+
     /**
      * Add a value to the list of values for this ConfigEntry
      */
@@ -218,8 +220,11 @@ public final class ConfigEntry
             aValue = type.filter(aValue);
         }
 
-        // call handleRTF for error reporting, but don't use the result
-        handleRTF(aValue);
+        // Report on fields that shouldn't have RTF but do
+        if (!allowsRTF() && RTF_PATTERN.matcher(aValue).find())
+        {
+            log.info(report("Ignoring unexpected RTF for", getName(), aValue)); //$NON-NLS-1$
+        }
 
         if (mayRepeat())
         {
@@ -388,25 +393,14 @@ public final class ConfigEntry
         {
             buf.append(getName());
             buf.append('=');
+            String text = getConfValue(value);
             if (allowsContinuation())
             {
-                String text = getConfValue(value);
-                String [] lines = StringUtil.splitAll(text, '\n');
-                for (int i = 0; i < lines.length; i++)
-                {
-                    if (i > 0)
-                    {
-                        buf.append("\\\n"); //$NON-NLS-1$
-                    }
-                    buf.append(lines[i]);
-                }
-                buf.append('\n');
+                // With continuation each line is ended with a '\', except the last.
+                text = text.replaceAll("\n", "\\\\\n"); //$NON-NLS-1$ //$NON-NLS-2$
             }
-            else
-            {
-                buf.append(getConfValue(value));
-                buf.append('\n');
-            }
+            buf.append(text);
+            buf.append('\n');
         }
         // CipherKey is empty to indicate that it is encrypted and locked.
         else if (type.equals(ConfigEntryType.CIPHER_KEY))
@@ -466,43 +460,6 @@ public final class ConfigEntry
         return null;
     }
 
-    private String handleRTF(String aValue)
-    {
-        String copy = aValue;
-        // This method is a hack! It could be made much nicer.
-
-        // strip \pard
-        copy = copy.replaceAll("\\\\pard ?", ""); //$NON-NLS-1$ //$NON-NLS-2$
-
-        // replace rtf newlines
-        copy = copy.replaceAll("\\\\pa[er] ?", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-
-        // strip whatever \qc is.
-        copy = copy.replaceAll("\\\\qc ?", ""); //$NON-NLS-1$ //$NON-NLS-2$
-
-        // strip bold and italic
-        copy = copy.replaceAll("\\\\[bi]0? ?", ""); //$NON-NLS-1$ //$NON-NLS-2$
-
-        // strip unicode characters
-        copy = copy.replaceAll("\\\\u-?[0-9]{4,6}+\\?", ""); //$NON-NLS-1$ //$NON-NLS-2$
-
-        // strip { and } which are found in {\i text }
-        copy = copy.replaceAll("[{}]", ""); //$NON-NLS-1$ //$NON-NLS-2$
-
-        // This check is here rather than at the top, so we can find the problems
-        // and fix the source.
-        if (!allowsRTF())
-        {
-            if (!copy.equals(aValue))
-            {
-                log.info(report("Ignoring unexpected RTF for", getName(), aValue)); //$NON-NLS-1$
-            }
-            return aValue;
-        }
-
-        return copy;
-    }
-
     private List processLines(OSISUtil.OSISFactory factory, String aValue)
     {
         List list = new ArrayList();
@@ -533,15 +490,22 @@ public final class ConfigEntry
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(ConfigEntry.class);
+    private static final Logger  log         = Logger.getLogger(ConfigEntry.class);
+
+    /**
+     * A pattern of allowable RTF in a SWORD conf.
+     * These are: \pard, \pae, \par, \qc \b, \i and embedded Unicode
+     */
+    private static final Pattern RTF_PATTERN = Pattern.compile("\\\\pard|\\\\pa[er]|\\\\qc|\\\\[bi]|\\\\u-?[0-9]{4,6}+"); //$NON-NLS-1$
+
     /**
      * A histogram for debugging.
      */
-    private static Histogram histogram = new Histogram();
+    private static Histogram     histogram   = new Histogram();
 
-    private ConfigEntryType type;
-    private String internal;
-    private String name;
-    private List values;
-    private Object value;
+    private ConfigEntryType      type;
+    private String               internal;
+    private String               name;
+    private List                 values;
+    private Object               value;
 }
