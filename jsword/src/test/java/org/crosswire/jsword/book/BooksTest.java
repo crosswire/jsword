@@ -109,7 +109,6 @@ public class BooksTest extends TestCase
             assertTrue(bmd.getInitials().length() > 0);
             assertTrue(bmd.getName() != null);
             assertTrue(bmd.getName().length() > 0);
-            assertTrue(bmd.getName().length() > bmd.getInitials().length());
         }
     }
 

@@ -50,7 +50,7 @@ public class ConfigEntryTableTest extends TestCase
         assertNotNull(table);
 
         table.add(ConfigEntryType.LANG, "de"); //$NON-NLS-1$
-        assertEquals(table.getValue(ConfigEntryType.LANG), "de"); //$NON-NLS-1$
+        assertEquals("de", ((Language) table.getValue(ConfigEntryType.LANG)).getCode()); //$NON-NLS-1$
     }
 
     public void testSaveConfigEntryTable()

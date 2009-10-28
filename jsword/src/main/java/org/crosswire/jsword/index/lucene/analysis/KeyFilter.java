@@ -60,6 +60,6 @@ public class KeyFilter extends AbstractBookTokenFilter
     public boolean incrementToken() throws IOException
     {
         // TODO(DMS): actually normalize
-        return super.incrementToken();
+        return input.incrementToken();
     }
 }

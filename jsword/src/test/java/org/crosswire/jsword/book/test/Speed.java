@@ -33,7 +33,7 @@ import org.crosswire.jsword.passage.PassageTally;
 
 /**
  * Speed is a simple benchmark that tests how fast a version is. The
- * current set of tasks that we perform are rather arbitry (sp?).
+ * current set of tasks that we perform are rather arbitrary.
  * But that is something that we can improve on when we have more
  * usage information.
  *

@@ -112,9 +112,6 @@ public class ConfigurableSnowballAnalyzer extends AbstractBookAnalyzer
         stemmerName = language;
         if (stemmerName != null)
         {
-            // stemmer name are same as language name, in most cases
-            stemmerName = book.getLanguage().getName();
-
             // Check for allowed stemmers
             if (!allowedStemmers.matcher(stemmerName).matches())
             {

@@ -21,22 +21,11 @@
  */
 package org.crosswire.jsword.book;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
-import org.crosswire.common.config.ChoiceFactory;
-import org.crosswire.common.config.Config;
-import org.crosswire.common.util.CWClassLoader;
-import org.crosswire.common.util.CWProject;
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.ResourceUtil;
-import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.passage.Key;
-import org.jdom.Document;
-import org.jdom.JDOMException;
 
 /**
  * Test to check that all books can be read.
@@ -57,11 +46,13 @@ public class ReadEverything
     /**
      * Read all the books that we can get our hands on.
      */
-    public static void main(String[] args) throws IOException, JDOMException
+    public static void main(String[] args)
     {
         Logger.outputEverything();
 
-        // This must be the first static in the program.
+/*
+         // This must be the first static in the program.
+
         // To ensure this we place it at the top of the class!
         // This will set it as a place to look for overrides for
         // ResourceBundles, properties and other resources
@@ -84,19 +75,21 @@ public class ReadEverything
 
         config.setProperties(ResourceUtil.getProperties("desktop")); //$NON-NLS-1$
         config.localToApplication();
-
-        // Loop through all the Bookks
+ */
+        // Loop through all the Books
         log.warn("*** Reading all known Books"); //$NON-NLS-1$
         List comments = Books.installed().getBooks();
         for (Iterator cit = comments.iterator(); cit.hasNext();)
         {
             Book book = (Book) cit.next();
 
-            log.warn("****** Reading: " + book.getInitials()); //$NON-NLS-1$
+            if (!book.isLocked())
+            {
+                log.warn("****** Reading: " + book.getInitials()); //$NON-NLS-1$
+                Key set = book.getGlobalKeyList();
 
-            Key set = book.getGlobalKeyList();
-
-            testReadMultiple(book, set);
+                testReadMultiple(book, set);
+            }
         }
     }
 

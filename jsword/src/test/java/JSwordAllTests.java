@@ -61,14 +61,26 @@ public class JSwordAllTests extends TestCase
         suite.addTestSuite(org.crosswire.jsword.book.BookMetaDataTest.class);
         suite.addTestSuite(org.crosswire.jsword.book.SentanceUtilTest.class);
 
-        // run independently: suite.addTestSuite(org.crosswire.jsword.book.ReadEverything.class);
+        // run independently:
+        //suite.addTestSuite(org.crosswire.jsword.book.ReadEverything.class);
         // commented out because the tests were very poor.
         //suite.addTestSuite(org.crosswire.jsword.book.OsisTest.class);
+
+        // Not a JUnit test
+        //suite.addTestSuite(org.crosswire.jsword.book.test.Speed.class);
 
         /* FIXME
         suite.addTestSuite(org.crosswire.jsword.index.search.parse.ParserTest.class);
         suite.addTestSuite(org.crosswire.jsword.index.search.parse.WordsTest.class);
         */
+
+        suite.addTestSuite(org.crosswire.jsword.book.sword.ConfigEntryTableTest.class);
+        suite.addTestSuite(org.crosswire.jsword.book.sword.RawFileBackendTest.class);
+        suite.addTestSuite(org.crosswire.jsword.book.sword.SwordBookDriverTest.class);
+        suite.addTestSuite(org.crosswire.jsword.book.sword.SwordBookMetaDataTest.class);
+        suite.addTestSuite(org.crosswire.jsword.book.sword.SwordBookTest.class);
+
+        suite.addTestSuite(org.crosswire.jsword.bridge.DwrBridgeTest.class);
 
         suite.addTestSuite(org.crosswire.jsword.index.lucene.analysis.AnalyzerFactoryTest.class);
         suite.addTestSuite(org.crosswire.jsword.index.lucene.analysis.ChineseLuceneAnalyzerTest.class);

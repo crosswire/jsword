@@ -66,7 +66,7 @@ public class StrongsNumberFilter extends AbstractBookTokenFilter
         // then create a token without the suffix and also for the whole.
         if (number == null)
         {
-            if (super.incrementToken())
+            if (input.incrementToken())
             {
                 try
                 {
