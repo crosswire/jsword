@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--Together XML Project-->
-<project>
-  <property category="config" name="options.umlVersion" value="20"/>
-  <property category="sys" name="DefaultDiagram" value="uml"/>
-  <property category="sys" name="Diagram" value="uml"/>
-  <property category="sys" name="WorkingDirectory" value="."/>
-  <property category="together" name="language" value="design"/>
-</project>
