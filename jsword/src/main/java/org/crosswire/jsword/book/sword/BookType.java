@@ -222,7 +222,7 @@ public abstract class BookType implements Serializable
 
         protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
         {
-            return new RawBackend(sbmd, 2);
+            return new RawFileBackend(sbmd, 2);
         }
 
         /* (non-Javadoc)
