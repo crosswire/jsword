@@ -92,3 +92,6 @@ turkish
 webapp
 devotional
 transliterations
+http
+ftp
+username

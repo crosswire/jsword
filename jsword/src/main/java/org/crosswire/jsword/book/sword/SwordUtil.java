@@ -91,7 +91,7 @@ public final class SwordUtil
 
     /**
      * Writes "data" to a RandomAccessFile at the "offset" position
-     * @param raf RandomAvccessFile
+     * @param raf RandomAccessFile
      * @param offset offset to write at
      * @param data data to write
      * @throws IOException on error

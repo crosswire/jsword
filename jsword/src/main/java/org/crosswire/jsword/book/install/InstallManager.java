@@ -32,6 +32,7 @@ import java.util.Set;
 
 import org.crosswire.common.util.CWProject;
 import org.crosswire.common.util.EventListenerList;
+import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PluginUtil;
@@ -119,7 +120,7 @@ public final class InstallManager
             buf.append(installer.getInstallerDefinition());
             props.setProperty(PREFIX + i++, buf.toString());
         }
-        URI outputURI = CWProject.instance().getWritablePropertiesURI(getClass().getName());
+        URI outputURI = CWProject.instance().getWritableURI(getClass().getName(), FileUtil.EXTENSION_PLUGIN);
         try
         {
             NetUtil.storeProperties(props, outputURI, "Saved Installer Sites"); //$NON-NLS-1$

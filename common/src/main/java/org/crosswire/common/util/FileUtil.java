@@ -94,6 +94,11 @@ public final class FileUtil
     public static final String EXTENSION_PROPERTIES = ".properties"; //$NON-NLS-1$
 
     /**
+     * Extension for plug-in files
+     */
+    public static final String EXTENSION_PLUGIN = ".plugin"; //$NON-NLS-1$
+
+    /**
      * Extension for XSLT files
      */
     public static final String EXTENSION_XSLT = ".xsl"; //$NON-NLS-1$

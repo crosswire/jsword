@@ -207,7 +207,7 @@ class TreeNode implements Cloneable, Serializable
     /**
      * The offset of the parent record in the offset.
      * Root nodes are indicated with a value of -1.
-     * That is, this TreeNode does not hava a parent.
+     * That is, this TreeNode does not have a parent.
      */
     private int               parent;
 

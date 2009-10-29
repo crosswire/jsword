@@ -45,7 +45,7 @@ import java.net.URI;
  * <p>
  * Note: If the Java System property jsword.home is set and it exists and is writable
  * then it will be used instead of the above location. This is useful for USB Drives
- * and other portable implementations of JSword. I is recommended that this name be JSword.
+ * and other portable implementations of JSword. It is recommended that this name be JSword.
  * </p>
  *
  * @see gnu.lgpl.License for license details.
@@ -114,18 +114,19 @@ public final class CWProject
     }
 
     /**
-     * Get a the URI of a (potentially non-existent) properties file that we can
-     * write to. This method of acquiring properties files is preferred over
-     * getResourceProperties() as this is writable and can take into account
-     * user preferences.
+     * Create a the URI for a (potentially non-existent) file to which we can write.
+     * Typically this is used to store user preferences and application overrides.
+     * This method of acquiring files is preferred over getResourceProperties()
+     * as this is writable and can take into account user preferences.
      * This method makes no promise that the URI returned is valid. It is
      * totally untested, so reading may well cause errors.
-     * @param subject The name (minus the .properties extension)
+     * @param subject The name (minus the .xxx extension)
+     * @param extension The extension, prefixed with a '.' See: {@link FileUtil} for a list of popular extensions.
      * @return The resource as a URI
      */
-    public URI getWritablePropertiesURI(String subject)
+    public URI getWritableURI(String subject, String extension)
     {
-        return NetUtil.lengthenURI(getWritableProjectDir(), subject + FileUtil.EXTENSION_PROPERTIES);
+        return NetUtil.lengthenURI(getWritableProjectDir(), subject + extension);
     }
 
     /**

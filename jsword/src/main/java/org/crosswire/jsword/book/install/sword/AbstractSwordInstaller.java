@@ -36,6 +36,7 @@ import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.progress.Progress;
 import org.crosswire.common.util.CWProject;
 import org.crosswire.common.util.CollectionUtil;
+import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
@@ -237,7 +238,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
             /* @Override */
             public void run()
             {
-                URI predictURI = CWProject.instance().getWritablePropertiesURI("sword-install"); //$NON-NLS-1$
+                URI predictURI = CWProject.instance().getWritableURI("sword-install", FileUtil.EXTENSION_PROPERTIES); //$NON-NLS-1$
                 Progress job = JobManager.createJob(UserMsg.INSTALLING.toString(sbmd.getName()), predictURI, this, true);
 
                 yield();

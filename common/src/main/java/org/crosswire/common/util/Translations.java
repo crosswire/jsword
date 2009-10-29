@@ -179,7 +179,7 @@ public class Translations
                 props.put(TRANSLATION_KEY, translation);
             }
 
-            URI outputURI = CWProject.instance().getWritablePropertiesURI(getClass().getName());
+            URI outputURI = CWProject.instance().getWritableURI(getClass().getName(), FileUtil.EXTENSION_PROPERTIES);
             NetUtil.storeProperties(props, outputURI, "BibleDesktop UI Translation"); //$NON-NLS-1$
         }
         catch (IOException ex)
