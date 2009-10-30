@@ -27,16 +27,14 @@ import junit.framework.TestSuite;
 /**
  * JUnit Test.
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class AllTests
-{
-    public static Test suite()
-    {
+public class AllTests {
+    public static Test suite() {
         TestSuite suite = new TestSuite("Test for org.crosswire.common.diff"); //$NON-NLS-1$
-        //$JUnit-BEGIN$
+        // $JUnit-BEGIN$
         suite.addTest(new TestSuite(BitapTest.class));
         suite.addTest(new TestSuite(CommonalityTest.class));
         suite.addTest(new TestSuite(DiffCleanupTest.class));
@@ -47,7 +45,7 @@ public class AllTests
         suite.addTest(new TestSuite(MatchTest.class));
         suite.addTest(new TestSuite(PatchEntryTest.class));
         suite.addTest(new TestSuite(PatchTest.class));
-        //$JUnit-END$
+        // $JUnit-END$
         return suite;
     }
 }

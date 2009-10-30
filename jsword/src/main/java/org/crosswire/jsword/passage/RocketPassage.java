@@ -26,47 +26,47 @@ import java.io.ObjectInputStream;
 import java.util.Iterator;
 
 /**
- * A RocketPassage is a bit and heavy implementation of Passage that goes
- * fairly quickly once let of the leash. It manages its speed by creating
- * contained instances of DistinctPassage and RangedPassage and selects
- * the fastest implementation for each of its methods from the 3 available.
- *
- * @see gnu.lgpl.License for license details.
+ * A RocketPassage is a bit and heavy implementation of Passage that goes fairly
+ * quickly once let of the leash. It manages its speed by creating contained
+ * instances of DistinctPassage and RangedPassage and selects the fastest
+ * implementation for each of its methods from the 3 available.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class RocketPassage extends BitwisePassage
-{
+public class RocketPassage extends BitwisePassage {
     /**
      * Create a new RocketPassage
      */
-    public RocketPassage()
-    {
+    public RocketPassage() {
     }
 
     /**
-     * Create a Verse from a human readable string. The opposite
-     * of getName(), Given any RangedPassage v1, and the following
-     * <code>RangedPassage v2 = new RangedPassage(v1.getName());</code>
-     * Then <code>v1.equals(v2);</code>
-     * Theoretically, since there are many ways of representing a RangedPassage as text
-     * string comparison along the lines of:
-     * <code>v1.getName().equals(v2.getName())</code> could be false.
-     * However since getName() is standardized this will be true.
-     * We don't need to worry about thread safety in a ctor since we don't exist yet.
-     * @param refs A String containing the text of the RangedPassage
-     * @throws NoSuchVerseException if refs is invalid
+     * Create a Verse from a human readable string. The opposite of getName(),
+     * Given any RangedPassage v1, and the following
+     * <code>RangedPassage v2 = new RangedPassage(v1.getName());</code> Then
+     * <code>v1.equals(v2);</code> Theoretically, since there are many ways of
+     * representing a RangedPassage as text string comparison along the lines
+     * of: <code>v1.getName().equals(v2.getName())</code> could be false.
+     * However since getName() is standardized this will be true. We don't need
+     * to worry about thread safety in a ctor since we don't exist yet.
+     * 
+     * @param refs
+     *            A String containing the text of the RangedPassage
+     * @throws NoSuchVerseException
+     *             if refs is invalid
      */
-    protected RocketPassage(String refs) throws NoSuchVerseException
-    {
+    protected RocketPassage(String refs) throws NoSuchVerseException {
         super(refs);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.AbstractPassage#optimizeReads()
      */
-    public void optimizeReads()
-    {
+    public void optimizeReads() {
         raiseEventSuppresion();
 
         // We have to create the cached versions of these separately
@@ -92,153 +92,156 @@ public class RocketPassage extends BitwisePassage
         lowerEventSuppresionAndTest();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.AbstractPassage#optimizeWrites()
      */
-    protected void optimizeWrites()
-    {
+    protected void optimizeWrites() {
         distinct = null;
         ranged = null;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Passage#countRanges(int)
      */
-    public int countRanges(RestrictionType restrict)
-    {
-        if (ranged != null)
-        {
+    public int countRanges(RestrictionType restrict) {
+        if (ranged != null) {
             return ranged.countRanges(restrict);
         }
 
         return super.countRanges(restrict);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Passage#countVerses()
      */
-    public int countVerses()
-    {
-        if (distinct != null)
-        {
+    public int countVerses() {
+        if (distinct != null) {
             return distinct.countVerses();
         }
 
         return super.countVerses();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Iterable#iterator()
      */
-    public Iterator iterator()
-    {
-        if (distinct != null)
-        {
+    public Iterator iterator() {
+        if (distinct != null) {
             return distinct.iterator();
         }
 
         return super.iterator();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Passage#rangeIterator(int)
      */
     /* @Override */
-    public Iterator rangeIterator(RestrictionType restrict)
-    {
-        if (ranged != null)
-        {
+    public Iterator rangeIterator(RestrictionType restrict) {
+        if (ranged != null) {
             return ranged.rangeIterator(restrict);
         }
 
         return super.rangeIterator(restrict);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Passage#isEmpty()
      */
-    public boolean isEmpty()
-    {
-        if (distinct != null)
-        {
+    public boolean isEmpty() {
+        if (distinct != null) {
             return distinct.isEmpty();
         }
 
         return super.isEmpty();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Passage#getVerseAt(int)
      */
-    public Verse getVerseAt(int offset) throws ArrayIndexOutOfBoundsException
-    {
-        if (distinct != null)
-        {
+    public Verse getVerseAt(int offset) throws ArrayIndexOutOfBoundsException {
+        if (distinct != null) {
             return distinct.getVerseAt(offset);
         }
 
         return super.getVerseAt(offset);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Passage#getVerseRangeAt(int, int)
      */
-    public VerseRange getRangeAt(int offset, RestrictionType restrict) throws ArrayIndexOutOfBoundsException
-    {
-        if (ranged != null)
-        {
+    public VerseRange getRangeAt(int offset, RestrictionType restrict) throws ArrayIndexOutOfBoundsException {
+        if (ranged != null) {
             return ranged.getRangeAt(offset, restrict);
         }
 
         return super.getRangeAt(offset, restrict);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Passage#booksInPassage()
      */
-    public int booksInPassage()
-    {
-        if (distinct != null)
-        {
+    public int booksInPassage() {
+        if (distinct != null) {
             return distinct.booksInPassage();
         }
 
         return super.booksInPassage();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Passage#chaptersInPassage(int)
      */
-    public int chaptersInPassage(int book) throws NoSuchVerseException
-    {
-        if (distinct != null)
-        {
+    public int chaptersInPassage(int book) throws NoSuchVerseException {
+        if (distinct != null) {
             return distinct.chaptersInPassage(book);
         }
 
         return super.chaptersInPassage(book);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Passage#versesInPassage(int, int)
      */
-    public int versesInPassage(int book, int chapter) throws NoSuchVerseException
-    {
-        if (distinct != null)
-        {
+    public int versesInPassage(int book, int chapter) throws NoSuchVerseException {
+        if (distinct != null) {
             return distinct.versesInPassage(book, chapter);
         }
 
         return super.versesInPassage(book, chapter);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#containsAll(org.crosswire.jsword.passage.Passage)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Passage#containsAll(org.crosswire.jsword
+     * .passage.Passage)
      */
-    public boolean containsAll(Passage that)
-    {
-        if (ranged != null)
-        {
+    public boolean containsAll(Passage that) {
+        if (ranged != null) {
             return ranged.containsAll(that);
         }
 
@@ -247,12 +250,15 @@ public class RocketPassage extends BitwisePassage
 
     /**
      * Serialization support
-     * @param is The stream to read our state from
-     * @throws IOException if the read fails
-     * @throws ClassNotFoundException If the read data is incorrect
+     * 
+     * @param is
+     *            The stream to read our state from
+     * @throws IOException
+     *             if the read fails
+     * @throws ClassNotFoundException
+     *             If the read data is incorrect
      */
-    private void readObject(ObjectInputStream is) throws IOException, ClassNotFoundException
-    {
+    private void readObject(ObjectInputStream is) throws IOException, ClassNotFoundException {
         optimizeWrites();
         is.defaultReadObject();
     }

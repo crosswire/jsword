@@ -25,11 +25,10 @@ import java.util.Iterator;
 
 /**
  * A placeholder until Java 1.5.
- *
+ * 
  * @author DM Smith [dmsmith555 at yahoo dot com]
- *
+ * 
  */
-public interface Iterable
-{
-  Iterator iterator();
+public interface Iterable {
+    Iterator iterator();
 }

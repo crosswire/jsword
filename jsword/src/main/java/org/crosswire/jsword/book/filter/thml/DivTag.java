@@ -27,50 +27,51 @@ import org.xml.sax.Attributes;
 
 /**
  * THML Tag to process the div element.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class DivTag extends AbstractTag
-{
+public class DivTag extends AbstractTag {
     /**
      * Create an div tag
      */
-    public DivTag()
-    {
+    public DivTag() {
         super();
         this.level = 0;
     }
 
     /**
      * Create an div tag of the given level
+     * 
      * @param level
      */
-    public DivTag(int level)
-    {
+    public DivTag(int level) {
         super();
         this.level = level;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
-    public String getTagName()
-    {
-        if (level == 0)
-        {
+    public String getTagName() {
+        if (level == 0) {
             return "div"; //$NON-NLS-1$
         }
         return "div" + level; //$NON-NLS-1$
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element,
+     * org.xml.sax.Attributes)
      */
     /* @Override */
-    public Element processTag(Element ele, Attributes attrs)
-    {
+    public Element processTag(Element ele, Attributes attrs) {
         // See if there are variant readings e.g. WHNU Mat 1.9
         String typeAttr = attrs.getValue("type"); //$NON-NLS-1$
         if ("variant".equals(typeAttr)) //$NON-NLS-1$
@@ -78,13 +79,11 @@ public class DivTag extends AbstractTag
             Element seg = OSISUtil.factory().createSeg();
             seg.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.VARIANT_TYPE);
             String classAttr = attrs.getValue("class"); //$NON-NLS-1$
-            if (classAttr != null)
-            {
+            if (classAttr != null) {
                 seg.setAttribute(OSISUtil.OSIS_ATTR_SUBTYPE, OSISUtil.VARIANT_CLASS + '-' + classAttr);
             }
 
-            if (ele != null)
-            {
+            if (ele != null) {
                 ele.addContent(seg);
             }
 
@@ -93,8 +92,7 @@ public class DivTag extends AbstractTag
 
         Element div = OSISUtil.factory().createDiv();
 
-        if (ele != null)
-        {
+        if (ele != null) {
             ele.addContent(div);
         }
 

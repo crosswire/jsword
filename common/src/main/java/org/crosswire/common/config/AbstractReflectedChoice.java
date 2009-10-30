@@ -33,47 +33,42 @@ import org.jdom.Element;
 
 /**
  * A helper for when we need to be a choice created dynamically.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public abstract class AbstractReflectedChoice implements Choice
-{
-    /* (non-Javadoc)
+public abstract class AbstractReflectedChoice implements Choice {
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
      */
-    public void init(Element option, ResourceBundle configResources) throws StartupException
-    {
+    public void init(Element option, ResourceBundle configResources) throws StartupException {
         assert configResources != null;
 
         key = option.getAttributeValue("key"); //$NON-NLS-1$
 
-        // Hidden is an optional field so it is ok for the resource to be missing.
-        try
-        {
+        // Hidden is an optional field so it is ok for the resource to be
+        // missing.
+        try {
             String hiddenState = configResources.getString(key + ".hidden"); //$NON-NLS-1$
             hidden = Boolean.valueOf(hiddenState).booleanValue();
-        }
-        catch (MissingResourceException e)
-        {
+        } catch (MissingResourceException e) {
             hidden = false;
         }
 
-        // Ignore is an optional field so it is ok for the resource to be missing.
-        try
-        {
+        // Ignore is an optional field so it is ok for the resource to be
+        // missing.
+        try {
             String ignoreState = configResources.getString(key + ".ignore"); //$NON-NLS-1$
             ignored = Boolean.valueOf(ignoreState).booleanValue();
-            if (ignored)
-            {
+            if (ignored) {
                 hidden = true;
                 return;
             }
-        }
-        catch (MissingResourceException e)
-        {
+        } catch (MissingResourceException e) {
             ignored = false;
         }
 
@@ -85,10 +80,8 @@ public abstract class AbstractReflectedChoice implements Choice
         String[] pathParts = StringUtil.split(key, '.');
         StringBuffer parentKey = new StringBuffer();
         StringBuffer path = new StringBuffer();
-        for (int i = 0; i < pathParts.length; i++)
-        {
-            if (i > 0)
-            {
+        for (int i = 0; i < pathParts.length; i++) {
+            if (i > 0) {
                 parentKey.append('.');
                 path.append('.');
             }
@@ -105,81 +98,82 @@ public abstract class AbstractReflectedChoice implements Choice
 
         type = option.getAttributeValue("type"); //$NON-NLS-1$
 
-        // The important 3 things saying what we update and how we describe ourselves
+        // The important 3 things saying what we update and how we describe
+        // ourselves
         Element introspector = option.getChild("introspect"); //$NON-NLS-1$
-        if (introspector == null)
-        {
-            throw new StartupException(Msg.CONFIG_MISSINGELE, new Object[] { "introspect" }); //$NON-NLS-1$
+        if (introspector == null) {
+            throw new StartupException(Msg.CONFIG_MISSINGELE, new Object[] {
+                "introspect"}); //$NON-NLS-1$
         }
 
         String clazzname = introspector.getAttributeValue("class"); //$NON-NLS-1$
-        if (clazzname == null)
-        {
-            throw new StartupException(Msg.CONFIG_MISSINGELE, new Object[] { "class" }); //$NON-NLS-1$
+        if (clazzname == null) {
+            throw new StartupException(Msg.CONFIG_MISSINGELE, new Object[] {
+                "class"}); //$NON-NLS-1$
         }
 
         propertyname = introspector.getAttributeValue("property"); //$NON-NLS-1$
-        if (propertyname == null)
-        {
-            throw new StartupException(Msg.CONFIG_MISSINGELE, new Object[] { "property" }); //$NON-NLS-1$
+        if (propertyname == null) {
+            throw new StartupException(Msg.CONFIG_MISSINGELE, new Object[] {
+                "property"}); //$NON-NLS-1$
         }
 
-        //log.debug("Looking up " + clazzname + ".set" + propertyname + "(" + getConvertionClass().getName() + " arg0)");
+        // log.debug("Looking up " + clazzname + ".set" + propertyname + "(" +
+        // getConvertionClass().getName() +
+        // " arg0)");
 
-        try
-        {
+        try {
             clazz = ClassUtil.forName(clazzname);
-        }
-        catch (ClassNotFoundException ex)
-        {
-            throw new StartupException(Msg.CONFIG_NOCLASS, ex, new Object[] { clazzname });
-        }
-
-        try
-        {
-            setter = clazz.getMethod("set" + propertyname, new Class[] { getConversionClass() }); //$NON-NLS-1$
-        }
-        catch (NoSuchMethodException ex)
-        {
-            throw new StartupException(Msg.CONFIG_NOSETTER, ex, new Object[] { clazz.getName(), propertyname, getConversionClass().getName() });
+        } catch (ClassNotFoundException ex) {
+            throw new StartupException(Msg.CONFIG_NOCLASS, ex, new Object[] {
+                clazzname
+            });
         }
 
-        try
-        {
-            try
-            {
+        try {
+            setter = clazz.getMethod("set" + propertyname, new Class[] { getConversionClass()}); //$NON-NLS-1$
+        } catch (NoSuchMethodException ex) {
+            throw new StartupException(Msg.CONFIG_NOSETTER, ex, new Object[] {
+                    clazz.getName(), propertyname, getConversionClass().getName()
+            });
+        }
+
+        try {
+            try {
                 getter = clazz.getMethod("is" + propertyname, new Class[0]); //$NON-NLS-1$
-            }
-            catch (NoSuchMethodException e)
-            {
+            } catch (NoSuchMethodException e) {
                 getter = clazz.getMethod("get" + propertyname, new Class[0]); //$NON-NLS-1$
             }
-        }
-        catch (NoSuchMethodException ex)
-        {
-            throw new StartupException(Msg.CONFIG_NOGETTER, ex, new Object[] { clazz.getName(), propertyname });
+        } catch (NoSuchMethodException ex) {
+            throw new StartupException(Msg.CONFIG_NOGETTER, ex, new Object[] {
+                    clazz.getName(), propertyname
+            });
         }
 
-        if (getter.getReturnType() != getConversionClass())
-        {
-            log.debug("Not using " + propertyname + " from " + clazz.getName() + " because the return type of the getter is not " + getConversionClass().getName()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            throw new StartupException(Msg.CONFIG_NORETURN, new Object[] { getter.getReturnType(), getConversionClass() });
+        if (getter.getReturnType() != getConversionClass()) {
+            log
+                    .debug("Not using " + propertyname + " from " + clazz.getName() + " because the return type of the getter is not " + getConversionClass().getName()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            throw new StartupException(Msg.CONFIG_NORETURN, new Object[] {
+                    getter.getReturnType(), getConversionClass()
+            });
         }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.config.Choice#getKey()
      */
-    public String getKey()
-    {
+    public String getKey() {
         return key;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.config.Choice#getType()
      */
-    public String getType()
-    {
+    public String getType() {
         return type;
     }
 
@@ -193,131 +187,129 @@ public abstract class AbstractReflectedChoice implements Choice
      */
     public abstract Object convertToObject(String orig);
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.config.Choice#getFullPath()
      */
-    public String getFullPath()
-    {
+    public String getFullPath() {
         return fullPath;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.config.Choice#setFullPath(java.lang.String)
      */
-    public void setFullPath(String newFullPath)
-    {
+    public void setFullPath(String newFullPath) {
         fullPath = newFullPath;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.config.Choice#getHelpText()
      */
-    public String getHelpText()
-    {
+    public String getHelpText() {
         return helptext;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.config.Choice#setHelpText(java.lang.String)
      */
-    public void setHelpText(String helptext)
-    {
+    public void setHelpText(String helptext) {
         this.helptext = helptext;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.config.Choice#isSaveable()
      */
-    public boolean isSaveable()
-    {
+    public boolean isSaveable() {
         return !external;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.config.Choice#isHidden()
      */
-    public boolean isHidden()
-    {
+    public boolean isHidden() {
         return hidden;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.config.Choice#isIgnored()
      */
-    public boolean isIgnored()
-    {
+    public boolean isIgnored() {
         return ignored;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.config.Choice#requiresRestart()
      */
-    public boolean requiresRestart()
-    {
+    public boolean requiresRestart() {
         return restart;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.config.Choice#getString()
      */
-    public String getString()
-    {
-        try
-        {
+    public String getString() {
+        try {
             Object retval = getter.invoke(null, new Object[0]);
             return convertToString(retval);
-        }
-        catch (IllegalAccessException ex)
-        {
+        } catch (IllegalAccessException ex) {
             log.error("Illegal access getting value from " + clazz.getName() + "." + getter.getName(), ex); //$NON-NLS-1$ //$NON-NLS-2$
             return ""; //$NON-NLS-1$
-        }
-        catch (InvocationTargetException ex)
-        {
+        } catch (InvocationTargetException ex) {
             log.error("Failed to get value from " + clazz.getName() + "." + getter.getName(), ex); //$NON-NLS-1$ //$NON-NLS-2$
             return ""; //$NON-NLS-1$
         }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.config.Choice#setString(java.lang.String)
      */
-    public void setString(String value) throws ConfigException
-    {
+    public void setString(String value) throws ConfigException {
         Exception ex = null;
-        try
-        {
+        try {
             Object object = convertToObject(value);
-            if (object != null)
-            {
-                setter.invoke(null, new Object[] { object });
+            if (object != null) {
+                setter.invoke(null, new Object[] {
+                    object
+                });
             }
-        }
-        catch (InvocationTargetException e)
-        {
+        } catch (InvocationTargetException e) {
             ex = e;
-        }
-        catch (IllegalArgumentException e)
-        {
+        } catch (IllegalArgumentException e) {
             ex = e;
-        }
-        catch (IllegalAccessException e)
-        {
+        } catch (IllegalAccessException e) {
             ex = e;
-        }
-        catch (NullPointerException e)
-        {
+        } catch (NullPointerException e) {
             ex = e;
         }
 
-        if (ex != null)
-        {
+        if (ex != null) {
             log.info("Exception while attempting to execute: " + setter.toString()); //$NON-NLS-1$
 
-
             // So we can't re-throw the original exception because it wasn't an
-            // Exception so we will have to re-throw the InvocationTargetException
-            throw new ConfigException(Msg.CONFIG_SETFAIL, ex, new Object[] { setter });
+            // Exception so we will have to re-throw the
+            // InvocationTargetException
+            throw new ConfigException(Msg.CONFIG_SETFAIL, ex, new Object[] {
+                setter
+            });
         }
     }
 

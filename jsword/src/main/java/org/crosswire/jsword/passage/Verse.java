@@ -32,42 +32,42 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.versification.BibleInfo;
 
 /**
- * A Passage is a pointer to a single verse. Externally its unique
- * identifier is a String of the form "Gen 1:1" Internally we use
+ * A Passage is a pointer to a single verse. Externally its unique identifier is
+ * a String of the form "Gen 1:1" Internally we use
  * <code>int[] { book, chapter, verse }</code>
- *
- * <p>A Verse is designed to be immutable. This is a necessary from a
- * collections point of view. A Verse should always be valid, although
- * some versions may not return any text for verses that they consider to
- * be mis-translated in some way.</p>
- *
- * <p>Optimization information: I spent some time optimizing this class
- * because it is at the heart of things. My benchmark started at 11.25s.
- * By taking the int[] and turning it into 3 ints and it took 10.8s.<br />
- * Caching the ordinal number just took the time from 12s to 12s! I guess
- * that the time and extra memory taken up by the extra int overrode the
- * time it saved by repeated queries to the same verse. I guess this would
- * change if we were using a [Ranged|Distinct]Passage instead of a Bitwise
- * Passage (as in the test). Maybe it would be a good idea to have an
- * extra class OrdCacheVerse (or something) that gave us the best of both
- * worlds?<br />
- * Removing the default initialization of the ints took the time down by
- * about 0.25s also.
+ * 
+ * <p>
+ * A Verse is designed to be immutable. This is a necessary from a collections
+ * point of view. A Verse should always be valid, although some versions may not
+ * return any text for verses that they consider to be mis-translated in some
+ * way.
  * </p>
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * <p>
+ * Optimization information: I spent some time optimizing this class because it
+ * is at the heart of things. My benchmark started at 11.25s. By taking the
+ * int[] and turning it into 3 ints and it took 10.8s.<br />
+ * Caching the ordinal number just took the time from 12s to 12s! I guess that
+ * the time and extra memory taken up by the extra int overrode the time it
+ * saved by repeated queries to the same verse. I guess this would change if we
+ * were using a [Ranged|Distinct]Passage instead of a Bitwise Passage (as in the
+ * test). Maybe it would be a good idea to have an extra class OrdCacheVerse (or
+ * something) that gave us the best of both worlds?<br />
+ * Removing the default initialization of the ints took the time down by about
+ * 0.25s also.
+ * </p>
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public final class Verse implements Key
-{
+public final class Verse implements Key {
     /**
      * The default Verse is Genesis 1:1. I didn't want to provide this
-     * constructor however, you are supposed to provide a default ctor
-     * for all beans. For this reason I suggest you don't use it.
+     * constructor however, you are supposed to provide a default ctor for all
+     * beans. For this reason I suggest you don't use it.
      */
-    public Verse()
-    {
+    public Verse() {
         originalName = null;
 
         book = DEFAULT.book;
@@ -76,51 +76,64 @@ public final class Verse implements Key
     }
 
     /**
-     * Create a Verse from book, chapter and verse numbers, throwing up
-     * if the specified Verse does not exist. This constructor is
-     * deliberately package protected so that is used only by VerseFactory.
-     * @param original The original verse reference
-     * @param book The book number (Genesis = 1)
-     * @param chapter The chapter number
-     * @param verse The verse number
-     * @exception NoSuchVerseException If the reference is illegal
+     * Create a Verse from book, chapter and verse numbers, throwing up if the
+     * specified Verse does not exist. This constructor is deliberately package
+     * protected so that is used only by VerseFactory.
+     * 
+     * @param original
+     *            The original verse reference
+     * @param book
+     *            The book number (Genesis = 1)
+     * @param chapter
+     *            The chapter number
+     * @param verse
+     *            The verse number
+     * @exception NoSuchVerseException
+     *                If the reference is illegal
      */
-    /*package*/ Verse(String original, int book, int chapter, int verse) throws NoSuchVerseException
-    {
+    /* package */Verse(String original, int book, int chapter, int verse) throws NoSuchVerseException {
         originalName = original;
         set(book, chapter, verse);
     }
 
     /**
-     * Create a Verse from book, chapter and verse numbers, throwing up
-     * if the specified Verse does not exist.
-     * @param book The book number (Genesis = 1)
-     * @param chapter The chapter number
-     * @param verse The verse number
-     * @exception NoSuchVerseException If the reference is illegal
+     * Create a Verse from book, chapter and verse numbers, throwing up if the
+     * specified Verse does not exist.
+     * 
+     * @param book
+     *            The book number (Genesis = 1)
+     * @param chapter
+     *            The chapter number
+     * @param verse
+     *            The verse number
+     * @exception NoSuchVerseException
+     *                If the reference is illegal
      */
-    public Verse(int book, int chapter, int verse) throws NoSuchVerseException
-    {
+    public Verse(int book, int chapter, int verse) throws NoSuchVerseException {
         this(null, book, chapter, verse);
     }
 
     /**
-     * Create a Verse from book, chapter and verse numbers, patching up if
-     * the specified verse does not exist.
-     * <p>The actual value of the boolean is ignored. However for future
-     * proofing you should only use 'true'. Do not use patch_up=false, use
+     * Create a Verse from book, chapter and verse numbers, patching up if the
+     * specified verse does not exist.
+     * <p>
+     * The actual value of the boolean is ignored. However for future proofing
+     * you should only use 'true'. Do not use patch_up=false, use
      * <code>Verse(int, int, int)</code> This so that we can declare this
-     * constructor to not throw an exception. Is there a better way of
-     * doing this?
-     * @param book The book number (Genesis = 1)
-     * @param chapter The chapter number
-     * @param verse The verse number
-     * @param patch_up True to trigger reference fixing
+     * constructor to not throw an exception. Is there a better way of doing
+     * this?
+     * 
+     * @param book
+     *            The book number (Genesis = 1)
+     * @param chapter
+     *            The chapter number
+     * @param verse
+     *            The verse number
+     * @param patch_up
+     *            True to trigger reference fixing
      */
-    public Verse(int book, int chapter, int verse, boolean patch_up)
-    {
-        if (!patch_up)
-        {
+    public Verse(int book, int chapter, int verse, boolean patch_up) {
+        if (!patch_up) {
             throw new IllegalArgumentException(Msg.ERROR_PATCH.toString());
         }
 
@@ -129,212 +142,197 @@ public final class Verse implements Key
     }
 
     /**
-     * Set a Verse using a Verse Ordinal number - WARNING Do not use this
-     * method unless you really know the dangers of doing so. Ordinals are
-     * not always going to be the same. So you should use a Verse or an
-     * int[3] in preference to an int ordinal whenever possible. Ordinal
-     * numbers are 1 based and not 0 based.
-     * @param ordinal The verse id
-     * @exception NoSuchVerseException If the reference is illegal
+     * Set a Verse using a Verse Ordinal number - WARNING Do not use this method
+     * unless you really know the dangers of doing so. Ordinals are not always
+     * going to be the same. So you should use a Verse or an int[3] in
+     * preference to an int ordinal whenever possible. Ordinal numbers are 1
+     * based and not 0 based.
+     * 
+     * @param ordinal
+     *            The verse id
+     * @exception NoSuchVerseException
+     *                If the reference is illegal
      */
-    public Verse(int ordinal) throws NoSuchVerseException
-    {
+    public Verse(int ordinal) throws NoSuchVerseException {
         originalName = null;
         set(ordinal);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
     /* @Override */
-    public String toString()
-    {
+    public String toString() {
         return getName();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getName()
      */
-    public String getName()
-    {
+    public String getName() {
         return getName(null);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage
+     * .Key)
      */
-    public String getName(Key base)
-    {
-        if (base != null && !(base instanceof Verse))
-        {
+    public String getName(Key base) {
+        if (base != null && !(base instanceof Verse)) {
             return getName();
         }
 
-        try
-        {
-            if (PassageUtil.isPersistentNaming() && originalName != null)
-            {
+        try {
+            if (PassageUtil.isPersistentNaming() && originalName != null) {
                 return originalName;
             }
 
             String verseName = doGetName((Verse) base);
             // Only shape it if it can be unshaped.
-            if (shaper.canUnshape())
-            {
+            if (shaper.canUnshape()) {
                 return shaper.shape(verseName);
             }
 
             return verseName;
-        }
-        catch (NoSuchKeyException ex)
-        {
+        } catch (NoSuchKeyException ex) {
             assert false : ex;
             return "!Error!"; //$NON-NLS-1$
         }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getRootName()
      */
-    public String getRootName()
-    {
-        try
-        {
+    public String getRootName() {
+        try {
             return BibleInfo.getShortBookName(book);
-        }
-        catch (NoSuchKeyException ex)
-        {
+        } catch (NoSuchKeyException ex) {
             assert false : ex;
             return "!Error!"; //$NON-NLS-1$
         }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getOsisRef()
      */
-    public String getOsisRef()
-    {
-        try
-        {
-            return BibleInfo.getOSISName(book)
-                + Verse.VERSE_OSIS_DELIM
-                + chapter
-                + Verse.VERSE_OSIS_DELIM
-                + verse;
-        }
-        catch (NoSuchVerseException ex)
-        {
+    public String getOsisRef() {
+        try {
+            return BibleInfo.getOSISName(book) + Verse.VERSE_OSIS_DELIM + chapter + Verse.VERSE_OSIS_DELIM + verse;
+        } catch (NoSuchVerseException ex) {
             assert false : ex;
             return "!Error!"; //$NON-NLS-1$
         }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getOSISId()
      */
-    public String getOsisID()
-    {
+    public String getOsisID() {
         return getOsisRef();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#clone()
      */
     /* @Override */
-    public Object clone()
-    {
+    public Object clone() {
         Verse copy = null;
-        try
-        {
+        try {
             copy = (Verse) super.clone();
             copy.book = book;
             copy.chapter = chapter;
             copy.verse = verse;
-            //copy.ord = ord;
+            // copy.ord = ord;
             copy.originalName = originalName;
-        }
-        catch (CloneNotSupportedException e)
-        {
+        } catch (CloneNotSupportedException e) {
             assert false : e;
         }
 
         return copy;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     /* @Override */
-    public boolean equals(Object obj)
-    {
+    public boolean equals(Object obj) {
         // Since this can not be null
-        if (obj == null)
-        {
+        if (obj == null) {
             return false;
         }
 
         // Check that that is the same as this
         // Don't use instanceOf since that breaks inheritance
-        if (!obj.getClass().equals(this.getClass()))
-        {
+        if (!obj.getClass().equals(this.getClass())) {
             return false;
         }
 
         Verse v = (Verse) obj;
 
         // The real tests
-        if (v.getBook() != getBook())
-        {
+        if (v.getBook() != getBook()) {
             return false;
         }
 
-        if (v.getChapter() != getChapter())
-        {
+        if (v.getChapter() != getChapter()) {
             return false;
         }
 
-        if (v.getVerse() != getVerse())
-        {
+        if (v.getVerse() != getVerse()) {
             return false;
         }
 
         return true;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     /* @Override */
-    public int hashCode()
-    {
+    public int hashCode() {
         return getOrdinal();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Comparable#compareTo(T)
      */
-    public int compareTo(Object obj)
-    {
+    public int compareTo(Object obj) {
         Verse that = null;
-        if (obj instanceof Verse)
-        {
+        if (obj instanceof Verse) {
             that = (Verse) obj;
-        }
-        else
-        {
+        } else {
             that = ((VerseRange) obj).getStart();
         }
 
         int thatStart = that.getOrdinal();
         int thisStart = this.getOrdinal();
 
-        if (thatStart > thisStart)
-        {
+        if (thatStart > thisStart) {
             return -1;
         }
 
-        if (thatStart < thisStart)
-        {
+        if (thatStart < thisStart) {
             return 1;
         }
 
@@ -343,61 +341,57 @@ public final class Verse implements Key
 
     /**
      * Is this verse adjacent to another verse
-     * @param that The thing to compare against
+     * 
+     * @param that
+     *            The thing to compare against
      * @return 1 means he is earlier than me, -1 means he is later ...
      */
-    public boolean adjacentTo(Verse that)
-    {
+    public boolean adjacentTo(Verse that) {
         return Math.abs(that.getOrdinal() - getOrdinal()) == 1;
     }
 
     /**
-     * How many verses are there in between the 2 Verses.
-     * The answer is -ve if that is bigger than this.
-     * The answer is inclusive of that and exclusive of this, so that
-     * <code>gen11.difference(gen12) == 1</code>
-     * @param that The Verse to compare this to
+     * How many verses are there in between the 2 Verses. The answer is -ve if
+     * that is bigger than this. The answer is inclusive of that and exclusive
+     * of this, so that <code>gen11.subtract(gen12) == 1</code>
+     * 
+     * @param that
+     *            The Verse to compare this to
      * @return The count of verses between this and that.
      */
-    public int subtract(Verse that)
-    {
+    public int subtract(Verse that) {
         return getOrdinal() - that.getOrdinal();
     }
 
     /**
      * Get the verse n down from here this Verse.
-     * @param n The number to count down by
+     * 
+     * @param n
+     *            The number to count down by
      * @return The new Verse
      */
-    public Verse subtract(int n)
-    {
-        try
-        {
+    public Verse subtract(int n) {
+        try {
             int new_ordinal = Math.max(getOrdinal() - n, 1);
             return new Verse(new_ordinal);
-        }
-        catch (NoSuchVerseException ex)
-        {
+        } catch (NoSuchVerseException ex) {
             assert false : ex;
             return Verse.DEFAULT;
         }
     }
 
     /**
-     * Get the verse that is a few verses on from the one
-     * we've got.
-     * @param extra the number of verses later than the one we're one
+     * Get the verse that is a few verses on from the one we've got.
+     * 
+     * @param extra
+     *            the number of verses later than the one we're one
      * @return The new verse
      */
-    public Verse add(int extra)
-    {
-        try
-        {
+    public Verse add(int extra) {
+        try {
             int new_ordinal = Math.min(getOrdinal() + extra, BibleInfo.versesInBible());
             return new Verse(new_ordinal);
-        }
-        catch (NoSuchVerseException ex)
-        {
+        } catch (NoSuchVerseException ex) {
             assert false : ex;
             return Verse.DEFAULT;
         }
@@ -405,52 +399,49 @@ public final class Verse implements Key
 
     /**
      * Return the book that we refer to
+     * 
      * @return The book number (Genesis = 1)
      */
-    public int getBook()
-    {
+    public int getBook() {
         return book;
     }
 
     /**
      * Return the chapter that we refer to
+     * 
      * @return The chapter number
      */
-    public int getChapter()
-    {
+    public int getChapter() {
         return chapter;
     }
 
     /**
      * Return the verse that we refer to
+     * 
      * @return The verse number
      */
-    public int getVerse()
-    {
+    public int getVerse() {
         return verse;
     }
 
     /**
      * Is this verse the first in a chapter
+     * 
      * @return true or false ...
      */
-    public boolean isStartOfChapter()
-    {
+    public boolean isStartOfChapter() {
         return verse == 1;
     }
 
     /**
      * Is this verse the first in a chapter
+     * 
      * @return true or false ...
      */
-    public boolean isEndOfChapter()
-    {
-        try
-        {
+    public boolean isEndOfChapter() {
+        try {
             return verse == BibleInfo.versesInChapter(book, chapter);
-        }
-        catch (NoSuchVerseException ex)
-        {
+        } catch (NoSuchVerseException ex) {
             assert false : ex;
             return true;
         }
@@ -458,26 +449,22 @@ public final class Verse implements Key
 
     /**
      * Is this verse the first in a chapter
+     * 
      * @return true or false ...
      */
-    public boolean isStartOfBook()
-    {
+    public boolean isStartOfBook() {
         return verse == 1 && chapter == 1;
     }
 
     /**
      * Is this verse the first in a chapter
+     * 
      * @return true or false ...
      */
-    public boolean isEndOfBook()
-    {
-        try
-        {
-            return verse == BibleInfo.versesInChapter(book, chapter)
-                && chapter == BibleInfo.chaptersInBook(book);
-        }
-        catch (NoSuchVerseException ex)
-        {
+    public boolean isEndOfBook() {
+        try {
+            return verse == BibleInfo.versesInChapter(book, chapter) && chapter == BibleInfo.chaptersInBook(book);
+        } catch (NoSuchVerseException ex) {
             assert false : ex;
             return true;
         }
@@ -485,46 +472,47 @@ public final class Verse implements Key
 
     /**
      * Is this verse in the same chapter as that one
-     * @param that The verse to compate to
+     * 
+     * @param that
+     *            The verse to compare to
      * @return true or false ...
      */
-    public boolean isSameChapter(Verse that)
-    {
+    public boolean isSameChapter(Verse that) {
         return book == that.book && chapter == that.chapter;
     }
 
     /**
      * Is this verse in the same book as that one
-     * @param that The verse to compate to
+     * 
+     * @param that
+     *            The verse to compare to
      * @return true or false ...
      */
-    public boolean isSameBook(Verse that)
-    {
+    public boolean isSameBook(Verse that) {
         return book == that.book;
     }
 
     /**
      * Return the verse that we refer to
+     * 
      * @return An array of 3 ints 0=book, 1=chapter, 2=verse
      */
-    public int[] getRefArray()
-    {
-        return new int[] { book, chapter, verse };
+    public int[] getRefArray() {
+        return new int[] {
+                book, chapter, verse
+        };
     }
 
     /**
-     * Return the verse id that we refer to, where Gen 1:1 = 1, and
-     * Rev 22:21 = 31104
+     * Return the verse id that we refer to, where Gen 1:1 = 1, and Rev 22:21 =
+     * 31104
+     * 
      * @return The verse number
      */
-    public int getOrdinal()
-    {
-        try
-        {
+    public int getOrdinal() {
+        try {
             return BibleInfo.verseOrdinal(book, chapter, verse);
-        }
-        catch (NoSuchVerseException ex)
-        {
+        } catch (NoSuchVerseException ex) {
             // A verse should never be illegal so
             log.error("ref=" + book + ", " + chapter + ", " + verse); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             assert false : ex;
@@ -533,32 +521,34 @@ public final class Verse implements Key
     }
 
     /**
-     * Return the bigger of the 2 verses. If the verses are equal()
-     * then return Verse a
-     * @param a The first verse to compare
-     * @param b The second verse to compare
+     * Return the bigger of the 2 verses. If the verses are equal() then return
+     * Verse a
+     * 
+     * @param a
+     *            The first verse to compare
+     * @param b
+     *            The second verse to compare
      * @return The bigger of the 2 verses
      */
-    public static Verse max(Verse a, Verse b)
-    {
-        if (a.compareTo(b) == -1)
-        {
+    public static Verse max(Verse a, Verse b) {
+        if (a.compareTo(b) == -1) {
             return b;
         }
         return a;
     }
 
     /**
-     * Return the smaller of the 2 verses. If the verses are equal()
-     * then return Verse a
-     * @param a The first verse to compare
-     * @param b The second verse to compare
+     * Return the smaller of the 2 verses. If the verses are equal() then return
+     * Verse a
+     * 
+     * @param a
+     *            The first verse to compare
+     * @param b
+     *            The second verse to compare
      * @return The smaller of the 2 verses
      */
-    public static Verse min(Verse a, Verse b)
-    {
-        if (a.compareTo(b) == 1)
-        {
+    public static Verse min(Verse a, Verse b) {
+        if (a.compareTo(b) == 1) {
             return b;
         }
         return a;
@@ -566,28 +556,27 @@ public final class Verse implements Key
 
     /**
      * Create an array of Verses
+     * 
      * @return The array of verses that this makes up
      */
-    public Verse[] toVerseArray()
-    {
-        return new Verse[] { this };
+    public Verse[] toVerseArray() {
+        return new Verse[] {
+            this
+        };
     }
 
     /**
      * Create a new Verse being the last verse in the current book
+     * 
      * @return The last verse in this book
      */
-    public Verse getLastVerseInBook()
-    {
-        try
-        {
+    public Verse getLastVerseInBook() {
+        try {
             int lastchap = BibleInfo.chaptersInBook(book);
             int lastverse = BibleInfo.versesInChapter(book, lastchap);
 
             return new Verse(book, lastchap, lastverse);
-        }
-        catch (NoSuchVerseException ex)
-        {
+        } catch (NoSuchVerseException ex) {
             assert false : ex;
             return Verse.DEFAULT;
         }
@@ -595,18 +584,15 @@ public final class Verse implements Key
 
     /**
      * Create a new Verse being the last verse in the current book
+     * 
      * @return The last verse in this book
      */
-    public Verse getLastVerseInChapter()
-    {
-        try
-        {
+    public Verse getLastVerseInChapter() {
+        try {
             int lastverse = BibleInfo.versesInChapter(book, chapter);
 
             return new Verse(book, chapter, lastverse);
-        }
-        catch (NoSuchVerseException ex)
-        {
+        } catch (NoSuchVerseException ex) {
             assert false : ex;
             return Verse.DEFAULT;
         }
@@ -614,16 +600,13 @@ public final class Verse implements Key
 
     /**
      * Create a new Verse being the first verse in the current book
+     * 
      * @return The first verse in this book
      */
-    public Verse getFirstVerseInBook()
-    {
-        try
-        {
+    public Verse getFirstVerseInBook() {
+        try {
             return new Verse(book, 1, 1);
-        }
-        catch (NoSuchVerseException ex)
-        {
+        } catch (NoSuchVerseException ex) {
             assert false : ex;
             return Verse.DEFAULT;
         }
@@ -631,110 +614,103 @@ public final class Verse implements Key
 
     /**
      * Create a new Verse being the first verse in the current book
+     * 
      * @return The first verse in this book
      */
-    public Verse getFirstVerseInChapter()
-    {
-        try
-        {
+    public Verse getFirstVerseInChapter() {
+        try {
             return new Verse(book, chapter, 1);
-        }
-        catch (NoSuchVerseException ex)
-        {
+        } catch (NoSuchVerseException ex) {
             assert false : ex;
             return Verse.DEFAULT;
         }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getParent()
      */
-    public Key getParent()
-    {
+    public Key getParent() {
         return parent;
     }
 
     /**
      * Set a parent Key. This allows us to follow the Key interface more
-     * closely, although the concept of a parent for a verse is fairly
-     * alien.
-     * @param parent The parent Key for this verse
+     * closely, although the concept of a parent for a verse is fairly alien.
+     * 
+     * @param parent
+     *            The parent Key for this verse
      */
-    public void setParent(Key parent)
-    {
+    public void setParent(Key parent) {
         this.parent = parent;
     }
 
     /**
      * Compute the verse representation given the context.
-     * @param verseBase the context or null if there is none
+     * 
+     * @param verseBase
+     *            the context or null if there is none
      * @return the verse representation
      * @throws NoSuchVerseException
      */
-    private String doGetName(Verse verseBase) throws NoSuchVerseException
-    {
+    private String doGetName(Verse verseBase) throws NoSuchVerseException {
         // To cope with thing like Jude 2...
-        if (BibleInfo.chaptersInBook(book) == 1)
-        {
-            if (verseBase == null || verseBase.book != book)
-            {
-                return BibleInfo.getPreferredBookName(book)
-                    + Verse.VERSE_PREF_DELIM1
-                    + verse;
+        if (BibleInfo.chaptersInBook(book) == 1) {
+            if (verseBase == null || verseBase.book != book) {
+                return BibleInfo.getPreferredBookName(book) + Verse.VERSE_PREF_DELIM1 + verse;
             }
 
             return String.valueOf(verse);
         }
 
-        if (verseBase == null || verseBase.book != book)
-        {
-            return BibleInfo.getPreferredBookName(book)
-                + Verse.VERSE_PREF_DELIM1
-                + chapter
-                + Verse.VERSE_PREF_DELIM2
-                + verse;
+        if (verseBase == null || verseBase.book != book) {
+            return BibleInfo.getPreferredBookName(book) + Verse.VERSE_PREF_DELIM1 + chapter + Verse.VERSE_PREF_DELIM2 + verse;
         }
 
-        if (verseBase.chapter != chapter)
-        {
-            return chapter
-                + Verse.VERSE_PREF_DELIM2
-                + verse;
+        if (verseBase.chapter != chapter) {
+            return chapter + Verse.VERSE_PREF_DELIM2 + verse;
         }
 
         return String.valueOf(verse);
     }
 
     /**
-     * This is simply a convenience function to wrap Integer.parseInt()
-     * and give us a reasonable exception on failure. It is called by
-     * VerseRange hence protected, however I would prefer private
-     * @param text The string to be parsed
+     * This is simply a convenience function to wrap Integer.parseInt() and give
+     * us a reasonable exception on failure. It is called by VerseRange hence
+     * protected, however I would prefer private
+     * 
+     * @param text
+     *            The string to be parsed
      * @return The correctly parsed chapter or verse
-     * @exception NoSuchVerseException If the reference is illegal
+     * @exception NoSuchVerseException
+     *                If the reference is illegal
      */
-    protected static int parseInt(String text) throws NoSuchVerseException
-    {
-        try
-        {
+    protected static int parseInt(String text) throws NoSuchVerseException {
+        try {
             return Integer.parseInt(shaper.unshape(text));
-        }
-        catch (NumberFormatException ex)
-        {
-            throw new NoSuchVerseException(UserMsg.VERSE_PARSE, new Object[] { text });
+        } catch (NumberFormatException ex) {
+            throw new NoSuchVerseException(UserMsg.VERSE_PARSE, new Object[] {
+                text
+            });
         }
     }
 
     /**
-     * Mutate into this reference and fix the reference if needed.
-     * This must only be called from a ctor to maintain immutability
-     * @param book The book to set (Genesis = 1)
-     * @param chapter The chapter to set
-     * @param verse The verse to set
+     * Mutate into this reference and fix the reference if needed. This must
+     * only be called from a ctor to maintain immutability
+     * 
+     * @param book
+     *            The book to set (Genesis = 1)
+     * @param chapter
+     *            The chapter to set
+     * @param verse
+     *            The verse to set
      */
-    private void setAndPatch(int book, int chapter, int verse)
-    {
-        int[] ref = { book, chapter, verse };
+    private void setAndPatch(int book, int chapter, int verse) {
+        int[] ref = {
+                book, chapter, verse
+        };
 
         BibleInfo.patch(ref);
 
@@ -744,15 +720,19 @@ public final class Verse implements Key
     }
 
     /**
-     * Verify and set the references.
-     * This must only be called from a ctor to maintain immutability
-     * @param book The book to set (Genesis = 1)
-     * @param chapter The chapter to set
-     * @param verse The verse to set
-     * @exception NoSuchVerseException If the verse can not be understood
+     * Verify and set the references. This must only be called from a ctor to
+     * maintain immutability
+     * 
+     * @param book
+     *            The book to set (Genesis = 1)
+     * @param chapter
+     *            The chapter to set
+     * @param verse
+     *            The verse to set
+     * @exception NoSuchVerseException
+     *                If the verse can not be understood
      */
-    private void set(int book, int chapter, int verse) throws NoSuchVerseException
-    {
+    private void set(int book, int chapter, int verse) throws NoSuchVerseException {
         BibleInfo.validate(book, chapter, verse);
 
         this.book = book;
@@ -761,13 +741,15 @@ public final class Verse implements Key
     }
 
     /**
-     * Set the references.
-     * This must only be called from a ctor to maintain immutability
-     * @param ordinal The ordinal of the verse
-     * @exception NoSuchVerseException If the verse can not be understood
+     * Set the references. This must only be called from a ctor to maintain
+     * immutability
+     * 
+     * @param ordinal
+     *            The ordinal of the verse
+     * @exception NoSuchVerseException
+     *                If the verse can not be understood
      */
-    private void set(int ordinal) throws NoSuchVerseException
-    {
+    private void set(int ordinal) throws NoSuchVerseException {
         int[] ref = BibleInfo.decodeOrdinal(ordinal);
 
         book = ref[BOOK];
@@ -777,12 +759,14 @@ public final class Verse implements Key
 
     /**
      * Write out the object to the given ObjectOutputStream
-     * @param out The stream to write our state to
-     * @throws IOException if the read fails
+     * 
+     * @param out
+     *            The stream to write our state to
+     * @throws IOException
+     *             if the read fails
      * @serialData Write the ordinal number of this verse
      */
-    private void writeObject(ObjectOutputStream out) throws IOException
-    {
+    private void writeObject(ObjectOutputStream out) throws IOException {
         // Call even if there is no default serializable fields.
         out.defaultWriteObject();
 
@@ -796,22 +780,22 @@ public final class Verse implements Key
 
     /**
      * Write out the object to the given ObjectOutputStream
-     * @param in The stream to read our state from
-     * @throws IOException if the read fails
-     * @throws ClassNotFoundException If the read data is incorrect
+     * 
+     * @param in
+     *            The stream to read our state from
+     * @throws IOException
+     *             if the read fails
+     * @throws ClassNotFoundException
+     *             If the read data is incorrect
      * @serialData Write the ordinal number of this verse
      */
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
-    {
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         // Call even if there is no default serializable fields.
         in.defaultReadObject();
 
-        try
-        {
+        try {
             set(in.readInt());
-        }
-        catch (NoSuchVerseException ex)
-        {
+        } catch (NoSuchVerseException ex) {
             throw new IOException(ex.getMessage());
         }
 
@@ -819,114 +803,132 @@ public final class Verse implements Key
         // default ctor so I will ignore it here.
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#canHaveChildren()
      */
-    public boolean canHaveChildren()
-    {
+    public boolean canHaveChildren() {
         return false;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getChildCount()
      */
-    public int getChildCount()
-    {
+    public int getChildCount() {
         return 0;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getCardinality()
      */
-    public int getCardinality()
-    {
+    public int getCardinality() {
         return 1;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#isEmpty()
      */
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return false;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage
+     * .Key)
      */
-    public boolean contains(Key key)
-    {
+    public boolean contains(Key key) {
         return this.equals(key);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#iterator()
      */
-    public Iterator iterator()
-    {
+    public Iterator iterator() {
         return new ItemIterator(this);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#add(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#add(org.crosswire.jsword.passage.Key)
      */
-    public void addAll(Key key)
-    {
+    public void addAll(Key key) {
         throw new UnsupportedOperationException();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#remove(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#remove(org.crosswire.jsword.passage.Key)
      */
-    public void removeAll(Key key)
-    {
+    public void removeAll(Key key) {
         throw new UnsupportedOperationException();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#retain(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#retain(org.crosswire.jsword.passage.Key)
      */
-    public void retainAll(Key key)
-    {
+    public void retainAll(Key key) {
         throw new UnsupportedOperationException();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#clear()
      */
-    public void clear()
-    {
+    public void clear() {
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#get(int)
      */
-    public Key get(int index)
-    {
-        if (index == 0)
-        {
+    public Key get(int index) {
+        if (index == 0) {
             return this;
         }
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage
+     * .Key)
      */
-    public int indexOf(Key that)
-    {
-        if (this.equals(that))
-        {
+    public int indexOf(Key that) {
+        if (this.equals(that)) {
             return 0;
         }
         return -1;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#blur(int)
      */
-    public void blur(int by, RestrictionType restrict)
-    {
+    public void blur(int by, RestrictionType restrict) {
         throw new UnsupportedOperationException();
     }
 
@@ -951,7 +953,8 @@ public final class Verse implements Key
     private static final int VERSE = 2;
 
     /**
-     * What characters should we use to separate parts of an OSIS verse reference
+     * What characters should we use to separate parts of an OSIS verse
+     * reference
      */
     public static final String VERSE_OSIS_DELIM = "."; //$NON-NLS-1$
 
@@ -977,7 +980,9 @@ public final class Verse implements Key
 
     /**
      * The parent key. See the key interface for more information.
+     * 
      * NOTE(joe): These keys are not serialized, should we?
+     * 
      * @see Key
      */
     private transient Key parent;

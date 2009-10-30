@@ -43,29 +43,29 @@ import org.crosswire.jsword.passage.VerseRange;
 import org.jdom.Element;
 
 /**
- * An abstract implementation of Book that lets implementors just concentrate
- * on reading book data.
- *
- * @see gnu.lgpl.License for license details.
+ * An abstract implementation of Book that lets implementors just concentrate on
+ * reading book data.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public abstract class AbstractPassageBook extends AbstractBook
-{
-    public AbstractPassageBook(BookMetaData bmd)
-    {
+public abstract class AbstractPassageBook extends AbstractBook {
+    public AbstractPassageBook(BookMetaData bmd) {
         super(bmd);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage.Key, boolean)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage
+     * .Key, boolean)
      */
-    public Iterator getOsisIterator(Key key, boolean allowEmpty) throws BookException
-    {
+    public Iterator getOsisIterator(Key key, boolean allowEmpty) throws BookException {
         // Note: allowEmpty indicates parallel view
         // TODO(DMS): make the iterator be demand driven
-        try
-        {
+        try {
             List content = new ArrayList();
 
             // For all the ranges in this Passage
@@ -73,12 +73,10 @@ public abstract class AbstractPassageBook extends AbstractBook
             boolean showTitles = ref.hasRanges(RestrictionType.CHAPTER) || !allowEmpty;
             Iterator rit = ref.rangeIterator(RestrictionType.CHAPTER);
 
-            while (rit.hasNext())
-            {
+            while (rit.hasNext()) {
                 VerseRange range = (VerseRange) rit.next();
 
-                if (showTitles)
-                {
+                if (showTitles) {
                     Element title = OSISUtil.factory().createTitle();
                     title.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.GENERATED_CONTENT);
                     title.addContent(range.getName());
@@ -87,14 +85,12 @@ public abstract class AbstractPassageBook extends AbstractBook
 
                 // For all the verses in this range
                 Iterator vit = range.iterator();
-                while (vit.hasNext())
-                {
+                while (vit.hasNext()) {
                     Key verse = (Key) vit.next();
                     String txt = getRawText(verse);
 
                     // If the verse is empty then we shouldn't add the verse tag
-                    if (allowEmpty || txt.length() > 0)
-                    {
+                    if (allowEmpty || txt.length() > 0) {
                         List osisContent = getFilter().toOSIS(this, verse, txt);
                         addOSIS(verse, content, osisContent);
                     }
@@ -102,118 +98,113 @@ public abstract class AbstractPassageBook extends AbstractBook
             }
 
             return content.iterator();
-        }
-        catch (FilterException ex)
-        {
+        } catch (FilterException ex) {
             throw new BookException(Msg.FILTER_FAIL, ex);
         }
     }
 
     /**
-     * Add the OSIS elements to the div element. Note, this assumes that
-     * the data is fully marked up.
-     * @param key The key being added
-     * @param div The div element to which the key's OSIS representation is being added
-     * @param osisContent The OSIS representation of the key being added.
+     * Add the OSIS elements to the div element. Note, this assumes that the
+     * data is fully marked up.
+     * 
+     * @param key
+     *            The key being added
+     * @param div
+     *            The div element to which the key's OSIS representation is
+     *            being added
+     * @param osisContent
+     *            The OSIS representation of the key being added.
      */
-    public void addOSIS(Key key, Element div, List osisContent)
-    {
+    public void addOSIS(Key key, Element div, List osisContent) {
         assert key != null;
         div.addContent(osisContent);
     }
 
     /**
-     * Add the OSIS elements to the div element. Note, this assumes that
-     * the data is fully marked up.
-     * @param key The key being added
-     * @param content The list to which the key's OSIS representation is being added
-     * @param osisContent The OSIS representation of the key being added.
+     * Add the OSIS elements to the div element. Note, this assumes that the
+     * data is fully marked up.
+     * 
+     * @param key
+     *            The key being added
+     * @param content
+     *            The list to which the key's OSIS representation is being added
+     * @param osisContent
+     *            The OSIS representation of the key being added.
      */
-    public void addOSIS(Key key, List content, List osisContent)
-    {
+    public void addOSIS(Key key, List content, List osisContent) {
         assert key != null;
         content.addAll(osisContent);
     }
 
     /**
      * What filter should be used to filter data in the format produced by this
-     * Book?.
-     * In some ways this method is more suited to BookMetaData however we do not
-     * have a specialization of BookMetaData to fit AbstractPassageBook and it
-     * doesn't like any higher in the hierarchy at the moment so I will leave
-     * this here.
+     * Book?. In some ways this method is more suited to BookMetaData however we
+     * do not have a specialization of BookMetaData to fit AbstractPassageBook
+     * and it doesn't like any higher in the hierarchy at the moment so I will
+     * leave this here.
      */
     protected abstract Filter getFilter();
 
     /**
      * For when we want to add writing functionality. This does not work.
      */
-    public void setDocument(Key key, BookData bdata) throws BookException
-    {
+    public void setDocument(Key key, BookData bdata) throws BookException {
         // For all of the sections
         Iterator sit = OSISUtil.getFragment(bdata.getOsisFragment()).iterator();
-        while (sit.hasNext())
-        {
+        while (sit.hasNext()) {
             Object nextElem = sit.next();
-            if (nextElem instanceof Element)
-            {
+            if (nextElem instanceof Element) {
                 Element div = (Element) nextElem;
 
                 // For all of the Verses in the section
-                for (Iterator vit = div.getContent().iterator(); vit.hasNext(); )
-                {
+                for (Iterator vit = div.getContent().iterator(); vit.hasNext();) {
                     Object data = vit.next();
-                    if (data instanceof Element)
-                    {
+                    if (data instanceof Element) {
                         Element overse = (Element) data;
                         String text = OSISUtil.getPlainText(overse);
 
                         setRawText(key, text);
-                    }
-                    else
-                    {
+                    } else {
                         log.error("Ignoring non OSIS/Verse content of DIV."); //$NON-NLS-1$
                     }
                 }
-            }
-            else
-            {
+            } else {
                 log.error("Ignoring non OSIS/Verse content of DIV."); //$NON-NLS-1$
             }
         }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.Book#isWritable()
      */
-    public boolean isWritable()
-    {
+    public boolean isWritable() {
         return false;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.KeyFactory#getEmptyKeyList()
      */
-    public final Key createEmptyKeyList()
-    {
+    public final Key createEmptyKeyList() {
         return keyf.createEmptyKeyList();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.KeyFactory#getGlobalKeyList()
      */
-    public final Key getGlobalKeyList()
-    {
-        if (global == null)
-        {
+    public final Key getGlobalKeyList() {
+        if (global == null) {
             global = keyf.createEmptyKeyList();
             Key all = keyf.getGlobalKeyList();
             Iterator iter = all.iterator();
-            while (iter.hasNext())
-            {
+            while (iter.hasNext()) {
                 Key key = (Key) iter.next();
-                if (contains(key))
-                {
+                if (contains(key)) {
                     global.addAll(key);
                 }
             }
@@ -221,26 +212,25 @@ public abstract class AbstractPassageBook extends AbstractBook
         return global;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.KeyFactory#isValidKey(java.lang.String)
      */
-    public Key getValidKey(String name)
-    {
-        try
-        {
+    public Key getValidKey(String name) {
+        try {
             return getKey(name);
-        }
-        catch (NoSuchKeyException e)
-        {
+        } catch (NoSuchKeyException e) {
             return createEmptyKeyList();
         }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.KeyFactory#getKey(java.lang.String)
      */
-    public final Key getKey(String text) throws NoSuchKeyException
-    {
+    public final Key getKey(String text) throws NoSuchKeyException {
         return keyf.getKey(text);
     }
 

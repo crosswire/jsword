@@ -30,42 +30,35 @@ import junit.framework.TestCase;
 /**
  * A Raw File format that allows for each verse to have it's own storage.
  * 
- * @see gnu.lgpl.License for license details. The copyright to this program is
- *      held by it's authors.
+ * @see gnu.lgpl.License for license details.<br>
+ *      The copyright to this program is held by it's authors.
  * @author mbergmann
  */
-public class SwordBookMetaDataTest extends TestCase
-{
+public class SwordBookMetaDataTest extends TestCase {
 
-    File              configFile        = new File("testconfig.conf"); //$NON-NLS-1$
+    File configFile = new File("testconfig.conf"); //$NON-NLS-1$
     SwordBookMetaData swordBookMetaData = null;
 
-    protected void setUp() throws Exception
-    {
+    protected void setUp() throws Exception {
         ConfigEntryTable table = new ConfigEntryTable("TestBook"); //$NON-NLS-1$
         table.add(ConfigEntryType.LANG, "de"); //$NON-NLS-1$
         table.add(ConfigEntryType.INITIALS, "TestBook"); //$NON-NLS-1$
         table.add(ConfigEntryType.DESCRIPTION, "MyNewBook"); //$NON-NLS-1$
         table.add(ConfigEntryType.MOD_DRV, "RawFiles"); //$NON-NLS-1$
-        try
-        {
+        try {
             table.save(configFile);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
 
         swordBookMetaData = new SwordBookMetaData(configFile, "TestBook", new URI("")); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    protected void tearDown() throws Exception
-    {
+    protected void tearDown() throws Exception {
         configFile.delete();
     }
 
-    public void testPropertiesAccessors()
-    {
+    public void testPropertiesAccessors() {
         assertNotNull(swordBookMetaData);
         assertEquals(swordBookMetaData.getName(), "MyNewBook"); //$NON-NLS-1$
         assertEquals(swordBookMetaData.getInitials(), "TestBook"); //$NON-NLS-1$

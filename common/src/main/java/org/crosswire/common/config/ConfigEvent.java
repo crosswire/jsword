@@ -27,19 +27,19 @@ import java.util.EventObject;
 
 /**
  * An event indicating that an exception has happened.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class ConfigEvent extends EventObject
-{
+public class ConfigEvent extends EventObject {
     /**
      * Constructs an ConfigEvent object.
-     * @param source The event originator, or log stream
+     * 
+     * @param source
+     *            The event originator, or log stream
      */
-    public ConfigEvent(Object source, String key, Choice model)
-    {
+    public ConfigEvent(Object source, String key, Choice model) {
         super(source);
 
         this.key = key;
@@ -48,28 +48,28 @@ public class ConfigEvent extends EventObject
 
     /**
      * Returns the key.
+     * 
      * @return the key
      */
-    public String getKey()
-    {
+    public String getKey() {
         return key;
     }
 
     /**
      * Returns the choice.
+     * 
      * @return the choice
      */
-    public Choice getChoice()
-    {
+    public Choice getChoice() {
         return model;
     }
 
     /**
      * Returns the choice.
+     * 
      * @return the choice
      */
-    public Choice getPath()
-    {
+    public Choice getPath() {
         return model;
     }
 
@@ -80,8 +80,7 @@ public class ConfigEvent extends EventObject
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    private void readObject(ObjectInputStream is) throws IOException, ClassNotFoundException
-    {
+    private void readObject(ObjectInputStream is) throws IOException, ClassNotFoundException {
         // Broken but we don't serialize events
         model = null;
         is.defaultReadObject();

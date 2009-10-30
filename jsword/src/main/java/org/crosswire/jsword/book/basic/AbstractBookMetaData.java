@@ -37,254 +37,269 @@ import org.jdom.Document;
 
 /**
  * An implementation of the Property Change methods from BookMetaData.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public abstract class AbstractBookMetaData implements BookMetaData
-{
+public abstract class AbstractBookMetaData implements BookMetaData {
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#getKeyType()
      */
-    public KeyType getKeyType()
-    {
+    public KeyType getKeyType() {
         return KeyType.LIST;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#getDriver()
      */
-    public BookDriver getDriver()
-    {
+    public BookDriver getDriver() {
         return driver;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#getDriverName()
      */
-    public String getDriverName()
-    {
-        if (getDriver() == null)
-        {
+    public String getDriverName() {
+        if (getDriver() == null) {
             return null;
         }
 
         return getDriver().getDriverName();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#hasFeature(org.crosswire.jsword.book.FeatureType)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.BookMetaData#hasFeature(org.crosswire.jsword
+     * .book.FeatureType)
      */
-    public boolean hasFeature(FeatureType feature)
-    {
+    public boolean hasFeature(FeatureType feature) {
         return false;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#getFullName()
      */
-    public String getOsisID()
-    {
+    public String getOsisID() {
         return getBookCategory().getName() + '.' + getInitials();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#isSupported()
      */
-    public boolean isSupported()
-    {
+    public boolean isSupported() {
         return true;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#isEnciphered()
      */
-    public boolean isEnciphered()
-    {
+    public boolean isEnciphered() {
         return false;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#isLocked()
      */
-    public boolean isLocked()
-    {
+    public boolean isLocked() {
         return false;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#unlock(String)
      */
-    public boolean unlock(String unlockKey)
-    {
+    public boolean unlock(String unlockKey) {
         return false;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#getUnlockKey()
      */
-    public String getUnlockKey()
-    {
+    public String getUnlockKey() {
         return null;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#isQuestionable()
      */
-    public boolean isQuestionable()
-    {
+    public boolean isQuestionable() {
         return false;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#getLanguage()
      */
-    public Language getLanguage()
-    {
+    public Language getLanguage() {
         return (Language) getProperty(KEY_XML_LANG);
     }
 
     /**
-     * @param language The language to set.
+     * @param language
+     *            The language to set.
      */
-    public void setLanguage(Language language)
-    {
+    public void setLanguage(Language language) {
         putProperty(KEY_XML_LANG, language);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#getLibrary()
      */
-    public URI getLibrary()
-    {
+    public URI getLibrary() {
         URI uri = null;
-        try
-        {
+        try {
             String loc = (String) getProperty(KEY_LIBRARY_URI);
-            if (loc != null)
-            {
+            if (loc != null) {
                 uri = new URI(loc);
             }
             return uri;
-        }
-        catch (URISyntaxException e)
-        {
+        } catch (URISyntaxException e) {
             return null;
         }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#setLibrary(java.net.URI)
      */
-    public void setLibrary(URI library)
-    {
+    public void setLibrary(URI library) {
         putProperty(KEY_LIBRARY_URI, library.toString());
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#setLocation(java.net.URI)
      */
-    public void setLocation(URI location)
-    {
+    public void setLocation(URI location) {
         putProperty(KEY_LOCATION_URI, location.toString());
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#getLocation()
      */
-    public URI getLocation()
-    {
+    public URI getLocation() {
         URI uri = null;
-        try
-        {
+        try {
             String loc = (String) getProperty(KEY_LOCATION_URI);
-            if (loc != null)
-            {
+            if (loc != null) {
                 uri = new URI(loc);
             }
             return uri;
-        }
-        catch (URISyntaxException e)
-        {
+        } catch (URISyntaxException e) {
             return null;
         }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#getProperties()
      */
-    public Map getProperties()
-    {
+    public Map getProperties() {
         return Collections.unmodifiableMap(prop);
     }
 
     /**
      * @param newProperties
      */
-    public void setProperties(Map newProperties)
-    {
+    public void setProperties(Map newProperties) {
         prop = newProperties;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#getProperty(java.lang.String)
      */
-    public Object getProperty(String key)
-    {
+    public Object getProperty(String key) {
         return prop.get(key);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#putProperty(java.lang.String, java.lang.Object)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.crosswire.jsword.book.BookMetaData#putProperty(java.lang.String,
+     * java.lang.Object)
      */
-    public void putProperty(String key, Object value)
-    {
+    public void putProperty(String key, Object value) {
         prop.put(key, value);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#getIndexStatus()
      */
-    public IndexStatus getIndexStatus()
-    {
+    public IndexStatus getIndexStatus() {
         return indexStatus;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#setIndexStatus(java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.BookMetaData#setIndexStatus(java.lang.String)
      */
-    public void setIndexStatus(IndexStatus newValue)
-    {
+    public void setIndexStatus(IndexStatus newValue) {
         indexStatus = newValue;
         prop.put(KEY_INDEXSTATUS, newValue.toString());
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#toOSIS()
      */
-    public Document toOSIS()
-    {
+    public Document toOSIS() {
         throw new UnsupportedOperationException("If you want to use this, implement it."); //$NON-NLS-1$
     }
 
     /**
-     * @param driver The driver to set.
+     * @param driver
+     *            The driver to set.
      */
-    public void setDriver(BookDriver driver)
-    {
+    public void setDriver(BookDriver driver) {
         this.driver = driver;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public boolean equals(Object obj)
-    {
+    public boolean equals(Object obj) {
         // Since this can not be null
-        if (obj == null)
-        {
+        if (obj == null) {
             return false;
         }
 
@@ -293,8 +308,7 @@ public abstract class AbstractBookMetaData implements BookMetaData
 
         // Check that that is the same as this
         // Don't use instanceof since that breaks inheritance
-        if (!obj.getClass().equals(this.getClass()))
-        {
+        if (!obj.getClass().equals(this.getClass())) {
             return false;
         }
 
@@ -304,32 +318,34 @@ public abstract class AbstractBookMetaData implements BookMetaData
         return getBookCategory().equals(that.getBookCategory()) && getName().equals(that.getName());
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
-    public int hashCode()
-    {
+    public int hashCode() {
         return getName().hashCode();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object obj)
-    {
+    public int compareTo(Object obj) {
         int result = this.getBookCategory().compareTo(((BookMetaData) obj).getBookCategory());
-        if (result == 0)
-        {
+        if (result == 0) {
             result = this.getName().compareTo(((BookMetaData) obj).getName());
         }
         return result;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         return getInitials();
     }
 

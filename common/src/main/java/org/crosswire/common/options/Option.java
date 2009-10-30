@@ -31,7 +31,8 @@ package org.crosswire.common.options;
  * </p>
  * <ul>
  * <li>An Option has a description, suitable for a usage statement.</li>
- * <li>An Option's argument can be optional, required or unexpected. Default is NO_ARGUMENT.</li>
+ * <li>An Option's argument can be optional, required or unexpected. Default is
+ * NO_ARGUMENT.</li>
  * <li>An Option can have an argument of a type. Default is DataType.BOOLEAN.</li>
  * <li>An Option can have short name consisting of a single character.</li>
  * <li>An Option can have a long name given by any string. What is allowed in
@@ -43,27 +44,28 @@ package org.crosswire.common.options;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class Option
-{
+public class Option {
     /**
      * Create a BOOLEAN Option with a short name, having no default value.
      * 
-     * @param description the description
-     * @param shortName the short name
+     * @param description
+     *            the description
+     * @param shortName
+     *            the short name
      */
-    public Option(String description, char shortName)
-    {
+    public Option(String description, char shortName) {
         this(description, ArgumentType.NO_ARGUMENT, DataType.BOOLEAN, shortName, null, null);
     }
 
     /**
      * Create a BOOLEAN Option with a long name, having no default value.
      * 
-     * @param description the description
-     * @param longName the long name
+     * @param description
+     *            the description
+     * @param longName
+     *            the long name
      */
-    public Option(String description, String longName)
-    {
+    public Option(String description, String longName) {
         this(description, ArgumentType.NO_ARGUMENT, DataType.BOOLEAN, '\u0000', longName, null);
     }
 
@@ -71,12 +73,14 @@ public class Option
      * Create a BOOLEAN Option with both short and long names, having no default
      * value.
      * 
-     * @param description the description
-     * @param shortName the short name
-     * @param longName the long name
+     * @param description
+     *            the description
+     * @param shortName
+     *            the short name
+     * @param longName
+     *            the long name
      */
-    public Option(String description, char shortName, String longName)
-    {
+    public Option(String description, char shortName, String longName) {
         this(description, ArgumentType.NO_ARGUMENT, DataType.BOOLEAN, shortName, longName, null);
     }
 
@@ -84,53 +88,66 @@ public class Option
      * Create an Option with both short and long names of a given DataType
      * having a default value.
      * 
-     * @param description the description
-     * @param shortName the short name
-     * @param longName the long name
-     * @param defaultValue the default value for this Option
+     * @param description
+     *            the description
+     * @param shortName
+     *            the short name
+     * @param longName
+     *            the long name
+     * @param defaultValue
+     *            the default value for this Option
      */
-    public Option(String description, char shortName, String longName, String defaultValue)
-    {
+    public Option(String description, char shortName, String longName, String defaultValue) {
         this(description, ArgumentType.NO_ARGUMENT, DataType.BOOLEAN, shortName, longName, defaultValue);
     }
 
     /**
      * Create an Option with a short name, having no default value.
      * 
-     * @param description the description
-     * @param argumentType the type of the argument
-     * @param dataType the type of argument's data
-     * @param shortName the short name
+     * @param description
+     *            the description
+     * @param argumentType
+     *            the type of the argument
+     * @param dataType
+     *            the type of argument's data
+     * @param shortName
+     *            the short name
      */
-    public Option(String description, ArgumentType argumentType, DataType dataType, char shortName)
-    {
+    public Option(String description, ArgumentType argumentType, DataType dataType, char shortName) {
         this(description, argumentType, dataType, shortName, null, null);
     }
 
     /**
      * Create an Option with a long name, having no default value.
      * 
-     * @param description the description
-     * @param argumentType the type of the argument
-     * @param dataType the type of argument's data
-     * @param longName the long name
+     * @param description
+     *            the description
+     * @param argumentType
+     *            the type of the argument
+     * @param dataType
+     *            the type of argument's data
+     * @param longName
+     *            the long name
      */
-    public Option(String description, ArgumentType argumentType, DataType dataType, String longName)
-    {
+    public Option(String description, ArgumentType argumentType, DataType dataType, String longName) {
         this(description, argumentType, dataType, '\u0000', longName, null);
     }
 
     /**
      * Create an Option with both short and long names, having no default value.
      * 
-     * @param description the description
-     * @param argumentType the type of the argument
-     * @param dataType the type of argument's data
-     * @param shortName the short name
-     * @param longName the long name
+     * @param description
+     *            the description
+     * @param argumentType
+     *            the type of the argument
+     * @param dataType
+     *            the type of argument's data
+     * @param shortName
+     *            the short name
+     * @param longName
+     *            the long name
      */
-    public Option(String description, ArgumentType argumentType, DataType dataType, char shortName, String longName)
-    {
+    public Option(String description, ArgumentType argumentType, DataType dataType, char shortName, String longName) {
         this(description, argumentType, dataType, shortName, longName, null);
     }
 
@@ -138,15 +155,20 @@ public class Option
      * Create an Option with both short and long names of a given DataType
      * having a default value.
      * 
-     * @param description the description
-     * @param argumentType the type of the argument
-     * @param dataType the type of argument's data
-     * @param shortName the short name
-     * @param longName the long name
-     * @param defaultValue the default value for this Option
+     * @param description
+     *            the description
+     * @param argumentType
+     *            the type of the argument
+     * @param dataType
+     *            the type of argument's data
+     * @param shortName
+     *            the short name
+     * @param longName
+     *            the long name
+     * @param defaultValue
+     *            the default value for this Option
      */
-    public Option(String description, ArgumentType argumentType, DataType dataType, char shortName, String longName, String defaultValue)
-    {
+    public Option(String description, ArgumentType argumentType, DataType dataType, char shortName, String longName, String defaultValue) {
         this.description = description;
         this.argumentType = argumentType;
         this.dataType = dataType;
@@ -160,8 +182,7 @@ public class Option
      * 
      * @return the description
      */
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
@@ -171,8 +192,7 @@ public class Option
      * 
      * @return the shortName
      */
-    public char getShortName()
-    {
+    public char getShortName() {
         return shortName;
     }
 
@@ -182,8 +202,7 @@ public class Option
      * 
      * @return the longName
      */
-    public String getLongName()
-    {
+    public String getLongName() {
         return longName;
     }
 
@@ -193,31 +212,28 @@ public class Option
      * 
      * @return the argumentType
      */
-    public ArgumentType getArgumentType()
-    {
+    public ArgumentType getArgumentType() {
         return argumentType;
     }
 
     /**
      * @return the dataType
      */
-    public DataType getDataType()
-    {
+    public DataType getDataType() {
         return dataType;
     }
 
     /**
      * @return the defaultValue
      */
-    public String getDefaultValue()
-    {
+    public String getDefaultValue() {
         return defaultValue;
     }
 
-    private String       description;
-    private char         shortName;
-    private String       longName;
-    private DataType     dataType;
+    private String description;
+    private char shortName;
+    private String longName;
+    private DataType dataType;
     private ArgumentType argumentType;
-    private String       defaultValue;
+    private String defaultValue;
 }

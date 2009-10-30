@@ -35,23 +35,20 @@ import junit.framework.TestCase;
 import org.crosswire.jsword.versification.BibleInfo;
 
 /**
- * This would be called TestPassage however then people might think it was
- * a separate TestCase, which it is not, needing to be inherited from to
- * customize the type of test.
+ * This would be called TestPassage however then people might think it was a
+ * separate TestCase, which it is not, needing to be inherited from to customize
+ * the type of test.
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class PassageParentTst extends TestCase
-{
-    public PassageParentTst(String s)
-    {
+public class PassageParentTst extends TestCase {
+    public PassageParentTst(String s) {
         super(s);
     }
 
-    public PassageParentTst(String s, PassageType ptype, boolean optimize)
-    {
+    public PassageParentTst(String s, PassageType ptype, boolean optimize) {
         super(s);
 
         PassageKeyFactory.setDefaultPassage(PassageType.toInteger(ptype));
@@ -98,20 +95,31 @@ public class PassageParentTst extends TestCase
      * problem is with the tests and not with the Passages.
      */
     /* @Override */
-    protected void setUp() throws Exception
-    {
+    protected void setUp() throws Exception {
         start = System.currentTimeMillis();
         BibleInfo.setFullBookName(false);
         gen1_135 = (Passage) keyf.getKey("Gen 1:1, Gen 1:3, Gen 1:5"); //$NON-NLS-1$
         exo2a_3b = (Passage) keyf.getKey("Exo 2:1-10, Exo 3:1-11"); //$NON-NLS-1$
         gen_rev = (Passage) keyf.getKey("Gen 1:1-Rev 22:21"); //$NON-NLS-1$
         grace = (Passage) keyf.createEmptyKeyList();
-        grace.addAll(keyf.getKey("Gen 6:8, 19:19, 32:5, 33:8, 10, 15, 39:4, 47:25, 29, 50:4, Exo 33:12-13, 16-17, 34:9, Num 32:5, Judg 6:17, Rut 2:2, 10, 1Sa 1:18, 20:3, 27:5")); //$NON-NLS-1$
-        grace.addAll(keyf.getKey("2Sa 14:22, 16:4, Ezr 9:8, Est 2:17, Psa 45:2, 84:11, Pro 1:9, 3:22, 34, 4:9, 22:11, Jer 31:2, Zec 4:7, 12:10, Luk 2:40, Joh 1:14, 16-17")); //$NON-NLS-1$
-        grace.addAll(keyf.getKey("Act 4:33, 11:23, 13:43, 14:3, 26, 15:11, 40, 18:27, 20:24, 32, Rom 1:5, 7, 3:24, 4:4, 16, 5:2, 15, 17, 20-6:1, 6:14-15, 11:5-6, 12:3, 6, 15:15, 16:20, 24")); //$NON-NLS-1$
-        grace.addAll(keyf.getKey("1Co 1:3-4, 3:10, 10:30, 15:10, 16:23, 2Co 1:2, 12, 4:15, 6:1, 8:1, 6-7, 9, 19, 9:8, 14, 12:9, 13:14, Gal 1:3, 6, 15, 2:9, 21, 5:4, 6:18")); //$NON-NLS-1$
-        grace.addAll(keyf.getKey("Eph 1:2, 6-7, 2:5, 7-8, 3:2, 7-8, 4:7, 29, 6:24, Phili 1:2, 7, 4:23, Col 1:2, 6, 3:16, 4:6, 18-1Th 1:1, 1Th 5:28, 2Th 1:2, 12, 2:16, 3:18")); //$NON-NLS-1$
-        grace.addAll(keyf.getKey("1Ti 1:2, 14, 6:21, 2Ti 1:2, 9, 2:1, 4:22, Tit 1:4, 2:11, 3:7, 15, Phile 3, 25, Heb 2:9, 4:16, 10:29, 12:15, 28, 13:9, 25, Jam 1:11, 4:6")); //$NON-NLS-1$
+        grace
+                .addAll(keyf
+                        .getKey("Gen 6:8, 19:19, 32:5, 33:8, 10, 15, 39:4, 47:25, 29, 50:4, Exo 33:12-13, 16-17, 34:9, Num 32:5, Judg 6:17, Rut 2:2, 10, 1Sa 1:18, 20:3, 27:5")); //$NON-NLS-1$
+        grace
+                .addAll(keyf
+                        .getKey("2Sa 14:22, 16:4, Ezr 9:8, Est 2:17, Psa 45:2, 84:11, Pro 1:9, 3:22, 34, 4:9, 22:11, Jer 31:2, Zec 4:7, 12:10, Luk 2:40, Joh 1:14, 16-17")); //$NON-NLS-1$
+        grace
+                .addAll(keyf
+                        .getKey("Act 4:33, 11:23, 13:43, 14:3, 26, 15:11, 40, 18:27, 20:24, 32, Rom 1:5, 7, 3:24, 4:4, 16, 5:2, 15, 17, 20-6:1, 6:14-15, 11:5-6, 12:3, 6, 15:15, 16:20, 24")); //$NON-NLS-1$
+        grace
+                .addAll(keyf
+                        .getKey("1Co 1:3-4, 3:10, 10:30, 15:10, 16:23, 2Co 1:2, 12, 4:15, 6:1, 8:1, 6-7, 9, 19, 9:8, 14, 12:9, 13:14, Gal 1:3, 6, 15, 2:9, 21, 5:4, 6:18")); //$NON-NLS-1$
+        grace
+                .addAll(keyf
+                        .getKey("Eph 1:2, 6-7, 2:5, 7-8, 3:2, 7-8, 4:7, 29, 6:24, Phili 1:2, 7, 4:23, Col 1:2, 6, 3:16, 4:6, 18-1Th 1:1, 1Th 5:28, 2Th 1:2, 12, 2:16, 3:18")); //$NON-NLS-1$
+        grace
+                .addAll(keyf
+                        .getKey("1Ti 1:2, 14, 6:21, 2Ti 1:2, 9, 2:1, 4:22, Tit 1:4, 2:11, 3:7, 15, Phile 3, 25, Heb 2:9, 4:16, 10:29, 12:15, 28, 13:9, 25, Jam 1:11, 4:6")); //$NON-NLS-1$
         grace.addAll(keyf.getKey("1Pe 1:2, 10, 13, 3:7, 4:10, 5:5, 10, 12, 2Pe 1:2, 3:18, 2Jo 3, Jude 4, Rev 1:4, 22:21")); //$NON-NLS-1$
         empty = (Passage) keyf.createEmptyKeyList();
 
@@ -119,8 +127,7 @@ public class PassageParentTst extends TestCase
         // String type = full_type.substring(full_type.lastIndexOf(".")+1);
         // boolean skip = type.equals("PassageTally");
 
-        if (optimize)
-        {
+        if (optimize) {
             gen1_135.optimizeReads();
             exo2a_3b.optimizeReads();
             gen_rev.optimizeReads();
@@ -146,21 +153,21 @@ public class PassageParentTst extends TestCase
         rev99 = VerseFactory.fromString("Rev 22:21"); //$NON-NLS-1$
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see junit.framework.TestCase#tearDown()
      */
     /* @Override */
-    protected void tearDown()
-    {
+    protected void tearDown() {
         // float secs = (System.currentTimeMillis() - start) / 1000F;
         // log(type+" total = "+secs+"s =======================");
 
         PassageKeyFactory.setDefaultPassage(PassageType.toInteger(PassageType.SPEED));
     }
 
-    public void testReadAddPassageListener() throws Exception
-    {
-//        for (int i=0; i<300; i++)
+    public void testReadAddPassageListener() throws Exception {
+        // for (int i=0; i<300; i++)
         {
             FixturePassageListener li1 = new FixturePassageListener();
             FixturePassageListener li2 = new FixturePassageListener();
@@ -182,12 +189,14 @@ public class PassageParentTst extends TestCase
         }
     }
 
-    public void testReadRangeIterator() throws Exception
-    {
-        // We used to check for a UnsupportedOperationException until DistinctPassage started
-        // throwing IllegalStateExceptions here. I'm not too bothered about the exact type of the
-        // exception right now. Maybe we ought to be more thorough at some stage.
-//        for (int i=0; i<12; i++)
+    public void testReadRangeIterator() throws Exception {
+        // We used to check for a UnsupportedOperationException until
+        // DistinctPassage started
+        // throwing IllegalStateExceptions here. I'm not too bothered about the
+        // exact type of the
+        // exception right now. Maybe we ought to be more thorough at some
+        // stage.
+        // for (int i=0; i<12; i++)
         {
             Iterator it = gen1_135.rangeIterator(RestrictionType.NONE);
             assertTrue(it.hasNext());
@@ -202,9 +211,8 @@ public class PassageParentTst extends TestCase
         }
     }
 
-    public void testReadVerseIterator() throws Exception
-    {
-//        for (int i=0; i<12; i++)
+    public void testReadVerseIterator() throws Exception {
+        // for (int i=0; i<12; i++)
         {
             Iterator it = gen1_135.iterator();
             assertTrue(it.hasNext());
@@ -219,9 +227,8 @@ public class PassageParentTst extends TestCase
         }
     }
 
-    public void testReadIsEmpty() throws Exception
-    {
-//        for (int i=0; i<20; i++)
+    public void testReadIsEmpty() throws Exception {
+        // for (int i=0; i<20; i++)
         {
             assertTrue(!gen1_135.isEmpty());
             assertTrue(!exo2a_3b.isEmpty());
@@ -229,9 +236,8 @@ public class PassageParentTst extends TestCase
         }
     }
 
-    public void testReadCountVerses() throws Exception
-    {
-//        for (int i=0; i<12; i++)
+    public void testReadCountVerses() throws Exception {
+        // for (int i=0; i<12; i++)
         {
             assertEquals(gen1_135.countVerses(), 3);
             assertEquals(exo2a_3b.countVerses(), 21);
@@ -239,9 +245,8 @@ public class PassageParentTst extends TestCase
         }
     }
 
-    public void testReadCountRanges() throws Exception
-    {
-//        for (int i=0; i<10; i++)
+    public void testReadCountRanges() throws Exception {
+        // for (int i=0; i<10; i++)
         {
             assertEquals(gen1_135.countRanges(RestrictionType.NONE), 3);
             assertEquals(exo2a_3b.countRanges(RestrictionType.NONE), 2);
@@ -249,9 +254,8 @@ public class PassageParentTst extends TestCase
         }
     }
 
-    public void testReadGetVerseAt() throws Exception
-    {
-//        for (int i=0; i<10; i++)
+    public void testReadGetVerseAt() throws Exception {
+        // for (int i=0; i<10; i++)
         {
             assertEquals(gen1_135.getVerseAt(0), gen11);
             assertEquals(gen1_135.getVerseAt(1), gen13);
@@ -263,9 +267,8 @@ public class PassageParentTst extends TestCase
         }
     }
 
-    public void testReadGetVerseRangeAt() throws Exception
-    {
-//        for (int i=0; i<5; i++)
+    public void testReadGetVerseRangeAt() throws Exception {
+        // for (int i=0; i<5; i++)
         {
             assertEquals(gen1_135.getRangeAt(0, RestrictionType.NONE), gen11_1);
             assertEquals(gen1_135.getRangeAt(1, RestrictionType.NONE), VerseRangeFactory.fromString("Gen 1:3")); //$NON-NLS-1$
@@ -275,18 +278,16 @@ public class PassageParentTst extends TestCase
         }
     }
 
-    public void testReadBooksInPassage() throws Exception
-    {
-//        for (int i=0; i<12; i++)
+    public void testReadBooksInPassage() throws Exception {
+        // for (int i=0; i<12; i++)
         {
             assertEquals(gen1_135.booksInPassage(), 1);
             assertEquals(exo2a_3b.booksInPassage(), 1);
         }
     }
 
-    public void testReadChaptersInPassage() throws Exception
-    {
-//        for (int i=0; i<3; i++)
+    public void testReadChaptersInPassage() throws Exception {
+        // for (int i=0; i<3; i++)
         {
             assertEquals(gen1_135.chaptersInPassage(1), 1);
             assertEquals(exo2a_3b.chaptersInPassage(1), 0);
@@ -299,9 +300,8 @@ public class PassageParentTst extends TestCase
         }
     }
 
-    public void testReadVersesInPassage() throws Exception
-    {
-//        for (int i=0; i<1; i++)
+    public void testReadVersesInPassage() throws Exception {
+        // for (int i=0; i<1; i++)
         {
             assertEquals(gen1_135.versesInPassage(1, 1), 3);
             assertEquals(exo2a_3b.versesInPassage(1, 1), 0);
@@ -334,9 +334,8 @@ public class PassageParentTst extends TestCase
         }
     }
 
-    public void testReadContainsVerse() throws Exception
-    {
-//        for (int i=0; i<1200; i++)
+    public void testReadContainsVerse() throws Exception {
+        // for (int i=0; i<1200; i++)
         {
             assertTrue(!empty.contains(gen11));
             assertTrue(gen1_135.contains(gen11));
@@ -349,9 +348,8 @@ public class PassageParentTst extends TestCase
         }
     }
 
-    public void testReadContainsVerseRange() throws Exception
-    {
-//        for (int i=0; i<600; i++)
+    public void testReadContainsVerseRange() throws Exception {
+        // for (int i=0; i<600; i++)
         {
             assertTrue(gen1_135.contains(gen11_1));
             assertTrue(!gen1_135.contains(gen11_2));
@@ -365,8 +363,7 @@ public class PassageParentTst extends TestCase
         }
     }
 
-    public void testReadContainsAll() throws Exception
-    {
+    public void testReadContainsAll() throws Exception {
         assertTrue(!gen1_135.containsAll(exo2a_3b));
         assertTrue(gen1_135.containsAll(empty));
         assertTrue(gen1_135.containsAll((Passage) gen1_135.clone()));
@@ -375,9 +372,8 @@ public class PassageParentTst extends TestCase
         assertTrue(exo2a_3b.containsAll((Passage) exo2a_3b.clone()));
     }
 
-    public void testReadContainsVerseBase() throws Exception
-    {
-//        for (int i=0; i<1000; i++)
+    public void testReadContainsVerseBase() throws Exception {
+        // for (int i=0; i<1000; i++)
         {
             assertTrue(!empty.contains(gen11));
             assertTrue(gen1_135.contains(gen11));
@@ -395,26 +391,25 @@ public class PassageParentTst extends TestCase
         }
     }
 
-    //==========================================================================
+    // ==========================================================================
 
-    public void testWriteCreatePassage() throws Exception
-    {
-        assertEquals(((Passage)keyf.createEmptyKeyList()).countVerses(), 0);
+    public void testWriteCreatePassage() throws Exception {
+        assertEquals(((Passage) keyf.createEmptyKeyList()).countVerses(), 0);
     }
 
-    public void testWriteToString() throws Exception
-    {
+    public void testWriteToString() throws Exception {
         assertEquals(keyf.getKey("gen 1 1,gen 1 3,rev 22 21,gen 1 2").toString(), "Gen 1:1-3, Rev 22:21"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(keyf.getKey("Gen 1 3;gen 22 2;rev 22 21;gen 22 3-10; rev 22 19;gen 1 1;rev 22 10-18; gen 1 2; rev 22 1-21").toString(), "Gen 1:1-3, 22:2-10, Rev 22"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(
+                keyf.getKey("Gen 1 3;gen 22 2;rev 22 21;gen 22 3-10; rev 22 19;gen 1 1;rev 22 10-18; gen 1 2; rev 22 1-21").toString(), "Gen 1:1-3, 22:2-10, Rev 22"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(keyf.getKey("").toString(), ""); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(keyf.getKey("gen 1 1-50:26,e,e 1 2,e 1 3-10").toString(), "Gen-Exo"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(keyf.getKey(null).toString(), "");  //$NON-NLS-1$
+        assertEquals(keyf.getKey(null).toString(), ""); //$NON-NLS-1$
     }
 
-    public void testWriteGetName() throws Exception
-    {
+    public void testWriteGetName() throws Exception {
         assertEquals(keyf.getKey("gen 1 1,gen 1 3,rev 22 21,gen 1 2").getName(), "Gen 1:1-3, Rev 22:21"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(keyf.getKey("Gen 1 3;gen 22 2;rev 22 21;gen 22 3-10; rev 22 19;gen 1 1;rev 22 10-18; gen 1 2; rev 22 1-21").getName(), "Gen 1:1-3, 22:2-10, Rev 22"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(
+                keyf.getKey("Gen 1 3;gen 22 2;rev 22 21;gen 22 3-10; rev 22 19;gen 1 1;rev 22 10-18; gen 1 2; rev 22 1-21").getName(), "Gen 1:1-3, 22:2-10, Rev 22"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(keyf.getKey("").getName(), ""); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(keyf.getKey("gen 1 1-50:26,e,e 1 2,e 1 3-10").getName(), "Gen-Exo"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(keyf.getKey("exo 1:1, 4").getName(), "Exo 1:1, 4"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -424,14 +419,13 @@ public class PassageParentTst extends TestCase
         assertEquals(keyf.getKey("Ge 1:26  3:22  11:7  20:13  31:7, 53  35:7").getName(), "Gen 1:26, 3:22, 11:7, 20:13, 31:7, 53, 35:7"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    public void testWriteBlur() throws Exception
-    {
-//        temp = (Passage) gen1_135.clone();
-//        temp.blur(0, RestrictionType.CHAPTER);
-//        assertEquals(temp, gen1_135);
-//        temp = (Passage) gen1_135.clone();
-//        temp.blur(0, RestrictionType.NONE);
-//        assertEquals(temp, gen1_135);
+    public void testWriteBlur() throws Exception {
+        // temp = (Passage) gen1_135.clone();
+        // temp.blur(0, RestrictionType.CHAPTER);
+        // assertEquals(temp, gen1_135);
+        // temp = (Passage) gen1_135.clone();
+        // temp.blur(0, RestrictionType.NONE);
+        // assertEquals(temp, gen1_135);
         temp = (Passage) gen1_135.clone();
         temp.blur(1, RestrictionType.CHAPTER);
         assertEquals(temp, keyf.getKey("Gen 1:1-6")); //$NON-NLS-1$
@@ -462,12 +456,12 @@ public class PassageParentTst extends TestCase
         temp = (Passage) gen1_135.clone();
         temp.blur(27, RestrictionType.NONE);
         assertEquals(temp, keyf.getKey("Gen 1:1-2:1")); //$NON-NLS-1$
-//        temp = (Passage) exo2a_3b.clone();
-//        temp.blur(0, RestrictionType.CHAPTER);
-//        assertEquals(temp, keyf.getKey("Exo 2:1-10, Exo 3:1-11")); //$NON-NLS-1$
-//        temp = (Passage) exo2a_3b.clone();
-//        temp.blur(0, RestrictionType.NONE);
-//        assertEquals(temp, keyf.getKey("Exo 2:1-10, Exo 3:1-11")); //$NON-NLS-1$
+        // temp = (Passage) exo2a_3b.clone();
+        // temp.blur(0, RestrictionType.CHAPTER);
+        //        assertEquals(temp, keyf.getKey("Exo 2:1-10, Exo 3:1-11")); //$NON-NLS-1$
+        // temp = (Passage) exo2a_3b.clone();
+        // temp.blur(0, RestrictionType.NONE);
+        //        assertEquals(temp, keyf.getKey("Exo 2:1-10, Exo 3:1-11")); //$NON-NLS-1$
         temp = (Passage) exo2a_3b.clone();
         temp.blur(1, RestrictionType.CHAPTER);
         assertEquals(temp, keyf.getKey("Exo 2:1-11, Exo 3:1-12")); //$NON-NLS-1$
@@ -510,14 +504,13 @@ public class PassageParentTst extends TestCase
         temp = (Passage) exo2a_3b.clone();
         temp.blur(99999, RestrictionType.NONE);
         assertEquals(temp, keyf.getKey("Gen 1:1-Rev 22:21")); //$NON-NLS-1$
-//        try { temp.blur(-1, RestrictionType.NONE); fail(temp.toString()); }
-//        catch (IllegalArgumentException ex) { }
-//        try { temp.blur(-1, RestrictionType.BOOK); fail(temp.toString()); }
-//        catch (IllegalArgumentException ex) { }
+        // try { temp.blur(-1, RestrictionType.NONE); fail(temp.toString()); }
+        // catch (IllegalArgumentException ex) { }
+        // try { temp.blur(-1, RestrictionType.BOOK); fail(temp.toString()); }
+        // catch (IllegalArgumentException ex) { }
     }
 
-    public void testWriteAddPassageListener() throws Exception
-    {
+    public void testWriteAddPassageListener() throws Exception {
         FixturePassageListener li1 = new FixturePassageListener();
         FixturePassageListener li2 = new FixturePassageListener();
         temp = (Passage) gen1_135.clone();
@@ -537,16 +530,14 @@ public class PassageParentTst extends TestCase
         assertTrue(li2.check(3, 0, 0));
     }
 
-    public void testWriteClone() throws Exception
-    {
+    public void testWriteClone() throws Exception {
         assertTrue(gen1_135 != gen1_135.clone());
         assertEquals(gen1_135, gen1_135.clone());
         assertTrue(exo2a_3b != exo2a_3b.clone());
         assertEquals(exo2a_3b, exo2a_3b.clone());
     }
 
-    public void testWriteRangeIterator() throws Exception
-    {
+    public void testWriteRangeIterator() throws Exception {
         Iterator it = gen1_135.rangeIterator(RestrictionType.NONE);
         assertTrue(it.hasNext());
         assertEquals(it.next(), VerseRangeFactory.fromString("Gen 1:1")); //$NON-NLS-1$
@@ -561,16 +552,16 @@ public class PassageParentTst extends TestCase
         assertEquals(it.next(), VerseRangeFactory.fromString("Gen-Rev")); //$NON-NLS-1$
         assertTrue(!it.hasNext());
 
-//        it = gen_rev.rangeIterator(RestrictionType.BOOK);
-//        assertTrue(it.hasNext());
-//        assertEquals(it.next(), VerseRangeFactory.fromString("Gen")); //$NON-NLS-1$
-//        assertTrue(it.hasNext());
-//        assertEquals(it.next(), VerseRangeFactory.fromString("Exo")); //$NON-NLS-1$
-//        assertTrue(it.hasNext());
-//        assertEquals(it.next(), VerseRangeFactory.fromString("Lev")); //$NON-NLS-1$
-//        assertTrue(it.hasNext());
-//        assertEquals(it.next(), VerseRangeFactory.fromString("Num")); //$NON-NLS-1$
-        //assertTrue(!it.hasNext());
+        // it = gen_rev.rangeIterator(RestrictionType.BOOK);
+        // assertTrue(it.hasNext());
+        //        assertEquals(it.next(), VerseRangeFactory.fromString("Gen")); //$NON-NLS-1$
+        // assertTrue(it.hasNext());
+        //        assertEquals(it.next(), VerseRangeFactory.fromString("Exo")); //$NON-NLS-1$
+        // assertTrue(it.hasNext());
+        //        assertEquals(it.next(), VerseRangeFactory.fromString("Lev")); //$NON-NLS-1$
+        // assertTrue(it.hasNext());
+        //        assertEquals(it.next(), VerseRangeFactory.fromString("Num")); //$NON-NLS-1$
+        // assertTrue(!it.hasNext());
 
         it = gen_rev.rangeIterator(RestrictionType.CHAPTER);
         assertTrue(it.hasNext());
@@ -581,14 +572,13 @@ public class PassageParentTst extends TestCase
         assertEquals(it.next(), VerseRangeFactory.fromString("Gen 3")); //$NON-NLS-1$
         assertTrue(it.hasNext());
         assertEquals(it.next(), VerseRangeFactory.fromString("Gen 4")); //$NON-NLS-1$
-        //assertTrue(!it.hasNext());
+        // assertTrue(!it.hasNext());
 
         it = empty.rangeIterator(RestrictionType.NONE);
         assertTrue(!it.hasNext());
     }
 
-    public void testWriteVerseIterator() throws Exception
-    {
+    public void testWriteVerseIterator() throws Exception {
         Iterator it = gen1_135.iterator();
         assertTrue(it.hasNext());
         assertEquals(it.next(), VerseFactory.fromString("Gen 1:1")); //$NON-NLS-1$
@@ -601,29 +591,25 @@ public class PassageParentTst extends TestCase
         assertTrue(!it.hasNext());
     }
 
-    public void testWriteIsEmpty() throws Exception
-    {
+    public void testWriteIsEmpty() throws Exception {
         assertTrue(!gen1_135.isEmpty());
         assertTrue(!exo2a_3b.isEmpty());
         assertTrue(empty.isEmpty());
     }
 
-    public void testWriteCountVerses() throws Exception
-    {
+    public void testWriteCountVerses() throws Exception {
         assertEquals(gen1_135.countVerses(), 3);
         assertEquals(exo2a_3b.countVerses(), 21);
         assertEquals(empty.countVerses(), 0);
     }
 
-    public void testWriteCountRanges() throws Exception
-    {
+    public void testWriteCountRanges() throws Exception {
         assertEquals(gen1_135.countRanges(RestrictionType.NONE), 3);
         assertEquals(exo2a_3b.countRanges(RestrictionType.NONE), 2);
         assertEquals(empty.countVerses(), 0);
     }
 
-    public void testWriteGetVerseAt() throws Exception
-    {
+    public void testWriteGetVerseAt() throws Exception {
         assertEquals(gen1_135.getVerseAt(0), gen11);
         assertEquals(gen1_135.getVerseAt(1), gen13);
         assertEquals(gen1_135.getVerseAt(2), gen15);
@@ -633,8 +619,7 @@ public class PassageParentTst extends TestCase
         assertEquals(exo2a_3b.getVerseAt(20), exo3b);
     }
 
-    public void testWriteGetVerseRangeAt() throws Exception
-    {
+    public void testWriteGetVerseRangeAt() throws Exception {
         assertEquals(gen1_135.getRangeAt(0, RestrictionType.NONE), gen11_1);
         assertEquals(gen1_135.getRangeAt(1, RestrictionType.NONE), VerseRangeFactory.fromString("Gen 1:3")); //$NON-NLS-1$
         assertEquals(gen1_135.getRangeAt(2, RestrictionType.NONE), VerseRangeFactory.fromString("Gen 1:5")); //$NON-NLS-1$
@@ -642,14 +627,12 @@ public class PassageParentTst extends TestCase
         assertEquals(exo2a_3b.getRangeAt(1, RestrictionType.NONE), VerseRangeFactory.fromString("Exo 3:1-11")); //$NON-NLS-1$
     }
 
-    public void testWriteBooksInPassage() throws Exception
-    {
+    public void testWriteBooksInPassage() throws Exception {
         assertEquals(gen1_135.booksInPassage(), 1);
         assertEquals(exo2a_3b.booksInPassage(), 1);
     }
 
-    public void testWriteChaptersInPassage() throws Exception
-    {
+    public void testWriteChaptersInPassage() throws Exception {
         assertEquals(gen1_135.chaptersInPassage(1), 1);
         assertEquals(exo2a_3b.chaptersInPassage(1), 0);
         assertEquals(gen1_135.chaptersInPassage(2), 0);
@@ -660,8 +643,7 @@ public class PassageParentTst extends TestCase
         assertEquals(exo2a_3b.chaptersInPassage(0), 2);
     }
 
-    public void testWriteVersesInPassage() throws Exception
-    {
+    public void testWriteVersesInPassage() throws Exception {
         assertEquals(gen1_135.versesInPassage(1, 1), 3);
         assertEquals(exo2a_3b.versesInPassage(1, 1), 0);
         assertEquals(gen1_135.versesInPassage(1, 2), 0);
@@ -692,8 +674,7 @@ public class PassageParentTst extends TestCase
         assertEquals(exo2a_3b.versesInPassage(0, 0), exo2a_3b.countVerses());
     }
 
-    public void testWriteContainsVerse() throws Exception
-    {
+    public void testWriteContainsVerse() throws Exception {
         assertTrue(!empty.contains(gen11));
         assertTrue(gen1_135.contains(gen11));
         assertTrue(!gen1_135.contains(gen12));
@@ -704,8 +685,7 @@ public class PassageParentTst extends TestCase
         assertTrue(gen_rev.contains(rev99));
     }
 
-    public void testWriteContainsVerseRange() throws Exception
-    {
+    public void testWriteContainsVerseRange() throws Exception {
         assertTrue(gen1_135.contains(gen11_1));
         assertTrue(!gen1_135.contains(gen11_2));
         assertTrue(!gen1_135.contains(gen12_1));
@@ -717,8 +697,7 @@ public class PassageParentTst extends TestCase
         assertTrue(gen_rev.contains(new VerseRange(rev99)));
     }
 
-    public void testWriteContainsAll() throws Exception
-    {
+    public void testWriteContainsAll() throws Exception {
         assertTrue(!gen1_135.containsAll(exo2a_3b));
         assertTrue(gen1_135.containsAll(empty));
         assertTrue(gen1_135.containsAll((Passage) gen1_135.clone()));
@@ -731,8 +710,7 @@ public class PassageParentTst extends TestCase
         assertTrue(gen_rev.containsAll(gen_rev));
     }
 
-    public void testWriteContainsVerseBase() throws Exception
-    {
+    public void testWriteContainsVerseBase() throws Exception {
         assertTrue(!empty.contains(gen11));
         assertTrue(gen1_135.contains(gen11));
         assertTrue(!gen1_135.contains(gen12));
@@ -748,8 +726,7 @@ public class PassageParentTst extends TestCase
         assertTrue(exo2a_3b.contains(exo22_1));
     }
 
-    public void testWriteAdd() throws Exception
-    {
+    public void testWriteAdd() throws Exception {
         temp = (Passage) gen1_135.clone();
         temp.add(VerseFactory.fromString("Gen 1:2")); //$NON-NLS-1$
         assertEquals(temp.getName(), "Gen 1:1-3, 5"); //$NON-NLS-1$
@@ -768,15 +745,13 @@ public class PassageParentTst extends TestCase
         assertEquals(temp.getName(), "Gen 1:1-5"); //$NON-NLS-1$
     }
 
-    public void testWriteAddAll() throws Exception
-    {
+    public void testWriteAddAll() throws Exception {
         temp = (Passage) gen1_135.clone();
         temp.addAll(keyf.getKey("Gen 1:2, Gen 1:4")); //$NON-NLS-1$
         assertEquals(temp.getName(), "Gen 1:1-5"); //$NON-NLS-1$
     }
 
-    public void testWriteClear() throws Exception
-    {
+    public void testWriteClear() throws Exception {
         temp = (Passage) gen1_135.clone();
         temp.clear();
         assertEquals(temp.getName(), ""); //$NON-NLS-1$
@@ -784,8 +759,7 @@ public class PassageParentTst extends TestCase
         assertEquals(temp.getName(), ""); //$NON-NLS-1$
     }
 
-    public void testWriteRemove() throws Exception
-    {
+    public void testWriteRemove() throws Exception {
         temp = (Passage) gen1_135.clone();
         temp.remove(VerseFactory.fromString("Gen 1:3")); //$NON-NLS-1$
         assertEquals(temp.getName(), "Gen 1:1, 5"); //$NON-NLS-1$
@@ -798,8 +772,7 @@ public class PassageParentTst extends TestCase
         assertEquals(temp.getName(), "Gen 1:1-2, 4-5"); //$NON-NLS-1$
     }
 
-    public void testWriteRemoveAllCollection() throws Exception
-    {
+    public void testWriteRemoveAllCollection() throws Exception {
         temp = (Passage) keyf.getKey("Gen 1:1-5"); //$NON-NLS-1$
         temp.removeAll(keyf.getKey("Gen 1:2, Gen 1:4")); //$NON-NLS-1$
         assertEquals(temp.getName(), "Gen 1:1, 3, 5"); //$NON-NLS-1$
@@ -811,8 +784,7 @@ public class PassageParentTst extends TestCase
         assertEquals(temp.getName(), ""); //$NON-NLS-1$
     }
 
-    public void testWriteRetainAllCollection() throws Exception
-    {
+    public void testWriteRetainAllCollection() throws Exception {
         temp = (Passage) keyf.getKey("Gen 1:1-5"); //$NON-NLS-1$
         temp.retainAll(keyf.getKey("Gen 1:2, Gen 1:4")); //$NON-NLS-1$
         assertEquals(temp.getName(), "Gen 1:2, 4"); //$NON-NLS-1$
@@ -835,11 +807,9 @@ public class PassageParentTst extends TestCase
         assertEquals(temp.getName(), ""); //$NON-NLS-1$
     }
 
-    public void testWriteObject() throws Exception
-    {
+    public void testWriteObject() throws Exception {
         Passage hard = (Passage) keyf.createEmptyKeyList();
-        for (int i=1; i<BibleInfo.versesInBible(); i+=200)
-        {
+        for (int i = 1; i < BibleInfo.versesInBible(); i += 200) {
             hard.add(new Verse(i));
         }
 
@@ -870,8 +840,7 @@ public class PassageParentTst extends TestCase
         test_dat.delete();
     }
 
-    public void testWriteDescription() throws Exception
-    {
+    public void testWriteDescription() throws Exception {
         File test_dat = new File("test.dat"); //$NON-NLS-1$
         FileWriter wout = new FileWriter(test_dat);
         gen1_135.writeDescription(wout);
@@ -885,9 +854,8 @@ public class PassageParentTst extends TestCase
         assertEquals(gen1_135, lst);
         test_dat.delete();
     }
-    
-    public void testSpecial() throws Exception
-    {
+
+    public void testSpecial() throws Exception {
         // Some special tests for known breakages
         Passage ich5l = (Passage) keyf.getKey("1ch 5"); //$NON-NLS-1$
         Passage ich5u = (Passage) keyf.getKey("1Ch 5"); //$NON-NLS-1$

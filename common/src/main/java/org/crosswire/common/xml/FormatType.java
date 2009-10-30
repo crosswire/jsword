@@ -23,27 +23,24 @@ package org.crosswire.common.xml;
 
 import java.io.Serializable;
 
-
 /**
  * The PrettySerializingContentHandler uses a FormatType to control its output.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class FormatType implements Serializable
-{
-    public static final FormatType AS_IS            = new FormatType("AS_IS", false, false, false); //$NON-NLS-1$
-    public static final FormatType ANALYSIS         = new FormatType("ANALYSIS", true, false, false); //$NON-NLS-1$
-    public static final FormatType CLASSIC          = new FormatType("CLASSIC", true, false, true); //$NON-NLS-1$
-    public static final FormatType ANALYSIS_INDENT  = new FormatType("ANALYSIS_INDENT", true, true, false); //$NON-NLS-1$
-    public static final FormatType CLASSIC_INDENT   = new FormatType("CLASSIC_INDENT", true, true, true); //$NON-NLS-1$
+public final class FormatType implements Serializable {
+    public static final FormatType AS_IS = new FormatType("AS_IS", false, false, false); //$NON-NLS-1$
+    public static final FormatType ANALYSIS = new FormatType("ANALYSIS", true, false, false); //$NON-NLS-1$
+    public static final FormatType CLASSIC = new FormatType("CLASSIC", true, false, true); //$NON-NLS-1$
+    public static final FormatType ANALYSIS_INDENT = new FormatType("ANALYSIS_INDENT", true, true, false); //$NON-NLS-1$
+    public static final FormatType CLASSIC_INDENT = new FormatType("CLASSIC_INDENT", true, true, true); //$NON-NLS-1$
 
     /**
      * Simple ctor
      */
-    public FormatType(String aName, boolean displayNewlines, boolean doIndenting, boolean classicLines)
-    {
+    public FormatType(String aName, boolean displayNewlines, boolean doIndenting, boolean classicLines) {
         name = aName;
         multiline = displayNewlines;
         // the following are true only if we add newlines.
@@ -54,52 +51,48 @@ public final class FormatType implements Serializable
 
     /**
      * Whether newlines are introduced into the document.
+     * 
      * @return true if newlines are added to the document
      */
-    public boolean isMultiline()
-    {
+    public boolean isMultiline() {
         return multiline;
     }
 
     /**
      * Whether indents are introduced into the document.
+     * 
      * @return true if indents are added to the document
      */
-    public boolean isIndented()
-    {
+    public boolean isIndented() {
         return indented;
     }
 
     /**
-     * Whether added whitespace is inside tags. Note, this does
-     * not change the document.
+     * Whether added whitespace is inside tags. Note, this does not change the
+     * document.
+     * 
      * @return true if whitespace is added inside tags of document
      */
-    public boolean isAnalytic()
-    {
+    public boolean isAnalytic() {
         return analytic;
     }
 
     /**
-     * Whether added whitespace is between tags. Note, this does
-     * change the document as whitespace is added to either side of
-     * existing text.
+     * Whether added whitespace is between tags. Note, this does change the
+     * document as whitespace is added to either side of existing text.
+     * 
      * @return true if whitespace is added inside tags of document
      */
-    public boolean isClassic()
-    {
+    public boolean isClassic() {
         return classic;
     }
 
     /**
      * Get an integer representation for this FormatType
      */
-    public int toInteger()
-    {
-        for (int i = 0; i < VALUES.length; i++)
-        {
-            if (equals(VALUES[i]))
-            {
+    public int toInteger() {
+        for (int i = 0; i < VALUES.length; i++) {
+            if (equals(VALUES[i])) {
                 return i;
             }
         }
@@ -111,13 +104,10 @@ public final class FormatType implements Serializable
     /**
      * Lookup method to convert from a String
      */
-    public static FormatType fromString(String name)
-    {
-        for (int i = 0; i < VALUES.length; i++)
-        {
+    public static FormatType fromString(String name) {
+        for (int i = 0; i < VALUES.length; i++) {
             FormatType obj = VALUES[i];
-            if (obj.name.equalsIgnoreCase(name))
-            {
+            if (obj.name.equalsIgnoreCase(name)) {
                 return obj;
             }
         }
@@ -129,16 +119,16 @@ public final class FormatType implements Serializable
     /**
      * Lookup method to convert from an integer
      */
-    public static FormatType fromInteger(int i)
-    {
+    public static FormatType fromInteger(int i) {
         return VALUES[i];
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         return name;
     }
 
@@ -155,18 +145,12 @@ public final class FormatType implements Serializable
     private static int nextObj;
     private final int obj = nextObj++;
 
-    Object readResolve()
-    {
+    Object readResolve() {
         return VALUES[obj];
     }
 
-    private static final FormatType[] VALUES =
-    {
-        AS_IS,
-        ANALYSIS,
-        CLASSIC,
-        ANALYSIS_INDENT,
-        CLASSIC_INDENT,
+    private static final FormatType[] VALUES = {
+            AS_IS, ANALYSIS, CLASSIC, ANALYSIS_INDENT, CLASSIC_INDENT,
     };
 
     /**

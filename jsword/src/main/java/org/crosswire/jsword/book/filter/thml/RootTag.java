@@ -27,32 +27,35 @@ import org.xml.sax.Attributes;
 
 /**
  * THML Tag to process the root element.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class RootTag extends AbstractTag
-{
+public class RootTag extends AbstractTag {
     /**
      * This is added by the parser to we make the string accessible
      */
     protected static final String TAG_ROOT = "root"; //$NON-NLS-1$
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
-    public String getTagName()
-    {
+    public String getTagName() {
         return TAG_ROOT;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element,
+     * org.xml.sax.Attributes)
      */
     /* @Override */
-    public Element processTag(Element ele, Attributes attrs)
-    {
+    public Element processTag(Element ele, Attributes attrs) {
         return OSISUtil.factory().createDiv();
     }
 }

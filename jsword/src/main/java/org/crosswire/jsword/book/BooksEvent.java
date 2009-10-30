@@ -26,22 +26,23 @@ import java.io.ObjectInputStream;
 import java.util.EventObject;
 
 /**
- * A BooksEvent is fired whenever a Bible is added or removed from the
- * system.
- *
- * @see gnu.lgpl.License for license details.
+ * A BooksEvent is fired whenever a Bible is added or removed from the system.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class BooksEvent extends EventObject
-{
+public class BooksEvent extends EventObject {
     /**
      * Basic constructor
-     * @param book The book of the changed Bible, or null if there is more than one change.
-     * @param added True if the changed Bible is an addition.
+     * 
+     * @param book
+     *            The book of the changed Bible, or null if there is more than
+     *            one change.
+     * @param added
+     *            True if the changed Bible is an addition.
      */
-    public BooksEvent(Object source, Book book, boolean added)
-    {
+    public BooksEvent(Object source, Book book, boolean added) {
         super(source);
 
         this.book = book;
@@ -50,18 +51,17 @@ public class BooksEvent extends EventObject
 
     /**
      * Get the name of the changed Book
+     * 
      * @return The Book
      */
-    public Book getBook()
-    {
+    public Book getBook() {
         return book;
     }
 
     /**
      * Is this an addition event?
      */
-    public boolean isAddition()
-    {
+    public boolean isAddition() {
         return added;
     }
 
@@ -72,8 +72,7 @@ public class BooksEvent extends EventObject
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    private void readObject(ObjectInputStream is) throws IOException, ClassNotFoundException
-    {
+    private void readObject(ObjectInputStream is) throws IOException, ClassNotFoundException {
         // Broken but we don't serialize events
         book = null;
         is.defaultReadObject();

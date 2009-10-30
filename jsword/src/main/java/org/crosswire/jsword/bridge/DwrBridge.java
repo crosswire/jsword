@@ -44,71 +44,68 @@ import org.xml.sax.SAXException;
 
 /**
  * The DWR DwrBridge adapts JSword to DWR. This is based upon APIExamples.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class DwrBridge
-{
+public class DwrBridge {
     /**
      * Get a listing of all the available books.
      * 
-     * @param filter The custom filter specification string
+     * @param filter
+     *            The custom filter specification string
      * @return a list of (initial, name) string pairs
      * @see BookInstaller#getInstalledBook(String)
      */
-    public String[][] getInstalledBooks(String filter)
-    {
+    public String[][] getInstalledBooks(String filter) {
         List reply = new ArrayList();
 
         List books = BookInstaller.getInstalledBooks(filter);
 
         Iterator iter = books.iterator();
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             Book book = (Book) iter.next();
-            String[] rbook = new String[]
-            {
-                            book.getInitials(), book.getName()
+            String[] rbook = new String[] {
+                    book.getInitials(), book.getName()
             };
             reply.add(rbook);
         }
 
         // If we can't find a book, indicate that.
-        if (reply.isEmpty())
-        {
-            reply.add(new String[] { "", "No Books installed" }); //$NON-NLS-1$ //$NON-NLS-2$
+        if (reply.isEmpty()) {
+            reply.add(new String[] {
+                    "", "No Books installed"}); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         return (String[][]) reply.toArray(new String[reply.size()][]);
     }
 
     /**
-     * Determine whether the named book can be searched, that is, whether
-     * the book is indexed.
+     * Determine whether the named book can be searched, that is, whether the
+     * book is indexed.
      * 
-     * @param bookInitials the named book to check.
+     * @param bookInitials
+     *            the named book to check.
      * @return true if searching can be performed
      */
-    public boolean isIndexed(String bookInitials)
-    {
+    public boolean isIndexed(String bookInitials) {
         return isIndexed(BookInstaller.getInstalledBook(bookInitials));
     }
 
     /**
      * Determine the size of this reference.
      * 
-     * @param bookInitials the book to which the reference applies.
-     * @param reference the actual reference
+     * @param bookInitials
+     *            the book to which the reference applies.
+     * @param reference
+     *            the actual reference
      * @return the number of entries for this reference.
      * @throws NoSuchKeyException
      */
-    public int getCardinality(String bookInitials, String reference) throws NoSuchKeyException
-    {
+    public int getCardinality(String bookInitials, String reference) throws NoSuchKeyException {
         Book book = BookInstaller.getInstalledBook(bookInitials);
-        if (book != null)
-        {
+        if (book != null) {
             Key key = book.getKey(reference);
             return key.getCardinality();
         }
@@ -116,28 +113,26 @@ public class DwrBridge
     }
 
     /**
-     * Obtain the OSIS representation from a book for a reference, pruning a reference to a limited number of keys.
-     *
-     * @param bookInitials the book to use
-     * @param reference a reference, appropriate for the book, for one or more keys
+     * Obtain the OSIS representation from a book for a reference, pruning a
+     * reference to a limited number of keys.
+     * 
+     * @param bookInitials
+     *            the book to use
+     * @param reference
+     *            a reference, appropriate for the book, for one or more keys
      */
-    public String getOSISString(String bookInitials, String reference, int start, int count) throws BookException, NoSuchKeyException
-    {
+    public String getOSISString(String bookInitials, String reference, int start, int count) throws BookException, NoSuchKeyException {
         String result = ""; //$NON-NLS-1$
-        try
-        {
+        try {
             SAXEventProvider sep = getOSISProvider(bookInitials, reference, start, count);
-            if (sep != null)
-            {
+            if (sep != null) {
                 ContentHandler ser = new SerializingContentHandler();
                 sep.provideSAXEvents(ser);
                 result = ser.toString();
             }
             return result;
-        }
-        catch (SAXException ex)
-        {
-//            throw new BookException(Msg.JSWORD_SAXPARSE, ex);
+        } catch (SAXException ex) {
+            // throw new BookException(Msg.JSWORD_SAXPARSE, ex);
         }
         return result;
     }
@@ -150,13 +145,10 @@ public class DwrBridge
      * @return The reference for the matching.
      * @throws BookException
      */
-    public String search(String bookInitials, String searchRequest) throws BookException
-    {
+    public String search(String bookInitials, String searchRequest) throws BookException {
         Book book = BookInstaller.getInstalledBook(bookInitials);
-        if (isIndexed(book) && searchRequest != null)
-        {
-            if (BookCategory.BIBLE.equals(book.getBookCategory()))
-            {
+        if (isIndexed(book) && searchRequest != null) {
+            if (BookCategory.BIBLE.equals(book.getBookCategory())) {
                 BibleInfo.setFullBookName(false);
             }
             return book.find(searchRequest).getName();
@@ -165,18 +157,18 @@ public class DwrBridge
     }
 
     /**
-     * Get close matches for a target in a book whose keys have a meaningful sort. This is not true of
-     * keys that are numeric or contain numbers. (unless the numbers are 0 filled.)
+     * Get close matches for a target in a book whose keys have a meaningful
+     * sort. This is not true of keys that are numeric or contain numbers.
+     * (unless the numbers are 0 filled.)
      */
-    public String[] match(String bookInitials, String searchRequest, int maxMatchCount)
-    {
+    public String[] match(String bookInitials, String searchRequest, int maxMatchCount) {
         Book book = BookInstaller.getInstalledBook(bookInitials);
-        if (book == null || searchRequest == null || maxMatchCount < 1)
-        {
+        if (book == null || searchRequest == null || maxMatchCount < 1) {
             return new String[0];
         }
 
-        // Need to use the locale of the book so that we can find stuff in the proper order
+        // Need to use the locale of the book so that we can find stuff in the
+        // proper order
         Locale sortLocale = new Locale(book.getLanguage().getCode());
         String target = searchRequest.toLowerCase(sortLocale);
 
@@ -194,21 +186,17 @@ public class DwrBridge
         List result = new ArrayList();
         Iterator iter = book.getGlobalKeyList().iterator();
         int count = 0;
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             Key key = (Key) iter.next();
             String entry = key.getName().toLowerCase(sortLocale);
-            if (entry.compareTo(target) >= 0)
-            {
-                if (entry.compareTo(endTarget) < 0)
-                {
+            if (entry.compareTo(target) >= 0) {
+                if (entry.compareTo(endTarget) < 0) {
                     result.add(entry);
                     count++;
                 }
 
                 // Have we seen enough?
-                if (count >= maxMatchCount)
-                {
+                if (count >= maxMatchCount) {
                     break;
                 }
             }
@@ -218,93 +206,87 @@ public class DwrBridge
     }
 
     /**
-     * For the sake of diagnostics, return the locations that JSword will look for books.
+     * For the sake of diagnostics, return the locations that JSword will look
+     * for books.
+     * 
      * @return the SWORD path
      */
-    public String[] getSwordPath()
-    {
+    public String[] getSwordPath() {
         File[] filePath = SwordBookPath.getSwordPath();
-        if (filePath.length == 0)
-        {
-            return new String[] { "No path" }; //$NON-NLS-1$
+        if (filePath.length == 0) {
+            return new String[] {
+                "No path"}; //$NON-NLS-1$
         }
         String[] path = new String[filePath.length];
-        for (int i = 0; i < filePath.length; i++)
-        {
+        for (int i = 0; i < filePath.length; i++) {
             path[i] = filePath[i].getAbsolutePath();
         }
         return path;
     }
 
     /**
-     * Determine whether the book can be searched, that is, whether
-     * the book is indexed.
+     * Determine whether the book can be searched, that is, whether the book is
+     * indexed.
      * 
-     * @param book the book to check.
+     * @param book
+     *            the book to check.
      * @return true if searching can be performed
      */
-    private boolean isIndexed(Book book)
-    {
+    private boolean isIndexed(Book book) {
         return book != null && IndexManagerFactory.getIndexManager().isIndexed(book);
     }
 
     /**
-     * Get BookData representing one or more Book entries, but capped to a maximum number of entries.
+     * Get BookData representing one or more Book entries, but capped to a
+     * maximum number of entries.
      * 
-     * @param bookInitials the book to use
-     * @param reference a reference, appropriate for the book, of one or more entries
-     * @param start the starting point where 0 is the first.
-     * @param count the maximum number of entries to use
+     * @param bookInitials
+     *            the book to use
+     * @param reference
+     *            a reference, appropriate for the book, of one or more entries
+     * @param start
+     *            the starting point where 0 is the first.
+     * @param count
+     *            the maximum number of entries to use
      * 
-     * @throws NoSuchKeyException 
+     * @throws NoSuchKeyException
      */
-    private BookData getBookData(String bookInitials, String reference, int start, int count) throws NoSuchKeyException
-    {
+    private BookData getBookData(String bookInitials, String reference, int start, int count) throws NoSuchKeyException {
         Book book = BookInstaller.getInstalledBook(bookInitials);
-        if (book == null || reference == null || count < 1)
-        {
+        if (book == null || reference == null || count < 1) {
             return null;
         }
 
-        // TODO(dms): add trim(count) and trim(start, count) to the key interface.
+        // TODO(dms): add trim(count) and trim(start, count) to the key
+        // interface.
         Key key = null;
-        if (BookCategory.BIBLE.equals(book.getBookCategory()))
-        {
+        if (BookCategory.BIBLE.equals(book.getBookCategory())) {
             key = book.getKey(reference);
             Passage remainder = (Passage) key;
-            if (start > 0)
-            {
+            if (start > 0) {
                 remainder = remainder.trimVerses(start);
             }
             remainder.trimVerses(count);
             key = remainder;
-        }
-        else if (BookCategory.GENERAL_BOOK.equals(book.getBookCategory()))
-        {
+        } else if (BookCategory.GENERAL_BOOK.equals(book.getBookCategory())) {
             // At this time we cannot trim a General Book
             key = book.getKey(reference);
-        }
-        else
-        {
+        } else {
             key = book.getKey(reference);
 
             // Do we need to trim?
-            if (start > 0 || key.getCardinality() > count)
-            {
+            if (start > 0 || key.getCardinality() > count) {
                 Iterator iter = key.iterator();
                 key = book.createEmptyKeyList();
                 int i = 0;
-                while (iter.hasNext())
-                {
+                while (iter.hasNext()) {
                     i++;
-                    if (i <= start)
-                    {
+                    if (i <= start) {
                         // skip it
                         iter.next();
                         continue;
                     }
-                    if (i >= count)
-                    {
+                    if (i >= count) {
                         break;
                     }
                     key.addAll((Key) iter.next());
@@ -316,17 +298,18 @@ public class DwrBridge
     }
 
     /**
-     * Obtain a SAX event provider for the OSIS document representation of one or more book entries.
-     *
-     * @param bookInitials the book to use
-     * @param reference a reference, appropriate for the book, of one or more entries
+     * Obtain a SAX event provider for the OSIS document representation of one
+     * or more book entries.
+     * 
+     * @param bookInitials
+     *            the book to use
+     * @param reference
+     *            a reference, appropriate for the book, of one or more entries
      */
-    private SAXEventProvider getOSISProvider(String bookInitials, String reference, int start, int count) throws BookException, NoSuchKeyException
-    {
+    private SAXEventProvider getOSISProvider(String bookInitials, String reference, int start, int count) throws BookException, NoSuchKeyException {
         BookData data = getBookData(bookInitials, reference, start, count);
         SAXEventProvider provider = null;
-        if (data != null)
-        {
+        if (data != null) {
             provider = data.getSAXEventProvider();
         }
         return provider;

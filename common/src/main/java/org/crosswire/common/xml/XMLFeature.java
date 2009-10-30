@@ -23,17 +23,15 @@ package org.crosswire.common.xml;
 
 import java.io.Serializable;
 
-
 /**
  * Wraps an XML Feature. The "known" set of XML Features is found in
  * XMLFeatureSet.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class XMLFeature implements Serializable, Comparable
-{
+public class XMLFeature implements Serializable, Comparable {
     /** Namespaces feature id */
     public static final XMLFeature NAMESPACES = new XMLFeature("http://xml.org/sax/features/namespaces"); //$NON-NLS-1$
 
@@ -69,53 +67,47 @@ public class XMLFeature implements Serializable, Comparable
 
     /**
      * Construct a feature for xml, setting the initial state
-     *
+     * 
      * @param control
      * @param initialState
      */
-    private XMLFeature(String control, boolean initialState)
-    {
+    private XMLFeature(String control, boolean initialState) {
         this.control = control;
         this.state = initialState;
     }
 
     /**
      * Construct a feature for xml, setting the initial state set to false.
-     *
+     * 
      * @param control
      */
-    private XMLFeature(String control)
-    {
+    private XMLFeature(String control) {
         this(control, false);
     }
 
     /**
      * @return the control associated with this feature
      */
-    public String getControl()
-    {
+    public String getControl() {
         return control;
     }
 
     /**
      * What state should the feature be set to.
+     * 
      * @return the state of the feature
      */
-    public boolean getState()
-    {
+    public boolean getState() {
         return state;
     }
 
     /**
      * Lookup method to convert from a String
      */
-    public static XMLFeature fromString(String name)
-    {
-        for (int i = 0; i < VALUES.length; i++)
-        {
+    public static XMLFeature fromString(String name) {
+        for (int i = 0; i < VALUES.length; i++) {
             XMLFeature o = VALUES[i];
-            if (o.control.equalsIgnoreCase(name))
-            {
+            if (o.control.equalsIgnoreCase(name)) {
                 return o;
             }
         }
@@ -127,42 +119,45 @@ public class XMLFeature implements Serializable, Comparable
     /**
      * Lookup method to convert from an integer
      */
-    public static XMLFeature fromInteger(int i)
-    {
+    public static XMLFeature fromInteger(int i) {
         return VALUES[i];
     }
 
     /**
-     * Prevent subclasses from overriding canonical identity based Object methods
+     * Prevent subclasses from overriding canonical identity based Object
+     * methods
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public final boolean equals(Object o)
-    {
+    public final boolean equals(Object o) {
         return super.equals(o);
     }
 
     /**
-     * Prevent subclasses from overriding canonical identity based Object methods
+     * Prevent subclasses from overriding canonical identity based Object
+     * methods
+     * 
      * @see java.lang.Object#hashCode()
      */
-    public final int hashCode()
-    {
+    public final int hashCode() {
         return super.hashCode();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         return (state ? "on  " : "off ") + control; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object o)
-    {
+    public int compareTo(Object o) {
         XMLFeature feature = (XMLFeature) o;
         return this.control.compareTo(feature.control);
     }
@@ -174,24 +169,13 @@ public class XMLFeature implements Serializable, Comparable
     private static int nextObj;
     private final int obj = nextObj++;
 
-    Object readResolve()
-    {
+    Object readResolve() {
         return VALUES[obj];
     }
 
-    private static final XMLFeature[] VALUES =
-    {
-        NAMESPACES,
-        NAMESPACE_PREFIX,
-        VALIDATION,
-        SCHEMA_VALIDATION,
-        SCHEMA_FULL_CHECKING,
-        VALIDATE_ANNOTATIONS,
-        DYNAMIC_VALIDATION,
-        LOAD_EXTERNAL_DTD,
-        XINCLUDE,
-        XINCLUDE_FIXUP_BASE_URIS,
-        XINCLUDE_FIXUP_LANGUAGE
+    private static final XMLFeature[] VALUES = {
+            NAMESPACES, NAMESPACE_PREFIX, VALIDATION, SCHEMA_VALIDATION, SCHEMA_FULL_CHECKING, VALIDATE_ANNOTATIONS, DYNAMIC_VALIDATION, LOAD_EXTERNAL_DTD,
+            XINCLUDE, XINCLUDE_FIXUP_BASE_URIS, XINCLUDE_FIXUP_LANGUAGE
     };
 
     /**

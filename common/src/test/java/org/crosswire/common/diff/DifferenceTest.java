@@ -9,22 +9,18 @@ package org.crosswire.common.diff;
 
 import junit.framework.TestCase;
 
-public class DifferenceTest extends TestCase
-{
+public class DifferenceTest extends TestCase {
 
-    protected void setUp()
-    {
+    protected void setUp() {
     }
 
-    public void testHashCode()
-    {
+    public void testHashCode() {
         assertTrue("Difference.hashCode:", (new Difference(EditType.EQUAL, "a")).hashCode() == (new Difference(EditType.EQUAL, "a")).hashCode()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         assertFalse("Difference.hashCode:", (new Difference(EditType.EQUAL, "a")).hashCode() == (new Difference(EditType.EQUAL, "ab")).hashCode()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         assertFalse("Difference.hashCode:", (new Difference(EditType.EQUAL, "a")).hashCode() == (new Difference(EditType.INSERT, "a")).hashCode()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
-    public void testEquals()
-    {
+    public void testEquals() {
         // First check that Diff equality works
         assertTrue("Difference.equals:", new Difference(EditType.EQUAL, "a").equals(new Difference(EditType.EQUAL, "a"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         assertEquals("Difference.equals:", new Difference(EditType.EQUAL, "a"), new Difference(EditType.EQUAL, "a")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

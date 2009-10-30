@@ -25,35 +25,37 @@ import java.io.Serializable;
 
 /**
  * Types of Passage optimizations.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public abstract class PassageType implements Serializable
-{
+public abstract class PassageType implements Serializable {
     /**
      * Optimize the Passage for speed
      */
     public static final PassageType SPEED = new PassageType("SPEED") //$NON-NLS-1$
     {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.passage.PassageType#createPassage(java.lang.String)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * org.crosswire.jsword.passage.PassageType#createPassage(java.lang.
+         * String)
          */
-        public Passage createPassage(String passage) throws NoSuchVerseException
-        {
-            if (passage == null || passage.length() == 0)
-            {
+        public Passage createPassage(String passage) throws NoSuchVerseException {
+            if (passage == null || passage.length() == 0) {
                 return createEmptyPassage();
             }
             return new RocketPassage(passage);
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see org.crosswire.jsword.passage.PassageType#createEmptyPassage()
          */
-        public Passage createEmptyPassage()
-        {
+        public Passage createEmptyPassage() {
             return new RocketPassage();
         }
 
@@ -68,23 +70,26 @@ public abstract class PassageType implements Serializable
      */
     public static final PassageType WRITE_SPEED = new PassageType("WRITE_SPEED") //$NON-NLS-1$
     {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.passage.PassageType#createPassage(java.lang.String)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * org.crosswire.jsword.passage.PassageType#createPassage(java.lang.
+         * String)
          */
-        public Passage createPassage(String passage) throws NoSuchVerseException
-        {
-            if (passage == null || passage.length() == 0)
-            {
+        public Passage createPassage(String passage) throws NoSuchVerseException {
+            if (passage == null || passage.length() == 0) {
                 return createEmptyPassage();
             }
             return new BitwisePassage(passage);
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see org.crosswire.jsword.passage.PassageType#createEmptyPassage()
          */
-        public Passage createEmptyPassage()
-        {
+        public Passage createEmptyPassage() {
             return new BitwisePassage();
         }
 
@@ -99,23 +104,26 @@ public abstract class PassageType implements Serializable
      */
     public static final PassageType SIZE = new PassageType("SIZE") //$NON-NLS-1$
     {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.passage.PassageType#createPassage(java.lang.String)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * org.crosswire.jsword.passage.PassageType#createPassage(java.lang.
+         * String)
          */
-        public Passage createPassage(String passage) throws NoSuchVerseException
-        {
-            if (passage == null || passage.length() == 0)
-            {
+        public Passage createPassage(String passage) throws NoSuchVerseException {
+            if (passage == null || passage.length() == 0) {
                 return createEmptyPassage();
             }
             return new DistinctPassage(passage);
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see org.crosswire.jsword.passage.PassageType#createEmptyPassage()
          */
-        public Passage createEmptyPassage()
-        {
+        public Passage createEmptyPassage() {
             return new DistinctPassage();
         }
 
@@ -130,23 +138,26 @@ public abstract class PassageType implements Serializable
      */
     public static final PassageType MIX = new PassageType("MIX") //$NON-NLS-1$
     {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.passage.PassageType#createPassage(java.lang.String)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * org.crosswire.jsword.passage.PassageType#createPassage(java.lang.
+         * String)
          */
-        public Passage createPassage(String passage) throws NoSuchVerseException
-        {
-            if (passage == null || passage.length() == 0)
-            {
+        public Passage createPassage(String passage) throws NoSuchVerseException {
+            if (passage == null || passage.length() == 0) {
                 return createEmptyPassage();
             }
             return new PassageTally(passage);
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see org.crosswire.jsword.passage.PassageType#createEmptyPassage()
          */
-        public Passage createEmptyPassage()
-        {
+        public Passage createEmptyPassage() {
             return new PassageTally();
         }
 
@@ -161,23 +172,26 @@ public abstract class PassageType implements Serializable
      */
     public static final PassageType TALLY = new PassageType("TALLY") //$NON-NLS-1$
     {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.passage.PassageType#createPassage(java.lang.String)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * org.crosswire.jsword.passage.PassageType#createPassage(java.lang.
+         * String)
          */
-        public Passage createPassage(String passage) throws NoSuchVerseException
-        {
-            if (passage == null || passage.length() == 0)
-            {
+        public Passage createPassage(String passage) throws NoSuchVerseException {
+            if (passage == null || passage.length() == 0) {
                 return createEmptyPassage();
             }
             return new PassageTally(passage);
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see org.crosswire.jsword.passage.PassageType#createEmptyPassage()
          */
-        public Passage createEmptyPassage()
-        {
+        public Passage createEmptyPassage() {
             return new PassageTally();
         }
 
@@ -190,13 +204,13 @@ public abstract class PassageType implements Serializable
     /**
      * Simple ctor
      */
-    public PassageType(String name)
-    {
+    public PassageType(String name) {
         this.name = name;
     }
 
     /**
      * Create an optimized passage
+     * 
      * @param passage
      * @return the optimized passage
      * @throws NoSuchVerseException
@@ -205,6 +219,7 @@ public abstract class PassageType implements Serializable
 
     /**
      * Create an empty, optimized passage
+     * 
      * @return the optimized, empty passage
      * @throws NoSuchVerseException
      */
@@ -213,13 +228,10 @@ public abstract class PassageType implements Serializable
     /**
      * Lookup method to convert from a String
      */
-    public static PassageType fromString(String name)
-    {
-        for (int i = 0; i < VALUES.length; i++)
-        {
+    public static PassageType fromString(String name) {
+        for (int i = 0; i < VALUES.length; i++) {
             PassageType o = VALUES[i];
-            if (o.name.equalsIgnoreCase(name))
-            {
+            if (o.name.equalsIgnoreCase(name)) {
                 return o;
             }
         }
@@ -231,11 +243,9 @@ public abstract class PassageType implements Serializable
     /**
      * Lookup method to convert from an integer
      */
-    public static PassageType fromInteger(int i)
-    {
+    public static PassageType fromInteger(int i) {
         // on error return SPEED
-        if (i < 0 || i >= VALUES.length)
-        {
+        if (i < 0 || i >= VALUES.length) {
             return SPEED;
         }
         return VALUES[i];
@@ -244,13 +254,10 @@ public abstract class PassageType implements Serializable
     /**
      * Lookup method to convert from an integer
      */
-    public static int toInteger(PassageType type)
-    {
-        for (int i = 0; i < VALUES.length; i++)
-        {
+    public static int toInteger(PassageType type) {
+        for (int i = 0; i < VALUES.length; i++) {
             PassageType o = VALUES[i];
-            if (o.equals(type))
-            {
+            if (o.equals(type)) {
                 return i;
             }
         }
@@ -260,28 +267,31 @@ public abstract class PassageType implements Serializable
     }
 
     /**
-     * Prevent subclasses from overriding canonical identity based Object methods
+     * Prevent subclasses from overriding canonical identity based Object
+     * methods
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public final boolean equals(Object o)
-    {
+    public final boolean equals(Object o) {
         return super.equals(o);
     }
 
     /**
-     * Prevent subclasses from overriding canonical identity based Object methods
+     * Prevent subclasses from overriding canonical identity based Object
+     * methods
+     * 
      * @see java.lang.Object#hashCode()
      */
-    public final int hashCode()
-    {
+    public final int hashCode() {
         return super.hashCode();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         return name;
     }
 
@@ -294,18 +304,12 @@ public abstract class PassageType implements Serializable
     private static int nextObj;
     private final int obj = nextObj++;
 
-    Object readResolve()
-    {
+    Object readResolve() {
         return VALUES[obj];
     }
 
-    private static final PassageType[] VALUES =
-    {
-        SPEED,
-        WRITE_SPEED,
-        SIZE,
-        MIX,
-        TALLY,
+    private static final PassageType[] VALUES = {
+            SPEED, WRITE_SPEED, SIZE, MIX, TALLY,
     };
 
     /**

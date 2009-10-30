@@ -26,47 +26,49 @@ import org.crosswire.common.util.Logger;
 
 /**
  * A class to convert between strings and objects of a type.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class ClassChoice extends AbstractReflectedChoice
-{
-    /* (non-Javadoc)
+public class ClassChoice extends AbstractReflectedChoice {
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.config.Choice#getConvertionClass()
      */
-    public Class getConversionClass()
-    {
+    public Class getConversionClass() {
         return Class.class;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.config.AbstractReflectedChoice#convertToString(java.lang.Object)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.common.config.AbstractReflectedChoice#convertToString(java
+     * .lang.Object)
      */
     /* @Override */
-    public String convertToString(Object orig)
-    {
-        if (orig == null)
-        {
+    public String convertToString(Object orig) {
+        if (orig == null) {
             return null;
         }
 
         return ((Class) orig).getName();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java
+     * .lang.String)
      */
     /* @Override */
-    public Object convertToObject(String orig)
-    {
-        try
-        {
+    public Object convertToObject(String orig) {
+        try {
             return ClassUtil.forName(orig);
-        }
-        catch (ClassNotFoundException ex)
-        {
+        } catch (ClassNotFoundException ex) {
             log.warn("Class not found: " + orig, ex); //$NON-NLS-1$
             return null;
         }

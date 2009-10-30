@@ -26,14 +26,12 @@ import junit.framework.TestCase;
 /**
  * JUnit Test.
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class HistoryTest extends TestCase
-{
-    public void testAdd()
-    {
+public class HistoryTest extends TestCase {
+    public void testAdd() {
         History history = new History();
         assertEquals(null, history.getCurrent());
         history.add("a"); //$NON-NLS-1$
@@ -47,8 +45,7 @@ public class HistoryTest extends TestCase
         assertEquals("[a, b, c]", history.getPreviousList().toString()); //$NON-NLS-1$
     }
 
-    public void testGo()
-    {
+    public void testGo() {
         History history = new History();
         assertEquals(null, history.getCurrent());
         history.add("a"); //$NON-NLS-1$
@@ -75,8 +72,7 @@ public class HistoryTest extends TestCase
         assertEquals("[a, b, c, d]", history.getPreviousList().toString()); //$NON-NLS-1$
     }
 
-    public void testNav()
-    {
+    public void testNav() {
         History history = new History();
         assertEquals(null, history.getCurrent());
         history.add("a"); //$NON-NLS-1$

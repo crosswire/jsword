@@ -25,41 +25,46 @@ import java.io.File;
 
 /**
  * A class to convert between files and objects of a type.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class FileChoice extends AbstractReflectedChoice
-{
-    /* (non-Javadoc)
+public class FileChoice extends AbstractReflectedChoice {
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.config.Choice#getConvertionClass()
      */
-    public Class getConversionClass()
-    {
+    public Class getConversionClass() {
         return File.class;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.config.AbstractReflectedChoice#convertToString(java.lang.Object)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.common.config.AbstractReflectedChoice#convertToString(java
+     * .lang.Object)
      */
     /* @Override */
-    public String convertToString(Object orig)
-    {
-        if (orig == null)
-        {
+    public String convertToString(Object orig) {
+        if (orig == null) {
             return ""; //$NON-NLS-1$
         }
 
         return ((File) orig).getAbsolutePath();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java
+     * .lang.String)
      */
     /* @Override */
-    public Object convertToObject(String orig)
-    {
+    public Object convertToObject(String orig) {
         return new File(orig);
     }
 }

@@ -30,47 +30,38 @@ import org.crosswire.jsword.index.IndexStatusEvent;
 import org.crosswire.jsword.index.IndexStatusListener;
 
 /**
- * BookIndexer allows one to check the status of an index, build an index or delete an index.
- * This is similar to SWORD's mkfastmod.
+ * BookIndexer allows one to check the status of an index, build an index or
+ * delete an index. This is similar to SWORD's mkfastmod.
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class BookIndexer
-{
+public class BookIndexer {
 
-    public BookIndexer(Book book)
-    {
+    public BookIndexer(Book book) {
         this.book = book;
         done = true; // not busy
         indexManager = IndexManagerFactory.getIndexManager();
         isl = new StatusListener(this);
     }
 
-    public boolean isIndexed()
-    {
+    public boolean isIndexed() {
         // If we are busy then the index is being created
         // or it is being deleted. So for all practical purposes
         // it is not indexed.
         return done && indexManager.isIndexed(book);
     }
 
-    public void deleteIndex() throws BookException
-    {
-        if (done)
-        {
+    public void deleteIndex() throws BookException {
+        if (done) {
             done = false;
             book.addIndexStatusListener(isl);
             indexManager.deleteIndex(book);
-            while (!done)
-            {
-                try
-                {
+            while (!done) {
+                try {
                     Thread.sleep(100);
-                }
-                catch (InterruptedException e)
-                {
+                } catch (InterruptedException e) {
                     // ok to be interrupted
                 }
             }
@@ -78,25 +69,18 @@ public class BookIndexer
         }
     }
 
-    public void createIndex() throws BookException
-    {
-        if (done)
-        {
+    public void createIndex() throws BookException {
+        if (done) {
             done = false;
             book.addIndexStatusListener(isl);
-            if (isIndexed())
-            {
+            if (isIndexed()) {
                 deleteIndex();
             }
             indexManager.scheduleIndexCreation(book);
-            while (!done)
-            {
-                try
-                {
+            while (!done) {
+                try {
                     Thread.sleep(100);
-                }
-                catch (InterruptedException e)
-                {
+                } catch (InterruptedException e) {
                     // ok to be interrupted
                 }
             }
@@ -104,8 +88,7 @@ public class BookIndexer
         }
     }
 
-    protected void setDone(boolean state)
-    {
+    protected void setDone(boolean state) {
         done = state;
     }
 
@@ -117,15 +100,12 @@ public class BookIndexer
     /**
      * Listen for the end of indexing.
      */
-    public static final class StatusListener implements IndexStatusListener
-    {
-        public StatusListener(BookIndexer indexer)
-        {
+    public static final class StatusListener implements IndexStatusListener {
+        public StatusListener(BookIndexer indexer) {
             this.indexer = indexer;
         }
 
-        public void statusChanged(IndexStatusEvent ev)
-        {
+        public void statusChanged(IndexStatusEvent ev) {
             indexer.setDone(true);
         }
 
@@ -133,10 +113,10 @@ public class BookIndexer
     }
 
     /**
-     * Call with &lt;operation&gt; book.
-     * Where operation can be one of:
+     * Call with &lt;operation&gt; book. Where operation can be one of:
      * <ul>
-     * <li>check - returns "TRUE" or "FALSE" indicating whether the index exists or not</li>
+     * <li>check - returns "TRUE" or "FALSE" indicating whether the index exists
+     * or not</li>
      * <li>create - (re)create the index</li>
      * <li>delete - delete the index if it exists</li>
      * </ul>
@@ -144,10 +124,8 @@ public class BookIndexer
      * 
      * @param args
      */
-    public static void main(String[] args)
-    {
-        if (args.length != 2)
-        {
+    public static void main(String[] args) {
+        if (args.length != 2) {
             usage();
             return;
         }
@@ -156,8 +134,7 @@ public class BookIndexer
 
         String operation = args[0];
         Book b = Books.installed().getBook(args[1]);
-        if (b == null)
-        {
+        if (b == null) {
             System.err.println("Book not found"); //$NON-NLS-1$
             return;
         }
@@ -165,40 +142,29 @@ public class BookIndexer
         BookIndexer indexer = new BookIndexer(b);
         if (operation.equalsIgnoreCase("create")) //$NON-NLS-1$
         {
-            try
-            {
+            try {
                 indexer.createIndex();
-            }
-            catch (BookException e)
-            {
+            } catch (BookException e) {
                 System.err.println("Unable to re-index book."); //$NON-NLS-1$
                 e.printStackTrace();
             }
-        }
-        else if (operation.equalsIgnoreCase("delete")) //$NON-NLS-1$
+        } else if (operation.equalsIgnoreCase("delete")) //$NON-NLS-1$
         {
-            try
-            {
+            try {
                 indexer.deleteIndex();
-            }
-            catch (BookException e)
-            {
+            } catch (BookException e) {
                 System.err.println("Unable to delete index for book."); //$NON-NLS-1$
                 e.printStackTrace();
             }
-        }
-        else if (operation.equalsIgnoreCase("check")) //$NON-NLS-1$
+        } else if (operation.equalsIgnoreCase("check")) //$NON-NLS-1$
         {
             System.err.println(indexer.isIndexed());
-        }
-        else
-        {
+        } else {
             usage();
         }
     }
 
-    public static void usage()
-    {
+    public static void usage() {
         System.err.println("Usage: BookIndexer operation book"); //$NON-NLS-1$
     }
 }

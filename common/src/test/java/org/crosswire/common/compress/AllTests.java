@@ -27,18 +27,16 @@ import junit.framework.TestSuite;
 /**
  * JUnit Test.
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class AllTests
-{
-    public static Test suite()
-    {
+public class AllTests {
+    public static Test suite() {
         TestSuite suite = new TestSuite("Test for org.crosswire.common.compress"); //$NON-NLS-1$
-        //$JUnit-BEGIN$
+        // $JUnit-BEGIN$
         suite.addTest(new TestSuite(LZSSTest.class));
-        //$JUnit-END$
+        // $JUnit-END$
         return suite;
     }
 }

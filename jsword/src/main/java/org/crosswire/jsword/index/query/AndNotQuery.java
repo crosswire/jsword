@@ -26,43 +26,43 @@ import org.crosswire.jsword.index.Index;
 import org.crosswire.jsword.passage.Key;
 
 /**
- * An "And Not" query specifies that a result needs to be in the left
- * but not in the right query result.
- *
- * @see gnu.lgpl.License for license details.
+ * An "And Not" query specifies that a result needs to be in the left but not in
+ * the right query result.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class AndNotQuery extends AbstractBinaryQuery
-{
+public class AndNotQuery extends AbstractBinaryQuery {
 
     /**
-     * Create a query where the right query result is subtracted from the left query result.
-     *
+     * Create a query where the right query result is subtracted from the left
+     * query result.
+     * 
      * @param theLeftQuery
      * @param theRightQuery
      */
-    public AndNotQuery(Query theLeftQuery, Query theRightQuery)
-    {
+    public AndNotQuery(Query theLeftQuery, Query theRightQuery) {
         super(theLeftQuery, theRightQuery);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.parse.Query#find(org.crosswire.jsword.index.search.Index)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.index.search.parse.Query#find(org.crosswire.jsword
+     * .index.search.Index)
      */
-    public Key find(Index index) throws BookException
-    {
+    public Key find(Index index) throws BookException {
         Key left = getLeftQuery().find(index);
 
-        if (left.isEmpty())
-        {
+        if (left.isEmpty()) {
             return left;
         }
 
         Key right = getRightQuery().find(index);
 
-        if (right.isEmpty())
-        {
+        if (right.isEmpty()) {
             return left;
         }
 

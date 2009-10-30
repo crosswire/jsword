@@ -27,25 +27,26 @@ import org.crosswire.jsword.passage.Key;
 
 /**
  * A null query searches for nothing and returns an empty Key.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class NullQuery implements Query
-{
+public class NullQuery implements Query {
     /**
      * Create a NullQuery.
      */
-    public NullQuery()
-    {
+    public NullQuery() {
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.query.Query#find(org.crosswire.jsword.index.search.Index)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.index.query.Query#find(org.crosswire.jsword.index
+     * .search.Index)
      */
-    public Key find(Index index) throws BookException
-    {
+    public Key find(Index index) throws BookException {
         return index.find(null);
     }
 

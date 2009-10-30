@@ -23,14 +23,13 @@ package org.crosswire.common.util;
 
 /**
  * Compile safe Msg resource settings.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-final class UserMsg extends MsgBase
-{
+final class UserMsg extends MsgBase {
     static final UserMsg REASON = new UserMsg("LucidException.Reason"); //$NON-NLS-1$
     static final UserMsg CREATE_DIR_FAIL = new UserMsg("NetUtil.CreateDirFail"); //$NON-NLS-1$
     static final UserMsg CREATE_FILE_FAIL = new UserMsg("NetUtil.CreateFileFail"); //$NON-NLS-1$
@@ -44,8 +43,7 @@ final class UserMsg extends MsgBase
     /**
      * Passthrough ctor
      */
-    private UserMsg(String name)
-    {
+    private UserMsg(String name) {
         super(name);
     }
 }

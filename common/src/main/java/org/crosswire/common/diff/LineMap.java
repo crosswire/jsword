@@ -27,24 +27,26 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * LineMap is a heuristic algorithm that allows the differencing of a representation of lines.
- * A Diff of the source and target maps can be reconstituted with restore.
- *
+ * LineMap is a heuristic algorithm that allows the differencing of a
+ * representation of lines. A Diff of the source and target maps can be
+ * reconstituted with restore.
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class LineMap
-{
+public class LineMap {
     /**
-     * Split two texts into a list of strings.  Reduce the texts to a string of
-     * hashes where each Unicode character represents one line. The result
-     * is that text1 is encoded into
-     * @param source Baseline string
-     * @param target Changed string
+     * Split two texts into a list of strings. Reduce the texts to a string of
+     * hashes where each Unicode character represents one line. The result is
+     * that text1 is encoded into
+     * 
+     * @param source
+     *            Baseline string
+     * @param target
+     *            Changed string
      */
-    public LineMap(final String source, final String target)
-    {
+    public LineMap(final String source, final String target) {
         // e.g. linearray[4] == "Hello\n"
         // e.g. linehash.get("Hello\n") == 4
 
@@ -59,21 +61,20 @@ public class LineMap
     }
 
     /**
-     * Rehydrate the text in a diff from a string of line hashes to real lines of
-     * text.
-     * @param diffs List of Difference objects
+     * Rehydrate the text in a diff from a string of line hashes to real lines
+     * of text.
+     * 
+     * @param diffs
+     *            List of Difference objects
      */
-    public void restore(final List diffs)
-    {
+    public void restore(final List diffs) {
         StringBuffer text = new StringBuffer();
-        for (int x = 0; x < diffs.size(); x++)
-        {
+        for (int x = 0; x < diffs.size(); x++) {
             Difference diff = (Difference) diffs.get(x);
             String chars = diff.getText();
 
             text.delete(0, text.length());
-            for (int y = 0; y < chars.length(); y++)
-            {
+            for (int y = 0; y < chars.length(); y++) {
                 text.append(lines.get(chars.charAt(y)));
             }
 
@@ -84,57 +85,52 @@ public class LineMap
     /**
      * @return the sourceMap
      */
-    public String getSourceMap()
-    {
+    public String getSourceMap() {
         return sourceMap;
     }
 
     /**
      * @return the targetMap
      */
-    public String getTargetMap()
-    {
+    public String getTargetMap() {
         return targetMap;
     }
 
     /**
      * @return the lines
      */
-    public List getLines()
-    {
+    public List getLines() {
         return lines;
     }
 
     /**
-     * Split a text into a list of strings.  Reduce the texts to a string of
+     * Split a text into a list of strings. Reduce the texts to a string of
      * hashes where each Unicode character represents one line.
-     * @param text String to encode
-     * @param linearray List of unique strings
-     * @param linehash Map of strings to indices
+     * 
+     * @param text
+     *            String to encode
+     * @param linearray
+     *            List of unique strings
+     * @param linehash
+     *            Map of strings to indices
      * @return Encoded string
      */
-    private String linesToCharsMunge(final String text, List linearray, Map linehash)
-    {
+    private String linesToCharsMunge(final String text, List linearray, Map linehash) {
         StringBuffer buf = new StringBuffer();
         String work = text;
         // text.split('\n') would work fine, but would temporarily double our
         // memory footprint for minimal speed improvement.
-        while (work.length() != 0)
-        {
+        while (work.length() != 0) {
             int i = work.indexOf('\n');
-            if (i == -1)
-            {
+            if (i == -1) {
                 i = work.length() - 1;
             }
             String line = work.substring(0, i + 1);
             work = work.substring(i + 1);
-            if (linehash.containsKey(line))
-            {
+            if (linehash.containsKey(line)) {
                 Integer charInt = (Integer) linehash.get(line);
                 buf.append(String.valueOf((char) charInt.intValue()));
-            }
-            else
-            {
+            } else {
                 linearray.add(line);
                 linehash.put(line, new Integer(linearray.size() - 1));
                 buf.append(String.valueOf((char) (linearray.size() - 1)));
@@ -144,12 +140,14 @@ public class LineMap
     }
 
     /**
-     * Each character in sourceMap provides an integer representation of the line in the original.
+     * Each character in sourceMap provides an integer representation of the
+     * line in the original.
      */
     private String sourceMap;
 
     /**
-     * Each character in sourceMap provides an integer representation of the line in the original.
+     * Each character in sourceMap provides an integer representation of the
+     * line in the original.
      */
     private String targetMap;
 

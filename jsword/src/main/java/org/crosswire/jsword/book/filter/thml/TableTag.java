@@ -27,31 +27,33 @@ import org.xml.sax.Attributes;
 
 /**
  * THML Tag to process the table element.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class TableTag extends AbstractTag
-{
-    /* (non-Javadoc)
+public class TableTag extends AbstractTag {
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
-    public String getTagName()
-    {
+    public String getTagName() {
         return "table"; //$NON-NLS-1$
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element,
+     * org.xml.sax.Attributes)
      */
     /* @Override */
-    public Element processTag(Element ele, Attributes attrs)
-    {
+    public Element processTag(Element ele, Attributes attrs) {
         Element table = OSISUtil.factory().createTable();
 
-        if (ele != null)
-        {
+        if (ele != null) {
             ele.addContent(table);
         }
 

@@ -25,13 +25,12 @@ import java.util.EventListener;
 
 /**
  * ConfigListener.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public interface ConfigListener extends EventListener
-{
+public interface ConfigListener extends EventListener {
     /**
      * Called whenever Config.add() is called
      */

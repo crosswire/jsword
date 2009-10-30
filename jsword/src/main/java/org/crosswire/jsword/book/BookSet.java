@@ -31,37 +31,32 @@ import java.util.TreeSet;
 import org.crosswire.common.util.Filter;
 
 /**
- * BookSet represents a collection of descriptions about Books
- * which may be subsetted into other BookMetaDataSets.
- * Each set is naturally ordered.
- *
- * @see gnu.lgpl.License for license details.
+ * BookSet represents a collection of descriptions about Books which may be
+ * subsetted into other BookMetaDataSets. Each set is naturally ordered.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class BookSet extends ArrayList implements Set
-{
-    public BookSet()
-    {
+public class BookSet extends ArrayList implements Set {
+    public BookSet() {
     }
 
-    public BookSet(Collection books)
-    {
+    public BookSet(Collection books) {
         this();
         addAll(books);
     }
 
     /**
-     * Gets the sorted set of all keys which can be used for groupings.
-     * These are all the property keys across the BookMetaDatas in this list.
+     * Gets the sorted set of all keys which can be used for groupings. These
+     * are all the property keys across the BookMetaDatas in this list.
+     * 
      * @return the set of all keys which can be used for grouping.
      */
-    public Set getGroups()
-    {
+    public Set getGroups() {
         Set results = new TreeSet();
         Iterator iter = iterator();
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             Book book = (Book) iter.next();
             results.addAll(book.getProperties().keySet());
         }
@@ -69,97 +64,94 @@ public class BookSet extends ArrayList implements Set
     }
 
     /**
-     * Get the sorted set of all values for a particular key.
-     * If there is a BookMetaData that does not have a value
-     * for that key, then null will be in the set. This can be use
-     * to categorize books that don't have that key.
-     * For example, "Language" will return all the languages
-     * for this BookMetaDataList and null for which the language
-     * is unknown.
+     * Get the sorted set of all values for a particular key. If there is a
+     * BookMetaData that does not have a value for that key, then null will be
+     * in the set. This can be use to categorize books that don't have that key.
+     * For example, "Language" will return all the languages for this
+     * BookMetaDataList and null for which the language is unknown.
+     * 
      * @param key
      * @return the values for a particular key.
      */
-    public Set getGroup(String key)
-    {
+    public Set getGroup(String key) {
         Set results = new TreeSet();
         Iterator iter = iterator();
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             Book book = (Book) iter.next();
             Object property = book.getProperty(key);
-            if (property != null)
-            {
+            if (property != null) {
                 results.add(property);
             }
         }
         return results;
     }
 
-    public BookSet filter(String key, Object value)
-    {
+    public BookSet filter(String key, Object value) {
         return filter(new GroupFilter(key, value));
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.util.List#add(int, java.lang.Object)
      */
-    public void add(int index, Object element)
-    {
+    public void add(int index, Object element) {
         // ignore the requested index
         add(element);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.util.Collection#add(java.lang.Object)
      */
-    public final boolean add(Object book)
-    {
+    public final boolean add(Object book) {
         // Add the item only if it is not in the list.
         // Add it into the list so that it is in sorted order.
         int pos = Collections.binarySearch(this, book);
-        if (pos < 0)
-        {
+        if (pos < 0) {
             super.add(-pos - 1, book);
             return true;
         }
         return false;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.util.Collection#addAll(java.util.Collection)
      */
-    public final boolean addAll(Collection c)
-    {
+    public final boolean addAll(Collection c) {
         // Might be better to add the list to the end
         // and then sort the list.
         // This can be revisited if the list performs badly.
         boolean added = false;
         Iterator iter = c.iterator();
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             Book book = (Book) iter.next();
-            if (add(book))
-            {
+            if (add(book)) {
                 added = true;
             }
         }
         return added;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.util.List#addAll(int, java.util.Collection)
      */
-    public final boolean addAll(int index, Collection c)
-    {
+    public final boolean addAll(int index, Collection c) {
         // Ignore the index
         return addAll(c);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.util.List#set(int, java.lang.Object)
      */
-    public Object set(int index, Object element)
-    {
+    public Object set(int index, Object element) {
         // remove the item at the index (keep it to return it),
         // then insert the item into the sorted list.
         Book item = (Book) remove(index);
@@ -167,17 +159,14 @@ public class BookSet extends ArrayList implements Set
         return item;
     }
 
-    public BookSet filter(Filter filter)
-    {
+    public BookSet filter(Filter filter) {
         // create a copy of the list and
         // remove everything that fails the test.
         BookSet listSet = (BookSet) clone();
         Iterator iter = listSet.iterator();
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             Book obj = (Book) iter.next();
-            if (!filter.test(obj))
-            {
+            if (!filter.test(obj)) {
                 iter.remove();
             }
         }
@@ -187,20 +176,18 @@ public class BookSet extends ArrayList implements Set
     /**
      * GroupFilter does the SQL traditional group by.
      */
-    private static final class GroupFilter implements Filter
-    {
-        public GroupFilter(String aKey, Object aValue)
-        {
+    private static final class GroupFilter implements Filter {
+        public GroupFilter(String aKey, Object aValue) {
             key = aKey;
             value = aValue;
         }
 
-        public boolean test(Object obj)
-        {
+        public boolean test(Object obj) {
             Book book = (Book) obj;
             Object property = book.getProperty(key);
             return property != null && property.equals(value);
         }
+
         private String key;
         private Object value;
     }

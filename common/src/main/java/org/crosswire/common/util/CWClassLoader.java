@@ -27,88 +27,81 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 
 /**
- * CWClassLoader extends the regular class loader by using looking
- * in more places. This is needed so that ResourceBundle can find
- * resources that are not held in the same package as the class.
- * This is expressed as a list of locations, called homes, that
- * the program will look in.
- *
+ * CWClassLoader extends the regular class loader by using looking in more
+ * places. This is needed so that ResourceBundle can find resources that are not
+ * held in the same package as the class. This is expressed as a list of
+ * locations, called homes, that the program will look in.
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class CWClassLoader extends ClassLoader
-{
+public final class CWClassLoader extends ClassLoader {
     /**
-     * Creates a class loader that finds resources
-     * for the supplied class that may not be in the class' package.
-     * You can use this within base classes by passing getClass()
-     * to load resources for a derived class.
-     * @param resourceOwner is the owner of the resource
+     * Creates a class loader that finds resources for the supplied class that
+     * may not be in the class' package. You can use this within base classes by
+     * passing getClass() to load resources for a derived class.
+     * 
+     * @param resourceOwner
+     *            is the owner of the resource
      */
-    CWClassLoader(Class resourceOwner)
-    {
+    CWClassLoader(Class resourceOwner) {
         owner = resourceOwner;
     }
 
     /**
-     * Creates a class loader that finds resources
-     * for the calling class that may not be in the class' package.
-     * Use this only within classes that are directly looking up their resources.
+     * Creates a class loader that finds resources for the calling class that
+     * may not be in the class' package. Use this only within classes that are
+     * directly looking up their resources.
      */
-    CWClassLoader()
-    {
+    CWClassLoader() {
         owner = CallContext.getCallingClass();
     }
 
     /**
-     * Creates a privileged class loader that finds resources
-     * for the supplied class that may not be in the class' package.
-     * You can use this within base classes by passing getClass()
-     * to load resources for a derived class.
-     * @param resourceOwner is the owner of the resource
+     * Creates a privileged class loader that finds resources for the supplied
+     * class that may not be in the class' package. You can use this within base
+     * classes by passing getClass() to load resources for a derived class.
+     * 
+     * @param resourceOwner
+     *            is the owner of the resource
      */
-    public static CWClassLoader instance(Class resourceOwner)
-    {
+    public static CWClassLoader instance(Class resourceOwner) {
         return (CWClassLoader) AccessController.doPrivileged(new PrivilegedLoader(resourceOwner));
     }
 
     /**
-     * Creates a privileged class loader that finds resources
-     * for the calling class that may not be in the class' package.
-     * Use this only within classes that are directly looking up their resources.
+     * Creates a privileged class loader that finds resources for the calling
+     * class that may not be in the class' package. Use this only within classes
+     * that are directly looking up their resources.
      */
-    public static CWClassLoader instance()
-    {
+    public static CWClassLoader instance() {
         Class resourceOwner = CallContext.getCallingClass();
         return instance(resourceOwner);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.ClassLoader#findResource(java.lang.String)
      */
     /* @Override */
-    public URL findResource(String search)
-    {
+    public URL findResource(String search) {
         URL resource = null;
-        if (search == null || search.length() == 0)
-        {
+        if (search == null || search.length() == 0) {
             return resource;
         }
 
         // First look for it with an absolute path
         // This allows developer overrides
-        if (search.charAt(0) != '/')
-        {
+        if (search.charAt(0) != '/') {
             resource = findResource('/' + search);
         }
 
-        if (resource == null)
-        {
+        if (resource == null) {
             // Look for it in the class's package.
             String newsearch = adjustPackageSearch(search);
-            if (!search.equals(newsearch))
-            {
+            if (!search.equals(newsearch)) {
                 resource = findResource(newsearch);
             }
         }
@@ -116,47 +109,39 @@ public final class CWClassLoader extends ClassLoader
         // Sometimes it comes in with '/' inside of it.
         // So look for it as a file with '.' in the name
         // This is the form that will find files in the resource.jar
-        if (resource == null)
-        {
+        if (resource == null) {
             // Look for it in the class's package.
             String newsearch = adjustPathSearch(search);
-            if (!search.equals(newsearch))
-            {
+            if (!search.equals(newsearch)) {
                 resource = findResource(newsearch);
             }
         }
 
         // See if it can be found in a home directory
-        if (resource == null)
-        {
+        if (resource == null) {
             URI homeResource = CWClassLoader.findHomeResource(search);
-            if (homeResource != null)
-            {
+            if (homeResource != null) {
                 resource = NetUtil.toURL(homeResource);
             }
         }
 
         // See if it can be found by its own class.
-        if (resource == null)
-        {
+        if (resource == null) {
             resource = owner.getResource(search);
         }
 
         // Try the appropriate class loader
-        if (resource == null)
-        {
+        if (resource == null) {
             resource = getClassLoader().getResource(search);
         }
 
         // Try the bootstrap and the system loader
-        if (resource == null)
-        {
+        if (resource == null) {
             resource = ClassLoader.getSystemResource(search);
         }
 
         // For good measure let the super class try to find it.
-        if (resource == null)
-        {
+        if (resource == null) {
             resource = super.findResource(search);
         }
 
@@ -164,30 +149,23 @@ public final class CWClassLoader extends ClassLoader
     }
 
     /**
-     * Prefix the search with a package prefix, if not already.
-     * Skip a leading '/' if present.
+     * Prefix the search with a package prefix, if not already. Skip a leading
+     * '/' if present.
      */
-    private String adjustPackageSearch(String aSearch)
-    {
+    private String adjustPackageSearch(String aSearch) {
         String search = aSearch;
         // If it has embedded '/' there is nothing to do.
-        if (search.indexOf('/', 1) == -1)
-        {
+        if (search.indexOf('/', 1) == -1) {
             String className = owner.getName();
             String pkgPrefix = className.substring(0, className.lastIndexOf('.') + 1);
 
-            if (search.charAt(0) == '/')
-            {
+            if (search.charAt(0) == '/') {
                 String part = search.substring(1);
-                if (!part.startsWith(pkgPrefix))
-                {
+                if (!part.startsWith(pkgPrefix)) {
                     search = '/' + pkgPrefix + part;
                 }
-            }
-            else
-            {
-                if (!search.startsWith(pkgPrefix))
-                {
+            } else {
+                if (!search.startsWith(pkgPrefix)) {
                     search = pkgPrefix + search;
                 }
             }
@@ -199,18 +177,13 @@ public final class CWClassLoader extends ClassLoader
     /**
      * Change all but a leading '/' to '.'
      */
-    private String adjustPathSearch(String aSearch)
-    {
+    private String adjustPathSearch(String aSearch) {
         String search = aSearch;
-        if (search.indexOf('/', 1) != -1)
-        {
+        if (search.indexOf('/', 1) != -1) {
             // Change all but a leading '/' to '.'
-            if (search.charAt(0) == '/')
-            {
+            if (search.charAt(0) == '/') {
                 search = '/' + search.substring(1).replace('/', '.');
-            }
-            else
-            {
+            } else {
                 search = search.replace('/', '.');
             }
         }
@@ -220,8 +193,7 @@ public final class CWClassLoader extends ClassLoader
     /**
      *
      */
-    public ClassLoader getClassLoader()
-    {
+    public ClassLoader getClassLoader() {
         // Choose the child loader as it will use the parent if need be
         // If they are not related then choose the context loader
         ClassLoader loader = pickLoader(Thread.currentThread().getContextClassLoader(), owner.getClassLoader());
@@ -234,24 +206,17 @@ public final class CWClassLoader extends ClassLoader
      * set their parent pointers correctly. 'null' is interpreted as the
      * primordial loader [i.e., everybody's parent].
      */
-    private static ClassLoader pickLoader(ClassLoader loader1, ClassLoader loader2)
-    {
+    private static ClassLoader pickLoader(ClassLoader loader1, ClassLoader loader2) {
         ClassLoader loader = loader2;
-        if (loader1 != loader2)
-        {
+        if (loader1 != loader2) {
             loader = loader1;
-            if (loader1 == null)
-            {
+            if (loader1 == null) {
                 loader = loader2;
-            }
-            else
-            {
+            } else {
                 // Is loader2 a descendant of loader1?
                 // It is if we can walk up to the top and find it.
-                for (ClassLoader curloader = loader2; curloader != null; curloader = curloader.getParent())
-                {
-                    if (curloader == loader1)
-                    {
+                for (ClassLoader curloader = loader2; curloader != null; curloader = curloader.getParent()) {
+                    if (curloader == loader1) {
                         loader = loader2;
                         break;
                     }
@@ -262,27 +227,26 @@ public final class CWClassLoader extends ClassLoader
     }
 
     /**
-     * If the application has set the homes, it will return
-     * the application's requested home directory, otherwise it returns null.
+     * If the application has set the homes, it will return the application's
+     * requested home directory, otherwise it returns null.
+     * 
      * @return Returns the home.
      */
-    public static synchronized URI getHome(int i)
-    {
-        if (i > 0 && i < homes.length)
-        {
+    public static synchronized URI getHome(int i) {
+        if (i > 0 && i < homes.length) {
             return homes[i];
         }
         return null;
     }
 
     /**
-     * Establish the applications home directory from where
-     * additional resources can be found. URL is expected to
-     * end with the directory name, not '/'.
-     * @param newHomes The home to set.
+     * Establish the applications home directory from where additional resources
+     * can be found. URL is expected to end with the directory name, not '/'.
+     * 
+     * @param newHomes
+     *            The home to set.
      */
-    public static synchronized void setHome(URI[] newHomes)
-    {
+    public static synchronized void setHome(URI[] newHomes) {
         homes = new URI[newHomes.length];
         System.arraycopy(newHomes, 0, homes, 0, newHomes.length);
     }
@@ -291,24 +255,21 @@ public final class CWClassLoader extends ClassLoader
      * Look for the resource in the home directories, returning the first
      * readable file.
      * 
-     * @param search must be non-null, non-empty
+     * @param search
+     *            must be non-null, non-empty
      */
-    public static URI findHomeResource(String search)
-    {
-        if (homes == null)
-        {
+    public static URI findHomeResource(String search) {
+        if (homes == null) {
             return null;
         }
 
-        for (int i = 0; i < homes.length; i++)
-        {
+        for (int i = 0; i < homes.length; i++) {
             URI homeURI = homes[i];
 
             URI override = NetUtil.lengthenURI(homeURI, search);
 
             // Make sure the file exists and can be read
-            if (NetUtil.canRead(override))
-            {
+            if (NetUtil.canRead(override)) {
                 return override;
             }
         }
@@ -317,39 +278,38 @@ public final class CWClassLoader extends ClassLoader
     }
 
     /**
-     * PrivilegedLoader creates a CWClassLoader if it is
-     * able to obtain java security permissions to do so.
+     * PrivilegedLoader creates a CWClassLoader if it is able to obtain java
+     * security permissions to do so.
      */
-    private static class PrivilegedLoader implements PrivilegedAction
-    {
+    private static class PrivilegedLoader implements PrivilegedAction {
         /**
-         * Creates a privileged class loader that finds resources
-         * for the supplied class that may not be in the class' package.
-         * You can use this within base classes by passing getClass()
-         * to load resources for a derived class.
-         * @param resourceOwner is the owner of the resource
+         * Creates a privileged class loader that finds resources for the
+         * supplied class that may not be in the class' package. You can use
+         * this within base classes by passing getClass() to load resources for
+         * a derived class.
+         * 
+         * @param resourceOwner
+         *            is the owner of the resource
          */
-        public PrivilegedLoader(Class resourceOwner)
-        {
+        public PrivilegedLoader(Class resourceOwner) {
             owningClass = resourceOwner;
         }
 
         /**
-         * Creates a privileged class loader that finds resources
-         * for the calling class that may not be in the class' package.
-         * Use this only within classes that are directly looking up their resources.
+         * Creates a privileged class loader that finds resources for the
+         * calling class that may not be in the class' package. Use this only
+         * within classes that are directly looking up their resources.
          */
-        public PrivilegedLoader()
-        {
+        public PrivilegedLoader() {
             owningClass = CallContext.getCallingClass();
         }
 
-
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see java.security.PrivilegedAction#run()
          */
-        public Object run()
-        {
+        public Object run() {
             return new CWClassLoader(owningClass);
         }
 

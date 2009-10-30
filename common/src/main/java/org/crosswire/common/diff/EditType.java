@@ -25,13 +25,12 @@ import java.io.Serializable;
 
 /**
  * An Enumeration of the possible Edits.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class EditType implements Serializable
-{
+public final class EditType implements Serializable {
     /**
      * Delete a sequence.
      */
@@ -48,10 +47,10 @@ public final class EditType implements Serializable
     public static final EditType EQUAL = new EditType("Equal", ' '); //$NON-NLS-1$
 
     /**
-     * @param name The name of the FeatureType
+     * @param name
+     *            The name of the FeatureType
      */
-    private EditType(String name, char symbol)
-    {
+    private EditType(String name, char symbol) {
         this.name = name;
         this.symbol = symbol;
     }
@@ -59,21 +58,17 @@ public final class EditType implements Serializable
     /**
      * @return te symbol for this EditType
      */
-    public char getSymbol()
-    {
+    public char getSymbol() {
         return symbol;
     }
 
     /**
      * Lookup method to convert from a String
      */
-    public static EditType fromString(String name)
-    {
-        for (int i = 0; i < VALUES.length; i++)
-        {
+    public static EditType fromString(String name) {
+        for (int i = 0; i < VALUES.length; i++) {
             EditType o = VALUES[i];
-            if (o.name.equalsIgnoreCase(name))
-            {
+            if (o.name.equalsIgnoreCase(name)) {
                 return o;
             }
         }
@@ -85,13 +80,10 @@ public final class EditType implements Serializable
     /**
      * Lookup method to convert from a String
      */
-    public static EditType fromSymbol(char symbol)
-    {
-        for (int i = 0; i < VALUES.length; i++)
-        {
+    public static EditType fromSymbol(char symbol) {
+        for (int i = 0; i < VALUES.length; i++) {
             EditType o = VALUES[i];
-            if (o.symbol == symbol)
-            {
+            if (o.symbol == symbol) {
                 return o;
             }
         }
@@ -103,16 +95,16 @@ public final class EditType implements Serializable
     /**
      * Lookup method to convert from an integer
      */
-    public static EditType fromInteger(int i)
-    {
+    public static EditType fromInteger(int i) {
         return VALUES[i];
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         return name;
     }
 
@@ -130,16 +122,12 @@ public final class EditType implements Serializable
     private static int nextObj;
     private final int obj = nextObj++;
 
-    Object readResolve()
-    {
+    Object readResolve() {
         return VALUES[obj];
     }
 
-    private static final EditType[] VALUES =
-    {
-        DELETE,
-        INSERT,
-        EQUAL,
+    private static final EditType[] VALUES = {
+            DELETE, INSERT, EQUAL,
     };
 
     /**

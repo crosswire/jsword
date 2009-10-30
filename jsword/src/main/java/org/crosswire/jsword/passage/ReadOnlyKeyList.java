@@ -25,237 +25,259 @@ import java.util.Iterator;
 
 /**
  * A read-only wrapper around any writable implementation of Key.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class ReadOnlyKeyList implements Key
-{
+public class ReadOnlyKeyList implements Key {
     /**
      * Simple ctor
      */
-    public ReadOnlyKeyList(Key keys, boolean ignore)
-    {
+    public ReadOnlyKeyList(Key keys, boolean ignore) {
         this.keys = keys;
         this.ignore = ignore;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getCardinality()
      */
-    public int getCardinality()
-    {
+    public int getCardinality() {
         return keys.getCardinality();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#canHaveChildren()
      */
-    public boolean canHaveChildren()
-    {
+    public boolean canHaveChildren() {
         return keys.canHaveChildren();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getChildCount()
      */
-    public int getChildCount()
-    {
+    public int getChildCount() {
         return keys.getChildCount();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#isEmpty()
      */
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return keys.isEmpty();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage
+     * .Key)
      */
-    public boolean contains(Key key)
-    {
+    public boolean contains(Key key) {
         return keys.contains(key);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#iterator()
      */
-    public Iterator iterator()
-    {
+    public Iterator iterator() {
         return keys.iterator();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#add(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#add(org.crosswire.jsword.passage.Key)
      */
-    public void addAll(Key key)
-    {
-        if (ignore)
-        {
+    public void addAll(Key key) {
+        if (ignore) {
             return;
         }
 
         throw new IllegalStateException(Msg.KEYLIST_READONLY.toString());
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#remove(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#remove(org.crosswire.jsword.passage.Key)
      */
-    public void removeAll(Key key)
-    {
-        if (ignore)
-        {
+    public void removeAll(Key key) {
+        if (ignore) {
             return;
         }
 
         throw new IllegalStateException(Msg.KEYLIST_READONLY.toString());
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#retain(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#retain(org.crosswire.jsword.passage.Key)
      */
-    public void retainAll(Key key)
-    {
-        if (ignore)
-        {
+    public void retainAll(Key key) {
+        if (ignore) {
             return;
         }
 
         throw new IllegalStateException(Msg.KEYLIST_READONLY.toString());
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#clear()
      */
-    public void clear()
-    {
-        if (ignore)
-        {
+    public void clear() {
+        if (ignore) {
             return;
         }
 
         throw new IllegalStateException(Msg.KEYLIST_READONLY.toString());
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getName()
      */
-    public String getName()
-    {
+    public String getName() {
         return keys.getName();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getRootName()
      */
-    public String getRootName()
-    {
+    public String getRootName() {
         return keys.getRootName();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage
+     * .Key)
      */
-    public String getName(Key base)
-    {
+    public String getName(Key base) {
         return keys.getName(base);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getOSISRef()
      */
-    public String getOsisRef()
-    {
+    public String getOsisRef() {
         return keys.getOsisRef();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getOSISId()
      */
-    public String getOsisID()
-    {
+    public String getOsisID() {
         return keys.getOsisID();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
-    public int hashCode()
-    {
+    public int hashCode() {
         return keys.hashCode();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public boolean equals(Object obj)
-    {
+    public boolean equals(Object obj) {
         return keys.equals(obj);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object o)
-    {
+    public int compareTo(Object o) {
         return keys.compareTo(o);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#get(int)
      */
-    public Key get(int index)
-    {
+    public Key get(int index) {
         return keys.get(index);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage
+     * .Key)
      */
-    public int indexOf(Key that)
-    {
+    public int indexOf(Key that) {
         return keys.indexOf(that);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getParent()
      */
-    public Key getParent()
-    {
+    public Key getParent() {
         return keys.getParent();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#blur(int)
      */
-    public void blur(int by, RestrictionType restrict)
-    {
-        if (ignore)
-        {
+    public void blur(int by, RestrictionType restrict) {
+        if (ignore) {
             return;
         }
 
         throw new IllegalStateException(Msg.KEYLIST_READONLY.toString());
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#clone()
      */
     /* @Override */
-    public Object clone()
-    {
+    public Object clone() {
         ReadOnlyKeyList clone = null;
-        try
-        {
+        try {
             clone = (ReadOnlyKeyList) super.clone();
             clone.keys = (Key) keys.clone();
-        }
-        catch (CloneNotSupportedException e)
-        {
+        } catch (CloneNotSupportedException e) {
             assert false : e;
         }
         return clone;

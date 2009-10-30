@@ -27,50 +27,47 @@ import java.util.List;
 import junit.framework.TestCase;
 
 /**
- * JUnit Test.
- * For when we don't actually want to do testing of responses
+ * JUnit Test. For when we don't actually want to do testing of responses
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class BookParentTst extends TestCase
-{
-    public BookParentTst(String s)
-    {
+public class BookParentTst extends TestCase {
+    public BookParentTst(String s) {
         super(s);
     }
 
     protected BookMetaData[] bmds = null;
     protected Book[] bibles = null;
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see junit.framework.TestCase#setUp()
      */
-    protected void setUp() throws Exception
-    {
+    protected void setUp() throws Exception {
         List lbmds = Books.installed().getBooks(BookFilters.getOnlyBibles());
         bibles = new Book[lbmds.size()];
         bmds = new BookMetaData[lbmds.size()];
 
         int i = 0;
-        for (Iterator it = lbmds.iterator(); it.hasNext();)
-        {
+        for (Iterator it = lbmds.iterator(); it.hasNext();) {
             bibles[i] = (Book) it.next();
             bmds[i] = bibles[i].getBookMetaData();
             i++;
         }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see junit.framework.TestCase#tearDown()
      */
-    protected void tearDown() throws Exception
-    {
+    protected void tearDown() throws Exception {
     }
 
-    public void testNothing()
-    {
+    public void testNothing() {
         assertTrue(true);
     }
 }

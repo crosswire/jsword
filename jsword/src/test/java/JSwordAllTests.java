@@ -20,7 +20,6 @@
  * ID: $Id$
  */
 // package default;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -28,19 +27,16 @@ import junit.framework.TestSuite;
 /**
  * JUnit Test.
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class JSwordAllTests extends TestCase
-{
-    public JSwordAllTests(String s)
-    {
+public class JSwordAllTests extends TestCase {
+    public JSwordAllTests(String s) {
         super(s);
     }
 
-    public static Test suite()
-    {
+    public static Test suite() {
         TestSuite suite = new TestSuite();
 
         suite.addTestSuite(org.crosswire.jsword.passage.BibleInfoTest.class);
@@ -49,7 +45,7 @@ public class JSwordAllTests extends TestCase
         suite.addTestSuite(org.crosswire.jsword.passage.PassageSizeTest.class);
         suite.addTestSuite(org.crosswire.jsword.passage.PassageSpeedTest.class);
         // commented out because it causes OutOfMemoryErrors.
-        //suite.addTestSuite(org.crosswire.jsword.passage.PassageSpeedOptTest.class);
+        // suite.addTestSuite(org.crosswire.jsword.passage.PassageSpeedOptTest.class);
         suite.addTestSuite(org.crosswire.jsword.passage.PassageTallyTest.class);
         suite.addTestSuite(org.crosswire.jsword.passage.PassageTally2Test.class);
         suite.addTestSuite(org.crosswire.jsword.passage.PassageUtilTest.class);
@@ -62,17 +58,20 @@ public class JSwordAllTests extends TestCase
         suite.addTestSuite(org.crosswire.jsword.book.SentanceUtilTest.class);
 
         // run independently:
-        //suite.addTestSuite(org.crosswire.jsword.book.ReadEverything.class);
+        // suite.addTestSuite(org.crosswire.jsword.book.ReadEverything.class);
         // commented out because the tests were very poor.
-        //suite.addTestSuite(org.crosswire.jsword.book.OsisTest.class);
+        // suite.addTestSuite(org.crosswire.jsword.book.OsisTest.class);
 
         // Not a JUnit test
-        //suite.addTestSuite(org.crosswire.jsword.book.test.Speed.class);
+        // suite.addTestSuite(org.crosswire.jsword.book.test.Speed.class);
 
-        /* FIXME
-        suite.addTestSuite(org.crosswire.jsword.index.search.parse.ParserTest.class);
-        suite.addTestSuite(org.crosswire.jsword.index.search.parse.WordsTest.class);
-        */
+        /*
+         * FIXME
+         * suite.addTestSuite(org.crosswire.jsword.index.search.parse.ParserTest
+         * .class);
+         * suite.addTestSuite(org.crosswire.jsword.index.search.parse.WordsTest
+         * .class);
+         */
 
         suite.addTestSuite(org.crosswire.jsword.book.sword.ConfigEntryTableTest.class);
         suite.addTestSuite(org.crosswire.jsword.book.sword.RawFileBackendTest.class);

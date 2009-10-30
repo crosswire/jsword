@@ -35,12 +35,11 @@ import org.crosswire.common.util.ResourceUtil;
 /**
  * JUnit Test.
  * 
- * @see gnu.lgpl.License for license details. The copyright to this program is
- *      held by it's authors.
+ * @see gnu.lgpl.License for license details.<br>
+ *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class LZSSTest extends TestCase
-{
+public class LZSSTest extends TestCase {
     public static int RING_SIZE = 4096;
     public static int RING_WRAP = RING_SIZE - 1;
     public static int THRESHOLD = 3;
@@ -50,8 +49,7 @@ public class LZSSTest extends TestCase
      * 
      * @see junit.framework.TestCase#setUp()
      */
-    protected void setUp()
-    {
+    protected void setUp() {
     }
 
     /*
@@ -59,26 +57,21 @@ public class LZSSTest extends TestCase
      * 
      * @see junit.framework.TestCase#tearDown()
      */
-    protected void tearDown()
-    {
+    protected void tearDown() {
     }
 
-    public void testCore()
-    {
+    public void testCore() {
         // Test the idiom s = (s + 1) & RING_WRAP
-        for (int i = -1; i < RING_SIZE - 1; i++ )
-        {
+        for (int i = -1; i < RING_SIZE - 1; i++) {
             assertEquals(i + 1, (i + 1) & RING_WRAP);
         }
-        for (int i = -1; i < RING_SIZE - 1; i++ )
-        {
+        for (int i = -1; i < RING_SIZE - 1; i++) {
             assertEquals(i + 1, (i + RING_SIZE + 1) & RING_WRAP);
         }
 
         // Test the counting of the flag set
         byte mask = 1;
-        for (int i = 7; i > 0; i--)
-        {
+        for (int i = 7; i > 0; i--) {
             mask <<= 1;
             assertTrue(mask != 0);
         }
@@ -86,7 +79,8 @@ public class LZSSTest extends TestCase
         assertEquals(0, mask);
 
         // Test the storing of a position and length
-        // Note: pos can be in the range of 0-4095 and len in the range of 3 - 18
+        // Note: pos can be in the range of 0-4095 and len in the range of 3 -
+        // 18
         int pos = 0x0FFF;
         int len = 0x000F + THRESHOLD;
         byte lowPart = (byte) pos;
@@ -100,52 +94,37 @@ public class LZSSTest extends TestCase
         assertEquals(len, (short) ((highPart & 0x0F) + THRESHOLD));
     }
 
-    public void testCompression()
-    {
+    public void testCompression() {
         InputStream kjvGenesis = null;
-        try
-        {
+        try {
             kjvGenesis = ResourceUtil.getResourceAsStream("kjv_genesis.txt"); //$NON-NLS-1$
-        }
-        catch (MissingResourceException e)
-        {
+        } catch (MissingResourceException e) {
+            fail();
+        } catch (IOException e) {
             fail();
         }
-        catch (IOException e)
-        {
-            fail();
-        }
-        LZSS compressor = new LZSS(kjvGenesis); //new ByteArrayInputStream("ATATAAAFFFF".getBytes()));
+        LZSS compressor = new LZSS(kjvGenesis); // new
+        // ByteArrayInputStream("ATATAAAFFFF".getBytes()));
         ByteArrayOutputStream bosCompressed = null;
-        try
-        {
+        try {
             bosCompressed = compressor.compress();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             fail();
         }
         LZSS uncompressor = new LZSS(new ByteArrayInputStream(bosCompressed.toByteArray()));
         ByteArrayOutputStream bosUncompressed = null;
-        try
-        {
+        try {
             bosUncompressed = uncompressor.uncompress();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             fail();
         }
-        try
-        {
+        try {
             byte[] back = bosUncompressed.toByteArray();
             String result = new String(back, "UTF-8"); //$NON-NLS-1$
             System.out.println(result);
-        }
-        catch (UnsupportedEncodingException e)
-        {
+        } catch (UnsupportedEncodingException e) {
             fail();
         }
-        
-        
+
     }
 }

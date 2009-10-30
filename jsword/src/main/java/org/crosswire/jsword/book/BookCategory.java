@@ -28,20 +28,12 @@ import org.crosswire.common.util.MsgBase;
 /**
  * An Enumeration of the possible types of Book.
  *
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-/**
- *
- *
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
- * @author DM Smith [dmsmith555 at yahoo dot com]
- */
-public final class BookCategory implements Serializable, Comparable
-{
+public final class BookCategory implements Serializable, Comparable {
     /**
      * Books that are Bibles
      */
@@ -98,10 +90,10 @@ public final class BookCategory implements Serializable, Comparable
     public static final BookCategory OTHER = new BookCategory("Other", UserMsg.OTHER); //$NON-NLS-1$
 
     /**
-     * @param name The name of the BookCategory
+     * @param name
+     *            The name of the BookCategory
      */
-    private BookCategory(String name, MsgBase externalName)
-    {
+    private BookCategory(String name, MsgBase externalName) {
         this.name = name;
         this.externalName = externalName;
     }
@@ -109,13 +101,10 @@ public final class BookCategory implements Serializable, Comparable
     /**
      * Lookup method to convert from a String
      */
-    public static BookCategory fromString(String name)
-    {
-        for (int i = 0; i < VALUES.length; i++)
-        {
+    public static BookCategory fromString(String name) {
+        for (int i = 0; i < VALUES.length; i++) {
             BookCategory o = VALUES[i];
-            if (o.name.equalsIgnoreCase(name))
-            {
+            if (o.name.equalsIgnoreCase(name)) {
                 return o;
             }
         }
@@ -125,13 +114,10 @@ public final class BookCategory implements Serializable, Comparable
     /**
      * Lookup method to convert from a String
      */
-    public static BookCategory fromExternalString(String name)
-    {
-        for (int i = 0; i < VALUES.length; i++)
-        {
+    public static BookCategory fromExternalString(String name) {
+        for (int i = 0; i < VALUES.length; i++) {
             BookCategory o = VALUES[i];
-            if (o.externalName.toString().equalsIgnoreCase(name))
-            {
+            if (o.externalName.toString().equalsIgnoreCase(name)) {
                 return o;
             }
         }
@@ -141,49 +127,51 @@ public final class BookCategory implements Serializable, Comparable
     /**
      * Lookup method to convert from an integer
      */
-    public static BookCategory fromInteger(int i)
-    {
+    public static BookCategory fromInteger(int i) {
         return VALUES[i];
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object o)
-    {
+    public int compareTo(Object o) {
         BookCategory that = (BookCategory) o;
         return this.name.compareTo(that.name);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public boolean equals(Object o)
-    {
+    public boolean equals(Object o) {
         return super.equals(o);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
-    public int hashCode()
-    {
+    public int hashCode() {
         return super.hashCode();
     }
 
     /**
      * @return the internal name.
      */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         return externalName.toString();
     }
 
@@ -197,24 +185,12 @@ public final class BookCategory implements Serializable, Comparable
     private static int nextObj;
     private final int obj = nextObj++;
 
-    Object readResolve()
-    {
+    Object readResolve() {
         return VALUES[obj];
     }
 
-    private static final BookCategory[] VALUES =
-    {
-        BIBLE,
-        DICTIONARY,
-        COMMENTARY,
-        DAILY_DEVOTIONS,
-        GLOSSARY,
-        QUESTIONABLE,
-        ESSAYS,
-        IMAGES,
-        MAPS,
-        GENERAL_BOOK,
-        OTHER,
+    private static final BookCategory[] VALUES = {
+            BIBLE, DICTIONARY, COMMENTARY, DAILY_DEVOTIONS, GLOSSARY, QUESTIONABLE, ESSAYS, IMAGES, MAPS, GENERAL_BOOK, OTHER,
     };
 
     /**

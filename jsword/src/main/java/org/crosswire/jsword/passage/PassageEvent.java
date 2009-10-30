@@ -24,37 +24,38 @@ package org.crosswire.jsword.passage;
 import java.util.EventObject;
 
 /**
- * Defines an event that encapsulates changes to a Passage. For many
- * operations on a Passage, calculating the extent of the changes is
- * hard. In these cases we default the range to Gen 1:1-Rev 22:21
- *
- * @see gnu.lgpl.License for license details.
+ * Defines an event that encapsulates changes to a Passage. For many operations
+ * on a Passage, calculating the extent of the changes is hard. In these cases
+ * we default the range to Gen 1:1-Rev 22:21
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class PassageEvent extends EventObject
-{
+public class PassageEvent extends EventObject {
     /**
      * Constructs a PassageEvent object.
-     * @param source the source Object (typically <code>this</code>)
-     * @param type an int specifying VERSES_CHANGED, VERSES_ADDED, VERSES_REMOVED
-     * @param lower an int specifying the bottom of a range
-     * @param upper an int specifying the top of a range
+     * 
+     * @param source
+     *            the source Object (typically <code>this</code>)
+     * @param type
+     *            an int specifying VERSES_CHANGED, VERSES_ADDED, VERSES_REMOVED
+     * @param lower
+     *            an int specifying the bottom of a range
+     * @param upper
+     *            an int specifying the top of a range
      */
-    public PassageEvent(Object source, int type, Verse lower, Verse upper)
-    {
+    public PassageEvent(Object source, int type, Verse lower, Verse upper) {
         super(source);
 
         this.type = type;
         this.lower = lower;
         this.upper = upper;
 
-        if (this.lower == null)
-        {
+        if (this.lower == null) {
             this.lower = VERSE_LOWEST;
         }
-        if (this.upper == null)
-        {
+        if (this.upper == null) {
             this.upper = VERSE_HIGHEST;
         }
     }
@@ -66,30 +67,30 @@ public class PassageEvent extends EventObject
      * <li>VERSES_ADDED
      * <li>VERSES_REMOVED
      * </ul>
+     * 
      * @return an int representing the type value
      */
-    public int getType()
-    {
+    public int getType() {
         return type;
     }
 
     /**
-     * Returns the lower index of the range. For a single element,
-     * this value is the same as that returned by {@link #getUpperIndex()}.
+     * Returns the lower index of the range. For a single element, this value is
+     * the same as that returned by {@link #getUpperIndex()}.
+     * 
      * @return an int representing the lower index value
      */
-    public Verse getLowerIndex()
-    {
+    public Verse getLowerIndex() {
         return lower;
     }
 
     /**
-     * Returns the upper index of the range. For a single element,
-     * this value is the same as that returned by {@link #getLowerIndex()}.
+     * Returns the upper index of the range. For a single element, this value is
+     * the same as that returned by {@link #getLowerIndex()}.
+     * 
      * @return an int representing the upper index value
      */
-    public Verse getUpperIndex()
-    {
+    public Verse getUpperIndex() {
         return upper;
     }
 

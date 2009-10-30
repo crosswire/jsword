@@ -25,21 +25,19 @@ import org.crosswire.common.util.MsgBase;
 
 /**
  * Compile safe Msg resource settings.
- *
+ * 
  * @see gnu.gpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class UserMsg extends MsgBase
-{
+public final class UserMsg extends MsgBase {
     static final UserMsg WARRANTY = new UserMsg("License.warranty"); //$NON-NLS-1$
     static final UserMsg DETAILS = new UserMsg("License.details"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor
      */
-    private UserMsg(String name)
-    {
+    private UserMsg(String name) {
         super(name);
     }
 }

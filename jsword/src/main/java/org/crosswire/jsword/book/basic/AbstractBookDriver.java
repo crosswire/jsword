@@ -28,51 +28,60 @@ import org.crosswire.jsword.book.BookException;
 /**
  * The AbstractBookDriver class implements some BibleDriver methods, making a
  * simple read-only BibleDriver.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public abstract class AbstractBookDriver implements BookDriver
-{
-    /* (non-Javadoc)
+public abstract class AbstractBookDriver implements BookDriver {
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookDriver#isWritable()
      */
-    public boolean isWritable()
-    {
+    public boolean isWritable() {
         return false;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDriver#create(org.crosswire.jsword.book.Book, org.crosswire.jsword.book.events.WorkListener)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.BookDriver#create(org.crosswire.jsword.book
+     * .Book, org.crosswire.jsword.book.events.WorkListener)
      */
-    public Book create(Book source) throws BookException
-    {
+    public Book create(Book source) throws BookException {
         throw new BookException(Msg.DRIVER_READONLY);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDriver#isDeletable(org.crosswire.jsword.book.Book)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.BookDriver#isDeletable(org.crosswire.jsword
+     * .book.Book)
      */
-    public boolean isDeletable(Book dead)
-    {
+    public boolean isDeletable(Book dead) {
         return false;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookDriver#delete(org.crosswire.jsword.book.Book)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.BookDriver#delete(org.crosswire.jsword.book
+     * .Book)
      */
-    public void delete(Book dead) throws BookException
-    {
+    public void delete(Book dead) throws BookException {
         throw new BookException(Msg.DRIVER_READONLY);
     }
 
-
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookProvider#getFirstBook()
      */
-    public Book getFirstBook()
-    {
+    public Book getFirstBook() {
         Book[] books = getBooks();
         return books == null || books.length == 0 ? null : books[0];
     }

@@ -26,34 +26,29 @@ import java.util.NoSuchElementException;
 import java.util.Stack;
 
 /**
- * This KeyIterator performs a depth first iteration over the subkeys
- * in the key.
- *
- * @see gnu.lgpl.License for license details.
+ * This KeyIterator performs a depth first iteration over the subkeys in the
+ * key.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class KeyIterator implements Iterator
-{
-    public KeyIterator(Key key)
-    {
+public class KeyIterator implements Iterator {
+    public KeyIterator(Key key) {
         stack = new Stack();
         stack.push(new Locator(key));
     }
 
-    protected void prepare()
-    {
+    protected void prepare() {
         // If there is nothing on the stack we have nothing to do.
-        if (stack.size() == 0)
-        {
+        if (stack.size() == 0) {
             return;
         }
 
         // Check to see if there are more children to process
         Locator peek = (Locator) stack.peek();
 
-        if (peek.getParent().getChildCount() > peek.getPosition())
-        {
+        if (peek.getParent().getChildCount() > peek.getPosition()) {
             return;
         }
 
@@ -64,16 +59,13 @@ public class KeyIterator implements Iterator
         prepare();
     }
 
-    public boolean hasNext()
-    {
+    public boolean hasNext() {
         prepare();
         return stack.size() != 0;
     }
 
-    public Object next()
-    {
-        if (!hasNext())
-        {
+    public Object next() {
+        if (!hasNext()) {
             throw new NoSuchElementException();
         }
 
@@ -87,8 +79,7 @@ public class KeyIterator implements Iterator
 
         // If we have exhausted all the children,
         // then return the parent key
-        if (childNum == -1)
-        {
+        if (childNum == -1) {
             return peek.getParent();
         }
 
@@ -97,21 +88,18 @@ public class KeyIterator implements Iterator
         return next();
     }
 
-    public void remove()
-    {
+    public void remove() {
         throw new UnsupportedOperationException();
     }
 
     /**
      * A helper class that remembers where we've been and where we are.
      */
-    public static class Locator
-    {
+    public static class Locator {
         private Key parent;
         private int position;
 
-        public Locator(Key parent)
-        {
+        public Locator(Key parent) {
             this.parent = parent;
             this.position = -1;
         }
@@ -119,32 +107,30 @@ public class KeyIterator implements Iterator
         /**
          * @return the parent
          */
-        public Key getParent()
-        {
+        public Key getParent() {
             return parent;
         }
 
         /**
-         * @param parent the parent to set
+         * @param parent
+         *            the parent to set
          */
-        public void setParent(Key parent)
-        {
+        public void setParent(Key parent) {
             this.parent = parent;
         }
 
         /**
          * @return the position
          */
-        public int getPosition()
-        {
+        public int getPosition() {
             return position;
         }
 
         /**
-         * @param position the position to set
+         * @param position
+         *            the position to set
          */
-        public void setPosition(int position)
-        {
+        public void setPosition(int position) {
             this.position = position;
         }
 

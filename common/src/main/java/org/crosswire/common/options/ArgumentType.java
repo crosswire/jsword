@@ -25,14 +25,14 @@ package org.crosswire.common.options;
 import java.io.Serializable;
 
 /**
- * An ArgumentType indicates whether and/or how an Option is followed by an argument.
- *
+ * An ArgumentType indicates whether and/or how an Option is followed by an
+ * argument.
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class ArgumentType implements Serializable
-{
+public class ArgumentType implements Serializable {
     /**
      * The option is not followed by an argument.
      */
@@ -49,23 +49,20 @@ public class ArgumentType implements Serializable
     public static final ArgumentType OPTIONAL_ARGUMENT = new ArgumentType("Optional"); //$NON-NLS-1$
 
     /**
-     * @param name The name of the DataType
+     * @param name
+     *            The name of the DataType
      */
-    protected ArgumentType(String name)
-    {
+    protected ArgumentType(String name) {
         this.name = name;
     }
 
     /**
      * Lookup method to convert from a String
      */
-    public static ArgumentType fromString(String name)
-    {
-        for (int i = 0; i < VALUES.length; i++)
-        {
+    public static ArgumentType fromString(String name) {
+        for (int i = 0; i < VALUES.length; i++) {
             ArgumentType o = VALUES[i];
-            if (o.name.equalsIgnoreCase(name))
-            {
+            if (o.name.equalsIgnoreCase(name)) {
                 return o;
             }
         }
@@ -77,16 +74,16 @@ public class ArgumentType implements Serializable
     /**
      * Lookup method to convert from an integer
      */
-    public static ArgumentType fromInteger(int i)
-    {
+    public static ArgumentType fromInteger(int i) {
         return VALUES[i];
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         return name;
     }
 
@@ -99,16 +96,12 @@ public class ArgumentType implements Serializable
     private static int nextObj;
     private final int obj = nextObj++;
 
-    Object readResolve()
-    {
+    Object readResolve() {
         return VALUES[obj];
     }
 
-    private static final ArgumentType[] VALUES =
-    {
-         NO_ARGUMENT,
-         REQUIRED_ARGUMENT,
-         OPTIONAL_ARGUMENT
+    private static final ArgumentType[] VALUES = {
+            NO_ARGUMENT, REQUIRED_ARGUMENT, OPTIONAL_ARGUMENT
     };
 
     /**

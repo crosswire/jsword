@@ -26,35 +26,34 @@ import junit.framework.TestCase;
 /**
  * JUnit Test.
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class BookDriverParentTst extends TestCase
-{
-    public BookDriverParentTst(String s)
-    {
+public class BookDriverParentTst extends TestCase {
+    public BookDriverParentTst(String s) {
         super(s);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see junit.framework.TestCase#setUp()
      */
     /* @Override */
-    protected void setUp()
-    {
+    protected void setUp() {
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see junit.framework.TestCase#tearDown()
      */
     /* @Override */
-    protected void tearDown()
-    {
+    protected void tearDown() {
     }
 
-    public void testNothing()
-    {
+    public void testNothing() {
         assertTrue(true);
     }
 }

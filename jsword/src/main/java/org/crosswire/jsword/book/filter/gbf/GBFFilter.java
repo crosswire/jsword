@@ -35,31 +35,32 @@ import org.jdom.Element;
 
 /**
  * Filter to convert GBF data to OSIS format.
- *
+ * 
  * The best place to go for more information about the GBF spec that I have
- * found is: <a href="http://ebible.org/bible/gbf.htm">http://ebible.org/bible/gbf.htm</a>
- *
- * @see gnu.lgpl.License for license details.
+ * found is: <a
+ * href="http://ebible.org/bible/gbf.htm">http://ebible.org/bible/gbf.htm</a>
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class GBFFilter implements Filter
-{
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.Book, org.crosswire.jsword.passage.Key, java.lang.String)
+public class GBFFilter implements Filter {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book
+     * .Book, org.crosswire.jsword.passage.Key, java.lang.String)
      */
-    public List toOSIS(Book book, Key key, String plain) throws FilterException
-    {
+    public List toOSIS(Book book, Key key, String plain) throws FilterException {
         DataPolice.setKey(key);
         Element ele = OSISUtil.factory().createDiv();
         LinkedList stack = new LinkedList();
         stack.addFirst(ele);
 
         List taglist = parseTags(book, key, plain.trim());
-        while (true)
-        {
-            if (taglist.isEmpty())
-            {
+        while (true) {
+            if (taglist.isEmpty()) {
                 break;
             }
 
@@ -72,17 +73,15 @@ public class GBFFilter implements Filter
         return ele.removeContent();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#clone()
      */
-    public Object clone()
-    {
-        try
-        {
+    public Object clone() {
+        try {
             return super.clone();
-        }
-        catch (CloneNotSupportedException e)
-        {
+        } catch (CloneNotSupportedException e) {
             assert false : e;
         }
         return null;
@@ -92,18 +91,15 @@ public class GBFFilter implements Filter
      * Turn the string into a list of tags in the order that they appear in the
      * original string.
      */
-    private List parseTags(Book book, Key key, String aRemains)
-    {
+    private List parseTags(Book book, Key key, String aRemains) {
         String remains = aRemains;
         List taglist = new ArrayList();
 
-        while (true)
-        {
+        while (true) {
             int ltpos = remains.indexOf('<');
             int gtpos = remains.indexOf('>');
 
-            if (ltpos == -1 && gtpos == -1)
-            {
+            if (ltpos == -1 && gtpos == -1) {
                 // no more tags to decode
                 taglist.add(GBFTagBuilders.getTextTag(remains));
                 remains = null;
@@ -111,8 +107,7 @@ public class GBFFilter implements Filter
             }
 
             // check that we don't have unmatched tags
-            if (ltpos == -1 || gtpos == -1)
-            {
+            if (ltpos == -1 || gtpos == -1) {
                 DataPolice.report("In " + book.getInitials() + "(" + key.getName() + ") ignoring unmatched '<' or '>' in gbf: " + remains); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 taglist.add(GBFTagBuilders.getTextTag(remains));
                 remains = null;
@@ -120,8 +115,7 @@ public class GBFFilter implements Filter
             }
 
             // check that the tags are in a sensible order
-            if (ltpos > gtpos)
-            {
+            if (ltpos > gtpos) {
                 DataPolice.report("In " + book.getInitials() + "(" + key.getName() + ") ignoring transposed '<' or '>' in gbf: " + remains); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 taglist.add(GBFTagBuilders.getTextTag(remains));
                 remains = null;
@@ -131,37 +125,31 @@ public class GBFFilter implements Filter
             // generate tags
             String start = remains.substring(0, ltpos);
             int strLen = start.length();
-            if (strLen > 0)
-            {
+            if (strLen > 0) {
                 int beginIndex = 0;
                 boolean inSepStr = SEPARATORS.indexOf(start.charAt(0)) >= 0;
                 // split words from seperators...
                 // e.g., "a b c? e g." -> "a b c", "? ", "e g."
-                //       "a b c<tag> e g." -> "a b c", tag, " ", "e g."
-                for (int i = 1; inSepStr && i < strLen; i++)
-                {
+                // "a b c<tag> e g." -> "a b c", tag, " ", "e g."
+                for (int i = 1; inSepStr && i < strLen; i++) {
                     char currentChar = start.charAt(i);
-                    if (!(SEPARATORS.indexOf(currentChar) >= 0))
-                    {
+                    if (!(SEPARATORS.indexOf(currentChar) >= 0)) {
                         taglist.add(GBFTagBuilders.getTextTag(start.substring(beginIndex, i)));
                         beginIndex = i;
                         inSepStr = false;
                     }
                 }
 
-                if (beginIndex < strLen)
-                {
+                if (beginIndex < strLen) {
                     taglist.add(GBFTagBuilders.getTextTag(start.substring(beginIndex)));
                 }
             }
 
             String tag = remains.substring(ltpos + 1, gtpos);
             int length = tag.length();
-            if (length > 0)
-            {
+            if (length > 0) {
                 Tag reply = GBFTagBuilders.getTag(book, key, tag);
-                if (reply != null)
-                {
+                if (reply != null) {
                     taglist.add(reply);
                 }
             }

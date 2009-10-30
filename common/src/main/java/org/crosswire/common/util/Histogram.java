@@ -26,55 +26,50 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * A simple implementation of a histogram. It would be nice to enhance
- * it to order on frequency.
- *
+ * A simple implementation of a histogram. It would be nice to enhance it to
+ * order on frequency.
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
-public class Histogram
-{
+public class Histogram {
     /**
      * Create an empty histogram
      */
-    public Histogram()
-    {
+    public Histogram() {
         hist = new HashMap();
     }
 
     /**
      * note that this key has been seen one time more than before.
+     * 
      * @param key
      */
-    public void increment(String key)
-    {
+    public void increment(String key) {
         Counter counter = (Counter) hist.get(key);
-        if (counter == null)
-        {
+        if (counter == null) {
             counter = new Counter();
             hist.put(key, counter);
         }
         counter.increment();
     }
 
-    public void clear()
-    {
+    public void clear() {
         hist.clear();
     }
 
     /**
-     * The format of the histogram is an unordered list
-     * of string and the counts of the number of times it has been seen.
+     * The format of the histogram is an unordered list of string and the counts
+     * of the number of times it has been seen.
+     * 
      * @return the resultant histogram
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         StringBuffer buf = new StringBuffer();
         Iterator iter = hist.entrySet().iterator();
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             Map.Entry entry = (Map.Entry) iter.next();
             buf.append(entry.getKey().toString());
             buf.append('\t');
@@ -87,21 +82,18 @@ public class Histogram
     /**
      * Trivial mutable counting integer class.
      */
-    private static class Counter
-    {
-        public Counter()
-        {
+    private static class Counter {
+        public Counter() {
         }
 
-        public void increment()
-        {
+        public void increment() {
             counter++;
         }
 
-        public String toString()
-        {
+        public String toString() {
             return Integer.toString(counter);
         }
+
         private int counter;
     }
 

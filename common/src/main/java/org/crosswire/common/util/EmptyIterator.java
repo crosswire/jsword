@@ -24,47 +24,47 @@ package org.crosswire.common.util;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-
 /**
- * An <code>EmptyIterator</code> is an <code>Iterator</code> that iterates
- * over nothing.
- *
- *
+ * An <code>EmptyIterator</code> is an <code>Iterator</code> that iterates over
+ * nothing.
+ * 
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
-public class EmptyIterator implements Iterator
-{
+public class EmptyIterator implements Iterator {
 
     /**
      * Construct an <code>EmptyIterator</code>.
      */
-    public EmptyIterator()
-    {
+    public EmptyIterator() {
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.util.Iterator#remove()
      */
-    public void remove()
-    {
+    public void remove() {
         throw new UnsupportedOperationException();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.util.Iterator#hasNext()
      */
-    public boolean hasNext()
-    {
+    public boolean hasNext() {
         return false;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.util.Iterator#next()
      */
-    public Object next()
-    {
+    public Object next() {
         throw new NoSuchElementException();
     }
 

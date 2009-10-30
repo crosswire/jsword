@@ -36,23 +36,24 @@ import org.jdom.Element;
 
 /**
  * A ConfigEntry holds the value(s) for an entry of ConfigEntryType.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @see gnu.lgpl.License
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
-public final class ConfigEntry
-{
+public final class ConfigEntry {
 
     /**
-     * Create a ConfigEntry whose type is not certain
-     * and whose value is not known.
-     * @param bookName the internal name of the book
-     * @param aName the name of the ConfigEntry.
+     * Create a ConfigEntry whose type is not certain and whose value is not
+     * known.
+     * 
+     * @param bookName
+     *            the internal name of the book
+     * @param aName
+     *            the name of the ConfigEntry.
      */
-    public ConfigEntry(String bookName, String aName)
-    {
+    public ConfigEntry(String bookName, String aName) {
         internal = bookName;
         name = aName;
         type = ConfigEntryType.fromString(aName);
@@ -60,12 +61,15 @@ public final class ConfigEntry
 
     /**
      * Create a ConfigEntry directly with an initial value.
-     * @param bookName the internal name of the book
-     * @param aType the kind of ConfigEntry
-     * @param aValue the initial value for the ConfigEntry
+     * 
+     * @param bookName
+     *            the internal name of the book
+     * @param aType
+     *            the kind of ConfigEntry
+     * @param aValue
+     *            the initial value for the ConfigEntry
      */
-    public ConfigEntry(String bookName, ConfigEntryType aType, String aValue)
-    {
+    public ConfigEntry(String bookName, ConfigEntryType aType, String aValue) {
         internal = bookName;
         name = aType.getName();
         type = aType;
@@ -75,10 +79,8 @@ public final class ConfigEntry
     /**
      * Get the key of this ConfigEntry
      */
-    public String getName()
-    {
-        if (type != null)
-        {
+    public String getName() {
+        if (type != null) {
             return type.getName();
         }
         return name;
@@ -87,22 +89,19 @@ public final class ConfigEntry
     /**
      * Get the type of this ConfigEntry
      */
-    public ConfigEntryType getType()
-    {
+    public ConfigEntryType getType() {
         return type;
     }
 
     /**
-     * Determines whether the string is allowed. For some config entries,
-     * the value is expected to be one of a group, for others the format is defined.
-     *
+     * Determines whether the string is allowed. For some config entries, the
+     * value is expected to be one of a group, for others the format is defined.
+     * 
      * @param aValue
      * @return true if the string is allowed
      */
-    public boolean isAllowed(String aValue)
-    {
-        if (type != null)
-        {
+    public boolean isAllowed(String aValue) {
+        if (type != null) {
             return type.isAllowed(aValue);
         }
         return true;
@@ -110,39 +109,38 @@ public final class ConfigEntry
 
     /**
      * RTF is allowed in a few config entries.
+     * 
      * @return true if rtf is allowed
      */
-    public boolean allowsRTF()
-    {
-        if (type != null)
-        {
+    public boolean allowsRTF() {
+        if (type != null) {
             return type.allowsRTF();
         }
         return true;
     }
 
     /**
-     * While most fields are single line or single value, some allow continuation.
-     * A continuation mark is a backslash at the end of a line. It is not to be followed by whitespace.
+     * While most fields are single line or single value, some allow
+     * continuation. A continuation mark is a backslash at the end of a line. It
+     * is not to be followed by whitespace.
+     * 
      * @return true if continuation is allowed
      */
-    public boolean allowsContinuation()
-    {
-        if (type != null)
-        {
+    public boolean allowsContinuation() {
+        if (type != null) {
             return type.allowsContinuation();
         }
         return true;
     }
 
     /**
-     * Some keys can repeat. When this happens each is a single value pick from a list of choices.
+     * Some keys can repeat. When this happens each is a single value pick from
+     * a list of choices.
+     * 
      * @return true if this ConfigEntryType can occur more than once
      */
-    public boolean mayRepeat()
-    {
-        if (type != null)
-        {
+    public boolean mayRepeat() {
+        if (type != null) {
             return type.mayRepeat();
         }
         return true;
@@ -151,37 +149,33 @@ public final class ConfigEntry
     /**
      *
      */
-    public boolean reportDetails()
-    {
-        if (type != null)
-        {
+    public boolean reportDetails() {
+        if (type != null) {
             return type.reportDetails();
         }
         return true;
     }
+
     /**
      * Determine whether this config entry is supported.
+     * 
      * @return true if this ConfigEntry has a type.
      */
-    public boolean isSupported()
-    {
+    public boolean isSupported() {
         return type != null;
     }
 
     /**
-     * Get the value(s) of this ConfigEntry.
-     * If mayRepeat() == true then it returns a List.
-     * Otherwise it returns a string.
+     * Get the value(s) of this ConfigEntry. If mayRepeat() == true then it
+     * returns a List. Otherwise it returns a string.
+     * 
      * @return a list, value or null.
      */
-    public Object getValue()
-    {
-        if (value != null)
-        {
+    public Object getValue() {
+        if (value != null) {
             return value;
         }
-        if (values != null)
-        {
+        if (values != null) {
             return values;
         }
         return type.getDefault();
@@ -189,18 +183,16 @@ public final class ConfigEntry
 
     /**
      * Determine whether this Config entry matches the value.
-     *
-     * @param search the value to match against
+     * 
+     * @param search
+     *            the value to match against
      * @return true if this ConfigEntry matches the value
      */
-    public boolean match(Object search)
-    {
-        if (value != null)
-        {
+    public boolean match(Object search) {
+        if (value != null) {
             return value.equals(search);
         }
-        if (values != null)
-        {
+        if (values != null) {
             return values.contains(search);
         }
         Object def = type.getDefault();
@@ -210,55 +202,41 @@ public final class ConfigEntry
     /**
      * Add a value to the list of values for this ConfigEntry
      */
-    public void addValue(String val)
-    {
+    public void addValue(String val) {
         String aValue = val;
         String confEntryName = getName();
         // Filter known types of entries
-        if (type != null)
-        {
+        if (type != null) {
             aValue = type.filter(aValue);
         }
 
         // Report on fields that shouldn't have RTF but do
-        if (!allowsRTF() && RTF_PATTERN.matcher(aValue).find())
-        {
+        if (!allowsRTF() && RTF_PATTERN.matcher(aValue).find()) {
             log.info(report("Ignoring unexpected RTF for", getName(), aValue)); //$NON-NLS-1$
         }
 
-        if (mayRepeat())
-        {
-            if (values == null)
-            {
+        if (mayRepeat()) {
+            if (values == null) {
                 histogram.increment(confEntryName);
                 values = new ArrayList();
             }
-            if (reportDetails())
-            {
+            if (reportDetails()) {
                 histogram.increment(confEntryName + '.' + aValue);
             }
-            if (!isAllowed(aValue))
-            {
+            if (!isAllowed(aValue)) {
                 log.info(report("Ignoring unknown config value for", confEntryName, aValue)); //$NON-NLS-1$
                 return;
             }
             values.add(aValue);
-        }
-        else
-        {
-            if (value != null)
-            {
+        } else {
+            if (value != null) {
                 log.info(report("Ignoring unexpected additional entry for", confEntryName, aValue)); //$NON-NLS-1$
-            }
-            else
-            {
+            } else {
                 histogram.increment(confEntryName);
-                if (type.hasChoices())
-                {
+                if (type.hasChoices()) {
                     histogram.increment(confEntryName + '.' + aValue);
                 }
-                if (!isAllowed(aValue))
-                {
+                if (!isAllowed(aValue)) {
                     log.info(report("Ignoring unknown config value for", confEntryName, aValue)); //$NON-NLS-1$
                     return;
                 }
@@ -267,8 +245,7 @@ public final class ConfigEntry
         }
     }
 
-    public Element toOSIS()
-    {
+    public Element toOSIS() {
         OSISUtil.OSISFactory factory = OSISUtil.factory();
 
         Element rowEle = factory.createRow();
@@ -284,42 +261,31 @@ public final class ConfigEntry
         // I18N(DMS): use name to lookup translation.
         hiEle.addContent(getName());
 
-        if (value != null)
-        {
+        if (value != null) {
             String text = value.toString();
             text = XMLUtil.escape(text);
-            if (allowsRTF())
-            {
+            if (allowsRTF()) {
                 valueElement.addContent(OSISUtil.rtfToOsis(text));
-            }
-            else if (allowsContinuation())
-            {
+            } else if (allowsContinuation()) {
                 valueElement.addContent(processLines(factory, text));
-            }
-            else
-            {
+            } else {
                 valueElement.addContent(text);
             }
         }
 
-        if (values != null)
-        {
+        if (values != null) {
             Element listEle = factory.createLG();
             valueElement.addContent(listEle);
 
             Iterator iter = values.iterator();
-            while (iter.hasNext())
-            {
+            while (iter.hasNext()) {
                 String text = (String) iter.next();
                 text = XMLUtil.escape(text);
                 Element itemEle = factory.createL();
                 listEle.addContent(itemEle);
-                if (allowsRTF())
-                {
+                if (allowsRTF()) {
                     itemEle.addContent(OSISUtil.rtfToOsis(text));
-                }
-                else
-                {
+                } else {
                     itemEle.addContent(text);
                 }
             }
@@ -327,33 +293,30 @@ public final class ConfigEntry
         return rowEle;
     }
 
-    public static void resetStatistics()
-    {
+    public static void resetStatistics() {
         histogram.clear();
     }
 
-    public static void dumpStatistics()
-    {
+    public static void dumpStatistics() {
         // Uncomment the following line to produce statistics
-        //System.out.println(histogram.toString());
+        // System.out.println(histogram.toString());
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     /* @Override */
-    public boolean equals(Object obj)
-    {
+    public boolean equals(Object obj) {
         // Since this can not be null
-        if (obj == null)
-        {
+        if (obj == null) {
             return false;
         }
 
         // Check that that is the same as this
         // Don't use instanceOf since that breaks inheritance
-        if (!obj.getClass().equals(this.getClass()))
-        {
+        if (!obj.getClass().equals(this.getClass())) {
             return false;
         }
 
@@ -361,77 +324,70 @@ public final class ConfigEntry
         return that.getName().equals(this.getName());
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     /* @Override */
-    public int hashCode()
-    {
+    public int hashCode() {
         return getName().hashCode();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
     /* @Override */
-    public String toString()
-    {
+    public String toString() {
         return getName();
     }
 
     /**
-     * Build's a SWORD conf file as a string. The result is not identical
-     * to the original, cleaning up problems in the original and re-arranging
-     * the entries into a predictable order.
+     * Build's a SWORD conf file as a string. The result is not identical to the
+     * original, cleaning up problems in the original and re-arranging the
+     * entries into a predictable order.
+     * 
      * @return the well-formed conf.
      */
-    public String toConf()
-    {
+    public String toConf() {
         StringBuffer buf = new StringBuffer();
 
-        if (value != null)
-        {
+        if (value != null) {
             buf.append(getName());
             buf.append('=');
             String text = getConfValue(value);
-            if (allowsContinuation())
-            {
-                // With continuation each line is ended with a '\', except the last.
+            if (allowsContinuation()) {
+                // With continuation each line is ended with a '\', except the
+                // last.
                 text = text.replaceAll("\n", "\\\\\n"); //$NON-NLS-1$ //$NON-NLS-2$
             }
             buf.append(text);
             buf.append('\n');
         }
         // CipherKey is empty to indicate that it is encrypted and locked.
-        else if (type.equals(ConfigEntryType.CIPHER_KEY))
-        {
+        else if (type.equals(ConfigEntryType.CIPHER_KEY)) {
             buf.append(getName());
             buf.append('=');
         }
 
-
-        if (values != null)
-        {
+        if (values != null) {
             // History values begin with the history value, e.g. 1.2
             // followed by a space.
             // These are to joined to the key.
-            if (type.equals(ConfigEntryType.HISTORY))
-            {
+            if (type.equals(ConfigEntryType.HISTORY)) {
                 Iterator iter = values.iterator();
-                while (iter.hasNext())
-                {
+                while (iter.hasNext()) {
                     String text = (String) iter.next();
                     buf.append(getName());
                     buf.append('_');
                     buf.append(text.replaceFirst(" ", "=")); //$NON-NLS-1$ //$NON-NLS-2$;
                     buf.append('\n');
                 }
-            }
-            else
-            {
+            } else {
                 Iterator iter = values.iterator();
-                while (iter.hasNext())
-                {
+                while (iter.hasNext()) {
                     buf.append(getName());
                     buf.append('=');
                     buf.append(getConfValue(iter.next()));
@@ -443,16 +399,16 @@ public final class ConfigEntry
     }
 
     /**
-     * The conf value is the internal representation of the string. For Language, this is the code, not the localized name. Add others as needed.
-     * @param aValue either value or values[i]
+     * The conf value is the internal representation of the string. For
+     * Language, this is the code, not the localized name. Add others as needed.
+     * 
+     * @param aValue
+     *            either value or values[i]
      * @return the conf value.
      */
-    private String getConfValue(Object aValue)
-    {
-        if (aValue != null)
-        {
-            if (aValue instanceof Language)
-            {
+    private String getConfValue(Object aValue) {
+        if (aValue != null) {
+            if (aValue instanceof Language) {
                 return ((Language) value).getCode();
             }
             return aValue.toString();
@@ -460,12 +416,10 @@ public final class ConfigEntry
         return null;
     }
 
-    private List processLines(OSISUtil.OSISFactory factory, String aValue)
-    {
+    private List processLines(OSISUtil.OSISFactory factory, String aValue) {
         List list = new ArrayList();
-        String [] lines = StringUtil.splitAll(aValue, '\n');
-        for (int i = 0; i < lines.length; i++)
-        {
+        String[] lines = StringUtil.splitAll(aValue, '\n');
+        for (int i = 0; i < lines.length; i++) {
             Element lineElement = factory.createL();
             lineElement.addContent(lines[i]);
             list.add(lineElement);
@@ -473,8 +427,7 @@ public final class ConfigEntry
         return list;
     }
 
-    private String report(String issue, String confEntryName, String aValue)
-    {
+    private String report(String issue, String confEntryName, String aValue) {
         StringBuffer buf = new StringBuffer(100);
         buf.append(issue);
         buf.append(' ');
@@ -490,22 +443,22 @@ public final class ConfigEntry
     /**
      * The log stream
      */
-    private static final Logger  log         = Logger.getLogger(ConfigEntry.class);
+    private static final Logger log = Logger.getLogger(ConfigEntry.class);
 
     /**
-     * A pattern of allowable RTF in a SWORD conf.
-     * These are: \pard, \pae, \par, \qc \b, \i and embedded Unicode
+     * A pattern of allowable RTF in a SWORD conf. These are: \pard, \pae, \par,
+     * \qc \b, \i and embedded Unicode
      */
     private static final Pattern RTF_PATTERN = Pattern.compile("\\\\pard|\\\\pa[er]|\\\\qc|\\\\[bi]|\\\\u-?[0-9]{4,6}+"); //$NON-NLS-1$
 
     /**
      * A histogram for debugging.
      */
-    private static Histogram     histogram   = new Histogram();
+    private static Histogram histogram = new Histogram();
 
-    private ConfigEntryType      type;
-    private String               internal;
-    private String               name;
-    private List                 values;
-    private Object               value;
+    private ConfigEntryType type;
+    private String internal;
+    private String name;
+    private List values;
+    private Object value;
 }

@@ -40,31 +40,29 @@ import org.crosswire.jsword.book.Books;
 
 /**
  * This represents all of the Sword Books (aka modules).
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class SwordBookPath
-{
+public class SwordBookPath {
     /**
      * Some basic name initialization
      */
-    private SwordBookPath()
-    {
+    private SwordBookPath() {
     }
 
     /**
      * Establish additional locations that Sword may hold books.
-     * @param theNewDirs The new Sword directories
+     * 
+     * @param theNewDirs
+     *            The new Sword directories
      * @throws BookException
      */
-    public static void setAugmentPath(File[] theNewDirs) throws BookException
-    {
+    public static void setAugmentPath(File[] theNewDirs) throws BookException {
         File[] newDirs = theNewDirs;
-        if (newDirs == null)
-        {
+        if (newDirs == null) {
             return;
         }
 
@@ -76,36 +74,31 @@ public class SwordBookPath
 
     /**
      * Retrieve the additional locations that Sword may hold Books.
+     * 
      * @return The new Sword directory
      */
-    public static File[] getAugmentPath()
-    {
+    public static File[] getAugmentPath() {
         return (File[]) augmentPath.clone();
     }
 
     /**
-     * Obtain a prioritized path of Book locations.
-     * This contains the download dir as the first location,
-     * the user's augment path and finally all the discovered
-     * standard locations.
-     *
+     * Obtain a prioritized path of Book locations. This contains the download
+     * dir as the first location, the user's augment path and finally all the
+     * discovered standard locations.
+     * 
      * @return the array of Book locations.
      */
-    public static File[] getSwordPath()
-    {
+    public static File[] getSwordPath() {
         ArrayList swordPath = new ArrayList();
 
         // The first place to look for Books
         swordPath.add(getSwordDownloadDir());
 
         // Then all the user's augments
-        if (augmentPath != null)
-        {
-            for (int i = 0; i < augmentPath.length; i++)
-            {
+        if (augmentPath != null) {
+            for (int i = 0; i < augmentPath.length; i++) {
                 File path = augmentPath[i];
-                if (!swordPath.contains(path))
-                {
+                if (!swordPath.contains(path)) {
                     swordPath.add(path);
                 }
             }
@@ -113,13 +106,10 @@ public class SwordBookPath
 
         File[] defaultPath = getDefaultPaths();
         // Then all the user's bookDirs
-        if (defaultPath != null)
-        {
-            for (int i = 0; i < defaultPath.length; i++)
-            {
+        if (defaultPath != null) {
+            for (int i = 0; i < defaultPath.length; i++) {
                 File path = defaultPath[i];
-                if (!swordPath.contains(path))
-                {
+                if (!swordPath.contains(path)) {
                     swordPath.add(path);
                 }
             }
@@ -130,20 +120,20 @@ public class SwordBookPath
 
     /**
      * Get a list of books in a given location.
-     * @param bookDir the directory in which to look
+     * 
+     * @param bookDir
+     *            the directory in which to look
      * @return the list of books in that location
      */
-    public static String[] getBookList(File bookDir)
-    {
+    public static String[] getBookList(File bookDir) {
         return bookDir.list(new CustomFilenameFilter());
     }
 
     /**
-     * Search all of the "standard" Sword locations for Books.
-     * Remember all the locations.
+     * Search all of the "standard" Sword locations for Books. Remember all the
+     * locations.
      */
-    private static File[] getDefaultPaths()
-    {
+    private static File[] getDefaultPaths() {
         // If possible migrate the old location to the new one
         migrateBookDir();
 
@@ -161,10 +151,10 @@ public class SwordBookPath
         testDefaultPath(bookDirs, ".." + File.separator + DIR_SWORD_LIBRARY); //$NON-NLS-1$
 
         // if there is a property set for the sword home directory
-        // The Sword project defines SWORD_HOME, but JSword expects this to be transformed into sword.home.
+        // The Sword project defines SWORD_HOME, but JSword expects this to be
+        // transformed into sword.home.
         String swordhome = System.getProperty(PROPERTY_SWORD_HOME);
-        if (swordhome != null)
-        {
+        if (swordhome != null) {
             testDefaultPath(bookDirs, swordhome);
 
             // how about in the library, just next door?
@@ -182,9 +172,8 @@ public class SwordBookPath
         readSwordConf(bookDirs, home + File.separator + DIR_SWORD_CONF);
 
         // Check for sword.conf in the usual places
-        String [] sysconfigPaths = StringUtil.split(DIR_SWORD_GLOBAL_CONF, ':');
-        for (int i = 0; i < sysconfigPaths.length; i++)
-        {
+        String[] sysconfigPaths = StringUtil.split(DIR_SWORD_GLOBAL_CONF, ':');
+        for (int i = 0; i < sysconfigPaths.length; i++) {
             readSwordConf(bookDirs, sysconfigPaths[i]);
         }
 
@@ -193,7 +182,8 @@ public class SwordBookPath
         // Check look for mods.d in the sword user data area
         testDefaultPath(bookDirs, new File(userDataArea.getPath()));
 
-        // JSword used to hold books in ~/.jsword (or its equivalent) but has code that will
+        // JSword used to hold books in ~/.jsword (or its equivalent) but has
+        // code that will
         // migrate it to ~/.sword (or its equivalent)
         // If the migration did not work then use the old area
         testDefaultPath(bookDirs, new File(CWProject.instance().getWritableProjectDir().getPath()));
@@ -201,14 +191,11 @@ public class SwordBookPath
         return (File[]) bookDirs.toArray(new File[bookDirs.size()]);
     }
 
-    private static void readSwordConf(List bookDirs, File swordConfDir)
-    {
+    private static void readSwordConf(List bookDirs, File swordConfDir) {
         File sysconfig = new File(swordConfDir, SWORD_GLOBAL_CONF);
-        if (sysconfig.canRead())
-        {
+        if (sysconfig.canRead()) {
             InputStream is = null;
-            try
-            {
+            try {
                 Properties prop = new Properties();
                 is = new FileInputStream(sysconfig);
                 prop.load(is);
@@ -216,21 +203,13 @@ public class SwordBookPath
                 testDefaultPath(bookDirs, datapath);
                 datapath = prop.getProperty(AUGMENT_PATH);
                 testDefaultPath(bookDirs, datapath);
-            }
-            catch (IOException ex)
-            {
+            } catch (IOException ex) {
                 log.warn("Failed to read system config file", ex); //$NON-NLS-1$
-            }
-            finally
-            {
-                if (is != null)
-                {
-                    try
-                    {
+            } finally {
+                if (is != null) {
+                    try {
                         is.close();
-                    }
-                    catch (IOException e)
-                    {
+                    } catch (IOException e) {
                         log.warn("Failed to close system config file", e); //$NON-NLS-1$
                     }
                 }
@@ -238,68 +217,64 @@ public class SwordBookPath
         }
     }
 
-    private static void readSwordConf(List bookDirs, String swordConfDir)
-    {
+    private static void readSwordConf(List bookDirs, String swordConfDir) {
         readSwordConf(bookDirs, new File(swordConfDir));
     }
 
     /**
-     * Check to see if the given directory is a Sword mods.d directory
-     * and then add it to the list if it is.
-     * @param bookDirs The list to add good paths
-     * @param path the path to check
+     * Check to see if the given directory is a Sword mods.d directory and then
+     * add it to the list if it is.
+     * 
+     * @param bookDirs
+     *            The list to add good paths
+     * @param path
+     *            the path to check
      */
-    private static void testDefaultPath(List bookDirs, File path)
-    {
-        if (path == null)
-        {
+    private static void testDefaultPath(List bookDirs, File path) {
+        if (path == null) {
             return;
         }
 
         File mods = new File(path, SwordConstants.DIR_CONF);
-        if (mods.isDirectory() && mods.canRead())
-        {
+        if (mods.isDirectory() && mods.canRead()) {
             bookDirs.add(path);
         }
     }
 
     /**
-     * Check to see if the given directory is a Sword mods.d directory
-     * and then add it to the list if it is.
-     * @param bookDirs The list to add good paths
-     * @param path the path to check
+     * Check to see if the given directory is a Sword mods.d directory and then
+     * add it to the list if it is.
+     * 
+     * @param bookDirs
+     *            The list to add good paths
+     * @param path
+     *            the path to check
      */
-    private static void testDefaultPath(List bookDirs, String path)
-    {
-        if (path == null)
-        {
+    private static void testDefaultPath(List bookDirs, String path) {
+        if (path == null) {
             return;
         }
 
         testDefaultPath(bookDirs, new File(path));
     }
 
-    private static File getDefaultDownloadPath()
-    {
+    private static File getDefaultDownloadPath() {
         File path = null;
         File[] possiblePaths = getDefaultPaths();
 
-        if (possiblePaths != null)
-        {
-            for (int i = 0; i < possiblePaths.length; i++)
-            {
+        if (possiblePaths != null) {
+            for (int i = 0; i < possiblePaths.length; i++) {
                 File mods = new File(possiblePaths[i], SwordConstants.DIR_CONF);
-                if (mods.canWrite())
-                {
+                if (mods.canWrite()) {
                     path = possiblePaths[i];
                     break;
                 }
             }
         }
 
-        // If it is not found on the path then it doesn't exist yet and needs to be established
-        if (path == null)
-        {
+        // If it is not found on the path then it doesn't exist yet and needs to
+        // be established
+        if (path == null) {
             URI userDataArea = OSType.getOSType().getUserAreaFolder(DIR_SWORD_CONF, DIR_SWORD_CONF_ALT);
             path = new File(userDataArea.getPath());
         }
@@ -307,8 +282,7 @@ public class SwordBookPath
         return path;
     }
 
-    private static void migrateBookDir()
-    {
+    private static void migrateBookDir() {
         // Books should be on this path
         URI userDataArea = OSType.getOSType().getUserAreaFolder(DIR_SWORD_CONF, DIR_SWORD_CONF_ALT);
 
@@ -318,8 +292,7 @@ public class SwordBookPath
         // It might be ~/.jsword or the new project dir
         File oldPath = new File(CWProject.instance().getDeprecatedWritableProjectDir().getPath());
 
-        if (oldPath.isDirectory())
-        {
+        if (oldPath.isDirectory()) {
             migrateBookDir(oldPath, swordBookPath);
             return;
         }
@@ -327,23 +300,19 @@ public class SwordBookPath
         // now trying the new project dir
         oldPath = new File(CWProject.instance().getWritableProjectDir().getPath());
 
-        if (oldPath.isDirectory())
-        {
+        if (oldPath.isDirectory()) {
             migrateBookDir(oldPath, swordBookPath);
             return;
         }
 
-
         // Finally, it might be ~/.sword
         oldPath = new File(OSType.DEFAULT.getUserAreaFolder(DIR_SWORD_CONF, DIR_SWORD_CONF_ALT).getPath());
-        if (oldPath.isDirectory())
-        {
+        if (oldPath.isDirectory()) {
             migrateBookDir(oldPath, swordBookPath);
         }
     }
 
-    private static void migrateBookDir(File oldPath, File newPath)
-    {
+    private static void migrateBookDir(File oldPath, File newPath) {
         // move the modules and confs
         File oldDataDir = new File(oldPath, SwordConstants.DIR_DATA);
         File newDataDir = new File(newPath, SwordConstants.DIR_DATA);
@@ -351,30 +320,25 @@ public class SwordBookPath
         File newConfDir = new File(newPath, SwordConstants.DIR_CONF);
 
         // move the modules
-        if (!migrate(oldDataDir, newDataDir))
-        {
+        if (!migrate(oldDataDir, newDataDir)) {
             return;
         }
 
         // move the confs
-        if (!migrate(oldConfDir, newConfDir))
-        {
+        if (!migrate(oldConfDir, newConfDir)) {
             // oops, restore the modules
             migrate(newDataDir, oldDataDir);
         }
     }
 
-    private static boolean migrate(File oldPath, File newPath)
-    {
-        if (oldPath.equals(newPath) || !oldPath.exists())
-        {
+    private static boolean migrate(File oldPath, File newPath) {
+        if (oldPath.equals(newPath) || !oldPath.exists()) {
             return true;
         }
 
         // make sure the parent exists
         File parent = newPath.getParentFile();
-        if (!parent.exists() && !parent.mkdirs())
-        {
+        if (!parent.exists() && !parent.mkdirs()) {
             return false;
         }
 
@@ -384,12 +348,11 @@ public class SwordBookPath
     /**
      * Get the download directory, which is either the one that the user chose
      * or that JSword picked for the user.
+     * 
      * @return Returns the download directory.
      */
-    public static File getSwordDownloadDir()
-    {
-        if (overrideDownloadDir != null)
-        {
+    public static File getSwordDownloadDir() {
+        if (overrideDownloadDir != null) {
             return overrideDownloadDir;
         }
         return defaultDownloadDir;
@@ -398,16 +361,15 @@ public class SwordBookPath
     /**
      * @return Returns the download directory that the user chose.
      */
-    public static File getDownloadDir()
-    {
+    public static File getDownloadDir() {
         return overrideDownloadDir;
     }
 
     /**
-     * @param dlDir The download directory that the user specifies.
+     * @param dlDir
+     *            The download directory that the user specifies.
      */
-    public static void setDownloadDir(File dlDir)
-    {
+    public static void setDownloadDir(File dlDir) {
         if (!dlDir.getPath().equals("")) //$NON-NLS-1$
         {
             overrideDownloadDir = dlDir;
@@ -416,16 +378,16 @@ public class SwordBookPath
     }
 
     /**
-     * Check that the directories in the version directory really
-     * represent versions.
+     * Check that the directories in the version directory really represent
+     * versions.
      */
-    static class CustomFilenameFilter implements FilenameFilter
-    {
-        /* (non-Javadoc)
+    static class CustomFilenameFilter implements FilenameFilter {
+        /*
+         * (non-Javadoc)
+         * 
          * @see java.io.FilenameFilter#accept(java.io.File, java.lang.String)
          */
-        public boolean accept(File parent, String name)
-        {
+        public boolean accept(File parent, String name) {
             return !name.startsWith(PREFIX_GLOBALS) && name.endsWith(SwordConstants.EXTENSION_CONF);
         }
     }

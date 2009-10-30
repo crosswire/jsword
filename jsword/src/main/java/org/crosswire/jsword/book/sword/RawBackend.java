@@ -41,18 +41,16 @@ import org.crosswire.jsword.passage.Verse;
 /**
  * Both Books and Commentaries seem to use the same format so this class
  * abstracts out the similarities.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class RawBackend extends AbstractBackend
-{
+public class RawBackend extends AbstractBackend {
     /**
      * Simple ctor
      */
-    public RawBackend(SwordBookMetaData sbmd, int datasize)
-    {
+    public RawBackend(SwordBookMetaData sbmd, int datasize) {
         super(sbmd);
         this.datasize = datasize;
         this.entrysize = OFFSETSIZE + datasize;
@@ -60,112 +58,117 @@ public class RawBackend extends AbstractBackend
         assert datasize == 2 || datasize == 4;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage
+     * .Key)
      */
     /* @Override */
-    public boolean contains(Key key)
-    {
+    public boolean contains(Key key) {
         checkActive();
 
         Verse verse = KeyUtil.getVerse(key);
 
-        try
-        {
+        try {
             int testament = SwordConstants.getTestament(verse);
             long index = SwordConstants.getIndex(verse);
 
             // If this is a single testament Bible, return nothing.
-            if (idxRaf[testament] == null)
-            {
+            if (idxRaf[testament] == null) {
                 return false;
             }
 
             DataIndex dataIndex = getIndex(idxRaf[testament], index);
 
             return dataIndex.getSize() > 0;
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             return false;
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key, java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire
+     * .jsword.passage.Key, java.lang.String)
      */
     /* @Override */
-    public String getRawText(Key key) throws BookException
-    {
+    public String getRawText(Key key) throws BookException {
         checkActive();
 
         Verse verse = KeyUtil.getVerse(key);
-        try
-        {
+        try {
             int testament = SwordConstants.getTestament(verse);
             long index = SwordConstants.getIndex(verse);
 
             // If this is a single testament Bible, return nothing.
-            if (idxRaf[testament] == null)
-            {
+            if (idxRaf[testament] == null) {
                 return ""; //$NON-NLS-1$
             }
 
             return getEntry(key.getName(), testament, index);
-        }
-        catch (IOException ex)
-        {
-            throw new BookException(UserMsg.READ_FAIL, ex, new Object[] { verse.getName() });
+        } catch (IOException ex) {
+            throw new BookException(UserMsg.READ_FAIL, ex, new Object[] {
+                verse.getName()
+            });
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.AbstractBackend#setRawText(org.crosswire.jsword.passage.Key, java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.sword.AbstractBackend#setRawText(org.crosswire
+     * .jsword.passage.Key, java.lang.String)
      */
-    public void setRawText(Key key, String text) throws BookException, IOException
-    {
+    public void setRawText(Key key, String text) throws BookException, IOException {
     }
 
-    /* (non-Javadoc)
-    * @see org.crosswire.jsword.book.sword.AbstractBackend#isWritable()
-    */
-    public boolean isWritable()
-    {
-        // For the module to be writable either the old testament or the new testament needs to be present
-        // (i.e. readable) and both the index and the data files need to be writable
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#isWritable()
+     */
+    public boolean isWritable() {
+        // For the module to be writable either the old testament or the new
+        // testament needs to be present
+        // (i.e. readable) and both the index and the data files need to be
+        // writable
         if (idxFile[SwordConstants.TESTAMENT_OLD].canRead()
-            && (idxFile[SwordConstants.TESTAMENT_OLD].canWrite() || !txtFile[SwordConstants.TESTAMENT_OLD].canWrite()))
-        {
+                && (idxFile[SwordConstants.TESTAMENT_OLD].canWrite() || !txtFile[SwordConstants.TESTAMENT_OLD].canWrite())) {
             return false;
         }
         if (idxFile[SwordConstants.TESTAMENT_NEW].canRead()
-            && (idxFile[SwordConstants.TESTAMENT_NEW].canWrite() || !txtFile[SwordConstants.TESTAMENT_NEW].canWrite()))
-        {
+                && (idxFile[SwordConstants.TESTAMENT_NEW].canWrite() || !txtFile[SwordConstants.TESTAMENT_NEW].canWrite())) {
             return false;
         }
         return idxFile[SwordConstants.TESTAMENT_OLD].canRead() || idxFile[SwordConstants.TESTAMENT_NEW].canRead();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.sword.AbstractBackend#create()
      */
-    public void create() throws IOException, BookException
-    {
+    public void create() throws IOException, BookException {
         super.create();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.common.activate.Activatable#activate(org.crosswire.common
+     * .activate.Lock)
      */
-    public final void activate(Lock lock)
-    {
+    public final void activate(Lock lock) {
         URI path = null;
-        try
-        {
+        try {
             path = getExpandedDataPath();
-        }
-        catch (BookException e)
-        {
+        } catch (BookException e) {
             Reporter.informUser(this, e);
             return;
         }
@@ -179,23 +182,20 @@ public class RawBackend extends AbstractBackend
         idxFile[SwordConstants.TESTAMENT_NEW] = new File(ntPath.getPath() + SwordConstants.EXTENSION_VSS);
 
         // It is an error to be neither OT nor NT
-        if (!txtFile[SwordConstants.TESTAMENT_OLD].canRead() && !txtFile[SwordConstants.TESTAMENT_NEW].canRead())
-        {
-            Reporter.informUser(this, new BookException(Msg.MISSING_FILE, new Object[] { path }));
+        if (!txtFile[SwordConstants.TESTAMENT_OLD].canRead() && !txtFile[SwordConstants.TESTAMENT_NEW].canRead()) {
+            Reporter.informUser(this, new BookException(Msg.MISSING_FILE, new Object[] {
+                path
+            }));
             return;
         }
 
         String fileMode = isWritable() ? FileUtil.MODE_WRITE : FileUtil.MODE_READ;
 
-        if (idxFile[SwordConstants.TESTAMENT_OLD].canRead())
-        {
-            try
-            {
+        if (idxFile[SwordConstants.TESTAMENT_OLD].canRead()) {
+            try {
                 idxRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_OLD], fileMode);
                 txtRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(txtFile[SwordConstants.TESTAMENT_OLD], fileMode);
-            }
-            catch (FileNotFoundException ex)
-            {
+            } catch (FileNotFoundException ex) {
                 assert false : ex;
                 log.error("Could not open OT", ex); //$NON-NLS-1$
                 idxRaf[SwordConstants.TESTAMENT_OLD] = null;
@@ -203,15 +203,11 @@ public class RawBackend extends AbstractBackend
             }
         }
 
-        if (idxFile[SwordConstants.TESTAMENT_NEW].canRead())
-        {
-            try
-            {
+        if (idxFile[SwordConstants.TESTAMENT_NEW].canRead()) {
+            try {
                 idxRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_NEW], fileMode);
                 txtRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(txtFile[SwordConstants.TESTAMENT_NEW], fileMode);
-            }
-            catch (FileNotFoundException ex)
-            {
+            } catch (FileNotFoundException ex) {
                 assert false : ex;
                 log.error("Could not open NT", ex); //$NON-NLS-1$
                 idxRaf[SwordConstants.TESTAMENT_NEW] = null;
@@ -222,25 +218,23 @@ public class RawBackend extends AbstractBackend
         active = true;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common
+     * .activate.Lock)
      */
-    public final void deactivate(Lock lock)
-    {
-        try
-        {
+    public final void deactivate(Lock lock) {
+        try {
             idxRaf[SwordConstants.TESTAMENT_OLD].close();
             txtRaf[SwordConstants.TESTAMENT_OLD].close();
 
             idxRaf[SwordConstants.TESTAMENT_NEW].close();
             txtRaf[SwordConstants.TESTAMENT_NEW].close();
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             log.error("Failed to close files", ex); //$NON-NLS-1$
-        }
-        finally
-        {
+        } finally {
             idxRaf[SwordConstants.TESTAMENT_OLD] = null;
             txtRaf[SwordConstants.TESTAMENT_OLD] = null;
 
@@ -254,33 +248,29 @@ public class RawBackend extends AbstractBackend
     /**
      * Helper method so we can quickly activate ourselves on access
      */
-    protected final void checkActive()
-    {
-        if (!active)
-        {
+    protected final void checkActive() {
+        if (!active) {
             Activator.activate(this);
         }
     }
 
     /**
      * Get the Index (that is offset and size) for an entry.
+     * 
      * @param entry
      * @return the index for the entry
      * @throws IOException
      */
-    protected DataIndex getIndex(RandomAccessFile raf, long entry) throws IOException
-    {
+    protected DataIndex getIndex(RandomAccessFile raf, long entry) throws IOException {
         // Read the offset and size for this key from the index
         byte[] buffer = SwordUtil.readRAF(raf, entry * entrysize, entrysize);
-        if (buffer == null || buffer.length == 0)
-        {
+        if (buffer == null || buffer.length == 0) {
             return new DataIndex(0, 0);
         }
 
         int entryOffset = SwordUtil.decodeLittleEndian32(buffer, 0);
         int entrySize = -1;
-        switch (datasize)
-        {
+        switch (datasize) {
         case 2:
             entrySize = SwordUtil.decodeLittleEndian16(buffer, 4);
             break;
@@ -296,24 +286,25 @@ public class RawBackend extends AbstractBackend
     /**
      * Get the text for an indexed entry in the book.
      * 
-     * @param index the entry to get
-     * @param name name of the entry
-     * @param testament testament number 0, 1 or 2
+     * @param index
+     *            the entry to get
+     * @param name
+     *            name of the entry
+     * @param testament
+     *            testament number 0, 1 or 2
      * @return the text for the entry.
-     * @throws IOException on a IO problem
+     * @throws IOException
+     *             on a IO problem
      */
-    protected String getEntry(String name, int testament, long index) throws IOException
-    {
+    protected String getEntry(String name, int testament, long index) throws IOException {
         DataIndex dataIndex = getIndex(idxRaf[testament], index);
 
         int size = dataIndex.getSize();
-        if (size == 0)
-        {
+        if (size == 0) {
             return ""; //$NON-NLS-1$
         }
 
-        if (size < 0)
-        {
+        if (size < 0) {
             log.error("In " + getBookMetaData().getInitials() + ": Verse " + name + " has a bad index size of " + size); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             return ""; //$NON-NLS-1$
         }

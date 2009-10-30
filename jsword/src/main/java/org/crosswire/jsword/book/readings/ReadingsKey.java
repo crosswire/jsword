@@ -33,67 +33,67 @@ import org.crosswire.jsword.passage.NoSuchKeyException;
 
 /**
  * For a readings dictionary the keys are dates.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class ReadingsKey extends DefaultLeafKeyList
-{
+public class ReadingsKey extends DefaultLeafKeyList {
     /**
      * Simple Constructor.
-     * @param text The textual version of the date for these readings in the
-     * format "d mmmm"
-     * @param osisName The OSIS id of this Key
-     * @param parent This Key's parent (or null of this Key has no parent)
+     * 
+     * @param text
+     *            The textual version of the date for these readings in the
+     *            format "d mmmm"
+     * @param osisName
+     *            The OSIS id of this Key
+     * @param parent
+     *            This Key's parent (or null of this Key has no parent)
      */
-    protected ReadingsKey(String text, String osisName, Key parent) throws NoSuchKeyException
-    {
+    protected ReadingsKey(String text, String osisName, Key parent) throws NoSuchKeyException {
         super(text, osisName, parent);
 
-        try
-        {
+        try {
             DateFormatter formatter = DateFormatter.getDateInstance();
             formatter.setLenient(true);
             date = formatter.parse(text);
-        }
-        catch (ParseException ex)
-        {
-            throw new NoSuchKeyException(Msg.PARSE_FAIL, ex, new Object[] { text });
+        } catch (ParseException ex) {
+            throw new NoSuchKeyException(Msg.PARSE_FAIL, ex, new Object[] {
+                text
+            });
         }
     }
 
     /**
      * Simple Constructor.
-     * @param date The date for this key
+     * 
+     * @param date
+     *            The date for this key
      */
-    protected ReadingsKey(Date date)
-    {
+    protected ReadingsKey(Date date) {
         super(DateFormatter.getDateInstance().format(date), DateFormatter.getSimpleDateInstance("d.MMMM").format(date)); //$NON-NLS-1$
         this.date = date;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public boolean equals(Object obj)
-    {
-        if (this == obj)
-        {
+    public boolean equals(Object obj) {
+        if (this == obj) {
             return true;
         }
 
         // Since this can not be null
-        if (obj == null)
-        {
+        if (obj == null) {
             return false;
         }
 
         // Check that that is the same as this
         // Don't use instanceof since that breaks inheritance
-        if (!obj.getClass().equals(this.getClass()))
-        {
+        if (!obj.getClass().equals(this.getClass())) {
             return false;
         }
 
@@ -103,40 +103,44 @@ public class ReadingsKey extends DefaultLeafKeyList
         return getName().equals(that.getName());
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
-    public int hashCode()
-    {
+    public int hashCode() {
         return date.hashCode();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object obj)
-    {
+    public int compareTo(Object obj) {
         ReadingsKey that = (ReadingsKey) obj;
         return this.date.compareTo(that.date);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#clone()
      */
-    public Object clone()
-    {
+    public Object clone() {
         return super.clone();
     }
 
     /**
      * Convert the Gregorian Calendar to a string.
+     * 
      * @param externalKey
      * @return the internal representation of the key
      */
-    public static String external2internal(Calendar externalKey)
-    {
-        Object[] objs = {new Integer(1 + externalKey.get(Calendar.MONTH)),
-                         new Integer(externalKey.get(Calendar.DATE))};
+    public static String external2internal(Calendar externalKey) {
+        Object[] objs = {
+                new Integer(1 + externalKey.get(Calendar.MONTH)), new Integer(externalKey.get(Calendar.DATE))
+        };
         return KEY_FORMAT.format(objs);
 
     }

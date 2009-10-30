@@ -25,13 +25,12 @@ import java.util.LinkedList;
 
 /**
  * GBF Tag interface.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public interface Tag
-{
+public interface Tag {
     /**
      * Sub-classes should implement this method to generate OSIS Object
      */

@@ -9,21 +9,18 @@ import org.crosswire.jsword.book.test.Speed;
 /**
  * Bench is a command line utility that runs the Speed benchmark program.
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class Bench
-{
+public class Bench {
     /**
      * Basic constructor
      */
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         Book version = null;
 
-        if (args.length == 0)
-        {
+        if (args.length == 0) {
             usage();
             versions();
             System.exit(1);
@@ -42,8 +39,7 @@ public class Bench
     /**
      * Print a usage message to stdout
      */
-    private static void usage()
-    {
+    private static void usage() {
         System.out.println("Usage: CBench [<version>] [disk]"); //$NON-NLS-1$
         System.out.println("  where <version> is the name of a version to benchmark."); //$NON-NLS-1$
         System.out.println("  and 'disk' specifies if the Raw version should not cache data."); //$NON-NLS-1$
@@ -53,12 +49,10 @@ public class Bench
     /**
      * List the available versions
      */
-    private static void versions()
-    {
+    private static void versions() {
         System.out.println("  Available versions:"); //$NON-NLS-1$
         List lbmds = Books.installed().getBooks();
-        for (Iterator it = lbmds.iterator(); it.hasNext();)
-        {
+        for (Iterator it = lbmds.iterator(); it.hasNext();) {
             Book book = (Book) it.next();
             System.out.println("    " + book.getName()); //$NON-NLS-1$
         }

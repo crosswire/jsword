@@ -25,51 +25,58 @@ import org.crosswire.common.util.MsgBase;
 
 /**
  * When something tries to use a verse that we don't understand.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class NoSuchVerseException extends NoSuchKeyException
-{
+public class NoSuchVerseException extends NoSuchKeyException {
     /**
      * Construct the Exception with a message
-     * @param msg The resource id to read
+     * 
+     * @param msg
+     *            The resource id to read
      */
-    public NoSuchVerseException(MsgBase msg)
-    {
+    public NoSuchVerseException(MsgBase msg) {
         super(msg);
     }
 
     /**
      * Construct the Exception with a message and a nested Exception
-     * @param msg The resource id to read
-     * @param ex The nested Exception
+     * 
+     * @param msg
+     *            The resource id to read
+     * @param ex
+     *            The nested Exception
      */
-    public NoSuchVerseException(MsgBase msg, Throwable ex)
-    {
+    public NoSuchVerseException(MsgBase msg, Throwable ex) {
         super(msg, ex);
     }
 
     /**
      * Construct the Exception with a message and some i18n params
-     * @param msg The resource id to read
-     * @param params An array of parameters
+     * 
+     * @param msg
+     *            The resource id to read
+     * @param params
+     *            An array of parameters
      */
-    public NoSuchVerseException(MsgBase msg, Object[] params)
-    {
+    public NoSuchVerseException(MsgBase msg, Object[] params) {
         super(msg, params);
     }
 
     /**
-     * Construct the Exception with a message, a nested Exception
-     * and some i18n params
-     * @param msg The resource id to read
-     * @param ex The nested Exception
-     * @param params An array of parameters
+     * Construct the Exception with a message, a nested Exception and some i18n
+     * params
+     * 
+     * @param msg
+     *            The resource id to read
+     * @param ex
+     *            The nested Exception
+     * @param params
+     *            An array of parameters
      */
-    public NoSuchVerseException(MsgBase msg, Throwable ex, Object[] params)
-    {
+    public NoSuchVerseException(MsgBase msg, Throwable ex, Object[] params) {
         super(msg, ex, params);
     }
 

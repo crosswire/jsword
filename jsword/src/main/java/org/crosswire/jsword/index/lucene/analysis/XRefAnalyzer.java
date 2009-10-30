@@ -28,34 +28,33 @@ import org.apache.lucene.analysis.WhitespaceTokenizer;
 import org.crosswire.jsword.book.Book;
 
 /**
- * A specialized analyzer that normalizes Strong's Numbers.
- *
- * @see gnu.lgpl.License for license details.
+ * A specialized analyzer that normalizes Cross References.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class XRefAnalyzer extends AbstractBookAnalyzer
-{
+public class XRefAnalyzer extends AbstractBookAnalyzer {
     /**
      * Construct a default XRefAnalyzer.
      */
-    public XRefAnalyzer()
-    {
+    public XRefAnalyzer() {
     }
 
     /**
      * Construct an XRefAnalyzer tied to a book.
      */
-    public XRefAnalyzer(Book book)
-    {
+    public XRefAnalyzer(Book book) {
         setBook(book);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String, java.io.Reader)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String,
+     * java.io.Reader)
      */
-    public TokenStream tokenStream(String fieldName, Reader reader)
-    {
+    public TokenStream tokenStream(String fieldName, Reader reader) {
         return new KeyFilter(getBook(), new WhitespaceTokenizer(reader));
     }
 }

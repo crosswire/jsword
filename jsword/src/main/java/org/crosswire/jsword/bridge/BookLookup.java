@@ -30,32 +30,27 @@ import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 
 /**
- * BookLookup allows one to lookup via keys.
- * Note: it does not work with GenBook.
+ * BookLookup allows one to lookup via keys. Note: it does not work with
+ * GenBook.
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class BookLookup
-{
+public class BookLookup {
 
-    public BookLookup(Book book)
-    {
+    public BookLookup(Book book) {
         this.book = book;
     }
 
-    public String locate(Key key) throws BookException
-    {
+    public String locate(Key key) throws BookException {
         StringBuffer buf = new StringBuffer();
 
         Iterator iter = key.iterator();
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             Key currentKey = (Key) iter.next();
             String osisID = currentKey.getOsisID();
-            if (buf.length() > 0)
-            {
+            if (buf.length() > 0) {
                 buf.append('\n');
             }
             buf.append(book.getInitials());
@@ -63,12 +58,9 @@ public class BookLookup
             buf.append(osisID);
             buf.append(" - "); //$NON-NLS-1$
             String rawText = book.getRawText(currentKey);
-            if (rawText != null && rawText.trim().length() > 0)
-            {
+            if (rawText != null && rawText.trim().length() > 0) {
                 buf.append(rawText);
-            }
-            else
-            {
+            } else {
                 buf.append("Not found"); //$NON-NLS-1$
             }
         }
@@ -79,56 +71,44 @@ public class BookLookup
     private Book book;
 
     /**
-     * Call with book, key.
-     * And book is the initials of a book, e.g. KJV.
-     * And key is a reference for the work, e.g. "Genesis 1:5-ff".
-     * Note: if the key has spaces, it must be quoted.
+     * Call with book, key. And book is the initials of a book, e.g. KJV. And
+     * key is a reference for the work, e.g. "Genesis 1:5-ff". Note: if the key
+     * has spaces, it must be quoted.
      * 
      * @param args
      */
-    public static void main(String[] args)
-    {
-        if (args.length != 2)
-        {
+    public static void main(String[] args) {
+        if (args.length != 2) {
             usage();
             return;
         }
 
         System.err.print("BookLookup"); //$NON-NLS-1$
-        for (int i = 0; i < args.length; i++)
-        {
+        for (int i = 0; i < args.length; i++) {
             System.err.print(' ');
             System.err.print(args[i]);
         }
         System.err.print('\n');
 
-
         Book b = Books.installed().getBook(args[0]);
-        if (b == null)
-        {
+        if (b == null) {
             System.err.println("Book not found"); //$NON-NLS-1$
             return;
         }
 
         BookLookup lookup = new BookLookup(b);
-        try
-        {
+        try {
             System.out.println(lookup.locate(b.getKey(args[1])));
-        }
-        catch (BookException e)
-        {
+        } catch (BookException e) {
             System.err.println("Error while doing lookup"); //$NON-NLS-1$
             e.printStackTrace();
-        }
-        catch (NoSuchKeyException e)
-        {
+        } catch (NoSuchKeyException e) {
             System.err.println("Error while doing lookup"); //$NON-NLS-1$
             e.printStackTrace();
         }
     }
 
-    public static void usage()
-    {
+    public static void usage() {
         System.err.println("Usage: BookLookup book key"); //$NON-NLS-1$
     }
 }

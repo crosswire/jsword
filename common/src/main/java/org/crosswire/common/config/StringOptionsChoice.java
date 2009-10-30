@@ -27,23 +27,22 @@ import org.jdom.Element;
 
 /**
  * A class to convert between strings and objects of a type.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class StringOptionsChoice extends AbstractReflectedChoice implements MultipleChoice
-{
-    /* (non-Javadoc)
+public class StringOptionsChoice extends AbstractReflectedChoice implements MultipleChoice {
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
      */
     /* @Override */
-    public void init(Element option, ResourceBundle configResources) throws StartupException
-    {
+    public void init(Element option, ResourceBundle configResources) throws StartupException {
         super.init(option, configResources);
         Element map = option.getChild("map"); //$NON-NLS-1$
-        if (map == null)
-        {
+        if (map == null) {
             throw new StartupException(Msg.CONFIG_NOMAP);
         }
 
@@ -51,39 +50,47 @@ public class StringOptionsChoice extends AbstractReflectedChoice implements Mult
         array = (String[]) ChoiceFactory.getDataMap().get(name);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.config.MultipleChoice#getOptions()
      */
-    public String[] getOptions()
-    {
-        String [] copy = new String[array.length];
+    public String[] getOptions() {
+        String[] copy = new String[array.length];
         System.arraycopy(array, 0, copy, 0, array.length);
         return copy;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.config.Choice#getConvertionClass()
      */
-    public Class getConversionClass()
-    {
+    public Class getConversionClass() {
         return String.class;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.config.AbstractReflectedChoice#convertToString(java.lang.Object)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.common.config.AbstractReflectedChoice#convertToString(java
+     * .lang.Object)
      */
     /* @Override */
-    public String convertToString(Object orig)
-    {
+    public String convertToString(Object orig) {
         return (String) orig;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java
+     * .lang.String)
      */
     /* @Override */
-    public Object convertToObject(String orig)
-    {
+    public Object convertToObject(String orig) {
         return orig;
     }
 

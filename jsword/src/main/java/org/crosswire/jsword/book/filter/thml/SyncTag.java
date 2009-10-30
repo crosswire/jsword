@@ -32,33 +32,35 @@ import org.xml.sax.Attributes;
 
 /**
  * THML Tag to process the sync element. A sync tag is always empty and
- * immediately follows what it marks. With types of Strong's and morph
- * these are to become w elements that surround the word that they modify.
- * This requires that we find the last text element and surround it with
- * a w element. If the last text element is already surrounded with a w
- * element then this is added to it. As a simplifying assumption, we will
- * assume that the text element is not contained by anything except perhaps
- * by a w element.
- *
- * @see gnu.lgpl.License for license details.
+ * immediately follows what it marks. With types of Strong's and morph these are
+ * to become w elements that surround the word that they modify. This requires
+ * that we find the last text element and surround it with a w element. If the
+ * last text element is already surrounded with a w element then this is added
+ * to it. As a simplifying assumption, we will assume that the text element is
+ * not contained by anything except perhaps by a w element.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class SyncTag extends AbstractTag
-{
-    /* (non-Javadoc)
+public class SyncTag extends AbstractTag {
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
-    public String getTagName()
-    {
+    public String getTagName() {
         return "sync"; //$NON-NLS-1$
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element,
+     * org.xml.sax.Attributes)
      */
-   public Element processTag(Element ele, Attributes attrs)
-    {
+    public Element processTag(Element ele, Attributes attrs) {
         // Strong's reference
         String type = attrs.getValue("type"); //$NON-NLS-1$
         String value = attrs.getValue("value"); //$NON-NLS-1$
@@ -67,27 +69,21 @@ public class SyncTag extends AbstractTag
         {
             List siblings = ele.getContent();
             int size = siblings.size();
-            if (size == 0)
-            {
+            if (size == 0) {
                 return null;
             }
             Content lastEle = (Content) siblings.get(size - 1);
-            if (lastEle instanceof Text)
-            {
+            if (lastEle instanceof Text) {
                 Element w = OSISUtil.factory().createW();
                 w.setAttribute(OSISUtil.ATTRIBUTE_W_LEMMA, OSISUtil.LEMMA_STRONGS + value);
                 siblings.set(size - 1, w);
                 w.addContent(lastEle);
-            }
-            else if (lastEle instanceof Element)
-            {
+            } else if (lastEle instanceof Element) {
                 Element wEle = (Element) lastEle;
-                if (wEle.getName().equals(OSISUtil.OSIS_ELEMENT_W))
-                {
+                if (wEle.getName().equals(OSISUtil.OSIS_ELEMENT_W)) {
                     StringBuffer buf = new StringBuffer();
                     String strongsAttr = wEle.getAttributeValue(OSISUtil.ATTRIBUTE_W_LEMMA);
-                    if (strongsAttr != null)
-                    {
+                    if (strongsAttr != null) {
                         buf.append(strongsAttr);
                         buf.append(' ');
                     }
@@ -103,27 +99,21 @@ public class SyncTag extends AbstractTag
         {
             List siblings = ele.getContent();
             int size = siblings.size();
-            if (size == 0)
-            {
+            if (size == 0) {
                 return null;
             }
             Content lastEle = (Content) siblings.get(size - 1);
-            if (lastEle instanceof Text)
-            {
+            if (lastEle instanceof Text) {
                 Element w = OSISUtil.factory().createW();
                 w.setAttribute(OSISUtil.ATTRIBUTE_W_MORPH, OSISUtil.MORPH_ROBINSONS + value);
                 siblings.set(size - 1, w);
                 w.addContent(lastEle);
-            }
-            else if (lastEle instanceof Element)
-            {
+            } else if (lastEle instanceof Element) {
                 Element wEle = (Element) lastEle;
-                if (wEle.getName().equals(OSISUtil.OSIS_ELEMENT_W))
-                {
+                if (wEle.getName().equals(OSISUtil.OSIS_ELEMENT_W)) {
                     StringBuffer buf = new StringBuffer();
                     String strongsAttr = wEle.getAttributeValue(OSISUtil.ATTRIBUTE_W_MORPH);
-                    if (strongsAttr != null)
-                    {
+                    if (strongsAttr != null) {
                         buf.append(strongsAttr);
                         buf.append(' ');
                     }
@@ -140,8 +130,7 @@ public class SyncTag extends AbstractTag
             Element div = OSISUtil.factory().createDiv();
             div.setAttribute(OSISUtil.OSIS_ATTR_OSISID, "dict://" + value); //$NON-NLS-1$
 
-            if (ele != null)
-            {
+            if (ele != null) {
                 ele.addContent(div);
             }
 

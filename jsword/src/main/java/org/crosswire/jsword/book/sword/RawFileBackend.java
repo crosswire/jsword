@@ -39,77 +39,72 @@ import org.crosswire.jsword.versification.BibleInfo;
 
 /**
  * A Raw File format that allows for each verse to have it's own storage.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author mbergmann
  */
-public class RawFileBackend extends RawBackend
-{
+public class RawFileBackend extends RawBackend {
 
-    public RawFileBackend(SwordBookMetaData sbmd, int datasize)
-    {
+    public RawFileBackend(SwordBookMetaData sbmd, int datasize) {
         super(sbmd, datasize);
 
         initIncFile();
-        try
-        {
+        try {
             incfileValue = readIncfile();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             log.error("Error on reading incfile!"); //$NON-NLS-1$
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.RawBackend#getRawText(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.sword.RawBackend#getRawText(org.crosswire.jsword
+     * .passage.Key)
      */
-    public String getRawText(Key key) throws BookException
-    {
+    public String getRawText(Key key) throws BookException {
         return super.getRawText(key);
     }
 
     /**
      * Get the text for an indexed entry in the book.
      * 
-     * @param name name of the entry
-     * @param testament testament number 1 or 2
-     * @param index the entry to get
+     * @param name
+     *            name of the entry
+     * @param testament
+     *            testament number 1 or 2
+     * @param index
+     *            the entry to get
      * @return the text for the entry.
-     * @throws java.io.IOException on file error
+     * @throws java.io.IOException
+     *             on file error
      */
-    protected String getEntry(String name, int testament, long index) throws IOException
-    {
+    protected String getEntry(String name, int testament, long index) throws IOException {
 
         DataIndex dataIndex = getIndex(idxRaf[testament], index);
         int size = dataIndex.getSize();
-        if (size == 0)
-        {
+        if (size == 0) {
             return ""; //$NON-NLS-1$
         }
 
-        if (size < 0)
-        {
-            log.error("In " + getBookMetaData().getInitials() + ": Verse " + name + " has a bad index size of " + size);   //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        if (size < 0) {
+            log.error("In " + getBookMetaData().getInitials() + ": Verse " + name + " has a bad index size of " + size); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             return ""; //$NON-NLS-1$
         }
 
-        try
-        {
+        try {
             File dataFile = getDataTextFile(testament, dataIndex);
             byte[] textBytes = readTextDataFile(dataFile);
             decipher(textBytes);
             return SwordUtil.decode(name, textBytes, getBookMetaData().getBookCharset());
-        }
-        catch (BookException e)
-        {
+        } catch (BookException e) {
             throw new IOException(e.getMessage());
         }
     }
 
-    public void setRawText(Key key, String text) throws BookException, IOException
-    {
+    public void setRawText(Key key, String text) throws BookException, IOException {
         checkActive();
 
         Verse verse = KeyUtil.getVerse(key);
@@ -119,14 +114,11 @@ public class RawFileBackend extends RawBackend
 
         DataIndex dataIndex = getIndex(idxRaf[testament], index);
         File dataFile;
-        if (dataIndex.getSize() == 0)
-        {
+        if (dataIndex.getSize() == 0) {
             dataFile = createDataTextFile(oIndex);
             updateIndexFile(testament, index);
             updateDataFile(testament, oIndex);
-        }
-        else
-        {
+        } else {
             dataFile = getDataTextFile(testament, dataIndex);
         }
 
@@ -134,67 +126,54 @@ public class RawFileBackend extends RawBackend
         encipher(textData);
         writeTextDataFile(dataFile, textData);
 
-        if (oIndex >= this.incfileValue)
-        {
+        if (oIndex >= this.incfileValue) {
             this.incfileValue = oIndex + 1;
             writeIncfile(this.incfileValue);
         }
     }
 
-    private void initIncFile()
-    {
-        try
-        {
+    private void initIncFile() {
+        try {
             File tempIncfile = new File(getExpandedDataPath().getPath() + File.separator + INCFILE);
-            if (tempIncfile.exists())
-            {
+            if (tempIncfile.exists()) {
                 this.incfile = tempIncfile;
             }
-        }
-        catch (BookException e)
-        {
+        } catch (BookException e) {
             log.error("Error on checking incfile: " + e.getMessage()); //$NON-NLS-1$
         }
     }
 
-    private File createDataTextFile(int index) throws BookException, IOException
-    {
+    private File createDataTextFile(int index) throws BookException, IOException {
         String dataPath = getExpandedDataPath().getPath();
         // JDK15: Use String.format instead
         // dataPath += File.separator + String.format("%07d", index);
         dataPath += File.separator + new DecimalFormat("0000000").format(index); //$NON-NLS-1$
         File dataFile = new File(dataPath);
-        if (!dataFile.exists() && !dataFile.createNewFile())
-        {
+        if (!dataFile.exists() && !dataFile.createNewFile()) {
             throw new IOException("Could not create data file."); //$NON-NLS-1$
         }
         return dataFile;
     }
 
-    private File getDataTextFile(int testament, DataIndex dataIndex) throws IOException, BookException
-    {
+    private File getDataTextFile(int testament, DataIndex dataIndex) throws IOException, BookException {
         File dataFile;
 
         // data size to be read from the data file (ot or nt) should be 9 bytes
         // this will be the filename of the actual text file "\r\n"
         byte[] data = SwordUtil.readRAF(txtRaf[testament], dataIndex.getOffset(), dataIndex.getSize());
         decipher(data);
-        if (data.length == 7)
-        {
+        if (data.length == 7) {
             String dataFilename = new String(data, 0, 7);
             String dataPath = getExpandedDataPath().getPath() + File.separator + dataFilename;
             dataFile = new File(dataPath);
-        }
-        else
-        {
+        } else {
             log.error("Read data is not of appropriate size of 9 bytes!"); //$NON-NLS-1$
             throw new IOException("Datalength is not 9 bytes!"); //$NON-NLS-1$
         }
         return dataFile;
     }
 
-    protected void updateIndexFile(int testament, long index) throws IOException
-    {
+    protected void updateIndexFile(int testament, long index) throws IOException {
         long indexFileWriteOffset = index * entrysize;
         long dataFileStartPosition = txtRaf[testament].length();
         int dataFileLengthValue = 7; // filename is 7 bytes + 2 bytes for "\r\n"
@@ -212,8 +191,7 @@ public class RawFileBackend extends RawBackend
         SwordUtil.writeRAF(idxRaf[testament], indexFileWriteOffset, indexFileWriteData);
     }
 
-    protected void updateDataFile(int testament, long ordinal) throws IOException
-    {
+    protected void updateDataFile(int testament, long ordinal) throws IOException {
         // JDK15: Use String.format instead
         // String fileName = String.format("%07d\r\n", ordinal);
         StringBuffer buf = new StringBuffer();
@@ -221,25 +199,22 @@ public class RawFileBackend extends RawBackend
         buf.append("\r\n"); //$NON-NLS-1$
         String fileName = buf.toString();
         BufferedOutputStream bos = null;
-        try
-        {
+        try {
             bos = new BufferedOutputStream(new FileOutputStream(txtFile[testament], true));
             bos.write(fileName.getBytes());
-        }
-        finally
-        {
-            if (bos != null)
-            {
+        } finally {
+            if (bos != null) {
                 bos.close();
             }
         }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.sword.RawBackend#create()
      */
-    public void create() throws IOException, BookException
-    {
+    public void create() throws IOException, BookException {
         super.create();
         createDataFiles();
         createIndexFiles();
@@ -251,11 +226,12 @@ public class RawFileBackend extends RawBackend
         prepopulateIncfile();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.sword.RawBackend#isWritable()
      */
-    public boolean isWritable()
-    {
+    public boolean isWritable() {
         File otTextFile = txtFile[1];
         File ntTextFile = txtFile[2];
         File otIndexFile = idxFile[1];
@@ -263,140 +239,106 @@ public class RawFileBackend extends RawBackend
         File incFile = this.incfile;
 
         if (otTextFile.exists() && otTextFile.canRead() && otTextFile.canWrite() && ntTextFile.exists() && ntTextFile.canRead() && ntTextFile.canWrite()
-            && otIndexFile.exists() && otIndexFile.canRead() && otIndexFile.canWrite() && ntIndexFile.exists() && ntIndexFile.canRead()
-            && ntIndexFile.canWrite() && incFile.exists() && incFile.canRead() && incFile.canWrite())
-        {
+                && otIndexFile.exists() && otIndexFile.canRead() && otIndexFile.canWrite() && ntIndexFile.exists() && ntIndexFile.canRead()
+                && ntIndexFile.canWrite() && incFile.exists() && incFile.canRead() && incFile.canWrite()) {
             return true;
         }
         return false;
     }
 
-    private void createDataFiles() throws IOException, BookException
-    {
+    private void createDataFiles() throws IOException, BookException {
         String path = getExpandedDataPath().getPath();
 
         File otTextFile = new File(path + File.separator + SwordConstants.FILE_OT);
-        if (!otTextFile.exists() && !otTextFile.createNewFile())
-        {
+        if (!otTextFile.exists() && !otTextFile.createNewFile()) {
             throw new IOException("Could not create ot text file."); //$NON-NLS-1$
         }
 
         File ntTextFile = new File(path + File.separator + SwordConstants.FILE_NT);
-        if (!ntTextFile.exists() && !ntTextFile.createNewFile())
-        {
+        if (!ntTextFile.exists() && !ntTextFile.createNewFile()) {
             throw new IOException("Could not create nt text file."); //$NON-NLS-1$
         }
     }
 
-    private void createIndexFiles() throws IOException, BookException
-    {
+    private void createIndexFiles() throws IOException, BookException {
         String path = getExpandedDataPath().getPath();
         File otIndexFile = new File(path + File.separator + SwordConstants.FILE_OT + SwordConstants.EXTENSION_VSS);
-        if (!otIndexFile.exists() && !otIndexFile.createNewFile())
-        {
+        if (!otIndexFile.exists() && !otIndexFile.createNewFile()) {
             throw new IOException("Could not create ot index file."); //$NON-NLS-1$
         }
 
         File ntIndexFile = new File(path + File.separator + SwordConstants.FILE_NT + SwordConstants.EXTENSION_VSS);
-        if (!ntIndexFile.exists() && !ntIndexFile.createNewFile())
-        {
+        if (!ntIndexFile.exists() && !ntIndexFile.createNewFile()) {
             throw new IOException("Could not create nt index file."); //$NON-NLS-1$
         }
     }
 
-    private void prepopulateIndexFiles() throws IOException
-    {
+    private void prepopulateIndexFiles() throws IOException {
         File otIndexFile = idxFile[SwordConstants.TESTAMENT_OLD];
         BufferedOutputStream otIdxBos = new BufferedOutputStream(new FileOutputStream(otIndexFile, false));
 
-        try
-        {
-            for (int i = 0; i < SwordConstants.ORDINAL_MAT11; i++)
-            {
+        try {
+            for (int i = 0; i < SwordConstants.ORDINAL_MAT11; i++) {
                 writeInitialIndex(otIdxBos);
             }
-        }
-        finally
-        {
+        } finally {
             otIdxBos.close();
         }
 
         File ntIndexFile = idxFile[SwordConstants.TESTAMENT_NEW];
         BufferedOutputStream ntIdxBos = new BufferedOutputStream(new FileOutputStream(ntIndexFile, false));
-        try
-        {
+        try {
             int totVerses = BibleInfo.versesInBible();
-            for (int i = SwordConstants.ORDINAL_MAT11; i < totVerses; i++)
-            {
+            for (int i = SwordConstants.ORDINAL_MAT11; i < totVerses; i++) {
                 writeInitialIndex(ntIdxBos);
             }
-        }
-        finally
-        {
+        } finally {
             ntIdxBos.close();
         }
     }
 
-    private void createIncfile() throws IOException, BookException
-    {
+    private void createIncfile() throws IOException, BookException {
         File tempIncfile = new File(getExpandedDataPath().getPath() + File.separator + INCFILE);
-        if (!tempIncfile.exists() && !tempIncfile.createNewFile())
-        {
+        if (!tempIncfile.exists() && !tempIncfile.createNewFile()) {
             throw new IOException("Could not create incfile file."); //$NON-NLS-1$
         }
         this.incfile = tempIncfile;
     }
 
-    private void prepopulateIncfile() throws IOException
-    {
+    private void prepopulateIncfile() throws IOException {
         writeIncfile(1);
     }
 
-    private void writeIncfile(int value) throws IOException
-    {
+    private void writeIncfile(int value) throws IOException {
         FileOutputStream fos = null;
-        try
-        {
+        try {
             fos = new FileOutputStream(this.incfile, false);
             fos.write(littleEndian32BitByteArrayFromInt(value));
-        }
-        catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             log.error("Error on writing to incfile, file should exist already!"); //$NON-NLS-1$
             log.error(e.getMessage());
-        }
-        finally
-        {
+        } finally {
             fos.close();
         }
     }
 
-    private int readIncfile() throws IOException
-    {
+    private int readIncfile() throws IOException {
         int ret = -1;
-        if (this.incfile != null)
-        {
+        if (this.incfile != null) {
             FileInputStream fis = null;
-            try
-            {
+            try {
                 fis = new FileInputStream(this.incfile);
                 byte[] buffer = new byte[4];
-                if (fis.read(buffer) != 4)
-                {
+                if (fis.read(buffer) != 4) {
                     log.error("Read data is not of appropriate size of 4 bytes!"); //$NON-NLS-1$
                     throw new IOException("Incfile is not 4 bytes long"); //$NON-NLS-1$
                 }
                 ret = SwordUtil.decodeLittleEndian32(buffer, 0);
-            }
-            catch (FileNotFoundException e)
-            {
+            } catch (FileNotFoundException e) {
                 log.error("Error on writing to incfile, file should exist already!"); //$NON-NLS-1$
                 log.error(e.getMessage());
-            }
-            finally
-            {
-                if (fis != null)
-                {
+            } finally {
+                if (fis != null) {
                     fis.close();
                 }
             }
@@ -405,75 +347,59 @@ public class RawFileBackend extends RawBackend
         return ret;
     }
 
-    private void writeInitialIndex(BufferedOutputStream outStream) throws IOException
-    {
+    private void writeInitialIndex(BufferedOutputStream outStream) throws IOException {
         outStream.write(littleEndian32BitByteArrayFromInt(0)); // offset
         outStream.write(littleEndian16BitByteArrayFromShort((short) 0)); // length
     }
 
-    private byte[] readTextDataFile(File dataFile) throws IOException
-    {
+    private byte[] readTextDataFile(File dataFile) throws IOException {
         BufferedInputStream inStream = null;
-        try
-        {
+        try {
             int len = (int) dataFile.length();
             byte[] textData = new byte[len];
             inStream = new BufferedInputStream(new FileInputStream(dataFile));
-            if (inStream.read(textData) != len)
-            {
+            if (inStream.read(textData) != len) {
                 log.error("Read data is not of appropriate size of " + len + " bytes!"); //$NON-NLS-1$ //$NON-NLS-2$
                 throw new IOException("data is not " + len + " bytes long"); //$NON-NLS-1$ //$NON-NLS-2$
             }
             return textData;
-        }
-        catch (FileNotFoundException ex)
-        {
+        } catch (FileNotFoundException ex) {
             log.error(ex.getMessage());
             throw new IOException("Could not read text data file, file not found: " + dataFile.getName()); //$NON-NLS-1$
-        }
-        finally
-        {
-            if (inStream != null)
-            {
+        } finally {
+            if (inStream != null) {
                 inStream.close();
             }
         }
     }
 
-    private void writeTextDataFile(File dataFile, byte[] textData) throws IOException
-    {
+    private void writeTextDataFile(File dataFile, byte[] textData) throws IOException {
         BufferedOutputStream bos = null;
-        try
-        {
+        try {
             bos = new BufferedOutputStream(new FileOutputStream(dataFile, false));
             bos.write(textData);
-        }
-        finally
-        {
-            if (bos != null)
-            {
+        } finally {
+            if (bos != null) {
                 bos.close();
             }
         }
     }
 
-    private byte[] littleEndian32BitByteArrayFromInt(int val)
-    {
+    private byte[] littleEndian32BitByteArrayFromInt(int val) {
         byte[] buffer = new byte[4];
         SwordUtil.encodeLittleEndian32(val, buffer, 0);
         return buffer;
     }
 
-    private byte[] littleEndian16BitByteArrayFromShort(short val)
-    {
+    private byte[] littleEndian16BitByteArrayFromShort(short val) {
         byte[] buffer = new byte[2];
         SwordUtil.encodeLittleEndian16(val, buffer, 0);
         return buffer;
     }
 
-    private static final Logger log          = Logger.getLogger(RawFileBackend.class);
-    private static final String INCFILE      = "incfile"; //$NON-NLS-1$
+    private static final Logger log = Logger.getLogger(RawFileBackend.class);
+    private static final String INCFILE = "incfile"; //$NON-NLS-1$
 
-    private File                incfile;
-    private int                 incfileValue;
+    private File incfile;
+    private int incfileValue;
 }

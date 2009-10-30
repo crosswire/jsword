@@ -28,38 +28,30 @@ import org.crosswire.common.xml.Converter;
 
 /**
  * A factory for Converters.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @see org.crosswire.common.xml.Converter
  */
-public final class ConverterFactory
-{
+public final class ConverterFactory {
     /**
      * Prevent instantiation
      */
-    private ConverterFactory()
-    {
+    private ConverterFactory() {
     }
 
     /**
      * Generate a converter for the current converter name
      */
-    public static Converter getConverter()
-    {
-        try
-        {
+    public static Converter getConverter() {
+        try {
             Class clazz = (Class) PluginUtil.getImplementorsMap(Converter.class).get(name);
             assert clazz != null : Msg.NO_CONVERTER.toString(name);
             return (Converter) clazz.newInstance();
-        }
-        catch (InstantiationException e)
-        {
+        } catch (InstantiationException e) {
             assert false : e;
-        }
-        catch (IllegalAccessException e)
-        {
+        } catch (IllegalAccessException e) {
             assert false : e;
         }
         return null;
@@ -68,24 +60,21 @@ public final class ConverterFactory
     /**
      * Get a map of the known converters, by looking up the answers in Project
      */
-    public static Map getKnownConverters()
-    {
+    public static Map getKnownConverters() {
         return PluginUtil.getImplementorsMap(Converter.class);
     }
 
     /**
      * For config to set the currently preferred converter implementation
      */
-    public static void setCurrentConverterName(String name)
-    {
+    public static void setCurrentConverterName(String name) {
         ConverterFactory.name = name;
     }
 
     /**
      * For config to read the currently preferred converter implementation
      */
-    public static String getCurrentConverterName()
-    {
+    public static String getCurrentConverterName() {
         return name;
     }
 

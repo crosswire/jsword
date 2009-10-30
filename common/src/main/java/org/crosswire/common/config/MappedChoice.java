@@ -26,16 +26,16 @@ import java.util.Map;
 /**
  * MappedChoice is simply a Choice where there are a number of alternative
  * options where each entry is a Map.Entry.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public interface MappedChoice extends Choice
-{
+public interface MappedChoice extends Choice {
     /**
      * The available alternative values to be presented as options to the user
      * where the user interface allows presentation of alternatives.
+     * 
      * @return A string array of alternatives.
      */
     Map getOptions();

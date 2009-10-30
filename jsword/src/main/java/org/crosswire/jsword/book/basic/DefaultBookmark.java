@@ -30,98 +30,103 @@ import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.Bookmark;
 import org.crosswire.jsword.index.search.SearchRequest;
 
-
 /**
- * A Bookmark remembers a particular view of one or more Books.
- * What is viewed regarding a book set is either a SearchRequest
- * or a key lookup request.
- *
- * @see gnu.lgpl.License for license details.
+ * A Bookmark remembers a particular view of one or more Books. What is viewed
+ * regarding a book set is either a SearchRequest or a key lookup request.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class DefaultBookmark implements Bookmark
-{
+public class DefaultBookmark implements Bookmark {
     /**
      * Create an empty default bookmark
      */
-    public DefaultBookmark()
-    {
+    public DefaultBookmark() {
         books = new ArrayList();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Bookmark#addBook(org.crosswire.jsword.book.Book)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.Bookmark#addBook(org.crosswire.jsword.book.
+     * Book)
      */
-    public void addBook(Book book)
-    {
+    public void addBook(Book book) {
         books.add(book);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.Bookmark#getBooks()
      */
-    public List getBooks()
-    {
+    public List getBooks() {
         return Collections.unmodifiableList(books);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Bookmark#setSearchRequest(org.crosswire.jsword.index.search.SearchRequest)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.Bookmark#setSearchRequest(org.crosswire.jsword
+     * .index.search.SearchRequest)
      */
-    public void setSearchRequest(SearchRequest request)
-    {
+    public void setSearchRequest(SearchRequest request) {
         searchRequest = request;
         lookupRequest = null;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.Bookmark#getSearchRequest()
      */
-    public SearchRequest getSearchRequest()
-    {
+    public SearchRequest getSearchRequest() {
         return searchRequest;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Bookmark#setLookupRequest(java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.Bookmark#setLookupRequest(java.lang.String)
      */
-    public void setLookupRequest(String request)
-    {
+    public void setLookupRequest(String request) {
         lookupRequest = request;
         searchRequest = null;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.Bookmark#getLookupRequest()
      */
-    public String getLookupRequest()
-    {
+    public String getLookupRequest() {
         return lookupRequest;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.Bookmark#getBookData()
      */
-    public BookData getBookData()
-    {
+    public BookData getBookData() {
         return null;
     }
 
     /**
-     * This needs to be declared here so that it is visible as a method
-     * on a derived Bookmark.
+     * This needs to be declared here so that it is visible as a method on a
+     * derived Bookmark.
+     * 
      * @return A complete copy of ourselves
      */
-    public Object clone()
-    {
+    public Object clone() {
         Object clone = null;
-        try
-        {
+        try {
             clone = super.clone();
-        }
-        catch (CloneNotSupportedException e)
-        {
+        } catch (CloneNotSupportedException e) {
             assert false : e;
         }
         return clone;

@@ -30,57 +30,55 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.cz.CzechAnalyzer;
 
 /**
- * An Analyzer whose {@link TokenStream} is built from a {@link LowerCaseTokenizer}
- * filtered with {@link StopFilter} (optional).
+ * An Analyzer whose {@link TokenStream} is built from a
+ * {@link LowerCaseTokenizer} filtered with {@link StopFilter} (optional).
  * Stemming not implemented yet
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Sijo Cherian [sijocherian at yahoo dot com]
  * @author DM SMITH [dmsmith555 at yahoo dot com]
  */
-public class CzechLuceneAnalyzer extends AbstractBookAnalyzer
-{
-    public CzechLuceneAnalyzer()
-    {
+public class CzechLuceneAnalyzer extends AbstractBookAnalyzer {
+    public CzechLuceneAnalyzer() {
         stopSet = StopFilter.makeStopSet(CzechAnalyzer.CZECH_STOP_WORDS);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String, java.io.Reader)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String,
+     * java.io.Reader)
      */
-    public final TokenStream tokenStream(String fieldName, Reader reader)
-    {
+    public final TokenStream tokenStream(String fieldName, Reader reader) {
         TokenStream result = new LowerCaseTokenizer(reader);
 
-        if (doStopWords && stopSet != null)
-        {
+        if (doStopWords && stopSet != null) {
             result = new StopFilter(false, result, stopSet);
         }
 
         return result;
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.lucene.analysis.Analyzer#reusableTokenStream(java.lang.String, java.io.Reader)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.apache.lucene.analysis.Analyzer#reusableTokenStream(java.lang.String,
+     * java.io.Reader)
      */
-    public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException
-    {
+    public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
         SavedStreams streams = (SavedStreams) getPreviousTokenStream();
-        if (streams == null)
-        {
+        if (streams == null) {
             streams = new SavedStreams();
             streams.setSource(new LowerCaseTokenizer(reader));
             streams.setResult(streams.getSource());
-            if (doStopWords && stopSet != null)
-            {
+            if (doStopWords && stopSet != null) {
                 streams.setResult(new StopFilter(false, streams.getResult(), stopSet));
             }
 
             setPreviousTokenStream(streams);
-        }
-        else
-        {
+        } else {
             streams.getSource().reset(reader);
         }
         return streams.getResult();

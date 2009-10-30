@@ -25,53 +25,51 @@ import org.crosswire.common.crypt.Sapphire;
 import org.crosswire.jsword.book.DataPolice;
 
 /**
- * Data entry represents an entry in a Data file.
- * The entry consists of a key and an optional payload.
- * The payload may be the content, aka rawtext.
- * The payload may be an alias for another entry.
- * The payload may be a block locator.
+ * Data entry represents an entry in a Data file. The entry consists of a key
+ * and an optional payload. The payload may be the content, that is rawtext. The
+ * payload may be an alias for another entry. The payload may be a block
+ * locator.
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class DataEntry
-{
+public class DataEntry {
     /**
      * Construct a data entry.
      * 
-     * @param name A name used for diagnostics.
-     * @param data The data for this entry.
-     * @param charset The character encoding for this entry.
+     * @param name
+     *            A name used for diagnostics.
+     * @param data
+     *            The data for this entry.
+     * @param charset
+     *            The character encoding for this entry.
      */
-    public DataEntry(String name, byte[] data, String charset)
-    {
-        this.name    = name;
-        this.data    = (byte[]) data.clone();
+    public DataEntry(String name, byte[] data, String charset) {
+        this.name = name;
+        this.data = (byte[]) data.clone();
         this.charset = charset;
     }
 
     /**
      * Get the name, that is, the diagnostic label, for this DataEntry.
+     * 
      * @return the diagnostic name.
      */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
     /**
      * Get the key from this DataEntry.
-    * @return the key
+     * 
+     * @return the key
      */
-    public String getKey()
-    {
-        if (key == null)
-        {
+    public String getKey() {
+        if (key == null) {
             keyEnd = SwordUtil.findByte(data, SEPARATOR);
 
-            if (keyEnd < 0)
-            {
+            if (keyEnd < 0) {
                 DataPolice.report("Failed to find key. name='" + name + "'"); //$NON-NLS-1$ //$NON-NLS-2$
                 return ""; //$NON-NLS-1$
             }
@@ -91,12 +89,11 @@ public class DataEntry
 
     /**
      * Determine whether this entry is an alias for another.
+     * 
      * @return whether this is an alias entry
      */
-    public boolean isLinkEntry()
-    {
-        if (data.length >= 5)
-        {
+    public boolean isLinkEntry() {
+        if (data.length >= 5) {
             String linkCheck = SwordUtil.decode(name, data, getKeyEnd() + 1, 5, charset);
             return "@LINK".equals(linkCheck); //$NON-NLS-1$
         }
@@ -110,8 +107,7 @@ public class DataEntry
      * @return the key to look up
      * @see #isLinkEntry()
      */
-    public String getLinkTarget()
-    {
+    public String getLinkTarget() {
         // 6 represents the length of "@LINK" + 1 to skip the last separator.
         int linkStart = getKeyEnd() + 6;
         int len = getLinkEnd() - linkStart + 1;
@@ -121,11 +117,11 @@ public class DataEntry
     /**
      * Get the raw text from this entry.
      * 
-     * @param cipherKey the key, if any, to (un)lock the text
+     * @param cipherKey
+     *            the key, if any, to (un)lock the text
      * @return the raw text
      */
-    public String getRawText(byte[] cipherKey)
-    {
+    public String getRawText(byte[] cipherKey) {
         int textStart = getKeyEnd() + 1;
         cipher(cipherKey, textStart);
         return SwordUtil.decode(name, data, textStart, data.length - textStart, charset).trim();
@@ -133,57 +129,50 @@ public class DataEntry
 
     /**
      * Get the block start and entry position.
+     * 
      * @return the index of the block
      */
-    public DataIndex getBlockIndex()
-    {
+    public DataIndex getBlockIndex() {
         int start = getKeyEnd() + 1;
-        return new DataIndex(SwordUtil.decodeLittleEndian32(data, start),
-                             SwordUtil.decodeLittleEndian32(data, start + 4));
+        return new DataIndex(SwordUtil.decodeLittleEndian32(data, start), SwordUtil.decodeLittleEndian32(data, start + 4));
     }
 
     /**
-     * Get the position of the first \n in the data. This represents the end of the key
-     * and the start of the rest of the data.
+     * Get the position of the first \n in the data. This represents the end of
+     * the key and the start of the rest of the data.
      * 
      * @return the end of the key or -1 if not found.
      */
-    private int getKeyEnd()
-    {
-        if (keyEnd == 0)
-        {
+    private int getKeyEnd() {
+        if (keyEnd == 0) {
             keyEnd = SwordUtil.findByte(data, SEPARATOR);
         }
         return keyEnd;
     }
 
     /**
-     * Get the position of the second \n in the data. This represents the end of the link
-     * and the start of the rest of the data.
+     * Get the position of the second \n in the data. This represents the end of
+     * the link and the start of the rest of the data.
      * 
      * @return the end of the link or -1 if not found.
      */
-    private int getLinkEnd()
-    {
-        if (linkEnd == 0)
-        {
+    private int getLinkEnd() {
+        if (linkEnd == 0) {
             linkEnd = SwordUtil.findByte(data, getKeyEnd() + 1, SEPARATOR);
         }
         return linkEnd;
     }
 
     /**
-     * Decipher/Encipher the data in place, if there
-     * is a cipher key.
-     * @param cipherKey the key to the cipher
+     * Decipher/Encipher the data in place, if there is a cipher key.
+     * 
+     * @param cipherKey
+     *            the key to the cipher
      */
-    public void cipher(byte[] cipherKey, int offset)
-    {
-        if (cipherKey != null && cipherKey.length > 0)
-        {
+    public void cipher(byte[] cipherKey, int offset) {
+        if (cipherKey != null && cipherKey.length > 0) {
             Sapphire cipherEngine = new Sapphire(cipherKey);
-            for (int i = offset; i < data.length; i++)
-            {
+            for (int i = offset; i < data.length; i++) {
                 data[i] = cipherEngine.cipher(data[i]);
             }
             // destroy any evidence!
@@ -191,42 +180,39 @@ public class DataEntry
         }
     }
 
-
     /**
-     * Used to separate the key name from the key value
-     * Note: it may be \r\n or just \n, so only need \n.
-     * ^M=CR=13=0x0d=\r
-     * ^J=LF=10=0x0a=\n
+     * Used to separate the key name from the key value Note: it may be \r\n or
+     * just \n, so only need \n. ^M=CR=13=0x0d=\r ^J=LF=10=0x0a=\n
      */
     private static final byte SEPARATOR = 10;
 
     /**
      * A diagnostic name.
      */
-    private String            name;
+    private String name;
 
     /**
      * The data entry as it comes out of the data file.
      */
-    private byte[]            data;
+    private byte[] data;
 
     /**
      * The character set of the data entry.
      */
-    private String            charset;
+    private String charset;
 
     /**
      * The key in the data entry.
      */
-    private String            key;
+    private String key;
 
     /**
      * The index of the separator between the key and the rest of the stuff.
      */
-    private int               keyEnd;
+    private int keyEnd;
 
     /**
      * The index of the separator between the link and the rest of the stuff.
      */
-    private int               linkEnd;
+    private int linkEnd;
 }

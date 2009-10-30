@@ -32,72 +32,61 @@ import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.versification.BibleInfo;
 
 /**
- * Determines the scope of the Bible.
- * That is, the verses that are in the Bible and the verses that are not.
- * This is based upon the KJV versification.
+ * Determines the scope of the Bible. That is, the verses that are in the Bible
+ * and the verses that are not. This is based upon the KJV versification.
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class BibleScope
-{
+public class BibleScope {
 
-    public BibleScope(Book book)
-    {
+    public BibleScope(Book book) {
         this.book = book;
     }
 
     /**
      * Get a key containing all the verses that are in this Bible.
+     * 
      * @return verses that are in scope
      */
-    public Key getInScope()
-    {
+    public Key getInScope() {
         computeScope();
         return inScope;
     }
 
     /**
      * Get a key containing all the verses that are not in this Bible.
+     * 
      * @return verses that are out of scope
      */
-    public Key getOutOfScope()
-    {
+    public Key getOutOfScope() {
         computeScope();
         return outScope;
     }
 
-    private void computeScope()
-    {
-        if (inScope == null)
-        {
+    private void computeScope() {
+        if (inScope == null) {
             KeyFactory keyf = PassageKeyFactory.instance();
             Key all = keyf.getGlobalKeyList();
             inScope = keyf.createEmptyKeyList();
             outScope = keyf.createEmptyKeyList();
             Iterator iter = all.iterator();
-            while (iter.hasNext())
-            {
+            while (iter.hasNext()) {
                 Key key = (Key) iter.next();
-                if (book.contains(key))
-                {
+                if (book.contains(key)) {
                     inScope.addAll(key);
-                }
-                else
-                {
+                } else {
                     outScope.addAll(key);
                 }
             }
         }
     }
 
-    public static void report(Book b)
-    {
-        if (!b.getBookCategory().equals(BookCategory.BIBLE) && !b.getBookCategory().equals(BookCategory.COMMENTARY))
-        {
+    public static void report(Book b) {
+        if (!b.getBookCategory().equals(BookCategory.BIBLE) && !b.getBookCategory().equals(BookCategory.COMMENTARY)) {
             System.err.println(b.getInitials() + " is not a Bible or Commentary"); //$NON-NLS-1$
-            //System.exit(1);
+            // System.exit(1);
         }
 
         BibleScope scope = new BibleScope(b);
@@ -110,10 +99,10 @@ public class BibleScope
     private Book book;
 
     /**
-     * Call with &lt;operation&gt; book.
-     * Where operation can be one of:
+     * Call with &lt;operation&gt; book. Where operation can be one of:
      * <ul>
-     * <li>check - returns "TRUE" or "FALSE" indicating whether the index exists or not</li>
+     * <li>check - returns "TRUE" or "FALSE" indicating whether the index exists
+     * or not</li>
      * <li>create - (re)create the index</li>
      * <li>delete - delete the index if it exists</li>
      * </ul>
@@ -121,10 +110,8 @@ public class BibleScope
      * 
      * @param args
      */
-    public static void main(String[] args)
-    {
-        if (args.length != 1)
-        {
+    public static void main(String[] args) {
+        if (args.length != 1) {
             usage();
             return;
         }
@@ -132,29 +119,28 @@ public class BibleScope
         System.err.println("BibleScope " + args[0]); //$NON-NLS-1$
 
         Book b = Books.installed().getBook(args[0]);
-        if (b == null)
-        {
+        if (b == null) {
             System.err.println("Book not found"); //$NON-NLS-1$
             return;
         }
 
         report(b);
 
-//        List books = Books.installed().getBooks(BookFilters.getCommentaries());
-//        Iterator iter = books.iterator();
-//        while (iter.hasNext())
-//        {
-//            try {
-//                report((Book) iter.next());
-//            } catch (Exception e) {
-//                System.out.println("exception " + e.toString());
-//            }
-//            System.out.println();
-//        }
+        // List books =
+        // Books.installed().getBooks(BookFilters.getCommentaries());
+        // Iterator iter = books.iterator();
+        // while (iter.hasNext())
+        // {
+        // try {
+        // report((Book) iter.next());
+        // } catch (Exception e) {
+        // System.out.println("exception " + e.toString());
+        // }
+        // System.out.println();
+        // }
     }
 
-    public static void usage()
-    {
+    public static void usage() {
         System.err.println("Usage: BibleScope book"); //$NON-NLS-1$
     }
 

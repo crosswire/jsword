@@ -49,13 +49,12 @@ import org.jdom.Text;
 
 /**
  * Some simple utilities to help working with OSIS classes.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public final class OSISUtil
-{
+public final class OSISUtil {
     /**
      * The following are values for the type attribute on the hi element.
      */
@@ -135,32 +134,38 @@ public final class OSISUtil
     public static final String HI_X_TT = "x-tt"; //$NON-NLS-1$
 
     /**
-     * Constant to help narrow down what we use seg for. In this case the justify right tag
+     * Constant to help narrow down what we use seg for. In this case the
+     * justify right tag
      */
     public static final String SEG_JUSTIFYRIGHT = "text-align: right;"; //$NON-NLS-1$
 
     /**
-     * Constant to help narrow down what we use seg for. In this case the justify right tag
+     * Constant to help narrow down what we use seg for. In this case the
+     * justify right tag
      */
     public static final String SEG_JUSTIFYLEFT = "text-align: left;"; //$NON-NLS-1$
 
     /**
-     * Constant to help narrow down what we use seg for. In this case the thml center tag
+     * Constant to help narrow down what we use seg for. In this case the thml
+     * center tag
      */
     public static final String SEG_CENTER = "text-align: center;"; //$NON-NLS-1$
 
     /**
-     * Constant to help narrow down what we use div for. In this case the thml pre tag
+     * Constant to help narrow down what we use div for. In this case the thml
+     * pre tag
      */
     public static final String DIV_PRE = "x-pre"; //$NON-NLS-1$
 
     /**
-     * Constant to help narrow down what we use seg for. In this case the color tag
+     * Constant to help narrow down what we use seg for. In this case the color
+     * tag
      */
     public static final String SEG_COLORPREFIX = "color: "; //$NON-NLS-1$
 
     /**
-     * Constant to help narrow down what we use seg for. In this case the font-size tag
+     * Constant to help narrow down what we use seg for. In this case the
+     * font-size tag
      */
     public static final String SEG_SIZEPREFIX = "font-size: "; //$NON-NLS-1$
 
@@ -212,7 +217,8 @@ public final class OSISUtil
     public static final String MORPH_STRONGS = "x-StrongsMorph:T"; //$NON-NLS-1$
 
     /**
-     * Constant to help narrow down what we use "q" for. In this case: blockquote
+     * Constant to help narrow down what we use "q" for. In this case:
+     * blockquote
      */
     public static final String Q_BLOCK = "blockquote"; //$NON-NLS-1$
 
@@ -233,7 +239,8 @@ public final class OSISUtil
     public static final String LIST_UNORDERED = "x-unordered"; //$NON-NLS-1$
 
     /**
-     * Table roles (on table, row and cell elements) can be "data", the default, or label.
+     * Table roles (on table, row and cell elements) can be "data", the default,
+     * or label.
      */
     public static final String TABLE_ROLE_LABEL = "label"; //$NON-NLS-1$
 
@@ -296,7 +303,8 @@ public final class OSISUtil
     public static final String ATTRIBUTE_W_MORPH = "morph"; //$NON-NLS-1$
     public static final String ATTRIBUTE_OSISTEXT_OSISIDWORK = "osisIDWork"; //$NON-NLS-1$
     // OSIS defines the lang attribute as the one from the xml namespace
-    // Typical usage element.setAttribute(OSISUtil.OSIS_ATTR_LANG, lang, Namespace.XML_NAMESPACE);
+    // Typical usage element.setAttribute(OSISUtil.OSIS_ATTR_LANG, lang,
+    // Namespace.XML_NAMESPACE);
     public static final String OSIS_ATTR_LANG = "lang"; //$NON-NLS-1$
     public static final String ATTRIBUTE_DIV_BOOK = "book"; //$NON-NLS-1$
 
@@ -305,9 +313,8 @@ public final class OSISUtil
      */
     private static final String OSISID_PREFIX_BIBLE = "Bible."; //$NON-NLS-1$
 
-    private static final Set EXTRA_BIBLICAL_ELEMENTS = new HashSet(Arrays.asList(new String[]
-    {
-        OSIS_ELEMENT_NOTE, OSIS_ELEMENT_TITLE, OSIS_ELEMENT_REFERENCE
+    private static final Set EXTRA_BIBLICAL_ELEMENTS = new HashSet(Arrays.asList(new String[] {
+            OSIS_ELEMENT_NOTE, OSIS_ELEMENT_TITLE, OSIS_ELEMENT_REFERENCE
     }));
 
     /**
@@ -318,8 +325,7 @@ public final class OSISUtil
     /**
      * Prevent instantiation
      */
-    private OSISUtil()
-    {
+    private OSISUtil() {
     }
 
     private static OSISFactory factory = new OSISFactory();
@@ -327,85 +333,74 @@ public final class OSISUtil
     /**
      * An accessor for the OSISFactory that creates OSIS objects
      */
-    public static OSISFactory factory()
-    {
+    public static OSISFactory factory() {
         return factory;
     }
 
     /**
      * A generic way of creating empty Elements of various types
      */
-    public static class OSISFactory
-    {
+    public static class OSISFactory {
         /**
         *
         */
-       public Element createAbbr()
-       {
-           return new Element(OSIS_ELEMENT_ABBR);
-       }
+        public Element createAbbr() {
+            return new Element(OSIS_ELEMENT_ABBR);
+        }
 
-       /**
+        /**
        *
        */
-      public Element createSeg()
-      {
-          return new Element(OSIS_ELEMENT_SEG);
-      }
+        public Element createSeg() {
+            return new Element(OSIS_ELEMENT_SEG);
+        }
 
         /**
          *
          */
-        public Element createOsisText()
-        {
+        public Element createOsisText() {
             return new Element(OSIS_ELEMENT_OSISTEXT);
         }
 
         /**
          *
          */
-        public Element createHeader()
-        {
+        public Element createHeader() {
             return new Element(OSIS_ELEMENT_HEADER);
         }
 
         /**
          *
          */
-        public Element createWork()
-        {
+        public Element createWork() {
             return new Element(OSIS_ELEMENT_WORK);
         }
 
         /**
          *
          */
-        public Element createOsis()
-        {
+        public Element createOsis() {
             return new Element(OSIS_ELEMENT_OSIS);
         }
 
         /**
          *
          */
-        public Element createDiv()
-        {
+        public Element createDiv() {
             return new Element(OSIS_ELEMENT_DIV);
         }
 
         /**
          *
          */
-        public Element createCell()
-        {
+        public Element createCell() {
             return new Element(OSIS_ELEMENT_CELL);
         }
 
         /**
          *
          */
-        public Element createHeaderCell()
-        {
+        public Element createHeaderCell() {
             Element ele = new Element(OSIS_ELEMENT_CELL);
             ele.setAttribute(ATTRIBUTE_TABLE_ROLE, TABLE_ROLE_LABEL);
             ele.setAttribute(ATTRIBUTE_CELL_ALIGN, CELL_ALIGN_CENTER);
@@ -415,194 +410,173 @@ public final class OSISUtil
         /**
          *
          */
-        public Element createVerse()
-        {
+        public Element createVerse() {
             return new Element(OSIS_ELEMENT_VERSE);
         }
 
         /**
          *
          */
-        public Element createW()
-        {
+        public Element createW() {
             return new Element(OSIS_ELEMENT_W);
         }
 
         /**
          *
          */
-        public Element createFigure()
-        {
+        public Element createFigure() {
             return new Element(OSIS_ELEMENT_FIGURE);
         }
 
         /**
          *
          */
-        public Element createForeign()
-        {
+        public Element createForeign() {
             return new Element(OSIS_ELEMENT_FOREIGN);
         }
 
         /**
          *
          */
-        public Element createItem()
-        {
+        public Element createItem() {
             return new Element(OSIS_ELEMENT_ITEM);
         }
 
         /**
          *
          */
-        public Element createP()
-        {
+        public Element createP() {
             return new Element(OSIS_ELEMENT_P);
         }
 
         /**
          *
          */
-        public Element createList()
-        {
+        public Element createList() {
             return new Element(OSIS_ELEMENT_LIST);
         }
 
         /**
          *
          */
-        public Element createQ()
-        {
+        public Element createQ() {
             return new Element(OSIS_ELEMENT_Q);
         }
 
         /**
          *
          */
-        public Element createName()
-        {
+        public Element createName() {
             return new Element(OSIS_ELEMENT_NAME);
         }
 
         /**
          *
          */
-        public Element createNote()
-        {
+        public Element createNote() {
             return new Element(OSIS_ELEMENT_NOTE);
         }
 
         /**
          *
          */
-        public Element createReference()
-        {
+        public Element createReference() {
             return new Element(OSIS_ELEMENT_REFERENCE);
         }
 
         /**
          *
          */
-        public Element createRow()
-        {
+        public Element createRow() {
             return new Element(OSIS_ELEMENT_ROW);
         }
 
         /**
          *
          */
-        public Element createSpeaker()
-        {
+        public Element createSpeaker() {
             return new Element(OSIS_ELEMENT_SPEAKER);
         }
 
         /**
          *
          */
-        public Element createSpeech()
-        {
+        public Element createSpeech() {
             return new Element(OSIS_ELEMENT_SPEECH);
         }
 
         /**
          *
          */
-        public Element createTable()
-        {
+        public Element createTable() {
             return new Element(OSIS_ELEMENT_TABLE);
         }
 
         /**
          *
          */
-        public Element createTitle()
-        {
+        public Element createTitle() {
             return new Element(OSIS_ELEMENT_TITLE);
         }
+
         /**
          * Line Group
          */
-        public Element createLG()
-        {
+        public Element createLG() {
             return new Element(OSIS_ELEMENT_LG);
         }
+
         /**
          * Line
          */
-        public Element createL()
-        {
+        public Element createL() {
             return new Element(OSIS_ELEMENT_L);
         }
+
         /**
          * Line Break
          */
-        public Element createLB()
-        {
+        public Element createLB() {
             return new Element(OSIS_ELEMENT_LB);
         }
+
         /**
          * Highlight
          */
-        public Element createHI()
-        {
+        public Element createHI() {
             return new Element(OSIS_ELEMENT_HI);
         }
 
         /**
          * Text
          */
-        public Text createText(String text)
-        {
+        public Text createText(String text) {
             return new Text(text);
         }
     }
 
     /**
-     * Dig past the osis and osisText element, if present, to get the meaningful content of the document.
-     *
+     * Dig past the osis and osisText element, if present, to get the meaningful
+     * content of the document.
+     * 
      * @return a fragment
      */
-    public static List getFragment(Element root)
-    {
+    public static List getFragment(Element root) {
         Element content = root;
-        if (OSISUtil.OSIS_ELEMENT_OSIS.equals(root.getName()))
-        {
+        if (OSISUtil.OSIS_ELEMENT_OSIS.equals(root.getName())) {
             content = root.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
         }
 
-        if (OSISUtil.OSIS_ELEMENT_OSISTEXT.equals(root.getName()))
-        {
+        if (OSISUtil.OSIS_ELEMENT_OSISTEXT.equals(root.getName())) {
             content = root.getChild(OSISUtil.OSIS_ELEMENT_DIV);
         }
 
         // At this point we are at something interesting, possibly null.
         // If this was a semantically valid OSIS document then it is a div.
         // As long as this node has one child dig deeper.
-        while (content != null && content.getContentSize() == 1)
-        {
+        while (content != null && content.getContentSize() == 1) {
             Content firstChild = content.getContent(0);
-            if (firstChild instanceof Element && OSISUtil.OSIS_ELEMENT_DIV.equals(((Element) firstChild).getName()))
-            {
+            if (firstChild instanceof Element && OSISUtil.OSIS_ELEMENT_DIV.equals(((Element) firstChild).getName())) {
                 content = (Element) firstChild;
             }
             break;
@@ -613,43 +587,49 @@ public final class OSISUtil
     }
 
     /**
-     * Get the canonical text from an osis document consisting of a single fragment.
-     * The document is assumed to be valid OSIS2.0 XML. While xml valid
-     * is rigidly defined as meaning that an xml parser can validate the document,
-     * it does not mean that the document is valid OSIS. This is a semantic
-     * problem that is not validated. This method assumes that the
-     * root element is also semantically valid.
-     *
-     * <p>This means that the top level element's tagname is osis.
-     * This can contain either a osisText or an osisCorpus.
-     * If it is an osisCorpus, then it contains an osisText.
-     * However, as a simplification, since JSword constructs
-     * the whole doc for the fragment, osisCorpus can be ignored.
-     * <p>The osisText element contains a div element that is either
-     * a container or a milestone. Again, JSword is providing the
-     * div element and it will be provided as a container. It is this div
-     * that "contains" the actual fragment.</p>
-     * <p>A verse element may either be
-     * a container or a milestone. Sword OSIS books differ in whether
-     * they provide the verse element. Most do not. The few that do are
-     * using the container model, but it has been proposed that milestones
-     * are the best practice.</p>
-     *
-     * <p>The fragment may contain elements that are not a part of the
-     * original text. These are things such as notes.</p>
-     *
-     * <p>Milestones require special handling. Beginning milestones
-     * elements have an sID attribute, while ending milestones have
-     * an eID with the same value as the opening. So everything between
-     * the start and the corresponding end is the content of the element.
-     * Also, for a given element, say div, they have to be properly nested
-     * as if they were container elements.</p>
-     *
-     * @param root the whole osis document.
+     * Get the canonical text from an osis document consisting of a single
+     * fragment. The document is assumed to be valid OSIS2.0 XML. While xml
+     * valid is rigidly defined as meaning that an xml parser can validate the
+     * document, it does not mean that the document is valid OSIS. This is a
+     * semantic problem that is not validated. This method assumes that the root
+     * element is also semantically valid.
+     * 
+     * <p>
+     * This means that the top level element's tagname is osis. This can contain
+     * either a osisText or an osisCorpus. If it is an osisCorpus, then it
+     * contains an osisText. However, as a simplification, since JSword
+     * constructs the whole doc for the fragment, osisCorpus can be ignored.
+     * <p>
+     * The osisText element contains a div element that is either a container or
+     * a milestone. Again, JSword is providing the div element and it will be
+     * provided as a container. It is this div that "contains" the actual
+     * fragment.
+     * </p>
+     * <p>
+     * A verse element may either be a container or a milestone. Sword OSIS
+     * books differ in whether they provide the verse element. Most do not. The
+     * few that do are using the container model, but it has been proposed that
+     * milestones are the best practice.
+     * </p>
+     * 
+     * <p>
+     * The fragment may contain elements that are not a part of the original
+     * text. These are things such as notes.
+     * </p>
+     * 
+     * <p>
+     * Milestones require special handling. Beginning milestones elements have
+     * an sID attribute, while ending milestones have an eID with the same value
+     * as the opening. So everything between the start and the corresponding end
+     * is the content of the element. Also, for a given element, say div, they
+     * have to be properly nested as if they were container elements.
+     * </p>
+     * 
+     * @param root
+     *            the whole osis document.
      * @return The canonical text without markup
      */
-    public static String getCanonicalText(Element root)
-    {
+    public static String getCanonicalText(Element root) {
         StringBuffer buffer = new StringBuffer();
 
         // Dig past osis, osisText, if present, to get to the real content.
@@ -659,39 +639,31 @@ public final class OSISUtil
         String sID = null;
         Object data = null;
         Element ele = null;
-        while (dit.hasNext())
-        {
+        while (dit.hasNext()) {
             data = dit.next();
-            if (data instanceof Element)
-            {
+            if (data instanceof Element) {
                 ele = (Element) data;
-                if (!isCanonical(ele))
-                {
+                if (!isCanonical(ele)) {
                     continue;
                 }
 
-                if (ele.getName().equals(OSISUtil.OSIS_ELEMENT_VERSE))
-                {
+                if (ele.getName().equals(OSISUtil.OSIS_ELEMENT_VERSE)) {
                     sID = ele.getAttributeValue(OSISUtil.OSIS_ATTR_SID);
                 }
 
-                if (sID != null)
-                {
+                if (sID != null) {
                     getCanonicalContent(ele, sID, dit, buffer);
-                }
-                else
-                {
+                } else {
                     getCanonicalContent(ele, null, ele.getContent().iterator(), buffer);
                 }
-            }
-            else if (data instanceof Text)
-            {
-                // make sure that adjacent text elements are separated by whitespace
-                // TODO(dms): verify that the xml parser does not split words containing entities.
+            } else if (data instanceof Text) {
+                // make sure that adjacent text elements are separated by
+                // whitespace
+                // TODO(dms): verify that the xml parser does not split words
+                // containing entities.
                 int lastIndex = buffer.length() - 1;
                 String text = ((Text) data).getText();
-                if (lastIndex >= 0 && !Character.isWhitespace(buffer.charAt(lastIndex)) && !Character.isWhitespace(text.charAt(0)))
-                {
+                if (lastIndex >= 0 && !Character.isWhitespace(buffer.charAt(lastIndex)) && !Character.isWhitespace(text.charAt(0))) {
                     buffer.append(' ');
                 }
                 buffer.append(text);
@@ -702,37 +674,33 @@ public final class OSISUtil
     }
 
     /**
-     * A simplified plain text version of the data in this Element with all
-     * the markup stripped out.
+     * A simplified plain text version of the data in this Element with all the
+     * markup stripped out.
+     * 
      * @return The Bible text without markup
      */
-    public static String getPlainText(Element root)
-    {
+    public static String getPlainText(Element root) {
         // Dig past osis, osisText, if present, to get to the real content.
         return getTextContent(OSISUtil.getFragment(root));
     }
 
     /**
      * A space separate string containing Strong's numbers.
+     * 
      * @return The Strong's numbers in the text
      */
-    public static String getStrongsNumbers(Element root)
-    {
+    public static String getStrongsNumbers(Element root) {
         StringBuffer buffer = new StringBuffer();
 
         Iterator contentIter = getDeepContent(root, OSISUtil.OSIS_ELEMENT_W).iterator();
-        while (contentIter.hasNext())
-        {
+        while (contentIter.hasNext()) {
             Element ele = (Element) contentIter.next();
             String attr = ele.getAttributeValue(OSISUtil.ATTRIBUTE_W_LEMMA);
-            if (attr != null)
-            {
+            if (attr != null) {
                 Matcher matcher = strongsNumberPattern.matcher(attr);
-                while (matcher.find())
-                {
+                while (matcher.find()) {
                     String strongsNum = matcher.group(1);
-                    if (buffer.length() > 0)
-                    {
+                    if (buffer.length() > 0) {
                         buffer.append(' ');
                     }
                     buffer.append(strongsNum);
@@ -745,27 +713,22 @@ public final class OSISUtil
 
     /**
      * A space separate string containing osisID from the reference element.
+     * 
      * @return The references in the text
      */
-    public static String getReferences(Element root)
-    {
+    public static String getReferences(Element root) {
         KeyFactory keyf = PassageKeyFactory.instance();
         Key collector = keyf.createEmptyKeyList();
 
         Iterator contentIter = getDeepContent(root, OSISUtil.OSIS_ELEMENT_REFERENCE).iterator();
-        while (contentIter.hasNext())
-        {
+        while (contentIter.hasNext()) {
             Element ele = (Element) contentIter.next();
             String attr = ele.getAttributeValue(OSISUtil.OSIS_ATTR_REF);
-            if (attr != null)
-            {
-                try
-                {
+            if (attr != null) {
+                try {
                     Key key = keyf.getKey(attr);
                     collector.addAll(key);
-                }
-                catch (NoSuchKeyException e)
-                {
+                } catch (NoSuchKeyException e) {
                     log.warn("Unable to parse: " + attr, e); //$NON-NLS-1$
                 }
             }
@@ -776,22 +739,18 @@ public final class OSISUtil
 
     /**
      * The text of non-reference notes.
-     *
+     * 
      * @return The references in the text
      */
-    public static String getNotes(Element root)
-    {
+    public static String getNotes(Element root) {
         StringBuffer buffer = new StringBuffer();
 
         Iterator contentIter = getDeepContent(root, OSISUtil.OSIS_ELEMENT_NOTE).iterator();
-        while (contentIter.hasNext())
-        {
+        while (contentIter.hasNext()) {
             Element ele = (Element) contentIter.next();
             String attr = ele.getAttributeValue(OSISUtil.OSIS_ATTR_TYPE);
-            if (attr == null || !attr.equals(NOTETYPE_REFERENCE))
-            {
-                if (buffer.length() > 0)
-                {
+            if (attr == null || !attr.equals(NOTETYPE_REFERENCE)) {
+                if (buffer.length() > 0) {
                     buffer.append(' ');
                 }
                 buffer.append(OSISUtil.getTextContent(ele.getContent()));
@@ -803,16 +762,14 @@ public final class OSISUtil
 
     /**
      * The text of non-reference notes.
-     *
+     * 
      * @return The references in the text
      */
-    public static String getHeadings(Element root)
-    {
+    public static String getHeadings(Element root) {
         StringBuffer buffer = new StringBuffer();
 
         Iterator contentIter = getDeepContent(root, OSISUtil.OSIS_ELEMENT_TITLE).iterator();
-        while (contentIter.hasNext())
-        {
+        while (contentIter.hasNext()) {
             Element ele = (Element) contentIter.next();
             getCanonicalContent(ele, null, ele.getContent().iterator(), buffer);
         }
@@ -820,10 +777,8 @@ public final class OSISUtil
         return buffer.toString();
     }
 
-    private static void getCanonicalContent(Element parent, String sID, Iterator iter, StringBuffer buffer)
-    {
-        if (!isCanonical(parent))
-        {
+    private static void getCanonicalContent(Element parent, String sID, Iterator iter, StringBuffer buffer) {
+        if (!isCanonical(parent)) {
             return;
         }
 
@@ -831,31 +786,28 @@ public final class OSISUtil
         Element ele = null;
         String eleName = null;
         String eID = null;
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             data = iter.next();
-            if (data instanceof Element)
-            {
+            if (data instanceof Element) {
                 ele = (Element) data;
                 // If the milestoned element is done then quit.
-                // This should be a eID=, that matches sID, from the same element.
+                // This should be a eID=, that matches sID, from the same
+                // element.
                 eleName = ele.getName();
                 eID = ele.getAttributeValue(OSISUtil.OSIS_ATTR_SID);
-                if (eID != null && eID.equals(sID) && eleName.equals(parent.getName()))
-                {
+                if (eID != null && eID.equals(sID) && eleName.equals(parent.getName())) {
                     break;
                 }
                 OSISUtil.getCanonicalContent(ele, sID, ele.getContent().iterator(), buffer);
-            }
-            else if (data instanceof Text)
-            {
-                // make sure that adjacent text elements are separated by whitespace
+            } else if (data instanceof Text) {
+                // make sure that adjacent text elements are separated by
+                // whitespace
                 // Empty elements also produce whitespace.
-                // TODO(dms): verify that the xml parser does not split words containing entities.
+                // TODO(dms): verify that the xml parser does not split words
+                // containing entities.
                 int lastIndex = buffer.length() - 1;
                 String text = ((Text) data).getText();
-                if (lastIndex >= 0 && !Character.isWhitespace(buffer.charAt(lastIndex)) && (text.length() == 0 || !Character.isWhitespace(text.charAt(0))))
-                {
+                if (lastIndex >= 0 && !Character.isWhitespace(buffer.charAt(lastIndex)) && (text.length() == 0 || !Character.isWhitespace(text.charAt(0)))) {
                     buffer.append(' ');
                 }
                 buffer.append(text);
@@ -863,16 +815,13 @@ public final class OSISUtil
         }
     }
 
-    private static boolean isCanonical(Content content)
-    {
+    private static boolean isCanonical(Content content) {
         boolean result = true;
-        if (content instanceof Element)
-        {
+        if (content instanceof Element) {
             Element element = (Element) content;
 
             // Ignore extra-biblical text
-            if (EXTRA_BIBLICAL_ELEMENTS.contains(element.getName()))
-            {
+            if (EXTRA_BIBLICAL_ELEMENTS.contains(element.getName())) {
                 String canonical = element.getAttributeValue(OSISUtil.OSIS_ATTR_CANONICAL);
                 result = Boolean.valueOf(canonical).booleanValue();
             }
@@ -881,13 +830,11 @@ public final class OSISUtil
         return result;
     }
 
-    private static String getTextContent(List fragment)
-    {
+    private static String getTextContent(List fragment) {
         StringBuffer buffer = new StringBuffer();
 
         Iterator contentIter = fragment.iterator();
-        while (contentIter.hasNext())
-        {
+        while (contentIter.hasNext()) {
             Content next = (Content) contentIter.next();
             recurseElement(next, buffer);
         }
@@ -896,11 +843,10 @@ public final class OSISUtil
     }
 
     /**
-     * Find all the instances of elements of type <code>find</code> under
-     * the element <code>div</code>.
+     * Find all the instances of elements of type <code>find</code> under the
+     * element <code>div</code>.
      */
-    public static Collection getDeepContent(Element div, String name)
-    {
+    public static Collection getDeepContent(Element div, String name) {
         List reply = new ArrayList();
         recurseDeepContent(div, name, reply);
         return reply;
@@ -908,30 +854,28 @@ public final class OSISUtil
 
     /**
      * Walk up the tree from the W to find out what verse we are in.
-     * @param ele The start point for our verse hunt.
+     * 
+     * @param ele
+     *            The start point for our verse hunt.
      * @return The verse we are in
      */
-    public static Verse getVerse(Element ele) throws BookException
-    {
-        if (ele.getName().equals(OSIS_ELEMENT_VERSE))
-        {
+    public static Verse getVerse(Element ele) throws BookException {
+        if (ele.getName().equals(OSIS_ELEMENT_VERSE)) {
             // If the element is an OSIS Verse then this is fairly easy
             String osisid = ele.getAttributeValue(OSIS_ATTR_OSISID);
 
-            try
-            {
+            try {
                 return VerseFactory.fromString(osisid);
-            }
-            catch (NoSuchVerseException ex)
-            {
-                throw new BookException(Msg.OSIS_BADID, ex, new Object[] { osisid });
+            } catch (NoSuchVerseException ex) {
+                throw new BookException(Msg.OSIS_BADID, ex, new Object[] {
+                    osisid
+                });
             }
         }
 
         // So we just walk up the tree trying to find a verse
         Parent parent = ele.getParent();
-        if (parent instanceof Element)
-        {
+        if (parent instanceof Element) {
             return getVerse((Element) parent);
         }
 
@@ -942,8 +886,7 @@ public final class OSISUtil
      * Helper method to create the boilerplate headers in an OSIS document from
      * the current metadata object
      */
-    public static Element createOsisFramework(BookMetaData bmd)
-    {
+    public static Element createOsisFramework(BookMetaData bmd) {
         Element osis = factory().createOsis();
         String osisid = bmd.getInitials();
 
@@ -964,43 +907,38 @@ public final class OSISUtil
 
     /**
      * Convert a Difference list into a pretty HTML report.
-     * @param diffs List of Difference objects
+     * 
+     * @param diffs
+     *            List of Difference objects
      * @return HTML representation
      */
-    public static List diffToOsis(List diffs)
-    {
+    public static List diffToOsis(List diffs) {
         Element div = factory().createDiv();
 
-        for (int x = 0; x < diffs.size(); x++)
-        {
+        for (int x = 0; x < diffs.size(); x++) {
             Difference diff = (Difference) diffs.get(x);
-            EditType editType = diff.getEditType(); // Mode (delete, equal, insert)
+            EditType editType = diff.getEditType(); // Mode (delete, equal,
+                                                    // insert)
             Text text = factory.createText(diff.getText()); // Text of change.
 
-            if (EditType.DELETE.equals(editType))
-            {
+            if (EditType.DELETE.equals(editType)) {
                 Element hi = factory().createHI();
                 hi.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_LINETHROUGH);
                 hi.addContent(text);
                 div.addContent(hi);
-            }
-            else if (EditType.INSERT.equals(editType))
-            {
+            } else if (EditType.INSERT.equals(editType)) {
                 Element hi = factory().createHI();
                 hi.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_UNDERLINE);
                 hi.addContent(text);
                 div.addContent(hi);
-            }
-            else
-            {
+            } else {
                 div.addContent(text);
             }
         }
         return div.cloneContent();
     }
 
-    public static List rtfToOsis(String rtf)
-    {
+    public static List rtfToOsis(String rtf) {
         Element div = factory().createDiv();
         Stack stack = new Stack();
         stack.push(div);
@@ -1010,11 +948,9 @@ public final class OSISUtil
         StringBuffer text = new StringBuffer(strlen);
 
         int i = 0;
-        for (i = 0; i < strlen; i++)
-        {
+        for (i = 0; i < strlen; i++) {
             char curChar = rtf.charAt(i);
-            if (curChar != '\\')
-            {
+            if (curChar != '\\') {
                 text.append(curChar);
                 continue;
             }
@@ -1067,22 +1003,21 @@ public final class OSISUtil
             {
                 StringBuffer buf = new StringBuffer();
                 i += 2;
-                while (i < strlen)
-                {
+                while (i < strlen) {
                     char curDigit = rtf.charAt(i);
-                    if (curDigit != '-' && !Character.isDigit(curDigit))
-                    {
+                    if (curDigit != '-' && !Character.isDigit(curDigit)) {
                         break;
                     }
                     buf.append(curDigit);
                     i++;
                 }
                 // At this point:
-                // buf contains the numeric representation of the number, 16-bit signed
-                // charAt(i) is the substitution character if Unicode is not supported
+                // buf contains the numeric representation of the number, 16-bit
+                // signed
+                // charAt(i) is the substitution character if Unicode is not
+                // supported
                 int value = Integer.parseInt(buf.toString());
-                if (value < 0)
-                {
+                if (value < 0) {
                     value += 65536;
                 }
                 text.append((char) value);
@@ -1138,50 +1073,46 @@ public final class OSISUtil
         }
 
         // If there is any text that has not been consumed
-        if (text.length() > 0)
-        {
+        if (text.length() > 0) {
             div.addContent(text.toString());
         }
-//        div.addContent(text.toString());
-//        // If the fragment is already in a document, then use that.
-//        Document doc = div.getDocument();
-//        if (doc == null)
-//        {
-//            doc = new Document(div);
-//        }
-//        SAXEventProvider ep = new JDOMSAXEventProvider(doc);
-//        ContentHandler osis = new PrettySerializingContentHandler(FormatType.CLASSIC_INDENT);
-//        try
-//        {
-//            ep.provideSAXEvents(osis);
-//        }
-//        catch (SAXException e)
-//        {
-//            e.printStackTrace();
-//        }
-//        System.err.println(osis.toString());
+        // div.addContent(text.toString());
+        // // If the fragment is already in a document, then use that.
+        // Document doc = div.getDocument();
+        // if (doc == null)
+        // {
+        // doc = new Document(div);
+        // }
+        // SAXEventProvider ep = new JDOMSAXEventProvider(doc);
+        // ContentHandler osis = new
+        // PrettySerializingContentHandler(FormatType.CLASSIC_INDENT);
+        // try
+        // {
+        // ep.provideSAXEvents(osis);
+        // }
+        // catch (SAXException e)
+        // {
+        // e.printStackTrace();
+        // }
+        // System.err.println(osis.toString());
         return div.cloneContent();
     }
 
     /**
-     * Find all the instances of elements of type <code>find</code> under
-     * the element <code>div</code>. For internal use only.
+     * Find all the instances of elements of type <code>find</code> under the
+     * element <code>div</code>. For internal use only.
      */
-    private static void recurseDeepContent(Element start, String name, List reply)
-    {
-        if (start.getName().equals(name))
-        {
+    private static void recurseDeepContent(Element start, String name, List reply) {
+        if (start.getName().equals(name)) {
             reply.add(start);
         }
 
         Object data = null;
         Element ele = null;
         Iterator contentIter = start.getContent().iterator();
-        while (contentIter.hasNext())
-        {
+        while (contentIter.hasNext()) {
             data = contentIter.next();
-            if (data instanceof Element)
-            {
+            if (data instanceof Element) {
                 ele = (Element) data;
                 recurseDeepContent(ele, name, reply);
             }
@@ -1192,33 +1123,28 @@ public final class OSISUtil
      * If we have a String just add it to the buffer, but if we have an Element
      * then try to dig the strings out of it.
      */
-    private static void recurseElement(Object sub, StringBuffer buffer)
-    {
-        if (sub instanceof Text)
-        {
+    private static void recurseElement(Object sub, StringBuffer buffer) {
+        if (sub instanceof Text) {
             buffer.append(((Text) sub).getText());
-        }
-        else if (sub instanceof Element)
-        {
+        } else if (sub instanceof Element) {
             recurseChildren((Element) sub, buffer);
-        }
-        else
-        {
+        } else {
             log.error("unknown type: " + sub.getClass().getName()); //$NON-NLS-1$
         }
     }
 
     /**
      * Helper to extract the Strings from a nest of JDOM elements
-     * @param ele The JDOM Element to dig into
-     * @param buffer The place we accumulate strings.
+     * 
+     * @param ele
+     *            The JDOM Element to dig into
+     * @param buffer
+     *            The place we accumulate strings.
      */
-    private static void recurseChildren(Element ele, StringBuffer buffer)
-    {
+    private static void recurseChildren(Element ele, StringBuffer buffer) {
         // ele is a JDOM Element that might have a getContent() method
         Iterator contentIter = ele.getContent().iterator();
-        while (contentIter.hasNext())
-        {
+        while (contentIter.hasNext()) {
             Object sub = contentIter.next();
             recurseElement(sub, buffer);
         }

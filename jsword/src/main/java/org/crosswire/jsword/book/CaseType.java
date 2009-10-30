@@ -26,18 +26,16 @@ import java.util.Locale;
 
 /**
  * Types of Sentence Case.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public abstract class CaseType implements Serializable
-{
+public abstract class CaseType implements Serializable {
     public static final CaseType LOWER = new CaseType("LOWER") //$NON-NLS-1$
     {
-        public String setCase(String word)
-        {
+        public String setCase(String word) {
             return word.toLowerCase(Locale.getDefault());
         }
 
@@ -49,11 +47,9 @@ public abstract class CaseType implements Serializable
 
     public static final CaseType SENTENCE = new CaseType("SENTENCE") //$NON-NLS-1$
     {
-        public String setCase(String word)
-        {
+        public String setCase(String word) {
             int index = word.indexOf('-');
-            if (index == -1)
-            {
+            if (index == -1) {
                 return toSentenceCase(word);
             }
 
@@ -74,8 +70,7 @@ public abstract class CaseType implements Serializable
             }
 
             // So cut by the -
-            return toSentenceCase(word.substring(0, index))
-                   + "-" + toSentenceCase(word.substring(index + 1)); //$NON-NLS-1$
+            return toSentenceCase(word.substring(0, index)) + "-" + toSentenceCase(word.substring(index + 1)); //$NON-NLS-1$
         }
 
         /**
@@ -86,8 +81,7 @@ public abstract class CaseType implements Serializable
 
     public static final CaseType UPPER = new CaseType("UPPER") //$NON-NLS-1$
     {
-        public String setCase(String word)
-        {
+        public String setCase(String word) {
             return word.toUpperCase(Locale.getDefault());
         }
 
@@ -102,22 +96,21 @@ public abstract class CaseType implements Serializable
     /**
      * Simple ctor
      */
-    public CaseType(String name)
-    {
+    public CaseType(String name) {
         this.name = name;
     }
 
     /**
      * Change to sentence case - ie first character in caps, the rest in lower.
-     * @param word The word to be manipulated
+     * 
+     * @param word
+     *            The word to be manipulated
      * @return The altered word
      */
-    protected static String toSentenceCase(String word)
-    {
+    protected static String toSentenceCase(String word) {
         assert word != null;
 
-        if (word.length() == 0)
-        {
+        if (word.length() == 0) {
             return ""; //$NON-NLS-1$
         }
 
@@ -125,38 +118,38 @@ public abstract class CaseType implements Serializable
     }
 
     /**
-     * What case is the specified word?. A blank word is LOWER, a
-     * word with a single upper case letter is SENTENCE and not
-     * UPPER - Simply because this is more likely, however TO BE
-     * SURE I WOULD NEED TO THE CONTEXT. I could not tell otherwise.
-     * <p>The issue here is that getCase("FreD") is undefined. Telling
-     * if this is SENTENCE (Tubal-Cain) or MIXED (really the case)
-     * is complex and would slow things down for a case that I don't
-     * believe happens with Bible text.</p>
-     * @param word The word to be tested
+     * What case is the specified word?. A blank word is LOWER, a word with a
+     * single upper case letter is SENTENCE and not UPPER - Simply because this
+     * is more likely, however TO BE SURE I WOULD NEED TO THE CONTEXT. I could
+     * not tell otherwise.
+     * <p>
+     * The issue here is that getCase("FreD") is undefined. Telling if this is
+     * SENTENCE (Tubal-Cain) or MIXED (really the case) is complex and would
+     * slow things down for a case that I don't believe happens with Bible text.
+     * </p>
+     * 
+     * @param word
+     *            The word to be tested
      * @return LOWER, SENTENCE, UPPER or MIXED
-     * @exception IllegalArgumentException is the word is null
+     * @exception IllegalArgumentException
+     *                is the word is null
      */
-    public static CaseType getCase(String word)
-    {
+    public static CaseType getCase(String word) {
         assert word != null;
 
         // Blank word
-        if (word.length() == 0)
-        {
+        if (word.length() == 0) {
             return LOWER;
         }
 
         // Lower case?
-        if (word.equals(word.toLowerCase(Locale.getDefault())))
-        {
+        if (word.equals(word.toLowerCase(Locale.getDefault()))) {
             return LOWER;
         }
 
         // Upper case?
         // A string length of 1 is no good ('I' or 'A' is sentence case)
-        if (word.equals(word.toUpperCase(Locale.getDefault())) && word.length() != 1)
-        {
+        if (word.equals(word.toUpperCase(Locale.getDefault())) && word.length() != 1) {
             return UPPER;
         }
 
@@ -167,12 +160,9 @@ public abstract class CaseType implements Serializable
     /**
      * Get an integer representation for this CaseType
      */
-    public int toInteger()
-    {
-        for (int i = 0; i < VALUES.length; i++)
-        {
-            if (equals(VALUES[i]))
-            {
+    public int toInteger() {
+        for (int i = 0; i < VALUES.length; i++) {
+            if (equals(VALUES[i])) {
                 return i;
             }
         }
@@ -184,13 +174,10 @@ public abstract class CaseType implements Serializable
     /**
      * Lookup method to convert from a String
      */
-    public static CaseType fromString(String name)
-    {
-        for (int i = 0; i < VALUES.length; i++)
-        {
+    public static CaseType fromString(String name) {
+        for (int i = 0; i < VALUES.length; i++) {
             CaseType o = VALUES[i];
-            if (o.name.equalsIgnoreCase(name))
-            {
+            if (o.name.equalsIgnoreCase(name)) {
                 return o;
             }
         }
@@ -202,34 +189,36 @@ public abstract class CaseType implements Serializable
     /**
      * Lookup method to convert from an integer
      */
-    public static CaseType fromInteger(int i)
-    {
+    public static CaseType fromInteger(int i) {
         return VALUES[i];
     }
 
     /**
-     * Prevent subclasses from overriding canonical identity based Object methods
+     * Prevent subclasses from overriding canonical identity based Object
+     * methods
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public final boolean equals(Object o)
-    {
+    public final boolean equals(Object o) {
         return super.equals(o);
     }
 
     /**
-     * Prevent subclasses from overriding canonical identity based Object methods
+     * Prevent subclasses from overriding canonical identity based Object
+     * methods
+     * 
      * @see java.lang.Object#hashCode()
      */
-    public final int hashCode()
-    {
+    public final int hashCode() {
         return super.hashCode();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         return name;
     }
 
@@ -242,16 +231,12 @@ public abstract class CaseType implements Serializable
     private static int nextObj;
     private final int obj = nextObj++;
 
-    Object readResolve()
-    {
+    Object readResolve() {
         return VALUES[obj];
     }
 
-    private static final CaseType[] VALUES =
-    {
-        LOWER,
-        SENTENCE,
-        UPPER,
+    private static final CaseType[] VALUES = {
+            LOWER, SENTENCE, UPPER,
     };
 
     /**

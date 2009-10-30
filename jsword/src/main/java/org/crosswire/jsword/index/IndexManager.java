@@ -21,7 +21,6 @@
  */
 package org.crosswire.jsword.index;
 
-
 import java.net.URI;
 
 import org.crosswire.jsword.book.Book;
@@ -29,13 +28,12 @@ import org.crosswire.jsword.book.BookException;
 
 /**
  * Manages the life-cycle of an Index.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public interface IndexManager
-{
+public interface IndexManager {
     /**
      * Detects if index data has been stored for this Bible already
      */
@@ -55,8 +53,11 @@ public interface IndexManager
     /**
      * We have downloaded a search index to a zip file. It should be installed
      * from here.
-     * @param book The book that we downloaded an index for
-     * @param tempDest The URI of a zip file to install
+     * 
+     * @param book
+     *            The book that we downloaded an index for
+     * @param tempDest
+     *            The URI of a zip file to install
      */
     void installDownloadedIndex(Book book, URI tempDest) throws BookException;
 

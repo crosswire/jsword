@@ -34,43 +34,38 @@ import org.crosswire.jsword.index.IndexManagerFactory;
 
 /**
  * .
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public final class IndexDownloader
-{
+public final class IndexDownloader {
     /**
      * Prevent instantiation
      */
-    private IndexDownloader()
-    {
+    private IndexDownloader() {
     }
 
     /**
      * Download and install a search index
-     * @param book The book to get an index for
+     * 
+     * @param book
+     *            The book to get an index for
      */
-    public static void downloadIndex(Book book, Installer installer) throws IOException, InstallException, BookException
-    {
+    public static void downloadIndex(Book book, Installer installer) throws IOException, InstallException, BookException {
         // Get a temp home
         URI tempDownload = NetUtil.getTemporaryURI(TEMP_PREFIX, TEMP_SUFFIX);
 
-        try
-        {
+        try {
             // Now we know what installer to use, download to the temp file
             installer.downloadSearchIndex(book, tempDownload);
 
             // And install from that file.
             IndexManager idxman = IndexManagerFactory.getIndexManager();
             idxman.installDownloadedIndex(book, tempDownload);
-        }
-        finally
-        {
+        } finally {
             // tidy up after ourselves
-            if (tempDownload != null)
-            {
+            if (tempDownload != null) {
                 NetUtil.delete(tempDownload);
             }
         }

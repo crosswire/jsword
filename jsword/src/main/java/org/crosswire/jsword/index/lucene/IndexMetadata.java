@@ -26,25 +26,21 @@ import java.util.Properties;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.ResourceUtil;
+
 /**
- * A singleton that Reads and Maintains IndexMetadata from properties file
- * All version number in the properties file must be float.
- *
+ * A singleton that Reads and Maintains IndexMetadata from properties file All
+ * version number in the properties file must be float.
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Sijo Cherian [sijocherian at yahoo dot com]
  */
-public class IndexMetadata
-{
-    private IndexMetadata()
-    {
-        try
-        {
+public class IndexMetadata {
+    private IndexMetadata() {
+        try {
             props = ResourceUtil.getProperties(getClass());
 
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             log.error("Property file read error", e); //$NON-NLS-1$
         }
     }
@@ -54,33 +50,29 @@ public class IndexMetadata
      * 
      * @return the singleton instance
      */
-    public static IndexMetadata instance()
-    {
+    public static IndexMetadata instance() {
         return myInstance;
     }
 
-    public float getInstalledIndexVersion()
-    {
+    public float getInstalledIndexVersion() {
         return Float.parseFloat(props.getProperty(INDEX_VERSION, "1.1")); //$NON-NLS-1$
     }
 
-    public float getLuceneVersion()
-    {
+    public float getLuceneVersion() {
         return Float.parseFloat(props.getProperty(LUCENE_VERSION));
     }
 
-    public float getLatestIndexVersion()
-    {
+    public float getLatestIndexVersion() {
         return Float.parseFloat(props.getProperty(LATEST_INDEX_VERSION, "1.1")); //$NON-NLS-1$
     }
 
-    public static final String   INDEX_VERSION        = "Installed.Index.Version";            //$NON-NLS-1$
-    public static final String   LATEST_INDEX_VERSION = "Latest.Index.Version";               //$NON-NLS-1$
-    public static final String   LUCENE_VERSION       = "Lucene.Version";                     //$NON-NLS-1$
-    public static final float    INDEX_VERSION_1_1    = 1.1f;
-    public static final float    INDEX_VERSION_1_2    = 1.2f;
+    public static final String INDEX_VERSION = "Installed.Index.Version"; //$NON-NLS-1$
+    public static final String LATEST_INDEX_VERSION = "Latest.Index.Version"; //$NON-NLS-1$
+    public static final String LUCENE_VERSION = "Lucene.Version"; //$NON-NLS-1$
+    public static final float INDEX_VERSION_1_1 = 1.1f;
+    public static final float INDEX_VERSION_1_2 = 1.2f;
 
-    private static final Logger  log                  = Logger.getLogger(IndexMetadata.class);
-    private static IndexMetadata myInstance           = new IndexMetadata();
-    private Properties           props;
+    private static final Logger log = Logger.getLogger(IndexMetadata.class);
+    private static IndexMetadata myInstance = new IndexMetadata();
+    private Properties props;
 }

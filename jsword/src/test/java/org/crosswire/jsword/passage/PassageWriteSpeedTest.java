@@ -24,14 +24,12 @@ package org.crosswire.jsword.passage;
 /**
  * JUnit Test.
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class PassageWriteSpeedTest extends PassageParentTst
-{
-    public PassageWriteSpeedTest(String s)
-    {
+public class PassageWriteSpeedTest extends PassageParentTst {
+    public PassageWriteSpeedTest(String s) {
         super(s, PassageType.WRITE_SPEED, false);
     }
 }

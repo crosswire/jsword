@@ -21,19 +21,19 @@
  */
 package org.crosswire.jsword.index.query;
 
-
 /**
  * A QueryBuilder builds a Query from a String.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public interface QueryBuilder
-{
+public interface QueryBuilder {
     /**
      * Construct a query from a string.
-     * @param aQuery The text to convert
+     * 
+     * @param aQuery
+     *            The text to convert
      * @return a query.
      */
     Query parse(String aQuery);

@@ -36,65 +36,60 @@ import org.crosswire.jsword.book.basic.AbstractBookDriver;
 
 /**
  * A driver for the readings dictionary.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class ReadingsBookDriver extends AbstractBookDriver
-{
+public class ReadingsBookDriver extends AbstractBookDriver {
     /**
      * Setup the array of BookMetaDatas
      */
-    public ReadingsBookDriver()
-    {
+    public ReadingsBookDriver() {
         List bookList = new ArrayList();
         String[] installedBooks = getInstalledReadingsSets();
-        for (int i = 0; i < installedBooks.length; i++)
-        {
+        for (int i = 0; i < installedBooks.length; i++) {
             bookList.add(new ReadingsBook(this, installedBooks[i], BookCategory.DAILY_DEVOTIONS));
         }
 
         books = (Book[]) bookList.toArray(new Book[bookList.size()]);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookDriver#getBooks()
      */
-    public Book[] getBooks()
-    {
+    public Book[] getBooks() {
         return books == null ? null : (Book[]) books.clone();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookDriver#getDriverName()
      */
-    public String getDriverName()
-    {
+    public String getDriverName() {
         return "Readings"; //$NON-NLS-1$
     }
 
     /**
      * Get the singleton instance of this driver.
+     * 
      * @return this driver instance
      */
-    public static BookDriver instance()
-    {
+    public static BookDriver instance() {
         return INSTANCE;
     }
 
     /**
      * Get a list of the available readings sets
      */
-    public String[] getInstalledReadingsSets()
-    {
-        try
-        {
+    public String[] getInstalledReadingsSets() {
+        try {
             URL index = ResourceUtil.getResource(ReadingsBookDriver.class, "readings.txt"); //$NON-NLS-1$
             return NetUtil.listByIndexFile(NetUtil.toURI(index), new ReadingsFilter());
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             return new String[0];
         }
     }
@@ -102,10 +97,8 @@ public class ReadingsBookDriver extends AbstractBookDriver
     /**
      * Get all files mentioned by readings.txt
      */
-    static final class ReadingsFilter implements URIFilter
-    {
-        public boolean accept(String name)
-        {
+    static final class ReadingsFilter implements URIFilter {
+        public boolean accept(String name) {
             return true;
         }
     }

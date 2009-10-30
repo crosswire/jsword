@@ -26,28 +26,25 @@ import java.io.Serializable;
 /**
  * A node that knows where the data is in the real file and where it is in
  * relationship to other nodes.
- *
- * @see gnu.lgpl.License for license details. The copyright to this program is
- *      held by it's authors.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
+ *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-class TreeNode implements Cloneable, Serializable
-{
+class TreeNode implements Cloneable, Serializable {
     /**
      * TreeNode default ctor.
      */
-    TreeNode()
-    {
+    TreeNode() {
         this(-1);
     }
 
     /**
      * Setup with the positions of data in the file
-     *
+     * 
      * @param theOffset
      */
-    TreeNode(int theOffset)
-    {
+    TreeNode(int theOffset) {
         offset = theOffset;
         name = ""; //$NON-NLS-1$
         parent = -1;
@@ -59,128 +56,116 @@ class TreeNode implements Cloneable, Serializable
     /**
      * @return the offset
      */
-    public int getOffset()
-    {
+    public int getOffset() {
         return offset;
     }
 
     /**
-     * @param newOffset the offset to set
+     * @param newOffset
+     *            the offset to set
      */
-    public void setOffset(int newOffset)
-    {
+    public void setOffset(int newOffset) {
         offset = newOffset;
     }
 
     /**
      * @return the name
      */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
     /**
-     * @param newName the name to set
+     * @param newName
+     *            the name to set
      */
-    public void setName(String newName)
-    {
+    public void setName(String newName) {
         name = newName;
     }
 
     /**
      * @return the userData
      */
-    public byte[] getUserData()
-    {
+    public byte[] getUserData() {
         return (byte[]) userData.clone();
     }
 
     /**
-     * @param theUserData the userData to set
+     * @param theUserData
+     *            the userData to set
      */
-    public void setUserData(byte[] theUserData)
-    {
+    public void setUserData(byte[] theUserData) {
         userData = (byte[]) theUserData.clone();
     }
 
     /**
      * @return the firstChild
      */
-    public int getFirstChild()
-    {
+    public int getFirstChild() {
         return firstChild;
     }
 
     /**
      * @return whether there are children
      */
-    public boolean hasChildren()
-    {
+    public boolean hasChildren() {
         return firstChild != -1;
     }
 
     /**
-     * @param firstChild the firstChild to set
+     * @param firstChild
+     *            the firstChild to set
      */
-    public void setFirstChild(int firstChild)
-    {
+    public void setFirstChild(int firstChild) {
         this.firstChild = firstChild;
     }
 
     /**
      * @return the nextSibling
      */
-    public int getNextSibling()
-    {
+    public int getNextSibling() {
         return nextSibling;
     }
 
     /**
      * @return if there are more siblings
      */
-    public boolean hasNextSibling()
-    {
+    public boolean hasNextSibling() {
         return nextSibling != -1;
     }
 
     /**
-     * @param nextSibling the nextSibling to set
+     * @param nextSibling
+     *            the nextSibling to set
      */
-    public void setNextSibling(int nextSibling)
-    {
+    public void setNextSibling(int nextSibling) {
         this.nextSibling = nextSibling;
     }
 
     /**
      * @return the parent
      */
-    public int getParent()
-    {
+    public int getParent() {
         return parent;
     }
 
     /**
-     * @param parent the parent to set
+     * @param parent
+     *            the parent to set
      */
-    public void setParent(int parent)
-    {
+    public void setParent(int parent) {
         this.parent = parent;
     }
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see java.lang.Object#clone()
      */
-    public Object clone()
-    {
-        try
-        {
+    public Object clone() {
+        try {
             return super.clone();
-        }
-        catch (CloneNotSupportedException e)
-        {
+        } catch (CloneNotSupportedException e) {
             assert false;
         }
 
@@ -190,40 +175,39 @@ class TreeNode implements Cloneable, Serializable
     /**
      * The offset of this TreeNode in the offset.
      */
-    private int               offset;
+    private int offset;
 
     /**
      * The name of this TreeNode. Note, this is not the path. To get the path,
      * one needs to traverse to the parent to construct the path.
      */
-    private String            name;
+    private String name;
 
     /**
-     * Optional, extra data associated with this TreeNode.
-     * For example, this is used to store offset and length for a raw genbook.
+     * Optional, extra data associated with this TreeNode. For example, this is
+     * used to store offset and length for a raw genbook.
      */
-    private byte[]            userData;
+    private byte[] userData;
 
     /**
-     * The offset of the parent record in the offset.
-     * Root nodes are indicated with a value of -1.
-     * That is, this TreeNode does not have a parent.
+     * The offset of the parent record in the offset. Root nodes are indicated
+     * with a value of -1. That is, this TreeNode does not have a parent.
      */
-    private int               parent;
+    private int parent;
 
     /**
-     * The offset of the next sibling record in the offset.
-     * Final siblings are indicated with a value of -1.
-     * That is, this TreeNode does not have a next sibling.
+     * The offset of the next sibling record in the offset. Final siblings are
+     * indicated with a value of -1. That is, this TreeNode does not have a next
+     * sibling.
      */
-    private int               nextSibling;
+    private int nextSibling;
 
     /**
-     * The offset of the first child record in the offset.
-     * Leaf nodes are indicated with a value of -1.
-     * That is, this TreeNode does not have any children.
+     * The offset of the first child record in the offset. Leaf nodes are
+     * indicated with a value of -1. That is, this TreeNode does not have any
+     * children.
      */
-    private int               firstChild;
+    private int firstChild;
 
     /**
      * Serialization ID

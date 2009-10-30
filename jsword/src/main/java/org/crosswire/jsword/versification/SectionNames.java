@@ -31,142 +31,142 @@ import org.crosswire.jsword.passage.NoSuchVerseException;
 
 /**
  * SectionNames deals with traditional sections of the Bible.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class SectionNames
-{
+public final class SectionNames {
     /**
      * Create a SectionNames object
      */
-    public SectionNames()
-    {
+    public SectionNames() {
         initialize();
     }
 
     /**
      * Is this book part of the Pentateuch?
-     * @param book The book to test
+     * 
+     * @param book
+     *            The book to test
      * @return True if this book is a part of this section
      */
-    public static boolean isPentateuch(int book)
-    {
+    public static boolean isPentateuch(int book) {
         return book >= BibleNames.GENESIS && book <= BibleNames.DEUTERONOMY;
     }
 
     /**
      * Is this book part of the OT History?
-     * @param book The book to test
+     * 
+     * @param book
+     *            The book to test
      * @return True if this book is a part of this section
      */
-    public static boolean isHistory(int book)
-    {
+    public static boolean isHistory(int book) {
         return book >= BibleNames.JOSHUA && book <= BibleNames.ESTHER;
     }
 
     /**
      * Is this book part of the OT History?
-     * @param book The book to test
+     * 
+     * @param book
+     *            The book to test
      * @return True if this book is a part of this section
      */
-    public static boolean isPoetry(int book)
-    {
+    public static boolean isPoetry(int book) {
         return book >= BibleNames.JOB && book <= BibleNames.SONGOFSOLOMON;
     }
 
     /**
      * Is this book part of the major prophets?
-     * @param book The book to test
+     * 
+     * @param book
+     *            The book to test
      * @return True if this book is a part of this section
      */
-    public static boolean isMajorProphet(int book)
-    {
+    public static boolean isMajorProphet(int book) {
         return book >= BibleNames.ISAIAH && book <= BibleNames.DANIEL;
     }
 
     /**
      * Is this book part of the minor prophets?
-     * @param book The book to test
+     * 
+     * @param book
+     *            The book to test
      * @return True if this book is a part of this section
      */
-    public static boolean isMinorProphet(int book)
-    {
+    public static boolean isMinorProphet(int book) {
         return book >= BibleNames.HOSEA && book <= BibleNames.MALACHI;
     }
 
     /**
      * Is this book part of the Gospels?
-     * @param book The book to test
+     * 
+     * @param book
+     *            The book to test
      * @return True if this book is a part of this section
      */
-    public static boolean isGospel(int book)
-    {
+    public static boolean isGospel(int book) {
         return book >= BibleNames.MATTHEW && book <= BibleNames.JOHN;
     }
 
     /**
      * Is this book part of the Gospels or Acts?
-     * @param book The book to test
+     * 
+     * @param book
+     *            The book to test
      * @return True if this book is a part of this section
      */
-    public static boolean isGospelOrActs(int book)
-    {
+    public static boolean isGospelOrActs(int book) {
         return book >= BibleNames.MATTHEW && book <= BibleNames.ACTS;
     }
 
     /**
      * Is this book part of the letters?
-     * @param book The book to test
+     * 
+     * @param book
+     *            The book to test
      * @return True if this book is a part of this section
      */
-    public static boolean isLetter(int book)
-    {
+    public static boolean isLetter(int book) {
         return book >= BibleNames.ROMANS && book <= BibleNames.JUDE;
     }
 
     /**
      * What section is this book a part of?
-     * @param book The book to test
+     * 
+     * @param book
+     *            The book to test
      * @return True The section
      */
-    public static int getSection(int book)
-    {
+    public static int getSection(int book) {
         // Ordered by section size for speed
-        if (isLetter(book))
-        {
+        if (isLetter(book)) {
             return LETTERS;
         }
 
-        if (isHistory(book))
-        {
+        if (isHistory(book)) {
             return HISTORY;
         }
 
-        if (isMinorProphet(book))
-        {
+        if (isMinorProphet(book)) {
             return MINOR_PROPHETS;
         }
 
-        if (isGospelOrActs(book))
-        {
+        if (isGospelOrActs(book)) {
             return GOSPELS_AND_ACTS;
         }
 
-        if (isPentateuch(book))
-        {
+        if (isPentateuch(book)) {
             return PENTATEUCH;
         }
 
-        if (isPoetry(book))
-        {
+        if (isPoetry(book)) {
             return POETRY;
         }
 
-        if (isMajorProphet(book))
-        {
+        if (isMajorProphet(book)) {
             return MAJOR_PROPHETS;
         }
 
@@ -174,56 +174,54 @@ public final class SectionNames
     }
 
     /**
-     * Get the full name of a book (e.g. "Genesis").
-     * Altered by the case setting (see setBookCase())
-     * @param section The book number (1-66)
+     * Get the full name of a book (e.g. "Genesis"). Altered by the case setting
+     * (see setBookCase())
+     * 
+     * @param section
+     *            The book number (1-66)
      * @return The full name of the book
-     * @exception NoSuchVerseException If the book number is not valid
+     * @exception NoSuchVerseException
+     *                If the book number is not valid
      */
-    public String getSectionName(int section) throws NoSuchVerseException
-    {
-        if (section == 0)
-        {
-            throw new NoSuchVerseException(Msg.BOOKS_SECTION, new Object[] { new Integer(section)});
+    public String getSectionName(int section) throws NoSuchVerseException {
+        if (section == 0) {
+            throw new NoSuchVerseException(Msg.BOOKS_SECTION, new Object[] {
+                new Integer(section)
+            });
         }
 
-        try
-        {
+        try {
             CaseType bookCase = BibleInfo.getDefaultCase();
 
-            if (bookCase.equals(CaseType.LOWER))
-            {
+            if (bookCase.equals(CaseType.LOWER)) {
                 return sections[section - 1].toLowerCase(Locale.getDefault());
             }
 
-            if (bookCase.equals(CaseType.UPPER))
-            {
+            if (bookCase.equals(CaseType.UPPER)) {
                 return sections[section - 1].toUpperCase(Locale.getDefault());
             }
 
             return sections[section - 1];
-        }
-        catch (ArrayIndexOutOfBoundsException ex)
-        {
+        } catch (ArrayIndexOutOfBoundsException ex) {
             // This is faster than doing the check explicitly, unless
             // The exception is actually thrown, then it is a lot slower
             // I'd like to think that the norm is to get it right
-            throw new NoSuchVerseException(Msg.BOOKS_SECTION, new Object[] { new Integer(section) });
+            throw new NoSuchVerseException(Msg.BOOKS_SECTION, new Object[] {
+                new Integer(section)
+            });
         }
     }
 
     /**
-     * Load up the resources for Bible book and section names,
-     * and cache the upper and lower versions of them.
+     * Load up the resources for Bible book and section names, and cache the
+     * upper and lower versions of them.
      */
-    private void initialize()
-    {
+    private void initialize() {
         ResourceBundle resources = ResourceBundle.getBundle(SectionNames.class.getName(), Locale.getDefault(), CWClassLoader.instance(SectionNames.class));
 
         sections = new String[SECTIONS_IN_BIBLE];
 
-        for (int i = 0; i < SECTIONS_IN_BIBLE; i++)
-        {
+        for (int i = 0; i < SECTIONS_IN_BIBLE; i++) {
             String section = getString(resources, SECTION_KEY + (i + 1));
             sections[i] = section;
         }
@@ -232,14 +230,10 @@ public final class SectionNames
     /*
      * Helper to make the code more readable.
      */
-    private String getString(ResourceBundle resources, String key)
-    {
-        try
-        {
+    private String getString(ResourceBundle resources, String key) {
+        try {
             return resources.getString(key);
-        }
-        catch (MissingResourceException e)
-        {
+        } catch (MissingResourceException e) {
             assert false;
         }
         return null;
@@ -248,12 +242,12 @@ public final class SectionNames
     private static final String SECTION_KEY = "Sections."; //$NON-NLS-1$
 
     /**
-     * Handy section finder. There is a bit of moderately bad programming
-     * here because org.crosswire.biblemapper.sw*ng.GroupVerseColor
-     * uses these numbers as an index into an array, so we shouldn't
-     * change these numbers without fixing that, however I don't imagine
-     * that this section could ever change without breaking
-     * GroupVerseColor anyway so I don't see it as a big problem.
+     * Handy section finder. There is a bit of moderately bad programming here
+     * because org.crosswire.biblemapper.sw*ng.GroupVerseColor uses these
+     * numbers as an index into an array, so we shouldn't change these numbers
+     * without fixing that, however I don't imagine that this section could ever
+     * change without breaking GroupVerseColor anyway so I don't see it as a big
+     * problem.
      */
     public static final byte PENTATEUCH = 1;
     public static final byte HISTORY = 2;

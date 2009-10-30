@@ -35,18 +35,16 @@ import org.xml.sax.XMLReader;
 
 /**
  * A SAXEventProvider that provides SAX events from a String.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class StringSAXEventProvider implements SAXEventProvider
-{
+public class StringSAXEventProvider implements SAXEventProvider {
     /**
      * Simple ctor
      */
-    public StringSAXEventProvider(String xmlstr) throws ParserConfigurationException, SAXException
-    {
+    public StringSAXEventProvider(String xmlstr) throws ParserConfigurationException, SAXException {
         this.xmlstr = xmlstr;
 
         SAXParserFactory fact = SAXParserFactory.newInstance();
@@ -55,21 +53,21 @@ public class StringSAXEventProvider implements SAXEventProvider
         reader = parser.getXMLReader();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.xml.SAXEventProvider#provideSAXEvents(org.xml.sax.ContentHandler)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.common.xml.SAXEventProvider#provideSAXEvents(org.xml.sax
+     * .ContentHandler)
      */
-    public void provideSAXEvents(ContentHandler handler) throws SAXException
-    {
-        try
-        {
+    public void provideSAXEvents(ContentHandler handler) throws SAXException {
+        try {
             StringReader sr = new StringReader(xmlstr);
             InputSource is = new InputSource(sr);
 
             reader.setContentHandler(handler);
             reader.parse(is);
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             throw new SAXException(ex);
         }
     }

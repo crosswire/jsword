@@ -30,20 +30,20 @@ import org.jdom.Element;
 
 /**
  * A class to convert between strings and objects of a type.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class IntOptionsChoice extends AbstractReflectedChoice implements MappedChoice
-{
-    /* (non-Javadoc)
+public class IntOptionsChoice extends AbstractReflectedChoice implements MappedChoice {
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
      */
     /* @Override */
-    public void init(Element option, ResourceBundle configResources) throws StartupException
-    {
+    public void init(Element option, ResourceBundle configResources) throws StartupException {
         assert configResources != null;
 
         super.init(option, configResources);
@@ -52,8 +52,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements MappedC
 
         options = new TreeMap();
         Iterator iter = option.getChildren("alternative").iterator(); //$NON-NLS-1$
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             Element alternative = (Element) iter.next();
             int number = Integer.parseInt(alternative.getAttributeValue("number")); //$NON-NLS-1$
             String name = configResources.getString(prefix + number);
@@ -61,50 +60,53 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements MappedC
         }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.config.MappedChoice#getOptions()
      */
-    public Map getOptions()
-    {
+    public Map getOptions() {
         return new TreeMap(options);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.config.Choice#getConvertionClass()
      */
-    public Class getConversionClass()
-    {
+    public Class getConversionClass() {
         return Integer.TYPE;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.config.AbstractReflectedChoice#convertToString(java.lang.Object)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.common.config.AbstractReflectedChoice#convertToString(java
+     * .lang.Object)
      */
     /* @Override */
-    public String convertToString(Object orig)
-    {
+    public String convertToString(Object orig) {
         return orig.toString();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java
+     * .lang.String)
      */
     /* @Override */
-    public Object convertToObject(String orig)
-    {
+    public Object convertToObject(String orig) {
         // First check to see if this is a number
-        try
-        {
+        try {
             return new Integer(orig);
-        }
-        catch (NumberFormatException ex)
-        {
+        } catch (NumberFormatException ex) {
             Iterator iter = options.entrySet().iterator();
-            while (iter.hasNext())
-            {
+            while (iter.hasNext()) {
                 Map.Entry mapEntry = (Map.Entry) iter.next();
-                if (mapEntry.getValue().equals(orig))
-                {
+                if (mapEntry.getValue().equals(orig)) {
                     return mapEntry.getKey();
                 }
             }

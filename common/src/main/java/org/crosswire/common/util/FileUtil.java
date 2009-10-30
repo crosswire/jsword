@@ -27,34 +27,31 @@ import java.util.List;
 
 /**
  * .
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public final class FileUtil
-{
+public final class FileUtil {
     /**
      * Prevent instantiation
      */
-    private FileUtil()
-    {
+    private FileUtil() {
     }
 
     /**
      * Deletes a file or a directory and all of its contents
-     * @param file or directory to delete
+     * 
+     * @param file
+     *            or directory to delete
      * @return the list of files that could not be deleted
      */
-    public static List delete(File file)
-    {
+    public static List delete(File file) {
         List failures = new ArrayList();
-        if (file.isDirectory())
-        {
+        if (file.isDirectory()) {
             deleteContents(file, failures);
         }
-        if (!file.delete())
-        {
+        if (!file.delete()) {
             failures.add(file);
         }
         return failures;
@@ -62,22 +59,21 @@ public final class FileUtil
 
     /**
      * Recursive delete files.
-     * @param dirPath  directory of files to delete
-     * @param failures the list of files that could not be deleted
-    */
-    private static void deleteContents(File dirPath, List failures)
-    {
+     * 
+     * @param dirPath
+     *            directory of files to delete
+     * @param failures
+     *            the list of files that could not be deleted
+     */
+    private static void deleteContents(File dirPath, List failures) {
         String[] ls = dirPath.list();
 
-        for (int idx = 0; idx < ls.length; idx++)
-        {
+        for (int idx = 0; idx < ls.length; idx++) {
             File file = new File(dirPath, ls[idx]);
-            if (file.isDirectory())
-            {
+            if (file.isDirectory()) {
                 deleteContents(file, failures);
             }
-            if (!file.delete())
-            {
+            if (!file.delete()) {
                 failures.add(file);
             }
         }

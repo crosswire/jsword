@@ -23,37 +23,44 @@ package org.crosswire.common.config;
 
 /**
  * A class to convert between strings and objects of a type.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class FontChoice extends AbstractReflectedChoice
-{
-    /* (non-Javadoc)
+public class FontChoice extends AbstractReflectedChoice {
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.config.Choice#getConvertionClass()
      */
-    public Class getConversionClass()
-    {
+    public Class getConversionClass() {
         return String.class;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.config.AbstractReflectedChoice#convertToString(java.lang.Object)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.common.config.AbstractReflectedChoice#convertToString(java
+     * .lang.Object)
      */
     /* @Override */
-    public String convertToString(Object orig)
-    {
-        // This is a string representation of the font in the form:name.style.size
+    public String convertToString(Object orig) {
+        // This is a string representation of the font in the
+        // form:name.style.size
         return (String) orig;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java
+     * .lang.String)
      */
     /* @Override */
-    public Object convertToObject(String orig)
-    {
+    public Object convertToObject(String orig) {
         return orig;
     }
 }

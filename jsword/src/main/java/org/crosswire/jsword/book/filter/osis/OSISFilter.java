@@ -40,111 +40,91 @@ import org.xml.sax.InputSource;
 
 /**
  * Filter to convert an OSIS XML string to OSIS format.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class OSISFilter implements Filter
-{
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.Book, org.crosswire.jsword.passage.Key, java.lang.String)
+public class OSISFilter implements Filter {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book
+     * .Book, org.crosswire.jsword.passage.Key, java.lang.String)
      */
-    public List toOSIS(Book book, Key key, String plain)
-    {
+    public List toOSIS(Book book, Key key, String plain) {
         DataPolice.setKey(key);
         Element ele = null;
         Exception ex = null;
         String clean = plain;
 
-        // FIXME(dms): this is a major HACK handling a problem with a badly encoded module.
+        // FIXME(dms): this is a major HACK handling a problem with a badly
+        // encoded module.
         if (book.getInitials().startsWith("NET") && plain.endsWith("</div>")) //$NON-NLS-1$ //$NON-NLS-2$
         {
             clean = clean.substring(0, plain.length() - 6);
         }
 
-        try
-        {
+        try {
             ele = parse(clean);
-        }
-        catch (JDOMException e)
-        {
+        } catch (JDOMException e) {
             ex = e;
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             ex = e;
         }
 
-        if (ele == null)
-        {
+        if (ele == null) {
             clean = XMLUtil.cleanAllEntities(clean);
 
-            try
-            {
+            try {
                 ele = parse(clean);
-            }
-            catch (JDOMException e)
-            {
+            } catch (JDOMException e) {
                 ex = e;
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 ex = e;
-            }
-            finally
-            {
+            } finally {
                 // Make sure that other places don't report this problem
                 DataPolice.setKey(null);
             }
         }
 
-        if (ex != null)
-        {
+        if (ex != null) {
             DataPolice.report("Parse " + book.getInitials() + "(" + key.getName() + ") failed: " + ex.getMessage() + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                              "\non: " + plain); //$NON-NLS-1$
+                    "\non: " + plain); //$NON-NLS-1$
             ele = cleanTags(book, key, clean);
         }
 
-        if (ele == null)
-        {
+        if (ele == null) {
             ele = OSISUtil.factory().createP();
         }
 
         return ele.removeContent();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#clone()
      */
-    public Object clone()
-    {
-        try
-        {
+    public Object clone() {
+        try {
             return super.clone();
-        }
-        catch (CloneNotSupportedException e)
-        {
+        } catch (CloneNotSupportedException e) {
             assert false : e;
         }
         return null;
     }
 
-    private Element cleanTags(Book book, Key key, String plain)
-    {
+    private Element cleanTags(Book book, Key key, String plain) {
         // So just try to strip out all XML looking things
         String shawn = XMLUtil.cleanAllTags(plain);
         Exception ex = null;
-        try
-        {
+        try {
             return parse(shawn);
-        }
-        catch (JDOMException e)
-        {
+        } catch (JDOMException e) {
             ex = e;
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             ex = e;
         }
 
@@ -154,11 +134,10 @@ public class OSISFilter implements Filter
     }
 
     /**
-     * If the string is invalid then we might want to have more than one
-     * crack at parsing it
+     * If the string is invalid then we might want to have more than one crack
+     * at parsing it
      */
-    private Element parse(String plain) throws JDOMException, IOException
-    {
+    private Element parse(String plain) throws JDOMException, IOException {
         // create a root element to house our document fragment
         StringReader in = new StringReader("<div>" + plain + "</div>"); //$NON-NLS-1$ //$NON-NLS-2$
         InputSource is = new InputSource(in);

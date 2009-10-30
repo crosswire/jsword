@@ -29,40 +29,36 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
- * Runs an xml parser on an xml file using an xml handler.
- * The default behavior is to check that the xml file is well-formed.
- *
+ * Runs an xml parser on an xml file using an xml handler. The default behavior
+ * is to check that the xml file is well-formed.
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class XMLProcess
-{
+public class XMLProcess {
 
-    public XMLProcess()
-    {
+    public XMLProcess() {
         features = new XMLFeatureSet();
     }
 
     /**
      * @return Returns the features.
      */
-    public XMLFeatureSet getFeatures()
-    {
+    public XMLFeatureSet getFeatures() {
         return features;
     }
 
     /**
      * Process an xml file according to the arguments.
+     * 
      * @param argv
      */
-    public static void main(String[] argv)
-    {
+    public static void main(String[] argv) {
         XMLProcess checker = new XMLProcess();
 
         // is there anything to do?
-        if (argv.length == 0)
-        {
+        if (argv.length == 0) {
             checker.usage();
             System.exit(1);
         }
@@ -71,11 +67,9 @@ public class XMLProcess
         String arg = null;
 
         // process arguments
-        for (int i = 0; i < argv.length; i++)
-        {
+        for (int i = 0; i < argv.length; i++) {
             arg = argv[i];
-            if (arg.charAt(0) == '-')
-            {
+            if (arg.charAt(0) == '-') {
                 String option = arg.substring(1);
                 if ("h".equals(option)) //$NON-NLS-1$
                 {
@@ -90,21 +84,17 @@ public class XMLProcess
 
     }
 
-    private void initialize(String[] argv)
-    {
+    private void initialize(String[] argv) {
         // process arguments
         int i = 0;
-        for (i = 0; i < argv.length; i++)
-        {
+        for (i = 0; i < argv.length; i++) {
             String arg = argv[i];
-            if (arg.charAt(0) == '-')
-            {
+            if (arg.charAt(0) == '-') {
                 String option = arg.substring(1);
                 if ("p".equals(option)) //$NON-NLS-1$
                 {
                     // get parser name
-                    if (++i == argv.length)
-                    {
+                    if (++i == argv.length) {
                         System.err.println("error: Missing argument to -p option."); //$NON-NLS-1$
                     }
                     parserName = argv[i];
@@ -115,8 +105,7 @@ public class XMLProcess
                 if ("a".equals(option)) //$NON-NLS-1$
                 {
                     // get parser name
-                    if (++i == argv.length)
-                    {
+                    if (++i == argv.length) {
                         System.err.println("error: Missing argument to -a option."); //$NON-NLS-1$
                     }
                     adapterName = argv[i];
@@ -130,8 +119,7 @@ public class XMLProcess
         features.setFeatureStates(argv);
     }
 
-    private void bind()
-    {
+    private void bind() {
         createParser();
         createAdapter();
 
@@ -142,108 +130,77 @@ public class XMLProcess
 
     }
 
-    private void createParser()
-    {
-        if (parser != null)
-        {
+    private void createParser() {
+        if (parser != null) {
             return;
         }
 
-        try
-        {
+        try {
             parser = XMLReaderFactory.createXMLReader(parserName);
-        }
-        catch (SAXException e)
-        {
+        } catch (SAXException e) {
             System.err.println("error: Unable to instantiate parser (" + parserName + ")"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
     }
 
-    private void createAdapter()
-    {
-        if (adapter != null)
-        {
+    private void createAdapter() {
+        if (adapter != null) {
             return;
         }
 
-        try
-        {
+        try {
             adapter = (XMLHandlerAdapter) ClassUtil.forName(adapterName).newInstance();
-        }
-        catch (ClassNotFoundException e)
-        {
+        } catch (ClassNotFoundException e) {
             System.err.println("error: Unable to instantiate XMLHandlerAdpater (" + adapterName + ")"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        catch (InstantiationException e)
-        {
+        } catch (InstantiationException e) {
             System.err.println("error: Unable to instantiate XMLHandlerAdpater (" + adapterName + ")"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        catch (IllegalAccessException e)
-        {
+        } catch (IllegalAccessException e) {
             System.err.println("error: Unable to instantiate XMLHandlerAdpater (" + adapterName + ")"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
     }
 
-    private void setHandlers()
-    {
+    private void setHandlers() {
         parser.setDTDHandler(adapter);
         parser.setErrorHandler(adapter);
         parser.setContentHandler(adapter);
 
-        try
-        {
+        try {
             parser.setProperty(DECLARATION_HANDLER_PROPERTY_ID, adapter);
-        }
-        catch (SAXException e)
-        {
+        } catch (SAXException e) {
             e.printStackTrace(System.err);
         }
 
-        try
-        {
+        try {
             parser.setProperty(LEXICAL_HANDLER_PROPERTY_ID, adapter);
-        }
-        catch (SAXException e)
-        {
+        } catch (SAXException e) {
             e.printStackTrace(System.err);
         }
     }
 
-    public void parse(String xmlFile)
-    {
+    public void parse(String xmlFile) {
         bind();
         // parse file
-        try
-        {
+        try {
             System.out.println("Parsing with the following:"); //$NON-NLS-1$
             printActual();
             parser.parse(xmlFile);
             System.out.println("Done: no problems found."); //$NON-NLS-1$
-        }
-        catch (SAXException e)
-        {
+        } catch (SAXException e) {
             System.err.println("error: Parse error occurred - " + e.getMessage()); //$NON-NLS-1$
             Exception nested = e.getException();
-            if (nested != null)
-            {
+            if (nested != null) {
                 nested.printStackTrace(System.err);
-            }
-            else
-            {
+            } else {
                 e.printStackTrace(System.err);
             }
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace(System.err);
         }
     }
 
     /** Prints the usage. */
-    private void usage()
-    {
+    private void usage() {
         System.err.println("usage: java org.crosswire.common.xml.XMLProcess (options) uri"); //$NON-NLS-1$
         System.err.println();
 
@@ -256,22 +213,19 @@ public class XMLProcess
         printDefaults();
     }
 
-    public void printUsage()
-    {
+    public void printUsage() {
         System.err.println("  -p name     Select parser by name."); //$NON-NLS-1$
         System.err.println("  -a name     Select XMLHandlerAdapter by name."); //$NON-NLS-1$
         features.printUsage();
     }
 
-    public void printDefaults()
-    {
+    public void printDefaults() {
         System.err.println("Parser:     " + DEFAULT_PARSER_NAME); //$NON-NLS-1$
         System.err.println("Handler:    " + DEFAULT_HANDLER_NAME); //$NON-NLS-1$
         System.err.println(new XMLFeatureSet().toString());
     }
 
-    public void printActual()
-    {
+    public void printActual() {
         System.err.println("Parser:     " + parserName); //$NON-NLS-1$
         System.err.println("Handler:    " + adapterName); //$NON-NLS-1$
         System.err.println(new XMLFeatureSet().toString());

@@ -25,13 +25,12 @@ import java.io.Serializable;
 
 /**
  * An Enumeration of the possible Features a Book may have.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public final class FeatureType implements Serializable
-{
+public final class FeatureType implements Serializable {
     /**
      * The book is one of Greek Definitions. AKA, Strong's.
      */
@@ -93,23 +92,20 @@ public final class FeatureType implements Serializable
     public static final FeatureType HEADINGS = new FeatureType("Headings"); //$NON-NLS-1$
 
     /**
-     * @param name The name of the FeatureType
+     * @param name
+     *            The name of the FeatureType
      */
-    private FeatureType(String name)
-    {
+    private FeatureType(String name) {
         this.name = name;
     }
 
     /**
      * Lookup method to convert from a String
      */
-    public static FeatureType fromString(String name)
-    {
-        for (int i = 0; i < VALUES.length; i++)
-        {
+    public static FeatureType fromString(String name) {
+        for (int i = 0; i < VALUES.length; i++) {
             FeatureType o = VALUES[i];
-            if (o.name.equalsIgnoreCase(name))
-            {
+            if (o.name.equalsIgnoreCase(name)) {
                 return o;
             }
         }
@@ -121,16 +117,16 @@ public final class FeatureType implements Serializable
     /**
      * Lookup method to convert from an integer
      */
-    public static FeatureType fromInteger(int i)
-    {
+    public static FeatureType fromInteger(int i) {
         return VALUES[i];
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         return name;
     }
 
@@ -143,25 +139,13 @@ public final class FeatureType implements Serializable
     private static int nextObj;
     private final int obj = nextObj++;
 
-    Object readResolve()
-    {
+    Object readResolve() {
         return VALUES[obj];
     }
 
-    private static final FeatureType[] VALUES =
-    {
-        GREEK_DEFINITIONS,
-        GREEK_PARSE,
-        HEBREW_DEFINITIONS,
-        HEBREW_PARSE,
-        DAILY_DEVOTIONS,
-        GLOSSARY,
-        STRONGS_NUMBERS,
-        FOOTNOTES,
-        SCRIPTURE_REFERENCES,
-        WORDS_OF_CHRIST,
-        MORPHOLOGY,
-        HEADINGS,
+    private static final FeatureType[] VALUES = {
+            GREEK_DEFINITIONS, GREEK_PARSE, HEBREW_DEFINITIONS, HEBREW_PARSE, DAILY_DEVOTIONS, GLOSSARY, STRONGS_NUMBERS, FOOTNOTES, SCRIPTURE_REFERENCES,
+            WORDS_OF_CHRIST, MORPHOLOGY, HEADINGS,
     };
 
     /**

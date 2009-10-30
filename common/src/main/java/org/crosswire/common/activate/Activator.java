@@ -27,33 +27,31 @@ import java.util.Set;
 
 /**
  * Manager for instances of Activatable.
- *
- * Activator should be used to manage all activate()ions and deactivate()ions
- * so that it can keep a track of exactly what is active and what can be
+ * 
+ * Activator should be used to manage all activate()ions and deactivate()ions so
+ * that it can keep a track of exactly what is active and what can be
  * deactivate()d is save memory.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public final class Activator
-{
+public final class Activator {
     /**
      * Prevent instantiation
      */
-    private Activator()
-    {
+    private Activator() {
         // singleton - no set-up needed
     }
 
     /**
      * Check that a subject is activated and call activate() if not.
-     * @param subject The thing to activate
+     * 
+     * @param subject
+     *            The thing to activate
      */
-    public static void activate(Activatable subject)
-    {
-        if (!activated.contains(subject) && subject != null)
-        {
+    public static void activate(Activatable subject) {
+        if (!activated.contains(subject) && subject != null) {
             subject.activate(lock);
             activated.add(subject);
         }
@@ -62,33 +60,29 @@ public final class Activator
     /**
      * If we need to tighten things up a bit we can save memory with this
      */
-    public static void reduceMemoryUsage(Kill amount)
-    {
+    public static void reduceMemoryUsage(Kill amount) {
         amount.reduceMemoryUsage();
     }
 
     /**
-     * Deactivate an Activatable object.
-     * It is safe to activate() something and then forget to deactivate() it
-     * since we keep a track of activated objects and will automatically
-     * deactivate() when needed, so this method should only be used when we are
-     * sure that something will not be needed again.
-     * @param subject The thing to de-activate
+     * Deactivate an Activatable object. It is safe to activate() something and
+     * then forget to deactivate() it since we keep a track of activated objects
+     * and will automatically deactivate() when needed, so this method should
+     * only be used when we are sure that something will not be needed again.
+     * 
+     * @param subject
+     *            The thing to deactivate
      */
-    public static void deactivate(Activatable subject)
-    {
-        if (activated.contains(subject) && subject != null)
-        {
+    public static void deactivate(Activatable subject) {
+        if (activated.contains(subject) && subject != null) {
             subject.deactivate(lock);
             activated.remove(subject);
         }
     }
 
-    public static void deactivateAll()
-    {
+    public static void deactivateAll() {
         Iterator iter = activated.iterator();
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             deactivate((Activatable) iter.next());
         }
     }

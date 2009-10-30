@@ -34,65 +34,70 @@ import org.crosswire.jsword.passage.VerseFactory;
 
 /**
  * A simple collector of verses that stores the verses in a Key.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class VerseCollector extends Collector
-{
+public class VerseCollector extends Collector {
 
     /**
      * Create a collector for the searcher that populates results.
      */
-    public VerseCollector(Searcher searcher, Key results)
-    {
+    public VerseCollector(Searcher searcher, Key results) {
         this.searcher = searcher;
         this.results = results;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.lucene.search.Collector#acceptsDocsOutOfOrder()
      */
-    public boolean acceptsDocsOutOfOrder()
-    {
+    public boolean acceptsDocsOutOfOrder() {
         // Order is unimportant
         return true;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.lucene.search.Collector#collect(int)
      */
-    public void collect(int docId) throws IOException
-    {
+    public void collect(int docId) throws IOException {
         Document doc = searcher.doc(docBase + docId);
-        try
-        {
+        try {
             Key key = VerseFactory.fromString(doc.get(LuceneIndex.FIELD_KEY));
             results.addAll(key);
-        }
-        catch (NoSuchVerseException e)
-        {
-            // Wrap the NoSuchVerseException in an IOException so it can be gotten.
+        } catch (NoSuchVerseException e) {
+            // Wrap the NoSuchVerseException in an IOException so it can be
+            // gotten.
             throw new IOException(e);
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.lucene.search.Collector#setNextReader(org.apache.lucene.index.IndexReader, int)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.apache.lucene.search.Collector#setNextReader(org.apache.lucene.index
+     * .IndexReader, int)
      */
-    public void setNextReader(IndexReader reader, int docBase) throws IOException
-    {
+    public void setNextReader(IndexReader reader, int docBase) throws IOException {
         this.docBase = docBase;
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.lucene.search.Collector#setScorer(org.apache.lucene.search.Scorer)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.apache.lucene.search.Collector#setScorer(org.apache.lucene.search
+     * .Scorer)
      */
-    public void setScorer(Scorer scorer) throws IOException
-    {
+    public void setScorer(Scorer scorer) throws IOException {
         // This collector does no scoring. It collects all hits.
     }
+
     private int docBase;
     private Searcher searcher;
     private Key results;

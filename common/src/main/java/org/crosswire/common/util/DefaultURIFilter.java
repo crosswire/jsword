@@ -23,18 +23,18 @@ package org.crosswire.common.util;
 
 /**
  * An URIFilter that accepts all names.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class DefaultURIFilter implements URIFilter
-{
-    /* (non-Javadoc)
+public class DefaultURIFilter implements URIFilter {
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.util.URIFilter#accept(java.lang.String)
      */
-    public boolean accept(String name)
-    {
+    public boolean accept(String name) {
         return true;
     }
 }

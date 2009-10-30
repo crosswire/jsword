@@ -27,36 +27,33 @@ import java.util.NoSuchElementException;
 
 /**
  * Convert an Iterator into a Enumeration.
- * <p>The only real difference between the 2 is the naming and
- * that Enumeration does not have the delete method.
- *
+ * <p>
+ * The only real difference between the 2 is the naming and that Enumeration
+ * does not have the delete method.
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public final class IteratorEnumeration implements Enumeration
-{
+public final class IteratorEnumeration implements Enumeration {
     /**
      * Create an Enumeration that proxies to an Iterator
      */
-    public IteratorEnumeration(Iterator it)
-    {
+    public IteratorEnumeration(Iterator it) {
         this.it = it;
     }
 
     /**
      * Returns true if the iteration has more elements
      */
-    public boolean hasMoreElements()
-    {
+    public boolean hasMoreElements() {
         return it.hasNext();
     }
 
     /**
-     *  Returns the next element in the interation
+     * Returns the next element in the interation
      */
-    public Object nextElement() throws NoSuchElementException
-    {
+    public Object nextElement() throws NoSuchElementException {
         return it.next();
     }
 

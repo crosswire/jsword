@@ -38,23 +38,21 @@ import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 
 /**
- * TreeKeyIndex reads Sword index files that are path based.
- * Paths are of the form /a/b/c, and can be of any depth.
- * The ultimate output of a TreeKeyIndex is the offset and
- * length of a chunk of data in another file that can be read.
- *
- * @see gnu.lgpl.License for license details.
+ * TreeKeyIndex reads Sword index files that are path based. Paths are of the
+ * form /a/b/c, and can be of any depth. The ultimate output of a TreeKeyIndex
+ * is the offset and length of a chunk of data in another file that can be read.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class TreeKeyIndex implements Activatable
-{
+public class TreeKeyIndex implements Activatable {
     /**
      * Simple ctor
+     * 
      * @throws BookException
      */
-    public TreeKeyIndex(SwordBookMetaData sbmd)
-    {
+    public TreeKeyIndex(SwordBookMetaData sbmd) {
         bmd = sbmd;
     }
 
@@ -62,54 +60,56 @@ public class TreeKeyIndex implements Activatable
      * @return the root TreeNode for the module.
      * @throws IOException
      */
-    public TreeNode getRoot() throws IOException
-    {
+    public TreeNode getRoot() throws IOException {
         return getTreeNode(getOffset(0));
     }
 
     /**
      * Get the parent of the TreeNode.
-     * @param node the node being worked upon
+     * 
+     * @param node
+     *            the node being worked upon
      * @return the parent node
      * @throws IOException
      */
-    public TreeNode getParent(TreeNode node) throws IOException
-    {
+    public TreeNode getParent(TreeNode node) throws IOException {
         return getTreeNode(getOffset(node.getParent()));
     }
 
     /**
      * Get the first child of the TreeNode.
-     * @param node the node being worked upon
+     * 
+     * @param node
+     *            the node being worked upon
      * @return the first child node
      * @throws IOException
      */
-    public TreeNode getFirstChild(TreeNode node) throws IOException
-    {
+    public TreeNode getFirstChild(TreeNode node) throws IOException {
         return getTreeNode(getOffset(node.getFirstChild()));
     }
 
     /**
      * Get the next sibling of the TreeNode.
-     * @param node the node being worked upon
+     * 
+     * @param node
+     *            the node being worked upon
      * @return the next sibling node
      * @throws IOException
      */
-    public TreeNode getNextSibling(TreeNode node) throws IOException
-    {
+    public TreeNode getNextSibling(TreeNode node) throws IOException {
         return getTreeNode(getOffset(node.getNextSibling()));
     }
 
     /**
      * The idx file contains offsets into the dat file.
-     * @param index the record id
+     * 
+     * @param index
+     *            the record id
      * @return an offset into the dat file
      * @throws IOException
      */
-    private int getOffset(int index) throws IOException
-    {
-        if (index == -1)
-        {
+    private int getOffset(int index) throws IOException {
+        if (index == -1) {
             return -1;
         }
 
@@ -120,16 +120,16 @@ public class TreeKeyIndex implements Activatable
 
     /**
      * Given an offset get the TreeNode from the dat file.
-     * @param offset start of a TreeNode record in the dat file.
+     * 
+     * @param offset
+     *            start of a TreeNode record in the dat file.
      * @return the TreeNode
      * @throws IOException
      */
-    private TreeNode getTreeNode(int offset) throws IOException
-    {
+    private TreeNode getTreeNode(int offset) throws IOException {
         TreeNode node = new TreeNode(offset);
 
-        if (offset == -1)
-        {
+        if (offset == -1) {
             return node;
         }
 
@@ -141,8 +141,7 @@ public class TreeKeyIndex implements Activatable
 
         buffer = SwordUtil.readUntilRAF(datRaf, (byte) 0);
         int size = buffer.length;
-        if (buffer[size - 1] == 0)
-        {
+        if (buffer[size - 1] == 0) {
             size--;
         }
 
@@ -152,26 +151,25 @@ public class TreeKeyIndex implements Activatable
 
         buffer = SwordUtil.readNextRAF(datRaf, 2);
         int userDataSize = SwordUtil.decodeLittleEndian16(buffer, 0);
-        if (userDataSize > 0)
-        {
+        if (userDataSize > 0) {
             node.setUserData(SwordUtil.readNextRAF(datRaf, userDataSize));
         }
 
         return node;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.common.activate.Activatable#activate(org.crosswire.common
+     * .activate.Lock)
      */
-    public final void activate(Lock lock)
-    {
+    public final void activate(Lock lock) {
         String path = null;
-        try
-        {
+        try {
             path = getExpandedDataPath();
-        }
-        catch (BookException e)
-        {
+        } catch (BookException e) {
             Reporter.informUser(this, e);
             return;
         }
@@ -179,25 +177,24 @@ public class TreeKeyIndex implements Activatable
         idxFile = new File(path + EXTENSION_INDEX);
         datFile = new File(path + EXTENSION_DATA);
 
-        if (!idxFile.canRead())
-        {
-            Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] { idxFile.getAbsolutePath() }));
+        if (!idxFile.canRead()) {
+            Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] {
+                idxFile.getAbsolutePath()
+            }));
             return;
         }
 
-        if (!datFile.canRead())
-        {
-            Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] { datFile.getAbsolutePath() }));
+        if (!datFile.canRead()) {
+            Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] {
+                datFile.getAbsolutePath()
+            }));
             return;
         }
 
-        try
-        {
+        try {
             idxRaf = new RandomAccessFile(idxFile, FileUtil.MODE_READ);
             datRaf = new RandomAccessFile(datFile, FileUtil.MODE_READ);
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             log.error("failed to open files", ex); //$NON-NLS-1$
             idxRaf = null;
             datRaf = null;
@@ -205,28 +202,24 @@ public class TreeKeyIndex implements Activatable
         active = true;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common
+     * .activate.Lock)
      */
-    public final void deactivate(Lock lock)
-    {
-        try
-        {
-            if (idxRaf != null)
-            {
+    public final void deactivate(Lock lock) {
+        try {
+            if (idxRaf != null) {
                 idxRaf.close();
             }
-            if (datRaf != null)
-            {
+            if (datRaf != null) {
                 datRaf.close();
             }
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             log.error("failed to close nt files", ex); //$NON-NLS-1$
-        }
-        finally
-        {
+        } finally {
             idxRaf = null;
             datRaf = null;
         }
@@ -236,20 +229,16 @@ public class TreeKeyIndex implements Activatable
     /**
      * Helper method so we can quickly activate ourselves on access
      */
-    protected final void checkActive()
-    {
-        if (!active)
-        {
+    protected final void checkActive() {
+        if (!active) {
             Activator.activate(this);
         }
     }
 
-    private String getExpandedDataPath() throws BookException
-    {
+    private String getExpandedDataPath() throws BookException {
         URI loc = NetUtil.lengthenURI(bmd.getLibrary(), (String) bmd.getProperty(ConfigEntryType.DATA_PATH));
 
-        if (loc == null)
-        {
+        if (loc == null) {
             throw new BookException(Msg.MISSING_FILE);
         }
 

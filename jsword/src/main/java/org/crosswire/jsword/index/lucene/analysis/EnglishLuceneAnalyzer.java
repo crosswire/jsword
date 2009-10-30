@@ -30,39 +30,34 @@ import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
 
 /**
- * English Analyzer works like lucene SimpleAnalyzer + Stemming. 
- * (LowerCaseTokenizer  > PorterStemFilter). 
- * Like the AbstractAnalyzer, {@link StopFilter} is off by default. 
- *
- *
+ * English Analyzer works like lucene SimpleAnalyzer + Stemming.
+ * (LowerCaseTokenizer > PorterStemFilter). Like the AbstractAnalyzer,
+ * {@link StopFilter} is off by default.
+ * 
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author sijo cherian [sijocherian at yahoo dot com]
  */
-public class EnglishLuceneAnalyzer extends AbstractBookAnalyzer
-{
+public class EnglishLuceneAnalyzer extends AbstractBookAnalyzer {
 
-    public EnglishLuceneAnalyzer()
-    {
+    public EnglishLuceneAnalyzer() {
         stopSet = StopAnalyzer.ENGLISH_STOP_WORDS_SET;
     }
 
     /**
-     * Constructs a {@link LowerCaseTokenizer} filtered by a
-     * language filter {@link StopFilter} and {@link PorterStemFilter} for English.
+     * Constructs a {@link LowerCaseTokenizer} filtered by a language filter
+     * {@link StopFilter} and {@link PorterStemFilter} for English.
      */
-    public final TokenStream tokenStream(String fieldName, Reader reader)
-    {
+    public final TokenStream tokenStream(String fieldName, Reader reader) {
         TokenStream result = new LowerCaseTokenizer(reader);
 
-        if (doStopWords && stopSet != null)
-        {
+        if (doStopWords && stopSet != null) {
             result = new StopFilter(false, result, stopSet);
         }
 
         // Using Porter Stemmer
-        if (doStemming)
-        {
+        if (doStemming) {
             result = new PorterStemFilter(result);
         }
 

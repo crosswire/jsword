@@ -27,12 +27,19 @@ import org.crosswire.jsword.passage.Key;
 
 /**
  * The search.Searcher uses a Query to calculate a search result.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public interface Query
-{
+public interface Query {
+    /**
+     * Find the keys that match the query in the index
+     * 
+     * @param index
+     *            the index to search
+     * @return the set of keys that match
+     * @throws BookException
+     */
     Key find(Index index) throws BookException;
 }

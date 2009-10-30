@@ -36,60 +36,68 @@ import org.jdom.Element;
 
 /**
  * SwordBook is a base class for all verse based Sword type books.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class SwordBook extends AbstractPassageBook
-{
+public class SwordBook extends AbstractPassageBook {
     /**
      * Simple ctor
      */
-    public SwordBook(SwordBookMetaData sbmd, AbstractBackend backend)
-    {
+    public SwordBook(SwordBookMetaData sbmd, AbstractBackend backend) {
         super(sbmd);
 
         this.sbmd = sbmd;
         this.backend = backend;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.common.activate.Activatable#activate(org.crosswire.common
+     * .activate.Lock)
      */
-    public final void activate(Lock lock)
-    {
+    public final void activate(Lock lock) {
         super.activate(lock);
 
         // We don't need to activate the backend because it should be capable
         // of doing it for itself.
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common
+     * .activate.Lock)
      */
-    public final void deactivate(Lock lock)
-    {
+    public final void deactivate(Lock lock) {
         super.deactivate(lock);
 
         Activator.deactivate(backend);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#contains(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.Book#contains(org.crosswire.jsword.passage.Key)
      */
-    public boolean contains(Key key)
-    {
+    public boolean contains(Key key) {
         return backend != null && backend.contains(key);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.basic.AbstractPassageBook#getRawText(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.basic.AbstractPassageBook#getRawText(org.crosswire
+     * .jsword.passage.Key)
      */
-    public String getRawText(Key key) throws BookException
-    {
-        if (backend == null)
-        {
+    public String getRawText(Key key) throws BookException {
+        if (backend == null) {
             return ""; //$NON-NLS-1$
         }
 
@@ -99,22 +107,22 @@ public class SwordBook extends AbstractPassageBook
         return result;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.basic.AbstractPassageBook#addOSIS(org.crosswire.jsword.passage.Key, org.jdom.Element, java.util.List)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.basic.AbstractPassageBook#addOSIS(org.crosswire
+     * .jsword.passage.Key, org.jdom.Element, java.util.List)
      */
-    public void addOSIS(Key key, Element div, List osisContent)
-    {
+    public void addOSIS(Key key, Element div, List osisContent) {
         // See if the text is marked up with verses
         // If it is then just add it.
         Iterator iter = osisContent.iterator();
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             Content content = (Content) iter.next();
-            if (content instanceof Element)
-            {
+            if (content instanceof Element) {
                 Element ele = (Element) content;
-                if (ele.getName().equals(OSISUtil.OSIS_ELEMENT_VERSE))
-                {
+                if (ele.getName().equals(OSISUtil.OSIS_ELEMENT_VERSE)) {
                     super.addOSIS(key, div, osisContent);
                     return;
                 }
@@ -129,19 +137,15 @@ public class SwordBook extends AbstractPassageBook
         super.addOSIS(key, everse, osisContent);
     }
 
-    public void addOSIS(Key key, List contentList, List osisContent)
-    {
+    public void addOSIS(Key key, List contentList, List osisContent) {
         // See if the text is marked up with verses
         // If it is then just add it.
         Iterator iter = osisContent.iterator();
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             Content content = (Content) iter.next();
-            if (content instanceof Element)
-            {
+            if (content instanceof Element) {
                 Element ele = (Element) content;
-                if (ele.getName().equals(OSISUtil.OSIS_ELEMENT_VERSE))
-                {
+                if (ele.getName().equals(OSISUtil.OSIS_ELEMENT_VERSE)) {
                     super.addOSIS(key, contentList, osisContent);
                     return;
                 }
@@ -156,35 +160,43 @@ public class SwordBook extends AbstractPassageBook
         contentList.add(everse);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.Book#isWritable()
      */
-    public boolean isWritable()
-    {
+    public boolean isWritable() {
         return backend.isWritable();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.basic.AbstractPassageBook#setRawText(org.crosswire.jsword.passage.Key, java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.basic.AbstractPassageBook#setRawText(org.crosswire
+     * .jsword.passage.Key, java.lang.String)
      */
-    public void setRawText(Key key, String rawData) throws BookException
-    {
+    public void setRawText(Key key, String rawData) throws BookException {
         throw new BookException(Msg.DRIVER_READONLY);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#setAliasKey(org.crosswire.jsword.passage.Key, org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.Book#setAliasKey(org.crosswire.jsword.passage
+     * .Key, org.crosswire.jsword.passage.Key)
      */
-    public void setAliasKey(Key alias, Key source) throws BookException
-    {
+    public void setAliasKey(Key alias, Key source) throws BookException {
         throw new BookException(Msg.DRIVER_READONLY);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.basic.AbstractPassageBook#getFilter()
      */
-    protected Filter getFilter()
-    {
+    protected Filter getFilter() {
         return sbmd.getFilter();
     }
 

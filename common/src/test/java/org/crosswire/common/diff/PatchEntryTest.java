@@ -13,30 +13,27 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-
-public class PatchEntryTest extends TestCase
-{
-    protected void setUp()
-    {
+public class PatchEntryTest extends TestCase {
+    protected void setUp() {
     }
 
-    public void testPatchObj()
-    {
+    public void testPatchObj() {
         // Patch Object
         PatchEntry p = new PatchEntry();
         p.setSourceStart(20);
         p.setTargetStart(21);
         p.setSourceLength(18);
         p.setTargetLength(17);
-        p.setDifferences(diffList(new Object[] { new Difference(EditType.EQUAL, "jump"), new Difference(EditType.DELETE, "s"), new Difference(EditType.INSERT, "ed"), new Difference(EditType.EQUAL, " over "), new Difference(EditType.DELETE, "the"), new Difference(EditType.INSERT, "a"), new Difference(EditType.EQUAL, " laz") })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+        p
+                .setDifferences(diffList(new Object[] {
+                        new Difference(EditType.EQUAL, "jump"), new Difference(EditType.DELETE, "s"), new Difference(EditType.INSERT, "ed"), new Difference(EditType.EQUAL, " over "), new Difference(EditType.DELETE, "the"), new Difference(EditType.INSERT, "a"), new Difference(EditType.EQUAL, " laz")})); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
         assertEquals("Patch: text1.", "jumps over the laz", p.getSourceText()); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals("Patch: text2.", "jumped over a laz", p.getTargetText()); //$NON-NLS-1$ //$NON-NLS-2$
         String strp = "@@ -21,18 +22,17 @@\n jump\n-s\n+ed\n  over \n-the\n+a\n  laz\n"; //$NON-NLS-1$
         assertEquals("Patch: toString.", strp, p.toString()); //$NON-NLS-1$
     }
 
-    public void testMatchFromText()
-    {
+    public void testMatchFromText() {
         String strp = "@@ -21,18 +22,17 @@\n jump\n-s\n+ed\n  over \n-the\n+a\n  laz\n"; //$NON-NLS-1$
         assertEquals("PatchEntry.fromText: #1.", strp, new PatchEntry(strp).toString()); //$NON-NLS-1$
         assertEquals("PatchEntry.fromText: #2.", "@@ -1 +1 @@\n-a\n+b\n", new PatchEntry("@@ -1 +1 @@\n-a\n+b\n").toString()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -51,8 +48,7 @@ public class PatchEntryTest extends TestCase
         assertEquals("PatchEntry.fromText: #11.", "@@ -1,4 +1,4 @@\n-%0Afoo\n+foo%0A\n", new PatchEntry("@@ -1,4 +1,4 @@\n-%0Afoo\n+foo%0A\n").toString()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
-    public void testMatchAddContext()
-    {
+    public void testMatchAddContext() {
         PatchEntry.setMargin(4);
         PatchEntry p = new PatchEntry("@@ -21,4 +21,10 @@\n-jump\n+somersault\n"); //$NON-NLS-1$
         p.addContext("The quick brown fox jumps over the lazy dog."); //$NON-NLS-1$
@@ -71,10 +67,8 @@ public class PatchEntryTest extends TestCase
         assertEquals("PatchEntry.addContext: Ambiguity.", "@@ -1,27 +1,28 @@\n Th\n-e\n+at\n  quick brown fox jumps. \n", p.toString()); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-  
     // Private function for quickly building lists of diffs.
-    private static List diffList(Object[] diffs)
-    {
+    private static List diffList(Object[] diffs) {
         List myDiffList = new ArrayList();
         myDiffList.addAll(Arrays.asList(diffs));
         return myDiffList;

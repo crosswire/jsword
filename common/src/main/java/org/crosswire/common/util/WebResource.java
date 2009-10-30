@@ -42,25 +42,21 @@ import org.apache.commons.httpclient.util.HttpURLConnection;
  * A WebResource is backed by an URL and potentially the proxy through which it
  * need go. It can get basic information about the resource and it can get the
  * resource.
- *
- * @see gnu.lgpl.License for license details.<br> The copyright to this program is
- *      held by it's authors.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
+ *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class WebResource
-{
-    public WebResource(URI theURI)
-    {
+public class WebResource {
+    public WebResource(URI theURI) {
         this(theURI, null);
     }
 
-    public WebResource(URI theURI, String theProxyHost)
-    {
+    public WebResource(URI theURI, String theProxyHost) {
         this(theURI, theProxyHost, null);
     }
 
-    public WebResource(URI theURI, String theProxyHost, Integer theProxyPort)
-    {
+    public WebResource(URI theURI, String theProxyHost, Integer theProxyPort) {
         uri = theURI;
         client = new HttpClient();
 
@@ -73,39 +69,35 @@ public class WebResource
         config.setHost(new HttpHost(theURI.getHost(), theURI.getPort()));
 
         // Configure proxy info if necessary and defined
-        if (theProxyHost != null && theProxyHost.length() > 0)
-        {
+        if (theProxyHost != null && theProxyHost.length() > 0) {
             config.setProxyHost(new ProxyHost(theProxyHost, theProxyPort == null ? -1 : theProxyPort.intValue()));
         }
     }
 
     /**
      * Determine the size of this WebResource.
-     * <p>Note that the http client may read the entire file to determine this.</p>
-     *
+     * <p>
+     * Note that the http client may read the entire file to determine this.
+     * </p>
+     * 
      * @return the size of the file
      */
-    public int getSize()
-    {
+    public int getSize() {
         HttpMethod method = new HeadMethod(uri.getPath());
 
-        try
-        {
+        try {
             // Execute the method.
             int status = client.executeMethod(method);
-            if (status == HttpStatus.SC_OK)
-            {
+            if (status == HttpStatus.SC_OK) {
                 return new HttpURLConnection(method, NetUtil.toURL(uri)).getContentLength();
             }
             String reason = HttpStatus.getStatusText(status);
-            Reporter.informUser(this, UserMsg.MISSING_FILE, new Object[] { reason + ':' + uri.getPath() });
-        }
-        catch (IOException e)
-        {
+            Reporter.informUser(this, UserMsg.MISSING_FILE, new Object[] {
+                reason + ':' + uri.getPath()
+            });
+        } catch (IOException e) {
             return 0;
-        }
-        finally
-        {
+        } finally {
             // Release the connection.
             method.releaseConnection();
         }
@@ -114,28 +106,23 @@ public class WebResource
 
     /**
      * Determine the last modified date of this WebResource.
-     * <p>Note that the http client may read the entire file.</p>
-     *
+     * <p>
+     * Note that the http client may read the entire file.
+     * </p>
+     * 
      * @return the last mod date of the file
      */
-    public long getLastModified()
-    {
+    public long getLastModified() {
         HttpMethod method = new HeadMethod(uri.getPath());
 
-        try
-        {
+        try {
             // Execute the method.
-            if (client.executeMethod(method) == HttpStatus.SC_OK)
-            {
+            if (client.executeMethod(method) == HttpStatus.SC_OK) {
                 return new HttpURLConnection(method, NetUtil.toURL(uri)).getLastModified();
             }
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             return new Date().getTime();
-        }
-        finally
-        {
+        } finally {
             // Release the connection.
             method.releaseConnection();
         }
@@ -144,23 +131,20 @@ public class WebResource
 
     /**
      * Copy this WebResource to the destination.
-     *
+     * 
      * @param dest
      * @throws LucidException
      */
-    public void copy(URI dest) throws LucidException
-    {
+    public void copy(URI dest) throws LucidException {
         InputStream in = null;
         OutputStream out = null;
 
         HttpMethod method = new GetMethod(uri.getPath());
 
-        try
-        {
+        try {
             // Execute the method.
             int status = client.executeMethod(method);
-            if (status == HttpStatus.SC_OK)
-            {
+            if (status == HttpStatus.SC_OK) {
                 in = method.getResponseBodyAsStream();
 
                 // Download the index file
@@ -168,24 +152,21 @@ public class WebResource
 
                 byte[] buf = new byte[4096];
                 int count = in.read(buf);
-                while (-1 != count)
-                {
+                while (-1 != count) {
                     out.write(buf, 0, count);
                     count = in.read(buf);
                 }
-            }
-            else
-            {
+            } else {
                 String reason = HttpStatus.getStatusText(status);
-                Reporter.informUser(this, UserMsg.MISSING_FILE, new Object[] { reason + ':' + uri.getPath() });
+                Reporter.informUser(this, UserMsg.MISSING_FILE, new Object[] {
+                    reason + ':' + uri.getPath()
+                });
             }
-        }
-        catch (IOException e)
-        {
-            throw new LucidException(UserMsg.MISSING_FILE, e, new Object[] { uri.toString() });
-        }
-        finally
-        {
+        } catch (IOException e) {
+            throw new LucidException(UserMsg.MISSING_FILE, e, new Object[] {
+                uri.toString()
+            });
+        } finally {
             // Release the connection.
             method.releaseConnection();
             // Close the streams

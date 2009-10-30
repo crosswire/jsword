@@ -26,23 +26,21 @@ import junit.framework.TestCase;
 /**
  * JUnit Test.
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class WorkEventTest extends TestCase
-{
+public class WorkEventTest extends TestCase {
     /**
      * Constructor for WorkEventTest.
+     * 
      * @param arg0
      */
-    public WorkEventTest(String arg0)
-    {
+    public WorkEventTest(String arg0) {
         super(arg0);
     }
 
-    public void testGetJob()
-    {
+    public void testGetJob() {
         Progress job = JobManager.createJob("wibble", false); //$NON-NLS-1$
         WorkEvent ev = new WorkEvent(job);
 

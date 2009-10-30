@@ -27,37 +27,34 @@ import org.crosswire.common.util.Logger;
 
 /**
  * .
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class KeyUtil
-{
+public final class KeyUtil {
     /**
      * Prevent instantiation
      */
-    private KeyUtil()
-    {
+    private KeyUtil() {
     }
 
     /**
      * Walk through a tree visiting the nodes and branches in the tree
-     * @param key The node tree to walk through
-     * @param visitor The visitor to notify whenever a node is found
+     * 
+     * @param key
+     *            The node tree to walk through
+     * @param visitor
+     *            The visitor to notify whenever a node is found
      */
-    public static void visit(Key key, KeyVisitor visitor)
-    {
-        for (Iterator it = key.iterator(); it.hasNext(); )
-        {
+    public static void visit(Key key, KeyVisitor visitor) {
+        for (Iterator it = key.iterator(); it.hasNext();) {
             Key subkey = (Key) it.next();
-            if (subkey.canHaveChildren())
-            {
+            if (subkey.canHaveChildren()) {
                 visitor.visitBranch(subkey);
                 visit(subkey, visitor);
-            }
-            else
-            {
+            } else {
                 visitor.visitLeaf(subkey);
             }
         }
@@ -67,25 +64,19 @@ public final class KeyUtil
      * Not all keys represent verses, but we ought to be able to get something
      * close to a verse from anything that does verse like work.
      */
-    public static Verse getVerse(Key key)
-    {
-        if (key instanceof Verse)
-        {
+    public static Verse getVerse(Key key) {
+        if (key instanceof Verse) {
             return (Verse) key;
         }
 
-        if (key instanceof Passage)
-        {
+        if (key instanceof Passage) {
             Passage ref = getPassage(key);
             return ref.getVerseAt(0);
         }
 
-        try
-        {
+        try {
             return VerseFactory.fromString(key.getName());
-        }
-        catch (NoSuchVerseException ex)
-        {
+        } catch (NoSuchVerseException ex) {
             log.warn("Key can't be a verse: " + key.getName()); //$NON-NLS-1$
             return Verse.DEFAULT;
         }
@@ -93,28 +84,22 @@ public final class KeyUtil
 
     /**
      * Not all keys represent passages, but we ought to be able to get something
-     * close to a passage from anything that does passage like work.
-     * If you pass a null key into this method, you get a null Passage out.
+     * close to a passage from anything that does passage like work. If you pass
+     * a null key into this method, you get a null Passage out.
      */
-    public static Passage getPassage(Key key)
-    {
-        if (key == null)
-        {
+    public static Passage getPassage(Key key) {
+        if (key == null) {
             return null;
         }
 
-        if (key instanceof Passage)
-        {
+        if (key instanceof Passage) {
             return (Passage) key;
         }
 
         Key ref = null;
-        try
-        {
+        try {
             ref = keyf.getKey(key.getName());
-        }
-        catch (NoSuchKeyException ex)
-        {
+        } catch (NoSuchKeyException ex) {
             log.warn("Key can't be a passage: " + key.getName()); //$NON-NLS-1$
             ref = keyf.createEmptyKeyList();
         }
@@ -127,7 +112,7 @@ public final class KeyUtil
     private static KeyFactory keyf = PassageKeyFactory.instance();
 
     /**
-     *  The log stream
+     * The log stream
      */
     private static final Logger log = Logger.getLogger(KeyUtil.class);
 }

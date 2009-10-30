@@ -23,23 +23,21 @@ package org.crosswire.jsword.index;
 
 import java.util.EventObject;
 
-
 /**
- * An IndexStatusEvent is fired whenever the IndexStatus
- * of a book has changed.
- *
- * @see gnu.lgpl.License for license details.
+ * An IndexStatusEvent is fired whenever the IndexStatus of a book has changed.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class IndexStatusEvent extends EventObject
-{
+public class IndexStatusEvent extends EventObject {
     /**
      * Basic constructor
-     * @param status The new status of the book.
+     * 
+     * @param status
+     *            The new status of the book.
      */
-    public IndexStatusEvent(Object source, IndexStatus status)
-    {
+    public IndexStatusEvent(Object source, IndexStatus status) {
         super(source);
 
         indexStatus = status;
@@ -48,8 +46,7 @@ public class IndexStatusEvent extends EventObject
     /**
      * @return Returns the indexStatus.
      */
-    public IndexStatus getIndexStatus()
-    {
+    public IndexStatus getIndexStatus() {
         return indexStatus;
     }
 

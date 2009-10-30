@@ -34,70 +34,75 @@ import org.crosswire.jsword.book.BooksEvent;
 import org.crosswire.jsword.book.BooksListener;
 
 /**
- * A basic implementation of BookList.
- * The methods in this abstract class are duplicates of those in Books, so
- * bugs fixed in one should be fixed in the other too.
- *
- * @see gnu.lgpl.License for license details.
+ * A basic implementation of BookList. The methods in this abstract class are
+ * duplicates of those in Books, so bugs fixed in one should be fixed in the
+ * other too.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public abstract class AbstractBookList implements BookList
-{
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookList#getBooks(org.crosswire.jsword.book.BookFilter)
+public abstract class AbstractBookList implements BookList {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.BookList#getBooks(org.crosswire.jsword.book
+     * .BookFilter)
      */
-    public List getBooks(BookFilter filter)
-    {
+    public List getBooks(BookFilter filter) {
         List temp = CollectionUtil.createList(new BookFilterIterator(getBooks(), filter));
         return Collections.unmodifiableList(temp);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookList#addBooksListener(org.crosswire.jsword.book.BooksListener)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.BookList#addBooksListener(org.crosswire.jsword
+     * .book.BooksListener)
      */
-    public synchronized void addBooksListener(BooksListener li)
-    {
+    public synchronized void addBooksListener(BooksListener li) {
         listeners.add(BooksListener.class, li);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookList#removeBooksListener(org.crosswire.jsword.book.BooksListener)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.BookList#removeBooksListener(org.crosswire.
+     * jsword.book.BooksListener)
      */
-    public synchronized void removeBooksListener(BooksListener li)
-    {
+    public synchronized void removeBooksListener(BooksListener li) {
         listeners.remove(BooksListener.class, li);
     }
 
     /**
      * Kick of an event sequence
-     * @param source The event source
-     * @param book The changed Book
-     * @param added Is it added?
+     * 
+     * @param source
+     *            The event source
+     * @param book
+     *            The changed Book
+     * @param added
+     *            Is it added?
      */
-    protected static synchronized void fireBooksChanged(Object source, Book book, boolean added)
-    {
+    protected static synchronized void fireBooksChanged(Object source, Book book, boolean added) {
         // Guaranteed to return a non-null array
         Object[] contents = listeners.getListenerList();
 
         // Process the listeners last to first, notifying
         // those that are interested in this event
         BooksEvent ev = null;
-        for (int i = contents.length - 2; i >= 0; i -= 2)
-        {
-            if (contents[i] == BooksListener.class)
-            {
-                if (ev == null)
-                {
+        for (int i = contents.length - 2; i >= 0; i -= 2) {
+            if (contents[i] == BooksListener.class) {
+                if (ev == null) {
                     ev = new BooksEvent(source, book, added);
                 }
 
-                if (added)
-                {
+                if (added) {
                     ((BooksListener) contents[i + 1]).bookAdded(ev);
-                }
-                else
-                {
+                } else {
                     ((BooksListener) contents[i + 1]).bookRemoved(ev);
                 }
             }

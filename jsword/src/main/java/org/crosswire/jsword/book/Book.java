@@ -34,18 +34,18 @@ import org.crosswire.jsword.passage.KeyFactory;
 import org.jdom.Document;
 
 /**
- * Book is the most basic store of textual data - It can retrieve data
- * either as an XML document or as plain text - It uses Keys to refer
- * to parts of itself, and can search for words (returning Keys).
- *
- * @see gnu.lgpl.License for license details.
+ * Book is the most basic store of textual data - It can retrieve data either as
+ * an XML document or as plain text - It uses Keys to refer to parts of itself,
+ * and can search for words (returning Keys).
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public interface Book extends Activatable, KeyFactory, Comparable
-{
+public interface Book extends Activatable, KeyFactory, Comparable {
     /**
      * Meta-Information: What version of the Bible is this?
+     * 
      * @return A Version for this Bible
      */
     BookMetaData getBookMetaData();
@@ -57,95 +57,111 @@ public interface Book extends Activatable, KeyFactory, Comparable
 
     /**
      * Return an iterator that returns each key's OSIS in turn.
-     *
-     * @param key the Items to locate
-     * @param allowEmpty indicates whether empty keys should be present.
+     * 
+     * @param key
+     *            the Items to locate
+     * @param allowEmpty
+     *            indicates whether empty keys should be present.
      */
     Iterator getOsisIterator(Key key, boolean allowEmpty) throws BookException;
 
     /**
      * Returns <tt>true</tt> if this book contains the specified element.
-     * @param key element whose presence in this book is to be tested.
+     * 
+     * @param key
+     *            element whose presence in this book is to be tested.
      * @return <tt>true</tt> if this book contains the specified element.
      */
     boolean contains(Key key);
 
-   /**
+    /**
      * Returns the raw text that getData(Key key) builds into OSIS.
-     *
-     * @param key The item to locate
+     * 
+     * @param key
+     *            The item to locate
      * @return The found Book data
-     * @throws BookException If anything goes wrong with this method
+     * @throws BookException
+     *             If anything goes wrong with this method
      */
     String getRawText(Key key) throws BookException;
 
     /**
-     * A Book is writable if the file system allows the underlying files
-     * to be opened for writing and if the driver for the book allows
-     * writing. Ultimately, all drivers should allow writing.
-     * At this time writing is not supported by drivers, so
-     * abstract implementations should return false and let
-     * specific implementations return true otherwise.
-     *
+     * A Book is writable if the file system allows the underlying files to be
+     * opened for writing and if the driver for the book allows writing.
+     * Ultimately, all drivers should allow writing. At this time writing is not
+     * supported by drivers, so abstract implementations should return false and
+     * let specific implementations return true otherwise.
+     * 
      * @return true if the book is writable
      */
     boolean isWritable();
 
     /**
-     * Store the raw text for the given key. This will replace/hide any
-     * raw text that already is present. Note: it is the responsibility
-     * of the calling program to ensure that the raw text matches the
-     * character set encoding and markup of the module.
-     *
-     * @param key The item to locate
-     * @param rawData The text to store
-     * @throws BookException If anything goes wrong with this method
+     * Store the raw text for the given key. This will replace/hide any raw text
+     * that already is present. Note: it is the responsibility of the calling
+     * program to ensure that the raw text matches the character set encoding
+     * and markup of the module.
+     * 
+     * @param key
+     *            The item to locate
+     * @param rawData
+     *            The text to store
+     * @throws BookException
+     *             If anything goes wrong with this method
      */
     void setRawText(Key key, String rawData) throws BookException;
 
     /**
-     * Store an alias of one key to another. Some Bibles do not have a verse by verse
-     * numbering system but rather meld several verses into one. Thus,
-     * any verse in the range refers to the same verse. Also it may apply
-     * to biblical commentaries that are indexed by Book, Chapter, Verse
-     * and that discuss the Bible at a verse range level. For a dictionary,
-     * it may be used for synonyms.
+     * Store an alias of one key to another. Some Bibles do not have a verse by
+     * verse numbering system but rather meld several verses into one. Thus, any
+     * verse in the range refers to the same verse. Also it may apply to
+     * biblical commentaries that are indexed by Book, Chapter, Verse and that
+     * discuss the Bible at a verse range level. For a dictionary, it may be
+     * used for synonyms.
      * <p>
-     * It should be an exception to set an alias when that alias already
-     * has raw text. Also, it should be an exception to set an alias to
-     * an alias. However, getRawText(Key) must be able to handle alias chains.
+     * It should be an exception to set an alias when that alias already has raw
+     * text. Also, it should be an exception to set an alias to an alias.
+     * However, getRawText(Key) must be able to handle alias chains.
      * </p>
-     *
-     * @param alias the key that aliases another
-     * @param source the key that holds the text
-     * @throws BookException If anything goes wrong with this method
+     * 
+     * @param alias
+     *            the key that aliases another
+     * @param source
+     *            the key that holds the text
+     * @throws BookException
+     *             If anything goes wrong with this method
      */
     void setAliasKey(Key alias, Key source) throws BookException;
 
     /**
-     * Retrieval: For a given search spec find a list of references to it.
-     * If there are no matches then null should be returned, otherwise a valid
-     * Key.
-     * @param request The search spec.
-     * @throws BookException If anything goes wrong with this method
+     * Retrieval: For a given search spec find a list of references to it. If
+     * there are no matches then null should be returned, otherwise a valid Key.
+     * 
+     * @param request
+     *            The search spec.
+     * @throws BookException
+     *             If anything goes wrong with this method
      */
     Key find(SearchRequest request) throws BookException;
 
     /**
-     * Retrieval: For a given search spec find a list of references to it.
-     * If there are no matches then null should be returned, otherwise a valid
-     * Key.
-     * @param request The search spec.
-     * @throws BookException If anything goes wrong with this method
+     * Retrieval: For a given search spec find a list of references to it. If
+     * there are no matches then null should be returned, otherwise a valid Key.
+     * 
+     * @param request
+     *            The search spec.
+     * @throws BookException
+     *             If anything goes wrong with this method
      */
     Key find(String request) throws BookException;
 
     /**
      * The name of the book, for example "King James Version" or
-     * "Bible in Basic English" or "Greek".
-     * In general it should be possible to deduce the initials from the name by
-     * removing all the non-capital letters. Although this is only a generalization.
-     * This method should not return null or a blank string.
+     * "Bible in Basic English" or "Greek". In general it should be possible to
+     * deduce the initials from the name by removing all the non-capital
+     * letters. Although this is only a generalization. This method should not
+     * return null or a blank string.
+     * 
      * @return The name of this book
      */
     String getName();
@@ -153,19 +169,21 @@ public interface Book extends Activatable, KeyFactory, Comparable
     /**
      * What category of content is this, a Bible or a reference work like a
      * Dictionary or Commentary.
+     * 
      * @return The category of book
      */
     BookCategory getBookCategory();
 
     /**
-     * Accessor for the driver that runs this Book.
-     * Note this method should only be used to delete() Books. Everything else
-     * you should want to do to a Book should be available in other ways.
+     * Accessor for the driver that runs this Book. Note this method should only
+     * be used to delete() Books. Everything else you should want to do to a
+     * Book should be available in other ways.
      */
     BookDriver getDriver();
 
     /**
      * The language of the book.
+     * 
      * @return the common name for the language
      */
     Language getLanguage();
@@ -173,81 +191,81 @@ public interface Book extends Activatable, KeyFactory, Comparable
     /**
      * The initials of this book - how people familiar with this book will know
      * it, for example "NIV", "KJV".
+     * 
      * @return The book's initials
      */
     String getInitials();
 
     /**
      * Calculated field: Get an OSIS identifier for the OsisText.setOsisIDWork()
-     * and the Work.setOsisWork() methods.
-     * The response will generally be of the form [Bible][Dict..].getInitials
+     * and the Work.setOsisWork() methods. The response will generally be of the
+     * form [Bible][Dict..].getInitials
+     * 
      * @return The osis id of this book
      */
     String getOsisID();
 
-   /**
-     * Return the likelihood that we have a match.
-     * This allows for calling the book different things
-     * and still be found.
+    /**
+     * Return the likelihood that we have a match. This allows for calling the
+     * book different things and still be found.
+     * 
      * @param name
      * @return true if we have a match.
      */
     boolean match(String name);
 
     /**
-     * Indicate whether this book is supported by JSword.
-     * Since the expectation is that all books are supported,
-     * abstract implementations should return true and let
-     * specific implementations return false if they cannot
-     * support the book.
-     *
+     * Indicate whether this book is supported by JSword. Since the expectation
+     * is that all books are supported, abstract implementations should return
+     * true and let specific implementations return false if they cannot support
+     * the book.
+     * 
      * @return true if the book is supported
      */
     boolean isSupported();
 
     /**
-     * Indicate whether this book is enciphered.
-     * Since the expectation is that most books are unenciphered,
-     * abstract implementations should return false and let
-     * specific implementations return true otherwise.
-     *
+     * Indicate whether this book is enciphered. Since the expectation is that
+     * most books are unenciphered, abstract implementations should return false
+     * and let specific implementations return true otherwise.
+     * 
      * @return true if the book is enciphered
      */
     boolean isEnciphered();
 
     /**
-     * Indicate whether this book is enciphered and without a key.
-     * Since the expectation is that most books are unenciphered,
-     * abstract implementations should return false and let
-     * specific implementations return true otherwise.
-     *
+     * Indicate whether this book is enciphered and without a key. Since the
+     * expectation is that most books are unenciphered, abstract implementations
+     * should return false and let specific implementations return true
+     * otherwise.
+     * 
      * @return true if the book is locked
      */
     boolean isLocked();
 
     /**
      * Unlocks a book with the given key.
-     *
-     * @param unlockKey the key to try
+     * 
+     * @param unlockKey
+     *            the key to try
      * @return true if the unlock key worked.
      */
     boolean unlock(String unlockKey);
 
     /**
      * Gets the unlock key for the module.
-     *
+     * 
      * @return the unlock key, if any, null otherwise.
      */
     String getUnlockKey();
 
     /**
-     * Indicate whether this book is questionable. A book may
-     * be deemed questionable if it's quality or content has not
-     * been confirmed.
-     * Since the expectation is that all books are not questionable,
-     * abstract implementations should return false and let
-     * specific implementations return true if the book is questionable.
-     *
+     * Indicate whether this book is questionable. A book may be deemed
+     * questionable if it's quality or content has not been confirmed. Since the
+     * expectation is that all books are not questionable, abstract
+     * implementations should return false and let specific implementations
+     * return true if the book is questionable.
+     * 
      * @return true if the book is questionable
      */
     boolean isQuestionable();
@@ -255,15 +273,18 @@ public interface Book extends Activatable, KeyFactory, Comparable
     /**
      * Calculated field: The name of the name, which could be helpful to
      * distinguish similar Books available through 2 BookDrivers.
+     * 
      * @return The driver name
      */
     String getDriverName();
 
     /**
-     * Return the orientation of the script of the Book. If a book contains more than one script,
-     * it refers to the dominate script of the book. This will be used to present
-     * Arabic and Hebrew in their proper orientation.
-     * Note: some languages have multiple scripts which don't have the same directionality.
+     * Return the orientation of the script of the Book. If a book contains more
+     * than one script, it refers to the dominate script of the book. This will
+     * be used to present Arabic and Hebrew in their proper orientation. Note:
+     * some languages have multiple scripts which don't have the same
+     * directionality.
+     * 
      * @return true if the orientation for the dominate script is LeftToRight.
      */
     boolean isLeftToRight();
@@ -274,26 +295,30 @@ public interface Book extends Activatable, KeyFactory, Comparable
     boolean hasFeature(FeatureType feature);
 
     /**
-     * Get a list of all the properties available to do with this Book.
-     * The returned Properties will be read-only so any attempts to alter it
-     * will fail.
+     * Get a list of all the properties available to do with this Book. The
+     * returned Properties will be read-only so any attempts to alter it will
+     * fail.
      */
     Map getProperties();
 
     /**
-     * @param key the key of the property.
+     * @param key
+     *            the key of the property.
      * @return the value of the property
      */
     Object getProperty(String key);
 
     /**
-     * @param key the key of the property.
-     * @param value the value of the property
-      */
+     * @param key
+     *            the key of the property.
+     * @param value
+     *            the value of the property
+     */
     void putProperty(String key, Object value);
 
     /**
      * Has anyone generated a search index for this Book?
+     * 
      * @see org.crosswire.jsword.index.IndexManager
      */
     IndexStatus getIndexStatus();
@@ -301,6 +326,7 @@ public interface Book extends Activatable, KeyFactory, Comparable
     /**
      * This method does not alter the index status, however it is for Indexers
      * that are responsible for indexing and have changed the status themselves.
+     * 
      * @see org.crosswire.jsword.index.IndexManager
      */
     void setIndexStatus(IndexStatus status);
@@ -312,15 +338,20 @@ public interface Book extends Activatable, KeyFactory, Comparable
 
     /**
      * Adds a <code>IndexStatusListener</code> to the listener list.
-     * <p>A <code>IndexStatusEvent</code> will get fired in response
-     * to <code>setIndexStatus</code>.
-     * @param li the <code>IndexStatusListener</code> to be added
+     * <p>
+     * A <code>IndexStatusEvent</code> will get fired in response to
+     * <code>setIndexStatus</code>.
+     * 
+     * @param li
+     *            the <code>IndexStatusListener</code> to be added
      */
     void addIndexStatusListener(IndexStatusListener li);
 
     /**
      * Removes a <code>IndexStatusListener</code> from the listener list.
-     * @param li the <code>IndexStatusListener</code> to be removed
+     * 
+     * @param li
+     *            the <code>IndexStatusListener</code> to be removed
      */
     void removeIndexStatusListener(IndexStatusListener li);
 }

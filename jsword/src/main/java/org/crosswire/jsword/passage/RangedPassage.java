@@ -30,54 +30,56 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- * A Passage that is implemented using a TreeSet of VerseRanges.
- * The attributes of the style are:<ul>
+ * A Passage that is implemented using a TreeSet of VerseRanges. The attributes
+ * of the style are:
+ * <ul>
  * <li>Compact storage of large amounts of data
  * <li>Fast getName()
  * <li>Slow manipulation
  * </ul>
- *
- * <p>When to normalize()? This is a slow process, but one that is perhaps
- * done bit-by-bit instead of killing everything just to do getName().
- * The options are:<ul>
+ * 
+ * <p>
+ * When to normalize()? This is a slow process, but one that is perhaps done
+ * bit-by-bit instead of killing everything just to do getName(). The options
+ * are:
+ * <ul>
  * <li>Before every read</li>
  * <li>Before reads with a background thread</li>
  * <li>After every change</li>
- * <li>After every change with a cacheing scheme</li>
+ * <li>After every change with a caching scheme</li>
  * </ul>
- * I'm not sure which will be best. So I'm starting with 1 and
- * optimizing later ... Maybe the best is to allow the user to choose?
- *
- * @see gnu.lgpl.License for license details.
+ * I'm not sure which will be best. So I'm starting with 1 and optimizing later
+ * ... Maybe the best is to allow the user to choose?
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class RangedPassage extends AbstractPassage
-{
+public class RangedPassage extends AbstractPassage {
     /**
-     * Create an empty RangedPassage. There are no ctors from either Verse
-     * or VerseRange so you need to do new <code>RangedPassage().add(...);</code>
+     * Create an empty RangedPassage. There are no ctors from either Verse or
+     * VerseRange so you need to do new <code>RangedPassage().add(...);</code>
      */
-    protected RangedPassage()
-    {
+    protected RangedPassage() {
         store = new TreeSet();
     }
 
     /**
-     * Create a Verse from a human readable string. The opposite
-     * of getName(), Given any RangedPassage v1, and the following
-     * <code>RangedPassage v2 = new RangedPassage(v1.getName());</code>
-     * Then <code>v1.equals(v2);</code>
-     * Theoretically, since there are many ways of representing a RangedPassage as text
-     * string comparision along the lines of:
-     * <code>v1.getName().equals(v2.getName())</code> could be false.
-     * However since getName() is standardized this will be true.
-     * We don't need to worry about thread safety in a ctor since we don't exist yet.
-     * @param refs A String containing the text of the RangedPassage
-     * @throws NoSuchVerseException if refs is invalid
+     * Create a Verse from a human readable string. The opposite of getName(),
+     * Given any RangedPassage v1, and the following
+     * <code>RangedPassage v2 = new RangedPassage(v1.getName());</code> Then
+     * <code>v1.equals(v2);</code> Theoretically, since there are many ways of
+     * representing a RangedPassage as text string comparison along the lines
+     * of: <code>v1.getName().equals(v2.getName())</code> could be false.
+     * However since getName() is standardized this will be true. We don't need
+     * to worry about thread safety in a ctor since we don't exist yet.
+     * 
+     * @param refs
+     *            A String containing the text of the RangedPassage
+     * @throws NoSuchVerseException
+     *             if refs is invalid
      */
-    protected RangedPassage(String refs) throws NoSuchVerseException
-    {
+    protected RangedPassage(String refs) throws NoSuchVerseException {
         super(refs);
 
         store = new TreeSet();
@@ -85,18 +87,19 @@ public class RangedPassage extends AbstractPassage
         normalize();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#clone()
      */
     /* @Override */
-    public Object clone()
-    {
+    public Object clone() {
         // This gets us a shallow copy
         RangedPassage copy = (RangedPassage) super.clone();
 
         // I want to just do the following
-        //   copy.store = (SortedSet) store.clone();
-        // However SortedSet is not Clonable so I can't
+        // copy.store = (SortedSet) store.clone();
+        // However SortedSet is not Cloneable so I can't
         // Watch out for this, I'm not sure if it breaks anything.
         copy.store = new TreeSet();
         copy.store.addAll(store);
@@ -104,31 +107,31 @@ public class RangedPassage extends AbstractPassage
         return copy;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Passage#countRanges(int)
      */
     /* @Override */
-    public int countRanges(RestrictionType restrict)
-    {
-        if (restrict.equals(RestrictionType.NONE))
-        {
+    public int countRanges(RestrictionType restrict) {
+        if (restrict.equals(RestrictionType.NONE)) {
             return store.size();
         }
 
         return super.countRanges(restrict);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Passage#countVerses()
      */
     /* @Override */
-    public int countVerses()
-    {
+    public int countVerses() {
         Iterator it = rangeIterator(RestrictionType.NONE);
         int count = 0;
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             VerseRange range = (VerseRange) it.next();
             count += range.getCardinality();
         }
@@ -136,55 +139,58 @@ public class RangedPassage extends AbstractPassage
         return count;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Iterable#iterator()
      */
-    public Iterator iterator()
-    {
+    public Iterator iterator() {
         return new VerseIterator(rangeIterator(RestrictionType.NONE));
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Passage#rangeIterator(int)
      */
     /* @Override */
-    public final Iterator rangeIterator(RestrictionType restrict)
-    {
-        if (restrict.equals(RestrictionType.NONE))
-        {
+    public final Iterator rangeIterator(RestrictionType restrict) {
+        if (restrict.equals(RestrictionType.NONE)) {
             return store.iterator();
         }
 
         return new VerseRangeIterator(store.iterator(), restrict);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Passage#isEmpty()
      */
     /* @Override */
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return store.isEmpty();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#contains(org.crosswire.jsword.passage.VerseBase)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Passage#contains(org.crosswire.jsword.passage
+     * .VerseBase)
      */
     /* @Override */
-    public boolean contains(Key obj)
-    {
-        // Even for the conatins(VerseRange) case, the simple
+    public boolean contains(Key obj) {
+        // Even for the contains(VerseRange) case, the simple
         // 'return store.contains(that);' will not work because
         // VerseRanges can contain others but not be equal to them.
 
         VerseRange that_range = toVerseRange(obj);
 
         Iterator it = rangeIterator(RestrictionType.NONE);
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             VerseRange this_range = (VerseRange) it.next();
-            if (this_range.contains(that_range))
-            {
+            if (this_range.contains(that_range)) {
                 return true;
             }
         }
@@ -194,11 +200,14 @@ public class RangedPassage extends AbstractPassage
         return false;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#add(org.crosswire.jsword.passage.VerseBase)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Passage#add(org.crosswire.jsword.passage
+     * .VerseBase)
      */
-    public void add(Key obj)
-    {
+    public void add(Key obj) {
         optimizeWrites();
 
         VerseRange that_range = toVerseRange(obj);
@@ -208,29 +217,32 @@ public class RangedPassage extends AbstractPassage
 
         // we do an extra check here because the cost of calculating the
         // params is non-zero an may be wasted
-        if (suppressEvents == 0)
-        {
+        if (suppressEvents == 0) {
             fireIntervalAdded(this, that_range.getStart(), that_range.getEnd());
         }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Passage#clear()
      */
     /* @Override */
-    public void clear()
-    {
+    public void clear() {
         optimizeWrites();
 
         store.clear();
         fireIntervalRemoved(this, null, null);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#remove(org.crosswire.jsword.passage.VerseBase)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Passage#remove(org.crosswire.jsword.passage
+     * .VerseBase)
      */
-    public void remove(Key obj)
-    {
+    public void remove(Key obj) {
         optimizeWrites();
 
         VerseRange that_range = toVerseRange(obj);
@@ -242,18 +254,15 @@ public class RangedPassage extends AbstractPassage
 
         // go through all the VerseRanges
         Iterator iter = new_store.iterator();
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             // if this range touches the range to be removed ...
             VerseRange this_range = (VerseRange) iter.next();
-            if (this_range.overlaps(that_range))
-            {
+            if (this_range.overlaps(that_range)) {
                 // ... remove it and add the remainder
                 store.remove(this_range);
                 VerseRange[] vra = VerseRange.remainder(this_range, that_range);
 
-                for (int i = 0; i < vra.length; i++)
-                {
+                for (int i = 0; i < vra.length; i++) {
                     store.add(vra[i]);
                 }
 
@@ -261,25 +270,26 @@ public class RangedPassage extends AbstractPassage
             }
         }
 
-        if (removed)
-        {
+        if (removed) {
             normalize();
         }
 
         // we do an extra check here because the cost of calculating the
         // params is non-zero an may be wasted
-        if (suppressEvents == 0)
-        {
+        if (suppressEvents == 0) {
             fireIntervalRemoved(this, that_range.getStart(), that_range.getEnd());
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#retainAll(org.crosswire.jsword.passage.Passage)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Passage#retainAll(org.crosswire.jsword.passage
+     * .Passage)
      */
     /* @Override */
-    public void retainAll(Key key)
-    {
+    public void retainAll(Key key) {
         Passage that = KeyUtil.getPassage(key);
 
         optimizeWrites();
@@ -287,31 +297,24 @@ public class RangedPassage extends AbstractPassage
         SortedSet new_store = new TreeSet();
 
         Iterator that_it = null;
-        if (that instanceof RangedPassage)
-        {
+        if (that instanceof RangedPassage) {
             that_it = that.rangeIterator(RestrictionType.CHAPTER);
-        }
-        else
-        {
+        } else {
             that_it = that.iterator();
         }
 
-        while (that_it.hasNext())
-        {
+        while (that_it.hasNext()) {
             VerseRange that_range = toVerseRange(that_it.next());
 
             // go through all the VerseRanges
             Iterator this_it = rangeIterator(RestrictionType.NONE);
-            while (this_it.hasNext())
-            {
+            while (this_it.hasNext()) {
                 // if this range touches the range to be removed ...
                 VerseRange this_range = (VerseRange) this_it.next();
-                if (this_range.overlaps(that_range))
-                {
+                if (this_range.overlaps(that_range)) {
                     // ... remove it and add the remainder
                     VerseRange interstect = VerseRange.intersection(this_range, that_range);
-                    if (interstect != null)
-                    {
+                    if (interstect != null) {
                         new_store.add(interstect);
                     }
                 }
@@ -326,16 +329,15 @@ public class RangedPassage extends AbstractPassage
 
     /**
      * We sometimes need to sort ourselves out ...
-     * <p>I don't think we need to be synchronised since we are private and we
-     * could check that all public calling of normalize() are synchronised,
-     * however this is safe, and I don't think there is a cost associated with
-     * a double synchronize. (?)
+     * <p>
+     * I don't think we need to be synchronized since we are private and we
+     * could check that all public calling of normalize() are synchronized,
+     * however this is safe, and I don't think there is a cost associated with a
+     * double synchronize. (?)
      */
     /* @Override */
-    /*protected*/ final void normalize()
-    {
-        if (skipNormalization != 0)
-        {
+    /* protected */final void normalize() {
+        if (skipNormalization != 0) {
             return;
         }
 
@@ -344,21 +346,17 @@ public class RangedPassage extends AbstractPassage
         SortedSet new_store = new TreeSet();
 
         Iterator it = rangeIterator(RestrictionType.NONE);
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             next = (VerseRange) it.next();
 
-            if (last != null && next.adjacentTo(last))
-            {
+            if (last != null && next.adjacentTo(last)) {
                 VerseRange merge = new VerseRange(last, next);
 
                 new_store.remove(last);
                 new_store.add(merge);
 
                 last = merge;
-            }
-            else
-            {
+            } else {
                 new_store.add(next);
                 last = next;
             }
@@ -376,57 +374,53 @@ public class RangedPassage extends AbstractPassage
      * synchronization. Everything is final so to save the proxying performace
      * hit.
      */
-    private static final class VerseIterator implements Iterator
-    {
+    private static final class VerseIterator implements Iterator {
         /**
-         * Create a basic iterator that is a proxy for the RangedPassage Passages
-         * iterator, with remove() overridden.
+         * Create a basic iterator that is a proxy for the RangedPassage
+         * Passages iterator, with remove() overridden.
          */
-        public VerseIterator(Iterator it)
-        {
-            try
-            {
+        public VerseIterator(Iterator it) {
+            try {
                 SortedSet temp = new TreeSet();
 
-                while (it.hasNext())
-                {
+                while (it.hasNext()) {
                     VerseRange range = (VerseRange) it.next();
 
-                    for (int i = 0; i < range.getCardinality(); i++)
-                    {
+                    for (int i = 0; i < range.getCardinality(); i++) {
                         temp.add(new Verse(range.getStart().getOrdinal() + i));
                     }
                 }
 
                 real = temp.iterator();
-            }
-            catch (NoSuchVerseException ex)
-            {
+            } catch (NoSuchVerseException ex) {
                 assert false : ex;
             }
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see java.util.Iterator#hasNext()
          */
-        public boolean hasNext()
-        {
+        public boolean hasNext() {
             return real.hasNext();
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see java.util.Iterator#next()
          */
-        public Object next() throws NoSuchElementException
-        {
+        public Object next() throws NoSuchElementException {
             return real.next();
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see java.util.Iterator#remove()
          */
-        public void remove() throws UnsupportedOperationException
-        {
+        public void remove() throws UnsupportedOperationException {
             throw new UnsupportedOperationException();
         }
 
@@ -439,52 +433,50 @@ public class RangedPassage extends AbstractPassage
     /**
      * Loop over the VerseRanges and check that they do not require digging into
      */
-    private static final class VerseRangeIterator implements Iterator
-    {
+    private static final class VerseRangeIterator implements Iterator {
         /**
          * Simple ctor
          */
-        public VerseRangeIterator(Iterator it, RestrictionType restrict)
-        {
+        public VerseRangeIterator(Iterator it, RestrictionType restrict) {
             this.restrict = restrict;
             this.real = it;
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see java.util.Iterator#remove()
          */
-        public void remove()
-        {
+        public void remove() {
             throw new UnsupportedOperationException();
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see java.util.Iterator#hasNext()
          */
-        public boolean hasNext()
-        {
+        public boolean hasNext() {
             return next != null || real.hasNext();
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see java.util.Iterator#next()
          */
-        public Object next()
-        {
-            if (next == null)
-            {
+        public Object next() {
+            if (next == null) {
                 next = (VerseRange) real.next();
             }
 
-            if (next == null)
-            {
+            if (next == null) {
                 throw new NoSuchElementException();
             }
 
             // So we know what is broadly next, however the range might need
             // splitting according to restrict
-            if (restrict.isSameScope(next.getStart(), next.getEnd()))
-            {
+            if (restrict.isSameScope(next.getStart(), next.getEnd())) {
                 return replyNext();
             }
             return splitNext();
@@ -493,8 +485,7 @@ public class RangedPassage extends AbstractPassage
         /**
          * The next object is correct, use that one
          */
-        private Key replyNext()
-        {
+        private Key replyNext() {
             VerseRange reply = next;
             next = null;
             return reply;
@@ -503,8 +494,7 @@ public class RangedPassage extends AbstractPassage
         /**
          * The next object is too big, so cut it up
          */
-        private Key splitNext()
-        {
+        private Key splitNext() {
             Iterator chop = next.rangeIterator(restrict);
             VerseRange first = (VerseRange) chop.next();
             VerseRange[] ranges = VerseRange.remainder(next, first);
@@ -533,13 +523,15 @@ public class RangedPassage extends AbstractPassage
 
     /**
      * Call the support mechanism in AbstractPassage
-     * @param out The stream to write our state to
+     * 
+     * @param out
+     *            The stream to write our state to
      * @serialData Write the ordinal number of this verse
-     * @throws IOException if the read fails
+     * @throws IOException
+     *             if the read fails
      * @see AbstractPassage#writeObjectSupport(ObjectOutputStream)
      */
-    private void writeObject(ObjectOutputStream out) throws IOException
-    {
+    private void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
 
         writeObjectSupport(out);
@@ -547,14 +539,17 @@ public class RangedPassage extends AbstractPassage
 
     /**
      * Call the support mechanism in AbstractPassage
-     * @param in The stream to read our state from
+     * 
+     * @param in
+     *            The stream to read our state from
      * @serialData Write the ordinal number of this verse
-     * @throws IOException if the read fails
-     * @throws ClassNotFoundException If the read data is incorrect
+     * @throws IOException
+     *             if the read fails
+     * @throws ClassNotFoundException
+     *             If the read data is incorrect
      * @see AbstractPassage#readObjectSupport(ObjectInputStream)
      */
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
-    {
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         optimizeWrites();
 
         store = new TreeSet();

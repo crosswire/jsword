@@ -33,23 +33,22 @@ import org.crosswire.jsword.index.lucene.LuceneIndex;
 
 /**
  * A specialized analyzer for Books that analyzes different fields differently.
- * This is book specific since it is possible that each book has specialized search requirements.
+ * This is book specific since it is possible that each book has specialized
+ * search requirements.
  * 
  * Uses AnalyzerFactory for InstalledIndexVersion > 1.1
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class LuceneAnalyzer extends Analyzer
-{
+public class LuceneAnalyzer extends Analyzer {
 
-    public LuceneAnalyzer(Book book)
-    {
+    public LuceneAnalyzer(Book book) {
         // The default analysis
         analyzer = new PerFieldAnalyzerWrapper(new SimpleAnalyzer());
 
-        if (IndexMetadata.instance().getInstalledIndexVersion() > IndexMetadata.INDEX_VERSION_1_1)
-        {
+        if (IndexMetadata.instance().getInstalledIndexVersion() > IndexMetadata.INDEX_VERSION_1_1) {
             // Content is analyzed using natural language analyzer
             // (stemming, stopword etc)
             Analyzer myNaturalLanguageAnalyzer = AnalyzerFactory.getInstance().createAnalyzer(book);
@@ -66,8 +65,7 @@ public class LuceneAnalyzer extends Analyzer
         analyzer.addAnalyzer(LuceneIndex.FIELD_XREF, new XRefAnalyzer());
     }
 
-    public TokenStream tokenStream(String fieldName, Reader reader)
-    {
+    public TokenStream tokenStream(String fieldName, Reader reader) {
         return analyzer.tokenStream(fieldName, reader);
     }
 

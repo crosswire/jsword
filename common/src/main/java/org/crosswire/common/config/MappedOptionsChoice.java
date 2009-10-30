@@ -31,85 +31,88 @@ import org.jdom.Element;
 
 /**
  * A class to convert between strings and objects of a type.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class MappedOptionsChoice extends AbstractReflectedChoice implements MappedChoice
-{
-    /* (non-Javadoc)
+public class MappedOptionsChoice extends AbstractReflectedChoice implements MappedChoice {
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
      */
     /* @Override */
-    public void init(Element option, ResourceBundle configResources) throws StartupException
-    {
+    public void init(Element option, ResourceBundle configResources) throws StartupException {
         assert configResources != null;
 
         super.init(option, configResources);
         Element mapElement = option.getChild("map"); //$NON-NLS-1$
-        if (mapElement == null)
-        {
+        if (mapElement == null) {
             throw new StartupException(Msg.CONFIG_NOMAP);
         }
 
         String name = mapElement.getAttributeValue("name"); //$NON-NLS-1$
         Object map = ChoiceFactory.getDataMap().get(name);
-        if (map instanceof Map)
-        {
+        if (map instanceof Map) {
             options = (Map) map;
-        }
-        else
-        {
+        } else {
             options = new TreeMap();
         }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.config.MappedChoice#getOptions()
      */
-    public Map getOptions()
-    {
+    public Map getOptions() {
         return new TreeMap(options);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.config.Choice#getConvertionClass()
      */
-    public Class getConversionClass()
-    {
+    public Class getConversionClass() {
         return String.class;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.config.AbstractReflectedChoice#convertToString(java.lang.Object)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.common.config.AbstractReflectedChoice#convertToString(java
+     * .lang.Object)
      */
     /* @Override */
-    public String convertToString(Object orig)
-    {
+    public String convertToString(Object orig) {
         return orig != null ? orig.toString() : ""; //$NON-NLS-1$
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java
+     * .lang.String)
      */
     /* @Override */
-    public Object convertToObject(String orig)
-    {
+    public Object convertToObject(String orig) {
         Iterator iter = options.entrySet().iterator();
         Map.Entry mapEntry = null;
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             mapEntry = (Map.Entry) iter.next();
-            if (mapEntry.getValue().toString().equals(orig) || mapEntry.getKey().toString().equals(orig))
-            {
+            if (mapEntry.getValue().toString().equals(orig) || mapEntry.getKey().toString().equals(orig)) {
                 return mapEntry.getKey().toString();
             }
         }
         logger.warn(Msg.IGNORE.toString(orig));
         return ""; //$NON-NLS-1$
     }
+
     private static Logger logger = Logger.getLogger(MappedOptionsChoice.class);
     private Map options;
 }

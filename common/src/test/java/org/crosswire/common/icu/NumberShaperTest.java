@@ -28,26 +28,22 @@ import junit.framework.TestCase;
 
 /**
  * JUnit test of NumberShaper.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class NumberShaperTest extends TestCase
-{
+public class NumberShaperTest extends TestCase {
     private static final String europeanDigits = "0123456789"; //$NON-NLS-1$
     private static final String easternArabicDigits = "\u06f0\u06f1\u06f2\u06f3\u06f4\u06f5\u06f6\u06f7\u06f8\u06f9"; //$NON-NLS-1$
-    public void testShape()
-    {
+
+    public void testShape() {
         NumberShaper shaper = new NumberShaper(new Locale("fa")); //$NON-NLS-1$
         assertEquals(easternArabicDigits, shaper.shape(europeanDigits));
         // Note: the following depends upon whether icu is on the classpath
-        if (shaper.canUnshape())
-        {
+        if (shaper.canUnshape()) {
             assertEquals(europeanDigits, shaper.unshape(easternArabicDigits));
-        }
-        else
-        {
+        } else {
             assertEquals(easternArabicDigits, shaper.unshape(easternArabicDigits));
         }
     }

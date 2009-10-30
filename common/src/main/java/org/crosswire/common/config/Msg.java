@@ -25,13 +25,12 @@ import org.crosswire.common.util.MsgBase;
 
 /**
  * Compile safe Msg resource settings.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public final class Msg extends MsgBase
-{
+public final class Msg extends MsgBase {
     static final Msg CONFIG_NOCLASS = new Msg("AbstractReflectedChoice.ConfigNoClass"); //$NON-NLS-1$
     static final Msg CONFIG_MISSINGELE = new Msg("AbstractReflectedChoice.ConfigMissingEle"); //$NON-NLS-1$
     static final Msg CONFIG_NOSETTER = new Msg("AbstractReflectedChoice.ConfigNoSetter"); //$NON-NLS-1$
@@ -44,8 +43,7 @@ public final class Msg extends MsgBase
     /**
      * Passthrough ctor
      */
-    private Msg(String name)
-    {
+    private Msg(String name) {
         super(name);
     }
 }

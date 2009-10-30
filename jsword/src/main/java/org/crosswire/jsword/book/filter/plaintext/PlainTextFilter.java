@@ -31,53 +31,50 @@ import org.crosswire.jsword.passage.Key;
 import org.jdom.Element;
 
 /**
- * Filter to convert plain text to OSIS format.
- * Plain text is nothing more than lines without markup.
- * Unfortunately, it often uses whitespace for markup.
- * We will use OSIS lb to mark lines.
- *
- * @see gnu.lgpl.License for license details.
+ * Filter to convert plain text to OSIS format. Plain text is nothing more than
+ * lines without markup. Unfortunately, it often uses whitespace for markup. We
+ * will use OSIS lb to mark lines.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class PlainTextFilter implements Filter
-{
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.Book, org.crosswire.jsword.passage.Key, java.lang.String)
+public class PlainTextFilter implements Filter {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book
+     * .Book, org.crosswire.jsword.passage.Key, java.lang.String)
      */
-    public List toOSIS(Book book, Key key, String plain)
-    {
+    public List toOSIS(Book book, Key key, String plain) {
         OSISUtil.OSISFactory factory = OSISUtil.factory();
         Element ele = factory.createDiv();
 
         String[] lines = StringUtil.splitAll(plain, '\n');
         int lastIndex = lines.length - 1;
-        for (int i = 0; i < lastIndex; i++)
-        {
+        for (int i = 0; i < lastIndex; i++) {
             // TODO(DMS): Preserve whitespace, in a smart manner.
             ele.addContent(lines[i]);
             ele.addContent(factory.createLB());
         }
         // Don't add a line break after the last line.
-        if (lastIndex >= 0)
-        {
+        if (lastIndex >= 0) {
             ele.addContent(lines[lastIndex]);
         }
 
         return ele.removeContent();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#clone()
      */
-    public Object clone()
-    {
-        try
-        {
+    public Object clone() {
+        try {
             return super.clone();
-        }
-        catch (CloneNotSupportedException e)
-        {
+        } catch (CloneNotSupportedException e) {
             assert false : e;
         }
         return null;

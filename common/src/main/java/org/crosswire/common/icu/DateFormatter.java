@@ -33,56 +33,50 @@ import org.crosswire.common.util.ReflectionUtil;
 
 /**
  * DateFormat provides a wrapper of some of DateFormat and SimpleDateFormat
- * using ICU4J if present, otherwise from core Java.
- * Note, only those methods in DateFormat that are actually used are here.
+ * using ICU4J if present, otherwise from core Java. Note, only those methods in
+ * DateFormat that are actually used are here.
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class DateFormatter
-{
+public class DateFormatter {
     /**
      * Prevent instantiation.
      */
-    private DateFormatter()
-    {
+    private DateFormatter() {
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.text.DateFormat#getDateInstance(int)
      */
-    public static DateFormatter getDateInstance(int format)
-    {
+    public static DateFormatter getDateInstance(int format) {
         DateFormatter fmt = new DateFormatter();
         boolean oops = false;
-        try
-        {
+        try {
             fmt.formatterClass = ClassUtil.forName("com.ibm.icu.text.DateFormat"); //$NON-NLS-1$
-            // To call a method taking a type of int, the type has to match but the object has to be wrapped
-            Class[] instanceTypes = { int.class };
-            Object[] instanceParams = { new Integer(format) };
+            // To call a method taking a type of int, the type has to match but
+            // the object has to be wrapped
+            Class[] instanceTypes = {
+                int.class
+            };
+            Object[] instanceParams = {
+                new Integer(format)
+            };
             fmt.formatter = ReflectionUtil.invoke(fmt.formatterClass, fmt.formatterClass, "getDateInstance", instanceParams, instanceTypes); //$NON-NLS-1$
-        }
-        catch (NoSuchMethodException e)
-        {
+        } catch (NoSuchMethodException e) {
             oops = true;
-        }
-        catch (IllegalAccessException e)
-        {
+        } catch (IllegalAccessException e) {
             oops = true;
-        }
-        catch (InvocationTargetException e)
-        {
+        } catch (InvocationTargetException e) {
             oops = true;
-        }
-        catch (ClassNotFoundException e)
-        {
+        } catch (ClassNotFoundException e) {
             oops = true;
         }
 
-        if (oops)
-        {
+        if (oops) {
             fmt.formatterClass = DateFormat.class;
             fmt.formatter = DateFormat.getDateInstance(format);
         }
@@ -90,50 +84,42 @@ public class DateFormatter
         return fmt;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.text.DateFormat#getDateInstance()
      */
-    public static DateFormatter getDateInstance()
-    {
+    public static DateFormatter getDateInstance() {
         return getDateInstance(DEFAULT);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.text.DateFormat#getDateInstance(int)
      */
-    public static DateFormatter getSimpleDateInstance(String format)
-    {
+    public static DateFormatter getSimpleDateInstance(String format) {
         DateFormatter fmt = new DateFormatter();
         boolean oops = false;
-        try
-        {
+        try {
             fmt.formatterClass = ClassUtil.forName("com.ibm.icu.text.SimpleDateFormat"); //$NON-NLS-1$
-            Object[] instanceParams = { format };
+            Object[] instanceParams = {
+                format
+            };
             fmt.formatter = ReflectionUtil.construct("com.ibm.icu.text.SimpleDateFormat", instanceParams); //$NON-NLS-1$
-        }
-        catch (NoSuchMethodException e)
-        {
+        } catch (NoSuchMethodException e) {
             oops = true;
-        }
-        catch (IllegalAccessException e)
-        {
+        } catch (IllegalAccessException e) {
             oops = true;
-        }
-        catch (InvocationTargetException e)
-        {
+        } catch (InvocationTargetException e) {
             oops = true;
-        }
-        catch (ClassNotFoundException e)
-        {
+        } catch (ClassNotFoundException e) {
             oops = true;
-        }
-        catch (InstantiationException e)
-        {
+        } catch (InstantiationException e) {
             oops = true;
         }
 
-        if (oops)
-        {
+        if (oops) {
             fmt.formatterClass = SimpleDateFormat.class;
             fmt.formatter = new SimpleDateFormat(format);
         }
@@ -141,62 +127,59 @@ public class DateFormatter
         return fmt;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.text.DateFormat#setLenient(boolean)
      */
-    public void setLenient(boolean lenient)
-    {
-        try
-        {
-            Class[] lenientTypes = { boolean.class };
-            Object[] lenientParams = { Boolean.valueOf(lenient) };
+    public void setLenient(boolean lenient) {
+        try {
+            Class[] lenientTypes = {
+                boolean.class
+            };
+            Object[] lenientParams = {
+                Boolean.valueOf(lenient)
+            };
             ReflectionUtil.invoke(formatterClass, formatter, "setLenient", lenientParams, lenientTypes); //$NON-NLS-1$
-        }
-        catch (NoSuchMethodException e)
-        {
+        } catch (NoSuchMethodException e) {
             assert false : e;
-        }
-        catch (IllegalAccessException e)
-        {
+        } catch (IllegalAccessException e) {
             assert false : e;
-        }
-        catch (InvocationTargetException e)
-        {
+        } catch (InvocationTargetException e) {
             assert false : e;
         }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.text.DateFormat#format(java.util.Date)
      */
-    public String format(Date date)
-    {
-        try
-        {
-            Object[] formatParams = { date };
+    public String format(Date date) {
+        try {
+            Object[] formatParams = {
+                date
+            };
             return (String) ReflectionUtil.invoke(formatterClass, formatter, "format", formatParams); //$NON-NLS-1$
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             assert false : e;
             return ""; //$NON-NLS-1$
         }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.text.DateFormat#parse(java.lang.String)
      */
-    public Date parse(String text) throws ParseException
-    {
-        try
-        {
-            Object[] parseParams = { text };
+    public Date parse(String text) throws ParseException {
+        try {
+            Object[] parseParams = {
+                text
+            };
             return (Date) ReflectionUtil.invoke(formatterClass, formatter, "parse", parseParams); //$NON-NLS-1$
-        }
-        catch (Exception e)
-        {
-            if (e instanceof ParseException)
-            {
+        } catch (Exception e) {
+            if (e instanceof ParseException) {
                 throw (ParseException) e;
             }
 
@@ -223,7 +206,7 @@ public class DateFormatter
      */
     public static final int SHORT = 3;
     /**
-     * Constant for default style pattern.  Its value is MEDIUM.
+     * Constant for default style pattern. Its value is MEDIUM.
      */
     public static final int DEFAULT = MEDIUM;
 

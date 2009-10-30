@@ -27,57 +27,58 @@ import java.util.Stack;
 
 /**
  * Various Strategies to cleanup a diff list.
- *
- * Based on the LGPL Diff_Match_Patch v1.5 javascript of Neil Fraser, Copyright (C) 2006
- * <a href="http://neil.fraser.name/software/diff_match_patch/">http://neil.fraser.name/software/diff_match_patch/</a>
- *
+ * 
+ * Based on the LGPL Diff_Match_Patch v1.5 javascript of Neil Fraser, Copyright
+ * (C) 2006<br>
+ * <a href="http://neil.fraser.name/software/diff_match_patch/">http://neil.
+ * fraser.name/software/diff_match_patch/</a>
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class DiffCleanup
-{
+public final class DiffCleanup {
     /**
      * Utility class constructor.
      */
-    private DiffCleanup()
-    {
+    private DiffCleanup() {
     }
 
     /**
-     * Reduce the number of edits by eliminating semantically trivial equalities.
-     * @param diffs List of Difference objects
+     * Reduce the number of edits by eliminating semantically trivial
+     * equalities.
+     * 
+     * @param diffs
+     *            List of Difference objects
      */
-    public static void cleanupSemantic(final List diffs)
-    {
+    public static void cleanupSemantic(final List diffs) {
         boolean changes = false;
-        Stack equalities = new Stack(); // Stack of indices where equalities are found.
-        String lastEquality = null; // Always equal to equalities.lastElement().getText()
-        int lengthChangesPre = 0; // Number of characters that changed prior to the equality.
-        int lengthChangesPost = 0; // Number of characters that changed after the equality.
+        Stack equalities = new Stack(); // Stack of indices where equalities are
+        // found.
+        String lastEquality = null; // Always equal to
+        // equalities.lastElement().getText()
+        int lengthChangesPre = 0; // Number of characters that changed prior to
+        // the equality.
+        int lengthChangesPost = 0; // Number of characters that changed after
+        // the equality.
         ListIterator pointer = diffs.listIterator();
         Difference curDiff = pointer.hasNext() ? (Difference) pointer.next() : null;
-        while (curDiff != null)
-        {
+        while (curDiff != null) {
             EditType editType = curDiff.getEditType();
-            if (EditType.EQUAL.equals(editType))
-            {
+            if (EditType.EQUAL.equals(editType)) {
                 // equality found
                 equalities.push(curDiff);
                 lengthChangesPre = lengthChangesPost;
                 lengthChangesPost = 0;
                 lastEquality = curDiff.getText();
-            }
-            else
-            {
+            } else {
                 // an insertion or deletion
                 lengthChangesPost += curDiff.getText().length();
                 int lastLen = lastEquality != null ? lastEquality.length() : 0;
-                if (lastEquality != null && lastLen <= lengthChangesPre && lastLen <= lengthChangesPost)
-                {
-                    // position pointer to the element after the one at the end of the stack
-                    while (curDiff != equalities.lastElement())
-                    {
+                if (lastEquality != null && lastLen <= lengthChangesPre && lastLen <= lengthChangesPost) {
+                    // position pointer to the element after the one at the end
+                    // of the stack
+                    while (curDiff != equalities.lastElement()) {
                         curDiff = (Difference) pointer.previous();
                     }
                     pointer.next();
@@ -86,26 +87,23 @@ public final class DiffCleanup
                     pointer.set(new Difference(EditType.DELETE, lastEquality));
                     // Insert a corresponding an insert.
                     pointer.add(new Difference(EditType.INSERT, lastEquality));
-                    equalities.pop(); // Throw away the equality we just deleted;
-                    if (!equalities.empty())
-                    {
-                        // Throw away the previous equality (it needs to be reevaluated).
+                    equalities.pop(); // Throw away the equality we just
+                    // deleted;
+                    if (!equalities.empty()) {
+                        // Throw away the previous equality (it needs to be
+                        // reevaluated).
                         equalities.pop();
                     }
-                    if (equalities.empty())
-                    {
-                        // There are no previous equalities, walk back to the start.
-                        while (pointer.hasPrevious())
-                        {
+                    if (equalities.empty()) {
+                        // There are no previous equalities, walk back to the
+                        // start.
+                        while (pointer.hasPrevious()) {
                             pointer.previous();
                         }
-                    }
-                    else
-                    {
+                    } else {
                         // There is a safe equality we can fall back to.
                         curDiff = (Difference) equalities.lastElement();
-                        while (curDiff != pointer.previous())
-                        {
+                        while (curDiff != pointer.previous()) {
                             // Intentionally empty loop.
                         }
                     }
@@ -119,50 +117,53 @@ public final class DiffCleanup
             curDiff = pointer.hasNext() ? (Difference) pointer.next() : null;
         }
 
-        if (changes)
-        {
+        if (changes) {
             cleanupMerge(diffs);
         }
     }
 
     /**
-     * Reduce the number of edits by eliminating operationally trivial equalities.
-     * @param diffs List of Difference objects
+     * Reduce the number of edits by eliminating operationally trivial
+     * equalities.
+     * 
+     * @param diffs
+     *            List of Difference objects
      */
-    public static void cleanupEfficiency(final List diffs)
-    {
-        if (diffs.isEmpty())
-        {
+    public static void cleanupEfficiency(final List diffs) {
+        if (diffs.isEmpty()) {
             return;
         }
 
         boolean changes = false;
-        Stack equalities = new Stack(); // Stack of indices where equalities are found.
-        String lastEquality = null; // Always equal to equalities.lastElement().getText();
-        int preInsert = 0; // Is there an insertion operation before the last equality.
-        int preDelete = 0; // Is there an deletion operation before the last equality.
-        int postInsert = 0; // Is there an insertion operation after the last equality.
-        int postDelete = 0; // Is there an deletion operation after the last equality.
+        Stack equalities = new Stack(); // Stack of indices where equalities are
+        // found.
+        String lastEquality = null; // Always equal to
+        // equalities.lastElement().getText();
+        int preInsert = 0; // Is there an insertion operation before the last
+        // equality.
+        int preDelete = 0; // Is there an deletion operation before the last
+        // equality.
+        int postInsert = 0; // Is there an insertion operation after the last
+        // equality.
+        int postDelete = 0; // Is there an deletion operation after the last
+        // equality.
 
         ListIterator pointer = diffs.listIterator();
         Difference curDiff = pointer.hasNext() ? (Difference) pointer.next() : null;
-        Difference safeDiff = curDiff; // The last Difference that is known to be unsplitable.
+        Difference safeDiff = curDiff; // The last Difference that is known to
+        // be unsplitable.
 
-        while (curDiff != null)
-        {
+        while (curDiff != null) {
             EditType editType = curDiff.getEditType();
             if (EditType.EQUAL.equals(editType)) // equality found
             {
-                if (curDiff.getText().length() < editCost && (postInsert + postDelete) > 0)
-                {
+                if (curDiff.getText().length() < editCost && (postInsert + postDelete) > 0) {
                     // Candidate found.
                     equalities.push(curDiff);
                     preInsert = postInsert;
                     preDelete = postDelete;
                     lastEquality = curDiff.getText();
-                }
-                else
-                {
+                } else {
                     // Not a candidate, and can never become one.
                     equalities.clear();
                     lastEquality = null;
@@ -170,16 +171,11 @@ public final class DiffCleanup
                 }
                 postInsert = 0;
                 postDelete = 0;
-            }
-            else
-            {
+            } else {
                 // an insertion or deletion
-                if (EditType.DELETE.equals(editType))
-                {
+                if (EditType.DELETE.equals(editType)) {
                     postDelete = 1;
-                }
-                else
-                {
+                } else {
                     postInsert = 1;
                 }
 
@@ -190,13 +186,11 @@ public final class DiffCleanup
                 // <ins>A</del>X<ins>C</ins><del>D</del>
                 // <ins>A</ins><del>B</del>X<del>C</del>
                 if (lastEquality != null
-                    && (((preInsert + preDelete + postInsert + postDelete) > 0)
-                    || ((lastEquality.length() < editCost / 2)
-                    && (preInsert + preDelete + postInsert + postDelete) == 3)))
-                {
-                    // position pointer to the element after the one at the end of the stack
-                    while (curDiff != equalities.lastElement())
-                    {
+                        && (((preInsert + preDelete + postInsert + postDelete) > 0) || ((lastEquality.length() < editCost / 2) && (preInsert + preDelete
+                                + postInsert + postDelete) == 3))) {
+                    // position pointer to the element after the one at the end
+                    // of the stack
+                    while (curDiff != equalities.lastElement()) {
                         curDiff = (Difference) pointer.previous();
                     }
                     pointer.next();
@@ -207,36 +201,30 @@ public final class DiffCleanup
                     curDiff = new Difference(EditType.INSERT, lastEquality);
                     pointer.add(curDiff);
 
-                    equalities.pop(); // Throw away the equality we just deleted;
+                    equalities.pop(); // Throw away the equality we just
+                    // deleted;
                     lastEquality = null;
-                    if (preInsert == 1 && preDelete == 1)
-                    {
-                        // No changes made which could affect previous entry, keep going.
+                    if (preInsert == 1 && preDelete == 1) {
+                        // No changes made which could affect previous entry,
+                        // keep going.
                         postInsert = 1;
                         postDelete = 1;
                         equalities.clear();
                         safeDiff = curDiff;
-                    }
-                    else
-                    {
-                        if (!equalities.empty())
-                        {
+                    } else {
+                        if (!equalities.empty()) {
                             // Throw away the previous equality;
                             equalities.pop();
                         }
-                        if (equalities.empty())
-                        {
+                        if (equalities.empty()) {
                             // There are no previous questionable equalities,
                             // walk back to the last known safe diff.
                             curDiff = safeDiff;
-                        }
-                        else
-                        {
+                        } else {
                             // There is an equality we can fall back to.
                             curDiff = (Difference) equalities.lastElement();
                         }
-                        while (curDiff != pointer.previous())
-                        {
+                        while (curDiff != pointer.previous()) {
                             // Intentionally empty loop.
                         }
 
@@ -249,19 +237,19 @@ public final class DiffCleanup
             curDiff = pointer.hasNext() ? (Difference) pointer.next() : null;
         }
 
-        if (changes)
-        {
+        if (changes) {
             cleanupMerge(diffs);
         }
     }
 
     /**
-     * Reorder and merge like edit sections.  Merge equalities.
-     * Any edit section can move as long as it doesn't cross an equality.
-     * @param diffs List of Difference objects
+     * Reorder and merge like edit sections. Merge equalities. Any edit section
+     * can move as long as it doesn't cross an equality.
+     * 
+     * @param diffs
+     *            List of Difference objects
      */
-    public static void cleanupMerge(final List diffs)
-    {
+    public static void cleanupMerge(final List diffs) {
         // Add a dummy entry at the end.
         diffs.add(new Difference(EditType.EQUAL, "")); //$NON-NLS-1$
 
@@ -275,54 +263,40 @@ public final class DiffCleanup
         ListIterator pointer = diffs.listIterator();
         Difference curDiff = pointer.hasNext() ? (Difference) pointer.next() : null;
         Difference prevEqual = null;
-        while (curDiff != null)
-        {
+        while (curDiff != null) {
             EditType editType = curDiff.getEditType();
-            if (EditType.INSERT.equals(editType))
-            {
+            if (EditType.INSERT.equals(editType)) {
                 countInsert++;
                 textInsert.append(curDiff.getText());
                 prevEqual = null;
-            }
-            else if (EditType.DELETE.equals(editType))
-            {
+            } else if (EditType.DELETE.equals(editType)) {
                 countDelete++;
                 textDelete.append(curDiff.getText());
                 prevEqual = null;
-            }
-            else if (EditType.EQUAL.equals(editType))
-            {
+            } else if (EditType.EQUAL.equals(editType)) {
                 // Upon reaching an equality, check for prior redundancies.
-                if (countDelete != 0 || countInsert != 0)
-                {
+                if (countDelete != 0 || countInsert != 0) {
                     // Delete the offending records.
                     pointer.previous(); // Reverse direction.
-                    while (countDelete-- > 0)
-                    {
+                    while (countDelete-- > 0) {
                         pointer.previous();
                         pointer.remove();
                     }
-                    while (countInsert-- > 0)
-                    {
+                    while (countInsert-- > 0) {
                         pointer.previous();
                         pointer.remove();
                     }
 
-                    if (countDelete != 0 && countInsert != 0)
-                    {
+                    if (countDelete != 0 && countInsert != 0) {
                         // Factor out any common prefixes.
                         commonLength = Commonality.prefix(textInsert.toString(), textDelete.toString());
-                        if (commonLength > 0)
-                        {
-                            if (pointer.hasPrevious())
-                            {
+                        if (commonLength > 0) {
+                            if (pointer.hasPrevious()) {
                                 curDiff = (Difference) pointer.previous();
                                 assert EditType.EQUAL.equals(curDiff.getEditType()) : "Previous diff should have been an equality."; //$NON-NLS-1$
                                 curDiff.appendText(textInsert.substring(0, commonLength));
                                 pointer.next();
-                            }
-                            else
-                            {
+                            } else {
                                 pointer.add(new Difference(EditType.EQUAL, textInsert.substring(0, commonLength)));
                             }
                             textInsert.replace(0, textInsert.length(), textInsert.substring(commonLength));
@@ -331,8 +305,7 @@ public final class DiffCleanup
 
                         // Factor out any common suffixes.
                         commonLength = Commonality.suffix(textInsert.toString(), textDelete.toString());
-                        if (commonLength > 0)
-                        {
+                        if (commonLength > 0) {
                             curDiff = (Difference) pointer.next();
                             curDiff.prependText(textInsert.substring(textInsert.length() - commonLength));
                             textInsert.replace(0, textInsert.length(), textInsert.substring(0, textInsert.length() - commonLength));
@@ -342,21 +315,17 @@ public final class DiffCleanup
                     }
 
                     // Insert the merged records.
-                    if (textDelete.length() != 0)
-                    {
+                    if (textDelete.length() != 0) {
                         pointer.add(new Difference(EditType.DELETE, textDelete.toString()));
                     }
 
-                    if (textInsert.length() != 0)
-                    {
+                    if (textInsert.length() != 0) {
                         pointer.add(new Difference(EditType.INSERT, textInsert.toString()));
                     }
 
                     // Step forward to the equality.
                     curDiff = pointer.hasNext() ? (Difference) pointer.next() : null;
-                }
-                else if (prevEqual != null)
-                {
+                } else if (prevEqual != null) {
                     // Merge this equality with the previous one.
                     prevEqual.appendText(curDiff.getText());
                     pointer.remove();
@@ -374,18 +343,18 @@ public final class DiffCleanup
         }
 
         Difference lastDiff = (Difference) diffs.get(diffs.size() - 1);
-        if (lastDiff.getText().length() == 0)
-        {
-            diffs.remove(diffs.size() - 1); // Remove the dummy entry at the end.
+        if (lastDiff.getText().length() == 0) {
+            diffs.remove(diffs.size() - 1); // Remove the dummy entry at the
+            // end.
         }
     }
 
     /**
      * Set the edit cost for efficiency
+     * 
      * @param newEditCost
      */
-    public static void setEditCost(int newEditCost)
-    {
+    public static void setEditCost(int newEditCost) {
         editCost = newEditCost;
     }
 

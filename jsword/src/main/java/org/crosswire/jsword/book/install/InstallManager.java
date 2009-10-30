@@ -40,75 +40,59 @@ import org.crosswire.common.util.Reporter;
 
 /**
  * A manager to abstract out the non-view specific book installation tasks.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class InstallManager
-{
+public final class InstallManager {
     /**
      * Simple ctor
      */
-    public InstallManager()
-    {
+    public InstallManager() {
         installers = new LinkedHashMap();
 
-        try
-        {
+        try {
             Properties sitemap = PluginUtil.getPlugin(getClass());
             factories = PluginUtil.getImplementorsMap(InstallerFactory.class);
             int i = 0;
-            for (String def = sitemap.getProperty(PREFIX + ++i); def != null; def = sitemap.getProperty(PREFIX + ++i))
-            {
-                try
-                {
+            for (String def = sitemap.getProperty(PREFIX + ++i); def != null; def = sitemap.getProperty(PREFIX + ++i)) {
+                try {
                     String[] parts = def.split(",", 3); //$NON-NLS-1$
                     String type = parts[0];
                     String name = parts[1];
                     String rest = parts[2];
 
                     Class clazz = (Class) factories.get(type);
-                    if (clazz == null)
-                    {
+                    if (clazz == null) {
                         log.warn(""); //$NON-NLS-1$
-                    }
-                    else
-                    {
+                    } else {
                         InstallerFactory ifactory = (InstallerFactory) clazz.newInstance();
                         Installer installer = ifactory.createInstaller(rest);
 
                         internalAdd(name, installer);
                     }
-                }
-                catch (InstantiationException e)
-                {
+                } catch (InstantiationException e) {
                     Reporter.informUser(this, e);
-                }
-                catch (IllegalAccessException e)
-                {
+                } catch (IllegalAccessException e) {
                     Reporter.informUser(this, e);
                 }
             }
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             Reporter.informUser(this, ex);
         }
     }
 
     /**
-     * Save all properties to the user's local area.
-     * Uses the same property name so as to override it.
+     * Save all properties to the user's local area. Uses the same property name
+     * so as to override it.
      */
-    public void save()
-    {
+    public void save() {
         Properties props = new Properties();
         StringBuffer buf = new StringBuffer();
         int i = 1;
-        for (Iterator it = installers.keySet().iterator(); it.hasNext(); )
-        {
+        for (Iterator it = installers.keySet().iterator(); it.hasNext();) {
             String name = (String) it.next();
             Installer installer = (Installer) installers.get(name);
             // Clear the buffer
@@ -121,12 +105,9 @@ public final class InstallManager
             props.setProperty(PREFIX + i++, buf.toString());
         }
         URI outputURI = CWProject.instance().getWritableURI(getClass().getName(), FileUtil.EXTENSION_PLUGIN);
-        try
-        {
+        try {
             NetUtil.storeProperties(props, outputURI, "Saved Installer Sites"); //$NON-NLS-1$
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             log.error("Failed to save installers", e); //$NON-NLS-1$
         }
     }
@@ -134,40 +115,30 @@ public final class InstallManager
     /**
      * The names of all the known InstallerFactories
      */
-    public Set getInstallerFactoryNames()
-    {
+    public Set getInstallerFactoryNames() {
         return Collections.unmodifiableSet(factories.keySet());
     }
 
     /**
      * Find the registered name of the InstallerFactory that created the given
-     * installer.
-     * There isn't a nice way to do this right now so we just do a trawl through
-     * all the known factories looking!
+     * installer. There isn't a nice way to do this right now so we just do a
+     * trawl through all the known factories looking!
      */
-    public String getFactoryNameForInstaller(Installer installer)
-    {
+    public String getFactoryNameForInstaller(Installer installer) {
         Class match = installer.getClass();
 
-        for (Iterator it = factories.keySet().iterator(); it.hasNext(); )
-        {
+        for (Iterator it = factories.keySet().iterator(); it.hasNext();) {
             String name = (String) it.next();
             Class factclazz = (Class) factories.get(name);
-            try
-            {
+            try {
                 InstallerFactory ifactory = (InstallerFactory) factclazz.newInstance();
                 Class clazz = ifactory.createInstaller().getClass();
-                if (clazz == match)
-                {
+                if (clazz == match) {
                     return name;
                 }
-            }
-            catch (InstantiationException e)
-            {
+            } catch (InstantiationException e) {
                 log.warn("Failed to instantiate installer factory: " + name + "=" + factclazz.getName(), e); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-            catch (IllegalAccessException e)
-            {
+            } catch (IllegalAccessException e) {
                 log.warn("Failed to instantiate installer factory: " + name + "=" + factclazz.getName(), e); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
@@ -177,25 +148,21 @@ public final class InstallManager
     }
 
     /**
-     * Find the registered name of the Installer.
-     * There isn't a nice way to do this right now so we just do a trawl through
-     * all the known factories looking!
+     * Find the registered name of the Installer. There isn't a nice way to do
+     * this right now so we just do a trawl through all the known factories
+     * looking!
      */
-    public String getInstallerNameForInstaller(Installer installer)
-    {
-        for (Iterator it = installers.keySet().iterator(); it.hasNext(); )
-        {
+    public String getInstallerNameForInstaller(Installer installer) {
+        for (Iterator it = installers.keySet().iterator(); it.hasNext();) {
             String name = (String) it.next();
             Installer test = (Installer) installers.get(name);
-            if (installer.equals(test))
-            {
+            if (installer.equals(test)) {
                 return name;
             }
         }
 
         log.warn("Failed to find installer name for " + installer.toString() + " among the " + installers.size() + " installers."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        for (Iterator it = installers.keySet().iterator(); it.hasNext(); )
-        {
+        for (Iterator it = installers.keySet().iterator(); it.hasNext();) {
             String name = (String) it.next();
             Installer test = (Installer) installers.get(name);
             log.warn("  it isn't equal to " + test.getInstallerDefinition()); //$NON-NLS-1$
@@ -205,22 +172,18 @@ public final class InstallManager
 
     /**
      * Find the InstallerFactory associated with the given name.
-     * @param name The InstallerFactory name to look-up
+     * 
+     * @param name
+     *            The InstallerFactory name to look-up
      * @return The found InstallerFactory or null if the name was not found
      */
-    public InstallerFactory getInstallerFactory(String name)
-    {
+    public InstallerFactory getInstallerFactory(String name) {
         Class clazz = (Class) factories.get(name);
-        try
-        {
+        try {
             return (InstallerFactory) clazz.newInstance();
-        }
-        catch (InstantiationException e)
-        {
+        } catch (InstantiationException e) {
             assert false : e;
-        }
-        catch (IllegalAccessException e)
-        {
+        } catch (IllegalAccessException e) {
             assert false : e;
         }
         return null;
@@ -229,28 +192,30 @@ public final class InstallManager
     /**
      * Accessor for the known installers
      */
-    public Map getInstallers()
-    {
+    public Map getInstallers() {
         return Collections.unmodifiableMap(installers);
     }
 
     /**
      * Find an installer by name
-     * @param name The name of the installer to find
+     * 
+     * @param name
+     *            The name of the installer to find
      * @return The installer or null if none was found by the given name
      */
-    public Installer getInstaller(String name)
-    {
+    public Installer getInstaller(String name) {
         return (Installer) installers.get(name);
     }
 
     /**
      * Add an installer to our list of installers
-     * @param name The name by which we reference the installer
-     * @param installer The installer to add
+     * 
+     * @param name
+     *            The name by which we reference the installer
+     * @param installer
+     *            The installer to add
      */
-    public void addInstaller(String name, Installer installer)
-    {
+    public void addInstaller(String name, Installer installer) {
         assert installer != null;
         assert name != null;
 
@@ -263,18 +228,18 @@ public final class InstallManager
     /**
      * InstallManager is a Map, however we demand that both names and installers
      * are unique (so we can lookup a name from an installer)
-     * @param name The name of the new installer
-     * @param installer The installer to associate with the given name
+     * 
+     * @param name
+     *            The name of the new installer
+     * @param installer
+     *            The installer to associate with the given name
      */
-    private void internalAdd(String name, Installer installer)
-    {
-        for (Iterator it = installers.keySet().iterator(); it.hasNext(); )
-        {
+    private void internalAdd(String name, Installer installer) {
+        for (Iterator it = installers.keySet().iterator(); it.hasNext();) {
             String tname = (String) it.next();
             Installer tinstaller = (Installer) installers.get(tname);
 
-            if (tinstaller.equals(installer))
-            {
+            if (tinstaller.equals(installer)) {
                 // We have a dupe - remove the old name
                 log.warn("duplicate installers: " + name + "=" + tname + ". removing " + tname); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
@@ -289,12 +254,12 @@ public final class InstallManager
 
     /**
      * Remove an installer from our list
-     * @param name The name by which this installer is referenced
+     * 
+     * @param name
+     *            The name by which this installer is referenced
      */
-    public void removeInstaller(String name)
-    {
-        if (installers.containsKey(name))
-        {
+    public void removeInstaller(String name) {
+        if (installers.containsKey(name)) {
             Installer old = (Installer) installers.remove(name);
             fireInstallersChanged(this, old, false);
         }
@@ -302,51 +267,50 @@ public final class InstallManager
 
     /**
      * Remove a BibleListener from our list of listeners
-     * @param li The old listener
+     * 
+     * @param li
+     *            The old listener
      */
-    public synchronized void addInstallerListener(InstallerListener li)
-    {
+    public synchronized void addInstallerListener(InstallerListener li) {
         listeners.add(InstallerListener.class, li);
     }
 
     /**
      * Add a BibleListener to our list of listeners
-     * @param li The new listener
+     * 
+     * @param li
+     *            The new listener
      */
-    public synchronized void removeBooksListener(InstallerListener li)
-    {
+    public synchronized void removeBooksListener(InstallerListener li) {
         listeners.remove(InstallerListener.class, li);
     }
 
     /**
      * Kick of an event sequence
-     * @param source The event source
-     * @param installer The meta-data of the changed Bible
-     * @param added Is it added?
+     * 
+     * @param source
+     *            The event source
+     * @param installer
+     *            The meta-data of the changed Bible
+     * @param added
+     *            Is it added?
      */
-    protected synchronized void fireInstallersChanged(Object source, Installer installer, boolean added)
-    {
+    protected synchronized void fireInstallersChanged(Object source, Installer installer, boolean added) {
         // Guaranteed to return a non-null array
         Object[] contents = listeners.getListenerList();
 
         // Process the listeners last to first, notifying
         // those that are interested in this event
         InstallerEvent ev = null;
-        for (int i = contents.length - 2; i >= 0; i -= 2)
-        {
-            if (contents[i] == InstallerListener.class)
-            {
-                if (ev == null)
-                {
+        for (int i = contents.length - 2; i >= 0; i -= 2) {
+            if (contents[i] == InstallerListener.class) {
+                if (ev == null) {
                     ev = new InstallerEvent(source, installer, added);
                 }
 
-                if (added)
-                {
+                if (added) {
                     ((InstallerListener) contents[i + 1]).installerAdded(ev);
-                }
-                else
-                {
+                } else {
                     ((InstallerListener) contents[i + 1]).installerRemoved(ev);
                 }
             }

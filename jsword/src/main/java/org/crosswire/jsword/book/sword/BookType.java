@@ -30,34 +30,32 @@ import org.crosswire.jsword.book.KeyType;
 
 /**
  * Data about book types.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public abstract class BookType implements Serializable
-{
+public abstract class BookType implements Serializable {
     /**
      * Uncompressed Bibles
      */
-    public static final BookType RAW_TEXT = new BookType("RawText", BookCategory.BIBLE) //$NON-NLS-1$
-    {
-        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
-        {
+    public static final BookType RAW_TEXT = new BookType("RawText", BookCategory.BIBLE) { //$NON-NLS-1$
+
+        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
             return new SwordBook(sbmd, backend);
         }
 
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
-        {
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException {
             return new RawBackend(sbmd, 2);
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see org.crosswire.jsword.book.sword.BookType#getKeyType()
          */
-        public KeyType getKeyType()
-        {
+        public KeyType getKeyType() {
             return KeyType.VERSE;
         }
 
@@ -70,24 +68,22 @@ public abstract class BookType implements Serializable
     /**
      * Compressed Bibles
      */
-    public static final BookType Z_TEXT = new BookType("zText", BookCategory.BIBLE) //$NON-NLS-1$
-    {
-        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
-        {
+    public static final BookType Z_TEXT = new BookType("zText", BookCategory.BIBLE) { //$NON-NLS-1$
+        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
             return new SwordBook(sbmd, backend);
         }
 
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
-        {
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException {
             BlockType blockType = BlockType.fromString((String) sbmd.getProperty(ConfigEntryType.BLOCK_TYPE));
             return new ZVerseBackend(sbmd, blockType);
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see org.crosswire.jsword.book.sword.BookType#getKeyType()
          */
-        public KeyType getKeyType()
-        {
+        public KeyType getKeyType() {
             return KeyType.VERSE;
         }
 
@@ -100,23 +96,22 @@ public abstract class BookType implements Serializable
     /**
      * Uncompressed Commentaries
      */
-    public static final BookType RAW_COM = new BookType("RawCom", BookCategory.COMMENTARY) //$NON-NLS-1$
-    {
-        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
-        {
+    public static final BookType RAW_COM = new BookType("RawCom", BookCategory.COMMENTARY) { //$NON-NLS-1$
+
+        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
             return new SwordBook(sbmd, backend);
         }
 
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
-        {
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException {
             return new RawBackend(sbmd, 2);
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see org.crosswire.jsword.book.sword.BookType#getKeyType()
          */
-        public KeyType getKeyType()
-        {
+        public KeyType getKeyType() {
             return KeyType.VERSE;
         }
 
@@ -126,23 +121,22 @@ public abstract class BookType implements Serializable
         private static final long serialVersionUID = 3258129141898294837L;
     };
 
-    public static final BookType RAW_COM4 = new BookType("RawCom4", BookCategory.COMMENTARY) //$NON-NLS-1$
-    {
-        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
-        {
+    public static final BookType RAW_COM4 = new BookType("RawCom4", BookCategory.COMMENTARY) { //$NON-NLS-1$
+
+        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
             return new SwordBook(sbmd, backend);
         }
 
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
-        {
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException {
             return new RawBackend(sbmd, 4);
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see org.crosswire.jsword.book.sword.BookType#getKeyType()
          */
-        public KeyType getKeyType()
-        {
+        public KeyType getKeyType() {
             return KeyType.VERSE;
         }
 
@@ -154,24 +148,23 @@ public abstract class BookType implements Serializable
     /**
      * Compressed Commentaries
      */
-    public static final BookType Z_COM = new BookType("zCom", BookCategory.COMMENTARY) //$NON-NLS-1$
-    {
-        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
-        {
+    public static final BookType Z_COM = new BookType("zCom", BookCategory.COMMENTARY) { //$NON-NLS-1$
+
+        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
             return new SwordBook(sbmd, backend);
         }
 
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
-        {
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException {
             BlockType blockType = BlockType.fromString((String) sbmd.getProperty(ConfigEntryType.BLOCK_TYPE));
             return new ZVerseBackend(sbmd, blockType);
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see org.crosswire.jsword.book.sword.BookType#getKeyType()
          */
-        public KeyType getKeyType()
-        {
+        public KeyType getKeyType() {
             return KeyType.VERSE;
         }
 
@@ -184,23 +177,22 @@ public abstract class BookType implements Serializable
     /**
      * Uncompresses HREF Commentaries
      */
-    public static final BookType HREF_COM = new BookType("HREFCom", BookCategory.COMMENTARY) //$NON-NLS-1$
-    {
-        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
-        {
+    public static final BookType HREF_COM = new BookType("HREFCom", BookCategory.COMMENTARY) { //$NON-NLS-1$
+
+        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
             return new SwordBook(sbmd, backend);
         }
 
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
-        {
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException {
             return new RawBackend(sbmd, 2);
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see org.crosswire.jsword.book.sword.BookType#getKeyType()
          */
-        public KeyType getKeyType()
-        {
+        public KeyType getKeyType() {
             return KeyType.VERSE;
         }
 
@@ -213,23 +205,22 @@ public abstract class BookType implements Serializable
     /**
      * Uncompressed Commentaries
      */
-    public static final BookType RAW_FILES = new BookType("RawFiles", BookCategory.COMMENTARY) //$NON-NLS-1$
-    {
-        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
-        {
+    public static final BookType RAW_FILES = new BookType("RawFiles", BookCategory.COMMENTARY) { //$NON-NLS-1$
+
+        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
             return new SwordBook(sbmd, backend);
         }
 
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
-        {
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException {
             return new RawFileBackend(sbmd, 2);
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see org.crosswire.jsword.book.sword.BookType#getKeyType()
          */
-        public KeyType getKeyType()
-        {
+        public KeyType getKeyType() {
             return KeyType.VERSE;
         }
 
@@ -242,27 +233,25 @@ public abstract class BookType implements Serializable
     /**
      * 2-Byte Index Uncompressed Dictionaries
      */
-    public static final BookType RAW_LD = new BookType("RawLD", BookCategory.DICTIONARY) //$NON-NLS-1$
-    {
-        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
-        {
-            if (sbmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS))
-            {
+    public static final BookType RAW_LD = new BookType("RawLD", BookCategory.DICTIONARY) { //$NON-NLS-1$
+
+        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
+            if (sbmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS)) {
                 return new SwordDailyDevotion(sbmd, backend);
             }
             return new SwordDictionary(sbmd, backend);
         }
 
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
-        {
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException {
             return new RawLDBackend(sbmd, 2);
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see org.crosswire.jsword.book.sword.BookType#getKeyType()
          */
-        public KeyType getKeyType()
-        {
+        public KeyType getKeyType() {
             return KeyType.LIST;
         }
 
@@ -275,27 +264,25 @@ public abstract class BookType implements Serializable
     /**
      * 4-Byte Index Uncompressed Dictionaries
      */
-    public static final BookType RAW_LD4 = new BookType("RawLD4", BookCategory.DICTIONARY) //$NON-NLS-1$
-    {
-        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
-        {
-            if (sbmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS))
-            {
+    public static final BookType RAW_LD4 = new BookType("RawLD4", BookCategory.DICTIONARY) { //$NON-NLS-1$
+
+        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
+            if (sbmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS)) {
                 return new SwordDailyDevotion(sbmd, backend);
             }
             return new SwordDictionary(sbmd, backend);
         }
 
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
-        {
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException {
             return new RawLDBackend(sbmd, 4);
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see org.crosswire.jsword.book.sword.BookType#getKeyType()
          */
-        public KeyType getKeyType()
-        {
+        public KeyType getKeyType() {
             return KeyType.LIST;
         }
 
@@ -308,27 +295,25 @@ public abstract class BookType implements Serializable
     /**
      * Compressed Dictionaries
      */
-    public static final BookType Z_LD = new BookType("zLD", BookCategory.DICTIONARY) //$NON-NLS-1$
-    {
-        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
-        {
-            if (sbmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS))
-            {
+    public static final BookType Z_LD = new BookType("zLD", BookCategory.DICTIONARY) { //$NON-NLS-1$
+
+        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
+            if (sbmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS)) {
                 return new SwordDailyDevotion(sbmd, backend);
             }
             return new SwordDictionary(sbmd, backend);
         }
 
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
-        {
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException {
             return new ZLDBackend(sbmd);
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see org.crosswire.jsword.book.sword.BookType#getKeyType()
          */
-        public KeyType getKeyType()
-        {
+        public KeyType getKeyType() {
             return KeyType.LIST;
         }
 
@@ -341,23 +326,22 @@ public abstract class BookType implements Serializable
     /**
      * Generic Books
      */
-    public static final BookType RAW_GEN_BOOK = new BookType("RawGenBook", BookCategory.GENERAL_BOOK) //$NON-NLS-1$
-    {
-        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend)
-        {
+    public static final BookType RAW_GEN_BOOK = new BookType("RawGenBook", BookCategory.GENERAL_BOOK) { //$NON-NLS-1$
+
+        protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
             return new SwordGenBook(sbmd, backend);
         }
 
-        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException
-        {
+        protected AbstractBackend getBackend(SwordBookMetaData sbmd) throws BookException {
             return new GenBookBackend(sbmd);
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see org.crosswire.jsword.book.sword.BookType#getKeyType()
          */
-        public KeyType getKeyType()
-        {
+        public KeyType getKeyType() {
             return KeyType.TREE;
         }
 
@@ -370,24 +354,22 @@ public abstract class BookType implements Serializable
     /**
      * Simple ctor
      */
-    public BookType(String name, BookCategory type)
-    {
+    public BookType(String name, BookCategory type) {
         this.name = name;
         this.type = type;
     }
 
     /**
      * Find a BookType from a name.
-     * @param name The name of the BookType to look up
+     * 
+     * @param name
+     *            The name of the BookType to look up
      * @return The found BookType or null if the name is not found
      */
-    public static BookType getBookType(String name)
-    {
-        for (int i = 0; i < VALUES.length; i++)
-        {
+    public static BookType getBookType(String name) {
+        for (int i = 0; i < VALUES.length; i++) {
             BookType mod = VALUES[i];
-            if (mod.name.equalsIgnoreCase(name))
-            {
+            if (mod.name.equalsIgnoreCase(name)) {
                 return mod;
             }
         }
@@ -398,28 +380,28 @@ public abstract class BookType implements Serializable
     /**
      * The category of this book
      */
-    public BookCategory getBookCategory()
-    {
+    public BookCategory getBookCategory() {
         return type;
     }
 
     /**
-     * Given a SwordBookMetaData determine whether this BookType
-     * will work for it.
-     * @param sbmd the BookMetaData that this BookType works upon
+     * Given a SwordBookMetaData determine whether this BookType will work for
+     * it.
+     * 
+     * @param sbmd
+     *            the BookMetaData that this BookType works upon
      * @return true if this is a usable BookType
      */
-    public boolean isSupported(SwordBookMetaData sbmd)
-    {
+    public boolean isSupported(SwordBookMetaData sbmd) {
         return type != null && sbmd != null;
     }
 
     /**
      * Create a Book appropriate for the BookMetaData
+     * 
      * @throws BookException
      */
-    public Book createBook(SwordBookMetaData sbmd) throws BookException
-    {
+    public Book createBook(SwordBookMetaData sbmd) throws BookException {
         return getBook(sbmd, getBackend(sbmd));
     }
 
@@ -435,6 +417,7 @@ public abstract class BookType implements Serializable
 
     /**
      * Get the way this type of Book organizes it's keys.
+     * 
      * @return the organization of keys for this book
      */
     public abstract KeyType getKeyType();
@@ -452,13 +435,10 @@ public abstract class BookType implements Serializable
     /**
      * Lookup method to convert from a String
      */
-    public static BookType fromString(String name)
-    {
-        for (int i = 0; i < VALUES.length; i++)
-        {
+    public static BookType fromString(String name) {
+        for (int i = 0; i < VALUES.length; i++) {
             BookType mod = VALUES[i];
-            if (mod.name.equalsIgnoreCase(name))
-            {
+            if (mod.name.equalsIgnoreCase(name)) {
                 return mod;
             }
         }
@@ -467,28 +447,31 @@ public abstract class BookType implements Serializable
     }
 
     /**
-     * Prevent subclasses from overriding canonical identity based Object methods
+     * Prevent subclasses from overriding canonical identity based Object
+     * methods
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public final boolean equals(Object o)
-    {
+    public final boolean equals(Object o) {
         return super.equals(o);
     }
 
     /**
-     * Prevent subclasses from overriding canonical identity based Object methods
+     * Prevent subclasses from overriding canonical identity based Object
+     * methods
+     * 
      * @see java.lang.Object#hashCode()
      */
-    public final int hashCode()
-    {
+    public final int hashCode() {
         return super.hashCode();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         return name;
     }
 
@@ -496,25 +479,12 @@ public abstract class BookType implements Serializable
     private static int nextObj;
     private final int obj = nextObj++;
 
-    Object readResolve()
-    {
+    Object readResolve() {
         return VALUES[obj];
     }
 
-    private static final BookType[] VALUES =
-    {
-        RAW_TEXT,
-        Z_TEXT,
-        RAW_COM,
-        RAW_COM4,
-        Z_COM,
-        RAW_COM,
-        HREF_COM,
-        RAW_FILES,
-        RAW_LD,
-        RAW_LD4,
-        Z_LD,
-        RAW_GEN_BOOK,
+    private static final BookType[] VALUES = {
+            RAW_TEXT, Z_TEXT, RAW_COM, RAW_COM4, Z_COM, RAW_COM, HREF_COM, RAW_FILES, RAW_LD, RAW_LD4, Z_LD, RAW_GEN_BOOK,
     };
 
     /**

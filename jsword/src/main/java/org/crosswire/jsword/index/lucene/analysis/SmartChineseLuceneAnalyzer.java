@@ -28,25 +28,26 @@ import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 
 /**
  * A simple wrapper for {@link SmartChineseAnalyzer}, which takes overlapping
- * two character tokenization approach which leads to larger index size, like {@link org.apache.lucene.analyzer.cjk.CJKAnalyzer}.
- * This analyzer's stop list is merely of punctuation. It does stemming of English.
- *  
+ * two character tokenization approach which leads to larger index size, like
+ * {@link org.apache.lucene.analyzer.cjk.CJKAnalyzer}. This analyzer's stop list
+ * is merely of punctuation. It does stemming of English.
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class SmartChineseLuceneAnalyzer extends AbstractBookAnalyzer
-{
-    public SmartChineseLuceneAnalyzer()
-    {
+public class SmartChineseLuceneAnalyzer extends AbstractBookAnalyzer {
+    public SmartChineseLuceneAnalyzer() {
         myAnalyzer = new SmartChineseAnalyzer();
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String, java.io.Reader)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String,
+     * java.io.Reader)
      */
-    public final TokenStream tokenStream(String fieldName, Reader reader)
-    {
+    public final TokenStream tokenStream(String fieldName, Reader reader) {
         return myAnalyzer.tokenStream(fieldName, reader);
     }
 

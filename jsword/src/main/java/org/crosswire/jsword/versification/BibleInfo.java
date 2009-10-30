@@ -28,171 +28,184 @@ import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 
 /**
- * BibleInfo is a static class that deals with Book number conversions and similar.
- * We start counting at 1 for books, chapters and verses (so Genesis=1, Revelation=66).
- * However internally books start counting at 0 and go up to 65.
- * <p>I've considered merging BibleInfo and PassageUtil since they are both supporting
- * static only classes. However they are both non-trivial, so together they would
- * be large, and there is a good dividing line between the 2.
- *
- * @see gnu.lgpl.License for license details.
+ * BibleInfo is a static class that deals with Book number conversions and
+ * similar. We start counting at 1 for books, chapters and verses (so Genesis=1,
+ * Revelation=66). However internally books start counting at 0 and go up to 65.
+ * <p>
+ * I've considered merging BibleInfo and PassageUtil since they are both
+ * supporting static only classes. However they are both non-trivial, so
+ * together they would be large, and there is a good dividing line between the
+ * 2.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class BibleInfo
-{
+public final class BibleInfo {
     /**
      * Ensure that we can not be instantiated
      */
-    private BibleInfo()
-    {
+    private BibleInfo() {
         initialize();
     }
 
     /**
      * This is only used by config.
-     * @param bookCase The new case to use for reporting book names
-     * @exception IllegalArgumentException If the case is not between 0 and 2
+     * 
+     * @param bookCase
+     *            The new case to use for reporting book names
+     * @exception IllegalArgumentException
+     *                If the case is not between 0 and 2
      * @see #getCase()
      */
-    public static void setCase(int bookCase)
-    {
+    public static void setCase(int bookCase) {
         BibleInfo.bookCase = CaseType.fromInteger(bookCase);
     }
 
     /**
      * This is only used by config
+     * 
      * @return The current case setting
      * @see #setCase(CaseType)
      */
-    public static int getCase()
-    {
+    public static int getCase() {
         return BibleInfo.bookCase.toInteger();
     }
 
     /**
-     * How do we report the names of the books?.
-     * These are static. This is on the assumption that we will not want to have
-     * different sections of the app using a different format. I expect this to
-     * be a good assumption, and it saves passing a Book class around everywhere.
-     * BibleInfo.MIXED is not allowed
-     * @param newBookCase The new case to use for reporting book names
-     * @exception IllegalArgumentException If the case is not between 0 and 2
+     * How do we report the names of the books?. These are static. This is on
+     * the assumption that we will not want to have different sections of the
+     * app using a different format. I expect this to be a good assumption, and
+     * it saves passing a Book class around everywhere. BibleInfo.MIXED is not
+     * allowed
+     * 
+     * @param newBookCase
+     *            The new case to use for reporting book names
+     * @exception IllegalArgumentException
+     *                If the case is not between 0 and 2
      * @see #getCase()
      */
-    public static void setCase(CaseType newBookCase)
-    {
+    public static void setCase(CaseType newBookCase) {
         BibleInfo.bookCase = newBookCase;
     }
 
     /**
      * This is only used by config
+     * 
      * @return Whether the name is long or short. Default is Full (true).
      * @see #setFullBookName(boolean)
      */
-    public static boolean isFullBookName()
-    {
+    public static boolean isFullBookName() {
         return BibleInfo.fullBookName;
     }
 
     /**
      * Set whether the name should be full or abbreviated, long or short.
-     * @param fullName The new case to use for reporting book names
+     * 
+     * @param fullName
+     *            The new case to use for reporting book names
      * @see #isFullBookName()
      */
-    public static void setFullBookName(boolean fullName)
-    {
+    public static void setFullBookName(boolean fullName) {
         BibleInfo.fullBookName = fullName;
     }
 
     /**
      * How do we report the names of the books?.
+     * 
      * @return The current case setting
      * @see #setCase(int)
      */
-    public static CaseType getDefaultCase()
-    {
+    public static CaseType getDefaultCase() {
         return BibleInfo.bookCase;
     }
 
     /**
      * Get the BookName.
-     * @param book The book number (1-66)
+     * 
+     * @param book
+     *            The book number (1-66)
      * @return The requested BookName
-     * @exception NoSuchVerseException If the book number is not valid
+     * @exception NoSuchVerseException
+     *                If the book number is not valid
      */
-    public static BookName getBookName(int book) throws NoSuchVerseException
-    {
+    public static BookName getBookName(int book) throws NoSuchVerseException {
         return bibleNames.getName(book);
     }
 
     /**
-     * Get the preferred name of a book.
-     * Altered by the case setting (see setBookCase() and isLongBookName())
-     * @param book The book number (1-66)
+     * Get the preferred name of a book. Altered by the case setting (see
+     * setBookCase() and isLongBookName())
+     * 
+     * @param book
+     *            The book number (1-66)
      * @return The full name of the book
-     * @exception NoSuchVerseException If the book number is not valid
+     * @exception NoSuchVerseException
+     *                If the book number is not valid
      */
-    public static String getPreferredBookName(int book) throws NoSuchVerseException
-    {
+    public static String getPreferredBookName(int book) throws NoSuchVerseException {
         return bibleNames.getPreferredName(book);
     }
 
     /**
-     * Get the full name of a book (e.g. "Genesis").
-     * Altered by the case setting (see setBookCase())
-     * @param book The book number (1-66)
+     * Get the full name of a book (e.g. "Genesis"). Altered by the case setting
+     * (see setBookCase())
+     * 
+     * @param book
+     *            The book number (1-66)
      * @return The full name of the book
-     * @exception NoSuchVerseException If the book number is not valid
+     * @exception NoSuchVerseException
+     *                If the book number is not valid
      */
-    public static String getLongBookName(int book) throws NoSuchVerseException
-    {
+    public static String getLongBookName(int book) throws NoSuchVerseException {
         return bibleNames.getLongName(book);
     }
 
     /**
-     * Get the short name of a book (e.g. "Gen").
-     * Altered by the case setting (see setBookCase())
-     * @param book The book number (1-66)
+     * Get the short name of a book (e.g. "Gen"). Altered by the case setting
+     * (see setBookCase())
+     * 
+     * @param book
+     *            The book number (1-66)
      * @return The short name of the book
-     * @exception NoSuchVerseException If the book number is not valid
+     * @exception NoSuchVerseException
+     *                If the book number is not valid
      */
-    public static String getShortBookName(int book) throws NoSuchVerseException
-    {
+    public static String getShortBookName(int book) throws NoSuchVerseException {
         return bibleNames.getShortName(book);
     }
 
     /**
      * Get the OSIS name for a book.
-     * @param book The book number (1-66)
+     * 
+     * @param book
+     *            The book number (1-66)
      * @return the OSIS defined short name for a book
-     * @exception NoSuchVerseException If the book number is not valid
+     * @exception NoSuchVerseException
+     *                If the book number is not valid
      */
-    public static String getOSISName(int book) throws NoSuchVerseException
-    {
+    public static String getOSISName(int book) throws NoSuchVerseException {
         return OSISNames.getName(book);
     }
 
     /**
      * Get number of a book from its name.
-     * @param find The string to identify
+     * 
+     * @param find
+     *            The string to identify
      * @return The book number (1 to 66) On error -1
      */
-    public static int getBookNumber(String find)
-    {
+    public static int getBookNumber(String find) {
         int bookNum = -1;
-        if (containsLetter(find))
-        {
+        if (containsLetter(find)) {
             bookNum = OSISNames.getNumber(find);
 
-            if (bookNum == -1)
-            {
+            if (bookNum == -1) {
                 bookNum = bibleNames.getNumber(find);
             }
 
-            if (bookNum == -1 && englishBibleNames != null)
-            {
+            if (bookNum == -1 && englishBibleNames != null) {
                 bookNum = englishBibleNames.getNumber(find);
             }
         }
@@ -202,137 +215,145 @@ public final class BibleInfo
     /**
      * Is the given string a valid book name. If this method returns true then
      * getBookNumber() will return a number and not throw an exception.
-     * @param find The string to identify
+     * 
+     * @param find
+     *            The string to identify
      * @return The book number (1 to 66)
      */
-    public static boolean isBookName(String find)
-    {
+    public static boolean isBookName(String find) {
         return getBookNumber(find) != -1;
     }
 
     /**
      * Count the books in the Bible.
+     * 
      * @return 66 always - the number of books in the Bible
      */
-    public static int booksInBible()
-    {
+    public static int booksInBible() {
         return BOOKS_IN_BIBLE;
     }
 
     /**
      * Count the chapters in the Bible.
+     * 
      * @return 1189 always - the number of chapters in the Bible
      */
-    public static int chaptersInBible()
-    {
+    public static int chaptersInBible() {
         return CHAPTERS_IN_BIBLE;
     }
 
     /**
-     * Count the verses in the Bible.
-     * This counts possible verses, so this number is not affected
-     * by some versions missing out some verses as 'there in error'
+     * Count the verses in the Bible. This counts possible verses, so this
+     * number is not affected by some versions missing out some verses as 'there
+     * in error'
+     * 
      * @return 31102 always - the number of verses in the Bible
      */
-    public static int versesInBible()
-    {
+    public static int versesInBible() {
         return VERSES_IN_BIBLE;
     }
 
     /**
      * Count the chapters in this book.
-     * @param book The book part of the reference.
+     * 
+     * @param book
+     *            The book part of the reference.
      * @return The number of chapters
-     * @exception NoSuchVerseException If the book number is not valid
+     * @exception NoSuchVerseException
+     *                If the book number is not valid
      */
-    public static int chaptersInBook(int book) throws NoSuchVerseException
-    {
-        try
-        {
+    public static int chaptersInBook(int book) throws NoSuchVerseException {
+        try {
             return CHAPTERS_IN_BOOK[book - 1];
-        }
-        catch (ArrayIndexOutOfBoundsException ex)
-        {
+        } catch (ArrayIndexOutOfBoundsException ex) {
             // This is faster than doing the check explicitly, unless
             // The exception is actually thrown, then it is a lot slower
             // I'd like to think that the norm is to get it right
-            throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] { new Integer(book) });
+            throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] {
+                new Integer(book)
+            });
         }
     }
 
     /**
      * Count the verses in a chapter.
-     * @param book The book part of the reference.
-     * @param chapter The current chapter
+     * 
+     * @param book
+     *            The book part of the reference.
+     * @param chapter
+     *            The current chapter
      * @return The number of verses
-     * @exception NoSuchVerseException If the book or chapter number is not valid
+     * @exception NoSuchVerseException
+     *                If the book or chapter number is not valid
      */
-    public static int versesInChapter(int book, int chapter) throws NoSuchVerseException
-    {
-        try
-        {
+    public static int versesInChapter(int book, int chapter) throws NoSuchVerseException {
+        try {
             return VERSES_IN_CHAPTER[book - 1][chapter - 1];
-        }
-        catch (ArrayIndexOutOfBoundsException ex)
-        {
+        } catch (ArrayIndexOutOfBoundsException ex) {
             // This is faster than doing the check explicitly, unless
             // The exception is actually thrown, then it is a lot slower
             // I'd like to think that the norm is to get it right
 
-            Object[] params = new Object[] { new Integer(book), new Integer(chapter) };
+            Object[] params = new Object[] {
+                    new Integer(book), new Integer(chapter)
+            };
             throw new NoSuchVerseException(Msg.BOOKS_BOOKCHAP, params);
         }
     }
 
     /**
      * Count the verses in a book.
-     * @param book The book part of the reference.
+     * 
+     * @param book
+     *            The book part of the reference.
      * @return The number of verses
-     * @exception NoSuchVerseException If the book number is not valid
+     * @exception NoSuchVerseException
+     *                If the book number is not valid
      */
-    public static int versesInBook(int book) throws NoSuchVerseException
-    {
-        try
-        {
+    public static int versesInBook(int book) throws NoSuchVerseException {
+        try {
             return VERSES_IN_BOOK[book - 1];
-        }
-        catch (ArrayIndexOutOfBoundsException ex)
-        {
+        } catch (ArrayIndexOutOfBoundsException ex) {
             // This is faster than doing the check explicitly, unless
             // The exception is actually thrown, then it is a lot slower
             // I'd like to think that the norm is to get it right
-            throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] { new Integer(book) });
+            throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] {
+                new Integer(book)
+            });
         }
     }
 
     /**
-     * Where does this verse come in the Bible. Starting with Gen 1:1 as
-     * number 1 counting up one per verse and not resetting at each new
-     * chapter.
-     * @param book The book part of the reference.
-     * @param chapter The current chapter
-     * @param verse The current verse
+     * Where does this verse come in the Bible. Starting with Gen 1:1 as number
+     * 1 counting up one per verse and not resetting at each new chapter.
+     * 
+     * @param book
+     *            The book part of the reference.
+     * @param chapter
+     *            The current chapter
+     * @param verse
+     *            The current verse
      * @return The ordinal number of verses
-     * @exception NoSuchVerseException If the reference is illegal
+     * @exception NoSuchVerseException
+     *                If the reference is illegal
      */
-    public static int verseOrdinal(int book, int chapter, int verse) throws NoSuchVerseException
-    {
+    public static int verseOrdinal(int book, int chapter, int verse) throws NoSuchVerseException {
         validate(book, chapter, verse);
         return ORDINAL_AT_START_OF_CHAPTER[book - 1][chapter - 1] + verse - 1;
     }
 
     /**
-     * Where does this verse come in the Bible. Starting with Gen 1:1 as
-     * number 1 counting up one per verse and not resetting at each new
-     * chapter.
-     * @param ref An array of 3 ints, book, chapter, verse
+     * Where does this verse come in the Bible. Starting with Gen 1:1 as number
+     * 1 counting up one per verse and not resetting at each new chapter.
+     * 
+     * @param ref
+     *            An array of 3 ints, book, chapter, verse
      * @return The ordinal number of the verse
-     * @exception NoSuchVerseException If the reference is illegal
+     * @exception NoSuchVerseException
+     *                If the reference is illegal
      */
-    public static int verseOrdinal(int[] ref) throws NoSuchVerseException
-    {
-        if (ref.length != 3)
-        {
+    public static int verseOrdinal(int[] ref) throws NoSuchVerseException {
+        if (ref.length != 3) {
             throw new NoSuchVerseException(Msg.REF_PARTS);
         }
 
@@ -340,78 +361,77 @@ public final class BibleInfo
     }
 
     /**
-     * Where does this verse come in the Bible. Starting with Gen 1:1 as
-     * number 1 counting up one per verse and not resetting at each new
-     * chapter.
-     * @param ordinal The ordinal number of the verse
+     * Where does this verse come in the Bible. Starting with Gen 1:1 as number
+     * 1 counting up one per verse and not resetting at each new chapter.
+     * 
+     * @param ordinal
+     *            The ordinal number of the verse
      * @return An array of 3 ints, book, chapter, verse
-     * @exception NoSuchVerseException If the reference is illegal
+     * @exception NoSuchVerseException
+     *                If the reference is illegal
      */
-    public static int[] decodeOrdinal(int ordinal) throws NoSuchVerseException
-    {
-        if (ordinal < 1 || ordinal > BibleInfo.versesInBible())
-        {
-            Object[] params = new Object[] { new Integer(BibleInfo.versesInBible()), new Integer(ordinal) };
+    public static int[] decodeOrdinal(int ordinal) throws NoSuchVerseException {
+        if (ordinal < 1 || ordinal > BibleInfo.versesInBible()) {
+            Object[] params = new Object[] {
+                    new Integer(BibleInfo.versesInBible()), new Integer(ordinal)
+            };
             throw new NoSuchVerseException(Msg.BOOKS_DECODE, params);
         }
 
-        for (int b = BOOKS_IN_BIBLE; b > 0; b--)
-        {
-            if (ordinal >= ORDINAL_AT_START_OF_BOOK[b - 1])
-            {
+        for (int b = BOOKS_IN_BIBLE; b > 0; b--) {
+            if (ordinal >= ORDINAL_AT_START_OF_BOOK[b - 1]) {
                 int cib = BibleInfo.chaptersInBook(b);
-                for (int c = cib; c > 0; c--)
-                {
-                    if (ordinal >= ORDINAL_AT_START_OF_CHAPTER[b - 1][c - 1])
-                    {
-                        return new int[] { b, c, ordinal - ORDINAL_AT_START_OF_CHAPTER[b - 1][c - 1] + 1 };
+                for (int c = cib; c > 0; c--) {
+                    if (ordinal >= ORDINAL_AT_START_OF_CHAPTER[b - 1][c - 1]) {
+                        return new int[] {
+                                b, c, ordinal - ORDINAL_AT_START_OF_CHAPTER[b - 1][c - 1] + 1
+                        };
                     }
                 }
             }
         }
 
         assert false;
-        return new int[] { 1, 1, 1 };
+        return new int[] {
+                1, 1, 1
+        };
     }
 
     /**
-     * Does the following represent a real verse?.
-     * It is code like this that makes me wonder if I18 is done well/worth
-     * doing. All this code does is check if the numbers are valid, but the
-     * exception handling code is huge :(
-     * @param book The book part of the reference.
-     * @param chapter The chapter part of the reference.
-     * @param verse The verse part of the reference.
-     * @exception NoSuchVerseException If the reference is illegal
+     * Does the following represent a real verse?. It is code like this that
+     * makes me wonder if I18 is done well/worth doing. All this code does is
+     * check if the numbers are valid, but the exception handling code is huge
+     * :(
+     * 
+     * @param book
+     *            The book part of the reference.
+     * @param chapter
+     *            The chapter part of the reference.
+     * @param verse
+     *            The verse part of the reference.
+     * @exception NoSuchVerseException
+     *                If the reference is illegal
      */
-    public static void validate(int book, int chapter, int verse) throws NoSuchVerseException
-    {
+    public static void validate(int book, int chapter, int verse) throws NoSuchVerseException {
         // Check the book
-        if (book < 1 || book > BOOKS_IN_BIBLE)
-        {
-            throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] { new Integer(book) });
+        if (book < 1 || book > BOOKS_IN_BIBLE) {
+            throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] {
+                new Integer(book)
+            });
         }
 
         // Check the chapter
-        if (chapter < 1 || chapter > chaptersInBook(book))
-        {
-            Object[] params = new Object[]
-            {
-                new Integer(chaptersInBook(book)),
-                getPreferredBookName(book), new Integer(chapter),
+        if (chapter < 1 || chapter > chaptersInBook(book)) {
+            Object[] params = new Object[] {
+                    new Integer(chaptersInBook(book)), getPreferredBookName(book), new Integer(chapter),
             };
             throw new NoSuchVerseException(UserMsg.BOOKS_CHAPTER, params);
         }
 
         // Check the verse
-        if (verse < 1 || verse > versesInChapter(book, chapter))
-        {
-            Object[] params = new Object[]
-            {
-                new Integer(versesInChapter(book, chapter)),
-                getPreferredBookName(book),
-                new Integer(chapter),
-                new Integer(verse),
+        if (verse < 1 || verse > versesInChapter(book, chapter)) {
+            Object[] params = new Object[] {
+                    new Integer(versesInChapter(book, chapter)), getPreferredBookName(book), new Integer(chapter), new Integer(verse),
             };
             throw new NoSuchVerseException(UserMsg.BOOKS_VERSE, params);
         }
@@ -419,13 +439,14 @@ public final class BibleInfo
 
     /**
      * Does the following represent a real verse?
-     * @param ref An array of 3 ints, book, chapter, verse
-     * @exception NoSuchVerseException If the reference is illegal
+     * 
+     * @param ref
+     *            An array of 3 ints, book, chapter, verse
+     * @exception NoSuchVerseException
+     *                If the reference is illegal
      */
-    public static void validate(int[] ref) throws NoSuchVerseException
-    {
-        if (ref.length != 3)
-        {
+    public static void validate(int[] ref) throws NoSuchVerseException {
+        if (ref.length != 3) {
             throw new NoSuchVerseException(Msg.REF_PARTS);
         }
 
@@ -433,59 +454,59 @@ public final class BibleInfo
     }
 
     /**
-     * Fix up these verses so that they are as valid a possible. This is currently
-     * done so that we can say "Gen 1:1" + 31 = "Gen 1:32" and "Gen 1:32".patch()
-     * is "Gen 2:1".
-     * <p>There is another patch system that allows us to use large numbers to
-     * mean "the end of" so "Gen 1:32".otherPatch() gives "Gen 1:31". This could
-     * be useful to allow the user to enter things like "Gen 1:99" meaning
-     * the end of the chapter. Or  "Isa 99:1" to mean the last chapter in Isaiah
-     * verse 1 or even "Rev 99:99" to mean the last verse in the Bible.
-     * <p>However I have not implemented this because I've used a different convention:
-     * "Gen 1:$" (OLB compatible) or "Gen 1:ff" (common comentary usage) to
-     * mean the end of the chapter - So the functionality is there anyway.
-     * <p>I think that getting into the habit of typing "Gen 1:99" is bad. It could
+     * Fix up these verses so that they are as valid a possible. This is
+     * currently done so that we can say "Gen 1:1" + 31 = "Gen 1:32" and
+     * "Gen 1:32".patch() is "Gen 2:1".
+     * <p>
+     * There is another patch system that allows us to use large numbers to mean
+     * "the end of" so "Gen 1:32".otherPatch() gives "Gen 1:31". This could be
+     * useful to allow the user to enter things like "Gen 1:99" meaning the end
+     * of the chapter. Or "Isa 99:1" to mean the last chapter in Isaiah verse 1
+     * or even "Rev 99:99" to mean the last verse in the Bible.
+     * <p>
+     * However I have not implemented this because I've used a different
+     * convention: "Gen 1:$" (OLB compatible) or "Gen 1:ff" (common comentary
+     * usage) to mean the end of the chapter - So the functionality is there
+     * anyway.
+     * <p>
+     * I think that getting into the habit of typing "Gen 1:99" is bad. It could
      * be the source of surprises "Psa 119:99" is not what you'd might expect,
-     * and neither is "Psa 99:1" is you wanted the last chapter in Psalms - expecting
-     * us to type "Psa 999:1" seems like we're getting silly.
-     * <p>However dispite this maybe we should provide the functionality anyway.
-     * @param ref An array of 3 ints, book, chapter, verse. This array will be changed.
+     * and neither is "Psa 99:1" is you wanted the last chapter in Psalms -
+     * expecting us to type "Psa 999:1" seems like we're getting silly.
+     * <p>
+     * However dispite this maybe we should provide the functionality anyway.
+     * 
+     * @param ref
+     *            An array of 3 ints, book, chapter, verse. This array will be
+     *            changed.
      * @return The original array that has been patched.
      */
-    public static int[] patch(int[] ref)
-    {
-        try
-        {
+    public static int[] patch(int[] ref) {
+        try {
             // If they are too small
-            if (ref[BOOK] <= 0)
-            {
+            if (ref[BOOK] <= 0) {
                 ref[BOOK] = 1;
             }
-            if (ref[CHAPTER] <= 0)
-            {
+            if (ref[CHAPTER] <= 0) {
                 ref[CHAPTER] = 1;
             }
-            if (ref[VERSE] <= 0)
-            {
+            if (ref[VERSE] <= 0) {
                 ref[VERSE] = 1;
             }
 
             // If they are too big
-            if (ref[BOOK] > BOOKS_IN_BIBLE)
-            {
+            if (ref[BOOK] > BOOKS_IN_BIBLE) {
                 ref[BOOK] = BibleNames.REVELATION;
                 ref[CHAPTER] = chaptersInBook(ref[BOOK]);
                 ref[VERSE] = versesInChapter(ref[BOOK], ref[CHAPTER]);
                 return ref;
             }
 
-            while (ref[CHAPTER] > chaptersInBook(ref[BOOK]))
-            {
+            while (ref[CHAPTER] > chaptersInBook(ref[BOOK])) {
                 ref[CHAPTER] -= chaptersInBook(ref[BOOK]);
                 ref[BOOK] += 1;
 
-                if (ref[BOOK] > BOOKS_IN_BIBLE)
-                {
+                if (ref[BOOK] > BOOKS_IN_BIBLE) {
                     ref[BOOK] = BibleNames.REVELATION;
                     ref[CHAPTER] = chaptersInBook(ref[BOOK]);
                     ref[VERSE] = versesInChapter(ref[BOOK], ref[CHAPTER]);
@@ -493,18 +514,15 @@ public final class BibleInfo
                 }
             }
 
-            while (ref[VERSE] > versesInChapter(ref[BOOK], ref[CHAPTER]))
-            {
+            while (ref[VERSE] > versesInChapter(ref[BOOK], ref[CHAPTER])) {
                 ref[VERSE] -= versesInChapter(ref[BOOK], ref[CHAPTER]);
                 ref[CHAPTER] += 1;
 
-                if (ref[CHAPTER] > chaptersInBook(ref[BOOK]))
-                {
+                if (ref[CHAPTER] > chaptersInBook(ref[BOOK])) {
                     ref[CHAPTER] -= chaptersInBook(ref[BOOK]);
                     ref[BOOK] += 1;
 
-                    if (ref[BOOK] > BOOKS_IN_BIBLE)
-                    {
+                    if (ref[BOOK] > BOOKS_IN_BIBLE) {
                         ref[BOOK] = BibleNames.REVELATION;
                         ref[CHAPTER] = chaptersInBook(ref[BOOK]);
                         ref[VERSE] = versesInChapter(ref[BOOK], ref[CHAPTER]);
@@ -514,9 +532,7 @@ public final class BibleInfo
             }
 
             return ref;
-        }
-        catch (NoSuchKeyException ex)
-        {
+        } catch (NoSuchKeyException ex) {
             assert false : ex;
             return ref;
         }
@@ -524,17 +540,24 @@ public final class BibleInfo
 
     /**
      * How many verses between ref1 and ref2 (inclusive).
-     * @param book1 The book part of the first reference.
-     * @param chapter1 The chapter part of the first reference.
-     * @param verse1 The verse part of the first reference.
-     * @param book2 The book part of the second reference.
-     * @param chapter2 The chapter part of the second reference.
-     * @param verse2 The verse part of the second reference.
+     * 
+     * @param book1
+     *            The book part of the first reference.
+     * @param chapter1
+     *            The chapter part of the first reference.
+     * @param verse1
+     *            The verse part of the first reference.
+     * @param book2
+     *            The book part of the second reference.
+     * @param chapter2
+     *            The chapter part of the second reference.
+     * @param verse2
+     *            The verse part of the second reference.
      * @return the number of verses
-     * @exception NoSuchVerseException If either reference is illegal
+     * @exception NoSuchVerseException
+     *                If either reference is illegal
      */
-    public static int verseCount(int book1, int chapter1, int verse1, int book2, int chapter2, int verse2) throws NoSuchVerseException
-    {
+    public static int verseCount(int book1, int chapter1, int verse1, int book2, int chapter2, int verse2) throws NoSuchVerseException {
         int verse_ord1 = verseOrdinal(book1, chapter1, verse1);
         int verse_ord2 = verseOrdinal(book2, chapter2, verse2);
 
@@ -543,15 +566,19 @@ public final class BibleInfo
 
     /**
      * How many verses between ref1 and ref2 (inclusive).
-     * @param ref1 An array of 3 ints, book, chapter, verse for the first reference.
-     * @param ref2 An array of 3 ints, book, chapter, verse for the second reference.
+     * 
+     * @param ref1
+     *            An array of 3 ints, book, chapter, verse for the first
+     *            reference.
+     * @param ref2
+     *            An array of 3 ints, book, chapter, verse for the second
+     *            reference.
      * @return the number of verses
-     * @exception NoSuchVerseException If either reference is illegal
+     * @exception NoSuchVerseException
+     *                If either reference is illegal
      */
-    public static int verseCount(int[] ref1, int[] ref2) throws NoSuchVerseException
-    {
-        if (ref1.length != 3 || ref2.length != 3)
-        {
+    public static int verseCount(int[] ref1, int[] ref2) throws NoSuchVerseException {
+        if (ref1.length != 3 || ref2.length != 3) {
             throw new IllegalArgumentException(Msg.REF_PARTS.toString());
         }
 
@@ -560,38 +587,40 @@ public final class BibleInfo
 
     /**
      * How many books are there in each of the above sections
-     * @param section The section
+     * 
+     * @param section
+     *            The section
      * @return The number of books in the given section
      * @see SectionNames#getSection(int)
      */
-    public static int booksInSection(int section)
-    {
+    public static int booksInSection(int section) {
         return BOOKS_IN_SECTION[section];
     }
 
     /**
-     * Get the full name of a book (e.g. "Genesis").
-     * Altered by the case setting (see setBookCase())
-     * @param section The book number (1-66)
+     * Get the full name of a book (e.g. "Genesis"). Altered by the case setting
+     * (see setBookCase())
+     * 
+     * @param section
+     *            The book number (1-66)
      * @return The full name of the book
-     * @exception NoSuchVerseException If the book number is not valid
+     * @exception NoSuchVerseException
+     *                If the book number is not valid
      */
-    public static String getSectionName(int section) throws NoSuchVerseException
-    {
+    public static String getSectionName(int section) throws NoSuchVerseException {
         return sectionNames.getSectionName(section);
     }
 
     /**
      * This is simply a convenience function to wrap Character.isLetter()
-     * @param text The string to be parsed
+     * 
+     * @param text
+     *            The string to be parsed
      * @return true if the string contains letters
      */
-    private static boolean containsLetter(String text)
-    {
-        for (int i = 0; i < text.length(); i++)
-        {
-            if (Character.isLetter(text.charAt(i)))
-            {
+    private static boolean containsLetter(String text) {
+        for (int i = 0; i < text.length(); i++) {
+            if (Character.isLetter(text.charAt(i))) {
                 return true;
             }
         }
@@ -602,15 +631,13 @@ public final class BibleInfo
     /**
      * Load up the resources for Bible book and section names.
      */
-    private static void initialize()
-    {
+    private static void initialize() {
         Locale locale = Locale.getDefault();
         bibleNames = new BibleNames(locale);
 
         // If the locale is not the program's default get it for alternates
         Locale englishLocale = new Locale("en"); //$NON-NLS-1$
-        if (!locale.getLanguage().equals(englishLocale.getLanguage()))
-        {
+        if (!locale.getLanguage().equals(englishLocale.getLanguage())) {
             englishBibleNames = new BibleNames(englishLocale);
         }
 
@@ -763,9 +790,9 @@ public final class BibleInfo
 
     /**
      * Constant for the ordinal number of the first verse in each chapter.
-     * Warning if you regenerate this code (from the code at the bottom of
-     * this module) then you will need to cut the psalms line in half to
-     * get it to compile under JBuilder.
+     * Warning if you regenerate this code (from the code at the bottom of this
+     * module) then you will need to cut the psalms line in half to get it to
+     * compile under JBuilder.
      */
     static final short[][] ORDINAL_AT_START_OF_CHAPTER =
     {
@@ -876,66 +903,65 @@ public final class BibleInfo
     /**
      * The number of books in each section
      */
-    static final short[] BOOKS_IN_SECTION =
-    {
-        0, // Does not exist
-        5, // Pentateuch = 1;
-        12, // History = 2;
-        5, // Poetry = 3;
-        5, // MajorProphets = 4;
-        12, // MinorProphets = 5;
-        5, // GospelsAndActs = 6;
-        21, // Letters = 7;
-        1, // Revelation = 8;
+    static final short[] BOOKS_IN_SECTION = {
+            0, // Does not exist
+            5, // Pentateuch = 1;
+            12, // History = 2;
+            5, // Poetry = 3;
+            5, // MajorProphets = 4;
+            12, // MinorProphets = 5;
+            5, // GospelsAndActs = 6;
+            21, // Letters = 7;
+            1, // Revelation = 8;
     };
 
     /**
-     * A singleton used to do initialization. Could be used to change static methods to non-static
+     * A singleton used to do initialization. Could be used to change static
+     * methods to non-static
      */
     static final BibleInfo instance = new BibleInfo();
 
     /**
      * This is the code used to create ORDINAL_AT_START_OF_CHAPTER and
-     * ORDINAL_AT_START_OF_BOOK. It is usually commented out because I
-     * don't see any point in making .class files bigger for no reason
-     * and this is needed only very rarely.
-     *
-    public static void main(String[] args) throws NoSuchVerseException
-    {
-        int verse_num;
-
-        verse_num = 1;
-        log.fine("    private static final short[] ORDINAL_AT_START_OF_BOOK =");
-        log.fine("    {");
-        log.fine("        ");
-        for (int b = 1; b <= booksInBible(); b++)
-        {
-            String vstr1 = "     " + verse_num;
-            String vstr2 = vstr1.substring(vstr1.length() - 5);
-            log.fine(vstr2 + ", ");
-            verse_num += versesInBook(b);
-
-            if (b % 10 == 0) log.fine();
-        }
-        log.fine();
-        log.fine("    };");
-
-        verse_num = 1;
-        log.fine("    private static final short[][] ORDINAL_AT_START_OF_CHAPTER =");
-        log.fine("    {");
-        for (int b = 1; b <= BibleInfo.booksInBible(); b++)
-        {
-            log.fine("        { ");
-            for (int c = 1; c <= BibleInfo.chaptersInBook(b); c++)
-            {
-                String vstr1 = "     " + verse_num;
-                String vstr2 = vstr1.substring(vstr1.length() - 5);
-                log.fine(vstr2 + ", ");
-                verse_num += BibleInfo.versesInChapter(b, c);
-            }
-            log.fine("},");
-        }
-        log.fine("    };");
-    }
-    */
+     * ORDINAL_AT_START_OF_BOOK. It is usually commented out because I don't see
+     * any point in making .class files bigger for no reason and this is needed
+     * only very rarely.
+     * 
+     * <pre>
+     * public static void main(String[] args) throws NoSuchVerseException {
+     *     int verse_num;
+     * 
+     *     verse_num = 1;
+     *     log.fine(&quot;    private static final short[] ORDINAL_AT_START_OF_BOOK =&quot;);
+     *     log.fine(&quot;    {&quot;);
+     *     log.fine(&quot;        &quot;);
+     *     for (int b = 1; b &lt;= booksInBible(); b++) {
+     *         String vstr1 = &quot;     &quot; + verse_num;
+     *         String vstr2 = vstr1.substring(vstr1.length() - 5);
+     *         log.fine(vstr2 + &quot;, &quot;);
+     *         verse_num += versesInBook(b);
+     * 
+     *         if (b % 10 == 0)
+     *             log.fine();
+     *     }
+     *     log.fine();
+     *     log.fine(&quot;    };&quot;);
+     * 
+     *     verse_num = 1;
+     *     log.fine(&quot;    private static final short[][] ORDINAL_AT_START_OF_CHAPTER =&quot;);
+     *     log.fine(&quot;    {&quot;);
+     *     for (int b = 1; b &lt;= BibleInfo.booksInBible(); b++) {
+     *         log.fine(&quot;        { &quot;);
+     *         for (int c = 1; c &lt;= BibleInfo.chaptersInBook(b); c++) {
+     *             String vstr1 = &quot;     &quot; + verse_num;
+     *             String vstr2 = vstr1.substring(vstr1.length() - 5);
+     *             log.fine(vstr2 + &quot;, &quot;);
+     *             verse_num += BibleInfo.versesInChapter(b, c);
+     *         }
+     *         log.fine(&quot;},&quot;);
+     *     }
+     *     log.fine(&quot;    };&quot;);
+     * }
+     * </pre>
+     */
 }

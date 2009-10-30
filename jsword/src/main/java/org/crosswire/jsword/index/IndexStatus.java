@@ -25,14 +25,13 @@ import java.io.Serializable;
 
 /**
  * An Enumeration of the possible states of an index.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class IndexStatus implements Serializable
-{
+public final class IndexStatus implements Serializable {
     /**
      * There is a complete and ready to use search index
      */
@@ -41,7 +40,7 @@ public final class IndexStatus implements Serializable
     /**
      * There is no search index, and no plans to create one
      */
-    public static final IndexStatus UNDONE = new IndexStatus("No Index");  //$NON-NLS-1$
+    public static final IndexStatus UNDONE = new IndexStatus("No Index"); //$NON-NLS-1$
 
     /**
      * This Book has been scheduled for index creation
@@ -56,32 +55,25 @@ public final class IndexStatus implements Serializable
     /**
      * All the known values
      */
-    private static final IndexStatus[] VALUES =
-    {
-        DONE,
-        UNDONE,
-        SCHEDULED,
-        CREATING,
+    private static final IndexStatus[] VALUES = {
+            DONE, UNDONE, SCHEDULED, CREATING,
     };
 
     /**
-     * @param name The name of the BookCategory
+     * @param name
+     *            The name of the BookCategory
      */
-    private IndexStatus(String name)
-    {
+    private IndexStatus(String name) {
         this.name = name;
     }
 
     /**
      * Lookup method to convert from a String
      */
-    public static IndexStatus fromString(String name)
-    {
-        for (int i = 0; i < VALUES.length; i++)
-        {
+    public static IndexStatus fromString(String name) {
+        for (int i = 0; i < VALUES.length; i++) {
             IndexStatus o = VALUES[i];
-            if (o.name.equalsIgnoreCase(name))
-            {
+            if (o.name.equalsIgnoreCase(name)) {
                 return o;
             }
         }
@@ -93,16 +85,16 @@ public final class IndexStatus implements Serializable
     /**
      * Lookup method to convert from an integer
      */
-    public static IndexStatus fromInteger(int i)
-    {
+    public static IndexStatus fromInteger(int i) {
         return VALUES[i];
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         return name;
     }
 
@@ -115,8 +107,7 @@ public final class IndexStatus implements Serializable
     private static int nextObj;
     private final int obj = nextObj++;
 
-    Object readResolve()
-    {
+    Object readResolve() {
         return VALUES[obj];
     }
 

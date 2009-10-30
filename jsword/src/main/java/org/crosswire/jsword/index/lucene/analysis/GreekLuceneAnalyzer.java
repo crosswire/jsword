@@ -27,38 +27,32 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.el.GreekAnalyzer;
 
 /**
- * Uses org.apache.lucene.analysis.el.GreekAnalyzer to do lowercasing and stopword(off by default).
- * Stemming not implemented yet
- *
+ * Uses org.apache.lucene.analysis.el.GreekAnalyzer to do lowercasing and
+ * stopword(off by default). Stemming not implemented yet
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Sijo Cherian [sijocherian at yahoo dot com]
  */
-public class GreekLuceneAnalyzer extends AbstractBookAnalyzer
-{
-    public GreekLuceneAnalyzer()
-    {
-        //Construct GreekAnalyzer that do not use stop words        
+public class GreekLuceneAnalyzer extends AbstractBookAnalyzer {
+    public GreekLuceneAnalyzer() {
+        // Construct GreekAnalyzer that do not use stop words
         myAnalyzer = new GreekAnalyzer(new String[0]);
     }
 
-    public final TokenStream tokenStream(String fieldName, Reader reader)
-    {
+    public final TokenStream tokenStream(String fieldName, Reader reader) {
         return myAnalyzer.tokenStream(fieldName, reader);
     }
 
-    public void setStopWords(String[] stopWords)
-    {
+    public void setStopWords(String[] stopWords) {
         myAnalyzer = new GreekAnalyzer(stopWords);
     }
 
-    public void setDoStopWords(boolean doIt)
-    {
+    public void setDoStopWords(boolean doIt) {
         doStopWords = doIt;
 
-        //GreekAnalyzer that uses stop word
-        if (doStopWords)
-        {
+        // GreekAnalyzer that uses stop word
+        if (doStopWords) {
             myAnalyzer = new GreekAnalyzer();
         }
     }

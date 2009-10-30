@@ -31,27 +31,27 @@ import org.jdom.Element;
 
 /**
  * Factory for the well known Choices.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public final class ChoiceFactory
-{
+public final class ChoiceFactory {
     /**
      * Prevent instantiation
      */
-    private ChoiceFactory()
-    {
+    private ChoiceFactory() {
     }
 
     /**
      * Get a ChoiceFactory by element.
-     * @param option The element to check
+     * 
+     * @param option
+     *            The element to check
      * @return One of the ChoiceTypes.
      */
-    public static Choice getChoice(Element option, ResourceBundle configResources) throws ClassNotFoundException, IllegalAccessException, InstantiationException, StartupException
-    {
+    public static Choice getChoice(Element option, ResourceBundle configResources) throws ClassNotFoundException, IllegalAccessException,
+            InstantiationException, StartupException {
         Class clazz = null;
 
         String type = option.getAttributeValue("type"); //$NON-NLS-1$
@@ -59,9 +59,7 @@ public final class ChoiceFactory
         {
             String clazzstr = option.getAttributeValue("class"); //$NON-NLS-1$
             clazz = ClassUtil.forName(clazzstr);
-        }
-        else
-        {
+        } else {
             clazz = (Class) map.get(type);
         }
 
@@ -73,8 +71,7 @@ public final class ChoiceFactory
     /**
      * Method getDataMap.
      */
-    public static Map getDataMap()
-    {
+    public static Map getDataMap() {
         return datamap;
     }
 
@@ -91,8 +88,7 @@ public final class ChoiceFactory
     /**
      * Setup the map of Choices
      */
-    static
-    {
+    static {
         map = PluginUtil.getImplementorsMap(Choice.class);
     }
 }

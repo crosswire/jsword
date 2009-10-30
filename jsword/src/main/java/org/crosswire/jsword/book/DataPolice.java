@@ -28,53 +28,45 @@ import org.crosswire.jsword.passage.Key;
  * When we can't convert some source data then the user doesn't really care and
  * just wants it to work, but it would be good to have some way to get the
  * problems fixed, so as a start point we report them through this class.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public final class DataPolice
-{
+public final class DataPolice {
     /**
      * Prevent instantiation
      */
-    private DataPolice()
-    {
+    private DataPolice() {
     }
 
     /**
      * Set the current book to enhance error reports
      */
-    public static void setBook(BookMetaData bmd)
-    {
+    public static void setBook(BookMetaData bmd) {
         DataPolice.bmd = bmd;
     }
 
     /**
      * Set the current item to enhance error reports
      */
-    public static void setKey(Key key)
-    {
+    public static void setKey(Key key) {
         DataPolice.key = key;
     }
 
     /**
      * Report a message against the current item
      */
-    public static void report(String message)
-    {
+    public static void report(String message) {
         StringBuffer buf = new StringBuffer();
-        if (bmd != null)
-        {
+        if (bmd != null) {
             buf.append(bmd.getInitials());
         }
-        if (bmd != null && key != null)
-        {
+        if (bmd != null && key != null) {
             buf.append(':');
             log.debug(bmd.getInitials() + ':' + key.getName());
         }
-        if (key != null)
-        {
+        if (key != null) {
             buf.append(key.getName());
         }
         buf.append(": "); //$NON-NLS-1$

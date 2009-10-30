@@ -29,24 +29,27 @@ import org.crosswire.jsword.book.CaseType;
 
 /**
  * BookName represents the different ways a book of the bible is named.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class BookName
-{
+public final class BookName {
     /**
      * Create a BookName for a Book of the Bible in a given language.
-     *
-     * @param locale the language of this BookName
-     * @param bookNumber the Book's canonical number
-     * @param longName the Book's long name
-     * @param shortName the Book's short name, if any
-     * @param alternateNames optional comma separated list of alternates for the Book
+     * 
+     * @param locale
+     *            the language of this BookName
+     * @param bookNumber
+     *            the Book's canonical number
+     * @param longName
+     *            the Book's long name
+     * @param shortName
+     *            the Book's short name, if any
+     * @param alternateNames
+     *            optional comma separated list of alternates for the Book
      */
-    public BookName(Locale locale, int bookNumber, String longName, String shortName, String alternateNames)
-    {
+    public BookName(Locale locale, int bookNumber, String longName, String shortName, String alternateNames) {
         this.locale = locale;
         this.bookNumber = bookNumber;
         this.longName = longName;
@@ -54,51 +57,47 @@ public final class BookName
         this.shortName = shortName;
         this.normalizedShortName = normalize(shortName, locale);
 
-        if (alternateNames != null)
-        {
+        if (alternateNames != null) {
             this.alternateNames = StringUtil.split(normalize(alternateNames, locale), ',');
         }
     }
 
     /**
      * Get canonical number of a book.
+     * 
      * @return The book number (1 to 66)
      */
-    public int getNumber()
-    {
+    public int getNumber() {
         return bookNumber;
     }
 
     /**
-     * Get the preferred name of a book.
-     * Altered by the case setting (see setBookCase() and isLongBookName())
+     * Get the preferred name of a book. Altered by the case setting (see
+     * setBookCase() and isLongBookName())
+     * 
      * @return The preferred name of the book
      */
-    public String getPreferredName()
-    {
-        if (BibleInfo.isFullBookName())
-        {
+    public String getPreferredName() {
+        if (BibleInfo.isFullBookName()) {
             return getLongName();
         }
         return getShortName();
     }
 
     /**
-     * Get the full name of a book (e.g. "Genesis").
-     * Altered by the case setting (see setBookCase())
+     * Get the full name of a book (e.g. "Genesis"). Altered by the case setting
+     * (see setBookCase())
+     * 
      * @return The full name of the book
      */
-    public String getLongName()
-    {
+    public String getLongName() {
         CaseType bookCase = BibleInfo.getDefaultCase();
 
-        if (bookCase == CaseType.LOWER)
-        {
+        if (bookCase == CaseType.LOWER) {
             return longName.toLowerCase(locale);
         }
 
-        if (bookCase == CaseType.UPPER)
-        {
+        if (bookCase == CaseType.UPPER) {
             return longName.toUpperCase(locale);
         }
 
@@ -106,21 +105,19 @@ public final class BookName
     }
 
     /**
-     * Get the short name of a book (e.g. "Gen").
-     * Altered by the case setting (see setBookCase())
+     * Get the short name of a book (e.g. "Gen"). Altered by the case setting
+     * (see setBookCase())
+     * 
      * @return The short name of the book
      */
-    public String getShortName()
-    {
+    public String getShortName() {
         CaseType bookCase = BibleInfo.getDefaultCase();
 
-        if (bookCase == CaseType.LOWER)
-        {
+        if (bookCase == CaseType.LOWER) {
             return shortName.toLowerCase(locale);
         }
 
-        if (bookCase == CaseType.UPPER)
-        {
+        if (bookCase == CaseType.UPPER) {
             return shortName.toUpperCase(locale);
         }
 
@@ -130,16 +127,14 @@ public final class BookName
     /**
      * @return the normalizedLongName
      */
-    public String getNormalizedLongName()
-    {
+    public String getNormalizedLongName() {
         return normalizedLongName;
     }
 
     /**
      * @return the normalizedShortName
      */
-    public String getNormalizedShortName()
-    {
+    public String getNormalizedShortName() {
         return normalizedShortName;
     }
 
@@ -151,61 +146,57 @@ public final class BookName
      * <li>it is a prefix of a normalized long name</li>
      * <li>it is a prefix of a normalized short name</li>
      * <li>a normalized short name is a prefix of it</li>
-     * @param normalizedName the already normalized name to match against.
+     * 
+     * @param normalizedName
+     *            the already normalized name to match against.
      * @return true of false
      */
-    public boolean match(String normalizedName)
-    {
+    public boolean match(String normalizedName) {
         // Does it match one of the alternative versions
-        for (int j = 0; j < alternateNames.length; j++)
-        {
+        for (int j = 0; j < alternateNames.length; j++) {
             String targetBookName = alternateNames[j];
-            if (targetBookName.startsWith(normalizedName) || normalizedName.startsWith(targetBookName))
-            {
+            if (targetBookName.startsWith(normalizedName) || normalizedName.startsWith(targetBookName)) {
                 return true;
             }
         }
 
         // Does it match a long version of the book
-        if (normalizedLongName.startsWith(normalizedName))
-        {
+        if (normalizedLongName.startsWith(normalizedName)) {
             return true;
         }
 
         // or a short version
-        if (normalizedShortName.startsWith(normalizedName) || normalizedName.startsWith(normalizedShortName))
-        {
+        if (normalizedShortName.startsWith(normalizedName) || normalizedName.startsWith(normalizedShortName)) {
             return true;
         }
 
         return false;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
-    public int hashCode()
-    {
+    public int hashCode() {
         return bookNumber;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public boolean equals(Object obj)
-    {
-        if (this == obj)
-        {
+    public boolean equals(Object obj) {
+        if (this == obj) {
             return true;
         }
 
-        if (obj == null)
-        {
+        if (obj == null) {
             return false;
         }
 
-        if (getClass() != obj.getClass())
-        {
+        if (getClass() != obj.getClass()) {
             return false;
         }
 
@@ -213,34 +204,36 @@ public final class BookName
         return bookNumber == other.bookNumber;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         return getPreferredName();
     }
 
     /**
      * Normalize by stripping punctuation and whitespace and lowercasing.
-     * @param str the string to normalize
+     * 
+     * @param str
+     *            the string to normalize
      * @return the normalized string
      */
-    public static String normalize(String str, Locale locale)
-    {
+    public static String normalize(String str, Locale locale) {
         return normPattern.matcher(str).replaceAll("").toLowerCase(locale); //$NON-NLS-1$
     }
 
     /** remove spaces and some punctuation in Book Name (make sure , is allowed) */
     private static Pattern normPattern = Pattern.compile("[. ]"); //$NON-NLS-1$
 
-    private int            bookNumber;
-    private String         longName;
-    private String         normalizedLongName;
-    private String         shortName;
-    private String         normalizedShortName;
-    private String[]       alternateNames;
+    private int bookNumber;
+    private String longName;
+    private String normalizedLongName;
+    private String shortName;
+    private String normalizedShortName;
+    private String[] alternateNames;
 
     /** The locale for the Book Name */
-    private Locale         locale;
+    private Locale locale;
 }

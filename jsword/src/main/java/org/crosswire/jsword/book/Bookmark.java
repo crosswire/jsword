@@ -27,35 +27,36 @@ import java.util.List;
 import org.crosswire.jsword.index.search.SearchRequest;
 
 /**
- * A Bookmark remembers a particular view of one or more Books.
- * What is viewed regarding a book set is either a SearchRequest
- * or a key lookup request.
- *
- * @see gnu.lgpl.License for license details.
+ * A Bookmark remembers a particular view of one or more Books. What is viewed
+ * regarding a book set is either a SearchRequest or a key lookup request.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public interface Bookmark extends Serializable, Cloneable
-{
+public interface Bookmark extends Serializable, Cloneable {
     /**
-     * Add a Book to this Bookmark.
-     * The books are maintained in the order they are added as a set.
+     * Add a Book to this Bookmark. The books are maintained in the order they
+     * are added as a set.
      * 
-     * @param book the Book to add.
+     * @param book
+     *            the Book to add.
      */
     void addBook(Book book);
 
     /**
      * Return the ordered set of books.
+     * 
      * @return the books
      */
     List getBooks();
 
     /**
-     * Set the SearchRequest for this Bookmark. A copy of the SearchRequest will be stored.
-     * Note, setting this will clear the lookup request, if any.
+     * Set the SearchRequest for this Bookmark. A copy of the SearchRequest will
+     * be stored. Note, setting this will clear the lookup request, if any.
      * 
-     * @param request the SearchRequest
+     * @param request
+     *            the SearchRequest
      */
     void setSearchRequest(SearchRequest request);
 
@@ -67,10 +68,11 @@ public interface Bookmark extends Serializable, Cloneable
     SearchRequest getSearchRequest();
 
     /**
-     * Set the lookup request for this Bookmark.
-     * Note, setting this will clear the SearchRequest, if any.
+     * Set the lookup request for this Bookmark. Note, setting this will clear
+     * the SearchRequest, if any.
      * 
-     * @param request the lookup request.
+     * @param request
+     *            the lookup request.
      */
     void setLookupRequest(String request);
 
@@ -82,16 +84,17 @@ public interface Bookmark extends Serializable, Cloneable
     String getLookupRequest();
 
     /**
-     * Convert this Bookmark into a BookData by converting the SearchReqeust or lookup request
-     * into a key list.
+     * Convert this Bookmark into a BookData by converting the SearchReqeust or
+     * lookup request into a key list.
      * 
      * @return the resulting BookData
      */
     BookData getBookData();
 
     /**
-     * This needs to be declared here so that it is visible as a method
-     * on a derived Bookmark.
+     * This needs to be declared here so that it is visible as a method on a
+     * derived Bookmark.
+     * 
      * @return A complete copy of ourselves
      */
     Object clone();

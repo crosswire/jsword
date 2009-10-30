@@ -54,18 +54,16 @@ import org.jdom.Element;
 
 /**
  * A Dictionary that displays daily Readings.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class ReadingsBook extends AbstractBook implements PreferredKey
-{
+public class ReadingsBook extends AbstractBook implements PreferredKey {
     /**
      * Constructor for ReadingsBook.
      */
-    public ReadingsBook(ReadingsBookDriver driver, String setname, BookCategory type)
-    {
+    public ReadingsBook(ReadingsBookDriver driver, String setname, BookCategory type) {
         super(null); // set the book metadata later
 
         hash = new TreeMap();
@@ -74,12 +72,9 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
         ResourceBundle prop = ResourceBundle.getBundle(setname, defaultLocale, CWClassLoader.instance(ReadingsBookDriver.class));
 
         String name = UserMsg.TITLE.toString();
-        try
-        {
+        try {
             name = prop.getString("title"); //$NON-NLS-1$
-        }
-        catch (MissingResourceException e)
-        {
+        } catch (MissingResourceException e) {
             log.warn("Missing resource: 'title' while parsing: " + setname); //$NON-NLS-1$
         }
 
@@ -94,18 +89,14 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
         greg.set(java.util.Calendar.MONDAY, java.util.Calendar.JANUARY);
         int currentYear = greg.get(java.util.Calendar.YEAR);
 
-        while (greg.get(java.util.Calendar.YEAR) == currentYear)
-        {
+        while (greg.get(java.util.Calendar.YEAR) == currentYear) {
             String internalKey = ReadingsKey.external2internal(greg);
             String readings = ""; //$NON-NLS-1$
 
-            try
-            {
+            try {
                 readings = prop.getString(internalKey);
                 hash.put(new ReadingsKey(greg.getTime()), readings);
-            }
-            catch (MissingResourceException e)
-            {
+            } catch (MissingResourceException e) {
                 log.warn("Missing resource: " + internalKey + " while parsing: " + setname); //$NON-NLS-1$ //$NON-NLS-2$
             }
 
@@ -115,19 +106,20 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
         global = new SetKeyList(hash.keySet(), getName());
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.PreferredKey#getPreferred()
      */
-    public Key getPreferred()
-    {
+    public Key getPreferred() {
         return new ReadingsKey(new Date());
     }
 
-    public Iterator getOsisIterator(Key key, boolean allowEmpty) throws BookException
-    {
-        if (!(key instanceof ReadingsKey))
-        {
-            throw new BookException(UserMsg.NOT_FOUND, new Object[] { key.getName() });
+    public Iterator getOsisIterator(Key key, boolean allowEmpty) throws BookException {
+        if (!(key instanceof ReadingsKey)) {
+            throw new BookException(UserMsg.NOT_FOUND, new Object[] {
+                key.getName()
+            });
         }
 
         // TODO(DMS): make the iterator be demand driven
@@ -138,20 +130,19 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
         content.add(title);
 
         String readings = (String) hash.get(key);
-        if (readings == null)
-        {
-            throw new BookException(UserMsg.NOT_FOUND, new Object[] { key.getName() });
+        if (readings == null) {
+            throw new BookException(UserMsg.NOT_FOUND, new Object[] {
+                key.getName()
+            });
         }
 
-        try
-        {
+        try {
             KeyFactory keyf = PassageKeyFactory.instance();
             Passage ref = (Passage) keyf.getKey(readings);
 
             Element list = OSISUtil.factory().createList();
             content.add(list);
-            for (Iterator it = ref.rangeIterator(RestrictionType.NONE); it.hasNext(); )
-            {
+            for (Iterator it = ref.rangeIterator(RestrictionType.NONE); it.hasNext();) {
                 VerseRange range = (VerseRange) it.next();
 
                 Element reading = OSISUtil.factory().createReference();
@@ -162,99 +153,109 @@ public class ReadingsBook extends AbstractBook implements PreferredKey
                 item.addContent(reading);
                 list.addContent(item);
             }
-        }
-        catch (NoSuchKeyException ex)
-        {
+        } catch (NoSuchKeyException ex) {
             content.add(OSISUtil.factory().createText(Msg.PARSE_FAIL.toString(readings)));
         }
 
         return content.iterator();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#contains(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.Book#contains(org.crosswire.jsword.passage.Key)
      */
-    public boolean contains(Key key)
-    {
+    public boolean contains(Key key) {
         return false;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage
+     * .Key)
      */
-    public String getRawText(Key key) throws BookException
-    {
+    public String getRawText(Key key) throws BookException {
         return ""; //$NON-NLS-1$
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.Book#isWritable()
      */
-    public boolean isWritable()
-    {
+    public boolean isWritable() {
         return false;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.basic.AbstractPassageBook#setRawText(org.crosswire.jsword.passage.Key, java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.basic.AbstractPassageBook#setRawText(org.crosswire
+     * .jsword.passage.Key, java.lang.String)
      */
-    public void setRawText(Key key, String rawData) throws BookException
-    {
+    public void setRawText(Key key, String rawData) throws BookException {
         throw new BookException(Msg.DRIVER_READONLY);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#setAliasKey(org.crosswire.jsword.passage.Key, org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.Book#setAliasKey(org.crosswire.jsword.passage
+     * .Key, org.crosswire.jsword.passage.Key)
      */
-    public void setAliasKey(Key alias, Key source) throws BookException
-    {
+    public void setAliasKey(Key alias, Key source) throws BookException {
         throw new BookException(Msg.DRIVER_READONLY);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.KeyFactory#isValidKey(java.lang.String)
      */
-    public Key getValidKey(String name)
-    {
-        try
-        {
+    public Key getValidKey(String name) {
+        try {
             return getKey(name);
-        }
-        catch (NoSuchKeyException e)
-        {
+        } catch (NoSuchKeyException e) {
             return createEmptyKeyList();
         }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.KeyFactory#getKey(java.lang.String)
      */
-    public Key getKey(String name) throws NoSuchKeyException
-    {
+    public Key getKey(String name) throws NoSuchKeyException {
         DefaultKeyList reply = new DefaultKeyList();
         reply.addAll(new ReadingsKey(name, name, global));
         return reply;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.KeyFactory#getGlobalKeyList()
      */
-    public Key getGlobalKeyList()
-    {
+    public Key getGlobalKeyList() {
         return global;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.KeyFactory#getEmptyKeyList()
      */
-    public Key createEmptyKeyList()
-    {
+    public Key createEmptyKeyList() {
         return new DefaultKeyList();
     }
 
     /* @Override */
-    public boolean hasFeature(FeatureType feature)
-    {
+    public boolean hasFeature(FeatureType feature) {
         return feature == FeatureType.DAILY_DEVOTIONS;
     }
 

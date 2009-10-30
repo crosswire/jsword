@@ -31,27 +31,22 @@ import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.versification.BibleInfo;
 
 /**
- * Exports the Book in SWORD's imp format.
- * This is identical to SWORD's mod2imp.
+ * Exports the Book in SWORD's imp format. This is identical to SWORD's mod2imp.
  * Note: it does not work with GenBook.
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class BookExporter
-{
+public class BookExporter {
 
-    public BookExporter(Book book)
-    {
+    public BookExporter(Book book) {
         this.book = book;
     }
 
-    public void mod2imp() throws BookException
-    {
+    public void mod2imp() throws BookException {
         // Use short key names for Bibles.
-        if (BookCategory.BIBLE.equals(book.getBookCategory()))
-        {
+        if (BookCategory.BIBLE.equals(book.getBookCategory())) {
             BibleInfo.setFullBookName(false);
         }
 
@@ -59,12 +54,10 @@ public class BookExporter
 
         Iterator iter = keys.iterator();
         StringBuffer buf = new StringBuffer();
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             Key key = (Key) iter.next();
             String rawText = book.getRawText(key);
-            if (rawText != null && rawText.trim().length() > 0)
-            {
+            if (rawText != null && rawText.trim().length() > 0) {
                 buf.delete(0, buf.length());
                 buf.append("$$$").append(key).append('\n').append(rawText); //$NON-NLS-1$
                 System.out.println(buf.toString());
@@ -75,10 +68,10 @@ public class BookExporter
     private Book book;
 
     /**
-     * Call with &lt;operation&gt; book.
-     * Where operation can be one of:
+     * Call with &lt;operation&gt; book. Where operation can be one of:
      * <ul>
-     * <li>check - returns "TRUE" or "FALSE" indicating whether the index exists or not</li>
+     * <li>check - returns "TRUE" or "FALSE" indicating whether the index exists
+     * or not</li>
      * <li>create - (re)create the index</li>
      * <li>delete - delete the index if it exists</li>
      * </ul>
@@ -86,10 +79,8 @@ public class BookExporter
      * 
      * @param args
      */
-    public static void main(String[] args)
-    {
-        if (args.length != 1)
-        {
+    public static void main(String[] args) {
+        if (args.length != 1) {
             usage();
             return;
         }
@@ -97,26 +88,21 @@ public class BookExporter
         System.err.println("BookExporter " + args[0]); //$NON-NLS-1$
 
         Book b = Books.installed().getBook(args[0]);
-        if (b == null)
-        {
+        if (b == null) {
             System.err.println("Book not found"); //$NON-NLS-1$
             return;
         }
 
         BookExporter exporter = new BookExporter(b);
-        try
-        {
+        try {
             exporter.mod2imp();
-        }
-        catch (BookException e)
-        {
+        } catch (BookException e) {
             System.err.println("Error while exporting"); //$NON-NLS-1$
             e.printStackTrace();
         }
     }
 
-    public static void usage()
-    {
+    public static void usage() {
         System.err.println("Usage: BookExporter book"); //$NON-NLS-1$
     }
 }

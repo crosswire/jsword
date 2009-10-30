@@ -29,33 +29,32 @@ import org.crosswire.jsword.book.Book;
 
 /**
  * A specialized analyzer that normalizes Strong's Numbers.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class KeyAnalyzer extends AbstractBookAnalyzer
-{
+public class KeyAnalyzer extends AbstractBookAnalyzer {
     /**
      * Construct a default KeyAnalyzer.
      */
-    public KeyAnalyzer()
-    {
+    public KeyAnalyzer() {
     }
 
     /**
      * Construct an KeyAnalyzer tied to a book.
      */
-    public KeyAnalyzer(Book book)
-    {
+    public KeyAnalyzer(Book book) {
         setBook(book);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String, java.io.Reader)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String,
+     * java.io.Reader)
      */
-    public TokenStream tokenStream(String fieldName, Reader reader)
-    {
+    public TokenStream tokenStream(String fieldName, Reader reader) {
         return new KeyFilter(getBook(), new KeywordTokenizer(reader));
     }
 }

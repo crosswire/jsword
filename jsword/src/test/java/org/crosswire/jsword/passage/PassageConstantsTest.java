@@ -26,44 +26,41 @@ import junit.framework.TestCase;
 /**
  * JUnit Test.
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class PassageConstantsTest extends TestCase
-{
-    public PassageConstantsTest(String s)
-    {
+public class PassageConstantsTest extends TestCase {
+    public PassageConstantsTest(String s) {
         super(s);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see junit.framework.TestCase#setUp()
      */
     /* @Override */
-    protected void setUp() throws Exception
-    {
+    protected void setUp() throws Exception {
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see junit.framework.TestCase#tearDown()
      */
     /* @Override */
-    protected void tearDown() throws Exception
-    {
+    protected void tearDown() throws Exception {
     }
 
-    public void testAllowedDelims() throws Exception
-    {
+    public void testAllowedDelims() throws Exception {
         // Check that we're not re-using delimiters
-        for (int i=0; i<AccuracyType.VERSE_ALLOWED_DELIMS.length(); i++)
-        {
+        for (int i = 0; i < AccuracyType.VERSE_ALLOWED_DELIMS.length(); i++) {
             assertEquals(AbstractPassage.REF_ALLOWED_DELIMS.indexOf(AccuracyType.VERSE_ALLOWED_DELIMS.charAt(i)), -1);
             assertEquals(VerseRange.RANGE_ALLOWED_DELIMS.indexOf(AccuracyType.VERSE_ALLOWED_DELIMS.charAt(i)), -1);
         }
 
-        for (int i=0; i<AbstractPassage.REF_ALLOWED_DELIMS.length(); i++)
-        {
+        for (int i = 0; i < AbstractPassage.REF_ALLOWED_DELIMS.length(); i++) {
             assertEquals(VerseRange.RANGE_ALLOWED_DELIMS.indexOf(AbstractPassage.REF_ALLOWED_DELIMS.charAt(i)), -1);
         }
     }

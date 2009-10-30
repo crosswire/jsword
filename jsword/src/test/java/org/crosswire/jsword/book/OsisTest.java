@@ -29,35 +29,34 @@ import org.jdom.output.XMLOutputter;
 /**
  * JUnit Test.
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class OsisTest extends TestCase
-{
-    public OsisTest(String s)
-    {
+public class OsisTest extends TestCase {
+    public OsisTest(String s) {
         super(s);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see junit.framework.TestCase#setUp()
      */
     /* @Override */
-    protected void setUp() throws Exception
-    {
+    protected void setUp() throws Exception {
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see junit.framework.TestCase#tearDown()
      */
     /* @Override */
-    protected void tearDown() throws Exception
-    {
+    protected void tearDown() throws Exception {
     }
 
-    public void testManual() throws Exception
-    {
+    public void testManual() throws Exception {
         Element seg = OSISUtil.factory().createSeg();
         seg.addContent("In the beginning God created the heaven and the earth."); //$NON-NLS-1$
 

@@ -24,38 +24,36 @@ package org.crosswire.common.util;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-
 /**
- * An <code>ItemIterator</code> is an <code>Iterator</code> that iterates
- * a single item.
- *
- *
+ * An <code>ItemIterator</code> is an <code>Iterator</code> that iterates a
+ * single item.
+ * 
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
-public class ItemIterator implements Iterator
-{
-    public ItemIterator(Object item)
-    {
+public class ItemIterator implements Iterator {
+    public ItemIterator(Object item) {
         this.item = item;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.util.Iterator#hasNext()
      */
-    public boolean hasNext()
-    {
+    public boolean hasNext() {
         return !done;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.util.Iterator#next()
      */
-    public Object next()
-    {
-        if (done)
-        {
+    public Object next() {
+        if (done) {
             throw new NoSuchElementException();
         }
 
@@ -63,14 +61,15 @@ public class ItemIterator implements Iterator
         return item;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.util.Iterator#remove()
      */
-    public void remove() throws UnsupportedOperationException
-    {
+    public void remove() throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
-    private Object  item;
+    private Object item;
     private boolean done;
 }

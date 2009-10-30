@@ -27,42 +27,44 @@ import org.xml.sax.Attributes;
 
 /**
  * THML Tag to process an element that does not map to OSIS.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class AnonymousTag extends AbstractTag
-{
-    public AnonymousTag(String name)
-    {
+public class AnonymousTag extends AbstractTag {
+    public AnonymousTag(String name) {
         tagName = name;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
-    public String getTagName()
-    {
+    public String getTagName() {
         return tagName;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element,
+     * org.xml.sax.Attributes)
      */
     /* @Override */
-    public Element processTag(Element ele, Attributes attrs)
-    {
+    public Element processTag(Element ele, Attributes attrs) {
         Element seg = OSISUtil.factory().createSeg();
         seg.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.TYPE_X_PREFIX + getTagName());
 
-        if (ele != null)
-        {
+        if (ele != null) {
             ele.addContent(seg);
         }
 
         return seg;
     }
+
     /**
      * The alias that we are using for the other tag
      */

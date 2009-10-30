@@ -29,28 +29,24 @@ import org.apache.lucene.analysis.standard.StandardTokenizer;
 import org.apache.lucene.analysis.th.ThaiWordFilter;
 
 /**
- * Tokenization using ThaiWordFilter. It uses java.text.BreakIterator to break words.
- * Stemming: Not implemented
- *
+ * Tokenization using ThaiWordFilter. It uses java.text.BreakIterator to break
+ * words. Stemming: Not implemented
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author sijo cherian [sijocherian at yahoo dot com]
  */
-public class ThaiLuceneAnalyzer extends AbstractBookAnalyzer
-{
+public class ThaiLuceneAnalyzer extends AbstractBookAnalyzer {
 
-    public TokenStream tokenStream(String fieldName, Reader reader)
-    {
+    public TokenStream tokenStream(String fieldName, Reader reader) {
         TokenStream ts = new StandardTokenizer(reader);
         ts = new ThaiWordFilter(ts);
-        if (doStopWords && stopSet != null)
-        {
+        if (doStopWords && stopSet != null) {
             ts = new StopFilter(false, ts, stopSet);
         }
         return ts;
     }
 
-    public ThaiLuceneAnalyzer()
-    {
+    public ThaiLuceneAnalyzer() {
     }
 }

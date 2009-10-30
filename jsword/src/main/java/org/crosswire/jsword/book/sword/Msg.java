@@ -25,13 +25,12 @@ import org.crosswire.common.util.MsgBase;
 
 /**
  * Compile safe Msg resource settings.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-final class Msg extends MsgBase
-{
+final class Msg extends MsgBase {
     static final Msg BAD_KEY = new Msg("RawLDBackend.BadKey"); //$NON-NLS-1$
     static final Msg FILTER_FAIL = new Msg("SwordDictionary.FilterFail"); //$NON-NLS-1$
     static final Msg MISSING_FILE = new Msg("ZVerseBackend.MissingFile"); //$NON-NLS-1$
@@ -43,8 +42,7 @@ final class Msg extends MsgBase
     /**
      * Passthrough ctor
      */
-    private Msg(String name)
-    {
+    private Msg(String name) {
         super(name);
     }
 }

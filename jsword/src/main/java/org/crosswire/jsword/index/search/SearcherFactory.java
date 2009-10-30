@@ -33,27 +33,23 @@ import org.crosswire.jsword.index.IndexManagerFactory;
 
 /**
  * Factory method for creating a new Searcher.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public final class SearcherFactory
-{
+public final class SearcherFactory {
     /**
      * Prevent instantiation
      */
-    private SearcherFactory()
-    {
+    private SearcherFactory() {
     }
 
     /**
      * Create a new Searcher.
      */
-    public static Searcher createSearcher(Book book) throws InstantiationException
-    {
-        try
-        {
+    public static Searcher createSearcher(Book book) throws InstantiationException {
+        try {
             IndexManager imanager = IndexManagerFactory.getIndexManager();
             Index index = imanager.getIndex(book);
 
@@ -61,29 +57,19 @@ public final class SearcherFactory
             parser.init(index);
 
             return parser;
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             log.error("createSearcher failed", e); //$NON-NLS-1$
             throw new InstantiationException();
-        }
-        catch (BookException e)
-        {
+        } catch (BookException e) {
             log.error("createSearcher failed", e); //$NON-NLS-1$
             throw new InstantiationException();
-        }
-        catch (ClassCastException e)
-        {
+        } catch (ClassCastException e) {
             log.error("createSearcher failed", e); //$NON-NLS-1$
             throw new InstantiationException();
-        }
-        catch (ClassNotFoundException e)
-        {
+        } catch (ClassNotFoundException e) {
             log.error("createSearcher failed", e); //$NON-NLS-1$
             throw new InstantiationException();
-        }
-        catch (IllegalAccessException e)
-        {
+        } catch (IllegalAccessException e) {
             log.error("createSearcher failed", e); //$NON-NLS-1$
             throw new InstantiationException();
         }

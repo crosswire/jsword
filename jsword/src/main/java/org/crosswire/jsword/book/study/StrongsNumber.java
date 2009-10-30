@@ -28,59 +28,63 @@ import java.util.regex.Pattern;
 import org.crosswire.jsword.book.BookException;
 
 /**
- * A Strong's Number is either Greek or Hebrew, where the actual numbers for each start at 1.
- * This class can parse Strong's Numbers that begin with G, g, H or h and are immediately
- * followed by a number. That number can have leading 0's. It can be followed by an OSISref
- * extension of !a, !b, which is ignored.
- *
- * <p>The canonical representation of the number is a G or H followed by 4 digits,
- * with leading 0's as needed.</p>
- *
- * <p>Numbers that exist:<ul>
+ * A Strong's Number is either Greek or Hebrew, where the actual numbers for
+ * each start at 1. This class can parse Strong's Numbers that begin with G, g,
+ * H or h and are immediately followed by a number. That number can have leading
+ * 0's. It can be followed by an OSISref extension of !a, !b, which is ignored.
+ * 
+ * <p>
+ * The canonical representation of the number is a G or H followed by 4 digits,
+ * with leading 0's as needed.
+ * </p>
+ * 
+ * <p>
+ * Numbers that exist:
+ * <ul>
  * <li>Hebrew: 1-8674
  * <li>Greek: 1-5624 (but not 1418, 2717, 3203-3302, 4452)
  * </ul>
  * </p>
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class StrongsNumber
-{
+public class StrongsNumber {
     /**
-     * Build an immutable Strong's Number.
-     * Anything that does not match causes a BookException.
-     * @param input a string that needs to be parsed.
+     * Build an immutable Strong's Number. Anything that does not match causes a
+     * BookException.
+     * 
+     * @param input
+     *            a string that needs to be parsed.
      * @throws BookException
      */
-    public StrongsNumber(String input) throws BookException
-    {
+    public StrongsNumber(String input) throws BookException {
         parse(input);
         validate();
     }
 
     /**
-     * Build an immutable Strong's Number.
-     * If the language is not 'G' or 'H' or the number is invalid, throw a BookException.
+     * Build an immutable Strong's Number. If the language is not 'G' or 'H' or
+     * the number is invalid, throw a BookException.
+     * 
      * @param language
      * @param strongsNumber
      * @throws BookException
      */
-    public StrongsNumber(char language, short strongsNumber) throws BookException
-    {
+    public StrongsNumber(char language, short strongsNumber) throws BookException {
         this(language, strongsNumber, null);
     }
 
     /**
-     * Build an immutable Strong's Number.
-     * If the language is not 'G' or 'H' or the number is invalid, throw a BookException.
+     * Build an immutable Strong's Number. If the language is not 'G' or 'H' or
+     * the number is invalid, throw a BookException.
+     * 
      * @param language
      * @param strongsNumber
      * @throws BookException
      */
-    public StrongsNumber(char language, short strongsNumber, String part) throws BookException
-    {
+    public StrongsNumber(char language, short strongsNumber, String part) throws BookException {
         this.language = language;
         this.strongsNumber = strongsNumber;
         this.part = part;
@@ -89,10 +93,10 @@ public class StrongsNumber
 
     /**
      * Return the canonical form of a Strong's Number, without the part.
+     * 
      * @return the strongsNumber
      */
-    public String getStrongsNumber()
-    {
+    public String getStrongsNumber() {
         StringBuffer buf = new StringBuffer(5);
         buf.append(language);
         buf.append(ZERO_PAD.format(strongsNumber));
@@ -101,15 +105,14 @@ public class StrongsNumber
 
     /**
      * Return the canonical form of a Strong's Number, with the part, if any
+     * 
      * @return the strongsNumber
      */
-    public String getFullStrongsNumber()
-    {
+    public String getFullStrongsNumber() {
         StringBuffer buf = new StringBuffer(5);
         buf.append(language);
         buf.append(ZERO_PAD.format(strongsNumber));
-        if (part != null)
-        {
+        if (part != null) {
             buf.append(part);
         }
         return buf.toString();
@@ -118,74 +121,65 @@ public class StrongsNumber
     /**
      * @return true if the Strong's number is for Greek
      */
-    public boolean isGreek()
-    {
+    public boolean isGreek() {
         return language == 'G';
     }
 
     /**
      * @return true if the Strong's number is for Hebrew
      */
-    public boolean isHebrew()
-    {
+    public boolean isHebrew() {
         return language == 'G';
     }
 
     /**
      * @return true if this Strong's number is identified by a sub part
      */
-    public boolean isPart()
-    {
+    public boolean isPart() {
         return part != null;
     }
 
     /**
-     * Validates the number portion of this StrongsNumber.
-     * Hebrew Strong's numbers are in the range of: 1-8674
-     * Greek Strong's numbers in the range of: 1-5624 (but not 1418, 2717, 3203-3302, 4452)
+     * Validates the number portion of this StrongsNumber. Hebrew Strong's
+     * numbers are in the range of: 1-8674 Greek Strong's numbers in the range
+     * of: 1-5624 (but not 1418, 2717, 3203-3302, 4452)
+     * 
      * @return true if the Strong's number is in range.
      */
-    public boolean isValid()
-    {
-        if (language == 'H' && (strongsNumber < 1 || strongsNumber > 8674))
-        {
+    public boolean isValid() {
+        if (language == 'H' && (strongsNumber < 1 || strongsNumber > 8674)) {
             return false;
         }
 
         if (language == 'G'
-            && (strongsNumber < 0
-                            || strongsNumber > 5624
-                            || strongsNumber == 1418
-                            || strongsNumber == 2717
-                            || (strongsNumber >= 3203 || strongsNumber <= 3302)
-                            || strongsNumber == 4452))
-        {
+                && (strongsNumber < 0 || strongsNumber > 5624 || strongsNumber == 1418 || strongsNumber == 2717
+                        || (strongsNumber >= 3203 || strongsNumber <= 3302) || strongsNumber == 4452)) {
             return false;
         }
         return true;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
-    public int hashCode()
-    {
+    public int hashCode() {
         int result = 31 + language;
         return 31 * result + strongsNumber;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public boolean equals(Object obj)
-    {
-        if (this == obj)
-        {
+    public boolean equals(Object obj) {
+        if (this == obj) {
             return true;
         }
 
-        if (obj == null || getClass() != obj.getClass())
-        {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
 
@@ -194,42 +188,44 @@ public class StrongsNumber
         return language == other.language && strongsNumber == other.strongsNumber;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         return getStrongsNumber();
     }
 
     /**
-     * Do the actual parsing. Anything that does not match causes a BookException.
+     * Do the actual parsing. Anything that does not match causes a
+     * BookException.
+     * 
      * @param input
      * @throws BookException
      */
-    private void parse(String input) throws BookException
-    {
+    private void parse(String input) throws BookException {
         String text = input;
 
         // Does it match
         Matcher m = STRONGS_PATTERN.matcher(text);
-        if (!m.lookingAt())
-        {
-            throw new BookException(UserMsg.STRONGS_ERROR_NUMBER, new Object[] { input });
+        if (!m.lookingAt()) {
+            throw new BookException(UserMsg.STRONGS_ERROR_NUMBER, new Object[] {
+                input
+            });
         }
 
         String lang = m.group(1);
         language = lang.charAt(0);
-        switch (language)
-        {
-            case 'g':
-                language = 'G';
-                break;
-            case 'h':
-                language = 'H';
-                break;
-            default:
-                // pass through
+        switch (language) {
+        case 'g':
+            language = 'G';
+            break;
+        case 'h':
+            language = 'H';
+            break;
+        default:
+            // pass through
         }
 
         // Get the number after the G or H
@@ -239,11 +235,11 @@ public class StrongsNumber
         part = m.group(3);
     }
 
-    private void validate() throws BookException
-    {
-        if (language != 'G' && language != 'H')
-        {
-            throw new BookException(UserMsg.STRONGS_ERROR_NUMBER, new Object[] { toString() });
+    private void validate() throws BookException {
+        if (language != 'G' && language != 'H') {
+            throw new BookException(UserMsg.STRONGS_ERROR_NUMBER, new Object[] {
+                toString()
+            });
         }
     }
 

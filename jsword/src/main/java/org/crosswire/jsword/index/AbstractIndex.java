@@ -24,30 +24,33 @@ package org.crosswire.jsword.index;
 import org.crosswire.jsword.index.search.SearchModifier;
 
 /**
- * A simple implementation of an Index that provides the
- * set/get for SearchModifier.
- *
- * @see gnu.lgpl.License for license details.
+ * A simple implementation of an Index that provides the set/get for
+ * SearchModifier.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 
-public abstract class AbstractIndex implements Index
-{
+public abstract class AbstractIndex implements Index {
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.Index#setSearchModifier(org.crosswire.jsword.index.search.SearchModifier)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.index.search.Index#setSearchModifier(org.crosswire
+     * .jsword.index.search.SearchModifier)
      */
-    public void setSearchModifier(SearchModifier theModifier)
-    {
+    public void setSearchModifier(SearchModifier theModifier) {
         modifier = theModifier;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.index.search.Index#getSearchModifier()
      */
-    public SearchModifier getSearchModifier()
-    {
+    public SearchModifier getSearchModifier() {
         return modifier;
     }
 

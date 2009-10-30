@@ -51,57 +51,50 @@ import org.xml.sax.SAXException;
 /**
  * A SAXEventProvider that gets its output data from an XSL stylesheet and
  * another SAXEventProvider (supplying input XML).
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class TransformingSAXEventProvider extends Transformer implements SAXEventProvider
-{
+public class TransformingSAXEventProvider extends Transformer implements SAXEventProvider {
     /**
      * Simple ctor
      */
-    public TransformingSAXEventProvider(URI xsluri, SAXEventProvider xmlsep)
-    {
+    public TransformingSAXEventProvider(URI xsluri, SAXEventProvider xmlsep) {
         this.xsluri = xsluri;
         this.xmlsep = xmlsep;
     }
 
     /**
      * Compile the XSL or retrieve it from the cache
+     * 
      * @throws IOException
      */
-    private TemplateInfo getTemplateInfo() throws TransformerConfigurationException, IOException
-    {
+    private TemplateInfo getTemplateInfo() throws TransformerConfigurationException, IOException {
         long modtime = NetUtil.getLastModified(xsluri);
 
         // we may have one cached
         TemplateInfo tinfo = (TemplateInfo) txers.get(xsluri);
 
         // But check it is up to date
-        if (tinfo != null && modtime > tinfo.getModtime())
-        {
+        if (tinfo != null && modtime > tinfo.getModtime()) {
             txers.remove(xsluri);
             tinfo = null;
             log.debug("updated style, re-caching. xsl=" + xsluri); //$NON-NLS-1$
         }
 
-        if (tinfo == null)
-        {
+        if (tinfo == null) {
             log.debug("generating templates for " + xsluri); //$NON-NLS-1$
 
             InputStream xslStream = null;
-            try
-            {
+            try {
                 xslStream = NetUtil.getInputStream(xsluri);
                 Templates templates = transfact.newTemplates(new StreamSource(xslStream));
 
                 tinfo = new TemplateInfo(templates, modtime);
 
                 txers.put(xsluri, tinfo);
-            }
-            finally
-            {
+            } finally {
                 IOUtil.close(xslStream);
             }
         }
@@ -109,68 +102,64 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
         return tinfo;
     }
 
-    /* (non-Javadoc)
-     * @see javax.xml.transform.Transformer#transform(javax.xml.transform.Source, javax.xml.transform.Result)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * javax.xml.transform.Transformer#transform(javax.xml.transform.Source,
+     * javax.xml.transform.Result)
      */
     /* @Override */
-    public void transform(Source xmlSource, Result outputTarget) throws TransformerException
-    {
+    public void transform(Source xmlSource, Result outputTarget) throws TransformerException {
         TemplateInfo tinfo;
-        try
-        {
+        try {
             tinfo = getTemplateInfo();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new TransformerException(e);
         }
 
         Transformer transformer = tinfo.getTemplates().newTransformer();
 
         Iterator iter = outputs.keySet().iterator();
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             String key = (String) iter.next();
             String val = getOutputProperty(key);
             transformer.setOutputProperty(key, val);
         }
 
         iter = params.keySet().iterator();
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             String key = (String) iter.next();
             Object val = params.get(key);
             transformer.setParameter(key, val);
         }
 
-        if (errors != null)
-        {
+        if (errors != null) {
             transformer.setErrorListener(errors);
         }
 
-        if (resolver != null)
-        {
+        if (resolver != null) {
             transformer.setURIResolver(resolver);
         }
 
         transformer.transform(xmlSource, outputTarget);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.xml.SAXEventProvider#provideSAXEvents(org.xml.sax.ContentHandler)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.common.xml.SAXEventProvider#provideSAXEvents(org.xml.sax
+     * .ContentHandler)
      */
-    public void provideSAXEvents(ContentHandler handler) throws SAXException
-    {
-        try
-        {
+    public void provideSAXEvents(ContentHandler handler) throws SAXException {
+        try {
             Source xmlSource = new SAXSource(new SAXEventProviderXMLReader(xmlsep), new SAXEventProviderInputSource());
 
             SAXResult outputTarget = new SAXResult(handler);
 
             transform(xmlSource, outputTarget);
-        }
-        catch (TransformerException ex)
-        {
+        } catch (TransformerException ex) {
             throw new SAXException(ex);
         }
     }
@@ -179,8 +168,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
      * @see Transformer#getErrorListener()
      */
     /* @Override */
-    public ErrorListener getErrorListener()
-    {
+    public ErrorListener getErrorListener() {
         return errors;
     }
 
@@ -188,8 +176,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
      * @see Transformer#setErrorListener(javax.xml.transform.ErrorListener)
      */
     /* @Override */
-    public void setErrorListener(ErrorListener errors) throws IllegalArgumentException
-    {
+    public void setErrorListener(ErrorListener errors) throws IllegalArgumentException {
         this.errors = errors;
     }
 
@@ -197,8 +184,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
      * @see Transformer#getURIResolver()
      */
     /* @Override */
-    public URIResolver getURIResolver()
-    {
+    public URIResolver getURIResolver() {
         return resolver;
     }
 
@@ -206,8 +192,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
      * @see Transformer#setURIResolver(javax.xml.transform.URIResolver)
      */
     /* @Override */
-    public void setURIResolver(URIResolver resolver)
-    {
+    public void setURIResolver(URIResolver resolver) {
         this.resolver = resolver;
     }
 
@@ -215,8 +200,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
      * @see Transformer#getOutputProperties()
      */
     /* @Override */
-    public Properties getOutputProperties()
-    {
+    public Properties getOutputProperties() {
         return outputs;
     }
 
@@ -224,8 +208,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
      * @see Transformer#setOutputProperties(java.util.Properties)
      */
     /* @Override */
-    public void setOutputProperties(Properties outputs) throws IllegalArgumentException
-    {
+    public void setOutputProperties(Properties outputs) throws IllegalArgumentException {
         this.outputs = outputs;
     }
 
@@ -233,8 +216,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
      * @see Transformer#getOutputProperty(java.lang.String)
      */
     /* @Override */
-    public String getOutputProperty(String name) throws IllegalArgumentException
-    {
+    public String getOutputProperty(String name) throws IllegalArgumentException {
         return outputs.getProperty(name);
     }
 
@@ -242,8 +224,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
      * @see Transformer#setOutputProperty(java.lang.String, java.lang.String)
      */
     /* @Override */
-    public void setOutputProperty(String name, String value) throws IllegalArgumentException
-    {
+    public void setOutputProperty(String name, String value) throws IllegalArgumentException {
         outputs.setProperty(name, value);
     }
 
@@ -251,8 +232,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
      * @see Transformer#clearParameters()
      */
     /* @Override */
-    public void clearParameters()
-    {
+    public void clearParameters() {
         params.clear();
     }
 
@@ -260,8 +240,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
      * @see Transformer#getParameter(java.lang.String)
      */
     /* @Override */
-    public Object getParameter(String name)
-    {
+    public Object getParameter(String name) {
         return params.get(name);
     }
 
@@ -269,8 +248,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
      * @see Transformer#setParameter(java.lang.String, java.lang.Object)
      */
     /* @Override */
-    public void setParameter(String name, Object value)
-    {
+    public void setParameter(String name, Object value) {
         params.put(name, value);
     }
 
@@ -285,7 +263,8 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
     private URIResolver resolver;
 
     /**
-     * The remembered OutputProperties because the transformer has not been created
+     * The remembered OutputProperties because the transformer has not been
+     * created
      */
     private Properties outputs = new Properties();
 
@@ -322,13 +301,11 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
     /**
      * A simple struct to link modification times to Templates objects
      */
-    private static class TemplateInfo
-    {
+    private static class TemplateInfo {
         /**
          * Simple ctor
          */
-        public TemplateInfo(Templates templates, long modtime)
-        {
+        public TemplateInfo(Templates templates, long modtime) {
             this.templates = templates;
             this.modtime = modtime;
         }
@@ -336,16 +313,14 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
         /**
          * The transformer
          */
-        Templates getTemplates()
-        {
+        Templates getTemplates() {
             return templates;
         }
 
         /**
          * The modtime of the xsl file
          */
-        long getModtime()
-        {
+        long getModtime() {
             return modtime;
         }
 

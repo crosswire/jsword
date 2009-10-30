@@ -32,103 +32,89 @@ import org.crosswire.common.icu.NumberShaper;
 
 /**
  * A base class for implementing type safe internationalization (i18n) that is
- * easy for most cases. See {@link org.crosswire.common.util.Msg} for an
- * example of how to inherit from here.
- *
- * <p>Some Regex/Vi macros to convert from a half way house i18n scheme where
- * the strings are in Msg classes but not properties files:
- * The following makes the lookup string simple
- *   :%s/Msg \([^ ]*\) = new Msg(".*")/Msg \1 = new Msg("\1")/
- * These turn a lookup string into a properties file
- *   :%s/    static final Msg //
- *   :%s/ = new Msg("/: /
- *   :%s/");\/\/\$NON-NLS-1\$$/
- *
+ * easy for most cases. See {@link org.crosswire.common.util.Msg} for an example
+ * of how to inherit from here.
+ * 
+ * <p>
+ * Some Regex/Vi macros to convert from a half way house i18n scheme where the
+ * strings are in Msg classes but not properties files: The following makes the
+ * lookup string simple :%s/Msg \([^ ]*\) = new Msg(".*")/Msg \1 = new
+ * Msg("\1")/ These turn a lookup string into a properties file :%s/ static
+ * final Msg // :%s/ = new Msg("/: / :%s/");\/\/\$NON-NLS-1\$$/
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  * @see org.crosswire.common.util.Msg
  */
-public class MsgBase
-{
+public class MsgBase {
     /**
      * Create a MsgBase object
      */
-    protected MsgBase(String name)
-    {
+    protected MsgBase(String name) {
         this.name = name;
         this.shaper = new NumberShaper();
         loadResources();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.commons.lang.enum.Enum#toString()
      */
     /* @Override */
-    public String toString()
-    {
+    public String toString() {
         return shaper.shape(obtainString());
     }
 
     /**
      * Formats the message with the given parameter.
      */
-    public String toString(Object param)
-    {
-        return shaper.shape(MessageFormat.format(obtainString(), new Object[] { param }));
+    public String toString(Object param) {
+        return shaper.shape(MessageFormat.format(obtainString(), new Object[] {
+            param
+        }));
     }
 
     /**
      * Formats the message with the given parameters.
      */
-    public String toString(Object[] params)
-    {
+    public String toString(Object[] params) {
         return shaper.shape(MessageFormat.format(obtainString(), params));
     }
 
     /**
      * Initialize any resource bundles
      */
-    protected final void loadResources()
-    {
+    protected final void loadResources() {
         Class implementingClass = getClass();
         String className = implementingClass.getName();
 
         // Class lock is needed around static resourceMap
-        synchronized (MsgBase.class)
-        {
+        synchronized (MsgBase.class) {
             // see if it is in the cache
             resources = (ResourceBundle) resourceMap.get(className);
 
             // if not then create it and put it into the cache
-            if (resources == null)
-            {
+            if (resources == null) {
                 Locale defaultLocale = Locale.getDefault();
-                try
-                {
+                try {
                     resources = ResourceBundle.getBundle(className, defaultLocale, CWClassLoader.instance(implementingClass));
                     resourceMap.put(className, resources);
-                }
-                catch (MissingResourceException ex)
-                {
+                } catch (MissingResourceException ex) {
                     log.warn("Assuming key is the default message " + className + ": " + name); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
         }
     }
 
-    private String obtainString()
-    {
-        try
-        {
-            if (resources != null)
-            {
+    private String obtainString() {
+        try {
+            if (resources != null) {
                 return resources.getString(name);
             }
-        }
-        catch (MissingResourceException ex)
-        {
+        } catch (MissingResourceException ex) {
             log.error("Missing resource: Locale=" + Locale.getDefault().toString() + " name=" + name + " package=" + getClass().getName()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
 
@@ -138,7 +124,8 @@ public class MsgBase
     private String name;
 
     /**
-     * resource map maintains a mapping of class names to resources found by that name.
+     * resource map maintains a mapping of class names to resources found by
+     * that name.
      */
     private static Map resourceMap = new HashMap();
 

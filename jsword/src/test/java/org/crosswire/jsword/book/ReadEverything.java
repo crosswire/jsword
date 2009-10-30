@@ -30,61 +30,59 @@ import org.crosswire.jsword.passage.Key;
 /**
  * Test to check that all books can be read.
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class ReadEverything
-{
+public class ReadEverything {
     /**
      * Prevent instantiation
      */
-    private ReadEverything()
-    {
+    private ReadEverything() {
     }
 
     /**
      * Read all the books that we can get our hands on.
      */
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         Logger.outputEverything();
 
-/*
-         // This must be the first static in the program.
-
-        // To ensure this we place it at the top of the class!
-        // This will set it as a place to look for overrides for
-        // ResourceBundles, properties and other resources
-        CWProject.setHome("jsword.home", ".jsword", "JSword"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
-        // And the array of allowed osis>html converters
-        ChoiceFactory.getDataMap().put("converters", new String[] {}); //$NON-NLS-1$
-
-        // The choice of configurable XSL stylesheets
-        ChoiceFactory.getDataMap().put("cswing-styles", new String[] {}); //$NON-NLS-1$
-
-        // Load the desktop configuration so we can find the sword drivers
-        Config config = new Config("Desktop Options"); //$NON-NLS-1$
-        Document xmlconfig = XMLUtil.getDocument("config"); //$NON-NLS-1$
-
-        Locale defaultLocale = Locale.getDefault();
-        ResourceBundle configResources = ResourceBundle.getBundle("config", defaultLocale, CWClassLoader.instance(ReadEverything.class)); //$NON-NLS-1$
-
-        config.add(xmlconfig, configResources);
-
-        config.setProperties(ResourceUtil.getProperties("desktop")); //$NON-NLS-1$
-        config.localToApplication();
- */
+        /*
+         * // This must be the first static in the program.
+         * 
+         * // To ensure this we place it at the top of the class! // This will
+         * set it as a place to look for overrides for // ResourceBundles,
+         * properties and other resources CWProject.setHome("jsword.home",
+         * ".jsword", "JSword"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+         * 
+         * // And the array of allowed osis>html converters
+         * ChoiceFactory.getDataMap().put("converters", new String[] {});
+         * //$NON-NLS-1$
+         * 
+         * // The choice of configurable XSL stylesheets
+         * ChoiceFactory.getDataMap().put("cswing-styles", new String[] {});
+         * //$NON-NLS-1$
+         * 
+         * // Load the desktop configuration so we can find the sword drivers
+         * Config config = new Config("Desktop Options"); //$NON-NLS-1$ Document
+         * xmlconfig = XMLUtil.getDocument("config"); //$NON-NLS-1$
+         * 
+         * Locale defaultLocale = Locale.getDefault(); ResourceBundle
+         * configResources = ResourceBundle.getBundle("config", defaultLocale,
+         * CWClassLoader.instance(ReadEverything.class)); //$NON-NLS-1$
+         * 
+         * config.add(xmlconfig, configResources);
+         * 
+         * config.setProperties(ResourceUtil.getProperties("desktop"));
+         * //$NON-NLS-1$ config.localToApplication();
+         */
         // Loop through all the Books
         log.warn("*** Reading all known Books"); //$NON-NLS-1$
         List comments = Books.installed().getBooks();
-        for (Iterator cit = comments.iterator(); cit.hasNext();)
-        {
+        for (Iterator cit = comments.iterator(); cit.hasNext();) {
             Book book = (Book) cit.next();
 
-            if (!book.isLocked())
-            {
+            if (!book.isLocked()) {
                 log.warn("****** Reading: " + book.getInitials()); //$NON-NLS-1$
                 Key set = book.getGlobalKeyList();
 
@@ -96,17 +94,15 @@ public class ReadEverything
     /**
      * Perform a test read on an iterator over a set of keys
      */
-    private static void testReadMultiple(Book book, Key set)
-    {
+    private static void testReadMultiple(Book book, Key set) {
         DataPolice.setBook(book.getBookMetaData());
 
-        //log.info("Testing: "+bmd.getInitials()+"="+bmd.getName());
+        // log.info("Testing: "+bmd.getInitials()+"="+bmd.getName());
         long start = System.currentTimeMillis();
         int entries = 0;
 
         Iterator it = set.iterator();
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             testReadSingle(book, (Key) it.next());
 
             entries++;
@@ -115,30 +111,26 @@ public class ReadEverything
         long end = System.currentTimeMillis();
         float time = (end - start) / 1000F;
 
-        log.info("Tested: book="+book.getInitials()+" entries="+entries+" time="+time+"s ("+(1000*time/entries)+"ms per entry)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+        log.info("Tested: book=" + book.getInitials() + " entries=" + entries + " time=" + time + "s (" + (1000 * time / entries) + "ms per entry)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
     }
 
     /**
      * Perform a test read on a single key
-     */    
-    private static void testReadSingle(Book book, Key key)
-    {
-        try
-        {
-            //log.debug("reading: "+bmd.getInitials()+"/"+key.getText());
+     */
+    private static void testReadSingle(Book book, Key key) {
+        try {
+            // log.debug("reading: "+bmd.getInitials()+"/"+key.getText());
 
             BookData data = new BookData(book, key);
-            if (data.getOsisFragment() == null)
-            {
-                log.warn("No output from: "+book.getInitials()+", "+key.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+            if (data.getOsisFragment() == null) {
+                log.warn("No output from: " + book.getInitials() + ", " + key.getName()); //$NON-NLS-1$ //$NON-NLS-2$
             }
 
-            // This might be a useful extra test, except that a failure gives you no help at all.
-            //data.validate();
-        }
-        catch (Throwable ex)
-        {
-            log.error("Unexpected error reading: "+book.getInitials()+", "+key.getName(), ex); //$NON-NLS-1$ //$NON-NLS-2$
+            // This might be a useful extra test, except that a failure gives
+            // you no help at all.
+            // data.validate();
+        } catch (Throwable ex) {
+            log.error("Unexpected error reading: " + book.getInitials() + ", " + key.getName(), ex); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 

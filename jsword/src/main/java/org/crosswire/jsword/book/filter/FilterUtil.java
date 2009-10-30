@@ -21,33 +21,29 @@
  */
 package org.crosswire.jsword.book.filter;
 
-
 /**
  * Utilities to help filters.
- *
- * <p>Both OSISFilter and THMLFilter need to report on strings that failed
- * parsing but don't want to output too much data. forOutput() helps.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * <p>
+ * Both OSISFilter and THMLFilter need to report on strings that failed parsing
+ * but don't want to output too much data. forOutput() helps.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public final class FilterUtil
-{
+public final class FilterUtil {
     /**
      * Prevent instantiation
      */
-    private FilterUtil()
-    {
+    private FilterUtil() {
     }
 
     /**
      * Cut up the input data so it is OK to output in an error log
      */
-    public static String forOutput(String data)
-    {
-        if (data.length() < MAX_OUTPUT_LEN)
-        {
+    public static String forOutput(String data) {
+        if (data.length() < MAX_OUTPUT_LEN) {
             return data;
         }
         String chopped = data.substring(0, MAX_OUTPUT_LEN);

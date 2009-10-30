@@ -28,26 +28,22 @@ import org.crosswire.common.util.PluginUtil;
 
 /**
  * A Factory class for Bookmarks.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
-
  */
-public final class BookmarkFactory
-{
+public final class BookmarkFactory {
     /**
      * Prevent instantiation
      */
-    private BookmarkFactory()
-    {
+    private BookmarkFactory() {
     }
 
     /**
      * Create a new Bookmark.
      */
-    public static Bookmark getBookmark()
-    {
+    public static Bookmark getBookmark() {
         return (Bookmark) instance.clone();
     }
 
@@ -64,30 +60,18 @@ public final class BookmarkFactory
     /**
      * Setup the instance
      */
-    static
-    {
-        try
-        {
+    static {
+        try {
             instance = (Bookmark) PluginUtil.getImplementation(Bookmark.class);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             log.error("createBookmark failed", e); //$NON-NLS-1$
-        }
-        catch (ClassCastException e)
-        {
+        } catch (ClassCastException e) {
             log.error("createBookmark failed", e); //$NON-NLS-1$
-        }
-        catch (ClassNotFoundException e)
-        {
+        } catch (ClassNotFoundException e) {
             log.error("createBookmark failed", e); //$NON-NLS-1$
-        }
-        catch (IllegalAccessException e)
-        {
+        } catch (IllegalAccessException e) {
             log.error("createBookmark failed", e); //$NON-NLS-1$
-        }
-        catch (InstantiationException e)
-        {
+        } catch (InstantiationException e) {
             log.error("createBookmark failed", e); //$NON-NLS-1$
         }
     }

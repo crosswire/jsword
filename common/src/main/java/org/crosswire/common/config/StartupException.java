@@ -26,51 +26,58 @@ import org.crosswire.common.util.MsgBase;
 
 /**
  * Something in the startup config files failed to start properly.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class StartupException extends LucidException
-{
+public class StartupException extends LucidException {
     /**
      * Construct the Exception with a message
-     * @param msg The resource id to read
+     * 
+     * @param msg
+     *            The resource id to read
      */
-    public StartupException(MsgBase msg)
-    {
+    public StartupException(MsgBase msg) {
         super(msg);
     }
 
     /**
      * Construct the Exception with a message and a nested Exception
-     * @param msg The resource id to read
-     * @param ex The nested Exception
+     * 
+     * @param msg
+     *            The resource id to read
+     * @param ex
+     *            The nested Exception
      */
-    public StartupException(MsgBase msg, Throwable ex)
-    {
+    public StartupException(MsgBase msg, Throwable ex) {
         super(msg, ex);
     }
 
     /**
      * Construct the Exception with a message and some i18n params
-     * @param msg The resource id to read
-     * @param params An array of parameters
+     * 
+     * @param msg
+     *            The resource id to read
+     * @param params
+     *            An array of parameters
      */
-    public StartupException(MsgBase msg, Object[] params)
-    {
+    public StartupException(MsgBase msg, Object[] params) {
         super(msg, params);
     }
 
     /**
-     * Construct the Exception with a message, a nested Exception
-     * and some i18n params
-     * @param msg The resource id to read
-     * @param ex The nested Exception
-     * @param params An array of parameters
+     * Construct the Exception with a message, a nested Exception and some i18n
+     * params
+     * 
+     * @param msg
+     *            The resource id to read
+     * @param ex
+     *            The nested Exception
+     * @param params
+     *            An array of parameters
      */
-    public StartupException(MsgBase msg, Throwable ex, Object[] params)
-    {
+    public StartupException(MsgBase msg, Throwable ex, Object[] params) {
         super(msg, ex, params);
     }
 

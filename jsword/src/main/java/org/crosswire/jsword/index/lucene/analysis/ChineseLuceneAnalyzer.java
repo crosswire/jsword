@@ -27,29 +27,28 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.cn.ChineseAnalyzer;
 
 /**
- * Uses org.apache.lucene.analysis.cn.ChineseAnalyzer 
- * Analysis: ChineseTokenizer, ChineseFilter
- * StopFilter, Stemming not implemented yet
- *
- * Note: org.apache.lucene.analysis.cn.CJKAnalyzer takes overlapping two character tokenization approach 
- * which leads to larger index size.
- *  
+ * Uses org.apache.lucene.analysis.cn.ChineseAnalyzer Analysis:
+ * ChineseTokenizer, ChineseFilter StopFilter, Stemming not implemented yet
+ * 
+ * Note: org.apache.lucene.analysis.cn.CJKAnalyzer takes overlapping two
+ * character tokenization approach which leads to larger index size.
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Sijo Cherian [sijocherian at yahoo dot com]
  */
-public class ChineseLuceneAnalyzer extends AbstractBookAnalyzer
-{
-    public ChineseLuceneAnalyzer()
-    {
+public class ChineseLuceneAnalyzer extends AbstractBookAnalyzer {
+    public ChineseLuceneAnalyzer() {
         myAnalyzer = new ChineseAnalyzer();
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String, java.io.Reader)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String,
+     * java.io.Reader)
      */
-    public final TokenStream tokenStream(String fieldName, Reader reader)
-    {
+    public final TokenStream tokenStream(String fieldName, Reader reader) {
         return myAnalyzer.tokenStream(fieldName, reader);
     }
 

@@ -25,13 +25,12 @@ import java.io.Serializable;
 
 /**
  * Types of Key that a Book uses, either verse, list, or tree.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class KeyType implements Serializable
-{
+public class KeyType implements Serializable {
     /**
      * Book contains verses and can be understood as book, chapter and verse.
      */
@@ -50,20 +49,16 @@ public class KeyType implements Serializable
     /**
      * Simple ctor
      */
-    public KeyType(String name)
-    {
+    public KeyType(String name) {
         this.name = name;
     }
 
     /**
      * Get an integer representation for this CaseType
      */
-    public int toInteger()
-    {
-        for (int i = 0; i < VALUES.length; i++)
-        {
-            if (equals(VALUES[i]))
-            {
+    public int toInteger() {
+        for (int i = 0; i < VALUES.length; i++) {
+            if (equals(VALUES[i])) {
                 return i;
             }
         }
@@ -75,13 +70,10 @@ public class KeyType implements Serializable
     /**
      * Lookup method to convert from a String
      */
-    public static KeyType fromString(String name)
-    {
-        for (int i = 0; i < VALUES.length; i++)
-        {
+    public static KeyType fromString(String name) {
+        for (int i = 0; i < VALUES.length; i++) {
             KeyType o = VALUES[i];
-            if (o.name.equalsIgnoreCase(name))
-            {
+            if (o.name.equalsIgnoreCase(name)) {
                 return o;
             }
         }
@@ -93,34 +85,36 @@ public class KeyType implements Serializable
     /**
      * Lookup method to convert from an integer
      */
-    public static KeyType fromInteger(int i)
-    {
+    public static KeyType fromInteger(int i) {
         return VALUES[i];
     }
 
     /**
-     * Prevent subclasses from overriding canonical identity based Object methods
+     * Prevent subclasses from overriding canonical identity based Object
+     * methods
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public final boolean equals(Object o)
-    {
+    public final boolean equals(Object o) {
         return super.equals(o);
     }
 
     /**
-     * Prevent subclasses from overriding canonical identity based Object methods
+     * Prevent subclasses from overriding canonical identity based Object
+     * methods
+     * 
      * @see java.lang.Object#hashCode()
      */
-    public final int hashCode()
-    {
+    public final int hashCode() {
         return super.hashCode();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         return name;
     }
 
@@ -133,16 +127,12 @@ public class KeyType implements Serializable
     private static int nextObj;
     private final int obj = nextObj++;
 
-    Object readResolve()
-    {
+    Object readResolve() {
         return VALUES[obj];
     }
 
-    private static final KeyType[] VALUES =
-    {
-        VERSE,
-        LIST,
-        TREE,
+    private static final KeyType[] VALUES = {
+            VERSE, LIST, TREE,
     };
 
     /**

@@ -29,71 +29,71 @@ import org.crosswire.common.util.Iterable;
 
 /**
  * An iterator that filters as it goes.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class BookFilterIterator implements Iterable, Iterator
-{
+public class BookFilterIterator implements Iterable, Iterator {
     /**
      * Simple ctor
-     * @param filter The filter to use, if null, will iterate over all values
+     * 
+     * @param filter
+     *            The filter to use, if null, will iterate over all values
      */
-    public BookFilterIterator(List books, BookFilter filter)
-    {
+    public BookFilterIterator(List books, BookFilter filter) {
         this.it = books.iterator();
         this.filter = filter;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Iterable#iterator()
      */
-    public Iterator iterator()
-    {
+    public Iterator iterator() {
         return this;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.util.Iterator#hasNext()
      */
-    public boolean hasNext()
-    {
+    public boolean hasNext() {
         next = findNext();
         return next != null;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.util.Iterator#next()
      */
-    public Object next()
-    {
-        if (next == null)
-        {
+    public Object next() {
+        if (next == null) {
             throw new NoSuchElementException();
         }
         return next;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.util.Iterator#remove()
      */
-    public void remove()
-    {
+    public void remove() {
         throw new UnsupportedOperationException();
     }
 
     /**
      * Find the next (if there is one)
      */
-    private Book findNext()
-    {
-        while (it.hasNext())
-        {
+    private Book findNext() {
+        while (it.hasNext()) {
             Book book = (Book) it.next();
-            if (filter == null || filter.test(book))
-            {
+            if (filter == null || filter.test(book)) {
                 return book;
             }
         }

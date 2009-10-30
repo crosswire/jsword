@@ -25,22 +25,20 @@ import org.crosswire.common.util.MsgBase;
 
 /**
  * Compile safe Msg resource settings.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class UserMsg extends MsgBase
-{
-    static final UserMsg WEB_WARNING      = new UserMsg("WebWarning.Warning");          //$NON-NLS-1$
-    static final UserMsg WEB_SHOW_WARNING = new UserMsg("WebWarning.ShowWarning");      //$NON-NLS-1$
+public final class UserMsg extends MsgBase {
+    static final UserMsg WEB_WARNING = new UserMsg("WebWarning.Warning"); //$NON-NLS-1$
+    static final UserMsg WEB_SHOW_WARNING = new UserMsg("WebWarning.ShowWarning"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor
      */
-    private UserMsg(String name)
-    {
+    private UserMsg(String name) {
         super(name);
     }
 }

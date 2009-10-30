@@ -35,29 +35,27 @@ import org.crosswire.jsword.book.install.InstallManager;
 import org.crosswire.jsword.book.install.Installer;
 
 /**
- * Exports the Book in SWORD's imp format.
- * This is identical to SWORD's mod2imp.
+ * Exports the Book in SWORD's imp format. This is identical to SWORD's mod2imp.
  * Note: it does not work with GenBook.
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class BookInstaller
-{
+public class BookInstaller {
 
-    public BookInstaller()
-    {
+    public BookInstaller() {
         installManager = new InstallManager();
     }
 
     /**
      * Uninstall a book.
-     * @param book the book to delete
-     * @throws BookException 
+     * 
+     * @param book
+     *            the book to delete
+     * @throws BookException
      */
-    public void deleteBook(Book book) throws BookException
-    {
+    public void deleteBook(Book book) throws BookException {
         // Make the book unavailable.
         // This is normally done via listeners.
         Books.installed().removeBook(book);
@@ -72,94 +70,98 @@ public class BookInstaller
      * 
      * @return the list of installers
      */
-    public Map getInstallers()
-    {
-        // Ask the Install Manager for a map of all known remote repositories sites
+    public Map getInstallers() {
+        // Ask the Install Manager for a map of all known remote repositories
+        // sites
         return installManager.getInstallers();
     }
 
     /**
      * Get a list of all installed books.
+     * 
      * @return the list of installed books
      */
-    public static List getInstalledBooks()
-    {
+    public static List getInstalledBooks() {
         return Books.installed().getBooks();
     }
 
     /**
      * Get a list of installed books by BookFilter.
-     * @param filter The book filter
+     * 
+     * @param filter
+     *            The book filter
      * @see BookFilter
      * @see Books
      */
-    public static List getInstalledBooks(BookFilter filter)
-    {
+    public static List getInstalledBooks(BookFilter filter) {
         return Books.installed().getBooks(filter);
     }
 
     /**
      * Get a list of books by CustomFilter specification
-     * @param filterSpec The filter string
+     * 
+     * @param filterSpec
+     *            The filter string
      * @see BookFilters#getCustom(java.lang.String)
      * @see Books
      */
-    public static List getInstalledBooks(String filterSpec)
-    {
+    public static List getInstalledBooks(String filterSpec) {
         return getInstalledBooks(BookFilters.getCustom(filterSpec));
     }
 
     /**
      * Get a particular installed book by initials.
      * 
-     * @param bookInitials The book name to search for
+     * @param bookInitials
+     *            The book name to search for
      * @return The found book. Null otherwise.
      */
-    public static Book getInstalledBook(String bookInitials)
-    {
+    public static Book getInstalledBook(String bookInitials) {
         return Books.installed().getBook(bookInitials);
     }
 
     /**
      * Get a list of all known books for an installer.
+     * 
      * @param repositoryName
      * @return the list of books at that repository
      */
-    public List getRepositoryBooks(String repositoryName)
-    {
+    public List getRepositoryBooks(String repositoryName) {
         return installManager.getInstaller(repositoryName).getBooks();
     }
 
     /**
      * Get a list of books in a repository by BookFilter.
-     * @param filter The book filter
+     * 
+     * @param filter
+     *            The book filter
      * @see BookFilter
      * @see Books
      */
-    public List getRepositoryBooks(String repositoryName, BookFilter filter)
-    {
+    public List getRepositoryBooks(String repositoryName, BookFilter filter) {
         return installManager.getInstaller(repositoryName).getBooks(filter);
     }
 
     /**
      * Get a list of books in a repository by CustomFilter specification
-     * @param filterSpec The filter string
+     * 
+     * @param filterSpec
+     *            The filter string
      * @see BookFilters#getCustom(java.lang.String)
      * @see Books
      */
-    public List getRepositoryBooks(String repositoryName, String filterSpec)
-    {
+    public List getRepositoryBooks(String repositoryName, String filterSpec) {
         return getRepositoryBooks(repositoryName, BookFilters.getCustom(filterSpec));
     }
 
     /**
      * Get a particular installed book by initials.
      * 
-     * @param bookInitials The book name to search for
+     * @param bookInitials
+     *            The book name to search for
      * @return The found book. Null otherwise.
      */
-    public Book getRepositoryBook(String repositoryName, String bookInitials)
-    {
+    public Book getRepositoryBook(String repositoryName, String bookInitials) {
         return installManager.getInstaller(repositoryName).getBook(bookInitials);
     }
 
@@ -167,43 +169,43 @@ public class BookInstaller
      * Reload the local cache for a remote repository.
      * 
      * @param repositoryName
-     * @throws InstallException 
+     * @throws InstallException
      */
-    public void reloadBookList(String repositoryName) throws InstallException
-    {
+    public void reloadBookList(String repositoryName) throws InstallException {
         installManager.getInstaller(repositoryName).reloadBookList();
     }
 
     /**
      * Get a Book from the repository. Note this does not install it.
      * 
-     * @param repositoryName the repository from which to get the book
-     * @param bookName the name of the book to get
+     * @param repositoryName
+     *            the repository from which to get the book
+     * @param bookName
+     *            the name of the book to get
      * @return the Book
      */
-    public Book getBook(String repositoryName, String bookName)
-    {
+    public Book getBook(String repositoryName, String bookName) {
         return installManager.getInstaller(repositoryName).getBook(bookName);
     }
 
     /**
      * Install a book, overwriting it if the book to be installed is newer.
      * 
-     * @param repositoryName the name of the repository from which to get the book
-     * @param book the book to get
-     * @throws BookException 
-     * @throws InstallException 
+     * @param repositoryName
+     *            the name of the repository from which to get the book
+     * @param book
+     *            the book to get
+     * @throws BookException
+     * @throws InstallException
      */
-    public void installBook(String repositoryName, Book book) throws BookException, InstallException
-    {
+    public void installBook(String repositoryName, Book book) throws BookException, InstallException {
         // An installer knows how to install books
         Installer installer = installManager.getInstaller(repositoryName);
 
         // Delete the book, if present
         // At the moment, JSword will not re-install. Later it will, if the
         // remote version is greater.
-        if (Books.installed().getBook(book.getInitials()) != null)
-        {
+        if (Books.installed().getBook(book.getInitials()) != null) {
             deleteBook(book);
         }
 
@@ -214,32 +216,54 @@ public class BookInstaller
     private InstallManager installManager;
 
     /**
-     * BookInstaller can manage the installation of books with the following capabilities.
+     * BookInstaller can manage the installation of books with the following
+     * capabilities.
      * 
      * Usage: BookInstaller [option]<br/>
      * Options:
      * <table border="0">
-     * <tr><td>uninstall</td><td>bookName               </td><td>Uninstall book</td></tr>
-     * <tr><td>sources  </td><td>&nbsp;                 </td><td>List source repositories</td></tr>
-     * <tr><td>list     </td><td>&nbsp;                 </td><td>List installed books</td></tr>
-     * <tr><td>list     </td><td>repositoryName         </td><td>list available books from a repository</td></tr>
-     * <tr><td>reload   </td><td>repositoryName         </td><td>Reload the local cache for a repository</td></tr>
-     * <tr><td>install  </td><td>repositoryName bookName</td><td>Install a book from a repository</td></tr>
+     * <tr>
+     * <td>uninstall</td>
+     * <td>bookName</td>
+     * <td>Uninstall book</td>
+     * </tr>
+     * <tr>
+     * <td>sources</td>
+     * <td>&nbsp;</td>
+     * <td>List source repositories</td>
+     * </tr>
+     * <tr>
+     * <td>list</td>
+     * <td>&nbsp;</td>
+     * <td>List installed books</td>
+     * </tr>
+     * <tr>
+     * <td>list</td>
+     * <td>repositoryName</td>
+     * <td>list available books from a repository</td>
+     * </tr>
+     * <tr>
+     * <td>reload</td>
+     * <td>repositoryName</td>
+     * <td>Reload the local cache for a repository</td>
+     * </tr>
+     * <tr>
+     * <td>install</td>
+     * <td>repositoryName bookName</td>
+     * <td>Install a book from a repository</td>
+     * </tr>
      * </table>
      * 
      * @param args
      */
-    public static void main(String[] args)
-    {
-        if (args.length < 1)
-        {
+    public static void main(String[] args) {
+        if (args.length < 1) {
             usage();
             return;
         }
 
         System.err.print("BookInstaller"); //$NON-NLS-1$
-        for (int i = 0; i < args.length; i++)
-        {
+        for (int i = 0; i < args.length; i++) {
             System.err.print(' ');
             System.err.print(args[i]);
         }
@@ -250,117 +274,80 @@ public class BookInstaller
         String operation = args[0];
         if (operation.equalsIgnoreCase("uninstall")) //$NON-NLS-1$
         {
-            if (args.length == 2)
-            {
+            if (args.length == 2) {
                 Book b = Books.installed().getBook(args[1]);
-                if (b == null)
-                {
+                if (b == null) {
                     System.err.println("Book not found"); //$NON-NLS-1$
                     return;
                 }
-                try
-                {
+                try {
                     installer.deleteBook(b);
-                }
-                catch (BookException e)
-                {
+                } catch (BookException e) {
                     e.printStackTrace();
                 }
-            }
-            else
-            {
+            } else {
                 usage();
             }
-        }
-        else if (operation.equalsIgnoreCase("sources")) //$NON-NLS-1$
+        } else if (operation.equalsIgnoreCase("sources")) //$NON-NLS-1$
         {
             // Get all the installers one after the other
             Map installers = installer.getInstallers();
             Iterator iter = installers.keySet().iterator();
-            while (iter.hasNext())
-            {
+            while (iter.hasNext()) {
                 System.out.println(iter.next());
             }
-        }
-        else if (operation.equalsIgnoreCase("list")) //$NON-NLS-1$
+        } else if (operation.equalsIgnoreCase("list")) //$NON-NLS-1$
         {
-            if (args.length == 1)
-            {
+            if (args.length == 1) {
                 Iterator iter = BookInstaller.getInstalledBooks().iterator();
-                while (iter.hasNext())
-                {
+                while (iter.hasNext()) {
                     Book book = (Book) iter.next();
                     System.out.println(book.getInitials());
                 }
-            }
-            else if (args.length == 2)
-            {
-                Iterator iter =  installer.getRepositoryBooks(args[1]).iterator();
-                while (iter.hasNext())
-                {
+            } else if (args.length == 2) {
+                Iterator iter = installer.getRepositoryBooks(args[1]).iterator();
+                while (iter.hasNext()) {
                     Book book = (Book) iter.next();
                     System.out.println(book.getInitials());
                 }
-            }
-            else
-            {
+            } else {
                 usage();
             }
-        }
-        else if (operation.equalsIgnoreCase("reload")) //$NON-NLS-1$
+        } else if (operation.equalsIgnoreCase("reload")) //$NON-NLS-1$
         {
-           if (args.length == 2)
-           {
-               try
-               {
-                   installer.reloadBookList(args[1]);
-               }
-               catch (InstallException e)
-               {
-                   e.printStackTrace();
-               }
-            }
-            else
-            {
+            if (args.length == 2) {
+                try {
+                    installer.reloadBookList(args[1]);
+                } catch (InstallException e) {
+                    e.printStackTrace();
+                }
+            } else {
                 usage();
             }
-        }
-        else if (operation.equalsIgnoreCase("install")) //$NON-NLS-1$
+        } else if (operation.equalsIgnoreCase("install")) //$NON-NLS-1$
         {
-            if (args.length == 3)
-            {
+            if (args.length == 3) {
                 Book b = installer.getBook(args[1], args[2]);
-                if (b == null)
-                {
+                if (b == null) {
                     System.err.println("Book not found"); //$NON-NLS-1$
                     return;
                 }
-                try
-                {
+                try {
                     installer.installBook(args[1], b);
-                }
-                catch (BookException e)
-                {
+                } catch (BookException e) {
+                    e.printStackTrace();
+                } catch (InstallException e) {
                     e.printStackTrace();
                 }
-                catch (InstallException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-            else
-            {
+            } else {
                 usage();
             }
-        }
-        else
-        {
+        } else {
             usage();
         }
     }
 
-    public static void usage()
-    {
+    public static void usage() {
         System.err.println("usage: BookInstaller <option>"); //$NON-NLS-1$
         System.err.println("Options:"); //$NON-NLS-1$
         System.err.println("    uninstall bookName                 Uninstall book"); //$NON-NLS-1$

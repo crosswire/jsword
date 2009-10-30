@@ -26,14 +26,12 @@ import junit.framework.TestCase;
 /**
  * JUnit Test.
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class XMLUtilTest extends TestCase
-{
-    public void testCleanAllEntities()
-    {
+public class XMLUtilTest extends TestCase {
+    public void testCleanAllEntities() {
         assertNull(XMLUtil.cleanAllEntities(null));
 
         assertEquals("", XMLUtil.cleanAllEntities("")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -64,8 +62,7 @@ public class XMLUtilTest extends TestCase
         assertEquals("-&amp;-\u00A0-&lt;-&gt;-&quot;-\u00A3-\u20AC-", XMLUtil.cleanAllEntities("-&amp;-&nbsp;-&lt;-&gt;-&quot;-&pound;-&euro;-")); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    public void testCleanAllTags()
-    {
+    public void testCleanAllTags() {
         assertNull(XMLUtil.cleanAllTags(null));
 
         assertEquals("", XMLUtil.cleanAllTags("")); //$NON-NLS-1$ //$NON-NLS-2$

@@ -22,81 +22,76 @@
 package org.crosswire.common.util;
 
 /**
- * A single language, paring an ISO-639 code to a localized representation of the language.
- *
- * @see gnu.lgpl.License for license details.
+ * A single language, paring an ISO-639 code to a localized representation of
+ * the language.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class Language implements Comparable
-{
+public class Language implements Comparable {
     public static final Language DEFAULT_LANG = new Language(null);
 
     /**
-     * A single language defined by an ISO-639 code.
-     * If the code is null or empty then it is considered to be DEFAULT_LANG_CODE (that is, English).
+     * A single language defined by an ISO-639 code. If the code is null or
+     * empty then it is considered to be DEFAULT_LANG_CODE (that is, English).
      * 
-     * @param iso639Code the particular language
+     * @param iso639Code
+     *            the particular language
      */
-    public Language(String iso639Code)
-    {
+    public Language(String iso639Code) {
         this.code = Languages.getLanguageCode(iso639Code);
     }
 
     /**
-     * Determine whether this language is valid.
-     * The code is valid if it is in iso639.properties.
-     *
+     * Determine whether this language is valid. The code is valid if it is in
+     * iso639.properties.
+     * 
      * @return true if the language is valid.
      */
-    public boolean isValidLanguage()
-    {
+    public boolean isValidLanguage() {
         return Languages.isValidLanguage(code);
     }
 
     /**
      * Get the language code.
-     *
+     * 
      * @return the code for the language
      */
-    public String getCode()
-    {
+    public String getCode() {
         return code;
     }
 
     /**
      * Get the language name.
-     *
+     * 
      * @return the name of the language
      */
-    public String getName()
-    {
-        if (name == null)
-        {
+    public String getName() {
+        if (name == null) {
             name = Languages.getLanguageName(code);
         }
         return name;
     }
 
     /**
-     * Determine whether this language is a Left-to-Right or a Right-to-Left language.
-     * Note: This is problematic. Languages do not have direction. Scripts do. Further,
-     * there are over 7000 living languages, many of which are written in Right-to-Left
-     * scripts and are not listed here.
+     * Determine whether this language is a Left-to-Right or a Right-to-Left
+     * language. Note: This is problematic. Languages do not have direction.
+     * Scripts do. Further, there are over 7000 living languages, many of which
+     * are written in Right-to-Left scripts and are not listed here.
+     * 
      * @return true if the language is Left-to-Right.
      */
-    public boolean isLeftToRight()
-    {
-        if (!knowsDirection)
-        {
+    public boolean isLeftToRight() {
+        if (!knowsDirection) {
             // TODO(DMS): Improve this.
-            ltor = !("he".equals(code)  || //$NON-NLS-1$ Hebrew
-                     "ar".equals(code)  || //$NON-NLS-1$ Arabic
-                     "fa".equals(code)  || //$NON-NLS-1$ Farsi/Persian
-                     "ur".equals(code)  || //$NON-NLS-1$ Uighur
-                     "uig".equals(code) || //$NON-NLS-1$ Uighur, too
-                     "syr".equals(code) || //$NON-NLS-1$ Syriac
-                     "iw".equals(code));   //$NON-NLS-1$ Java's notion of Hebrew
+            ltor = !("he".equals(code) || //$NON-NLS-1$ Hebrew
+                    "ar".equals(code) || //$NON-NLS-1$ Arabic
+                    "fa".equals(code) || //$NON-NLS-1$ Farsi/Persian
+                    "ur".equals(code) || //$NON-NLS-1$ Uighur
+                    "uig".equals(code) || //$NON-NLS-1$ Uighur, too
+                    "syr".equals(code) || //$NON-NLS-1$ Syriac
+            "iw".equals(code)); //$NON-NLS-1$ Java's notion of Hebrew
 
             knowsDirection = true;
         }
@@ -104,26 +99,26 @@ public class Language implements Comparable
         return ltor;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
-    public int hashCode()
-    {
+    public int hashCode() {
         return code.hashCode();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public boolean equals(Object obj)
-    {
-        if (this == obj)
-        {
+    public boolean equals(Object obj) {
+        if (this == obj) {
             return true;
         }
 
-        if (obj == null || getClass() != obj.getClass())
-        {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
 
@@ -132,19 +127,21 @@ public class Language implements Comparable
         return code.equals(other.code);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         return getName();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object o)
-    {
+    public int compareTo(Object o) {
         return getName().compareTo(o.toString());
     }
 

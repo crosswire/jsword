@@ -26,43 +26,42 @@ import org.apache.lucene.analysis.Tokenizer;
 
 /**
  * SavedStreams is used to make reusable Lucene analyzers.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-/* package */ class SavedStreams
-{
+/* package */class SavedStreams {
     /**
      * @return the source
      */
-    public Tokenizer getSource()
-    {
+    public Tokenizer getSource() {
         return source;
     }
 
     /**
-     * @param source the source to set
+     * @param source
+     *            the source to set
      */
-    public void setSource(Tokenizer source)
-    {
+    public void setSource(Tokenizer source) {
         this.source = source;
     }
 
     /**
      * @return the result
      */
-    public TokenStream getResult()
-    {
+    public TokenStream getResult() {
         return result;
     }
+
     /**
-     * @param result the result to set
+     * @param result
+     *            the result to set
      */
-    public void setResult(TokenStream result)
-    {
+    public void setResult(TokenStream result) {
         this.result = result;
     }
+
     private Tokenizer source;
     private TokenStream result;
 }

@@ -35,27 +35,27 @@ import org.crosswire.jsword.index.query.RangeQuery;
 
 /**
  * A query can have a optional range specifier and an optional blur specifier.
- * The range specifier can be +[range], -[range] or just [range].
- * This must stand at the beginning of the query and may be surrounded by whitespace.
- * The blur specifier is either ~ or ~n, where ~ means adjacent verses,
- * but ~n means to blur by n verses.
- *
- * @see gnu.lgpl.License for license details.
+ * The range specifier can be +[range], -[range] or just [range]. This must
+ * stand at the beginning of the query and may be surrounded by whitespace. The
+ * blur specifier is either ~ or ~n, where ~ means adjacent verses, but ~n means
+ * to blur by n verses.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class LuceneQueryBuilder implements QueryBuilder
-{
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.query.QueryBuilder#parse(java.lang.String)
+public final class LuceneQueryBuilder implements QueryBuilder {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.index.query.QueryBuilder#parse(java.lang.String)
      */
-    public Query parse(String aSearch)
-    {
+    public Query parse(String aSearch) {
         Query query = NULL_QUERY;
 
         String sought = aSearch;
-        if (sought == null || sought.length()  == 0)
-        {
+        if (sought == null || sought.length() == 0) {
             return query;
         }
 
@@ -65,8 +65,7 @@ public final class LuceneQueryBuilder implements QueryBuilder
         String rangeModifier = ""; //$NON-NLS-1$
         // Look for a range +[...], -[...], or [...]
         Matcher rangeMatcher = RANGE_PATTERN.matcher(sought);
-        if (rangeMatcher.find())
-        {
+        if (rangeMatcher.find()) {
             rangeModifier = rangeMatcher.group(1);
             range = new RangeQuery(rangeMatcher.group(2));
             sought = sought.substring(rangeMatcher.end());
@@ -74,32 +73,24 @@ public final class LuceneQueryBuilder implements QueryBuilder
 
         // Look for a blur ~n
         Matcher blurMatcher = BLUR_PATTERN.matcher(sought);
-        if (blurMatcher.find())
-        {
+        if (blurMatcher.find()) {
             // Did we have ~ or ~n?
             int blurFactor = 1;
             String blur = blurMatcher.group(1);
-            if (blur.length() > 0)
-            {
+            if (blur.length() > 0) {
                 blurFactor = Integer.parseInt(blur);
             }
             Query left = new BaseQuery(sought.substring(i, blurMatcher.start()));
             Query right = new BaseQuery(sought.substring(blurMatcher.end()));
             query = new BlurQuery(left, right, blurFactor);
-        }
-        else if (sought.length() > 0)
-        {
+        } else if (sought.length() > 0) {
             query = new BaseQuery(sought);
         }
 
-        if (range != null && !NULL_QUERY.equals(query))
-        {
-            if (rangeModifier.length() == 0 || rangeModifier.charAt(0) == '+')
-            {
+        if (range != null && !NULL_QUERY.equals(query)) {
+            if (rangeModifier.length() == 0 || rangeModifier.charAt(0) == '+') {
                 query = new AndQuery(range, query);
-            }
-            else
-            {
+            } else {
                 // AndNot needs to be after what it is restricting
                 query = new AndNotQuery(query, range);
             }
@@ -109,15 +100,15 @@ public final class LuceneQueryBuilder implements QueryBuilder
     }
 
     /**
-     * The pattern of a range. This is anything that is
-     * contained between a leading [] (but not containing a [ or ]),
-     * with a + or - optional prefix,
+     * The pattern of a range. This is anything that is contained between a
+     * leading [] (but not containing a [ or ]), with a + or - optional prefix,
      * perhaps surrounded by whitespace.
      */
     private static final Pattern RANGE_PATTERN = Pattern.compile("^\\s*([-+]?)\\[([^\\[\\]]+)\\]\\s*"); //$NON-NLS-1$
 
     /**
-     * The pattern of a blur. A '~', optionally followed by a number, representing the number of verses.
+     * The pattern of a blur. A '~', optionally followed by a number,
+     * representing the number of verses.
      */
     private static final Pattern BLUR_PATTERN = Pattern.compile("\\s~(\\d*)?\\s"); //$NON-NLS-1$
 

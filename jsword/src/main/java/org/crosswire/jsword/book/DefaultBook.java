@@ -28,40 +28,38 @@ import org.crosswire.common.util.Logger;
 
 /**
  * Defines a single default book.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class DefaultBook
-{
-    public DefaultBook(BookList bookList, BookFilter bookFilter)
-    {
-        books  = bookList;
+public class DefaultBook {
+    public DefaultBook(BookList bookList, BookFilter bookFilter) {
+        books = bookList;
         filter = bookFilter;
     }
 
     /**
      * Set the default Book. It must satisfy the filter.
-     * @param newBook The version to use as default.
+     * 
+     * @param newBook
+     *            The version to use as default.
      */
-    public void setDefault(Book newBook)
-    {
-        if (filter.test(newBook))
-        {
+    public void setDefault(Book newBook) {
+        if (filter.test(newBook)) {
             book = newBook;
         }
     }
 
     /**
-     * Set the default Book conditionally. It has to satisfy the filter
-     * and the book must not currently be set.
-     * @param newBook The version to use as default.
+     * Set the default Book conditionally. It has to satisfy the filter and the
+     * book must not currently be set.
+     * 
+     * @param newBook
+     *            The version to use as default.
      */
-    public void setDefaultConditionally(Book newBook)
-    {
-        if (book == null)
-        {
+    public void setDefaultConditionally(Book newBook) {
+        if (book == null) {
             setDefault(newBook);
         }
     }
@@ -69,42 +67,37 @@ public class DefaultBook
     /**
      * Unset the current default book and attempt to appoint another.
      */
-    protected void unsetDefault()
-    {
+    protected void unsetDefault() {
         book = null;
 
         checkReplacement();
     }
 
     /**
-     * Unset the current default book, if it matches the argument
-     * and attempt to appoint another.
+     * Unset the current default book, if it matches the argument and attempt to
+     * appoint another.
      */
-    protected void unsetDefaultConditionally(Book oldBook)
-    {
-        if (book == oldBook)
-        {
+    protected void unsetDefaultConditionally(Book oldBook) {
+        if (book == oldBook) {
             unsetDefault();
         }
     }
 
     /**
      * Get the current default book or null if there is none.
+     * 
      * @return the current default version
      */
-    public Book getDefault()
-    {
+    public Book getDefault() {
         return book;
     }
 
     /**
-     * This method is identical to <code>getDefault().getName()</code>
-     * and is only used by Config which works best with strings under reflection.
+     * This method is identical to <code>getDefault().getName()</code> and is
+     * only used by Config which works best with strings under reflection.
      */
-    public String getDefaultName()
-    {
-        if (book == null)
-        {
+    public String getDefaultName() {
+        if (book == null) {
             return null;
         }
 
@@ -112,31 +105,31 @@ public class DefaultBook
     }
 
     /**
-     * Trawl through all the known Books satisfying the filter
-     * looking for the one matching the given name.
-     * <p>This method is for use with config scripts and other things that
-     * <b>need</b> to work with Strings. The preferred method is to use
-     * Book objects.
-     * <p>This method is picky in that it only matches when the driver and the
+     * Trawl through all the known Books satisfying the filter looking for the
+     * one matching the given name.
+     * <p>
+     * This method is for use with config scripts and other things that
+     * <b>need</b> to work with Strings. The preferred method is to use Book
+     * objects.
+     * <p>
+     * This method is picky in that it only matches when the driver and the
      * version are the same. The user (probably) only cares about the version
      * though, and so might be disappointed when we fail to match AV (FooDriver)
      * against AV (BarDriver).
-     * @param name The version to use as default.
+     * 
+     * @param name
+     *            The version to use as default.
      */
-    public void setDefaultByName(String name)
-    {
-        if (name == null || name.length() == 0)
-        {
+    public void setDefaultByName(String name) {
+        if (name == null || name.length() == 0) {
             log.warn("Attempt to set empty book as default. Ignoring"); //$NON-NLS-1$
             return;
         }
 
         Iterator iter = books.getBooks(filter).iterator();
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             Book aBook = (Book) iter.next();
-            if (aBook.match(name))
-            {
+            if (aBook.match(name)) {
                 setDefault(aBook);
                 return;
             }
@@ -149,13 +142,11 @@ public class DefaultBook
      * Go through all of the current books checking to see if we need to replace
      * the current defaults with one of these.
      */
-    protected void checkReplacement()
-    {
+    protected void checkReplacement() {
         List bookList = books.getBooks(filter);
 
         Iterator it = bookList.iterator();
-        if (it.hasNext())
-        {
+        if (it.hasNext()) {
             book = (Book) it.next();
         }
     }

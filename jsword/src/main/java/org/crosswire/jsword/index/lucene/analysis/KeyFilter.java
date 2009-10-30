@@ -28,37 +28,40 @@ import org.crosswire.jsword.book.Book;
 
 /**
  * A KeyFilter normalizes Key.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class KeyFilter extends AbstractBookTokenFilter
-{
+public class KeyFilter extends AbstractBookTokenFilter {
     /**
      * Construct a KeyFilter not tied to a Book.
-     * @param in the input TokenStream
+     * 
+     * @param in
+     *            the input TokenStream
      */
-    public KeyFilter(TokenStream in)
-    {
-      this(null, in);
+    public KeyFilter(TokenStream in) {
+        this(null, in);
     }
 
     /**
      * Construct a KeyFilter tied to a Book.
-     * @param book the book to which this TokenFilter is tied.
-     * @param in the input TokenStream
+     * 
+     * @param book
+     *            the book to which this TokenFilter is tied.
+     * @param in
+     *            the input TokenStream
      */
-    public KeyFilter(Book book, TokenStream in)
-    {
-      super(book, in);
+    public KeyFilter(Book book, TokenStream in) {
+        super(book, in);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.lucene.analysis.TokenStream#incrementToken()
      */
-    public boolean incrementToken() throws IOException
-    {
+    public boolean incrementToken() throws IOException {
         // TODO(DMS): actually normalize
         return input.incrementToken();
     }

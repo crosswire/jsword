@@ -27,219 +27,241 @@ import org.crosswire.common.util.ItemIterator;
 
 /**
  * A simple default implementation of the Key interface.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class DefaultLeafKeyList implements Key
-{
+public class DefaultLeafKeyList implements Key {
     /**
      * Default ctor
      */
-    public DefaultLeafKeyList(String name)
-    {
+    public DefaultLeafKeyList(String name) {
         this(name, name, null);
     }
 
     /**
      * Default ctor
      */
-    public DefaultLeafKeyList(String name, String osisName)
-    {
+    public DefaultLeafKeyList(String name, String osisName) {
         this(name, osisName, null);
     }
 
     /**
      * Default ctor
      */
-    public DefaultLeafKeyList(String name, String osisName, Key parent)
-    {
+    public DefaultLeafKeyList(String name, String osisName, Key parent) {
         this.name = name;
         this.parent = parent;
         this.osisName = osisName;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#canHaveChildren()
      */
-    public boolean canHaveChildren()
-    {
+    public boolean canHaveChildren() {
         return false;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getChildCount()
      */
-    public int getChildCount()
-    {
+    public int getChildCount() {
         return 0;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getName()
      */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage
+     * .Key)
      */
-    public String getName(Key base)
-    {
+    public String getName(Key base) {
         return getName();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getRootName()
      */
-    public String getRootName()
-    {
+    public String getRootName() {
         return getName();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getOSISRef()
      */
-    public String getOsisRef()
-    {
+    public String getOsisRef() {
         return osisName;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getOSISId()
      */
-    public String getOsisID()
-    {
+    public String getOsisID() {
         return getOsisRef();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getParent()
      */
-    public Key getParent()
-    {
+    public Key getParent() {
         return parent;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getCardinality()
      */
-    public int getCardinality()
-    {
+    public int getCardinality() {
         return 1;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#isEmpty()
      */
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return false;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage
+     * .Key)
      */
-    public boolean contains(Key key)
-    {
+    public boolean contains(Key key) {
         return this.equals(key);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#iterator()
      */
-    public Iterator iterator()
-    {
+    public Iterator iterator() {
         return new ItemIterator(this);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#add(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#add(org.crosswire.jsword.passage.Key)
      */
-    public void addAll(Key key)
-    {
+    public void addAll(Key key) {
         throw new UnsupportedOperationException();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#remove(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#remove(org.crosswire.jsword.passage.Key)
      */
-    public void removeAll(Key key)
-    {
+    public void removeAll(Key key) {
         throw new UnsupportedOperationException();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#retain(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#retain(org.crosswire.jsword.passage.Key)
      */
-    public void retainAll(Key key)
-    {
+    public void retainAll(Key key) {
         throw new UnsupportedOperationException();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#clear()
      */
-    public void clear()
-    {
+    public void clear() {
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#get(int)
      */
-    public Key get(int index)
-    {
-        if (index == 0)
-        {
+    public Key get(int index) {
+        if (index == 0) {
             return this;
         }
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage
+     * .Key)
      */
-    public int indexOf(Key that)
-    {
-        if (this.equals(that))
-        {
+    public int indexOf(Key that) {
+        if (this.equals(that)) {
             return 0;
         }
         return -1;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#blur(int)
      */
-    public void blur(int by, RestrictionType restrict)
-    {
+    public void blur(int by, RestrictionType restrict) {
         throw new UnsupportedOperationException();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         return getName();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public boolean equals(Object obj)
-    {
-        if (this == obj)
-        {
+    public boolean equals(Object obj) {
+        if (this == obj) {
             return true;
         }
 
         // Since this can not be null
-        if (obj == null)
-        {
+        if (obj == null) {
             return false;
         }
 
@@ -248,8 +270,7 @@ public class DefaultLeafKeyList implements Key
 
         // Check that that is the same as this
         // Don't use instanceof since that breaks inheritance
-        if (!obj.getClass().equals(this.getClass()))
-        {
+        if (!obj.getClass().equals(this.getClass())) {
             return false;
         }
 
@@ -258,40 +279,38 @@ public class DefaultLeafKeyList implements Key
         return name.equals(that.name);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
-    public int hashCode()
-    {
+    public int hashCode() {
         return name.hashCode();
     }
 
-
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object obj)
-    {
+    public int compareTo(Object obj) {
         DefaultLeafKeyList that = (DefaultLeafKeyList) obj;
         return name.compareTo(that.name);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#clone()
      */
-    public Object clone()
-    {
+    public Object clone() {
         DefaultLeafKeyList clone = null;
-        try
-        {
+        try {
             clone = (DefaultLeafKeyList) super.clone();
-            if (parent != null)
-            {
+            if (parent != null) {
                 clone.parent = (Key) parent.clone();
             }
-        }
-        catch (CloneNotSupportedException e)
-        {
+        } catch (CloneNotSupportedException e) {
             assert false : e;
         }
         return clone;

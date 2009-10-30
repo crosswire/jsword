@@ -20,7 +20,6 @@
  * ID: $Id$
  */
 // package default;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
@@ -28,19 +27,16 @@ import junit.textui.TestRunner;
 /**
  * JUnit Test.
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class AllTests
-{
-    public static void main(String[] args)
-    {
+public class AllTests {
+    public static void main(String[] args) {
         TestRunner.run(suite());
     }
 
-    public static Test suite()
-    {
+    public static Test suite() {
         TestSuite suite = new TestSuite();
 
         suite.addTest(org.crosswire.common.util.AllTests.suite());

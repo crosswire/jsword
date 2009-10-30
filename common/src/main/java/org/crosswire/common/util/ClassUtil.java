@@ -28,80 +28,66 @@ import java.util.zip.ZipFile;
 
 /**
  * Various Java Class Utilities.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public final class ClassUtil
-{
+public final class ClassUtil {
     /**
      * Prevent instantiation
      */
-    private ClassUtil()
-    {
+    private ClassUtil() {
     }
 
     /**
      * Gets the Class for the className in a way that works well for extensions.
      * See: http://www.javageeks.com/Papers/ClassForName/ClassForName.pdf
-     * @param className the class to get
+     * 
+     * @param className
+     *            the class to get
      * @return the found Class
      * @throws ClassNotFoundException
      */
-    public static Class forName(String className) throws ClassNotFoundException
-    {
-      return Thread.currentThread().getContextClassLoader().loadClass(className);
+    public static Class forName(String className) throws ClassNotFoundException {
+        return Thread.currentThread().getContextClassLoader().loadClass(className);
     }
 
     /**
-     * This function finds the first matching filename for a Java class
-     * file from the classpath, if none is found it returns null.
+     * This function finds the first matching filename for a Java class file
+     * from the classpath, if none is found it returns null.
      */
-    public static String findClasspathEntry(String classname, String classpath)
-    {
+    public static String findClasspathEntry(String classname, String classpath) {
         String full = null;
 
         String[] paths = StringUtil.split(classpath, File.pathSeparator);
-        for (int i = 0; i < paths.length; i++)
-        {
+        for (int i = 0; i < paths.length; i++) {
             // Search the jar
-            if (paths[i].endsWith(EXTENSION_ZIP) || paths[i].endsWith(EXTENSION_JAR))
-            {
-                try
-                {
+            if (paths[i].endsWith(EXTENSION_ZIP) || paths[i].endsWith(EXTENSION_JAR)) {
+                try {
                     String fileName = classname.replace(',', '/') + EXTENSION_CLASS;
                     ZipFile zip = new ZipFile(paths[i]);
                     ZipEntry entry = zip.getEntry(fileName);
 
-                    if (entry != null && !entry.isDirectory())
-                    {
-                        if (full != null && !full.equals(fileName))
-                        {
+                    if (entry != null && !entry.isDirectory()) {
+                        if (full != null && !full.equals(fileName)) {
                             log.warn("Warning duplicate " + classname + " found: " + full + " and " + paths[i]); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                        }
-                        else
-                        {
+                        } else {
                             full = paths[i];
                         }
                     }
-                }
-                catch (IOException ex)
-                {
+                } catch (IOException ex) {
                     // If that zip file failed, then ignore it and move on.
                     log.warn("Missing zip file for " + classname + " and " + paths[i]); //$NON-NLS-1$ //$NON-NLS-2$
                 }
-            }
-            else
-            {
+            } else {
                 StringBuffer path = new StringBuffer(256);
 
                 // Search for the file
                 String extra = classname.replace('.', File.separatorChar);
 
                 path.append(paths[i]);
-                if (paths[i].charAt(paths[i].length() - 1) != File.separatorChar)
-                {
+                if (paths[i].charAt(paths[i].length() - 1) != File.separatorChar) {
                     path.append(File.separatorChar);
                 }
 
@@ -109,14 +95,10 @@ public final class ClassUtil
                 path.append(EXTENSION_CLASS);
                 String fileName = path.toString();
 
-                if (new File(fileName).isFile())
-                {
-                    if (full != null && !full.equals(fileName))
-                    {
+                if (new File(fileName).isFile()) {
+                    if (full != null && !full.equals(fileName)) {
                         log.warn("Warning duplicate " + classname + " found: " + full + " and " + paths[i]); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    }
-                    else
-                    {
+                    } else {
                         full = paths[i];
                     }
                 }
@@ -127,74 +109,78 @@ public final class ClassUtil
     }
 
     /**
-     * This function find the first matching filename for a Java class
-     * file from the classpath, if none is found it returns null.
+     * This function find the first matching filename for a Java class file from
+     * the classpath, if none is found it returns null.
      */
-    public static String findClasspathEntry(String classname)
-    {
+    public static String findClasspathEntry(String classname) {
         String classpath = System.getProperty("java.class.path", ""); //$NON-NLS-1$ //$NON-NLS-2$
         return findClasspathEntry(classname, classpath);
     }
 
     /**
-     * <p>Gets the class name minus the package name for an <code>Object</code>.</p>
-     *
-     * @param object  the class to get the short name for, may be null
-     * @param valueIfNull  the value to return if null
-     * @return the class name of the object without the package name, or the null value
+     * <p>
+     * Gets the class name minus the package name for an <code>Object</code>.
+     * </p>
+     * 
+     * @param object
+     *            the class to get the short name for, may be null
+     * @param valueIfNull
+     *            the value to return if null
+     * @return the class name of the object without the package name, or the
+     *         null value
      */
-    public static String getShortClassName(Object object, String valueIfNull)
-    {
-        if (object == null)
-        {
+    public static String getShortClassName(Object object, String valueIfNull) {
+        if (object == null) {
             return valueIfNull;
         }
         return getShortClassName(object.getClass().getName());
     }
 
     /**
-     * <p>Gets the class name minus the package name from a <code>Class</code>.</p>
-     *
-     * @param cls  the class to get the short name for, must not be
-     *  <code>null</code>
+     * <p>
+     * Gets the class name minus the package name from a <code>Class</code>.
+     * </p>
+     * 
+     * @param cls
+     *            the class to get the short name for, must not be
+     *            <code>null</code>
      * @return the class name without the package name
-     * @throws IllegalArgumentException if the class is <code>null</code>
+     * @throws IllegalArgumentException
+     *             if the class is <code>null</code>
      */
-    public static String getShortClassName(Class cls)
-    {
-        if (cls == null)
-        {
+    public static String getShortClassName(Class cls) {
+        if (cls == null) {
             throw new IllegalArgumentException("The class must not be null"); //$NON-NLS-1$
         }
         return getShortClassName(cls.getName());
     }
 
     /**
-     * <p>Gets the class name minus the package name from a String.</p>
-     *
-     * <p>The string passed in is assumed to be a class name - it is not checked.</p>
-     *
-     * @param className  the className to get the short name for,
-     *  must not be empty or <code>null</code>
+     * <p>
+     * Gets the class name minus the package name from a String.
+     * </p>
+     * 
+     * <p>
+     * The string passed in is assumed to be a class name - it is not checked.
+     * </p>
+     * 
+     * @param className
+     *            the className to get the short name for, must not be empty or
+     *            <code>null</code>
      * @return the class name of the class without the package name
-     * @throws IllegalArgumentException if the className is empty
+     * @throws IllegalArgumentException
+     *             if the className is empty
      */
-    public static String getShortClassName(String className)
-    {
-        if (className == null || className.length() == 0)
-        {
+    public static String getShortClassName(String className) {
+        if (className == null || className.length() == 0) {
             throw new IllegalArgumentException("The class name must not be empty"); //$NON-NLS-1$
         }
         char[] chars = className.toCharArray();
         int lastDot = 0;
-        for (int i = 0; i < chars.length; i++)
-        {
-            if (chars[i] == PACKAGE_SEPARATOR_CHAR)
-            {
+        for (int i = 0; i < chars.length; i++) {
+            if (chars[i] == PACKAGE_SEPARATOR_CHAR) {
                 lastDot = i + 1;
-            }
-            else if (chars[i] == INNER_CLASS_SEPARATOR_CHAR)
-            {
+            } else if (chars[i] == INNER_CLASS_SEPARATOR_CHAR) {
                 chars[i] = PACKAGE_SEPARATOR_CHAR;
             }
         }
@@ -202,12 +188,16 @@ public final class ClassUtil
     }
 
     /**
-     * <p>The package separator character: <code>&#x2e;</code>.</p>
+     * <p>
+     * The package separator character: <code>&#x2e;</code>.
+     * </p>
      */
     private static final char PACKAGE_SEPARATOR_CHAR = '.';
 
     /**
-     * <p>The inner class separator character: <code>$</code>.</p>
+     * <p>
+     * The inner class separator character: <code>$</code>.
+     * </p>
      */
     private static final char INNER_CLASS_SEPARATOR_CHAR = '$';
 

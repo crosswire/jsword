@@ -27,47 +27,47 @@ import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.PassageTally;
 
 /**
- * An AND query specifies that a result needs to be in both the left and the right query results.
- *
- * @see gnu.lgpl.License for license details.
+ * An AND query specifies that a result needs to be in both the left and the
+ * right query results.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class AndQuery extends AbstractBinaryQuery
-{
+public class AndQuery extends AbstractBinaryQuery {
 
     /**
      * Create a query where the result is the intersection of two queries.
-     *
+     * 
      * @param theLeftQuery
      * @param theRightQuery
      */
-    public AndQuery(Query theLeftQuery, Query theRightQuery)
-    {
+    public AndQuery(Query theLeftQuery, Query theRightQuery) {
         super(theLeftQuery, theRightQuery);
     }
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.parse.Query#find(org.crosswire.jsword.index.search.Index)
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.index.search.parse.Query#find(org.crosswire.jsword
+     * .index.search.Index)
      */
-    public Key find(Index index) throws BookException
-    {
+    public Key find(Index index) throws BookException {
         Key left = getLeftQuery().find(index);
 
-        if (left.isEmpty())
-        {
+        if (left.isEmpty()) {
             return left;
         }
 
         Key right = getRightQuery().find(index);
 
-        if (right.isEmpty())
-        {
+        if (right.isEmpty()) {
             return right;
         }
 
         // If ranking was requested then prioritize it.
-        if (right instanceof PassageTally)
-        {
+        if (right instanceof PassageTally) {
             right.retainAll(left);
             return right;
         }

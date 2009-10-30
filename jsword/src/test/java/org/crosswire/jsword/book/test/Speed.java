@@ -32,17 +32,18 @@ import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageTally;
 
 /**
- * Speed is a simple benchmark that tests how fast a version is. The
- * current set of tasks that we perform are rather arbitrary.
- * But that is something that we can improve on when we have more
- * usage information.
- *
- * <p>Progress report. All builds are Debug unless *ed:
+ * Speed is a simple benchmark that tests how fast a version is. The current set
+ * of tasks that we perform are rather arbitrary. But that is something that we
+ * can improve on when we have more usage information.
+ * 
+ * <p>
+ * Progress report. All builds are Debug unless *ed:
+ * 
  * <pre>
  * Date          Bible       VM              Time/s
  * 1999.12.08    Raw (Mem)   HS 1.0.1         20
  * 1999.12.08    Raw (Mem)   MVM 5.00.3167   541
- * 1999.12.09    Raw (Disk)  HS 1.0.1       >600
+ * 1999.12.09    Raw (Disk)  HS 1.0.1       &gt;600
  * 1999.12.10    Ser         HS 1.0.1         78
  * 1999.12.11    Ser         HS 1.0.1          6.7
  * 1999.12.11    Raw (Mem)   HS 1.0.1         11
@@ -51,29 +52,26 @@ import org.crosswire.jsword.passage.PassageTally;
  * 1999.12.12    Ser         HS 1.0.1          4
  * 1999.12.12    Ser *       HS 1.0.1          3
  * </pre>
+ * 
  * </p>
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class Speed implements Runnable
-{
+public class Speed implements Runnable {
     /**
      * Basic constructor
      */
-    public Speed(Book book)
-    {
+    public Speed(Book book) {
         this.book = book;
     }
 
     /**
      * This is what to call to execute a benchmark
      */
-    public void run()
-    {
-        try
-        {
+    public void run() {
+        try {
             start_time = System.currentTimeMillis();
 
             PassageTally tally;
@@ -99,34 +97,29 @@ public class Speed implements Runnable
             ref = null;
 
             end_time = System.currentTimeMillis();
-        }
-        catch (BookException ex)
-        {
+        } catch (BookException ex) {
             Reporter.informUser(this, ex);
-        }
-        catch (NoSuchKeyException ex)
-        {
+        } catch (NoSuchKeyException ex) {
             Reporter.informUser(this, ex);
         }
     }
 
     /**
      * Dummy display routine. We might want to add some XSL styling to this.
-     * @param ref The passage to format for display
-     * @throws BookException 
+     * 
+     * @param ref
+     *            The passage to format for display
+     * @throws BookException
      */
-    private void dummyDisplay(Passage ref) throws BookException
-    {
+    private void dummyDisplay(Passage ref) throws BookException {
         new BookData(book, ref).getOsisFragment();
     }
 
     /**
      * Accessor for the version that we are testing
      */
-    public long getBenchmark()
-    {
-        if (start_time == 0 || end_time == 0)
-        {    
+    public long getBenchmark() {
+        if (start_time == 0 || end_time == 0) {
             throw new IllegalStateException("The benchmark has not finished yet."); //$NON-NLS-1$
         }
 
@@ -136,16 +129,14 @@ public class Speed implements Runnable
     /**
      * Accessor for the version that we are testing
      */
-    public Book getBook()
-    {
+    public Book getBook() {
         return book;
     }
 
     /**
      * Accessor for the version that we are testing
      */
-    public void setBook(Book book)
-    {
+    public void setBook(Book book) {
         this.book = book;
     }
 

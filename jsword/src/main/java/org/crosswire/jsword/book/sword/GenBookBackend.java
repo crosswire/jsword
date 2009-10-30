@@ -40,78 +40,71 @@ import org.crosswire.jsword.passage.TreeKey;
 
 /**
  * Backend for General Books.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class GenBookBackend extends AbstractBackend
-{
+public class GenBookBackend extends AbstractBackend {
     /**
      * Simple ctor
      */
-    public GenBookBackend(SwordBookMetaData sbmd)
-    {
+    public GenBookBackend(SwordBookMetaData sbmd) {
         super(sbmd);
         index = new TreeKeyIndex(sbmd);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.common.activate.Activatable#activate(org.crosswire.common
+     * .activate.Lock)
      */
-    public final void activate(Lock lock)
-    {
+    public final void activate(Lock lock) {
         Activator.activate(index);
 
         URI path = null;
-        try
-        {
+        try {
             path = getExpandedDataPath();
-        }
-        catch (BookException e)
-        {
+        } catch (BookException e) {
             Reporter.informUser(this, e);
             return;
         }
 
         bdtFile = new File(path.getPath() + EXTENSION_BDT);
 
-        if (!bdtFile.canRead())
-        {
-            Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] { bdtFile.getAbsolutePath() }));
+        if (!bdtFile.canRead()) {
+            Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] {
+                bdtFile.getAbsolutePath()
+            }));
             return;
         }
 
-        try
-        {
+        try {
             bdtRaf = new RandomAccessFile(bdtFile, FileUtil.MODE_READ);
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             log.error("failed to open files", ex); //$NON-NLS-1$
             bdtRaf = null;
         }
         active = true;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common
+     * .activate.Lock)
      */
-    public final void deactivate(Lock lock)
-    {
-        try
-        {
-            if (bdtRaf != null)
-            {
+    public final void deactivate(Lock lock) {
+        try {
+            if (bdtRaf != null) {
                 bdtRaf.close();
             }
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             log.error("failed to close gen book files", ex); //$NON-NLS-1$
-        }
-        finally
-        {
+        } finally {
             bdtRaf = null;
         }
         active = false;
@@ -120,44 +113,45 @@ public class GenBookBackend extends AbstractBackend
         Activator.deactivate(index);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage
+     * .Key)
      */
     /* @Override */
-    public boolean contains(Key key)
-    {
+    public boolean contains(Key key) {
         checkActive();
 
-        try
-        {
+        try {
             TreeNode node = find(key);
-            byte [] userData = node.getUserData();
+            byte[] userData = node.getUserData();
 
             // Some entries may be empty.
             return userData.length == 8;
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             return false;
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key, java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire
+     * .jsword.passage.Key, java.lang.String)
      */
     /* @Override */
-    public String getRawText(Key key) throws BookException
-    {
+    public String getRawText(Key key) throws BookException {
         checkActive();
 
-        try
-        {
+        try {
             TreeNode node = find(key);
-            byte [] userData = node.getUserData();
+            byte[] userData = node.getUserData();
 
             // Some entries may be empty.
-            if (userData.length == 8)
-            {
+            if (userData.length == 8) {
                 int start = SwordUtil.decodeLittleEndian32(userData, 0);
                 int size = SwordUtil.decodeLittleEndian32(userData, 4);
                 byte[] data = SwordUtil.readRAF(bdtRaf, start, size);
@@ -166,25 +160,26 @@ public class GenBookBackend extends AbstractBackend
             }
 
             return ""; //$NON-NLS-1$
-        }
-        catch (IOException e)
-        {
-            throw new BookException(UserMsg.READ_FAIL, e, new Object[] { key.getName() });
+        } catch (IOException e) {
+            throw new BookException(UserMsg.READ_FAIL, e, new Object[] {
+                key.getName()
+            });
         }
     }
 
     /**
      * Given a Key, find the TreeNode for it.
-     * @param key The key to use for searching
+     * 
+     * @param key
+     *            The key to use for searching
      * @return the found node, null otherwise
      * @throws IOException
      */
-    private TreeNode find(Key key) throws IOException
-    {
-        // We need to search from the root, so navigate to the root, saving as we go.
+    private TreeNode find(Key key) throws IOException {
+        // We need to search from the root, so navigate to the root, saving as
+        // we go.
         List path = new ArrayList();
-        for (Key parentKey = key; parentKey != null && parentKey.getName().length() > 0; parentKey = parentKey.getParent())
-        {
+        for (Key parentKey = key; parentKey != null && parentKey.getName().length() > 0; parentKey = parentKey.getParent()) {
             path.add(parentKey.getName());
         }
 
@@ -192,19 +187,14 @@ public class GenBookBackend extends AbstractBackend
 
         node = index.getFirstChild(node);
 
-        for (int i = path.size() - 1; i >= 0; i--)
-        {
+        for (int i = path.size() - 1; i >= 0; i--) {
             String name = (String) path.get(i);
 
             // Search among the siblings for the current level.
-            while (node != null && !name.equals(node.getName()))
-            {
-                if (node.hasNextSibling())
-                {
+            while (node != null && !name.equals(node.getName())) {
+                if (node.hasNextSibling()) {
                     node = index.getNextSibling(node);
-                }
-                else
-                {
+                } else {
                     log.error("Could not find " + name); //$NON-NLS-1$
                     node = null;
                 }
@@ -212,38 +202,35 @@ public class GenBookBackend extends AbstractBackend
 
             // If we have found it but have not exhausted the path
             // we need to get more
-            if (node != null && name.equals(node.getName()) && i > 0)
-            {
+            if (node != null && name.equals(node.getName()) && i > 0) {
                 node = index.getFirstChild(node);
             }
         }
 
-        // At this point we have either found it, returning it or have not, returning null
-        if (node != null && node.getName().equals(key.getName()))
-        {
+        // At this point we have either found it, returning it or have not,
+        // returning null
+        if (node != null && node.getName().equals(key.getName())) {
             return node;
         }
 
         return null;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.sword.AbstractBackend#readIndex()
      */
     /* @Override */
-    public Key readIndex()
-    {
+    public Key readIndex() {
         SwordBookMetaData bmd = getBookMetaData();
         Key reply = new DefaultKeyList(null, bmd.getName());
 
-        try
-        {
+        try {
             TreeNode node = index.getRoot();
             reply = new TreeKey(node.getName(), null);
             doReadIndex(node, reply);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             log.error("Could not get read GenBook index", e); //$NON-NLS-1$
         }
 
@@ -252,43 +239,37 @@ public class GenBookBackend extends AbstractBackend
 
     /**
      * A helper function to recursively read the entire tree.
-     *
-     * @param parentNode the current node whose children are being sought
+     * 
+     * @param parentNode
+     *            the current node whose children are being sought
      * @param parentKey
      * @throws IOException
      */
-    private void doReadIndex(TreeNode parentNode, Key parentKey) throws IOException
-    {
+    private void doReadIndex(TreeNode parentNode, Key parentKey) throws IOException {
         TreeNode currentNode = parentNode;
-        if (currentNode.hasChildren())
-        {
+        if (currentNode.hasChildren()) {
             TreeNode childNode = index.getFirstChild(currentNode);
-            do
-            {
+            do {
                 TreeKey childKey = new TreeKey(childNode.getName(), parentKey);
                 parentKey.addAll(childKey);
 
                 // Build the tree as deep as possible
                 doReadIndex(childNode, childKey);
 
-                if (!childNode.hasNextSibling())
-                {
+                if (!childNode.hasNextSibling()) {
                     break;
                 }
 
                 childNode = index.getNextSibling(childNode);
-            }
-            while (true);
+            } while (true);
         }
     }
 
     /**
      * Helper method so we can quickly activate ourselves on access
      */
-    protected final void checkActive()
-    {
-        if (!active)
-        {
+    protected final void checkActive() {
+        if (!active) {
             Activator.activate(this);
         }
     }

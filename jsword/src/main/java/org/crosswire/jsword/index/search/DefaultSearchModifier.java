@@ -21,60 +21,62 @@
  */
 package org.crosswire.jsword.index.search;
 
-
 /**
- * The DefaultSearchModifier provides a simple implementation
- * of a SearchModifier.
- *
- * @see gnu.lgpl.License for license details.
+ * The DefaultSearchModifier provides a simple implementation of a
+ * SearchModifier.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 
-public class DefaultSearchModifier implements SearchModifier
-{
+public class DefaultSearchModifier implements SearchModifier {
 
     /**
-     * A default SearchModifier that returns all hits and does not rank the results.
+     * A default SearchModifier that returns all hits and does not rank the
+     * results.
      */
-    public DefaultSearchModifier()
-    {
-        ranked     = false;
+    public DefaultSearchModifier() {
+        ranked = false;
         maxResults = Integer.MAX_VALUE;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.index.search.SearchModifier#isRanked()
      */
-    public boolean isRanked()
-    {
+    public boolean isRanked() {
         return ranked;
     }
 
     /**
      * Set whether or not the search should be ranked.
-     * @param newRanked true if the search should be ranked
+     * 
+     * @param newRanked
+     *            true if the search should be ranked
      */
-    public void setRanked(boolean newRanked)
-    {
+    public void setRanked(boolean newRanked) {
         ranked = newRanked;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.index.search.SearchModifier#getMaxResults()
      */
-    public int getMaxResults()
-    {
+    public int getMaxResults() {
         return maxResults;
     }
 
     /**
-     * The maximum number of results to provide. A value of Integer.MAX_VALUE, the default, means get all results.
+     * The maximum number of results to provide. A value of Integer.MAX_VALUE,
+     * the default, means get all results.
      * 
-     * @param newMaxResults the maxResults to set
+     * @param newMaxResults
+     *            the maxResults to set
      */
-    public void setMaxResults(int newMaxResults)
-    {
+    public void setMaxResults(int newMaxResults) {
         maxResults = newMaxResults;
     }
 

@@ -59,14 +59,14 @@ import org.crosswire.jsword.util.ConverterFactory;
 import org.xml.sax.SAXException;
 
 /**
- * All the methods in this class highlight some are of the API and how to use it.
- *
- * @see gnu.lgpl.License for license details.
+ * All the methods in this class highlight some are of the API and how to use
+ * it.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class APIExamples
-{
+public class APIExamples {
     /**
      * The name of a Bible to find
      */
@@ -75,64 +75,61 @@ public class APIExamples
     /**
      * Get a particular installed book by initials.
      * 
-     * @param bookInitials The book name to search for
+     * @param bookInitials
+     *            The book name to search for
      * @return The found book. Null otherwise.
      */
-    public Book getBook(String bookInitials)
-    {
+    public Book getBook(String bookInitials) {
         return Books.installed().getBook(bookInitials);
     }
 
     /**
-     * Get just the canonical text of one or more book entries without any markup.
-     *
-     * @param bookInitials the book to use
-     * @param reference a reference, appropriate for the book, of one or more entries
+     * Get just the canonical text of one or more book entries without any
+     * markup.
+     * 
+     * @param bookInitials
+     *            the book to use
+     * @param reference
+     *            a reference, appropriate for the book, of one or more entries
      */
-    public String getPlainText(String bookInitials, String reference) throws BookException, NoSuchKeyException
-    {
+    public String getPlainText(String bookInitials, String reference) throws BookException, NoSuchKeyException {
         Book book = getBook(bookInitials);
-        if (book == null)
-        {
+        if (book == null) {
             return ""; //$NON-NLS-1$
         }
 
-        Key      key  = book.getKey(reference);
+        Key key = book.getKey(reference);
         BookData data = new BookData(book, key);
         return OSISUtil.getCanonicalText(data.getOsisFragment());
     }
 
     /**
-     * Obtain a SAX event provider for the OSIS document representation of one or more book entries.
-     *
-     * @param bookInitials the book to use
-     * @param reference a reference, appropriate for the book, of one or more entries
+     * Obtain a SAX event provider for the OSIS document representation of one
+     * or more book entries.
+     * 
+     * @param bookInitials
+     *            the book to use
+     * @param reference
+     *            a reference, appropriate for the book, of one or more entries
      */
-    public SAXEventProvider getOSIS(String bookInitials, String reference, int maxKeyCount) throws BookException, NoSuchKeyException
-    {
-        if (bookInitials == null || reference == null)
-        {
+    public SAXEventProvider getOSIS(String bookInitials, String reference, int maxKeyCount) throws BookException, NoSuchKeyException {
+        if (bookInitials == null || reference == null) {
             return null;
         }
 
         Book book = getBook(bookInitials);
 
         Key key = null;
-        if (BookCategory.BIBLE.equals(book.getBookCategory()))
-        {
+        if (BookCategory.BIBLE.equals(book.getBookCategory())) {
             key = book.getKey(reference);
             ((Passage) key).trimVerses(maxKeyCount);
-        }
-        else
-        {
+        } else {
             key = book.createEmptyKeyList();
 
             Iterator iter = book.getKey(reference).iterator();
             int count = 0;
-            while (iter.hasNext())
-            {
-                if (++count >= maxKeyCount)
-                {
+            while (iter.hasNext()) {
+                if (++count >= maxKeyCount) {
                     break;
                 }
                 key.addAll((Key) iter.next());
@@ -147,18 +144,19 @@ public class APIExamples
     /**
      * Obtain styled text (in this case HTML) for a book reference.
      * 
-     * @param bookInitials the book to use
-     * @param reference a reference, appropriate for the book, of one or more entries
+     * @param bookInitials
+     *            the book to use
+     * @param reference
+     *            a reference, appropriate for the book, of one or more entries
      * @return the styled text
      * @see Book
      * @see SAXEventProvider
      */
-    public String readStyledText(String bookInitials, String reference, int maxKeyCount) throws NoSuchKeyException, BookException, TransformerException, SAXException
-    {
+    public String readStyledText(String bookInitials, String reference, int maxKeyCount) throws NoSuchKeyException, BookException, TransformerException,
+            SAXException {
         Book book = getBook(bookInitials);
         SAXEventProvider osissep = getOSIS(bookInitials, reference, maxKeyCount);
-        if (osissep == null)
-        {
+        if (osissep == null) {
             return ""; //$NON-NLS-1$
         }
 
@@ -166,7 +164,8 @@ public class APIExamples
 
         TransformingSAXEventProvider htmlsep = (TransformingSAXEventProvider) styler.convert(osissep);
 
-        // You can also pass parameters to the XSLT. What you pass depends upon what the XSLT can use.
+        // You can also pass parameters to the XSLT. What you pass depends upon
+        // what the XSLT can use.
         BookMetaData bmd = book.getBookMetaData();
         boolean direction = bmd.isLeftToRight();
         htmlsep.setParameter("direction", direction ? "ltr" : "rtl"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -177,12 +176,12 @@ public class APIExamples
 
     /**
      * While Bible and Commentary are very similar, a Dictionary is read in a
-     * slightly different way. It is also worth looking at the JavaDoc for
-     * Book that has a way of treating Bible, Commentary and Dictionary the same.
+     * slightly different way. It is also worth looking at the JavaDoc for Book
+     * that has a way of treating Bible, Commentary and Dictionary the same.
+     * 
      * @see Book
      */
-    public void readDictionary() throws BookException
-    {
+    public void readDictionary() throws BookException {
         // This just gets a list of all the known dictionaries and picks the
         // first. In a real world app you will probably have a better way
         // of doing this.
@@ -204,8 +203,7 @@ public class APIExamples
     /**
      * An example of how to search for various bits of data.
      */
-    public void search() throws BookException
-    {
+    public void search() throws BookException {
         Book bible = Books.installed().getBook(BIBLE_NAME);
 
         // This does a standard operator search. See the search documentation
@@ -215,9 +213,10 @@ public class APIExamples
         System.out.println("The following verses contain both moses and aaron: " + key.getName()); //$NON-NLS-1$
 
         // You can also trim the result to a more manageable quantity.
-        // The test here is not necessary since we are working with a bible. It is necessary if we don't know what it is.
-        if (key instanceof Passage)
-        {
+        // The test here is not necessary since we are working with a bible. It
+        // is necessary if we don't know what it
+        // is.
+        if (key instanceof Passage) {
             Passage remaining = ((Passage) key).trimVerses(5);
             System.out.println("The first 5 verses containing both moses and aaron: " + key.getName()); //$NON-NLS-1$
             System.out.println("The rest of the verses are: " + remaining.getName()); //$NON-NLS-1$
@@ -226,10 +225,10 @@ public class APIExamples
 
     /**
      * An example of how to perform a ranked search.
+     * 
      * @throws BookException
      */
-    void rankedSearch() throws BookException
-    {
+    void rankedSearch() throws BookException {
         Book bible = Books.installed().getBook(BIBLE_NAME);
 
         // For a more complex example:
@@ -244,14 +243,13 @@ public class APIExamples
         int partial = total;
 
         // we get PassageTallys for rank searches
-        if (results instanceof PassageTally || rank)
-        {
+        if (results instanceof PassageTally || rank) {
             PassageTally tally = (PassageTally) results;
             tally.setOrdering(PassageTally.ORDER_TALLY);
             int rankCount = 20;
-            if (rankCount > 0 && rankCount < total)
-            {
-                // Here we are trimming by ranges, where a range is a set of continuous verses.
+            if (rankCount > 0 && rankCount < total) {
+                // Here we are trimming by ranges, where a range is a set of
+                // continuous verses.
                 tally.trimRanges(rankCount, RestrictionType.NONE);
                 partial = rankCount;
             }
@@ -261,27 +259,33 @@ public class APIExamples
     }
 
     /**
-     * An example of how to do a search and then get text for each range of verses.
+     * An example of how to do a search and then get text for each range of
+     * verses.
+     * 
      * @throws BookException
      * @throws SAXException
      */
-    void searchAndShow() throws BookException, SAXException
-    {
+    void searchAndShow() throws BookException, SAXException {
         Book bible = Books.installed().getBook(BIBLE_NAME);
 
         // Search for words like Melchezedik
         Key key = bible.find("melchesidec~"); //$NON-NLS-1$
 
-        // Here is an example of how to iterate over the ranges and get the text for each
+        // Here is an example of how to iterate over the ranges and get the text
+        // for each
         // The key's iterator would have iterated over verses.
 
         // The following shows how to use a stylesheet of your own choosing
         String path = "xsl/cswing/simple.xsl"; //$NON-NLS-1$
         URL xslurl = ResourceUtil.getResource(path);
 
-        Iterator rangeIter = ((Passage) key).rangeIterator(RestrictionType.CHAPTER); // Make ranges break on chapter boundaries.
-        while (rangeIter.hasNext())
-        {
+        Iterator rangeIter = ((Passage) key).rangeIterator(RestrictionType.CHAPTER); // Make
+                                                                                     // ranges
+                                                                                     // break
+                                                                                     // on
+                                                                                     // chapter
+        // boundaries.
+        while (rangeIter.hasNext()) {
             Key range = (Key) rangeIter.next();
             BookData data = new BookData(bible, range);
             SAXEventProvider osissep = data.getSAXEventProvider();
@@ -294,11 +298,11 @@ public class APIExamples
     /**
      * This is an example of the different ways to select a Book from the
      * selection available.
+     * 
      * @see org.crosswire.common.config.Config
      * @see Books
      */
-    public void pickBible()
-    {
+    public void pickBible() {
         // The Default Bible - JSword does everything it can to make this work
         Book book = Books.installed().getBook(BIBLE_NAME);
 
@@ -321,18 +325,15 @@ public class APIExamples
         List test = Books.installed().getBooks(new MyBookFilter("ESV")); //$NON-NLS-1$
         book = (Book) test.get(0);
 
-        if (book != null)
-        {
+        if (book != null) {
             System.out.println(book.getInitials());
         }
-
 
         // If you want to know about new books as they arrive:
         Books.installed().addBooksListener(new MyBooksListener());
     }
 
-    public void installBook()
-    {
+    public void installBook() {
         // An installer knows how to install books
         Installer installer = null;
 
@@ -344,8 +345,7 @@ public class APIExamples
         // Get all the installers one after the other
         Iterator iter = installers.entrySet().iterator();
         String name = null;
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             Map.Entry mapEntry = (Map.Entry) iter.next();
             name = (String) mapEntry.getKey();
             installer = (Installer) mapEntry.getValue();
@@ -356,12 +356,9 @@ public class APIExamples
         installer = imanager.getInstaller(name);
 
         // Now we can get the list of books
-        try
-        {
+        try {
             installer.reloadBookList();
-        }
-        catch (InstallException e)
-        {
+        } catch (InstallException e) {
             e.printStackTrace();
         }
 
@@ -373,14 +370,13 @@ public class APIExamples
 
         Book book = (Book) availableBooks.get(0);
 
-        if (book != null)
-        {
+        if (book != null) {
             System.out.println("Book " + book.getInitials() + " is available"); //$NON-NLS-1$ //$NON-NLS-2$
 
             // Delete the book, if present
-            // At the moment, JSword will not re-install. Later it will, if the remote version is greater.
-            try
-            {
+            // At the moment, JSword will not re-install. Later it will, if the
+            // remote version is greater.
+            try {
                 if (Books.installed().getBook("ESV") != null) //$NON-NLS-1$
                 {
                     // Make the book unavailable.
@@ -391,19 +387,14 @@ public class APIExamples
                     // This should be a call on installer.
                     book.getDriver().delete(book);
                 }
-            }
-            catch (BookException e1)
-            {
+            } catch (BookException e1) {
                 e1.printStackTrace();
             }
 
-            try
-            {
+            try {
                 // Now install it. Note this is a background task.
                 installer.install(book);
-            }
-            catch (InstallException e)
-            {
+            } catch (InstallException e) {
                 e.printStackTrace();
             }
         }
@@ -412,15 +403,12 @@ public class APIExamples
     /**
      * A simple BookFilter that looks for a Bible by name.
      */
-    static class MyBookFilter implements BookFilter
-    {
-        public MyBookFilter(String bookName)
-        {
+    static class MyBookFilter implements BookFilter {
+        public MyBookFilter(String bookName) {
             name = bookName;
         }
 
-        public boolean test(Book bk)
-        {
+        public boolean test(Book bk) {
             return bk.getInitials().equals(name);
         }
 
@@ -430,32 +418,37 @@ public class APIExamples
     /**
      * A simple BooksListener that actually does nothing.
      */
-    static class MyBooksListener implements BooksListener
-    {
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.BooksListener#bookAdded(org.crosswire.jsword.book.BooksEvent)
+    static class MyBooksListener implements BooksListener {
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * org.crosswire.jsword.book.BooksListener#bookAdded(org.crosswire.jsword
+         * .book.BooksEvent)
          */
-        public void bookAdded(BooksEvent ev)
-        {
+        public void bookAdded(BooksEvent ev) {
         }
 
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.book.BooksListener#bookRemoved(org.crosswire.jsword.book.BooksEvent)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * org.crosswire.jsword.book.BooksListener#bookRemoved(org.crosswire
+         * .jsword.book.BooksEvent)
          */
-        public void bookRemoved(BooksEvent ev)
-        {
+        public void bookRemoved(BooksEvent ev) {
         }
     }
 
     /**
      * Quick Demo
+     * 
      * @throws NoSuchKeyException
      * @throws BookException
      * @throws SAXException
      * @throws TransformerException
      */
-    public static void main(String[] args) throws BookException, NoSuchKeyException, TransformerException, SAXException
-    {
+    public static void main(String[] args) throws BookException, NoSuchKeyException, TransformerException, SAXException {
         APIExamples examples = new APIExamples();
 
         examples.installBook();

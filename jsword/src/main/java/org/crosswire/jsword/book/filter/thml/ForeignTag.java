@@ -28,38 +28,39 @@ import org.xml.sax.Attributes;
 
 /**
  * THML Tag to process the foreign element.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class ForeignTag extends AbstractTag
-{
-    /* (non-Javadoc)
+public class ForeignTag extends AbstractTag {
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
-    public String getTagName()
-    {
+    public String getTagName() {
         return "foreign"; //$NON-NLS-1$
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element,
+     * org.xml.sax.Attributes)
      */
     /* @Override */
-    public Element processTag(Element ele, Attributes attrs)
-    {
+    public Element processTag(Element ele, Attributes attrs) {
         Element div = OSISUtil.factory().createForeign();
 
         String lang = attrs.getValue("lang"); //$NON-NLS-1$
-        if (lang != null)
-        {
+        if (lang != null) {
             // OSIS defines the long attribute as the one from the xml namespace
             div.setAttribute(OSISUtil.OSIS_ATTR_LANG, lang, Namespace.XML_NAMESPACE);
         }
 
-        if (ele != null)
-        {
+        if (ele != null) {
             ele.addContent(div);
         }
 

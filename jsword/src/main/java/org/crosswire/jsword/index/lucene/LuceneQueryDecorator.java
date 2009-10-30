@@ -25,20 +25,22 @@ import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.index.query.QueryDecorator;
 
 /**
- * LuceneQueryDecorator represents the extension of stock Lucene syntax
- * with passage ranges and with blurring (searching in nearby verses).
- *
- * @see gnu.lgpl.License for license details.
+ * LuceneQueryDecorator represents the extension of stock Lucene syntax with
+ * passage ranges and with blurring (searching in nearby verses).
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
-public class LuceneQueryDecorator implements QueryDecorator
-{
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.SearchSyntax#decorateAllWords(java.lang.String)
+public class LuceneQueryDecorator implements QueryDecorator {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.index.search.SearchSyntax#decorateAllWords(java.
+     * lang.String)
      */
-    public String decorateAllWords(String queryWords)
-    {
+    public String decorateAllWords(String queryWords) {
         String[] words = queryWords.split(SPACE);
         StringBuffer search = new StringBuffer();
         search.append(PLUS);
@@ -46,20 +48,26 @@ public class LuceneQueryDecorator implements QueryDecorator
         return search.toString();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.SearchSyntax#decorateAnyWords(java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.index.search.SearchSyntax#decorateAnyWords(java.
+     * lang.String)
      */
-    public String decorateAnyWords(String queryWords)
-    {
+    public String decorateAnyWords(String queryWords) {
         // Don't need to do anything, this is the default behavior
         return queryWords;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.SearchSyntax#decoratePhrase(java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.index.search.SearchSyntax#decoratePhrase(java.lang
+     * .String)
      */
-    public String decoratePhrase(String queryWords)
-    {
+    public String decoratePhrase(String queryWords) {
         // This performs a best match
         StringBuffer search = new StringBuffer();
         search.append(QUOTE);
@@ -68,11 +76,14 @@ public class LuceneQueryDecorator implements QueryDecorator
         return search.toString();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.SearchSyntax#decorateNotWords(java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.index.search.SearchSyntax#decorateNotWords(java.
+     * lang.String)
      */
-    public String decorateNotWords(String queryWords)
-    {
+    public String decorateNotWords(String queryWords) {
         String[] words = queryWords.split(SPACE);
         StringBuffer search = new StringBuffer();
         search.append(MINUS);
@@ -80,11 +91,14 @@ public class LuceneQueryDecorator implements QueryDecorator
         return search.toString();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.SearchSyntax#decorateRange(java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.index.search.SearchSyntax#decorateRange(java.lang
+     * .String)
      */
-    public String decorateRange(String queryWords)
-    {
+    public String decorateRange(String queryWords) {
         StringBuffer search = new StringBuffer();
         search.append(PLUS);
         search.append(OPEN);
@@ -93,22 +107,28 @@ public class LuceneQueryDecorator implements QueryDecorator
         return search.toString();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.SearchSyntax#decorateSpellWords(java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.index.search.SearchSyntax#decorateSpellWords(java
+     * .lang.String)
      */
-    public String decorateSpellWords(String queryWords)
-    {
+    public String decorateSpellWords(String queryWords) {
         String[] words = queryWords.split(SPACE);
         StringBuffer search = new StringBuffer(StringUtil.join(words, FUZZY_SPACE));
         search.append(FUZZY);
         return search.toString();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.SearchSyntax#decorateStartWords(java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.index.search.SearchSyntax#decorateStartWords(java
+     * .lang.String)
      */
-    public String decorateStartWords(String queryWords)
-    {
+    public String decorateStartWords(String queryWords) {
         String[] words = queryWords.split(SPACE);
         StringBuffer search = new StringBuffer(StringUtil.join(words, WILD_SPACE));
         search.append(WILD);

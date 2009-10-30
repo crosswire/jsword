@@ -27,44 +27,43 @@ import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.PassageTally;
 
 /**
- * An OR query specifies that a result is the union of the left and the right query results.
- *
- * @see gnu.lgpl.License for license details.
+ * An OR query specifies that a result is the union of the left and the right
+ * query results.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
-public class OrQuery extends AbstractBinaryQuery
-{
+public class OrQuery extends AbstractBinaryQuery {
 
     /**
      *
      */
-    public OrQuery(Query theLeftQuery, Query theRightQuery)
-    {
+    public OrQuery(Query theLeftQuery, Query theRightQuery) {
         super(theLeftQuery, theRightQuery);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.parse.Query#find(org.crosswire.jsword.index.search.Index)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.index.search.parse.Query#find(org.crosswire.jsword
+     * .index.search.Index)
      */
-    public Key find(Index index) throws BookException
-    {
+    public Key find(Index index) throws BookException {
         Key left = getLeftQuery().find(index);
         Key right = getRightQuery().find(index);
 
-        if (left.isEmpty())
-        {
+        if (left.isEmpty()) {
             return right;
         }
 
-        if (right.isEmpty())
-        {
+        if (right.isEmpty()) {
             return left;
         }
 
         // If ranking was requested then prioritize it.
-        if (right instanceof PassageTally)
-        {
+        if (right instanceof PassageTally) {
             right.addAll(left);
             return right;
         }

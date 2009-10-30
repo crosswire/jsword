@@ -33,32 +33,27 @@ import org.crosswire.jsword.passage.Verse;
 
 /**
  * A Raw File format that allows for each verse to have it's own storage.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author mbergmann
  */
-public class RawFileBackendTest extends TestCase
-{
+public class RawFileBackendTest extends TestCase {
 
-    final String   modName    = "TestComment";              //$NON-NLS-1$
-    File           configFile = new File("testconfig.conf"); //$NON-NLS-1$
-    RawFileBackend backend    = null;
+    final String modName = "TestComment"; //$NON-NLS-1$
+    File configFile = new File("testconfig.conf"); //$NON-NLS-1$
+    RawFileBackend backend = null;
 
-    protected void setUp() throws Exception
-    {
+    protected void setUp() throws Exception {
         ConfigEntryTable table = new ConfigEntryTable(modName);
         table.add(ConfigEntryType.LANG, "de"); //$NON-NLS-1$
         table.add(ConfigEntryType.INITIALS, modName);
         table.add(ConfigEntryType.DESCRIPTION, "MyNewBook"); //$NON-NLS-1$
         table.add(ConfigEntryType.MOD_DRV, "RawFiles"); //$NON-NLS-1$
         table.add(ConfigEntryType.DATA_PATH, "test"); //$NON-NLS-1$
-        try
-        {
+        try {
             table.save(configFile);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
 
@@ -66,18 +61,15 @@ public class RawFileBackendTest extends TestCase
         backend = new RawFileBackend(swordBookMetaData, 2);
     }
 
-    protected void tearDown() throws Exception
-    {
+    protected void tearDown() throws Exception {
         // configFile.delete();
     }
 
-    public void testCreate() throws IOException, BookException
-    {
+    public void testCreate() throws IOException, BookException {
         backend.create();
     }
 
-    public void testSetRawText() throws NoSuchVerseException, IOException, BookException
-    {
+    public void testSetRawText() throws NoSuchVerseException, IOException, BookException {
         Verse otVerse = new Verse(1, 3, 1);
         Verse otVerse2 = new Verse(3, 3, 5);
         Verse otVerse3 = new Verse(2, 6, 4);

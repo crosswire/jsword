@@ -25,13 +25,12 @@ import org.crosswire.common.util.MsgBase;
 
 /**
  * Compile safe Msg resource settings.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-final class UserMsg extends MsgBase
-{
+final class UserMsg extends MsgBase {
     static final UserMsg NO_KEY = new UserMsg("SwordDictionary.NoKey"); //$NON-NLS-1$
     static final UserMsg MISSING_FILE = new UserMsg("ZVerseBackend.MissingFile"); //$NON-NLS-1$
     static final UserMsg READ_FAIL = new UserMsg("ZVerseBackend.ReadFail"); //$NON-NLS-1$
@@ -41,8 +40,7 @@ final class UserMsg extends MsgBase
     /**
      * Passthrough ctor
      */
-    private UserMsg(String name)
-    {
+    private UserMsg(String name) {
         super(name);
     }
 }

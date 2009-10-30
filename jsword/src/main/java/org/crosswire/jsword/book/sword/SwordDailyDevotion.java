@@ -28,26 +28,25 @@ import org.crosswire.jsword.passage.PreferredKey;
 
 /**
  * A book that has a preferred key of today's date.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
-public class SwordDailyDevotion extends SwordDictionary implements PreferredKey
-{
+public class SwordDailyDevotion extends SwordDictionary implements PreferredKey {
     /**
      * Simple ctor
      */
-    public SwordDailyDevotion(SwordBookMetaData sbmd, AbstractBackend backend)
-    {
+    public SwordDailyDevotion(SwordBookMetaData sbmd, AbstractBackend backend) {
         super(sbmd, backend);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.PreferredKey#getPreferred()
      */
-    public Key getPreferred()
-    {
+    public Key getPreferred() {
         return new DefaultLeafKeyList(DateFormatter.getDateInstance().format(new Date()));
     }
 }

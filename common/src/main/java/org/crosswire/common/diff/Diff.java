@@ -28,55 +28,60 @@ import java.util.ListIterator;
 
 /**
  * Computes the difference between two texts to create a list of differences.
- *
- * Based on the LGPL Diff_Match_Patch v1.5 javascript of Neil Fraser, Copyright (C) 2006
- * <a href="http://neil.fraser.name/software/diff_match_patch/">http://neil.fraser.name/software/diff_match_patch/</a>
- *
+ * 
+ * Based on the LGPL Diff_Match_Patch v1.5 javascript of Neil Fraser, Copyright
+ * (C) 2006<br>
+ * <a href="http://neil.fraser.name/software/diff_match_patch/">http://neil.
+ * fraser.name/software/diff_match_patch/</a>
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class Diff
-{
+public class Diff {
     /**
-     * Construct an object that can find the differences between two texts.
-     * Run a faster slightly less optimal diff.
-     * This constructor allows the 'checkLines' to be optional.
-     * Most of the time checkLines is wanted, so default to true.
-     * @param source Old string to be diffed
-     * @param target New string to be diffed
+     * Construct an object that can find the differences between two texts. Run
+     * a faster slightly less optimal diff. This constructor allows the
+     * 'checkLines' to be optional. Most of the time checkLines is wanted, so
+     * default to true.
+     * 
+     * @param source
+     *            Old string to be diffed
+     * @param target
+     *            New string to be diffed
      */
-    public Diff(final String source, final String target)
-    {
+    public Diff(final String source, final String target) {
         this(source, target, true);
     }
 
     /**
      * Construct an object that can find the differences between two texts.
-     * @param source Old string to be diffed
-     * @param target New string to be diffed
-     * @param checkLines Speedup flag.  If false, then don't run a
-     *     line-level diff first to identify the changed areas.
-     *     If true, then run a faster slightly less optimal diff
+     * 
+     * @param source
+     *            Old string to be diffed
+     * @param target
+     *            New string to be diffed
+     * @param checkLines
+     *            Speedup flag. If false, then don't run a line-level diff first
+     *            to identify the changed areas. If true, then run a faster
+     *            slightly less optimal diff
      */
-    public Diff(final String source, final String target, final boolean checkLines)
-    {
+    public Diff(final String source, final String target, final boolean checkLines) {
         this.source = source;
         this.target = target;
         this.checkLines = checkLines;
     }
 
     /**
-     * Find the differences between two texts.  Simplifies the problem by
+     * Find the differences between two texts. Simplifies the problem by
      * stripping any common prefix or suffix off the texts before diffing.
+     * 
      * @return List of Difference objects
      */
-    public List compare()
-    {
+    public List compare() {
         // Check for equality (speedup)
         List diffs;
-        if (source.equals(target))
-        {
+        if (source.equals(target)) {
             diffs = new ArrayList();
             diffs.add(new Difference(EditType.EQUAL, source));
             return diffs;
@@ -115,10 +120,10 @@ public class Diff
 
     /**
      * Find the differences between two texts.
+     * 
      * @return List of Difference objects
      */
-    private List compute()
-    {
+    private List compute() {
         List diffs = new ArrayList();
 
         if ("".equals(source)) //$NON-NLS-1$
@@ -138,8 +143,7 @@ public class Diff
         String longText = source.length() > target.length() ? source : target;
         String shortText = source.length() > target.length() ? target : source;
         int i = longText.indexOf(shortText);
-        if (i != -1)
-        {
+        if (i != -1) {
             // Shorter text is inside the longer text (speedup)
             EditType editType = (source.length() > target.length()) ? EditType.DELETE : EditType.INSERT;
             diffs.add(new Difference(editType, longText.substring(0, i)));
@@ -150,8 +154,7 @@ public class Diff
 
         // Check to see if the problem can be split in two.
         CommonMiddle middleMatch = Commonality.halfMatch(source, target);
-        if (middleMatch != null)
-        {
+        if (middleMatch != null) {
             // A half-match was found, sort out the return data.
             // Send both pairs off for separate processing.
             Diff startDiff = new Diff(middleMatch.getSourcePrefix(), middleMatch.getTargetPrefix(), checkLines);
@@ -164,14 +167,12 @@ public class Diff
         }
 
         // Perform a real diff.
-        if (checkLines && source.length() + target.length() < 250)
-        {
+        if (checkLines && source.length() + target.length() < 250) {
             checkLines = false; // Too trivial for the overhead.
         }
 
         LineMap lineMap = null;
-        if (checkLines)
-        {
+        if (checkLines) {
             // Scan the text on a line-by-line basis first.
             lineMap = new LineMap(source, target);
             source = lineMap.getSourceMap();
@@ -180,16 +181,14 @@ public class Diff
 
         diffs = new DifferenceEngine(source, target).generate();
 
-        if (diffs == null)
-        {
+        if (diffs == null) {
             // No acceptable result.
             diffs = new ArrayList();
             diffs.add(new Difference(EditType.DELETE, source));
             diffs.add(new Difference(EditType.INSERT, target));
         }
 
-        if (checkLines && lineMap != null)
-        {
+        if (checkLines && lineMap != null) {
             // Convert the diff back to original text.
             lineMap.restore(diffs);
             // Eliminate freak matches (e.g. blank lines)
@@ -204,35 +203,26 @@ public class Diff
             StringBuffer textInsert = new StringBuffer();
             ListIterator pointer = diffs.listIterator();
             Difference curDiff = (Difference) pointer.next();
-            while (curDiff != null)
-            {
+            while (curDiff != null) {
                 EditType editType = curDiff.getEditType();
-                if (EditType.INSERT.equals(editType))
-                {
+                if (EditType.INSERT.equals(editType)) {
                     countInserts++;
                     textInsert.append(curDiff.getText());
-                }
-                else if (EditType.DELETE.equals(editType))
-                {
+                } else if (EditType.DELETE.equals(editType)) {
                     countDeletes++;
                     textDelete.append(curDiff.getText());
-                }
-                else
-                {
+                } else {
                     // Upon reaching an equality, check for prior redundancies.
-                    if (countDeletes >= 1 && countInserts >= 1)
-                    {
+                    if (countDeletes >= 1 && countInserts >= 1) {
                         // Delete the offending records and add the merged ones.
                         pointer.previous();
-                        for (int j = 0; j < countDeletes + countInserts; j++)
-                        {
+                        for (int j = 0; j < countDeletes + countInserts; j++) {
                             pointer.previous();
                             pointer.remove();
                         }
                         Diff newDiff = new Diff(textDelete.toString(), textInsert.toString(), false);
                         Iterator iter = newDiff.compare().iterator();
-                        while (iter.hasNext())
-                        {
+                        while (iter.hasNext()) {
                             pointer.add(iter.next());
                         }
                     }
@@ -243,29 +233,30 @@ public class Diff
                 }
                 curDiff = pointer.hasNext() ? (Difference) pointer.next() : null;
             }
-            diffs.remove(diffs.size() - 1); // Remove the dummy entry at the end.
+            diffs.remove(diffs.size() - 1); // Remove the dummy entry at the
+            // end.
         }
         return diffs;
     }
 
     /**
-     * loc is a location in source, compute and return the equivalent location in
-     * target.
-     * e.g. "The cat" vs "The big cat", 1->1, 5->8
-     * @param diffs List of Difference objects
-     * @param loc Location within source
+     * loc is a location in source, compute and return the equivalent location
+     * in target. e.g. "The cat" vs "The big cat", 1->1, 5->8
+     * 
+     * @param diffs
+     *            List of Difference objects
+     * @param loc
+     *            Location within source
      * @return Location within target
      */
-    public int xIndex(final List diffs, final int loc)
-    {
+    public int xIndex(final List diffs, final int loc) {
         int chars1 = 0;
         int chars2 = 0;
         int lastChars1 = 0;
         int lastChars2 = 0;
         Difference lastDiff = null;
         Iterator iter = diffs.iterator();
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             Difference diff = (Difference) iter.next();
             EditType editType = diff.getEditType();
 
@@ -288,7 +279,10 @@ public class Diff
             lastChars2 = chars2;
         }
 
-        if (lastDiff != null && EditType.DELETE.equals(lastDiff.getEditType())) // The location was deleted.
+        if (lastDiff != null && EditType.DELETE.equals(lastDiff.getEditType())) // The
+        // location
+        // was
+        // deleted.
         {
             return lastChars2;
         }
@@ -299,34 +293,31 @@ public class Diff
 
     /**
      * Convert a Difference list into a pretty HTML report.
-     * @param diffs List of Difference objects
+     * 
+     * @param diffs
+     *            List of Difference objects
      * @return HTML representation
      */
-    public String prettyHtml(List diffs)
-    {
+    public String prettyHtml(List diffs) {
         StringBuffer buf = new StringBuffer();
-        for (int x = 0; x < diffs.size(); x++)
-        {
+        for (int x = 0; x < diffs.size(); x++) {
             Difference diff = (Difference) diffs.get(x);
-            EditType editType = diff.getEditType(); // Mode (delete, equal, insert)
+            EditType editType = diff.getEditType(); // Mode (delete, equal,
+            // insert)
             String text = diff.getText(); // Text of change.
             // TODO(DMS): Do replacements
-            // text = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            // text = text.replace(/&/g, "&amp;").replace(/</g,
+            // "&lt;").replace(/>/g, "&gt;");
             // text = text.replace(/\n/g, "&para;<BR>");
-            if (EditType.DELETE.equals(editType))
-            {
+            if (EditType.DELETE.equals(editType)) {
                 buf.append("<del style=\"background:#FFE6E6;\">"); //$NON-NLS-1$
                 buf.append(text);
                 buf.append("</del>"); //$NON-NLS-1$
-            }
-            else if (EditType.INSERT.equals(editType))
-            {
+            } else if (EditType.INSERT.equals(editType)) {
                 buf.append("<ins style=\"background:#E6FFE6;\">"); //$NON-NLS-1$
                 buf.append(text);
                 buf.append("</ins>"); //$NON-NLS-1$
-            }
-            else
-            {
+            } else {
                 buf.append("<span>"); //$NON-NLS-1$
                 buf.append(text);
                 buf.append("</span>"); //$NON-NLS-1$

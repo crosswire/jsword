@@ -36,35 +36,34 @@ import java.util.zip.InflaterInputStream;
  * A class can be Activatable if it needs a significant amount of memory on an
  * irregular basis, and so would benefit from being told when to wake-up and
  * when to conserver memory.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class Zip extends AbstractCompressor
-{
+public class Zip extends AbstractCompressor {
     /**
      * Create a Zip that is capable of transforming the input.
-     *
-     * @param input to compress or uncompress.
+     * 
+     * @param input
+     *            to compress or uncompress.
      */
-    public Zip(InputStream input)
-    {
+    public Zip(InputStream input) {
         super(input);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.compress.Compressor#compress()
      */
-    public ByteArrayOutputStream compress() throws IOException
-    {
+    public ByteArrayOutputStream compress() throws IOException {
         BufferedInputStream in = new BufferedInputStream(input);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         DeflaterOutputStream out = new DeflaterOutputStream(bos, new Deflater(), BUF_SIZE);
         byte[] buf = new byte[BUF_SIZE];
 
-        for (int count = in.read(buf); count != -1; count = in.read(buf))
-        {
+        for (int count = in.read(buf); count != -1; count = in.read(buf)) {
             out.write(buf, 0, count);
         }
         in.close();
@@ -73,26 +72,27 @@ public class Zip extends AbstractCompressor
         return bos;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.compress.Compressor#uncompress()
      */
-    public ByteArrayOutputStream uncompress() throws IOException
-    {
+    public ByteArrayOutputStream uncompress() throws IOException {
         return uncompress(BUF_SIZE);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.common.compress.Compressor#uncompress(int)
      */
-    public ByteArrayOutputStream uncompress(int expectedLength) throws IOException
-    {
+    public ByteArrayOutputStream uncompress(int expectedLength) throws IOException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         BufferedOutputStream out = new BufferedOutputStream(bos, expectedLength);
         InflaterInputStream in = new InflaterInputStream(input, new Inflater(), expectedLength);
         byte[] buf = new byte[expectedLength];
 
-        for (int count = in.read(buf); count != -1; count = in.read(buf))
-        {
+        for (int count = in.read(buf); count != -1; count = in.read(buf)) {
             out.write(buf, 0, count);
         }
         in.close();

@@ -70,15 +70,15 @@ import org.jdom.Element;
 
 /**
  * Implement the SearchEngine using Lucene as the search engine.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class LuceneIndex extends AbstractIndex implements Activatable
-{
-    /* The following fields are named the same as Sword in the hopes of
-     * sharing indexes.
+public class LuceneIndex extends AbstractIndex implements Activatable {
+    /*
+     * The following fields are named the same as Sword in the hopes of sharing
+     * indexes.
      */
     /**
      * The Lucene field for the osisID
@@ -112,39 +112,35 @@ public class LuceneIndex extends AbstractIndex implements Activatable
 
     /**
      * Read an existing index and use it.
-     * @throws BookException If we fail to read the index files
+     * 
+     * @throws BookException
+     *             If we fail to read the index files
      */
-    public LuceneIndex(Book book, URI storage) throws BookException
-    {
+    public LuceneIndex(Book book, URI storage) throws BookException {
         this.book = book;
 
-        try
-        {
+        try {
             this.path = NetUtil.getAsFile(storage).getCanonicalPath();
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             throw new BookException(UserMsg.LUCENE_INIT, ex);
         }
     }
 
     /**
      * Generate an index to use, telling the job about progress as you go.
-     * @throws BookException If we fail to read the index files
+     * 
+     * @throws BookException
+     *             If we fail to read the index files
      */
-    public LuceneIndex(Book book, URI storage, boolean create) throws BookException
-    {
+    public LuceneIndex(Book book, URI storage, boolean create) throws BookException {
         assert create;
 
         this.book = book;
         File finalPath = null;
-        try
-        {
+        try {
             finalPath = NetUtil.getAsFile(storage);
             this.path = finalPath.getCanonicalPath();
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             throw new BookException(UserMsg.LUCENE_INIT, ex);
         }
 
@@ -160,19 +156,19 @@ public class LuceneIndex extends AbstractIndex implements Activatable
         List errors = new ArrayList();
         File tempPath = new File(path + '.' + IndexStatus.CREATING.toString());
 
-        try
-        {
-            synchronized (CREATING)
-            {
+        try {
+            synchronized (CREATING) {
 
                 book.setIndexStatus(IndexStatus.CREATING);
 
-                // An index is created by opening an IndexWriter with the create argument set to true.
-                //IndexWriter writer = new IndexWriter(tempPath.getCanonicalPath(), analyzer, true);
+                // An index is created by opening an IndexWriter with the create
+                // argument set to true.
+                // IndexWriter writer = new
+                // IndexWriter(tempPath.getCanonicalPath(), analyzer, true);
 
                 // Create the index in core.
                 final RAMDirectory ramDir = new RAMDirectory();
-                IndexWriter  writer = new IndexWriter(ramDir, analyzer, true, IndexWriter.MaxFieldLength.UNLIMITED);
+                IndexWriter writer = new IndexWriter(ramDir, analyzer, true, IndexWriter.MaxFieldLength.UNLIMITED);
 
                 generateSearchIndexImpl(job, errors, writer, book.getGlobalKeyList(), 0);
 
@@ -186,7 +182,9 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                 // Write the core index to disk.
                 final Directory destination = FSDirectory.open(new File(tempPath.getCanonicalPath()));
                 IndexWriter fsWriter = new IndexWriter(destination, analyzer, true, IndexWriter.MaxFieldLength.UNLIMITED);
-                fsWriter.addIndexesNoOptimize(new Directory[] { ramDir });
+                fsWriter.addIndexesNoOptimize(new Directory[] {
+                    ramDir
+                });
                 fsWriter.optimize();
                 fsWriter.close();
 
@@ -194,25 +192,20 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                 ramDir.close();
 
                 job.setCancelable(false);
-                if (!job.isFinished())
-                {
-                    if (!tempPath.renameTo(finalPath))
-                    {
+                if (!job.isFinished()) {
+                    if (!tempPath.renameTo(finalPath)) {
                         throw new BookException(UserMsg.INSTALL_FAIL);
                     }
                 }
 
-                if (finalPath.exists())
-                {
+                if (finalPath.exists()) {
                     finalStatus = IndexStatus.DONE;
                 }
 
-                if (!errors.isEmpty())
-                {
+                if (!errors.isEmpty()) {
                     StringBuffer buf = new StringBuffer();
                     Iterator iter = errors.iterator();
-                    while (iter.hasNext())
-                    {
+                    while (iter.hasNext()) {
                         buf.append(iter.next());
                         buf.append('\n');
                     }
@@ -220,33 +213,28 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                 }
 
             }
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             job.cancel();
             throw new BookException(UserMsg.LUCENE_INIT, ex);
-        }
-        finally
-        {
+        } finally {
             book.setIndexStatus(finalStatus);
             job.done();
         }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.index.search.Index#findWord(java.lang.String)
      */
-    public Key find(String search) throws BookException
-    {
+    public Key find(String search) throws BookException {
         checkActive();
 
         SearchModifier modifier = getSearchModifier();
         Key results = null;
 
-        if (search != null)
-        {
-            try
-            {
+        if (search != null) {
+            try {
                 Analyzer analyzer = new LuceneAnalyzer(book);
 
                 QueryParser parser = new QueryParser(LuceneIndex.FIELD_BODY, analyzer);
@@ -255,8 +243,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                 log.info("ParsedQuery-" + query.toString()); //$NON-NLS-1$
 
                 // For ranking we use a PassageTally
-                if (modifier != null && modifier.isRanked())
-                {
+                if (modifier != null && modifier.isRanked()) {
                     PassageTally tally = new PassageTally();
                     tally.raiseEventSuppresion();
                     tally.raiseNormalizeProtection();
@@ -266,119 +253,102 @@ public class LuceneIndex extends AbstractIndex implements Activatable
                     searcher.search(query, collector);
                     tally.setTotal(collector.getTotalHits());
                     ScoreDoc[] hits = collector.topDocs().scoreDocs;
-                    for (int i = 0; i < hits.length; i++)
-                    {
+                    for (int i = 0; i < hits.length; i++) {
                         int docId = hits[i].doc;
                         Document doc = searcher.doc(docId);
                         Key key = VerseFactory.fromString(doc.get(LuceneIndex.FIELD_KEY));
-                        // PassageTally understands a score of 0 as the verse not participating
+                        // PassageTally understands a score of 0 as the verse
+                        // not participating
                         int score = (int) (hits[i].score * 100 + 1);
                         tally.add(key, score);
                     }
                     tally.lowerNormalizeProtection();
                     tally.lowerEventSuppresionAndTest();
-                }
-                else
-                {
+                } else {
                     results = book.createEmptyKeyList();
                     // If we have an abstract passage,
                     // make sure it does not try to fire change events.
                     AbstractPassage passage = null;
-                    if (results instanceof AbstractPassage)
-                    {
+                    if (results instanceof AbstractPassage) {
                         passage = (AbstractPassage) results;
                         passage.raiseEventSuppresion();
                         passage.raiseNormalizeProtection();
                     }
                     searcher.search(query, new VerseCollector(searcher, results));
-                    if (passage != null)
-                    {
+                    if (passage != null) {
                         passage.lowerNormalizeProtection();
                         passage.lowerEventSuppresionAndTest();
                     }
                 }
-            }
-            catch (IOException e)
-            {
-                // The VerseCollector may throw IOExceptions that merely wrap a NoSuchVerseException
+            } catch (IOException e) {
+                // The VerseCollector may throw IOExceptions that merely wrap a
+                // NoSuchVerseException
                 Throwable cause = e.getCause();
-                if (cause instanceof NoSuchVerseException)
-                {
+                if (cause instanceof NoSuchVerseException) {
                     throw new BookException(UserMsg.SEARCH_FAILED, cause);
                 }
 
                 throw new BookException(UserMsg.SEARCH_FAILED, e);
-            }
-            catch (NoSuchVerseException e)
-            {
+            } catch (NoSuchVerseException e) {
                 throw new BookException(UserMsg.SEARCH_FAILED, e);
-            }
-            catch (ParseException e)
-            {
+            } catch (ParseException e) {
                 throw new BookException(UserMsg.SEARCH_FAILED, e);
-            }
-            finally
-            {
+            } finally {
                 Activator.deactivate(this);
             }
         }
 
-        if (results == null)
-        {
-            if (modifier != null && modifier.isRanked())
-            {
+        if (results == null) {
+            if (modifier != null && modifier.isRanked()) {
                 results = new PassageTally();
-            }
-            else
-            {
+            } else {
                 results = book.createEmptyKeyList();
             }
         }
         return results;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.index.search.Index#getKey(java.lang.String)
      */
-    public Key getKey(String name) throws NoSuchKeyException
-    {
+    public Key getKey(String name) throws NoSuchKeyException {
         return book.getKey(name);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.common.activate.Activatable#activate(org.crosswire.common
+     * .activate.Lock)
      */
-    public final void activate(Lock lock)
-    {
-        try
-        {
+    public final void activate(Lock lock) {
+        try {
             directory = FSDirectory.open(new File(path));
             searcher = new IndexSearcher(directory, true);
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             log.warn("second load failure", ex); //$NON-NLS-1$
         }
 
         active = true;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common
+     * .activate.Lock)
      */
-    public final void deactivate(Lock lock)
-    {
-        try
-        {
+    public final void deactivate(Lock lock) {
+        try {
             searcher.close();
             directory.close();
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             Reporter.informUser(this, ex);
-        }
-        finally
-        {
+        } finally {
             searcher = null;
             directory = null;
         }
@@ -389,10 +359,8 @@ public class LuceneIndex extends AbstractIndex implements Activatable
     /**
      * Helper method so we can quickly activate ourselves on access
      */
-    protected final void checkActive()
-    {
-        if (!active)
-        {
+    protected final void checkActive() {
+        if (!active) {
             Activator.activate(this);
         }
     }
@@ -400,8 +368,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable
     /**
      * Dig down into a Key indexing as we go.
      */
-    private void generateSearchIndexImpl(Progress job, List errors, IndexWriter writer, Key key, int count) throws BookException, IOException
-    {
+    private void generateSearchIndexImpl(Progress job, List errors, IndexWriter writer, Key key, int count) throws BookException, IOException {
         boolean hasStrongs = book.getBookMetaData().hasFeature(FeatureType.STRONGS_NUMBERS);
         boolean hasXRefs = book.getBookMetaData().hasFeature(FeatureType.SCRIPTURE_REFERENCES);
         boolean hasNotes = book.getBookMetaData().hasFeature(FeatureType.FOOTNOTES);
@@ -425,27 +392,20 @@ public class LuceneIndex extends AbstractIndex implements Activatable
 
         int size = key.getCardinality();
         int subCount = count;
-        for (Iterator it = key.iterator(); it.hasNext(); )
-        {
+        for (Iterator it = key.iterator(); it.hasNext();) {
             subkey = (Key) it.next();
-            if (subkey.canHaveChildren())
-            {
+            if (subkey.canHaveChildren()) {
                 generateSearchIndexImpl(job, errors, writer, subkey, subCount);
-            }
-            else
-            {
+            } else {
                 // Set up DataPolice for this key.
                 DataPolice.setKey(subkey);
 
                 data = new BookData(book, subkey);
                 osis = null;
 
-                try
-                {
+                try {
                     osis = data.getOsisFragment();
-                }
-                catch (BookException e)
-                {
+                } catch (BookException e) {
                     errors.add(subkey);
                     continue;
                 }
@@ -460,36 +420,30 @@ public class LuceneIndex extends AbstractIndex implements Activatable
 
                 addField(doc, bodyField, OSISUtil.getCanonicalText(osis));
 
-                if (hasStrongs)
-                {
+                if (hasStrongs) {
                     addField(doc, strongField, OSISUtil.getStrongsNumbers(osis));
                 }
 
-                if (hasXRefs)
-                {
+                if (hasXRefs) {
                     addField(doc, xrefField, OSISUtil.getReferences(osis));
                 }
 
-                if (hasNotes)
-                {
+                if (hasNotes) {
                     addField(doc, noteField, OSISUtil.getNotes(osis));
                 }
 
-                if (hasHeadings)
-                {
+                if (hasHeadings) {
                     addField(doc, headingField, OSISUtil.getHeadings(osis));
                 }
 
                 // Add the document if we added more than just the key.
-                if (doc.getFields().size() > 1)
-                {
+                if (doc.getFields().size() > 1) {
                     writer.addDocument(doc);
                 }
 
                 // report progress
                 rootName = subkey.getRootName();
-                if (!rootName.equals(oldRootName))
-                {
+                if (!rootName.equals(oldRootName)) {
                     oldRootName = rootName;
                     job.setSectionName(rootName);
                 }
@@ -501,25 +455,23 @@ public class LuceneIndex extends AbstractIndex implements Activatable
 
                 // This could take a long time ...
                 Thread.yield();
-                if (Thread.currentThread().isInterrupted())
-                {
+                if (Thread.currentThread().isInterrupted()) {
                     break;
                 }
             }
         }
     }
 
-    private void addField(Document doc, Field field, String text)
-    {
-        if (text != null && text.length() > 0)
-        {
+    private void addField(Document doc, Field field, String text) {
+        if (text != null && text.length() > 0) {
             field.setValue(text);
             doc.add(field);
         }
     }
 
     /**
-     * A synchronization lock point to prevent us from doing 2 index runs at a time.
+     * A synchronization lock point to prevent us from doing 2 index runs at a
+     * time.
      */
     private static final Object CREATING = new Object();
 

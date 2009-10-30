@@ -25,21 +25,19 @@ import org.crosswire.common.util.MsgBase;
 
 /**
  * Compile safe Msg resource settings.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-final class UserMsg extends MsgBase
-{
+final class UserMsg extends MsgBase {
     static final UserMsg NOT_FOUND = new UserMsg("ReadingsBook.NotFound"); //$NON-NLS-1$
     static final UserMsg TITLE = new UserMsg("ReadingsBookDriver.Title"); //$NON-NLS-1$
 
     /**
      * Passthrough ctor
      */
-    private UserMsg(String name)
-    {
+    private UserMsg(String name) {
         super(name);
     }
 }

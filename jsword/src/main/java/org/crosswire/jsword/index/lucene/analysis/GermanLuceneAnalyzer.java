@@ -31,29 +31,24 @@ import org.apache.lucene.analysis.de.GermanStemFilter;
 
 /**
  * Based on Lucene's GermanAnalyzer
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Sijo Cherian [sijocherian at yahoo dot com]
  */
-public class GermanLuceneAnalyzer extends AbstractBookAnalyzer
-{
-    public GermanLuceneAnalyzer()
-    {
+public class GermanLuceneAnalyzer extends AbstractBookAnalyzer {
+    public GermanLuceneAnalyzer() {
         stopSet = StopFilter.makeStopSet(GermanAnalyzer.GERMAN_STOP_WORDS);
     }
 
-    public TokenStream tokenStream(String fieldName, Reader reader)
-    {
+    public TokenStream tokenStream(String fieldName, Reader reader) {
         TokenStream result = new LowerCaseTokenizer(reader);
 
-        if (doStopWords && stopSet != null)
-        {
+        if (doStopWords && stopSet != null) {
             result = new StopFilter(false, result, stopSet);
         }
 
-        if (doStemming)
-        {
+        if (doStemming) {
             result = new GermanStemFilter(result);
         }
 

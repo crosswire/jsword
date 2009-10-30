@@ -28,38 +28,35 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * A StrongsMapSet is keyed by a Strong's Number of the form Gd or Hd,
- * where G and H stand for Greek and Hebrew respectively and d is the
- * actual number, zero padded to 4 digits. The value for a MapEntry
- * is a Set of Strings, which are the various ways a Strong's Number
- * is marked up.
- *
- * @see gnu.lgpl.License for license details.
+ * A StrongsMapSet is keyed by a Strong's Number of the form Gd or Hd, where G
+ * and H stand for Greek and Hebrew respectively and d is the actual number,
+ * zero padded to 4 digits. The value for a MapEntry is a Set of Strings, which
+ * are the various ways a Strong's Number is marked up.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class StrongsMapSet
-{
+public class StrongsMapSet {
     /**
      * Build an empty Strong's Map Set.
      */
-    public StrongsMapSet()
-    {
+    public StrongsMapSet() {
         map = new HashMap();
     }
 
     /**
      * Add a String representing the content of an instance of a Strong's Number
      * in a text.
-     *
-     * @param strongsNumber the Strong's Number
-     * @param representation a way the Strong's number is represented.
+     * 
+     * @param strongsNumber
+     *            the Strong's Number
+     * @param representation
+     *            a way the Strong's number is represented.
      */
-    public void add(String strongsNumber, String representation)
-    {
+    public void add(String strongsNumber, String representation) {
         Set reps = (Set) map.get(strongsNumber);
-        if (reps == null)
-        {
+        if (reps == null) {
             reps = new TreeSet();
             map.put(strongsNumber, reps);
         }
@@ -69,11 +66,11 @@ public class StrongsMapSet
 
     /**
      * Get the set of all representations for a Strong's Number.
+     * 
      * @param strongsNumber
      * @return the whole set
      */
-    public Set get(String strongsNumber)
-    {
+    public Set get(String strongsNumber) {
         return (Set) map.get(strongsNumber);
     }
 

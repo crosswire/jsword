@@ -21,50 +21,53 @@
  */
 package org.crosswire.jsword.index.search;
 
-
 /**
  * A default implementation of a SearchRequest.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class DefaultSearchRequest implements SearchRequest
-{
+public class DefaultSearchRequest implements SearchRequest {
     /**
-     * Create a DefaultSearchRequest for the provided request and
-     * the provided modifiers.
-     * @param theRequest what is being searched
-     * @param theModifier how the search is to be modified
+     * Create a DefaultSearchRequest for the provided request and the provided
+     * modifiers.
+     * 
+     * @param theRequest
+     *            what is being searched
+     * @param theModifier
+     *            how the search is to be modified
      */
-    public DefaultSearchRequest(String theRequest, SearchModifier theModifier)
-    {
+    public DefaultSearchRequest(String theRequest, SearchModifier theModifier) {
         request = theRequest;
         modifier = theModifier;
     }
 
     /**
      * Create a DefaultSearchRequest for the provided request.
-     * @param theRequest what is being searched
+     * 
+     * @param theRequest
+     *            what is being searched
      */
-    public DefaultSearchRequest(String theRequest)
-    {
+    public DefaultSearchRequest(String theRequest) {
         this(theRequest, null);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.index.search.SearchRequest#isRanked()
      */
-    public SearchModifier getSearchModifier()
-    {
+    public SearchModifier getSearchModifier() {
         return modifier;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.index.search.SearchRequest#getRequest()
      */
-    public String getRequest()
-    {
+    public String getRequest() {
         return request;
     }
 

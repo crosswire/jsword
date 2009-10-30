@@ -28,24 +28,27 @@ import org.crosswire.jsword.passage.Key;
 
 /**
  * A generic interface for things that can convert a String into OSIS data.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public interface Filter extends Cloneable
-{
+public interface Filter extends Cloneable {
     /**
      * Converter from plain (encoded) text to OSIS data
-     * @param key The key for the text
-     * @param plain The encoded text
+     * 
+     * @param key
+     *            The key for the text
+     * @param plain
+     *            The encoded text
      * @return a List of OSIS Elements
      */
     List toOSIS(Book book, Key key, String plain) throws FilterException;
 
     /**
-     * This needs to be declared here so that it is visible as a method
-     * on a derived Key.
+     * This needs to be declared here so that it is visible as a method on a
+     * derived Key.
+     * 
      * @return A complete copy of ourselves
      */
     Object clone();

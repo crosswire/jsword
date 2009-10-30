@@ -39,23 +39,20 @@ import org.jdom.Element;
 
 /**
  * DefaultBookMetaData is an implementation of the of the BookMetaData
- * interface. A less complete implementation design for inheritance is
- * available in AbstractBookMetaData where the complexity is in the setup rather
- * than the inheritance. DefaultBookMetaData is probably the preferred
- * implementation.
- *
- * @see gnu.lgpl.License for license details.
+ * interface. A less complete implementation design for inheritance is available
+ * in AbstractBookMetaData where the complexity is in the setup rather than the
+ * inheritance. DefaultBookMetaData is probably the preferred implementation.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class DefaultBookMetaData extends AbstractBookMetaData
-{
+public class DefaultBookMetaData extends AbstractBookMetaData {
     /**
-     * Ctor with a properties from which to get values.
-     * A call to setBook() is still required after this ctor is called
+     * Ctor with a properties from which to get values. A call to setBook() is
+     * still required after this ctor is called
      */
-    public DefaultBookMetaData(BookDriver driver, Book book, Map prop)
-    {
+    public DefaultBookMetaData(BookDriver driver, Book book, Map prop) {
         setDriver(driver);
 
         setProperties(prop);
@@ -65,81 +62,76 @@ public class DefaultBookMetaData extends AbstractBookMetaData
         setLanguage(new Language(lang));
 
         IndexManager imanager = IndexManagerFactory.getIndexManager();
-        if (imanager.isIndexed(book))
-        {
+        if (imanager.isIndexed(book)) {
             setIndexStatus(IndexStatus.DONE);
-        }
-        else
-        {
+        } else {
             setIndexStatus(IndexStatus.UNDONE);
         }
     }
 
     /**
-     * Ctor with some default values.
-     * A call to setBook() is still required after this ctor is called
+     * Ctor with some default values. A call to setBook() is still required
+     * after this ctor is called
      */
-    public DefaultBookMetaData(BookDriver driver, String name, BookCategory type)
-    {
+    public DefaultBookMetaData(BookDriver driver, String name, BookCategory type) {
         setDriver(driver);
         setName(name);
         setBookCategory(type);
         setLanguage(new Language(null)); // Default language
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#getType()
      */
-    public BookCategory getBookCategory()
-    {
+    public BookCategory getBookCategory() {
         return type;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#getName()
      */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#getInitials()
      */
-    public String getInitials()
-    {
+    public String getInitials() {
         return initials;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#isLeftToRight()
      */
-    public boolean isLeftToRight()
-    {
+    public boolean isLeftToRight() {
         return getLanguage().isLeftToRight();
     }
 
     /**
      * See note on setName() for side effect on setInitials(). If a value of
      * null is used then the initials are defaulted using the name
+     * 
      * @see DefaultBookMetaData#setName(String)
-     * @param initials The initials to set.
+     * @param initials
+     *            The initials to set.
      */
-    public void setInitials(String initials)
-    {
-        if (initials == null)
-        {
-            if (name == null)
-            {
+    public void setInitials(String initials) {
+        if (initials == null) {
+            if (name == null) {
                 this.initials = ""; //$NON-NLS-1$
-            }
-            else
-            {
+            } else {
                 this.initials = StringUtil.getInitials(name);
             }
-        }
-        else
-        {
+        } else {
             this.initials = initials;
         }
 
@@ -149,11 +141,12 @@ public class DefaultBookMetaData extends AbstractBookMetaData
     /**
      * Setting the name also sets some default initials, so if you wish to set
      * some specific initials then it should be done after setting the name.
+     * 
      * @see DefaultBookMetaData#setInitials(String)
-     * @param name The name to set.
+     * @param name
+     *            The name to set.
      */
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
 
         putProperty(KEY_NAME, this.name);
@@ -162,13 +155,12 @@ public class DefaultBookMetaData extends AbstractBookMetaData
     }
 
     /**
-     * @param aType The type to set.
+     * @param aType
+     *            The type to set.
      */
-    public void setBookCategory(BookCategory aType)
-    {
+    public void setBookCategory(BookCategory aType) {
         BookCategory t = aType;
-        if (t == null)
-        {
+        if (t == null) {
             t = BookCategory.BIBLE;
         }
         type = t;
@@ -177,25 +169,25 @@ public class DefaultBookMetaData extends AbstractBookMetaData
     }
 
     /**
-     * @param typestr The string version of the type to set.
+     * @param typestr
+     *            The string version of the type to set.
      */
-    public void setType(String typestr)
-    {
+    public void setType(String typestr) {
         BookCategory newType = null;
-        if (typestr != null)
-        {
+        if (typestr != null) {
             newType = BookCategory.fromString(typestr);
         }
 
         setBookCategory(newType);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#toOSIS()
      */
     /* @Override */
-    public Document toOSIS()
-    {
+    public Document toOSIS() {
         OSISUtil.OSISFactory factory = OSISUtil.factory();
         Element ele = factory.createTable();
         addRow(ele, "Initials", getInitials()); //$NON-NLS-1$
@@ -205,10 +197,8 @@ public class DefaultBookMetaData extends AbstractBookMetaData
         return new Document(ele);
     }
 
-    private void addRow(Element table, String key, String value)
-    {
-        if (value == null)
-        {
+    private void addRow(Element table, String key, String value) {
+        if (value == null) {
             return;
         }
 

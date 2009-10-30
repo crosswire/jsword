@@ -25,26 +25,27 @@ import org.jdom.Element;
 
 /**
  * Process the content of an element but to ignore the tag itself.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class IgnoreTag extends AnonymousTag
-{
+public class IgnoreTag extends AnonymousTag {
     /**
      * Simple ctor
      */
-    public IgnoreTag(String name)
-    {
+    public IgnoreTag(String name) {
         super(name);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.AbstractTag#processContent(org.jdom.Element)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.filter.thml.AbstractTag#processContent(org.
+     * jdom.Element)
      */
-    public void processContent(Element ele)
-    {
+    public void processContent(Element ele) {
         // Replace the parent with this element
         Element parent = ele.getParentElement();
         parent.removeContent(ele);

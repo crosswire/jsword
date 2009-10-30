@@ -30,29 +30,24 @@ import junit.framework.TestCase;
 /**
  * JUnit Test.
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class StringUtilTest extends TestCase
-{
-    public StringUtilTest(String s)
-    {
+public class StringUtilTest extends TestCase {
+    public StringUtilTest(String s) {
         super(s);
     }
 
     /* @Override */
-    protected void setUp() throws Exception
-    {
+    protected void setUp() throws Exception {
     }
 
     /* @Override */
-    protected void tearDown() throws Exception
-    {
+    protected void tearDown() throws Exception {
     }
 
-    public void testRead() throws Exception
-    {
+    public void testRead() throws Exception {
         PipedReader in = new PipedReader();
         PipedWriter pout = new PipedWriter(in);
         PrintWriter out = new PrintWriter(pout, true);
@@ -63,15 +58,13 @@ public class StringUtilTest extends TestCase
         assertEquals(StringUtil.read(in), "a b c d e" + StringUtil.NEWLINE + "f g h i j" + StringUtil.NEWLINE); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    public void testGetInitials() throws Exception
-    {
+    public void testGetInitials() throws Exception {
         assertEquals(StringUtil.getInitials("Church of England"), "CoE"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(StringUtil.getInitials("Java DataBase Connectivity"), "JDC"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(StringUtil.getInitials(""), ""); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    public void testCreateTitle() throws Exception
-    {
+    public void testCreateTitle() throws Exception {
         assertEquals(StringUtil.createTitle("OneTwo"), "One Two"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(StringUtil.createTitle("one_two"), "One Two"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(StringUtil.createTitle("ONeTWo"), "ONe TWo"); //$NON-NLS-1$ //$NON-NLS-2$

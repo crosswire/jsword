@@ -42,32 +42,27 @@ import org.jdom.Element;
 
 /**
  * Analyze Strong's Numbers in a module.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class StrongsAnalysis
-{
+public class StrongsAnalysis {
     /**
      *
      */
-    public StrongsAnalysis()
-    {
+    public StrongsAnalysis() {
         Book bible = Books.installed().getBook("KJV"); //$NON-NLS-1$
-        if (!bible.hasFeature(FeatureType.STRONGS_NUMBERS))
-        {
+        if (!bible.hasFeature(FeatureType.STRONGS_NUMBERS)) {
             bible = null;
             List bibles = Books.installed().getBooks(new BookFilters.BookFeatureFilter(FeatureType.STRONGS_NUMBERS));
 
-            if (!bibles.isEmpty())
-            {
+            if (!bibles.isEmpty()) {
                 bible = (Book) bibles.get(0);
             }
         }
 
-        if (bible == null)
-        {
+        if (bible == null) {
             return;
         }
 
@@ -82,30 +77,22 @@ public class StrongsAnalysis
      * @param errors
      * @param wholeBible
      */
-    public void analyze(StrongsMapSet sms, Book book, List errors, Key wholeBible)
-    {
+    public void analyze(StrongsMapSet sms, Book book, List errors, Key wholeBible) {
         Key subkey = null;
         BookData data = null;
         Element osis = null;
         StringBuffer buffer = new StringBuffer();
-        for (Iterator it = wholeBible.iterator(); it.hasNext(); )
-        {
+        for (Iterator it = wholeBible.iterator(); it.hasNext();) {
             subkey = (Key) it.next();
-            if (subkey.canHaveChildren())
-            {
+            if (subkey.canHaveChildren()) {
                 analyze(sms, book, errors, subkey);
-            }
-            else
-            {
+            } else {
                 data = new BookData(book, subkey);
                 osis = null;
 
-                try
-                {
+                try {
                     osis = data.getOsisFragment();
-                }
-                catch (BookException e)
-                {
+                } catch (BookException e) {
                     errors.add(subkey);
                     continue;
                 }
@@ -113,12 +100,10 @@ public class StrongsAnalysis
                 // Do the actual indexing
                 Collection allW = OSISUtil.getDeepContent(osis, OSISUtil.OSIS_ELEMENT_W);
                 Iterator wIter = allW.iterator();
-                while (wIter.hasNext())
-                {
+                while (wIter.hasNext()) {
                     // Clear out the buffer for re-use
                     int len = buffer.length();
-                    if (len > 0)
-                    {
+                    if (len > 0) {
                         buffer.delete(0, len);
                     }
 
@@ -128,19 +113,14 @@ public class StrongsAnalysis
                     String content = OSISUtil.getPlainText(wElement);
 
                     Matcher matcher = strongsNumberPattern.matcher(snAttr);
-                    while (matcher.find())
-                    {
-                        try
-                        {
+                    while (matcher.find()) {
+                        try {
                             StrongsNumber strongsNumber = new StrongsNumber(matcher.group(1));
-                            if (buffer.length() > 0)
-                            {
+                            if (buffer.length() > 0) {
                                 buffer.append(' ');
                             }
                             buffer.append(strongsNumber.getStrongsNumber());
-                        }
-                        catch (BookException e)
-                        {
+                        } catch (BookException e) {
                             errors.add(subkey);
                             continue;
                         }
@@ -148,7 +128,7 @@ public class StrongsAnalysis
 
                     // now we can actually store the mapping
                     sms.add(buffer.toString(), content);
-               }
+                }
             }
         }
     }
@@ -156,8 +136,7 @@ public class StrongsAnalysis
     /**
      * @param args
      */
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         new StrongsAnalysis();
     }
 

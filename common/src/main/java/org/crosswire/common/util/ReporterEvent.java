@@ -27,20 +27,21 @@ import org.crosswire.common.icu.NumberShaper;
 
 /**
  * An event indicating that some bit of data needs capturing.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class ReporterEvent extends EventObject
-{
+public class ReporterEvent extends EventObject {
     /**
      * Constructs an CaptureEvent object.
-     * @param source The event originator (typically <code>this</code>)
-     * @param ex An exception
+     * 
+     * @param source
+     *            The event originator (typically <code>this</code>)
+     * @param ex
+     *            An exception
      */
-    public ReporterEvent(Object source, Throwable ex)
-    {
+    public ReporterEvent(Object source, Throwable ex) {
         super(source);
 
         this.ex = ex;
@@ -49,11 +50,13 @@ public class ReporterEvent extends EventObject
 
     /**
      * Constructs an CaptureEvent object.
-     * @param source The event originator (typically <code>this</code>)
-     * @param message An message to log
+     * 
+     * @param source
+     *            The event originator (typically <code>this</code>)
+     * @param message
+     *            An message to log
      */
-    public ReporterEvent(Object source, String message)
-    {
+    public ReporterEvent(Object source, String message) {
         super(source);
 
         this.ex = null;
@@ -62,26 +65,22 @@ public class ReporterEvent extends EventObject
 
     /**
      * Returns a string specifying the source of the message.
+     * 
      * @return The Source as a String
      */
-    public String getSourceName()
-    {
+    public String getSourceName() {
         Object src = getSource();
 
         Class clazz;
-        if (src instanceof Class)
-        {
+        if (src instanceof Class) {
             clazz = (Class) src;
-        }
-        else
-        {
+        } else {
             clazz = src.getClass();
         }
 
         String full = clazz.getName();
         int lastDot = full.lastIndexOf('.');
-        if (lastDot == -1)
-        {
+        if (lastDot == -1) {
             return full;
         }
         return full.substring(lastDot + 1);
@@ -89,19 +88,19 @@ public class ReporterEvent extends EventObject
 
     /**
      * Returns the exception.
+     * 
      * @return the Exception
      */
-    public Throwable getException()
-    {
+    public Throwable getException() {
         return ex;
     }
 
     /**
      * Returns the message.
+     * 
      * @return the message
      */
-    public String getMessage()
-    {
+    public String getMessage() {
         return message;
     }
 

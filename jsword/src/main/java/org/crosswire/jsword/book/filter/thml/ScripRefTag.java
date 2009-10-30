@@ -32,39 +32,38 @@ import org.xml.sax.Attributes;
 
 /**
  * THML Tag to process the scripRef element.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class ScripRefTag extends AbstractTag
-{
-    /* (non-Javadoc)
+public class ScripRefTag extends AbstractTag {
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
-    public String getTagName()
-    {
+    public String getTagName() {
         return "scripRef"; //$NON-NLS-1$
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element,
+     * org.xml.sax.Attributes)
      */
     /* @Override */
-    public Element processTag(Element ele, Attributes attrs)
-    {
+    public Element processTag(Element ele, Attributes attrs) {
         Element reference = null;
 
         String refstr = attrs.getValue("passage"); //$NON-NLS-1$
-        if (refstr != null)
-        {
+        if (refstr != null) {
             Passage ref = null;
-            try
-            {
+            try {
                 ref = (Passage) keyf.getKey(refstr);
-            }
-            catch (NoSuchKeyException ex)
-            {
+            } catch (NoSuchKeyException ex) {
                 DataPolice.report("Unparsable passage: (" + refstr + ") due to " + ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
             }
 
@@ -72,39 +71,35 @@ public class ScripRefTag extends AbstractTag
             String osisname = ref != null ? ref.getOsisRef() : refstr;
             reference = OSISUtil.factory().createReference();
             reference.setAttribute(OSISUtil.OSIS_ATTR_REF, osisname);
-        }
-        else
-        {
+        } else {
             // The reference will be filled in by processContent
             reference = OSISUtil.factory().createReference();
         }
 
-        if (ele != null)
-        {
+        if (ele != null) {
             ele.addContent(reference);
         }
 
         return reference;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.AbstractTag#processContent(org.jdom.Element)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.filter.thml.AbstractTag#processContent(org.
+     * jdom.Element)
      */
     /* @Override */
-    public void processContent(Element ele)
-    {
+    public void processContent(Element ele) {
         String refstr = ele.getValue();
-        try
-        {
-            if (ele.getAttribute(OSISUtil.OSIS_ATTR_REF) == null)
-            {
+        try {
+            if (ele.getAttribute(OSISUtil.OSIS_ATTR_REF) == null) {
                 Passage ref = (Passage) keyf.getKey(refstr);
                 String osisname = ref.getOsisRef();
                 ele.setAttribute(OSISUtil.OSIS_ATTR_REF, osisname);
             }
-        }
-        catch (NoSuchKeyException ex)
-        {
+        } catch (NoSuchKeyException ex) {
             DataPolice.report("scripRef ahs no passage attribute, unable to guess: (" + refstr + ") due to " + ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }

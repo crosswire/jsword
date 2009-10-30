@@ -30,22 +30,19 @@ import org.crosswire.common.util.Language;
 
 /**
  * A Raw File format that allows for each verse to have it's own storage.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author mbergmann
  */
-public class ConfigEntryTableTest extends TestCase
-{
+public class ConfigEntryTableTest extends TestCase {
 
-    public void testCreateConfigEntryTableInstance()
-    {
+    public void testCreateConfigEntryTableInstance() {
         ConfigEntryTable table = new ConfigEntryTable("TestBook"); //$NON-NLS-1$
         assertNotNull(table);
     }
 
-    public void testAddConfigEntry()
-    {
+    public void testAddConfigEntry() {
         ConfigEntryTable table = new ConfigEntryTable("TestBook"); //$NON-NLS-1$
         assertNotNull(table);
 
@@ -53,8 +50,7 @@ public class ConfigEntryTableTest extends TestCase
         assertEquals("de", ((Language) table.getValue(ConfigEntryType.LANG)).getCode()); //$NON-NLS-1$
     }
 
-    public void testSaveConfigEntryTable()
-    {
+    public void testSaveConfigEntryTable() {
         ConfigEntryTable table = new ConfigEntryTable("TestBook"); //$NON-NLS-1$
         assertNotNull(table);
 
@@ -66,16 +62,11 @@ public class ConfigEntryTableTest extends TestCase
         assertEquals(table.getValue(ConfigEntryType.INITIALS), "TestBook"); //$NON-NLS-1$
 
         File configFile = new File("testconfig.conf"); //$NON-NLS-1$
-        try
-        {
+        try {
             table.save(configFile);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             assertTrue(false);
-        }
-        finally
-        {
+        } finally {
             configFile.delete();
         }
     }

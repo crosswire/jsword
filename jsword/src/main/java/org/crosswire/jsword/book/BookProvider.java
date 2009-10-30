@@ -21,24 +21,24 @@
  */
 package org.crosswire.jsword.book;
 
-
 /**
  * A BookSelectEvent happens whenever a user selects a book.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public interface BookProvider
-{
+public interface BookProvider {
     /**
      * Provide books.
+     * 
      * @return the books
      */
     Book[] getBooks();
 
     /**
      * Provide the first book.
+     * 
      * @return the first book
      */
     Book getFirstBook();

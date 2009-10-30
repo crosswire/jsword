@@ -42,13 +42,12 @@ import org.xml.sax.SAXException;
 
 /**
  * Start of a mechanism to extract a Dictionary module to OSIS.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class DictToOsis
-{
+public class DictToOsis {
     /**
      * The name of a Bible to find
      */
@@ -57,13 +56,11 @@ public class DictToOsis
     /**
      * @param args
      */
-    public static void main(String[] args) throws BookException, IOException
-    {
+    public static void main(String[] args) throws BookException, IOException {
         new DictToOsis().dump(BOOK_NAME);
     }
 
-    public void dump(String name) throws BookException, IOException
-    {
+    public void dump(String name) throws BookException, IOException {
         Books books = Books.installed();
         Book book = books.getBook(name);
         BookMetaData bmd = book.getBookMetaData();
@@ -75,17 +72,13 @@ public class DictToOsis
 
         // Get a verse iterator
         Iterator iter = keys.iterator();
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             Key key = (Key) iter.next();
             BookData bdata = new BookData(book, key);
             SAXEventProvider osissep = bdata.getSAXEventProvider();
-            try
-            {
+            try {
                 buildEntryOpen(buf, key.getName(), XMLUtil.writeToString(osissep));
-            }
-            catch (SAXException e)
-            {
+            } catch (SAXException e) {
                 e.printStackTrace(System.err);
             }
         }
@@ -93,15 +86,11 @@ public class DictToOsis
         buildDocumentClose(buf);
 
         Writer writer = null;
-        try
-        {
+        try {
             writer = new OutputStreamWriter(new FileOutputStream(bmd.getInitials() + ".xml"), "UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
             writer.write(buf.toString());
-        }
-        finally
-        {
-            if (writer != null)
-            {
+        } finally {
+            if (writer != null) {
                 writer.close();
             }
         }
@@ -110,26 +99,28 @@ public class DictToOsis
         parser.parse(bmd.getInitials() + ".xml"); //$NON-NLS-1$
     }
 
-    private void buildDocumentOpen(StringBuffer buf, BookMetaData bmd)
-    {
-        MessageFormat msgFormat = new MessageFormat("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<osis\n  xmlns=\"http://www.bibletechnologies.net/2003/OSIS/namespace\"\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n  xsi:schemaLocation=\"http://www.bibletechnologies.net/2003/OSIS/namespace osisCore.2.1.xsd\">\n<osisText osisIDWork=\"{0}\" osisRefWork=\"defaultReferenceScheme\" xml:lang=\"en\">\n  <header>\n    <work osisWork=\"{0}\">\n      <title>{1}</title>\n      <identifier type=\"OSIS\">Dict.{0}</identifier>\n      <refSystem>Dict.{0}</refSystem>\n    </work>\n    <work osisWork=\"defaultReferenceScheme\">\n      <refSystem>Dict.{0}</refSystem>\n    </work>\n  </header>\n<div>\n"); //$NON-NLS-1$
-        msgFormat.format(new Object[] { bmd.getInitials(), bmd.getName() }, buf, pos);
+    private void buildDocumentOpen(StringBuffer buf, BookMetaData bmd) {
+        MessageFormat msgFormat = new MessageFormat(
+                "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<osis\n  xmlns=\"http://www.bibletechnologies.net/2003/OSIS/namespace\"\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n  xsi:schemaLocation=\"http://www.bibletechnologies.net/2003/OSIS/namespace osisCore.2.1.xsd\">\n<osisText osisIDWork=\"{0}\" osisRefWork=\"defaultReferenceScheme\" xml:lang=\"en\">\n  <header>\n    <work osisWork=\"{0}\">\n      <title>{1}</title>\n      <identifier type=\"OSIS\">Dict.{0}</identifier>\n      <refSystem>Dict.{0}</refSystem>\n    </work>\n    <work osisWork=\"defaultReferenceScheme\">\n      <refSystem>Dict.{0}</refSystem>\n    </work>\n  </header>\n<div>\n"); //$NON-NLS-1$
+        msgFormat.format(new Object[] {
+                bmd.getInitials(), bmd.getName()
+        }, buf, pos);
     }
 
-    private void buildDocumentClose(StringBuffer buf)
-    {
+    private void buildDocumentClose(StringBuffer buf) {
         buf.append("</div>\n</osisText>\n</osis>\n"); //$NON-NLS-1$
     }
 
-    private void buildEntryOpen(StringBuffer buf, String entryName, String entryDef)
-    {
+    private void buildEntryOpen(StringBuffer buf, String entryName, String entryDef) {
         String tmp = entryName;
-        if (tmp.indexOf(' ') != -1)
-        {
+        if (tmp.indexOf(' ') != -1) {
             tmp = "x"; //$NON-NLS-1$
         }
-        MessageFormat msgFormat = new MessageFormat("<div type=\"entry\" osisID=\"{0}\" canonical=\"true\"><seg type=\"x-form\"><seg type=\"x-orth\">{0}</seg></seg><seg type=\"x-def\">{1}</seg></div>\n"); //$NON-NLS-1$
-        msgFormat.format(new Object[] { tmp, entryDef }, buf, pos);
+        MessageFormat msgFormat = new MessageFormat(
+                "<div type=\"entry\" osisID=\"{0}\" canonical=\"true\"><seg type=\"x-form\"><seg type=\"x-orth\">{0}</seg></seg><seg type=\"x-def\">{1}</seg></div>\n"); //$NON-NLS-1$
+        msgFormat.format(new Object[] {
+                tmp, entryDef
+        }, buf, pos);
     }
 
     private static FieldPosition pos = new FieldPosition(0);

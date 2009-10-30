@@ -42,32 +42,33 @@ import org.jdom.Document;
 
 /**
  * A utility class for loading and representing Sword book configs.
- *
- * <p>Config file format. See also:
- * <a href="http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout">
+ * 
+ * <p>
+ * Config file format. See also: <a href=
+ * "http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout">
  * http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout</a>
- *
- * <p> The contents of the About field are in rtf.
- * <p> \ is used as a continuation line.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * <p>
+ * The contents of the About field are in rtf.
+ * <p>
+ * \ is used as a continuation line.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Mark Goodwin [mark at thorubio dot org]
  * @author Joe Walker [joe at eireneh dot com]
  * @author Jacky Cheung
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class SwordBookMetaData extends AbstractBookMetaData
-{
+public final class SwordBookMetaData extends AbstractBookMetaData {
     /**
      * Loads a sword config from a given File.
-     *
+     * 
      * @param file
      * @param internal
      * @throws IOException
      */
-    public SwordBookMetaData(File file, String internal, URI bookRootPath) throws IOException
-    {
+    public SwordBookMetaData(File file, String internal, URI bookRootPath) throws IOException {
         cet = new ConfigEntryTable(internal);
         cet.load(file);
 
@@ -77,96 +78,102 @@ public final class SwordBookMetaData extends AbstractBookMetaData
 
     /**
      * Loads a sword config from a buffer.
-     *
+     * 
      * @param buffer
      * @param internal
      * @throws IOException
      */
-    public SwordBookMetaData(byte[] buffer, String internal) throws IOException
-    {
+    public SwordBookMetaData(byte[] buffer, String internal) throws IOException {
         cet = new ConfigEntryTable(internal);
         cet.load(buffer);
         buildProperties();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#isQuestionable()
      */
     /* @Override */
-    public boolean isQuestionable()
-    {
+    public boolean isQuestionable() {
         return cet.isQuestionable();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#isSupported()
      */
     /* @Override */
-    public boolean isSupported()
-    {
+    public boolean isSupported() {
         return cet.isSupported() && cet.getBookType().isSupported(this);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#isEnciphered()
      */
     /* @Override */
-    public boolean isEnciphered()
-    {
+    public boolean isEnciphered() {
         return cet.isEnciphered();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#isLocked()
      */
     /* @Override */
-    public boolean isLocked()
-    {
+    public boolean isLocked() {
         return cet.isLocked();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#unlock(String)
      */
     /* @Override */
-    public boolean unlock(String unlockKey)
-    {
+    public boolean unlock(String unlockKey) {
         return cet.unlock(unlockKey);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#getUnlockKey()
      */
-    public String getUnlockKey()
-    {
+    public String getUnlockKey() {
         return cet.getUnlockKey();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#getName()
      */
-    public String getName()
-    {
+    public String getName() {
         return (String) getProperty(ConfigEntryType.DESCRIPTION);
     }
 
     /**
      * Returns the Charset of the book based on the encoding attribute
+     * 
      * @return the charset of the book.
      */
-    public String getBookCharset()
-    {
+    public String getBookCharset() {
         return (String) ENCODING_JAVA.get(getProperty(ConfigEntryType.ENCODING));
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#getKeyType()
      */
-    public KeyType getKeyType()
-    {
+    public KeyType getKeyType() {
         BookType bookType = getBookType();
-        if (bookType == null)
-        {
+        if (bookType == null) {
             return null;
         }
         return bookType.getKeyType();
@@ -175,16 +182,14 @@ public final class SwordBookMetaData extends AbstractBookMetaData
     /**
      * Returns the Book Type.
      */
-    public BookType getBookType()
-    {
+    public BookType getBookType() {
         return cet.getBookType();
     }
 
     /**
      * Returns the sourceType.
      */
-    public Filter getFilter()
-    {
+    public Filter getFilter() {
         String sourcetype = (String) getProperty(ConfigEntryType.SOURCE_TYPE);
         return FilterFactory.getFilter(sourcetype);
     }
@@ -192,34 +197,35 @@ public final class SwordBookMetaData extends AbstractBookMetaData
     /**
      * @return Returns the relative path of the book's conf.
      */
-    public String getConfPath()
-    {
+    public String getConfPath() {
         return SwordConstants.DIR_CONF + '/' + getInitials().toLowerCase(Locale.ENGLISH) + SwordConstants.EXTENSION_CONF;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#setLibrary(java.net.URI)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.basic.AbstractBookMetaData#setLibrary(java.
+     * net.URI)
      */
-    public void setLibrary(URI library)
-    {
+    public void setLibrary(URI library) {
         // Ignore it if it is not supported.
-        if (!isSupported())
-        {
+        if (!isSupported()) {
             return;
         }
 
         cet.add(ConfigEntryType.LIBRARY_URL, library.toString());
         super.setLibrary(library);
 
-        // Currently all DATA_PATH entries end in / to indicate dirs or not to indicate file prefixes
+        // Currently all DATA_PATH entries end in / to indicate dirs or not to
+        // indicate file prefixes
         String datapath = (String) getProperty(ConfigEntryType.DATA_PATH);
 
         int lastSlash = datapath.lastIndexOf('/');
 
         // There were modules that did not have a valid datapath.
         // This should not be necessary
-        if (lastSlash == -1)
-        {
+        if (lastSlash == -1) {
             return;
         }
 
@@ -230,61 +236,64 @@ public final class SwordBookMetaData extends AbstractBookMetaData
         super.setLocation(location);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#getBookCategory()
      */
-    public BookCategory getBookCategory()
-    {
-        if (type == null)
-        {
+    public BookCategory getBookCategory() {
+        if (type == null) {
             type = (BookCategory) getProperty(ConfigEntryType.CATEGORY);
-            if (type == BookCategory.OTHER)
-            {
+            if (type == BookCategory.OTHER) {
                 type = getBookType().getBookCategory();
             }
         }
         return type;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#toOSIS()
      */
     /* @Override */
-    public Document toOSIS()
-    {
+    public Document toOSIS() {
         return new Document(cet.toOSIS());
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#getInitials()
      */
-    public String getInitials()
-    {
+    public String getInitials() {
         return (String) getProperty(ConfigEntryType.INITIALS);
     }
 
     /**
-     * Get the string value for the property or null if it is not defined.
-     * It is assumed that all properties gotten with this method are single line.
-     * @param entry the ConfigEntryType
+     * Get the string value for the property or null if it is not defined. It is
+     * assumed that all properties gotten with this method are single line.
+     * 
+     * @param entry
+     *            the ConfigEntryType
      * @return the property or null
      */
-    public Object getProperty(ConfigEntryType entry)
-    {
+    public Object getProperty(ConfigEntryType entry) {
         return cet.getValue(entry);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.BookMetaData#isLeftToRight()
      */
-    public boolean isLeftToRight()
-    {
+    public boolean isLeftToRight() {
         // This should return the dominate direction of the text, if it is BiDi,
         // then we have to guess.
         String dir = (String) getProperty(ConfigEntryType.DIRECTION);
-        if (ConfigEntryType.DIRECTION_BIDI.equals(dir))
-        {
-            // When BiDi, return the dominate direction based upon the Book's Language not Direction
+        if (ConfigEntryType.DIRECTION_BIDI.equals(dir)) {
+            // When BiDi, return the dominate direction based upon the Book's
+            // Language not Direction
             Language lang = (Language) getProperty(ConfigEntryType.LANG);
             return lang.isLeftToRight();
         }
@@ -292,14 +301,16 @@ public final class SwordBookMetaData extends AbstractBookMetaData
         return ConfigEntryType.DIRECTION_LTOR.equals(dir);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.BookMetaData#hasFeature(org.crosswire.jsword.book.FeatureType)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.BookMetaData#hasFeature(org.crosswire.jsword
+     * .book.FeatureType)
      */
     /* @Override */
-    public boolean hasFeature(FeatureType feature)
-    {
-        if (cet.match(ConfigEntryType.FEATURE, feature.toString()))
-        {
+    public boolean hasFeature(FeatureType feature) {
+        if (cet.match(ConfigEntryType.FEATURE, feature.toString())) {
             return true;
         }
         // Many "features" are GlobalOptionFilters, which in the Sword C++ API
@@ -307,38 +318,31 @@ public final class SwordBookMetaData extends AbstractBookMetaData
         // These mostly have the source type prepended to the feature
         StringBuffer buffer = new StringBuffer((String) getProperty(ConfigEntryType.SOURCE_TYPE));
         buffer.append(feature);
-        if (cet.match(ConfigEntryType.GLOBAL_OPTION_FILTER, buffer.toString()))
-        {
+        if (cet.match(ConfigEntryType.GLOBAL_OPTION_FILTER, buffer.toString())) {
             return true;
         }
         // But some do not
         return cet.match(ConfigEntryType.GLOBAL_OPTION_FILTER, feature.toString());
     }
 
-    private void buildProperties()
-    {
+    private void buildProperties() {
         // merge entries into properties file
         Iterator iter = cet.getKeys().iterator();
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             ConfigEntryType key = (ConfigEntryType) iter.next();
             Object value = cet.getValue(key);
             // value is null if the config entry was rejected.
-            if (value == null)
-            {
+            if (value == null) {
                 continue;
             }
-            if (value instanceof List)
-            {
+            if (value instanceof List) {
                 List list = (List) value;
                 StringBuffer combined = new StringBuffer();
                 boolean appendSeparator = false;
                 Iterator it = list.iterator();
-                while (it.hasNext())
-                {
+                while (it.hasNext()) {
                     String element = (String) it.next();
-                    if (appendSeparator)
-                    {
+                    if (appendSeparator) {
                         combined.append('\n');
                     }
                     combined.append(element);
@@ -350,25 +354,24 @@ public final class SwordBookMetaData extends AbstractBookMetaData
 
             putProperty(key.toString(), value);
         }
-//        Element ele = cet.toOSIS();
-//        SAXEventProvider sep = new JDOMSAXEventProvider(new Document(ele));
-//        try
-//        {
-//            System.out.println(XMLUtil.writeToString(sep));
-//        }
-//        catch(Exception e)
-//        {
-//        }
+        // Element ele = cet.toOSIS();
+        // SAXEventProvider sep = new JDOMSAXEventProvider(new Document(ele));
+        // try
+        // {
+        // System.out.println(XMLUtil.writeToString(sep));
+        // }
+        // catch(Exception e)
+        // {
+        // }
     }
 
     /**
      * Sword only recognizes two encodings for its modules: UTF-8 and LATIN1
-     * Sword uses MS Windows cp1252 for Latin 1 not the standard. Arrgh!
-     * The language strings need to be converted to Java charsets
+     * Sword uses MS Windows cp1252 for Latin 1 not the standard. Arrgh! The
+     * language strings need to be converted to Java charsets
      */
     private static final Map ENCODING_JAVA = new HashMap();
-    static
-    {
+    static {
         ENCODING_JAVA.put("Latin-1", "WINDOWS-1252"); //$NON-NLS-1$ //$NON-NLS-2$
         ENCODING_JAVA.put("UTF-8", "UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
     }

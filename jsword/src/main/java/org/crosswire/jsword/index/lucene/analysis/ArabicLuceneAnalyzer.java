@@ -33,71 +33,65 @@ import org.apache.lucene.analysis.ar.ArabicNormalizationFilter;
 import org.apache.lucene.analysis.ar.ArabicStemFilter;
 
 /**
- * An Analyzer whose {@link TokenStream} is built from a {@link ArabicLetterTokenizer}
- * filtered with {@link LowerCaseFilter}, 
- * {@link ArabicNormalizationFilter},
- * {@link ArabicStemFilter} (optional) and Arabic {@link StopFilter} (optional).
- *  
+ * An Analyzer whose {@link TokenStream} is built from a
+ * {@link ArabicLetterTokenizer} filtered with {@link LowerCaseFilter},
+ * {@link ArabicNormalizationFilter}, {@link ArabicStemFilter} (optional) and
+ * Arabic {@link StopFilter} (optional).
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class ArabicLuceneAnalyzer extends AbstractBookAnalyzer
-{
-    public ArabicLuceneAnalyzer() throws IOException
-    {
-        loadStopWords(ArabicAnalyzer.class,
-                      ArabicAnalyzer.DEFAULT_STOPWORD_FILE,
-                      ArabicAnalyzer.STOPWORDS_COMMENT);
+public class ArabicLuceneAnalyzer extends AbstractBookAnalyzer {
+    public ArabicLuceneAnalyzer() throws IOException {
+        loadStopWords(ArabicAnalyzer.class, ArabicAnalyzer.DEFAULT_STOPWORD_FILE, ArabicAnalyzer.STOPWORDS_COMMENT);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String, java.io.Reader)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String,
+     * java.io.Reader)
      */
-    public final TokenStream tokenStream(String fieldName, Reader reader)
-    {
+    public final TokenStream tokenStream(String fieldName, Reader reader) {
         TokenStream result = new ArabicLetterTokenizer(reader);
         result = new LowerCaseFilter(result);
         result = new ArabicNormalizationFilter(result);
-        if (doStopWords && stopSet != null)
-        {
+        if (doStopWords && stopSet != null) {
             result = new StopFilter(false, result, stopSet);
         }
 
-        if (doStemming)
-        {
+        if (doStemming) {
             result = new ArabicStemFilter(result);
         }
 
         return result;
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.lucene.analysis.Analyzer#reusableTokenStream(java.lang.String, java.io.Reader)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.apache.lucene.analysis.Analyzer#reusableTokenStream(java.lang.String,
+     * java.io.Reader)
      */
-    public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException
-    {
+    public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
         SavedStreams streams = (SavedStreams) getPreviousTokenStream();
-        if (streams == null)
-        {
+        if (streams == null) {
             streams = new SavedStreams();
             streams.setSource(new ArabicLetterTokenizer(reader));
             streams.setResult(new LowerCaseFilter(streams.getSource()));
             streams.setResult(new ArabicNormalizationFilter(streams.getResult()));
-            if (doStopWords && stopSet != null)
-            {
+            if (doStopWords && stopSet != null) {
                 streams.setResult(new StopFilter(false, streams.getResult(), stopSet));
             }
 
-            if (doStemming)
-            {
+            if (doStemming) {
                 streams.setResult(new ArabicStemFilter(streams.getResult()));
             }
 
             setPreviousTokenStream(streams);
-        }
-        else
-        {
+        } else {
             streams.getSource().reset(reader);
         }
         return streams.getResult();

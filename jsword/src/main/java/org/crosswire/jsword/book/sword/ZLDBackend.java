@@ -37,43 +37,35 @@ import org.crosswire.jsword.book.BookException;
 /**
  * An extension of RawLDBackend to read Z format files.
  * 
- * @see gnu.lgpl.License for license details. The copyright to this program is
- *      held by it's authors.
+ * @see gnu.lgpl.License for license details.<br>
+ *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class ZLDBackend extends RawLDBackend
-{
+public class ZLDBackend extends RawLDBackend {
     /**
      * Simple ctor
      */
-    public ZLDBackend(SwordBookMetaData sbmd)
-    {
+    public ZLDBackend(SwordBookMetaData sbmd) {
         super(sbmd, 4);
         this.lastBlockNum = -1;
         this.lastUncompressed = EMPTY_BYTES;
     }
 
-    protected String getRawText(DataEntry entry)
-    {
+    protected String getRawText(DataEntry entry) {
         DataIndex blockIndex = entry.getBlockIndex();
         long blockNum = blockIndex.getOffset();
         int blockEntry = blockIndex.getSize();
 
         // Can we get the data from the cache
         byte[] uncompressed = null;
-        if (blockNum == lastBlockNum)
-        {
+        if (blockNum == lastBlockNum) {
             uncompressed = lastUncompressed;
-        }
-        else
-        {
+        } else {
             byte[] temp;
-            try
-            {
+            try {
                 temp = SwordUtil.readRAF(zdxRaf, blockNum * ZDX_ENTRY_SIZE, ZDX_ENTRY_SIZE);
-                if (temp == null || temp.length == 0)
-                {
+                if (temp == null || temp.length == 0) {
                     return ""; //$NON-NLS-1$
                 }
 
@@ -90,17 +82,14 @@ public class ZLDBackend extends RawLDBackend
                 // cache the uncompressed data for next time
                 lastBlockNum = blockNum;
                 lastUncompressed = uncompressed;
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 return ""; //$NON-NLS-1$
             }
         }
 
         // get the "entry" from this block.
         int entryCount = SwordUtil.decodeLittleEndian32(uncompressed, 0);
-        if (blockEntry >= entryCount)
-        {
+        if (blockEntry >= entryCount) {
             return ""; //$NON-NLS-1$
         }
 
@@ -117,10 +106,11 @@ public class ZLDBackend extends RawLDBackend
     /*
      * (non-Javadoc)
      * 
-     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
+     * @see
+     * org.crosswire.common.activate.Activatable#activate(org.crosswire.common
+     * .activate.Lock)
      */
-    public void activate(Lock lock)
-    {
+    public void activate(Lock lock) {
         super.activate(lock);
 
         active = false;
@@ -132,39 +122,35 @@ public class ZLDBackend extends RawLDBackend
         lastUncompressed = EMPTY_BYTES;
 
         URI path = null;
-        try
-        {
+        try {
             path = getExpandedDataPath();
-        }
-        catch (BookException e)
-        {
+        } catch (BookException e) {
             Reporter.informUser(this, e);
             return;
         }
 
-        try
-        {
+        try {
             zdxFile = new File(path.getPath() + EXTENSION_Z_INDEX);
             zdtFile = new File(path.getPath() + EXTENSION_Z_DATA);
 
-            if (!zdxFile.canRead())
-            {
-                Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] { zdtFile.getAbsolutePath() }));
+            if (!zdxFile.canRead()) {
+                Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] {
+                    zdtFile.getAbsolutePath()
+                }));
                 return;
             }
 
-            if (!zdtFile.canRead())
-            {
-                Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] { zdtFile.getAbsolutePath() }));
+            if (!zdtFile.canRead()) {
+                Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] {
+                    zdtFile.getAbsolutePath()
+                }));
                 return;
             }
 
             // Open the files
             zdxRaf = new RandomAccessFile(zdxFile, FileUtil.MODE_READ);
             zdtRaf = new RandomAccessFile(zdtFile, FileUtil.MODE_READ);
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             log.error("failed to open files", ex); //$NON-NLS-1$
             zdxRaf = null;
             zdtRaf = null;
@@ -177,31 +163,25 @@ public class ZLDBackend extends RawLDBackend
     /*
      * (non-Javadoc)
      * 
-     * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
+     * @see
+     * org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common
+     * .activate.Lock)
      */
-    public void deactivate(Lock lock)
-    {
+    public void deactivate(Lock lock) {
         super.deactivate(lock);
         lastBlockNum = -1;
         lastUncompressed = EMPTY_BYTES;
 
-        try
-        {
-            if (zdxRaf != null)
-            {
+        try {
+            if (zdxRaf != null) {
                 zdxRaf.close();
             }
-            if (zdtRaf != null)
-            {
+            if (zdtRaf != null) {
                 zdtRaf.close();
             }
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             log.error("failed to close files", ex); //$NON-NLS-1$
-        }
-        finally
-        {
+        } finally {
             zdxRaf = null;
             zdtRaf = null;
         }
@@ -212,8 +192,7 @@ public class ZLDBackend extends RawLDBackend
     /**
      * Determine whether we are active.
      */
-    protected boolean isActive()
-    {
+    protected boolean isActive() {
         return active && super.isActive();
     }
 
@@ -224,8 +203,7 @@ public class ZLDBackend extends RawLDBackend
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    private void readObject(ObjectInputStream is) throws IOException, ClassNotFoundException
-    {
+    private void readObject(ObjectInputStream is) throws IOException, ClassNotFoundException {
         active = false;
         zdxFile = null;
         zdtFile = null;
@@ -237,55 +215,55 @@ public class ZLDBackend extends RawLDBackend
     }
 
     private static final String EXTENSION_Z_INDEX = ".zdx"; //$NON-NLS-1$
-    private static final String EXTENSION_Z_DATA  = ".zdt"; //$NON-NLS-1$
+    private static final String EXTENSION_Z_DATA = ".zdt"; //$NON-NLS-1$
 
-    private static final int    ZDX_ENTRY_SIZE    = 8;
-    private static final int    BLOCK_ENTRY_COUNT = 4;
-    private static final int    BLOCK_ENTRY_SIZE  = 8;
-    private static final byte[] EMPTY_BYTES       = new byte[0];
+    private static final int ZDX_ENTRY_SIZE = 8;
+    private static final int BLOCK_ENTRY_COUNT = 4;
+    private static final int BLOCK_ENTRY_SIZE = 8;
+    private static final byte[] EMPTY_BYTES = new byte[0];
 
     /**
      * Flags whether there are open files or not
      */
-    private transient boolean             active;
+    private transient boolean active;
 
     /**
      * The compressed index.
      */
-    private transient File                zdxFile;
+    private transient File zdxFile;
 
     /**
      * The compressed index random access file.
      */
-    private transient RandomAccessFile    zdxRaf;
+    private transient RandomAccessFile zdxRaf;
 
     /**
      * The compressed text.
      */
-    private transient File                zdtFile;
+    private transient File zdtFile;
 
     /**
      * The compressed text random access file.
      */
-    private transient RandomAccessFile    zdtRaf;
+    private transient RandomAccessFile zdtRaf;
 
     /**
      * The index of the block that is cached.
      */
-    private transient long                lastBlockNum;
+    private transient long lastBlockNum;
 
     /**
      * The cache for a read of a compressed block.
      */
-    private transient byte[]              lastUncompressed;
+    private transient byte[] lastUncompressed;
 
     /**
      * Serialization ID
      */
-    private static final long   serialVersionUID  = 3536098410391064446L;
+    private static final long serialVersionUID = 3536098410391064446L;
 
     /**
      * The log stream
      */
-    private static final Logger log               = Logger.getLogger(ZLDBackend.class);
+    private static final Logger log = Logger.getLogger(ZLDBackend.class);
 }

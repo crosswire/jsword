@@ -28,25 +28,22 @@ import org.crosswire.common.util.PluginUtil;
 
 /**
  * A Factory class for QueryBuilder.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class QueryBuilderFactory
-{
+public final class QueryBuilderFactory {
     /**
      * Prevent instantiation
      */
-    private QueryBuilderFactory()
-    {
+    private QueryBuilderFactory() {
     }
 
     /**
      * Create a new QueryBuilder.
      */
-    public static QueryBuilder getQueryBuilder()
-    {
+    public static QueryBuilder getQueryBuilder() {
         return instance;
     }
 
@@ -63,30 +60,18 @@ public final class QueryBuilderFactory
     /**
      * Setup the instance
      */
-    static
-    {
-        try
-        {
+    static {
+        try {
             instance = (QueryBuilder) PluginUtil.getImplementation(QueryBuilder.class);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             log.error("create QueryBuilder failed", e); //$NON-NLS-1$
-        }
-        catch (ClassCastException e)
-        {
+        } catch (ClassCastException e) {
             log.error("create QueryBuilder failed", e); //$NON-NLS-1$
-        }
-        catch (ClassNotFoundException e)
-        {
+        } catch (ClassNotFoundException e) {
             log.error("create QueryBuilder failed", e); //$NON-NLS-1$
-        }
-        catch (InstantiationException e)
-        {
+        } catch (InstantiationException e) {
             log.error("create QueryBuilder failed", e); //$NON-NLS-1$
-        }
-        catch (IllegalAccessException e)
-        {
+        } catch (IllegalAccessException e) {
             log.error("create QueryBuilder failed", e); //$NON-NLS-1$
         }
     }

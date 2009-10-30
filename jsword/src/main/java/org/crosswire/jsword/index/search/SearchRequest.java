@@ -25,13 +25,12 @@ import java.io.Serializable;
 
 /**
  * A SearchRequest consists of a string and modifiers for the search.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public interface SearchRequest extends Serializable
-{
+public interface SearchRequest extends Serializable {
     /**
      * @return the modifications to this SearchRequest
      */

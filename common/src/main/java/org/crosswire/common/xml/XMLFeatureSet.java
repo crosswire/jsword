@@ -54,16 +54,14 @@ import org.xml.sax.XMLReader;
 
 /**
  * A set of useful XML Features
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class XMLFeatureSet
-{
+public final class XMLFeatureSet {
 
-    public XMLFeatureSet()
-    {
+    public XMLFeatureSet() {
         features.put("n", new XMLFeatureState(XMLFeature.NAMESPACES, true)); //$NON-NLS-1$
         features.put("np", new XMLFeatureState(XMLFeature.NAMESPACE_PREFIX)); //$NON-NLS-1$
         features.put("v", new XMLFeatureState(XMLFeature.VALIDATION)); //$NON-NLS-1$
@@ -77,48 +75,42 @@ public final class XMLFeatureSet
         features.put("xl", new XMLFeatureState(XMLFeature.XINCLUDE_FIXUP_LANGUAGE, true)); //$NON-NLS-1$
 
         Iterator iter = features.entrySet().iterator();
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             Map.Entry entry = (Entry) iter.next();
             states.put(((XMLFeatureState) entry.getValue()).getFeature(), entry.getKey());
         }
     }
 
-    public void setFeatureState(XMLFeature feature, boolean state)
-    {
-       ((XMLFeatureState) features.get(states.get(feature))).setState(state);
+    public void setFeatureState(XMLFeature feature, boolean state) {
+        ((XMLFeatureState) features.get(states.get(feature))).setState(state);
     }
 
-    public void setFeatureStates(String[] argv)
-    {
+    public void setFeatureStates(String[] argv) {
         // process arguments
-        for (int i = 0; i < argv.length; i++)
-        {
+        for (int i = 0; i < argv.length; i++) {
             String arg = argv[i];
-            if (arg.charAt(0) == '-')
-            {
+            if (arg.charAt(0) == '-') {
                 String option = arg.substring(1);
                 String key = option.toLowerCase(Locale.ENGLISH);
                 XMLFeatureState feature = (XMLFeatureState) features.get(key);
-                if (feature != null)
-                {
+                if (feature != null) {
                     feature.setState(option.equals(key));
                 }
             }
         }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
     /* @Override */
-    public String toString()
-    {
+    public String toString() {
         StringBuffer buf = new StringBuffer();
         buf.append('\n');
         Iterator iter = features.values().iterator();
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             XMLFeatureState state = (XMLFeatureState) iter.next();
             buf.append(state.getFeature().toString()).append('\n');
         }
@@ -126,8 +118,7 @@ public final class XMLFeatureSet
     }
 
     /** Prints the usage. */
-    public void printUsage()
-    {
+    public void printUsage() {
         System.err.println("XML Feature Set options:"); //$NON-NLS-1$
         System.err.println("  -n  | -N    Turn on/off namespace processing."); //$NON-NLS-1$
         System.err.println("  -np | -NP   Turn on/off namespace prefixes."); //$NON-NLS-1$
@@ -151,11 +142,9 @@ public final class XMLFeatureSet
         System.err.println("              NOTE: Requires use of -xi and not supported by all parsers."); //$NON-NLS-1$
     }
 
-    public void setFeatures(XMLReader parser)
-    {
+    public void setFeatures(XMLReader parser) {
         Iterator iter = features.values().iterator();
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             XMLFeatureState state = (XMLFeatureState) iter.next();
             state.setFeature(parser);
         }
@@ -164,62 +153,51 @@ public final class XMLFeatureSet
     /**
      * A holder of the boolean state for a feature.
      */
-    private static class XMLFeatureState
-    {
-        public XMLFeatureState(XMLFeature feature, boolean state)
-        {
+    private static class XMLFeatureState {
+        public XMLFeatureState(XMLFeature feature, boolean state) {
             this.feature = feature;
             this.state = state;
         }
 
-        public XMLFeatureState(XMLFeature feature)
-        {
+        public XMLFeatureState(XMLFeature feature) {
             this(feature, false);
         }
 
         /**
          * @return Returns the feature.
          */
-        public XMLFeature getFeature()
-        {
+        public XMLFeature getFeature() {
             return feature;
         }
 
         /**
          * @return Returns the state.
          */
-        public boolean getState()
-        {
+        public boolean getState() {
             return state;
         }
 
         /**
          * Set the new state
+         * 
          * @param newState
          */
-        public void setState(boolean newState)
-        {
+        public void setState(boolean newState) {
             state = newState;
         }
 
         /**
          * Set the control state on the parser.
-         *
+         * 
          * @param parser
          */
-        public void setFeature(XMLReader parser)
-        {
+        public void setFeature(XMLReader parser) {
             String control = feature.getControl();
-            try
-            {
+            try {
                 parser.setFeature(control, state);
-            }
-            catch (SAXNotRecognizedException e)
-            {
+            } catch (SAXNotRecognizedException e) {
                 System.err.println("warning: Parser does not recognize feature (" + control + ")"); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-            catch (SAXNotSupportedException e)
-            {
+            } catch (SAXNotSupportedException e) {
                 System.err.println("warning: Parser does not support feature (" + control + ")"); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }

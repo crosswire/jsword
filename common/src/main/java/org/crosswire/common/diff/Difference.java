@@ -22,17 +22,16 @@
 package org.crosswire.common.diff;
 
 /**
- *
- * Represents a single difference, consisting of an EditType and associated text.
- *
+ * 
+ * Represents a single difference, consisting of an EditType and associated
+ * text.
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class Difference
-{
-    public Difference(EditType edit, String text)
-    {
+public class Difference {
+    public Difference(EditType edit, String text) {
         this.editType = edit;
         this.text = text;
     }
@@ -40,111 +39,109 @@ public class Difference
     /**
      * @return the EditType
      */
-    public EditType getEditType()
-    {
+    public EditType getEditType() {
         return editType;
     }
 
     /**
-     * @param newEditType the EditType to set
+     * @param newEditType
+     *            the EditType to set
      */
-    public void setEditType(EditType newEditType)
-    {
+    public void setEditType(EditType newEditType) {
         editType = newEditType;
     }
 
     /**
      * @return the text
      */
-    public String getText()
-    {
+    public String getText() {
         return text;
     }
 
     /**
-     * @param newText the text to set
+     * @param newText
+     *            the text to set
      */
-    public void setText(String newText)
-    {
+    public void setText(String newText) {
         text = newText;
     }
 
     /**
      * @return the index
      */
-    public int getIndex()
-    {
+    public int getIndex() {
         return index;
     }
 
     /**
-     * @param newIndex the index to set
+     * @param newIndex
+     *            the index to set
      */
-    public void setIndex(int newIndex)
-    {
+    public void setIndex(int newIndex) {
         index = newIndex;
     }
 
     /**
-     * @param addText the text to set
+     * @param addText
+     *            the text to set
      */
-    public void appendText(String addText)
-    {
+    public void appendText(String addText) {
         text += addText;
     }
 
     /**
-     * @param addText the text to set
+     * @param addText
+     *            the text to set
      */
-    public void appendText(char addText)
-    {
+    public void appendText(char addText) {
         text += addText;
     }
 
     /**
-     * @param addText the text to set
+     * @param addText
+     *            the text to set
      */
-    public void prependText(String addText)
-    {
+    public void prependText(String addText) {
         text = addText + text;
     }
 
     /**
-     * @param addText the text to set
+     * @param addText
+     *            the text to set
      */
-    public void prependText(char addText)
-    {
+    public void prependText(char addText) {
         text = addText + text;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         return editType.toString() + ':' + text;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
-    public int hashCode()
-    {
+    public int hashCode() {
         return 31 * editType.hashCode() + text.hashCode();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public boolean equals(Object obj)
-    {
-        if (this == obj)
-        {
+    public boolean equals(Object obj) {
+        if (this == obj) {
             return true;
         }
 
-        if (obj == null || getClass() != obj.getClass())
-        {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
 

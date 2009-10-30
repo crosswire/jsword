@@ -29,88 +29,97 @@ import org.crosswire.jsword.passage.RestrictionType;
 
 /**
  * A Backend that can be used as a global key list.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public abstract class AbstractKeyBackend extends AbstractBackend implements Key
-{
+public abstract class AbstractKeyBackend extends AbstractBackend implements Key {
     /**
      * Simple ctor
-     * @param sbmd the book's metadata
+     * 
+     * @param sbmd
+     *            the book's metadata
      */
-    public AbstractKeyBackend(SwordBookMetaData sbmd)
-    {
+    public AbstractKeyBackend(SwordBookMetaData sbmd) {
         super(sbmd);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#canHaveChildren()
      */
-    public boolean canHaveChildren()
-    {
+    public boolean canHaveChildren() {
         return false;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getChildCount()
      */
-    public int getChildCount()
-    {
+    public int getChildCount() {
         return 0;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#isEmpty()
      */
     /* @Override */
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return getCardinality() == 0;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage
+     * .Key)
      */
     /* @Override */
-    public boolean contains(Key key)
-    {
+    public boolean contains(Key key) {
         return indexOf(key) > 0;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#iterator()
      */
-    public Iterator iterator()
-    {
+    public Iterator iterator() {
         return new Iterator() {
 
-            /* (non-Javadoc)
+            /*
+             * (non-Javadoc)
+             * 
              * @see java.util.Iterator#hasNext()
              */
-            public boolean hasNext()
-            {
+            public boolean hasNext() {
                 return here < count;
             }
 
-            /* (non-Javadoc)
+            /*
+             * (non-Javadoc)
+             * 
              * @see java.util.Iterator#next()
              */
-            public Object next() throws NoSuchElementException
-            {
-                if (here >= count)
-                {
+            public Object next() throws NoSuchElementException {
+                if (here >= count) {
                     throw new NoSuchElementException();
                 }
                 return get(here++);
             }
 
-            /* (non-Javadoc)
+            /*
+             * (non-Javadoc)
+             * 
              * @see java.util.Iterator#remove()
              */
-            public void remove()
-            {
+            public void remove() {
                 throw new UnsupportedOperationException();
             }
 
@@ -119,155 +128,166 @@ public abstract class AbstractKeyBackend extends AbstractBackend implements Key
         };
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#add(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#add(org.crosswire.jsword.passage.Key)
      */
-    public void addAll(Key key)
-    {
+    public void addAll(Key key) {
         throw new UnsupportedOperationException();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#remove(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#remove(org.crosswire.jsword.passage.Key)
      */
-    public void removeAll(Key key)
-    {
+    public void removeAll(Key key) {
         throw new UnsupportedOperationException();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#clear()
      */
-    public void clear()
-    {
+    public void clear() {
         throw new UnsupportedOperationException();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getParent()
      */
-    public Key getParent()
-    {
+    public Key getParent() {
         return null;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#clone()
      */
-    public Object clone()
-    {
-        try
-        {
+    public Object clone() {
+        try {
             super.clone();
-        }
-        catch (CloneNotSupportedException e)
-        {
+        } catch (CloneNotSupportedException e) {
             assert false : e;
         }
         return this;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getName()
      */
-    public String getName()
-    {
+    public String getName() {
         return getBookMetaData().getInitials();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage
+     * .Key)
      */
-    public String getName(Key base)
-    {
+    public String getName(Key base) {
         return getName();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getOsisID()
      */
-    public String getOsisID()
-    {
+    public String getOsisID() {
         return getName();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getOsisRef()
      */
-    public String getOsisRef()
-    {
+    public String getOsisRef() {
         return getName();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getRootName()
      */
-    public String getRootName()
-    {
+    public String getRootName() {
         return getName();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#retainAll(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#retainAll(org.crosswire.jsword.passage
+     * .Key)
      */
-    public void retainAll(Key key)
-    {
+    public void retainAll(Key key) {
         throw new UnsupportedOperationException();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     /* @Override */
-    public boolean equals(Object obj)
-    {
+    public boolean equals(Object obj) {
         // Since this can not be null
-        if (obj == null)
-        {
+        if (obj == null) {
             return false;
         }
 
         // Check that that is the same as this
         // Don't use instanceOf since that breaks inheritance
-        if (!obj.getClass().equals(this.getClass()))
-        {
+        if (!obj.getClass().equals(this.getClass())) {
             return false;
         }
 
         return compareTo(obj) == 0;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
-    public int hashCode()
-    {
+    public int hashCode() {
         return getName().hashCode();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object obj)
-    {
+    public int compareTo(Object obj) {
         Key that = (Key) obj;
 
-        if (this == that)
-        {
+        if (this == that) {
             return 0;
         }
 
-        if (that == null)
-        {
+        if (that == null) {
             // he is empty, we are not so he is greater
             return -1;
         }
 
-
         int ret = this.getName().compareTo(that.getName());
 
-        if (ret != 0)
-        {
+        if (ret != 0) {
             return ret;
         }
 
@@ -278,20 +298,16 @@ public abstract class AbstractKeyBackend extends AbstractBackend implements Key
         Key thisfirst = null;
         Key thatfirst = null;
 
-        if (thisIter.hasNext())
-        {
+        if (thisIter.hasNext()) {
             thisfirst = (Key) thisIter.next();
         }
 
-        if (thatIter.hasNext())
-        {
+        if (thatIter.hasNext()) {
             thatfirst = (Key) thatIter.next();
         }
 
-        if (thisfirst == null)
-        {
-            if (thatfirst == null)
-            {
+        if (thisfirst == null) {
+            if (thatfirst == null) {
                 // we are both empty, and rank the same
                 return 0;
             }
@@ -299,8 +315,7 @@ public abstract class AbstractKeyBackend extends AbstractBackend implements Key
             return 1;
         }
 
-        if (thatfirst == null)
-        {
+        if (thatfirst == null) {
             // he is empty, we are not so he is greater
             return -1;
         }
@@ -308,11 +323,12 @@ public abstract class AbstractKeyBackend extends AbstractBackend implements Key
         return thisfirst.getName().compareTo(thatfirst.getName());
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#blur(int)
      */
-    public void blur(int by, RestrictionType restrict)
-    {
+    public void blur(int by, RestrictionType restrict) {
     }
 
     /**

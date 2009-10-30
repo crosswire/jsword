@@ -28,35 +28,34 @@ import org.crosswire.common.util.StringUtil;
 /**
  * .
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class SentanceUtilTest extends TestCase
-{
-    public SentanceUtilTest(String s)
-    {
+public class SentanceUtilTest extends TestCase {
+    public SentanceUtilTest(String s) {
         super(s);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see junit.framework.TestCase#setUp()
      */
     /* @Override */
-    protected void setUp() throws Exception
-    {
+    protected void setUp() throws Exception {
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see junit.framework.TestCase#tearDown()
      */
     /* @Override */
-    protected void tearDown() throws Exception
-    {
+    protected void tearDown() throws Exception {
     }
 
-    public void testTokenize() throws Exception
-    {
+    public void testTokenize() throws Exception {
         String[] sa;
 
         sa = SentenceUtil.tokenize("one two three"); //$NON-NLS-1$
@@ -118,8 +117,7 @@ public class SentanceUtilTest extends TestCase
         assertEquals(sa[3], "four?"); //$NON-NLS-1$
     }
 
-    public void testGetCase() throws Exception
-    {
+    public void testGetCase() throws Exception {
         assertEquals(CaseType.getCase("FRED"), CaseType.UPPER); //$NON-NLS-1$
         assertEquals(CaseType.getCase("F-ED"), CaseType.UPPER); //$NON-NLS-1$
         assertEquals(CaseType.getCase("F00D"), CaseType.UPPER); //$NON-NLS-1$
@@ -134,8 +132,7 @@ public class SentanceUtilTest extends TestCase
         // assertEquals(PassageUtil.getCase("FreD"), CaseType.SENTENCE);
     }
 
-    public void testSetCase() throws Exception
-    {
+    public void testSetCase() throws Exception {
         assertEquals(CaseType.UPPER.setCase("FRED"), "FRED"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(CaseType.UPPER.setCase("Fred"), "FRED"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(CaseType.UPPER.setCase("fred"), "FRED"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -168,8 +165,7 @@ public class SentanceUtilTest extends TestCase
         assertEquals(CaseType.SENTENCE.setCase(""), ""); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    public void testToSentenceCase() throws Exception
-    {
+    public void testToSentenceCase() throws Exception {
         assertEquals(CaseType.toSentenceCase("one"), "One"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(CaseType.toSentenceCase("one two"), "One two"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(CaseType.toSentenceCase("ONE"), "One"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -181,33 +177,38 @@ public class SentanceUtilTest extends TestCase
         assertEquals(CaseType.toSentenceCase("1 TWO"), "1 two"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    public void testStripPunctuation() throws Exception
-    {
+    public void testStripPunctuation() throws Exception {
         String[] sa;
 
-        sa = SentenceUtil.stripPunctuation(new String[] { "aaaa" }); //$NON-NLS-1$
+        sa = SentenceUtil.stripPunctuation(new String[] {
+            "aaaa"}); //$NON-NLS-1$
         assertEquals(sa.length, 1);
         assertEquals(sa[0], "aaaa"); //$NON-NLS-1$
-        sa = SentenceUtil.stripPunctuation(new String[] { "aaaa", "bbbb" }); //$NON-NLS-1$ //$NON-NLS-2$
+        sa = SentenceUtil.stripPunctuation(new String[] {
+                "aaaa", "bbbb"}); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(sa.length, 2);
         assertEquals(sa[0], "aaaa"); //$NON-NLS-1$
         assertEquals(sa[1], "bbbb"); //$NON-NLS-1$
-        sa = SentenceUtil.stripPunctuation(new String[] { "One", "Two", "Three" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        sa = SentenceUtil.stripPunctuation(new String[] {
+                "One", "Two", "Three"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         assertEquals(sa.length, 3);
         assertEquals(sa[0], "One"); //$NON-NLS-1$
         assertEquals(sa[1], "Two"); //$NON-NLS-1$
         assertEquals(sa[2], "Three"); //$NON-NLS-1$
-        sa = SentenceUtil.stripPunctuation(new String[] { " One ", " Two ", " Three " }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        sa = SentenceUtil.stripPunctuation(new String[] {
+                " One ", " Two ", " Three "}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         assertEquals(sa.length, 3);
         assertEquals(sa[0], "One"); //$NON-NLS-1$
         assertEquals(sa[1], "Two"); //$NON-NLS-1$
         assertEquals(sa[2], "Three"); //$NON-NLS-1$
-        sa = SentenceUtil.stripPunctuation(new String[] { " 'One's' " , "Two?",  "!Three-Four\" " }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
+        sa = SentenceUtil.stripPunctuation(new String[] {
+                " 'One's' ", "Two?", "!Three-Four\" "}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
         assertEquals(sa.length, 3);
         assertEquals(sa[0], "One's"); //$NON-NLS-1$
         assertEquals(sa[1], "Two"); //$NON-NLS-1$
         assertEquals(sa[2], "Three-Four"); //$NON-NLS-1$
-        sa = SentenceUtil.stripPunctuation(new String[] { " 'One's' ", " ,Two? ", " !Three-- ", " Four\" " }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        sa = SentenceUtil.stripPunctuation(new String[] {
+                " 'One's' ", " ,Two? ", " !Three-- ", " Four\" "}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         assertEquals(sa.length, 4);
         assertEquals(sa[0], "One's"); //$NON-NLS-1$
         assertEquals(sa[1], "Two"); //$NON-NLS-1$
@@ -215,8 +216,7 @@ public class SentanceUtilTest extends TestCase
         assertEquals(sa[3], "Four"); //$NON-NLS-1$
     }
 
-    public void testStripWordsStringArray() throws Exception
-    {
+    public void testStripWordsStringArray() throws Exception {
         String[] sa;
 
         sa = SentenceUtil.stripWords(StringUtil.split(" 'One's' ,Two? !Three-Four\" ")); //$NON-NLS-1$
@@ -234,7 +234,8 @@ public class SentanceUtilTest extends TestCase
         assertEquals(sa[3], "--"); //$NON-NLS-1$
         assertEquals(sa[4], "\""); //$NON-NLS-1$
 
-        sa = SentenceUtil.stripWords(new String[] { "'One's'", " ,Two? ", "!Three--", "Four\"" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        sa = SentenceUtil.stripWords(new String[] {
+                "'One's'", " ,Two? ", "!Three--", "Four\""}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         assertEquals(sa.length, 5);
         assertEquals(sa[0], "'"); //$NON-NLS-1$
         assertEquals(sa[1], "' ,"); //$NON-NLS-1$
@@ -243,28 +244,23 @@ public class SentanceUtilTest extends TestCase
         assertEquals(sa[4], "\""); //$NON-NLS-1$
     }
 
-    public void testUpdatePassageTally()
-    {
+    public void testUpdatePassageTally() {
         // SentenceUtil.updatePassageTally(version, tally, words);
     }
 
-    public void testUpdatePassageTallyFlat() throws Exception
-    {
+    public void testUpdatePassageTallyFlat() throws Exception {
         // SentenceUtil.updatePassageTallyFlat(version, tally, words);
     }
 
-    public void testGetPassage() throws Exception
-    {
+    public void testGetPassage() throws Exception {
         // Passage ref = SentenceUtil.getPassage(version, words);
     }
 
-    public void testIsNewPara() throws Exception
-    {
+    public void testIsNewPara() throws Exception {
         // boolean b = SentenceUtil.isNewPara(doc);
     }
 
-    public void testGetWords() throws Exception
-    {
+    public void testGetWords() throws Exception {
         String[] sa;
 
         sa = SentenceUtil.getWords("One Two three"); //$NON-NLS-1$
@@ -302,8 +298,7 @@ public class SentanceUtilTest extends TestCase
         assertEquals(sa[1], "two-three"); //$NON-NLS-1$
     }
 
-    public void testStripPunctuationWord() throws Exception
-    {
+    public void testStripPunctuationWord() throws Exception {
         assertEquals(SentenceUtil.stripPunctuationWord("abcde"), "abcde"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(SentenceUtil.stripPunctuationWord("a---e"), "a---e"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(SentenceUtil.stripPunctuationWord("a'''e"), "a'''e"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -364,21 +359,18 @@ public class SentanceUtilTest extends TestCase
         assertEquals(SentenceUtil.stripPunctuationWord(" $%^\" test %^&"), "test"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    public void testStripWordsStringString() throws Exception
-    {
+    public void testStripWordsStringString() throws Exception {
         // String s = SentenceUtil.stripWords(first, last);
     }
 
-    public void testFirstLetter() throws Exception
-    {
+    public void testFirstLetter() throws Exception {
         assertEquals(SentenceUtil.firstLetter("abcde"), 0); //$NON-NLS-1$
         assertEquals(SentenceUtil.firstLetter(" abcde"), 1); //$NON-NLS-1$
         assertEquals(SentenceUtil.firstLetter(" \"%abcde"), 3); //$NON-NLS-1$
         assertEquals(SentenceUtil.firstLetter(" \"%abcde--!   "), 3); //$NON-NLS-1$
     }
 
-    public void testLastLetter() throws Exception
-    {
+    public void testLastLetter() throws Exception {
         assertEquals(SentenceUtil.lastLetter("abcde"), 4); //$NON-NLS-1$
         assertEquals(SentenceUtil.lastLetter("abcde "), 4); //$NON-NLS-1$
         assertEquals(SentenceUtil.lastLetter("abcde\" "), 4); //$NON-NLS-1$
@@ -391,8 +383,7 @@ public class SentanceUtilTest extends TestCase
         assertEquals(SentenceUtil.lastLetter(" abcde\"%$-- "), 5); //$NON-NLS-1$
     }
 
-    public void testStripWords()
-    {
+    public void testStripWords() {
         assertEquals(SentenceUtil.stripWords("one", "two"), ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         assertEquals(SentenceUtil.stripWords("one,", "two"), ","); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         assertEquals(SentenceUtil.stripWords("one'", "two"), "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -414,7 +405,7 @@ public class SentanceUtilTest extends TestCase
         assertEquals(SentenceUtil.stripWords("one", " ,two"), " ,"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         assertEquals(SentenceUtil.stripWords("one", " 'two"), " '"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         assertEquals(SentenceUtil.stripWords("one", " -two"), " -"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        assertEquals(SentenceUtil.stripWords("one" , "#two"), "#"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals(SentenceUtil.stripWords("one", "#two"), "#"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         assertEquals(SentenceUtil.stripWords("one- ", "-two"), "- -"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         assertEquals(SentenceUtil.stripWords("-one- ", "-two-"), "- -"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         assertEquals(SentenceUtil.stripWords("one-world ", "two"), " "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

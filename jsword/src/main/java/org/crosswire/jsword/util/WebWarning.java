@@ -40,20 +40,15 @@ import org.crosswire.common.util.ResourceUtil;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class WebWarning
-{
+public class WebWarning {
     /**
      * This is a utility class, thus it's constructor is private.
      */
-    private WebWarning()
-    {
-        try
-        {
+    private WebWarning() {
+        try {
             Properties props = ResourceUtil.getProperties(getClass().getName());
             shown = Boolean.valueOf(props.getProperty(SHOWN_KEY, Boolean.valueOf(DEFAULT_SHOWN).toString())).booleanValue();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             shown = DEFAULT_SHOWN;
         }
     }
@@ -63,26 +58,22 @@ public class WebWarning
      * 
      * @return the singleton instance
      */
-    public static WebWarning instance()
-    {
+    public static WebWarning instance() {
         return instance;
     }
 
-  /**
-     * @param newShown Whether this WebWarning should be shown.
+    /**
+     * @param newShown
+     *            Whether this WebWarning should be shown.
      */
-    public void setShown(boolean newShown)
-    {
-        try
-        {
+    public void setShown(boolean newShown) {
+        try {
             shown = newShown;
             Properties props = new Properties();
             props.put(SHOWN_KEY, Boolean.valueOf(shown).toString());
             URI outputURI = CWProject.instance().getWritableURI(getClass().getName(), FileUtil.EXTENSION_PROPERTIES);
             NetUtil.storeProperties(props, outputURI, "JSword WebWarning"); //$NON-NLS-1$
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             log.error("Failed to save JSword WebWarning", ex); //$NON-NLS-1$
         }
     }
@@ -90,49 +81,46 @@ public class WebWarning
     /**
      * @return Whether this WebWarning should be shown.
      */
-    public boolean isShown()
-    {
+    public boolean isShown() {
         return shown;
     }
 
     /**
      * From configuration set the state.
-     * @param newShown Whether this WebWarning should be shown.
+     * 
+     * @param newShown
+     *            Whether this WebWarning should be shown.
      */
-    public static void setWarningShown(boolean newShown)
-    {
+    public static void setWarningShown(boolean newShown) {
         WebWarning.instance().setShown(newShown);
     }
 
     /**
      * @return Whether this WebWarning should be shown.
      */
-    public static boolean isWarningShown()
-    {
+    public static boolean isWarningShown() {
         return WebWarning.instance().isShown();
     }
 
     /**
      * @return a warning that the Internet is about to be accessed
      */
-    public String getWarning()
-    {
+    public String getWarning() {
         return UserMsg.WEB_WARNING.toString();
     }
 
     /**
      * @return indicate that the warning will be shown again
      */
-    public String getShownWarningLabel()
-    {
+    public String getShownWarningLabel() {
         return UserMsg.WEB_SHOW_WARNING.toString();
     }
 
     private static WebWarning instance = new WebWarning();
 
-    private static final String  SHOWN_KEY     = "shown"; //$NON-NLS-1$
+    private static final String SHOWN_KEY = "shown"; //$NON-NLS-1$
     private static final boolean DEFAULT_SHOWN = true;
-    private boolean              shown;
+    private boolean shown;
 
     /**
      * The log stream

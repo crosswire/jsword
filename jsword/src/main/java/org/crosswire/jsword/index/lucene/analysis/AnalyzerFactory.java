@@ -31,57 +31,45 @@ import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.book.Book;
 
 /**
- * A factory creating the appropriate Analyzer for natural language analysis of text for Lucene 
- * Indexing and Query Parsing.
- * Note: [Lang] refers to CommonName for ISO639 Language
- * Dependency: Analyzer from lucene contrib: lucene-analyzers-[version].jar, lucene-smartcn-[version].jar, lucene-snowball-[version].jar
+ * A factory creating the appropriate Analyzer for natural language analysis of
+ * text for Lucene Indexing and Query Parsing. Note: [Lang] refers to CommonName
+ * for ISO639 Language Dependency: Analyzer from lucene contrib:
+ * lucene-analyzers-[version].jar, lucene-smartcn-[version].jar,
+ * lucene-snowball-[version].jar
  * 
- * Properties used:
- * <Key> : <Value> 
- * Default.Analyzer : The default analyzer class
- * [Lang].Analyzer : Appropriate Analyzer class to be used for the language of the book
+ * Properties used: <Key> : <Value> Default.Analyzer : The default analyzer
+ * class [Lang].Analyzer : Appropriate Analyzer class to be used for the
+ * language of the book
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Sijo Cherian [sijocherian at yahoo dot com]
  */
-public final class AnalyzerFactory
-{
-    public AbstractBookAnalyzer createAnalyzer(Book book)
-    {
+public final class AnalyzerFactory {
+    public AbstractBookAnalyzer createAnalyzer(Book book) {
         AbstractBookAnalyzer newObject = null;
         Language lang = book == null ? null : book.getLanguage();
-        if (lang != null)
-        {
+        if (lang != null) {
             String aClass = getAnalyzerValue(lang);
 
             log.debug("Creating analyzer:" + aClass + " BookLang:" + lang); //$NON-NLS-1$ //$NON-NLS-2$
 
-            if (aClass != null)
-            {
-                try
-                {
+            if (aClass != null) {
+                try {
                     Class impl = ClassUtil.forName(aClass);
 
                     newObject = (AbstractBookAnalyzer) impl.newInstance();
-                }
-                catch (ClassNotFoundException e)
-                {
+                } catch (ClassNotFoundException e) {
                     log.error("Configuration error in AnalyzerFactory properties", e); //$NON-NLS-1$
-                }
-                catch (IllegalAccessException e)
-                {
+                } catch (IllegalAccessException e) {
                     log.error("Configuration error in AnalyzerFactory properties", e); //$NON-NLS-1$
-                }
-                catch (InstantiationException e)
-                {
+                } catch (InstantiationException e) {
                     log.error("Configuration error in AnalyzerFactory properties", e); //$NON-NLS-1$
                 }
             }
         }
 
-        if (newObject == null)
-        {
+        if (newObject == null) {
             newObject = new SimpleLuceneAnalyzer();
         }
 
@@ -92,50 +80,41 @@ public final class AnalyzerFactory
         return newObject;
     }
 
-    public static AnalyzerFactory getInstance()
-    {
+    public static AnalyzerFactory getInstance() {
         return myInstance;
     }
 
-    private AnalyzerFactory()
-    {
+    private AnalyzerFactory() {
         loadProperties();
     }
 
-    public String getAnalyzerValue(Language lang)
-    {
+    public String getAnalyzerValue(Language lang) {
         String key = lang.getCode() + ".Analyzer"; //$NON-NLS-1$
         return myProperties.getProperty(key);
     }
 
-    public boolean getDefaultStemmingProperty()
-    {
+    public boolean getDefaultStemmingProperty() {
         String key = DEFAULT_ID + ".Stemming"; //$NON-NLS-1$
         return Boolean.valueOf(myProperties.getProperty(key)).booleanValue();
     }
 
-    public boolean getDefaultStopWordProperty()
-    {
+    public boolean getDefaultStopWordProperty() {
         String key = DEFAULT_ID + ".StopWord"; //$NON-NLS-1$
         return Boolean.valueOf(myProperties.getProperty(key)).booleanValue();
     }
 
-    private void loadProperties()
-    {
-        try
-        {
+    private void loadProperties() {
+        try {
             myProperties = ResourceUtil.getProperties(getClass());
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             log.error("AnalyzerFactory property load from file failed", e); //$NON-NLS-1$
         }
     }
 
-    public static final String     DEFAULT_ID = "Default";                              //$NON-NLS-1$
-    private static final Logger    log        = Logger.getLogger(AnalyzerFactory.class);
+    public static final String DEFAULT_ID = "Default"; //$NON-NLS-1$
+    private static final Logger log = Logger.getLogger(AnalyzerFactory.class);
     private static AnalyzerFactory myInstance = new AnalyzerFactory();
 
-    private Properties             myProperties;
+    private Properties myProperties;
 
 }

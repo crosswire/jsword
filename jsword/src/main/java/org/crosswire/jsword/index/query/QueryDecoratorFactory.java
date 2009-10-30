@@ -28,25 +28,22 @@ import org.crosswire.common.util.PluginUtil;
 
 /**
  * A Factory class for QueryDecorator.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class QueryDecoratorFactory
-{
+public final class QueryDecoratorFactory {
     /**
      * Prevent instantiation
      */
-    private QueryDecoratorFactory()
-    {
+    private QueryDecoratorFactory() {
     }
 
     /**
      * Create a new QueryDecorator.
      */
-    public static QueryDecorator getSearchSyntax()
-    {
+    public static QueryDecorator getSearchSyntax() {
         return instance;
     }
 
@@ -63,30 +60,18 @@ public final class QueryDecoratorFactory
     /**
      * Setup the instance
      */
-    static
-    {
-        try
-        {
+    static {
+        try {
             instance = (QueryDecorator) PluginUtil.getImplementation(QueryDecorator.class);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             log.error("create QueryDecorator failed", e); //$NON-NLS-1$
-        }
-        catch (ClassCastException e)
-        {
+        } catch (ClassCastException e) {
             log.error("create QueryDecorator failed", e); //$NON-NLS-1$
-        }
-        catch (ClassNotFoundException e)
-        {
+        } catch (ClassNotFoundException e) {
             log.error("create QueryDecorator failed", e); //$NON-NLS-1$
-        }
-        catch (InstantiationException e)
-        {
+        } catch (InstantiationException e) {
             log.error("create QueryDecorator failed", e); //$NON-NLS-1$
-        }
-        catch (IllegalAccessException e)
-        {
+        } catch (IllegalAccessException e) {
             log.error("create QueryDecorator failed", e); //$NON-NLS-1$
         }
     }

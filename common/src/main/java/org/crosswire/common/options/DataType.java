@@ -28,23 +28,25 @@ import org.crosswire.common.util.Convert;
 
 /**
  * A DataType provides the ability to marshal a String value to an object.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public abstract class DataType implements Serializable
-{
+public abstract class DataType implements Serializable {
     /**
      * A string argument.
      */
     public static final DataType STRING = new DataType("String") //$NON-NLS-1$
     {
-        /* (non-Javadoc)
-         * @see org.crosswire.common.options.DataType#convertFromString(java.lang.String)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * org.crosswire.common.options.DataType#convertFromString(java.lang
+         * .String)
          */
-        public Object convertFromString(String value)
-        {
+        public Object convertFromString(String value) {
             return value;
         }
 
@@ -59,11 +61,14 @@ public abstract class DataType implements Serializable
      */
     public static final DataType INTEGER = new DataType("Integer") //$NON-NLS-1$
     {
-        /* (non-Javadoc)
-         * @see org.crosswire.common.options.DataType#convertFromString(java.lang.String)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * org.crosswire.common.options.DataType#convertFromString(java.lang
+         * .String)
          */
-        public Object convertFromString(String value)
-        {
+        public Object convertFromString(String value) {
             return new Integer(Convert.string2Int(value));
         }
 
@@ -78,11 +83,14 @@ public abstract class DataType implements Serializable
      */
     public static final DataType BOOLEAN = new DataType("Boolean") //$NON-NLS-1$
     {
-        /* (non-Javadoc)
-         * @see org.crosswire.common.options.DataType#convertFromString(java.lang.String)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * org.crosswire.common.options.DataType#convertFromString(java.lang
+         * .String)
          */
-        public Object convertFromString(String value)
-        {
+        public Object convertFromString(String value) {
             return Boolean.valueOf(Convert.string2Boolean(value));
         }
 
@@ -93,10 +101,10 @@ public abstract class DataType implements Serializable
     };
 
     /**
-     * @param name The name of the DataType
+     * @param name
+     *            The name of the DataType
      */
-    protected DataType(String name)
-    {
+    protected DataType(String name) {
         this.name = name;
     }
 
@@ -108,13 +116,10 @@ public abstract class DataType implements Serializable
     /**
      * Lookup method to convert from a String
      */
-    public static DataType fromString(String name)
-    {
-        for (int i = 0; i < VALUES.length; i++)
-        {
+    public static DataType fromString(String name) {
+        for (int i = 0; i < VALUES.length; i++) {
             DataType o = VALUES[i];
-            if (o.name.equalsIgnoreCase(name))
-            {
+            if (o.name.equalsIgnoreCase(name)) {
                 return o;
             }
         }
@@ -126,16 +131,16 @@ public abstract class DataType implements Serializable
     /**
      * Lookup method to convert from an integer
      */
-    public static DataType fromInteger(int i)
-    {
+    public static DataType fromInteger(int i) {
         return VALUES[i];
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         return name;
     }
 
@@ -148,14 +153,11 @@ public abstract class DataType implements Serializable
     private static int nextObj;
     private final int obj = nextObj++;
 
-    Object readResolve()
-    {
+    Object readResolve() {
         return VALUES[obj];
     }
 
-    private static final DataType[] VALUES =
-    {
-    };
+    private static final DataType[] VALUES = {};
 
     /**
      * Serialization ID

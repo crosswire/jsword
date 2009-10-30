@@ -49,27 +49,24 @@ import org.jdom.JDOMException;
 /**
  * Gather all references.
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class GatherAllReferences
-{
+public class GatherAllReferences {
     /**
      * Prevent instantiation
      */
-    private GatherAllReferences()
-    {
+    private GatherAllReferences() {
     }
 
     /**
      * Read all the books that we can get our hands on.
      */
-    public static void main(String[] args) throws IOException, JDOMException
-    {
+    public static void main(String[] args) throws IOException, JDOMException {
         out = new PrintWriter(new BufferedWriter(new FileWriter("passages.log"))); //$NON-NLS-1$
         // Calling Project.instance() will set up the project's home directory
-        //     ~/.jsword
+        // ~/.jsword
         // This will set it as a place to look for overrides for
         // ResourceBundles, properties and other resources
         CWProject.instance();
@@ -95,8 +92,7 @@ public class GatherAllReferences
         // Loop through all the Bookks
         log.warn("*** Reading all known Books"); //$NON-NLS-1$
         List comments = Books.installed().getBooks();
-        for (Iterator cit = comments.iterator(); cit.hasNext();)
-        {
+        for (Iterator cit = comments.iterator(); cit.hasNext();) {
             Book book = (Book) cit.next();
 
             BookMetaData bmd = book.getBookMetaData();
@@ -115,15 +111,15 @@ public class GatherAllReferences
     /**
      * Perform a test read on an iterator over a set of keys
      */
-    private static void readBook(Book book, Key set)
-    {
+    private static void readBook(Book book, Key set) {
         DataPolice.setBook(book.getBookMetaData());
 
-        int[] stats = new int[] { 0, 0 };
+        int[] stats = new int[] {
+                0, 0
+        };
 
         Iterator it = set.iterator();
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             readKey(book, (Key) it.next(), stats);
         }
         log.warn(book.getInitials() + ':' + stats[0] + ':' + stats[1]);
@@ -132,18 +128,13 @@ public class GatherAllReferences
 
     /**
      * Perform a test read on a single key
-     */    
-    private static void readKey(Book book, Key key, int[] stats)
-    {
-        try
-        {
+     */
+    private static void readKey(Book book, Key key, int[] stats) {
+        try {
             String orig;
-            try
-            {
+            try {
                 orig = book.getRawText(key);
-            }
-            catch (BookException ex)
-            {
+            } catch (BookException ex) {
                 log.warn("Failed to read: " + book.getInitials() + '(' + key.getName() + "):" + ex.getMessage(), ex); //$NON-NLS-1$ //$NON-NLS-2$
                 return;
             }
@@ -151,43 +142,34 @@ public class GatherAllReferences
             Matcher matcher = null;
             if (orig.indexOf("passage=\"") != -1) //$NON-NLS-1$
             {
-               matcher = thmlPassagePattern.matcher(orig);
-            }
-            else if (orig.indexOf("osisRef=\"") != -1) //$NON-NLS-1$
+                matcher = thmlPassagePattern.matcher(orig);
+            } else if (orig.indexOf("osisRef=\"") != -1) //$NON-NLS-1$
             {
                 matcher = osisPassagePattern.matcher(orig);
-            }
-            else if (orig.indexOf("<RX>") != -1) //$NON-NLS-1$
+            } else if (orig.indexOf("<RX>") != -1) //$NON-NLS-1$
             {
                 matcher = gbfPassagePattern.matcher(orig);
             }
 
-            if (matcher != null)
-            {
-                while (matcher.find())
-                {
+            if (matcher != null) {
+                while (matcher.find()) {
                     String rawRef = matcher.group(1);
                     stats[0]++;
                     String message = book.getInitials() + ':' + key.getOsisRef() + '/' + rawRef;
-                    try
-                    {
+                    try {
                         Key ref = keyf.getKey(rawRef);
                         message += '/' + ref.getOsisRef();
-                    }
-                    catch (NoSuchKeyException e)
-                    {
+                    } catch (NoSuchKeyException e) {
                         message += '!' + e.getMessage();
                         stats[1]++;
                     }
-                    
+
                     out.println(message);
                 }
             }
 
-        }
-        catch (Throwable ex)
-        {
-            log.error("Unexpected error reading: "+book.getInitials()+'(' + key.getName() + ')', ex); //$NON-NLS-1$
+        } catch (Throwable ex) {
+            log.error("Unexpected error reading: " + book.getInitials() + '(' + key.getName() + ')', ex); //$NON-NLS-1$
         }
     }
 

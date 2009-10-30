@@ -27,32 +27,34 @@ import org.xml.sax.Attributes;
 
 /**
  * THML Tag to process the blockquote element.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class BlockquoteTag extends AbstractTag
-{
-    /* (non-Javadoc)
+public class BlockquoteTag extends AbstractTag {
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
-    public String getTagName()
-    {
+    public String getTagName() {
         return "blockquote"; //$NON-NLS-1$
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element,
+     * org.xml.sax.Attributes)
      */
     /* @Override */
-    public Element processTag(Element ele, Attributes attrs)
-    {
+    public Element processTag(Element ele, Attributes attrs) {
         Element q = OSISUtil.factory().createQ();
         q.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.Q_BLOCK);
 
-        if (ele != null)
-        {
+        if (ele != null) {
             ele.addContent(q);
         }
 

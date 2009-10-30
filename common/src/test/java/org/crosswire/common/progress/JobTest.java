@@ -33,25 +33,24 @@ import org.crosswire.common.util.NetUtil;
 /**
  * JUnit Test.
  * 
- * @see gnu.lgpl.License for license details.
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class JobTest extends TestCase
-{
+public class JobTest extends TestCase {
 
     private static final String WIBBLE = "wibble"; //$NON-NLS-1$
+
     /**
      * Constructor for JobTest.
+     * 
      * @param arg0
      */
-    public JobTest(String arg0)
-    {
+    public JobTest(String arg0) {
         super(arg0);
     }
 
-    public void testJob() throws IOException, URISyntaxException
-    {
+    public void testJob() throws IOException, URISyntaxException {
         Progress job;
         File tempfile = File.createTempFile("jobtest", "tmp"); //$NON-NLS-1$ //$NON-NLS-2$
         URI uri = new URI(NetUtil.PROTOCOL_FILE, null, tempfile.getAbsolutePath(), null);
@@ -76,7 +75,7 @@ public class JobTest extends TestCase
         job.done();
         assertEquals(job.isFinished(), true);
         assertEquals(job.getWork(), 100);
-//        assertEquals(job.isCancelable(), false);
+        // assertEquals(job.isCancelable(), false);
 
         job = JobManager.createJob(WIBBLE, uri, false);
         assertEquals(job.getJobName(), WIBBLE);
@@ -87,7 +86,7 @@ public class JobTest extends TestCase
         job.done();
         assertEquals(job.isFinished(), true);
         assertEquals(job.getWork(), 100);
-//        assertEquals(job.isCancelable(), false);
+        // assertEquals(job.isCancelable(), false);
 
         job = JobManager.createJob(WIBBLE, uri, Thread.currentThread(), false);
         assertEquals(job.getJobName(), WIBBLE);
@@ -98,6 +97,6 @@ public class JobTest extends TestCase
         job.done();
         assertEquals(job.isFinished(), true);
         assertEquals(job.getWork(), 100);
-//        assertEquals(job.isCancelable(), false);
+        // assertEquals(job.isCancelable(), false);
     }
 }

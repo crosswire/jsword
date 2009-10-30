@@ -27,39 +27,39 @@ import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 
 /**
- * A range query specifies how a range should be included in the search.
- * It provides a range, a modifier (AND [+] or AND NOT [-]).
- *
- * @see gnu.lgpl.License for license details.
+ * A range query specifies how a range should be included in the search. It
+ * provides a range, a modifier (AND [+] or AND NOT [-]).
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
-public class RangeQuery extends AbstractQuery
-{
+public class RangeQuery extends AbstractQuery {
 
     /**
      * Construct a query from the range specification.
-     *
+     * 
      * @param theRange
      */
-    public RangeQuery(String theRange)
-    {
+    public RangeQuery(String theRange) {
         super(theRange);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.parse.Query#find(org.crosswire.jsword.index.search.Index)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.index.search.parse.Query#find(org.crosswire.jsword
+     * .index.search.Index)
      */
-    public Key find(Index index) throws BookException
-    {
+    public Key find(Index index) throws BookException {
         String range = getQuery();
-        try
-        {
+        try {
             return index.getKey(range);
-        }
-        catch (NoSuchKeyException e)
-        {
-            throw new BookException(UserMsg.ILLEGAL_PASSAGE, e, new Object[] { range });
+        } catch (NoSuchKeyException e) {
+            throw new BookException(UserMsg.ILLEGAL_PASSAGE, e, new Object[] {
+                range
+            });
         }
     }
 }

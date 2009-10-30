@@ -30,18 +30,16 @@ import org.crosswire.common.util.PluginUtil;
 
 /**
  * A simple container for all the known filters.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public final class FilterFactory
-{
+public final class FilterFactory {
     /**
      * Prevent instantiation
      */
-    private FilterFactory()
-    {
+    private FilterFactory() {
     }
 
     /**
@@ -63,48 +61,35 @@ public final class FilterFactory
      * Populate the lookup table of filters and the default from the properties
      * file.
      */
-    static
-    {
+    static {
         Map map = PluginUtil.getImplementorsMap(Filter.class);
 
         // the default value
-        try
-        {
+        try {
             Class cdeft = (Class) map.remove("default"); //$NON-NLS-1$
             deft = (Filter) cdeft.newInstance();
-        }
-        catch (InstantiationException e)
-        {
+        } catch (InstantiationException e) {
             log.fatal("Failed to get default filter, will attempt to use first", e); //$NON-NLS-1$
-        }
-        catch (IllegalAccessException e)
-        {
+        } catch (IllegalAccessException e) {
             log.fatal("Failed to get default filter, will attempt to use first", e); //$NON-NLS-1$
         }
 
         // the lookup table
-        for (Iterator it = map.entrySet().iterator(); it.hasNext(); )
-        {
-            try
-            {
+        for (Iterator it = map.entrySet().iterator(); it.hasNext();) {
+            try {
                 Map.Entry entry = (Map.Entry) it.next();
                 Class clazz = (Class) entry.getValue();
                 Filter instance = (Filter) clazz.newInstance();
                 addFilter((String) entry.getKey(), instance);
-            }
-            catch (InstantiationException ex)
-            {
+            } catch (InstantiationException ex) {
                 log.error("Failed to add filter", ex); //$NON-NLS-1$
-            }
-            catch (IllegalAccessException ex)
-            {
+            } catch (IllegalAccessException ex) {
                 log.error("Failed to add filter", ex); //$NON-NLS-1$
             }
         }
 
         // if the default didn't work then make a stab at an answer
-        if (deft == null)
-        {
+        if (deft == null) {
             deft = (Filter) filters.values().iterator().next();
         }
     }
@@ -113,21 +98,17 @@ public final class FilterFactory
      * Find a filter given a lookup string. If lookup is null or the filter is
      * not found then the default filter will be used.
      */
-    public static Filter getFilter(String lookup)
-    {
+    public static Filter getFilter(String lookup) {
         Filter reply = null;
-        for (Iterator it = filters.keySet().iterator(); it.hasNext(); )
-        {
+        for (Iterator it = filters.keySet().iterator(); it.hasNext();) {
             String key = (String) it.next();
-            if (key.equalsIgnoreCase(lookup))
-            {
+            if (key.equalsIgnoreCase(lookup)) {
                 reply = (Filter) filters.get(key);
                 break;
             }
         }
 
-        if (reply == null)
-        {
+        if (reply == null) {
             reply = deft;
         }
 
@@ -137,16 +118,14 @@ public final class FilterFactory
     /**
      * Find a filter given a lookup string
      */
-    public static Filter getDefaultFilter()
-    {
+    public static Filter getDefaultFilter() {
         return (Filter) deft.clone();
     }
 
     /**
      * Add to our list of known filters
      */
-    public static void addFilter(String name, Filter instance)
-    {
+    public static void addFilter(String name, Filter instance) {
         filters.put(name, instance);
     }
 }

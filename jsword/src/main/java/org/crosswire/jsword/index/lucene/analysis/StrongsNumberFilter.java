@@ -32,63 +32,56 @@ import org.crosswire.jsword.book.study.StrongsNumber;
 
 /**
  * A StrongsNumberFilter normalizes Strong's Numbers.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class StrongsNumberFilter extends AbstractBookTokenFilter
-{
+public class StrongsNumberFilter extends AbstractBookTokenFilter {
 
     /**
      * Construct filtering <i>in</i>.
      */
-    public StrongsNumberFilter(TokenStream in)
-    {
-      this(null, in);
+    public StrongsNumberFilter(TokenStream in) {
+        this(null, in);
     }
 
     /**
      * Construct filtering <i>in</i>.
      */
-    public StrongsNumberFilter(Book book, TokenStream in)
-    {
-      super(book, in);
-      termAtt = (TermAttribute) addAttribute(TermAttribute.class);
+    public StrongsNumberFilter(Book book, TokenStream in) {
+        super(book, in);
+        termAtt = (TermAttribute) addAttribute(TermAttribute.class);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.lucene.analysis.TokenStream#incrementToken()
      */
-    public boolean incrementToken() throws IOException
-    {
-        // If the term is suffixed with '!a' or 'a', where 'a' is a sequence of 1 or more letters
+    public boolean incrementToken() throws IOException {
+        // If the term is suffixed with '!a' or 'a', where 'a' is a sequence of
+        // 1 or more letters
         // then create a token without the suffix and also for the whole.
-        if (number == null)
-        {
-            if (input.incrementToken())
-            {
-                try
-                {
+        if (number == null) {
+            if (input.incrementToken()) {
+                try {
                     String tokenText = termAtt.term();
 
                     number = new StrongsNumber(tokenText);
                     String s = number.getStrongsNumber();
 
                     // Was it a Strong's Number? If so it transformed.
-                    if (!s.equals(tokenText))
-                    {
+                    if (!s.equals(tokenText)) {
                         termAtt.setTermBuffer(s);
 
-                        // If the number had a part keep it around for the next call
-                        if (!number.isPart())
-                        {
+                        // If the number had a part keep it around for the next
+                        // call
+                        if (!number.isPart()) {
                             number = null;
                         }
                     }
-                }
-                catch (BookException e)
-                {
+                } catch (BookException e) {
                     DataPolice.report(e.getDetailedMessage());
                 }
 
@@ -109,14 +102,12 @@ public class StrongsNumberFilter extends AbstractBookTokenFilter
     }
 
     /* Define to quite FindBugs */
-    public boolean equals(Object obj)
-    {
+    public boolean equals(Object obj) {
         return super.equals(obj);
     }
 
     /* Define to quite FindBugs */
-    public int hashCode()
-    {
+    public int hashCode() {
         return super.hashCode();
     }
 

@@ -25,32 +25,27 @@ import java.io.Serializable;
 
 /**
  * Types of Passage Lists.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public abstract class PassageListType implements Serializable
-{
+public abstract class PassageListType implements Serializable {
     /**
      * Passage to be interpreted as a list of verses.
      */
     public static final PassageListType VERSES = new PassageListType("VERSES") //$NON-NLS-1$
     {
-        public Object getElementAt(Passage ref, int index, RestrictionType restrict)
-        {
-            if (ref == null)
-            {
+        public Object getElementAt(Passage ref, int index, RestrictionType restrict) {
+            if (ref == null) {
                 return null;
             }
             return ref.getVerseAt(index);
         }
 
-        public int count(Passage ref, RestrictionType restrict)
-        {
-            if (ref == null)
-            {
+        public int count(Passage ref, RestrictionType restrict) {
+            if (ref == null) {
                 return 0;
             }
             return ref.countVerses();
@@ -63,23 +58,19 @@ public abstract class PassageListType implements Serializable
     };
 
     /**
-     *  Passage to be interpreted as a list of ranges.
+     * Passage to be interpreted as a list of ranges.
      */
     public static final PassageListType RANGES = new PassageListType("RANGES") //$NON-NLS-1$
     {
-        public Object getElementAt(Passage ref, int index, RestrictionType restrict)
-        {
-            if (ref == null)
-            {
+        public Object getElementAt(Passage ref, int index, RestrictionType restrict) {
+            if (ref == null) {
                 return null;
             }
             return ref.getRangeAt(index, restrict);
         }
 
-        public int count(Passage ref, RestrictionType restrict)
-        {
-            if (ref == null)
-            {
+        public int count(Passage ref, RestrictionType restrict) {
+            if (ref == null) {
                 return 0;
             }
             return ref.countRanges(restrict);
@@ -94,24 +85,21 @@ public abstract class PassageListType implements Serializable
     /**
      * Simple ctor
      */
-    public PassageListType(String name)
-    {
+    public PassageListType(String name) {
         this.name = name;
     }
 
     public abstract Object getElementAt(Passage ref, int index, RestrictionType restrict);
+
     public abstract int count(Passage ref, RestrictionType restrict);
 
     /**
      * Lookup method to convert from a String
      */
-    public static PassageListType fromString(String name)
-    {
-        for (int i = 0; i < VALUES.length; i++)
-        {
+    public static PassageListType fromString(String name) {
+        for (int i = 0; i < VALUES.length; i++) {
             PassageListType o = VALUES[i];
-            if (o.name.equalsIgnoreCase(name))
-            {
+            if (o.name.equalsIgnoreCase(name)) {
                 return o;
             }
         }
@@ -123,34 +111,36 @@ public abstract class PassageListType implements Serializable
     /**
      * Lookup method to convert from an integer
      */
-    public static PassageListType fromInteger(int i)
-    {
+    public static PassageListType fromInteger(int i) {
         return VALUES[i];
     }
 
     /**
-     * Prevent subclasses from overriding canonical identity based Object methods
+     * Prevent subclasses from overriding canonical identity based Object
+     * methods
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public final boolean equals(Object o)
-    {
+    public final boolean equals(Object o) {
         return super.equals(o);
     }
 
     /**
-     * Prevent subclasses from overriding canonical identity based Object methods
+     * Prevent subclasses from overriding canonical identity based Object
+     * methods
+     * 
      * @see java.lang.Object#hashCode()
      */
-    public final int hashCode()
-    {
+    public final int hashCode() {
         return super.hashCode();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         return name;
     }
 
@@ -163,15 +153,12 @@ public abstract class PassageListType implements Serializable
     private static int nextObj;
     private final int obj = nextObj++;
 
-    Object readResolve()
-    {
+    Object readResolve() {
         return VALUES[obj];
     }
 
-    private static final PassageListType[] VALUES =
-    {
-        VERSES,
-        RANGES,
+    private static final PassageListType[] VALUES = {
+            VERSES, RANGES,
     };
 
     /**

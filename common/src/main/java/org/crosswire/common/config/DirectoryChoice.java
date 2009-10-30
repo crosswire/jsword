@@ -21,14 +21,12 @@
  */
 package org.crosswire.common.config;
 
-
 /**
  * A class to convert between strings and objects of a type.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class DirectoryChoice extends FileChoice
-{
+public class DirectoryChoice extends FileChoice {
 }

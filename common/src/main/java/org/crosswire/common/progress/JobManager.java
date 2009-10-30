@@ -31,23 +31,24 @@ import java.util.Set;
 import org.crosswire.common.util.Logger;
 
 /**
- * JobManager is responsible for creating jobs and informing listeners about
- * the progress they make to completion.
- *
- * <p>Example code:
+ * JobManager is responsible for creating jobs and informing listeners about the
+ * progress they make to completion.
+ * 
+ * <p>
+ * Example code:
+ * 
  * <pre>
- * final Thread worker = new Thread("DisplayPreLoader")
+ * final Thread worker = new Thread(&quot;DisplayPreLoader&quot;)
  * {
  *     public void run()
  *     {
- *         URL predictURI = Project.instance().getWritablePropertiesURI("save-name");
- *         Progress job = JobManager.createJob("Job Title", predictURI, this, true);
- *
+ *         URL predictURI = Project.instance().getWritablePropertiesURI(&quot;save-name&quot;);
+ *         Progress job = JobManager.createJob(&quot;Job Title&quot;, predictURI, this, true);
  *         try
  *         {
- *             job.setProgress("Step 1");
+ *             job.setProgress(&quot;Step 1&quot;);
  *             ...
- *             job.setProgress("Step 2");
+ *             job.setProgress(&quot;Step 2&quot;);
  *             ...
  *         }
  *         catch (Exception ex)
@@ -61,29 +62,25 @@ import org.crosswire.common.util.Logger;
  *         }
  *     }
  * };
- *
  * worker.setPriority(Thread.MIN_PRIORITY);
  * worker.start();
  * </pre>
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public final class JobManager
-{
+public final class JobManager {
     /**
      * Prevent instantiation
      */
-    private JobManager()
-    {
+    private JobManager() {
     }
 
     /**
      * Create a new Job
      */
-    public static Progress createJob(String description, URI predictURI, Thread work, boolean fakeupdates)
-    {
+    public static Progress createJob(String description, URI predictURI, Thread work, boolean fakeupdates) {
         Progress job = new Job(description, predictURI, work, fakeupdates ? Progress.UNKNOWN : 100);
         jobs.add(job);
 
@@ -95,37 +92,32 @@ public final class JobManager
     /**
      * Create a new Job
      */
-    public static Progress createJob(String description, Thread work, boolean fakeupdates)
-    {
+    public static Progress createJob(String description, Thread work, boolean fakeupdates) {
         return createJob(description, null, work, fakeupdates);
     }
 
     /**
      * Create a new Job
      */
-    public static Progress createJob(String description, URI predictURI, boolean fakeupdates)
-    {
+    public static Progress createJob(String description, URI predictURI, boolean fakeupdates) {
         return createJob(description, predictURI, null, fakeupdates);
     }
 
     /**
      * Create a new Job
      */
-    public static Progress createJob(String description, boolean fakeupdates)
-    {
+    public static Progress createJob(String description, boolean fakeupdates) {
         return createJob(description, null, null, fakeupdates);
     }
 
     /**
      * Add a listener to the list
      */
-    public static synchronized void addWorkListener(WorkListener li)
-    {
+    public static synchronized void addWorkListener(WorkListener li) {
         List temp = new ArrayList();
         temp.addAll(listeners);
 
-        if (!temp.contains(li))
-        {
+        if (!temp.contains(li)) {
             temp.add(li);
             listeners = temp;
         }
@@ -134,10 +126,8 @@ public final class JobManager
     /**
      * Remote a listener from the list
      */
-    public static synchronized void removeWorkListener(WorkListener li)
-    {
-        if (listeners.contains(li))
-        {
+    public static synchronized void removeWorkListener(WorkListener li) {
+        if (listeners.contains(li)) {
             List temp = new ArrayList();
             temp.addAll(listeners);
             temp.remove(li);
@@ -148,8 +138,7 @@ public final class JobManager
     /**
      * Accessor for the currently known jobs
      */
-    public static synchronized Set getJobs()
-    {
+    public static synchronized Set getJobs() {
         Set reply = new HashSet();
         reply.addAll(jobs);
         return reply;
@@ -158,38 +147,32 @@ public final class JobManager
     /**
      * Inform the listeners that a title has changed.
      */
-    protected static void fireWorkProgressed(Progress job)
-    {
+    protected static void fireWorkProgressed(Progress job) {
         final WorkEvent ev = new WorkEvent(job);
 
         // we need to keep the synchronized section very small to avoid deadlock
         // certainly keep the event dispatch clear of the synchronized block or
         // there will be a deadlock
         final List temp = new ArrayList();
-        synchronized (JobManager.class)
-        {
+        synchronized (JobManager.class) {
             temp.addAll(listeners);
         }
 
         // We ought only to tell listeners about jobs that are in our
         // list of jobs so we need to fire before delete.
-        if (listeners != null)
-        {
+        if (listeners != null) {
             Iterator iter = temp.iterator();
-            while (iter.hasNext())
-            {
+            while (iter.hasNext()) {
                 WorkListener worker = (WorkListener) iter.next();
                 worker.workProgressed(ev);
             }
         }
 
         // Do we need to remove the job? Note that the section above will
-        // proably execute after this so we will be firing events for jobs
+        // probably execute after this so we will be firing events for jobs
         // that are no longer in our list of jobs. ho hum.
-        synchronized (JobManager.class)
-        {
-            if (job.isFinished())
-            {
+        synchronized (JobManager.class) {
+            if (job.isFinished()) {
                 log.debug("job finished: " + job.getJobName()); //$NON-NLS-1$
                 jobs.remove(job);
             }

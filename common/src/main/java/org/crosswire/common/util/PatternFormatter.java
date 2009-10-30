@@ -44,27 +44,26 @@ import java.util.logging.Logger;
  * <li>{7} is the line number</li>
  * <li>{8} is the system supplied new line</li>
  * </ul>
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class PatternFormatter extends Formatter
-{
+public class PatternFormatter extends Formatter {
     /**
      * Format the given LogRecord.
-     * @param record the log record to be formatted.
+     * 
+     * @param record
+     *            the log record to be formatted.
      * @return a formatted log record
      */
     /* @Override */
-    public synchronized String format(LogRecord record)
-    {
+    public synchronized String format(LogRecord record) {
         // Minimize memory allocations here.
         dat.setTime(record.getMillis());
         String throwable = ""; //$NON-NLS-1$
-        if (record.getThrown() != null)
-        {
+        if (record.getThrown() != null) {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             record.getThrown().printStackTrace(pw);
@@ -76,39 +75,34 @@ public class PatternFormatter extends Formatter
         String loggerName = record.getLoggerName();
         Logger logger = LogManager.getLogManager().getLogger(loggerName);
 
-        for (Logger aLogger = logger; aLogger != null; aLogger = aLogger.getParent())
-        {
+        for (Logger aLogger = logger; aLogger != null; aLogger = aLogger.getParent()) {
             String property = null;
             String aLoggerName = aLogger.getName();
 
-            if (aLoggerName != null)
-            {
+            if (aLoggerName != null) {
                 property = LogManager.getLogManager().getProperty(aLoggerName + ".format"); //$NON-NLS-1$
             }
 
-            if (property != null)
-            {
+            if (property != null) {
                 format = property;
                 break;
             }
         }
 
-        if (format == null)
-        {
+        if (format == null) {
             format = DEFAULT_FORMAT;
         }
 
-        Object[] args =
-        {
-            dat,  // 0
-            record.getLoggerName(), // 1
-            record.getLevel().getLocalizedName(), // 2
-            formatMessage(record), // 3
-            throwable, // 4
-            record.getSourceClassName(), // 5
-            record.getSourceMethodName(), // 6
-            new Long(record.getSequenceNumber()), // 7
-            lineSeparator, // 8
+        Object[] args = {
+                dat, // 0
+                record.getLoggerName(), // 1
+                record.getLevel().getLocalizedName(), // 2
+                formatMessage(record), // 3
+                throwable, // 4
+                record.getSourceClassName(), // 5
+                record.getSourceMethodName(), // 6
+                new Long(record.getSequenceNumber()), // 7
+                lineSeparator, // 8
         };
 
         StringBuffer text = new StringBuffer();
@@ -121,7 +115,7 @@ public class PatternFormatter extends Formatter
     private static final String DEFAULT_FORMAT = "{1}({2}): {3}{8} {4}"; //$NON-NLS-1$
     private MessageFormat formatter;
 
-    // Line separator string.  This is the value of the line.separator
+    // Line separator string. This is the value of the line.separator
     // property at the moment that the PatternFormatter was created.
     private String lineSeparator = System.getProperty("line.separator", "\r\n"); //$NON-NLS-1$ //$NON-NLS-2$
 }

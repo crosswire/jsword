@@ -28,26 +28,22 @@ import org.crosswire.common.util.PluginUtil;
 
 /**
  * A Factory class for IndexManagers.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
-
  */
-public final class IndexManagerFactory
-{
+public final class IndexManagerFactory {
     /**
      * Prevent instantiation
      */
-    private IndexManagerFactory()
-    {
+    private IndexManagerFactory() {
     }
 
     /**
      * Create a new IndexManager.
      */
-    public static IndexManager getIndexManager()
-    {
+    public static IndexManager getIndexManager() {
         return instance;
     }
 
@@ -64,30 +60,18 @@ public final class IndexManagerFactory
     /**
      * Setup the instance
      */
-    static
-    {
-        try
-        {
+    static {
+        try {
             instance = (IndexManager) PluginUtil.getImplementation(IndexManager.class);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             log.error("createIndexManager failed", e); //$NON-NLS-1$
-        }
-        catch (ClassCastException e)
-        {
+        } catch (ClassCastException e) {
             log.error("createIndexManager failed", e); //$NON-NLS-1$
-        }
-        catch (ClassNotFoundException e)
-        {
+        } catch (ClassNotFoundException e) {
             log.error("createIndexManager failed", e); //$NON-NLS-1$
-        }
-        catch (IllegalAccessException e)
-        {
+        } catch (IllegalAccessException e) {
             log.error("createIndexManager failed", e); //$NON-NLS-1$
-        }
-        catch (InstantiationException e)
-        {
+        } catch (InstantiationException e) {
             log.error("createIndexManager failed", e); //$NON-NLS-1$
         }
     }

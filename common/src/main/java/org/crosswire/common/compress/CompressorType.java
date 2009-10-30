@@ -26,23 +26,24 @@ import java.io.Serializable;
 
 /**
  * An Enumeration of the possible Compressions.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public abstract class CompressorType implements Serializable
-{
+public abstract class CompressorType implements Serializable {
     /**
      * Delete a sequence.
      */
-    public static final CompressorType ZIP = new CompressorType("ZIP") //$NON-NLS-1$
-    {
-        /* (non-Javadoc)
-         * @see org.crosswire.common.compress.CompressorType#getCompressor(byte[])
+    public static final CompressorType ZIP = new CompressorType("ZIP") { //$NON-NLS-1$
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * org.crosswire.common.compress.CompressorType#getCompressor(byte[])
          */
-        public Compressor getCompressor(byte[] input)
-        {
+        public Compressor getCompressor(byte[] input) {
             return new Zip(new ByteArrayInputStream(input));
         }
 
@@ -55,13 +56,15 @@ public abstract class CompressorType implements Serializable
     /**
      * Insert a sequence
      */
-    public static final CompressorType LZSS = new CompressorType("LZSS") //$NON-NLS-1$
-    {
-        /* (non-Javadoc)
-         * @see org.crosswire.common.compress.CompressorType#getCompressor(byte[])
+    public static final CompressorType LZSS = new CompressorType("LZSS") { //$NON-NLS-1$
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * org.crosswire.common.compress.CompressorType#getCompressor(byte[])
          */
-        public Compressor getCompressor(byte[] input)
-        {
+        public Compressor getCompressor(byte[] input) {
             return new LZSS(new ByteArrayInputStream(input));
         }
 
@@ -72,10 +75,10 @@ public abstract class CompressorType implements Serializable
     };
 
     /**
-     * @param name The name of the CompressorType
+     * @param name
+     *            The name of the CompressorType
      */
-    protected CompressorType(String name)
-    {
+    protected CompressorType(String name) {
         this.name = name;
     }
 
@@ -87,13 +90,10 @@ public abstract class CompressorType implements Serializable
     /**
      * Lookup method to convert from a String
      */
-    public static CompressorType fromString(String name)
-    {
-        for (int i = 0; i < VALUES.length; i++)
-        {
+    public static CompressorType fromString(String name) {
+        for (int i = 0; i < VALUES.length; i++) {
             CompressorType o = VALUES[i];
-            if (o.name.equalsIgnoreCase(name))
-            {
+            if (o.name.equalsIgnoreCase(name)) {
                 return o;
             }
         }
@@ -105,16 +105,16 @@ public abstract class CompressorType implements Serializable
     /**
      * Lookup method to convert from an integer
      */
-    public static CompressorType fromInteger(int i)
-    {
+    public static CompressorType fromInteger(int i) {
         return VALUES[i];
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         return name;
     }
 
@@ -127,15 +127,12 @@ public abstract class CompressorType implements Serializable
     private static int nextObj;
     private final int obj = nextObj++;
 
-    Object readResolve()
-    {
+    Object readResolve() {
         return VALUES[obj];
     }
 
-    private static final CompressorType[] VALUES =
-    {
-        ZIP,
-        LZSS,
+    private static final CompressorType[] VALUES = {
+            ZIP, LZSS,
     };
 
     /**

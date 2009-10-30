@@ -21,20 +21,20 @@
  */
 package org.crosswire.common.util;
 
-
 /**
  * A method of filtering Objects.
- *
- *
+ * 
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public interface Filter
-{
+public interface Filter {
     /**
      * Does this given object pass the test implemented by this filter
-     * @param obj The object to test
+     * 
+     * @param obj
+     *            The object to test
      * @return boolean true if it passes, false otherwise
      */
     boolean test(Object obj);

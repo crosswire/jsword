@@ -25,19 +25,19 @@ import java.util.EventObject;
 
 /**
  * An Event in History.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class HistoryEvent extends EventObject
-{
+public class HistoryEvent extends EventObject {
     /**
      * Constructs an HistoryEvent object.
-     * @param source The event originator (typically <code>this</code>)
+     * 
+     * @param source
+     *            The event originator (typically <code>this</code>)
      */
-    public HistoryEvent(Object source)
-    {
+    public HistoryEvent(Object source) {
         super(source);
     }
 

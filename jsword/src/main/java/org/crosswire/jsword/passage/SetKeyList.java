@@ -30,173 +30,188 @@ import org.crosswire.common.util.Logger;
 
 /**
  * A Key that uses a Set of Keys as it's store of data.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class SetKeyList extends AbstractKeyList
-{
+public class SetKeyList extends AbstractKeyList {
     /**
      * Simple ctor
      */
-    public SetKeyList(Set set)
-    {
+    public SetKeyList(Set set) {
         this(set, null, null);
     }
 
     /**
      * Simple ctor
      */
-    public SetKeyList(Set set, String name)
-    {
+    public SetKeyList(Set set, String name) {
         this(set, null, name);
     }
 
     /**
      * Simple ctor
      */
-    public SetKeyList(Set set, Key parent)
-    {
+    public SetKeyList(Set set, Key parent) {
         this(set, parent, null);
     }
 
     /**
      * Simple ctor
      */
-    public SetKeyList(Set set, Key parent, String name)
-    {
+    public SetKeyList(Set set, Key parent, String name) {
         super(name);
         this.parent = parent;
         list.addAll(set);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#add(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#add(org.crosswire.jsword.passage.Key)
      */
-    public void addAll(Key key)
-    {
+    public void addAll(Key key) {
         list.add(key);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#clear()
      */
-    public void clear()
-    {
+    public void clear() {
         list.clear();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage
+     * .Key)
      */
     /* @Override */
-    public boolean contains(Key key)
-    {
+    public boolean contains(Key key) {
         return list.contains(key);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     /* @Override */
-    public boolean equals(Object obj)
-    {
-        if (obj instanceof SetKeyList)
-        {
+    public boolean equals(Object obj) {
+        if (obj instanceof SetKeyList) {
             SetKeyList that = (SetKeyList) obj;
             return list.equals(that.list);
         }
         return false;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     /* @Override */
-    public int hashCode()
-    {
+    public int hashCode() {
         return list.hashCode();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#isEmpty()
      */
     /* @Override */
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return list.isEmpty();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#iterator()
      */
-    public Iterator iterator()
-    {
+    public Iterator iterator() {
         return list.iterator();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#remove(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#remove(org.crosswire.jsword.passage.Key)
      */
-    public void removeAll(Key key)
-    {
+    public void removeAll(Key key) {
         list.remove(key);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getCardinality()
      */
-    public int getCardinality()
-    {
+    public int getCardinality() {
         return list.size();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#canHaveChildren()
      */
-    public boolean canHaveChildren()
-    {
+    public boolean canHaveChildren() {
         return false;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getChildCount()
      */
-    public int getChildCount()
-    {
+    public int getChildCount() {
         return 0;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#get(int)
      */
-    public Key get(int index)
-    {
+    public Key get(int index) {
         return (Key) list.get(index);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage
+     * .Key)
      */
-    public int indexOf(Key that)
-    {
+    public int indexOf(Key that) {
         return list.indexOf(that);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#getParent()
      */
-    public Key getParent()
-    {
+    public Key getParent() {
         return parent;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.passage.Key#blur(int)
      */
-    public void blur(int by, RestrictionType restrict)
-    {
+    public void blur(int by, RestrictionType restrict) {
         log.warn("attempt to blur a non-blur-able list"); //$NON-NLS-1$
     }
 

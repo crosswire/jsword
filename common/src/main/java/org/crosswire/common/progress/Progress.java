@@ -23,13 +23,12 @@ package org.crosswire.common.progress;
 
 /**
  * A Generic way of keeping track of Threads and monitoring their progress.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public interface Progress
-{
+public interface Progress {
     /**
      * Indicate that the total amount of work is unknown.
      */
@@ -37,9 +36,12 @@ public interface Progress
 
     /**
      * Start the task.
-     *
-     * @param name the initial name of the job.
-     * @param totalWork the total amount that is to be worked. If UNKNOWN then the progress is to be guessed.
+     * 
+     * @param name
+     *            the initial name of the job.
+     * @param totalWork
+     *            the total amount that is to be worked. If UNKNOWN then the
+     *            progress is to be guessed.
      */
     void beginJob(String name, int totalWork);
 
@@ -60,8 +62,9 @@ public interface Progress
 
     /**
      * We have moved onto another section so update the section title.
-     *
-     * @param name the name of the section
+     * 
+     * @param name
+     *            the name of the section
      */
     void setSectionName(String name);
 
@@ -72,8 +75,9 @@ public interface Progress
 
     /**
      * Indicate progress toward the whole.
-     *
-     * @param progress a part of the whole.
+     * 
+     * @param progress
+     *            a part of the whole.
      */
     void setWork(int progress);
 
@@ -85,12 +89,12 @@ public interface Progress
     /**
      * Cancel the job (if possible). If isCancelable() is false, then the job
      * will be canceled if cancelable becomes true. There is no guarantee that
-     *
+     * 
      */
     void cancel();
 
     /**
-     * Used to determine whether job is done or cancelled or reached totalWork.
+     * Used to determine whether job is done or canceled or reached totalWork.
      */
     boolean isFinished();
 
@@ -101,8 +105,9 @@ public interface Progress
 
     /**
      * Indicates whether the job is cancelable or not.
-     *
-     * @param newCancelable The state to set.
+     * 
+     * @param newCancelable
+     *            The state to set.
      */
     void setCancelable(boolean newCancelable);
 

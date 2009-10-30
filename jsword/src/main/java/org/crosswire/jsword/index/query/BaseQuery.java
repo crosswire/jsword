@@ -27,29 +27,30 @@ import org.crosswire.jsword.passage.Key;
 
 /**
  * A base query is the smallest unit of search that the index can perform.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class BaseQuery extends AbstractQuery
-{
+public class BaseQuery extends AbstractQuery {
 
     /**
      * Construct a query from a string.
-     *
+     * 
      * @param theQuery
      */
-    public BaseQuery(String theQuery)
-    {
+    public BaseQuery(String theQuery) {
         super(theQuery);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.index.search.parse.Query#find(org.crosswire.jsword.index.search.Index)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.index.search.parse.Query#find(org.crosswire.jsword
+     * .index.search.Index)
      */
-    public Key find(Index index) throws BookException
-    {
+    public Key find(Index index) throws BookException {
         return index.find(getQuery());
     }
 }

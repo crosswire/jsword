@@ -28,36 +28,37 @@ import org.crosswire.jsword.book.Book;
 
 /**
  * A KeyFilter normalizes OSISrefs.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class XRefFilter extends AbstractBookTokenFilter
-{
+public class XRefFilter extends AbstractBookTokenFilter {
     /**
      * Construct filtering <i>in</i>.
      */
-    public XRefFilter(TokenStream in)
-    {
-      this(null, in);
+    public XRefFilter(TokenStream in) {
+        this(null, in);
     }
 
     /**
      * Construct an XRefFilter tied to a Book.
-     * @param book the book to which this TokenFilter is tied.
-     * @param in the input TokenStream
+     * 
+     * @param book
+     *            the book to which this TokenFilter is tied.
+     * @param in
+     *            the input TokenStream
      */
-    public XRefFilter(Book book, TokenStream in)
-    {
-      super(book, in);
+    public XRefFilter(Book book, TokenStream in) {
+        super(book, in);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.lucene.analysis.TokenStream#incrementToken()
      */
-    public boolean incrementToken() throws IOException
-    {
+    public boolean incrementToken() throws IOException {
         // TODO(DMS): actually normalize
         return super.incrementToken();
     }

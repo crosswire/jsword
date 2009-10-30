@@ -25,21 +25,19 @@ import java.io.Serializable;
 
 /**
  * Block types indicates the grain of compression.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public abstract class BlockType implements Serializable
-{
+public abstract class BlockType implements Serializable {
     /**
      * The level of compression is the Book
      */
     public static final BlockType BLOCK_BOOK = new BlockType("BOOK") //$NON-NLS-1$
     {
-        public char getIndicator()
-        {
+        public char getIndicator() {
             return 'b';
         }
 
@@ -54,8 +52,7 @@ public abstract class BlockType implements Serializable
      */
     public static final BlockType BLOCK_CHAPTER = new BlockType("CHAPTER") //$NON-NLS-1$
     {
-        public char getIndicator()
-        {
+        public char getIndicator() {
             return 'c';
         }
 
@@ -70,8 +67,7 @@ public abstract class BlockType implements Serializable
      */
     public static final BlockType BLOCK_VERSE = new BlockType("VERSE") //$NON-NLS-1$
     {
-        public char getIndicator()
-        {
+        public char getIndicator() {
             return 'v';
         }
 
@@ -84,15 +80,14 @@ public abstract class BlockType implements Serializable
     /**
      * Simple ctor
      */
-    public BlockType(String name)
-    {
+    public BlockType(String name) {
         this.name = name;
     }
 
     /**
-     * Return a character indicating the grain of compression.
-     * This is used in the names of compressed sword books.
-     *
+     * Return a character indicating the grain of compression. This is used in
+     * the names of compressed sword books.
+     * 
      * @return the indicator
      */
     abstract char getIndicator();
@@ -100,13 +95,10 @@ public abstract class BlockType implements Serializable
     /**
      * Lookup method to convert from a String
      */
-    public static BlockType fromString(String name)
-    {
-        for (int i = 0; i < VALUES.length; i++)
-        {
+    public static BlockType fromString(String name) {
+        for (int i = 0; i < VALUES.length; i++) {
             BlockType obj = VALUES[i];
-            if (obj.name.equalsIgnoreCase(name))
-            {
+            if (obj.name.equalsIgnoreCase(name)) {
                 return obj;
             }
         }
@@ -117,34 +109,36 @@ public abstract class BlockType implements Serializable
     /**
      * Lookup method to convert from an integer
      */
-    public static BlockType fromInteger(int i)
-    {
+    public static BlockType fromInteger(int i) {
         return VALUES[i];
     }
 
     /**
-     * Prevent subclasses from overriding canonical identity based Object methods
+     * Prevent subclasses from overriding canonical identity based Object
+     * methods
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public final boolean equals(Object o)
-    {
+    public final boolean equals(Object o) {
         return super.equals(o);
     }
 
     /**
-     * Prevent subclasses from overriding canonical identity based Object methods
+     * Prevent subclasses from overriding canonical identity based Object
+     * methods
+     * 
      * @see java.lang.Object#hashCode()
      */
-    public final int hashCode()
-    {
+    public final int hashCode() {
         return super.hashCode();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         return name;
     }
 
@@ -157,16 +151,12 @@ public abstract class BlockType implements Serializable
     private static int nextObj;
     private final int obj = nextObj++;
 
-    Object readResolve()
-    {
+    Object readResolve() {
         return VALUES[obj];
     }
 
-    private static final BlockType[] VALUES =
-    {
-        BLOCK_BOOK,
-        BLOCK_CHAPTER,
-        BLOCK_VERSE,
+    private static final BlockType[] VALUES = {
+            BLOCK_BOOK, BLOCK_CHAPTER, BLOCK_VERSE,
     };
 
     /**

@@ -27,31 +27,33 @@ import org.xml.sax.Attributes;
 
 /**
  * THML Tag to process the big element.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class BigTag extends AbstractTag
-{
-    /* (non-Javadoc)
+public class BigTag extends AbstractTag {
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
-    public String getTagName()
-    {
+    public String getTagName() {
         return "big"; //$NON-NLS-1$
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element, org.xml.sax.Attributes)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element,
+     * org.xml.sax.Attributes)
      */
     /* @Override */
-    public Element processTag(Element ele, Attributes attrs)
-    {
+    public Element processTag(Element ele, Attributes attrs) {
         Element hiEle = OSISUtil.factory().createHI();
         hiEle.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_X_BIG);
-        if (ele != null)
-        {
+        if (ele != null) {
             ele.addContent(hiEle);
         }
 

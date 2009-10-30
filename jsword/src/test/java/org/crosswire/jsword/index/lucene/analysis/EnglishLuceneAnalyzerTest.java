@@ -29,76 +29,68 @@ import junit.framework.TestCase;
 
 /**
  * Test the English Analyzer
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Sijo Cherian [sijocherian at yahoo dot com]
  */
-public class EnglishLuceneAnalyzerTest extends TestCase
-{
-    
-    protected void setUp() throws Exception
-    {
+public class EnglishLuceneAnalyzerTest extends TestCase {
+
+    protected void setUp() throws Exception {
         super.setUp();
         myAnalyzer = new EnglishLuceneAnalyzer();
-        
+
         parser = new QueryParser(field, myAnalyzer);
-  
+
     }
 
-    protected void tearDown() throws Exception
-    {
+    protected void tearDown() throws Exception {
         super.tearDown();
     }
 
-    public void testDefaultBehavior() throws ParseException
-    {
+    public void testDefaultBehavior() throws ParseException {
         String testInput = "Surely will every man walketh"; //$NON-NLS-1$
         Query query = parser.parse(testInput);
 
-        //stemming on
-        assertTrue(query.toString().indexOf(field+":sure ") > -1); //$NON-NLS-1$
-        assertTrue(query.toString().indexOf(field+":everi") > -1); //$NON-NLS-1$    
+        // stemming on
+        assertTrue(query.toString().indexOf(field + ":sure ") > -1); //$NON-NLS-1$
+        assertTrue(query.toString().indexOf(field + ":everi") > -1); //$NON-NLS-1$    
     }
-    
-    public void testSetDoStopWords() throws ParseException
-    {      
+
+    public void testSetDoStopWords() throws ParseException {
         String testInput = "Surely will every man walketh"; //$NON-NLS-1$
         Query query = parser.parse(testInput);
-            
-        //enable stop word
+
+        // enable stop word
         myAnalyzer.setDoStopWords(true);
         query = parser.parse(testInput);
-        assertTrue(query.toString().indexOf(field+":will") == -1); //$NON-NLS-1$
+        assertTrue(query.toString().indexOf(field + ":will") == -1); //$NON-NLS-1$
 
-        //set custom stop word
+        // set custom stop word
         myAnalyzer.setDoStopWords(true);
-        String[] stopWords = {"thy", "ye","unto","shalt"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        String[] stopWords = {
+                "thy", "ye", "unto", "shalt"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         myAnalyzer.setStopWords(stopWords);
         testInput = "Upon thy belly Shalt thou go"; //$NON-NLS-1$
         query = parser.parse(testInput);
-        //System.out.println("ParsedQuery- "+ query.toString());
-        
-        assertTrue(query.toString().indexOf(field+":shalt") == -1); //$NON-NLS-1$
-        assertTrue(query.toString().indexOf(field+":thy") == -1); //$NON-NLS-1$
-        assertTrue(query.toString().indexOf(field+":upon") > -1); //$NON-NLS-1$
+        // System.out.println("ParsedQuery- "+ query.toString());
 
-                
+        assertTrue(query.toString().indexOf(field + ":shalt") == -1); //$NON-NLS-1$
+        assertTrue(query.toString().indexOf(field + ":thy") == -1); //$NON-NLS-1$
+        assertTrue(query.toString().indexOf(field + ":upon") > -1); //$NON-NLS-1$
+
     }
 
-    public void testSetDoStemming() throws ParseException
-    {
+    public void testSetDoStemming() throws ParseException {
         String testInput = "Surely will every man walketh"; //$NON-NLS-1$
         Query query = parser.parse(testInput);
-        
+
         myAnalyzer.setDoStemming(false);
         query = parser.parse(testInput);
-        assertTrue(query.toString().indexOf(field+":surely") > -1); //$NON-NLS-1$
-        assertTrue(query.toString().indexOf(field+":every") > -1); //$NON-NLS-1$
+        assertTrue(query.toString().indexOf(field + ":surely") > -1); //$NON-NLS-1$
+        assertTrue(query.toString().indexOf(field + ":every") > -1); //$NON-NLS-1$
 
     }
-
- 
 
     protected static final String field = "content"; //$NON-NLS-1$
     private AbstractBookAnalyzer myAnalyzer;

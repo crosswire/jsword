@@ -37,26 +37,23 @@ import org.jdom.Namespace;
 import org.jdom.Text;
 
 /**
- * BookData is the assembler of the OSIS that is returned by the filters.
- * As such it puts that into an OSIS document. When several books are
- * supplied, it gets the data from each and puts it into a parallel or
- * interlinear view.
+ * BookData is the assembler of the OSIS that is returned by the filters. As
+ * such it puts that into an OSIS document. When several books are supplied, it
+ * gets the data from each and puts it into a parallel or interlinear view.
  * Note: it is critical that all the books are able to understand the same key.
  * That does not mean that each has to have content for each key. Missing keys
  * are represented by empty cells.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class BookData implements BookProvider
-{
+public class BookData implements BookProvider {
     /**
      * Ctor
      */
-    public BookData(Book book, Key key)
-    {
+    public BookData(Book book, Key key) {
         assert book != null;
         assert key != null;
 
@@ -69,8 +66,7 @@ public class BookData implements BookProvider
     /**
      * Create BookData for multiple books.
      */
-    public BookData(Book[] books, Key key, boolean compare)
-    {
+    public BookData(Book[] books, Key key, boolean compare) {
         assert books != null && books.length > 0;
         assert key != null;
 
@@ -82,11 +78,10 @@ public class BookData implements BookProvider
     /**
      * Accessor for the root OSIS element
      */
-    public Element getOsis() throws BookException
-    {
-        if (osis == null)
-        {
-            // TODO(DMS): Determine the proper representation of the OSISWork name for multiple books.
+    public Element getOsis() throws BookException {
+        if (osis == null) {
+            // TODO(DMS): Determine the proper representation of the OSISWork
+            // name for multiple books.
             osis = OSISUtil.createOsisFramework(getFirstBook().getBookMetaData());
             Element text = osis.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
             Element div = getOsisFragment();
@@ -99,10 +94,8 @@ public class BookData implements BookProvider
     /**
      * Accessor for the root OSIS element
      */
-    public Element getOsisFragment() throws BookException
-    {
-        if (fragment == null)
-        {
+    public Element getOsisFragment() throws BookException {
+        if (fragment == null) {
             fragment = getOsisContent();
         }
 
@@ -111,15 +104,14 @@ public class BookData implements BookProvider
 
     /**
      * Output the current data as a SAX stream.
+     * 
      * @return A way of posting SAX events
      */
-    public SAXEventProvider getSAXEventProvider() throws BookException
-    {
+    public SAXEventProvider getSAXEventProvider() throws BookException {
         // If the fragment is already in a document, then use that.
         Element frag = getOsisFragment();
         Document doc = frag.getDocument();
-        if (doc == null)
-        {
+        if (doc == null) {
             doc = new Document(frag);
         }
         return new JDOMSAXEventProvider(doc);
@@ -127,53 +119,46 @@ public class BookData implements BookProvider
 
     /**
      * Who created this data.
+     * 
      * @return Returns the book.
      */
-    public Book[] getBooks()
-    {
+    public Book[] getBooks() {
         return books == null ? null : (Book[]) books.clone();
     }
 
     /**
      * Get the first book.
      */
-    public Book getFirstBook()
-    {
+    public Book getFirstBook() {
         return books != null && books.length > 0 ? books[0] : null;
     }
 
     /**
      * The key used to obtain data from one or more books.
+     * 
      * @return Returns the key.
      */
-    public Key getKey()
-    {
+    public Key getKey() {
         return key;
     }
 
     /**
      * @return whether the books should be compared.
      */
-    public boolean isComparingBooks()
-    {
+    public boolean isComparingBooks() {
         return comparingBooks;
     }
 
-    private Element getOsisContent() throws BookException
-    {
+    private Element getOsisContent() throws BookException {
         Element div = OSISUtil.factory().createDiv();
 
-        if (books.length == 1)
-        {
+        if (books.length == 1) {
             Iterator iter = books[0].getOsisIterator(key, false);
-            while (iter.hasNext())
-            {
+            while (iter.hasNext()) {
                 Content content = (Content) iter.next();
                 div.addContent(content);
             }
-        }
-        else
-        {
+        } else {
             Element table = OSISUtil.factory().createTable();
             Element row = OSISUtil.factory().createRow();
             Element cell = null;
@@ -184,27 +169,21 @@ public class BookData implements BookProvider
             boolean[] showDiffs = new boolean[books.length - 1];
             boolean doDiffs = false;
 
-            for (int i = 0; i < books.length; i++)
-            {
+            for (int i = 0; i < books.length; i++) {
                 Book book = books[i];
 
                 cell = OSISUtil.factory().createHeaderCell();
 
-                if (i > 0)
-                {
+                if (i > 0) {
                     Book prevBook = books[i - 1];
                     BookCategory category = book.getBookCategory();
 
                     BookCategory prevCategory = prevBook.getBookCategory();
                     String prevName = prevBook.getInitials();
-                    showDiffs[i - 1] = comparingBooks
-                                            && BookCategory.BIBLE.equals(category)
-                                            && category.equals(prevCategory)
-                                            && book.getLanguage().equals(prevBook.getLanguage())
-                                            && !book.getInitials().equals(prevName);
+                    showDiffs[i - 1] = comparingBooks && BookCategory.BIBLE.equals(category) && category.equals(prevCategory)
+                            && book.getLanguage().equals(prevBook.getLanguage()) && !book.getInitials().equals(prevName);
 
-                    if (showDiffs[i - 1])
-                    {
+                    if (showDiffs[i - 1]) {
                         doDiffs = true;
                         StringBuffer buf = new StringBuffer(prevBook.getInitials());
                         buf.append(" ==> "); //$NON-NLS-1$
@@ -226,39 +205,31 @@ public class BookData implements BookProvider
 
             int cellCount = 0;
             int rowCount = 0;
-            while (true)
-            {
+            while (true) {
                 cellCount = 0;
 
                 row = OSISUtil.factory().createRow();
 
                 String lastText = ""; //$NON-NLS-1$
 
-                for (int i = 0; i < iters.length; i++)
-                {
+                for (int i = 0; i < iters.length; i++) {
                     Book book = books[i];
                     cell = OSISUtil.factory().createCell();
                     Language lang = (Language) book.getProperty(BookMetaData.KEY_XML_LANG);
                     cell.setAttribute(OSISUtil.OSIS_ATTR_LANG, lang.getCode(), Namespace.XML_NAMESPACE);
                     row.addContent(cell);
-                    if (iters[i].hasNext())
-                    {
+                    if (iters[i].hasNext()) {
                         content = (Content) iters[i].next();
 
-                        if (doDiffs)
-                        {
+                        if (doDiffs) {
                             String thisText = ""; //$NON-NLS-1$
-                            if (content instanceof Element)
-                            {
+                            if (content instanceof Element) {
                                 thisText = OSISUtil.getCanonicalText((Element) content);
-                            }
-                            else if (content instanceof Text)
-                            {
+                            } else if (content instanceof Text) {
                                 thisText = ((Text) content).getText();
                             }
 
-                            if (i > 0 && showDiffs[i - 1])
-                            {
+                            if (i > 0 && showDiffs[i - 1]) {
                                 List diffs = new Diff(lastText, thisText, false).compare();
                                 DiffCleanup.cleanupSemantic(diffs);
                                 cell.addContent(OSISUtil.diffToOsis(diffs));
@@ -276,16 +247,14 @@ public class BookData implements BookProvider
                     }
                 }
 
-                if (cellCount == 0)
-                {
+                if (cellCount == 0) {
                     break;
                 }
 
                 table.addContent(row);
                 rowCount++;
             }
-            if (rowCount > 0)
-            {
+            if (rowCount > 0) {
                 div.addContent(table);
             }
         }

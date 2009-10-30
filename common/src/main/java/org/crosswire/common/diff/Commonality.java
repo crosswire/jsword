@@ -23,42 +23,40 @@ package org.crosswire.common.diff;
 
 /**
  * A Commonality is shared text at the beginning, middle or end of two strings.
- *
- * Based on the LGPL Diff_Match_Patch v1.5 javascript of Neil Fraser, Copyright (C) 2006
- * <a href="http://neil.fraser.name/software/diff_match_patch/">http://neil.fraser.name/software/diff_match_patch/</a>
- *
+ * 
+ * Based on the LGPL Diff_Match_Patch v1.5 javascript of Neil Fraser, Copyright
+ * (C) 2006<br>
+ * <a href="http://neil.fraser.name/software/diff_match_patch/">http://neil.
+ * fraser.name/software/diff_match_patch/</a>
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class Commonality
-{
+public class Commonality {
     /**
      * This is a utility class, therefore the constructor is private.
      */
-    private Commonality()
-    {
+    private Commonality() {
     }
 
     /**
      * Find the length of a common prefix.
-     * @param source First string
-     * @param target Second string
+     * 
+     * @param source
+     *            First string
+     * @param target
+     *            Second string
      * @return The number of characters common to the start of each string.
      */
-    public static int prefix(final String source, final String target)
-    {
+    public static int prefix(final String source, final String target) {
         int pointermin = 0;
         int pointermax = Math.min(source.length(), target.length());
         int pointermid = pointermax;
-        while (pointermin < pointermid)
-        {
-            if (source.regionMatches(0, target, 0, pointermid))
-            {
+        while (pointermin < pointermid) {
+            if (source.regionMatches(0, target, 0, pointermid)) {
                 pointermin = pointermid;
-            }
-            else
-            {
+            } else {
                 pointermax = pointermid;
             }
             pointermid = (pointermax - pointermin) / 2 + pointermin;
@@ -69,23 +67,21 @@ public class Commonality
 
     /**
      * Find the length of a common suffix.
-     * @param source First string
-     * @param target Second string
+     * 
+     * @param source
+     *            First string
+     * @param target
+     *            Second string
      * @return The number of characters common to the end of each string.
      */
-    public static int suffix(final String source, final String target)
-    {
+    public static int suffix(final String source, final String target) {
         int pointermin = 0;
         int pointermax = Math.min(source.length(), target.length());
         int pointermid = pointermax;
-        while (pointermin < pointermid)
-        {
-            if (source.regionMatches(source.length() - pointermid, target, target.length() - pointermid, pointermid))
-            {
+        while (pointermin < pointermid) {
+            if (source.regionMatches(source.length() - pointermid, target, target.length() - pointermid, pointermid)) {
                 pointermin = pointermid;
-            }
-            else
-            {
+            } else {
                 pointermax = pointermid;
             }
             pointermid = (pointermax - pointermin) / 2 + pointermin;
@@ -95,21 +91,22 @@ public class Commonality
     }
 
     /**
-     * Do the two texts share a substring which is at least half the length of the
-     * longer text?
-     * @param source Baseline string
-     * @param target Changed string
-     * @return a CommonMiddle  Or null if there was no match.
+     * Do the two texts share a substring which is at least half the length of
+     * the longer text?
+     * 
+     * @param source
+     *            Baseline string
+     * @param target
+     *            Changed string
+     * @return a CommonMiddle Or null if there was no match.
      */
-    public static CommonMiddle halfMatch(final String source, final String target)
-    {
+    public static CommonMiddle halfMatch(final String source, final String target) {
         int sourceLength = source.length();
         int targetLength = target.length();
         String longText = sourceLength > targetLength ? source : target;
         String shortText = sourceLength > targetLength ? target : source;
         int longTextLength = Math.max(sourceLength, targetLength);
-        if (longTextLength < 10 || shortText.length() < 1)
-        {
+        if (longTextLength < 10 || shortText.length() < 1) {
             return null; // Pointless.
         }
 
@@ -118,53 +115,48 @@ public class Commonality
         // Check again based on the third quarter.
         CommonMiddle hm2 = halfMatch(longText, shortText, ceil(longTextLength, 2));
         CommonMiddle hm = null;
-        if (hm1 == null && hm2 == null)
-        {
+        if (hm1 == null && hm2 == null) {
             return null;
-        }
-        else if (hm2 == null)
-        {
+        } else if (hm2 == null) {
             hm = hm1;
-        }
-        else if (hm1 == null)
-        {
+        } else if (hm1 == null) {
             hm = hm2;
-        }
-        else
-        {
-            // Both matched.  Select the longest.
+        } else {
+            // Both matched. Select the longest.
             hm = hm1.getCommonality().length() > hm2.getCommonality().length() ? hm1 : hm2;
         }
 
         // A half-match was found, sort out the return data.
-        if (sourceLength > targetLength)
-        {
+        if (sourceLength > targetLength) {
             return hm;
         }
 
         return new CommonMiddle(hm.getTargetPrefix(), hm.getTargetSuffix(), hm.getSourcePrefix(), hm.getSourceSuffix(), hm.getCommonality());
     }
 
-    private static int ceil(int number, int divisor)
-    {
+    private static int ceil(int number, int divisor) {
         assert divisor > 0;
         int result = number / divisor + ((number % divisor) > 0 ? 1 : 0);
-        // assert result == (int) Math.ceil(((double) number) / ((double) divisor));
+        // assert result == (int) Math.ceil(((double) number) / ((double)
+        // divisor));
         return result;
     }
 
     /**
-     * Does a substring of shortText exist within longText such that the substring
-     * is at least half the length of longText?
-     * @param longText Longer string
-     * @param shortText Shorter string
-     * @param startIndex Start index of quarter length substring within longText
+     * Does a substring of shortText exist within longText such that the
+     * substring is at least half the length of longText?
+     * 
+     * @param longText
+     *            Longer string
+     * @param shortText
+     *            Shorter string
+     * @param startIndex
+     *            Start index of quarter length substring within longText
      * @return Five element String array, containing the prefix of longText, the
-     *     suffix of longText, the prefix of shortText, the suffix of shortText
-     *     and the common middle.  Or null if there was no match.
+     *         suffix of longText, the prefix of shortText, the suffix of
+     *         shortText and the common middle. Or null if there was no match.
      */
-    private static CommonMiddle halfMatch(final String longText, final String shortText, final int startIndex)
-    {
+    private static CommonMiddle halfMatch(final String longText, final String shortText, final int startIndex) {
         // Start with a 1/4 length substring at position i as a seed.
         String seed = longText.substring(startIndex, startIndex + (longText.length() / 4));
         int j = -1;
@@ -173,12 +165,10 @@ public class Commonality
         String longTextSuffix = ""; //$NON-NLS-1$
         String shortTextPrefix = ""; //$NON-NLS-1$
         String shortTextSuffix = ""; //$NON-NLS-1$
-        while ((j = shortText.indexOf(seed, j + 1)) != -1)
-        {
+        while ((j = shortText.indexOf(seed, j + 1)) != -1) {
             int prefixLength = Commonality.prefix(longText.substring(startIndex), shortText.substring(j));
             int suffixLength = Commonality.suffix(longText.substring(0, startIndex), shortText.substring(0, j));
-            if (common.length() < (prefixLength + suffixLength))
-            {
+            if (common.length() < (prefixLength + suffixLength)) {
                 common = shortText.substring(j - suffixLength, j) + shortText.substring(j, j + prefixLength);
                 longTextPrefix = longText.substring(0, startIndex - suffixLength);
                 longTextSuffix = longText.substring(startIndex + prefixLength);
@@ -187,8 +177,7 @@ public class Commonality
             }
         }
 
-        if (common.length() >= longText.length() / 2)
-        {
+        if (common.length() >= longText.length() / 2) {
             return new CommonMiddle(longTextPrefix, longTextSuffix, shortTextPrefix, shortTextSuffix, common);
         }
 

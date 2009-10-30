@@ -32,45 +32,37 @@ import java.util.Properties;
 import org.crosswire.common.config.ChoiceFactory;
 
 /**
- * Translations provides a list of locales that BibleDesktop has been translated into.
- *
- * @see gnu.lgpl.License for license details.
+ * Translations provides a list of locales that BibleDesktop has been translated
+ * into.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class Translations
-{
+public class Translations {
     /**
      * Singleton classes have private constructors.
      */
-    private Translations()
-    {
-        try
-        {
+    private Translations() {
+        try {
             loadSupportedTranslations();
             Properties props = ResourceUtil.getProperties(getClass());
             translation = props.getProperty(TRANSLATION_KEY);
-            if (translation == null || translation.length() == 0)
-            {
+            if (translation == null || translation.length() == 0) {
                 // check for a match against language and country
                 // This pertains to zh_TW and zh_CN
-                for (int i = 0; i < translations.length; i++)
-                {
+                for (int i = 0; i < translations.length; i++) {
                     Locale supportedLocale = new Locale(translations[i]);
-                    if (supportedLocale.getLanguage().equals(originalLocale.getLanguage())
-                        && supportedLocale.getCountry().equals(originalLocale.getCountry()))
-                    {
+                    if (supportedLocale.getLanguage().equals(originalLocale.getLanguage()) && supportedLocale.getCountry().equals(originalLocale.getCountry())) {
                         translation = translations[i];
                         return;
                     }
                 }
 
                 // check for a match against just language
-                for (int i = 0; i < translations.length; i++)
-                {
+                for (int i = 0; i < translations.length; i++) {
                     Locale supportedLocale = new Locale(translations[i]);
-                    if (supportedLocale.getLanguage().equals(originalLocale.getLanguage()))
-                    {
+                    if (supportedLocale.getLanguage().equals(originalLocale.getLanguage())) {
                         translation = translations[i];
                         return;
                     }
@@ -79,9 +71,7 @@ public class Translations
                 // if we don't have a matching locale then just use the default.
                 translation = DEFAULT_TRANSLATION;
             }
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             translation = DEFAULT_TRANSLATION;
         }
     }
@@ -91,8 +81,7 @@ public class Translations
      * 
      * @return the singleton instance
      */
-    public static Translations instance()
-    {
+    public static Translations instance() {
         return instance;
     }
 
@@ -101,15 +90,14 @@ public class Translations
      * 
      * @return an string array of translations in locale friendly names.
      */
-    public Map getSupported()
-    {
+    public Map getSupported() {
         loadSupportedTranslations();
 
-        // I18N(DMS) Collate these according to the current locale, putting the current locale's locale first.
+        // I18N(DMS) Collate these according to the current locale, putting the
+        // current locale's locale first.
         Map names = new LinkedHashMap();
 
-        for (int i = 0; i < translations.length; i++)
-        {
+        for (int i = 0; i < translations.length; i++) {
             names.put(translations[i], toString(translations[i]));
         }
 
@@ -118,19 +106,18 @@ public class Translations
 
     /**
      * Get the locale for the current translation.
+     * 
      * @return the translation's locale
      */
-    public Locale getCurrentLocale()
-    {
-        // If there is no particular translation, then return the default locale.
-        if (translation == null || DEFAULT_TRANSLATION.equals(translation))
-        {
+    public Locale getCurrentLocale() {
+        // If there is no particular translation, then return the default
+        // locale.
+        if (translation == null || DEFAULT_TRANSLATION.equals(translation)) {
             return DEFAULT_LOCALE;
         }
 
         // If the local consists of a language and a country then use both
-        if (translation.indexOf('_') != -1)
-        {
+        if (translation.indexOf('_') != -1) {
             String[] locale = StringUtil.split(translation, '_');
             return new Locale(locale[0], locale[1]);
         }
@@ -144,67 +131,58 @@ public class Translations
      * 
      * @return the current translation
      */
-    public String getCurrent()
-    {
+    public String getCurrent() {
         return toString(translation);
     }
 
     /**
      * Set the current translation, using human readable string.
      * 
-     * @param newTranslation the translation to use
+     * @param newTranslation
+     *            the translation to use
      */
-    public void setCurrent(String newTranslation)
-    {
+    public void setCurrent(String newTranslation) {
         String found = DEFAULT_TRANSLATION;
         String currentTranslation = ""; //$NON-NLS-1$
-        for (int i = 0; i < translations.length; i++)
-        {
+        for (int i = 0; i < translations.length; i++) {
             String trans = translations[i];
             currentTranslation = toString(translation);
 
-            if (trans.equals(newTranslation) || currentTranslation.equals(newTranslation))
-            {
+            if (trans.equals(newTranslation) || currentTranslation.equals(newTranslation)) {
                 found = trans;
                 break;
             }
         }
 
-        try
-        {
+        try {
             translation = found;
             Properties props = new Properties();
-            if (translation != DEFAULT_TRANSLATION)
-            {
+            if (translation != DEFAULT_TRANSLATION) {
                 props.put(TRANSLATION_KEY, translation);
             }
 
             URI outputURI = CWProject.instance().getWritableURI(getClass().getName(), FileUtil.EXTENSION_PROPERTIES);
             NetUtil.storeProperties(props, outputURI, "BibleDesktop UI Translation"); //$NON-NLS-1$
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             log.error("Failed to save BibleDesktop UI Translation", ex); //$NON-NLS-1$
         }
     }
 
     /**
-     * Set the locale for the program to the one the user has selected.
-     * But don't set it to the default translation, so that the user's
-     * actual locale, is used for Bible book names.
+     * Set the locale for the program to the one the user has selected. But
+     * don't set it to the default translation, so that the user's actual
+     * locale, is used for Bible book names.
      * 
      * This only makes sense after config has called setCurrentTranslation.
      */
-    public void setLocale()
-    {
+    public void setLocale() {
         Locale.setDefault(getCurrentLocale());
     }
 
     /**
      * Register this class with the common config engine.
      */
-    public void register()
-    {
+    public void register() {
         ChoiceFactory.getDataMap().put(TRANSLATION_KEY, getSupportedTranslations());
     }
 
@@ -213,18 +191,17 @@ public class Translations
      * 
      * @return the current translation
      */
-    public static String getCurrentTranslation()
-    {
+    public static String getCurrentTranslation() {
         return Translations.instance().getCurrent();
     }
 
     /**
      * Set the current translation, using human readable string.
      * 
-     * @param newTranslation the translation to use
+     * @param newTranslation
+     *            the translation to use
      */
-    public static void setCurrentTranslation(String newTranslation)
-    {
+    public static void setCurrentTranslation(String newTranslation) {
         Translations.instance().setCurrent(newTranslation);
     }
 
@@ -233,36 +210,28 @@ public class Translations
      * 
      * @return an string array of translations in locale friendly names.
      */
-    public static Map getSupportedTranslations()
-    {
+    public static Map getSupportedTranslations() {
         return Translations.instance().getSupported();
     }
 
     /**
      * Get a list of the supported translations
      */
-    private void loadSupportedTranslations()
-    {
-        if (translations == null)
-        {
-            try
-            {
+    private void loadSupportedTranslations() {
+        if (translations == null) {
+            try {
                 URL index = ResourceUtil.getResource(Translations.class, "translations.txt"); //$NON-NLS-1$
                 translations = NetUtil.listByIndexFile(NetUtil.toURI(index));
-            }
-            catch (IOException ex)
-            {
-                translations =  new String[0];
+            } catch (IOException ex) {
+                translations = new String[0];
             }
         }
     }
 
-    public String toString(String translationCode)
-    {
+    public String toString(String translationCode) {
         StringBuffer currentTranslation = new StringBuffer(Languages.getLanguageName(translationCode));
 
-        if (translationCode.indexOf('_') != -1)
-        {
+        if (translationCode.indexOf('_') != -1) {
             String[] locale = StringUtil.split(translationCode, '_');
             currentTranslation.append(", "); //$NON-NLS-1$
             currentTranslation.append(Countries.getCountry(locale[1]));
@@ -297,7 +266,8 @@ public class Translations
     private String[] translations;
 
     /**
-     * The locale that the program starts with. This needs to precede "instance."
+     * The locale that the program starts with. This needs to precede
+     * "instance."
      */
     private static Locale originalLocale = Locale.getDefault();
 

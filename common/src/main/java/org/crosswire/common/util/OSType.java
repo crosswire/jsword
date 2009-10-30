@@ -27,28 +27,31 @@ import java.net.URI;
 
 /**
  * Types of Operating Systems for which specialized behavior is needed.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public abstract class OSType implements Serializable
-{
+public abstract class OSType implements Serializable {
     public static final OSType MAC = new OSType("Mac") //$NON-NLS-1$
     {
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see org.crosswire.jsword.util.OSType#getUserArea()
          */
-        public URI getUserArea()
-        {
+        public URI getUserArea() {
             return NetUtil.lengthenURI(getUserHome(), MAC_USER_DATA_AREA);
         }
 
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.util.OSType#getUserAreaFolder(java.lang.String, java.lang.String)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * org.crosswire.jsword.util.OSType#getUserAreaFolder(java.lang.String,
+         * java.lang.String)
          */
-        public URI getUserAreaFolder(String hiddenFolderName, String visibleFolderName)
-        {
+        public URI getUserAreaFolder(String hiddenFolderName, String visibleFolderName) {
             return NetUtil.lengthenURI(getUserArea(), visibleFolderName);
         }
 
@@ -60,19 +63,23 @@ public abstract class OSType implements Serializable
 
     public static final OSType WIN32 = new OSType("Win") //$NON-NLS-1$
     {
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see org.crosswire.jsword.util.OSType#getUserArea()
          */
-        public URI getUserArea()
-        {
+        public URI getUserArea() {
             return NetUtil.lengthenURI(getUserHome(), WIN32_USER_DATA_AREA);
         }
 
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.util.OSType#getUserAreaFolder(java.lang.String, java.lang.String)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * org.crosswire.jsword.util.OSType#getUserAreaFolder(java.lang.String,
+         * java.lang.String)
          */
-        public URI getUserAreaFolder(String hiddenFolderName, String visibleFolderName)
-        {
+        public URI getUserAreaFolder(String hiddenFolderName, String visibleFolderName) {
             return NetUtil.lengthenURI(getUserArea(), visibleFolderName);
         }
 
@@ -84,19 +91,23 @@ public abstract class OSType implements Serializable
 
     public static final OSType DEFAULT = new OSType("*nix") //$NON-NLS-1$
     {
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
+         * 
          * @see org.crosswire.jsword.util.OSType#getUserArea()
          */
-        public URI getUserArea()
-        {
+        public URI getUserArea() {
             return getUserHome();
         }
 
-        /* (non-Javadoc)
-         * @see org.crosswire.jsword.util.OSType#getUserAreaFolder(java.lang.String, java.lang.String)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * org.crosswire.jsword.util.OSType#getUserAreaFolder(java.lang.String,
+         * java.lang.String)
          */
-        public URI getUserAreaFolder(String hiddenFolderName, String visibleFolderName)
-        {
+        public URI getUserAreaFolder(String hiddenFolderName, String visibleFolderName) {
             return NetUtil.lengthenURI(getUserArea(), hiddenFolderName);
         }
 
@@ -104,47 +115,45 @@ public abstract class OSType implements Serializable
          * Serialization ID
          */
         private static final long serialVersionUID = 8260119208395182688L;
-     };
+    };
 
     /**
      * Simple ctor
      */
-    public OSType(String name)
-    {
+    public OSType(String name) {
         this.name = name;
     }
 
     /**
      * Get the user area for this OSType.
+     * 
      * @return the user area
      */
     public abstract URI getUserArea();
 
     /**
-     * A folder in the user area. This osType will determine which to use in constructing
-     * the URI to the folder.
-     *
-     * @param hiddenFolderName is typically a "unix" hidden folder name such as .jsword.
-     * @param visibleFolderName is an visible folder name, such as JSword.
-     *
+     * A folder in the user area. This osType will determine which to use in
+     * constructing the URI to the folder.
+     * 
+     * @param hiddenFolderName
+     *            is typically a "unix" hidden folder name such as .jsword.
+     * @param visibleFolderName
+     *            is an visible folder name, such as JSword.
+     * 
      * @return the user area folder
      */
     public abstract URI getUserAreaFolder(String hiddenFolderName, String visibleFolderName);
 
-    public static URI getUserHome()
-    {
+    public static URI getUserHome() {
         return NetUtil.getURI(new File(System.getProperty("user.home"))); //$NON-NLS-1$;
     }
 
     /**
      * Get an integer representation for this CaseType
      */
-    public int toInteger()
-    {
-        for (int i = 0; i < VALUES.length; i++)
-        {
-            if (equals(VALUES[i]))
-            {
+    public int toInteger() {
+        for (int i = 0; i < VALUES.length; i++) {
+            if (equals(VALUES[i])) {
                 return i;
             }
         }
@@ -155,24 +164,20 @@ public abstract class OSType implements Serializable
 
     /**
      * Get the machine's OSType.
-     *
+     * 
      * @return the machine's OSType
      */
-    public static OSType getOSType()
-    {
+    public static OSType getOSType() {
         return osType;
     }
 
     /**
      * Lookup method to convert from a String
      */
-    public static OSType fromString(String name)
-    {
-        for (int i = 0; i < VALUES.length; i++)
-        {
+    public static OSType fromString(String name) {
+        for (int i = 0; i < VALUES.length; i++) {
             OSType o = VALUES[i];
-            if (name.startsWith(o.name))
-            {
+            if (name.startsWith(o.name)) {
                 return o;
             }
         }
@@ -182,34 +187,36 @@ public abstract class OSType implements Serializable
     /**
      * Lookup method to convert from an integer
      */
-    public static OSType fromInteger(int i)
-    {
+    public static OSType fromInteger(int i) {
         return VALUES[i];
     }
 
     /**
-     * Prevent subclasses from overriding canonical identity based Object methods
+     * Prevent subclasses from overriding canonical identity based Object
+     * methods
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public final boolean equals(Object o)
-    {
+    public final boolean equals(Object o) {
         return super.equals(o);
     }
 
     /**
-     * Prevent subclasses from overriding canonical identity based Object methods
+     * Prevent subclasses from overriding canonical identity based Object
+     * methods
+     * 
      * @see java.lang.Object#hashCode()
      */
-    public final int hashCode()
-    {
+    public final int hashCode() {
         return super.hashCode();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         return name;
     }
 
@@ -222,16 +229,12 @@ public abstract class OSType implements Serializable
     private static int nextObj;
     private final int obj = nextObj++;
 
-    Object readResolve()
-    {
+    Object readResolve() {
         return VALUES[obj];
     }
 
-    private static final OSType[] VALUES =
-    {
-        MAC,
-        WIN32,
-        DEFAULT,
+    private static final OSType[] VALUES = {
+            MAC, WIN32, DEFAULT,
     };
 
     /**

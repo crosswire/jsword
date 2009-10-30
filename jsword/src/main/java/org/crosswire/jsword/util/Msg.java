@@ -25,20 +25,19 @@ import org.crosswire.common.util.MsgBase;
 
 /**
  * Compile safe Msg resource settings.
- *
- * @see gnu.lgpl.License for license details.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class Msg extends MsgBase
-{
-    static final Msg NO_CONVERTER     = new Msg("ConverterFactory.NoConverter"); //$NON-NLS-1$
+public final class Msg extends MsgBase {
+    static final Msg NO_CONVERTER = new Msg("ConverterFactory.NoConverter"); //$NON-NLS-1$
+
     /**
      * Passthrough ctor
      */
-    private Msg(String name)
-    {
+    private Msg(String name) {
         super(name);
     }
 }

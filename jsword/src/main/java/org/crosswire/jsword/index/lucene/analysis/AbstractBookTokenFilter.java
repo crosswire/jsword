@@ -27,31 +27,30 @@ import org.crosswire.jsword.book.Book;
 
 /**
  * An AbstractBookTokenFilter ties a Lucene TokenFilter to a Book.
- *
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class AbstractBookTokenFilter extends TokenFilter
-{
+public class AbstractBookTokenFilter extends TokenFilter {
 
     /**
      * Create a TokenFilter not tied to a Book.
      * 
-     * @param input the token stream to filter
+     * @param input
+     *            the token stream to filter
      */
-    public AbstractBookTokenFilter(TokenStream input)
-    {
+    public AbstractBookTokenFilter(TokenStream input) {
         this(null, input);
     }
 
     /**
      * Create a TokenFilter tied to a Book.
      * 
-     * @param input the token stream to filter
+     * @param input
+     *            the token stream to filter
      */
-    public AbstractBookTokenFilter(Book book, TokenStream input)
-    {
+    public AbstractBookTokenFilter(Book book, TokenStream input) {
         super(input);
         this.book = book;
     }
@@ -59,28 +58,25 @@ public class AbstractBookTokenFilter extends TokenFilter
     /**
      * @return the book
      */
-    public Book getBook()
-    {
+    public Book getBook() {
         return book;
     }
 
     /**
-     * @param book the book to set
+     * @param book
+     *            the book to set
      */
-    public void setBook(Book book)
-    {
+    public void setBook(Book book) {
         this.book = book;
     }
 
     /* Define to quite FindBugs */
-    public boolean equals(Object obj)
-    {
+    public boolean equals(Object obj) {
         return super.equals(obj);
     }
 
     /* Define to quite FindBugs */
-    public int hashCode()
-    {
+    public int hashCode() {
         return super.hashCode();
     }
 
