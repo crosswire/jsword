@@ -21,8 +21,6 @@
  */
 package org.crosswire.jsword.book;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -313,22 +311,7 @@ public final class BookFilters {
             List cache = new ArrayList();
             String[] filters = match.split(";"); //$NON-NLS-1$
             for (int i = 0; i < filters.length; i++) {
-                String[] parts = filters[i].split("="); //$NON-NLS-1$
-                if (parts.length != 2 || parts[0].length() == 0 || parts[1].length() == 0) {
-                    throw new IllegalArgumentException("Filter format is 'property=value', given: " + filters[i]); //$NON-NLS-1$
-                }
-
-                Test test = new Test();
-
-                String gettername = "get" + Character.toTitleCase(parts[0].charAt(0)) + parts[0].substring(1); //$NON-NLS-1$
-                try {
-                    test.property = Book.class.getMethod(gettername, (Class[]) null);
-                    test.result = parts[1];
-                } catch (NoSuchMethodException ex) {
-                    throw new IllegalArgumentException("Missing property: " + parts[0] + " in Book"); //$NON-NLS-1$ //$NON-NLS-2$
-                }
-
-                cache.add(test);
+                cache.add(new Test(filters[i]));
             }
 
             tests = (Test[]) cache.toArray(new Test[cache.size()]);
@@ -344,19 +327,8 @@ public final class BookFilters {
         public boolean test(Book book) {
             for (int i = 0; i < tests.length; i++) {
                 Test test = tests[i];
-                try {
-                    Object result = test.property.invoke(book, (Object[]) null);
-                    if (!test.result.equals(result.toString())) {
-                        return false;
-                    }
-                } catch (IllegalArgumentException e) {
-                    log.warn("Error while testing property " + test.property.getName() + " on " + book.getName(), e); //$NON-NLS-1$ //$NON-NLS-2$
-                    return false;
-                } catch (IllegalAccessException e) {
-                    log.warn("Error while testing property " + test.property.getName() + " on " + book.getName(), e); //$NON-NLS-1$ //$NON-NLS-2$
-                    return false;
-                } catch (InvocationTargetException e) {
-                    log.warn("Error while testing property " + test.property.getName() + " on " + book.getName(), e); //$NON-NLS-1$ //$NON-NLS-2$
+                Object result = book.getProperty(test.property);
+                if (result == null || !test.result.equals(result.toString())) {
                     return false;
                 }
             }
@@ -370,8 +342,21 @@ public final class BookFilters {
          *
          */
         static class Test {
+            protected Test(String filter) {
+                String[] parts = filter.split("="); //$NON-NLS-1$
+                if (parts.length != 2 || parts[0].length() == 0 || parts[1].length() == 0) {
+                    throw new IllegalArgumentException("Filter format is 'property=value', given: " + filter); //$NON-NLS-1$
+                }
+                this.property = parts[0];
+                this.result = parts[1];
+
+            }
+            protected Test(String property, String result) {
+                this.property = property;
+                this.result = result;
+            }
+            protected String property;
             protected String result;
-            protected Method property;
         }
     }
 
