@@ -5,6 +5,10 @@ en
 zh_CN
 zh_TW
 de
+#Note: 'id' will become 'in' within a Locale
+#It needs to be 'id' here to pick up the right Language from iso639.properties
+id
 fa
 #tr
 vi
+
