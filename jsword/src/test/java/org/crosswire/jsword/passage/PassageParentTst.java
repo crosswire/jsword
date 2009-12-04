@@ -227,7 +227,7 @@ public class PassageParentTst extends TestCase {
         }
     }
 
-    public void testReadIsEmpty() throws Exception {
+    public void testReadIsEmpty() {
         // for (int i=0; i<20; i++)
         {
             assertTrue(!gen1_135.isEmpty());
@@ -236,7 +236,7 @@ public class PassageParentTst extends TestCase {
         }
     }
 
-    public void testReadCountVerses() throws Exception {
+    public void testReadCountVerses() {
         // for (int i=0; i<12; i++)
         {
             assertEquals(gen1_135.countVerses(), 3);
@@ -245,7 +245,7 @@ public class PassageParentTst extends TestCase {
         }
     }
 
-    public void testReadCountRanges() throws Exception {
+    public void testReadCountRanges() {
         // for (int i=0; i<10; i++)
         {
             assertEquals(gen1_135.countRanges(RestrictionType.NONE), 3);
@@ -278,7 +278,7 @@ public class PassageParentTst extends TestCase {
         }
     }
 
-    public void testReadBooksInPassage() throws Exception {
+    public void testReadBooksInPassage() {
         // for (int i=0; i<12; i++)
         {
             assertEquals(gen1_135.booksInPassage(), 1);
@@ -334,7 +334,7 @@ public class PassageParentTst extends TestCase {
         }
     }
 
-    public void testReadContainsVerse() throws Exception {
+    public void testReadContainsVerse() {
         // for (int i=0; i<1200; i++)
         {
             assertTrue(!empty.contains(gen11));
@@ -348,7 +348,7 @@ public class PassageParentTst extends TestCase {
         }
     }
 
-    public void testReadContainsVerseRange() throws Exception {
+    public void testReadContainsVerseRange() {
         // for (int i=0; i<600; i++)
         {
             assertTrue(gen1_135.contains(gen11_1));
@@ -363,7 +363,7 @@ public class PassageParentTst extends TestCase {
         }
     }
 
-    public void testReadContainsAll() throws Exception {
+    public void testReadContainsAll() {
         assertTrue(!gen1_135.containsAll(exo2a_3b));
         assertTrue(gen1_135.containsAll(empty));
         assertTrue(gen1_135.containsAll((Passage) gen1_135.clone()));
@@ -372,7 +372,7 @@ public class PassageParentTst extends TestCase {
         assertTrue(exo2a_3b.containsAll((Passage) exo2a_3b.clone()));
     }
 
-    public void testReadContainsVerseBase() throws Exception {
+    public void testReadContainsVerseBase() {
         // for (int i=0; i<1000; i++)
         {
             assertTrue(!empty.contains(gen11));
@@ -393,7 +393,7 @@ public class PassageParentTst extends TestCase {
 
     // ==========================================================================
 
-    public void testWriteCreatePassage() throws Exception {
+    public void testWriteCreatePassage() {
         assertEquals(((Passage) keyf.createEmptyKeyList()).countVerses(), 0);
     }
 
@@ -530,7 +530,7 @@ public class PassageParentTst extends TestCase {
         assertTrue(li2.check(3, 0, 0));
     }
 
-    public void testWriteClone() throws Exception {
+    public void testWriteClone() {
         assertTrue(gen1_135 != gen1_135.clone());
         assertEquals(gen1_135, gen1_135.clone());
         assertTrue(exo2a_3b != exo2a_3b.clone());
@@ -591,19 +591,19 @@ public class PassageParentTst extends TestCase {
         assertTrue(!it.hasNext());
     }
 
-    public void testWriteIsEmpty() throws Exception {
+    public void testWriteIsEmpty() {
         assertTrue(!gen1_135.isEmpty());
         assertTrue(!exo2a_3b.isEmpty());
         assertTrue(empty.isEmpty());
     }
 
-    public void testWriteCountVerses() throws Exception {
+    public void testWriteCountVerses() {
         assertEquals(gen1_135.countVerses(), 3);
         assertEquals(exo2a_3b.countVerses(), 21);
         assertEquals(empty.countVerses(), 0);
     }
 
-    public void testWriteCountRanges() throws Exception {
+    public void testWriteCountRanges() {
         assertEquals(gen1_135.countRanges(RestrictionType.NONE), 3);
         assertEquals(exo2a_3b.countRanges(RestrictionType.NONE), 2);
         assertEquals(empty.countVerses(), 0);
@@ -627,7 +627,7 @@ public class PassageParentTst extends TestCase {
         assertEquals(exo2a_3b.getRangeAt(1, RestrictionType.NONE), VerseRangeFactory.fromString("Exo 3:1-11")); //$NON-NLS-1$
     }
 
-    public void testWriteBooksInPassage() throws Exception {
+    public void testWriteBooksInPassage() {
         assertEquals(gen1_135.booksInPassage(), 1);
         assertEquals(exo2a_3b.booksInPassage(), 1);
     }
@@ -674,7 +674,7 @@ public class PassageParentTst extends TestCase {
         assertEquals(exo2a_3b.versesInPassage(0, 0), exo2a_3b.countVerses());
     }
 
-    public void testWriteContainsVerse() throws Exception {
+    public void testWriteContainsVerse() {
         assertTrue(!empty.contains(gen11));
         assertTrue(gen1_135.contains(gen11));
         assertTrue(!gen1_135.contains(gen12));
@@ -685,7 +685,7 @@ public class PassageParentTst extends TestCase {
         assertTrue(gen_rev.contains(rev99));
     }
 
-    public void testWriteContainsVerseRange() throws Exception {
+    public void testWriteContainsVerseRange() {
         assertTrue(gen1_135.contains(gen11_1));
         assertTrue(!gen1_135.contains(gen11_2));
         assertTrue(!gen1_135.contains(gen12_1));
@@ -697,7 +697,7 @@ public class PassageParentTst extends TestCase {
         assertTrue(gen_rev.contains(new VerseRange(rev99)));
     }
 
-    public void testWriteContainsAll() throws Exception {
+    public void testWriteContainsAll() {
         assertTrue(!gen1_135.containsAll(exo2a_3b));
         assertTrue(gen1_135.containsAll(empty));
         assertTrue(gen1_135.containsAll((Passage) gen1_135.clone()));
@@ -710,7 +710,7 @@ public class PassageParentTst extends TestCase {
         assertTrue(gen_rev.containsAll(gen_rev));
     }
 
-    public void testWriteContainsVerseBase() throws Exception {
+    public void testWriteContainsVerseBase() {
         assertTrue(!empty.contains(gen11));
         assertTrue(gen1_135.contains(gen11));
         assertTrue(!gen1_135.contains(gen12));
@@ -751,7 +751,7 @@ public class PassageParentTst extends TestCase {
         assertEquals(temp.getName(), "Gen 1:1-5"); //$NON-NLS-1$
     }
 
-    public void testWriteClear() throws Exception {
+    public void testWriteClear() {
         temp = (Passage) gen1_135.clone();
         temp.clear();
         assertEquals(temp.getName(), ""); //$NON-NLS-1$

@@ -43,7 +43,7 @@ public class HelpDeskTest extends TestCase {
     protected void tearDown() throws Exception {
     }
 
-    public void test() throws Exception {
+    public void test() {
         /*
          * boolean file = FileCaptureListener.getHelpDeskListener(); boolean log
          * = LogCaptureListener.getHelpDeskListener(); boolean soi =

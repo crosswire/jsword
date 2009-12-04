@@ -4,9 +4,9 @@
 	<classpathentry exported="true" kind="src" path="/common"/>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/test/java"/>
-	<classpathentry exported="true" kind="lib" path="jar/lucene-2.9.0/lucene-analyzers-2.9.0.jar" sourcepath="jar/lucene-2.9.0/lucene-2.9.0-src.zip"/>
-	<classpathentry exported="true" kind="lib" path="jar/lucene-2.9.0/lucene-core-2.9.0.jar" sourcepath="jar/lucene-2.9.0/lucene-2.9.0-src.zip"/>
-	<classpathentry exported="true" kind="lib" path="jar/lucene-2.9.0/lucene-smartcn-2.9.0.jar" sourcepath="jar/lucene-2.9.0/lucene-2.9.0-src.zip"/>
-	<classpathentry exported="true" kind="lib" path="jar/lucene-2.9.0/lucene-snowball-2.9.0.jar" sourcepath="jar/lucene-2.9.0/lucene-2.9.0-src.zip"/>
+	<classpathentry exported="true" kind="lib" path="jar/lucene-2.9.1/lucene-analyzers-2.9.1.jar" sourcepath="jar/lucene-2.9.1/lucene-2.9.1-src.zip"/>
+	<classpathentry exported="true" kind="lib" path="jar/lucene-2.9.1/lucene-core-2.9.1.jar" sourcepath="jar/lucene-2.9.1/lucene-2.9.1-src.zip"/>
+	<classpathentry exported="true" kind="lib" path="jar/lucene-2.9.1/lucene-smartcn-2.9.1.jar" sourcepath="jar/lucene-2.9.1/lucene-2.9.1-src.zip"/>
+	<classpathentry exported="true" kind="lib" path="jar/lucene-2.9.1/lucene-snowball-2.9.1.jar" sourcepath="jar/lucene-2.9.1/lucene-2.9.1-src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

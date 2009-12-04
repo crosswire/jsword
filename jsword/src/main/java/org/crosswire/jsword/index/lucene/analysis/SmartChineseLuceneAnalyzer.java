@@ -25,6 +25,7 @@ import java.io.Reader;
 
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
+import org.apache.lucene.util.Version;
 
 /**
  * A simple wrapper for {@link SmartChineseAnalyzer}, which takes overlapping
@@ -38,7 +39,7 @@ import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
  */
 public class SmartChineseLuceneAnalyzer extends AbstractBookAnalyzer {
     public SmartChineseLuceneAnalyzer() {
-        myAnalyzer = new SmartChineseAnalyzer();
+        myAnalyzer = new SmartChineseAnalyzer(Version.LUCENE_29);
     }
 
     /*

@@ -24,6 +24,7 @@ package org.crosswire.jsword.index.lucene.analysis;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.util.Version;
 
 import junit.framework.TestCase;
 
@@ -46,7 +47,7 @@ public class ChineseLuceneAnalyzerTest extends TestCase {
 
     public void testTokenization() throws ParseException {
         myAnalyzer = new ChineseLuceneAnalyzer();
-        parser = new QueryParser(field, myAnalyzer);
+        parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
 
         String testInput = "\u795E\u7231\u4E16\u4EBA\uFF0C\u751A\u81F3\u628A\u4ED6\u7684\u72EC\u751F\u5B50\u8D50\u7ED9\u4ED6\u4EEC"; //$NON-NLS-1$
 

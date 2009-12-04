@@ -170,7 +170,7 @@ public class VerseRangeTest extends TestCase {
         assertEquals(rev11_9, VerseRangeFactory.fromString("Rev")); //$NON-NLS-1$
     }
 
-    public void testToString() throws Exception {
+    public void testToString() {
         assertEquals(gen11_1.toString(), "Gen 1:1"); //$NON-NLS-1$
         assertEquals(gen11_2.toString(), "Gen 1:1-2"); //$NON-NLS-1$
         assertEquals(gen11_9.toString(), "Gen 1"); //$NON-NLS-1$
@@ -203,13 +203,13 @@ public class VerseRangeTest extends TestCase {
         assertEquals(gen11_1, RestrictionType.NONE.toRange(VerseFactory.fromString("Gen 1:1"), 1)); //$NON-NLS-1$
     }
 
-    public void testNewViaVerseIntBoolean() throws Exception {
+    public void testNewViaVerseIntBoolean() {
         assertEquals(gen_rev, RestrictionType.NONE.toRange(gen11, 999999));
         assertEquals(gen11_1, RestrictionType.NONE.toRange(gen11, 0));
         assertEquals(gen11_1, RestrictionType.NONE.toRange(gen11, -1));
     }
 
-    public void testNewViaVerse() throws Exception {
+    public void testNewViaVerse() {
         assertEquals(gen11_1, new VerseRange(gen11));
         assertEquals(rev99_1, new VerseRange(rev99));
     }
@@ -227,7 +227,7 @@ public class VerseRangeTest extends TestCase {
         assertEquals(gen11_1, new VerseRange(gen11, new Verse(1, 1, 1)));
     }
 
-    public void testNewViaVerseIntIntBoolean() throws Exception {
+    public void testNewViaVerseIntIntBoolean() {
         assertEquals(gen11_1, RestrictionType.CHAPTER.blur(gen11, 0, 0));
         assertEquals(gen11_1, RestrictionType.NONE.blur(gen11, 0, 0));
         assertEquals(gen11_2, RestrictionType.CHAPTER.blur(gen11, 0, 1));
@@ -300,7 +300,7 @@ public class VerseRangeTest extends TestCase {
         assertEquals(rev11_9, RestrictionType.NONE.blur(rev99, 403, 9));
     }
 
-    public void testNewViaVerseRangeIntIntBoolean() throws Exception {
+    public void testNewViaVerseRangeIntIntBoolean() {
         assertEquals(gen11_1, RestrictionType.CHAPTER.blur(gen11_1, 0, 0));
         assertEquals(gen11_1, RestrictionType.NONE.blur(gen11_1, 0, 0));
         assertEquals(gen11_2, RestrictionType.CHAPTER.blur(gen11_1, 0, 1));
@@ -373,7 +373,7 @@ public class VerseRangeTest extends TestCase {
         assertEquals(rev11_9, RestrictionType.NONE.blur(rev99_1, 403, 9));
     }
 
-    public void testNewViaVerseRangeVerseRange() throws Exception {
+    public void testNewViaVerseRangeVerseRange() {
         assertEquals(gen_rev, new VerseRange(gen11_1, rev99_9));
         assertEquals(gen_rev, new VerseRange(gen_rev, rev99_9));
         assertEquals(gen_rev, new VerseRange(rev11_9, gen_rev));
@@ -395,7 +395,7 @@ public class VerseRangeTest extends TestCase {
         }
     }
 
-    public void testGetName() throws Exception {
+    public void testGetName() {
         assertEquals(gen11_1.getName(), "Gen 1:1"); //$NON-NLS-1$
         assertEquals(gen11_2.getName(), "Gen 1:1-2"); //$NON-NLS-1$
         assertEquals(gen11_9.getName(), "Gen 1"); //$NON-NLS-1$
@@ -409,14 +409,14 @@ public class VerseRangeTest extends TestCase {
         assertEquals(rev99_1.getName(), "Rev 22:21"); //$NON-NLS-1$
     }
 
-    public void testGetNameVerse() throws Exception {
+    public void testGetNameVerse() {
         assertEquals(gen11_2.getName(gen11), "1-2"); //$NON-NLS-1$
         assertEquals(gen12_1.getName(gen11), "2"); //$NON-NLS-1$
         assertEquals(rev99_9.getName(gen11), "Rev 22"); //$NON-NLS-1$
         assertEquals(rev99_9.getName(null), "Rev 22"); //$NON-NLS-1$
     }
 
-    public void testGetStart() throws Exception {
+    public void testGetStart() {
         assertEquals(gen11_1.getStart(), gen11);
         assertEquals(gen11_2.getStart(), gen11);
         assertEquals(gen11_9.getStart(), gen11);
@@ -430,7 +430,7 @@ public class VerseRangeTest extends TestCase {
         assertEquals(rev99_1.getStart(), rev99);
     }
 
-    public void testGetEnd() throws Exception {
+    public void testGetEnd() {
         assertEquals(gen11_1.getEnd(), gen11);
         assertEquals(gen11_2.getEnd(), gen12);
         assertEquals(gen11_9.getEnd(), gen19);
@@ -444,7 +444,7 @@ public class VerseRangeTest extends TestCase {
         assertEquals(rev99_1.getEnd(), rev99);
     }
 
-    public void testGetVerseCount() throws Exception {
+    public void testGetVerseCount() {
         assertEquals(gen11_1.getCardinality(), 1);
         assertEquals(gen11_2.getCardinality(), 2);
         assertEquals(gen11_9.getCardinality(), 31);
@@ -458,14 +458,14 @@ public class VerseRangeTest extends TestCase {
         assertEquals(rev99_1.getCardinality(), 1);
     }
 
-    public void testClone() throws Exception {
+    public void testClone() {
         assertTrue(gen11_1 != gen11_1.clone());
         assertTrue(gen11_1.equals(gen11_1.clone()));
         assertTrue(rev99_1 != rev99_1.clone());
         assertTrue(rev99_1.equals(rev99_1.clone()));
     }
 
-    public void testCompareTo() throws Exception {
+    public void testCompareTo() {
         assertEquals(rev99_1.compareTo(gen11_1), 1);
         assertEquals(gen11_1.compareTo(rev99_1), -1);
         assertEquals(gen11_1.compareTo(gen11_1), 0);
@@ -527,7 +527,7 @@ public class VerseRangeTest extends TestCase {
         }
     }
 
-    public void testContainsVerse() throws Exception {
+    public void testContainsVerse() {
         assertTrue(gen_all.contains(gen11));
         assertTrue(gen_all.contains(gen12));
         assertTrue(gen_all.contains(gen99));
@@ -548,7 +548,7 @@ public class VerseRangeTest extends TestCase {
         }
     }
 
-    public void testContainsVerseRange() throws Exception {
+    public void testContainsVerseRange() {
         assertTrue(gen_all.contains(gen11_1));
         assertTrue(gen_all.contains(gen11_2));
         assertTrue(gen_all.contains(gen12_1));
@@ -593,7 +593,7 @@ public class VerseRangeTest extends TestCase {
         assertTrue(!VerseRangeFactory.fromString("Lev-Deu 1:1").isWholeBook()); //$NON-NLS-1$
     }
 
-    public void testToVerseArray() throws Exception {
+    public void testToVerseArray() {
         assertEquals(gen11_1.toVerseArray()[0], gen11);
         assertEquals(gen11_2.toVerseArray()[0], gen11);
         assertEquals(gen11_2.toVerseArray()[1], gen12);
@@ -616,7 +616,7 @@ public class VerseRangeTest extends TestCase {
         assertEquals(rev11_9.toVerseArray().length, 404);
     }
 
-    public void testVerseElements() throws Exception {
+    public void testVerseElements() {
         Iterator it = gen11_1.iterator();
         while (it.hasNext()) {
             assertTrue(it.hasNext());

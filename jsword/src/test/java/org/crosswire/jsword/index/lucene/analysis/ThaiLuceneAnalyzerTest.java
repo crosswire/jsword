@@ -24,6 +24,7 @@ package org.crosswire.jsword.index.lucene.analysis;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.util.Version;
 
 import junit.framework.TestCase;
 
@@ -40,7 +41,7 @@ public class ThaiLuceneAnalyzerTest extends TestCase {
         super.setUp();
         myAnalyzer = new ThaiLuceneAnalyzer();
 
-        parser = new QueryParser(field, myAnalyzer);
+        parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
     }
 
     protected void tearDown() throws Exception {

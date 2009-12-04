@@ -220,7 +220,7 @@ public class VerseTest extends TestCase {
         assertEquals(VerseFactory.fromString("Gen 2:1").getName(null), "Gen 2:1"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    public void testNewViaIntIntIntBoolean() throws Exception {
+    public void testNewViaIntIntIntBoolean() {
         assertEquals(gen11, new Verse(0, 1, 1, true));
         assertEquals(gen11, new Verse(1, 0, 1, true));
         assertEquals(gen11, new Verse(1, 1, 0, true));
@@ -294,14 +294,14 @@ public class VerseTest extends TestCase {
         }
     }
 
-    public void testClone() throws Exception {
+    public void testClone() {
         assertEquals(gen11, gen11.clone());
         assertEquals(gen11, gen11.clone());
         assertEquals(rev99, rev99.clone());
         assertEquals(rev99, rev99.clone());
     }
 
-    public void testEquals() throws Exception {
+    public void testEquals() {
         assertTrue(!gen11.equals(null));
         assertTrue(!gen11.equals(new Integer(0)));
         assertTrue(!gen11.equals("org.crosswire.jsword.passage.Verse")); //$NON-NLS-1$
@@ -311,20 +311,20 @@ public class VerseTest extends TestCase {
         assertTrue(!gen11.equals(gen12));
     }
 
-    public void testHashCode() throws Exception {
+    public void testHashCode() {
         assertEquals(gen11.hashCode(), gen11a.hashCode());
         assertEquals(gen11.hashCode(), gen11.getOrdinal());
         assertTrue(gen11.hashCode() != gen12.getOrdinal());
         assertTrue(gen11.hashCode() != 0);
     }
 
-    public void testCompareTo() throws Exception {
+    public void testCompareTo() {
         assertEquals(gen11.compareTo(rev99), -1);
         assertEquals(rev99.compareTo(gen11), 1);
         assertEquals(gen11.compareTo(gen11), 0);
     }
 
-    public void testAddSubtract() throws Exception {
+    public void testAddSubtract() {
         assertEquals(gen12.subtract(gen11), 1);
         assertEquals(gen11.subtract(gen11), 0);
         assertEquals(gen11.subtract(gen12), -1);
@@ -345,7 +345,7 @@ public class VerseTest extends TestCase {
         assertEquals(rev99.add(2), rev99);
     }
 
-    public void testToString() throws Exception {
+    public void testToString() {
         assertEquals(gen11.toString(), "Gen 1:1"); //$NON-NLS-1$
         assertEquals(gen12.toString(), "Gen 1:2"); //$NON-NLS-1$
         assertEquals(gen21.toString(), "Gen 2:1"); //$NON-NLS-1$
@@ -357,7 +357,7 @@ public class VerseTest extends TestCase {
         assertEquals(rev99.toString(), "Rev 22:21"); //$NON-NLS-1$
     }
 
-    public void testGetBook() throws Exception {
+    public void testGetBook() {
         assertEquals(gen11.getBook(), 1);
         assertEquals(gen12.getBook(), 1);
         assertEquals(gen21.getBook(), 1);
@@ -369,7 +369,7 @@ public class VerseTest extends TestCase {
         assertEquals(rev99.getBook(), 66);
     }
 
-    public void testGetChapter() throws Exception {
+    public void testGetChapter() {
         assertEquals(gen11.getChapter(), 1);
         assertEquals(gen12.getChapter(), 1);
         assertEquals(gen21.getChapter(), 2);
@@ -381,7 +381,7 @@ public class VerseTest extends TestCase {
         assertEquals(rev99.getChapter(), 22);
     }
 
-    public void testGetVerse() throws Exception {
+    public void testGetVerse() {
         assertEquals(gen11.getVerse(), 1);
         assertEquals(gen12.getVerse(), 2);
         assertEquals(gen21.getVerse(), 1);
@@ -423,7 +423,7 @@ public class VerseTest extends TestCase {
         }), 1);
     }
 
-    public void testGetOrdinal() throws Exception {
+    public void testGetOrdinal() {
         assertEquals(gen11.getOrdinal(), 1);
         assertEquals(gen12.getOrdinal(), 2);
         assertEquals(gen21.getOrdinal(), 32);
@@ -500,7 +500,7 @@ public class VerseTest extends TestCase {
         assertTrue(VerseFactory.fromString("Gen $:$").isEndOfBook()); //$NON-NLS-1$
     }
 
-    public void testMax() throws Exception {
+    public void testMax() {
         assertEquals(Verse.max(gen11, gen12), gen12);
         assertEquals(Verse.max(gen11, rev99), rev99);
         assertEquals(Verse.max(gen11, gen11a), gen11);
@@ -509,7 +509,7 @@ public class VerseTest extends TestCase {
         assertEquals(Verse.max(gen11a, gen11), gen11a);
     }
 
-    public void testMin() throws Exception {
+    public void testMin() {
         assertEquals(Verse.min(gen11, gen12), gen11);
         assertEquals(Verse.min(gen11, rev99), gen11);
         assertEquals(Verse.min(gen11, gen11a), gen11);
@@ -518,7 +518,7 @@ public class VerseTest extends TestCase {
         assertEquals(Verse.min(gen11a, gen11a), gen11a);
     }
 
-    public void testToVerseArray() throws Exception {
+    public void testToVerseArray() {
         assertEquals(gen11.toVerseArray().length, 1);
     }
 }

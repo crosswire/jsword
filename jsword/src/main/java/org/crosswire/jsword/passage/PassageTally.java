@@ -1120,18 +1120,6 @@ public class PassageTally extends AbstractPassage {
         }
 
         /**
-         * @return the next Verse in the interation
-         * @throws NoSuchElementException
-         *             if hasNext() == false
-         */
-        public int lastRank() throws NoSuchElementException {
-            if (last != null) {
-                return last.tally;
-            }
-            throw new NoSuchElementException(Msg.TALLY_ERROR_ENUM.toString());
-        }
-
-        /**
          * So that we can get at the ranking of the given verse
          */
         private TalliedVerseRange last;

@@ -84,7 +84,7 @@ public class BooksTest extends TestCase {
         }
     }
 
-    public void testGetBibleMetaData() throws Exception {
+    public void testGetBibleMetaData() {
         for (int i = 0; i < bibles.length; i++) {
             Book bible = bibles[i];
             BookMetaData bmd = bible.getBookMetaData();
@@ -92,7 +92,7 @@ public class BooksTest extends TestCase {
         }
     }
 
-    public void testMetaData() throws Exception {
+    public void testMetaData() {
         for (int i = 0; i < bmds.length; i++) {
             BookMetaData bmd = bmds[i];
 
@@ -103,7 +103,7 @@ public class BooksTest extends TestCase {
         }
     }
 
-    public void testGetBookMetaData() throws Exception {
+    public void testGetBookMetaData() {
         for (int i = 0; i < bibles.length; i++) {
             Book bible = bibles[i];
             BookMetaData bmd = bible.getBookMetaData();

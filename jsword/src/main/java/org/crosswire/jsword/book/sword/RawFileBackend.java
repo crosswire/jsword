@@ -338,7 +338,9 @@ public class RawFileBackend extends RawBackend {
             log.error("Error on writing to incfile, file should exist already!"); //$NON-NLS-1$
             log.error(e.getMessage());
         } finally {
-            fos.close();
+            if (fos != null) {
+                fos.close();
+            }
         }
     }
 

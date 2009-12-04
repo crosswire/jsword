@@ -8,7 +8,7 @@ public class AccuracyTypeTest extends TestCase {
         super(s);
     }
 
-    public void testFromText_onePartInvalidBook() throws Exception {
+    public void testFromText_onePartInvalidBook() {
         try {
             AccuracyType.fromText("10", new String[] { "10"}, null, null); //$NON-NLS-1$//$NON-NLS-2$
         } catch (NoSuchVerseException nsve) {

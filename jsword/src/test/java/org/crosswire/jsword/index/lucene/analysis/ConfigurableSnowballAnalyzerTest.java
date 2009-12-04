@@ -27,6 +27,7 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.util.Version;
 
 /**
  * Snowball Analyzer test for stemming, stop word
@@ -40,7 +41,7 @@ public class ConfigurableSnowballAnalyzerTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         myAnalyzer = new ConfigurableSnowballAnalyzer();
-        parser = new QueryParser(field, myAnalyzer);
+        parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
     }
 
     protected void tearDown() throws Exception {
@@ -122,7 +123,7 @@ public class ConfigurableSnowballAnalyzerTest extends TestCase {
 
         // Compare with custom analyzer
         Analyzer anal = new GermanLuceneAnalyzer();
-        QueryParser gparser = new QueryParser(field, anal);
+        QueryParser gparser = new QueryParser(Version.LUCENE_29, field, anal);
         query = gparser.parse(testInput);
         assertTrue(query.toString().indexOf(field + ":denn ") > -1); //$NON-NLS-1$
 

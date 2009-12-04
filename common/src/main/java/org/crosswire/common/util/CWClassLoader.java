@@ -295,15 +295,6 @@ public final class CWClassLoader extends ClassLoader {
             owningClass = resourceOwner;
         }
 
-        /**
-         * Creates a privileged class loader that finds resources for the
-         * calling class that may not be in the class' package. Use this only
-         * within classes that are directly looking up their resources.
-         */
-        public PrivilegedLoader() {
-            owningClass = CallContext.getCallingClass();
-        }
-
         /*
          * (non-Javadoc)
          * 

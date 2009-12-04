@@ -114,7 +114,7 @@ public class PassageTally2Test extends TestCase {
     protected void tearDown() {
     }
 
-    public void testGetName() throws Exception {
+    public void testGetName() {
         assertEquals(tally.getName(0), "Gen 1:1, 5, 3, 7, 2:1, 3:1"); //$NON-NLS-1$
         assertEquals(tally.getName(1), "Gen 1:1"); //$NON-NLS-1$
         assertEquals(tally.getName(2), "Gen 1:1, 5"); //$NON-NLS-1$
@@ -139,12 +139,12 @@ public class PassageTally2Test extends TestCase {
         assertEquals(empty.getName(10), ""); //$NON-NLS-1$
     }
 
-    public void testToString() throws Exception {
+    public void testToString() {
         assertEquals(tally.toString(), "Gen 1:1, 5, 3, 7, 2:1, 3:1"); //$NON-NLS-1$
         assertEquals(empty.toString(), ""); //$NON-NLS-1$
     }
 
-    public void testGetOrderedNameAndTally() throws Exception {
+    public void testGetOrderedNameAndTally() {
         assertEquals(tally.getNameAndTally(), "Gen 1:1 (100%), Gen 1:5 (66%), Gen 1:3 (33%), Gen 1:7 (33%), Gen 2:1 (33%), Gen 3:1 (33%)"); //$NON-NLS-1$
         assertEquals(empty.getNameAndTally(), ""); //$NON-NLS-1$
     }
@@ -163,7 +163,7 @@ public class PassageTally2Test extends TestCase {
         assertTrue(li.check(2, 0, 0));
     }
 
-    public void testClone() throws Exception {
+    public void testClone() {
         assertTrue(tally != tally.clone());
         assertEquals(tally, tally.clone());
         assertTrue(empty != empty.clone());
@@ -208,22 +208,22 @@ public class PassageTally2Test extends TestCase {
         assertTrue(!it.hasNext());
     }
 
-    public void testIsEmpty() throws Exception {
+    public void testIsEmpty() {
         assertTrue(!tally.isEmpty());
         assertTrue(empty.isEmpty());
     }
 
-    public void testCountVerses() throws Exception {
+    public void testCountVerses() {
         assertEquals(tally.countVerses(), 6);
         assertEquals(empty.countVerses(), 0);
     }
 
-    public void testCountRanges() throws Exception {
+    public void testCountRanges() {
         assertEquals(tally.countRanges(RestrictionType.NONE), 6);
         assertEquals(empty.countRanges(RestrictionType.NONE), 0);
     }
 
-    public void testContainsVerse() throws Exception {
+    public void testContainsVerse() {
         assertTrue(!empty.contains(gen11));
         assertTrue(tally.contains(gen11));
         assertTrue(!tally.contains(gen12));
@@ -231,7 +231,7 @@ public class PassageTally2Test extends TestCase {
         assertTrue(tally.contains(gen15));
     }
 
-    public void testContainsVerseRange() throws Exception {
+    public void testContainsVerseRange() {
         assertTrue(!empty.contains(gen11_1));
         assertTrue(tally.contains(gen11_1));
         assertTrue(!tally.contains(gen11_2));
@@ -271,7 +271,7 @@ public class PassageTally2Test extends TestCase {
         assertEquals(temp.getName(), "Gen 1:1, 5, 2, 3, 4, 7, 2:1, 3:1"); //$NON-NLS-1$
     }
 
-    public void testClear() throws Exception {
+    public void testClear() {
         temp = (PassageTally) tally.clone();
         temp.clear();
         assertEquals(temp.getName(), ""); //$NON-NLS-1$
@@ -282,7 +282,7 @@ public class PassageTally2Test extends TestCase {
         assertEquals(temp.getName(), ""); //$NON-NLS-1$
     }
 
-    public void testBlur() throws Exception {
+    public void testBlur() {
         temp = (PassageTally) tally.clone();
         temp.blur(1, RestrictionType.NONE);
         assertEquals(
@@ -294,7 +294,7 @@ public class PassageTally2Test extends TestCase {
         // "Gen 1:1, 3, 5, 7, 2:1, 3:1");
     }
 
-    public void testFlatten() throws Exception {
+    public void testFlatten() {
         temp = (PassageTally) tally.clone();
         temp.flatten();
         assertEquals(temp.getName(), "Gen 1:1, 3, 5, 7, 2:1, 3:1"); //$NON-NLS-1$

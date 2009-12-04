@@ -61,7 +61,7 @@ public class BibleInfoTest extends TestCase {
         BibleInfo.setCase(storedCase);
     }
 
-    public void testCase() throws Exception {
+    public void testCase() {
         BibleInfo.setCase(CaseType.LOWER);
         assertEquals(BibleInfo.getDefaultCase(), CaseType.LOWER);
 
@@ -187,7 +187,7 @@ public class BibleInfoTest extends TestCase {
         }
     }
 
-    public void testGetBookNumber() throws Exception {
+    public void testGetBookNumber() {
         assertEquals(BibleInfo.getBookNumber("Genesis"), 1); //$NON-NLS-1$
         assertEquals(BibleInfo.getBookNumber("Gene"), 1); //$NON-NLS-1$
         assertEquals(BibleInfo.getBookNumber("Gen"), 1); //$NON-NLS-1$
@@ -427,7 +427,7 @@ public class BibleInfoTest extends TestCase {
         assertEquals(BibleInfo.verseCount(1, 1, 1, 1, 1, 10), 10);
     }
 
-    public void testNames() throws Exception {
+    public void testNames() {
         assertEquals(BibleNames.GENESIS, 1);
         assertEquals(BibleNames.REVELATION, 66);
     }

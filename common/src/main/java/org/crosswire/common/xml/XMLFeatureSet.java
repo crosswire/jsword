@@ -171,13 +171,6 @@ public final class XMLFeatureSet {
         }
 
         /**
-         * @return Returns the state.
-         */
-        public boolean getState() {
-            return state;
-        }
-
-        /**
          * Set the new state
          * 
          * @param newState

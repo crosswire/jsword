@@ -53,7 +53,7 @@ public class PassageConstantsTest extends TestCase {
     protected void tearDown() throws Exception {
     }
 
-    public void testAllowedDelims() throws Exception {
+    public void testAllowedDelims() {
         // Check that we're not re-using delimiters
         for (int i = 0; i < AccuracyType.VERSE_ALLOWED_DELIMS.length(); i++) {
             assertEquals(AbstractPassage.REF_ALLOWED_DELIMS.indexOf(AccuracyType.VERSE_ALLOWED_DELIMS.charAt(i)), -1);

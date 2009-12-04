@@ -27,6 +27,7 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.util.Version;
 
 /**
  * 
@@ -71,7 +72,7 @@ public class AnalyzerFactoryTest extends TestCase {
     public void testEngStemming() throws ParseException {
         AbstractBookAnalyzer myAnalyzer = new EnglishLuceneAnalyzer();
 
-        QueryParser parser = new QueryParser(field, myAnalyzer);
+        QueryParser parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
 
         String testInput = "Surely will every man walketh"; //$NON-NLS-1$
         Query query = parser.parse(testInput);

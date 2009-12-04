@@ -21,6 +21,7 @@
  */
 package org.crosswire.common.util;
 
+import java.io.IOException;
 import java.io.PipedReader;
 import java.io.PipedWriter;
 import java.io.PrintWriter;
@@ -40,14 +41,14 @@ public class StringUtilTest extends TestCase {
     }
 
     /* @Override */
-    protected void setUp() throws Exception {
+    protected void setUp() {
     }
 
     /* @Override */
-    protected void tearDown() throws Exception {
+    protected void tearDown() {
     }
 
-    public void testRead() throws Exception {
+    public void testRead() throws IOException {
         PipedReader in = new PipedReader();
         PipedWriter pout = new PipedWriter(in);
         PrintWriter out = new PrintWriter(pout, true);
@@ -58,13 +59,13 @@ public class StringUtilTest extends TestCase {
         assertEquals(StringUtil.read(in), "a b c d e" + StringUtil.NEWLINE + "f g h i j" + StringUtil.NEWLINE); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    public void testGetInitials() throws Exception {
+    public void testGetInitials() {
         assertEquals(StringUtil.getInitials("Church of England"), "CoE"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(StringUtil.getInitials("Java DataBase Connectivity"), "JDC"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(StringUtil.getInitials(""), ""); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    public void testCreateTitle() throws Exception {
+    public void testCreateTitle() {
         assertEquals(StringUtil.createTitle("OneTwo"), "One Two"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(StringUtil.createTitle("one_two"), "One Two"); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals(StringUtil.createTitle("ONeTWo"), "ONe TWo"); //$NON-NLS-1$ //$NON-NLS-2$

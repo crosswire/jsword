@@ -53,7 +53,7 @@ public class BookMetaDataTest extends TestCase {
     protected void tearDown() {
     }
 
-    public void testVersion() throws Exception {
+    public void testVersion() {
         /*
          * log("VersionFactory.getVersion(String, String)"); Version niv1 =
          * VersionFactory.getVersion("New International Version","Original");

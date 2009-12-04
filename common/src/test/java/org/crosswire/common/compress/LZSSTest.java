@@ -110,6 +110,7 @@ public class LZSSTest extends TestCase {
             bosCompressed = compressor.compress();
         } catch (IOException e) {
             fail();
+            return;
         }
         LZSS uncompressor = new LZSS(new ByteArrayInputStream(bosCompressed.toByteArray()));
         ByteArrayOutputStream bosUncompressed = null;
@@ -117,6 +118,7 @@ public class LZSSTest extends TestCase {
             bosUncompressed = uncompressor.uncompress();
         } catch (IOException e) {
             fail();
+            return;
         }
         try {
             byte[] back = bosUncompressed.toByteArray();
@@ -124,6 +126,7 @@ public class LZSSTest extends TestCase {
             System.out.println(result);
         } catch (UnsupportedEncodingException e) {
             fail();
+            return;
         }
 
     }

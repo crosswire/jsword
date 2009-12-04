@@ -27,6 +27,7 @@ import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
 import org.apache.lucene.analysis.th.ThaiWordFilter;
+import org.apache.lucene.util.Version;
 
 /**
  * Tokenization using ThaiWordFilter. It uses java.text.BreakIterator to break
@@ -39,7 +40,7 @@ import org.apache.lucene.analysis.th.ThaiWordFilter;
 public class ThaiLuceneAnalyzer extends AbstractBookAnalyzer {
 
     public TokenStream tokenStream(String fieldName, Reader reader) {
-        TokenStream ts = new StandardTokenizer(reader);
+        TokenStream ts = new StandardTokenizer(Version.LUCENE_29, reader);
         ts = new ThaiWordFilter(ts);
         if (doStopWords && stopSet != null) {
             ts = new StopFilter(false, ts, stopSet);

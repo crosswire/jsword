@@ -60,7 +60,7 @@ public class PassageUtilTest extends TestCase {
     protected void tearDown() throws Exception {
     }
 
-    public void testOther() throws Exception {
+    public void testOther() {
         // Need to add:
         /*
          * log("PassageUtil.[s|g]etBlurRestriction()");
@@ -94,7 +94,7 @@ public class PassageUtilTest extends TestCase {
         PassageUtil.setPersistentNaming(stored_naming);
     }
 
-    public void testTokenize() throws Exception {
+    public void testTokenize() {
         /*
          * log("PassageUtil.tokenize()"); String[] temp =
          * PassageUtil.tokenize(" one  two three ", " ");
@@ -103,7 +103,7 @@ public class PassageUtilTest extends TestCase {
          */
     }
 
-    public void testBinary() throws Exception {
+    public void testBinary() {
         byte[] buffer;
         int[] index;
 

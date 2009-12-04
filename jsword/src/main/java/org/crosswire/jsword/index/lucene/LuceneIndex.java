@@ -42,6 +42,7 @@ import org.apache.lucene.search.TopScoreDocCollector;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.RAMDirectory;
+import org.apache.lucene.util.Version;
 import org.crosswire.common.activate.Activatable;
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
@@ -237,7 +238,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
             try {
                 Analyzer analyzer = new LuceneAnalyzer(book);
 
-                QueryParser parser = new QueryParser(LuceneIndex.FIELD_BODY, analyzer);
+                QueryParser parser = new QueryParser(Version.LUCENE_29, LuceneIndex.FIELD_BODY, analyzer);
                 parser.setAllowLeadingWildcard(true);
                 Query query = parser.parse(search);
                 log.info("ParsedQuery-" + query.toString()); //$NON-NLS-1$
