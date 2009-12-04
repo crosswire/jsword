@@ -370,8 +370,7 @@ public class SwordBookPath {
      *            The download directory that the user specifies.
      */
     public static void setDownloadDir(File dlDir) {
-        if (!dlDir.getPath().equals("")) //$NON-NLS-1$
-        {
+        if (!dlDir.getPath().equals("")) { //$NON-NLS-1$
             overrideDownloadDir = dlDir;
             log.debug("Setting sword download directory to: " + dlDir); //$NON-NLS-1$
         }

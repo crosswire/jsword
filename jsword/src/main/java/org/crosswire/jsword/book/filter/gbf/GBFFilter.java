@@ -36,9 +36,8 @@ import org.jdom.Element;
 /**
  * Filter to convert GBF data to OSIS format.
  * 
- * The best place to go for more information about the GBF spec that I have
- * found is: <a
- * href="http://ebible.org/bible/gbf.htm">http://ebible.org/bible/gbf.htm</a>
+ * The best place to go for more information about the GBF spec is:
+ * <a href="http://ebible.org/bible/gbf.htm">http://ebible.org/bible/gbf.htm</a>
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
@@ -95,31 +94,54 @@ public class GBFFilter implements Filter {
         String remains = aRemains;
         List taglist = new ArrayList();
 
+        // A GBF code is of the form <XY...> or <Xy...>
+        // where the first letter is always capitalized and
+        // the second letter indicates an open or close tag.
+        // Upper letters are open, lower are close.
+        // The ... is optional and represents an argument.
+        // Sometimes the argument is preceded by a space.
+        // In GBF it is legal to have < and > otherwise.
+        // In at least one module, GerLut1545, << ... >> is used for quotes.
         while (true) {
             int ltpos = remains.indexOf('<');
-            int gtpos = remains.indexOf('>');
+            int gtpos = remains.indexOf('>', ltpos + 1);
 
-            if (ltpos == -1 && gtpos == -1) {
-                // no more tags to decode
-                taglist.add(GBFTagBuilders.getTextTag(remains));
-                remains = null;
-                break;
-            }
-
-            // check that we don't have unmatched tags
+            // check whether we have unmatched < and >, or no tags at all
+            // If so then we don't have a tag in the remaining.
             if (ltpos == -1 || gtpos == -1) {
-                DataPolice.report("In " + book.getInitials() + "(" + key.getName() + ") ignoring unmatched '<' or '>' in gbf: " + remains); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                taglist.add(GBFTagBuilders.getTextTag(remains));
-                remains = null;
-                break;
+                // If the first letter after < is an upper case letter
+                // then report it as a potential problem
+                if (ltpos >= 0
+                        && ltpos < remains.length()
+                        && Character.isUpperCase(remains.charAt(ltpos + 1)))
+                {
+                    DataPolice.report("Possible bad GBF tag" + remains); //$NON-NLS-1$
+                }
+                if (gtpos != -1 && ltpos >= 0) {
+                    DataPolice.report("Possible bad GBF tag" + remains); //$NON-NLS-1$
+                }
+                int pos = Math.max(ltpos, gtpos) + 1;
+                // If there were not any <, > or either ended the string
+                // then we only have text.
+                if (pos == 0 || pos == remains.length()) {
+                    taglist.add(GBFTagBuilders.getTextTag(remains));
+                    break;
+                }
+                taglist.add(GBFTagBuilders.getTextTag(remains.substring(0, pos)));
+                remains = remains.substring(pos);
+                continue;
             }
 
-            // check that the tags are in a sensible order
-            if (ltpos > gtpos) {
-                DataPolice.report("In " + book.getInitials() + "(" + key.getName() + ") ignoring transposed '<' or '>' in gbf: " + remains); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                taglist.add(GBFTagBuilders.getTextTag(remains));
-                remains = null;
-                break;
+            // If the character after the < is not an upper case letter
+            // then we don't have GBF.
+            // So, create a text tag that ends with the found >.
+            // Note that in JST, there are spurious html tags and
+            // this will treat them as valid GBF text.
+            char firstChar = remains.charAt(ltpos + 1);
+            if (!Character.isUpperCase(firstChar)) {
+                taglist.add(GBFTagBuilders.getTextTag(remains.substring(0, gtpos + 1)));
+                remains = remains.substring(gtpos + 1);
+                continue;
             }
 
             // generate tags
@@ -128,7 +150,7 @@ public class GBFFilter implements Filter {
             if (strLen > 0) {
                 int beginIndex = 0;
                 boolean inSepStr = SEPARATORS.indexOf(start.charAt(0)) >= 0;
-                // split words from seperators...
+                // split words from separators...
                 // e.g., "a b c? e g." -> "a b c", "? ", "e g."
                 // "a b c<tag> e g." -> "a b c", tag, " ", "e g."
                 for (int i = 1; inSepStr && i < strLen; i++) {

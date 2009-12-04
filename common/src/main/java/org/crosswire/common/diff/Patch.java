@@ -237,11 +237,11 @@ public class Patch {
                             index2 = diff.xIndex(diffs, index1);
                         }
 
-                        if (EditType.INSERT.equals(editType)) // Insertion
-                        {
+                        if (EditType.INSERT.equals(editType)) {
+                            // Insertion
                             resultText = resultText.substring(0, startLoc + index2) + aDiff.getText() + resultText.substring(startLoc + index2);
-                        } else if (EditType.DELETE.equals(editType)) // Deletion
-                        {
+                        } else if (EditType.DELETE.equals(editType)) {
+                            // Deletion
                             resultText = resultText.substring(0, startLoc + index2)
                                     + resultText.substring(startLoc + diff.xIndex(diffs, index1 + aDiff.getText().length()));
                         }

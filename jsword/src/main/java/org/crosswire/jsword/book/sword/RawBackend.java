@@ -34,6 +34,7 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.Verse;
@@ -69,6 +70,8 @@ public class RawBackend extends AbstractBackend {
     public boolean contains(Key key) {
         checkActive();
 
+        try {
+        DataPolice.setKey(key);
         Verse verse = KeyUtil.getVerse(key);
 
         try {
@@ -86,6 +89,9 @@ public class RawBackend extends AbstractBackend {
         } catch (IOException ex) {
             return false;
         }
+        } finally {
+            DataPolice.setKey(null);
+        }
     }
 
     /*
@@ -99,21 +105,26 @@ public class RawBackend extends AbstractBackend {
     public String getRawText(Key key) throws BookException {
         checkActive();
 
-        Verse verse = KeyUtil.getVerse(key);
         try {
-            int testament = SwordConstants.getTestament(verse);
-            long index = SwordConstants.getIndex(verse);
+            DataPolice.setKey(key);
+            Verse verse = KeyUtil.getVerse(key);
+            try {
+                int testament = SwordConstants.getTestament(verse);
+                long index = SwordConstants.getIndex(verse);
 
-            // If this is a single testament Bible, return nothing.
-            if (idxRaf[testament] == null) {
-                return ""; //$NON-NLS-1$
+                // If this is a single testament Bible, return nothing.
+                if (idxRaf[testament] == null) {
+                    return ""; //$NON-NLS-1$
+                }
+
+                return getEntry(key.getName(), testament, index);
+            } catch (IOException ex) {
+                throw new BookException(UserMsg.READ_FAIL, ex, new Object[] {
+                    verse.getName()
+                });
             }
-
-            return getEntry(key.getName(), testament, index);
-        } catch (IOException ex) {
-            throw new BookException(UserMsg.READ_FAIL, ex, new Object[] {
-                verse.getName()
-            });
+        } finally {
+            DataPolice.setKey(null);
         }
     }
 
@@ -138,11 +149,13 @@ public class RawBackend extends AbstractBackend {
         // (i.e. readable) and both the index and the data files need to be
         // writable
         if (idxFile[SwordConstants.TESTAMENT_OLD].canRead()
-                && (idxFile[SwordConstants.TESTAMENT_OLD].canWrite() || !txtFile[SwordConstants.TESTAMENT_OLD].canWrite())) {
+                && (idxFile[SwordConstants.TESTAMENT_OLD].canWrite() || !txtFile[SwordConstants.TESTAMENT_OLD].canWrite()))
+        {
             return false;
         }
         if (idxFile[SwordConstants.TESTAMENT_NEW].canRead()
-                && (idxFile[SwordConstants.TESTAMENT_NEW].canWrite() || !txtFile[SwordConstants.TESTAMENT_NEW].canWrite())) {
+                && (idxFile[SwordConstants.TESTAMENT_NEW].canWrite() || !txtFile[SwordConstants.TESTAMENT_NEW].canWrite()))
+        {
             return false;
         }
         return idxFile[SwordConstants.TESTAMENT_OLD].canRead() || idxFile[SwordConstants.TESTAMENT_NEW].canRead();

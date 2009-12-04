@@ -23,9 +23,11 @@ package org.crosswire.jsword.book;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.TreeKey;
 
 /**
  * Test to check that all books can be read.
@@ -46,39 +48,13 @@ public class ReadEverything {
      */
     public static void main(String[] args) {
         Logger.outputEverything();
+        DataPolice.setReportingLevel(Level.WARNING);
+        DataPolice.setLevel(Level.FINEST);
 
-        /*
-         * // This must be the first static in the program.
-         * 
-         * // To ensure this we place it at the top of the class! // This will
-         * set it as a place to look for overrides for // ResourceBundles,
-         * properties and other resources CWProject.setHome("jsword.home",
-         * ".jsword", "JSword"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-         * 
-         * // And the array of allowed osis>html converters
-         * ChoiceFactory.getDataMap().put("converters", new String[] {});
-         * //$NON-NLS-1$
-         * 
-         * // The choice of configurable XSL stylesheets
-         * ChoiceFactory.getDataMap().put("cswing-styles", new String[] {});
-         * //$NON-NLS-1$
-         * 
-         * // Load the desktop configuration so we can find the sword drivers
-         * Config config = new Config("Desktop Options"); //$NON-NLS-1$ Document
-         * xmlconfig = XMLUtil.getDocument("config"); //$NON-NLS-1$
-         * 
-         * Locale defaultLocale = Locale.getDefault(); ResourceBundle
-         * configResources = ResourceBundle.getBundle("config", defaultLocale,
-         * CWClassLoader.instance(ReadEverything.class)); //$NON-NLS-1$
-         * 
-         * config.add(xmlconfig, configResources);
-         * 
-         * config.setProperties(ResourceUtil.getProperties("desktop"));
-         * //$NON-NLS-1$ config.localToApplication();
-         */
         // Loop through all the Books
-        log.warn("*** Reading all known Books"); //$NON-NLS-1$
-        List comments = Books.installed().getBooks();
+        log.warn("*** Reading all installed Bibles"); //$NON-NLS-1$
+        BookFilter filter = BookFilters.getCustom("SourceType=TEI"); //$NON-NLS-1$
+        List comments = Books.installed().getBooks(filter);
         for (Iterator cit = comments.iterator(); cit.hasNext();) {
             Book book = (Book) cit.next();
 
@@ -102,8 +78,17 @@ public class ReadEverything {
         int entries = 0;
 
         Iterator it = set.iterator();
+        boolean first = true;
         while (it.hasNext()) {
-            testReadSingle(book, (Key) it.next());
+            Key key = (Key) it.next();
+            // skip the root of a TreeKey as it often is not addressable.
+            if (first) {
+                first = false;
+                if (set instanceof TreeKey && key.getName().isEmpty()) {
+                    continue;
+                }
+            }
+            testReadSingle(book, key);
 
             entries++;
         }

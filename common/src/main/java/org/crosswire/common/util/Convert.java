@@ -47,31 +47,12 @@ public final class Convert {
      * @return the converted data
      */
     public static boolean string2Boolean(String data) {
-        if (Boolean.valueOf(data).booleanValue()) {
-            return true;
-        }
-        if (data.equalsIgnoreCase("yes")) //$NON-NLS-1$
-        {
-            return true;
-        }
-        if (data.equalsIgnoreCase("ok")) //$NON-NLS-1$
-        {
-            return true;
-        }
-        if (data.equalsIgnoreCase("okay")) //$NON-NLS-1$
-        {
-            return true;
-        }
-        if (data.equalsIgnoreCase("on")) //$NON-NLS-1$
-        {
-            return true;
-        }
-        if (data.equalsIgnoreCase("1")) //$NON-NLS-1$
-        {
-            return true;
-        }
-
-        return false;
+        return Boolean.valueOf(data).booleanValue()
+                || data.equalsIgnoreCase("yes") //$NON-NLS-1$
+                || data.equalsIgnoreCase("ok") //$NON-NLS-1$
+                || data.equalsIgnoreCase("okay") //$NON-NLS-1$
+                || data.equalsIgnoreCase("on") //$NON-NLS-1$
+                || data.equals("1"); //$NON-NLS-1$
     }
 
     /**

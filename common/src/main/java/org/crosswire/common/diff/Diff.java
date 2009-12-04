@@ -103,13 +103,11 @@ public class Diff {
         diffs = compute();
 
         // Restore the prefix and suffix
-        if (!"".equals(commonPrefix)) //$NON-NLS-1$
-        {
+        if (!"".equals(commonPrefix)) { //$NON-NLS-1$
             diffs.add(0, new Difference(EditType.EQUAL, commonPrefix));
         }
 
-        if (!"".equals(commonSuffix)) //$NON-NLS-1$
-        {
+        if (!"".equals(commonSuffix)) { //$NON-NLS-1$
             diffs.add(new Difference(EditType.EQUAL, commonSuffix));
         }
 
@@ -126,15 +124,13 @@ public class Diff {
     private List compute() {
         List diffs = new ArrayList();
 
-        if ("".equals(source)) //$NON-NLS-1$
-        {
+        if ("".equals(source)) { //$NON-NLS-1$
             // Just add some text (speedup)
             diffs.add(new Difference(EditType.INSERT, target));
             return diffs;
         }
 
-        if ("".equals(target)) //$NON-NLS-1$
-        {
+        if ("".equals(target)) { //$NON-NLS-1$
             // Just delete some text (speedup)
             diffs.add(new Difference(EditType.DELETE, source));
             return diffs;
@@ -260,18 +256,18 @@ public class Diff {
             Difference diff = (Difference) iter.next();
             EditType editType = diff.getEditType();
 
-            if (!EditType.INSERT.equals(editType)) // Equality or deletion.
-            {
+            // Equality or deletion?
+            if (!EditType.INSERT.equals(editType)) {
                 chars1 += diff.getText().length();
             }
 
-            if (!EditType.DELETE.equals(editType)) // Equality or insertion.
-            {
+            // Equality or insertion?
+            if (!EditType.DELETE.equals(editType)) {
                 chars2 += diff.getText().length();
             }
 
-            if (chars1 > loc) // Overshot the location.
-            {
+            // Overshot the location?
+            if (chars1 > loc) {
                 lastDiff = diff;
                 break;
             }
@@ -279,11 +275,8 @@ public class Diff {
             lastChars2 = chars2;
         }
 
-        if (lastDiff != null && EditType.DELETE.equals(lastDiff.getEditType())) // The
-        // location
-        // was
-        // deleted.
-        {
+        // Was the location was deleted?
+        if (lastDiff != null && EditType.DELETE.equals(lastDiff.getEditType())) {
             return lastChars2;
         }
 
@@ -306,8 +299,9 @@ public class Diff {
             // insert)
             String text = diff.getText(); // Text of change.
             // TODO(DMS): Do replacements
-            // text = text.replace(/&/g, "&amp;").replace(/</g,
-            // "&lt;").replace(/>/g, "&gt;");
+            // text = text.replace(/&/g, "&amp;");
+            // text = text.replace(/</g, "&lt;");
+            // text = text.replace(/>/g, "&gt;");
             // text = text.replace(/\n/g, "&para;<BR>");
             if (EditType.DELETE.equals(editType)) {
                 buf.append("<del style=\"background:#FFE6E6;\">"); //$NON-NLS-1$

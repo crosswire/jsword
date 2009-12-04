@@ -562,8 +562,7 @@ public final class ConfigEntryTable {
         if (datapath == null) {
             datapath = ""; //$NON-NLS-1$
         }
-        if (datapath.startsWith("./")) //$NON-NLS-1$
-        {
+        if (datapath.startsWith("./")) { //$NON-NLS-1$
             datapath = datapath.substring(2);
         }
         add(ConfigEntryType.DATA_PATH, datapath);
@@ -602,10 +601,8 @@ public final class ConfigEntryTable {
                         ". Neither " + ConfigEntryType.GLOSSARY_FROM.getName() + //$NON-NLS-1$
                         " or " + ConfigEntryType.GLOSSARY_FROM.getName() + //$NON-NLS-1$
                         " match " + ConfigEntryType.LANG.getName()); //$NON-NLS-1$
-            }
-
-            // The LANG field should match the GLOSSARY_FROM field
-            else if (!langFrom.equals(lang)) {
+            } else if (!langFrom.equals(lang)) {
+                // The LANG field should match the GLOSSARY_FROM field
                 /*
                  * log.error("Data error in " + internal + //$NON-NLS-1$ ". " +
                  * ConfigEntryType.GLOSSARY_FROM.getName() + //$NON-NLS-1$ " ("

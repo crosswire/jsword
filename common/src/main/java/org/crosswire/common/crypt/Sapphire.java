@@ -552,8 +552,7 @@ public class Sapphire {
     /**
      * @param hash
      */
-    public void hashFinal(byte[] hash) // Destination
-    {
+    public void hashFinal(byte[] hash) { // Destination
         for (int i = 255; i >= 0; i--) {
             cipher((byte) i);
         }

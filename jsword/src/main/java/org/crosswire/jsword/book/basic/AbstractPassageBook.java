@@ -157,7 +157,8 @@ public abstract class AbstractPassageBook extends AbstractBook {
                 Element div = (Element) nextElem;
 
                 // For all of the Verses in the section
-                for (Iterator vit = div.getContent().iterator(); vit.hasNext();) {
+                Iterator vit = div.getContent().iterator();
+                while (vit.hasNext()) {
                     Object data = vit.next();
                     if (data instanceof Element) {
                         Element overse = (Element) data;

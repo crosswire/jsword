@@ -182,7 +182,8 @@ public final class PluginUtil {
      * @see PluginUtil#getImplementors(Class)
      */
     public static Object getImplementation(Class clazz) throws MalformedURLException, ClassCastException, IOException, ClassNotFoundException,
-            InstantiationException, IllegalAccessException {
+            InstantiationException, IllegalAccessException
+    {
         return getImplementor(clazz).newInstance();
     }
 

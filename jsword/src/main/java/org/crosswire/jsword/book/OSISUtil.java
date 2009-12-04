@@ -959,8 +959,7 @@ public final class OSISUtil {
             // and when one is a prefix of another, it follows.
 
             // Used to end all open attributes. Only \qc in our implementation.
-            if (rtf.startsWith("\\pard", i)) //$NON-NLS-1$
-            {
+            if (rtf.startsWith("\\pard", i)) { //$NON-NLS-1$
                 Element currentElement = (Element) stack.pop();
                 currentElement.addContent(text.toString());
                 text.delete(0, text.length());
@@ -971,9 +970,7 @@ public final class OSISUtil {
             }
 
             // Simulate a paragraph break.
-            if (rtf.startsWith("\\par", i)) //$NON-NLS-1$
-            {
-
+            if (rtf.startsWith("\\par", i)) { //$NON-NLS-1$
                 Element currentElement = (Element) stack.peek();
                 currentElement.addContent(text.toString());
                 text.delete(0, text.length());
@@ -984,8 +981,7 @@ public final class OSISUtil {
 
             // OSIS does not have the notion of centered text.
             // So we define our own
-            if (rtf.startsWith("\\qc", i)) //$NON-NLS-1$
-            {
+            if (rtf.startsWith("\\qc", i)) { //$NON-NLS-1$
                 Element centerDiv = OSISUtil.factory.createDiv();
                 centerDiv.setAttribute(OSIS_ATTR_TYPE, "x-center"); //$NON-NLS-1$
                 Element currentElement = (Element) stack.peek();
@@ -999,8 +995,7 @@ public final class OSISUtil {
             }
 
             // convert Unicode representations to Unicode
-            if (rtf.startsWith("\\u", i)) //$NON-NLS-1$
-            {
+            if (rtf.startsWith("\\u", i)) { //$NON-NLS-1$
                 StringBuffer buf = new StringBuffer();
                 i += 2;
                 while (i < strlen) {
@@ -1026,8 +1021,7 @@ public final class OSISUtil {
             }
 
             // close italic and bold
-            if (rtf.startsWith("\\i0", i) || rtf.startsWith("\\b0", i)) //$NON-NLS-1$ //$NON-NLS-2$
-            {
+            if (rtf.startsWith("\\i0", i) || rtf.startsWith("\\b0", i)) { //$NON-NLS-1$ //$NON-NLS-2$
                 Element currentElement = (Element) stack.pop();
                 currentElement.addContent(text.toString());
                 text.delete(0, text.length());
@@ -1036,15 +1030,13 @@ public final class OSISUtil {
             }
 
             // Skip escaped whitespace
-            if (rtf.startsWith(" ", i) || rtf.startsWith("\n", i)) //$NON-NLS-1$ //$NON-NLS-2$
-            {
+            if (rtf.startsWith(" ", i) || rtf.startsWith("\n", i)) { //$NON-NLS-1$ //$NON-NLS-2$
                 i += 1;
                 continue;
             }
 
             // start italic
-            if (rtf.startsWith("\\i", i)) //$NON-NLS-1$
-            {
+            if (rtf.startsWith("\\i", i)) { //$NON-NLS-1$
                 Element hiElement = OSISUtil.factory.createHI();
                 hiElement.setAttribute(OSIS_ATTR_TYPE, HI_ITALIC);
                 Element currentElement = (Element) stack.peek();
@@ -1057,8 +1049,7 @@ public final class OSISUtil {
             }
 
             // start bold
-            if (rtf.startsWith("\\b", i)) //$NON-NLS-1$
-            {
+            if (rtf.startsWith("\\b", i)) { //$NON-NLS-1$
                 Element hiElement = OSISUtil.factory.createHI();
                 hiElement.setAttribute(OSIS_ATTR_TYPE, HI_BOLD);
                 Element currentElement = (Element) stack.peek();

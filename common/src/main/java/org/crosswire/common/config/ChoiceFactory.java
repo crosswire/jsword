@@ -51,12 +51,12 @@ public final class ChoiceFactory {
      * @return One of the ChoiceTypes.
      */
     public static Choice getChoice(Element option, ResourceBundle configResources) throws ClassNotFoundException, IllegalAccessException,
-            InstantiationException, StartupException {
+            InstantiationException, StartupException
+    {
         Class clazz = null;
 
         String type = option.getAttributeValue("type"); //$NON-NLS-1$
-        if ("custom".equals(type)) //$NON-NLS-1$
-        {
+        if ("custom".equals(type)) { //$NON-NLS-1$
             String clazzstr = option.getAttributeValue("class"); //$NON-NLS-1$
             clazz = ClassUtil.forName(clazzstr);
         } else {

@@ -193,10 +193,8 @@ public final class PassageKeyFactory implements KeyFactory {
             }
 
             return buffer;
-        }
-
-        // if distinct is not bigger than ranged
-        else if (distinct_size <= ranged_size) {
+        } else if (distinct_size <= ranged_size) {
+            // if distinct is not bigger than ranged
             int array_size = binarySize(AbstractPassage.METHOD_COUNT) + binarySize(BibleInfo.versesInBible())
                     + (verses * binarySize(BibleInfo.versesInBible()));
             byte[] buffer = new byte[array_size];
@@ -216,10 +214,8 @@ public final class PassageKeyFactory implements KeyFactory {
             }
 
             return buffer;
-        }
-
-        // otherwise use ranges
-        else {
+        } else {
+            // otherwise use ranges
             int array_size = binarySize(AbstractPassage.METHOD_COUNT) + binarySize(BibleInfo.versesInBible() / 2)
                     + (2 * ranges * binarySize(BibleInfo.versesInBible()));
             byte[] buffer = new byte[array_size];
@@ -320,7 +316,7 @@ public final class PassageKeyFactory implements KeyFactory {
      *            The stream to read from
      * @return a newly built Passage
      * @throws IOException
-     *             If there was troule reading the stream
+     *             If there was trouble reading the stream
      * @throws NoSuchVerseException
      *             if the data was not a valid passage
      */
@@ -415,7 +411,7 @@ public final class PassageKeyFactory implements KeyFactory {
      * @param index
      *            The offset to start at
      * @param max
-     *            The max nuber of bytes to read
+     *            The max number of bytes to read
      * @return The converted number
      */
     protected static int fromBinary(byte[] buffer, int[] index, int max) {
@@ -512,9 +508,8 @@ public final class PassageKeyFactory implements KeyFactory {
                 if (curChar == 'f') {
                     buf.append('f');
                     i++;
-                }
-                // If it wasn't an 'f' or a '$' then it was digits
-                else if (curChar != '$') {
+                } else if (curChar != '$') {
+                    // If it wasn't an 'f' or a '$' then it was digits
                     while (i < size) {
                         curChar = name.charAt(i);
                         if (!Character.isDigit(curChar)) {

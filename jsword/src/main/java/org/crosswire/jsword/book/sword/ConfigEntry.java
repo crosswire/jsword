@@ -110,7 +110,7 @@ public final class ConfigEntry {
     /**
      * RTF is allowed in a few config entries.
      * 
-     * @return true if rtf is allowed
+     * @return true if RTF is allowed
      */
     public boolean allowsRTF() {
         if (type != null) {
@@ -365,9 +365,8 @@ public final class ConfigEntry {
             }
             buf.append(text);
             buf.append('\n');
-        }
-        // CipherKey is empty to indicate that it is encrypted and locked.
-        else if (type.equals(ConfigEntryType.CIPHER_KEY)) {
+        } else if (type.equals(ConfigEntryType.CIPHER_KEY)) {
+            // CipherKey is empty to indicate that it is encrypted and locked.
             buf.append(getName());
             buf.append('=');
         }

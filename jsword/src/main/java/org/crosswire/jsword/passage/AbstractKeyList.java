@@ -81,7 +81,8 @@ public abstract class AbstractKeyList implements Key {
      *            The check key
      */
     protected static void retain(Key alter, Key base) {
-        for (Iterator it = alter.iterator(); it.hasNext();) {
+        Iterator it = alter.iterator();
+        while (it.hasNext()) {
             Key sublist = (Key) it.next();
             if (sublist.canHaveChildren()) {
                 retain(sublist, base);

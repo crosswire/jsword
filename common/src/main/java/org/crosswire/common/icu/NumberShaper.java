@@ -309,11 +309,9 @@ public class NumberShaper implements Serializable {
     private char getNine() {
         if (nineShape == '\u0000') {
             nineShape = '9';
-            if ("fa".equals(locale.getLanguage())) //$NON-NLS-1$
-            {
+            if ("fa".equals(locale.getLanguage())) { //$NON-NLS-1$
                 nineShape = '\u06f9';
-            } else if ("ar".equals(locale.getLanguage())) //$NON-NLS-1$
-            {
+            } else if ("ar".equals(locale.getLanguage())) { //$NON-NLS-1$
                 nineShape = '\u0669';
             }
         }

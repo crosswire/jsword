@@ -461,7 +461,7 @@ public abstract class AbstractBook implements Book {
         }
 
         // We might consider checking for equality against all Books?
-        // However currently we dont.
+        // However currently we don't.
 
         // Check that that is the same as this
         // Don't use instanceof since that breaks inheritance

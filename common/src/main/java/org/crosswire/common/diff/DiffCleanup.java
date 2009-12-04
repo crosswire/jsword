@@ -155,8 +155,8 @@ public final class DiffCleanup {
 
         while (curDiff != null) {
             EditType editType = curDiff.getEditType();
-            if (EditType.EQUAL.equals(editType)) // equality found
-            {
+            if (EditType.EQUAL.equals(editType)) {
+                // equality found
                 if (curDiff.getText().length() < editCost && (postInsert + postDelete) > 0) {
                     // Candidate found.
                     equalities.push(curDiff);
@@ -186,8 +186,10 @@ public final class DiffCleanup {
                 // <ins>A</del>X<ins>C</ins><del>D</del>
                 // <ins>A</ins><del>B</del>X<del>C</del>
                 if (lastEquality != null
-                        && (((preInsert + preDelete + postInsert + postDelete) > 0) || ((lastEquality.length() < editCost / 2) && (preInsert + preDelete
-                                + postInsert + postDelete) == 3))) {
+                        && (((preInsert + preDelete + postInsert + postDelete) > 0)
+                                || ((lastEquality.length() < editCost / 2)
+                                        && (preInsert + preDelete + postInsert + postDelete) == 3)))
+                {
                     // position pointer to the element after the one at the end
                     // of the stack
                     while (curDiff != equalities.lastElement()) {

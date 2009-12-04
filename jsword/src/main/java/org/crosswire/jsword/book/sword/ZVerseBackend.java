@@ -34,6 +34,7 @@ import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.Verse;
@@ -232,37 +233,44 @@ public class ZVerseBackend extends AbstractBackend {
     /* @Override */
     public boolean contains(Key key) {
         checkActive();
-        Verse verse = KeyUtil.getVerse(key);
-
         try {
-            int testament = SwordConstants.getTestament(verse);
-            long index = SwordConstants.getIndex(verse);
+            DataPolice.setKey(key);
+            Verse verse = KeyUtil.getVerse(key);
 
-            // If Bible does not contain the desired testament, then false
-            if (compRaf[testament] == null) {
+            try {
+                int testament = SwordConstants.getTestament(verse);
+                long index = SwordConstants.getIndex(verse);
+
+                // If Bible does not contain the desired testament, then false
+                if (compRaf[testament] == null) {
+                    return false;
+                }
+
+                // 10 because the index is 10 bytes long for each verse
+                byte[] temp = SwordUtil.readRAF(compRaf[testament], index * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE);
+
+                // If the Bible does not contain the desired verse, return
+                // nothing.
+                // Some Bibles have different versification, so the requested
+                // verse
+                // may not exist.
+                if (temp == null || temp.length == 0) {
+                    return false;
+                }
+
+                // The data is little endian - extract the blockNum, verseStart
+                // and
+                // verseSize
+                int verseSize = SwordUtil.decodeLittleEndian16(temp, 8);
+
+                return verseSize > 0;
+
+            } catch (IOException e) {
                 return false;
             }
-
-            // 10 because the index is 10 bytes long for each verse
-            byte[] temp = SwordUtil.readRAF(compRaf[testament], index * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE);
-
-            // If the Bible does not contain the desired verse, return nothing.
-            // Some Bibles have different versification, so the requested verse
-            // may not exist.
-            if (temp == null || temp.length == 0) {
-                return false;
-            }
-
-            // The data is little endian - extract the blockNum, verseStart and
-            // verseSize
-            int verseSize = SwordUtil.decodeLittleEndian16(temp, 8);
-
-            return verseSize > 0;
-
-        } catch (IOException e) {
-            return false;
+        } finally {
+            DataPolice.setKey(null);
         }
-
     }
 
     /*
@@ -275,75 +283,84 @@ public class ZVerseBackend extends AbstractBackend {
     /* @Override */
     public String getRawText(Key key) throws BookException {
         checkActive();
-
-        SwordBookMetaData sbmd = getBookMetaData();
-        String charset = sbmd.getBookCharset();
-        String compressType = (String) sbmd.getProperty(ConfigEntryType.COMPRESS_TYPE);
-
-        Verse verse = KeyUtil.getVerse(key);
-
         try {
-            int testament = SwordConstants.getTestament(verse);
-            long index = SwordConstants.getIndex(verse);
+            DataPolice.setKey(key);
 
-            // If Bible does not contain the desired testament, return nothing.
-            if (compRaf[testament] == null) {
-                return ""; //$NON-NLS-1$
-            }
+            SwordBookMetaData sbmd = getBookMetaData();
+            String charset = sbmd.getBookCharset();
+            String compressType = (String) sbmd.getProperty(ConfigEntryType.COMPRESS_TYPE);
 
-            // 10 because the index is 10 bytes long for each verse
-            byte[] temp = SwordUtil.readRAF(compRaf[testament], index * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE);
+            Verse verse = KeyUtil.getVerse(key);
 
-            // If the Bible does not contain the desired verse, return nothing.
-            // Some Bibles have different versification, so the requested verse
-            // may not exist.
-            if (temp == null || temp.length == 0) {
-                return ""; //$NON-NLS-1$
-            }
+            try {
+                int testament = SwordConstants.getTestament(verse);
+                long index = SwordConstants.getIndex(verse);
 
-            // The data is little endian - extract the blockNum, verseStart and
-            // verseSize
-            long blockNum = SwordUtil.decodeLittleEndian32(temp, 0);
-            int verseStart = SwordUtil.decodeLittleEndian32(temp, 4);
-            int verseSize = SwordUtil.decodeLittleEndian16(temp, 8);
+                // If Bible does not contain the desired testament, return
+                // nothing.
+                if (compRaf[testament] == null) {
+                    return ""; //$NON-NLS-1$
+                }
 
-            // Can we get the data from the cache
-            byte[] uncompressed = null;
-            if (blockNum == lastBlockNum && testament == lastTestament) {
-                uncompressed = lastUncompressed;
-            } else {
-                // Then seek using this index into the idx file
-                temp = SwordUtil.readRAF(idxRaf[testament], blockNum * IDX_ENTRY_SIZE, IDX_ENTRY_SIZE);
+                // 10 because the index is 10 bytes long for each verse
+                byte[] temp = SwordUtil.readRAF(compRaf[testament], index * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE);
+
+                // If the Bible does not contain the desired verse, return
+                // nothing.
+                // Some Bibles have different versification, so the requested
+                // verse
+                // may not exist.
                 if (temp == null || temp.length == 0) {
                     return ""; //$NON-NLS-1$
                 }
 
-                int blockStart = SwordUtil.decodeLittleEndian32(temp, 0);
-                int blockSize = SwordUtil.decodeLittleEndian32(temp, 4);
-                int uncompressedSize = SwordUtil.decodeLittleEndian32(temp, 8);
+                // The data is little endian - extract the blockNum, verseStart
+                // and
+                // verseSize
+                long blockNum = SwordUtil.decodeLittleEndian32(temp, 0);
+                int verseStart = SwordUtil.decodeLittleEndian32(temp, 4);
+                int verseSize = SwordUtil.decodeLittleEndian16(temp, 8);
 
-                // Read from the data file.
-                byte[] data = SwordUtil.readRAF(textRaf[testament], blockStart, blockSize);
+                // Can we get the data from the cache
+                byte[] uncompressed = null;
+                if (blockNum == lastBlockNum && testament == lastTestament) {
+                    uncompressed = lastUncompressed;
+                } else {
+                    // Then seek using this index into the idx file
+                    temp = SwordUtil.readRAF(idxRaf[testament], blockNum * IDX_ENTRY_SIZE, IDX_ENTRY_SIZE);
+                    if (temp == null || temp.length == 0) {
+                        return ""; //$NON-NLS-1$
+                    }
 
-                decipher(data);
+                    int blockStart = SwordUtil.decodeLittleEndian32(temp, 0);
+                    int blockSize = SwordUtil.decodeLittleEndian32(temp, 4);
+                    int uncompressedSize = SwordUtil.decodeLittleEndian32(temp, 8);
 
-                uncompressed = CompressorType.fromString(compressType).getCompressor(data).uncompress(uncompressedSize).toByteArray();
+                    // Read from the data file.
+                    byte[] data = SwordUtil.readRAF(textRaf[testament], blockStart, blockSize);
 
-                // cache the uncompressed data for next time
-                lastBlockNum = blockNum;
-                lastTestament = testament;
-                lastUncompressed = uncompressed;
+                    decipher(data);
+
+                    uncompressed = CompressorType.fromString(compressType).getCompressor(data).uncompress(uncompressedSize).toByteArray();
+
+                    // cache the uncompressed data for next time
+                    lastBlockNum = blockNum;
+                    lastTestament = testament;
+                    lastUncompressed = uncompressed;
+                }
+
+                // and cut out the required section.
+                byte[] chopped = new byte[verseSize];
+                System.arraycopy(uncompressed, verseStart, chopped, 0, verseSize);
+
+                return SwordUtil.decode(key.getName(), chopped, charset);
+            } catch (IOException e) {
+                throw new BookException(UserMsg.READ_FAIL, e, new Object[] {
+                    verse.getName()
+                });
             }
-
-            // and cut out the required section.
-            byte[] chopped = new byte[verseSize];
-            System.arraycopy(uncompressed, verseStart, chopped, 0, verseSize);
-
-            return SwordUtil.decode(key.getName(), chopped, charset);
-        } catch (IOException e) {
-            throw new BookException(UserMsg.READ_FAIL, e, new Object[] {
-                verse.getName()
-            });
+        } finally {
+            DataPolice.setKey(key);
         }
     }
 

@@ -26,7 +26,6 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Map;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.passage.Key;
@@ -54,8 +53,8 @@ public class CustomHandler extends DefaultHandler {
      * Simple ctor
      */
     public CustomHandler(Book book, Key key) {
-        this.book = book;
-        this.key = key;
+        DataPolice.setBook(book.getBookMetaData());
+        DataPolice.setKey(key);
         stack = new LinkedList();
     }
 
@@ -80,8 +79,8 @@ public class CustomHandler extends DefaultHandler {
                 return;
             }
 
-            if (top instanceof Element) // It might be a text element
-            {
+            // It might be a text element
+            if (top instanceof Element) {
                 ele = (Element) top;
             }
         }
@@ -187,7 +186,7 @@ public class CustomHandler extends DefaultHandler {
             t = (Tag) TAG_MAP.get(qname.toLowerCase(Locale.ENGLISH));
 
             if (t == null) {
-                log.warn("In " + book.getInitials() + "(" + key.getName() + ") unknown thml element: " + localname + " qname=" + qname); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                DataPolice.report("Unknown thml element: " + localname + " qname=" + qname); //$NON-NLS-1$ //$NON-NLS-2$
 
                 // Report on it only once and make sure the content is output.
                 t = new AnonymousTag(qname);
@@ -195,20 +194,10 @@ public class CustomHandler extends DefaultHandler {
                 return t;
             }
 
-            DataPolice.report("In " + book.getInitials() + "(" + key.getName() + ") Wrong case used in thml element: " + qname); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            DataPolice.report("Wrong case used in thml element: " + qname); //$NON-NLS-1$
         }
         return t;
     }
-
-    /**
-     * The book containing the data.
-     */
-    private Book book;
-
-    /**
-     * The key for the data.
-     */
-    private Key key;
 
     /**
      * When the document is parsed, this is the last element popped off the
@@ -324,8 +313,4 @@ public class CustomHandler extends DefaultHandler {
         }
     }
 
-    /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(CustomHandler.class);
 }

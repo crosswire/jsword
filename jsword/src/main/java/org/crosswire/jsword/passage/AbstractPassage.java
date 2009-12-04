@@ -818,8 +818,8 @@ public abstract class AbstractPassage implements Passage {
      */
     public int indexOf(Key that) {
         int index = 0;
-
-        for (Iterator it = iterator(); it.hasNext();) {
+        Iterator it = iterator();
+        while (it.hasNext()) {
             Key key = (Key) it.next();
             if (key.equals(that)) {
                 return index;
@@ -1263,9 +1263,8 @@ public abstract class AbstractPassage implements Passage {
             }
 
             out.writeObject(store);
-        }
-        // if distinct is not bigger than ranged
-        else if (distinct_size <= ranged_size) {
+        } else if (distinct_size <= ranged_size) {
+            // if distinct is not bigger than ranged
             // write the Passage type and the number of verses
             out.writeInt(DISTINCT);
             out.writeInt(countVerses());
@@ -1276,9 +1275,8 @@ public abstract class AbstractPassage implements Passage {
                 Verse verse = (Verse) it.next();
                 out.writeInt(verse.getOrdinal());
             }
-        }
-        // otherwise use ranges
-        else {
+        } else {
+            // otherwise use ranges
             // write the Passage type and the number of ranges
             out.writeInt(RANGED);
             out.writeInt(countRanges(RestrictionType.NONE));

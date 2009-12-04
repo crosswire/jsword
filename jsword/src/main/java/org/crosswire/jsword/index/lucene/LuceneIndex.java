@@ -392,7 +392,8 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
 
         int size = key.getCardinality();
         int subCount = count;
-        for (Iterator it = key.iterator(); it.hasNext();) {
+        Iterator it = key.iterator();
+        while (it.hasNext()) {
             subkey = (Key) it.next();
             if (subkey.canHaveChildren()) {
                 generateSearchIndexImpl(job, errors, writer, subkey, subCount);

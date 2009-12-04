@@ -48,8 +48,7 @@ public final class VerseFactory {
      *                If the text can not be understood
      */
     public static Verse fromString(String original) throws NoSuchVerseException {
-        if ("".equals(original)) //$NON-NLS-1$
-        {
+        if ("".equals(original)) { //$NON-NLS-1$
             return null;
         }
         String[] parts = AccuracyType.tokenize(original);

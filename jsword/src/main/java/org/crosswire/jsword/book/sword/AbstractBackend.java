@@ -115,7 +115,7 @@ public abstract class AbstractBackend implements Activatable {
      * Determine whether this Book contains the key in question
      * 
      * @param key
-     *            The key whose presense is desired.
+     *            The key whose presence is desired.
      * @return true if the Book contains the key
      */
     public abstract boolean contains(Key key);
@@ -144,6 +144,16 @@ public abstract class AbstractBackend implements Activatable {
      *             If the module data path could not be created.
      */
     public void setRawText(Key key, String text) throws BookException, IOException {
+    }
+
+    /**
+     * Sets alias for a comment on a verse range
+     * I.e. setRawText() was for verse range Gen.1.1-3 then setAliasKey should be called for Gen.1.1.2 and Gen.1.1.3
+     * @param alias Alias Key
+     * @param source Source Key
+     * @throws IOException Exception when anything goes wrong on writing the alias
+     */
+    public void setAliasKey(Key alias, Key source) throws IOException {
     }
 
     /**

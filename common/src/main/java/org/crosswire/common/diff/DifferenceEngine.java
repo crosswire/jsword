@@ -220,8 +220,7 @@ public class DifferenceEngine {
         for (int d = vMap.size() - 2; d >= 0; d--) {
             while (true) {
                 Set set = (Set) vMap.get(d);
-                if (set.contains((x - 1) + "," + y)) //$NON-NLS-1$
-                {
+                if (set.contains((x - 1) + "," + y)) { //$NON-NLS-1$
                     x--;
                     if (EditType.DELETE.equals(lastEditType)) {
                         Difference firstDiff = (Difference) path.get(0);
@@ -231,8 +230,7 @@ public class DifferenceEngine {
                     }
                     lastEditType = EditType.DELETE;
                     break;
-                } else if (set.contains(x + "," + (y - 1))) //$NON-NLS-1$
-                {
+                } else if (set.contains(x + "," + (y - 1))) { //$NON-NLS-1$
                     y--;
                     if (EditType.INSERT.equals(lastEditType)) {
                         Difference firstDiff = (Difference) path.get(0);
@@ -278,8 +276,7 @@ public class DifferenceEngine {
         for (int d = vMap.size() - 2; d >= 0; d--) {
             while (true) {
                 Set set = (Set) vMap.get(d);
-                if (set.contains((x - 1) + "," + y)) //$NON-NLS-1$
-                {
+                if (set.contains((x - 1) + "," + y)) { //$NON-NLS-1$
                     x--;
                     if (EditType.DELETE.equals(lastEditType)) {
                         Difference lastDiff = (Difference) path.get(path.size() - 1);
@@ -289,8 +286,7 @@ public class DifferenceEngine {
                     }
                     lastEditType = EditType.DELETE;
                     break;
-                } else if (set.contains(x + "," + (y - 1))) //$NON-NLS-1$
-                {
+                } else if (set.contains(x + "," + (y - 1))) { //$NON-NLS-1$
                     y--;
                     if (EditType.INSERT.equals(lastEditType)) {
                         Difference lastDiff = (Difference) path.get(path.size() - 1);

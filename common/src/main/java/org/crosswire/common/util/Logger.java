@@ -21,7 +21,12 @@
  */
 package org.crosswire.common.util;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.MissingResourceException;
+import java.util.logging.Handler;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 
 /**
@@ -40,194 +45,291 @@ import java.util.logging.LogRecord;
  */
 public final class Logger {
     /**
-     * Same as calling <code>getLogger(clazz.getName())</code>.
+     * Get a new logger for the class that shows the class, method and line
+     * number of the caller.
+     * @param clazz the class that holds the logger.
      */
     public static Logger getLogger(Class clazz) {
-        return new Logger(clazz);
+        return getLogger(clazz, true);
+    }
+
+    /**
+     * Get a new logger for the class that shows the class of the caller.
+     * @param clazz the class that holds the logger.
+     * @param showLocation when true it will get the method and line where logging occurred.
+     */
+    public static Logger getLogger(Class clazz, boolean showLocation) {
+        return new Logger(clazz, showLocation);
+    }
+
+    /**
+     * Set the level at which output occurs for this Logger.
+     * 
+     * @param newLevel
+     *            the level to apply
+     */
+    public void setLevel(Level newLevel) {
+        logger.setLevel(newLevel);
     }
 
     /**
      * Stop all logging output
      */
-    public static void outputNothing() {
+    public static synchronized void outputNothing() {
         level = Level.OFF;
     }
 
     /**
      * Output a minimum of stuff
      */
-    public static void outputInfoMinimum() {
+    public static synchronized void outputInfoMinimum() {
         level = Level.WARNING;
     }
 
     /**
      * Output everything
      */
-    public static void outputEverything() {
-        level = Level.FINEST;
+    public static synchronized void outputEverything() {
+        level = Level.ALL;
     }
 
     /**
-     * Simple ctor
-     */
-    private Logger(Class id) {
-        logger = java.util.logging.Logger.getLogger(id.getName());
-    }
-
-    /**
-     * Log a message object with the FATAL level.
+     * Log a message object with the SEVERE level.
      * 
-     * @param message
+     * @param msg
+     *            the message to log.
+     */
+    public void fatal(String msg) {
+        doLogging(Level.SEVERE, msg, null);
+    }
+
+    /**
+     * Log a message object with the SEVERE level.
+     * 
+     * @param msg
      *            the message object to log.
      */
-    public void fatal(String message) {
-        doLogging(Level.SEVERE, message, null);
+    public void fatal(String msg, Throwable th) {
+        doLogging(Level.SEVERE, msg, th);
     }
 
     /**
-     * Log a message object with the FATAL level.
+     * Log a message object with the WARNING level.
      * 
-     * @param message
-     *            the message object to log.
+     * @param msg
+     *            the message to log.
      */
-    public void fatal(String message, Throwable th) {
-        doLogging(Level.SEVERE, message, th);
+    public void error(String msg) {
+        doLogging(Level.WARNING, msg, null);
     }
 
     /**
-     * Log a message object with the ERROR level.
+     * Log a message object with the WARNING level.
      * 
-     * @param message
-     *            the message object to log.
+     * @param msg
+     *            the message to log.
+     * @param th
+     *            the exception to note when not null
      */
-    public void error(String message) {
-        doLogging(Level.WARNING, message, null);
-    }
-
-    /**
-     * Log a message object with the ERROR level.
-     * 
-     * @param message
-     *            the message object to log.
-     */
-    public void error(String message, Throwable th) {
-        doLogging(Level.WARNING, message, th);
+    public void error(String msg, Throwable th) {
+        doLogging(Level.WARNING, msg, th);
     }
 
     /**
      * Log a message object with the INFO level.
      * 
-     * @param message
+     * @param msg
      *            the message object to log.
      */
-    public void info(String message) {
-        doLogging(Level.CONFIG, message, null);
+    public void info(String msg) {
+        doLogging(Level.INFO, msg, null);
     }
 
     /**
      * Log a message object with the INFO level.
      * 
-     * @param message
+     * @param msg
      *            the message object to log.
+     * @param th
+     *            the exception to note when not null
      */
-    public void info(String message, Throwable th) {
-        doLogging(Level.CONFIG, message, th);
+    public void info(String msg, Throwable th) {
+        doLogging(Level.INFO, msg, th);
     }
 
     /**
-     * Log a message object with the WARN level.
+     * Log a message object with the FINE level.
      * 
-     * @param message
+     * @param msg
      *            the message object to log.
      */
-    public void warn(String message) {
-        doLogging(Level.INFO, message, null);
+    public void warn(String msg) {
+        doLogging(Level.FINE, msg, null);
     }
 
     /**
-     * Log a message object with the WARN level.
+     * Log a message object with the FINE level.
      * 
-     * @param message
+     * @param msg
      *            the message object to log.
+     * @param th
+     *            the exception to note when not null
      */
-    public void warn(String message, Throwable th) {
-        doLogging(Level.INFO, message, th);
+    public void warn(String msg, Throwable th) {
+        doLogging(Level.FINE, msg, th);
     }
 
     /**
-     * Log a message object with the DEBUG level.
+     * Log a message object with the FINEST level.
      * 
-     * @param message
+     * @param msg
      *            the message object to log.
      */
-    public void debug(String message) {
-        initialize();
-        logger.fine(message);
+    public void debug(String msg) {
+        doLogging(Level.FINEST, msg, null);
+    }
+
+    /**
+     * Log a message with the supplied level.
+     * 
+     * @param lev
+     *            the level at which to log.
+     * @param msg
+     *            the message to log.
+     */
+    public void log(Level lev, String msg) {
+        doLogging(lev, msg, null);
+    }
+
+    /**
+     * Log a message with the supplied level, recording the exception when not
+     * null.
+     * 
+     * @param msg
+     *            the message object to log.
+     */
+    public void log(Level lev, String msg, Throwable th) {
+        doLogging(lev, msg, th);
+    }
+
+    /**
+     * Create a logger for the class. Wrapped by {@link getLogger}.
+     */
+    private Logger(Class id, boolean showLocation) {
+        this.logger = java.util.logging.Logger.getLogger(id.getName());
+        this.showLocation = showLocation;
     }
 
     // Private method to infer the caller's class and method names
     private void doLogging(Level theLevel, String message, Throwable th) {
         initialize();
 
-        String className = null;
-        String methodName = null;
-        int lineNumber = -1;
-
-        // Get the stack trace.
-        StackTraceElement[] stack = (new Throwable()).getStackTrace();
-
-        // First, search back to a method in the Logger class.
-        int ix = 0;
-        while (ix < stack.length) {
-            StackTraceElement frame = stack[ix];
-            String cname = frame.getClassName();
-            if (cname.equals(CLASS_NAME)) {
-                break;
-            }
-            ix++;
-        }
-
-        // Now search for the first frame before the "Logger" class.
-        while (ix < stack.length) {
-            StackTraceElement frame = stack[ix];
-            String cname = frame.getClassName();
-            if (!cname.equals(CLASS_NAME)) {
-                // We've found the relevant frame.
-                className = cname;
-                methodName = frame.getMethodName();
-                lineNumber = frame.getLineNumber();
-                break;
-            }
-            ix++;
-        }
-
         LogRecord logRecord = new LogRecord(theLevel, message);
         logRecord.setLoggerName(logger.getName());
-        logRecord.setSourceClassName(className);
-        logRecord.setSourceMethodName(methodName);
+        logRecord.setSourceClassName(CallContext.getCallingClass(1).getName());
         logRecord.setThrown(th);
-        // This is a non-standard use of sequence number.
-        // We could just subclass LogRecord and add line number.
-        logRecord.setSequenceNumber(lineNumber);
+
+        if (showLocation) {
+            String methodName = null;
+            int lineNumber = -1;
+
+            // Get the stack trace.
+            StackTraceElement[] stack = (new Throwable()).getStackTrace();
+
+            // First, search back to a method in the Logger class.
+            int ix = 0;
+            while (ix < stack.length) {
+                StackTraceElement frame = stack[ix];
+                String cname = frame.getClassName();
+                if (cname.equals(CLASS_NAME)) {
+                    break;
+                }
+                ix++;
+            }
+
+            // Now search for the first frame with the name of the caller.
+            while (ix < stack.length) {
+                StackTraceElement frame = stack[ix];
+                if (!frame.getClassName().equals(CLASS_NAME)) {
+                    // We've found the relevant frame.
+                    methodName = frame.getMethodName();
+                    lineNumber = frame.getLineNumber();
+                    break;
+                }
+                ix++;
+            }
+
+            logRecord.setSourceMethodName(methodName);
+            // This is a non-standard use of sequence number.
+            // We could just subclass LogRecord and add line number.
+            logRecord.setSequenceNumber(lineNumber);
+        }
+
         logger.log(logRecord);
     }
 
-    private void initialize() {
-        // Establish a class that will load logging properties into
-        // java.util.logging.LogManager
-        System.setProperty("java.util.logging.config.class", LogConfig.class.getName()); //$NON-NLS-1$
+    private synchronized void initialize() {
+        Logger.establishLogging();
+        Logger.setLevel();
+    }
 
+    private static void establishLogging() {
+        if (established) {
+            return;
+        }
+        established = true;
+
+        Exception ex = null;
+        try {
+            InputStream cwConfigStream = ResourceUtil.getResourceAsStream("CWLogging.properties");  //$NON-NLS-1$
+            LogManager.getLogManager().readConfiguration(cwConfigStream);
+        } catch (SecurityException e) {
+            ex = e;
+        } catch (MissingResourceException e) {
+            ex = e;
+        } catch (IOException e) {
+            ex = e;
+        }
+        if (ex != null) {
+            cwLogger.info("Can't load CWLogging.properties", ex); //$NON-NLS-1$
+        }
+    }
+
+    private static void setLevel() {
         // If there was a request to change the minimum level of logging
         // handle it now.
-        if (level != null) {
-            java.util.logging.Logger.getLogger(ROOT_LOGGER).setLevel(level);
-            level = null;
+        if (Logger.level != null) {
+            // There are two parts of making a log message get out.
+            // It has to be more important than the level:
+            //     a) of the logger
+            //     b) of the handler
+            // So we need to set both.
+            // In the case of the handlers, we set all of them.
+            java.util.logging.Logger rootLogger = java.util.logging.Logger.getLogger(ROOT_LOGGER);
+            Handler[] handlers = rootLogger.getHandlers();
+            for (int index = 0; index < handlers.length; index++) {
+                handlers[index].setLevel(Level.FINE);
+            }
+            rootLogger.setLevel(Logger.level);
+            // Don't do this again unless asked.
+            Logger.level = null;
         }
     }
 
     private static final String ROOT_LOGGER = ""; //$NON-NLS-1$
     private static final String CLASS_NAME = Logger.class.getName();
+    private static volatile boolean established;
     private static volatile Level level;
 
+    /**
+     * The actual logger.
+     */
     private java.util.logging.Logger logger;
+    private static Logger cwLogger = getLogger(Logger.class);
+
+    /**
+     * Whether we dig into the call stack to get the method and line number of
+     * the caller.
+     */
+    private boolean showLocation;
 }

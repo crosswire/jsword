@@ -65,8 +65,7 @@ public class SyncTag extends AbstractTag {
         String type = attrs.getValue("type"); //$NON-NLS-1$
         String value = attrs.getValue("value"); //$NON-NLS-1$
 
-        if ("Strongs".equals(type)) //$NON-NLS-1$
-        {
+        if ("Strongs".equals(type)) { //$NON-NLS-1$
             List siblings = ele.getContent();
             int size = siblings.size();
             if (size == 0) {
@@ -95,8 +94,7 @@ public class SyncTag extends AbstractTag {
             return null;
         }
 
-        if ("morph".equals(type)) //$NON-NLS-1$
-        {
+        if ("morph".equals(type)) { //$NON-NLS-1$
             List siblings = ele.getContent();
             int size = siblings.size();
             if (size == 0) {
@@ -125,8 +123,7 @@ public class SyncTag extends AbstractTag {
             return null;
         }
 
-        if ("Dict".equals(type)) //$NON-NLS-1$
-        {
+        if ("Dict".equals(type)) { //$NON-NLS-1$
             Element div = OSISUtil.factory().createDiv();
             div.setAttribute(OSISUtil.OSIS_ATTR_OSISID, "dict://" + value); //$NON-NLS-1$
 

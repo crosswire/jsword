@@ -414,11 +414,9 @@ public class PatchEntry {
         for (i = 0; i < strlen; i++) {
             char c = str.charAt(i);
             if (c == '%') {
-                if ("%0A".equals(str.substring(i, i + 3))) //$NON-NLS-1$
-                {
+                if ("%0A".equals(str.substring(i, i + 3))) { //$NON-NLS-1$
                     buf.append('\n');
-                } else // if ("%25".equals(str.substring(i, i + 3))
-                {
+                } else { // if ("%25".equals(str.substring(i, i + 3))
                     buf.append('%');
                 }
                 i += 2;

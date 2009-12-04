@@ -42,10 +42,10 @@ public class DwrBridgeTest extends TestCase {
     }
 
     public void testGetBooks() {
-        String[][] bibles = dwrBridge.getInstalledBooks("bookCategory=Biblical Texts"); //$NON-NLS-1$
+        String[][] bibles = dwrBridge.getInstalledBooks("Category=Biblical Texts"); //$NON-NLS-1$
         assertTrue(bibles.length > 1);
 
-        String[][] dicts = dwrBridge.getInstalledBooks("bookCategory=Dictionaries"); //$NON-NLS-1$
+        String[][] dicts = dwrBridge.getInstalledBooks("Category=Dictionaries"); //$NON-NLS-1$
         assertTrue(dicts.length > 1);
     }
 
@@ -54,7 +54,7 @@ public class DwrBridgeTest extends TestCase {
             String verse = dwrBridge.getOSISString("KJV", "Gen 1:1", 0, 100); //$NON-NLS-1$ //$NON-NLS-2$
             assertEquals(
                     verse,
-                    "<div><title type=\"x-gen\">Gen 1:1</title><verse osisID=\"Gen.1.1\"><w lemma=\"strong:H07225\">In the beginning</w> <w lemma=\"strong:H0430\">God</w> <w lemma=\"strong:H0853 strong:H01254\" morph=\"strongMorph:TH8804\">created</w> <w lemma=\"strong:H08064\">the heaven</w> <w lemma=\"strong:H0853\">and</w> <w lemma=\"strong:H0776\">the earth</w>.</verse></div>"); //$NON-NLS-1$
+                    "<div><title type=\"x-gen\">Genesis 1:1</title><verse osisID=\"Gen.1.1\"><w lemma=\"strong:H07225\">In the beginning</w> <w lemma=\"strong:H0430\">God</w> <w lemma=\"strong:H0853 strong:H01254\" morph=\"strongMorph:TH8804\">created</w> <w lemma=\"strong:H08064\">the heaven</w> <w lemma=\"strong:H0853\">and</w> <w lemma=\"strong:H0776\">the earth</w>.</verse></div>"); //$NON-NLS-1$
             String hdef = dwrBridge.getOSISString("StrongsHebrew", "H07225", 0, 100); //$NON-NLS-1$ //$NON-NLS-2$
             assertEquals(
                     hdef,

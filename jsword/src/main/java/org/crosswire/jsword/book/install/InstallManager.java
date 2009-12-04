@@ -92,7 +92,8 @@ public final class InstallManager {
         Properties props = new Properties();
         StringBuffer buf = new StringBuffer();
         int i = 1;
-        for (Iterator it = installers.keySet().iterator(); it.hasNext();) {
+        Iterator it = installers.keySet().iterator();
+        while (it.hasNext()) {
             String name = (String) it.next();
             Installer installer = (Installer) installers.get(name);
             // Clear the buffer
@@ -127,7 +128,8 @@ public final class InstallManager {
     public String getFactoryNameForInstaller(Installer installer) {
         Class match = installer.getClass();
 
-        for (Iterator it = factories.keySet().iterator(); it.hasNext();) {
+        Iterator it = factories.keySet().iterator();
+        while (it.hasNext()) {
             String name = (String) it.next();
             Class factclazz = (Class) factories.get(name);
             try {
@@ -153,7 +155,8 @@ public final class InstallManager {
      * looking!
      */
     public String getInstallerNameForInstaller(Installer installer) {
-        for (Iterator it = installers.keySet().iterator(); it.hasNext();) {
+        Iterator it = installers.keySet().iterator();
+        while (it.hasNext()) {
             String name = (String) it.next();
             Installer test = (Installer) installers.get(name);
             if (installer.equals(test)) {
@@ -162,7 +165,8 @@ public final class InstallManager {
         }
 
         log.warn("Failed to find installer name for " + installer.toString() + " among the " + installers.size() + " installers."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        for (Iterator it = installers.keySet().iterator(); it.hasNext();) {
+        it = installers.keySet().iterator();
+        while (it.hasNext()) {
             String name = (String) it.next();
             Installer test = (Installer) installers.get(name);
             log.warn("  it isn't equal to " + test.getInstallerDefinition()); //$NON-NLS-1$
@@ -235,7 +239,8 @@ public final class InstallManager {
      *            The installer to associate with the given name
      */
     private void internalAdd(String name, Installer installer) {
-        for (Iterator it = installers.keySet().iterator(); it.hasNext();) {
+        Iterator it = installers.keySet().iterator();
+        while (it.hasNext()) {
             String tname = (String) it.next();
             Installer tinstaller = (Installer) installers.get(tname);
 

@@ -28,8 +28,7 @@ import java.net.URI;
 import junit.framework.TestCase;
 
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.passage.NoSuchVerseException;
-import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.passage.*;
 
 /**
  * A Raw File format that allows for each verse to have it's own storage.
@@ -96,5 +95,19 @@ public class RawFileBackendTest extends TestCase {
         assertEquals(backend.getRawText(ntVerse2), "Hello NT2"); //$NON-NLS-1$
         assertEquals(backend.getRawText(ntVerse3), "Hello NT3"); //$NON-NLS-1$
         assertEquals(backend.getRawText(ntVerse4), "Hello NT4"); //$NON-NLS-1$
+    }
+
+    public void testSetAliasKey() throws NoSuchVerseException, IOException, BookException {
+        Verse source = VerseFactory.fromString("Gen 1:1"); //$NON-NLS-1$
+        Verse alias1 = VerseFactory.fromString("Gen 1:2"); //$NON-NLS-1$
+        Verse alias2 = VerseFactory.fromString("Gen 1:3"); //$NON-NLS-1$
+
+        backend.setRawText(source, "Hello Alias test!"); //$NON-NLS-1$
+        backend.setAliasKey(alias1, source);
+        backend.setAliasKey(alias2, source);
+
+        assertEquals(backend.getRawText(source), "Hello Alias test!"); //$NON-NLS-1$
+        assertEquals(backend.getRawText(alias1), "Hello Alias test!"); //$NON-NLS-1$
+        assertEquals(backend.getRawText(alias2), "Hello Alias test!"); //$NON-NLS-1$
     }
 }

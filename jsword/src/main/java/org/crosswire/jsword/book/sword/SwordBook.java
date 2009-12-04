@@ -21,6 +21,7 @@
  */
 package org.crosswire.jsword.book.sword;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -102,7 +103,6 @@ public class SwordBook extends AbstractPassageBook {
         }
 
         String result = backend.getRawText(key);
-
         assert result != null;
         return result;
     }
@@ -188,7 +188,11 @@ public class SwordBook extends AbstractPassageBook {
      * .Key, org.crosswire.jsword.passage.Key)
      */
     public void setAliasKey(Key alias, Key source) throws BookException {
-        throw new BookException(Msg.DRIVER_READONLY);
+        try {
+            backend.setAliasKey(alias, source);
+        } catch (IOException e) {
+            throw new BookException(Msg.UNABLE_TO_SAVE, new Object[] {alias.getOsisID()});
+        }
     }
 
     /*

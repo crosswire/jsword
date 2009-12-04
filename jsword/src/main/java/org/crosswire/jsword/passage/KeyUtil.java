@@ -49,7 +49,8 @@ public final class KeyUtil {
      *            The visitor to notify whenever a node is found
      */
     public static void visit(Key key, KeyVisitor visitor) {
-        for (Iterator it = key.iterator(); it.hasNext();) {
+        Iterator it = key.iterator();
+        while (it.hasNext()) {
             Key subkey = (Key) it.next();
             if (subkey.canHaveChildren()) {
                 visitor.visitBranch(subkey);

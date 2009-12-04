@@ -237,8 +237,7 @@ public class BibleToOsis {
         }
 
         String chapterName = "CHAPTER"; //$NON-NLS-1$
-        if ("Ps".equals(bookName)) //$NON-NLS-1$
-        {
+        if ("Ps".equals(bookName)) { //$NON-NLS-1$
             chapterName = "PSALM"; //$NON-NLS-1$
         }
 

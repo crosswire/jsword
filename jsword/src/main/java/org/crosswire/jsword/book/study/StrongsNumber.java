@@ -140,23 +140,33 @@ public class StrongsNumber {
     }
 
     /**
-     * Validates the number portion of this StrongsNumber. Hebrew Strong's
-     * numbers are in the range of: 1-8674 Greek Strong's numbers in the range
-     * of: 1-5624 (but not 1418, 2717, 3203-3302, 4452)
+     * Validates the number portion of this StrongsNumber.
+     * <ul>
+     * <li>Hebrew Strong's numbers are in the range of: 1-8674.</li>
+     * <li>Greek Strong's numbers in the range of: 1-5624
+     * (but not 1418, 2717, 3203-3302, 4452).</li>
+     * </ul>
      * 
      * @return true if the Strong's number is in range.
      */
     public boolean isValid() {
-        if (language == 'H' && (strongsNumber < 1 || strongsNumber > 8674)) {
-            return false;
+        if (language == 'H'
+                && strongsNumber >= 1
+                && strongsNumber <= 8674)
+        {
+            return true;
         }
 
         if (language == 'G'
-                && (strongsNumber < 0 || strongsNumber > 5624 || strongsNumber == 1418 || strongsNumber == 2717
-                        || (strongsNumber >= 3203 || strongsNumber <= 3302) || strongsNumber == 4452)) {
-            return false;
+                && ((strongsNumber >= 1 && strongsNumber < 1418)
+                        || (strongsNumber > 1418 && strongsNumber < 2717)
+                        || (strongsNumber > 2717 && strongsNumber < 3203)
+                        || (strongsNumber > 3302 && strongsNumber <= 5624)))
+        {
+            return true;
         }
-        return true;
+
+        return false;
     }
 
     /*

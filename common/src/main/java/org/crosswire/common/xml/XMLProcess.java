@@ -71,8 +71,7 @@ public class XMLProcess {
             arg = argv[i];
             if (arg.charAt(0) == '-') {
                 String option = arg.substring(1);
-                if ("h".equals(option)) //$NON-NLS-1$
-                {
+                if ("h".equals(option)) { //$NON-NLS-1$
                     checker.usage();
                     System.exit(0);
                 }
@@ -91,8 +90,7 @@ public class XMLProcess {
             String arg = argv[i];
             if (arg.charAt(0) == '-') {
                 String option = arg.substring(1);
-                if ("p".equals(option)) //$NON-NLS-1$
-                {
+                if ("p".equals(option)) { //$NON-NLS-1$
                     // get parser name
                     if (++i == argv.length) {
                         System.err.println("error: Missing argument to -p option."); //$NON-NLS-1$
@@ -102,8 +100,7 @@ public class XMLProcess {
                     createParser();
                     continue;
                 }
-                if ("a".equals(option)) //$NON-NLS-1$
-                {
+                if ("a".equals(option)) { //$NON-NLS-1$
                     // get parser name
                     if (++i == argv.length) {
                         System.err.println("error: Missing argument to -a option."); //$NON-NLS-1$

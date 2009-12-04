@@ -142,7 +142,9 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
 
             Element list = OSISUtil.factory().createList();
             content.add(list);
-            for (Iterator it = ref.rangeIterator(RestrictionType.NONE); it.hasNext();) {
+
+            Iterator it = ref.rangeIterator(RestrictionType.NONE);
+            while (it.hasNext()) {
                 VerseRange range = (VerseRange) it.next();
 
                 Element reading = OSISUtil.factory().createReference();

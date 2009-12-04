@@ -24,6 +24,7 @@ package org.crosswire.jsword.book.filter.gbf;
 import java.util.LinkedList;
 
 import org.crosswire.common.util.ClassUtil;
+import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.OSISUtil.OSISFactory;
@@ -61,14 +62,11 @@ public final class GBFTags {
             super(name);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util
-         * .LinkedList)
-         */
         public void updateOsisStack(LinkedList stack) {
+            if (stack.isEmpty()) {
+                DataPolice.report("Ignoring end tag without corresponding start tag: " + getName()); //$NON-NLS-1$
+                return;
+            }
             stack.removeFirst();
         }
     }
@@ -84,13 +82,6 @@ public final class GBFTags {
             super(name);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util
-         * .LinkedList)
-         */
         public void updateOsisStack(LinkedList stack) {
             Element ele = OSIS_FACTORY.createHI();
             ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_BOLD);
@@ -106,13 +97,6 @@ public final class GBFTags {
             super(name);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util
-         * .LinkedList)
-         */
         public void updateOsisStack(LinkedList stack) {
             Element ele = OSIS_FACTORY.createReference();
 
@@ -138,13 +122,6 @@ public final class GBFTags {
             super(name);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util
-         * .LinkedList)
-         */
         public void updateOsisStack(LinkedList stack) {
 
             Element p = OSIS_FACTORY.createLB();
@@ -171,13 +148,6 @@ public final class GBFTags {
             super(name);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util
-         * .LinkedList)
-         */
         public void updateOsisStack(LinkedList stack) {
             Element ele = OSIS_FACTORY.createNote();
             ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.NOTETYPE_STUDY);
@@ -196,27 +166,25 @@ public final class GBFTags {
             super(name);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util
-         * .LinkedList)
-         */
         public void updateOsisStack(LinkedList stack) {
-            Object pop = stack.removeFirst();
-            if (pop instanceof Element) {
-                Element note = (Element) pop;
+            if (stack.isEmpty()) {
+                DataPolice.report("Ignoring end tag without corresponding start tag: " + getName()); //$NON-NLS-1$
+                return;
+            }
 
-                if (note.getContentSize() < 1) {
-                    Content top = (Content) stack.get(0);
-                    if (top instanceof Element) {
-                        Element ele = (Element) top;
-                        ele.removeContent(note);
-                    }
-                }
-            } else {
+            Object pop = stack.removeFirst();
+            if (!(pop instanceof Element)) {
                 DataPolice.report("expected to pop a Note, but found " + ClassUtil.getShortClassName(pop.getClass())); //$NON-NLS-1$
+                return;
+            }
+
+            Element note = (Element) pop;
+            if (note.getContentSize() < 1) {
+                Content top = (Content) stack.get(0);
+                if (top instanceof Element) {
+                    Element ele = (Element) top;
+                    ele.removeContent(note);
+                }
             }
         }
     }
@@ -232,13 +200,6 @@ public final class GBFTags {
             super(name);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util
-         * .LinkedList)
-         */
         public void updateOsisStack(LinkedList stack) {
             GBFTags.updateOsisStack(stack, OSIS_FACTORY.createTitle());
         }
@@ -255,13 +216,6 @@ public final class GBFTags {
             super(name);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util
-         * .LinkedList)
-         */
         public void updateOsisStack(LinkedList stack) {
         }
     }
@@ -277,13 +231,6 @@ public final class GBFTags {
             super(name);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util
-         * .LinkedList)
-         */
         public void updateOsisStack(LinkedList stack) {
             Element ele = OSIS_FACTORY.createHI();
             ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_ITALIC);
@@ -302,13 +249,6 @@ public final class GBFTags {
             super(name);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util
-         * .LinkedList)
-         */
         public void updateOsisStack(LinkedList stack) {
             // LATER(joe): is seg the right thing?
             Element ele = OSIS_FACTORY.createSeg();
@@ -328,13 +268,6 @@ public final class GBFTags {
             super(name);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util
-         * .LinkedList)
-         */
         public void updateOsisStack(LinkedList stack) {
             Element ele = OSIS_FACTORY.createSeg();
             ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.SEG_JUSTIFYLEFT);
@@ -353,13 +286,6 @@ public final class GBFTags {
             super(name);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util
-         * .LinkedList)
-         */
         public void updateOsisStack(LinkedList stack) {
             GBFTags.updateOsisStack(stack, OSIS_FACTORY.createQ());
         }
@@ -376,13 +302,6 @@ public final class GBFTags {
             super(name);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util
-         * .LinkedList)
-         */
         public void updateOsisStack(LinkedList stack) {
 
             if (stack.isEmpty()) {
@@ -410,13 +329,6 @@ public final class GBFTags {
             super(name);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util
-         * .LinkedList)
-         */
         public void updateOsisStack(LinkedList stack) {
             GBFTags.updateOsisStack(stack, OSIS_FACTORY.createLG());
         }
@@ -433,13 +345,6 @@ public final class GBFTags {
             super(name);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util
-         * .LinkedList)
-         */
         public void updateOsisStack(LinkedList stack) {
             GBFTags.updateOsisStack(stack, OSIS_FACTORY.createTitle());
         }
@@ -456,13 +361,6 @@ public final class GBFTags {
             super(name);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util
-         * .LinkedList)
-         */
         public void updateOsisStack(LinkedList stack) {
             Element ele = OSIS_FACTORY.createQ();
             ele.setAttribute(OSISUtil.ATTRIBUTE_Q_WHO, Msg.NAME_JESUS.toString());
@@ -478,13 +376,6 @@ public final class GBFTags {
             super(name);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util
-         * .LinkedList)
-         */
         public void updateOsisStack(LinkedList stack) {
             String name = getName().trim();
 
@@ -536,13 +427,6 @@ public final class GBFTags {
             super(name);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util
-         * .LinkedList)
-         */
         public void updateOsisStack(LinkedList stack) {
             String name = getName().trim();
 
@@ -596,13 +480,6 @@ public final class GBFTags {
             super(name);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util
-         * .LinkedList)
-         */
         public void updateOsisStack(LinkedList stack) {
             Element ele = OSIS_FACTORY.createNote();
             ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.NOTETYPE_STUDY);
@@ -621,21 +498,16 @@ public final class GBFTags {
             super(name);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util
-         * .LinkedList)
-         */
         public void updateOsisStack(LinkedList stack) {
+            // Make sure that characters that XML requires to be escaped are.
+            String text = XMLUtil.escape(getName());
             if (stack.isEmpty()) {
-                stack.addFirst(new Text(getName()));
+                stack.addFirst(new Text(text));
             } else {
                 Content top = (Content) stack.get(0);
                 if (top instanceof Element) {
                     Element ele = (Element) top;
-                    ele.addContent(getName());
+                    ele.addContent(text);
                 }
             }
         }
@@ -652,13 +524,6 @@ public final class GBFTags {
             super(name);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util
-         * .LinkedList)
-         */
         public void updateOsisStack(LinkedList stack) {
             GBFTags.updateOsisStack(stack, OSIS_FACTORY.createTitle());
         }
@@ -675,13 +540,6 @@ public final class GBFTags {
             super(name);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.filter.gbf.Tag#updateOsisStack(java.util
-         * .LinkedList)
-         */
         public void updateOsisStack(LinkedList stack) {
             Element ele = OSIS_FACTORY.createHI();
             ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_UNDERLINE);

@@ -153,7 +153,8 @@ public class APIExamples {
      * @see SAXEventProvider
      */
     public String readStyledText(String bookInitials, String reference, int maxKeyCount) throws NoSuchKeyException, BookException, TransformerException,
-            SAXException {
+            SAXException
+    {
         Book book = getBook(bookInitials);
         SAXEventProvider osissep = getOSIS(bookInitials, reference, maxKeyCount);
         if (osissep == null) {
@@ -272,18 +273,14 @@ public class APIExamples {
         Key key = bible.find("melchesidec~"); //$NON-NLS-1$
 
         // Here is an example of how to iterate over the ranges and get the text
-        // for each
+        // for each.
         // The key's iterator would have iterated over verses.
 
         // The following shows how to use a stylesheet of your own choosing
         String path = "xsl/cswing/simple.xsl"; //$NON-NLS-1$
         URL xslurl = ResourceUtil.getResource(path);
-
-        Iterator rangeIter = ((Passage) key).rangeIterator(RestrictionType.CHAPTER); // Make
-                                                                                     // ranges
-                                                                                     // break
-                                                                                     // on
-                                                                                     // chapter
+        // Make ranges  break  on  chapter
+        Iterator rangeIter = ((Passage) key).rangeIterator(RestrictionType.CHAPTER);
         // boundaries.
         while (rangeIter.hasNext()) {
             Key range = (Key) rangeIter.next();
@@ -377,8 +374,7 @@ public class APIExamples {
             // At the moment, JSword will not re-install. Later it will, if the
             // remote version is greater.
             try {
-                if (Books.installed().getBook("ESV") != null) //$NON-NLS-1$
-                {
+                if (Books.installed().getBook("ESV") != null) { //$NON-NLS-1$
                     // Make the book unavailable.
                     // This is normally done via listeners.
                     Books.installed().removeBook(book);

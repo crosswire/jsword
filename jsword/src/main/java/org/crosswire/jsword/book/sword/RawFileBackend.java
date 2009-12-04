@@ -126,10 +126,22 @@ public class RawFileBackend extends RawBackend {
         encipher(textData);
         writeTextDataFile(dataFile, textData);
 
-        if (oIndex >= this.incfileValue) {
-            this.incfileValue = oIndex + 1;
-            writeIncfile(this.incfileValue);
-        }
+        checkAndIncrementIncfile(oIndex);
+    }
+
+    public void setAliasKey(Key alias, Key source) throws IOException {
+        Verse aliasVerse = KeyUtil.getVerse(alias);
+        Verse sourceVerse = KeyUtil.getVerse(source);
+        int testament = SwordConstants.getTestament(aliasVerse);
+        long aliasIndex = SwordConstants.getIndex(aliasVerse);
+        //long sourceIndex = SwordConstants.getIndex(sourceVerse);
+        int aliasOIndex = aliasVerse.getOrdinal() - 1;
+        int sourceOIndex = sourceVerse.getOrdinal() - 1;
+
+        updateIndexFile(testament, aliasIndex);
+        updateDataFile(testament, sourceOIndex);
+
+        checkAndIncrementIncfile(aliasOIndex);
     }
 
     private void initIncFile() {
@@ -209,6 +221,13 @@ public class RawFileBackend extends RawBackend {
         }
     }
 
+    private void checkAndIncrementIncfile(int index) throws IOException {
+        if (index >= this.incfileValue) {
+            this.incfileValue = index + 1;
+            writeIncfile(this.incfileValue);
+        }
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -240,7 +259,8 @@ public class RawFileBackend extends RawBackend {
 
         if (otTextFile.exists() && otTextFile.canRead() && otTextFile.canWrite() && ntTextFile.exists() && ntTextFile.canRead() && ntTextFile.canWrite()
                 && otIndexFile.exists() && otIndexFile.canRead() && otIndexFile.canWrite() && ntIndexFile.exists() && ntIndexFile.canRead()
-                && ntIndexFile.canWrite() && incFile.exists() && incFile.canRead() && incFile.canWrite()) {
+                && ntIndexFile.canWrite() && incFile.exists() && incFile.canRead() && incFile.canWrite())
+        {
             return true;
         }
         return false;

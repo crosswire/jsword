@@ -152,3 +152,5 @@ applet
 href
 proxies
 metadata
+ditto
+trawl

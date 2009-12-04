@@ -74,8 +74,7 @@ public class DivTag extends AbstractTag {
     public Element processTag(Element ele, Attributes attrs) {
         // See if there are variant readings e.g. WHNU Mat 1.9
         String typeAttr = attrs.getValue("type"); //$NON-NLS-1$
-        if ("variant".equals(typeAttr)) //$NON-NLS-1$
-        {
+        if ("variant".equals(typeAttr)) { //$NON-NLS-1$
             Element seg = OSISUtil.factory().createSeg();
             seg.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.VARIANT_TYPE);
             String classAttr = attrs.getValue("class"); //$NON-NLS-1$

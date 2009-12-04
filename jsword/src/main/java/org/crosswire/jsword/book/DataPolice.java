@@ -21,6 +21,8 @@
  */
 package org.crosswire.jsword.book;
 
+import java.util.logging.Level;
+
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.passage.Key;
 
@@ -42,6 +44,9 @@ public final class DataPolice {
 
     /**
      * Set the current book to enhance error reports
+     * 
+     * @param bmd
+     *            the book to report.
      */
     public static void setBook(BookMetaData bmd) {
         DataPolice.bmd = bmd;
@@ -55,9 +60,35 @@ public final class DataPolice {
     }
 
     /**
-     * Report a message against the current item
+     * Set the current level at which to report problems. Problems at too fine
+     * grain a level might be filtered by default.
+     * 
+     * @param level
+     *            the level to set
      */
-    public static void report(String message) {
+    public static void setReportingLevel(Level level) {
+        DataPolice.level = level;
+    }
+
+    /**
+     * Set the level at which to show problems.
+     * 
+     * @param level
+     *            the level to set
+     */
+    public static void setLevel(Level level) {
+        log.setLevel(level);
+    }
+
+    /**
+     * Report a message against the current book and key.
+     * 
+     * @param lev
+     *            the level at which to report
+     * @param message
+     *            the police report.
+     */
+    public static void report(Level lev, String message) {
         StringBuffer buf = new StringBuffer();
         if (bmd != null) {
             buf.append(bmd.getInitials());
@@ -71,7 +102,19 @@ public final class DataPolice {
         }
         buf.append(": "); //$NON-NLS-1$
         buf.append(message);
-        log.debug(buf.toString());
+        log.log(lev, buf.toString());
+    }
+
+    /**
+     * Report a message against the current book and key.
+     * 
+     * @param lev
+     *            the level at which to report
+     * @param message
+     *            the police report.
+     */
+    public static void report(String message) {
+        report(level, message);
     }
 
     /**
@@ -85,7 +128,12 @@ public final class DataPolice {
     private static BookMetaData bmd;
 
     /**
+     * The level at which to do logging. Default is FINE.
+     */
+    private static Level level = Level.FINE;
+
+    /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(DataPolice.class);
+    private static final Logger log = Logger.getLogger(DataPolice.class, false);
 }

@@ -74,9 +74,15 @@ public final class SwordUtil {
     protected static byte[] readNextRAF(RandomAccessFile raf, int theSize) throws IOException {
         long offset = raf.getFilePointer();
         int size = theSize;
+        long rafSize = raf.length();
+
+        if (offset >= rafSize) {
+            DataPolice.report("Attempt to read beyond end. offset=" + offset + " size=" + size + " but raf.length=" + rafSize); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            return new byte[0];
+        }
 
         if (offset + size > raf.length()) {
-            DataPolice.report("Need to reduce size to avoid EOFException. offset=" + offset + " size=" + size + " but raf.length=" + raf.length()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            DataPolice.report("Need to reduce size to avoid EOFException. offset=" + offset + " size=" + size + " but raf.length=" + rafSize); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             size = (int) (raf.length() - offset);
         }
 
@@ -321,8 +327,7 @@ public final class SwordUtil {
      * @return a string that is UTF-8 internally
      */
     public static String decode(String key, byte[] data, int offset, int length, String charset) {
-        if ("WINDOWS-1252".equals(charset)) //$NON-NLS-1$
-        {
+        if ("WINDOWS-1252".equals(charset)) { //$NON-NLS-1$
             clean1252(key, data, length);
         }
         String txt = ""; //$NON-NLS-1$

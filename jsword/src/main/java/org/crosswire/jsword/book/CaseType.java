@@ -54,18 +54,15 @@ public abstract class CaseType implements Serializable {
             }
 
             // So there is a "-", however first some exceptions
-            if ("maher-shalal-hash-baz".equalsIgnoreCase(word)) //$NON-NLS-1$
-            {
+            if ("maher-shalal-hash-baz".equalsIgnoreCase(word)) { //$NON-NLS-1$
                 return "Maher-Shalal-Hash-Baz"; //$NON-NLS-1$
             }
 
-            if ("no-one".equalsIgnoreCase(word)) //$NON-NLS-1$
-            {
+            if ("no-one".equalsIgnoreCase(word)) { //$NON-NLS-1$
                 return "No-one"; //$NON-NLS-1$
             }
 
-            if (word.substring(0, 4).equalsIgnoreCase("god-")) //$NON-NLS-1$
-            {
+            if (word.substring(0, 4).equalsIgnoreCase("god-")) { //$NON-NLS-1$
                 return toSentenceCase(word);
             }
 

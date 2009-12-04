@@ -81,9 +81,8 @@ public final class SentenceUtil {
             if (nextSpace == -1 && nextDDash == -1) {
                 temp = sentence.substring(pos);
                 alive = false;
-            }
-            // Space is next if it is not -1 and it is less than ddash
-            else if ((nextSpace != -1 && nextSpace < nextDDash) || (nextDDash == -1)) {
+            } else if ((nextSpace != -1 && nextSpace < nextDDash) || (nextDDash == -1)) {
+                // Space is next if it is not -1 and it is less than ddash
                 // The next separator is a space
                 temp = sentence.substring(pos, nextSpace) + ' ';
                 pos = nextSpace + 1;
@@ -93,8 +92,7 @@ public final class SentenceUtil {
                 pos = nextDDash + 2;
             }
 
-            if (temp != null && !temp.trim().equals("")) //$NON-NLS-1$
-            {
+            if (temp != null && !temp.trim().equals("")) { //$NON-NLS-1$
                 tokens.add(temp);
             }
         }

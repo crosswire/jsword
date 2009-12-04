@@ -100,7 +100,7 @@ public class ScripRefTag extends AbstractTag {
                 ele.setAttribute(OSISUtil.OSIS_ATTR_REF, osisname);
             }
         } catch (NoSuchKeyException ex) {
-            DataPolice.report("scripRef ahs no passage attribute, unable to guess: (" + refstr + ") due to " + ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+            DataPolice.report("scripRef has no passage attribute, unable to guess: (" + refstr + ") due to " + ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 

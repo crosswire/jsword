@@ -75,7 +75,8 @@ public final class ReflectionUtil {
      * @throws InstantiationException
      */
     public static Object construct(String className, Object[] params) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException,
-            InvocationTargetException, InstantiationException {
+            InvocationTargetException, InstantiationException
+    {
         Class[] paramTypes = describeParameters(params);
         Class clazz = ClassUtil.forName(className);
         final Constructor c = clazz.getConstructor(paramTypes);
@@ -99,7 +100,8 @@ public final class ReflectionUtil {
      * @throws InstantiationException
      */
     public static Object construct(String className, Object[] params, Class[] paramTypes) throws ClassNotFoundException, NoSuchMethodException,
-            IllegalAccessException, InvocationTargetException, InstantiationException {
+            IllegalAccessException, InvocationTargetException, InstantiationException
+    {
         Class[] calledTypes = paramTypes;
         if (calledTypes == null) {
             calledTypes = describeParameters(params);
@@ -120,7 +122,8 @@ public final class ReflectionUtil {
      *            For example new Object[] { ...}
      */
     public static Object invoke(Object base, String methodName, Object[] params) throws NoSuchMethodException, IllegalAccessException,
-            InvocationTargetException {
+            InvocationTargetException
+    {
         Class clazz = base.getClass();
         return invoke(clazz, base, methodName, params);
     }
@@ -135,7 +138,8 @@ public final class ReflectionUtil {
      *            For example new Object[] { ...}
      */
     public static Object invoke(String call, Object[] params) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException,
-            InvocationTargetException {
+            InvocationTargetException
+    {
         // Split the call into class name and method name
         int lastDot = call.lastIndexOf('.');
         String className = call.substring(0, lastDot);
@@ -165,7 +169,8 @@ public final class ReflectionUtil {
      * @throws InvocationTargetException
      */
     public static Object invoke(Class clazz, Object obj, String methodName, Object[] params) throws NoSuchMethodException, IllegalAccessException,
-            InvocationTargetException {
+            InvocationTargetException
+    {
         return invoke(clazz, obj, methodName, params, null);
     }
 
@@ -191,7 +196,8 @@ public final class ReflectionUtil {
      * @throws InvocationTargetException
      */
     public static Object invoke(Class clazz, Object obj, String methodName, Object[] params, Class[] paramTypes) throws NoSuchMethodException,
-            IllegalAccessException, InvocationTargetException {
+            IllegalAccessException, InvocationTargetException
+    {
         Class[] calledTypes = paramTypes;
         if (calledTypes == null) {
             calledTypes = describeParameters(params);

@@ -34,6 +34,7 @@ import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.TreeKey;
@@ -125,6 +126,7 @@ public class GenBookBackend extends AbstractBackend {
         checkActive();
 
         try {
+            DataPolice.setKey(key);
             TreeNode node = find(key);
             byte[] userData = node.getUserData();
 
@@ -132,6 +134,8 @@ public class GenBookBackend extends AbstractBackend {
             return userData.length == 8;
         } catch (IOException e) {
             return false;
+        } finally {
+            DataPolice.setKey(null);
         }
     }
 
@@ -147,6 +151,7 @@ public class GenBookBackend extends AbstractBackend {
         checkActive();
 
         try {
+            DataPolice.setKey(key);
             TreeNode node = find(key);
             byte[] userData = node.getUserData();
 
@@ -164,6 +169,8 @@ public class GenBookBackend extends AbstractBackend {
             throw new BookException(UserMsg.READ_FAIL, e, new Object[] {
                 key.getName()
             });
+        } finally {
+            DataPolice.setKey(null);
         }
     }
 

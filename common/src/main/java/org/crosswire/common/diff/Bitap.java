@@ -133,11 +133,9 @@ public class Bitap implements Locator {
             for (int j = finish - 1; j >= start; j--) {
                 Character curChar = new Character(text.charAt(j));
                 int mask = alphabet.containsKey(curChar) ? ((Integer) alphabet.get(curChar)).intValue() : 0;
-                if (d == 0) // First pass: exact match.
-                {
+                if (d == 0) { // First pass: exact match.
                     rd[j] = ((rd[j + 1] << 1) | 1) & mask;
-                } else // Subsequent passes: fuzzy match.
-                {
+                } else { // Subsequent passes: fuzzy match.
                     rd[j] = ((rd[j + 1] << 1) | 1) & mask | ((lastrd[j + 1] << 1) | 1) | ((lastrd[j] << 1) | 1) | lastrd[j + 1];
                 }
 

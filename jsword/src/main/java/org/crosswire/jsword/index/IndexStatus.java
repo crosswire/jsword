@@ -53,10 +53,15 @@ public final class IndexStatus implements Serializable {
     public static final IndexStatus CREATING = new IndexStatus("Creating"); //$NON-NLS-1$
 
     /**
+     * An index is no longer valid and needs to be discarded.
+     */
+    public static final IndexStatus INVALID = new IndexStatus("Invalid"); //$NON-NLS-1$
+
+    /**
      * All the known values
      */
     private static final IndexStatus[] VALUES = {
-            DONE, UNDONE, SCHEDULED, CREATING,
+            DONE, UNDONE, SCHEDULED, CREATING, INVALID
     };
 
     /**

@@ -112,8 +112,7 @@ public class GetOptions {
 
             // If we are at the end of all options, '--', we need to skip this
             // and copy what follows to the end
-            if ("--".equals(nextArg)) //$NON-NLS-1$
-            {
+            if ("--".equals(nextArg)) { //$NON-NLS-1$
                 for (int j = i + 1; j < nargs; j++) {
                     nonOptionArgs.add(args[j]);
                 }

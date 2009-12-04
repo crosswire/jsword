@@ -78,8 +78,7 @@ public class DataEntry {
 
             // for some weird reason plain text dictionaries
             // all get \ added to the ends of the index entries.
-            if (key.endsWith("\\")) //$NON-NLS-1$
-            {
+            if (key.endsWith("\\")) { //$NON-NLS-1$
                 key = key.substring(0, key.length() - 1);
             }
         }

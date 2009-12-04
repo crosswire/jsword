@@ -272,8 +272,7 @@ public class BookInstaller {
         BookInstaller installer = new BookInstaller();
 
         String operation = args[0];
-        if (operation.equalsIgnoreCase("uninstall")) //$NON-NLS-1$
-        {
+        if (operation.equalsIgnoreCase("uninstall")) { //$NON-NLS-1$
             if (args.length == 2) {
                 Book b = Books.installed().getBook(args[1]);
                 if (b == null) {
@@ -288,16 +287,14 @@ public class BookInstaller {
             } else {
                 usage();
             }
-        } else if (operation.equalsIgnoreCase("sources")) //$NON-NLS-1$
-        {
+        } else if (operation.equalsIgnoreCase("sources")) { //$NON-NLS-1$
             // Get all the installers one after the other
             Map installers = installer.getInstallers();
             Iterator iter = installers.keySet().iterator();
             while (iter.hasNext()) {
                 System.out.println(iter.next());
             }
-        } else if (operation.equalsIgnoreCase("list")) //$NON-NLS-1$
-        {
+        } else if (operation.equalsIgnoreCase("list")) { //$NON-NLS-1$
             if (args.length == 1) {
                 Iterator iter = BookInstaller.getInstalledBooks().iterator();
                 while (iter.hasNext()) {
@@ -313,8 +310,7 @@ public class BookInstaller {
             } else {
                 usage();
             }
-        } else if (operation.equalsIgnoreCase("reload")) //$NON-NLS-1$
-        {
+        } else if (operation.equalsIgnoreCase("reload")) { //$NON-NLS-1$
             if (args.length == 2) {
                 try {
                     installer.reloadBookList(args[1]);
@@ -324,8 +320,7 @@ public class BookInstaller {
             } else {
                 usage();
             }
-        } else if (operation.equalsIgnoreCase("install")) //$NON-NLS-1$
-        {
+        } else if (operation.equalsIgnoreCase("install")) { //$NON-NLS-1$
             if (args.length == 3) {
                 Book b = installer.getBook(args[1], args[2]);
                 if (b == null) {

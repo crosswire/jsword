@@ -82,7 +82,8 @@ public class StrongsAnalysis {
         BookData data = null;
         Element osis = null;
         StringBuffer buffer = new StringBuffer();
-        for (Iterator it = wholeBible.iterator(); it.hasNext();) {
+        Iterator it = wholeBible.iterator();
+        while (it.hasNext()) {
             subkey = (Key) it.next();
             if (subkey.canHaveChildren()) {
                 analyze(sms, book, errors, subkey);
