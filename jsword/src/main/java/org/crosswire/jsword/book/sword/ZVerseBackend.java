@@ -364,6 +364,20 @@ public class ZVerseBackend extends AbstractBackend {
         }
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#setAliasKey(org.crosswire.jsword.passage.Key, org.crosswire.jsword.passage.Key)
+     */
+    public void setAliasKey(Key alias, Key source) throws IOException {
+        throw new UnsupportedOperationException();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#setRawText(org.crosswire.jsword.passage.Key, java.lang.String)
+     */
+    public void setRawText(Key key, String text) throws BookException, IOException {
+        throw new UnsupportedOperationException();
+    }
+
     /**
      * Helper method so we can quickly activate ourselves on access
      */

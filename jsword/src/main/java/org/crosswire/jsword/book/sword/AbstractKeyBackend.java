@@ -21,9 +21,11 @@
  */
 package org.crosswire.jsword.book.sword;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.RestrictionType;
 
@@ -154,6 +156,20 @@ public abstract class AbstractKeyBackend extends AbstractBackend implements Key 
      * @see org.crosswire.jsword.passage.Key#clear()
      */
     public void clear() {
+        throw new UnsupportedOperationException();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#setAliasKey(org.crosswire.jsword.passage.Key, org.crosswire.jsword.passage.Key)
+     */
+    public void setAliasKey(Key alias, Key source) throws IOException {
+        throw new UnsupportedOperationException();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#setRawText(org.crosswire.jsword.passage.Key, java.lang.String)
+     */
+    public void setRawText(Key key, String text) throws BookException, IOException {
         throw new UnsupportedOperationException();
     }
 

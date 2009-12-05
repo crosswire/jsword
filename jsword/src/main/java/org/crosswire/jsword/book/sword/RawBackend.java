@@ -161,13 +161,11 @@ public class RawBackend extends AbstractBackend {
         return idxFile[SwordConstants.TESTAMENT_OLD].canRead() || idxFile[SwordConstants.TESTAMENT_NEW].canRead();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.sword.AbstractBackend#create()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#setAliasKey(org.crosswire.jsword.passage.Key, org.crosswire.jsword.passage.Key)
      */
-    public void create() throws IOException, BookException {
-        super.create();
+    public void setAliasKey(Key alias, Key source) throws IOException {
+        throw new UnsupportedOperationException();
     }
 
     /*

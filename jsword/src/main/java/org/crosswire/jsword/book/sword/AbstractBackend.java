@@ -143,8 +143,7 @@ public abstract class AbstractBackend implements Activatable {
      * @throws IOException
      *             If the module data path could not be created.
      */
-    public void setRawText(Key key, String text) throws BookException, IOException {
-    }
+    public abstract void setRawText(Key key, String text) throws BookException, IOException;
 
     /**
      * Sets alias for a comment on a verse range
@@ -153,8 +152,7 @@ public abstract class AbstractBackend implements Activatable {
      * @param source Source Key
      * @throws IOException Exception when anything goes wrong on writing the alias
      */
-    public void setAliasKey(Key alias, Key source) throws IOException {
-    }
+    public abstract void setAliasKey(Key alias, Key source) throws IOException;
 
     /**
      * Create the directory to hold the Book if it does not exist.
