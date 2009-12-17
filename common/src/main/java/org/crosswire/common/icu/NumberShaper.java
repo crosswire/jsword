@@ -182,113 +182,88 @@ public class NumberShaper implements Serializable {
 
         // offset > 0 when we are going from 0-9
         // FIXME(DMS): C:V should be shown as V:C in Farsi.
-        // int srcLen = text.length;
-        // int destLen = srcLen;
-        // if (offset > 0 && srcLen > 3)
-        // {
-        // // count the number of ':' flanked by '0' to '9'
-        // // each one of these is going
-        // // to be bracketed with RLO and PDF.
-        // for (int i = 1; i < srcLen - 1; i++)
-        // {
-        // char prevChar = text[i - 1];
-        // char curChar = text[i];
-        // char nextChar = text[i + 1];
-        // if (curChar == ':' && prevChar >= '0' && prevChar <= '9' && nextChar
-        // >= '0' && nextChar <= '9')
-        // {
-        // destLen += 2;
-        // }
-        // }
-        //
-        // // Did we actually see a ':'
-        // if (destLen != srcLen)
-        // {
-        // transformed[0] = true;
-        // int sPos = 0;
-        // int dPos = 0;
-        // int stop = srcLen - 1; // ensure look-ahead
-        // char[] dest = new char[destLen];
-        // dest[dPos++] = text[sPos++];
-        // while (sPos < stop)
-        // {
-        // char prevChar = text[sPos - 1];
-        // char nextChar = text[sPos + 1];
-        // char curChar = text[sPos++];
-        // if (curChar == ':' && prevChar >= '0' && prevChar <= '9' && nextChar
-        // >= '0' && nextChar <= '9')
-        // {
-        // dest[dPos++] = '\u202E'; // RLO
-        // dest[dPos++] = curChar;
-        // dest[dPos++] = '\u202C'; // PDF
-        // }
-        // else if (curChar >= zero && curChar <= nine)
-        // {
-        // dest[dPos++] = (char)(curChar + offset);
-        // }
-        // else
-        // {
-        // dest[dPos++] = curChar;
-        // }
-        // }
-        // // copy the rest
-        // while (sPos < srcLen)
-        // {
-        // dest[dPos++] = text[sPos++];
-        // }
-        // return dest;
-        // }
-        // }
-        // // Are we going to '0' - '9' with embedded, specially marked ':'
-        // else if (offset < 0 && srcLen > 3)
-        // {
-        // for (int sPos = 0; sPos < srcLen - 2; sPos++)
-        // {
-        // if (text[sPos] == '\u202E' && text[sPos + 1] == ':' && text[sPos + 2]
-        // == '\u202C')
-        // {
-        // destLen -= 2;
-        // sPos += 2;
-        // }
-        // }
-        //
-        // // Did we actually see a '\u202E:\u202C'
-        // if (destLen != srcLen)
-        // {
-        // transformed[0] = true;
-        // char[] dest = new char[destLen];
-        // int sPos = 0;
-        // int dPos = 0;
-        // int stop = srcLen - 2; // ensure look-ahead
-        // while (sPos < stop)
-        // {
-        // char curChar = text[sPos++];
-        // if (curChar == '\u202E' && text[sPos] == ':' && text[sPos + 1] ==
-        // '\u202C')
-        // {
-        // dest[dPos++] = ':';
-        // sPos += 2; // skip the whole pattern
-        // }
-        // else if (curChar >= zero && curChar <= nine)
-        // {
-        // dest[dPos++] = (char)(curChar + offset);
-        // }
-        // else
-        // {
-        // dest[dPos++] = curChar;
-        // }
-        // }
-        //
-        // // copy the rest
-        // while (sPos < srcLen)
-        // {
-        // dest[dPos++] = text[sPos++];
-        // }
-        //                
-        // return dest;
-        // }
-        // }
+/*
+        int srcLen = text.length;
+        int destLen = srcLen;
+        if (offset > 0 && srcLen > 3) {
+            // count the number of ':' flanked by '0' to '9'
+            // each one of these is going
+            // to be bracketed with RLO and PDF.
+            for (int i = 1; i < srcLen - 1; i++) {
+                char prevChar = text[i - 1];
+                char curChar = text[i];
+                char nextChar = text[i + 1];
+                if (curChar == ':' && prevChar >= '0' && prevChar <= '9' && nextChar >= '0' && nextChar <= '9') {
+                    destLen += 2;
+                }
+            }
 
+            // Did we actually see a ':'
+            if (destLen != srcLen) {
+                transformed[0] = true;
+                int sPos = 0;
+                int dPos = 0;
+                int stop = srcLen - 1; // ensure look-ahead
+                char[] dest = new char[destLen];
+                dest[dPos++] = text[sPos++];
+                while (sPos < stop) {
+                    char prevChar = text[sPos - 1];
+                    char nextChar = text[sPos + 1];
+                    char curChar = text[sPos++];
+                    if (curChar == ':' && prevChar >= '0' && prevChar <= '9' && nextChar >= '0' && nextChar <= '9') {
+                        dest[dPos++] = '\u202E'; // RLO
+                        dest[dPos++] = curChar;
+                        dest[dPos++] = '\u202C'; // PDF
+                    } else if (curChar >= zero && curChar <= nine) {
+                        dest[dPos++] = (char) (curChar + offset);
+                    } else {
+                        dest[dPos++] = curChar;
+                    }
+                }
+                // copy the rest
+                while (sPos < srcLen) {
+                    dest[dPos++] = text[sPos++];
+                }
+                return dest;
+            }
+        }
+        // Are we going to '0' - '9' with embedded, specially marked ':'
+        else if (offset < 0 && srcLen > 3) {
+            for (int sPos = 0; sPos < srcLen - 2; sPos++) {
+                if (text[sPos] == '\u202E' && text[sPos + 1] == ':' && text[sPos + 2] == '\u202C') {
+                    destLen -= 2;
+                    sPos += 2;
+                }
+            }
+
+            // Did we actually see a '\u202E:\u202C'
+            if (destLen != srcLen) {
+                transformed[0] = true;
+                char[] dest = new char[destLen];
+                int sPos = 0;
+                int dPos = 0;
+                int stop = srcLen - 2; // ensure look-ahead
+                while (sPos < stop) {
+                    char curChar = text[sPos++];
+                    if (curChar == '\u202E' && text[sPos] == ':' && text[sPos + 1] == '\u202C') {
+                        dest[dPos++] = ':';
+                        sPos += 2; // skip the whole pattern
+                    } else if (curChar >= zero && curChar <= nine) {
+                        dest[dPos++] = (char) (curChar + offset);
+                    } else {
+                        dest[dPos++] = curChar;
+                    }
+                }
+
+                // copy the rest
+                while (sPos < srcLen) {
+                    dest[dPos++] = text[sPos++];
+                }
+
+                return dest;
+            }
+        }
+*/
         int len = src.length;
         for (int i = 0; i < len; i++) {
             char c = text[i];
