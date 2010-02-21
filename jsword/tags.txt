@@ -9,6 +9,8 @@ DEAD: The class or method is not used. Or it is only used by something that is n
 SPEEDUP: When we need to optimize - there is something that we could do here
 I18N: Take note of this when we complete internationalization
 JDK14: Things to change when we move to JDK1.4
+JDK15: Things to change when we move to JDK1.5
+JDK6: Things to change when we move to JDK6
 NOWARN: code inserted to stop eclipse (or something else) warning
 PARANOIA: code that shouldn't need to be there and perhaps could be removed to make things faster
 BORROWED: This code is copied from somewhere else, maybe we need to keep the 2 in sync

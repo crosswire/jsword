@@ -84,7 +84,7 @@ public class ReadEverything {
             // skip the root of a TreeKey as it often is not addressable.
             if (first) {
                 first = false;
-                if (set instanceof TreeKey && key.getName().isEmpty()) {
+                if (set instanceof TreeKey && key.getName().length() == 0) {
                     continue;
                 }
             }

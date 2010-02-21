@@ -72,7 +72,11 @@ public class VerseCollector extends Collector {
         } catch (NoSuchVerseException e) {
             // Wrap the NoSuchVerseException in an IOException so it can be
             // gotten.
-            throw new IOException(e);
+            IOException ioe = new IOException();
+            ioe.initCause(e);
+            throw ioe;
+            // JDK6: Change to:
+            // throw new IOException(e);
         }
     }
 
