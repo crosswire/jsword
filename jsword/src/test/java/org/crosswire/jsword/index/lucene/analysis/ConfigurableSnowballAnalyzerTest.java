@@ -64,7 +64,7 @@ public class ConfigurableSnowballAnalyzerTest extends TestCase {
 
         myAnalyzer.pickStemmer("French"); //$NON-NLS-1$
 
-        String testInput = " tant aimŽ le monde qu'il a donnŽ son"; //$NON-NLS-1$
+        String testInput = " tant aimÃ© le monde qu'il a donnÃ© son"; //$NON-NLS-1$
 
         Query query = parser.parse(testInput);
         assertTrue(query.toString().indexOf(field + ":aim ") > -1); //$NON-NLS-1$
@@ -76,7 +76,7 @@ public class ConfigurableSnowballAnalyzerTest extends TestCase {
 
         myAnalyzer.pickStemmer("French"); //$NON-NLS-1$
         myAnalyzer.setDoStopWords(true);
-        String testInput = " tant aimï¿½ le monde qu 'il a donnï¿½ son"; //$NON-NLS-1$
+        String testInput = " tant aimÃ© le monde qu 'il a donnÃ© son"; //$NON-NLS-1$
 
         Query query = parser.parse(testInput);
         assertTrue(query.toString().indexOf(field + ":le") == -1); //$NON-NLS-1$
@@ -89,12 +89,12 @@ public class ConfigurableSnowballAnalyzerTest extends TestCase {
         myAnalyzer.pickStemmer("French"); //$NON-NLS-1$
         myAnalyzer.setDoStemming(false);
 
-        String testInput = " tant aimŽ le monde qu'il a donnŽ son"; //$NON-NLS-1$
+        String testInput = " tant aimÃ© le monde qu'il a donnÃ© son"; //$NON-NLS-1$
 
         Query query = parser.parse(testInput);
         // System.out.println(query.toString());
-        assertTrue(query.toString().indexOf(field + ":aimŽ ") > -1); //$NON-NLS-1$
-        assertTrue(query.toString().indexOf(field + ":donnŽ ") > -1); //$NON-NLS-1$
+        assertTrue(query.toString().indexOf(field + ":aimÃ© ") > -1); //$NON-NLS-1$
+        assertTrue(query.toString().indexOf(field + ":donnÃ© ") > -1); //$NON-NLS-1$
     }
 
     public void testStemmerConfig() throws ParseException {
@@ -102,11 +102,11 @@ public class ConfigurableSnowballAnalyzerTest extends TestCase {
         myAnalyzer.pickStemmer("French"); //$NON-NLS-1$
         myAnalyzer.setDoStemming(false);
 
-        String testInput = " tant aimŽ le monde qu'il a donnŽ son"; //$NON-NLS-1$
+        String testInput = " tant aimÃ© le monde qu'il a donnÃ© son"; //$NON-NLS-1$
 
         Query query = parser.parse(testInput);
-        assertTrue(query.toString().indexOf(field + ":aimŽ ") > -1); //$NON-NLS-1$
-        assertTrue(query.toString().indexOf(field + ":donnŽ ") > -1); //$NON-NLS-1$
+        assertTrue(query.toString().indexOf(field + ":aimÃ© ") > -1); //$NON-NLS-1$
+        assertTrue(query.toString().indexOf(field + ":donnÃ© ") > -1); //$NON-NLS-1$
 
     }
 
@@ -114,7 +114,7 @@ public class ConfigurableSnowballAnalyzerTest extends TestCase {
 
         myAnalyzer.pickStemmer("German"); //$NON-NLS-1$
 
-        String testInput = "Denn also hat Gott die Welt geliebt, da§ er seinen eingeborenen Sohn gab, auf da§ jeder, der an ihn glaubt, nicht verloren gehe, sondern ewiges Leben habe"; //$NON-NLS-1$
+        String testInput = "Denn also hat Gott die Welt geliebt, daÃŸ er seinen eingeborenen Sohn gab, auf daÃŸ jeder, der an ihn glaubt, nicht verloren gehe, sondern ewiges Leben habe"; //$NON-NLS-1$
 
         Query query = parser.parse(testInput);
         assertTrue(query.toString().indexOf(field + ":denn ") > -1); //$NON-NLS-1$

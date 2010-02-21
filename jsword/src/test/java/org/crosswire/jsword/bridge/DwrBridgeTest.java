@@ -23,6 +23,7 @@ package org.crosswire.jsword.bridge;
 
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.NoSuchKeyException;
+import org.crosswire.jsword.versification.BibleInfo;
 
 import junit.framework.TestCase;
 
@@ -39,6 +40,7 @@ public class DwrBridgeTest extends TestCase {
     DwrBridge dwrBridge = new DwrBridge();
 
     protected void setUp() {
+        BibleInfo.setFullBookName(true);
     }
 
     public void testGetBooks() {
@@ -53,12 +55,10 @@ public class DwrBridgeTest extends TestCase {
         try {
             String verse = dwrBridge.getOSISString("KJV", "Gen 1:1", 0, 100); //$NON-NLS-1$ //$NON-NLS-2$
             assertEquals(
-                    verse,
-                    "<div><title type=\"x-gen\">Genesis 1:1</title><verse osisID=\"Gen.1.1\"><w lemma=\"strong:H07225\">In the beginning</w> <w lemma=\"strong:H0430\">God</w> <w lemma=\"strong:H0853 strong:H01254\" morph=\"strongMorph:TH8804\">created</w> <w lemma=\"strong:H08064\">the heaven</w> <w lemma=\"strong:H0853\">and</w> <w lemma=\"strong:H0776\">the earth</w>.</verse></div>"); //$NON-NLS-1$
+                    "<div><title type=\"x-gen\">Genesis 1:1</title><verse osisID=\"Gen.1.1\"><w lemma=\"strong:H07225\">In the beginning</w> <w lemma=\"strong:H0430\">God</w> <w lemma=\"strong:H0853 strong:H01254\" morph=\"strongMorph:TH8804\">created</w> <w lemma=\"strong:H08064\">the heaven</w> <w lemma=\"strong:H0853\">and</w> <w lemma=\"strong:H0776\">the earth</w>.</verse></div>", verse); //$NON-NLS-1$
             String hdef = dwrBridge.getOSISString("StrongsHebrew", "H07225", 0, 100); //$NON-NLS-1$ //$NON-NLS-2$
             assertEquals(
-                    hdef,
-                    "<div><title>07225</title>7225  re'shiyth  ray-sheeth'\r<lb></lb>\r<lb></lb> from the same as 7218; the first, in place, time, order or\r<lb></lb> rank (specifically, a firstfruit):--beginning, chief(-est),\r<lb></lb> first(-fruits, part, time), principal thing.\r<lb></lb> see HEBREW for 07218</div>"); //$NON-NLS-1$
+                    "<div><title>07225</title>7225  re'shiyth  ray-sheeth'\r<lb></lb>\r<lb></lb> from the same as 7218; the first, in place, time, order or\r<lb></lb> rank (specifically, a firstfruit):--beginning, chief(-est),\r<lb></lb> first(-fruits, part, time), principal thing.\r<lb></lb> see HEBREW for 07218</div>", hdef); //$NON-NLS-1$
         } catch (BookException e) {
             fail(e.getDetailedMessage());
         } catch (NoSuchKeyException e) {
