@@ -72,7 +72,7 @@ public abstract class AccuracyType implements Serializable {
      * The verse was specified as book, chapter and verse. For example, Gen 1:1,
      * Jude 3 (which only has one chapter)
      */
-    public static final AccuracyType BOOK_VERSE = new AccuracyType("BOOK_VERSE") //$NON-NLS-1$
+    public static final AccuracyType BOOK_VERSE = new AccuracyType("BOOK_VERSE")
     {
         /*
          * (non-Javadoc)
@@ -127,7 +127,7 @@ public abstract class AccuracyType implements Serializable {
      * The passage was specified to a book and chapter (no verse). For example,
      * Gen 1
      */
-    public static final AccuracyType BOOK_CHAPTER = new AccuracyType("BOOK_CHAPTER") //$NON-NLS-1$
+    public static final AccuracyType BOOK_CHAPTER = new AccuracyType("BOOK_CHAPTER")
     {
         /*
          * (non-Javadoc)
@@ -177,7 +177,7 @@ public abstract class AccuracyType implements Serializable {
      * The passage was specified to a book only (no chapter or verse). For
      * example, Gen
      */
-    public static final AccuracyType BOOK_ONLY = new AccuracyType("BOOK_ONLY") //$NON-NLS-1$
+    public static final AccuracyType BOOK_ONLY = new AccuracyType("BOOK_ONLY")
     {
         /*
          * (non-Javadoc)
@@ -226,7 +226,7 @@ public abstract class AccuracyType implements Serializable {
      * The passage was specified to a chapter and verse (no book). For example,
      * 1:1
      */
-    public static final AccuracyType CHAPTER_VERSE = new AccuracyType("CHAPTER_VERSE") //$NON-NLS-1$
+    public static final AccuracyType CHAPTER_VERSE = new AccuracyType("CHAPTER_VERSE")
     {
         /*
          * (non-Javadoc)
@@ -246,7 +246,8 @@ public abstract class AccuracyType implements Serializable {
          */
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
             if (verseRangeBasis == null) {
-                throw new NoSuchVerseException(UserMsg.ACCURACY_BOOK);
+                // TRANSLATOR: The user supplied a verse reference but did not give the book of the Bible.
+                throw new NoSuchVerseException(UserMsg.gettext("Book is missing"));
             }
             int book = verseRangeBasis.getEnd().getBook();
             int chapter = getChapter(book, parts[0]);
@@ -279,7 +280,7 @@ public abstract class AccuracyType implements Serializable {
     /**
      * There was only a chapter number
      */
-    public static final AccuracyType CHAPTER_ONLY = new AccuracyType("CHAPTER_ONLY") //$NON-NLS-1$
+    public static final AccuracyType CHAPTER_ONLY = new AccuracyType("CHAPTER_ONLY")
     {
         /*
          * (non-Javadoc)
@@ -299,7 +300,8 @@ public abstract class AccuracyType implements Serializable {
          */
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
             if (verseRangeBasis == null) {
-                throw new NoSuchVerseException(UserMsg.ACCURACY_BOOK);
+                // TRANSLATOR: The user supplied a verse reference but did not give the book of the Bible.
+                throw new NoSuchVerseException(UserMsg.gettext("Book is missing"));
             }
             int book = verseRangeBasis.getEnd().getBook();
             int chapter = getChapter(book, parts[0]);
@@ -330,7 +332,7 @@ public abstract class AccuracyType implements Serializable {
     /**
      * There was only a verse number
      */
-    public static final AccuracyType VERSE_ONLY = new AccuracyType("VERSE_ONLY") //$NON-NLS-1$
+    public static final AccuracyType VERSE_ONLY = new AccuracyType("VERSE_ONLY")
     {
         /*
          * (non-Javadoc)
@@ -350,7 +352,8 @@ public abstract class AccuracyType implements Serializable {
          */
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
             if (verseRangeBasis == null) {
-                throw new NoSuchVerseException(UserMsg.ACCURACY_BOOK_CHAPTER);
+                // TRANSLATOR: The user supplied a verse reference but did not give the book or chapter of the Bible.
+                throw new NoSuchVerseException(UserMsg.gettext("Book and chapter are missing"));
             }
             int book = verseRangeBasis.getEnd().getBook();
             int chapter = verseRangeBasis.getEnd().getChapter();
@@ -603,11 +606,12 @@ public abstract class AccuracyType implements Serializable {
     private static NoSuchVerseException buildVersePartsException(String original, String[] parts) {
         StringBuffer buffer = new StringBuffer(original);
         for (int i = 0; i < parts.length; i++) {
-            buffer.append(", ").append(parts[i]); //$NON-NLS-1$
+            buffer.append(", ").append(parts[i]);
         }
-        return new NoSuchVerseException(UserMsg.VERSE_PARTS, new Object[] {
+        // TRANSLATOR: The user specified a verse with too many separators. {0} is a placeholder for the allowable separators.
+        return new NoSuchVerseException(UserMsg.gettext("Too many parts to the Verse. (Parts are separated by any of {0})", new Object[] {
             buffer.toString()
-        });
+        }));
     }
 
     /**
@@ -639,9 +643,11 @@ public abstract class AccuracyType implements Serializable {
         try {
             return Integer.parseInt(new NumberShaper().unshape(text));
         } catch (NumberFormatException ex) {
-            throw new NoSuchVerseException(UserMsg.VERSE_PARSE, new Object[] {
+            // TRANSLATOR: The chapter or verse number is actually not a number, but something else.
+            // {0} is a placeholder for what the user supplied.
+            throw new NoSuchVerseException(UserMsg.gettext("Cannot understand {0} as a chapter or verse.", new Object[] {
                 text
-            });
+            }));
         }
     }
 
@@ -730,9 +736,10 @@ public abstract class AccuracyType implements Serializable {
                     // Letters always continue a previous token
                     if (charIsDigit) {
                         if (tokenCount >= args.length) {
-                            throw new NoSuchVerseException(UserMsg.VERSE_PARTS, new Object[] {
+                            // TRANSLATOR: The user specified a verse with too many separators. {0} is a placeholder for the allowable separators.
+                            throw new NoSuchVerseException(UserMsg.gettext("Too many parts to the Verse. (Parts are separated by any of {0})", new Object[] {
                                 input
-                            });
+                            }));
                         }
 
                         token = new String(normalized, startIndex, normalizedLength - startIndex);
@@ -752,9 +759,10 @@ public abstract class AccuracyType implements Serializable {
         }
 
         if (tokenCount >= args.length) {
-            throw new NoSuchVerseException(UserMsg.VERSE_PARTS, new Object[] {
+            // TRANSLATOR: The user specified a verse with too many separators. {0} is a placeholder for the allowable separators.
+            throw new NoSuchVerseException(UserMsg.gettext("Too many parts to the Verse. (Parts are separated by any of {0})", new Object[] {
                 input
-            });
+            }));
         }
 
         token = new String(normalized, startIndex, normalizedLength - startIndex);
@@ -827,7 +835,7 @@ public abstract class AccuracyType implements Serializable {
     /**
      * What characters can we use to separate parts to a verse
      */
-    public static final String VERSE_ALLOWED_DELIMS = " :."; //$NON-NLS-1$
+    public static final String VERSE_ALLOWED_DELIMS = " :.";
 
     /**
      * The name of the object
@@ -849,12 +857,12 @@ public abstract class AccuracyType implements Serializable {
     /**
      * Characters that are used to indicate end of verse/chapter, part 1
      */
-    public static final String VERSE_END_MARK1 = "$"; //$NON-NLS-1$
+    public static final String VERSE_END_MARK1 = "$";
 
     /**
      * Characters that are used to indicate end of verse/chapter, part 2
      */
-    public static final String VERSE_END_MARK2 = "ff"; //$NON-NLS-1$
+    public static final String VERSE_END_MARK2 = "ff";
 
     /**
      * Serialization ID

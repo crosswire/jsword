@@ -22,10 +22,8 @@
 package org.crosswire.jsword.versification;
 
 import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
-import org.crosswire.common.util.CWClassLoader;
+import org.crosswire.common.util.MsgBase;
 import org.crosswire.jsword.book.CaseType;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 
@@ -37,7 +35,7 @@ import org.crosswire.jsword.passage.NoSuchVerseException;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class SectionNames {
+public final class SectionNames extends MsgBase {
     /**
      * Create a SectionNames object
      */
@@ -217,29 +215,25 @@ public final class SectionNames {
      * upper and lower versions of them.
      */
     private void initialize() {
-        ResourceBundle resources = ResourceBundle.getBundle(SectionNames.class.getName(), Locale.getDefault(), CWClassLoader.instance(SectionNames.class));
-
         sections = new String[SECTIONS_IN_BIBLE];
-
-        for (int i = 0; i < SECTIONS_IN_BIBLE; i++) {
-            String section = getString(resources, SECTION_KEY + (i + 1));
-            sections[i] = section;
-        }
+        
+        // TRANSLATOR: Pentateuch is the first 5 books of the Bible.
+        sections[0] = UserMsg.gettext("Pentateuch");
+        // TRANSLATOR: History are the books of the Old Testament that give the history of Israel
+        sections[1] = UserMsg.gettext("History");
+        // TRANSLATOR: The Bible poetry books
+        sections[2] = UserMsg.gettext("Poetry");
+        // TRANSLATOR: The Bible's major prophets
+        sections[3] = UserMsg.gettext("Major Prophets");
+        // TRANSLATOR: The Bible's minor prophets
+        sections[4] = UserMsg.gettext("Minor Prophets");
+        // TRANSLATOR: The 4 Gospels and Acts in the New Testament
+        sections[5] = UserMsg.gettext("Gospels And Acts");
+        // TRANSLATOR: The letters of the New Testament
+        sections[6] = UserMsg.gettext("Letters");
+        // TRANSLATOR: The book of Revelation
+        sections[7] = UserMsg.gettext("Revelation");
     }
-
-    /*
-     * Helper to make the code more readable.
-     */
-    private String getString(ResourceBundle resources, String key) {
-        try {
-            return resources.getString(key);
-        } catch (MissingResourceException e) {
-            assert false;
-        }
-        return null;
-    }
-
-    private static final String SECTION_KEY = "Sections."; //$NON-NLS-1$
 
     /**
      * Handy section finder. There is a bit of moderately bad programming here
@@ -263,5 +257,4 @@ public final class SectionNames {
 
     /** Constant for the number of sections in the Bible */
     private static final int SECTIONS_IN_BIBLE = 8;
-
 }

@@ -63,7 +63,7 @@ public class BooksTest extends TestCase {
         for (Iterator it = lbmds.iterator(); it.hasNext();) {
             bibles[i] = (Book) it.next();
             bmds[i] = bibles[i].getBookMetaData();
-            gen11[i] = bibles[i].getKey("Gen 1:1"); //$NON-NLS-1$
+            gen11[i] = bibles[i].getKey("Gen 1:1");
             i++;
         }
     }
@@ -114,7 +114,7 @@ public class BooksTest extends TestCase {
     public void testGetDataKey() throws Exception {
         for (int i = 0; i < bibles.length; i++) {
             Book bible = bibles[i];
-            Key key = bible.getKey("Gen 1:1"); //$NON-NLS-1$
+            Key key = bible.getKey("Gen 1:1");
             BookData data = new BookData(bible, key);
             assertNotNull(data);
         }
@@ -134,14 +134,14 @@ public class BooksTest extends TestCase {
      * something vaguely sensible // I assume that find() just calls
      * findPassage(), where the real tests are for (int i = 0; i <
      * bibles.length; i++) { Book bible = bibles[i]; Key key = bible.find(new
-     * Search("aaron", false)); //$NON-NLS-1$ assertNotNull("bible=" +
-     * bible.getFullName(), key); //$NON-NLS-1$ } }
+     * Search("aaron", false)); assertNotNull("bible=" +
+     * bible.getFullName(), key); } }
      * 
      * FIXME: These are only valid if all bibles are English public void
      * testFindPassage() throws Exception { for (int i = 0; i < bibles.length;
      * i++) { Book ver = bibles[i];
      * 
-     * Key key = ver.find(new Search("aaron", false)); //$NON-NLS-1$
+     * Key key = ver.find(new Search("aaron", false));
      * assertTrue(key != null); } }
      * 
      * FIXME: These are only valid if all bibles are English public void
@@ -151,36 +151,36 @@ public class BooksTest extends TestCase {
      * ignorebibles.length; j++) { // if (ver instanceof fullbibles[j]) if
      * (ignorebibles[j].isAssignableFrom(ver.getClass())) skip = true; } if
      * (skip) continue; log.debug("thorough testing bible: " +
-     * ver.getFullName()); //$NON-NLS-1$
+     * ver.getFullName());
      * 
-     * Key key = ver.find(new Search("aaron", false)); //$NON-NLS-1$ Passage ref
+     * Key key = ver.find(new Search("aaron", false)); Passage ref
      * = KeyUtil.getPassage(key); assertTrue(ref.countVerses() > 10); key =
-     * ver.find(new Search("jerusalem", false)); //$NON-NLS-1$ ref =
+     * ver.find(new Search("jerusalem", false)); ref =
      * KeyUtil.getPassage(key); assertTrue(ref.countVerses() > 10); key =
-     * ver.find(new Search("god", false)); //$NON-NLS-1$ ref =
+     * ver.find(new Search("god", false)); ref =
      * KeyUtil.getPassage(key); assertTrue(ref.countVerses() > 10); key =
-     * ver.find(new Search("GOD", false)); //$NON-NLS-1$ ref =
+     * ver.find(new Search("GOD", false)); ref =
      * KeyUtil.getPassage(key); assertTrue(ref.countVerses() > 10); key =
-     * ver.find(new Search("brother's", false)); //$NON-NLS-1$ ref =
+     * ver.find(new Search("brother's", false)); ref =
      * KeyUtil.getPassage(key); assertTrue(ref.countVerses() > 2); key =
-     * ver.find(new Search("BROTHER'S", false)); //$NON-NLS-1$ ref =
+     * ver.find(new Search("BROTHER'S", false)); ref =
      * KeyUtil.getPassage(key); assertTrue(ref.countVerses() > 2);
      * 
-     * key = ver.find(new Search("maher-shalal-hash-baz", false)); //$NON-NLS-1$
+     * key = ver.find(new Search("maher-shalal-hash-baz", false));
      * ref = KeyUtil.getPassage(key); if (ref.isEmpty()) { key = ver.find(new
-     * Search("mahershalalhashbaz", false)); //$NON-NLS-1$ ref =
+     * Search("mahershalalhashbaz", false)); ref =
      * KeyUtil.getPassage(key); } if (ref.isEmpty()) { key = ver.find(new
-     * Search("maher*", false)); //$NON-NLS-1$ ref = KeyUtil.getPassage(key); }
+     * Search("maher*", false)); ref = KeyUtil.getPassage(key); }
      * assertEquals(ref.countVerses(), 2); assertEquals(ref.getVerseAt(0), new
-     * Verse("Isa 8:1")); //$NON-NLS-1$ assertEquals(ref.getVerseAt(1), new
-     * Verse("Isa 8:3")); //$NON-NLS-1$
+     * Verse("Isa 8:1")); assertEquals(ref.getVerseAt(1), new
+     * Verse("Isa 8:3"));
      * 
-     * key = ver.find(new Search("MAHER-SHALAL-HASH-BAZ", false)); //$NON-NLS-1$
+     * key = ver.find(new Search("MAHER-SHALAL-HASH-BAZ", false));
      * ref = KeyUtil.getPassage(key); if (ref.isEmpty()) { key = ver.find(new
-     * Search("MAHERSHALALHASHBAZ", false)); //$NON-NLS-1$ ref =
+     * Search("MAHERSHALALHASHBAZ", false)); ref =
      * KeyUtil.getPassage(key); } assertEquals(ref.countVerses(), 2);
-     * assertEquals(ref.getVerseAt(0), new Verse("Isa 8:1")); //$NON-NLS-1$
-     * assertEquals(ref.getVerseAt(1), new Verse("Isa 8:3")); //$NON-NLS-1$ } }
+     * assertEquals(ref.getVerseAt(0), new Verse("Isa 8:1"));
+     * assertEquals(ref.getVerseAt(1), new Verse("Isa 8:3")); } }
      */
     /*
      * public void testGetStartsWith() throws Exception { for (int i=0;

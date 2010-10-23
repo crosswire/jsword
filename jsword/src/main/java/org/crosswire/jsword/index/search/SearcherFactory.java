@@ -58,19 +58,19 @@ public final class SearcherFactory {
 
             return parser;
         } catch (IOException e) {
-            log.error("createSearcher failed", e); //$NON-NLS-1$
+            log.error("createSearcher failed", e);
             throw new InstantiationException();
         } catch (BookException e) {
-            log.error("createSearcher failed", e); //$NON-NLS-1$
+            log.error("createSearcher failed", e);
             throw new InstantiationException();
         } catch (ClassCastException e) {
-            log.error("createSearcher failed", e); //$NON-NLS-1$
+            log.error("createSearcher failed", e);
             throw new InstantiationException();
         } catch (ClassNotFoundException e) {
-            log.error("createSearcher failed", e); //$NON-NLS-1$
+            log.error("createSearcher failed", e);
             throw new InstantiationException();
         } catch (IllegalAccessException e) {
-            log.error("createSearcher failed", e); //$NON-NLS-1$
+            log.error("createSearcher failed", e);
             throw new InstantiationException();
         }
     }

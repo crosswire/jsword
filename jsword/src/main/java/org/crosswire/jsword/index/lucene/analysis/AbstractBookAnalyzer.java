@@ -98,7 +98,7 @@ public abstract class AbstractBookAnalyzer extends Analyzer {
         InputStreamReader reader = null;
         try {
             stream = ResourceUtil.getResourceAsStream(clazz, resourceName);
-            reader = new InputStreamReader(stream, "UTF-8"); // //$NON-NLS-1$
+            reader = new InputStreamReader(stream, "UTF-8"); //
             stopSet = WordlistLoader.getWordSet(reader, commentChar);
         } finally {
             if (reader != null) {

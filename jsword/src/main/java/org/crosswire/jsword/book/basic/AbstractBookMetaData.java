@@ -281,7 +281,7 @@ public abstract class AbstractBookMetaData implements BookMetaData {
      * @see org.crosswire.jsword.book.BookMetaData#toOSIS()
      */
     public Document toOSIS() {
-        throw new UnsupportedOperationException("If you want to use this, implement it."); //$NON-NLS-1$
+        throw new UnsupportedOperationException("If you want to use this, implement it.");
     }
 
     /**

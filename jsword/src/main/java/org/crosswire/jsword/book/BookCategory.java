@@ -23,8 +23,6 @@ package org.crosswire.jsword.book;
 
 import java.io.Serializable;
 
-import org.crosswire.common.util.MsgBase;
-
 /**
  * An Enumeration of the possible types of Book.
  *
@@ -34,68 +32,46 @@ import org.crosswire.common.util.MsgBase;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public final class BookCategory implements Serializable, Comparable {
-    /**
-     * Books that are Bibles
-     */
-    public static final BookCategory BIBLE = new BookCategory("Biblical Texts", UserMsg.BIBLE); //$NON-NLS-1$
+    /** Books that are Bibles */
+    public static final BookCategory BIBLE = new BookCategory("Biblical Texts", UserMsg.gettext("Biblical Texts"));
 
-    /**
-     * Books that are Dictionaries
-     */
-    public static final BookCategory DICTIONARY = new BookCategory("Lexicons / Dictionaries", UserMsg.DICTIONARY); //$NON-NLS-1$
+    /** Books that are Dictionaries */
+    public static final BookCategory DICTIONARY = new BookCategory("Lexicons / Dictionaries", UserMsg.gettext("Dictionaries"));
 
-    /**
-     * Books that are Commentaries
-     */
-    public static final BookCategory COMMENTARY = new BookCategory("Commentaries", UserMsg.COMMENTARY); //$NON-NLS-1$
+    /** Books that are Commentaries */
+    public static final BookCategory COMMENTARY = new BookCategory("Commentaries", UserMsg.gettext("Commentaries"));
 
-    /**
-     * Books that are indexed by day. AKA, Daily Devotions
-     */
-    public static final BookCategory DAILY_DEVOTIONS = new BookCategory("Daily Devotional", UserMsg.READINGS); //$NON-NLS-1$
+    /** Books that are indexed by day. AKA, Daily Devotions */
+    public static final BookCategory DAILY_DEVOTIONS = new BookCategory("Daily Devotional", UserMsg.gettext("Daily Devotionals"));
 
-    /**
-     * Books that map words from one language to another.
-     */
-    public static final BookCategory GLOSSARY = new BookCategory("Glossaries", UserMsg.GLOSSARIES); //$NON-NLS-1$
+    /** Books that map words from one language to another. */
+    public static final BookCategory GLOSSARY = new BookCategory("Glossaries", UserMsg.gettext("Glossaries"));
 
-    /**
-     * Books that are questionable.
-     */
-    public static final BookCategory QUESTIONABLE = new BookCategory("Cults / Unorthodox / Questionable Material", UserMsg.UNORTHODOX); //$NON-NLS-1$
+    /** Books that are questionable. */
+    public static final BookCategory QUESTIONABLE = new BookCategory("Cults / Unorthodox / Questionable Material", UserMsg.gettext("Cults / Unorthodox / Questionable Materials"));
 
-    /**
-     * Books that are just essays.
-     */
-    public static final BookCategory ESSAYS = new BookCategory("Essays", UserMsg.ESSAYS); //$NON-NLS-1$
+    /** Books that are just essays. */
+    public static final BookCategory ESSAYS = new BookCategory("Essays", UserMsg.gettext("Essays"));
 
-    /**
-     * Books that are predominately images.
-     */
-    public static final BookCategory IMAGES = new BookCategory("Images", UserMsg.IMAGES); //$NON-NLS-1$
+    /** Books that are predominately images. */
+    public static final BookCategory IMAGES = new BookCategory("Images", UserMsg.gettext("Images"));
 
-    /**
-     * Books that are a collection of maps.
-     */
-    public static final BookCategory MAPS = new BookCategory("Maps", UserMsg.MAPS); //$NON-NLS-1$
+    /** Books that are a collection of maps. */
+    public static final BookCategory MAPS = new BookCategory("Maps", UserMsg.gettext("Maps"));
 
-    /**
-     * Books that are just books.
-     */
-    public static final BookCategory GENERAL_BOOK = new BookCategory("Generic Books", UserMsg.GENERAL); //$NON-NLS-1$
+    /** Books that are just books. */
+    public static final BookCategory GENERAL_BOOK = new BookCategory("Generic Books", UserMsg.gettext("General Books"));
 
-    /**
-     * Books that are not any of the above
-     */
-    public static final BookCategory OTHER = new BookCategory("Other", UserMsg.OTHER); //$NON-NLS-1$
+    /** Books that are not any of the above. This is a catch all for new book categories. */
+    public static final BookCategory OTHER = new BookCategory("Other", UserMsg.gettext("Other"));
 
     /**
      * @param name
      *            The name of the BookCategory
      */
-    private BookCategory(String name, MsgBase externalName) {
+    private BookCategory(String name, String externalName) {
         this.name = name;
-        this.externalName = externalName;
+        this.externalName = externalName.toString();
     }
 
     /**
@@ -179,7 +155,7 @@ public final class BookCategory implements Serializable, Comparable {
      * The names of the BookCategory
      */
     private transient String name;
-    private transient MsgBase externalName;
+    private transient String externalName;
 
     // Support for serialization
     private static int nextObj;

@@ -72,9 +72,9 @@ public class WebWarning {
             Properties props = new Properties();
             props.put(SHOWN_KEY, Boolean.valueOf(shown).toString());
             URI outputURI = CWProject.instance().getWritableURI(getClass().getName(), FileUtil.EXTENSION_PROPERTIES);
-            NetUtil.storeProperties(props, outputURI, "JSword WebWarning"); //$NON-NLS-1$
+            NetUtil.storeProperties(props, outputURI, "JSword WebWarning");
         } catch (IOException ex) {
-            log.error("Failed to save JSword WebWarning", ex); //$NON-NLS-1$
+            log.error("Failed to save JSword WebWarning", ex);
         }
     }
 
@@ -106,19 +106,24 @@ public class WebWarning {
      * @return a warning that the Internet is about to be accessed
      */
     public String getWarning() {
-        return UserMsg.WEB_WARNING.toString();
+        // TRANSLATOR: Warn the user that the program is about to access the Internet.
+        // In some countries, this warning may be too bland. It might be better to warn the user that this might
+        // put them at risk of persecution.
+        return UserMsg.gettext("You are about to access the Internet. Are you sure you want to do this?");
     }
 
     /**
      * @return indicate that the warning will be shown again
      */
     public String getShownWarningLabel() {
-        return UserMsg.WEB_SHOW_WARNING.toString();
+        // TRANSLATOR: This labels a checkbox, which is checked by default.
+        // Unchecking it allows the user to not see the message again but the Internet will be accessed.
+        return UserMsg.gettext("Show this warning every time the Internet is accessed.");
     }
 
     private static WebWarning instance = new WebWarning();
 
-    private static final String SHOWN_KEY = "shown"; //$NON-NLS-1$
+    private static final String SHOWN_KEY = "shown";
     private static final boolean DEFAULT_SHOWN = true;
     private boolean shown;
 

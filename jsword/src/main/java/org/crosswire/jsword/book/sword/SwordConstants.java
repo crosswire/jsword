@@ -44,42 +44,42 @@ public final class SwordConstants {
     /**
      * New testament data files
      */
-    public static final String FILE_NT = "nt"; //$NON-NLS-1$
+    public static final String FILE_NT = "nt";
 
     /**
      * Old testament data files
      */
-    public static final String FILE_OT = "ot"; //$NON-NLS-1$
+    public static final String FILE_OT = "ot";
 
     /**
      * Index file extensions
      */
-    public static final String EXTENSION_VSS = ".vss"; //$NON-NLS-1$
+    public static final String EXTENSION_VSS = ".vss";
 
     /**
      * Extension for index files
      */
-    public static final String EXTENSION_INDEX = ".idx"; //$NON-NLS-1$
+    public static final String EXTENSION_INDEX = ".idx";
 
     /**
      * Extension for data files
      */
-    public static final String EXTENSION_DATA = ".dat"; //$NON-NLS-1$
+    public static final String EXTENSION_DATA = ".dat";
 
     /**
      * Extension for config files
      */
-    public static final String EXTENSION_CONF = ".conf"; //$NON-NLS-1$
+    public static final String EXTENSION_CONF = ".conf";
 
     /**
      * The data directory
      */
-    public static final String DIR_DATA = "modules"; //$NON-NLS-1$
+    public static final String DIR_DATA = "modules";
 
     /**
      * The configuration directory
      */
-    public static final String DIR_CONF = "mods.d"; //$NON-NLS-1$
+    public static final String DIR_CONF = "mods.d";
 
     /**
      * constant for the introduction

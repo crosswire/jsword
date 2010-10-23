@@ -64,15 +64,15 @@ public final class BookmarkFactory {
         try {
             instance = (Bookmark) PluginUtil.getImplementation(Bookmark.class);
         } catch (IOException e) {
-            log.error("createBookmark failed", e); //$NON-NLS-1$
+            log.error("createBookmark failed", e);
         } catch (ClassCastException e) {
-            log.error("createBookmark failed", e); //$NON-NLS-1$
+            log.error("createBookmark failed", e);
         } catch (ClassNotFoundException e) {
-            log.error("createBookmark failed", e); //$NON-NLS-1$
+            log.error("createBookmark failed", e);
         } catch (IllegalAccessException e) {
-            log.error("createBookmark failed", e); //$NON-NLS-1$
+            log.error("createBookmark failed", e);
         } catch (InstantiationException e) {
-            log.error("createBookmark failed", e); //$NON-NLS-1$
+            log.error("createBookmark failed", e);
         }
     }
 }

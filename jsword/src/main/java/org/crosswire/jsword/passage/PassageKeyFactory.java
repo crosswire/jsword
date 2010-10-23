@@ -369,8 +369,8 @@ public final class PassageKeyFactory implements KeyFactory {
      * @return The number of bytes written
      */
     protected static int toBinary(byte[] buffer, int index, int number, int max) {
-        assert number >= 0 : "No -ve output " + number; //$NON-NLS-1$
-        assert number <= max : "number " + number + " > max " + max; //$NON-NLS-1$ //$NON-NLS-2$
+        assert number >= 0 : "No -ve output " + number;
+        assert number <= max : "number " + number + " > max " + max;
 
         // 1 byte (2^8)
         if (max < 256) {
@@ -551,7 +551,7 @@ public final class PassageKeyFactory implements KeyFactory {
 
     static {
         try {
-            whole = new ReadOnlyPassage(defaultType.createPassage("Gen 1:1-Rev 22:21"), true); //$NON-NLS-1$
+            whole = new ReadOnlyPassage(defaultType.createPassage("Gen 1:1-Rev 22:21"), true);
         } catch (NoSuchKeyException ex) {
             assert false : ex;
             whole = defaultType.createEmptyPassage();

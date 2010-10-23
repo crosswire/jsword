@@ -62,7 +62,7 @@ public final class LuceneQueryBuilder implements QueryBuilder {
         int i = 0;
 
         Query range = null;
-        String rangeModifier = ""; //$NON-NLS-1$
+        String rangeModifier = "";
         // Look for a range +[...], -[...], or [...]
         Matcher rangeMatcher = RANGE_PATTERN.matcher(sought);
         if (rangeMatcher.find()) {
@@ -104,13 +104,13 @@ public final class LuceneQueryBuilder implements QueryBuilder {
      * leading [] (but not containing a [ or ]), with a + or - optional prefix,
      * perhaps surrounded by whitespace.
      */
-    private static final Pattern RANGE_PATTERN = Pattern.compile("^\\s*([-+]?)\\[([^\\[\\]]+)\\]\\s*"); //$NON-NLS-1$
+    private static final Pattern RANGE_PATTERN = Pattern.compile("^\\s*([-+]?)\\[([^\\[\\]]+)\\]\\s*");
 
     /**
      * The pattern of a blur. A '~', optionally followed by a number,
      * representing the number of verses.
      */
-    private static final Pattern BLUR_PATTERN = Pattern.compile("\\s~(\\d*)?\\s"); //$NON-NLS-1$
+    private static final Pattern BLUR_PATTERN = Pattern.compile("\\s~(\\d*)?\\s");
 
     /**
      * A query that returns nothing.

@@ -44,7 +44,7 @@ public class ScripRefTag extends AbstractTag {
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
     public String getTagName() {
-        return "scripRef"; //$NON-NLS-1$
+        return "scripRef";
     }
 
     /*
@@ -58,13 +58,13 @@ public class ScripRefTag extends AbstractTag {
     public Element processTag(Element ele, Attributes attrs) {
         Element reference = null;
 
-        String refstr = attrs.getValue("passage"); //$NON-NLS-1$
+        String refstr = attrs.getValue("passage");
         if (refstr != null) {
             Passage ref = null;
             try {
                 ref = (Passage) keyf.getKey(refstr);
             } catch (NoSuchKeyException ex) {
-                DataPolice.report("Unparsable passage: (" + refstr + ") due to " + ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+                DataPolice.report("Unparsable passage: (" + refstr + ") due to " + ex.getMessage());
             }
 
             // If we don't have a Passage then use the origial string
@@ -100,7 +100,7 @@ public class ScripRefTag extends AbstractTag {
                 ele.setAttribute(OSISUtil.OSIS_ATTR_REF, osisname);
             }
         } catch (NoSuchKeyException ex) {
-            DataPolice.report("scripRef has no passage attribute, unable to guess: (" + refstr + ") due to " + ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+            DataPolice.report("scripRef has no passage attribute, unable to guess: (" + refstr + ") due to " + ex.getMessage());
         }
     }
 

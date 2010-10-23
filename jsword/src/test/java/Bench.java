@@ -33,28 +33,28 @@ public class Bench {
         speed.run();
 
         float time = speed.getBenchmark() / 1000;
-        System.out.println("CBench mark for '" + args[0] + "': " + time + "s"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        System.out.println("CBench mark for '" + args[0] + "': " + time + "s");
     }
 
     /**
      * Print a usage message to stdout
      */
     private static void usage() {
-        System.out.println("Usage: CBench [<version>] [disk]"); //$NON-NLS-1$
-        System.out.println("  where <version> is the name of a version to benchmark."); //$NON-NLS-1$
-        System.out.println("  and 'disk' specifies if the Raw version should not cache data."); //$NON-NLS-1$
-        System.out.println("  Remember to quote the version name if it includes spaces."); //$NON-NLS-1$
+        System.out.println("Usage: CBench [<version>] [disk]");
+        System.out.println("  where <version> is the name of a version to benchmark.");
+        System.out.println("  and 'disk' specifies if the Raw version should not cache data.");
+        System.out.println("  Remember to quote the version name if it includes spaces.");
     }
 
     /**
      * List the available versions
      */
     private static void versions() {
-        System.out.println("  Available versions:"); //$NON-NLS-1$
+        System.out.println("  Available versions:");
         List lbmds = Books.installed().getBooks();
         for (Iterator it = lbmds.iterator(); it.hasNext();) {
             Book book = (Book) it.next();
-            System.out.println("    " + book.getName()); //$NON-NLS-1$
+            System.out.println("    " + book.getName());
         }
     }
 }

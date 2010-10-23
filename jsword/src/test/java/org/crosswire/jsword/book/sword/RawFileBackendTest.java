@@ -39,24 +39,24 @@ import org.crosswire.jsword.passage.*;
  */
 public class RawFileBackendTest extends TestCase {
 
-    final String modName = "TestComment"; //$NON-NLS-1$
-    File configFile = new File("testconfig.conf"); //$NON-NLS-1$
+    final String modName = "TestComment";
+    File configFile = new File("testconfig.conf");
     RawFileBackend backend = null;
 
     protected void setUp() throws Exception {
         ConfigEntryTable table = new ConfigEntryTable(modName);
-        table.add(ConfigEntryType.LANG, "de"); //$NON-NLS-1$
+        table.add(ConfigEntryType.LANG, "de");
         table.add(ConfigEntryType.INITIALS, modName);
-        table.add(ConfigEntryType.DESCRIPTION, "MyNewBook"); //$NON-NLS-1$
-        table.add(ConfigEntryType.MOD_DRV, "RawFiles"); //$NON-NLS-1$
-        table.add(ConfigEntryType.DATA_PATH, "test"); //$NON-NLS-1$
+        table.add(ConfigEntryType.DESCRIPTION, "MyNewBook");
+        table.add(ConfigEntryType.MOD_DRV, "RawFiles");
+        table.add(ConfigEntryType.DATA_PATH, "test");
         try {
             table.save(configFile);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
 
-        SwordBookMetaData swordBookMetaData = new SwordBookMetaData(configFile, modName, new URI("file:///tmp")); //$NON-NLS-1$
+        SwordBookMetaData swordBookMetaData = new SwordBookMetaData(configFile, modName, new URI("file:///tmp"));
         backend = new RawFileBackend(swordBookMetaData, 2);
     }
 
@@ -78,36 +78,36 @@ public class RawFileBackendTest extends TestCase {
         Verse ntVerse3 = new Verse(66, 22, 21);
         Verse ntVerse4 = new Verse(64, 1, 2);
 
-        backend.setRawText(otVerse, "Hello OT"); //$NON-NLS-1$
-        backend.setRawText(otVerse2, "Hello OT2"); //$NON-NLS-1$
-        backend.setRawText(otVerse3, "Hello OT3"); //$NON-NLS-1$
-        backend.setRawText(otVerse4, "Hello OT4"); //$NON-NLS-1$
-        backend.setRawText(ntVerse, "Hello NT"); //$NON-NLS-1$
-        backend.setRawText(ntVerse2, "Hello NT2"); //$NON-NLS-1$
-        backend.setRawText(ntVerse3, "Hello NT3"); //$NON-NLS-1$
-        backend.setRawText(ntVerse4, "Hello NT4"); //$NON-NLS-1$
+        backend.setRawText(otVerse, "Hello OT");
+        backend.setRawText(otVerse2, "Hello OT2");
+        backend.setRawText(otVerse3, "Hello OT3");
+        backend.setRawText(otVerse4, "Hello OT4");
+        backend.setRawText(ntVerse, "Hello NT");
+        backend.setRawText(ntVerse2, "Hello NT2");
+        backend.setRawText(ntVerse3, "Hello NT3");
+        backend.setRawText(ntVerse4, "Hello NT4");
 
-        assertEquals(backend.getRawText(otVerse), "Hello OT"); //$NON-NLS-1$
-        assertEquals(backend.getRawText(otVerse2), "Hello OT2"); //$NON-NLS-1$
-        assertEquals(backend.getRawText(otVerse3), "Hello OT3"); //$NON-NLS-1$
-        assertEquals(backend.getRawText(otVerse4), "Hello OT4"); //$NON-NLS-1$
-        assertEquals(backend.getRawText(ntVerse), "Hello NT"); //$NON-NLS-1$
-        assertEquals(backend.getRawText(ntVerse2), "Hello NT2"); //$NON-NLS-1$
-        assertEquals(backend.getRawText(ntVerse3), "Hello NT3"); //$NON-NLS-1$
-        assertEquals(backend.getRawText(ntVerse4), "Hello NT4"); //$NON-NLS-1$
+        assertEquals(backend.getRawText(otVerse), "Hello OT");
+        assertEquals(backend.getRawText(otVerse2), "Hello OT2");
+        assertEquals(backend.getRawText(otVerse3), "Hello OT3");
+        assertEquals(backend.getRawText(otVerse4), "Hello OT4");
+        assertEquals(backend.getRawText(ntVerse), "Hello NT");
+        assertEquals(backend.getRawText(ntVerse2), "Hello NT2");
+        assertEquals(backend.getRawText(ntVerse3), "Hello NT3");
+        assertEquals(backend.getRawText(ntVerse4), "Hello NT4");
     }
 
     public void testSetAliasKey() throws NoSuchVerseException, IOException, BookException {
-        Verse source = VerseFactory.fromString("Gen 1:1"); //$NON-NLS-1$
-        Verse alias1 = VerseFactory.fromString("Gen 1:2"); //$NON-NLS-1$
-        Verse alias2 = VerseFactory.fromString("Gen 1:3"); //$NON-NLS-1$
+        Verse source = VerseFactory.fromString("Gen 1:1");
+        Verse alias1 = VerseFactory.fromString("Gen 1:2");
+        Verse alias2 = VerseFactory.fromString("Gen 1:3");
 
-        backend.setRawText(source, "Hello Alias test!"); //$NON-NLS-1$
+        backend.setRawText(source, "Hello Alias test!");
         backend.setAliasKey(alias1, source);
         backend.setAliasKey(alias2, source);
 
-        assertEquals(backend.getRawText(source), "Hello Alias test!"); //$NON-NLS-1$
-        assertEquals(backend.getRawText(alias1), "Hello Alias test!"); //$NON-NLS-1$
-        assertEquals(backend.getRawText(alias2), "Hello Alias test!"); //$NON-NLS-1$
+        assertEquals(backend.getRawText(source), "Hello Alias test!");
+        assertEquals(backend.getRawText(alias1), "Hello Alias test!");
+        assertEquals(backend.getRawText(alias2), "Hello Alias test!");
     }
 }

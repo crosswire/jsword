@@ -37,7 +37,7 @@ public abstract class SearchType implements Serializable {
     /**
      * Find the words in the specified order.
      */
-    public static final SearchType PHRASE = new SearchType("Phrase") //$NON-NLS-1$
+    public static final SearchType PHRASE = new SearchType("Phrase")
     {
         /*
          * (non-Javadoc)
@@ -59,7 +59,7 @@ public abstract class SearchType implements Serializable {
     /**
      * Find all the words regardless of position.
      */
-    public static final SearchType ALL_WORDS = new SearchType("All") //$NON-NLS-1$
+    public static final SearchType ALL_WORDS = new SearchType("All")
     {
         /*
          * (non-Javadoc)
@@ -81,7 +81,7 @@ public abstract class SearchType implements Serializable {
     /**
      * Find any of these words
      */
-    public static final SearchType ANY_WORDS = new SearchType("Any") //$NON-NLS-1$
+    public static final SearchType ANY_WORDS = new SearchType("Any")
     {
         /*
          * (non-Javadoc)
@@ -104,7 +104,7 @@ public abstract class SearchType implements Serializable {
      * Find verses not containing these words. Note this may require being added
      * after words being sought.
      */
-    public static final SearchType NOT_WORDS = new SearchType("Not") //$NON-NLS-1$
+    public static final SearchType NOT_WORDS = new SearchType("Not")
     {
         /*
          * (non-Javadoc)
@@ -126,7 +126,7 @@ public abstract class SearchType implements Serializable {
     /**
      * Find verses with words that start with the these beginnings.
      */
-    public static final SearchType START_WORDS = new SearchType("Start") //$NON-NLS-1$
+    public static final SearchType START_WORDS = new SearchType("Start")
     {
         /*
          * (non-Javadoc)
@@ -148,7 +148,7 @@ public abstract class SearchType implements Serializable {
     /**
      * Find verses with words spelled something like
      */
-    public static final SearchType SPELL_WORDS = new SearchType("Spell") //$NON-NLS-1$
+    public static final SearchType SPELL_WORDS = new SearchType("Spell")
     {
         /*
          * (non-Javadoc)
@@ -170,7 +170,7 @@ public abstract class SearchType implements Serializable {
     /**
      * Find verses in this range
      */
-    public static final SearchType RANGE = new SearchType("Range") //$NON-NLS-1$
+    public static final SearchType RANGE = new SearchType("Range")
     {
         /*
          * (non-Javadoc)
@@ -212,7 +212,7 @@ public abstract class SearchType implements Serializable {
                 return o;
             }
         }
-        throw new ClassCastException("Not a valid search type"); //$NON-NLS-1$
+        throw new ClassCastException("Not a valid search type");
     }
 
     /**

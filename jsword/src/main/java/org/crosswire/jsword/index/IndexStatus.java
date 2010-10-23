@@ -35,27 +35,27 @@ public final class IndexStatus implements Serializable {
     /**
      * There is a complete and ready to use search index
      */
-    public static final IndexStatus DONE = new IndexStatus("Indexed"); //$NON-NLS-1$
+    public static final IndexStatus DONE = new IndexStatus("Indexed");
 
     /**
      * There is no search index, and no plans to create one
      */
-    public static final IndexStatus UNDONE = new IndexStatus("No Index"); //$NON-NLS-1$
+    public static final IndexStatus UNDONE = new IndexStatus("No Index");
 
     /**
      * This Book has been scheduled for index creation
      */
-    public static final IndexStatus SCHEDULED = new IndexStatus("Scheduled"); //$NON-NLS-1$
+    public static final IndexStatus SCHEDULED = new IndexStatus("Scheduled");
 
     /**
      * An index is currently being generated for this Book
      */
-    public static final IndexStatus CREATING = new IndexStatus("Creating"); //$NON-NLS-1$
+    public static final IndexStatus CREATING = new IndexStatus("Creating");
 
     /**
      * An index is no longer valid and needs to be discarded.
      */
-    public static final IndexStatus INVALID = new IndexStatus("Invalid"); //$NON-NLS-1$
+    public static final IndexStatus INVALID = new IndexStatus("Invalid");
 
     /**
      * All the known values

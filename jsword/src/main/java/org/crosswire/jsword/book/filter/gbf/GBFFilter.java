@@ -115,10 +115,10 @@ public class GBFFilter implements Filter {
                         && ltpos < remains.length()
                         && Character.isUpperCase(remains.charAt(ltpos + 1)))
                 {
-                    DataPolice.report("Possible bad GBF tag" + remains); //$NON-NLS-1$
+                    DataPolice.report("Possible bad GBF tag" + remains);
                 }
                 if (gtpos != -1 && ltpos >= 0) {
-                    DataPolice.report("Possible bad GBF tag" + remains); //$NON-NLS-1$
+                    DataPolice.report("Possible bad GBF tag" + remains);
                 }
                 int pos = Math.max(ltpos, gtpos) + 1;
                 // If there were not any <, > or either ended the string
@@ -182,6 +182,6 @@ public class GBFFilter implements Filter {
         return taglist;
     }
 
-    private static final String SEPARATORS = " ,:;.?!"; //$NON-NLS-1$
+    private static final String SEPARATORS = " ,:;.?!";
 
 }

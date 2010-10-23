@@ -85,15 +85,15 @@ public class BibleScope {
 
     public static void report(Book b) {
         if (!b.getBookCategory().equals(BookCategory.BIBLE) && !b.getBookCategory().equals(BookCategory.COMMENTARY)) {
-            System.err.println(b.getInitials() + " is not a Bible or Commentary"); //$NON-NLS-1$
+            System.err.println(b.getInitials() + " is not a Bible or Commentary");
             // System.exit(1);
         }
 
         BibleScope scope = new BibleScope(b);
         BibleInfo.setFullBookName(false); // use short names
         System.out.println('[' + b.getInitials() + ']');
-        System.out.println("InScope=" + scope.getInScope().getOsisRef()); //$NON-NLS-1$
-        System.out.println("OutScope=" + scope.getOutOfScope().getOsisRef()); //$NON-NLS-1$        
+        System.out.println("InScope=" + scope.getInScope().getOsisRef());
+        System.out.println("OutScope=" + scope.getOutOfScope().getOsisRef());        
     }
 
     private Book book;
@@ -116,11 +116,11 @@ public class BibleScope {
             return;
         }
 
-        System.err.println("BibleScope " + args[0]); //$NON-NLS-1$
+        System.err.println("BibleScope " + args[0]);
 
         Book b = Books.installed().getBook(args[0]);
         if (b == null) {
-            System.err.println("Book not found"); //$NON-NLS-1$
+            System.err.println("Book not found");
             return;
         }
 
@@ -141,7 +141,7 @@ public class BibleScope {
     }
 
     public static void usage() {
-        System.err.println("Usage: BibleScope book"); //$NON-NLS-1$
+        System.err.println("Usage: BibleScope book");
     }
 
     private Key inScope;

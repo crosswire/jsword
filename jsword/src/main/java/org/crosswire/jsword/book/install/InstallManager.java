@@ -59,14 +59,14 @@ public final class InstallManager {
             int i = 0;
             for (String def = sitemap.getProperty(PREFIX + ++i); def != null; def = sitemap.getProperty(PREFIX + ++i)) {
                 try {
-                    String[] parts = def.split(",", 3); //$NON-NLS-1$
+                    String[] parts = def.split(",", 3);
                     String type = parts[0];
                     String name = parts[1];
                     String rest = parts[2];
 
                     Class clazz = (Class) factories.get(type);
                     if (clazz == null) {
-                        log.warn(""); //$NON-NLS-1$
+                        log.warn("");
                     } else {
                         InstallerFactory ifactory = (InstallerFactory) clazz.newInstance();
                         Installer installer = ifactory.createInstaller(rest);
@@ -107,9 +107,9 @@ public final class InstallManager {
         }
         URI outputURI = CWProject.instance().getWritableURI(getClass().getName(), FileUtil.EXTENSION_PLUGIN);
         try {
-            NetUtil.storeProperties(props, outputURI, "Saved Installer Sites"); //$NON-NLS-1$
+            NetUtil.storeProperties(props, outputURI, "Saved Installer Sites");
         } catch (IOException e) {
-            log.error("Failed to save installers", e); //$NON-NLS-1$
+            log.error("Failed to save installers", e);
         }
     }
 
@@ -139,13 +139,13 @@ public final class InstallManager {
                     return name;
                 }
             } catch (InstantiationException e) {
-                log.warn("Failed to instantiate installer factory: " + name + "=" + factclazz.getName(), e); //$NON-NLS-1$ //$NON-NLS-2$
+                log.warn("Failed to instantiate installer factory: " + name + "=" + factclazz.getName(), e);
             } catch (IllegalAccessException e) {
-                log.warn("Failed to instantiate installer factory: " + name + "=" + factclazz.getName(), e); //$NON-NLS-1$ //$NON-NLS-2$
+                log.warn("Failed to instantiate installer factory: " + name + "=" + factclazz.getName(), e);
             }
         }
 
-        log.warn("Failed to find factory name for " + installer.toString() + " among the " + factories.size() + " factories."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        log.warn("Failed to find factory name for " + installer.toString() + " among the " + factories.size() + " factories.");
         return null;
     }
 
@@ -164,12 +164,12 @@ public final class InstallManager {
             }
         }
 
-        log.warn("Failed to find installer name for " + installer.toString() + " among the " + installers.size() + " installers."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        log.warn("Failed to find installer name for " + installer.toString() + " among the " + installers.size() + " installers.");
         it = installers.keySet().iterator();
         while (it.hasNext()) {
             String name = (String) it.next();
             Installer test = (Installer) installers.get(name);
-            log.warn("  it isn't equal to " + test.getInstallerDefinition()); //$NON-NLS-1$
+            log.warn("  it isn't equal to " + test.getInstallerDefinition());
         }
         return null;
     }
@@ -246,7 +246,7 @@ public final class InstallManager {
 
             if (tinstaller.equals(installer)) {
                 // We have a dupe - remove the old name
-                log.warn("duplicate installers: " + name + "=" + tname + ". removing " + tname); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                log.warn("duplicate installers: " + name + "=" + tname + ". removing " + tname);
 
                 // Can't call removeInstaller while iterating.
                 it.remove();
@@ -325,7 +325,7 @@ public final class InstallManager {
     /**
      * The prefix for the keys in the installer property file.
      */
-    private static final String PREFIX = "Installer."; //$NON-NLS-1$
+    private static final String PREFIX = "Installer.";
 
     /**
      * The map of installer factories

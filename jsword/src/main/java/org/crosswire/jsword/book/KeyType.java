@@ -34,17 +34,17 @@ public class KeyType implements Serializable {
     /**
      * Book contains verses and can be understood as book, chapter and verse.
      */
-    public static final KeyType VERSE = new KeyType("verse"); //$NON-NLS-1$
+    public static final KeyType VERSE = new KeyType("verse");
 
     /**
      * Book organizes its entries in a list, as in a dictionary.
      */
-    public static final KeyType LIST = new KeyType("list"); //$NON-NLS-1$
+    public static final KeyType LIST = new KeyType("list");
 
     /**
      * Book organizes its entries in a tree, as in a general book.
      */
-    public static final KeyType TREE = new KeyType("tree"); //$NON-NLS-1$
+    public static final KeyType TREE = new KeyType("tree");
 
     /**
      * Simple ctor

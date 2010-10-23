@@ -100,7 +100,7 @@ public final class DataPolice {
         if (key != null) {
             buf.append(key.getName());
         }
-        buf.append(": "); //$NON-NLS-1$
+        buf.append(": ");
         buf.append(message);
         log.log(lev, buf.toString());
     }

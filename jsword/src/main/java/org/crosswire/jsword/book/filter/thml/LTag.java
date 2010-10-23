@@ -39,7 +39,7 @@ public class LTag extends AbstractTag {
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
     public String getTagName() {
-        return "li"; //$NON-NLS-1$
+        return "li";
     }
 
     /*

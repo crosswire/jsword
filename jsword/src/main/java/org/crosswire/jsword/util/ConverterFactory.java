@@ -81,5 +81,5 @@ public final class ConverterFactory {
     /**
      * Current default converter implementation
      */
-    private static String name = "Configurable"; //$NON-NLS-1$
+    private static String name = "Configurable";
 }

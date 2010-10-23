@@ -70,7 +70,7 @@ public class ReadingsBookDriver extends AbstractBookDriver {
      * @see org.crosswire.jsword.book.BookDriver#getDriverName()
      */
     public String getDriverName() {
-        return "Readings"; //$NON-NLS-1$
+        return "Readings";
     }
 
     /**
@@ -87,7 +87,7 @@ public class ReadingsBookDriver extends AbstractBookDriver {
      */
     public String[] getInstalledReadingsSets() {
         try {
-            URL index = ResourceUtil.getResource(ReadingsBookDriver.class, "readings.txt"); //$NON-NLS-1$
+            URL index = ResourceUtil.getResource(ReadingsBookDriver.class, "readings.txt");
             return NetUtil.listByIndexFile(NetUtil.toURI(index), new ReadingsFilter());
         } catch (IOException ex) {
             return new String[0];
@@ -111,7 +111,7 @@ public class ReadingsBookDriver extends AbstractBookDriver {
     /**
      * Resources subdir for readings sets
      */
-    public static final String DIR_READINGS = "readings"; //$NON-NLS-1$
+    public static final String DIR_READINGS = "readings";
 
     /**
      * A shared instance of this driver.

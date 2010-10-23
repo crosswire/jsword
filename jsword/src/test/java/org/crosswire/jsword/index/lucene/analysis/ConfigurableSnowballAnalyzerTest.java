@@ -51,73 +51,73 @@ public class ConfigurableSnowballAnalyzerTest extends TestCase {
     public void testStemmers() {
 
         // valid
-        myAnalyzer.pickStemmer("Finnish"); //$NON-NLS-1$
+        myAnalyzer.pickStemmer("Finnish");
         // invalid stemmer
         try {
-            myAnalyzer.pickStemmer("test"); //$NON-NLS-1$
+            myAnalyzer.pickStemmer("test");
         } catch (IllegalArgumentException e) {
-            assertTrue(e.getMessage().indexOf("SnowballAnalyzer") > -1); //$NON-NLS-1$
+            assertTrue(e.getMessage().indexOf("SnowballAnalyzer") > -1);
         }
     }
 
     public void testStemming() throws ParseException {
 
-        myAnalyzer.pickStemmer("French"); //$NON-NLS-1$
+        myAnalyzer.pickStemmer("French");
 
-        String testInput = " tant aimé le monde qu'il a donné son"; //$NON-NLS-1$
+        String testInput = " tant aimé le monde qu'il a donné son";
 
         Query query = parser.parse(testInput);
-        assertTrue(query.toString().indexOf(field + ":aim ") > -1); //$NON-NLS-1$
-        assertTrue(query.toString().indexOf(field + ":mond ") > -1); //$NON-NLS-1$
+        assertTrue(query.toString().indexOf(field + ":aim ") > -1);
+        assertTrue(query.toString().indexOf(field + ":mond ") > -1);
         // System.out.println(query.toString());
     }
 
     public void testStopwords() throws ParseException {
 
-        myAnalyzer.pickStemmer("French"); //$NON-NLS-1$
+        myAnalyzer.pickStemmer("French");
         myAnalyzer.setDoStopWords(true);
-        String testInput = " tant aimé le monde qu 'il a donné son"; //$NON-NLS-1$
+        String testInput = " tant aimé le monde qu 'il a donné son";
 
         Query query = parser.parse(testInput);
-        assertTrue(query.toString().indexOf(field + ":le") == -1); //$NON-NLS-1$
-        assertTrue(query.toString().indexOf(field + ":a ") == -1); //$NON-NLS-1$
+        assertTrue(query.toString().indexOf(field + ":le") == -1);
+        assertTrue(query.toString().indexOf(field + ":a ") == -1);
 
     }
 
     public void testStemmingOff() throws ParseException {
 
-        myAnalyzer.pickStemmer("French"); //$NON-NLS-1$
+        myAnalyzer.pickStemmer("French");
         myAnalyzer.setDoStemming(false);
 
-        String testInput = " tant aimé le monde qu'il a donné son"; //$NON-NLS-1$
+        String testInput = " tant aimé le monde qu'il a donné son";
 
         Query query = parser.parse(testInput);
         // System.out.println(query.toString());
-        assertTrue(query.toString().indexOf(field + ":aimé ") > -1); //$NON-NLS-1$
-        assertTrue(query.toString().indexOf(field + ":donné ") > -1); //$NON-NLS-1$
+        assertTrue(query.toString().indexOf(field + ":aimé ") > -1);
+        assertTrue(query.toString().indexOf(field + ":donné ") > -1);
     }
 
     public void testStemmerConfig() throws ParseException {
 
-        myAnalyzer.pickStemmer("French"); //$NON-NLS-1$
+        myAnalyzer.pickStemmer("French");
         myAnalyzer.setDoStemming(false);
 
-        String testInput = " tant aimé le monde qu'il a donné son"; //$NON-NLS-1$
+        String testInput = " tant aimé le monde qu'il a donné son";
 
         Query query = parser.parse(testInput);
-        assertTrue(query.toString().indexOf(field + ":aimé ") > -1); //$NON-NLS-1$
-        assertTrue(query.toString().indexOf(field + ":donné ") > -1); //$NON-NLS-1$
+        assertTrue(query.toString().indexOf(field + ":aimé ") > -1);
+        assertTrue(query.toString().indexOf(field + ":donné ") > -1);
 
     }
 
     public void testMultipleStemmers() throws ParseException {
 
-        myAnalyzer.pickStemmer("German"); //$NON-NLS-1$
+        myAnalyzer.pickStemmer("German");
 
-        String testInput = "Denn also hat Gott die Welt geliebt, daß er seinen eingeborenen Sohn gab, auf daß jeder, der an ihn glaubt, nicht verloren gehe, sondern ewiges Leben habe"; //$NON-NLS-1$
+        String testInput = "Denn also hat Gott die Welt geliebt, daß er seinen eingeborenen Sohn gab, auf daß jeder, der an ihn glaubt, nicht verloren gehe, sondern ewiges Leben habe";
 
         Query query = parser.parse(testInput);
-        assertTrue(query.toString().indexOf(field + ":denn ") > -1); //$NON-NLS-1$
+        assertTrue(query.toString().indexOf(field + ":denn ") > -1);
 
         // System.out.println(query.toString());
 
@@ -125,11 +125,11 @@ public class ConfigurableSnowballAnalyzerTest extends TestCase {
         Analyzer anal = new GermanLuceneAnalyzer();
         QueryParser gparser = new QueryParser(Version.LUCENE_29, field, anal);
         query = gparser.parse(testInput);
-        assertTrue(query.toString().indexOf(field + ":denn ") > -1); //$NON-NLS-1$
+        assertTrue(query.toString().indexOf(field + ":denn ") > -1);
 
     }
 
-    protected static final String field = "content"; //$NON-NLS-1$
+    protected static final String field = "content";
     private ConfigurableSnowballAnalyzer myAnalyzer;
     private QueryParser parser;
 }

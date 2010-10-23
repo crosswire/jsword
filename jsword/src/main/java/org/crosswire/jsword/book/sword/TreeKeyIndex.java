@@ -178,16 +178,20 @@ public class TreeKeyIndex implements Activatable {
         datFile = new File(path + EXTENSION_DATA);
 
         if (!idxFile.canRead()) {
-            Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] {
+            // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
+            // {0} is a placeholder for the file.
+            Reporter.informUser(this, new BookException(UserMsg.gettext("Error reading {0}", new Object[] {
                 idxFile.getAbsolutePath()
-            }));
+            })));
             return;
         }
 
         if (!datFile.canRead()) {
-            Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] {
+            // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
+            // {0} is a placeholder for the file.
+            Reporter.informUser(this, new BookException(UserMsg.gettext("Error reading {0}", new Object[] {
                 datFile.getAbsolutePath()
-            }));
+            })));
             return;
         }
 
@@ -195,7 +199,7 @@ public class TreeKeyIndex implements Activatable {
             idxRaf = new RandomAccessFile(idxFile, FileUtil.MODE_READ);
             datRaf = new RandomAccessFile(datFile, FileUtil.MODE_READ);
         } catch (IOException ex) {
-            log.error("failed to open files", ex); //$NON-NLS-1$
+            log.error("failed to open files", ex);
             idxRaf = null;
             datRaf = null;
         }
@@ -218,7 +222,7 @@ public class TreeKeyIndex implements Activatable {
                 datRaf.close();
             }
         } catch (IOException ex) {
-            log.error("failed to close nt files", ex); //$NON-NLS-1$
+            log.error("failed to close nt files", ex);
         } finally {
             idxRaf = null;
             datRaf = null;
@@ -245,8 +249,8 @@ public class TreeKeyIndex implements Activatable {
         return new File(loc.getPath()).getAbsolutePath();
     }
 
-    private static final String EXTENSION_INDEX = ".idx"; //$NON-NLS-1$
-    private static final String EXTENSION_DATA = ".dat"; //$NON-NLS-1$
+    private static final String EXTENSION_INDEX = ".idx";
+    private static final String EXTENSION_DATA = ".dat";
 
     private SwordBookMetaData bmd;
     private File idxFile;

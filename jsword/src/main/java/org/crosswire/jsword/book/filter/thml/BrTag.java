@@ -39,7 +39,7 @@ public class BrTag extends AbstractTag {
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
     public String getTagName() {
-        return "br"; //$NON-NLS-1$
+        return "br";
     }
 
     /*

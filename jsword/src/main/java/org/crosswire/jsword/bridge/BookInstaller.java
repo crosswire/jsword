@@ -262,7 +262,7 @@ public class BookInstaller {
             return;
         }
 
-        System.err.print("BookInstaller"); //$NON-NLS-1$
+        System.err.print("BookInstaller");
         for (int i = 0; i < args.length; i++) {
             System.err.print(' ');
             System.err.print(args[i]);
@@ -272,11 +272,11 @@ public class BookInstaller {
         BookInstaller installer = new BookInstaller();
 
         String operation = args[0];
-        if (operation.equalsIgnoreCase("uninstall")) { //$NON-NLS-1$
+        if (operation.equalsIgnoreCase("uninstall")) {
             if (args.length == 2) {
                 Book b = Books.installed().getBook(args[1]);
                 if (b == null) {
-                    System.err.println("Book not found"); //$NON-NLS-1$
+                    System.err.println("Book not found");
                     return;
                 }
                 try {
@@ -287,14 +287,14 @@ public class BookInstaller {
             } else {
                 usage();
             }
-        } else if (operation.equalsIgnoreCase("sources")) { //$NON-NLS-1$
+        } else if (operation.equalsIgnoreCase("sources")) {
             // Get all the installers one after the other
             Map installers = installer.getInstallers();
             Iterator iter = installers.keySet().iterator();
             while (iter.hasNext()) {
                 System.out.println(iter.next());
             }
-        } else if (operation.equalsIgnoreCase("list")) { //$NON-NLS-1$
+        } else if (operation.equalsIgnoreCase("list")) {
             if (args.length == 1) {
                 Iterator iter = BookInstaller.getInstalledBooks().iterator();
                 while (iter.hasNext()) {
@@ -310,7 +310,7 @@ public class BookInstaller {
             } else {
                 usage();
             }
-        } else if (operation.equalsIgnoreCase("reload")) { //$NON-NLS-1$
+        } else if (operation.equalsIgnoreCase("reload")) {
             if (args.length == 2) {
                 try {
                     installer.reloadBookList(args[1]);
@@ -320,11 +320,11 @@ public class BookInstaller {
             } else {
                 usage();
             }
-        } else if (operation.equalsIgnoreCase("install")) { //$NON-NLS-1$
+        } else if (operation.equalsIgnoreCase("install")) {
             if (args.length == 3) {
                 Book b = installer.getBook(args[1], args[2]);
                 if (b == null) {
-                    System.err.println("Book not found"); //$NON-NLS-1$
+                    System.err.println("Book not found");
                     return;
                 }
                 try {
@@ -343,13 +343,13 @@ public class BookInstaller {
     }
 
     public static void usage() {
-        System.err.println("usage: BookInstaller <option>"); //$NON-NLS-1$
-        System.err.println("Options:"); //$NON-NLS-1$
-        System.err.println("    uninstall bookName                 Uninstall book"); //$NON-NLS-1$
-        System.err.println("    sources                            List remote source repositories"); //$NON-NLS-1$
-        System.err.println("    list                               List installed books"); //$NON-NLS-1$
-        System.err.println("    list      repositoryName           List available books from a repository"); //$NON-NLS-1$
-        System.err.println("    reload    repositoryName           Reload local cache for a repository"); //$NON-NLS-1$
-        System.err.println("    install   repositoryName bookName  Install a book from a repository"); //$NON-NLS-1$
+        System.err.println("usage: BookInstaller <option>");
+        System.err.println("Options:");
+        System.err.println("    uninstall bookName                 Uninstall book");
+        System.err.println("    sources                            List remote source repositories");
+        System.err.println("    list                               List installed books");
+        System.err.println("    list      repositoryName           List available books from a repository");
+        System.err.println("    reload    repositoryName           Reload local cache for a repository");
+        System.err.println("    install   repositoryName bookName  Install a book from a repository");
     }
 }

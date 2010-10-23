@@ -78,7 +78,7 @@ public final class KeyUtil {
         try {
             return VerseFactory.fromString(key.getName());
         } catch (NoSuchVerseException ex) {
-            log.warn("Key can't be a verse: " + key.getName()); //$NON-NLS-1$
+            log.warn("Key can't be a verse: " + key.getName());
             return Verse.DEFAULT;
         }
     }
@@ -101,7 +101,7 @@ public final class KeyUtil {
         try {
             ref = keyf.getKey(key.getName());
         } catch (NoSuchKeyException ex) {
-            log.warn("Key can't be a passage: " + key.getName()); //$NON-NLS-1$
+            log.warn("Key can't be a passage: " + key.getName());
             ref = keyf.createEmptyKeyList();
         }
         return (Passage) ref;

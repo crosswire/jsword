@@ -34,62 +34,62 @@ public final class FeatureType implements Serializable {
     /**
      * The book is one of Greek Definitions. AKA, Strong's.
      */
-    public static final FeatureType GREEK_DEFINITIONS = new FeatureType("GreekDef"); //$NON-NLS-1$
+    public static final FeatureType GREEK_DEFINITIONS = new FeatureType("GreekDef");
 
     /**
      * The book is one of Greek word parsings. AKA, Robinson.
      */
-    public static final FeatureType GREEK_PARSE = new FeatureType("GreekParse"); //$NON-NLS-1$
+    public static final FeatureType GREEK_PARSE = new FeatureType("GreekParse");
 
     /**
      * The book is one of Hebrew Definitions. AKA, Strong's.
      */
-    public static final FeatureType HEBREW_DEFINITIONS = new FeatureType("HebrewDef"); //$NON-NLS-1$
+    public static final FeatureType HEBREW_DEFINITIONS = new FeatureType("HebrewDef");
 
     /**
      * The book is one of Hebrew word parsings. AKA, ???.
      */
-    public static final FeatureType HEBREW_PARSE = new FeatureType("HebrewParse"); //$NON-NLS-1$
+    public static final FeatureType HEBREW_PARSE = new FeatureType("HebrewParse");
 
     /**
      * The book is one of Daily Devotions.
      */
-    public static final FeatureType DAILY_DEVOTIONS = new FeatureType("DailyDevotions"); //$NON-NLS-1$
+    public static final FeatureType DAILY_DEVOTIONS = new FeatureType("DailyDevotions");
 
     /**
      * The book is glossary of translations from one language to another.
      */
-    public static final FeatureType GLOSSARY = new FeatureType("Glossary"); //$NON-NLS-1$
+    public static final FeatureType GLOSSARY = new FeatureType("Glossary");
 
     /**
      * The book contains Strong's Numbers
      */
-    public static final FeatureType STRONGS_NUMBERS = new FeatureType("StrongsNumbers"); //$NON-NLS-1$
+    public static final FeatureType STRONGS_NUMBERS = new FeatureType("StrongsNumbers");
 
     /**
      * The book contains footnotes
      */
-    public static final FeatureType FOOTNOTES = new FeatureType("Footnotes"); //$NON-NLS-1$
+    public static final FeatureType FOOTNOTES = new FeatureType("Footnotes");
 
     /**
      * The book contains Scripture cross references
      */
-    public static final FeatureType SCRIPTURE_REFERENCES = new FeatureType("Scripref"); //$NON-NLS-1$
+    public static final FeatureType SCRIPTURE_REFERENCES = new FeatureType("Scripref");
 
     /**
      * The book marks the Word's of Christ
      */
-    public static final FeatureType WORDS_OF_CHRIST = new FeatureType("RedLetterText"); //$NON-NLS-1$
+    public static final FeatureType WORDS_OF_CHRIST = new FeatureType("RedLetterText");
 
     /**
      * The book contains Morphology info
      */
-    public static final FeatureType MORPHOLOGY = new FeatureType("Morph"); //$NON-NLS-1$
+    public static final FeatureType MORPHOLOGY = new FeatureType("Morph");
 
     /**
      * The book contains Headings
      */
-    public static final FeatureType HEADINGS = new FeatureType("Headings"); //$NON-NLS-1$
+    public static final FeatureType HEADINGS = new FeatureType("Headings");
 
     /**
      * @param name

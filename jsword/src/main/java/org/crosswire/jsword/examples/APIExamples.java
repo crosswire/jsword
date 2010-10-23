@@ -70,7 +70,7 @@ public class APIExamples {
     /**
      * The name of a Bible to find
      */
-    private static final String BIBLE_NAME = "KJV"; //$NON-NLS-1$
+    private static final String BIBLE_NAME = "KJV";
 
     /**
      * Get a particular installed book by initials.
@@ -95,7 +95,7 @@ public class APIExamples {
     public String getPlainText(String bookInitials, String reference) throws BookException, NoSuchKeyException {
         Book book = getBook(bookInitials);
         if (book == null) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         Key key = book.getKey(reference);
@@ -158,7 +158,7 @@ public class APIExamples {
         Book book = getBook(bookInitials);
         SAXEventProvider osissep = getOSIS(bookInitials, reference, maxKeyCount);
         if (osissep == null) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         Converter styler = ConverterFactory.getConverter();
@@ -169,7 +169,7 @@ public class APIExamples {
         // what the XSLT can use.
         BookMetaData bmd = book.getBookMetaData();
         boolean direction = bmd.isLeftToRight();
-        htmlsep.setParameter("direction", direction ? "ltr" : "rtl"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        htmlsep.setParameter("direction", direction ? "ltr" : "rtl");
 
         // Finally you can get the styled text.
         return XMLUtil.writeToString(htmlsep);
@@ -195,10 +195,10 @@ public class APIExamples {
         Key keys = dict.getGlobalKeyList();
         Key first = (Key) keys.iterator().next();
 
-        System.out.println("The first Key in the default dictionary is " + first); //$NON-NLS-1$
+        System.out.println("The first Key in the default dictionary is " + first);
 
         BookData data = new BookData(dict, first);
-        System.out.println("And the text against that key is " + OSISUtil.getPlainText(data.getOsisFragment())); //$NON-NLS-1$
+        System.out.println("And the text against that key is " + OSISUtil.getPlainText(data.getOsisFragment()));
     }
 
     /**
@@ -209,9 +209,9 @@ public class APIExamples {
 
         // This does a standard operator search. See the search documentation
         // for more examples of how to search
-        Key key = bible.find("+moses +aaron"); //$NON-NLS-1$
+        Key key = bible.find("+moses +aaron");
 
-        System.out.println("The following verses contain both moses and aaron: " + key.getName()); //$NON-NLS-1$
+        System.out.println("The following verses contain both moses and aaron: " + key.getName());
 
         // You can also trim the result to a more manageable quantity.
         // The test here is not necessary since we are working with a bible. It
@@ -219,8 +219,8 @@ public class APIExamples {
         // is.
         if (key instanceof Passage) {
             Passage remaining = ((Passage) key).trimVerses(5);
-            System.out.println("The first 5 verses containing both moses and aaron: " + key.getName()); //$NON-NLS-1$
-            System.out.println("The rest of the verses are: " + remaining.getName()); //$NON-NLS-1$
+            System.out.println("The first 5 verses containing both moses and aaron: " + key.getName());
+            System.out.println("The rest of the verses are: " + remaining.getName());
         }
     }
 
@@ -239,7 +239,7 @@ public class APIExamples {
         DefaultSearchModifier modifier = new DefaultSearchModifier();
         modifier.setRanked(rank);
 
-        Key results = bible.find(new DefaultSearchRequest("for god so loved the world", modifier)); //$NON-NLS-1$
+        Key results = bible.find(new DefaultSearchRequest("for god so loved the world", modifier));
         int total = results.getCardinality();
         int partial = total;
 
@@ -255,7 +255,7 @@ public class APIExamples {
                 partial = rankCount;
             }
         }
-        System.out.println("Showing the first " + partial + " of " + total + " verses."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        System.out.println("Showing the first " + partial + " of " + total + " verses.");
         System.out.println(results);
     }
 
@@ -270,14 +270,14 @@ public class APIExamples {
         Book bible = Books.installed().getBook(BIBLE_NAME);
 
         // Search for words like Melchezedik
-        Key key = bible.find("melchesidec~"); //$NON-NLS-1$
+        Key key = bible.find("melchesidec~");
 
         // Here is an example of how to iterate over the ranges and get the text
         // for each.
         // The key's iterator would have iterated over verses.
 
         // The following shows how to use a stylesheet of your own choosing
-        String path = "xsl/cswing/simple.xsl"; //$NON-NLS-1$
+        String path = "xsl/cswing/simple.xsl";
         URL xslurl = ResourceUtil.getResource(path);
         // Make ranges  break  on  chapter
         Iterator rangeIter = ((Passage) key).rangeIterator(RestrictionType.CHAPTER);
@@ -288,7 +288,7 @@ public class APIExamples {
             SAXEventProvider osissep = data.getSAXEventProvider();
             SAXEventProvider htmlsep = new TransformingSAXEventProvider(NetUtil.toURI(xslurl), osissep);
             String text = XMLUtil.writeToString(htmlsep);
-            System.out.println("The html text of " + range.getName() + " is " + text); //$NON-NLS-1$ //$NON-NLS-2$
+            System.out.println("The html text of " + range.getName() + " is " + text);
         }
     }
 
@@ -319,7 +319,7 @@ public class APIExamples {
 
         // If you are wanting to get really fancy you can implement your own
         // BookFilter easily
-        List test = Books.installed().getBooks(new MyBookFilter("ESV")); //$NON-NLS-1$
+        List test = Books.installed().getBooks(new MyBookFilter("ESV"));
         book = (Book) test.get(0);
 
         if (book != null) {
@@ -348,7 +348,7 @@ public class APIExamples {
             installer = (Installer) mapEntry.getValue();
         }
 
-        name = "CrossWire"; //$NON-NLS-1$
+        name = "CrossWire";
         // If we know the name of the installer we can get it directly
         installer = imanager.getInstaller(name);
 
@@ -363,18 +363,18 @@ public class APIExamples {
         List availableBooks = installer.getBooks();
 
         // get some available books. In this case, just one book.
-        availableBooks = installer.getBooks(new MyBookFilter("ESV")); //$NON-NLS-1$
+        availableBooks = installer.getBooks(new MyBookFilter("ESV"));
 
         Book book = (Book) availableBooks.get(0);
 
         if (book != null) {
-            System.out.println("Book " + book.getInitials() + " is available"); //$NON-NLS-1$ //$NON-NLS-2$
+            System.out.println("Book " + book.getInitials() + " is available");
 
             // Delete the book, if present
             // At the moment, JSword will not re-install. Later it will, if the
             // remote version is greater.
             try {
-                if (Books.installed().getBook("ESV") != null) { //$NON-NLS-1$
+                if (Books.installed().getBook("ESV") != null) {
                     // Make the book unavailable.
                     // This is normally done via listeners.
                     Books.installed().removeBook(book);
@@ -448,8 +448,8 @@ public class APIExamples {
         APIExamples examples = new APIExamples();
 
         examples.installBook();
-        System.out.println("The plain text of Gen 1:1 is " + examples.getPlainText(BIBLE_NAME, "Gen 1:1")); //$NON-NLS-1$ //$NON-NLS-2$
-        System.out.println("The html text of Gen 1:1 is " + examples.readStyledText(BIBLE_NAME, "Gen 1:1", 100)); //$NON-NLS-1$ //$NON-NLS-2$
+        System.out.println("The plain text of Gen 1:1 is " + examples.getPlainText(BIBLE_NAME, "Gen 1:1"));
+        System.out.println("The html text of Gen 1:1 is " + examples.readStyledText(BIBLE_NAME, "Gen 1:1", 100));
         examples.readDictionary();
         examples.search();
         examples.rankedSearch();

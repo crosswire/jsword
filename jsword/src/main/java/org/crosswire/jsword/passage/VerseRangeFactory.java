@@ -85,9 +85,10 @@ public final class VerseRangeFactory {
             return fromText(original, parts[0], parts[1], basis);
 
         default:
-            throw new NoSuchVerseException(UserMsg.RANGE_PARTS, new Object[] {
+            // TRANSLATOR: The user specified a verse range with too many separators. {0} is a placeholder for the allowable separators.
+            throw new NoSuchVerseException(UserMsg.gettext("A verse range cannot have more than 2 parts. (Parts are separated by {0}) Given {1}", new Object[] {
                     VerseRange.RANGE_ALLOWED_DELIMS, original
-            });
+            }));
         }
     }
 

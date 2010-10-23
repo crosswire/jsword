@@ -56,12 +56,12 @@ public class BookLookup {
             buf.append(book.getInitials());
             buf.append(':');
             buf.append(osisID);
-            buf.append(" - "); //$NON-NLS-1$
+            buf.append(" - ");
             String rawText = book.getRawText(currentKey);
             if (rawText != null && rawText.trim().length() > 0) {
                 buf.append(rawText);
             } else {
-                buf.append("Not found"); //$NON-NLS-1$
+                buf.append("Not found");
             }
         }
 
@@ -83,7 +83,7 @@ public class BookLookup {
             return;
         }
 
-        System.err.print("BookLookup"); //$NON-NLS-1$
+        System.err.print("BookLookup");
         for (int i = 0; i < args.length; i++) {
             System.err.print(' ');
             System.err.print(args[i]);
@@ -92,7 +92,7 @@ public class BookLookup {
 
         Book b = Books.installed().getBook(args[0]);
         if (b == null) {
-            System.err.println("Book not found"); //$NON-NLS-1$
+            System.err.println("Book not found");
             return;
         }
 
@@ -100,15 +100,15 @@ public class BookLookup {
         try {
             System.out.println(lookup.locate(b.getKey(args[1])));
         } catch (BookException e) {
-            System.err.println("Error while doing lookup"); //$NON-NLS-1$
+            System.err.println("Error while doing lookup");
             e.printStackTrace();
         } catch (NoSuchKeyException e) {
-            System.err.println("Error while doing lookup"); //$NON-NLS-1$
+            System.err.println("Error while doing lookup");
             e.printStackTrace();
         }
     }
 
     public static void usage() {
-        System.err.println("Usage: BookLookup book key"); //$NON-NLS-1$
+        System.err.println("Usage: BookLookup book key");
     }
 }

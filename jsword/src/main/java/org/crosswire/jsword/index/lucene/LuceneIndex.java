@@ -84,32 +84,32 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
     /**
      * The Lucene field for the osisID
      */
-    public static final String FIELD_KEY = "key"; //$NON-NLS-1$
+    public static final String FIELD_KEY = "key";
 
     /**
      * The Lucene field for the text contents
      */
-    public static final String FIELD_BODY = "content"; //$NON-NLS-1$
+    public static final String FIELD_BODY = "content";
 
     /**
      * The Lucene field for the strong numbers
      */
-    public static final String FIELD_STRONG = "strong"; //$NON-NLS-1$
+    public static final String FIELD_STRONG = "strong";
 
     /**
      * The Lucene field for headings
      */
-    public static final String FIELD_HEADING = "heading"; //$NON-NLS-1$
+    public static final String FIELD_HEADING = "heading";
 
     /**
      * The Lucene field for cross references
      */
-    public static final String FIELD_XREF = "xref"; //$NON-NLS-1$
+    public static final String FIELD_XREF = "xref";
 
     /**
      * The Lucene field for the notes
      */
-    public static final String FIELD_NOTE = "note"; //$NON-NLS-1$
+    public static final String FIELD_NOTE = "note";
 
     /**
      * Read an existing index and use it.
@@ -123,7 +123,8 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
         try {
             this.path = NetUtil.getAsFile(storage).getCanonicalPath();
         } catch (IOException ex) {
-            throw new BookException(UserMsg.LUCENE_INIT, ex);
+            // TRANSLATOR: Error condition: Could not initialize a search index.
+            throw new BookException(UserMsg.gettext("Failed to initialize Lucene search engine."), ex);
         }
     }
 
@@ -142,13 +143,15 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
             finalPath = NetUtil.getAsFile(storage);
             this.path = finalPath.getCanonicalPath();
         } catch (IOException ex) {
-            throw new BookException(UserMsg.LUCENE_INIT, ex);
+            // TRANSLATOR: Error condition: Could not initialize a search index. Lucene is the name of the search technology being used.
+            throw new BookException(UserMsg.gettext("Failed to initialize Lucene search engine."), ex);
         }
 
         // Indexing the book is a good way to police data errors.
         DataPolice.setBook(book.getBookMetaData());
 
-        Progress job = JobManager.createJob(UserMsg.INDEX_START.toString(book.getInitials()), Thread.currentThread(), false);
+        // TRANSLATOR: Progress label indicating the start of indexing. {0} is a placeholder for the book's short name.
+        Progress job = JobManager.createJob(UserMsg.gettext("Creating index. Processing {0}", book.getInitials()), Thread.currentThread(), false);
 
         IndexStatus finalStatus = IndexStatus.UNDONE;
 
@@ -173,7 +176,8 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
 
                 generateSearchIndexImpl(job, errors, writer, book.getGlobalKeyList(), 0);
 
-                job.setSectionName(UserMsg.OPTIMIZING.toString());
+                // TRANSLATOR: Progress label for optimizing a search index. This may take a bit of time, so we have a label for it.
+                job.setSectionName(UserMsg.gettext("Optimizing"));
                 job.setWork(95);
 
                 // Consolidate the index into the minimum number of files.
@@ -195,7 +199,8 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
                 job.setCancelable(false);
                 if (!job.isFinished()) {
                     if (!tempPath.renameTo(finalPath)) {
-                        throw new BookException(UserMsg.INSTALL_FAIL);
+                        // TRANSLATOR: The search index could not be moved to it's final location.
+                        throw new BookException(UserMsg.gettext("Installation failed."));
                     }
                 }
 
@@ -210,13 +215,16 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
                         buf.append(iter.next());
                         buf.append('\n');
                     }
-                    Reporter.informUser(this, UserMsg.BAD_VERSE, buf);
+                    // TRANSLATOR: It is likely that one or more verses could not be indexed due to errors in those verses.
+                    // This message gives a listing of them to the user.
+                    Reporter.informUser(this, UserMsg.gettext("The following verses have errors and could not be indexed\n{0}", buf));
                 }
 
             }
         } catch (IOException ex) {
             job.cancel();
-            throw new BookException(UserMsg.LUCENE_INIT, ex);
+            // TRANSLATOR: Common error condition: Some error happened while creating a search index.
+            throw new BookException(UserMsg.gettext("Failed to initialize Lucene search engine."), ex);
         } finally {
             book.setIndexStatus(finalStatus);
             job.done();
@@ -241,7 +249,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
                 QueryParser parser = new QueryParser(Version.LUCENE_29, LuceneIndex.FIELD_BODY, analyzer);
                 parser.setAllowLeadingWildcard(true);
                 Query query = parser.parse(search);
-                log.info("ParsedQuery-" + query.toString()); //$NON-NLS-1$
+                log.info("ParsedQuery-" + query.toString());
 
                 // For ranking we use a PassageTally
                 if (modifier != null && modifier.isRanked()) {
@@ -286,14 +294,18 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
                 // NoSuchVerseException
                 Throwable cause = e.getCause();
                 if (cause instanceof NoSuchVerseException) {
-                    throw new BookException(UserMsg.SEARCH_FAILED, cause);
+                    // TRANSLATOR: Error condition: An unexpected error happened that caused search to fail.
+                    throw new BookException(UserMsg.gettext("Search failed."), cause);
                 }
 
-                throw new BookException(UserMsg.SEARCH_FAILED, e);
+                // TRANSLATOR: Error condition: An unexpected error happened that caused search to fail.
+                throw new BookException(UserMsg.gettext("Search failed."), e);
             } catch (NoSuchVerseException e) {
-                throw new BookException(UserMsg.SEARCH_FAILED, e);
+                // TRANSLATOR: Error condition: An unexpected error happened that caused search to fail.
+                throw new BookException(UserMsg.gettext("Search failed."), e);
             } catch (ParseException e) {
-                throw new BookException(UserMsg.SEARCH_FAILED, e);
+                // TRANSLATOR: Error condition: An unexpected error happened that caused search to fail.
+                throw new BookException(UserMsg.gettext("Search failed."), e);
             } finally {
                 Activator.deactivate(this);
             }
@@ -330,7 +342,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
             directory = FSDirectory.open(new File(path));
             searcher = new IndexSearcher(directory, true);
         } catch (IOException ex) {
-            log.warn("second load failure", ex); //$NON-NLS-1$
+            log.warn("second load failure", ex);
         }
 
         active = true;
@@ -375,21 +387,21 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
         boolean hasNotes = book.getBookMetaData().hasFeature(FeatureType.FOOTNOTES);
         boolean hasHeadings = book.getBookMetaData().hasFeature(FeatureType.HEADINGS);
 
-        String oldRootName = ""; //$NON-NLS-1$
+        String oldRootName = "";
         int percent = 0;
-        String rootName = ""; //$NON-NLS-1$
+        String rootName = "";
         BookData data = null;
         Key subkey = null;
         Element osis = null;
 
         // Set up for reuse.
         Document doc = new Document();
-        Field keyField = new Field(FIELD_KEY, "", Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.NO); //$NON-NLS-1$
-        Field bodyField = new Field(FIELD_BODY, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO); //$NON-NLS-1$
-        Field strongField = new Field(FIELD_STRONG, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO); //$NON-NLS-1$
-        Field xrefField = new Field(FIELD_XREF, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO); //$NON-NLS-1$
-        Field noteField = new Field(FIELD_NOTE, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO); //$NON-NLS-1$
-        Field headingField = new Field(FIELD_HEADING, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO); //$NON-NLS-1$
+        Field keyField = new Field(FIELD_KEY, "", Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.NO);
+        Field bodyField = new Field(FIELD_BODY, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
+        Field strongField = new Field(FIELD_STRONG, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
+        Field xrefField = new Field(FIELD_XREF, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
+        Field noteField = new Field(FIELD_NOTE, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
+        Field headingField = new Field(FIELD_HEADING, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
 
         int size = key.getCardinality();
         int subCount = count;

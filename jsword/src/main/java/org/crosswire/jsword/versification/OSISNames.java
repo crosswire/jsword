@@ -131,7 +131,7 @@ public final class OSISNames {
     }
 
     /** The Locale of OSIS Names */
-    private static final Locale OSIS_LOCALE = new Locale("en"); //$NON-NLS-1$
+    private static final Locale OSIS_LOCALE = new Locale("en");
 
     /**
      * A singleton used to do initialization. Could be used to change static
@@ -139,7 +139,7 @@ public final class OSISNames {
      */
     static final OSISNames instance = new OSISNames();
 
-    private static final String OSIS_KEY = "OSIS."; //$NON-NLS-1$
+    private static final String OSIS_KEY = "OSIS.";
 
     /** Standard OSIS names for the book of the Bible, in mixed case */
     private static String[] osisBooks;

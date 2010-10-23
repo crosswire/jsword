@@ -52,14 +52,14 @@ public class ReadEverything {
         DataPolice.setLevel(Level.FINEST);
 
         // Loop through all the Books
-        log.warn("*** Reading all installed Bibles"); //$NON-NLS-1$
-        BookFilter filter = BookFilters.getCustom("SourceType=TEI"); //$NON-NLS-1$
+        log.warn("*** Reading all installed Bibles");
+        BookFilter filter = BookFilters.getCustom("SourceType=TEI");
         List comments = Books.installed().getBooks(filter);
         for (Iterator cit = comments.iterator(); cit.hasNext();) {
             Book book = (Book) cit.next();
 
             if (!book.isLocked()) {
-                log.warn("****** Reading: " + book.getInitials()); //$NON-NLS-1$
+                log.warn("****** Reading: " + book.getInitials());
                 Key set = book.getGlobalKeyList();
 
                 testReadMultiple(book, set);
@@ -96,7 +96,7 @@ public class ReadEverything {
         long end = System.currentTimeMillis();
         float time = (end - start) / 1000F;
 
-        log.info("Tested: book=" + book.getInitials() + " entries=" + entries + " time=" + time + "s (" + (1000 * time / entries) + "ms per entry)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+        log.info("Tested: book=" + book.getInitials() + " entries=" + entries + " time=" + time + "s (" + (1000 * time / entries) + "ms per entry)");
     }
 
     /**
@@ -108,14 +108,14 @@ public class ReadEverything {
 
             BookData data = new BookData(book, key);
             if (data.getOsisFragment() == null) {
-                log.warn("No output from: " + book.getInitials() + ", " + key.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+                log.warn("No output from: " + book.getInitials() + ", " + key.getName());
             }
 
             // This might be a useful extra test, except that a failure gives
             // you no help at all.
             // data.validate();
         } catch (Throwable ex) {
-            log.error("Unexpected error reading: " + book.getInitials() + ", " + key.getName(), ex); //$NON-NLS-1$ //$NON-NLS-2$
+            log.error("Unexpected error reading: " + book.getInitials() + ", " + key.getName(), ex);
         }
     }
 

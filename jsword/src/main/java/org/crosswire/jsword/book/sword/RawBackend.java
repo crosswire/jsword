@@ -114,14 +114,16 @@ public class RawBackend extends AbstractBackend {
 
                 // If this is a single testament Bible, return nothing.
                 if (idxRaf[testament] == null) {
-                    return ""; //$NON-NLS-1$
+                    return "";
                 }
 
                 return getEntry(key.getName(), testament, index);
             } catch (IOException ex) {
-                throw new BookException(UserMsg.READ_FAIL, ex, new Object[] {
+                // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
+                // {0} is a placeholder for the file.
+                throw new BookException(UserMsg.gettext("Error reading {0}", new Object[] {
                     verse.getName()
-                });
+                }), ex);
             }
         } finally {
             DataPolice.setKey(null);
@@ -208,7 +210,7 @@ public class RawBackend extends AbstractBackend {
                 txtRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(txtFile[SwordConstants.TESTAMENT_OLD], fileMode);
             } catch (FileNotFoundException ex) {
                 assert false : ex;
-                log.error("Could not open OT", ex); //$NON-NLS-1$
+                log.error("Could not open OT", ex);
                 idxRaf[SwordConstants.TESTAMENT_OLD] = null;
                 txtRaf[SwordConstants.TESTAMENT_OLD] = null;
             }
@@ -220,7 +222,7 @@ public class RawBackend extends AbstractBackend {
                 txtRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(txtFile[SwordConstants.TESTAMENT_NEW], fileMode);
             } catch (FileNotFoundException ex) {
                 assert false : ex;
-                log.error("Could not open NT", ex); //$NON-NLS-1$
+                log.error("Could not open NT", ex);
                 idxRaf[SwordConstants.TESTAMENT_NEW] = null;
                 txtRaf[SwordConstants.TESTAMENT_NEW] = null;
             }
@@ -244,7 +246,7 @@ public class RawBackend extends AbstractBackend {
             idxRaf[SwordConstants.TESTAMENT_NEW].close();
             txtRaf[SwordConstants.TESTAMENT_NEW].close();
         } catch (IOException ex) {
-            log.error("Failed to close files", ex); //$NON-NLS-1$
+            log.error("Failed to close files", ex);
         } finally {
             idxRaf[SwordConstants.TESTAMENT_OLD] = null;
             txtRaf[SwordConstants.TESTAMENT_OLD] = null;
@@ -312,12 +314,12 @@ public class RawBackend extends AbstractBackend {
 
         int size = dataIndex.getSize();
         if (size == 0) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         if (size < 0) {
-            log.error("In " + getBookMetaData().getInitials() + ": Verse " + name + " has a bad index size of " + size); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            return ""; //$NON-NLS-1$
+            log.error("In " + getBookMetaData().getInitials() + ": Verse " + name + " has a bad index size of " + size);
+            return "";
         }
 
         byte[] data = SwordUtil.readRAF(txtRaf[testament], dataIndex.getOffset(), size);

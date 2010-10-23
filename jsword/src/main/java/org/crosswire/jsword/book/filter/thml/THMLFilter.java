@@ -76,10 +76,10 @@ public class THMLFilter implements Filter {
                 int start = Math.max(0, colNumber - 40);
                 int stop = Math.min(finalInput.length(), colNumber + 40);
                 int here = stop - start;
-                log.warn("Could not fix " + book.getInitials() + '(' + key.getName() + ") by " + //$NON-NLS-1$ //$NON-NLS-2$
-                        errorMessage + ": Error here(" + colNumber + ',' + finalInput.length() + ',' + here + "): " + finalInput.substring(start, stop)); //$NON-NLS-1$ //$NON-NLS-2$
+                log.warn("Could not fix " + book.getInitials() + '(' + key.getName() + ") by " +
+                        errorMessage + ": Error here(" + colNumber + ',' + finalInput.length() + ',' + here + "): " + finalInput.substring(start, stop));
             } else {
-                log.warn("Could not fix " + book.getInitials() + "(" + key.getName() + ") by " + errorMessage + ": " + error.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                log.warn("Could not fix " + book.getInitials() + "(" + key.getName() + ") by " + errorMessage + ": " + error.getMessage());
             }
             ele = OSISUtil.factory().createP();
         }
@@ -104,7 +104,7 @@ public class THMLFilter implements Filter {
     private Element cleanParse(Book book, Key key, String plain) {
         // So just try to strip out all XML looking things
         String clean = XMLUtil.cleanAllEntities(plain);
-        Element ele = parse(book, key, clean, "cleaning entities"); //$NON-NLS-1$
+        Element ele = parse(book, key, clean, "cleaning entities");
 
         if (ele == null) {
             ele = cleanText(book, key, clean);
@@ -116,10 +116,10 @@ public class THMLFilter implements Filter {
     private Element cleanText(Book book, Key key, String plain) {
         // So just try to strip out all XML looking things
         String clean = XMLUtil.cleanAllCharacters(plain);
-        Element ele = parse(book, key, clean, "cleaning text"); //$NON-NLS-1$
+        Element ele = parse(book, key, clean, "cleaning text");
 
         if (ele == null) {
-            ele = parse(book, key, XMLUtil.closeEmptyTags(clean), "closing empty tags"); //$NON-NLS-1$
+            ele = parse(book, key, XMLUtil.closeEmptyTags(clean), "closing empty tags");
         }
 
         if (ele == null) {
@@ -132,7 +132,7 @@ public class THMLFilter implements Filter {
     private Element cleanTags(Book book, Key key, String plain) {
         // So just try to strip out all XML looking things
         String clean = XMLUtil.cleanAllTags(plain);
-        return parse(book, key, clean, "cleaning tags"); //$NON-NLS-1$
+        return parse(book, key, clean, "cleaning tags");
     }
 
     private Element parse(Book book, Key key, String plain, String failMessage) {
@@ -140,7 +140,7 @@ public class THMLFilter implements Filter {
         // We need to create a root element to house our document fragment
         StringBuffer buf = new StringBuffer(15 + plain.length()); // 15 for the
                                                                   // tags we add
-        buf.append('<').append(RootTag.TAG_ROOT).append('>').append(plain).append("</").append(RootTag.TAG_ROOT).append('>'); //$NON-NLS-1$
+        buf.append('<').append(RootTag.TAG_ROOT).append('>').append(plain).append("</").append(RootTag.TAG_ROOT).append('>');
         finalInput = buf.toString();
         try {
             StringReader in = new StringReader(finalInput);

@@ -203,7 +203,7 @@ public final class Verse implements Key {
             return verseName;
         } catch (NoSuchKeyException ex) {
             assert false : ex;
-            return "!Error!"; //$NON-NLS-1$
+            return "!Error!";
         }
     }
 
@@ -217,7 +217,7 @@ public final class Verse implements Key {
             return BibleInfo.getShortBookName(book);
         } catch (NoSuchKeyException ex) {
             assert false : ex;
-            return "!Error!"; //$NON-NLS-1$
+            return "!Error!";
         }
     }
 
@@ -231,7 +231,7 @@ public final class Verse implements Key {
             return BibleInfo.getOSISName(book) + Verse.VERSE_OSIS_DELIM + chapter + Verse.VERSE_OSIS_DELIM + verse;
         } catch (NoSuchVerseException ex) {
             assert false : ex;
-            return "!Error!"; //$NON-NLS-1$
+            return "!Error!";
         }
     }
 
@@ -514,7 +514,7 @@ public final class Verse implements Key {
             return BibleInfo.verseOrdinal(book, chapter, verse);
         } catch (NoSuchVerseException ex) {
             // A verse should never be illegal so
-            log.error("ref=" + book + ", " + chapter + ", " + verse); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            log.error("ref=" + book + ", " + chapter + ", " + verse);
             assert false : ex;
             return 1;
         }
@@ -690,9 +690,11 @@ public final class Verse implements Key {
         try {
             return Integer.parseInt(shaper.unshape(text));
         } catch (NumberFormatException ex) {
-            throw new NoSuchVerseException(UserMsg.VERSE_PARSE, new Object[] {
+            // TRANSLATOR: The chapter or verse number is actually not a number, but something else.
+            // {0} is a placeholder for what the user supplied.
+            throw new NoSuchVerseException(UserMsg.gettext("Cannot understand {0} as a chapter or verse.", new Object[] {
                 text
-            });
+            }));
         }
     }
 
@@ -956,17 +958,17 @@ public final class Verse implements Key {
      * What characters should we use to separate parts of an OSIS verse
      * reference
      */
-    public static final String VERSE_OSIS_DELIM = "."; //$NON-NLS-1$
+    public static final String VERSE_OSIS_DELIM = ".";
 
     /**
      * What characters should we use to separate the book from the chapter
      */
-    public static final String VERSE_PREF_DELIM1 = " "; //$NON-NLS-1$
+    public static final String VERSE_PREF_DELIM1 = " ";
 
     /**
      * What characters should we use to separate the chapter from the verse
      */
-    public static final String VERSE_PREF_DELIM2 = ":"; //$NON-NLS-1$
+    public static final String VERSE_PREF_DELIM2 = ":";
 
     /**
      * The default verse

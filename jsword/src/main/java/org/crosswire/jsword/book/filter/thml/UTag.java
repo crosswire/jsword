@@ -39,7 +39,7 @@ public class UTag extends AbstractTag {
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
     public String getTagName() {
-        return "u"; //$NON-NLS-1$
+        return "u";
     }
 
     /*

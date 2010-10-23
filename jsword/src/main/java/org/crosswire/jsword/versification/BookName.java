@@ -221,11 +221,11 @@ public final class BookName {
      * @return the normalized string
      */
     public static String normalize(String str, Locale locale) {
-        return normPattern.matcher(str).replaceAll("").toLowerCase(locale); //$NON-NLS-1$
+        return normPattern.matcher(str).replaceAll("").toLowerCase(locale);
     }
 
     /** remove spaces and some punctuation in Book Name (make sure , is allowed) */
-    private static Pattern normPattern = Pattern.compile("[. ]"); //$NON-NLS-1$
+    private static Pattern normPattern = Pattern.compile("[. ]");
 
     private int bookNumber;
     private String longName;

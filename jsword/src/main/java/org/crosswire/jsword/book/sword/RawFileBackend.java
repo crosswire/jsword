@@ -53,7 +53,7 @@ public class RawFileBackend extends RawBackend {
         try {
             incfileValue = readIncfile();
         } catch (IOException e) {
-            log.error("Error on reading incfile!"); //$NON-NLS-1$
+            log.error("Error on reading incfile!");
         }
     }
 
@@ -86,12 +86,12 @@ public class RawFileBackend extends RawBackend {
         DataIndex dataIndex = getIndex(idxRaf[testament], index);
         int size = dataIndex.getSize();
         if (size == 0) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         if (size < 0) {
-            log.error("In " + getBookMetaData().getInitials() + ": Verse " + name + " has a bad index size of " + size); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            return ""; //$NON-NLS-1$
+            log.error("In " + getBookMetaData().getInitials() + ": Verse " + name + " has a bad index size of " + size);
+            return "";
         }
 
         try {
@@ -122,7 +122,7 @@ public class RawFileBackend extends RawBackend {
             dataFile = getDataTextFile(testament, dataIndex);
         }
 
-        byte[] textData = text.getBytes("UTF-8"); //$NON-NLS-1$
+        byte[] textData = text.getBytes("UTF-8");
         encipher(textData);
         writeTextDataFile(dataFile, textData);
 
@@ -151,7 +151,7 @@ public class RawFileBackend extends RawBackend {
                 this.incfile = tempIncfile;
             }
         } catch (BookException e) {
-            log.error("Error on checking incfile: " + e.getMessage()); //$NON-NLS-1$
+            log.error("Error on checking incfile: " + e.getMessage());
         }
     }
 
@@ -159,10 +159,10 @@ public class RawFileBackend extends RawBackend {
         String dataPath = getExpandedDataPath().getPath();
         // JDK15: Use String.format instead
         // dataPath += File.separator + String.format("%07d", index);
-        dataPath += File.separator + new DecimalFormat("0000000").format(index); //$NON-NLS-1$
+        dataPath += File.separator + new DecimalFormat("0000000").format(index);
         File dataFile = new File(dataPath);
         if (!dataFile.exists() && !dataFile.createNewFile()) {
-            throw new IOException("Could not create data file."); //$NON-NLS-1$
+            throw new IOException("Could not create data file.");
         }
         return dataFile;
     }
@@ -179,8 +179,8 @@ public class RawFileBackend extends RawBackend {
             String dataPath = getExpandedDataPath().getPath() + File.separator + dataFilename;
             dataFile = new File(dataPath);
         } else {
-            log.error("Read data is not of appropriate size of 9 bytes!"); //$NON-NLS-1$
-            throw new IOException("Datalength is not 9 bytes!"); //$NON-NLS-1$
+            log.error("Read data is not of appropriate size of 9 bytes!");
+            throw new IOException("Datalength is not 9 bytes!");
         }
         return dataFile;
     }
@@ -207,8 +207,8 @@ public class RawFileBackend extends RawBackend {
         // JDK15: Use String.format instead
         // String fileName = String.format("%07d\r\n", ordinal);
         StringBuffer buf = new StringBuffer();
-        buf.append(new DecimalFormat("0000000").format(ordinal)); //$NON-NLS-1$
-        buf.append("\r\n"); //$NON-NLS-1$
+        buf.append(new DecimalFormat("0000000").format(ordinal));
+        buf.append("\r\n");
         String fileName = buf.toString();
         BufferedOutputStream bos = null;
         try {
@@ -271,12 +271,12 @@ public class RawFileBackend extends RawBackend {
 
         File otTextFile = new File(path + File.separator + SwordConstants.FILE_OT);
         if (!otTextFile.exists() && !otTextFile.createNewFile()) {
-            throw new IOException("Could not create ot text file."); //$NON-NLS-1$
+            throw new IOException("Could not create ot text file.");
         }
 
         File ntTextFile = new File(path + File.separator + SwordConstants.FILE_NT);
         if (!ntTextFile.exists() && !ntTextFile.createNewFile()) {
-            throw new IOException("Could not create nt text file."); //$NON-NLS-1$
+            throw new IOException("Could not create nt text file.");
         }
     }
 
@@ -284,12 +284,12 @@ public class RawFileBackend extends RawBackend {
         String path = getExpandedDataPath().getPath();
         File otIndexFile = new File(path + File.separator + SwordConstants.FILE_OT + SwordConstants.EXTENSION_VSS);
         if (!otIndexFile.exists() && !otIndexFile.createNewFile()) {
-            throw new IOException("Could not create ot index file."); //$NON-NLS-1$
+            throw new IOException("Could not create ot index file.");
         }
 
         File ntIndexFile = new File(path + File.separator + SwordConstants.FILE_NT + SwordConstants.EXTENSION_VSS);
         if (!ntIndexFile.exists() && !ntIndexFile.createNewFile()) {
-            throw new IOException("Could not create nt index file."); //$NON-NLS-1$
+            throw new IOException("Could not create nt index file.");
         }
     }
 
@@ -320,7 +320,7 @@ public class RawFileBackend extends RawBackend {
     private void createIncfile() throws IOException, BookException {
         File tempIncfile = new File(getExpandedDataPath().getPath() + File.separator + INCFILE);
         if (!tempIncfile.exists() && !tempIncfile.createNewFile()) {
-            throw new IOException("Could not create incfile file."); //$NON-NLS-1$
+            throw new IOException("Could not create incfile file.");
         }
         this.incfile = tempIncfile;
     }
@@ -335,7 +335,7 @@ public class RawFileBackend extends RawBackend {
             fos = new FileOutputStream(this.incfile, false);
             fos.write(littleEndian32BitByteArrayFromInt(value));
         } catch (FileNotFoundException e) {
-            log.error("Error on writing to incfile, file should exist already!"); //$NON-NLS-1$
+            log.error("Error on writing to incfile, file should exist already!");
             log.error(e.getMessage());
         } finally {
             if (fos != null) {
@@ -352,12 +352,12 @@ public class RawFileBackend extends RawBackend {
                 fis = new FileInputStream(this.incfile);
                 byte[] buffer = new byte[4];
                 if (fis.read(buffer) != 4) {
-                    log.error("Read data is not of appropriate size of 4 bytes!"); //$NON-NLS-1$
-                    throw new IOException("Incfile is not 4 bytes long"); //$NON-NLS-1$
+                    log.error("Read data is not of appropriate size of 4 bytes!");
+                    throw new IOException("Incfile is not 4 bytes long");
                 }
                 ret = SwordUtil.decodeLittleEndian32(buffer, 0);
             } catch (FileNotFoundException e) {
-                log.error("Error on writing to incfile, file should exist already!"); //$NON-NLS-1$
+                log.error("Error on writing to incfile, file should exist already!");
                 log.error(e.getMessage());
             } finally {
                 if (fis != null) {
@@ -381,13 +381,13 @@ public class RawFileBackend extends RawBackend {
             byte[] textData = new byte[len];
             inStream = new BufferedInputStream(new FileInputStream(dataFile));
             if (inStream.read(textData) != len) {
-                log.error("Read data is not of appropriate size of " + len + " bytes!"); //$NON-NLS-1$ //$NON-NLS-2$
-                throw new IOException("data is not " + len + " bytes long"); //$NON-NLS-1$ //$NON-NLS-2$
+                log.error("Read data is not of appropriate size of " + len + " bytes!");
+                throw new IOException("data is not " + len + " bytes long");
             }
             return textData;
         } catch (FileNotFoundException ex) {
             log.error(ex.getMessage());
-            throw new IOException("Could not read text data file, file not found: " + dataFile.getName()); //$NON-NLS-1$
+            throw new IOException("Could not read text data file, file not found: " + dataFile.getName());
         } finally {
             if (inStream != null) {
                 inStream.close();
@@ -420,7 +420,7 @@ public class RawFileBackend extends RawBackend {
     }
 
     private static final Logger log = Logger.getLogger(RawFileBackend.class);
-    private static final String INCFILE = "incfile"; //$NON-NLS-1$
+    private static final String INCFILE = "incfile";
 
     private File incfile;
     private int incfileValue;

@@ -91,101 +91,101 @@ public class VerseTest extends TestCase {
 
     public void testNewViaString() throws Exception {
         assertEquals(gen11, Verse.DEFAULT);
-        assertEquals(gen11, VerseFactory.fromString("Genesis 1 1")); //$NON-NLS-1$
-        assertEquals(gen11, VerseFactory.fromString("Gen 1 1")); //$NON-NLS-1$
-        assertEquals(gen11, VerseFactory.fromString("G 1 1")); //$NON-NLS-1$
-        assertEquals(gen11, VerseFactory.fromString("genesis 1 1")); //$NON-NLS-1$
-        assertEquals(gen11, VerseFactory.fromString("genesi 1 1")); //$NON-NLS-1$
-        assertEquals(gen11, VerseFactory.fromString("GENESIS 1 1")); //$NON-NLS-1$
-        assertEquals(gen11, VerseFactory.fromString("GENESI 1 1")); //$NON-NLS-1$
-        assertEquals(gen11, VerseFactory.fromString("g 1 1")); //$NON-NLS-1$
-        assertEquals(gen11, VerseFactory.fromString("g 1")); //$NON-NLS-1$
-        assertEquals(gen11, VerseFactory.fromString("g")); //$NON-NLS-1$
-        assertEquals(gen11, VerseFactory.fromString("gen")); //$NON-NLS-1$
-        assertEquals(rev99, VerseFactory.fromString("rev 22 21")); //$NON-NLS-1$
-        assertEquals(rev99, VerseFactory.fromString("REVE 22 21")); //$NON-NLS-1$
-        assertEquals(rev99, VerseFactory.fromString("REVELATIONS 22 21")); //$NON-NLS-1$
-        assertEquals(gen21, VerseFactory.fromString("g 2")); //$NON-NLS-1$
-        assertEquals(gen11, VerseFactory.fromString("g.1.1")); //$NON-NLS-1$
-        assertEquals(gen11, VerseFactory.fromString("g 1.1")); //$NON-NLS-1$
-        assertEquals(gen11, VerseFactory.fromString("g.1 1")); //$NON-NLS-1$
-        assertEquals(gen11, VerseFactory.fromString("g.1:1")); //$NON-NLS-1$
-        assertEquals(gen11, VerseFactory.fromString("g:1:1")); //$NON-NLS-1$
-        assertEquals(gen11, VerseFactory.fromString("g:1 1")); //$NON-NLS-1$
-        assertEquals(gen11, VerseFactory.fromString(" g 1 1 ")); //$NON-NLS-1$
-        assertEquals(gen11, VerseFactory.fromString("gen1")); //$NON-NLS-1$
-        assertEquals(gen11, VerseFactory.fromString("GEN1")); //$NON-NLS-1$
-        assertEquals(gen11, VerseFactory.fromString("GENESIS1:1")); //$NON-NLS-1$
-        assertEquals(gen11, VerseFactory.fromString("G1    1")); //$NON-NLS-1$
-        assertEquals(gen11, VerseFactory.fromString(" GEN  1  1  ")); //$NON-NLS-1$
+        assertEquals(gen11, VerseFactory.fromString("Genesis 1 1"));
+        assertEquals(gen11, VerseFactory.fromString("Gen 1 1"));
+        assertEquals(gen11, VerseFactory.fromString("G 1 1"));
+        assertEquals(gen11, VerseFactory.fromString("genesis 1 1"));
+        assertEquals(gen11, VerseFactory.fromString("genesi 1 1"));
+        assertEquals(gen11, VerseFactory.fromString("GENESIS 1 1"));
+        assertEquals(gen11, VerseFactory.fromString("GENESI 1 1"));
+        assertEquals(gen11, VerseFactory.fromString("g 1 1"));
+        assertEquals(gen11, VerseFactory.fromString("g 1"));
+        assertEquals(gen11, VerseFactory.fromString("g"));
+        assertEquals(gen11, VerseFactory.fromString("gen"));
+        assertEquals(rev99, VerseFactory.fromString("rev 22 21"));
+        assertEquals(rev99, VerseFactory.fromString("REVE 22 21"));
+        assertEquals(rev99, VerseFactory.fromString("REVELATIONS 22 21"));
+        assertEquals(gen21, VerseFactory.fromString("g 2"));
+        assertEquals(gen11, VerseFactory.fromString("g.1.1"));
+        assertEquals(gen11, VerseFactory.fromString("g 1.1"));
+        assertEquals(gen11, VerseFactory.fromString("g.1 1"));
+        assertEquals(gen11, VerseFactory.fromString("g.1:1"));
+        assertEquals(gen11, VerseFactory.fromString("g:1:1"));
+        assertEquals(gen11, VerseFactory.fromString("g:1 1"));
+        assertEquals(gen11, VerseFactory.fromString(" g 1 1 "));
+        assertEquals(gen11, VerseFactory.fromString("gen1"));
+        assertEquals(gen11, VerseFactory.fromString("GEN1"));
+        assertEquals(gen11, VerseFactory.fromString("GENESIS1:1"));
+        assertEquals(gen11, VerseFactory.fromString("G1    1"));
+        assertEquals(gen11, VerseFactory.fromString(" GEN  1  1  "));
         /*
          * See note in AccuracyType.tokenize() assertEquals(gen11,
-         * VerseFactory.fromString("gen1v1")); //$NON-NLS-1$ assertEquals(gen11,
-         * VerseFactory.fromString("gen 1 v 1")); //$NON-NLS-1$
+         * VerseFactory.fromString("gen1v1")); assertEquals(gen11,
+         * VerseFactory.fromString("gen 1 v 1"));
          * assertEquals(gen11, VerseFactory.fromString("gen 1v1"));
-         * //$NON-NLS-1$ assertEquals(gen11,
-         * VerseFactory.fromString("gen 1  v  1")); //$NON-NLS-1$
+         * assertEquals(gen11,
+         * VerseFactory.fromString("gen 1  v  1"));
          * assertEquals(gen11, VerseFactory.fromString("gen 1  v  1 "));
-         * //$NON-NLS-1$ assertEquals(gen11,
-         * VerseFactory.fromString(" gen 1  v  1 ")); //$NON-NLS-1$
+         * assertEquals(gen11,
+         * VerseFactory.fromString(" gen 1  v  1 "));
          * assertEquals(gen11, VerseFactory.fromString("gen ch1 1"));
          * assertEquals(gen11, VerseFactory.fromString("gen ch 1 1"));
          * assertEquals(gen11, VerseFactory.fromString("gen ch  1 1"));
          * assertEquals(gen11, VerseFactory.fromString("gen ch1v1"));
          * assertEquals(gen11, VerseFactory.fromString(" gen ch 1 v 1 "));
          */
-        assertEquals(gen11, VerseFactory.fromString(" gen 1 1 ")); //$NON-NLS-1$
-        //assertEquals(pro11, VerseFactory.fromString("proverbs 1v1")); //$NON-NLS-1$
+        assertEquals(gen11, VerseFactory.fromString(" gen 1 1 "));
+        //assertEquals(pro11, VerseFactory.fromString("proverbs 1v1"));
         // assertEquals(ch111, VerseFactory.fromString("1chronicles ch1 1"));
-        assertEquals(ssa11, VerseFactory.fromString("2Sa 1:1")); //$NON-NLS-1$
-        assertEquals(ssa11, VerseFactory.fromString("2Sa 1 1")); //$NON-NLS-1$
-        assertEquals(ssa11, VerseFactory.fromString("2Sa1 1")); //$NON-NLS-1$
-        assertEquals(ssa11, VerseFactory.fromString("2 Sa 1 1")); //$NON-NLS-1$
-        assertEquals(ssa11, VerseFactory.fromString("2 Sa1 1")); //$NON-NLS-1$
-        assertEquals(ssa11, VerseFactory.fromString("2Sa1:1")); //$NON-NLS-1$
-        assertEquals(ssa11, VerseFactory.fromString("2 Sa 1 1")); //$NON-NLS-1$
-        assertEquals(ssa11, VerseFactory.fromString("  2  Sa  1  ")); //$NON-NLS-1$
-        assertEquals(ssa11, VerseFactory.fromString("  2  Sa  ")); //$NON-NLS-1$
-        assertEquals(ssa11, VerseFactory.fromString("  2  Sa1  ")); //$NON-NLS-1$
-        assertEquals(ssa11, VerseFactory.fromString("  2  Sa1  1  ")); //$NON-NLS-1$
-        assertEquals(ssa11, VerseFactory.fromString("  2 : Sa1  1  ")); //$NON-NLS-1$
-        assertEquals(rev99, VerseFactory.fromString("Rev 22:$")); //$NON-NLS-1$
-        assertEquals(rev99, VerseFactory.fromString(" Rev 22 ff ")); //$NON-NLS-1$
-        assertEquals(rev99, VerseFactory.fromString("  Rev  22  ff  ")); //$NON-NLS-1$
-        assertEquals(rev99, VerseFactory.fromString("  Rev  22  $  ")); //$NON-NLS-1$
-        assertEquals(jude9, VerseFactory.fromString("Jude $")); //$NON-NLS-1$
-        assertEquals(jude9, VerseFactory.fromString(" Jude  $ ")); //$NON-NLS-1$
-        assertEquals(jude9, VerseFactory.fromString("Jude ff")); //$NON-NLS-1$
-        assertEquals(jude9, VerseFactory.fromString("  Jude  ff  ")); //$NON-NLS-1$
-        assertEquals(VerseFactory.fromString("Deu 1:1"), VerseFactory.fromString("Dt 1:1")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(VerseFactory.fromString("Mat 1:1"), VerseFactory.fromString("Mt 1:1")); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(ssa11, VerseFactory.fromString("2Sa 1:1"));
+        assertEquals(ssa11, VerseFactory.fromString("2Sa 1 1"));
+        assertEquals(ssa11, VerseFactory.fromString("2Sa1 1"));
+        assertEquals(ssa11, VerseFactory.fromString("2 Sa 1 1"));
+        assertEquals(ssa11, VerseFactory.fromString("2 Sa1 1"));
+        assertEquals(ssa11, VerseFactory.fromString("2Sa1:1"));
+        assertEquals(ssa11, VerseFactory.fromString("2 Sa 1 1"));
+        assertEquals(ssa11, VerseFactory.fromString("  2  Sa  1  "));
+        assertEquals(ssa11, VerseFactory.fromString("  2  Sa  "));
+        assertEquals(ssa11, VerseFactory.fromString("  2  Sa1  "));
+        assertEquals(ssa11, VerseFactory.fromString("  2  Sa1  1  "));
+        assertEquals(ssa11, VerseFactory.fromString("  2 : Sa1  1  "));
+        assertEquals(rev99, VerseFactory.fromString("Rev 22:$"));
+        assertEquals(rev99, VerseFactory.fromString(" Rev 22 ff "));
+        assertEquals(rev99, VerseFactory.fromString("  Rev  22  ff  "));
+        assertEquals(rev99, VerseFactory.fromString("  Rev  22  $  "));
+        assertEquals(jude9, VerseFactory.fromString("Jude $"));
+        assertEquals(jude9, VerseFactory.fromString(" Jude  $ "));
+        assertEquals(jude9, VerseFactory.fromString("Jude ff"));
+        assertEquals(jude9, VerseFactory.fromString("  Jude  ff  "));
+        assertEquals(VerseFactory.fromString("Deu 1:1"), VerseFactory.fromString("Dt 1:1"));
+        assertEquals(VerseFactory.fromString("Mat 1:1"), VerseFactory.fromString("Mt 1:1"));
         try {
-            VerseFactory.fromString("gen 1 1 1"); //$NON-NLS-1$
+            VerseFactory.fromString("gen 1 1 1");
             fail();
         } catch (NoSuchVerseException ex) {
         }
         try {
-            VerseFactory.fromString("gen.1.1.1"); //$NON-NLS-1$
+            VerseFactory.fromString("gen.1.1.1");
             fail();
         } catch (NoSuchVerseException ex) {
         }
         try {
-            VerseFactory.fromString("gen.1.1:1"); //$NON-NLS-1$
+            VerseFactory.fromString("gen.1.1:1");
             fail();
         } catch (NoSuchVerseException ex) {
         }
         try {
-            VerseFactory.fromString("gen 1 1 1"); //$NON-NLS-1$
+            VerseFactory.fromString("gen 1 1 1");
             fail();
         } catch (NoSuchVerseException ex) {
         }
         try {
-            VerseFactory.fromString("gen 1 1 1"); //$NON-NLS-1$
+            VerseFactory.fromString("gen 1 1 1");
             fail();
         } catch (NoSuchVerseException ex) {
         }
         try {
-            VerseFactory.fromString("gen 1 1 1"); //$NON-NLS-1$
+            VerseFactory.fromString("gen 1 1 1");
             fail();
         } catch (NoSuchVerseException ex) {
         }
@@ -195,29 +195,29 @@ public class VerseTest extends TestCase {
         } catch (NullPointerException ex) {
         } catch (NoSuchKeyException ex) {
         }
-        assertEquals(jude1, VerseFactory.fromString("jude 1")); //$NON-NLS-1$
-        assertEquals(jude2, VerseFactory.fromString("jude 2")); //$NON-NLS-1$
-        assertEquals(jude9, VerseFactory.fromString("jude 25")); //$NON-NLS-1$
+        assertEquals(jude1, VerseFactory.fromString("jude 1"));
+        assertEquals(jude2, VerseFactory.fromString("jude 2"));
+        assertEquals(jude9, VerseFactory.fromString("jude 25"));
     }
 
     public void testGetName() throws Exception {
-        assertEquals(VerseFactory.fromString("Genesis 1 1").getName(), "Gen 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(VerseFactory.fromString("Gen 1 1").getName(), "Gen 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(VerseFactory.fromString("Genesis 1:1").getName(), "Gen 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(VerseFactory.fromString("Gen 1 1").getName(), "Gen 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(VerseFactory.fromString("g 1 1").getName(), "Gen 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(VerseFactory.fromString("g").getName(), "Gen 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(VerseFactory.fromString("G:1:1").getName(), "Gen 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(VerseFactory.fromString("Jude 1").getName(), "Jude 1"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(VerseFactory.fromString("Jude").getName(), "Jude 1"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(VerseFactory.fromString("Jude 1:1").getName(), "Jude 1"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(VerseFactory.fromString("Genesis 1 1").getName(), "Gen 1:1");
+        assertEquals(VerseFactory.fromString("Gen 1 1").getName(), "Gen 1:1");
+        assertEquals(VerseFactory.fromString("Genesis 1:1").getName(), "Gen 1:1");
+        assertEquals(VerseFactory.fromString("Gen 1 1").getName(), "Gen 1:1");
+        assertEquals(VerseFactory.fromString("g 1 1").getName(), "Gen 1:1");
+        assertEquals(VerseFactory.fromString("g").getName(), "Gen 1:1");
+        assertEquals(VerseFactory.fromString("G:1:1").getName(), "Gen 1:1");
+        assertEquals(VerseFactory.fromString("Jude 1").getName(), "Jude 1");
+        assertEquals(VerseFactory.fromString("Jude").getName(), "Jude 1");
+        assertEquals(VerseFactory.fromString("Jude 1:1").getName(), "Jude 1");
     }
 
     public void testGetNameVerse() throws Exception {
-        assertEquals(VerseFactory.fromString("Gen 1:2").getName(gen11), "2"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(VerseFactory.fromString("Gen 2:1").getName(gen11), "2:1"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(VerseFactory.fromString("Gen 2:1").getName(jude9), "Gen 2:1"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(VerseFactory.fromString("Gen 2:1").getName(null), "Gen 2:1"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(VerseFactory.fromString("Gen 1:2").getName(gen11), "2");
+        assertEquals(VerseFactory.fromString("Gen 2:1").getName(gen11), "2:1");
+        assertEquals(VerseFactory.fromString("Gen 2:1").getName(jude9), "Gen 2:1");
+        assertEquals(VerseFactory.fromString("Gen 2:1").getName(null), "Gen 2:1");
     }
 
     public void testNewViaIntIntIntBoolean() {
@@ -304,7 +304,7 @@ public class VerseTest extends TestCase {
     public void testEquals() {
         assertTrue(!gen11.equals(null));
         assertTrue(!gen11.equals(new Integer(0)));
-        assertTrue(!gen11.equals("org.crosswire.jsword.passage.Verse")); //$NON-NLS-1$
+        assertTrue(!gen11.equals("org.crosswire.jsword.passage.Verse"));
         assertTrue(gen11.equals(gen11a));
         assertTrue(!gen11.equals(gen12));
         assertTrue(!gen11.equals(rev99));
@@ -346,15 +346,15 @@ public class VerseTest extends TestCase {
     }
 
     public void testToString() {
-        assertEquals(gen11.toString(), "Gen 1:1"); //$NON-NLS-1$
-        assertEquals(gen12.toString(), "Gen 1:2"); //$NON-NLS-1$
-        assertEquals(gen21.toString(), "Gen 2:1"); //$NON-NLS-1$
-        assertEquals(gen22.toString(), "Gen 2:2"); //$NON-NLS-1$
-        assertEquals(rev11.toString(), "Rev 1:1"); //$NON-NLS-1$
-        assertEquals(rev12.toString(), "Rev 1:2"); //$NON-NLS-1$
-        assertEquals(rev21.toString(), "Rev 2:1"); //$NON-NLS-1$
-        assertEquals(rev22.toString(), "Rev 2:2"); //$NON-NLS-1$
-        assertEquals(rev99.toString(), "Rev 22:21"); //$NON-NLS-1$
+        assertEquals(gen11.toString(), "Gen 1:1");
+        assertEquals(gen12.toString(), "Gen 1:2");
+        assertEquals(gen21.toString(), "Gen 2:1");
+        assertEquals(gen22.toString(), "Gen 2:2");
+        assertEquals(rev11.toString(), "Rev 1:1");
+        assertEquals(rev12.toString(), "Rev 1:2");
+        assertEquals(rev21.toString(), "Rev 2:1");
+        assertEquals(rev22.toString(), "Rev 2:2");
+        assertEquals(rev99.toString(), "Rev 22:21");
     }
 
     public void testGetBook() {
@@ -437,20 +437,20 @@ public class VerseTest extends TestCase {
 
     public void testGetAccuracy() throws Exception {
         VerseRange vr = new VerseRange(gen11, gen11);
-        assertEquals(AccuracyType.fromText("Gen 1:1", AccuracyType.tokenize("Gen 1:1"), vr), AccuracyType.BOOK_VERSE); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(AccuracyType.fromText("Gen 1", AccuracyType.tokenize("Gen 1"), vr), AccuracyType.BOOK_CHAPTER); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(AccuracyType.fromText("Jude 1", AccuracyType.tokenize("Jude 1"), vr), AccuracyType.BOOK_VERSE); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(AccuracyType.fromText("Jude 1:1", AccuracyType.tokenize("Jude 1:1"), vr), AccuracyType.BOOK_VERSE); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(AccuracyType.fromText("Gen", AccuracyType.tokenize("Gen"), vr), AccuracyType.BOOK_ONLY); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(AccuracyType.fromText("1:1", AccuracyType.tokenize("1:1"), vr), AccuracyType.CHAPTER_VERSE); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(AccuracyType.fromText("1", AccuracyType.tokenize("1"), vr), AccuracyType.VERSE_ONLY); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(AccuracyType.fromText("Gen 1:1", AccuracyType.tokenize("Gen 1:1"), vr), AccuracyType.BOOK_VERSE);
+        assertEquals(AccuracyType.fromText("Gen 1", AccuracyType.tokenize("Gen 1"), vr), AccuracyType.BOOK_CHAPTER);
+        assertEquals(AccuracyType.fromText("Jude 1", AccuracyType.tokenize("Jude 1"), vr), AccuracyType.BOOK_VERSE);
+        assertEquals(AccuracyType.fromText("Jude 1:1", AccuracyType.tokenize("Jude 1:1"), vr), AccuracyType.BOOK_VERSE);
+        assertEquals(AccuracyType.fromText("Gen", AccuracyType.tokenize("Gen"), vr), AccuracyType.BOOK_ONLY);
+        assertEquals(AccuracyType.fromText("1:1", AccuracyType.tokenize("1:1"), vr), AccuracyType.CHAPTER_VERSE);
+        assertEquals(AccuracyType.fromText("1", AccuracyType.tokenize("1"), vr), AccuracyType.VERSE_ONLY);
         try {
-            AccuracyType.fromText("Komplete and utter rubbish", AccuracyType.tokenize("Komplete and utter rubbish"), vr); //$NON-NLS-1$ //$NON-NLS-2$
+            AccuracyType.fromText("Komplete and utter rubbish", AccuracyType.tokenize("Komplete and utter rubbish"), vr);
             fail();
         } catch (NoSuchVerseException ex) {
         }
         try {
-            AccuracyType.fromText("b 1 1", AccuracyType.tokenize("b 1 1"), vr); //$NON-NLS-1$ //$NON-NLS-2$
+            AccuracyType.fromText("b 1 1", AccuracyType.tokenize("b 1 1"), vr);
             fail();
         } catch (NoSuchVerseException ex) {
         }
@@ -462,42 +462,42 @@ public class VerseTest extends TestCase {
     }
 
     public void testIsStartEndOfChapterBook() throws Exception {
-        assertTrue(VerseFactory.fromString("Gen 1:1").isStartOfChapter()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen 1:10").isStartOfChapter()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen 1:$").isStartOfChapter()); //$NON-NLS-1$
-        assertTrue(VerseFactory.fromString("Gen 10:1").isStartOfChapter()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen 10:10").isStartOfChapter()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen 10:$").isStartOfChapter()); //$NON-NLS-1$
-        assertTrue(VerseFactory.fromString("Gen $:1").isStartOfChapter()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen $:10").isStartOfChapter()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen $:$").isStartOfChapter()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen 1:1").isEndOfChapter()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen 1:10").isEndOfChapter()); //$NON-NLS-1$
-        assertTrue(VerseFactory.fromString("Gen 1:$").isEndOfChapter()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen 10:1").isEndOfChapter()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen 10:10").isEndOfChapter()); //$NON-NLS-1$
-        assertTrue(VerseFactory.fromString("Gen 10:$").isEndOfChapter()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen $:1").isEndOfChapter()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen $:10").isEndOfChapter()); //$NON-NLS-1$
-        assertTrue(VerseFactory.fromString("Gen $:$").isEndOfChapter()); //$NON-NLS-1$
-        assertTrue(VerseFactory.fromString("Gen 1:1").isStartOfBook()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen 1:10").isStartOfBook()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen 1:$").isStartOfBook()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen 10:1").isStartOfBook()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen 10:10").isStartOfBook()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen 10:$").isStartOfBook()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen $:1").isStartOfBook()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen $:10").isStartOfBook()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen $:$").isStartOfBook()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen 1:1").isEndOfBook()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen 1:10").isEndOfBook()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen 1:$").isEndOfBook()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen 10:1").isEndOfBook()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen 10:10").isEndOfBook()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen 10:$").isEndOfBook()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen $:1").isEndOfBook()); //$NON-NLS-1$
-        assertTrue(!VerseFactory.fromString("Gen $:10").isEndOfBook()); //$NON-NLS-1$
-        assertTrue(VerseFactory.fromString("Gen $:$").isEndOfBook()); //$NON-NLS-1$
+        assertTrue(VerseFactory.fromString("Gen 1:1").isStartOfChapter());
+        assertTrue(!VerseFactory.fromString("Gen 1:10").isStartOfChapter());
+        assertTrue(!VerseFactory.fromString("Gen 1:$").isStartOfChapter());
+        assertTrue(VerseFactory.fromString("Gen 10:1").isStartOfChapter());
+        assertTrue(!VerseFactory.fromString("Gen 10:10").isStartOfChapter());
+        assertTrue(!VerseFactory.fromString("Gen 10:$").isStartOfChapter());
+        assertTrue(VerseFactory.fromString("Gen $:1").isStartOfChapter());
+        assertTrue(!VerseFactory.fromString("Gen $:10").isStartOfChapter());
+        assertTrue(!VerseFactory.fromString("Gen $:$").isStartOfChapter());
+        assertTrue(!VerseFactory.fromString("Gen 1:1").isEndOfChapter());
+        assertTrue(!VerseFactory.fromString("Gen 1:10").isEndOfChapter());
+        assertTrue(VerseFactory.fromString("Gen 1:$").isEndOfChapter());
+        assertTrue(!VerseFactory.fromString("Gen 10:1").isEndOfChapter());
+        assertTrue(!VerseFactory.fromString("Gen 10:10").isEndOfChapter());
+        assertTrue(VerseFactory.fromString("Gen 10:$").isEndOfChapter());
+        assertTrue(!VerseFactory.fromString("Gen $:1").isEndOfChapter());
+        assertTrue(!VerseFactory.fromString("Gen $:10").isEndOfChapter());
+        assertTrue(VerseFactory.fromString("Gen $:$").isEndOfChapter());
+        assertTrue(VerseFactory.fromString("Gen 1:1").isStartOfBook());
+        assertTrue(!VerseFactory.fromString("Gen 1:10").isStartOfBook());
+        assertTrue(!VerseFactory.fromString("Gen 1:$").isStartOfBook());
+        assertTrue(!VerseFactory.fromString("Gen 10:1").isStartOfBook());
+        assertTrue(!VerseFactory.fromString("Gen 10:10").isStartOfBook());
+        assertTrue(!VerseFactory.fromString("Gen 10:$").isStartOfBook());
+        assertTrue(!VerseFactory.fromString("Gen $:1").isStartOfBook());
+        assertTrue(!VerseFactory.fromString("Gen $:10").isStartOfBook());
+        assertTrue(!VerseFactory.fromString("Gen $:$").isStartOfBook());
+        assertTrue(!VerseFactory.fromString("Gen 1:1").isEndOfBook());
+        assertTrue(!VerseFactory.fromString("Gen 1:10").isEndOfBook());
+        assertTrue(!VerseFactory.fromString("Gen 1:$").isEndOfBook());
+        assertTrue(!VerseFactory.fromString("Gen 10:1").isEndOfBook());
+        assertTrue(!VerseFactory.fromString("Gen 10:10").isEndOfBook());
+        assertTrue(!VerseFactory.fromString("Gen 10:$").isEndOfBook());
+        assertTrue(!VerseFactory.fromString("Gen $:1").isEndOfBook());
+        assertTrue(!VerseFactory.fromString("Gen $:10").isEndOfBook());
+        assertTrue(VerseFactory.fromString("Gen $:$").isEndOfBook());
     }
 
     public void testMax() {

@@ -39,7 +39,7 @@ public class ScriptureTag extends AbstractTag {
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
     public String getTagName() {
-        return "scripture"; //$NON-NLS-1$
+        return "scripture";
     }
 
     /*

@@ -142,13 +142,13 @@ public class SwordBookPath {
         String home = System.getProperty(PROPERTY_USER_HOME);
 
         // Is sword.conf in the current directory?
-        readSwordConf(bookDirs, "."); //$NON-NLS-1$
+        readSwordConf(bookDirs, ".");
 
         // mods.d in the current directory?
-        testDefaultPath(bookDirs, "."); //$NON-NLS-1$
+        testDefaultPath(bookDirs, ".");
 
         // how about in the library, just next door?
-        testDefaultPath(bookDirs, ".." + File.separator + DIR_SWORD_LIBRARY); //$NON-NLS-1$
+        testDefaultPath(bookDirs, ".." + File.separator + DIR_SWORD_LIBRARY);
 
         // if there is a property set for the sword home directory
         // The Sword project defines SWORD_HOME, but JSword expects this to be
@@ -158,14 +158,14 @@ public class SwordBookPath {
             testDefaultPath(bookDirs, swordhome);
 
             // how about in the library, just next door?
-            testDefaultPath(bookDirs, swordhome + File.separator + ".." + File.separator + DIR_SWORD_LIBRARY); //$NON-NLS-1$
+            testDefaultPath(bookDirs, swordhome + File.separator + ".." + File.separator + DIR_SWORD_LIBRARY);
         }
 
-        if (System.getProperty("os.name").startsWith("Windows")) //$NON-NLS-1$ //$NON-NLS-2$
+        if (System.getProperty("os.name").startsWith("Windows"))
         {
             testDefaultPath(bookDirs, DIR_WINDOWS_DEFAULT);
             // how about in the library, just next door?
-            testDefaultPath(bookDirs, DIR_WINDOWS_DEFAULT + File.separator + ".." + File.separator + DIR_SWORD_LIBRARY); //$NON-NLS-1$
+            testDefaultPath(bookDirs, DIR_WINDOWS_DEFAULT + File.separator + ".." + File.separator + DIR_SWORD_LIBRARY);
         }
 
         // .sword in the users home directory?
@@ -204,13 +204,13 @@ public class SwordBookPath {
                 datapath = prop.getProperty(AUGMENT_PATH);
                 testDefaultPath(bookDirs, datapath);
             } catch (IOException ex) {
-                log.warn("Failed to read system config file", ex); //$NON-NLS-1$
+                log.warn("Failed to read system config file", ex);
             } finally {
                 if (is != null) {
                     try {
                         is.close();
                     } catch (IOException e) {
-                        log.warn("Failed to close system config file", e); //$NON-NLS-1$
+                        log.warn("Failed to close system config file", e);
                     }
                 }
             }
@@ -370,9 +370,9 @@ public class SwordBookPath {
      *            The download directory that the user specifies.
      */
     public static void setDownloadDir(File dlDir) {
-        if (!dlDir.getPath().equals("")) { //$NON-NLS-1$
+        if (!dlDir.getPath().equals("")) {
             overrideDownloadDir = dlDir;
-            log.debug("Setting sword download directory to: " + dlDir); //$NON-NLS-1$
+            log.debug("Setting sword download directory to: " + dlDir);
         }
     }
 
@@ -394,57 +394,57 @@ public class SwordBookPath {
     /**
      * Default windows installation directory
      */
-    private static final String DIR_WINDOWS_DEFAULT = "C:\\Program Files\\CrossWire\\The SWORD Project"; //$NON-NLS-1$
+    private static final String DIR_WINDOWS_DEFAULT = "C:\\Program Files\\CrossWire\\The SWORD Project";
 
     /**
      * Library may be a sibling of DIR_WINDOWS_DEFAULT or SWORD_HOME or CWD
      */
-    private static final String DIR_SWORD_LIBRARY = "library"; //$NON-NLS-1$
+    private static final String DIR_SWORD_LIBRARY = "library";
 
     /**
      * Users config directory for Sword in Unix
      */
-    private static final String DIR_SWORD_CONF = ".sword"; //$NON-NLS-1$
+    private static final String DIR_SWORD_CONF = ".sword";
 
     /**
      * Users config directory for Sword in Unix
      */
-    private static final String DIR_SWORD_CONF_ALT = "Sword"; //$NON-NLS-1$
+    private static final String DIR_SWORD_CONF_ALT = "Sword";
 
     /**
      * Sword global config file
      */
-    private static final String SWORD_GLOBAL_CONF = "sword.conf"; //$NON-NLS-1$
+    private static final String SWORD_GLOBAL_CONF = "sword.conf";
 
     /**
      * Sword global config file locations
      */
-    private static final String DIR_SWORD_GLOBAL_CONF = "/etc:/usr/local/etc"; //$NON-NLS-1$
+    private static final String DIR_SWORD_GLOBAL_CONF = "/etc:/usr/local/etc";
 
     /**
      * Sword global config file's path to where mods can be found
      */
-    private static final String DATA_PATH = "DataPath"; //$NON-NLS-1$
+    private static final String DATA_PATH = "DataPath";
 
     /**
      * Sword global config file's path to where mods can be found
      */
-    private static final String AUGMENT_PATH = "AugmentPath"; //$NON-NLS-1$
+    private static final String AUGMENT_PATH = "AugmentPath";
 
     /**
      * System property for sword home directory
      */
-    private static final String PROPERTY_SWORD_HOME = "sword.home"; //$NON-NLS-1$
+    private static final String PROPERTY_SWORD_HOME = "sword.home";
 
     /**
      * Java system property for users home directory
      */
-    private static final String PROPERTY_USER_HOME = "user.home"; //$NON-NLS-1$
+    private static final String PROPERTY_USER_HOME = "user.home";
 
     /**
      * File prefix for config file
      */
-    private static final String PREFIX_GLOBALS = "globals."; //$NON-NLS-1$
+    private static final String PREFIX_GLOBALS = "globals.";
 
     /**
      * The directory URL

@@ -51,7 +51,7 @@ public class DictToOsis {
     /**
      * The name of a Bible to find
      */
-    private static final String BOOK_NAME = "WebstersDict"; //$NON-NLS-1$
+    private static final String BOOK_NAME = "WebstersDict";
 
     /**
      * @param args
@@ -87,7 +87,7 @@ public class DictToOsis {
 
         Writer writer = null;
         try {
-            writer = new OutputStreamWriter(new FileOutputStream(bmd.getInitials() + ".xml"), "UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
+            writer = new OutputStreamWriter(new FileOutputStream(bmd.getInitials() + ".xml"), "UTF-8");
             writer.write(buf.toString());
         } finally {
             if (writer != null) {
@@ -95,29 +95,29 @@ public class DictToOsis {
             }
         }
         XMLProcess parser = new XMLProcess();
-        // parser.getFeatures().setFeatureStates("-s", "-f", "-va", "-dv"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-        parser.parse(bmd.getInitials() + ".xml"); //$NON-NLS-1$
+        // parser.getFeatures().setFeatureStates("-s", "-f", "-va", "-dv");
+        parser.parse(bmd.getInitials() + ".xml");
     }
 
     private void buildDocumentOpen(StringBuffer buf, BookMetaData bmd) {
         MessageFormat msgFormat = new MessageFormat(
-                "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<osis\n  xmlns=\"http://www.bibletechnologies.net/2003/OSIS/namespace\"\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n  xsi:schemaLocation=\"http://www.bibletechnologies.net/2003/OSIS/namespace osisCore.2.1.xsd\">\n<osisText osisIDWork=\"{0}\" osisRefWork=\"defaultReferenceScheme\" xml:lang=\"en\">\n  <header>\n    <work osisWork=\"{0}\">\n      <title>{1}</title>\n      <identifier type=\"OSIS\">Dict.{0}</identifier>\n      <refSystem>Dict.{0}</refSystem>\n    </work>\n    <work osisWork=\"defaultReferenceScheme\">\n      <refSystem>Dict.{0}</refSystem>\n    </work>\n  </header>\n<div>\n"); //$NON-NLS-1$
+                "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<osis\n  xmlns=\"http://www.bibletechnologies.net/2003/OSIS/namespace\"\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n  xsi:schemaLocation=\"http://www.bibletechnologies.net/2003/OSIS/namespace osisCore.2.1.xsd\">\n<osisText osisIDWork=\"{0}\" osisRefWork=\"defaultReferenceScheme\" xml:lang=\"en\">\n  <header>\n    <work osisWork=\"{0}\">\n      <title>{1}</title>\n      <identifier type=\"OSIS\">Dict.{0}</identifier>\n      <refSystem>Dict.{0}</refSystem>\n    </work>\n    <work osisWork=\"defaultReferenceScheme\">\n      <refSystem>Dict.{0}</refSystem>\n    </work>\n  </header>\n<div>\n");
         msgFormat.format(new Object[] {
                 bmd.getInitials(), bmd.getName()
         }, buf, pos);
     }
 
     private void buildDocumentClose(StringBuffer buf) {
-        buf.append("</div>\n</osisText>\n</osis>\n"); //$NON-NLS-1$
+        buf.append("</div>\n</osisText>\n</osis>\n");
     }
 
     private void buildEntryOpen(StringBuffer buf, String entryName, String entryDef) {
         String tmp = entryName;
         if (tmp.indexOf(' ') != -1) {
-            tmp = "x"; //$NON-NLS-1$
+            tmp = "x";
         }
         MessageFormat msgFormat = new MessageFormat(
-                "<div type=\"entry\" osisID=\"{0}\" canonical=\"true\"><seg type=\"x-form\"><seg type=\"x-orth\">{0}</seg></seg><seg type=\"x-def\">{1}</seg></div>\n"); //$NON-NLS-1$
+                "<div type=\"entry\" osisID=\"{0}\" canonical=\"true\"><seg type=\"x-form\"><seg type=\"x-orth\">{0}</seg></seg><seg type=\"x-def\">{1}</seg></div>\n");
         msgFormat.format(new Object[] {
                 tmp, entryDef
         }, buf, pos);

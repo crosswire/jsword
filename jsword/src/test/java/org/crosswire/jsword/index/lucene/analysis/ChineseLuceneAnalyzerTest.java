@@ -49,15 +49,15 @@ public class ChineseLuceneAnalyzerTest extends TestCase {
         myAnalyzer = new ChineseLuceneAnalyzer();
         parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
 
-        String testInput = "\u795E\u7231\u4E16\u4EBA\uFF0C\u751A\u81F3\u628A\u4ED6\u7684\u72EC\u751F\u5B50\u8D50\u7ED9\u4ED6\u4EEC"; //$NON-NLS-1$
+        String testInput = "\u795E\u7231\u4E16\u4EBA\uFF0C\u751A\u81F3\u628A\u4ED6\u7684\u72EC\u751F\u5B50\u8D50\u7ED9\u4ED6\u4EEC";
 
         Query query = parser.parse(testInput);
-        assertTrue(query.toString().indexOf(field + ":\"\u795E \u7231") > -1); //$NON-NLS-1$
-        assertTrue(query.toString().indexOf("\u4ED6 \u4EEC\"") > -1); //$NON-NLS-1$
+        assertTrue(query.toString().indexOf(field + ":\"\u795E \u7231") > -1);
+        assertTrue(query.toString().indexOf("\u4ED6 \u4EEC\"") > -1);
         // System.out.println(query.toString());
     }
 
-    protected static final String field = "content"; //$NON-NLS-1$
+    protected static final String field = "content";
     private AbstractBookAnalyzer myAnalyzer;
     private QueryParser parser;
 }

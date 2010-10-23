@@ -35,7 +35,7 @@ public abstract class BlockType implements Serializable {
     /**
      * The level of compression is the Book
      */
-    public static final BlockType BLOCK_BOOK = new BlockType("BOOK") //$NON-NLS-1$
+    public static final BlockType BLOCK_BOOK = new BlockType("BOOK")
     {
         public char getIndicator() {
             return 'b';
@@ -50,7 +50,7 @@ public abstract class BlockType implements Serializable {
     /**
      * The level of compression is the Book
      */
-    public static final BlockType BLOCK_CHAPTER = new BlockType("CHAPTER") //$NON-NLS-1$
+    public static final BlockType BLOCK_CHAPTER = new BlockType("CHAPTER")
     {
         public char getIndicator() {
             return 'c';
@@ -65,7 +65,7 @@ public abstract class BlockType implements Serializable {
     /**
      * The level of compression is the Book
      */
-    public static final BlockType BLOCK_VERSE = new BlockType("VERSE") //$NON-NLS-1$
+    public static final BlockType BLOCK_VERSE = new BlockType("VERSE")
     {
         public char getIndicator() {
             return 'v';

@@ -110,7 +110,7 @@ public class ConfigurableSnowballAnalyzer extends AbstractBookAnalyzer {
         if (stemmerName != null) {
             // Check for allowed stemmers
             if (!allowedStemmers.matcher(stemmerName).matches()) {
-                throw new IllegalArgumentException("SnowballAnalyzer configured for unavailable stemmer " + stemmerName); //$NON-NLS-1$
+                throw new IllegalArgumentException("SnowballAnalyzer configured for unavailable stemmer " + stemmerName);
             }
 
             // Initialize the default stop words
@@ -126,16 +126,16 @@ public class ConfigurableSnowballAnalyzer extends AbstractBookAnalyzer {
     private String stemmerName;
 
     private static Pattern allowedStemmers = Pattern
-            .compile("(Danish|Dutch|English|Finnish|French|German2|German|Italian|Kp|Lovins|Norwegian|Porter|Portuguese|Russian|Spanish|Swedish)"); //$NON-NLS-1$
+            .compile("(Danish|Dutch|English|Finnish|French|German2|German|Italian|Kp|Lovins|Norwegian|Porter|Portuguese|Russian|Spanish|Swedish)");
 
     // Maps StemmerName > String array of standard stop words
     private static HashMap defaultStopWordMap = new HashMap();
     static {
-        defaultStopWordMap.put("French", FrenchAnalyzer.FRENCH_STOP_WORDS); //$NON-NLS-1$
-        defaultStopWordMap.put("German", GermanAnalyzer.GERMAN_STOP_WORDS); //$NON-NLS-1$
-        defaultStopWordMap.put("German2", GermanAnalyzer.GERMAN_STOP_WORDS); //$NON-NLS-1$
-        defaultStopWordMap.put("Dutch", DutchAnalyzer.DUTCH_STOP_WORDS); //$NON-NLS-1$
-        defaultStopWordMap.put("English", StopAnalyzer.ENGLISH_STOP_WORDS_SET); //$NON-NLS-1$
-        defaultStopWordMap.put("Porter", StopAnalyzer.ENGLISH_STOP_WORDS_SET); //$NON-NLS-1$
+        defaultStopWordMap.put("French", FrenchAnalyzer.FRENCH_STOP_WORDS);
+        defaultStopWordMap.put("German", GermanAnalyzer.GERMAN_STOP_WORDS);
+        defaultStopWordMap.put("German2", GermanAnalyzer.GERMAN_STOP_WORDS);
+        defaultStopWordMap.put("Dutch", DutchAnalyzer.DUTCH_STOP_WORDS);
+        defaultStopWordMap.put("English", StopAnalyzer.ENGLISH_STOP_WORDS_SET);
+        defaultStopWordMap.put("Porter", StopAnalyzer.ENGLISH_STOP_WORDS_SET);
     }
 }

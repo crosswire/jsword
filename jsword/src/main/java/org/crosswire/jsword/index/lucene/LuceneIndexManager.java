@@ -58,7 +58,7 @@ public class LuceneIndexManager implements IndexManager {
             URI storage = getStorageArea(book);
             return NetUtil.isDirectory(storage);
         } catch (IOException ex) {
-            log.error("Failed to find lucene index storage area.", ex); //$NON-NLS-1$
+            log.error("Failed to find lucene index storage area.", ex);
             return false;
         }
     }
@@ -81,7 +81,8 @@ public class LuceneIndexManager implements IndexManager {
 
             return reply;
         } catch (IOException ex) {
-            throw new BookException(UserMsg.LUCENE_INIT, ex);
+            // TRANSLATOR: Common error condition: Some error happened while opening a search index.
+            throw new BookException(UserMsg.gettext("Failed to initialize Lucene search engine."), ex);
         }
     }
 
@@ -132,7 +133,8 @@ public class LuceneIndexManager implements IndexManager {
             File zip = NetUtil.getAsFile(tempDest);
             IOUtil.unpackZip(zip, NetUtil.getAsFile(storage));
         } catch (IOException ex) {
-            throw new BookException(UserMsg.INSTALL_FAIL, ex);
+            // TRANSLATOR: The search index could not be moved to it's final location.
+            throw new BookException(UserMsg.gettext("Installation failed."), ex);
         }
     }
 
@@ -156,11 +158,13 @@ public class LuceneIndexManager implements IndexManager {
             tempPath = new File(finalCanonicalPath + '.' + IndexStatus.CREATING.toString());
             FileUtil.delete(tempPath);
             if (!storage.renameTo(tempPath)) {
-                throw new BookException(UserMsg.DELETE_FAILED);
+                // TRANSLATOR: Error condition: The index could not be deleted.
+                throw new BookException(UserMsg.gettext("Failed to delete search index."));
             }
             book.setIndexStatus(IndexStatus.UNDONE);
         } catch (IOException ex) {
-            throw new BookException(UserMsg.DELETE_FAILED, ex);
+            // TRANSLATOR: Error condition: The index could not be deleted.
+            throw new BookException(UserMsg.gettext("Failed to delete search index."), ex);
         }
 
         FileUtil.delete(tempPath);
@@ -197,7 +201,7 @@ public class LuceneIndexManager implements IndexManager {
     /**
      * The lucene search index directory
      */
-    private static final String DIR_LUCENE = "lucene"; //$NON-NLS-1$
+    private static final String DIR_LUCENE = "lucene";
 
     /**
      * The log stream

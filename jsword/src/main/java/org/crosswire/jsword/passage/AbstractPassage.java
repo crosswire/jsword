@@ -75,7 +75,7 @@ public abstract class AbstractPassage implements Passage {
      */
     public int compareTo(Object obj) {
         if (!(obj instanceof Passage)) {
-            log.warn("Can't compare a Passage to a " + obj.getClass().getName()); //$NON-NLS-1$
+            log.warn("Can't compare a Passage to a " + obj.getClass().getName());
             return -1;
         }
 
@@ -273,7 +273,23 @@ public abstract class AbstractPassage implements Passage {
      * @see org.crosswire.jsword.passage.Passage#getOverview()
      */
     public String getOverview() {
-        return UserMsg.ABSTRACT_REF_SUMMARY.toString(new Object[] {
+        // TRANSLATOR: This provides an overview of the verses in one or more books. The placeholders here deserve extra comment.
+        // {0,number,integer} is a placeholder for the count of verses. It will be displayed as an integer using the number system of the user's locale.
+        // {0,choice,0#verses|1#verse|1<verses} uses the value of the number of verses to display the correct singular or plural form for the word "verse"
+        //    Choices are separated by |. And each choice consists of a number, a comparison and the value to use when the comparison is met.
+        //    Choices are ordered from smallest to largest. The numbers represent boundaries that determine when a choice is used.
+        //    The comparision # means to match exactly.
+        //    The comparision < means that the number on the left is less than the number being evaluated.
+        //    Here, 0 is the first boundary specified by a #. So every number less than or equal to 0 get the first choice.
+        //    In this situation, we are dealing with counting numbers, so we'll never have negative numbers.
+        //    Next choice is 1 with a boundary specified by #. So all numbers greater than 0 (the first choice) but less than or equal to 1 get the second choice.
+        //    In this situation, the only number that will match is 1.
+        //    The final choice is 1<. This means that every number greater than 1 will get this choice.
+        // Putting the first two placeholders together we get "0 verses", "1 verse" or "n verses" (where n is 2 or more)
+        // The reason to go into this is that this pattern works for English. Other languages might have different ways of representing singular and plurals.
+        // {1,number,integer} is a placeholder for the count of Bible books. It works the same way as the count of verses.
+        // {1,choice,0#books|1#book|1<books} is the placeholder for the singular or plural of "book"
+        return UserMsg.gettext("{0,number,integer} {0,choice,0#verses|1#verse|1<verses} in {1,number,integer} {1,choice,0#books|1#book|1<books}", new Object[] {
                 new Integer(countVerses()), new Integer(booksInPassage())
         });
     }
@@ -1040,7 +1056,7 @@ public abstract class AbstractPassage implements Passage {
             // chance to fix the error
             // throw new LogicError();
 
-            log.warn("skip_normalization=" + skipNormalization); //$NON-NLS-1$
+            log.warn("skip_normalization=" + skipNormalization);
         }
     }
 
@@ -1073,7 +1089,7 @@ public abstract class AbstractPassage implements Passage {
             // chance to fix the error
             // throw new LogicError();
 
-            log.warn("suppress_events=" + suppressEvents); //$NON-NLS-1$
+            log.warn("suppress_events=" + suppressEvents);
         }
     }
 
@@ -1431,17 +1447,17 @@ public abstract class AbstractPassage implements Passage {
     /**
      * What characters can we use to separate VerseRanges in a Passage
      */
-    public static final String REF_ALLOWED_DELIMS = ",;\n\r\t"; //$NON-NLS-1$
+    public static final String REF_ALLOWED_DELIMS = ",;\n\r\t";
 
     /**
      * What characters should we use to separate VerseRanges in a Passage
      */
-    public static final String REF_PREF_DELIM = ", "; //$NON-NLS-1$
+    public static final String REF_PREF_DELIM = ", ";
 
     /**
      * What characters should we use to separate VerseRanges in a Passage
      */
-    public static final String REF_OSIS_DELIM = " "; //$NON-NLS-1$
+    public static final String REF_OSIS_DELIM = " ";
 
     /**
      * Serialization ID

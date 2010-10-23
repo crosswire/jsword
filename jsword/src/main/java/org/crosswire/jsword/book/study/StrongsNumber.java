@@ -220,9 +220,10 @@ public class StrongsNumber {
         // Does it match
         Matcher m = STRONGS_PATTERN.matcher(text);
         if (!m.lookingAt()) {
-            throw new BookException(UserMsg.STRONGS_ERROR_NUMBER, new Object[] {
+            // TRANSLATOR: User error condition: Indicates that what was given is not a Strong's Number. {0} is a placeholder for the bad Strong's Number.
+            throw new BookException(UserMsg.gettext("Not a valid Strong's Number \"{0}\"", new Object[] {
                 input
-            });
+            }));
         }
 
         String lang = m.group(1);
@@ -247,9 +248,10 @@ public class StrongsNumber {
 
     private void validate() throws BookException {
         if (language != 'G' && language != 'H') {
-            throw new BookException(UserMsg.STRONGS_ERROR_NUMBER, new Object[] {
+            // TRANSLATOR: User error condition: Indicates that what was given is not a Strong's Number. {0} is a placeholder for the bad Strong's Number.
+            throw new BookException(UserMsg.gettext("Not a valid Strong's Number \"{0}\"", new Object[] {
                 toString()
-            });
+            }));
         }
     }
 
@@ -271,6 +273,6 @@ public class StrongsNumber {
     /**
      * The pattern of an acceptable Strong's number.
      */
-    private static final Pattern STRONGS_PATTERN = Pattern.compile("([GgHh])0*([1-9][0-9]*)!?([A-Za-z]+)?"); //$NON-NLS-1$
-    private static final DecimalFormat ZERO_PAD = new DecimalFormat("0000"); //$NON-NLS-1$
+    private static final Pattern STRONGS_PATTERN = Pattern.compile("([GgHh])0*([1-9][0-9]*)!?([A-Za-z]+)?");
+    private static final DecimalFormat ZERO_PAD = new DecimalFormat("0000");
 }

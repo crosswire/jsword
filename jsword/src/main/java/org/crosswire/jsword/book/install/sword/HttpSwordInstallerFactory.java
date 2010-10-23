@@ -100,12 +100,12 @@ public class HttpSwordInstallerFactory implements InstallerFactory {
     /**
      * The relative path of the dir holding the zip files
      */
-    protected static final String PACKAGE_DIR = "packages/rawzip"; //$NON-NLS-1$
+    protected static final String PACKAGE_DIR = "packages/rawzip";
 
     /**
      * The relative path of the dir holding the index file
      */
-    private static final String LIST_DIR = "raw"; //$NON-NLS-1$
+    private static final String LIST_DIR = "raw";
 
-    private Pattern commaPattern = Pattern.compile(","); //$NON-NLS-1$
+    private Pattern commaPattern = Pattern.compile(",");
 }

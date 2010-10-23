@@ -31,7 +31,7 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  */
 final class Msg extends MsgBase {
-    static final Msg UNUSED = new Msg("UNUSED"); //$NON-NLS-1$
+    static final Msg UNUSED = new Msg("UNUSED");
 
     /**
      * Passthrough ctor

@@ -31,11 +31,11 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  */
 public final class Msg extends MsgBase {
-    static final Msg BOOKS_SECTION = new Msg("BibleInfo.Section"); //$NON-NLS-1$
-    static final Msg BOOKS_BOOK = new Msg("BibleInfo.Book"); //$NON-NLS-1$
-    static final Msg BOOKS_BOOKCHAP = new Msg("BibleInfo.BookChap"); //$NON-NLS-1$
-    static final Msg BOOKS_DECODE = new Msg("BibleInfo.Decode"); //$NON-NLS-1$
-    static final Msg REF_PARTS = new Msg("BibleInfo.RefParts"); //$NON-NLS-1$
+    static final Msg BOOKS_SECTION = new Msg("BibleInfo.Section");
+    static final Msg BOOKS_BOOK = new Msg("BibleInfo.Book");
+    static final Msg BOOKS_BOOKCHAP = new Msg("BibleInfo.BookChap");
+    static final Msg BOOKS_DECODE = new Msg("BibleInfo.Decode");
+    static final Msg REF_PARTS = new Msg("BibleInfo.RefParts");
 
     /**
      * Passthrough ctor
@@ -43,4 +43,43 @@ public final class Msg extends MsgBase {
     private Msg(String name) {
         super(name);
     }
+    /**
+     * Get the internationalized text, but return key if key is unknown.
+     * 
+     * @param key
+     * @return the internationalized text
+     */
+    public static String gettext(String key)
+    {
+        return msg.lookup(key);
+    }
+
+    /**
+     * Get the internationalized text, but return key if key is unknown.
+     * The text requires one parameter to be passed.
+     * 
+     * @param key
+     * @param param
+     * @return the formatted, internationalized text
+     */
+    public static String gettext(String key, Object param)
+    {
+        return msg.toString(key, param);
+    }
+
+    /**
+     * Get the internationalized text, but return key if key is unknown.
+     * The text requires one parameter to be passed.
+     * 
+     * @param key
+     * @param param
+     * @return the formatted, internationalized text
+     */
+    public static String gettext(String key, Object[] params)
+    {
+        return msg.toString(key, params);
+    }
+
+    private static MsgBase msg = new Msg();
+    Msg() {}
 }

@@ -31,17 +31,43 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  */
 public final class UserMsg extends MsgBase {
-    static final UserMsg ABSTRACT_REF_SUMMARY = new UserMsg("AbstractPassage.RefSummary"); //$NON-NLS-1$
-    static final UserMsg VERSE_PARTS = new UserMsg("Verse.Parts"); //$NON-NLS-1$
-    static final UserMsg VERSE_PARSE = new UserMsg("Verse.Parse"); //$NON-NLS-1$
-    static final UserMsg RANGE_PARTS = new UserMsg("VerseRange.Parts"); //$NON-NLS-1$
-    static final UserMsg ACCURACY_BOOK = new UserMsg("AccuracyType.Book"); //$NON-NLS-1$
-    static final UserMsg ACCURACY_BOOK_CHAPTER = new UserMsg("AccuracyType.BookChapter"); //$NON-NLS-1$
 
     /**
-     * Passthrough ctor
+     * Get the internationalized text, but return key if key is unknown.
+     * 
+     * @param key
+     * @return the internationalized text
      */
-    private UserMsg(String name) {
-        super(name);
+    public static String gettext(String key)
+    {
+        return msg.lookup(key);
     }
+
+    /**
+     * Get the internationalized text, but return key if key is unknown.
+     * The text requires one parameter to be passed.
+     * 
+     * @param key
+     * @param param
+     * @return the formatted, internationalized text
+     */
+    public static String gettext(String key, Object param)
+    {
+        return msg.toString(key, param);
+    }
+
+    /**
+     * Get the internationalized text, but return key if key is unknown.
+     * The text requires one parameter to be passed.
+     * 
+     * @param key
+     * @param param
+     * @return the formatted, internationalized text
+     */
+    public static String gettext(String key, Object[] params)
+    {
+        return msg.toString(key, params);
+    }
+
+    private static MsgBase msg = new UserMsg();
 }

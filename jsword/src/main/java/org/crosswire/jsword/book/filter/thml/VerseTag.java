@@ -40,7 +40,7 @@ public class VerseTag extends AbstractTag {
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
     public String getTagName() {
-        return "verse"; //$NON-NLS-1$
+        return "verse";
     }
 
     /*

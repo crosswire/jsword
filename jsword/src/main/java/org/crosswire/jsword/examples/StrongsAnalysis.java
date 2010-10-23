@@ -52,7 +52,7 @@ public class StrongsAnalysis {
      *
      */
     public StrongsAnalysis() {
-        Book bible = Books.installed().getBook("KJV"); //$NON-NLS-1$
+        Book bible = Books.installed().getBook("KJV");
         if (!bible.hasFeature(FeatureType.STRONGS_NUMBERS)) {
             bible = null;
             List bibles = Books.installed().getBooks(new BookFilters.BookFeatureFilter(FeatureType.STRONGS_NUMBERS));
@@ -141,5 +141,5 @@ public class StrongsAnalysis {
         new StrongsAnalysis();
     }
 
-    private static Pattern strongsNumberPattern = Pattern.compile("strong:([GH][0-9]+)"); //$NON-NLS-1$
+    private static Pattern strongsNumberPattern = Pattern.compile("strong:([GH][0-9]+)");
 }

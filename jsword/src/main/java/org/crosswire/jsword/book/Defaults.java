@@ -616,14 +616,14 @@ public final class Defaults {
         }
     }
 
-    private static final String BIBLE_KEY = "bible-names"; //$NON-NLS-1$
-    private static final String COMMENTARY_KEY = "commentary-names"; //$NON-NLS-1$
-    private static final String DICTIONARY_KEY = "dictionary-names"; //$NON-NLS-1$
-    private static final String DAILY_DEVOTIONALS_KEY = "daily-devotional-names"; //$NON-NLS-1$
-    private static final String GREEKDEF_KEY = "greekdef-names"; //$NON-NLS-1$
-    private static final String HEBREWDEF_KEY = "hebrewdef-names"; //$NON-NLS-1$
-    private static final String GREEKPARSE_KEY = "greekparse-names"; //$NON-NLS-1$
-    private static final String HEBREWPARSE_KEY = "hebrewparse-names"; //$NON-NLS-1$
+    private static final String BIBLE_KEY = "bible-names";
+    private static final String COMMENTARY_KEY = "commentary-names";
+    private static final String DICTIONARY_KEY = "dictionary-names";
+    private static final String DAILY_DEVOTIONALS_KEY = "daily-devotional-names";
+    private static final String GREEKDEF_KEY = "greekdef-names";
+    private static final String HEBREWDEF_KEY = "hebrewdef-names";
+    private static final String GREEKPARSE_KEY = "greekparse-names";
+    private static final String HEBREWPARSE_KEY = "hebrewparse-names";
 
     /**
      * Indicates whether the last book of each type is used next time.

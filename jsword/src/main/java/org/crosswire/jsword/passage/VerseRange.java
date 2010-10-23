@@ -159,7 +159,7 @@ public final class VerseRange implements Key {
             return rangeName;
         } catch (NoSuchVerseException ex) {
             assert false : ex;
-            return "!Error!"; //$NON-NLS-1$
+            return "!Error!";
         }
     }
 
@@ -269,7 +269,7 @@ public final class VerseRange implements Key {
             return start.getOsisRef();
         } catch (NoSuchVerseException ex) {
             assert false : ex;
-            return "!Error!"; //$NON-NLS-1$
+            return "!Error!";
         }
     }
 
@@ -295,7 +295,7 @@ public final class VerseRange implements Key {
             }
         } catch (NoSuchVerseException ex) {
             assert false : ex;
-            return "!Error!"; //$NON-NLS-1$
+            return "!Error!";
         }
 
         int startOrdinal = start.getOrdinal();
@@ -912,7 +912,7 @@ public final class VerseRange implements Key {
      * Check to see that everything is ok with the Data
      */
     private void verifyData() {
-        assert verseCount == end.subtract(start) + 1 : "start=" + start + ", end=" + end + ", verseCount=" + verseCount; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assert verseCount == end.subtract(start) + 1 : "start=" + start + ", end=" + end + ", verseCount=" + verseCount;
     }
 
     /**
@@ -1150,7 +1150,7 @@ public final class VerseRange implements Key {
     /**
      * What characters can we use to separate the 2 parts to a VerseRanges
      */
-    public static final String RANGE_ALLOWED_DELIMS = "-"; //$NON-NLS-1$
+    public static final String RANGE_ALLOWED_DELIMS = "-";
 
     /**
      * What characters should we use to separate VerseRange parts on output

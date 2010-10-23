@@ -260,50 +260,50 @@ public interface BookMetaData extends Comparable {
     /**
      * The key for the type in the properties map
      */
-    String KEY_CATEGORY = "Category"; //$NON-NLS-1$
+    String KEY_CATEGORY = "Category";
 
     /**
      * The key for the book in the properties map
      */
-    String KEY_BOOK = "Book"; //$NON-NLS-1$
+    String KEY_BOOK = "Book";
 
     /**
      * The key for the driver in the properties map
      */
-    String KEY_DRIVER = "Driver"; //$NON-NLS-1$
+    String KEY_DRIVER = "Driver";
 
     /**
      * The key for the name in the properties map
      */
-    String KEY_NAME = "Description"; //$NON-NLS-1$
+    String KEY_NAME = "Description";
 
     /**
      * The key for the language in the properties map
      */
-    String KEY_XML_LANG = "Lang"; //$NON-NLS-1$
+    String KEY_XML_LANG = "Lang";
 
     /**
      * The key for the font in the properties map
      */
-    String KEY_FONT = "Font"; //$NON-NLS-1$
+    String KEY_FONT = "Font";
 
     /**
      * The key for the initials in the properties map
      */
-    String KEY_INITIALS = "Initials"; //$NON-NLS-1$
+    String KEY_INITIALS = "Initials";
 
     /**
      * The key for the URI locating where this book is installed
      */
-    String KEY_LIBRARY_URI = "LibraryURI"; //$NON-NLS-1$
+    String KEY_LIBRARY_URI = "LibraryURI";
 
     /**
      * The key for the URI locating this book
      */
-    String KEY_LOCATION_URI = "LocationURI"; //$NON-NLS-1$
+    String KEY_LOCATION_URI = "LocationURI";
 
     /**
      * The key for the indexed status in the properties map
      */
-    String KEY_INDEXSTATUS = "IndexStatus"; //$NON-NLS-1$
+    String KEY_INDEXSTATUS = "IndexStatus";
 }

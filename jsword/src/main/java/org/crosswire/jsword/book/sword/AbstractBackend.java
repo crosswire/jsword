@@ -163,7 +163,7 @@ public abstract class AbstractBackend implements Activatable {
     public void create() throws IOException, BookException {
         File dataPath = new File(getExpandedDataPath());
         if (!dataPath.exists() && !dataPath.mkdirs()) {
-            throw new IOException("Unable to create module data path!"); //$NON-NLS-1$
+            throw new IOException("Unable to create module data path!");
         }
     }
 

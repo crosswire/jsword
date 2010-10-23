@@ -170,7 +170,7 @@ public final class BibleNames {
         ResourceBundle resources = ResourceBundle.getBundle(BibleNames.class.getName(), locale, CWClassLoader.instance(BibleNames.class));
 
         for (int i = 0; i < booksInBible; i++) {
-            String osisName = ""; //$NON-NLS-1$
+            String osisName = "";
             try {
                 osisName = OSISNames.getName(i + 1);
             } catch (NoSuchVerseException e) {
@@ -214,9 +214,9 @@ public final class BibleNames {
         return null;
     }
 
-    private static final String FULL_KEY = ".Full"; //$NON-NLS-1$
-    private static final String SHORT_KEY = ".Short"; //$NON-NLS-1$
-    private static final String ALT_KEY = ".Alt"; //$NON-NLS-1$
+    private static final String FULL_KEY = ".Full";
+    private static final String SHORT_KEY = ".Short";
+    private static final String ALT_KEY = ".Alt";
 
     /**
      * Handy book finder

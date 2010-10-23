@@ -71,11 +71,12 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
         Locale defaultLocale = Locale.getDefault();
         ResourceBundle prop = ResourceBundle.getBundle(setname, defaultLocale, CWClassLoader.instance(ReadingsBookDriver.class));
 
-        String name = UserMsg.TITLE.toString();
+        // TRANSLATOR: The default name for JSword's Reading plan.
+        String name = UserMsg.gettext("Readings");
         try {
-            name = prop.getString("title"); //$NON-NLS-1$
+            name = prop.getString("title");
         } catch (MissingResourceException e) {
-            log.warn("Missing resource: 'title' while parsing: " + setname); //$NON-NLS-1$
+            log.warn("Missing resource: 'title' while parsing: " + setname);
         }
 
         DefaultBookMetaData bmd = new DefaultBookMetaData(driver, name, type);
@@ -91,13 +92,13 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
 
         while (greg.get(java.util.Calendar.YEAR) == currentYear) {
             String internalKey = ReadingsKey.external2internal(greg);
-            String readings = ""; //$NON-NLS-1$
+            String readings = "";
 
             try {
                 readings = prop.getString(internalKey);
                 hash.put(new ReadingsKey(greg.getTime()), readings);
             } catch (MissingResourceException e) {
-                log.warn("Missing resource: " + internalKey + " while parsing: " + setname); //$NON-NLS-1$ //$NON-NLS-2$
+                log.warn("Missing resource: " + internalKey + " while parsing: " + setname);
             }
 
             greg.add(java.util.Calendar.DATE, 1);
@@ -117,9 +118,10 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
 
     public Iterator getOsisIterator(Key key, boolean allowEmpty) throws BookException {
         if (!(key instanceof ReadingsKey)) {
-            throw new BookException(UserMsg.NOT_FOUND, new Object[] {
+            // TRANSLATOR: Error condition: Indicates that something could not be found in the book. {0} is a placeholder for the unknown key.
+            throw new BookException(UserMsg.gettext("Key not found {0}", new Object[] {
                 key.getName()
-            });
+            }));
         }
 
         // TODO(DMS): make the iterator be demand driven
@@ -131,9 +133,10 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
 
         String readings = (String) hash.get(key);
         if (readings == null) {
-            throw new BookException(UserMsg.NOT_FOUND, new Object[] {
+            // TRANSLATOR: Error condition: Indicates that something could not be found in the book. {0} is a placeholder for the unknown key.
+            throw new BookException(UserMsg.gettext("Key not found {0}", new Object[] {
                 key.getName()
-            });
+            }));
         }
 
         try {
@@ -180,7 +183,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
      * .Key)
      */
     public String getRawText(Key key) throws BookException {
-        return ""; //$NON-NLS-1$
+        return "";
     }
 
     /*

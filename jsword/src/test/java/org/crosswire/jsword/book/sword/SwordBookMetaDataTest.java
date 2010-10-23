@@ -36,22 +36,22 @@ import junit.framework.TestCase;
  */
 public class SwordBookMetaDataTest extends TestCase {
 
-    File configFile = new File("testconfig.conf"); //$NON-NLS-1$
+    File configFile = new File("testconfig.conf");
     SwordBookMetaData swordBookMetaData = null;
 
     protected void setUp() throws Exception {
-        ConfigEntryTable table = new ConfigEntryTable("TestBook"); //$NON-NLS-1$
-        table.add(ConfigEntryType.LANG, "de"); //$NON-NLS-1$
-        table.add(ConfigEntryType.INITIALS, "TestBook"); //$NON-NLS-1$
-        table.add(ConfigEntryType.DESCRIPTION, "MyNewBook"); //$NON-NLS-1$
-        table.add(ConfigEntryType.MOD_DRV, "RawFiles"); //$NON-NLS-1$
+        ConfigEntryTable table = new ConfigEntryTable("TestBook");
+        table.add(ConfigEntryType.LANG, "de");
+        table.add(ConfigEntryType.INITIALS, "TestBook");
+        table.add(ConfigEntryType.DESCRIPTION, "MyNewBook");
+        table.add(ConfigEntryType.MOD_DRV, "RawFiles");
         try {
             table.save(configFile);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
 
-        swordBookMetaData = new SwordBookMetaData(configFile, "TestBook", new URI("")); //$NON-NLS-1$ //$NON-NLS-2$
+        swordBookMetaData = new SwordBookMetaData(configFile, "TestBook", new URI(""));
     }
 
     protected void tearDown() throws Exception {
@@ -60,9 +60,9 @@ public class SwordBookMetaDataTest extends TestCase {
 
     public void testPropertiesAccessors() {
         assertNotNull(swordBookMetaData);
-        assertEquals(swordBookMetaData.getName(), "MyNewBook"); //$NON-NLS-1$
-        assertEquals(swordBookMetaData.getInitials(), "TestBook"); //$NON-NLS-1$
+        assertEquals(swordBookMetaData.getName(), "MyNewBook");
+        assertEquals(swordBookMetaData.getInitials(), "TestBook");
         assertNotNull(swordBookMetaData.getLanguage());
-        assertEquals(swordBookMetaData.getLanguage().getCode(), "de"); //$NON-NLS-1$
+        assertEquals(swordBookMetaData.getLanguage().getCode(), "de");
     }
 }

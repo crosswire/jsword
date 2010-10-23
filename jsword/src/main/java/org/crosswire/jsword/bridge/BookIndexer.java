@@ -130,31 +130,31 @@ public class BookIndexer {
             return;
         }
 
-        System.err.println("BookIndexer " + args[0] + " " + args[1]); //$NON-NLS-1$ //$NON-NLS-2$
+        System.err.println("BookIndexer " + args[0] + " " + args[1]);
 
         String operation = args[0];
         Book b = Books.installed().getBook(args[1]);
         if (b == null) {
-            System.err.println("Book not found"); //$NON-NLS-1$
+            System.err.println("Book not found");
             return;
         }
 
         BookIndexer indexer = new BookIndexer(b);
-        if (operation.equalsIgnoreCase("create")) { //$NON-NLS-1$
+        if (operation.equalsIgnoreCase("create")) {
             try {
                 indexer.createIndex();
             } catch (BookException e) {
-                System.err.println("Unable to re-index book."); //$NON-NLS-1$
+                System.err.println("Unable to re-index book.");
                 e.printStackTrace();
             }
-        } else if (operation.equalsIgnoreCase("delete")) { //$NON-NLS-1$
+        } else if (operation.equalsIgnoreCase("delete")) {
             try {
                 indexer.deleteIndex();
             } catch (BookException e) {
-                System.err.println("Unable to delete index for book."); //$NON-NLS-1$
+                System.err.println("Unable to delete index for book.");
                 e.printStackTrace();
             }
-        } else if (operation.equalsIgnoreCase("check")) { //$NON-NLS-1$
+        } else if (operation.equalsIgnoreCase("check")) {
             System.err.println(indexer.isIndexed());
         } else {
             usage();
@@ -162,6 +162,6 @@ public class BookIndexer {
     }
 
     public static void usage() {
-        System.err.println("Usage: BookIndexer operation book"); //$NON-NLS-1$
+        System.err.println("Usage: BookIndexer operation book");
     }
 }

@@ -31,8 +31,8 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  */
 final class Msg extends MsgBase {
-    static final Msg PARSE_FAIL = new Msg("ReadingsKey.ParseFail"); //$NON-NLS-1$
-    static final Msg DRIVER_READONLY = new Msg("ReadingsKey.DriverReadonly"); //$NON-NLS-1$
+    static final Msg PARSE_FAIL = new Msg("ReadingsKey.ParseFail");
+    static final Msg DRIVER_READONLY = new Msg("ReadingsKey.DriverReadonly");
 
     /**
      * Passthrough ctor

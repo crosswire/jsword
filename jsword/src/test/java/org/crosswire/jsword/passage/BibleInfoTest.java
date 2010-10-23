@@ -74,16 +74,16 @@ public class BibleInfoTest extends TestCase {
 
     public void testGetLongBookName() throws Exception {
         BibleInfo.setCase(CaseType.SENTENCE);
-        assertEquals(BibleInfo.getLongBookName(1), "Genesis"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getLongBookName(66), "Revelation of John"); //$NON-NLS-1$
+        assertEquals(BibleInfo.getLongBookName(1), "Genesis");
+        assertEquals(BibleInfo.getLongBookName(66), "Revelation of John");
 
         BibleInfo.setCase(CaseType.LOWER);
-        assertEquals(BibleInfo.getLongBookName(1), "genesis"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getLongBookName(66), "revelation of john"); //$NON-NLS-1$
+        assertEquals(BibleInfo.getLongBookName(1), "genesis");
+        assertEquals(BibleInfo.getLongBookName(66), "revelation of john");
 
         BibleInfo.setCase(CaseType.UPPER);
-        assertEquals(BibleInfo.getLongBookName(1), "GENESIS"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getLongBookName(66), "REVELATION OF JOHN"); //$NON-NLS-1$
+        assertEquals(BibleInfo.getLongBookName(1), "GENESIS");
+        assertEquals(BibleInfo.getLongBookName(66), "REVELATION OF JOHN");
 
         try {
             BibleInfo.getLongBookName(0);
@@ -106,15 +106,15 @@ public class BibleInfoTest extends TestCase {
         } catch (NoSuchVerseException ex) {
         }
 
-        assertEquals(BibleInfo.getShortBookName(1), "Gen"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getShortBookName(2), "Exo"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getShortBookName(7), "Judg"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getShortBookName(39), "Mal"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getShortBookName(40), "Mat"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getShortBookName(50), "Phili"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getShortBookName(57), "Phile"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getShortBookName(65), "Jude"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getShortBookName(66), "Rev"); //$NON-NLS-1$
+        assertEquals(BibleInfo.getShortBookName(1), "Gen");
+        assertEquals(BibleInfo.getShortBookName(2), "Exo");
+        assertEquals(BibleInfo.getShortBookName(7), "Judg");
+        assertEquals(BibleInfo.getShortBookName(39), "Mal");
+        assertEquals(BibleInfo.getShortBookName(40), "Mat");
+        assertEquals(BibleInfo.getShortBookName(50), "Phili");
+        assertEquals(BibleInfo.getShortBookName(57), "Phile");
+        assertEquals(BibleInfo.getShortBookName(65), "Jude");
+        assertEquals(BibleInfo.getShortBookName(66), "Rev");
 
         try {
             BibleInfo.getShortBookName(67);
@@ -129,15 +129,15 @@ public class BibleInfoTest extends TestCase {
         } catch (NoSuchVerseException ex) {
         }
 
-        assertEquals(BibleInfo.getShortBookName(1), "gen"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getShortBookName(2), "exo"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getShortBookName(7), "judg"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getShortBookName(39), "mal"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getShortBookName(40), "mat"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getShortBookName(50), "phili"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getShortBookName(57), "phile"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getShortBookName(65), "jude"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getShortBookName(66), "rev"); //$NON-NLS-1$
+        assertEquals(BibleInfo.getShortBookName(1), "gen");
+        assertEquals(BibleInfo.getShortBookName(2), "exo");
+        assertEquals(BibleInfo.getShortBookName(7), "judg");
+        assertEquals(BibleInfo.getShortBookName(39), "mal");
+        assertEquals(BibleInfo.getShortBookName(40), "mat");
+        assertEquals(BibleInfo.getShortBookName(50), "phili");
+        assertEquals(BibleInfo.getShortBookName(57), "phile");
+        assertEquals(BibleInfo.getShortBookName(65), "jude");
+        assertEquals(BibleInfo.getShortBookName(66), "rev");
 
         try {
             BibleInfo.getShortBookName(67);
@@ -152,15 +152,15 @@ public class BibleInfoTest extends TestCase {
         } catch (NoSuchVerseException ex) {
         }
 
-        assertEquals(BibleInfo.getShortBookName(1), "GEN"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getShortBookName(2), "EXO"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getShortBookName(7), "JUDG"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getShortBookName(39), "MAL"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getShortBookName(40), "MAT"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getShortBookName(50), "PHILI"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getShortBookName(57), "PHILE"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getShortBookName(65), "JUDE"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getShortBookName(66), "REV"); //$NON-NLS-1$
+        assertEquals(BibleInfo.getShortBookName(1), "GEN");
+        assertEquals(BibleInfo.getShortBookName(2), "EXO");
+        assertEquals(BibleInfo.getShortBookName(7), "JUDG");
+        assertEquals(BibleInfo.getShortBookName(39), "MAL");
+        assertEquals(BibleInfo.getShortBookName(40), "MAT");
+        assertEquals(BibleInfo.getShortBookName(50), "PHILI");
+        assertEquals(BibleInfo.getShortBookName(57), "PHILE");
+        assertEquals(BibleInfo.getShortBookName(65), "JUDE");
+        assertEquals(BibleInfo.getShortBookName(66), "REV");
 
         try {
             BibleInfo.getShortBookName(67);
@@ -170,9 +170,9 @@ public class BibleInfoTest extends TestCase {
     }
 
     public void testGetBookJogger() throws Exception {
-        assertEquals(BibleInfo.getOSISName(1), "Gen"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getOSISName(2), "Exod"); //$NON-NLS-1$
-        assertEquals(BibleInfo.getOSISName(66), "Rev"); //$NON-NLS-1$
+        assertEquals(BibleInfo.getOSISName(1), "Gen");
+        assertEquals(BibleInfo.getOSISName(2), "Exod");
+        assertEquals(BibleInfo.getOSISName(66), "Rev");
 
         try {
             BibleInfo.getOSISName(0);
@@ -188,39 +188,39 @@ public class BibleInfoTest extends TestCase {
     }
 
     public void testGetBookNumber() {
-        assertEquals(BibleInfo.getBookNumber("Genesis"), 1); //$NON-NLS-1$
-        assertEquals(BibleInfo.getBookNumber("Gene"), 1); //$NON-NLS-1$
-        assertEquals(BibleInfo.getBookNumber("Gen"), 1); //$NON-NLS-1$
-        assertEquals(BibleInfo.getBookNumber("G"), 1); //$NON-NLS-1$
-        assertEquals(BibleInfo.getBookNumber("g"), 1); //$NON-NLS-1$
-        assertEquals(BibleInfo.getBookNumber("GEN"), 1); //$NON-NLS-1$
-        assertEquals(BibleInfo.getBookNumber("genesis"), 1); //$NON-NLS-1$
-        assertEquals(BibleInfo.getBookNumber("psa"), 19); //$NON-NLS-1$
-        assertEquals(BibleInfo.getBookNumber("ps"), 19); //$NON-NLS-1$
-        assertEquals(BibleInfo.getBookNumber("pss"), 19); //$NON-NLS-1$
-        assertEquals(BibleInfo.getBookNumber("psalter"), 19); //$NON-NLS-1$
-        assertEquals(BibleInfo.getBookNumber("ecc"), 21); //$NON-NLS-1$
-        assertEquals(BibleInfo.getBookNumber("Qohelot"), 21); //$NON-NLS-1$
-        assertEquals(BibleInfo.getBookNumber("son"), 22); //$NON-NLS-1$
-        assertEquals(BibleInfo.getBookNumber("song"), 22); //$NON-NLS-1$
-        assertEquals(BibleInfo.getBookNumber("song of solomon"), 22); //$NON-NLS-1$
-        assertEquals(BibleInfo.getBookNumber("songofsolomon"), 22); //$NON-NLS-1$
-        assertEquals(BibleInfo.getBookNumber("ss"), 22); //$NON-NLS-1$
-        assertEquals(BibleInfo.getBookNumber("canticle"), 22); //$NON-NLS-1$
-        assertEquals(BibleInfo.getBookNumber("can"), 22); //$NON-NLS-1$
-        assertEquals(BibleInfo.getBookNumber("phi"), 50); //$NON-NLS-1$
-        assertEquals(BibleInfo.getBookNumber("phil"), 50); //$NON-NLS-1$
-        assertEquals(BibleInfo.getBookNumber("phili"), 50); //$NON-NLS-1$
-        assertEquals(BibleInfo.getBookNumber("phile"), 57); //$NON-NLS-1$
-        assertEquals(BibleInfo.getBookNumber("revelations"), 66); //$NON-NLS-1$
-        assertEquals(BibleInfo.getBookNumber("rev"), 66); //$NON-NLS-1$
+        assertEquals(BibleInfo.getBookNumber("Genesis"), 1);
+        assertEquals(BibleInfo.getBookNumber("Gene"), 1);
+        assertEquals(BibleInfo.getBookNumber("Gen"), 1);
+        assertEquals(BibleInfo.getBookNumber("G"), 1);
+        assertEquals(BibleInfo.getBookNumber("g"), 1);
+        assertEquals(BibleInfo.getBookNumber("GEN"), 1);
+        assertEquals(BibleInfo.getBookNumber("genesis"), 1);
+        assertEquals(BibleInfo.getBookNumber("psa"), 19);
+        assertEquals(BibleInfo.getBookNumber("ps"), 19);
+        assertEquals(BibleInfo.getBookNumber("pss"), 19);
+        assertEquals(BibleInfo.getBookNumber("psalter"), 19);
+        assertEquals(BibleInfo.getBookNumber("ecc"), 21);
+        assertEquals(BibleInfo.getBookNumber("Qohelot"), 21);
+        assertEquals(BibleInfo.getBookNumber("son"), 22);
+        assertEquals(BibleInfo.getBookNumber("song"), 22);
+        assertEquals(BibleInfo.getBookNumber("song of solomon"), 22);
+        assertEquals(BibleInfo.getBookNumber("songofsolomon"), 22);
+        assertEquals(BibleInfo.getBookNumber("ss"), 22);
+        assertEquals(BibleInfo.getBookNumber("canticle"), 22);
+        assertEquals(BibleInfo.getBookNumber("can"), 22);
+        assertEquals(BibleInfo.getBookNumber("phi"), 50);
+        assertEquals(BibleInfo.getBookNumber("phil"), 50);
+        assertEquals(BibleInfo.getBookNumber("phili"), 50);
+        assertEquals(BibleInfo.getBookNumber("phile"), 57);
+        assertEquals(BibleInfo.getBookNumber("revelations"), 66);
+        assertEquals(BibleInfo.getBookNumber("rev"), 66);
 
-        if (BibleInfo.getBookNumber("b") != -1) //$NON-NLS-1$
+        if (BibleInfo.getBookNumber("b") != -1)
         {
             fail();
         }
 
-        assertEquals(BibleInfo.getBookNumber("1"), -1); //$NON-NLS-1$
+        assertEquals(BibleInfo.getBookNumber("1"), -1);
     }
 
     public void testIn() throws Exception {

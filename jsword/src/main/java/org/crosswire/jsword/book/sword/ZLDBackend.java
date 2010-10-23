@@ -66,7 +66,7 @@ public class ZLDBackend extends RawLDBackend {
             try {
                 temp = SwordUtil.readRAF(zdxRaf, blockNum * ZDX_ENTRY_SIZE, ZDX_ENTRY_SIZE);
                 if (temp == null || temp.length == 0) {
-                    return ""; //$NON-NLS-1$
+                    return "";
                 }
 
                 int blockStart = SwordUtil.decodeLittleEndian32(temp, 0);
@@ -83,14 +83,14 @@ public class ZLDBackend extends RawLDBackend {
                 lastBlockNum = blockNum;
                 lastUncompressed = uncompressed;
             } catch (IOException e) {
-                return ""; //$NON-NLS-1$
+                return "";
             }
         }
 
         // get the "entry" from this block.
         int entryCount = SwordUtil.decodeLittleEndian32(uncompressed, 0);
         if (blockEntry >= entryCount) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         int entryOffset = BLOCK_ENTRY_COUNT + (BLOCK_ENTRY_SIZE * blockEntry);
@@ -134,16 +134,20 @@ public class ZLDBackend extends RawLDBackend {
             zdtFile = new File(path.getPath() + EXTENSION_Z_DATA);
 
             if (!zdxFile.canRead()) {
-                Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] {
+                // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
+                // {0} is a placeholder for the file.
+                Reporter.informUser(this, new BookException(UserMsg.gettext("Error reading {0}", new Object[] {
                     zdtFile.getAbsolutePath()
-                }));
+                })));
                 return;
             }
 
             if (!zdtFile.canRead()) {
-                Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] {
+                // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
+                // {0} is a placeholder for the file.
+                Reporter.informUser(this, new BookException(UserMsg.gettext("Error reading {0}", new Object[] {
                     zdtFile.getAbsolutePath()
-                }));
+                })));
                 return;
             }
 
@@ -151,7 +155,7 @@ public class ZLDBackend extends RawLDBackend {
             zdxRaf = new RandomAccessFile(zdxFile, FileUtil.MODE_READ);
             zdtRaf = new RandomAccessFile(zdtFile, FileUtil.MODE_READ);
         } catch (IOException ex) {
-            log.error("failed to open files", ex); //$NON-NLS-1$
+            log.error("failed to open files", ex);
             zdxRaf = null;
             zdtRaf = null;
             return;
@@ -180,7 +184,7 @@ public class ZLDBackend extends RawLDBackend {
                 zdtRaf.close();
             }
         } catch (IOException ex) {
-            log.error("failed to close files", ex); //$NON-NLS-1$
+            log.error("failed to close files", ex);
         } finally {
             zdxRaf = null;
             zdtRaf = null;
@@ -214,8 +218,8 @@ public class ZLDBackend extends RawLDBackend {
         is.defaultReadObject();
     }
 
-    private static final String EXTENSION_Z_INDEX = ".zdx"; //$NON-NLS-1$
-    private static final String EXTENSION_Z_DATA = ".zdt"; //$NON-NLS-1$
+    private static final String EXTENSION_Z_INDEX = ".zdx";
+    private static final String EXTENSION_Z_DATA = ".zdt";
 
     private static final int ZDX_ENTRY_SIZE = 8;
     private static final int BLOCK_ENTRY_COUNT = 4;

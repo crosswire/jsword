@@ -99,7 +99,7 @@ public class SwordBook extends AbstractPassageBook {
      */
     public String getRawText(Key key) throws BookException {
         if (backend == null) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         String result = backend.getRawText(key);

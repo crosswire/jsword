@@ -309,7 +309,7 @@ public final class BookFilters {
          */
         public CustomBookFilter(String match) {
             List cache = new ArrayList();
-            String[] filters = match.split(";"); //$NON-NLS-1$
+            String[] filters = match.split(";");
             for (int i = 0; i < filters.length; i++) {
                 cache.add(new Test(filters[i]));
             }
@@ -343,9 +343,9 @@ public final class BookFilters {
          */
         static class Test {
             protected Test(String filter) {
-                String[] parts = filter.split("="); //$NON-NLS-1$
+                String[] parts = filter.split("=");
                 if (parts.length != 2 || parts[0].length() == 0 || parts[1].length() == 0) {
-                    throw new IllegalArgumentException("Filter format is 'property=value', given: " + filter); //$NON-NLS-1$
+                    throw new IllegalArgumentException("Filter format is 'property=value', given: " + filter);
                 }
                 this.property = parts[0];
                 this.result = parts[1];

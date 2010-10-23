@@ -36,7 +36,7 @@ public class RootTag extends AbstractTag {
     /**
      * This is added by the parser to we make the string accessible
      */
-    protected static final String TAG_ROOT = "root"; //$NON-NLS-1$
+    protected static final String TAG_ROOT = "root";
 
     /*
      * (non-Javadoc)

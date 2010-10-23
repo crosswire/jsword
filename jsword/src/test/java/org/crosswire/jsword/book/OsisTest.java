@@ -58,15 +58,15 @@ public class OsisTest extends TestCase {
 
     public void testManual() throws Exception {
         Element seg = OSISUtil.factory().createSeg();
-        seg.addContent("In the beginning God created the heaven and the earth."); //$NON-NLS-1$
+        seg.addContent("In the beginning God created the heaven and the earth.");
 
         Element verse = OSISUtil.factory().createVerse();
-        verse.setAttribute(OSISUtil.OSIS_ATTR_OSISID, "Gen.1.1"); //$NON-NLS-1$
+        verse.setAttribute(OSISUtil.OSIS_ATTR_OSISID, "Gen.1.1");
         verse.addContent(seg);
 
         Element div = OSISUtil.factory().createDiv();
-        div.setAttribute("type", "chapter"); //$NON-NLS-1$ //$NON-NLS-2$
-        div.setAttribute("osisID", "Gen.1.1"); //$NON-NLS-1$ //$NON-NLS-2$
+        div.setAttribute("type", "chapter");
+        div.setAttribute("osisID", "Gen.1.1");
         div.addContent(verse);
 
         Element work = OSISUtil.factory().createWork();
@@ -75,7 +75,7 @@ public class OsisTest extends TestCase {
         header.addContent(work);
 
         Element osistext = OSISUtil.factory().createOsisText();
-        osistext.setAttribute(OSISUtil.ATTRIBUTE_OSISTEXT_OSISIDWORK, "Bible.KJV"); //$NON-NLS-1$
+        osistext.setAttribute(OSISUtil.ATTRIBUTE_OSISTEXT_OSISIDWORK, "Bible.KJV");
         osistext.addContent(header);
         osistext.addContent(div);
 

@@ -92,7 +92,7 @@ public final class GBFTagBuilders {
             if (tag == null) {
                 // I'm not confident enough that we handle all the GBF tags
                 // that I will blame the book instead of the program
-                log.warn("In " + book.getInitials() + "(" + key.getName() + ") ignoring tag of <" + name + ">"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                log.warn("In " + book.getInitials() + "(" + key.getName() + ") ignoring tag of <" + name + ">");
                 // DataPolice.report("Ignoring tag of <" + name + ">");
             }
         }
@@ -149,12 +149,12 @@ public final class GBFTagBuilders {
     */
     static final class EscapeTagBuilder implements TagBuilder {
         public Tag createTag(final String name) {
-            if ("CG".equals(name)) { //$NON-NLS-1$
-                return new TextTag("&gt;"); //$NON-NLS-1$
+            if ("CG".equals(name)) {
+                return new TextTag("&gt;");
             }
 
             // else "CT"
-            return new TextTag("&lt;"); //$NON-NLS-1$
+            return new TextTag("&lt;");
         }
 
     }
@@ -319,59 +319,59 @@ public final class GBFTagBuilders {
         TagBuilder defaultEndTagBuilder = new DefaultEndTagBuilder();
         TagBuilder ignoreTagBuilder = new IgnoredTagBuilder();
 
-        BUILDERS.put("FB", new BoldStartTagBuilder()); //$NON-NLS-1$
-        BUILDERS.put("Fb", defaultEndTagBuilder); //$NON-NLS-1$
+        BUILDERS.put("FB", new BoldStartTagBuilder());
+        BUILDERS.put("Fb", defaultEndTagBuilder);
 
-        BUILDERS.put("FI", new ItalicStartTagBuilder()); //$NON-NLS-1$
-        BUILDERS.put("Fi", defaultEndTagBuilder); //$NON-NLS-1$
+        BUILDERS.put("FI", new ItalicStartTagBuilder());
+        BUILDERS.put("Fi", defaultEndTagBuilder);
 
-        BUILDERS.put("FR", new RedLetterStartTagBuilder()); //$NON-NLS-1$
-        BUILDERS.put("Fr", defaultEndTagBuilder); //$NON-NLS-1$
+        BUILDERS.put("FR", new RedLetterStartTagBuilder());
+        BUILDERS.put("Fr", defaultEndTagBuilder);
 
-        BUILDERS.put("FU", new UnderlineStartTagBuilder()); //$NON-NLS-1$
-        BUILDERS.put("Fu", defaultEndTagBuilder); //$NON-NLS-1$
+        BUILDERS.put("FU", new UnderlineStartTagBuilder());
+        BUILDERS.put("Fu", defaultEndTagBuilder);
 
-        BUILDERS.put("RX", new CrossRefStartTagBuilder()); //$NON-NLS-1$
-        BUILDERS.put("Rx", defaultEndTagBuilder); //$NON-NLS-1$
+        BUILDERS.put("RX", new CrossRefStartTagBuilder());
+        BUILDERS.put("Rx", defaultEndTagBuilder);
 
-        BUILDERS.put("CL", new EndOfLineTagBuilder()); //$NON-NLS-1$
-        BUILDERS.put("CM", new ParagraphTagBuilder()); //$NON-NLS-1$
+        BUILDERS.put("CL", new EndOfLineTagBuilder());
+        BUILDERS.put("CM", new ParagraphTagBuilder());
 
-        BUILDERS.put("RF", new FootnoteStartTagBuilder()); //$NON-NLS-1$
-        BUILDERS.put("Rf", new FootnoteEndTagBuilder()); //$NON-NLS-1$
-        BUILDERS.put("RB", new TextFootnoteTagBuilder()); //$NON-NLS-1$
+        BUILDERS.put("RF", new FootnoteStartTagBuilder());
+        BUILDERS.put("Rf", new FootnoteEndTagBuilder());
+        BUILDERS.put("RB", new TextFootnoteTagBuilder());
 
-        BUILDERS.put("TS", new HeaderStartTagBuilder()); //$NON-NLS-1$
-        BUILDERS.put("Ts", defaultEndTagBuilder); //$NON-NLS-1$
+        BUILDERS.put("TS", new HeaderStartTagBuilder());
+        BUILDERS.put("Ts", defaultEndTagBuilder);
 
-        BUILDERS.put("TB", new PsalmTitleStartTagBuilder()); //$NON-NLS-1$
-        BUILDERS.put("Tb", defaultEndTagBuilder); //$NON-NLS-1$
+        BUILDERS.put("TB", new PsalmTitleStartTagBuilder());
+        BUILDERS.put("Tb", defaultEndTagBuilder);
 
-        BUILDERS.put("TH", new TitleStartTagBuilder()); //$NON-NLS-1$
-        BUILDERS.put("Th", defaultEndTagBuilder); //$NON-NLS-1$
+        BUILDERS.put("TH", new TitleStartTagBuilder());
+        BUILDERS.put("Th", defaultEndTagBuilder);
 
-        BUILDERS.put("BA", ignoreTagBuilder); //$NON-NLS-1$
-        BUILDERS.put("BC", ignoreTagBuilder); //$NON-NLS-1$
-        BUILDERS.put("BI", ignoreTagBuilder); //$NON-NLS-1$
-        BUILDERS.put("BN", ignoreTagBuilder); //$NON-NLS-1$
-        BUILDERS.put("BO", ignoreTagBuilder); //$NON-NLS-1$
-        BUILDERS.put("BP", ignoreTagBuilder); //$NON-NLS-1$
+        BUILDERS.put("BA", ignoreTagBuilder);
+        BUILDERS.put("BC", ignoreTagBuilder);
+        BUILDERS.put("BI", ignoreTagBuilder);
+        BUILDERS.put("BN", ignoreTagBuilder);
+        BUILDERS.put("BO", ignoreTagBuilder);
+        BUILDERS.put("BP", ignoreTagBuilder);
 
-        BUILDERS.put("JR", new JustifyRightTagBuilder()); //$NON-NLS-1$
-        BUILDERS.put("JL", ignoreTagBuilder); //$NON-NLS-1$
+        BUILDERS.put("JR", new JustifyRightTagBuilder());
+        BUILDERS.put("JL", ignoreTagBuilder);
 
-        BUILDERS.put("FO", new OTQuoteStartTagBuilder()); //$NON-NLS-1$
-        BUILDERS.put("Fo", defaultEndTagBuilder); //$NON-NLS-1$
+        BUILDERS.put("FO", new OTQuoteStartTagBuilder());
+        BUILDERS.put("Fo", defaultEndTagBuilder);
 
-        BUILDERS.put("PP", new PoetryStartTagBuilder()); //$NON-NLS-1$
-        BUILDERS.put("Pp", defaultEndTagBuilder); //$NON-NLS-1$
+        BUILDERS.put("PP", new PoetryStartTagBuilder());
+        BUILDERS.put("Pp", defaultEndTagBuilder);
 
         TagBuilder builder = new StrongsWordTagBuilder();
-        BUILDERS.put("WH", builder); //$NON-NLS-1$
-        BUILDERS.put("WG", builder); //$NON-NLS-1$
-        BUILDERS.put("WT", new StrongsMorphTagBuilder()); //$NON-NLS-1$
+        BUILDERS.put("WH", builder);
+        BUILDERS.put("WG", builder);
+        BUILDERS.put("WT", new StrongsMorphTagBuilder());
 
-        BUILDERS.put("CG", new EscapeTagBuilder()); //$NON-NLS-1$
-        BUILDERS.put("CT", new EscapeTagBuilder()); //$NON-NLS-1$
+        BUILDERS.put("CG", new EscapeTagBuilder());
+        BUILDERS.put("CT", new EscapeTagBuilder());
     }
 }

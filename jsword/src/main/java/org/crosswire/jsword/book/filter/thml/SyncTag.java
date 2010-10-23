@@ -50,7 +50,7 @@ public class SyncTag extends AbstractTag {
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
     public String getTagName() {
-        return "sync"; //$NON-NLS-1$
+        return "sync";
     }
 
     /*
@@ -62,10 +62,10 @@ public class SyncTag extends AbstractTag {
      */
     public Element processTag(Element ele, Attributes attrs) {
         // Strong's reference
-        String type = attrs.getValue("type"); //$NON-NLS-1$
-        String value = attrs.getValue("value"); //$NON-NLS-1$
+        String type = attrs.getValue("type");
+        String value = attrs.getValue("value");
 
-        if ("Strongs".equals(type)) { //$NON-NLS-1$
+        if ("Strongs".equals(type)) {
             List siblings = ele.getContent();
             int size = siblings.size();
             if (size == 0) {
@@ -94,7 +94,7 @@ public class SyncTag extends AbstractTag {
             return null;
         }
 
-        if ("morph".equals(type)) { //$NON-NLS-1$
+        if ("morph".equals(type)) {
             List siblings = ele.getContent();
             int size = siblings.size();
             if (size == 0) {
@@ -123,9 +123,9 @@ public class SyncTag extends AbstractTag {
             return null;
         }
 
-        if ("Dict".equals(type)) { //$NON-NLS-1$
+        if ("Dict".equals(type)) {
             Element div = OSISUtil.factory().createDiv();
-            div.setAttribute(OSISUtil.OSIS_ATTR_OSISID, "dict://" + value); //$NON-NLS-1$
+            div.setAttribute(OSISUtil.OSIS_ATTR_OSISID, "dict://" + value);
 
             if (ele != null) {
                 ele.addContent(div);
@@ -134,7 +134,7 @@ public class SyncTag extends AbstractTag {
             return div;
         }
 
-        DataPolice.report("sync tag has type=" + type + " when value=" + value); //$NON-NLS-1$ //$NON-NLS-2$
+        DataPolice.report("sync tag has type=" + type + " when value=" + value);
         return null;
     }
 }

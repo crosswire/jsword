@@ -49,7 +49,7 @@ public class HTag extends AbstractTag {
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
     public String getTagName() {
-        return "h" + level; //$NON-NLS-1$
+        return "h" + level;
     }
 
     /*

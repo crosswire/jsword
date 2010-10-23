@@ -31,10 +31,10 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  */
 final class Msg extends MsgBase {
-    static final Msg UNKNOWN_ERROR = new Msg("SwordInstaller.UnknownError"); //$NON-NLS-1$
-    static final Msg CACHE_ERROR = new Msg("SwordInstaller.CacheError"); //$NON-NLS-1$
-    static final Msg INVALID_DEFINITION = new Msg("SwordInstaller.InvalidURL"); //$NON-NLS-1$
-    static final Msg URL_FAILED = new Msg("SwordInstallerFactory.URLFailed"); //$NON-NLS-1$
+    static final Msg UNKNOWN_ERROR = new Msg("SwordInstaller.UnknownError");
+    static final Msg CACHE_ERROR = new Msg("SwordInstaller.CacheError");
+    static final Msg INVALID_DEFINITION = new Msg("SwordInstaller.InvalidURL");
+    static final Msg URL_FAILED = new Msg("SwordInstallerFactory.URLFailed");
 
     /**
      * Passthrough ctor

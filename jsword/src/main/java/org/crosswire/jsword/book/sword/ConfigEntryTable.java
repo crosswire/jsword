@@ -217,7 +217,8 @@ public final class ConfigEntryTable {
             try {
                 save();
             } catch (IOException e) {
-                Reporter.informUser(this, UserMsg.UNLOCK_FAILED, e);
+                // TRANSLATOR: Common error condition: The user supplied unlock key could not be saved.
+                Reporter.informUser(this, UserMsg.gettext("Unable to save the book's unlock key."));
             }
         }
         return true;
@@ -316,12 +317,12 @@ public final class ConfigEntryTable {
     public Element toOSIS() {
         OSISUtil.OSISFactory factory = OSISUtil.factory();
         Element ele = factory.createTable();
-        toOSIS(factory, ele, "BasicInfo", BASIC_INFO); //$NON-NLS-1$
-        toOSIS(factory, ele, "LangInfo", LANG_INFO); //$NON-NLS-1$
-        toOSIS(factory, ele, "LicenseInfo", COPYRIGHT_INFO); //$NON-NLS-1$
-        toOSIS(factory, ele, "FeatureInfo", FEATURE_INFO); //$NON-NLS-1$
-        toOSIS(factory, ele, "SysInfo", SYSTEM_INFO); //$NON-NLS-1$
-        toOSIS(factory, ele, "Extra", extra); //$NON-NLS-1$
+        toOSIS(factory, ele, "BasicInfo", BASIC_INFO);
+        toOSIS(factory, ele, "LangInfo", LANG_INFO);
+        toOSIS(factory, ele, "LicenseInfo", COPYRIGHT_INFO);
+        toOSIS(factory, ele, "FeatureInfo", FEATURE_INFO);
+        toOSIS(factory, ele, "SysInfo", SYSTEM_INFO);
+        toOSIS(factory, ele, "Extra", extra);
         return ele;
     }
 
@@ -336,7 +337,7 @@ public final class ConfigEntryTable {
         StringBuffer buf = new StringBuffer();
         buf.append('[');
         buf.append(getValue(ConfigEntryType.INITIALS));
-        buf.append("]\n"); //$NON-NLS-1$
+        buf.append("]\n");
         toConf(buf, BASIC_INFO);
         toConf(buf, SYSTEM_INFO);
         toConf(buf, HIDDEN);
@@ -389,7 +390,7 @@ public final class ConfigEntryTable {
 
             Matcher matcher = KEY_VALUE_PATTERN.matcher(line);
             if (!matcher.matches()) {
-                log.warn("Expected to see '=' in " + internal + ": " + line); //$NON-NLS-1$ //$NON-NLS-2$
+                log.warn("Expected to see '=' in " + internal + ": " + line);
                 continue;
             }
 
@@ -397,7 +398,7 @@ public final class ConfigEntryTable {
             String value = matcher.group(2).trim();
             // Only CIPHER_KEYS that are empty are not ignored
             if (value.length() == 0 && !ConfigEntryType.CIPHER_KEY.getName().equals(key)) {
-                log.warn("Ignoring empty entry in " + internal + ": " + line); //$NON-NLS-1$ //$NON-NLS-2$
+                log.warn("Ignoring empty entry in " + internal + ": " + line);
                 continue;
             }
 
@@ -410,10 +411,10 @@ public final class ConfigEntryTable {
 
             if (e == null) {
                 if (type == null) {
-                    log.warn("Extra entry in " + internal + " of " + configEntry.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+                    log.warn("Extra entry in " + internal + " of " + configEntry.getName());
                     extra.put(key, configEntry);
                 } else if (type.isSynthetic()) {
-                    log.warn("Ignoring unexpected entry in " + internal + " of " + configEntry.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+                    log.warn("Ignoring unexpected entry in " + internal + " of " + configEntry.getName());
                 } else {
                     table.put(type, configEntry);
                 }
@@ -453,7 +454,7 @@ public final class ConfigEntryTable {
             }
         }
         if (initials == null) {
-            log.error("Malformed conf file for " + internal + " no initials found. Using internal of " + internal); //$NON-NLS-1$ //$NON-NLS-2$
+            log.error("Malformed conf file for " + internal + " no initials found. Using internal of " + internal);
             initials = internal;
         }
         add(ConfigEntryType.INITIALS, initials);
@@ -476,17 +477,17 @@ public final class ConfigEntryTable {
 
             if (isKeyLine(line)) {
                 if (continuation_expected) {
-                    log.warn(report("Continuation followed by key for", configEntry.getName(), line)); //$NON-NLS-1$
+                    log.warn(report("Continuation followed by key for", configEntry.getName(), line));
                 }
 
                 backup(line);
                 break;
             } else if (!continuation_expected) {
-                log.warn(report("Line without previous continuation for", configEntry.getName(), line)); //$NON-NLS-1$
+                log.warn(report("Line without previous continuation for", configEntry.getName(), line));
             }
 
             if (!configEntry.allowsContinuation()) {
-                log.warn(report("Ignoring unexpected additional line for", configEntry.getName(), line)); //$NON-NLS-1$
+                log.warn(report("Ignoring unexpected additional line for", configEntry.getName(), line));
             } else {
                 if (continuation_expected) {
                     buf.append('\n');
@@ -536,7 +537,7 @@ public final class ConfigEntryTable {
             readahead = oops;
         } else {
             // should never happen
-            log.error("Backup an empty string for " + internal); //$NON-NLS-1$
+            log.error("Backup an empty string for " + internal);
         }
     }
 
@@ -560,9 +561,9 @@ public final class ConfigEntryTable {
     private void adjustDataPath() {
         String datapath = (String) getValue(ConfigEntryType.DATA_PATH);
         if (datapath == null) {
-            datapath = ""; //$NON-NLS-1$
+            datapath = "";
         }
-        if (datapath.startsWith("./")) { //$NON-NLS-1$
+        if (datapath.startsWith("./")) {
             datapath = datapath.substring(2);
         }
         add(ConfigEntryType.DATA_PATH, datapath);
@@ -582,14 +583,14 @@ public final class ConfigEntryTable {
         // If we have either langFrom or langTo, we are dealing with a glossary
         if (langFrom != null || langTo != null) {
             if (langFrom == null) {
-                log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_FROM.getName() + '=' + Languages.DEFAULT_LANG_CODE); //$NON-NLS-1$ //$NON-NLS-2$
+                log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_FROM.getName() + '=' + Languages.DEFAULT_LANG_CODE);
                 langFrom = Language.DEFAULT_LANG;
                 add(ConfigEntryType.GLOSSARY_FROM, lang.getCode());
             }
             testLanguage(internal, langFrom);
 
             if (langTo == null) {
-                log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_TO.getName() + '=' + Languages.DEFAULT_LANG_CODE); //$NON-NLS-1$ //$NON-NLS-2$
+                log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_TO.getName() + '=' + Languages.DEFAULT_LANG_CODE);
                 langTo = Language.DEFAULT_LANG;
                 add(ConfigEntryType.GLOSSARY_TO, lang.getCode());
             }
@@ -597,18 +598,18 @@ public final class ConfigEntryTable {
 
             // At least one of the two languages should match the lang entry
             if (!langFrom.equals(lang) && !langTo.equals(lang)) {
-                log.error("Data error in " + internal + //$NON-NLS-1$
-                        ". Neither " + ConfigEntryType.GLOSSARY_FROM.getName() + //$NON-NLS-1$
-                        " or " + ConfigEntryType.GLOSSARY_FROM.getName() + //$NON-NLS-1$
-                        " match " + ConfigEntryType.LANG.getName()); //$NON-NLS-1$
+                log.error("Data error in " + internal +
+                        ". Neither " + ConfigEntryType.GLOSSARY_FROM.getName() +
+                        " or " + ConfigEntryType.GLOSSARY_FROM.getName() +
+                        " match " + ConfigEntryType.LANG.getName());
             } else if (!langFrom.equals(lang)) {
                 // The LANG field should match the GLOSSARY_FROM field
                 /*
-                 * log.error("Data error in " + internal + //$NON-NLS-1$ ". " +
-                 * ConfigEntryType.GLOSSARY_FROM.getName() + //$NON-NLS-1$ " ("
+                 * log.error("Data error in " + internal + ". " +
+                 * ConfigEntryType.GLOSSARY_FROM.getName() + " ("
                  * + langFrom.getCode() + ") does not match " +
                  * ConfigEntryType.LANG.getName() + " (" + lang.getCode() +
-                 * ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                 * ")");
                  */
                 lang = langFrom;
                 add(ConfigEntryType.LANG, lang.getCode());
@@ -625,14 +626,14 @@ public final class ConfigEntryTable {
         // From the config map, extract the important bean properties
         String modTypeName = (String) getValue(ConfigEntryType.MOD_DRV);
         if (modTypeName == null) {
-            log.error("Book not supported: malformed conf file for " + internal + " no " + ConfigEntryType.MOD_DRV.getName() + " found"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            log.error("Book not supported: malformed conf file for " + internal + " no " + ConfigEntryType.MOD_DRV.getName() + " found");
             supported = false;
             return;
         }
 
         bookType = BookType.fromString(modTypeName);
         if (getBookType() == null) {
-            log.error("Book not supported: malformed conf file for " + internal + " no book type found"); //$NON-NLS-1$ //$NON-NLS-2$
+            log.error("Book not supported: malformed conf file for " + internal + " no book type found");
             supported = false;
             return;
         }
@@ -655,7 +656,7 @@ public final class ConfigEntryTable {
     private void adjustName() {
         // If there is no name then use the internal name
         if (table.get(ConfigEntryType.DESCRIPTION) == null) {
-            log.error("Malformed conf file for " + internal + " no " + ConfigEntryType.DESCRIPTION.getName() + " found. Using internal of " + internal); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            log.error("Malformed conf file for " + internal + " no " + ConfigEntryType.DESCRIPTION.getName() + " found. Using internal of " + internal);
             add(ConfigEntryType.DESCRIPTION, internal);
         }
     }
@@ -666,7 +667,7 @@ public final class ConfigEntryTable {
     private void validate() {
         // if (isEnciphered())
         // {
-        //            log.debug("Book not supported: " + internal + " because it is locked and there is no key."); //$NON-NLS-1$ //$NON-NLS-2$
+        //            log.debug("Book not supported: " + internal + " because it is locked and there is no key.");
         // supported = false;
         // return;
         // }
@@ -674,7 +675,7 @@ public final class ConfigEntryTable {
 
     private void testLanguage(String initials, Language lang) {
         if (!lang.isValidLanguage()) {
-            log.warn("Unknown language " + lang.getCode() + " in book " + initials); //$NON-NLS-1$ //$NON-NLS-2$
+            log.warn("Unknown language " + lang.getCode() + " in book " + initials);
         }
     }
 
@@ -763,9 +764,9 @@ public final class ConfigEntryTable {
         buf.append(issue);
         buf.append(' ');
         buf.append(confEntryName);
-        buf.append(" in "); //$NON-NLS-1$
+        buf.append(" in ");
         buf.append(internal);
-        buf.append(": "); //$NON-NLS-1$
+        buf.append(": ");
         buf.append(line);
 
         return buf.toString();
@@ -775,8 +776,8 @@ public final class ConfigEntryTable {
      * Sword only recognizes two encodings for its modules: UTF-8 and LATIN1
      * Sword uses MS Windows cp1252 for Latin 1 not the standard. Arrgh!
      */
-    private static final String ENCODING_UTF8 = "UTF-8"; //$NON-NLS-1$
-    private static final String ENCODING_LATIN1 = "WINDOWS-1252"; //$NON-NLS-1$
+    private static final String ENCODING_UTF8 = "UTF-8";
+    private static final String ENCODING_LATIN1 = "WINDOWS-1252";
 
     /**
      * These are the elements that JSword requires. They are a superset of those
@@ -872,6 +873,6 @@ public final class ConfigEntryTable {
      * the line. The = sign following the key may be surrounded by whitespace.
      * The value may contain anything, including an = sign.
      */
-    private static final Pattern KEY_VALUE_PATTERN = Pattern.compile("^([A-Za-z0-9_.]+)\\s*=\\s*(.*)$"); //$NON-NLS-1$
+    private static final Pattern KEY_VALUE_PATTERN = Pattern.compile("^([A-Za-z0-9_.]+)\\s*=\\s*(.*)$");
 
 }

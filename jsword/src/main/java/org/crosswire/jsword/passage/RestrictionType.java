@@ -37,7 +37,7 @@ public abstract class RestrictionType implements Serializable {
     /**
      * There is no restriction on blurring.
      */
-    public static final RestrictionType NONE = new RestrictionType("NONE") //$NON-NLS-1$
+    public static final RestrictionType NONE = new RestrictionType("NONE")
     {
         /*
          * (non-Javadoc)
@@ -102,7 +102,7 @@ public abstract class RestrictionType implements Serializable {
      */
     // Note: FindBugs wrongly reports an initialization circularity.
     // Turns out that it is the exception handling that causes it.
-    public static final RestrictionType CHAPTER = new RestrictionType("CHAPTER") //$NON-NLS-1$
+    public static final RestrictionType CHAPTER = new RestrictionType("CHAPTER")
     {
         /*
          * (non-Javadoc)

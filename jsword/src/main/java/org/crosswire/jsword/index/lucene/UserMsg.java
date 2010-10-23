@@ -31,18 +31,43 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  */
 final class UserMsg extends MsgBase {
-    static final UserMsg INDEX_START = new UserMsg("LuceneIndex.Indexing"); //$NON-NLS-1$
-    static final UserMsg LUCENE_INIT = new UserMsg("LuceneIndex.LuceneInit"); //$NON-NLS-1$
-    static final UserMsg SEARCH_FAILED = new UserMsg("LuceneIndex.SearchFailed"); //$NON-NLS-1$
-    static final UserMsg OPTIMIZING = new UserMsg("LuceneIndex.Optimizing"); //$NON-NLS-1$
-    static final UserMsg DELETE_FAILED = new UserMsg("LuceneIndex.DeleteFailed"); //$NON-NLS-1$
-    static final UserMsg INSTALL_FAIL = new UserMsg("LuceneIndex.InstallFailed"); //$NON-NLS-1$
-    static final UserMsg BAD_VERSE = new UserMsg("LuceneIndex.BadVerse"); //$NON-NLS-1$
 
     /**
-     * Passthrough ctor
+     * Get the internationalized text, but return key if key is unknown.
+     * 
+     * @param key
+     * @return the internationalized text
      */
-    private UserMsg(String name) {
-        super(name);
+    public static String gettext(String key)
+    {
+        return msg.lookup(key);
     }
+
+    /**
+     * Get the internationalized text, but return key if key is unknown.
+     * The text requires one parameter to be passed.
+     * 
+     * @param key
+     * @param param
+     * @return the formatted, internationalized text
+     */
+    public static String gettext(String key, Object param)
+    {
+        return msg.toString(key, param);
+    }
+
+    /**
+     * Get the internationalized text, but return key if key is unknown.
+     * The text requires one parameter to be passed.
+     * 
+     * @param key
+     * @param param
+     * @return the formatted, internationalized text
+     */
+    public static String gettext(String key, Object[] params)
+    {
+        return msg.toString(key, params);
+    }
+
+    private static MsgBase msg = new UserMsg();
 }

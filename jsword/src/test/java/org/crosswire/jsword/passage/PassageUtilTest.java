@@ -75,22 +75,22 @@ public class PassageUtilTest extends TestCase {
         boolean stored_naming = PassageUtil.isPersistentNaming();
         PassageUtil.setPersistentNaming(false);
         assertTrue(!PassageUtil.isPersistentNaming());
-        assertEquals(VerseFactory.fromString("Genesis 1 1").toString(), "Gen 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(VerseFactory.fromString("Gen 1 1").toString(), "Gen 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(VerseFactory.fromString("Genesis 1:1").toString(), "Gen 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(VerseFactory.fromString("Gen 1 1").toString(), "Gen 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(VerseFactory.fromString("g 1 1").toString(), "Gen 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(VerseFactory.fromString("g").toString(), "Gen 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(VerseFactory.fromString("G:1:1").toString(), "Gen 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(VerseFactory.fromString("Genesis 1 1").toString(), "Gen 1:1");
+        assertEquals(VerseFactory.fromString("Gen 1 1").toString(), "Gen 1:1");
+        assertEquals(VerseFactory.fromString("Genesis 1:1").toString(), "Gen 1:1");
+        assertEquals(VerseFactory.fromString("Gen 1 1").toString(), "Gen 1:1");
+        assertEquals(VerseFactory.fromString("g 1 1").toString(), "Gen 1:1");
+        assertEquals(VerseFactory.fromString("g").toString(), "Gen 1:1");
+        assertEquals(VerseFactory.fromString("G:1:1").toString(), "Gen 1:1");
         PassageUtil.setPersistentNaming(true);
         assertTrue(PassageUtil.isPersistentNaming());
-        assertEquals(VerseFactory.fromString("Genesis 1 1").toString(), "Genesis 1 1"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(VerseFactory.fromString("Gen 1 1").toString(), "Gen 1 1"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(VerseFactory.fromString("Genesis 1:1").toString(), "Genesis 1:1"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(VerseFactory.fromString("Gen 1 1").toString(), "Gen 1 1"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(VerseFactory.fromString("g 1 1").toString(), "g 1 1"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(VerseFactory.fromString("g").toString(), "g"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(VerseFactory.fromString("G:1:1").toString(), "G:1:1"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(VerseFactory.fromString("Genesis 1 1").toString(), "Genesis 1 1");
+        assertEquals(VerseFactory.fromString("Gen 1 1").toString(), "Gen 1 1");
+        assertEquals(VerseFactory.fromString("Genesis 1:1").toString(), "Genesis 1:1");
+        assertEquals(VerseFactory.fromString("Gen 1 1").toString(), "Gen 1 1");
+        assertEquals(VerseFactory.fromString("g 1 1").toString(), "g 1 1");
+        assertEquals(VerseFactory.fromString("g").toString(), "g");
+        assertEquals(VerseFactory.fromString("G:1:1").toString(), "G:1:1");
         PassageUtil.setPersistentNaming(stored_naming);
     }
 
@@ -331,9 +331,9 @@ public class PassageUtilTest extends TestCase {
     }
 
     public void testBinaryRepresentation() throws Exception {
-        Passage gen1_135 = (Passage) keyf.getKey("Gen 1:1, Gen 1:3, Gen 1:5"); //$NON-NLS-1$
-        Passage exo2a_3b = (Passage) keyf.getKey("Exo 2:1-10, Exo 3:1-11"); //$NON-NLS-1$
-        Passage gen_rev = (Passage) keyf.getKey("Gen 1:1-Rev 22:21"); //$NON-NLS-1$
+        Passage gen1_135 = (Passage) keyf.getKey("Gen 1:1, Gen 1:3, Gen 1:5");
+        Passage exo2a_3b = (Passage) keyf.getKey("Exo 2:1-10, Exo 3:1-11");
+        Passage gen_rev = (Passage) keyf.getKey("Gen 1:1-Rev 22:21");
         Passage hard = (Passage) keyf.createEmptyKeyList();
         Passage empty = (Passage) keyf.createEmptyKeyList();
 

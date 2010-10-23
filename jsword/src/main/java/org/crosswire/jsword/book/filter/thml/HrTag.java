@@ -35,6 +35,6 @@ public class HrTag extends AbstractTag {
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
     public String getTagName() {
-        return "hr"; //$NON-NLS-1$
+        return "hr";
     }
 }

@@ -166,11 +166,11 @@ public abstract class AbstractPassageBook extends AbstractBook {
 
                         setRawText(key, text);
                     } else {
-                        log.error("Ignoring non OSIS/Verse content of DIV."); //$NON-NLS-1$
+                        log.error("Ignoring non OSIS/Verse content of DIV.");
                     }
                 }
             } else {
-                log.error("Ignoring non OSIS/Verse content of DIV."); //$NON-NLS-1$
+                log.error("Ignoring non OSIS/Verse content of DIV.");
             }
         }
     }

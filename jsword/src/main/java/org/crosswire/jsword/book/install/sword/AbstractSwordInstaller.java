@@ -147,7 +147,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
             // entries.values() so the underlying list is not modified.
             return new ArrayList(entries.values());
         } catch (InstallException ex) {
-            log.error("Failed to reload cached index file", ex); //$NON-NLS-1$
+            log.error("Failed to reload cached index file", ex);
             return new ArrayList();
         }
     }
@@ -231,7 +231,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         // So now we know what we want to install - all we need to do
         // is installer.install(name) however we are doing it in the
         // background so we create a job for it.
-        final Thread worker = new Thread("DisplayPreLoader") //$NON-NLS-1$
+        final Thread worker = new Thread("DisplayPreLoader")
         {
             /*
              * (non-Javadoc)
@@ -240,15 +240,17 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
              */
             /* @Override */
             public void run() {
-                URI predictURI = CWProject.instance().getWritableURI("sword-install", FileUtil.EXTENSION_PROPERTIES); //$NON-NLS-1$
-                Progress job = JobManager.createJob(UserMsg.INSTALLING.toString(sbmd.getName()), predictURI, this, true);
+                URI predictURI = CWProject.instance().getWritableURI("sword-install", FileUtil.EXTENSION_PROPERTIES);
+                // TRANSLATOR: Progress label indicating the installation of a book. {0} is a placeholder for the name of the book.
+                Progress job = JobManager.createJob(UserMsg.gettext("Installing book: {0}", sbmd.getName()), predictURI, this, true);
 
                 yield();
 
                 try {
-                    job.setSectionName(UserMsg.JOB_INIT.toString());
+                    // TRANSLATOR: Progress label indicating the Initialization of installing of a book.
+                    job.setSectionName(UserMsg.gettext("Initializing"));
 
-                    URI temp = NetUtil.getTemporaryURI("swd", ZIP_SUFFIX); //$NON-NLS-1$
+                    URI temp = NetUtil.getTemporaryURI("swd", ZIP_SUFFIX);
 
                     download(job, packageDirectory, sbmd.getInitials() + ZIP_SUFFIX, temp);
 
@@ -257,7 +259,8 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                     if (!job.isFinished()) {
                         File dldir = SwordBookPath.getSwordDownloadDir();
                         IOUtil.unpackZip(NetUtil.getAsFile(temp), dldir);
-                        job.setSectionName(UserMsg.JOB_CONFIG.toString());
+                        // TRANSLATOR: Progress label for installing the conf file for a book.
+                        job.setSectionName(UserMsg.gettext("Copying config file"));
                         sbmd.setLibrary(NetUtil.getURI(dldir));
                         SwordBookDriver.registerNewBook(sbmd);
                     }
@@ -288,7 +291,8 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
      * @see org.crosswire.jsword.book.install.Installer#reloadIndex()
      */
     public void reloadBookList() throws InstallException {
-        Progress job = JobManager.createJob(UserMsg.JOB_DOWNLOADING.toString(), Thread.currentThread(), false);
+        // TRANSLATOR: Progress label for downloading one or more files.
+        Progress job = JobManager.createJob(UserMsg.gettext("Downloading files"), Thread.currentThread(), false);
 
         try {
             URI scratchfile = getCachedIndexFile();
@@ -310,7 +314,8 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
      * .jsword.book.BookMetaData, java.net.URI)
      */
     public void downloadSearchIndex(Book book, URI localDest) throws InstallException {
-        Progress job = JobManager.createJob(UserMsg.JOB_DOWNLOADING.toString(), Thread.currentThread(), false);
+        // TRANSLATOR: Progress label for downloading one or more files.
+        Progress job = JobManager.createJob(UserMsg.gettext("Downloading files"), Thread.currentThread(), false);
 
         try {
             download(job, packageDirectory + '/' + SEARCH_DIR, book.getInitials() + ZIP_SUFFIX, localDest);
@@ -359,7 +364,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
                         // Every now and then an empty entry sneaks in
                         if (size == 0) {
-                            log.error("Empty entry: " + internal); //$NON-NLS-1$
+                            log.error("Empty entry: " + internal);
                             continue;
                         }
 
@@ -367,14 +372,14 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                         if (tin.read(buffer) != size) {
                             // This should not happen, but if it does then skip
                             // it.
-                            log.error("Did not read all that was expected " + internal); //$NON-NLS-1$
+                            log.error("Did not read all that was expected " + internal);
                             continue;
                         }
 
                         if (internal.endsWith(SwordConstants.EXTENSION_CONF)) {
                             internal = internal.substring(0, internal.length() - 5);
                         } else {
-                            log.error("Not a SWORD config file: " + internal); //$NON-NLS-1$
+                            log.error("Not a SWORD config file: " + internal);
                             continue;
                         }
 
@@ -387,7 +392,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                         Book book = new SwordBook(sbmd, null);
                         entries.put(book.getName(), book);
                     } catch (IOException ex) {
-                        log.error("Failed to load config for entry: " + internal, ex); //$NON-NLS-1$
+                        log.error("Failed to load config for entry: " + internal, ex);
                     }
                 }
             }
@@ -610,19 +615,19 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /**
      * The directory containing zipped books on the <code>host</code>.
      */
-    protected String packageDirectory = ""; //$NON-NLS-1$
+    protected String packageDirectory = "";
 
     /**
      * The directory containing the catalog of all books on the
      * <code>host</code>.
      */
-    protected String catalogDirectory = ""; //$NON-NLS-1$
+    protected String catalogDirectory = "";
 
     /**
      * The directory containing the catalog of all books on the
      * <code>host</code>.
      */
-    protected String indexDirectory = ""; //$NON-NLS-1$
+    protected String indexDirectory = "";
 
     /**
      * Do we need to reload the index file
@@ -632,12 +637,12 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /**
      * The sword index file
      */
-    protected static final String FILE_LIST_GZ = "mods.d.tar.gz"; //$NON-NLS-1$
+    protected static final String FILE_LIST_GZ = "mods.d.tar.gz";
 
     /**
      * The suffix of zip books on this server
      */
-    protected static final String ZIP_SUFFIX = ".zip"; //$NON-NLS-1$
+    protected static final String ZIP_SUFFIX = ".zip";
 
     /**
      * The log stream
@@ -647,11 +652,11 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /**
      * The relative path of the dir holding the search index files
      */
-    protected static final String SEARCH_DIR = "search/jsword/L1"; //$NON-NLS-1$
+    protected static final String SEARCH_DIR = "search/jsword/L1";
 
     /**
      * When we cache a download index
      */
-    protected static final String DOWNLOAD_PREFIX = "download-"; //$NON-NLS-1$
+    protected static final String DOWNLOAD_PREFIX = "download-";
 
 }

@@ -186,7 +186,7 @@ public class BookData implements BookProvider {
                     if (showDiffs[i - 1]) {
                         doDiffs = true;
                         StringBuffer buf = new StringBuffer(prevBook.getInitials());
-                        buf.append(" ==> "); //$NON-NLS-1$
+                        buf.append(" ==> ");
                         buf.append(book.getInitials());
 
                         cell.addContent(OSISUtil.factory().createText(buf.toString()));
@@ -210,7 +210,7 @@ public class BookData implements BookProvider {
 
                 row = OSISUtil.factory().createRow();
 
-                String lastText = ""; //$NON-NLS-1$
+                String lastText = "";
 
                 for (int i = 0; i < iters.length; i++) {
                     Book book = books[i];
@@ -222,7 +222,7 @@ public class BookData implements BookProvider {
                         content = (Content) iters[i].next();
 
                         if (doDiffs) {
-                            String thisText = ""; //$NON-NLS-1$
+                            String thisText = "";
                             if (content instanceof Element) {
                                 thisText = OSISUtil.getCanonicalText((Element) content);
                             } else if (content instanceof Text) {

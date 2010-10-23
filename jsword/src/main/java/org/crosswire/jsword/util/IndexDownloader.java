@@ -74,10 +74,10 @@ public final class IndexDownloader {
     /**
      * Temp file prefix
      */
-    private static final String TEMP_PREFIX = "jsword-index"; //$NON-NLS-1$
+    private static final String TEMP_PREFIX = "jsword-index";
 
     /**
      * Temp file suffix
      */
-    private static final String TEMP_SUFFIX = "dat"; //$NON-NLS-1$
+    private static final String TEMP_SUFFIX = "dat";
 }

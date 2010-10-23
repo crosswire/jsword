@@ -70,15 +70,15 @@ public class DataEntry {
             keyEnd = SwordUtil.findByte(data, SEPARATOR);
 
             if (keyEnd < 0) {
-                DataPolice.report("Failed to find key. name='" + name + "'"); //$NON-NLS-1$ //$NON-NLS-2$
-                return ""; //$NON-NLS-1$
+                DataPolice.report("Failed to find key. name='" + name + "'");
+                return "";
             }
 
             key = SwordUtil.decode(name, data, keyEnd, charset).trim();
 
             // for some weird reason plain text dictionaries
             // all get \ added to the ends of the index entries.
-            if (key.endsWith("\\")) { //$NON-NLS-1$
+            if (key.endsWith("\\")) {
                 key = key.substring(0, key.length() - 1);
             }
         }
@@ -94,7 +94,7 @@ public class DataEntry {
     public boolean isLinkEntry() {
         if (data.length >= 5) {
             String linkCheck = SwordUtil.decode(name, data, getKeyEnd() + 1, 5, charset);
-            return "@LINK".equals(linkCheck); //$NON-NLS-1$
+            return "@LINK".equals(linkCheck);
         }
         return false;
     }

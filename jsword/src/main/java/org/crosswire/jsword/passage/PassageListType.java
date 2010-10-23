@@ -35,7 +35,7 @@ public abstract class PassageListType implements Serializable {
     /**
      * Passage to be interpreted as a list of verses.
      */
-    public static final PassageListType VERSES = new PassageListType("VERSES") //$NON-NLS-1$
+    public static final PassageListType VERSES = new PassageListType("VERSES")
     {
         public Object getElementAt(Passage ref, int index, RestrictionType restrict) {
             if (ref == null) {
@@ -60,7 +60,7 @@ public abstract class PassageListType implements Serializable {
     /**
      * Passage to be interpreted as a list of ranges.
      */
-    public static final PassageListType RANGES = new PassageListType("RANGES") //$NON-NLS-1$
+    public static final PassageListType RANGES = new PassageListType("RANGES")
     {
         public Object getElementAt(Passage ref, int index, RestrictionType restrict) {
             if (ref == null) {

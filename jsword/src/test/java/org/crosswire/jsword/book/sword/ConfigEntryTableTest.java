@@ -38,30 +38,30 @@ import org.crosswire.common.util.Language;
 public class ConfigEntryTableTest extends TestCase {
 
     public void testCreateConfigEntryTableInstance() {
-        ConfigEntryTable table = new ConfigEntryTable("TestBook"); //$NON-NLS-1$
+        ConfigEntryTable table = new ConfigEntryTable("TestBook");
         assertNotNull(table);
     }
 
     public void testAddConfigEntry() {
-        ConfigEntryTable table = new ConfigEntryTable("TestBook"); //$NON-NLS-1$
+        ConfigEntryTable table = new ConfigEntryTable("TestBook");
         assertNotNull(table);
 
-        table.add(ConfigEntryType.LANG, "de"); //$NON-NLS-1$
-        assertEquals("de", ((Language) table.getValue(ConfigEntryType.LANG)).getCode()); //$NON-NLS-1$
+        table.add(ConfigEntryType.LANG, "de");
+        assertEquals("de", ((Language) table.getValue(ConfigEntryType.LANG)).getCode());
     }
 
     public void testSaveConfigEntryTable() {
-        ConfigEntryTable table = new ConfigEntryTable("TestBook"); //$NON-NLS-1$
+        ConfigEntryTable table = new ConfigEntryTable("TestBook");
         assertNotNull(table);
 
-        table.add(ConfigEntryType.LANG, "de"); //$NON-NLS-1$
+        table.add(ConfigEntryType.LANG, "de");
         Language lang = (Language) table.getValue(ConfigEntryType.LANG);
         assertNotNull(lang);
-        assertEquals(lang.getCode(), "de"); //$NON-NLS-1$
-        table.add(ConfigEntryType.INITIALS, "TestBook"); //$NON-NLS-1$
-        assertEquals(table.getValue(ConfigEntryType.INITIALS), "TestBook"); //$NON-NLS-1$
+        assertEquals(lang.getCode(), "de");
+        table.add(ConfigEntryType.INITIALS, "TestBook");
+        assertEquals(table.getValue(ConfigEntryType.INITIALS), "TestBook");
 
-        File configFile = new File("testconfig.conf"); //$NON-NLS-1$
+        File configFile = new File("testconfig.conf");
         try {
             table.save(configFile);
         } catch (IOException e) {

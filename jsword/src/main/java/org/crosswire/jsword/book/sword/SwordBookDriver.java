@@ -60,7 +60,7 @@ public class SwordBookDriver extends AbstractBookDriver {
      * @see org.crosswire.jsword.book.BookDriver#getName()
      */
     public String getDriverName() {
-        return "Sword"; //$NON-NLS-1$
+        return "Sword";
     }
 
     /*
@@ -119,13 +119,13 @@ public class SwordBookDriver extends AbstractBookDriver {
                         }
                     }
                 } catch (IOException e) {
-                    log.warn("Couldn't create SwordBookMetaData", e); //$NON-NLS-1$
+                    log.warn("Couldn't create SwordBookMetaData", e);
                 } catch (BookException e) {
-                    log.warn("Couldn't create SwordBookMetaData", e); //$NON-NLS-1$
+                    log.warn("Couldn't create SwordBookMetaData", e);
                 }
             }
         } else {
-            log.debug("mods.d directory at " + mods + " does not exist"); //$NON-NLS-1$ //$NON-NLS-2$
+            log.debug("mods.d directory at " + mods + " does not exist");
         }
     }
 
@@ -161,9 +161,11 @@ public class SwordBookDriver extends AbstractBookDriver {
 
         // We can only uninstall what we download into our download dir.
         if (!confFile.exists()) {
-            throw new BookException(UserMsg.DELETE_FAILED, new Object[] {
+            // TRANSLATOR: Common error condition: The file could not be deleted. There can be many reasons.
+            // {0} is a placeholder for the file.
+            throw new BookException(UserMsg.gettext("Unable to delete: {0}", new Object[] {
                 confFile
-            });
+            }));
         }
 
         // Delete the conf
@@ -180,9 +182,11 @@ public class SwordBookDriver extends AbstractBookDriver {
 
         // TODO(DM): list all that failed
         if (!failures.isEmpty()) {
-            throw new BookException(UserMsg.DELETE_FAILED, new Object[] {
+            // TRANSLATOR: Common error condition: The file could not be deleted. There can be many reasons.
+            // {0} is a placeholder for the file.
+            throw new BookException(UserMsg.gettext("Unable to delete: {0}", new Object[] {
                 failures.get(0)
-            });
+            }));
         }
     }
 

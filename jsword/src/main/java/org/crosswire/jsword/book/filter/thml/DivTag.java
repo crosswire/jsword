@@ -58,9 +58,9 @@ public class DivTag extends AbstractTag {
      */
     public String getTagName() {
         if (level == 0) {
-            return "div"; //$NON-NLS-1$
+            return "div";
         }
-        return "div" + level; //$NON-NLS-1$
+        return "div" + level;
     }
 
     /*
@@ -73,11 +73,11 @@ public class DivTag extends AbstractTag {
     /* @Override */
     public Element processTag(Element ele, Attributes attrs) {
         // See if there are variant readings e.g. WHNU Mat 1.9
-        String typeAttr = attrs.getValue("type"); //$NON-NLS-1$
-        if ("variant".equals(typeAttr)) { //$NON-NLS-1$
+        String typeAttr = attrs.getValue("type");
+        if ("variant".equals(typeAttr)) {
             Element seg = OSISUtil.factory().createSeg();
             seg.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.VARIANT_TYPE);
-            String classAttr = attrs.getValue("class"); //$NON-NLS-1$
+            String classAttr = attrs.getValue("class");
             if (classAttr != null) {
                 seg.setAttribute(OSISUtil.OSIS_ATTR_SUBTYPE, OSISUtil.VARIANT_CLASS + '-' + classAttr);
             }

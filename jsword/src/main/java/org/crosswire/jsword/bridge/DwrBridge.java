@@ -75,7 +75,7 @@ public class DwrBridge {
         // If we can't find a book, indicate that.
         if (reply.isEmpty()) {
             reply.add(new String[] {
-                    "", "No Books installed"}); //$NON-NLS-1$ //$NON-NLS-2$
+                    "", "No Books installed"});
         }
 
         return (String[][]) reply.toArray(new String[reply.size()][]);
@@ -122,7 +122,7 @@ public class DwrBridge {
      *            a reference, appropriate for the book, for one or more keys
      */
     public String getOSISString(String bookInitials, String reference, int start, int count) throws BookException, NoSuchKeyException {
-        String result = ""; //$NON-NLS-1$
+        String result = "";
         try {
             SAXEventProvider sep = getOSISProvider(bookInitials, reference, start, count);
             if (sep != null) {
@@ -153,7 +153,7 @@ public class DwrBridge {
             }
             return book.find(searchRequest).getName();
         }
-        return ""; //$NON-NLS-1$
+        return "";
     }
 
     /**
@@ -215,7 +215,7 @@ public class DwrBridge {
         File[] filePath = SwordBookPath.getSwordPath();
         if (filePath.length == 0) {
             return new String[] {
-                "No path"}; //$NON-NLS-1$
+                "No path"};
         }
         String[] path = new String[filePath.length];
         for (int i = 0; i < filePath.length; i++) {

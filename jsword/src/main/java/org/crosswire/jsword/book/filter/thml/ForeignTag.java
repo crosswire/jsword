@@ -40,7 +40,7 @@ public class ForeignTag extends AbstractTag {
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
     public String getTagName() {
-        return "foreign"; //$NON-NLS-1$
+        return "foreign";
     }
 
     /*
@@ -54,7 +54,7 @@ public class ForeignTag extends AbstractTag {
     public Element processTag(Element ele, Attributes attrs) {
         Element div = OSISUtil.factory().createForeign();
 
-        String lang = attrs.getValue("lang"); //$NON-NLS-1$
+        String lang = attrs.getValue("lang");
         if (lang != null) {
             // OSIS defines the long attribute as the one from the xml namespace
             div.setAttribute(OSISUtil.OSIS_ATTR_LANG, lang, Namespace.XML_NAMESPACE);

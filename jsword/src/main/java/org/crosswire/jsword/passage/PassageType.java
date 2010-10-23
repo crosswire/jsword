@@ -34,7 +34,7 @@ public abstract class PassageType implements Serializable {
     /**
      * Optimize the Passage for speed
      */
-    public static final PassageType SPEED = new PassageType("SPEED") //$NON-NLS-1$
+    public static final PassageType SPEED = new PassageType("SPEED")
     {
         /*
          * (non-Javadoc)
@@ -68,7 +68,7 @@ public abstract class PassageType implements Serializable {
     /**
      * Optimize the Passage for write speed
      */
-    public static final PassageType WRITE_SPEED = new PassageType("WRITE_SPEED") //$NON-NLS-1$
+    public static final PassageType WRITE_SPEED = new PassageType("WRITE_SPEED")
     {
         /*
          * (non-Javadoc)
@@ -102,7 +102,7 @@ public abstract class PassageType implements Serializable {
     /**
      * Optimize the Passage for size
      */
-    public static final PassageType SIZE = new PassageType("SIZE") //$NON-NLS-1$
+    public static final PassageType SIZE = new PassageType("SIZE")
     {
         /*
          * (non-Javadoc)
@@ -136,7 +136,7 @@ public abstract class PassageType implements Serializable {
     /**
      * Optimize the Passage for a mix
      */
-    public static final PassageType MIX = new PassageType("MIX") //$NON-NLS-1$
+    public static final PassageType MIX = new PassageType("MIX")
     {
         /*
          * (non-Javadoc)
@@ -170,7 +170,7 @@ public abstract class PassageType implements Serializable {
     /**
      * Optimize the Passage for tally operations
      */
-    public static final PassageType TALLY = new PassageType("TALLY") //$NON-NLS-1$
+    public static final PassageType TALLY = new PassageType("TALLY")
     {
         /*
          * (non-Javadoc)

@@ -64,7 +64,7 @@ public final class GBFTags {
 
         public void updateOsisStack(LinkedList stack) {
             if (stack.isEmpty()) {
-                DataPolice.report("Ignoring end tag without corresponding start tag: " + getName()); //$NON-NLS-1$
+                DataPolice.report("Ignoring end tag without corresponding start tag: " + getName());
                 return;
             }
             stack.removeFirst();
@@ -105,7 +105,7 @@ public final class GBFTags {
                 Passage ref = (Passage) KEY_FACTORY.getKey(refstr);
                 ele.setAttribute(OSISUtil.OSIS_ATTR_REF, ref.getOsisRef());
             } catch (NoSuchKeyException ex) {
-                DataPolice.report("unable to parse reference: " + refstr); //$NON-NLS-1$
+                DataPolice.report("unable to parse reference: " + refstr);
             }
             GBFTags.updateOsisStack(stack, ele);
         }
@@ -168,13 +168,13 @@ public final class GBFTags {
 
         public void updateOsisStack(LinkedList stack) {
             if (stack.isEmpty()) {
-                DataPolice.report("Ignoring end tag without corresponding start tag: " + getName()); //$NON-NLS-1$
+                DataPolice.report("Ignoring end tag without corresponding start tag: " + getName());
                 return;
             }
 
             Object pop = stack.removeFirst();
             if (!(pop instanceof Element)) {
-                DataPolice.report("expected to pop a Note, but found " + ClassUtil.getShortClassName(pop.getClass())); //$NON-NLS-1$
+                DataPolice.report("expected to pop a Note, but found " + ClassUtil.getShortClassName(pop.getClass()));
                 return;
             }
 
@@ -384,7 +384,7 @@ public final class GBFTags {
                 Element ele = (Element) top;
                 int size = ele.getContentSize();
                 if (size == 0) {
-                    DataPolice.report("No content to attach word to: <" + name + ">."); //$NON-NLS-1$ //$NON-NLS-2$
+                    DataPolice.report("No content to attach word to: <" + name + ">.");
                     return;
                 }
 
@@ -400,7 +400,7 @@ public final class GBFTags {
                 } else if (prevObj instanceof Element) {
                     word = (Element) prevObj;
                 } else {
-                    DataPolice.report("No words to attach word to: <" + name + ">."); //$NON-NLS-1$ //$NON-NLS-2$
+                    DataPolice.report("No words to attach word to: <" + name + ">.");
                     return;
                 }
 
@@ -435,7 +435,7 @@ public final class GBFTags {
                 Element ele = (Element) top;
                 int size = ele.getContentSize();
                 if (size == 0) {
-                    DataPolice.report("No content to attach word to: <" + name + ">."); //$NON-NLS-1$ //$NON-NLS-2$
+                    DataPolice.report("No content to attach word to: <" + name + ">.");
                     return;
                 }
 
@@ -452,7 +452,7 @@ public final class GBFTags {
                 } else if (prevObj instanceof Element) {
                     word = (Element) prevObj;
                 } else {
-                    DataPolice.report("No words to attach word to: <" + name + ">."); //$NON-NLS-1$ //$NON-NLS-2$
+                    DataPolice.report("No words to attach word to: <" + name + ">.");
                     return;
                 }
 

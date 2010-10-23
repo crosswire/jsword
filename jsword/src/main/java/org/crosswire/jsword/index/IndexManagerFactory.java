@@ -64,15 +64,15 @@ public final class IndexManagerFactory {
         try {
             instance = (IndexManager) PluginUtil.getImplementation(IndexManager.class);
         } catch (IOException e) {
-            log.error("createIndexManager failed", e); //$NON-NLS-1$
+            log.error("createIndexManager failed", e);
         } catch (ClassCastException e) {
-            log.error("createIndexManager failed", e); //$NON-NLS-1$
+            log.error("createIndexManager failed", e);
         } catch (ClassNotFoundException e) {
-            log.error("createIndexManager failed", e); //$NON-NLS-1$
+            log.error("createIndexManager failed", e);
         } catch (IllegalAccessException e) {
-            log.error("createIndexManager failed", e); //$NON-NLS-1$
+            log.error("createIndexManager failed", e);
         } catch (InstantiationException e) {
-            log.error("createIndexManager failed", e); //$NON-NLS-1$
+            log.error("createIndexManager failed", e);
         }
     }
 }

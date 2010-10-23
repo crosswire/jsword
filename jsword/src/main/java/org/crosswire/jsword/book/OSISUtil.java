@@ -61,257 +61,257 @@ public final class OSISUtil {
     /**
      * Constant for acrostic highlighting
      */
-    public static final String HI_ACROSTIC = "acrostic"; //$NON-NLS-1$
+    public static final String HI_ACROSTIC = "acrostic";
 
     /**
      * Constant for rendering bold text
      */
-    public static final String HI_BOLD = "bold"; //$NON-NLS-1$
+    public static final String HI_BOLD = "bold";
 
     /**
      * Constant for rendering emphatic text
      */
-    public static final String HI_EMPHASIS = "emphasis"; //$NON-NLS-1$
+    public static final String HI_EMPHASIS = "emphasis";
 
     /**
      * Constant for rendering illuminated text.
      */
-    public static final String HI_ILLUMINATED = "illuminated"; //$NON-NLS-1$
+    public static final String HI_ILLUMINATED = "illuminated";
 
     /**
      * Constant for rendering italic text.
      */
-    public static final String HI_ITALIC = "italic"; //$NON-NLS-1$
+    public static final String HI_ITALIC = "italic";
 
     /**
      * Constant for rendering strike-through text
      */
-    public static final String HI_LINETHROUGH = "line-through"; //$NON-NLS-1$
+    public static final String HI_LINETHROUGH = "line-through";
 
     /**
      * Constant for rendering normal text.
      */
-    public static final String HI_NORMAL = "normal"; //$NON-NLS-1$
+    public static final String HI_NORMAL = "normal";
 
     /**
      * Constant for rendering small caps
      */
-    public static final String HI_SMALL_CAPS = "small-caps"; //$NON-NLS-1$
+    public static final String HI_SMALL_CAPS = "small-caps";
 
     /**
      * Constant for rendering subscripts
      */
-    public static final String HI_SUB = "sub"; //$NON-NLS-1$
+    public static final String HI_SUB = "sub";
 
     /**
      * Constant for rendering superscripts
      */
-    public static final String HI_SUPER = "super"; //$NON-NLS-1$
+    public static final String HI_SUPER = "super";
 
     /**
      * Constant for rendering underlined text
      */
-    public static final String HI_UNDERLINE = "underline"; //$NON-NLS-1$
+    public static final String HI_UNDERLINE = "underline";
 
     /**
      * Constant for rendering upper case text
      */
-    public static final String HI_X_CAPS = "x-caps"; //$NON-NLS-1$
+    public static final String HI_X_CAPS = "x-caps";
 
     /**
      * Constant for rendering big text
      */
-    public static final String HI_X_BIG = "x-big"; //$NON-NLS-1$
+    public static final String HI_X_BIG = "x-big";
 
     /**
      * Constant for rendering small text
      */
-    public static final String HI_X_SMALL = "x-small"; //$NON-NLS-1$
+    public static final String HI_X_SMALL = "x-small";
 
     /**
      * Constant for rendering tt text
      */
-    public static final String HI_X_TT = "x-tt"; //$NON-NLS-1$
+    public static final String HI_X_TT = "x-tt";
 
     /**
      * Constant to help narrow down what we use seg for. In this case the
      * justify right tag
      */
-    public static final String SEG_JUSTIFYRIGHT = "text-align: right;"; //$NON-NLS-1$
+    public static final String SEG_JUSTIFYRIGHT = "text-align: right;";
 
     /**
      * Constant to help narrow down what we use seg for. In this case the
      * justify right tag
      */
-    public static final String SEG_JUSTIFYLEFT = "text-align: left;"; //$NON-NLS-1$
+    public static final String SEG_JUSTIFYLEFT = "text-align: left;";
 
     /**
      * Constant to help narrow down what we use seg for. In this case the thml
      * center tag
      */
-    public static final String SEG_CENTER = "text-align: center;"; //$NON-NLS-1$
+    public static final String SEG_CENTER = "text-align: center;";
 
     /**
      * Constant to help narrow down what we use div for. In this case the thml
      * pre tag
      */
-    public static final String DIV_PRE = "x-pre"; //$NON-NLS-1$
+    public static final String DIV_PRE = "x-pre";
 
     /**
      * Constant to help narrow down what we use seg for. In this case the color
      * tag
      */
-    public static final String SEG_COLORPREFIX = "color: "; //$NON-NLS-1$
+    public static final String SEG_COLORPREFIX = "color: ";
 
     /**
      * Constant to help narrow down what we use seg for. In this case the
      * font-size tag
      */
-    public static final String SEG_SIZEPREFIX = "font-size: "; //$NON-NLS-1$
+    public static final String SEG_SIZEPREFIX = "font-size: ";
 
     /**
      * Constant for x- types
      */
-    public static final String TYPE_X_PREFIX = "x-"; //$NON-NLS-1$
+    public static final String TYPE_X_PREFIX = "x-";
 
     /**
      * Constant for the study note type
      */
-    public static final String NOTETYPE_STUDY = "x-StudyNote"; //$NON-NLS-1$
+    public static final String NOTETYPE_STUDY = "x-StudyNote";
 
     /**
      * Constant for the cross reference note type
      */
-    public static final String NOTETYPE_REFERENCE = "crossReference"; //$NON-NLS-1$
+    public static final String NOTETYPE_REFERENCE = "crossReference";
 
     /**
      * Constant for the variant type segment
      */
-    public static final String VARIANT_TYPE = "x-variant"; //$NON-NLS-1$
-    public static final String VARIANT_CLASS = "x-class"; //$NON-NLS-1$
+    public static final String VARIANT_TYPE = "x-variant";
+    public static final String VARIANT_CLASS = "x-class";
 
     /**
      * Constant for JSword generated content. Used for type or subType.
      */
-    public static final String GENERATED_CONTENT = "x-gen"; //$NON-NLS-1$
+    public static final String GENERATED_CONTENT = "x-gen";
 
     /**
      * Constant for the pos (part of speech) type.
      */
-    public static final String POS_TYPE = "x-pos"; //$NON-NLS-1$
+    public static final String POS_TYPE = "x-pos";
 
     /**
      * Constant for the def (dictionary definition) type
      */
-    public static final String DEF_TYPE = "x-def"; //$NON-NLS-1$
+    public static final String DEF_TYPE = "x-def";
 
     /**
      * Constant for a Strong's numbering lemma
      */
-    public static final String LEMMA_STRONGS = "strong:"; //$NON-NLS-1$
-    public static final String MORPH_ROBINSONS = "robinson:"; //$NON-NLS-1$
+    public static final String LEMMA_STRONGS = "strong:";
+    public static final String MORPH_ROBINSONS = "robinson:";
 
     /**
      * Constant for Strong's numbering morphology
      */
-    public static final String MORPH_STRONGS = "x-StrongsMorph:T"; //$NON-NLS-1$
+    public static final String MORPH_STRONGS = "x-StrongsMorph:T";
 
     /**
      * Constant to help narrow down what we use "q" for. In this case:
      * blockquote
      */
-    public static final String Q_BLOCK = "blockquote"; //$NON-NLS-1$
+    public static final String Q_BLOCK = "blockquote";
 
     /**
      * Constant to help narrow down what we use "q" for. In this case: citation
      */
-    public static final String Q_CITATION = "citation"; //$NON-NLS-1$
+    public static final String Q_CITATION = "citation";
 
     /**
      * Constant to help narrow down what we use "q" for. In this case: embedded
      */
-    public static final String Q_EMBEDDED = "embedded"; //$NON-NLS-1$
+    public static final String Q_EMBEDDED = "embedded";
 
     /**
      * Constant to help narrow down what we use "list" for.
      */
-    public static final String LIST_ORDERED = "x-ordered"; //$NON-NLS-1$
-    public static final String LIST_UNORDERED = "x-unordered"; //$NON-NLS-1$
+    public static final String LIST_ORDERED = "x-ordered";
+    public static final String LIST_UNORDERED = "x-unordered";
 
     /**
      * Table roles (on table, row and cell elements) can be "data", the default,
      * or label.
      */
-    public static final String TABLE_ROLE_LABEL = "label"; //$NON-NLS-1$
+    public static final String TABLE_ROLE_LABEL = "label";
 
     /**
      * Possible cell alignments
      */
-    public static final String CELL_ALIGN_LEFT = "left"; //$NON-NLS-1$
-    public static final String CELL_ALIGN_RIGHT = "right"; //$NON-NLS-1$
-    public static final String CELL_ALIGN_CENTER = "center"; //$NON-NLS-1$
-    public static final String CELL_ALIGN_JUSTIFY = "justify"; //$NON-NLS-1$
-    public static final String CELL_ALIGN_START = "start"; //$NON-NLS-1$
-    public static final String CELL_ALIGN_END = "end"; //$NON-NLS-1$
+    public static final String CELL_ALIGN_LEFT = "left";
+    public static final String CELL_ALIGN_RIGHT = "right";
+    public static final String CELL_ALIGN_CENTER = "center";
+    public static final String CELL_ALIGN_JUSTIFY = "justify";
+    public static final String CELL_ALIGN_START = "start";
+    public static final String CELL_ALIGN_END = "end";
 
-    public static final String OSIS_ELEMENT_ABBR = "abbr"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_TITLE = "title"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_TABLE = "table"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_SPEECH = "speech"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_SPEAKER = "speaker"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_ROW = "row"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_REFERENCE = "reference"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_NOTE = "note"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_NAME = "name"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_Q = "q"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_LIST = "list"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_P = "p"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_ITEM = "item"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_FIGURE = "figure"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_FOREIGN = "foreign"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_W = "w"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_CHAPTER = "chapter"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_VERSE = "verse"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_CELL = "cell"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_DIV = "div"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_OSIS = "osis"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_WORK = "work"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_HEADER = "header"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_OSISTEXT = "osisText"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_SEG = "seg"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_LG = "lg"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_L = "l"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_LB = "lb"; //$NON-NLS-1$
-    public static final String OSIS_ELEMENT_HI = "hi"; //$NON-NLS-1$
+    public static final String OSIS_ELEMENT_ABBR = "abbr";
+    public static final String OSIS_ELEMENT_TITLE = "title";
+    public static final String OSIS_ELEMENT_TABLE = "table";
+    public static final String OSIS_ELEMENT_SPEECH = "speech";
+    public static final String OSIS_ELEMENT_SPEAKER = "speaker";
+    public static final String OSIS_ELEMENT_ROW = "row";
+    public static final String OSIS_ELEMENT_REFERENCE = "reference";
+    public static final String OSIS_ELEMENT_NOTE = "note";
+    public static final String OSIS_ELEMENT_NAME = "name";
+    public static final String OSIS_ELEMENT_Q = "q";
+    public static final String OSIS_ELEMENT_LIST = "list";
+    public static final String OSIS_ELEMENT_P = "p";
+    public static final String OSIS_ELEMENT_ITEM = "item";
+    public static final String OSIS_ELEMENT_FIGURE = "figure";
+    public static final String OSIS_ELEMENT_FOREIGN = "foreign";
+    public static final String OSIS_ELEMENT_W = "w";
+    public static final String OSIS_ELEMENT_CHAPTER = "chapter";
+    public static final String OSIS_ELEMENT_VERSE = "verse";
+    public static final String OSIS_ELEMENT_CELL = "cell";
+    public static final String OSIS_ELEMENT_DIV = "div";
+    public static final String OSIS_ELEMENT_OSIS = "osis";
+    public static final String OSIS_ELEMENT_WORK = "work";
+    public static final String OSIS_ELEMENT_HEADER = "header";
+    public static final String OSIS_ELEMENT_OSISTEXT = "osisText";
+    public static final String OSIS_ELEMENT_SEG = "seg";
+    public static final String OSIS_ELEMENT_LG = "lg";
+    public static final String OSIS_ELEMENT_L = "l";
+    public static final String OSIS_ELEMENT_LB = "lb";
+    public static final String OSIS_ELEMENT_HI = "hi";
 
-    public static final String ATTRIBUTE_TEXT_OSISIDWORK = "osisIDWork"; //$NON-NLS-1$
-    public static final String ATTRIBUTE_WORK_OSISWORK = "osisWork"; //$NON-NLS-1$
-    public static final String OSIS_ATTR_OSISID = "osisID"; //$NON-NLS-1$
-    public static final String OSIS_ATTR_SID = "sID"; //$NON-NLS-1$
-    public static final String OSIS_ATTR_EID = "eID"; //$NON-NLS-1$
-    public static final String ATTRIBUTE_W_LEMMA = "lemma"; //$NON-NLS-1$
-    public static final String ATTRIBUTE_FIGURE_SRC = "src"; //$NON-NLS-1$
-    public static final String ATTRIBUTE_TABLE_ROLE = "role"; //$NON-NLS-1$
-    public static final String ATTRIBUTE_CELL_ALIGN = "align"; //$NON-NLS-1$
-    public static final String OSIS_ATTR_TYPE = "type"; //$NON-NLS-1$
-    public static final String OSIS_ATTR_CANONICAL = "canonical"; //$NON-NLS-1$
-    public static final String OSIS_ATTR_SUBTYPE = "subType"; //$NON-NLS-1$
-    public static final String OSIS_ATTR_REF = "osisRef"; //$NON-NLS-1$
-    public static final String OSIS_ATTR_LEVEL = "level"; //$NON-NLS-1$
-    public static final String ATTRIBUTE_SPEAKER_WHO = "who"; //$NON-NLS-1$
-    public static final String ATTRIBUTE_Q_WHO = "who"; //$NON-NLS-1$
-    public static final String ATTRIBUTE_W_MORPH = "morph"; //$NON-NLS-1$
-    public static final String ATTRIBUTE_OSISTEXT_OSISIDWORK = "osisIDWork"; //$NON-NLS-1$
+    public static final String ATTRIBUTE_TEXT_OSISIDWORK = "osisIDWork";
+    public static final String ATTRIBUTE_WORK_OSISWORK = "osisWork";
+    public static final String OSIS_ATTR_OSISID = "osisID";
+    public static final String OSIS_ATTR_SID = "sID";
+    public static final String OSIS_ATTR_EID = "eID";
+    public static final String ATTRIBUTE_W_LEMMA = "lemma";
+    public static final String ATTRIBUTE_FIGURE_SRC = "src";
+    public static final String ATTRIBUTE_TABLE_ROLE = "role";
+    public static final String ATTRIBUTE_CELL_ALIGN = "align";
+    public static final String OSIS_ATTR_TYPE = "type";
+    public static final String OSIS_ATTR_CANONICAL = "canonical";
+    public static final String OSIS_ATTR_SUBTYPE = "subType";
+    public static final String OSIS_ATTR_REF = "osisRef";
+    public static final String OSIS_ATTR_LEVEL = "level";
+    public static final String ATTRIBUTE_SPEAKER_WHO = "who";
+    public static final String ATTRIBUTE_Q_WHO = "who";
+    public static final String ATTRIBUTE_W_MORPH = "morph";
+    public static final String ATTRIBUTE_OSISTEXT_OSISIDWORK = "osisIDWork";
     // OSIS defines the lang attribute as the one from the xml namespace
     // Typical usage element.setAttribute(OSISUtil.OSIS_ATTR_LANG, lang,
     // Namespace.XML_NAMESPACE);
-    public static final String OSIS_ATTR_LANG = "lang"; //$NON-NLS-1$
-    public static final String ATTRIBUTE_DIV_BOOK = "book"; //$NON-NLS-1$
+    public static final String OSIS_ATTR_LANG = "lang";
+    public static final String ATTRIBUTE_DIV_BOOK = "book";
 
     /**
      * Prefix for OSIS IDs that refer to Bibles
      */
-    private static final String OSISID_PREFIX_BIBLE = "Bible."; //$NON-NLS-1$
+    private static final String OSISID_PREFIX_BIBLE = "Bible.";
 
     private static final Set EXTRA_BIBLICAL_ELEMENTS = new HashSet(Arrays.asList(new String[] {
             OSIS_ELEMENT_NOTE, OSIS_ELEMENT_TITLE, OSIS_ELEMENT_REFERENCE
@@ -729,7 +729,7 @@ public final class OSISUtil {
                     Key key = keyf.getKey(attr);
                     collector.addAll(key);
                 } catch (NoSuchKeyException e) {
-                    log.warn("Unable to parse: " + attr, e); //$NON-NLS-1$
+                    log.warn("Unable to parse: " + attr, e);
                 }
             }
         }
@@ -959,7 +959,7 @@ public final class OSISUtil {
             // and when one is a prefix of another, it follows.
 
             // Used to end all open attributes. Only \qc in our implementation.
-            if (rtf.startsWith("\\pard", i)) { //$NON-NLS-1$
+            if (rtf.startsWith("\\pard", i)) {
                 Element currentElement = (Element) stack.pop();
                 currentElement.addContent(text.toString());
                 text.delete(0, text.length());
@@ -970,7 +970,7 @@ public final class OSISUtil {
             }
 
             // Simulate a paragraph break.
-            if (rtf.startsWith("\\par", i)) { //$NON-NLS-1$
+            if (rtf.startsWith("\\par", i)) {
                 Element currentElement = (Element) stack.peek();
                 currentElement.addContent(text.toString());
                 text.delete(0, text.length());
@@ -981,9 +981,9 @@ public final class OSISUtil {
 
             // OSIS does not have the notion of centered text.
             // So we define our own
-            if (rtf.startsWith("\\qc", i)) { //$NON-NLS-1$
+            if (rtf.startsWith("\\qc", i)) {
                 Element centerDiv = OSISUtil.factory.createDiv();
-                centerDiv.setAttribute(OSIS_ATTR_TYPE, "x-center"); //$NON-NLS-1$
+                centerDiv.setAttribute(OSIS_ATTR_TYPE, "x-center");
                 Element currentElement = (Element) stack.peek();
                 currentElement.addContent(text.toString());
                 text.delete(0, text.length());
@@ -995,7 +995,7 @@ public final class OSISUtil {
             }
 
             // convert Unicode representations to Unicode
-            if (rtf.startsWith("\\u", i)) { //$NON-NLS-1$
+            if (rtf.startsWith("\\u", i)) {
                 StringBuffer buf = new StringBuffer();
                 i += 2;
                 while (i < strlen) {
@@ -1021,7 +1021,7 @@ public final class OSISUtil {
             }
 
             // close italic and bold
-            if (rtf.startsWith("\\i0", i) || rtf.startsWith("\\b0", i)) { //$NON-NLS-1$ //$NON-NLS-2$
+            if (rtf.startsWith("\\i0", i) || rtf.startsWith("\\b0", i)) {
                 Element currentElement = (Element) stack.pop();
                 currentElement.addContent(text.toString());
                 text.delete(0, text.length());
@@ -1030,13 +1030,13 @@ public final class OSISUtil {
             }
 
             // Skip escaped whitespace
-            if (rtf.startsWith(" ", i) || rtf.startsWith("\n", i)) { //$NON-NLS-1$ //$NON-NLS-2$
+            if (rtf.startsWith(" ", i) || rtf.startsWith("\n", i)) {
                 i += 1;
                 continue;
             }
 
             // start italic
-            if (rtf.startsWith("\\i", i)) { //$NON-NLS-1$
+            if (rtf.startsWith("\\i", i)) {
                 Element hiElement = OSISUtil.factory.createHI();
                 hiElement.setAttribute(OSIS_ATTR_TYPE, HI_ITALIC);
                 Element currentElement = (Element) stack.peek();
@@ -1049,7 +1049,7 @@ public final class OSISUtil {
             }
 
             // start bold
-            if (rtf.startsWith("\\b", i)) { //$NON-NLS-1$
+            if (rtf.startsWith("\\b", i)) {
                 Element hiElement = OSISUtil.factory.createHI();
                 hiElement.setAttribute(OSIS_ATTR_TYPE, HI_BOLD);
                 Element currentElement = (Element) stack.peek();
@@ -1120,7 +1120,7 @@ public final class OSISUtil {
         } else if (sub instanceof Element) {
             recurseChildren((Element) sub, buffer);
         } else {
-            log.error("unknown type: " + sub.getClass().getName()); //$NON-NLS-1$
+            log.error("unknown type: " + sub.getClass().getName());
         }
     }
 
@@ -1141,6 +1141,6 @@ public final class OSISUtil {
         }
     }
 
-    private static String strongsNumber = "strong:([GgHh][0-9]+!?[A-Za-z]*)"; //$NON-NLS-1$
+    private static String strongsNumber = "strong:([GgHh][0-9]+!?[A-Za-z]*)";
     private static Pattern strongsNumberPattern = Pattern.compile(strongsNumber);
 }

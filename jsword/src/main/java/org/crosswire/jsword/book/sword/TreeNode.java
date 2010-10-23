@@ -46,7 +46,7 @@ class TreeNode implements Cloneable, Serializable {
      */
     TreeNode(int theOffset) {
         offset = theOffset;
-        name = ""; //$NON-NLS-1$
+        name = "";
         parent = -1;
         nextSibling = -1;
         firstChild = -1;

@@ -57,9 +57,10 @@ public class RangeQuery extends AbstractQuery {
         try {
             return index.getKey(range);
         } catch (NoSuchKeyException e) {
-            throw new BookException(UserMsg.ILLEGAL_PASSAGE, e, new Object[] {
+            // TRANSLATOR: User error condition: The passage range could not be understood. {0} is a placeholder for the passage.
+            throw new BookException(UserMsg.gettext("Syntax Error: Invalid passage \"{0}\"", new Object[] {
                 range
-            });
+            }), e);
         }
     }
 }

@@ -40,7 +40,7 @@ public abstract class BookType implements Serializable {
     /**
      * Uncompressed Bibles
      */
-    public static final BookType RAW_TEXT = new BookType("RawText", BookCategory.BIBLE) { //$NON-NLS-1$
+    public static final BookType RAW_TEXT = new BookType("RawText", BookCategory.BIBLE) {
 
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
             return new SwordBook(sbmd, backend);
@@ -68,7 +68,7 @@ public abstract class BookType implements Serializable {
     /**
      * Compressed Bibles
      */
-    public static final BookType Z_TEXT = new BookType("zText", BookCategory.BIBLE) { //$NON-NLS-1$
+    public static final BookType Z_TEXT = new BookType("zText", BookCategory.BIBLE) {
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
             return new SwordBook(sbmd, backend);
         }
@@ -96,7 +96,7 @@ public abstract class BookType implements Serializable {
     /**
      * Uncompressed Commentaries
      */
-    public static final BookType RAW_COM = new BookType("RawCom", BookCategory.COMMENTARY) { //$NON-NLS-1$
+    public static final BookType RAW_COM = new BookType("RawCom", BookCategory.COMMENTARY) {
 
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
             return new SwordBook(sbmd, backend);
@@ -121,7 +121,7 @@ public abstract class BookType implements Serializable {
         private static final long serialVersionUID = 3258129141898294837L;
     };
 
-    public static final BookType RAW_COM4 = new BookType("RawCom4", BookCategory.COMMENTARY) { //$NON-NLS-1$
+    public static final BookType RAW_COM4 = new BookType("RawCom4", BookCategory.COMMENTARY) {
 
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
             return new SwordBook(sbmd, backend);
@@ -148,7 +148,7 @@ public abstract class BookType implements Serializable {
     /**
      * Compressed Commentaries
      */
-    public static final BookType Z_COM = new BookType("zCom", BookCategory.COMMENTARY) { //$NON-NLS-1$
+    public static final BookType Z_COM = new BookType("zCom", BookCategory.COMMENTARY) {
 
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
             return new SwordBook(sbmd, backend);
@@ -177,7 +177,7 @@ public abstract class BookType implements Serializable {
     /**
      * Uncompresses HREF Commentaries
      */
-    public static final BookType HREF_COM = new BookType("HREFCom", BookCategory.COMMENTARY) { //$NON-NLS-1$
+    public static final BookType HREF_COM = new BookType("HREFCom", BookCategory.COMMENTARY) {
 
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
             return new SwordBook(sbmd, backend);
@@ -205,7 +205,7 @@ public abstract class BookType implements Serializable {
     /**
      * Uncompressed Commentaries
      */
-    public static final BookType RAW_FILES = new BookType("RawFiles", BookCategory.COMMENTARY) { //$NON-NLS-1$
+    public static final BookType RAW_FILES = new BookType("RawFiles", BookCategory.COMMENTARY) {
 
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
             return new SwordBook(sbmd, backend);
@@ -233,7 +233,7 @@ public abstract class BookType implements Serializable {
     /**
      * 2-Byte Index Uncompressed Dictionaries
      */
-    public static final BookType RAW_LD = new BookType("RawLD", BookCategory.DICTIONARY) { //$NON-NLS-1$
+    public static final BookType RAW_LD = new BookType("RawLD", BookCategory.DICTIONARY) {
 
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
             if (sbmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS)) {
@@ -264,7 +264,7 @@ public abstract class BookType implements Serializable {
     /**
      * 4-Byte Index Uncompressed Dictionaries
      */
-    public static final BookType RAW_LD4 = new BookType("RawLD4", BookCategory.DICTIONARY) { //$NON-NLS-1$
+    public static final BookType RAW_LD4 = new BookType("RawLD4", BookCategory.DICTIONARY) {
 
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
             if (sbmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS)) {
@@ -295,7 +295,7 @@ public abstract class BookType implements Serializable {
     /**
      * Compressed Dictionaries
      */
-    public static final BookType Z_LD = new BookType("zLD", BookCategory.DICTIONARY) { //$NON-NLS-1$
+    public static final BookType Z_LD = new BookType("zLD", BookCategory.DICTIONARY) {
 
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
             if (sbmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS)) {
@@ -326,7 +326,7 @@ public abstract class BookType implements Serializable {
     /**
      * Generic Books
      */
-    public static final BookType RAW_GEN_BOOK = new BookType("RawGenBook", BookCategory.GENERAL_BOOK) { //$NON-NLS-1$
+    public static final BookType RAW_GEN_BOOK = new BookType("RawGenBook", BookCategory.GENERAL_BOOK) {
 
         protected Book getBook(SwordBookMetaData sbmd, AbstractBackend backend) {
             return new SwordGenBook(sbmd, backend);

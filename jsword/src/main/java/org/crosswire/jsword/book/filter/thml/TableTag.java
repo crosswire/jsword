@@ -39,7 +39,7 @@ public class TableTag extends AbstractTag {
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
     public String getTagName() {
-        return "table"; //$NON-NLS-1$
+        return "table";
     }
 
     /*

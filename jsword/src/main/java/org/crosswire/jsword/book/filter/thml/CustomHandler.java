@@ -186,7 +186,7 @@ public class CustomHandler extends DefaultHandler {
             t = (Tag) TAG_MAP.get(qname.toLowerCase(Locale.ENGLISH));
 
             if (t == null) {
-                DataPolice.report("Unknown thml element: " + localname + " qname=" + qname); //$NON-NLS-1$ //$NON-NLS-2$
+                DataPolice.report("Unknown thml element: " + localname + " qname=" + qname);
 
                 // Report on it only once and make sure the content is output.
                 t = new AnonymousTag(qname);
@@ -194,7 +194,7 @@ public class CustomHandler extends DefaultHandler {
                 return t;
             }
 
-            DataPolice.report("Wrong case used in thml element: " + qname); //$NON-NLS-1$
+            DataPolice.report("Wrong case used in thml element: " + qname);
         }
         return t;
     }
@@ -222,88 +222,88 @@ public class CustomHandler extends DefaultHandler {
          */
         Tag[] tags = new Tag[] {
                 // The following are defined in Voyager xhtml 4.0
-                new ATag(), new AbbrTag(), new AliasTag("acronym", new AbbrTag()), //$NON-NLS-1$
-                new AnonymousTag("address"), //$NON-NLS-1$
-                new SkipTag("applet"), //$NON-NLS-1$
-                new SkipTag("area"), //$NON-NLS-1$
-                new BTag(), new SkipTag("base"), //$NON-NLS-1$
-                new SkipTag("basefont"), //$NON-NLS-1$
-                new IgnoreTag("bdo"), //$NON-NLS-1$
-                new BigTag(), new BlockquoteTag(), new IgnoreTag("body"), //$NON-NLS-1$
-                new BrTag(), new SkipTag("button"), //$NON-NLS-1$
-                new AnonymousTag("caption"), //$NON-NLS-1$
-                new CenterTag(), new AnonymousTag("cite"), //$NON-NLS-1$
-                new AnonymousTag("code"), //$NON-NLS-1$
-                new SkipTag("col"), //$NON-NLS-1$
-                new SkipTag("colgroup"), //$NON-NLS-1$
-                new AliasTag("dd", new LiTag()), //$NON-NLS-1$
-                new AnonymousTag("del"), //$NON-NLS-1$
-                new AnonymousTag("dfn"), //$NON-NLS-1$
-                new DivTag(), new AliasTag("dl", new UlTag()), //$NON-NLS-1$
-                new AliasTag("dt", new LiTag()), //$NON-NLS-1$
-                new AliasTag("em", new ITag()), //$NON-NLS-1$
-                new IgnoreTag("fieldset"), //$NON-NLS-1$
-                new FontTag(), new SkipTag("form"), //$NON-NLS-1$
-                new SkipTag("frame"), //$NON-NLS-1$
-                new SkipTag("frameset"), //$NON-NLS-1$
-                new AliasTag("h1", new HTag(1)), //$NON-NLS-1$
-                new AliasTag("h2", new HTag(2)), //$NON-NLS-1$
-                new AliasTag("h3", new HTag(3)), //$NON-NLS-1$
-                new AliasTag("h4", new HTag(4)), //$NON-NLS-1$
-                new AliasTag("h5", new HTag(5)), //$NON-NLS-1$
-                new AliasTag("h6", new HTag(6)), //$NON-NLS-1$
-                new SkipTag("head"), //$NON-NLS-1$
-                new HrTag(), new IgnoreTag("html"), //$NON-NLS-1$
-                new IgnoreTag("frameset"), //$NON-NLS-1$
-                new ITag(), new SkipTag("iframe"), //$NON-NLS-1$
-                new ImgTag(), new SkipTag("input"), //$NON-NLS-1$
-                new AnonymousTag("ins"), //$NON-NLS-1$
-                new AnonymousTag("kbd"), //$NON-NLS-1$
-                new AnonymousTag("label"), //$NON-NLS-1$
-                new AnonymousTag("legend"), //$NON-NLS-1$
-                new LiTag(), new SkipTag("link"), //$NON-NLS-1$
-                new SkipTag("map"), //$NON-NLS-1$
-                new SkipTag("meta"), //$NON-NLS-1$
-                new SkipTag("noscript"), //$NON-NLS-1$
-                new SkipTag("object"), //$NON-NLS-1$
-                new OlTag(), new SkipTag("optgroup"), //$NON-NLS-1$
-                new SkipTag("option"), //$NON-NLS-1$
-                new PTag(), new SkipTag("param"), //$NON-NLS-1$
-                new IgnoreTag("pre"), //$NON-NLS-1$
-                new QTag(), new RootTag(), new STag(), new AnonymousTag("samp"), //$NON-NLS-1$
-                new SkipTag("script"), //$NON-NLS-1$
-                new SkipTag("select"), //$NON-NLS-1$
-                new SmallTag(), new IgnoreTag("span"), //$NON-NLS-1$
-                new AliasTag("strong", new BTag()), //$NON-NLS-1$
-                new SkipTag("style"), //$NON-NLS-1$
-                new SubTag(), new SupTag(), new SyncTag(), new TableTag(), new IgnoreTag("tbody"), //$NON-NLS-1$
-                new TdTag(), new IgnoreTag("tfoot"), //$NON-NLS-1$
-                new SkipTag("textarea"), //$NON-NLS-1$
-                new SkipTag("title"), //$NON-NLS-1$
-                new IgnoreTag("thead"), //$NON-NLS-1$
-                new ThTag(), new TrTag(), new TtTag(), new UTag(), new UlTag(), new AnonymousTag("var"), //$NON-NLS-1$
+                new ATag(), new AbbrTag(), new AliasTag("acronym", new AbbrTag()),
+                new AnonymousTag("address"),
+                new SkipTag("applet"),
+                new SkipTag("area"),
+                new BTag(), new SkipTag("base"),
+                new SkipTag("basefont"),
+                new IgnoreTag("bdo"),
+                new BigTag(), new BlockquoteTag(), new IgnoreTag("body"),
+                new BrTag(), new SkipTag("button"),
+                new AnonymousTag("caption"),
+                new CenterTag(), new AnonymousTag("cite"),
+                new AnonymousTag("code"),
+                new SkipTag("col"),
+                new SkipTag("colgroup"),
+                new AliasTag("dd", new LiTag()),
+                new AnonymousTag("del"),
+                new AnonymousTag("dfn"),
+                new DivTag(), new AliasTag("dl", new UlTag()),
+                new AliasTag("dt", new LiTag()),
+                new AliasTag("em", new ITag()),
+                new IgnoreTag("fieldset"),
+                new FontTag(), new SkipTag("form"),
+                new SkipTag("frame"),
+                new SkipTag("frameset"),
+                new AliasTag("h1", new HTag(1)),
+                new AliasTag("h2", new HTag(2)),
+                new AliasTag("h3", new HTag(3)),
+                new AliasTag("h4", new HTag(4)),
+                new AliasTag("h5", new HTag(5)),
+                new AliasTag("h6", new HTag(6)),
+                new SkipTag("head"),
+                new HrTag(), new IgnoreTag("html"),
+                new IgnoreTag("frameset"),
+                new ITag(), new SkipTag("iframe"),
+                new ImgTag(), new SkipTag("input"),
+                new AnonymousTag("ins"),
+                new AnonymousTag("kbd"),
+                new AnonymousTag("label"),
+                new AnonymousTag("legend"),
+                new LiTag(), new SkipTag("link"),
+                new SkipTag("map"),
+                new SkipTag("meta"),
+                new SkipTag("noscript"),
+                new SkipTag("object"),
+                new OlTag(), new SkipTag("optgroup"),
+                new SkipTag("option"),
+                new PTag(), new SkipTag("param"),
+                new IgnoreTag("pre"),
+                new QTag(), new RootTag(), new STag(), new AnonymousTag("samp"),
+                new SkipTag("script"),
+                new SkipTag("select"),
+                new SmallTag(), new IgnoreTag("span"),
+                new AliasTag("strong", new BTag()),
+                new SkipTag("style"),
+                new SubTag(), new SupTag(), new SyncTag(), new TableTag(), new IgnoreTag("tbody"),
+                new TdTag(), new IgnoreTag("tfoot"),
+                new SkipTag("textarea"),
+                new SkipTag("title"),
+                new IgnoreTag("thead"),
+                new ThTag(), new TrTag(), new TtTag(), new UTag(), new UlTag(), new AnonymousTag("var"),
 
                 // ThML adds the following to Voyager
                 // Note: hymn.mod is not here nor are additional head&DC
                 // elements
-                new AnonymousTag("added"), //$NON-NLS-1$
-                new AnonymousTag("attr"), //$NON-NLS-1$
-                new AnonymousTag("argument"), //$NON-NLS-1$
-                new CitationTag(), new AnonymousTag("date"), //$NON-NLS-1$
-                new AnonymousTag("deleted"), //$NON-NLS-1$
-                new AnonymousTag("def"), //$NON-NLS-1$
-                new AliasTag("div1", new DivTag(1)), //$NON-NLS-1$
-                new AliasTag("div2", new DivTag(2)), //$NON-NLS-1$
-                new AliasTag("div3", new DivTag(3)), //$NON-NLS-1$
-                new AliasTag("div4", new DivTag(4)), //$NON-NLS-1$
-                new AliasTag("div5", new DivTag(5)), //$NON-NLS-1$
-                new AliasTag("div6", new DivTag(6)), //$NON-NLS-1$
-                new ForeignTag(), new AnonymousTag("index"), //$NON-NLS-1$
-                new AnonymousTag("insertIndex"), //$NON-NLS-1$
-                new AnonymousTag("glossary"), //$NON-NLS-1$
-                new NoteTag(), new NameTag(), new PbTag(), new AnonymousTag("scripCom"), //$NON-NLS-1$
-                new AnonymousTag("scripContext"), //$NON-NLS-1$
-                new ScripRefTag(), new ScriptureTag(), new TermTag(), new AnonymousTag("unclear"), //$NON-NLS-1$
+                new AnonymousTag("added"),
+                new AnonymousTag("attr"),
+                new AnonymousTag("argument"),
+                new CitationTag(), new AnonymousTag("date"),
+                new AnonymousTag("deleted"),
+                new AnonymousTag("def"),
+                new AliasTag("div1", new DivTag(1)),
+                new AliasTag("div2", new DivTag(2)),
+                new AliasTag("div3", new DivTag(3)),
+                new AliasTag("div4", new DivTag(4)),
+                new AliasTag("div5", new DivTag(5)),
+                new AliasTag("div6", new DivTag(6)),
+                new ForeignTag(), new AnonymousTag("index"),
+                new AnonymousTag("insertIndex"),
+                new AnonymousTag("glossary"),
+                new NoteTag(), new NameTag(), new PbTag(), new AnonymousTag("scripCom"),
+                new AnonymousTag("scripContext"),
+                new ScripRefTag(), new ScriptureTag(), new TermTag(), new AnonymousTag("unclear"),
                 new VerseTag(),
         };
         for (int i = 0; i < tags.length; i++) {

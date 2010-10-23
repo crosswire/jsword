@@ -61,7 +61,7 @@ public class OSISFilter implements Filter {
 
         // FIXME(dms): this is a major HACK handling a problem with a badly
         // encoded module.
-        if (book.getInitials().startsWith("NET") && plain.endsWith("</div>")) //$NON-NLS-1$ //$NON-NLS-2$
+        if (book.getInitials().startsWith("NET") && plain.endsWith("</div>"))
         {
             clean = clean.substring(0, plain.length() - 6);
         }
@@ -90,8 +90,8 @@ public class OSISFilter implements Filter {
         }
 
         if (ex != null) {
-            DataPolice.report("Parse " + book.getInitials() + "(" + key.getName() + ") failed: " + ex.getMessage() + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    "\non: " + plain); //$NON-NLS-1$
+            DataPolice.report("Parse " + book.getInitials() + "(" + key.getName() + ") failed: " + ex.getMessage() +
+                    "\non: " + plain);
             ele = cleanTags(book, key, clean);
         }
 
@@ -128,7 +128,7 @@ public class OSISFilter implements Filter {
             ex = e;
         }
 
-        log.warn("Could not fix " + book.getInitials() + "(" + key.getName() + ")  by cleaning tags: " + ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        log.warn("Could not fix " + book.getInitials() + "(" + key.getName() + ")  by cleaning tags: " + ex.getMessage());
 
         return null;
     }
@@ -139,7 +139,7 @@ public class OSISFilter implements Filter {
      */
     private Element parse(String plain) throws JDOMException, IOException {
         // create a root element to house our document fragment
-        StringReader in = new StringReader("<div>" + plain + "</div>"); //$NON-NLS-1$ //$NON-NLS-2$
+        StringReader in = new StringReader("<div>" + plain + "</div>");
         InputSource is = new InputSource(in);
         SAXBuilder builder = new SAXBuilder();
         Document doc = builder.build(is);

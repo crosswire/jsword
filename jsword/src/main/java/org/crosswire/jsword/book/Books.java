@@ -277,7 +277,7 @@ public final class Books implements BookList {
      *            The BookDriver to add
      */
     public synchronized void registerDriver(BookDriver driver) throws BookException {
-        log.debug("begin registering driver: " + driver.getClass().getName()); //$NON-NLS-1$
+        log.debug("begin registering driver: " + driver.getClass().getName());
 
         drivers.add(driver);
 
@@ -306,7 +306,7 @@ public final class Books implements BookList {
             removeBook(book);
         }
 
-        log.debug("end registering driver: " + driver.getClass().getName()); //$NON-NLS-1$
+        log.debug("end registering driver: " + driver.getClass().getName());
     }
 
     /**
@@ -316,7 +316,7 @@ public final class Books implements BookList {
      *            The BookDriver to remove
      */
     public synchronized void unregisterDriver(BookDriver driver) throws BookException {
-        log.debug("begin un-registering driver: " + driver.getClass().getName()); //$NON-NLS-1$
+        log.debug("begin un-registering driver: " + driver.getClass().getName());
 
         Book[] bookArray = driver.getBooks();
         for (int j = 0; j < bookArray.length; j++) {
@@ -329,7 +329,7 @@ public final class Books implements BookList {
             });
         }
 
-        log.debug("end un-registering driver: " + driver.getClass().getName()); //$NON-NLS-1$
+        log.debug("end un-registering driver: " + driver.getClass().getName());
     }
 
     /**
@@ -400,7 +400,7 @@ public final class Books implements BookList {
                 }
             };
 
-            Thread init = new Thread(runner, "book-driver-registration"); //$NON-NLS-1$
+            Thread init = new Thread(runner, "book-driver-registration");
             init.setPriority(Thread.MIN_PRIORITY);
             init.start();
         } else {
@@ -415,14 +415,14 @@ public final class Books implements BookList {
         // This will classload them all and they will register themselves.
         Class[] types = PluginUtil.getImplementors(BookDriver.class);
 
-        log.debug("begin auto-registering " + types.length + " drivers:"); //$NON-NLS-1$ //$NON-NLS-2$
+        log.debug("begin auto-registering " + types.length + " drivers:");
 
         for (int i = 0; i < types.length; i++) {
             // job.setProgress(Msg.JOB_DRIVER.toString() +
             // ClassUtils.getShortClassName(types[i]));
 
             try {
-                Method driverInstance = types[i].getMethod("instance", new Class[0]); //$NON-NLS-1$
+                Method driverInstance = types[i].getMethod("instance", new Class[0]);
                 BookDriver driver = (BookDriver) driverInstance.invoke(null, new Object[0]); // types[i].newInstance();
                 registerDriver(driver);
             } catch (NoSuchMethodException e) {

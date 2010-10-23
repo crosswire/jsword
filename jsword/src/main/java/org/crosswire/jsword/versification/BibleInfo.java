@@ -423,17 +423,28 @@ public final class BibleInfo {
         // Check the chapter
         if (chapter < 1 || chapter > chaptersInBook(book)) {
             Object[] params = new Object[] {
-                    new Integer(chaptersInBook(book)), getPreferredBookName(book), new Integer(chapter),
+                    new Integer(1), new Integer(chaptersInBook(book)), getPreferredBookName(book), new Integer(chapter),
             };
-            throw new NoSuchVerseException(UserMsg.BOOKS_CHAPTER, params);
+            // TRANSLATOR: The user supplied a chapter that was out of bounds. This tells them what is allowed.
+            // {0} is the lowest value that is allowed. Currently this is 1, later it will be 0.
+            // {1,number,integer} is the place holder for the highest chapter number in the book. The format is special in that it will present it in the user's preferred format.
+            // {2} is a placeholder for the Bible book name.
+            // {3,number,integer} is a placeholder for the chapter number that the user gave.
+            throw new NoSuchVerseException(UserMsg.gettext("Chapter should be between {0} and {1,number,integer} for {2} (given {3,number,integer}).", params));
         }
 
         // Check the verse
         if (verse < 1 || verse > versesInChapter(book, chapter)) {
             Object[] params = new Object[] {
-                    new Integer(versesInChapter(book, chapter)), getPreferredBookName(book), new Integer(chapter), new Integer(verse),
+                    new Integer(1), new Integer(versesInChapter(book, chapter)), getPreferredBookName(book), new Integer(chapter), new Integer(verse),
             };
-            throw new NoSuchVerseException(UserMsg.BOOKS_VERSE, params);
+            // TRANSLATOR: The user supplied a verse number that was out of bounds. This tells them what is allowed.
+            // {0} is the lowest value that is allowed. Currently this is 1, later it will be 0.
+            // {1,number,integer} is the place holder for the highest verse number in the chapter. The format is special in that it will present it in the user's preferred format.
+            // {2} is a placeholder for the Bible book name.
+            // {3,number,integer} is a placeholder for the chapter number that the user gave.
+            // {4,number,integer} is a placeholder for the verse number that the user gave.
+            throw new NoSuchVerseException(UserMsg.gettext("Verse should be between {0} and {1,number,integer} for {2} {3,number,integer} (given {4,number,integer}).", params));
         }
     }
 
@@ -636,7 +647,7 @@ public final class BibleInfo {
         bibleNames = new BibleNames(locale);
 
         // If the locale is not the program's default get it for alternates
-        Locale englishLocale = new Locale("en"); //$NON-NLS-1$
+        Locale englishLocale = new Locale("en");
         if (!locale.getLanguage().equals(englishLocale.getLanguage())) {
             englishBibleNames = new BibleNames(englishLocale);
         }

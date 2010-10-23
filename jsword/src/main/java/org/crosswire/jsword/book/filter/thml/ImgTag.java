@@ -39,7 +39,7 @@ public class ImgTag extends AbstractTag {
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
     public String getTagName() {
-        return "img"; //$NON-NLS-1$
+        return "img";
     }
 
     /*
@@ -52,7 +52,7 @@ public class ImgTag extends AbstractTag {
     /* @Override */
     public Element processTag(Element ele, Attributes attrs) {
         Element img = OSISUtil.factory().createFigure();
-        img.setAttribute(OSISUtil.ATTRIBUTE_FIGURE_SRC, attrs.getValue("src")); //$NON-NLS-1$
+        img.setAttribute(OSISUtil.ATTRIBUTE_FIGURE_SRC, attrs.getValue("src"));
 
         if (ele != null) {
             ele.addContent(img);

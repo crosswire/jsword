@@ -292,9 +292,9 @@ public class PassageTally extends AbstractPassage {
         while (it.hasNext() && count < max_count) {
             Key verse = (Key) it.next();
             retcode.append(verse.getName());
-            retcode.append(" ("); //$NON-NLS-1$
+            retcode.append(" (");
             retcode.append(100 * it.lastRank() / max);
-            retcode.append("%)"); //$NON-NLS-1$
+            retcode.append("%)");
 
             count++;
 
@@ -628,7 +628,7 @@ public class PassageTally extends AbstractPassage {
         raiseNormalizeProtection();
 
         if (!restrict.equals(RestrictionType.NONE)) {
-            log.warn("Restrict=" + restrict + " is not properly supported."); //$NON-NLS-1$ //$NON-NLS-2$
+            log.warn("Restrict=" + restrict + " is not properly supported.");
 
             // This is a bit of a cheat, but there is no way I'm going
             // to do the maths to speed up the restricted version

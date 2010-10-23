@@ -65,7 +65,7 @@ public final class SentenceUtil {
         while (alive) {
             // Find the next space and double dash
             int nextSpace = sentence.indexOf(' ', pos);
-            int nextDDash = sentence.indexOf("--", pos); //$NON-NLS-1$
+            int nextDDash = sentence.indexOf("--", pos);
 
             // If there is a space just after the ddash then ignore the ddash
             if (nextSpace == nextDDash + 2) {
@@ -88,11 +88,11 @@ public final class SentenceUtil {
                 pos = nextSpace + 1;
             } else {
                 // The next separator is a ddash
-                temp = sentence.substring(pos, nextDDash) + "--"; //$NON-NLS-1$
+                temp = sentence.substring(pos, nextDDash) + "--";
                 pos = nextDDash + 2;
             }
 
-            if (temp != null && !temp.trim().equals("")) { //$NON-NLS-1$
+            if (temp != null && !temp.trim().equals("")) {
                 tokens.add(temp);
             }
         }
@@ -145,7 +145,7 @@ public final class SentenceUtil {
         // The first bit of punctuation is what comes in front of the first word
         int first = firstLetter(words[0]);
         if (first == 0) {
-            retcode[0] = ""; //$NON-NLS-1$
+            retcode[0] = "";
         } else {
             retcode[0] = words[0].substring(0, first);
         }
@@ -158,7 +158,7 @@ public final class SentenceUtil {
         // The last bit of punctuation is what comes at the end of the last word
         int last = lastLetter(words[words.length - 1]);
         if (last == words[words.length - 1].length()) {
-            retcode[words.length] = ""; //$NON-NLS-1$
+            retcode[words.length] = "";
         } else {
             retcode[words.length] = words[words.length - 1].substring(last + 1);
         }
@@ -179,7 +179,7 @@ public final class SentenceUtil {
         // First there are some things we regard as word delimitters even if
         // they are not near space. Note that "-" should not be in this list
         // because words like abel-beth-maiacha comtain them.
-        sentence = sentence.replaceAll("--", " "); //$NON-NLS-1$ //$NON-NLS-2$
+        sentence = sentence.replaceAll("--", " ");
         sentence = sentence.replace('.', ' ');
         sentence = sentence.replace('!', ' ');
         sentence = sentence.replace('?', ' ');
@@ -190,7 +190,7 @@ public final class SentenceUtil {
         sentence = sentence.replace('(', ' ');
         sentence = sentence.replace(')', ' ');
 
-        String[] words = StringUtil.split(sentence, " "); //$NON-NLS-1$
+        String[] words = StringUtil.split(sentence, " ");
         String[] retcode = new String[words.length];
 
         // Remove the punctuation from the ends of the words.

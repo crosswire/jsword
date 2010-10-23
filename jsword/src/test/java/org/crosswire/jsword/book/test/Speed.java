@@ -77,19 +77,19 @@ public class Speed implements Runnable {
             PassageTally tally;
 
             // Part 1, a best match, and doc generate
-            tally = (PassageTally) book.find("\"In the beginning god created the heavens and the earth\""); //$NON-NLS-1$
+            tally = (PassageTally) book.find("\"In the beginning god created the heavens and the earth\"");
             tally.trimVerses(35);
             dummyDisplay(tally);
             tally = null;
 
             // Part 2, another best match, and doc generate
-            tally = (PassageTally) book.find("\"for god so loves the world that he gave his only begotten son\""); //$NON-NLS-1$
+            tally = (PassageTally) book.find("\"for god so loves the world that he gave his only begotten son\"");
             tally.trimVerses(35);
             dummyDisplay(tally);
             tally = null;
 
             // Part 3, a power match, and doc generate
-            String nextInput = book.find("aaron & manna").getName(); //$NON-NLS-1$
+            String nextInput = book.find("aaron & manna").getName();
             Key key = book.getKey(nextInput);
             Passage ref = KeyUtil.getPassage(key);
             ref.trimVerses(35);
@@ -120,7 +120,7 @@ public class Speed implements Runnable {
      */
     public long getBenchmark() {
         if (start_time == 0 || end_time == 0) {
-            throw new IllegalStateException("The benchmark has not finished yet."); //$NON-NLS-1$
+            throw new IllegalStateException("The benchmark has not finished yet.");
         }
 
         return end_time - start_time;

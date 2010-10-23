@@ -90,7 +90,7 @@ public class RawLDBackend extends AbstractKeyBackend {
 
     public String getRawText(String key) throws BookException {
         if (!checkActive()) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         try {
@@ -102,13 +102,16 @@ public class RawLDBackend extends AbstractKeyBackend {
                 }
                 return getRawText(entry);
             }
-            throw new BookException(UserMsg.READ_FAIL, new Object[] {
+            // TRANSLATOR: Error condition: Indicates that something could not be found in the book. {0} is a placeholder for the unknown key.
+            throw new BookException(UserMsg.gettext("Key not found {0}", new Object[] {
                 key
-            });
+            }));
         } catch (IOException ex) {
-            throw new BookException(UserMsg.READ_FAIL, ex, new Object[] {
+            // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
+            // {0} is a placeholder for the file.
+            throw new BookException(UserMsg.gettext("Error reading {0}", new Object[] {
                 key
-            });
+            }), ex);
         }
     }
 
@@ -203,16 +206,20 @@ public class RawLDBackend extends AbstractKeyBackend {
             datFile = new File(path.getPath() + SwordConstants.EXTENSION_DATA);
 
             if (!idxFile.canRead()) {
-                Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] {
+                // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
+                // {0} is a placeholder for the file.
+                Reporter.informUser(this, new BookException(UserMsg.gettext("Error reading {0}", new Object[] {
                     idxFile.getAbsolutePath()
-                }));
+                })));
                 return;
             }
 
             if (!datFile.canRead()) {
-                Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] {
+                // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
+                // {0} is a placeholder for the file.
+                Reporter.informUser(this, new BookException(UserMsg.gettext("Error reading {0}", new Object[] {
                     datFile.getAbsolutePath()
-                }));
+                })));
                 return;
             }
 
@@ -220,7 +227,7 @@ public class RawLDBackend extends AbstractKeyBackend {
             idxRaf = new RandomAccessFile(idxFile, FileUtil.MODE_READ);
             datRaf = new RandomAccessFile(datFile, FileUtil.MODE_READ);
         } catch (IOException ex) {
-            log.error("failed to open files", ex); //$NON-NLS-1$
+            log.error("failed to open files", ex);
             idxRaf = null;
             datRaf = null;
             return;
@@ -246,7 +253,7 @@ public class RawLDBackend extends AbstractKeyBackend {
                 datRaf.close();
             }
         } catch (IOException ex) {
-            log.error("failed to close files", ex); //$NON-NLS-1$
+            log.error("failed to close files", ex);
         } finally {
             idxRaf = null;
             datRaf = null;
@@ -427,7 +434,7 @@ public class RawLDBackend extends AbstractKeyBackend {
 
                 // The NAS lexicon has some entries that end in A-Z, but it is
                 // not preceded by a !
-                if (hasTrailingLetter && "naslex".equalsIgnoreCase(bmd.getInitials())) //$NON-NLS-1$
+                if (hasTrailingLetter && "naslex".equalsIgnoreCase(bmd.getInitials()))
                 {
                     buf.append(Character.toUpperCase(lastLetter));
                 }
@@ -531,21 +538,21 @@ public class RawLDBackend extends AbstractKeyBackend {
     /**
      * Date formatter
      */
-    private static final MessageFormat DATE_KEY_FORMAT = new MessageFormat("{0,number,00}.{1,number,00}"); //$NON-NLS-1$
+    private static final MessageFormat DATE_KEY_FORMAT = new MessageFormat("{0,number,00}.{1,number,00}");
 
     /**
      * This is the pattern of a Strong's Number. It begins with a G or H. Is
      * followed by a number. It can be followed by a ! and a letter or just a
      * letter.
      */
-    private static final Pattern STRONGS_PATTERN = Pattern.compile("^([GH])(\\d+)((!)?([a-z])?)$"); //$NON-NLS-1$
+    private static final Pattern STRONGS_PATTERN = Pattern.compile("^([GH])(\\d+)((!)?([a-z])?)$");
 
     /**
      * A means to normalize Strong's Numbers.
      */
-    private static final DecimalFormat ZERO_5PAD = new DecimalFormat("00000"); //$NON-NLS-1$
+    private static final DecimalFormat ZERO_5PAD = new DecimalFormat("00000");
 
-    private static final DecimalFormat ZERO_4PAD = new DecimalFormat("0000"); //$NON-NLS-1$
+    private static final DecimalFormat ZERO_4PAD = new DecimalFormat("0000");
 
     /**
      * Serialization ID

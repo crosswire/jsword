@@ -50,50 +50,50 @@ public class EnglishLuceneAnalyzerTest extends TestCase {
     }
 
     public void testDefaultBehavior() throws ParseException {
-        String testInput = "Surely will every man walketh"; //$NON-NLS-1$
+        String testInput = "Surely will every man walketh";
         Query query = parser.parse(testInput);
 
         // stemming on
-        assertTrue(query.toString().indexOf(field + ":sure ") > -1); //$NON-NLS-1$
-        assertTrue(query.toString().indexOf(field + ":everi") > -1); //$NON-NLS-1$    
+        assertTrue(query.toString().indexOf(field + ":sure ") > -1);
+        assertTrue(query.toString().indexOf(field + ":everi") > -1);    
     }
 
     public void testSetDoStopWords() throws ParseException {
-        String testInput = "Surely will every man walketh"; //$NON-NLS-1$
+        String testInput = "Surely will every man walketh";
         Query query = parser.parse(testInput);
 
         // enable stop word
         myAnalyzer.setDoStopWords(true);
         query = parser.parse(testInput);
-        assertTrue(query.toString().indexOf(field + ":will") == -1); //$NON-NLS-1$
+        assertTrue(query.toString().indexOf(field + ":will") == -1);
 
         // set custom stop word
         myAnalyzer.setDoStopWords(true);
         String[] stopWords = {
-                "thy", "ye", "unto", "shalt"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                "thy", "ye", "unto", "shalt"};
         myAnalyzer.setStopWords(stopWords);
-        testInput = "Upon thy belly Shalt thou go"; //$NON-NLS-1$
+        testInput = "Upon thy belly Shalt thou go";
         query = parser.parse(testInput);
         // System.out.println("ParsedQuery- "+ query.toString());
 
-        assertTrue(query.toString().indexOf(field + ":shalt") == -1); //$NON-NLS-1$
-        assertTrue(query.toString().indexOf(field + ":thy") == -1); //$NON-NLS-1$
-        assertTrue(query.toString().indexOf(field + ":upon") > -1); //$NON-NLS-1$
+        assertTrue(query.toString().indexOf(field + ":shalt") == -1);
+        assertTrue(query.toString().indexOf(field + ":thy") == -1);
+        assertTrue(query.toString().indexOf(field + ":upon") > -1);
 
     }
 
     public void testSetDoStemming() throws ParseException {
-        String testInput = "Surely will every man walketh"; //$NON-NLS-1$
+        String testInput = "Surely will every man walketh";
         Query query = parser.parse(testInput);
 
         myAnalyzer.setDoStemming(false);
         query = parser.parse(testInput);
-        assertTrue(query.toString().indexOf(field + ":surely") > -1); //$NON-NLS-1$
-        assertTrue(query.toString().indexOf(field + ":every") > -1); //$NON-NLS-1$
+        assertTrue(query.toString().indexOf(field + ":surely") > -1);
+        assertTrue(query.toString().indexOf(field + ":every") > -1);
 
     }
 
-    protected static final String field = "content"; //$NON-NLS-1$
+    protected static final String field = "content";
     private AbstractBookAnalyzer myAnalyzer;
     private QueryParser parser;
 }

@@ -52,8 +52,8 @@ public class BibleToOsis {
     /**
      * The name of a Bible to find
      */
-    private static final String BIBLE_NAME = "KJV"; //$NON-NLS-1$
-    private static final String BIBLE_RANGE = "Gen-Rev"; //$NON-NLS-1$
+    private static final String BIBLE_NAME = "KJV";
+    private static final String BIBLE_RANGE = "Gen-Rev";
     private static final boolean BY_BOOK = false;
 
     /**
@@ -71,7 +71,7 @@ public class BibleToOsis {
         Books books = Books.installed();
         Book bible = books.getBook(name);
         BookMetaData bmd = bible.getBookMetaData();
-        String lastBookName = ""; //$NON-NLS-1$
+        String lastBookName = "";
         int lastChapter = -1;
         StringBuffer buf = new StringBuffer();
         boolean inPreVerse = false;
@@ -130,28 +130,28 @@ public class BibleToOsis {
             /* Output the verse */
 
             boolean foundPreVerse = false;
-            String preVerseText = ""; //$NON-NLS-1$
+            String preVerseText = "";
             if (raw.indexOf(preVerseStart) != -1) {
                 Matcher matcher = preVersePattern.matcher(raw);
                 StringBuffer rawbuf = new StringBuffer();
                 if (matcher.find()) {
                     foundPreVerse = true;
                     preVerseText = matcher.group(1);
-                    matcher.appendReplacement(rawbuf, ""); //$NON-NLS-1$
+                    matcher.appendReplacement(rawbuf, "");
                 }
                 matcher.appendTail(rawbuf);
                 raw = rawbuf.toString();
             }
 
             boolean foundPsalmTitle = false;
-            String psalmTitleText = ""; //$NON-NLS-1$
+            String psalmTitleText = "";
             if (raw.indexOf(psalmTitleStart) != -1) {
                 Matcher matcher = psalmTitlePattern.matcher(raw);
                 StringBuffer rawbuf = new StringBuffer();
                 if (matcher.find()) {
                     foundPsalmTitle = true;
                     psalmTitleText = matcher.group(1);
-                    matcher.appendReplacement(rawbuf, ""); //$NON-NLS-1$
+                    matcher.appendReplacement(rawbuf, "");
                 }
                 matcher.appendTail(rawbuf);
                 raw = rawbuf.toString();
@@ -197,7 +197,7 @@ public class BibleToOsis {
         }
 
         MessageFormat msgFormat = new MessageFormat(
-                "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<osis\n  xmlns=\"http://www.bibletechnologies.net/2003/OSIS/namespace\"\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n  xsi:schemaLocation=\"http://www.bibletechnologies.net/2003/OSIS/namespace http://www.bibletechnologies.net/osisCore.2.1.1.xsd\">\n<osisText osisIDWork=\"{0}\" osisRefWork=\"defaultReferenceScheme\" xml:lang=\"en\">\n<header>\n  <work osisWork=\"{0}\">\n    <title>{1}</title>\n    <identifier type=\"OSIS\">Bible.{0}</identifier>\n    <scope>{2}</scope>\n    <refSystem>Bible.KJV</refSystem>\n  </work>\n  <work osisWork=\"defaultReferenceScheme\">\n    <refSystem>Bible.KJV</refSystem>\n  </work>\n  <work osisWork=\"strong\">\n    <refSystem>Dict.Strongs</refSystem>\n  </work>\n  <work osisWork=\"robinson\">\n    <refSystem>Dict.Robinsons</refSystem>\n  </work>\n  <work osisWork=\"strongMorph\">\n    <refSystem>Dict.strongMorph</refSystem>\n  </work>\n</header>\n"); //$NON-NLS-1$
+                "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<osis\n  xmlns=\"http://www.bibletechnologies.net/2003/OSIS/namespace\"\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n  xsi:schemaLocation=\"http://www.bibletechnologies.net/2003/OSIS/namespace http://www.bibletechnologies.net/osisCore.2.1.1.xsd\">\n<osisText osisIDWork=\"{0}\" osisRefWork=\"defaultReferenceScheme\" xml:lang=\"en\">\n<header>\n  <work osisWork=\"{0}\">\n    <title>{1}</title>\n    <identifier type=\"OSIS\">Bible.{0}</identifier>\n    <scope>{2}</scope>\n    <refSystem>Bible.KJV</refSystem>\n  </work>\n  <work osisWork=\"defaultReferenceScheme\">\n    <refSystem>Bible.KJV</refSystem>\n  </work>\n  <work osisWork=\"strong\">\n    <refSystem>Dict.Strongs</refSystem>\n  </work>\n  <work osisWork=\"robinson\">\n    <refSystem>Dict.Robinsons</refSystem>\n  </work>\n  <work osisWork=\"strongMorph\">\n    <refSystem>Dict.strongMorph</refSystem>\n  </work>\n</header>\n");
         msgFormat.format(new Object[] {
                 bmd.getInitials(), bmd.getName(), range
         }, buf, pos);
@@ -205,40 +205,40 @@ public class BibleToOsis {
 
     private void buildDocumentClose(StringBuffer buf, boolean force) {
         if (force) {
-            buf.append("</osisText>\n</osis>\n"); //$NON-NLS-1$
+            buf.append("</osisText>\n</osis>\n");
         }
     }
 
     private void buildBookOpen(StringBuffer buf, String bookName) {
-        System.err.println("processing " + bookName); //$NON-NLS-1$
-        MessageFormat msgFormat = new MessageFormat("<div type=\"book\" osisID=\"{0}\" canonical=\"true\">\n"); //$NON-NLS-1$
+        System.err.println("processing " + bookName);
+        MessageFormat msgFormat = new MessageFormat("<div type=\"book\" osisID=\"{0}\" canonical=\"true\">\n");
         msgFormat.format(new Object[] {
             bookName
         }, buf, pos);
     }
 
     private void buildBookClose(StringBuffer buf) {
-        buf.append("</div>\n"); //$NON-NLS-1$
+        buf.append("</div>\n");
     }
 
     private void buildChapterClose(StringBuffer buf) {
-        buf.append("</chapter>\n"); //$NON-NLS-1$
+        buf.append("</chapter>\n");
     }
 
     private void buildChapterOpen(StringBuffer buf, String bookName, int chapter) {
-        MessageFormat msgFormat = new MessageFormat("<chapter osisID=\"{0}.{1}\" chapterTitle=\"{2} {1}.\">\n"); //$NON-NLS-1$
-        if ("Obad".equals(bookName) || //$NON-NLS-1$
-                "Phlm".equals(bookName) || //$NON-NLS-1$
-                "2John".equals(bookName) || //$NON-NLS-1$
-                "3John".equals(bookName) || //$NON-NLS-1$
-                "Jude".equals(bookName)) //$NON-NLS-1$
+        MessageFormat msgFormat = new MessageFormat("<chapter osisID=\"{0}.{1}\" chapterTitle=\"{2} {1}.\">\n");
+        if ("Obad".equals(bookName) ||
+                "Phlm".equals(bookName) ||
+                "2John".equals(bookName) ||
+                "3John".equals(bookName) ||
+                "Jude".equals(bookName))
         {
             return;
         }
 
-        String chapterName = "CHAPTER"; //$NON-NLS-1$
-        if ("Ps".equals(bookName)) { //$NON-NLS-1$
-            chapterName = "PSALM"; //$NON-NLS-1$
+        String chapterName = "CHAPTER";
+        if ("Ps".equals(bookName)) {
+            chapterName = "PSALM";
         }
 
         msgFormat.format(new Object[] {
@@ -247,7 +247,7 @@ public class BibleToOsis {
     }
 
     private void buildPsalmTitle(StringBuffer buf, String psalmTitle) {
-        MessageFormat msgFormat = new MessageFormat("<title type=\"psalm\" canonical=\"true\">{0}</title>"); //$NON-NLS-1$
+        MessageFormat msgFormat = new MessageFormat("<title type=\"psalm\" canonical=\"true\">{0}</title>");
         msgFormat.format(new Object[] {
             psalmTitle
         }, buf, pos);
@@ -255,32 +255,32 @@ public class BibleToOsis {
 
     // private void buildPsalmAcrostic(StringBuffer buf, String psalmTitle)
     // {
-    //        MessageFormat msgFormat = new MessageFormat("<title type=\"acrostic\" canonical=\"true\">{0}</title>"); //$NON-NLS-1$
+    //        MessageFormat msgFormat = new MessageFormat("<title type=\"acrostic\" canonical=\"true\">{0}</title>");
     // msgFormat.format(new Object[] { psalmTitle }, buf, pos);
     // }
 
     private void buildPreVerseOpen(StringBuffer buf, String preVerse) {
-        MessageFormat msgFormat = new MessageFormat("<div type=\"section\" canonical=\"true\"><title canonical=\"true\">{0}</title>"); //$NON-NLS-1$
+        MessageFormat msgFormat = new MessageFormat("<div type=\"section\" canonical=\"true\"><title canonical=\"true\">{0}</title>");
         msgFormat.format(new Object[] {
             preVerse
         }, buf, pos);
     }
 
     private void buildPreVerseClose(StringBuffer buf) {
-        buf.append("</div>\n"); //$NON-NLS-1$
+        buf.append("</div>\n");
     }
 
     private void buildVerseOpen(StringBuffer buf, String osisID) {
-        //        MessageFormat msgFormat = new MessageFormat("<verse sID=\"{0}\" osisID=\"{0}\"/>"); //$NON-NLS-1$
-        MessageFormat msgFormat = new MessageFormat("<verse osisID=\"{0}\">"); //$NON-NLS-1$
+        //        MessageFormat msgFormat = new MessageFormat("<verse sID=\"{0}\" osisID=\"{0}\"/>");
+        MessageFormat msgFormat = new MessageFormat("<verse osisID=\"{0}\">");
         msgFormat.format(new Object[] {
             osisID
         }, buf, pos);
     }
 
     private void buildVerseClose(StringBuffer buf, String osisID) {
-        //        MessageFormat msgFormat = new MessageFormat("<verse eID=\"{0}\"/>"); //$NON-NLS-1$
-        MessageFormat msgFormat = new MessageFormat("</verse>\n"); //$NON-NLS-1$
+        //        MessageFormat msgFormat = new MessageFormat("<verse eID=\"{0}\"/>");
+        MessageFormat msgFormat = new MessageFormat("</verse>\n");
         msgFormat.format(new Object[] {
             osisID
         }, buf, pos);
@@ -289,7 +289,7 @@ public class BibleToOsis {
     private void openOutputFile(String newFilename, boolean open) throws IOException {
         if (open) {
             filename = newFilename;
-            writer = new OutputStreamWriter(new FileOutputStream(filename + ".xml"), "UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
+            writer = new OutputStreamWriter(new FileOutputStream(filename + ".xml"), "UTF-8");
         }
     }
 
@@ -307,24 +307,24 @@ public class BibleToOsis {
     private void parse() {
         XMLProcess parser = new XMLProcess();
         parser.getFeatures().setFeatureStates(new String[] {
-                "-s", "-f", "-va", "-dv"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-        parser.parse(filename + ".xml"); //$NON-NLS-1$
+                "-s", "-f", "-va", "-dv"});
+        parser.parse(filename + ".xml");
     }
 
     private static FieldPosition pos = new FieldPosition(0);
 
-    private static String preVerseStart = "<title subtype=\"x-preverse\" type=\"section\">"; //$NON-NLS-1$
-    private static String preVerseElement = "<title subtype=\"x-preverse\" type=\"section\">(.*?)</title>"; //$NON-NLS-1$
+    private static String preVerseStart = "<title subtype=\"x-preverse\" type=\"section\">";
+    private static String preVerseElement = "<title subtype=\"x-preverse\" type=\"section\">(.*?)</title>";
     private static Pattern preVersePattern = Pattern.compile(preVerseElement);
-    //    private static String preVerseEnd = "</title>"; //$NON-NLS-1$
+    //    private static String preVerseEnd = "</title>";
     // private static Pattern preVerseStartPattern =
     // Pattern.compile(preVerseStart);
-    //    private static Pattern preVerseEndPattern = Pattern.compile(preVerseEnd); //$NON-NLS-1$
+    //    private static Pattern preVerseEndPattern = Pattern.compile(preVerseEnd);
 
-    private static String psalmTitleStart = "<title type=\"psalm\">"; //$NON-NLS-1$
-    private static String psalmTitleElement = "<title type=\"psalm\">(.*?)</title>"; //$NON-NLS-1$
+    private static String psalmTitleStart = "<title type=\"psalm\">";
+    private static String psalmTitleElement = "<title type=\"psalm\">(.*?)</title>";
     private static Pattern psalmTitlePattern = Pattern.compile(psalmTitleElement);
-    //    private static String psalmTitleEnd = "</title>"; //$NON-NLS-1$
+    //    private static String psalmTitleEnd = "</title>";
     // private static Pattern psalmTitleStartPattern =
     // Pattern.compile(psalmTitleStart);
     // private static Pattern psalmTitleEndPattern =

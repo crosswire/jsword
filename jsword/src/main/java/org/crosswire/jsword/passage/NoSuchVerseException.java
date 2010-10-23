@@ -79,6 +79,54 @@ public class NoSuchVerseException extends NoSuchKeyException {
     public NoSuchVerseException(MsgBase msg, Throwable ex, Object[] params) {
         super(msg, ex, params);
     }
+    /**
+     * Construct the Exception with a message
+     * 
+     * @param msg
+     *            The resource id to read
+     */
+    public NoSuchVerseException(String msg) {
+        super(msg);
+    }
+
+    /**
+     * Construct the Exception with a message and a nested Exception
+     * 
+     * @param msg
+     *            The resource id to read
+     * @param ex
+     *            The nested Exception
+     */
+    public NoSuchVerseException(String msg, Throwable ex) {
+        super(msg, ex);
+    }
+
+    /**
+     * Construct the Exception with a message and some i18n params
+     * 
+     * @param msg
+     *            The resource id to read
+     * @param params
+     *            An array of parameters
+     */
+    public NoSuchVerseException(String msg, Object[] params) {
+        super(msg, params);
+    }
+
+    /**
+     * Construct the Exception with a message, a nested Exception and some i18n
+     * params
+     * 
+     * @param msg
+     *            The resource id to read
+     * @param ex
+     *            The nested Exception
+     * @param params
+     *            An array of parameters
+     */
+    public NoSuchVerseException(String msg, Throwable ex, Object[] params) {
+        super(msg, ex, params);
+    }
 
     /**
      * Serialization ID

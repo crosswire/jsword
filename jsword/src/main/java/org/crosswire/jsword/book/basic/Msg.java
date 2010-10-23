@@ -31,9 +31,9 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  */
 public final class Msg extends MsgBase {
-    static final Msg DRIVER_READONLY = new Msg("AbstractBookDriver.DriverReadonly"); //$NON-NLS-1$
-    static final Msg INDEX_FAIL = new Msg("AbstractBookDriver.IndexFail"); //$NON-NLS-1$
-    static final Msg FILTER_FAIL = new Msg("AbstractPassageBook.FilterFail"); //$NON-NLS-1$
+    static final Msg DRIVER_READONLY = new Msg("AbstractBookDriver.DriverReadonly");
+    static final Msg INDEX_FAIL = new Msg("AbstractBookDriver.IndexFail");
+    static final Msg FILTER_FAIL = new Msg("AbstractPassageBook.FilterFail");
 
     /**
      * Passthrough ctor

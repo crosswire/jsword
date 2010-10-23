@@ -41,7 +41,7 @@ public class FontTag extends AbstractTag {
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
     public String getTagName() {
-        return "font"; //$NON-NLS-1$
+        return "font";
     }
 
     /*
@@ -56,14 +56,14 @@ public class FontTag extends AbstractTag {
         Element seg = OSISUtil.factory().createSeg();
         StringBuffer buf = new StringBuffer();
 
-        String color = attrs.getValue("color"); //$NON-NLS-1$
+        String color = attrs.getValue("color");
         if (color != null) {
             buf.append(OSISUtil.SEG_COLORPREFIX);
             buf.append(color);
             buf.append(';');
         }
 
-        String size = attrs.getValue("size"); //$NON-NLS-1$
+        String size = attrs.getValue("size");
         if (size != null) {
             buf.append(OSISUtil.SEG_SIZEPREFIX);
             buf.append(size);
@@ -74,7 +74,7 @@ public class FontTag extends AbstractTag {
         if (type.length() > 0) {
             seg.setAttribute(OSISUtil.OSIS_ATTR_TYPE, type);
         } else {
-            DataPolice.report("Missing color/size attribute."); //$NON-NLS-1$
+            DataPolice.report("Missing color/size attribute.");
             XMLUtil.debugSAXAttributes(attrs);
         }
 

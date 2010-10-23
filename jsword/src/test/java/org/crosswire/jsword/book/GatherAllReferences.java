@@ -64,7 +64,7 @@ public class GatherAllReferences {
      * Read all the books that we can get our hands on.
      */
     public static void main(String[] args) throws IOException, JDOMException {
-        out = new PrintWriter(new BufferedWriter(new FileWriter("passages.log"))); //$NON-NLS-1$
+        out = new PrintWriter(new BufferedWriter(new FileWriter("passages.log")));
         // Calling Project.instance() will set up the project's home directory
         // ~/.jsword
         // This will set it as a place to look for overrides for
@@ -72,32 +72,32 @@ public class GatherAllReferences {
         CWProject.instance();
 
         // And the array of allowed osis>html converters
-        ChoiceFactory.getDataMap().put("converters", new String[] {}); //$NON-NLS-1$
+        ChoiceFactory.getDataMap().put("converters", new String[] {});
 
         // The choice of configurable XSL stylesheets
-        ChoiceFactory.getDataMap().put("cswing-styles", new String[] {}); //$NON-NLS-1$
+        ChoiceFactory.getDataMap().put("cswing-styles", new String[] {});
 
         // Load the desktop configuration so we can find the sword drivers
-        Config config = new Config("Desktop Options"); //$NON-NLS-1$
-        Document xmlconfig = XMLUtil.getDocument("config"); //$NON-NLS-1$
+        Config config = new Config("Desktop Options");
+        Document xmlconfig = XMLUtil.getDocument("config");
 
         Locale defaultLocale = Locale.getDefault();
-        ResourceBundle configResources = ResourceBundle.getBundle("config", defaultLocale, CWClassLoader.instance(GatherAllReferences.class)); //$NON-NLS-1$
+        ResourceBundle configResources = ResourceBundle.getBundle("config", defaultLocale, CWClassLoader.instance(GatherAllReferences.class));
 
         config.add(xmlconfig, configResources);
 
-        config.setProperties(ResourceUtil.getProperties("desktop")); //$NON-NLS-1$
+        config.setProperties(ResourceUtil.getProperties("desktop"));
         config.localToApplication();
 
         // Loop through all the Bookks
-        log.warn("*** Reading all known Books"); //$NON-NLS-1$
+        log.warn("*** Reading all known Books");
         List comments = Books.installed().getBooks();
         for (Iterator cit = comments.iterator(); cit.hasNext();) {
             Book book = (Book) cit.next();
 
             BookMetaData bmd = book.getBookMetaData();
             // Skip PlainText as they do not have references marked up
-            if (bmd.getProperty("SourceType") != null) //$NON-NLS-1$
+            if (bmd.getProperty("SourceType") != null)
             {
                 Key set = book.getGlobalKeyList();
 
@@ -135,18 +135,18 @@ public class GatherAllReferences {
             try {
                 orig = book.getRawText(key);
             } catch (BookException ex) {
-                log.warn("Failed to read: " + book.getInitials() + '(' + key.getName() + "):" + ex.getMessage(), ex); //$NON-NLS-1$ //$NON-NLS-2$
+                log.warn("Failed to read: " + book.getInitials() + '(' + key.getName() + "):" + ex.getMessage(), ex);
                 return;
             }
 
             Matcher matcher = null;
-            if (orig.indexOf("passage=\"") != -1) //$NON-NLS-1$
+            if (orig.indexOf("passage=\"") != -1)
             {
                 matcher = thmlPassagePattern.matcher(orig);
-            } else if (orig.indexOf("osisRef=\"") != -1) //$NON-NLS-1$
+            } else if (orig.indexOf("osisRef=\"") != -1)
             {
                 matcher = osisPassagePattern.matcher(orig);
-            } else if (orig.indexOf("<RX>") != -1) //$NON-NLS-1$
+            } else if (orig.indexOf("<RX>") != -1)
             {
                 matcher = gbfPassagePattern.matcher(orig);
             }
@@ -169,13 +169,13 @@ public class GatherAllReferences {
             }
 
         } catch (Throwable ex) {
-            log.error("Unexpected error reading: " + book.getInitials() + '(' + key.getName() + ')', ex); //$NON-NLS-1$
+            log.error("Unexpected error reading: " + book.getInitials() + '(' + key.getName() + ')', ex);
         }
     }
 
-    private static Pattern thmlPassagePattern = Pattern.compile("passage=\"([^\"]*)"); //$NON-NLS-1$
-    private static Pattern gbfPassagePattern = Pattern.compile("<RX>([^<]*)"); //$NON-NLS-1$
-    private static Pattern osisPassagePattern = Pattern.compile("osisRef=\"([^\"]*)"); //$NON-NLS-1$
+    private static Pattern thmlPassagePattern = Pattern.compile("passage=\"([^\"]*)");
+    private static Pattern gbfPassagePattern = Pattern.compile("<RX>([^<]*)");
+    private static Pattern osisPassagePattern = Pattern.compile("osisRef=\"([^\"]*)");
     private static KeyFactory keyf = PassageKeyFactory.instance();
     private static PrintWriter out;
     /**

@@ -31,7 +31,7 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  */
 final class Msg extends MsgBase {
-    static final Msg NAME_JESUS = new Msg("RedLetterStartTagBuilder.NameJesus"); //$NON-NLS-1$
+    static final Msg NAME_JESUS = new Msg("RedLetterStartTagBuilder.NameJesus");
 
     /**
      * Passthrough ctor

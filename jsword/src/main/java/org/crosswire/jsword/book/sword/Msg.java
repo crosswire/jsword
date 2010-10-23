@@ -31,14 +31,14 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  */
 final class Msg extends MsgBase {
-    static final Msg BAD_KEY = new Msg("RawLDBackend.BadKey"); //$NON-NLS-1$
-    static final Msg FILTER_FAIL = new Msg("SwordDictionary.FilterFail"); //$NON-NLS-1$
-    static final Msg MISSING_FILE = new Msg("ZVerseBackend.MissingFile"); //$NON-NLS-1$
-    static final Msg TYPE_UNSUPPORTED = new Msg("SwordBookDriver.TypeUnsuported"); //$NON-NLS-1$
-    static final Msg DRIVER_READONLY = new Msg("SwordBook.DriverReadonly"); //$NON-NLS-1$
-    static final Msg UNDEFINED_BOOK_TYPE = new Msg("BookType.UndefinedBookType"); //$NON-NLS-1$
-    static final Msg UNDEFINED_DATATYPE = new Msg("BookType.UndefinedDatatype"); //$NON-NLS-1$
-    static final MsgBase UNABLE_TO_SAVE = new Msg("SwordBook.UnableToSave"); //$NON-NLS-1$;
+    static final Msg BAD_KEY = new Msg("RawLDBackend.BadKey");
+    static final Msg FILTER_FAIL = new Msg("SwordDictionary.FilterFail");
+    static final Msg MISSING_FILE = new Msg("ZVerseBackend.MissingFile");
+    static final Msg TYPE_UNSUPPORTED = new Msg("SwordBookDriver.TypeUnsuported");
+    static final Msg DRIVER_READONLY = new Msg("SwordBook.DriverReadonly");
+    static final Msg UNDEFINED_BOOK_TYPE = new Msg("BookType.UndefinedBookType");
+    static final Msg UNDEFINED_DATATYPE = new Msg("BookType.UndefinedDatatype");
+    static final MsgBase UNABLE_TO_SAVE = new Msg("SwordBook.UnableToSave");
 
     /**
      * Passthrough ctor

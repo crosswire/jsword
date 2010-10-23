@@ -127,7 +127,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData {
     public void setInitials(String initials) {
         if (initials == null) {
             if (name == null) {
-                this.initials = ""; //$NON-NLS-1$
+                this.initials = "";
             } else {
                 this.initials = StringUtil.getInitials(name);
             }
@@ -190,10 +190,10 @@ public class DefaultBookMetaData extends AbstractBookMetaData {
     public Document toOSIS() {
         OSISUtil.OSISFactory factory = OSISUtil.factory();
         Element ele = factory.createTable();
-        addRow(ele, "Initials", getInitials()); //$NON-NLS-1$
-        addRow(ele, "Description", getName()); //$NON-NLS-1$
-        addRow(ele, "Key", getBookCategory().toString()); //$NON-NLS-1$
-        addRow(ele, "Language", getLanguage().getName()); //$NON-NLS-1$
+        addRow(ele, "Initials", getInitials());
+        addRow(ele, "Description", getName());
+        addRow(ele, "Key", getBookCategory().toString());
+        addRow(ele, "Language", getLanguage().getName());
         return new Document(ele);
     }
 

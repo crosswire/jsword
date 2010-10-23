@@ -31,14 +31,14 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  */
 public final class Msg extends MsgBase {
-    static final Msg TALLY_ERROR_ENUM = new Msg("PassageTally.ErrorEnum"); //$NON-NLS-1$
-    static final Msg TALLY_ERROR_ORDER = new Msg("PassageTally.ErrorOrder"); //$NON-NLS-1$
-    static final Msg PASSAGE_READONLY = new Msg("ReadOnlyPassage.Readonly"); //$NON-NLS-1$
-    static final Msg ERROR_PATCH = new Msg("Verse.ErrorPatch"); //$NON-NLS-1$
-    static final Msg PASSAGE_UNKNOWN = new Msg("PassageUtil.Unknown"); //$NON-NLS-1$
-    static final Msg ABSTRACT_CAST = new Msg("AbstractPassage.Cast"); //$NON-NLS-1$
-    static final Msg ABSTRACT_INDEX = new Msg("AbstractPassage.Index"); //$NON-NLS-1$
-    static final Msg KEYLIST_READONLY = new Msg("ReadOnlyKeyList.Readonly"); //$NON-NLS-1$
+    static final Msg TALLY_ERROR_ENUM = new Msg("PassageTally.ErrorEnum");
+    static final Msg TALLY_ERROR_ORDER = new Msg("PassageTally.ErrorOrder");
+    static final Msg PASSAGE_READONLY = new Msg("ReadOnlyPassage.Readonly");
+    static final Msg ERROR_PATCH = new Msg("Verse.ErrorPatch");
+    static final Msg PASSAGE_UNKNOWN = new Msg("PassageUtil.Unknown");
+    static final Msg ABSTRACT_CAST = new Msg("AbstractPassage.Cast");
+    static final Msg ABSTRACT_INDEX = new Msg("AbstractPassage.Index");
+    static final Msg KEYLIST_READONLY = new Msg("ReadOnlyKeyList.Readonly");
 
     /**
      * Passthrough ctor

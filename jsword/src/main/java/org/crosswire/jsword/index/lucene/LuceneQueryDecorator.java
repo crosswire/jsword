@@ -139,21 +139,21 @@ public class LuceneQueryDecorator implements QueryDecorator {
      * In our parsing we use space quite a lot and this ensures there is only
      * one and that we don't have lots of NON-NLS comments everywhere
      */
-    private static final String SPACE = " "; //$NON-NLS-1$
+    private static final String SPACE = " ";
     private static final char QUOTE = '"';
     private static final char PLUS = '+';
-    private static final String SPACE_PLUS = " +"; //$NON-NLS-1$
+    private static final String SPACE_PLUS = " +";
 
     private static final char MINUS = '-';
-    private static final String SPACE_MINUS = " -"; //$NON-NLS-1$
+    private static final String SPACE_MINUS = " -";
 
     private static final char OPEN = '[';
     private static final char CLOSE = ']';
 
     private static final char FUZZY = '~';
-    private static final String FUZZY_SPACE = "~ "; //$NON-NLS-1$
+    private static final String FUZZY_SPACE = "~ ";
 
     private static final char WILD = '*';
-    private static final String WILD_SPACE = "* "; //$NON-NLS-1$
+    private static final String WILD_SPACE = "* ";
 
 }

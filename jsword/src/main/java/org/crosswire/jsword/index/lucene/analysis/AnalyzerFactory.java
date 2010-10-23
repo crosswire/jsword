@@ -52,7 +52,7 @@ public final class AnalyzerFactory {
         if (lang != null) {
             String aClass = getAnalyzerValue(lang);
 
-            log.debug("Creating analyzer:" + aClass + " BookLang:" + lang); //$NON-NLS-1$ //$NON-NLS-2$
+            log.debug("Creating analyzer:" + aClass + " BookLang:" + lang);
 
             if (aClass != null) {
                 try {
@@ -60,11 +60,11 @@ public final class AnalyzerFactory {
 
                     newObject = (AbstractBookAnalyzer) impl.newInstance();
                 } catch (ClassNotFoundException e) {
-                    log.error("Configuration error in AnalyzerFactory properties", e); //$NON-NLS-1$
+                    log.error("Configuration error in AnalyzerFactory properties", e);
                 } catch (IllegalAccessException e) {
-                    log.error("Configuration error in AnalyzerFactory properties", e); //$NON-NLS-1$
+                    log.error("Configuration error in AnalyzerFactory properties", e);
                 } catch (InstantiationException e) {
-                    log.error("Configuration error in AnalyzerFactory properties", e); //$NON-NLS-1$
+                    log.error("Configuration error in AnalyzerFactory properties", e);
                 }
             }
         }
@@ -89,17 +89,17 @@ public final class AnalyzerFactory {
     }
 
     public String getAnalyzerValue(Language lang) {
-        String key = lang.getCode() + ".Analyzer"; //$NON-NLS-1$
+        String key = lang.getCode() + ".Analyzer";
         return myProperties.getProperty(key);
     }
 
     public boolean getDefaultStemmingProperty() {
-        String key = DEFAULT_ID + ".Stemming"; //$NON-NLS-1$
+        String key = DEFAULT_ID + ".Stemming";
         return Boolean.valueOf(myProperties.getProperty(key)).booleanValue();
     }
 
     public boolean getDefaultStopWordProperty() {
-        String key = DEFAULT_ID + ".StopWord"; //$NON-NLS-1$
+        String key = DEFAULT_ID + ".StopWord";
         return Boolean.valueOf(myProperties.getProperty(key)).booleanValue();
     }
 
@@ -107,11 +107,11 @@ public final class AnalyzerFactory {
         try {
             myProperties = ResourceUtil.getProperties(getClass());
         } catch (IOException e) {
-            log.error("AnalyzerFactory property load from file failed", e); //$NON-NLS-1$
+            log.error("AnalyzerFactory property load from file failed", e);
         }
     }
 
-    public static final String DEFAULT_ID = "Default"; //$NON-NLS-1$
+    public static final String DEFAULT_ID = "Default";
     private static final Logger log = Logger.getLogger(AnalyzerFactory.class);
     private static AnalyzerFactory myInstance = new AnalyzerFactory();
 

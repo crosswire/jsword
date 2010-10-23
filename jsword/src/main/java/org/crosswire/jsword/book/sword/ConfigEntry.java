@@ -212,7 +212,7 @@ public final class ConfigEntry {
 
         // Report on fields that shouldn't have RTF but do
         if (!allowsRTF() && RTF_PATTERN.matcher(aValue).find()) {
-            log.info(report("Ignoring unexpected RTF for", getName(), aValue)); //$NON-NLS-1$
+            log.info(report("Ignoring unexpected RTF for", getName(), aValue));
         }
 
         if (mayRepeat()) {
@@ -224,20 +224,20 @@ public final class ConfigEntry {
                 histogram.increment(confEntryName + '.' + aValue);
             }
             if (!isAllowed(aValue)) {
-                log.info(report("Ignoring unknown config value for", confEntryName, aValue)); //$NON-NLS-1$
+                log.info(report("Ignoring unknown config value for", confEntryName, aValue));
                 return;
             }
             values.add(aValue);
         } else {
             if (value != null) {
-                log.info(report("Ignoring unexpected additional entry for", confEntryName, aValue)); //$NON-NLS-1$
+                log.info(report("Ignoring unexpected additional entry for", confEntryName, aValue));
             } else {
                 histogram.increment(confEntryName);
                 if (type.hasChoices()) {
                     histogram.increment(confEntryName + '.' + aValue);
                 }
                 if (!isAllowed(aValue)) {
-                    log.info(report("Ignoring unknown config value for", confEntryName, aValue)); //$NON-NLS-1$
+                    log.info(report("Ignoring unknown config value for", confEntryName, aValue));
                     return;
                 }
                 value = type.convert(aValue);
@@ -361,7 +361,7 @@ public final class ConfigEntry {
             if (allowsContinuation()) {
                 // With continuation each line is ended with a '\', except the
                 // last.
-                text = text.replaceAll("\n", "\\\\\n"); //$NON-NLS-1$ //$NON-NLS-2$
+                text = text.replaceAll("\n", "\\\\\n");
             }
             buf.append(text);
             buf.append('\n');
@@ -381,7 +381,7 @@ public final class ConfigEntry {
                     String text = (String) iter.next();
                     buf.append(getName());
                     buf.append('_');
-                    buf.append(text.replaceFirst(" ", "=")); //$NON-NLS-1$ //$NON-NLS-2$;
+                    buf.append(text.replaceFirst(" ", "="));
                     buf.append('\n');
                 }
             } else {
@@ -431,9 +431,9 @@ public final class ConfigEntry {
         buf.append(issue);
         buf.append(' ');
         buf.append(confEntryName);
-        buf.append(" in "); //$NON-NLS-1$
+        buf.append(" in ");
         buf.append(internal);
-        buf.append(": "); //$NON-NLS-1$
+        buf.append(": ");
         buf.append(aValue);
 
         return buf.toString();
@@ -448,7 +448,7 @@ public final class ConfigEntry {
      * A pattern of allowable RTF in a SWORD conf. These are: \pard, \pae, \par,
      * \qc \b, \i and embedded Unicode
      */
-    private static final Pattern RTF_PATTERN = Pattern.compile("\\\\pard|\\\\pa[er]|\\\\qc|\\\\[bi]|\\\\u-?[0-9]{4,6}+"); //$NON-NLS-1$
+    private static final Pattern RTF_PATTERN = Pattern.compile("\\\\pard|\\\\pa[er]|\\\\qc|\\\\[bi]|\\\\u-?[0-9]{4,6}+");
 
     /**
      * A histogram for debugging.

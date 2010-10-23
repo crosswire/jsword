@@ -46,37 +46,37 @@ public class ConfigEntryType implements Serializable {
     /**
      * Constants for direction
      */
-    public static final String DIRECTION_LTOR = "LtoR"; //$NON-NLS-1$
-    public static final String DIRECTION_RTOL = "RtoL"; //$NON-NLS-1$
-    public static final String DIRECTION_BIDI = "bidi"; //$NON-NLS-1$
+    public static final String DIRECTION_LTOR = "LtoR";
+    public static final String DIRECTION_RTOL = "RtoL";
+    public static final String DIRECTION_BIDI = "bidi";
 
     private static final String[] BLOCK_TYPE_PICKS = new String[] {
-            "BOOK", //$NON-NLS-1$
-            "CHAPTER", //$NON-NLS-1$
-            "VERSE", //$NON-NLS-1$
+            "BOOK",
+            "CHAPTER",
+            "VERSE",
     };
 
     private static final String[] BOOLEAN_PICKS = new String[] {
-            "true", //$NON-NLS-1$
-            "false", //$NON-NLS-1$
+            "true",
+            "false",
     };
 
     private static final String[] CATEGORY_PICKS = new String[] {
-            "Daily Devotional", //$NON-NLS-1$
-            "Glossaries", //$NON-NLS-1$
-            "Cults / Unorthodox / Questionable Material", //$NON-NLS-1$
-            "Essays", //$NON-NLS-1$
-            "Maps", //$NON-NLS-1$
-            "Images", //$NON-NLS-1$
-            "Biblical Texts", //$NON-NLS-1$
-            "Commentaries", //$NON-NLS-1$
-            "Lexicons / Dictionaries", //$NON-NLS-1$
-            "Generic Books", //$NON-NLS-1$
+            "Daily Devotional",
+            "Glossaries",
+            "Cults / Unorthodox / Questionable Material",
+            "Essays",
+            "Maps",
+            "Images",
+            "Biblical Texts",
+            "Commentaries",
+            "Lexicons / Dictionaries",
+            "Generic Books",
     };
 
     private static final String[] COMPRESS_TYPE_PICKS = new String[] {
-            "LZSS", //$NON-NLS-1$
-            "ZIP", //$NON-NLS-1$
+            "LZSS",
+            "ZIP",
     };
 
     private static final String[] DIRECTION_PICKS = new String[] {
@@ -84,101 +84,101 @@ public class ConfigEntryType implements Serializable {
     };
 
     private static final String[] KEY_TYPE_PICKS = new String[] {
-            "TreeKey", //$NON-NLS-1$
-            "VerseKey", //$NON-NLS-1$
+            "TreeKey",
+            "VerseKey",
     };
 
     private static final String[] FEATURE_PICKS = new String[] {
-            "StrongsNumbers", //$NON-NLS-1$
-            "GreekDef", //$NON-NLS-1$
-            "HebrewDef", //$NON-NLS-1$
-            "GreekParse", //$NON-NLS-1$
-            "HebrewParse", //$NON-NLS-1$
-            "DailyDevotion", //$NON-NLS-1$
-            "Glossary", //$NON-NLS-1$
-            "Images", //$NON-NLS-1$
+            "StrongsNumbers",
+            "GreekDef",
+            "HebrewDef",
+            "GreekParse",
+            "HebrewParse",
+            "DailyDevotion",
+            "Glossary",
+            "Images",
     };
 
     private static final String[] GLOBAL_OPTION_FILTER_PICKS = new String[] {
-            "GBFStrongs", //$NON-NLS-1$
-            "GBFFootnotes", //$NON-NLS-1$
-            "GBFScripref", //$NON-NLS-1$
-            "GBFMorph", //$NON-NLS-1$
-            "GBFHeadings", //$NON-NLS-1$
-            "GBFRedLetterWords", //$NON-NLS-1$
-            "ThMLStrongs", //$NON-NLS-1$
-            "ThMLFootnotes", //$NON-NLS-1$
-            "ThMLScripref", //$NON-NLS-1$
-            "ThMLMorph", //$NON-NLS-1$
-            "ThMLHeadings", //$NON-NLS-1$
-            "ThMLVariants", //$NON-NLS-1$
-            "ThMLLemma", //$NON-NLS-1$
-            "UTF8Cantillation", //$NON-NLS-1$
-            "UTF8GreekAccents", //$NON-NLS-1$
-            "UTF8HebrewPoints", //$NON-NLS-1$
-            "OSISStrongs", //$NON-NLS-1$
-            "OSISFootnotes", //$NON-NLS-1$
-            "OSISScripref", //$NON-NLS-1$
-            "OSISMorph", //$NON-NLS-1$
-            "OSISHeadings", //$NON-NLS-1$
-            "OSISRedLetterWords", //$NON-NLS-1$
-            "OSISLemma", //$NON-NLS-1$
-            "OSISRuby", //$NON-NLS-1$
+            "GBFStrongs",
+            "GBFFootnotes",
+            "GBFScripref",
+            "GBFMorph",
+            "GBFHeadings",
+            "GBFRedLetterWords",
+            "ThMLStrongs",
+            "ThMLFootnotes",
+            "ThMLScripref",
+            "ThMLMorph",
+            "ThMLHeadings",
+            "ThMLVariants",
+            "ThMLLemma",
+            "UTF8Cantillation",
+            "UTF8GreekAccents",
+            "UTF8HebrewPoints",
+            "OSISStrongs",
+            "OSISFootnotes",
+            "OSISScripref",
+            "OSISMorph",
+            "OSISHeadings",
+            "OSISRedLetterWords",
+            "OSISLemma",
+            "OSISRuby",
     };
 
     private static final String[] LICENSE_PICKS = new String[] {
-            "Public Domain", //$NON-NLS-1$
-            "Copyrighted", //$NON-NLS-1$
-            "Copyrighted; Free non-commercial distribution", //$NON-NLS-1$
-            "Copyrighted; Permission to distribute granted to CrossWire", //$NON-NLS-1$
-            "Copyrighted; Freely distributable", //$NON-NLS-1$
-            "Copyrighted; Permission granted to distribute non-commercially in Sword format", //$NON-NLS-1$
-            "GFDL", //$NON-NLS-1$
-            "GPL", //$NON-NLS-1$
-            "Creative Commons: by-nc-nd", //$NON-NLS-1$
-            "Creative Commons: by-nc-sa", //$NON-NLS-1$
-            "Creative Commons: by-nc", //$NON-NLS-1$
-            "Creative Commons: by-nd", //$NON-NLS-1$
-            "Creative Commons: by-sa", //$NON-NLS-1$
-            "Creative Commons: by", //$NON-NLS-1$
+            "Public Domain",
+            "Copyrighted",
+            "Copyrighted; Free non-commercial distribution",
+            "Copyrighted; Permission to distribute granted to CrossWire",
+            "Copyrighted; Freely distributable",
+            "Copyrighted; Permission granted to distribute non-commercially in Sword format",
+            "GFDL",
+            "GPL",
+            "Creative Commons: by-nc-nd",
+            "Creative Commons: by-nc-sa",
+            "Creative Commons: by-nc",
+            "Creative Commons: by-nd",
+            "Creative Commons: by-sa",
+            "Creative Commons: by",
     };
 
     private static final String[] ENCODING_PICKS = new String[] {
-            "Latin-1", //$NON-NLS-1$
-            "UTF-8", //$NON-NLS-1$
+            "Latin-1",
+            "UTF-8",
     };
 
     private static final String[] MOD_DRV_PICKS = new String[] {
-            "RawText", //$NON-NLS-1$
-            "zText", //$NON-NLS-1$
-            "RawCom", //$NON-NLS-1$
-            "RawCom4", //$NON-NLS-1$
-            "zCom", //$NON-NLS-1$
-            "HREFCom", //$NON-NLS-1$
-            "RawFiles", //$NON-NLS-1$
-            "RawLD", //$NON-NLS-1$
-            "RawLD4", //$NON-NLS-1$
-            "zLD", //$NON-NLS-1$
-            "RawGenBook", //$NON-NLS-1$
+            "RawText",
+            "zText",
+            "RawCom",
+            "RawCom4",
+            "zCom",
+            "HREFCom",
+            "RawFiles",
+            "RawLD",
+            "RawLD4",
+            "zLD",
+            "RawGenBook",
     };
 
     private static final String[] SOURCE_TYPE_PICKS = new String[] {
-            "Plaintext", //$NON-NLS-1$
-            "GBF", //$NON-NLS-1$
-            "ThML", //$NON-NLS-1$
-            "OSIS", //$NON-NLS-1$
-            "TEI", //$NON-NLS-1$
-            "OSIS", //$NON-NLS-1$
-            "TEI", //$NON-NLS-1$
+            "Plaintext",
+            "GBF",
+            "ThML",
+            "OSIS",
+            "TEI",
+            "OSIS",
+            "TEI",
     };
 
     private static final String[] VERSIFICATION_PICKS = new String[] {
-            "KJV", //$NON-NLS-1$
-            "KJVA", //$NON-NLS-1$
-            "NRSV", //$NON-NLS-1$
-            "NRSVA", //$NON-NLS-1$
-            "Leningrad", //$NON-NLS-1$
-            "MT", //$NON-NLS-1$
+            "KJV",
+            "KJVA",
+            "NRSV",
+            "NRSVA",
+            "Leningrad",
+            "MT",
     };
 
     /**
@@ -299,12 +299,12 @@ public class ConfigEntryType implements Serializable {
      * the first non-blank line of the conf. JSword uses this for display and
      * access purposes.
      */
-    public static final ConfigEntryType INITIALS = new ConfigEntrySyntheticType("Initials"); //$NON-NLS-1$
+    public static final ConfigEntryType INITIALS = new ConfigEntrySyntheticType("Initials");
 
     /**
      * Relative path to the data files, some issues with this
      */
-    public static final ConfigEntryType DATA_PATH = new ConfigEntryType("DataPath") //$NON-NLS-1$
+    public static final ConfigEntryType DATA_PATH = new ConfigEntryType("DataPath")
     {
         /*
          * (non-Javadoc)
@@ -326,29 +326,29 @@ public class ConfigEntryType implements Serializable {
     /**
      * The full name of this book
      */
-    public static final ConfigEntryType DESCRIPTION = new ConfigEntryType("Description"); //$NON-NLS-1$
+    public static final ConfigEntryType DESCRIPTION = new ConfigEntryType("Description");
 
     /**
      * This indicates how the book was stored.
      */
-    public static final ConfigEntryType MOD_DRV = new ConfigEntryPickType("ModDrv", MOD_DRV_PICKS); //$NON-NLS-1$
+    public static final ConfigEntryType MOD_DRV = new ConfigEntryPickType("ModDrv", MOD_DRV_PICKS);
 
     /**
      * The type of compression in use. JSword does not support LZSS. While it is
      * the default, it is not used. At least so far.
      */
-    public static final ConfigEntryType COMPRESS_TYPE = new ConfigEntryPickType("CompressType", COMPRESS_TYPE_PICKS, COMPRESS_TYPE_PICKS[0]); //$NON-NLS-1$
+    public static final ConfigEntryType COMPRESS_TYPE = new ConfigEntryPickType("CompressType", COMPRESS_TYPE_PICKS, COMPRESS_TYPE_PICKS[0]);
 
     /**
      * The level at which compression is applied, BOOK, CHAPTER, or VERSE
      */
-    public static final ConfigEntryType BLOCK_TYPE = new ConfigEntryPickType("BlockType", BLOCK_TYPE_PICKS, BLOCK_TYPE_PICKS[0]); //$NON-NLS-1$
+    public static final ConfigEntryType BLOCK_TYPE = new ConfigEntryPickType("BlockType", BLOCK_TYPE_PICKS, BLOCK_TYPE_PICKS[0]);
 
     /**
      * single value integer, unknown use, some indications that we ought to be
      * using it
      */
-    public static final ConfigEntryType BLOCK_COUNT = new ConfigEntryType("BlockCount", new Integer(200)) //$NON-NLS-1$
+    public static final ConfigEntryType BLOCK_COUNT = new ConfigEntryType("BlockCount", new Integer(200))
     {
         /*
          * (non-Javadoc)
@@ -390,24 +390,24 @@ public class ConfigEntryType implements Serializable {
     /**
      * The kind of key that a Generic Book uses.
      */
-    public static final ConfigEntryType KEY_TYPE = new ConfigEntryPickType("KeyType", KEY_TYPE_PICKS, KEY_TYPE_PICKS[0]); //$NON-NLS-1$
+    public static final ConfigEntryType KEY_TYPE = new ConfigEntryPickType("KeyType", KEY_TYPE_PICKS, KEY_TYPE_PICKS[0]);
 
     /**
      * If this exists in the conf, then the book is encrypted. The value is used
      * to unlock the book. The encryption algorithm is Sapphire.
      */
-    public static final ConfigEntryType CIPHER_KEY = new ConfigEntryType("CipherKey"); //$NON-NLS-1$
+    public static final ConfigEntryType CIPHER_KEY = new ConfigEntryType("CipherKey");
 
     /**
      * This indicates the versification of the book, with KJV being the default.
      */
-    public static final ConfigEntryType VERSIFICATION = new ConfigEntryPickType("Versification", VERSIFICATION_PICKS); //$NON-NLS-1$
+    public static final ConfigEntryType VERSIFICATION = new ConfigEntryPickType("Versification", VERSIFICATION_PICKS);
 
     /**
      * Global Option Filters are the names of routines in Sword that can be used
      * to display the data. These are not used by JSword.
      */
-    public static final ConfigEntryType GLOBAL_OPTION_FILTER = new ConfigEntryPickType("GlobalOptionFilter", GLOBAL_OPTION_FILTER_PICKS) { //$NON-NLS-1$
+    public static final ConfigEntryType GLOBAL_OPTION_FILTER = new ConfigEntryPickType("GlobalOptionFilter", GLOBAL_OPTION_FILTER_PICKS) {
 
         /*
          * (non-Javadoc)
@@ -429,23 +429,23 @@ public class ConfigEntryType implements Serializable {
      * RtoL. Most are 'LtoR'. Some are 'bidi', bi-directional. E.g.
      * hebrew-english glossary.
      */
-    public static final ConfigEntryType DIRECTION = new ConfigEntryPickType("Direction", DIRECTION_PICKS, DIRECTION_PICKS[0]); //$NON-NLS-1$
+    public static final ConfigEntryType DIRECTION = new ConfigEntryPickType("Direction", DIRECTION_PICKS, DIRECTION_PICKS[0]);
 
     /**
      * This indicates the kind of markup used for the book.
      */
-    public static final ConfigEntryType SOURCE_TYPE = new ConfigEntryPickType("SourceType", SOURCE_TYPE_PICKS, SOURCE_TYPE_PICKS[0]); //$NON-NLS-1$
+    public static final ConfigEntryType SOURCE_TYPE = new ConfigEntryPickType("SourceType", SOURCE_TYPE_PICKS, SOURCE_TYPE_PICKS[0]);
 
     /**
      * The character encoding. Only Latin-1 and UTF-8 are supported.
      */
-    public static final ConfigEntryType ENCODING = new ConfigEntryPickType("Encoding", ENCODING_PICKS, ENCODING_PICKS[0]); //$NON-NLS-1$
+    public static final ConfigEntryType ENCODING = new ConfigEntryPickType("Encoding", ENCODING_PICKS, ENCODING_PICKS[0]);
 
     /**
      * Display level is used by GenBooks to do auto expansion in the tree. A
      * level of 2 indicates that the first two levels should be shown.
      */
-    public static final ConfigEntryType DISPLAY_LEVEL = new ConfigEntryType("DisplayLevel") { //$NON-NLS-1$
+    public static final ConfigEntryType DISPLAY_LEVEL = new ConfigEntryType("DisplayLevel") {
 
         /*
          * (non-Javadoc)
@@ -487,13 +487,13 @@ public class ConfigEntryType implements Serializable {
     /**
      * A recommended font to use for the book.
      */
-    public static final ConfigEntryType FONT = new ConfigEntryType("Font"); //$NON-NLS-1$
+    public static final ConfigEntryType FONT = new ConfigEntryType("Font");
 
     /**
      * When false do not show quotation marks for OSIS text that has <q>
      * elements.
      */
-    public static final ConfigEntryType OSIS_Q_TO_TICK = new ConfigEntryPickType("OSISqToTick", BOOLEAN_PICKS, Boolean.TRUE) { //$NON-NLS-1$
+    public static final ConfigEntryType OSIS_Q_TO_TICK = new ConfigEntryPickType("OSISqToTick", BOOLEAN_PICKS, Boolean.TRUE) {
 
         /*
          * (non-Javadoc)
@@ -515,7 +515,7 @@ public class ConfigEntryType implements Serializable {
     /**
      * A Feature describes a characteristic of the Book.
      */
-    public static final ConfigEntryType FEATURE = new ConfigEntryPickType("Feature", FEATURE_PICKS) { //$NON-NLS-1$
+    public static final ConfigEntryType FEATURE = new ConfigEntryPickType("Feature", FEATURE_PICKS) {
 
         /*
          * (non-Javadoc)
@@ -536,7 +536,7 @@ public class ConfigEntryType implements Serializable {
      * Books with a Feature of Glossary are used to map words FROM one language
      * TO another.
      */
-    public static final ConfigEntryType GLOSSARY_FROM = new ConfigEntryType("GlossaryFrom") { //$NON-NLS-1$
+    public static final ConfigEntryType GLOSSARY_FROM = new ConfigEntryType("GlossaryFrom") {
 
         /**
          * Serialization ID
@@ -560,7 +560,7 @@ public class ConfigEntryType implements Serializable {
      * Books with a Feature of Glossary are used to map words FROM one language
      * TO another.
      */
-    public static final ConfigEntryType GLOSSARY_TO = new ConfigEntryType("GlossaryTo") { //$NON-NLS-1$
+    public static final ConfigEntryType GLOSSARY_TO = new ConfigEntryType("GlossaryTo") {
 
         /*
          * (non-Javadoc)
@@ -582,12 +582,12 @@ public class ConfigEntryType implements Serializable {
     /**
      * The short name of this book.
      */
-    public static final ConfigEntryType ABBREVIATION = new ConfigEntryType("Abbreviation"); //$NON-NLS-1$
+    public static final ConfigEntryType ABBREVIATION = new ConfigEntryType("Abbreviation");
 
     /**
      * Contains rtf that describes the book.
      */
-    public static final ConfigEntryType ABOUT = new ConfigEntryType("About") { //$NON-NLS-1$
+    public static final ConfigEntryType ABOUT = new ConfigEntryType("About") {
 
         /*
          * (non-Javadoc)
@@ -617,7 +617,7 @@ public class ConfigEntryType implements Serializable {
     /**
      * An informational string indicating the current version of the book.
      */
-    public static final ConfigEntryType VERSION = new ConfigEntryType("Version", "1.0") { //$NON-NLS-1$ //$NON-NLS-2$
+    public static final ConfigEntryType VERSION = new ConfigEntryType("Version", "1.0") {
 
         public boolean isAllowed(String aValue) {
             try {
@@ -641,7 +641,7 @@ public class ConfigEntryType implements Serializable {
      * the value with it. The x.y corresponds to a current or prior Version
      * value.
      */
-    public static final ConfigEntryType HISTORY = new ConfigEntryType("History") { //$NON-NLS-1$
+    public static final ConfigEntryType HISTORY = new ConfigEntryType("History") {
 
         /*
          * (non-Javadoc)
@@ -671,12 +671,12 @@ public class ConfigEntryType implements Serializable {
      * single value version number, lowest sword c++ version that can read this
      * book JSword does not use this value.
      */
-    public static final ConfigEntryType MINIMUM_VERSION = new ConfigEntryType("MinimumVersion", "1.5.1a"); //$NON-NLS-1$ //$NON-NLS-2$
+    public static final ConfigEntryType MINIMUM_VERSION = new ConfigEntryType("MinimumVersion", "1.5.1a");
 
     /**
      * The Category of the book. Used on the web to classify books into a tree.
      */
-    public static final ConfigEntryType CATEGORY = new ConfigEntryPickType("Category", CATEGORY_PICKS, BookCategory.OTHER) { //$NON-NLS-1$
+    public static final ConfigEntryType CATEGORY = new ConfigEntryPickType("Category", CATEGORY_PICKS, BookCategory.OTHER) {
 
         /*
          * (non-Javadoc)
@@ -699,12 +699,12 @@ public class ConfigEntryType implements Serializable {
      * Library of Congress Subject Heading. Typically this is of the form
      * BookCategory Scope Language, where scope is typically O.T., N.T.
      */
-    public static final ConfigEntryType LCSH = new ConfigEntryType("LCSH"); //$NON-NLS-1$
+    public static final ConfigEntryType LCSH = new ConfigEntryType("LCSH");
 
     /**
      * single value string, defaults to en, the language of the book
      */
-    public static final ConfigEntryType LANG = new ConfigEntryType("Lang", new Language(null)) { //$NON-NLS-1$
+    public static final ConfigEntryType LANG = new ConfigEntryType("Lang", new Language(null)) {
 
         /*
          * (non-Javadoc)
@@ -727,7 +727,7 @@ public class ConfigEntryType implements Serializable {
      * The installed size of the book in bytes. This is not the size of the zip
      * that is downloaded.
      */
-    public static final ConfigEntryType INSTALL_SIZE = new ConfigEntryType("InstallSize") { //$NON-NLS-1$
+    public static final ConfigEntryType INSTALL_SIZE = new ConfigEntryType("InstallSize") {
 
         /*
          * (non-Javadoc)
@@ -770,7 +770,7 @@ public class ConfigEntryType implements Serializable {
      * The date that this version of the book was last updated. Informational
      * only.
      */
-    public static final ConfigEntryType SWORD_VERSION_DATE = new ConfigEntryType("SwordVersionDate") { //$NON-NLS-1$
+    public static final ConfigEntryType SWORD_VERSION_DATE = new ConfigEntryType("SwordVersionDate") {
 
         /*
          * (non-Javadoc)
@@ -783,7 +783,7 @@ public class ConfigEntryType implements Serializable {
             return validDatePattern.matcher(value).matches();
         }
 
-        private Pattern validDatePattern = Pattern.compile("\\d{4}-\\d{2}-\\d{2}"); //$NON-NLS-1$
+        private Pattern validDatePattern = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
 
         /**
          * Serialization ID
@@ -796,7 +796,7 @@ public class ConfigEntryType implements Serializable {
      * installs a book with an obsoletes that matches an installed book, offer
      * the user the opportunity to delete the old book.
      */
-    public static final ConfigEntryType OBSOLETES = new ConfigEntryType("Obsoletes") { //$NON-NLS-1$
+    public static final ConfigEntryType OBSOLETES = new ConfigEntryType("Obsoletes") {
 
         /*
          * (non-Javadoc)
@@ -825,7 +825,7 @@ public class ConfigEntryType implements Serializable {
     /**
      * Informational copyright notice.
      */
-    public static final ConfigEntryType COPYRIGHT = new ConfigEntryType("Copyright") { //$NON-NLS-1$
+    public static final ConfigEntryType COPYRIGHT = new ConfigEntryType("Copyright") {
 
         /*
          * (non-Javadoc)
@@ -846,13 +846,13 @@ public class ConfigEntryType implements Serializable {
     /**
      * single value string, unknown use
      */
-    public static final ConfigEntryType COPYRIGHT_HOLDER = new ConfigEntryType("CopyrightHolder"); //$NON-NLS-1$
+    public static final ConfigEntryType COPYRIGHT_HOLDER = new ConfigEntryType("CopyrightHolder");
 
     /**
      * Copyright info. Informational only. This is a year, a year range or a
      * comma separated list of these.
      */
-    public static final ConfigEntryType COPYRIGHT_DATE = new ConfigEntryType("CopyrightDate") { //$NON-NLS-1$
+    public static final ConfigEntryType COPYRIGHT_DATE = new ConfigEntryType("CopyrightDate") {
 
         /*
          * (non-Javadoc)
@@ -865,7 +865,7 @@ public class ConfigEntryType implements Serializable {
             return validDatePattern.matcher(value).matches();
         }
 
-        private Pattern validDatePattern = Pattern.compile("\\d{4}(\\s*-\\s*\\d{4})?(\\s*,\\s*\\d{4}(\\s*-\\s*\\d{4})?)*"); //$NON-NLS-1$
+        private Pattern validDatePattern = Pattern.compile("\\d{4}(\\s*-\\s*\\d{4})?(\\s*,\\s*\\d{4}(\\s*-\\s*\\d{4})?)*");
 
         /**
          * Serialization ID
@@ -876,7 +876,7 @@ public class ConfigEntryType implements Serializable {
     /**
      * Copyright info. Informational only.
      */
-    public static final ConfigEntryType COPYRIGHT_NOTES = new ConfigEntryType("CopyrightNotes") { //$NON-NLS-1$
+    public static final ConfigEntryType COPYRIGHT_NOTES = new ConfigEntryType("CopyrightNotes") {
 
         /*
          * (non-Javadoc)
@@ -906,7 +906,7 @@ public class ConfigEntryType implements Serializable {
     /**
      * Copyright info. Informational only.
      */
-    public static final ConfigEntryType COPYRIGHT_CONTACT_NAME = new ConfigEntryType("CopyrightContactName") { //$NON-NLS-1$
+    public static final ConfigEntryType COPYRIGHT_CONTACT_NAME = new ConfigEntryType("CopyrightContactName") {
 
         /*
          * (non-Javadoc)
@@ -936,7 +936,7 @@ public class ConfigEntryType implements Serializable {
     /**
      * Copyright info. Informational only.
      */
-    public static final ConfigEntryType COPYRIGHT_CONTACT_NOTES = new ConfigEntryType("CopyrightContactNotes") { //$NON-NLS-1$
+    public static final ConfigEntryType COPYRIGHT_CONTACT_NOTES = new ConfigEntryType("CopyrightContactNotes") {
 
         /*
          * (non-Javadoc)
@@ -966,7 +966,7 @@ public class ConfigEntryType implements Serializable {
     /**
      * Copyright info. Informational only.
      */
-    public static final ConfigEntryType COPYRIGHT_CONTACT_ADDRESS = new ConfigEntryType("CopyrightContactAddress") { //$NON-NLS-1$
+    public static final ConfigEntryType COPYRIGHT_CONTACT_ADDRESS = new ConfigEntryType("CopyrightContactAddress") {
 
         /*
          * (non-Javadoc)
@@ -996,27 +996,27 @@ public class ConfigEntryType implements Serializable {
     /**
      * Copyright info. Informational only.
      */
-    public static final ConfigEntryType COPYRIGHT_CONTACT_EMAIL = new ConfigEntryType("CopyrightContactEmail"); //$NON-NLS-1$
+    public static final ConfigEntryType COPYRIGHT_CONTACT_EMAIL = new ConfigEntryType("CopyrightContactEmail");
 
     /**
      * A one line promo statement, required by Lockman for NASB
      */
-    public static final ConfigEntryType SHORT_PROMO = new ConfigEntryType("ShortPromo"); //$NON-NLS-1$
+    public static final ConfigEntryType SHORT_PROMO = new ConfigEntryType("ShortPromo");
 
     /**
      * A one line copyright statement, required by Lockman for NASB
      */
-    public static final ConfigEntryType SHORT_COPYRIGHT = new ConfigEntryType("ShortCopyright"); //$NON-NLS-1$
+    public static final ConfigEntryType SHORT_COPYRIGHT = new ConfigEntryType("ShortCopyright");
 
     /**
      * Copyright info. Informational only.
      */
-    public static final ConfigEntryType DISTRIBUTION_LICENSE = new ConfigEntryPickType("DistributionLicense", LICENSE_PICKS, LICENSE_PICKS[0]); //$NON-NLS-1$
+    public static final ConfigEntryType DISTRIBUTION_LICENSE = new ConfigEntryPickType("DistributionLicense", LICENSE_PICKS, LICENSE_PICKS[0]);
 
     /**
      * Copyright info. Informational only.
      */
-    public static final ConfigEntryType DISTRIBUTION_NOTES = new ConfigEntryType("DistributionNotes") { //$NON-NLS-1$
+    public static final ConfigEntryType DISTRIBUTION_NOTES = new ConfigEntryType("DistributionNotes") {
 
         /*
          * (non-Javadoc)
@@ -1037,7 +1037,7 @@ public class ConfigEntryType implements Serializable {
     /**
      * Information on where the book's text was obtained.
      */
-    public static final ConfigEntryType TEXT_SOURCE = new ConfigEntryType("TextSource") { //$NON-NLS-1$
+    public static final ConfigEntryType TEXT_SOURCE = new ConfigEntryType("TextSource") {
 
         /*
          * (non-Javadoc)
@@ -1059,7 +1059,7 @@ public class ConfigEntryType implements Serializable {
      * Similar to DataPath. It gives where on the CrossWire server the book can
      * be found. Informational only.
      */
-    public static final ConfigEntryType DISTRIBUTION_SOURCE = new ConfigEntryType("DistributionSource") { //$NON-NLS-1$
+    public static final ConfigEntryType DISTRIBUTION_SOURCE = new ConfigEntryType("DistributionSource") {
 
         /*
          * (non-Javadoc)
@@ -1081,18 +1081,18 @@ public class ConfigEntryType implements Serializable {
      * single value version number, lowest sword c++ version that can read this
      * book JSword does not use this value.
      */
-    public static final ConfigEntryType OSIS_VERSION = new ConfigEntryType("OSISVersion", "2.0"); //$NON-NLS-1$ //$NON-NLS-2$
+    public static final ConfigEntryType OSIS_VERSION = new ConfigEntryType("OSISVersion", "2.0");
 
     /**
      * The location of a collection of modules. JSword uses this to install and
      * delete a module.
      */
-    public static final ConfigEntryType LIBRARY_URL = new ConfigEntrySyntheticType("LibraryURL"); //$NON-NLS-1$
+    public static final ConfigEntryType LIBRARY_URL = new ConfigEntrySyntheticType("LibraryURL");
 
     /**
      * The location of the module. JSword uses this to access a module.
      */
-    public static final ConfigEntryType LOCATION_URL = new ConfigEntrySyntheticType("LocationURL"); //$NON-NLS-1$
+    public static final ConfigEntryType LOCATION_URL = new ConfigEntrySyntheticType("LocationURL");
 
     /**
      * Simple ctor

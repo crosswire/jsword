@@ -41,7 +41,7 @@ public class IndexMetadata {
             props = ResourceUtil.getProperties(getClass());
 
         } catch (IOException e) {
-            log.error("Property file read error", e); //$NON-NLS-1$
+            log.error("Property file read error", e);
         }
     }
 
@@ -55,7 +55,7 @@ public class IndexMetadata {
     }
 
     public float getInstalledIndexVersion() {
-        return Float.parseFloat(props.getProperty(INDEX_VERSION, "1.1")); //$NON-NLS-1$
+        return Float.parseFloat(props.getProperty(INDEX_VERSION, "1.1"));
     }
 
     public float getLuceneVersion() {
@@ -63,12 +63,12 @@ public class IndexMetadata {
     }
 
     public float getLatestIndexVersion() {
-        return Float.parseFloat(props.getProperty(LATEST_INDEX_VERSION, "1.1")); //$NON-NLS-1$
+        return Float.parseFloat(props.getProperty(LATEST_INDEX_VERSION, "1.1"));
     }
 
-    public static final String INDEX_VERSION = "Installed.Index.Version"; //$NON-NLS-1$
-    public static final String LATEST_INDEX_VERSION = "Latest.Index.Version"; //$NON-NLS-1$
-    public static final String LUCENE_VERSION = "Lucene.Version"; //$NON-NLS-1$
+    public static final String INDEX_VERSION = "Installed.Index.Version";
+    public static final String LATEST_INDEX_VERSION = "Latest.Index.Version";
+    public static final String LUCENE_VERSION = "Lucene.Version";
     public static final float INDEX_VERSION_1_1 = 1.1f;
     public static final float INDEX_VERSION_1_2 = 1.2f;
 

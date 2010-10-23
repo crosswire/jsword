@@ -72,7 +72,7 @@ public class ReadingsKey extends DefaultLeafKeyList {
      *            The date for this key
      */
     protected ReadingsKey(Date date) {
-        super(DateFormatter.getDateInstance().format(date), DateFormatter.getSimpleDateInstance("d.MMMM").format(date)); //$NON-NLS-1$
+        super(DateFormatter.getDateInstance().format(date), DateFormatter.getSimpleDateInstance("d.MMMM").format(date));
         this.date = date;
     }
 
@@ -158,5 +158,5 @@ public class ReadingsKey extends DefaultLeafKeyList {
     /**
      * Date formatter
      */
-    private static final MessageFormat KEY_FORMAT = new MessageFormat("{0,number,00}.{1,number,00}"); //$NON-NLS-1$
+    private static final MessageFormat KEY_FORMAT = new MessageFormat("{0,number,00}.{1,number,00}");
 }

@@ -39,7 +39,7 @@ public class BigTag extends AbstractTag {
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
     public String getTagName() {
-        return "big"; //$NON-NLS-1$
+        return "big";
     }
 
     /*

@@ -212,7 +212,7 @@ public class SetKeyList extends AbstractKeyList {
      * @see org.crosswire.jsword.passage.Key#blur(int)
      */
     public void blur(int by, RestrictionType restrict) {
-        log.warn("attempt to blur a non-blur-able list"); //$NON-NLS-1$
+        log.warn("attempt to blur a non-blur-able list");
     }
 
     /**

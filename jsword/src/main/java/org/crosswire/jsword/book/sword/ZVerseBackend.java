@@ -105,10 +105,10 @@ import org.crosswire.jsword.passage.Verse;
  * @author Joe Walker [joe at eireneh dot com]
  */
 public class ZVerseBackend extends AbstractBackend {
-    private static final String SUFFIX_COMP = "v"; //$NON-NLS-1$
-    private static final String SUFFIX_INDEX = "s"; //$NON-NLS-1$
-    private static final String SUFFIX_PART1 = "z"; //$NON-NLS-1$
-    private static final String SUFFIX_TEXT = "z"; //$NON-NLS-1$
+    private static final String SUFFIX_COMP = "v";
+    private static final String SUFFIX_INDEX = "s";
+    private static final String SUFFIX_PART1 = "z";
+    private static final String SUFFIX_TEXT = "z";
 
     /**
      * Simple ctor
@@ -160,7 +160,7 @@ public class ZVerseBackend extends AbstractBackend {
                 compRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(compFile[SwordConstants.TESTAMENT_OLD], FileUtil.MODE_READ);
             } catch (FileNotFoundException ex) {
                 assert false : ex;
-                log.error("Could not open OT", ex); //$NON-NLS-1$
+                log.error("Could not open OT", ex);
                 idxRaf[SwordConstants.TESTAMENT_OLD] = null;
                 textRaf[SwordConstants.TESTAMENT_OLD] = null;
                 compRaf[SwordConstants.TESTAMENT_OLD] = null;
@@ -174,7 +174,7 @@ public class ZVerseBackend extends AbstractBackend {
                 compRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(compFile[SwordConstants.TESTAMENT_NEW], FileUtil.MODE_READ);
             } catch (FileNotFoundException ex) {
                 assert false : ex;
-                log.error("Could not open NT", ex); //$NON-NLS-1$
+                log.error("Could not open NT", ex);
                 idxRaf[SwordConstants.TESTAMENT_NEW] = null;
                 textRaf[SwordConstants.TESTAMENT_NEW] = null;
                 compRaf[SwordConstants.TESTAMENT_NEW] = null;
@@ -198,7 +198,7 @@ public class ZVerseBackend extends AbstractBackend {
                 textRaf[SwordConstants.TESTAMENT_NEW].close();
                 compRaf[SwordConstants.TESTAMENT_NEW].close();
             } catch (IOException ex) {
-                log.error("failed to close nt files", ex); //$NON-NLS-1$
+                log.error("failed to close nt files", ex);
             } finally {
                 idxRaf[SwordConstants.TESTAMENT_NEW] = null;
                 textRaf[SwordConstants.TESTAMENT_NEW] = null;
@@ -212,7 +212,7 @@ public class ZVerseBackend extends AbstractBackend {
                 textRaf[SwordConstants.TESTAMENT_OLD].close();
                 compRaf[SwordConstants.TESTAMENT_OLD].close();
             } catch (IOException ex) {
-                log.error("failed to close ot files", ex); //$NON-NLS-1$
+                log.error("failed to close ot files", ex);
             } finally {
                 idxRaf[SwordConstants.TESTAMENT_OLD] = null;
                 textRaf[SwordConstants.TESTAMENT_OLD] = null;
@@ -299,7 +299,7 @@ public class ZVerseBackend extends AbstractBackend {
                 // If Bible does not contain the desired testament, return
                 // nothing.
                 if (compRaf[testament] == null) {
-                    return ""; //$NON-NLS-1$
+                    return "";
                 }
 
                 // 10 because the index is 10 bytes long for each verse
@@ -311,7 +311,7 @@ public class ZVerseBackend extends AbstractBackend {
                 // verse
                 // may not exist.
                 if (temp == null || temp.length == 0) {
-                    return ""; //$NON-NLS-1$
+                    return "";
                 }
 
                 // The data is little endian - extract the blockNum, verseStart
@@ -329,7 +329,7 @@ public class ZVerseBackend extends AbstractBackend {
                     // Then seek using this index into the idx file
                     temp = SwordUtil.readRAF(idxRaf[testament], blockNum * IDX_ENTRY_SIZE, IDX_ENTRY_SIZE);
                     if (temp == null || temp.length == 0) {
-                        return ""; //$NON-NLS-1$
+                        return "";
                     }
 
                     int blockStart = SwordUtil.decodeLittleEndian32(temp, 0);
@@ -355,9 +355,11 @@ public class ZVerseBackend extends AbstractBackend {
 
                 return SwordUtil.decode(key.getName(), chopped, charset);
             } catch (IOException e) {
-                throw new BookException(UserMsg.READ_FAIL, e, new Object[] {
+                // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
+                // {0} is a placeholder for the file.
+                throw new BookException(UserMsg.gettext("Error reading {0}", new Object[] {
                     verse.getName()
-                });
+                }), e);
             }
         } finally {
             DataPolice.setKey(key);

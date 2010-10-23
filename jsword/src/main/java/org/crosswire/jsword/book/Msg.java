@@ -33,10 +33,10 @@ import org.crosswire.common.util.MsgBase;
  */
 final class Msg extends MsgBase {
 
-    static final Msg MISSING_VERSE = new Msg("OSISUtil.MissingVerse"); //$NON-NLS-1$
-    static final Msg OSIS_BADID = new Msg("OSISUtil.OSISBadID"); //$NON-NLS-1$
-    static final Msg BOOK_NOREMOVE = new Msg("Books.BookNoRemove"); //$NON-NLS-1$
-    static final Msg DRIVER_NOREMOVE = new Msg("Books.DriverNoRemove"); //$NON-NLS-1$
+    static final Msg MISSING_VERSE = new Msg("OSISUtil.MissingVerse");
+    static final Msg OSIS_BADID = new Msg("OSISUtil.OSISBadID");
+    static final Msg BOOK_NOREMOVE = new Msg("Books.BookNoRemove");
+    static final Msg DRIVER_NOREMOVE = new Msg("Books.DriverNoRemove");
 
     /**
      * Passthrough ctor

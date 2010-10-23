@@ -40,33 +40,31 @@ import org.crosswire.jsword.book.install.InstallException;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
+/**
+ *
+ *
+ * @see gnu.lgpl.License for license details.<br>
+ *      The copyright to this program is held by it's authors.
+ * @author DM Smith [dmsmith555 at yahoo dot com]
+ */
 public class HttpSwordInstaller extends AbstractSwordInstaller {
-    /*
-     * (non-Javadoc)
-     * 
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#getType()
      */
     public String getType() {
-        return "sword-http"; //$NON-NLS-1$
+        return "sword-http";
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.install.Installer#getSize(org.crosswire.jsword
-     * .book.Book)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.install.Installer#getSize(org.crosswire.jsword.book.Book)
      */
     public int getSize(Book book) {
         return NetUtil.getSize(toRemoteURI(book), proxyHost, proxyPort);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.install.Installer#toRemoteURI(org.crosswire
-     * .jsword.book.Book)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.install.Installer#toRemoteURI(org.crosswire.jsword.book.Book)
      */
     public URI toRemoteURI(Book book) {
         try {
@@ -76,30 +74,27 @@ public class HttpSwordInstaller extends AbstractSwordInstaller {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.install.sword.AbstractSwordInstaller#download
-     * (java.lang.String, java.lang.String, java.net.URI)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.install.sword.AbstractSwordInstaller#download(org.crosswire.common.progress.Progress, java.lang.String, java.lang.String, java.net.URI)
      */
-    /* @Override */
     protected void download(Progress job, String dir, String file, URI dest) throws InstallException {
         URI uri;
         try {
             uri = new URI(NetUtil.PROTOCOL_HTTP, host, dir + '/' + file, null);
         } catch (URISyntaxException e1) {
-            throw new InstallException(UserMsg.MISSING_FILE, e1, new Object[] {
+            // TRANSLATOR: Common error condition: {0} is a placeholder for the URL of what could not be found.
+            throw new InstallException(UserMsg.gettext("Unable to find: {0}", new Object[] {
                 dir + '/' + file
-            });
+            }), e1);
         }
 
         try {
             copy(job, uri, dest);
         } catch (LucidException ex) {
-            throw new InstallException(UserMsg.MISSING_FILE, ex, new Object[] {
+            // TRANSLATOR: Common error condition: {0} is a placeholder for the URL of what could not be found.
+            throw new InstallException(UserMsg.gettext("Unable to find: {0}", new Object[] {
                 uri.toString()
-            });
+            }), ex);
         }
     }
 
@@ -111,19 +106,17 @@ public class HttpSwordInstaller extends AbstractSwordInstaller {
      */
     private void copy(Progress job, URI uri, URI dest) throws LucidException {
         if (job != null) {
-            job.setSectionName(UserMsg.JOB_DOWNLOADING.toString());
+            // TRANSLATOR: Progress label for downloading one or more files.
+            job.setSectionName(UserMsg.gettext("Downloading files"));
         }
 
         WebResource wr = new WebResource(uri, proxyHost, proxyPort);
         wr.copy(dest);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.install.sword.AbstractSwordInstaller#equals(java.lang.Object)
      */
-    /* @Override */
     public boolean equals(Object object) {
         if (!(object instanceof HttpSwordInstaller)) {
             return false;
@@ -137,12 +130,9 @@ public class HttpSwordInstaller extends AbstractSwordInstaller {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.install.sword.AbstractSwordInstaller#hashCode()
      */
-    /* @Override */
     public int hashCode() {
         return super.hashCode();
     }

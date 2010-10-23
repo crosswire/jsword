@@ -76,16 +76,18 @@ public class GenBookBackend extends AbstractBackend {
         bdtFile = new File(path.getPath() + EXTENSION_BDT);
 
         if (!bdtFile.canRead()) {
-            Reporter.informUser(this, new BookException(UserMsg.READ_FAIL, new Object[] {
+            // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
+            // {0} is a placeholder for the file.
+            Reporter.informUser(this, new BookException(UserMsg.gettext("Error reading {0}", new Object[] {
                 bdtFile.getAbsolutePath()
-            }));
+            })));
             return;
         }
 
         try {
             bdtRaf = new RandomAccessFile(bdtFile, FileUtil.MODE_READ);
         } catch (IOException ex) {
-            log.error("failed to open files", ex); //$NON-NLS-1$
+            log.error("failed to open files", ex);
             bdtRaf = null;
         }
         active = true;
@@ -104,7 +106,7 @@ public class GenBookBackend extends AbstractBackend {
                 bdtRaf.close();
             }
         } catch (IOException ex) {
-            log.error("failed to close gen book files", ex); //$NON-NLS-1$
+            log.error("failed to close gen book files", ex);
         } finally {
             bdtRaf = null;
         }
@@ -164,11 +166,13 @@ public class GenBookBackend extends AbstractBackend {
                 return SwordUtil.decode(key.getName(), data, getBookMetaData().getBookCharset());
             }
 
-            return ""; //$NON-NLS-1$
+            return "";
         } catch (IOException e) {
-            throw new BookException(UserMsg.READ_FAIL, e, new Object[] {
+            // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
+            // {0} is a placeholder for the file.
+            throw new BookException(UserMsg.gettext("Error reading {0}", new Object[] {
                 key.getName()
-            });
+            }), e);
         } finally {
             DataPolice.setKey(null);
         }
@@ -202,7 +206,7 @@ public class GenBookBackend extends AbstractBackend {
                 if (node.hasNextSibling()) {
                     node = index.getNextSibling(node);
                 } else {
-                    log.error("Could not find " + name); //$NON-NLS-1$
+                    log.error("Could not find " + name);
                     node = null;
                 }
             }
@@ -238,7 +242,7 @@ public class GenBookBackend extends AbstractBackend {
             reply = new TreeKey(node.getName(), null);
             doReadIndex(node, reply);
         } catch (IOException e) {
-            log.error("Could not get read GenBook index", e); //$NON-NLS-1$
+            log.error("Could not get read GenBook index", e);
         }
 
         return reply;
@@ -298,7 +302,7 @@ public class GenBookBackend extends AbstractBackend {
     /**
      * Raw GenBook file extensions
      */
-    private static final String EXTENSION_BDT = ".bdt"; //$NON-NLS-1$
+    private static final String EXTENSION_BDT = ".bdt";
 
     /**
      * The raw data file

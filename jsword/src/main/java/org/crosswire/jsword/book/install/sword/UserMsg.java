@@ -31,16 +31,43 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  */
 final class UserMsg extends MsgBase {
-    static final UserMsg INSTALLING = new UserMsg("SwordInstaller.Installing"); //$NON-NLS-1$
-    static final UserMsg JOB_INIT = new UserMsg("SwordInstaller.JobInit"); //$NON-NLS-1$
-    static final UserMsg JOB_CONFIG = new UserMsg("SwordInstaller.JobConfig"); //$NON-NLS-1$
-    static final UserMsg JOB_DOWNLOADING = new UserMsg("SwordInstaller.JobDownloading"); //$NON-NLS-1$
-    static final UserMsg MISSING_FILE = new UserMsg("HttpSwordInstaller.MissingFile"); //$NON-NLS-1$
 
     /**
-     * Passthrough ctor
+     * Get the internationalized text, but return key if key is unknown.
+     * 
+     * @param key
+     * @return the internationalized text
      */
-    private UserMsg(String name) {
-        super(name);
+    public static String gettext(String key)
+    {
+        return msg.lookup(key);
     }
+
+    /**
+     * Get the internationalized text, but return key if key is unknown.
+     * The text requires one parameter to be passed.
+     * 
+     * @param key
+     * @param param
+     * @return the formatted, internationalized text
+     */
+    public static String gettext(String key, Object param)
+    {
+        return msg.toString(key, param);
+    }
+
+    /**
+     * Get the internationalized text, but return key if key is unknown.
+     * The text requires one parameter to be passed.
+     * 
+     * @param key
+     * @param param
+     * @return the formatted, internationalized text
+     */
+    public static String gettext(String key, Object[] params)
+    {
+        return msg.toString(key, params);
+    }
+
+    private static MsgBase msg = new UserMsg();
 }

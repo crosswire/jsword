@@ -59,7 +59,7 @@ public class BookExporter {
             String rawText = book.getRawText(key);
             if (rawText != null && rawText.trim().length() > 0) {
                 buf.delete(0, buf.length());
-                buf.append("$$$").append(key).append('\n').append(rawText); //$NON-NLS-1$
+                buf.append("$$$").append(key).append('\n').append(rawText);
                 System.out.println(buf.toString());
             }
         }
@@ -85,11 +85,11 @@ public class BookExporter {
             return;
         }
 
-        System.err.println("BookExporter " + args[0]); //$NON-NLS-1$
+        System.err.println("BookExporter " + args[0]);
 
         Book b = Books.installed().getBook(args[0]);
         if (b == null) {
-            System.err.println("Book not found"); //$NON-NLS-1$
+            System.err.println("Book not found");
             return;
         }
 
@@ -97,12 +97,12 @@ public class BookExporter {
         try {
             exporter.mod2imp();
         } catch (BookException e) {
-            System.err.println("Error while exporting"); //$NON-NLS-1$
+            System.err.println("Error while exporting");
             e.printStackTrace();
         }
     }
 
     public static void usage() {
-        System.err.println("Usage: BookExporter book"); //$NON-NLS-1$
+        System.err.println("Usage: BookExporter book");
     }
 }

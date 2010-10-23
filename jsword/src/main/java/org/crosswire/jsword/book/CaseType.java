@@ -33,7 +33,7 @@ import java.util.Locale;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public abstract class CaseType implements Serializable {
-    public static final CaseType LOWER = new CaseType("LOWER") //$NON-NLS-1$
+    public static final CaseType LOWER = new CaseType("LOWER")
     {
         public String setCase(String word) {
             return word.toLowerCase(Locale.getDefault());
@@ -45,7 +45,7 @@ public abstract class CaseType implements Serializable {
         private static final long serialVersionUID = 3546637707360286256L;
     };
 
-    public static final CaseType SENTENCE = new CaseType("SENTENCE") //$NON-NLS-1$
+    public static final CaseType SENTENCE = new CaseType("SENTENCE")
     {
         public String setCase(String word) {
             int index = word.indexOf('-');
@@ -54,20 +54,20 @@ public abstract class CaseType implements Serializable {
             }
 
             // So there is a "-", however first some exceptions
-            if ("maher-shalal-hash-baz".equalsIgnoreCase(word)) { //$NON-NLS-1$
-                return "Maher-Shalal-Hash-Baz"; //$NON-NLS-1$
+            if ("maher-shalal-hash-baz".equalsIgnoreCase(word)) {
+                return "Maher-Shalal-Hash-Baz";
             }
 
-            if ("no-one".equalsIgnoreCase(word)) { //$NON-NLS-1$
-                return "No-one"; //$NON-NLS-1$
+            if ("no-one".equalsIgnoreCase(word)) {
+                return "No-one";
             }
 
-            if (word.substring(0, 4).equalsIgnoreCase("god-")) { //$NON-NLS-1$
+            if (word.substring(0, 4).equalsIgnoreCase("god-")) {
                 return toSentenceCase(word);
             }
 
             // So cut by the -
-            return toSentenceCase(word.substring(0, index)) + "-" + toSentenceCase(word.substring(index + 1)); //$NON-NLS-1$
+            return toSentenceCase(word.substring(0, index)) + "-" + toSentenceCase(word.substring(index + 1));
         }
 
         /**
@@ -76,7 +76,7 @@ public abstract class CaseType implements Serializable {
         private static final long serialVersionUID = 3905520510312985138L;
     };
 
-    public static final CaseType UPPER = new CaseType("UPPER") //$NON-NLS-1$
+    public static final CaseType UPPER = new CaseType("UPPER")
     {
         public String setCase(String word) {
             return word.toUpperCase(Locale.getDefault());
@@ -108,7 +108,7 @@ public abstract class CaseType implements Serializable {
         assert word != null;
 
         if (word.length() == 0) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         return Character.toUpperCase(word.charAt(0)) + word.substring(1).toLowerCase(Locale.getDefault());

@@ -48,7 +48,7 @@ public final class VerseFactory {
      *                If the text can not be understood
      */
     public static Verse fromString(String original) throws NoSuchVerseException {
-        if ("".equals(original)) { //$NON-NLS-1$
+        if ("".equals(original)) {
             return null;
         }
         String[] parts = AccuracyType.tokenize(original);
@@ -70,7 +70,7 @@ public final class VerseFactory {
      *                If the reference is illegal
      */
     public static Verse fromString(String original, VerseRange verseRangeBasis) throws NoSuchVerseException {
-        if ("".equals(original)) { //$NON-NLS-1$
+        if ("".equals(original)) {
             return null;
         }
         String[] parts = AccuracyType.tokenize(original);

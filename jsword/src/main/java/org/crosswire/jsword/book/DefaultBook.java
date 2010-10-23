@@ -122,7 +122,7 @@ public class DefaultBook {
      */
     public void setDefaultByName(String name) {
         if (name == null || name.length() == 0) {
-            log.warn("Attempt to set empty book as default. Ignoring"); //$NON-NLS-1$
+            log.warn("Attempt to set empty book as default. Ignoring");
             return;
         }
 
@@ -135,7 +135,7 @@ public class DefaultBook {
             }
         }
 
-        log.warn("Book not found. Ignoring: " + name); //$NON-NLS-1$
+        log.warn("Book not found. Ignoring: " + name);
     }
 
     /**
