@@ -63,48 +63,48 @@ public final class NetUtil {
     /**
      * Constant for the file: protocol or scheme
      */
-    public static final String PROTOCOL_FILE = "file"; //$NON-NLS-1$
+    public static final String PROTOCOL_FILE = "file";
 
     /**
      * Constant for the http: protocol or scheme
      */
-    public static final String PROTOCOL_HTTP = "http"; //$NON-NLS-1$
+    public static final String PROTOCOL_HTTP = "http";
 
     /**
      * Constant for the ftp: protocol or scheme
      */
-    public static final String PROTOCOL_FTP = "ftp"; //$NON-NLS-1$
+    public static final String PROTOCOL_FTP = "ftp";
 
     /**
      * Constant for the jar: protocol or scheme
      */
-    public static final String PROTOCOL_JAR = "jar"; //$NON-NLS-1$
+    public static final String PROTOCOL_JAR = "jar";
 
     /**
      * For directory listings
      */
-    public static final String INDEX_FILE = "index.txt"; //$NON-NLS-1$
+    public static final String INDEX_FILE = "index.txt";
 
     /**
      * URL/URI separator
      */
-    public static final String SEPARATOR = "/"; //$NON-NLS-1$
+    public static final String SEPARATOR = "/";
 
     /**
      * Separating the username from the rest of the URL/URI
      */
-    public static final String AUTH_SEPERATOR_USERNAME = "@"; //$NON-NLS-1$
+    public static final String AUTH_SEPERATOR_USERNAME = "@";
 
     /**
      * Separating the password from the username
      */
-    public static final String AUTH_SEPERATOR_PASSWORD = ":"; //$NON-NLS-1$
+    public static final String AUTH_SEPERATOR_PASSWORD = ":";
 
     /**
      * The temporary suffix, used when a temporary file is needed in the
      * system's temporary directory.
      */
-    private static final String TEMP_SUFFIX = "tmp"; //$NON-NLS-1$
+    private static final String TEMP_SUFFIX = "tmp";
 
     public static URI copy(URI uri) {
         try {
@@ -129,14 +129,16 @@ public final class NetUtil {
 
         // If it is a file, except
         if (file.isFile()) {
-            throw new MalformedURLException(UserMsg.IS_FILE.toString(orig));
+            // TRANSLATOR: Error condition: A directory was expected, but a file was found. {0} is a placeholder for the file.
+            throw new MalformedURLException(UserMsg.gettext("The given URL {0} is a file.", orig));
         }
 
         // Is it already a directory ?
         if (!file.isDirectory()) {
             // Create the directory and make sure it worked.
             if (!file.mkdirs()) {
-                throw new MalformedURLException(UserMsg.CREATE_DIR_FAIL.toString(orig));
+                // TRANSLATOR: Error condition: A directory could not be created. {0} is a placeholder for the directory
+                throw new MalformedURLException(UserMsg.gettext("The given URL {0} could not be created as a directory.", orig));
             }
         }
     }
@@ -155,7 +157,8 @@ public final class NetUtil {
 
         // If it is a file, except
         if (file.isDirectory()) {
-            throw new MalformedURLException(UserMsg.IS_DIR.toString(orig));
+            // TRANSLATOR: Error condition: A file was expected, but a directory was found. {0} is a placeholder for the directory.
+            throw new MalformedURLException(UserMsg.gettext("The given URL {0} is a directory.", orig));
         }
 
         // Is it already a directory ?
@@ -165,7 +168,8 @@ public final class NetUtil {
 
             // Did that work?
             if (!file.isFile()) {
-                throw new MalformedURLException(UserMsg.CREATE_FILE_FAIL.toString(orig));
+                // TRANSLATOR: Error condition: A file could not be created. {0} is a placeholder for the file
+                throw new MalformedURLException(UserMsg.gettext("The given URL {0} could not be created as a file.", orig));
             }
         }
     }
@@ -286,7 +290,7 @@ public final class NetUtil {
         if (uri.getScheme().equals(PROTOCOL_FILE)) {
             return new File(uri.getPath());
         }
-        String hashString = (uri.toString().hashCode() + "").replace('-', 'm'); //$NON-NLS-1$
+        String hashString = (uri.toString().hashCode() + "").replace('-', 'm');
 
         // get the location of the tempWorkingDir
         File workingDir = getURICacheDir();
@@ -354,8 +358,8 @@ public final class NetUtil {
         String newFile = file.substring(0, file.length() - strip.length());
 
         try {
-            return new URI(orig.getScheme(), orig.getUserInfo(), orig.getHost(), orig.getPort(), newFile, "", //$NON-NLS-1$
-                    ""); //$NON-NLS-1$
+            return new URI(orig.getScheme(), orig.getUserInfo(), orig.getHost(), orig.getPort(), newFile, "",
+                    "");
         } catch (URISyntaxException e) {
             throw new MalformedURLException(Msg.CANT_STRIP.toString(new Object[] {
                     orig, strip
@@ -478,7 +482,7 @@ public final class NetUtil {
             // JNLP or other systems that can't use file: URIs. But it is silly
             // to get to picky so if there is a solution using file: then just
             // print a warning and carry on.
-            log.warn("index file for " + uri.toString() + " was not found."); //$NON-NLS-1$ //$NON-NLS-2$
+            log.warn("index file for " + uri.toString() + " was not found.");
             if (uri.getScheme().equals(PROTOCOL_FILE)) {
                 return listByFile(uri, filter);
             }
@@ -490,12 +494,12 @@ public final class NetUtil {
 
             // Check that the answers are the same
             if (files.length != reply.length) {
-                log.warn("index file for " + uri.toString() + " has incorrect number of entries."); //$NON-NLS-1$ //$NON-NLS-2$
+                log.warn("index file for " + uri.toString() + " has incorrect number of entries.");
             } else {
                 List list = Arrays.asList(files);
                 for (int i = 0; i < files.length; i++) {
                     if (!list.contains(files[i])) {
-                        log.warn("file: based index found " + files[i] + " but this was not found using index file."); //$NON-NLS-1$ //$NON-NLS-2$
+                        log.warn("file: based index found " + files[i] + " but this was not found using index file.");
                     }
                 }
             }
@@ -512,7 +516,8 @@ public final class NetUtil {
     public static String[] listByFile(URI uri, URIFilter filter) throws MalformedURLException {
         File fdir = new File(uri.getPath());
         if (!fdir.isDirectory()) {
-            throw new MalformedURLException(UserMsg.NOT_DIR.toString(uri.toString()));
+            // TRANSLATOR: Error condition: A directory was expected, but a file was found. {0} is a placeholder for the file.
+            throw new MalformedURLException(UserMsg.gettext("URL {0} is not a directory", uri.toString()));
         }
 
         return fdir.list(new URIFilterFilenameFilter(filter));
@@ -546,7 +551,7 @@ public final class NetUtil {
 
             // We still need to do the filtering
             List list = new ArrayList();
-            String[] names = StringUtil.split(contents, "\n"); //$NON-NLS-1$
+            String[] names = StringUtil.split(contents, "\n");
             for (int i = 0; i < names.length; i++) {
                 // we need to trim, as we may have \r\n not \n
                 String name = names[i].trim();
@@ -667,7 +672,7 @@ public final class NetUtil {
 
             return time;
         } catch (IOException ex) {
-            log.warn("Failed to get modified time", ex); //$NON-NLS-1$
+            log.warn("Failed to get modified time", ex);
             return new Date().getTime();
         }
     }
@@ -725,7 +730,8 @@ public final class NetUtil {
      */
     private static void checkFileURI(URI uri) throws MalformedURLException {
         if (!uri.getScheme().equals(PROTOCOL_FILE)) {
-            throw new MalformedURLException(UserMsg.NOT_FILE_URI.toString(uri));
+            // TRANSLATOR: Error condition: The URL protocol "file:" was expected, but something else was found. {0} is a placeholder for the URL.
+            throw new MalformedURLException(UserMsg.gettext("The given URL {0} is not a file: URL.", uri));
         }
     }
 

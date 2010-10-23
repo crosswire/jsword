@@ -49,7 +49,7 @@ public final class CallContext extends SecurityManager {
 
             return resolver;
         } catch (SecurityException se) {
-            throw new LucidRuntimeException(Msg.SECURITY, se);
+            throw new LucidRuntimeException(Msg.SECURITY.toString(), se, null);
         }
     }
 

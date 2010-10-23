@@ -69,9 +69,9 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
     /* @Override */
     protected String decorateTagName(String tagName) {
         StringBuffer buf = new StringBuffer(50);
-        buf.append("<font class='tag'>"); //$NON-NLS-1$
+        buf.append("<font class='tag'>");
         buf.append(super.decorateTagName(tagName));
-        buf.append("</font>"); //$NON-NLS-1$
+        buf.append("</font>");
         return buf.toString();
     }
 
@@ -84,9 +84,9 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
     /* @Override */
     protected String decorateAttributeName(String attrName) {
         StringBuffer buf = new StringBuffer(50);
-        buf.append("<font class='attr'>"); //$NON-NLS-1$
+        buf.append("<font class='attr'>");
         buf.append(super.decorateAttributeName(attrName));
-        buf.append("</font>"); //$NON-NLS-1$
+        buf.append("</font>");
         return buf.toString();
     }
 
@@ -99,9 +99,9 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
     /* @Override */
     protected String decorateAttributeValue(String attrValue) {
         StringBuffer buf = new StringBuffer(50);
-        buf.append("<font class='value'>"); //$NON-NLS-1$
+        buf.append("<font class='value'>");
         buf.append(super.decorateAttributeValue(attrValue));
-        buf.append("</font>"); //$NON-NLS-1$
+        buf.append("</font>");
         return buf.toString();
     }
 
@@ -115,9 +115,9 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
     /* @Override */
     protected String decorateCharacters(String characters) {
         StringBuffer buf = new StringBuffer(50);
-        buf.append("<font class='text'>"); //$NON-NLS-1$
-        buf.append(XMLUtil.escape(super.decorateCharacters(characters)).replaceAll("\n", "<br>")); //$NON-NLS-1$ //$NON-NLS-2$
-        buf.append("</font>"); //$NON-NLS-1$
+        buf.append("<font class='text'>");
+        buf.append(XMLUtil.escape(super.decorateCharacters(characters)).replaceAll("\n", "<br>"));
+        buf.append("</font>");
         return buf.toString();
     }
 
@@ -131,9 +131,9 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
     /* @Override */
     protected String decorateIndent(int indentLevel) {
         StringBuffer buf = new StringBuffer(100);
-        buf.append("<font class='indent'>"); //$NON-NLS-1$
-        buf.append(super.decorateIndent(indentLevel).replaceAll("\t", "&nbsp;&nbsp;&nbsp;&nbsp;")); //$NON-NLS-1$ //$NON-NLS-2$
-        buf.append("</font>"); //$NON-NLS-1$
+        buf.append("<font class='indent'>");
+        buf.append(super.decorateIndent(indentLevel).replaceAll("\t", "&nbsp;&nbsp;&nbsp;&nbsp;"));
+        buf.append("</font>");
         return buf.toString();
     }
 
@@ -147,7 +147,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
         // Note: we should be using SPAN here but Sun's Java does not support
         // styling it.
         // Also, it introduces whitespace between the span and the text.
-        write("<html><head><style type='text/css'>\nFONT.tag    { font-family:courier new, monospaced; color:#666699; font-weight:bold; }\nFONT.attr   { font-family:courier new, monospaced; color:#669966; font-weight:bold; }\nFONT.value  { font-family:courier new, monospaced; color:#669966; font-style:italic; }\nFONT.indent { }\nFONT.text   { font-family:courier new, monospaced; background:#FFFF99; }\n</style></head><body>\n"); //$NON-NLS-1$
+        write("<html><head><style type='text/css'>\nFONT.tag    { font-family:courier new, monospaced; color:#666699; font-weight:bold; }\nFONT.attr   { font-family:courier new, monospaced; color:#669966; font-weight:bold; }\nFONT.value  { font-family:courier new, monospaced; color:#669966; font-style:italic; }\nFONT.indent { }\nFONT.text   { font-family:courier new, monospaced; background:#FFFF99; }\n</style></head><body>\n");
     }
 
     /*
@@ -157,7 +157,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
      */
     /* @Override */
     public void endDocument() {
-        write("</body></head>"); //$NON-NLS-1$
+        write("</body></head>");
     }
 
     /*
@@ -232,6 +232,6 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
      */
     /* @Override */
     protected String getNewline() {
-        return "<br>"; //$NON-NLS-1$
+        return "<br>";
     }
 }

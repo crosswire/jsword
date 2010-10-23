@@ -160,11 +160,11 @@ public class Commonality {
         // Start with a 1/4 length substring at position i as a seed.
         String seed = longText.substring(startIndex, startIndex + (longText.length() / 4));
         int j = -1;
-        String common = ""; //$NON-NLS-1$
-        String longTextPrefix = ""; //$NON-NLS-1$
-        String longTextSuffix = ""; //$NON-NLS-1$
-        String shortTextPrefix = ""; //$NON-NLS-1$
-        String shortTextSuffix = ""; //$NON-NLS-1$
+        String common = "";
+        String longTextPrefix = "";
+        String longTextSuffix = "";
+        String shortTextPrefix = "";
+        String shortTextSuffix = "";
         while ((j = shortText.indexOf(seed, j + 1)) != -1) {
             int prefixLength = Commonality.prefix(longText.substring(startIndex), shortText.substring(j));
             int suffixLength = Commonality.suffix(longText.substring(0, startIndex), shortText.substring(0, j));

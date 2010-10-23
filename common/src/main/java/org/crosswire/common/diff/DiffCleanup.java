@@ -253,7 +253,7 @@ public final class DiffCleanup {
      */
     public static void cleanupMerge(final List diffs) {
         // Add a dummy entry at the end.
-        diffs.add(new Difference(EditType.EQUAL, "")); //$NON-NLS-1$
+        diffs.add(new Difference(EditType.EQUAL, ""));
 
         int countDelete = 0;
         int countInsert = 0;
@@ -295,7 +295,7 @@ public final class DiffCleanup {
                         if (commonLength > 0) {
                             if (pointer.hasPrevious()) {
                                 curDiff = (Difference) pointer.previous();
-                                assert EditType.EQUAL.equals(curDiff.getEditType()) : "Previous diff should have been an equality."; //$NON-NLS-1$
+                                assert EditType.EQUAL.equals(curDiff.getEditType()) : "Previous diff should have been an equality.";
                                 curDiff.appendText(textInsert.substring(0, commonLength));
                                 pointer.next();
                             } else {

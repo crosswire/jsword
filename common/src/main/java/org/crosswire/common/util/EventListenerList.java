@@ -311,14 +311,14 @@ public class EventListenerList implements Serializable {
     /* @Override */
     public String toString() {
         Object[] lList = listenerList;
-        StringBuffer s = new StringBuffer("EventListenerList: "); //$NON-NLS-1$
+        StringBuffer s = new StringBuffer("EventListenerList: ");
         s.append(lList.length / 2);
-        s.append(" listeners: "); //$NON-NLS-1$
+        s.append(" listeners: ");
 
         for (int i = 0; i <= lList.length - 2; i += 2) {
-            s.append(" type "); //$NON-NLS-1$
+            s.append(" type ");
             s.append(((Class) lList[i]).getName());
-            s.append(" listener "); //$NON-NLS-1$
+            s.append(" listener ");
             s.append(lList[i + 1]);
         }
 

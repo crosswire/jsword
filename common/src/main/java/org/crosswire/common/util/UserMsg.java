@@ -21,6 +21,7 @@
  */
 package org.crosswire.common.util;
 
+
 /**
  * Compile safe Msg resource settings.
  * 
@@ -30,20 +31,43 @@ package org.crosswire.common.util;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 final class UserMsg extends MsgBase {
-    static final UserMsg REASON = new UserMsg("LucidException.Reason"); //$NON-NLS-1$
-    static final UserMsg CREATE_DIR_FAIL = new UserMsg("NetUtil.CreateDirFail"); //$NON-NLS-1$
-    static final UserMsg CREATE_FILE_FAIL = new UserMsg("NetUtil.CreateFileFail"); //$NON-NLS-1$
-    static final UserMsg IS_DIR = new UserMsg("NetUtil.IsDir"); //$NON-NLS-1$
-    static final UserMsg IS_FILE = new UserMsg("NetUtil.IsFile"); //$NON-NLS-1$
-    static final UserMsg NOT_DIR = new UserMsg("NetUtil.NotDir"); //$NON-NLS-1$
-    static final UserMsg NOT_FILE_URI = new UserMsg("NetUtil.NotFileURI"); //$NON-NLS-1$
-    static final UserMsg MISSING_FILE = new UserMsg("WebResource.MissingFile"); //$NON-NLS-1$
-    static final UserMsg UNEXPECTED_ERROR = new UserMsg("Reporter.Unexpected"); //$NON-NLS-1$
 
     /**
-     * Passthrough ctor
+     * Get the internationalized text, but return key if key is unknown.
+     * 
+     * @param key
+     * @return the internationalized text
      */
-    private UserMsg(String name) {
-        super(name);
+    public static String gettext(String key)
+    {
+        return msg.lookup(key);
     }
+
+    /**
+     * Get the internationalized text, but return key if key is unknown.
+     * The text requires one parameter to be passed.
+     * 
+     * @param key
+     * @param param
+     * @return the formatted, internationalized text
+     */
+    public static String gettext(String key, Object param)
+    {
+        return msg.toString(key, param);
+    }
+
+    /**
+     * Get the internationalized text, but return key if key is unknown.
+     * The text requires one parameter to be passed.
+     * 
+     * @param key
+     * @param param
+     * @return the formatted, internationalized text
+     */
+    public static String gettext(String key, Object[] params)
+    {
+        return msg.toString(key, params);
+    }
+
+    private static MsgBase msg = new UserMsg();
 }

@@ -53,7 +53,7 @@ public class LineMap {
         // "\x00" is a valid character, but various debuggers don't like it.
         // So we'll insert a junk entry to avoid generating a null character.
         lines = new ArrayList();
-        lines.add(""); //$NON-NLS-1$
+        lines.add("");
 
         Map linehash = new HashMap();
         sourceMap = linesToCharsMunge(source, lines, linehash);

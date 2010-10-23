@@ -50,7 +50,7 @@ public class Distance {
      */
     public static int getLevenshteinDistance(String source, String target) {
         if (source == null || target == null) {
-            throw new IllegalArgumentException("Strings must not be null"); //$NON-NLS-1$
+            throw new IllegalArgumentException("Strings must not be null");
         }
 
         /*

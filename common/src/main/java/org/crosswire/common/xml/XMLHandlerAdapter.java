@@ -287,7 +287,7 @@ public class XMLHandlerAdapter implements EntityResolver, DTDHandler, ContentHan
      * @see org.xml.sax.ErrorHandler#warning(org.xml.sax.SAXParseException)
      */
     public void warning(SAXParseException ex) throws SAXException {
-        printError("Warning", ex); //$NON-NLS-1$
+        printError("Warning", ex);
     }
 
     /*
@@ -296,7 +296,7 @@ public class XMLHandlerAdapter implements EntityResolver, DTDHandler, ContentHan
      * @see org.xml.sax.ErrorHandler#error(org.xml.sax.SAXParseException)
      */
     public void error(SAXParseException ex) throws SAXException {
-        printError("Error", ex); //$NON-NLS-1$
+        printError("Error", ex);
     }
 
     /*
@@ -305,14 +305,14 @@ public class XMLHandlerAdapter implements EntityResolver, DTDHandler, ContentHan
      * @see org.xml.sax.ErrorHandler#fatalError(org.xml.sax.SAXParseException)
      */
     public void fatalError(SAXParseException ex) throws SAXException {
-        printError("Fatal Error", ex); //$NON-NLS-1$
+        printError("Fatal Error", ex);
     }
 
     /** Prints the error message. */
     private void printError(String type, SAXParseException ex) {
-        System.err.print("["); //$NON-NLS-1$
+        System.err.print("[");
         System.err.print(type);
-        System.err.print("] "); //$NON-NLS-1$
+        System.err.print("] ");
         String systemId = ex.getSystemId();
         if (systemId != null) {
             int index = systemId.lastIndexOf('/');
@@ -325,7 +325,7 @@ public class XMLHandlerAdapter implements EntityResolver, DTDHandler, ContentHan
         System.err.print(ex.getLineNumber());
         System.err.print(':');
         System.err.print(ex.getColumnNumber());
-        System.err.print(": "); //$NON-NLS-1$
+        System.err.print(": ");
         System.err.print(ex.getMessage());
         System.err.println();
         System.err.flush();

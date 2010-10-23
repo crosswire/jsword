@@ -33,7 +33,7 @@ import java.net.URI;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public abstract class OSType implements Serializable {
-    public static final OSType MAC = new OSType("Mac") //$NON-NLS-1$
+    public static final OSType MAC = new OSType("Mac")
     {
         /*
          * (non-Javadoc)
@@ -61,7 +61,7 @@ public abstract class OSType implements Serializable {
         private static final long serialVersionUID = -1575982665011980783L;
     };
 
-    public static final OSType WIN32 = new OSType("Win") //$NON-NLS-1$
+    public static final OSType WIN32 = new OSType("Win")
     {
         /*
          * (non-Javadoc)
@@ -89,7 +89,7 @@ public abstract class OSType implements Serializable {
         private static final long serialVersionUID = 2448098399487879399L;
     };
 
-    public static final OSType DEFAULT = new OSType("*nix") //$NON-NLS-1$
+    public static final OSType DEFAULT = new OSType("*nix")
     {
         /*
          * (non-Javadoc)
@@ -145,7 +145,7 @@ public abstract class OSType implements Serializable {
     public abstract URI getUserAreaFolder(String hiddenFolderName, String visibleFolderName);
 
     public static URI getUserHome() {
-        return NetUtil.getURI(new File(System.getProperty("user.home"))); //$NON-NLS-1$;
+        return NetUtil.getURI(new File(System.getProperty("user.home")));
     }
 
     /**
@@ -240,17 +240,17 @@ public abstract class OSType implements Serializable {
     /**
      * The Windows user settings parent directory
      */
-    private static final String WIN32_USER_DATA_AREA = "Application Data"; //$NON-NLS-1$
+    private static final String WIN32_USER_DATA_AREA = "Application Data";
 
     /**
      * The Mac user settings parent directory
      */
-    private static final String MAC_USER_DATA_AREA = "Library/Application Support"; //$NON-NLS-1$
+    private static final String MAC_USER_DATA_AREA = "Library/Application Support";
 
     /**
      * The machine's osType
      */
-    private static OSType osType = fromString(System.getProperty("os.name")); //$NON-NLS-1$
+    private static OSType osType = fromString(System.getProperty("os.name"));
 
     /**
      * Serialization ID

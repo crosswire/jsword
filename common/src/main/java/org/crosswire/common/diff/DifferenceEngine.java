@@ -46,7 +46,7 @@ public class DifferenceEngine {
      * Empty Difference Engine, which won't find anything.
      */
     public DifferenceEngine() {
-        this("", ""); //$NON-NLS-1$ //$NON-NLS-2$
+        this("", "");
     }
 
     /**
@@ -120,7 +120,7 @@ public class DifferenceEngine {
                     x = kMinus1Value.intValue() + 1;
                 }
                 y = x - k;
-                footstep = x + "," + y; //$NON-NLS-1$
+                footstep = x + "," + y;
                 if (front && (footsteps.containsKey(footstep))) {
                     done = true;
                 }
@@ -130,7 +130,7 @@ public class DifferenceEngine {
                 while (!done && x < source.length() && y < target.length() && source.charAt(x) == target.charAt(y)) {
                     x++;
                     y++;
-                    footstep = x + "," + y; //$NON-NLS-1$
+                    footstep = x + "," + y;
                     if (front && footsteps.containsKey(footstep)) {
                         done = true;
                     }
@@ -140,7 +140,7 @@ public class DifferenceEngine {
                 }
                 v1.put(new Integer(k), new Integer(x));
                 Set s = (Set) vMap1.get(d);
-                s.add(x + "," + y); //$NON-NLS-1$
+                s.add(x + "," + y);
                 if (done) {
                     // Front path ran over reverse path.
                     Integer footstepValue = (Integer) footsteps.get(footstep);
@@ -164,7 +164,7 @@ public class DifferenceEngine {
                     x = kMinus1Value.intValue() + 1;
                 }
                 y = x - k;
-                footstep = (source.length() - x) + "," + (target.length() - y); //$NON-NLS-1$
+                footstep = (source.length() - x) + "," + (target.length() - y);
                 if (!front && (footsteps.containsKey(footstep))) {
                     done = true;
                 }
@@ -174,7 +174,7 @@ public class DifferenceEngine {
                 while (!done && x < source.length() && y < target.length() && source.charAt(source.length() - x - 1) == target.charAt(target.length() - y - 1)) {
                     x++;
                     y++;
-                    footstep = (source.length() - x) + "," + (target.length() - y); //$NON-NLS-1$
+                    footstep = (source.length() - x) + "," + (target.length() - y);
                     if (!front && (footsteps.containsKey(footstep))) {
                         done = true;
                     }
@@ -185,7 +185,7 @@ public class DifferenceEngine {
 
                 v2.put(new Integer(k), new Integer(x));
                 Set s = (Set) vMap2.get(d);
-                s.add(x + "," + y); //$NON-NLS-1$
+                s.add(x + "," + y);
                 if (done) {
                     // Reverse path ran over front path.
                     Integer footstepValue = (Integer) footsteps.get(footstep);
@@ -220,7 +220,7 @@ public class DifferenceEngine {
         for (int d = vMap.size() - 2; d >= 0; d--) {
             while (true) {
                 Set set = (Set) vMap.get(d);
-                if (set.contains((x - 1) + "," + y)) { //$NON-NLS-1$
+                if (set.contains((x - 1) + "," + y)) {
                     x--;
                     if (EditType.DELETE.equals(lastEditType)) {
                         Difference firstDiff = (Difference) path.get(0);
@@ -230,7 +230,7 @@ public class DifferenceEngine {
                     }
                     lastEditType = EditType.DELETE;
                     break;
-                } else if (set.contains(x + "," + (y - 1))) { //$NON-NLS-1$
+                } else if (set.contains(x + "," + (y - 1))) {
                     y--;
                     if (EditType.INSERT.equals(lastEditType)) {
                         Difference firstDiff = (Difference) path.get(0);
@@ -243,7 +243,7 @@ public class DifferenceEngine {
                 } else {
                     x--;
                     y--;
-                    assert newSource.charAt(x) == newTarget.charAt(y) : "No diagonal.  Can't happen. (path1)"; //$NON-NLS-1$
+                    assert newSource.charAt(x) == newTarget.charAt(y) : "No diagonal.  Can't happen. (path1)";
                     if (EditType.EQUAL.equals(lastEditType)) {
                         Difference firstDiff = (Difference) path.get(0);
                         firstDiff.prependText(newSource.charAt(x));
@@ -276,7 +276,7 @@ public class DifferenceEngine {
         for (int d = vMap.size() - 2; d >= 0; d--) {
             while (true) {
                 Set set = (Set) vMap.get(d);
-                if (set.contains((x - 1) + "," + y)) { //$NON-NLS-1$
+                if (set.contains((x - 1) + "," + y)) {
                     x--;
                     if (EditType.DELETE.equals(lastEditType)) {
                         Difference lastDiff = (Difference) path.get(path.size() - 1);
@@ -286,7 +286,7 @@ public class DifferenceEngine {
                     }
                     lastEditType = EditType.DELETE;
                     break;
-                } else if (set.contains(x + "," + (y - 1))) { //$NON-NLS-1$
+                } else if (set.contains(x + "," + (y - 1))) {
                     y--;
                     if (EditType.INSERT.equals(lastEditType)) {
                         Difference lastDiff = (Difference) path.get(path.size() - 1);
@@ -299,7 +299,7 @@ public class DifferenceEngine {
                 } else {
                     x--;
                     y--;
-                    assert newSource.charAt(newSource.length() - x - 1) == newTarget.charAt(newTarget.length() - y - 1) : "No diagonal.  Can't happen. (path2)"; //$NON-NLS-1$
+                    assert newSource.charAt(newSource.length() - x - 1) == newTarget.charAt(newTarget.length() - y - 1) : "No diagonal.  Can't happen. (path2)";
 
                     if (EditType.EQUAL.equals(lastEditType)) {
                         Difference lastDiff = (Difference) path.get(path.size() - 1);

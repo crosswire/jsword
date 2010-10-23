@@ -33,6 +33,6 @@ import java.util.logging.LogManager;
  */
 public class LogConfig {
     public LogConfig() throws SecurityException, IOException {
-        LogManager.getLogManager().readConfiguration(ResourceUtil.getResourceAsStream("CWLogging.properties")); //$NON-NLS-1$
+        LogManager.getLogManager().readConfiguration(ResourceUtil.getResourceAsStream("CWLogging.properties"));
     }
 }

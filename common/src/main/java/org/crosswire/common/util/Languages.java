@@ -108,7 +108,7 @@ public class Languages {
 
         // These are not uncommon. Looking for them prevents exceptions
         // and provides the same result.
-        if (lookup.startsWith("x-") || lookup.startsWith("X-") || lookup.length() > 3) //$NON-NLS-1$ //$NON-NLS-2$
+        if (lookup.startsWith("x-") || lookup.startsWith("X-") || lookup.length() > 3)
         {
             return UNKNOWN_LANG_CODE;
         }
@@ -116,13 +116,13 @@ public class Languages {
         return lookup;
     }
 
-    public static final String DEFAULT_LANG_CODE = "en"; //$NON-NLS-1$
-    private static final String UNKNOWN_LANG_CODE = "und"; //$NON-NLS-1$
+    public static final String DEFAULT_LANG_CODE = "en";
+    private static final String UNKNOWN_LANG_CODE = "und";
 
     private static/* final */ResourceBundle languages;
     static {
         try {
-            languages = ResourceBundle.getBundle("iso639", Locale.getDefault(), CWClassLoader.instance()); //$NON-NLS-1$;
+            languages = ResourceBundle.getBundle("iso639", Locale.getDefault(), CWClassLoader.instance());
         } catch (MissingResourceException e) {
             assert false;
         }

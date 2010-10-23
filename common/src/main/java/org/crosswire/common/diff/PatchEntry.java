@@ -154,11 +154,11 @@ public class PatchEntry {
     // Indices are printed as 1-based, not 0-based.
     public String toString() {
         StringBuffer txt = new StringBuffer();
-        txt.append("@@ -"); //$NON-NLS-1$
+        txt.append("@@ -");
         txt.append(getCoordinates(sourceStart, sourceLength));
-        txt.append(" +"); //$NON-NLS-1$
+        txt.append(" +");
         txt.append(getCoordinates(targetStart, targetLength));
-        txt.append(" @@\n"); //$NON-NLS-1$
+        txt.append(" @@\n");
 
         Iterator iter = diffs.iterator();
         while (iter.hasNext()) {
@@ -191,11 +191,11 @@ public class PatchEntry {
         diffs.clear();
         String[] text = newlinePattern.split(input);
         char sign = '\0';
-        String line = ""; //$NON-NLS-1$
+        String line = "";
 
         Matcher matcher = patchPattern.matcher(text[0]);
         matcher.matches();
-        assert matcher.groupCount() == 4 : "Invalid patch string:\n" + text[0]; //$NON-NLS-1$
+        assert matcher.groupCount() == 4 : "Invalid patch string:\n" + text[0];
         // m = text[0].match(/^@@ -(\d+),?(\d*) \+(\d+),?(\d*) @@$/);
 
         sourceStart = Integer.parseInt(matcher.group(1));
@@ -360,7 +360,7 @@ public class PatchEntry {
 
         if (length == 0) {
             buf.append(start);
-            buf.append(",0"); //$NON-NLS-1$
+            buf.append(",0");
         } else if (length == 1) {
             buf.append(sourceStart + 1);
         } else {
@@ -388,10 +388,10 @@ public class PatchEntry {
             char c = str.charAt(i);
             switch (c) {
             case '%':
-                buf.append("%25"); //$NON-NLS-1$
+                buf.append("%25");
                 break;
             case '\n':
-                buf.append("%0A"); //$NON-NLS-1$
+                buf.append("%0A");
                 break;
             default:
                 buf.append(c);
@@ -414,7 +414,7 @@ public class PatchEntry {
         for (i = 0; i < strlen; i++) {
             char c = str.charAt(i);
             if (c == '%') {
-                if ("%0A".equals(str.substring(i, i + 3))) { //$NON-NLS-1$
+                if ("%0A".equals(str.substring(i, i + 3))) {
                     buf.append('\n');
                 } else { // if ("%25".equals(str.substring(i, i + 3))
                     buf.append('%');
@@ -432,8 +432,8 @@ public class PatchEntry {
      */
     private static final int MARGIN = 4;
     private static int margin = MARGIN;
-    private static Pattern newlinePattern = Pattern.compile("\n"); //$NON-NLS-1$
-    private static Pattern patchPattern = Pattern.compile("^@@ -(\\d+),?(\\d*) \\+(\\d+),?(\\d*) @@$"); //$NON-NLS-1$
+    private static Pattern newlinePattern = Pattern.compile("\n");
+    private static Pattern patchPattern = Pattern.compile("^@@ -(\\d+),?(\\d*) \\+(\\d+),?(\\d*) @@$");
 
     private List diffs;
     private int sourceStart;

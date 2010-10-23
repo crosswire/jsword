@@ -34,17 +34,17 @@ public final class EditType implements Serializable {
     /**
      * Delete a sequence.
      */
-    public static final EditType DELETE = new EditType("Delete", '-'); //$NON-NLS-1$
+    public static final EditType DELETE = new EditType("Delete", '-');
 
     /**
      * Insert a sequence
      */
-    public static final EditType INSERT = new EditType("Insert", '+'); //$NON-NLS-1$
+    public static final EditType INSERT = new EditType("Insert", '+');
 
     /**
      * Equal sequences
      */
-    public static final EditType EQUAL = new EditType("Equal", ' '); //$NON-NLS-1$
+    public static final EditType EQUAL = new EditType("Equal", ' ');
 
     /**
      * @param name

@@ -39,7 +39,7 @@ import org.crosswire.common.util.NetUtil;
  */
 public class JobTest extends TestCase {
 
-    private static final String WIBBLE = "wibble"; //$NON-NLS-1$
+    private static final String WIBBLE = "wibble";
 
     /**
      * Constructor for JobTest.
@@ -52,7 +52,7 @@ public class JobTest extends TestCase {
 
     public void testJob() throws IOException, URISyntaxException {
         Progress job;
-        File tempfile = File.createTempFile("jobtest", "tmp"); //$NON-NLS-1$ //$NON-NLS-2$
+        File tempfile = File.createTempFile("jobtest", "tmp");
         URI uri = new URI(NetUtil.PROTOCOL_FILE, null, tempfile.getAbsolutePath(), null);
 
         job = JobManager.createJob(WIBBLE, false);

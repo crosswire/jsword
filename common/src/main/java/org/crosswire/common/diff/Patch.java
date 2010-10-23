@@ -199,8 +199,8 @@ public class Patch {
         int delta = 0;
         int expectedLoc = 0;
         int startLoc = -1;
-        String text1 = ""; //$NON-NLS-1$
-        String text2 = ""; //$NON-NLS-1$
+        String text1 = "";
+        String text2 = "";
         List diffs;
         int index1 = 0;
         int index2 = 0;
@@ -279,7 +279,7 @@ public class Patch {
             int patchSize = maxPatternLength;
             int start1 = bigPatch.getSourceStart();
             int start2 = bigPatch.getTargetStart();
-            String preContext = ""; //$NON-NLS-1$
+            String preContext = "";
             while (bigPatch.hasDifferences()) {
                 // Create one of several smaller patches.
                 PatchEntry patch = new PatchEntry();
@@ -441,7 +441,7 @@ public class Patch {
 
     // Ideally we'd like to have the @@ be merely a look-ahead, but it doesn't
     // work that way with split.
-    private static Pattern patchBoundaryPattern = Pattern.compile("\n@@"); //$NON-NLS-1$
+    private static Pattern patchBoundaryPattern = Pattern.compile("\n@@");
 
     private List patches;
     private int margin;

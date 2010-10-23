@@ -34,85 +34,85 @@ public class HistoryTest extends TestCase {
     public void testAdd() {
         History history = new History();
         assertEquals(null, history.getCurrent());
-        history.add("a"); //$NON-NLS-1$
-        assertEquals("a", history.getCurrent()); //$NON-NLS-1$
-        history.add("b"); //$NON-NLS-1$
-        assertEquals("[a, b]", history.getPreviousList().toString()); //$NON-NLS-1$
+        history.add("a");
+        assertEquals("a", history.getCurrent());
+        history.add("b");
+        assertEquals("[a, b]", history.getPreviousList().toString());
         // re-adding the current element won't change the list
-        history.add("b"); //$NON-NLS-1$
-        assertEquals("[a, b]", history.getPreviousList().toString()); //$NON-NLS-1$
-        history.add("c"); //$NON-NLS-1$
-        assertEquals("[a, b, c]", history.getPreviousList().toString()); //$NON-NLS-1$
+        history.add("b");
+        assertEquals("[a, b]", history.getPreviousList().toString());
+        history.add("c");
+        assertEquals("[a, b, c]", history.getPreviousList().toString());
     }
 
     public void testGo() {
         History history = new History();
         assertEquals(null, history.getCurrent());
-        history.add("a"); //$NON-NLS-1$
-        history.add("b"); //$NON-NLS-1$
-        history.add("c"); //$NON-NLS-1$
-        history.add("d"); //$NON-NLS-1$
-        assertEquals("[a, b, c, d]", history.getPreviousList().toString()); //$NON-NLS-1$
+        history.add("a");
+        history.add("b");
+        history.add("c");
+        history.add("d");
+        assertEquals("[a, b, c, d]", history.getPreviousList().toString());
         history.go(-1);
-        assertEquals("[a, b, c]", history.getPreviousList().toString()); //$NON-NLS-1$
-        assertEquals("[d]", history.getNextList().toString()); //$NON-NLS-1$
+        assertEquals("[a, b, c]", history.getPreviousList().toString());
+        assertEquals("[d]", history.getNextList().toString());
 
         history.go(-2);
-        assertEquals("[a]", history.getPreviousList().toString()); //$NON-NLS-1$
-        assertEquals("[b, c, d]", history.getNextList().toString()); //$NON-NLS-1$
+        assertEquals("[a]", history.getPreviousList().toString());
+        assertEquals("[b, c, d]", history.getNextList().toString());
 
         history.go(3);
-        assertEquals("[a, b, c, d]", history.getPreviousList().toString()); //$NON-NLS-1$
+        assertEquals("[a, b, c, d]", history.getPreviousList().toString());
 
         history.go(-10);
-        assertEquals("[a]", history.getPreviousList().toString()); //$NON-NLS-1$
-        assertEquals("[b, c, d]", history.getNextList().toString()); //$NON-NLS-1$
+        assertEquals("[a]", history.getPreviousList().toString());
+        assertEquals("[b, c, d]", history.getNextList().toString());
 
         history.go(10);
-        assertEquals("[a, b, c, d]", history.getPreviousList().toString()); //$NON-NLS-1$
+        assertEquals("[a, b, c, d]", history.getPreviousList().toString());
     }
 
     public void testNav() {
         History history = new History();
         assertEquals(null, history.getCurrent());
-        history.add("a"); //$NON-NLS-1$
-        history.add("b"); //$NON-NLS-1$
-        history.add("c"); //$NON-NLS-1$
-        history.add("d"); //$NON-NLS-1$
-        history.add("e"); //$NON-NLS-1$
-        history.add("f"); //$NON-NLS-1$
-        history.add("g"); //$NON-NLS-1$
-        history.add("h"); //$NON-NLS-1$
-        history.add("i"); //$NON-NLS-1$
-        assertEquals("[a, b, c, d, e, f, g, h, i]", history.getPreviousList().toString()); //$NON-NLS-1$
+        history.add("a");
+        history.add("b");
+        history.add("c");
+        history.add("d");
+        history.add("e");
+        history.add("f");
+        history.add("g");
+        history.add("h");
+        history.add("i");
+        assertEquals("[a, b, c, d, e, f, g, h, i]", history.getPreviousList().toString());
 
         history.go(-5);
-        assertEquals("[a, b, c, d]", history.getPreviousList().toString()); //$NON-NLS-1$
-        assertEquals("[e, f, g, h, i]", history.getNextList().toString()); //$NON-NLS-1$
-        assertEquals("d", history.getCurrent()); //$NON-NLS-1$
+        assertEquals("[a, b, c, d]", history.getPreviousList().toString());
+        assertEquals("[e, f, g, h, i]", history.getNextList().toString());
+        assertEquals("d", history.getCurrent());
 
         // Adding the current does not change anything
-        history.add("d"); //$NON-NLS-1$
-        assertEquals("[a, b, c, d]", history.getPreviousList().toString()); //$NON-NLS-1$
-        assertEquals("[e, f, g, h, i]", history.getNextList().toString()); //$NON-NLS-1$
+        history.add("d");
+        assertEquals("[a, b, c, d]", history.getPreviousList().toString());
+        assertEquals("[e, f, g, h, i]", history.getNextList().toString());
 
         // Adding the next splits the list
-        history.add("e"); //$NON-NLS-1$
-        assertEquals("[a, b, c, d, e]", history.getPreviousList().toString()); //$NON-NLS-1$
-        assertEquals("[f, g, h, i]", history.getNextList().toString()); //$NON-NLS-1$
+        history.add("e");
+        assertEquals("[a, b, c, d, e]", history.getPreviousList().toString());
+        assertEquals("[f, g, h, i]", history.getNextList().toString());
 
         // Adding the next splits the list
-        history.add("h"); //$NON-NLS-1$
-        assertEquals("[a, b, c, d, e, h]", history.getPreviousList().toString()); //$NON-NLS-1$
-        assertEquals("[i]", history.getNextList().toString()); //$NON-NLS-1$
+        history.add("h");
+        assertEquals("[a, b, c, d, e, h]", history.getPreviousList().toString());
+        assertEquals("[i]", history.getNextList().toString());
 
         history.go(-5);
-        assertEquals("[a]", history.getPreviousList().toString()); //$NON-NLS-1$
-        assertEquals("[b, c, d, e, h, i]", history.getNextList().toString()); //$NON-NLS-1$
+        assertEquals("[a]", history.getPreviousList().toString());
+        assertEquals("[b, c, d, e, h, i]", history.getNextList().toString());
 
-        history.add("e"); //$NON-NLS-1$
-        assertEquals("[a, e]", history.getPreviousList().toString()); //$NON-NLS-1$
-        assertEquals("[h, i]", history.getNextList().toString()); //$NON-NLS-1$
+        history.add("e");
+        assertEquals("[a, e]", history.getPreviousList().toString());
+        assertEquals("[h, i]", history.getNextList().toString());
 
     }
 }

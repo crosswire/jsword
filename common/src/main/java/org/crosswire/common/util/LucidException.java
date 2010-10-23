@@ -108,6 +108,60 @@ public class LucidException extends Exception {
     }
 
     /**
+     * All LucidExceptions are constructed with references to resources in an
+     * i18n properties file.
+     * 
+     * @param msg
+     *            The resource id to read
+     */
+    public LucidException(String msg) {
+        this(msg, null, (Object[]) null);
+    }
+
+    /**
+     * All LucidExceptions are constructed with references to resources in an
+     * i18n properties file.
+     * 
+     * @param msg
+     *            The resource id to read
+     */
+    public LucidException(String msg, Throwable cause) {
+        this(msg, cause, (Object[]) null);
+    }
+
+    /**
+     * All LucidExceptions are constructed with references to resources in an
+     * i18n properties file. This version allows us to add parameters
+     * 
+     * @param msg
+     *            The resource id to read
+     * @param params
+     *            An array of parameters
+     */
+    public LucidException(String msg, Object[] params) {
+        this(msg, null, params);
+    }
+
+    /**
+     * All LucidExceptions are constructed with references to resources in an
+     * i18n properties file. This version allows us to add parameters
+     * 
+     * @param msg
+     *            The resource id to read
+     * @param params
+     *            An array of parameters
+     */
+    public LucidException(String msg, Throwable cause, Object[] params) {
+        super(msg, cause);
+        this.deprecated = false;
+        if (params != null) {
+            this.params = (Object[]) params.clone();
+        } else {
+            this.params = null;
+        }
+    }
+
+    /**
      * We only unravel the message when we need to to save time
      * 
      * @return The unraveled i18n string
@@ -123,8 +177,8 @@ public class LucidException extends Exception {
         try {
             return MessageFormat.format(out, params);
         } catch (IllegalArgumentException ex) {
-            log.warn("Format fail for '" + out + '\'', ex); //$NON-NLS-1$
-            return "Error formatting message '" + out + '\''; //$NON-NLS-1$
+            log.warn("Format fail for '" + out + '\'', ex);
+            return "Error formatting message '" + out + '\'';
         }
     }
 
@@ -139,11 +193,13 @@ public class LucidException extends Exception {
             return getMessage();
         }
 
+        // TRANSLATOR: When an error occurs this label precedes the details of the problem.
+        String reason = UserMsg.gettext("Reason:");
         if (cause instanceof LucidException) {
             LucidException lex = (LucidException) cause;
-            return getMessage() + UserMsg.REASON + lex.getDetailedMessage();
+            return getMessage() + reason + lex.getDetailedMessage();
         }
-        return getMessage() + UserMsg.REASON + cause.getMessage();
+        return getMessage() + reason + cause.getMessage();
     }
 
     /**

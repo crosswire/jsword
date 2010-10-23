@@ -103,11 +103,11 @@ public class Diff {
         diffs = compute();
 
         // Restore the prefix and suffix
-        if (!"".equals(commonPrefix)) { //$NON-NLS-1$
+        if (!"".equals(commonPrefix)) {
             diffs.add(0, new Difference(EditType.EQUAL, commonPrefix));
         }
 
-        if (!"".equals(commonSuffix)) { //$NON-NLS-1$
+        if (!"".equals(commonSuffix)) {
             diffs.add(new Difference(EditType.EQUAL, commonSuffix));
         }
 
@@ -124,13 +124,13 @@ public class Diff {
     private List compute() {
         List diffs = new ArrayList();
 
-        if ("".equals(source)) { //$NON-NLS-1$
+        if ("".equals(source)) {
             // Just add some text (speedup)
             diffs.add(new Difference(EditType.INSERT, target));
             return diffs;
         }
 
-        if ("".equals(target)) { //$NON-NLS-1$
+        if ("".equals(target)) {
             // Just delete some text (speedup)
             diffs.add(new Difference(EditType.DELETE, source));
             return diffs;
@@ -192,7 +192,7 @@ public class Diff {
 
             // Rediff any replacement blocks, this time character-by-character.
             // Add a dummy entry at the end.
-            diffs.add(new Difference(EditType.EQUAL, "")); //$NON-NLS-1$
+            diffs.add(new Difference(EditType.EQUAL, ""));
             int countDeletes = 0;
             int countInserts = 0;
             StringBuffer textDelete = new StringBuffer();
@@ -304,17 +304,17 @@ public class Diff {
             // text = text.replace(/>/g, "&gt;");
             // text = text.replace(/\n/g, "&para;<BR>");
             if (EditType.DELETE.equals(editType)) {
-                buf.append("<del style=\"background:#FFE6E6;\">"); //$NON-NLS-1$
+                buf.append("<del style=\"background:#FFE6E6;\">");
                 buf.append(text);
-                buf.append("</del>"); //$NON-NLS-1$
+                buf.append("</del>");
             } else if (EditType.INSERT.equals(editType)) {
-                buf.append("<ins style=\"background:#E6FFE6;\">"); //$NON-NLS-1$
+                buf.append("<ins style=\"background:#E6FFE6;\">");
                 buf.append(text);
-                buf.append("</ins>"); //$NON-NLS-1$
+                buf.append("</ins>");
             } else {
-                buf.append("<span>"); //$NON-NLS-1$
+                buf.append("<span>");
                 buf.append(text);
-                buf.append("</span>"); //$NON-NLS-1$
+                buf.append("</span>");
             }
         }
         return buf.toString();

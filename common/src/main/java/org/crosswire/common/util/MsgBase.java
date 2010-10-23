@@ -35,44 +35,65 @@ import org.crosswire.common.icu.NumberShaper;
  * easy for most cases. See {@link org.crosswire.common.util.Msg} for an example
  * of how to inherit from here.
  * 
- * <p>
- * Some Regex/Vi macros to convert from a half way house i18n scheme where the
- * strings are in Msg classes but not properties files: The following makes the
- * lookup string simple :%s/Msg \([^ ]*\) = new Msg(".*")/Msg \1 = new
- * Msg("\1")/ These turn a lookup string into a properties file :%s/ static
- * final Msg // :%s/ = new Msg("/: / :%s/");\/\/\$NON-NLS-1\$$/
- * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
- * @see org.crosswire.common.util.Msg
  */
 public class MsgBase {
     /**
      * Create a MsgBase object
      */
     protected MsgBase(String name) {
+        this();
         this.name = name;
+    }
+
+    protected MsgBase()
+    {
         this.shaper = new NumberShaper();
         loadResources();
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Get the internationalized text, but return key if key is unknown.
      * 
-     * @see org.apache.commons.lang.enum.Enum#toString()
+     * @param key
+     * @return the internationalized text
      */
-    /* @Override */
+    public String lookup(String key)
+    {
+        return shaper.shape(obtainString(key));        
+    }
+
+    /**
+     * Formats the message with the given parameter.
+     */
+    public String toString(String key, Object param) {
+        return shaper.shape(MessageFormat.format(obtainString(key), new Object[] {
+            param
+        }));
+    }
+
+    /**
+     * Formats the message with the given parameters.
+     */
+    public String toString(String key, Object[] params) {
+        return shaper.shape(MessageFormat.format(obtainString(key), params));
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     public String toString() {
-        return shaper.shape(obtainString());
+        return shaper.shape(obtainString(name));
     }
 
     /**
      * Formats the message with the given parameter.
      */
     public String toString(Object param) {
-        return shaper.shape(MessageFormat.format(obtainString(), new Object[] {
+        return shaper.shape(MessageFormat.format(obtainString(name), new Object[] {
             param
         }));
     }
@@ -81,7 +102,7 @@ public class MsgBase {
      * Formats the message with the given parameters.
      */
     public String toString(Object[] params) {
-        return shaper.shape(MessageFormat.format(obtainString(), params));
+        return shaper.shape(MessageFormat.format(obtainString(name), params));
     }
 
     /**
@@ -103,31 +124,31 @@ public class MsgBase {
                     resources = ResourceBundle.getBundle(className, defaultLocale, CWClassLoader.instance(implementingClass));
                     resourceMap.put(className, resources);
                 } catch (MissingResourceException ex) {
-                    log.warn("Assuming key is the default message " + className + ": " + name); //$NON-NLS-1$ //$NON-NLS-2$
+                    log.warn("Assuming key is the default message " + className);
                 }
             }
         }
     }
 
-    private String obtainString() {
+    private String obtainString(String key) {
         try {
             if (resources != null) {
-                return resources.getString(name);
+                return resources.getString(key);
             }
         } catch (MissingResourceException ex) {
-            log.error("Missing resource: Locale=" + Locale.getDefault().toString() + " name=" + name + " package=" + getClass().getName()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            log.error("Missing resource: Locale=" + Locale.getDefault().toString() + " name=" + key + " package=" + getClass().getName());
         }
 
-        return name;
+        return key;
     }
-
-    private String name;
 
     /**
      * resource map maintains a mapping of class names to resources found by
      * that name.
      */
     private static Map resourceMap = new HashMap();
+
+    private String name;
 
     /**
      * If there is any internationalization to be done, it is thru this

@@ -33,7 +33,7 @@ import junit.framework.TestSuite;
  */
 public class AllTests {
     public static Test suite() {
-        TestSuite suite = new TestSuite("Test for org.crosswire.common.diff"); //$NON-NLS-1$
+        TestSuite suite = new TestSuite("Test for org.crosswire.common.diff");
         // $JUnit-BEGIN$
         suite.addTest(new TestSuite(BitapTest.class));
         suite.addTest(new TestSuite(CommonalityTest.class));

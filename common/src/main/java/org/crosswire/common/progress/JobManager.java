@@ -84,7 +84,7 @@ public final class JobManager {
         Progress job = new Job(description, predictURI, work, fakeupdates ? Progress.UNKNOWN : 100);
         jobs.add(job);
 
-        log.debug("job starting: " + job.getJobName()); //$NON-NLS-1$
+        log.debug("job starting: " + job.getJobName());
 
         return job;
     }
@@ -173,7 +173,7 @@ public final class JobManager {
         // that are no longer in our list of jobs. ho hum.
         synchronized (JobManager.class) {
             if (job.isFinished()) {
-                log.debug("job finished: " + job.getJobName()); //$NON-NLS-1$
+                log.debug("job finished: " + job.getJobName());
                 jobs.remove(job);
             }
         }

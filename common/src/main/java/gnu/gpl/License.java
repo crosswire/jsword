@@ -387,7 +387,10 @@ public class License {
      * @return the warranty for this program
      */
     public String getWarranty() {
-        return UserMsg.WARRANTY.toString(name);
+        /* TRANSLATOR: This is short-hand for the actual GPL warranty.
+         * See the English for this to see what needs to be translated.
+         */
+        return UserMsg.gettext("License.warranty", name);
     }
 
     /**
@@ -396,7 +399,10 @@ public class License {
      * @return the details of this program's distribution license
      */
     public String getDetails() {
-        return UserMsg.DETAILS.toString(name);
+        /* TRANSLATOR: This is short-hand for the actual GPL license.
+         * See the English for this to see what needs to be translated.
+         */
+        return UserMsg.gettext("License.details", name);
     }
 
     /**

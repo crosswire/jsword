@@ -30,11 +30,11 @@ package org.crosswire.common.util;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 final class Msg extends MsgBase {
-    static final Msg SECURITY = new Msg("CallContext.Security"); //$NON-NLS-1$
-    static final Msg WRONG_TYPE = new Msg("EventListenerList.WrongType"); //$NON-NLS-1$
-    static final Msg CANT_STRIP = new Msg("NetUtil.CantStrip"); //$NON-NLS-1$
-    static final Msg NO_RESOURCE = new Msg("ResourceUtil.NoResource"); //$NON-NLS-1$
-    static final Msg NOT_ASSIGNABLE = new Msg("ResourceUtil.NotAssignable"); //$NON-NLS-1$
+    static final Msg SECURITY = new Msg("Could not create ClassResolver:");
+    static final Msg WRONG_TYPE = new Msg("Listener {0} is not of type {1}");
+    static final Msg CANT_STRIP = new Msg("The URL {0} does not end in {1}.");
+    static final Msg NO_RESOURCE = new Msg("Cannot find resource: {0}");
+    static final Msg NOT_ASSIGNABLE = new Msg("Class {0} does not implement {1}.");
 
     /**
      * Passthrough ctor

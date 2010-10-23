@@ -33,7 +33,7 @@ import junit.framework.TestSuite;
  */
 public class AllTests {
     public static Test suite() {
-        TestSuite suite = new TestSuite("Test for org.crosswire.common.progress"); //$NON-NLS-1$
+        TestSuite suite = new TestSuite("Test for org.crosswire.common.progress");
         // $JUnit-BEGIN$
         suite.addTest(new TestSuite(JobTest.class));
         suite.addTest(new TestSuite(WorkEventTest.class));

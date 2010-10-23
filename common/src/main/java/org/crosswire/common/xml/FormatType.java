@@ -31,11 +31,11 @@ import java.io.Serializable;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public final class FormatType implements Serializable {
-    public static final FormatType AS_IS = new FormatType("AS_IS", false, false, false); //$NON-NLS-1$
-    public static final FormatType ANALYSIS = new FormatType("ANALYSIS", true, false, false); //$NON-NLS-1$
-    public static final FormatType CLASSIC = new FormatType("CLASSIC", true, false, true); //$NON-NLS-1$
-    public static final FormatType ANALYSIS_INDENT = new FormatType("ANALYSIS_INDENT", true, true, false); //$NON-NLS-1$
-    public static final FormatType CLASSIC_INDENT = new FormatType("CLASSIC_INDENT", true, true, true); //$NON-NLS-1$
+    public static final FormatType AS_IS = new FormatType("AS_IS", false, false, false);
+    public static final FormatType ANALYSIS = new FormatType("ANALYSIS", true, false, false);
+    public static final FormatType CLASSIC = new FormatType("CLASSIC", true, false, true);
+    public static final FormatType ANALYSIS_INDENT = new FormatType("ANALYSIS_INDENT", true, true, false);
+    public static final FormatType CLASSIC_INDENT = new FormatType("CLASSIC_INDENT", true, true, true);
 
     /**
      * Simple ctor

@@ -21,41 +21,41 @@ public class LineMapTest extends TestCase {
     public void testCompile() {
         // Convert lines down to characters
         ArrayList list = new ArrayList();
-        list.add(""); //$NON-NLS-1$
-        list.add("alpha\n"); //$NON-NLS-1$
-        list.add("beta\n"); //$NON-NLS-1$
-        LineMap map = new LineMap("alpha\nbeta\nalpha\n", "beta\nalpha\nbeta\n"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("new LineMap:", "\u0001\u0002\u0001", map.getSourceMap()); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("new LineMap:", "\u0002\u0001\u0002", map.getTargetMap()); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("new LineMap:", list, map.getLines()); //$NON-NLS-1$
+        list.add("");
+        list.add("alpha\n");
+        list.add("beta\n");
+        LineMap map = new LineMap("alpha\nbeta\nalpha\n", "beta\nalpha\nbeta\n");
+        assertEquals("new LineMap:", "\u0001\u0002\u0001", map.getSourceMap());
+        assertEquals("new LineMap:", "\u0002\u0001\u0002", map.getTargetMap());
+        assertEquals("new LineMap:", list, map.getLines());
 
         list.clear();
-        list.add(""); //$NON-NLS-1$
-        list.add("alpha\r\n"); //$NON-NLS-1$
-        list.add("beta\r\n"); //$NON-NLS-1$
-        list.add("\r\n"); //$NON-NLS-1$
-        map = new LineMap("", "alpha\r\nbeta\r\n\r\n\r\n"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("new LineMap:", "", map.getSourceMap()); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("new LineMap:", "\u0001\u0002\u0003\u0003", map.getTargetMap()); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("new LineMap:", list, map.getLines()); //$NON-NLS-1$
+        list.add("");
+        list.add("alpha\r\n");
+        list.add("beta\r\n");
+        list.add("\r\n");
+        map = new LineMap("", "alpha\r\nbeta\r\n\r\n\r\n");
+        assertEquals("new LineMap:", "", map.getSourceMap());
+        assertEquals("new LineMap:", "\u0001\u0002\u0003\u0003", map.getTargetMap());
+        assertEquals("new LineMap:", list, map.getLines());
     }
 
     public void testRestore() {
         // Convert chars up to lines
         List diffs = diffList(new Object[] {
-                new Difference(EditType.EQUAL, "\u0001\u0002\u0001"), new Difference(EditType.INSERT, "\u0002\u0001\u0002")}); //$NON-NLS-1$ //$NON-NLS-2$
+                new Difference(EditType.EQUAL, "\u0001\u0002\u0001"), new Difference(EditType.INSERT, "\u0002\u0001\u0002")});
         ArrayList list = new ArrayList();
-        list.add(""); //$NON-NLS-1$
-        list.add("alpha\n"); //$NON-NLS-1$
-        list.add("beta\n"); //$NON-NLS-1$
-        LineMap map = new LineMap("alpha\nbeta\nalpha\n", "beta\nalpha\nbeta\n"); //$NON-NLS-1$ //$NON-NLS-2$
+        list.add("");
+        list.add("alpha\n");
+        list.add("beta\n");
+        LineMap map = new LineMap("alpha\nbeta\nalpha\n", "beta\nalpha\nbeta\n");
         map.restore(diffs);
         assertEquals(
-                "LineMap.restore:", diffList(new Object[] { new Difference(EditType.EQUAL, "alpha\nbeta\nalpha\n"), new Difference(EditType.INSERT, "beta\nalpha\nbeta\n")}).get(0), diffs.get(0)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                "LineMap.restore:", diffList(new Object[] { new Difference(EditType.EQUAL, "alpha\nbeta\nalpha\n"), new Difference(EditType.INSERT, "beta\nalpha\nbeta\n")}).get(0), diffs.get(0));
         assertEquals(
-                "LineMap.restore:", diffList(new Object[] { new Difference(EditType.EQUAL, "alpha\nbeta\nalpha\n"), new Difference(EditType.INSERT, "beta\nalpha\nbeta\n")}).get(diffs.size() - 1), diffs.get(diffs.size() - 1)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                "LineMap.restore:", diffList(new Object[] { new Difference(EditType.EQUAL, "alpha\nbeta\nalpha\n"), new Difference(EditType.INSERT, "beta\nalpha\nbeta\n")}).get(diffs.size() - 1), diffs.get(diffs.size() - 1));
         assertEquals(
-                "LineMap.restore:", diffList(new Object[] { new Difference(EditType.EQUAL, "alpha\nbeta\nalpha\n"), new Difference(EditType.INSERT, "beta\nalpha\nbeta\n")}), diffs); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                "LineMap.restore:", diffList(new Object[] { new Difference(EditType.EQUAL, "alpha\nbeta\nalpha\n"), new Difference(EditType.INSERT, "beta\nalpha\nbeta\n")}), diffs);
     }
 
     // Private function for quickly building lists of diffs.

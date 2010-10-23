@@ -48,11 +48,11 @@ public final class Convert {
      */
     public static boolean string2Boolean(String data) {
         return Boolean.valueOf(data).booleanValue()
-                || data.equalsIgnoreCase("yes") //$NON-NLS-1$
-                || data.equalsIgnoreCase("ok") //$NON-NLS-1$
-                || data.equalsIgnoreCase("okay") //$NON-NLS-1$
-                || data.equalsIgnoreCase("on") //$NON-NLS-1$
-                || data.equals("1"); //$NON-NLS-1$
+                || data.equalsIgnoreCase("yes")
+                || data.equalsIgnoreCase("ok")
+                || data.equalsIgnoreCase("okay")
+                || data.equalsIgnoreCase("on")
+                || data.equals("1");
     }
 
     /**
@@ -146,8 +146,8 @@ public final class Convert {
     public static Map string2Hashtable(String data, Class superclass) {
         Map commands = new HashMap();
 
-        String[] data_arr = StringUtil.split(data, " "); //$NON-NLS-1$
-        String entry = ""; //$NON-NLS-1$
+        String[] data_arr = StringUtil.split(data, " ");
+        String entry = "";
         for (int i = 0; i < data_arr.length; i++) {
             try {
                 entry = data_arr[i];
@@ -162,7 +162,7 @@ public final class Convert {
                     commands.put(key, value);
                 }
             } catch (ClassNotFoundException ex) {
-                log.warn("Invalid config file entry: " + entry + " System message: " + ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+                log.warn("Invalid config file entry: " + entry + " System message: " + ex.getMessage());
                 Reporter.informUser(Convert.class, ex);
             }
         }

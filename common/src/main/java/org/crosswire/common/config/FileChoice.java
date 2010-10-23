@@ -50,7 +50,7 @@ public class FileChoice extends AbstractReflectedChoice {
     /* @Override */
     public String convertToString(Object orig) {
         if (orig == null) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
 
         return ((File) orig).getAbsolutePath();

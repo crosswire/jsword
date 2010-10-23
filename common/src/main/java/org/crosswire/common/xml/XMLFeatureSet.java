@@ -62,17 +62,17 @@ import org.xml.sax.XMLReader;
 public final class XMLFeatureSet {
 
     public XMLFeatureSet() {
-        features.put("n", new XMLFeatureState(XMLFeature.NAMESPACES, true)); //$NON-NLS-1$
-        features.put("np", new XMLFeatureState(XMLFeature.NAMESPACE_PREFIX)); //$NON-NLS-1$
-        features.put("v", new XMLFeatureState(XMLFeature.VALIDATION)); //$NON-NLS-1$
-        features.put("xd", new XMLFeatureState(XMLFeature.LOAD_EXTERNAL_DTD, true)); //$NON-NLS-1$
-        features.put("s", new XMLFeatureState(XMLFeature.SCHEMA_VALIDATION)); //$NON-NLS-1$
-        features.put("f", new XMLFeatureState(XMLFeature.SCHEMA_FULL_CHECKING)); //$NON-NLS-1$
-        features.put("va", new XMLFeatureState(XMLFeature.VALIDATE_ANNOTATIONS)); //$NON-NLS-1$
-        features.put("dv", new XMLFeatureState(XMLFeature.DYNAMIC_VALIDATION)); //$NON-NLS-1$
-        features.put("xi", new XMLFeatureState(XMLFeature.XINCLUDE)); //$NON-NLS-1$
-        features.put("xb", new XMLFeatureState(XMLFeature.XINCLUDE_FIXUP_BASE_URIS, true)); //$NON-NLS-1$
-        features.put("xl", new XMLFeatureState(XMLFeature.XINCLUDE_FIXUP_LANGUAGE, true)); //$NON-NLS-1$
+        features.put("n", new XMLFeatureState(XMLFeature.NAMESPACES, true));
+        features.put("np", new XMLFeatureState(XMLFeature.NAMESPACE_PREFIX));
+        features.put("v", new XMLFeatureState(XMLFeature.VALIDATION));
+        features.put("xd", new XMLFeatureState(XMLFeature.LOAD_EXTERNAL_DTD, true));
+        features.put("s", new XMLFeatureState(XMLFeature.SCHEMA_VALIDATION));
+        features.put("f", new XMLFeatureState(XMLFeature.SCHEMA_FULL_CHECKING));
+        features.put("va", new XMLFeatureState(XMLFeature.VALIDATE_ANNOTATIONS));
+        features.put("dv", new XMLFeatureState(XMLFeature.DYNAMIC_VALIDATION));
+        features.put("xi", new XMLFeatureState(XMLFeature.XINCLUDE));
+        features.put("xb", new XMLFeatureState(XMLFeature.XINCLUDE_FIXUP_BASE_URIS, true));
+        features.put("xl", new XMLFeatureState(XMLFeature.XINCLUDE_FIXUP_LANGUAGE, true));
 
         Iterator iter = features.entrySet().iterator();
         while (iter.hasNext()) {
@@ -119,27 +119,27 @@ public final class XMLFeatureSet {
 
     /** Prints the usage. */
     public void printUsage() {
-        System.err.println("XML Feature Set options:"); //$NON-NLS-1$
-        System.err.println("  -n  | -N    Turn on/off namespace processing."); //$NON-NLS-1$
-        System.err.println("  -np | -NP   Turn on/off namespace prefixes."); //$NON-NLS-1$
-        System.err.println("              NOTE: Requires use of -n."); //$NON-NLS-1$
-        System.err.println("  -v  | -V    Turn on/off validation."); //$NON-NLS-1$
-        System.err.println("  -xd | -XD   Turn on/off loading of external DTDs."); //$NON-NLS-1$
-        System.err.println("              NOTE: Always on when -v in use and not supported by all parsers."); //$NON-NLS-1$
-        System.err.println("  -s  | -S    Turn on/off Schema validation support."); //$NON-NLS-1$
-        System.err.println("              NOTE: Not supported by all parsers."); //$NON-NLS-1$
-        System.err.println("  -f  | -F    Turn on/off Schema full checking."); //$NON-NLS-1$
-        System.err.println("              NOTE: Requires use of -s and not supported by all parsers."); //$NON-NLS-1$
-        System.err.println("  -va | -VA   Turn on/off validation of schema annotations."); //$NON-NLS-1$
-        System.err.println("              NOTE: Requires use of -s and not supported by all parsers."); //$NON-NLS-1$
-        System.err.println("  -dv | -DV   Turn on/off dynamic validation."); //$NON-NLS-1$
-        System.err.println("              NOTE: Not supported by all parsers."); //$NON-NLS-1$
-        System.err.println("  -xi | -XI   Turn on/off XInclude processing."); //$NON-NLS-1$
-        System.err.println("              NOTE: Not supported by all parsers."); //$NON-NLS-1$
-        System.err.println("  -xb | -XB   Turn on/off base URI fixup during XInclude processing."); //$NON-NLS-1$
-        System.err.println("              NOTE: Requires use of -xi and not supported by all parsers."); //$NON-NLS-1$
-        System.err.println("  -xl | -XL   Turn on/off language fixup during XInclude processing."); //$NON-NLS-1$
-        System.err.println("              NOTE: Requires use of -xi and not supported by all parsers."); //$NON-NLS-1$
+        System.err.println("XML Feature Set options:");
+        System.err.println("  -n  | -N    Turn on/off namespace processing.");
+        System.err.println("  -np | -NP   Turn on/off namespace prefixes.");
+        System.err.println("              NOTE: Requires use of -n.");
+        System.err.println("  -v  | -V    Turn on/off validation.");
+        System.err.println("  -xd | -XD   Turn on/off loading of external DTDs.");
+        System.err.println("              NOTE: Always on when -v in use and not supported by all parsers.");
+        System.err.println("  -s  | -S    Turn on/off Schema validation support.");
+        System.err.println("              NOTE: Not supported by all parsers.");
+        System.err.println("  -f  | -F    Turn on/off Schema full checking.");
+        System.err.println("              NOTE: Requires use of -s and not supported by all parsers.");
+        System.err.println("  -va | -VA   Turn on/off validation of schema annotations.");
+        System.err.println("              NOTE: Requires use of -s and not supported by all parsers.");
+        System.err.println("  -dv | -DV   Turn on/off dynamic validation.");
+        System.err.println("              NOTE: Not supported by all parsers.");
+        System.err.println("  -xi | -XI   Turn on/off XInclude processing.");
+        System.err.println("              NOTE: Not supported by all parsers.");
+        System.err.println("  -xb | -XB   Turn on/off base URI fixup during XInclude processing.");
+        System.err.println("              NOTE: Requires use of -xi and not supported by all parsers.");
+        System.err.println("  -xl | -XL   Turn on/off language fixup during XInclude processing.");
+        System.err.println("              NOTE: Requires use of -xi and not supported by all parsers.");
     }
 
     public void setFeatures(XMLReader parser) {
@@ -189,9 +189,9 @@ public final class XMLFeatureSet {
             try {
                 parser.setFeature(control, state);
             } catch (SAXNotRecognizedException e) {
-                System.err.println("warning: Parser does not recognize feature (" + control + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+                System.err.println("warning: Parser does not recognize feature (" + control + ")");
             } catch (SAXNotSupportedException e) {
-                System.err.println("warning: Parser does not support feature (" + control + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+                System.err.println("warning: Parser does not support feature (" + control + ")");
             }
         }
 

@@ -33,37 +33,37 @@ import java.io.Serializable;
  */
 public class XMLFeature implements Serializable, Comparable {
     /** Namespaces feature id */
-    public static final XMLFeature NAMESPACES = new XMLFeature("http://xml.org/sax/features/namespaces"); //$NON-NLS-1$
+    public static final XMLFeature NAMESPACES = new XMLFeature("http://xml.org/sax/features/namespaces");
 
     /** Namespace prefixes feature id */
-    public static final XMLFeature NAMESPACE_PREFIX = new XMLFeature("http://xml.org/sax/features/namespace-prefixes"); //$NON-NLS-1$
+    public static final XMLFeature NAMESPACE_PREFIX = new XMLFeature("http://xml.org/sax/features/namespace-prefixes");
 
     /** Validation feature id */
-    public static final XMLFeature VALIDATION = new XMLFeature("http://xml.org/sax/features/validation"); //$NON-NLS-1$
+    public static final XMLFeature VALIDATION = new XMLFeature("http://xml.org/sax/features/validation");
 
     /** Schema validation feature id */
-    public static final XMLFeature SCHEMA_VALIDATION = new XMLFeature("http://apache.org/xml/features/validation/schema"); //$NON-NLS-1$
+    public static final XMLFeature SCHEMA_VALIDATION = new XMLFeature("http://apache.org/xml/features/validation/schema");
 
     /** Schema full checking feature id */
-    public static final XMLFeature SCHEMA_FULL_CHECKING = new XMLFeature("http://apache.org/xml/features/validation/schema-full-checking"); //$NON-NLS-1$
+    public static final XMLFeature SCHEMA_FULL_CHECKING = new XMLFeature("http://apache.org/xml/features/validation/schema-full-checking");
 
     /** Validate schema annotations feature id */
-    public static final XMLFeature VALIDATE_ANNOTATIONS = new XMLFeature("http://apache.org/xml/features/validate-annotations"); //$NON-NLS-1$
+    public static final XMLFeature VALIDATE_ANNOTATIONS = new XMLFeature("http://apache.org/xml/features/validate-annotations");
 
     /** Dynamic validation feature id */
-    public static final XMLFeature DYNAMIC_VALIDATION = new XMLFeature("http://apache.org/xml/features/validation/dynamic"); //$NON-NLS-1$
+    public static final XMLFeature DYNAMIC_VALIDATION = new XMLFeature("http://apache.org/xml/features/validation/dynamic");
 
     /** Load external DTD feature id */
-    public static final XMLFeature LOAD_EXTERNAL_DTD = new XMLFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd"); //$NON-NLS-1$
+    public static final XMLFeature LOAD_EXTERNAL_DTD = new XMLFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd");
 
     /** XInclude feature id */
-    public static final XMLFeature XINCLUDE = new XMLFeature("http://apache.org/xml/features/xinclude"); //$NON-NLS-1$
+    public static final XMLFeature XINCLUDE = new XMLFeature("http://apache.org/xml/features/xinclude");
 
     /** XInclude fixup base URIs feature id */
-    public static final XMLFeature XINCLUDE_FIXUP_BASE_URIS = new XMLFeature("http://apache.org/xml/features/xinclude/fixup-base-uris", true); //$NON-NLS-1$
+    public static final XMLFeature XINCLUDE_FIXUP_BASE_URIS = new XMLFeature("http://apache.org/xml/features/xinclude/fixup-base-uris", true);
 
     /** XInclude fixup language feature id */
-    public static final XMLFeature XINCLUDE_FIXUP_LANGUAGE = new XMLFeature("http://apache.org/xml/features/xinclude/fixup-language", true); //$NON-NLS-1$
+    public static final XMLFeature XINCLUDE_FIXUP_LANGUAGE = new XMLFeature("http://apache.org/xml/features/xinclude/fixup-language", true);
 
     /**
      * Construct a feature for xml, setting the initial state
@@ -149,7 +149,7 @@ public class XMLFeature implements Serializable, Comparable {
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        return (state ? "on  " : "off ") + control; //$NON-NLS-1$ //$NON-NLS-2$
+        return (state ? "on  " : "off ") + control;
     }
 
     /*

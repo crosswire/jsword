@@ -54,12 +54,12 @@ public class OptionList {
         String longName = option.getLongName();
         if (shortName != '\u0000') {
             String optionName = Character.toString(shortName);
-            assert !shortOptions.containsKey(optionName) : optionName + " already present"; //$NON-NLS-1$
+            assert !shortOptions.containsKey(optionName) : optionName + " already present";
             shortOptions.put(optionName, option);
         }
 
         if (longName != null) {
-            assert !longOptions.containsKey(longName) : longName + " already present"; //$NON-NLS-1$
+            assert !longOptions.containsKey(longName) : longName + " already present";
             longOptions.put(longName, option);
         }
     }

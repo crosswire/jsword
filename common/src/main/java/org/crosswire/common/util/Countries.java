@@ -100,13 +100,13 @@ public class Countries {
         }
     }
 
-    public static final String DEFAULT_COUNTRY_CODE = "US"; //$NON-NLS-1$
-    private static final String UNKNOWN_COUNTRY_CODE = "XX"; //$NON-NLS-1$
+    public static final String DEFAULT_COUNTRY_CODE = "US";
+    private static final String UNKNOWN_COUNTRY_CODE = "XX";
 
     private static/* final */ResourceBundle countries;
     static {
         try {
-            countries = ResourceBundle.getBundle("iso3166", Locale.getDefault(), CWClassLoader.instance()); //$NON-NLS-1$;
+            countries = ResourceBundle.getBundle("iso3166", Locale.getDefault(), CWClassLoader.instance());
         } catch (MissingResourceException e) {
             assert false;
         }

@@ -69,7 +69,7 @@ public class ClassChoice extends AbstractReflectedChoice {
         try {
             return ClassUtil.forName(orig);
         } catch (ClassNotFoundException ex) {
-            log.warn("Class not found: " + orig, ex); //$NON-NLS-1$
+            log.warn("Class not found: " + orig, ex);
             return null;
         }
     }

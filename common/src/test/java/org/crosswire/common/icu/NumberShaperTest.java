@@ -34,11 +34,11 @@ import junit.framework.TestCase;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class NumberShaperTest extends TestCase {
-    private static final String europeanDigits = "0123456789"; //$NON-NLS-1$
-    private static final String easternArabicDigits = "\u06f0\u06f1\u06f2\u06f3\u06f4\u06f5\u06f6\u06f7\u06f8\u06f9"; //$NON-NLS-1$
+    private static final String europeanDigits = "0123456789";
+    private static final String easternArabicDigits = "\u06f0\u06f1\u06f2\u06f3\u06f4\u06f5\u06f6\u06f7\u06f8\u06f9";
 
     public void testShape() {
-        NumberShaper shaper = new NumberShaper(new Locale("fa")); //$NON-NLS-1$
+        NumberShaper shaper = new NumberShaper(new Locale("fa"));
         assertEquals(easternArabicDigits, shaper.shape(europeanDigits));
         // Note: the following depends upon whether icu is on the classpath
         if (shaper.canUnshape()) {

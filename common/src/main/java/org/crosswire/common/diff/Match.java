@@ -34,7 +34,7 @@ package org.crosswire.common.diff;
  */
 public class Match implements Locator {
     public Match() {
-        this("", "", 0); //$NON-NLS-1$ //$NON-NLS-2$
+        this("", "", 0);
     }
 
     /**

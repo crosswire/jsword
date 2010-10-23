@@ -72,7 +72,8 @@ public final class IOUtil {
             if (!parentDir.isDirectory()) {
                 // Create the directory and make sure it worked.
                 if (!parentDir.mkdirs()) {
-                    throw new MalformedURLException(UserMsg.CREATE_DIR_FAIL.toString(parentDir.toString()));
+                    // TRANSLATOR: Error condition: A directory could not be created. {0} is a placeholder for the directory
+                    throw new MalformedURLException(UserMsg.gettext("The given URL {0} could not be created as a directory.", parentDir.toString()));
                 }
             }
 
@@ -104,7 +105,7 @@ public final class IOUtil {
             try {
                 raf.close();
             } catch (IOException ex) {
-                log.error("close", ex); //$NON-NLS-1$
+                log.error("close", ex);
             }
         }
     }
@@ -120,7 +121,7 @@ public final class IOUtil {
             try {
                 out.close();
             } catch (IOException ex) {
-                log.error("close", ex); //$NON-NLS-1$
+                log.error("close", ex);
             }
         }
     }
@@ -136,7 +137,7 @@ public final class IOUtil {
             try {
                 in.close();
             } catch (IOException ex) {
-                log.error("close", ex); //$NON-NLS-1$
+                log.error("close", ex);
             }
         }
     }
@@ -152,7 +153,7 @@ public final class IOUtil {
             try {
                 in.close();
             } catch (IOException ex) {
-                log.error("close", ex); //$NON-NLS-1$
+                log.error("close", ex);
             }
         }
     }

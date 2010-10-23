@@ -56,7 +56,7 @@ public class DateFormatter {
         DateFormatter fmt = new DateFormatter();
         boolean oops = false;
         try {
-            fmt.formatterClass = ClassUtil.forName("com.ibm.icu.text.DateFormat"); //$NON-NLS-1$
+            fmt.formatterClass = ClassUtil.forName("com.ibm.icu.text.DateFormat");
             // To call a method taking a type of int, the type has to match but
             // the object has to be wrapped
             Class[] instanceTypes = {
@@ -65,7 +65,7 @@ public class DateFormatter {
             Object[] instanceParams = {
                 new Integer(format)
             };
-            fmt.formatter = ReflectionUtil.invoke(fmt.formatterClass, fmt.formatterClass, "getDateInstance", instanceParams, instanceTypes); //$NON-NLS-1$
+            fmt.formatter = ReflectionUtil.invoke(fmt.formatterClass, fmt.formatterClass, "getDateInstance", instanceParams, instanceTypes);
         } catch (NoSuchMethodException e) {
             oops = true;
         } catch (IllegalAccessException e) {
@@ -102,11 +102,11 @@ public class DateFormatter {
         DateFormatter fmt = new DateFormatter();
         boolean oops = false;
         try {
-            fmt.formatterClass = ClassUtil.forName("com.ibm.icu.text.SimpleDateFormat"); //$NON-NLS-1$
+            fmt.formatterClass = ClassUtil.forName("com.ibm.icu.text.SimpleDateFormat");
             Object[] instanceParams = {
                 format
             };
-            fmt.formatter = ReflectionUtil.construct("com.ibm.icu.text.SimpleDateFormat", instanceParams); //$NON-NLS-1$
+            fmt.formatter = ReflectionUtil.construct("com.ibm.icu.text.SimpleDateFormat", instanceParams);
         } catch (NoSuchMethodException e) {
             oops = true;
         } catch (IllegalAccessException e) {
@@ -140,7 +140,7 @@ public class DateFormatter {
             Object[] lenientParams = {
                 Boolean.valueOf(lenient)
             };
-            ReflectionUtil.invoke(formatterClass, formatter, "setLenient", lenientParams, lenientTypes); //$NON-NLS-1$
+            ReflectionUtil.invoke(formatterClass, formatter, "setLenient", lenientParams, lenientTypes);
         } catch (NoSuchMethodException e) {
             assert false : e;
         } catch (IllegalAccessException e) {
@@ -160,10 +160,10 @@ public class DateFormatter {
             Object[] formatParams = {
                 date
             };
-            return (String) ReflectionUtil.invoke(formatterClass, formatter, "format", formatParams); //$NON-NLS-1$
+            return (String) ReflectionUtil.invoke(formatterClass, formatter, "format", formatParams);
         } catch (Exception e) {
             assert false : e;
-            return ""; //$NON-NLS-1$
+            return "";
         }
     }
 
@@ -177,7 +177,7 @@ public class DateFormatter {
             Object[] parseParams = {
                 text
             };
-            return (Date) ReflectionUtil.invoke(formatterClass, formatter, "parse", parseParams); //$NON-NLS-1$
+            return (Date) ReflectionUtil.invoke(formatterClass, formatter, "parse", parseParams);
         } catch (Exception e) {
             if (e instanceof ParseException) {
                 throw (ParseException) e;

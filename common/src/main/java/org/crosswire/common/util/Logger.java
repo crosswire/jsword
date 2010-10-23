@@ -281,7 +281,7 @@ public final class Logger {
 
         Exception ex = null;
         try {
-            InputStream cwConfigStream = ResourceUtil.getResourceAsStream("CWLogging.properties");  //$NON-NLS-1$
+            InputStream cwConfigStream = ResourceUtil.getResourceAsStream("CWLogging.properties");
             LogManager.getLogManager().readConfiguration(cwConfigStream);
         } catch (SecurityException e) {
             ex = e;
@@ -291,7 +291,7 @@ public final class Logger {
             ex = e;
         }
         if (ex != null) {
-            cwLogger.info("Can't load CWLogging.properties", ex); //$NON-NLS-1$
+            cwLogger.info("Can't load CWLogging.properties", ex);
         }
     }
 
@@ -316,7 +316,7 @@ public final class Logger {
         }
     }
 
-    private static final String ROOT_LOGGER = ""; //$NON-NLS-1$
+    private static final String ROOT_LOGGER = "";
     private static final String CLASS_NAME = Logger.class.getName();
     private static volatile boolean established;
     private static volatile Level level;

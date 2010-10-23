@@ -120,7 +120,7 @@ public class SerializingContentHandler implements ContentHandler {
         for (int i = 0; i < attrs.getLength(); i++) {
             buffer.append(' ');
             buffer.append(XMLUtil.getAttributeName(attrs, i));
-            buffer.append("=\""); //$NON-NLS-1$
+            buffer.append("=\"");
             buffer.append(attrs.getValue(i));
             buffer.append('\"');
         }
@@ -139,7 +139,7 @@ public class SerializingContentHandler implements ContentHandler {
      * java.lang.String, java.lang.String)
      */
     public void endElement(String uri, String localname, String qname) {
-        buffer.append("</"); //$NON-NLS-1$
+        buffer.append("</");
         if (qname != null) {
             buffer.append(qname);
         } else {
@@ -180,11 +180,11 @@ public class SerializingContentHandler implements ContentHandler {
      * java.lang.String)
      */
     public void processingInstruction(String target, String data) {
-        buffer.append("<!"); //$NON-NLS-1$
+        buffer.append("<!");
         buffer.append(target);
         buffer.append(' ');
         buffer.append(data);
-        buffer.append("!>"); //$NON-NLS-1$
+        buffer.append("!>");
 
         if (newlines) {
             buffer.append('\n');

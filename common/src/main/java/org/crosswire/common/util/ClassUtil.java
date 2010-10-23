@@ -71,14 +71,14 @@ public final class ClassUtil {
 
                     if (entry != null && !entry.isDirectory()) {
                         if (full != null && !full.equals(fileName)) {
-                            log.warn("Warning duplicate " + classname + " found: " + full + " and " + paths[i]); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            log.warn("Warning duplicate " + classname + " found: " + full + " and " + paths[i]);
                         } else {
                             full = paths[i];
                         }
                     }
                 } catch (IOException ex) {
                     // If that zip file failed, then ignore it and move on.
-                    log.warn("Missing zip file for " + classname + " and " + paths[i]); //$NON-NLS-1$ //$NON-NLS-2$
+                    log.warn("Missing zip file for " + classname + " and " + paths[i]);
                 }
             } else {
                 StringBuffer path = new StringBuffer(256);
@@ -97,7 +97,7 @@ public final class ClassUtil {
 
                 if (new File(fileName).isFile()) {
                     if (full != null && !full.equals(fileName)) {
-                        log.warn("Warning duplicate " + classname + " found: " + full + " and " + paths[i]); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        log.warn("Warning duplicate " + classname + " found: " + full + " and " + paths[i]);
                     } else {
                         full = paths[i];
                     }
@@ -113,7 +113,7 @@ public final class ClassUtil {
      * the classpath, if none is found it returns null.
      */
     public static String findClasspathEntry(String classname) {
-        String classpath = System.getProperty("java.class.path", ""); //$NON-NLS-1$ //$NON-NLS-2$
+        String classpath = System.getProperty("java.class.path", "");
         return findClasspathEntry(classname, classpath);
     }
 
@@ -150,7 +150,7 @@ public final class ClassUtil {
      */
     public static String getShortClassName(Class cls) {
         if (cls == null) {
-            throw new IllegalArgumentException("The class must not be null"); //$NON-NLS-1$
+            throw new IllegalArgumentException("The class must not be null");
         }
         return getShortClassName(cls.getName());
     }
@@ -173,7 +173,7 @@ public final class ClassUtil {
      */
     public static String getShortClassName(String className) {
         if (className == null || className.length() == 0) {
-            throw new IllegalArgumentException("The class name must not be empty"); //$NON-NLS-1$
+            throw new IllegalArgumentException("The class name must not be empty");
         }
         char[] chars = className.toCharArray();
         int lastDot = 0;
@@ -201,9 +201,9 @@ public final class ClassUtil {
      */
     private static final char INNER_CLASS_SEPARATOR_CHAR = '$';
 
-    private static final String EXTENSION_CLASS = ".class"; //$NON-NLS-1$
-    private static final String EXTENSION_JAR = ".jar"; //$NON-NLS-1$
-    private static final String EXTENSION_ZIP = ".zip"; //$NON-NLS-1$
+    private static final String EXTENSION_CLASS = ".class";
+    private static final String EXTENSION_JAR = ".jar";
+    private static final String EXTENSION_ZIP = ".zip";
 
     /**
      * The log stream

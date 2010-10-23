@@ -34,69 +34,69 @@ public class XMLUtilTest extends TestCase {
     public void testCleanAllEntities() {
         assertNull(XMLUtil.cleanAllEntities(null));
 
-        assertEquals("", XMLUtil.cleanAllEntities("")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("aa", XMLUtil.cleanAllEntities("aa")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("<aa>", XMLUtil.cleanAllEntities("<aa>")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("<aa>aa", XMLUtil.cleanAllEntities("<aa>aa")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("<aa>aa;aa", XMLUtil.cleanAllEntities("<aa>aa;aa")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(";", XMLUtil.cleanAllEntities(";")); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals("", XMLUtil.cleanAllEntities(""));
+        assertEquals("aa", XMLUtil.cleanAllEntities("aa"));
+        assertEquals("<aa>", XMLUtil.cleanAllEntities("<aa>"));
+        assertEquals("<aa>aa", XMLUtil.cleanAllEntities("<aa>aa"));
+        assertEquals("<aa>aa;aa", XMLUtil.cleanAllEntities("<aa>aa;aa"));
+        assertEquals(";", XMLUtil.cleanAllEntities(";"));
 
-        assertEquals("aa &amp; aa", XMLUtil.cleanAllEntities("aa &amp; aa")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("aa &amp;amp aa", XMLUtil.cleanAllEntities("aa &amp aa")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("aa &amp;a-mp aa", XMLUtil.cleanAllEntities("aa &a-mp aa")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("aa  aa", XMLUtil.cleanAllEntities("aa &am; aa")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("aa &amp;am aa", XMLUtil.cleanAllEntities("aa &am aa")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("aa &amp;", XMLUtil.cleanAllEntities("aa &amp;")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("aa &amp;amp", XMLUtil.cleanAllEntities("aa &amp")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("aa ", XMLUtil.cleanAllEntities("aa &am;")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("aa &amp;am", XMLUtil.cleanAllEntities("aa &am")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("aa &amp;a", XMLUtil.cleanAllEntities("aa &a")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("aa &amp;", XMLUtil.cleanAllEntities("aa &")); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals("aa &amp; aa", XMLUtil.cleanAllEntities("aa &amp; aa"));
+        assertEquals("aa &amp;amp aa", XMLUtil.cleanAllEntities("aa &amp aa"));
+        assertEquals("aa &amp;a-mp aa", XMLUtil.cleanAllEntities("aa &a-mp aa"));
+        assertEquals("aa  aa", XMLUtil.cleanAllEntities("aa &am; aa"));
+        assertEquals("aa &amp;am aa", XMLUtil.cleanAllEntities("aa &am aa"));
+        assertEquals("aa &amp;", XMLUtil.cleanAllEntities("aa &amp;"));
+        assertEquals("aa &amp;amp", XMLUtil.cleanAllEntities("aa &amp"));
+        assertEquals("aa ", XMLUtil.cleanAllEntities("aa &am;"));
+        assertEquals("aa &amp;am", XMLUtil.cleanAllEntities("aa &am"));
+        assertEquals("aa &amp;a", XMLUtil.cleanAllEntities("aa &a"));
+        assertEquals("aa &amp;", XMLUtil.cleanAllEntities("aa &"));
 
-        assertEquals("aa \u00A0 aa", XMLUtil.cleanAllEntities("aa &nbsp; aa")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("aa &amp;nbsp aa", XMLUtil.cleanAllEntities("aa &nbsp aa")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("aa &amp;nb-sp aa", XMLUtil.cleanAllEntities("aa &nb-sp aa")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("aa  aa", XMLUtil.cleanAllEntities("aa &nb; aa")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("aa &amp;nb aa", XMLUtil.cleanAllEntities("aa &nb aa")); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals("aa \u00A0 aa", XMLUtil.cleanAllEntities("aa &nbsp; aa"));
+        assertEquals("aa &amp;nbsp aa", XMLUtil.cleanAllEntities("aa &nbsp aa"));
+        assertEquals("aa &amp;nb-sp aa", XMLUtil.cleanAllEntities("aa &nb-sp aa"));
+        assertEquals("aa  aa", XMLUtil.cleanAllEntities("aa &nb; aa"));
+        assertEquals("aa &amp;nb aa", XMLUtil.cleanAllEntities("aa &nb aa"));
 
-        assertEquals("-&amp;-\u00A0-&lt;-&gt;-&quot;-\u00A3-\u20AC-", XMLUtil.cleanAllEntities("-&amp;-&nbsp;-&lt;-&gt;-&quot;-&pound;-&euro;-")); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals("-&amp;-\u00A0-&lt;-&gt;-&quot;-\u00A3-\u20AC-", XMLUtil.cleanAllEntities("-&amp;-&nbsp;-&lt;-&gt;-&quot;-&pound;-&euro;-"));
     }
 
     public void testCleanAllTags() {
         assertNull(XMLUtil.cleanAllTags(null));
 
-        assertEquals("", XMLUtil.cleanAllTags("")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("aa", XMLUtil.cleanAllTags("aa")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("aa &amp; aa", XMLUtil.cleanAllTags("aa &amp; aa")); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals("", XMLUtil.cleanAllTags(""));
+        assertEquals("aa", XMLUtil.cleanAllTags("aa"));
+        assertEquals("aa &amp; aa", XMLUtil.cleanAllTags("aa &amp; aa"));
 
-        assertEquals("", XMLUtil.cleanAllTags("<a>")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("", XMLUtil.cleanAllTags("<aa>")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("", XMLUtil.cleanAllTags("</aa>")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("", XMLUtil.cleanAllTags("<aa wibble=\"wobble\">")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("keep", XMLUtil.cleanAllTags("<aa>keep</aa>")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("keep", XMLUtil.cleanAllTags("<aa>keep<aa>")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("keep", XMLUtil.cleanAllTags("<aa>ke<aa>ep")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("keep", XMLUtil.cleanAllTags("ke<aa><aa>ep")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("keep keep", XMLUtil.cleanAllTags("ke<aa><aa>ep<bb> <cc>ke<aa><aa>ep")); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals("", XMLUtil.cleanAllTags("<a>"));
+        assertEquals("", XMLUtil.cleanAllTags("<aa>"));
+        assertEquals("", XMLUtil.cleanAllTags("</aa>"));
+        assertEquals("", XMLUtil.cleanAllTags("<aa wibble=\"wobble\">"));
+        assertEquals("keep", XMLUtil.cleanAllTags("<aa>keep</aa>"));
+        assertEquals("keep", XMLUtil.cleanAllTags("<aa>keep<aa>"));
+        assertEquals("keep", XMLUtil.cleanAllTags("<aa>ke<aa>ep"));
+        assertEquals("keep", XMLUtil.cleanAllTags("ke<aa><aa>ep"));
+        assertEquals("keep keep", XMLUtil.cleanAllTags("ke<aa><aa>ep<bb> <cc>ke<aa><aa>ep"));
 
-        assertEquals("", XMLUtil.cleanAllTags("<")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("", XMLUtil.cleanAllTags("<a")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("", XMLUtil.cleanAllTags("<aa")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("", XMLUtil.cleanAllTags("<aa;")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("", XMLUtil.cleanAllTags("<\\")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("", XMLUtil.cleanAllTags("<\\a")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("", XMLUtil.cleanAllTags("<\\aa")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("", XMLUtil.cleanAllTags("<\\aa;")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("", XMLUtil.cleanAllTags("< ")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("", XMLUtil.cleanAllTags("< a")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("", XMLUtil.cleanAllTags("< aa")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("", XMLUtil.cleanAllTags("< aa;")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("", XMLUtil.cleanAllTags("< aa>")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("keep", XMLUtil.cleanAllTags("keep<")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("keep", XMLUtil.cleanAllTags("keep<a")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("keep", XMLUtil.cleanAllTags("keep<aa")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("keep", XMLUtil.cleanAllTags("keep<aa dont=\"want\"")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("keep", XMLUtil.cleanAllTags("keep<aa dont=\"want\" keep")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("keep", XMLUtil.cleanAllTags("keep<aa dont=\"want\" keep>")); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals("", XMLUtil.cleanAllTags("<"));
+        assertEquals("", XMLUtil.cleanAllTags("<a"));
+        assertEquals("", XMLUtil.cleanAllTags("<aa"));
+        assertEquals("", XMLUtil.cleanAllTags("<aa;"));
+        assertEquals("", XMLUtil.cleanAllTags("<\\"));
+        assertEquals("", XMLUtil.cleanAllTags("<\\a"));
+        assertEquals("", XMLUtil.cleanAllTags("<\\aa"));
+        assertEquals("", XMLUtil.cleanAllTags("<\\aa;"));
+        assertEquals("", XMLUtil.cleanAllTags("< "));
+        assertEquals("", XMLUtil.cleanAllTags("< a"));
+        assertEquals("", XMLUtil.cleanAllTags("< aa"));
+        assertEquals("", XMLUtil.cleanAllTags("< aa;"));
+        assertEquals("", XMLUtil.cleanAllTags("< aa>"));
+        assertEquals("keep", XMLUtil.cleanAllTags("keep<"));
+        assertEquals("keep", XMLUtil.cleanAllTags("keep<a"));
+        assertEquals("keep", XMLUtil.cleanAllTags("keep<aa"));
+        assertEquals("keep", XMLUtil.cleanAllTags("keep<aa dont=\"want\""));
+        assertEquals("keep", XMLUtil.cleanAllTags("keep<aa dont=\"want\" keep"));
+        assertEquals("keep", XMLUtil.cleanAllTags("keep<aa dont=\"want\" keep>"));
     }
 }

@@ -41,6 +41,7 @@ import java.text.MessageFormat;
  * @see LucidException
  */
 public class LucidRuntimeException extends RuntimeException {
+
     /**
      * All LucidRuntimeException are constructed with references to resources in
      * an i18n properties file.
@@ -48,7 +49,7 @@ public class LucidRuntimeException extends RuntimeException {
      * @param msg
      *            The resource id to read
      */
-    public LucidRuntimeException(MsgBase msg) {
+    public LucidRuntimeException(String msg) {
         this(msg, null, null);
     }
 
@@ -59,7 +60,7 @@ public class LucidRuntimeException extends RuntimeException {
      * @param msg
      *            The resource id to read
      */
-    public LucidRuntimeException(MsgBase msg, Throwable cause) {
+    public LucidRuntimeException(String msg, Throwable cause) {
         this(msg, cause, null);
     }
 
@@ -72,7 +73,7 @@ public class LucidRuntimeException extends RuntimeException {
      * @param params
      *            An array of parameters
      */
-    public LucidRuntimeException(MsgBase msg, Object[] params) {
+    public LucidRuntimeException(String msg, Object[] params) {
         this(msg, null, params);
     }
 
@@ -81,12 +82,12 @@ public class LucidRuntimeException extends RuntimeException {
      * an i18n properties file. This version allows us to add parameters
      * 
      * @param msg
-     *            The resource id to read
+     *            the internationalized message to format
      * @param newParams
      *            An array of parameters
      */
-    public LucidRuntimeException(MsgBase msg, Throwable cause, Object[] newParams) {
-        super(msg.toString(), cause);
+    public LucidRuntimeException(String msg, Throwable cause, Object[] newParams) {
+        super(msg, cause);
 
         this.params = newParams == null ? null : (Object[]) newParams.clone();
     }
@@ -107,8 +108,8 @@ public class LucidRuntimeException extends RuntimeException {
         try {
             return MessageFormat.format(out, params);
         } catch (IllegalArgumentException ex) {
-            log.warn("Format fail for '" + out + '\'', ex); //$NON-NLS-1$
-            return "Error formatting message '" + out + '\''; //$NON-NLS-1$
+            log.warn("Format fail for '" + out + '\'', ex);
+            return "Error formatting message '" + out + '\'';
         }
     }
 

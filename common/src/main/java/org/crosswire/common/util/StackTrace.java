@@ -66,13 +66,13 @@ public final class StackTrace {
         StringWriter sout = new StringWriter();
         ex.printStackTrace(new PrintWriter(sout));
         String msg = new String(sout.getBuffer());
-        String[] calls = StringUtil.split(msg, "\n\r"); //$NON-NLS-1$
+        String[] calls = StringUtil.split(msg, "\n\r");
 
         int total = 0;
         for (int i = 0; i < calls.length - discard; i++) {
             String call = calls[i + discard];
 
-            if (!(call.startsWith("Caused") || call.indexOf("...") >= 0)) //$NON-NLS-1$ //$NON-NLS-2$
+            if (!(call.startsWith("Caused") || call.indexOf("...") >= 0))
             {
                 total++;
             }
@@ -88,7 +88,7 @@ public final class StackTrace {
             String call = calls[i + discard];
 
             try {
-                if (!(call.startsWith("Caused") || call.indexOf("...") >= 0)) //$NON-NLS-1$ //$NON-NLS-2$
+                if (!(call.startsWith("Caused") || call.indexOf("...") >= 0))
                 {
                     int spcIndex = call.indexOf(' ');
                     int lhsIndex = call.indexOf('(');
@@ -111,9 +111,9 @@ public final class StackTrace {
                     j++;
                 }
             } catch (NumberFormatException ex2) {
-                classNames[j] = "ParseError: "; //$NON-NLS-1$
+                classNames[j] = "ParseError: ";
                 methodNames[j] = call;
-                fileNames[j] = "Error"; //$NON-NLS-1$
+                fileNames[j] = "Error";
                 lineNumbers[j] = 0;
                 j++;
             }
@@ -144,7 +144,7 @@ public final class StackTrace {
      *            Number of calling function
      */
     public String getFullFunctionName(int level) {
-        return classNames[level] + '.' + methodNames[level] + "()"; //$NON-NLS-1$
+        return classNames[level] + '.' + methodNames[level] + "()";
     }
 
     /**

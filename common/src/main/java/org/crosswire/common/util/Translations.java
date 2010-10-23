@@ -143,7 +143,7 @@ public class Translations {
      */
     public void setCurrent(String newTranslation) {
         String found = DEFAULT_TRANSLATION;
-        String currentTranslation = ""; //$NON-NLS-1$
+        String currentTranslation = "";
         for (int i = 0; i < translations.length; i++) {
             String trans = translations[i];
             currentTranslation = toString(translation);
@@ -162,9 +162,9 @@ public class Translations {
             }
 
             URI outputURI = CWProject.instance().getWritableURI(getClass().getName(), FileUtil.EXTENSION_PROPERTIES);
-            NetUtil.storeProperties(props, outputURI, "BibleDesktop UI Translation"); //$NON-NLS-1$
+            NetUtil.storeProperties(props, outputURI, "BibleDesktop UI Translation");
         } catch (IOException ex) {
-            log.error("Failed to save BibleDesktop UI Translation", ex); //$NON-NLS-1$
+            log.error("Failed to save BibleDesktop UI Translation", ex);
         }
     }
 
@@ -220,7 +220,7 @@ public class Translations {
     private void loadSupportedTranslations() {
         if (translations == null) {
             try {
-                URL index = ResourceUtil.getResource(Translations.class, "translations.txt"); //$NON-NLS-1$
+                URL index = ResourceUtil.getResource(Translations.class, "translations.txt");
                 translations = NetUtil.listByIndexFile(NetUtil.toURI(index));
             } catch (IOException ex) {
                 translations = new String[0];
@@ -233,7 +233,7 @@ public class Translations {
 
         if (translationCode.indexOf('_') != -1) {
             String[] locale = StringUtil.split(translationCode, '_');
-            currentTranslation.append(", "); //$NON-NLS-1$
+            currentTranslation.append(", ");
             currentTranslation.append(Countries.getCountry(locale[1]));
         }
 
@@ -243,12 +243,12 @@ public class Translations {
     /**
      * The key used in config.xml
      */
-    private static final String TRANSLATION_KEY = "translation-codes"; //$NON-NLS-1$
+    private static final String TRANSLATION_KEY = "translation-codes";
 
     /**
      * The default translation, if the user has not chosen anything else.
      */
-    public static final String DEFAULT_TRANSLATION = "en"; //$NON-NLS-1$
+    public static final String DEFAULT_TRANSLATION = "en";
 
     /**
      * The default Locale, it the user has not chosen anything else.

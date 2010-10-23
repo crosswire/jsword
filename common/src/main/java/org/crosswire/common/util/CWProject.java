@@ -227,7 +227,7 @@ public final class CWProject {
                 // This isn't fatal, it just means that NetUtil will try to use
                 // $TMP
                 // in place of a more permanent solution.
-                log.warn("Failed to get directory for NetUtil.setURICacheDir()", ex); //$NON-NLS-1$
+                log.warn("Failed to get directory for NetUtil.setURICacheDir()", ex);
             }
 
         }
@@ -267,7 +267,7 @@ public final class CWProject {
     /**
      * The cache of downloaded files inside the project directory
      */
-    private static final String DIR_NETCACHE = "netcache"; //$NON-NLS-1$
+    private static final String DIR_NETCACHE = "netcache";
 
     /**
      * The homes for this application: first is writable, second (if present) is
@@ -289,17 +289,17 @@ public final class CWProject {
     /**
      * System property for home directory
      */
-    private static String homeProperty = "jsword.home"; //$NON-NLS-1$
+    private static String homeProperty = "jsword.home";
 
     /**
      * The JSword user settings directory
      */
-    private static String homeDirectory = ".jsword"; //$NON-NLS-1$
+    private static String homeDirectory = ".jsword";
 
     /**
      * The JSword user settings directory for Mac and Windows
      */
-    private static String homeAltDirectory = "JSword"; //$NON-NLS-1$
+    private static String homeAltDirectory = "JSword";
 
     /**
      * The filesystem resources

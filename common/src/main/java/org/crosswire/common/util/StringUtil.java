@@ -45,7 +45,7 @@ public final class StringUtil {
     /**
      * The newline character
      */
-    public static final String NEWLINE = System.getProperty("line.separator", "\r\n"); //$NON-NLS-1$ //$NON-NLS-2$
+    public static final String NEWLINE = System.getProperty("line.separator", "\r\n");
 
     /**
      * This method reads an InputStream <b>In its entirety</b>, and passes The
@@ -552,7 +552,7 @@ public final class StringUtil {
             return null;
         }
         if (separator == null) {
-            separator = ""; //$NON-NLS-1$
+            separator = "";
         }
         int arraySize = array.length;
 
@@ -596,11 +596,11 @@ public final class StringUtil {
      */
     public static String toString(Object[] a) {
         if (a == null) {
-            return "null"; //$NON-NLS-1$
+            return "null";
         }
 
         if (a.length == 0) {
-            return "[]"; //$NON-NLS-1$
+            return "[]";
         }
 
         StringBuffer buf = new StringBuffer();
@@ -609,13 +609,13 @@ public final class StringUtil {
             if (i == 0) {
                 buf.append('[');
             } else {
-                buf.append(", "); //$NON-NLS-1$
+                buf.append(", ");
             }
 
             buf.append(String.valueOf(a[i]));
         }
 
-        buf.append("]"); //$NON-NLS-1$
+        buf.append("]");
         return buf.toString();
     }
 

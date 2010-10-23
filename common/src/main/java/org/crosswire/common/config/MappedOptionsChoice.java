@@ -48,12 +48,12 @@ public class MappedOptionsChoice extends AbstractReflectedChoice implements Mapp
         assert configResources != null;
 
         super.init(option, configResources);
-        Element mapElement = option.getChild("map"); //$NON-NLS-1$
+        Element mapElement = option.getChild("map");
         if (mapElement == null) {
             throw new StartupException(Msg.CONFIG_NOMAP);
         }
 
-        String name = mapElement.getAttributeValue("name"); //$NON-NLS-1$
+        String name = mapElement.getAttributeValue("name");
         Object map = ChoiceFactory.getDataMap().get(name);
         if (map instanceof Map) {
             options = (Map) map;
@@ -89,7 +89,7 @@ public class MappedOptionsChoice extends AbstractReflectedChoice implements Mapp
      */
     /* @Override */
     public String convertToString(Object orig) {
-        return orig != null ? orig.toString() : ""; //$NON-NLS-1$
+        return orig != null ? orig.toString() : "";
     }
 
     /*
@@ -110,7 +110,7 @@ public class MappedOptionsChoice extends AbstractReflectedChoice implements Mapp
             }
         }
         logger.warn(Msg.IGNORE.toString(orig));
-        return ""; //$NON-NLS-1$
+        return "";
     }
 
     private static Logger logger = Logger.getLogger(MappedOptionsChoice.class);

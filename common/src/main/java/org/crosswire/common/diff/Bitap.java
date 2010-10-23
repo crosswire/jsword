@@ -198,7 +198,7 @@ public class Bitap implements Locator {
     protected void alphabet() {
         int len = pattern.length();
 
-        assert len <= Bitap.MAXBITS : "Pattern too long for this application."; //$NON-NLS-1$
+        assert len <= Bitap.MAXBITS : "Pattern too long for this application.";
 
         for (int i = 0; i < len; i++) {
             Character c = new Character(pattern.charAt(i));

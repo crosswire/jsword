@@ -31,13 +31,42 @@ import org.crosswire.common.util.MsgBase;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public final class Msg extends MsgBase {
-    static final Msg WARRANTY = new Msg("License.warranty"); //$NON-NLS-1$
-    static final Msg DETAILS = new Msg("License.details"); //$NON-NLS-1$
+    /**
+     * Get the internationalized text, but return key if key is unknown.
+     * 
+     * @param key
+     * @return the internationalized text
+     */
+    public static String gettext(String key)
+    {
+        return msg.lookup(key);
+    }
 
     /**
-     * Passthrough ctor
+     * Get the internationalized text, but return key if key is unknown.
+     * The text requires one parameter to be passed.
+     * 
+     * @param key
+     * @param param
+     * @return the formatted, internationalized text
      */
-    private Msg(String name) {
-        super(name);
+    public static String gettext(String key, Object param)
+    {
+        return msg.toString(key, param);
     }
+
+    /**
+     * Get the internationalized text, but return key if key is unknown.
+     * The text requires one parameter to be passed.
+     * 
+     * @param key
+     * @param param
+     * @return the formatted, internationalized text
+     */
+    public static String gettext(String key, Object[] params)
+    {
+        return msg.toString(key, params);
+    }
+
+    private static MsgBase msg = new Msg();
 }

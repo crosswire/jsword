@@ -41,12 +41,12 @@ public class StringOptionsChoice extends AbstractReflectedChoice implements Mult
     /* @Override */
     public void init(Element option, ResourceBundle configResources) throws StartupException {
         super.init(option, configResources);
-        Element map = option.getChild("map"); //$NON-NLS-1$
+        Element map = option.getChild("map");
         if (map == null) {
             throw new StartupException(Msg.CONFIG_NOMAP);
         }
 
-        String name = map.getAttributeValue("name"); //$NON-NLS-1$
+        String name = map.getAttributeValue("name");
         array = (String[]) ChoiceFactory.getDataMap().get(name);
     }
 

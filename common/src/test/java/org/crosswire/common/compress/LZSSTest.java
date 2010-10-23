@@ -97,7 +97,7 @@ public class LZSSTest extends TestCase {
     public void testCompression() {
         InputStream kjvGenesis = null;
         try {
-            kjvGenesis = ResourceUtil.getResourceAsStream("kjv_genesis.txt"); //$NON-NLS-1$
+            kjvGenesis = ResourceUtil.getResourceAsStream("kjv_genesis.txt");
         } catch (MissingResourceException e) {
             fail();
         } catch (IOException e) {
@@ -122,7 +122,7 @@ public class LZSSTest extends TestCase {
         }
         try {
             byte[] back = bosUncompressed.toByteArray();
-            String result = new String(back, "UTF-8"); //$NON-NLS-1$
+            String result = new String(back, "UTF-8");
             System.out.println(result);
         } catch (UnsupportedEncodingException e) {
             fail();

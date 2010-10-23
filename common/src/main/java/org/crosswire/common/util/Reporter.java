@@ -124,7 +124,6 @@ public final class Reporter {
      *            The cause of the message, a Component if possible.
      * @param message
      *            The message to pass to the user
-     * @deprecated Use informUser(Object source, MsgBase message) instead
      */
     public static void informUser(Object source, String message) {
         log.debug(message);
@@ -223,7 +222,7 @@ public final class Reporter {
         Object[] liArr = LISTENERS.getListenerList();
 
         if (liArr.length == 0) {
-            log.warn("Nothing to listen to report: message=" + ev.getMessage(), ev.getException()); //$NON-NLS-1$
+            log.warn("Nothing to listen to report: message=" + ev.getMessage(), ev.getException());
         }
 
         // Process the listeners last to first, notifying
@@ -260,7 +259,7 @@ public final class Reporter {
     /**
      * The system property name for registering AWT exceptions
      */
-    private static final String AWT_HANDLER_PROPERTY = "sun.awt.exception.handler"; //$NON-NLS-1$
+    private static final String AWT_HANDLER_PROPERTY = "sun.awt.exception.handler";
 
     /**
      * The name of the class to register for AWT exceptions
@@ -296,7 +295,8 @@ public final class Reporter {
             // were causing recursive AWT exceptions
             // and way too many dialogs were being thrown up on the screen.
             if (gate.open()) {
-                Reporter.informUser(this, new LucidException(UserMsg.UNEXPECTED_ERROR, ex));
+                // TRANSLATOR: Very frequent error condition: The program has encountered a severe problem and it is likely that the program is unusable.
+                Reporter.informUser(this, new LucidException(UserMsg.gettext("Unexpected internal problem. You may need to restart."), ex));
             }
         }
 

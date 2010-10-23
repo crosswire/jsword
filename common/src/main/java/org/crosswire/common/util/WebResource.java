@@ -92,9 +92,10 @@ public class WebResource {
                 return new HttpURLConnection(method, NetUtil.toURL(uri)).getContentLength();
             }
             String reason = HttpStatus.getStatusText(status);
-            Reporter.informUser(this, UserMsg.MISSING_FILE, new Object[] {
+            // TRANSLATOR: Common error condition: {0} is a placeholder for the URL of what could not be found.
+            Reporter.informUser(this, UserMsg.gettext("Unable to find: {0}", new Object[] {
                 reason + ':' + uri.getPath()
-            });
+            }));
         } catch (IOException e) {
             return 0;
         } finally {
@@ -158,14 +159,16 @@ public class WebResource {
                 }
             } else {
                 String reason = HttpStatus.getStatusText(status);
-                Reporter.informUser(this, UserMsg.MISSING_FILE, new Object[] {
+                // TRANSLATOR: Common error condition: {0} is a placeholder for the URL of what could not be found.
+                Reporter.informUser(this, UserMsg.gettext("Unable to find: {0}", new Object[] {
                     reason + ':' + uri.getPath()
-                });
+                }));
             }
         } catch (IOException e) {
-            throw new LucidException(UserMsg.MISSING_FILE, e, new Object[] {
+            // TRANSLATOR: Common error condition: {0} is a placeholder for the URL of what could not be found.
+            throw new LucidException(UserMsg.gettext("Unable to find: {0}", new Object[] {
                 uri.toString()
-            });
+            }), e);
         } finally {
             // Release the connection.
             method.releaseConnection();

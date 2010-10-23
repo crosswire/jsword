@@ -117,8 +117,8 @@ public class Config {
 
         String value = model.getString();
         if (value == null) {
-            value = ""; //$NON-NLS-1$
-            log.info("key=" + key + " had a null value"); //$NON-NLS-1$//$NON-NLS-2$
+            value = "";
+            log.info("key=" + key + " had a null value");
         }
 
         local.put(key, value);
@@ -141,7 +141,7 @@ public class Config {
         Iterator iter = root.getChildren().iterator();
         while (iter.hasNext()) {
             Element element = (Element) iter.next();
-            String key = element.getAttributeValue("key"); //$NON-NLS-1$
+            String key = element.getAttributeValue("key");
 
             Exception ex = null;
             try {
@@ -160,7 +160,7 @@ public class Config {
             }
 
             if (ex != null) {
-                log.warn("Error creating config element, key=" + key, ex); //$NON-NLS-1$
+                log.warn("Error creating config element, key=" + key, ex);
             }
         }
     }
@@ -272,14 +272,14 @@ public class Config {
             // if force==true or if a higher priority choice has
             // changed.
             if (!newValue.equals(oldValue)) {
-                log.info("Setting " + key + "=" + newValue + " (was " + oldValue + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                log.info("Setting " + key + "=" + newValue + " (was " + oldValue + ")");
                 try {
                     choice.setString(newValue);
                     if (changeListeners != null) {
                         changeListeners.firePropertyChange(new PropertyChangeEvent(choice, choice.getKey(), oldValue, newValue));
                     }
                 } catch (LucidException ex) {
-                    log.warn("Failure setting " + key + "=" + newValue, ex); //$NON-NLS-1$ //$NON-NLS-2$
+                    log.warn("Failure setting " + key + "=" + newValue, ex);
                     Reporter.informUser(this, new ConfigException(Msg.CONFIG_SETFAIL, ex, new Object[] {
                         choice.getFullPath()
                     }));
@@ -353,7 +353,7 @@ public class Config {
     public static String getPath(String key) {
         int lastDot = key.lastIndexOf('.');
         if (lastDot == -1) {
-            throw new IllegalArgumentException("key=" + key + " does not contain a dot."); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new IllegalArgumentException("key=" + key + " does not contain a dot.");
         }
 
         return key.substring(0, lastDot);
@@ -365,7 +365,7 @@ public class Config {
     public static String getLeaf(String key) {
         int lastDot = key.lastIndexOf('.');
         if (lastDot == -1) {
-            throw new IllegalArgumentException("key=" + key + " does not contain a dot."); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new IllegalArgumentException("key=" + key + " does not contain a dot.");
         }
 
         return key.substring(lastDot + 1);

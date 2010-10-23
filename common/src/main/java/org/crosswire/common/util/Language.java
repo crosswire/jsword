@@ -85,13 +85,13 @@ public class Language implements Comparable {
     public boolean isLeftToRight() {
         if (!knowsDirection) {
             // TODO(DMS): Improve this.
-            ltor = !("he".equals(code) || //$NON-NLS-1$ Hebrew
-                    "ar".equals(code) || //$NON-NLS-1$ Arabic
-                    "fa".equals(code) || //$NON-NLS-1$ Farsi/Persian
-                    "ur".equals(code) || //$NON-NLS-1$ Uighur
-                    "uig".equals(code) || //$NON-NLS-1$ Uighur, too
-                    "syr".equals(code) || //$NON-NLS-1$ Syriac
-            "iw".equals(code)); //$NON-NLS-1$ Java's notion of Hebrew
+            ltor = !("he".equals(code)  || // Hebrew
+                     "ar".equals(code)  || // Arabic
+                     "fa".equals(code)  || // Farsi/Persian
+                     "ur".equals(code)  || // Uighur
+                     "uig".equals(code) || // Uighur, too
+                     "syr".equals(code) || // Syriac
+                     "iw".equals(code));   // Java's notion of Hebrew
 
             knowsDirection = true;
         }

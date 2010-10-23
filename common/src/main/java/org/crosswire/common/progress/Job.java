@@ -186,7 +186,8 @@ public final class Job implements Progress {
     public void done() {
         synchronized (this) {
             finished = true;
-            sectionName = UserMsg.DONE.toString();
+            // TRANSLATOR: This shows up in a progress bar when progress is finished.
+            sectionName = UserMsg.gettext("Done");
             work = 100;
 
             if (updater != null) {
@@ -356,7 +357,7 @@ public final class Job implements Progress {
         long now = System.currentTimeMillis();
 
         if (now < sectionStart) {
-            log.warn("now before started: now=" + new Date(now) + " started=" + new Date(sectionStart)); //$NON-NLS-1$ //$NON-NLS-2$
+            log.warn("now before started: now=" + new Date(now) + " started=" + new Date(sectionStart));
             return;
         }
 
@@ -425,7 +426,7 @@ public final class Job implements Progress {
 
         percentEnd = work + pcdiff;
 
-        log.debug("Predicting " + predsecttime + "ms (" + work + '-' + percentEnd + "%) for section " + message); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        log.debug("Predicting " + predsecttime + "ms (" + work + '-' + percentEnd + "%) for section " + message);
     }
 
     /**
@@ -451,11 +452,11 @@ public final class Job implements Progress {
                         predictedLength = age;
                     }
                 } catch (NumberFormatException ex) {
-                    log.error("Time format error", ex); //$NON-NLS-1$
+                    log.error("Time format error", ex);
                 }
             }
         } catch (IOException ex) {
-            log.debug("Failed to load prediction times - guessing"); //$NON-NLS-1$
+            log.debug("Failed to load prediction times - guessing");
         }
     }
 
@@ -487,9 +488,9 @@ public final class Job implements Progress {
 
         // And save. It's not a disaster if this goes wrong
         try {
-            NetUtil.storeProperties(predictions, predictURI, "Predicted Startup Times"); //$NON-NLS-1$
+            NetUtil.storeProperties(predictions, predictURI, "Predicted Startup Times");
         } catch (IOException ex) {
-            log.error("Failed to save prediction times", ex); //$NON-NLS-1$
+            log.error("Failed to save prediction times", ex);
         }
     }
 

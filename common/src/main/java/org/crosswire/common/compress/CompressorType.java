@@ -35,7 +35,7 @@ public abstract class CompressorType implements Serializable {
     /**
      * Delete a sequence.
      */
-    public static final CompressorType ZIP = new CompressorType("ZIP") { //$NON-NLS-1$
+    public static final CompressorType ZIP = new CompressorType("ZIP") {
 
         /*
          * (non-Javadoc)
@@ -56,7 +56,7 @@ public abstract class CompressorType implements Serializable {
     /**
      * Insert a sequence
      */
-    public static final CompressorType LZSS = new CompressorType("LZSS") { //$NON-NLS-1$
+    public static final CompressorType LZSS = new CompressorType("LZSS") {
 
         /*
          * (non-Javadoc)

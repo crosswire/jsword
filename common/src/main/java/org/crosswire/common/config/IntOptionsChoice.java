@@ -48,13 +48,13 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements MappedC
 
         super.init(option, configResources);
 
-        String prefix = getKey() + ".alternative."; //$NON-NLS-1$
+        String prefix = getKey() + ".alternative.";
 
         options = new TreeMap();
-        Iterator iter = option.getChildren("alternative").iterator(); //$NON-NLS-1$
+        Iterator iter = option.getChildren("alternative").iterator();
         while (iter.hasNext()) {
             Element alternative = (Element) iter.next();
-            int number = Integer.parseInt(alternative.getAttributeValue("number")); //$NON-NLS-1$
+            int number = Integer.parseInt(alternative.getAttributeValue("number"));
             String name = configResources.getString(prefix + number);
             options.put(new Integer(number), name);
         }

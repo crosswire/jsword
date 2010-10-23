@@ -55,9 +55,9 @@ public final class ChoiceFactory {
     {
         Class clazz = null;
 
-        String type = option.getAttributeValue("type"); //$NON-NLS-1$
-        if ("custom".equals(type)) { //$NON-NLS-1$
-            String clazzstr = option.getAttributeValue("class"); //$NON-NLS-1$
+        String type = option.getAttributeValue("type");
+        if ("custom".equals(type)) {
+            String clazzstr = option.getAttributeValue("class");
             clazz = ClassUtil.forName(clazzstr);
         } else {
             clazz = (Class) map.get(type);

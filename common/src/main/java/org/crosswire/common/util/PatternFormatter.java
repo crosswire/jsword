@@ -62,7 +62,7 @@ public class PatternFormatter extends Formatter {
     public synchronized String format(LogRecord record) {
         // Minimize memory allocations here.
         dat.setTime(record.getMillis());
-        String throwable = ""; //$NON-NLS-1$
+        String throwable = "";
         if (record.getThrown() != null) {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
@@ -71,7 +71,7 @@ public class PatternFormatter extends Formatter {
             throwable = sw.toString();
         }
 
-        String format = LogManager.getLogManager().getProperty(PatternFormatter.class.getName() + ".format"); //$NON-NLS-1$
+        String format = LogManager.getLogManager().getProperty(PatternFormatter.class.getName() + ".format");
         String loggerName = record.getLoggerName();
         Logger logger = LogManager.getLogManager().getLogger(loggerName);
 
@@ -80,7 +80,7 @@ public class PatternFormatter extends Formatter {
             String aLoggerName = aLogger.getName();
 
             if (aLoggerName != null) {
-                property = LogManager.getLogManager().getProperty(aLoggerName + ".format"); //$NON-NLS-1$
+                property = LogManager.getLogManager().getProperty(aLoggerName + ".format");
             }
 
             if (property != null) {
@@ -112,10 +112,10 @@ public class PatternFormatter extends Formatter {
     }
 
     private Date dat = new Date();
-    private static final String DEFAULT_FORMAT = "{1}({2}): {3}{8} {4}"; //$NON-NLS-1$
+    private static final String DEFAULT_FORMAT = "{1}({2}): {3}{8} {4}";
     private MessageFormat formatter;
 
     // Line separator string. This is the value of the line.separator
     // property at the moment that the PatternFormatter was created.
-    private String lineSeparator = System.getProperty("line.separator", "\r\n"); //$NON-NLS-1$ //$NON-NLS-2$
+    private String lineSeparator = System.getProperty("line.separator", "\r\n");
 }

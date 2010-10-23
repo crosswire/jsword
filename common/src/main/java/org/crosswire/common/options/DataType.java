@@ -37,7 +37,7 @@ public abstract class DataType implements Serializable {
     /**
      * A string argument.
      */
-    public static final DataType STRING = new DataType("String") //$NON-NLS-1$
+    public static final DataType STRING = new DataType("String")
     {
         /*
          * (non-Javadoc)
@@ -59,7 +59,7 @@ public abstract class DataType implements Serializable {
     /**
      * An integer argument.
      */
-    public static final DataType INTEGER = new DataType("Integer") //$NON-NLS-1$
+    public static final DataType INTEGER = new DataType("Integer")
     {
         /*
          * (non-Javadoc)
@@ -81,7 +81,7 @@ public abstract class DataType implements Serializable {
     /**
      * An boolean argument that allows various values for 'true'.
      */
-    public static final DataType BOOLEAN = new DataType("Boolean") //$NON-NLS-1$
+    public static final DataType BOOLEAN = new DataType("Boolean")
     {
         /*
          * (non-Javadoc)

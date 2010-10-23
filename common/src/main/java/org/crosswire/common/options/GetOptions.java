@@ -112,7 +112,7 @@ public class GetOptions {
 
             // If we are at the end of all options, '--', we need to skip this
             // and copy what follows to the end
-            if ("--".equals(nextArg)) { //$NON-NLS-1$
+            if ("--".equals(nextArg)) {
                 for (int j = i + 1; j < nargs; j++) {
                     nonOptionArgs.add(args[j]);
                 }
@@ -131,10 +131,10 @@ public class GetOptions {
                 List opts = programOptions.getLongOptions(flag);
                 int count = opts.size();
                 if (count == 0) {
-                    throw new IllegalArgumentException("Illegal option --" + flag); //$NON-NLS-1$
+                    throw new IllegalArgumentException("Illegal option --" + flag);
                 }
                 if (count > 1) {
-                    throw new IllegalArgumentException("Ambiguous option --" + flag); //$NON-NLS-1$
+                    throw new IllegalArgumentException("Ambiguous option --" + flag);
                 }
                 Option option = (Option) opts.get(0);
                 if (option.getArgumentType().equals(ArgumentType.NO_ARGUMENT)) {
@@ -146,7 +146,7 @@ public class GetOptions {
                 if (equalPos != -1) {
                     // Add option with argument to options
                     // Check for empty argument
-                    String argument = (equalPos + 1 < nextArg.length()) ? nextArg.substring(equalPos + 1) : ""; //$NON-NLS-1$
+                    String argument = (equalPos + 1 < nextArg.length()) ? nextArg.substring(equalPos + 1) : "";
                     suppliedOptions.put(option, argument);
                     continue;
                 }
@@ -159,7 +159,7 @@ public class GetOptions {
                         suppliedOptions.put(option, argument);
                         continue;
                     }
-                    throw new IllegalArgumentException("Option missing required argument"); //$NON-NLS-1$
+                    throw new IllegalArgumentException("Option missing required argument");
                 }
             } else {
                 // Process a short argument or short argument sequence
@@ -170,7 +170,7 @@ public class GetOptions {
                     char curChar = nextArg.charAt(j);
                     Option option = programOptions.getShortOption(curChar);
                     if (option == null) {
-                        throw new IllegalArgumentException("Illegal option -" + curChar); //$NON-NLS-1$
+                        throw new IllegalArgumentException("Illegal option -" + curChar);
                     }
                     if (option.getArgumentType().equals(ArgumentType.NO_ARGUMENT)) {
                         // Add option with null argument to options
@@ -193,7 +193,7 @@ public class GetOptions {
                             suppliedOptions.put(option, argument);
                             continue;
                         }
-                        throw new IllegalArgumentException("Option missing required argument"); //$NON-NLS-1$
+                        throw new IllegalArgumentException("Option missing required argument");
                     }
                 }
             }

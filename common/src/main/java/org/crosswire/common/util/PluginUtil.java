@@ -70,17 +70,17 @@ public final class PluginUtil {
                     if (clazz.isAssignableFrom(impl)) {
                         matches.add(impl);
                     } else {
-                        log.warn("Class " + impl.getName() + " does not implement " + clazz.getName() + ". Ignoring."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        log.warn("Class " + impl.getName() + " does not implement " + clazz.getName() + ". Ignoring.");
                     }
                 } catch (ClassNotFoundException ex) {
-                    log.warn("Failed to add class to list: " + clazz.getName(), ex); //$NON-NLS-1$
+                    log.warn("Failed to add class to list: " + clazz.getName(), ex);
                 }
             }
 
-            log.debug("Found " + matches.size() + " implementors of " + clazz.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+            log.debug("Found " + matches.size() + " implementors of " + clazz.getName());
             return (Class[]) matches.toArray(new Class[matches.size()]);
         } catch (IOException ex) {
-            log.error("Failed to get any classes.", ex); //$NON-NLS-1$
+            log.error("Failed to get any classes.", ex);
             return new Class[0];
         }
     }
@@ -112,16 +112,16 @@ public final class PluginUtil {
                     if (clazz.isAssignableFrom(impl)) {
                         matches.put(key, impl);
                     } else {
-                        log.warn("Class " + impl.getName() + " does not implement " + clazz.getName() + ". Ignoring."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        log.warn("Class " + impl.getName() + " does not implement " + clazz.getName() + ". Ignoring.");
                     }
                 } catch (ClassNotFoundException ex) {
-                    log.warn("Failed to add class to list: " + clazz.getName(), ex); //$NON-NLS-1$
+                    log.warn("Failed to add class to list: " + clazz.getName(), ex);
                 }
             }
 
-            log.debug("Found " + matches.size() + " implementors of " + clazz.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+            log.debug("Found " + matches.size() + " implementors of " + clazz.getName());
         } catch (IOException ex) {
-            log.error("Failed to get any classes.", ex); //$NON-NLS-1$
+            log.error("Failed to get any classes.", ex);
         }
 
         return matches;
@@ -216,12 +216,12 @@ public final class PluginUtil {
     /**
      * Extension for properties files
      */
-    public static final String EXTENSION_PLUGIN = ".plugin"; //$NON-NLS-1$
+    public static final String EXTENSION_PLUGIN = ".plugin";
 
     /**
      * The string for default implementations
      */
-    private static final String DEFAULT = "default"; //$NON-NLS-1$
+    private static final String DEFAULT = "default";
 
     /**
      * The log stream

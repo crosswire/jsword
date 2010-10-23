@@ -52,25 +52,25 @@ public class StringUtilTest extends TestCase {
         PipedReader in = new PipedReader();
         PipedWriter pout = new PipedWriter(in);
         PrintWriter out = new PrintWriter(pout, true);
-        out.println("a b c d e"); //$NON-NLS-1$
-        out.println("f g h i j"); //$NON-NLS-1$
+        out.println("a b c d e");
+        out.println("f g h i j");
         out.close();
         pout.close();
-        assertEquals(StringUtil.read(in), "a b c d e" + StringUtil.NEWLINE + "f g h i j" + StringUtil.NEWLINE); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(StringUtil.read(in), "a b c d e" + StringUtil.NEWLINE + "f g h i j" + StringUtil.NEWLINE);
     }
 
     public void testGetInitials() {
-        assertEquals(StringUtil.getInitials("Church of England"), "CoE"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(StringUtil.getInitials("Java DataBase Connectivity"), "JDC"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(StringUtil.getInitials(""), ""); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(StringUtil.getInitials("Church of England"), "CoE");
+        assertEquals(StringUtil.getInitials("Java DataBase Connectivity"), "JDC");
+        assertEquals(StringUtil.getInitials(""), "");
     }
 
     public void testCreateTitle() {
-        assertEquals(StringUtil.createTitle("OneTwo"), "One Two"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(StringUtil.createTitle("one_two"), "One Two"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(StringUtil.createTitle("ONeTWo"), "ONe TWo"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(StringUtil.createTitle("One_Two"), "One Two"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(StringUtil.createTitle("One _Two"), "One Two"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(StringUtil.createTitle("one  _Two"), "One Two"); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(StringUtil.createTitle("OneTwo"), "One Two");
+        assertEquals(StringUtil.createTitle("one_two"), "One Two");
+        assertEquals(StringUtil.createTitle("ONeTWo"), "ONe TWo");
+        assertEquals(StringUtil.createTitle("One_Two"), "One Two");
+        assertEquals(StringUtil.createTitle("One _Two"), "One Two");
+        assertEquals(StringUtil.createTitle("one  _Two"), "One Two");
     }
 }

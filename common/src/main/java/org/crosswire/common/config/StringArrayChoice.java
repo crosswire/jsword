@@ -42,7 +42,7 @@ public class StringArrayChoice extends AbstractReflectedChoice {
     /* @Override */
     public void init(Element option, ResourceBundle configResources) throws StartupException {
         super.init(option, configResources);
-        separator = option.getAttributeValue("separator"); //$NON-NLS-1$
+        separator = option.getAttributeValue("separator");
     }
 
     /*
@@ -78,5 +78,5 @@ public class StringArrayChoice extends AbstractReflectedChoice {
         return Convert.string2StringArray(orig, separator);
     }
 
-    private String separator = " "; //$NON-NLS-1$
+    private String separator = " ";
 }

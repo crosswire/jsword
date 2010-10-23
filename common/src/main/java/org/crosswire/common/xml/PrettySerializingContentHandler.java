@@ -142,7 +142,7 @@ public class PrettySerializingContentHandler implements ContentHandler {
         for (int i = 0; i < attrs.getLength(); i++) {
             write(' ');
             write(decorateAttributeName(XMLUtil.getAttributeName(attrs, i)));
-            write("='"); //$NON-NLS-1$
+            write("='");
             write(decorateAttributeValue(XMLUtil.escape(attrs.getValue(i))));
             write('\'');
         }
@@ -167,7 +167,7 @@ public class PrettySerializingContentHandler implements ContentHandler {
             }
             //
             // // Hack alert JTextPane cannot handle <br/>
-            //            if (localname.equalsIgnoreCase("br")) //$NON-NLS-1$
+            //            if (localname.equalsIgnoreCase("br"))
             // {
             write(getTagEnd());
             // }
@@ -249,31 +249,31 @@ public class PrettySerializingContentHandler implements ContentHandler {
     }
 
     protected String getTagStart() {
-        return "<"; //$NON-NLS-1$
+        return "<";
     }
 
     protected String getTagEnd() {
-        return ">"; //$NON-NLS-1$
+        return ">";
     }
 
     protected String getEmptyTagEnd() {
-        return "/>"; //$NON-NLS-1$
+        return "/>";
     }
 
     protected String getEndTagStart() {
-        return "</"; //$NON-NLS-1$
+        return "</";
     }
 
     protected String getPIStart() {
-        return "<!"; //$NON-NLS-1$
+        return "<!";
     }
 
     protected String getPIEnd() {
-        return "!>"; //$NON-NLS-1$
+        return "!>";
     }
 
     protected String getNewline() {
-        return "\n"; //$NON-NLS-1$
+        return "\n";
     }
 
     protected String decorateTagName(String tagName) {
