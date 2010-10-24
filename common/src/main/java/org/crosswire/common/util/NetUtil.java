@@ -252,7 +252,7 @@ public final class NetUtil {
      * @param oldUri
      *            The URI to move
      * @param newUri
-     *            The desitination URI
+     *            The destination URI
      */
     public static boolean move(URI oldUri, URI newUri) throws IOException {
         checkFileURI(oldUri);
