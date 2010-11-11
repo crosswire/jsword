@@ -1,7 +1,7 @@
 <project name="jsword-common" default="all">
 
   <!-- This build uses the core build targets -->
-  <import file="../common/core.xml"/>
+  <import file="../jsword/core.xml"/>
 
   <target name="clean.extra" description="Extra stuff to do after calling clean">
     <delete dir="${keystore.file}"/>

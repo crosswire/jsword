@@ -376,7 +376,7 @@
 <property name="severity" value="ignore"/>
 </module>
 <module name="Header">
-<property name="headerFile" value="E:\Eclipse\JSword\common\LicenseHeader.txt"/>
+<property name="headerFile" value="E:\Eclipse\JSword\jsword\LicenseHeader.txt"/>
 <property name="ignoreLines" value="3,20"/>
 </module>
 <module name="RequiredRegexp">

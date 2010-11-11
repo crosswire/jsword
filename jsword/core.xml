@@ -24,7 +24,7 @@
   <property name="test.root"        value="${target.root}/test"/>
   <property name="test.classes"     value="${test.root}/classes"/>
   <property name="test.jar"         value="${test.root}"/>
-  <property name="keystore.devfile" value="../common/crosswire.keystore"/>
+  <property name="keystore.devfile" value="../jsword/crosswire.keystore"/>
   <property name="keystore.file"    value="${keystore.devfile}"/>
   <property name="keystore.alias"   value="jsword"/>
   <property name="keystore.pswd"    value="p455w0rd"/>
@@ -40,7 +40,6 @@
   <patternset id="internal.built.jars">
     <include name="**/bibledesktop-${release.version}.jar"/>
     <include name="**/jsword-${release.version}.jar"/>
-    <include name="**/jsword-common-${release.version}.jar"/>
     <include name="**/jsword-common-swing-${release.version}.jar"/>
     <include name="**/jsword-${release.version}.jar"/>
   </patternset>
@@ -91,7 +90,7 @@
     =========================================================================-->
   <path id="test.jarpath">
     <fileset dir="${target.jar}" includes="*.jar"/>
-    <fileset dir="../common/jar" includes="**/junit*.jar"/>
+    <fileset dir="../jsword/jar" includes="**/junit*.jar"/>
   </path>
 
   <!--=======================================================================
@@ -132,10 +131,10 @@
   <xmlcatalog id="commonDTDs">
     <dtd 
       publicId="-//W3C//DTD XHTML 1.0 Strict//EN"
-      location="../common/etc/dtdcatalog/xhtml1-strict.dtd"/>
+      location="../jsword/etc/dtdcatalog/xhtml1-strict.dtd"/>
     <dtd 
       publicId="-//W3C//DTD XHTML 1.0 Transitional//EN"
-      location="../common/etc/dtdcatalog/xhtml1-transitional.dtd"/>
+      location="../jsword/etc/dtdcatalog/xhtml1-transitional.dtd"/>
   </xmlcatalog>
 
   <!--=======================================================================

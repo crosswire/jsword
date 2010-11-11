@@ -1,13 +1,10 @@
 <project name="jsword" default="all">
 
   <!-- This build uses the core build targets -->
-  <import file="../common/core.xml"/>
+  <import file="../jsword/core.xml"/>
 
-  <!-- Actually the dependency is on common,
-	== but bibledesktop has two dependencies (jsword and common-swing,
-	== and this is a work around for that
-	-->
-  <property name="dependency" value="common-swing"/>
-  <property name="dependency.jar" value="../${dependency}/${target.jar}"/>
+  <target name="clean.extra" description="Extra stuff to do after calling clean">
+    <delete dir="${keystore.file}"/>
+  </target>
 
 </project>
