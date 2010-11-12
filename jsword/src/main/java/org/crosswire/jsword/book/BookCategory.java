@@ -71,7 +71,7 @@ public final class BookCategory implements Serializable, Comparable {
      */
     private BookCategory(String name, String externalName) {
         this.name = name;
-        this.externalName = externalName.toString();
+        this.externalName = externalName;
     }
 
     /**
@@ -93,7 +93,7 @@ public final class BookCategory implements Serializable, Comparable {
     public static BookCategory fromExternalString(String name) {
         for (int i = 0; i < VALUES.length; i++) {
             BookCategory o = VALUES[i];
-            if (o.externalName.toString().equalsIgnoreCase(name)) {
+            if (o.externalName.equalsIgnoreCase(name)) {
                 return o;
             }
         }
@@ -148,7 +148,7 @@ public final class BookCategory implements Serializable, Comparable {
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        return externalName.toString();
+        return externalName;
     }
 
     /**

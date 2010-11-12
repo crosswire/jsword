@@ -72,8 +72,7 @@ public final class StackTrace {
         for (int i = 0; i < calls.length - discard; i++) {
             String call = calls[i + discard];
 
-            if (!(call.startsWith("Caused") || call.indexOf("...") >= 0))
-            {
+            if (!(call.startsWith("Caused") || call.indexOf("...") >= 0)) {
                 total++;
             }
         }
@@ -88,8 +87,7 @@ public final class StackTrace {
             String call = calls[i + discard];
 
             try {
-                if (!(call.startsWith("Caused") || call.indexOf("...") >= 0))
-                {
+                if (!(call.startsWith("Caused") || call.indexOf("...") >= 0)) {
                     int spcIndex = call.indexOf(' ');
                     int lhsIndex = call.indexOf('(');
                     int clnIndex = call.indexOf(':');

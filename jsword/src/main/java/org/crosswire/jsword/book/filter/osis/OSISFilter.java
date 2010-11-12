@@ -61,8 +61,7 @@ public class OSISFilter implements Filter {
 
         // FIXME(dms): this is a major HACK handling a problem with a badly
         // encoded module.
-        if (book.getInitials().startsWith("NET") && plain.endsWith("</div>"))
-        {
+        if (book.getInitials().startsWith("NET") && plain.endsWith("</div>")) {
             clean = clean.substring(0, plain.length() - 6);
         }
 
@@ -90,8 +89,7 @@ public class OSISFilter implements Filter {
         }
 
         if (ex != null) {
-            DataPolice.report("Parse " + book.getInitials() + "(" + key.getName() + ") failed: " + ex.getMessage() +
-                    "\non: " + plain);
+            DataPolice.report("Parse " + book.getInitials() + "(" + key.getName() + ") failed: " + ex.getMessage() + "\non: " + plain);
             ele = cleanTags(book, key, clean);
         }
 

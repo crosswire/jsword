@@ -227,11 +227,11 @@ public class BibleToOsis {
 
     private void buildChapterOpen(StringBuffer buf, String bookName, int chapter) {
         MessageFormat msgFormat = new MessageFormat("<chapter osisID=\"{0}.{1}\" chapterTitle=\"{2} {1}.\">\n");
-        if ("Obad".equals(bookName) ||
-                "Phlm".equals(bookName) ||
-                "2John".equals(bookName) ||
-                "3John".equals(bookName) ||
-                "Jude".equals(bookName))
+        if ("Obad".equals(bookName)
+                || "Phlm".equals(bookName)
+                || "2John".equals(bookName)
+                || "3John".equals(bookName)
+                || "Jude".equals(bookName))
         {
             return;
         }

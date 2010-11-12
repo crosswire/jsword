@@ -38,8 +38,7 @@ public final class UserMsg extends MsgBase {
      * @param key
      * @return the internationalized text
      */
-    public static String gettext(String key)
-    {
+    public static String gettext(String key) {
         return msg.lookup(key);
     }
 
@@ -51,8 +50,7 @@ public final class UserMsg extends MsgBase {
      * @param param
      * @return the formatted, internationalized text
      */
-    public static String gettext(String key, Object param)
-    {
+    public static String gettext(String key, Object param) {
         return msg.toString(key, param);
     }
 
@@ -61,11 +59,10 @@ public final class UserMsg extends MsgBase {
      * The text requires one parameter to be passed.
      * 
      * @param key
-     * @param param
+     * @param params
      * @return the formatted, internationalized text
      */
-    public static String gettext(String key, Object[] params)
-    {
+    public static String gettext(String key, Object[] params) {
         return msg.toString(key, params);
     }
 

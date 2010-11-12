@@ -49,8 +49,7 @@ public class MsgBase {
         this.name = name;
     }
 
-    protected MsgBase()
-    {
+    protected MsgBase() {
         this.shaper = new NumberShaper();
         loadResources();
     }
@@ -61,9 +60,8 @@ public class MsgBase {
      * @param key
      * @return the internationalized text
      */
-    public String lookup(String key)
-    {
-        return shaper.shape(obtainString(key));        
+    public String lookup(String key) {
+        return shaper.shape(obtainString(key));
     }
 
     /**

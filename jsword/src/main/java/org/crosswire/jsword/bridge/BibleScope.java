@@ -93,7 +93,7 @@ public class BibleScope {
         BibleInfo.setFullBookName(false); // use short names
         System.out.println('[' + b.getInitials() + ']');
         System.out.println("InScope=" + scope.getInScope().getOsisRef());
-        System.out.println("OutScope=" + scope.getOutOfScope().getOsisRef());        
+        System.out.println("OutScope=" + scope.getOutOfScope().getOsisRef());
     }
 
     private Book book;

@@ -337,16 +337,13 @@ public abstract class RestrictionType implements Serializable {
      * @return The current default blurRestriction setting
      */
     public static RestrictionType getDefaultBlurRestriction() {
-        if (defaultBlurRestriction == null) {
-            defaultBlurRestriction = RestrictionType.NONE;
-        }
         return defaultBlurRestriction;
     }
 
     /**
      * A default restriction type for blurring.
      */
-    private static RestrictionType defaultBlurRestriction;
+    private static RestrictionType defaultBlurRestriction = RestrictionType.NONE;
 
     /**
      * The name of the RestrictionType
@@ -362,7 +359,7 @@ public abstract class RestrictionType implements Serializable {
     }
 
     private static final RestrictionType[] VALUES = {
-            NONE, CHAPTER,
+            NONE, CHAPTER
     };
 
     /**

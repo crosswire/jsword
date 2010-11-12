@@ -32,7 +32,7 @@ public class Bench {
         Speed speed = new Speed(version);
         speed.run();
 
-        float time = speed.getBenchmark() / 1000;
+        double time = speed.getBenchmark() / 1000.0;
         System.out.println("CBench mark for '" + args[0] + "': " + time + "s");
     }
 

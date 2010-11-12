@@ -161,8 +161,7 @@ public class SwordBookPath {
             testDefaultPath(bookDirs, swordhome + File.separator + ".." + File.separator + DIR_SWORD_LIBRARY);
         }
 
-        if (System.getProperty("os.name").startsWith("Windows"))
-        {
+        if (System.getProperty("os.name").startsWith("Windows")) {
             testDefaultPath(bookDirs, DIR_WINDOWS_DEFAULT);
             // how about in the library, just next door?
             testDefaultPath(bookDirs, DIR_WINDOWS_DEFAULT + File.separator + ".." + File.separator + DIR_SWORD_LIBRARY);

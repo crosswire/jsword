@@ -216,7 +216,7 @@ public final class SectionNames extends MsgBase {
      */
     private void initialize() {
         sections = new String[SECTIONS_IN_BIBLE];
-        
+
         // TRANSLATOR: Pentateuch is the first 5 books of the Bible.
         sections[0] = UserMsg.gettext("Pentateuch");
         // TRANSLATOR: History are the books of the Old Testament that give the history of Israel

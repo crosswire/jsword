@@ -346,6 +346,7 @@ public class APIExamples {
             Map.Entry mapEntry = (Map.Entry) iter.next();
             name = (String) mapEntry.getKey();
             installer = (Installer) mapEntry.getValue();
+            System.out.println(name + ": " + installer.getInstallerDefinition());
         }
 
         name = "CrossWire";
@@ -362,10 +363,15 @@ public class APIExamples {
         // Get a list of all the available books
         List availableBooks = installer.getBooks();
 
+        Book book = (Book) availableBooks.get(0);
+        if (book != null) {
+            System.out.println("Book " + book.getInitials() + " is available");
+        }
+
         // get some available books. In this case, just one book.
         availableBooks = installer.getBooks(new MyBookFilter("ESV"));
 
-        Book book = (Book) availableBooks.get(0);
+        book = (Book) availableBooks.get(0);
 
         if (book != null) {
             System.out.println("Book " + book.getInitials() + " is available");

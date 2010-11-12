@@ -598,10 +598,10 @@ public final class ConfigEntryTable {
 
             // At least one of the two languages should match the lang entry
             if (!langFrom.equals(lang) && !langTo.equals(lang)) {
-                log.error("Data error in " + internal +
-                        ". Neither " + ConfigEntryType.GLOSSARY_FROM.getName() +
-                        " or " + ConfigEntryType.GLOSSARY_FROM.getName() +
-                        " match " + ConfigEntryType.LANG.getName());
+                log.error("Data error in " + internal
+                          + ". Neither " + ConfigEntryType.GLOSSARY_FROM.getName()
+                          + " or " + ConfigEntryType.GLOSSARY_FROM.getName()
+                          + " match " + ConfigEntryType.LANG.getName());
             } else if (!langFrom.equals(lang)) {
                 // The LANG field should match the GLOSSARY_FROM field
                 /*

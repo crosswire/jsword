@@ -213,7 +213,7 @@ public final class Logger {
     }
 
     /**
-     * Create a logger for the class. Wrapped by {@link getLogger}.
+     * Create a logger for the class. Wrapped by {@link #java.util.logging.Logger.getLogger(String)}.
      */
     private Logger(Class id, boolean showLocation) {
         this.logger = java.util.logging.Logger.getLogger(id.getName());

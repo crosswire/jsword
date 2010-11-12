@@ -40,7 +40,7 @@ import org.crosswire.common.util.ResourceUtil;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class LZSSTest extends TestCase {
-    public static int RING_SIZE = 4096;
+    public static final int RING_SIZE = 4096;
     public static int RING_WRAP = RING_SIZE - 1;
     public static int THRESHOLD = 3;
 

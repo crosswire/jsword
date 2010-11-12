@@ -76,8 +76,8 @@ public class THMLFilter implements Filter {
                 int start = Math.max(0, colNumber - 40);
                 int stop = Math.min(finalInput.length(), colNumber + 40);
                 int here = stop - start;
-                log.warn("Could not fix " + book.getInitials() + '(' + key.getName() + ") by " +
-                        errorMessage + ": Error here(" + colNumber + ',' + finalInput.length() + ',' + here + "): " + finalInput.substring(start, stop));
+                log.warn("Could not fix " + book.getInitials() + '(' + key.getName() + ") by "
+                         + errorMessage + ": Error here(" + colNumber + ',' + finalInput.length() + ',' + here + "): " + finalInput.substring(start, stop));
             } else {
                 log.warn("Could not fix " + book.getInitials() + "(" + key.getName() + ") by " + errorMessage + ": " + error.getMessage());
             }

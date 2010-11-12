@@ -63,21 +63,21 @@ public final class DataPolice {
      * Set the current level at which to report problems. Problems at too fine
      * grain a level might be filtered by default.
      * 
-     * @param level
+     * @param lev
      *            the level to set
      */
-    public static void setReportingLevel(Level level) {
-        DataPolice.level = level;
+    public static void setReportingLevel(Level lev) {
+        DataPolice.level = lev;
     }
 
     /**
      * Set the level at which to show problems.
      * 
-     * @param level
+     * @param lev
      *            the level to set
      */
-    public static void setLevel(Level level) {
-        log.setLevel(level);
+    public static void setLevel(Level lev) {
+        log.setLevel(lev);
     }
 
     /**
@@ -108,8 +108,6 @@ public final class DataPolice {
     /**
      * Report a message against the current book and key.
      * 
-     * @param lev
-     *            the level at which to report
      * @param message
      *            the police report.
      */
