@@ -663,10 +663,13 @@ public final class OSISUtil {
                 // containing entities.
                 int lastIndex = buffer.length() - 1;
                 String text = ((Text) data).getText();
-                if (lastIndex >= 0 && !Character.isWhitespace(buffer.charAt(lastIndex)) && !Character.isWhitespace(text.charAt(0))) {
-                    buffer.append(' ');
+                // Ignore empty text nodes.
+                if (text.length() != 0) {
+                    if (lastIndex >= 0 && !Character.isWhitespace(buffer.charAt(lastIndex)) && !Character.isWhitespace(text.charAt(0))) {
+                        buffer.append(' ');
+                    }
+                    buffer.append(text);
                 }
-                buffer.append(text);
             }
         }
 
