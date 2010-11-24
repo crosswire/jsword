@@ -246,11 +246,12 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
                 yield();
 
+                URI temp = null;
                 try {
                     // TRANSLATOR: Progress label indicating the Initialization of installing of a book.
                     job.setSectionName(UserMsg.gettext("Initializing"));
 
-                    URI temp = NetUtil.getTemporaryURI("swd", ZIP_SUFFIX);
+                    temp = NetUtil.getTemporaryURI("swd", ZIP_SUFFIX);
 
                     download(job, packageDirectory, sbmd.getInitials() + ZIP_SUFFIX, temp);
 
@@ -276,6 +277,16 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                     job.cancel();
                 } finally {
                     job.done();
+                    // tidy up after ourselves
+                    // This is a best effort. If for some reason it does not delete now
+                    // it will automatically be deleted when the JVM exits normally.
+                    if (temp != null) {
+                        try {
+                            NetUtil.delete(temp);
+                        } catch (IOException e) {
+                            log.warn("Error deleting temp download file:"+e.getMessage());
+                        }
+                    }
                 }
             }
         };
