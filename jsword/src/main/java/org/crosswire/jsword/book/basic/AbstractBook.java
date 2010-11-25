@@ -23,9 +23,8 @@ package org.crosswire.jsword.book.basic;
 
 import java.util.Map;
 
-import javax.swing.event.EventListenerList;
-
 import org.crosswire.common.activate.Lock;
+import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Language;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookCategory;
