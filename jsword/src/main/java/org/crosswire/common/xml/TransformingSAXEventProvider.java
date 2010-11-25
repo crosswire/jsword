@@ -63,6 +63,8 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
     public TransformingSAXEventProvider(URI xsluri, SAXEventProvider xmlsep) {
         this.xsluri = xsluri;
         this.xmlsep = xmlsep;
+        this.outputs = new Properties();
+        this.params = new HashMap();
     }
 
     /**
@@ -71,16 +73,21 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
      * @throws IOException
      */
     private TemplateInfo getTemplateInfo() throws TransformerConfigurationException, IOException {
-        long modtime = NetUtil.getLastModified(xsluri);
-
         // we may have one cached
         TemplateInfo tinfo = (TemplateInfo) txers.get(xsluri);
 
-        // But check it is up to date
-        if (tinfo != null && modtime > tinfo.getModtime()) {
-            txers.remove(xsluri);
-            tinfo = null;
-            log.debug("updated style, re-caching. xsl=" + xsluri);
+        long modtime = -1;
+        if (TransformingSAXEventProvider.developmentMode) {
+            if (tinfo != null) {
+                modtime = NetUtil.getLastModified(xsluri);
+
+                // But check it is up to date
+                if (modtime > tinfo.getModtime()) {
+                    txers.remove(xsluri);
+                    tinfo = null;
+                    log.debug("updated style, re-caching. xsl=" + xsluri);
+                }
+            }
         }
 
         if (tinfo == null) {
@@ -89,7 +96,14 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
             InputStream xslStream = null;
             try {
                 xslStream = NetUtil.getInputStream(xsluri);
+                if (transfact == null) {
+                    transfact = TransformerFactory.newInstance();
+                }
                 Templates templates = transfact.newTemplates(new StreamSource(xslStream));
+
+                if (modtime == -1) {
+                    modtime = NetUtil.getLastModified(xsluri);
+                }
 
                 tinfo = new TemplateInfo(templates, modtime);
 
@@ -253,6 +267,26 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
     }
 
     /**
+     * @param developmentMode the developmentMode to set
+     */
+    public static void setDevelopmentMode(boolean developmentMode) {
+        TransformingSAXEventProvider.developmentMode = developmentMode;
+    }
+
+    /**
+     * In development mode the style sheet is checked for modifications before use and if so, it is recompiled.
+     * @return the developmentMode
+     */
+    public static boolean isDevelopmentMode() {
+        return developmentMode;
+    }
+
+    /**
+     * In development mode the style sheet is checked for modifications before use and if so, it is recompiled.
+     */
+    private static boolean developmentMode;
+
+    /**
      * The remembered ErrorListener because the transformer has not been created
      */
     private ErrorListener errors;
@@ -266,12 +300,12 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
      * The remembered OutputProperties because the transformer has not been
      * created
      */
-    private Properties outputs = new Properties();
+    private Properties outputs;
 
     /**
      * The remembered Parameters because the transformer has not been created
      */
-    private Map params = new HashMap();
+    private Map params;
 
     /**
      * The XSL stylesheet
@@ -286,7 +320,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
     /**
      * How we get the transformer objects
      */
-    private TransformerFactory transfact = TransformerFactory.newInstance();
+    private TransformerFactory transfact;
 
     /**
      * A cache of transformers
