@@ -41,28 +41,106 @@ import org.apache.commons.httpclient.util.HttpURLConnection;
 /**
  * A WebResource is backed by an URL and potentially the proxy through which it
  * need go. It can get basic information about the resource and it can get the
- * resource.
+ * resource. The requests are subject to a timeout, which can be set via the
+ * constructor or previously by a call to set the default timeout. The initial
+ * default timeout is 750 milliseconds.
+ * 
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class WebResource {
+    /**
+     * Construct a WebResource for the given URL, while timing out if too much
+     * time has passed.
+     * 
+     * @param theURI
+     *            the Resource to get via HTTP
+     */
     public WebResource(URI theURI) {
-        this(theURI, null);
+        this(theURI, null, null, timeout);
     }
 
+    /**
+     * Construct a WebResource for the given URL, while timing out if too much
+     * time has passed.
+     * 
+     * @param theURI
+     *            the Resource to get via HTTP
+     * @param theTimeout
+     *            the length of time in milliseconds to allow a connection to
+     *            respond before timing out
+     */
+    public WebResource(URI theURI, int theTimeout) {
+        this(theURI, null, null, theTimeout);
+    }
+
+    /**
+     * Construct a WebResource for the given URL, going through the optional
+     * proxy and default port, while timing out if too much time has passed.
+     * 
+     * @param theURI
+     *            the Resource to get via HTTP
+     * @param theProxyHost
+     *            the proxy host or null
+     */
     public WebResource(URI theURI, String theProxyHost) {
-        this(theURI, theProxyHost, null);
+        this(theURI, theProxyHost, null, timeout);
     }
 
+    /**
+     * Construct a WebResource for the given URL, going through the optional
+     * proxy and default port, while timing out if too much time has passed.
+     * 
+     * @param theURI
+     *            the Resource to get via HTTP
+     * @param theProxyHost
+     *            the proxy host or null
+     * @param theTimeout
+     *            the length of time in milliseconds to allow a connection to
+     *            respond before timing out
+     */
+    public WebResource(URI theURI, String theProxyHost, int theTimeout) {
+        this(theURI, theProxyHost, null, theTimeout);
+    }
+
+    /**
+     * Construct a WebResource for the given URL, going through the optional
+     * proxy and port, while timing out if too much time has passed.
+     * 
+     * @param theURI
+     *            the Resource to get via HTTP
+     * @param theProxyHost
+     *            the proxy host or null
+     * @param theProxyPort
+     *            the proxy port or null, where null means use the standard port
+     */
     public WebResource(URI theURI, String theProxyHost, Integer theProxyPort) {
+        this(theURI, theProxyHost, theProxyPort, timeout);
+    }
+
+    /**
+     * Construct a WebResource for the given URL, going through the optional
+     * proxy and port, while timing out if too much time has passed.
+     * 
+     * @param theURI
+     *            the Resource to get via HTTP
+     * @param theProxyHost
+     *            the proxy host or null
+     * @param theProxyPort
+     *            the proxy port or null, where null means use the standard port
+     * @param theTimeout
+     *            the length of time in milliseconds to allow a connection to
+     *            respond before timing out
+     */
+    public WebResource(URI theURI, String theProxyHost, Integer theProxyPort, int theTimeout) {
         uri = theURI;
         client = new HttpClient();
 
         // Set a 2 second timeout on getting a connection.
         HttpConnectionManager connectMgr = client.getHttpConnectionManager();
-        connectMgr.getParams().setConnectionTimeout(TIMEOUT);
+        connectMgr.getParams().setConnectionTimeout(theTimeout);
 
         // Configure the host and port
         HostConfiguration config = client.getHostConfiguration();
@@ -72,6 +150,21 @@ public class WebResource {
         if (theProxyHost != null && theProxyHost.length() > 0) {
             config.setProxyHost(new ProxyHost(theProxyHost, theProxyPort == null ? -1 : theProxyPort.intValue()));
         }
+    }
+
+    /**
+     * @return the timeout in milliseconds
+     */
+    public static int getTimeout() {
+        return timeout;
+    }
+
+    /**
+     * @param timeout
+     *            the timeout to set in milliseconds
+     */
+    public static void setTimeout(int timeout) {
+        WebResource.timeout = timeout;
     }
 
     /**
@@ -92,7 +185,8 @@ public class WebResource {
                 return new HttpURLConnection(method, NetUtil.toURL(uri)).getContentLength();
             }
             String reason = HttpStatus.getStatusText(status);
-            // TRANSLATOR: Common error condition: {0} is a placeholder for the URL of what could not be found.
+            // TRANSLATOR: Common error condition: {0} is a placeholder for the
+            // URL of what could not be found.
             Reporter.informUser(this, UserMsg.gettext("Unable to find: {0}", new Object[] {
                 reason + ':' + uri.getPath()
             }));
@@ -159,13 +253,15 @@ public class WebResource {
                 }
             } else {
                 String reason = HttpStatus.getStatusText(status);
-                // TRANSLATOR: Common error condition: {0} is a placeholder for the URL of what could not be found.
+                // TRANSLATOR: Common error condition: {0} is a placeholder for
+                // the URL of what could not be found.
                 Reporter.informUser(this, UserMsg.gettext("Unable to find: {0}", new Object[] {
                     reason + ':' + uri.getPath()
                 }));
             }
         } catch (IOException e) {
-            // TRANSLATOR: Common error condition: {0} is a placeholder for the URL of what could not be found.
+            // TRANSLATOR: Common error condition: {0} is a placeholder for the
+            // URL of what could not be found.
             throw new LucidException(UserMsg.gettext("Unable to find: {0}", new Object[] {
                 uri.toString()
             }), e);
@@ -181,7 +277,7 @@ public class WebResource {
     /**
      * Define a 750 ms timeout to get a connection
      */
-    private static final int TIMEOUT = 750;
+    private static int timeout = 750;
 
     private URI uri;
     private HttpClient client;
