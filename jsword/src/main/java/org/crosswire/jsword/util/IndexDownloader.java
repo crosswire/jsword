@@ -31,6 +31,7 @@ import org.crosswire.jsword.book.install.InstallException;
 import org.crosswire.jsword.book.install.Installer;
 import org.crosswire.jsword.index.IndexManager;
 import org.crosswire.jsword.index.IndexManagerFactory;
+import org.crosswire.jsword.index.IndexStatus;
 
 /**
  * .
@@ -56,14 +57,18 @@ public final class IndexDownloader {
         // Get a temp home
         URI tempDownload = NetUtil.getTemporaryURI(TEMP_PREFIX, TEMP_SUFFIX);
 
+        IndexStatus finalStatus = IndexStatus.UNDONE;
         try {
             // Now we know what installer to use, download to the temp file
             installer.downloadSearchIndex(book, tempDownload);
 
             // And install from that file.
             IndexManager idxman = IndexManagerFactory.getIndexManager();
+            book.setIndexStatus(IndexStatus.CREATING);
             idxman.installDownloadedIndex(book, tempDownload);
+            finalStatus = IndexStatus.DONE;
         } finally {
+            book.setIndexStatus(finalStatus);
             // tidy up after ourselves
             if (tempDownload != null) {
                 NetUtil.delete(tempDownload);
