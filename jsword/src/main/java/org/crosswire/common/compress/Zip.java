@@ -23,7 +23,6 @@
 package org.crosswire.common.compress;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,9 +32,7 @@ import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
 /**
- * A class can be Activatable if it needs a significant amount of memory on an
- * irregular basis, and so would benefit from being told when to wake-up and
- * when to conserver memory.
+ * Zip manages the compression and uncompression of Zip files.
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
@@ -87,8 +84,7 @@ public class Zip extends AbstractCompressor {
      * @see org.crosswire.common.compress.Compressor#uncompress(int)
      */
     public ByteArrayOutputStream uncompress(int expectedLength) throws IOException {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        BufferedOutputStream out = new BufferedOutputStream(bos, expectedLength);
+        ByteArrayOutputStream out = new ByteArrayOutputStream(expectedLength);
         InflaterInputStream in = new InflaterInputStream(input, new Inflater(), expectedLength);
         byte[] buf = new byte[expectedLength];
 
@@ -98,7 +94,7 @@ public class Zip extends AbstractCompressor {
         in.close();
         out.flush();
         out.close();
-        return bos;
+        return out;
     }
 
 }
