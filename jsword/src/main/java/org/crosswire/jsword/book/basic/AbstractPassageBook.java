@@ -55,17 +55,14 @@ public abstract class AbstractPassageBook extends AbstractBook {
         super(bmd);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage
-     * .Key, boolean)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage.Key, boolean)
      */
     public Iterator getOsisIterator(Key key, boolean allowEmpty) throws BookException {
         // Note: allowEmpty indicates parallel view
         // TODO(DMS): make the iterator be demand driven
         try {
+            Filter filter = getFilter();
             List content = new ArrayList();
 
             // For all the ranges in this Passage
@@ -91,7 +88,7 @@ public abstract class AbstractPassageBook extends AbstractBook {
 
                     // If the verse is empty then we shouldn't add the verse tag
                     if (allowEmpty || txt.length() > 0) {
-                        List osisContent = getFilter().toOSIS(this, verse, txt);
+                        List osisContent = filter.toOSIS(this, verse, txt);
                         addOSIS(verse, content, osisContent);
                     }
                 }

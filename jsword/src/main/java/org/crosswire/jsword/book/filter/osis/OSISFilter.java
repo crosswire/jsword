@@ -46,12 +46,16 @@ import org.xml.sax.InputSource;
  * @author Joe Walker [joe at eireneh dot com]
  */
 public class OSISFilter implements Filter {
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book
-     * .Book, org.crosswire.jsword.passage.Key, java.lang.String)
+    /**
+     * Default constructor of an OSISFilter
+     */
+    public OSISFilter() {
+        builder = new SAXBuilder();
+        builder.setFastReconfigure(true);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.Book, org.crosswire.jsword.passage.Key, java.lang.String)
      */
     public List toOSIS(Book book, Key key, String plain) {
         DataPolice.setKey(key);
@@ -139,7 +143,6 @@ public class OSISFilter implements Filter {
         // create a root element to house our document fragment
         StringReader in = new StringReader("<div>" + plain + "</div>");
         InputSource is = new InputSource(in);
-        SAXBuilder builder = new SAXBuilder();
         Document doc = builder.build(is);
         Element div = doc.getRootElement();
 
@@ -150,4 +153,9 @@ public class OSISFilter implements Filter {
      * The log stream
      */
     private static final Logger log = Logger.getLogger(OSISFilter.class);
+
+    /**
+     * A reusable SAX Builder
+     */
+    private SAXBuilder builder;
 }

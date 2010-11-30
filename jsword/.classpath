@@ -15,8 +15,8 @@
 	<classpathentry exported="true" kind="lib" path="jar/icu4j-4.0/icu4j-charsets-4_0.jar"/>
 	<classpathentry exported="true" kind="lib" path="jar/jaf-1.1/activation.jar"/>
 	<classpathentry exported="true" kind="lib" path="jar/javatar-2.5/javatar-2.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="jar/jdom-1.0/jdom-1.0.jar" sourcepath="jar/jdom-1.0/jdom-1.0.zip"/>
 	<classpathentry exported="true" kind="lib" path="jar/junit-3.8.1/junit.jar" sourcepath="jar/junit-3.8.1/junit-3.8.1-src.jar"/>
 	<classpathentry kind="lib" path="jar/icu4j-4.0/icu4j-4_0.jar" sourcepath="jar/icu4j-4.0/icu4j-4_0-src.jar"/>
+	<classpathentry exported="true" kind="lib" path="jar/jdom-1.1.1/jdom-1.1.1.jar" sourcepath="jar/jdom-1.1.1/jdom-1.1.1-src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

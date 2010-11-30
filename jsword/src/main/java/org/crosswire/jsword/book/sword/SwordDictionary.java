@@ -30,6 +30,7 @@ import org.crosswire.common.activate.Lock;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractBook;
+import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterException;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.DefaultLeafKeyList;
@@ -52,8 +53,8 @@ public class SwordDictionary extends AbstractBook {
     protected SwordDictionary(SwordBookMetaData sbmd, AbstractBackend backend) {
         super(sbmd);
 
-        this.sbmd = sbmd;
         this.backend = (AbstractKeyBackend) backend;
+        this.filter = sbmd.getFilter();
         active = false;
     }
 
@@ -78,7 +79,7 @@ public class SwordDictionary extends AbstractBook {
 
             String txt = backend.getRawText(key);
 
-            List osisContent = sbmd.getFilter().toOSIS(this, key, txt);
+            List osisContent = filter.toOSIS(this, key, txt);
             content.addAll(osisContent);
 
             return content.iterator();
@@ -245,7 +246,7 @@ public class SwordDictionary extends AbstractBook {
     private AbstractKeyBackend backend;
 
     /**
-     * The Sword configuration file
+     * The filter to use to convert to OSIS.
      */
-    private SwordBookMetaData sbmd;
+    private Filter filter;
 }

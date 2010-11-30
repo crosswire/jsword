@@ -31,6 +31,7 @@ import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.AbstractBook;
+import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterException;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
@@ -52,8 +53,8 @@ public class SwordGenBook extends AbstractBook {
     protected SwordGenBook(SwordBookMetaData sbmd, AbstractBackend backend) {
         super(sbmd);
 
-        this.sbmd = sbmd;
         this.backend = backend;
+        this.filter = sbmd.getFilter();
         map = null;
         set = null;
         global = null;
@@ -126,7 +127,7 @@ public class SwordGenBook extends AbstractBook {
 
             String txt = backend.getRawText(key);
 
-            List osisContent = sbmd.getFilter().toOSIS(this, key, txt);
+            List osisContent = filter.toOSIS(this, key, txt);
             content.addAll(osisContent);
 
             return content.iterator();
@@ -308,7 +309,7 @@ public class SwordGenBook extends AbstractBook {
     private AbstractBackend backend;
 
     /**
-     * The Sword configuration file
+     * The filter to use to convert to OSIS.
      */
-    private SwordBookMetaData sbmd;
+    private Filter filter;
 }

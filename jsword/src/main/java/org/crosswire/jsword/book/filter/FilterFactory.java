@@ -23,6 +23,7 @@ package org.crosswire.jsword.book.filter;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 
 import org.crosswire.common.util.Logger;
@@ -76,11 +77,12 @@ public final class FilterFactory {
 
         // the lookup table
         Iterator it = map.entrySet().iterator();
+        Filter instance = null;
         while (it.hasNext()) {
             try {
                 Map.Entry entry = (Map.Entry) it.next();
                 Class clazz = (Class) entry.getValue();
-                Filter instance = (Filter) clazz.newInstance();
+                instance = (Filter) clazz.newInstance();
                 addFilter((String) entry.getKey(), instance);
             } catch (InstantiationException ex) {
                 log.error("Failed to add filter", ex);
@@ -91,7 +93,7 @@ public final class FilterFactory {
 
         // if the default didn't work then make a stab at an answer
         if (deft == null) {
-            deft = (Filter) filters.values().iterator().next();
+            deft = instance;
         }
     }
 
@@ -100,15 +102,7 @@ public final class FilterFactory {
      * not found then the default filter will be used.
      */
     public static Filter getFilter(String lookup) {
-        Filter reply = null;
-        Iterator it = filters.keySet().iterator();
-        while (it.hasNext()) {
-            String key = (String) it.next();
-            if (key.equalsIgnoreCase(lookup)) {
-                reply = (Filter) filters.get(key);
-                break;
-            }
-        }
+        Filter reply = (Filter) filters.get(lookup.toLowerCase());
 
         if (reply == null) {
             reply = deft;
@@ -128,6 +122,6 @@ public final class FilterFactory {
      * Add to our list of known filters
      */
     public static void addFilter(String name, Filter instance) {
-        filters.put(name, instance);
+        filters.put(name.toLowerCase(Locale.ENGLISH), instance);
     }
 }

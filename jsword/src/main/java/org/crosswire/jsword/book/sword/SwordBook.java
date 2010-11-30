@@ -49,7 +49,7 @@ public class SwordBook extends AbstractPassageBook {
     public SwordBook(SwordBookMetaData sbmd, AbstractBackend backend) {
         super(sbmd);
 
-        this.sbmd = sbmd;
+        this.filter = sbmd.getFilter();
         this.backend = backend;
     }
 
@@ -201,7 +201,7 @@ public class SwordBook extends AbstractPassageBook {
      * @see org.crosswire.jsword.book.basic.AbstractPassageBook#getFilter()
      */
     protected Filter getFilter() {
-        return sbmd.getFilter();
+        return filter;
     }
 
     /**
@@ -210,7 +210,7 @@ public class SwordBook extends AbstractPassageBook {
     private AbstractBackend backend;
 
     /**
-     * The Sword configuration file
+     * The filter to use to convert to OSIS.
      */
-    private SwordBookMetaData sbmd;
+    private Filter filter;
 }
