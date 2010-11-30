@@ -10,13 +10,13 @@
 	<classpathentry exported="true" kind="lib" path="jar/lucene-2.9.1/lucene-snowball-2.9.1.jar" sourcepath="jar/lucene-2.9.1/lucene-2.9.1-src.zip"/>
 	<classpathentry exported="true" kind="lib" path="jar/commons-httpclient-3.1/commons-httpclient-3.1.jar" sourcepath="jar/commons-httpclient-3.1/commons-httpclient-3.1-src.zip"/>
 	<classpathentry exported="true" kind="lib" path="jar/commons-logging-1.1.1/commons-logging-1.1.1.jar" sourcepath="jar/commons-logging-1.1.1/commons-logging-1.1.1-src.zip"/>
-	<classpathentry exported="true" kind="lib" path="jar/commons-net-1.4.1/commons-net-1.4.1.jar" sourcepath="jar/commons-net-1.4.1/commons-net-1.4.1-src.zip"/>
 	<classpathentry exported="true" kind="lib" path="jar/icu4j-4.0/icu4j-charsets-4_0.jar"/>
 	<classpathentry exported="true" kind="lib" path="jar/jaf-1.1/activation.jar"/>
 	<classpathentry exported="true" kind="lib" path="jar/javatar-2.5/javatar-2.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="jar/junit-3.8.1/junit.jar" sourcepath="jar/junit-3.8.1/junit-3.8.1-src.jar"/>
 	<classpathentry kind="lib" path="jar/icu4j-4.0/icu4j-4_0.jar" sourcepath="jar/icu4j-4.0/icu4j-4_0-src.jar"/>
 	<classpathentry exported="true" kind="lib" path="jar/jdom-1.1.1/jdom-1.1.1.jar" sourcepath="jar/jdom-1.1.1/jdom-1.1.1-src.zip"/>
-	<classpathentry kind="lib" path="jar/commons-codec-1.4/commons-codec-1.4.jar" sourcepath="jar/commons-codec-1.4/commons-codec-1.4-src.zip"/>
+	<classpathentry exported="true" kind="lib" path="jar/commons-codec-1.4/commons-codec-1.4.jar" sourcepath="jar/commons-codec-1.4/commons-codec-1.4-src.zip"/>
+	<classpathentry exported="true" kind="lib" path="jar/commons-net-2.2/commons-net-2.2.jar" sourcepath="jar/commons-net-2.2/commons-net-2.2-src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
