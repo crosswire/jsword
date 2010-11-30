@@ -620,18 +620,21 @@ public final class NetUtil {
      *            the resource whose size is wanted
      * @return the size of that resource
      */
-    public static int getSize(URI uri) {
+    public static long getSize(URI uri) {
         return getSize(uri, null, null);
     }
 
-    public static int getSize(URI uri, String proxyHost) {
+    public static long getSize(URI uri, String proxyHost) {
         return getSize(uri, proxyHost, null);
     }
 
-    public static int getSize(URI uri, String proxyHost, Integer proxyPort) {
+    public static long getSize(URI uri, String proxyHost, Integer proxyPort) {
         try {
             if (uri.getScheme().equals(PROTOCOL_HTTP)) {
-                return new WebResource(uri, proxyHost, proxyPort).getSize();
+                WebResource resource = new WebResource(uri, proxyHost, proxyPort);
+                long size = resource.getSize();
+                resource.shutdown();
+                return size;
             }
 
             return uri.toURL().openConnection().getContentLength();
@@ -655,7 +658,10 @@ public final class NetUtil {
     public static long getLastModified(URI uri, String proxyHost, Integer proxyPort) {
         try {
             if (uri.getScheme().equals(PROTOCOL_HTTP)) {
-                return new WebResource(uri, proxyHost, proxyPort).getLastModified();
+                WebResource resource = new WebResource(uri, proxyHost, proxyPort);
+                long time = resource.getLastModified();
+                resource.shutdown();
+                return time;
             }
 
             URLConnection urlConnection = uri.toURL().openConnection();

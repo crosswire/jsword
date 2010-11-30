@@ -59,7 +59,7 @@ public class HttpSwordInstaller extends AbstractSwordInstaller {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#getSize(org.crosswire.jsword.book.Book)
      */
-    public int getSize(Book book) {
+    public long getSize(Book book) {
         return NetUtil.getSize(toRemoteURI(book), proxyHost, proxyPort);
     }
 
@@ -112,6 +112,7 @@ public class HttpSwordInstaller extends AbstractSwordInstaller {
 
         WebResource wr = new WebResource(uri, proxyHost, proxyPort);
         wr.copy(dest);
+        wr.shutdown();
     }
 
     /* (non-Javadoc)

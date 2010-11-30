@@ -8,7 +8,6 @@
 	<classpathentry exported="true" kind="lib" path="jar/lucene-2.9.1/lucene-core-2.9.1.jar" sourcepath="jar/lucene-2.9.1/lucene-2.9.1-src.zip"/>
 	<classpathentry exported="true" kind="lib" path="jar/lucene-2.9.1/lucene-smartcn-2.9.1.jar" sourcepath="jar/lucene-2.9.1/lucene-2.9.1-src.zip"/>
 	<classpathentry exported="true" kind="lib" path="jar/lucene-2.9.1/lucene-snowball-2.9.1.jar" sourcepath="jar/lucene-2.9.1/lucene-2.9.1-src.zip"/>
-	<classpathentry exported="true" kind="lib" path="jar/commons-httpclient-3.1/commons-httpclient-3.1.jar" sourcepath="jar/commons-httpclient-3.1/commons-httpclient-3.1-src.zip"/>
 	<classpathentry exported="true" kind="lib" path="jar/commons-logging-1.1.1/commons-logging-1.1.1.jar" sourcepath="jar/commons-logging-1.1.1/commons-logging-1.1.1-src.zip"/>
 	<classpathentry exported="true" kind="lib" path="jar/icu4j-4.0/icu4j-charsets-4_0.jar"/>
 	<classpathentry exported="true" kind="lib" path="jar/jaf-1.1/activation.jar"/>
@@ -18,5 +17,7 @@
 	<classpathentry exported="true" kind="lib" path="jar/jdom-1.1.1/jdom-1.1.1.jar" sourcepath="jar/jdom-1.1.1/jdom-1.1.1-src.zip"/>
 	<classpathentry exported="true" kind="lib" path="jar/commons-codec-1.4/commons-codec-1.4.jar" sourcepath="jar/commons-codec-1.4/commons-codec-1.4-src.zip"/>
 	<classpathentry exported="true" kind="lib" path="jar/commons-net-2.2/commons-net-2.2.jar" sourcepath="jar/commons-net-2.2/commons-net-2.2-src.zip"/>
+	<classpathentry kind="lib" path="jar/httpcomponents-core-4.1/httpcore-4.1.jar" sourcepath="jar/httpcomponents-core-4.1/httpcomponents-core-4.1-src.zip"/>
+	<classpathentry kind="lib" path="jar/httpcomponents-client-4.1-beta1/httpclient-4.1-beta1.jar" sourcepath="jar/httpcomponents-client-4.1-beta1/httpcomponents-client-4.1-beta1-src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

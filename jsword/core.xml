@@ -53,7 +53,8 @@
   	<exclude name="**/*-src.jar"/>
     <include name="**/jdom-*.jar"/>
     <include name="**/commons-codec-*.jar"/>
-    <include name="**/commons-httpclient-*.jar"/>
+    <include name="**/httpcore-*.jar"/>
+    <include name="**/httpclient-*.jar"/>
     <include name="**/commons-logging-*.jar"/>
     <include name="**/commons-net-*.jar"/>
     <include name="**/lucene-core-*.jar"/>

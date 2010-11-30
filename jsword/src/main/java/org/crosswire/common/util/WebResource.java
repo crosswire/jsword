@@ -24,19 +24,26 @@ package org.crosswire.common.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.ProxySelector;
 import java.net.URI;
 import java.util.Date;
 
-import org.apache.commons.httpclient.HostConfiguration;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpConnectionManager;
-import org.apache.commons.httpclient.HttpHost;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.ProxyHost;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.HeadMethod;
-import org.apache.commons.httpclient.util.HttpURLConnection;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpHead;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.conn.params.ConnRouteParams;
+import org.apache.http.impl.client.AbstractHttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.ProxySelectorRoutePlanner;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 
 /**
  * A WebResource is backed by an URL and potentially the proxy through which it
@@ -136,20 +143,32 @@ public class WebResource {
      */
     public WebResource(URI theURI, String theProxyHost, Integer theProxyPort, int theTimeout) {
         uri = theURI;
-        client = new HttpClient();
+        client = new DefaultHttpClient();
+        HttpParams params = client.getParams();
 
-        // Set a 2 second timeout on getting a connection.
-        HttpConnectionManager connectMgr = client.getHttpConnectionManager();
-        connectMgr.getParams().setConnectionTimeout(theTimeout);
-
-        // Configure the host and port
-        HostConfiguration config = client.getHostConfiguration();
-        config.setHost(new HttpHost(theURI.getHost(), theURI.getPort()));
+        // Allowable time between packets
+        HttpConnectionParams.setSoTimeout(params, theTimeout);
+        // Allowable time to get a connection
+        HttpConnectionParams.setConnectionTimeout(params, theTimeout);
 
         // Configure proxy info if necessary and defined
         if (theProxyHost != null && theProxyHost.length() > 0) {
-            config.setProxyHost(new ProxyHost(theProxyHost, theProxyPort == null ? -1 : theProxyPort.intValue()));
+            // Configure the host and port
+            HttpHost proxy = new HttpHost(theProxyHost, theProxyPort == null ? -1 : theProxyPort.intValue());
+            ConnRouteParams.setDefaultProxy(params, proxy);
         }
+        ProxySelectorRoutePlanner routePlanner = new ProxySelectorRoutePlanner(
+                client.getConnectionManager().getSchemeRegistry(),
+                ProxySelector.getDefault());
+                ((AbstractHttpClient) client).setRoutePlanner(routePlanner);
+    }
+
+    /**
+     * When this WebResource is no longer needed it should be shutdown to return
+     * underlying resources back to the OS.
+     */
+    public void shutdown() {
+        client.getConnectionManager().shutdown();
     }
 
     /**
@@ -175,16 +194,23 @@ public class WebResource {
      * 
      * @return the size of the file
      */
-    public int getSize() {
-        HttpMethod method = new HeadMethod(uri.getPath());
-
+    public long getSize() {
+        HttpRequestBase method = new HttpHead(uri);
+        HttpResponse response = null;
         try {
             // Execute the method.
-            int status = client.executeMethod(method);
-            if (status == HttpStatus.SC_OK) {
-                return new HttpURLConnection(method, NetUtil.toURL(uri)).getContentLength();
+            response = client.execute(method);
+            StatusLine statusLine = response.getStatusLine();
+            if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+                Header header = response.getFirstHeader("Content-Length");
+                String value = header.getValue();
+                try {
+                    return Long.parseLong(value);
+                } catch (NumberFormatException ex) {
+                    return 0;
+                }
             }
-            String reason = HttpStatus.getStatusText(status);
+            String reason = response.getStatusLine().getReasonPhrase();
             // TRANSLATOR: Common error condition: {0} is a placeholder for the
             // URL of what could not be found.
             Reporter.informUser(this, UserMsg.gettext("Unable to find: {0}", new Object[] {
@@ -192,9 +218,6 @@ public class WebResource {
             }));
         } catch (IOException e) {
             return 0;
-        } finally {
-            // Release the connection.
-            method.releaseConnection();
         }
         return 0;
     }
@@ -207,19 +230,32 @@ public class WebResource {
      * 
      * @return the last mod date of the file
      */
+    @SuppressWarnings("deprecation")
     public long getLastModified() {
-        HttpMethod method = new HeadMethod(uri.getPath());
-
+        HttpRequestBase method = new HttpHead(uri);
+        HttpResponse response = null;
         try {
             // Execute the method.
-            if (client.executeMethod(method) == HttpStatus.SC_OK) {
-                return new HttpURLConnection(method, NetUtil.toURL(uri)).getLastModified();
+            response = client.execute(method);
+            StatusLine statusLine = response.getStatusLine();
+            if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+                Header header = response.getFirstHeader("Last-Modified");
+                String value = header.getValue();
+                try {
+                    // This date cannot be readily parsed with DateFormatter
+                    return Date.parse(value);
+                } catch (Exception ex) {
+                    return 0;
+                }
             }
+            String reason = response.getStatusLine().getReasonPhrase();
+            // TRANSLATOR: Common error condition: {0} is a placeholder for the
+            // URL of what could not be found.
+            Reporter.informUser(this, UserMsg.gettext("Unable to find: {0}", new Object[] {
+                reason + ':' + uri.getPath()
+            }));
         } catch (IOException e) {
             return new Date().getTime();
-        } finally {
-            // Release the connection.
-            method.releaseConnection();
         }
         return new Date().getTime();
     }
@@ -234,13 +270,15 @@ public class WebResource {
         InputStream in = null;
         OutputStream out = null;
 
-        HttpMethod method = new GetMethod(uri.getPath());
-
+        HttpRequestBase method = new HttpGet(uri);
+        HttpResponse response = null;
+        HttpEntity entity = null;
         try {
             // Execute the method.
-            int status = client.executeMethod(method);
-            if (status == HttpStatus.SC_OK) {
-                in = method.getResponseBodyAsStream();
+            response = client.execute(method);
+            entity = response.getEntity();
+            if (entity != null) {
+                in = entity.getContent();
 
                 // Download the index file
                 out = NetUtil.getOutputStream(dest);
@@ -252,7 +290,7 @@ public class WebResource {
                     count = in.read(buf);
                 }
             } else {
-                String reason = HttpStatus.getStatusText(status);
+                String reason = response.getStatusLine().getReasonPhrase();
                 // TRANSLATOR: Common error condition: {0} is a placeholder for
                 // the URL of what could not be found.
                 Reporter.informUser(this, UserMsg.gettext("Unable to find: {0}", new Object[] {
@@ -266,8 +304,6 @@ public class WebResource {
                 uri.toString()
             }), e);
         } finally {
-            // Release the connection.
-            method.releaseConnection();
             // Close the streams
             IOUtil.close(in);
             IOUtil.close(out);
