@@ -333,7 +333,7 @@
     <javac debug="on"
            includes="**/*.java"
            destdir="${target.classes}"
-           source="1.4">
+           source="1.5">
       <src refid="source.path"/>
       <classpath refid="runtime.jarpath"/>
     </javac>
@@ -382,7 +382,7 @@
     <javac debug="on"
            includes="**/*.java"
            destdir="${test.classes}"
-           source="1.4">
+           source="1.5">
       <src refid="testsource.path"/>
       <classpath refid="test.jarpath"/>
     </javac>

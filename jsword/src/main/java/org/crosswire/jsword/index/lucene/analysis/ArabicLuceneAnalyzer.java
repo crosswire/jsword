@@ -31,6 +31,7 @@ import org.apache.lucene.analysis.ar.ArabicAnalyzer;
 import org.apache.lucene.analysis.ar.ArabicLetterTokenizer;
 import org.apache.lucene.analysis.ar.ArabicNormalizationFilter;
 import org.apache.lucene.analysis.ar.ArabicStemFilter;
+import org.apache.lucene.util.Version;
 
 /**
  * An Analyzer whose {@link TokenStream} is built from a
@@ -44,14 +45,11 @@ import org.apache.lucene.analysis.ar.ArabicStemFilter;
  */
 public class ArabicLuceneAnalyzer extends AbstractBookAnalyzer {
     public ArabicLuceneAnalyzer() throws IOException {
-        loadStopWords(ArabicAnalyzer.class, ArabicAnalyzer.DEFAULT_STOPWORD_FILE, ArabicAnalyzer.STOPWORDS_COMMENT);
+        stopSet = ArabicAnalyzer.getDefaultStopSet();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String,
-     * java.io.Reader)
+    /* (non-Javadoc)
+     * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String, java.io.Reader)
      */
     public final TokenStream tokenStream(String fieldName, Reader reader) {
         TokenStream result = new ArabicLetterTokenizer(reader);
@@ -68,22 +66,18 @@ public class ArabicLuceneAnalyzer extends AbstractBookAnalyzer {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.apache.lucene.analysis.Analyzer#reusableTokenStream(java.lang.String,
-     * java.io.Reader)
+    /* (non-Javadoc)
+     * @see org.apache.lucene.analysis.Analyzer#reusableTokenStream(java.lang.String, java.io.Reader)
      */
     public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
         SavedStreams streams = (SavedStreams) getPreviousTokenStream();
         if (streams == null) {
-            streams = new SavedStreams();
-            streams.setSource(new ArabicLetterTokenizer(reader));
-            streams.setResult(new LowerCaseFilter(streams.getSource()));
+            streams = new SavedStreams(new ArabicLetterTokenizer(reader));
+            streams.setResult(new LowerCaseFilter(streams.getResult()));
             streams.setResult(new ArabicNormalizationFilter(streams.getResult()));
+
             if (doStopWords && stopSet != null) {
-                streams.setResult(new StopFilter(false, streams.getResult(), stopSet));
+                streams.setResult(new StopFilter(StopFilter.getEnablePositionIncrementsVersionDefault(matchVersion), streams.getResult(), stopSet));
             }
 
             if (doStemming) {
@@ -96,4 +90,6 @@ public class ArabicLuceneAnalyzer extends AbstractBookAnalyzer {
         }
         return streams.getResult();
     }
+
+    private final Version matchVersion = Version.LUCENE_29;
 }

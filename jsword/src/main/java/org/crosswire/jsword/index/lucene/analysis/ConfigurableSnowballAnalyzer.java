@@ -21,11 +21,14 @@
  */
 package org.crosswire.jsword.index.lucene.analysis;
 
+import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.lucene.analysis.LowerCaseTokenizer;
+import org.apache.lucene.analysis.PorterStemFilter;
 import org.apache.lucene.analysis.StopAnalyzer;
 import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
@@ -33,6 +36,7 @@ import org.apache.lucene.analysis.de.GermanAnalyzer;
 import org.apache.lucene.analysis.fr.FrenchAnalyzer;
 import org.apache.lucene.analysis.nl.DutchAnalyzer;
 import org.apache.lucene.analysis.snowball.SnowballFilter;
+import org.apache.lucene.util.Version;
 import org.crosswire.jsword.book.Book;
 
 /**
@@ -91,6 +95,29 @@ public class ConfigurableSnowballAnalyzer extends AbstractBookAnalyzer {
         return result;
     }
 
+    /* (non-Javadoc)
+     * @see org.apache.lucene.analysis.Analyzer#reusableTokenStream(java.lang.String, java.io.Reader)
+     */
+    @Override
+    public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
+        SavedStreams streams = (SavedStreams) getPreviousTokenStream();
+        if (streams == null) {
+            streams = new SavedStreams(new LowerCaseTokenizer(reader));
+            if (doStopWords && stopSet != null) {
+                streams.setResult(new StopFilter(StopFilter.getEnablePositionIncrementsVersionDefault(matchVersion), streams.getResult(), stopSet));
+            }
+
+            if (doStemming) {
+                streams.setResult(new PorterStemFilter(streams.getResult()));
+            }
+
+            setPreviousTokenStream(streams);
+        } else {
+            streams.getSource().reset(reader);
+        }
+        return streams.getResult();
+    }
+
     public void setBook(Book newBook) {
         book = newBook;
         stemmerName = null;
@@ -115,7 +142,7 @@ public class ConfigurableSnowballAnalyzer extends AbstractBookAnalyzer {
 
             // Initialize the default stop words
             if (defaultStopWordMap.containsKey(stemmerName)) {
-                stopSet = StopFilter.makeStopSet((String[]) defaultStopWordMap.get(stemmerName));
+                stopSet = (Set<?>) defaultStopWordMap.get(stemmerName);
             }
         }
     }
@@ -129,13 +156,15 @@ public class ConfigurableSnowballAnalyzer extends AbstractBookAnalyzer {
             .compile("(Danish|Dutch|English|Finnish|French|German2|German|Italian|Kp|Lovins|Norwegian|Porter|Portuguese|Russian|Spanish|Swedish)");
 
     // Maps StemmerName > String array of standard stop words
-    private static HashMap defaultStopWordMap = new HashMap();
+    private static HashMap<String, Set<?>> defaultStopWordMap = new HashMap();
     static {
-        defaultStopWordMap.put("French", FrenchAnalyzer.FRENCH_STOP_WORDS);
-        defaultStopWordMap.put("German", GermanAnalyzer.GERMAN_STOP_WORDS);
-        defaultStopWordMap.put("German2", GermanAnalyzer.GERMAN_STOP_WORDS);
-        defaultStopWordMap.put("Dutch", DutchAnalyzer.DUTCH_STOP_WORDS);
+        defaultStopWordMap.put("French", FrenchAnalyzer.getDefaultStopSet());
+        defaultStopWordMap.put("German", GermanAnalyzer.getDefaultStopSet());
+        defaultStopWordMap.put("German2", GermanAnalyzer.getDefaultStopSet());
+        defaultStopWordMap.put("Dutch", DutchAnalyzer.getDefaultStopSet());
         defaultStopWordMap.put("English", StopAnalyzer.ENGLISH_STOP_WORDS_SET);
         defaultStopWordMap.put("Porter", StopAnalyzer.ENGLISH_STOP_WORDS_SET);
     }
+
+    private final Version matchVersion = Version.LUCENE_29;
 }

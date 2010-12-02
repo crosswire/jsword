@@ -284,7 +284,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                         try {
                             NetUtil.delete(temp);
                         } catch (IOException e) {
-                            log.warn("Error deleting temp download file:"+e.getMessage());
+                            log.warn("Error deleting temp download file:" + e.getMessage());
                         }
                     }
                 }

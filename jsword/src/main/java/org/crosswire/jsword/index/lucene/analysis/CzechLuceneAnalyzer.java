@@ -28,6 +28,7 @@ import org.apache.lucene.analysis.LowerCaseTokenizer;
 import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.cz.CzechAnalyzer;
+import org.apache.lucene.util.Version;
 
 /**
  * An Analyzer whose {@link TokenStream} is built from a
@@ -41,15 +42,13 @@ import org.apache.lucene.analysis.cz.CzechAnalyzer;
  */
 public class CzechLuceneAnalyzer extends AbstractBookAnalyzer {
     public CzechLuceneAnalyzer() {
-        stopSet = StopFilter.makeStopSet(CzechAnalyzer.CZECH_STOP_WORDS);
+        stopSet = CzechAnalyzer.getDefaultStopSet();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String,
-     * java.io.Reader)
+    /* (non-Javadoc)
+     * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String, java.io.Reader)
      */
+    @Override
     public final TokenStream tokenStream(String fieldName, Reader reader) {
         TokenStream result = new LowerCaseTokenizer(reader);
 
@@ -60,21 +59,16 @@ public class CzechLuceneAnalyzer extends AbstractBookAnalyzer {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.apache.lucene.analysis.Analyzer#reusableTokenStream(java.lang.String,
-     * java.io.Reader)
+    /* (non-Javadoc)
+     * @see org.apache.lucene.analysis.Analyzer#reusableTokenStream(java.lang.String, java.io.Reader)
      */
+    @Override
     public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
         SavedStreams streams = (SavedStreams) getPreviousTokenStream();
         if (streams == null) {
-            streams = new SavedStreams();
-            streams.setSource(new LowerCaseTokenizer(reader));
-            streams.setResult(streams.getSource());
+            streams = new SavedStreams(new LowerCaseTokenizer(reader));
             if (doStopWords && stopSet != null) {
-                streams.setResult(new StopFilter(false, streams.getResult(), stopSet));
+                streams.setResult(new StopFilter(StopFilter.getEnablePositionIncrementsVersionDefault(matchVersion), streams.getResult(), stopSet));
             }
 
             setPreviousTokenStream(streams);
@@ -84,4 +78,5 @@ public class CzechLuceneAnalyzer extends AbstractBookAnalyzer {
         return streams.getResult();
     }
 
+    private final Version matchVersion = Version.LUCENE_29;
 }

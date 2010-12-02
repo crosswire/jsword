@@ -21,9 +21,12 @@
  */
 package org.crosswire.jsword.index.lucene.analysis;
 
+import java.util.Arrays;
+
 import junit.framework.TestCase;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
@@ -96,7 +99,7 @@ public class AnalyzerFactoryTest extends TestCase {
         myAnalyzer.setDoStopWords(true);
         String[] stopWords = {
                 "thy", "ye", "unto", "shalt"};
-        myAnalyzer.setStopWords(stopWords);
+        myAnalyzer.setStopWords(new CharArraySet(Arrays.asList(stopWords), false));
         testInput = "Upon thy belly Shalt thou go";
         query = parser.parse(testInput);
         assertTrue(query.toString().indexOf(field + ":shalt") == -1);

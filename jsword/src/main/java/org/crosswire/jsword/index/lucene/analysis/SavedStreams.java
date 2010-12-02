@@ -33,18 +33,18 @@ import org.apache.lucene.analysis.Tokenizer;
  */
 /* package */class SavedStreams {
     /**
+     * Save the TokenStream starting with the source.
+     * @param source
+     */
+    public SavedStreams(Tokenizer source) {
+        this.source = source;
+        this.result = source;
+    }
+    /**
      * @return the source
      */
     public Tokenizer getSource() {
         return source;
-    }
-
-    /**
-     * @param source
-     *            the source to set
-     */
-    public void setSource(Tokenizer source) {
-        this.source = source;
     }
 
     /**

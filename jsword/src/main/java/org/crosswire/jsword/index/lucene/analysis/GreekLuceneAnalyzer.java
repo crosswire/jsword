@@ -21,10 +21,14 @@
  */
 package org.crosswire.jsword.index.lucene.analysis;
 
+import java.io.IOException;
 import java.io.Reader;
 
+import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.el.GreekAnalyzer;
+import org.apache.lucene.analysis.el.GreekLowerCaseFilter;
+import org.apache.lucene.analysis.standard.StandardTokenizer;
 import org.apache.lucene.util.Version;
 
 /**
@@ -37,26 +41,47 @@ import org.apache.lucene.util.Version;
  */
 public class GreekLuceneAnalyzer extends AbstractBookAnalyzer {
     public GreekLuceneAnalyzer() {
-        // Construct GreekAnalyzer that do not use stop words
-        myAnalyzer = new GreekAnalyzer(Version.LUCENE_29, new String[0]);
+        stopSet = GreekAnalyzer.getDefaultStopSet();
     }
 
-    public final TokenStream tokenStream(String fieldName, Reader reader) {
-        return myAnalyzer.tokenStream(fieldName, reader);
-    }
-
-    public void setStopWords(String[] stopWords) {
-        myAnalyzer = new GreekAnalyzer(Version.LUCENE_29, stopWords);
-    }
-
-    public void setDoStopWords(boolean doIt) {
-        doStopWords = doIt;
-
-        // GreekAnalyzer that uses stop word
-        if (doStopWords) {
-            myAnalyzer = new GreekAnalyzer(Version.LUCENE_29);
+    /**
+     * Creates a {@link TokenStream} which tokenizes all the text in the provided {@link Reader}.
+     *
+     * @return  A {@link TokenStream} built from a {@link StandardTokenizer} filtered with
+     *                  {@link GreekLowerCaseFilter} and {@link StopFilter}
+     */
+    @Override
+    public TokenStream tokenStream(String fieldName, Reader reader) {
+        TokenStream result = new StandardTokenizer(matchVersion, reader);
+        result = new GreekLowerCaseFilter(result);
+        if (doStopWords && stopSet != null) {
+            result = new StopFilter(StopFilter.getEnablePositionIncrementsVersionDefault(matchVersion), result, stopSet);
         }
+        return result;
     }
 
-    private GreekAnalyzer myAnalyzer;
+    /**
+     * Returns a (possibly reused) {@link TokenStream} which tokenizes all the text 
+     * in the provided {@link Reader}.
+     *
+     * @return  A {@link TokenStream} built from a {@link StandardTokenizer} filtered with
+     *                  {@link GreekLowerCaseFilter} and {@link StopFilter}
+     */
+    @Override
+    public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
+        SavedStreams streams = (SavedStreams) getPreviousTokenStream();
+        if (streams == null) {
+            streams = new SavedStreams(new StandardTokenizer(matchVersion, reader));
+            streams.setResult(new GreekLowerCaseFilter(streams.getResult()));
+            if (doStopWords && stopSet != null) {
+                streams.setResult(new StopFilter(StopFilter.getEnablePositionIncrementsVersionDefault(matchVersion), streams.getResult(), stopSet));
+            }
+            setPreviousTokenStream(streams);
+        } else {
+            streams.getSource().reset(reader);
+        }
+        return streams.getResult();
+    }
+
+    private final Version matchVersion = Version.LUCENE_29;
 }

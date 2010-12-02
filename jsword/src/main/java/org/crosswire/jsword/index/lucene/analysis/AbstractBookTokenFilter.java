@@ -32,7 +32,7 @@ import org.crosswire.jsword.book.Book;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class AbstractBookTokenFilter extends TokenFilter {
+public abstract class AbstractBookTokenFilter extends TokenFilter {
 
     /**
      * Create a TokenFilter not tied to a Book.

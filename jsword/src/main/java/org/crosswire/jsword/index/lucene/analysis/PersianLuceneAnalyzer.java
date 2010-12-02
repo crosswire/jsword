@@ -31,6 +31,7 @@ import org.apache.lucene.analysis.ar.ArabicLetterTokenizer;
 import org.apache.lucene.analysis.ar.ArabicNormalizationFilter;
 import org.apache.lucene.analysis.fa.PersianAnalyzer;
 import org.apache.lucene.analysis.fa.PersianNormalizationFilter;
+import org.apache.lucene.util.Version;
 
 /**
  * An Analyzer whose {@link TokenStream} is built from a
@@ -44,7 +45,7 @@ import org.apache.lucene.analysis.fa.PersianNormalizationFilter;
  */
 public class PersianLuceneAnalyzer extends AbstractBookAnalyzer {
     public PersianLuceneAnalyzer() throws IOException {
-        loadStopWords(PersianAnalyzer.class, PersianAnalyzer.DEFAULT_STOPWORD_FILE, PersianAnalyzer.STOPWORDS_COMMENT);
+        stopSet = PersianAnalyzer.getDefaultStopSet();
     }
 
     /*
@@ -64,7 +65,7 @@ public class PersianLuceneAnalyzer extends AbstractBookAnalyzer {
          * above!
          */
         if (doStopWords && stopSet != null) {
-            result = new StopFilter(false, result, stopSet);
+            result = new StopFilter(StopFilter.getEnablePositionIncrementsVersionDefault(matchVersion), result, stopSet);
         }
 
         return result;
@@ -82,9 +83,8 @@ public class PersianLuceneAnalyzer extends AbstractBookAnalyzer {
     public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
         SavedStreams streams = (SavedStreams) getPreviousTokenStream();
         if (streams == null) {
-            streams = new SavedStreams();
-            streams.setSource(new ArabicLetterTokenizer(reader));
-            streams.setResult(new LowerCaseFilter(streams.getSource()));
+            streams = new SavedStreams(new ArabicLetterTokenizer(reader));
+            streams.setResult(new LowerCaseFilter(streams.getResult()));
             streams.setResult(new ArabicNormalizationFilter(streams.getResult()));
             /* additional persian-specific normalization */
             streams.setResult(new PersianNormalizationFilter(streams.getResult()));
@@ -101,4 +101,5 @@ public class PersianLuceneAnalyzer extends AbstractBookAnalyzer {
         }
         return streams.getResult();
     }
+    private final Version matchVersion = Version.LUCENE_29;
 }

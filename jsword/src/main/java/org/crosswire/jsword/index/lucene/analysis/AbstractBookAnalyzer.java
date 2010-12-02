@@ -21,15 +21,9 @@
  */
 package org.crosswire.jsword.index.lucene.analysis;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Set;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.StopFilter;
-import org.apache.lucene.analysis.WordlistLoader;
-import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.book.Book;
 
 /**
@@ -77,39 +71,10 @@ public abstract class AbstractBookAnalyzer extends Analyzer {
         return doStopWords;
     }
 
-    public void setStopWords(String[] stopWords) {
-        stopSet = StopFilter.makeStopSet(stopWords);
+    public void setStopWords(Set<?> stopWords) {
+        stopSet = stopWords;
     }
 
-    /**
-     * Load a stop word list as a resource. The list needs to be in a form
-     * described by {@link org.apache.lucene.analysis.WordListLoader}.
-     * 
-     * @param clazz
-     *            the class that owns the resource
-     * @param resourceName
-     *            the name of the resource
-     * @param commentChar
-     *            The comment character in the stop word file.
-     * @throws IOException
-     */
-    public void loadStopWords(Class clazz, String resourceName, String commentChar) throws IOException {
-        InputStream stream = null;
-        InputStreamReader reader = null;
-        try {
-            stream = ResourceUtil.getResourceAsStream(clazz, resourceName);
-            reader = new InputStreamReader(stream, "UTF-8"); //
-            stopSet = WordlistLoader.getWordSet(reader, commentChar);
-        } finally {
-            if (reader != null) {
-                reader.close();
-            }
-
-            if (stream != null) {
-                stream.close();
-            }
-        }
-    }
 
     public void setDoStemming(boolean stemming) {
         doStemming = stemming;
