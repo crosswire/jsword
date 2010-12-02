@@ -65,7 +65,8 @@
     <include name="**/jsword-common-aqua-*.jar"/>
     <include name="**/javatar-*.jar"/>
     <!-- Exclude ICU4J for now.
-  	<exclude name="**/icu4j-charsets-*.jar"/>
+    <exclude name="**/icu4j-charsets-*.jar"/>
+    <exclude name="**/icu4j-*-src.jar"/>
   	<include name="**/icu4j-*.jar"/> -->
     <!--
     <include name="**/activation.jar"/>
