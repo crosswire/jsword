@@ -658,7 +658,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(AbstractSwordInstaller.class);
+    protected static final Logger log = Logger.getLogger(AbstractSwordInstaller.class);
 
     /**
      * The relative path of the dir holding the search index files
