@@ -112,7 +112,7 @@ public class GBFFilter implements Filter {
                 // If the first letter after < is an upper case letter
                 // then report it as a potential problem
                 if (ltpos >= 0
-                        && ltpos < remains.length()
+                        && ltpos < remains.length() + 1
                         && Character.isUpperCase(remains.charAt(ltpos + 1)))
                 {
                     DataPolice.report("Possible bad GBF tag" + remains);
