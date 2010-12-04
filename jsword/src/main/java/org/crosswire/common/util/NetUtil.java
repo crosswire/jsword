@@ -620,19 +620,19 @@ public final class NetUtil {
      *            the resource whose size is wanted
      * @return the size of that resource
      */
-    public static long getSize(URI uri) {
+    public static int getSize(URI uri) {
         return getSize(uri, null, null);
     }
 
-    public static long getSize(URI uri, String proxyHost) {
+    public static int getSize(URI uri, String proxyHost) {
         return getSize(uri, proxyHost, null);
     }
 
-    public static long getSize(URI uri, String proxyHost, Integer proxyPort) {
+    public static int getSize(URI uri, String proxyHost, Integer proxyPort) {
         try {
             if (uri.getScheme().equals(PROTOCOL_HTTP)) {
                 WebResource resource = new WebResource(uri, proxyHost, proxyPort);
-                long size = resource.getSize();
+                int size = resource.getSize();
                 resource.shutdown();
                 return size;
             }

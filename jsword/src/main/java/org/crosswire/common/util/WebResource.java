@@ -195,7 +195,7 @@ public class WebResource {
      * 
      * @return the size of the file
      */
-    public long getSize() {
+    public int getSize() {
         HttpRequestBase method = new HttpHead(uri);
         HttpResponse response = null;
         try {
@@ -203,7 +203,7 @@ public class WebResource {
             response = client.execute(method);
             StatusLine statusLine = response.getStatusLine();
             if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-                return getHeaderAsLong(response, "Content-Length");
+                return getHeaderAsInt(response, "Content-Length");
             }
             String reason = response.getStatusLine().getReasonPhrase();
             // TRANSLATOR: Common error condition: {0} is a placeholder for the
@@ -259,28 +259,30 @@ public class WebResource {
     public void copy(URI dest, Progress meter) throws LucidException  {
         InputStream in = null;
         OutputStream out = null;
-
+long startDownload = System.currentTimeMillis();
         HttpRequestBase method = new HttpGet(uri);
         HttpResponse response = null;
         HttpEntity entity = null;
         try {
             // Execute the method.
             response = client.execute(method);
-
+int afterExecute = (int) (System.currentTimeMillis() - startDownload);
             // Initialize the meter, if present
             if (meter != null) {
                 // Find out how big it is
-                long size = getHeaderAsLong(response, "Content-Length");
+                int size = getHeaderAsInt(response, "Content-Length");
                 // Sometimes the Content-Length is not given and we have to grab it via HEAD method
                 if (size == 0) {
                     size = getSize();
                 }
                 meter.setTotalWork(size);
             }
+            long afterSize = (System.currentTimeMillis() - startDownload - afterExecute);
 
             entity = response.getEntity();
             if (entity != null) {
                 in = entity.getContent();
+                long afterEntity = (System.currentTimeMillis() - startDownload - afterSize);
 
                 // Download the index file
                 out = NetUtil.getOutputStream(dest);
@@ -294,6 +296,12 @@ public class WebResource {
                     out.write(buf, 0, count);
                     count = in.read(buf);
                 }
+                long afterWrite = (System.currentTimeMillis() - startDownload - afterEntity);
+                System.out.println("execute = " + afterExecute + "ms\n" +
+                        "size = " + afterSize + "ms\n" +
+                        "entity = " + afterEntity + "ms\n" +
+                        "write = " + afterWrite + "ms\n"
+                        );
             } else {
                 String reason = response.getStatusLine().getReasonPhrase();
                 // TRANSLATOR: Common error condition: {0} is a placeholder for
@@ -330,13 +338,13 @@ public class WebResource {
      * 
      * @param response The response from the request
      * @param field the header field to check
-     * @return the long value for the field
+     * @return the int value for the field
      */
-    private long getHeaderAsLong(HttpResponse response, String field) {
+    private int getHeaderAsInt(HttpResponse response, String field) {
         Header header = response.getFirstHeader(field);
         String value = header.getValue();
         try {
-            return Long.parseLong(value);
+            return Integer.parseInt(value);
         } catch (NumberFormatException ex) {
             return 0;
         }

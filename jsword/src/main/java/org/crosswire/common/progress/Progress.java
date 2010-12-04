@@ -34,7 +34,7 @@ public interface Progress {
     /**
      * Indicate that the total amount of work is unknown.
      */
-    long UNKNOWN = -1;
+    int UNKNOWN = -1;
 
     /**
      * Start the task measured from 0 to 100. It is the caller's responsibility to compute percentages.
@@ -53,7 +53,7 @@ public interface Progress {
      * @param totalWork
      *            the total amount that is to be worked.
      */
-    void beginJob(String sectionName, long totalWork);
+    void beginJob(String sectionName, int totalWork);
 
     /**
      * Start the task using timings from a prior run as a guess for the current
@@ -82,7 +82,7 @@ public interface Progress {
     /**
      * @return the total amount of work to be done, or UNKNOWN if it not known
      */
-    long getTotalWork();
+    int getTotalWork();
 
     /**
      * Set the total amount of work to be done. This can be called any time. It
@@ -93,7 +93,7 @@ public interface Progress {
      *            the total amount of work to be done in units that make sense
      *            to the caller.
      */
-    void setTotalWork(long totalWork);
+    void setTotalWork(int totalWork);
 
     /**
      * Return the computed percentage as an integer, typically from 0 to 100.
@@ -108,12 +108,12 @@ public interface Progress {
      * @param progress
      *            a part of the whole.
      */
-    void setWork(long progress);
+    void setWork(int progress);
 
     /**
      * @return the amount of work done so far as reported by the caller
      */
-    long getWorkDone();
+    int getWorkDone();
 
     /**
      * Indicate progress toward the whole. It is up to the caller to give a
@@ -123,7 +123,7 @@ public interface Progress {
      * @param progress
      *            a part of the whole.
      */
-    void setWorkDone(long progress);
+    void setWorkDone(int progress);
 
     /**
      * Indicate progress toward the whole. It is up to the caller to give a
@@ -132,7 +132,7 @@ public interface Progress {
      * @param step
      *            the amount of work done since the last call.
      */
-    void incrementWorkDone(long step);
+    void incrementWorkDone(int step);
 
     /**
      * The section name is used in reporting progress.

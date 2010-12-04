@@ -88,7 +88,7 @@ public interface Installer extends BookList {
      *            The book meta-data to check on.
      * @return whether there is a newer version to install
      */
-    long getSize(Book book);
+    int getSize(Book book);
 
     /**
      * Return true if the book is not installed or there is a newer version to

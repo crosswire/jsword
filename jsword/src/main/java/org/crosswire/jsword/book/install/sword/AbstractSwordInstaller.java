@@ -239,10 +239,10 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
              */
             /* @Override */
             public void run() {
-                Progress job = JobManager.createJob("Install", this);
-
                 // TRANSLATOR: Progress label indicating the installation of a book. {0} is a placeholder for the name of the book.
                 String jobName = UserMsg.gettext("Installing book: {0}", sbmd.getName());
+                Progress job = JobManager.createJob(jobName, this);
+
                 // Don't bother setting a size, we'll do it later.
                 job.beginJob(jobName);
 
@@ -304,9 +304,10 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
      * @see org.crosswire.jsword.book.install.Installer#reloadIndex()
      */
     public void reloadBookList() throws InstallException {
-        Progress job = JobManager.createJob("BookList", Thread.currentThread());
         // TRANSLATOR: Progress label for downloading one or more files.
-        job.beginJob(UserMsg.gettext("Downloading files"));
+        String jobName = UserMsg.gettext("Downloading files");
+        Progress job = JobManager.createJob(jobName, Thread.currentThread());
+        job.beginJob(jobName);
 
         try {
             URI scratchfile = getCachedIndexFile();
@@ -328,9 +329,10 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
      * .jsword.book.BookMetaData, java.net.URI)
      */
     public void downloadSearchIndex(Book book, URI localDest) throws InstallException {
-        Progress job = JobManager.createJob("SearchIndex", Thread.currentThread());
         // TRANSLATOR: Progress label for downloading one or more files.
-        job.beginJob(UserMsg.gettext("Downloading files"));
+        String jobName = UserMsg.gettext("Downloading files");
+        Progress job = JobManager.createJob(jobName, Thread.currentThread());
+        job.beginJob(jobName);
 
         try {
             download(job, packageDirectory + '/' + SEARCH_DIR, book.getInitials() + ZIP_SUFFIX, localDest);
