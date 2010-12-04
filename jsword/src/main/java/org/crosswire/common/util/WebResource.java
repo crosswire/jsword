@@ -44,6 +44,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.ProxySelectorRoutePlanner;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.crosswire.common.progress.Progress;
 
 /**
  * A WebResource is backed by an URL and potentially the proxy through which it
@@ -202,13 +203,7 @@ public class WebResource {
             response = client.execute(method);
             StatusLine statusLine = response.getStatusLine();
             if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-                Header header = response.getFirstHeader("Content-Length");
-                String value = header.getValue();
-                try {
-                    return Long.parseLong(value);
-                } catch (NumberFormatException ex) {
-                    return 0;
-                }
+                return getHeaderAsLong(response, "Content-Length");
             }
             String reason = response.getStatusLine().getReasonPhrase();
             // TRANSLATOR: Common error condition: {0} is a placeholder for the
@@ -230,7 +225,6 @@ public class WebResource {
      * 
      * @return the last mod date of the file
      */
-    @SuppressWarnings("deprecation")
     public long getLastModified() {
         HttpRequestBase method = new HttpHead(uri);
         HttpResponse response = null;
@@ -239,14 +233,7 @@ public class WebResource {
             response = client.execute(method);
             StatusLine statusLine = response.getStatusLine();
             if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-                Header header = response.getFirstHeader("Last-Modified");
-                String value = header.getValue();
-                try {
-                    // This date cannot be readily parsed with DateFormatter
-                    return Date.parse(value);
-                } catch (Exception ex) {
-                    return 0;
-                }
+                return getHeaderAsDate(response, "Last-Modified");
             }
             String reason = response.getStatusLine().getReasonPhrase();
             // TRANSLATOR: Common error condition: {0} is a placeholder for the
@@ -261,12 +248,15 @@ public class WebResource {
     }
 
     /**
-     * Copy this WebResource to the destination.
+     * Copy this WebResource to the destination and report progress.
      * 
      * @param dest
+     *            the URI of the destination, typically a file:///.
+     * @param meter
+     *            the job on which to report progress
      * @throws LucidException
      */
-    public void copy(URI dest) throws LucidException {
+    public void copy(URI dest, Progress meter) throws LucidException  {
         InputStream in = null;
         OutputStream out = null;
 
@@ -276,6 +266,18 @@ public class WebResource {
         try {
             // Execute the method.
             response = client.execute(method);
+
+            // Initialize the meter, if present
+            if (meter != null) {
+                // Find out how big it is
+                long size = getHeaderAsLong(response, "Content-Length");
+                // Sometimes the Content-Length is not given and we have to grab it via HEAD method
+                if (size == 0) {
+                    size = getSize();
+                }
+                meter.setTotalWork(size);
+            }
+
             entity = response.getEntity();
             if (entity != null) {
                 in = entity.getContent();
@@ -286,6 +288,9 @@ public class WebResource {
                 byte[] buf = new byte[4096];
                 int count = in.read(buf);
                 while (-1 != count) {
+                    if (meter != null) {
+                        meter.incrementWorkDone(count);
+                    }
                     out.write(buf, 0, count);
                     count = in.read(buf);
                 }
@@ -310,6 +315,51 @@ public class WebResource {
         }
     }
 
+    /**
+     * Copy this WebResource to the destination.
+     * 
+     * @param dest
+     * @throws LucidException
+     */
+    public void copy(URI dest) throws LucidException {
+        copy(dest, null);
+    }
+
+    /**
+     * Get the field as a long.
+     * 
+     * @param response The response from the request
+     * @param field the header field to check
+     * @return the long value for the field
+     */
+    private long getHeaderAsLong(HttpResponse response, String field) {
+        Header header = response.getFirstHeader(field);
+        String value = header.getValue();
+        try {
+            return Long.parseLong(value);
+        } catch (NumberFormatException ex) {
+            return 0;
+        }
+    }
+
+    /**
+     * Get the number of seconds since start of epoch for the field in the response headers as a Date.
+     * 
+     * @param response The response from the request
+     * @param field the header field to check
+     * @return number of seconds since start of epoch
+     */
+    @SuppressWarnings("deprecation")
+    private long getHeaderAsDate(HttpResponse response, String field) {
+        Header header = response.getFirstHeader(field);
+        String value = header.getValue();
+        try {
+            // This date cannot be readily parsed with DateFormatter
+            return Date.parse(value);
+        } catch (IllegalArgumentException ex) {
+            return 0;
+        }
+    }
     /**
      * Define a 750 ms timeout to get a connection
      */

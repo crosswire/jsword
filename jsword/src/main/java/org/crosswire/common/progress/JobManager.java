@@ -21,7 +21,6 @@
  */
 package org.crosswire.common.progress;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -78,36 +77,27 @@ public final class JobManager {
     }
 
     /**
-     * Create a new Job
+     * Create a new Job that cannot be canceled.
+     * 
+     * @param jobName the name of the Job
      */
-    public static Progress createJob(String description, URI predictURI, Thread work, boolean fakeupdates) {
-        Progress job = new Job(description, predictURI, work, fakeupdates ? Progress.UNKNOWN : 100);
+    public static Progress createJob(String jobName) {
+        return createJob(jobName, null);
+    }
+
+    /**
+     * Create a new Job that can be canceled.
+     * 
+     * @param jobName the name of the Job
+     * @param workerThread the thread on which this job runs
+     */
+    public static Progress createJob(String jobName, Thread workerThread) {
+        Progress job = new Job(jobName, workerThread);
         jobs.add(job);
 
         log.debug("job starting: " + job.getJobName());
 
         return job;
-    }
-
-    /**
-     * Create a new Job
-     */
-    public static Progress createJob(String description, Thread work, boolean fakeupdates) {
-        return createJob(description, null, work, fakeupdates);
-    }
-
-    /**
-     * Create a new Job
-     */
-    public static Progress createJob(String description, URI predictURI, boolean fakeupdates) {
-        return createJob(description, predictURI, null, fakeupdates);
-    }
-
-    /**
-     * Create a new Job
-     */
-    public static Progress createJob(String description, boolean fakeupdates) {
-        return createJob(description, null, null, fakeupdates);
     }
 
     /**

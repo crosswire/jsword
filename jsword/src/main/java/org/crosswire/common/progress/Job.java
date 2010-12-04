@@ -24,7 +24,6 @@ package org.crosswire.common.progress;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -42,6 +41,7 @@ import org.crosswire.common.util.NetUtil;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public final class Job implements Progress {
     /**
@@ -50,175 +50,222 @@ public final class Job implements Progress {
      * 
      * @param description
      *            Short description of this job
-     * @param predictURI
-     *            Optional URI to save/load prediction times from
      * @param worker
      *            Optional thread to use in request to stop worker
-     * @param totalWork
-     *            the size of the work to do
      */
-    protected Job(String description, URI predictURI, Thread worker, int totalWork) {
-        this.predictURI = predictURI;
+    protected Job(String jobName, Thread worker) {
+        this.jobName = jobName;
         this.workerThread = worker;
         this.listeners = new ArrayList();
-        this.start = -1;
-        this.predictedLength = -1;
-        beginJob(description, totalWork);
+        this.cancelable = workerThread != null;
+        this.jobMode = ProgressMode.PREDICTIVE;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.common.progress.Progress#beginJob(java.lang.String,
-     * int)
+    /* (non-Javadoc)
+     * @see org.crosswire.common.progress.Progress#beginJob(java.lang.String)
      */
-    public void beginJob(String name, int workToDo) {
+    public void beginJob(String sectionName) {
+        beginJob(sectionName, 100);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.progress.Progress#beginJob(java.lang.String, long)
+     */
+    public void beginJob(String sectionName, long totalWork) {
         if (this.finished) {
             return;
         }
 
         synchronized (this) {
-            this.totalWork = workToDo;
-            this.sectionName = name;
-            this.jobName = name;
-            this.work = 0;
-            this.finished = false;
-            this.cancelable = workerThread != null;
+            finished = false;
+            currentSectionName = sectionName;
+            totalUnits = totalWork;
+            jobMode = totalUnits == 100 ? ProgressMode.PERCENT : ProgressMode.UNITS;
+        }
 
-            if (totalWork == UNKNOWN) {
-                updater = new Timer();
-                updater.schedule(new PredictTask(), 0, 100);
-            }
+        // Report that the Job has started.
+        JobManager.fireWorkProgressed(this);
+    }
 
-            // Set-up the timings files. It's not a disaster if it doesn't load
-            if (predictURI != null) {
-                loadPredictions();
+    /* (non-Javadoc)
+     * @see org.crosswire.common.progress.Progress#beginJob(java.lang.String, java.net.URI)
+     */
+    public void beginJob(String sectionName, URI predictURI) {
+        if (finished) {
+            return;
+        }
+
+        synchronized (this) {
+            finished = false;
+            currentSectionName = sectionName;
+            predictionMapURI = predictURI;
+            jobMode = ProgressMode.PREDICTIVE;
+            startTime = System.currentTimeMillis();
+
+            fakingTimer = new Timer();
+            fakingTimer.schedule(new PredictTask(), 0, REPORTING_INTERVAL);
+
+            // Load currentPredictionMap. It's not a disaster if it doesn't load
+            totalUnits = loadPredictions();
+
+            // There were no prior predictions so punt.
+            if (totalUnits == Progress.UNKNOWN) {
+                // if we have nothing to go on use our assumption
+                totalUnits = EXTRA_TIME;
+                jobMode = ProgressMode.UNKNOWN;
             }
 
             // And the predictions for next time
-            current = new HashMap();
-            start = System.currentTimeMillis();
+            nextPredictionMap = new HashMap();
         }
+
+        // Report that the Job has started.
         JobManager.fireWorkProgressed(this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
+     * @see org.crosswire.common.progress.Progress#getJobName()
+     */
+    public synchronized String getJobName() {
+        return jobName;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.progress.Progress#getProgressMode()
+     */
+    public synchronized ProgressMode getProgressMode() {
+        return jobMode;
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.common.progress.Progress#getTotalWork()
      */
-    public synchronized int getTotalWork() {
-        return totalWork;
+    public synchronized long getTotalWork() {
+        return totalUnits;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.common.progress.Progress#setSectionName(java.lang.String)
+    /* (non-Javadoc)
+     * @see org.crosswire.common.progress.Progress#setTotalWork(long)
      */
-    public void setSectionName(String statedesc) {
-        if (this.finished) {
-            return;
-        }
-
-        boolean doUpdate = false;
-        synchronized (this) {
-            this.sectionName = statedesc;
-
-            doUpdate = updater != null;
-            if (doUpdate) {
-                if (predictedLength != 0) {
-                    setWork(100 * getAgeFromMap(predicted, statedesc) / predictedLength);
-                } else {
-                    setWork(0);
-                }
-            }
-            predictSection(statedesc);
-
-            current.put(statedesc, new Integer((int) (System.currentTimeMillis() - start)));
-        }
-
-        if (doUpdate) {
-            JobManager.fireWorkProgressed(this);
-        }
+    public synchronized void setTotalWork(long totalWork) {
+        this.totalUnits = totalWork;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.common.progress.Progress#setWork(int)
+    /* (non-Javadoc)
+     * @see org.crosswire.common.progress.Progress#getWork()
      */
-    public void setWork(int work) {
-        if (this.finished) {
+    public synchronized int getWork() {
+        return percent;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.progress.Progress#setWork(long)
+     */
+    public synchronized void setWork(long work) {
+        setWorkDone(work);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.progress.Progress#getWorkDone()
+     */
+    public synchronized long getWorkDone() {
+        return workUnits;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.progress.Progress#setWork(long)
+     */
+    public void setWorkDone(long work) {
+        if (finished) {
             return;
         }
 
         synchronized (this) {
-            if (this.work == work) {
+            if (workUnits == work) {
                 return;
             }
 
-            this.work = work;
-
-            predictSection(sectionName);
-
-            current.put(sectionName, new Integer((int) (System.currentTimeMillis() - start)));
+            workUnits = work;
+            percent = (int) (100 * workUnits / totalUnits);
         }
 
         JobManager.fireWorkProgressed(this);
     }
 
-    /**
-     * We have moved onto another section so update the percentage complete and
-     * the section title.
+    /* (non-Javadoc)
+     * @see org.crosswire.common.progress.Progress#incrementWorkDone(long)
      */
-    public void setProgress(int work, String statedesc) {
-        setSectionName(statedesc);
-        setWork(work);
+    public void incrementWorkDone(long step) {
+        setWorkDone(getWorkDone() + step);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
+     * @see org.crosswire.common.progress.Progress#getSectionName()
+     */
+    public synchronized String getSectionName() {
+        return currentSectionName;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.common.progress.Progress#setSectionName(java.lang.String)
+     */
+    public void setSectionName(String sectionName) {
+        if (finished) {
+            return;
+        }
+
+        synchronized (this) {
+            // If we are in some kind of predictive mode, then measure progress toward the expected end.
+            if (jobMode == ProgressMode.PREDICTIVE || jobMode == ProgressMode.UNKNOWN) {
+                updateProgress(System.currentTimeMillis());
+
+                // We are done with the current section and are starting another
+                // So record the length of the last section
+                if (nextPredictionMap != null) {
+                    nextPredictionMap.put(currentSectionName, Long.valueOf(workUnits));
+                }
+            }
+
+            currentSectionName = sectionName;
+        }
+
+        // Tell listeners that the label changed.
+        JobManager.fireWorkProgressed(this);
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.common.progress.Progress#done()
      */
     public void done() {
         synchronized (this) {
             finished = true;
             // TRANSLATOR: This shows up in a progress bar when progress is finished.
-            sectionName = UserMsg.gettext("Done");
-            work = 100;
+            currentSectionName = UserMsg.gettext("Done");
 
-            if (updater != null) {
-                updater.cancel();
-                updater = null;
+            // Turn off the timer
+            if (fakingTimer != null) {
+                fakingTimer.cancel();
+                fakingTimer = null;
             }
 
-            current.put(sectionName, new Integer((int) (System.currentTimeMillis() - start)));
+            workUnits = totalUnits;
+            percent = 100;
+
+            if (nextPredictionMap != null) {
+                nextPredictionMap.put(currentSectionName, Long.valueOf(System.currentTimeMillis() - startTime));
+            }
         }
 
         JobManager.fireWorkProgressed(this);
 
         synchronized (this) {
-            if (predictURI != null) {
+            if (predictionMapURI != null) {
                 savePredictions();
             }
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.common.progress.Progress#getSectionName()
-     */
-    public synchronized String getSectionName() {
-        return sectionName;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.common.progress.Progress#cancel()
      */
     public void cancel() {
@@ -231,61 +278,29 @@ public final class Job implements Progress {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.common.progress.Progress#isCancelable()
-     */
-    public boolean isCancelable() {
-        return cancelable;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.common.progress.Progress#setCancelable(boolean)
-     */
-    public void setCancelable(boolean newInterruptable) {
-        if (workerThread == null || finished) {
-            return;
-        }
-        cancelable = newInterruptable;
-        fireStateChanged();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.common.progress.Progress#isFinished()
      */
     public boolean isFinished() {
         return finished;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.common.progress.Progress#getWork()
+    /* (non-Javadoc)
+     * @see org.crosswire.common.progress.Progress#isCancelable()
      */
-    public synchronized int getWork() {
-        return work;
+    public synchronized boolean isCancelable() {
+        return cancelable;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.common.progress.Progress#getJobName()
+    /* (non-Javadoc)
+     * @see org.crosswire.common.progress.Progress#setCancelable(boolean)
      */
-    public synchronized String getJobName() {
-        return jobName;
-    }
-
-    /**
-     * Typically called from in a catch block, this ensures that we don't save
-     * the timing file because we have a messed up run.
-     */
-    private synchronized void ignoreTimings() {
-        predictURI = null;
+    public synchronized void setCancelable(boolean newInterruptable) {
+        if (workerThread == null || finished) {
+            return;
+        }
+        cancelable = newInterruptable;
+        fireStateChanged();
     }
 
     /**
@@ -328,7 +343,7 @@ public final class Job implements Progress {
 
         // We ought only to tell listeners about jobs that are in our
         // list of jobs so we need to fire before delete.
-        int count = temp.size();
+        long count = temp.size();
         for (int i = 0; i < count; i++) {
             ((WorkListener) temp.get(i)).workStateChanged(ev);
         }
@@ -337,14 +352,14 @@ public final class Job implements Progress {
     /**
      * Predict a percentage complete
      */
-    private synchronized int getAgeFromMap(Map props, String message) {
+    private synchronized long getAgeFromMap(Map props, String message) {
         if (props == null) {
             return 0;
         }
 
-        Integer time = (Integer) props.get(message);
+        Long time = (Long) props.get(message);
         if (time != null) {
-            return time.intValue();
+            return time.longValue();
         }
 
         return 0;
@@ -353,103 +368,42 @@ public final class Job implements Progress {
     /**
      * Get estimated the percent progress, extrapolating between sections
      */
-    protected synchronized void guessProgress() {
-        long now = System.currentTimeMillis();
+    protected synchronized void updateProgress(long now) {
+        workUnits = now - startTime;
 
-        if (now < sectionStart) {
-            log.warn("now before started: now=" + new Date(now) + " started=" + new Date(sectionStart));
-            return;
+        // Are we taking more time than expected?
+        // Then we are at 100%
+        if (workUnits > totalUnits) {
+            workUnits = totalUnits;
+            percent = 100;
+        } else {
+            percent = (int) (100 * workUnits / totalUnits);
         }
-
-        if (now == sectionStart) {
-            return;
-        }
-
-        if (now > sectionEnd) {
-            // the prediction went wrong and we are ahead of ourselves
-            work = percentEnd;
-            return;
-        }
-
-        // how long is this section
-        int sectlen = (int) (sectionEnd - sectionStart);
-        // what percent of the way through it are we?
-        int sectpc = (int) (100 * (now - sectionStart) / sectlen);
-        // so what do we need to add to the current percentage
-        int boost = sectpc * (percentEnd - work) / 100;
-        // so we guess at progress at:
-        int total = work + boost;
-        // but check this is not more than 100
-        total = total <= 100 ? total : 100;
-
-        work = total;
-    }
-
-    /**
-     * Predict a percentage complete
-     */
-    private synchronized void predictSection(String message) {
-        sectionStart = System.currentTimeMillis();
-
-        // if we have nothing to go on assume 10 sections of 10 sec each.
-        if (predicted == null || predictedLength == 0) {
-            sectionEnd = 10000;
-            percentEnd = 10;
-            return;
-        }
-
-        // from the predictions get this section starts and ends and the final
-        // finish
-        int predsectstart = getAgeFromMap(predicted, sectionName);
-        int predsectend = Integer.MAX_VALUE;
-
-        // find better values for predsectend and predallend
-        Iterator iter = predicted.keySet().iterator();
-        while (iter.hasNext()) {
-            String title = (String) iter.next();
-            int age = ((Integer) predicted.get(title)).intValue();
-
-            // if this is a later section (than the current) but early than the
-            // current earliest
-            if (age > predsectstart && age < predsectend) {
-                predsectend = age;
-            }
-        }
-        int predsecttime = predsectend - predsectstart;
-
-        sectionEnd = sectionStart + predsecttime;
-
-        // And what is the end percentage?
-        int pcstart = 100 * predsectstart / predictedLength;
-        int pcend = 100 * predsectend / predictedLength;
-        int pcdiff = pcend - pcstart;
-
-        percentEnd = work + pcdiff;
-
-        log.debug("Predicting " + predsecttime + "ms (" + work + '-' + percentEnd + "%) for section " + message);
     }
 
     /**
      * Load the predictive timings if any
      */
-    private synchronized void loadPredictions() {
+    private synchronized long loadPredictions() {
+        long maxAge = UNKNOWN;
         try {
-            predicted = new HashMap();
-            Properties temp = NetUtil.loadProperties(predictURI);
+            currentPredictionMap = new HashMap();
+            Properties temp = NetUtil.loadProperties(predictionMapURI);
 
+            // Determine the predicted time from the current prediction map
             Iterator iter = temp.keySet().iterator();
             while (iter.hasNext()) {
                 String title = (String) iter.next();
                 String timestr = temp.getProperty(title);
 
                 try {
-                    Integer time = new Integer(timestr);
-                    predicted.put(title, time);
+                    Long time = Long.valueOf(timestr);
+                    currentPredictionMap.put(title, time);
 
                     // if this time is later than the latest
-                    int age = time.intValue();
-                    if (age > predictedLength) {
-                        predictedLength = age;
+                    long age = time.longValue();
+                    if (maxAge < age) {
+                        maxAge = age;
                     }
                 } catch (NumberFormatException ex) {
                     log.error("Time format error", ex);
@@ -458,46 +412,56 @@ public final class Job implements Progress {
         } catch (IOException ex) {
             log.debug("Failed to load prediction times - guessing");
         }
+
+        return maxAge;
     }
 
     /**
      * Save the known timings to a properties file.
      */
     private synchronized void savePredictions() {
-        // We need to create a new prediction file. Work out the end point
-        long end = start;
-        Iterator iter = current.keySet().iterator();
-        while (iter.hasNext()) {
-            String message = (String) iter.next();
-            int age = getAgeFromMap(current, message);
-            if (age > end) {
-                end = age;
-            }
-        }
-        // long length = end - start;
-
         // Now we know the start and the end we can convert all times to
         // percents
         Properties predictions = new Properties();
-        iter = current.keySet().iterator();
+        Iterator iter = nextPredictionMap.keySet().iterator();
         while (iter.hasNext()) {
-            String message = (String) iter.next();
-            int age = getAgeFromMap(current, message);
-            predictions.setProperty(message, Integer.toString(age));
+            String sectionName = (String) iter.next();
+            long age = getAgeFromMap(nextPredictionMap, sectionName);
+            predictions.setProperty(sectionName, Long.toString(age));
         }
 
         // And save. It's not a disaster if this goes wrong
         try {
-            NetUtil.storeProperties(predictions, predictURI, "Predicted Startup Times");
+            NetUtil.storeProperties(predictions, predictionMapURI, "Predicted Startup Times");
         } catch (IOException ex) {
             log.error("Failed to save prediction times", ex);
         }
     }
 
     /**
+     * Typically called from in a catch block, this ensures that we don't save
+     * the timing file because we have a messed up run.
+     */
+    private synchronized void ignoreTimings() {
+        predictionMapURI = null;
+    }
+
+    private static final int REPORTING_INTERVAL = 100;
+
+    /**
+     * The amount of extra time if the predicted time was off and more time is needed.
+     */
+    private static final int EXTRA_TIME = 2 * REPORTING_INTERVAL;
+
+    /**
+     * The type of job being performed. This is used to simplify code.
+     */
+    private ProgressMode jobMode;
+
+    /**
      * Total amount of work to do.
      */
-    private int totalWork;
+    private long totalUnits;
 
     /**
      * Does this job allow interruptions?
@@ -510,24 +474,14 @@ public final class Job implements Progress {
     private boolean finished;
 
     /**
+     * The amount of work done against the total.
+     */
+    private long workUnits;
+
+    /**
      * The officially reported progress
      */
-    private int work;
-
-    /**
-     * When do we expect this section to end
-     */
-    private long sectionEnd;
-
-    /**
-     * When did this section start?
-     */
-    private long sectionStart;
-
-    /**
-     * The percentage at the end of this section
-     */
-    private int percentEnd;
+    private int percent;
 
     /**
      * A short descriptive phrase
@@ -542,37 +496,32 @@ public final class Job implements Progress {
     /**
      * Description of what we are doing
      */
-    private String sectionName;
-
-    /**
-     * When did this job start?
-     */
-    private long start;
-
-    /**
-     * The timings as measured this time
-     */
-    private Map current;
-
-    /**
-     * The timings loaded from where they were saved after the last run
-     */
-    private Map predicted;
-
-    /**
-     * How long to we predict this job is going to last?
-     */
-    private int predictedLength;
+    private String currentSectionName;
 
     /**
      * The URI to which we load and save timings
      */
-    private URI predictURI;
+    private URI predictionMapURI;
 
     /**
-     * The timer that lets us post fake progress events
+     * The timings loaded from where they were saved after the last run
      */
-    private Timer updater;
+    private Map currentPredictionMap;
+
+    /**
+     * The timings as measured this time
+     */
+    private Map nextPredictionMap;
+
+    /**
+     * When did this job start? Measured in milliseconds since beginning of epoch.
+     */
+    private long startTime;
+
+    /**
+     * The timer that lets us post fake progress events.
+     */
+    private Timer fakingTimer;
 
     /**
      * People that want to know about "cancelable" changes
@@ -583,16 +532,12 @@ public final class Job implements Progress {
      * So we can fake progress for Jobs that don't tell us how they are doing
      */
     final class PredictTask extends TimerTask {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent
-         * )
+        /* (non-Javadoc)
+         * @see java.util.TimerTask#run()
          */
-        /* @Override */
+        @Override
         public void run() {
-            guessProgress();
+            updateProgress(System.currentTimeMillis());
             JobManager.fireWorkProgressed(Job.this);
         }
 

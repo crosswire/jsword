@@ -55,7 +55,9 @@ public class JobTest extends TestCase {
         File tempfile = File.createTempFile("jobtest", "tmp");
         URI uri = new URI(NetUtil.PROTOCOL_FILE, null, tempfile.getAbsolutePath(), null);
 
-        job = JobManager.createJob(WIBBLE, false);
+        job = JobManager.createJob(WIBBLE);
+        job.beginJob(WIBBLE);
+
         assertEquals(job.getJobName(), WIBBLE);
         assertEquals(job.isFinished(), false);
         assertEquals(job.isCancelable(), false);
@@ -66,7 +68,8 @@ public class JobTest extends TestCase {
         assertEquals(job.getWork(), 100);
         assertEquals(job.isCancelable(), false);
 
-        job = JobManager.createJob(WIBBLE, Thread.currentThread(), false);
+        job = JobManager.createJob(WIBBLE, Thread.currentThread());
+        job.beginJob(WIBBLE);
         assertEquals(job.getJobName(), WIBBLE);
         assertEquals(job.isFinished(), false);
         assertEquals(job.isCancelable(), true);
@@ -77,7 +80,8 @@ public class JobTest extends TestCase {
         assertEquals(job.getWork(), 100);
         // assertEquals(job.isCancelable(), false);
 
-        job = JobManager.createJob(WIBBLE, uri, false);
+        job = JobManager.createJob(WIBBLE);
+        job.beginJob(WIBBLE, uri);
         assertEquals(job.getJobName(), WIBBLE);
         assertEquals(job.isFinished(), false);
         assertEquals(job.isCancelable(), false);
@@ -88,7 +92,8 @@ public class JobTest extends TestCase {
         assertEquals(job.getWork(), 100);
         // assertEquals(job.isCancelable(), false);
 
-        job = JobManager.createJob(WIBBLE, uri, Thread.currentThread(), false);
+        job = JobManager.createJob(WIBBLE, Thread.currentThread());
+        job.beginJob(WIBBLE, uri);
         assertEquals(job.getJobName(), WIBBLE);
         assertEquals(job.isFinished(), false);
         assertEquals(job.isCancelable(), true);

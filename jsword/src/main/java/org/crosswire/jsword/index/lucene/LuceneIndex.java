@@ -151,7 +151,8 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
         DataPolice.setBook(book.getBookMetaData());
 
         // TRANSLATOR: Progress label indicating the start of indexing. {0} is a placeholder for the book's short name.
-        Progress job = JobManager.createJob(UserMsg.gettext("Creating index. Processing {0}", book.getInitials()), Thread.currentThread(), false);
+        Progress job = JobManager.createJob("CreateIndex", Thread.currentThread());
+        job.beginJob(UserMsg.gettext("Creating index. Processing {0}", book.getInitials()));
 
         IndexStatus finalStatus = IndexStatus.UNDONE;
 
@@ -463,9 +464,12 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
                 }
 
                 subCount++;
+                int oldPercent = percent;
                 percent = 95 * subCount / size;
 
-                job.setWork(percent);
+                if (oldPercent != percent) {
+                    job.setWork(percent);
+                }
 
                 // This could take a long time ...
                 Thread.yield();

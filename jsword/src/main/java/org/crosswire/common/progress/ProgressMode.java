@@ -14,38 +14,35 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2007
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
+ * ID: $Id: org.eclipse.jdt.ui.prefs 1178 2006-11-06 12:48:02Z dmsmith $
  */
 package org.crosswire.common.progress;
 
-import junit.framework.TestCase;
-
 /**
- * JUnit Test.
- * 
+ * Progress can be  one of several modes, which correspond to the <code>Progress.beginJob()</code> calls.
+ *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
- * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class WorkEventTest extends TestCase {
+public enum ProgressMode {
     /**
-     * Constructor for WorkEventTest.
-     * 
-     * @param arg0
+     * Progress is working toward 100% and is supplying work from 0 to 100.
      */
-    public WorkEventTest(String arg0) {
-        super(arg0);
-    }
-
-    public void testGetJob() {
-        Progress job = JobManager.createJob("wibble");
-        job.beginJob("wibble");
-        WorkEvent ev = new WorkEvent(job);
-
-        assertEquals(ev.getJob(), job);
-        assertEquals(ev.getSource(), job);
-    }
+    PERCENT,
+    /**
+     * Progress is working toward a number of units. It might be 100.
+     */
+    UNITS,
+    /**
+     * Progress is predicted on the basis of prior runs. The caller has supplied a useful map of the sections for last run.
+     */
+    PREDICTIVE,
+    /**
+     * Progress is entirely indeterminate. The user has not supplied a useful map of the sections for last run.
+     */
+    UNKNOWN
 }

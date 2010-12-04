@@ -111,7 +111,7 @@ public class HttpSwordInstaller extends AbstractSwordInstaller {
         }
 
         WebResource wr = new WebResource(uri, proxyHost, proxyPort);
-        wr.copy(dest);
+        wr.copy(dest, job);
         wr.shutdown();
     }
 

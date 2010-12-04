@@ -102,7 +102,7 @@ public final class FilterFactory {
      * not found then the default filter will be used.
      */
     public static Filter getFilter(String lookup) {
-        Filter reply = (Filter) filters.get(lookup.toLowerCase());
+        Filter reply = (Filter) filters.get(lookup.toLowerCase(Locale.ENGLISH));
 
         if (reply == null) {
             reply = deft;
