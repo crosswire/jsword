@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="src/main/java"/>
-	<classpathentry kind="src" path="src/test/java"/>
-	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry exported="true" kind="lib" path="jar/commons-logging-1.1.1/commons-logging-1.1.1.jar" sourcepath="jar/commons-logging-1.1.1/commons-logging-1.1.1-src.zip"/>
 	<classpathentry exported="true" kind="lib" path="jar/jaf-1.1/activation.jar"/>
 	<classpathentry exported="true" kind="lib" path="jar/javatar-2.5/javatar-2.5.jar"/>
@@ -13,11 +10,14 @@
 	<classpathentry exported="true" kind="lib" path="jar/commons-net-2.2/commons-net-2.2.jar" sourcepath="jar/commons-net-2.2/commons-net-2.2-src.zip"/>
 	<classpathentry exported="true" kind="lib" path="jar/httpcomponents-core-4.1/httpcore-4.1.jar" sourcepath="jar/httpcomponents-core-4.1/httpcomponents-core-4.1-src.zip"/>
 	<classpathentry exported="true" kind="lib" path="jar/httpcomponents-client-4.1-beta1/httpclient-4.1-beta1.jar" sourcepath="jar/httpcomponents-client-4.1-beta1/httpcomponents-client-4.1-beta1-src.zip"/>
-	<classpathentry exported="true" kind="lib" path="jar/lucene-3.0.2/lucene-analyzers-3.0.2.jar" sourcepath="jar/lucene-3.0.2/lucene-3.0.2-src.zip"/>
-	<classpathentry exported="true" kind="lib" path="jar/lucene-3.0.2/lucene-core-3.0.2.jar" sourcepath="jar/lucene-3.0.2/lucene-3.0.2-src.zip"/>
-	<classpathentry exported="true" kind="lib" path="jar/lucene-3.0.2/lucene-smartcn-3.0.2.jar" sourcepath="jar/lucene-3.0.2/lucene-3.0.2-src.zip"/>
-	<classpathentry exported="true" kind="lib" path="jar/lucene-3.0.2/lucene-snowball-3.0.2.jar" sourcepath="jar/lucene-3.0.2/lucene-3.0.2-src.zip"/>
-	<classpathentry exported="true" kind="lib" path="jar/icu4j-4.4.2/icu4j-4_4_2.jar" sourcepath="jar/icu4j-4.4.2/icu4j-4_4_2-src.jar"/>
-	<classpathentry exported="true" kind="lib" path="jar/icu4j-4.4.2/icu4j-charsets-4_4_2.jar"/>
+	<classpathentry kind="src" path="src/main/resources"/>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry kind="lib" path="jar/lucene-3.0.3/lucene-analyzers-3.0.3.jar" sourcepath="jar/lucene-3.0.3/lucene-3.0.3-src.zip"/>
+	<classpathentry kind="lib" path="jar/lucene-3.0.3/lucene-core-3.0.3.jar" sourcepath="jar/lucene-3.0.3/lucene-3.0.3-src.zip"/>
+	<classpathentry kind="lib" path="jar/lucene-3.0.3/lucene-smartcn-3.0.3.jar" sourcepath="jar/lucene-3.0.3/lucene-3.0.3-src.zip"/>
+	<classpathentry kind="lib" path="jar/lucene-3.0.3/lucene-snowball-3.0.3.jar" sourcepath="jar/lucene-3.0.3/lucene-3.0.3-src.zip"/>
+	<classpathentry kind="lib" path="jar/icu4j-4.6/icu4j-4_6.jar" sourcepath="jar/icu4j-4.6/icu4j-4_6-src.jar"/>
+	<classpathentry kind="lib" path="jar/icu4j-4.6/icu4j-charsets-4_6.jar" sourcepath="jar/icu4j-4.6/icu4j-4_6-src.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
