@@ -44,7 +44,7 @@ public class BookLookup {
     }
 
     public String locate(Key key) throws BookException {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
 
         Iterator iter = key.iterator();
         while (iter.hasNext()) {

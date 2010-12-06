@@ -352,7 +352,7 @@ public final class ConfigEntry {
      * @return the well-formed conf.
      */
     public String toConf() {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
 
         if (value != null) {
             buf.append(getName());
@@ -427,7 +427,7 @@ public final class ConfigEntry {
     }
 
     private String report(String issue, String confEntryName, String aValue) {
-        StringBuffer buf = new StringBuffer(100);
+        StringBuilder buf = new StringBuilder(100);
         buf.append(issue);
         buf.append(' ');
         buf.append(confEntryName);

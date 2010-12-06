@@ -211,7 +211,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
                 }
 
                 if (!errors.isEmpty()) {
-                    StringBuffer buf = new StringBuffer();
+                    StringBuilder buf = new StringBuilder();
                     Iterator iter = errors.iterator();
                     while (iter.hasNext()) {
                         buf.append(iter.next());

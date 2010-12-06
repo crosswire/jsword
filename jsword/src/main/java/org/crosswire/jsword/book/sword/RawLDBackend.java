@@ -428,7 +428,7 @@ public class RawLDBackend extends AbstractKeyBackend {
             if (bmd.hasFeature(FeatureType.GREEK_DEFINITIONS) && bmd.hasFeature(FeatureType.HEBREW_DEFINITIONS)) {
                 // The convention is that a Strong's dictionary with both Greek
                 // and Hebrew have G or H prefix
-                StringBuffer buf = new StringBuffer();
+                StringBuilder buf = new StringBuilder();
                 buf.append(Character.toUpperCase(type));
                 buf.append(ZERO_4PAD.format(strongsNumber));
 

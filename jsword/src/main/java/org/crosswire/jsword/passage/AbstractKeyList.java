@@ -281,7 +281,7 @@ public abstract class AbstractKeyList implements Key {
          * Create a <code>NameVisitor</code>.
          */
         public NameVisitor() {
-            buffer = new StringBuffer();
+            buffer = new StringBuilder();
         }
 
         /*
@@ -311,7 +311,7 @@ public abstract class AbstractKeyList implements Key {
             return reply;
         }
 
-        protected StringBuffer buffer;
+        protected StringBuilder buffer;
     }
 
     /**

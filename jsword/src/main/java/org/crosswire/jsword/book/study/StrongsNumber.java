@@ -97,7 +97,7 @@ public class StrongsNumber {
      * @return the strongsNumber
      */
     public String getStrongsNumber() {
-        StringBuffer buf = new StringBuffer(5);
+        StringBuilder buf = new StringBuilder(5);
         buf.append(language);
         buf.append(ZERO_PAD.format(strongsNumber));
         return buf.toString();
@@ -109,7 +109,7 @@ public class StrongsNumber {
      * @return the strongsNumber
      */
     public String getFullStrongsNumber() {
-        StringBuffer buf = new StringBuffer(5);
+        StringBuilder buf = new StringBuilder(5);
         buf.append(language);
         buf.append(ZERO_PAD.format(strongsNumber));
         if (part != null) {

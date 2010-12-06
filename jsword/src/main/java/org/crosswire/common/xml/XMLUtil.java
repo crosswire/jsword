@@ -122,7 +122,7 @@ public final class XMLUtil {
             return s;
         }
         int len = s.length();
-        StringBuffer str = new StringBuffer(len);
+        StringBuilder str = new StringBuilder(len);
 
         for (int i = 0; i < len; i++) {
             char ch = s.charAt(i);

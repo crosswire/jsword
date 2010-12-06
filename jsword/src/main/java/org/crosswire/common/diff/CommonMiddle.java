@@ -94,7 +94,7 @@ public class CommonMiddle {
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         buf.append(sourcePrefix);
         buf.append(',');
         buf.append(sourceSuffix);

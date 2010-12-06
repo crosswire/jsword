@@ -89,7 +89,7 @@ public final class DataPolice {
      *            the police report.
      */
     public static void report(Level lev, String message) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         if (bmd != null) {
             buf.append(bmd.getInitials());
         }

@@ -138,7 +138,7 @@ public class THMLFilter implements Filter {
     private Element parse(Book book, Key key, String plain, String failMessage) {
         Exception ex = null;
         // We need to create a root element to house our document fragment
-        StringBuffer buf = new StringBuffer(15 + plain.length()); // 15 for the
+        StringBuilder buf = new StringBuilder(15 + plain.length()); // 15 for the
                                                                   // tags we add
         buf.append('<').append(RootTag.TAG_ROOT).append('>').append(plain).append("</").append(RootTag.TAG_ROOT).append('>');
         finalInput = buf.toString();

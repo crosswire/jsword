@@ -171,7 +171,7 @@ public abstract class AbstractPassage implements Passage {
             return originalName;
         }
 
-        StringBuffer retcode = new StringBuffer();
+        StringBuilder retcode = new StringBuilder();
 
         Iterator it = rangeIterator(RestrictionType.NONE);
         Verse current = null;
@@ -218,7 +218,7 @@ public abstract class AbstractPassage implements Passage {
      * @see org.crosswire.jsword.passage.Passage#getOSISName()
      */
     public String getOsisRef() {
-        StringBuffer retcode = new StringBuffer();
+        StringBuilder retcode = new StringBuilder();
 
         Iterator it = rangeIterator(RestrictionType.NONE);
         boolean hasNext = it.hasNext();
@@ -241,7 +241,7 @@ public abstract class AbstractPassage implements Passage {
      * @see org.crosswire.jsword.passage.Key#getOSISId()
      */
     public String getOsisID() {
-        StringBuffer retcode = new StringBuffer();
+        StringBuilder retcode = new StringBuilder();
 
         Iterator it = rangeIterator(RestrictionType.NONE);
         boolean hasNext = it.hasNext();

@@ -185,7 +185,7 @@ public class BookData implements BookProvider {
 
                     if (showDiffs[i - 1]) {
                         doDiffs = true;
-                        StringBuffer buf = new StringBuffer(prevBook.getInitials());
+                        StringBuilder buf = new StringBuilder(prevBook.getInitials());
                         buf.append(" ==> ");
                         buf.append(book.getInitials());
 

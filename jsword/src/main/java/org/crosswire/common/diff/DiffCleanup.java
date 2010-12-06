@@ -257,8 +257,8 @@ public final class DiffCleanup {
 
         int countDelete = 0;
         int countInsert = 0;
-        StringBuffer textDelete = new StringBuffer();
-        StringBuffer textInsert = new StringBuffer();
+        StringBuilder textDelete = new StringBuilder();
+        StringBuilder textInsert = new StringBuilder();
 
         int commonLength = 0;
 

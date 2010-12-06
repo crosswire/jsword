@@ -78,8 +78,8 @@ public abstract class AbstractReflectedChoice implements Choice {
 
         // OPTIMIZE(dms): This is poorly done (by me!)
         String[] pathParts = StringUtil.split(key, '.');
-        StringBuffer parentKey = new StringBuffer();
-        StringBuffer path = new StringBuffer();
+        StringBuilder parentKey = new StringBuilder();
+        StringBuilder path = new StringBuilder();
         for (int i = 0; i < pathParts.length; i++) {
             if (i > 0) {
                 parentKey.append('.');

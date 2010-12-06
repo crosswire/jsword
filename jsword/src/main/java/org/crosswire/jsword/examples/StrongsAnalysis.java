@@ -81,7 +81,7 @@ public class StrongsAnalysis {
         Key subkey = null;
         BookData data = null;
         Element osis = null;
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         Iterator it = wholeBible.iterator();
         while (it.hasNext()) {
             subkey = (Key) it.next();

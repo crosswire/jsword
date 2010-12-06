@@ -57,7 +57,7 @@ public final class StringUtil {
      * @return A string containing all the text from the Stream.
      */
     public static String read(Reader in) throws IOException {
-        StringBuffer retcode = new StringBuffer();
+        StringBuilder retcode = new StringBuilder();
         BufferedReader din = new BufferedReader(in);
 
         while (true) {
@@ -80,7 +80,7 @@ public final class StringUtil {
      * StringUtil.createTitle("oneTwo") = "One Two"
      */
     public static String createTitle(String variable) {
-        StringBuffer retcode = new StringBuffer();
+        StringBuilder retcode = new StringBuilder();
         boolean lastlower = false;
         boolean lastspace = true;
 
@@ -122,7 +122,7 @@ public final class StringUtil {
     public static String getInitials(String sentence) {
         String[] words = StringUtil.split(sentence);
 
-        StringBuffer retcode = new StringBuffer();
+        StringBuilder retcode = new StringBuilder();
         for (int i = 0; i < words.length; i++) {
             String word = words[i];
 
@@ -561,7 +561,7 @@ public final class StringUtil {
         // (Assuming that all Strings are roughly equally long)
         int bufSize = arraySize == 0 ? 0 : arraySize * ((array[0] == null ? 16 : array[0].toString().length()) + separator.length());
 
-        StringBuffer buf = new StringBuffer(bufSize);
+        StringBuilder buf = new StringBuilder(bufSize);
 
         for (int i = 0; i < arraySize; i++) {
             if (i > 0) {
@@ -587,7 +587,7 @@ public final class StringUtil {
      * <tt>null</tt>, in which case <tt>"null"</tt> is returned.
      * 
      * <p>
-     * This is borrowed from Java 1.5, but uses StringBuffer.
+     * This is borrowed from Java 1.5, but uses StringBuilder.
      * 
      * @param a
      *            the array whose string representation to return
@@ -603,7 +603,7 @@ public final class StringUtil {
             return "[]";
         }
 
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
 
         for (int i = 0; i < a.length; i++) {
             if (i == 0) {

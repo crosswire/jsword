@@ -68,7 +68,7 @@ public class LineMap {
      *            List of Difference objects
      */
     public void restore(final List diffs) {
-        StringBuffer text = new StringBuffer();
+        StringBuilder text = new StringBuilder();
         for (int x = 0; x < diffs.size(); x++) {
             Difference diff = (Difference) diffs.get(x);
             String chars = diff.getText();
@@ -116,7 +116,7 @@ public class LineMap {
      * @return Encoded string
      */
     private String linesToCharsMunge(final String text, List linearray, Map linehash) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         String work = text;
         // text.split('\n') would work fine, but would temporarily double our
         // memory footprint for minimal speed improvement.

@@ -190,7 +190,7 @@ public final class Convert {
      */
     public static String map2String(Map commands) {
         Iterator it = commands.entrySet().iterator();
-        StringBuffer retcode = new StringBuffer();
+        StringBuilder retcode = new StringBuilder();
 
         while (it.hasNext()) {
             Map.Entry entry = (Map.Entry) it.next();

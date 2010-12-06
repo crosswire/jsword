@@ -311,7 +311,7 @@ public class EventListenerList implements Serializable {
     /* @Override */
     public String toString() {
         Object[] lList = listenerList;
-        StringBuffer s = new StringBuffer("EventListenerList: ");
+        StringBuilder s = new StringBuilder("EventListenerList: ");
         s.append(lList.length / 2);
         s.append(" listeners: ");
 

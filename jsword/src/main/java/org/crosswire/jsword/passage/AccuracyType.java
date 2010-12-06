@@ -604,7 +604,7 @@ public abstract class AccuracyType implements Serializable {
     }
 
     private static NoSuchVerseException buildVersePartsException(String original, String[] parts) {
-        StringBuffer buffer = new StringBuffer(original);
+        StringBuilder buffer = new StringBuilder(original);
         for (int i = 0; i < parts.length; i++) {
             buffer.append(", ").append(parts[i]);
         }

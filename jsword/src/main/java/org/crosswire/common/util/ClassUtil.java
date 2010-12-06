@@ -81,7 +81,7 @@ public final class ClassUtil {
                     log.warn("Missing zip file for " + classname + " and " + paths[i]);
                 }
             } else {
-                StringBuffer path = new StringBuffer(256);
+                StringBuilder path = new StringBuilder(256);
 
                 // Search for the file
                 String extra = classname.replace('.', File.separatorChar);

@@ -195,8 +195,8 @@ public class Diff {
             diffs.add(new Difference(EditType.EQUAL, ""));
             int countDeletes = 0;
             int countInserts = 0;
-            StringBuffer textDelete = new StringBuffer();
-            StringBuffer textInsert = new StringBuffer();
+            StringBuilder textDelete = new StringBuilder();
+            StringBuilder textInsert = new StringBuilder();
             ListIterator pointer = diffs.listIterator();
             Difference curDiff = (Difference) pointer.next();
             while (curDiff != null) {
@@ -292,7 +292,7 @@ public class Diff {
      * @return HTML representation
      */
     public String prettyHtml(List diffs) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         for (int x = 0; x < diffs.size(); x++) {
             Difference diff = (Difference) diffs.get(x);
             EditType editType = diff.getEditType(); // Mode (delete, equal,

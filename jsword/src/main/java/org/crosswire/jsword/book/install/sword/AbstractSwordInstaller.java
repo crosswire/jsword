@@ -88,7 +88,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
      * @see org.crosswire.jsword.book.install.Installer#getInstallerDefinition()
      */
     public String getInstallerDefinition() {
-        StringBuffer buf = new StringBuffer(host);
+        StringBuilder buf = new StringBuilder(host);
         buf.append(',');
         buf.append(packageDirectory);
         buf.append(',');

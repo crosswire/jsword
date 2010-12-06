@@ -107,7 +107,7 @@ public final class XMLFeatureSet {
      */
     /* @Override */
     public String toString() {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         buf.append('\n');
         Iterator iter = features.values().iterator();
         while (iter.hasNext()) {

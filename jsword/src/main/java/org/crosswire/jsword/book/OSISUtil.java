@@ -630,7 +630,7 @@ public final class OSISUtil {
      * @return The canonical text without markup
      */
     public static String getCanonicalText(Element root) {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
 
         // Dig past osis, osisText, if present, to get to the real content.
         List frag = OSISUtil.getFragment(root);
@@ -693,7 +693,7 @@ public final class OSISUtil {
      * @return The Strong's numbers in the text
      */
     public static String getStrongsNumbers(Element root) {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
 
         Iterator contentIter = getDeepContent(root, OSISUtil.OSIS_ELEMENT_W).iterator();
         while (contentIter.hasNext()) {
@@ -746,7 +746,7 @@ public final class OSISUtil {
      * @return The references in the text
      */
     public static String getNotes(Element root) {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
 
         Iterator contentIter = getDeepContent(root, OSISUtil.OSIS_ELEMENT_NOTE).iterator();
         while (contentIter.hasNext()) {
@@ -769,7 +769,7 @@ public final class OSISUtil {
      * @return The references in the text
      */
     public static String getHeadings(Element root) {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
 
         Iterator contentIter = getDeepContent(root, OSISUtil.OSIS_ELEMENT_TITLE).iterator();
         while (contentIter.hasNext()) {
@@ -780,7 +780,7 @@ public final class OSISUtil {
         return buffer.toString();
     }
 
-    private static void getCanonicalContent(Element parent, String sID, Iterator iter, StringBuffer buffer) {
+    private static void getCanonicalContent(Element parent, String sID, Iterator iter, StringBuilder buffer) {
         if (!isCanonical(parent)) {
             return;
         }
@@ -834,7 +834,7 @@ public final class OSISUtil {
     }
 
     private static String getTextContent(List fragment) {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
 
         Iterator contentIter = fragment.iterator();
         while (contentIter.hasNext()) {
@@ -948,7 +948,7 @@ public final class OSISUtil {
 
         int strlen = rtf.length();
 
-        StringBuffer text = new StringBuffer(strlen);
+        StringBuilder text = new StringBuilder(strlen);
 
         int i = 0;
         for (i = 0; i < strlen; i++) {
@@ -999,7 +999,7 @@ public final class OSISUtil {
 
             // convert Unicode representations to Unicode
             if (rtf.startsWith("\\u", i)) {
-                StringBuffer buf = new StringBuffer();
+                StringBuilder buf = new StringBuilder();
                 i += 2;
                 while (i < strlen) {
                     char curDigit = rtf.charAt(i);
@@ -1117,7 +1117,7 @@ public final class OSISUtil {
      * If we have a String just add it to the buffer, but if we have an Element
      * then try to dig the strings out of it.
      */
-    private static void recurseElement(Object sub, StringBuffer buffer) {
+    private static void recurseElement(Object sub, StringBuilder buffer) {
         if (sub instanceof Text) {
             buffer.append(((Text) sub).getText());
         } else if (sub instanceof Element) {
@@ -1135,7 +1135,7 @@ public final class OSISUtil {
      * @param buffer
      *            The place we accumulate strings.
      */
-    private static void recurseChildren(Element ele, StringBuffer buffer) {
+    private static void recurseChildren(Element ele, StringBuilder buffer) {
         // ele is a JDOM Element that might have a getContent() method
         Iterator contentIter = ele.getContent().iterator();
         while (contentIter.hasNext()) {

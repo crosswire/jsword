@@ -473,7 +473,7 @@ public final class PassageKeyFactory implements KeyFactory {
 
         // Note this has a lot in common with AccuracyType.tokenize
         int size = name.length();
-        StringBuffer buf = new StringBuffer(size * 2);
+        StringBuilder buf = new StringBuilder(size * 2);
 
         char curChar = ' ';
         boolean isNumber = false;

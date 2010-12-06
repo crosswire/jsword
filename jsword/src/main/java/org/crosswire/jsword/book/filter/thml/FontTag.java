@@ -54,7 +54,7 @@ public class FontTag extends AbstractTag {
     /* @Override */
     public Element processTag(Element ele, Attributes attrs) {
         Element seg = OSISUtil.factory().createSeg();
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
 
         String color = attrs.getValue("color");
         if (color != null) {

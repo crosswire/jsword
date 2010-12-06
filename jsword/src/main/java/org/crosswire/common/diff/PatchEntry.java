@@ -153,7 +153,7 @@ public class PatchEntry {
     // Header: @@ -382,8 +481,9 @@
     // Indices are printed as 1-based, not 0-based.
     public String toString() {
-        StringBuffer txt = new StringBuffer();
+        StringBuilder txt = new StringBuilder();
         txt.append("@@ -");
         txt.append(getCoordinates(sourceStart, sourceLength));
         txt.append(" +");
@@ -234,7 +234,7 @@ public class PatchEntry {
 
     // Compute and return the source text (all equalities and deletions).
     public String getSourceText() {
-        StringBuffer txt = new StringBuffer();
+        StringBuilder txt = new StringBuilder();
         Iterator iter = diffs.iterator();
         while (iter.hasNext()) {
             Difference diff = (Difference) iter.next();
@@ -247,7 +247,7 @@ public class PatchEntry {
 
     // Compute and return the destination text (all equalities and insertions).
     public String getTargetText() {
-        StringBuffer txt = new StringBuffer();
+        StringBuilder txt = new StringBuilder();
         Iterator iter = diffs.iterator();
         while (iter.hasNext()) {
             Difference diff = (Difference) iter.next();
@@ -356,7 +356,7 @@ public class PatchEntry {
     }
 
     private String getCoordinates(int start, int length) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
 
         if (length == 0) {
             buf.append(start);
@@ -383,7 +383,7 @@ public class PatchEntry {
      */
     private String encode(String str) {
         int strlen = str.length();
-        StringBuffer buf = new StringBuffer(2 * strlen);
+        StringBuilder buf = new StringBuilder(2 * strlen);
         for (int i = 0; i < strlen; i++) {
             char c = str.charAt(i);
             switch (c) {
@@ -409,7 +409,7 @@ public class PatchEntry {
      */
     private String decode(String str) {
         int strlen = str.length();
-        StringBuffer buf = new StringBuffer(2 * strlen);
+        StringBuilder buf = new StringBuilder(2 * strlen);
         int i = 0;
         for (i = 0; i < strlen; i++) {
             char c = str.charAt(i);

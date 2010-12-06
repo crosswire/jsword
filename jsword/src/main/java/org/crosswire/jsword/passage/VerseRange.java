@@ -186,7 +186,7 @@ public final class VerseRange implements Key {
 
             // If this is in 2 separate books
             if (startBook != endBook) {
-                StringBuffer buf = new StringBuffer();
+                StringBuilder buf = new StringBuilder();
                 if (start.isStartOfBook()) {
                     buf.append(BibleInfo.getOSISName(startBook));
                 } else if (start.isStartOfChapter()) {
@@ -224,7 +224,7 @@ public final class VerseRange implements Key {
 
             // If this is 2 separate chapters in the same book
             if (startChapter != endChapter) {
-                StringBuffer buf = new StringBuffer();
+                StringBuilder buf = new StringBuilder();
                 if (start.isStartOfChapter()) {
                     buf.append(BibleInfo.getOSISName(startBook));
                     buf.append(Verse.VERSE_OSIS_DELIM);
@@ -249,7 +249,7 @@ public final class VerseRange implements Key {
             // If this range is exactly a whole chapter
             if (isWholeChapter()) {
                 // Just report the name of the book and the chapter
-                StringBuffer buf = new StringBuffer();
+                StringBuilder buf = new StringBuilder();
                 buf.append(BibleInfo.getOSISName(startBook));
                 buf.append(Verse.VERSE_OSIS_DELIM);
                 buf.append(startChapter);
@@ -258,7 +258,7 @@ public final class VerseRange implements Key {
 
             // If this is 2 separate verses
             if (start.getVerse() != end.getVerse()) {
-                StringBuffer buf = new StringBuffer();
+                StringBuilder buf = new StringBuilder();
                 buf.append(start.getOsisRef());
                 buf.append(VerseRange.RANGE_PREF_DELIM);
                 buf.append(end.getOsisRef());
@@ -306,7 +306,7 @@ public final class VerseRange implements Key {
 
         // Estimate the size of the buffer: book.dd.dd (where book is 3-5, 3
         // typical)
-        StringBuffer buf = new StringBuffer((endOrdinal - startOrdinal + 1) * 10);
+        StringBuilder buf = new StringBuilder((endOrdinal - startOrdinal + 1) * 10);
         buf.append(start.getOsisID());
         for (int i = startOrdinal + 1; i < endOrdinal; i++) {
             try {

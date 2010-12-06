@@ -53,7 +53,7 @@ public class BookExporter {
         Key keys = book.getGlobalKeyList();
 
         Iterator iter = keys.iterator();
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         while (iter.hasNext()) {
             Key key = (Key) iter.next();
             String rawText = book.getRawText(key);

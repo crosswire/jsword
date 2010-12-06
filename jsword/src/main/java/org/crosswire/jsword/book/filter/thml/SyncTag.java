@@ -80,7 +80,7 @@ public class SyncTag extends AbstractTag {
             } else if (lastEle instanceof Element) {
                 Element wEle = (Element) lastEle;
                 if (wEle.getName().equals(OSISUtil.OSIS_ELEMENT_W)) {
-                    StringBuffer buf = new StringBuffer();
+                    StringBuilder buf = new StringBuilder();
                     String strongsAttr = wEle.getAttributeValue(OSISUtil.ATTRIBUTE_W_LEMMA);
                     if (strongsAttr != null) {
                         buf.append(strongsAttr);
@@ -109,7 +109,7 @@ public class SyncTag extends AbstractTag {
             } else if (lastEle instanceof Element) {
                 Element wEle = (Element) lastEle;
                 if (wEle.getName().equals(OSISUtil.OSIS_ELEMENT_W)) {
-                    StringBuffer buf = new StringBuffer();
+                    StringBuilder buf = new StringBuilder();
                     String strongsAttr = wEle.getAttributeValue(OSISUtil.ATTRIBUTE_W_MORPH);
                     if (strongsAttr != null) {
                         buf.append(strongsAttr);

@@ -221,7 +221,7 @@ public class PassageTally extends AbstractPassage {
             return originalName;
         }
 
-        StringBuffer retcode = new StringBuffer();
+        StringBuilder retcode = new StringBuilder();
 
         if (order == ORDER_BIBLICAL) {
             Iterator it = rangeIterator(RestrictionType.NONE);
@@ -281,7 +281,7 @@ public class PassageTally extends AbstractPassage {
      */
     public String getNameAndTally(int cnt) {
         int max_count = cnt;
-        StringBuffer retcode = new StringBuffer();
+        StringBuilder retcode = new StringBuilder();
         if (max_count == 0) {
             max_count = Integer.MAX_VALUE;
         }

@@ -405,7 +405,7 @@ public final class GBFTags {
                 }
 
                 String existingMorph = word.getAttributeValue(OSISUtil.ATTRIBUTE_W_MORPH);
-                StringBuffer newMorph = new StringBuffer();
+                StringBuilder newMorph = new StringBuilder();
 
                 if (existingMorph != null && existingMorph.length() > 0) {
                     newMorph.append(existingMorph).append('|');
@@ -457,7 +457,7 @@ public final class GBFTags {
                 }
 
                 String existingLemma = word.getAttributeValue(OSISUtil.ATTRIBUTE_W_LEMMA);
-                StringBuffer newLemma = new StringBuffer();
+                StringBuilder newLemma = new StringBuilder();
 
                 if (existingLemma != null && existingLemma.length() > 0) {
                     newLemma.append(existingLemma).append('|');

@@ -206,7 +206,7 @@ public class RawFileBackend extends RawBackend {
     protected void updateDataFile(int testament, long ordinal) throws IOException {
         // JDK15: Use String.format instead
         // String fileName = String.format("%07d\r\n", ordinal);
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         buf.append(new DecimalFormat("0000000").format(ordinal));
         buf.append("\r\n");
         String fileName = buf.toString();

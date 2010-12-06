@@ -42,7 +42,7 @@ public class LuceneQueryDecorator implements QueryDecorator {
      */
     public String decorateAllWords(String queryWords) {
         String[] words = queryWords.split(SPACE);
-        StringBuffer search = new StringBuffer();
+        StringBuilder search = new StringBuilder();
         search.append(PLUS);
         search.append(StringUtil.join(words, SPACE_PLUS));
         return search.toString();
@@ -69,7 +69,7 @@ public class LuceneQueryDecorator implements QueryDecorator {
      */
     public String decoratePhrase(String queryWords) {
         // This performs a best match
-        StringBuffer search = new StringBuffer();
+        StringBuilder search = new StringBuilder();
         search.append(QUOTE);
         search.append(queryWords);
         search.append(QUOTE);
@@ -85,7 +85,7 @@ public class LuceneQueryDecorator implements QueryDecorator {
      */
     public String decorateNotWords(String queryWords) {
         String[] words = queryWords.split(SPACE);
-        StringBuffer search = new StringBuffer();
+        StringBuilder search = new StringBuilder();
         search.append(MINUS);
         search.append(StringUtil.join(words, SPACE_MINUS));
         return search.toString();
@@ -99,7 +99,7 @@ public class LuceneQueryDecorator implements QueryDecorator {
      * .String)
      */
     public String decorateRange(String queryWords) {
-        StringBuffer search = new StringBuffer();
+        StringBuilder search = new StringBuilder();
         search.append(PLUS);
         search.append(OPEN);
         search.append(queryWords);
@@ -116,7 +116,7 @@ public class LuceneQueryDecorator implements QueryDecorator {
      */
     public String decorateSpellWords(String queryWords) {
         String[] words = queryWords.split(SPACE);
-        StringBuffer search = new StringBuffer(StringUtil.join(words, FUZZY_SPACE));
+        StringBuilder search = new StringBuilder(StringUtil.join(words, FUZZY_SPACE));
         search.append(FUZZY);
         return search.toString();
     }
@@ -130,7 +130,7 @@ public class LuceneQueryDecorator implements QueryDecorator {
      */
     public String decorateStartWords(String queryWords) {
         String[] words = queryWords.split(SPACE);
-        StringBuffer search = new StringBuffer(StringUtil.join(words, WILD_SPACE));
+        StringBuilder search = new StringBuilder(StringUtil.join(words, WILD_SPACE));
         search.append(WILD);
         return search.toString();
     }

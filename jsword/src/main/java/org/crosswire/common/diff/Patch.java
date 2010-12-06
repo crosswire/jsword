@@ -366,7 +366,7 @@ public class Patch {
      * @return Text representation of patches.
      */
     public String toText() {
-        StringBuffer text = new StringBuffer();
+        StringBuilder text = new StringBuilder();
         Iterator iter = patches.iterator();
         while (iter.hasNext()) {
             text.append(iter.next());

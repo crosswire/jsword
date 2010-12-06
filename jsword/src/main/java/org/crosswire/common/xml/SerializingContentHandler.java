@@ -200,5 +200,5 @@ public class SerializingContentHandler implements ContentHandler {
     }
 
     private boolean newlines;
-    private StringBuffer buffer = new StringBuffer();
+    private StringBuilder buffer = new StringBuilder();
 }

@@ -68,7 +68,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
 
     /* @Override */
     protected String decorateTagName(String tagName) {
-        StringBuffer buf = new StringBuffer(50);
+        StringBuilder buf = new StringBuilder(50);
         buf.append("<font class='tag'>");
         buf.append(super.decorateTagName(tagName));
         buf.append("</font>");
@@ -83,7 +83,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
      */
     /* @Override */
     protected String decorateAttributeName(String attrName) {
-        StringBuffer buf = new StringBuffer(50);
+        StringBuilder buf = new StringBuilder(50);
         buf.append("<font class='attr'>");
         buf.append(super.decorateAttributeName(attrName));
         buf.append("</font>");
@@ -98,7 +98,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
      */
     /* @Override */
     protected String decorateAttributeValue(String attrValue) {
-        StringBuffer buf = new StringBuffer(50);
+        StringBuilder buf = new StringBuilder(50);
         buf.append("<font class='value'>");
         buf.append(super.decorateAttributeValue(attrValue));
         buf.append("</font>");
@@ -114,7 +114,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
      */
     /* @Override */
     protected String decorateCharacters(String characters) {
-        StringBuffer buf = new StringBuffer(50);
+        StringBuilder buf = new StringBuilder(50);
         buf.append("<font class='text'>");
         buf.append(XMLUtil.escape(super.decorateCharacters(characters)).replaceAll("\n", "<br>"));
         buf.append("</font>");
@@ -130,7 +130,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
      */
     /* @Override */
     protected String decorateIndent(int indentLevel) {
-        StringBuffer buf = new StringBuffer(100);
+        StringBuilder buf = new StringBuilder(100);
         buf.append("<font class='indent'>");
         buf.append(super.decorateIndent(indentLevel).replaceAll("\t", "&nbsp;&nbsp;&nbsp;&nbsp;"));
         buf.append("</font>");

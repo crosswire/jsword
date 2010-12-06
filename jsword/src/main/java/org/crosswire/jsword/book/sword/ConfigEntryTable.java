@@ -334,7 +334,7 @@ public final class ConfigEntryTable {
      * @return the well-formed conf.
      */
     public String toConf() {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         buf.append('[');
         buf.append(getValue(ConfigEntryType.INITIALS));
         buf.append("]\n");
@@ -373,7 +373,7 @@ public final class ConfigEntryTable {
     }
 
     private void loadContents(BufferedReader in) throws IOException {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         while (true) {
             // Empty out the buffer
             buf.setLength(0);
@@ -463,7 +463,7 @@ public final class ConfigEntryTable {
     /**
      * Get continuation lines, if any.
      */
-    private void getContinuation(ConfigEntry configEntry, BufferedReader bin, StringBuffer buf) throws IOException {
+    private void getContinuation(ConfigEntry configEntry, BufferedReader bin, StringBuilder buf) throws IOException {
         for (String line = advance(bin); line != null; line = advance(bin)) {
             int length = buf.length();
 
@@ -705,7 +705,7 @@ public final class ConfigEntryTable {
         }
     }
 
-    private void toConf(StringBuffer buf, ConfigEntryType[] category) {
+    private void toConf(StringBuilder buf, ConfigEntryType[] category) {
         for (int i = 0; i < category.length; i++) {
 
             ConfigEntry entry = (ConfigEntry) table.get(category[i]);
@@ -747,7 +747,7 @@ public final class ConfigEntryTable {
         }
     }
 
-    private void toConf(StringBuffer buf, Map map) {
+    private void toConf(StringBuilder buf, Map map) {
         Iterator iter = map.entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry mapEntry = (Map.Entry) iter.next();
@@ -760,7 +760,7 @@ public final class ConfigEntryTable {
     }
 
     private String report(String issue, String confEntryName, String line) {
-        StringBuffer buf = new StringBuffer(100);
+        StringBuilder buf = new StringBuilder(100);
         buf.append(issue);
         buf.append(' ');
         buf.append(confEntryName);

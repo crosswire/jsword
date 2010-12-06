@@ -379,7 +379,7 @@ public final class NetUtil {
     public static URI lengthenURI(URI orig, String anExtra) {
         String extra = anExtra;
         try {
-            StringBuffer path = new StringBuffer(orig.getPath());
+            StringBuilder path = new StringBuilder(orig.getPath());
             char lastChar = path.charAt(path.length() - 1);
             char firstChar = extra.charAt(0);
             if (isSeparator(firstChar)) {

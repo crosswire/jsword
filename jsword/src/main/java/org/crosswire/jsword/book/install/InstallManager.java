@@ -90,7 +90,7 @@ public final class InstallManager {
      */
     public void save() {
         Properties props = new Properties();
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         int i = 1;
         Iterator it = installers.keySet().iterator();
         while (it.hasNext()) {

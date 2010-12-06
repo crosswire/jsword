@@ -316,7 +316,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         // Many "features" are GlobalOptionFilters, which in the Sword C++ API
         // indicate a class to use for filtering.
         // These mostly have the source type prepended to the feature
-        StringBuffer buffer = new StringBuffer((String) getProperty(ConfigEntryType.SOURCE_TYPE));
+        StringBuilder buffer = new StringBuilder((String) getProperty(ConfigEntryType.SOURCE_TYPE));
         buffer.append(feature);
         if (cet.match(ConfigEntryType.GLOBAL_OPTION_FILTER, buffer.toString())) {
             return true;
@@ -337,7 +337,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             }
             if (value instanceof List) {
                 List list = (List) value;
-                StringBuffer combined = new StringBuffer();
+                StringBuilder combined = new StringBuilder();
                 boolean appendSeparator = false;
                 Iterator it = list.iterator();
                 while (it.hasNext()) {
