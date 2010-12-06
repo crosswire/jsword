@@ -131,7 +131,7 @@ public class Bitap implements Locator {
             }
 
             for (int j = finish - 1; j >= start; j--) {
-                Character curChar = new Character(text.charAt(j));
+                Character curChar = Character.valueOf(text.charAt(j));
                 int mask = alphabet.containsKey(curChar) ? ((Integer) alphabet.get(curChar)).intValue() : 0;
                 if (d == 0) { // First pass: exact match.
                     rd[j] = ((rd[j + 1] << 1) | 1) & mask;
@@ -201,11 +201,11 @@ public class Bitap implements Locator {
         assert len <= Bitap.MAXBITS : "Pattern too long for this application.";
 
         for (int i = 0; i < len; i++) {
-            Character c = new Character(pattern.charAt(i));
+            Character c = Character.valueOf(pattern.charAt(i));
             Integer value = (Integer) alphabet.get(c);
             int mask = value == null ? 0 : value.intValue();
             mask |= (int) Math.pow(2, len - i - 1);
-            alphabet.put(c, new Integer(mask));
+            alphabet.put(c, Integer.valueOf(mask));
         }
     }
 

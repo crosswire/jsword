@@ -101,7 +101,7 @@ public class OptionList {
      * @return the matching Option, null otherwise.
      */
     public Option getShortOption(char key) {
-        Character keyChar = new Character(key);
+        Character keyChar = Character.valueOf(key);
         Option match = null;
         if (shortOptions.containsKey(keyChar)) {
             match = (Option) shortOptions.get(keyChar);

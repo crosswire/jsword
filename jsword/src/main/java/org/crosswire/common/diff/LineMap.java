@@ -132,7 +132,7 @@ public class LineMap {
                 buf.append(String.valueOf((char) charInt.intValue()));
             } else {
                 linearray.add(line);
-                linehash.put(line, new Integer(linearray.size() - 1));
+                linehash.put(line, Integer.valueOf(linearray.size() - 1));
                 buf.append(String.valueOf((char) (linearray.size() - 1)));
             }
         }

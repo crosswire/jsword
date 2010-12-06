@@ -63,7 +63,7 @@ public class DateFormatter {
                 int.class
             };
             Object[] instanceParams = {
-                new Integer(format)
+                Integer.valueOf(format)
             };
             fmt.formatter = ReflectionUtil.invoke(fmt.formatterClass, fmt.formatterClass, "getDateInstance", instanceParams, instanceTypes);
         } catch (NoSuchMethodException e) {

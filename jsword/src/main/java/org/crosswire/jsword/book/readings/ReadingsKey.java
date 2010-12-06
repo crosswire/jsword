@@ -139,7 +139,7 @@ public class ReadingsKey extends DefaultLeafKeyList {
      */
     public static String external2internal(Calendar externalKey) {
         Object[] objs = {
-                new Integer(1 + externalKey.get(Calendar.MONTH)), new Integer(externalKey.get(Calendar.DATE))
+                Integer.valueOf(1 + externalKey.get(Calendar.MONTH)), Integer.valueOf(externalKey.get(Calendar.DATE))
         };
         return KEY_FORMAT.format(objs);
 

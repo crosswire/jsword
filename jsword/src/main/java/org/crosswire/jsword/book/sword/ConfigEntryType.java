@@ -348,7 +348,7 @@ public class ConfigEntryType implements Serializable {
      * single value integer, unknown use, some indications that we ought to be
      * using it
      */
-    public static final ConfigEntryType BLOCK_COUNT = new ConfigEntryType("BlockCount", new Integer(200))
+    public static final ConfigEntryType BLOCK_COUNT = new ConfigEntryType("BlockCount", Integer.valueOf(200))
     {
         /*
          * (non-Javadoc)
@@ -375,7 +375,7 @@ public class ConfigEntryType implements Serializable {
          */
         public Object convert(String input) {
             try {
-                return new Integer(input);
+                return Integer.valueOf(input);
             } catch (NumberFormatException e) {
                 return getDefault();
             }
@@ -472,7 +472,7 @@ public class ConfigEntryType implements Serializable {
          */
         public Object convert(String input) {
             try {
-                return new Integer(input);
+                return Integer.valueOf(input);
             } catch (NumberFormatException e) {
                 return null;
             }
@@ -754,7 +754,7 @@ public class ConfigEntryType implements Serializable {
          */
         public Object convert(String input) {
             try {
-                return new Integer(input);
+                return Integer.valueOf(input);
             } catch (NumberFormatException e) {
                 return null;
             }

@@ -184,7 +184,7 @@ public final class SectionNames extends MsgBase {
     public String getSectionName(int section) throws NoSuchVerseException {
         if (section == 0) {
             throw new NoSuchVerseException(Msg.BOOKS_SECTION, new Object[] {
-                new Integer(section)
+                Integer.valueOf(section)
             });
         }
 
@@ -205,7 +205,7 @@ public final class SectionNames extends MsgBase {
             // The exception is actually thrown, then it is a lot slower
             // I'd like to think that the norm is to get it right
             throw new NoSuchVerseException(Msg.BOOKS_SECTION, new Object[] {
-                new Integer(section)
+                Integer.valueOf(section)
             });
         }
     }

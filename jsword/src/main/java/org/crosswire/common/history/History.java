@@ -218,7 +218,7 @@ public class History {
      * @param obj
      */
     private void visit(Object obj) {
-        history.put(obj, new Long(System.currentTimeMillis()));
+        history.put(obj, Long.valueOf(System.currentTimeMillis()));
     }
 
     /**

@@ -303,7 +303,7 @@ public class VerseTest extends TestCase {
 
     public void testEquals() {
         assertTrue(!gen11.equals(null));
-        assertTrue(!gen11.equals(new Integer(0)));
+        assertTrue(!gen11.equals(Integer.valueOf(0)));
         assertTrue(!gen11.equals("org.crosswire.jsword.passage.Verse"));
         assertTrue(gen11.equals(gen11a));
         assertTrue(!gen11.equals(gen12));

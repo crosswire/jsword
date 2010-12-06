@@ -101,7 +101,7 @@ public class PatternFormatter extends Formatter {
                 throwable, // 4
                 record.getSourceClassName(), // 5
                 record.getSourceMethodName(), // 6
-                new Long(record.getSequenceNumber()), // 7
+                Long.valueOf(record.getSequenceNumber()), // 7
                 lineSeparator, // 8
         };
 

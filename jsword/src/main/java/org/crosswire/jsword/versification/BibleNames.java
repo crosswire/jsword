@@ -58,7 +58,7 @@ public final class BibleNames {
             // The exception is actually thrown, then it is a lot slower
             // I'd like to think that the norm is to get it right
             throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] {
-                new Integer(book)
+                Integer.valueOf(book)
             });
         }
     }

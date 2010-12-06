@@ -21,16 +21,16 @@ public class BitapTest extends TestCase {
         // Initialise the bitmasks for Bitap
         Map bitmask;
         bitmask = new HashMap();
-        bitmask.put(new Character('a'), new Integer(4));
-        bitmask.put(new Character('b'), new Integer(2));
-        bitmask.put(new Character('c'), new Integer(1));
+        bitmask.put(Character.valueOf('a'), Integer.valueOf(4));
+        bitmask.put(Character.valueOf('b'), Integer.valueOf(2));
+        bitmask.put(Character.valueOf('c'), Integer.valueOf(1));
         Bitap bitap = new Bitap("", "abc", 0);
         bitap.alphabet();
         assertEquals("match_alphabet: Unique.", bitmask, bitap.getAlphabet());
         bitmask = new HashMap();
-        bitmask.put(new Character('a'), new Integer(37));
-        bitmask.put(new Character('b'), new Integer(18));
-        bitmask.put(new Character('c'), new Integer(8));
+        bitmask.put(Character.valueOf('a'), Integer.valueOf(37));
+        bitmask.put(Character.valueOf('b'), Integer.valueOf(18));
+        bitmask.put(Character.valueOf('c'), Integer.valueOf(8));
         bitap = new Bitap("", "abcaba", 0);
         bitap.alphabet();
         assertEquals("match_alphabet: Duplicates.", bitmask, bitap.getAlphabet());

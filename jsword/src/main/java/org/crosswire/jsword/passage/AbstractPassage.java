@@ -290,7 +290,7 @@ public abstract class AbstractPassage implements Passage {
         // {1,number,integer} is a placeholder for the count of Bible books. It works the same way as the count of verses.
         // {1,choice,0#books|1#book|1<books} is the placeholder for the singular or plural of "book"
         return UserMsg.gettext("{0,number,integer} {0,choice,0#verses|1#verse|1<verses} in {1,number,integer} {1,choice,0#books|1#book|1<books}", new Object[] {
-                new Integer(countVerses()), new Integer(booksInPassage())
+                Integer.valueOf(countVerses()), Integer.valueOf(booksInPassage())
         });
     }
 
@@ -437,7 +437,7 @@ public abstract class AbstractPassage implements Passage {
         for (int i = 0; i <= offset; i++) {
             if (!it.hasNext()) {
                 Object[] params = new Object[] {
-                        new Integer(offset), new Integer(countVerses())
+                        Integer.valueOf(offset), Integer.valueOf(countVerses())
                 };
                 throw new ArrayIndexOutOfBoundsException(Msg.ABSTRACT_INDEX.toString(params));
             }
@@ -460,7 +460,7 @@ public abstract class AbstractPassage implements Passage {
         for (int i = 0; i <= offset; i++) {
             if (!it.hasNext()) {
                 Object[] params = new Object[] {
-                        new Integer(offset), new Integer(countVerses())
+                        Integer.valueOf(offset), Integer.valueOf(countVerses())
                 };
                 throw new ArrayIndexOutOfBoundsException(Msg.ABSTRACT_INDEX.toString(params));
             }

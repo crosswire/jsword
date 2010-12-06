@@ -242,7 +242,7 @@ public class BibleToOsis {
         }
 
         msgFormat.format(new Object[] {
-                bookName, new Integer(chapter), chapterName
+                bookName, Integer.valueOf(chapter), chapterName
         }, buf, pos);
     }
 

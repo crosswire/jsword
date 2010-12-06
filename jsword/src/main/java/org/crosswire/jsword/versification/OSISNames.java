@@ -65,7 +65,7 @@ public final class OSISNames {
             // The exception is actually thrown, then it is a lot slower
             // I'd like to think that the norm is to get it right
             throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] {
-                new Integer(book)
+                Integer.valueOf(book)
             });
         }
     }
@@ -114,7 +114,7 @@ public final class OSISNames {
 
         for (int i = 0; i < osisBooks.length; i++) {
             osisBooks[i] = getString(resources, OSIS_KEY + (i + 1));
-            osisMap.put(BookName.normalize(osisBooks[i], OSIS_LOCALE), new Integer(i + 1));
+            osisMap.put(BookName.normalize(osisBooks[i], OSIS_LOCALE), Integer.valueOf(i + 1));
         }
     }
 

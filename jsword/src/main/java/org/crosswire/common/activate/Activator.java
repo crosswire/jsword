@@ -81,7 +81,7 @@ public final class Activator {
     }
 
     public static void deactivateAll() {
-        Iterator iter = activated.iterator();
+        Iterator<Activatable> iter = activated.iterator();
         while (iter.hasNext()) {
             deactivate((Activatable) iter.next());
         }
@@ -90,7 +90,7 @@ public final class Activator {
     /**
      * The list of things that we have activated
      */
-    private static Set activated = new HashSet();
+    private static Set<Activatable> activated = new HashSet<Activatable>();
 
     /**
      * The object we use to prevent others from

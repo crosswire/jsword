@@ -56,7 +56,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements MappedC
             Element alternative = (Element) iter.next();
             int number = Integer.parseInt(alternative.getAttributeValue("number"));
             String name = configResources.getString(prefix + number);
-            options.put(new Integer(number), name);
+            options.put(Integer.valueOf(number), name);
         }
     }
 
@@ -101,7 +101,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements MappedC
     public Object convertToObject(String orig) {
         // First check to see if this is a number
         try {
-            return new Integer(orig);
+            return Integer.valueOf(orig);
         } catch (NumberFormatException ex) {
             Iterator iter = options.entrySet().iterator();
             while (iter.hasNext()) {
@@ -110,7 +110,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements MappedC
                     return mapEntry.getKey();
                 }
             }
-            return new Integer(0);
+            return Integer.valueOf(0);
         }
     }
 

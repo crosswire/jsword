@@ -69,7 +69,7 @@ public abstract class DataType implements Serializable {
          * .String)
          */
         public Object convertFromString(String value) {
-            return new Integer(Convert.string2Int(value));
+            return Integer.valueOf(Convert.string2Int(value));
         }
 
         /**

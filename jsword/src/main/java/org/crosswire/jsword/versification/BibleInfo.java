@@ -270,7 +270,7 @@ public final class BibleInfo {
             // The exception is actually thrown, then it is a lot slower
             // I'd like to think that the norm is to get it right
             throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] {
-                new Integer(book)
+                Integer.valueOf(book)
             });
         }
     }
@@ -295,7 +295,7 @@ public final class BibleInfo {
             // I'd like to think that the norm is to get it right
 
             Object[] params = new Object[] {
-                    new Integer(book), new Integer(chapter)
+                    Integer.valueOf(book), Integer.valueOf(chapter)
             };
             throw new NoSuchVerseException(Msg.BOOKS_BOOKCHAP, params);
         }
@@ -318,7 +318,7 @@ public final class BibleInfo {
             // The exception is actually thrown, then it is a lot slower
             // I'd like to think that the norm is to get it right
             throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] {
-                new Integer(book)
+                Integer.valueOf(book)
             });
         }
     }
@@ -373,7 +373,7 @@ public final class BibleInfo {
     public static int[] decodeOrdinal(int ordinal) throws NoSuchVerseException {
         if (ordinal < 1 || ordinal > BibleInfo.versesInBible()) {
             Object[] params = new Object[] {
-                    new Integer(BibleInfo.versesInBible()), new Integer(ordinal)
+                    Integer.valueOf(BibleInfo.versesInBible()), Integer.valueOf(ordinal)
             };
             throw new NoSuchVerseException(Msg.BOOKS_DECODE, params);
         }
@@ -416,14 +416,14 @@ public final class BibleInfo {
         // Check the book
         if (book < 1 || book > BOOKS_IN_BIBLE) {
             throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] {
-                new Integer(book)
+                Integer.valueOf(book)
             });
         }
 
         // Check the chapter
         if (chapter < 1 || chapter > chaptersInBook(book)) {
             Object[] params = new Object[] {
-                    new Integer(1), new Integer(chaptersInBook(book)), getPreferredBookName(book), new Integer(chapter),
+                    Integer.valueOf(1), Integer.valueOf(chaptersInBook(book)), getPreferredBookName(book), Integer.valueOf(chapter),
             };
             // TRANSLATOR: The user supplied a chapter that was out of bounds. This tells them what is allowed.
             // {0} is the lowest value that is allowed. Currently this is 1, later it will be 0.
@@ -436,7 +436,7 @@ public final class BibleInfo {
         // Check the verse
         if (verse < 1 || verse > versesInChapter(book, chapter)) {
             Object[] params = new Object[] {
-                    new Integer(1), new Integer(versesInChapter(book, chapter)), getPreferredBookName(book), new Integer(chapter), new Integer(verse),
+                    Integer.valueOf(1), Integer.valueOf(versesInChapter(book, chapter)), getPreferredBookName(book), Integer.valueOf(chapter), Integer.valueOf(verse),
             };
             // TRANSLATOR: The user supplied a verse number that was out of bounds. This tells them what is allowed.
             // {0} is the lowest value that is allowed. Currently this is 1, later it will be 0.

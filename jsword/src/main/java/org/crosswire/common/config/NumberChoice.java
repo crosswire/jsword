@@ -61,6 +61,6 @@ public class NumberChoice extends AbstractReflectedChoice {
      */
     /* @Override */
     public Object convertToObject(String orig) {
-        return new Integer(Convert.string2Int(orig));
+        return Integer.valueOf(Convert.string2Int(orig));
     }
 }

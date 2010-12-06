@@ -394,7 +394,7 @@ public class RawLDBackend extends AbstractKeyBackend {
                 Date date = nameDF.parse(keytitle);
                 greg.setTime(date);
                 Object[] objs = {
-                        new Integer(1 + greg.get(Calendar.MONTH)), new Integer(greg.get(Calendar.DATE))
+                        Integer.valueOf(1 + greg.get(Calendar.MONTH)), Integer.valueOf(greg.get(Calendar.DATE))
                 };
                 return DATE_KEY_FORMAT.format(objs);
             } catch (ParseException e) {

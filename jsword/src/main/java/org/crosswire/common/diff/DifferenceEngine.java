@@ -91,8 +91,8 @@ public class DifferenceEngine {
         List vMap2 = new ArrayList();
         Map v1 = new HashMap();
         Map v2 = new HashMap();
-        v1.put(new Integer(1), new Integer(0));
-        v2.put(new Integer(1), new Integer(0));
+        v1.put(Integer.valueOf(1), Integer.valueOf(0));
+        v2.put(Integer.valueOf(1), Integer.valueOf(0));
         int x;
         int y;
         String footstep; // Used to track overlapping paths.
@@ -110,9 +110,9 @@ public class DifferenceEngine {
             // Walk the front path one step.
             vMap1.add(new HashSet()); // Adds at index 'd'.
             for (int k = -d; k <= d; k += 2) {
-                Integer kPlus1Key = new Integer(k + 1);
+                Integer kPlus1Key = Integer.valueOf(k + 1);
                 Integer kPlus1Value = (Integer) v1.get(kPlus1Key);
-                Integer kMinus1Key = new Integer(k - 1);
+                Integer kMinus1Key = Integer.valueOf(k - 1);
                 Integer kMinus1Value = (Integer) v1.get(kMinus1Key);
                 if (k == -d || k != d && kMinus1Value.intValue() < kPlus1Value.intValue()) {
                     x = kPlus1Value.intValue();
@@ -125,7 +125,7 @@ public class DifferenceEngine {
                     done = true;
                 }
                 if (!front) {
-                    footsteps.put(footstep, new Integer(d));
+                    footsteps.put(footstep, Integer.valueOf(d));
                 }
                 while (!done && x < source.length() && y < target.length() && source.charAt(x) == target.charAt(y)) {
                     x++;
@@ -135,10 +135,10 @@ public class DifferenceEngine {
                         done = true;
                     }
                     if (!front) {
-                        footsteps.put(footstep, new Integer(d));
+                        footsteps.put(footstep, Integer.valueOf(d));
                     }
                 }
-                v1.put(new Integer(k), new Integer(x));
+                v1.put(Integer.valueOf(k), Integer.valueOf(x));
                 Set s = (Set) vMap1.get(d);
                 s.add(x + "," + y);
                 if (done) {
@@ -154,9 +154,9 @@ public class DifferenceEngine {
             // Walk the reverse path one step.
             vMap2.add(new HashSet()); // Adds at index 'd'.
             for (int k = -d; k <= d; k += 2) {
-                Integer kPlus1Key = new Integer(k + 1);
+                Integer kPlus1Key = Integer.valueOf(k + 1);
                 Integer kPlus1Value = (Integer) v2.get(kPlus1Key);
-                Integer kMinus1Key = new Integer(k - 1);
+                Integer kMinus1Key = Integer.valueOf(k - 1);
                 Integer kMinus1Value = (Integer) v2.get(kMinus1Key);
                 if (k == -d || k != d && kMinus1Value.intValue() < kPlus1Value.intValue()) {
                     x = kPlus1Value.intValue();
@@ -169,7 +169,7 @@ public class DifferenceEngine {
                     done = true;
                 }
                 if (front) {
-                    footsteps.put(footstep, new Integer(d));
+                    footsteps.put(footstep, Integer.valueOf(d));
                 }
                 while (!done && x < source.length() && y < target.length() && source.charAt(source.length() - x - 1) == target.charAt(target.length() - y - 1)) {
                     x++;
@@ -179,11 +179,11 @@ public class DifferenceEngine {
                         done = true;
                     }
                     if (front) {
-                        footsteps.put(footstep, new Integer(d));
+                        footsteps.put(footstep, Integer.valueOf(d));
                     }
                 }
 
-                v2.put(new Integer(k), new Integer(x));
+                v2.put(Integer.valueOf(k), Integer.valueOf(x));
                 Set s = (Set) vMap2.get(d);
                 s.add(x + "," + y);
                 if (done) {
