@@ -21,8 +21,6 @@
  */
 package org.crosswire.jsword.passage;
 
-import java.io.Serializable;
-
 import org.crosswire.jsword.versification.BibleInfo;
 
 /**
@@ -33,56 +31,27 @@ import org.crosswire.jsword.versification.BibleInfo;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public abstract class RestrictionType implements Serializable {
+public enum RestrictionType {
     /**
      * There is no restriction on blurring.
      */
-    public static final RestrictionType NONE = new RestrictionType("NONE")
-    {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.passage.RestrictionType#isSameScope(org.crosswire
-         * .jsword.passage.Verse, org.crosswire.jsword.passage.Verse)
-         */
+    NONE {
         public boolean isSameScope(Verse start, Verse end) {
             return true;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword
-         * .passage.VerseRange, int, int)
-         */
         public VerseRange blur(VerseRange range, int blurDown, int blurUp) {
             Verse start = range.getStart().subtract(blurDown);
             Verse end = range.getEnd().add(blurUp);
             return new VerseRange(start, end);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword
-         * .passage.Verse, int, int)
-         */
         public VerseRange blur(Verse verse, int blurDown, int blurUp) {
             Verse start = verse.subtract(blurDown);
             Verse end = verse.add(blurUp);
             return new VerseRange(start, end);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword
-         * .passage.Verse, int, int)
-         */
         public VerseRange toRange(Verse verse, int count) {
             Verse end = verse;
             if (count > 1) {
@@ -90,38 +59,16 @@ public abstract class RestrictionType implements Serializable {
             }
             return new VerseRange(verse, end);
         }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3905246714754643248L;
-    };
+    },
 
     /**
      * Blurring is restricted to the chapter
      */
-    // Note: FindBugs wrongly reports an initialization circularity.
-    // Turns out that it is the exception handling that causes it.
-    public static final RestrictionType CHAPTER = new RestrictionType("CHAPTER")
-    {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.passage.RestrictionType#isSameScope(org.crosswire
-         * .jsword.passage.Verse, org.crosswire.jsword.passage.Verse)
-         */
+    CHAPTER {
         public boolean isSameScope(Verse start, Verse end) {
             return start.isSameChapter(end);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword
-         * .passage.VerseRange, int, int)
-         */
         public VerseRange blur(VerseRange range, int blurDown, int blurUp) {
             try {
                 Verse start = range.getStart();
@@ -146,13 +93,6 @@ public abstract class RestrictionType implements Serializable {
             }
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.passage.RestrictionType#blur(org.crosswire.jsword
-         * .passage.Verse, int, int)
-         */
         public VerseRange blur(Verse verse, int blurDown, int blurUp) {
             try {
                 int verseNumber = verse.getVerse();
@@ -179,22 +119,10 @@ public abstract class RestrictionType implements Serializable {
             }
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.passage.RestrictionType#toRange(org.crosswire
-         * .jsword.passage.Verse, int)
-         */
         public VerseRange toRange(Verse verse, int count) {
             Verse end = verse.add(count - 1);
             return new VerseRange(verse, end);
         }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3257284751327768626L;
     };
 
     /**
@@ -240,36 +168,22 @@ public abstract class RestrictionType implements Serializable {
     public abstract VerseRange toRange(Verse verse, int count);
 
     /**
-     * Simple ctor
-     */
-    public RestrictionType(String name) {
-        this.name = name;
-    }
-
-    /**
      * Get an integer representation for this RestrictionType
      */
     public int toInteger() {
-        for (int i = 0; i < VALUES.length; i++) {
-            if (equals(VALUES[i])) {
-                return i;
-            }
-        }
-        // cannot get here
-        assert false;
-        return -1;
+        return ordinal();
     }
 
     /**
      * Lookup method to convert from a String
      */
     public static RestrictionType fromString(String name) {
-        for (int i = 0; i < VALUES.length; i++) {
-            RestrictionType o = VALUES[i];
-            if (o.name.equalsIgnoreCase(name)) {
-                return o;
+        for (RestrictionType v : values()) {
+            if (v.name().equalsIgnoreCase(name)) {
+                return v;
             }
         }
+
         // cannot get here
         assert false;
         return null;
@@ -279,36 +193,15 @@ public abstract class RestrictionType implements Serializable {
      * Lookup method to convert from an integer
      */
     public static RestrictionType fromInteger(int i) {
-        return VALUES[i];
-    }
+        for (RestrictionType v : values()) {
+            if (v.ordinal() == i) {
+                return v;
+            }
+        }
 
-    /**
-     * Prevent subclasses from overriding canonical identity based Object
-     * methods
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    public final boolean equals(Object o) {
-        return super.equals(o);
-    }
-
-    /**
-     * Prevent subclasses from overriding canonical identity based Object
-     * methods
-     * 
-     * @see java.lang.Object#hashCode()
-     */
-    public final int hashCode() {
-        return super.hashCode();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-        return name;
+        // cannot get here
+        assert false;
+        return null;
     }
 
     /**
@@ -344,26 +237,4 @@ public abstract class RestrictionType implements Serializable {
      * A default restriction type for blurring.
      */
     private static RestrictionType defaultBlurRestriction = RestrictionType.NONE;
-
-    /**
-     * The name of the RestrictionType
-     */
-    private String name;
-
-    // Support for serialization
-    private static int nextObj;
-    private final int obj = nextObj++;
-
-    Object readResolve() {
-        return VALUES[obj];
-    }
-
-    private static final RestrictionType[] VALUES = {
-            NONE, CHAPTER
-    };
-
-    /**
-     * Serialization ID
-     */
-    private static final long serialVersionUID = 5511668815596963817L;
 }

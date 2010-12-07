@@ -21,7 +21,6 @@
  */
 package org.crosswire.jsword.book.sword;
 
-import java.io.Serializable;
 
 /**
  * Block types indicates the grain of compression.
@@ -31,57 +30,28 @@ import java.io.Serializable;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public abstract class BlockType implements Serializable {
+public enum BlockType {
     /**
      * The level of compression is the Book
      */
-    public static final BlockType BLOCK_BOOK = new BlockType("BOOK")
-    {
-        public char getIndicator() {
-            return 'b';
-        }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3257569486067807287L;
-    };
+    BLOCK_BOOK ("BOOK", 'b'),
 
     /**
      * The level of compression is the Book
      */
-    public static final BlockType BLOCK_CHAPTER = new BlockType("CHAPTER")
-    {
-        public char getIndicator() {
-            return 'c';
-        }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3762533416838968372L;
-    };
+    BLOCK_CHAPTER ("CHAPTER", 'c'),
 
     /**
      * The level of compression is the Book
      */
-    public static final BlockType BLOCK_VERSE = new BlockType("VERSE")
-    {
-        public char getIndicator() {
-            return 'v';
-        }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3257572793192362551L;
-    };
+    BLOCK_VERSE ("VERSE", 'v');
 
     /**
      * Simple ctor
      */
-    public BlockType(String name) {
+    private BlockType(String name, char indicator) {
         this.name = name;
+        this.indicator = indicator;
     }
 
     /**
@@ -90,53 +60,25 @@ public abstract class BlockType implements Serializable {
      * 
      * @return the indicator
      */
-    abstract char getIndicator();
+    public char getIndicator() {
+        return indicator;
+    }
 
     /**
      * Lookup method to convert from a String
      */
     public static BlockType fromString(String name) {
-        for (int i = 0; i < VALUES.length; i++) {
-            BlockType obj = VALUES[i];
-            if (obj.name.equalsIgnoreCase(name)) {
-                return obj;
+        for (BlockType v : values()) {
+            if (v.name.equalsIgnoreCase(name)) {
+                return v;
             }
         }
 
         throw new ClassCastException(Msg.UNDEFINED_DATATYPE.toString(name));
     }
 
-    /**
-     * Lookup method to convert from an integer
-     */
-    public static BlockType fromInteger(int i) {
-        return VALUES[i];
-    }
-
-    /**
-     * Prevent subclasses from overriding canonical identity based Object
-     * methods
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    public final boolean equals(Object o) {
-        return super.equals(o);
-    }
-
-    /**
-     * Prevent subclasses from overriding canonical identity based Object
-     * methods
-     * 
-     * @see java.lang.Object#hashCode()
-     */
-    public final int hashCode() {
-        return super.hashCode();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
+    /* (non-Javadoc)
+     * @see java.lang.Enum#toString()
      */
     public String toString() {
         return name;
@@ -146,21 +88,8 @@ public abstract class BlockType implements Serializable {
      * The name of the BlockType
      */
     private String name;
-
-    // Support for serialization
-    private static int nextObj;
-    private final int obj = nextObj++;
-
-    Object readResolve() {
-        return VALUES[obj];
-    }
-
-    private static final BlockType[] VALUES = {
-            BLOCK_BOOK, BLOCK_CHAPTER, BLOCK_VERSE,
-    };
-
     /**
-     * Serialization ID
+     * The indicator for the BlockType
      */
-    private static final long serialVersionUID = 1411226089933054161L;
+    private char indicator;
 }

@@ -21,8 +21,6 @@
  */
 package org.crosswire.common.diff;
 
-import java.io.Serializable;
-
 /**
  * An Enumeration of the possible Edits.
  * 
@@ -30,21 +28,21 @@ import java.io.Serializable;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class EditType implements Serializable {
+public enum EditType  {
     /**
      * Delete a sequence.
      */
-    public static final EditType DELETE = new EditType("Delete", '-');
+    DELETE  ("Delete", '-'),
 
     /**
      * Insert a sequence
      */
-    public static final EditType INSERT = new EditType("Insert", '+');
+    INSERT  ("Insert", '+'),
 
     /**
      * Equal sequences
      */
-    public static final EditType EQUAL = new EditType("Equal", ' ');
+    EQUAL ("Equal", ' ');
 
     /**
      * @param name
@@ -63,15 +61,18 @@ public final class EditType implements Serializable {
     }
 
     /**
-     * Lookup method to convert from a String
+     * Get a CompressorType from a String
+     * 
+     * @param name the case insensitive representation of the desired CompressorType
+     * @return the desired compressor or null if not found.
      */
     public static EditType fromString(String name) {
-        for (int i = 0; i < VALUES.length; i++) {
-            EditType o = VALUES[i];
-            if (o.name.equalsIgnoreCase(name)) {
-                return o;
+        for (EditType v : values()) {
+            if (v.name().equalsIgnoreCase(name)) {
+                return v;
             }
         }
+
         // cannot get here
         assert false;
         return null;
@@ -81,22 +82,15 @@ public final class EditType implements Serializable {
      * Lookup method to convert from a String
      */
     public static EditType fromSymbol(char symbol) {
-        for (int i = 0; i < VALUES.length; i++) {
-            EditType o = VALUES[i];
-            if (o.symbol == symbol) {
-                return o;
+        for (EditType v : values()) {
+            if (v.symbol == symbol) {
+                return v;
             }
         }
+
         // cannot get here
         assert false;
         return null;
-    }
-
-    /**
-     * Lookup method to convert from an integer
-     */
-    public static EditType fromInteger(int i) {
-        return VALUES[i];
     }
 
     /*
@@ -117,21 +111,4 @@ public final class EditType implements Serializable {
      * The symbol representing the EditType
      */
     private char symbol;
-
-    // Support for serialization
-    private static int nextObj;
-    private final int obj = nextObj++;
-
-    Object readResolve() {
-        return VALUES[obj];
-    }
-
-    private static final EditType[] VALUES = {
-            DELETE, INSERT, EQUAL,
-    };
-
-    /**
-     * Serialization ID
-     */
-    private static final long serialVersionUID = 3256727260177708345L;
 }

@@ -21,7 +21,6 @@
  */
 package org.crosswire.jsword.passage;
 
-import java.io.Serializable;
 
 /**
  * Types of Passage optimizations.
@@ -30,19 +29,11 @@ import java.io.Serializable;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public abstract class PassageType implements Serializable {
+public enum PassageType {
     /**
      * Optimize the Passage for speed
      */
-    public static final PassageType SPEED = new PassageType("SPEED")
-    {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.passage.PassageType#createPassage(java.lang.
-         * String)
-         */
+    SPEED {
         public Passage createPassage(String passage) throws NoSuchVerseException {
             if (passage == null || passage.length() == 0) {
                 return createEmptyPassage();
@@ -50,33 +41,15 @@ public abstract class PassageType implements Serializable {
             return new RocketPassage(passage);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.crosswire.jsword.passage.PassageType#createEmptyPassage()
-         */
         public Passage createEmptyPassage() {
             return new RocketPassage();
         }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = -5432599732858220775L;
-    };
+    },
 
     /**
      * Optimize the Passage for write speed
      */
-    public static final PassageType WRITE_SPEED = new PassageType("WRITE_SPEED")
-    {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.passage.PassageType#createPassage(java.lang.
-         * String)
-         */
+    WRITE_SPEED {
         public Passage createPassage(String passage) throws NoSuchVerseException {
             if (passage == null || passage.length() == 0) {
                 return createEmptyPassage();
@@ -84,33 +57,15 @@ public abstract class PassageType implements Serializable {
             return new BitwisePassage(passage);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.crosswire.jsword.passage.PassageType#createEmptyPassage()
-         */
         public Passage createEmptyPassage() {
             return new BitwisePassage();
         }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = -8808127396341614058L;
-    };
+    },
 
     /**
      * Optimize the Passage for size
      */
-    public static final PassageType SIZE = new PassageType("SIZE")
-    {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.passage.PassageType#createPassage(java.lang.
-         * String)
-         */
+    SIZE {
         public Passage createPassage(String passage) throws NoSuchVerseException {
             if (passage == null || passage.length() == 0) {
                 return createEmptyPassage();
@@ -118,11 +73,6 @@ public abstract class PassageType implements Serializable {
             return new DistinctPassage(passage);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.crosswire.jsword.passage.PassageType#createEmptyPassage()
-         */
         public Passage createEmptyPassage() {
             return new DistinctPassage();
         }
@@ -131,20 +81,12 @@ public abstract class PassageType implements Serializable {
          * Serialization ID
          */
         private static final long serialVersionUID = -1959355535575121168L;
-    };
+    },
 
     /**
      * Optimize the Passage for a mix
      */
-    public static final PassageType MIX = new PassageType("MIX")
-    {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.passage.PassageType#createPassage(java.lang.
-         * String)
-         */
+    MIX {
         public Passage createPassage(String passage) throws NoSuchVerseException {
             if (passage == null || passage.length() == 0) {
                 return createEmptyPassage();
@@ -152,33 +94,15 @@ public abstract class PassageType implements Serializable {
             return new PassageTally(passage);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.crosswire.jsword.passage.PassageType#createEmptyPassage()
-         */
         public Passage createEmptyPassage() {
             return new PassageTally();
         }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = -8426713571411491868L;
-    };
+    },
 
     /**
      * Optimize the Passage for tally operations
      */
-    public static final PassageType TALLY = new PassageType("TALLY")
-    {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.passage.PassageType#createPassage(java.lang.
-         * String)
-         */
+    TALLY {
         public Passage createPassage(String passage) throws NoSuchVerseException {
             if (passage == null || passage.length() == 0) {
                 return createEmptyPassage();
@@ -186,27 +110,10 @@ public abstract class PassageType implements Serializable {
             return new PassageTally(passage);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.crosswire.jsword.passage.PassageType#createEmptyPassage()
-         */
         public Passage createEmptyPassage() {
             return new PassageTally();
         }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = -4148688085074351220L;
     };
-
-    /**
-     * Simple ctor
-     */
-    public PassageType(String name) {
-        this.name = name;
-    }
 
     /**
      * Create an optimized passage
@@ -229,12 +136,12 @@ public abstract class PassageType implements Serializable {
      * Lookup method to convert from a String
      */
     public static PassageType fromString(String name) {
-        for (int i = 0; i < VALUES.length; i++) {
-            PassageType o = VALUES[i];
-            if (o.name.equalsIgnoreCase(name)) {
-                return o;
+        for (PassageType v : values()) {
+            if (v.name().equalsIgnoreCase(name)) {
+                return v;
             }
         }
+
         // cannot get here
         assert false;
         return null;
@@ -244,76 +151,20 @@ public abstract class PassageType implements Serializable {
      * Lookup method to convert from an integer
      */
     public static PassageType fromInteger(int i) {
-        // on error return SPEED
-        if (i < 0 || i >= VALUES.length) {
-            return SPEED;
+        for (PassageType v : values()) {
+            if (v.ordinal() == i) {
+                return v;
+            }
         }
-        return VALUES[i];
+
+        // on error return SPEED
+        return SPEED;
     }
 
     /**
      * Lookup method to convert from an integer
      */
     public static int toInteger(PassageType type) {
-        for (int i = 0; i < VALUES.length; i++) {
-            PassageType o = VALUES[i];
-            if (o.equals(type)) {
-                return i;
-            }
-        }
-        // cannot get here
-        assert false;
-        return 0; // SPEED
+        return type.ordinal();
     }
-
-    /**
-     * Prevent subclasses from overriding canonical identity based Object
-     * methods
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    public final boolean equals(Object o) {
-        return super.equals(o);
-    }
-
-    /**
-     * Prevent subclasses from overriding canonical identity based Object
-     * methods
-     * 
-     * @see java.lang.Object#hashCode()
-     */
-    public final int hashCode() {
-        return super.hashCode();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-        return name;
-    }
-
-    /**
-     * The name of the PassageListType
-     */
-    private String name;
-
-    // Support for serialization
-    private static int nextObj;
-    private final int obj = nextObj++;
-
-    Object readResolve() {
-        return VALUES[obj];
-    }
-
-    private static final PassageType[] VALUES = {
-            SPEED, WRITE_SPEED, SIZE, MIX, TALLY,
-    };
-
-    /**
-     * Serialization ID
-     */
-    private static final long serialVersionUID = 1678142015407980515L;
 }

@@ -21,7 +21,7 @@
  */
 package org.crosswire.jsword.book;
 
-import java.io.Serializable;
+
 
 /**
  * An Enumeration of the possible Features a Book may have.
@@ -30,66 +30,66 @@ import java.io.Serializable;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public final class FeatureType implements Serializable {
+public enum FeatureType {
     /**
      * The book is one of Greek Definitions. AKA, Strong's.
      */
-    public static final FeatureType GREEK_DEFINITIONS = new FeatureType("GreekDef");
+    GREEK_DEFINITIONS ("GreekDef"),
 
     /**
      * The book is one of Greek word parsings. AKA, Robinson.
      */
-    public static final FeatureType GREEK_PARSE = new FeatureType("GreekParse");
+    GREEK_PARSE ("GreekParse"),
 
     /**
      * The book is one of Hebrew Definitions. AKA, Strong's.
      */
-    public static final FeatureType HEBREW_DEFINITIONS = new FeatureType("HebrewDef");
+    HEBREW_DEFINITIONS ("HebrewDef"),
 
     /**
      * The book is one of Hebrew word parsings. AKA, ???.
      */
-    public static final FeatureType HEBREW_PARSE = new FeatureType("HebrewParse");
+    HEBREW_PARSE ("HebrewParse"),
 
     /**
      * The book is one of Daily Devotions.
      */
-    public static final FeatureType DAILY_DEVOTIONS = new FeatureType("DailyDevotions");
+    DAILY_DEVOTIONS ("DailyDevotions"),
 
     /**
      * The book is glossary of translations from one language to another.
      */
-    public static final FeatureType GLOSSARY = new FeatureType("Glossary");
+    GLOSSARY ("Glossary"),
 
     /**
      * The book contains Strong's Numbers
      */
-    public static final FeatureType STRONGS_NUMBERS = new FeatureType("StrongsNumbers");
+    STRONGS_NUMBERS ("StrongsNumbers"),
 
     /**
      * The book contains footnotes
      */
-    public static final FeatureType FOOTNOTES = new FeatureType("Footnotes");
+    FOOTNOTES ("Footnotes"),
 
     /**
      * The book contains Scripture cross references
      */
-    public static final FeatureType SCRIPTURE_REFERENCES = new FeatureType("Scripref");
+    SCRIPTURE_REFERENCES ("Scripref"),
 
     /**
      * The book marks the Word's of Christ
      */
-    public static final FeatureType WORDS_OF_CHRIST = new FeatureType("RedLetterText");
+    WORDS_OF_CHRIST ("RedLetterText"),
 
     /**
      * The book contains Morphology info
      */
-    public static final FeatureType MORPHOLOGY = new FeatureType("Morph");
+    MORPHOLOGY ("Morph"),
 
     /**
      * The book contains Headings
      */
-    public static final FeatureType HEADINGS = new FeatureType("Headings");
+    HEADINGS ("Headings");
 
     /**
      * @param name
@@ -103,28 +103,19 @@ public final class FeatureType implements Serializable {
      * Lookup method to convert from a String
      */
     public static FeatureType fromString(String name) {
-        for (int i = 0; i < VALUES.length; i++) {
-            FeatureType o = VALUES[i];
-            if (o.name.equalsIgnoreCase(name)) {
-                return o;
+        for (FeatureType v : values()) {
+            if (v.name.equalsIgnoreCase(name)) {
+                return v;
             }
         }
+
         // cannot get here
         assert false;
         return null;
     }
 
-    /**
-     * Lookup method to convert from an integer
-     */
-    public static FeatureType fromInteger(int i) {
-        return VALUES[i];
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
+    /* (non-Javadoc)
+     * @see java.lang.Enum#toString()
      */
     public String toString() {
         return name;
@@ -134,22 +125,4 @@ public final class FeatureType implements Serializable {
      * The name of the FeatureType
      */
     private String name;
-
-    // Support for serialization
-    private static int nextObj;
-    private final int obj = nextObj++;
-
-    Object readResolve() {
-        return VALUES[obj];
-    }
-
-    private static final FeatureType[] VALUES = {
-            GREEK_DEFINITIONS, GREEK_PARSE, HEBREW_DEFINITIONS, HEBREW_PARSE, DAILY_DEVOTIONS, GLOSSARY, STRONGS_NUMBERS, FOOTNOTES, SCRIPTURE_REFERENCES,
-            WORDS_OF_CHRIST, MORPHOLOGY, HEADINGS,
-    };
-
-    /**
-     * Serialization ID
-     */
-    private static final long serialVersionUID = 3256727260177708345L;
 }

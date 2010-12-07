@@ -259,14 +259,12 @@ public class WebResource {
     public void copy(URI dest, Progress meter) throws LucidException  {
         InputStream in = null;
         OutputStream out = null;
-long startDownload = System.currentTimeMillis();
         HttpRequestBase method = new HttpGet(uri);
         HttpResponse response = null;
         HttpEntity entity = null;
         try {
             // Execute the method.
             response = client.execute(method);
-int afterExecute = (int) (System.currentTimeMillis() - startDownload);
             // Initialize the meter, if present
             if (meter != null) {
                 // Find out how big it is
@@ -277,12 +275,10 @@ int afterExecute = (int) (System.currentTimeMillis() - startDownload);
                 }
                 meter.setTotalWork(size);
             }
-            long afterSize = (System.currentTimeMillis() - startDownload - afterExecute);
 
             entity = response.getEntity();
             if (entity != null) {
                 in = entity.getContent();
-                long afterEntity = (System.currentTimeMillis() - startDownload - afterSize);
 
                 // Download the index file
                 out = NetUtil.getOutputStream(dest);
@@ -296,12 +292,6 @@ int afterExecute = (int) (System.currentTimeMillis() - startDownload);
                     out.write(buf, 0, count);
                     count = in.read(buf);
                 }
-                long afterWrite = (System.currentTimeMillis() - startDownload - afterEntity);
-                System.out.println("execute = " + afterExecute + "ms\n" +
-                        "size = " + afterSize + "ms\n" +
-                        "entity = " + afterEntity + "ms\n" +
-                        "write = " + afterWrite + "ms\n"
-                        );
             } else {
                 String reason = response.getStatusLine().getReasonPhrase();
                 // TRANSLATOR: Common error condition: {0} is a placeholder for

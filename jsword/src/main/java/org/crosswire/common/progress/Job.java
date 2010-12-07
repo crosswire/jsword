@@ -277,7 +277,7 @@ public final class Job implements Progress {
             percent = 100;
 
             if (nextPredictionMap != null) {
-                nextPredictionMap.put(currentSectionName, Integer.valueOf((int)(System.currentTimeMillis() - startTime)));
+                nextPredictionMap.put(currentSectionName, Integer.valueOf((int) (System.currentTimeMillis() - startTime)));
             }
         }
 

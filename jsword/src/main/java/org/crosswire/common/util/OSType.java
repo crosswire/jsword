@@ -22,7 +22,6 @@
 package org.crosswire.common.util;
 
 import java.io.File;
-import java.io.Serializable;
 import java.net.URI;
 
 /**
@@ -32,95 +31,41 @@ import java.net.URI;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public abstract class OSType implements Serializable {
-    public static final OSType MAC = new OSType("Mac")
-    {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.crosswire.jsword.util.OSType#getUserArea()
-         */
+public enum OSType {
+    MAC  ("Mac") {
         public URI getUserArea() {
             return NetUtil.lengthenURI(getUserHome(), MAC_USER_DATA_AREA);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.util.OSType#getUserAreaFolder(java.lang.String,
-         * java.lang.String)
-         */
         public URI getUserAreaFolder(String hiddenFolderName, String visibleFolderName) {
             return NetUtil.lengthenURI(getUserArea(), visibleFolderName);
         }
+    },
 
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = -1575982665011980783L;
-    };
-
-    public static final OSType WIN32 = new OSType("Win")
-    {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.crosswire.jsword.util.OSType#getUserArea()
-         */
+    WIN32  ("Win") {
         public URI getUserArea() {
             return NetUtil.lengthenURI(getUserHome(), WIN32_USER_DATA_AREA);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.util.OSType#getUserAreaFolder(java.lang.String,
-         * java.lang.String)
-         */
         public URI getUserAreaFolder(String hiddenFolderName, String visibleFolderName) {
             return NetUtil.lengthenURI(getUserArea(), visibleFolderName);
         }
+    },
 
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 2448098399487879399L;
-    };
-
-    public static final OSType DEFAULT = new OSType("*nix")
-    {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.crosswire.jsword.util.OSType#getUserArea()
-         */
+    DEFAULT ("*nix") {
         public URI getUserArea() {
             return getUserHome();
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.util.OSType#getUserAreaFolder(java.lang.String,
-         * java.lang.String)
-         */
         public URI getUserAreaFolder(String hiddenFolderName, String visibleFolderName) {
             return NetUtil.lengthenURI(getUserArea(), hiddenFolderName);
         }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 8260119208395182688L;
     };
 
     /**
      * Simple ctor
      */
-    public OSType(String name) {
+    private OSType(String name) {
         this.name = name;
     }
 
@@ -149,20 +94,6 @@ public abstract class OSType implements Serializable {
     }
 
     /**
-     * Get an integer representation for this CaseType
-     */
-    public int toInteger() {
-        for (int i = 0; i < VALUES.length; i++) {
-            if (equals(VALUES[i])) {
-                return i;
-            }
-        }
-        // cannot get here
-        assert false;
-        return -1;
-    }
-
-    /**
      * Get the machine's OSType.
      * 
      * @return the machine's OSType
@@ -175,40 +106,13 @@ public abstract class OSType implements Serializable {
      * Lookup method to convert from a String
      */
     public static OSType fromString(String name) {
-        for (int i = 0; i < VALUES.length; i++) {
-            OSType o = VALUES[i];
-            if (name.startsWith(o.name)) {
-                return o;
+        for (OSType v : values()) {
+            if (v.name.equalsIgnoreCase(name)) {
+                return v;
             }
         }
+
         return DEFAULT;
-    }
-
-    /**
-     * Lookup method to convert from an integer
-     */
-    public static OSType fromInteger(int i) {
-        return VALUES[i];
-    }
-
-    /**
-     * Prevent subclasses from overriding canonical identity based Object
-     * methods
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    public final boolean equals(Object o) {
-        return super.equals(o);
-    }
-
-    /**
-     * Prevent subclasses from overriding canonical identity based Object
-     * methods
-     * 
-     * @see java.lang.Object#hashCode()
-     */
-    public final int hashCode() {
-        return super.hashCode();
     }
 
     /*
@@ -225,18 +129,6 @@ public abstract class OSType implements Serializable {
      */
     private String name;
 
-    // Support for serialization
-    private static int nextObj;
-    private final int obj = nextObj++;
-
-    Object readResolve() {
-        return VALUES[obj];
-    }
-
-    private static final OSType[] VALUES = {
-            MAC, WIN32, DEFAULT,
-    };
-
     /**
      * The Windows user settings parent directory
      */
@@ -251,9 +143,4 @@ public abstract class OSType implements Serializable {
      * The machine's osType
      */
     private static OSType osType = fromString(System.getProperty("os.name"));
-
-    /**
-     * Serialization ID
-     */
-    private static final long serialVersionUID = -3196320305857293885L;
 }

@@ -21,8 +21,6 @@
  */
 package org.crosswire.jsword.index.search;
 
-import java.io.Serializable;
-
 import org.crosswire.jsword.index.query.QueryDecorator;
 import org.crosswire.jsword.index.query.QueryDecoratorFactory;
 
@@ -33,167 +31,76 @@ import org.crosswire.jsword.index.query.QueryDecoratorFactory;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public abstract class SearchType implements Serializable {
+public enum SearchType {
     /**
      * Find the words in the specified order.
      */
-    public static final SearchType PHRASE = new SearchType("Phrase")
-    {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.index.search.SearchType#decorate(java.lang.String
-         * )
-         */
+    PHRASE ("Phrase") {
         public String decorate(String queryWords) {
             return SEARCH_SYNTAX.decoratePhrase(queryWords);
         }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 4049921554181534256L;
-    };
+    },
 
     /**
      * Find all the words regardless of position.
      */
-    public static final SearchType ALL_WORDS = new SearchType("All")
-    {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.index.search.SearchType#decorate(java.lang.String
-         * )
-         */
+    ALL_WORDS ("All") {
         public String decorate(String queryWords) {
             return SEARCH_SYNTAX.decorateAllWords(queryWords);
         }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3256721771208980279L;
-    };
+   },
 
     /**
      * Find any of these words
      */
-    public static final SearchType ANY_WORDS = new SearchType("Any")
-    {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.index.search.SearchType#decorate(java.lang.String
-         * )
-         */
+    ANY_WORDS ("Any") {
         public String decorate(String queryWords) {
             return SEARCH_SYNTAX.decorateAnyWords(queryWords);
         }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3257846580244853043L;
-    };
+    },
 
     /**
      * Find verses not containing these words. Note this may require being added
      * after words being sought.
      */
-    public static final SearchType NOT_WORDS = new SearchType("Not")
-    {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.index.search.SearchType#decorate(java.lang.String
-         * )
-         */
+    NOT_WORDS ("Not") {
         public String decorate(String queryWords) {
             return SEARCH_SYNTAX.decorateNotWords(queryWords);
         }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 4050480123318842929L;
-    };
+    },
 
     /**
      * Find verses with words that start with the these beginnings.
      */
-    public static final SearchType START_WORDS = new SearchType("Start")
-    {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.index.search.SearchType#decorate(java.lang.String
-         * )
-         */
+    START_WORDS ("Start") {
         public String decorate(String queryWords) {
             return SEARCH_SYNTAX.decorateStartWords(queryWords);
         }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3544667378161168437L;
-    };
+    },
 
     /**
      * Find verses with words spelled something like
      */
-    public static final SearchType SPELL_WORDS = new SearchType("Spell")
-    {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.index.search.SearchType#decorate(java.lang.String
-         * )
-         */
+    SPELL_WORDS ("Spell") {
         public String decorate(String queryWords) {
             return SEARCH_SYNTAX.decorateSpellWords(queryWords);
         }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3544387006957237044L;
-    };
+    },
 
     /**
      * Find verses in this range
      */
-    public static final SearchType RANGE = new SearchType("Range")
-    {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.index.search.SearchType#decorate(java.lang.String
-         * )
-         */
+    RANGE ("Range") {
         public String decorate(String queryWords) {
             return SEARCH_SYNTAX.decorateRange(queryWords);
         }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3257288028421959989L;
     };
 
     /**
      * @param name
      *            The name of the BookCategory
      */
-    protected SearchType(String name) {
+    private SearchType(String name) {
         this.name = name;
     }
 
@@ -206,46 +113,17 @@ public abstract class SearchType implements Serializable {
      * Lookup method to convert from a String
      */
     public static SearchType fromString(String name) {
-        for (int i = 0; i < VALUES.length; i++) {
-            SearchType o = VALUES[i];
-            if (o.name.equalsIgnoreCase(name)) {
-                return o;
+        for (SearchType v : values()) {
+            if (v.name.equalsIgnoreCase(name)) {
+                return v;
             }
         }
+
         throw new ClassCastException("Not a valid search type");
     }
 
-    /**
-     * Lookup method to convert from an integer
-     */
-    public static SearchType fromInteger(int i) {
-        return VALUES[i];
-    }
-
-    /**
-     * Prevent subclasses from overriding canonical identity based Object
-     * methods
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    public final boolean equals(Object o) {
-        return super.equals(o);
-    }
-
-    /**
-     * Prevent subclasses from overriding canonical identity based Object
-     * methods
-     * 
-     * @see java.lang.Object#hashCode()
-     */
-    public final int hashCode() {
-        return super.hashCode();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
+    /* (non-Javadoc)
+     * @see java.lang.Enum#toString()
      */
     public String toString() {
         return name;
@@ -257,21 +135,4 @@ public abstract class SearchType implements Serializable {
     private String name;
 
     protected static final QueryDecorator SEARCH_SYNTAX = QueryDecoratorFactory.getSearchSyntax();
-
-    // Support for serialization
-    private static int nextObj;
-    private final int obj = nextObj++;
-
-    Object readResolve() {
-        return VALUES[obj];
-    }
-
-    private static final SearchType[] VALUES = {
-            PHRASE, ALL_WORDS, ANY_WORDS, NOT_WORDS, START_WORDS, SPELL_WORDS, RANGE,
-    };
-
-    /**
-     * Serialization ID
-     */
-    private static final long serialVersionUID = 3256721767014871089L;
 }

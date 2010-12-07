@@ -21,7 +21,6 @@
  */
 package org.crosswire.jsword.book;
 
-import java.io.Serializable;
 
 /**
  * Types of Key that a Book uses, either verse, list, or tree.
@@ -30,114 +29,42 @@ import java.io.Serializable;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class KeyType implements Serializable {
+public enum KeyType {
     /**
      * Book contains verses and can be understood as book, chapter and verse.
      */
-    public static final KeyType VERSE = new KeyType("verse");
+    VERSE,
 
     /**
      * Book organizes its entries in a list, as in a dictionary.
      */
-    public static final KeyType LIST = new KeyType("list");
+    LIST,
 
     /**
      * Book organizes its entries in a tree, as in a general book.
      */
-    public static final KeyType TREE = new KeyType("tree");
-
-    /**
-     * Simple ctor
-     */
-    public KeyType(String name) {
-        this.name = name;
-    }
+    TREE;
 
     /**
      * Get an integer representation for this CaseType
      */
     public int toInteger() {
-        for (int i = 0; i < VALUES.length; i++) {
-            if (equals(VALUES[i])) {
-                return i;
-            }
-        }
-        // cannot get here
-        assert false;
-        return -1;
+        return ordinal();
     }
 
     /**
      * Lookup method to convert from a String
      */
     public static KeyType fromString(String name) {
-        for (int i = 0; i < VALUES.length; i++) {
-            KeyType o = VALUES[i];
-            if (o.name.equalsIgnoreCase(name)) {
-                return o;
+        for (KeyType v : values()) {
+            if (v.name().equalsIgnoreCase(name)) {
+                return v;
             }
         }
+
         // cannot get here
         assert false;
         return null;
     }
-
-    /**
-     * Lookup method to convert from an integer
-     */
-    public static KeyType fromInteger(int i) {
-        return VALUES[i];
-    }
-
-    /**
-     * Prevent subclasses from overriding canonical identity based Object
-     * methods
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    public final boolean equals(Object o) {
-        return super.equals(o);
-    }
-
-    /**
-     * Prevent subclasses from overriding canonical identity based Object
-     * methods
-     * 
-     * @see java.lang.Object#hashCode()
-     */
-    public final int hashCode() {
-        return super.hashCode();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-        return name;
-    }
-
-    /**
-     * The name of the type
-     */
-    private transient String name;
-
-    // Support for serialization
-    private static int nextObj;
-    private final int obj = nextObj++;
-
-    Object readResolve() {
-        return VALUES[obj];
-    }
-
-    private static final KeyType[] VALUES = {
-            VERSE, LIST, TREE,
-    };
-
-    /**
-     * Serialization ID
-     */
-    private static final long serialVersionUID = 8856576924393105712L;
 
 }

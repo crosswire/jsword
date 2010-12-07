@@ -21,7 +21,6 @@
  */
 package org.crosswire.jsword.book;
 
-import java.io.Serializable;
 import java.util.Locale;
 
 /**
@@ -32,21 +31,14 @@ import java.util.Locale;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public abstract class CaseType implements Serializable {
-    public static final CaseType LOWER = new CaseType("LOWER")
-    {
+public enum CaseType {
+    LOWER  {
         public String setCase(String word) {
             return word.toLowerCase(Locale.getDefault());
         }
+    },
 
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3546637707360286256L;
-    };
-
-    public static final CaseType SENTENCE = new CaseType("SENTENCE")
-    {
+    SENTENCE {
         public String setCase(String word) {
             int index = word.indexOf('-');
             if (index == -1) {
@@ -69,42 +61,24 @@ public abstract class CaseType implements Serializable {
             // So cut by the -
             return toSentenceCase(word.substring(0, index)) + "-" + toSentenceCase(word.substring(index + 1));
         }
+    },
 
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3905520510312985138L;
-    };
-
-    public static final CaseType UPPER = new CaseType("UPPER")
-    {
+    UPPER {
         public String setCase(String word) {
             return word.toUpperCase(Locale.getDefault());
         }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3257002163871035698L;
     };
 
     public abstract String setCase(String word);
 
     /**
-     * Simple ctor
-     */
-    public CaseType(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Change to sentence case - ie first character in caps, the rest in lower.
+     * Change to sentence case - that is first character in caps, the rest in lower.
      * 
      * @param word
      *            The word to be manipulated
      * @return The altered word
      */
-    protected static String toSentenceCase(String word) {
+    public static String toSentenceCase(String word) {
         assert word != null;
 
         if (word.length() == 0) {
@@ -158,26 +132,19 @@ public abstract class CaseType implements Serializable {
      * Get an integer representation for this CaseType
      */
     public int toInteger() {
-        for (int i = 0; i < VALUES.length; i++) {
-            if (equals(VALUES[i])) {
-                return i;
-            }
-        }
-        // cannot get here
-        assert false;
-        return -1;
+        return ordinal();
     }
 
     /**
      * Lookup method to convert from a String
      */
     public static CaseType fromString(String name) {
-        for (int i = 0; i < VALUES.length; i++) {
-            CaseType o = VALUES[i];
-            if (o.name.equalsIgnoreCase(name)) {
-                return o;
+        for (CaseType v : values()) {
+            if (v.name().equalsIgnoreCase(name)) {
+                return v;
             }
         }
+
         // cannot get here
         assert false;
         return null;
@@ -187,57 +154,15 @@ public abstract class CaseType implements Serializable {
      * Lookup method to convert from an integer
      */
     public static CaseType fromInteger(int i) {
-        return VALUES[i];
+        for (CaseType v : values()) {
+            if (v.ordinal() == i) {
+                return v;
+            }
+        }
+
+        // cannot get here
+        assert false;
+        return null;
     }
 
-    /**
-     * Prevent subclasses from overriding canonical identity based Object
-     * methods
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    public final boolean equals(Object o) {
-        return super.equals(o);
-    }
-
-    /**
-     * Prevent subclasses from overriding canonical identity based Object
-     * methods
-     * 
-     * @see java.lang.Object#hashCode()
-     */
-    public final int hashCode() {
-        return super.hashCode();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-        return name;
-    }
-
-    /**
-     * The name of the type
-     */
-    private transient String name;
-
-    // Support for serialization
-    private static int nextObj;
-    private final int obj = nextObj++;
-
-    Object readResolve() {
-        return VALUES[obj];
-    }
-
-    private static final CaseType[] VALUES = {
-            LOWER, SENTENCE, UPPER,
-    };
-
-    /**
-     * Serialization ID
-     */
-    private static final long serialVersionUID = -63772726311422060L;
 }

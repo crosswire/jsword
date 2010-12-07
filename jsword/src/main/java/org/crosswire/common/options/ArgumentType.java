@@ -19,10 +19,7 @@
  *
  * ID: $Id: org.eclipse.jdt.ui.prefs 1178 2006-11-06 12:48:02Z dmsmith $
  */
-
 package org.crosswire.common.options;
-
-import java.io.Serializable;
 
 /**
  * An ArgumentType indicates whether and/or how an Option is followed by an
@@ -32,27 +29,27 @@ import java.io.Serializable;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class ArgumentType implements Serializable {
+public enum ArgumentType {
     /**
      * The option is not followed by an argument.
      */
-    public static final ArgumentType NO_ARGUMENT = new ArgumentType("NO");
+    NO_ARGUMENT  ("NO"),
 
     /**
      * The option is followed by an argument.
      */
-    public static final ArgumentType REQUIRED_ARGUMENT = new ArgumentType("Required");
+    REQUIRED_ARGUMENT  ("Required"),
 
     /**
      * The option may be followed by an argument.
      */
-    public static final ArgumentType OPTIONAL_ARGUMENT = new ArgumentType("Optional");
+    OPTIONAL_ARGUMENT ("Optional");
 
     /**
      * @param name
      *            The name of the DataType
      */
-    protected ArgumentType(String name) {
+    private ArgumentType(String name) {
         this.name = name;
     }
 
@@ -60,28 +57,19 @@ public class ArgumentType implements Serializable {
      * Lookup method to convert from a String
      */
     public static ArgumentType fromString(String name) {
-        for (int i = 0; i < VALUES.length; i++) {
-            ArgumentType o = VALUES[i];
-            if (o.name.equalsIgnoreCase(name)) {
-                return o;
+        for (ArgumentType v : values()) {
+            if (v.name.equalsIgnoreCase(name)) {
+                return v;
             }
         }
+
         // cannot get here
         assert false;
         return null;
     }
 
-    /**
-     * Lookup method to convert from an integer
-     */
-    public static ArgumentType fromInteger(int i) {
-        return VALUES[i];
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
+    /* (non-Javadoc)
+     * @see java.lang.Enum#toString()
      */
     public String toString() {
         return name;
@@ -91,22 +79,4 @@ public class ArgumentType implements Serializable {
      * The name of the DataType
      */
     private String name;
-
-    // Support for serialization
-    private static int nextObj;
-    private final int obj = nextObj++;
-
-    Object readResolve() {
-        return VALUES[obj];
-    }
-
-    private static final ArgumentType[] VALUES = {
-            NO_ARGUMENT, REQUIRED_ARGUMENT, OPTIONAL_ARGUMENT
-    };
-
-    /**
-     * Serialization ID
-     */
-    private static final long serialVersionUID = 3256727260177708345L;
-
 }

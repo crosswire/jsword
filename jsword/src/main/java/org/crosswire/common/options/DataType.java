@@ -19,10 +19,7 @@
  *
  * ID: $Id: org.eclipse.jdt.ui.prefs 1178 2006-11-06 12:48:02Z dmsmith $
  */
-
 package org.crosswire.common.options;
-
-import java.io.Serializable;
 
 import org.crosswire.common.util.Convert;
 
@@ -33,83 +30,46 @@ import org.crosswire.common.util.Convert;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public abstract class DataType implements Serializable {
+public enum DataType {
     /**
      * A string argument.
      */
-    public static final DataType STRING = new DataType("String")
-    {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.common.options.DataType#convertFromString(java.lang
-         * .String)
-         */
+    STRING  ("String") {
         public Object convertFromString(String value) {
             return value;
         }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = -2521783846509171308L;
-    };
+    },
 
     /**
      * An integer argument.
      */
-    public static final DataType INTEGER = new DataType("Integer")
-    {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.common.options.DataType#convertFromString(java.lang
-         * .String)
-         */
+    INTEGER  ("Integer") {
         public Object convertFromString(String value) {
             return Integer.valueOf(Convert.string2Int(value));
         }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = -2521783846509171308L;
-    };
+    },
 
     /**
      * An boolean argument that allows various values for 'true'.
      */
-    public static final DataType BOOLEAN = new DataType("Boolean")
-    {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.common.options.DataType#convertFromString(java.lang
-         * .String)
-         */
+    BOOLEAN ("Boolean") {
         public Object convertFromString(String value) {
             return Boolean.valueOf(Convert.string2Boolean(value));
         }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = -2521783846509171308L;
     };
 
     /**
      * @param name
      *            The name of the DataType
      */
-    protected DataType(String name) {
+    private DataType(String name) {
         this.name = name;
     }
 
     /**
-     * Convert a String to an Arguments expected value.
+     * Convert a String to an DataType's expected value.
+     * @param input the string to convert
+     * @return the converted value
      */
     public abstract Object convertFromString(String input);
 
@@ -117,10 +77,9 @@ public abstract class DataType implements Serializable {
      * Lookup method to convert from a String
      */
     public static DataType fromString(String name) {
-        for (int i = 0; i < VALUES.length; i++) {
-            DataType o = VALUES[i];
-            if (o.name.equalsIgnoreCase(name)) {
-                return o;
+        for (DataType v : values()) {
+            if (v.name().equalsIgnoreCase(name)) {
+                return v;
             }
         }
         // cannot get here
@@ -128,17 +87,8 @@ public abstract class DataType implements Serializable {
         return null;
     }
 
-    /**
-     * Lookup method to convert from an integer
-     */
-    public static DataType fromInteger(int i) {
-        return VALUES[i];
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
+    /* (non-Javadoc)
+     * @see java.lang.Enum#toString()
      */
     public String toString() {
         return name;
@@ -148,20 +98,4 @@ public abstract class DataType implements Serializable {
      * The name of the DataType
      */
     private String name;
-
-    // Support for serialization
-    private static int nextObj;
-    private final int obj = nextObj++;
-
-    Object readResolve() {
-        return VALUES[obj];
-    }
-
-    private static final DataType[] VALUES = {};
-
-    /**
-     * Serialization ID
-     */
-    private static final long serialVersionUID = 3256727260177708345L;
-
 }

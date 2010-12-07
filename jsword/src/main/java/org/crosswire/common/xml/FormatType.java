@@ -21,8 +21,6 @@
  */
 package org.crosswire.common.xml;
 
-import java.io.Serializable;
-
 /**
  * The PrettySerializingContentHandler uses a FormatType to control its output.
  * 
@@ -30,18 +28,17 @@ import java.io.Serializable;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class FormatType implements Serializable {
-    public static final FormatType AS_IS = new FormatType("AS_IS", false, false, false);
-    public static final FormatType ANALYSIS = new FormatType("ANALYSIS", true, false, false);
-    public static final FormatType CLASSIC = new FormatType("CLASSIC", true, false, true);
-    public static final FormatType ANALYSIS_INDENT = new FormatType("ANALYSIS_INDENT", true, true, false);
-    public static final FormatType CLASSIC_INDENT = new FormatType("CLASSIC_INDENT", true, true, true);
+public enum FormatType {
+    AS_IS           (false, false, false),
+    ANALYSIS        (true,  false, false),
+    CLASSIC         (true,  false, true),
+    ANALYSIS_INDENT (true,  true,  false),
+    CLASSIC_INDENT  (true,  true,  true);
 
     /**
      * Simple ctor
      */
-    public FormatType(String aName, boolean displayNewlines, boolean doIndenting, boolean classicLines) {
-        name = aName;
+    private FormatType(boolean displayNewlines, boolean doIndenting, boolean classicLines) {
         multiline = displayNewlines;
         // the following are true only if we add newlines.
         indented = doIndenting && multiline;
@@ -87,74 +84,8 @@ public final class FormatType implements Serializable {
         return classic;
     }
 
-    /**
-     * Get an integer representation for this FormatType
-     */
-    public int toInteger() {
-        for (int i = 0; i < VALUES.length; i++) {
-            if (equals(VALUES[i])) {
-                return i;
-            }
-        }
-        // cannot get here
-        assert false;
-        return -1;
-    }
-
-    /**
-     * Lookup method to convert from a String
-     */
-    public static FormatType fromString(String name) {
-        for (int i = 0; i < VALUES.length; i++) {
-            FormatType obj = VALUES[i];
-            if (obj.name.equalsIgnoreCase(name)) {
-                return obj;
-            }
-        }
-        // cannot get here
-        assert false;
-        return null;
-    }
-
-    /**
-     * Lookup method to convert from an integer
-     */
-    public static FormatType fromInteger(int i) {
-        return VALUES[i];
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-        return name;
-    }
-
-    /**
-     * The name of the FormatType
-     */
-    private String name;
     private boolean indented;
     private boolean multiline;
     private boolean analytic;
     private boolean classic;
-
-    // Support for serialization
-    private static int nextObj;
-    private final int obj = nextObj++;
-
-    Object readResolve() {
-        return VALUES[obj];
-    }
-
-    private static final FormatType[] VALUES = {
-            AS_IS, ANALYSIS, CLASSIC, ANALYSIS_INDENT, CLASSIC_INDENT,
-    };
-
-    /**
-     * Serialization ID
-     */
-    private static final long serialVersionUID = 3544385916136142129L;
 }
