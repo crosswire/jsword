@@ -549,6 +549,7 @@ public class License {
      * @return the warranty for this program
      */
     public String getWarranty() {
+        // I18N(DMS)
         return Msg.gettext("License.warranty", name);
     }
 
@@ -558,6 +559,7 @@ public class License {
      * @return the details of this program's distribution license
      */
     public String getDetails() {
+        // I18N(DMS)
         return Msg.gettext("License.details", name);
     }
 
