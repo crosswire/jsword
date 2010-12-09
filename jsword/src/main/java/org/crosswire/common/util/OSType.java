@@ -33,30 +33,36 @@ import java.net.URI;
  */
 public enum OSType {
     MAC  ("Mac") {
+        @Override
         public URI getUserArea() {
             return NetUtil.lengthenURI(getUserHome(), MAC_USER_DATA_AREA);
         }
 
+        @Override
         public URI getUserAreaFolder(String hiddenFolderName, String visibleFolderName) {
             return NetUtil.lengthenURI(getUserArea(), visibleFolderName);
         }
     },
 
     WIN32  ("Win") {
+        @Override
         public URI getUserArea() {
             return NetUtil.lengthenURI(getUserHome(), WIN32_USER_DATA_AREA);
         }
 
+        @Override
         public URI getUserAreaFolder(String hiddenFolderName, String visibleFolderName) {
             return NetUtil.lengthenURI(getUserArea(), visibleFolderName);
         }
     },
 
     DEFAULT ("*nix") {
+        @Override
         public URI getUserArea() {
             return getUserHome();
         }
 
+        @Override
         public URI getUserAreaFolder(String hiddenFolderName, String visibleFolderName) {
             return NetUtil.lengthenURI(getUserArea(), hiddenFolderName);
         }
@@ -107,7 +113,7 @@ public enum OSType {
      */
     public static OSType fromString(String name) {
         for (OSType v : values()) {
-            if (v.name.equalsIgnoreCase(name)) {
+            if (name.startsWith(v.name)) {
                 return v;
             }
         }
@@ -120,6 +126,7 @@ public enum OSType {
      * 
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         return name;
     }
