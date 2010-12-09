@@ -33,7 +33,7 @@ import java.util.NoSuchElementException;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
-public class EmptyIterator implements Iterator {
+public class EmptyIterator<E> implements Iterator<E> {
 
     /**
      * Construct an <code>EmptyIterator</code>.
@@ -64,7 +64,7 @@ public class EmptyIterator implements Iterator {
      * 
      * @see java.util.Iterator#next()
      */
-    public Object next() {
+    public E next() {
         throw new NoSuchElementException();
     }
 

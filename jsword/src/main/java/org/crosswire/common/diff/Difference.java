@@ -118,6 +118,7 @@ public class Difference {
      * 
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         return editType.toString() + ':' + text;
     }
@@ -127,6 +128,7 @@ public class Difference {
      * 
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode() {
         return 31 * editType.hashCode() + text.hashCode();
     }
@@ -136,6 +138,7 @@ public class Difference {
      * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;

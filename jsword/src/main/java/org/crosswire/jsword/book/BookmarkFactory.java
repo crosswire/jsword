@@ -62,7 +62,7 @@ public final class BookmarkFactory {
      */
     static {
         try {
-            instance = (Bookmark) PluginUtil.getImplementation(Bookmark.class);
+            instance = PluginUtil.getImplementation(Bookmark.class);
         } catch (IOException e) {
             log.error("createBookmark failed", e);
         } catch (ClassCastException e) {

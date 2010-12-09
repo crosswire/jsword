@@ -16,6 +16,7 @@ import junit.framework.TestCase;
 
 public class DiffTest extends TestCase {
 
+    @Override
     protected void setUp() {
     }
 

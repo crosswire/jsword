@@ -49,7 +49,7 @@ public class ImgTag extends AbstractTag {
      * org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element,
      * org.xml.sax.Attributes)
      */
-    /* @Override */
+    @Override
     public Element processTag(Element ele, Attributes attrs) {
         Element img = OSISUtil.factory().createFigure();
         img.setAttribute(OSISUtil.ATTRIBUTE_FIGURE_SRC, attrs.getValue("src"));

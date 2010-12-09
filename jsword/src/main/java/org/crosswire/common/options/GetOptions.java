@@ -73,11 +73,11 @@ import java.util.Map;
 public class GetOptions {
     public GetOptions(String programName, String[] args, OptionList programOptions) {
         this.programName = programName;
-        this.args = (String[]) args.clone();
+        this.args = args.clone();
         this.programOptions = programOptions;
         // Initially, we have not started to process an argument
-        this.nonOptionArgs = new ArrayList();
-        this.suppliedOptions = new LinkedHashMap();
+        this.nonOptionArgs = new ArrayList<String>();
+        this.suppliedOptions = new LinkedHashMap<Option, String>();
 
         parse();
     }
@@ -128,7 +128,7 @@ public class GetOptions {
                 // --flag=argument
                 int equalPos = nextArg.indexOf('=');
                 String flag = (equalPos != -1) ? nextArg.substring(2, equalPos) : nextArg.substring(2);
-                List opts = programOptions.getLongOptions(flag);
+                List<Option> opts = programOptions.getLongOptions(flag);
                 int count = opts.size();
                 if (count == 0) {
                     throw new IllegalArgumentException("Illegal option --" + flag);
@@ -136,7 +136,7 @@ public class GetOptions {
                 if (count > 1) {
                     throw new IllegalArgumentException("Ambiguous option --" + flag);
                 }
-                Option option = (Option) opts.get(0);
+                Option option = opts.get(0);
                 if (option.getArgumentType().equals(ArgumentType.NO_ARGUMENT)) {
                     // Add option with null argument to options
                     suppliedOptions.put(option, null);
@@ -282,6 +282,6 @@ public class GetOptions {
     /**
      * The position in the array that is currently being studied.
      */
-    private List nonOptionArgs;
-    private Map suppliedOptions;
+    private List<String> nonOptionArgs;
+    private Map<Option,String> suppliedOptions;
 }

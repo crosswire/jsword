@@ -29,7 +29,7 @@ import java.util.NoSuchElementException;
 /**
  * Unscramble the current stack, and present the data from it to the user in
  * various forms. This code is slightly dodgy in that it makes use of the way
- * exceptions print their stack straces, however it is probably a safe enough
+ * exceptions print their stack traces, however it is probably a safe enough
  * assumption for the moment.
  * 
  * @see gnu.lgpl.License for license details.<br>
@@ -185,7 +185,7 @@ public final class StackTrace {
      * @param level
      *            Number of calling function
      */
-    public Class getClass(int level) {
+    public Class<?> getClass(int level) {
         try {
             return ClassUtil.forName(classNames[level]);
         } catch (ClassNotFoundException ex) {
@@ -197,19 +197,15 @@ public final class StackTrace {
     /**
      * Base class for the real enumeration implementations below
      */
-    public abstract class AbstractStackIterator implements Iterator {
-        /*
-         * (non-Javadoc)
-         * 
+    public abstract class AbstractStackIterator<T> implements Iterator<T> {
+        /* (non-Javadoc)
          * @see java.util.Iterator#hasNext()
          */
         public boolean hasNext() {
             return level < getClassCount();
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.util.Iterator#remove()
          */
         public void remove() {
@@ -232,9 +228,9 @@ public final class StackTrace {
     /**
      * To iterate over the class names
      */
-    public Iterator getClassNameElements() {
-        return new AbstractStackIterator() {
-            public Object next() throws NoSuchElementException {
+    public Iterator<String> getClassNameElements() {
+        return new AbstractStackIterator<String>() {
+            public String next() throws NoSuchElementException {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
@@ -246,9 +242,9 @@ public final class StackTrace {
     /**
      * To iterate over the function names
      */
-    public Iterator getFunctionNameElements() {
-        return new AbstractStackIterator() {
-            public Object next() throws NoSuchElementException {
+    public Iterator<String> getFunctionNameElements() {
+        return new AbstractStackIterator<String>() {
+            public String next() throws NoSuchElementException {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
@@ -260,9 +256,9 @@ public final class StackTrace {
     /**
      * To iterate over the full function names
      */
-    public Iterator getFullFunctionNameElements() {
-        return new AbstractStackIterator() {
-            public Object next() throws NoSuchElementException {
+    public Iterator<String> getFullFunctionNameElements() {
+        return new AbstractStackIterator<String>() {
+            public String next() throws NoSuchElementException {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }

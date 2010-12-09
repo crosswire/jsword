@@ -65,6 +65,7 @@ public class LuceneAnalyzer extends Analyzer {
         analyzer.addAnalyzer(LuceneIndex.FIELD_XREF, new XRefAnalyzer());
     }
 
+    @Override
     public TokenStream tokenStream(String fieldName, Reader reader) {
         return analyzer.tokenStream(fieldName, reader);
     }

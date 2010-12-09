@@ -38,7 +38,7 @@ public class StringOptionsChoice extends AbstractReflectedChoice implements Mult
      * 
      * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
      */
-    /* @Override */
+    @Override
     public void init(Element option, ResourceBundle configResources) throws StartupException {
         super.init(option, configResources);
         Element map = option.getChild("map");
@@ -66,7 +66,7 @@ public class StringOptionsChoice extends AbstractReflectedChoice implements Mult
      * 
      * @see org.crosswire.common.config.Choice#getConvertionClass()
      */
-    public Class getConversionClass() {
+    public Class<String> getConversionClass() {
         return String.class;
     }
 
@@ -77,7 +77,7 @@ public class StringOptionsChoice extends AbstractReflectedChoice implements Mult
      * org.crosswire.common.config.AbstractReflectedChoice#convertToString(java
      * .lang.Object)
      */
-    /* @Override */
+    @Override
     public String convertToString(Object orig) {
         return (String) orig;
     }
@@ -89,7 +89,7 @@ public class StringOptionsChoice extends AbstractReflectedChoice implements Mult
      * org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java
      * .lang.String)
      */
-    /* @Override */
+    @Override
     public Object convertToObject(String orig) {
         return orig;
     }

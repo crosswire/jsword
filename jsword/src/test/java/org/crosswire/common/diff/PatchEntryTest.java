@@ -14,6 +14,7 @@ import java.util.List;
 import junit.framework.TestCase;
 
 public class PatchEntryTest extends TestCase {
+    @Override
     protected void setUp() {
     }
 

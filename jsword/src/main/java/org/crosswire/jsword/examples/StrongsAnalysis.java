@@ -38,6 +38,7 @@ import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.study.StrongsMapSet;
 import org.crosswire.jsword.book.study.StrongsNumber;
 import org.crosswire.jsword.passage.Key;
+import org.jdom.Content;
 import org.jdom.Element;
 
 /**
@@ -55,10 +56,10 @@ public class StrongsAnalysis {
         Book bible = Books.installed().getBook("KJV");
         if (!bible.hasFeature(FeatureType.STRONGS_NUMBERS)) {
             bible = null;
-            List bibles = Books.installed().getBooks(new BookFilters.BookFeatureFilter(FeatureType.STRONGS_NUMBERS));
+            List<Book> bibles = Books.installed().getBooks(new BookFilters.BookFeatureFilter(FeatureType.STRONGS_NUMBERS));
 
             if (!bibles.isEmpty()) {
-                bible = (Book) bibles.get(0);
+                bible = bibles.get(0);
             }
         }
 
@@ -66,7 +67,7 @@ public class StrongsAnalysis {
             return;
         }
 
-        List errors = new ArrayList();
+        List<Key> errors = new ArrayList<Key>();
         StrongsMapSet sms = new StrongsMapSet();
         analyze(sms, bible, errors, bible.getGlobalKeyList());
     }
@@ -77,14 +78,14 @@ public class StrongsAnalysis {
      * @param errors
      * @param wholeBible
      */
-    public void analyze(StrongsMapSet sms, Book book, List errors, Key wholeBible) {
+    public void analyze(StrongsMapSet sms, Book book, List<Key> errors, Key wholeBible) {
         Key subkey = null;
         BookData data = null;
         Element osis = null;
         StringBuilder buffer = new StringBuilder();
-        Iterator it = wholeBible.iterator();
+        Iterator<Key> it = wholeBible.iterator();
         while (it.hasNext()) {
-            subkey = (Key) it.next();
+            subkey = it.next();
             if (subkey.canHaveChildren()) {
                 analyze(sms, book, errors, subkey);
             } else {
@@ -99,8 +100,8 @@ public class StrongsAnalysis {
                 }
 
                 // Do the actual indexing
-                Collection allW = OSISUtil.getDeepContent(osis, OSISUtil.OSIS_ELEMENT_W);
-                Iterator wIter = allW.iterator();
+                Collection<Content> allW = OSISUtil.getDeepContent(osis, OSISUtil.OSIS_ELEMENT_W);
+                Iterator<Content> wIter = allW.iterator();
                 while (wIter.hasNext()) {
                     // Clear out the buffer for re-use
                     int len = buffer.length();

@@ -218,7 +218,7 @@ public final class ConfigEntry {
         if (mayRepeat()) {
             if (values == null) {
                 histogram.increment(confEntryName);
-                values = new ArrayList();
+                values = new ArrayList<String>();
             }
             if (reportDetails()) {
                 histogram.increment(confEntryName + '.' + aValue);
@@ -277,9 +277,9 @@ public final class ConfigEntry {
             Element listEle = factory.createLG();
             valueElement.addContent(listEle);
 
-            Iterator iter = values.iterator();
+            Iterator<String> iter = values.iterator();
             while (iter.hasNext()) {
-                String text = (String) iter.next();
+                String text = iter.next();
                 text = XMLUtil.escape(text);
                 Element itemEle = factory.createL();
                 listEle.addContent(itemEle);
@@ -307,7 +307,7 @@ public final class ConfigEntry {
      * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    /* @Override */
+    @Override
     public boolean equals(Object obj) {
         // Since this can not be null
         if (obj == null) {
@@ -329,7 +329,7 @@ public final class ConfigEntry {
      * 
      * @see java.lang.Object#hashCode()
      */
-    /* @Override */
+    @Override
     public int hashCode() {
         return getName().hashCode();
     }
@@ -339,7 +339,7 @@ public final class ConfigEntry {
      * 
      * @see java.lang.Object#toString()
      */
-    /* @Override */
+    @Override
     public String toString() {
         return getName();
     }
@@ -376,16 +376,16 @@ public final class ConfigEntry {
             // followed by a space.
             // These are to joined to the key.
             if (type.equals(ConfigEntryType.HISTORY)) {
-                Iterator iter = values.iterator();
+                Iterator<String> iter = values.iterator();
                 while (iter.hasNext()) {
-                    String text = (String) iter.next();
+                    String text = iter.next();
                     buf.append(getName());
                     buf.append('_');
                     buf.append(text.replaceFirst(" ", "="));
                     buf.append('\n');
                 }
             } else {
-                Iterator iter = values.iterator();
+                Iterator<String> iter = values.iterator();
                 while (iter.hasNext()) {
                     buf.append(getName());
                     buf.append('=');
@@ -415,8 +415,8 @@ public final class ConfigEntry {
         return null;
     }
 
-    private List processLines(OSISUtil.OSISFactory factory, String aValue) {
-        List list = new ArrayList();
+    private List<Element> processLines(OSISUtil.OSISFactory factory, String aValue) {
+        List<Element> list = new ArrayList<Element>();
         String[] lines = StringUtil.splitAll(aValue, '\n');
         for (int i = 0; i < lines.length; i++) {
             Element lineElement = factory.createL();
@@ -458,6 +458,6 @@ public final class ConfigEntry {
     private ConfigEntryType type;
     private String internal;
     private String name;
-    private List values;
+    private List<String> values;
     private Object value;
 }

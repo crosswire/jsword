@@ -81,6 +81,7 @@ public class ReadingsKey extends DefaultLeafKeyList {
      * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -108,6 +109,7 @@ public class ReadingsKey extends DefaultLeafKeyList {
      * 
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode() {
         return date.hashCode();
     }
@@ -117,7 +119,8 @@ public class ReadingsKey extends DefaultLeafKeyList {
      * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object obj) {
+    @Override
+    public int compareTo(Key obj) {
         ReadingsKey that = (ReadingsKey) obj;
         return this.date.compareTo(that.date);
     }
@@ -127,6 +130,7 @@ public class ReadingsKey extends DefaultLeafKeyList {
      * 
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         return super.clone();
     }

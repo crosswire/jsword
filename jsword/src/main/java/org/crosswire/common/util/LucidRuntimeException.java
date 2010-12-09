@@ -97,7 +97,7 @@ public class LucidRuntimeException extends RuntimeException {
      * 
      * @return The unraveled i18n string
      */
-    /* @Override */
+    @Override
     public String getMessage() {
         String out = super.getMessage();
 

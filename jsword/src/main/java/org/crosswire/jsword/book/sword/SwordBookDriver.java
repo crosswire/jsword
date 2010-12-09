@@ -71,7 +71,7 @@ public class SwordBookDriver extends AbstractBookDriver {
     public Book[] getBooks() {
         ConfigEntry.resetStatistics();
 
-        List valid = new ArrayList();
+        List<Book> valid = new ArrayList<Book>();
 
         File[] dirs = SwordBookPath.getSwordPath();
         for (int j = 0; j < dirs.length; j++) {
@@ -80,10 +80,10 @@ public class SwordBookDriver extends AbstractBookDriver {
 
         ConfigEntry.dumpStatistics();
 
-        return (Book[]) valid.toArray(new Book[valid.size()]);
+        return valid.toArray(new Book[valid.size()]);
     }
 
-    private void getBooks(List valid, File bookDir) {
+    private void getBooks(List<Book> valid, File bookDir) {
         File mods = new File(bookDir, SwordConstants.DIR_CONF);
         if (mods.isDirectory()) {
             String[] bookConfs = SwordBookPath.getBookList(mods);
@@ -136,7 +136,7 @@ public class SwordBookDriver extends AbstractBookDriver {
      * org.crosswire.jsword.book.BookDriver#isDeletable(org.crosswire.jsword
      * .book.BookMetaData)
      */
-    /* @Override */
+    @Override
     public boolean isDeletable(Book dead) {
         SwordBookMetaData sbmd = (SwordBookMetaData) dead.getBookMetaData();
         File dlDir = SwordBookPath.getSwordDownloadDir();
@@ -153,7 +153,7 @@ public class SwordBookDriver extends AbstractBookDriver {
      * org.crosswire.jsword.book.BookDriver#delete(org.crosswire.jsword.book
      * .BookMetaData)
      */
-    /* @Override */
+    @Override
     public void delete(Book dead) throws BookException {
         SwordBookMetaData sbmd = (SwordBookMetaData) dead.getBookMetaData();
         File dlDir = SwordBookPath.getSwordDownloadDir();
@@ -169,7 +169,7 @@ public class SwordBookDriver extends AbstractBookDriver {
         }
 
         // Delete the conf
-        List failures = FileUtil.delete(confFile);
+        List<File> failures = FileUtil.delete(confFile);
         if (failures.isEmpty()) {
             URI loc = sbmd.getLocation();
             if (loc != null) {

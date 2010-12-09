@@ -45,7 +45,7 @@ public final class CWClassLoader extends ClassLoader {
      * @param resourceOwner
      *            is the owner of the resource
      */
-    CWClassLoader(Class resourceOwner) {
+    CWClassLoader(Class<?> resourceOwner) {
         owner = resourceOwner;
     }
 
@@ -66,8 +66,8 @@ public final class CWClassLoader extends ClassLoader {
      * @param resourceOwner
      *            is the owner of the resource
      */
-    public static CWClassLoader instance(Class resourceOwner) {
-        return (CWClassLoader) AccessController.doPrivileged(new PrivilegedLoader(resourceOwner));
+    public static CWClassLoader instance(Class<?> resourceOwner) {
+        return AccessController.doPrivileged(new PrivilegedLoader<CWClassLoader>(resourceOwner));
     }
 
     /**
@@ -76,7 +76,7 @@ public final class CWClassLoader extends ClassLoader {
      * that are directly looking up their resources.
      */
     public static CWClassLoader instance() {
-        Class resourceOwner = CallContext.getCallingClass();
+        Class<? extends Object> resourceOwner = CallContext.getCallingClass();
         return instance(resourceOwner);
     }
 
@@ -85,7 +85,7 @@ public final class CWClassLoader extends ClassLoader {
      * 
      * @see java.lang.ClassLoader#findResource(java.lang.String)
      */
-    /* @Override */
+    @Override
     public URL findResource(String search) {
         URL resource = null;
         if (search == null || search.length() == 0) {
@@ -281,7 +281,7 @@ public final class CWClassLoader extends ClassLoader {
      * PrivilegedLoader creates a CWClassLoader if it is able to obtain java
      * security permissions to do so.
      */
-    private static class PrivilegedLoader implements PrivilegedAction {
+    private static class PrivilegedLoader<T> implements PrivilegedAction<T> {
         /**
          * Creates a privileged class loader that finds resources for the
          * supplied class that may not be in the class' package. You can use
@@ -291,7 +291,7 @@ public final class CWClassLoader extends ClassLoader {
          * @param resourceOwner
          *            is the owner of the resource
          */
-        public PrivilegedLoader(Class resourceOwner) {
+        public PrivilegedLoader(Class<?> resourceOwner) {
             owningClass = resourceOwner;
         }
 
@@ -300,17 +300,17 @@ public final class CWClassLoader extends ClassLoader {
          * 
          * @see java.security.PrivilegedAction#run()
          */
-        public Object run() {
-            return new CWClassLoader(owningClass);
+        public T run() {
+            return (T) new CWClassLoader(owningClass);
         }
 
-        private Class owningClass;
+        private Class<?> owningClass;
     }
 
     /**
      * The class to which the resources belong
      */
-    private Class owner;
+    private Class<?> owner;
 
     /**
      * Notion of a project's home from where additional resources can be found.

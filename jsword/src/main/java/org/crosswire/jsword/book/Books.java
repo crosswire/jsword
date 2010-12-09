@@ -52,7 +52,7 @@ public final class Books implements BookList {
      */
     private Books() {
         books = new BookSet();
-        drivers = new HashSet();
+        drivers = new HashSet<BookDriver>();
         listeners = new EventListenerList();
         threaded = false;
 
@@ -73,7 +73,7 @@ public final class Books implements BookList {
      * 
      * @see org.crosswire.jsword.book.BookList#getBooks()
      */
-    public synchronized List getBooks() {
+    public synchronized List<Book> getBooks() {
         return new BookSet(books);
     }
 
@@ -89,9 +89,9 @@ public final class Books implements BookList {
 
         // Check name first
         // First check for exact matches
-        Iterator iter = books.iterator();
+        Iterator<Book> iter = books.iterator();
         while (iter.hasNext()) {
-            Book book = (Book) iter.next();
+            Book book = iter.next();
             if (name.equals(book.getName())) {
                 return book;
             }
@@ -100,7 +100,7 @@ public final class Books implements BookList {
         // Next check for case-insensitive matches
         iter = books.iterator();
         while (iter.hasNext()) {
-            Book book = (Book) iter.next();
+            Book book = iter.next();
             if (name.equalsIgnoreCase(book.getName())) {
                 return book;
             }
@@ -110,7 +110,7 @@ public final class Books implements BookList {
         // First check for exact matches
         iter = books.iterator();
         while (iter.hasNext()) {
-            Book book = (Book) iter.next();
+            Book book = iter.next();
             BookMetaData bmd = book.getBookMetaData();
             if (name.equals(bmd.getInitials())) {
                 return book;
@@ -120,7 +120,7 @@ public final class Books implements BookList {
         // Next check for case-insensitive matches
         iter = books.iterator();
         while (iter.hasNext()) {
-            Book book = (Book) iter.next();
+            Book book = iter.next();
             if (name.equalsIgnoreCase(book.getInitials())) {
                 return book;
             }
@@ -135,8 +135,8 @@ public final class Books implements BookList {
      * org.crosswire.jsword.book.BookList#getBooks(org.crosswire.jsword.book
      * .BookFilter)
      */
-    public synchronized List getBooks(BookFilter filter) {
-        List temp = CollectionUtil.createList(new BookFilterIterator(getBooks(), filter));
+    public synchronized List<Book> getBooks(BookFilter filter) {
+        List<Book> temp = CollectionUtil.createList(new BookFilterIterator(getBooks(), filter));
         return new BookSet(temp);
     }
 
@@ -149,10 +149,10 @@ public final class Books implements BookList {
      */
     public int getMaxLength(String propertyKey) {
         int max = -1;
-        List bookList = getBooks();
-        Iterator iter = bookList.iterator();
+        List<Book> bookList = getBooks();
+        Iterator<Book> iter = bookList.iterator();
         while (iter.hasNext()) {
-            Book book = (Book) iter.next();
+            Book book = iter.next();
             Object property = book.getProperty(propertyKey);
             if (property != null) {
                 String value = property instanceof String ? (String) property : property.toString();
@@ -173,10 +173,10 @@ public final class Books implements BookList {
      */
     public int getMaxLength(String propertyKey, BookFilter filter) {
         int max = -1;
-        List bookList = getBooks(filter);
-        Iterator iter = bookList.iterator();
+        List<Book> bookList = getBooks(filter);
+        Iterator<Book> iter = bookList.iterator();
         while (iter.hasNext()) {
-            Book book = (Book) iter.next();
+            Book book = iter.next();
             Object property = book.getProperty(propertyKey);
             if (property != null) {
                 String value = property instanceof String ? (String) property : property.toString();
@@ -284,7 +284,7 @@ public final class Books implements BookList {
         // Go through all the books and add all the new ones.
         // Remove those that are not known to the driver, but used to be.
         Book[] bookArray = driver.getBooks();
-        Set current = CollectionUtil.createSet(new BookFilterIterator(getBooks(), BookFilters.getBooksByDriver(driver)));
+        Set<Book> current = CollectionUtil.createSet(new BookFilterIterator(getBooks(), BookFilters.getBooksByDriver(driver)));
 
         for (int j = 0; j < bookArray.length; j++) {
             Book b = bookArray[j];
@@ -300,9 +300,9 @@ public final class Books implements BookList {
 
         // Remove the books from the previous version of the driver
         // that are not in this version.
-        Iterator iter = current.iterator();
+        Iterator<Book> iter = current.iterator();
         while (iter.hasNext()) {
-            Book book = (Book) iter.next();
+            Book book = iter.next();
             removeBook(book);
         }
 
@@ -337,17 +337,17 @@ public final class Books implements BookList {
      * registered it can be hard to get ahold of the current book driver. This
      * method gives access to the registered instances.
      */
-    public synchronized BookDriver[] getDriversByClass(Class type) {
-        List matches = new ArrayList();
-        Iterator iter = drivers.iterator();
+    public synchronized BookDriver[] getDriversByClass(Class<? extends BookDriver> type) {
+        List<BookDriver> matches = new ArrayList<BookDriver>();
+        Iterator<BookDriver> iter = drivers.iterator();
         while (iter.hasNext()) {
-            BookDriver driver = (BookDriver) iter.next();
+            BookDriver driver = iter.next();
             if (driver.getClass() == type) {
                 matches.add(driver);
             }
         }
 
-        return (BookDriver[]) matches.toArray(new BookDriver[matches.size()]);
+        return matches.toArray(new BookDriver[matches.size()]);
     }
 
     /**
@@ -356,7 +356,7 @@ public final class Books implements BookList {
      * @return Found int or the default value
      */
     public synchronized BookDriver[] getDrivers() {
-        return (BookDriver[]) drivers.toArray(new BookDriver[drivers.size()]);
+        return drivers.toArray(new BookDriver[drivers.size()]);
     }
 
     /**
@@ -366,9 +366,9 @@ public final class Books implements BookList {
      */
     public synchronized BookDriver[] getWritableDrivers() {
         int i = 0;
-        Iterator iter = drivers.iterator();
+        Iterator<BookDriver> iter = drivers.iterator();
         while (iter.hasNext()) {
-            BookDriver driver = (BookDriver) iter.next();
+            BookDriver driver = iter.next();
             if (driver.isWritable()) {
                 i++;
             }
@@ -379,7 +379,7 @@ public final class Books implements BookList {
         i = 0;
         iter = drivers.iterator();
         while (iter.hasNext()) {
-            BookDriver driver = (BookDriver) iter.next();
+            BookDriver driver = iter.next();
             if (driver.isWritable()) {
                 reply[i++] = driver;
             }
@@ -413,7 +413,7 @@ public final class Books implements BookList {
      */
     protected void autoRegister() {
         // This will classload them all and they will register themselves.
-        Class[] types = PluginUtil.getImplementors(BookDriver.class);
+        Class<? extends BookDriver>[] types = PluginUtil.getImplementors(BookDriver.class);
 
         log.debug("begin auto-registering " + types.length + " drivers:");
 
@@ -447,7 +447,7 @@ public final class Books implements BookList {
     /**
      * An array of BookDrivers
      */
-    private Set drivers;
+    private Set<BookDriver> drivers;
 
     /**
      * The list of listeners

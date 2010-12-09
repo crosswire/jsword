@@ -211,13 +211,13 @@ public final class StringUtil {
         // Performance tuned for 2.0 (JDK1.4)
 
         if (str == null) {
-            return (String[]) EMPTY_STRING_ARRAY.clone();
+            return EMPTY_STRING_ARRAY.clone();
         }
         int len = str.length();
         if (len == 0) {
-            return (String[]) EMPTY_STRING_ARRAY.clone();
+            return EMPTY_STRING_ARRAY.clone();
         }
-        List list = new ArrayList();
+        List<String> list = new ArrayList<String>();
         int i = 0;
         int start = 0;
         boolean match = false;
@@ -236,7 +236,7 @@ public final class StringUtil {
         if (match) {
             list.add(str.substring(start, i));
         }
-        return (String[]) list.toArray(new String[list.size()]);
+        return list.toArray(new String[list.size()]);
     }
 
     /**
@@ -276,13 +276,13 @@ public final class StringUtil {
         // Performance tuned for 2.0 (JDK1.4)
 
         if (str == null) {
-            return (String[]) EMPTY_STRING_ARRAY.clone();
+            return EMPTY_STRING_ARRAY.clone();
         }
         int len = str.length();
         if (len == 0) {
-            return (String[]) EMPTY_STRING_ARRAY.clone();
+            return EMPTY_STRING_ARRAY.clone();
         }
-        List list = new ArrayList();
+        List<String> list = new ArrayList<String>();
         int i = 0;
         int start = 0;
         boolean match = false;
@@ -299,7 +299,7 @@ public final class StringUtil {
         if (match) {
             list.add(str.substring(start, i));
         }
-        return (String[]) list.toArray(new String[list.size()]);
+        return list.toArray(new String[list.size()]);
     }
 
     /**
@@ -340,13 +340,13 @@ public final class StringUtil {
         // Performance tuned for 2.0 (JDK1.4)
 
         if (str == null) {
-            return (String[]) EMPTY_STRING_ARRAY.clone();
+            return EMPTY_STRING_ARRAY.clone();
         }
         int len = str.length();
         if (len == 0) {
-            return (String[]) EMPTY_STRING_ARRAY.clone();
+            return EMPTY_STRING_ARRAY.clone();
         }
-        List list = new ArrayList();
+        List<String> list = new ArrayList<String>();
         int sizePlus1 = 1;
         int i = 0;
         int start = 0;
@@ -367,7 +367,7 @@ public final class StringUtil {
         if (match) {
             list.add(str.substring(start, i));
         }
-        return (String[]) list.toArray(new String[list.size()]);
+        return list.toArray(new String[list.size()]);
     }
 
     /**
@@ -448,13 +448,13 @@ public final class StringUtil {
         // Also, StringTokenizer uses isSpace() not isWhitespace()
 
         if (str == null) {
-            return (String[]) EMPTY_STRING_ARRAY.clone();
+            return EMPTY_STRING_ARRAY.clone();
         }
         int len = str.length();
         if (len == 0) {
-            return (String[]) EMPTY_STRING_ARRAY.clone();
+            return EMPTY_STRING_ARRAY.clone();
         }
-        List list = new ArrayList();
+        List<String> list = new ArrayList<String>();
         int sizePlus1 = 1;
         int i = 0;
         int start = 0;
@@ -515,7 +515,7 @@ public final class StringUtil {
         if (match) {
             list.add(str.substring(start, i));
         }
-        return (String[]) list.toArray(new String[list.size()]);
+        return list.toArray(new String[list.size()]);
     }
 
     /**

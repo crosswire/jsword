@@ -78,11 +78,11 @@ public class Diff {
      * 
      * @return List of Difference objects
      */
-    public List compare() {
+    public List<Difference> compare() {
         // Check for equality (speedup)
-        List diffs;
+        List<Difference> diffs;
         if (source.equals(target)) {
-            diffs = new ArrayList();
+            diffs = new ArrayList<Difference>();
             diffs.add(new Difference(EditType.EQUAL, source));
             return diffs;
         }
@@ -121,8 +121,8 @@ public class Diff {
      * 
      * @return List of Difference objects
      */
-    private List compute() {
-        List diffs = new ArrayList();
+    private List<Difference> compute() {
+        List<Difference> diffs = new ArrayList<Difference>();
 
         if ("".equals(source)) {
             // Just add some text (speedup)
@@ -179,7 +179,7 @@ public class Diff {
 
         if (diffs == null) {
             // No acceptable result.
-            diffs = new ArrayList();
+            diffs = new ArrayList<Difference>();
             diffs.add(new Difference(EditType.DELETE, source));
             diffs.add(new Difference(EditType.INSERT, target));
         }
@@ -197,8 +197,8 @@ public class Diff {
             int countInserts = 0;
             StringBuilder textDelete = new StringBuilder();
             StringBuilder textInsert = new StringBuilder();
-            ListIterator pointer = diffs.listIterator();
-            Difference curDiff = (Difference) pointer.next();
+            ListIterator<Difference> pointer = diffs.listIterator();
+            Difference curDiff = pointer.next();
             while (curDiff != null) {
                 EditType editType = curDiff.getEditType();
                 if (EditType.INSERT.equals(editType)) {
@@ -217,7 +217,7 @@ public class Diff {
                             pointer.remove();
                         }
                         Diff newDiff = new Diff(textDelete.toString(), textInsert.toString(), false);
-                        Iterator iter = newDiff.compare().iterator();
+                        Iterator<Difference> iter = newDiff.compare().iterator();
                         while (iter.hasNext()) {
                             pointer.add(iter.next());
                         }
@@ -227,7 +227,7 @@ public class Diff {
                     textDelete.delete(0, textDelete.length());
                     textInsert.delete(0, textInsert.length());
                 }
-                curDiff = pointer.hasNext() ? (Difference) pointer.next() : null;
+                curDiff = pointer.hasNext() ? pointer.next() : null;
             }
             diffs.remove(diffs.size() - 1); // Remove the dummy entry at the
             // end.
@@ -245,15 +245,15 @@ public class Diff {
      *            Location within source
      * @return Location within target
      */
-    public int xIndex(final List diffs, final int loc) {
+    public int xIndex(final List<Difference> diffs, final int loc) {
         int chars1 = 0;
         int chars2 = 0;
         int lastChars1 = 0;
         int lastChars2 = 0;
         Difference lastDiff = null;
-        Iterator iter = diffs.iterator();
+        Iterator<Difference> iter = diffs.iterator();
         while (iter.hasNext()) {
-            Difference diff = (Difference) iter.next();
+            Difference diff = iter.next();
             EditType editType = diff.getEditType();
 
             // Equality or deletion?
@@ -291,10 +291,10 @@ public class Diff {
      *            List of Difference objects
      * @return HTML representation
      */
-    public String prettyHtml(List diffs) {
+    public String prettyHtml(List<Difference> diffs) {
         StringBuilder buf = new StringBuilder();
         for (int x = 0; x < diffs.size(); x++) {
-            Difference diff = (Difference) diffs.get(x);
+            Difference diff = diffs.get(x);
             EditType editType = diff.getEditType(); // Mode (delete, equal,
             // insert)
             String text = diff.getText(); // Text of change.

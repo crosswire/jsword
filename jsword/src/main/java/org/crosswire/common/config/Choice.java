@@ -81,7 +81,7 @@ public interface Choice {
      * 
      * @return The Class that this Choice works using.
      */
-    Class getConversionClass();
+    Class<? extends Object> getConversionClass();
 
     /**
      * String value to associate with the name (key)

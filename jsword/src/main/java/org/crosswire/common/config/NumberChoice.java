@@ -36,7 +36,7 @@ public class NumberChoice extends AbstractReflectedChoice {
      * 
      * @see org.crosswire.common.config.Choice#getConvertionClass()
      */
-    public Class getConversionClass() {
+    public Class<Integer> getConversionClass() {
         return Integer.TYPE;
     }
 
@@ -47,7 +47,7 @@ public class NumberChoice extends AbstractReflectedChoice {
      * org.crosswire.common.config.AbstractReflectedChoice#convertToString(java
      * .lang.Object)
      */
-    /* @Override */
+    @Override
     public String convertToString(Object orig) {
         return Convert.int2String(((Integer) orig).intValue());
     }
@@ -59,7 +59,7 @@ public class NumberChoice extends AbstractReflectedChoice {
      * org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java
      * .lang.String)
      */
-    /* @Override */
+    @Override
     public Object convertToObject(String orig) {
         return Integer.valueOf(Convert.string2Int(orig));
     }

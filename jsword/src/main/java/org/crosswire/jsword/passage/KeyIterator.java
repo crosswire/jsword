@@ -33,9 +33,9 @@ import java.util.Stack;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class KeyIterator implements Iterator {
+public class KeyIterator implements Iterator<Key> {
     public KeyIterator(Key key) {
-        stack = new Stack();
+        stack = new Stack<Locator>();
         stack.push(new Locator(key));
     }
 
@@ -46,7 +46,7 @@ public class KeyIterator implements Iterator {
         }
 
         // Check to see if there are more children to process
-        Locator peek = (Locator) stack.peek();
+        Locator peek = stack.peek();
 
         if (peek.getParent().getChildCount() > peek.getPosition()) {
             return;
@@ -64,12 +64,12 @@ public class KeyIterator implements Iterator {
         return stack.size() != 0;
     }
 
-    public Object next() {
+    public Key next() {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
 
-        Locator peek = (Locator) stack.peek();
+        Locator peek = stack.peek();
 
         // Determine which child in the list of children to consider
         int childNum = peek.getPosition();
@@ -136,5 +136,5 @@ public class KeyIterator implements Iterator {
 
     }
 
-    private Stack stack = new Stack();
+    private Stack<Locator> stack;
 }

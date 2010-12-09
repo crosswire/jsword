@@ -104,7 +104,7 @@ public final class JobManager {
      * Add a listener to the list
      */
     public static synchronized void addWorkListener(WorkListener li) {
-        List temp = new ArrayList();
+        List<WorkListener> temp = new ArrayList<WorkListener>();
         temp.addAll(listeners);
 
         if (!temp.contains(li)) {
@@ -118,7 +118,7 @@ public final class JobManager {
      */
     public static synchronized void removeWorkListener(WorkListener li) {
         if (listeners.contains(li)) {
-            List temp = new ArrayList();
+            List<WorkListener> temp = new ArrayList<WorkListener>();
             temp.addAll(listeners);
             temp.remove(li);
             listeners = temp;
@@ -128,8 +128,8 @@ public final class JobManager {
     /**
      * Accessor for the currently known jobs
      */
-    public static synchronized Set getJobs() {
-        Set reply = new HashSet();
+    public static synchronized Set<Progress> getJobs() {
+        Set<Progress> reply = new HashSet<Progress>();
         reply.addAll(jobs);
         return reply;
     }
@@ -143,7 +143,7 @@ public final class JobManager {
         // we need to keep the synchronized section very small to avoid deadlock
         // certainly keep the event dispatch clear of the synchronized block or
         // there will be a deadlock
-        final List temp = new ArrayList();
+        final List<WorkListener> temp = new ArrayList<WorkListener>();
         synchronized (JobManager.class) {
             temp.addAll(listeners);
         }
@@ -151,9 +151,9 @@ public final class JobManager {
         // We ought only to tell listeners about jobs that are in our
         // list of jobs so we need to fire before delete.
         if (listeners != null) {
-            Iterator iter = temp.iterator();
+            Iterator<WorkListener> iter = temp.iterator();
             while (iter.hasNext()) {
-                WorkListener worker = (WorkListener) iter.next();
+                WorkListener worker = iter.next();
                 worker.workProgressed(ev);
             }
         }
@@ -172,12 +172,12 @@ public final class JobManager {
     /**
      * List of listeners
      */
-    private static List listeners = new ArrayList();
+    private static List<WorkListener> listeners = new ArrayList<WorkListener>();
 
     /**
      * List of current jobs
      */
-    private static Set jobs = new HashSet();
+    private static Set<Progress> jobs = new HashSet<Progress>();
 
     /**
      * The log stream

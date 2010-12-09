@@ -65,12 +65,9 @@ public abstract class AbstractKeyBackend extends AbstractBackend implements Key 
         return 0;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#isEmpty()
      */
-    /* @Override */
     public boolean isEmpty() {
         return getCardinality() == 0;
     }
@@ -82,7 +79,7 @@ public abstract class AbstractKeyBackend extends AbstractBackend implements Key 
      * org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage
      * .Key)
      */
-    /* @Override */
+    @Override
     public boolean contains(Key key) {
         return indexOf(key) > 0;
     }
@@ -92,8 +89,8 @@ public abstract class AbstractKeyBackend extends AbstractBackend implements Key 
      * 
      * @see org.crosswire.jsword.passage.Key#iterator()
      */
-    public Iterator iterator() {
-        return new Iterator() {
+    public Iterator<Key> iterator() {
+        return new Iterator<Key>() {
 
             /*
              * (non-Javadoc)
@@ -109,7 +106,7 @@ public abstract class AbstractKeyBackend extends AbstractBackend implements Key 
              * 
              * @see java.util.Iterator#next()
              */
-            public Object next() throws NoSuchElementException {
+            public Key next() throws NoSuchElementException {
                 if (here >= count) {
                     throw new NoSuchElementException();
                 }
@@ -162,6 +159,7 @@ public abstract class AbstractKeyBackend extends AbstractBackend implements Key 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#setAliasKey(org.crosswire.jsword.passage.Key, org.crosswire.jsword.passage.Key)
      */
+    @Override
     public void setAliasKey(Key alias, Key source) throws IOException {
         throw new UnsupportedOperationException();
     }
@@ -169,6 +167,7 @@ public abstract class AbstractKeyBackend extends AbstractBackend implements Key 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#setRawText(org.crosswire.jsword.passage.Key, java.lang.String)
      */
+    @Override
     public void setRawText(Key key, String text) throws BookException, IOException {
         throw new UnsupportedOperationException();
     }
@@ -187,6 +186,7 @@ public abstract class AbstractKeyBackend extends AbstractBackend implements Key 
      * 
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         try {
             super.clone();
@@ -259,7 +259,7 @@ public abstract class AbstractKeyBackend extends AbstractBackend implements Key 
      * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    /* @Override */
+    @Override
     public boolean equals(Object obj) {
         // Since this can not be null
         if (obj == null) {
@@ -272,7 +272,7 @@ public abstract class AbstractKeyBackend extends AbstractBackend implements Key 
             return false;
         }
 
-        return compareTo(obj) == 0;
+        return compareTo((Key) obj) == 0;
     }
 
     /*
@@ -280,6 +280,7 @@ public abstract class AbstractKeyBackend extends AbstractBackend implements Key 
      * 
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode() {
         return getName().hashCode();
     }
@@ -289,8 +290,7 @@ public abstract class AbstractKeyBackend extends AbstractBackend implements Key 
      * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object obj) {
-        Key that = (Key) obj;
+    public int compareTo(Key that) {
 
         if (this == that) {
             return 0;
@@ -308,18 +308,18 @@ public abstract class AbstractKeyBackend extends AbstractBackend implements Key 
         }
 
         // Compare the contents.
-        Iterator thisIter = this.iterator();
-        Iterator thatIter = that.iterator();
+        Iterator<Key> thisIter = this.iterator();
+        Iterator<Key> thatIter = that.iterator();
 
         Key thisfirst = null;
         Key thatfirst = null;
 
         if (thisIter.hasNext()) {
-            thisfirst = (Key) thisIter.next();
+            thisfirst = thisIter.next();
         }
 
         if (thatIter.hasNext()) {
-            thatfirst = (Key) thatIter.next();
+            thatfirst = thatIter.next();
         }
 
         if (thisfirst == null) {

@@ -47,7 +47,7 @@ import org.jdom.Document;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public interface BookMetaData extends Comparable {
+public interface BookMetaData extends Comparable<BookMetaData> {
     /**
      * The name of the book, for example "King James Version" or
      * "Bible in Basic English" or "Greek". In general it should be possible to
@@ -220,7 +220,7 @@ public interface BookMetaData extends Comparable {
      * returned Properties will be read-only so any attempts to alter it will
      * fail.
      */
-    Map getProperties();
+    Map<String, Object> getProperties();
 
     /**
      * @param key

@@ -69,7 +69,7 @@ public class DistinctPassage extends AbstractPassage {
     protected DistinctPassage(String refs) throws NoSuchVerseException {
         super(refs);
 
-        store = Collections.synchronizedSortedSet(new TreeSet());
+        store = Collections.synchronizedSortedSet(new TreeSet<Key>());
         addVerses(refs);
     }
 
@@ -84,6 +84,7 @@ public class DistinctPassage extends AbstractPassage {
      * 
      * @return A complete copy of ourselves
      */
+    @Override
     public Object clone() {
         // This gets us a shallow copy
         DistinctPassage copy = (DistinctPassage) super.clone();
@@ -92,7 +93,7 @@ public class DistinctPassage extends AbstractPassage {
         // copy.store = (SortedSet) store.clone();
         // However SortedSet is not Cloneable so I can't
         // Watch out for this, I'm not sure if it breaks anything.
-        copy.store = new TreeSet();
+        copy.store = new TreeSet<Key>();
         copy.store.addAll(store);
 
         return copy;
@@ -103,7 +104,7 @@ public class DistinctPassage extends AbstractPassage {
      * 
      * @see java.lang.Iterable#iterator()
      */
-    public Iterator iterator() {
+    public Iterator<Key> iterator() {
         return store.iterator();
     }
 
@@ -112,6 +113,7 @@ public class DistinctPassage extends AbstractPassage {
      * 
      * @see org.crosswire.jsword.passage.Passage#isEmpty()
      */
+    @Override
     public boolean isEmpty() {
         return store.isEmpty();
     }
@@ -121,6 +123,7 @@ public class DistinctPassage extends AbstractPassage {
      * 
      * @see org.crosswire.jsword.passage.Passage#countVerses()
      */
+    @Override
     public int countVerses() {
         return store.size();
     }
@@ -132,8 +135,9 @@ public class DistinctPassage extends AbstractPassage {
      * org.crosswire.jsword.passage.Passage#contains(org.crosswire.jsword.passage
      * .VerseBase)
      */
+    @Override
     public boolean contains(Key obj) {
-        Iterator iter = obj.iterator();
+        Iterator<Key> iter = obj.iterator();
         while (iter.hasNext()) {
             if (!store.contains(iter.next())) {
                 return false;
@@ -155,7 +159,7 @@ public class DistinctPassage extends AbstractPassage {
 
         Verse firstVerse = null;
         Verse lastVerse = null;
-        Iterator iter = obj.iterator();
+        Iterator<Key> iter = obj.iterator();
         while (iter.hasNext()) {
             lastVerse = (Verse) iter.next();
             if (firstVerse == null) {
@@ -183,7 +187,7 @@ public class DistinctPassage extends AbstractPassage {
 
         Verse firstVerse = null;
         Verse lastVerse = null;
-        Iterator iter = obj.iterator();
+        Iterator<Key> iter = obj.iterator();
         while (iter.hasNext()) {
             lastVerse = (Verse) iter.next();
             if (firstVerse == null) {
@@ -204,6 +208,7 @@ public class DistinctPassage extends AbstractPassage {
      * 
      * @see org.crosswire.jsword.passage.Passage#clear()
      */
+    @Override
     public void clear() {
         optimizeWrites();
 
@@ -242,7 +247,7 @@ public class DistinctPassage extends AbstractPassage {
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         optimizeWrites();
 
-        store = new TreeSet();
+        store = new TreeSet<Key>();
 
         in.defaultReadObject();
 
@@ -257,5 +262,5 @@ public class DistinctPassage extends AbstractPassage {
     /**
      * The place the real data is stored
      */
-    private transient SortedSet store = new TreeSet();
+    private transient SortedSet<Key> store = new TreeSet<Key>();
 }

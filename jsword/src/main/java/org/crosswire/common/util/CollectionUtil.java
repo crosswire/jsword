@@ -53,9 +53,9 @@ public final class CollectionUtil {
      *            The source of data for the list
      * @return List
      */
-    public static List createList(Iterable it) {
-        List reply = new ArrayList();
-        Iterator iter = it.iterator();
+    public static <T> List<T> createList(Iterable<T> it) {
+        List<T> reply = new ArrayList<T>();
+        Iterator<T> iter = it.iterator();
         while (iter.hasNext()) {
             reply.add(iter.next());
         }
@@ -70,9 +70,9 @@ public final class CollectionUtil {
      *            The source of data for the list
      * @return the created set
      */
-    public static Set createSet(Iterable it) {
-        Set reply = new HashSet();
-        Iterator iter = it.iterator();
+    public static <T> Set<T> createSet(Iterable<T> it) {
+        Set<T> reply = new HashSet<T>();
+        Iterator<T> iter = it.iterator();
         while (iter.hasNext()) {
             reply.add(iter.next());
         }
@@ -87,11 +87,11 @@ public final class CollectionUtil {
      *            The Properties to convert
      * @return The map
      */
-    public static Map properties2Map(Properties prop) {
-        Map propMap = new HashMap();
-        Iterator iter = prop.entrySet().iterator();
+    public static <K,V> Map<K,V> properties2Map(Properties prop) {
+        Map<K,V> propMap = new HashMap<K,V>();
+        Iterator<Map.Entry<Object,Object>> iter = prop.entrySet().iterator();
         while (iter.hasNext()) {
-            Map.Entry entry = (Map.Entry) iter.next();
+            Map.Entry<K,V> entry = (Map.Entry<K,V>) iter.next();
             propMap.put(entry.getKey(), entry.getValue());
         }
         return propMap;
@@ -105,7 +105,7 @@ public final class CollectionUtil {
      *            The URI of the Properties to convert
      * @return The map
      */
-    public static Map properties2Map(URI propUri) throws IOException {
+    public static <K,V> Map<K,V> properties2Map(URI propUri) throws IOException {
         return properties2Map(NetUtil.loadProperties(propUri));
     }
 

@@ -56,7 +56,7 @@ public final class Job implements Progress {
     protected Job(String jobName, Thread worker) {
         this.jobName = jobName;
         this.workerThread = worker;
-        this.listeners = new ArrayList();
+        this.listeners = new ArrayList<WorkListener>();
         this.cancelable = workerThread != null;
         this.jobMode = ProgressMode.PREDICTIVE;
     }
@@ -187,7 +187,7 @@ public final class Job implements Progress {
             workUnits = work;
 
             int oldPercent = percent;
-            percent = (int) (100 * workUnits / totalUnits);
+            percent = 100 * workUnits / totalUnits;
             if (oldPercent == percent) {
                 return;
             }
@@ -208,7 +208,7 @@ public final class Job implements Progress {
             workUnits += step;
 
             int oldPercent = percent;
-            percent = (int) (100 * workUnits / totalUnits);
+            percent = 100 * workUnits / totalUnits;
             if (oldPercent == percent) {
                 return;
             }
@@ -333,7 +333,7 @@ public final class Job implements Progress {
      * Add a listener to the list
      */
     public synchronized void addWorkListener(WorkListener li) {
-        List temp = new ArrayList();
+        List<WorkListener> temp = new ArrayList<WorkListener>();
         temp.addAll(listeners);
 
         if (!temp.contains(li)) {
@@ -347,7 +347,7 @@ public final class Job implements Progress {
      */
     public synchronized void removeWorkListener(WorkListener li) {
         if (listeners.contains(li)) {
-            List temp = new ArrayList();
+            List<WorkListener> temp = new ArrayList<WorkListener>();
             temp.addAll(listeners);
             temp.remove(li);
             listeners = temp;
@@ -360,7 +360,7 @@ public final class Job implements Progress {
         // we need to keep the synchronized section very small to avoid deadlock
         // certainly keep the event dispatch clear of the synchronized block or
         // there will be a deadlock
-        final List temp = new ArrayList();
+        final List<WorkListener> temp = new ArrayList<WorkListener>();
         synchronized (this) {
             if (listeners != null) {
                 temp.addAll(listeners);
@@ -371,7 +371,7 @@ public final class Job implements Progress {
         // list of jobs so we need to fire before delete.
         int count = temp.size();
         for (int i = 0; i < count; i++) {
-            ((WorkListener) temp.get(i)).workStateChanged(ev);
+            temp.get(i).workStateChanged(ev);
         }
     }
 
@@ -390,7 +390,7 @@ public final class Job implements Progress {
             workUnits = totalUnits;
             percent = 100;
         } else {
-            percent = (int) (100 * workUnits / totalUnits);
+            percent = 100 * workUnits / totalUnits;
         }
         return oldPercent != percent;
     }
@@ -405,7 +405,7 @@ public final class Job implements Progress {
             Properties temp = NetUtil.loadProperties(predictionMapURI);
 
             // Determine the predicted time from the current prediction map
-            Iterator iter = temp.keySet().iterator();
+            Iterator<Object> iter = temp.keySet().iterator();
             while (iter.hasNext()) {
                 String title = (String) iter.next();
                 String timestr = temp.getProperty(title);
@@ -437,9 +437,9 @@ public final class Job implements Progress {
         // Now we know the start and the end we can convert all times to
         // percents
         Properties predictions = new Properties();
-        Iterator iter = nextPredictionMap.keySet().iterator();
+        Iterator<String> iter = nextPredictionMap.keySet().iterator();
         while (iter.hasNext()) {
-            String sectionName = (String) iter.next();
+            String sectionName = iter.next();
             Integer age = nextPredictionMap.get(sectionName);
             predictions.setProperty(sectionName, age.toString());
         }
@@ -520,12 +520,12 @@ public final class Job implements Progress {
     /**
      * The timings loaded from where they were saved after the last run
      */
-    private Map currentPredictionMap;
+    private Map<String, Integer> currentPredictionMap;
 
     /**
      * The timings as measured this time
      */
-    private Map <String, Integer> nextPredictionMap;
+    private Map<String, Integer> nextPredictionMap;
 
     /**
      * When did this job start? Measured in milliseconds since beginning of epoch.
@@ -540,7 +540,7 @@ public final class Job implements Progress {
     /**
      * People that want to know about "cancelable" changes
      */
-    private List listeners;
+    private List<WorkListener> listeners;
 
     /**
      * So we can fake progress for Jobs that don't tell us how they are doing

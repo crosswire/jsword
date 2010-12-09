@@ -225,14 +225,14 @@ public abstract class AbstractBookMetaData implements BookMetaData {
      * 
      * @see org.crosswire.jsword.book.BookMetaData#getProperties()
      */
-    public Map getProperties() {
+    public Map<String,Object> getProperties() {
         return Collections.unmodifiableMap(prop);
     }
 
     /**
      * @param newProperties
      */
-    public void setProperties(Map newProperties) {
+    public void setProperties(Map<String,Object> newProperties) {
         prop = newProperties;
     }
 
@@ -297,6 +297,7 @@ public abstract class AbstractBookMetaData implements BookMetaData {
      * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(Object obj) {
         // Since this can not be null
         if (obj == null) {
@@ -323,6 +324,7 @@ public abstract class AbstractBookMetaData implements BookMetaData {
      * 
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode() {
         return getName().hashCode();
     }
@@ -332,10 +334,10 @@ public abstract class AbstractBookMetaData implements BookMetaData {
      * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object obj) {
-        int result = this.getBookCategory().compareTo(((BookMetaData) obj).getBookCategory());
+    public int compareTo(BookMetaData obj) {
+        int result = this.getBookCategory().compareTo(obj.getBookCategory());
         if (result == 0) {
-            result = this.getName().compareTo(((BookMetaData) obj).getName());
+            result = this.getName().compareTo(obj.getName());
         }
         return result;
     }
@@ -345,6 +347,7 @@ public abstract class AbstractBookMetaData implements BookMetaData {
      * 
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         return getInitials();
     }
@@ -352,7 +355,7 @@ public abstract class AbstractBookMetaData implements BookMetaData {
     /**
      * The single key version of the properties
      */
-    private Map prop = new LinkedHashMap();
+    private Map<String,Object> prop = new LinkedHashMap<String,Object>();
 
     private BookDriver driver;
     private IndexStatus indexStatus = IndexStatus.UNDONE;

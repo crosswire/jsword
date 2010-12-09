@@ -37,7 +37,7 @@ public class ClassChoice extends AbstractReflectedChoice {
      * 
      * @see org.crosswire.common.config.Choice#getConvertionClass()
      */
-    public Class getConversionClass() {
+    public Class<?> getConversionClass() {
         return Class.class;
     }
 
@@ -48,13 +48,13 @@ public class ClassChoice extends AbstractReflectedChoice {
      * org.crosswire.common.config.AbstractReflectedChoice#convertToString(java
      * .lang.Object)
      */
-    /* @Override */
+    @Override
     public String convertToString(Object orig) {
         if (orig == null) {
             return null;
         }
 
-        return ((Class) orig).getName();
+        return ((Class<?>) orig).getName();
     }
 
     /*
@@ -64,7 +64,7 @@ public class ClassChoice extends AbstractReflectedChoice {
      * org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java
      * .lang.String)
      */
-    /* @Override */
+    @Override
     public Object convertToObject(String orig) {
         try {
             return ClassUtil.forName(orig);

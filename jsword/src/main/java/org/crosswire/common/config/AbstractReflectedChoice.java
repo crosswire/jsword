@@ -321,7 +321,7 @@ public abstract class AbstractReflectedChoice implements Choice {
     /**
      * The type that we reflect to
      */
-    private Class clazz;
+    private Class<? extends Object> clazz;
 
     /**
      * The property that we call on the reflecting class

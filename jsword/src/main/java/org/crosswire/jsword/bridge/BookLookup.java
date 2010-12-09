@@ -46,9 +46,9 @@ public class BookLookup {
     public String locate(Key key) throws BookException {
         StringBuilder buf = new StringBuilder();
 
-        Iterator iter = key.iterator();
+        Iterator<Key> iter = key.iterator();
         while (iter.hasNext()) {
-            Key currentKey = (Key) iter.next();
+            Key currentKey = iter.next();
             String osisID = currentKey.getOsisID();
             if (buf.length() > 0) {
                 buf.append('\n');

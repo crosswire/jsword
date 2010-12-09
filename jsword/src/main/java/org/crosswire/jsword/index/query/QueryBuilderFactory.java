@@ -62,7 +62,7 @@ public final class QueryBuilderFactory {
      */
     static {
         try {
-            instance = (QueryBuilder) PluginUtil.getImplementation(QueryBuilder.class);
+            instance = PluginUtil.getImplementation(QueryBuilder.class);
         } catch (IOException e) {
             log.error("create QueryBuilder failed", e);
         } catch (ClassCastException e) {

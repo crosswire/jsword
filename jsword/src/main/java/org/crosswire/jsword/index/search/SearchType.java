@@ -36,6 +36,7 @@ public enum SearchType {
      * Find the words in the specified order.
      */
     PHRASE ("Phrase") {
+        @Override
         public String decorate(String queryWords) {
             return SEARCH_SYNTAX.decoratePhrase(queryWords);
         }
@@ -45,6 +46,7 @@ public enum SearchType {
      * Find all the words regardless of position.
      */
     ALL_WORDS ("All") {
+        @Override
         public String decorate(String queryWords) {
             return SEARCH_SYNTAX.decorateAllWords(queryWords);
         }
@@ -54,6 +56,7 @@ public enum SearchType {
      * Find any of these words
      */
     ANY_WORDS ("Any") {
+        @Override
         public String decorate(String queryWords) {
             return SEARCH_SYNTAX.decorateAnyWords(queryWords);
         }
@@ -64,6 +67,7 @@ public enum SearchType {
      * after words being sought.
      */
     NOT_WORDS ("Not") {
+        @Override
         public String decorate(String queryWords) {
             return SEARCH_SYNTAX.decorateNotWords(queryWords);
         }
@@ -73,6 +77,7 @@ public enum SearchType {
      * Find verses with words that start with the these beginnings.
      */
     START_WORDS ("Start") {
+        @Override
         public String decorate(String queryWords) {
             return SEARCH_SYNTAX.decorateStartWords(queryWords);
         }
@@ -82,6 +87,7 @@ public enum SearchType {
      * Find verses with words spelled something like
      */
     SPELL_WORDS ("Spell") {
+        @Override
         public String decorate(String queryWords) {
             return SEARCH_SYNTAX.decorateSpellWords(queryWords);
         }
@@ -91,6 +97,7 @@ public enum SearchType {
      * Find verses in this range
      */
     RANGE ("Range") {
+        @Override
         public String decorate(String queryWords) {
             return SEARCH_SYNTAX.decorateRange(queryWords);
         }
@@ -125,6 +132,7 @@ public enum SearchType {
     /* (non-Javadoc)
      * @see java.lang.Enum#toString()
      */
+    @Override
     public String toString() {
         return name;
     }

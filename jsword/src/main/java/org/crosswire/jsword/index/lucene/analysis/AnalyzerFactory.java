@@ -56,9 +56,9 @@ public final class AnalyzerFactory {
 
             if (aClass != null) {
                 try {
-                    Class impl = ClassUtil.forName(aClass);
+                    Class<AbstractBookAnalyzer> impl = (Class<AbstractBookAnalyzer>) ClassUtil.forName(aClass);
 
-                    newObject = (AbstractBookAnalyzer) impl.newInstance();
+                    newObject = impl.newInstance();
                 } catch (ClassNotFoundException e) {
                     log.error("Configuration error in AnalyzerFactory properties", e);
                 } catch (IllegalAccessException e) {

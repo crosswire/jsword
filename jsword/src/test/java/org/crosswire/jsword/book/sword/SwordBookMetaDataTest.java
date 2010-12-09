@@ -39,6 +39,7 @@ public class SwordBookMetaDataTest extends TestCase {
     File configFile = new File("testconfig.conf");
     SwordBookMetaData swordBookMetaData = null;
 
+    @Override
     protected void setUp() throws Exception {
         ConfigEntryTable table = new ConfigEntryTable("TestBook");
         table.add(ConfigEntryType.LANG, "de");
@@ -54,6 +55,7 @@ public class SwordBookMetaDataTest extends TestCase {
         swordBookMetaData = new SwordBookMetaData(configFile, "TestBook", new URI(""));
     }
 
+    @Override
     protected void tearDown() throws Exception {
         configFile.delete();
     }

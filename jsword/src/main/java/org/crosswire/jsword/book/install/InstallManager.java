@@ -51,7 +51,7 @@ public final class InstallManager {
      * Simple ctor
      */
     public InstallManager() {
-        installers = new LinkedHashMap();
+        installers = new LinkedHashMap<String, Installer>();
 
         try {
             Properties sitemap = PluginUtil.getPlugin(getClass());
@@ -64,11 +64,11 @@ public final class InstallManager {
                     String name = parts[1];
                     String rest = parts[2];
 
-                    Class clazz = (Class) factories.get(type);
+                    Class<InstallerFactory> clazz = factories.get(type);
                     if (clazz == null) {
                         log.warn("");
                     } else {
-                        InstallerFactory ifactory = (InstallerFactory) clazz.newInstance();
+                        InstallerFactory ifactory = clazz.newInstance();
                         Installer installer = ifactory.createInstaller(rest);
 
                         internalAdd(name, installer);
@@ -92,10 +92,10 @@ public final class InstallManager {
         Properties props = new Properties();
         StringBuilder buf = new StringBuilder();
         int i = 1;
-        Iterator it = installers.keySet().iterator();
+        Iterator<String> it = installers.keySet().iterator();
         while (it.hasNext()) {
-            String name = (String) it.next();
-            Installer installer = (Installer) installers.get(name);
+            String name = it.next();
+            Installer installer = installers.get(name);
             // Clear the buffer
             buf.delete(0, buf.length());
             buf.append(installer.getType());
@@ -116,7 +116,7 @@ public final class InstallManager {
     /**
      * The names of all the known InstallerFactories
      */
-    public Set getInstallerFactoryNames() {
+    public Set<String> getInstallerFactoryNames() {
         return Collections.unmodifiableSet(factories.keySet());
     }
 
@@ -126,15 +126,15 @@ public final class InstallManager {
      * trawl through all the known factories looking!
      */
     public String getFactoryNameForInstaller(Installer installer) {
-        Class match = installer.getClass();
+        Class<? extends Installer> match = installer.getClass();
 
-        Iterator it = factories.keySet().iterator();
+        Iterator<String> it = factories.keySet().iterator();
         while (it.hasNext()) {
-            String name = (String) it.next();
-            Class factclazz = (Class) factories.get(name);
+            String name = it.next();
+            Class<InstallerFactory> factclazz = factories.get(name);
             try {
-                InstallerFactory ifactory = (InstallerFactory) factclazz.newInstance();
-                Class clazz = ifactory.createInstaller().getClass();
+                InstallerFactory ifactory = factclazz.newInstance();
+                Class<? extends Installer> clazz = ifactory.createInstaller().getClass();
                 if (clazz == match) {
                     return name;
                 }
@@ -155,10 +155,10 @@ public final class InstallManager {
      * looking!
      */
     public String getInstallerNameForInstaller(Installer installer) {
-        Iterator it = installers.keySet().iterator();
+        Iterator<String> it = installers.keySet().iterator();
         while (it.hasNext()) {
-            String name = (String) it.next();
-            Installer test = (Installer) installers.get(name);
+            String name = it.next();
+            Installer test = installers.get(name);
             if (installer.equals(test)) {
                 return name;
             }
@@ -167,8 +167,8 @@ public final class InstallManager {
         log.warn("Failed to find installer name for " + installer.toString() + " among the " + installers.size() + " installers.");
         it = installers.keySet().iterator();
         while (it.hasNext()) {
-            String name = (String) it.next();
-            Installer test = (Installer) installers.get(name);
+            String name = it.next();
+            Installer test = installers.get(name);
             log.warn("  it isn't equal to " + test.getInstallerDefinition());
         }
         return null;
@@ -182,9 +182,9 @@ public final class InstallManager {
      * @return The found InstallerFactory or null if the name was not found
      */
     public InstallerFactory getInstallerFactory(String name) {
-        Class clazz = (Class) factories.get(name);
+        Class<InstallerFactory> clazz = factories.get(name);
         try {
-            return (InstallerFactory) clazz.newInstance();
+            return clazz.newInstance();
         } catch (InstantiationException e) {
             assert false : e;
         } catch (IllegalAccessException e) {
@@ -196,7 +196,7 @@ public final class InstallManager {
     /**
      * Accessor for the known installers
      */
-    public Map getInstallers() {
+    public Map<String, Installer> getInstallers() {
         return Collections.unmodifiableMap(installers);
     }
 
@@ -208,7 +208,7 @@ public final class InstallManager {
      * @return The installer or null if none was found by the given name
      */
     public Installer getInstaller(String name) {
-        return (Installer) installers.get(name);
+        return installers.get(name);
     }
 
     /**
@@ -239,10 +239,10 @@ public final class InstallManager {
      *            The installer to associate with the given name
      */
     private void internalAdd(String name, Installer installer) {
-        Iterator it = installers.keySet().iterator();
+        Iterator<String> it = installers.keySet().iterator();
         while (it.hasNext()) {
-            String tname = (String) it.next();
-            Installer tinstaller = (Installer) installers.get(tname);
+            String tname = it.next();
+            Installer tinstaller = installers.get(tname);
 
             if (tinstaller.equals(installer)) {
                 // We have a dupe - remove the old name
@@ -265,7 +265,7 @@ public final class InstallManager {
      */
     public void removeInstaller(String name) {
         if (installers.containsKey(name)) {
-            Installer old = (Installer) installers.remove(name);
+            Installer old = installers.remove(name);
             fireInstallersChanged(this, old, false);
         }
     }
@@ -330,7 +330,7 @@ public final class InstallManager {
     /**
      * The map of installer factories
      */
-    private Map factories;
+    private Map<String, Class<InstallerFactory>> factories;
 
     /**
      * The log stream
@@ -340,7 +340,7 @@ public final class InstallManager {
     /**
      * The list of discovered installers
      */
-    private Map installers;
+    private Map<String, Installer> installers;
 
     /**
      * The list of listeners

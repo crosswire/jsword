@@ -53,8 +53,8 @@ public final class ReflectionUtil {
      * @throws IllegalAccessException
      * @throws InstantiationException
      */
-    public static Object construct(String className) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        Class clazz = ClassUtil.forName(className);
+    public static <T> T construct(String className) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        Class<T> clazz = (Class<T>) ClassUtil.forName(className);
         return clazz.newInstance();
     }
 
@@ -74,12 +74,12 @@ public final class ReflectionUtil {
      * @throws InvocationTargetException
      * @throws InstantiationException
      */
-    public static Object construct(String className, Object[] params) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException,
+    public static <T> T construct(String className, Object[] params) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException,
             InvocationTargetException, InstantiationException
     {
-        Class[] paramTypes = describeParameters(params);
-        Class clazz = ClassUtil.forName(className);
-        final Constructor c = clazz.getConstructor(paramTypes);
+        Class<?>[] paramTypes = describeParameters(params);
+        Class<T> clazz = (Class<T>) ClassUtil.forName(className);
+        final Constructor<T> c = clazz.getConstructor(paramTypes);
         return c.newInstance(params);
     }
 
@@ -99,15 +99,15 @@ public final class ReflectionUtil {
      * @throws InvocationTargetException
      * @throws InstantiationException
      */
-    public static Object construct(String className, Object[] params, Class[] paramTypes) throws ClassNotFoundException, NoSuchMethodException,
+    public static <T> T construct(String className, Object[] params, Class<?>[] paramTypes) throws ClassNotFoundException, NoSuchMethodException,
             IllegalAccessException, InvocationTargetException, InstantiationException
     {
-        Class[] calledTypes = paramTypes;
+        Class<?>[] calledTypes = paramTypes;
         if (calledTypes == null) {
             calledTypes = describeParameters(params);
         }
-        Class clazz = ClassUtil.forName(className);
-        final Constructor c = clazz.getConstructor(calledTypes);
+        Class<T> clazz = (Class<T>) ClassUtil.forName(className);
+        final Constructor<T> c = clazz.getConstructor(calledTypes);
         return c.newInstance(params);
     }
 
@@ -124,7 +124,7 @@ public final class ReflectionUtil {
     public static Object invoke(Object base, String methodName, Object[] params) throws NoSuchMethodException, IllegalAccessException,
             InvocationTargetException
     {
-        Class clazz = base.getClass();
+        Class<?> clazz = base.getClass();
         return invoke(clazz, base, methodName, params);
     }
 
@@ -144,7 +144,7 @@ public final class ReflectionUtil {
         int lastDot = call.lastIndexOf('.');
         String className = call.substring(0, lastDot);
         String methodName = call.substring(lastDot + 1);
-        Class clazz = ClassUtil.forName(className);
+        Class<?> clazz = ClassUtil.forName(className);
         return invoke(clazz, clazz, methodName, params);
     }
 
@@ -168,7 +168,7 @@ public final class ReflectionUtil {
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      */
-    public static Object invoke(Class clazz, Object obj, String methodName, Object[] params) throws NoSuchMethodException, IllegalAccessException,
+    public static <T> Object invoke(Class<T> clazz, Object obj, String methodName, Object[] params) throws NoSuchMethodException, IllegalAccessException,
             InvocationTargetException
     {
         return invoke(clazz, obj, methodName, params, null);
@@ -195,10 +195,10 @@ public final class ReflectionUtil {
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      */
-    public static Object invoke(Class clazz, Object obj, String methodName, Object[] params, Class[] paramTypes) throws NoSuchMethodException,
+    public static <T> Object invoke(Class<T> clazz, Object obj, String methodName, Object[] params, Class<?>[] paramTypes) throws NoSuchMethodException,
             IllegalAccessException, InvocationTargetException
     {
-        Class[] calledTypes = paramTypes;
+        Class<?>[] calledTypes = paramTypes;
         if (calledTypes == null) {
             calledTypes = describeParameters(params);
         }
@@ -212,10 +212,10 @@ public final class ReflectionUtil {
      *            the types to describe
      * @return the parallel array of class objects
      */
-    private static Class[] describeParameters(Object[] params) {
-        Class[] calledTypes = new Class[params.length];
+    private static Class<?>[] describeParameters(Object[] params) {
+        Class<?>[] calledTypes = new Class[params.length];
         for (int i = 0; i < params.length; i++) {
-            Class clazz = params[i].getClass();
+            Class<?> clazz = params[i].getClass();
             if (clazz.equals(Boolean.class)) {
                 clazz = boolean.class;
             }
@@ -224,7 +224,7 @@ public final class ReflectionUtil {
         return calledTypes;
     }
 
-    private static Method getMethod(Class clazz, String methodName, Class[] calledTypes) throws NoSuchMethodException {
+    private static <T> Method getMethod(Class<T> clazz, String methodName, Class<?>[] calledTypes) throws NoSuchMethodException {
         // The bad news is that we can't use something like:
         // clazz.getMethod(methodNames, called_types);
         // because it does not cope with inheritance (at least in the MVM)
@@ -237,7 +237,7 @@ public final class ReflectionUtil {
             }
 
             // The right number of params
-            Class[] testTypes = testMethods[i].getParameterTypes();
+            Class<?>[] testTypes = testMethods[i].getParameterTypes();
             if (testTypes.length != calledTypes.length) {
                 continue;
             }

@@ -90,12 +90,12 @@ public class Translations {
      * 
      * @return an string array of translations in locale friendly names.
      */
-    public Map getSupported() {
+    public Map<String,String> getSupported() {
         loadSupportedTranslations();
 
         // I18N(DMS) Collate these according to the current locale, putting the
         // current locale's locale first.
-        Map names = new LinkedHashMap();
+        Map<String,String> names = new LinkedHashMap<String,String>();
 
         for (int i = 0; i < translations.length; i++) {
             names.put(translations[i], toString(translations[i]));
@@ -210,7 +210,7 @@ public class Translations {
      * 
      * @return an string array of translations in locale friendly names.
      */
-    public static Map getSupportedTranslations() {
+    public static Map<String,String> getSupportedTranslations() {
         return Translations.instance().getSupported();
     }
 

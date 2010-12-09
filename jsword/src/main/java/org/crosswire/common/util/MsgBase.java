@@ -83,6 +83,7 @@ public class MsgBase {
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         return shaper.shape(obtainString(name));
     }
@@ -107,13 +108,13 @@ public class MsgBase {
      * Initialize any resource bundles
      */
     protected final void loadResources() {
-        Class implementingClass = getClass();
+        Class<? extends MsgBase> implementingClass = getClass();
         String className = implementingClass.getName();
 
         // Class lock is needed around static resourceMap
         synchronized (MsgBase.class) {
             // see if it is in the cache
-            resources = (ResourceBundle) resourceMap.get(className);
+            resources = resourceMap.get(className);
 
             // if not then create it and put it into the cache
             if (resources == null) {
@@ -144,7 +145,7 @@ public class MsgBase {
      * resource map maintains a mapping of class names to resources found by
      * that name.
      */
-    private static Map resourceMap = new HashMap();
+    private static Map<String,ResourceBundle> resourceMap = new HashMap<String,ResourceBundle>();
 
     private String name;
 

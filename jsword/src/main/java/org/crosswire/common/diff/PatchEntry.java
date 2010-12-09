@@ -41,10 +41,10 @@ import java.util.regex.Pattern;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class PatchEntry {
+public class PatchEntry implements Iterable<Difference> {
     // Constructor for a patch object.
     public PatchEntry() {
-        this.diffs = new ArrayList();
+        this.diffs = new ArrayList<Difference>();
         this.sourceStart = 0;
         this.targetStart = 0;
         this.sourceLength = 0;
@@ -152,6 +152,7 @@ public class PatchEntry {
     // Emulate GNU diff's format.
     // Header: @@ -382,8 +481,9 @@
     // Indices are printed as 1-based, not 0-based.
+    @Override
     public String toString() {
         StringBuilder txt = new StringBuilder();
         txt.append("@@ -");
@@ -160,9 +161,9 @@ public class PatchEntry {
         txt.append(getCoordinates(targetStart, targetLength));
         txt.append(" @@\n");
 
-        Iterator iter = diffs.iterator();
+        Iterator<Difference> iter = diffs.iterator();
         while (iter.hasNext()) {
-            Difference diff = (Difference) iter.next();
+            Difference diff = iter.next();
             txt.append(diff.getEditType().getSymbol());
             txt.append(encode(diff.getText()));
             txt.append('\n');
@@ -235,9 +236,9 @@ public class PatchEntry {
     // Compute and return the source text (all equalities and deletions).
     public String getSourceText() {
         StringBuilder txt = new StringBuilder();
-        Iterator iter = diffs.iterator();
+        Iterator<Difference> iter = diffs.iterator();
         while (iter.hasNext()) {
-            Difference diff = (Difference) iter.next();
+            Difference diff = iter.next();
             if (!EditType.INSERT.equals(diff.getEditType())) {
                 txt.append(diff.getText());
             }
@@ -248,9 +249,9 @@ public class PatchEntry {
     // Compute and return the destination text (all equalities and insertions).
     public String getTargetText() {
         StringBuilder txt = new StringBuilder();
-        Iterator iter = diffs.iterator();
+        Iterator<Difference> iter = diffs.iterator();
         while (iter.hasNext()) {
-            Difference diff = (Difference) iter.next();
+            Difference diff = iter.next();
             if (!EditType.DELETE.equals(diff.getEditType())) {
                 txt.append(diff.getText());
             }
@@ -311,7 +312,7 @@ public class PatchEntry {
         return !diffs.isEmpty();
     }
 
-    public Iterator iterator() {
+    public Iterator<Difference> iterator() {
         return diffs.iterator();
     }
 
@@ -319,24 +320,24 @@ public class PatchEntry {
         if (diffs.isEmpty()) {
             return null;
         }
-        return (Difference) diffs.get(0);
+        return diffs.get(0);
     }
 
     public Difference removeFirstDifference() {
         if (diffs.isEmpty()) {
             return null;
         }
-        return (Difference) diffs.remove(0);
+        return diffs.remove(0);
     }
 
     public Difference getLastDifference() {
         if (diffs.isEmpty()) {
             return null;
         }
-        return (Difference) diffs.get(diffs.size() - 1);
+        return diffs.get(diffs.size() - 1);
     }
 
-    protected void setDifferences(List newDiffs) {
+    protected void setDifferences(List<Difference> newDiffs) {
         diffs = newDiffs;
     }
 
@@ -435,7 +436,7 @@ public class PatchEntry {
     private static Pattern newlinePattern = Pattern.compile("\n");
     private static Pattern patchPattern = Pattern.compile("^@@ -(\\d+),?(\\d*) \\+(\\d+),?(\\d*) @@$");
 
-    private List diffs;
+    private List<Difference> diffs;
     private int sourceStart;
     private int targetStart;
     private int sourceLength;

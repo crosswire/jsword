@@ -44,8 +44,8 @@ public class History {
      * 
      */
     public History() {
-        nav = new ArrayList();
-        history = new HashMap();
+        nav = new ArrayList<Object>();
+        history = new HashMap<Object,Long>();
         listeners = new EventListenerList();
     }
 
@@ -132,7 +132,7 @@ public class History {
      * 
      * @return the elements in the back list.
      */
-    public List getPreviousList() {
+    public List<Object> getPreviousList() {
         if (backCount > 0) {
             return Collections.unmodifiableList(nav.subList(0, backCount));
         }
@@ -144,7 +144,7 @@ public class History {
      * 
      * @return the elements in the forward list.
      */
-    public List getNextList() {
+    public List<Object> getNextList() {
         if (backCount < nav.size()) {
             return Collections.unmodifiableList(nav.subList(backCount, nav.size()));
         }
@@ -245,12 +245,12 @@ public class History {
     /**
      * The elements that can be navigated.
      */
-    private List nav;
+    private List<Object> nav;
 
     /**
      * A map of elements that have been seen so far to when they have been seen.
      */
-    private Map history;
+    private Map<Object,Long> history;
 
     /**
      * The number of elements in the "back" list.

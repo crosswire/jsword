@@ -64,7 +64,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
         this.xsluri = xsluri;
         this.xmlsep = xmlsep;
         this.outputs = new Properties();
-        this.params = new HashMap();
+        this.params = new HashMap<String,Object>();
     }
 
     /**
@@ -74,7 +74,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
      */
     private TemplateInfo getTemplateInfo() throws TransformerConfigurationException, IOException {
         // we may have one cached
-        TemplateInfo tinfo = (TemplateInfo) txers.get(xsluri);
+        TemplateInfo tinfo = txers.get(xsluri);
 
         long modtime = -1;
         if (TransformingSAXEventProvider.developmentMode) {
@@ -123,7 +123,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
      * javax.xml.transform.Transformer#transform(javax.xml.transform.Source,
      * javax.xml.transform.Result)
      */
-    /* @Override */
+    @Override
     public void transform(Source xmlSource, Result outputTarget) throws TransformerException {
         TemplateInfo tinfo;
         try {
@@ -134,16 +134,16 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
 
         Transformer transformer = tinfo.getTemplates().newTransformer();
 
-        Iterator iter = outputs.keySet().iterator();
+        Iterator<Object> iter = outputs.keySet().iterator();
         while (iter.hasNext()) {
             String key = (String) iter.next();
             String val = getOutputProperty(key);
             transformer.setOutputProperty(key, val);
         }
 
-        iter = params.keySet().iterator();
-        while (iter.hasNext()) {
-            String key = (String) iter.next();
+        Iterator<String> iter2 = params.keySet().iterator();
+        while (iter2.hasNext()) {
+            String key = iter2.next();
             Object val = params.get(key);
             transformer.setParameter(key, val);
         }
@@ -181,7 +181,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
     /**
      * @see Transformer#getErrorListener()
      */
-    /* @Override */
+    @Override
     public ErrorListener getErrorListener() {
         return errors;
     }
@@ -189,7 +189,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
     /**
      * @see Transformer#setErrorListener(javax.xml.transform.ErrorListener)
      */
-    /* @Override */
+    @Override
     public void setErrorListener(ErrorListener errors) throws IllegalArgumentException {
         this.errors = errors;
     }
@@ -197,7 +197,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
     /**
      * @see Transformer#getURIResolver()
      */
-    /* @Override */
+    @Override
     public URIResolver getURIResolver() {
         return resolver;
     }
@@ -205,7 +205,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
     /**
      * @see Transformer#setURIResolver(javax.xml.transform.URIResolver)
      */
-    /* @Override */
+    @Override
     public void setURIResolver(URIResolver resolver) {
         this.resolver = resolver;
     }
@@ -213,7 +213,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
     /**
      * @see Transformer#getOutputProperties()
      */
-    /* @Override */
+    @Override
     public Properties getOutputProperties() {
         return outputs;
     }
@@ -221,7 +221,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
     /**
      * @see Transformer#setOutputProperties(java.util.Properties)
      */
-    /* @Override */
+    @Override
     public void setOutputProperties(Properties outputs) throws IllegalArgumentException {
         this.outputs = outputs;
     }
@@ -229,7 +229,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
     /**
      * @see Transformer#getOutputProperty(java.lang.String)
      */
-    /* @Override */
+    @Override
     public String getOutputProperty(String name) throws IllegalArgumentException {
         return outputs.getProperty(name);
     }
@@ -237,7 +237,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
     /**
      * @see Transformer#setOutputProperty(java.lang.String, java.lang.String)
      */
-    /* @Override */
+    @Override
     public void setOutputProperty(String name, String value) throws IllegalArgumentException {
         outputs.setProperty(name, value);
     }
@@ -245,7 +245,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
     /**
      * @see Transformer#clearParameters()
      */
-    /* @Override */
+    @Override
     public void clearParameters() {
         params.clear();
     }
@@ -253,7 +253,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
     /**
      * @see Transformer#getParameter(java.lang.String)
      */
-    /* @Override */
+    @Override
     public Object getParameter(String name) {
         return params.get(name);
     }
@@ -261,7 +261,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
     /**
      * @see Transformer#setParameter(java.lang.String, java.lang.Object)
      */
-    /* @Override */
+    @Override
     public void setParameter(String name, Object value) {
         params.put(name, value);
     }
@@ -305,7 +305,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
     /**
      * The remembered Parameters because the transformer has not been created
      */
-    private Map params;
+    private Map<String,Object> params;
 
     /**
      * The XSL stylesheet
@@ -325,7 +325,7 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
     /**
      * A cache of transformers
      */
-    private static Map txers = new HashMap();
+    private static Map<URI,TemplateInfo> txers = new HashMap<URI,TemplateInfo>();
 
     /**
      * The log stream

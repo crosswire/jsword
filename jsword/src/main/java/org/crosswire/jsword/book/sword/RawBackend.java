@@ -66,7 +66,7 @@ public class RawBackend extends AbstractBackend {
      * org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage
      * .Key)
      */
-    /* @Override */
+    @Override
     public boolean contains(Key key) {
         checkActive();
 
@@ -101,7 +101,7 @@ public class RawBackend extends AbstractBackend {
      * org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire
      * .jsword.passage.Key, java.lang.String)
      */
-    /* @Override */
+    @Override
     public String getRawText(Key key) throws BookException {
         checkActive();
 
@@ -137,6 +137,7 @@ public class RawBackend extends AbstractBackend {
      * org.crosswire.jsword.book.sword.AbstractBackend#setRawText(org.crosswire
      * .jsword.passage.Key, java.lang.String)
      */
+    @Override
     public void setRawText(Key key, String text) throws BookException, IOException {
     }
 
@@ -145,6 +146,7 @@ public class RawBackend extends AbstractBackend {
      * 
      * @see org.crosswire.jsword.book.sword.AbstractBackend#isWritable()
      */
+    @Override
     public boolean isWritable() {
         // For the module to be writable either the old testament or the new
         // testament needs to be present
@@ -166,6 +168,7 @@ public class RawBackend extends AbstractBackend {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#setAliasKey(org.crosswire.jsword.passage.Key, org.crosswire.jsword.passage.Key)
      */
+    @Override
     public void setAliasKey(Key alias, Key source) throws IOException {
         throw new UnsupportedOperationException();
     }

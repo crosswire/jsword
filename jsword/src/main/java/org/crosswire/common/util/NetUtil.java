@@ -496,7 +496,7 @@ public final class NetUtil {
             if (files.length != reply.length) {
                 log.warn("index file for " + uri.toString() + " has incorrect number of entries.");
             } else {
-                List list = Arrays.asList(files);
+                List<String> list = Arrays.asList(files);
                 for (int i = 0; i < files.length; i++) {
                     if (!list.contains(files[i])) {
                         log.warn("file: based index found " + files[i] + " but this was not found using index file.");
@@ -550,7 +550,7 @@ public final class NetUtil {
             String contents = StringUtil.read(new InputStreamReader(in));
 
             // We still need to do the filtering
-            List list = new ArrayList();
+            List<String> list = new ArrayList<String>();
             String[] names = StringUtil.split(contents, "\n");
             for (int i = 0; i < names.length; i++) {
                 // we need to trim, as we may have \r\n not \n
@@ -565,7 +565,7 @@ public final class NetUtil {
                 }
             }
 
-            return (String[]) list.toArray(new String[list.size()]);
+            return list.toArray(new String[list.size()]);
         } finally {
             IOUtil.close(in);
         }

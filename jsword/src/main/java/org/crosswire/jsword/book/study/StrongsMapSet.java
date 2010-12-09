@@ -42,7 +42,7 @@ public class StrongsMapSet {
      * Build an empty Strong's Map Set.
      */
     public StrongsMapSet() {
-        map = new HashMap();
+        map = new HashMap<String,Set<String>>();
     }
 
     /**
@@ -55,9 +55,9 @@ public class StrongsMapSet {
      *            a way the Strong's number is represented.
      */
     public void add(String strongsNumber, String representation) {
-        Set reps = (Set) map.get(strongsNumber);
+        Set<String> reps = map.get(strongsNumber);
         if (reps == null) {
-            reps = new TreeSet();
+            reps = new TreeSet<String>();
             map.put(strongsNumber, reps);
         }
         // TODO(DMS): change parameter to include the locale of the Book.
@@ -70,9 +70,9 @@ public class StrongsMapSet {
      * @param strongsNumber
      * @return the whole set
      */
-    public Set get(String strongsNumber) {
-        return (Set) map.get(strongsNumber);
+    public Set<String> get(String strongsNumber) {
+        return map.get(strongsNumber);
     }
 
-    private Map map;
+    private Map<String,Set<String>> map;
 }

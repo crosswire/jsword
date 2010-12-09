@@ -62,7 +62,7 @@ public final class QueryDecoratorFactory {
      */
     static {
         try {
-            instance = (QueryDecorator) PluginUtil.getImplementation(QueryDecorator.class);
+            instance = PluginUtil.getImplementation(QueryDecorator.class);
         } catch (IOException e) {
             log.error("create QueryDecorator failed", e);
         } catch (ClassCastException e) {

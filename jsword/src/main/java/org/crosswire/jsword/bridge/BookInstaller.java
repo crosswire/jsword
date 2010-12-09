@@ -70,7 +70,7 @@ public class BookInstaller {
      * 
      * @return the list of installers
      */
-    public Map getInstallers() {
+    public Map<String,Installer> getInstallers() {
         // Ask the Install Manager for a map of all known remote repositories
         // sites
         return installManager.getInstallers();
@@ -81,7 +81,7 @@ public class BookInstaller {
      * 
      * @return the list of installed books
      */
-    public static List getInstalledBooks() {
+    public static List<Book> getInstalledBooks() {
         return Books.installed().getBooks();
     }
 
@@ -93,7 +93,7 @@ public class BookInstaller {
      * @see BookFilter
      * @see Books
      */
-    public static List getInstalledBooks(BookFilter filter) {
+    public static List<Book> getInstalledBooks(BookFilter filter) {
         return Books.installed().getBooks(filter);
     }
 
@@ -105,7 +105,7 @@ public class BookInstaller {
      * @see BookFilters#getCustom(java.lang.String)
      * @see Books
      */
-    public static List getInstalledBooks(String filterSpec) {
+    public static List<Book> getInstalledBooks(String filterSpec) {
         return getInstalledBooks(BookFilters.getCustom(filterSpec));
     }
 
@@ -126,7 +126,7 @@ public class BookInstaller {
      * @param repositoryName
      * @return the list of books at that repository
      */
-    public List getRepositoryBooks(String repositoryName) {
+    public List<Book> getRepositoryBooks(String repositoryName) {
         return installManager.getInstaller(repositoryName).getBooks();
     }
 
@@ -138,7 +138,7 @@ public class BookInstaller {
      * @see BookFilter
      * @see Books
      */
-    public List getRepositoryBooks(String repositoryName, BookFilter filter) {
+    public List<Book> getRepositoryBooks(String repositoryName, BookFilter filter) {
         return installManager.getInstaller(repositoryName).getBooks(filter);
     }
 
@@ -150,7 +150,7 @@ public class BookInstaller {
      * @see BookFilters#getCustom(java.lang.String)
      * @see Books
      */
-    public List getRepositoryBooks(String repositoryName, String filterSpec) {
+    public List<Book> getRepositoryBooks(String repositoryName, String filterSpec) {
         return getRepositoryBooks(repositoryName, BookFilters.getCustom(filterSpec));
     }
 
@@ -289,22 +289,22 @@ public class BookInstaller {
             }
         } else if (operation.equalsIgnoreCase("sources")) {
             // Get all the installers one after the other
-            Map installers = installer.getInstallers();
-            Iterator iter = installers.keySet().iterator();
+            Map<String,Installer> installers = installer.getInstallers();
+            Iterator<String> iter = installers.keySet().iterator();
             while (iter.hasNext()) {
                 System.out.println(iter.next());
             }
         } else if (operation.equalsIgnoreCase("list")) {
             if (args.length == 1) {
-                Iterator iter = BookInstaller.getInstalledBooks().iterator();
+                Iterator<Book> iter = BookInstaller.getInstalledBooks().iterator();
                 while (iter.hasNext()) {
-                    Book book = (Book) iter.next();
+                    Book book = iter.next();
                     System.out.println(book.getInitials());
                 }
             } else if (args.length == 2) {
-                Iterator iter = installer.getRepositoryBooks(args[1]).iterator();
+                Iterator<Book> iter = installer.getRepositoryBooks(args[1]).iterator();
                 while (iter.hasNext()) {
-                    Book book = (Book) iter.next();
+                    Book book = iter.next();
                     System.out.println(book.getInitials());
                 }
             } else {

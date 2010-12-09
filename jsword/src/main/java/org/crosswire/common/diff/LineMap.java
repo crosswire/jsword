@@ -52,10 +52,10 @@ public class LineMap {
 
         // "\x00" is a valid character, but various debuggers don't like it.
         // So we'll insert a junk entry to avoid generating a null character.
-        lines = new ArrayList();
+        lines = new ArrayList<String>();
         lines.add("");
 
-        Map linehash = new HashMap();
+        Map<String,Integer> linehash = new HashMap<String, Integer>();
         sourceMap = linesToCharsMunge(source, lines, linehash);
         targetMap = linesToCharsMunge(target, lines, linehash);
     }
@@ -67,7 +67,7 @@ public class LineMap {
      * @param diffs
      *            List of Difference objects
      */
-    public void restore(final List diffs) {
+    public void restore(final List<?> diffs) {
         StringBuilder text = new StringBuilder();
         for (int x = 0; x < diffs.size(); x++) {
             Difference diff = (Difference) diffs.get(x);
@@ -99,7 +99,7 @@ public class LineMap {
     /**
      * @return the lines
      */
-    public List getLines() {
+    public List<String> getLines() {
         return lines;
     }
 
@@ -115,7 +115,7 @@ public class LineMap {
      *            Map of strings to indices
      * @return Encoded string
      */
-    private String linesToCharsMunge(final String text, List linearray, Map linehash) {
+    private String linesToCharsMunge(final String text, List<String> linearray, Map<String,Integer> linehash) {
         StringBuilder buf = new StringBuilder();
         String work = text;
         // text.split('\n') would work fine, but would temporarily double our
@@ -128,7 +128,7 @@ public class LineMap {
             String line = work.substring(0, i + 1);
             work = work.substring(i + 1);
             if (linehash.containsKey(line)) {
-                Integer charInt = (Integer) linehash.get(line);
+                Integer charInt = linehash.get(line);
                 buf.append(String.valueOf((char) charInt.intValue()));
             } else {
                 linearray.add(line);
@@ -154,5 +154,5 @@ public class LineMap {
     /**
      * The lines from the original. Useful for reconstitution.
      */
-    private List lines;
+    private List<String> lines;
 }

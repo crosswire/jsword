@@ -14,6 +14,7 @@ import junit.framework.TestCase;
 
 public class BitapTest extends TestCase {
 
+    @Override
     protected void setUp() {
     }
 

@@ -73,7 +73,7 @@ public interface Installer extends BookList {
      * 
      * @see Installer#reloadBookList()
      */
-    List getBooks();
+    List<Book> getBooks();
 
     /**
      * Get a Book matching the name from the local cache. Null if none is found.

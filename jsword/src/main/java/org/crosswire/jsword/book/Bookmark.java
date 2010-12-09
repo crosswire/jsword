@@ -49,7 +49,7 @@ public interface Bookmark extends Serializable, Cloneable {
      * 
      * @return the books
      */
-    List getBooks();
+    List<Book> getBooks();
 
     /**
      * Set the SearchRequest for this Bookmark. A copy of the SearchRequest will

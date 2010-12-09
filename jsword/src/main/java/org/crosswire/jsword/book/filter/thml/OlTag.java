@@ -49,7 +49,7 @@ public class OlTag extends AbstractTag {
      * org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element,
      * org.xml.sax.Attributes)
      */
-    /* @Override */
+    @Override
     public Element processTag(Element ele, Attributes attrs) {
         Element list = OSISUtil.factory().createList();
         list.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.LIST_ORDERED);

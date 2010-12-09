@@ -37,6 +37,7 @@ import junit.framework.TestCase;
  */
 public class ThaiLuceneAnalyzerTest extends TestCase {
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         myAnalyzer = new ThaiLuceneAnalyzer();
@@ -44,6 +45,7 @@ public class ThaiLuceneAnalyzerTest extends TestCase {
         parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
     }

@@ -8,6 +8,7 @@ import junit.framework.TestCase;
 
 public class DiffCleanupTest extends TestCase {
 
+    @Override
     protected void setUp() {
     }
 

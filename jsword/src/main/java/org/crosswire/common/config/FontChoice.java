@@ -34,7 +34,7 @@ public class FontChoice extends AbstractReflectedChoice {
      * 
      * @see org.crosswire.common.config.Choice#getConvertionClass()
      */
-    public Class getConversionClass() {
+    public Class<String> getConversionClass() {
         return String.class;
     }
 
@@ -45,7 +45,7 @@ public class FontChoice extends AbstractReflectedChoice {
      * org.crosswire.common.config.AbstractReflectedChoice#convertToString(java
      * .lang.Object)
      */
-    /* @Override */
+    @Override
     public String convertToString(Object orig) {
         // This is a string representation of the font in the
         // form:name.style.size
@@ -59,7 +59,7 @@ public class FontChoice extends AbstractReflectedChoice {
      * org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java
      * .lang.String)
      */
-    /* @Override */
+    @Override
     public Object convertToObject(String orig) {
         return orig;
     }

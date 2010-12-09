@@ -40,7 +40,7 @@ public class BookMetaDataTest extends TestCase {
      * 
      * @see junit.framework.TestCase#setUp()
      */
-    /* @Override */
+    @Override
     protected void setUp() {
     }
 
@@ -49,7 +49,7 @@ public class BookMetaDataTest extends TestCase {
      * 
      * @see junit.framework.TestCase#tearDown()
      */
-    /* @Override */
+    @Override
     protected void tearDown() {
     }
 

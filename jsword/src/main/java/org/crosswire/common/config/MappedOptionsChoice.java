@@ -37,13 +37,13 @@ import org.jdom.Element;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class MappedOptionsChoice extends AbstractReflectedChoice implements MappedChoice {
+public class MappedOptionsChoice extends AbstractReflectedChoice implements MappedChoice<Object,Object> {
     /*
      * (non-Javadoc)
      * 
      * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
      */
-    /* @Override */
+    @Override
     public void init(Element option, ResourceBundle configResources) throws StartupException {
         assert configResources != null;
 
@@ -55,10 +55,10 @@ public class MappedOptionsChoice extends AbstractReflectedChoice implements Mapp
 
         String name = mapElement.getAttributeValue("name");
         Object map = ChoiceFactory.getDataMap().get(name);
-        if (map instanceof Map) {
-            options = (Map) map;
+        if (map instanceof Map<?,?>) {
+            options = (Map<?,?>) map;
         } else {
-            options = new TreeMap();
+            options = new TreeMap<Object,Object>();
         }
     }
 
@@ -67,8 +67,8 @@ public class MappedOptionsChoice extends AbstractReflectedChoice implements Mapp
      * 
      * @see org.crosswire.common.config.MappedChoice#getOptions()
      */
-    public Map getOptions() {
-        return new TreeMap(options);
+    public Map<Object,Object> getOptions() {
+        return new TreeMap<Object,Object>(options);
     }
 
     /*
@@ -76,7 +76,7 @@ public class MappedOptionsChoice extends AbstractReflectedChoice implements Mapp
      * 
      * @see org.crosswire.common.config.Choice#getConvertionClass()
      */
-    public Class getConversionClass() {
+    public Class<String> getConversionClass() {
         return String.class;
     }
 
@@ -87,7 +87,7 @@ public class MappedOptionsChoice extends AbstractReflectedChoice implements Mapp
      * org.crosswire.common.config.AbstractReflectedChoice#convertToString(java
      * .lang.Object)
      */
-    /* @Override */
+    @Override
     public String convertToString(Object orig) {
         return orig != null ? orig.toString() : "";
     }
@@ -99,12 +99,12 @@ public class MappedOptionsChoice extends AbstractReflectedChoice implements Mapp
      * org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java
      * .lang.String)
      */
-    /* @Override */
+    @Override
     public Object convertToObject(String orig) {
-        Iterator iter = options.entrySet().iterator();
-        Map.Entry mapEntry = null;
+        Iterator<?> iter = options.entrySet().iterator();
+        Map.Entry<?,?> mapEntry = null;
         while (iter.hasNext()) {
-            mapEntry = (Map.Entry) iter.next();
+            mapEntry = (Map.Entry<?,?>) iter.next();
             if (mapEntry.getValue().toString().equals(orig) || mapEntry.getKey().toString().equals(orig)) {
                 return mapEntry.getKey().toString();
             }
@@ -114,5 +114,5 @@ public class MappedOptionsChoice extends AbstractReflectedChoice implements Mapp
     }
 
     private static Logger logger = Logger.getLogger(MappedOptionsChoice.class);
-    private Map options;
+    private Map<?,?> options;
 }

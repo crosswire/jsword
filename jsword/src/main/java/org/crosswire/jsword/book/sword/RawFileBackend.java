@@ -64,6 +64,7 @@ public class RawFileBackend extends RawBackend {
      * org.crosswire.jsword.book.sword.RawBackend#getRawText(org.crosswire.jsword
      * .passage.Key)
      */
+    @Override
     public String getRawText(Key key) throws BookException {
         return super.getRawText(key);
     }
@@ -81,6 +82,7 @@ public class RawFileBackend extends RawBackend {
      * @throws java.io.IOException
      *             on file error
      */
+    @Override
     protected String getEntry(String name, int testament, long index) throws IOException {
 
         DataIndex dataIndex = getIndex(idxRaf[testament], index);
@@ -104,6 +106,7 @@ public class RawFileBackend extends RawBackend {
         }
     }
 
+    @Override
     public void setRawText(Key key, String text) throws BookException, IOException {
         checkActive();
 
@@ -129,6 +132,7 @@ public class RawFileBackend extends RawBackend {
         checkAndIncrementIncfile(oIndex);
     }
 
+    @Override
     public void setAliasKey(Key alias, Key source) throws IOException {
         Verse aliasVerse = KeyUtil.getVerse(alias);
         Verse sourceVerse = KeyUtil.getVerse(source);
@@ -233,6 +237,7 @@ public class RawFileBackend extends RawBackend {
      * 
      * @see org.crosswire.jsword.book.sword.RawBackend#create()
      */
+    @Override
     public void create() throws IOException, BookException {
         super.create();
         createDataFiles();
@@ -250,6 +255,7 @@ public class RawFileBackend extends RawBackend {
      * 
      * @see org.crosswire.jsword.book.sword.RawBackend#isWritable()
      */
+    @Override
     public boolean isWritable() {
         File otTextFile = txtFile[1];
         File ntTextFile = txtFile[2];

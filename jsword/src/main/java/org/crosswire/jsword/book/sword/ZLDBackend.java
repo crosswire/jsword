@@ -52,6 +52,7 @@ public class ZLDBackend extends RawLDBackend {
         this.lastUncompressed = EMPTY_BYTES;
     }
 
+    @Override
     protected String getRawText(DataEntry entry) {
         DataIndex blockIndex = entry.getBlockIndex();
         long blockNum = blockIndex.getOffset();
@@ -110,6 +111,7 @@ public class ZLDBackend extends RawLDBackend {
      * org.crosswire.common.activate.Activatable#activate(org.crosswire.common
      * .activate.Lock)
      */
+    @Override
     public void activate(Lock lock) {
         super.activate(lock);
 
@@ -171,6 +173,7 @@ public class ZLDBackend extends RawLDBackend {
      * org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common
      * .activate.Lock)
      */
+    @Override
     public void deactivate(Lock lock) {
         super.deactivate(lock);
         lastBlockNum = -1;
@@ -196,6 +199,7 @@ public class ZLDBackend extends RawLDBackend {
     /**
      * Determine whether we are active.
      */
+    @Override
     protected boolean isActive() {
         return active && super.isActive();
     }

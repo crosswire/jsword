@@ -39,28 +39,28 @@ public class SetKeyList extends AbstractKeyList {
     /**
      * Simple ctor
      */
-    public SetKeyList(Set set) {
+    public SetKeyList(Set<Key> set) {
         this(set, null, null);
     }
 
     /**
      * Simple ctor
      */
-    public SetKeyList(Set set, String name) {
+    public SetKeyList(Set<Key> set, String name) {
         this(set, null, name);
     }
 
     /**
      * Simple ctor
      */
-    public SetKeyList(Set set, Key parent) {
+    public SetKeyList(Set<Key> set, Key parent) {
         this(set, parent, null);
     }
 
     /**
      * Simple ctor
      */
-    public SetKeyList(Set set, Key parent, String name) {
+    public SetKeyList(Set<Key> set, Key parent, String name) {
         super(name);
         this.parent = parent;
         list.addAll(set);
@@ -92,7 +92,7 @@ public class SetKeyList extends AbstractKeyList {
      * org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage
      * .Key)
      */
-    /* @Override */
+    @Override
     public boolean contains(Key key) {
         return list.contains(key);
     }
@@ -102,7 +102,7 @@ public class SetKeyList extends AbstractKeyList {
      * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    /* @Override */
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof SetKeyList) {
             SetKeyList that = (SetKeyList) obj;
@@ -116,7 +116,7 @@ public class SetKeyList extends AbstractKeyList {
      * 
      * @see java.lang.Object#hashCode()
      */
-    /* @Override */
+    @Override
     public int hashCode() {
         return list.hashCode();
     }
@@ -126,7 +126,7 @@ public class SetKeyList extends AbstractKeyList {
      * 
      * @see org.crosswire.jsword.passage.Key#isEmpty()
      */
-    /* @Override */
+    @Override
     public boolean isEmpty() {
         return list.isEmpty();
     }
@@ -136,7 +136,7 @@ public class SetKeyList extends AbstractKeyList {
      * 
      * @see org.crosswire.jsword.passage.Key#iterator()
      */
-    public Iterator iterator() {
+    public Iterator<Key> iterator() {
         return list.iterator();
     }
 
@@ -183,7 +183,7 @@ public class SetKeyList extends AbstractKeyList {
      * @see org.crosswire.jsword.passage.Key#get(int)
      */
     public Key get(int index) {
-        return (Key) list.get(index);
+        return list.get(index);
     }
 
     /*
@@ -223,7 +223,7 @@ public class SetKeyList extends AbstractKeyList {
     /**
      * The Set that we are proxying to
      */
-    private List list = new ArrayList();
+    private List<Key> list = new ArrayList<Key>();
 
     /**
      * Serialization ID

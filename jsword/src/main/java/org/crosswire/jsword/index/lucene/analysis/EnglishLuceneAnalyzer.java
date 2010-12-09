@@ -51,6 +51,7 @@ public class EnglishLuceneAnalyzer extends AbstractBookAnalyzer {
      * Constructs a {@link LowerCaseTokenizer} filtered by a language filter
      * {@link StopFilter} and {@link PorterStemFilter} for English.
      */
+    @Override
     public final TokenStream tokenStream(String fieldName, Reader reader) {
         TokenStream result = new LowerCaseTokenizer(reader);
 

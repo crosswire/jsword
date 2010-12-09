@@ -12,6 +12,7 @@ import junit.framework.TestCase;
 import org.crosswire.common.diff.Patch.PatchResults;
 
 public class PatchTest extends TestCase {
+    @Override
     protected void setUp() {
     }
 

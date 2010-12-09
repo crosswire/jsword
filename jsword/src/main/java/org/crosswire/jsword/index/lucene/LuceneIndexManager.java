@@ -72,7 +72,7 @@ public class LuceneIndexManager implements IndexManager {
      */
     public Index getIndex(Book book) throws BookException {
         try {
-            Index reply = (Index) INDEXES.get(book);
+            Index reply = INDEXES.get(book);
             if (reply == null) {
                 URI storage = getStorageArea(book);
                 reply = new LuceneIndex(book, storage);
@@ -196,7 +196,7 @@ public class LuceneIndexManager implements IndexManager {
     /**
      * The created indexes
      */
-    protected static final Map INDEXES = new HashMap();
+    protected static final Map<Book,Index> INDEXES = new HashMap<Book,Index>();
 
     /**
      * The lucene search index directory

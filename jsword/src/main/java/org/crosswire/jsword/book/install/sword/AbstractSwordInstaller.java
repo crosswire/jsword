@@ -68,7 +68,7 @@ import com.ice.tar.TarInputStream;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public abstract class AbstractSwordInstaller extends AbstractBookList implements Installer, Comparable {
+public abstract class AbstractSwordInstaller extends AbstractBookList implements Installer, Comparable<AbstractSwordInstaller> {
     /**
      * Utility to download a file from a remote site
      * 
@@ -136,7 +136,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
      * 
      * @see org.crosswire.jsword.book.BookList#getBooks()
      */
-    public List getBooks() {
+    public List<Book> getBooks() {
         try {
             if (!loaded) {
                 loadCachedIndex();
@@ -144,10 +144,10 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
             // We need to create a List from the Set returned by
             // entries.values() so the underlying list is not modified.
-            return new ArrayList(entries.values());
+            return new ArrayList<Book>(entries.values());
         } catch (InstallException ex) {
             log.error("Failed to reload cached index file", ex);
-            return new ArrayList();
+            return new ArrayList<Book>();
         }
     }
 
@@ -159,10 +159,10 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     public synchronized Book getBook(String name) {
         // Check name first
         // First check for exact matches
-        List books = getBooks();
-        Iterator iter = books.iterator();
+        List<Book> books = getBooks();
+        Iterator<Book> iter = books.iterator();
         while (iter.hasNext()) {
-            Book book = (Book) iter.next();
+            Book book = iter.next();
             if (name.equals(book.getName())) {
                 return book;
             }
@@ -171,7 +171,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         // Next check for case-insensitive matches
         iter = books.iterator();
         while (iter.hasNext()) {
-            Book book = (Book) iter.next();
+            Book book = iter.next();
             if (name.equalsIgnoreCase(book.getName())) {
                 return book;
             }
@@ -181,7 +181,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         // First check for exact matches
         iter = books.iterator();
         while (iter.hasNext()) {
-            Book book = (Book) iter.next();
+            Book book = iter.next();
             BookMetaData bmd = book.getBookMetaData();
             if (name.equals(bmd.getInitials())) {
                 return book;
@@ -191,7 +191,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         // Next check for case-insensitive matches
         iter = books.iterator();
         while (iter.hasNext()) {
-            Book book = (Book) iter.next();
+            Book book = iter.next();
             if (name.equalsIgnoreCase(book.getInitials())) {
                 return book;
             }
@@ -206,8 +206,9 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
      * org.crosswire.jsword.book.BookList#getBooks(org.crosswire.jsword.book
      * .BookFilter)
      */
-    public synchronized List getBooks(BookFilter filter) {
-        List temp = CollectionUtil.createList(new BookFilterIterator(getBooks(), filter));
+    @Override
+    public synchronized List<Book> getBooks(BookFilter filter) {
+        List<Book> temp = CollectionUtil.createList(new BookFilterIterator(getBooks(), filter));
         return new BookSet(temp);
     }
 
@@ -237,7 +238,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
              * 
              * @see java.lang.Runnable#run()
              */
-            /* @Override */
+            @Override
             public void run() {
                 // TRANSLATOR: Progress label indicating the installation of a book. {0} is a placeholder for the name of the book.
                 String jobName = UserMsg.gettext("Installing book: {0}", sbmd.getName());
@@ -556,7 +557,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
      * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    /* @Override */
+    @Override
     public boolean equals(Object object) {
         if (!(object instanceof AbstractSwordInstaller)) {
             return false;
@@ -579,8 +580,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
      * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object arg0) {
-        HttpSwordInstaller myClass = (HttpSwordInstaller) arg0;
+    public int compareTo(AbstractSwordInstaller myClass) {
 
         int ret = host.compareTo(myClass.host);
         if (ret != 0) {
@@ -594,7 +594,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
      * 
      * @see java.lang.Object#hashCode()
      */
-    /* @Override */
+    @Override
     public int hashCode() {
         return host.hashCode() + packageDirectory.hashCode();
     }
@@ -610,9 +610,9 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     }
 
     /**
-     * A map of the entries in this download area
+     * A map of the books in this download area
      */
-    protected Map entries = new HashMap();
+    protected Map<String,Book> entries = new HashMap<String,Book>();
 
     /**
      * The remote hostname.

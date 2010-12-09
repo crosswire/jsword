@@ -244,7 +244,7 @@ public abstract class AbstractBook implements Book {
      * 
      * @see org.crosswire.jsword.book.BookMetaData#getProperties()
      */
-    public Map getProperties() {
+    public Map<String,Object> getProperties() {
         return bmd.getProperties();
     }
 
@@ -452,7 +452,7 @@ public abstract class AbstractBook implements Book {
      * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    /* @Override */
+    @Override
     public boolean equals(Object obj) {
         // Since this can not be null
         if (obj == null) {
@@ -479,7 +479,7 @@ public abstract class AbstractBook implements Book {
      * 
      * @see java.lang.Object#hashCode()
      */
-    /* @Override */
+    @Override
     public int hashCode() {
         return bmd.hashCode();
     }
@@ -489,8 +489,8 @@ public abstract class AbstractBook implements Book {
      * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object obj) {
-        return this.bmd.compareTo(((Book) obj).getBookMetaData());
+    public int compareTo(Book obj) {
+        return this.bmd.compareTo(obj.getBookMetaData());
     }
 
     /*
@@ -498,7 +498,7 @@ public abstract class AbstractBook implements Book {
      * 
      * @see java.lang.Object#toString()
      */
-    /* @Override */
+    @Override
     public String toString() {
         return bmd.toString();
     }

@@ -29,7 +29,7 @@ package org.crosswire.common.util;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class Language implements Comparable {
+public class Language implements Comparable<Language> {
     public static final Language DEFAULT_LANG = new Language(null);
 
     /**
@@ -104,6 +104,7 @@ public class Language implements Comparable {
      * 
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode() {
         return code.hashCode();
     }
@@ -113,6 +114,7 @@ public class Language implements Comparable {
      * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -132,6 +134,7 @@ public class Language implements Comparable {
      * 
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         return getName();
     }
@@ -141,7 +144,7 @@ public class Language implements Comparable {
      * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object o) {
+    public int compareTo(Language o) {
         return getName().compareTo(o.toString());
     }
 

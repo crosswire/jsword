@@ -50,8 +50,8 @@ public abstract class AbstractBookList implements BookList {
      * org.crosswire.jsword.book.BookList#getBooks(org.crosswire.jsword.book
      * .BookFilter)
      */
-    public List getBooks(BookFilter filter) {
-        List temp = CollectionUtil.createList(new BookFilterIterator(getBooks(), filter));
+    public List<Book> getBooks(BookFilter filter) {
+        List<Book> temp = CollectionUtil.createList(new BookFilterIterator(getBooks(), filter));
         return Collections.unmodifiableList(temp);
     }
 

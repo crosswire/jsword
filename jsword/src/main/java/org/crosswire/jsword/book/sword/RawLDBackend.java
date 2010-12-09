@@ -80,7 +80,7 @@ public class RawLDBackend extends AbstractKeyBackend {
      * org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire
      * .jsword.passage.Key, java.lang.String)
      */
-    /* @Override */
+    @Override
     public String getRawText(Key key) throws BookException {
         DataPolice.setKey(key);
         String result = getRawText(key.getName());

@@ -313,7 +313,7 @@ public final class OSISUtil {
      */
     private static final String OSISID_PREFIX_BIBLE = "Bible.";
 
-    private static final Set EXTRA_BIBLICAL_ELEMENTS = new HashSet(Arrays.asList(new String[] {
+    private static final Set<String> EXTRA_BIBLICAL_ELEMENTS = new HashSet<String>(Arrays.asList(new String[] {
             OSIS_ELEMENT_NOTE, OSIS_ELEMENT_TITLE, OSIS_ELEMENT_REFERENCE
     }));
 
@@ -561,7 +561,7 @@ public final class OSISUtil {
      * 
      * @return a fragment
      */
-    public static List getFragment(Element root) {
+    public static List<Content> getFragment(Element root) {
         Element content = root;
         if (OSISUtil.OSIS_ELEMENT_OSIS.equals(root.getName())) {
             content = root.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
@@ -633,11 +633,11 @@ public final class OSISUtil {
         StringBuilder buffer = new StringBuilder();
 
         // Dig past osis, osisText, if present, to get to the real content.
-        List frag = OSISUtil.getFragment(root);
+        List<Content> frag = OSISUtil.getFragment(root);
 
-        Iterator dit = frag.iterator();
+        Iterator<Content> dit = frag.iterator();
         String sID = null;
-        Object data = null;
+        Content data = null;
         Element ele = null;
         while (dit.hasNext()) {
             data = dit.next();
@@ -695,7 +695,7 @@ public final class OSISUtil {
     public static String getStrongsNumbers(Element root) {
         StringBuilder buffer = new StringBuilder();
 
-        Iterator contentIter = getDeepContent(root, OSISUtil.OSIS_ELEMENT_W).iterator();
+        Iterator<Content> contentIter = getDeepContent(root, OSISUtil.OSIS_ELEMENT_W).iterator();
         while (contentIter.hasNext()) {
             Element ele = (Element) contentIter.next();
             String attr = ele.getAttributeValue(OSISUtil.ATTRIBUTE_W_LEMMA);
@@ -723,7 +723,7 @@ public final class OSISUtil {
         KeyFactory keyf = PassageKeyFactory.instance();
         Key collector = keyf.createEmptyKeyList();
 
-        Iterator contentIter = getDeepContent(root, OSISUtil.OSIS_ELEMENT_REFERENCE).iterator();
+        Iterator<Content> contentIter = getDeepContent(root, OSISUtil.OSIS_ELEMENT_REFERENCE).iterator();
         while (contentIter.hasNext()) {
             Element ele = (Element) contentIter.next();
             String attr = ele.getAttributeValue(OSISUtil.OSIS_ATTR_REF);
@@ -748,7 +748,7 @@ public final class OSISUtil {
     public static String getNotes(Element root) {
         StringBuilder buffer = new StringBuilder();
 
-        Iterator contentIter = getDeepContent(root, OSISUtil.OSIS_ELEMENT_NOTE).iterator();
+        Iterator<Content> contentIter = getDeepContent(root, OSISUtil.OSIS_ELEMENT_NOTE).iterator();
         while (contentIter.hasNext()) {
             Element ele = (Element) contentIter.next();
             String attr = ele.getAttributeValue(OSISUtil.OSIS_ATTR_TYPE);
@@ -771,7 +771,7 @@ public final class OSISUtil {
     public static String getHeadings(Element root) {
         StringBuilder buffer = new StringBuilder();
 
-        Iterator contentIter = getDeepContent(root, OSISUtil.OSIS_ELEMENT_TITLE).iterator();
+        Iterator<Content> contentIter = getDeepContent(root, OSISUtil.OSIS_ELEMENT_TITLE).iterator();
         while (contentIter.hasNext()) {
             Element ele = (Element) contentIter.next();
             getCanonicalContent(ele, null, ele.getContent().iterator(), buffer);
@@ -780,12 +780,12 @@ public final class OSISUtil {
         return buffer.toString();
     }
 
-    private static void getCanonicalContent(Element parent, String sID, Iterator iter, StringBuilder buffer) {
+    private static void getCanonicalContent(Element parent, String sID, Iterator<Content> iter, StringBuilder buffer) {
         if (!isCanonical(parent)) {
             return;
         }
 
-        Object data = null;
+        Content data = null;
         Element ele = null;
         String eleName = null;
         String eID = null;
@@ -833,12 +833,12 @@ public final class OSISUtil {
         return result;
     }
 
-    private static String getTextContent(List fragment) {
+    private static String getTextContent(List<Content> fragment) {
         StringBuilder buffer = new StringBuilder();
 
-        Iterator contentIter = fragment.iterator();
+        Iterator<Content> contentIter = fragment.iterator();
         while (contentIter.hasNext()) {
-            Content next = (Content) contentIter.next();
+            Content next = contentIter.next();
             recurseElement(next, buffer);
         }
 
@@ -849,8 +849,8 @@ public final class OSISUtil {
      * Find all the instances of elements of type <code>find</code> under the
      * element <code>div</code>.
      */
-    public static Collection getDeepContent(Element div, String name) {
-        List reply = new ArrayList();
+    public static Collection<Content> getDeepContent(Element div, String name) {
+        List<Content> reply = new ArrayList<Content>();
         recurseDeepContent(div, name, reply);
         return reply;
     }
@@ -915,11 +915,11 @@ public final class OSISUtil {
      *            List of Difference objects
      * @return HTML representation
      */
-    public static List diffToOsis(List diffs) {
+    public static List<Content> diffToOsis(List<Difference> diffs) {
         Element div = factory().createDiv();
 
         for (int x = 0; x < diffs.size(); x++) {
-            Difference diff = (Difference) diffs.get(x);
+            Difference diff = diffs.get(x);
             EditType editType = diff.getEditType(); // Mode (delete, equal,
                                                     // insert)
             Text text = factory.createText(diff.getText()); // Text of change.
@@ -941,9 +941,9 @@ public final class OSISUtil {
         return div.cloneContent();
     }
 
-    public static List rtfToOsis(String rtf) {
+    public static List<Content> rtfToOsis(String rtf) {
         Element div = factory().createDiv();
-        Stack stack = new Stack();
+        Stack<Content> stack = new Stack<Content>();
         stack.push(div);
 
         int strlen = rtf.length();
@@ -1096,14 +1096,14 @@ public final class OSISUtil {
      * Find all the instances of elements of type <code>find</code> under the
      * element <code>div</code>. For internal use only.
      */
-    private static void recurseDeepContent(Element start, String name, List reply) {
+    private static void recurseDeepContent(Element start, String name, List<Content> reply) {
         if (start.getName().equals(name)) {
             reply.add(start);
         }
 
-        Object data = null;
+        Content data = null;
         Element ele = null;
-        Iterator contentIter = start.getContent().iterator();
+        Iterator<Content> contentIter = start.getContent().iterator();
         while (contentIter.hasNext()) {
             data = contentIter.next();
             if (data instanceof Element) {
@@ -1137,9 +1137,9 @@ public final class OSISUtil {
      */
     private static void recurseChildren(Element ele, StringBuilder buffer) {
         // ele is a JDOM Element that might have a getContent() method
-        Iterator contentIter = ele.getContent().iterator();
+        Iterator<Content> contentIter = ele.getContent().iterator();
         while (contentIter.hasNext()) {
-            Object sub = contentIter.next();
+            Content sub = contentIter.next();
             recurseElement(sub, buffer);
         }
     }

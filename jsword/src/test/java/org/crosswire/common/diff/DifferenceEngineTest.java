@@ -16,6 +16,7 @@ import java.util.Set;
 import junit.framework.TestCase;
 
 public class DifferenceEngineTest extends TestCase {
+    @Override
     protected void setUp() {
     }
 

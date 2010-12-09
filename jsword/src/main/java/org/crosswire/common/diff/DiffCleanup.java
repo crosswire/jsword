@@ -51,9 +51,9 @@ public final class DiffCleanup {
      * @param diffs
      *            List of Difference objects
      */
-    public static void cleanupSemantic(final List diffs) {
+    public static void cleanupSemantic(final List<Difference> diffs) {
         boolean changes = false;
-        Stack equalities = new Stack(); // Stack of indices where equalities are
+        Stack<Difference> equalities = new Stack<Difference>(); // Stack of indices where equalities are
         // found.
         String lastEquality = null; // Always equal to
         // equalities.lastElement().getText()
@@ -61,7 +61,7 @@ public final class DiffCleanup {
         // the equality.
         int lengthChangesPost = 0; // Number of characters that changed after
         // the equality.
-        ListIterator pointer = diffs.listIterator();
+        ListIterator<Difference> pointer = diffs.listIterator();
         Difference curDiff = pointer.hasNext() ? (Difference) pointer.next() : null;
         while (curDiff != null) {
             EditType editType = curDiff.getEditType();
@@ -79,7 +79,7 @@ public final class DiffCleanup {
                     // position pointer to the element after the one at the end
                     // of the stack
                     while (curDiff != equalities.lastElement()) {
-                        curDiff = (Difference) pointer.previous();
+                        curDiff = pointer.previous();
                     }
                     pointer.next();
 
@@ -102,7 +102,7 @@ public final class DiffCleanup {
                         }
                     } else {
                         // There is a safe equality we can fall back to.
-                        curDiff = (Difference) equalities.lastElement();
+                        curDiff = equalities.lastElement();
                         while (curDiff != pointer.previous()) {
                             // Intentionally empty loop.
                         }
@@ -129,13 +129,13 @@ public final class DiffCleanup {
      * @param diffs
      *            List of Difference objects
      */
-    public static void cleanupEfficiency(final List diffs) {
+    public static void cleanupEfficiency(final List<Difference> diffs) {
         if (diffs.isEmpty()) {
             return;
         }
 
         boolean changes = false;
-        Stack equalities = new Stack(); // Stack of indices where equalities are
+        Stack<Difference> equalities = new Stack<Difference>(); // Stack of indices where equalities are
         // found.
         String lastEquality = null; // Always equal to
         // equalities.lastElement().getText();
@@ -148,7 +148,7 @@ public final class DiffCleanup {
         int postDelete = 0; // Is there an deletion operation after the last
         // equality.
 
-        ListIterator pointer = diffs.listIterator();
+        ListIterator<Difference> pointer = diffs.listIterator();
         Difference curDiff = pointer.hasNext() ? (Difference) pointer.next() : null;
         Difference safeDiff = curDiff; // The last Difference that is known to
         // be unsplitable.
@@ -193,7 +193,7 @@ public final class DiffCleanup {
                     // position pointer to the element after the one at the end
                     // of the stack
                     while (curDiff != equalities.lastElement()) {
-                        curDiff = (Difference) pointer.previous();
+                        curDiff = pointer.previous();
                     }
                     pointer.next();
 
@@ -224,7 +224,7 @@ public final class DiffCleanup {
                             curDiff = safeDiff;
                         } else {
                             // There is an equality we can fall back to.
-                            curDiff = (Difference) equalities.lastElement();
+                            curDiff = equalities.lastElement();
                         }
                         while (curDiff != pointer.previous()) {
                             // Intentionally empty loop.
@@ -251,7 +251,7 @@ public final class DiffCleanup {
      * @param diffs
      *            List of Difference objects
      */
-    public static void cleanupMerge(final List diffs) {
+    public static void cleanupMerge(final List<Difference> diffs) {
         // Add a dummy entry at the end.
         diffs.add(new Difference(EditType.EQUAL, ""));
 
@@ -262,7 +262,7 @@ public final class DiffCleanup {
 
         int commonLength = 0;
 
-        ListIterator pointer = diffs.listIterator();
+        ListIterator<Difference> pointer = diffs.listIterator();
         Difference curDiff = pointer.hasNext() ? (Difference) pointer.next() : null;
         Difference prevEqual = null;
         while (curDiff != null) {
@@ -294,7 +294,7 @@ public final class DiffCleanup {
                         commonLength = Commonality.prefix(textInsert.toString(), textDelete.toString());
                         if (commonLength > 0) {
                             if (pointer.hasPrevious()) {
-                                curDiff = (Difference) pointer.previous();
+                                curDiff = pointer.previous();
                                 assert EditType.EQUAL.equals(curDiff.getEditType()) : "Previous diff should have been an equality.";
                                 curDiff.appendText(textInsert.substring(0, commonLength));
                                 pointer.next();
@@ -308,7 +308,7 @@ public final class DiffCleanup {
                         // Factor out any common suffixes.
                         commonLength = Commonality.suffix(textInsert.toString(), textDelete.toString());
                         if (commonLength > 0) {
-                            curDiff = (Difference) pointer.next();
+                            curDiff = pointer.next();
                             curDiff.prependText(textInsert.substring(textInsert.length() - commonLength));
                             textInsert.replace(0, textInsert.length(), textInsert.substring(0, textInsert.length() - commonLength));
                             textDelete.replace(0, textDelete.length(), textDelete.substring(0, textDelete.length() - commonLength));
@@ -331,7 +331,7 @@ public final class DiffCleanup {
                     // Merge this equality with the previous one.
                     prevEqual.appendText(curDiff.getText());
                     pointer.remove();
-                    curDiff = (Difference) pointer.previous();
+                    curDiff = pointer.previous();
                     pointer.next(); // Forward direction
                 }
 
@@ -344,7 +344,7 @@ public final class DiffCleanup {
             curDiff = pointer.hasNext() ? (Difference) pointer.next() : null;
         }
 
-        Difference lastDiff = (Difference) diffs.get(diffs.size() - 1);
+        Difference lastDiff = diffs.get(diffs.size() - 1);
         if (lastDiff.getText().length() == 0) {
             diffs.remove(diffs.size() - 1); // Remove the dummy entry at the
             // end.

@@ -40,6 +40,7 @@ import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.RestrictionType;
 import org.crosswire.jsword.passage.VerseRange;
+import org.jdom.Content;
 import org.jdom.Element;
 
 /**
@@ -58,17 +59,17 @@ public abstract class AbstractPassageBook extends AbstractBook {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage.Key, boolean)
      */
-    public Iterator getOsisIterator(Key key, boolean allowEmpty) throws BookException {
+    public Iterator<Content> getOsisIterator(Key key, boolean allowEmpty) throws BookException {
         // Note: allowEmpty indicates parallel view
         // TODO(DMS): make the iterator be demand driven
         try {
             Filter filter = getFilter();
-            List content = new ArrayList();
+            List<Content> content = new ArrayList<Content>();
 
             // For all the ranges in this Passage
             Passage ref = KeyUtil.getPassage(key);
             boolean showTitles = ref.hasRanges(RestrictionType.CHAPTER) || !allowEmpty;
-            Iterator rit = ref.rangeIterator(RestrictionType.CHAPTER);
+            Iterator<Key> rit = ref.rangeIterator(RestrictionType.CHAPTER);
 
             while (rit.hasNext()) {
                 VerseRange range = (VerseRange) rit.next();
@@ -81,14 +82,14 @@ public abstract class AbstractPassageBook extends AbstractBook {
                 }
 
                 // For all the verses in this range
-                Iterator vit = range.iterator();
+                Iterator<Key> vit = range.iterator();
                 while (vit.hasNext()) {
-                    Key verse = (Key) vit.next();
+                    Key verse = vit.next();
                     String txt = getRawText(verse);
 
                     // If the verse is empty then we shouldn't add the verse tag
                     if (allowEmpty || txt.length() > 0) {
-                        List osisContent = filter.toOSIS(this, verse, txt);
+                        List<Content> osisContent = filter.toOSIS(this, verse, txt);
                         addOSIS(verse, content, osisContent);
                     }
                 }
@@ -112,7 +113,7 @@ public abstract class AbstractPassageBook extends AbstractBook {
      * @param osisContent
      *            The OSIS representation of the key being added.
      */
-    public void addOSIS(Key key, Element div, List osisContent) {
+    public void addOSIS(Key key, Element div, List<Content> osisContent) {
         assert key != null;
         div.addContent(osisContent);
     }
@@ -128,7 +129,7 @@ public abstract class AbstractPassageBook extends AbstractBook {
      * @param osisContent
      *            The OSIS representation of the key being added.
      */
-    public void addOSIS(Key key, List content, List osisContent) {
+    public void addOSIS(Key key, List<Content> content, List<Content> osisContent) {
         assert key != null;
         content.addAll(osisContent);
     }
@@ -147,14 +148,14 @@ public abstract class AbstractPassageBook extends AbstractBook {
      */
     public void setDocument(Key key, BookData bdata) throws BookException {
         // For all of the sections
-        Iterator sit = OSISUtil.getFragment(bdata.getOsisFragment()).iterator();
+        Iterator<?> sit = OSISUtil.getFragment(bdata.getOsisFragment()).iterator();
         while (sit.hasNext()) {
             Object nextElem = sit.next();
             if (nextElem instanceof Element) {
                 Element div = (Element) nextElem;
 
                 // For all of the Verses in the section
-                Iterator vit = div.getContent().iterator();
+                Iterator<Object> vit = div.getContent().iterator();
                 while (vit.hasNext()) {
                     Object data = vit.next();
                     if (data instanceof Element) {
@@ -199,9 +200,9 @@ public abstract class AbstractPassageBook extends AbstractBook {
         if (global == null) {
             global = keyf.createEmptyKeyList();
             Key all = keyf.getGlobalKeyList();
-            Iterator iter = all.iterator();
+            Iterator<Key> iter = all.iterator();
             while (iter.hasNext()) {
-                Key key = (Key) iter.next();
+                Key key = iter.next();
                 if (contains(key)) {
                     global.addAll(key);
                 }

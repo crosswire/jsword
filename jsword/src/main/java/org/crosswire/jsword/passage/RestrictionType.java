@@ -36,22 +36,26 @@ public enum RestrictionType {
      * There is no restriction on blurring.
      */
     NONE {
+        @Override
         public boolean isSameScope(Verse start, Verse end) {
             return true;
         }
 
+        @Override
         public VerseRange blur(VerseRange range, int blurDown, int blurUp) {
             Verse start = range.getStart().subtract(blurDown);
             Verse end = range.getEnd().add(blurUp);
             return new VerseRange(start, end);
         }
 
+        @Override
         public VerseRange blur(Verse verse, int blurDown, int blurUp) {
             Verse start = verse.subtract(blurDown);
             Verse end = verse.add(blurUp);
             return new VerseRange(start, end);
         }
 
+        @Override
         public VerseRange toRange(Verse verse, int count) {
             Verse end = verse;
             if (count > 1) {
@@ -65,10 +69,12 @@ public enum RestrictionType {
      * Blurring is restricted to the chapter
      */
     CHAPTER {
+        @Override
         public boolean isSameScope(Verse start, Verse end) {
             return start.isSameChapter(end);
         }
 
+        @Override
         public VerseRange blur(VerseRange range, int blurDown, int blurUp) {
             try {
                 Verse start = range.getStart();
@@ -93,6 +99,7 @@ public enum RestrictionType {
             }
         }
 
+        @Override
         public VerseRange blur(Verse verse, int blurDown, int blurUp) {
             try {
                 int verseNumber = verse.getVerse();
@@ -119,6 +126,7 @@ public enum RestrictionType {
             }
         }
 
+        @Override
         public VerseRange toRange(Verse verse, int count) {
             Verse end = verse.add(count - 1);
             return new VerseRange(verse, end);

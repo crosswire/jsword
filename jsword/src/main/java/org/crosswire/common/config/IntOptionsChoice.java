@@ -36,13 +36,13 @@ import org.jdom.Element;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class IntOptionsChoice extends AbstractReflectedChoice implements MappedChoice {
+public class IntOptionsChoice extends AbstractReflectedChoice implements MappedChoice<Integer,String> {
     /*
      * (non-Javadoc)
      * 
      * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
      */
-    /* @Override */
+    @Override
     public void init(Element option, ResourceBundle configResources) throws StartupException {
         assert configResources != null;
 
@@ -50,10 +50,10 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements MappedC
 
         String prefix = getKey() + ".alternative.";
 
-        options = new TreeMap();
-        Iterator iter = option.getChildren("alternative").iterator();
+        options = new TreeMap<Integer,String>();
+        Iterator<Element> iter = option.getChildren("alternative").iterator();
         while (iter.hasNext()) {
-            Element alternative = (Element) iter.next();
+            Element alternative = iter.next();
             int number = Integer.parseInt(alternative.getAttributeValue("number"));
             String name = configResources.getString(prefix + number);
             options.put(Integer.valueOf(number), name);
@@ -65,8 +65,8 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements MappedC
      * 
      * @see org.crosswire.common.config.MappedChoice#getOptions()
      */
-    public Map getOptions() {
-        return new TreeMap(options);
+    public Map<Integer,String> getOptions() {
+        return new TreeMap<Integer,String>(options);
     }
 
     /*
@@ -74,7 +74,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements MappedC
      * 
      * @see org.crosswire.common.config.Choice#getConvertionClass()
      */
-    public Class getConversionClass() {
+    public Class<Integer> getConversionClass() {
         return Integer.TYPE;
     }
 
@@ -85,7 +85,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements MappedC
      * org.crosswire.common.config.AbstractReflectedChoice#convertToString(java
      * .lang.Object)
      */
-    /* @Override */
+    @Override
     public String convertToString(Object orig) {
         return orig.toString();
     }
@@ -97,15 +97,15 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements MappedC
      * org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java
      * .lang.String)
      */
-    /* @Override */
+    @Override
     public Object convertToObject(String orig) {
         // First check to see if this is a number
         try {
             return Integer.valueOf(orig);
         } catch (NumberFormatException ex) {
-            Iterator iter = options.entrySet().iterator();
+            Iterator<Map.Entry<Integer,String>> iter = options.entrySet().iterator();
             while (iter.hasNext()) {
-                Map.Entry mapEntry = (Map.Entry) iter.next();
+                Map.Entry<Integer,String> mapEntry = iter.next();
                 if (mapEntry.getValue().equals(orig)) {
                     return mapEntry.getKey();
                 }
@@ -114,5 +114,5 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements MappedC
         }
     }
 
-    private Map options;
+    private Map<Integer,String> options;
 }

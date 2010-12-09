@@ -58,15 +58,15 @@ public final class PluginUtil {
      *            The class or interface to find implementors of.
      * @return The list of implementing classes.
      */
-    public static Class[] getImplementors(Class clazz) {
+    public static <T> Class<T>[] getImplementors(Class<T> clazz) {
         try {
-            List matches = new ArrayList();
+            List<Class<T>> matches = new ArrayList<Class<T>>();
             Properties props = getPlugin(clazz);
-            Iterator it = props.values().iterator();
+            Iterator<Object> it = props.values().iterator();
             while (it.hasNext()) {
                 try {
                     String name = (String) it.next();
-                    Class impl = ClassUtil.forName(name);
+                    Class<T> impl = (Class<T>) ClassUtil.forName(name);
                     if (clazz.isAssignableFrom(impl)) {
                         matches.add(impl);
                     } else {
@@ -78,7 +78,7 @@ public final class PluginUtil {
             }
 
             log.debug("Found " + matches.size() + " implementors of " + clazz.getName());
-            return (Class[]) matches.toArray(new Class[matches.size()]);
+            return matches.toArray(new Class[matches.size()]);
         } catch (IOException ex) {
             log.error("Failed to get any classes.", ex);
             return new Class[0];
@@ -98,17 +98,17 @@ public final class PluginUtil {
      *            The class or interface to find implementors of.
      * @return The map of implementing classes.
      */
-    public static Map getImplementorsMap(Class clazz) {
-        Map matches = new HashMap();
+    public static <T> Map<String,Class<T>> getImplementorsMap(Class<T> clazz) {
+        Map<String,Class<T>> matches = new HashMap<String,Class<T>>();
 
         try {
             Properties props = getPlugin(clazz);
-            Iterator it = props.keySet().iterator();
+            Iterator<Object> it = props.keySet().iterator();
             while (it.hasNext()) {
                 try {
                     String key = (String) it.next();
                     String value = props.getProperty(key);
-                    Class impl = ClassUtil.forName(value);
+                    Class<T> impl = (Class<T>) ClassUtil.forName(value);
                     if (clazz.isAssignableFrom(impl)) {
                         matches.put(key, impl);
                     } else {
@@ -146,11 +146,11 @@ public final class PluginUtil {
      *             if the read contents are not valid
      * @see PluginUtil#getImplementors(Class)
      */
-    public static Class getImplementor(Class clazz) throws IOException, ClassNotFoundException, ClassCastException {
+    public static <T> Class<T> getImplementor(Class<T> clazz) throws IOException, ClassNotFoundException, ClassCastException {
         Properties props = getPlugin(clazz);
         String name = props.getProperty(DEFAULT);
 
-        Class impl = ClassUtil.forName(name);
+        Class<T> impl = (Class<T>) ClassUtil.forName(name);
         if (!clazz.isAssignableFrom(impl)) {
             throw new ClassCastException(Msg.NOT_ASSIGNABLE.toString(new Object[] {
                     impl.getName(), clazz.getName()
@@ -181,7 +181,7 @@ public final class PluginUtil {
      *             if the new object can not be instantiated
      * @see PluginUtil#getImplementors(Class)
      */
-    public static Object getImplementation(Class clazz) throws MalformedURLException, ClassCastException, IOException, ClassNotFoundException,
+    public static <T> T getImplementation(Class<T> clazz) throws MalformedURLException, ClassCastException, IOException, ClassNotFoundException,
             InstantiationException, IllegalAccessException
     {
         return getImplementor(clazz).newInstance();
@@ -198,7 +198,7 @@ public final class PluginUtil {
      * @throws MissingResourceException
      *             if the resource can not be found
      */
-    public static Properties getPlugin(Class clazz) throws IOException {
+    public static <T> Properties getPlugin(Class<T> clazz) throws IOException {
         String subject = ClassUtil.getShortClassName(clazz);
 
         try {

@@ -137,14 +137,14 @@ public class EventListenerList implements Serializable {
      * 
      * @since 1.3
      */
-    public EventListener[] getListeners(Class t) {
+    public <T extends EventListener> T[] getListeners(Class<T> t) {
         Object[] lList = getListenerList();
         int n = getListenerCount(lList, t);
-        EventListener[] result = (EventListener[]) Array.newInstance(t, n);
+        T[] result = (T[]) Array.newInstance(t, n);
         int j = 0;
         for (int i = lList.length - 2; i >= 0; i -= 2) {
             if (lList[i] == t) {
-                result[j++] = (EventListener) lList[i + 1];
+                result[j++] = (T) lList[i + 1];
             }
         }
         return result;
@@ -161,15 +161,15 @@ public class EventListenerList implements Serializable {
      * Returns the total number of listeners of the supplied type for this
      * listener list.
      */
-    public int getListenerCount(Class t) {
+    public int getListenerCount(Class<?> t) {
         Object[] lList = getListenerList();
         return getListenerCount(lList, t);
     }
 
-    private int getListenerCount(Object[] list, Class t) {
+    private int getListenerCount(Object[] list, Class<?> t) {
         int count = 0;
         for (int i = 0; i < list.length; i += 2) {
-            if (t == (Class) list[i]) {
+            if (t == (Class<?>) list[i]) {
                 count++;
             }
         }
@@ -184,7 +184,7 @@ public class EventListenerList implements Serializable {
      * @param li
      *            the listener to be added
      */
-    public synchronized void add(Class t, EventListener li) {
+    public synchronized <T extends EventListener> void add(Class<T> t, EventListener li) {
         if (li == null) {
             // In an ideal world, we would do an assertion here
             // to help developers know they are probably doing
@@ -225,7 +225,7 @@ public class EventListenerList implements Serializable {
      * @param li
      *            the listener to be removed
      */
-    public synchronized void remove(Class t, EventListener li) {
+    public synchronized <T extends EventListener> void remove(Class<T> t, EventListener li) {
         if (li == null) {
             // In an ideal world, we would do an assertion here
             // to help developers know they are probably doing
@@ -276,7 +276,7 @@ public class EventListenerList implements Serializable {
 
         // Save the non-null event listeners:
         for (int i = 0; i < lList.length; i += 2) {
-            Class t = (Class) lList[i];
+            Class<?> t = (Class<?>) lList[i];
             EventListener li = (EventListener) lList[i + 1];
             if ((li != null) && (li instanceof Serializable)) {
                 oos.writeObject(t.getName());
@@ -301,14 +301,14 @@ public class EventListenerList implements Serializable {
             }
 
             EventListener li = (EventListener) ois.readObject();
-            add(ClassUtil.forName((String) listenerTypeOrNull), li);
+            add((Class<EventListener>)ClassUtil.forName((String) listenerTypeOrNull), li);
         }
     }
 
     /**
      * Return a string representation of the EventListenerList.
      */
-    /* @Override */
+    @Override
     public String toString() {
         Object[] lList = listenerList;
         StringBuilder s = new StringBuilder("EventListenerList: ");
@@ -317,7 +317,7 @@ public class EventListenerList implements Serializable {
 
         for (int i = 0; i <= lList.length - 2; i += 2) {
             s.append(" type ");
-            s.append(((Class) lList[i]).getName());
+            s.append(((Class<?>) lList[i]).getName());
             s.append(" listener ");
             s.append(lList[i + 1]);
         }

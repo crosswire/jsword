@@ -11,6 +11,7 @@ import junit.framework.TestCase;
 
 public class CommonalityTest extends TestCase {
 
+    @Override
     protected void setUp() {
     }
 

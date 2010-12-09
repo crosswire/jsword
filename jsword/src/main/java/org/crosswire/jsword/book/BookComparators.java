@@ -42,10 +42,10 @@ public final class BookComparators {
     /**
      * Order by default Book ordering
      */
-    public static Comparator getDefault() {
-        return new Comparator() {
-            public int compare(Object o1, Object o2) {
-                return ((Book) o1).compareTo(o2);
+    public static Comparator<Book> getDefault() {
+        return new Comparator<Book>() {
+            public int compare(Book o1, Book o2) {
+                return o1.compareTo(o2);
             }
         };
     }
@@ -53,12 +53,10 @@ public final class BookComparators {
     /**
      * Order by Initials.
      */
-    public static Comparator getInitialComparator() {
-        return new Comparator() {
-            public int compare(Object o1, Object o2) {
-                Book b1 = (Book) o1;
-                Book b2 = (Book) o2;
-                return b1.getInitials().compareTo(b2.getInitials());
+    public static Comparator<Book> getInitialComparator() {
+        return new Comparator<Book>() {
+            public int compare(Book o1, Book o2) {
+                return o1.getInitials().compareTo(o2.getInitials());
             }
         };
     }

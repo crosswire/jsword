@@ -31,6 +31,7 @@ import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterException;
 import org.crosswire.jsword.passage.Key;
+import org.jdom.Content;
 import org.jdom.Element;
 
 /**
@@ -51,19 +52,19 @@ public class GBFFilter implements Filter {
      * org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book
      * .Book, org.crosswire.jsword.passage.Key, java.lang.String)
      */
-    public List toOSIS(Book book, Key key, String plain) throws FilterException {
+    public List<Content> toOSIS(Book book, Key key, String plain) throws FilterException {
         DataPolice.setKey(key);
         Element ele = OSISUtil.factory().createDiv();
-        LinkedList stack = new LinkedList();
+        LinkedList<Content> stack = new LinkedList<Content>();
         stack.addFirst(ele);
 
-        List taglist = parseTags(book, key, plain.trim());
+        List<Tag> taglist = parseTags(book, key, plain.trim());
         while (true) {
             if (taglist.isEmpty()) {
                 break;
             }
 
-            Tag tag = (Tag) taglist.remove(0);
+            Tag tag = taglist.remove(0);
             tag.updateOsisStack(stack);
         }
 
@@ -77,6 +78,7 @@ public class GBFFilter implements Filter {
      * 
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         try {
             return super.clone();
@@ -90,9 +92,9 @@ public class GBFFilter implements Filter {
      * Turn the string into a list of tags in the order that they appear in the
      * original string.
      */
-    private List parseTags(Book book, Key key, String aRemains) {
+    private List<Tag> parseTags(Book book, Key key, String aRemains) {
         String remains = aRemains;
-        List taglist = new ArrayList();
+        List<Tag> taglist = new ArrayList<Tag>();
 
         // A GBF code is of the form <XY...> or <Xy...>
         // where the first letter is always capitalized and

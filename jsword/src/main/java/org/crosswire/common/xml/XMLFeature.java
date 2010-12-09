@@ -31,7 +31,7 @@ import java.io.Serializable;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class XMLFeature implements Serializable, Comparable {
+public class XMLFeature implements Serializable, Comparable<XMLFeature> {
     /** Namespaces feature id */
     public static final XMLFeature NAMESPACES = new XMLFeature("http://xml.org/sax/features/namespaces");
 
@@ -129,6 +129,7 @@ public class XMLFeature implements Serializable, Comparable {
      * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public final boolean equals(Object o) {
         return super.equals(o);
     }
@@ -139,6 +140,7 @@ public class XMLFeature implements Serializable, Comparable {
      * 
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public final int hashCode() {
         return super.hashCode();
     }
@@ -148,6 +150,7 @@ public class XMLFeature implements Serializable, Comparable {
      * 
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         return (state ? "on  " : "off ") + control;
     }
@@ -157,8 +160,7 @@ public class XMLFeature implements Serializable, Comparable {
      * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object o) {
-        XMLFeature feature = (XMLFeature) o;
+    public int compareTo(XMLFeature feature) {
         return this.control.compareTo(feature.control);
     }
 

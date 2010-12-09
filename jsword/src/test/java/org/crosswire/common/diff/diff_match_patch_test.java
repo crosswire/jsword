@@ -11,6 +11,7 @@ import junit.framework.TestCase;
 
 public class diff_match_patch_test extends TestCase {
 
+    @Override
     protected void setUp() {
     }
 

@@ -51,7 +51,7 @@ public class StrongsNumberFilter extends AbstractBookTokenFilter {
      */
     public StrongsNumberFilter(Book book, TokenStream in) {
         super(book, in);
-        termAtt = (TermAttribute) addAttribute(TermAttribute.class);
+        termAtt = addAttribute(TermAttribute.class);
     }
 
     /*
@@ -59,6 +59,7 @@ public class StrongsNumberFilter extends AbstractBookTokenFilter {
      * 
      * @see org.apache.lucene.analysis.TokenStream#incrementToken()
      */
+    @Override
     public boolean incrementToken() throws IOException {
         // If the term is suffixed with '!a' or 'a', where 'a' is a sequence of
         // 1 or more letters
@@ -102,11 +103,13 @@ public class StrongsNumberFilter extends AbstractBookTokenFilter {
     }
 
     /* Define to quite FindBugs */
+    @Override
     public boolean equals(Object obj) {
         return super.equals(obj);
     }
 
     /* Define to quite FindBugs */
+    @Override
     public int hashCode() {
         return super.hashCode();
     }

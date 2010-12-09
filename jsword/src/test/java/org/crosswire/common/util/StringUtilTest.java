@@ -40,11 +40,11 @@ public class StringUtilTest extends TestCase {
         super(s);
     }
 
-    /* @Override */
+    @Override
     protected void setUp() {
     }
 
-    /* @Override */
+    @Override
     protected void tearDown() {
     }
 

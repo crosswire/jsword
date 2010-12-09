@@ -85,7 +85,7 @@ public class BibleToOsis {
         }
 
         // Get a verse iterator
-        Iterator iter = keys.iterator();
+        Iterator<Key> iter = keys.iterator();
         while (iter.hasNext()) {
             Verse verse = (Verse) iter.next();
             String raw = bible.getRawText(verse);

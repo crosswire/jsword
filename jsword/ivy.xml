@@ -1,0 +1,22 @@
+<ivy-module version="2.0">
+  <info organisation="org.crosswire" module="jsword"/>
+  <dependencies>
+    <dependency org="commons-codec"             name="commons-codec"    rev="1.4"       conf="default->master,sources" />
+    <dependency org="commons-logging"           name="commons-logging"  rev="1.1.1"     conf="default->master,sources" />
+    <dependency org="commons-net"               name="commons-net"      rev="2.2"       conf="default->master,sources" />
+    <dependency org="org.apache.httpcomponents" name="httpcore"         rev="4.1"       conf="default->master,sources" />
+    <dependency org="org.apache.httpcomponents" name="httpclient"       rev="4.1-beta1" conf="default->master,sources" />
+    <dependency org="javatar"                   name="javatar"          rev="2.5"       />
+    <!-- dependency org="org.jdom"                  name="jdom"             rev="1.1.1"       conf="default->master,sources" /> Should be rev="1.1.1" -->
+    <dependency org="org.apache.lucene"         name="lucene-core"      rev="3.0.3"     conf="default->master,sources" />
+    <dependency org="org.apache.lucene"         name="lucene-analyzers" rev="3.0.3"     conf="default->master,sources" />
+    <dependency org="org.apache.lucene"         name="lucene-smartcn"   rev="3.0.3"     conf="default->master,sources" />
+    <dependency org="org.apache.lucene"         name="lucene-snowball"  rev="3.0.3"     conf="default->master,sources" />
+    <!-- dependency org="junit"                     name="junit"            rev="3.8.1"     / -->
+    <!-- dependency org="com.ibm.icu"               name="icu4j"            rev="4.6"       / -->
+    <!-- dependency org="jaf"                       name="activation"       rev="1.1"       / -->
+    <!-- dependency org="xalan"                     name="xalan"            rev="2.7.1"     / -->
+    <!-- dependency org="xalan"                     name="serializer"       rev="2.7.1"     / -->
+    <!-- dependency org="xerces"                    name="xercesImpl"       rev="2.11.0"    / -->
+  </dependencies>
+</ivy-module>

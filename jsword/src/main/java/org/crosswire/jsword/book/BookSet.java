@@ -38,11 +38,11 @@ import org.crosswire.common.util.Filter;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class BookSet extends ArrayList implements Set {
+public class BookSet extends ArrayList<Book> implements Set<Book> {
     public BookSet() {
     }
 
-    public BookSet(Collection books) {
+    public BookSet(Collection<Book> books) {
         this();
         addAll(books);
     }
@@ -53,11 +53,9 @@ public class BookSet extends ArrayList implements Set {
      * 
      * @return the set of all keys which can be used for grouping.
      */
-    public Set getGroups() {
-        Set results = new TreeSet();
-        Iterator iter = iterator();
-        while (iter.hasNext()) {
-            Book book = (Book) iter.next();
+    public Set<String> getGroups() {
+        Set<String> results = new TreeSet<String>();
+        for (Book book : this) {
             results.addAll(book.getProperties().keySet());
         }
         return results;
@@ -73,11 +71,11 @@ public class BookSet extends ArrayList implements Set {
      * @param key
      * @return the values for a particular key.
      */
-    public Set getGroup(String key) {
-        Set results = new TreeSet();
-        Iterator iter = iterator();
+    public Set<Object> getGroup(String key) {
+        Set<Object> results = new TreeSet<Object>();
+        Iterator<Book> iter = iterator();
         while (iter.hasNext()) {
-            Book book = (Book) iter.next();
+            Book book = iter.next();
             Object property = book.getProperty(key);
             if (property != null) {
                 results.add(property);
@@ -95,7 +93,8 @@ public class BookSet extends ArrayList implements Set {
      * 
      * @see java.util.List#add(int, java.lang.Object)
      */
-    public void add(int index, Object element) {
+    @Override
+    public void add(int index, Book element) {
         // ignore the requested index
         add(element);
     }
@@ -105,7 +104,8 @@ public class BookSet extends ArrayList implements Set {
      * 
      * @see java.util.Collection#add(java.lang.Object)
      */
-    public final boolean add(Object book) {
+    @Override
+    public final boolean add(Book book) {
         // Add the item only if it is not in the list.
         // Add it into the list so that it is in sorted order.
         int pos = Collections.binarySearch(this, book);
@@ -121,14 +121,15 @@ public class BookSet extends ArrayList implements Set {
      * 
      * @see java.util.Collection#addAll(java.util.Collection)
      */
-    public final boolean addAll(Collection c) {
+    @Override
+    public final boolean addAll(Collection<? extends Book> c) {
         // Might be better to add the list to the end
         // and then sort the list.
         // This can be revisited if the list performs badly.
         boolean added = false;
-        Iterator iter = c.iterator();
+        Iterator<? extends Book> iter = c.iterator();
         while (iter.hasNext()) {
-            Book book = (Book) iter.next();
+            Book book = iter.next();
             if (add(book)) {
                 added = true;
             }
@@ -141,7 +142,8 @@ public class BookSet extends ArrayList implements Set {
      * 
      * @see java.util.List#addAll(int, java.util.Collection)
      */
-    public final boolean addAll(int index, Collection c) {
+    @Override
+    public final boolean addAll(int index, Collection<? extends Book> c) {
         // Ignore the index
         return addAll(c);
     }
@@ -151,10 +153,11 @@ public class BookSet extends ArrayList implements Set {
      * 
      * @see java.util.List#set(int, java.lang.Object)
      */
-    public Object set(int index, Object element) {
+    @Override
+    public Book set(int index, Book element) {
         // remove the item at the index (keep it to return it),
         // then insert the item into the sorted list.
-        Book item = (Book) remove(index);
+        Book item = remove(index);
         add(element);
         return item;
     }
@@ -163,9 +166,9 @@ public class BookSet extends ArrayList implements Set {
         // create a copy of the list and
         // remove everything that fails the test.
         BookSet listSet = (BookSet) clone();
-        Iterator iter = listSet.iterator();
+        Iterator<Book> iter = listSet.iterator();
         while (iter.hasNext()) {
-            Book obj = (Book) iter.next();
+            Book obj = iter.next();
             if (!filter.test(obj)) {
                 iter.remove();
             }

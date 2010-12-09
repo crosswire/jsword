@@ -46,7 +46,6 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.Map.Entry;
 
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
@@ -74,15 +73,15 @@ public final class XMLFeatureSet {
         features.put("xb", new XMLFeatureState(XMLFeature.XINCLUDE_FIXUP_BASE_URIS, true));
         features.put("xl", new XMLFeatureState(XMLFeature.XINCLUDE_FIXUP_LANGUAGE, true));
 
-        Iterator iter = features.entrySet().iterator();
+        Iterator<Map.Entry<String,XMLFeatureState>> iter = features.entrySet().iterator();
         while (iter.hasNext()) {
-            Map.Entry entry = (Entry) iter.next();
-            states.put(((XMLFeatureState) entry.getValue()).getFeature(), entry.getKey());
+            Map.Entry<String,XMLFeatureState> entry = iter.next();
+            states.put(entry.getValue().getFeature(), entry.getKey());
         }
     }
 
     public void setFeatureState(XMLFeature feature, boolean state) {
-        ((XMLFeatureState) features.get(states.get(feature))).setState(state);
+        features.get(states.get(feature)).setState(state);
     }
 
     public void setFeatureStates(String[] argv) {
@@ -92,7 +91,7 @@ public final class XMLFeatureSet {
             if (arg.charAt(0) == '-') {
                 String option = arg.substring(1);
                 String key = option.toLowerCase(Locale.ENGLISH);
-                XMLFeatureState feature = (XMLFeatureState) features.get(key);
+                XMLFeatureState feature = features.get(key);
                 if (feature != null) {
                     feature.setState(option.equals(key));
                 }
@@ -105,13 +104,13 @@ public final class XMLFeatureSet {
      * 
      * @see java.lang.Object#toString()
      */
-    /* @Override */
+    @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
         buf.append('\n');
-        Iterator iter = features.values().iterator();
+        Iterator<XMLFeatureState> iter = features.values().iterator();
         while (iter.hasNext()) {
-            XMLFeatureState state = (XMLFeatureState) iter.next();
+            XMLFeatureState state = iter.next();
             buf.append(state.getFeature().toString()).append('\n');
         }
         return buf.toString();
@@ -143,9 +142,9 @@ public final class XMLFeatureSet {
     }
 
     public void setFeatures(XMLReader parser) {
-        Iterator iter = features.values().iterator();
+        Iterator<XMLFeatureState> iter = features.values().iterator();
         while (iter.hasNext()) {
-            XMLFeatureState state = (XMLFeatureState) iter.next();
+            XMLFeatureState state = iter.next();
             state.setFeature(parser);
         }
     }
@@ -199,6 +198,6 @@ public final class XMLFeatureSet {
         private XMLFeature feature;
     }
 
-    private Map features = new TreeMap();
-    private Map states = new TreeMap();
+    private Map<String,XMLFeatureState> features = new TreeMap<String,XMLFeatureState>();
+    private Map<XMLFeature,String> states = new TreeMap<XMLFeature,String>();
 }

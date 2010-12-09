@@ -31,7 +31,7 @@ import java.io.Serializable;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class BookCategory implements Serializable, Comparable {
+public final class BookCategory implements Serializable, Comparable<BookCategory> {
     /** Books that are Bibles */
     // I18N(DMS)
     public static final BookCategory BIBLE = new BookCategory("Biblical Texts", UserMsg.gettext("Biblical Texts"));
@@ -123,8 +123,7 @@ public final class BookCategory implements Serializable, Comparable {
      * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object o) {
-        BookCategory that = (BookCategory) o;
+    public int compareTo(BookCategory that) {
         return this.name.compareTo(that.name);
     }
 
@@ -133,6 +132,7 @@ public final class BookCategory implements Serializable, Comparable {
      * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(Object o) {
         return super.equals(o);
     }
@@ -142,6 +142,7 @@ public final class BookCategory implements Serializable, Comparable {
      * 
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode() {
         return super.hashCode();
     }
@@ -158,6 +159,7 @@ public final class BookCategory implements Serializable, Comparable {
      * 
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         return externalName;
     }

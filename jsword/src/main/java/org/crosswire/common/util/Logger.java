@@ -49,7 +49,7 @@ public final class Logger {
      * number of the caller.
      * @param clazz the class that holds the logger.
      */
-    public static Logger getLogger(Class clazz) {
+    public static <T> Logger getLogger(Class<T> clazz) {
         return getLogger(clazz, true);
     }
 
@@ -58,7 +58,7 @@ public final class Logger {
      * @param clazz the class that holds the logger.
      * @param showLocation when true it will get the method and line where logging occurred.
      */
-    public static Logger getLogger(Class clazz, boolean showLocation) {
+    public static <T> Logger getLogger(Class<T> clazz, boolean showLocation) {
         return new Logger(clazz, showLocation);
     }
 
@@ -215,7 +215,7 @@ public final class Logger {
     /**
      * Create a logger for the class. Wrapped by {@link #java.util.logging.Logger.getLogger(String)}.
      */
-    private Logger(Class id, boolean showLocation) {
+    private <T> Logger(Class<T> id, boolean showLocation) {
         this.logger = java.util.logging.Logger.getLogger(id.getName());
         this.showLocation = showLocation;
     }

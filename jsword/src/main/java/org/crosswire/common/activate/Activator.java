@@ -83,7 +83,7 @@ public final class Activator {
     public static void deactivateAll() {
         Iterator<Activatable> iter = activated.iterator();
         while (iter.hasNext()) {
-            deactivate((Activatable) iter.next());
+            deactivate(iter.next());
         }
     }
 

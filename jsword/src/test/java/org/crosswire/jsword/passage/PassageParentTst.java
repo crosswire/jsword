@@ -94,7 +94,7 @@ public class PassageParentTst extends TestCase {
      * to be a bad performer (which includes using lots of memory) So the
      * problem is with the tests and not with the Passages.
      */
-    /* @Override */
+    @Override
     protected void setUp() throws Exception {
         start = System.currentTimeMillis();
         BibleInfo.setFullBookName(false);
@@ -158,7 +158,7 @@ public class PassageParentTst extends TestCase {
      * 
      * @see junit.framework.TestCase#tearDown()
      */
-    /* @Override */
+    @Override
     protected void tearDown() {
         // float secs = (System.currentTimeMillis() - start) / 1000F;
         // log(type+" total = "+secs+"s =======================");

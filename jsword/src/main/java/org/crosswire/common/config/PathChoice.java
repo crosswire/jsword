@@ -38,7 +38,7 @@ public class PathChoice extends AbstractReflectedChoice {
      * 
      * @see org.crosswire.common.config.Choice#getConvertionClass()
      */
-    public Class getConversionClass() {
+    public Class<File[]> getConversionClass() {
         return File[].class;
     }
 
@@ -49,7 +49,7 @@ public class PathChoice extends AbstractReflectedChoice {
      * org.crosswire.common.config.AbstractReflectedChoice#convertToString(java
      * .lang.Object)
      */
-    /* @Override */
+    @Override
     public String convertToString(Object orig) {
         File[] paths = (File[]) orig;
         String[] names = new String[paths.length];
@@ -67,7 +67,7 @@ public class PathChoice extends AbstractReflectedChoice {
      * org.crosswire.common.config.AbstractReflectedChoice#convertToObject(java
      * .lang.String)
      */
-    /* @Override */
+    @Override
     public Object convertToObject(String orig) {
         String[] names = Convert.string2StringArray(orig, File.pathSeparator);
         File[] paths = new File[names.length];

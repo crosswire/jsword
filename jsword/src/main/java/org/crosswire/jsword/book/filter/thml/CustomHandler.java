@@ -55,7 +55,7 @@ public class CustomHandler extends DefaultHandler {
     public CustomHandler(Book book, Key key) {
         DataPolice.setBook(book.getBookMetaData());
         DataPolice.setKey(key);
-        stack = new LinkedList();
+        stack = new LinkedList<Content>();
     }
 
     /*
@@ -64,7 +64,7 @@ public class CustomHandler extends DefaultHandler {
      * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String,
      * java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
-    /* @Override */
+    @Override
     public void startElement(String uri, String localname, String qname, Attributes attrs) throws SAXException {
         Element ele = null;
 
@@ -97,7 +97,7 @@ public class CustomHandler extends DefaultHandler {
      * 
      * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
      */
-    /* @Override */
+    @Override
     public void characters(char[] data, int offset, int length) {
         // what we are adding
         String text = new String(data, offset, length);
@@ -108,7 +108,7 @@ public class CustomHandler extends DefaultHandler {
         }
 
         // What we are adding to
-        Content top = (Content) stack.getFirst();
+        Content top = stack.getFirst();
 
         // If the element and its descendants are to be ignored
         // then there is a null element on the stack
@@ -148,14 +148,14 @@ public class CustomHandler extends DefaultHandler {
      * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String,
      * java.lang.String, java.lang.String)
      */
-    /* @Override */
+    @Override
     public void endElement(String uri, String localname, String qname) {
         if (stack.isEmpty()) {
             return;
         }
         // When we are done processing an element we need to remove
         // it from the stack so that nothing more is attached to it.
-        Content top = (Content) stack.removeFirst();
+        Content top = stack.removeFirst();
         if (top instanceof Element) {
             Element finished = (Element) top;
             Tag t = getTag(localname, qname);
@@ -177,13 +177,13 @@ public class CustomHandler extends DefaultHandler {
     }
 
     private Tag getTag(String localname, String qname) {
-        Tag t = (Tag) TAG_MAP.get(qname);
+        Tag t = TAG_MAP.get(qname);
 
         // Some of the THML books are broken in that they use uppercase
         // element names, which the spec disallows, but we might as well
         // look out for them
         if (t == null) {
-            t = (Tag) TAG_MAP.get(qname.toLowerCase(Locale.ENGLISH));
+            t = TAG_MAP.get(qname.toLowerCase(Locale.ENGLISH));
 
             if (t == null) {
                 DataPolice.report("Unknown thml element: " + localname + " qname=" + qname);
@@ -208,12 +208,12 @@ public class CustomHandler extends DefaultHandler {
     /**
      * The stack of elements that we have created
      */
-    private LinkedList stack;
+    private LinkedList<Content> stack;
 
     /**
      * The known tag types
      */
-    private static final Map TAG_MAP = new HashMap();
+    private static final Map<String,Tag> TAG_MAP = new HashMap<String,Tag>();
 
     static {
         /*

@@ -58,7 +58,7 @@ public class PatternFormatter extends Formatter {
      *            the log record to be formatted.
      * @return a formatted log record
      */
-    /* @Override */
+    @Override
     public synchronized String format(LogRecord record) {
         // Minimize memory allocations here.
         dat.setTime(record.getMillis());

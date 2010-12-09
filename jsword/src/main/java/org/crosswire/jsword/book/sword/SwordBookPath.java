@@ -66,7 +66,7 @@ public class SwordBookPath {
             return;
         }
 
-        SwordBookPath.augmentPath = (File[]) newDirs.clone();
+        SwordBookPath.augmentPath = newDirs.clone();
 
         // Now we need to (re)register ourselves
         Books.installed().registerDriver(SwordBookDriver.instance());
@@ -78,7 +78,7 @@ public class SwordBookPath {
      * @return The new Sword directory
      */
     public static File[] getAugmentPath() {
-        return (File[]) augmentPath.clone();
+        return augmentPath.clone();
     }
 
     /**
@@ -89,7 +89,7 @@ public class SwordBookPath {
      * @return the array of Book locations.
      */
     public static File[] getSwordPath() {
-        ArrayList swordPath = new ArrayList();
+        ArrayList<File> swordPath = new ArrayList<File>();
 
         // The first place to look for Books
         swordPath.add(getSwordDownloadDir());
@@ -115,7 +115,7 @@ public class SwordBookPath {
             }
         }
 
-        return (File[]) swordPath.toArray(new File[swordPath.size()]);
+        return swordPath.toArray(new File[swordPath.size()]);
     }
 
     /**
@@ -137,7 +137,7 @@ public class SwordBookPath {
         // If possible migrate the old location to the new one
         migrateBookDir();
 
-        List bookDirs = new ArrayList();
+        List<File> bookDirs = new ArrayList<File>();
 
         String home = System.getProperty(PROPERTY_USER_HOME);
 
@@ -187,10 +187,10 @@ public class SwordBookPath {
         // If the migration did not work then use the old area
         testDefaultPath(bookDirs, new File(CWProject.instance().getWritableProjectDir().getPath()));
 
-        return (File[]) bookDirs.toArray(new File[bookDirs.size()]);
+        return bookDirs.toArray(new File[bookDirs.size()]);
     }
 
-    private static void readSwordConf(List bookDirs, File swordConfDir) {
+    private static void readSwordConf(List<File> bookDirs, File swordConfDir) {
         File sysconfig = new File(swordConfDir, SWORD_GLOBAL_CONF);
         if (sysconfig.canRead()) {
             InputStream is = null;
@@ -216,7 +216,7 @@ public class SwordBookPath {
         }
     }
 
-    private static void readSwordConf(List bookDirs, String swordConfDir) {
+    private static void readSwordConf(List<File> bookDirs, String swordConfDir) {
         readSwordConf(bookDirs, new File(swordConfDir));
     }
 
@@ -229,7 +229,7 @@ public class SwordBookPath {
      * @param path
      *            the path to check
      */
-    private static void testDefaultPath(List bookDirs, File path) {
+    private static void testDefaultPath(List<File> bookDirs, File path) {
         if (path == null) {
             return;
         }
@@ -249,7 +249,7 @@ public class SwordBookPath {
      * @param path
      *            the path to check
      */
-    private static void testDefaultPath(List bookDirs, String path) {
+    private static void testDefaultPath(List<File> bookDirs, String path) {
         if (path == null) {
             return;
         }

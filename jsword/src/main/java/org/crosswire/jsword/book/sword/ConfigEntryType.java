@@ -200,7 +200,7 @@ public class ConfigEntryType implements Serializable {
          */
         public ConfigEntryPickType(String name, String[] picks, Object defaultPick) {
             super(name, defaultPick);
-            choiceArray = (String[]) picks.clone();
+            choiceArray = picks.clone();
         }
 
         /*
@@ -208,6 +208,7 @@ public class ConfigEntryType implements Serializable {
          * 
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
          */
+        @Override
         protected boolean hasChoices() {
             return true;
         }
@@ -219,6 +220,7 @@ public class ConfigEntryType implements Serializable {
          * org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang
          * .String)
          */
+        @Override
         public boolean isAllowed(String value) {
             for (int i = 0; i < choiceArray.length; i++) {
                 if (choiceArray[i].equalsIgnoreCase(value)) {
@@ -236,6 +238,7 @@ public class ConfigEntryType implements Serializable {
          * org.crosswire.jsword.book.sword.ConfigEntryType#filter(java.lang.
          * String)
          */
+        @Override
         public String filter(String value) {
             // Do we have an exact match?
             for (int i = 0; i < choiceArray.length; i++) {
@@ -284,6 +287,7 @@ public class ConfigEntryType implements Serializable {
          * 
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#isSynthetic()
          */
+        @Override
         public boolean isSynthetic() {
             return true;
         }
@@ -313,6 +317,7 @@ public class ConfigEntryType implements Serializable {
          * org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang
          * .String)
          */
+        @Override
         public boolean isAllowed(String value) {
             return true;
         }
@@ -357,6 +362,7 @@ public class ConfigEntryType implements Serializable {
          * org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang
          * .String)
          */
+        @Override
         public boolean isAllowed(String aValue) {
             try {
                 Integer.parseInt(aValue);
@@ -373,6 +379,7 @@ public class ConfigEntryType implements Serializable {
          * org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang
          * .String)
          */
+        @Override
         public Object convert(String input) {
             try {
                 return Integer.valueOf(input);
@@ -414,6 +421,7 @@ public class ConfigEntryType implements Serializable {
          * 
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#mayRepeat()
          */
+        @Override
         public boolean mayRepeat() {
             return true;
         }
@@ -454,6 +462,7 @@ public class ConfigEntryType implements Serializable {
          * org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang
          * .String)
          */
+        @Override
         public boolean isAllowed(String value) {
             try {
                 Integer.parseInt(value);
@@ -470,6 +479,7 @@ public class ConfigEntryType implements Serializable {
          * org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang
          * .String)
          */
+        @Override
         public Object convert(String input) {
             try {
                 return Integer.valueOf(input);
@@ -502,6 +512,7 @@ public class ConfigEntryType implements Serializable {
          * org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang
          * .String)
          */
+        @Override
         public Object convert(String input) {
             return Boolean.valueOf(input);
         }
@@ -522,6 +533,7 @@ public class ConfigEntryType implements Serializable {
          * 
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#mayRepeat()
          */
+        @Override
         public boolean mayRepeat() {
             return true;
         }
@@ -550,6 +562,7 @@ public class ConfigEntryType implements Serializable {
          * org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang
          * .String)
          */
+        @Override
         public Object convert(String input) {
             return new Language(input);
         }
@@ -569,6 +582,7 @@ public class ConfigEntryType implements Serializable {
          * org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang
          * .String)
          */
+        @Override
         public Object convert(String input) {
             return new Language(input);
         }
@@ -595,6 +609,7 @@ public class ConfigEntryType implements Serializable {
          * @see
          * org.crosswire.jsword.book.sword.ConfigEntryType#allowsContinuation()
          */
+        @Override
         public boolean allowsContinuation() {
             return true;
         }
@@ -604,6 +619,7 @@ public class ConfigEntryType implements Serializable {
          * 
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#allowsRTF()
          */
+        @Override
         public boolean allowsRTF() {
             return true;
         }
@@ -619,6 +635,7 @@ public class ConfigEntryType implements Serializable {
      */
     public static final ConfigEntryType VERSION = new ConfigEntryType("Version", "1.0") {
 
+        @Override
         public boolean isAllowed(String aValue) {
             try {
                 Float.parseFloat(aValue);
@@ -648,6 +665,7 @@ public class ConfigEntryType implements Serializable {
          * 
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#mayRepeat()
          */
+        @Override
         public boolean mayRepeat() {
             return true;
         }
@@ -657,6 +675,7 @@ public class ConfigEntryType implements Serializable {
          * 
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#reportDetails()
          */
+        @Override
         public boolean reportDetails() {
             return false;
         }
@@ -685,6 +704,7 @@ public class ConfigEntryType implements Serializable {
          * org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang
          * .String)
          */
+        @Override
         public Object convert(String input) {
             return BookCategory.fromString(input);
         }
@@ -713,6 +733,7 @@ public class ConfigEntryType implements Serializable {
          * org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang
          * .String)
          */
+        @Override
         public Object convert(String input) {
             return new Language(input);
         }
@@ -736,6 +757,7 @@ public class ConfigEntryType implements Serializable {
          * org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang
          * .String)
          */
+        @Override
         public boolean isAllowed(String value) {
             try {
                 Integer.parseInt(value);
@@ -752,6 +774,7 @@ public class ConfigEntryType implements Serializable {
          * org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang
          * .String)
          */
+        @Override
         public Object convert(String input) {
             try {
                 return Integer.valueOf(input);
@@ -779,6 +802,7 @@ public class ConfigEntryType implements Serializable {
          * org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang
          * .String)
          */
+        @Override
         public boolean isAllowed(String value) {
             return validDatePattern.matcher(value).matches();
         }
@@ -803,6 +827,7 @@ public class ConfigEntryType implements Serializable {
          * 
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#mayRepeat()
          */
+        @Override
         public boolean mayRepeat() {
             return true;
         }
@@ -812,6 +837,7 @@ public class ConfigEntryType implements Serializable {
          * 
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#reportDetails()
          */
+        @Override
         public boolean reportDetails() {
             return false;
         }
@@ -833,6 +859,7 @@ public class ConfigEntryType implements Serializable {
          * @see
          * org.crosswire.jsword.book.sword.ConfigEntryType#allowsContinuation()
          */
+        @Override
         public boolean allowsContinuation() {
             return true;
         }
@@ -861,6 +888,7 @@ public class ConfigEntryType implements Serializable {
          * org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang
          * .String)
          */
+        @Override
         public boolean isAllowed(String value) {
             return validDatePattern.matcher(value).matches();
         }
@@ -884,6 +912,7 @@ public class ConfigEntryType implements Serializable {
          * @see
          * org.crosswire.jsword.book.sword.ConfigEntryType#allowsContinuation()
          */
+        @Override
         public boolean allowsContinuation() {
             return true;
         }
@@ -893,6 +922,7 @@ public class ConfigEntryType implements Serializable {
          * 
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#allowsRTF()
          */
+        @Override
         public boolean allowsRTF() {
             return true;
         }
@@ -914,6 +944,7 @@ public class ConfigEntryType implements Serializable {
          * @see
          * org.crosswire.jsword.book.sword.ConfigEntryType#allowsContinuation()
          */
+        @Override
         public boolean allowsContinuation() {
             return true;
         }
@@ -923,6 +954,7 @@ public class ConfigEntryType implements Serializable {
          * 
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#allowsRTF()
          */
+        @Override
         public boolean allowsRTF() {
             return true;
         }
@@ -944,6 +976,7 @@ public class ConfigEntryType implements Serializable {
          * @see
          * org.crosswire.jsword.book.sword.ConfigEntryType#allowsContinuation()
          */
+        @Override
         public boolean allowsContinuation() {
             return true;
         }
@@ -953,6 +986,7 @@ public class ConfigEntryType implements Serializable {
          * 
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#allowsRTF()
          */
+        @Override
         public boolean allowsRTF() {
             return true;
         }
@@ -974,6 +1008,7 @@ public class ConfigEntryType implements Serializable {
          * @see
          * org.crosswire.jsword.book.sword.ConfigEntryType#allowsContinuation()
          */
+        @Override
         public boolean allowsContinuation() {
             return true;
         }
@@ -983,6 +1018,7 @@ public class ConfigEntryType implements Serializable {
          * 
          * @see org.crosswire.jsword.book.sword.ConfigEntryType#allowsRTF()
          */
+        @Override
         public boolean allowsRTF() {
             return true;
         }
@@ -1024,6 +1060,7 @@ public class ConfigEntryType implements Serializable {
          * @see
          * org.crosswire.jsword.book.sword.ConfigEntryType#allowsContinuation()
          */
+        @Override
         public boolean allowsContinuation() {
             return true;
         }
@@ -1045,6 +1082,7 @@ public class ConfigEntryType implements Serializable {
          * @see
          * org.crosswire.jsword.book.sword.ConfigEntryType#allowsContinuation()
          */
+        @Override
         public boolean allowsContinuation() {
             return true;
         }
@@ -1067,6 +1105,7 @@ public class ConfigEntryType implements Serializable {
          * @see
          * org.crosswire.jsword.book.sword.ConfigEntryType#allowsContinuation()
          */
+        @Override
         public boolean allowsContinuation() {
             return true;
         }
@@ -1258,6 +1297,7 @@ public class ConfigEntryType implements Serializable {
      * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public final boolean equals(Object o) {
         return super.equals(o);
     }
@@ -1268,6 +1308,7 @@ public class ConfigEntryType implements Serializable {
      * 
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public final int hashCode() {
         return super.hashCode();
     }
@@ -1277,6 +1318,7 @@ public class ConfigEntryType implements Serializable {
      * 
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         return name;
     }

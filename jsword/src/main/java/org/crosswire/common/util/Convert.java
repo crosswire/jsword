@@ -121,7 +121,7 @@ public final class Convert {
      *            the thing to convert
      * @return the converted data
      */
-    public static Class string2Class(String data) throws ClassNotFoundException {
+    public static Class<?> string2Class(String data) throws ClassNotFoundException {
         return ClassUtil.forName(data);
     }
 
@@ -132,19 +132,19 @@ public final class Convert {
      *            the thing to convert
      * @return the converted data
      */
-    public static String class2String(Class data) {
+    public static String class2String(Class<?> data) {
         return data.getName();
     }
 
     /**
-     * Convert a String to a Hashtable, with type checking
+     * Convert a String to a Map, with type checking
      * 
      * @param data
      *            the thing to convert
      * @return the converted data
      */
-    public static Map string2Hashtable(String data, Class superclass) {
-        Map commands = new HashMap();
+    public static Map<String, String> string2Hashtable(String data, Class<?> superclass) {
+        Map<String, String> commands = new HashMap<String, String>();
 
         String[] data_arr = StringUtil.split(data, " ");
         String entry = "";
@@ -154,7 +154,7 @@ public final class Convert {
                 int equ_pos = entry.indexOf('=');
                 String key = entry.substring(0, equ_pos);
                 String value = entry.substring(equ_pos + 1);
-                Class clazz = ClassUtil.forName(value);
+                Class<?> clazz = ClassUtil.forName(value);
 
                 if (clazz.isAssignableFrom(superclass)) {
                     assert false;
@@ -171,29 +171,29 @@ public final class Convert {
     }
 
     /**
-     * Convert a String to a Hashtable, without type checking
+     * Convert a String to a Map, without type checking
      * 
      * @param data
      *            the thing to convert
      * @return the converted data
      */
-    public static Map string2Map(String data) {
+    public static Map<String,String> string2Map(String data) {
         return string2Hashtable(data, Object.class);
     }
 
     /**
-     * Convert a Hashtable to a Sting
+     * Convert a Map to a Sting
      * 
      * @param commands
      *            the thing to convert
      * @return the converted data
      */
-    public static String map2String(Map commands) {
-        Iterator it = commands.entrySet().iterator();
+    public static String map2String(Map<Object,Object> commands) {
+        Iterator<Map.Entry<Object,Object>> it = commands.entrySet().iterator();
         StringBuilder retcode = new StringBuilder();
 
         while (it.hasNext()) {
-            Map.Entry entry = (Map.Entry) it.next();
+            Map.Entry<Object,Object> entry = it.next();
 
             retcode.append(entry.getKey());
             retcode.append('=');

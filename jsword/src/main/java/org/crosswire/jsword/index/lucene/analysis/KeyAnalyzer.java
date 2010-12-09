@@ -52,6 +52,7 @@ public class KeyAnalyzer extends AbstractBookAnalyzer {
     /* (non-Javadoc)
      * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String, java.io.Reader)
      */
+    @Override
     public TokenStream tokenStream(String fieldName, Reader reader) {
         return new KeyFilter(getBook(), new KeywordTokenizer(reader));
     }

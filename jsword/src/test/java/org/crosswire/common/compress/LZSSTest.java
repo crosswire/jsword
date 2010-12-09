@@ -41,14 +41,15 @@ import org.crosswire.common.util.ResourceUtil;
  */
 public class LZSSTest extends TestCase {
     public static final int RING_SIZE = 4096;
-    public static int RING_WRAP = RING_SIZE - 1;
-    public static int THRESHOLD = 3;
+    public static final int RING_WRAP = RING_SIZE - 1;
+    public static final int THRESHOLD = 3;
 
     /*
      * (non-Javadoc)
      * 
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     protected void setUp() {
     }
 
@@ -57,6 +58,7 @@ public class LZSSTest extends TestCase {
      * 
      * @see junit.framework.TestCase#tearDown()
      */
+    @Override
     protected void tearDown() {
     }
 

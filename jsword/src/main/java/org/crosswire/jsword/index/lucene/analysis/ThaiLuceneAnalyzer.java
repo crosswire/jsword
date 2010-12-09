@@ -43,6 +43,7 @@ public class ThaiLuceneAnalyzer extends AbstractBookAnalyzer {
     public ThaiLuceneAnalyzer() {
     }
 
+    @Override
     public TokenStream tokenStream(String fieldName, Reader reader) {
         TokenStream ts = new StandardTokenizer(matchVersion, reader);
         ts = new ThaiWordFilter(ts);
@@ -55,6 +56,7 @@ public class ThaiLuceneAnalyzer extends AbstractBookAnalyzer {
     /* (non-Javadoc)
      * @see org.apache.lucene.analysis.Analyzer#reusableTokenStream(java.lang.String, java.io.Reader)
      */
+    @Override
     public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
         SavedStreams streams = (SavedStreams) getPreviousTokenStream();
         if (streams == null) {

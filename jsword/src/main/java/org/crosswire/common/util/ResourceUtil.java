@@ -67,7 +67,7 @@ public final class ResourceUtil {
      * @throws MissingResourceException
      *             if the resource can not be found
      */
-    public static URL getResource(Class clazz, String resourceName) throws MissingResourceException {
+    public static <T> URL getResource(Class<T> clazz, String resourceName) throws MissingResourceException {
         URL resource = CWClassLoader.instance(clazz).findResource(resourceName);
 
         if (resource == null) {
@@ -99,7 +99,7 @@ public final class ResourceUtil {
      * @throws MissingResourceException
      *             if the resource can not be found
      */
-    public static InputStream getResourceAsStream(Class clazz, String search) throws IOException, MissingResourceException {
+    public static <T> InputStream getResourceAsStream(Class<T> clazz, String search) throws IOException, MissingResourceException {
         return ResourceUtil.getResource(clazz, search).openStream();
     }
 
@@ -131,7 +131,7 @@ public final class ResourceUtil {
      * @throws MissingResourceException
      *             if the resource can not be found
      */
-    public static Properties getProperties(Class clazz) throws IOException {
+    public static <T> Properties getProperties(Class<T> clazz) throws IOException {
         return getProperties(clazz, ClassUtil.getShortClassName(clazz));
     }
 
@@ -147,7 +147,7 @@ public final class ResourceUtil {
      * @throws MissingResourceException
      *             if the resource can not be found
      */
-    private static Properties getProperties(Class clazz, String subject) throws IOException {
+    private static <T> Properties getProperties(Class<T> clazz, String subject) throws IOException {
         try {
             String lookup = subject + FileUtil.EXTENSION_PROPERTIES;
             InputStream in = getResourceAsStream(clazz, lookup);

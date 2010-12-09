@@ -15,6 +15,7 @@ import junit.framework.TestCase;
 
 public class LineMapTest extends TestCase {
 
+    @Override
     protected void setUp() {
     }
 

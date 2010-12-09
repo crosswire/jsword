@@ -36,6 +36,7 @@ import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.DefaultLeafKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
+import org.jdom.Content;
 import org.jdom.Element;
 
 /**
@@ -65,21 +66,21 @@ public class SwordDictionary extends AbstractBook {
      * org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage
      * .Key, boolean)
      */
-    public Iterator getOsisIterator(Key key, boolean allowEmpty) throws BookException {
+    public Iterator<Content> getOsisIterator(Key key, boolean allowEmpty) throws BookException {
         checkActive();
 
         assert key != null;
         assert backend != null;
 
         try {
-            List content = new ArrayList();
+            List<Content> content = new ArrayList<Content>();
             Element title = OSISUtil.factory().createTitle();
             title.addContent(key.getName());
             content.add(title);
 
             String txt = backend.getRawText(key);
 
-            List osisContent = filter.toOSIS(this, key, txt);
+            List<Content> osisContent = filter.toOSIS(this, key, txt);
             content.addAll(osisContent);
 
             return content.iterator();
@@ -203,7 +204,7 @@ public class SwordDictionary extends AbstractBook {
      * org.crosswire.common.activate.Activatable#activate(org.crosswire.common
      * .activate.Lock)
      */
-    /* @Override */
+    @Override
     public final void activate(Lock lock) {
         super.activate(lock);
         active = true;
@@ -219,7 +220,7 @@ public class SwordDictionary extends AbstractBook {
      * org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common
      * .activate.Lock)
      */
-    /* @Override */
+    @Override
     public final void deactivate(Lock lock) {
         super.deactivate(lock);
         Activator.deactivate(backend);

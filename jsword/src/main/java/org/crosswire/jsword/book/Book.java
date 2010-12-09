@@ -31,6 +31,7 @@ import org.crosswire.jsword.index.IndexStatusListener;
 import org.crosswire.jsword.index.search.SearchRequest;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyFactory;
+import org.jdom.Content;
 import org.jdom.Document;
 
 /**
@@ -42,7 +43,7 @@ import org.jdom.Document;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public interface Book extends Activatable, KeyFactory, Comparable {
+public interface Book extends Activatable, KeyFactory, Comparable<Book> {
     /**
      * Meta-Information: What version of the Bible is this?
      * 
@@ -63,7 +64,7 @@ public interface Book extends Activatable, KeyFactory, Comparable {
      * @param allowEmpty
      *            indicates whether empty keys should be present.
      */
-    Iterator getOsisIterator(Key key, boolean allowEmpty) throws BookException;
+    Iterator<Content> getOsisIterator(Key key, boolean allowEmpty) throws BookException;
 
     /**
      * Returns <tt>true</tt> if this book contains the specified element.
@@ -299,7 +300,7 @@ public interface Book extends Activatable, KeyFactory, Comparable {
      * returned Properties will be read-only so any attempts to alter it will
      * fail.
      */
-    Map getProperties();
+    Map<String, Object> getProperties();
 
     /**
      * @param key

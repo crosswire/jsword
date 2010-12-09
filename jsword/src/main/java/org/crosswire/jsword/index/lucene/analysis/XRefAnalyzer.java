@@ -55,6 +55,7 @@ public class XRefAnalyzer extends AbstractBookAnalyzer {
      * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String,
      * java.io.Reader)
      */
+    @Override
     public TokenStream tokenStream(String fieldName, Reader reader) {
         return new KeyFilter(getBook(), new WhitespaceTokenizer(reader));
     }

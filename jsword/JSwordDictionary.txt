@@ -156,3 +156,8 @@ ditto
 trawl
 breakages
 indeterminant
+stemmer
+snowball
+iterable
+placeholders
+dodgy

@@ -71,11 +71,13 @@ public abstract class AbstractBookTokenFilter extends TokenFilter {
     }
 
     /* Define to quite FindBugs */
+    @Override
     public boolean equals(Object obj) {
         return super.equals(obj);
     }
 
     /* Define to quite FindBugs */
+    @Override
     public int hashCode() {
         return super.hashCode();
     }

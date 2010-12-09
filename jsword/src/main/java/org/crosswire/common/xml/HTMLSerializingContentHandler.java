@@ -66,7 +66,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
         super(theFormat, theWriter);
     }
 
-    /* @Override */
+    @Override
     protected String decorateTagName(String tagName) {
         StringBuilder buf = new StringBuilder(50);
         buf.append("<font class='tag'>");
@@ -81,7 +81,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
      * @seeorg.crosswire.common.xml.PrettySerializingContentHandler#
      * decorateAttributeName(java.lang.String)
      */
-    /* @Override */
+    @Override
     protected String decorateAttributeName(String attrName) {
         StringBuilder buf = new StringBuilder(50);
         buf.append("<font class='attr'>");
@@ -96,7 +96,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
      * @seeorg.crosswire.common.xml.PrettySerializingContentHandler#
      * decorateAttributeValue(java.lang.String)
      */
-    /* @Override */
+    @Override
     protected String decorateAttributeValue(String attrValue) {
         StringBuilder buf = new StringBuilder(50);
         buf.append("<font class='value'>");
@@ -112,7 +112,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
      * org.crosswire.common.xml.PrettySerializingContentHandler#decorateCharacters
      * (java.lang.String)
      */
-    /* @Override */
+    @Override
     protected String decorateCharacters(String characters) {
         StringBuilder buf = new StringBuilder(50);
         buf.append("<font class='text'>");
@@ -128,7 +128,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
      * org.crosswire.common.xml.PrettySerializingContentHandler#decorateIndent
      * (int)
      */
-    /* @Override */
+    @Override
     protected String decorateIndent(int indentLevel) {
         StringBuilder buf = new StringBuilder(100);
         buf.append("<font class='indent'>");
@@ -142,7 +142,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
      * 
      * @see org.xml.sax.ContentHandler#startDocument()
      */
-    /* @Override */
+    @Override
     public void startDocument() {
         // Note: we should be using SPAN here but Sun's Java does not support
         // styling it.
@@ -155,7 +155,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
      * 
      * @see org.xml.sax.ContentHandler#endDocument()
      */
-    /* @Override */
+    @Override
     public void endDocument() {
         write("</body></head>");
     }
@@ -166,7 +166,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
      * @see
      * org.crosswire.common.xml.PrettySerializingContentHandler#getEmptyTagEnd()
      */
-    /* @Override */
+    @Override
     protected String getEmptyTagEnd() {
         return XMLUtil.escape(super.getEmptyTagEnd());
     }
@@ -177,7 +177,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
      * @see
      * org.crosswire.common.xml.PrettySerializingContentHandler#getEndTagStart()
      */
-    /* @Override */
+    @Override
     protected String getEndTagStart() {
         return XMLUtil.escape(super.getEndTagStart());
     }
@@ -187,7 +187,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
      * 
      * @see org.crosswire.common.xml.PrettySerializingContentHandler#getPIEnd()
      */
-    /* @Override */
+    @Override
     protected String getPIEnd() {
         return XMLUtil.escape(super.getPIEnd());
     }
@@ -198,7 +198,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
      * @see
      * org.crosswire.common.xml.PrettySerializingContentHandler#getPIStart()
      */
-    /* @Override */
+    @Override
     protected String getPIStart() {
         return XMLUtil.escape(super.getPIStart());
     }
@@ -208,7 +208,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
      * 
      * @see org.crosswire.common.xml.PrettySerializingContentHandler#getTagEnd()
      */
-    /* @Override */
+    @Override
     protected String getTagEnd() {
         return XMLUtil.escape(super.getTagEnd());
     }
@@ -219,7 +219,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
      * @see
      * org.crosswire.common.xml.PrettySerializingContentHandler#getTagStart()
      */
-    /* @Override */
+    @Override
     protected String getTagStart() {
         return XMLUtil.escape(super.getTagStart());
     }
@@ -230,7 +230,7 @@ public class HTMLSerializingContentHandler extends PrettySerializingContentHandl
      * @see
      * org.crosswire.common.xml.PrettySerializingContentHandler#getNewline()
      */
-    /* @Override */
+    @Override
     protected String getNewline() {
         return "<br>";
     }

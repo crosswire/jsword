@@ -80,7 +80,7 @@ public final class OSISNames {
     public static int getNumber(String find) {
         String match = BookName.normalize(find, OSIS_LOCALE);
 
-        Integer bookNum = (Integer) osisMap.get(match);
+        Integer bookNum = osisMap.get(match);
         if (bookNum != null) {
             return bookNum.intValue();
         }
@@ -107,7 +107,7 @@ public final class OSISNames {
     private static void initialize() {
         int booksInBible = BibleInfo.booksInBible();
         osisBooks = new String[booksInBible];
-        osisMap = new HashMap(booksInBible);
+        osisMap = new HashMap<String,Integer>(booksInBible);
 
         // Get all the OSIS standard book names
         ResourceBundle resources = ResourceBundle.getBundle(OSISNames.class.getName(), OSIS_LOCALE, CWClassLoader.instance(OSISNames.class));
@@ -148,5 +148,5 @@ public final class OSISNames {
      * Standard OSIS names for the book of the Bible, in lowercase, generated at
      * runtime
      */
-    private static Map osisMap;
+    private static Map<String,Integer> osisMap;
 }

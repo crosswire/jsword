@@ -49,7 +49,7 @@ public class CenterTag extends AbstractTag {
      * org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element,
      * org.xml.sax.Attributes)
      */
-    /* @Override */
+    @Override
     public Element processTag(Element ele, Attributes attrs) {
         Element seg = OSISUtil.factory().createSeg();
         seg.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.SEG_CENTER);

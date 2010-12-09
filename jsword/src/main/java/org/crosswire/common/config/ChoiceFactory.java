@@ -53,17 +53,17 @@ public final class ChoiceFactory {
     public static Choice getChoice(Element option, ResourceBundle configResources) throws ClassNotFoundException, IllegalAccessException,
             InstantiationException, StartupException
     {
-        Class clazz = null;
+        Class<Choice> clazz = null;
 
         String type = option.getAttributeValue("type");
         if ("custom".equals(type)) {
             String clazzstr = option.getAttributeValue("class");
-            clazz = ClassUtil.forName(clazzstr);
+            clazz = (Class<Choice>) ClassUtil.forName(clazzstr);
         } else {
-            clazz = (Class) map.get(type);
+            clazz = map.get(type);
         }
 
-        Choice choice = (Choice) clazz.newInstance();
+        Choice choice = clazz.newInstance();
         choice.init(option, configResources);
         return choice;
     }
@@ -71,19 +71,19 @@ public final class ChoiceFactory {
     /**
      * Method getDataMap.
      */
-    public static Map getDataMap() {
+    public static Map<String,Object> getDataMap() {
         return datamap;
     }
 
     /**
      * Storage of various registered objects
      */
-    private static Map datamap = new HashMap();
+    private static Map<String,Object> datamap = new HashMap<String,Object>();
 
     /**
      * Store of the known ChoiceTypes
      */
-    private static Map map;
+    private static Map<String,Class<Choice>> map;
 
     /**
      * Setup the map of Choices

@@ -123,7 +123,7 @@ public class GenBookBackend extends AbstractBackend {
      * org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage
      * .Key)
      */
-    /* @Override */
+    @Override
     public boolean contains(Key key) {
         checkActive();
 
@@ -148,7 +148,7 @@ public class GenBookBackend extends AbstractBackend {
      * org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire
      * .jsword.passage.Key, java.lang.String)
      */
-    /* @Override */
+    @Override
     public String getRawText(Key key) throws BookException {
         checkActive();
 
@@ -189,7 +189,7 @@ public class GenBookBackend extends AbstractBackend {
     private TreeNode find(Key key) throws IOException {
         // We need to search from the root, so navigate to the root, saving as
         // we go.
-        List path = new ArrayList();
+        List<String> path = new ArrayList<String>();
         for (Key parentKey = key; parentKey != null && parentKey.getName().length() > 0; parentKey = parentKey.getParent()) {
             path.add(parentKey.getName());
         }
@@ -199,7 +199,7 @@ public class GenBookBackend extends AbstractBackend {
         node = index.getFirstChild(node);
 
         for (int i = path.size() - 1; i >= 0; i--) {
-            String name = (String) path.get(i);
+            String name = path.get(i);
 
             // Search among the siblings for the current level.
             while (node != null && !name.equals(node.getName())) {
@@ -232,7 +232,7 @@ public class GenBookBackend extends AbstractBackend {
      * 
      * @see org.crosswire.jsword.book.sword.AbstractBackend#readIndex()
      */
-    /* @Override */
+    @Override
     public Key readIndex() {
         SwordBookMetaData bmd = getBookMetaData();
         Key reply = new DefaultKeyList(null, bmd.getName());
@@ -251,6 +251,7 @@ public class GenBookBackend extends AbstractBackend {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#setAliasKey(org.crosswire.jsword.passage.Key, org.crosswire.jsword.passage.Key)
      */
+    @Override
     public void setAliasKey(Key alias, Key source) throws IOException {
         throw new UnsupportedOperationException();
     }
@@ -258,6 +259,7 @@ public class GenBookBackend extends AbstractBackend {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#setRawText(org.crosswire.jsword.passage.Key, java.lang.String)
      */
+    @Override
     public void setRawText(Key key, String text) throws BookException, IOException {
         throw new UnsupportedOperationException();
     }

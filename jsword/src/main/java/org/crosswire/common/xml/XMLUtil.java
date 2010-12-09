@@ -346,7 +346,7 @@ public final class XMLUtil {
             return entity;
         }
 
-        String replace = (String) badEntities.get(entity);
+        String replace = badEntities.get(entity);
         if (replace != null) {
             return replace;
         }
@@ -355,8 +355,8 @@ public final class XMLUtil {
     }
 
     // Map entities to their unicode equivalent
-    private static Set goodEntities = new HashSet();
-    private static Map badEntities = new HashMap();
+    private static Set<String> goodEntities = new HashSet<String>();
+    private static Map<String,String> badEntities = new HashMap<String,String>();
     static {
         // pre-defined XML entities
         goodEntities.add("&quot;"); // quotation mark

@@ -50,6 +50,7 @@ import org.crosswire.jsword.passage.PreferredKey;
 import org.crosswire.jsword.passage.RestrictionType;
 import org.crosswire.jsword.passage.SetKeyList;
 import org.crosswire.jsword.passage.VerseRange;
+import org.jdom.Content;
 import org.jdom.Element;
 
 /**
@@ -66,7 +67,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
     public ReadingsBook(ReadingsBookDriver driver, String setname, BookCategory type) {
         super(null); // set the book metadata later
 
-        hash = new TreeMap();
+        hash = new TreeMap<Key,String>();
 
         Locale defaultLocale = Locale.getDefault();
         ResourceBundle prop = ResourceBundle.getBundle(setname, defaultLocale, CWClassLoader.instance(ReadingsBookDriver.class));
@@ -116,7 +117,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
         return new ReadingsKey(new Date());
     }
 
-    public Iterator getOsisIterator(Key key, boolean allowEmpty) throws BookException {
+    public Iterator<Content> getOsisIterator(Key key, boolean allowEmpty) throws BookException {
         if (!(key instanceof ReadingsKey)) {
             // TRANSLATOR: Error condition: Indicates that something could not be found in the book. {0} is a placeholder for the unknown key.
             throw new BookException(UserMsg.gettext("Key not found {0}", new Object[] {
@@ -125,13 +126,13 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
         }
 
         // TODO(DMS): make the iterator be demand driven
-        List content = new ArrayList();
+        List<Content> content = new ArrayList<Content>();
 
         Element title = OSISUtil.factory().createTitle();
         title.addContent(key.getName());
         content.add(title);
 
-        String readings = (String) hash.get(key);
+        String readings = hash.get(key);
         if (readings == null) {
             // TRANSLATOR: Error condition: Indicates that something could not be found in the book. {0} is a placeholder for the unknown key.
             throw new BookException(UserMsg.gettext("Key not found {0}", new Object[] {
@@ -146,7 +147,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
             Element list = OSISUtil.factory().createList();
             content.add(list);
 
-            Iterator it = ref.rangeIterator(RestrictionType.NONE);
+            Iterator<Key> it = ref.rangeIterator(RestrictionType.NONE);
             while (it.hasNext()) {
                 VerseRange range = (VerseRange) it.next();
 
@@ -259,7 +260,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
         return new DefaultKeyList();
     }
 
-    /* @Override */
+    @Override
     public boolean hasFeature(FeatureType feature) {
         return feature == FeatureType.DAILY_DEVOTIONS;
     }
@@ -272,7 +273,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
     /**
      * The store of keys and data
      */
-    private Map hash;
+    private Map<Key,String> hash;
 
     /**
      * The log stream

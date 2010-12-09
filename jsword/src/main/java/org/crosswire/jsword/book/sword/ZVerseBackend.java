@@ -230,7 +230,7 @@ public class ZVerseBackend extends AbstractBackend {
      * org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage
      * .Key)
      */
-    /* @Override */
+    @Override
     public boolean contains(Key key) {
         checkActive();
         try {
@@ -280,7 +280,7 @@ public class ZVerseBackend extends AbstractBackend {
      * org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire
      * .jsword.passage.Key, java.lang.String)
      */
-    /* @Override */
+    @Override
     public String getRawText(Key key) throws BookException {
         checkActive();
         try {
@@ -369,6 +369,7 @@ public class ZVerseBackend extends AbstractBackend {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#setAliasKey(org.crosswire.jsword.passage.Key, org.crosswire.jsword.passage.Key)
      */
+    @Override
     public void setAliasKey(Key alias, Key source) throws IOException {
         throw new UnsupportedOperationException();
     }
@@ -376,6 +377,7 @@ public class ZVerseBackend extends AbstractBackend {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#setRawText(org.crosswire.jsword.passage.Key, java.lang.String)
      */
+    @Override
     public void setRawText(Key key, String text) throws BookException, IOException {
         throw new UnsupportedOperationException();
     }

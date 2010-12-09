@@ -60,6 +60,7 @@ public class SwordBook extends AbstractPassageBook {
      * org.crosswire.common.activate.Activatable#activate(org.crosswire.common
      * .activate.Lock)
      */
+    @Override
     public final void activate(Lock lock) {
         super.activate(lock);
 
@@ -74,6 +75,7 @@ public class SwordBook extends AbstractPassageBook {
      * org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common
      * .activate.Lock)
      */
+    @Override
     public final void deactivate(Lock lock) {
         super.deactivate(lock);
 
@@ -114,12 +116,13 @@ public class SwordBook extends AbstractPassageBook {
      * org.crosswire.jsword.book.basic.AbstractPassageBook#addOSIS(org.crosswire
      * .jsword.passage.Key, org.jdom.Element, java.util.List)
      */
-    public void addOSIS(Key key, Element div, List osisContent) {
+    @Override
+    public void addOSIS(Key key, Element div, List<Content> osisContent) {
         // See if the text is marked up with verses
         // If it is then just add it.
-        Iterator iter = osisContent.iterator();
+        Iterator<Content> iter = osisContent.iterator();
         while (iter.hasNext()) {
-            Content content = (Content) iter.next();
+            Content content = iter.next();
             if (content instanceof Element) {
                 Element ele = (Element) content;
                 if (ele.getName().equals(OSISUtil.OSIS_ELEMENT_VERSE)) {
@@ -137,12 +140,13 @@ public class SwordBook extends AbstractPassageBook {
         super.addOSIS(key, everse, osisContent);
     }
 
-    public void addOSIS(Key key, List contentList, List osisContent) {
+    @Override
+    public void addOSIS(Key key, List<Content> contentList, List<Content> osisContent) {
         // See if the text is marked up with verses
         // If it is then just add it.
-        Iterator iter = osisContent.iterator();
+        Iterator<Content> iter = osisContent.iterator();
         while (iter.hasNext()) {
-            Content content = (Content) iter.next();
+            Content content = iter.next();
             if (content instanceof Element) {
                 Element ele = (Element) content;
                 if (ele.getName().equals(OSISUtil.OSIS_ELEMENT_VERSE)) {
@@ -165,6 +169,7 @@ public class SwordBook extends AbstractPassageBook {
      * 
      * @see org.crosswire.jsword.book.Book#isWritable()
      */
+    @Override
     public boolean isWritable() {
         return backend.isWritable();
     }
@@ -200,6 +205,7 @@ public class SwordBook extends AbstractPassageBook {
      * 
      * @see org.crosswire.jsword.book.basic.AbstractPassageBook#getFilter()
      */
+    @Override
     protected Filter getFilter() {
         return filter;
     }

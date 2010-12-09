@@ -81,6 +81,7 @@ public class ConfigurableSnowballAnalyzer extends AbstractBookAnalyzer {
      * Filters {@link LowerCaseTokenizer} with {@link StopFilter} if enabled and
      * {@link SnowballFilter}.
      */
+    @Override
     public final TokenStream tokenStream(String fieldName, Reader reader) {
         TokenStream result = new LowerCaseTokenizer(reader);
         if (doStopWords && stopSet != null) {
@@ -118,6 +119,7 @@ public class ConfigurableSnowballAnalyzer extends AbstractBookAnalyzer {
         return streams.getResult();
     }
 
+    @Override
     public void setBook(Book newBook) {
         book = newBook;
         stemmerName = null;
@@ -142,7 +144,7 @@ public class ConfigurableSnowballAnalyzer extends AbstractBookAnalyzer {
 
             // Initialize the default stop words
             if (defaultStopWordMap.containsKey(stemmerName)) {
-                stopSet = (Set<?>) defaultStopWordMap.get(stemmerName);
+                stopSet = defaultStopWordMap.get(stemmerName);
             }
         }
     }
@@ -156,7 +158,7 @@ public class ConfigurableSnowballAnalyzer extends AbstractBookAnalyzer {
             .compile("(Danish|Dutch|English|Finnish|French|German2|German|Italian|Kp|Lovins|Norwegian|Porter|Portuguese|Russian|Spanish|Swedish)");
 
     // Maps StemmerName > String array of standard stop words
-    private static HashMap<String, Set<?>> defaultStopWordMap = new HashMap();
+    private static HashMap<String, Set<?>> defaultStopWordMap = new HashMap<String, Set<?>>();
     static {
         defaultStopWordMap.put("French", FrenchAnalyzer.getDefaultStopSet());
         defaultStopWordMap.put("German", GermanAnalyzer.getDefaultStopSet());

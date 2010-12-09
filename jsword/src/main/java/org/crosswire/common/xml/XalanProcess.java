@@ -48,7 +48,7 @@ public class XalanProcess {
      * @param args
      */
     public static void main(String[] args) {
-        Class clazz = null;
+        Class<?> clazz = null;
         Method main = null;
         try {
             // Try for 1.4.x

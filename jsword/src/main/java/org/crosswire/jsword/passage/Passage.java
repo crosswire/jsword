@@ -212,7 +212,7 @@ public interface Passage extends Key {
      *            Do we break ranges over chapters
      * @return A list enumerator
      */
-    Iterator rangeIterator(RestrictionType restrict);
+    Iterator<Key> rangeIterator(RestrictionType restrict);
 
     /**
      * Returns true if this collection contains all the specified Verse

@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.crosswire.common.diff.Diff;
 import org.crosswire.common.diff.DiffCleanup;
+import org.crosswire.common.diff.Difference;
 import org.crosswire.common.util.Language;
 import org.crosswire.common.xml.JDOMSAXEventProvider;
 import org.crosswire.common.xml.SAXEventProvider;
@@ -70,7 +71,7 @@ public class BookData implements BookProvider {
         assert books != null && books.length > 0;
         assert key != null;
 
-        this.books = (Book[]) books.clone();
+        this.books = books.clone();
         this.key = key;
         this.comparingBooks = compare;
     }
@@ -153,9 +154,9 @@ public class BookData implements BookProvider {
         Element div = OSISUtil.factory().createDiv();
 
         if (books.length == 1) {
-            Iterator iter = books[0].getOsisIterator(key, false);
+            Iterator<Content> iter = books[0].getOsisIterator(key, false);
             while (iter.hasNext()) {
-                Content content = (Content) iter.next();
+                Content content = iter.next();
                 div.addContent(content);
             }
         } else {
@@ -165,7 +166,7 @@ public class BookData implements BookProvider {
 
             table.addContent(row);
 
-            Iterator[] iters = new Iterator[books.length];
+            Iterator<Content>[] iters = new Iterator[books.length];
             boolean[] showDiffs = new boolean[books.length - 1];
             boolean doDiffs = false;
 
@@ -219,7 +220,7 @@ public class BookData implements BookProvider {
                     cell.setAttribute(OSISUtil.OSIS_ATTR_LANG, lang.getCode(), Namespace.XML_NAMESPACE);
                     row.addContent(cell);
                     if (iters[i].hasNext()) {
-                        content = (Content) iters[i].next();
+                        content = iters[i].next();
 
                         if (doDiffs) {
                             String thisText = "";
@@ -230,7 +231,7 @@ public class BookData implements BookProvider {
                             }
 
                             if (i > 0 && showDiffs[i - 1]) {
-                                List diffs = new Diff(lastText, thisText, false).compare();
+                                List<Difference> diffs = new Diff(lastText, thisText, false).compare();
                                 DiffCleanup.cleanupSemantic(diffs);
                                 cell.addContent(OSISUtil.diffToOsis(diffs));
 

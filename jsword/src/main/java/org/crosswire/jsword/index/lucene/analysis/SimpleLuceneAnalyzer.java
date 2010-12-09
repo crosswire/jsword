@@ -49,6 +49,7 @@ public class SimpleLuceneAnalyzer extends AbstractBookAnalyzer {
         doStemming = false;
     }
 
+    @Override
     public TokenStream tokenStream(String fieldName, Reader reader) {
         TokenStream result = new LowerCaseTokenizer(reader);
         result = new ASCIIFoldingFilter(result);

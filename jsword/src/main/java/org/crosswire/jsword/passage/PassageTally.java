@@ -23,6 +23,7 @@ package org.crosswire.jsword.passage;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.TreeSet;
 
 import org.crosswire.common.util.Logger;
@@ -120,6 +121,7 @@ public class PassageTally extends AbstractPassage {
      * 
      * @see org.crosswire.jsword.passage.AbstractPassage#isEmpty()
      */
+    @Override
     public boolean isEmpty() {
         return size == 0;
     }
@@ -129,6 +131,7 @@ public class PassageTally extends AbstractPassage {
      * 
      * @see org.crosswire.jsword.passage.AbstractPassage#countVerses()
      */
+    @Override
     public int countVerses() {
         return size;
     }
@@ -180,11 +183,12 @@ public class PassageTally extends AbstractPassage {
      * 
      * @see org.crosswire.jsword.passage.AbstractPassage#clone()
      */
+    @Override
     public Object clone() {
         // This gets us a shallow copy
         PassageTally copy = (PassageTally) super.clone();
 
-        copy.board = (int[]) board.clone();
+        copy.board = board.clone();
 
         return copy;
     }
@@ -194,6 +198,7 @@ public class PassageTally extends AbstractPassage {
      * 
      * @see org.crosswire.jsword.passage.AbstractPassage#toString()
      */
+    @Override
     public String toString() {
         return getName(0);
     }
@@ -203,6 +208,7 @@ public class PassageTally extends AbstractPassage {
      * 
      * @see org.crosswire.jsword.passage.AbstractPassage#getName()
      */
+    @Override
     public String getName() {
         return getName(0);
     }
@@ -224,7 +230,7 @@ public class PassageTally extends AbstractPassage {
         StringBuilder retcode = new StringBuilder();
 
         if (order == ORDER_BIBLICAL) {
-            Iterator it = rangeIterator(RestrictionType.NONE);
+            Iterator<Key> it = rangeIterator(RestrictionType.NONE);
             Verse current = null;
             while (it.hasNext()) {
                 VerseRange range = (VerseRange) it.next();
@@ -241,12 +247,12 @@ public class PassageTally extends AbstractPassage {
                 max_count = Integer.MAX_VALUE;
             }
 
-            Iterator it = new OrderedVerseIterator(board);
+            Iterator<Key> it = new OrderedVerseIterator(board);
             Key current = null;
             int count = 0;
 
             while (it.hasNext() && count < max_count) {
-                Key verse = (Key) it.next();
+                Key verse = it.next();
                 retcode.append(verse.getName(current));
 
                 current = verse;
@@ -290,7 +296,7 @@ public class PassageTally extends AbstractPassage {
         int count = 0;
 
         while (it.hasNext() && count < max_count) {
-            Key verse = (Key) it.next();
+            Key verse = it.next();
             retcode.append(verse.getName());
             retcode.append(" (");
             retcode.append(100 * it.lastRank() / max);
@@ -311,7 +317,7 @@ public class PassageTally extends AbstractPassage {
      * 
      * @return A verse Iterator
      */
-    public Iterator iterator() {
+    public Iterator<Key> iterator() {
         if (order == ORDER_BIBLICAL) {
             return new VerseIterator();
         }
@@ -323,7 +329,8 @@ public class PassageTally extends AbstractPassage {
      * 
      * @return A range Iterator
      */
-    public Iterator rangeIterator(RestrictionType restrict) {
+    @Override
+    public Iterator<Key> rangeIterator(RestrictionType restrict) {
         if (order == ORDER_BIBLICAL) {
             return new VerseRangeIterator(iterator(), restrict);
         }
@@ -337,8 +344,9 @@ public class PassageTally extends AbstractPassage {
      *            The verses to test for
      * @return true if all the verses exist in this tally
      */
+    @Override
     public boolean contains(Key that) {
-        Iterator it = that.iterator();
+        Iterator<Key> it = that.iterator();
 
         while (it.hasNext()) {
             Verse verse = (Verse) it.next();
@@ -427,7 +435,7 @@ public class PassageTally extends AbstractPassage {
     public void remove(Key that) {
         optimizeWrites();
 
-        Iterator it = that.iterator();
+        Iterator<Key> it = that.iterator();
 
         while (it.hasNext()) {
             Verse verse = (Verse) it.next();
@@ -443,6 +451,7 @@ public class PassageTally extends AbstractPassage {
      * @see
      * org.crosswire.jsword.passage.Key#addAll(org.crosswire.jsword.passage.Key)
      */
+    @Override
     public void addAll(Key that) {
         optimizeWrites();
 
@@ -456,7 +465,7 @@ public class PassageTally extends AbstractPassage {
 
             incrementMax(that_rt.max);
         } else {
-            Iterator it = that.iterator();
+            Iterator<Key> it = that.iterator();
 
             while (it.hasNext()) {
                 Verse verse = (Verse) it.next();
@@ -486,7 +495,7 @@ public class PassageTally extends AbstractPassage {
                 increment(i, -that_rt.board[i - 1]);
             }
         } else {
-            Iterator it = that.iterator();
+            Iterator<Key> it = that.iterator();
 
             while (it.hasNext()) {
                 Verse verse = (Verse) it.next();
@@ -507,6 +516,7 @@ public class PassageTally extends AbstractPassage {
      * @param key
      *            The verses to remove/decrement
      */
+    @Override
     public void removeAll(Key key) {
         Passage that = KeyUtil.getPassage(key);
 
@@ -522,7 +532,7 @@ public class PassageTally extends AbstractPassage {
                 }
             }
         } else {
-            Iterator it = that.iterator();
+            Iterator<Key> it = that.iterator();
 
             while (it.hasNext()) {
                 Verse verse = (Verse) it.next();
@@ -540,6 +550,7 @@ public class PassageTally extends AbstractPassage {
     /**
      * Removes all of the Verses from this Passage.
      */
+    @Override
     public void clear() {
         optimizeWrites();
 
@@ -565,6 +576,7 @@ public class PassageTally extends AbstractPassage {
      * @return A new Passage containing the remaining verses or null
      * @see Verse
      */
+    @Override
     public Passage trimVerses(int count) {
         optimizeWrites();
 
@@ -573,9 +585,9 @@ public class PassageTally extends AbstractPassage {
 
         Passage remainder = (Passage) this.clone();
 
-        Iterator it = iterator();
+        Iterator<Key> it = iterator();
         while (it.hasNext()) {
-            Key verse = (Key) it.next();
+            Key verse = it.next();
 
             if (i > count) {
                 remove(verse);
@@ -620,6 +632,7 @@ public class PassageTally extends AbstractPassage {
      *            How should we restrict the blurring?
      * @see Passage
      */
+    @Override
     public void blur(int verses, RestrictionType restrict) {
         assert verses > 0;
 
@@ -633,7 +646,7 @@ public class PassageTally extends AbstractPassage {
             // This is a bit of a cheat, but there is no way I'm going
             // to do the maths to speed up the restricted version
             PassageTally temp = (PassageTally) this.clone();
-            Iterator it = temp.rangeIterator(RestrictionType.NONE);
+            Iterator<Key> it = temp.rangeIterator(RestrictionType.NONE);
 
             while (it.hasNext()) {
                 VerseRange range = (VerseRange) it.next();
@@ -715,7 +728,7 @@ public class PassageTally extends AbstractPassage {
      *            The amount to increment/decrement by
      */
     private void alterVerseBase(Key that, int tally) {
-        Iterator it = that.iterator();
+        Iterator<Key> it = that.iterator();
 
         while (it.hasNext()) {
             Verse verse = (Verse) it.next();
@@ -838,7 +851,7 @@ public class PassageTally extends AbstractPassage {
      * 
      * @author Joe Walker
      */
-    private final class VerseIterator implements Iterator {
+    private final class VerseIterator implements Iterator<Key> {
         /**
          * Find the first unused verse
          */
@@ -860,7 +873,7 @@ public class PassageTally extends AbstractPassage {
          * 
          * @see java.util.Iterator#next()
          */
-        public Object next() throws NoSuchElementException {
+        public Key next() throws NoSuchElementException {
             try {
                 if (next > BibleInfo.versesInBible()) {
                     throw new NoSuchElementException();
@@ -903,12 +916,12 @@ public class PassageTally extends AbstractPassage {
      * 
      * @author Joe Walker
      */
-    private static final class OrderedVerseIterator implements Iterator {
+    private static final class OrderedVerseIterator implements Iterator<Key> {
         /**
          * Find the first unused verse
          */
         protected OrderedVerseIterator(int[] board) {
-            TreeSet output = new TreeSet();
+            TreeSet<TalliedVerse> output = new TreeSet<TalliedVerse>();
 
             int vib = BibleInfo.versesInBible();
             for (int i = 0; i < vib; i++) {
@@ -935,9 +948,9 @@ public class PassageTally extends AbstractPassage {
          * 
          * @see java.util.Iterator#next()
          */
-        public Object next() throws NoSuchElementException {
+        public Key next() throws NoSuchElementException {
             try {
-                last = (TalliedVerse) it.next();
+                last = it.next();
                 return new Verse(last.ord);
             } catch (NoSuchVerseException ex) {
                 assert false : ex;
@@ -974,14 +987,14 @@ public class PassageTally extends AbstractPassage {
         /**
          * The Iterator we are converting
          */
-        private Iterator it;
+        private Iterator<TalliedVerse> it;
     }
 
     /**
      * Hack to make this work with J2SE 1.1 as well as J2SE 1.2 This compared 2
      * Integers
      */
-    private static class TalliedVerse implements Comparable {
+    private static class TalliedVerse implements Comparable<TalliedVerse> {
         /**
          * Convenience ctor to set the public variables
          * 
@@ -1000,6 +1013,7 @@ public class PassageTally extends AbstractPassage {
          * 
          * @see java.lang.Object#hashCode()
          */
+        @Override
         public int hashCode() {
             int result = 31 + ord;
             return 31 * result + tally;
@@ -1010,6 +1024,7 @@ public class PassageTally extends AbstractPassage {
          * 
          * @see java.lang.Object#equals(java.lang.Object)
          */
+        @Override
         public boolean equals(Object obj) {
             if (this == obj) {
                 return true;
@@ -1035,9 +1050,7 @@ public class PassageTally extends AbstractPassage {
          * 
          * @see java.lang.Comparable#compareTo(java.lang.Object)
          */
-        public int compareTo(Object obj) {
-            TalliedVerse that = (TalliedVerse) obj;
-
+        public int compareTo(TalliedVerse that) {
             if (that.tally == this.tally) {
                 return this.ord - that.ord;
             }
@@ -1061,20 +1074,20 @@ public class PassageTally extends AbstractPassage {
      * 
      * @author Joe Walker
      */
-    private static final class OrderedVerseRangeIterator implements Iterator {
+    private static final class OrderedVerseRangeIterator implements Iterator<Key> {
         /**
          * Find the first unused verse
          */
-        public OrderedVerseRangeIterator(Iterator vit, int[] board) {
-            TreeSet output = new TreeSet();
+        public OrderedVerseRangeIterator(Iterator<Key> vit, int[] board) {
+            Set<TalliedVerseRange> output = new TreeSet<TalliedVerseRange>();
 
-            Iterator rit = new VerseRangeIterator(vit, RestrictionType.NONE);
+            Iterator<Key> rit = new VerseRangeIterator(vit, RestrictionType.NONE);
             while (rit.hasNext()) {
                 VerseRange range = (VerseRange) rit.next();
 
                 // Calculate the maximum rank for a verse
                 int rank = 0;
-                Iterator iter = range.iterator();
+                Iterator<Key> iter = range.iterator();
 
                 while (iter.hasNext()) {
                     Verse verse = (Verse) iter.next();
@@ -1105,8 +1118,8 @@ public class PassageTally extends AbstractPassage {
          * 
          * @see java.util.Iterator#next()
          */
-        public Object next() throws NoSuchElementException {
-            last = (TalliedVerseRange) it.next();
+        public VerseRange next() throws NoSuchElementException {
+            last = it.next();
             return last.range;
         }
 
@@ -1127,14 +1140,14 @@ public class PassageTally extends AbstractPassage {
         /**
          * The Iterator we are converting
          */
-        private Iterator it;
+        private Iterator<TalliedVerseRange> it;
     }
 
     /**
      * Hack to make this work with JDK1.1 as well as JDK1.2 This compared 2
      * Integers
      */
-    private static class TalliedVerseRange implements Comparable {
+    private static class TalliedVerseRange implements Comparable<TalliedVerseRange> {
         /**
          * Convenience ctor to set the public variables
          * 
@@ -1153,6 +1166,7 @@ public class PassageTally extends AbstractPassage {
          * 
          * @see java.lang.Object#hashCode()
          */
+        @Override
         public int hashCode() {
             int result = 31 + tally;
             return 31 * result + ((range == null) ? 0 : range.hashCode());
@@ -1163,6 +1177,7 @@ public class PassageTally extends AbstractPassage {
          * 
          * @see java.lang.Object#equals(java.lang.Object)
          */
+        @Override
         public boolean equals(Object obj) {
             if (this == obj) {
                 return true;
@@ -1192,9 +1207,7 @@ public class PassageTally extends AbstractPassage {
          * 
          * @see java.lang.Comparable#compareTo(java.lang.Object)
          */
-        public int compareTo(Object obj) {
-            TalliedVerseRange that = (TalliedVerseRange) obj;
-
+        public int compareTo(TalliedVerseRange that) {
             if (that.tally == this.tally) {
                 return this.range.compareTo(that.range);
             }

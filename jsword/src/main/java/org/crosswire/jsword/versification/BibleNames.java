@@ -115,17 +115,17 @@ public final class BibleNames {
     public int getNumber(String find) {
         String match = BookName.normalize(find, locale);
 
-        BookName bookName = (BookName) fullBooksMap.get(match);
+        BookName bookName = fullBooksMap.get(match);
         if (bookName != null) {
             return bookName.getNumber();
         }
 
-        bookName = (BookName) shortBooksMap.get(match);
+        bookName = shortBooksMap.get(match);
         if (bookName != null) {
             return bookName.getNumber();
         }
 
-        bookName = (BookName) altBooksMap.get(match);
+        bookName = altBooksMap.get(match);
         if (bookName != null) {
             return bookName.getNumber();
         }
@@ -162,10 +162,10 @@ public final class BibleNames {
         books = new BookName[booksInBible];
 
         // Create the book name maps
-        fullBooksMap = new HashMap(booksInBible);
-        shortBooksMap = new HashMap(booksInBible);
+        fullBooksMap = new HashMap<String,BookName>(booksInBible);
+        shortBooksMap = new HashMap<String,BookName>(booksInBible);
 
-        altBooksMap = new HashMap(booksInBible);
+        altBooksMap = new HashMap<String,BookName>(booksInBible);
 
         ResourceBundle resources = ResourceBundle.getBundle(BibleNames.class.getName(), locale, CWClassLoader.instance(BibleNames.class));
 
@@ -296,17 +296,17 @@ public final class BibleNames {
     /**
      * The full names of the book of the Bible, normalized, generated at runtime
      */
-    private Map fullBooksMap;
+    private Map<String,BookName> fullBooksMap;
 
     /**
      * Standard shortened names for the book of the Bible, normalized, generated
      * at runtime.
      */
-    private Map shortBooksMap;
+    private Map<String,BookName> shortBooksMap;
 
     /**
      * Alternative shortened names for the book of the Bible, normalized,
      * generated at runtime
      */
-    private Map altBooksMap;
+    private Map<String,BookName> altBooksMap;
 }

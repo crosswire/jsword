@@ -51,6 +51,7 @@ public class ArabicLuceneAnalyzer extends AbstractBookAnalyzer {
     /* (non-Javadoc)
      * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String, java.io.Reader)
      */
+    @Override
     public final TokenStream tokenStream(String fieldName, Reader reader) {
         TokenStream result = new ArabicLetterTokenizer(reader);
         result = new LowerCaseFilter(result);
@@ -69,6 +70,7 @@ public class ArabicLuceneAnalyzer extends AbstractBookAnalyzer {
     /* (non-Javadoc)
      * @see org.apache.lucene.analysis.Analyzer#reusableTokenStream(java.lang.String, java.io.Reader)
      */
+    @Override
     public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
         SavedStreams streams = (SavedStreams) getPreviousTokenStream();
         if (streams == null) {

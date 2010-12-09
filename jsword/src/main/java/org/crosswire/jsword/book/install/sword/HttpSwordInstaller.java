@@ -77,6 +77,7 @@ public class HttpSwordInstaller extends AbstractSwordInstaller {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.sword.AbstractSwordInstaller#download(org.crosswire.common.progress.Progress, java.lang.String, java.lang.String, java.net.URI)
      */
+    @Override
     protected void download(Progress job, String dir, String file, URI dest) throws InstallException {
         URI uri;
         try {
@@ -118,6 +119,7 @@ public class HttpSwordInstaller extends AbstractSwordInstaller {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.sword.AbstractSwordInstaller#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(Object object) {
         if (!(object instanceof HttpSwordInstaller)) {
             return false;
@@ -134,6 +136,7 @@ public class HttpSwordInstaller extends AbstractSwordInstaller {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.sword.AbstractSwordInstaller#hashCode()
      */
+    @Override
     public int hashCode() {
         return super.hashCode();
     }

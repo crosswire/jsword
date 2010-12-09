@@ -43,6 +43,7 @@ public class RawFileBackendTest extends TestCase {
     File configFile = new File("testconfig.conf");
     RawFileBackend backend = null;
 
+    @Override
     protected void setUp() throws Exception {
         ConfigEntryTable table = new ConfigEntryTable(modName);
         table.add(ConfigEntryType.LANG, "de");
@@ -60,6 +61,7 @@ public class RawFileBackendTest extends TestCase {
         backend = new RawFileBackend(swordBookMetaData, 2);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         // configFile.delete();
     }

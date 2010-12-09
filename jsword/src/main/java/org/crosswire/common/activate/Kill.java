@@ -31,7 +31,7 @@ package org.crosswire.common.activate;
 public class Kill {
     /** Try as hard as possible to conserve memory */
     public static final Kill EVERYTHING = new Kill() {
-        /* @Override */
+        @Override
         public void reduceMemoryUsage() {
             Activator.deactivateAll();
         }

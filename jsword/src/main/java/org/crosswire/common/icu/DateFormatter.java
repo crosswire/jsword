@@ -59,7 +59,7 @@ public class DateFormatter {
             fmt.formatterClass = ClassUtil.forName("com.ibm.icu.text.DateFormat");
             // To call a method taking a type of int, the type has to match but
             // the object has to be wrapped
-            Class[] instanceTypes = {
+            Class<?>[] instanceTypes = {
                 int.class
             };
             Object[] instanceParams = {
@@ -134,7 +134,7 @@ public class DateFormatter {
      */
     public void setLenient(boolean lenient) {
         try {
-            Class[] lenientTypes = {
+            Class<?>[] lenientTypes = {
                 boolean.class
             };
             Object[] lenientParams = {
@@ -214,5 +214,5 @@ public class DateFormatter {
     private Object formatter;
 
     /** The class of the formatter */
-    private Class formatterClass;
+    private Class<?> formatterClass;
 }

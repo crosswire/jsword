@@ -81,7 +81,7 @@ import org.jdom.Element;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class Config {
+public class Config implements Iterable<Choice> {
     /**
      * Config ctor
      * 
@@ -90,8 +90,8 @@ public class Config {
      */
     public Config(String title) {
         this.title = title;
-        keys = new ArrayList();
-        models = new ArrayList();
+        keys = new ArrayList<String>();
+        models = new ArrayList<Choice>();
         local = new Properties();
         listenerList = new EventListenerList();
     }
@@ -138,7 +138,7 @@ public class Config {
         // We are going to assume a DTD has validated the config file and
         // just assume that everything is laid out properly.
         Element root = xmlconfig.getRootElement();
-        Iterator iter = root.getChildren().iterator();
+        Iterator<?> iter = root.getChildren().iterator();
         while (iter.hasNext()) {
             Element element = (Element) iter.next();
             String key = element.getAttributeValue("key");
@@ -187,7 +187,7 @@ public class Config {
      * 
      * @return An enumeration over the choices
      */
-    public Iterator iterator() {
+    public Iterator<Choice> iterator() {
         return models.iterator();
     }
 
@@ -202,7 +202,7 @@ public class Config {
             return null;
         }
 
-        return (Choice) models.get(index);
+        return models.get(index);
     }
 
     /**
@@ -237,9 +237,9 @@ public class Config {
      * Take the data in the application and copy it to the local storage area.
      */
     public void applicationToLocal() {
-        Iterator iter = keys.iterator();
+        Iterator<String> iter = keys.iterator();
         while (iter.hasNext()) {
-            String key = (String) iter.next();
+            String key = iter.next();
             Choice model = getChoice(key);
             String value = model.getString();
             local.put(key, value);
@@ -250,9 +250,9 @@ public class Config {
      * Take the data in the local storage area and copy it to the application.
      */
     public void localToApplication() {
-        Iterator iter = keys.iterator();
+        Iterator<String> iter = keys.iterator();
         while (iter.hasNext()) {
-            String key = (String) iter.next();
+            String key = iter.next();
             Choice choice = getChoice(key);
 
             String oldValue = choice.getString(); // never returns null
@@ -293,7 +293,7 @@ public class Config {
      * using the specified stream
      */
     public void setProperties(Properties prop) {
-        Iterator iter = prop.keySet().iterator();
+        Iterator<Object> iter = prop.keySet().iterator();
         while (iter.hasNext()) {
             String key = (String) iter.next();
             String value = prop.getProperty(key);
@@ -313,9 +313,9 @@ public class Config {
     public Properties getProperties() {
         Properties prop = new Properties();
 
-        Iterator iter = keys.iterator();
+        Iterator<String> iter = keys.iterator();
         while (iter.hasNext()) {
-            String key = (String) iter.next();
+            String key = iter.next();
             String value = local.getProperty(key);
 
             Choice model = getChoice(key);
@@ -497,12 +497,12 @@ public class Config {
     /**
      * The array that stores the keys
      */
-    protected List keys = new ArrayList();
+    protected List<String> keys = new ArrayList<String>();
 
     /**
      * The array that stores the models
      */
-    protected List models = new ArrayList();
+    protected List<Choice> models = new ArrayList<Choice>();
 
     /**
      * The set of local values

@@ -40,6 +40,7 @@ import junit.framework.TestCase;
  */
 public class EnglishLuceneAnalyzerTest extends TestCase {
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         myAnalyzer = new EnglishLuceneAnalyzer();
@@ -48,6 +49,7 @@ public class EnglishLuceneAnalyzerTest extends TestCase {
 
     }
 
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
     }

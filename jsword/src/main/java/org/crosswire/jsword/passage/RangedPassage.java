@@ -26,7 +26,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.SortedSet;
+import java.util.Set;
 import java.util.TreeSet;
 
 /**
@@ -61,7 +61,7 @@ public class RangedPassage extends AbstractPassage {
      * VerseRange so you need to do new <code>RangedPassage().add(...);</code>
      */
     protected RangedPassage() {
-        store = new TreeSet();
+        store = new TreeSet<Key>();
     }
 
     /**
@@ -82,7 +82,7 @@ public class RangedPassage extends AbstractPassage {
     protected RangedPassage(String refs) throws NoSuchVerseException {
         super(refs);
 
-        store = new TreeSet();
+        store = new TreeSet<Key>();
         addVerses(refs);
         normalize();
     }
@@ -92,7 +92,7 @@ public class RangedPassage extends AbstractPassage {
      * 
      * @see java.lang.Object#clone()
      */
-    /* @Override */
+    @Override
     public Object clone() {
         // This gets us a shallow copy
         RangedPassage copy = (RangedPassage) super.clone();
@@ -101,7 +101,7 @@ public class RangedPassage extends AbstractPassage {
         // copy.store = (SortedSet) store.clone();
         // However SortedSet is not Cloneable so I can't
         // Watch out for this, I'm not sure if it breaks anything.
-        copy.store = new TreeSet();
+        copy.store = new TreeSet<Key>();
         copy.store.addAll(store);
 
         return copy;
@@ -112,7 +112,7 @@ public class RangedPassage extends AbstractPassage {
      * 
      * @see org.crosswire.jsword.passage.Passage#countRanges(int)
      */
-    /* @Override */
+    @Override
     public int countRanges(RestrictionType restrict) {
         if (restrict.equals(RestrictionType.NONE)) {
             return store.size();
@@ -126,9 +126,9 @@ public class RangedPassage extends AbstractPassage {
      * 
      * @see org.crosswire.jsword.passage.Passage#countVerses()
      */
-    /* @Override */
+    @Override
     public int countVerses() {
-        Iterator it = rangeIterator(RestrictionType.NONE);
+        Iterator<Key> it = rangeIterator(RestrictionType.NONE);
         int count = 0;
 
         while (it.hasNext()) {
@@ -144,7 +144,7 @@ public class RangedPassage extends AbstractPassage {
      * 
      * @see java.lang.Iterable#iterator()
      */
-    public Iterator iterator() {
+    public Iterator<Key> iterator() {
         return new VerseIterator(rangeIterator(RestrictionType.NONE));
     }
 
@@ -153,8 +153,8 @@ public class RangedPassage extends AbstractPassage {
      * 
      * @see org.crosswire.jsword.passage.Passage#rangeIterator(int)
      */
-    /* @Override */
-    public final Iterator rangeIterator(RestrictionType restrict) {
+    @Override
+    public final Iterator<Key> rangeIterator(RestrictionType restrict) {
         if (restrict.equals(RestrictionType.NONE)) {
             return store.iterator();
         }
@@ -167,7 +167,7 @@ public class RangedPassage extends AbstractPassage {
      * 
      * @see org.crosswire.jsword.passage.Passage#isEmpty()
      */
-    /* @Override */
+    @Override
     public boolean isEmpty() {
         return store.isEmpty();
     }
@@ -179,7 +179,7 @@ public class RangedPassage extends AbstractPassage {
      * org.crosswire.jsword.passage.Passage#contains(org.crosswire.jsword.passage
      * .VerseBase)
      */
-    /* @Override */
+    @Override
     public boolean contains(Key obj) {
         // Even for the contains(VerseRange) case, the simple
         // 'return store.contains(that);' will not work because
@@ -187,7 +187,7 @@ public class RangedPassage extends AbstractPassage {
 
         VerseRange that_range = toVerseRange(obj);
 
-        Iterator it = rangeIterator(RestrictionType.NONE);
+        Iterator<Key> it = rangeIterator(RestrictionType.NONE);
         while (it.hasNext()) {
             VerseRange this_range = (VerseRange) it.next();
             if (this_range.contains(that_range)) {
@@ -227,7 +227,7 @@ public class RangedPassage extends AbstractPassage {
      * 
      * @see org.crosswire.jsword.passage.Passage#clear()
      */
-    /* @Override */
+    @Override
     public void clear() {
         optimizeWrites();
 
@@ -249,11 +249,11 @@ public class RangedPassage extends AbstractPassage {
         boolean removed = false;
 
         // This allows us to modify store which iterating through a copy
-        SortedSet new_store = new TreeSet();
+        Set<Key> new_store = new TreeSet<Key>();
         new_store.addAll(store);
 
         // go through all the VerseRanges
-        Iterator iter = new_store.iterator();
+        Iterator<Key> iter = new_store.iterator();
         while (iter.hasNext()) {
             // if this range touches the range to be removed ...
             VerseRange this_range = (VerseRange) iter.next();
@@ -288,15 +288,15 @@ public class RangedPassage extends AbstractPassage {
      * org.crosswire.jsword.passage.Passage#retainAll(org.crosswire.jsword.passage
      * .Passage)
      */
-    /* @Override */
+    @Override
     public void retainAll(Key key) {
         Passage that = KeyUtil.getPassage(key);
 
         optimizeWrites();
 
-        SortedSet new_store = new TreeSet();
+        Set<Key> new_store = new TreeSet<Key>();
 
-        Iterator that_it = null;
+        Iterator<Key> that_it = null;
         if (that instanceof RangedPassage) {
             that_it = that.rangeIterator(RestrictionType.CHAPTER);
         } else {
@@ -307,7 +307,7 @@ public class RangedPassage extends AbstractPassage {
             VerseRange that_range = toVerseRange(that_it.next());
 
             // go through all the VerseRanges
-            Iterator this_it = rangeIterator(RestrictionType.NONE);
+            Iterator<Key> this_it = rangeIterator(RestrictionType.NONE);
             while (this_it.hasNext()) {
                 // if this range touches the range to be removed ...
                 VerseRange this_range = (VerseRange) this_it.next();
@@ -335,7 +335,7 @@ public class RangedPassage extends AbstractPassage {
      * however this is safe, and I don't think there is a cost associated with a
      * double synchronize. (?)
      */
-    /* @Override */
+    @Override
     /* protected */final void normalize() {
         if (skipNormalization != 0) {
             return;
@@ -343,9 +343,9 @@ public class RangedPassage extends AbstractPassage {
 
         VerseRange last = null;
         VerseRange next = null;
-        SortedSet new_store = new TreeSet();
+        Set<Key> new_store = new TreeSet<Key>();
 
-        Iterator it = rangeIterator(RestrictionType.NONE);
+        Iterator<Key> it = rangeIterator(RestrictionType.NONE);
         while (it.hasNext()) {
             next = (VerseRange) it.next();
 
@@ -374,14 +374,14 @@ public class RangedPassage extends AbstractPassage {
      * synchronization. Everything is final so to save the proxying performace
      * hit.
      */
-    private static final class VerseIterator implements Iterator {
+    private static final class VerseIterator implements Iterator<Key> {
         /**
          * Create a basic iterator that is a proxy for the RangedPassage
          * Passages iterator, with remove() overridden.
          */
-        public VerseIterator(Iterator it) {
+        public VerseIterator(Iterator<Key> it) {
             try {
-                SortedSet temp = new TreeSet();
+                Set<Key> temp = new TreeSet<Key>();
 
                 while (it.hasNext()) {
                     VerseRange range = (VerseRange) it.next();
@@ -411,7 +411,7 @@ public class RangedPassage extends AbstractPassage {
          * 
          * @see java.util.Iterator#next()
          */
-        public Object next() throws NoSuchElementException {
+        public Key next() throws NoSuchElementException {
             return real.next();
         }
 
@@ -427,17 +427,17 @@ public class RangedPassage extends AbstractPassage {
         /**
          * The Iterator that we are proxying to
          */
-        private Iterator real;
+        private Iterator<Key> real;
     }
 
     /**
      * Loop over the VerseRanges and check that they do not require digging into
      */
-    private static final class VerseRangeIterator implements Iterator {
+    private static final class VerseRangeIterator implements Iterator<Key> {
         /**
          * Simple ctor
          */
-        public VerseRangeIterator(Iterator it, RestrictionType restrict) {
+        public VerseRangeIterator(Iterator<Key> it, RestrictionType restrict) {
             this.restrict = restrict;
             this.real = it;
         }
@@ -465,7 +465,7 @@ public class RangedPassage extends AbstractPassage {
          * 
          * @see java.util.Iterator#next()
          */
-        public Object next() {
+        public Key next() {
             if (next == null) {
                 next = (VerseRange) real.next();
             }
@@ -495,7 +495,7 @@ public class RangedPassage extends AbstractPassage {
          * The next object is too big, so cut it up
          */
         private Key splitNext() {
-            Iterator chop = next.rangeIterator(restrict);
+            Iterator<Key> chop = next.rangeIterator(restrict);
             VerseRange first = (VerseRange) chop.next();
             VerseRange[] ranges = VerseRange.remainder(next, first);
 
@@ -518,7 +518,7 @@ public class RangedPassage extends AbstractPassage {
         /**
          * Where we read our base ranges from
          */
-        private Iterator real;
+        private Iterator<Key> real;
     }
 
     /**
@@ -552,7 +552,7 @@ public class RangedPassage extends AbstractPassage {
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         optimizeWrites();
 
-        store = new TreeSet();
+        store = new TreeSet<Key>();
 
         in.defaultReadObject();
 
@@ -567,5 +567,5 @@ public class RangedPassage extends AbstractPassage {
     /**
      * The place the real data is stored
      */
-    private transient SortedSet store;
+    private transient Set<Key> store;
 }

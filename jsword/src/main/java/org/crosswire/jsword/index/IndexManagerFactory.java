@@ -62,7 +62,7 @@ public final class IndexManagerFactory {
      */
     static {
         try {
-            instance = (IndexManager) PluginUtil.getImplementation(IndexManager.class);
+            instance = PluginUtil.getImplementation(IndexManager.class);
         } catch (IOException e) {
             log.error("createIndexManager failed", e);
         } catch (ClassCastException e) {

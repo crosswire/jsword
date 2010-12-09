@@ -34,6 +34,7 @@ public enum PassageListType {
      * Passage to be interpreted as a list of verses.
      */
     VERSES {
+        @Override
         public Object getElementAt(Passage ref, int index, RestrictionType restrict) {
             if (ref == null) {
                 return null;
@@ -41,6 +42,7 @@ public enum PassageListType {
             return ref.getVerseAt(index);
         }
 
+        @Override
         public int count(Passage ref, RestrictionType restrict) {
             if (ref == null) {
                 return 0;
@@ -53,6 +55,7 @@ public enum PassageListType {
      * Passage to be interpreted as a list of ranges.
      */
     RANGES {
+        @Override
         public Object getElementAt(Passage ref, int index, RestrictionType restrict) {
             if (ref == null) {
                 return null;
@@ -60,6 +63,7 @@ public enum PassageListType {
             return ref.getRangeAt(index, restrict);
         }
 
+        @Override
         public int count(Passage ref, RestrictionType restrict) {
             if (ref == null) {
                 return 0;

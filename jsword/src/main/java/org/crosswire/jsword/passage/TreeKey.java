@@ -41,7 +41,7 @@ public class TreeKey extends AbstractKeyList {
     public TreeKey(String name, Key parent) {
         super(name);
         this.parent = parent;
-        this.children = new ArrayList();
+        this.children = new ArrayList<Key>();
     }
 
     /**
@@ -76,9 +76,9 @@ public class TreeKey extends AbstractKeyList {
      */
     public int getCardinality() {
         int cardinality = 1; // count this node
-        Iterator iter = children.iterator();
+        Iterator<Key> iter = children.iterator();
         while (iter.hasNext()) {
-            Key child = (Key) iter.next();
+            Key child = iter.next();
             cardinality += child.getCardinality();
         }
 
@@ -90,7 +90,7 @@ public class TreeKey extends AbstractKeyList {
      * 
      * @see org.crosswire.jsword.passage.Key#isEmpty()
      */
-    /* @Override */
+    @Override
     public boolean isEmpty() {
         return children.isEmpty();
     }
@@ -102,15 +102,15 @@ public class TreeKey extends AbstractKeyList {
      * org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage
      * .Key)
      */
-    /* @Override */
+    @Override
     public boolean contains(Key key) {
         if (children.contains(key)) {
             return true;
         }
 
-        Iterator iter = children.iterator();
+        Iterator<Key> iter = children.iterator();
         while (iter.hasNext()) {
-            Key child = (Key) iter.next();
+            Key child = iter.next();
             if (child.contains(key)) {
                 return true;
             }
@@ -124,7 +124,7 @@ public class TreeKey extends AbstractKeyList {
      * 
      * @see org.crosswire.jsword.passage.Key#iterator()
      */
-    public Iterator iterator() {
+    public Iterator<Key> iterator() {
         return new KeyIterator(this);
     }
 
@@ -163,7 +163,7 @@ public class TreeKey extends AbstractKeyList {
      * @see org.crosswire.jsword.passage.Key#get(int)
      */
     public Key get(int index) {
-        return (Key) children.get(index);
+        return children.get(index);
     }
 
     /*
@@ -200,6 +200,7 @@ public class TreeKey extends AbstractKeyList {
      * 
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         return super.clone();
     }
@@ -212,7 +213,7 @@ public class TreeKey extends AbstractKeyList {
     /**
      * The immediate children of this tree node.
      */
-    private List children;
+    private List<Key> children;
 
     /**
      * Serialization ID

@@ -159,7 +159,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
 
         Analyzer analyzer = new LuceneAnalyzer(book);
 
-        List errors = new ArrayList();
+        List<Key> errors = new ArrayList<Key>();
         File tempPath = new File(path + '.' + IndexStatus.CREATING.toString());
 
         try {
@@ -212,7 +212,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
 
                 if (!errors.isEmpty()) {
                     StringBuilder buf = new StringBuilder();
-                    Iterator iter = errors.iterator();
+                    Iterator<Key> iter = errors.iterator();
                     while (iter.hasNext()) {
                         buf.append(iter.next());
                         buf.append('\n');
@@ -383,7 +383,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
     /**
      * Dig down into a Key indexing as we go.
      */
-    private void generateSearchIndexImpl(Progress job, List errors, IndexWriter writer, Key key, int count) throws BookException, IOException {
+    private void generateSearchIndexImpl(Progress job, List<Key> errors, IndexWriter writer, Key key, int count) throws BookException, IOException {
         boolean hasStrongs = book.getBookMetaData().hasFeature(FeatureType.STRONGS_NUMBERS);
         boolean hasXRefs = book.getBookMetaData().hasFeature(FeatureType.SCRIPTURE_REFERENCES);
         boolean hasNotes = book.getBookMetaData().hasFeature(FeatureType.FOOTNOTES);
@@ -407,9 +407,9 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
 
         int size = key.getCardinality();
         int subCount = count;
-        Iterator it = key.iterator();
+        Iterator<Key> it = key.iterator();
         while (it.hasNext()) {
-            subkey = (Key) it.next();
+            subkey = it.next();
             if (subkey.canHaveChildren()) {
                 generateSearchIndexImpl(job, errors, writer, subkey, subCount);
             } else {

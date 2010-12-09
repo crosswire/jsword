@@ -35,11 +35,11 @@ import java.util.NoSuchElementException;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public final class IteratorEnumeration implements Enumeration {
+public final class IteratorEnumeration<E> implements Enumeration<E> {
     /**
      * Create an Enumeration that proxies to an Iterator
      */
-    public IteratorEnumeration(Iterator it) {
+    public IteratorEnumeration(Iterator<E> it) {
         this.it = it;
     }
 
@@ -53,12 +53,12 @@ public final class IteratorEnumeration implements Enumeration {
     /**
      * Returns the next element in the interation
      */
-    public Object nextElement() throws NoSuchElementException {
+    public E nextElement() throws NoSuchElementException {
         return it.next();
     }
 
     /**
      * The Iterator that we are proxying to
      */
-    private Iterator it;
+    private Iterator<E> it;
 }

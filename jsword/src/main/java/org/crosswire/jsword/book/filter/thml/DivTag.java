@@ -70,7 +70,7 @@ public class DivTag extends AbstractTag {
      * org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element,
      * org.xml.sax.Attributes)
      */
-    /* @Override */
+    @Override
     public Element processTag(Element ele, Attributes attrs) {
         // See if there are variant readings e.g. WHNU Mat 1.9
         String typeAttr = attrs.getValue("type");

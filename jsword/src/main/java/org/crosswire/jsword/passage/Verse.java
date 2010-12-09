@@ -163,7 +163,7 @@ public final class Verse implements Key {
      * 
      * @see java.lang.Object#toString()
      */
-    /* @Override */
+    @Override
     public String toString() {
         return getName();
     }
@@ -249,7 +249,7 @@ public final class Verse implements Key {
      * 
      * @see java.lang.Object#clone()
      */
-    /* @Override */
+    @Override
     public Object clone() {
         Verse copy = null;
         try {
@@ -271,7 +271,7 @@ public final class Verse implements Key {
      * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    /* @Override */
+    @Override
     public boolean equals(Object obj) {
         // Since this can not be null
         if (obj == null) {
@@ -307,7 +307,7 @@ public final class Verse implements Key {
      * 
      * @see java.lang.Object#hashCode()
      */
-    /* @Override */
+    @Override
     public int hashCode() {
         return getOrdinal();
     }
@@ -317,7 +317,7 @@ public final class Verse implements Key {
      * 
      * @see java.lang.Comparable#compareTo(T)
      */
-    public int compareTo(Object obj) {
+    public int compareTo(Key obj) {
         Verse that = null;
         if (obj instanceof Verse) {
             that = (Verse) obj;
@@ -857,8 +857,8 @@ public final class Verse implements Key {
      * 
      * @see org.crosswire.jsword.passage.Key#iterator()
      */
-    public Iterator iterator() {
-        return new ItemIterator(this);
+    public Iterator<Key> iterator() {
+        return new ItemIterator<Key>(this);
     }
 
     /*

@@ -45,6 +45,7 @@ public class IgnoreTag extends AnonymousTag {
      * org.crosswire.jsword.book.filter.thml.AbstractTag#processContent(org.
      * jdom.Element)
      */
+    @Override
     public void processContent(Element ele) {
         // Replace the parent with this element
         Element parent = ele.getParentElement();

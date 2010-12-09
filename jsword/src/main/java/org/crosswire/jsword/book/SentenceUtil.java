@@ -56,7 +56,7 @@ public final class SentenceUtil {
      * @return The string array
      */
     public static String[] tokenize(String sentence) {
-        List tokens = new ArrayList();
+        List<String> tokens = new ArrayList<String>();
 
         int pos = 0;
         String temp;
@@ -100,9 +100,9 @@ public final class SentenceUtil {
         // Create a String[]
         String[] retcode = new String[tokens.size()];
         int i = 0;
-        Iterator iter = tokens.iterator();
+        Iterator<String> iter = tokens.iterator();
         while (iter.hasNext()) {
-            retcode[i++] = (String) iter.next();
+            retcode[i++] = iter.next();
         }
 
         return retcode;

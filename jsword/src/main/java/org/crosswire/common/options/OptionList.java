@@ -38,8 +38,8 @@ import java.util.Map;
  */
 public class OptionList {
     public OptionList() {
-        longOptions = new LinkedHashMap();
-        shortOptions = new LinkedHashMap();
+        longOptions = new LinkedHashMap<String,Option>();
+        shortOptions = new LinkedHashMap<String,Option>();
     }
 
     /**
@@ -74,17 +74,17 @@ public class OptionList {
      *            the input to match
      * @return a list of all matches, or an empty list
      */
-    public List getLongOptions(String key) {
-        List matches = new ArrayList();
+    public List<Option> getLongOptions(String key) {
+        List<Option> matches = new ArrayList<Option>();
         if (longOptions.containsKey(key)) {
             matches.add(longOptions.get(key));
         }
 
-        Iterator iter = longOptions.entrySet().iterator();
+        Iterator<Map.Entry<String, Option>> iter = longOptions.entrySet().iterator();
         while (iter.hasNext()) {
-            Map.Entry entry = (Map.Entry) iter.next();
-            String entryKey = (String) entry.getKey();
-            Object entryValue = entry.getValue();
+            Map.Entry<String, Option> entry = iter.next();
+            String entryKey = entry.getKey();
+            Option entryValue = entry.getValue();
             if (entryKey.startsWith(key) && !matches.contains(entryValue)) {
                 matches.add(entryValue);
             }
@@ -104,7 +104,7 @@ public class OptionList {
         Character keyChar = Character.valueOf(key);
         Option match = null;
         if (shortOptions.containsKey(keyChar)) {
-            match = (Option) shortOptions.get(keyChar);
+            match = shortOptions.get(keyChar);
         }
 
         return match;
@@ -121,8 +121,8 @@ public class OptionList {
      *            the input to match
      * @return a list of all matches, or an empty list
      */
-    public List getOptions(String key) {
-        List matches = new ArrayList();
+    public List<Option> getOptions(String key) {
+        List<Option> matches = new ArrayList<Option>();
         if (key.length() == 1) {
             Option match = getShortOption(key.charAt(0));
             if (match != null) {
@@ -130,9 +130,9 @@ public class OptionList {
             }
         }
 
-        Iterator iter = getLongOptions(key).iterator();
+        Iterator<Option> iter = getLongOptions(key).iterator();
         while (iter.hasNext()) {
-            Option match = (Option) iter.next();
+            Option match = iter.next();
             if (!matches.contains(match)) {
                 matches.add(match);
             }
@@ -141,6 +141,6 @@ public class OptionList {
         return matches;
     }
 
-    private Map shortOptions;
-    private Map longOptions;
+    private Map<String,Option> shortOptions;
+    private Map<String,Option> longOptions;
 }

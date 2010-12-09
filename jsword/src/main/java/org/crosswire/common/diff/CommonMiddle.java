@@ -93,6 +93,7 @@ public class CommonMiddle {
      * 
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
         buf.append(sourcePrefix);
@@ -112,6 +113,7 @@ public class CommonMiddle {
      * 
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode() {
         int result = 31 + ((sourcePrefix == null) ? 0 : sourcePrefix.hashCode());
         result = 31 * result + ((sourceSuffix == null) ? 0 : sourceSuffix.hashCode());
@@ -125,6 +127,7 @@ public class CommonMiddle {
      * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;

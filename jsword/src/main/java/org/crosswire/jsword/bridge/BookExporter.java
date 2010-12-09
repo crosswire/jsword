@@ -52,10 +52,10 @@ public class BookExporter {
 
         Key keys = book.getGlobalKeyList();
 
-        Iterator iter = keys.iterator();
+        Iterator<Key> iter = keys.iterator();
         StringBuilder buf = new StringBuilder();
         while (iter.hasNext()) {
-            Key key = (Key) iter.next();
+            Key key = iter.next();
             String rawText = book.getRawText(key);
             if (rawText != null && rawText.trim().length() > 0) {
                 buf.delete(0, buf.length());

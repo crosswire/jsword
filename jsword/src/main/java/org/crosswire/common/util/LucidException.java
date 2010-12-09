@@ -101,7 +101,7 @@ public class LucidException extends Exception {
         super(msg.toString(), cause);
         this.deprecated = false;
         if (params != null) {
-            this.params = (Object[]) params.clone();
+            this.params = params.clone();
         } else {
             this.params = null;
         }
@@ -155,7 +155,7 @@ public class LucidException extends Exception {
         super(msg, cause);
         this.deprecated = false;
         if (params != null) {
-            this.params = (Object[]) params.clone();
+            this.params = params.clone();
         } else {
             this.params = null;
         }
@@ -166,7 +166,7 @@ public class LucidException extends Exception {
      * 
      * @return The unraveled i18n string
      */
-    /* @Override */
+    @Override
     public String getMessage() {
         String out = super.getMessage();
 

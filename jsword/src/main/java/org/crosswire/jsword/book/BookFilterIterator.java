@@ -25,8 +25,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.crosswire.common.util.Iterable;
-
 /**
  * An iterator that filters as it goes.
  * 
@@ -35,30 +33,26 @@ import org.crosswire.common.util.Iterable;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class BookFilterIterator implements Iterable, Iterator {
+public class BookFilterIterator implements Iterable<Book>, Iterator<Book> {
     /**
      * Simple ctor
      * 
      * @param filter
      *            The filter to use, if null, will iterate over all values
      */
-    public BookFilterIterator(List books, BookFilter filter) {
+    public BookFilterIterator(List<Book> books, BookFilter filter) {
         this.it = books.iterator();
         this.filter = filter;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see java.lang.Iterable#iterator()
      */
-    public Iterator iterator() {
+    public Iterator<Book> iterator() {
         return this;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see java.util.Iterator#hasNext()
      */
     public boolean hasNext() {
@@ -66,21 +60,17 @@ public class BookFilterIterator implements Iterable, Iterator {
         return next != null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see java.util.Iterator#next()
      */
-    public Object next() {
+    public Book next() {
         if (next == null) {
             throw new NoSuchElementException();
         }
         return next;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see java.util.Iterator#remove()
      */
     public void remove() {
@@ -92,7 +82,7 @@ public class BookFilterIterator implements Iterable, Iterator {
      */
     private Book findNext() {
         while (it.hasNext()) {
-            Book book = (Book) it.next();
+            Book book = it.next();
             if (filter == null || filter.test(book)) {
                 return book;
             }
@@ -106,7 +96,7 @@ public class BookFilterIterator implements Iterable, Iterator {
      */
     private Book next;
 
-    private Iterator it;
+    private Iterator<Book> it;
 
     /**
      * The value filter

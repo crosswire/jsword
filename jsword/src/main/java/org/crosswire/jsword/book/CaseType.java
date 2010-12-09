@@ -33,12 +33,14 @@ import java.util.Locale;
  */
 public enum CaseType {
     LOWER  {
+        @Override
         public String setCase(String word) {
             return word.toLowerCase(Locale.getDefault());
         }
     },
 
     SENTENCE {
+        @Override
         public String setCase(String word) {
             int index = word.indexOf('-');
             if (index == -1) {
@@ -64,6 +66,7 @@ public enum CaseType {
     },
 
     UPPER {
+        @Override
         public String setCase(String word) {
             return word.toUpperCase(Locale.getDefault());
         }

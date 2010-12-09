@@ -71,10 +71,12 @@ public enum AccuracyType {
      * Jude 3 (which only has one chapter)
      */
     BOOK_VERSE {
+        @Override
         public boolean isVerse() {
             return true;
         }
 
+        @Override
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
             int book = BibleInfo.getBookNumber(parts[0]);
             int chapter = 1;
@@ -89,6 +91,7 @@ public enum AccuracyType {
             return new Verse(original, book, chapter, verse);
         }
 
+        @Override
         public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException {
             // A fully specified verse is the same regardless of whether it is a
             // start or an end to a range.
@@ -101,10 +104,12 @@ public enum AccuracyType {
      * Gen 1
      */
     BOOK_CHAPTER {
+        @Override
         public boolean isChapter() {
             return true;
         }
 
+        @Override
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
             int book = BibleInfo.getBookNumber(parts[0]);
             int chapter = getChapter(book, parts[1]);
@@ -112,6 +117,7 @@ public enum AccuracyType {
             return new Verse(original, book, chapter, verse);
         }
 
+        @Override
         public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException {
             // Very similar to the start verse but we want the end of the
             // chapter
@@ -126,15 +132,18 @@ public enum AccuracyType {
      * example, Gen
      */
     BOOK_ONLY {
+        @Override
         public boolean isBook() {
             return true;
         }
 
+        @Override
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
             int book = BibleInfo.getBookNumber(parts[0]);
             return new Verse(original, book, 1, 1);
         }
 
+        @Override
         public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException {
             // And we end with a book, so we need to encompass the lot
             // For example "Gen 3-Exo"
@@ -150,10 +159,12 @@ public enum AccuracyType {
      * 1:1
      */
     CHAPTER_VERSE {
+        @Override
         public boolean isVerse() {
             return true;
         }
 
+        @Override
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
             if (verseRangeBasis == null) {
                 // TRANSLATOR: The user supplied a verse reference but did not give the book of the Bible.
@@ -166,6 +177,7 @@ public enum AccuracyType {
             return new Verse(original, book, chapter, verse);
         }
 
+        @Override
         public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException {
             // Very similar to the start verse but use the verse as a basis
             int book = verseBasis.getBook();
@@ -179,10 +191,12 @@ public enum AccuracyType {
      * There was only a chapter number
      */
     CHAPTER_ONLY {
+        @Override
         public boolean isChapter() {
             return true;
         }
 
+        @Override
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
             if (verseRangeBasis == null) {
                 // TRANSLATOR: The user supplied a verse reference but did not give the book of the Bible.
@@ -193,6 +207,7 @@ public enum AccuracyType {
             return new Verse(original, book, chapter, 1);
         }
 
+        @Override
         public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException {
             // Very similar to the start verse but use the verse as a basis
             // and it gets the end of the chapter
@@ -206,10 +221,12 @@ public enum AccuracyType {
      * There was only a verse number
      */
     VERSE_ONLY {
+        @Override
         public boolean isVerse() {
             return true;
         }
 
+        @Override
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
             if (verseRangeBasis == null) {
                 // TRANSLATOR: The user supplied a verse reference but did not give the book or chapter of the Bible.
@@ -221,6 +238,7 @@ public enum AccuracyType {
             return new Verse(original, book, chapter, verse);
         }
 
+        @Override
         public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException {
             // Very similar to the start verse but use the verse as a basis
             // and it gets the end of the chapter

@@ -110,7 +110,7 @@ public final class CWProject {
      */
     public URI[] getProjectResourceDirs() {
         establishProjectHome();
-        return (URI[]) homes.clone();
+        return homes.clone();
     }
 
     /**

@@ -52,7 +52,7 @@ public class Bitap implements Locator {
         this.text = text;
         this.pattern = pattern;
         this.loc = loc;
-        alphabet = new HashMap();
+        alphabet = new HashMap<Character, Integer>();
     }
 
     /*
@@ -132,7 +132,7 @@ public class Bitap implements Locator {
 
             for (int j = finish - 1; j >= start; j--) {
                 Character curChar = Character.valueOf(text.charAt(j));
-                int mask = alphabet.containsKey(curChar) ? ((Integer) alphabet.get(curChar)).intValue() : 0;
+                int mask = alphabet.containsKey(curChar) ? alphabet.get(curChar).intValue() : 0;
                 if (d == 0) { // First pass: exact match.
                     rd[j] = ((rd[j + 1] << 1) | 1) & mask;
                 } else { // Subsequent passes: fuzzy match.
@@ -174,7 +174,7 @@ public class Bitap implements Locator {
         return bestLoc;
     }
 
-    protected Map getAlphabet() {
+    protected Map<Character, Integer> getAlphabet() {
         return alphabet;
     }
 
@@ -202,7 +202,7 @@ public class Bitap implements Locator {
 
         for (int i = 0; i < len; i++) {
             Character c = Character.valueOf(pattern.charAt(i));
-            Integer value = (Integer) alphabet.get(c);
+            Integer value = alphabet.get(c);
             int mask = value == null ? 0 : value.intValue();
             mask |= (int) Math.pow(2, len - i - 1);
             alphabet.put(c, Integer.valueOf(mask));
@@ -274,5 +274,5 @@ public class Bitap implements Locator {
     /**
      * Alphabet is the compiled representation of the pattern.
      */
-    private Map alphabet;
+    private Map<Character, Integer> alphabet;
 }

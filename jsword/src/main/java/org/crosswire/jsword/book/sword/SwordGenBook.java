@@ -37,6 +37,7 @@ import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.ReadOnlyKeyList;
+import org.jdom.Content;
 
 /**
  * A Sword version of Dictionary.
@@ -68,16 +69,16 @@ public class SwordGenBook extends AbstractBook {
      * org.crosswire.common.activate.Activatable#activate(org.crosswire.common
      * .activate.Lock)
      */
-    /* @Override */
+    @Override
     public final void activate(Lock lock) {
         super.activate(lock);
 
         set = backend.readIndex();
 
-        map = new HashMap();
-        Iterator iter = set.iterator();
+        map = new HashMap<String,Key>();
+        Iterator<Key> iter = set.iterator();
         while (iter.hasNext()) {
-            Key key = (Key) iter.next();
+            Key key = iter.next();
             map.put(key.getName(), key);
         }
 
@@ -96,7 +97,7 @@ public class SwordGenBook extends AbstractBook {
      * org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common
      * .activate.Lock)
      */
-    /* @Override */
+    @Override
     public final void deactivate(Lock lock) {
         super.deactivate(lock);
 
@@ -116,18 +117,18 @@ public class SwordGenBook extends AbstractBook {
      * org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage
      * .Key, boolean)
      */
-    public Iterator getOsisIterator(Key key, boolean allowEmpty) throws BookException {
+    public Iterator<Content> getOsisIterator(Key key, boolean allowEmpty) throws BookException {
         checkActive();
 
         assert key != null;
         assert backend != null;
 
         try {
-            List content = new ArrayList();
+            List<Content> content = new ArrayList<Content>();
 
             String txt = backend.getRawText(key);
 
-            List osisContent = filter.toOSIS(this, key, txt);
+            List<Content> osisContent = filter.toOSIS(this, key, txt);
             content.addAll(osisContent);
 
             return content.iterator();
@@ -225,35 +226,35 @@ public class SwordGenBook extends AbstractBook {
     public Key getKey(String text) throws NoSuchKeyException {
         checkActive();
 
-        Key key = (Key) map.get(text);
+        Key key = map.get(text);
         if (key != null) {
             return key;
         }
 
         // First check for keys that match ignoring case
-        Iterator iter = map.keySet().iterator();
+        Iterator<String> iter = map.keySet().iterator();
         while (iter.hasNext()) {
-            String keyName = (String) iter.next();
+            String keyName = iter.next();
             if (keyName.equalsIgnoreCase(text)) {
-                return (Key) map.get(keyName);
+                return map.get(keyName);
             }
         }
 
         // Next keys that start with the given text
         iter = map.keySet().iterator();
         while (iter.hasNext()) {
-            String keyName = (String) iter.next();
+            String keyName = iter.next();
             if (keyName.startsWith(text)) {
-                return (Key) map.get(keyName);
+                return map.get(keyName);
             }
         }
 
         // Next try keys that contain the given text
         iter = map.keySet().iterator();
         while (iter.hasNext()) {
-            String keyName = (String) iter.next();
+            String keyName = iter.next();
             if (keyName.indexOf(text) != -1) {
-                return (Key) map.get(keyName);
+                return map.get(keyName);
             }
         }
 
@@ -296,7 +297,7 @@ public class SwordGenBook extends AbstractBook {
     /**
      * So we can quickly find a Key given the text for the key
      */
-    private Map map;
+    private Map<String,Key> map;
 
     /**
      * So we can implement getIndex() easily

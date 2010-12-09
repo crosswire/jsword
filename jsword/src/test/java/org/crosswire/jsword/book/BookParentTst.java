@@ -46,6 +46,7 @@ public class BookParentTst extends TestCase {
      * 
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     protected void setUp() throws Exception {
         List lbmds = Books.installed().getBooks(BookFilters.getOnlyBibles());
         bibles = new Book[lbmds.size()];
@@ -64,6 +65,7 @@ public class BookParentTst extends TestCase {
      * 
      * @see junit.framework.TestCase#tearDown()
      */
+    @Override
     protected void tearDown() throws Exception {
     }
 

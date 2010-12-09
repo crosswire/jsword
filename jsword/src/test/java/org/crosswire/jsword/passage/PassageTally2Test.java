@@ -75,7 +75,7 @@ public class PassageTally2Test extends TestCase {
      * 
      * @see junit.framework.TestCase#setUp()
      */
-    /* @Override */
+    @Override
     protected void setUp() throws Exception {
         gen11_1 = RestrictionType.NONE.toRange(new Verse(1, 1, 1), 1);
         gen11_2 = RestrictionType.NONE.toRange(new Verse(1, 1, 1), 2);
@@ -110,7 +110,7 @@ public class PassageTally2Test extends TestCase {
      * 
      * @see junit.framework.TestCase#tearDown()
      */
-    /* @Override */
+    @Override
     protected void tearDown() {
     }
 

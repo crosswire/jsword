@@ -28,6 +28,7 @@ import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.passage.Key;
+import org.jdom.Content;
 import org.jdom.Element;
 
 /**
@@ -47,7 +48,7 @@ public class PlainTextFilter implements Filter {
      * org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book
      * .Book, org.crosswire.jsword.passage.Key, java.lang.String)
      */
-    public List toOSIS(Book book, Key key, String plain) {
+    public List<Content> toOSIS(Book book, Key key, String plain) {
         OSISUtil.OSISFactory factory = OSISUtil.factory();
         Element ele = factory.createDiv();
 
@@ -71,6 +72,7 @@ public class PlainTextFilter implements Filter {
      * 
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         try {
             return super.clone();

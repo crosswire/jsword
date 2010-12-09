@@ -51,7 +51,7 @@ public final class FilterFactory {
     /**
      * The lookup table of filters
      */
-    private static Map filters = new HashMap();
+    private static Map<String,Filter> filters = new HashMap<String,Filter>();
 
     /**
      * The lookup table of filters
@@ -63,12 +63,12 @@ public final class FilterFactory {
      * file.
      */
     static {
-        Map map = PluginUtil.getImplementorsMap(Filter.class);
+        Map<String,Class<Filter>> map = PluginUtil.getImplementorsMap(Filter.class);
 
         // the default value
         try {
-            Class cdeft = (Class) map.remove("default");
-            deft = (Filter) cdeft.newInstance();
+            Class<Filter> cdeft = map.remove("default");
+            deft = cdeft.newInstance();
         } catch (InstantiationException e) {
             log.fatal("Failed to get default filter, will attempt to use first", e);
         } catch (IllegalAccessException e) {
@@ -76,14 +76,14 @@ public final class FilterFactory {
         }
 
         // the lookup table
-        Iterator it = map.entrySet().iterator();
+        Iterator<Map.Entry<String,Class<Filter>>> it = map.entrySet().iterator();
         Filter instance = null;
         while (it.hasNext()) {
             try {
-                Map.Entry entry = (Map.Entry) it.next();
-                Class clazz = (Class) entry.getValue();
-                instance = (Filter) clazz.newInstance();
-                addFilter((String) entry.getKey(), instance);
+                Map.Entry<String,Class<Filter>> entry = it.next();
+                Class<Filter> clazz = entry.getValue();
+                instance = clazz.newInstance();
+                addFilter(entry.getKey(), instance);
             } catch (InstantiationException ex) {
                 log.error("Failed to add filter", ex);
             } catch (IllegalAccessException ex) {
@@ -102,7 +102,7 @@ public final class FilterFactory {
      * not found then the default filter will be used.
      */
     public static Filter getFilter(String lookup) {
-        Filter reply = (Filter) filters.get(lookup.toLowerCase(Locale.ENGLISH));
+        Filter reply = filters.get(lookup.toLowerCase(Locale.ENGLISH));
 
         if (reply == null) {
             reply = deft;

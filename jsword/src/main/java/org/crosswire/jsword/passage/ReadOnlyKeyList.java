@@ -91,7 +91,7 @@ public class ReadOnlyKeyList implements Key {
      * 
      * @see org.crosswire.jsword.passage.Key#iterator()
      */
-    public Iterator iterator() {
+    public Iterator<Key> iterator() {
         return keys.iterator();
     }
 
@@ -202,6 +202,7 @@ public class ReadOnlyKeyList implements Key {
      * 
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode() {
         return keys.hashCode();
     }
@@ -211,6 +212,7 @@ public class ReadOnlyKeyList implements Key {
      * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(Object obj) {
         return keys.equals(obj);
     }
@@ -220,7 +222,7 @@ public class ReadOnlyKeyList implements Key {
      * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object o) {
+    public int compareTo(Key o) {
         return keys.compareTo(o);
     }
 
@@ -271,7 +273,7 @@ public class ReadOnlyKeyList implements Key {
      * 
      * @see java.lang.Object#clone()
      */
-    /* @Override */
+    @Override
     public Object clone() {
         ReadOnlyKeyList clone = null;
         try {

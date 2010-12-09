@@ -62,9 +62,9 @@ public final class IOUtil {
         // unpack the zip.
         byte[] dbuf = new byte[4096];
         ZipFile zf = new ZipFile(file);
-        Enumeration entries = zf.entries();
+        Enumeration<? extends ZipEntry> entries = zf.entries();
         while (entries.hasMoreElements()) {
-            ZipEntry entry = (ZipEntry) entries.nextElement();
+            ZipEntry entry = entries.nextElement();
             String entrypath = entry.getName();
             File entryFile = new File(destdir, entrypath);
             File parentDir = entryFile.getParentFile();

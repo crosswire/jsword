@@ -60,18 +60,19 @@ public class SyncTag extends AbstractTag {
      * org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element,
      * org.xml.sax.Attributes)
      */
+    @Override
     public Element processTag(Element ele, Attributes attrs) {
         // Strong's reference
         String type = attrs.getValue("type");
         String value = attrs.getValue("value");
 
         if ("Strongs".equals(type)) {
-            List siblings = ele.getContent();
+            List<Content> siblings = ele.getContent();
             int size = siblings.size();
             if (size == 0) {
                 return null;
             }
-            Content lastEle = (Content) siblings.get(size - 1);
+            Content lastEle = siblings.get(size - 1);
             if (lastEle instanceof Text) {
                 Element w = OSISUtil.factory().createW();
                 w.setAttribute(OSISUtil.ATTRIBUTE_W_LEMMA, OSISUtil.LEMMA_STRONGS + value);
@@ -95,12 +96,12 @@ public class SyncTag extends AbstractTag {
         }
 
         if ("morph".equals(type)) {
-            List siblings = ele.getContent();
+            List<Content> siblings = ele.getContent();
             int size = siblings.size();
             if (size == 0) {
                 return null;
             }
-            Content lastEle = (Content) siblings.get(size - 1);
+            Content lastEle = siblings.get(size - 1);
             if (lastEle instanceof Text) {
                 Element w = OSISUtil.factory().createW();
                 w.setAttribute(OSISUtil.ATTRIBUTE_W_MORPH, OSISUtil.MORPH_ROBINSONS + value);

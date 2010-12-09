@@ -33,26 +33,22 @@ import java.util.NoSuchElementException;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
-public class ItemIterator implements Iterator {
-    public ItemIterator(Object item) {
+public class ItemIterator<T> implements Iterator<T> {
+    public ItemIterator(T item) {
         this.item = item;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see java.util.Iterator#hasNext()
      */
     public boolean hasNext() {
         return !done;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see java.util.Iterator#next()
      */
-    public Object next() {
+    public T next() {
         if (done) {
             throw new NoSuchElementException();
         }
@@ -61,15 +57,13 @@ public class ItemIterator implements Iterator {
         return item;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see java.util.Iterator#remove()
      */
     public void remove() throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
-    private Object item;
+    private T item;
     private boolean done;
 }

@@ -45,6 +45,7 @@ public class SkipTag extends AnonymousTag {
      * org.crosswire.jsword.book.filter.thml.AbstractTag#processContent(org.
      * jdom.Element)
      */
+    @Override
     public void processContent(Element ele) {
         // Remove this element and all it's children
         Element parent = ele.getParentElement();

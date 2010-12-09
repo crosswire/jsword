@@ -43,7 +43,7 @@ public class OsisTest extends TestCase {
      * 
      * @see junit.framework.TestCase#setUp()
      */
-    /* @Override */
+    @Override
     protected void setUp() throws Exception {
     }
 
@@ -52,7 +52,7 @@ public class OsisTest extends TestCase {
      * 
      * @see junit.framework.TestCase#tearDown()
      */
-    /* @Override */
+    @Override
     protected void tearDown() throws Exception {
     }
 

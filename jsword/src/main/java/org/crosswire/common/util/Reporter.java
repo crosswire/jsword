@@ -69,7 +69,7 @@ public final class Reporter {
      *            informUser(Object source, LucidRuntimeException prob)
      */
     public static void informUser(Object source, Throwable prob) {
-        Class cat = (source != null) ? source.getClass() : Reporter.class;
+        Class<?> cat = (source != null) ? source.getClass() : Reporter.class;
         Logger templog = Logger.getLogger(cat);
 
         templog.warn(prob.getMessage(), prob);
@@ -89,7 +89,7 @@ public final class Reporter {
      *            The Exception that was thrown
      */
     public static void informUser(Object source, LucidException prob) {
-        Class cat = (source != null) ? source.getClass() : Reporter.class;
+        Class<?> cat = (source != null) ? source.getClass() : Reporter.class;
         Logger templog = Logger.getLogger(cat);
 
         templog.warn(prob.getMessage(), prob);
@@ -109,7 +109,7 @@ public final class Reporter {
      *            The Exception that was thrown
      */
     public static void informUser(Object source, LucidRuntimeException prob) {
-        Class cat = (source != null) ? source.getClass() : Reporter.class;
+        Class<?> cat = (source != null) ? source.getClass() : Reporter.class;
         Logger templog = Logger.getLogger(cat);
 
         templog.warn(prob.getMessage(), prob);

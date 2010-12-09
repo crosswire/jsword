@@ -71,9 +71,9 @@ public class BibleScope {
             Key all = keyf.getGlobalKeyList();
             inScope = keyf.createEmptyKeyList();
             outScope = keyf.createEmptyKeyList();
-            Iterator iter = all.iterator();
+            Iterator<Key> iter = all.iterator();
             while (iter.hasNext()) {
-                Key key = (Key) iter.next();
+                Key key = iter.next();
                 if (book.contains(key)) {
                     inScope.addAll(key);
                 } else {

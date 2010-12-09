@@ -308,13 +308,13 @@ public final class BookFilters {
          * @see BookFilters#getCustom(String)
          */
         public CustomBookFilter(String match) {
-            List cache = new ArrayList();
+            List<Test> cache = new ArrayList<Test>();
             String[] filters = match.split(";");
             for (int i = 0; i < filters.length; i++) {
                 cache.add(new Test(filters[i]));
             }
 
-            tests = (Test[]) cache.toArray(new Test[cache.size()]);
+            tests = cache.toArray(new Test[cache.size()]);
         }
 
         /*

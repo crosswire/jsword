@@ -126,13 +126,13 @@ public class APIExamples {
         } else {
             key = book.createEmptyKeyList();
 
-            Iterator iter = book.getKey(reference).iterator();
+            Iterator<Key> iter = book.getKey(reference).iterator();
             int count = 0;
             while (iter.hasNext()) {
                 if (++count >= maxKeyCount) {
                     break;
                 }
-                key.addAll((Key) iter.next());
+                key.addAll(iter.next());
             }
         }
 
@@ -186,14 +186,14 @@ public class APIExamples {
         // This just gets a list of all the known dictionaries and picks the
         // first. In a real world app you will probably have a better way
         // of doing this.
-        List dicts = Books.installed().getBooks(BookFilters.getDictionaries());
-        Book dict = (Book) dicts.get(0);
+        List<Book> dicts = Books.installed().getBooks(BookFilters.getDictionaries());
+        Book dict = dicts.get(0);
 
         // If I want every key in the Dictionary then I do this (or something
         // like it - in the real world you want to call hasNext() on an iterator
         // before next() but the point is the same:
         Key keys = dict.getGlobalKeyList();
-        Key first = (Key) keys.iterator().next();
+        Key first = keys.iterator().next();
 
         System.out.println("The first Key in the default dictionary is " + first);
 
@@ -280,10 +280,10 @@ public class APIExamples {
         String path = "xsl/cswing/simple.xsl";
         URL xslurl = ResourceUtil.getResource(path);
         // Make ranges  break  on  chapter
-        Iterator rangeIter = ((Passage) key).rangeIterator(RestrictionType.CHAPTER);
+        Iterator<Key> rangeIter = ((Passage) key).rangeIterator(RestrictionType.CHAPTER);
         // boundaries.
         while (rangeIter.hasNext()) {
-            Key range = (Key) rangeIter.next();
+            Key range = rangeIter.next();
             BookData data = new BookData(bible, range);
             SAXEventProvider osissep = data.getSAXEventProvider();
             SAXEventProvider htmlsep = new TransformingSAXEventProvider(NetUtil.toURI(xslurl), osissep);
@@ -307,20 +307,20 @@ public class APIExamples {
         System.out.println(book.getLanguage());
 
         // If you want a greater selection of Books:
-        List books = Books.installed().getBooks();
-        book = (Book) books.get(0);
+        List<Book> books = Books.installed().getBooks();
+        book = books.get(0);
 
         // Or you can narrow the range a bit
         books = Books.installed().getBooks(BookFilters.getOnlyBibles());
-        book = (Book) books.get(0);
+        book = books.get(0);
 
         // There are implementations of BookFilter for all sorts of things in
         // the BookFilters class
 
         // If you are wanting to get really fancy you can implement your own
         // BookFilter easily
-        List test = Books.installed().getBooks(new MyBookFilter("ESV"));
-        book = (Book) test.get(0);
+        List<Book> test = Books.installed().getBooks(new MyBookFilter("ESV"));
+        book = test.get(0);
 
         if (book != null) {
             System.out.println(book.getInitials());
@@ -337,15 +337,15 @@ public class APIExamples {
         InstallManager imanager = new InstallManager();
 
         // Ask the Install Manager for a map of all known module sites
-        Map installers = imanager.getInstallers();
+        Map<String,Installer> installers = imanager.getInstallers();
 
         // Get all the installers one after the other
-        Iterator iter = installers.entrySet().iterator();
+        Iterator<Map.Entry<String,Installer>> iter = installers.entrySet().iterator();
         String name = null;
         while (iter.hasNext()) {
-            Map.Entry mapEntry = (Map.Entry) iter.next();
-            name = (String) mapEntry.getKey();
-            installer = (Installer) mapEntry.getValue();
+            Map.Entry<String,Installer> mapEntry = iter.next();
+            name = mapEntry.getKey();
+            installer = mapEntry.getValue();
             System.out.println(name + ": " + installer.getInstallerDefinition());
         }
 
@@ -361,9 +361,9 @@ public class APIExamples {
         }
 
         // Get a list of all the available books
-        List availableBooks = installer.getBooks();
+        List<Book> availableBooks = installer.getBooks();
 
-        Book book = (Book) availableBooks.get(0);
+        Book book = availableBooks.get(0);
         if (book != null) {
             System.out.println("Book " + book.getInitials() + " is available");
         }
@@ -371,7 +371,7 @@ public class APIExamples {
         // get some available books. In this case, just one book.
         availableBooks = installer.getBooks(new MyBookFilter("ESV"));
 
-        book = (Book) availableBooks.get(0);
+        book = availableBooks.get(0);
 
         if (book != null) {
             System.out.println("Book " + book.getInitials() + " is available");

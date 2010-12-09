@@ -81,9 +81,9 @@ public abstract class AbstractKeyList implements Key {
      *            The check key
      */
     protected static void retain(Key alter, Key base) {
-        Iterator it = alter.iterator();
+        Iterator<Key> it = alter.iterator();
         while (it.hasNext()) {
-            Key sublist = (Key) it.next();
+            Key sublist = it.next();
             if (sublist.canHaveChildren()) {
                 retain(sublist, base);
                 if (sublist.isEmpty()) {
@@ -102,6 +102,7 @@ public abstract class AbstractKeyList implements Key {
      * 
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         return getName();
     }
@@ -177,7 +178,7 @@ public abstract class AbstractKeyList implements Key {
      * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    /* @Override */
+    @Override
     public boolean equals(Object obj) {
         // Since this can not be null
         if (obj == null) {
@@ -190,7 +191,7 @@ public abstract class AbstractKeyList implements Key {
             return false;
         }
 
-        return compareTo(obj) == 0;
+        return compareTo((Key) obj) == 0;
     }
 
     /*
@@ -198,6 +199,7 @@ public abstract class AbstractKeyList implements Key {
      * 
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode() {
         return getName().hashCode();
     }
@@ -207,8 +209,7 @@ public abstract class AbstractKeyList implements Key {
      * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object obj) {
-        Key that = (Key) obj;
+    public int compareTo(Key that) {
 
         if (this == that) {
             return 0;
@@ -226,18 +227,18 @@ public abstract class AbstractKeyList implements Key {
         }
 
         // Compare the contents.
-        Iterator thisIter = this.iterator();
-        Iterator thatIter = that.iterator();
+        Iterator<Key> thisIter = this.iterator();
+        Iterator<Key> thatIter = that.iterator();
 
         Key thisfirst = null;
         Key thatfirst = null;
 
         if (thisIter.hasNext()) {
-            thisfirst = (Key) thisIter.next();
+            thisfirst = thisIter.next();
         }
 
         if (thatIter.hasNext()) {
-            thatfirst = (Key) thatIter.next();
+            thatfirst = thatIter.next();
         }
 
         if (thisfirst == null) {
@@ -262,6 +263,7 @@ public abstract class AbstractKeyList implements Key {
      * 
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         Object clone = null;
         try {
@@ -291,6 +293,7 @@ public abstract class AbstractKeyList implements Key {
          * org.crosswire.jsword.passage.KeyVisitor#visitLeaf(org.crosswire.jsword
          * .passage.Key)
          */
+        @Override
         public void visitLeaf(Key key) {
             buffer.append(key.getName());
             buffer.append(AbstractPassage.REF_PREF_DELIM);
@@ -301,6 +304,7 @@ public abstract class AbstractKeyList implements Key {
          * 
          * @see java.lang.Object#toString()
          */
+        @Override
         public String toString() {
             String reply = buffer.toString();
             if (reply.length() > 0) {
@@ -326,6 +330,7 @@ public abstract class AbstractKeyList implements Key {
          * org.crosswire.jsword.passage.KeyVisitor#visitLeaf(org.crosswire.jsword
          * .passage.Key)
          */
+        @Override
         public void visitLeaf(Key key) {
             buffer.append(key.getOsisRef());
             buffer.append(AbstractPassage.REF_PREF_DELIM);
@@ -344,6 +349,7 @@ public abstract class AbstractKeyList implements Key {
          * org.crosswire.jsword.passage.KeyVisitor#visitLeaf(org.crosswire.jsword
          * .passage.Key)
          */
+        @Override
         public void visitLeaf(Key key) {
             buffer.append(key.getOsisID());
             buffer.append(AbstractPassage.REF_OSIS_DELIM);
@@ -354,6 +360,7 @@ public abstract class AbstractKeyList implements Key {
          * 
          * @see java.lang.Object#toString()
          */
+        @Override
         public String toString() {
             String reply = super.toString();
             if (reply.length() > 0) {

@@ -76,8 +76,8 @@ public final class ConfigEntryTable {
      *            the name of the book
      */
     public ConfigEntryTable(String bookName) {
-        table = new HashMap();
-        extra = new TreeMap();
+        table = new HashMap<ConfigEntryType,ConfigEntry>();
+        extra = new TreeMap<String,ConfigEntry>();
         internal = bookName;
         supported = true;
     }
@@ -236,14 +236,14 @@ public final class ConfigEntryTable {
     /**
      * Returns an Enumeration of all the known keys found in the config file.
      */
-    public Set getKeys() {
+    public Set<ConfigEntryType> getKeys() {
         return table.keySet();
     }
 
     /**
      * Returns an Enumeration of all the unknown keys found in the config file.
      */
-    public Set getExtraKeys() {
+    public Set<String> getExtraKeys() {
         return extra.keySet();
     }
 
@@ -263,7 +263,7 @@ public final class ConfigEntryTable {
      *         (if there is no default)
      */
     public Object getValue(ConfigEntryType type) {
-        ConfigEntry ce = (ConfigEntry) table.get(type);
+        ConfigEntry ce = table.get(type);
         if (ce != null) {
             return ce.getValue();
         }
@@ -281,7 +281,7 @@ public final class ConfigEntryTable {
      * @return true if there is a matching ConfigEntry matching the value
      */
     public boolean match(ConfigEntryType type, Object search) {
-        ConfigEntry ce = (ConfigEntry) table.get(type);
+        ConfigEntry ce = table.get(type);
         return ce != null && ce.match(search);
     }
 
@@ -292,8 +292,12 @@ public final class ConfigEntryTable {
      *            of the unknown entry
      * @return the requested value or null (if there is no value)
      */
-    public String getExtraValue(String key) {
-        return (String) extra.get(key);
+    public Object getExtraValue(String key) {
+        ConfigEntry ce = table.get(key);
+        if (ce != null) {
+            return ce.getValue();
+        }
+        return null;
     }
 
     /**
@@ -307,8 +311,8 @@ public final class ConfigEntryTable {
      * @return true if there is a unknown entry matching the value
      */
     public boolean matchExtra(String key, String search) {
-        String ce = (String) extra.get(key);
-        return ce != null && ce.equalsIgnoreCase(search);
+        ConfigEntry ce = table.get(key);
+        return ce != null && ce.match(search);
     }
 
     /**
@@ -407,7 +411,7 @@ public final class ConfigEntryTable {
 
             ConfigEntryType type = configEntry.getType();
 
-            ConfigEntry e = (ConfigEntry) table.get(type);
+            ConfigEntry e = table.get(type);
 
             if (e == null) {
                 if (type == null) {
@@ -685,7 +689,7 @@ public final class ConfigEntryTable {
     private void toOSIS(OSISUtil.OSISFactory factory, Element ele, String aTitle, ConfigEntryType[] category) {
         Element title = null;
         for (int i = 0; i < category.length; i++) {
-            ConfigEntry entry = (ConfigEntry) table.get(category[i]);
+            ConfigEntry entry = table.get(category[i]);
             Element configElement = null;
 
             if (entry != null) {
@@ -708,7 +712,7 @@ public final class ConfigEntryTable {
     private void toConf(StringBuilder buf, ConfigEntryType[] category) {
         for (int i = 0; i < category.length; i++) {
 
-            ConfigEntry entry = (ConfigEntry) table.get(category[i]);
+            ConfigEntry entry = table.get(category[i]);
 
             if (entry != null && !entry.getType().isSynthetic()) {
                 String text = entry.toConf();
@@ -722,12 +726,12 @@ public final class ConfigEntryTable {
     /**
      * Build an ordered map so that it displays in a consistent order.
      */
-    private void toOSIS(OSISUtil.OSISFactory factory, Element ele, String aTitle, Map map) {
+    private void toOSIS(OSISUtil.OSISFactory factory, Element ele, String aTitle, Map<String,ConfigEntry> map) {
         Element title = null;
-        Iterator iter = map.entrySet().iterator();
+        Iterator<Map.Entry<String,ConfigEntry>> iter = map.entrySet().iterator();
         while (iter.hasNext()) {
-            Map.Entry mapEntry = (Map.Entry) iter.next();
-            ConfigEntry entry = (ConfigEntry) mapEntry.getValue();
+            Map.Entry<String,ConfigEntry> mapEntry = iter.next();
+            ConfigEntry entry = mapEntry.getValue();
             Element configElement = null;
 
             if (entry != null) {
@@ -747,11 +751,11 @@ public final class ConfigEntryTable {
         }
     }
 
-    private void toConf(StringBuilder buf, Map map) {
-        Iterator iter = map.entrySet().iterator();
+    private void toConf(StringBuilder buf, Map<String,ConfigEntry> map) {
+        Iterator<Map.Entry<String,ConfigEntry>> iter = map.entrySet().iterator();
         while (iter.hasNext()) {
-            Map.Entry mapEntry = (Map.Entry) iter.next();
-            ConfigEntry entry = (ConfigEntry) mapEntry.getValue();
+            Map.Entry<String,ConfigEntry> mapEntry = iter.next();
+            ConfigEntry entry = mapEntry.getValue();
             String text = entry.toConf();
             if (text != null && text.length() > 0) {
                 buf.append(text);
@@ -834,12 +838,12 @@ public final class ConfigEntryTable {
     /**
      * A map of lists of known config entries.
      */
-    private Map table;
+    private Map<ConfigEntryType,ConfigEntry> table;
 
     /**
      * A map of lists of unknown config entries.
      */
-    private Map extra;
+    private Map<String,ConfigEntry> extra;
 
     /**
      * The BookType for this ConfigEntry

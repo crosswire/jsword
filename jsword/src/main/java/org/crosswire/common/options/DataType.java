@@ -35,6 +35,7 @@ public enum DataType {
      * A string argument.
      */
     STRING  ("String") {
+        @Override
         public Object convertFromString(String value) {
             return value;
         }
@@ -44,6 +45,7 @@ public enum DataType {
      * An integer argument.
      */
     INTEGER  ("Integer") {
+        @Override
         public Object convertFromString(String value) {
             return Integer.valueOf(Convert.string2Int(value));
         }
@@ -53,6 +55,7 @@ public enum DataType {
      * An boolean argument that allows various values for 'true'.
      */
     BOOLEAN ("Boolean") {
+        @Override
         public Object convertFromString(String value) {
             return Boolean.valueOf(Convert.string2Boolean(value));
         }
@@ -90,6 +93,7 @@ public enum DataType {
     /* (non-Javadoc)
      * @see java.lang.Enum#toString()
      */
+    @Override
     public String toString() {
         return name;
     }

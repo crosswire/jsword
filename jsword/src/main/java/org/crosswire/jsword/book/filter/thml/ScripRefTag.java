@@ -54,7 +54,7 @@ public class ScripRefTag extends AbstractTag {
      * org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element,
      * org.xml.sax.Attributes)
      */
-    /* @Override */
+    @Override
     public Element processTag(Element ele, Attributes attrs) {
         Element reference = null;
 
@@ -90,7 +90,7 @@ public class ScripRefTag extends AbstractTag {
      * org.crosswire.jsword.book.filter.thml.AbstractTag#processContent(org.
      * jdom.Element)
      */
-    /* @Override */
+    @Override
     public void processContent(Element ele) {
         String refstr = ele.getValue();
         try {

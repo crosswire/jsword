@@ -52,6 +52,7 @@ public class StrongsNumberAnalyzer extends AbstractBookAnalyzer {
     /* (non-Javadoc)
      * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String, java.io.Reader)
      */
+    @Override
     public TokenStream tokenStream(String fieldName, Reader reader) {
         return new StrongsNumberFilter(getBook(), new WhitespaceTokenizer(reader));
     }

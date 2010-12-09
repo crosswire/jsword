@@ -66,6 +66,7 @@ public class RocketPassage extends BitwisePassage {
      * 
      * @see org.crosswire.jsword.passage.AbstractPassage#optimizeReads()
      */
+    @Override
     public void optimizeReads() {
         raiseEventSuppresion();
 
@@ -97,6 +98,7 @@ public class RocketPassage extends BitwisePassage {
      * 
      * @see org.crosswire.jsword.passage.AbstractPassage#optimizeWrites()
      */
+    @Override
     protected void optimizeWrites() {
         distinct = null;
         ranged = null;
@@ -107,6 +109,7 @@ public class RocketPassage extends BitwisePassage {
      * 
      * @see org.crosswire.jsword.passage.Passage#countRanges(int)
      */
+    @Override
     public int countRanges(RestrictionType restrict) {
         if (ranged != null) {
             return ranged.countRanges(restrict);
@@ -120,6 +123,7 @@ public class RocketPassage extends BitwisePassage {
      * 
      * @see org.crosswire.jsword.passage.Passage#countVerses()
      */
+    @Override
     public int countVerses() {
         if (distinct != null) {
             return distinct.countVerses();
@@ -133,7 +137,8 @@ public class RocketPassage extends BitwisePassage {
      * 
      * @see java.lang.Iterable#iterator()
      */
-    public Iterator iterator() {
+    @Override
+    public Iterator<Key> iterator() {
         if (distinct != null) {
             return distinct.iterator();
         }
@@ -146,8 +151,8 @@ public class RocketPassage extends BitwisePassage {
      * 
      * @see org.crosswire.jsword.passage.Passage#rangeIterator(int)
      */
-    /* @Override */
-    public Iterator rangeIterator(RestrictionType restrict) {
+    @Override
+    public Iterator<Key> rangeIterator(RestrictionType restrict) {
         if (ranged != null) {
             return ranged.rangeIterator(restrict);
         }
@@ -160,6 +165,7 @@ public class RocketPassage extends BitwisePassage {
      * 
      * @see org.crosswire.jsword.passage.Passage#isEmpty()
      */
+    @Override
     public boolean isEmpty() {
         if (distinct != null) {
             return distinct.isEmpty();
@@ -173,6 +179,7 @@ public class RocketPassage extends BitwisePassage {
      * 
      * @see org.crosswire.jsword.passage.Passage#getVerseAt(int)
      */
+    @Override
     public Verse getVerseAt(int offset) throws ArrayIndexOutOfBoundsException {
         if (distinct != null) {
             return distinct.getVerseAt(offset);
@@ -186,6 +193,7 @@ public class RocketPassage extends BitwisePassage {
      * 
      * @see org.crosswire.jsword.passage.Passage#getVerseRangeAt(int, int)
      */
+    @Override
     public VerseRange getRangeAt(int offset, RestrictionType restrict) throws ArrayIndexOutOfBoundsException {
         if (ranged != null) {
             return ranged.getRangeAt(offset, restrict);
@@ -199,6 +207,7 @@ public class RocketPassage extends BitwisePassage {
      * 
      * @see org.crosswire.jsword.passage.Passage#booksInPassage()
      */
+    @Override
     public int booksInPassage() {
         if (distinct != null) {
             return distinct.booksInPassage();
@@ -212,6 +221,7 @@ public class RocketPassage extends BitwisePassage {
      * 
      * @see org.crosswire.jsword.passage.Passage#chaptersInPassage(int)
      */
+    @Override
     public int chaptersInPassage(int book) throws NoSuchVerseException {
         if (distinct != null) {
             return distinct.chaptersInPassage(book);
@@ -225,6 +235,7 @@ public class RocketPassage extends BitwisePassage {
      * 
      * @see org.crosswire.jsword.passage.Passage#versesInPassage(int, int)
      */
+    @Override
     public int versesInPassage(int book, int chapter) throws NoSuchVerseException {
         if (distinct != null) {
             return distinct.versesInPassage(book, chapter);
@@ -240,6 +251,7 @@ public class RocketPassage extends BitwisePassage {
      * org.crosswire.jsword.passage.Passage#containsAll(org.crosswire.jsword
      * .passage.Passage)
      */
+    @Override
     public boolean containsAll(Passage that) {
         if (ranged != null) {
             return ranged.containsAll(that);

@@ -59,7 +59,7 @@ public class VerseTest extends TestCase {
      * 
      * @see junit.framework.TestCase#setUp()
      */
-    /* @Override */
+    @Override
     protected void setUp() throws Exception {
         BibleInfo.setFullBookName(false);
         gen11 = new Verse(1, 1, 1);
@@ -85,7 +85,7 @@ public class VerseTest extends TestCase {
      * 
      * @see junit.framework.TestCase#tearDown()
      */
-    /* @Override */
+    @Override
     protected void tearDown() {
     }
 

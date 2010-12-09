@@ -32,6 +32,7 @@ import java.io.ByteArrayInputStream;
  */
 public enum CompressorType {
     ZIP {
+        @Override
         public Compressor getCompressor(byte[] input) {
             return new Zip(new ByteArrayInputStream(input));
         }
@@ -39,6 +40,7 @@ public enum CompressorType {
 
     LZSS {
 
+        @Override
         public Compressor getCompressor(byte[] input) {
             return new LZSS(new ByteArrayInputStream(input));
         }

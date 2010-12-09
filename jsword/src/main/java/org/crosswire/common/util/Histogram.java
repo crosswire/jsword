@@ -38,7 +38,7 @@ public class Histogram {
      * Create an empty histogram
      */
     public Histogram() {
-        hist = new HashMap();
+        hist = new HashMap<String,Counter>();
     }
 
     /**
@@ -47,7 +47,7 @@ public class Histogram {
      * @param key
      */
     public void increment(String key) {
-        Counter counter = (Counter) hist.get(key);
+        Counter counter = hist.get(key);
         if (counter == null) {
             counter = new Counter();
             hist.put(key, counter);
@@ -66,11 +66,12 @@ public class Histogram {
      * @return the resultant histogram
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
-        Iterator iter = hist.entrySet().iterator();
+        Iterator<Map.Entry<String,Counter>> iter = hist.entrySet().iterator();
         while (iter.hasNext()) {
-            Map.Entry entry = (Map.Entry) iter.next();
+            Map.Entry<String,Counter> entry = iter.next();
             buf.append(entry.getKey().toString());
             buf.append('\t');
             buf.append(entry.getValue().toString());
@@ -90,6 +91,7 @@ public class Histogram {
             counter++;
         }
 
+        @Override
         public String toString() {
             return Integer.toString(counter);
         }
@@ -97,6 +99,6 @@ public class Histogram {
         private int counter;
     }
 
-    private Map hist;
+    private Map<String,Counter> hist;
 
 }

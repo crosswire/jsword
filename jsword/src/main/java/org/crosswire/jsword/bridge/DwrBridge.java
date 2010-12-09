@@ -59,13 +59,13 @@ public class DwrBridge {
      * @see BookInstaller#getInstalledBook(String)
      */
     public String[][] getInstalledBooks(String filter) {
-        List reply = new ArrayList();
+        List<String[]> reply = new ArrayList<String[]>();
 
-        List books = BookInstaller.getInstalledBooks(filter);
+        List<Book> books = BookInstaller.getInstalledBooks(filter);
 
-        Iterator iter = books.iterator();
+        Iterator<Book> iter = books.iterator();
         while (iter.hasNext()) {
-            Book book = (Book) iter.next();
+            Book book = iter.next();
             String[] rbook = new String[] {
                     book.getInitials(), book.getName()
             };
@@ -78,7 +78,7 @@ public class DwrBridge {
                     "", "No Books installed"});
         }
 
-        return (String[][]) reply.toArray(new String[reply.size()][]);
+        return reply.toArray(new String[reply.size()][]);
     }
 
     /**
@@ -183,11 +183,11 @@ public class DwrBridge {
         // 3) Caching the whole list here is dumb.
         // What is needed is that all this be pushed into JSword proper.
         // TODO(dms): Push this into Book interface.
-        List result = new ArrayList();
-        Iterator iter = book.getGlobalKeyList().iterator();
+        List<String> result = new ArrayList<String>();
+        Iterator<Key> iter = book.getGlobalKeyList().iterator();
         int count = 0;
         while (iter.hasNext()) {
-            Key key = (Key) iter.next();
+            Key key = iter.next();
             String entry = key.getName().toLowerCase(sortLocale);
             if (entry.compareTo(target) >= 0) {
                 if (entry.compareTo(endTarget) < 0) {
@@ -202,7 +202,7 @@ public class DwrBridge {
             }
         }
 
-        return (String[]) result.toArray(new String[result.size()]);
+        return result.toArray(new String[result.size()]);
     }
 
     /**
@@ -276,7 +276,7 @@ public class DwrBridge {
 
             // Do we need to trim?
             if (start > 0 || key.getCardinality() > count) {
-                Iterator iter = key.iterator();
+                Iterator<Key> iter = key.iterator();
                 key = book.createEmptyKeyList();
                 int i = 0;
                 while (iter.hasNext()) {
@@ -289,7 +289,7 @@ public class DwrBridge {
                     if (i >= count) {
                         break;
                     }
-                    key.addAll((Key) iter.next());
+                    key.addAll(iter.next());
                 }
             }
         }

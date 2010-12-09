@@ -49,7 +49,7 @@ public final class ClassUtil {
      * @return the found Class
      * @throws ClassNotFoundException
      */
-    public static Class forName(String className) throws ClassNotFoundException {
+    public static Class<?> forName(String className) throws ClassNotFoundException {
         return Thread.currentThread().getContextClassLoader().loadClass(className);
     }
 
@@ -148,7 +148,7 @@ public final class ClassUtil {
      * @throws IllegalArgumentException
      *             if the class is <code>null</code>
      */
-    public static String getShortClassName(Class cls) {
+    public static String getShortClassName(Class<?> cls) {
         if (cls == null) {
             throw new IllegalArgumentException("The class must not be null");
         }

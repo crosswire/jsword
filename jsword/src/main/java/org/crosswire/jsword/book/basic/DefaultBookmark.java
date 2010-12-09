@@ -43,7 +43,7 @@ public class DefaultBookmark implements Bookmark {
      * Create an empty default bookmark
      */
     public DefaultBookmark() {
-        books = new ArrayList();
+        books = new ArrayList<Book>();
     }
 
     /*
@@ -62,7 +62,7 @@ public class DefaultBookmark implements Bookmark {
      * 
      * @see org.crosswire.jsword.book.Bookmark#getBooks()
      */
-    public List getBooks() {
+    public List<Book> getBooks() {
         return Collections.unmodifiableList(books);
     }
 
@@ -122,6 +122,7 @@ public class DefaultBookmark implements Bookmark {
      * 
      * @return A complete copy of ourselves
      */
+    @Override
     public Object clone() {
         Object clone = null;
         try {
@@ -135,7 +136,7 @@ public class DefaultBookmark implements Bookmark {
     /**
      * The list of books.
      */
-    private List books;
+    private List<Book> books;
 
     /**
      * The lookup request.

@@ -54,6 +54,7 @@ public class VerseCollector extends Collector {
      * 
      * @see org.apache.lucene.search.Collector#acceptsDocsOutOfOrder()
      */
+    @Override
     public boolean acceptsDocsOutOfOrder() {
         // Order is unimportant
         return true;
@@ -64,6 +65,7 @@ public class VerseCollector extends Collector {
      * 
      * @see org.apache.lucene.search.Collector#collect(int)
      */
+    @Override
     public void collect(int docId) throws IOException {
         Document doc = searcher.doc(docBase + docId);
         try {
@@ -87,6 +89,7 @@ public class VerseCollector extends Collector {
      * org.apache.lucene.search.Collector#setNextReader(org.apache.lucene.index
      * .IndexReader, int)
      */
+    @Override
     public void setNextReader(IndexReader reader, int docBase) throws IOException {
         this.docBase = docBase;
     }
@@ -98,6 +101,7 @@ public class VerseCollector extends Collector {
      * org.apache.lucene.search.Collector#setScorer(org.apache.lucene.search
      * .Scorer)
      */
+    @Override
     public void setScorer(Scorer scorer) throws IOException {
         // This collector does no scoring. It collects all hits.
     }

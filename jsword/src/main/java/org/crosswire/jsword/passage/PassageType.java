@@ -34,6 +34,7 @@ public enum PassageType {
      * Optimize the Passage for speed
      */
     SPEED {
+        @Override
         public Passage createPassage(String passage) throws NoSuchVerseException {
             if (passage == null || passage.length() == 0) {
                 return createEmptyPassage();
@@ -41,6 +42,7 @@ public enum PassageType {
             return new RocketPassage(passage);
         }
 
+        @Override
         public Passage createEmptyPassage() {
             return new RocketPassage();
         }
@@ -50,6 +52,7 @@ public enum PassageType {
      * Optimize the Passage for write speed
      */
     WRITE_SPEED {
+        @Override
         public Passage createPassage(String passage) throws NoSuchVerseException {
             if (passage == null || passage.length() == 0) {
                 return createEmptyPassage();
@@ -57,6 +60,7 @@ public enum PassageType {
             return new BitwisePassage(passage);
         }
 
+        @Override
         public Passage createEmptyPassage() {
             return new BitwisePassage();
         }
@@ -66,6 +70,7 @@ public enum PassageType {
      * Optimize the Passage for size
      */
     SIZE {
+        @Override
         public Passage createPassage(String passage) throws NoSuchVerseException {
             if (passage == null || passage.length() == 0) {
                 return createEmptyPassage();
@@ -73,6 +78,7 @@ public enum PassageType {
             return new DistinctPassage(passage);
         }
 
+        @Override
         public Passage createEmptyPassage() {
             return new DistinctPassage();
         }
@@ -87,6 +93,7 @@ public enum PassageType {
      * Optimize the Passage for a mix
      */
     MIX {
+        @Override
         public Passage createPassage(String passage) throws NoSuchVerseException {
             if (passage == null || passage.length() == 0) {
                 return createEmptyPassage();
@@ -94,6 +101,7 @@ public enum PassageType {
             return new PassageTally(passage);
         }
 
+        @Override
         public Passage createEmptyPassage() {
             return new PassageTally();
         }
@@ -103,6 +111,7 @@ public enum PassageType {
      * Optimize the Passage for tally operations
      */
     TALLY {
+        @Override
         public Passage createPassage(String passage) throws NoSuchVerseException {
             if (passage == null || passage.length() == 0) {
                 return createEmptyPassage();
@@ -110,6 +119,7 @@ public enum PassageType {
             return new PassageTally(passage);
         }
 
+        @Override
         public Passage createEmptyPassage() {
             return new PassageTally();
         }

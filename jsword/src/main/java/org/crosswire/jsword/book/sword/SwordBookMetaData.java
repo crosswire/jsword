@@ -94,7 +94,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * 
      * @see org.crosswire.jsword.book.BookMetaData#isQuestionable()
      */
-    /* @Override */
+    @Override
     public boolean isQuestionable() {
         return cet.isQuestionable();
     }
@@ -104,7 +104,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * 
      * @see org.crosswire.jsword.book.BookMetaData#isSupported()
      */
-    /* @Override */
+    @Override
     public boolean isSupported() {
         return cet.isSupported() && cet.getBookType().isSupported(this);
     }
@@ -114,7 +114,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * 
      * @see org.crosswire.jsword.book.BookMetaData#isEnciphered()
      */
-    /* @Override */
+    @Override
     public boolean isEnciphered() {
         return cet.isEnciphered();
     }
@@ -124,7 +124,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * 
      * @see org.crosswire.jsword.book.BookMetaData#isLocked()
      */
-    /* @Override */
+    @Override
     public boolean isLocked() {
         return cet.isLocked();
     }
@@ -134,7 +134,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * 
      * @see org.crosswire.jsword.book.BookMetaData#unlock(String)
      */
-    /* @Override */
+    @Override
     public boolean unlock(String unlockKey) {
         return cet.unlock(unlockKey);
     }
@@ -144,6 +144,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * 
      * @see org.crosswire.jsword.book.BookMetaData#getUnlockKey()
      */
+    @Override
     public String getUnlockKey() {
         return cet.getUnlockKey();
     }
@@ -163,7 +164,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * @return the charset of the book.
      */
     public String getBookCharset() {
-        return (String) ENCODING_JAVA.get(getProperty(ConfigEntryType.ENCODING));
+        return ENCODING_JAVA.get(getProperty(ConfigEntryType.ENCODING));
     }
 
     /*
@@ -171,6 +172,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * 
      * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#getKeyType()
      */
+    @Override
     public KeyType getKeyType() {
         BookType bookType = getBookType();
         if (bookType == null) {
@@ -208,6 +210,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * org.crosswire.jsword.book.basic.AbstractBookMetaData#setLibrary(java.
      * net.URI)
      */
+    @Override
     public void setLibrary(URI library) {
         // Ignore it if it is not supported.
         if (!isSupported()) {
@@ -256,7 +259,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * 
      * @see org.crosswire.jsword.book.BookMetaData#toOSIS()
      */
-    /* @Override */
+    @Override
     public Document toOSIS() {
         return new Document(cet.toOSIS());
     }
@@ -308,7 +311,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * org.crosswire.jsword.book.BookMetaData#hasFeature(org.crosswire.jsword
      * .book.FeatureType)
      */
-    /* @Override */
+    @Override
     public boolean hasFeature(FeatureType feature) {
         if (cet.match(ConfigEntryType.FEATURE, feature.toString())) {
             return true;
@@ -327,21 +330,21 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
 
     private void buildProperties() {
         // merge entries into properties file
-        Iterator iter = cet.getKeys().iterator();
+        Iterator<ConfigEntryType> iter = cet.getKeys().iterator();
         while (iter.hasNext()) {
-            ConfigEntryType key = (ConfigEntryType) iter.next();
+            ConfigEntryType key = iter.next();
             Object value = cet.getValue(key);
             // value is null if the config entry was rejected.
             if (value == null) {
                 continue;
             }
-            if (value instanceof List) {
-                List list = (List) value;
+            if (value instanceof List<?>) {
+                List<String> list = (List<String>) value;
                 StringBuilder combined = new StringBuilder();
                 boolean appendSeparator = false;
-                Iterator it = list.iterator();
+                Iterator<String> it = list.iterator();
                 while (it.hasNext()) {
-                    String element = (String) it.next();
+                    String element = it.next();
                     if (appendSeparator) {
                         combined.append('\n');
                     }
@@ -370,7 +373,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * Sword uses MS Windows cp1252 for Latin 1 not the standard. Arrgh! The
      * language strings need to be converted to Java charsets
      */
-    private static final Map ENCODING_JAVA = new HashMap();
+    private static final Map<String,String> ENCODING_JAVA = new HashMap<String,String>();
     static {
         ENCODING_JAVA.put("Latin-1", "WINDOWS-1252");
         ENCODING_JAVA.put("UTF-8", "UTF-8");

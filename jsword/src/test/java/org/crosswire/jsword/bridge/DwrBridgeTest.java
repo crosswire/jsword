@@ -39,6 +39,7 @@ import junit.framework.TestCase;
 public class DwrBridgeTest extends TestCase {
     DwrBridge dwrBridge = new DwrBridge();
 
+    @Override
     protected void setUp() {
         BibleInfo.setFullBookName(true);
     }

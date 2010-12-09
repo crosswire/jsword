@@ -51,7 +51,7 @@ public class BooksTest extends TestCase {
      * 
      * @see junit.framework.TestCase#setUp()
      */
-    /* @Override */
+    @Override
     protected void setUp() throws Exception {
         List lbmds = Books.installed().getBooks(BookFilters.getOnlyBibles());
         int numBibles = lbmds.size();
@@ -73,7 +73,7 @@ public class BooksTest extends TestCase {
      * 
      * @see junit.framework.TestCase#tearDown()
      */
-    /* @Override */
+    @Override
     protected void tearDown() throws Exception {
     }
 

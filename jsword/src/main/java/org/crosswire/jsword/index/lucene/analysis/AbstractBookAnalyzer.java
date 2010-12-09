@@ -85,7 +85,7 @@ public abstract class AbstractBookAnalyzer extends Analyzer {
      */
     protected Book book;
 
-    protected Set stopSet;
+    protected Set<?> stopSet;
 
     // for turning on/off stop word removal during analysis
     protected boolean doStopWords;

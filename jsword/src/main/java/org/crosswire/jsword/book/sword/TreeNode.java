@@ -87,7 +87,7 @@ class TreeNode implements Cloneable, Serializable {
      * @return the userData
      */
     public byte[] getUserData() {
-        return (byte[]) userData.clone();
+        return userData.clone();
     }
 
     /**
@@ -95,7 +95,7 @@ class TreeNode implements Cloneable, Serializable {
      *            the userData to set
      */
     public void setUserData(byte[] theUserData) {
-        userData = (byte[]) theUserData.clone();
+        userData = theUserData.clone();
     }
 
     /**
@@ -162,6 +162,7 @@ class TreeNode implements Cloneable, Serializable {
      * 
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         try {
             return super.clone();

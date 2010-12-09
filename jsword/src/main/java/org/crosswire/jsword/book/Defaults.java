@@ -502,35 +502,35 @@ public final class Defaults {
      */
     public static void refreshBooks() {
         // Create the array of Bibles
-        Map bnames = getBookMap(BookFilters.getOnlyBibles());
+        Map<Book,String> bnames = getBookMap(BookFilters.getOnlyBibles());
         ChoiceFactory.getDataMap().put(BIBLE_KEY, bnames);
 
         // Create the array of Commentaries
-        Map cnames = getBookMap(BookFilters.getCommentaries());
+        Map<Book,String> cnames = getBookMap(BookFilters.getCommentaries());
         ChoiceFactory.getDataMap().put(COMMENTARY_KEY, cnames);
 
         // Create the array of Dictionaries
-        Map dnames = getBookMap(BookFilters.getDictionaries());
+        Map<Book,String> dnames = getBookMap(BookFilters.getDictionaries());
         ChoiceFactory.getDataMap().put(DICTIONARY_KEY, dnames);
 
         // Create the array of DailyDevotionals
-        Map rnames = getBookMap(BookFilters.getDailyDevotionals());
+        Map<Book,String> rnames = getBookMap(BookFilters.getDailyDevotionals());
         ChoiceFactory.getDataMap().put(DAILY_DEVOTIONALS_KEY, rnames);
 
         // Create the array of Dictionaries
-        Map greekDef = getBookMap(BookFilters.getGreekDefinitions());
+        Map<Book,String> greekDef = getBookMap(BookFilters.getGreekDefinitions());
         ChoiceFactory.getDataMap().put(GREEKDEF_KEY, greekDef);
 
         // Create the array of Dictionaries
-        Map hebrewDef = getBookMap(BookFilters.getHebrewDefinitions());
+        Map<Book,String> hebrewDef = getBookMap(BookFilters.getHebrewDefinitions());
         ChoiceFactory.getDataMap().put(HEBREWDEF_KEY, hebrewDef);
 
         // Create the array of Dictionaries
-        Map greekParse = getBookMap(BookFilters.getGreekParse());
+        Map<Book,String> greekParse = getBookMap(BookFilters.getGreekParse());
         ChoiceFactory.getDataMap().put(GREEKPARSE_KEY, greekParse);
 
         // Create the array of Dictionaries
-        Map hebrewParse = getBookMap(BookFilters.getHebrewParse());
+        Map<Book,String> hebrewParse = getBookMap(BookFilters.getHebrewParse());
         ChoiceFactory.getDataMap().put(HEBREWPARSE_KEY, hebrewParse);
     }
 
@@ -539,9 +539,9 @@ public final class Defaults {
      * the current defaults with one of these.
      */
     protected static void checkAllPreferable() {
-        Iterator iter = Books.installed().getBooks().iterator();
+        Iterator<Book> iter = Books.installed().getBooks().iterator();
         while (iter.hasNext()) {
-            Book book = (Book) iter.next();
+            Book book = iter.next();
             checkPreferable(book);
         }
     }
@@ -566,12 +566,12 @@ public final class Defaults {
     /**
      * Convert a filter into an array of names of Books that pass the filter.
      */
-    private static Map getBookMap(BookFilter filter) {
-        Map books = new TreeMap(BookComparators.getDefault());
+    private static Map<Book,String> getBookMap(BookFilter filter) {
+        Map<Book,String> books = new TreeMap<Book,String>(BookComparators.getDefault());
 
-        Iterator iter = Books.installed().getBooks(filter).iterator();
+        Iterator<Book> iter = Books.installed().getBooks(filter).iterator();
         while (iter.hasNext()) {
-            Book book = (Book) iter.next();
+            Book book = iter.next();
             books.put(book, book.getName());
         }
 

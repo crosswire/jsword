@@ -53,7 +53,7 @@ public final class SearcherFactory {
             IndexManager imanager = IndexManagerFactory.getIndexManager();
             Index index = imanager.getIndex(book);
 
-            Searcher parser = (Searcher) PluginUtil.getImplementation(Searcher.class);
+            Searcher parser = PluginUtil.getImplementation(Searcher.class);
             parser.init(index);
 
             return parser;

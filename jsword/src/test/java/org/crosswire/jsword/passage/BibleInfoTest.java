@@ -46,7 +46,7 @@ public class BibleInfoTest extends TestCase {
      * 
      * @see junit.framework.TestCase#setUp()
      */
-    /* @Override */
+    @Override
     protected void setUp() {
         storedCase = BibleInfo.getDefaultCase();
     }
@@ -56,7 +56,7 @@ public class BibleInfoTest extends TestCase {
      * 
      * @see junit.framework.TestCase#tearDown()
      */
-    /* @Override */
+    @Override
     protected void tearDown() {
         BibleInfo.setCase(storedCase);
     }

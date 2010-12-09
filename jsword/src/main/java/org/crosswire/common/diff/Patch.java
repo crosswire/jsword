@@ -46,7 +46,7 @@ public class Patch {
      * Create an empty patch.
      */
     public Patch() {
-        patches = new ArrayList();
+        patches = new ArrayList<PatchEntry>();
         margin = PatchEntry.getMargin();
     }
 
@@ -84,7 +84,7 @@ public class Patch {
      * @param diffs
      *            Optional array of diff tuples for text1 to text2.
      */
-    public Patch(String source, String target, List diffs) {
+    public Patch(String source, String target, List<Difference> diffs) {
         this();
         make(source, target, diffs);
     }
@@ -101,8 +101,8 @@ public class Patch {
      *            Optional array of diff tuples for text1 to text2.
      * @return this patch
      */
-    public Patch make(String source, String target, List diffList) {
-        List diffs = diffList;
+    public Patch make(String source, String target, List<Difference> diffList) {
+        List<Difference> diffs = diffList;
         if (diffs == null) {
             Diff diff = new Diff(source, target);
             diffs = diff.compare();
@@ -124,10 +124,10 @@ public class Patch {
         // Recreate the patches to determine context info.
         String prePatchText = source;
         String postPatchText = source;
-        Iterator iter = diffs.iterator();
+        Iterator<Difference> iter = diffs.iterator();
         int x = 0;
         while (iter.hasNext()) {
-            Difference diff = (Difference) iter.next();
+            Difference diff = iter.next();
             EditType editType = diff.getEditType();
             String diffText = diff.getText();
             int len = diffText.length();
@@ -201,13 +201,13 @@ public class Patch {
         int startLoc = -1;
         String text1 = "";
         String text2 = "";
-        List diffs;
+        List<Difference> diffs;
         int index1 = 0;
         int index2 = 0;
         int x = 0;
-        Iterator patchIter = patches.iterator();
+        Iterator<PatchEntry> patchIter = patches.iterator();
         while (patchIter.hasNext()) {
-            PatchEntry aPatch = (PatchEntry) patchIter.next();
+            PatchEntry aPatch = patchIter.next();
             expectedLoc = aPatch.getTargetStart() + delta;
             text1 = aPatch.getSourceText();
             Match match = new Match(resultText, text1, expectedLoc);
@@ -229,9 +229,9 @@ public class Patch {
                     Diff diff = new Diff(text1, text2, false);
                     diffs = diff.compare();
                     index1 = 0;
-                    Iterator diffIter = aPatch.iterator();
+                    Iterator<Difference> diffIter = aPatch.iterator();
                     while (diffIter.hasNext()) {
-                        Difference aDiff = (Difference) diffIter.next();
+                        Difference aDiff = diffIter.next();
                         EditType editType = aDiff.getEditType();
                         if (!EditType.EQUAL.equals(editType)) {
                             index2 = diff.xIndex(diffs, index1);
@@ -263,15 +263,15 @@ public class Patch {
      */
     public void splitMax() {
         int maxPatternLength = new Match().maxPatternLength();
-        ListIterator pointer = patches.listIterator();
-        PatchEntry bigPatch = pointer.hasNext() ? (PatchEntry) pointer.next() : null;
+        ListIterator<PatchEntry> pointer = patches.listIterator();
+        PatchEntry bigPatch = pointer.hasNext() ? pointer.next() : null;
         while (bigPatch != null) {
             if (bigPatch.getSourceLength() <= maxPatternLength) {
                 if (!pointer.hasNext()) {
                     break;
                 }
 
-                bigPatch = (PatchEntry) pointer.next();
+                bigPatch = pointer.next();
             }
 
             // Remove the big old patch.
@@ -356,7 +356,7 @@ public class Patch {
                 }
             }
 
-            bigPatch = pointer.hasNext() ? (PatchEntry) pointer.next() : null;
+            bigPatch = pointer.hasNext() ? pointer.next() : null;
         }
     }
 
@@ -367,7 +367,7 @@ public class Patch {
      */
     public String toText() {
         StringBuilder text = new StringBuilder();
-        Iterator iter = patches.iterator();
+        Iterator<PatchEntry> iter = patches.iterator();
         while (iter.hasNext()) {
             text.append(iter.next());
         }
@@ -418,14 +418,14 @@ public class Patch {
          */
         public PatchResults(String text, boolean[] results) {
             this.text = text;
-            this.results = (boolean[]) results.clone();
+            this.results = results.clone();
         }
 
         /**
          * @return the results
          */
         public boolean[] getResults() {
-            return (boolean[]) results.clone();
+            return results.clone();
         }
 
         /**
@@ -443,6 +443,6 @@ public class Patch {
     // work that way with split.
     private static Pattern patchBoundaryPattern = Pattern.compile("\n@@");
 
-    private List patches;
+    private List<PatchEntry> patches;
     private int margin;
 }

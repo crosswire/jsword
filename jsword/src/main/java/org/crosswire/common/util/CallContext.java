@@ -58,15 +58,15 @@ public final class CallContext extends SecurityManager {
      * 
      * @see java.lang.SecurityManager#getClassContext()
      */
-    /* @Override */
-    protected Class[] getClassContext() {
+    @Override
+    protected Class<?>[] getClassContext() {
         return super.getClassContext();
     }
 
     /**
      * When called from a method it will return the class calling that method.
      */
-    public static Class getCallingClass() {
+    public static Class<?> getCallingClass() {
         return getCallingClass(1); // add 1 for this method
     }
 
@@ -78,7 +78,7 @@ public final class CallContext extends SecurityManager {
      * @throws ArrayIndexOutOfBoundsException
      *             if the index is not valid
      */
-    public static Class getCallingClass(int i) {
+    public static Class<?> getCallingClass(int i) {
         return instance().getClassContext()[CALL_CONTEXT_OFFSET + i];
     }
 
