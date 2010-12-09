@@ -58,50 +58,50 @@ public class JobTest extends TestCase {
         job = JobManager.createJob(WIBBLE);
         job.beginJob(WIBBLE);
 
-        assertEquals(job.getJobName(), WIBBLE);
-        assertEquals(job.isFinished(), false);
-        assertEquals(job.isCancelable(), false);
-        assertEquals(job.getSectionName(), WIBBLE);
-        assertEquals(job.getWork(), 0);
+        assertEquals(WIBBLE, job.getJobName());
+        assertEquals(false, job.isFinished());
+        assertEquals(false, job.isCancelable());
+        assertEquals(WIBBLE, job.getSectionName());
+        assertEquals(0, job.getWork());
         job.done();
-        assertEquals(job.isFinished(), true);
-        assertEquals(job.getWork(), 100);
+        assertEquals(true, job.isFinished());
+        assertEquals(100, job.getWork());
         assertEquals(job.isCancelable(), false);
 
         job = JobManager.createJob(WIBBLE, Thread.currentThread());
         job.beginJob(WIBBLE);
-        assertEquals(job.getJobName(), WIBBLE);
-        assertEquals(job.isFinished(), false);
-        assertEquals(job.isCancelable(), true);
-        assertEquals(job.getSectionName(), WIBBLE);
-        assertEquals(job.getWork(), 0);
+        assertEquals(WIBBLE, job.getJobName());
+        assertEquals(false, job.isFinished());
+        assertEquals(true, job.isCancelable());
+        assertEquals(WIBBLE, job.getSectionName());
+        assertEquals(0, job.getWork());
         job.done();
-        assertEquals(job.isFinished(), true);
-        assertEquals(job.getWork(), 100);
+        assertEquals(true, job.isFinished());
+        assertEquals(100, job.getWork());
         // assertEquals(job.isCancelable(), false);
 
         job = JobManager.createJob(WIBBLE);
         job.beginJob(WIBBLE, uri);
-        assertEquals(job.getJobName(), WIBBLE);
-        assertEquals(job.isFinished(), false);
-        assertEquals(job.isCancelable(), false);
-        assertEquals(job.getSectionName(), WIBBLE);
-        assertEquals(job.getWork(), 0);
+        assertEquals(WIBBLE, job.getJobName());
+        assertEquals(false, job.isFinished());
+        assertEquals(false, job.isCancelable());
+        assertEquals(WIBBLE, job.getSectionName());
+        assertEquals(0, job.getWork());
         job.done();
-        assertEquals(job.isFinished(), true);
-        assertEquals(job.getWork(), 100);
+        assertEquals(true, job.isFinished());
+        assertEquals(100, job.getWork());
         // assertEquals(job.isCancelable(), false);
 
         job = JobManager.createJob(WIBBLE, Thread.currentThread());
         job.beginJob(WIBBLE, uri);
-        assertEquals(job.getJobName(), WIBBLE);
-        assertEquals(job.isFinished(), false);
-        assertEquals(job.isCancelable(), true);
-        assertEquals(job.getSectionName(), WIBBLE);
-        assertEquals(job.getWork(), 0);
+        assertEquals(WIBBLE, job.getJobName());
+        assertEquals(false, job.isFinished());
+        assertEquals(true, job.isCancelable());
+        assertEquals(WIBBLE, job.getSectionName());
+        assertEquals(0, job.getWork());
         job.done();
-        assertEquals(job.isFinished(), true);
-        assertEquals(job.getWork(), 100);
+        assertEquals(true, job.isFinished());
+        assertEquals(100, job.getWork());
         // assertEquals(job.isCancelable(), false);
     }
 }

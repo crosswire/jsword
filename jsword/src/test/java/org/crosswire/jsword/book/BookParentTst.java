@@ -21,7 +21,6 @@
  */
 package org.crosswire.jsword.book;
 
-import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -48,14 +47,13 @@ public class BookParentTst extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
-        List lbmds = Books.installed().getBooks(BookFilters.getOnlyBibles());
+        List<Book> lbmds = Books.installed().getBooks(BookFilters.getOnlyBibles());
         bibles = new Book[lbmds.size()];
         bmds = new BookMetaData[lbmds.size()];
 
         int i = 0;
-        for (Iterator it = lbmds.iterator(); it.hasNext();) {
-            bibles[i] = (Book) it.next();
-            bmds[i] = bibles[i].getBookMetaData();
+        for (Book book : lbmds) {
+            bmds[i] = book.getBookMetaData();
             i++;
         }
     }

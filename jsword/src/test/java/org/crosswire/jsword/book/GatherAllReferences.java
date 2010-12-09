@@ -25,7 +25,6 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -91,9 +90,8 @@ public class GatherAllReferences {
 
         // Loop through all the Bookks
         log.warn("*** Reading all known Books");
-        List comments = Books.installed().getBooks();
-        for (Iterator cit = comments.iterator(); cit.hasNext();) {
-            Book book = (Book) cit.next();
+        List<Book> comments = Books.installed().getBooks();
+        for (Book book : comments) {
 
             BookMetaData bmd = book.getBookMetaData();
             // Skip PlainText as they do not have references marked up
@@ -118,9 +116,8 @@ public class GatherAllReferences {
                 0, 0
         };
 
-        Iterator it = set.iterator();
-        while (it.hasNext()) {
-            readKey(book, (Key) it.next(), stats);
+        for (Key key : set) {
+            readKey(book, key, stats);
         }
         log.warn(book.getInitials() + ':' + stats[0] + ':' + stats[1]);
 

@@ -583,7 +583,10 @@ public final class OSISUtil {
         }
 
         assert content != null;
-        return content.getContent();
+        if (content != null) {
+            return content.getContent();
+        }
+        return new ArrayList<Content>();
     }
 
     /**

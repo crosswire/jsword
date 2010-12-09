@@ -87,8 +87,8 @@ public class DifferenceEngine {
     public List<Difference> generate() {
         long msEnd = System.currentTimeMillis() + (long) (timeout * 1000);
         int maxD = (source.length() + target.length()) / 2;
-        List<HashSet<String>> vMap1 = new ArrayList<HashSet<String>>();
-        List<HashSet<String>> vMap2 = new ArrayList<HashSet<String>>();
+        List<Set<String>> vMap1 = new ArrayList<Set<String>>();
+        List<Set<String>> vMap2 = new ArrayList<Set<String>>();
         Map<Integer,Integer> v1 = new HashMap<Integer,Integer>();
         Map<Integer,Integer> v2 = new HashMap<Integer,Integer>();
         v1.put(Integer.valueOf(1), Integer.valueOf(0));
@@ -212,7 +212,7 @@ public class DifferenceEngine {
      *            New string fragment to be diffed
      * @return List of Difference objects
      */
-    protected List<Difference> path1(final List<HashSet<String>> vMap, final String newSource, final String newTarget) {
+    protected List<Difference> path1(final List<Set<String>> vMap, final String newSource, final String newTarget) {
         List<Difference> path = new ArrayList<Difference>();
         int x = newSource.length();
         int y = newTarget.length();
@@ -268,7 +268,7 @@ public class DifferenceEngine {
      *            New string fragment to be diffed
      * @return List of Difference objects
      */
-    protected List<Difference> path2(final List<HashSet<String>> vMap, final String newSource, final String newTarget) {
+    protected List<Difference> path2(final List<Set<String>> vMap, final String newSource, final String newTarget) {
         List<Difference> path = new ArrayList<Difference>();
         int x = newSource.length();
         int y = newTarget.length();

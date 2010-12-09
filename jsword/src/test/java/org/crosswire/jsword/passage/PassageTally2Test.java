@@ -171,7 +171,7 @@ public class PassageTally2Test extends TestCase {
     }
 
     public void testVerseIterator() throws Exception {
-        Iterator it = tally.iterator();
+        Iterator<Key> it = tally.iterator();
         assertTrue(it.hasNext());
         assertEquals(it.next(), VerseFactory.fromString("Gen 1:1"));
         assertTrue(it.hasNext());
@@ -190,7 +190,7 @@ public class PassageTally2Test extends TestCase {
     }
 
     public void testRangeIterator() throws Exception {
-        Iterator it = tally.rangeIterator(RestrictionType.NONE);
+        Iterator<Key> it = tally.rangeIterator(RestrictionType.NONE);
         assertTrue(it.hasNext());
         assertEquals(it.next(), VerseRangeFactory.fromString("Gen 1:1"));
         assertTrue(it.hasNext());

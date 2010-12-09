@@ -21,7 +21,7 @@ public class LineMapTest extends TestCase {
 
     public void testCompile() {
         // Convert lines down to characters
-        ArrayList list = new ArrayList();
+        ArrayList<String> list = new ArrayList<String>();
         list.add("");
         list.add("alpha\n");
         list.add("beta\n");
@@ -43,26 +43,26 @@ public class LineMapTest extends TestCase {
 
     public void testRestore() {
         // Convert chars up to lines
-        List diffs = diffList(new Object[] {
-                new Difference(EditType.EQUAL, "\u0001\u0002\u0001"), new Difference(EditType.INSERT, "\u0002\u0001\u0002")});
-        ArrayList list = new ArrayList();
+        List<Difference> diffs = diffList(
+                new Difference(EditType.EQUAL, "\u0001\u0002\u0001"), new Difference(EditType.INSERT, "\u0002\u0001\u0002"));
+        ArrayList<String> list = new ArrayList<String>();
         list.add("");
         list.add("alpha\n");
         list.add("beta\n");
         LineMap map = new LineMap("alpha\nbeta\nalpha\n", "beta\nalpha\nbeta\n");
         map.restore(diffs);
         assertEquals(
-                "LineMap.restore:", diffList(new Object[] { new Difference(EditType.EQUAL, "alpha\nbeta\nalpha\n"), new Difference(EditType.INSERT, "beta\nalpha\nbeta\n")}).get(0), diffs.get(0));
+                "LineMap.restore:", diffList(new Difference(EditType.EQUAL, "alpha\nbeta\nalpha\n"), new Difference(EditType.INSERT, "beta\nalpha\nbeta\n")).get(0), diffs.get(0));
         assertEquals(
-                "LineMap.restore:", diffList(new Object[] { new Difference(EditType.EQUAL, "alpha\nbeta\nalpha\n"), new Difference(EditType.INSERT, "beta\nalpha\nbeta\n")}).get(diffs.size() - 1), diffs.get(diffs.size() - 1));
+                "LineMap.restore:", diffList(new Difference(EditType.EQUAL, "alpha\nbeta\nalpha\n"), new Difference(EditType.INSERT, "beta\nalpha\nbeta\n")).get(diffs.size() - 1), diffs.get(diffs.size() - 1));
         assertEquals(
-                "LineMap.restore:", diffList(new Object[] { new Difference(EditType.EQUAL, "alpha\nbeta\nalpha\n"), new Difference(EditType.INSERT, "beta\nalpha\nbeta\n")}), diffs);
+                "LineMap.restore:", diffList(new Difference(EditType.EQUAL, "alpha\nbeta\nalpha\n"), new Difference(EditType.INSERT, "beta\nalpha\nbeta\n")), diffs);
     }
 
     // Private function for quickly building lists of diffs.
-    private static List diffList(Object[] diffs) {
-        List myDiffList = new ArrayList();
-        myDiffList.addAll(Arrays.asList(diffs));
-        return myDiffList;
+    private static <T> List<T> diffList(T... items) {
+        List<T> list = new ArrayList<T>();
+        list.addAll(Arrays.asList(items));
+        return list;
     }
 }

@@ -21,7 +21,6 @@
  */
 package org.crosswire.jsword.book;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -54,9 +53,8 @@ public class ReadEverything {
         // Loop through all the Books
         log.warn("*** Reading all installed Bibles");
         BookFilter filter = BookFilters.getCustom("SourceType=TEI");
-        List comments = Books.installed().getBooks(filter);
-        for (Iterator cit = comments.iterator(); cit.hasNext();) {
-            Book book = (Book) cit.next();
+        List<Book> comments = Books.installed().getBooks(filter);
+        for (Book book : comments) {
 
             if (!book.isLocked()) {
                 log.warn("****** Reading: " + book.getInitials());
@@ -77,10 +75,8 @@ public class ReadEverything {
         long start = System.currentTimeMillis();
         int entries = 0;
 
-        Iterator it = set.iterator();
         boolean first = true;
-        while (it.hasNext()) {
-            Key key = (Key) it.next();
+        for (Key key : set) {
             // skip the root of a TreeKey as it often is not addressable.
             if (first) {
                 first = false;

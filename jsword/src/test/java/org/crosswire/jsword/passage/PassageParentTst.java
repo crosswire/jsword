@@ -198,7 +198,7 @@ public class PassageParentTst extends TestCase {
         // stage.
         // for (int i=0; i<12; i++)
         {
-            Iterator it = gen1_135.rangeIterator(RestrictionType.NONE);
+            Iterator<Key> it = gen1_135.rangeIterator(RestrictionType.NONE);
             assertTrue(it.hasNext());
             assertEquals(it.next(), VerseRangeFactory.fromString("Gen 1:1"));
             assertTrue(it.hasNext());
@@ -214,7 +214,7 @@ public class PassageParentTst extends TestCase {
     public void testReadVerseIterator() throws Exception {
         // for (int i=0; i<12; i++)
         {
-            Iterator it = gen1_135.iterator();
+            Iterator<Key> it = gen1_135.iterator();
             assertTrue(it.hasNext());
             assertEquals(it.next(), VerseFactory.fromString("Gen 1:1"));
             assertTrue(it.hasNext());
@@ -538,7 +538,7 @@ public class PassageParentTst extends TestCase {
     }
 
     public void testWriteRangeIterator() throws Exception {
-        Iterator it = gen1_135.rangeIterator(RestrictionType.NONE);
+        Iterator<Key> it = gen1_135.rangeIterator(RestrictionType.NONE);
         assertTrue(it.hasNext());
         assertEquals(it.next(), VerseRangeFactory.fromString("Gen 1:1"));
         assertTrue(it.hasNext());
@@ -579,7 +579,7 @@ public class PassageParentTst extends TestCase {
     }
 
     public void testWriteVerseIterator() throws Exception {
-        Iterator it = gen1_135.iterator();
+        Iterator<Key> it = gen1_135.iterator();
         assertTrue(it.hasNext());
         assertEquals(it.next(), VerseFactory.fromString("Gen 1:1"));
         assertTrue(it.hasNext());

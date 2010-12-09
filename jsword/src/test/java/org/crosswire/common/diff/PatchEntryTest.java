@@ -25,9 +25,8 @@ public class PatchEntryTest extends TestCase {
         p.setTargetStart(21);
         p.setSourceLength(18);
         p.setTargetLength(17);
-        p
-                .setDifferences(diffList(new Object[] {
-                        new Difference(EditType.EQUAL, "jump"), new Difference(EditType.DELETE, "s"), new Difference(EditType.INSERT, "ed"), new Difference(EditType.EQUAL, " over "), new Difference(EditType.DELETE, "the"), new Difference(EditType.INSERT, "a"), new Difference(EditType.EQUAL, " laz")}));
+        p.setDifferences(diffList(
+                new Difference(EditType.EQUAL, "jump"), new Difference(EditType.DELETE, "s"), new Difference(EditType.INSERT, "ed"), new Difference(EditType.EQUAL, " over "), new Difference(EditType.DELETE, "the"), new Difference(EditType.INSERT, "a"), new Difference(EditType.EQUAL, " laz")));
         assertEquals("Patch: text1.", "jumps over the laz", p.getSourceText());
         assertEquals("Patch: text2.", "jumped over a laz", p.getTargetText());
         String strp = "@@ -21,18 +22,17 @@\n jump\n-s\n+ed\n  over \n-the\n+a\n  laz\n";
@@ -69,9 +68,9 @@ public class PatchEntryTest extends TestCase {
     }
 
     // Private function for quickly building lists of diffs.
-    private static List diffList(Object[] diffs) {
-        List myDiffList = new ArrayList();
-        myDiffList.addAll(Arrays.asList(diffs));
-        return myDiffList;
+    private static <T> List<T> diffList(T... items) {
+        List<T> list = new ArrayList<T>();
+        list.addAll(Arrays.asList(items));
+        return list;
     }
 }

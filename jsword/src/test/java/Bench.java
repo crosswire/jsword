@@ -1,4 +1,3 @@
-import java.util.Iterator;
 import java.util.List;
 
 import org.crosswire.jsword.book.Book;
@@ -26,7 +25,7 @@ public class Bench {
             System.exit(1);
         }
 
-        List dicts = Books.installed().getBooks(BookFilters.getOnlyBibles());
+        List<Book> dicts = Books.installed().getBooks(BookFilters.getOnlyBibles());
         version = (Book) dicts.get(0);
 
         Speed speed = new Speed(version);
@@ -51,9 +50,8 @@ public class Bench {
      */
     private static void versions() {
         System.out.println("  Available versions:");
-        List lbmds = Books.installed().getBooks();
-        for (Iterator it = lbmds.iterator(); it.hasNext();) {
-            Book book = (Book) it.next();
+        List<Book> lbmds = Books.installed().getBooks();
+        for (Book book : lbmds) {
             System.out.println("    " + book.getName());
         }
     }
