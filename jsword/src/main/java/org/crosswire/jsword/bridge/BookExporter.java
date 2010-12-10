@@ -21,8 +21,6 @@
  */
 package org.crosswire.jsword.bridge;
 
-import java.util.Iterator;
-
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookException;
@@ -52,10 +50,8 @@ public class BookExporter {
 
         Key keys = book.getGlobalKeyList();
 
-        Iterator<Key> iter = keys.iterator();
         StringBuilder buf = new StringBuilder();
-        while (iter.hasNext()) {
-            Key key = iter.next();
+        for (Key key : keys) {
             String rawText = book.getRawText(key);
             if (rawText != null && rawText.trim().length() > 0) {
                 buf.delete(0, buf.length());

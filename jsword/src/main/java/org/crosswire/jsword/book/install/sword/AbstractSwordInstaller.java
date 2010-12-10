@@ -27,7 +27,6 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
@@ -159,19 +158,14 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     public synchronized Book getBook(String name) {
         // Check name first
         // First check for exact matches
-        List<Book> books = getBooks();
-        Iterator<Book> iter = books.iterator();
-        while (iter.hasNext()) {
-            Book book = iter.next();
+        for (Book book : getBooks()) {
             if (name.equals(book.getName())) {
                 return book;
             }
         }
 
         // Next check for case-insensitive matches
-        iter = books.iterator();
-        while (iter.hasNext()) {
-            Book book = iter.next();
+        for (Book book : getBooks()) {
             if (name.equalsIgnoreCase(book.getName())) {
                 return book;
             }
@@ -179,9 +173,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
         // Then check initials
         // First check for exact matches
-        iter = books.iterator();
-        while (iter.hasNext()) {
-            Book book = iter.next();
+        for (Book book : getBooks()) {
             BookMetaData bmd = book.getBookMetaData();
             if (name.equals(bmd.getInitials())) {
                 return book;
@@ -189,9 +181,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         }
 
         // Next check for case-insensitive matches
-        iter = books.iterator();
-        while (iter.hasNext()) {
-            Book book = iter.next();
+        for (Book book : getBooks()) {
             if (name.equalsIgnoreCase(book.getInitials())) {
                 return book;
             }

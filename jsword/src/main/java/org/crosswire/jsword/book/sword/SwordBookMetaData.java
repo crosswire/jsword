@@ -24,7 +24,6 @@ package org.crosswire.jsword.book.sword;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -329,9 +328,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
 
     private void buildProperties() {
         // merge entries into properties file
-        Iterator<ConfigEntryType> iter = cet.getKeys().iterator();
-        while (iter.hasNext()) {
-            ConfigEntryType key = iter.next();
+        for (ConfigEntryType key : cet.getKeys()) {
             Object value = cet.getValue(key);
             // value is null if the config entry was rejected.
             if (value == null) {
@@ -341,9 +338,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
                 List<String> list = (List<String>) value;
                 StringBuilder combined = new StringBuilder();
                 boolean appendSeparator = false;
-                Iterator<String> it = list.iterator();
-                while (it.hasNext()) {
-                    String element = it.next();
+                for (String element : list) {
                     if (appendSeparator) {
                         combined.append('\n');
                     }

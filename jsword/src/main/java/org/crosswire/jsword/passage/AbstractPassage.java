@@ -369,9 +369,8 @@ public abstract class AbstractPassage implements Passage {
         int current_book = 0;
         int book_count = 0;
 
-        Iterator<Key> it = iterator();
-        while (it.hasNext()) {
-            Verse verse = (Verse) it.next();
+        for (Key aKey : this) {
+            Verse verse = (Verse) aKey;
             if (current_book != verse.getBook()) {
                 current_book = verse.getBook();
                 book_count++;
@@ -394,9 +393,8 @@ public abstract class AbstractPassage implements Passage {
         int current_chapter = 0;
         int chapter_count = 0;
 
-        Iterator<Key> it = iterator();
-        while (it.hasNext()) {
-            Verse verse = (Verse) it.next();
+        for (Key aKey : this) {
+            Verse verse = (Verse) aKey;
 
             if ((book == 0 || verse.getBook() == book) && current_chapter != verse.getChapter()) {
                 current_chapter = verse.getChapter();
@@ -417,9 +415,8 @@ public abstract class AbstractPassage implements Passage {
 
         int verse_count = 0;
 
-        Iterator<Key> it = iterator();
-        while (it.hasNext()) {
-            Verse verse = (Verse) it.next();
+        for (Key aKey : this) {
+            Verse verse = (Verse) aKey;
 
             if ((book == 0 || verse.getBook() == book) && (chapter == 0 || verse.getChapter() == chapter)) {
                 verse_count++;
@@ -523,11 +520,8 @@ public abstract class AbstractPassage implements Passage {
 
         Passage remainder = (Passage) this.clone();
 
-        Iterator<Key> it = iterator();
-        while (it.hasNext()) {
+        for (Key verse : this) {
             i++;
-            Key verse = it.next();
-
             if (i > count) {
                 remove(verse);
                 overflow = true;
@@ -599,13 +593,14 @@ public abstract class AbstractPassage implements Passage {
 
         if (that instanceof RangedPassage) {
             that_it = that.rangeIterator(RestrictionType.NONE);
+            while (that_it.hasNext()) {
+                // Avoid touching store to make thread safety easier.
+                add((Key) that_it.next());
+            }
         } else {
-            that_it = that.iterator();
-        }
-
-        while (that_it.hasNext()) {
-            // Avoid touching store to make thread safety easier.
-            add((Key) that_it.next());
+            for (Key subkey : that) {
+                add(subkey);
+            }
         }
 
         lowerNormalizeProtection();
@@ -661,10 +656,7 @@ public abstract class AbstractPassage implements Passage {
         raiseNormalizeProtection();
 
         Passage temp = (Passage) this.clone();
-        Iterator<Key> it = temp.iterator();
-
-        while (it.hasNext()) {
-            Key verse = it.next();
+        for (Key verse : temp) {
             if (!that.contains(verse)) {
                 remove(verse);
             }
@@ -838,9 +830,7 @@ public abstract class AbstractPassage implements Passage {
      */
     public int indexOf(Key that) {
         int index = 0;
-        Iterator<Key> it = iterator();
-        while (it.hasNext()) {
-            Key key = it.next();
+        for (Key key : this) {
             if (key.equals(that)) {
                 return index;
             }
@@ -1276,9 +1266,8 @@ public abstract class AbstractPassage implements Passage {
             out.writeInt(BITWISE);
 
             BitSet store = new BitSet(BibleInfo.versesInBible());
-            Iterator<Key> it = iterator();
-            while (it.hasNext()) {
-                Verse verse = (Verse) it.next();
+            for (Key aKey : this) {
+                Verse verse = (Verse) aKey;
                 store.set(verse.getOrdinal() - 1);
             }
 
@@ -1290,9 +1279,8 @@ public abstract class AbstractPassage implements Passage {
             out.writeInt(countVerses());
 
             // write the verse ordinals in a loop
-            Iterator<Key> it = iterator();
-            while (it.hasNext()) {
-                Verse verse = (Verse) it.next();
+            for (Key aKey : this) {
+                Verse verse = (Verse) aKey;
                 out.writeInt(verse.getOrdinal());
             }
         } else {

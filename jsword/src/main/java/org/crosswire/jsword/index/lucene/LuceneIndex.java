@@ -25,7 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.lucene.analysis.Analyzer;
@@ -212,9 +211,8 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
 
                 if (!errors.isEmpty()) {
                     StringBuilder buf = new StringBuilder();
-                    Iterator<Key> iter = errors.iterator();
-                    while (iter.hasNext()) {
-                        buf.append(iter.next());
+                    for (Key error : errors) {
+                        buf.append(error);
                         buf.append('\n');
                     }
                     // TRANSLATOR: It is likely that one or more verses could not be indexed due to errors in those verses.
@@ -393,7 +391,6 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
         int percent = 0;
         String rootName = "";
         BookData data = null;
-        Key subkey = null;
         Element osis = null;
 
         // Set up for reuse.
@@ -407,9 +404,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
 
         int size = key.getCardinality();
         int subCount = count;
-        Iterator<Key> it = key.iterator();
-        while (it.hasNext()) {
-            subkey = it.next();
+        for (Key subkey : key) {
             if (subkey.canHaveChildren()) {
                 generateSearchIndexImpl(job, errors, writer, subkey, subCount);
             } else {

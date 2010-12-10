@@ -49,7 +49,6 @@ import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.PreferredKey;
 import org.crosswire.jsword.passage.RestrictionType;
 import org.crosswire.jsword.passage.SetKeyList;
-import org.crosswire.jsword.passage.VerseRange;
 import org.jdom.Content;
 import org.jdom.Element;
 
@@ -149,7 +148,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
 
             Iterator<Key> it = ref.rangeIterator(RestrictionType.NONE);
             while (it.hasNext()) {
-                VerseRange range = (VerseRange) it.next();
+                Key range = it.next();
 
                 Element reading = OSISUtil.factory().createReference();
                 reading.setAttribute(OSISUtil.OSIS_ATTR_REF, range.getOsisRef());

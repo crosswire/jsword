@@ -9,7 +9,6 @@ package org.crosswire.common.diff;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -86,9 +85,7 @@ public class DiffTest extends TestCase {
     private static String[] diff_rebuildtexts(List<Difference> diffs) {
         String[] text = {
                 "", ""};
-        Iterator<Difference> iter = diffs.iterator();
-        while (iter.hasNext()) {
-            Difference myDiff = iter.next();
+        for (Difference myDiff : diffs) {
             EditType editType = myDiff.getEditType();
             if (!EditType.INSERT.equals(editType)) {
                 text[0] += myDiff.getText();

@@ -346,10 +346,8 @@ public class PassageTally extends AbstractPassage {
      */
     @Override
     public boolean contains(Key that) {
-        Iterator<Key> it = that.iterator();
-
-        while (it.hasNext()) {
-            Verse verse = (Verse) it.next();
+        for (Key aKey : that) {
+            Verse verse = (Verse) aKey;
             if (board[verse.getOrdinal() - 1] == 0) {
                 return false;
             }
@@ -435,10 +433,8 @@ public class PassageTally extends AbstractPassage {
     public void remove(Key that) {
         optimizeWrites();
 
-        Iterator<Key> it = that.iterator();
-
-        while (it.hasNext()) {
-            Verse verse = (Verse) it.next();
+        for (Key aKey : that) {
+            Verse verse = (Verse) aKey;
             kill(verse.getOrdinal());
         }
 
@@ -465,10 +461,8 @@ public class PassageTally extends AbstractPassage {
 
             incrementMax(that_rt.max);
         } else {
-            Iterator<Key> it = that.iterator();
-
-            while (it.hasNext()) {
-                Verse verse = (Verse) it.next();
+            for (Key aKey : that) {
+                Verse verse = (Verse) aKey;
                 increment(verse.getOrdinal(), 1);
             }
 
@@ -495,10 +489,8 @@ public class PassageTally extends AbstractPassage {
                 increment(i, -that_rt.board[i - 1]);
             }
         } else {
-            Iterator<Key> it = that.iterator();
-
-            while (it.hasNext()) {
-                Verse verse = (Verse) it.next();
+            for (Key aKey : that) {
+                Verse verse = (Verse) aKey;
                 increment(verse.getOrdinal(), -1);
             }
         }
@@ -532,10 +524,8 @@ public class PassageTally extends AbstractPassage {
                 }
             }
         } else {
-            Iterator<Key> it = that.iterator();
-
-            while (it.hasNext()) {
-                Verse verse = (Verse) it.next();
+            for (Key aKey : that) {
+                Verse verse = (Verse) aKey;
                 kill(verse.getOrdinal());
             }
         }
@@ -585,10 +575,7 @@ public class PassageTally extends AbstractPassage {
 
         Passage remainder = (Passage) this.clone();
 
-        Iterator<Key> it = iterator();
-        while (it.hasNext()) {
-            Key verse = it.next();
-
+        for (Key verse : this) {
             if (i > count) {
                 remove(verse);
                 overflow = true;
@@ -728,10 +715,8 @@ public class PassageTally extends AbstractPassage {
      *            The amount to increment/decrement by
      */
     private void alterVerseBase(Key that, int tally) {
-        Iterator<Key> it = that.iterator();
-
-        while (it.hasNext()) {
-            Verse verse = (Verse) it.next();
+        for (Key aKey : that) {
+            Verse verse = (Verse) aKey;
             increment(verse.getOrdinal(), tally);
         }
 
@@ -1087,10 +1072,8 @@ public class PassageTally extends AbstractPassage {
 
                 // Calculate the maximum rank for a verse
                 int rank = 0;
-                Iterator<Key> iter = range.iterator();
-
-                while (iter.hasNext()) {
-                    Verse verse = (Verse) iter.next();
+                for (Key aKey : range) {
+                    Verse verse = (Verse) aKey;
                     int temp = board[verse.getOrdinal() - 1];
                     if (temp > rank) {
                         rank = temp;

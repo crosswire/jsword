@@ -23,7 +23,6 @@ package org.crosswire.jsword.bridge;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -61,11 +60,7 @@ public class DwrBridge {
     public String[][] getInstalledBooks(String filter) {
         List<String[]> reply = new ArrayList<String[]>();
 
-        List<Book> books = BookInstaller.getInstalledBooks(filter);
-
-        Iterator<Book> iter = books.iterator();
-        while (iter.hasNext()) {
-            Book book = iter.next();
+        for (Book book : BookInstaller.getInstalledBooks(filter)) {
             String[] rbook = new String[] {
                     book.getInitials(), book.getName()
             };
@@ -184,10 +179,8 @@ public class DwrBridge {
         // What is needed is that all this be pushed into JSword proper.
         // TODO(dms): Push this into Book interface.
         List<String> result = new ArrayList<String>();
-        Iterator<Key> iter = book.getGlobalKeyList().iterator();
         int count = 0;
-        while (iter.hasNext()) {
-            Key key = iter.next();
+        for (Key key : book.getGlobalKeyList()) {
             String entry = key.getName().toLowerCase(sortLocale);
             if (entry.compareTo(target) >= 0) {
                 if (entry.compareTo(endTarget) < 0) {
@@ -276,20 +269,17 @@ public class DwrBridge {
 
             // Do we need to trim?
             if (start > 0 || key.getCardinality() > count) {
-                Iterator<Key> iter = key.iterator();
                 key = book.createEmptyKeyList();
                 int i = 0;
-                while (iter.hasNext()) {
+                for (Key aKey : key) {
                     i++;
                     if (i <= start) {
-                        // skip it
-                        iter.next();
                         continue;
                     }
                     if (i >= count) {
                         break;
                     }
-                    key.addAll(iter.next());
+                    key.addAll(aKey);
                 }
             }
         }

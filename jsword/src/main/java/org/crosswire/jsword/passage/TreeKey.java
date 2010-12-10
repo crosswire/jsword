@@ -76,9 +76,7 @@ public class TreeKey extends AbstractKeyList {
      */
     public int getCardinality() {
         int cardinality = 1; // count this node
-        Iterator<Key> iter = children.iterator();
-        while (iter.hasNext()) {
-            Key child = iter.next();
+        for (Key child : children) {
             cardinality += child.getCardinality();
         }
 
@@ -108,9 +106,7 @@ public class TreeKey extends AbstractKeyList {
             return true;
         }
 
-        Iterator<Key> iter = children.iterator();
-        while (iter.hasNext()) {
-            Key child = iter.next();
+        for (Key child : children) {
             if (child.contains(key)) {
                 return true;
             }

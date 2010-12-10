@@ -21,7 +21,6 @@
  */
 package org.crosswire.jsword.book;
 
-import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -539,9 +538,7 @@ public final class Defaults {
      * the current defaults with one of these.
      */
     protected static void checkAllPreferable() {
-        Iterator<Book> iter = Books.installed().getBooks().iterator();
-        while (iter.hasNext()) {
-            Book book = iter.next();
+        for (Book book : Books.installed().getBooks()) {
             checkPreferable(book);
         }
     }
@@ -569,9 +566,7 @@ public final class Defaults {
     private static Map<Book,String> getBookMap(BookFilter filter) {
         Map<Book,String> books = new TreeMap<Book,String>(BookComparators.getDefault());
 
-        Iterator<Book> iter = Books.installed().getBooks(filter).iterator();
-        while (iter.hasNext()) {
-            Book book = iter.next();
+        for (Book book : Books.installed().getBooks(filter)) {
             books.put(book, book.getName());
         }
 

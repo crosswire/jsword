@@ -22,7 +22,6 @@
 package org.crosswire.common.util;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -69,10 +68,8 @@ public class Histogram {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
-        Iterator<Map.Entry<String,Counter>> iter = hist.entrySet().iterator();
-        while (iter.hasNext()) {
-            Map.Entry<String,Counter> entry = iter.next();
-            buf.append(entry.getKey().toString());
+        for (Map.Entry<String,Counter> entry : hist.entrySet()) {
+            buf.append(entry.getKey());
             buf.append('\t');
             buf.append(entry.getValue().toString());
             buf.append('\n');

@@ -21,8 +21,6 @@
  */
 package org.crosswire.jsword.bridge;
 
-import java.util.Iterator;
-
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.Books;
@@ -71,9 +69,7 @@ public class BibleScope {
             Key all = keyf.getGlobalKeyList();
             inScope = keyf.createEmptyKeyList();
             outScope = keyf.createEmptyKeyList();
-            Iterator<Key> iter = all.iterator();
-            while (iter.hasNext()) {
-                Key key = iter.next();
+            for (Key key : all) {
                 if (book.contains(key)) {
                     inScope.addAll(key);
                 } else {

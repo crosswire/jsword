@@ -21,8 +21,6 @@
  */
 package org.crosswire.jsword.passage;
 
-import java.util.Iterator;
-
 import org.crosswire.common.util.Logger;
 
 /**
@@ -49,9 +47,7 @@ public final class KeyUtil {
      *            The visitor to notify whenever a node is found
      */
     public static void visit(Key key, KeyVisitor visitor) {
-        Iterator<Key> it = key.iterator();
-        while (it.hasNext()) {
-            Key subkey = it.next();
+        for (Key subkey : key) {
             if (subkey.canHaveChildren()) {
                 visitor.visitBranch(subkey);
                 visit(subkey, visitor);

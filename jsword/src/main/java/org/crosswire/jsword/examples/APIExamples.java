@@ -126,13 +126,12 @@ public class APIExamples {
         } else {
             key = book.createEmptyKeyList();
 
-            Iterator<Key> iter = book.getKey(reference).iterator();
             int count = 0;
-            while (iter.hasNext()) {
+            for (Key aKey : book.getKey(reference)) {
                 if (++count >= maxKeyCount) {
                     break;
                 }
-                key.addAll(iter.next());
+                key.addAll(aKey);
             }
         }
 
@@ -340,10 +339,8 @@ public class APIExamples {
         Map<String,Installer> installers = imanager.getInstallers();
 
         // Get all the installers one after the other
-        Iterator<Map.Entry<String,Installer>> iter = installers.entrySet().iterator();
         String name = null;
-        while (iter.hasNext()) {
-            Map.Entry<String,Installer> mapEntry = iter.next();
+        for (Map.Entry<String,Installer> mapEntry : installers.entrySet()) {
             name = mapEntry.getKey();
             installer = mapEntry.getValue();
             System.out.println(name + ": " + installer.getInstallerDefinition());

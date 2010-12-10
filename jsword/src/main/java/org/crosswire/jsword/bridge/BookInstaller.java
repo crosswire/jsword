@@ -21,7 +21,6 @@
  */
 package org.crosswire.jsword.bridge;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -290,21 +289,16 @@ public class BookInstaller {
         } else if (operation.equalsIgnoreCase("sources")) {
             // Get all the installers one after the other
             Map<String,Installer> installers = installer.getInstallers();
-            Iterator<String> iter = installers.keySet().iterator();
-            while (iter.hasNext()) {
-                System.out.println(iter.next());
+            for (String name : installers.keySet()) {
+                System.out.println(name);
             }
         } else if (operation.equalsIgnoreCase("list")) {
             if (args.length == 1) {
-                Iterator<Book> iter = BookInstaller.getInstalledBooks().iterator();
-                while (iter.hasNext()) {
-                    Book book = iter.next();
+                for (Book book : BookInstaller.getInstalledBooks()) {
                     System.out.println(book.getInitials());
                 }
             } else if (args.length == 2) {
-                Iterator<Book> iter = installer.getRepositoryBooks(args[1]).iterator();
-                while (iter.hasNext()) {
-                    Book book = iter.next();
+                for (Book book : installer.getRepositoryBooks(args[1])) {
                     System.out.println(book.getInitials());
                 }
             } else {

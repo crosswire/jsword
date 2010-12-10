@@ -76,9 +76,7 @@ public class SwordGenBook extends AbstractBook {
         set = backend.readIndex();
 
         map = new HashMap<String,Key>();
-        Iterator<Key> iter = set.iterator();
-        while (iter.hasNext()) {
-            Key key = iter.next();
+        for (Key key : set) {
             map.put(key.getName(), key);
         }
 
@@ -232,27 +230,21 @@ public class SwordGenBook extends AbstractBook {
         }
 
         // First check for keys that match ignoring case
-        Iterator<String> iter = map.keySet().iterator();
-        while (iter.hasNext()) {
-            String keyName = iter.next();
+        for (String keyName : map.keySet()) {
             if (keyName.equalsIgnoreCase(text)) {
                 return map.get(keyName);
             }
         }
 
         // Next keys that start with the given text
-        iter = map.keySet().iterator();
-        while (iter.hasNext()) {
-            String keyName = iter.next();
+        for (String keyName : map.keySet()) {
             if (keyName.startsWith(text)) {
                 return map.get(keyName);
             }
         }
 
         // Next try keys that contain the given text
-        iter = map.keySet().iterator();
-        while (iter.hasNext()) {
-            String keyName = iter.next();
+        for (String keyName : map.keySet()) {
             if (keyName.indexOf(text) != -1) {
                 return map.get(keyName);
             }

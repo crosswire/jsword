@@ -135,9 +135,8 @@ public class BitwisePassage extends AbstractPassage {
      */
     @Override
     public boolean contains(Key obj) {
-        Iterator<Key> iter = obj.iterator();
-        while (iter.hasNext()) {
-            Verse verse = (Verse) iter.next();
+        for (Key aKey : obj) {
+            Verse verse = (Verse) aKey;
             if (!store.get(verse.getOrdinal())) {
                 return false;
             }
@@ -158,9 +157,8 @@ public class BitwisePassage extends AbstractPassage {
 
         Verse firstVerse = null;
         Verse lastVerse = null;
-        Iterator<Key> iter = obj.iterator();
-        while (iter.hasNext()) {
-            lastVerse = (Verse) iter.next();
+        for (Key aKey : obj) {
+            lastVerse = (Verse) aKey;
             if (firstVerse == null) {
                 firstVerse = lastVerse;
             }
@@ -186,9 +184,8 @@ public class BitwisePassage extends AbstractPassage {
 
         Verse firstVerse = null;
         Verse lastVerse = null;
-        Iterator<Key> iter = obj.iterator();
-        while (iter.hasNext()) {
-            lastVerse = (Verse) iter.next();
+        for (Key aKey : obj) {
+            lastVerse = (Verse) aKey;
             if (firstVerse == null) {
                 firstVerse = lastVerse;
             }
@@ -276,9 +273,8 @@ public class BitwisePassage extends AbstractPassage {
         } else {
             thatStore = new BitSet(BibleInfo.versesInBible() + 1);
 
-            Iterator<Key> it = that.iterator();
-            while (it.hasNext()) {
-                int ord = ((Verse) it.next()).getOrdinal();
+            for (Key aKey : that) {
+                int ord = ((Verse) aKey).getOrdinal();
                 if (store.get(ord)) {
                     thatStore.set(ord);
                 }

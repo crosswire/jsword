@@ -103,9 +103,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements MappedC
         try {
             return Integer.valueOf(orig);
         } catch (NumberFormatException ex) {
-            Iterator<Map.Entry<Integer,String>> iter = options.entrySet().iterator();
-            while (iter.hasNext()) {
-                Map.Entry<Integer,String> mapEntry = iter.next();
+            for (Map.Entry<Integer,String> mapEntry : options.entrySet()) {
                 if (mapEntry.getValue().equals(orig)) {
                     return mapEntry.getKey();
                 }

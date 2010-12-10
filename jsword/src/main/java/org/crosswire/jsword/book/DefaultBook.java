@@ -126,9 +126,7 @@ public class DefaultBook {
             return;
         }
 
-        Iterator<Book> iter = books.getBooks(filter).iterator();
-        while (iter.hasNext()) {
-            Book aBook = iter.next();
+        for (Book aBook : books.getBooks(filter)) {
             if (aBook.match(name)) {
                 setDefault(aBook);
                 return;

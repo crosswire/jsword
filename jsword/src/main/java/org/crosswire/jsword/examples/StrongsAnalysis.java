@@ -22,8 +22,6 @@
 package org.crosswire.jsword.examples;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -79,13 +77,10 @@ public class StrongsAnalysis {
      * @param wholeBible
      */
     public void analyze(StrongsMapSet sms, Book book, List<Key> errors, Key wholeBible) {
-        Key subkey = null;
         BookData data = null;
         Element osis = null;
         StringBuilder buffer = new StringBuilder();
-        Iterator<Key> it = wholeBible.iterator();
-        while (it.hasNext()) {
-            subkey = it.next();
+        for (Key subkey : wholeBible) {
             if (subkey.canHaveChildren()) {
                 analyze(sms, book, errors, subkey);
             } else {
@@ -100,19 +95,17 @@ public class StrongsAnalysis {
                 }
 
                 // Do the actual indexing
-                Collection<Content> allW = OSISUtil.getDeepContent(osis, OSISUtil.OSIS_ELEMENT_W);
-                Iterator<Content> wIter = allW.iterator();
-                while (wIter.hasNext()) {
+                for (Content content : OSISUtil.getDeepContent(osis, OSISUtil.OSIS_ELEMENT_W)) {
                     // Clear out the buffer for re-use
                     int len = buffer.length();
                     if (len > 0) {
                         buffer.delete(0, len);
                     }
 
-                    Element wElement = (Element) wIter.next();
+                    Element wElement = (Element) content;
                     String snAttr = wElement.getAttributeValue(OSISUtil.ATTRIBUTE_W_LEMMA);
 
-                    String content = OSISUtil.getPlainText(wElement);
+                    String text = OSISUtil.getPlainText(wElement);
 
                     Matcher matcher = strongsNumberPattern.matcher(snAttr);
                     while (matcher.find()) {
@@ -129,7 +122,7 @@ public class StrongsAnalysis {
                     }
 
                     // now we can actually store the mapping
-                    sms.add(buffer.toString(), content);
+                    sms.add(buffer.toString(), text);
                 }
             }
         }

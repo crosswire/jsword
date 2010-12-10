@@ -27,7 +27,6 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.text.FieldPosition;
 import java.text.MessageFormat;
-import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -85,9 +84,8 @@ public class BibleToOsis {
         }
 
         // Get a verse iterator
-        Iterator<Key> iter = keys.iterator();
-        while (iter.hasNext()) {
-            Verse verse = (Verse) iter.next();
+        for (Key key : keys) {
+            Verse verse = (Verse) key;
             String raw = bible.getRawText(verse);
             String osisID = verse.getOsisID();
             String currentBookName = BibleInfo.getOSISName(verse.getBook());

@@ -25,7 +25,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -89,18 +88,14 @@ public final class Books implements BookList {
 
         // Check name first
         // First check for exact matches
-        Iterator<Book> iter = books.iterator();
-        while (iter.hasNext()) {
-            Book book = iter.next();
+        for (Book book : books) {
             if (name.equals(book.getName())) {
                 return book;
             }
         }
 
         // Next check for case-insensitive matches
-        iter = books.iterator();
-        while (iter.hasNext()) {
-            Book book = iter.next();
+        for (Book book : books) {
             if (name.equalsIgnoreCase(book.getName())) {
                 return book;
             }
@@ -108,9 +103,7 @@ public final class Books implements BookList {
 
         // Then check initials
         // First check for exact matches
-        iter = books.iterator();
-        while (iter.hasNext()) {
-            Book book = iter.next();
+        for (Book book : books) {
             BookMetaData bmd = book.getBookMetaData();
             if (name.equals(bmd.getInitials())) {
                 return book;
@@ -118,9 +111,7 @@ public final class Books implements BookList {
         }
 
         // Next check for case-insensitive matches
-        iter = books.iterator();
-        while (iter.hasNext()) {
-            Book book = iter.next();
+        for (Book book : books) {
             if (name.equalsIgnoreCase(book.getInitials())) {
                 return book;
             }
@@ -149,10 +140,7 @@ public final class Books implements BookList {
      */
     public int getMaxLength(String propertyKey) {
         int max = -1;
-        List<Book> bookList = getBooks();
-        Iterator<Book> iter = bookList.iterator();
-        while (iter.hasNext()) {
-            Book book = iter.next();
+        for (Book book : getBooks()) {
             Object property = book.getProperty(propertyKey);
             if (property != null) {
                 String value = property instanceof String ? (String) property : property.toString();
@@ -173,10 +161,7 @@ public final class Books implements BookList {
      */
     public int getMaxLength(String propertyKey, BookFilter filter) {
         int max = -1;
-        List<Book> bookList = getBooks(filter);
-        Iterator<Book> iter = bookList.iterator();
-        while (iter.hasNext()) {
-            Book book = iter.next();
+        for (Book book : getBooks(filter)) {
             Object property = book.getProperty(propertyKey);
             if (property != null) {
                 String value = property instanceof String ? (String) property : property.toString();
@@ -300,9 +285,7 @@ public final class Books implements BookList {
 
         // Remove the books from the previous version of the driver
         // that are not in this version.
-        Iterator<Book> iter = current.iterator();
-        while (iter.hasNext()) {
-            Book book = iter.next();
+        for (Book book : current) {
             removeBook(book);
         }
 
@@ -339,9 +322,7 @@ public final class Books implements BookList {
      */
     public synchronized BookDriver[] getDriversByClass(Class<? extends BookDriver> type) {
         List<BookDriver> matches = new ArrayList<BookDriver>();
-        Iterator<BookDriver> iter = drivers.iterator();
-        while (iter.hasNext()) {
-            BookDriver driver = iter.next();
+        for (BookDriver driver : drivers) {
             if (driver.getClass() == type) {
                 matches.add(driver);
             }
@@ -366,9 +347,7 @@ public final class Books implements BookList {
      */
     public synchronized BookDriver[] getWritableDrivers() {
         int i = 0;
-        Iterator<BookDriver> iter = drivers.iterator();
-        while (iter.hasNext()) {
-            BookDriver driver = iter.next();
+        for (BookDriver driver : drivers) {
             if (driver.isWritable()) {
                 i++;
             }
@@ -377,9 +356,7 @@ public final class Books implements BookList {
         BookDriver[] reply = new BookDriver[i];
 
         i = 0;
-        iter = drivers.iterator();
-        while (iter.hasNext()) {
-            BookDriver driver = iter.next();
+        for (BookDriver driver : drivers) {
             if (driver.isWritable()) {
                 reply[i++] = driver;
             }

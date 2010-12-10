@@ -22,7 +22,6 @@
 package org.crosswire.jsword.book.sword;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 
 import org.crosswire.common.activate.Activator;
@@ -120,9 +119,7 @@ public class SwordBook extends AbstractPassageBook {
     public void addOSIS(Key key, Element div, List<Content> osisContent) {
         // See if the text is marked up with verses
         // If it is then just add it.
-        Iterator<Content> iter = osisContent.iterator();
-        while (iter.hasNext()) {
-            Content content = iter.next();
+        for (Content content : osisContent) {
             if (content instanceof Element) {
                 Element ele = (Element) content;
                 if (ele.getName().equals(OSISUtil.OSIS_ELEMENT_VERSE)) {
@@ -144,9 +141,7 @@ public class SwordBook extends AbstractPassageBook {
     public void addOSIS(Key key, List<Content> contentList, List<Content> osisContent) {
         // See if the text is marked up with verses
         // If it is then just add it.
-        Iterator<Content> iter = osisContent.iterator();
-        while (iter.hasNext()) {
-            Content content = iter.next();
+        for (Content content : osisContent) {
             if (content instanceof Element) {
                 Element ele = (Element) content;
                 if (ele.getName().equals(OSISUtil.OSIS_ELEMENT_VERSE)) {

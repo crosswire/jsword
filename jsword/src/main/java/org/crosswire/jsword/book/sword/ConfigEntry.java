@@ -22,7 +22,6 @@
 package org.crosswire.jsword.book.sword;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -277,9 +276,7 @@ public final class ConfigEntry {
             Element listEle = factory.createLG();
             valueElement.addContent(listEle);
 
-            Iterator<String> iter = values.iterator();
-            while (iter.hasNext()) {
-                String text = iter.next();
+            for (String text : values) {
                 text = XMLUtil.escape(text);
                 Element itemEle = factory.createL();
                 listEle.addContent(itemEle);
@@ -376,20 +373,17 @@ public final class ConfigEntry {
             // followed by a space.
             // These are to joined to the key.
             if (type.equals(ConfigEntryType.HISTORY)) {
-                Iterator<String> iter = values.iterator();
-                while (iter.hasNext()) {
-                    String text = iter.next();
+                for (String text : values) {
                     buf.append(getName());
                     buf.append('_');
                     buf.append(text.replaceFirst(" ", "="));
                     buf.append('\n');
                 }
             } else {
-                Iterator<String> iter = values.iterator();
-                while (iter.hasNext()) {
+                for (String text : values) {
                     buf.append(getName());
                     buf.append('=');
-                    buf.append(getConfValue(iter.next()));
+                    buf.append(getConfValue(text));
                     buf.append('\n');
                 }
             }

@@ -31,7 +31,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -728,9 +727,7 @@ public final class ConfigEntryTable {
      */
     private void toOSIS(OSISUtil.OSISFactory factory, Element ele, String aTitle, Map<String,ConfigEntry> map) {
         Element title = null;
-        Iterator<Map.Entry<String,ConfigEntry>> iter = map.entrySet().iterator();
-        while (iter.hasNext()) {
-            Map.Entry<String,ConfigEntry> mapEntry = iter.next();
+        for (Map.Entry<String,ConfigEntry> mapEntry : map.entrySet()) {
             ConfigEntry entry = mapEntry.getValue();
             Element configElement = null;
 
@@ -752,9 +749,7 @@ public final class ConfigEntryTable {
     }
 
     private void toConf(StringBuilder buf, Map<String,ConfigEntry> map) {
-        Iterator<Map.Entry<String,ConfigEntry>> iter = map.entrySet().iterator();
-        while (iter.hasNext()) {
-            Map.Entry<String,ConfigEntry> mapEntry = iter.next();
+        for (Map.Entry<String,ConfigEntry> mapEntry : map.entrySet()) {
             ConfigEntry entry = mapEntry.getValue();
             String text = entry.toConf();
             if (text != null && text.length() > 0) {

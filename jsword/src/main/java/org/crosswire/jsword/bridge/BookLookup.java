@@ -21,8 +21,6 @@
  */
 package org.crosswire.jsword.bridge;
 
-import java.util.Iterator;
-
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Books;
@@ -46,9 +44,7 @@ public class BookLookup {
     public String locate(Key key) throws BookException {
         StringBuilder buf = new StringBuilder();
 
-        Iterator<Key> iter = key.iterator();
-        while (iter.hasNext()) {
-            Key currentKey = iter.next();
+        for (Key currentKey: key) {
             String osisID = currentKey.getOsisID();
             if (buf.length() > 0) {
                 buf.append('\n');

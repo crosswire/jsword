@@ -26,7 +26,6 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -101,10 +100,8 @@ public final class PluginUtil {
 
         try {
             PropertyMap props = getPlugin(clazz);
-            Iterator<String> it = props.keySet().iterator();
-            while (it.hasNext()) {
+            for (String key : props.keySet()) {
                 try {
-                    String key = it.next();
                     String value = props.get(key);
                     Class<T> impl = (Class<T>) ClassUtil.forName(value);
                     if (clazz.isAssignableFrom(impl)) {

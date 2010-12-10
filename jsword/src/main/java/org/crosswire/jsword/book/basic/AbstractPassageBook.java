@@ -82,9 +82,7 @@ public abstract class AbstractPassageBook extends AbstractBook {
                 }
 
                 // For all the verses in this range
-                Iterator<Key> vit = range.iterator();
-                while (vit.hasNext()) {
-                    Key verse = vit.next();
+                for (Key verse : range) {
                     String txt = getRawText(verse);
 
                     // If the verse is empty then we shouldn't add the verse tag
@@ -148,16 +146,12 @@ public abstract class AbstractPassageBook extends AbstractBook {
      */
     public void setDocument(Key key, BookData bdata) throws BookException {
         // For all of the sections
-        Iterator<?> sit = OSISUtil.getFragment(bdata.getOsisFragment()).iterator();
-        while (sit.hasNext()) {
-            Object nextElem = sit.next();
+        for (Content nextElem : OSISUtil.getFragment(bdata.getOsisFragment())) {
             if (nextElem instanceof Element) {
                 Element div = (Element) nextElem;
 
                 // For all of the Verses in the section
-                Iterator<Object> vit = div.getContent().iterator();
-                while (vit.hasNext()) {
-                    Object data = vit.next();
+                for (Content data : (List<Content>) div.getContent()) {
                     if (data instanceof Element) {
                         Element overse = (Element) data;
                         String text = OSISUtil.getPlainText(overse);
@@ -200,9 +194,7 @@ public abstract class AbstractPassageBook extends AbstractBook {
         if (global == null) {
             global = keyf.createEmptyKeyList();
             Key all = keyf.getGlobalKeyList();
-            Iterator<Key> iter = all.iterator();
-            while (iter.hasNext()) {
-                Key key = iter.next();
+            for (Key key : all) {
                 if (contains(key)) {
                     global.addAll(key);
                 }

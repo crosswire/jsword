@@ -21,8 +21,6 @@
  */
 package org.crosswire.common.util;
 
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -189,12 +187,8 @@ public final class Convert {
      * @return the converted data
      */
     public static String map2String(Map<Object,Object> commands) {
-        Iterator<Map.Entry<Object,Object>> it = commands.entrySet().iterator();
         StringBuilder retcode = new StringBuilder();
-
-        while (it.hasNext()) {
-            Map.Entry<Object,Object> entry = it.next();
-
+        for (Map.Entry<Object,Object> entry : commands.entrySet()) {
             retcode.append(entry.getKey());
             retcode.append('=');
             retcode.append(entry.getValue());

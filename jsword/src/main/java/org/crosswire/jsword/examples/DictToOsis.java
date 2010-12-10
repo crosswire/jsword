@@ -27,8 +27,6 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.text.FieldPosition;
 import java.text.MessageFormat;
-import java.util.Iterator;
-
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.XMLProcess;
 import org.crosswire.common.xml.XMLUtil;
@@ -71,9 +69,7 @@ public class DictToOsis {
         buildDocumentOpen(buf, bmd);
 
         // Get a verse iterator
-        Iterator<Key> iter = keys.iterator();
-        while (iter.hasNext()) {
-            Key key = iter.next();
+        for (Key key : keys) {
             BookData bdata = new BookData(book, key);
             SAXEventProvider osissep = bdata.getSAXEventProvider();
             try {

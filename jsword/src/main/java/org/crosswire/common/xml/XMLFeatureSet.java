@@ -42,7 +42,6 @@
  */
 package org.crosswire.common.xml;
 
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
@@ -73,9 +72,7 @@ public final class XMLFeatureSet {
         features.put("xb", new XMLFeatureState(XMLFeature.XINCLUDE_FIXUP_BASE_URIS, true));
         features.put("xl", new XMLFeatureState(XMLFeature.XINCLUDE_FIXUP_LANGUAGE, true));
 
-        Iterator<Map.Entry<String,XMLFeatureState>> iter = features.entrySet().iterator();
-        while (iter.hasNext()) {
-            Map.Entry<String,XMLFeatureState> entry = iter.next();
+        for (Map.Entry<String,XMLFeatureState> entry : features.entrySet()) {
             states.put(entry.getValue().getFeature(), entry.getKey());
         }
     }
@@ -108,9 +105,7 @@ public final class XMLFeatureSet {
     public String toString() {
         StringBuilder buf = new StringBuilder();
         buf.append('\n');
-        Iterator<XMLFeatureState> iter = features.values().iterator();
-        while (iter.hasNext()) {
-            XMLFeatureState state = iter.next();
+        for (XMLFeatureState state : features.values()) {
             buf.append(state.getFeature().toString()).append('\n');
         }
         return buf.toString();
@@ -142,9 +137,7 @@ public final class XMLFeatureSet {
     }
 
     public void setFeatures(XMLReader parser) {
-        Iterator<XMLFeatureState> iter = features.values().iterator();
-        while (iter.hasNext()) {
-            XMLFeatureState state = iter.next();
+        for (XMLFeatureState state : features.values()) {
             state.setFeature(parser);
         }
     }

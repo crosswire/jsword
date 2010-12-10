@@ -73,9 +73,7 @@ public class BookSet extends ArrayList<Book> implements Set<Book> {
      */
     public Set<Object> getGroup(String key) {
         Set<Object> results = new TreeSet<Object>();
-        Iterator<Book> iter = iterator();
-        while (iter.hasNext()) {
-            Book book = iter.next();
+        for (Book book : this) {
             Object property = book.getProperty(key);
             if (property != null) {
                 results.add(property);
@@ -127,9 +125,7 @@ public class BookSet extends ArrayList<Book> implements Set<Book> {
         // and then sort the list.
         // This can be revisited if the list performs badly.
         boolean added = false;
-        Iterator<? extends Book> iter = c.iterator();
-        while (iter.hasNext()) {
-            Book book = iter.next();
+        for (Book book : c) {
             if (add(book)) {
                 added = true;
             }

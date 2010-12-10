@@ -22,7 +22,6 @@
 package org.crosswire.common.diff;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.regex.Matcher;
@@ -225,9 +224,7 @@ public class Patch {
                     Diff diff = new Diff(text1, text2, false);
                     diffs = diff.compare();
                     index1 = 0;
-                    Iterator<Difference> diffIter = aPatch.iterator();
-                    while (diffIter.hasNext()) {
-                        Difference aDiff = diffIter.next();
+                    for (Difference aDiff : aPatch) {
                         EditType editType = aDiff.getEditType();
                         if (!EditType.EQUAL.equals(editType)) {
                             index2 = diff.xIndex(diffs, index1);

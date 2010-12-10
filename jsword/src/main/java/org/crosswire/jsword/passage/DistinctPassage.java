@@ -137,9 +137,8 @@ public class DistinctPassage extends AbstractPassage {
      */
     @Override
     public boolean contains(Key obj) {
-        Iterator<Key> iter = obj.iterator();
-        while (iter.hasNext()) {
-            if (!store.contains(iter.next())) {
+        for (Key aKey : obj) {
+            if (!store.contains(aKey)) {
                 return false;
             }
         }
@@ -159,9 +158,8 @@ public class DistinctPassage extends AbstractPassage {
 
         Verse firstVerse = null;
         Verse lastVerse = null;
-        Iterator<Key> iter = obj.iterator();
-        while (iter.hasNext()) {
-            lastVerse = (Verse) iter.next();
+        for (Key aKey : obj) {
+            lastVerse = (Verse) aKey;
             if (firstVerse == null) {
                 firstVerse = lastVerse;
             }
@@ -187,9 +185,8 @@ public class DistinctPassage extends AbstractPassage {
 
         Verse firstVerse = null;
         Verse lastVerse = null;
-        Iterator<Key> iter = obj.iterator();
-        while (iter.hasNext()) {
-            lastVerse = (Verse) iter.next();
+        for (Key aKey : obj) {
+            lastVerse = (Verse) aKey;
             if (firstVerse == null) {
                 firstVerse = lastVerse;
             }

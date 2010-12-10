@@ -253,10 +253,9 @@ public class RangedPassage extends AbstractPassage {
         new_store.addAll(store);
 
         // go through all the VerseRanges
-        Iterator<Key> iter = new_store.iterator();
-        while (iter.hasNext()) {
+        for (Key aKey : new_store) {
             // if this range touches the range to be removed ...
-            VerseRange this_range = (VerseRange) iter.next();
+            VerseRange this_range = (VerseRange) aKey;
             if (this_range.overlaps(that_range)) {
                 // ... remove it and add the remainder
                 store.remove(this_range);

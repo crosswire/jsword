@@ -125,10 +125,7 @@ public final class InstallManager {
      */
     public String getFactoryNameForInstaller(Installer installer) {
         Class<? extends Installer> match = installer.getClass();
-
-        Iterator<String> it = factories.keySet().iterator();
-        while (it.hasNext()) {
-            String name = it.next();
+        for (String name : factories.keySet()) {
             Class<InstallerFactory> factclazz = factories.get(name);
             try {
                 InstallerFactory ifactory = factclazz.newInstance();
@@ -153,9 +150,7 @@ public final class InstallManager {
      * looking!
      */
     public String getInstallerNameForInstaller(Installer installer) {
-        Iterator<String> it = installers.keySet().iterator();
-        while (it.hasNext()) {
-            String name = it.next();
+        for (String name : installers.keySet()) {
             Installer test = installers.get(name);
             if (installer.equals(test)) {
                 return name;
@@ -163,9 +158,7 @@ public final class InstallManager {
         }
 
         log.warn("Failed to find installer name for " + installer.toString() + " among the " + installers.size() + " installers.");
-        it = installers.keySet().iterator();
-        while (it.hasNext()) {
-            String name = it.next();
+        for (String name : installers.keySet()) {
             Installer test = installers.get(name);
             log.warn("  it isn't equal to " + test.getInstallerDefinition());
         }

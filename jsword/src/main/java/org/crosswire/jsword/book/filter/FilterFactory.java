@@ -22,7 +22,6 @@
 package org.crosswire.jsword.book.filter;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
@@ -76,11 +75,9 @@ public final class FilterFactory {
         }
 
         // the lookup table
-        Iterator<Map.Entry<String,Class<Filter>>> it = map.entrySet().iterator();
         Filter instance = null;
-        while (it.hasNext()) {
+        for (Map.Entry<String,Class<Filter>> entry : map.entrySet()) {
             try {
-                Map.Entry<String,Class<Filter>> entry = it.next();
                 Class<Filter> clazz = entry.getValue();
                 instance = clazz.newInstance();
                 addFilter(entry.getKey(), instance);

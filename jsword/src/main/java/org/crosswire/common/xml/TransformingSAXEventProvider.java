@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
@@ -134,16 +133,13 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
 
         Transformer transformer = tinfo.getTemplates().newTransformer();
 
-        Iterator<Object> iter = outputs.keySet().iterator();
-        while (iter.hasNext()) {
-            String key = (String) iter.next();
+        for (Object obj : outputs.keySet()) {
+            String key = (String) obj;
             String val = getOutputProperty(key);
             transformer.setOutputProperty(key, val);
         }
 
-        Iterator<String> iter2 = params.keySet().iterator();
-        while (iter2.hasNext()) {
-            String key = iter2.next();
+        for (String key : params.keySet()) {
             Object val = params.get(key);
             transformer.setParameter(key, val);
         }

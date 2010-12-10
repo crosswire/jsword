@@ -698,9 +698,8 @@ public final class OSISUtil {
     public static String getStrongsNumbers(Element root) {
         StringBuilder buffer = new StringBuilder();
 
-        Iterator<Content> contentIter = getDeepContent(root, OSISUtil.OSIS_ELEMENT_W).iterator();
-        while (contentIter.hasNext()) {
-            Element ele = (Element) contentIter.next();
+        for (Content content : getDeepContent(root, OSISUtil.OSIS_ELEMENT_TITLE)) {
+            Element ele = (Element) content;
             String attr = ele.getAttributeValue(OSISUtil.ATTRIBUTE_W_LEMMA);
             if (attr != null) {
                 Matcher matcher = strongsNumberPattern.matcher(attr);
@@ -726,9 +725,8 @@ public final class OSISUtil {
         KeyFactory keyf = PassageKeyFactory.instance();
         Key collector = keyf.createEmptyKeyList();
 
-        Iterator<Content> contentIter = getDeepContent(root, OSISUtil.OSIS_ELEMENT_REFERENCE).iterator();
-        while (contentIter.hasNext()) {
-            Element ele = (Element) contentIter.next();
+        for (Content content : getDeepContent(root, OSISUtil.OSIS_ELEMENT_TITLE)) {
+            Element ele = (Element) content;
             String attr = ele.getAttributeValue(OSISUtil.OSIS_ATTR_REF);
             if (attr != null) {
                 try {
@@ -751,9 +749,8 @@ public final class OSISUtil {
     public static String getNotes(Element root) {
         StringBuilder buffer = new StringBuilder();
 
-        Iterator<Content> contentIter = getDeepContent(root, OSISUtil.OSIS_ELEMENT_NOTE).iterator();
-        while (contentIter.hasNext()) {
-            Element ele = (Element) contentIter.next();
+        for (Content content : getDeepContent(root, OSISUtil.OSIS_ELEMENT_TITLE)) {
+            Element ele = (Element) content;
             String attr = ele.getAttributeValue(OSISUtil.OSIS_ATTR_TYPE);
             if (attr == null || !attr.equals(NOTETYPE_REFERENCE)) {
                 if (buffer.length() > 0) {
@@ -774,9 +771,8 @@ public final class OSISUtil {
     public static String getHeadings(Element root) {
         StringBuilder buffer = new StringBuilder();
 
-        Iterator<Content> contentIter = getDeepContent(root, OSISUtil.OSIS_ELEMENT_TITLE).iterator();
-        while (contentIter.hasNext()) {
-            Element ele = (Element) contentIter.next();
+        for (Content content : getDeepContent(root, OSISUtil.OSIS_ELEMENT_TITLE)) {
+            Element ele = (Element) content;
             getCanonicalContent(ele, null, ele.getContent().iterator(), buffer);
         }
 
@@ -839,9 +835,7 @@ public final class OSISUtil {
     private static String getTextContent(List<Content> fragment) {
         StringBuilder buffer = new StringBuilder();
 
-        Iterator<Content> contentIter = fragment.iterator();
-        while (contentIter.hasNext()) {
-            Content next = contentIter.next();
+        for (Content next : fragment) {
             recurseElement(next, buffer);
         }
 
@@ -1104,11 +1098,9 @@ public final class OSISUtil {
             reply.add(start);
         }
 
-        Content data = null;
+//        Content data = null;
         Element ele = null;
-        Iterator<Content> contentIter = start.getContent().iterator();
-        while (contentIter.hasNext()) {
-            data = contentIter.next();
+        for (Content data : (List<Content>) start.getContent()) {
             if (data instanceof Element) {
                 ele = (Element) data;
                 recurseDeepContent(ele, name, reply);
@@ -1140,9 +1132,7 @@ public final class OSISUtil {
      */
     private static void recurseChildren(Element ele, StringBuilder buffer) {
         // ele is a JDOM Element that might have a getContent() method
-        Iterator<Content> contentIter = ele.getContent().iterator();
-        while (contentIter.hasNext()) {
-            Content sub = contentIter.next();
+        for (Content sub : (List<Content>) ele.getContent()) {
             recurseElement(sub, buffer);
         }
     }

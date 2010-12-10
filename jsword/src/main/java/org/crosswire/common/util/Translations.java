@@ -24,7 +24,6 @@ package org.crosswire.common.util;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
-import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 

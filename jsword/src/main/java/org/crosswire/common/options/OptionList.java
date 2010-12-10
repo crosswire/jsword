@@ -23,7 +23,6 @@
 package org.crosswire.common.options;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,9 +79,7 @@ public class OptionList {
             matches.add(longOptions.get(key));
         }
 
-        Iterator<Map.Entry<String, Option>> iter = longOptions.entrySet().iterator();
-        while (iter.hasNext()) {
-            Map.Entry<String, Option> entry = iter.next();
+        for (Map.Entry<String,Option> entry : longOptions.entrySet()) {
             String entryKey = entry.getKey();
             Option entryValue = entry.getValue();
             if (entryKey.startsWith(key) && !matches.contains(entryValue)) {
