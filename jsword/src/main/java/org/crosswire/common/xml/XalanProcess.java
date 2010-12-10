@@ -51,14 +51,14 @@ public class XalanProcess {
         Class<?> clazz = null;
         Method main = null;
         try {
-            // Try for 1.4.x
-            clazz = ClassUtil.forName("org.apache.xalan.xslt.Process");
-            main = clazz.getMethod("main", new Class[] { String[].class});
+            // Try for 1.5.x
+            clazz = ClassUtil.forName("com.sun.org.apache.xalan.internal.xslt.Process");
+                    main = clazz.getMethod("_main", new Class[] { String[].class});
         } catch (ClassNotFoundException e) {
             try {
-                // Try for 1.5.x
-                clazz = ClassUtil.forName("com.sun.org.apache.xalan.internal.xslt.Process");
-                main = clazz.getMethod("_main", new Class[] { String[].class});
+                // Try for 1.4.x
+                clazz = ClassUtil.forName("org.apache.xalan.xslt.Process");
+                main = clazz.getMethod("main", new Class[] { String[].class});
             } catch (ClassNotFoundException e1) {
                 e1.printStackTrace(System.err);
             } catch (SecurityException e1) {
@@ -66,6 +66,8 @@ public class XalanProcess {
             } catch (NoSuchMethodException e1) {
                 e1.printStackTrace(System.err);
             }
+        } catch (SecurityException e1) {
+            e1.printStackTrace(System.err);
         } catch (NoSuchMethodException e) {
             e.printStackTrace(System.err);
             return;

@@ -23,14 +23,13 @@ package org.crosswire.common.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.PropertyMap;
 import org.crosswire.common.util.ResourceUtil;
 import org.jdom.Document;
 import org.jdom.JDOMException;
@@ -356,7 +355,7 @@ public final class XMLUtil {
 
     // Map entities to their unicode equivalent
     private static Set<String> goodEntities = new HashSet<String>();
-    private static Map<String,String> badEntities = new HashMap<String,String>();
+    private static PropertyMap badEntities = new PropertyMap();
     static {
         // pre-defined XML entities
         goodEntities.add("&quot;"); // quotation mark

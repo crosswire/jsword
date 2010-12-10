@@ -25,15 +25,14 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
+import org.crosswire.common.util.PropertyMap;
 
 /**
  * A Generic method of keeping track of Threads and monitoring their progress.
@@ -402,13 +401,11 @@ public final class Job implements Progress {
         int maxAge = UNKNOWN;
         try {
             currentPredictionMap = new HashMap<String, Integer>();
-            Properties temp = NetUtil.loadProperties(predictionMapURI);
+            PropertyMap temp = NetUtil.loadProperties(predictionMapURI);
 
             // Determine the predicted time from the current prediction map
-            Iterator<Object> iter = temp.keySet().iterator();
-            while (iter.hasNext()) {
-                String title = (String) iter.next();
-                String timestr = temp.getProperty(title);
+            for (String title : temp.keySet()) {
+                String timestr = temp.get(title);
 
                 try {
                     Integer time = Integer.valueOf(timestr);
@@ -436,12 +433,10 @@ public final class Job implements Progress {
     private synchronized void savePredictions() {
         // Now we know the start and the end we can convert all times to
         // percents
-        Properties predictions = new Properties();
-        Iterator<String> iter = nextPredictionMap.keySet().iterator();
-        while (iter.hasNext()) {
-            String sectionName = iter.next();
+        PropertyMap predictions = new PropertyMap();
+        for (String sectionName : nextPredictionMap.keySet()) {
             Integer age = nextPredictionMap.get(sectionName);
-            predictions.setProperty(sectionName, age.toString());
+            predictions.put(sectionName, age.toString());
         }
 
         // And save. It's not a disaster if this goes wrong

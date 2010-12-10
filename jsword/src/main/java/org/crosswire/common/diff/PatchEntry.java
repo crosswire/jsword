@@ -161,9 +161,7 @@ public class PatchEntry implements Iterable<Difference> {
         txt.append(getCoordinates(targetStart, targetLength));
         txt.append(" @@\n");
 
-        Iterator<Difference> iter = diffs.iterator();
-        while (iter.hasNext()) {
-            Difference diff = iter.next();
+        for (Difference diff : diffs) {
             txt.append(diff.getEditType().getSymbol());
             txt.append(encode(diff.getText()));
             txt.append('\n');
@@ -236,9 +234,7 @@ public class PatchEntry implements Iterable<Difference> {
     // Compute and return the source text (all equalities and deletions).
     public String getSourceText() {
         StringBuilder txt = new StringBuilder();
-        Iterator<Difference> iter = diffs.iterator();
-        while (iter.hasNext()) {
-            Difference diff = iter.next();
+        for (Difference diff : diffs) {
             if (!EditType.INSERT.equals(diff.getEditType())) {
                 txt.append(diff.getText());
             }
@@ -249,9 +245,7 @@ public class PatchEntry implements Iterable<Difference> {
     // Compute and return the destination text (all equalities and insertions).
     public String getTargetText() {
         StringBuilder txt = new StringBuilder();
-        Iterator<Difference> iter = diffs.iterator();
-        while (iter.hasNext()) {
-            Difference diff = iter.next();
+        for (Difference diff : diffs) {
             if (!EditType.DELETE.equals(diff.getEditType())) {
                 txt.append(diff.getText());
             }

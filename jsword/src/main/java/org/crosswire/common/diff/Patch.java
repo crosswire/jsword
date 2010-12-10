@@ -124,10 +124,8 @@ public class Patch {
         // Recreate the patches to determine context info.
         String prePatchText = source;
         String postPatchText = source;
-        Iterator<Difference> iter = diffs.iterator();
         int x = 0;
-        while (iter.hasNext()) {
-            Difference diff = iter.next();
+        for (Difference diff : diffs) {
             EditType editType = diff.getEditType();
             String diffText = diff.getText();
             int len = diffText.length();
@@ -205,9 +203,7 @@ public class Patch {
         int index1 = 0;
         int index2 = 0;
         int x = 0;
-        Iterator<PatchEntry> patchIter = patches.iterator();
-        while (patchIter.hasNext()) {
-            PatchEntry aPatch = patchIter.next();
+        for (PatchEntry aPatch : patches) {
             expectedLoc = aPatch.getTargetStart() + delta;
             text1 = aPatch.getSourceText();
             Match match = new Match(resultText, text1, expectedLoc);
@@ -367,9 +363,8 @@ public class Patch {
      */
     public String toText() {
         StringBuilder text = new StringBuilder();
-        Iterator<PatchEntry> iter = patches.iterator();
-        while (iter.hasNext()) {
-            text.append(iter.next());
+        for (PatchEntry entry : patches) {
+            text.append(entry);
         }
         return text.toString();
     }

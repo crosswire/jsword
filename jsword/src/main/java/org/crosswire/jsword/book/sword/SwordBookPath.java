@@ -29,11 +29,11 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import org.crosswire.common.util.CWProject;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.OSType;
+import org.crosswire.common.util.PropertyMap;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Books;
@@ -195,12 +195,12 @@ public class SwordBookPath {
         if (sysconfig.canRead()) {
             InputStream is = null;
             try {
-                Properties prop = new Properties();
+                PropertyMap prop = new PropertyMap();
                 is = new FileInputStream(sysconfig);
                 prop.load(is);
-                String datapath = prop.getProperty(DATA_PATH);
+                String datapath = prop.get(DATA_PATH);
                 testDefaultPath(bookDirs, datapath);
-                datapath = prop.getProperty(AUGMENT_PATH);
+                datapath = prop.get(AUGMENT_PATH);
                 testDefaultPath(bookDirs, datapath);
             } catch (IOException ex) {
                 log.warn("Failed to read system config file", ex);

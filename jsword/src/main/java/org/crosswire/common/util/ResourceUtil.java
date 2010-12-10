@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.MissingResourceException;
-import java.util.Properties;
 
 /**
  * Better implementations of the getResource methods with less ambiguity and
@@ -115,7 +114,7 @@ public final class ResourceUtil {
      * @throws MissingResourceException
      *             if the resource can not be found
      */
-    public static Properties getProperties(String subject) throws IOException {
+    public static PropertyMap getProperties(String subject) throws IOException {
         return getProperties(CallContext.getCallingClass(), subject);
     }
 
@@ -131,7 +130,7 @@ public final class ResourceUtil {
      * @throws MissingResourceException
      *             if the resource can not be found
      */
-    public static <T> Properties getProperties(Class<T> clazz) throws IOException {
+    public static <T> PropertyMap getProperties(Class<T> clazz) throws IOException {
         return getProperties(clazz, ClassUtil.getShortClassName(clazz));
     }
 
@@ -147,16 +146,16 @@ public final class ResourceUtil {
      * @throws MissingResourceException
      *             if the resource can not be found
      */
-    private static <T> Properties getProperties(Class<T> clazz, String subject) throws IOException {
+    private static <T> PropertyMap getProperties(Class<T> clazz, String subject) throws IOException {
         try {
             String lookup = subject + FileUtil.EXTENSION_PROPERTIES;
             InputStream in = getResourceAsStream(clazz, lookup);
 
-            Properties prop = new Properties();
+            PropertyMap prop = new PropertyMap();
             prop.load(in);
             return prop;
         } catch (MissingResourceException e) {
-            return new Properties();
+            return new PropertyMap();
         }
     }
 }

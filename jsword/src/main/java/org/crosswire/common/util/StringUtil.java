@@ -587,13 +587,15 @@ public final class StringUtil {
      * <tt>null</tt>, in which case <tt>"null"</tt> is returned.
      * 
      * <p>
-     * This is borrowed from Java 1.5, but uses StringBuilder.
+     * This is borrowed from Java 1.5
      * 
      * @param a
      *            the array whose string representation to return
      * @return a string representation of <tt>a</tt>
      * @since 1.5
+     * @deprecated use Arrays.toString(Object[] a) instead
      */
+    @Deprecated
     public static String toString(Object[] a) {
         if (a == null) {
             return "null";

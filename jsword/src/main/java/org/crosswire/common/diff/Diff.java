@@ -22,7 +22,6 @@
 package org.crosswire.common.diff;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -217,9 +216,8 @@ public class Diff {
                             pointer.remove();
                         }
                         Diff newDiff = new Diff(textDelete.toString(), textInsert.toString(), false);
-                        Iterator<Difference> iter = newDiff.compare().iterator();
-                        while (iter.hasNext()) {
-                            pointer.add(iter.next());
+                        for (Difference diff : newDiff.compare()) {
+                            pointer.add(diff);
                         }
                     }
                     countInserts = 0;
@@ -251,9 +249,7 @@ public class Diff {
         int lastChars1 = 0;
         int lastChars2 = 0;
         Difference lastDiff = null;
-        Iterator<Difference> iter = diffs.iterator();
-        while (iter.hasNext()) {
-            Difference diff = iter.next();
+        for (Difference diff : diffs) {
             EditType editType = diff.getEditType();
 
             // Equality or deletion?

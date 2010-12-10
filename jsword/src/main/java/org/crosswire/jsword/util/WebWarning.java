@@ -23,12 +23,12 @@ package org.crosswire.jsword.util;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.Properties;
 
 import org.crosswire.common.util.CWProject;
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
+import org.crosswire.common.util.PropertyMap;
 import org.crosswire.common.util.ResourceUtil;
 
 /**
@@ -46,8 +46,8 @@ public class WebWarning {
      */
     private WebWarning() {
         try {
-            Properties props = ResourceUtil.getProperties(getClass().getName());
-            shown = Boolean.valueOf(props.getProperty(SHOWN_KEY, Boolean.valueOf(DEFAULT_SHOWN).toString())).booleanValue();
+            PropertyMap props = ResourceUtil.getProperties(getClass().getName());
+            shown = Boolean.valueOf(props.get(SHOWN_KEY, Boolean.valueOf(DEFAULT_SHOWN).toString())).booleanValue();
         } catch (IOException e) {
             shown = DEFAULT_SHOWN;
         }
@@ -69,7 +69,7 @@ public class WebWarning {
     public void setShown(boolean newShown) {
         try {
             shown = newShown;
-            Properties props = new Properties();
+            PropertyMap props = new PropertyMap();
             props.put(SHOWN_KEY, Boolean.valueOf(shown).toString());
             URI outputURI = CWProject.instance().getWritableURI(getClass().getName(), FileUtil.EXTENSION_PROPERTIES);
             NetUtil.storeProperties(props, outputURI, "JSword WebWarning");

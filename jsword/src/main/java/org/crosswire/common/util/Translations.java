@@ -27,7 +27,6 @@ import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Properties;
 
 import org.crosswire.common.config.ChoiceFactory;
 
@@ -46,8 +45,8 @@ public class Translations {
     private Translations() {
         try {
             loadSupportedTranslations();
-            Properties props = ResourceUtil.getProperties(getClass());
-            translation = props.getProperty(TRANSLATION_KEY);
+            PropertyMap props = ResourceUtil.getProperties(getClass());
+            translation = props.get(TRANSLATION_KEY);
             if (translation == null || translation.length() == 0) {
                 // check for a match against language and country
                 // This pertains to zh_TW and zh_CN
@@ -90,12 +89,12 @@ public class Translations {
      * 
      * @return an string array of translations in locale friendly names.
      */
-    public Map<String,String> getSupported() {
+    public PropertyMap getSupported() {
         loadSupportedTranslations();
 
         // I18N(DMS) Collate these according to the current locale, putting the
         // current locale's locale first.
-        Map<String,String> names = new LinkedHashMap<String,String>();
+        PropertyMap names = new PropertyMap();
 
         for (int i = 0; i < translations.length; i++) {
             names.put(translations[i], toString(translations[i]));
@@ -156,7 +155,7 @@ public class Translations {
 
         try {
             translation = found;
-            Properties props = new Properties();
+            PropertyMap props = new PropertyMap();
             if (translation != DEFAULT_TRANSLATION) {
                 props.put(TRANSLATION_KEY, translation);
             }

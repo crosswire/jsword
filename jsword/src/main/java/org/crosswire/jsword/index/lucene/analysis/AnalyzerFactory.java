@@ -22,11 +22,11 @@
 package org.crosswire.jsword.index.lucene.analysis;
 
 import java.io.IOException;
-import java.util.Properties;
 
 import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Language;
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.PropertyMap;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.book.Book;
 
@@ -90,17 +90,17 @@ public final class AnalyzerFactory {
 
     public String getAnalyzerValue(Language lang) {
         String key = lang.getCode() + ".Analyzer";
-        return myProperties.getProperty(key);
+        return myProperties.get(key);
     }
 
     public boolean getDefaultStemmingProperty() {
         String key = DEFAULT_ID + ".Stemming";
-        return Boolean.valueOf(myProperties.getProperty(key)).booleanValue();
+        return Boolean.valueOf(myProperties.get(key)).booleanValue();
     }
 
     public boolean getDefaultStopWordProperty() {
         String key = DEFAULT_ID + ".StopWord";
-        return Boolean.valueOf(myProperties.getProperty(key)).booleanValue();
+        return Boolean.valueOf(myProperties.get(key)).booleanValue();
     }
 
     private void loadProperties() {
@@ -115,6 +115,6 @@ public final class AnalyzerFactory {
     private static final Logger log = Logger.getLogger(AnalyzerFactory.class);
     private static AnalyzerFactory myInstance = new AnalyzerFactory();
 
-    private Properties myProperties;
+    private PropertyMap myProperties;
 
 }

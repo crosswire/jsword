@@ -29,13 +29,13 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 import java.util.ResourceBundle;
 
 import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LucidException;
 import org.crosswire.common.util.NetUtil;
+import org.crosswire.common.util.PropertyMap;
 import org.crosswire.common.util.Reporter;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -92,7 +92,7 @@ public class Config implements Iterable<Choice> {
         this.title = title;
         keys = new ArrayList<String>();
         models = new ArrayList<Choice>();
-        local = new Properties();
+        local = new PropertyMap();
         listenerList = new EventListenerList();
     }
 
@@ -230,16 +230,14 @@ public class Config implements Iterable<Choice> {
      * classes displaying config information
      */
     public String getLocal(String name) {
-        return local.getProperty(name);
+        return local.get(name);
     }
 
     /**
      * Take the data in the application and copy it to the local storage area.
      */
     public void applicationToLocal() {
-        Iterator<String> iter = keys.iterator();
-        while (iter.hasNext()) {
-            String key = iter.next();
+        for (String key : keys) {
             Choice model = getChoice(key);
             String value = model.getString();
             local.put(key, value);
@@ -250,13 +248,11 @@ public class Config implements Iterable<Choice> {
      * Take the data in the local storage area and copy it to the application.
      */
     public void localToApplication() {
-        Iterator<String> iter = keys.iterator();
-        while (iter.hasNext()) {
-            String key = iter.next();
+        for (String key : keys) {
             Choice choice = getChoice(key);
 
             String oldValue = choice.getString(); // never returns null
-            String newValue = local.getProperty(key);
+            String newValue = local.get(key);
 
             // The new value shouldn't really be blank - obviously this
             // choice has just been added, substitute the default.
@@ -264,7 +260,7 @@ public class Config implements Iterable<Choice> {
                 if ((oldValue == null) || (oldValue.length() == 0)) {
                     continue;
                 }
-                local.setProperty(key, oldValue);
+                local.put(key, oldValue);
                 newValue = oldValue;
             }
 
@@ -292,11 +288,9 @@ public class Config implements Iterable<Choice> {
      * Take the data stored permanently and copy it to the local storage area,
      * using the specified stream
      */
-    public void setProperties(Properties prop) {
-        Iterator<Object> iter = prop.keySet().iterator();
-        while (iter.hasNext()) {
-            String key = (String) iter.next();
-            String value = prop.getProperty(key);
+    public void setProperties(PropertyMap prop) {
+        for (String key : prop.keySet()) {
+            String value = prop.get(key);
 
             Choice model = getChoice(key);
             // Only if a value was stored and it should be stored then we use
@@ -310,13 +304,11 @@ public class Config implements Iterable<Choice> {
     /**
      * Take the data in the local storage area and store it permanently
      */
-    public Properties getProperties() {
-        Properties prop = new Properties();
+    public PropertyMap getProperties() {
+        PropertyMap prop  = new PropertyMap();
 
-        Iterator<String> iter = keys.iterator();
-        while (iter.hasNext()) {
-            String key = iter.next();
-            String value = local.getProperty(key);
+        for (String key : keys) {
+            String value = local.get(key);
 
             Choice model = getChoice(key);
             if (model.isSaveable()) {
@@ -507,7 +499,7 @@ public class Config implements Iterable<Choice> {
     /**
      * The set of local values
      */
-    protected Properties local = new Properties();
+    protected PropertyMap local;
 
     /**
      * The set of property change listeners.

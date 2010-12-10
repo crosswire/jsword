@@ -130,9 +130,7 @@ public class OptionList {
             }
         }
 
-        Iterator<Option> iter = getLongOptions(key).iterator();
-        while (iter.hasNext()) {
-            Option match = iter.next();
+        for (Option match : getLongOptions(key)) {
             if (!matches.contains(match)) {
                 matches.add(match);
             }

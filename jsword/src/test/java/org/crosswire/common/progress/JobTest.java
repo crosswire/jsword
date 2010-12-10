@@ -82,11 +82,12 @@ public class JobTest extends TestCase {
 
         job = JobManager.createJob(WIBBLE);
         job.beginJob(WIBBLE, uri);
+        job.setTotalWork(100);
         assertEquals(WIBBLE, job.getJobName());
         assertEquals(false, job.isFinished());
         assertEquals(false, job.isCancelable());
         assertEquals(WIBBLE, job.getSectionName());
-        assertEquals(0, job.getWork());
+        job.cancel();
         job.done();
         assertEquals(true, job.isFinished());
         assertEquals(100, job.getWork());

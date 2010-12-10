@@ -24,9 +24,8 @@ package org.crosswire.common.util;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Enumeration;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -55,9 +54,8 @@ public final class CollectionUtil {
      */
     public static <T> List<T> createList(Iterable<T> it) {
         List<T> reply = new ArrayList<T>();
-        Iterator<T> iter = it.iterator();
-        while (iter.hasNext()) {
-            reply.add(iter.next());
+        for (T obj : it) {
+            reply.add(obj);
         }
 
         return reply;
@@ -72,9 +70,8 @@ public final class CollectionUtil {
      */
     public static <T> Set<T> createSet(Iterable<T> it) {
         Set<T> reply = new HashSet<T>();
-        Iterator<T> iter = it.iterator();
-        while (iter.hasNext()) {
-            reply.add(iter.next());
+        for (T obj : it) {
+            reply.add(obj);
         }
 
         return reply;
@@ -87,12 +84,14 @@ public final class CollectionUtil {
      *            The Properties to convert
      * @return The map
      */
-    public static <K,V> Map<K,V> properties2Map(Properties prop) {
-        Map<K,V> propMap = new HashMap<K,V>();
-        Iterator<Map.Entry<Object,Object>> iter = prop.entrySet().iterator();
-        while (iter.hasNext()) {
-            Map.Entry<K,V> entry = (Map.Entry<K,V>) iter.next();
-            propMap.put(entry.getKey(), entry.getValue());
+    public static PropertyMap properties2Map(Properties prop) {
+        PropertyMap propMap = new PropertyMap();
+        for (Enumeration<Object> e = prop.keys() ; e.hasMoreElements() ;) {
+            Object k = e.nextElement();
+            Object v = prop.get(k);
+            if (k instanceof String && v instanceof String) {
+                propMap.put((String) k, (String) v);
+            }
         }
         return propMap;
     }
@@ -105,8 +104,8 @@ public final class CollectionUtil {
      *            The URI of the Properties to convert
      * @return The map
      */
-    public static <K,V> Map<K,V> properties2Map(URI propUri) throws IOException {
-        return properties2Map(NetUtil.loadProperties(propUri));
+    public static PropertyMap properties2Map(URI propUri) throws IOException {
+        return NetUtil.loadProperties(propUri);
     }
 
 }

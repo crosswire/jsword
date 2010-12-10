@@ -30,7 +30,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
-import java.util.Properties;
 
 /**
  * A plugin maps one or more implementations to an interface or abstract class
@@ -61,11 +60,10 @@ public final class PluginUtil {
     public static <T> Class<T>[] getImplementors(Class<T> clazz) {
         try {
             List<Class<T>> matches = new ArrayList<Class<T>>();
-            Properties props = getPlugin(clazz);
-            Iterator<Object> it = props.values().iterator();
-            while (it.hasNext()) {
+            PropertyMap props = getPlugin(clazz);
+            for (String key : props.keySet()) {
+                String name = props.get(key);
                 try {
-                    String name = (String) it.next();
                     Class<T> impl = (Class<T>) ClassUtil.forName(name);
                     if (clazz.isAssignableFrom(impl)) {
                         matches.add(impl);
@@ -102,12 +100,12 @@ public final class PluginUtil {
         Map<String,Class<T>> matches = new HashMap<String,Class<T>>();
 
         try {
-            Properties props = getPlugin(clazz);
-            Iterator<Object> it = props.keySet().iterator();
+            PropertyMap props = getPlugin(clazz);
+            Iterator<String> it = props.keySet().iterator();
             while (it.hasNext()) {
                 try {
-                    String key = (String) it.next();
-                    String value = props.getProperty(key);
+                    String key = it.next();
+                    String value = props.get(key);
                     Class<T> impl = (Class<T>) ClassUtil.forName(value);
                     if (clazz.isAssignableFrom(impl)) {
                         matches.put(key, impl);
@@ -147,8 +145,8 @@ public final class PluginUtil {
      * @see PluginUtil#getImplementors(Class)
      */
     public static <T> Class<T> getImplementor(Class<T> clazz) throws IOException, ClassNotFoundException, ClassCastException {
-        Properties props = getPlugin(clazz);
-        String name = props.getProperty(DEFAULT);
+        PropertyMap props = getPlugin(clazz);
+        String name = props.get(DEFAULT);
 
         Class<T> impl = (Class<T>) ClassUtil.forName(name);
         if (!clazz.isAssignableFrom(impl)) {
@@ -198,18 +196,18 @@ public final class PluginUtil {
      * @throws MissingResourceException
      *             if the resource can not be found
      */
-    public static <T> Properties getPlugin(Class<T> clazz) throws IOException {
+    public static <T> PropertyMap getPlugin(Class<T> clazz) throws IOException {
         String subject = ClassUtil.getShortClassName(clazz);
 
         try {
             String lookup = subject + PluginUtil.EXTENSION_PLUGIN;
             InputStream in = ResourceUtil.getResourceAsStream(clazz, lookup);
 
-            Properties prop = new Properties();
+            PropertyMap prop = new PropertyMap();
             prop.load(in);
             return prop;
         } catch (MissingResourceException e) {
-            return new Properties();
+            return new PropertyMap();
         }
     }
 

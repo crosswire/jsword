@@ -23,7 +23,6 @@ package org.crosswire.common.progress;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -151,9 +150,7 @@ public final class JobManager {
         // We ought only to tell listeners about jobs that are in our
         // list of jobs so we need to fire before delete.
         if (listeners != null) {
-            Iterator<WorkListener> iter = temp.iterator();
-            while (iter.hasNext()) {
-                WorkListener worker = iter.next();
+            for (WorkListener worker : temp) {
                 worker.workProgressed(ev);
             }
         }

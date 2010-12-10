@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.jar.JarEntry;
 
@@ -579,11 +580,11 @@ public final class NetUtil {
      * @return the properties given by the URI
      * @throws IOException
      */
-    public static Properties loadProperties(URI uri) throws IOException {
+    public static PropertyMap loadProperties(URI uri) throws IOException {
         InputStream is = null;
         try {
             is = NetUtil.getInputStream(uri);
-            Properties prop = new Properties();
+            PropertyMap prop = new PropertyMap();
             prop.load(is);
             is.close();
             return prop;
@@ -604,12 +605,14 @@ public final class NetUtil {
      *            the label held in the properties file
      * @throws IOException
      */
-    public static void storeProperties(Properties properties, URI uri, String title) throws IOException {
+    public static void storeProperties(PropertyMap properties, URI uri, String title) throws IOException {
         OutputStream out = null;
 
         try {
             out = NetUtil.getOutputStream(uri);
-            properties.store(out, title);
+            PropertyMap temp = new PropertyMap();
+            temp.putAll(properties);
+            temp.store(out, title);
         } finally {
             IOUtil.close(out);
         }

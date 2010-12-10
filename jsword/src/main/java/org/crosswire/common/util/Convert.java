@@ -143,8 +143,8 @@ public final class Convert {
      *            the thing to convert
      * @return the converted data
      */
-    public static Map<String, String> string2Hashtable(String data, Class<?> superclass) {
-        Map<String, String> commands = new HashMap<String, String>();
+    public static PropertyMap string2Hashtable(String data, Class<?> superclass) {
+        PropertyMap commands = new PropertyMap();
 
         String[] data_arr = StringUtil.split(data, " ");
         String entry = "";
@@ -177,7 +177,7 @@ public final class Convert {
      *            the thing to convert
      * @return the converted data
      */
-    public static Map<String,String> string2Map(String data) {
+    public static PropertyMap string2Map(String data) {
         return string2Hashtable(data, Object.class);
     }
 

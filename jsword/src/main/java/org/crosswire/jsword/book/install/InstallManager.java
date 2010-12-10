@@ -27,7 +27,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 
 import org.crosswire.common.util.CWProject;
@@ -36,6 +35,7 @@ import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PluginUtil;
+import org.crosswire.common.util.PropertyMap;
 import org.crosswire.common.util.Reporter;
 
 /**
@@ -54,10 +54,10 @@ public final class InstallManager {
         installers = new LinkedHashMap<String, Installer>();
 
         try {
-            Properties sitemap = PluginUtil.getPlugin(getClass());
+            PropertyMap sitemap = PluginUtil.getPlugin(getClass());
             factories = PluginUtil.getImplementorsMap(InstallerFactory.class);
             int i = 0;
-            for (String def = sitemap.getProperty(PREFIX + ++i); def != null; def = sitemap.getProperty(PREFIX + ++i)) {
+            for (String def = sitemap.get(PREFIX + ++i); def != null; def = sitemap.get(PREFIX + ++i)) {
                 try {
                     String[] parts = def.split(",", 3);
                     String type = parts[0];
@@ -89,12 +89,10 @@ public final class InstallManager {
      * so as to override it.
      */
     public void save() {
-        Properties props = new Properties();
+        PropertyMap props = new PropertyMap();
         StringBuilder buf = new StringBuilder();
         int i = 1;
-        Iterator<String> it = installers.keySet().iterator();
-        while (it.hasNext()) {
-            String name = it.next();
+        for (String name : installers.keySet()) {
             Installer installer = installers.get(name);
             // Clear the buffer
             buf.delete(0, buf.length());
@@ -103,7 +101,7 @@ public final class InstallManager {
             buf.append(name);
             buf.append(',');
             buf.append(installer.getInstallerDefinition());
-            props.setProperty(PREFIX + i++, buf.toString());
+            props.put(PREFIX + i++, buf.toString());
         }
         URI outputURI = CWProject.instance().getWritableURI(getClass().getName(), FileUtil.EXTENSION_PLUGIN);
         try {

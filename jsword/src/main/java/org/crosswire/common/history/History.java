@@ -136,7 +136,7 @@ public class History {
         if (backCount > 0) {
             return Collections.unmodifiableList(nav.subList(0, backCount));
         }
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
     /**
@@ -148,7 +148,7 @@ public class History {
         if (backCount < nav.size()) {
             return Collections.unmodifiableList(nav.subList(backCount, nav.size()));
         }
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
     /**

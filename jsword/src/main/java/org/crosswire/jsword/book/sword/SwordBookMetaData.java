@@ -24,14 +24,13 @@ package org.crosswire.jsword.book.sword;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import org.crosswire.common.util.Language;
 import org.crosswire.common.util.NetUtil;
+import org.crosswire.common.util.PropertyMap;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.KeyType;
@@ -373,7 +372,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * Sword uses MS Windows cp1252 for Latin 1 not the standard. Arrgh! The
      * language strings need to be converted to Java charsets
      */
-    private static final Map<String,String> ENCODING_JAVA = new HashMap<String,String>();
+    private static final PropertyMap ENCODING_JAVA = new PropertyMap();
     static {
         ENCODING_JAVA.put("Latin-1", "WINDOWS-1252");
         ENCODING_JAVA.put("UTF-8", "UTF-8");

@@ -161,9 +161,7 @@ public class RawFileBackend extends RawBackend {
 
     private File createDataTextFile(int index) throws BookException, IOException {
         String dataPath = getExpandedDataPath().getPath();
-        // JDK15: Use String.format instead
-        // dataPath += File.separator + String.format("%07d", index);
-        dataPath += File.separator + new DecimalFormat("0000000").format(index);
+        dataPath += File.separator + String.format("%07d", Integer.valueOf(index));
         File dataFile = new File(dataPath);
         if (!dataFile.exists() && !dataFile.createNewFile()) {
             throw new IOException("Could not create data file.");
@@ -208,12 +206,7 @@ public class RawFileBackend extends RawBackend {
     }
 
     protected void updateDataFile(int testament, long ordinal) throws IOException {
-        // JDK15: Use String.format instead
-        // String fileName = String.format("%07d\r\n", ordinal);
-        StringBuilder buf = new StringBuilder();
-        buf.append(new DecimalFormat("0000000").format(ordinal));
-        buf.append("\r\n");
-        String fileName = buf.toString();
+        String fileName = String.format("%07d\r\n", Long.valueOf(ordinal));
         BufferedOutputStream bos = null;
         try {
             bos = new BufferedOutputStream(new FileOutputStream(txtFile[testament], true));

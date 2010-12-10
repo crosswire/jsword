@@ -22,9 +22,9 @@
 package org.crosswire.jsword.index.lucene;
 
 import java.io.IOException;
-import java.util.Properties;
 
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.PropertyMap;
 import org.crosswire.common.util.ResourceUtil;
 
 /**
@@ -55,15 +55,17 @@ public class IndexMetadata {
     }
 
     public float getInstalledIndexVersion() {
-        return Float.parseFloat(props.getProperty(INDEX_VERSION, "1.1"));
+        String value = props.get(INDEX_VERSION, "1.1");
+        return Float.parseFloat(value);
     }
 
     public float getLuceneVersion() {
-        return Float.parseFloat(props.getProperty(LUCENE_VERSION));
+        return Float.parseFloat(props.get(LUCENE_VERSION));
     }
 
     public float getLatestIndexVersion() {
-        return Float.parseFloat(props.getProperty(LATEST_INDEX_VERSION, "1.1"));
+        String value = props.get(INDEX_VERSION, "1.1");
+        return Float.parseFloat(value);
     }
 
     public static final String INDEX_VERSION = "Installed.Index.Version";
@@ -74,5 +76,5 @@ public class IndexMetadata {
 
     private static final Logger log = Logger.getLogger(IndexMetadata.class);
     private static IndexMetadata myInstance = new IndexMetadata();
-    private Properties props;
+    private PropertyMap props;
 }

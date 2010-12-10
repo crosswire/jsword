@@ -22,7 +22,6 @@
 package org.crosswire.common.activate;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -81,9 +80,8 @@ public final class Activator {
     }
 
     public static void deactivateAll() {
-        Iterator<Activatable> iter = activated.iterator();
-        while (iter.hasNext()) {
-            deactivate(iter.next());
+        for (Activatable item : activated) {
+            deactivate(item);
         }
     }
 

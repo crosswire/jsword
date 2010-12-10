@@ -644,7 +644,7 @@ public class PassageTally extends AbstractPassage {
             log.warn("Restrict=" + restrict + " is not properly supported.");
 
             // This is a bit of a cheat, but there is no way I'm going
-            // to do the maths to speed up the restricted version
+            // to do the math to speed up the restricted version
             PassageTally temp = (PassageTally) this.clone();
             Iterator<Key> it = temp.rangeIterator(RestrictionType.NONE);
 
