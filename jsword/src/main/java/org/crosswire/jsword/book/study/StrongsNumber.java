@@ -129,7 +129,7 @@ public class StrongsNumber {
      * @return true if the Strong's number is for Hebrew
      */
     public boolean isHebrew() {
-        return language == 'G';
+        return language == 'H';
     }
 
     /**
