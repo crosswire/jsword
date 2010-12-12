@@ -26,7 +26,7 @@ public class Bench {
         }
 
         List<Book> dicts = Books.installed().getBooks(BookFilters.getOnlyBibles());
-        version = (Book) dicts.get(0);
+        version = dicts.get(0);
 
         Speed speed = new Speed(version);
         speed.run();

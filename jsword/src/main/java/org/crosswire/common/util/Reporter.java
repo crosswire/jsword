@@ -27,21 +27,26 @@ import java.util.Properties;
  * This package looks after Exceptions and messages as they happen. It would be
  * nice not to need this class - the principle being that any library that
  * encounters an error can throw an exception to indicate that there is a
- * problem. However this is not always the case. For example: <li>static class
- * constructors should not throw, unless the class really is of no use given the
- * error, and yet we may want to tell the user that there was a (non-critical)
- * error.</li> <li>Any library routine that works in a loop, applying some
- * (potentially failing) functionality, may want to continue the work without
- * throwing in response to a single error.</li> <li>The class being implemented
- * may implement an interface that disallows nested exceptions and yet does not
- * want to loose the root cause error information. (This is the weakest of the
- * above arguments, but probably still valid.)</li> However in many of the times
- * this class is used, this is the reason: <li>Within UI specific code - to
- * throw up a dialog box (or whatever). Now this use is currently tolerated,
- * however it is probably a poor idea to use GUI agnostic messaging in a GUI
- * specific context. But I'm not bothered enough to change it now. Specifically
- * this use is deprecated because it makes the app more susceptible to the
- * configuration of the things that listen to reports.</li>
+ * problem. However this is not always the case. For example:
+ * <ul>
+ * <li>static class constructors should not throw, unless the class really is of
+ * no use given the error, and yet we may want to tell the user that there was a
+ * (non-critical) error.</li>
+ * <li>Any library routine that works in a loop, applying some (potentially
+ * failing) functionality, may want to continue the work without throwing in
+ * response to a single error.</li>
+ * <li>The class being implemented may implement an interface that disallows
+ * nested exceptions and yet does not want to loose the root cause error
+ * information. (This is the weakest of the above arguments, but probably still
+ * valid.)</li> However in many of the times this class is used, this is the
+ * reason:
+ * <li>Within UI specific code - to throw up a dialog box (or whatever). Now
+ * this use is currently tolerated, however it is probably a poor idea to use
+ * GUI agnostic messaging in a GUI specific context. But I'm not bothered enough
+ * to change it now. Specifically this use is deprecated because it makes the
+ * app more susceptible to the configuration of the things that listen to
+ * reports.</li>
+ * </ul>
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
@@ -63,10 +68,6 @@ public final class Reporter {
      * @param source
      *            The cause of the problem, a Component if possible.
      * @param prob
-     *            The Exception that was thrown TODO(joe): think about this -
-     *            isn't this method useful? deprecated use either
-     *            informUser(Object source, LucidException prob) or
-     *            informUser(Object source, LucidRuntimeException prob)
      */
     public static void informUser(Object source, Throwable prob) {
         Class<?> cat = (source != null) ? source.getClass() : Reporter.class;

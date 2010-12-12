@@ -220,7 +220,7 @@ public interface BookMetaData extends Comparable<BookMetaData> {
      * returned Properties will be read-only so any attempts to alter it will
      * fail.
      */
-    Map<String, Object> getProperties();
+    Map<String,Object> getProperties();
 
     /**
      * @param key
