@@ -738,7 +738,9 @@ public abstract class AbstractPassage implements Passage {
         raiseNormalizeProtection();
 
         int count = 0; // number of lines read
-        BufferedReader bin = new BufferedReader(in);
+        // Quiet Android from complaining about using the default BufferReader buffer size.
+        // The actual buffer size is undocumented. So this is a good idea any way.
+        BufferedReader bin = new BufferedReader(in, 8192);
         while (true) {
             String line = bin.readLine();
             if (line == null) {

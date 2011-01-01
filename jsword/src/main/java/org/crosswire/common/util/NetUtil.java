@@ -21,6 +21,7 @@
  */
 package org.crosswire.common.util;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -536,8 +537,13 @@ public final class NetUtil {
 
     /**
      * List all the files specified by the index file passed in. To be
-     * acceptable it must be a non-0 length string, not commented with #, not
-     * the index file itself and acceptable by the filter.
+     * acceptable it:
+     * <ul>
+     * <li> must be a non-0 length string,</li>
+     * <li> not commented with #,</li>
+     * <li> not the index file itself</li>
+     * <li> and acceptable by the filter.</li>
+     * </ul>
      * 
      * @return String[] Matching results.
      * @throws FileNotFoundException
@@ -546,19 +552,24 @@ public final class NetUtil {
         InputStream in = null;
         try {
             in = NetUtil.getInputStream(index);
-            String contents = StringUtil.read(new InputStreamReader(in));
+            // Quiet Android from complaining about using the default BufferReader buffer size.
+            // The actual buffer size is undocumented. So this is a good idea any way.
+            BufferedReader din = new BufferedReader(new InputStreamReader(in), 8192);
 
             // We still need to do the filtering
             List<String> list = new ArrayList<String>();
-            String[] names = StringUtil.split(contents, "\n");
-            for (int i = 0; i < names.length; i++) {
-                // we need to trim, as we may have \r\n not \n
-                String name = names[i].trim();
 
-                // to be acceptable it must be a non-0 length string, not
-                // commented
-                // with #, not the index file itself and acceptable by the
-                // filter.
+            while (true) {
+                String line = din.readLine();
+
+                if (line == null) {
+                    break;
+                }
+
+                // we need to trim extraneous whitespace on the line
+                String name = line.trim();
+
+                // Is it acceptable?
                 if (name.length() > 0 && name.charAt(0) != '#' && !name.equals(INDEX_FILE) && filter.accept(name)) {
                     list.add(name);
                 }
@@ -668,8 +679,7 @@ public final class NetUtil {
             URLConnection urlConnection = uri.toURL().openConnection();
             long time = urlConnection.getLastModified();
 
-            // If it were a jar then time contains the last modified date of the
-            // jar.
+            // If it were a jar then time contains the last modified date of the jar.
             if (urlConnection instanceof JarURLConnection) {
                 // form is jar:file:.../xxx.jar!.../filename.ext
                 JarURLConnection jarConnection = (JarURLConnection) urlConnection;

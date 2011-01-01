@@ -58,7 +58,9 @@ public final class StringUtil {
      */
     public static String read(Reader in) throws IOException {
         StringBuilder retcode = new StringBuilder();
-        BufferedReader din = new BufferedReader(in);
+        // Quiet Android from complaining about using the default BufferReader buffer size.
+        // The actual buffer size is undocumented. So this is a good idea any way.
+        BufferedReader din = new BufferedReader(in, 8192);
 
         while (true) {
             String line = din.readLine();

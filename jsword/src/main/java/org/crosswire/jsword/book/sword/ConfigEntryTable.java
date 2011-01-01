@@ -92,8 +92,11 @@ public final class ConfigEntryTable {
         configFile = file;
 
         BufferedReader in = null;
+        int bufferSize = 8192;
         try {
-            in = new BufferedReader(new InputStreamReader(new FileInputStream(file), ENCODING_UTF8));
+            // Quiet Android from complaining about using the default BufferReader buffer size.
+            // The actual buffer size is undocumented. So this is a good idea any way.
+            in = new BufferedReader(new InputStreamReader(new FileInputStream(file), ENCODING_UTF8), bufferSize);
             loadInitials(in);
             loadContents(in);
             in.close();
@@ -105,7 +108,7 @@ public final class ConfigEntryTable {
                 readahead = null;
                 table.clear();
                 extra.clear();
-                in = new BufferedReader(new InputStreamReader(new FileInputStream(file), ENCODING_LATIN1));
+                in = new BufferedReader(new InputStreamReader(new FileInputStream(file), ENCODING_LATIN1), bufferSize);
                 loadInitials(in);
                 loadContents(in);
                 in.close();
@@ -134,7 +137,9 @@ public final class ConfigEntryTable {
     public void load(byte[] buffer) throws IOException {
         BufferedReader in = null;
         try {
-            in = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer), ENCODING_UTF8));
+            // Quiet Android from complaining about using the default BufferReader buffer size.
+            // The actual buffer size is undocumented. So this is a good idea any way.
+            in = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer), ENCODING_UTF8), buffer.length);
             loadInitials(in);
             loadContents(in);
             in.close();
@@ -146,7 +151,7 @@ public final class ConfigEntryTable {
                 readahead = null;
                 table.clear();
                 extra.clear();
-                in = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer), ENCODING_LATIN1));
+                in = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer), ENCODING_LATIN1), buffer.length);
                 loadInitials(in);
                 loadContents(in);
                 in.close();
