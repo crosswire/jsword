@@ -219,7 +219,11 @@ public class APIExamples {
         if (key instanceof Passage) {
             Passage remaining = ((Passage) key).trimVerses(5);
             System.out.println("The first 5 verses containing both moses and aaron: " + key.getName());
-            System.out.println("The rest of the verses are: " + remaining.getName());
+            if (remaining != null) {
+                System.out.println("The rest of the verses are: " + remaining.getName());
+            } else {
+                System.out.println("There are only 5 verses containing both moses and aaron");
+            }
         }
     }
 
@@ -234,9 +238,11 @@ public class APIExamples {
         // For a more complex example:
         // Rank the verses and show the first 20
         boolean rank = true;
+        int max = 20;
 
         DefaultSearchModifier modifier = new DefaultSearchModifier();
         modifier.setRanked(rank);
+        modifier.setMaxResults(max);
 
         Key results = bible.find(new DefaultSearchRequest("for god so loved the world", modifier));
         int total = results.getCardinality();
@@ -246,7 +252,7 @@ public class APIExamples {
         if (results instanceof PassageTally || rank) {
             PassageTally tally = (PassageTally) results;
             tally.setOrdering(PassageTally.ORDER_TALLY);
-            int rankCount = 20;
+            int rankCount = max;
             if (rankCount > 0 && rankCount < total) {
                 // Here we are trimming by ranges, where a range is a set of
                 // continuous verses.

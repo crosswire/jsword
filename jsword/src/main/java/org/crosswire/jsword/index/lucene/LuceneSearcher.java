@@ -33,7 +33,7 @@ import org.crosswire.jsword.passage.Key;
 /**
  * The central interface to all searching.
  * 
- * Functionality the I invisage includes:
+ * Functionality the I envisage includes:
  * <ul>
  * <li>A simple search syntax that goes something like this.
  * <ul>
