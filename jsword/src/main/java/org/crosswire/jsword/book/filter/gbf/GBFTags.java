@@ -459,11 +459,13 @@ public final class GBFTags {
                 String existingLemma = word.getAttributeValue(OSISUtil.ATTRIBUTE_W_LEMMA);
                 StringBuilder newLemma = new StringBuilder();
 
+                // Strong's numbers are separated by spaces w/in the attribute
                 if (existingLemma != null && existingLemma.length() > 0) {
-                    newLemma.append(existingLemma).append('|');
+                    newLemma.append(existingLemma).append(' ');
                 }
 
-                newLemma.append(OSISUtil.LEMMA_STRONGS).append(name.substring(2));
+                // Grab the G or H and the number that follows
+                newLemma.append(OSISUtil.LEMMA_STRONGS).append(name.substring(1));
                 word.setAttribute(OSISUtil.ATTRIBUTE_W_LEMMA, newLemma.toString());
             }
         }
