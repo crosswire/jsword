@@ -110,6 +110,7 @@ public class MsgBase {
     protected final void loadResources() {
         Class<? extends MsgBase> implementingClass = getClass();
         String className = implementingClass.getName();
+        String shortClassName = ClassUtil.getShortClassName(className);
 
         // Class lock is needed around static resourceMap
         synchronized (MsgBase.class) {
@@ -120,11 +121,14 @@ public class MsgBase {
             if (resources == null) {
                 Locale defaultLocale = Locale.getDefault();
                 try {
-                    resources = ResourceBundle.getBundle(className, defaultLocale, CWClassLoader.instance(implementingClass));
+                    resources = ResourceBundle.getBundle(shortClassName, defaultLocale, CWClassLoader.instance(implementingClass));
                     resourceMap.put(className, resources);
                 } catch (MissingResourceException ex) {
                     log.warn("Assuming key is the default message " + className);
                 }
+            }
+            if (resources == null) {
+                log.error("Missing resources: Locale=" + Locale.getDefault().toString() + " class=" + className);
             }
         }
     }
