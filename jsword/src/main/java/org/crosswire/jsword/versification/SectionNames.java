@@ -23,7 +23,6 @@ package org.crosswire.jsword.versification;
 
 import java.util.Locale;
 
-import org.crosswire.common.util.MsgBase;
 import org.crosswire.jsword.book.CaseType;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 
@@ -35,7 +34,7 @@ import org.crosswire.jsword.passage.NoSuchVerseException;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class SectionNames extends MsgBase {
+public final class SectionNames {
     /**
      * Create a SectionNames object
      */
