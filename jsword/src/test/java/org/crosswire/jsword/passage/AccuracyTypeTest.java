@@ -26,7 +26,7 @@ public class AccuracyTypeTest extends TestCase {
         try {
             AccuracyType.fromText("1:2:3:4", new String[] { "1", "2", "3", "4"}, null, null);
         } catch (NoSuchVerseException nsve) {
-            // I18N(DMS)
+            // TRANSLATOR: The user specified a verse with too many separators. {0} is a placeholder for the allowable separators.
             NoSuchVerseException correctException = new NoSuchVerseException(JSMsg.gettext("Too many parts to the Verse. (Parts are separated by any of {0})", 
                 "1:2:3:4, 1, 2, 3, 4"));
             assertEquals("Unexpected exception message", correctException.getMessage(), nsve.getMessage());
@@ -45,7 +45,7 @@ public class AccuracyTypeTest extends TestCase {
         try {
             AccuracyType.fromText("-1:2:3", new String[] { "-1", "2", "3"}, null, null);
         } catch (NoSuchVerseException nsve) {
-            // I18N(DMS)
+            // TRANSLATOR: The user specified a verse with too many separators. {0} is a placeholder for the allowable separators.
             NoSuchVerseException correctException = new NoSuchVerseException(JSMsg.gettext("Too many parts to the Verse. (Parts are separated by any of {0})", 
                     "-1:2:3, -1, 2, 3"));
             assertEquals("Unexpected exception message", correctException.getMessage(), nsve.getMessage());

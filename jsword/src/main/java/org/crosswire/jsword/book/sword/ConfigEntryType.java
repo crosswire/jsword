@@ -816,9 +816,9 @@ public class ConfigEntryType implements Serializable {
     };
 
     /**
-     * A list of prior "initials" for the current book. TODO(dms): when a user
-     * installs a book with an obsoletes that matches an installed book, offer
-     * the user the opportunity to delete the old book.
+     * A list of prior "initials" for the current book.
+     * TODO(dms): when a user installs a book with an obsoletes that matches
+     * an installed book, offer the user the opportunity to delete the old book.
      */
     public static final ConfigEntryType OBSOLETES = new ConfigEntryType("Obsoletes") {
 
