@@ -409,7 +409,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
             ConfigEntry.dumpStatistics();
         } catch (IOException ex) {
-            throw new InstallException(Msg.CACHE_ERROR, ex);
+            throw new InstallException(Msg.lookupText("Error loading from cache"), ex);
         } finally {
             IOUtil.close(tin);
             IOUtil.close(gin);
@@ -531,7 +531,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
             URI scratchdir = CWProject.instance().getWriteableProjectSubdir(getTempFileExtension(host, catalogDirectory), true);
             return NetUtil.lengthenURI(scratchdir, FILE_LIST_GZ);
         } catch (IOException ex) {
-            throw new InstallException(Msg.URL_FAILED, ex);
+            throw new InstallException(Msg.lookupText("URL manipulation failed"), ex);
         }
     }
 
@@ -602,7 +602,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /**
      * A map of the books in this download area
      */
-    protected Map<String,Book> entries = new HashMap<String,Book>();
+    protected Map<String, Book> entries = new HashMap<String, Book>();
 
     /**
      * The remote hostname.

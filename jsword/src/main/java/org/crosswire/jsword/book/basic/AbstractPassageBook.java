@@ -31,7 +31,6 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
-import org.crosswire.jsword.book.filter.FilterException;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyFactory;
 import org.crosswire.jsword.passage.KeyUtil;
@@ -62,41 +61,37 @@ public abstract class AbstractPassageBook extends AbstractBook {
     public Iterator<Content> getOsisIterator(Key key, boolean allowEmpty) throws BookException {
         // Note: allowEmpty indicates parallel view
         // TODO(DMS): make the iterator be demand driven
-        try {
-            Filter filter = getFilter();
-            List<Content> content = new ArrayList<Content>();
+        Filter filter = getFilter();
+        List<Content> content = new ArrayList<Content>();
 
-            // For all the ranges in this Passage
-            Passage ref = KeyUtil.getPassage(key);
-            boolean showTitles = ref.hasRanges(RestrictionType.CHAPTER) || !allowEmpty;
-            Iterator<Key> rit = ref.rangeIterator(RestrictionType.CHAPTER);
+        // For all the ranges in this Passage
+        Passage ref = KeyUtil.getPassage(key);
+        boolean showTitles = ref.hasRanges(RestrictionType.CHAPTER) || !allowEmpty;
+        Iterator<Key> rit = ref.rangeIterator(RestrictionType.CHAPTER);
 
-            while (rit.hasNext()) {
-                VerseRange range = (VerseRange) rit.next();
+        while (rit.hasNext()) {
+            VerseRange range = (VerseRange) rit.next();
 
-                if (showTitles) {
-                    Element title = OSISUtil.factory().createTitle();
-                    title.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.GENERATED_CONTENT);
-                    title.addContent(range.getName());
-                    content.add(title);
-                }
-
-                // For all the verses in this range
-                for (Key verse : range) {
-                    String txt = getRawText(verse);
-
-                    // If the verse is empty then we shouldn't add the verse tag
-                    if (allowEmpty || txt.length() > 0) {
-                        List<Content> osisContent = filter.toOSIS(this, verse, txt);
-                        addOSIS(verse, content, osisContent);
-                    }
-                }
+            if (showTitles) {
+                Element title = OSISUtil.factory().createTitle();
+                title.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.GENERATED_CONTENT);
+                title.addContent(range.getName());
+                content.add(title);
             }
 
-            return content.iterator();
-        } catch (FilterException ex) {
-            throw new BookException(Msg.FILTER_FAIL, ex);
+            // For all the verses in this range
+            for (Key verse : range) {
+                String txt = getRawText(verse);
+
+                // If the verse is empty then we shouldn't add the verse tag
+                if (allowEmpty || txt.length() > 0) {
+                    List<Content> osisContent = filter.toOSIS(this, verse, txt);
+                    addOSIS(verse, content, osisContent);
+                }
+            }
         }
+
+        return content.iterator();
     }
 
     /**

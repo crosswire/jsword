@@ -363,7 +363,7 @@ public final class GBFTags {
 
         public void updateOsisStack(LinkedList<Content> stack) {
             Element ele = OSIS_FACTORY.createQ();
-            ele.setAttribute(OSISUtil.ATTRIBUTE_Q_WHO, Msg.NAME_JESUS.toString());
+            ele.setAttribute(OSISUtil.ATTRIBUTE_Q_WHO, "Jesus");
             GBFTags.updateOsisStack(stack, ele);
         }
     }

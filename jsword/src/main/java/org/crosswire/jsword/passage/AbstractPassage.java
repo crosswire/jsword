@@ -293,9 +293,9 @@ public abstract class AbstractPassage implements Passage {
         // The reason to go into this is that this pattern works for English. Other languages might have different ways of representing singular and plurals.
         // {1,number,integer} is a placeholder for the count of Bible books. It works the same way as the count of verses.
         // {1,choice,0#books|1#book|1<books} is the placeholder for the singular or plural of "book"
-        return UserMsg.gettext("{0,number,integer} {0,choice,0#verses|1#verse|1<verses} in {1,number,integer} {1,choice,0#books|1#book|1<books}", new Object[] {
-                Integer.valueOf(countVerses()), Integer.valueOf(booksInPassage())
-        });
+        return UserMsg.gettext("{0,number,integer} {0,choice,0#verses|1#verse|1<verses} in {1,number,integer} {1,choice,0#books|1#book|1<books}",
+                Integer.valueOf(countVerses()), Integer.valueOf(booksInPassage()
+                ));
     }
 
     /*
@@ -437,10 +437,7 @@ public abstract class AbstractPassage implements Passage {
 
         for (int i = 0; i <= offset; i++) {
             if (!it.hasNext()) {
-                Object[] params = new Object[] {
-                        Integer.valueOf(offset), Integer.valueOf(countVerses())
-                };
-                throw new ArrayIndexOutOfBoundsException(Msg.ABSTRACT_INDEX.toString(params));
+                throw new ArrayIndexOutOfBoundsException(Msg.lookupText("Index out of range (Given {0,number,integer}, Max {1,number,integer}).", Integer.valueOf(offset), Integer.valueOf(countVerses())));
             }
 
             retcode = it.next();
@@ -460,10 +457,7 @@ public abstract class AbstractPassage implements Passage {
 
         for (int i = 0; i <= offset; i++) {
             if (!it.hasNext()) {
-                Object[] params = new Object[] {
-                        Integer.valueOf(offset), Integer.valueOf(countVerses())
-                };
-                throw new ArrayIndexOutOfBoundsException(Msg.ABSTRACT_INDEX.toString(params));
+                throw new ArrayIndexOutOfBoundsException(Msg.lookupText("Index out of range (Given {0,number,integer}, Max {1,number,integer}).", Integer.valueOf(offset), Integer.valueOf(countVerses())));
             }
 
             retcode = it.next();
@@ -698,7 +692,7 @@ public abstract class AbstractPassage implements Passage {
         Iterator<Key> it = temp.rangeIterator(RestrictionType.NONE);
 
         while (it.hasNext()) {
-            VerseRange range = restrict.blur((VerseRange)it.next(), verses, verses);
+            VerseRange range = restrict.blur((VerseRange) it.next(), verses, verses);
             add(range);
         }
 
@@ -1122,7 +1116,7 @@ public abstract class AbstractPassage implements Passage {
             return new VerseRange((Verse) base);
         }
 
-        throw new ClassCastException(Msg.ABSTRACT_CAST.toString());
+        throw new ClassCastException(Msg.lookupText("Can only use Verses and VerseRanges in this Collection"));
     }
 
     /**
@@ -1366,7 +1360,7 @@ public abstract class AbstractPassage implements Passage {
                 break;
 
             default:
-                throw new ClassCastException(Msg.ABSTRACT_CAST.toString());
+                throw new ClassCastException(Msg.lookupText("Can only use Verses and VerseRanges in this Collection"));
             }
         } catch (NoSuchVerseException ex) {
             throw new IOException(ex.getMessage());

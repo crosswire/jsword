@@ -314,7 +314,7 @@ public final class GBFTagBuilders {
      * The <code>BUILDERS</code> maps the 2 letter GBF tag to a class that
      * proxies for the tag.
      */
-    private static final Map<String,TagBuilder> BUILDERS = new HashMap<String,TagBuilder>();
+    private static final Map<String, TagBuilder> BUILDERS = new HashMap<String, TagBuilder>();
     static {
         TagBuilder defaultEndTagBuilder = new DefaultEndTagBuilder();
         TagBuilder ignoreTagBuilder = new IgnoredTagBuilder();

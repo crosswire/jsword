@@ -74,7 +74,7 @@ public final class ReflectionUtil {
      * @throws InvocationTargetException
      * @throws InstantiationException
      */
-    public static <T> T construct(String className, Object[] params) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException,
+    public static <T> T construct(String className, Object... params) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException,
             InvocationTargetException, InstantiationException
     {
         Class<?>[] paramTypes = describeParameters(params);
@@ -121,7 +121,7 @@ public final class ReflectionUtil {
      * @param params
      *            For example new Object[] { ...}
      */
-    public static Object invoke(Object base, String methodName, Object[] params) throws NoSuchMethodException, IllegalAccessException,
+    public static Object invoke(Object base, String methodName, Object... params) throws NoSuchMethodException, IllegalAccessException,
             InvocationTargetException
     {
         Class<?> clazz = base.getClass();
@@ -137,7 +137,7 @@ public final class ReflectionUtil {
      * @param params
      *            For example new Object[] { ...}
      */
-    public static Object invoke(String call, Object[] params) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException,
+    public static Object invoke(String call, Object... params) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException,
             InvocationTargetException
     {
         // Split the call into class name and method name
@@ -168,7 +168,7 @@ public final class ReflectionUtil {
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      */
-    public static <T> Object invoke(Class<T> clazz, Object obj, String methodName, Object[] params) throws NoSuchMethodException, IllegalAccessException,
+    public static <T> Object invoke(Class<T> clazz, Object obj, String methodName, Object... params) throws NoSuchMethodException, IllegalAccessException,
             InvocationTargetException
     {
         return invoke(clazz, obj, methodName, params, null);
@@ -212,7 +212,7 @@ public final class ReflectionUtil {
      *            the types to describe
      * @return the parallel array of class objects
      */
-    private static Class<?>[] describeParameters(Object[] params) {
+    private static Class<?>[] describeParameters(Object... params) {
         Class<?>[] calledTypes = new Class[params.length];
         for (int i = 0; i < params.length; i++) {
             Class<?> clazz = params[i].getClass();

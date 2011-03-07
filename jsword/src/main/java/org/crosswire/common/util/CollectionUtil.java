@@ -85,7 +85,7 @@ public final class CollectionUtil {
      */
     public static PropertyMap properties2Map(Properties prop) {
         PropertyMap propMap = new PropertyMap();
-        for (Enumeration<Object> e = prop.keys() ; e.hasMoreElements() ;) {
+        for (Enumeration<Object> e = prop.keys(); e.hasMoreElements(); ) {
             Object k = e.nextElement();
             Object v = prop.get(k);
             if (k instanceof String && v instanceof String) {

@@ -60,7 +60,7 @@ public class HttpSwordInstallerFactory implements InstallerFactory {
         case 6:
             return createInstaller(parts);
         default:
-            throw new IllegalArgumentException(Msg.INVALID_DEFINITION.toString(installerDefinition));
+            throw new IllegalArgumentException(Msg.lookupText("Not enough / symbols in url: {0}", installerDefinition));
         }
 
     }

@@ -44,6 +44,6 @@ public class Kill {
     public static final Kill ONLY_IF_TIGHT = new Kill();
 
     public void reduceMemoryUsage() {
-        throw new IllegalArgumentException(Msg.NOT_IMPLEMENTED.toString());
+        throw new IllegalArgumentException("Not implemented");
     }
 }

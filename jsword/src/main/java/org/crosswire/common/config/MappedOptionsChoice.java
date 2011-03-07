@@ -37,7 +37,7 @@ import org.jdom.Element;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class MappedOptionsChoice extends AbstractReflectedChoice implements MappedChoice<Object,Object> {
+public class MappedOptionsChoice extends AbstractReflectedChoice implements MappedChoice<Object, Object> {
     /*
      * (non-Javadoc)
      * 
@@ -50,15 +50,15 @@ public class MappedOptionsChoice extends AbstractReflectedChoice implements Mapp
         super.init(option, configResources);
         Element mapElement = option.getChild("map");
         if (mapElement == null) {
-            throw new StartupException(Msg.CONFIG_NOMAP);
+            throw new StartupException(Msg.lookupText("Missing {0} element in config.xml", "map"));
         }
 
         String name = mapElement.getAttributeValue("name");
         Object map = ChoiceFactory.getDataMap().get(name);
-        if (map instanceof Map<?,?>) {
-            options = (Map<?,?>) map;
+        if (map instanceof Map<?, ?>) {
+            options = (Map<?, ?>) map;
         } else {
-            options = new TreeMap<Object,Object>();
+            options = new TreeMap<Object, Object>();
         }
     }
 
@@ -67,8 +67,8 @@ public class MappedOptionsChoice extends AbstractReflectedChoice implements Mapp
      * 
      * @see org.crosswire.common.config.MappedChoice#getOptions()
      */
-    public Map<Object,Object> getOptions() {
-        return new TreeMap<Object,Object>(options);
+    public Map<Object, Object> getOptions() {
+        return new TreeMap<Object, Object>(options);
     }
 
     /*
@@ -102,17 +102,17 @@ public class MappedOptionsChoice extends AbstractReflectedChoice implements Mapp
     @Override
     public Object convertToObject(String orig) {
         Iterator<?> iter = options.entrySet().iterator();
-        Map.Entry<?,?> mapEntry = null;
+        Map.Entry<?, ?> mapEntry = null;
         while (iter.hasNext()) {
-            mapEntry = (Map.Entry<?,?>) iter.next();
+            mapEntry = (Map.Entry<?, ?>) iter.next();
             if (mapEntry.getValue().toString().equals(orig) || mapEntry.getKey().toString().equals(orig)) {
                 return mapEntry.getKey().toString();
             }
         }
-        logger.warn(Msg.IGNORE.toString(orig));
+        logger.warn(Msg.lookupText("Ignoring invalid option: {0}", orig));
         return "";
     }
 
     private static Logger logger = Logger.getLogger(MappedOptionsChoice.class);
-    private Map<?,?> options;
+    private Map<?, ?> options;
 }

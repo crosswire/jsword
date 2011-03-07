@@ -30,8 +30,8 @@ import org.crosswire.common.activate.Lock;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractBook;
+import org.crosswire.jsword.book.basic.Msg;
 import org.crosswire.jsword.book.filter.Filter;
-import org.crosswire.jsword.book.filter.FilterException;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.DefaultLeafKeyList;
 import org.crosswire.jsword.passage.Key;
@@ -72,21 +72,17 @@ public class SwordDictionary extends AbstractBook {
         assert key != null;
         assert backend != null;
 
-        try {
-            List<Content> content = new ArrayList<Content>();
-            Element title = OSISUtil.factory().createTitle();
-            title.addContent(key.getName());
-            content.add(title);
+        List<Content> content = new ArrayList<Content>();
+        Element title = OSISUtil.factory().createTitle();
+        title.addContent(key.getName());
+        content.add(title);
 
-            String txt = backend.getRawText(key);
+        String txt = backend.getRawText(key);
 
-            List<Content> osisContent = filter.toOSIS(this, key, txt);
-            content.addAll(osisContent);
+        List<Content> osisContent = filter.toOSIS(this, key, txt);
+        content.addAll(osisContent);
 
-            return content.iterator();
-        } catch (FilterException ex) {
-            throw new BookException(Msg.FILTER_FAIL, ex);
-        }
+        return content.iterator();
     }
 
     /*
@@ -132,7 +128,7 @@ public class SwordDictionary extends AbstractBook {
      * .jsword.passage.Key, java.lang.String)
      */
     public void setRawText(Key key, String rawData) throws BookException {
-        throw new BookException(Msg.DRIVER_READONLY);
+        throw new BookException(Msg.lookupText("This Book is read-only."));
     }
 
     /*
@@ -143,7 +139,7 @@ public class SwordDictionary extends AbstractBook {
      * .Key, org.crosswire.jsword.passage.Key)
      */
     public void setAliasKey(Key alias, Key source) throws BookException {
-        throw new BookException(Msg.DRIVER_READONLY);
+        throw new BookException(Msg.lookupText("This Book is read-only."));
     }
 
     /*

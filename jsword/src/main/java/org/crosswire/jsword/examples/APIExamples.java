@@ -251,7 +251,7 @@ public class APIExamples {
         // we get PassageTallys for rank searches
         if (results instanceof PassageTally || rank) {
             PassageTally tally = (PassageTally) results;
-            tally.setOrdering(PassageTally.ORDER_TALLY);
+            tally.setOrdering(PassageTally.Order.TALLY);
             int rankCount = max;
             if (rankCount > 0 && rankCount < total) {
                 // Here we are trimming by ranges, where a range is a set of
@@ -342,11 +342,11 @@ public class APIExamples {
         InstallManager imanager = new InstallManager();
 
         // Ask the Install Manager for a map of all known module sites
-        Map<String,Installer> installers = imanager.getInstallers();
+        Map<String, Installer> installers = imanager.getInstallers();
 
         // Get all the installers one after the other
         String name = null;
-        for (Map.Entry<String,Installer> mapEntry : installers.entrySet()) {
+        for (Map.Entry<String, Installer> mapEntry : installers.entrySet()) {
             name = mapEntry.getKey();
             installer = mapEntry.getValue();
             System.out.println(name + ": " + installer.getInstallerDefinition());

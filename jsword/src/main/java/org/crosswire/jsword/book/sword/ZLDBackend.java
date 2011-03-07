@@ -138,18 +138,14 @@ public class ZLDBackend extends RawLDBackend {
             if (!zdxFile.canRead()) {
                 // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
                 // {0} is a placeholder for the file.
-                Reporter.informUser(this, new BookException(UserMsg.gettext("Error reading {0}", new Object[] {
-                    zdtFile.getAbsolutePath()
-                })));
+                Reporter.informUser(this, new BookException(UserMsg.gettext("Error reading {0}", zdtFile.getAbsolutePath())));
                 return;
             }
 
             if (!zdtFile.canRead()) {
                 // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
                 // {0} is a placeholder for the file.
-                Reporter.informUser(this, new BookException(UserMsg.gettext("Error reading {0}", new Object[] {
-                    zdtFile.getAbsolutePath()
-                })));
+                Reporter.informUser(this, new BookException(UserMsg.gettext("Error reading {0}", zdtFile.getAbsolutePath())));
                 return;
             }
 

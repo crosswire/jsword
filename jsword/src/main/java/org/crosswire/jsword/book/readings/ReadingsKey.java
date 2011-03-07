@@ -59,9 +59,7 @@ public class ReadingsKey extends DefaultLeafKeyList {
             formatter.setLenient(true);
             date = formatter.parse(text);
         } catch (ParseException ex) {
-            throw new NoSuchKeyException(Msg.PARSE_FAIL, ex, new Object[] {
-                text
-            });
+            throw new NoSuchKeyException(Msg.lookupText("Failed to parse {0}", text), ex);
         }
     }
 

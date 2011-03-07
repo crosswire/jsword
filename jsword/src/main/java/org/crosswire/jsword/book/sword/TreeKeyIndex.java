@@ -180,18 +180,14 @@ public class TreeKeyIndex implements Activatable {
         if (!idxFile.canRead()) {
             // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
             // {0} is a placeholder for the file.
-            Reporter.informUser(this, new BookException(UserMsg.gettext("Error reading {0}", new Object[] {
-                idxFile.getAbsolutePath()
-            })));
+            Reporter.informUser(this, new BookException(UserMsg.gettext("Error reading {0}", idxFile.getAbsolutePath())));
             return;
         }
 
         if (!datFile.canRead()) {
             // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
             // {0} is a placeholder for the file.
-            Reporter.informUser(this, new BookException(UserMsg.gettext("Error reading {0}", new Object[] {
-                datFile.getAbsolutePath()
-            })));
+            Reporter.informUser(this, new BookException(UserMsg.gettext("Error reading {0}", datFile.getAbsolutePath())));
             return;
         }
 
@@ -243,7 +239,8 @@ public class TreeKeyIndex implements Activatable {
         URI loc = NetUtil.lengthenURI(bmd.getLibrary(), (String) bmd.getProperty(ConfigEntryType.DATA_PATH));
 
         if (loc == null) {
-            throw new BookException(Msg.MISSING_FILE);
+            // FIXME(DMS): missing parameter
+            throw new BookException(Msg.lookupText("Missing data files for old and new testaments in {0}."));
         }
 
         return new File(loc.getPath()).getAbsolutePath();

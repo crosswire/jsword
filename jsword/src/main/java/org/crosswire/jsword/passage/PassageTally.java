@@ -43,7 +43,7 @@ import org.crosswire.jsword.versification.BibleInfo;
  * 
  * <p>
  * This class exactly implements the Passage interface when the ordering is set
- * to ORDER_BIBLICAL, however an additional setting of ORDER_TALLY sorts the
+ * to Order.BIBLICAL, however an additional setting of Order.TALLY sorts the
  * verses by the rank in this tally.
  * 
  * <p>
@@ -139,18 +139,14 @@ public class PassageTally extends AbstractPassage {
     /**
      * Set how we sort the verses we output. The options are:
      * <ul>
-     * <li>ORDER_BIBLICAL: Natural Biblical order</li>
-     * <li>ORDER_TALLY: In an order specified by this class</li>
+     * <li>Order.BIBLICAL: Natural Biblical order</li>
+     * <li>Order.TALLY: In an order specified by this class</li>
      * </ul>
      * 
      * @param order
      *            the sort order
      */
-    public void setOrdering(int order) {
-        if (order != ORDER_BIBLICAL && order != ORDER_TALLY) {
-            throw new IllegalArgumentException(Msg.TALLY_ERROR_ORDER.toString());
-        }
-
+    public void setOrdering(Order order) {
         this.order = order;
     }
 
@@ -159,7 +155,7 @@ public class PassageTally extends AbstractPassage {
      * 
      * @return the sort order
      */
-    public int getOrdering() {
+    public Order getOrdering() {
         return order;
     }
 
@@ -229,7 +225,7 @@ public class PassageTally extends AbstractPassage {
 
         StringBuilder retcode = new StringBuilder();
 
-        if (order == ORDER_BIBLICAL) {
+        if (order == Order.BIBLICAL) {
             Iterator<Key> it = rangeIterator(RestrictionType.NONE);
             Verse current = null;
             while (it.hasNext()) {
@@ -318,7 +314,7 @@ public class PassageTally extends AbstractPassage {
      * @return A verse Iterator
      */
     public Iterator<Key> iterator() {
-        if (order == ORDER_BIBLICAL) {
+        if (order == Order.BIBLICAL) {
             return new VerseIterator();
         }
         return new OrderedVerseIterator(board);
@@ -331,7 +327,7 @@ public class PassageTally extends AbstractPassage {
      */
     @Override
     public Iterator<Key> rangeIterator(RestrictionType restrict) {
-        if (order == ORDER_BIBLICAL) {
+        if (order == Order.BIBLICAL) {
             return new VerseRangeIterator(iterator(), restrict);
         }
         return new OrderedVerseRangeIterator(iterator(), board);
@@ -781,15 +777,17 @@ public class PassageTally extends AbstractPassage {
         board[ord - 1] = 0;
     }
 
-    /**
-     * Sort in Biblical order
-     */
-    public static final int ORDER_BIBLICAL = 0;
+    public enum Order {
+        /**
+         * Sort in Biblical order
+         */
+        BIBLICAL,
 
-    /**
-     * Sort in tally rank order
-     */
-    public static final int ORDER_TALLY = 1;
+        /**
+         * Sort in tally rank order
+         */
+        TALLY
+    }
 
     /**
      * The highest tally possible
@@ -819,7 +817,7 @@ public class PassageTally extends AbstractPassage {
     /**
      * The maximum tally possible
      */
-    private int order = ORDER_BIBLICAL;
+    private Order order = Order.BIBLICAL;
 
     /**
      * The log stream
@@ -961,7 +959,7 @@ public class PassageTally extends AbstractPassage {
             if (last != null) {
                 return last.tally;
             }
-            throw new NoSuchElementException(Msg.TALLY_ERROR_ENUM.toString());
+            throw new NoSuchElementException(Msg.lookupText("nextElement() has not been called yet."));
         }
 
         /**

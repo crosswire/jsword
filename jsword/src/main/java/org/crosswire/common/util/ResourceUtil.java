@@ -70,7 +70,7 @@ public final class ResourceUtil {
         URL resource = CWClassLoader.instance(clazz).findResource(resourceName);
 
         if (resource == null) {
-            throw new MissingResourceException(Msg.NO_RESOURCE.toString(resourceName), clazz.getName(), resourceName);
+            throw new MissingResourceException(Msg.lookupText("Cannot find resource: {0}", resourceName), clazz.getName(), resourceName);
         }
 
         return resource;

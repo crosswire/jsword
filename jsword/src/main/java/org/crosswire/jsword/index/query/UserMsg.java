@@ -31,39 +31,16 @@ import org.crosswire.common.util.MsgBase;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 final class UserMsg extends MsgBase {
-
     /**
      * Get the internationalized text, but return key if key is unknown.
-     * 
-     * @param key
-     * @return the internationalized text
-     */
-    public static String gettext(String key) {
-        return msg.lookup(key);
-    }
-
-    /**
-     * Get the internationalized text, but return key if key is unknown.
-     * The text requires one parameter to be passed.
-     * 
-     * @param key
-     * @param param
-     * @return the formatted, internationalized text
-     */
-    public static String gettext(String key, Object param) {
-        return msg.toString(key, param);
-    }
-
-    /**
-     * Get the internationalized text, but return key if key is unknown.
-     * The text requires one parameter to be passed.
+     * The text requires one or more parameters to be passed.
      * 
      * @param key
      * @param params
      * @return the formatted, internationalized text
      */
-    public static String gettext(String key, Object[] params) {
-        return msg.toString(key, params);
+    public static String gettext(String key, Object... params) {
+        return msg.lookup(key, params);
     }
 
     private static MsgBase msg = new UserMsg();

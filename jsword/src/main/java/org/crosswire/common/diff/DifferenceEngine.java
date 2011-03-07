@@ -89,14 +89,14 @@ public class DifferenceEngine {
         int maxD = (source.length() + target.length()) / 2;
         List<Set<String>> vMap1 = new ArrayList<Set<String>>();
         List<Set<String>> vMap2 = new ArrayList<Set<String>>();
-        Map<Integer,Integer> v1 = new HashMap<Integer,Integer>();
-        Map<Integer,Integer> v2 = new HashMap<Integer,Integer>();
+        Map<Integer, Integer> v1 = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> v2 = new HashMap<Integer, Integer>();
         v1.put(Integer.valueOf(1), Integer.valueOf(0));
         v2.put(Integer.valueOf(1), Integer.valueOf(0));
         int x;
         int y;
         String footstep; // Used to track overlapping paths.
-        Map<String,Integer> footsteps = new HashMap<String,Integer>();
+        Map<String, Integer> footsteps = new HashMap<String, Integer>();
         boolean done = false;
         // If the total number of characters is odd, then the front path will
         // collide with the reverse path.

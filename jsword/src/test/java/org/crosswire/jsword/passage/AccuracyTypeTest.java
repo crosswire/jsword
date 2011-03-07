@@ -25,8 +25,8 @@ public class AccuracyTypeTest extends TestCase {
             AccuracyType.fromText("1:2:3:4", new String[] { "1", "2", "3", "4"}, null, null);
         } catch (NoSuchVerseException nsve) {
             // I18N(DMS)
-            NoSuchVerseException correctException = new NoSuchVerseException(UserMsg.gettext("Too many parts to the Verse. (Parts are separated by any of {0})", new Object[] {
-                "1:2:3:4, 1, 2, 3, 4"}));
+            NoSuchVerseException correctException = new NoSuchVerseException(UserMsg.gettext("Too many parts to the Verse. (Parts are separated by any of {0})", 
+                "1:2:3:4, 1, 2, 3, 4"));
             assertEquals("Unexpected exception message", correctException.getMessage(), nsve.getMessage());
             caught = true;
         } catch (ArrayIndexOutOfBoundsException aioobe) {
@@ -44,8 +44,8 @@ public class AccuracyTypeTest extends TestCase {
             AccuracyType.fromText("-1:2:3", new String[] { "-1", "2", "3"}, null, null);
         } catch (NoSuchVerseException nsve) {
             // I18N(DMS)
-            NoSuchVerseException correctException = new NoSuchVerseException(UserMsg.gettext("Too many parts to the Verse. (Parts are separated by any of {0})", new Object[] {
-                "-1:2:3, -1, 2, 3"}));
+            NoSuchVerseException correctException = new NoSuchVerseException(UserMsg.gettext("Too many parts to the Verse. (Parts are separated by any of {0})", 
+                    "-1:2:3, -1, 2, 3"));
             assertEquals("Unexpected exception message", correctException.getMessage(), nsve.getMessage());
             caught = true;
         } catch (ArrayIndexOutOfBoundsException aioobe) {

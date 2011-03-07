@@ -97,8 +97,8 @@ public class PassageTally2Test extends TestCase {
         gen123_1 = (Passage) keyf.getKey("Gen 1:1, Gen 2:1, Gen 3:1");
         gen1_157 = (Passage) keyf.getKey("Gen 1:1, Gen 1:5, Gen 1:7");
 
-        tally.setOrdering(PassageTally.ORDER_TALLY);
-        empty.setOrdering(PassageTally.ORDER_TALLY);
+        tally.setOrdering(PassageTally.Order.TALLY);
+        empty.setOrdering(PassageTally.Order.TALLY);
 
         tally.addAll(gen1_135);
         tally.addAll(gen123_1);

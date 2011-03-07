@@ -357,9 +357,7 @@ public class ZVerseBackend extends AbstractBackend {
             } catch (IOException e) {
                 // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
                 // {0} is a placeholder for the file.
-                throw new BookException(UserMsg.gettext("Error reading {0}", new Object[] {
-                    verse.getName()
-                }), e);
+                throw new BookException(UserMsg.gettext("Error reading {0}", verse.getName()), e);
             }
         } finally {
             DataPolice.setKey(key);

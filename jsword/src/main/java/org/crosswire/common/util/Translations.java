@@ -208,7 +208,7 @@ public class Translations {
      * 
      * @return an string array of translations in locale friendly names.
      */
-    public static Map<String,String> getSupportedTranslations() {
+    public static Map<String, String> getSupportedTranslations() {
         return Translations.instance().getSupported();
     }
 

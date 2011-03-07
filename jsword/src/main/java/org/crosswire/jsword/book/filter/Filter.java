@@ -44,7 +44,7 @@ public interface Filter extends Cloneable {
      *            The encoded text
      * @return a List of OSIS Elements
      */
-    List<Content> toOSIS(Book book, Key key, String plain) throws FilterException;
+    List<Content> toOSIS(Book book, Key key, String plain);
 
     /**
      * This needs to be declared here so that it is visible as a method on a

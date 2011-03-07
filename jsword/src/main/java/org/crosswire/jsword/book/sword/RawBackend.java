@@ -121,9 +121,7 @@ public class RawBackend extends AbstractBackend {
             } catch (IOException ex) {
                 // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
                 // {0} is a placeholder for the file.
-                throw new BookException(UserMsg.gettext("Error reading {0}", new Object[] {
-                    verse.getName()
-                }), ex);
+                throw new BookException(UserMsg.gettext("Error reading {0}", verse.getName()), ex);
             }
         } finally {
             DataPolice.setKey(null);
@@ -199,9 +197,7 @@ public class RawBackend extends AbstractBackend {
 
         // It is an error to be neither OT nor NT
         if (!txtFile[SwordConstants.TESTAMENT_OLD].canRead() && !txtFile[SwordConstants.TESTAMENT_NEW].canRead()) {
-            Reporter.informUser(this, new BookException(Msg.MISSING_FILE, new Object[] {
-                path
-            }));
+            Reporter.informUser(this, new BookException(Msg.lookupText("Missing data files for old and new testaments in {0}.", path)));
             return;
         }
 

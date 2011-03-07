@@ -182,9 +182,7 @@ public final class SectionNames {
      */
     public String getSectionName(int section) throws NoSuchVerseException {
         if (section == 0) {
-            throw new NoSuchVerseException(Msg.BOOKS_SECTION, new Object[] {
-                Integer.valueOf(section)
-            });
+            throw new NoSuchVerseException(Msg.lookupText("Section must be between 1 and 8 (given {0,number,integer}).", Integer.valueOf(section)));
         }
 
         try {
@@ -203,9 +201,7 @@ public final class SectionNames {
             // This is faster than doing the check explicitly, unless
             // The exception is actually thrown, then it is a lot slower
             // I'd like to think that the norm is to get it right
-            throw new NoSuchVerseException(Msg.BOOKS_SECTION, new Object[] {
-                Integer.valueOf(section)
-            });
+            throw new NoSuchVerseException(Msg.lookupText("Section must be between 1 and 8 (given {0,number,integer}).", Integer.valueOf(section)));
         }
     }
 

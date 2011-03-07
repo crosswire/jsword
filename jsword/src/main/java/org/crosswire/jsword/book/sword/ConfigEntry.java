@@ -276,8 +276,8 @@ public final class ConfigEntry {
             Element listEle = factory.createLG();
             valueElement.addContent(listEle);
 
-            for (String text : values) {
-                text = XMLUtil.escape(text);
+            for (String str : values) {
+                String text = XMLUtil.escape(str);
                 Element itemEle = factory.createL();
                 listEle.addContent(itemEle);
                 if (allowsRTF()) {

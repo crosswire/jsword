@@ -31,8 +31,8 @@ import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.AbstractBook;
+import org.crosswire.jsword.book.basic.Msg;
 import org.crosswire.jsword.book.filter.Filter;
-import org.crosswire.jsword.book.filter.FilterException;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
@@ -62,12 +62,8 @@ public class SwordGenBook extends AbstractBook {
         active = false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.common.activate.Activatable#activate(org.crosswire.common
-     * .activate.Lock)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractBook#activate(org.crosswire.common.activate.Lock)
      */
     @Override
     public final void activate(Lock lock) {
@@ -75,7 +71,7 @@ public class SwordGenBook extends AbstractBook {
 
         set = backend.readIndex();
 
-        map = new HashMap<String,Key>();
+        map = new HashMap<String, Key>();
         for (Key key : set) {
             map.put(key.getName(), key);
         }
@@ -88,12 +84,8 @@ public class SwordGenBook extends AbstractBook {
         // of doing it for itself.
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common
-     * .activate.Lock)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractBook#deactivate(org.crosswire.common.activate.Lock)
      */
     @Override
     public final void deactivate(Lock lock) {
@@ -108,12 +100,8 @@ public class SwordGenBook extends AbstractBook {
         active = false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage
-     * .Key, boolean)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage.Key, boolean)
      */
     public Iterator<Content> getOsisIterator(Key key, boolean allowEmpty) throws BookException {
         checkActive();
@@ -121,36 +109,25 @@ public class SwordGenBook extends AbstractBook {
         assert key != null;
         assert backend != null;
 
-        try {
-            List<Content> content = new ArrayList<Content>();
+        List<Content> content = new ArrayList<Content>();
 
-            String txt = backend.getRawText(key);
+        String txt = backend.getRawText(key);
 
-            List<Content> osisContent = filter.toOSIS(this, key, txt);
-            content.addAll(osisContent);
+        List<Content> osisContent = filter.toOSIS(this, key, txt);
+        content.addAll(osisContent);
 
-            return content.iterator();
-        } catch (FilterException ex) {
-            throw new BookException(Msg.FILTER_FAIL, ex);
-        }
+        return content.iterator();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.Book#contains(org.crosswire.jsword.passage.Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#contains(org.crosswire.jsword.passage.Key)
      */
     public boolean contains(Key key) {
         return backend != null && backend.contains(key);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage
-     * .Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
      */
     public String getRawText(Key key) throws BookException {
         checkActive();
@@ -161,40 +138,28 @@ public class SwordGenBook extends AbstractBook {
         return backend.getRawText(key);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#isWritable()
      */
     public boolean isWritable() {
         return backend.isWritable();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.basic.AbstractPassageBook#setRawText(org.crosswire
-     * .jsword.passage.Key, java.lang.String)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#setRawText(org.crosswire.jsword.passage.Key, java.lang.String)
      */
     public void setRawText(Key key, String rawData) throws BookException {
-        throw new BookException(Msg.DRIVER_READONLY);
+        throw new BookException(Msg.lookupText("This Book is read-only."));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.Book#setAliasKey(org.crosswire.jsword.passage
-     * .Key, org.crosswire.jsword.passage.Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#setAliasKey(org.crosswire.jsword.passage.Key, org.crosswire.jsword.passage.Key)
      */
     public void setAliasKey(Key alias, Key source) throws BookException {
-        throw new BookException(Msg.DRIVER_READONLY);
+        throw new BookException(Msg.lookupText("This Book is read-only."));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getGlobalKeyList()
      */
     public Key getGlobalKeyList() {
@@ -203,10 +168,8 @@ public class SwordGenBook extends AbstractBook {
         return global;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.KeyFactory#isValidKey(java.lang.String)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#getValidKey(java.lang.String)
      */
     public Key getValidKey(String name) {
         try {
@@ -216,9 +179,7 @@ public class SwordGenBook extends AbstractBook {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getKey(java.lang.String)
      */
     public Key getKey(String text) throws NoSuchKeyException {
@@ -253,15 +214,11 @@ public class SwordGenBook extends AbstractBook {
         // TRANSLATOR: Error condition: Indicates that something could not be found in the book.
         // {0} is a placeholder for the unknown key.
         // {1} is the short name of the book
-        throw new NoSuchKeyException(UserMsg.gettext("No entry for \'{0}\' in {1}.", new Object[] {
-                text, getInitials()
-        }));
+        throw new NoSuchKeyException(UserMsg.gettext("No entry for \'{0}\' in {1}.", text, getInitials()));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.KeyFactory#getEmptyKeyList()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#createEmptyKeyList()
      */
     public Key createEmptyKeyList() {
         return new DefaultKeyList();
@@ -289,7 +246,7 @@ public class SwordGenBook extends AbstractBook {
     /**
      * So we can quickly find a Key given the text for the key
      */
-    private Map<String,Key> map;
+    private Map<String, Key> map;
 
     /**
      * So we can implement getIndex() easily

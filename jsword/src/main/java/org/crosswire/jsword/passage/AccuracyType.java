@@ -461,9 +461,7 @@ public enum AccuracyType {
             buffer.append(", ").append(parts[i]);
         }
         // TRANSLATOR: The user specified a verse with too many separators. {0} is a placeholder for the allowable separators.
-        return new NoSuchVerseException(UserMsg.gettext("Too many parts to the Verse. (Parts are separated by any of {0})", new Object[] {
-            buffer.toString()
-        }));
+        return new NoSuchVerseException(UserMsg.gettext("Too many parts to the Verse. (Parts are separated by any of {0})", buffer.toString()));
     }
 
     /**
@@ -497,9 +495,7 @@ public enum AccuracyType {
         } catch (NumberFormatException ex) {
             // TRANSLATOR: The chapter or verse number is actually not a number, but something else.
             // {0} is a placeholder for what the user supplied.
-            throw new NoSuchVerseException(UserMsg.gettext("Cannot understand {0} as a chapter or verse.", new Object[] {
-                text
-            }));
+            throw new NoSuchVerseException(UserMsg.gettext("Cannot understand {0} as a chapter or verse.", text));
         }
     }
 
@@ -589,9 +585,7 @@ public enum AccuracyType {
                     if (charIsDigit) {
                         if (tokenCount >= args.length) {
                             // TRANSLATOR: The user specified a verse with too many separators. {0} is a placeholder for the allowable separators.
-                            throw new NoSuchVerseException(UserMsg.gettext("Too many parts to the Verse. (Parts are separated by any of {0})", new Object[] {
-                                input
-                            }));
+                            throw new NoSuchVerseException(UserMsg.gettext("Too many parts to the Verse. (Parts are separated by any of {0})", input));
                         }
 
                         token = new String(normalized, startIndex, normalizedLength - startIndex);
@@ -612,9 +606,7 @@ public enum AccuracyType {
 
         if (tokenCount >= args.length) {
             // TRANSLATOR: The user specified a verse with too many separators. {0} is a placeholder for the allowable separators.
-            throw new NoSuchVerseException(UserMsg.gettext("Too many parts to the Verse. (Parts are separated by any of {0})", new Object[] {
-                input
-            }));
+            throw new NoSuchVerseException(UserMsg.gettext("Too many parts to the Verse. (Parts are separated by any of {0})", input));
         }
 
         token = new String(normalized, startIndex, normalizedLength - startIndex);

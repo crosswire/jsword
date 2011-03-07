@@ -276,9 +276,7 @@ public class Config implements Iterable<Choice> {
                     }
                 } catch (LucidException ex) {
                     log.warn("Failure setting " + key + "=" + newValue, ex);
-                    Reporter.informUser(this, new ConfigException(Msg.CONFIG_SETFAIL, ex, new Object[] {
-                        choice.getFullPath()
-                    }));
+                    Reporter.informUser(this, new ConfigException(Msg.lookupText("Failed to set option: {0}", choice.getFullPath()), ex));
                 }
             }
         }

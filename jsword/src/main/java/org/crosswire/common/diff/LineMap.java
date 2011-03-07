@@ -55,7 +55,7 @@ public class LineMap {
         lines = new ArrayList<String>();
         lines.add("");
 
-        Map<String,Integer> linehash = new HashMap<String, Integer>();
+        Map<String, Integer> linehash = new HashMap<String, Integer>();
         sourceMap = linesToCharsMunge(source, lines, linehash);
         targetMap = linesToCharsMunge(target, lines, linehash);
     }
@@ -115,7 +115,7 @@ public class LineMap {
      *            Map of strings to indices
      * @return Encoded string
      */
-    private String linesToCharsMunge(final String text, List<String> linearray, Map<String,Integer> linehash) {
+    private String linesToCharsMunge(final String text, List<String> linearray, Map<String, Integer> linehash) {
         StringBuilder buf = new StringBuilder();
         String work = text;
         // text.split('\n') would work fine, but would temporarily double our

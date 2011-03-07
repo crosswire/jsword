@@ -350,9 +350,7 @@ public final class NetUtil {
 
         String test = file.substring(file.length() - strip.length());
         if (!test.equals(strip)) {
-            throw new MalformedURLException(Msg.CANT_STRIP.toString(new Object[] {
-                    orig, strip
-            }));
+            throw new MalformedURLException(Msg.lookupText("The URL {0} does not end in {1}.", orig, strip));
         }
 
         String newFile = file.substring(0, file.length() - strip.length());
@@ -361,9 +359,7 @@ public final class NetUtil {
             return new URI(orig.getScheme(), orig.getUserInfo(), orig.getHost(), orig.getPort(), newFile, "",
                     "");
         } catch (URISyntaxException e) {
-            throw new MalformedURLException(Msg.CANT_STRIP.toString(new Object[] {
-                    orig, strip
-            }));
+            throw new MalformedURLException(Msg.lookupText("The URL {0} does not end in {1}.", orig, strip));
         }
     }
 
@@ -550,11 +546,12 @@ public final class NetUtil {
      */
     public static String[] listByIndexFile(URI index, URIFilter filter) throws IOException {
         InputStream in = null;
+        BufferedReader din = null;
         try {
             in = NetUtil.getInputStream(index);
             // Quiet Android from complaining about using the default BufferReader buffer size.
             // The actual buffer size is undocumented. So this is a good idea any way.
-            BufferedReader din = new BufferedReader(new InputStreamReader(in), 8192);
+            din = new BufferedReader(new InputStreamReader(in), 8192);
 
             // We still need to do the filtering
             List<String> list = new ArrayList<String>();
@@ -577,6 +574,7 @@ public final class NetUtil {
 
             return list.toArray(new String[list.size()]);
         } finally {
+            IOUtil.close(din);
             IOUtil.close(in);
         }
     }

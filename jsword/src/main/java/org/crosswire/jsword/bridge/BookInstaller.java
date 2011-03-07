@@ -69,7 +69,7 @@ public class BookInstaller {
      * 
      * @return the list of installers
      */
-    public Map<String,Installer> getInstallers() {
+    public Map<String, Installer> getInstallers() {
         // Ask the Install Manager for a map of all known remote repositories
         // sites
         return installManager.getInstallers();
@@ -288,7 +288,7 @@ public class BookInstaller {
             }
         } else if (operation.equalsIgnoreCase("sources")) {
             // Get all the installers one after the other
-            Map<String,Installer> installers = installer.getInstallers();
+            Map<String, Installer> installers = installer.getInstallers();
             for (String name : installers.keySet()) {
                 System.out.println(name);
             }

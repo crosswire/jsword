@@ -103,10 +103,7 @@ public class DateFormatter {
         boolean oops = false;
         try {
             fmt.formatterClass = ClassUtil.forName("com.ibm.icu.text.SimpleDateFormat");
-            Object[] instanceParams = {
-                format
-            };
-            fmt.formatter = ReflectionUtil.construct("com.ibm.icu.text.SimpleDateFormat", instanceParams);
+            fmt.formatter = ReflectionUtil.construct("com.ibm.icu.text.SimpleDateFormat", format);
         } catch (NoSuchMethodException e) {
             oops = true;
         } catch (IllegalAccessException e) {
@@ -157,10 +154,7 @@ public class DateFormatter {
      */
     public String format(Date date) {
         try {
-            Object[] formatParams = {
-                date
-            };
-            return (String) ReflectionUtil.invoke(formatterClass, formatter, "format", formatParams);
+            return (String) ReflectionUtil.invoke(formatterClass, formatter, "format", date);
         } catch (Exception e) {
             assert false : e;
             return "";
@@ -174,10 +168,7 @@ public class DateFormatter {
      */
     public Date parse(String text) throws ParseException {
         try {
-            Object[] parseParams = {
-                text
-            };
-            return (Date) ReflectionUtil.invoke(formatterClass, formatter, "parse", parseParams);
+            return (Date) ReflectionUtil.invoke(formatterClass, formatter, "parse", text);
         } catch (Exception e) {
             if (e instanceof ParseException) {
                 throw (ParseException) e;

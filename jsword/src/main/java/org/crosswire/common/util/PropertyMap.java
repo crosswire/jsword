@@ -45,7 +45,7 @@ import java.util.Properties;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class PropertyMap extends LinkedHashMap<String,String> {
+public class PropertyMap extends LinkedHashMap<String, String> {
     /**
      * Creates an empty property list with no default values.
      */
@@ -75,7 +75,7 @@ public class PropertyMap extends LinkedHashMap<String,String> {
      */
     public String get(String key) {
         String value = super.get(key);
-        return ((value == null) && (defaults != null)) ? defaults.get(key) : value;        
+        return ((value == null) && (defaults != null)) ? defaults.get(key) : value;
     }
 
     /**
@@ -97,14 +97,14 @@ public class PropertyMap extends LinkedHashMap<String,String> {
     }
 
     /**
-     * Merely a call to {@link #put(String,String)}, provided as
+     * Merely a call to {@link #put(String, String)}, provided as
      * a simple way to migrate from {@link java.lang.Properties}.
      *
      * @param key the key to be placed into this property list.
      * @param value the value corresponding to <tt>key</tt>.
      * @return     the previous value of the specified key in this property
      *             list, or <code>null</code> if it did not have one.
-     * @deprecated use {@link #put(String,String)} instead
+     * @deprecated use {@link #put(String, String)} instead
      */
     @Deprecated
     public String setProperty(String key, String value) {
@@ -159,7 +159,7 @@ public class PropertyMap extends LinkedHashMap<String,String> {
     public void load(InputStream inStream) throws IOException {
         Properties prop = new Properties();
         prop.load(inStream);
-        for (Enumeration<Object> e = prop.keys() ; e.hasMoreElements() ;) {
+        for (Enumeration<Object> e = prop.keys(); e.hasMoreElements(); ) {
             Object k = e.nextElement();
             Object v = prop.get(k);
             if (k instanceof String && v instanceof String) {

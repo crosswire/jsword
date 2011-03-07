@@ -225,14 +225,14 @@ public abstract class AbstractBookMetaData implements BookMetaData {
      * 
      * @see org.crosswire.jsword.book.BookMetaData#getProperties()
      */
-    public Map<String,Object> getProperties() {
+    public Map<String, Object> getProperties() {
         return Collections.unmodifiableMap(prop);
     }
 
     /**
      * @param newProperties
      */
-    public void setProperties(Map<String,Object> newProperties) {
+    public void setProperties(Map<String, Object> newProperties) {
         prop = newProperties;
     }
 
@@ -355,7 +355,7 @@ public abstract class AbstractBookMetaData implements BookMetaData {
     /**
      * The single key version of the properties
      */
-    private Map<String,Object> prop = new LinkedHashMap<String,Object>();
+    private Map<String, Object> prop = new LinkedHashMap<String, Object>();
 
     private BookDriver driver;
     private IndexStatus indexStatus = IndexStatus.UNDONE;

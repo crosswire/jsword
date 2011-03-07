@@ -64,9 +64,7 @@ public final class OSISNames {
             // This is faster than doing the check explicitly, unless
             // The exception is actually thrown, then it is a lot slower
             // I'd like to think that the norm is to get it right
-            throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] {
-                Integer.valueOf(book)
-            });
+            throw new NoSuchVerseException(Msg.lookupText("Book must be between 1 and 66 (given {0,number,integer}).", Integer.valueOf(book)));
         }
     }
 
@@ -107,7 +105,7 @@ public final class OSISNames {
     private static void initialize() {
         int booksInBible = BibleInfo.booksInBible();
         osisBooks = new String[booksInBible];
-        osisMap = new HashMap<String,Integer>(booksInBible);
+        osisMap = new HashMap<String, Integer>(booksInBible);
 
         // Get all the OSIS standard book names
         ResourceBundle resources = ResourceBundle.getBundle(OSISNames.class.getName(), OSIS_LOCALE, CWClassLoader.instance(OSISNames.class));
@@ -148,5 +146,5 @@ public final class OSISNames {
      * Standard OSIS names for the book of the Bible, in lowercase, generated at
      * runtime
      */
-    private static Map<String,Integer> osisMap;
+    private static Map<String, Integer> osisMap;
 }

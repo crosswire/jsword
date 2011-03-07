@@ -38,11 +38,11 @@ import java.util.EventListener;
  * It differs in that it is fully synchronized, thus thread safe.
  * 
  * <p>
- * If you inculde sw*ng code in non-gui code then you can end up not being able
+ * If you include sw*ng code in non-GUI code then you can end up not being able
  * to run your code in a headerless environment because X includes Y which
  * includes Font which tries to lookup font metrics and then everything dies. I
- * appreciate the Headerless changes in 1.4, but my rule (from before 1.4) was
- * "Don't inculde sw*ng code from non-sw*ng code", and I enforced that by making
+ * appreciate the headerless changes in 1.4, but my rule (from before 1.4) was
+ * "Don't include sw*ng code from non-sw*ng code", and I enforced that by making
  * sure all my sw*ng code was in a package with sw*ng in the name and by making
  * sure that the word sw*ng was not in any non-sw*ng code (hence I spelled it
  * sw*ng in comments) That way some simple greps will tell you if the servlet
@@ -50,7 +50,7 @@ import java.util.EventListener;
  * 
  * <p>
  * A single instance can be used to hold all listeners (of all types) for the
- * instance using the list. It is the responsiblity of the class using the
+ * instance using the list. It is the responsibility of the class using the
  * EventListenerList to provide type-safe API (preferably conforming to the
  * JavaBeans spec) and methods which dispatch event notification methods to
  * appropriate Event Listeners on the list.
@@ -60,7 +60,7 @@ import java.util.EventListener;
  * lists in a single place, as well as MT safety.
  * 
  * Usage example: Say one is defining a class which sends out FooEvents, and
- * wantds to allow users of the class to register FooListeners and receive
+ * wants to allow users of the class to register FooListeners and receive
  * notification when FooEvents occur. The following should be added to the class
  * definition:
  * 
@@ -193,9 +193,7 @@ public class EventListenerList implements Serializable {
         }
 
         if (!t.isInstance(li)) {
-            throw new IllegalArgumentException(Msg.WRONG_TYPE.toString(new Object[] {
-                    li, t
-            }));
+            throw new IllegalArgumentException(Msg.lookupText("Listener {0} is not of type {1}", li, t));
         }
 
         if (listenerList == NULL_ARRAY) {
@@ -234,9 +232,7 @@ public class EventListenerList implements Serializable {
         }
 
         if (!t.isInstance(li)) {
-            throw new IllegalArgumentException(Msg.WRONG_TYPE.toString(new Object[] {
-                    li, t
-            }));
+            throw new IllegalArgumentException(Msg.lookupText("Listener {0} is not of type {1}", li, t));
         }
 
         // Is li on the list?
@@ -301,7 +297,7 @@ public class EventListenerList implements Serializable {
             }
 
             EventListener li = (EventListener) ois.readObject();
-            add((Class<EventListener>)ClassUtil.forName((String) listenerTypeOrNull), li);
+            add((Class<EventListener>) ClassUtil.forName((String) listenerTypeOrNull), li);
         }
     }
 

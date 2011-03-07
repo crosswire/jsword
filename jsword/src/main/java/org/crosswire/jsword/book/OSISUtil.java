@@ -562,29 +562,29 @@ public final class OSISUtil {
      * @return a fragment
      */
     public static List<Content> getFragment(Element root) {
-        Element content = root;
-        if (OSISUtil.OSIS_ELEMENT_OSIS.equals(root.getName())) {
-            content = root.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
-        }
-
-        if (OSISUtil.OSIS_ELEMENT_OSISTEXT.equals(root.getName())) {
-            content = root.getChild(OSISUtil.OSIS_ELEMENT_DIV);
-        }
-
-        // At this point we are at something interesting, possibly null.
-        // If this was a semantically valid OSIS document then it is a div.
-        // As long as this node has one child dig deeper.
-        while (content != null && content.getContentSize() == 1) {
-            Content firstChild = content.getContent(0);
-            if (firstChild instanceof Element && OSISUtil.OSIS_ELEMENT_DIV.equals(((Element) firstChild).getName())) {
-                content = (Element) firstChild;
+        if (root != null) {
+            Element content = root;
+            if (OSISUtil.OSIS_ELEMENT_OSIS.equals(root.getName())) {
+                content = root.getChild(OSISUtil.OSIS_ELEMENT_OSISTEXT);
             }
-            break;
-        }
 
-        assert content != null;
-        if (content != null) {
-            return content.getContent();
+            if (OSISUtil.OSIS_ELEMENT_OSISTEXT.equals(root.getName())) {
+                content = root.getChild(OSISUtil.OSIS_ELEMENT_DIV);
+            }
+
+            // At this point we are at something interesting, possibly null.
+            // If this was a semantically valid OSIS document then it is a div.
+            // As long as this node has one child dig deeper.
+            if (content != null && content.getContentSize() == 1) {
+                Content firstChild = content.getContent(0);
+                if (firstChild instanceof Element && OSISUtil.OSIS_ELEMENT_DIV.equals(((Element) firstChild).getName())) {
+                    content = (Element) firstChild;
+                }
+            }
+
+            if (content != null) {
+                return content.getContent();
+            }
         }
         return new ArrayList<Content>();
     }
@@ -867,9 +867,7 @@ public final class OSISUtil {
             try {
                 return VerseFactory.fromString(osisid);
             } catch (NoSuchVerseException ex) {
-                throw new BookException(Msg.OSIS_BADID, ex, new Object[] {
-                    osisid
-                });
+                throw new BookException(Msg.lookupText("OsisID not valid: {0}", osisid), ex);
             }
         }
 
@@ -879,7 +877,7 @@ public final class OSISUtil {
             return getVerse((Element) parent);
         }
 
-        throw new BookException(Msg.MISSING_VERSE);
+        throw new BookException(Msg.lookupText("Verse element could not be found"));
     }
 
     /**

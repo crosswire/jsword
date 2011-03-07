@@ -52,7 +52,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData {
      * Ctor with a properties from which to get values. A call to setBook() is
      * still required after this ctor is called
      */
-    public DefaultBookMetaData(BookDriver driver, Book book, Map<String,Object> prop) {
+    public DefaultBookMetaData(BookDriver driver, Book book, Map<String, Object> prop) {
         setDriver(driver);
 
         setProperties(prop);

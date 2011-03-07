@@ -21,7 +21,6 @@
  */
 package org.crosswire.common.util;
 
-import java.text.MessageFormat;
 
 /**
  * A LucidException adds 2 concepts to a base Exception, that of a wrapped
@@ -60,62 +59,8 @@ public class LucidException extends Exception {
      * @param msg
      *            The resource id to read
      */
-    public LucidException(MsgBase msg) {
-        this(msg, null, (Object[]) null);
-    }
-
-    /**
-     * All LucidExceptions are constructed with references to resources in an
-     * i18n properties file.
-     * 
-     * @param msg
-     *            The resource id to read
-     */
-    public LucidException(MsgBase msg, Throwable cause) {
-        this(msg, cause, (Object[]) null);
-    }
-
-    /**
-     * All LucidExceptions are constructed with references to resources in an
-     * i18n properties file. This version allows us to add parameters
-     * 
-     * @param msg
-     *            The resource id to read
-     * @param params
-     *            An array of parameters
-     */
-    public LucidException(MsgBase msg, Object[] params) {
-        this(msg, null, params);
-    }
-
-    /**
-     * All LucidExceptions are constructed with references to resources in an
-     * i18n properties file. This version allows us to add parameters
-     * 
-     * @param msg
-     *            The resource id to read
-     * @param params
-     *            An array of parameters
-     */
-    public LucidException(MsgBase msg, Throwable cause, Object[] params) {
-        super(msg.toString(), cause);
-        this.deprecated = false;
-        if (params != null) {
-            this.params = params.clone();
-        } else {
-            this.params = null;
-        }
-    }
-
-    /**
-     * All LucidExceptions are constructed with references to resources in an
-     * i18n properties file.
-     * 
-     * @param msg
-     *            The resource id to read
-     */
     public LucidException(String msg) {
-        this(msg, null, (Object[]) null);
+        super(msg);
     }
 
     /**
@@ -126,60 +71,7 @@ public class LucidException extends Exception {
      *            The resource id to read
      */
     public LucidException(String msg, Throwable cause) {
-        this(msg, cause, (Object[]) null);
-    }
-
-    /**
-     * All LucidExceptions are constructed with references to resources in an
-     * i18n properties file. This version allows us to add parameters
-     * 
-     * @param msg
-     *            The resource id to read
-     * @param params
-     *            An array of parameters
-     */
-    public LucidException(String msg, Object[] params) {
-        this(msg, null, params);
-    }
-
-    /**
-     * All LucidExceptions are constructed with references to resources in an
-     * i18n properties file. This version allows us to add parameters
-     * 
-     * @param msg
-     *            The resource id to read
-     * @param params
-     *            An array of parameters
-     */
-    public LucidException(String msg, Throwable cause, Object[] params) {
         super(msg, cause);
-        this.deprecated = false;
-        if (params != null) {
-            this.params = params.clone();
-        } else {
-            this.params = null;
-        }
-    }
-
-    /**
-     * We only unravel the message when we need to to save time
-     * 
-     * @return The unraveled i18n string
-     */
-    @Override
-    public String getMessage() {
-        String out = super.getMessage();
-
-        if (deprecated || params == null) {
-            return out;
-        }
-
-        try {
-            return MessageFormat.format(out, params);
-        } catch (IllegalArgumentException ex) {
-            log.warn("Format fail for '" + out + '\'', ex);
-            return "Error formatting message '" + out + '\'';
-        }
     }
 
     /**
@@ -203,23 +95,7 @@ public class LucidException extends Exception {
     }
 
     /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(LucidException.class);
-
-    /**
      * Serialization ID
      */
     private static final long serialVersionUID = 3257846580311963191L;
-
-    /**
-     * Is the message to be included literally (ie passed a string), or should
-     * we look it up as a resource (ie passed a MsgBase).
-     */
-    private final boolean deprecated;
-
-    /**
-     * The array of parameters
-     */
-    protected final Object[] params;
 }

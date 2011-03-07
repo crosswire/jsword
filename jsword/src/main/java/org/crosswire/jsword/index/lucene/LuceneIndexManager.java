@@ -196,7 +196,7 @@ public class LuceneIndexManager implements IndexManager {
     /**
      * The created indexes
      */
-    protected static final Map<Book,Index> INDEXES = new HashMap<Book,Index>();
+    protected static final Map<Book, Index> INDEXES = new HashMap<Book, Index>();
 
     /**
      * The lucene search index directory

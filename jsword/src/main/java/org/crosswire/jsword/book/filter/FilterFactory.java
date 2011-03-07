@@ -50,7 +50,7 @@ public final class FilterFactory {
     /**
      * The lookup table of filters
      */
-    private static Map<String,Filter> filters = new HashMap<String,Filter>();
+    private static Map<String, Filter> filters = new HashMap<String, Filter>();
 
     /**
      * The lookup table of filters
@@ -62,7 +62,7 @@ public final class FilterFactory {
      * file.
      */
     static {
-        Map<String,Class<Filter>> map = PluginUtil.getImplementorsMap(Filter.class);
+        Map<String, Class<Filter>> map = PluginUtil.getImplementorsMap(Filter.class);
 
         // the default value
         try {
@@ -76,7 +76,7 @@ public final class FilterFactory {
 
         // the lookup table
         Filter instance = null;
-        for (Map.Entry<String,Class<Filter>> entry : map.entrySet()) {
+        for (Map.Entry<String, Class<Filter>> entry : map.entrySet()) {
             try {
                 Class<Filter> clazz = entry.getValue();
                 instance = clazz.newInstance();

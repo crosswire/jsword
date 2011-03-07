@@ -213,7 +213,7 @@ public class CustomHandler extends DefaultHandler {
     /**
      * The known tag types
      */
-    private static final Map<String,Tag> TAG_MAP = new HashMap<String,Tag>();
+    private static final Map<String, Tag> TAG_MAP = new HashMap<String, Tag>();
 
     static {
         /*

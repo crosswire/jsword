@@ -51,7 +51,7 @@ public abstract class AbstractBookDriver implements BookDriver {
      * .Book, org.crosswire.jsword.book.events.WorkListener)
      */
     public Book create(Book source) throws BookException {
-        throw new BookException(Msg.DRIVER_READONLY);
+        throw new BookException(Msg.lookupText("This Book is read-only."));
     }
 
     /*
@@ -73,7 +73,7 @@ public abstract class AbstractBookDriver implements BookDriver {
      * .Book)
      */
     public void delete(Book dead) throws BookException {
-        throw new BookException(Msg.DRIVER_READONLY);
+        throw new BookException(Msg.lookupText("This Book is read-only."));
     }
 
     /*

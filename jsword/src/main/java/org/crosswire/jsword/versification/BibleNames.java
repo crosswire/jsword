@@ -57,9 +57,7 @@ public final class BibleNames {
             // This is faster than doing the check explicitly, unless
             // The exception is actually thrown, then it is a lot slower
             // I'd like to think that the norm is to get it right
-            throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] {
-                Integer.valueOf(book)
-            });
+            throw new NoSuchVerseException(Msg.lookupText("Book must be between 1 and 66 (given {0,number,integer}).", Integer.valueOf(book)));
         }
     }
 
@@ -162,10 +160,10 @@ public final class BibleNames {
         books = new BookName[booksInBible];
 
         // Create the book name maps
-        fullBooksMap = new HashMap<String,BookName>(booksInBible);
-        shortBooksMap = new HashMap<String,BookName>(booksInBible);
+        fullBooksMap = new HashMap<String, BookName>(booksInBible);
+        shortBooksMap = new HashMap<String, BookName>(booksInBible);
 
-        altBooksMap = new HashMap<String,BookName>(booksInBible);
+        altBooksMap = new HashMap<String, BookName>(booksInBible);
 
         ResourceBundle resources = ResourceBundle.getBundle(BibleNames.class.getName(), locale, CWClassLoader.instance(BibleNames.class));
 
@@ -296,17 +294,17 @@ public final class BibleNames {
     /**
      * The full names of the book of the Bible, normalized, generated at runtime
      */
-    private Map<String,BookName> fullBooksMap;
+    private Map<String, BookName> fullBooksMap;
 
     /**
      * Standard shortened names for the book of the Bible, normalized, generated
      * at runtime.
      */
-    private Map<String,BookName> shortBooksMap;
+    private Map<String, BookName> shortBooksMap;
 
     /**
      * Alternative shortened names for the book of the Bible, normalized,
      * generated at runtime
      */
-    private Map<String,BookName> altBooksMap;
+    private Map<String, BookName> altBooksMap;
 }

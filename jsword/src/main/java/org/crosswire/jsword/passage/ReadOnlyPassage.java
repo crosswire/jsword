@@ -59,7 +59,7 @@ final class ReadOnlyPassage implements Passage {
             return;
         }
 
-        throw new IllegalStateException(Msg.PASSAGE_READONLY.toString());
+        throw new IllegalStateException(Msg.lookupText("Cannot alter a read-only passage"));
     }
 
     /*
@@ -73,7 +73,7 @@ final class ReadOnlyPassage implements Passage {
             return;
         }
 
-        throw new IllegalStateException(Msg.PASSAGE_READONLY.toString());
+        throw new IllegalStateException(Msg.lookupText("Cannot alter a read-only passage"));
     }
 
     /*
@@ -87,7 +87,7 @@ final class ReadOnlyPassage implements Passage {
             return;
         }
 
-        throw new IllegalStateException(Msg.PASSAGE_READONLY.toString());
+        throw new IllegalStateException(Msg.lookupText("Cannot alter a read-only passage"));
     }
 
     /*
@@ -347,7 +347,7 @@ final class ReadOnlyPassage implements Passage {
             return;
         }
 
-        throw new IllegalStateException(Msg.PASSAGE_READONLY.toString());
+        throw new IllegalStateException(Msg.lookupText("Cannot alter a read-only passage"));
     }
 
     /*
@@ -362,7 +362,7 @@ final class ReadOnlyPassage implements Passage {
             return;
         }
 
-        throw new IllegalStateException(Msg.PASSAGE_READONLY.toString());
+        throw new IllegalStateException(Msg.lookupText("Cannot alter a read-only passage"));
     }
 
     /*
@@ -386,7 +386,7 @@ final class ReadOnlyPassage implements Passage {
             return;
         }
 
-        throw new IllegalStateException(Msg.PASSAGE_READONLY.toString());
+        throw new IllegalStateException(Msg.lookupText("Cannot alter a read-only passage"));
     }
 
     /*
@@ -399,7 +399,7 @@ final class ReadOnlyPassage implements Passage {
             return;
         }
 
-        throw new IllegalStateException(Msg.PASSAGE_READONLY.toString());
+        throw new IllegalStateException(Msg.lookupText("Cannot alter a read-only passage"));
     }
 
     /*
@@ -412,7 +412,7 @@ final class ReadOnlyPassage implements Passage {
             return;
         }
 
-        throw new IllegalStateException(Msg.PASSAGE_READONLY.toString());
+        throw new IllegalStateException(Msg.lookupText("Cannot alter a read-only passage"));
     }
 
     /*

@@ -22,7 +22,6 @@
 package org.crosswire.jsword.book;
 
 import org.crosswire.common.util.LucidException;
-import org.crosswire.common.util.MsgBase;
 
 /**
  * Something went wrong with a Book.
@@ -32,55 +31,6 @@ import org.crosswire.common.util.MsgBase;
  * @author Joe Walker [joe at eireneh dot com]
  */
 public class BookException extends LucidException {
-    /**
-     * Construct the Exception with a message
-     * 
-     * @param msg
-     *            The resource id to read
-     */
-    public BookException(MsgBase msg) {
-        super(msg);
-    }
-
-    /**
-     * Construct the Exception with a message and a nested Exception
-     * 
-     * @param msg
-     *            The resource id to read
-     * @param ex
-     *            The nested Exception
-     */
-    public BookException(MsgBase msg, Throwable ex) {
-        super(msg, ex);
-    }
-
-    /**
-     * Construct the Exception with a message and some Msg params
-     * 
-     * @param msg
-     *            The resource id to read
-     * @param params
-     *            An array of parameters
-     */
-    public BookException(MsgBase msg, Object[] params) {
-        super(msg, params);
-    }
-
-    /**
-     * Construct the Exception with a message, a nested Exception and some Msg
-     * params
-     * 
-     * @param msg
-     *            The resource id to read
-     * @param ex
-     *            The nested Exception
-     * @param params
-     *            An array of parameters
-     */
-    public BookException(MsgBase msg, Throwable ex, Object[] params) {
-        super(msg, ex, params);
-    }
-
     /**
      * Construct the Exception with a message
      * 
@@ -101,33 +51,6 @@ public class BookException extends LucidException {
      */
     public BookException(String msg, Throwable ex) {
         super(msg, ex);
-    }
-
-    /**
-     * Construct the Exception with a message and some Msg params
-     * 
-     * @param msg
-     *            The resource id to read
-     * @param params
-     *            An array of parameters
-     */
-    public BookException(String msg, Object[] params) {
-        super(msg, params);
-    }
-
-    /**
-     * Construct the Exception with a message, a nested Exception and some Msg
-     * params
-     * 
-     * @param msg
-     *            The resource id to read
-     * @param ex
-     *            The nested Exception
-     * @param params
-     *            An array of parameters
-     */
-    public BookException(String msg, Throwable ex, Object[] params) {
-        super(msg, ex, params);
     }
 
     /**

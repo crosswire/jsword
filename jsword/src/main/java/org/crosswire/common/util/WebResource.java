@@ -208,9 +208,7 @@ public class WebResource {
             String reason = response.getStatusLine().getReasonPhrase();
             // TRANSLATOR: Common error condition: {0} is a placeholder for the
             // URL of what could not be found.
-            Reporter.informUser(this, UserMsg.gettext("Unable to find: {0}", new Object[] {
-                reason + ':' + uri.getPath()
-            }));
+            Reporter.informUser(this, UserMsg.gettext("Unable to find: {0}", reason + ':' + uri.getPath()));
         } catch (IOException e) {
             return 0;
         }
@@ -238,9 +236,7 @@ public class WebResource {
             String reason = response.getStatusLine().getReasonPhrase();
             // TRANSLATOR: Common error condition: {0} is a placeholder for the
             // URL of what could not be found.
-            Reporter.informUser(this, UserMsg.gettext("Unable to find: {0}", new Object[] {
-                reason + ':' + uri.getPath()
-            }));
+            Reporter.informUser(this, UserMsg.gettext("Unable to find: {0}", reason + ':' + uri.getPath()));
         } catch (IOException e) {
             return new Date().getTime();
         }
@@ -296,16 +292,12 @@ public class WebResource {
                 String reason = response.getStatusLine().getReasonPhrase();
                 // TRANSLATOR: Common error condition: {0} is a placeholder for
                 // the URL of what could not be found.
-                Reporter.informUser(this, UserMsg.gettext("Unable to find: {0}", new Object[] {
-                    reason + ':' + uri.getPath()
-                }));
+                Reporter.informUser(this, UserMsg.gettext("Unable to find: {0}", reason + ':' + uri.getPath()));
             }
         } catch (IOException e) {
             // TRANSLATOR: Common error condition: {0} is a placeholder for the
             // URL of what could not be found.
-            throw new LucidException(UserMsg.gettext("Unable to find: {0}", new Object[] {
-                uri.toString()
-            }), e);
+            throw new LucidException(UserMsg.gettext("Unable to find: {0}", uri.toString()), e);
         } finally {
             // Close the streams
             IOUtil.close(in);

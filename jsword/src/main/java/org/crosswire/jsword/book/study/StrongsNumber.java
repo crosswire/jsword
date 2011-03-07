@@ -224,9 +224,7 @@ public class StrongsNumber {
         Matcher m = STRONGS_PATTERN.matcher(text);
         if (!m.lookingAt()) {
             // TRANSLATOR: User error condition: Indicates that what was given is not a Strong's Number. {0} is a placeholder for the bad Strong's Number.
-            throw new BookException(UserMsg.gettext("Not a valid Strong's Number \"{0}\"", new Object[] {
-                input
-            }));
+            throw new BookException(UserMsg.gettext("Not a valid Strong's Number \"{0}\"", input));
         }
 
         String lang = m.group(1);
@@ -252,9 +250,7 @@ public class StrongsNumber {
     private void validate() throws BookException {
         if (language != 'G' && language != 'H') {
             // TRANSLATOR: User error condition: Indicates that what was given is not a Strong's Number. {0} is a placeholder for the bad Strong's Number.
-            throw new BookException(UserMsg.gettext("Not a valid Strong's Number \"{0}\"", new Object[] {
-                toString()
-            }));
+            throw new BookException(UserMsg.gettext("Not a valid Strong's Number \"{0}\"", toString()));
         }
     }
 

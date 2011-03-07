@@ -95,8 +95,8 @@ public final class PluginUtil {
      *            The class or interface to find implementors of.
      * @return The map of implementing classes.
      */
-    public static <T> Map<String,Class<T>> getImplementorsMap(Class<T> clazz) {
-        Map<String,Class<T>> matches = new HashMap<String,Class<T>>();
+    public static <T> Map<String, Class<T>> getImplementorsMap(Class<T> clazz) {
+        Map<String, Class<T>> matches = new HashMap<String, Class<T>>();
 
         try {
             PropertyMap props = getPlugin(clazz);
@@ -147,9 +147,7 @@ public final class PluginUtil {
 
         Class<T> impl = (Class<T>) ClassUtil.forName(name);
         if (!clazz.isAssignableFrom(impl)) {
-            throw new ClassCastException(Msg.NOT_ASSIGNABLE.toString(new Object[] {
-                    impl.getName(), clazz.getName()
-            }));
+            throw new ClassCastException(Msg.lookupText("Class {0} does not implement {1}.", impl.getName(), clazz.getName()));
         }
 
         return impl;

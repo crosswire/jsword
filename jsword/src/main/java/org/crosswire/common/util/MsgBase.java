@@ -44,11 +44,6 @@ public class MsgBase {
     /**
      * Create a MsgBase object
      */
-    protected MsgBase(String name) {
-        this();
-        this.name = name;
-    }
-
     protected MsgBase() {
         this.shaper = new NumberShaper();
         loadResources();
@@ -60,48 +55,11 @@ public class MsgBase {
      * @param key
      * @return the internationalized text
      */
-    public String lookup(String key) {
-        return shaper.shape(obtainString(key));
-    }
-
-    /**
-     * Formats the message with the given parameter.
-     */
-    public String toString(String key, Object param) {
-        return shaper.shape(MessageFormat.format(obtainString(key), new Object[] {
-            param
-        }));
-    }
-
-    /**
-     * Formats the message with the given parameters.
-     */
-    public String toString(String key, Object[] params) {
+    public String lookup(String key, Object... params) {
+        if (params.length == 0) {
+            return shaper.shape(obtainString(key));
+        }
         return shaper.shape(MessageFormat.format(obtainString(key), params));
-    }
-
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        return shaper.shape(obtainString(name));
-    }
-
-    /**
-     * Formats the message with the given parameter.
-     */
-    public String toString(Object param) {
-        return shaper.shape(MessageFormat.format(obtainString(name), new Object[] {
-            param
-        }));
-    }
-
-    /**
-     * Formats the message with the given parameters.
-     */
-    public String toString(Object[] params) {
-        return shaper.shape(MessageFormat.format(obtainString(name), params));
     }
 
     /**
@@ -146,12 +104,10 @@ public class MsgBase {
     }
 
     /**
-     * resource map maintains a mapping of class names to resources found by
+     * Resource map maintains a mapping of class names to resources found by
      * that name.
      */
-    private static Map<String,ResourceBundle> resourceMap = new HashMap<String,ResourceBundle>();
-
-    private String name;
+    private static Map<String, ResourceBundle> resourceMap = new HashMap<String, ResourceBundle>();
 
     /**
      * If there is any internationalization to be done, it is thru this

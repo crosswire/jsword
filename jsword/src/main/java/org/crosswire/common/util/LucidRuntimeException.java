@@ -21,7 +21,6 @@
  */
 package org.crosswire.common.util;
 
-import java.text.MessageFormat;
 
 /**
  * EventExceptions are generally used for passing problems through the event
@@ -50,7 +49,7 @@ public class LucidRuntimeException extends RuntimeException {
      *            The resource id to read
      */
     public LucidRuntimeException(String msg) {
-        this(msg, null, null);
+        super(msg);
     }
 
     /**
@@ -61,70 +60,12 @@ public class LucidRuntimeException extends RuntimeException {
      *            The resource id to read
      */
     public LucidRuntimeException(String msg, Throwable cause) {
-        this(msg, cause, null);
-    }
-
-    /**
-     * All LucidRuntimeException are constructed with references to resources in
-     * an i18n properties file. This version allows us to add parameters
-     * 
-     * @param msg
-     *            The resource id to read
-     * @param params
-     *            An array of parameters
-     */
-    public LucidRuntimeException(String msg, Object[] params) {
-        this(msg, null, params);
-    }
-
-    /**
-     * All LucidRuntimeException are constructed with references to resources in
-     * an i18n properties file. This version allows us to add parameters
-     * 
-     * @param msg
-     *            the internationalized message to format
-     * @param newParams
-     *            An array of parameters
-     */
-    public LucidRuntimeException(String msg, Throwable cause, Object[] newParams) {
         super(msg, cause);
-
-        this.params = newParams == null ? null : (Object[]) newParams.clone();
     }
-
-    /**
-     * We only unravel the message when we need to to save time
-     * 
-     * @return The unraveled i18n string
-     */
-    @Override
-    public String getMessage() {
-        String out = super.getMessage();
-
-        if (params == null) {
-            return out;
-        }
-
-        try {
-            return MessageFormat.format(out, params);
-        } catch (IllegalArgumentException ex) {
-            log.warn("Format fail for '" + out + '\'', ex);
-            return "Error formatting message '" + out + '\'';
-        }
-    }
-
-    /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(LucidRuntimeException.class);
 
     /**
      * Serialization ID
      */
     private static final long serialVersionUID = 3906091143962965817L;
 
-    /**
-     * The array of parameters
-     */
-    protected final Object[] params;
 }

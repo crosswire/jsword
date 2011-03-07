@@ -117,7 +117,7 @@ public abstract class AbstractBook implements Book {
             try {
                 searcher = SearcherFactory.createSearcher(this);
             } catch (InstantiationException ex) {
-                throw new BookException(Msg.INDEX_FAIL, ex);
+                throw new BookException(Msg.lookupText("Failed to initialize the search index"), ex);
             }
         }
 
@@ -244,7 +244,7 @@ public abstract class AbstractBook implements Book {
      * 
      * @see org.crosswire.jsword.book.BookMetaData#getProperties()
      */
-    public Map<String,Object> getProperties() {
+    public Map<String, Object> getProperties() {
         return bmd.getProperties();
     }
 

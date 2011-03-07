@@ -36,7 +36,7 @@ import org.jdom.Element;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class IntOptionsChoice extends AbstractReflectedChoice implements MappedChoice<Integer,String> {
+public class IntOptionsChoice extends AbstractReflectedChoice implements MappedChoice<Integer, String> {
     /*
      * (non-Javadoc)
      * 
@@ -50,7 +50,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements MappedC
 
         String prefix = getKey() + ".alternative.";
 
-        options = new TreeMap<Integer,String>();
+        options = new TreeMap<Integer, String>();
         Iterator<Element> iter = option.getChildren("alternative").iterator();
         while (iter.hasNext()) {
             Element alternative = iter.next();
@@ -65,8 +65,8 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements MappedC
      * 
      * @see org.crosswire.common.config.MappedChoice#getOptions()
      */
-    public Map<Integer,String> getOptions() {
-        return new TreeMap<Integer,String>(options);
+    public Map<Integer, String> getOptions() {
+        return new TreeMap<Integer, String>(options);
     }
 
     /*
@@ -103,7 +103,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements MappedC
         try {
             return Integer.valueOf(orig);
         } catch (NumberFormatException ex) {
-            for (Map.Entry<Integer,String> mapEntry : options.entrySet()) {
+            for (Map.Entry<Integer, String> mapEntry : options.entrySet()) {
                 if (mapEntry.getValue().equals(orig)) {
                     return mapEntry.getKey();
                 }
@@ -112,5 +112,5 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements MappedC
         }
     }
 
-    private Map<Integer,String> options;
+    private Map<Integer, String> options;
 }

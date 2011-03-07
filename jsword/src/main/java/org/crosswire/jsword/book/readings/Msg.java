@@ -28,16 +28,20 @@ import org.crosswire.common.util.MsgBase;
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
- * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 final class Msg extends MsgBase {
-    static final Msg PARSE_FAIL = new Msg("ReadingsKey.ParseFail");
-    static final Msg DRIVER_READONLY = new Msg("ReadingsKey.DriverReadonly");
-
     /**
-     * Passthrough ctor
+     * Get the internationalized text, but return key if key is unknown.
+     * The text requires one or more parameters to be passed.
+     * 
+     * @param key
+     * @param params
+     * @return the formatted, internationalized text
      */
-    private Msg(String name) {
-        super(name);
+    public static String lookupText(String key, Object... params) {
+        return msg.lookup(key, params);
     }
+
+    private static MsgBase msg = new Msg();
 }

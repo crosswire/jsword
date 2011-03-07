@@ -75,9 +75,7 @@ public class XalanProcess {
 
         try {
             if (main != null) {
-                main.invoke(null, new Object[] {
-                    args
-                });
+                main.invoke(null, (Object[]) args);
             }
         } catch (IllegalArgumentException e) {
             e.printStackTrace(System.err);

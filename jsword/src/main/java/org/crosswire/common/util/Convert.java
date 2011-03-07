@@ -186,9 +186,9 @@ public final class Convert {
      *            the thing to convert
      * @return the converted data
      */
-    public static String map2String(Map<? extends Object,? extends Object> commands) {
+    public static String map2String(Map<? extends Object, ? extends Object> commands) {
         StringBuilder retcode = new StringBuilder();
-        for (Map.Entry<? extends Object,? extends Object> entry : commands.entrySet()) {
+        for (Map.Entry<? extends Object, ? extends Object> entry : commands.entrySet()) {
             retcode.append(entry.getKey());
             retcode.append('=');
             retcode.append(entry.getValue());

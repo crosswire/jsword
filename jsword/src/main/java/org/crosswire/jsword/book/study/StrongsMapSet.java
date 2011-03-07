@@ -42,7 +42,7 @@ public class StrongsMapSet {
      * Build an empty Strong's Map Set.
      */
     public StrongsMapSet() {
-        map = new HashMap<String,Set<String>>();
+        map = new HashMap<String, Set<String>>();
     }
 
     /**
@@ -74,5 +74,5 @@ public class StrongsMapSet {
         return map.get(strongsNumber);
     }
 
-    private Map<String,Set<String>> map;
+    private Map<String, Set<String>> map;
 }

@@ -74,7 +74,7 @@ public enum BlockType {
             }
         }
 
-        throw new ClassCastException(Msg.UNDEFINED_DATATYPE.toString(name));
+        throw new ClassCastException(Msg.lookupText("DataType {0} is not defined!", name));
     }
 
     /* (non-Javadoc)

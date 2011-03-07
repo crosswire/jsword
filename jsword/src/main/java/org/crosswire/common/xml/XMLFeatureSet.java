@@ -72,7 +72,7 @@ public final class XMLFeatureSet {
         features.put("xb", new XMLFeatureState(XMLFeature.XINCLUDE_FIXUP_BASE_URIS, true));
         features.put("xl", new XMLFeatureState(XMLFeature.XINCLUDE_FIXUP_LANGUAGE, true));
 
-        for (Map.Entry<String,XMLFeatureState> entry : features.entrySet()) {
+        for (Map.Entry<String, XMLFeatureState> entry : features.entrySet()) {
             states.put(entry.getValue().getFeature(), entry.getKey());
         }
     }
@@ -191,6 +191,6 @@ public final class XMLFeatureSet {
         private XMLFeature feature;
     }
 
-    private Map<String,XMLFeatureState> features = new TreeMap<String,XMLFeatureState>();
-    private Map<XMLFeature,String> states = new TreeMap<XMLFeature,String>();
+    private Map<String, XMLFeatureState> features = new TreeMap<String, XMLFeatureState>();
+    private Map<XMLFeature, String> states = new TreeMap<XMLFeature, String>();
 }

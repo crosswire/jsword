@@ -71,19 +71,19 @@ public final class ChoiceFactory {
     /**
      * Method getDataMap.
      */
-    public static Map<String,Object> getDataMap() {
+    public static Map<String, Object> getDataMap() {
         return datamap;
     }
 
     /**
      * Storage of various registered objects
      */
-    private static Map<String,Object> datamap = new HashMap<String,Object>();
+    private static Map<String, Object> datamap = new HashMap<String, Object>();
 
     /**
      * Store of the known ChoiceTypes
      */
-    private static Map<String,Class<Choice>> map;
+    private static Map<String, Class<Choice>> map;
 
     /**
      * Setup the map of Choices

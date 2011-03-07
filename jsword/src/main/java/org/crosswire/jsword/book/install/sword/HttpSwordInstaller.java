@@ -84,18 +84,14 @@ public class HttpSwordInstaller extends AbstractSwordInstaller {
             uri = new URI(NetUtil.PROTOCOL_HTTP, host, dir + '/' + file, null);
         } catch (URISyntaxException e1) {
             // TRANSLATOR: Common error condition: {0} is a placeholder for the URL of what could not be found.
-            throw new InstallException(UserMsg.gettext("Unable to find: {0}", new Object[] {
-                dir + '/' + file
-            }), e1);
+            throw new InstallException(UserMsg.gettext("Unable to find: {0}", dir + '/' + file), e1);
         }
 
         try {
             copy(job, uri, dest);
         } catch (LucidException ex) {
             // TRANSLATOR: Common error condition: {0} is a placeholder for the URL of what could not be found.
-            throw new InstallException(UserMsg.gettext("Unable to find: {0}", new Object[] {
-                uri.toString()
-            }), ex);
+            throw new InstallException(UserMsg.gettext("Unable to find: {0}", uri.toString()), ex);
         }
     }
 

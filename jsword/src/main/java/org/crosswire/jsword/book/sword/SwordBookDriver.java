@@ -163,9 +163,7 @@ public class SwordBookDriver extends AbstractBookDriver {
         if (!confFile.exists()) {
             // TRANSLATOR: Common error condition: The file could not be deleted. There can be many reasons.
             // {0} is a placeholder for the file.
-            throw new BookException(UserMsg.gettext("Unable to delete: {0}", new Object[] {
-                confFile
-            }));
+            throw new BookException(UserMsg.gettext("Unable to delete: {0}", confFile));
         }
 
         // Delete the conf
@@ -184,9 +182,7 @@ public class SwordBookDriver extends AbstractBookDriver {
         if (!failures.isEmpty()) {
             // TRANSLATOR: Common error condition: The file could not be deleted. There can be many reasons.
             // {0} is a placeholder for the file.
-            throw new BookException(UserMsg.gettext("Unable to delete: {0}", new Object[] {
-                failures.get(0)
-            }));
+            throw new BookException(UserMsg.gettext("Unable to delete: {0}", failures.get(0)));
         }
     }
 
@@ -222,7 +218,8 @@ public class SwordBookDriver extends AbstractBookDriver {
     private Book createBook(SwordBookMetaData sbmd) throws BookException {
         BookType modtype = sbmd.getBookType();
         if (modtype == null || modtype.getBookCategory() == null) {
-            throw new BookException(Msg.TYPE_UNSUPPORTED);
+            // FIXME(DMS): missing parameter
+            throw new BookException(Msg.lookupText("Unsupported type: {0} when reading {1}"));
         }
 
         return modtype.createBook(sbmd);

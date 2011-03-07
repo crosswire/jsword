@@ -31,12 +31,11 @@ import java.util.Map;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public interface MappedChoice<K,V> extends Choice {
+public interface MappedChoice<K, V> extends Choice {
     /**
      * The available alternative values to be presented as options to the user
      * where the user interface allows presentation of alternatives.
-     * 
      * @return A string array of alternatives.
      */
-    Map<K,V> getOptions();
+    Map<K, V> getOptions();
 }

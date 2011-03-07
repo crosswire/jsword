@@ -47,7 +47,7 @@ public final class ConverterFactory {
     public static Converter getConverter() {
         try {
             Class<Converter> clazz = PluginUtil.getImplementorsMap(Converter.class).get(name);
-            assert clazz != null : Msg.NO_CONVERTER.toString(name);
+            assert clazz != null : Msg.lookupText("No converter called: {0}", name);
             return clazz.newInstance();
         } catch (InstantiationException e) {
             assert false : e;
@@ -60,7 +60,7 @@ public final class ConverterFactory {
     /**
      * Get a map of the known converters, by looking up the answers in Project
      */
-    public static Map<String,Class<Converter>> getKnownConverters() {
+    public static Map<String, Class<Converter>> getKnownConverters() {
         return PluginUtil.getImplementorsMap(Converter.class);
     }
 

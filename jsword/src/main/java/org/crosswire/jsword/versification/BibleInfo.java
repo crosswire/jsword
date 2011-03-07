@@ -269,9 +269,7 @@ public final class BibleInfo {
             // This is faster than doing the check explicitly, unless
             // The exception is actually thrown, then it is a lot slower
             // I'd like to think that the norm is to get it right
-            throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] {
-                Integer.valueOf(book)
-            });
+            throw new NoSuchVerseException(Msg.lookupText("Book must be between 1 and 66 (given {0,number,integer}).", Integer.valueOf(book)));
         }
     }
 
@@ -293,11 +291,7 @@ public final class BibleInfo {
             // This is faster than doing the check explicitly, unless
             // The exception is actually thrown, then it is a lot slower
             // I'd like to think that the norm is to get it right
-
-            Object[] params = new Object[] {
-                    Integer.valueOf(book), Integer.valueOf(chapter)
-            };
-            throw new NoSuchVerseException(Msg.BOOKS_BOOKCHAP, params);
+            throw new NoSuchVerseException(Msg.lookupText("Book must be between 1 and 66 (given {0,number,integer}), and Chapter must be valid for this book (given {1,number,integer}).", Integer.valueOf(book), Integer.valueOf(chapter)));
         }
     }
 
@@ -317,9 +311,7 @@ public final class BibleInfo {
             // This is faster than doing the check explicitly, unless
             // The exception is actually thrown, then it is a lot slower
             // I'd like to think that the norm is to get it right
-            throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] {
-                Integer.valueOf(book)
-            });
+            throw new NoSuchVerseException(Msg.lookupText("Book must be between 1 and 66 (given {0,number,integer}).", Integer.valueOf(book)));
         }
     }
 
@@ -354,7 +346,7 @@ public final class BibleInfo {
      */
     public static int verseOrdinal(int[] ref) throws NoSuchVerseException {
         if (ref.length != 3) {
-            throw new NoSuchVerseException(Msg.REF_PARTS);
+            throw new NoSuchVerseException(Msg.lookupText("Must be 3 parts to the reference."));
         }
 
         return verseOrdinal(ref[0], ref[1], ref[2]);
@@ -372,10 +364,7 @@ public final class BibleInfo {
      */
     public static int[] decodeOrdinal(int ordinal) throws NoSuchVerseException {
         if (ordinal < 1 || ordinal > BibleInfo.versesInBible()) {
-            Object[] params = new Object[] {
-                    Integer.valueOf(BibleInfo.versesInBible()), Integer.valueOf(ordinal)
-            };
-            throw new NoSuchVerseException(Msg.BOOKS_DECODE, params);
+            throw new NoSuchVerseException(Msg.lookupText("Ordinal must be between 1 and {0,number,integer} (given {1,number,integer}).", Integer.valueOf(BibleInfo.versesInBible()), Integer.valueOf(ordinal)));
         }
 
         for (int b = BOOKS_IN_BIBLE; b > 0; b--) {
@@ -415,36 +404,32 @@ public final class BibleInfo {
     public static void validate(int book, int chapter, int verse) throws NoSuchVerseException {
         // Check the book
         if (book < 1 || book > BOOKS_IN_BIBLE) {
-            throw new NoSuchVerseException(Msg.BOOKS_BOOK, new Object[] {
-                Integer.valueOf(book)
-            });
+            throw new NoSuchVerseException(Msg.lookupText("Book must be between 1 and 66 (given {0,number,integer}).", Integer.valueOf(book)));
         }
 
         // Check the chapter
         if (chapter < 1 || chapter > chaptersInBook(book)) {
-            Object[] params = new Object[] {
-                    Integer.valueOf(1), Integer.valueOf(chaptersInBook(book)), getPreferredBookName(book), Integer.valueOf(chapter),
-            };
             // TRANSLATOR: The user supplied a chapter that was out of bounds. This tells them what is allowed.
             // {0} is the lowest value that is allowed. Currently this is 1, later it will be 0.
             // {1,number,integer} is the place holder for the highest chapter number in the book. The format is special in that it will present it in the user's preferred format.
             // {2} is a placeholder for the Bible book name.
             // {3,number,integer} is a placeholder for the chapter number that the user gave.
-            throw new NoSuchVerseException(UserMsg.gettext("Chapter should be between {0} and {1,number,integer} for {2} (given {3,number,integer}).", params));
+            throw new NoSuchVerseException(UserMsg.gettext("Chapter should be between {0} and {1,number,integer} for {2} (given {3,number,integer}).",
+                    Integer.valueOf(1), Integer.valueOf(chaptersInBook(book)), getPreferredBookName(book), Integer.valueOf(chapter)
+                    ));
         }
 
         // Check the verse
         if (verse < 1 || verse > versesInChapter(book, chapter)) {
-            Object[] params = new Object[] {
-                    Integer.valueOf(1), Integer.valueOf(versesInChapter(book, chapter)), getPreferredBookName(book), Integer.valueOf(chapter), Integer.valueOf(verse),
-            };
             // TRANSLATOR: The user supplied a verse number that was out of bounds. This tells them what is allowed.
             // {0} is the lowest value that is allowed. Currently this is 1, later it will be 0.
             // {1,number,integer} is the place holder for the highest verse number in the chapter. The format is special in that it will present it in the user's preferred format.
             // {2} is a placeholder for the Bible book name.
             // {3,number,integer} is a placeholder for the chapter number that the user gave.
             // {4,number,integer} is a placeholder for the verse number that the user gave.
-            throw new NoSuchVerseException(UserMsg.gettext("Verse should be between {0} and {1,number,integer} for {2} {3,number,integer} (given {4,number,integer}).", params));
+            throw new NoSuchVerseException(UserMsg.gettext("Verse should be between {0} and {1,number,integer} for {2} {3,number,integer} (given {4,number,integer}).",
+                    Integer.valueOf(1), Integer.valueOf(versesInChapter(book, chapter)), getPreferredBookName(book), Integer.valueOf(chapter), Integer.valueOf(verse)
+                    ));
         }
     }
 
@@ -458,7 +443,7 @@ public final class BibleInfo {
      */
     public static void validate(int[] ref) throws NoSuchVerseException {
         if (ref.length != 3) {
-            throw new NoSuchVerseException(Msg.REF_PARTS);
+            throw new NoSuchVerseException(Msg.lookupText("Must be 3 parts to the reference."));
         }
 
         validate(ref[BOOK], ref[CHAPTER], ref[VERSE]);
@@ -590,7 +575,7 @@ public final class BibleInfo {
      */
     public static int verseCount(int[] ref1, int[] ref2) throws NoSuchVerseException {
         if (ref1.length != 3 || ref2.length != 3) {
-            throw new IllegalArgumentException(Msg.REF_PARTS.toString());
+            throw new NoSuchVerseException(Msg.lookupText("Must be 3 parts to the reference."));
         }
 
         return verseCount(ref1[0], ref1[1], ref1[2], ref2[0], ref2[1], ref2[2]);

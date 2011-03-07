@@ -95,7 +95,8 @@ public abstract class AbstractBackend implements Activatable {
         URI loc = NetUtil.lengthenURI(bmd.getLibrary(), (String) bmd.getProperty(ConfigEntryType.DATA_PATH));
 
         if (loc == null) {
-            throw new BookException(Msg.MISSING_FILE);
+            // FIXME(DMS): missing parameter
+            throw new BookException(Msg.lookupText("Missing data files for old and new testaments in {0}."));
         }
 
         return loc;

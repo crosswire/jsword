@@ -106,7 +106,7 @@ public class ReadOnlyKeyList implements Key {
             return;
         }
 
-        throw new IllegalStateException(Msg.KEYLIST_READONLY.toString());
+        throw new IllegalStateException(Msg.lookupText("Cannot alter a read-only key list"));
     }
 
     /*
@@ -120,7 +120,7 @@ public class ReadOnlyKeyList implements Key {
             return;
         }
 
-        throw new IllegalStateException(Msg.KEYLIST_READONLY.toString());
+        throw new IllegalStateException(Msg.lookupText("Cannot alter a read-only key list"));
     }
 
     /*
@@ -134,7 +134,7 @@ public class ReadOnlyKeyList implements Key {
             return;
         }
 
-        throw new IllegalStateException(Msg.KEYLIST_READONLY.toString());
+        throw new IllegalStateException(Msg.lookupText("Cannot alter a read-only key list"));
     }
 
     /*
@@ -147,7 +147,7 @@ public class ReadOnlyKeyList implements Key {
             return;
         }
 
-        throw new IllegalStateException(Msg.KEYLIST_READONLY.toString());
+        throw new IllegalStateException(Msg.lookupText("Cannot alter a read-only key list"));
     }
 
     /*
@@ -265,7 +265,7 @@ public class ReadOnlyKeyList implements Key {
             return;
         }
 
-        throw new IllegalStateException(Msg.KEYLIST_READONLY.toString());
+        throw new IllegalStateException(Msg.lookupText("Cannot alter a read-only key list"));
     }
 
     /*

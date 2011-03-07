@@ -134,7 +134,7 @@ public final class Verse implements Key {
      */
     public Verse(int book, int chapter, int verse, boolean patch_up) {
         if (!patch_up) {
-            throw new IllegalArgumentException(Msg.ERROR_PATCH.toString());
+            throw new IllegalArgumentException(Msg.lookupText("Use patch=true."));
         }
 
         originalName = null;
@@ -692,9 +692,7 @@ public final class Verse implements Key {
         } catch (NumberFormatException ex) {
             // TRANSLATOR: The chapter or verse number is actually not a number, but something else.
             // {0} is a placeholder for what the user supplied.
-            throw new NoSuchVerseException(UserMsg.gettext("Cannot understand {0} as a chapter or verse.", new Object[] {
-                text
-            }));
+            throw new NoSuchVerseException(UserMsg.gettext("Cannot understand {0} as a chapter or verse.", text));
         }
     }
 

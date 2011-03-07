@@ -78,9 +78,7 @@ public class GenBookBackend extends AbstractBackend {
         if (!bdtFile.canRead()) {
             // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
             // {0} is a placeholder for the file.
-            Reporter.informUser(this, new BookException(UserMsg.gettext("Error reading {0}", new Object[] {
-                bdtFile.getAbsolutePath()
-            })));
+            Reporter.informUser(this, new BookException(UserMsg.gettext("Error reading {0}", bdtFile.getAbsolutePath())));
             return;
         }
 
@@ -170,9 +168,7 @@ public class GenBookBackend extends AbstractBackend {
         } catch (IOException e) {
             // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
             // {0} is a placeholder for the file.
-            throw new BookException(UserMsg.gettext("Error reading {0}", new Object[] {
-                key.getName()
-            }), e);
+            throw new BookException(UserMsg.gettext("Error reading {0}", key.getName()), e);
         } finally {
             DataPolice.setKey(null);
         }

@@ -283,5 +283,5 @@ public class GetOptions {
      * The position in the array that is currently being studied.
      */
     private List<String> nonOptionArgs;
-    private Map<Option,String> suppliedOptions;
+    private Map<Option, String> suppliedOptions;
 }

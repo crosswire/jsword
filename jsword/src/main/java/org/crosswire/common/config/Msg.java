@@ -28,22 +28,20 @@ import org.crosswire.common.util.MsgBase;
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
- * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class Msg extends MsgBase {
-    static final Msg CONFIG_NOCLASS = new Msg("Specified class not found: {0}");
-    static final Msg CONFIG_MISSINGELE = new Msg("Missing {0} element in config.xml");
-    static final Msg CONFIG_NOSETTER = new Msg("Specified method not found {0}.set{1}({2} arg0)");
-    static final Msg CONFIG_NOGETTER = new Msg("Specified method not found {0}.get{1}()");
-    static final Msg CONFIG_NORETURN = new Msg("Mismatch of return types, found: {0} required: {1}");
-    static final Msg CONFIG_NOMAP = new Msg("Missing <map> element.");
-    static final Msg IGNORE = new Msg("Ignoring invalid option: {0}");
-    static final Msg CONFIG_SETFAIL = new Msg("Failed to set option: {0}");
-
+final class Msg extends MsgBase {
     /**
-     * Passthrough ctor
+     * Get the internationalized text, but return key if key is unknown.
+     * The text requires one or more parameters to be passed.
+     * 
+     * @param key
+     * @param params
+     * @return the formatted, internationalized text
      */
-    private Msg(String name) {
-        super(name);
+    public static String lookupText(String key, Object... params) {
+        return msg.lookup(key, params);
     }
+
+    private static MsgBase msg = new Msg();
 }

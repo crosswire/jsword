@@ -249,7 +249,7 @@ public final class Books implements BookList {
         if (removed) {
             fireBooksChanged(instance, book, true);
         } else {
-            throw new BookException(Msg.BOOK_NOREMOVE);
+            throw new BookException(Msg.lookupText("Could not remove unregistered Book: {0}", book.getName()));
         }
     }
 
@@ -307,9 +307,7 @@ public final class Books implements BookList {
         }
 
         if (!drivers.remove(driver)) {
-            throw new BookException(Msg.DRIVER_NOREMOVE, new Object[] {
-                driver.getClass().getName()
-            });
+            throw new BookException(Msg.lookupText("Could not remove unregistered Driver: {0}", driver.getClass().getName()));
         }
 
         log.debug("end un-registering driver: " + driver.getClass().getName());
@@ -317,7 +315,7 @@ public final class Books implements BookList {
 
     /**
      * Since Books keeps a track of drivers itself, including creating them when
-     * registered it can be hard to get ahold of the current book driver. This
+     * registered it can be hard to get a hold of the current book driver. This
      * method gives access to the registered instances.
      */
     public synchronized BookDriver[] getDriversByClass(Class<? extends BookDriver> type) {

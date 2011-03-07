@@ -37,8 +37,8 @@ import java.util.Map;
  */
 public class OptionList {
     public OptionList() {
-        longOptions = new LinkedHashMap<String,Option>();
-        shortOptions = new LinkedHashMap<String,Option>();
+        longOptions = new LinkedHashMap<String, Option>();
+        shortOptions = new LinkedHashMap<String, Option>();
     }
 
     /**
@@ -79,7 +79,7 @@ public class OptionList {
             matches.add(longOptions.get(key));
         }
 
-        for (Map.Entry<String,Option> entry : longOptions.entrySet()) {
+        for (Map.Entry<String, Option> entry : longOptions.entrySet()) {
             String entryKey = entry.getKey();
             Option entryValue = entry.getValue();
             if (entryKey.startsWith(key) && !matches.contains(entryValue)) {
@@ -98,10 +98,11 @@ public class OptionList {
      * @return the matching Option, null otherwise.
      */
     public Option getShortOption(char key) {
-        Character keyChar = Character.valueOf(key);
+        String optionName = Character.toString(key);
+
         Option match = null;
-        if (shortOptions.containsKey(keyChar)) {
-            match = shortOptions.get(keyChar);
+        if (shortOptions.containsKey(optionName)) {
+            match = shortOptions.get(optionName);
         }
 
         return match;
@@ -136,6 +137,6 @@ public class OptionList {
         return matches;
     }
 
-    private Map<String,Option> shortOptions;
-    private Map<String,Option> longOptions;
+    private Map<String, Option> shortOptions;
+    private Map<String, Option> longOptions;
 }

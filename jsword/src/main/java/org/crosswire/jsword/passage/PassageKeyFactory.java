@@ -295,7 +295,7 @@ public final class PassageKeyFactory implements KeyFactory {
             break;
 
         default:
-            throw new NoSuchVerseException(Msg.PASSAGE_UNKNOWN);
+            throw new NoSuchVerseException(Msg.lookupText("Unknown passage type."));
         }
 
         // Some speedups

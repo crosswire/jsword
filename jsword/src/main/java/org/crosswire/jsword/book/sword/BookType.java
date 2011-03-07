@@ -241,7 +241,7 @@ public enum BookType {
             }
         }
 
-        throw new IllegalArgumentException(Msg.UNDEFINED_BOOK_TYPE.toString(name));
+        throw new IllegalArgumentException(Msg.lookupText("BookType {0} is not defined!", name));
     }
 
     /**
@@ -316,7 +316,7 @@ public enum BookType {
             }
         }
 
-        throw new ClassCastException(Msg.UNDEFINED_DATATYPE.toString(name));
+        throw new ClassCastException(Msg.lookupText("DataType {0} is not defined!", name));
     }
 
     /* (non-Javadoc)

@@ -93,7 +93,7 @@ public class PatternFormatter extends Formatter {
             format = DEFAULT_FORMAT;
         }
 
-        Object[] args = {
+        return MessageFormat.format(format,
                 dat, // 0
                 record.getLoggerName(), // 1
                 record.getLevel().getLocalizedName(), // 2
@@ -102,18 +102,12 @@ public class PatternFormatter extends Formatter {
                 record.getSourceClassName(), // 5
                 record.getSourceMethodName(), // 6
                 Long.valueOf(record.getSequenceNumber()), // 7
-                lineSeparator, // 8
-        };
-
-        StringBuffer text = new StringBuffer();
-        formatter = new MessageFormat(format);
-        formatter.format(args, text, null);
-        return text.toString();
+                lineSeparator // 8
+        );
     }
 
     private Date dat = new Date();
     private static final String DEFAULT_FORMAT = "{1}({2}): {3}{8} {4}";
-    private MessageFormat formatter;
 
     // Line separator string. This is the value of the line.separator
     // property at the moment that the PatternFormatter was created.

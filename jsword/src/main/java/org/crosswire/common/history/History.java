@@ -45,7 +45,7 @@ public class History {
      */
     public History() {
         nav = new ArrayList<Object>();
-        history = new HashMap<Object,Long>();
+        history = new HashMap<Object, Long>();
         listeners = new EventListenerList();
     }
 
@@ -250,7 +250,7 @@ public class History {
     /**
      * A map of elements that have been seen so far to when they have been seen.
      */
-    private Map<Object,Long> history;
+    private Map<Object, Long> history;
 
     /**
      * The number of elements in the "back" list.

@@ -29,7 +29,6 @@ import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
-import org.crosswire.jsword.book.filter.FilterException;
 import org.crosswire.jsword.passage.Key;
 import org.jdom.Content;
 import org.jdom.Element;
@@ -52,7 +51,7 @@ public class GBFFilter implements Filter {
      * org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book
      * .Book, org.crosswire.jsword.passage.Key, java.lang.String)
      */
-    public List<Content> toOSIS(Book book, Key key, String plain) throws FilterException {
+    public List<Content> toOSIS(Book book, Key key, String plain) {
         DataPolice.setKey(key);
         Element ele = OSISUtil.factory().createDiv();
         LinkedList<Content> stack = new LinkedList<Content>();
