@@ -28,6 +28,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.crosswire.common.util.CWClassLoader;
+import org.crosswire.common.util.ClassUtil;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 
 /**
@@ -108,7 +109,9 @@ public final class OSISNames {
         osisMap = new HashMap<String, Integer>(booksInBible);
 
         // Get all the OSIS standard book names
-        ResourceBundle resources = ResourceBundle.getBundle(OSISNames.class.getName(), OSIS_LOCALE, CWClassLoader.instance(OSISNames.class));
+        String className = OSISNames.class.getName();
+        String shortClassName = ClassUtil.getShortClassName(className);
+        ResourceBundle resources = ResourceBundle.getBundle(shortClassName, OSIS_LOCALE, CWClassLoader.instance(OSISNames.class));
 
         for (int i = 0; i < osisBooks.length; i++) {
             osisBooks[i] = getString(resources, OSIS_KEY + (i + 1));

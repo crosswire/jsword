@@ -28,6 +28,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.crosswire.common.util.CWClassLoader;
+import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 
@@ -165,7 +166,9 @@ public final class BibleNames {
 
         altBooksMap = new HashMap<String, BookName>(booksInBible);
 
-        ResourceBundle resources = ResourceBundle.getBundle(BibleNames.class.getName(), locale, CWClassLoader.instance(BibleNames.class));
+        String className = BibleNames.class.getName();
+        String shortClassName = ClassUtil.getShortClassName(className);
+        ResourceBundle resources = ResourceBundle.getBundle(shortClassName, locale, CWClassLoader.instance(BibleNames.class));
 
         for (int i = 0; i < booksInBible; i++) {
             String osisName = "";
