@@ -26,10 +26,10 @@ import java.util.List;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
+import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractPassageBook;
-import org.crosswire.jsword.book.basic.Msg;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.passage.Key;
 import org.jdom.Content;
@@ -178,7 +178,7 @@ public class SwordBook extends AbstractPassageBook {
      * .jsword.passage.Key, java.lang.String)
      */
     public void setRawText(Key key, String rawData) throws BookException {
-        throw new BookException(Msg.lookupText("This Book is read-only."));
+        throw new BookException(JSOtherMsg.lookupText("This Book is read-only."));
     }
 
     /*
@@ -192,7 +192,7 @@ public class SwordBook extends AbstractPassageBook {
         try {
             backend.setAliasKey(alias, source);
         } catch (IOException e) {
-            throw new BookException(Msg.lookupText("Unable to save {0}.", alias.getOsisID()));
+            throw new BookException(JSOtherMsg.lookupText("Unable to save {0}.", alias.getOsisID()));
         }
     }
 

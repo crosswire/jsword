@@ -21,6 +21,7 @@
  */
 package org.crosswire.jsword.book.sword;
 
+import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookException;
@@ -241,7 +242,7 @@ public enum BookType {
             }
         }
 
-        throw new IllegalArgumentException(Msg.lookupText("BookType {0} is not defined!", name));
+        throw new IllegalArgumentException(JSOtherMsg.lookupText("BookType {0} is not defined!", name));
     }
 
     /**
@@ -316,7 +317,7 @@ public enum BookType {
             }
         }
 
-        throw new ClassCastException(Msg.lookupText("DataType {0} is not defined!", name));
+        throw new ClassCastException(JSOtherMsg.lookupText("DataType {0} is not defined!", name));
     }
 
     /* (non-Javadoc)

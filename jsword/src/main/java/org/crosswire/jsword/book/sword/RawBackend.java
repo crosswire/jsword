@@ -33,6 +33,8 @@ import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.JSMsg;
+import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.passage.Key;
@@ -121,7 +123,7 @@ public class RawBackend extends AbstractBackend {
             } catch (IOException ex) {
                 // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
                 // {0} is a placeholder for the file.
-                throw new BookException(UserMsg.gettext("Error reading {0}", verse.getName()), ex);
+                throw new BookException(JSMsg.gettext("Error reading {0}", verse.getName()), ex);
             }
         } finally {
             DataPolice.setKey(null);
@@ -197,7 +199,7 @@ public class RawBackend extends AbstractBackend {
 
         // It is an error to be neither OT nor NT
         if (!txtFile[SwordConstants.TESTAMENT_OLD].canRead() && !txtFile[SwordConstants.TESTAMENT_NEW].canRead()) {
-            Reporter.informUser(this, new BookException(Msg.lookupText("Missing data files for old and new testaments in {0}.", path)));
+            Reporter.informUser(this, new BookException(JSOtherMsg.lookupText("Missing data files for old and new testaments in {0}.", path)));
             return;
         }
 

@@ -27,6 +27,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.crosswire.common.icu.DateFormatter;
+import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.passage.DefaultLeafKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
@@ -59,7 +60,7 @@ public class ReadingsKey extends DefaultLeafKeyList {
             formatter.setLenient(true);
             date = formatter.parse(text);
         } catch (ParseException ex) {
-            throw new NoSuchKeyException(Msg.lookupText("Failed to parse {0}", text), ex);
+            throw new NoSuchKeyException(JSOtherMsg.lookupText("Failed to parse {0}", text), ex);
         }
     }
 

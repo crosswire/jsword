@@ -22,6 +22,7 @@
 package org.crosswire.jsword.passage;
 
 import org.crosswire.common.util.StringUtil;
+import org.crosswire.jsword.JSMsg;
 
 /**
  * A factory that creates VerseRanges from user input.
@@ -86,7 +87,7 @@ public final class VerseRangeFactory {
 
         default:
             // TRANSLATOR: The user specified a verse range with too many separators. {0} is a placeholder for the allowable separators.
-            throw new NoSuchVerseException(UserMsg.gettext("A verse range cannot have more than 2 parts. (Parts are separated by {0}) Given {1}", VerseRange.RANGE_ALLOWED_DELIMS, original));
+            throw new NoSuchVerseException(JSMsg.gettext("A verse range cannot have more than 2 parts. (Parts are separated by {0}) Given {1}", VerseRange.RANGE_ALLOWED_DELIMS, original));
         }
     }
 

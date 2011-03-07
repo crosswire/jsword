@@ -550,7 +550,7 @@ public class License {
      */
     public String getWarranty() {
         // I18N(DMS)
-        return Msg.lookupText("License.warranty", name);
+        return LGPLMsg.lookupText("License.warranty", name);
     }
 
     /**
@@ -560,7 +560,7 @@ public class License {
      */
     public String getDetails() {
         // I18N(DMS)
-        return Msg.lookupText("License.details", name);
+        return LGPLMsg.lookupText("License.details", name);
     }
 
     /**

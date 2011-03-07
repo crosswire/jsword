@@ -36,6 +36,8 @@ import java.util.NoSuchElementException;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.StringUtil;
+import org.crosswire.jsword.JSMsg;
+import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.versification.BibleInfo;
 
 /**
@@ -293,7 +295,7 @@ public abstract class AbstractPassage implements Passage {
         // The reason to go into this is that this pattern works for English. Other languages might have different ways of representing singular and plurals.
         // {1,number,integer} is a placeholder for the count of Bible books. It works the same way as the count of verses.
         // {1,choice,0#books|1#book|1<books} is the placeholder for the singular or plural of "book"
-        return UserMsg.gettext("{0,number,integer} {0,choice,0#verses|1#verse|1<verses} in {1,number,integer} {1,choice,0#books|1#book|1<books}",
+        return JSMsg.gettext("{0,number,integer} {0,choice,0#verses|1#verse|1<verses} in {1,number,integer} {1,choice,0#books|1#book|1<books}",
                 Integer.valueOf(countVerses()), Integer.valueOf(booksInPassage()
                 ));
     }
@@ -437,7 +439,7 @@ public abstract class AbstractPassage implements Passage {
 
         for (int i = 0; i <= offset; i++) {
             if (!it.hasNext()) {
-                throw new ArrayIndexOutOfBoundsException(Msg.lookupText("Index out of range (Given {0,number,integer}, Max {1,number,integer}).", Integer.valueOf(offset), Integer.valueOf(countVerses())));
+                throw new ArrayIndexOutOfBoundsException(JSOtherMsg.lookupText("Index out of range (Given {0,number,integer}, Max {1,number,integer}).", Integer.valueOf(offset), Integer.valueOf(countVerses())));
             }
 
             retcode = it.next();
@@ -457,7 +459,7 @@ public abstract class AbstractPassage implements Passage {
 
         for (int i = 0; i <= offset; i++) {
             if (!it.hasNext()) {
-                throw new ArrayIndexOutOfBoundsException(Msg.lookupText("Index out of range (Given {0,number,integer}, Max {1,number,integer}).", Integer.valueOf(offset), Integer.valueOf(countVerses())));
+                throw new ArrayIndexOutOfBoundsException(JSOtherMsg.lookupText("Index out of range (Given {0,number,integer}, Max {1,number,integer}).", Integer.valueOf(offset), Integer.valueOf(countVerses())));
             }
 
             retcode = it.next();
@@ -1116,7 +1118,7 @@ public abstract class AbstractPassage implements Passage {
             return new VerseRange((Verse) base);
         }
 
-        throw new ClassCastException(Msg.lookupText("Can only use Verses and VerseRanges in this Collection"));
+        throw new ClassCastException(JSOtherMsg.lookupText("Can only use Verses and VerseRanges in this Collection"));
     }
 
     /**
@@ -1360,7 +1362,7 @@ public abstract class AbstractPassage implements Passage {
                 break;
 
             default:
-                throw new ClassCastException(Msg.lookupText("Can only use Verses and VerseRanges in this Collection"));
+                throw new ClassCastException(JSOtherMsg.lookupText("Can only use Verses and VerseRanges in this Collection"));
             }
         } catch (NoSuchVerseException ex) {
             throw new IOException(ex.getMessage());

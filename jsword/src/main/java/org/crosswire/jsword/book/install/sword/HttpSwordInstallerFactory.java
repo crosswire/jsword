@@ -23,6 +23,7 @@ package org.crosswire.jsword.book.install.sword;
 
 import java.util.regex.Pattern;
 
+import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.install.Installer;
 import org.crosswire.jsword.book.install.InstallerFactory;
 
@@ -60,7 +61,7 @@ public class HttpSwordInstallerFactory implements InstallerFactory {
         case 6:
             return createInstaller(parts);
         default:
-            throw new IllegalArgumentException(Msg.lookupText("Not enough / symbols in url: {0}", installerDefinition));
+            throw new IllegalArgumentException(JSOtherMsg.lookupText("Not enough / symbols in url: {0}", installerDefinition));
         }
 
     }

@@ -33,6 +33,7 @@ import org.crosswire.common.compress.CompressorType;
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
+import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.passage.Key;
@@ -357,7 +358,7 @@ public class ZVerseBackend extends AbstractBackend {
             } catch (IOException e) {
                 // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
                 // {0} is a placeholder for the file.
-                throw new BookException(UserMsg.gettext("Error reading {0}", verse.getName()), e);
+                throw new BookException(JSMsg.gettext("Error reading {0}", verse.getName()), e);
             }
         } finally {
             DataPolice.setKey(key);

@@ -23,6 +23,8 @@ package org.crosswire.jsword.passage;
 
 import java.util.Iterator;
 
+import org.crosswire.jsword.JSOtherMsg;
+
 /**
  * A read-only wrapper around any writable implementation of Key.
  * 
@@ -106,7 +108,7 @@ public class ReadOnlyKeyList implements Key {
             return;
         }
 
-        throw new IllegalStateException(Msg.lookupText("Cannot alter a read-only key list"));
+        throw new IllegalStateException(JSOtherMsg.lookupText("Cannot alter a read-only key list"));
     }
 
     /*
@@ -120,7 +122,7 @@ public class ReadOnlyKeyList implements Key {
             return;
         }
 
-        throw new IllegalStateException(Msg.lookupText("Cannot alter a read-only key list"));
+        throw new IllegalStateException(JSOtherMsg.lookupText("Cannot alter a read-only key list"));
     }
 
     /*
@@ -134,7 +136,7 @@ public class ReadOnlyKeyList implements Key {
             return;
         }
 
-        throw new IllegalStateException(Msg.lookupText("Cannot alter a read-only key list"));
+        throw new IllegalStateException(JSOtherMsg.lookupText("Cannot alter a read-only key list"));
     }
 
     /*
@@ -147,7 +149,7 @@ public class ReadOnlyKeyList implements Key {
             return;
         }
 
-        throw new IllegalStateException(Msg.lookupText("Cannot alter a read-only key list"));
+        throw new IllegalStateException(JSOtherMsg.lookupText("Cannot alter a read-only key list"));
     }
 
     /*
@@ -265,7 +267,7 @@ public class ReadOnlyKeyList implements Key {
             return;
         }
 
-        throw new IllegalStateException(Msg.lookupText("Cannot alter a read-only key list"));
+        throw new IllegalStateException(JSOtherMsg.lookupText("Cannot alter a read-only key list"));
     }
 
     /*

@@ -27,6 +27,7 @@ import java.util.ResourceBundle;
 import java.util.TreeMap;
 
 import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.JSOtherMsg;
 import org.jdom.Element;
 
 /**
@@ -50,7 +51,7 @@ public class MappedOptionsChoice extends AbstractReflectedChoice implements Mapp
         super.init(option, configResources);
         Element mapElement = option.getChild("map");
         if (mapElement == null) {
-            throw new StartupException(Msg.lookupText("Missing {0} element in config.xml", "map"));
+            throw new StartupException(JSOtherMsg.lookupText("Missing {0} element in config.xml", "map"));
         }
 
         String name = mapElement.getAttributeValue("name");
@@ -109,7 +110,7 @@ public class MappedOptionsChoice extends AbstractReflectedChoice implements Mapp
                 return mapEntry.getKey().toString();
             }
         }
-        logger.warn(Msg.lookupText("Ignoring invalid option: {0}", orig));
+        logger.warn(JSOtherMsg.lookupText("Ignoring invalid option: {0}", orig));
         return "";
     }
 

@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
 
+import org.crosswire.jsword.JSOtherMsg;
+
 /**
  * A plugin maps one or more implementations to an interface or abstract class
  * via a properties file whose suffix is "plugin". When there is more than one
@@ -147,7 +149,7 @@ public final class PluginUtil {
 
         Class<T> impl = (Class<T>) ClassUtil.forName(name);
         if (!clazz.isAssignableFrom(impl)) {
-            throw new ClassCastException(Msg.lookupText("Class {0} does not implement {1}.", impl.getName(), clazz.getName()));
+            throw new ClassCastException(JSOtherMsg.lookupText("Class {0} does not implement {1}.", impl.getName(), clazz.getName()));
         }
 
         return impl;

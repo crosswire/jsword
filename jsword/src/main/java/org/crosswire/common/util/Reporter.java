@@ -23,6 +23,8 @@ package org.crosswire.common.util;
 
 import java.util.Properties;
 
+import org.crosswire.jsword.JSMsg;
+
 /**
  * This package looks after Exceptions and messages as they happen. It would be
  * nice not to need this class - the principle being that any library that
@@ -230,7 +232,7 @@ public final class Reporter {
             // and way too many dialogs were being thrown up on the screen.
             if (gate.open()) {
                 // TRANSLATOR: Very frequent error condition: The program has encountered a severe problem and it is likely that the program is unusable.
-                Reporter.informUser(this, new LucidException(UserMsg.gettext("Unexpected internal problem. You may need to restart."), ex));
+                Reporter.informUser(this, new LucidException(JSMsg.gettext("Unexpected internal problem. You may need to restart."), ex));
             }
         }
 

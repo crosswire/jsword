@@ -23,6 +23,8 @@ package org.crosswire.jsword.versification;
 
 import java.util.Locale;
 
+import org.crosswire.jsword.JSMsg;
+import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.CaseType;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 
@@ -182,7 +184,7 @@ public final class SectionNames {
      */
     public String getSectionName(int section) throws NoSuchVerseException {
         if (section == 0) {
-            throw new NoSuchVerseException(Msg.lookupText("Section must be between 1 and 8 (given {0,number,integer}).", Integer.valueOf(section)));
+            throw new NoSuchVerseException(JSOtherMsg.lookupText("Section must be between 1 and 8 (given {0,number,integer}).", Integer.valueOf(section)));
         }
 
         try {
@@ -201,7 +203,7 @@ public final class SectionNames {
             // This is faster than doing the check explicitly, unless
             // The exception is actually thrown, then it is a lot slower
             // I'd like to think that the norm is to get it right
-            throw new NoSuchVerseException(Msg.lookupText("Section must be between 1 and 8 (given {0,number,integer}).", Integer.valueOf(section)));
+            throw new NoSuchVerseException(JSOtherMsg.lookupText("Section must be between 1 and 8 (given {0,number,integer}).", Integer.valueOf(section)));
         }
     }
 
@@ -213,21 +215,21 @@ public final class SectionNames {
         sections = new String[SECTIONS_IN_BIBLE];
 
         // TRANSLATOR: Pentateuch is the first 5 books of the Bible.
-        sections[0] = UserMsg.gettext("Pentateuch");
+        sections[0] = JSMsg.gettext("Pentateuch");
         // TRANSLATOR: History are the books of the Old Testament that give the history of Israel
-        sections[1] = UserMsg.gettext("History");
+        sections[1] = JSMsg.gettext("History");
         // TRANSLATOR: The Bible poetry books
-        sections[2] = UserMsg.gettext("Poetry");
+        sections[2] = JSMsg.gettext("Poetry");
         // TRANSLATOR: The Bible's major prophets
-        sections[3] = UserMsg.gettext("Major Prophets");
+        sections[3] = JSMsg.gettext("Major Prophets");
         // TRANSLATOR: The Bible's minor prophets
-        sections[4] = UserMsg.gettext("Minor Prophets");
+        sections[4] = JSMsg.gettext("Minor Prophets");
         // TRANSLATOR: The 4 Gospels and Acts in the New Testament
-        sections[5] = UserMsg.gettext("Gospels And Acts");
+        sections[5] = JSMsg.gettext("Gospels And Acts");
         // TRANSLATOR: The letters of the New Testament
-        sections[6] = UserMsg.gettext("Letters");
+        sections[6] = JSMsg.gettext("Letters");
         // TRANSLATOR: The book of Revelation
-        sections[7] = UserMsg.gettext("Revelation");
+        sections[7] = JSMsg.gettext("Revelation");
     }
 
     /**

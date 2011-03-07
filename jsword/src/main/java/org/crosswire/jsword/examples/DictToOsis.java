@@ -27,6 +27,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.text.FieldPosition;
 import java.text.MessageFormat;
+
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.common.xml.XMLProcess;
 import org.crosswire.common.xml.XMLUtil;

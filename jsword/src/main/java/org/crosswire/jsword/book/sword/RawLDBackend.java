@@ -43,6 +43,7 @@ import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.StringUtil;
+import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.DataPolice;
@@ -103,11 +104,11 @@ public class RawLDBackend extends AbstractKeyBackend {
                 return getRawText(entry);
             }
             // TRANSLATOR: Error condition: Indicates that something could not be found in the book. {0} is a placeholder for the unknown key.
-            throw new BookException(UserMsg.gettext("Key not found {0}", key));
+            throw new BookException(JSMsg.gettext("Key not found {0}", key));
         } catch (IOException ex) {
             // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
             // {0} is a placeholder for the file.
-            throw new BookException(UserMsg.gettext("Error reading {0}", key), ex);
+            throw new BookException(JSMsg.gettext("Error reading {0}", key), ex);
         }
     }
 
@@ -204,14 +205,14 @@ public class RawLDBackend extends AbstractKeyBackend {
             if (!idxFile.canRead()) {
                 // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
                 // {0} is a placeholder for the file.
-                Reporter.informUser(this, new BookException(UserMsg.gettext("Error reading {0}", idxFile.getAbsolutePath())));
+                Reporter.informUser(this, new BookException(JSMsg.gettext("Error reading {0}", idxFile.getAbsolutePath())));
                 return;
             }
 
             if (!datFile.canRead()) {
                 // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
                 // {0} is a placeholder for the file.
-                Reporter.informUser(this, new BookException(UserMsg.gettext("Error reading {0}", datFile.getAbsolutePath())));
+                Reporter.informUser(this, new BookException(JSMsg.gettext("Error reading {0}", datFile.getAbsolutePath())));
                 return;
             }
 

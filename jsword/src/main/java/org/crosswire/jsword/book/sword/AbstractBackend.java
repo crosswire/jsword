@@ -28,6 +28,7 @@ import java.net.URI;
 import org.crosswire.common.activate.Activatable;
 import org.crosswire.common.crypt.Sapphire;
 import org.crosswire.common.util.NetUtil;
+import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
 
@@ -96,7 +97,7 @@ public abstract class AbstractBackend implements Activatable {
 
         if (loc == null) {
             // FIXME(DMS): missing parameter
-            throw new BookException(Msg.lookupText("Missing data files for old and new testaments in {0}."));
+            throw new BookException(JSOtherMsg.lookupText("Missing data files for old and new testaments in {0}."));
         }
 
         return loc;

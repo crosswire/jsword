@@ -30,6 +30,7 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PropertyMap;
 import org.crosswire.common.util.ResourceUtil;
+import org.crosswire.jsword.JSMsg;
 
 /**
  * Provide a configurable warning that the Internet is going to be accessed.
@@ -109,7 +110,7 @@ public class WebWarning {
         // TRANSLATOR: Warn the user that the program is about to access the Internet.
         // In some countries, this warning may be too bland. It might be better to warn the user that this might
         // put them at risk of persecution.
-        return UserMsg.gettext("You are about to access the Internet. Are you sure you want to do this?");
+        return JSMsg.gettext("You are about to access the Internet. Are you sure you want to do this?");
     }
 
     /**
@@ -118,7 +119,7 @@ public class WebWarning {
     public String getShownWarningLabel() {
         // TRANSLATOR: This labels a checkbox, which is checked by default.
         // Unchecking it allows the user to not see the message again but the Internet will be accessed.
-        return UserMsg.gettext("Show this warning every time the Internet is accessed.");
+        return JSMsg.gettext("Show this warning every time the Internet is accessed.");
     }
 
     private static WebWarning instance = new WebWarning();

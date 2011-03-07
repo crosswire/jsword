@@ -26,6 +26,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.MissingResourceException;
 
+import org.crosswire.jsword.JSOtherMsg;
+
 /**
  * Better implementations of the getResource methods with less ambiguity and
  * that are less dependent on the specific classloader situation.
@@ -70,7 +72,7 @@ public final class ResourceUtil {
         URL resource = CWClassLoader.instance(clazz).findResource(resourceName);
 
         if (resource == null) {
-            throw new MissingResourceException(Msg.lookupText("Cannot find resource: {0}", resourceName), clazz.getName(), resourceName);
+            throw new MissingResourceException(JSOtherMsg.lookupText("Cannot find resource: {0}", resourceName), clazz.getName(), resourceName);
         }
 
         return resource;

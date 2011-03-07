@@ -41,6 +41,7 @@ import org.crosswire.common.util.Language;
 import org.crosswire.common.util.Languages;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.OSISUtil;
 import org.jdom.Element;
@@ -222,7 +223,7 @@ public final class ConfigEntryTable {
                 save();
             } catch (IOException e) {
                 // TRANSLATOR: Common error condition: The user supplied unlock key could not be saved.
-                Reporter.informUser(this, UserMsg.gettext("Unable to save the book's unlock key."));
+                Reporter.informUser(this, JSMsg.gettext("Unable to save the book's unlock key."));
             }
         }
         return true;

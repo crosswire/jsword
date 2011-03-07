@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Iterator;
 
+import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.versification.BibleInfo;
 
 /**
@@ -295,7 +296,7 @@ public final class PassageKeyFactory implements KeyFactory {
             break;
 
         default:
-            throw new NoSuchVerseException(Msg.lookupText("Unknown passage type."));
+            throw new NoSuchVerseException(JSOtherMsg.lookupText("Unknown passage type."));
         }
 
         // Some speedups

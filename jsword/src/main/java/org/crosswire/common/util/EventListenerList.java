@@ -28,6 +28,8 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.EventListener;
 
+import org.crosswire.jsword.JSOtherMsg;
+
 /**
  * A class which holds a list of EventListeners. This code is lifted from
  * javax.sw*ng.event.EventListnerList. It is very useful in non GUI code which
@@ -193,7 +195,7 @@ public class EventListenerList implements Serializable {
         }
 
         if (!t.isInstance(li)) {
-            throw new IllegalArgumentException(Msg.lookupText("Listener {0} is not of type {1}", li, t));
+            throw new IllegalArgumentException(JSOtherMsg.lookupText("Listener {0} is not of type {1}", li, t));
         }
 
         if (listenerList == NULL_ARRAY) {
@@ -232,7 +234,7 @@ public class EventListenerList implements Serializable {
         }
 
         if (!t.isInstance(li)) {
-            throw new IllegalArgumentException(Msg.lookupText("Listener {0} is not of type {1}", li, t));
+            throw new IllegalArgumentException(JSOtherMsg.lookupText("Listener {0} is not of type {1}", li, t));
         }
 
         // Is li on the list?

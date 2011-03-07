@@ -29,6 +29,8 @@ import java.util.Iterator;
 import org.crosswire.common.icu.NumberShaper;
 import org.crosswire.common.util.ItemIterator;
 import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.JSMsg;
+import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.versification.BibleInfo;
 
 /**
@@ -134,7 +136,7 @@ public final class Verse implements Key {
      */
     public Verse(int book, int chapter, int verse, boolean patch_up) {
         if (!patch_up) {
-            throw new IllegalArgumentException(Msg.lookupText("Use patch=true."));
+            throw new IllegalArgumentException(JSOtherMsg.lookupText("Use patch=true."));
         }
 
         originalName = null;
@@ -692,7 +694,7 @@ public final class Verse implements Key {
         } catch (NumberFormatException ex) {
             // TRANSLATOR: The chapter or verse number is actually not a number, but something else.
             // {0} is a placeholder for what the user supplied.
-            throw new NoSuchVerseException(UserMsg.gettext("Cannot understand {0} as a chapter or verse.", text));
+            throw new NoSuchVerseException(JSMsg.gettext("Cannot understand {0} as a chapter or verse.", text));
         }
     }
 

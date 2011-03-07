@@ -29,9 +29,10 @@ import java.util.Map;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
+import org.crosswire.jsword.JSMsg;
+import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.AbstractBook;
-import org.crosswire.jsword.book.basic.Msg;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
@@ -149,14 +150,14 @@ public class SwordGenBook extends AbstractBook {
      * @see org.crosswire.jsword.book.Book#setRawText(org.crosswire.jsword.passage.Key, java.lang.String)
      */
     public void setRawText(Key key, String rawData) throws BookException {
-        throw new BookException(Msg.lookupText("This Book is read-only."));
+        throw new BookException(JSOtherMsg.lookupText("This Book is read-only."));
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#setAliasKey(org.crosswire.jsword.passage.Key, org.crosswire.jsword.passage.Key)
      */
     public void setAliasKey(Key alias, Key source) throws BookException {
-        throw new BookException(Msg.lookupText("This Book is read-only."));
+        throw new BookException(JSOtherMsg.lookupText("This Book is read-only."));
     }
 
     /* (non-Javadoc)
@@ -214,7 +215,7 @@ public class SwordGenBook extends AbstractBook {
         // TRANSLATOR: Error condition: Indicates that something could not be found in the book.
         // {0} is a placeholder for the unknown key.
         // {1} is the short name of the book
-        throw new NoSuchKeyException(UserMsg.gettext("No entry for \'{0}\' in {1}.", text, getInitials()));
+        throw new NoSuchKeyException(JSMsg.gettext("No entry for \'{0}\' in {1}.", text, getInitials()));
     }
 
     /* (non-Javadoc)

@@ -34,6 +34,7 @@ import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.PluginUtil;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.JSOtherMsg;
 
 /**
  * The Books class (along with Book) is the central point of contact between the
@@ -249,7 +250,7 @@ public final class Books implements BookList {
         if (removed) {
             fireBooksChanged(instance, book, true);
         } else {
-            throw new BookException(Msg.lookupText("Could not remove unregistered Book: {0}", book.getName()));
+            throw new BookException(JSOtherMsg.lookupText("Could not remove unregistered Book: {0}", book.getName()));
         }
     }
 
@@ -307,7 +308,7 @@ public final class Books implements BookList {
         }
 
         if (!drivers.remove(driver)) {
-            throw new BookException(Msg.lookupText("Could not remove unregistered Driver: {0}", driver.getClass().getName()));
+            throw new BookException(JSOtherMsg.lookupText("Could not remove unregistered Driver: {0}", driver.getClass().getName()));
         }
 
         log.debug("end un-registering driver: " + driver.getClass().getName());

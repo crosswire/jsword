@@ -26,6 +26,8 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.Iterator;
 
+import org.crosswire.jsword.JSOtherMsg;
+
 /**
  * This is a simple proxy to a real Passage object that denies all attempts to
  * write to it.
@@ -59,7 +61,7 @@ final class ReadOnlyPassage implements Passage {
             return;
         }
 
-        throw new IllegalStateException(Msg.lookupText("Cannot alter a read-only passage"));
+        throw new IllegalStateException(JSOtherMsg.lookupText("Cannot alter a read-only passage"));
     }
 
     /*
@@ -73,7 +75,7 @@ final class ReadOnlyPassage implements Passage {
             return;
         }
 
-        throw new IllegalStateException(Msg.lookupText("Cannot alter a read-only passage"));
+        throw new IllegalStateException(JSOtherMsg.lookupText("Cannot alter a read-only passage"));
     }
 
     /*
@@ -87,7 +89,7 @@ final class ReadOnlyPassage implements Passage {
             return;
         }
 
-        throw new IllegalStateException(Msg.lookupText("Cannot alter a read-only passage"));
+        throw new IllegalStateException(JSOtherMsg.lookupText("Cannot alter a read-only passage"));
     }
 
     /*
@@ -347,7 +349,7 @@ final class ReadOnlyPassage implements Passage {
             return;
         }
 
-        throw new IllegalStateException(Msg.lookupText("Cannot alter a read-only passage"));
+        throw new IllegalStateException(JSOtherMsg.lookupText("Cannot alter a read-only passage"));
     }
 
     /*
@@ -362,7 +364,7 @@ final class ReadOnlyPassage implements Passage {
             return;
         }
 
-        throw new IllegalStateException(Msg.lookupText("Cannot alter a read-only passage"));
+        throw new IllegalStateException(JSOtherMsg.lookupText("Cannot alter a read-only passage"));
     }
 
     /*
@@ -386,7 +388,7 @@ final class ReadOnlyPassage implements Passage {
             return;
         }
 
-        throw new IllegalStateException(Msg.lookupText("Cannot alter a read-only passage"));
+        throw new IllegalStateException(JSOtherMsg.lookupText("Cannot alter a read-only passage"));
     }
 
     /*
@@ -399,7 +401,7 @@ final class ReadOnlyPassage implements Passage {
             return;
         }
 
-        throw new IllegalStateException(Msg.lookupText("Cannot alter a read-only passage"));
+        throw new IllegalStateException(JSOtherMsg.lookupText("Cannot alter a read-only passage"));
     }
 
     /*
@@ -412,7 +414,7 @@ final class ReadOnlyPassage implements Passage {
             return;
         }
 
-        throw new IllegalStateException(Msg.lookupText("Cannot alter a read-only passage"));
+        throw new IllegalStateException(JSOtherMsg.lookupText("Cannot alter a read-only passage"));
     }
 
     /*

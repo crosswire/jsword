@@ -21,6 +21,7 @@
  */
 package org.crosswire.jsword.index.query;
 
+import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.index.Index;
 import org.crosswire.jsword.passage.Key;
@@ -58,7 +59,7 @@ public class RangeQuery extends AbstractQuery {
             return index.getKey(range);
         } catch (NoSuchKeyException e) {
             // TRANSLATOR: User error condition: The passage range could not be understood. {0} is a placeholder for the passage.
-            throw new BookException(UserMsg.gettext("Syntax Error: Invalid passage \"{0}\"", range), e);
+            throw new BookException(JSMsg.gettext("Syntax Error: Invalid passage \"{0}\"", range), e);
         }
     }
 }

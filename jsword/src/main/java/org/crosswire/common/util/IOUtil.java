@@ -33,6 +33,8 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.crosswire.jsword.JSMsg;
+
 /**
  * .
  * 
@@ -73,7 +75,7 @@ public final class IOUtil {
                 // Create the directory and make sure it worked.
                 if (!parentDir.mkdirs()) {
                     // TRANSLATOR: Error condition: A directory could not be created. {0} is a placeholder for the directory
-                    throw new MalformedURLException(UserMsg.gettext("The given URL {0} could not be created as a directory.", parentDir.toString()));
+                    throw new MalformedURLException(JSMsg.gettext("The given URL {0} could not be created as a directory.", parentDir.toString()));
                 }
             }
 

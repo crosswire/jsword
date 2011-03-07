@@ -30,6 +30,8 @@ import java.util.List;
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
+import org.crosswire.jsword.JSMsg;
+import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
@@ -163,7 +165,7 @@ public class SwordBookDriver extends AbstractBookDriver {
         if (!confFile.exists()) {
             // TRANSLATOR: Common error condition: The file could not be deleted. There can be many reasons.
             // {0} is a placeholder for the file.
-            throw new BookException(UserMsg.gettext("Unable to delete: {0}", confFile));
+            throw new BookException(JSMsg.gettext("Unable to delete: {0}", confFile));
         }
 
         // Delete the conf
@@ -182,7 +184,7 @@ public class SwordBookDriver extends AbstractBookDriver {
         if (!failures.isEmpty()) {
             // TRANSLATOR: Common error condition: The file could not be deleted. There can be many reasons.
             // {0} is a placeholder for the file.
-            throw new BookException(UserMsg.gettext("Unable to delete: {0}", failures.get(0)));
+            throw new BookException(JSMsg.gettext("Unable to delete: {0}", failures.get(0)));
         }
     }
 
@@ -219,7 +221,7 @@ public class SwordBookDriver extends AbstractBookDriver {
         BookType modtype = sbmd.getBookType();
         if (modtype == null || modtype.getBookCategory() == null) {
             // FIXME(DMS): missing parameter
-            throw new BookException(Msg.lookupText("Unsupported type: {0} when reading {1}"));
+            throw new BookException(JSOtherMsg.lookupText("Unsupported type: {0} when reading {1}"));
         }
 
         return modtype.createBook(sbmd);

@@ -50,6 +50,7 @@ import org.crosswire.common.progress.Progress;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
@@ -123,7 +124,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
             this.path = NetUtil.getAsFile(storage).getCanonicalPath();
         } catch (IOException ex) {
             // TRANSLATOR: Error condition: Could not initialize a search index.
-            throw new BookException(UserMsg.gettext("Failed to initialize Lucene search engine."), ex);
+            throw new BookException(JSMsg.gettext("Failed to initialize Lucene search engine."), ex);
         }
     }
 
@@ -143,14 +144,14 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
             this.path = finalPath.getCanonicalPath();
         } catch (IOException ex) {
             // TRANSLATOR: Error condition: Could not initialize a search index. Lucene is the name of the search technology being used.
-            throw new BookException(UserMsg.gettext("Failed to initialize Lucene search engine."), ex);
+            throw new BookException(JSMsg.gettext("Failed to initialize Lucene search engine."), ex);
         }
 
         // Indexing the book is a good way to police data errors.
         DataPolice.setBook(book.getBookMetaData());
 
         // TRANSLATOR: Progress label indicating the start of indexing. {0} is a placeholder for the book's short name.
-        String jobName = UserMsg.gettext("Creating index. Processing {0}", book.getInitials());
+        String jobName = JSMsg.gettext("Creating index. Processing {0}", book.getInitials());
         Progress job = JobManager.createJob(jobName, Thread.currentThread());
         job.beginJob(jobName);
 
@@ -178,7 +179,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
                 generateSearchIndexImpl(job, errors, writer, book.getGlobalKeyList(), 0);
 
                 // TRANSLATOR: Progress label for optimizing a search index. This may take a bit of time, so we have a label for it.
-                job.setSectionName(UserMsg.gettext("Optimizing"));
+                job.setSectionName(JSMsg.gettext("Optimizing"));
                 job.setWork(95);
 
                 // Consolidate the index into the minimum number of files.
@@ -201,7 +202,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
                 if (!job.isFinished()) {
                     if (!tempPath.renameTo(finalPath)) {
                         // TRANSLATOR: The search index could not be moved to it's final location.
-                        throw new BookException(UserMsg.gettext("Installation failed."));
+                        throw new BookException(JSMsg.gettext("Installation failed."));
                     }
                 }
 
@@ -217,14 +218,14 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
                     }
                     // TRANSLATOR: It is likely that one or more verses could not be indexed due to errors in those verses.
                     // This message gives a listing of them to the user.
-                    Reporter.informUser(this, UserMsg.gettext("The following verses have errors and could not be indexed\n{0}", buf));
+                    Reporter.informUser(this, JSMsg.gettext("The following verses have errors and could not be indexed\n{0}", buf));
                 }
 
             }
         } catch (IOException ex) {
             job.cancel();
             // TRANSLATOR: Common error condition: Some error happened while creating a search index.
-            throw new BookException(UserMsg.gettext("Failed to initialize Lucene search engine."), ex);
+            throw new BookException(JSMsg.gettext("Failed to initialize Lucene search engine."), ex);
         } finally {
             book.setIndexStatus(finalStatus);
             job.done();
@@ -295,17 +296,17 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
                 Throwable cause = e.getCause();
                 if (cause instanceof NoSuchVerseException) {
                     // TRANSLATOR: Error condition: An unexpected error happened that caused search to fail.
-                    throw new BookException(UserMsg.gettext("Search failed."), cause);
+                    throw new BookException(JSMsg.gettext("Search failed."), cause);
                 }
 
                 // TRANSLATOR: Error condition: An unexpected error happened that caused search to fail.
-                throw new BookException(UserMsg.gettext("Search failed."), e);
+                throw new BookException(JSMsg.gettext("Search failed."), e);
             } catch (NoSuchVerseException e) {
                 // TRANSLATOR: Error condition: An unexpected error happened that caused search to fail.
-                throw new BookException(UserMsg.gettext("Search failed."), e);
+                throw new BookException(JSMsg.gettext("Search failed."), e);
             } catch (ParseException e) {
                 // TRANSLATOR: Error condition: An unexpected error happened that caused search to fail.
-                throw new BookException(UserMsg.gettext("Search failed."), e);
+                throw new BookException(JSMsg.gettext("Search failed."), e);
             } finally {
                 Activator.deactivate(this);
             }

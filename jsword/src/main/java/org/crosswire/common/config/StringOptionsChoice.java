@@ -23,6 +23,7 @@ package org.crosswire.common.config;
 
 import java.util.ResourceBundle;
 
+import org.crosswire.jsword.JSOtherMsg;
 import org.jdom.Element;
 
 /**
@@ -43,7 +44,7 @@ public class StringOptionsChoice extends AbstractReflectedChoice implements Mult
         super.init(option, configResources);
         Element map = option.getChild("map");
         if (map == null) {
-            throw new StartupException(Msg.lookupText("Missing {0} element in config.xml", "map"));
+            throw new StartupException(JSOtherMsg.lookupText("Missing {0} element in config.xml", "map"));
         }
 
         String name = map.getAttributeValue("name");

@@ -33,6 +33,7 @@ import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
@@ -82,7 +83,7 @@ public class LuceneIndexManager implements IndexManager {
             return reply;
         } catch (IOException ex) {
             // TRANSLATOR: Common error condition: Some error happened while opening a search index.
-            throw new BookException(UserMsg.gettext("Failed to initialize Lucene search engine."), ex);
+            throw new BookException(JSMsg.gettext("Failed to initialize Lucene search engine."), ex);
         }
     }
 
@@ -134,7 +135,7 @@ public class LuceneIndexManager implements IndexManager {
             IOUtil.unpackZip(zip, NetUtil.getAsFile(storage));
         } catch (IOException ex) {
             // TRANSLATOR: The search index could not be moved to it's final location.
-            throw new BookException(UserMsg.gettext("Installation failed."), ex);
+            throw new BookException(JSMsg.gettext("Installation failed."), ex);
         }
     }
 
@@ -159,12 +160,12 @@ public class LuceneIndexManager implements IndexManager {
             FileUtil.delete(tempPath);
             if (!storage.renameTo(tempPath)) {
                 // TRANSLATOR: Error condition: The index could not be deleted.
-                throw new BookException(UserMsg.gettext("Failed to delete search index."));
+                throw new BookException(JSMsg.gettext("Failed to delete search index."));
             }
             book.setIndexStatus(IndexStatus.UNDONE);
         } catch (IOException ex) {
             // TRANSLATOR: Error condition: The index could not be deleted.
-            throw new BookException(UserMsg.gettext("Failed to delete search index."), ex);
+            throw new BookException(JSMsg.gettext("Failed to delete search index."), ex);
         }
 
         FileUtil.delete(tempPath);

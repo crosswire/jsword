@@ -21,6 +21,8 @@
  */
 package org.crosswire.jsword.book.sword;
 
+import org.crosswire.jsword.JSOtherMsg;
+
 
 /**
  * Block types indicates the grain of compression.
@@ -74,7 +76,7 @@ public enum BlockType {
             }
         }
 
-        throw new ClassCastException(Msg.lookupText("DataType {0} is not defined!", name));
+        throw new ClassCastException(JSOtherMsg.lookupText("DataType {0} is not defined!", name));
     }
 
     /* (non-Javadoc)

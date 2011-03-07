@@ -35,6 +35,7 @@ import java.util.regex.Pattern;
 import org.crosswire.common.diff.Difference;
 import org.crosswire.common.diff.EditType;
 import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyFactory;
 import org.crosswire.jsword.passage.NoSuchKeyException;
@@ -867,7 +868,7 @@ public final class OSISUtil {
             try {
                 return VerseFactory.fromString(osisid);
             } catch (NoSuchVerseException ex) {
-                throw new BookException(Msg.lookupText("OsisID not valid: {0}", osisid), ex);
+                throw new BookException(JSOtherMsg.lookupText("OsisID not valid: {0}", osisid), ex);
             }
         }
 
@@ -877,7 +878,7 @@ public final class OSISUtil {
             return getVerse((Element) parent);
         }
 
-        throw new BookException(Msg.lookupText("Verse element could not be found"));
+        throw new BookException(JSOtherMsg.lookupText("Verse element could not be found"));
     }
 
     /**

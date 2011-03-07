@@ -23,6 +23,8 @@ package org.crosswire.jsword.book;
 
 import java.io.Serializable;
 
+import org.crosswire.jsword.JSMsg;
+
 /**
  * An Enumeration of the possible types of Book.
  *
@@ -34,47 +36,47 @@ import java.io.Serializable;
 public final class BookCategory implements Serializable, Comparable<BookCategory> {
     /** Books that are Bibles */
     // I18N(DMS)
-    public static final BookCategory BIBLE = new BookCategory("Biblical Texts", UserMsg.gettext("Biblical Texts"));
+    public static final BookCategory BIBLE = new BookCategory("Biblical Texts", JSMsg.gettext("Biblical Texts"));
 
     /** Books that are Dictionaries */
     // I18N(DMS)
-    public static final BookCategory DICTIONARY = new BookCategory("Lexicons / Dictionaries", UserMsg.gettext("Dictionaries"));
+    public static final BookCategory DICTIONARY = new BookCategory("Lexicons / Dictionaries", JSMsg.gettext("Dictionaries"));
 
     /** Books that are Commentaries */
     // I18N(DMS)
-    public static final BookCategory COMMENTARY = new BookCategory("Commentaries", UserMsg.gettext("Commentaries"));
+    public static final BookCategory COMMENTARY = new BookCategory("Commentaries", JSMsg.gettext("Commentaries"));
 
     /** Books that are indexed by day. AKA, Daily Devotions */
     // I18N(DMS)
-    public static final BookCategory DAILY_DEVOTIONS = new BookCategory("Daily Devotional", UserMsg.gettext("Daily Devotionals"));
+    public static final BookCategory DAILY_DEVOTIONS = new BookCategory("Daily Devotional", JSMsg.gettext("Daily Devotionals"));
 
     /** Books that map words from one language to another. */
     // I18N(DMS)
-    public static final BookCategory GLOSSARY = new BookCategory("Glossaries", UserMsg.gettext("Glossaries"));
+    public static final BookCategory GLOSSARY = new BookCategory("Glossaries", JSMsg.gettext("Glossaries"));
 
     /** Books that are questionable. */
     // I18N(DMS)
-    public static final BookCategory QUESTIONABLE = new BookCategory("Cults / Unorthodox / Questionable Material", UserMsg.gettext("Cults / Unorthodox / Questionable Materials"));
+    public static final BookCategory QUESTIONABLE = new BookCategory("Cults / Unorthodox / Questionable Material", JSMsg.gettext("Cults / Unorthodox / Questionable Materials"));
 
     /** Books that are just essays. */
     // I18N(DMS)
-    public static final BookCategory ESSAYS = new BookCategory("Essays", UserMsg.gettext("Essays"));
+    public static final BookCategory ESSAYS = new BookCategory("Essays", JSMsg.gettext("Essays"));
 
     /** Books that are predominately images. */
     // I18N(DMS)
-    public static final BookCategory IMAGES = new BookCategory("Images", UserMsg.gettext("Images"));
+    public static final BookCategory IMAGES = new BookCategory("Images", JSMsg.gettext("Images"));
 
     /** Books that are a collection of maps. */
     // I18N(DMS)
-    public static final BookCategory MAPS = new BookCategory("Maps", UserMsg.gettext("Maps"));
+    public static final BookCategory MAPS = new BookCategory("Maps", JSMsg.gettext("Maps"));
 
     /** Books that are just books. */
     // I18N(DMS)
-    public static final BookCategory GENERAL_BOOK = new BookCategory("Generic Books", UserMsg.gettext("General Books"));
+    public static final BookCategory GENERAL_BOOK = new BookCategory("Generic Books", JSMsg.gettext("General Books"));
 
     /** Books that are not any of the above. This is a catch all for new book categories. */
     // I18N(DMS)
-    public static final BookCategory OTHER = new BookCategory("Other", UserMsg.gettext("Other"));
+    public static final BookCategory OTHER = new BookCategory("Other", JSMsg.gettext("Other"));
 
     /**
      * @param name

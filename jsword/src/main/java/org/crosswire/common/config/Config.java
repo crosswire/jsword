@@ -37,6 +37,7 @@ import org.crosswire.common.util.LucidException;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PropertyMap;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.JSOtherMsg;
 import org.jdom.Document;
 import org.jdom.Element;
 
@@ -276,7 +277,7 @@ public class Config implements Iterable<Choice> {
                     }
                 } catch (LucidException ex) {
                     log.warn("Failure setting " + key + "=" + newValue, ex);
-                    Reporter.informUser(this, new ConfigException(Msg.lookupText("Failed to set option: {0}", choice.getFullPath()), ex));
+                    Reporter.informUser(this, new ConfigException(JSOtherMsg.lookupText("Failed to set option: {0}", choice.getFullPath()), ex));
                 }
             }
         }

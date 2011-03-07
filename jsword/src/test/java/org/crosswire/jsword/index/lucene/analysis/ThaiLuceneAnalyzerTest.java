@@ -21,12 +21,12 @@
  */
 package org.crosswire.jsword.index.lucene.analysis;
 
+import junit.framework.TestCase;
+
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
-
-import junit.framework.TestCase;
 
 /**
  * Test the Thai Analyzer

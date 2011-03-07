@@ -27,6 +27,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.versification.BibleInfo;
 
 /**
@@ -959,7 +960,7 @@ public class PassageTally extends AbstractPassage {
             if (last != null) {
                 return last.tally;
             }
-            throw new NoSuchElementException(Msg.lookupText("nextElement() has not been called yet."));
+            throw new NoSuchElementException(JSOtherMsg.lookupText("nextElement() has not been called yet."));
         }
 
         /**

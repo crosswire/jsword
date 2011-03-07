@@ -33,6 +33,8 @@ import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.JSMsg;
+import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
@@ -180,14 +182,14 @@ public class TreeKeyIndex implements Activatable {
         if (!idxFile.canRead()) {
             // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
             // {0} is a placeholder for the file.
-            Reporter.informUser(this, new BookException(UserMsg.gettext("Error reading {0}", idxFile.getAbsolutePath())));
+            Reporter.informUser(this, new BookException(JSMsg.gettext("Error reading {0}", idxFile.getAbsolutePath())));
             return;
         }
 
         if (!datFile.canRead()) {
             // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
             // {0} is a placeholder for the file.
-            Reporter.informUser(this, new BookException(UserMsg.gettext("Error reading {0}", datFile.getAbsolutePath())));
+            Reporter.informUser(this, new BookException(JSMsg.gettext("Error reading {0}", datFile.getAbsolutePath())));
             return;
         }
 
@@ -240,7 +242,7 @@ public class TreeKeyIndex implements Activatable {
 
         if (loc == null) {
             // FIXME(DMS): missing parameter
-            throw new BookException(Msg.lookupText("Missing data files for old and new testaments in {0}."));
+            throw new BookException(JSOtherMsg.lookupText("Missing data files for old and new testaments in {0}."));
         }
 
         return new File(loc.getPath()).getAbsolutePath();

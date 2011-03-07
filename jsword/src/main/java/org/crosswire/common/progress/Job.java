@@ -33,6 +33,7 @@ import java.util.TimerTask;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PropertyMap;
+import org.crosswire.jsword.JSMsg;
 
 /**
  * A Generic method of keeping track of Threads and monitoring their progress.
@@ -259,7 +260,7 @@ public final class Job implements Progress {
      */
     public void done() {
         // TRANSLATOR: This shows up in a progress bar when progress is finished.
-        String sectionName = UserMsg.gettext("Done");
+        String sectionName = JSMsg.gettext("Done");
 
         synchronized (this) {
             finished = true;

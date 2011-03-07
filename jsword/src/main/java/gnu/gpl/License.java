@@ -390,7 +390,7 @@ public class License {
         /* TRANSLATOR: This is short-hand for the actual GPL warranty.
          * See the English for this to see what needs to be translated.
          */
-        return UserMsg.gettext("License.warranty", name);
+        return GPLMsg.gettext("License.warranty", name);
     }
 
     /**
@@ -402,7 +402,7 @@ public class License {
         /* TRANSLATOR: This is short-hand for the actual GPL license.
          * See the English for this to see what needs to be translated.
          */
-        return UserMsg.gettext("License.details", name);
+        return GPLMsg.gettext("License.details", name);
     }
 
     /**

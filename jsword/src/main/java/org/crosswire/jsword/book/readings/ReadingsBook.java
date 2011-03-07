@@ -34,13 +34,14 @@ import java.util.TreeMap;
 import org.crosswire.common.util.CWClassLoader;
 import org.crosswire.common.util.Language;
 import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.JSMsg;
+import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractBook;
 import org.crosswire.jsword.book.basic.DefaultBookMetaData;
-import org.crosswire.jsword.book.basic.Msg;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyFactory;
@@ -73,7 +74,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
         ResourceBundle prop = ResourceBundle.getBundle(setname, defaultLocale, CWClassLoader.instance(ReadingsBookDriver.class));
 
         // TRANSLATOR: The default name for JSword's Reading plan.
-        String name = UserMsg.gettext("Readings");
+        String name = JSMsg.gettext("Readings");
         try {
             name = prop.getString("title");
         } catch (MissingResourceException e) {
@@ -120,7 +121,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
     public Iterator<Content> getOsisIterator(Key key, boolean allowEmpty) throws BookException {
         if (!(key instanceof ReadingsKey)) {
             // TRANSLATOR: Error condition: Indicates that something could not be found in the book. {0} is a placeholder for the unknown key.
-            throw new BookException(UserMsg.gettext("Key not found {0}", key.getName()));
+            throw new BookException(JSMsg.gettext("Key not found {0}", key.getName()));
         }
 
         // TODO(DMS): make the iterator be demand driven
@@ -133,7 +134,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
         String readings = hash.get(key);
         if (readings == null) {
             // TRANSLATOR: Error condition: Indicates that something could not be found in the book. {0} is a placeholder for the unknown key.
-            throw new BookException(UserMsg.gettext("Key not found {0}", key.getName()));
+            throw new BookException(JSMsg.gettext("Key not found {0}", key.getName()));
         }
 
         try {
@@ -156,7 +157,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
                 list.addContent(item);
             }
         } catch (NoSuchKeyException ex) {
-            content.add(OSISUtil.factory().createText(Msg.lookupText("Failed to parse {0}", readings)));
+            content.add(OSISUtil.factory().createText(JSOtherMsg.lookupText("Failed to parse {0}", readings)));
         }
 
         return content.iterator();
@@ -200,7 +201,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
      * .jsword.passage.Key, java.lang.String)
      */
     public void setRawText(Key key, String rawData) throws BookException {
-        throw new BookException(Msg.lookupText("This Book is read-only."));
+        throw new BookException(JSOtherMsg.lookupText("This Book is read-only."));
     }
 
     /*
@@ -211,7 +212,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
      * .Key, org.crosswire.jsword.passage.Key)
      */
     public void setAliasKey(Key alias, Key source) throws BookException {
-        throw new BookException(Msg.lookupText("This Book is read-only."));
+        throw new BookException(JSOtherMsg.lookupText("This Book is read-only."));
     }
 
     /*

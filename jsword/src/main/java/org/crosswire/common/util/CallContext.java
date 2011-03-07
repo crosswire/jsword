@@ -21,6 +21,8 @@
  */
 package org.crosswire.common.util;
 
+import org.crosswire.jsword.JSOtherMsg;
+
 /**
  * This singleton class provides a way for a method to determine which class
  * called it.
@@ -49,7 +51,7 @@ public final class CallContext extends SecurityManager {
 
             return resolver;
         } catch (SecurityException se) {
-            throw new LucidRuntimeException(Msg.lookupText("Could not create ClassResolver:"), se);
+            throw new LucidRuntimeException(JSOtherMsg.lookupText("Could not create ClassResolver:"), se);
         }
     }
 

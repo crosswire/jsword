@@ -21,6 +21,8 @@
  */
 package org.crosswire.common.util;
 
+import org.crosswire.jsword.JSMsg;
+
 
 /**
  * A LucidException adds 2 concepts to a base Exception, that of a wrapped
@@ -86,7 +88,7 @@ public class LucidException extends Exception {
         }
 
         // TRANSLATOR: When an error occurs this label precedes the details of the problem.
-        String reason = UserMsg.gettext("Reason:");
+        String reason = JSMsg.gettext("Reason:");
         if (cause instanceof LucidException) {
             LucidException lex = (LucidException) cause;
             return getMessage() + reason + lex.getDetailedMessage();

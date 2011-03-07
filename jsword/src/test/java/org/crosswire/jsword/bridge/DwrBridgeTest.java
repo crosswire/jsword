@@ -21,11 +21,11 @@
  */
 package org.crosswire.jsword.bridge;
 
+import junit.framework.TestCase;
+
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.versification.BibleInfo;
-
-import junit.framework.TestCase;
 
 /**
  * Test of functionality for use with DWR. This test assumes, at a minimum, that

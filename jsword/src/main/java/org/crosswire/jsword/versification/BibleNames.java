@@ -30,6 +30,7 @@ import java.util.ResourceBundle;
 import org.crosswire.common.util.CWClassLoader;
 import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.StringUtil;
+import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 
 /**
@@ -58,7 +59,7 @@ public final class BibleNames {
             // This is faster than doing the check explicitly, unless
             // The exception is actually thrown, then it is a lot slower
             // I'd like to think that the norm is to get it right
-            throw new NoSuchVerseException(Msg.lookupText("Book must be between 1 and 66 (given {0,number,integer}).", Integer.valueOf(book)));
+            throw new NoSuchVerseException(JSOtherMsg.lookupText("Book must be between 1 and 66 (given {0,number,integer}).", Integer.valueOf(book)));
         }
     }
 

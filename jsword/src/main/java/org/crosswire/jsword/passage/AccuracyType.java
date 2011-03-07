@@ -22,6 +22,7 @@
 package org.crosswire.jsword.passage;
 
 import org.crosswire.common.icu.NumberShaper;
+import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.versification.BibleInfo;
 
 /**
@@ -168,7 +169,7 @@ public enum AccuracyType {
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
             if (verseRangeBasis == null) {
                 // TRANSLATOR: The user supplied a verse reference but did not give the book of the Bible.
-                throw new NoSuchVerseException(UserMsg.gettext("Book is missing"));
+                throw new NoSuchVerseException(JSMsg.gettext("Book is missing"));
             }
             int book = verseRangeBasis.getEnd().getBook();
             int chapter = getChapter(book, parts[0]);
@@ -200,7 +201,7 @@ public enum AccuracyType {
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
             if (verseRangeBasis == null) {
                 // TRANSLATOR: The user supplied a verse reference but did not give the book of the Bible.
-                throw new NoSuchVerseException(UserMsg.gettext("Book is missing"));
+                throw new NoSuchVerseException(JSMsg.gettext("Book is missing"));
             }
             int book = verseRangeBasis.getEnd().getBook();
             int chapter = getChapter(book, parts[0]);
@@ -230,7 +231,7 @@ public enum AccuracyType {
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
             if (verseRangeBasis == null) {
                 // TRANSLATOR: The user supplied a verse reference but did not give the book or chapter of the Bible.
-                throw new NoSuchVerseException(UserMsg.gettext("Book and chapter are missing"));
+                throw new NoSuchVerseException(JSMsg.gettext("Book and chapter are missing"));
             }
             int book = verseRangeBasis.getEnd().getBook();
             int chapter = verseRangeBasis.getEnd().getChapter();
@@ -461,7 +462,7 @@ public enum AccuracyType {
             buffer.append(", ").append(parts[i]);
         }
         // TRANSLATOR: The user specified a verse with too many separators. {0} is a placeholder for the allowable separators.
-        return new NoSuchVerseException(UserMsg.gettext("Too many parts to the Verse. (Parts are separated by any of {0})", buffer.toString()));
+        return new NoSuchVerseException(JSMsg.gettext("Too many parts to the Verse. (Parts are separated by any of {0})", buffer.toString()));
     }
 
     /**
@@ -495,7 +496,7 @@ public enum AccuracyType {
         } catch (NumberFormatException ex) {
             // TRANSLATOR: The chapter or verse number is actually not a number, but something else.
             // {0} is a placeholder for what the user supplied.
-            throw new NoSuchVerseException(UserMsg.gettext("Cannot understand {0} as a chapter or verse.", text));
+            throw new NoSuchVerseException(JSMsg.gettext("Cannot understand {0} as a chapter or verse.", text));
         }
     }
 
@@ -585,7 +586,7 @@ public enum AccuracyType {
                     if (charIsDigit) {
                         if (tokenCount >= args.length) {
                             // TRANSLATOR: The user specified a verse with too many separators. {0} is a placeholder for the allowable separators.
-                            throw new NoSuchVerseException(UserMsg.gettext("Too many parts to the Verse. (Parts are separated by any of {0})", input));
+                            throw new NoSuchVerseException(JSMsg.gettext("Too many parts to the Verse. (Parts are separated by any of {0})", input));
                         }
 
                         token = new String(normalized, startIndex, normalizedLength - startIndex);
@@ -606,7 +607,7 @@ public enum AccuracyType {
 
         if (tokenCount >= args.length) {
             // TRANSLATOR: The user specified a verse with too many separators. {0} is a placeholder for the allowable separators.
-            throw new NoSuchVerseException(UserMsg.gettext("Too many parts to the Verse. (Parts are separated by any of {0})", input));
+            throw new NoSuchVerseException(JSMsg.gettext("Too many parts to the Verse. (Parts are separated by any of {0})", input));
         }
 
         token = new String(normalized, startIndex, normalizedLength - startIndex);

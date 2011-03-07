@@ -29,6 +29,7 @@ import java.util.ResourceBundle;
 import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.StringUtil;
+import org.crosswire.jsword.JSOtherMsg;
 import org.jdom.Element;
 
 /**
@@ -102,17 +103,17 @@ public abstract class AbstractReflectedChoice implements Choice {
         // ourselves
         Element introspector = option.getChild("introspect");
         if (introspector == null) {
-            throw new StartupException(Msg.lookupText("Missing {0} element in config.xml", "introspect"));
+            throw new StartupException(JSOtherMsg.lookupText("Missing {0} element in config.xml", "introspect"));
         }
 
         String clazzname = introspector.getAttributeValue("class");
         if (clazzname == null) {
-            throw new StartupException(Msg.lookupText("Missing {0} element in config.xml", "class"));
+            throw new StartupException(JSOtherMsg.lookupText("Missing {0} element in config.xml", "class"));
         }
 
         propertyname = introspector.getAttributeValue("property");
         if (propertyname == null) {
-            throw new StartupException(Msg.lookupText("Missing {0} element in config.xml", "property"));
+            throw new StartupException(JSOtherMsg.lookupText("Missing {0} element in config.xml", "property"));
         }
 
         // log.debug("Looking up " + clazzname + ".set" + propertyname + "(" +
@@ -122,13 +123,13 @@ public abstract class AbstractReflectedChoice implements Choice {
         try {
             clazz = ClassUtil.forName(clazzname);
         } catch (ClassNotFoundException ex) {
-            throw new StartupException(Msg.lookupText("Specified class not found: {0}", clazzname), ex);
+            throw new StartupException(JSOtherMsg.lookupText("Specified class not found: {0}", clazzname), ex);
         }
 
         try {
             setter = clazz.getMethod("set" + propertyname, getConversionClass());
         } catch (NoSuchMethodException ex) {
-            throw new StartupException(Msg.lookupText("Specified method not found {0}.set{1}({2} arg0)",
+            throw new StartupException(JSOtherMsg.lookupText("Specified method not found {0}.set{1}({2} arg0)",
                     clazz.getName(), propertyname, getConversionClass().getName()), ex
             );
         }
@@ -140,12 +141,12 @@ public abstract class AbstractReflectedChoice implements Choice {
                 getter = clazz.getMethod("get" + propertyname, new Class[0]);
             }
         } catch (NoSuchMethodException ex) {
-            throw new StartupException(Msg.lookupText("Specified method not found {0}.get{1}()", clazz.getName(), propertyname), ex);
+            throw new StartupException(JSOtherMsg.lookupText("Specified method not found {0}.get{1}()", clazz.getName(), propertyname), ex);
         }
 
         if (getter.getReturnType() != getConversionClass()) {
             log.debug("Not using " + propertyname + " from " + clazz.getName() + " because the return type of the getter is not " + getConversionClass().getName());
-            throw new StartupException(Msg.lookupText("Mismatch of return types, found: {0} required: {1}", getter.getReturnType(), getConversionClass()));
+            throw new StartupException(JSOtherMsg.lookupText("Mismatch of return types, found: {0} required: {1}", getter.getReturnType(), getConversionClass()));
         }
     }
 
@@ -295,7 +296,7 @@ public abstract class AbstractReflectedChoice implements Choice {
             // So we can't re-throw the original exception because it wasn't an
             // Exception so we will have to re-throw the
             // InvocationTargetException
-            throw new ConfigException(Msg.lookupText("Failed to set option: {0}", setter), ex);
+            throw new ConfigException(JSOtherMsg.lookupText("Failed to set option: {0}", setter), ex);
         }
     }
 

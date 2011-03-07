@@ -28,6 +28,7 @@ import org.crosswire.common.progress.Progress;
 import org.crosswire.common.util.LucidException;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.WebResource;
+import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.install.InstallException;
 
@@ -84,14 +85,14 @@ public class HttpSwordInstaller extends AbstractSwordInstaller {
             uri = new URI(NetUtil.PROTOCOL_HTTP, host, dir + '/' + file, null);
         } catch (URISyntaxException e1) {
             // TRANSLATOR: Common error condition: {0} is a placeholder for the URL of what could not be found.
-            throw new InstallException(UserMsg.gettext("Unable to find: {0}", dir + '/' + file), e1);
+            throw new InstallException(JSMsg.gettext("Unable to find: {0}", dir + '/' + file), e1);
         }
 
         try {
             copy(job, uri, dest);
         } catch (LucidException ex) {
             // TRANSLATOR: Common error condition: {0} is a placeholder for the URL of what could not be found.
-            throw new InstallException(UserMsg.gettext("Unable to find: {0}", uri.toString()), ex);
+            throw new InstallException(JSMsg.gettext("Unable to find: {0}", uri.toString()), ex);
         }
     }
 
@@ -104,7 +105,7 @@ public class HttpSwordInstaller extends AbstractSwordInstaller {
     private void copy(Progress job, URI uri, URI dest) throws LucidException {
         if (job != null) {
             // TRANSLATOR: Progress label for downloading one or more files.
-            job.setSectionName(UserMsg.gettext("Downloading files"));
+            job.setSectionName(JSMsg.gettext("Downloading files"));
         }
 
         WebResource wr = new WebResource(uri, proxyHost, proxyPort);

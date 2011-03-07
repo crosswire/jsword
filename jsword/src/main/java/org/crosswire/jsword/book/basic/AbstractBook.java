@@ -26,6 +26,7 @@ import java.util.Map;
 import org.crosswire.common.activate.Lock;
 import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Language;
+import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookDriver;
@@ -117,7 +118,7 @@ public abstract class AbstractBook implements Book {
             try {
                 searcher = SearcherFactory.createSearcher(this);
             } catch (InstantiationException ex) {
-                throw new BookException(Msg.lookupText("Failed to initialize the search index"), ex);
+                throw new BookException(JSOtherMsg.lookupText("Failed to initialize the search index"), ex);
             }
         }
 
