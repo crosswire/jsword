@@ -199,7 +199,7 @@ public interface Key extends Comparable<Key>, Iterable<Key>, Cloneable, Serializ
      * 
      * @return A complete copy of ourselves
      */
-    Object clone();
+    Key clone();
 
     /**
      * This needs to be declared here so that it is visible as a method on a

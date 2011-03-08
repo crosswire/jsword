@@ -48,9 +48,9 @@ public interface Filter extends Cloneable {
 
     /**
      * This needs to be declared here so that it is visible as a method on a
-     * derived Key.
+     * derived Filter.
      * 
      * @return A complete copy of ourselves
      */
-    Object clone();
+    Filter clone();
 }

@@ -105,19 +105,15 @@ public class OSISFilter implements Filter {
         return ele.removeContent();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#clone()
-     */
     @Override
-    public Object clone() {
+    public OSISFilter clone() {
+        OSISFilter clone = null;
         try {
-            return super.clone();
+            clone = (OSISFilter) super.clone();
         } catch (CloneNotSupportedException e) {
             assert false : e;
         }
-        return null;
+        return clone;
     }
 
     private Element cleanTags(Book book, Key key, String plain) {

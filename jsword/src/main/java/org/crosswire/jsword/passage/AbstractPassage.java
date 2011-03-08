@@ -70,9 +70,7 @@ public abstract class AbstractPassage implements Passage {
         listeners = new ArrayList<PassageListener>();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(Key obj) {
@@ -102,13 +100,8 @@ public abstract class AbstractPassage implements Passage {
         return thisfirst.compareTo(thatfirst);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#clone()
-     */
     @Override
-    public Object clone() {
+    public AbstractPassage clone() {
         // This gets us a shallow copy
         AbstractPassage copy = null;
 
@@ -125,11 +118,6 @@ public abstract class AbstractPassage implements Passage {
         return copy;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         // Since this can not be null
@@ -156,20 +144,13 @@ public abstract class AbstractPassage implements Passage {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         return getName().hashCode();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#getName()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getName()
      */
     public String getName() {
         if (PassageUtil.isPersistentNaming() && originalName != null) {
@@ -196,17 +177,16 @@ public abstract class AbstractPassage implements Passage {
         return retcode.toString();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage
-     * .Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage.Key)
      */
     public String getName(Key base) {
         return getName();
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getRootName()
+     */
     public String getRootName() {
         Iterator<Key> it = rangeIterator(RestrictionType.NONE);
         while (it.hasNext()) {
@@ -217,10 +197,8 @@ public abstract class AbstractPassage implements Passage {
         return getName();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#getOSISName()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getOsisRef()
      */
     public String getOsisRef() {
         StringBuilder retcode = new StringBuilder();
@@ -240,10 +218,8 @@ public abstract class AbstractPassage implements Passage {
         return retcode.toString();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Key#getOSISId()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getOsisID()
      */
     public String getOsisID() {
         StringBuilder retcode = new StringBuilder();
@@ -263,19 +239,12 @@ public abstract class AbstractPassage implements Passage {
         return retcode.toString();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         return getName();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#getOverview()
      */
     public String getOverview() {
@@ -300,19 +269,15 @@ public abstract class AbstractPassage implements Passage {
                 ));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#isEmpty()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#isEmpty()
      */
     public boolean isEmpty() {
         // Is there any content?
         return !iterator().hasNext();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#countVerses()
      */
     public int countVerses() {
@@ -325,10 +290,8 @@ public abstract class AbstractPassage implements Passage {
         return count;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#hasRanges(int)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#hasRanges(org.crosswire.jsword.passage.RestrictionType)
      */
     public boolean hasRanges(RestrictionType restrict) {
         int count = 0;
@@ -345,10 +308,8 @@ public abstract class AbstractPassage implements Passage {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#countRanges(int)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#countRanges(org.crosswire.jsword.passage.RestrictionType)
      */
     public int countRanges(RestrictionType restrict) {
         int count = 0;
@@ -362,9 +323,7 @@ public abstract class AbstractPassage implements Passage {
         return count;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#booksInPassage()
      */
     public int booksInPassage() {
@@ -382,9 +341,7 @@ public abstract class AbstractPassage implements Passage {
         return book_count;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#chaptersInPassage(int)
      */
     public int chaptersInPassage(int book) throws NoSuchVerseException {
@@ -407,9 +364,7 @@ public abstract class AbstractPassage implements Passage {
         return chapter_count;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#versesInPassage(int, int)
      */
     public int versesInPassage(int book, int chapter) throws NoSuchVerseException {
@@ -428,9 +383,7 @@ public abstract class AbstractPassage implements Passage {
         return verse_count;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#getVerseAt(int)
      */
     public Verse getVerseAt(int offset) throws ArrayIndexOutOfBoundsException {
@@ -448,10 +401,8 @@ public abstract class AbstractPassage implements Passage {
         return (Verse) retcode;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#getVerseRangeAt(int, int)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#getRangeAt(int, org.crosswire.jsword.passage.RestrictionType)
      */
     public VerseRange getRangeAt(int offset, RestrictionType restrict) throws ArrayIndexOutOfBoundsException {
         Iterator<Key> it = rangeIterator(restrict);
@@ -468,21 +419,15 @@ public abstract class AbstractPassage implements Passage {
         return (VerseRange) retcode;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#rangeIterator()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#rangeIterator(org.crosswire.jsword.passage.RestrictionType)
      */
     public Iterator<Key> rangeIterator(RestrictionType restrict) {
         return new VerseRangeIterator(iterator(), restrict);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#containsAll(org.crosswire.jsword
-     * .passage.Passage)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#containsAll(org.crosswire.jsword.passage.Passage)
      */
     public boolean containsAll(Passage that) {
         Iterator<Key> that_it = null;
@@ -502,9 +447,7 @@ public abstract class AbstractPassage implements Passage {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#trimVerses(int)
      */
     public Passage trimVerses(int count) {
@@ -514,7 +457,7 @@ public abstract class AbstractPassage implements Passage {
         int i = 0;
         boolean overflow = false;
 
-        Passage remainder = (Passage) this.clone();
+        Passage remainder = this.clone();
 
         for (Key verse : this) {
             i++;
@@ -535,10 +478,8 @@ public abstract class AbstractPassage implements Passage {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#trimRanges(int, int)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#trimRanges(int, org.crosswire.jsword.passage.RestrictionType)
      */
     public Passage trimRanges(int count, RestrictionType restrict) {
         optimizeWrites();
@@ -547,7 +488,7 @@ public abstract class AbstractPassage implements Passage {
         int i = 0;
         boolean overflow = false;
 
-        Passage remainder = (Passage) this.clone();
+        Passage remainder = this.clone();
 
         Iterator<Key> it = rangeIterator(restrict);
         while (it.hasNext()) {
@@ -571,12 +512,8 @@ public abstract class AbstractPassage implements Passage {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#addAll(org.crosswire.jsword.passage
-     * .Passage)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#addAll(org.crosswire.jsword.passage.Key)
      */
     public void addAll(Key key) {
         Passage that = KeyUtil.getPassage(key);
@@ -605,12 +542,8 @@ public abstract class AbstractPassage implements Passage {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#removeAll(org.crosswire.jsword.passage
-     * .Passage)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#removeAll(org.crosswire.jsword.passage.Key)
      */
     public void removeAll(Key key) {
         Passage that = KeyUtil.getPassage(key);
@@ -638,11 +571,8 @@ public abstract class AbstractPassage implements Passage {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#retain(org.crosswire.jsword.passage.Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#retainAll(org.crosswire.jsword.passage.Key)
      */
     public void retainAll(Key key) {
         Passage that = KeyUtil.getPassage(key);
@@ -651,7 +581,7 @@ public abstract class AbstractPassage implements Passage {
         raiseEventSuppresion();
         raiseNormalizeProtection();
 
-        Passage temp = (Passage) this.clone();
+        Passage temp = this.clone();
         for (Key verse : temp) {
             if (!that.contains(verse)) {
                 remove(verse);
@@ -664,10 +594,8 @@ public abstract class AbstractPassage implements Passage {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#clear()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#clear()
      */
     public void clear() {
         optimizeWrites();
@@ -680,17 +608,15 @@ public abstract class AbstractPassage implements Passage {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#blur(int, int)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#blur(int, org.crosswire.jsword.passage.RestrictionType)
      */
     public void blur(int verses, RestrictionType restrict) {
         optimizeWrites();
         raiseEventSuppresion();
         raiseNormalizeProtection();
 
-        Passage temp = (Passage) this.clone();
+        Passage temp = this.clone();
         Iterator<Key> it = temp.rangeIterator(RestrictionType.NONE);
 
         while (it.hasNext()) {
@@ -704,11 +630,8 @@ public abstract class AbstractPassage implements Passage {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#writeDescription(java.io.Writer)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#writeDescription(java.io.Writer)
      */
     public void writeDescription(Writer out) throws IOException {
         BufferedWriter bout = new BufferedWriter(out);
@@ -724,9 +647,7 @@ public abstract class AbstractPassage implements Passage {
         bout.flush();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#readDescription(java.io.Reader)
      */
     public void readDescription(Reader in) throws IOException, NoSuchVerseException {
@@ -758,9 +679,7 @@ public abstract class AbstractPassage implements Passage {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#optimizeReads()
      */
     public void optimizeReads() {
@@ -772,12 +691,8 @@ public abstract class AbstractPassage implements Passage {
     protected void optimizeWrites() {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#addPassageListener(org.crosswire
-     * .jsword.passage.PassageListener)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#addPassageListener(org.crosswire.jsword.passage.PassageListener)
      */
     public void addPassageListener(PassageListener li) {
         synchronized (listeners) {
@@ -785,12 +700,8 @@ public abstract class AbstractPassage implements Passage {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#removePassageListener(org.crosswire
-     * .jsword.passage.PassageListener)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#removePassageListener(org.crosswire.jsword.passage.PassageListener)
      */
     public void removePassageListener(PassageListener li) {
         synchronized (listeners) {
@@ -798,33 +709,23 @@ public abstract class AbstractPassage implements Passage {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage
-     * .Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#contains(org.crosswire.jsword.passage.Key)
      */
     public boolean contains(Key key) {
         Passage ref = KeyUtil.getPassage(key);
         return containsAll(ref);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getCardinality()
      */
     public int getCardinality() {
         return countVerses();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage
-     * .Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage.Key)
      */
     public int indexOf(Key that) {
         int index = 0;
@@ -839,36 +740,28 @@ public abstract class AbstractPassage implements Passage {
         return -1;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#canHaveChildren()
      */
     public boolean canHaveChildren() {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getChildCount()
      */
     public int getChildCount() {
         return 0;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#get(int)
      */
     public Key get(int index) {
         return getVerseAt(index);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getParent()
      */
     public Key getParent() {
@@ -1139,18 +1032,14 @@ public abstract class AbstractPassage implements Passage {
             calculateNext();
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.util.Iterator#hasNext()
          */
         public boolean hasNext() {
             return next_range != null;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
         public VerseRange next() throws NoSuchElementException {
@@ -1164,9 +1053,7 @@ public abstract class AbstractPassage implements Passage {
             return retcode;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.util.Iterator#remove()
          */
         public void remove() throws UnsupportedOperationException {

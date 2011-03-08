@@ -51,27 +51,21 @@ public class TreeKey extends AbstractKeyList {
         this(text, null);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#canHaveChildren()
      */
     public boolean canHaveChildren() {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getChildCount()
      */
     public int getChildCount() {
         return children.size();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getCardinality()
      */
     public int getCardinality() {
@@ -83,23 +77,11 @@ public class TreeKey extends AbstractKeyList {
         return cardinality;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Key#isEmpty()
-     */
     @Override
     public boolean isEmpty() {
         return children.isEmpty();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage
-     * .Key)
-     */
     @Override
     public boolean contains(Key key) {
         if (children.contains(key)) {
@@ -115,90 +97,65 @@ public class TreeKey extends AbstractKeyList {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Key#iterator()
+    /* (non-Javadoc)
+     * @see java.lang.Iterable#iterator()
      */
     public Iterator<Key> iterator() {
         return new KeyIterator(this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#add(org.crosswire.jsword.passage.Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#addAll(org.crosswire.jsword.passage.Key)
      */
     public void addAll(Key key) {
         children.add(key);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#remove(org.crosswire.jsword.passage.Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#removeAll(org.crosswire.jsword.passage.Key)
      */
     public void removeAll(Key key) {
         children.remove(key);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#clear()
      */
     public void clear() {
         children.clear();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#get(int)
      */
     public Key get(int index) {
         return children.get(index);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage
-     * .Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage.Key)
      */
     public int indexOf(Key that) {
         return children.indexOf(that);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getParent()
      */
     public Key getParent() {
         return parent;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Key#blur(int)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#blur(int, org.crosswire.jsword.passage.RestrictionType)
      */
     public void blur(int by, RestrictionType restrict) {
         log.warn("attempt to blur a non-blur-able list");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#clone()
-     */
     @Override
-    public Object clone() {
-        return super.clone();
+    public TreeKey clone() {
+        return (TreeKey) super.clone();
     }
 
     /**

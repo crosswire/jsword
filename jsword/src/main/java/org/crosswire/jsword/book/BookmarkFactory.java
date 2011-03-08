@@ -44,7 +44,7 @@ public final class BookmarkFactory {
      * Create a new Bookmark.
      */
     public static Bookmark getBookmark() {
-        return (Bookmark) instance.clone();
+        return instance.clone();
     }
 
     /**

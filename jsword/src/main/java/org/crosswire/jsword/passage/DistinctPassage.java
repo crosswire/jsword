@@ -85,7 +85,7 @@ public class DistinctPassage extends AbstractPassage {
      * @return A complete copy of ourselves
      */
     @Override
-    public Object clone() {
+    public DistinctPassage clone() {
         // This gets us a shallow copy
         DistinctPassage copy = (DistinctPassage) super.clone();
 
@@ -99,42 +99,23 @@ public class DistinctPassage extends AbstractPassage {
         return copy;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see java.lang.Iterable#iterator()
      */
     public Iterator<Key> iterator() {
         return store.iterator();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#isEmpty()
-     */
     @Override
     public boolean isEmpty() {
         return store.isEmpty();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#countVerses()
-     */
     @Override
     public int countVerses() {
         return store.size();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#contains(org.crosswire.jsword.passage
-     * .VerseBase)
-     */
     @Override
     public boolean contains(Key obj) {
         for (Key aKey : obj) {
@@ -146,12 +127,8 @@ public class DistinctPassage extends AbstractPassage {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#add(org.crosswire.jsword.passage
-     * .VerseBase)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#add(org.crosswire.jsword.passage.Key)
      */
     public void add(Key obj) {
         optimizeWrites();
@@ -173,12 +150,8 @@ public class DistinctPassage extends AbstractPassage {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#remove(org.crosswire.jsword.passage
-     * .VerseBase)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#remove(org.crosswire.jsword.passage.Key)
      */
     public void remove(Key obj) {
         optimizeWrites();
@@ -200,11 +173,6 @@ public class DistinctPassage extends AbstractPassage {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#clear()
-     */
     @Override
     public void clear() {
         optimizeWrites();

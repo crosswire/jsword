@@ -41,67 +41,50 @@ public class ReadOnlyKeyList implements Key {
         this.ignore = ignore;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getCardinality()
      */
     public int getCardinality() {
         return keys.getCardinality();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#canHaveChildren()
      */
     public boolean canHaveChildren() {
         return keys.canHaveChildren();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getChildCount()
      */
     public int getChildCount() {
         return keys.getChildCount();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#isEmpty()
      */
     public boolean isEmpty() {
         return keys.isEmpty();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage
-     * .Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
      */
     public boolean contains(Key key) {
         return keys.contains(key);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Key#iterator()
+    /* (non-Javadoc)
+     * @see java.lang.Iterable#iterator()
      */
     public Iterator<Key> iterator() {
         return keys.iterator();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#add(org.crosswire.jsword.passage.Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#addAll(org.crosswire.jsword.passage.Key)
      */
     public void addAll(Key key) {
         if (ignore) {
@@ -111,11 +94,8 @@ public class ReadOnlyKeyList implements Key {
         throw new IllegalStateException(JSOtherMsg.lookupText("Cannot alter a read-only key list"));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#remove(org.crosswire.jsword.passage.Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#removeAll(org.crosswire.jsword.passage.Key)
      */
     public void removeAll(Key key) {
         if (ignore) {
@@ -125,11 +105,8 @@ public class ReadOnlyKeyList implements Key {
         throw new IllegalStateException(JSOtherMsg.lookupText("Cannot alter a read-only key list"));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#retain(org.crosswire.jsword.passage.Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#retainAll(org.crosswire.jsword.passage.Key)
      */
     public void retainAll(Key key) {
         if (ignore) {
@@ -139,9 +116,7 @@ public class ReadOnlyKeyList implements Key {
         throw new IllegalStateException(JSOtherMsg.lookupText("Cannot alter a read-only key list"));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#clear()
      */
     public void clear() {
@@ -152,115 +127,81 @@ public class ReadOnlyKeyList implements Key {
         throw new IllegalStateException(JSOtherMsg.lookupText("Cannot alter a read-only key list"));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getName()
      */
     public String getName() {
         return keys.getName();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getRootName()
      */
     public String getRootName() {
         return keys.getRootName();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage
-     * .Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage.Key)
      */
     public String getName(Key base) {
         return keys.getName(base);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Key#getOSISRef()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getOsisRef()
      */
     public String getOsisRef() {
         return keys.getOsisRef();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Key#getOSISId()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getOsisID()
      */
     public String getOsisID() {
         return keys.getOsisID();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         return keys.hashCode();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         return keys.equals(obj);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(Key o) {
         return keys.compareTo(o);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+   /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#get(int)
      */
     public Key get(int index) {
         return keys.get(index);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage
-     * .Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage.Key)
      */
     public int indexOf(Key that) {
         return keys.indexOf(that);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getParent()
      */
     public Key getParent() {
         return keys.getParent();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Key#blur(int)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#blur(int, org.crosswire.jsword.passage.RestrictionType)
      */
     public void blur(int by, RestrictionType restrict) {
         if (ignore) {
@@ -270,17 +211,12 @@ public class ReadOnlyKeyList implements Key {
         throw new IllegalStateException(JSOtherMsg.lookupText("Cannot alter a read-only key list"));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#clone()
-     */
     @Override
-    public Object clone() {
+    public ReadOnlyKeyList clone() {
         ReadOnlyKeyList clone = null;
         try {
             clone = (ReadOnlyKeyList) super.clone();
-            clone.keys = (Key) keys.clone();
+            clone.keys = keys.clone();
         } catch (CloneNotSupportedException e) {
             assert false : e;
         }

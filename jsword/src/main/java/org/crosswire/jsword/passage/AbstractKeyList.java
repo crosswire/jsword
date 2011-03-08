@@ -40,31 +40,22 @@ public abstract class AbstractKeyList implements Key {
         this.name = name;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#isEmpty()
      */
     public boolean isEmpty() {
         return getCardinality() == 0;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage
-     * .Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
      */
     public boolean contains(Key key) {
         return indexOf(key) >= 0;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#retain(org.crosswire.jsword.passage.Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#retainAll(org.crosswire.jsword.passage.Key)
      */
     public void retainAll(Key key) {
         Key shared = new DefaultKeyList();
@@ -97,11 +88,6 @@ public abstract class AbstractKeyList implements Key {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         return getName();
@@ -116,9 +102,7 @@ public abstract class AbstractKeyList implements Key {
         this.name = name;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getName()
      */
     public String getName() {
@@ -131,30 +115,22 @@ public abstract class AbstractKeyList implements Key {
         return visitor.toString();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage
-     * .Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage.Key)
      */
     public String getName(Key base) {
         return getName();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getRootName()
      */
     public String getRootName() {
         return getName();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Key#getOSISRef()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getOsisRef()
      */
     public String getOsisRef() {
         DefaultKeyVisitor visitor = new OsisRefVisitor();
@@ -162,10 +138,8 @@ public abstract class AbstractKeyList implements Key {
         return visitor.toString();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Key#getOSISId()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getOsisID()
      */
     public String getOsisID() {
         DefaultKeyVisitor visitor = new OsisIDVisitor();
@@ -173,11 +147,6 @@ public abstract class AbstractKeyList implements Key {
         return visitor.toString();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         // Since this can not be null
@@ -194,19 +163,12 @@ public abstract class AbstractKeyList implements Key {
         return compareTo((Key) obj) == 0;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         return getName().hashCode();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(Key that) {
@@ -258,16 +220,11 @@ public abstract class AbstractKeyList implements Key {
         return thisfirst.getName().compareTo(thatfirst.getName());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#clone()
-     */
     @Override
-    public Object clone() {
-        Object clone = null;
+    public AbstractKeyList clone() {
+        AbstractKeyList clone = null;
         try {
-            clone = super.clone();
+            clone = (AbstractKeyList) super.clone();
         } catch (CloneNotSupportedException e) {
             assert false : e;
         }
@@ -286,24 +243,12 @@ public abstract class AbstractKeyList implements Key {
             buffer = new StringBuilder();
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.passage.KeyVisitor#visitLeaf(org.crosswire.jsword
-         * .passage.Key)
-         */
         @Override
         public void visitLeaf(Key key) {
             buffer.append(key.getName());
             buffer.append(AbstractPassage.REF_PREF_DELIM);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.lang.Object#toString()
-         */
         @Override
         public String toString() {
             String reply = buffer.toString();
@@ -323,13 +268,6 @@ public abstract class AbstractKeyList implements Key {
      * the Passage, using OSIS names.
      */
     static class OsisRefVisitor extends NameVisitor {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.passage.KeyVisitor#visitLeaf(org.crosswire.jsword
-         * .passage.Key)
-         */
         @Override
         public void visitLeaf(Key key) {
             buffer.append(key.getOsisRef());
@@ -342,24 +280,12 @@ public abstract class AbstractKeyList implements Key {
      * the Passage, using OSIS names.
      */
     static class OsisIDVisitor extends NameVisitor {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.passage.KeyVisitor#visitLeaf(org.crosswire.jsword
-         * .passage.Key)
-         */
-        @Override
+       @Override
         public void visitLeaf(Key key) {
             buffer.append(key.getOsisID());
             buffer.append(AbstractPassage.REF_OSIS_DELIM);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.lang.Object#toString()
-         */
         @Override
         public String toString() {
             String reply = super.toString();

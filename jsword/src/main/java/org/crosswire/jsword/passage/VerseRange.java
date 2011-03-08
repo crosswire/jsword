@@ -128,21 +128,15 @@ public final class VerseRange implements Key {
         verseCount = calcVerseCount(start, end);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getName()
      */
     public String getName() {
         return getName(null);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage
-     * .Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage.Key)
      */
     public String getName(Key base) {
         if (PassageUtil.isPersistentNaming() && originalName != null) {
@@ -163,18 +157,14 @@ public final class VerseRange implements Key {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getRootName()
      */
     public String getRootName() {
         return start.getRootName();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getOsisRef()
      */
     public String getOsisRef() {
@@ -273,9 +263,7 @@ public final class VerseRange implements Key {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getOsisID()
      */
     public String getOsisID() {
@@ -326,11 +314,6 @@ public final class VerseRange implements Key {
         return buf.toString();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         return getName();
@@ -396,19 +379,14 @@ public final class VerseRange implements Key {
         return endBook - startBook + 1;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#clone()
-     */
     @Override
-    public Object clone() {
+    public VerseRange clone() {
         // This gets us a shallow copy
         VerseRange copy = null;
         try {
             copy = (VerseRange) super.clone();
-            copy.start = (Verse) start.clone();
-            copy.end = (Verse) end.clone();
+            copy.start = start.clone();
+            copy.end = end.clone();
             copy.verseCount = verseCount;
             copy.originalName = originalName;
             copy.shaper = new NumberShaper();
@@ -419,11 +397,6 @@ public final class VerseRange implements Key {
         return copy;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         // Since this can not be null
@@ -454,19 +427,12 @@ public final class VerseRange implements Key {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         return (start.getOrdinal() << 16) + verseCount;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(Key obj) {
@@ -719,9 +685,7 @@ public final class VerseRange implements Key {
         return new AbstractPassage.VerseRangeIterator(iterator(), restrict);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getParent()
      */
     public Key getParent() {
@@ -806,16 +770,26 @@ public final class VerseRange implements Key {
     /**
      * Returns a VerseRange that wraps the whole Bible
      * 
-     * @return The whole bible VerseRange
+     * @return The whole Bible VerseRange
      */
     public static VerseRange getWholeBibleVerseRange() {
         return whole;
     }
 
+    /**
+     * Returns a VerseRange that wraps the Old Testament
+     * 
+     * @return The Old Testament VerseRange
+     */
     public static VerseRange getOldTestamentVerseRange() {
         return otRange;
     }
 
+    /**
+     * Returns a VerseRange that wraps the New Testament
+     * 
+     * @return The New Testament VerseRange
+     */
     public static VerseRange getNewTestamentVerseRange() {
         return ntRange;
     }
@@ -982,18 +956,14 @@ public final class VerseRange implements Key {
             last = range.getEnd().getOrdinal();
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.util.Iterator#hasNext()
          */
         public boolean hasNext() {
             return next <= last;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
         public Key next() throws NoSuchElementException {
@@ -1009,9 +979,7 @@ public final class VerseRange implements Key {
             }
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.util.Iterator#remove()
          */
         public void remove() throws UnsupportedOperationException {
@@ -1022,48 +990,36 @@ public final class VerseRange implements Key {
         private int last;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#canHaveChildren()
      */
     public boolean canHaveChildren() {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getChildCount()
      */
     public int getChildCount() {
         return 0;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getCardinality()
      */
     public int getCardinality() {
         return verseCount;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#isEmpty()
      */
     public boolean isEmpty() {
         return verseCount == 0;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage
-     * .Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage.Key)
      */
     public boolean contains(Key key) {
         if (key instanceof VerseRange) {
@@ -1081,68 +1037,49 @@ public final class VerseRange implements Key {
         return new VerseIterator(this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#add(org.crosswire.jsword.passage.Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#addAll(org.crosswire.jsword.passage.Key)
      */
     public void addAll(Key key) {
         throw new UnsupportedOperationException();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#remove(org.crosswire.jsword.passage.Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#removeAll(org.crosswire.jsword.passage.Key)
      */
     public void removeAll(Key key) {
         throw new UnsupportedOperationException();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#retain(org.crosswire.jsword.passage.Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#retainAll(org.crosswire.jsword.passage.Key)
      */
     public void retainAll(Key key) {
         throw new UnsupportedOperationException();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#clear()
      */
     public void clear() {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#get(int)
      */
     public Key get(int index) {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage
-     * .Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage.Key)
      */
     public int indexOf(Key that) {
         return -1;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Key#blur(int)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#blur(int, org.crosswire.jsword.passage.RestrictionType)
      */
     public void blur(int by, RestrictionType restrict) {
         VerseRange newRange = restrict.blur(this, by, by);

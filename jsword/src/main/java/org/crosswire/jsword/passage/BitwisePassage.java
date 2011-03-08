@@ -79,16 +79,8 @@ public class BitwisePassage extends AbstractPassage {
         addVerses(refs);
     }
 
-    /**
-     * Get a copy of ourselves. Points to note: Call clone() not new() on member
-     * Objects, and on us. Do not use Copy Constructors! - they do not inherit
-     * well. Think about this needing to be synchronized If this is not
-     * cloneable then writing cloneable children is harder
-     * 
-     * @return A complete copy of ourselves
-     */
     @Override
-    public Object clone() {
+    public BitwisePassage clone() {
         // This gets us a shallow copy
         BitwisePassage copy = (BitwisePassage) super.clone();
 
@@ -97,42 +89,23 @@ public class BitwisePassage extends AbstractPassage {
         return copy;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#countVerses()
-     */
     @Override
     public int countVerses() {
         return store.cardinality();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#isEmpty()
-     */
     @Override
     public boolean isEmpty() {
         return store.isEmpty();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see java.lang.Iterable#iterator()
      */
     public Iterator<Key> iterator() {
         return new VerseIterator();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#contains(org.crosswire.jsword.passage
-     * .VerseBase)
-     */
     @Override
     public boolean contains(Key obj) {
         for (Key aKey : obj) {
@@ -145,12 +118,8 @@ public class BitwisePassage extends AbstractPassage {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#add(org.crosswire.jsword.passage
-     * .VerseBase)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#add(org.crosswire.jsword.passage.Key)
      */
     public void add(Key obj) {
         optimizeWrites();
@@ -172,12 +141,8 @@ public class BitwisePassage extends AbstractPassage {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#remove(org.crosswire.jsword.passage
-     * .VerseBase)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#remove(org.crosswire.jsword.passage.Key)
      */
     public void remove(Key obj) {
         optimizeWrites();
@@ -199,13 +164,6 @@ public class BitwisePassage extends AbstractPassage {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#addAll(org.crosswire.jsword.passage
-     * .Passage)
-     */
     @Override
     public void addAll(Key key) {
         Passage that = KeyUtil.getPassage(key);
@@ -226,13 +184,6 @@ public class BitwisePassage extends AbstractPassage {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#removeAll(org.crosswire.jsword.passage
-     * .Passage)
-     */
     @Override
     public void removeAll(Key key) {
         Passage that = KeyUtil.getPassage(key);
@@ -254,13 +205,6 @@ public class BitwisePassage extends AbstractPassage {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#retainAll(org.crosswire.jsword.passage
-     * .Passage)
-     */
     @Override
     public void retainAll(Key key) {
         Passage that = KeyUtil.getPassage(key);
@@ -285,11 +229,6 @@ public class BitwisePassage extends AbstractPassage {
         fireIntervalRemoved(this, null, null);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#clear()
-     */
     @Override
     public void clear() {
         optimizeWrites();
@@ -299,11 +238,6 @@ public class BitwisePassage extends AbstractPassage {
         fireIntervalRemoved(this, null, null);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#blur(int, int)
-     */
     @Override
     public void blur(int verses, RestrictionType restrict) {
         assert verses > 0;
@@ -353,18 +287,14 @@ public class BitwisePassage extends AbstractPassage {
             calculateNext();
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.util.Iterator#hasNext()
          */
         public boolean hasNext() {
             return next >= 0;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
         public Key next() throws NoSuchElementException {
@@ -383,9 +313,7 @@ public class BitwisePassage extends AbstractPassage {
             }
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.util.Iterator#remove()
          */
         public void remove() throws UnsupportedOperationException {

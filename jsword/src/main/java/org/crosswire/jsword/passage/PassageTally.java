@@ -117,21 +117,11 @@ public class PassageTally extends AbstractPassage {
         addVerses(refs);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.AbstractPassage#isEmpty()
-     */
     @Override
     public boolean isEmpty() {
         return size == 0;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.AbstractPassage#countVerses()
-     */
     @Override
     public int countVerses() {
         return size;
@@ -175,13 +165,8 @@ public class PassageTally extends AbstractPassage {
         this.total = total;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.AbstractPassage#clone()
-     */
     @Override
-    public Object clone() {
+    public PassageTally clone() {
         // This gets us a shallow copy
         PassageTally copy = (PassageTally) super.clone();
 
@@ -190,21 +175,11 @@ public class PassageTally extends AbstractPassage {
         return copy;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.AbstractPassage#toString()
-     */
     @Override
     public String toString() {
         return getName(0);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.AbstractPassage#getName()
-     */
     @Override
     public String getName() {
         return getName(0);
@@ -321,11 +296,6 @@ public class PassageTally extends AbstractPassage {
         return new OrderedVerseIterator(board);
     }
 
-    /**
-     * Iterate through the range elements in the current sort order
-     * 
-     * @return A range Iterator
-     */
     @Override
     public Iterator<Key> rangeIterator(RestrictionType restrict) {
         if (order == Order.BIBLICAL) {
@@ -438,12 +408,6 @@ public class PassageTally extends AbstractPassage {
         fireIntervalRemoved(this, null, null);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#addAll(org.crosswire.jsword.passage.Key)
-     */
     @Override
     public void addAll(Key that) {
         optimizeWrites();
@@ -499,12 +463,6 @@ public class PassageTally extends AbstractPassage {
         // incrementMax(-1);
     }
 
-    /**
-     * Remove/Decrement these verses in the rankings
-     * 
-     * @param key
-     *            The verses to remove/decrement
-     */
     @Override
     public void removeAll(Key key) {
         Passage that = KeyUtil.getPassage(key);
@@ -534,9 +492,6 @@ public class PassageTally extends AbstractPassage {
         // incrementMax(-1);
     }
 
-    /**
-     * Removes all of the Verses from this Passage.
-     */
     @Override
     public void clear() {
         optimizeWrites();
@@ -570,7 +525,7 @@ public class PassageTally extends AbstractPassage {
         int i = 0;
         boolean overflow = false;
 
-        Passage remainder = (Passage) this.clone();
+        Passage remainder = this.clone();
 
         for (Key verse : this) {
             if (i > count) {
@@ -606,16 +561,6 @@ public class PassageTally extends AbstractPassage {
         max = 1;
     }
 
-    /**
-     * Widen the range of the verses in this list. This is primarily for
-     * "find x within n verses of y" type applications.
-     * 
-     * @param verses
-     *            The number of verses to widen by
-     * @param restrict
-     *            How should we restrict the blurring?
-     * @see Passage
-     */
     @Override
     public void blur(int verses, RestrictionType restrict) {
         assert verses > 0;
@@ -629,7 +574,7 @@ public class PassageTally extends AbstractPassage {
 
             // This is a bit of a cheat, but there is no way I'm going
             // to do the math to speed up the restricted version
-            PassageTally temp = (PassageTally) this.clone();
+            PassageTally temp = this.clone();
             Iterator<Key> it = temp.rangeIterator(RestrictionType.NONE);
 
             while (it.hasNext()) {
@@ -843,18 +788,14 @@ public class PassageTally extends AbstractPassage {
             calculateNext();
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.util.Iterator#hasNext()
          */
         public boolean hasNext() {
             return next <= BibleInfo.versesInBible();
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
         public Key next() throws NoSuchElementException {
@@ -873,9 +814,7 @@ public class PassageTally extends AbstractPassage {
             }
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.util.Iterator#remove()
          */
         public void remove() throws UnsupportedOperationException {
@@ -918,18 +857,14 @@ public class PassageTally extends AbstractPassage {
             last = null;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.util.Iterator#hasNext()
          */
         public boolean hasNext() {
             return it.hasNext();
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
         public Key next() throws NoSuchElementException {
@@ -942,9 +877,7 @@ public class PassageTally extends AbstractPassage {
             }
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.util.Iterator#remove()
          */
         public void remove() throws UnsupportedOperationException {
@@ -992,22 +925,12 @@ public class PassageTally extends AbstractPassage {
             this.tally = tally;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.lang.Object#hashCode()
-         */
         @Override
         public int hashCode() {
             int result = 31 + ord;
             return 31 * result + tally;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.lang.Object#equals(java.lang.Object)
-         */
         @Override
         public boolean equals(Object obj) {
             if (this == obj) {
@@ -1029,9 +952,7 @@ public class PassageTally extends AbstractPassage {
             return true;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.lang.Comparable#compareTo(java.lang.Object)
          */
         public int compareTo(TalliedVerse that) {
@@ -1086,18 +1007,14 @@ public class PassageTally extends AbstractPassage {
             last = null;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.util.Iterator#hasNext()
          */
         public boolean hasNext() {
             return it.hasNext();
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
         public VerseRange next() throws NoSuchElementException {
@@ -1105,9 +1022,7 @@ public class PassageTally extends AbstractPassage {
             return last.range;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.util.Iterator#remove()
          */
         public void remove() throws UnsupportedOperationException {
@@ -1143,22 +1058,12 @@ public class PassageTally extends AbstractPassage {
             this.tally = tally;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.lang.Object#hashCode()
-         */
         @Override
         public int hashCode() {
             int result = 31 + tally;
             return 31 * result + ((range == null) ? 0 : range.hashCode());
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.lang.Object#equals(java.lang.Object)
-         */
         @Override
         public boolean equals(Object obj) {
             if (this == obj) {
@@ -1184,9 +1089,7 @@ public class PassageTally extends AbstractPassage {
             return true;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.lang.Comparable#compareTo(java.lang.Object)
          */
         public int compareTo(TalliedVerseRange that) {

@@ -151,7 +151,7 @@ public class PassageTally2Test extends TestCase {
 
     public void testAddPassageListener() throws Exception {
         FixturePassageListener li = new FixturePassageListener();
-        temp = (PassageTally) tally.clone();
+        temp = tally.clone();
         temp.addPassageListener(li);
         assertTrue(li.check(0, 0, 0));
         temp.add(VerseFactory.fromString("Gen 1:7"));
@@ -240,12 +240,12 @@ public class PassageTally2Test extends TestCase {
     }
 
     public void testAdd() throws Exception {
-        temp = (PassageTally) tally.clone();
+        temp = tally.clone();
         temp.add(VerseFactory.fromString("Gen 1:2"));
         assertEquals(temp.getName(), "Gen 1:1, 5, 2, 3, 7, 2:1, 3:1");
         temp.add(VerseFactory.fromString("Gen 1:4"));
         assertEquals(temp.getName(), "Gen 1:1, 5, 2, 3, 4, 7, 2:1, 3:1");
-        temp = (PassageTally) tally.clone();
+        temp = tally.clone();
         temp.add(VerseRangeFactory.fromString("Gen 1:2-4"));
         assertEquals(temp.getName(), "Gen 1:1, 3, 5, 2, 4, 7, 2:1, 3:1");
         try {
@@ -256,7 +256,7 @@ public class PassageTally2Test extends TestCase {
     }
 
     public void testUnAdd() throws Exception {
-        temp = (PassageTally) tally.clone();
+        temp = tally.clone();
         temp.unAdd(VerseFactory.fromString("Gen 1:5"));
         assertEquals(temp.getName(), "Gen 1:1, 3, 5, 7, 2:1, 3:1");
         temp.unAdd(VerseFactory.fromString("Gen 1:5"));
@@ -266,24 +266,24 @@ public class PassageTally2Test extends TestCase {
     }
 
     public void testAddAll() throws Exception {
-        temp = (PassageTally) tally.clone();
+        temp = tally.clone();
         temp.addAll(keyf.getKey("Gen 1:2, Gen 1:4"));
         assertEquals(temp.getName(), "Gen 1:1, 5, 2, 3, 4, 7, 2:1, 3:1");
     }
 
     public void testClear() {
-        temp = (PassageTally) tally.clone();
+        temp = tally.clone();
         temp.clear();
         assertEquals(temp.getName(), "");
         temp.clear();
         assertEquals(temp.getName(), "");
-        temp = (PassageTally) empty.clone();
+        temp = empty.clone();
         temp.clear();
         assertEquals(temp.getName(), "");
     }
 
     public void testBlur() {
-        temp = (PassageTally) tally.clone();
+        temp = tally.clone();
         temp.blur(1, RestrictionType.NONE);
         assertEquals(
                 temp.getNameAndTally(),
@@ -295,7 +295,7 @@ public class PassageTally2Test extends TestCase {
     }
 
     public void testFlatten() {
-        temp = (PassageTally) tally.clone();
+        temp = tally.clone();
         temp.flatten();
         assertEquals(temp.getName(), "Gen 1:1, 3, 5, 7, 2:1, 3:1");
     }

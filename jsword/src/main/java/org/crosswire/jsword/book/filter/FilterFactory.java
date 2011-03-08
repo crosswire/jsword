@@ -105,14 +105,14 @@ public final class FilterFactory {
             reply = deft;
         }
 
-        return (Filter) reply.clone();
+        return reply.clone();
     }
 
     /**
      * Find a filter given a lookup string
      */
     public static Filter getDefaultFilter() {
-        return (Filter) deft.clone();
+        return deft.clone();
     }
 
     /**

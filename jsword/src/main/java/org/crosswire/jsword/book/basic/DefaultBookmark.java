@@ -46,87 +46,62 @@ public class DefaultBookmark implements Bookmark {
         books = new ArrayList<Book>();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.Bookmark#addBook(org.crosswire.jsword.book.
-     * Book)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Bookmark#addBook(org.crosswire.jsword.book.Book)
      */
     public void addBook(Book book) {
         books.add(book);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Bookmark#getBooks()
      */
     public List<Book> getBooks() {
         return Collections.unmodifiableList(books);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.Bookmark#setSearchRequest(org.crosswire.jsword
-     * .index.search.SearchRequest)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Bookmark#setSearchRequest(org.crosswire.jsword.index.search.SearchRequest)
      */
     public void setSearchRequest(SearchRequest request) {
         searchRequest = request;
         lookupRequest = null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Bookmark#getSearchRequest()
      */
     public SearchRequest getSearchRequest() {
         return searchRequest;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.Bookmark#setLookupRequest(java.lang.String)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Bookmark#setLookupRequest(java.lang.String)
      */
     public void setLookupRequest(String request) {
         lookupRequest = request;
         searchRequest = null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Bookmark#getLookupRequest()
      */
     public String getLookupRequest() {
         return lookupRequest;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Bookmark#getBookData()
      */
     public BookData getBookData() {
         return null;
     }
 
-    /**
-     * This needs to be declared here so that it is visible as a method on a
-     * derived Bookmark.
-     * 
-     * @return A complete copy of ourselves
-     */
     @Override
-    public Object clone() {
-        Object clone = null;
+    public DefaultBookmark clone() {
+        DefaultBookmark clone = null;
         try {
-            clone = super.clone();
+            clone = (DefaultBookmark) super.clone();
         } catch (CloneNotSupportedException e) {
             assert false : e;
         }

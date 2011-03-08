@@ -46,384 +46,281 @@ final class SynchronizedPassage implements Passage {
         this.ref = ref;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#add(org.crosswire.jsword.passage.Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#addAll(org.crosswire.jsword.passage.Key)
      */
     public synchronized void addAll(Key key) {
         ref.addAll(key);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#remove(org.crosswire.jsword.passage.Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#removeAll(org.crosswire.jsword.passage.Key)
      */
     public synchronized void removeAll(Key key) {
         ref.removeAll(key);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#retain(org.crosswire.jsword.passage.Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#retainAll(org.crosswire.jsword.passage.Key)
      */
     public synchronized void retainAll(Key key) {
         ref.retainAll(key);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage
-     * .Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#contains(org.crosswire.jsword.passage.Key)
      */
     public synchronized boolean contains(Key key) {
         return ref.contains(key);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getChildCount()
      */
     public synchronized int getChildCount() {
         return ref.getChildCount();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getCardinality()
      */
     public synchronized int getCardinality() {
         return ref.getCardinality();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#canHaveChildren()
      */
     public synchronized boolean canHaveChildren() {
         return ref.canHaveChildren();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Key#iterator()
+    /* (non-Javadoc)
+     * @see java.lang.Iterable#iterator()
      */
     public synchronized Iterator<Key> iterator() {
         return ref.iterator();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#get(int)
      */
     public synchronized Key get(int index) {
         return ref.get(index);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage
-     * .Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage.Key)
      */
     public synchronized int indexOf(Key that) {
         return ref.indexOf(that);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getParent()
      */
     public synchronized Key getParent() {
         return ref.getParent();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#getName()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getName()
      */
     public synchronized String getName() {
         return ref.getName();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage
-     * .Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getName(org.crosswire.jsword.passage.Key)
      */
     public synchronized String getName(Key base) {
         return ref.getName(base);
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getRootName()
+     */
     public synchronized String getRootName() {
         return ref.getRootName();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#getOSISName()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getOsisRef()
      */
     public synchronized String getOsisRef() {
         return ref.getOsisRef();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Key#getOSISId()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#getOsisID()
      */
     public synchronized String getOsisID() {
         return ref.getOsisID();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#getOverview()
      */
     public synchronized String getOverview() {
         return ref.getOverview();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#isEmpty()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#isEmpty()
      */
     public synchronized boolean isEmpty() {
         return ref.isEmpty();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#countVerses()
      */
     public synchronized int countVerses() {
         return ref.countVerses();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#hasRanges(org.crosswire.jsword.passage
-     * .RestrictionType)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#hasRanges(org.crosswire.jsword.passage.RestrictionType)
      */
     public synchronized boolean hasRanges(RestrictionType restrict) {
         return ref.hasRanges(restrict);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#countRanges(org.crosswire.jsword
-     * .passage.RestrictionType)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#countRanges(org.crosswire.jsword.passage.RestrictionType)
      */
     public synchronized int countRanges(RestrictionType restrict) {
         return ref.countRanges(restrict);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#trimVerses(int)
      */
     public synchronized Passage trimVerses(int count) {
         return ref.trimVerses(count);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#trimRanges(int,
-     * org.crosswire.jsword.passage.RestrictionType)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#trimRanges(int, org.crosswire.jsword.passage.RestrictionType)
      */
     public synchronized Passage trimRanges(int count, RestrictionType restrict) {
         return ref.trimRanges(count, restrict);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#booksInPassage()
      */
     public synchronized int booksInPassage() {
         return ref.booksInPassage();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#chaptersInPassage(int)
      */
     public synchronized int chaptersInPassage(int book) throws NoSuchVerseException {
         return ref.chaptersInPassage(book);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#versesInPassage(int, int)
      */
     public synchronized int versesInPassage(int book, int chapter) throws NoSuchVerseException {
         return ref.versesInPassage(book, chapter);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#getVerseAt(int)
      */
     public synchronized Verse getVerseAt(int offset) throws ArrayIndexOutOfBoundsException {
         return ref.getVerseAt(offset);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#getVerseRangeAt(int, int)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#getRangeAt(int, org.crosswire.jsword.passage.RestrictionType)
      */
     public synchronized VerseRange getRangeAt(int offset, RestrictionType restrict) throws ArrayIndexOutOfBoundsException {
         return ref.getRangeAt(offset, restrict);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#rangeIterator(int)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#rangeIterator(org.crosswire.jsword.passage.RestrictionType)
      */
     public synchronized Iterator<Key> rangeIterator(RestrictionType restrict) {
         return ref.rangeIterator(restrict);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#add(org.crosswire.jsword.passage
-     * .VerseBase)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#add(org.crosswire.jsword.passage.Key)
      */
     public synchronized void add(Key that) {
         ref.add(that);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#remove(org.crosswire.jsword.passage
-     * .VerseBase)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#remove(org.crosswire.jsword.passage.Key)
      */
     public synchronized void remove(Key that) {
         ref.remove(that);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#containsAll(org.crosswire.jsword
-     * .passage.Passage)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#containsAll(org.crosswire.jsword.passage.Passage)
      */
     public synchronized boolean containsAll(Passage that) {
         return ref.containsAll(that);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#clear()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#clear()
      */
     public synchronized void clear() {
         ref.clear();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Key#blur(int)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#blur(int, org.crosswire.jsword.passage.RestrictionType)
      */
     public synchronized void blur(int by, RestrictionType restrict) {
         ref.blur(by, restrict);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#readDescription(java.io.Reader)
      */
     public synchronized void readDescription(Reader in) throws IOException, NoSuchVerseException {
         ref.readDescription(in);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#writeDescription(java.io.Writer)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#writeDescription(java.io.Writer)
      */
     public synchronized void writeDescription(Writer out) throws IOException {
         ref.writeDescription(out);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#optimizeReads()
      */
     public synchronized void optimizeReads() {
         ref.optimizeReads();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#addPassageListener(org.crosswire
-     * .jsword.passage.PassageListener)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#addPassageListener(org.crosswire.jsword.passage.PassageListener)
      */
     public synchronized void addPassageListener(PassageListener li) {
         ref.addPassageListener(li);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#removePassageListener(org.crosswire
-     * .jsword.passage.PassageListener)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#removePassageListener(org.crosswire.jsword.passage.PassageListener)
      */
     public synchronized void removePassageListener(PassageListener li) {
         ref.removePassageListener(li);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#clone()
-     */
     @Override
-    public synchronized Object clone() {
+    public synchronized SynchronizedPassage clone() {
         SynchronizedPassage clone = null;
         try {
             clone = (SynchronizedPassage) super.clone();
@@ -436,21 +333,11 @@ final class SynchronizedPassage implements Passage {
         return clone;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public synchronized int hashCode() {
         return ref.hashCode();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public synchronized boolean equals(Object obj) {
         return ref.equals(obj);

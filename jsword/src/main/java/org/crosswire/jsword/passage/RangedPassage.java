@@ -87,13 +87,8 @@ public class RangedPassage extends AbstractPassage {
         normalize();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#clone()
-     */
     @Override
-    public Object clone() {
+    public RangedPassage clone() {
         // This gets us a shallow copy
         RangedPassage copy = (RangedPassage) super.clone();
 
@@ -107,11 +102,6 @@ public class RangedPassage extends AbstractPassage {
         return copy;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#countRanges(int)
-     */
     @Override
     public int countRanges(RestrictionType restrict) {
         if (restrict.equals(RestrictionType.NONE)) {
@@ -121,11 +111,6 @@ public class RangedPassage extends AbstractPassage {
         return super.countRanges(restrict);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#countVerses()
-     */
     @Override
     public int countVerses() {
         Iterator<Key> it = rangeIterator(RestrictionType.NONE);
@@ -139,20 +124,13 @@ public class RangedPassage extends AbstractPassage {
         return count;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see java.lang.Iterable#iterator()
      */
     public Iterator<Key> iterator() {
         return new VerseIterator(rangeIterator(RestrictionType.NONE));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#rangeIterator(int)
-     */
     @Override
     public final Iterator<Key> rangeIterator(RestrictionType restrict) {
         if (restrict.equals(RestrictionType.NONE)) {
@@ -162,23 +140,11 @@ public class RangedPassage extends AbstractPassage {
         return new VerseRangeIterator(store.iterator(), restrict);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#isEmpty()
-     */
     @Override
     public boolean isEmpty() {
         return store.isEmpty();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#contains(org.crosswire.jsword.passage
-     * .VerseBase)
-     */
     @Override
     public boolean contains(Key obj) {
         // Even for the contains(VerseRange) case, the simple
@@ -200,12 +166,8 @@ public class RangedPassage extends AbstractPassage {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#add(org.crosswire.jsword.passage
-     * .VerseBase)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#add(org.crosswire.jsword.passage.Key)
      */
     public void add(Key obj) {
         optimizeWrites();
@@ -222,11 +184,6 @@ public class RangedPassage extends AbstractPassage {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#clear()
-     */
     @Override
     public void clear() {
         optimizeWrites();
@@ -235,12 +192,8 @@ public class RangedPassage extends AbstractPassage {
         fireIntervalRemoved(this, null, null);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#remove(org.crosswire.jsword.passage
-     * .VerseBase)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#remove(org.crosswire.jsword.passage.Key)
      */
     public void remove(Key obj) {
         optimizeWrites();
@@ -280,13 +233,6 @@ public class RangedPassage extends AbstractPassage {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Passage#retainAll(org.crosswire.jsword.passage
-     * .Passage)
-     */
     @Override
     public void retainAll(Key key) {
         Passage that = KeyUtil.getPassage(key);
@@ -396,27 +342,21 @@ public class RangedPassage extends AbstractPassage {
             }
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.util.Iterator#hasNext()
          */
         public boolean hasNext() {
             return real.hasNext();
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
         public Key next() throws NoSuchElementException {
             return real.next();
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.util.Iterator#remove()
          */
         public void remove() throws UnsupportedOperationException {
@@ -441,27 +381,21 @@ public class RangedPassage extends AbstractPassage {
             this.real = it;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.util.Iterator#remove()
          */
         public void remove() {
             throw new UnsupportedOperationException();
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.util.Iterator#hasNext()
          */
         public boolean hasNext() {
             return next != null || real.hasNext();
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
         public Key next() {

@@ -157,20 +157,15 @@ class TreeNode implements Cloneable, Serializable {
         this.parent = parent;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#clone()
-     */
     @Override
-    public Object clone() {
+    public TreeNode clone() {
+        TreeNode clone = null;
         try {
-            return super.clone();
+            clone = (TreeNode) super.clone();
         } catch (CloneNotSupportedException e) {
-            assert false;
+            assert false : e;
         }
-
-        return null;
+        return clone;
     }
 
     /**

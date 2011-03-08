@@ -44,12 +44,8 @@ import org.jdom.Element;
  * @author Joe Walker [joe at eireneh dot com]
  */
 public class GBFFilter implements Filter {
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book
-     * .Book, org.crosswire.jsword.passage.Key, java.lang.String)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.Book, org.crosswire.jsword.passage.Key, java.lang.String)
      */
     public List<Content> toOSIS(Book book, Key key, String plain) {
         DataPolice.setKey(key);
@@ -72,19 +68,15 @@ public class GBFFilter implements Filter {
         return ele.removeContent();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#clone()
-     */
     @Override
-    public Object clone() {
+    public GBFFilter clone() {
+        GBFFilter clone = null;
         try {
-            return super.clone();
+            clone = (GBFFilter) super.clone();
         } catch (CloneNotSupportedException e) {
             assert false : e;
         }
-        return null;
+        return clone;
     }
 
     /**

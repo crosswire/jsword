@@ -97,5 +97,5 @@ public interface Bookmark extends Serializable, Cloneable {
      * 
      * @return A complete copy of ourselves
      */
-    Object clone();
+    Bookmark clone();
 }
