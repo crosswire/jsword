@@ -230,7 +230,7 @@ public final class XMLUtil {
     }
 
     /**
-     * Remove all invalid characters in the input. XML has stringent
+     * Remove all invalid characters in the input, replacing them with a space. XML has stringent
      * requirements as to which characters are or are not allowed. The set of
      * allowable characters are:<br />
      * #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]<br/>
@@ -241,7 +241,7 @@ public final class XMLUtil {
      * @return the cleaned string
      */
     public static String cleanAllCharacters(String broken) {
-        return invalidCharacterPattern.matcher(broken).replaceAll("");
+        return invalidCharacterPattern.matcher(broken).replaceAll(" ");
     }
 
     /**
@@ -321,10 +321,9 @@ public final class XMLUtil {
                 }
             }
 
-            // So we have the end of the tag, delete it ...
-            // DataPolice.report("discarding tag: " + working.substring(lt, i +
-            // 1));
-            working = working.substring(0, lt) + working.substring(i + 1);
+            // So we have the end of the tag, delete it, but leave a space in it's place
+            // DataPolice.report("discarding tag: " + working.substring(lt, i + 1));
+            working = working.substring(0, lt) + " " + working.substring(i + 1);
         }
 
         return working;
@@ -350,7 +349,8 @@ public final class XMLUtil {
             return replace;
         }
 
-        return "";
+        // replace unknown entities with a space
+        return " ";
     }
 
     // Map entities to their unicode equivalent

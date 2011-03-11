@@ -131,8 +131,8 @@ public class THMLFilter implements Filter {
     private Element parse(Book book, Key key, String plain, String failMessage) {
         Exception ex = null;
         // We need to create a root element to house our document fragment
-        StringBuilder buf = new StringBuilder(15 + plain.length()); // 15 for the
-                                                                  // tags we add
+        // 15 for the tags we add
+        StringBuilder buf = new StringBuilder(15 + plain.length());
         buf.append('<').append(RootTag.TAG_ROOT).append('>').append(plain).append("</").append(RootTag.TAG_ROOT).append('>');
         finalInput = buf.toString();
         try {
@@ -152,7 +152,13 @@ public class THMLFilter implements Filter {
             ex = e;
         } catch (ParserConfigurationException e) {
             ex = e;
-        }
+        } catch (IllegalArgumentException e) {
+            // JDOM has a few exceptions which are all derived from this.
+            ex = e;
+        } catch (RuntimeException e) {
+            // Catch everything else so that we handle the exception properly within a Sw*ng callback
+            ex = e;
+        } 
 
         errorMessage = failMessage;
         error = ex;

@@ -50,6 +50,6 @@ public class IgnoreTag extends AnonymousTag {
         // Replace the parent with this element
         Element parent = ele.getParentElement();
         parent.removeContent(ele);
-        parent.addContent(ele.getChildren());
+        parent.addContent(ele.removeContent());
     }
 }
