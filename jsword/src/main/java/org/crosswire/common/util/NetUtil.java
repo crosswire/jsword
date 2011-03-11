@@ -133,7 +133,7 @@ public final class NetUtil {
         // If it is a file, except
         if (file.isFile()) {
             // TRANSLATOR: Error condition: A directory was expected, but a file was found. {0} is a placeholder for the file.
-            throw new MalformedURLException(JSMsg.gettext("The given URL {0} is a file.", orig));
+            throw new MalformedURLException(JSMsg.gettext("The URL {0} is a file.", orig));
         }
 
         // Is it already a directory ?
@@ -141,7 +141,7 @@ public final class NetUtil {
             // Create the directory and make sure it worked.
             if (!file.mkdirs()) {
                 // TRANSLATOR: Error condition: A directory could not be created. {0} is a placeholder for the directory
-                throw new MalformedURLException(JSMsg.gettext("The given URL {0} could not be created as a directory.", orig));
+                throw new MalformedURLException(JSMsg.gettext("The URL {0} could not be created as a directory.", orig));
             }
         }
     }
@@ -161,7 +161,7 @@ public final class NetUtil {
         // If it is a file, except
         if (file.isDirectory()) {
             // TRANSLATOR: Error condition: A file was expected, but a directory was found. {0} is a placeholder for the directory.
-            throw new MalformedURLException(JSMsg.gettext("The given URL {0} is a directory.", orig));
+            throw new MalformedURLException(JSMsg.gettext("The URL {0} is a directory.", orig));
         }
 
         // Is it already a directory ?
@@ -172,7 +172,7 @@ public final class NetUtil {
             // Did that work?
             if (!file.isFile()) {
                 // TRANSLATOR: Error condition: A file could not be created. {0} is a placeholder for the file
-                throw new MalformedURLException(JSMsg.gettext("The given URL {0} could not be created as a file.", orig));
+                throw new MalformedURLException(JSMsg.gettext("The URL {0} could not be created as a file.", orig));
             }
         }
     }
@@ -516,7 +516,7 @@ public final class NetUtil {
         File fdir = new File(uri.getPath());
         if (!fdir.isDirectory()) {
             // TRANSLATOR: Error condition: A directory was expected, but a file was found. {0} is a placeholder for the file.
-            throw new MalformedURLException(JSMsg.gettext("URL {0} is not a directory", uri.toString()));
+            throw new MalformedURLException(JSMsg.gettext("The URL {0} is not a directory", uri.toString()));
         }
 
         return fdir.list(new URIFilterFilenameFilter(filter));
@@ -749,7 +749,7 @@ public final class NetUtil {
     private static void checkFileURI(URI uri) throws MalformedURLException {
         if (!uri.getScheme().equals(PROTOCOL_FILE)) {
             // TRANSLATOR: Error condition: The URL protocol "file:" was expected, but something else was found. {0} is a placeholder for the URL.
-            throw new MalformedURLException(JSMsg.gettext("The given URL {0} is not a file: URL.", uri));
+            throw new MalformedURLException(JSMsg.gettext("The URL {0} is not a file.", uri));
         }
     }
 
