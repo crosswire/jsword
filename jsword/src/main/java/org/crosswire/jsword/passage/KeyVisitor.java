@@ -31,7 +31,7 @@ package org.crosswire.jsword.passage;
 public interface KeyVisitor {
     /**
      * We've found a leaf node in a Key tree, and are giving the visitor a
-     * change to do processing based on it.
+     * chance to do processing based on it.
      * 
      * @param key
      *            The found leaf node.
@@ -40,7 +40,7 @@ public interface KeyVisitor {
 
     /**
      * We've found a branch node in a Key tree, and are giving the visitor a
-     * change to do processing based on it.
+     * chance to do processing based on it.
      * 
      * @param key
      *            The found branch node.

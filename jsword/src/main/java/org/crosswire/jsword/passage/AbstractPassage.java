@@ -1255,7 +1255,7 @@ public abstract class AbstractPassage implements Passage {
             throw new IOException(ex.getMessage());
         }
 
-        // We are ignoring the original_name. It was set to null in the
+        // We are ignoring the originalName. It was set to null in the
         // default ctor so I will ignore it here.
 
         // We don't bother to call fireContentsChanged(...) because
