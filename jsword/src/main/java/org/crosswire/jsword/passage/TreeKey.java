@@ -158,6 +158,42 @@ public class TreeKey extends AbstractKeyList {
         return (TreeKey) super.clone();
     }
 
+    @Override
+    public String getRootName() {
+        String rootName = getName();
+        for (Key parentKey = this; parentKey != null && parentKey.getName().length() > 0; parentKey = parentKey.getParent()) {
+            rootName = parentKey.getName();
+        }
+        return rootName;
+    }
+
+    @Override
+    public String getOsisRef() {
+        return getOsisID();
+    }
+
+    @Override
+    public String getOsisID() {
+        StringBuilder b = new StringBuilder(100);
+        b.append(osisify(getName()));
+        for (Key parentKey = this.getParent(); parentKey != null && parentKey.getName().length() > 0; parentKey = parentKey.getParent()) {
+            b.insert(0, ".");
+            b.insert(0, osisify(parentKey.getName()));
+        }
+        // Remove the leading .
+        return b.toString();
+    }
+
+    private String osisify(String str) {
+        // FIXME(DMS): An osisID cannot have lots of stuff that a name can have.
+        // It can only have _, a-z, A-Z, 0-9.
+        // Need to normalize the name by
+        // replacing ' ' with '_'
+        // Stripping punctuation, accents, ...
+        // ...
+        return str.replace(' ', '_');
+    }
+
     /**
      * The parent of this key.
      */

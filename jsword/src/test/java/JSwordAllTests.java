@@ -82,6 +82,7 @@ public class JSwordAllTests extends TestCase {
 
         suite.addTestSuite(org.crosswire.jsword.book.sword.ConfigEntryTableTest.class);
         suite.addTestSuite(org.crosswire.jsword.book.sword.RawFileBackendTest.class);
+        suite.addTestSuite(org.crosswire.jsword.book.sword.GenBookTest.class);
         suite.addTestSuite(org.crosswire.jsword.book.sword.SwordBookDriverTest.class);
         suite.addTestSuite(org.crosswire.jsword.book.sword.SwordBookMetaDataTest.class);
         suite.addTestSuite(org.crosswire.jsword.book.sword.SwordBookTest.class);
