@@ -28,7 +28,7 @@ public class GenBookTest extends TestCase {
     protected void tearDown() throws Exception {
     }
 
-    public void testCreate() throws IOException, BookException {
+    public void testOsisID() throws IOException, BookException {
         Book book = Books.installed().getBook("Pilgrim"); // Bunyan's Pilgrim's Progress
         if (book != null) {
             Key key = null;
@@ -45,6 +45,15 @@ public class GenBookTest extends TestCase {
                    Assert.fail("Could not get the osisID for a GenBook key.");
                 }
             }
+        }
+    }
+    
+    public void testCount() {
+        Book book = Books.installed().getBook("Pilgrim");
+        if (book != null) {
+            Key globalKeyList = book.getGlobalKeyList();
+            assertEquals("Incorrect number of keys in master list", 29, globalKeyList.getCardinality());
+            assertEquals("Incorrect number of top level keys", 6, globalKeyList.getChildCount());
         }
     }
 
