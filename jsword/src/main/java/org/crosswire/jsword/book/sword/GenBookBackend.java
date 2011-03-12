@@ -56,12 +56,8 @@ public class GenBookBackend extends AbstractBackend {
         index = new TreeKeyIndex(sbmd);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.common.activate.Activatable#activate(org.crosswire.common
-     * .activate.Lock)
+    /* (non-Javadoc)
+     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
      */
     public final void activate(Lock lock) {
         Activator.activate(index);
@@ -92,12 +88,8 @@ public class GenBookBackend extends AbstractBackend {
         active = true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common
-     * .activate.Lock)
+    /* (non-Javadoc)
+     * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
      */
     public final void deactivate(Lock lock) {
         try {
@@ -115,13 +107,6 @@ public class GenBookBackend extends AbstractBackend {
         Activator.deactivate(index);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage
-     * .Key)
-     */
     @Override
     public boolean contains(Key key) {
         checkActive();
@@ -146,13 +131,6 @@ public class GenBookBackend extends AbstractBackend {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire
-     * .jsword.passage.Key, java.lang.String)
-     */
     @Override
     public String getRawText(Key key) throws BookException {
         checkActive();
@@ -160,6 +138,14 @@ public class GenBookBackend extends AbstractBackend {
         try {
             DataPolice.setKey(key);
             TreeNode node = find(key);
+
+            if (node == null) {
+                // TRANSLATOR: Error condition: Indicates that something could not be found in the book.
+                // {0} is a placeholder for the unknown key.
+                // {1} is the short name of the book
+                throw new BookException(JSMsg.gettext("No entry for ''{0}'' in {1}.", key.getName(), getBookMetaData().getInitials()));
+            }
+
             byte[] userData = node.getUserData();
 
             // Some entries may be empty.
@@ -230,11 +216,6 @@ public class GenBookBackend extends AbstractBackend {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.sword.AbstractBackend#readIndex()
-     */
     @Override
     public Key readIndex() {
         SwordBookMetaData bmd = getBookMetaData();
@@ -251,17 +232,11 @@ public class GenBookBackend extends AbstractBackend {
         return reply;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.AbstractBackend#setAliasKey(org.crosswire.jsword.passage.Key, org.crosswire.jsword.passage.Key)
-     */
     @Override
     public void setAliasKey(Key alias, Key source) throws IOException {
         throw new UnsupportedOperationException();
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.AbstractBackend#setRawText(org.crosswire.jsword.passage.Key, java.lang.String)
-     */
     @Override
     public void setRawText(Key key, String text) throws BookException, IOException {
         throw new UnsupportedOperationException();

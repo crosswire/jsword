@@ -215,7 +215,7 @@ public class SwordGenBook extends AbstractBook {
         // TRANSLATOR: Error condition: Indicates that something could not be found in the book.
         // {0} is a placeholder for the unknown key.
         // {1} is the short name of the book
-        throw new NoSuchKeyException(JSMsg.gettext("No entry for \'{0}\' in {1}.", text, getInitials()));
+        throw new NoSuchKeyException(JSMsg.gettext("No entry for ''{0}'' in {1}.", text, getInitials()));
     }
 
     /* (non-Javadoc)
