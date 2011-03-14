@@ -56,5 +56,18 @@ public class GenBookTest extends TestCase {
             assertEquals("Incorrect number of top level keys", 6, globalKeyList.getChildCount());
         }
     }
+    public void testInvalidKey() {
+        Book book = Books.installed().getBook("Pilgrim");
+        if (book != null) {
+            Key key = book.getGlobalKeyList();
+            try {
+                book.getRawText(key);
+            } catch (NullPointerException e) {
+                Assert.fail("test for bad key should not have thrown an NPE.");
+            } catch (BookException e) {
+                assertEquals("testing for a bad key", "No entry for '' in Pilgrim.", e.getMessage());
+            }
+        }
+    }
 
 }
