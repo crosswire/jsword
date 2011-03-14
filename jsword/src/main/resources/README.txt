@@ -14,6 +14,9 @@ Change the code below and rebuild the file as the need arises.
 The iso639*.properties files are kept with a pruned set of names
 for the languages found in the Sword catalog of Books.
 
+iso639.properties uses localized names, where known, and is sync'd SWORD's locales.d/locales.conf
+iso639_en.properties has the English name, date ranges in brackets [...] and localized name suffixed in ()
+
 This is primarily for performance, but it is also to facilitate translation.
 
 Using:
