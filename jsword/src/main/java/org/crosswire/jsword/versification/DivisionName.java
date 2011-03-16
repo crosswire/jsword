@@ -31,7 +31,7 @@ import org.crosswire.jsword.JSMsg;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public enum DivisonName {
+public enum DivisionName {
 
     /** BIBLE consists of the entire/whole Bible (Gen - Rev) **/
     BIBLE {

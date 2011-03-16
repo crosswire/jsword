@@ -225,7 +225,7 @@ public final class SectionNames {
         // TRANSLATOR: The Bible's minor prophets
         sections[4] = JSMsg.gettext("Minor Prophets");
         // TRANSLATOR: The 4 Gospels and Acts in the New Testament
-        sections[5] = JSMsg.gettext("Gospels And Acts");
+        sections[5] = JSMsg.gettext("Gospels and Acts");
         // TRANSLATOR: The letters of the New Testament
         sections[6] = JSMsg.gettext("Letters");
         // TRANSLATOR: The book of Revelation
