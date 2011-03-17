@@ -113,17 +113,7 @@ public class GenBookBackend extends AbstractBackend {
 
         try {
             DataPolice.setKey(key);
-            TreeNode node = find(key);
-            // Is there an entry?
-            if (node == null) {
-                return false;
-            }
-
-            // Is it non-empty?
-            byte[] userData = node.getUserData();
-
-            // Some entries may be empty.
-            return userData.length == 8;
+            return null != find(key);
         } catch (IOException e) {
             return false;
         } finally {
