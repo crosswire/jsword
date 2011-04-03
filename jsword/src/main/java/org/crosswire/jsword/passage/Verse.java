@@ -31,32 +31,19 @@ import org.crosswire.common.util.ItemIterator;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
+import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.BibleInfo;
 
 /**
- * A Passage is a pointer to a single verse. Externally its unique identifier is
+ * A Verse is a pointer to a single verse. Externally its unique identifier is
  * a String of the form "Gen 1:1" Internally we use
- * <code>int[] { book, chapter, verse }</code>
+ * <code>( book, chapter, verse )</code>
  * 
  * <p>
  * A Verse is designed to be immutable. This is a necessary from a collections
  * point of view. A Verse should always be valid, although some versions may not
  * return any text for verses that they consider to be mis-translated in some
  * way.
- * </p>
- * 
- * <p>
- * Optimization information: I spent some time optimizing this class because it
- * is at the heart of things. My benchmark started at 11.25s. By taking the
- * int[] and turning it into 3 ints and it took 10.8s.<br />
- * Caching the ordinal number just took the time from 12s to 12s! I guess that
- * the time and extra memory taken up by the extra int overrode the time it
- * saved by repeated queries to the same verse. I guess this would change if we
- * were using a [Ranged|Distinct]Passage instead of a Bitwise Passage (as in the
- * test). Maybe it would be a good idea to have an extra class OrdCacheVerse (or
- * something) that gave us the best of both worlds?<br />
- * Removing the default initialization of the ints took the time down by about
- * 0.25s also.
  * </p>
  * 
  * @see gnu.lgpl.License for license details.<br>
@@ -93,7 +80,7 @@ public final class Verse implements Key {
      * @exception NoSuchVerseException
      *                If the reference is illegal
      */
-    /* package */Verse(String original, int book, int chapter, int verse) throws NoSuchVerseException {
+    /* package */Verse(String original, BibleBook book, int chapter, int verse) throws NoSuchVerseException {
         originalName = original;
         set(book, chapter, verse);
     }
@@ -111,7 +98,7 @@ public final class Verse implements Key {
      * @exception NoSuchVerseException
      *                If the reference is illegal
      */
-    public Verse(int book, int chapter, int verse) throws NoSuchVerseException {
+    public Verse(BibleBook book, int chapter, int verse) throws NoSuchVerseException {
         this(null, book, chapter, verse);
     }
 
@@ -134,7 +121,7 @@ public final class Verse implements Key {
      * @param patch_up
      *            True to trigger reference fixing
      */
-    public Verse(int book, int chapter, int verse, boolean patch_up) {
+    public Verse(BibleBook book, int chapter, int verse, boolean patch_up) {
         if (!patch_up) {
             throw new IllegalArgumentException(JSOtherMsg.lookupText("Use patch=true."));
         }
@@ -203,7 +190,7 @@ public final class Verse implements Key {
      */
     public String getRootName() {
         try {
-            return BibleInfo.getShortBookName(book);
+            return book.getShortName();
         } catch (NoSuchKeyException ex) {
             assert false : ex;
             return "!Error!";
@@ -214,12 +201,7 @@ public final class Verse implements Key {
      * @see org.crosswire.jsword.passage.Key#getOsisRef()
      */
     public String getOsisRef() {
-        try {
-            return BibleInfo.getOSISName(book) + Verse.VERSE_OSIS_DELIM + chapter + Verse.VERSE_OSIS_DELIM + verse;
-        } catch (NoSuchVerseException ex) {
-            assert false : ex;
-            return "!Error!";
-        }
+        return book.getOSIS() + Verse.VERSE_OSIS_DELIM + chapter + Verse.VERSE_OSIS_DELIM + verse;
     }
 
     /* (non-Javadoc)
@@ -237,7 +219,6 @@ public final class Verse implements Key {
             copy.book = book;
             copy.chapter = chapter;
             copy.verse = verse;
-            // copy.ord = ord;
             copy.originalName = originalName;
         } catch (CloneNotSupportedException e) {
             assert false : e;
@@ -368,9 +349,9 @@ public final class Verse implements Key {
     /**
      * Return the book that we refer to
      * 
-     * @return The book number (Genesis = 1)
+     * @return The book of the Bible
      */
-    public int getBook() {
+    public BibleBook getBook() {
         return book;
     }
 
@@ -461,17 +442,6 @@ public final class Verse implements Key {
     }
 
     /**
-     * Return the verse that we refer to
-     * 
-     * @return An array of 3 ints 0=book, 1=chapter, 2=verse
-     */
-    public int[] getRefArray() {
-        return new int[] {
-                book, chapter, verse
-        };
-    }
-
-    /**
      * Return the verse id that we refer to, where Gen 1:1 = 1, and Rev 22:21 =
      * 31104
      * 
@@ -479,7 +449,7 @@ public final class Verse implements Key {
      */
     public int getOrdinal() {
         try {
-            return BibleInfo.verseOrdinal(book, chapter, verse);
+            return BibleInfo.verseOrdinal(this);
         } catch (NoSuchVerseException ex) {
             // A verse should never be illegal so
             log.error("ref=" + book + ", " + chapter + ", " + verse);
@@ -626,14 +596,14 @@ public final class Verse implements Key {
         // To cope with thing like Jude 2...
         if (BibleInfo.chaptersInBook(book) == 1) {
             if (verseBase == null || verseBase.book != book) {
-                return BibleInfo.getPreferredBookName(book) + Verse.VERSE_PREF_DELIM1 + verse;
+                return book.getPreferredName() + Verse.VERSE_PREF_DELIM1 + verse;
             }
 
             return String.valueOf(verse);
         }
 
         if (verseBase == null || verseBase.book != book) {
-            return BibleInfo.getPreferredBookName(book) + Verse.VERSE_PREF_DELIM1 + chapter + Verse.VERSE_PREF_DELIM2 + verse;
+            return book.getPreferredName() + Verse.VERSE_PREF_DELIM1 + chapter + Verse.VERSE_PREF_DELIM2 + verse;
         }
 
         if (verseBase.chapter != chapter) {
@@ -675,16 +645,12 @@ public final class Verse implements Key {
      * @param verse
      *            The verse to set
      */
-    private void setAndPatch(int book, int chapter, int verse) {
-        int[] ref = {
-                book, chapter, verse
-        };
+    private void setAndPatch(BibleBook book, int chapter, int verse) {
+        Verse patched = BibleInfo.patch(book, chapter, verse);
 
-        BibleInfo.patch(ref);
-
-        this.book = ref[BOOK];
-        this.chapter = ref[CHAPTER];
-        this.verse = ref[VERSE];
+        this.book = patched.book;
+        this.chapter = patched.chapter;
+        this.verse = patched.verse;
     }
 
     /**
@@ -700,7 +666,7 @@ public final class Verse implements Key {
      * @exception NoSuchVerseException
      *                If the verse can not be understood
      */
-    private void set(int book, int chapter, int verse) throws NoSuchVerseException {
+    private void set(BibleBook book, int chapter, int verse) throws NoSuchVerseException {
         BibleInfo.validate(book, chapter, verse);
 
         this.book = book;
@@ -709,8 +675,7 @@ public final class Verse implements Key {
     }
 
     /**
-     * Set the references. This must only be called from a ctor to maintain
-     * immutability
+     * Set the references. This must only be called from a ctor to maintain immutability
      * 
      * @param ordinal
      *            The ordinal of the verse
@@ -718,11 +683,11 @@ public final class Verse implements Key {
      *                If the verse can not be understood
      */
     private void set(int ordinal) throws NoSuchVerseException {
-        int[] ref = BibleInfo.decodeOrdinal(ordinal);
+        Verse v = BibleInfo.decodeOrdinal(ordinal);
 
-        book = ref[BOOK];
-        chapter = ref[CHAPTER];
-        verse = ref[VERSE];
+        book = v.book;
+        chapter = v.chapter;
+        verse = v.verse;
     }
 
     /**
@@ -873,21 +838,6 @@ public final class Verse implements Key {
     static final long serialVersionUID = -4033921076023185171L;
 
     /**
-     * To make the code more readable, the book is the first part of a int[]
-     */
-    private static final int BOOK = 0;
-
-    /**
-     * To make the code more readable, the chapter is the second part of a int[]
-     */
-    private static final int CHAPTER = 1;
-
-    /**
-     * To make the code more readable, the verse is the third part of a int[]
-     */
-    private static final int VERSE = 2;
-
-    /**
      * What characters should we use to separate parts of an OSIS verse
      * reference
      */
@@ -906,7 +856,7 @@ public final class Verse implements Key {
     /**
      * The default verse
      */
-    public static final Verse DEFAULT = new Verse(1, 1, 1, true);
+    public static final Verse DEFAULT = new Verse(BibleBook.GENESIS, 1, 1, true);
 
     /**
      * Allow the conversion to and from other number representations.
@@ -923,9 +873,9 @@ public final class Verse implements Key {
     private transient Key parent;
 
     /**
-     * The book number. Genesis=1
+     * The book of the Bible.
      */
-    private transient int book;
+    private transient BibleBook book;
 
     /**
      * The chapter number

@@ -590,14 +590,13 @@ public class PassageTally extends AbstractPassage {
             for (int i = 0; i < vib; i++) {
                 if (board[i] != 0) {
                     // This could be re-written more simply:
-                    // for (int j = -verses; j <= verses; j++)
-                    // {
-                    // int k = i + j;
-                    // if (k >= 0 && k < BibleInfo.versesInBible())
-                    // new_board[k] += board[i] + verses - mod(j);
+                    // for (int j = -verses; j <= verses; j++) {
+                    //     int k = i + j;
+                    //     if (k >= 0 && k < BibleInfo.versesInBible()) {
+                    //         new_board[k] += board[i] + verses - mod(j);
+                    //     }
                     // }
-                    // However splitting the loop in 2 will speed it
-                    // up quite a bit.
+                    // However splitting the loop in 2 will speed it up quite a bit.
 
                     for (int j = -verses; j < 0; j++) {
                         int k = i + j;

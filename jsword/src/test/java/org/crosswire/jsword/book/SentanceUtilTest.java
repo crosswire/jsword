@@ -59,189 +59,182 @@ public class SentanceUtilTest extends TestCase {
         String[] sa;
 
         sa = SentenceUtil.tokenize("one two three");
-        assertEquals(sa.length, 3);
-        assertEquals(sa[0], "one ");
-        assertEquals(sa[1], "two ");
-        assertEquals(sa[2], "three");
+        assertEquals(3, sa.length);
+        assertEquals("one ", sa[0]);
+        assertEquals("two ", sa[1]);
+        assertEquals("three", sa[2]);
 
         sa = SentenceUtil.tokenize("!one  two three ");
-        assertEquals(sa.length, 3);
-        assertEquals(sa[0], "!one ");
-        assertEquals(sa[1], "two ");
-        assertEquals(sa[2], "three ");
+        assertEquals(3, sa.length);
+        assertEquals("!one ", sa[0]);
+        assertEquals("two ", sa[1]);
+        assertEquals("three ", sa[2]);
 
         sa = SentenceUtil.tokenize("\"one-- two three ");
-        assertEquals(sa.length, 3);
-        assertEquals(sa[0], "\"one-- ");
-        assertEquals(sa[1], "two ");
-        assertEquals(sa[2], "three ");
+        assertEquals(3, sa.length);
+        assertEquals("\"one-- ", sa[0]);
+        assertEquals("two ", sa[1]);
+        assertEquals("three ", sa[2]);
 
         sa = SentenceUtil.tokenize("-one--two three ");
         assertEquals(sa.length, 3);
-        assertEquals(sa[0], "-one--");
-        assertEquals(sa[1], "two ");
-        assertEquals(sa[2], "three ");
+        assertEquals("-one--", sa[0]);
+        assertEquals("two ", sa[1]);
+        assertEquals("three ", sa[2]);
 
         sa = SentenceUtil.tokenize("one-two--three ");
-        assertEquals(sa.length, 2);
-        assertEquals(sa[0], "one-two--");
-        assertEquals(sa[1], "three ");
+        assertEquals(2, sa.length);
+        assertEquals("one-two--", sa[0]);
+        assertEquals("three ", sa[1]);
 
         sa = SentenceUtil.tokenize("one! \"*(two-three");
-        assertEquals(sa.length, 2);
-        assertEquals(sa[0], "one! ");
-        assertEquals(sa[1], "\"*(two-three");
+        assertEquals(2, sa.length);
+        assertEquals("one! ", sa[0]);
+        assertEquals("\"*(two-three", sa[1]);
 
         // moved from TestRawBible
         sa = SentenceUtil.tokenize("one two three");
-        assertEquals(sa.length, 3);
-        assertEquals(sa[0], "one ");
-        assertEquals(sa[1], "two ");
-        assertEquals(sa[2], "three");
+        assertEquals(3, sa.length);
+        assertEquals("one ", sa[0]);
+        assertEquals("two ", sa[1]);
+        assertEquals("three", sa[2]);
 
         sa = SentenceUtil.tokenize("one");
-        assertEquals(sa.length, 1);
-        assertEquals(sa[0], "one");
+        assertEquals(1, sa.length);
+        assertEquals("one", sa[0]);
 
         sa = SentenceUtil.tokenize("One, !Two-er THREE-er?");
-        assertEquals(sa.length, 3);
-        assertEquals(sa[0], "One, ");
-        assertEquals(sa[1], "!Two-er ");
-        assertEquals(sa[2], "THREE-er?");
+        assertEquals(3, sa.length);
+        assertEquals("One, ", sa[0]);
+        assertEquals("!Two-er ", sa[1]);
+        assertEquals("THREE-er?", sa[2]);
 
         sa = SentenceUtil.tokenize("One, !Two-er THREE--four?");
-        assertEquals(sa.length, 4);
-        assertEquals(sa[0], "One, ");
-        assertEquals(sa[1], "!Two-er ");
-        assertEquals(sa[2], "THREE--");
-        assertEquals(sa[3], "four?");
+        assertEquals(4, sa.length);
+        assertEquals("One, ", sa[0]);
+        assertEquals("!Two-er ", sa[1]);
+        assertEquals("THREE--", sa[2]);
+        assertEquals("four?", sa[3]);
     }
 
     public void testGetCase() {
-        assertEquals(CaseType.getCase("FRED"), CaseType.UPPER);
-        assertEquals(CaseType.getCase("F-ED"), CaseType.UPPER);
-        assertEquals(CaseType.getCase("F00D"), CaseType.UPPER);
-        assertEquals(CaseType.getCase("fred"), CaseType.LOWER);
-        assertEquals(CaseType.getCase("f-ed"), CaseType.LOWER);
-        assertEquals(CaseType.getCase("f00d"), CaseType.LOWER);
-        assertEquals(CaseType.getCase("Fred"), CaseType.SENTENCE);
-        assertEquals(CaseType.getCase("F-ed"), CaseType.SENTENCE);
-        assertEquals(CaseType.getCase("F00d"), CaseType.SENTENCE);
-        assertEquals(CaseType.getCase(""), CaseType.LOWER);
+        assertEquals(CaseType.UPPER, CaseType.getCase("FRED"));
+        assertEquals(CaseType.UPPER, CaseType.getCase("F-ED"));
+        assertEquals(CaseType.UPPER, CaseType.getCase("F00D"));
+        assertEquals(CaseType.LOWER, CaseType.getCase("fred"));
+        assertEquals(CaseType.LOWER, CaseType.getCase("f-ed"));
+        assertEquals(CaseType.LOWER, CaseType.getCase("f00d"));
+        assertEquals(CaseType.SENTENCE, CaseType.getCase("Fred"));
+        assertEquals(CaseType.SENTENCE, CaseType.getCase("F-ed"));
+        assertEquals(CaseType.SENTENCE, CaseType.getCase("F00d"));
+        assertEquals(CaseType.LOWER, CaseType.getCase(""));
         // The results of this are undefined so
-        // assertEquals(PassageUtil.getCase("FreD"), CaseType.SENTENCE);
+        // assertEquals(CaseType.SENTENCE, PassageUtil.getCase("FreD"));
     }
 
     public void testSetCase() {
-        assertEquals(CaseType.UPPER.setCase("FRED"), "FRED");
-        assertEquals(CaseType.UPPER.setCase("Fred"), "FRED");
-        assertEquals(CaseType.UPPER.setCase("fred"), "FRED");
-        assertEquals(CaseType.UPPER.setCase("frED"), "FRED");
-        assertEquals(CaseType.UPPER.setCase("fr00"), "FR00");
-        assertEquals(CaseType.UPPER.setCase("fr=_"), "FR=_");
-        assertEquals(CaseType.LOWER.setCase("FRED"), "fred");
-        assertEquals(CaseType.LOWER.setCase("Fred"), "fred");
-        assertEquals(CaseType.LOWER.setCase("fred"), "fred");
-        assertEquals(CaseType.LOWER.setCase("frED"), "fred");
-        assertEquals(CaseType.LOWER.setCase("fr00"), "fr00");
-        assertEquals(CaseType.LOWER.setCase("fr=_"), "fr=_");
-        assertEquals(CaseType.SENTENCE.setCase("FRED"), "Fred");
-        assertEquals(CaseType.SENTENCE.setCase("Fred"), "Fred");
-        assertEquals(CaseType.SENTENCE.setCase("fred"), "Fred");
-        assertEquals(CaseType.SENTENCE.setCase("frED"), "Fred");
-        assertEquals(CaseType.SENTENCE.setCase("fr00"), "Fr00");
-        assertEquals(CaseType.SENTENCE.setCase("fr=_"), "Fr=_");
-        assertEquals(CaseType.LOWER.setCase("no-one"), "no-one");
-        assertEquals(CaseType.UPPER.setCase("no-one"), "NO-ONE");
-        assertEquals(CaseType.SENTENCE.setCase("no-one"), "No-one");
-        assertEquals(CaseType.LOWER.setCase("xx-one"), "xx-one");
-        assertEquals(CaseType.UPPER.setCase("xx-one"), "XX-ONE");
-        assertEquals(CaseType.SENTENCE.setCase("xx-one"), "Xx-One");
-        assertEquals(CaseType.SENTENCE.setCase("god-inspired"), "God-inspired");
-        assertEquals(CaseType.SENTENCE.setCase("god-breathed"), "God-breathed");
-        assertEquals(CaseType.SENTENCE.setCase("maher-shalal-hash-baz"), "Maher-Shalal-Hash-Baz");
-        assertEquals(CaseType.LOWER.setCase(""), "");
-        assertEquals(CaseType.UPPER.setCase(""), "");
-        assertEquals(CaseType.SENTENCE.setCase(""), "");
+        assertEquals("FRED", CaseType.UPPER.setCase("FRED"));
+        assertEquals("FRED", CaseType.UPPER.setCase("Fred"));
+        assertEquals("FRED", CaseType.UPPER.setCase("fred"));
+        assertEquals("FRED", CaseType.UPPER.setCase("frED"));
+        assertEquals("FR00", CaseType.UPPER.setCase("fr00"));
+        assertEquals("FR=_", CaseType.UPPER.setCase("fr=_"));
+        assertEquals("fred", CaseType.LOWER.setCase("FRED"));
+        assertEquals("fred", CaseType.LOWER.setCase("Fred"));
+        assertEquals("fred", CaseType.LOWER.setCase("fred"));
+        assertEquals("fred", CaseType.LOWER.setCase("frED"));
+        assertEquals("fr00", CaseType.LOWER.setCase("fr00"));
+        assertEquals("fr=_", CaseType.LOWER.setCase("fr=_"));
+        assertEquals("Fred", CaseType.SENTENCE.setCase("FRED"));
+        assertEquals("Fred", CaseType.SENTENCE.setCase("Fred"));
+        assertEquals("Fred", CaseType.SENTENCE.setCase("fred"));
+        assertEquals("Fred", CaseType.SENTENCE.setCase("frED"));
+        assertEquals("Fr00", CaseType.SENTENCE.setCase("fr00"));
+        assertEquals("Fr=_", CaseType.SENTENCE.setCase("fr=_"));
+        assertEquals("no-one", CaseType.LOWER.setCase("no-one"));
+        assertEquals("NO-ONE", CaseType.UPPER.setCase("no-one"));
+        assertEquals("No-one", CaseType.SENTENCE.setCase("no-one"));
+        assertEquals("xx-one", CaseType.LOWER.setCase("xx-one"));
+        assertEquals("XX-ONE", CaseType.UPPER.setCase("xx-one"));
+        assertEquals("Xx-One", CaseType.SENTENCE.setCase("xx-one"));
+        assertEquals("God-inspired", CaseType.SENTENCE.setCase("god-inspired"));
+        assertEquals("God-breathed", CaseType.SENTENCE.setCase("god-breathed"));
+        assertEquals("Maher-Shalal-Hash-Baz", CaseType.SENTENCE.setCase("maher-shalal-hash-baz"));
+        assertEquals("", CaseType.LOWER.setCase(""));
+        assertEquals("", CaseType.UPPER.setCase(""));
+        assertEquals("", CaseType.SENTENCE.setCase(""));
     }
 
     public void testToSentenceCase() {
-        assertEquals(CaseType.toSentenceCase("one"), "One");
-        assertEquals(CaseType.toSentenceCase("one two"), "One two");
-        assertEquals(CaseType.toSentenceCase("ONE"), "One");
-        assertEquals(CaseType.toSentenceCase("ONE TWO"), "One two");
-        assertEquals(CaseType.toSentenceCase("onE"), "One");
-        assertEquals(CaseType.toSentenceCase("onE twO"), "One two");
-        assertEquals(CaseType.toSentenceCase("12345"), "12345");
-        assertEquals(CaseType.toSentenceCase("1 two"), "1 two");
-        assertEquals(CaseType.toSentenceCase("1 TWO"), "1 two");
+        assertEquals("One", CaseType.toSentenceCase("one"));
+        assertEquals("One two", CaseType.toSentenceCase("one two"));
+        assertEquals("One", CaseType.toSentenceCase("ONE"));
+        assertEquals("One two", CaseType.toSentenceCase("ONE TWO"));
+        assertEquals("One", CaseType.toSentenceCase("onE"));
+        assertEquals("One two", CaseType.toSentenceCase("onE twO"));
+        assertEquals("12345", CaseType.toSentenceCase("12345"));
+        assertEquals("1 two", CaseType.toSentenceCase("1 two"));
+        assertEquals("1 two", CaseType.toSentenceCase("1 TWO"));
     }
 
     public void testStripPunctuation() {
         String[] sa;
 
-        sa = SentenceUtil.stripPunctuation(new String[] {
-            "aaaa"});
-        assertEquals(sa.length, 1);
-        assertEquals(sa[0], "aaaa");
-        sa = SentenceUtil.stripPunctuation(new String[] {
-                "aaaa", "bbbb"});
-        assertEquals(sa.length, 2);
-        assertEquals(sa[0], "aaaa");
-        assertEquals(sa[1], "bbbb");
-        sa = SentenceUtil.stripPunctuation(new String[] {
-                "One", "Two", "Three"});
-        assertEquals(sa.length, 3);
-        assertEquals(sa[0], "One");
-        assertEquals(sa[1], "Two");
-        assertEquals(sa[2], "Three");
-        sa = SentenceUtil.stripPunctuation(new String[] {
-                " One ", " Two ", " Three "});
-        assertEquals(sa.length, 3);
-        assertEquals(sa[0], "One");
-        assertEquals(sa[1], "Two");
-        assertEquals(sa[2], "Three");
-        sa = SentenceUtil.stripPunctuation(new String[] {
-                " 'One's' ", "Two?", "!Three-Four\" "}); 
-        assertEquals(sa.length, 3);
-        assertEquals(sa[0], "One's");
-        assertEquals(sa[1], "Two");
-        assertEquals(sa[2], "Three-Four");
-        sa = SentenceUtil.stripPunctuation(new String[] {
-                " 'One's' ", " ,Two? ", " !Three-- ", " Four\" "});
-        assertEquals(sa.length, 4);
-        assertEquals(sa[0], "One's");
-        assertEquals(sa[1], "Two");
-        assertEquals(sa[2], "Three");
-        assertEquals(sa[3], "Four");
+        sa = SentenceUtil.stripPunctuation("aaaa");
+        assertEquals(1, sa.length);
+        assertEquals("aaaa", sa[0]);
+        sa = SentenceUtil.stripPunctuation("aaaa", "bbbb");
+        assertEquals(2, sa.length);
+        assertEquals("aaaa", sa[0]);
+        assertEquals("bbbb", sa[1]);
+        sa = SentenceUtil.stripPunctuation("One", "Two", "Three");
+        assertEquals(3, sa.length);
+        assertEquals("One", sa[0]);
+        assertEquals("Two", sa[1]);
+        assertEquals("Three", sa[2]);
+        sa = SentenceUtil.stripPunctuation(" One ", " Two ", " Three ");
+        assertEquals(3, sa.length);
+        assertEquals("One", sa[0]);
+        assertEquals("Two", sa[1]);
+        assertEquals("Three", sa[2]);
+        sa = SentenceUtil.stripPunctuation(" 'One's' ", "Two?", "!Three-Four\" "); 
+        assertEquals(3, sa.length);
+        assertEquals("One's", sa[0]);
+        assertEquals("Two", sa[1]);
+        assertEquals("Three-Four", sa[2]);
+        sa = SentenceUtil.stripPunctuation(" 'One's' ", " ,Two? ", " !Three-- ", " Four\" ");
+        assertEquals(4, sa.length);
+        assertEquals("One's", sa[0]);
+        assertEquals("Two", sa[1]);
+        assertEquals("Three", sa[2]);
+        assertEquals("Four", sa[3]);
     }
 
     public void testStripWordsStringArray() {
         String[] sa;
 
         sa = SentenceUtil.stripWords(StringUtil.split(" 'One's' ,Two? !Three-Four\" "));
-        assertEquals(sa.length, 4);
-        assertEquals(sa[0], "'");
-        assertEquals(sa[1], "',");
-        assertEquals(sa[2], "?!");
-        assertEquals(sa[3], "\"");
+        assertEquals(4, sa.length, 4);
+        assertEquals("'", sa[0]);
+        assertEquals("',", sa[1]);
+        assertEquals("?!", sa[2]);
+        assertEquals("\"", sa[3]);
 
         sa = SentenceUtil.stripWords(StringUtil.split(" 'One's' ,Two? !Three-- Four\" "));
-        assertEquals(sa.length, 5);
-        assertEquals(sa[0], "'");
-        assertEquals(sa[1], "',");
-        assertEquals(sa[2], "?!");
-        assertEquals(sa[3], "--");
-        assertEquals(sa[4], "\"");
+        assertEquals(5, sa.length, 5);
+        assertEquals("'", sa[0]);
+        assertEquals("',", sa[1]);
+        assertEquals("?!", sa[2]);
+        assertEquals("--", sa[3]);
+        assertEquals("\"", sa[4]);
 
-        sa = SentenceUtil.stripWords(new String[] {
-                "'One's'", " ,Two? ", "!Three--", "Four\""});
-        assertEquals(sa.length, 5);
-        assertEquals(sa[0], "'");
-        assertEquals(sa[1], "' ,");
-        assertEquals(sa[2], "? !");
-        assertEquals(sa[3], "--");
-        assertEquals(sa[4], "\"");
+        sa = SentenceUtil.stripWords("'One's'", " ,Two? ", "!Three--", "Four\"");
+        assertEquals(5, sa.length);
+        assertEquals("'", sa[0]);
+        assertEquals("' ,", sa[1]);
+        assertEquals("? !", sa[2]);
+        assertEquals("--", sa[3]);
+        assertEquals("\"", sa[4]);
     }
 
     public void testUpdatePassageTally() {
@@ -264,99 +257,99 @@ public class SentanceUtilTest extends TestCase {
         String[] sa;
 
         sa = SentenceUtil.getWords("One Two three");
-        assertEquals(sa.length, 3);
-        assertEquals(sa[0], "one");
-        assertEquals(sa[1], "two");
-        assertEquals(sa[2], "three");
+        assertEquals(3, sa.length);
+        assertEquals("one", sa[0]);
+        assertEquals("two", sa[1]);
+        assertEquals("three", sa[2]);
 
         sa = SentenceUtil.getWords("!one  two three ");
-        assertEquals(sa.length, 3);
-        assertEquals(sa[0], "one");
-        assertEquals(sa[1], "two");
-        assertEquals(sa[2], "three");
+        assertEquals(3, sa.length);
+        assertEquals("one", sa[0]);
+        assertEquals("two", sa[1]);
+        assertEquals("three", sa[2]);
 
         sa = SentenceUtil.getWords("\"one-- two three ");
-        assertEquals(sa.length, 3);
-        assertEquals(sa[0], "one");
-        assertEquals(sa[1], "two");
-        assertEquals(sa[2], "three");
+        assertEquals(3, sa.length);
+        assertEquals("one", sa[0]);
+        assertEquals("two", sa[1]);
+        assertEquals("three", sa[2]);
 
         sa = SentenceUtil.getWords("-one--two three ");
-        assertEquals(sa.length, 3);
-        assertEquals(sa[0], "one");
-        assertEquals(sa[1], "two");
-        assertEquals(sa[2], "three");
+        assertEquals(3, sa.length);
+        assertEquals("one", sa[0]);
+        assertEquals("two", sa[1]);
+        assertEquals("three", sa[2]);
 
         sa = SentenceUtil.getWords("one-two--three ");
-        assertEquals(sa.length, 2);
-        assertEquals(sa[0], "one-two");
-        assertEquals(sa[1], "three");
+        assertEquals(2, sa.length);
+        assertEquals("one-two", sa[0]);
+        assertEquals("three", sa[1]);
 
         sa = SentenceUtil.getWords("one! \"(two-three");
-        assertEquals(sa.length, 2);
-        assertEquals(sa[0], "one");
-        assertEquals(sa[1], "two-three");
+        assertEquals(2, sa.length);
+        assertEquals("one", sa[0]);
+        assertEquals("two-three", sa[1]);
     }
 
     public void testStripPunctuationWord() {
-        assertEquals(SentenceUtil.stripPunctuationWord("abcde"), "abcde");
-        assertEquals(SentenceUtil.stripPunctuationWord("a---e"), "a---e");
-        assertEquals(SentenceUtil.stripPunctuationWord("a'''e"), "a'''e");
-        assertEquals(SentenceUtil.stripPunctuationWord("a'e-e"), "a'e-e");
-        assertEquals(SentenceUtil.stripPunctuationWord("12345"), "12345");
-        assertEquals(SentenceUtil.stripPunctuationWord("'abcde"), "abcde");
-        assertEquals(SentenceUtil.stripPunctuationWord("'a---e"), "a---e");
-        assertEquals(SentenceUtil.stripPunctuationWord("'a'''e"), "a'''e");
-        assertEquals(SentenceUtil.stripPunctuationWord("'a'e-e"), "a'e-e");
-        assertEquals(SentenceUtil.stripPunctuationWord("'12345"), "12345");
-        assertEquals(SentenceUtil.stripPunctuationWord("'abcde'"), "abcde");
-        assertEquals(SentenceUtil.stripPunctuationWord("'a---e'"), "a---e");
-        assertEquals(SentenceUtil.stripPunctuationWord("'a'''e'"), "a'''e");
-        assertEquals(SentenceUtil.stripPunctuationWord("'a'e-e'"), "a'e-e");
-        assertEquals(SentenceUtil.stripPunctuationWord("'12345'"), "12345");
-        assertEquals(SentenceUtil.stripPunctuationWord("'-abcde--"), "abcde");
-        assertEquals(SentenceUtil.stripPunctuationWord("'-a---e--"), "a---e");
-        assertEquals(SentenceUtil.stripPunctuationWord("'-a'''e--"), "a'''e");
-        assertEquals(SentenceUtil.stripPunctuationWord("'-a'e-e--"), "a'e-e");
-        assertEquals(SentenceUtil.stripPunctuationWord("'-12345--"), "12345");
-        assertEquals(SentenceUtil.stripPunctuationWord("$'-abcde-'*"), "abcde");
-        assertEquals(SentenceUtil.stripPunctuationWord("$'-a---e-'*"), "a---e");
-        assertEquals(SentenceUtil.stripPunctuationWord("$'-a'''e-'*"), "a'''e");
-        assertEquals(SentenceUtil.stripPunctuationWord("$'-a'e-e-'*"), "a'e-e");
-        assertEquals(SentenceUtil.stripPunctuationWord("$'-12345-'*"), "12345");
-        assertEquals(SentenceUtil.stripPunctuationWord("`'-abcde-'["), "abcde");
-        assertEquals(SentenceUtil.stripPunctuationWord("`'-a---e-'["), "a---e");
-        assertEquals(SentenceUtil.stripPunctuationWord("`'-a'''e-'["), "a'''e");
-        assertEquals(SentenceUtil.stripPunctuationWord("`'-a'e-e-'["), "a'e-e");
-        assertEquals(SentenceUtil.stripPunctuationWord("`'-12345-'["), "12345");
-        assertEquals(SentenceUtil.stripPunctuationWord("#'-abcde-'}"), "abcde");
-        assertEquals(SentenceUtil.stripPunctuationWord("#'-a---e-'}"), "a---e");
-        assertEquals(SentenceUtil.stripPunctuationWord("#'-a'''e-'}"), "a'''e");
-        assertEquals(SentenceUtil.stripPunctuationWord("#'-a'e-e-'}"), "a'e-e");
-        assertEquals(SentenceUtil.stripPunctuationWord("#'-12345-'}"), "12345");
-        assertEquals(SentenceUtil.stripPunctuationWord("%'-abcde-'/"), "abcde");
-        assertEquals(SentenceUtil.stripPunctuationWord("%'-a---e-'/"), "a---e");
-        assertEquals(SentenceUtil.stripPunctuationWord("%'-a'''e-'/"), "a'''e");
-        assertEquals(SentenceUtil.stripPunctuationWord("%'-a'e-e-'/"), "a'e-e");
-        assertEquals(SentenceUtil.stripPunctuationWord("%'-12345-'/"), "12345");
+        assertEquals("abcde", SentenceUtil.stripPunctuationWord("abcde"));
+        assertEquals("a---e", SentenceUtil.stripPunctuationWord("a---e"));
+        assertEquals("a'''e", SentenceUtil.stripPunctuationWord("a'''e"));
+        assertEquals("a'e-e", SentenceUtil.stripPunctuationWord("a'e-e"));
+        assertEquals("12345", SentenceUtil.stripPunctuationWord("12345"));
+        assertEquals("abcde", SentenceUtil.stripPunctuationWord("'abcde"));
+        assertEquals("a---e", SentenceUtil.stripPunctuationWord("'a---e"));
+        assertEquals("a'''e", SentenceUtil.stripPunctuationWord("'a'''e"));
+        assertEquals("a'e-e", SentenceUtil.stripPunctuationWord("'a'e-e"));
+        assertEquals("12345", SentenceUtil.stripPunctuationWord("'12345"));
+        assertEquals("abcde", SentenceUtil.stripPunctuationWord("'abcde'"));
+        assertEquals("a---e", SentenceUtil.stripPunctuationWord("'a---e'"));
+        assertEquals("a'''e", SentenceUtil.stripPunctuationWord("'a'''e'"));
+        assertEquals("a'e-e", SentenceUtil.stripPunctuationWord("'a'e-e'"));
+        assertEquals("12345", SentenceUtil.stripPunctuationWord("'12345'"));
+        assertEquals("abcde", SentenceUtil.stripPunctuationWord("'-abcde--"));
+        assertEquals("a---e", SentenceUtil.stripPunctuationWord("'-a---e--"));
+        assertEquals("a'''e", SentenceUtil.stripPunctuationWord("'-a'''e--"));
+        assertEquals("a'e-e", SentenceUtil.stripPunctuationWord("'-a'e-e--"));
+        assertEquals("12345", SentenceUtil.stripPunctuationWord("'-12345--"));
+        assertEquals("abcde", SentenceUtil.stripPunctuationWord("$'-abcde-'*"));
+        assertEquals("a---e", SentenceUtil.stripPunctuationWord("$'-a---e-'*"));
+        assertEquals("a'''e", SentenceUtil.stripPunctuationWord("$'-a'''e-'*"));
+        assertEquals("a'e-e", SentenceUtil.stripPunctuationWord("$'-a'e-e-'*"));
+        assertEquals("12345", SentenceUtil.stripPunctuationWord("$'-12345-'*"));
+        assertEquals("abcde", SentenceUtil.stripPunctuationWord("`'-abcde-'["));
+        assertEquals("a---e", SentenceUtil.stripPunctuationWord("`'-a---e-'["));
+        assertEquals("a'''e", SentenceUtil.stripPunctuationWord("`'-a'''e-'["));
+        assertEquals("a'e-e", SentenceUtil.stripPunctuationWord("`'-a'e-e-'["));
+        assertEquals("12345", SentenceUtil.stripPunctuationWord("`'-12345-'["));
+        assertEquals("abcde", SentenceUtil.stripPunctuationWord("#'-abcde-'}"));
+        assertEquals("a---e", SentenceUtil.stripPunctuationWord("#'-a---e-'}"));
+        assertEquals("a'''e", SentenceUtil.stripPunctuationWord("#'-a'''e-'}"));
+        assertEquals("a'e-e", SentenceUtil.stripPunctuationWord("#'-a'e-e-'}"));
+        assertEquals("12345", SentenceUtil.stripPunctuationWord("#'-12345-'}"));
+        assertEquals("abcde", SentenceUtil.stripPunctuationWord("%'-abcde-'/"));
+        assertEquals("a---e", SentenceUtil.stripPunctuationWord("%'-a---e-'/"));
+        assertEquals("a'''e", SentenceUtil.stripPunctuationWord("%'-a'''e-'/"));
+        assertEquals("a'e-e", SentenceUtil.stripPunctuationWord("%'-a'e-e-'/"));
+        assertEquals("12345", SentenceUtil.stripPunctuationWord("%'-12345-'/"));
 
-        assertEquals(SentenceUtil.stripPunctuationWord("test"), "test");
-        assertEquals(SentenceUtil.stripPunctuationWord(" test"), "test");
-        assertEquals(SentenceUtil.stripPunctuationWord("test-- "), "test");
-        assertEquals(SentenceUtil.stripPunctuationWord("test! "), "test");
-        assertEquals(SentenceUtil.stripPunctuationWord("test\" "), "test");
-        assertEquals(SentenceUtil.stripPunctuationWord("test... "), "test");
-        assertEquals(SentenceUtil.stripPunctuationWord("test's"), "test's");
-        assertEquals(SentenceUtil.stripPunctuationWord("test's "), "test's");
-        assertEquals(SentenceUtil.stripPunctuationWord("test's!"), "test's");
-        assertEquals(SentenceUtil.stripPunctuationWord("test's?"), "test's");
-        assertEquals(SentenceUtil.stripPunctuationWord("test!?;;'#\""), "test");
-        assertEquals(SentenceUtil.stripPunctuationWord("!\"%$test"), "test");
-        assertEquals(SentenceUtil.stripPunctuationWord("   test "), "test");
-        assertEquals(SentenceUtil.stripPunctuationWord("--test "), "test");
-        assertEquals(SentenceUtil.stripPunctuationWord("'test "), "test");
-        assertEquals(SentenceUtil.stripPunctuationWord("/?test "), "test");
-        assertEquals(SentenceUtil.stripPunctuationWord(" $%^\" test %^&"), "test");
+        assertEquals("test", SentenceUtil.stripPunctuationWord("test"));
+        assertEquals("test", SentenceUtil.stripPunctuationWord(" test"));
+        assertEquals("test", SentenceUtil.stripPunctuationWord("test-- "));
+        assertEquals("test", SentenceUtil.stripPunctuationWord("test! "));
+        assertEquals("test", SentenceUtil.stripPunctuationWord("test\" "));
+        assertEquals("test", SentenceUtil.stripPunctuationWord("test... "));
+        assertEquals("test's", SentenceUtil.stripPunctuationWord("test's"));
+        assertEquals("test's", SentenceUtil.stripPunctuationWord("test's "));
+        assertEquals("test's", SentenceUtil.stripPunctuationWord("test's!"));
+        assertEquals("test's", SentenceUtil.stripPunctuationWord("test's?"));
+        assertEquals("test", SentenceUtil.stripPunctuationWord("test!?;;'#\""));
+        assertEquals("test", SentenceUtil.stripPunctuationWord("!\"%$test"));
+        assertEquals("test", SentenceUtil.stripPunctuationWord("   test "));
+        assertEquals("test", SentenceUtil.stripPunctuationWord("--test "));
+        assertEquals("test", SentenceUtil.stripPunctuationWord("'test "));
+        assertEquals("test", SentenceUtil.stripPunctuationWord("/?test "));
+        assertEquals("test", SentenceUtil.stripPunctuationWord(" $%^\" test %^&"));
     }
 
     public void testStripWordsStringString() {
@@ -364,51 +357,51 @@ public class SentanceUtilTest extends TestCase {
     }
 
     public void testFirstLetter() {
-        assertEquals(SentenceUtil.firstLetter("abcde"), 0);
-        assertEquals(SentenceUtil.firstLetter(" abcde"), 1);
-        assertEquals(SentenceUtil.firstLetter(" \"%abcde"), 3);
-        assertEquals(SentenceUtil.firstLetter(" \"%abcde--!   "), 3);
+        assertEquals(0, SentenceUtil.firstLetter("abcde"));
+        assertEquals(1, SentenceUtil.firstLetter(" abcde"));
+        assertEquals(3, SentenceUtil.firstLetter(" \"%abcde"));
+        assertEquals(3, SentenceUtil.firstLetter(" \"%abcde--!   "));
     }
 
     public void testLastLetter() {
-        assertEquals(SentenceUtil.lastLetter("abcde"), 4);
-        assertEquals(SentenceUtil.lastLetter("abcde "), 4);
-        assertEquals(SentenceUtil.lastLetter("abcde\" "), 4);
-        assertEquals(SentenceUtil.lastLetter("abcde\"%$ "), 4);
-        assertEquals(SentenceUtil.lastLetter(" abcde"), 5);
-        assertEquals(SentenceUtil.lastLetter(" abcde "), 5);
-        assertEquals(SentenceUtil.lastLetter(" abcde\" "), 5);
-        assertEquals(SentenceUtil.lastLetter(" abcde\"%$ "), 5);
-        assertEquals(SentenceUtil.lastLetter(" abcde--\"%$ "), 5);
-        assertEquals(SentenceUtil.lastLetter(" abcde\"%$-- "), 5);
+        assertEquals(4, SentenceUtil.lastLetter("abcde"));
+        assertEquals(4, SentenceUtil.lastLetter("abcde "));
+        assertEquals(4, SentenceUtil.lastLetter("abcde\" "));
+        assertEquals(4, SentenceUtil.lastLetter("abcde\"%$ "));
+        assertEquals(5, SentenceUtil.lastLetter(" abcde"));
+        assertEquals(5, SentenceUtil.lastLetter(" abcde "));
+        assertEquals(5, SentenceUtil.lastLetter(" abcde\" "));
+        assertEquals(5, SentenceUtil.lastLetter(" abcde\"%$ "));
+        assertEquals(5, SentenceUtil.lastLetter(" abcde--\"%$ "));
+        assertEquals(5, SentenceUtil.lastLetter(" abcde\"%$-- "));
     }
 
     public void testStripWords() {
-        assertEquals(SentenceUtil.stripWords("one", "two"), "");
-        assertEquals(SentenceUtil.stripWords("one,", "two"), ",");
-        assertEquals(SentenceUtil.stripWords("one'", "two"), "'");
-        assertEquals(SentenceUtil.stripWords("one-", "two"), "-");
-        assertEquals(SentenceUtil.stripWords("one#", "two"), "#");
-        assertEquals(SentenceUtil.stripWords("one", ",two"), ",");
-        assertEquals(SentenceUtil.stripWords("one", "'two"), "'");
-        assertEquals(SentenceUtil.stripWords("one", "-two"), "-");
-        assertEquals(SentenceUtil.stripWords("one", "#two"), "#");
-        assertEquals(SentenceUtil.stripWords("one-", "-two"), "--");
-        assertEquals(SentenceUtil.stripWords("-one-", "-two-"), "--");
-        assertEquals(SentenceUtil.stripWords("one-world", "two"), "");
-        assertEquals(SentenceUtil.stripWords("one-world'", "two"), "'");
-        assertEquals(SentenceUtil.stripWords("one ", "two"), " ");
-        assertEquals(SentenceUtil.stripWords("one, ", "two"), ", ");
-        assertEquals(SentenceUtil.stripWords("one' ", "two"), "' ");
-        assertEquals(SentenceUtil.stripWords("one- ", "two"), "- ");
-        assertEquals(SentenceUtil.stripWords("one# ", "two"), "# ");
-        assertEquals(SentenceUtil.stripWords("one", " ,two"), " ,");
-        assertEquals(SentenceUtil.stripWords("one", " 'two"), " '");
-        assertEquals(SentenceUtil.stripWords("one", " -two"), " -");
-        assertEquals(SentenceUtil.stripWords("one", "#two"), "#");
-        assertEquals(SentenceUtil.stripWords("one- ", "-two"), "- -");
-        assertEquals(SentenceUtil.stripWords("-one- ", "-two-"), "- -");
-        assertEquals(SentenceUtil.stripWords("one-world ", "two"), " ");
-        assertEquals(SentenceUtil.stripWords("one-world'", " two"), "' ");
+        assertEquals("", SentenceUtil.stripWords("one", "two"));
+        assertEquals(",", SentenceUtil.stripWords("one,", "two"));
+        assertEquals("'", SentenceUtil.stripWords("one'", "two"));
+        assertEquals("-", SentenceUtil.stripWords("one-", "two"));
+        assertEquals("#", SentenceUtil.stripWords("one#", "two"));
+        assertEquals(",", SentenceUtil.stripWords("one", ",two"));
+        assertEquals("'", SentenceUtil.stripWords("one", "'two"));
+        assertEquals("-", SentenceUtil.stripWords("one", "-two"));
+        assertEquals("#", SentenceUtil.stripWords("one", "#two"));
+        assertEquals("--", SentenceUtil.stripWords("one-", "-two"));
+        assertEquals("--", SentenceUtil.stripWords("-one-", "-two-"));
+        assertEquals("", SentenceUtil.stripWords("one-world", "two"));
+        assertEquals("'", SentenceUtil.stripWords("one-world'", "two"));
+        assertEquals(" ", SentenceUtil.stripWords("one ", "two"));
+        assertEquals(", ", SentenceUtil.stripWords("one, ", "two"));
+        assertEquals("' ", SentenceUtil.stripWords("one' ", "two"));
+        assertEquals("- ", SentenceUtil.stripWords("one- ", "two"));
+        assertEquals("# ", SentenceUtil.stripWords("one# ", "two"));
+        assertEquals(" ,", SentenceUtil.stripWords("one", " ,two"));
+        assertEquals(" '", SentenceUtil.stripWords("one", " 'two"));
+        assertEquals(" -", SentenceUtil.stripWords("one", " -two"));
+        assertEquals("#", SentenceUtil.stripWords("one", "#two"));
+        assertEquals("- -", SentenceUtil.stripWords("one- ", "-two"));
+        assertEquals("- -", SentenceUtil.stripWords("-one- ", "-two-"));
+        assertEquals(" ", SentenceUtil.stripWords("one-world ", "two"));
+        assertEquals("' ", SentenceUtil.stripWords("one-world'", " two"));
     }
 }

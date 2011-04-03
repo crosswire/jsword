@@ -27,6 +27,7 @@ import java.io.Writer;
 import java.util.Iterator;
 
 import org.crosswire.jsword.JSOtherMsg;
+import org.crosswire.jsword.versification.BibleBook;
 
 /**
  * This is a simple proxy to a real Passage object that denies all attempts to
@@ -234,16 +235,16 @@ final class ReadOnlyPassage implements Passage {
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#chaptersInPassage(int)
+     * @see org.crosswire.jsword.passage.Passage#chaptersInPassage(BibleBook)
      */
-    public int chaptersInPassage(int book) throws NoSuchVerseException {
+    public int chaptersInPassage(BibleBook book) throws NoSuchVerseException {
         return ref.chaptersInPassage(book);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#versesInPassage(int, int)
+     * @see org.crosswire.jsword.passage.Passage#versesInPassage(BibleBook, int)
      */
-    public int versesInPassage(int book, int chapter) throws NoSuchVerseException {
+    public int versesInPassage(BibleBook book, int chapter) throws NoSuchVerseException {
         return ref.versesInPassage(book, chapter);
     }
 

@@ -26,6 +26,8 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.Iterator;
 
+import org.crosswire.jsword.versification.BibleBook;
+
 /**
  * This is a simple proxy to a real Passage object that makes all accesses
  * synchronized. It is final to give the VM as much hope as possible at being
@@ -215,16 +217,16 @@ final class SynchronizedPassage implements Passage {
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#chaptersInPassage(int)
+     * @see org.crosswire.jsword.passage.Passage#chaptersInPassage(BibleBook)
      */
-    public synchronized int chaptersInPassage(int book) throws NoSuchVerseException {
+    public synchronized int chaptersInPassage(BibleBook book) throws NoSuchVerseException {
         return ref.chaptersInPassage(book);
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#versesInPassage(int, int)
+     * @see org.crosswire.jsword.passage.Passage#versesInPassage(BibleBook, int)
      */
-    public synchronized int versesInPassage(int book, int chapter) throws NoSuchVerseException {
+    public synchronized int versesInPassage(BibleBook book, int chapter) throws NoSuchVerseException {
         return ref.versesInPassage(book, chapter);
     }
 

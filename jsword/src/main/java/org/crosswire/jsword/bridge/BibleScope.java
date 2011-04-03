@@ -27,7 +27,7 @@ import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyFactory;
 import org.crosswire.jsword.passage.PassageKeyFactory;
-import org.crosswire.jsword.versification.BibleInfo;
+import org.crosswire.jsword.versification.BookName;
 
 /**
  * Determines the scope of the Bible. That is, the verses that are in the Bible
@@ -86,7 +86,7 @@ public class BibleScope {
         }
 
         BibleScope scope = new BibleScope(b);
-        BibleInfo.setFullBookName(false); // use short names
+        BookName.setFullBookName(false); // use short names
         System.out.println('[' + b.getInitials() + ']');
         System.out.println("InScope=" + scope.getInScope().getOsisRef());
         System.out.println("OutScope=" + scope.getOutOfScope().getOsisRef());

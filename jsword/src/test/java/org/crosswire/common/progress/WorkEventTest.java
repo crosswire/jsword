@@ -45,7 +45,7 @@ public class WorkEventTest extends TestCase {
         job.beginJob("wibble");
         WorkEvent ev = new WorkEvent(job);
 
-        assertEquals(ev.getJob(), job);
-        assertEquals(ev.getSource(), job);
+        assertEquals(job, ev.getJob());
+        assertEquals(job, ev.getSource());
     }
 }

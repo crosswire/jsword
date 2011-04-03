@@ -23,6 +23,8 @@ package org.crosswire.jsword.passage;
 
 import java.util.EventObject;
 
+import org.crosswire.jsword.versification.BibleBook;
+
 /**
  * Defines an event that encapsulates changes to a Passage. For many operations
  * on a Passage, calculating the extent of the changes is hard. In these cases
@@ -112,12 +114,12 @@ public class PassageEvent extends EventObject {
     /**
      * When the lower verse is null
      */
-    public static final Verse VERSE_LOWEST = new Verse(1, 1, 1, true);
+    public static final Verse VERSE_LOWEST = new Verse(BibleBook.GENESIS, 1, 1, true);
 
     /**
      * When the upper verse is null
      */
-    public static final Verse VERSE_HIGHEST = new Verse(66, 22, 21, true);
+    public static final Verse VERSE_HIGHEST = new Verse(BibleBook.REVELATION, 22, 21, true);
 
     /**
      * The type of change

@@ -10,6 +10,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseFactory;
+import org.crosswire.jsword.versification.BibleBook;
 
 /**
  * A Raw File format that allows for each verse to have it's own storage.
@@ -52,14 +53,14 @@ public class RawFileBackendTest extends TestCase {
     }
 
     public void testSetRawText() throws NoSuchVerseException, IOException, BookException {
-        Verse otVerse = new Verse(1, 3, 1);
-        Verse otVerse2 = new Verse(3, 3, 5);
-        Verse otVerse3 = new Verse(2, 6, 4);
-        Verse otVerse4 = new Verse(7, 3, 1);
-        Verse ntVerse = new Verse(61, 1, 2);
-        Verse ntVerse2 = new Verse(60, 1, 2);
-        Verse ntVerse3 = new Verse(66, 22, 21);
-        Verse ntVerse4 = new Verse(64, 1, 2);
+        Verse otVerse = new Verse(BibleBook.GENESIS, 3, 1);
+        Verse otVerse2 = new Verse(BibleBook.LEVITICUS, 3, 5);
+        Verse otVerse3 = new Verse(BibleBook.EXODUS, 6, 4);
+        Verse otVerse4 = new Verse(BibleBook.JUDGES, 3, 1);
+        Verse ntVerse = new Verse(BibleBook.PETER2, 1, 2);
+        Verse ntVerse2 = new Verse(BibleBook.PETER1, 1, 2);
+        Verse ntVerse3 = new Verse(BibleBook.REVELATION, 22, 21);
+        Verse ntVerse4 = new Verse(BibleBook.JOHN3, 1, 2);
 
         backend.setRawText(otVerse, "Hello OT");
         backend.setRawText(otVerse2, "Hello OT2");
@@ -70,14 +71,14 @@ public class RawFileBackendTest extends TestCase {
         backend.setRawText(ntVerse3, "Hello NT3");
         backend.setRawText(ntVerse4, "Hello NT4");
 
-        assertEquals(backend.getRawText(otVerse), "Hello OT");
-        assertEquals(backend.getRawText(otVerse2), "Hello OT2");
-        assertEquals(backend.getRawText(otVerse3), "Hello OT3");
-        assertEquals(backend.getRawText(otVerse4), "Hello OT4");
-        assertEquals(backend.getRawText(ntVerse), "Hello NT");
-        assertEquals(backend.getRawText(ntVerse2), "Hello NT2");
-        assertEquals(backend.getRawText(ntVerse3), "Hello NT3");
-        assertEquals(backend.getRawText(ntVerse4), "Hello NT4");
+        assertEquals("Hello OT", backend.getRawText(otVerse));
+        assertEquals("Hello OT2", backend.getRawText(otVerse2));
+        assertEquals("Hello OT3", backend.getRawText(otVerse3));
+        assertEquals("Hello OT4", backend.getRawText(otVerse4));
+        assertEquals("Hello NT", backend.getRawText(ntVerse));
+        assertEquals("Hello NT2", backend.getRawText(ntVerse2));
+        assertEquals("Hello NT3", backend.getRawText(ntVerse3));
+        assertEquals("Hello NT4", backend.getRawText(ntVerse4));
     }
 
     public void testSetAliasKey() throws NoSuchVerseException, IOException, BookException {
@@ -89,8 +90,8 @@ public class RawFileBackendTest extends TestCase {
         backend.setAliasKey(alias1, source);
         backend.setAliasKey(alias2, source);
 
-        assertEquals(backend.getRawText(source), "Hello Alias test!");
-        assertEquals(backend.getRawText(alias1), "Hello Alias test!");
-        assertEquals(backend.getRawText(alias2), "Hello Alias test!");
+        assertEquals("Hello Alias test!", backend.getRawText(source));
+        assertEquals("Hello Alias test!", backend.getRawText(alias1));
+        assertEquals("Hello Alias test!", backend.getRawText(alias2));
     }
 }

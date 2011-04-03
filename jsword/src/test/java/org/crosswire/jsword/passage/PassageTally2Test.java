@@ -29,6 +29,8 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
+import org.crosswire.jsword.versification.BibleBook;
+
 /**
  * JUnit Test.
  * 
@@ -77,21 +79,21 @@ public class PassageTally2Test extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
-        gen11_1 = RestrictionType.NONE.toRange(new Verse(1, 1, 1), 1);
-        gen11_2 = RestrictionType.NONE.toRange(new Verse(1, 1, 1), 2);
-        gen12_1 = RestrictionType.NONE.toRange(new Verse(1, 1, 2), 1);
-        exo21_1 = RestrictionType.NONE.toRange(new Verse(2, 2, 1), 1);
-        exo21_2 = RestrictionType.NONE.toRange(new Verse(2, 2, 1), 2);
-        exo22_1 = RestrictionType.NONE.toRange(new Verse(2, 2, 2), 1);
+        gen11_1 = RestrictionType.NONE.toRange(new Verse(BibleBook.GENESIS, 1, 1), 1);
+        gen11_2 = RestrictionType.NONE.toRange(new Verse(BibleBook.GENESIS, 1, 1), 2);
+        gen12_1 = RestrictionType.NONE.toRange(new Verse(BibleBook.GENESIS, 1, 2), 1);
+        exo21_1 = RestrictionType.NONE.toRange(new Verse(BibleBook.EXODUS, 2, 1), 1);
+        exo21_2 = RestrictionType.NONE.toRange(new Verse(BibleBook.EXODUS, 2, 1), 2);
+        exo22_1 = RestrictionType.NONE.toRange(new Verse(BibleBook.EXODUS, 2, 2), 1);
 
-        gen11 = new Verse(1, 1, 1);
-        gen12 = new Verse(1, 1, 2);
-        gen13 = new Verse(1, 1, 3);
-        gen15 = new Verse(1, 1, 5);
-        exo21 = new Verse(2, 2, 1);
-        exo22 = new Verse(2, 2, 2);
-        exo23 = new Verse(2, 2, 3);
-        exo3b = new Verse(2, 3, 11);
+        gen11 = new Verse(BibleBook.GENESIS, 1, 1);
+        gen12 = new Verse(BibleBook.GENESIS, 1, 2);
+        gen13 = new Verse(BibleBook.GENESIS, 1, 3);
+        gen15 = new Verse(BibleBook.GENESIS, 1, 5);
+        exo21 = new Verse(BibleBook.EXODUS, 2, 1);
+        exo22 = new Verse(BibleBook.EXODUS, 2, 2);
+        exo23 = new Verse(BibleBook.EXODUS, 2, 3);
+        exo3b = new Verse(BibleBook.EXODUS, 3, 11);
 
         gen1_135 = (Passage) keyf.getKey("Gen 1:1, Gen 1:3, Gen 1:5");
         gen123_1 = (Passage) keyf.getKey("Gen 1:1, Gen 2:1, Gen 3:1");

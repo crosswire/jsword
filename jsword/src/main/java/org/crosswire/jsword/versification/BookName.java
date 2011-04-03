@@ -40,7 +40,7 @@ public final class BookName {
      * 
      * @param locale
      *            the language of this BookName
-     * @param bookNumber
+     * @param book
      *            the Book's canonical number
      * @param longName
      *            the Book's long name
@@ -49,9 +49,9 @@ public final class BookName {
      * @param alternateNames
      *            optional comma separated list of alternates for the Book
      */
-    public BookName(Locale locale, int bookNumber, String longName, String shortName, String alternateNames) {
+    public BookName(Locale locale, BibleBook book, String longName, String shortName, String alternateNames) {
         this.locale = locale;
-        this.bookNumber = bookNumber;
+        this.book = book;
         this.longName = longName;
         this.normalizedLongName = normalize(longName, locale);
         this.shortName = shortName;
@@ -63,22 +63,22 @@ public final class BookName {
     }
 
     /**
-     * Get canonical number of a book.
+     * Get the BibleBook to which this set of names is tied.
      * 
-     * @return The book number (1 to 66)
+     * @return The book
      */
-    public int getNumber() {
-        return bookNumber;
+    public BibleBook getBook() {
+        return book;
     }
 
     /**
      * Get the preferred name of a book. Altered by the case setting (see
-     * setBookCase() and isLongBookName())
+     * setBookCase() and isFullBookName())
      * 
      * @return The preferred name of the book
      */
     public String getPreferredName() {
-        if (BibleInfo.isFullBookName()) {
+        if (BookName.isFullBookName()) {
             return getLongName();
         }
         return getShortName();
@@ -91,13 +91,13 @@ public final class BookName {
      * @return The full name of the book
      */
     public String getLongName() {
-        CaseType bookCase = BibleInfo.getDefaultCase();
+        CaseType caseType = BookName.getDefaultCase();
 
-        if (bookCase == CaseType.LOWER) {
+        if (caseType == CaseType.LOWER) {
             return longName.toLowerCase(locale);
         }
 
-        if (bookCase == CaseType.UPPER) {
+        if (caseType == CaseType.UPPER) {
             return longName.toUpperCase(locale);
         }
 
@@ -111,13 +111,13 @@ public final class BookName {
      * @return The short name of the book
      */
     public String getShortName() {
-        CaseType bookCase = BibleInfo.getDefaultCase();
+        CaseType caseType = BookName.getDefaultCase();
 
-        if (bookCase == CaseType.LOWER) {
+        if (caseType == CaseType.LOWER) {
             return shortName.toLowerCase(locale);
         }
 
-        if (bookCase == CaseType.UPPER) {
+        if (caseType == CaseType.UPPER) {
             return shortName.toUpperCase(locale);
         }
 
@@ -180,7 +180,7 @@ public final class BookName {
      */
     @Override
     public int hashCode() {
-        return bookNumber;
+        return book.hashCode();
     }
 
     /*
@@ -203,7 +203,7 @@ public final class BookName {
         }
 
         final BookName other = (BookName) obj;
-        return bookNumber == other.bookNumber;
+        return book == other.book;
     }
 
     /*
@@ -227,10 +227,81 @@ public final class BookName {
         return normPattern.matcher(str).replaceAll("").toLowerCase(locale);
     }
 
+    /**
+     * This is only used by config.
+     * 
+     * @param bookCase
+     *            The new case to use for reporting book names
+     * @exception IllegalArgumentException
+     *                If the case is not between 0 and 2
+     * @see #getCase()
+     */
+    public static void setCase(int bookCase) {
+        BookName.bookCase = CaseType.fromInteger(bookCase);
+    }
+
+    /**
+     * This is only used by config
+     * 
+     * @return The current case setting
+     * @see #setCase(CaseType)
+     */
+    public static int getCase() {
+        return BookName.bookCase.toInteger();
+    }
+
+    /**
+     * How do we report the names of the books?. These are static. This is on
+     * the assumption that we will not want to have different sections of the
+     * app using a different format. I expect this to be a good assumption, and
+     * it saves passing a Book class around everywhere. CaseType.MIXED is not
+     * allowed
+     * 
+     * @param newBookCase
+     *            The new case to use for reporting book names
+     * @exception IllegalArgumentException
+     *                If the case is not between 0 and 2
+     * @see #getCase()
+     */
+    public static void setCase(CaseType newBookCase) {
+        BookName.bookCase = newBookCase;
+    }
+
+    /**
+     * This is only used by config
+     * 
+     * @return Whether the name is long or short. Default is Full (true).
+     * @see #setFullBookName(boolean)
+     */
+    public static boolean isFullBookName() {
+        return BookName.fullBookName;
+    }
+
+    /**
+     * Set whether the name should be full or abbreviated, long or short.
+     * 
+     * @param fullName
+     *            The new case to use for reporting book names
+     * @see #isFullBookName()
+     */
+    public static void setFullBookName(boolean fullName) {
+        BookName.fullBookName = fullName;
+    }
+
+    /**
+     * How do we report the names of the books?.
+     * 
+     * @return The current case setting
+     * @see #setCase(int)
+     */
+    public static CaseType getDefaultCase() {
+        return BookName.bookCase;
+    }
+
     /** remove spaces and some punctuation in Book Name (make sure , is allowed) */
     private static Pattern normPattern = Pattern.compile("[. ]");
 
-    private int bookNumber;
+    private BibleBook book;
     private String longName;
     private String normalizedLongName;
     private String shortName;
@@ -239,4 +310,11 @@ public final class BookName {
 
     /** The locale for the Book Name */
     private Locale locale;
+
+    /** How the book names are reported. */
+    private static CaseType bookCase = CaseType.SENTENCE;
+
+    /** Whether long or short, full or abbreviated names are used. */
+    private static boolean fullBookName = true;
+
 }

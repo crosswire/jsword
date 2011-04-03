@@ -26,7 +26,7 @@ import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.versification.BibleInfo;
+import org.crosswire.jsword.versification.BookName;
 
 /**
  * Exports the Book in SWORD's imp format. This is identical to SWORD's mod2imp.
@@ -45,7 +45,7 @@ public class BookExporter {
     public void mod2imp() throws BookException {
         // Use short key names for Bibles.
         if (BookCategory.BIBLE.equals(book.getBookCategory())) {
-            BibleInfo.setFullBookName(false);
+            BookName.setFullBookName(false);
         }
 
         Key keys = book.getGlobalKeyList();

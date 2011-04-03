@@ -38,6 +38,7 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
+import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.BibleInfo;
 
 /**
@@ -327,7 +328,8 @@ public abstract class AbstractPassage implements Passage {
      * @see org.crosswire.jsword.passage.Passage#booksInPassage()
      */
     public int booksInPassage() {
-        int current_book = 0;
+        // FIXME(DMS): a passage does not have to be ordered, for example PassageTally.
+        BibleBook current_book = null;
         int book_count = 0;
 
         for (Key aKey : this) {
@@ -344,18 +346,14 @@ public abstract class AbstractPassage implements Passage {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#chaptersInPassage(int)
      */
-    public int chaptersInPassage(int book) throws NoSuchVerseException {
-        if (book != 0) {
-            BibleInfo.validate(book, 1, 1);
-        }
-
+    public int chaptersInPassage(BibleBook book) throws NoSuchVerseException {
         int current_chapter = 0;
         int chapter_count = 0;
 
         for (Key aKey : this) {
             Verse verse = (Verse) aKey;
 
-            if ((book == 0 || verse.getBook() == book) && current_chapter != verse.getChapter()) {
+            if ((book == null || verse.getBook() == book) && current_chapter != verse.getChapter()) {
                 current_chapter = verse.getChapter();
                 chapter_count++;
             }
@@ -367,15 +365,17 @@ public abstract class AbstractPassage implements Passage {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#versesInPassage(int, int)
      */
-    public int versesInPassage(int book, int chapter) throws NoSuchVerseException {
-        BibleInfo.validate(book == 0 ? 1 : book, chapter == 0 ? 1 : chapter, 1);
+    public int versesInPassage(BibleBook book, int chapter) throws NoSuchVerseException {
+		if (book != null) {
+        	BibleInfo.validate(book, chapter == 0 ? 1 : chapter, 1);
+        }
 
         int verse_count = 0;
 
         for (Key aKey : this) {
             Verse verse = (Verse) aKey;
 
-            if ((book == 0 || verse.getBook() == book) && (chapter == 0 || verse.getChapter() == chapter)) {
+            if ((book == null || verse.getBook() == book) && (chapter == 0 || verse.getChapter() == chapter)) {
                 verse_count++;
             }
         }

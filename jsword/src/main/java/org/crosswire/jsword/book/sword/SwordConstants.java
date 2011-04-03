@@ -22,7 +22,7 @@
 package org.crosswire.jsword.book.sword;
 
 import org.crosswire.jsword.passage.Verse;
-import org.crosswire.jsword.versification.BibleNames;
+import org.crosswire.jsword.versification.BibleBook;
 
 /**
  * A Constants to help the SwordBookDriver to read Sword format data.
@@ -115,7 +115,7 @@ public final class SwordConstants {
      */
     static int getIndex(Verse v) {
         int ord = v.getOrdinal();
-        int book = v.getBook();
+        int book = v.getBook().ordinal();
         int chapter = v.getChapter();
         int verse = v.getVerse();
         int testament = -1;
@@ -123,10 +123,11 @@ public final class SwordConstants {
         if (ord >= SwordConstants.ORDINAL_MAT11) {
             // This is an NT verse
             testament = SwordConstants.TESTAMENT_NEW;
-            book = book - BibleNames.MALACHI;
+            book = book - BibleBook.MALACHI.ordinal();
         } else {
             // This is an OT verse
             testament = SwordConstants.TESTAMENT_OLD;
+            book++;
         }
 
         short bookOffset = SwordConstants.bks[testament][book];
@@ -138,7 +139,7 @@ public final class SwordConstants {
     /**
      * The start of the new testament
      */
-    static final int ORDINAL_MAT11 = new Verse(BibleNames.MATTHEW, 1, 1, true).getOrdinal();
+    static final int ORDINAL_MAT11 = new Verse(BibleBook.MATTHEW, 1, 1, true).getOrdinal();
 
     /**
      * array containing LUT of offsets in the chapter table.

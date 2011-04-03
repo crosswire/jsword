@@ -34,47 +34,47 @@ import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 
 /**
- * BibleNames is a static class that deals with Book name lookup conversions. We
- * start counting at 1 for books (so Genesis=1, Revelation=66). However
- * internally books start counting at 0 and go up to 65.
+ * BibleNames deals with locale sensitive BibleBook name lookup conversions.
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class BibleNames {
+/* package */ final class BibleNames {
     /**
      * Create BibleNames for the given locale
      */
-    public BibleNames(Locale locale) {
+    /* package */ BibleNames(Locale locale) {
         this.locale = locale;
         initialize();
     }
 
-    public BookName getName(int book) throws NoSuchVerseException {
+    /* package */ BookName getBookName(BibleBook book) throws NoSuchVerseException {
+        // This is faster than doing the check explicitly, unless
+        // The exception is actually thrown, then it is a lot slower
+        // I'd like to think that the norm is to get it right
         try {
-            return books[book - 1];
+            return books[book.ordinal()];
+        } catch (NullPointerException ex) {
+            throw new NoSuchVerseException(JSOtherMsg.lookupText("Book must not be null"));
         } catch (ArrayIndexOutOfBoundsException ex) {
-            // This is faster than doing the check explicitly, unless
-            // The exception is actually thrown, then it is a lot slower
-            // I'd like to think that the norm is to get it right
-            throw new NoSuchVerseException(JSOtherMsg.lookupText("Book must be between 1 and 66 (given {0,number,integer}).", Integer.valueOf(book)));
+            throw new NoSuchVerseException(JSOtherMsg.lookupText("Book must be between 1 and 66 (given {0,number,integer}).", Integer.valueOf(book.ordinal())));
         }
     }
 
     /**
      * Get the preferred name of a book. Altered by the case setting (see
-     * setBookCase() and isLongBookName())
+     * setBookCase() and isFullBookName())
      * 
      * @param book
-     *            The book number (1-66)
+     *            The book of the Bible
      * @return The full name of the book
      * @exception NoSuchVerseException
      *                If the book number is not valid
      */
-    public String getPreferredName(int book) throws NoSuchVerseException {
-        return getName(book).getPreferredName();
+    /* package */ String getPreferredName(BibleBook book) throws NoSuchVerseException {
+        return getBookName(book).getPreferredName();
     }
 
     /**
@@ -82,13 +82,13 @@ public final class BibleNames {
      * (see setBookCase())
      * 
      * @param book
-     *            The book number (1-66)
+     *            The book of the Bible
      * @return The full name of the book
      * @exception NoSuchVerseException
      *                If the book number is not valid
      */
-    public String getLongName(int book) throws NoSuchVerseException {
-        return getName(book).getLongName();
+    /* package */ String getLongName(BibleBook book) throws NoSuchVerseException {
+        return getBookName(book).getLongName();
     }
 
     /**
@@ -96,13 +96,13 @@ public final class BibleNames {
      * (see setBookCase())
      * 
      * @param book
-     *            The book number (1-66)
+     *            The book of the Bible
      * @return The short name of the book
      * @exception NoSuchVerseException
      *                If the book number is not valid
      */
-    public String getShortName(int book) throws NoSuchVerseException {
-        return getName(book).getShortName();
+    /* package */ String getShortName(BibleBook book) throws NoSuchVerseException {
+        return getBookName(book).getShortName();
     }
 
     /**
@@ -110,46 +110,46 @@ public final class BibleNames {
      * 
      * @param find
      *            The string to identify
-     * @return The book number (1 to 66) On error -1
+     * @return The BibleBook, On error null
      */
-    public int getNumber(String find) {
+    /* package */ BibleBook getBook(String find) {
         String match = BookName.normalize(find, locale);
 
         BookName bookName = fullBooksMap.get(match);
         if (bookName != null) {
-            return bookName.getNumber();
+            return bookName.getBook();
         }
 
         bookName = shortBooksMap.get(match);
         if (bookName != null) {
-            return bookName.getNumber();
+            return bookName.getBook();
         }
 
         bookName = altBooksMap.get(match);
         if (bookName != null) {
-            return bookName.getNumber();
+            return bookName.getBook();
         }
 
         for (int i = 0; i < books.length; i++) {
             bookName = books[i];
             if (bookName.match(match)) {
-                return bookName.getNumber();
+                return bookName.getBook();
             }
         }
 
-        return -1;
+        return null;
     }
 
     /**
      * Is the given string a valid book name. If this method returns true then
-     * getBookNumber() will return a number and not throw an exception.
+     * getBook() will return a BibleBook and not null.
      * 
      * @param find
      *            The string to identify
-     * @return The book number (1 to 66)
+     * @return true if the book name is known
      */
-    public boolean isBookName(String find) {
-        return getNumber(find) != -1;
+    /* package */ boolean isBookName(String find) {
+        return getBook(find) != null;
     }
 
     /**
@@ -159,7 +159,7 @@ public final class BibleNames {
     private void initialize() {
         int booksInBible = BibleInfo.booksInBible();
 
-        books = new BookName[booksInBible];
+        books = new BookName[BibleBook.values().length];
 
         // Create the book name maps
         fullBooksMap = new HashMap<String, BookName>(booksInBible);
@@ -171,13 +171,8 @@ public final class BibleNames {
         String shortClassName = ClassUtil.getShortClassName(className);
         ResourceBundle resources = ResourceBundle.getBundle(shortClassName, locale, CWClassLoader.instance(BibleNames.class));
 
-        for (int i = 0; i < booksInBible; i++) {
-            String osisName = "";
-            try {
-                osisName = OSISNames.getName(i + 1);
-            } catch (NoSuchVerseException e) {
-                assert false;
-            }
+        for (BibleBook book: BibleBook.values()) {
+            String osisName = book.getOSIS();
 
             String fullBook = getString(resources, osisName + FULL_KEY);
 
@@ -188,14 +183,14 @@ public final class BibleNames {
 
             String altBook = getString(resources, osisName + ALT_KEY);
 
-            BookName bookName = new BookName(locale, i + 1, fullBook, shortBook, altBook);
-            books[i] = bookName;
+            BookName bookName = new BookName(locale, BibleBook.fromOSIS(osisName), fullBook, shortBook, altBook);
+            books[book.ordinal()] = bookName;
 
             fullBooksMap.put(bookName.getNormalizedLongName(), bookName);
 
             shortBooksMap.put(bookName.getNormalizedShortName(), bookName);
-
-            String[] alternates = StringUtil.split(altBook, ',');
+            
+            String[] alternates = StringUtil.split(BookName.normalize(altBook, locale), ',');
 
             for (int j = 0; j < alternates.length; j++) {
                 altBooksMap.put(alternates[j], bookName);
@@ -219,76 +214,6 @@ public final class BibleNames {
     private static final String FULL_KEY = ".Full";
     private static final String SHORT_KEY = ".Short";
     private static final String ALT_KEY = ".Alt";
-
-    /**
-     * Handy book finder
-     */
-    public static final byte GENESIS = 1;
-    public static final byte EXODUS = 2;
-    public static final byte LEVITICUS = 3;
-    public static final byte NUMBERS = 4;
-    public static final byte DEUTERONOMY = 5;
-    public static final byte JOSHUA = 6;
-    public static final byte JUDGES = 7;
-    public static final byte RUTH = 8;
-    public static final byte SAMUEL1 = 9;
-    public static final byte SAMUEL2 = 10;
-    public static final byte KINGS1 = 11;
-    public static final byte KINGS2 = 12;
-    public static final byte CHRONICLES1 = 13;
-    public static final byte CHRONICLES2 = 14;
-    public static final byte EZRA = 15;
-    public static final byte NEHEMIAH = 16;
-    public static final byte ESTHER = 17;
-    public static final byte JOB = 18;
-    public static final byte PSALMS = 19;
-    public static final byte PROVERBS = 20;
-    public static final byte ECCLESIASTES = 21;
-    public static final byte SONGOFSOLOMON = 22;
-    public static final byte ISAIAH = 23;
-    public static final byte JEREMIAH = 24;
-    public static final byte LAMENTATIONS = 25;
-    public static final byte EZEKIEL = 26;
-    public static final byte DANIEL = 27;
-    public static final byte HOSEA = 28;
-    public static final byte JOEL = 29;
-    public static final byte AMOS = 30;
-    public static final byte OBADIAH = 31;
-    public static final byte JONAH = 32;
-    public static final byte MICAH = 33;
-    public static final byte NAHUM = 34;
-    public static final byte HABAKKUK = 35;
-    public static final byte ZEPHANIAH = 36;
-    public static final byte HAGGAI = 37;
-    public static final byte ZECHARIAH = 38;
-    public static final byte MALACHI = 39;
-    public static final byte MATTHEW = 40;
-    public static final byte MARK = 41;
-    public static final byte LUKE = 42;
-    public static final byte JOHN = 43;
-    public static final byte ACTS = 44;
-    public static final byte ROMANS = 45;
-    public static final byte CORINTHIANS1 = 46;
-    public static final byte CORINTHIANS2 = 47;
-    public static final byte GALATIANS = 48;
-    public static final byte EPHESIANS = 49;
-    public static final byte PHILIPPIANS = 50;
-    public static final byte COLOSSIANS = 51;
-    public static final byte THESSALONIANS1 = 52;
-    public static final byte THESSALONIANS2 = 53;
-    public static final byte TIMOTHY1 = 54;
-    public static final byte TIMOTHY2 = 55;
-    public static final byte TITUS = 56;
-    public static final byte PHILEMON = 57;
-    public static final byte HEBREWS = 58;
-    public static final byte JAMES = 59;
-    public static final byte PETER1 = 60;
-    public static final byte PETER2 = 61;
-    public static final byte JOHN1 = 62;
-    public static final byte JOHN2 = 63;
-    public static final byte JOHN3 = 64;
-    public static final byte JUDE = 65;
-    public static final byte REVELATION = 66;
 
     private BookName[] books;
 

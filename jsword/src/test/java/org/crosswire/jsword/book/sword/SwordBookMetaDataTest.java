@@ -62,9 +62,9 @@ public class SwordBookMetaDataTest extends TestCase {
 
     public void testPropertiesAccessors() {
         assertNotNull(swordBookMetaData);
-        assertEquals(swordBookMetaData.getName(), "MyNewBook");
-        assertEquals(swordBookMetaData.getInitials(), "TestBook");
+        assertEquals("MyNewBook", swordBookMetaData.getName());
+        assertEquals("TestBook", swordBookMetaData.getInitials());
         assertNotNull(swordBookMetaData.getLanguage());
-        assertEquals(swordBookMetaData.getLanguage().getCode(), "de");
+        assertEquals("de", swordBookMetaData.getLanguage().getCode());
     }
 }

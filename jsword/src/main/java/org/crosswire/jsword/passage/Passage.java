@@ -26,6 +26,8 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.Iterator;
 
+import org.crosswire.jsword.versification.BibleBook;
+
 /**
  * A Passage is a specialized Collection of Verses. The additions are:
  * <ul>
@@ -158,26 +160,26 @@ public interface Passage extends Key {
      * How many chapters are there in a particular book in this Passage
      * 
      * @param book
-     *            The book to check (0 for distinct chapters in all books)
+     *            The book to check (null for distinct chapters in all books)
      * @return The number of distinct chapters
      * @throws NoSuchVerseException
      *             if the book is invalid
      */
-    int chaptersInPassage(int book) throws NoSuchVerseException;
+    int chaptersInPassage(BibleBook book) throws NoSuchVerseException;
 
     /**
      * How many chapters are there in a particular book in this Passage Note
      * that <code>versesInPassage(ref, 0, 0) == ref.countVerses()</code>
      * 
      * @param book
-     *            The book to check (0 for distinct chapters in all books)
+     *            The book to check (null for distinct chapters in all books)
      * @param chapter
      *            The chapter to check (0 for distinct verses in all chapters)
      * @return The number of distinct chapters
      * @throws NoSuchVerseException
      *             if the book/chapter is invalid
      */
-    int versesInPassage(int book, int chapter) throws NoSuchVerseException;
+    int versesInPassage(BibleBook book, int chapter) throws NoSuchVerseException;
 
     /**
      * Get a specific Verse from this collection

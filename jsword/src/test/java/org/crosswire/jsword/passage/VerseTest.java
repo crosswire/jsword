@@ -23,7 +23,9 @@ package org.crosswire.jsword.passage;
 
 import junit.framework.TestCase;
 
+import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.BibleInfo;
+import org.crosswire.jsword.versification.BookName;
 
 /**
  * JUnit Test.
@@ -61,23 +63,23 @@ public class VerseTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
-        BibleInfo.setFullBookName(false);
-        gen11 = new Verse(1, 1, 1);
-        gen11a = new Verse(1, 1, 1);
-        gen12 = new Verse(1, 1, 2);
-        gen21 = new Verse(1, 2, 1);
-        gen22 = new Verse(1, 2, 2);
-        rev11 = new Verse(66, 1, 1);
-        rev12 = new Verse(66, 1, 2);
-        rev21 = new Verse(66, 2, 1);
-        rev22 = new Verse(66, 2, 2);
-        rev99 = new Verse(66, 22, 21);
-        jude1 = new Verse(65, 1, 1);
-        jude2 = new Verse(65, 1, 2);
-        jude9 = new Verse(65, 1, 25);
-        ssa11 = new Verse(10, 1, 1);
-        pro11 = new Verse(20, 1, 1);
-        ch111 = new Verse(13, 1, 1);
+        BookName.setFullBookName(false);
+        gen11 = new Verse(BibleBook.GENESIS, 1, 1);
+        gen11a = new Verse(BibleBook.GENESIS, 1, 1);
+        gen12 = new Verse(BibleBook.GENESIS, 1, 2);
+        gen21 = new Verse(BibleBook.GENESIS, 2, 1);
+        gen22 = new Verse(BibleBook.GENESIS, 2, 2);
+        rev11 = new Verse(BibleBook.REVELATION, 1, 1);
+        rev12 = new Verse(BibleBook.REVELATION, 1, 2);
+        rev21 = new Verse(BibleBook.REVELATION, 2, 1);
+        rev22 = new Verse(BibleBook.REVELATION, 2, 2);
+        rev99 = new Verse(BibleBook.REVELATION, 22, 21);
+        jude1 = new Verse(BibleBook.JUDE, 1, 1);
+        jude2 = new Verse(BibleBook.JUDE, 1, 2);
+        jude9 = new Verse(BibleBook.JUDE, 1, 25);
+        ssa11 = new Verse(BibleBook.SAMUEL2, 1, 1);
+        pro11 = new Verse(BibleBook.PROVERBS, 1, 1);
+        ch111 = new Verse(BibleBook.CHRONICLES1, 1, 1);
     }
 
     /*
@@ -221,74 +223,61 @@ public class VerseTest extends TestCase {
     }
 
     public void testNewViaIntIntIntBoolean() {
-        assertEquals(gen11, new Verse(0, 1, 1, true));
-        assertEquals(gen11, new Verse(1, 0, 1, true));
-        assertEquals(gen11, new Verse(1, 1, 0, true));
-        assertEquals(rev99, new Verse(66, 22, 22, true));
-        assertEquals(rev99, new Verse(66, 23, 21, true));
-        assertEquals(rev99, new Verse(66, 23, 22, true));
-        assertEquals(rev99, new Verse(67, 22, 21, true));
-        assertEquals(rev99, new Verse(67, 22, 22, true));
-        assertEquals(rev99, new Verse(999999, 0, 0, true));
-        assertEquals(rev99, new Verse(0, 999999, 0, true));
-        assertEquals(rev99, new Verse(0, 0, 999999, true));
+        assertEquals(gen11, new Verse(null, 1, 1, true));
+        assertEquals(gen11, new Verse(BibleBook.GENESIS, 0, 1, true));
+        assertEquals(gen11, new Verse(BibleBook.GENESIS, 1, 0, true));
+        assertEquals(rev99, new Verse(BibleBook.REVELATION, 22, 22, true));
+        assertEquals(rev99, new Verse(BibleBook.REVELATION, 23, 21, true));
+        assertEquals(rev99, new Verse(BibleBook.REVELATION, 23, 22, true));
+        assertEquals(rev99, new Verse(BibleBook.GENESIS, 999999, 0, true));
+        assertEquals(rev99, new Verse(BibleBook.GENESIS, 0, 999999, true));
         try {
-            new Verse(0, 1, 1);
+            new Verse(null, 1, 1);
             fail();
         } catch (NoSuchVerseException ex) {
         }
         try {
-            new Verse(1, 0, 1);
+            new Verse(BibleBook.GENESIS, 0, 1);
             fail();
         } catch (NoSuchVerseException ex) {
         }
         try {
-            new Verse(1, 1, 0);
+            new Verse(BibleBook.GENESIS, 1, 0);
             fail();
         } catch (NoSuchVerseException ex) {
         }
         try {
-            new Verse(1, 1, 32);
+            new Verse(BibleBook.GENESIS, 1, 32);
             fail();
         } catch (NoSuchVerseException ex) {
         }
         try {
-            new Verse(1, 51, 1);
+            new Verse(BibleBook.GENESIS, 51, 1);
             fail();
         } catch (NoSuchVerseException ex) {
         }
         try {
-            new Verse(67, 1, 1);
-            fail();
-        } catch (NoSuchVerseException ex) {
-        }
-        try {
-            new Verse(0, 1, 1, false);
+            new Verse(null, 1, 1, false);
             fail();
         } catch (IllegalArgumentException ex) {
         }
         try {
-            new Verse(1, 0, 1, false);
+            new Verse(BibleBook.GENESIS, 0, 1, false);
             fail();
         } catch (IllegalArgumentException ex) {
         }
         try {
-            new Verse(1, 1, 0, false);
+            new Verse(BibleBook.GENESIS, 1, 0, false);
             fail();
         } catch (IllegalArgumentException ex) {
         }
         try {
-            new Verse(1, 1, 32, false);
+            new Verse(BibleBook.GENESIS, 1, 32, false);
             fail();
         } catch (IllegalArgumentException ex) {
         }
         try {
-            new Verse(1, 51, 1, false);
-            fail();
-        } catch (IllegalArgumentException ex) {
-        }
-        try {
-            new Verse(67, 1, 1, false);
+            new Verse(BibleBook.GENESIS, 51, 1, false);
             fail();
         } catch (IllegalArgumentException ex) {
         }
@@ -358,15 +347,15 @@ public class VerseTest extends TestCase {
     }
 
     public void testGetBook() {
-        assertEquals(gen11.getBook(), 1);
-        assertEquals(gen12.getBook(), 1);
-        assertEquals(gen21.getBook(), 1);
-        assertEquals(gen22.getBook(), 1);
-        assertEquals(rev11.getBook(), 66);
-        assertEquals(rev12.getBook(), 66);
-        assertEquals(rev21.getBook(), 66);
-        assertEquals(rev22.getBook(), 66);
-        assertEquals(rev99.getBook(), 66);
+        assertEquals(gen11.getBook(), BibleBook.GENESIS);
+        assertEquals(gen12.getBook(), BibleBook.GENESIS);
+        assertEquals(gen21.getBook(), BibleBook.GENESIS);
+        assertEquals(gen22.getBook(), BibleBook.GENESIS);
+        assertEquals(rev11.getBook(), BibleBook.REVELATION);
+        assertEquals(rev12.getBook(), BibleBook.REVELATION);
+        assertEquals(rev21.getBook(), BibleBook.REVELATION);
+        assertEquals(rev22.getBook(), BibleBook.REVELATION);
+        assertEquals(rev99.getBook(), BibleBook.REVELATION);
     }
 
     public void testGetChapter() {
@@ -391,36 +380,6 @@ public class VerseTest extends TestCase {
         assertEquals(rev21.getVerse(), 1);
         assertEquals(rev22.getVerse(), 2);
         assertEquals(rev99.getVerse(), 21);
-    }
-
-    public void testGetRefArray() throws Exception {
-        assertEquals(BibleInfo.verseCount(gen11.getRefArray(), new int[] {
-                1, 1, 1
-        }), 1);
-        assertEquals(BibleInfo.verseCount(gen12.getRefArray(), new int[] {
-                1, 1, 2
-        }), 1);
-        assertEquals(BibleInfo.verseCount(gen21.getRefArray(), new int[] {
-                1, 2, 1
-        }), 1);
-        assertEquals(BibleInfo.verseCount(gen22.getRefArray(), new int[] {
-                1, 2, 2
-        }), 1);
-        assertEquals(BibleInfo.verseCount(rev11.getRefArray(), new int[] {
-                66, 1, 1
-        }), 1);
-        assertEquals(BibleInfo.verseCount(rev12.getRefArray(), new int[] {
-                66, 1, 2
-        }), 1);
-        assertEquals(BibleInfo.verseCount(rev21.getRefArray(), new int[] {
-                66, 2, 1
-        }), 1);
-        assertEquals(BibleInfo.verseCount(rev22.getRefArray(), new int[] {
-                66, 2, 2
-        }), 1);
-        assertEquals(BibleInfo.verseCount(rev99.getRefArray(), new int[] {
-                66, 22, 21
-        }), 1);
     }
 
     public void testGetOrdinal() {
@@ -450,7 +409,7 @@ public class VerseTest extends TestCase {
         } catch (NoSuchVerseException ex) {
         }
         try {
-            AccuracyType.fromText("b 1 1", AccuracyType.tokenize("b 1 1"), vr);
+            AccuracyType.fromText("x 1 1", AccuracyType.tokenize("x 1 1"), vr);
             fail();
         } catch (NoSuchVerseException ex) {
         }

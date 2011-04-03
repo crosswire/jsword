@@ -105,8 +105,8 @@ public class LZSSTest extends TestCase {
         } catch (IOException e) {
             fail();
         }
-        LZSS compressor = new LZSS(kjvGenesis); // new
-        // ByteArrayInputStream("ATATAAAFFFF".getBytes()));
+        // new ByteArrayInputStream("ATATAAAFFFF".getBytes()));
+        LZSS compressor = new LZSS(kjvGenesis);
         ByteArrayOutputStream bosCompressed = null;
         try {
             bosCompressed = compressor.compress();

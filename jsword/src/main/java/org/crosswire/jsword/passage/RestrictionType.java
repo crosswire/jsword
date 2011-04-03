@@ -21,6 +21,7 @@
  */
 package org.crosswire.jsword.passage;
 
+import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.BibleInfo;
 
 /**
@@ -78,12 +79,12 @@ public enum RestrictionType {
         public VerseRange blur(VerseRange range, int blurDown, int blurUp) {
             try {
                 Verse start = range.getStart();
-                int startBook = start.getBook();
+                BibleBook startBook = start.getBook();
                 int startChapter = start.getChapter();
                 int startVerse = start.getVerse() - blurDown;
 
                 Verse end = range.getEnd();
-                int endBook = end.getBook();
+                BibleBook endBook = end.getBook();
                 int endChapter = end.getChapter();
                 int endVerse = end.getVerse() + blurUp;
 
@@ -111,9 +112,9 @@ public enum RestrictionType {
                     start = verse.subtract(down);
                 }
 
-                int bookNumber = verse.getBook();
+                BibleBook book = verse.getBook();
                 int chapterNumber = verse.getChapter();
-                int up = Math.min(verseNumber + blurUp, BibleInfo.versesInChapter(bookNumber, chapterNumber)) - verseNumber;
+                int up = Math.min(verseNumber + blurUp, BibleInfo.versesInChapter(book, chapterNumber)) - verseNumber;
                 Verse end = verse;
                 if (up > 0) {
                     end = verse.add(up);

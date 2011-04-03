@@ -37,7 +37,7 @@ import org.crosswire.jsword.index.IndexManagerFactory;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.versification.BibleInfo;
+import org.crosswire.jsword.versification.BookName;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
@@ -144,7 +144,7 @@ public class DwrBridge {
         Book book = BookInstaller.getInstalledBook(bookInitials);
         if (isIndexed(book) && searchRequest != null) {
             if (BookCategory.BIBLE.equals(book.getBookCategory())) {
-                BibleInfo.setFullBookName(false);
+                BookName.setFullBookName(false);
             }
             return book.find(searchRequest).getName();
         }

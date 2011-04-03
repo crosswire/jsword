@@ -91,7 +91,7 @@ public class JobTest extends TestCase {
         job.done();
         assertEquals(true, job.isFinished());
         assertEquals(100, job.getWork());
-        // assertEquals(job.isCancelable(), false);
+        // assertEquals(false, job.isCancelable());
 
         job = JobManager.createJob(WIBBLE, Thread.currentThread());
         job.beginJob(WIBBLE, uri);
@@ -103,6 +103,6 @@ public class JobTest extends TestCase {
         job.done();
         assertEquals(true, job.isFinished());
         assertEquals(100, job.getWork());
-        // assertEquals(job.isCancelable(), false);
+        // assertEquals(false, job.isCancelable());
     }
 }

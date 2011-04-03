@@ -23,6 +23,7 @@ package org.crosswire.jsword.passage;
 
 import org.crosswire.common.icu.NumberShaper;
 import org.crosswire.jsword.JSMsg;
+import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.BibleInfo;
 
 /**
@@ -79,7 +80,7 @@ public enum AccuracyType {
 
         @Override
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
-            int book = BibleInfo.getBookNumber(parts[0]);
+            BibleBook book = BibleBook.getBook(parts[0]);
             int chapter = 1;
             int verse = 1;
             if (parts.length == 3) {
@@ -112,7 +113,7 @@ public enum AccuracyType {
 
         @Override
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
-            int book = BibleInfo.getBookNumber(parts[0]);
+            BibleBook book = BibleBook.getBook(parts[0]);
             int chapter = getChapter(book, parts[1]);
             int verse = 1;
             return new Verse(original, book, chapter, verse);
@@ -140,7 +141,7 @@ public enum AccuracyType {
 
         @Override
         public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
-            int book = BibleInfo.getBookNumber(parts[0]);
+            BibleBook book = BibleBook.getBook(parts[0]);
             return new Verse(original, book, 1, 1);
         }
 
@@ -171,7 +172,7 @@ public enum AccuracyType {
                 // TRANSLATOR: The user supplied a verse reference but did not give the book of the Bible.
                 throw new NoSuchVerseException(JSMsg.gettext("Book is missing"));
             }
-            int book = verseRangeBasis.getEnd().getBook();
+            BibleBook book = verseRangeBasis.getEnd().getBook();
             int chapter = getChapter(book, parts[0]);
             int verse = getVerse(book, chapter, parts[1]);
 
@@ -181,7 +182,7 @@ public enum AccuracyType {
         @Override
         public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException {
             // Very similar to the start verse but use the verse as a basis
-            int book = verseBasis.getBook();
+            BibleBook book = verseBasis.getBook();
             int chapter = getChapter(book, endParts[0]);
             int verse = getVerse(book, chapter, endParts[1]);
             return new Verse(endVerseDesc, book, chapter, verse);
@@ -203,7 +204,7 @@ public enum AccuracyType {
                 // TRANSLATOR: The user supplied a verse reference but did not give the book of the Bible.
                 throw new NoSuchVerseException(JSMsg.gettext("Book is missing"));
             }
-            int book = verseRangeBasis.getEnd().getBook();
+            BibleBook book = verseRangeBasis.getEnd().getBook();
             int chapter = getChapter(book, parts[0]);
             return new Verse(original, book, chapter, 1);
         }
@@ -212,7 +213,7 @@ public enum AccuracyType {
         public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException {
             // Very similar to the start verse but use the verse as a basis
             // and it gets the end of the chapter
-            int book = verseBasis.getBook();
+            BibleBook book = verseBasis.getBook();
             int chapter = getChapter(book, endParts[0]);
             return new Verse(endVerseDesc, book, chapter, 1).getLastVerseInChapter();
         }
@@ -233,7 +234,7 @@ public enum AccuracyType {
                 // TRANSLATOR: The user supplied a verse reference but did not give the book or chapter of the Bible.
                 throw new NoSuchVerseException(JSMsg.gettext("Book and chapter are missing"));
             }
-            int book = verseRangeBasis.getEnd().getBook();
+            BibleBook book = verseRangeBasis.getEnd().getBook();
             int chapter = verseRangeBasis.getEnd().getChapter();
             int verse = getVerse(book, chapter, parts[0]);
             return new Verse(original, book, chapter, verse);
@@ -243,7 +244,7 @@ public enum AccuracyType {
         public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException {
             // Very similar to the start verse but use the verse as a basis
             // and it gets the end of the chapter
-            int book = verseBasis.getBook();
+            BibleBook book = verseBasis.getBook();
             int chapter = verseBasis.getChapter();
             int verse = getVerse(book, chapter, endParts[0]);
             return new Verse(endVerseDesc, book, chapter, verse);
@@ -309,7 +310,7 @@ public enum AccuracyType {
      * @return the number of the chapter
      * @throws NoSuchVerseException
      */
-    public static final int getChapter(int lbook, String chapter) throws NoSuchVerseException {
+    public static final int getChapter(BibleBook lbook, String chapter) throws NoSuchVerseException {
         if (isEndMarker(chapter)) {
             return BibleInfo.chaptersInBook(lbook);
         }
@@ -329,7 +330,7 @@ public enum AccuracyType {
      * @return the number of the verse
      * @throws NoSuchVerseException
      */
-    public static final int getVerse(int lbook, int lchapter, String verse) throws NoSuchVerseException {
+    public static final int getVerse(BibleBook lbook, int lchapter, String verse) throws NoSuchVerseException {
         if (isEndMarker(verse)) {
             return BibleInfo.versesInChapter(lbook, lchapter);
         }
@@ -399,7 +400,7 @@ public enum AccuracyType {
     public static AccuracyType fromText(String original, String[] parts, AccuracyType verseAccuracy, VerseRange basis) throws NoSuchVerseException {
         switch (parts.length) {
         case 1:
-            if (BibleInfo.isBookName(parts[0])) {
+            if (BibleBook.isBook(parts[0])) {
                 return BOOK_ONLY;
             }
 
@@ -429,8 +430,8 @@ public enum AccuracyType {
 
         case 2:
             // Does it start with a book?
-            int pbook = BibleInfo.getBookNumber(parts[0]);
-            if (pbook == -1) {
+            BibleBook pbook = BibleBook.getBook(parts[0]);
+            if (pbook == null) {
                 checkValidChapterOrVerse(parts[0]);
                 checkValidChapterOrVerse(parts[1]);
                 return CHAPTER_VERSE;
@@ -443,7 +444,7 @@ public enum AccuracyType {
             return BOOK_CHAPTER;
 
         case 3:
-            if (BibleInfo.getBookNumber(parts[0]) != -1) {
+            if (BibleBook.getBook(parts[0]) != null) {
                 checkValidChapterOrVerse(parts[1]);
                 checkValidChapterOrVerse(parts[2]);
                 return BOOK_VERSE;

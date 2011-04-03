@@ -24,11 +24,13 @@ package org.crosswire.jsword.passage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.crosswire.common.icu.NumberShaper;
 import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.BibleInfo;
 
 /**
@@ -168,122 +170,112 @@ public final class VerseRange implements Key {
      * @see org.crosswire.jsword.passage.Key#getOsisRef()
      */
     public String getOsisRef() {
-        try {
-            int startBook = start.getBook();
-            int endBook = end.getBook();
-            int startChapter = start.getChapter();
-            int endChapter = end.getChapter();
+        BibleBook startBook = start.getBook();
+        BibleBook endBook = end.getBook();
+        int startChapter = start.getChapter();
+        int endChapter = end.getChapter();
 
-            // If this is in 2 separate books
-            if (startBook != endBook) {
-                StringBuilder buf = new StringBuilder();
-                if (start.isStartOfBook()) {
-                    buf.append(BibleInfo.getOSISName(startBook));
-                } else if (start.isStartOfChapter()) {
-                    buf.append(BibleInfo.getOSISName(startBook));
-                    buf.append(Verse.VERSE_OSIS_DELIM);
-                    buf.append(startChapter);
-                } else {
-                    buf.append(start.getOsisRef());
-                }
-
-                buf.append(VerseRange.RANGE_PREF_DELIM);
-
-                if (end.isEndOfBook()) {
-                    buf.append(BibleInfo.getOSISName(endBook));
-                } else if (end.isEndOfChapter()) {
-                    buf.append(BibleInfo.getOSISName(endBook));
-                    buf.append(Verse.VERSE_OSIS_DELIM);
-                    buf.append(endChapter);
-                } else {
-                    buf.append(end.getOsisRef());
-                }
-
-                return buf.toString();
-            }
-
-            // This range is exactly a whole book
-            if (isWholeBook()) {
-                // Just report the name of the book, we don't need to worry
-                // about the
-                // base since we start at the start of a book, and should have
-                // been
-                // recently normalized()
-                return BibleInfo.getOSISName(startBook);
-            }
-
-            // If this is 2 separate chapters in the same book
-            if (startChapter != endChapter) {
-                StringBuilder buf = new StringBuilder();
-                if (start.isStartOfChapter()) {
-                    buf.append(BibleInfo.getOSISName(startBook));
-                    buf.append(Verse.VERSE_OSIS_DELIM);
-                    buf.append(startChapter);
-                } else {
-                    buf.append(start.getOsisRef());
-                }
-
-                buf.append(VerseRange.RANGE_PREF_DELIM);
-
-                if (end.isEndOfChapter()) {
-                    buf.append(BibleInfo.getOSISName(endBook));
-                    buf.append(Verse.VERSE_OSIS_DELIM);
-                    buf.append(endChapter);
-                } else {
-                    buf.append(end.getOsisRef());
-                }
-
-                return buf.toString();
-            }
-
-            // If this range is exactly a whole chapter
-            if (isWholeChapter()) {
-                // Just report the name of the book and the chapter
-                StringBuilder buf = new StringBuilder();
-                buf.append(BibleInfo.getOSISName(startBook));
+        // If this is in 2 separate books
+        if (startBook != endBook) {
+            StringBuilder buf = new StringBuilder();
+            if (start.isStartOfBook()) {
+                buf.append(startBook.getOSIS());
+            } else if (start.isStartOfChapter()) {
+                buf.append(startBook.getOSIS());
                 buf.append(Verse.VERSE_OSIS_DELIM);
                 buf.append(startChapter);
-                return buf.toString();
-            }
-
-            // If this is 2 separate verses
-            if (start.getVerse() != end.getVerse()) {
-                StringBuilder buf = new StringBuilder();
+            } else {
                 buf.append(start.getOsisRef());
-                buf.append(VerseRange.RANGE_PREF_DELIM);
-                buf.append(end.getOsisRef());
-                return buf.toString();
             }
 
-            // The range is a single verse
-            return start.getOsisRef();
-        } catch (NoSuchVerseException ex) {
-            assert false : ex;
-            return "!Error!";
+            buf.append(VerseRange.RANGE_PREF_DELIM);
+
+            if (end.isEndOfBook()) {
+                buf.append(endBook.getOSIS());
+            } else if (end.isEndOfChapter()) {
+                buf.append(endBook.getOSIS());
+                buf.append(Verse.VERSE_OSIS_DELIM);
+                buf.append(endChapter);
+            } else {
+                buf.append(end.getOsisRef());
+            }
+
+            return buf.toString();
         }
+
+        // This range is exactly a whole book
+        if (isWholeBook()) {
+            // Just report the name of the book, we don't need to worry
+            // about the
+            // base since we start at the start of a book, and should have
+            // been
+            // recently normalized()
+            return startBook.getOSIS();
+        }
+
+        // If this is 2 separate chapters in the same book
+        if (startChapter != endChapter) {
+            StringBuilder buf = new StringBuilder();
+            if (start.isStartOfChapter()) {
+                buf.append(startBook.getOSIS());
+                buf.append(Verse.VERSE_OSIS_DELIM);
+                buf.append(startChapter);
+            } else {
+                buf.append(start.getOsisRef());
+            }
+
+            buf.append(VerseRange.RANGE_PREF_DELIM);
+
+            if (end.isEndOfChapter()) {
+                buf.append(endBook.getOSIS());
+                buf.append(Verse.VERSE_OSIS_DELIM);
+                buf.append(endChapter);
+            } else {
+                buf.append(end.getOsisRef());
+            }
+
+            return buf.toString();
+        }
+
+        // If this range is exactly a whole chapter
+        if (isWholeChapter()) {
+            // Just report the name of the book and the chapter
+            StringBuilder buf = new StringBuilder();
+            buf.append(startBook.getOSIS());
+            buf.append(Verse.VERSE_OSIS_DELIM);
+            buf.append(startChapter);
+            return buf.toString();
+        }
+
+        // If this is 2 separate verses
+        if (start.getVerse() != end.getVerse()) {
+            StringBuilder buf = new StringBuilder();
+            buf.append(start.getOsisRef());
+            buf.append(VerseRange.RANGE_PREF_DELIM);
+            buf.append(end.getOsisRef());
+            return buf.toString();
+        }
+
+        // The range is a single verse
+        return start.getOsisRef();
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getOsisID()
      */
     public String getOsisID() {
-        try {
-            // This range is exactly a whole book
-            if (isWholeBook()) {
-                // Just report the name of the book, we don't need to worry
-                // about the base since we start at the start of a book, and
-                // should have been recently normalized()
-                return BibleInfo.getOSISName(start.getBook());
-            }
+        // This range is exactly a whole book
+        if (isWholeBook()) {
+            // Just report the name of the book, we don't need to worry
+            // about the base since we start at the start of a book, and
+            // should have been recently normalized()
+            return start.getBook().getOSIS();
+        }
 
-            // If this range is exactly a whole chapter
-            if (isWholeChapter()) {
-                // Just report the name of the book and the chapter
-                return BibleInfo.getOSISName(start.getBook()) + Verse.VERSE_OSIS_DELIM + start.getChapter();
-            }
-        } catch (NoSuchVerseException ex) {
-            assert false : ex;
-            return "!Error!";
+        // If this range is exactly a whole chapter
+        if (isWholeChapter()) {
+            // Just report the name of the book and the chapter
+            return start.getBook().getOSIS() + Verse.VERSE_OSIS_DELIM + start.getChapter();
         }
 
         int startOrdinal = start.getOrdinal();
@@ -343,9 +335,9 @@ public final class VerseRange implements Key {
      * @return The number of chapters. Always >= 1.
      */
     public int getChapterCount() {
-        int startBook = start.getBook();
+        BibleBook startBook = start.getBook();
         int startChap = start.getChapter();
-        int endBook = end.getBook();
+        BibleBook endBook = end.getBook();
         int endChap = end.getChapter();
 
         if (startBook == endBook) {
@@ -355,7 +347,7 @@ public final class VerseRange implements Key {
         try {
             // So we are going to have to count up chapters from start to end
             int total = BibleInfo.chaptersInBook(startBook) - startChap;
-            for (int b = startBook + 1; b < endBook; b++) {
+            for (BibleBook b : EnumSet.range(BibleInfo.getNextBook(startBook), BibleInfo.getPreviousBook(endBook))) {
                 total += BibleInfo.chaptersInBook(b);
             }
             total += endChap;
@@ -373,8 +365,8 @@ public final class VerseRange implements Key {
      * @return The number of books. Always >= 1.
      */
     public int getBookCount() {
-        int startBook = start.getBook();
-        int endBook = end.getBook();
+        int startBook = start.getBook().ordinal();
+        int endBook = end.getBook().ordinal();
 
         return endBook - startBook + 1;
     }
@@ -385,8 +377,8 @@ public final class VerseRange implements Key {
         VerseRange copy = null;
         try {
             copy = (VerseRange) super.clone();
-            copy.start = start.clone();
-            copy.end = end.clone();
+            copy.start = start;
+            copy.end = end;
             copy.verseCount = verseCount;
             copy.originalName = originalName;
             copy.shaper = new NumberShaper();
@@ -796,10 +788,10 @@ public final class VerseRange implements Key {
 
     private String doGetName(Key base) throws NoSuchVerseException {
         // Cache these we're going to be using them a lot.
-        int startBook = start.getBook();
+        BibleBook startBook = start.getBook();
         int startChapter = start.getChapter();
         int startVerse = start.getVerse();
-        int endBook = end.getBook();
+        BibleBook endBook = end.getBook();
         int endChapter = end.getChapter();
         int endVerse = end.getVerse();
 
@@ -812,14 +804,14 @@ public final class VerseRange implements Key {
                 // base since we start at the start of a book, and should have
                 // been
                 // recently normalized()
-                return BibleInfo.getPreferredBookName(startBook) + VerseRange.RANGE_PREF_DELIM + BibleInfo.getPreferredBookName(endBook);
+                return startBook.getPreferredName() + VerseRange.RANGE_PREF_DELIM + endBook.getPreferredName();
             }
 
             // If this range is exactly a whole chapter
             if (isWholeChapters()) {
                 // Just report book and chapter names
-                return BibleInfo.getPreferredBookName(startBook) + Verse.VERSE_PREF_DELIM1 + startChapter + VerseRange.RANGE_PREF_DELIM
-                        + BibleInfo.getPreferredBookName(endBook) + Verse.VERSE_PREF_DELIM1 + endChapter;
+                return startBook.getPreferredName() + Verse.VERSE_PREF_DELIM1 + startChapter + VerseRange.RANGE_PREF_DELIM
+                        + endBook.getPreferredName() + Verse.VERSE_PREF_DELIM1 + endChapter;
             }
 
             return start.getName(base) + VerseRange.RANGE_PREF_DELIM + end.getName(base);
@@ -831,7 +823,7 @@ public final class VerseRange implements Key {
             // the
             // base since we start at the start of a book, and should have been
             // recently normalized()
-            return BibleInfo.getPreferredBookName(startBook);
+            return startBook.getPreferredName();
         }
 
         // If this is 2 separate chapters
@@ -839,7 +831,7 @@ public final class VerseRange implements Key {
             // If this range is a whole number of chapters
             if (isWholeChapters()) {
                 // Just report the name of the book and the chapters
-                return BibleInfo.getPreferredBookName(startBook) + Verse.VERSE_PREF_DELIM1 + startChapter + VerseRange.RANGE_PREF_DELIM + endChapter;
+                return startBook.getPreferredName() + Verse.VERSE_PREF_DELIM1 + startChapter + VerseRange.RANGE_PREF_DELIM + endChapter;
             }
 
             return start.getName(base) + VerseRange.RANGE_PREF_DELIM + endChapter + Verse.VERSE_PREF_DELIM2 + endVerse;
@@ -848,7 +840,7 @@ public final class VerseRange implements Key {
         // If this range is exactly a whole chapter
         if (isWholeChapter()) {
             // Just report the name of the book and the chapter
-            return BibleInfo.getPreferredBookName(startBook) + Verse.VERSE_PREF_DELIM1 + startChapter;
+            return startBook.getPreferredName() + Verse.VERSE_PREF_DELIM1 + startChapter;
         }
 
         // If this is 2 separate verses
@@ -1154,21 +1146,21 @@ public final class VerseRange implements Key {
 
     static {
         try {
-            whole = new VerseRange(new Verse(1, 1, 1), new Verse(66, 22, 21));
+            whole = new VerseRange(new Verse(BibleBook.GENESIS, 1, 1), new Verse(BibleBook.REVELATION, 22, 21));
         } catch (NoSuchVerseException ex) {
             assert false : ex;
             whole = new VerseRange();
         }
 
         try {
-            otRange = new VerseRange(new Verse(1, 1, 1), new Verse(39, 4, 6));
+            otRange = new VerseRange(new Verse(BibleBook.GENESIS, 1, 1), new Verse(BibleBook.MALACHI, 4, 6));
         } catch (NoSuchVerseException ex) {
             assert false : ex;
             otRange = new VerseRange();
         }
 
         try {
-            ntRange = new VerseRange(new Verse(40, 1, 1), new Verse(66, 22, 21));
+            ntRange = new VerseRange(new Verse(BibleBook.MATTHEW, 1, 1), new Verse(BibleBook.REVELATION, 22, 21));
         } catch (NoSuchVerseException ex) {
             assert false : ex;
             ntRange = new VerseRange();

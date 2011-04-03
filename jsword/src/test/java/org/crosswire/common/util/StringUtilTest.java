@@ -56,21 +56,21 @@ public class StringUtilTest extends TestCase {
         out.println("f g h i j");
         out.close();
         pout.close();
-        assertEquals(StringUtil.read(in), "a b c d e" + StringUtil.NEWLINE + "f g h i j" + StringUtil.NEWLINE);
+        assertEquals("a b c d e" + StringUtil.NEWLINE + "f g h i j" + StringUtil.NEWLINE, StringUtil.read(in));
     }
 
     public void testGetInitials() {
-        assertEquals(StringUtil.getInitials("Church of England"), "CoE");
-        assertEquals(StringUtil.getInitials("Java DataBase Connectivity"), "JDC");
-        assertEquals(StringUtil.getInitials(""), "");
+        assertEquals("CoE", StringUtil.getInitials("Church of England"));
+        assertEquals("JDC", StringUtil.getInitials("Java DataBase Connectivity"));
+        assertEquals("", StringUtil.getInitials(""));
     }
 
     public void testCreateTitle() {
-        assertEquals(StringUtil.createTitle("OneTwo"), "One Two");
-        assertEquals(StringUtil.createTitle("one_two"), "One Two");
-        assertEquals(StringUtil.createTitle("ONeTWo"), "ONe TWo");
-        assertEquals(StringUtil.createTitle("One_Two"), "One Two");
-        assertEquals(StringUtil.createTitle("One _Two"), "One Two");
-        assertEquals(StringUtil.createTitle("one  _Two"), "One Two");
+        assertEquals("One Two", StringUtil.createTitle("OneTwo"));
+        assertEquals("One Two", StringUtil.createTitle("one_two"));
+        assertEquals("ONe TWo", StringUtil.createTitle("ONeTWo"));
+        assertEquals("One Two", StringUtil.createTitle("One_Two"));
+        assertEquals("One Two", StringUtil.createTitle("One _Two"));
+        assertEquals("One Two", StringUtil.createTitle("one  _Two"));
     }
 }

@@ -32,7 +32,9 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
+import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.BibleInfo;
+import org.crosswire.jsword.versification.BookName;
 
 /**
  * This would be called TestPassage however then people might think it was a
@@ -97,29 +99,17 @@ public class PassageParentTst extends TestCase {
     @Override
     protected void setUp() throws Exception {
         start = System.currentTimeMillis();
-        BibleInfo.setFullBookName(false);
+        BookName.setFullBookName(false);
         gen1_135 = (Passage) keyf.getKey("Gen 1:1, Gen 1:3, Gen 1:5");
         exo2a_3b = (Passage) keyf.getKey("Exo 2:1-10, Exo 3:1-11");
         gen_rev = (Passage) keyf.getKey("Gen 1:1-Rev 22:21");
         grace = (Passage) keyf.createEmptyKeyList();
-        grace
-                .addAll(keyf
-                        .getKey("Gen 6:8, 19:19, 32:5, 33:8, 10, 15, 39:4, 47:25, 29, 50:4, Exo 33:12-13, 16-17, 34:9, Num 32:5, Judg 6:17, Rut 2:2, 10, 1Sa 1:18, 20:3, 27:5"));
-        grace
-                .addAll(keyf
-                        .getKey("2Sa 14:22, 16:4, Ezr 9:8, Est 2:17, Psa 45:2, 84:11, Pro 1:9, 3:22, 34, 4:9, 22:11, Jer 31:2, Zec 4:7, 12:10, Luk 2:40, Joh 1:14, 16-17"));
-        grace
-                .addAll(keyf
-                        .getKey("Act 4:33, 11:23, 13:43, 14:3, 26, 15:11, 40, 18:27, 20:24, 32, Rom 1:5, 7, 3:24, 4:4, 16, 5:2, 15, 17, 20-6:1, 6:14-15, 11:5-6, 12:3, 6, 15:15, 16:20, 24"));
-        grace
-                .addAll(keyf
-                        .getKey("1Co 1:3-4, 3:10, 10:30, 15:10, 16:23, 2Co 1:2, 12, 4:15, 6:1, 8:1, 6-7, 9, 19, 9:8, 14, 12:9, 13:14, Gal 1:3, 6, 15, 2:9, 21, 5:4, 6:18"));
-        grace
-                .addAll(keyf
-                        .getKey("Eph 1:2, 6-7, 2:5, 7-8, 3:2, 7-8, 4:7, 29, 6:24, Phili 1:2, 7, 4:23, Col 1:2, 6, 3:16, 4:6, 18-1Th 1:1, 1Th 5:28, 2Th 1:2, 12, 2:16, 3:18"));
-        grace
-                .addAll(keyf
-                        .getKey("1Ti 1:2, 14, 6:21, 2Ti 1:2, 9, 2:1, 4:22, Tit 1:4, 2:11, 3:7, 15, Phile 3, 25, Heb 2:9, 4:16, 10:29, 12:15, 28, 13:9, 25, Jam 1:11, 4:6"));
+        grace.addAll(keyf.getKey("Gen 6:8, 19:19, 32:5, 33:8, 10, 15, 39:4, 47:25, 29, 50:4, Exo 33:12-13, 16-17, 34:9, Num 32:5, Judg 6:17, Rut 2:2, 10, 1Sa 1:18, 20:3, 27:5"));
+        grace.addAll(keyf.getKey("2Sa 14:22, 16:4, Ezr 9:8, Est 2:17, Psa 45:2, 84:11, Pro 1:9, 3:22, 34, 4:9, 22:11, Jer 31:2, Zec 4:7, 12:10, Luk 2:40, Joh 1:14, 16-17"));
+        grace.addAll(keyf.getKey("Act 4:33, 11:23, 13:43, 14:3, 26, 15:11, 40, 18:27, 20:24, 32, Rom 1:5, 7, 3:24, 4:4, 16, 5:2, 15, 17, 20-6:1, 6:14-15, 11:5-6, 12:3, 6, 15:15, 16:20, 24"));
+        grace.addAll(keyf.getKey("1Co 1:3-4, 3:10, 10:30, 15:10, 16:23, 2Co 1:2, 12, 4:15, 6:1, 8:1, 6-7, 9, 19, 9:8, 14, 12:9, 13:14, Gal 1:3, 6, 15, 2:9, 21, 5:4, 6:18"));
+        grace.addAll(keyf.getKey("Eph 1:2, 6-7, 2:5, 7-8, 3:2, 7-8, 4:7, 29, 6:24, Phili 1:2, 7, 4:23, Col 1:2, 6, 3:16, 4:6, 18-1Th 1:1, 1Th 5:28, 2Th 1:2, 12, 2:16, 3:18"));
+        grace.addAll(keyf.getKey("1Ti 1:2, 14, 6:21, 2Ti 1:2, 9, 2:1, 4:22, Tit 1:4, 2:11, 3:7, 15, Phile 3, 25, Heb 2:9, 4:16, 10:29, 12:15, 28, 13:9, 25, Jam 1:11, 4:6"));
         grace.addAll(keyf.getKey("1Pe 1:2, 10, 13, 3:7, 4:10, 5:5, 10, 12, 2Pe 1:2, 3:18, 2Jo 3, Jude 4, Rev 1:4, 22:21"));
         empty = (Passage) keyf.createEmptyKeyList();
 
@@ -135,21 +125,21 @@ public class PassageParentTst extends TestCase {
             empty.optimizeReads();
         }
 
-        gen11_1 = RestrictionType.NONE.toRange(new Verse(1, 1, 1), 1);
-        gen11_2 = RestrictionType.NONE.toRange(new Verse(1, 1, 1), 2);
-        gen12_1 = RestrictionType.NONE.toRange(new Verse(1, 1, 2), 1);
-        exo21_1 = RestrictionType.NONE.toRange(new Verse(2, 2, 1), 1);
-        exo21_2 = RestrictionType.NONE.toRange(new Verse(2, 2, 1), 2);
-        exo22_1 = RestrictionType.NONE.toRange(new Verse(2, 2, 2), 1);
+        gen11_1 = RestrictionType.NONE.toRange(new Verse(BibleBook.GENESIS, 1, 1), 1);
+        gen11_2 = RestrictionType.NONE.toRange(new Verse(BibleBook.GENESIS, 1, 1), 2);
+        gen12_1 = RestrictionType.NONE.toRange(new Verse(BibleBook.GENESIS, 1, 2), 1);
+        exo21_1 = RestrictionType.NONE.toRange(new Verse(BibleBook.EXODUS, 2, 1), 1);
+        exo21_2 = RestrictionType.NONE.toRange(new Verse(BibleBook.EXODUS, 2, 1), 2);
+        exo22_1 = RestrictionType.NONE.toRange(new Verse(BibleBook.EXODUS, 2, 2), 1);
 
-        gen11 = new Verse(1, 1, 1);
-        gen12 = new Verse(1, 1, 2);
-        gen13 = new Verse(1, 1, 3);
-        gen15 = new Verse(1, 1, 5);
-        exo21 = new Verse(2, 2, 1);
-        exo22 = new Verse(2, 2, 2);
-        exo23 = new Verse(2, 2, 3);
-        exo3b = new Verse(2, 3, 11);
+        gen11 = new Verse(BibleBook.GENESIS, 1, 1);
+        gen12 = new Verse(BibleBook.GENESIS, 1, 2);
+        gen13 = new Verse(BibleBook.GENESIS, 1, 3);
+        gen15 = new Verse(BibleBook.GENESIS, 1, 5);
+        exo21 = new Verse(BibleBook.EXODUS, 2, 1);
+        exo22 = new Verse(BibleBook.EXODUS, 2, 2);
+        exo23 = new Verse(BibleBook.EXODUS, 2, 3);
+        exo3b = new Verse(BibleBook.EXODUS, 3, 11);
         rev99 = VerseFactory.fromString("Rev 22:21");
     }
 
@@ -289,48 +279,48 @@ public class PassageParentTst extends TestCase {
     public void testReadChaptersInPassage() throws Exception {
         // for (int i=0; i<3; i++)
         {
-            assertEquals(gen1_135.chaptersInPassage(1), 1);
-            assertEquals(exo2a_3b.chaptersInPassage(1), 0);
-            assertEquals(gen1_135.chaptersInPassage(2), 0);
-            assertEquals(exo2a_3b.chaptersInPassage(2), 2);
-            assertEquals(gen1_135.chaptersInPassage(3), 0);
-            assertEquals(exo2a_3b.chaptersInPassage(3), 0);
-            assertEquals(gen1_135.chaptersInPassage(0), 1);
-            assertEquals(exo2a_3b.chaptersInPassage(0), 2);
+            assertEquals(1, gen1_135.chaptersInPassage(BibleBook.GENESIS));
+            assertEquals(0, exo2a_3b.chaptersInPassage(BibleBook.GENESIS));
+            assertEquals(0, gen1_135.chaptersInPassage(BibleBook.EXODUS));
+            assertEquals(2, exo2a_3b.chaptersInPassage(BibleBook.EXODUS));
+            assertEquals(0, gen1_135.chaptersInPassage(BibleBook.LEVITICUS));
+            assertEquals(0, exo2a_3b.chaptersInPassage(BibleBook.LEVITICUS));
+            assertEquals(1, gen1_135.chaptersInPassage(null));
+            assertEquals(2, exo2a_3b.chaptersInPassage(null));
         }
     }
 
     public void testReadVersesInPassage() throws Exception {
         // for (int i=0; i<1; i++)
         {
-            assertEquals(gen1_135.versesInPassage(1, 1), 3);
-            assertEquals(exo2a_3b.versesInPassage(1, 1), 0);
-            assertEquals(gen1_135.versesInPassage(1, 2), 0);
-            assertEquals(exo2a_3b.versesInPassage(1, 2), 0);
-            assertEquals(gen1_135.versesInPassage(2, 1), 0);
-            assertEquals(exo2a_3b.versesInPassage(2, 1), 0);
-            assertEquals(gen1_135.versesInPassage(2, 2), 0);
-            assertEquals(exo2a_3b.versesInPassage(2, 2), 10);
-            assertEquals(gen1_135.versesInPassage(2, 3), 0);
-            assertEquals(exo2a_3b.versesInPassage(2, 3), 11);
-            assertEquals(gen1_135.versesInPassage(2, 4), 0);
-            assertEquals(exo2a_3b.versesInPassage(2, 4), 0);
-            assertEquals(gen1_135.versesInPassage(3, 1), 0);
-            assertEquals(exo2a_3b.versesInPassage(3, 1), 0);
-            assertEquals(gen1_135.versesInPassage(1, 0), 3);
-            assertEquals(exo2a_3b.versesInPassage(1, 0), 0);
-            assertEquals(gen1_135.versesInPassage(2, 0), 0);
-            assertEquals(exo2a_3b.versesInPassage(2, 0), 21);
-            assertEquals(gen1_135.versesInPassage(3, 0), 0);
-            assertEquals(exo2a_3b.versesInPassage(3, 0), 0);
-            assertEquals(gen1_135.versesInPassage(0, 1), 3);
-            assertEquals(exo2a_3b.versesInPassage(0, 1), 0);
-            assertEquals(gen1_135.versesInPassage(0, 2), 0);
-            assertEquals(exo2a_3b.versesInPassage(0, 2), 10);
-            assertEquals(gen1_135.versesInPassage(0, 3), 0);
-            assertEquals(exo2a_3b.versesInPassage(0, 3), 11);
-            assertEquals(gen1_135.versesInPassage(0, 0), gen1_135.countVerses());
-            assertEquals(exo2a_3b.versesInPassage(0, 0), exo2a_3b.countVerses());
+            assertEquals(3, gen1_135.versesInPassage(BibleBook.GENESIS, 1));
+            assertEquals(0, exo2a_3b.versesInPassage(BibleBook.GENESIS, 1));
+            assertEquals(0, gen1_135.versesInPassage(BibleBook.GENESIS, 2));
+            assertEquals(0, exo2a_3b.versesInPassage(BibleBook.GENESIS, 2));
+            assertEquals(0, gen1_135.versesInPassage(BibleBook.EXODUS, 1));
+            assertEquals(0, exo2a_3b.versesInPassage(BibleBook.EXODUS, 1));
+            assertEquals(0, gen1_135.versesInPassage(BibleBook.EXODUS, 2));
+            assertEquals(10, exo2a_3b.versesInPassage(BibleBook.EXODUS, 2));
+            assertEquals(0, gen1_135.versesInPassage(BibleBook.EXODUS, 3));
+            assertEquals(11, exo2a_3b.versesInPassage(BibleBook.EXODUS, 3));
+            assertEquals(0, gen1_135.versesInPassage(BibleBook.EXODUS, 4));
+            assertEquals(0, exo2a_3b.versesInPassage(BibleBook.EXODUS, 4));
+            assertEquals(0, gen1_135.versesInPassage(BibleBook.LEVITICUS, 1));
+            assertEquals(0, exo2a_3b.versesInPassage(BibleBook.LEVITICUS, 1));
+            assertEquals(3, gen1_135.versesInPassage(BibleBook.GENESIS, 0));
+            assertEquals(0, exo2a_3b.versesInPassage(BibleBook.GENESIS, 0));
+            assertEquals(0, gen1_135.versesInPassage(BibleBook.EXODUS, 0));
+            assertEquals(21, exo2a_3b.versesInPassage(BibleBook.EXODUS, 0));
+            assertEquals(0, gen1_135.versesInPassage(BibleBook.LEVITICUS, 0));
+            assertEquals(0, exo2a_3b.versesInPassage(BibleBook.LEVITICUS, 0));
+            assertEquals(3, gen1_135.versesInPassage(null, 1));
+            assertEquals(0, exo2a_3b.versesInPassage(null, 1));
+            assertEquals(0, gen1_135.versesInPassage(null, 2));
+            assertEquals(10, exo2a_3b.versesInPassage(null, 2));
+            assertEquals(0, gen1_135.versesInPassage(null, 3));
+            assertEquals(11, exo2a_3b.versesInPassage(null, 3));
+            assertEquals(gen1_135.countVerses(), gen1_135.versesInPassage(null, 0));
+            assertEquals(exo2a_3b.countVerses(), exo2a_3b.versesInPassage(null, 0));
         }
     }
 
@@ -415,7 +405,7 @@ public class PassageParentTst extends TestCase {
         assertEquals(keyf.getKey("exo 1:1, 4").getName(), "Exo 1:1, 4");
         assertEquals(keyf.getKey("exo 1:1, 4, 2-3, 11-ff, 6-10").getName(), "Exo 1:1-4, 6-22");
         assertEquals(keyf.getKey("Num 1, 2").getName(), "Num 1-2");
-        // Test for the sepaator being a space. This comes from "Clarke"
+        // Test for the separator being a space. This comes from "Clarke"
         assertEquals(keyf.getKey("Ge 1:26  3:22  11:7  20:13  31:7, 53  35:7").getName(), "Gen 1:26, 3:22, 11:7, 20:13, 31:7, 53, 35:7");
     }
 
@@ -633,45 +623,45 @@ public class PassageParentTst extends TestCase {
     }
 
     public void testWriteChaptersInPassage() throws Exception {
-        assertEquals(gen1_135.chaptersInPassage(1), 1);
-        assertEquals(exo2a_3b.chaptersInPassage(1), 0);
-        assertEquals(gen1_135.chaptersInPassage(2), 0);
-        assertEquals(exo2a_3b.chaptersInPassage(2), 2);
-        assertEquals(gen1_135.chaptersInPassage(3), 0);
-        assertEquals(exo2a_3b.chaptersInPassage(3), 0);
-        assertEquals(gen1_135.chaptersInPassage(0), 1);
-        assertEquals(exo2a_3b.chaptersInPassage(0), 2);
+        assertEquals(gen1_135.chaptersInPassage(BibleBook.GENESIS), 1);
+        assertEquals(exo2a_3b.chaptersInPassage(BibleBook.GENESIS), 0);
+        assertEquals(gen1_135.chaptersInPassage(BibleBook.EXODUS), 0);
+        assertEquals(exo2a_3b.chaptersInPassage(BibleBook.EXODUS), 2);
+        assertEquals(gen1_135.chaptersInPassage(BibleBook.LEVITICUS), 0);
+        assertEquals(exo2a_3b.chaptersInPassage(BibleBook.LEVITICUS), 0);
+        assertEquals(gen1_135.chaptersInPassage(null), 1);
+        assertEquals(exo2a_3b.chaptersInPassage(null), 2);
     }
 
     public void testWriteVersesInPassage() throws Exception {
-        assertEquals(gen1_135.versesInPassage(1, 1), 3);
-        assertEquals(exo2a_3b.versesInPassage(1, 1), 0);
-        assertEquals(gen1_135.versesInPassage(1, 2), 0);
-        assertEquals(exo2a_3b.versesInPassage(1, 2), 0);
-        assertEquals(gen1_135.versesInPassage(2, 1), 0);
-        assertEquals(exo2a_3b.versesInPassage(2, 1), 0);
-        assertEquals(gen1_135.versesInPassage(2, 2), 0);
-        assertEquals(exo2a_3b.versesInPassage(2, 2), 10);
-        assertEquals(gen1_135.versesInPassage(2, 3), 0);
-        assertEquals(exo2a_3b.versesInPassage(2, 3), 11);
-        assertEquals(gen1_135.versesInPassage(2, 4), 0);
-        assertEquals(exo2a_3b.versesInPassage(2, 4), 0);
-        assertEquals(gen1_135.versesInPassage(3, 1), 0);
-        assertEquals(exo2a_3b.versesInPassage(3, 1), 0);
-        assertEquals(gen1_135.versesInPassage(1, 0), 3);
-        assertEquals(exo2a_3b.versesInPassage(1, 0), 0);
-        assertEquals(gen1_135.versesInPassage(2, 0), 0);
-        assertEquals(exo2a_3b.versesInPassage(2, 0), 21);
-        assertEquals(gen1_135.versesInPassage(3, 0), 0);
-        assertEquals(exo2a_3b.versesInPassage(3, 0), 0);
-        assertEquals(gen1_135.versesInPassage(0, 1), 3);
-        assertEquals(exo2a_3b.versesInPassage(0, 1), 0);
-        assertEquals(gen1_135.versesInPassage(0, 2), 0);
-        assertEquals(exo2a_3b.versesInPassage(0, 2), 10);
-        assertEquals(gen1_135.versesInPassage(0, 3), 0);
-        assertEquals(exo2a_3b.versesInPassage(0, 3), 11);
-        assertEquals(gen1_135.versesInPassage(0, 0), gen1_135.countVerses());
-        assertEquals(exo2a_3b.versesInPassage(0, 0), exo2a_3b.countVerses());
+        assertEquals(gen1_135.versesInPassage(BibleBook.GENESIS, 1), 3);
+        assertEquals(exo2a_3b.versesInPassage(BibleBook.GENESIS, 1), 0);
+        assertEquals(gen1_135.versesInPassage(BibleBook.GENESIS, 2), 0);
+        assertEquals(exo2a_3b.versesInPassage(BibleBook.GENESIS, 2), 0);
+        assertEquals(gen1_135.versesInPassage(BibleBook.EXODUS, 1), 0);
+        assertEquals(exo2a_3b.versesInPassage(BibleBook.EXODUS, 1), 0);
+        assertEquals(gen1_135.versesInPassage(BibleBook.EXODUS, 2), 0);
+        assertEquals(exo2a_3b.versesInPassage(BibleBook.EXODUS, 2), 10);
+        assertEquals(gen1_135.versesInPassage(BibleBook.EXODUS, 3), 0);
+        assertEquals(exo2a_3b.versesInPassage(BibleBook.EXODUS, 3), 11);
+        assertEquals(gen1_135.versesInPassage(BibleBook.EXODUS, 4), 0);
+        assertEquals(exo2a_3b.versesInPassage(BibleBook.EXODUS, 4), 0);
+        assertEquals(gen1_135.versesInPassage(BibleBook.LEVITICUS, 1), 0);
+        assertEquals(exo2a_3b.versesInPassage(BibleBook.LEVITICUS, 1), 0);
+        assertEquals(gen1_135.versesInPassage(BibleBook.GENESIS, 0), 3);
+        assertEquals(exo2a_3b.versesInPassage(BibleBook.GENESIS, 0), 0);
+        assertEquals(gen1_135.versesInPassage(BibleBook.EXODUS, 0), 0);
+        assertEquals(exo2a_3b.versesInPassage(BibleBook.EXODUS, 0), 21);
+        assertEquals(gen1_135.versesInPassage(BibleBook.LEVITICUS, 0), 0);
+        assertEquals(exo2a_3b.versesInPassage(BibleBook.LEVITICUS, 0), 0);
+        assertEquals(gen1_135.versesInPassage(null, 1), 3);
+        assertEquals(exo2a_3b.versesInPassage(null, 1), 0);
+        assertEquals(gen1_135.versesInPassage(null, 2), 0);
+        assertEquals(exo2a_3b.versesInPassage(null, 2), 10);
+        assertEquals(gen1_135.versesInPassage(null, 3), 0);
+        assertEquals(exo2a_3b.versesInPassage(null, 3), 11);
+        assertEquals(gen1_135.versesInPassage(null, 0), gen1_135.countVerses());
+        assertEquals(exo2a_3b.versesInPassage(null, 0), exo2a_3b.countVerses());
     }
 
     public void testWriteContainsVerse() {

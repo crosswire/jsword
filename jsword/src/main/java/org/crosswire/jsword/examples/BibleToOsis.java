@@ -38,7 +38,6 @@ import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Verse;
-import org.crosswire.jsword.versification.BibleInfo;
 
 /**
  * Start of a mechanism to extract a Bible module to OSIS.
@@ -88,7 +87,7 @@ public class BibleToOsis {
             Verse verse = (Verse) key;
             String raw = bible.getRawText(verse);
             String osisID = verse.getOsisID();
-            String currentBookName = BibleInfo.getOSISName(verse.getBook());
+            String currentBookName = verse.getBook().getOSIS();
             int currentChapter = verse.getChapter();
 
             boolean newBookFound = !lastBookName.equals(currentBookName);

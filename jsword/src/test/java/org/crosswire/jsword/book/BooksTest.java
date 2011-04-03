@@ -87,7 +87,7 @@ public class BooksTest extends TestCase {
         for (int i = 0; i < bibles.length; i++) {
             Book bible = bibles[i];
             BookMetaData bmd = bible.getBookMetaData();
-            assertEquals(bmd, bmds[i]);
+            assertEquals(bmds[i], bmd);
         }
     }
 
@@ -106,7 +106,7 @@ public class BooksTest extends TestCase {
         for (int i = 0; i < bibles.length; i++) {
             Book bible = bibles[i];
             BookMetaData bmd = bible.getBookMetaData();
-            assertEquals(bmd, bmds[i]);
+            assertEquals(bmds[i], bmd);
         }
     }
 

@@ -14,19 +14,14 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2011
  *     The copyright to this program is held by it's authors.
  *
  * ID: $Id$
  */
 package org.crosswire.jsword.versification;
 
-import java.util.Locale;
-
 import org.crosswire.jsword.JSMsg;
-import org.crosswire.jsword.JSOtherMsg;
-import org.crosswire.jsword.book.CaseType;
-import org.crosswire.jsword.passage.NoSuchVerseException;
 
 /**
  * SectionNames deals with traditional sections of the Bible.
@@ -36,200 +31,428 @@ import org.crosswire.jsword.passage.NoSuchVerseException;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class SectionNames {
+public enum SectionNames {
+    /** BIBLE consists of the entire/whole Bible (Gen - Rev) **/
+    BIBLE {
+        @Override
+        public boolean contains(BibleBook book) {
+            int bookNum = book.ordinal();
+            return bookNum >= BibleBook.GENESIS.ordinal() && bookNum <= BibleBook.REVELATION.ordinal();
+        }
+
+        @Override
+        public int getSize() {
+            return 66;
+        }
+
+        @Override
+        public String getName() {
+            // TRANSLATOR: The entire/whole Bible (Gen - Rev)
+            return JSMsg.gettext("The Whole Bible");
+        }
+
+        @Override
+        public String getRange() {
+            return "Gen-Rev";
+        }
+
+    },
+    /** OLD_TESTAMENT consists of the old testament (Gen - Rev) **/
+    OLD_TESTAMENT {
+        @Override
+        public boolean contains(BibleBook book) {
+            int bookNum = book.ordinal();
+            return bookNum >= BibleBook.GENESIS.ordinal() && bookNum <= BibleBook.MALACHI.ordinal();
+        }
+
+        @Override
+        public int getSize() {
+            return 39;
+        }
+
+        @Override
+        public String getName() {
+            // TRANSLATOR: The old testament (Gen - Mal)
+            return JSMsg.gettext("Old Testament");
+        }
+
+        @Override
+        public String getRange() {
+            return "Gen-Mal";
+        }
+    },
+    /** PENTATEUCH consists of the 5 books of Moses (Gen - Deu) **/
+    PENTATEUCH {
+        @Override
+        public boolean contains(BibleBook book) {
+            int bookNum = book.ordinal();
+            return bookNum >= BibleBook.GENESIS.ordinal() && bookNum <= BibleBook.DEUTERONOMY.ordinal();
+        }
+
+        @Override
+        public int getSize() {
+            return 5;
+        }
+
+        @Override
+        public String getName() {
+            // TRANSLATOR: Pentateuch is the first 5 books of the Bible.
+            return JSMsg.gettext("Pentateuch");
+        }
+
+        @Override
+        public String getRange() {
+            return "Gen-Deu";
+        }
+    },
+    /** HISTORY consists of the history in the Old Testament of Israel */
+    HISTORY {
+        @Override
+        public boolean contains(BibleBook book) {
+            int bookNum = book.ordinal();
+            return bookNum >= BibleBook.JOSHUA.ordinal() && bookNum <= BibleBook.ESTHER.ordinal();
+        }
+
+        @Override
+        public int getSize() {
+            return 12;
+        }
+
+        @Override
+        public String getName() {
+            // TRANSLATOR: History are the books of the Old Testament that give the history of Israel
+            return JSMsg.gettext("History");
+        }
+
+        @Override
+        public String getRange() {
+            return "Jos-Est";
+        }
+    },
+    /** POETRY consists of the poetic works (Job-Song) */
+    POETRY {
+        @Override
+        public boolean contains(BibleBook book) {
+            int bookNum = book.ordinal();
+            return bookNum >= BibleBook.JOB.ordinal() && bookNum <= BibleBook.SONGOFSOLOMON.ordinal();
+        }
+
+        @Override
+        public int getSize() {
+            return 5;
+        }
+
+        @Override
+        public String getName() {
+            // TRANSLATOR: The poetic works of the Bible consisting of:
+            // Job, Psalms, Proverbs, Ecclesiastes, and Song of Solomon
+            return JSMsg.gettext("Poetry");
+        }
+
+        @Override
+        public String getRange() {
+            return "Job-Song";
+        }
+    },
+    /** PROPHECY consists of the Deu 28, major prophets, minor prophets, Revelation (Isa-Mal, Rev) */
+    PROPHECY {
+        @Override
+        public boolean contains(BibleBook book) {
+            int bookNum = book.ordinal();
+            return bookNum == BibleBook.REVELATION.ordinal() || bookNum >= BibleBook.ISAIAH.ordinal() && bookNum <= BibleBook.MALACHI.ordinal();
+        }
+
+        @Override
+        public int getSize() {
+            return 18;
+        }
+
+        @Override
+        public String getName() {
+            // TRANSLATOR: A division of the Bible containing prophecy:
+            // Deuteronomy 28
+            // Major Prophets: Isaiah, Jeremiah, Lamentations, Ezekiel, Daniel
+            // Minor Prophets: Hosea, Joel, Amos, Obadiah, Jonah, Micah, Nahum,
+            //                 Habakkuk, Zephaniah, Haggai, Zechariah, Malachi 
+            // Revelation
+            return JSMsg.gettext("All Prophecy");
+        }
+
+        @Override
+        public String getRange() {
+            return "Deu 28,Isa-Mal,Rev";
+        }
+    },
+    /** MAJOR_PROPHETS consists of the major prophets (Isa-Dan) */
+    MAJOR_PROPHETS {
+        @Override
+        public boolean contains(BibleBook book) {
+            int bookNum = book.ordinal();
+            return bookNum >= BibleBook.ISAIAH.ordinal() && bookNum <= BibleBook.DANIEL.ordinal();
+        }
+
+        @Override
+        public int getSize() {
+            return 5;
+        }
+
+        @Override
+        public String getName() {
+            // TRANSLATOR: A division of the Bible containing the major prophets (Isa-Dan)
+            // Isaiah, Jeremiah, Lamentations, Ezekiel, Daniel 
+            return JSMsg.gettext("Major Prophets");
+        }
+
+        @Override
+        public String getRange() {
+            return "Isa-Dan";
+        }
+    },
+    /** MINOR_PROPHETS consists of the minor prophets (Hos-Mal) */
+    MINOR_PROPHETS {
+        @Override
+        public boolean contains(BibleBook book) {
+            int bookNum = book.ordinal();
+            return bookNum >= BibleBook.HOSEA.ordinal() && bookNum <= BibleBook.MALACHI.ordinal();
+        }
+
+        @Override
+        public int getSize() {
+            return 12;
+        }
+
+        @Override
+        public String getName() {
+            // TRANSLATOR: A division of the Bible containing the minor prophets (Hos-Mal)
+            // Hosea, Joel, Amos, Obadiah, Jonah, Micah, Nahum, 
+            // Habakkuk, Zephaniah, Haggai, Zechariah, Malachi 
+            return JSMsg.gettext("Minor Prophets");
+        }
+
+        @Override
+        public String getRange() {
+            return "Hos-Mal";
+        }
+    },
+    /** NEW_TESTAMENT consists of the new testament (Mat - Rev) **/
+    NEW_TESTAMENT {
+        @Override
+        public boolean contains(BibleBook book) {
+            int bookNum = book.ordinal();
+            return bookNum >= BibleBook.GENESIS.ordinal() && bookNum <= BibleBook.REVELATION.ordinal();
+        }
+
+        @Override
+        public int getSize() {
+            return 27;
+        }
+
+        @Override
+        public String getName() {
+            // TRANSLATOR: The New Testament (Mat - Rev)
+            return JSMsg.gettext("New Testament");
+        }
+
+        @Override
+        public String getRange() {
+            return "Mat-Rev";
+        }
+    },
+    /** GOSPELS_AND_ACTS consists of the 4 Gospels and Acts (Mat-Acts) */
+    GOSPELS_AND_ACTS {
+        @Override
+        public boolean contains(BibleBook book) {
+            int bookNum = book.ordinal();
+            return bookNum >= BibleBook.MATTHEW.ordinal() && bookNum <= BibleBook.ACTS.ordinal();
+        }
+
+        @Override
+        public int getSize() {
+            return 5;
+        }
+
+        @Override
+        public String getName() {
+            // TRANSLATOR: A division of the Bible containing the 4 Gospels and Acts (Mat-Acts)
+            // Matthew, Mark, Luke, John, Acts
+            return JSMsg.gettext("Gospels and Acts");
+        }
+
+        @Override
+        public String getRange() {
+            return "Mat-Acts";
+        }
+    },
+    /** LETTERS consists of the letters/epistles (Rom-Jud) */
+    LETTERS {
+        @Override
+        public boolean contains(BibleBook book) {
+            int bookNum = book.ordinal();
+            return bookNum >= BibleBook.ROMANS.ordinal() && bookNum <= BibleBook.JUDE.ordinal();
+        }
+
+        @Override
+        public int getSize() {
+            return 21;
+        }
+
+        @Override
+        public String getName() {
+            // TRANSLATOR: A division of the Bible containing the letters/epistles (Rom-Jud)
+            // Pauline: Romans, 1&2 Corinthians, Galatians, Ephesians, Philippians, Colossians,
+            //          1&2 Thessalonians, 1&2 Timothy, Titus, Philemon, Hebrews
+            // General: James, 1-2 Peter, 1-3 John, Jude
+            return JSMsg.gettext("Letters");
+        }
+
+        @Override
+        public String getRange() {
+            return "Rom-Jud";
+        }
+    },
+    /** LETTERS consists of the Pauline letters/epistles (Rom-Heb) */
+    PAULINE_LETTERS {
+        @Override
+        public boolean contains(BibleBook book) {
+            int bookNum = book.ordinal();
+            return bookNum >= BibleBook.ROMANS.ordinal() && bookNum <= BibleBook.JUDE.ordinal();
+        }
+
+        @Override
+        public int getSize() {
+            return 14;
+        }
+
+        @Override
+        public String getName() {
+            // TRANSLATOR: A division of the Bible containing the Pauline letters/epistles (Rom-Heb)
+            // Romans, 1-2 Corinthians, Galatians, Ephesians, Philippians, Colossians,
+            // 1-2 Thessalonians, 1-2 Timothy, Titus, Philemon, Hebrews
+            return JSMsg.gettext("Letters to People");
+        }
+
+        @Override
+        public String getRange() {
+            return "Rom-Heb";
+        }
+    },
+    /** LETTERS consists of the general letters/epistles (Jas-Jud) */
+    GENERAL_LETTERS {
+        @Override
+        public boolean contains(BibleBook book) {
+            int bookNum = book.ordinal();
+            return bookNum >= BibleBook.ROMANS.ordinal() && bookNum <= BibleBook.JUDE.ordinal();
+        }
+
+        @Override
+        public int getSize() {
+            return 7;
+        }
+
+        @Override
+        public String getName() {
+            // TRANSLATOR: A division of the Bible containing the general letters/epistles (Jas-Jud)
+            // James, 1-2 Peter, 1-3 John, Jude
+            return JSMsg.gettext("Letters from People");
+        }
+
+        @Override
+        public String getRange() {
+            return "Jas-Jud";
+        }
+    },
+    /** REVELATION consists of the book of Revelation (Rev) */
+    REVELATION {
+        @Override
+        public boolean contains(BibleBook book) {
+            return book == BibleBook.REVELATION;
+        }
+
+        @Override
+        public int getSize() {
+            return 1;
+        }
+
+        @Override
+        public String getName() {
+            // TRANSLATOR: A division of the Bible containing the book of Revelation (Rev)
+            return JSMsg.gettext("Revelation");
+        }
+
+        @Override
+        public String getRange() {
+            return "Rev";
+        }
+    };
+
     /**
-     * Create a SectionNames object
+     * Determine whether the book is contained within the section.
+     * @param book
+     * @return true if the book is contained within the division
      */
-    public SectionNames() {
-        initialize();
+    public abstract boolean contains(BibleBook book);
+
+    /**
+     * Get the number of whole books in the section.
+     * @return the number of whole books in the section
+     */
+    public abstract int getSize();
+
+    /**
+     * Obtain a localized string description of the section.
+     * @return the localized name.
+     */
+    public abstract String getName();
+
+    /**
+     * Obtain a string representation of the scope of the section.
+     * @return the localized name.
+     */
+    public abstract String getRange();
+
+    @Override
+    public String toString() {
+        return getName();
     }
 
     /**
-     * Is this book part of the Pentateuch?
+     * Determine the section to which this book belongs.
      * 
-     * @param book
-     *            The book to test
-     * @return True if this book is a part of this section
+     * @param book The book to test
+     * @return the section
      */
-    public static boolean isPentateuch(int book) {
-        return book >= BibleNames.GENESIS && book <= BibleNames.DEUTERONOMY;
-    }
-
-    /**
-     * Is this book part of the OT History?
-     * 
-     * @param book
-     *            The book to test
-     * @return True if this book is a part of this section
-     */
-    public static boolean isHistory(int book) {
-        return book >= BibleNames.JOSHUA && book <= BibleNames.ESTHER;
-    }
-
-    /**
-     * Is this book part of the OT History?
-     * 
-     * @param book
-     *            The book to test
-     * @return True if this book is a part of this section
-     */
-    public static boolean isPoetry(int book) {
-        return book >= BibleNames.JOB && book <= BibleNames.SONGOFSOLOMON;
-    }
-
-    /**
-     * Is this book part of the major prophets?
-     * 
-     * @param book
-     *            The book to test
-     * @return True if this book is a part of this section
-     */
-    public static boolean isMajorProphet(int book) {
-        return book >= BibleNames.ISAIAH && book <= BibleNames.DANIEL;
-    }
-
-    /**
-     * Is this book part of the minor prophets?
-     * 
-     * @param book
-     *            The book to test
-     * @return True if this book is a part of this section
-     */
-    public static boolean isMinorProphet(int book) {
-        return book >= BibleNames.HOSEA && book <= BibleNames.MALACHI;
-    }
-
-    /**
-     * Is this book part of the Gospels?
-     * 
-     * @param book
-     *            The book to test
-     * @return True if this book is a part of this section
-     */
-    public static boolean isGospel(int book) {
-        return book >= BibleNames.MATTHEW && book <= BibleNames.JOHN;
-    }
-
-    /**
-     * Is this book part of the Gospels or Acts?
-     * 
-     * @param book
-     *            The book to test
-     * @return True if this book is a part of this section
-     */
-    public static boolean isGospelOrActs(int book) {
-        return book >= BibleNames.MATTHEW && book <= BibleNames.ACTS;
-    }
-
-    /**
-     * Is this book part of the letters?
-     * 
-     * @param book
-     *            The book to test
-     * @return True if this book is a part of this section
-     */
-    public static boolean isLetter(int book) {
-        return book >= BibleNames.ROMANS && book <= BibleNames.JUDE;
-    }
-
-    /**
-     * What section is this book a part of?
-     * 
-     * @param book
-     *            The book to test
-     * @return True The section
-     */
-    public static int getSection(int book) {
+    public static SectionNames getSection(BibleBook book) {
         // Ordered by section size for speed
-        if (isLetter(book)) {
+        if (LETTERS.contains(book)) {
             return LETTERS;
         }
 
-        if (isHistory(book)) {
+        if (HISTORY.contains(book)) {
             return HISTORY;
         }
 
-        if (isMinorProphet(book)) {
+        if (MINOR_PROPHETS.contains(book)) {
             return MINOR_PROPHETS;
         }
 
-        if (isGospelOrActs(book)) {
+        if (GOSPELS_AND_ACTS.contains(book)) {
             return GOSPELS_AND_ACTS;
         }
 
-        if (isPentateuch(book)) {
+        if (PENTATEUCH.contains(book)) {
             return PENTATEUCH;
         }
 
-        if (isPoetry(book)) {
+        if (POETRY.contains(book)) {
             return POETRY;
         }
 
-        if (isMajorProphet(book)) {
+        if (MAJOR_PROPHETS.contains(book)) {
             return MAJOR_PROPHETS;
         }
 
+        // AV11N(DMS): might not be true
         return REVELATION;
-    }
-
-    /**
-     * Get the full name of a book (e.g. "Genesis"). Altered by the case setting
-     * (see setBookCase())
-     * 
-     * @param section
-     *            The book number (1-66)
-     * @return The full name of the book
-     * @exception NoSuchVerseException
-     *                If the book number is not valid
-     */
-    public String getSectionName(int section) throws NoSuchVerseException {
-        if (section == 0) {
-            throw new NoSuchVerseException(JSOtherMsg.lookupText("Section must be between 1 and 8 (given {0,number,integer}).", Integer.valueOf(section)));
-        }
-
-        try {
-            CaseType bookCase = BibleInfo.getDefaultCase();
-
-            if (bookCase.equals(CaseType.LOWER)) {
-                return sections[section - 1].toLowerCase(Locale.getDefault());
-            }
-
-            if (bookCase.equals(CaseType.UPPER)) {
-                return sections[section - 1].toUpperCase(Locale.getDefault());
-            }
-
-            return sections[section - 1];
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            // This is faster than doing the check explicitly, unless
-            // The exception is actually thrown, then it is a lot slower
-            // I'd like to think that the norm is to get it right
-            throw new NoSuchVerseException(JSOtherMsg.lookupText("Section must be between 1 and 8 (given {0,number,integer}).", Integer.valueOf(section)));
-        }
-    }
-
-    /**
-     * Load up the resources for Bible book and section names, and cache the
-     * upper and lower versions of them.
-     */
-    private void initialize() {
-        sections = new String[SECTIONS_IN_BIBLE];
-
-        // TRANSLATOR: Pentateuch is the first 5 books of the Bible.
-        sections[0] = JSMsg.gettext("Pentateuch");
-        // TRANSLATOR: History are the books of the Old Testament that give the history of Israel
-        sections[1] = JSMsg.gettext("History");
-        // TRANSLATOR: The Bible poetry books
-        sections[2] = JSMsg.gettext("Poetry");
-        // TRANSLATOR: The Bible's major prophets
-        sections[3] = JSMsg.gettext("Major Prophets");
-        // TRANSLATOR: The Bible's minor prophets
-        sections[4] = JSMsg.gettext("Minor Prophets");
-        // TRANSLATOR: The 4 Gospels and Acts in the New Testament
-        sections[5] = JSMsg.gettext("Gospels and Acts");
-        // TRANSLATOR: The letters of the New Testament
-        sections[6] = JSMsg.gettext("Letters");
-        // TRANSLATOR: The book of Revelation
-        sections[7] = JSMsg.gettext("Revelation");
     }
 
     /**
@@ -239,7 +462,6 @@ public final class SectionNames {
      * without fixing that, however I don't imagine that this section could ever
      * change without breaking GroupVerseColor anyway so I don't see it as a big
      * problem.
-     */
     public static final byte PENTATEUCH = 1;
     public static final byte HISTORY = 2;
     public static final byte POETRY = 3;
@@ -248,10 +470,9 @@ public final class SectionNames {
     public static final byte GOSPELS_AND_ACTS = 6;
     public static final byte LETTERS = 7;
     public static final byte REVELATION = 8;
+     */
 
-    /** Standard names for the sections */
-    private String[] sections;
-
-    /** Constant for the number of sections in the Bible */
+    /** Constant for the number of sections in the Bible
     private static final int SECTIONS_IN_BIBLE = 8;
+     */
 }

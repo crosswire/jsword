@@ -114,7 +114,7 @@ public final class SentenceUtil {
      *            Words with punctuation
      * @return Words without punctuation
      */
-    public static String[] stripPunctuation(String[] words) {
+    public static String[] stripPunctuation(String... words) {
         String[] retcode = new String[words.length];
 
         // Remove the punctuation from the ends of the words.
@@ -133,7 +133,7 @@ public final class SentenceUtil {
      *            Words with punctuation
      * @return Punctuation without words
      */
-    public static String[] stripWords(String[] words) {
+    public static String[] stripWords(String... words) {
         if (words.length == 0) {
             return new String[0];
         }
@@ -174,9 +174,9 @@ public final class SentenceUtil {
      */
     public static String[] getWords(String aSentence) {
         String sentence = aSentence;
-        // First there are some things we regard as word delimitters even if
+        // First there are some things we regard as word delimiters even if
         // they are not near space. Note that "-" should not be in this list
-        // because words like abel-beth-maiacha comtain them.
+        // because words like abel-beth-maiacha contain them.
         sentence = sentence.replaceAll("--", " ");
         sentence = sentence.replace('.', ' ');
         sentence = sentence.replace('!', ' ');

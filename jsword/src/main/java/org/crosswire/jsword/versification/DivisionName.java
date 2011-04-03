@@ -32,12 +32,17 @@ import org.crosswire.jsword.JSMsg;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public enum DivisionName {
-
     /** BIBLE consists of the entire/whole Bible (Gen - Rev) **/
     BIBLE {
         @Override
-        public boolean contains(int book) {
-            return book >= BibleNames.GENESIS && book <= BibleNames.REVELATION;
+        public boolean contains(BibleBook book) {
+            int bookNum = book.ordinal();
+            return bookNum >= BibleBook.GENESIS.ordinal() && bookNum <= BibleBook.REVELATION.ordinal();
+        }
+
+        @Override
+        public int getSize() {
+            return 66; //BibleNames.REVELATION - BibleNames.GENESIS + 1;
         }
 
         @Override
@@ -50,12 +55,19 @@ public enum DivisionName {
         public String getRange() {
             return "Gen-Rev";
         }
+
     },
     /** OLD_TESTAMENT consists of the old testament (Gen - Rev) **/
     OLD_TESTAMENT {
         @Override
-        public boolean contains(int book) {
-            return book >= BibleNames.GENESIS && book <= BibleNames.MALACHI;
+        public boolean contains(BibleBook book) {
+            int bookNum = book.ordinal();
+            return bookNum >= BibleBook.GENESIS.ordinal() && bookNum <= BibleBook.MALACHI.ordinal();
+        }
+
+        @Override
+        public int getSize() {
+            return 66; //BibleNames.REVELATION - BibleNames.GENESIS + 1;
         }
 
         @Override
@@ -72,8 +84,14 @@ public enum DivisionName {
     /** PENTATEUCH consists of the 5 books of Moses (Gen - Deu) **/
     PENTATEUCH {
         @Override
-        public boolean contains(int book) {
-            return book >= BibleNames.GENESIS && book <= BibleNames.DEUTERONOMY;
+        public boolean contains(BibleBook book) {
+            int bookNum = book.ordinal();
+            return bookNum >= BibleBook.GENESIS.ordinal() && bookNum <= BibleBook.DEUTERONOMY.ordinal();
+        }
+
+        @Override
+        public int getSize() {
+            return 66; //BibleNames.REVELATION - BibleNames.GENESIS + 1;
         }
 
         @Override
@@ -90,8 +108,14 @@ public enum DivisionName {
     /** HISTORY consists of the history in the Old Testament of Israel */
     HISTORY {
         @Override
-        public boolean contains(int book) {
-            return book >= BibleNames.JOSHUA && book <= BibleNames.ESTHER;
+        public boolean contains(BibleBook book) {
+            int bookNum = book.ordinal();
+            return bookNum >= BibleBook.JOSHUA.ordinal() && bookNum <= BibleBook.ESTHER.ordinal();
+        }
+
+        @Override
+        public int getSize() {
+            return 66; //BibleNames.REVELATION - BibleNames.GENESIS + 1;
         }
 
         @Override
@@ -108,8 +132,14 @@ public enum DivisionName {
     /** POETRY consists of the poetic works (Job-Song) */
     POETRY {
         @Override
-        public boolean contains(int book) {
-            return book >= BibleNames.JOB && book <= BibleNames.SONGOFSOLOMON;
+        public boolean contains(BibleBook book) {
+            int bookNum = book.ordinal();
+            return bookNum >= BibleBook.JOB.ordinal() && bookNum <= BibleBook.SONGOFSOLOMON.ordinal();
+        }
+
+        @Override
+        public int getSize() {
+            return 66; //BibleNames.REVELATION - BibleNames.GENESIS + 1;
         }
 
         @Override
@@ -127,8 +157,14 @@ public enum DivisionName {
     /** PROPHECY consists of the Deu 28, major prophets, minor prophets, Revelation (Isa-Mal, Rev) */
     PROPHECY {
         @Override
-        public boolean contains(int book) {
-            return book == BibleNames.REVELATION || book >= BibleNames.ISAIAH && book <= BibleNames.MALACHI;
+        public boolean contains(BibleBook book) {
+            int bookNum = book.ordinal();
+            return bookNum == BibleBook.REVELATION.ordinal() || bookNum >= BibleBook.ISAIAH.ordinal() && bookNum <= BibleBook.MALACHI.ordinal();
+        }
+
+        @Override
+        public int getSize() {
+            return 66; //BibleNames.REVELATION - BibleNames.GENESIS + 1;
         }
 
         @Override
@@ -150,8 +186,14 @@ public enum DivisionName {
     /** MAJOR_PROPHETS consists of the major prophets (Isa-Dan) */
     MAJOR_PROPHETS {
         @Override
-        public boolean contains(int book) {
-            return book >= BibleNames.ISAIAH && book <= BibleNames.DANIEL;
+        public boolean contains(BibleBook book) {
+            int bookNum = book.ordinal();
+            return bookNum >= BibleBook.ISAIAH.ordinal() && bookNum <= BibleBook.DANIEL.ordinal();
+        }
+
+        @Override
+        public int getSize() {
+            return 66; //BibleNames.REVELATION - BibleNames.GENESIS + 1;
         }
 
         @Override
@@ -169,8 +211,14 @@ public enum DivisionName {
     /** MINOR_PROPHETS consists of the minor prophets (Hos-Mal) */
     MINOR_PROPHETS {
         @Override
-        public boolean contains(int book) {
-            return book >= BibleNames.HOSEA && book <= BibleNames.MALACHI;
+        public boolean contains(BibleBook book) {
+            int bookNum = book.ordinal();
+            return bookNum >= BibleBook.HOSEA.ordinal() && bookNum <= BibleBook.MALACHI.ordinal();
+        }
+
+        @Override
+        public int getSize() {
+            return 66; //BibleNames.REVELATION - BibleNames.GENESIS + 1;
         }
 
         @Override
@@ -189,8 +237,14 @@ public enum DivisionName {
     /** NEW_TESTAMENT consists of the new testament (Mat - Rev) **/
     NEW_TESTAMENT {
         @Override
-        public boolean contains(int book) {
-            return book >= BibleNames.GENESIS && book <= BibleNames.REVELATION;
+        public boolean contains(BibleBook book) {
+            int bookNum = book.ordinal();
+            return bookNum >= BibleBook.GENESIS.ordinal() && bookNum <= BibleBook.REVELATION.ordinal();
+        }
+
+        @Override
+        public int getSize() {
+            return 66; //BibleNames.REVELATION - BibleNames.GENESIS + 1;
         }
 
         @Override
@@ -207,8 +261,14 @@ public enum DivisionName {
     /** GOSPELS_AND_ACTS consists of the 4 Gospels and Acts (Mat-Acts) */
     GOSPELS_AND_ACTS {
         @Override
-        public boolean contains(int book) {
-            return book >= BibleNames.MATTHEW && book <= BibleNames.ACTS;
+        public boolean contains(BibleBook book) {
+            int bookNum = book.ordinal();
+            return bookNum >= BibleBook.MATTHEW.ordinal() && bookNum <= BibleBook.ACTS.ordinal();
+        }
+
+        @Override
+        public int getSize() {
+            return 66; //BibleNames.REVELATION - BibleNames.GENESIS + 1;
         }
 
         @Override
@@ -226,8 +286,14 @@ public enum DivisionName {
     /** LETTERS consists of the letters/epistles (Rom-Jud) */
     LETTERS {
         @Override
-        public boolean contains(int book) {
-            return book >= BibleNames.ROMANS && book <= BibleNames.JUDE;
+        public boolean contains(BibleBook book) {
+            int bookNum = book.ordinal();
+            return bookNum >= BibleBook.ROMANS.ordinal() && bookNum <= BibleBook.JUDE.ordinal();
+        }
+
+        @Override
+        public int getSize() {
+            return 66; //BibleNames.REVELATION - BibleNames.GENESIS + 1;
         }
 
         @Override
@@ -247,8 +313,14 @@ public enum DivisionName {
     /** LETTERS consists of the Pauline letters/epistles (Rom-Heb) */
     PAULINE_LETTERS {
         @Override
-        public boolean contains(int book) {
-            return book >= BibleNames.ROMANS && book <= BibleNames.JUDE;
+        public boolean contains(BibleBook book) {
+            int bookNum = book.ordinal();
+            return bookNum >= BibleBook.ROMANS.ordinal() && bookNum <= BibleBook.JUDE.ordinal();
+        }
+
+        @Override
+        public int getSize() {
+            return 66; //BibleNames.REVELATION - BibleNames.GENESIS + 1;
         }
 
         @Override
@@ -267,8 +339,14 @@ public enum DivisionName {
     /** LETTERS consists of the general letters/epistles (Jas-Jud) */
     GENERAL_LETTERS {
         @Override
-        public boolean contains(int book) {
-            return book >= BibleNames.ROMANS && book <= BibleNames.JUDE;
+        public boolean contains(BibleBook book) {
+            int bookNum = book.ordinal();
+            return bookNum >= BibleBook.ROMANS.ordinal() && bookNum <= BibleBook.JUDE.ordinal();
+        }
+
+        @Override
+        public int getSize() {
+            return 66; //BibleNames.REVELATION - BibleNames.GENESIS + 1;
         }
 
         @Override
@@ -286,8 +364,13 @@ public enum DivisionName {
     /** REVELATION consists of the book of Revelation (Rev) */
     REVELATION {
         @Override
-        public boolean contains(int book) {
-            return book == BibleNames.REVELATION;
+        public boolean contains(BibleBook book) {
+            return book == BibleBook.REVELATION;
+        }
+
+        @Override
+        public int getSize() {
+            return 66; //BibleNames.REVELATION - BibleNames.GENESIS + 1;
         }
 
         @Override
@@ -304,11 +387,16 @@ public enum DivisionName {
 
     /**
      * Determine whether the book is contained within the section.
-     * This method is present for the sake of org.crosswire.biblemapper.sw*ng.GroupVerseColor.
      * @param book
      * @return true if the book is contained within the division
      */
-    public abstract boolean contains(int book);
+    public abstract boolean contains(BibleBook book);
+
+    /**
+     * Get the number of whole books in the section.
+     * @return the number of whole books in the section
+     */
+    public abstract int getSize();
 
     /**
      * Obtain a localized string description of the section.
@@ -327,4 +415,64 @@ public enum DivisionName {
         return getName();
     }
 
+    /**
+     * Determine the section to which this book belongs.
+     * 
+     * @param book The book to test
+     * @return the section
+     */
+    public static DivisionName getSection(BibleBook book) {
+        // Ordered by section size for speed
+        if (LETTERS.contains(book)) {
+            return LETTERS;
+        }
+
+        if (HISTORY.contains(book)) {
+            return HISTORY;
+        }
+
+        if (MINOR_PROPHETS.contains(book)) {
+            return MINOR_PROPHETS;
+        }
+
+        if (GOSPELS_AND_ACTS.contains(book)) {
+            return GOSPELS_AND_ACTS;
+        }
+
+        if (PENTATEUCH.contains(book)) {
+            return PENTATEUCH;
+        }
+
+        if (POETRY.contains(book)) {
+            return POETRY;
+        }
+
+        if (MAJOR_PROPHETS.contains(book)) {
+            return MAJOR_PROPHETS;
+        }
+
+        // AV11N(DMS): might not be true
+        return REVELATION;
+    }
+
+    /**
+     * Handy section finder. There is a bit of moderately bad programming here
+     * because org.crosswire.biblemapper.sw*ng.GroupVerseColor uses these
+     * numbers as an index into an array, so we shouldn't change these numbers
+     * without fixing that, however I don't imagine that this section could ever
+     * change without breaking GroupVerseColor anyway so I don't see it as a big
+     * problem.
+    public static final byte PENTATEUCH = 1;
+    public static final byte HISTORY = 2;
+    public static final byte POETRY = 3;
+    public static final byte MAJOR_PROPHETS = 4;
+    public static final byte MINOR_PROPHETS = 5;
+    public static final byte GOSPELS_AND_ACTS = 6;
+    public static final byte LETTERS = 7;
+    public static final byte REVELATION = 8;
+     */
+
+    /** Constant for the number of sections in the Bible
+    private static final int SECTIONS_IN_BIBLE = 8;
+     */
 }

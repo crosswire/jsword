@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Iterator;
 
+import org.crosswire.jsword.versification.BibleBook;
+
 /**
  * A RocketPassage is a bit and heavy implementation of Passage that goes fairly
  * quickly once let of the leash. It manages its speed by creating contained
@@ -222,7 +224,7 @@ public class RocketPassage extends BitwisePassage {
      * @see org.crosswire.jsword.passage.Passage#chaptersInPassage(int)
      */
     @Override
-    public int chaptersInPassage(int book) throws NoSuchVerseException {
+    public int chaptersInPassage(BibleBook book) throws NoSuchVerseException {
         if (distinct != null) {
             return distinct.chaptersInPassage(book);
         }
@@ -236,7 +238,7 @@ public class RocketPassage extends BitwisePassage {
      * @see org.crosswire.jsword.passage.Passage#versesInPassage(int, int)
      */
     @Override
-    public int versesInPassage(int book, int chapter) throws NoSuchVerseException {
+    public int versesInPassage(BibleBook book, int chapter) throws NoSuchVerseException {
         if (distinct != null) {
             return distinct.versesInPassage(book, chapter);
         }

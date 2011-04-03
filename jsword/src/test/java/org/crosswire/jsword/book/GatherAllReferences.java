@@ -137,14 +137,11 @@ public class GatherAllReferences {
             }
 
             Matcher matcher = null;
-            if (orig.indexOf("passage=\"") != -1)
-            {
+            if (orig.indexOf("passage=\"") != -1) {
                 matcher = thmlPassagePattern.matcher(orig);
-            } else if (orig.indexOf("osisRef=\"") != -1)
-            {
+            } else if (orig.indexOf("osisRef=\"") != -1) {
                 matcher = osisPassagePattern.matcher(orig);
-            } else if (orig.indexOf("<RX>") != -1)
-            {
+            } else if (orig.indexOf("<RX>") != -1) {
                 matcher = gbfPassagePattern.matcher(orig);
             }
 
