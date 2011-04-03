@@ -166,3 +166,9 @@ android
 headerless
 versioned
 app
+ethiopian
+peshitta
+codex
+sinaiticus
+vulgate
+rahlfs
