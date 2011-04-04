@@ -55,7 +55,7 @@ public class Languages {
             if (DEFAULT_LANG_CODE.equals(code) || UNKNOWN_LANG_CODE.equals(code)) {
                 return true;
             }
-            languages.getString(code);
+            commonLangs.getString(code);
             return true;
         } catch (MissingResourceException e) {
             return false;
@@ -76,9 +76,13 @@ public class Languages {
     public static String getLanguageName(String iso639Code) {
         String code = getLanguageCode(iso639Code);
         try {
-            return languages.getString(code);
+            return commonLangs.getString(code);
         } catch (MissingResourceException e) {
-            return code;
+            try {
+                return allLangs.getString(code);
+            } catch (MissingResourceException e1) {
+                return code;
+            }
         }
     }
 
@@ -119,10 +123,16 @@ public class Languages {
     public static final String DEFAULT_LANG_CODE = "en";
     private static final String UNKNOWN_LANG_CODE = "und";
 
-    private static/* final */ResourceBundle languages;
+    private static/* final */ResourceBundle commonLangs;
+    private static/* final */ResourceBundle allLangs;
     static {
         try {
-            languages = ResourceBundle.getBundle("iso639", Locale.getDefault(), CWClassLoader.instance());
+            commonLangs = ResourceBundle.getBundle("iso639", Locale.getDefault(), CWClassLoader.instance());
+        } catch (MissingResourceException e) {
+            assert false;
+        }
+        try {
+            commonLangs = ResourceBundle.getBundle("iso639full", Locale.getDefault(), CWClassLoader.instance());
         } catch (MissingResourceException e) {
             assert false;
         }
