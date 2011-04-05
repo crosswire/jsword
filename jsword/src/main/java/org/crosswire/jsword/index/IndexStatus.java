@@ -21,7 +21,6 @@
  */
 package org.crosswire.jsword.index;
 
-import java.io.Serializable;
 
 /**
  * An Enumeration of the possible states of an index.
@@ -31,38 +30,31 @@ import java.io.Serializable;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class IndexStatus implements Serializable {
+public enum IndexStatus {
     /**
      * There is a complete and ready to use search index
      */
-    public static final IndexStatus DONE = new IndexStatus("Indexed");
+    DONE("Indexed"),
 
     /**
      * There is no search index, and no plans to create one
      */
-    public static final IndexStatus UNDONE = new IndexStatus("No Index");
+    UNDONE("No Index"),
 
     /**
      * This Book has been scheduled for index creation
      */
-    public static final IndexStatus SCHEDULED = new IndexStatus("Scheduled");
+    SCHEDULED("Scheduled"),
 
     /**
      * An index is currently being generated for this Book
      */
-    public static final IndexStatus CREATING = new IndexStatus("Creating");
+    CREATING("Creating"),
 
     /**
      * An index is no longer valid and needs to be discarded.
      */
-    public static final IndexStatus INVALID = new IndexStatus("Invalid");
-
-    /**
-     * All the known values
-     */
-    private static final IndexStatus[] VALUES = {
-            DONE, UNDONE, SCHEDULED, CREATING, INVALID
-    };
+    INVALID("Invalid");
 
     /**
      * @param name
@@ -76,8 +68,7 @@ public final class IndexStatus implements Serializable {
      * Lookup method to convert from a String
      */
     public static IndexStatus fromString(String name) {
-        for (int i = 0; i < VALUES.length; i++) {
-            IndexStatus o = VALUES[i];
+        for (IndexStatus o: IndexStatus.values()) {
             if (o.name.equalsIgnoreCase(name)) {
                 return o;
             }
@@ -87,38 +78,14 @@ public final class IndexStatus implements Serializable {
         return null;
     }
 
-    /**
-     * Lookup method to convert from an integer
-     */
-    public static IndexStatus fromInteger(int i) {
-        return VALUES[i];
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         return name;
     }
 
     /**
-     * The name of the BookCategory
+     * The name of the IndexStatus
      */
     private String name;
 
-    // Support for serialization
-    private static int nextObj;
-    private final int obj = nextObj++;
-
-    Object readResolve() {
-        return VALUES[obj];
-    }
-
-    /**
-     * Serialization ID
-     */
-    private static final long serialVersionUID = 3256718472791537204L;
 }

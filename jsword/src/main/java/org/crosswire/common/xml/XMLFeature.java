@@ -21,7 +21,6 @@
  */
 package org.crosswire.common.xml;
 
-import java.io.Serializable;
 
 /**
  * Wraps an XML Feature. The "known" set of XML Features is found in
@@ -31,39 +30,39 @@ import java.io.Serializable;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class XMLFeature implements Serializable, Comparable<XMLFeature> {
+public enum XMLFeature {
     /** Namespaces feature id */
-    public static final XMLFeature NAMESPACES = new XMLFeature("http://xml.org/sax/features/namespaces");
+    NAMESPACES("http://xml.org/sax/features/namespaces"),
 
     /** Namespace prefixes feature id */
-    public static final XMLFeature NAMESPACE_PREFIX = new XMLFeature("http://xml.org/sax/features/namespace-prefixes");
+    NAMESPACE_PREFIX("http://xml.org/sax/features/namespace-prefixes"),
 
     /** Validation feature id */
-    public static final XMLFeature VALIDATION = new XMLFeature("http://xml.org/sax/features/validation");
+    VALIDATION("http://xml.org/sax/features/validation"),
 
     /** Schema validation feature id */
-    public static final XMLFeature SCHEMA_VALIDATION = new XMLFeature("http://apache.org/xml/features/validation/schema");
+    SCHEMA_VALIDATION("http://apache.org/xml/features/validation/schema"),
 
     /** Schema full checking feature id */
-    public static final XMLFeature SCHEMA_FULL_CHECKING = new XMLFeature("http://apache.org/xml/features/validation/schema-full-checking");
+    SCHEMA_FULL_CHECKING("http://apache.org/xml/features/validation/schema-full-checking"),
 
     /** Validate schema annotations feature id */
-    public static final XMLFeature VALIDATE_ANNOTATIONS = new XMLFeature("http://apache.org/xml/features/validate-annotations");
+    VALIDATE_ANNOTATIONS("http://apache.org/xml/features/validate-annotations"),
 
     /** Dynamic validation feature id */
-    public static final XMLFeature DYNAMIC_VALIDATION = new XMLFeature("http://apache.org/xml/features/validation/dynamic");
+    DYNAMIC_VALIDATION("http://apache.org/xml/features/validation/dynamic"),
 
     /** Load external DTD feature id */
-    public static final XMLFeature LOAD_EXTERNAL_DTD = new XMLFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd");
+    LOAD_EXTERNAL_DTD("http://apache.org/xml/features/nonvalidating/load-external-dtd"),
 
     /** XInclude feature id */
-    public static final XMLFeature XINCLUDE = new XMLFeature("http://apache.org/xml/features/xinclude");
+    XINCLUDE("http://apache.org/xml/features/xinclude"),
 
     /** XInclude fixup base URIs feature id */
-    public static final XMLFeature XINCLUDE_FIXUP_BASE_URIS = new XMLFeature("http://apache.org/xml/features/xinclude/fixup-base-uris", true);
+    XINCLUDE_FIXUP_BASE_URIS("http://apache.org/xml/features/xinclude/fixup-base-uris", true),
 
     /** XInclude fixup language feature id */
-    public static final XMLFeature XINCLUDE_FIXUP_LANGUAGE = new XMLFeature("http://apache.org/xml/features/xinclude/fixup-language", true);
+    XINCLUDE_FIXUP_LANGUAGE("http://apache.org/xml/features/xinclude/fixup-language", true);
 
     /**
      * Construct a feature for xml, setting the initial state
@@ -105,8 +104,7 @@ public class XMLFeature implements Serializable, Comparable<XMLFeature> {
      * Lookup method to convert from a String
      */
     public static XMLFeature fromString(String name) {
-        for (int i = 0; i < VALUES.length; i++) {
-            XMLFeature o = VALUES[i];
+        for (XMLFeature o : XMLFeature.values()) {
             if (o.control.equalsIgnoreCase(name)) {
                 return o;
             }
@@ -116,73 +114,12 @@ public class XMLFeature implements Serializable, Comparable<XMLFeature> {
         return null;
     }
 
-    /**
-     * Lookup method to convert from an integer
-     */
-    public static XMLFeature fromInteger(int i) {
-        return VALUES[i];
-    }
-
-    /**
-     * Prevent subclasses from overriding canonical identity based Object
-     * methods
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-    public final boolean equals(Object o) {
-        return super.equals(o);
-    }
-
-    /**
-     * Prevent subclasses from overriding canonical identity based Object
-     * methods
-     * 
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public final int hashCode() {
-        return super.hashCode();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         return (state ? "on  " : "off ") + control;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
-     */
-    public int compareTo(XMLFeature feature) {
-        return this.control.compareTo(feature.control);
-    }
-
     private String control;
     private boolean state;
-
-    // Support for serialization
-    private static int nextObj;
-    private final int obj = nextObj++;
-
-    Object readResolve() {
-        return VALUES[obj];
-    }
-
-    private static final XMLFeature[] VALUES = {
-            NAMESPACES, NAMESPACE_PREFIX, VALIDATION, SCHEMA_VALIDATION, SCHEMA_FULL_CHECKING, VALIDATE_ANNOTATIONS, DYNAMIC_VALIDATION, LOAD_EXTERNAL_DTD,
-            XINCLUDE, XINCLUDE_FIXUP_BASE_URIS, XINCLUDE_FIXUP_LANGUAGE
-    };
-
-    /**
-     * Serialization UID
-     */
-    private static final long serialVersionUID = -1972881391399216524L;
 
 }

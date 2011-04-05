@@ -21,8 +21,6 @@
  */
 package org.crosswire.jsword.book;
 
-import java.io.Serializable;
-
 import org.crosswire.jsword.JSMsg;
 
 /**
@@ -33,50 +31,50 @@ import org.crosswire.jsword.JSMsg;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class BookCategory implements Serializable, Comparable<BookCategory> {
+public enum BookCategory {
     /** Books that are Bibles */
     // TRANSLATOR: The name for the book category consisting of Bibles.
-    public static final BookCategory BIBLE = new BookCategory("Biblical Texts", JSMsg.gettext("Biblical Texts"));
+    BIBLE("Biblical Texts", JSMsg.gettext("Biblical Texts")),
 
     /** Books that are Dictionaries */
     // TRANSLATOR: The name for the book category consisting of Lexicons and Dictionaries.
-    public static final BookCategory DICTIONARY = new BookCategory("Lexicons / Dictionaries", JSMsg.gettext("Dictionaries"));
+    DICTIONARY("Lexicons / Dictionaries", JSMsg.gettext("Dictionaries")),
 
     /** Books that are Commentaries */
     // TRANSLATOR: The name for the book category consisting of Commentaries.
-    public static final BookCategory COMMENTARY = new BookCategory("Commentaries", JSMsg.gettext("Commentaries"));
+    COMMENTARY("Commentaries", JSMsg.gettext("Commentaries")),
 
     /** Books that are indexed by day. AKA, Daily Devotions */
     // TRANSLATOR: The name for the book category consisting of Daily Devotions, indexed by day of the year.
-    public static final BookCategory DAILY_DEVOTIONS = new BookCategory("Daily Devotional", JSMsg.gettext("Daily Devotionals"));
+    DAILY_DEVOTIONS("Daily Devotional", JSMsg.gettext("Daily Devotionals")),
 
     /** Books that map words from one language to another. */
     // TRANSLATOR: The name for the book category consisting of Glossaries that map words/phrases from one language into another.
-    public static final BookCategory GLOSSARY = new BookCategory("Glossaries", JSMsg.gettext("Glossaries"));
+    GLOSSARY("Glossaries", JSMsg.gettext("Glossaries")),
 
     /** Books that are questionable. */
     // TRANSLATOR: The name for the book category consisting of books that are considered unorthodox by mainstream Christianity.
-    public static final BookCategory QUESTIONABLE = new BookCategory("Cults / Unorthodox / Questionable Material", JSMsg.gettext("Cults / Unorthodox / Questionable Materials"));
+    QUESTIONABLE("Cults / Unorthodox / Questionable Material", JSMsg.gettext("Cults / Unorthodox / Questionable Materials")),
 
     /** Books that are just essays. */
     // TRANSLATOR: The name for the book category consisting of just essays.
-    public static final BookCategory ESSAYS = new BookCategory("Essays", JSMsg.gettext("Essays"));
+    ESSAYS("Essays", JSMsg.gettext("Essays")),
 
     /** Books that are predominately images. */
     // TRANSLATOR: The name for the book category consisting of books containing mostly images.
-    public static final BookCategory IMAGES = new BookCategory("Images", JSMsg.gettext("Images"));
+    IMAGES("Images", JSMsg.gettext("Images")),
 
     /** Books that are a collection of maps. */
     // TRANSLATOR: The name for the book category consisting of books containing mostly maps.
-    public static final BookCategory MAPS = new BookCategory("Maps", JSMsg.gettext("Maps"));
+    MAPS("Maps", JSMsg.gettext("Maps")),
 
     /** Books that are just books. */
     // TRANSLATOR: The name for the book category consisting of general books.
-    public static final BookCategory GENERAL_BOOK = new BookCategory("Generic Books", JSMsg.gettext("General Books"));
+    GENERAL_BOOK("Generic Books", JSMsg.gettext("General Books")),
 
     /** Books that are not any of the above. This is a catch all for new book categories. */
     // TRANSLATOR: The name for the book category consisting of books not in any of the other categories.
-    public static final BookCategory OTHER = new BookCategory("Other", JSMsg.gettext("Other"));
+    OTHER("Other", JSMsg.gettext("Other"));
 
     /**
      * @param name
@@ -91,8 +89,7 @@ public final class BookCategory implements Serializable, Comparable<BookCategory
      * Lookup method to convert from a String
      */
     public static BookCategory fromString(String name) {
-        for (int i = 0; i < VALUES.length; i++) {
-            BookCategory o = VALUES[i];
+        for (BookCategory o : BookCategory.values()) {
             if (o.name.equalsIgnoreCase(name)) {
                 return o;
             }
@@ -104,8 +101,7 @@ public final class BookCategory implements Serializable, Comparable<BookCategory
      * Lookup method to convert from a String
      */
     public static BookCategory fromExternalString(String name) {
-        for (int i = 0; i < VALUES.length; i++) {
-            BookCategory o = VALUES[i];
+        for (BookCategory o : BookCategory.values()) {
             if (o.externalName.equalsIgnoreCase(name)) {
                 return o;
             }
@@ -117,36 +113,12 @@ public final class BookCategory implements Serializable, Comparable<BookCategory
      * Lookup method to convert from an integer
      */
     public static BookCategory fromInteger(int i) {
-        return VALUES[i];
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
-     */
-    public int compareTo(BookCategory that) {
-        return this.name.compareTo(that.name);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-    public boolean equals(Object o) {
-        return super.equals(o);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode() {
-        return super.hashCode();
+        for (BookCategory o : BookCategory.values()) {
+            if (i == o.ordinal()) {
+                return o;
+            }
+        }
+        return OTHER;
     }
 
     /**
@@ -156,10 +128,8 @@ public final class BookCategory implements Serializable, Comparable<BookCategory
         return name;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
+    /**
+     * @return the internationalized name.
      */
     @Override
     public String toString() {
@@ -171,21 +141,4 @@ public final class BookCategory implements Serializable, Comparable<BookCategory
      */
     private transient String name;
     private transient String externalName;
-
-    // Support for serialization
-    private static int nextObj;
-    private final int obj = nextObj++;
-
-    Object readResolve() {
-        return VALUES[obj];
-    }
-
-    private static final BookCategory[] VALUES = {
-            BIBLE, DICTIONARY, COMMENTARY, DAILY_DEVOTIONS, GLOSSARY, QUESTIONABLE, ESSAYS, IMAGES, MAPS, GENERAL_BOOK, OTHER,
-    };
-
-    /**
-     * Serialization ID
-     */
-    private static final long serialVersionUID = 3256727260177708345L;
 }
