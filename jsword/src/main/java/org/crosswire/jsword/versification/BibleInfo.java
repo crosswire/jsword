@@ -234,7 +234,7 @@ public final class BibleInfo {
         // Therefore, subtract 2 instead of 1
         int lastBook = ORDINAL_AT_START_OF_BOOK.length - 2;
         // for (BibleBook book : BibleBook.values()) {
-        for (BibleBook book: EnumSet.range(BibleBook.GENESIS, BibleBook.REVELATION)) {
+        for (BibleBook book: EnumSet.range(BibleBook.GEN, BibleBook.REV)) {
             int b = book.ordinal();
             if (b <= lastBook && ordinal >= ORDINAL_AT_START_OF_BOOK[b] && ordinal < ORDINAL_AT_START_OF_BOOK[b + 1]) {
                 int cib = BibleInfo.chaptersInBook(book);
@@ -247,7 +247,7 @@ public final class BibleInfo {
         }
 
         assert false;
-        return new Verse(BibleBook.GENESIS, 1, 1);
+        return new Verse(BibleBook.GEN, 1, 1);
     }
 
     /**
@@ -329,7 +329,7 @@ public final class BibleInfo {
         try {
             // If the book is null, then patch to GENESIS
             if (patchedBook == null) {
-                patchedBook = BibleBook.GENESIS;
+                patchedBook = BibleBook.GEN;
             }
             // If they are too small
             if (patchedChapter <= 0) {
@@ -344,7 +344,7 @@ public final class BibleInfo {
                 patchedBook = BibleInfo.getNextBook(patchedBook);
 
                 if (patchedBook == null) {
-                    patchedBook = BibleBook.REVELATION;
+                    patchedBook = BibleBook.REV;
                     patchedChapter = chaptersInBook(patchedBook);
                     patchedVerse = versesInChapter(patchedBook, patchedChapter);
                     return new Verse(patchedBook, patchedChapter, patchedVerse);
@@ -360,7 +360,7 @@ public final class BibleInfo {
                     patchedBook = BibleInfo.getNextBook(patchedBook);
 
                     if (patchedBook == null) {
-                        patchedBook = BibleBook.REVELATION;
+                        patchedBook = BibleBook.REV;
                         patchedChapter = chaptersInBook(patchedBook);
                         patchedVerse = versesInChapter(patchedBook, patchedChapter);
                         return new Verse(patchedBook, patchedChapter, patchedVerse);
@@ -371,7 +371,7 @@ public final class BibleInfo {
             return new Verse(patchedBook, patchedChapter, patchedVerse);
         } catch (NoSuchKeyException ex) {
             assert false : ex;
-            return new Verse(BibleBook.GENESIS, 1, 1, true);
+            return new Verse(BibleBook.GEN, 1, 1, true);
         }
     }
 
@@ -826,7 +826,7 @@ public final class BibleInfo {
         out.println("    private static final short[] ORDINAL_AT_START_OF_BOOK =");
         out.println("    {");
         out.print("        ");
-        for (BibleBook b: EnumSet.range(BibleBook.GENESIS, BibleBook.REVELATION)) {
+        for (BibleBook b: EnumSet.range(BibleBook.GEN, BibleBook.REV)) {
             String vstr1 = "     " + verseNum;
             String vstr2 = vstr1.substring(vstr1.length() - 5);
             out.print(vstr2 + ", ");
@@ -844,7 +844,7 @@ public final class BibleInfo {
         verseNum = 1;
         out.println("    private static final short[][] ORDINAL_AT_START_OF_CHAPTER =");
         out.println("    {");
-        for (BibleBook b: EnumSet.range(BibleBook.GENESIS, BibleBook.REVELATION)) {
+        for (BibleBook b: EnumSet.range(BibleBook.GEN, BibleBook.REV)) {
             out.println("        { ");
             for (int c = 1; c <= BibleInfo.chaptersInBook(b); c++) {
                 String vstr1 = "     " + verseNum;

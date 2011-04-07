@@ -73,32 +73,32 @@ public class VerseRangeTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
-        gen11_1 = RestrictionType.NONE.toRange(new Verse(BibleBook.GENESIS, 1, 1), 1);
-        gen11_2 = RestrictionType.NONE.toRange(new Verse(BibleBook.GENESIS, 1, 1), 2);
-        gen11_9 = RestrictionType.NONE.toRange(new Verse(BibleBook.GENESIS, 1, 1), 31);
-        gen11_a = RestrictionType.NONE.toRange(new Verse(BibleBook.GENESIS, 1, 1), 32);
-        gen12_1 = RestrictionType.NONE.toRange(new Verse(BibleBook.GENESIS, 1, 2), 1);
-        gen_all = RestrictionType.NONE.toRange(new Verse(BibleBook.GENESIS, 1, 1), 1533);
-        gen_ex1 = RestrictionType.NONE.toRange(new Verse(BibleBook.GENESIS, 1, 1), 1534);
-        gen_exo = RestrictionType.NONE.toRange(new Verse(BibleBook.GENESIS, 1, 1), 2746);
-        gen_rev = RestrictionType.NONE.toRange(new Verse(BibleBook.GENESIS, 1, 1), 31102);
-        rev99_9 = RestrictionType.NONE.toRange(new Verse(BibleBook.REVELATION, 22, 1), 21);
-        rev11_9 = RestrictionType.NONE.toRange(new Verse(BibleBook.REVELATION, 1, 1), 404);
-        rev99_1 = RestrictionType.NONE.toRange(new Verse(BibleBook.REVELATION, 22, 21), 1);
+        gen11_1 = RestrictionType.NONE.toRange(new Verse(BibleBook.GEN, 1, 1), 1);
+        gen11_2 = RestrictionType.NONE.toRange(new Verse(BibleBook.GEN, 1, 1), 2);
+        gen11_9 = RestrictionType.NONE.toRange(new Verse(BibleBook.GEN, 1, 1), 31);
+        gen11_a = RestrictionType.NONE.toRange(new Verse(BibleBook.GEN, 1, 1), 32);
+        gen12_1 = RestrictionType.NONE.toRange(new Verse(BibleBook.GEN, 1, 2), 1);
+        gen_all = RestrictionType.NONE.toRange(new Verse(BibleBook.GEN, 1, 1), 1533);
+        gen_ex1 = RestrictionType.NONE.toRange(new Verse(BibleBook.GEN, 1, 1), 1534);
+        gen_exo = RestrictionType.NONE.toRange(new Verse(BibleBook.GEN, 1, 1), 2746);
+        gen_rev = RestrictionType.NONE.toRange(new Verse(BibleBook.GEN, 1, 1), 31102);
+        rev99_9 = RestrictionType.NONE.toRange(new Verse(BibleBook.REV, 22, 1), 21);
+        rev11_9 = RestrictionType.NONE.toRange(new Verse(BibleBook.REV, 1, 1), 404);
+        rev99_1 = RestrictionType.NONE.toRange(new Verse(BibleBook.REV, 22, 21), 1);
 
-        gen11 = new Verse(BibleBook.GENESIS, 1, 1);
-        gen12 = new Verse(BibleBook.GENESIS, 1, 2);
-        gen19 = new Verse(BibleBook.GENESIS, 1, 31);
-        gen21 = new Verse(BibleBook.GENESIS, 2, 1);
-        gen22 = new Verse(BibleBook.GENESIS, 2, 2);
-        gen99 = new Verse(BibleBook.GENESIS, 50, 26);
-        exo11 = new Verse(BibleBook.EXODUS, 1, 1);
-        rev11 = new Verse(BibleBook.REVELATION, 1, 1);
-        rev12 = new Verse(BibleBook.REVELATION, 1, 2);
-        rev21 = new Verse(BibleBook.REVELATION, 2, 1);
-        rev22 = new Verse(BibleBook.REVELATION, 2, 2);
-        rev99 = new Verse(BibleBook.REVELATION, 22, 21);
-        rev91 = new Verse(BibleBook.REVELATION, 22, 1);
+        gen11 = new Verse(BibleBook.GEN, 1, 1);
+        gen12 = new Verse(BibleBook.GEN, 1, 2);
+        gen19 = new Verse(BibleBook.GEN, 1, 31);
+        gen21 = new Verse(BibleBook.GEN, 2, 1);
+        gen22 = new Verse(BibleBook.GEN, 2, 2);
+        gen99 = new Verse(BibleBook.GEN, 50, 26);
+        exo11 = new Verse(BibleBook.EXOD, 1, 1);
+        rev11 = new Verse(BibleBook.REV, 1, 1);
+        rev12 = new Verse(BibleBook.REV, 1, 2);
+        rev21 = new Verse(BibleBook.REV, 2, 1);
+        rev22 = new Verse(BibleBook.REV, 2, 2);
+        rev99 = new Verse(BibleBook.REV, 22, 21);
+        rev91 = new Verse(BibleBook.REV, 22, 1);
     }
 
     /*
@@ -226,7 +226,7 @@ public class VerseRangeTest extends TestCase {
         assertEquals(gen_all, new VerseRange(gen99, gen11));
         assertEquals(gen_ex1, new VerseRange(gen11, exo11));
         assertEquals(gen_ex1, new VerseRange(exo11, gen11));
-        assertEquals(gen11_1, new VerseRange(gen11, new Verse(BibleBook.GENESIS, 1, 1)));
+        assertEquals(gen11_1, new VerseRange(gen11, new Verse(BibleBook.GEN, 1, 1)));
     }
 
     public void testNewViaVerseIntIntBoolean() {

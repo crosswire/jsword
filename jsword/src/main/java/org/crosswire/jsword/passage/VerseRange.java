@@ -1146,21 +1146,21 @@ public final class VerseRange implements Key {
 
     static {
         try {
-            whole = new VerseRange(new Verse(BibleBook.GENESIS, 1, 1), new Verse(BibleBook.REVELATION, 22, 21));
+            whole = new VerseRange(new Verse(BibleBook.GEN, 1, 1), new Verse(BibleBook.REV, 22, 21));
         } catch (NoSuchVerseException ex) {
             assert false : ex;
             whole = new VerseRange();
         }
 
         try {
-            otRange = new VerseRange(new Verse(BibleBook.GENESIS, 1, 1), new Verse(BibleBook.MALACHI, 4, 6));
+            otRange = new VerseRange(new Verse(BibleBook.GEN, 1, 1), new Verse(BibleBook.MAL, 4, 6));
         } catch (NoSuchVerseException ex) {
             assert false : ex;
             otRange = new VerseRange();
         }
 
         try {
-            ntRange = new VerseRange(new Verse(BibleBook.MATTHEW, 1, 1), new Verse(BibleBook.REVELATION, 22, 21));
+            ntRange = new VerseRange(new Verse(BibleBook.MATT, 1, 1), new Verse(BibleBook.REV, 22, 21));
         } catch (NoSuchVerseException ex) {
             assert false : ex;
             ntRange = new VerseRange();

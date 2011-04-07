@@ -856,7 +856,7 @@ public final class Verse implements Key {
     /**
      * The default verse
      */
-    public static final Verse DEFAULT = new Verse(BibleBook.GENESIS, 1, 1, true);
+    public static final Verse DEFAULT = new Verse(BibleBook.GEN, 1, 1, true);
 
     /**
      * Allow the conversion to and from other number representations.

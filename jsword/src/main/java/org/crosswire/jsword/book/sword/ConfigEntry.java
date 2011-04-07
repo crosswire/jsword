@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.crosswire.common.util.Histogram;
-import org.crosswire.common.util.Language;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.common.xml.XMLUtil;
@@ -299,11 +298,6 @@ public final class ConfigEntry {
         // System.out.println(histogram.toString());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         // Since this can not be null
@@ -321,21 +315,11 @@ public final class ConfigEntry {
         return that.getName().equals(this.getName());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         return getName().hashCode();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         return getName();
@@ -392,8 +376,7 @@ public final class ConfigEntry {
     }
 
     /**
-     * The conf value is the internal representation of the string. For
-     * Language, this is the code, not the localized name. Add others as needed.
+     * The conf value is the internal representation of the string.
      * 
      * @param aValue
      *            either value or values[i]
@@ -401,8 +384,8 @@ public final class ConfigEntry {
      */
     private String getConfValue(Object aValue) {
         if (aValue != null) {
-            if (aValue instanceof Language) {
-                return ((Language) value).getCode();
+            if (type != null) {
+                return type.unconvert(aValue);
             }
             return aValue.toString();
         }

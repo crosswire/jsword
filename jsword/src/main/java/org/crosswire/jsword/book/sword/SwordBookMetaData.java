@@ -292,14 +292,14 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         // This should return the dominate direction of the text, if it is BiDi,
         // then we have to guess.
         String dir = (String) getProperty(ConfigEntryType.DIRECTION);
-        if (ConfigEntryType.DIRECTION_BIDI.equals(dir)) {
+        if (ConfigEntryType.DIRECTION_BIDI.equalsIgnoreCase(dir)) {
             // When BiDi, return the dominate direction based upon the Book's
             // Language not Direction
             Language lang = (Language) getProperty(ConfigEntryType.LANG);
             return lang.isLeftToRight();
         }
 
-        return ConfigEntryType.DIRECTION_LTOR.equals(dir);
+        return ConfigEntryType.DIRECTION_LTOR.equalsIgnoreCase(dir);
     }
 
     /*
@@ -351,15 +351,6 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
 
             putProperty(key.toString(), value);
         }
-        // Element ele = cet.toOSIS();
-        // SAXEventProvider sep = new JDOMSAXEventProvider(new Document(ele));
-        // try
-        // {
-        // System.out.println(XMLUtil.writeToString(sep));
-        // }
-        // catch(Exception e)
-        // {
-        // }
     }
 
     /**

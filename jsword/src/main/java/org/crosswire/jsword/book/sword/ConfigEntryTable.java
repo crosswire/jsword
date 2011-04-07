@@ -285,7 +285,7 @@ public final class ConfigEntryTable {
      *            the value to match against
      * @return true if there is a matching ConfigEntry matching the value
      */
-    public boolean match(ConfigEntryType type, Object search) {
+    public boolean match(ConfigEntryType type, String search) {
         ConfigEntry ce = table.get(type);
         return ce != null && ce.match(search);
     }

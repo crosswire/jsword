@@ -64,22 +64,22 @@ public class VerseTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         BookName.setFullBookName(false);
-        gen11 = new Verse(BibleBook.GENESIS, 1, 1);
-        gen11a = new Verse(BibleBook.GENESIS, 1, 1);
-        gen12 = new Verse(BibleBook.GENESIS, 1, 2);
-        gen21 = new Verse(BibleBook.GENESIS, 2, 1);
-        gen22 = new Verse(BibleBook.GENESIS, 2, 2);
-        rev11 = new Verse(BibleBook.REVELATION, 1, 1);
-        rev12 = new Verse(BibleBook.REVELATION, 1, 2);
-        rev21 = new Verse(BibleBook.REVELATION, 2, 1);
-        rev22 = new Verse(BibleBook.REVELATION, 2, 2);
-        rev99 = new Verse(BibleBook.REVELATION, 22, 21);
+        gen11 = new Verse(BibleBook.GEN, 1, 1);
+        gen11a = new Verse(BibleBook.GEN, 1, 1);
+        gen12 = new Verse(BibleBook.GEN, 1, 2);
+        gen21 = new Verse(BibleBook.GEN, 2, 1);
+        gen22 = new Verse(BibleBook.GEN, 2, 2);
+        rev11 = new Verse(BibleBook.REV, 1, 1);
+        rev12 = new Verse(BibleBook.REV, 1, 2);
+        rev21 = new Verse(BibleBook.REV, 2, 1);
+        rev22 = new Verse(BibleBook.REV, 2, 2);
+        rev99 = new Verse(BibleBook.REV, 22, 21);
         jude1 = new Verse(BibleBook.JUDE, 1, 1);
         jude2 = new Verse(BibleBook.JUDE, 1, 2);
         jude9 = new Verse(BibleBook.JUDE, 1, 25);
-        ssa11 = new Verse(BibleBook.SAMUEL2, 1, 1);
-        pro11 = new Verse(BibleBook.PROVERBS, 1, 1);
-        ch111 = new Verse(BibleBook.CHRONICLES1, 1, 1);
+        ssa11 = new Verse(BibleBook.SAM2, 1, 1);
+        pro11 = new Verse(BibleBook.PROV, 1, 1);
+        ch111 = new Verse(BibleBook.CHR1, 1, 1);
     }
 
     /*
@@ -224,35 +224,35 @@ public class VerseTest extends TestCase {
 
     public void testNewViaIntIntIntBoolean() {
         assertEquals(gen11, new Verse(null, 1, 1, true));
-        assertEquals(gen11, new Verse(BibleBook.GENESIS, 0, 1, true));
-        assertEquals(gen11, new Verse(BibleBook.GENESIS, 1, 0, true));
-        assertEquals(rev99, new Verse(BibleBook.REVELATION, 22, 22, true));
-        assertEquals(rev99, new Verse(BibleBook.REVELATION, 23, 21, true));
-        assertEquals(rev99, new Verse(BibleBook.REVELATION, 23, 22, true));
-        assertEquals(rev99, new Verse(BibleBook.GENESIS, 999999, 0, true));
-        assertEquals(rev99, new Verse(BibleBook.GENESIS, 0, 999999, true));
+        assertEquals(gen11, new Verse(BibleBook.GEN, 0, 1, true));
+        assertEquals(gen11, new Verse(BibleBook.GEN, 1, 0, true));
+        assertEquals(rev99, new Verse(BibleBook.REV, 22, 22, true));
+        assertEquals(rev99, new Verse(BibleBook.REV, 23, 21, true));
+        assertEquals(rev99, new Verse(BibleBook.REV, 23, 22, true));
+        assertEquals(rev99, new Verse(BibleBook.GEN, 999999, 0, true));
+        assertEquals(rev99, new Verse(BibleBook.GEN, 0, 999999, true));
         try {
             new Verse(null, 1, 1);
             fail();
         } catch (NoSuchVerseException ex) {
         }
         try {
-            new Verse(BibleBook.GENESIS, 0, 1);
+            new Verse(BibleBook.GEN, 0, 1);
             fail();
         } catch (NoSuchVerseException ex) {
         }
         try {
-            new Verse(BibleBook.GENESIS, 1, 0);
+            new Verse(BibleBook.GEN, 1, 0);
             fail();
         } catch (NoSuchVerseException ex) {
         }
         try {
-            new Verse(BibleBook.GENESIS, 1, 32);
+            new Verse(BibleBook.GEN, 1, 32);
             fail();
         } catch (NoSuchVerseException ex) {
         }
         try {
-            new Verse(BibleBook.GENESIS, 51, 1);
+            new Verse(BibleBook.GEN, 51, 1);
             fail();
         } catch (NoSuchVerseException ex) {
         }
@@ -262,22 +262,22 @@ public class VerseTest extends TestCase {
         } catch (IllegalArgumentException ex) {
         }
         try {
-            new Verse(BibleBook.GENESIS, 0, 1, false);
+            new Verse(BibleBook.GEN, 0, 1, false);
             fail();
         } catch (IllegalArgumentException ex) {
         }
         try {
-            new Verse(BibleBook.GENESIS, 1, 0, false);
+            new Verse(BibleBook.GEN, 1, 0, false);
             fail();
         } catch (IllegalArgumentException ex) {
         }
         try {
-            new Verse(BibleBook.GENESIS, 1, 32, false);
+            new Verse(BibleBook.GEN, 1, 32, false);
             fail();
         } catch (IllegalArgumentException ex) {
         }
         try {
-            new Verse(BibleBook.GENESIS, 51, 1, false);
+            new Verse(BibleBook.GEN, 51, 1, false);
             fail();
         } catch (IllegalArgumentException ex) {
         }
@@ -347,15 +347,15 @@ public class VerseTest extends TestCase {
     }
 
     public void testGetBook() {
-        assertEquals(gen11.getBook(), BibleBook.GENESIS);
-        assertEquals(gen12.getBook(), BibleBook.GENESIS);
-        assertEquals(gen21.getBook(), BibleBook.GENESIS);
-        assertEquals(gen22.getBook(), BibleBook.GENESIS);
-        assertEquals(rev11.getBook(), BibleBook.REVELATION);
-        assertEquals(rev12.getBook(), BibleBook.REVELATION);
-        assertEquals(rev21.getBook(), BibleBook.REVELATION);
-        assertEquals(rev22.getBook(), BibleBook.REVELATION);
-        assertEquals(rev99.getBook(), BibleBook.REVELATION);
+        assertEquals(gen11.getBook(), BibleBook.GEN);
+        assertEquals(gen12.getBook(), BibleBook.GEN);
+        assertEquals(gen21.getBook(), BibleBook.GEN);
+        assertEquals(gen22.getBook(), BibleBook.GEN);
+        assertEquals(rev11.getBook(), BibleBook.REV);
+        assertEquals(rev12.getBook(), BibleBook.REV);
+        assertEquals(rev21.getBook(), BibleBook.REV);
+        assertEquals(rev22.getBook(), BibleBook.REV);
+        assertEquals(rev99.getBook(), BibleBook.REV);
     }
 
     public void testGetChapter() {

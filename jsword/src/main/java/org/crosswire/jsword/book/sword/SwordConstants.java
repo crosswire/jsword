@@ -123,7 +123,7 @@ public final class SwordConstants {
         if (ord >= SwordConstants.ORDINAL_MAT11) {
             // This is an NT verse
             testament = SwordConstants.TESTAMENT_NEW;
-            book = book - BibleBook.MALACHI.ordinal();
+            book = book - BibleBook.MAL.ordinal();
         } else {
             // This is an OT verse
             testament = SwordConstants.TESTAMENT_OLD;
@@ -139,7 +139,7 @@ public final class SwordConstants {
     /**
      * The start of the new testament
      */
-    static final int ORDINAL_MAT11 = new Verse(BibleBook.MATTHEW, 1, 1, true).getOrdinal();
+    static final int ORDINAL_MAT11 = new Verse(BibleBook.MATT, 1, 1, true).getOrdinal();
 
     /**
      * array containing LUT of offsets in the chapter table.

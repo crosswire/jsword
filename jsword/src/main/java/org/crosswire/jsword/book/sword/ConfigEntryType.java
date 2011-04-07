@@ -24,6 +24,7 @@ package org.crosswire.jsword.book.sword;
 import java.util.regex.Pattern;
 
 import org.crosswire.common.util.Language;
+import org.crosswire.common.util.Version;
 import org.crosswire.jsword.book.BookCategory;
 
 /**
@@ -303,6 +304,14 @@ public enum ConfigEntryType {
         public Object convert(String input) {
             return new Language(input);
         }
+
+        @Override
+        public String unconvert(Object internal) {
+            if (internal instanceof Language) {
+                return ((Language) internal).getCode();
+            }
+            return super.unconvert(internal);
+        }
     },
 
     /**
@@ -313,6 +322,14 @@ public enum ConfigEntryType {
         @Override
         public Object convert(String input) {
             return new Language(input);
+        }
+
+        @Override
+        public String unconvert(Object internal) {
+            if (internal instanceof Language) {
+                return ((Language) internal).getCode();
+            }
+            return super.unconvert(internal);
         }
     },
 
@@ -343,10 +360,18 @@ public enum ConfigEntryType {
         @Override
         public boolean isAllowed(String aValue) {
             try {
-                Float.parseFloat(aValue);
+                new Version(aValue);
                 return true;
-            } catch (NumberFormatException e) {
+            } catch (IllegalArgumentException e) {
                 return false;
+            }
+        }
+        @Override
+        public Object convert(String input) {
+            try {
+                return new Version(input);
+            } catch (IllegalArgumentException e) {
+                return null;
             }
         }
     },
@@ -411,6 +436,14 @@ public enum ConfigEntryType {
         public Object convert(String input) {
             return new Language(input);
         }
+
+        @Override
+        public String unconvert(Object internal) {
+            if (internal instanceof Language) {
+                return ((Language) internal).getCode();
+            }
+            return super.unconvert(internal);
+        }
     },
 
     /**
@@ -452,9 +485,9 @@ public enum ConfigEntryType {
     },
 
     /**
-     * A list of prior "initials" for the current book. TODO(dms): when a user
-     * installs a book with an obsoletes that matches an installed book, offer
-     * the user the opportunity to delete the old book.
+     * A list of prior "initials" for the current book.
+     * TODO(dms): when a user installs a book with an obsoletes that matches
+     * an installed book, offer the user the opportunity to delete the old book.
      */
     OBSOLETES("Obsoletes") {
         @Override
@@ -661,6 +694,8 @@ public enum ConfigEntryType {
      */
     private ConfigEntryType(String name) {
         this.name = name;
+        this.defaultValue = null;
+        this.picks = null;
     }
 
     /**
@@ -669,6 +704,7 @@ public enum ConfigEntryType {
     private ConfigEntryType(String name, String defaultValue) {
         this.name = name;
         this.defaultValue = convert(defaultValue);
+        this.picks = null;
     }
 
     /**
@@ -677,7 +713,9 @@ public enum ConfigEntryType {
     private ConfigEntryType(String name, int defaultPick, String... picks) {
         this.name = name;
         if (defaultPick >= 0 && defaultPick < picks.length) {
-            this.defaultValue = picks[defaultPick];
+            this.defaultValue = convert(picks[defaultPick]);
+        } else {
+            this.defaultValue = null;
         }
         this.picks = picks;
     }
@@ -820,6 +858,18 @@ public enum ConfigEntryType {
     }
 
     /**
+     * Return the original representation of the object.
+     * 
+     * @return the converted object
+     */
+    public String unconvert(Object internal) {
+        if (internal == null) {
+            return null;
+        }
+        return internal.toString();
+    }
+
+    /**
      * Lookup method to convert from a String
      */
     public static ConfigEntryType fromString(String name) {
@@ -851,17 +901,17 @@ public enum ConfigEntryType {
     /**
      * The name of the ConfigEntryType
      */
-    private String name;
+    private final String name;
 
     /**
      * The default for the ConfigEntryType
      */
-    private Object defaultValue;
+    private final Object defaultValue;
 
     /**
      * The array of choices.
      */
-    private String[] picks;
+    private final String[] picks;
 
     /**
      * Constants for direction

@@ -67,94 +67,94 @@ public class BibleInfoTest extends TestCase {
 
     public void testGetLongBookName() throws Exception {
         BookName.setCase(CaseType.SENTENCE);
-        assertEquals("Genesis", BibleBook.GENESIS.getLongName());
-        assertEquals("Revelation of John", BibleBook.REVELATION.getLongName());
+        assertEquals("Genesis", BibleBook.GEN.getLongName());
+        assertEquals("Revelation of John", BibleBook.REV.getLongName());
 
         BookName.setCase(CaseType.LOWER);
-        assertEquals("genesis", BibleBook.GENESIS.getLongName());
-        assertEquals("revelation of john", BibleBook.REVELATION.getLongName());
+        assertEquals("genesis", BibleBook.GEN.getLongName());
+        assertEquals("revelation of john", BibleBook.REV.getLongName());
 
         BookName.setCase(CaseType.UPPER);
-        assertEquals("GENESIS", BibleBook.GENESIS.getLongName());
-        assertEquals("REVELATION OF JOHN", BibleBook.REVELATION.getLongName());
+        assertEquals("GENESIS", BibleBook.GEN.getLongName());
+        assertEquals("REVELATION OF JOHN", BibleBook.REV.getLongName());
 
     }
 
     public void testGetShortBookName() throws Exception {
         BookName.setCase(CaseType.SENTENCE);
-        assertEquals("Gen", BibleBook.GENESIS.getShortName());
-        assertEquals("Exo", BibleBook.EXODUS.getShortName());
-        assertEquals("Judg", BibleBook.JUDGES.getShortName());
-        assertEquals("Mal", BibleBook.MALACHI.getShortName());
-        assertEquals("Mat", BibleBook.MATTHEW.getShortName());
-        assertEquals("Phili", BibleBook.PHILIPPIANS.getShortName());
-        assertEquals("Phile", BibleBook.PHILEMON.getShortName());
+        assertEquals("Gen", BibleBook.GEN.getShortName());
+        assertEquals("Exo", BibleBook.EXOD.getShortName());
+        assertEquals("Judg", BibleBook.JUDG.getShortName());
+        assertEquals("Mal", BibleBook.MAL.getShortName());
+        assertEquals("Mat", BibleBook.MATT.getShortName());
+        assertEquals("Phili", BibleBook.PHIL.getShortName());
+        assertEquals("Phile", BibleBook.PHLM.getShortName());
         assertEquals("Jude", BibleBook.JUDE.getShortName());
-        assertEquals("Rev", BibleBook.REVELATION.getShortName());
+        assertEquals("Rev", BibleBook.REV.getShortName());
 
         BookName.setCase(CaseType.LOWER);
-        assertEquals("gen", BibleBook.GENESIS.getShortName());
-        assertEquals("exo", BibleBook.EXODUS.getShortName());
-        assertEquals("judg", BibleBook.JUDGES.getShortName());
-        assertEquals("mal", BibleBook.MALACHI.getShortName());
-        assertEquals("mat", BibleBook.MATTHEW.getShortName());
-        assertEquals("phili", BibleBook.PHILIPPIANS.getShortName());
-        assertEquals("phile", BibleBook.PHILEMON.getShortName());
+        assertEquals("gen", BibleBook.GEN.getShortName());
+        assertEquals("exo", BibleBook.EXOD.getShortName());
+        assertEquals("judg", BibleBook.JUDG.getShortName());
+        assertEquals("mal", BibleBook.MAL.getShortName());
+        assertEquals("mat", BibleBook.MATT.getShortName());
+        assertEquals("phili", BibleBook.PHIL.getShortName());
+        assertEquals("phile", BibleBook.PHLM.getShortName());
         assertEquals("jude", BibleBook.JUDE.getShortName());
-        assertEquals("rev", BibleBook.REVELATION.getShortName());
+        assertEquals("rev", BibleBook.REV.getShortName());
 
         BookName.setCase(CaseType.UPPER);
-        assertEquals("GEN", BibleBook.GENESIS.getShortName());
-        assertEquals("EXO", BibleBook.EXODUS.getShortName());
-        assertEquals("JUDG", BibleBook.JUDGES.getShortName());
-        assertEquals("MAL", BibleBook.MALACHI.getShortName());
-        assertEquals("MAT", BibleBook.MATTHEW.getShortName());
-        assertEquals("PHILI", BibleBook.PHILIPPIANS.getShortName());
-        assertEquals("PHILE", BibleBook.PHILEMON.getShortName());
+        assertEquals("GEN", BibleBook.GEN.getShortName());
+        assertEquals("EXO", BibleBook.EXOD.getShortName());
+        assertEquals("JUDG", BibleBook.JUDG.getShortName());
+        assertEquals("MAL", BibleBook.MAL.getShortName());
+        assertEquals("MAT", BibleBook.MATT.getShortName());
+        assertEquals("PHILI", BibleBook.PHIL.getShortName());
+        assertEquals("PHILE", BibleBook.PHLM.getShortName());
         assertEquals("JUDE", BibleBook.JUDE.getShortName());
-        assertEquals("REV", BibleBook.REVELATION.getShortName());
+        assertEquals("REV", BibleBook.REV.getShortName());
     }
 
     public void testGetBookJogger() throws Exception {
-        assertEquals("Gen", BibleBook.GENESIS.getOSIS());
-        assertEquals("Exod", BibleBook.EXODUS.getOSIS());
-        assertEquals("Rev", BibleBook.REVELATION.getOSIS());
+        assertEquals("Gen", BibleBook.GEN.getOSIS());
+        assertEquals("Exod", BibleBook.EXOD.getOSIS());
+        assertEquals("Rev", BibleBook.REV.getOSIS());
     }
 
     public void testGetBookNumber() {
-        assertEquals(BibleBook.GENESIS, BibleBook.getBook("Genesis"));
-        assertEquals(BibleBook.GENESIS, BibleBook.getBook("Gene"));
-        assertEquals(BibleBook.GENESIS, BibleBook.getBook("Gen"));
-        assertEquals(BibleBook.GENESIS, BibleBook.getBook("G"));
-        assertEquals(BibleBook.GENESIS, BibleBook.getBook("g"));
-        assertEquals(BibleBook.GENESIS, BibleBook.getBook("GEN"));
-        assertEquals(BibleBook.GENESIS, BibleBook.getBook("genesis"));
-        assertEquals(BibleBook.PSALMS, BibleBook.getBook("psa"));
-        assertEquals(BibleBook.PSALMS, BibleBook.getBook("ps"));
-        assertEquals(BibleBook.PSALMS, BibleBook.getBook("pss"));
-        assertEquals(BibleBook.PSALMS, BibleBook.getBook("psalter"));
-        assertEquals(BibleBook.ECCLESIASTES, BibleBook.getBook("ecc"));
-        assertEquals(BibleBook.ECCLESIASTES, BibleBook.getBook("Qohelot"));
-        assertEquals(BibleBook.SONGOFSOLOMON, BibleBook.getBook("son"));
-        assertEquals(BibleBook.SONGOFSOLOMON, BibleBook.getBook("song"));
-        assertEquals(BibleBook.SONGOFSOLOMON, BibleBook.getBook("song of solomon"));
-        assertEquals(BibleBook.SONGOFSOLOMON, BibleBook.getBook("songofsolomon"));
-        assertEquals(BibleBook.SONGOFSOLOMON, BibleBook.getBook("ss"));
-        assertEquals(BibleBook.SONGOFSOLOMON, BibleBook.getBook("canticle"));
-        assertEquals(BibleBook.SONGOFSOLOMON, BibleBook.getBook("can"));
-        assertEquals(BibleBook.PHILIPPIANS, BibleBook.getBook("phi"));
-        assertEquals(BibleBook.PHILIPPIANS, BibleBook.getBook("phil"));
-        assertEquals(BibleBook.PHILIPPIANS, BibleBook.getBook("phili"));
-        assertEquals(BibleBook.PHILEMON, BibleBook.getBook("phile"));
-        assertEquals(BibleBook.REVELATION, BibleBook.getBook("revelations"));
-        assertEquals(BibleBook.REVELATION, BibleBook.getBook("rev"));
+        assertEquals(BibleBook.GEN, BibleBook.getBook("Genesis"));
+        assertEquals(BibleBook.GEN, BibleBook.getBook("Gene"));
+        assertEquals(BibleBook.GEN, BibleBook.getBook("Gen"));
+        assertEquals(BibleBook.GEN, BibleBook.getBook("G"));
+        assertEquals(BibleBook.GEN, BibleBook.getBook("g"));
+        assertEquals(BibleBook.GEN, BibleBook.getBook("GEN"));
+        assertEquals(BibleBook.GEN, BibleBook.getBook("genesis"));
+        assertEquals(BibleBook.PS, BibleBook.getBook("psa"));
+        assertEquals(BibleBook.PS, BibleBook.getBook("ps"));
+        assertEquals(BibleBook.PS, BibleBook.getBook("pss"));
+        assertEquals(BibleBook.PS, BibleBook.getBook("psalter"));
+        assertEquals(BibleBook.ECCL, BibleBook.getBook("ecc"));
+        assertEquals(BibleBook.ECCL, BibleBook.getBook("Qohelot"));
+        assertEquals(BibleBook.SONG, BibleBook.getBook("son"));
+        assertEquals(BibleBook.SONG, BibleBook.getBook("song"));
+        assertEquals(BibleBook.SONG, BibleBook.getBook("song of solomon"));
+        assertEquals(BibleBook.SONG, BibleBook.getBook("songofsolomon"));
+        assertEquals(BibleBook.SONG, BibleBook.getBook("ss"));
+        assertEquals(BibleBook.SONG, BibleBook.getBook("canticle"));
+        assertEquals(BibleBook.SONG, BibleBook.getBook("can"));
+        assertEquals(BibleBook.PHIL, BibleBook.getBook("phi"));
+        assertEquals(BibleBook.PHIL, BibleBook.getBook("phil"));
+        assertEquals(BibleBook.PHIL, BibleBook.getBook("phili"));
+        assertEquals(BibleBook.PHLM, BibleBook.getBook("phile"));
+        assertEquals(BibleBook.REV, BibleBook.getBook("revelations"));
+        assertEquals(BibleBook.REV, BibleBook.getBook("rev"));
 
         assertEquals(null, BibleBook.getBook("1"));
     }
 
     public void testIn() throws Exception {
-        assertEquals(1533, BibleInfo.versesInBook(BibleBook.GENESIS));
-        assertEquals(404, BibleInfo.versesInBook(BibleBook.REVELATION));
+        assertEquals(1533, BibleInfo.versesInBook(BibleBook.GEN));
+        assertEquals(404, BibleInfo.versesInBook(BibleBook.REV));
 
         // Counts using loops
         int viw_b = 0;
@@ -163,7 +163,7 @@ public class BibleInfoTest extends TestCase {
 
         // For all the books
         // for (BibleBook b : BibleBook.values()) {
-        for (BibleBook b: EnumSet.range(BibleBook.GENESIS, BibleBook.REVELATION)) {
+        for (BibleBook b: EnumSet.range(BibleBook.GEN, BibleBook.REV)) {
             // Count and check the verses in this book
             int vib = 0;
             for (int c = 1; c <= BibleInfo.chaptersInBook(b); c++) {
@@ -191,7 +191,7 @@ public class BibleInfoTest extends TestCase {
         int first_verse_ord = 1;
         int last_verse_ord = 1;
         // for (BibleBook b : BibleBook.values()) {
-        for (BibleBook b: EnumSet.range(BibleBook.GENESIS, BibleBook.REVELATION)) {
+        for (BibleBook b: EnumSet.range(BibleBook.GEN, BibleBook.REV)) {
             for (int c = 1; c <= BibleInfo.chaptersInBook(b); c++) {
                 last_verse_ord = first_verse_ord + BibleInfo.versesInChapter(b, c) - 1;
 
@@ -215,7 +215,7 @@ public class BibleInfoTest extends TestCase {
         } catch (NoSuchVerseException ex) {
         }
         // for (BibleBook b : BibleBook.values()) {
-        for (BibleBook b: EnumSet.range(BibleBook.GENESIS, BibleBook.REVELATION)) {
+        for (BibleBook b: EnumSet.range(BibleBook.GEN, BibleBook.REV)) {
             try {
                 BibleInfo.validate(b, 0, 1);
                 fail();
@@ -260,12 +260,12 @@ public class BibleInfoTest extends TestCase {
     public void testPatch() throws Exception {
         int all = 1;
         // for (BibleBook b : BibleBook.values()) {
-        for (BibleBook b: EnumSet.range(BibleBook.GENESIS, BibleBook.REVELATION)) {
+        for (BibleBook b: EnumSet.range(BibleBook.GEN, BibleBook.REV)) {
             int cib = BibleInfo.chaptersInBook(b);
             for (int c = 1; c <= cib; c++) {
                 int vic = BibleInfo.versesInChapter(b, c);
                 for (int v = 1; v <= vic; v++) {
-                    Verse pv = BibleInfo.patch(BibleBook.GENESIS, 1, all);
+                    Verse pv = BibleInfo.patch(BibleBook.GEN, 1, all);
 
                     assertEquals(b, pv.getBook());
                     assertEquals(c, pv.getChapter());
@@ -274,11 +274,11 @@ public class BibleInfoTest extends TestCase {
                 }
             }
         }
-        Verse gen11 = new Verse(BibleBook.GENESIS, 1, 1);
-        assertEquals(gen11, BibleInfo.patch(BibleBook.GENESIS, 1, 1));
-        assertEquals(gen11, BibleInfo.patch(BibleBook.GENESIS, 1, 0));
-        assertEquals(gen11, BibleInfo.patch(BibleBook.GENESIS, 0, 1));
-        assertEquals(gen11, BibleInfo.patch(BibleBook.GENESIS, 0, 0));
+        Verse gen11 = new Verse(BibleBook.GEN, 1, 1);
+        assertEquals(gen11, BibleInfo.patch(BibleBook.GEN, 1, 1));
+        assertEquals(gen11, BibleInfo.patch(BibleBook.GEN, 1, 0));
+        assertEquals(gen11, BibleInfo.patch(BibleBook.GEN, 0, 1));
+        assertEquals(gen11, BibleInfo.patch(BibleBook.GEN, 0, 0));
         assertEquals(gen11, BibleInfo.patch(null, 1, 1));
         assertEquals(gen11, BibleInfo.patch(null, 1, 0));
         assertEquals(gen11, BibleInfo.patch(null, 0, 1));
@@ -288,12 +288,12 @@ public class BibleInfoTest extends TestCase {
     public void testVerseCount() throws Exception {
         int count_up = 0;
         int count_down = 31102;
-        Verse gen11 = new Verse(BibleBook.GENESIS, 1, 1);
-        Verse gen110 = new Verse(BibleBook.GENESIS, 1, 10);
-        Verse exo11 = new Verse(BibleBook.EXODUS, 1, 1);
-        Verse rev99 = new Verse(BibleBook.REVELATION, 22, 21);
+        Verse gen11 = new Verse(BibleBook.GEN, 1, 1);
+        Verse gen110 = new Verse(BibleBook.GEN, 1, 10);
+        Verse exo11 = new Verse(BibleBook.EXOD, 1, 1);
+        Verse rev99 = new Verse(BibleBook.REV, 22, 21);
         // for (BibleBook b : BibleBook.values()) {
-        for (BibleBook b: EnumSet.range(BibleBook.GENESIS, BibleBook.REVELATION)) {
+        for (BibleBook b: EnumSet.range(BibleBook.GEN, BibleBook.REV)) {
             for (int c = 1; c <= BibleInfo.chaptersInBook(b); c++) {
                 for (int v = 1; v <= BibleInfo.versesInChapter(b, c); v++) {
                     Verse curVerse = new Verse(b, c, v);
@@ -309,13 +309,13 @@ public class BibleInfoTest extends TestCase {
 
             assertEquals(BibleInfo.versesInBook(b), new Verse(b, BibleInfo.chaptersInBook(b), BibleInfo.versesInChapter(b, BibleInfo.chaptersInBook(b))).subtract(new Verse(b, 1, 1)) + 1 );
         }
-        assertEquals(BibleInfo.versesInBook(BibleBook.GENESIS), exo11.subtract(gen11));
+        assertEquals(BibleInfo.versesInBook(BibleBook.GEN), exo11.subtract(gen11));
         assertEquals(9, gen110.subtract(gen11));
     }
 
     public void testNames() {
-        assertEquals(0, BibleBook.GENESIS.ordinal());
-        assertEquals(65, BibleBook.REVELATION.ordinal());
+        assertEquals(0, BibleBook.GEN.ordinal());
+        assertEquals(65, BibleBook.REV.ordinal());
     }
 
     /**

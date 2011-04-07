@@ -53,13 +53,13 @@ public class RawFileBackendTest extends TestCase {
     }
 
     public void testSetRawText() throws NoSuchVerseException, IOException, BookException {
-        Verse otVerse = new Verse(BibleBook.GENESIS, 3, 1);
-        Verse otVerse2 = new Verse(BibleBook.LEVITICUS, 3, 5);
-        Verse otVerse3 = new Verse(BibleBook.EXODUS, 6, 4);
-        Verse otVerse4 = new Verse(BibleBook.JUDGES, 3, 1);
-        Verse ntVerse = new Verse(BibleBook.PETER2, 1, 2);
-        Verse ntVerse2 = new Verse(BibleBook.PETER1, 1, 2);
-        Verse ntVerse3 = new Verse(BibleBook.REVELATION, 22, 21);
+        Verse otVerse = new Verse(BibleBook.GEN, 3, 1);
+        Verse otVerse2 = new Verse(BibleBook.LEV, 3, 5);
+        Verse otVerse3 = new Verse(BibleBook.EXOD, 6, 4);
+        Verse otVerse4 = new Verse(BibleBook.JUDG, 3, 1);
+        Verse ntVerse = new Verse(BibleBook.PET2, 1, 2);
+        Verse ntVerse2 = new Verse(BibleBook.PET1, 1, 2);
+        Verse ntVerse3 = new Verse(BibleBook.REV, 22, 21);
         Verse ntVerse4 = new Verse(BibleBook.JOHN3, 1, 2);
 
         backend.setRawText(otVerse, "Hello OT");

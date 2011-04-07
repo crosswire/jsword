@@ -37,7 +37,7 @@ public enum SectionNames {
         @Override
         public boolean contains(BibleBook book) {
             int bookNum = book.ordinal();
-            return bookNum >= BibleBook.GENESIS.ordinal() && bookNum <= BibleBook.REVELATION.ordinal();
+            return bookNum >= BibleBook.GEN.ordinal() && bookNum <= BibleBook.REV.ordinal();
         }
 
         @Override
@@ -62,7 +62,7 @@ public enum SectionNames {
         @Override
         public boolean contains(BibleBook book) {
             int bookNum = book.ordinal();
-            return bookNum >= BibleBook.GENESIS.ordinal() && bookNum <= BibleBook.MALACHI.ordinal();
+            return bookNum >= BibleBook.GEN.ordinal() && bookNum <= BibleBook.MAL.ordinal();
         }
 
         @Override
@@ -86,7 +86,7 @@ public enum SectionNames {
         @Override
         public boolean contains(BibleBook book) {
             int bookNum = book.ordinal();
-            return bookNum >= BibleBook.GENESIS.ordinal() && bookNum <= BibleBook.DEUTERONOMY.ordinal();
+            return bookNum >= BibleBook.GEN.ordinal() && bookNum <= BibleBook.DEUT.ordinal();
         }
 
         @Override
@@ -110,7 +110,7 @@ public enum SectionNames {
         @Override
         public boolean contains(BibleBook book) {
             int bookNum = book.ordinal();
-            return bookNum >= BibleBook.JOSHUA.ordinal() && bookNum <= BibleBook.ESTHER.ordinal();
+            return bookNum >= BibleBook.JOSH.ordinal() && bookNum <= BibleBook.ESTH.ordinal();
         }
 
         @Override
@@ -134,7 +134,7 @@ public enum SectionNames {
         @Override
         public boolean contains(BibleBook book) {
             int bookNum = book.ordinal();
-            return bookNum >= BibleBook.JOB.ordinal() && bookNum <= BibleBook.SONGOFSOLOMON.ordinal();
+            return bookNum >= BibleBook.JOB.ordinal() && bookNum <= BibleBook.SONG.ordinal();
         }
 
         @Override
@@ -159,7 +159,7 @@ public enum SectionNames {
         @Override
         public boolean contains(BibleBook book) {
             int bookNum = book.ordinal();
-            return bookNum == BibleBook.REVELATION.ordinal() || bookNum >= BibleBook.ISAIAH.ordinal() && bookNum <= BibleBook.MALACHI.ordinal();
+            return bookNum == BibleBook.REV.ordinal() || bookNum >= BibleBook.ISA.ordinal() && bookNum <= BibleBook.MAL.ordinal();
         }
 
         @Override
@@ -188,7 +188,7 @@ public enum SectionNames {
         @Override
         public boolean contains(BibleBook book) {
             int bookNum = book.ordinal();
-            return bookNum >= BibleBook.ISAIAH.ordinal() && bookNum <= BibleBook.DANIEL.ordinal();
+            return bookNum >= BibleBook.ISA.ordinal() && bookNum <= BibleBook.DAN.ordinal();
         }
 
         @Override
@@ -213,7 +213,7 @@ public enum SectionNames {
         @Override
         public boolean contains(BibleBook book) {
             int bookNum = book.ordinal();
-            return bookNum >= BibleBook.HOSEA.ordinal() && bookNum <= BibleBook.MALACHI.ordinal();
+            return bookNum >= BibleBook.HOS.ordinal() && bookNum <= BibleBook.MAL.ordinal();
         }
 
         @Override
@@ -239,7 +239,7 @@ public enum SectionNames {
         @Override
         public boolean contains(BibleBook book) {
             int bookNum = book.ordinal();
-            return bookNum >= BibleBook.GENESIS.ordinal() && bookNum <= BibleBook.REVELATION.ordinal();
+            return bookNum >= BibleBook.GEN.ordinal() && bookNum <= BibleBook.REV.ordinal();
         }
 
         @Override
@@ -263,7 +263,7 @@ public enum SectionNames {
         @Override
         public boolean contains(BibleBook book) {
             int bookNum = book.ordinal();
-            return bookNum >= BibleBook.MATTHEW.ordinal() && bookNum <= BibleBook.ACTS.ordinal();
+            return bookNum >= BibleBook.MATT.ordinal() && bookNum <= BibleBook.ACTS.ordinal();
         }
 
         @Override
@@ -288,7 +288,7 @@ public enum SectionNames {
         @Override
         public boolean contains(BibleBook book) {
             int bookNum = book.ordinal();
-            return bookNum >= BibleBook.ROMANS.ordinal() && bookNum <= BibleBook.JUDE.ordinal();
+            return bookNum >= BibleBook.ROM.ordinal() && bookNum <= BibleBook.JUDE.ordinal();
         }
 
         @Override
@@ -315,7 +315,7 @@ public enum SectionNames {
         @Override
         public boolean contains(BibleBook book) {
             int bookNum = book.ordinal();
-            return bookNum >= BibleBook.ROMANS.ordinal() && bookNum <= BibleBook.JUDE.ordinal();
+            return bookNum >= BibleBook.ROM.ordinal() && bookNum <= BibleBook.JUDE.ordinal();
         }
 
         @Override
@@ -341,7 +341,7 @@ public enum SectionNames {
         @Override
         public boolean contains(BibleBook book) {
             int bookNum = book.ordinal();
-            return bookNum >= BibleBook.ROMANS.ordinal() && bookNum <= BibleBook.JUDE.ordinal();
+            return bookNum >= BibleBook.ROM.ordinal() && bookNum <= BibleBook.JUDE.ordinal();
         }
 
         @Override
@@ -365,7 +365,7 @@ public enum SectionNames {
     REVELATION {
         @Override
         public boolean contains(BibleBook book) {
-            return book == BibleBook.REVELATION;
+            return book == BibleBook.REV;
         }
 
         @Override

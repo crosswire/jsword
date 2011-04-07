@@ -114,12 +114,12 @@ public class PassageEvent extends EventObject {
     /**
      * When the lower verse is null
      */
-    public static final Verse VERSE_LOWEST = new Verse(BibleBook.GENESIS, 1, 1, true);
+    public static final Verse VERSE_LOWEST = new Verse(BibleBook.GEN, 1, 1, true);
 
     /**
      * When the upper verse is null
      */
-    public static final Verse VERSE_HIGHEST = new Verse(BibleBook.REVELATION, 22, 21, true);
+    public static final Verse VERSE_HIGHEST = new Verse(BibleBook.REV, 22, 21, true);
 
     /**
      * The type of change
