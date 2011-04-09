@@ -32,8 +32,8 @@ import org.crosswire.common.util.StringUtil;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class SentanceUtilTest extends TestCase {
-    public SentanceUtilTest(String s) {
+public class SentenceUtilTest extends TestCase {
+    public SentenceUtilTest(String s) {
         super(s);
     }
 

@@ -88,7 +88,7 @@ public class GatherAllReferences {
         config.setProperties(ResourceUtil.getProperties("desktop"));
         config.localToApplication();
 
-        // Loop through all the Bookks
+        // Loop through all the Books
         log.warn("*** Reading all known Books");
         List<Book> comments = Books.installed().getBooks();
         for (Book book : comments) {
