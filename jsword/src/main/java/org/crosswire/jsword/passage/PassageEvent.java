@@ -35,22 +35,40 @@ import org.crosswire.jsword.versification.BibleBook;
  * @author Joe Walker [joe at eireneh dot com]
  */
 public class PassageEvent extends EventObject {
+
+    public enum EventType {
+        /**
+         * Identifies one or more changes in the lists contents.
+         */
+       CHANGED,
+
+        /**
+         * Identifies the addition of one or more contiguous items to the list
+         */
+       ADDED,
+
+        /**
+         * Identifies the removal of one or more contiguous items from the list
+         */
+        REMOVED,
+    }
+
     /**
      * Constructs a PassageEvent object.
      * 
      * @param source
      *            the source Object (typically <code>this</code>)
-     * @param type
+     * @param versesChanged
      *            an int specifying VERSES_CHANGED, VERSES_ADDED, VERSES_REMOVED
      * @param lower
      *            an int specifying the bottom of a range
      * @param upper
      *            an int specifying the top of a range
      */
-    public PassageEvent(Object source, int type, Verse lower, Verse upper) {
+    public PassageEvent(Object source, EventType versesChanged, Verse lower, Verse upper) {
         super(source);
 
-        this.type = type;
+        this.type = versesChanged;
         this.lower = lower;
         this.upper = upper;
 
@@ -72,7 +90,7 @@ public class PassageEvent extends EventObject {
      * 
      * @return an int representing the type value
      */
-    public int getType() {
+    public EventType getType() {
         return type;
     }
 
@@ -97,21 +115,6 @@ public class PassageEvent extends EventObject {
     }
 
     /**
-     * Identifies one or more changes in the lists contents.
-     */
-    public static final int VERSES_CHANGED = 0;
-
-    /**
-     * Identifies the addition of one or more contiguous items to the list
-     */
-    public static final int VERSES_ADDED = 1;
-
-    /**
-     * Identifies the removal of one or more contiguous items from the list
-     */
-    public static final int VERSES_REMOVED = 2;
-
-    /**
      * When the lower verse is null
      */
     public static final Verse VERSE_LOWEST = new Verse(BibleBook.GEN, 1, 1, true);
@@ -124,7 +127,7 @@ public class PassageEvent extends EventObject {
     /**
      * The type of change
      */
-    private int type;
+    private EventType type;
 
     /**
      * The lowest numbered element to have changed

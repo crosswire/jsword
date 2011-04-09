@@ -798,7 +798,7 @@ public abstract class AbstractPassage implements Passage {
         }
 
         // Create Event
-        PassageEvent ev = new PassageEvent(source, PassageEvent.VERSES_ADDED, start, end);
+        PassageEvent ev = new PassageEvent(source, PassageEvent.EventType.ADDED, start, end);
 
         // Copy listener vector so it won't change while firing
         List<PassageListener> temp;
@@ -833,7 +833,7 @@ public abstract class AbstractPassage implements Passage {
         }
 
         // Create Event
-        PassageEvent ev = new PassageEvent(source, PassageEvent.VERSES_REMOVED, start, end);
+        PassageEvent ev = new PassageEvent(source, PassageEvent.EventType.REMOVED, start, end);
 
         // Copy listener vector so it won't change while firing
         List<PassageListener> temp;
@@ -868,7 +868,7 @@ public abstract class AbstractPassage implements Passage {
         }
 
         // Create Event
-        PassageEvent ev = new PassageEvent(source, PassageEvent.VERSES_CHANGED, start, end);
+        PassageEvent ev = new PassageEvent(source, PassageEvent.EventType.CHANGED, start, end);
 
         // Copy listener vector so it won't change while firing
         List<PassageListener> temp;
