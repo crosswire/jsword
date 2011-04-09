@@ -83,15 +83,12 @@ public class Version implements Comparable<Version> {
      *
      * @return The original string representation of this version identifier.
      */
+    @Override
     public String toString() {
         return original;
     }
 
-    /**
-     * Returns a hash code value for the object.
-     * 
-     * @return An integer which is a hash code value for this object.
-     */
+    @Override
     public int hashCode() {
         return original.hashCode();
     }
