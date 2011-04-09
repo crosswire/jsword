@@ -25,6 +25,8 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.index.search.DefaultSearchModifier;
+import org.crosswire.jsword.index.search.DefaultSearchRequest;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.NoSuchKeyException;
@@ -74,19 +76,36 @@ public class Speed implements Runnable {
         try {
             start_time = System.currentTimeMillis();
 
-            PassageTally tally;
+
+            DefaultSearchModifier modifier = new DefaultSearchModifier();
+            modifier.setRanked(true);
+
+            // If ranking see if the results are being limited.
+            int rankCount = 35;
+            modifier.setMaxResults(rankCount);
 
             // Part 1, a best match, and doc generate
-            tally = (PassageTally) book.find("\"In the beginning god created the heavens and the earth\"");
-            tally.trimVerses(35);
-            dummyDisplay(tally);
-            tally = null;
+            String param = "\"In the beginning god created the heavens and the earth\"";
+            Key results = book.find(new DefaultSearchRequest(param, modifier));
+
+            // we should get PassageTallys for rank searches
+            if (results instanceof PassageTally) {
+                PassageTally tally = (PassageTally) results;
+                tally.setOrdering(PassageTally.Order.TALLY);
+                tally.trimVerses(rankCount);
+                dummyDisplay(tally);
+                results = null;
+            }
 
             // Part 2, another best match, and doc generate
-            tally = (PassageTally) book.find("\"for god so loves the world that he gave his only begotten son\"");
-            tally.trimVerses(35);
-            dummyDisplay(tally);
-            tally = null;
+            param = "\"for god so loves the world that he gave his only begotten son\"";
+            if (results instanceof PassageTally) {
+                PassageTally tally = (PassageTally) results;
+                tally.setOrdering(PassageTally.Order.TALLY);
+                tally.trimVerses(rankCount);
+                dummyDisplay(tally);
+                results = null;
+            }
 
             // Part 3, a power match, and doc generate
             String nextInput = book.find("aaron & manna").getName();
