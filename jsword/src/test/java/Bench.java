@@ -22,7 +22,7 @@ public class Bench {
         if (args.length == 0) {
             usage();
             versions();
-            System.exit(1);
+            //System.exit(1);
         }
 
         List<Book> dicts = Books.installed().getBooks(BookFilters.getOnlyBibles());
@@ -32,7 +32,7 @@ public class Bench {
         speed.run();
 
         double time = speed.getBenchmark() / 1000.0;
-        System.out.println("CBench mark for '" + args[0] + "': " + time + "s");
+        System.out.println("CBench mark for '" + version + "': " + time + "s");
     }
 
     /**

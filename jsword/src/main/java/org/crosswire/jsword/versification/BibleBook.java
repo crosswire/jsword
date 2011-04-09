@@ -151,6 +151,7 @@ public enum BibleBook {
         return osis;
     }
 
+    @Override
     public String toString() {
         return osis;
     }
