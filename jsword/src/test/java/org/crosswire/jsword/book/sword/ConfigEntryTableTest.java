@@ -27,6 +27,15 @@ import java.io.IOException;
 import junit.framework.TestCase;
 
 import org.crosswire.common.util.Language;
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookData;
+import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.Books;
+import org.crosswire.jsword.book.FeatureType;
+import org.crosswire.jsword.book.OSISUtil;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.NoSuchKeyException;
+import org.jdom.Element;
 
 /**
  * A Raw File format that allows for each verse to have it's own storage.
@@ -48,6 +57,40 @@ public class ConfigEntryTableTest extends TestCase {
 
         table.add(ConfigEntryType.LANG, "de");
         assertEquals("de", ((Language) table.getValue(ConfigEntryType.LANG)).getCode());
+        FeatureType feature = FeatureType.STRONGS_NUMBERS;
+        table.add(ConfigEntryType.FEATURE, FeatureType.STRONGS_NUMBERS.toString());
+        if (table.match(ConfigEntryType.FEATURE, feature.toString())) {
+            assertTrue("Should have Strongs", true);
+        } else {
+            // Many "features" are GlobalOptionFilters, which in the Sword C++ API
+            // indicate a class to use for filtering.
+            // These mostly have the source type prepended to the feature
+            StringBuilder buffer = new StringBuilder((String) table.getValue(ConfigEntryType.SOURCE_TYPE));
+            buffer.append(feature);
+            if (table.match(ConfigEntryType.GLOBAL_OPTION_FILTER, buffer.toString())) {
+                assertTrue("Should have Strongs", true);
+            } else {
+                // But some do not
+                assertTrue("Should have Strongs",  table.match(ConfigEntryType.GLOBAL_OPTION_FILTER, feature.toString()));
+            }
+        }
+        Book book = Books.installed().getBook("KJV");
+        assertTrue("Should have Strongs", book.getBookMetaData().hasFeature(FeatureType.STRONGS_NUMBERS));
+
+        try {
+            Key key = book.getKey("Gen 1:1");
+            BookData data = new BookData(book, key);
+            try {
+                Element osis = data.getOsisFragment();
+                String strongsNumbers = OSISUtil.getStrongsNumbers(osis);
+                assertTrue("No Strongs in KJV", strongsNumbers.length()>0);
+            } catch (BookException e) {
+                fail("Should have Gen 1:1 data");
+            }
+        } catch (NoSuchKeyException e1) {
+            fail("Should have Gen 1:1 key");
+        }
+        
     }
 
     public void testSaveConfigEntryTable() {

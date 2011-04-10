@@ -699,7 +699,7 @@ public final class OSISUtil {
     public static String getStrongsNumbers(Element root) {
         StringBuilder buffer = new StringBuilder();
 
-        for (Content content : getDeepContent(root, OSISUtil.OSIS_ELEMENT_TITLE)) {
+        for (Content content : getDeepContent(root, OSISUtil.OSIS_ELEMENT_W)) {
             Element ele = (Element) content;
             String attr = ele.getAttributeValue(OSISUtil.ATTRIBUTE_W_LEMMA);
             if (attr != null) {
@@ -726,7 +726,7 @@ public final class OSISUtil {
         KeyFactory keyf = PassageKeyFactory.instance();
         Key collector = keyf.createEmptyKeyList();
 
-        for (Content content : getDeepContent(root, OSISUtil.OSIS_ELEMENT_TITLE)) {
+        for (Content content : getDeepContent(root, OSISUtil.OSIS_ELEMENT_REFERENCE)) {
             Element ele = (Element) content;
             String attr = ele.getAttributeValue(OSISUtil.OSIS_ATTR_REF);
             if (attr != null) {
@@ -750,7 +750,7 @@ public final class OSISUtil {
     public static String getNotes(Element root) {
         StringBuilder buffer = new StringBuilder();
 
-        for (Content content : getDeepContent(root, OSISUtil.OSIS_ELEMENT_TITLE)) {
+        for (Content content : getDeepContent(root, OSISUtil.OSIS_ELEMENT_NOTE)) {
             Element ele = (Element) content;
             String attr = ele.getAttributeValue(OSISUtil.OSIS_ATTR_TYPE);
             if (attr == null || !attr.equals(NOTETYPE_REFERENCE)) {
