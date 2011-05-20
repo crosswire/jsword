@@ -132,7 +132,7 @@ public class Languages {
             assert false;
         }
         try {
-            commonLangs = ResourceBundle.getBundle("iso639full", Locale.getDefault(), CWClassLoader.instance());
+            allLangs = ResourceBundle.getBundle("iso639full", Locale.getDefault(), CWClassLoader.instance());
         } catch (MissingResourceException e) {
             assert false;
         }
