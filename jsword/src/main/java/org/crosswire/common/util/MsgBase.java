@@ -56,10 +56,15 @@ public class MsgBase {
      * @return the internationalized text
      */
     public String lookup(String key, Object... params) {
+        String rawMessage = obtainString(key);
         if (params.length == 0) {
-            return shaper.shape(obtainString(key));
+            return shaper.shape(rawMessage);
         }
-        return shaper.shape(MessageFormat.format(obtainString(key), params));
+
+        //MessageFormat strips off all single apostrophes from the message so replace single quotes with two quotes
+        rawMessage = rawMessage.replaceAll("'", "''");
+        
+        return shaper.shape(MessageFormat.format(rawMessage, params));
     }
 
     /**

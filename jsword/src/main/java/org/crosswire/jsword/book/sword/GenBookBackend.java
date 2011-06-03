@@ -133,7 +133,7 @@ public class GenBookBackend extends AbstractBackend {
                 // TRANSLATOR: Error condition: Indicates that something could not be found in the book.
                 // {0} is a placeholder for the unknown key.
                 // {1} is the short name of the book
-                throw new BookException(JSMsg.gettext("No entry for ''{0}'' in {1}.", key.getName(), getBookMetaData().getInitials()));
+                throw new BookException(JSMsg.gettext("No entry for '{0}' in {1}.", key.getName(), getBookMetaData().getInitials()));
             }
 
             byte[] userData = node.getUserData();
