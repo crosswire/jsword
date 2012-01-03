@@ -32,6 +32,7 @@ import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractPassageBook;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyUtil;
 import org.jdom.Content;
 import org.jdom.Element;
 
@@ -131,11 +132,15 @@ public class SwordBook extends AbstractPassageBook {
         }
 
         // If we get here then the text is not marked up with verse
-        // In this case we add the verse markup.
-        Element everse = OSISUtil.factory().createVerse();
-        everse.setAttribute(OSISUtil.OSIS_ATTR_OSISID, key.getOsisID());
-        div.addContent(everse);
-        super.addOSIS(key, everse, osisContent);
+        // In this case we add the verse markup, if the verse is not 0.
+        if (KeyUtil.getPassage(key).getVerseAt(0).getVerse() == 0) {
+            super.addOSIS(key, div, osisContent);
+        } else {
+            Element everse = OSISUtil.factory().createVerse();
+            everse.setAttribute(OSISUtil.OSIS_ATTR_OSISID, key.getOsisID());
+            div.addContent(everse);
+            super.addOSIS(key, everse, osisContent);
+        }
     }
 
     @Override
@@ -153,11 +158,15 @@ public class SwordBook extends AbstractPassageBook {
         }
 
         // If we get here then the text is not marked up with verse
-        // In this case we add the verse markup.
-        Element everse = OSISUtil.factory().createVerse();
-        everse.setAttribute(OSISUtil.OSIS_ATTR_OSISID, key.getOsisID());
-        super.addOSIS(key, everse, osisContent);
-        contentList.add(everse);
+        // In this case we add the verse markup, if the verse is not 0.
+        if (KeyUtil.getPassage(key).getVerseAt(0).getVerse() == 0) {
+            super.addOSIS(key, contentList, osisContent);
+        } else {
+            Element everse = OSISUtil.factory().createVerse();
+            everse.setAttribute(OSISUtil.OSIS_ATTR_OSISID, key.getOsisID());
+            super.addOSIS(key, everse, osisContent);
+            contentList.add(everse);
+        }
     }
 
     /*

@@ -21,8 +21,10 @@
  */
 package org.crosswire.jsword.book.sword;
 
+import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.versification.BibleBook;
+import org.crosswire.jsword.versification.BibleInfo;
 
 /**
  * A Constants to help the SwordBookDriver to read Sword format data.
@@ -101,8 +103,7 @@ public final class SwordConstants {
      */
     public static int getTestament(Verse v) {
         int ord = v.getOrdinal();
-
-        if (ord >= SwordConstants.ORDINAL_MAT11) {
+        if (ord >= SwordConstants.ORDINAL_NT) {
             // This is an NT verse
             return SwordConstants.TESTAMENT_NEW;
         }
@@ -114,13 +115,19 @@ public final class SwordConstants {
      * Get the sword index of the given verse
      */
     static int getIndex(Verse v) {
+        try {
+            return BibleInfo.getTestamentOrdinal(v);
+        } catch (NoSuchVerseException e) {
+            return 0;
+        }
+/*
         int ord = v.getOrdinal();
         int book = v.getBook().ordinal();
         int chapter = v.getChapter();
         int verse = v.getVerse();
         int testament = -1;
 
-        if (ord >= SwordConstants.ORDINAL_MAT11) {
+        if (ord >= SwordConstants.ORDINAL_NT) {
             // This is an NT verse
             testament = SwordConstants.TESTAMENT_NEW;
             book = book - BibleBook.MAL.ordinal();
@@ -134,12 +141,20 @@ public final class SwordConstants {
         short chapOffset = SwordConstants.cps[testament][bookOffset + chapter];
 
         return verse + chapOffset;
+*/
     }
 
     /**
      * The start of the new testament
      */
-    static final int ORDINAL_MAT11 = new Verse(BibleBook.MATT, 1, 1, true).getOrdinal();
+    static int ORDINAL_NT;
+    static {
+        try {
+            ORDINAL_NT = new Verse(BibleBook.INTRO_NT, 0, 0).getOrdinal();
+        } catch (NoSuchVerseException e) {
+            // This must work
+        }
+    }
 
     /**
      * array containing LUT of offsets in the chapter table.

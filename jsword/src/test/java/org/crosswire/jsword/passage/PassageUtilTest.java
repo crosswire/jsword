@@ -337,7 +337,7 @@ public class PassageUtilTest extends TestCase {
         Passage hard = (Passage) keyf.createEmptyKeyList();
         Passage empty = (Passage) keyf.createEmptyKeyList();
 
-        for (int i = 1; i < BibleInfo.versesInBible(); i += 10) {
+        for (int i = 1; i < BibleInfo.maximumOrdinal(); i += 10) {
             hard.add(new Verse(i));
         }
 

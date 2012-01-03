@@ -190,11 +190,11 @@ public class PassageParentTst extends TestCase {
         {
             Iterator<Key> it = gen1_135.rangeIterator(RestrictionType.NONE);
             assertTrue(it.hasNext());
-            assertEquals(it.next(), VerseRangeFactory.fromString("Gen 1:1"));
+            assertEquals(VerseRangeFactory.fromString("Gen 1:1"), it.next());
             assertTrue(it.hasNext());
-            assertEquals(it.next(), VerseRangeFactory.fromString("Gen 1:3"));
+            assertEquals(VerseRangeFactory.fromString("Gen 1:3"), it.next());
             assertTrue(it.hasNext());
-            assertEquals(it.next(), VerseRangeFactory.fromString("Gen 1:5"));
+            assertEquals(VerseRangeFactory.fromString("Gen 1:5"), it.next());
             assertTrue(!it.hasNext());
             it = empty.rangeIterator(RestrictionType.NONE);
             assertTrue(!it.hasNext());
@@ -206,11 +206,11 @@ public class PassageParentTst extends TestCase {
         {
             Iterator<Key> it = gen1_135.iterator();
             assertTrue(it.hasNext());
-            assertEquals(it.next(), VerseFactory.fromString("Gen 1:1"));
+            assertEquals(VerseFactory.fromString("Gen 1:1"), it.next());
             assertTrue(it.hasNext());
-            assertEquals(it.next(), VerseFactory.fromString("Gen 1:3"));
+            assertEquals(VerseFactory.fromString("Gen 1:3"), it.next());
             assertTrue(it.hasNext());
-            assertEquals(it.next(), VerseFactory.fromString("Gen 1:5"));
+            assertEquals(VerseFactory.fromString("Gen 1:5"), it.next());
             assertTrue(!it.hasNext());
             it = empty.iterator();
             assertTrue(!it.hasNext());
@@ -229,50 +229,50 @@ public class PassageParentTst extends TestCase {
     public void testReadCountVerses() {
         // for (int i=0; i<12; i++)
         {
-            assertEquals(gen1_135.countVerses(), 3);
-            assertEquals(exo2a_3b.countVerses(), 21);
-            assertEquals(empty.countVerses(), 0);
+            assertEquals(3, gen1_135.countVerses());
+            assertEquals(21, exo2a_3b.countVerses());
+            assertEquals(0, empty.countVerses());
         }
     }
 
     public void testReadCountRanges() {
         // for (int i=0; i<10; i++)
         {
-            assertEquals(gen1_135.countRanges(RestrictionType.NONE), 3);
-            assertEquals(exo2a_3b.countRanges(RestrictionType.NONE), 2);
-            assertEquals(empty.countVerses(), 0);
+            assertEquals(3, gen1_135.countRanges(RestrictionType.NONE));
+            assertEquals(2, exo2a_3b.countRanges(RestrictionType.NONE));
+            assertEquals(0, empty.countVerses());
         }
     }
 
     public void testReadGetVerseAt() throws Exception {
         // for (int i=0; i<10; i++)
         {
-            assertEquals(gen1_135.getVerseAt(0), gen11);
-            assertEquals(gen1_135.getVerseAt(1), gen13);
-            assertEquals(gen1_135.getVerseAt(2), gen15);
-            assertEquals(exo2a_3b.getVerseAt(0), exo21);
-            assertEquals(exo2a_3b.getVerseAt(1), exo22);
-            assertEquals(exo2a_3b.getVerseAt(2), exo23);
-            assertEquals(exo2a_3b.getVerseAt(20), exo3b);
+            assertEquals(gen11, gen1_135.getVerseAt(0));
+            assertEquals(gen13, gen1_135.getVerseAt(1));
+            assertEquals(gen15, gen1_135.getVerseAt(2));
+            assertEquals(exo21, exo2a_3b.getVerseAt(0));
+            assertEquals(exo22, exo2a_3b.getVerseAt(1));
+            assertEquals(exo23, exo2a_3b.getVerseAt(2));
+            assertEquals(exo3b, exo2a_3b.getVerseAt(20));
         }
     }
 
     public void testReadGetVerseRangeAt() throws Exception {
         // for (int i=0; i<5; i++)
         {
-            assertEquals(gen1_135.getRangeAt(0, RestrictionType.NONE), gen11_1);
-            assertEquals(gen1_135.getRangeAt(1, RestrictionType.NONE), VerseRangeFactory.fromString("Gen 1:3"));
-            assertEquals(gen1_135.getRangeAt(2, RestrictionType.NONE), VerseRangeFactory.fromString("Gen 1:5"));
-            assertEquals(exo2a_3b.getRangeAt(0, RestrictionType.NONE), VerseRangeFactory.fromString("Exo 2:1-10"));
-            assertEquals(exo2a_3b.getRangeAt(1, RestrictionType.NONE), VerseRangeFactory.fromString("Exo 3:1-11"));
+            assertEquals(gen11_1, gen1_135.getRangeAt(0, RestrictionType.NONE));
+            assertEquals(VerseRangeFactory.fromString("Gen 1:3"), gen1_135.getRangeAt(1, RestrictionType.NONE));
+            assertEquals(VerseRangeFactory.fromString("Gen 1:5"), gen1_135.getRangeAt(2, RestrictionType.NONE));
+            assertEquals(VerseRangeFactory.fromString("Exo 2:1-10"), exo2a_3b.getRangeAt(0, RestrictionType.NONE));
+            assertEquals(VerseRangeFactory.fromString("Exo 3:1-11"), exo2a_3b.getRangeAt(1, RestrictionType.NONE));
         }
     }
 
     public void testReadBooksInPassage() {
         // for (int i=0; i<12; i++)
         {
-            assertEquals(gen1_135.booksInPassage(), 1);
-            assertEquals(exo2a_3b.booksInPassage(), 1);
+            assertEquals(1, gen1_135.booksInPassage());
+            assertEquals(1, exo2a_3b.booksInPassage());
         }
     }
 
@@ -799,7 +799,7 @@ public class PassageParentTst extends TestCase {
 
     public void testWriteObject() throws Exception {
         Passage hard = (Passage) keyf.createEmptyKeyList();
-        for (int i = 1; i < BibleInfo.versesInBible(); i += 200) {
+        for (int i = 10; i < BibleInfo.maximumOrdinal(); i += 200) {
             hard.add(new Verse(i));
         }
 

@@ -22,7 +22,7 @@
 package org.crosswire.jsword.book;
 
 /**
- * A BookSelectEvent happens whenever a user selects a book.
+ * A BookProvider provides a list of books.
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.

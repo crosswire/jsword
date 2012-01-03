@@ -167,13 +167,13 @@ public final class PassageKeyFactory implements KeyFactory {
         int ranges = ref.countRanges(RestrictionType.NONE);
 
         // the size in bytes of teach storage method
-        int bitwise_size = BibleInfo.versesInBible() / 8;
+        int bitwise_size = BibleInfo.maximumOrdinal() / 8;
         int ranged_size = (ranges * 4) + 1;
         int distinct_size = (verses * 2) + 1;
 
         // if bitwise is equal smallest
         if (bitwise_size <= ranged_size && bitwise_size <= distinct_size) {
-            int array_size = binarySize(AbstractPassage.METHOD_COUNT) + (BibleInfo.versesInBible() / 8) + 1;
+            int array_size = binarySize(AbstractPassage.METHOD_COUNT) + (BibleInfo.maximumOrdinal() / 8) + 1;
             byte[] buffer = new byte[array_size];
             int index = 0;
 
@@ -195,41 +195,41 @@ public final class PassageKeyFactory implements KeyFactory {
             return buffer;
         } else if (distinct_size <= ranged_size) {
             // if distinct is not bigger than ranged
-            int array_size = binarySize(AbstractPassage.METHOD_COUNT) + binarySize(BibleInfo.versesInBible())
-                    + (verses * binarySize(BibleInfo.versesInBible()));
+            int array_size = binarySize(AbstractPassage.METHOD_COUNT) + binarySize(BibleInfo.maximumOrdinal())
+                    + (verses * binarySize(BibleInfo.maximumOrdinal()));
             byte[] buffer = new byte[array_size];
             int index = 0;
 
             // write the Passage type and the number of verses. There must be
             // less than 2**16 verses
             index += toBinary(buffer, index, AbstractPassage.DISTINCT, AbstractPassage.METHOD_COUNT);
-            index += toBinary(buffer, index, verses, BibleInfo.versesInBible());
+            index += toBinary(buffer, index, verses, BibleInfo.maximumOrdinal());
 
             // write the verse ordinals in a loop
             for (Key aKey : ref) {
                 Verse verse = (Verse) aKey;
                 int ord = verse.getOrdinal();
-                index += toBinary(buffer, index, ord, BibleInfo.versesInBible());
+                index += toBinary(buffer, index, ord, BibleInfo.maximumOrdinal());
             }
 
             return buffer;
         } else {
             // otherwise use ranges
-            int array_size = binarySize(AbstractPassage.METHOD_COUNT) + binarySize(BibleInfo.versesInBible() / 2)
-                    + (2 * ranges * binarySize(BibleInfo.versesInBible()));
+            int array_size = binarySize(AbstractPassage.METHOD_COUNT) + binarySize(BibleInfo.maximumOrdinal() / 2)
+                    + (2 * ranges * binarySize(BibleInfo.maximumOrdinal()));
             byte[] buffer = new byte[array_size];
             int index = 0;
 
             // write the Passage type and the number of ranges
             index += toBinary(buffer, index, AbstractPassage.RANGED, AbstractPassage.METHOD_COUNT);
-            index += toBinary(buffer, index, ranges, BibleInfo.versesInBible() / 2);
+            index += toBinary(buffer, index, ranges, BibleInfo.maximumOrdinal() / 2);
 
             // write the verse ordinals in a loop
             Iterator<Key> it = ref.rangeIterator(RestrictionType.NONE);
             while (it.hasNext()) {
                 VerseRange range = (VerseRange) it.next();
-                index += toBinary(buffer, index, range.getStart().getOrdinal(), BibleInfo.versesInBible());
-                index += toBinary(buffer, index, range.getCardinality(), BibleInfo.versesInBible());
+                index += toBinary(buffer, index, range.getStart().getOrdinal(), BibleInfo.maximumOrdinal());
+                index += toBinary(buffer, index, range.getCardinality(), BibleInfo.maximumOrdinal());
             }
 
             // chop to size
@@ -264,7 +264,7 @@ public final class PassageKeyFactory implements KeyFactory {
 
         switch (type) {
         case AbstractPassage.BITWISE:
-            for (int ord = 1; ord <= BibleInfo.versesInBible(); ord++) {
+            for (int ord = 1; ord <= BibleInfo.maximumOrdinal(); ord++) {
                 // Which byte should we be viewing
                 int idx0 = (ord / 8) + index[0];
 
@@ -279,18 +279,18 @@ public final class PassageKeyFactory implements KeyFactory {
             break;
 
         case AbstractPassage.DISTINCT:
-            int verses = fromBinary(buffer, index, BibleInfo.versesInBible());
+            int verses = fromBinary(buffer, index, BibleInfo.maximumOrdinal());
             for (int i = 0; i < verses; i++) {
-                int ord = fromBinary(buffer, index, BibleInfo.versesInBible());
+                int ord = fromBinary(buffer, index, BibleInfo.maximumOrdinal());
                 ref.add(new Verse(ord));
             }
             break;
 
         case AbstractPassage.RANGED:
-            int ranges = fromBinary(buffer, index, BibleInfo.versesInBible() / 2);
+            int ranges = fromBinary(buffer, index, BibleInfo.maximumOrdinal() / 2);
             for (int i = 0; i < ranges; i++) {
-                int ord = fromBinary(buffer, index, BibleInfo.versesInBible());
-                int len = fromBinary(buffer, index, BibleInfo.versesInBible());
+                int ord = fromBinary(buffer, index, BibleInfo.maximumOrdinal());
+                int len = fromBinary(buffer, index, BibleInfo.maximumOrdinal());
                 ref.add(RestrictionType.NONE.toRange(new Verse(ord), len));
             }
             break;

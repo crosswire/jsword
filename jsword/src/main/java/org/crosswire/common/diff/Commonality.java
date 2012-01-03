@@ -129,7 +129,11 @@ public class Commonality {
             return hm;
         }
 
-        return new CommonMiddle(hm.getTargetPrefix(), hm.getTargetSuffix(), hm.getSourcePrefix(), hm.getSourceSuffix(), hm.getCommonality());
+        // While hm cannot be null our QA checker can't figure that out.
+        if (hm != null) {
+            return new CommonMiddle(hm.getTargetPrefix(), hm.getTargetSuffix(), hm.getSourcePrefix(), hm.getSourceSuffix(), hm.getCommonality());
+        }
+        return null;
     }
 
     private static int ceil(int number, int divisor) {

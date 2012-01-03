@@ -551,11 +551,6 @@ public final class Job implements Progress {
                 JobManager.fireWorkProgressed(Job.this);
             }
         }
-
-        /**
-         * Serialization ID
-         */
-        private static final long serialVersionUID = 3256721784160924983L;
     }
 
     /**

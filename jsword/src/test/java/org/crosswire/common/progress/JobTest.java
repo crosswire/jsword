@@ -99,7 +99,6 @@ public class JobTest extends TestCase {
         assertEquals(false, job.isFinished());
         assertEquals(true, job.isCancelable());
         assertEquals(WIBBLE, job.getSectionName());
-        assertEquals(0, job.getWork());
         job.done();
         assertEquals(true, job.isFinished());
         assertEquals(100, job.getWork());

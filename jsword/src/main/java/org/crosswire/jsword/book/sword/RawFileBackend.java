@@ -296,7 +296,7 @@ public class RawFileBackend extends RawBackend {
         BufferedOutputStream otIdxBos = new BufferedOutputStream(new FileOutputStream(otIndexFile, false));
 
         try {
-            for (int i = 0; i < SwordConstants.ORDINAL_MAT11; i++) {
+            for (int i = 0; i < SwordConstants.ORDINAL_NT; i++) {
                 writeInitialIndex(otIdxBos);
             }
         } finally {
@@ -306,8 +306,8 @@ public class RawFileBackend extends RawBackend {
         File ntIndexFile = idxFile[SwordConstants.TESTAMENT_NEW];
         BufferedOutputStream ntIdxBos = new BufferedOutputStream(new FileOutputStream(ntIndexFile, false));
         try {
-            int totVerses = BibleInfo.versesInBible();
-            for (int i = SwordConstants.ORDINAL_MAT11; i < totVerses; i++) {
+            int totVerses = BibleInfo.maximumOrdinal();
+            for (int i = SwordConstants.ORDINAL_NT; i < totVerses; i++) {
                 writeInitialIndex(ntIdxBos);
             }
         } finally {

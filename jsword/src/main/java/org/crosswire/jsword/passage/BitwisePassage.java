@@ -215,7 +215,7 @@ public class BitwisePassage extends AbstractPassage {
         if (that instanceof BitwisePassage) {
             thatStore = ((BitwisePassage) that).store;
         } else {
-            thatStore = new BitSet(BibleInfo.versesInBible() + 1);
+            thatStore = new BitSet(BibleInfo.maximumOrdinal() + 1);
 
             for (Key aKey : that) {
                 int ord = ((Verse) aKey).getOrdinal();
@@ -251,12 +251,12 @@ public class BitwisePassage extends AbstractPassage {
             raiseEventSuppresion();
             raiseNormalizeProtection();
 
-            int versesInBible = BibleInfo.versesInBible();
-            BitSet newStore = new BitSet(versesInBible + 1);
+            int maximumOrdinal = BibleInfo.maximumOrdinal();
+            BitSet newStore = new BitSet(maximumOrdinal + 1);
 
             for (int i = store.nextSetBit(0); i >= 0; i = store.nextSetBit(i + 1)) {
                 int start = Math.max(1, i - verses);
-                int end = Math.min(versesInBible, i + verses);
+                int end = Math.min(maximumOrdinal, i + verses);
 
                 for (int j = start; j <= end; j++) {
                     newStore.set(j);
@@ -364,7 +364,7 @@ public class BitwisePassage extends AbstractPassage {
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         optimizeWrites();
 
-        store = new BitSet(BibleInfo.versesInBible() + 1);
+        store = new BitSet(BibleInfo.maximumOrdinal() + 1);
 
         in.defaultReadObject();
 
@@ -379,5 +379,5 @@ public class BitwisePassage extends AbstractPassage {
     /**
      * The place the real data is stored
      */
-    protected transient BitSet store = new BitSet(BibleInfo.versesInBible() + 1);
+    protected transient BitSet store = new BitSet(BibleInfo.maximumOrdinal() + 1);
 }

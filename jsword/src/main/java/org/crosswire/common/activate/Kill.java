@@ -28,20 +28,20 @@ package org.crosswire.common.activate;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class Kill {
+public enum Kill {
     /** Try as hard as possible to conserve memory */
-    public static final Kill EVERYTHING = new Kill() {
+    EVERYTHING  {
         @Override
         public void reduceMemoryUsage() {
             Activator.deactivateAll();
         }
-    };
+    },
 
     /** Reduce memory usage, but only where sensible */
-    public static final Kill LEAST_USED = new Kill();
+    LEAST_USED,
 
     /** Reduce memory usage, but only if we really need to */
-    public static final Kill ONLY_IF_TIGHT = new Kill();
+    ONLY_IF_TIGHT;
 
     public void reduceMemoryUsage() {
         throw new IllegalArgumentException("Not implemented");

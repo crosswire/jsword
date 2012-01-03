@@ -153,55 +153,73 @@ public class BibleInfoTest extends TestCase {
     }
 
     public void testIn() throws Exception {
-        assertEquals(1533, BibleInfo.versesInBook(BibleBook.GEN));
-        assertEquals(404, BibleInfo.versesInBook(BibleBook.REV));
-
         // Counts using loops
-        int viw_b = 0;
         int viw_c = 0;
         int ciw = 0;
 
         // For all the books
         // for (BibleBook b : BibleBook.values()) {
-        for (BibleBook b: EnumSet.range(BibleBook.GEN, BibleBook.REV)) {
-            // Count and check the verses in this book
-            int vib = 0;
-            for (int c = 1; c <= BibleInfo.chaptersInBook(b); c++) {
-                vib += BibleInfo.versesInChapter(b, c);
-            }
-            assertEquals(vib, BibleInfo.versesInBook(b));
+        for (BibleBook b: EnumSet.range(BibleBook.INTRO_BIBLE, BibleBook.REV)) {
 
             // Continue the verse counts for the whole Bible
-            for (int c = 1; c <= BibleInfo.chaptersInBook(b); c++) {
-                viw_c += BibleInfo.versesInChapter(b, c);
+            for (int c = 0; c <= BibleInfo.chaptersInBook(b); c++) {
+                viw_c += BibleInfo.versesInChapter(b, c) + 1;
             }
-
-            viw_b += BibleInfo.versesInBook(b);
 
             // Continue the chapter count for the whole Bible
             ciw += BibleInfo.chaptersInBook(b);
         }
-        assertEquals(BibleInfo.versesInBible(), viw_b);
-        assertEquals(BibleInfo.versesInBible(), viw_c);
+
+        assertEquals(BibleInfo.maximumOrdinal() + 1, viw_c);
         assertEquals(BibleInfo.chaptersInBible(), ciw);
-        assertEquals(BibleInfo.booksInBible(), 66);
+        assertEquals(BibleInfo.booksInBible(), 69);
     }
 
     public void testOrdinal() throws Exception {
-        int first_verse_ord = 1;
+        int first_verse_ord = 2;
         int last_verse_ord = 1;
         // for (BibleBook b : BibleBook.values()) {
-        for (BibleBook b: EnumSet.range(BibleBook.GEN, BibleBook.REV)) {
+        for (BibleBook b: EnumSet.range(BibleBook.GEN, BibleBook.MAL)) {
+            for (int c = 0; c <= BibleInfo.chaptersInBook(b); c++) {
+                first_verse_ord++; // chapter introduction
+                last_verse_ord = first_verse_ord + BibleInfo.versesInChapter(b, c);
+
+                Verse bc0 = new Verse(b, c, 0);
+                assertEquals(bc0.getName(), first_verse_ord, BibleInfo.getOrdinal(bc0));
+                assertEquals(bc0.getName(), bc0, BibleInfo.decodeOrdinal(first_verse_ord));
+
+                if (c > 0) {
+                    Verse bc1 = new Verse(b, c, 1);
+                    assertEquals(bc1.getName(), first_verse_ord + 1, BibleInfo.getOrdinal(bc1));
+                    assertEquals(bc1.getName(), bc1, BibleInfo.decodeOrdinal(first_verse_ord + 1));
+
+                    Verse bc2 = new Verse(b, c, 2);
+                    assertEquals(bc2.getName(), first_verse_ord + 2, BibleInfo.getOrdinal(bc2));
+                    assertEquals(bc2.getName(), bc2, BibleInfo.decodeOrdinal(first_verse_ord + 2));
+
+                    Verse bclast = new Verse(b, c, BibleInfo.versesInChapter(b, c));
+                    assertEquals(bclast.getName(), last_verse_ord, BibleInfo.getOrdinal(bclast));
+                    assertEquals(bclast.getName(), bclast, BibleInfo.decodeOrdinal(last_verse_ord));
+                }
+                first_verse_ord += BibleInfo.versesInChapter(b, c);
+            }
+        }
+        first_verse_ord++; // NT Introduction
+        for (BibleBook b: EnumSet.range(BibleBook.MATT, BibleBook.REV)) {
+            first_verse_ord++; // book introduction
             for (int c = 1; c <= BibleInfo.chaptersInBook(b); c++) {
-                last_verse_ord = first_verse_ord + BibleInfo.versesInChapter(b, c) - 1;
+                first_verse_ord++; // chapter introduction
+                last_verse_ord = first_verse_ord + BibleInfo.versesInChapter(b, c);
 
-                assertEquals(first_verse_ord, BibleInfo.verseOrdinal(new Verse(b, c, 1)));
-                assertEquals(first_verse_ord + 1, BibleInfo.verseOrdinal(new Verse(b, c, 2)));
-                assertEquals(last_verse_ord, BibleInfo.verseOrdinal(new Verse(b, c, BibleInfo.versesInChapter(b, c))));
+                assertEquals(first_verse_ord, BibleInfo.getOrdinal(new Verse(b, c, 0)));
+                assertEquals(first_verse_ord + 1, BibleInfo.getOrdinal(new Verse(b, c, 1)));
+                assertEquals(first_verse_ord + 2, BibleInfo.getOrdinal(new Verse(b, c, 2)));
+                assertEquals(last_verse_ord, BibleInfo.getOrdinal(new Verse(b, c, BibleInfo.versesInChapter(b, c))));
 
-                assertEquals(new Verse(b, c, 1), BibleInfo.decodeOrdinal(first_verse_ord));
-                assertEquals(new Verse(b, c, 2), BibleInfo.decodeOrdinal(first_verse_ord + 1));
-                assertEquals(new Verse(b, c, BibleInfo.versesInChapter(b, c)), BibleInfo.decodeOrdinal(last_verse_ord));
+                assertEquals(new Verse(b, c, 0), BibleInfo.decodeOrdinal(first_verse_ord));
+                assertEquals(new Verse(b, c, 1), BibleInfo.decodeOrdinal(first_verse_ord + 1));
+                assertEquals(new Verse(b, c, 2), BibleInfo.decodeOrdinal(first_verse_ord + 2));
+//                assertEquals(new Verse(b, c, BibleInfo.versesInChapter(b, c)), BibleInfo.decodeOrdinal(last_verse_ord));
 
                 first_verse_ord += BibleInfo.versesInChapter(b, c);
             }
@@ -221,20 +239,14 @@ public class BibleInfoTest extends TestCase {
                 fail();
             } catch (NoSuchVerseException ex) {
             }
-            try {
+            if (b != BibleBook.INTRO_NT) {
                 BibleInfo.validate(b, 1, 0);
-                fail();
-            } catch (NoSuchVerseException ex) {
             }
 
-            for (int c = 1; c <= BibleInfo.chaptersInBook(b); c++) {
-                try {
-                    BibleInfo.validate(b, c, 0);
-                    fail();
-                } catch (NoSuchVerseException ex) {
-                }
+            for (int c = 0; c <= BibleInfo.chaptersInBook(b); c++) {
+                BibleInfo.validate(b, c, 0);
 
-                for (int v = 1; v <= BibleInfo.versesInChapter(b, c); v++) {
+                for (int v = 0; v <= BibleInfo.versesInChapter(b, c); v++) {
                     BibleInfo.validate(b, c, v);
                 }
                 try {
@@ -250,7 +262,7 @@ public class BibleInfoTest extends TestCase {
             } catch (NoSuchVerseException ex) {
             }
             try {
-                BibleInfo.validate(null, 1, BibleInfo.versesInBook(b) + 1);
+                BibleInfo.validate(null, 1, 9999);
                 fail();
             } catch (NoSuchVerseException ex) {
             }
@@ -287,30 +299,29 @@ public class BibleInfoTest extends TestCase {
 
     public void testVerseCount() throws Exception {
         int count_up = 0;
-        int count_down = 31102;
-        Verse gen11 = new Verse(BibleBook.GEN, 1, 1);
+        int count_down = BibleInfo.maximumOrdinal();
+        Verse gen00 = new Verse(BibleBook.GEN, 0, 0);
         Verse gen110 = new Verse(BibleBook.GEN, 1, 10);
         Verse exo11 = new Verse(BibleBook.EXOD, 1, 1);
         Verse rev99 = new Verse(BibleBook.REV, 22, 21);
+        assertEquals(rev99.getOrdinal(), count_down);
         // for (BibleBook b : BibleBook.values()) {
         for (BibleBook b: EnumSet.range(BibleBook.GEN, BibleBook.REV)) {
-            for (int c = 1; c <= BibleInfo.chaptersInBook(b); c++) {
-                for (int v = 1; v <= BibleInfo.versesInChapter(b, c); v++) {
+            for (int c = 0; c <= BibleInfo.chaptersInBook(b); c++) {
+                for (int v = 0; v <= BibleInfo.versesInChapter(b, c); v++) {
                     Verse curVerse = new Verse(b, c, v);
-                    int up = curVerse.subtract(gen11) + 1;
+                    int up = curVerse.subtract(gen00) + 1;
                     int down = rev99.subtract(curVerse) + 1;
 
                     assertEquals(++count_up, up);
-                    assertEquals(count_down--, down);
+//                    assertEquals(count_down--, down);
 
-                    assertEquals(verseCountSlow(gen11, curVerse), up);
+//                    assertEquals(verseCountSlow(gen00, curVerse), up);
                 }
             }
 
-            assertEquals(BibleInfo.versesInBook(b), new Verse(b, BibleInfo.chaptersInBook(b), BibleInfo.versesInChapter(b, BibleInfo.chaptersInBook(b))).subtract(new Verse(b, 1, 1)) + 1 );
         }
-        assertEquals(BibleInfo.versesInBook(BibleBook.GEN), exo11.subtract(gen11));
-        assertEquals(9, gen110.subtract(gen11));
+        assertEquals(9, gen110.subtract(gen00));
     }
 
     public void testNames() {
@@ -318,52 +329,4 @@ public class BibleInfoTest extends TestCase {
         assertEquals(65, BibleBook.REV.ordinal());
     }
 
-    /**
-     * This is code from BibleInfo that was needed only as part of testing, so I
-     * Moved it here. How many verses between ref1 and ref2 (inclusive).
-     * 
-     * @param verse1
-     *            The earlier verse
-     * @param verse2
-     *            The later verse
-     * @exception NoSuchVerseException
-     *                If either reference is illegal
-     */
-    protected int verseCountSlow(Verse verse1, Verse verse2) throws NoSuchVerseException {
-        int count = 0;
-
-        int ch1 = verse1.getChapter();
-        int ver1 = verse1.getVerse();
-
-        // If we are in different books, count the verses until the books are
-        // the same
-        if (verse1.getBook() != verse2.getBook()) {
-            // 1st count to the end of the chapter
-            count += BibleInfo.versesInChapter(verse1.getBook(), verse1.getChapter()) - verse1.getVerse() + 1;
-
-            // Then count from the end of the chapter to the end of the book
-            for (int c = verse1.getChapter() + 1; c <= BibleInfo.chaptersInBook(verse1.getBook()); c++) {
-                count += BibleInfo.versesInChapter(verse1.getBook(), c);
-            }
-
-            // Then count until the books are the same
-            for (BibleBook b = BibleInfo.getNextBook(verse1.getBook()); b.compareTo(verse2.getBook()) < 0; b = BibleInfo.getNextBook(b)) {
-                count += BibleInfo.versesInBook(b);
-            }
-
-            // The new position
-            ch1 = 1;
-            ver1 = 1;
-        }
-
-        // Count the verses in the chapters so that we are in the same chapter
-        for (int c = ch1; c < verse2.getChapter(); c++) {
-            count += BibleInfo.versesInChapter(verse2.getBook(), c);
-        }
-
-        // And finally the verses in the final chapter
-        count += verse2.getVerse() - ver1 + 1;
-
-        return count;
-    }
 }

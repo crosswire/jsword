@@ -10,6 +10,10 @@ import org.crosswire.jsword.passage.NoSuchVerseException;
  * A BibleBook is a book of the Bible. It may or may not be canonical.
  */
 public enum BibleBook {
+    // JSword introduction to the Bible
+    INTRO_BIBLE("Intro.Bible"),
+    // JSword introduction to the Old Testament
+    INTRO_OT("Intro.OT"),
     // Old Testament
     GEN("Gen"),
     EXOD("Exod"),
@@ -50,6 +54,8 @@ public enum BibleBook {
     HAG("Hag"),
     ZECH("Zech"),
     MAL("Mal"),
+    // JSword introduction to the New Testament
+    INTRO_NT("Intro.NT"),
     // New Testament
     MATT("Matt"),
     MARK("Mark"),

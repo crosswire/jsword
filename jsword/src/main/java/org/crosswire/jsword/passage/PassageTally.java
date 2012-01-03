@@ -415,7 +415,7 @@ public class PassageTally extends AbstractPassage {
         if (that instanceof PassageTally) {
             PassageTally that_rt = (PassageTally) that;
 
-            int vib = BibleInfo.versesInBible();
+            int vib = BibleInfo.maximumOrdinal();
             for (int i = 0; i < vib; i++) {
                 increment(i + 1, that_rt.board[i]);
             }
@@ -445,7 +445,7 @@ public class PassageTally extends AbstractPassage {
         if (that instanceof PassageTally) {
             PassageTally that_rt = (PassageTally) that;
 
-            int vib = BibleInfo.versesInBible();
+            int vib = BibleInfo.maximumOrdinal();
             for (int i = 0; i < vib; i++) {
                 increment(i, -that_rt.board[i - 1]);
             }
@@ -472,7 +472,7 @@ public class PassageTally extends AbstractPassage {
         if (that instanceof PassageTally) {
             PassageTally that_rt = (PassageTally) that;
 
-            int vib = BibleInfo.versesInBible();
+            int vib = BibleInfo.maximumOrdinal();
             for (int i = 0; i < vib; i++) {
                 if (that_rt.board[i] != 0) {
                     kill(i + 1);
@@ -496,7 +496,7 @@ public class PassageTally extends AbstractPassage {
     public void clear() {
         optimizeWrites();
 
-        int vib = BibleInfo.versesInBible();
+        int vib = BibleInfo.maximumOrdinal();
         for (int i = 0; i < vib; i++) {
             board[i] = 0;
         }
@@ -551,7 +551,7 @@ public class PassageTally extends AbstractPassage {
     public void flatten() {
         optimizeWrites();
 
-        int vib = BibleInfo.versesInBible();
+        int vib = BibleInfo.maximumOrdinal();
         for (int i = 0; i < vib; i++) {
             if (board[i] != 0) {
                 board[i] = 1;
@@ -584,7 +584,7 @@ public class PassageTally extends AbstractPassage {
                 }
             }
         } else {
-            int[] new_board = new int[BibleInfo.versesInBible()];
+            int[] new_board = new int[BibleInfo.maximumOrdinal()];
 
             int vib = new_board.length;
             for (int i = 0; i < vib; i++) {
@@ -592,7 +592,7 @@ public class PassageTally extends AbstractPassage {
                     // This could be re-written more simply:
                     // for (int j = -verses; j <= verses; j++) {
                     //     int k = i + j;
-                    //     if (k >= 0 && k < BibleInfo.versesInBible()) {
+                    //     if (k >= 0 && k < BibleInfo.maximumOrdinal()) {
                     //         new_board[k] += board[i] + verses - mod(j);
                     //     }
                     // }
@@ -634,7 +634,7 @@ public class PassageTally extends AbstractPassage {
     private void resetMax() {
         optimizeWrites();
 
-        int vib = BibleInfo.versesInBible();
+        int vib = BibleInfo.maximumOrdinal();
         max = 0;
         size = 0;
         for (int i = 0; i < vib; i++) {
@@ -752,7 +752,7 @@ public class PassageTally extends AbstractPassage {
     /**
      * The tally board itself
      */
-    protected int[] board = new int[BibleInfo.versesInBible()];
+    protected int[] board = new int[BibleInfo.maximumOrdinal()];
 
     /**
      * The maximum tally possible
@@ -791,7 +791,7 @@ public class PassageTally extends AbstractPassage {
          * @see java.util.Iterator#hasNext()
          */
         public boolean hasNext() {
-            return next <= BibleInfo.versesInBible();
+            return next <= BibleInfo.maximumOrdinal();
         }
 
         /* (non-Javadoc)
@@ -799,7 +799,7 @@ public class PassageTally extends AbstractPassage {
          */
         public Key next() throws NoSuchElementException {
             try {
-                if (next > BibleInfo.versesInBible()) {
+                if (next > BibleInfo.maximumOrdinal()) {
                     throw new NoSuchElementException();
                 }
 
@@ -826,7 +826,7 @@ public class PassageTally extends AbstractPassage {
         private void calculateNext() {
             do {
                 next++;
-            } while (next <= BibleInfo.versesInBible() && board[next - 1] == 0);
+            } while (next <= BibleInfo.maximumOrdinal() && board[next - 1] == 0);
         }
 
         /** What is the next Verse to be considered */
@@ -845,7 +845,7 @@ public class PassageTally extends AbstractPassage {
         protected OrderedVerseIterator(int[] board) {
             TreeSet<TalliedVerse> output = new TreeSet<TalliedVerse>();
 
-            int vib = BibleInfo.versesInBible();
+            int vib = BibleInfo.maximumOrdinal();
             for (int i = 0; i < vib; i++) {
                 if (board[i] != 0) {
                     output.add(new TalliedVerse(i + 1, board[i]));

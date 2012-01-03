@@ -59,7 +59,7 @@ import org.crosswire.jsword.passage.NoSuchVerseException;
         } catch (NullPointerException ex) {
             throw new NoSuchVerseException(JSOtherMsg.lookupText("Book must not be null"));
         } catch (ArrayIndexOutOfBoundsException ex) {
-            throw new NoSuchVerseException(JSOtherMsg.lookupText("Book must be between 1 and 66 (given {0,number,integer}).", Integer.valueOf(book.ordinal())));
+            throw new NoSuchVerseException(JSOtherMsg.lookupText("Book must be between 0 and 66 (given {0,number,integer}).", Integer.valueOf(book.ordinal())));
         }
     }
 

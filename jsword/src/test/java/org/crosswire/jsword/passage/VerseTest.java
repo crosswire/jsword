@@ -318,7 +318,7 @@ public class VerseTest extends TestCase {
         assertEquals(gen11.subtract(gen11), 0);
         assertEquals(gen11.subtract(gen12), -1);
         Verse last = gen11.clone();
-        for (int i = 0; i < BibleInfo.versesInBible(); i += 99) {
+        for (int i = 0; i < BibleInfo.maximumOrdinal(); i += 99) {
             Verse next = last.add(i);
             assertEquals(next.subtract(last), i);
 

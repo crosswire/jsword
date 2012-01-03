@@ -1142,7 +1142,7 @@ public abstract class AbstractPassage implements Passage {
      */
     protected void writeObjectSupport(ObjectOutputStream out) throws IOException {
         // the size in bits of teach storage method
-        int bitwise_size = BibleInfo.versesInBible();
+        int bitwise_size = BibleInfo.maximumOrdinal();
         int ranged_size = 8 * countRanges(RestrictionType.NONE);
         int distinct_size = 4 * countVerses();
 
@@ -1150,7 +1150,7 @@ public abstract class AbstractPassage implements Passage {
         if (bitwise_size <= ranged_size && bitwise_size <= distinct_size) {
             out.writeInt(BITWISE);
 
-            BitSet store = new BitSet(BibleInfo.versesInBible());
+            BitSet store = new BitSet(BibleInfo.maximumOrdinal());
             for (Key aKey : this) {
                 Verse verse = (Verse) aKey;
                 store.set(verse.getOrdinal() - 1);
@@ -1224,7 +1224,7 @@ public abstract class AbstractPassage implements Passage {
             switch (type) {
             case BITWISE:
                 BitSet store = (BitSet) is.readObject();
-                for (int i = 0; i < BibleInfo.versesInBible(); i++) {
+                for (int i = 0; i < BibleInfo.maximumOrdinal(); i++) {
                     if (store.get(i)) {
                         add(new Verse(i + 1));
                     }

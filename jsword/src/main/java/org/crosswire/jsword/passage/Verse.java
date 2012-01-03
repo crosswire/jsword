@@ -338,7 +338,7 @@ public final class Verse implements Key {
      */
     public Verse add(int extra) {
         try {
-            int new_ordinal = Math.min(getOrdinal() + extra, BibleInfo.versesInBible());
+            int new_ordinal = Math.min(getOrdinal() + extra, BibleInfo.maximumOrdinal());
             return new Verse(new_ordinal);
         } catch (NoSuchVerseException ex) {
             assert false : ex;
@@ -379,7 +379,7 @@ public final class Verse implements Key {
      * @return true or false ...
      */
     public boolean isStartOfChapter() {
-        return verse == 1;
+        return verse == 1 || verse == 0;
     }
 
     /**
@@ -402,7 +402,7 @@ public final class Verse implements Key {
      * @return true or false ...
      */
     public boolean isStartOfBook() {
-        return verse == 1 && chapter == 1;
+        return (verse == 1 || verse == 0) && (chapter == 1 || chapter == 0);
     }
 
     /**
@@ -449,7 +449,7 @@ public final class Verse implements Key {
      */
     public int getOrdinal() {
         try {
-            return BibleInfo.verseOrdinal(this);
+            return BibleInfo.getOrdinal(this);
         } catch (NoSuchVerseException ex) {
             // A verse should never be illegal so
             log.error("ref=" + book + ", " + chapter + ", " + verse);
