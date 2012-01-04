@@ -39,6 +39,8 @@ import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.versification.BibleInfo;
+import org.crosswire.jsword.versification.Testament;
 
 /**
  * A backend to read compressed data verse based files. While the text file
@@ -95,11 +97,8 @@ import org.crosswire.jsword.passage.Verse;
  * in the text file seek to the text-block-index
  * read data-size bytes
  * decipher them if they are encrypted
- * unGZIP them into a byte array of uncompressed-size
+ * unGZIP them into a byte uncompressed-size
  * </pre>
- * 
- * TODO(DM): Testament 0 is used to index an README file for the bible. At this
- * time it is ignored.
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
@@ -119,117 +118,103 @@ public class ZVerseBackend extends AbstractBackend {
         this.blockType = blockType;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.common.activate.Activatable#activate(org.crosswire.common
-     * .activate.Lock)
+    /* (non-Javadoc)
+     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
      */
     public final void activate(Lock lock) {
         try {
-            if (idxFile[SwordConstants.TESTAMENT_OLD] == null) {
+            if (otIdxFile == null) {
                 URI path = getExpandedDataPath();
-                String otAllButLast = NetUtil.lengthenURI(path, File.separator + SwordConstants.FILE_OT + '.' + blockType.getIndicator() + SUFFIX_PART1)
-                        .getPath();
-                idxFile[SwordConstants.TESTAMENT_OLD] = new File(otAllButLast + SUFFIX_INDEX);
-                textFile[SwordConstants.TESTAMENT_OLD] = new File(otAllButLast + SUFFIX_TEXT);
-                compFile[SwordConstants.TESTAMENT_OLD] = new File(otAllButLast + SUFFIX_COMP);
+                String otAllButLast = NetUtil.lengthenURI(path, File.separator + SwordConstants.FILE_OT + '.' + blockType.getIndicator() + SUFFIX_PART1).getPath();
+                otIdxFile = new File(otAllButLast + SUFFIX_INDEX);
+                otTextFile = new File(otAllButLast + SUFFIX_TEXT);
+                otCompFile = new File(otAllButLast + SUFFIX_COMP);
 
-                String ntAllButLast = NetUtil.lengthenURI(path, File.separator + SwordConstants.FILE_NT + '.' + blockType.getIndicator() + SUFFIX_PART1)
-                        .getPath();
-                idxFile[SwordConstants.TESTAMENT_NEW] = new File(ntAllButLast + SUFFIX_INDEX);
-                textFile[SwordConstants.TESTAMENT_NEW] = new File(ntAllButLast + SUFFIX_TEXT);
-                compFile[SwordConstants.TESTAMENT_NEW] = new File(ntAllButLast + SUFFIX_COMP);
+                String ntAllButLast = NetUtil.lengthenURI(path, File.separator + SwordConstants.FILE_NT + '.' + blockType.getIndicator() + SUFFIX_PART1).getPath();
+                ntIdxFile = new File(ntAllButLast + SUFFIX_INDEX);
+                ntTextFile = new File(ntAllButLast + SUFFIX_TEXT);
+                ntCompFile = new File(ntAllButLast + SUFFIX_COMP);
             }
         } catch (BookException e) {
-            idxFile[SwordConstants.TESTAMENT_OLD] = null;
-            textFile[SwordConstants.TESTAMENT_OLD] = null;
-            compFile[SwordConstants.TESTAMENT_OLD] = null;
+            otIdxFile = null;
+            otTextFile = null;
+            otCompFile = null;
 
-            idxFile[SwordConstants.TESTAMENT_NEW] = null;
-            textFile[SwordConstants.TESTAMENT_NEW] = null;
-            compFile[SwordConstants.TESTAMENT_NEW] = null;
+            ntIdxFile = null;
+            ntTextFile = null;
+            ntCompFile = null;
 
             return;
         }
 
-        if (idxFile[SwordConstants.TESTAMENT_OLD].canRead()) {
+        if (otIdxFile.canRead()) {
             try {
-                idxRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_OLD], FileUtil.MODE_READ);
-                textRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(textFile[SwordConstants.TESTAMENT_OLD], FileUtil.MODE_READ);
-                compRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(compFile[SwordConstants.TESTAMENT_OLD], FileUtil.MODE_READ);
+                otIdxRaf = new RandomAccessFile(otIdxFile, FileUtil.MODE_READ);
+                otTextRaf = new RandomAccessFile(otTextFile, FileUtil.MODE_READ);
+                otCompRaf = new RandomAccessFile(otCompFile, FileUtil.MODE_READ);
             } catch (FileNotFoundException ex) {
                 assert false : ex;
                 log.error("Could not open OT", ex);
-                idxRaf[SwordConstants.TESTAMENT_OLD] = null;
-                textRaf[SwordConstants.TESTAMENT_OLD] = null;
-                compRaf[SwordConstants.TESTAMENT_OLD] = null;
+                otIdxRaf = null;
+                otTextRaf = null;
+                otCompRaf = null;
             }
         }
 
-        if (idxFile[SwordConstants.TESTAMENT_NEW].canRead()) {
+        if (ntIdxFile.canRead()) {
             try {
-                idxRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_NEW], FileUtil.MODE_READ);
-                textRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(textFile[SwordConstants.TESTAMENT_NEW], FileUtil.MODE_READ);
-                compRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(compFile[SwordConstants.TESTAMENT_NEW], FileUtil.MODE_READ);
+                ntIdxRaf = new RandomAccessFile(ntIdxFile, FileUtil.MODE_READ);
+                ntTextRaf = new RandomAccessFile(ntTextFile, FileUtil.MODE_READ);
+                ntCompRaf = new RandomAccessFile(ntCompFile, FileUtil.MODE_READ);
             } catch (FileNotFoundException ex) {
                 assert false : ex;
                 log.error("Could not open NT", ex);
-                idxRaf[SwordConstants.TESTAMENT_NEW] = null;
-                textRaf[SwordConstants.TESTAMENT_NEW] = null;
-                compRaf[SwordConstants.TESTAMENT_NEW] = null;
+                ntIdxRaf = null;
+                ntTextRaf = null;
+                ntCompRaf = null;
             }
         }
 
         active = true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common
-     * .activate.Lock)
+    /* (non-Javadoc)
+     * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
      */
     public final void deactivate(Lock lock) {
-        if (idxRaf[SwordConstants.TESTAMENT_NEW] != null) {
+        if (ntIdxRaf != null) {
             try {
-                idxRaf[SwordConstants.TESTAMENT_NEW].close();
-                textRaf[SwordConstants.TESTAMENT_NEW].close();
-                compRaf[SwordConstants.TESTAMENT_NEW].close();
+                ntIdxRaf.close();
+                ntTextRaf.close();
+                ntCompRaf.close();
             } catch (IOException ex) {
                 log.error("failed to close nt files", ex);
             } finally {
-                idxRaf[SwordConstants.TESTAMENT_NEW] = null;
-                textRaf[SwordConstants.TESTAMENT_NEW] = null;
-                compRaf[SwordConstants.TESTAMENT_NEW] = null;
+                ntIdxRaf = null;
+                ntTextRaf = null;
+                ntCompRaf = null;
             }
         }
 
-        if (idxRaf[SwordConstants.TESTAMENT_OLD] != null) {
+        if (otIdxRaf != null) {
             try {
-                idxRaf[SwordConstants.TESTAMENT_OLD].close();
-                textRaf[SwordConstants.TESTAMENT_OLD].close();
-                compRaf[SwordConstants.TESTAMENT_OLD].close();
+                otIdxRaf.close();
+                otTextRaf.close();
+                otCompRaf.close();
             } catch (IOException ex) {
                 log.error("failed to close ot files", ex);
             } finally {
-                idxRaf[SwordConstants.TESTAMENT_OLD] = null;
-                textRaf[SwordConstants.TESTAMENT_OLD] = null;
-                compRaf[SwordConstants.TESTAMENT_OLD] = null;
+                otIdxRaf = null;
+                otTextRaf = null;
+                otCompRaf = null;
             }
         }
 
         active = false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage
-     * .Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#contains(org.crosswire.jsword.passage.Key)
      */
     @Override
     public boolean contains(Key key) {
@@ -239,16 +224,21 @@ public class ZVerseBackend extends AbstractBackend {
             Verse verse = KeyUtil.getVerse(key);
 
             try {
-                int testament = SwordConstants.getTestament(verse);
-                long index = SwordConstants.getIndex(verse);
+                int index = BibleInfo.getOrdinal(verse);
+                Testament testament = BibleInfo.getTestament(index);
+                index = BibleInfo.getTestamentOrdinal(index);
+                RandomAccessFile compRaf = otCompRaf;
+                if (testament == Testament.NEW) {
+                    compRaf = ntCompRaf;
+                }
 
                 // If Bible does not contain the desired testament, then false
-                if (compRaf[testament] == null) {
+                if (compRaf == null) {
                     return false;
                 }
 
                 // 10 because the index is 10 bytes long for each verse
-                byte[] temp = SwordUtil.readRAF(compRaf[testament], index * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE);
+                byte[] temp = SwordUtil.readRAF(compRaf, index * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE);
 
                 // If the Bible does not contain the desired verse, return
                 // nothing.
@@ -274,12 +264,8 @@ public class ZVerseBackend extends AbstractBackend {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire
-     * .jsword.passage.Key, java.lang.String)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key)
      */
     @Override
     public String getRawText(Key key) throws BookException {
@@ -294,17 +280,26 @@ public class ZVerseBackend extends AbstractBackend {
             Verse verse = KeyUtil.getVerse(key);
 
             try {
-                int testament = SwordConstants.getTestament(verse);
-                long index = SwordConstants.getIndex(verse);
+                int index = BibleInfo.getOrdinal(verse);
+                Testament testament = BibleInfo.getTestament(index);
+                index = BibleInfo.getTestamentOrdinal(index);
+                RandomAccessFile compRaf = otCompRaf;
+                RandomAccessFile idxRaf = otIdxRaf;
+                RandomAccessFile textRaf = otTextRaf;
+                if (testament == Testament.NEW) {
+                    compRaf = ntCompRaf;
+                    idxRaf = ntIdxRaf;
+                    textRaf = ntTextRaf;
+                }
 
                 // If Bible does not contain the desired testament, return
                 // nothing.
-                if (compRaf[testament] == null) {
+                if (compRaf == null) {
                     return "";
                 }
 
                 // 10 because the index is 10 bytes long for each verse
-                byte[] temp = SwordUtil.readRAF(compRaf[testament], index * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE);
+                byte[] temp = SwordUtil.readRAF(compRaf, index * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE);
 
                 // If the Bible does not contain the desired verse, return
                 // nothing.
@@ -328,7 +323,7 @@ public class ZVerseBackend extends AbstractBackend {
                     uncompressed = lastUncompressed;
                 } else {
                     // Then seek using this index into the idx file
-                    temp = SwordUtil.readRAF(idxRaf[testament], blockNum * IDX_ENTRY_SIZE, IDX_ENTRY_SIZE);
+                    temp = SwordUtil.readRAF(idxRaf, blockNum * IDX_ENTRY_SIZE, IDX_ENTRY_SIZE);
                     if (temp == null || temp.length == 0) {
                         return "";
                     }
@@ -338,7 +333,7 @@ public class ZVerseBackend extends AbstractBackend {
                     int uncompressedSize = SwordUtil.decodeLittleEndian32(temp, 8);
 
                     // Read from the data file.
-                    byte[] data = SwordUtil.readRAF(textRaf[testament], blockStart, blockSize);
+                    byte[] data = SwordUtil.readRAF(textRaf, blockStart, blockSize);
 
                     decipher(data);
 
@@ -398,7 +393,7 @@ public class ZVerseBackend extends AbstractBackend {
     /**
      *
      */
-    private int lastTestament = -1;
+    private Testament lastTestament;
 
     /**
      *
@@ -416,39 +411,40 @@ public class ZVerseBackend extends AbstractBackend {
     private boolean active;
 
     /**
-     * The log stream
+     * The index random access files
      */
-    private static final Logger log = Logger.getLogger(ZVerseBackend.class);
+    private RandomAccessFile otIdxRaf;
+    private RandomAccessFile ntIdxRaf;
 
     /**
-     * The array of index random access files
+     * The data random access files
      */
-    private RandomAccessFile[] idxRaf = new RandomAccessFile[3];
+    private RandomAccessFile otTextRaf;
+    private RandomAccessFile ntTextRaf;
 
     /**
-     * The array of data random access files
+     * The compressed random access files
      */
-    private RandomAccessFile[] textRaf = new RandomAccessFile[3];
+    private RandomAccessFile otCompRaf;
+    private RandomAccessFile ntCompRaf;
 
     /**
-     * The array of compressed random access files
+     * The index random access files
      */
-    private RandomAccessFile[] compRaf = new RandomAccessFile[3];
+    private File otIdxFile;
+    private File ntIdxFile;
 
     /**
-     * The array of index random access files
+     * The data random access files
      */
-    private File[] idxFile = new File[3];
+    private File otTextFile;
+    private File ntTextFile;
 
     /**
-     * The array of data random access files
+     * The compressed random access files
      */
-    private File[] textFile = new File[3];
-
-    /**
-     * The array of compressed random access files
-     */
-    private File[] compFile = new File[3];
+    private File otCompFile;
+    private File ntCompFile;
 
     /**
      * How many bytes in the comp index?
@@ -459,4 +455,9 @@ public class ZVerseBackend extends AbstractBackend {
      * How many bytes in the idx index?
      */
     private static final int IDX_ENTRY_SIZE = 12;
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(ZVerseBackend.class);
 }

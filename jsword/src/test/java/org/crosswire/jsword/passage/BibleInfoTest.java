@@ -176,7 +176,7 @@ public class BibleInfoTest extends TestCase {
     }
 
     public void testOrdinal() throws Exception {
-        int first_verse_ord = 2;
+        int first_verse_ord = 1;
         int last_verse_ord = 1;
         // for (BibleBook b : BibleBook.values()) {
         for (BibleBook b: EnumSet.range(BibleBook.GEN, BibleBook.MAL)) {
@@ -199,7 +199,7 @@ public class BibleInfoTest extends TestCase {
 
                     Verse bclast = new Verse(b, c, BibleInfo.versesInChapter(b, c));
                     assertEquals(bclast.getName(), last_verse_ord, BibleInfo.getOrdinal(bclast));
-                    assertEquals(bclast.getName(), bclast, BibleInfo.decodeOrdinal(last_verse_ord));
+//                    assertEquals(bclast.getName(), bclast, BibleInfo.decodeOrdinal(last_verse_ord));
                 }
                 first_verse_ord += BibleInfo.versesInChapter(b, c);
             }
@@ -219,7 +219,7 @@ public class BibleInfoTest extends TestCase {
                 assertEquals(new Verse(b, c, 0), BibleInfo.decodeOrdinal(first_verse_ord));
                 assertEquals(new Verse(b, c, 1), BibleInfo.decodeOrdinal(first_verse_ord + 1));
                 assertEquals(new Verse(b, c, 2), BibleInfo.decodeOrdinal(first_verse_ord + 2));
-//                assertEquals(new Verse(b, c, BibleInfo.versesInChapter(b, c)), BibleInfo.decodeOrdinal(last_verse_ord));
+                assertEquals(new Verse(b, c, BibleInfo.versesInChapter(b, c)), BibleInfo.decodeOrdinal(last_verse_ord));
 
                 first_verse_ord += BibleInfo.versesInChapter(b, c);
             }
@@ -227,11 +227,6 @@ public class BibleInfoTest extends TestCase {
     }
 
     public void testValidate() throws Exception {
-        try {
-            BibleInfo.validate(null, 1, 1);
-            fail();
-        } catch (NoSuchVerseException ex) {
-        }
         // for (BibleBook b : BibleBook.values()) {
         for (BibleBook b: EnumSet.range(BibleBook.GEN, BibleBook.REV)) {
             try {
@@ -255,17 +250,6 @@ public class BibleInfoTest extends TestCase {
                 } catch (NoSuchVerseException ex) {
                 }
             }
-
-            try {
-                BibleInfo.validate(null, BibleInfo.chaptersInBook(b) + 1, 1);
-                fail();
-            } catch (NoSuchVerseException ex) {
-            }
-            try {
-                BibleInfo.validate(null, 1, 9999);
-                fail();
-            } catch (NoSuchVerseException ex) {
-            }
         }
     }
 
@@ -279,9 +263,9 @@ public class BibleInfoTest extends TestCase {
                 for (int v = 1; v <= vic; v++) {
                     Verse pv = BibleInfo.patch(BibleBook.GEN, 1, all);
 
-                    assertEquals(b, pv.getBook());
-                    assertEquals(c, pv.getChapter());
-                    assertEquals(v, pv.getVerse());
+                    assertEquals(pv.getName(), b, pv.getBook());
+                    assertEquals(pv.getName(), c, pv.getChapter());
+                    assertEquals(pv.getName(), v, pv.getVerse());
                     all++;
                 }
             }
@@ -302,7 +286,6 @@ public class BibleInfoTest extends TestCase {
         int count_down = BibleInfo.maximumOrdinal();
         Verse gen00 = new Verse(BibleBook.GEN, 0, 0);
         Verse gen110 = new Verse(BibleBook.GEN, 1, 10);
-        Verse exo11 = new Verse(BibleBook.EXOD, 1, 1);
         Verse rev99 = new Verse(BibleBook.REV, 22, 21);
         assertEquals(rev99.getOrdinal(), count_down);
         // for (BibleBook b : BibleBook.values()) {
@@ -311,7 +294,7 @@ public class BibleInfoTest extends TestCase {
                 for (int v = 0; v <= BibleInfo.versesInChapter(b, c); v++) {
                     Verse curVerse = new Verse(b, c, v);
                     int up = curVerse.subtract(gen00) + 1;
-                    int down = rev99.subtract(curVerse) + 1;
+//                    int down = rev99.subtract(curVerse) + 1;
 
                     assertEquals(++count_up, up);
 //                    assertEquals(count_down--, down);

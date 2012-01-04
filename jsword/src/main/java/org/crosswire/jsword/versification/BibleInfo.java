@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2012
  *     The copyright to this program is held by it's authors.
  *
  * ID: $Id$
@@ -43,6 +43,16 @@ import org.crosswire.jsword.passage.Verse;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public final class BibleInfo {
+    /**
+     * constant for the old testament
+     */
+    public static final int TESTAMENT_OLD = 0;
+
+    /**
+     * constant for the new testament
+     */
+    public static final int TESTAMENT_NEW = 1;
+
     /**
      * Ensure that we can not be instantiated
      */
@@ -83,10 +93,8 @@ public final class BibleInfo {
      * @param book
      *            The book part of the reference.
      * @return The last valid chapter number for a book.
-     * @exception NoSuchVerseException
-     *                If the book is not valid
      */
-    public static int chaptersInBook(BibleBook book) throws NoSuchVerseException {
+    public static int chaptersInBook(BibleBook book) {
         // This is faster than doing the check explicitly, unless
         // The exception is actually thrown, then it is a lot slower
         // I'd like to think that the norm is to get it right
@@ -107,10 +115,9 @@ public final class BibleInfo {
      * @param chapter
      *            The current chapter
      * @return The last valid verse number for a chapter
-     * @exception NoSuchVerseException
      *                If the book or chapter number is not valid
      */
-    public static int versesInChapter(BibleBook book, int chapter) throws NoSuchVerseException {
+    public static int versesInChapter(BibleBook book, int chapter) {
         // This is faster than doing the check explicitly, unless
         // The exception is actually thrown, then it is a lot slower
         // I'd like to think that the norm is to get it right
@@ -159,15 +166,9 @@ public final class BibleInfo {
      * @param verse
      *            The verse to convert
      * @return The ordinal number of verses
-     * @exception NoSuchVerseException
-     *                If the reference is illegal
      */
-    public static int getOrdinal(Verse verse) throws NoSuchVerseException {
-        BibleBook b = verse.getBook();
-        int c = verse.getChapter();
-        int v = verse.getVerse();
-        validate(b, c, v);
-        return ORDINAL_AT_START_OF_CHAPTER[b.ordinal()][c] + v;
+    public static int getOrdinal(Verse verse) {
+        return ORDINAL_AT_START_OF_CHAPTER[verse.getBook().ordinal()][verse.getChapter()] + verse.getVerse();
     }
 
     /**
@@ -195,21 +196,46 @@ public final class BibleInfo {
      * @param verse
      *            The verse to convert
      * @return The ordinal number of verses
-     * @exception NoSuchVerseException
-     *                If the reference is illegal
      */
-    public static int getTestamentOrdinal(Verse verse) throws NoSuchVerseException {
-        BibleBook b = verse.getBook();
-        int c = verse.getChapter();
-        int v = verse.getVerse();
-        validate(b, c, v);
-        int ordinal = ORDINAL_AT_START_OF_CHAPTER[b.ordinal()][c] + v;
-        if (ordinal >= NT_ORDINAL_START) {
-            return ordinal - NT_ORDINAL_START + 1;
+    public static int getTestamentOrdinal(int ordinal) {
+        int nt_ordinal = ORDINAL_AT_START_OF_CHAPTER[BibleBook.INTRO_NT.ordinal()][0];
+        if (ordinal >= nt_ordinal) {
+            return ordinal - nt_ordinal + 1;
         }
         return ordinal;
     }
 
+    /**
+     * Get the testament of a given verse
+     */
+    public static Testament getTestament(int ordinal) {
+        if (ordinal >= ORDINAL_AT_START_OF_CHAPTER[BibleBook.INTRO_NT.ordinal()][0]) {
+            // This is an NT verse
+            return Testament.NEW;
+        }
+        // This is an OT verse
+        return Testament.OLD;
+    }
+
+    /**
+     * Give the count of verses in the testament or the whole Bible.
+     * 
+     * @param testament The testament to count. If null, then all testaments.
+     * @return the number of verses in the testament
+     */
+    public static int getCount(Testament testament) {
+        // The sentinel give the total verses in the Bible
+        int total = ORDINAL_AT_START_OF_CHAPTER[ORDINAL_AT_START_OF_CHAPTER.length - 1][0];
+        if (testament == null) {
+            return total;
+        }
+        // The ordinal for the NT Intro is the count of the OT verses
+        int otCount = ORDINAL_AT_START_OF_CHAPTER[BibleBook.INTRO_NT.ordinal()][0];
+        if (testament == Testament.OLD) {
+            return otCount;
+        }
+        return total - otCount;
+    }
     /**
      * Where does this verse come in the Bible. This will unwind the value returned by getOrdinal(Verse).
      * 
@@ -259,7 +285,7 @@ public final class BibleInfo {
 
         // There is a gap for the New Testament introduction.
         // This occurs when ordinal is one less than the book introduction of the next book.
-        if (bookIndex == OT_LAST_BOOK && ordinal == ORDINAL_AT_START_OF_CHAPTER[bookIndex + 1][0] - 1) {
+        if (bookIndex == BibleBook.INTRO_NT.ordinal() - 1 && ordinal == ORDINAL_AT_START_OF_CHAPTER[bookIndex + 1][0] - 1) {
             bookIndex++;
         }
 
@@ -872,9 +898,7 @@ public final class BibleInfo {
         },
     };
 
-    private static final int OT_LAST_BOOK = 38;
     private static final int NT_ORDINAL_START = 24115;
-    private static final int NT_BOOK_START = 39;
 
     /**
      * A singleton used to do initialization. Could be used to change static

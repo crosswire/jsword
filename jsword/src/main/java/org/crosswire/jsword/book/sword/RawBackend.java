@@ -40,6 +40,8 @@ import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.versification.BibleInfo;
+import org.crosswire.jsword.versification.Testament;
 
 /**
  * Both Books and Commentaries seem to use the same format so this class
@@ -61,12 +63,8 @@ public class RawBackend extends AbstractBackend {
         assert datasize == 2 || datasize == 4;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#contains(org.crosswire.jsword.passage
-     * .Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#contains(org.crosswire.jsword.passage.Key)
      */
     @Override
     public boolean contains(Key key) {
@@ -77,15 +75,20 @@ public class RawBackend extends AbstractBackend {
         Verse verse = KeyUtil.getVerse(key);
 
         try {
-            int testament = SwordConstants.getTestament(verse);
-            long index = SwordConstants.getIndex(verse);
+            int index = BibleInfo.getOrdinal(verse);
+            Testament testament = BibleInfo.getTestament(index);
+            index = BibleInfo.getTestamentOrdinal(index);
+            RandomAccessFile idxRaf = otIdxRaf;
+            if (testament == Testament.OLD) {
+                idxRaf = ntIdxRaf;
+            }
 
             // If this is a single testament Bible, return nothing.
-            if (idxRaf[testament] == null) {
+            if (idxRaf == null) {
                 return false;
             }
 
-            DataIndex dataIndex = getIndex(idxRaf[testament], index);
+            DataIndex dataIndex = getIndex(idxRaf, index);
 
             return dataIndex.getSize() > 0;
         } catch (IOException ex) {
@@ -96,12 +99,8 @@ public class RawBackend extends AbstractBackend {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire
-     * .jsword.passage.Key, java.lang.String)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key)
      */
     @Override
     public String getRawText(Key key) throws BookException {
@@ -111,11 +110,16 @@ public class RawBackend extends AbstractBackend {
             DataPolice.setKey(key);
             Verse verse = KeyUtil.getVerse(key);
             try {
-                int testament = SwordConstants.getTestament(verse);
-                long index = SwordConstants.getIndex(verse);
+                int index = BibleInfo.getOrdinal(verse);
+                Testament testament = BibleInfo.getTestament(index);
+                index = BibleInfo.getTestamentOrdinal(index);
+                RandomAccessFile idxRaf = otIdxRaf;
+                if (testament == Testament.OLD) {
+                    idxRaf = ntIdxRaf;
+                }
 
                 // If this is a single testament Bible, return nothing.
-                if (idxRaf[testament] == null) {
+                if (idxRaf == null) {
                     return "";
                 }
 
@@ -130,20 +134,14 @@ public class RawBackend extends AbstractBackend {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.sword.AbstractBackend#setRawText(org.crosswire
-     * .jsword.passage.Key, java.lang.String)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#setRawText(org.crosswire.jsword.passage.Key, java.lang.String)
      */
     @Override
     public void setRawText(Key key, String text) throws BookException, IOException {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#isWritable()
      */
     @Override
@@ -152,17 +150,13 @@ public class RawBackend extends AbstractBackend {
         // testament needs to be present
         // (i.e. readable) and both the index and the data files need to be
         // writable
-        if (idxFile[SwordConstants.TESTAMENT_OLD].canRead()
-                && (idxFile[SwordConstants.TESTAMENT_OLD].canWrite() || !txtFile[SwordConstants.TESTAMENT_OLD].canWrite()))
-        {
+        if (otIdxFile.canRead() && (otIdxFile.canWrite() || !otTxtFile.canWrite())) {
             return false;
         }
-        if (idxFile[SwordConstants.TESTAMENT_NEW].canRead()
-                && (idxFile[SwordConstants.TESTAMENT_NEW].canWrite() || !txtFile[SwordConstants.TESTAMENT_NEW].canWrite()))
-        {
+        if (ntIdxFile.canRead() && (ntIdxFile.canWrite() || !ntTxtFile.canWrite())) {
             return false;
         }
-        return idxFile[SwordConstants.TESTAMENT_OLD].canRead() || idxFile[SwordConstants.TESTAMENT_NEW].canRead();
+        return otIdxFile.canRead() || ntIdxFile.canRead();
     }
 
     /* (non-Javadoc)
@@ -173,12 +167,8 @@ public class RawBackend extends AbstractBackend {
         throw new UnsupportedOperationException();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.common.activate.Activatable#activate(org.crosswire.common
-     * .activate.Lock)
+    /* (non-Javadoc)
+     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
      */
     public final void activate(Lock lock) {
         URI path = null;
@@ -190,70 +180,66 @@ public class RawBackend extends AbstractBackend {
         }
 
         URI otPath = NetUtil.lengthenURI(path, File.separator + SwordConstants.FILE_OT);
-        txtFile[SwordConstants.TESTAMENT_OLD] = new File(otPath.getPath());
-        idxFile[SwordConstants.TESTAMENT_OLD] = new File(otPath.getPath() + SwordConstants.EXTENSION_VSS);
+        otTxtFile = new File(otPath.getPath());
+        otIdxFile = new File(otPath.getPath() + SwordConstants.EXTENSION_VSS);
 
         URI ntPath = NetUtil.lengthenURI(path, File.separator + SwordConstants.FILE_NT);
-        txtFile[SwordConstants.TESTAMENT_NEW] = new File(ntPath.getPath());
-        idxFile[SwordConstants.TESTAMENT_NEW] = new File(ntPath.getPath() + SwordConstants.EXTENSION_VSS);
+        ntTxtFile = new File(ntPath.getPath());
+        ntIdxFile = new File(ntPath.getPath() + SwordConstants.EXTENSION_VSS);
 
         // It is an error to be neither OT nor NT
-        if (!txtFile[SwordConstants.TESTAMENT_OLD].canRead() && !txtFile[SwordConstants.TESTAMENT_NEW].canRead()) {
+        if (!otTxtFile.canRead() && !ntTxtFile.canRead()) {
             Reporter.informUser(this, new BookException(JSOtherMsg.lookupText("Missing data files for old and new testaments in {0}.", path)));
             return;
         }
 
         String fileMode = isWritable() ? FileUtil.MODE_WRITE : FileUtil.MODE_READ;
 
-        if (idxFile[SwordConstants.TESTAMENT_OLD].canRead()) {
+        if (otIdxFile.canRead()) {
             try {
-                idxRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_OLD], fileMode);
-                txtRaf[SwordConstants.TESTAMENT_OLD] = new RandomAccessFile(txtFile[SwordConstants.TESTAMENT_OLD], fileMode);
+                otIdxRaf = new RandomAccessFile(otIdxFile, fileMode);
+                otTxtRaf = new RandomAccessFile(otTxtFile, fileMode);
             } catch (FileNotFoundException ex) {
                 assert false : ex;
                 log.error("Could not open OT", ex);
-                idxRaf[SwordConstants.TESTAMENT_OLD] = null;
-                txtRaf[SwordConstants.TESTAMENT_OLD] = null;
+                ntIdxRaf = null;
+                ntTxtRaf = null;
             }
         }
 
-        if (idxFile[SwordConstants.TESTAMENT_NEW].canRead()) {
+        if (ntIdxFile.canRead()) {
             try {
-                idxRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(idxFile[SwordConstants.TESTAMENT_NEW], fileMode);
-                txtRaf[SwordConstants.TESTAMENT_NEW] = new RandomAccessFile(txtFile[SwordConstants.TESTAMENT_NEW], fileMode);
+                ntIdxRaf = new RandomAccessFile(ntIdxFile, fileMode);
+                ntTxtRaf = new RandomAccessFile(ntTxtFile, fileMode);
             } catch (FileNotFoundException ex) {
                 assert false : ex;
                 log.error("Could not open NT", ex);
-                idxRaf[SwordConstants.TESTAMENT_NEW] = null;
-                txtRaf[SwordConstants.TESTAMENT_NEW] = null;
+                ntIdxRaf = null;
+                ntTxtRaf = null;
             }
         }
 
         active = true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common
-     * .activate.Lock)
+    /* (non-Javadoc)
+     * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
      */
     public final void deactivate(Lock lock) {
         try {
-            idxRaf[SwordConstants.TESTAMENT_OLD].close();
-            txtRaf[SwordConstants.TESTAMENT_OLD].close();
+            otIdxRaf.close();
+            otTxtRaf.close();
 
-            idxRaf[SwordConstants.TESTAMENT_NEW].close();
-            txtRaf[SwordConstants.TESTAMENT_NEW].close();
+            ntIdxRaf.close();
+            ntTxtRaf.close();
         } catch (IOException ex) {
             log.error("Failed to close files", ex);
         } finally {
-            idxRaf[SwordConstants.TESTAMENT_OLD] = null;
-            txtRaf[SwordConstants.TESTAMENT_OLD] = null;
+            otIdxRaf = null;
+            otTxtRaf = null;
 
-            idxRaf[SwordConstants.TESTAMENT_NEW] = null;
-            txtRaf[SwordConstants.TESTAMENT_NEW] = null;
+            ntIdxRaf = null;
+            ntTxtRaf = null;
         }
 
         active = false;
@@ -305,13 +291,20 @@ public class RawBackend extends AbstractBackend {
      * @param name
      *            name of the entry
      * @param testament
-     *            testament number 0, 1 or 2
+     *            the testament for the entry
      * @return the text for the entry.
      * @throws IOException
      *             on a IO problem
      */
-    protected String getEntry(String name, int testament, long index) throws IOException {
-        DataIndex dataIndex = getIndex(idxRaf[testament], index);
+    protected String getEntry(String name, Testament testament, long index) throws IOException {
+        RandomAccessFile idxRaf = otIdxRaf;
+        RandomAccessFile txtRaf = otTxtRaf;
+        if (testament == Testament.OLD) {
+            idxRaf = ntIdxRaf;
+            txtRaf = ntTxtRaf;
+        }
+
+        DataIndex dataIndex = getIndex(idxRaf, index);
 
         int size = dataIndex.getSize();
         if (size == 0) {
@@ -323,7 +316,7 @@ public class RawBackend extends AbstractBackend {
             return "";
         }
 
-        byte[] data = SwordUtil.readRAF(txtRaf[testament], dataIndex.getOffset(), size);
+        byte[] data = SwordUtil.readRAF(txtRaf, dataIndex.getOffset(), size);
 
         decipher(data);
 
@@ -345,18 +338,23 @@ public class RawBackend extends AbstractBackend {
      */
     protected int entrysize;
 
-    /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(RawBackend.class);
+    protected RandomAccessFile otIdxRaf;
+    protected RandomAccessFile otTxtRaf;
+    protected File otIdxFile;
+    protected File otTxtFile;
 
-    protected RandomAccessFile[] idxRaf = new RandomAccessFile[3];
-    protected RandomAccessFile[] txtRaf = new RandomAccessFile[3];
-    protected File[] idxFile = new File[3];
-    protected File[] txtFile = new File[3];
+    protected RandomAccessFile ntIdxRaf;
+    protected RandomAccessFile ntTxtRaf;
+    protected File ntIdxFile;
+    protected File ntTxtFile;
 
     /**
      * How many bytes in the offset pointers in the index
      */
     protected static final int OFFSETSIZE = 4;
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(RawBackend.class);
 }

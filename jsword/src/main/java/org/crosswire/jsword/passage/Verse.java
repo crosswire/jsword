@@ -28,7 +28,6 @@ import java.util.Iterator;
 
 import org.crosswire.common.icu.NumberShaper;
 import org.crosswire.common.util.ItemIterator;
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.versification.BibleBook;
@@ -388,12 +387,7 @@ public final class Verse implements Key {
      * @return true or false ...
      */
     public boolean isEndOfChapter() {
-        try {
-            return verse == BibleInfo.versesInChapter(book, chapter);
-        } catch (NoSuchVerseException ex) {
-            assert false : ex;
-            return true;
-        }
+        return verse == BibleInfo.versesInChapter(book, chapter);
     }
 
     /**
@@ -411,12 +405,7 @@ public final class Verse implements Key {
      * @return true or false ...
      */
     public boolean isEndOfBook() {
-        try {
-            return verse == BibleInfo.versesInChapter(book, chapter) && chapter == BibleInfo.chaptersInBook(book);
-        } catch (NoSuchVerseException ex) {
-            assert false : ex;
-            return true;
-        }
+        return verse == BibleInfo.versesInChapter(book, chapter) && chapter == BibleInfo.chaptersInBook(book);
     }
 
     /**
@@ -448,14 +437,7 @@ public final class Verse implements Key {
      * @return The verse number
      */
     public int getOrdinal() {
-        try {
-            return BibleInfo.getOrdinal(this);
-        } catch (NoSuchVerseException ex) {
-            // A verse should never be illegal so
-            log.error("ref=" + book + ", " + chapter + ", " + verse);
-            assert false : ex;
-            return 1;
-        }
+        return BibleInfo.getOrdinal(this);
     }
 
     /**
@@ -892,8 +874,4 @@ public final class Verse implements Key {
      */
     private transient String originalName;
 
-    /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(Verse.class);
 }

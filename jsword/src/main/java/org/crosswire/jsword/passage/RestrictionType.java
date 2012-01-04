@@ -102,29 +102,24 @@ public enum RestrictionType {
 
         @Override
         public VerseRange blur(Verse verse, int blurDown, int blurUp) {
-            try {
-                int verseNumber = verse.getVerse();
+            int verseNumber = verse.getVerse();
 
-                int down = verseNumber - Math.max(verseNumber - blurDown, 1);
+            int down = verseNumber - Math.max(verseNumber - blurDown, 1);
 
-                Verse start = verse;
-                if (down > 0) {
-                    start = verse.subtract(down);
-                }
-
-                BibleBook book = verse.getBook();
-                int chapterNumber = verse.getChapter();
-                int up = Math.min(verseNumber + blurUp, BibleInfo.versesInChapter(book, chapterNumber)) - verseNumber;
-                Verse end = verse;
-                if (up > 0) {
-                    end = verse.add(up);
-                }
-
-                return new VerseRange(start, end);
-            } catch (NoSuchVerseException ex) {
-                assert false : ex;
-                return null;
+            Verse start = verse;
+            if (down > 0) {
+                start = verse.subtract(down);
             }
+
+            BibleBook book = verse.getBook();
+            int chapterNumber = verse.getChapter();
+            int up = Math.min(verseNumber + blurUp, BibleInfo.versesInChapter(book, chapterNumber)) - verseNumber;
+            Verse end = verse;
+            if (up > 0) {
+                end = verse.add(up);
+            }
+
+            return new VerseRange(start, end);
         }
 
         @Override

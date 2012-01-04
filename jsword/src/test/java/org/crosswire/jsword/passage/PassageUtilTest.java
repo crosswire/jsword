@@ -80,7 +80,7 @@ public class PassageUtilTest extends TestCase {
         assertEquals(VerseFactory.fromString("Genesis 1:1").toString(), "Gen 1:1");
         assertEquals(VerseFactory.fromString("Gen 1 1").toString(), "Gen 1:1");
         assertEquals(VerseFactory.fromString("g 1 1").toString(), "Gen 1:1");
-        assertEquals(VerseFactory.fromString("g").toString(), "Gen 1:1");
+        assertEquals(VerseFactory.fromString("g").toString(), "Gen 0:0");
         assertEquals(VerseFactory.fromString("G:1:1").toString(), "Gen 1:1");
         PassageUtil.setPersistentNaming(true);
         assertTrue(PassageUtil.isPersistentNaming());

@@ -28,6 +28,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
@@ -35,6 +36,7 @@ import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.versification.BibleInfo;
+import org.crosswire.jsword.versification.Testament;
 
 /**
  * A Raw File format that allows for each verse to have it's own storage.
@@ -56,35 +58,27 @@ public class RawFileBackend extends RawBackend {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.sword.RawBackend#getRawText(org.crosswire.jsword
-     * .passage.Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.RawBackend#getRawText(org.crosswire.jsword.passage.Key)
      */
     @Override
     public String getRawText(Key key) throws BookException {
         return super.getRawText(key);
     }
 
-    /**
-     * Get the text for an indexed entry in the book.
-     * 
-     * @param name
-     *            name of the entry
-     * @param testament
-     *            testament number 1 or 2
-     * @param index
-     *            the entry to get
-     * @return the text for the entry.
-     * @throws java.io.IOException
-     *             on file error
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.RawBackend#getEntry(java.lang.String, org.crosswire.jsword.versification.Testament, long)
      */
     @Override
-    protected String getEntry(String name, int testament, long index) throws IOException {
+    protected String getEntry(String name, Testament testament, long index) throws IOException {
+        RandomAccessFile idxRaf = otIdxRaf;
+        RandomAccessFile txtRaf = otTxtRaf;
+        if (testament == Testament.OLD) {
+            idxRaf = ntIdxRaf;
+            txtRaf = ntTxtRaf;
+        }
 
-        DataIndex dataIndex = getIndex(idxRaf[testament], index);
+        DataIndex dataIndex = getIndex(idxRaf, index);
         int size = dataIndex.getSize();
         if (size == 0) {
             return "";
@@ -96,7 +90,7 @@ public class RawFileBackend extends RawBackend {
         }
 
         try {
-            File dataFile = getDataTextFile(testament, dataIndex);
+            File dataFile = getDataTextFile(txtRaf, dataIndex);
             byte[] textBytes = readTextDataFile(dataFile);
             decipher(textBytes);
             return SwordUtil.decode(name, textBytes, getBookMetaData().getBookCharset());
@@ -105,23 +99,36 @@ public class RawFileBackend extends RawBackend {
         }
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.RawBackend#setRawText(org.crosswire.jsword.passage.Key, java.lang.String)
+     */
     @Override
     public void setRawText(Key key, String text) throws BookException, IOException {
         checkActive();
 
         Verse verse = KeyUtil.getVerse(key);
-        int testament = SwordConstants.getTestament(verse);
-        long index = SwordConstants.getIndex(verse);
+        int index = BibleInfo.getOrdinal(verse);
+        Testament testament = BibleInfo.getTestament(index);
+        index = BibleInfo.getTestamentOrdinal(index);
+        RandomAccessFile idxRaf = otIdxRaf;
+        RandomAccessFile txtRaf = otTxtRaf;
+        File txtFile = otTxtFile;
+        if (testament == Testament.NEW) {
+            idxRaf = ntIdxRaf;
+            txtRaf = ntTxtRaf;
+            txtFile = ntTxtFile;
+        }
+
         int oIndex = verse.getOrdinal() - 1;
 
-        DataIndex dataIndex = getIndex(idxRaf[testament], index);
+        DataIndex dataIndex = getIndex(idxRaf, index);
         File dataFile;
         if (dataIndex.getSize() == 0) {
             dataFile = createDataTextFile(oIndex);
-            updateIndexFile(testament, index);
-            updateDataFile(testament, oIndex);
+            updateIndexFile(idxRaf, index, txtRaf.length());
+            updateDataFile(oIndex, txtFile);
         } else {
-            dataFile = getDataTextFile(testament, dataIndex);
+            dataFile = getDataTextFile(txtRaf, dataIndex);
         }
 
         byte[] textData = text.getBytes("UTF-8");
@@ -135,14 +142,23 @@ public class RawFileBackend extends RawBackend {
     public void setAliasKey(Key alias, Key source) throws IOException {
         Verse aliasVerse = KeyUtil.getVerse(alias);
         Verse sourceVerse = KeyUtil.getVerse(source);
-        int testament = SwordConstants.getTestament(aliasVerse);
-        long aliasIndex = SwordConstants.getIndex(aliasVerse);
-        //long sourceIndex = SwordConstants.getIndex(sourceVerse);
+        int aliasIndex = BibleInfo.getOrdinal(aliasVerse);
+        Testament testament = BibleInfo.getTestament(aliasIndex);
+        aliasIndex = BibleInfo.getTestamentOrdinal(aliasIndex);
+        RandomAccessFile idxRaf = otIdxRaf;
+        RandomAccessFile txtRaf = otTxtRaf;
+        File txtFile = otTxtFile;
+        if (testament == Testament.NEW) {
+            idxRaf = ntIdxRaf;
+            txtRaf = ntTxtRaf;
+            txtFile = ntTxtFile;
+        }
+
         int aliasOIndex = aliasVerse.getOrdinal() - 1;
         int sourceOIndex = sourceVerse.getOrdinal() - 1;
 
-        updateIndexFile(testament, aliasIndex);
-        updateDataFile(testament, sourceOIndex);
+        updateIndexFile(idxRaf, aliasIndex, txtRaf.length());
+        updateDataFile(sourceOIndex, txtFile);
 
         checkAndIncrementIncfile(aliasOIndex);
     }
@@ -168,12 +184,11 @@ public class RawFileBackend extends RawBackend {
         return dataFile;
     }
 
-    private File getDataTextFile(int testament, DataIndex dataIndex) throws IOException, BookException {
+    private File getDataTextFile(RandomAccessFile txtRaf, DataIndex dataIndex) throws IOException, BookException {
         File dataFile;
-
         // data size to be read from the data file (ot or nt) should be 9 bytes
         // this will be the filename of the actual text file "\r\n"
-        byte[] data = SwordUtil.readRAF(txtRaf[testament], dataIndex.getOffset(), dataIndex.getSize());
+        byte[] data = SwordUtil.readRAF(txtRaf, dataIndex.getOffset(), dataIndex.getSize());
         decipher(data);
         if (data.length == 7) {
             String dataFilename = new String(data, 0, 7);
@@ -186,9 +201,8 @@ public class RawFileBackend extends RawBackend {
         return dataFile;
     }
 
-    protected void updateIndexFile(int testament, long index) throws IOException {
+    protected void updateIndexFile(RandomAccessFile idxRaf, long index, long dataFileStartPosition) throws IOException {
         long indexFileWriteOffset = index * entrysize;
-        long dataFileStartPosition = txtRaf[testament].length();
         int dataFileLengthValue = 7; // filename is 7 bytes + 2 bytes for "\r\n"
         byte[] startPositionData = littleEndian32BitByteArrayFromInt((int) dataFileStartPosition);
         byte[] lengthValueData = littleEndian16BitByteArrayFromShort((short) dataFileLengthValue);
@@ -201,14 +215,14 @@ public class RawFileBackend extends RawBackend {
         indexFileWriteData[4] = lengthValueData[0];
         indexFileWriteData[5] = lengthValueData[1];
 
-        SwordUtil.writeRAF(idxRaf[testament], indexFileWriteOffset, indexFileWriteData);
+        SwordUtil.writeRAF(idxRaf, indexFileWriteOffset, indexFileWriteData);
     }
 
-    protected void updateDataFile(int testament, long ordinal) throws IOException {
+    protected void updateDataFile(long ordinal, File txtFile) throws IOException {
         String fileName = String.format("%07d\r\n", Long.valueOf(ordinal));
         BufferedOutputStream bos = null;
         try {
-            bos = new BufferedOutputStream(new FileOutputStream(txtFile[testament], true));
+            bos = new BufferedOutputStream(new FileOutputStream(txtFile, true));
             bos.write(fileName.getBytes());
         } finally {
             if (bos != null) {
@@ -242,22 +256,16 @@ public class RawFileBackend extends RawBackend {
         prepopulateIncfile();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.RawBackend#isWritable()
      */
     @Override
     public boolean isWritable() {
-        File otTextFile = txtFile[1];
-        File ntTextFile = txtFile[2];
-        File otIndexFile = idxFile[1];
-        File ntIndexFile = idxFile[2];
         File incFile = this.incfile;
 
-        if (otTextFile.exists() && otTextFile.canRead() && otTextFile.canWrite() && ntTextFile.exists() && ntTextFile.canRead() && ntTextFile.canWrite()
-                && otIndexFile.exists() && otIndexFile.canRead() && otIndexFile.canWrite() && ntIndexFile.exists() && ntIndexFile.canRead()
-                && ntIndexFile.canWrite() && incFile.exists() && incFile.canRead() && incFile.canWrite())
+        if (otTxtFile.exists() && otTxtFile.canRead() && otTxtFile.canWrite() && ntTxtFile.exists() && ntTxtFile.canRead() && ntTxtFile.canWrite()
+                && otIdxFile.exists() && otIdxFile.canRead() && otIdxFile.canWrite() && ntIdxFile.exists() && ntIdxFile.canRead()
+                && ntIdxFile.canWrite() && incFile.exists() && incFile.canRead() && incFile.canWrite())
         {
             return true;
         }
@@ -292,22 +300,20 @@ public class RawFileBackend extends RawBackend {
     }
 
     private void prepopulateIndexFiles() throws IOException {
-        File otIndexFile = idxFile[SwordConstants.TESTAMENT_OLD];
-        BufferedOutputStream otIdxBos = new BufferedOutputStream(new FileOutputStream(otIndexFile, false));
-
+        int otCount = BibleInfo.getCount(Testament.OLD);
+        int ntCount = BibleInfo.getCount(Testament.NEW) + 1;
+        BufferedOutputStream otIdxBos = new BufferedOutputStream(new FileOutputStream(otIdxFile, false));
         try {
-            for (int i = 0; i < SwordConstants.ORDINAL_NT; i++) {
+            for (int i = 0; i < otCount; i++) {
                 writeInitialIndex(otIdxBos);
             }
         } finally {
             otIdxBos.close();
         }
 
-        File ntIndexFile = idxFile[SwordConstants.TESTAMENT_NEW];
-        BufferedOutputStream ntIdxBos = new BufferedOutputStream(new FileOutputStream(ntIndexFile, false));
+        BufferedOutputStream ntIdxBos = new BufferedOutputStream(new FileOutputStream(ntIdxFile, false));
         try {
-            int totVerses = BibleInfo.maximumOrdinal();
-            for (int i = SwordConstants.ORDINAL_NT; i < totVerses; i++) {
+            for (int i = 0; i < ntCount; i++) {
                 writeInitialIndex(ntIdxBos);
             }
         } finally {
@@ -417,9 +423,10 @@ public class RawFileBackend extends RawBackend {
         return buffer;
     }
 
-    private static final Logger log = Logger.getLogger(RawFileBackend.class);
     private static final String INCFILE = "incfile";
 
     private File incfile;
     private int incfileValue;
+
+    private static final Logger log = Logger.getLogger(RawFileBackend.class);
 }

@@ -344,19 +344,14 @@ public final class VerseRange implements Key {
             return endChap - startChap + 1;
         }
 
-        try {
-            // So we are going to have to count up chapters from start to end
-            int total = BibleInfo.chaptersInBook(startBook) - startChap;
-            for (BibleBook b : EnumSet.range(BibleInfo.getNextBook(startBook), BibleInfo.getPreviousBook(endBook))) {
-                total += BibleInfo.chaptersInBook(b);
-            }
-            total += endChap;
-
-            return total;
-        } catch (NoSuchVerseException ex) {
-            assert false : ex;
-            return 1;
+        // So we are going to have to count up chapters from start to end
+        int total = BibleInfo.chaptersInBook(startBook) - startChap;
+        for (BibleBook b : EnumSet.range(BibleInfo.getNextBook(startBook), BibleInfo.getPreviousBook(endBook))) {
+            total += BibleInfo.chaptersInBook(b);
         }
+        total += endChap;
+
+        return total;
     }
 
     /**
