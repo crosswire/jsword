@@ -76,10 +76,8 @@ public final class Verse implements Key {
      *            The chapter number
      * @param verse
      *            The verse number
-     * @exception NoSuchVerseException
-     *                If the reference is illegal
      */
-    /* package */Verse(String original, BibleBook book, int chapter, int verse) throws NoSuchVerseException {
+    /* package */Verse(String original, BibleBook book, int chapter, int verse) {
         originalName = original;
         set(book, chapter, verse);
     }
@@ -94,10 +92,8 @@ public final class Verse implements Key {
      *            The chapter number
      * @param verse
      *            The verse number
-     * @exception NoSuchVerseException
-     *                If the reference is illegal
      */
-    public Verse(BibleBook book, int chapter, int verse) throws NoSuchVerseException {
+    public Verse(BibleBook book, int chapter, int verse) {
         this(null, book, chapter, verse);
     }
 
@@ -138,10 +134,8 @@ public final class Verse implements Key {
      * 
      * @param ordinal
      *            The verse id
-     * @exception NoSuchVerseException
-     *                If the reference is illegal
      */
-    public Verse(int ordinal) throws NoSuchVerseException {
+    public Verse(int ordinal) {
         originalName = null;
         set(ordinal);
     }
@@ -166,34 +160,24 @@ public final class Verse implements Key {
             return getName();
         }
 
-        try {
-            if (PassageUtil.isPersistentNaming() && originalName != null) {
-                return originalName;
-            }
-
-            String verseName = doGetName((Verse) base);
-            // Only shape it if it can be unshaped.
-            if (shaper.canUnshape()) {
-                return shaper.shape(verseName);
-            }
-
-            return verseName;
-        } catch (NoSuchKeyException ex) {
-            assert false : ex;
-            return "!Error!";
+        if (PassageUtil.isPersistentNaming() && originalName != null) {
+            return originalName;
         }
+
+        String verseName = doGetName((Verse) base);
+        // Only shape it if it can be unshaped.
+        if (shaper.canUnshape()) {
+            return shaper.shape(verseName);
+        }
+
+        return verseName;
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getRootName()
      */
     public String getRootName() {
-        try {
-            return book.getShortName();
-        } catch (NoSuchKeyException ex) {
-            assert false : ex;
-            return "!Error!";
-        }
+        return book.getShortName();
     }
 
     /* (non-Javadoc)
@@ -300,15 +284,15 @@ public final class Verse implements Key {
 
     /**
      * How many verses are there in between the 2 Verses. The answer is -ve if
-     * that is bigger than this. The answer is inclusive of that and exclusive
-     * of this, so that <code>gen11.subtract(gen12) == 1</code>
+     * start is bigger than this (the end). The answer is inclusive of start and exclusive
+     * of this, so that <code>gen12.subtract(gen11) == 1</code>
      * 
-     * @param that
+     * @param start
      *            The Verse to compare this to
      * @return The count of verses between this and that.
      */
-    public int subtract(Verse that) {
-        return getOrdinal() - that.getOrdinal();
+    public int subtract(Verse start) {
+        return getOrdinal() - start.getOrdinal();
     }
 
     /**
@@ -319,30 +303,18 @@ public final class Verse implements Key {
      * @return The new Verse
      */
     public Verse subtract(int n) {
-        try {
-            int new_ordinal = Math.max(getOrdinal() - n, 1);
-            return new Verse(new_ordinal);
-        } catch (NoSuchVerseException ex) {
-            assert false : ex;
-            return Verse.DEFAULT;
-        }
+        return BibleInfo.decodeOrdinal(getOrdinal() - n);
     }
 
     /**
      * Get the verse that is a few verses on from the one we've got.
      * 
-     * @param extra
+     * @param n
      *            the number of verses later than the one we're one
      * @return The new verse
      */
-    public Verse add(int extra) {
-        try {
-            int new_ordinal = Math.min(getOrdinal() + extra, BibleInfo.maximumOrdinal());
-            return new Verse(new_ordinal);
-        } catch (NoSuchVerseException ex) {
-            assert false : ex;
-            return Verse.DEFAULT;
-        }
+    public Verse add(int n) {
+        return BibleInfo.decodeOrdinal(getOrdinal() + n);
     }
 
     /**
@@ -485,67 +457,6 @@ public final class Verse implements Key {
         };
     }
 
-    /**
-     * Create a new Verse being the last verse in the current book
-     * 
-     * @return The last verse in this book
-     */
-    public Verse getLastVerseInBook() {
-        try {
-            int lastchap = BibleInfo.chaptersInBook(book);
-            int lastverse = BibleInfo.versesInChapter(book, lastchap);
-
-            return new Verse(book, lastchap, lastverse);
-        } catch (NoSuchVerseException ex) {
-            assert false : ex;
-            return Verse.DEFAULT;
-        }
-    }
-
-    /**
-     * Create a new Verse being the last verse in the current book
-     * 
-     * @return The last verse in this book
-     */
-    public Verse getLastVerseInChapter() {
-        try {
-            int lastverse = BibleInfo.versesInChapter(book, chapter);
-
-            return new Verse(book, chapter, lastverse);
-        } catch (NoSuchVerseException ex) {
-            assert false : ex;
-            return Verse.DEFAULT;
-        }
-    }
-
-    /**
-     * Create a new Verse being the first verse in the current book
-     * 
-     * @return The first verse in this book
-     */
-    public Verse getFirstVerseInBook() {
-        try {
-            return new Verse(book, 1, 1);
-        } catch (NoSuchVerseException ex) {
-            assert false : ex;
-            return Verse.DEFAULT;
-        }
-    }
-
-    /**
-     * Create a new Verse being the first verse in the current book
-     * 
-     * @return The first verse in this book
-     */
-    public Verse getFirstVerseInChapter() {
-        try {
-            return new Verse(book, chapter, 1);
-        } catch (NoSuchVerseException ex) {
-            assert false : ex;
-            return Verse.DEFAULT;
-        }
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -572,9 +483,8 @@ public final class Verse implements Key {
      * @param verseBase
      *            the context or null if there is none
      * @return the verse representation
-     * @throws NoSuchVerseException
      */
-    private String doGetName(Verse verseBase) throws NoSuchVerseException {
+    private String doGetName(Verse verseBase) {
         // To cope with thing like Jude 2...
         if (BibleInfo.chaptersInBook(book) == 1) {
             if (verseBase == null || verseBase.book != book) {
@@ -603,8 +513,6 @@ public final class Verse implements Key {
      * @param text
      *            The string to be parsed
      * @return The correctly parsed chapter or verse
-     * @exception NoSuchVerseException
-     *                If the reference is illegal
      */
     protected static int parseInt(String text) throws NoSuchVerseException {
         try {
@@ -645,12 +553,8 @@ public final class Verse implements Key {
      *            The chapter to set
      * @param verse
      *            The verse to set
-     * @exception NoSuchVerseException
-     *                If the verse can not be understood
      */
-    private void set(BibleBook book, int chapter, int verse) throws NoSuchVerseException {
-        BibleInfo.validate(book, chapter, verse);
-
+    private void set(BibleBook book, int chapter, int verse) {
         this.book = book;
         this.chapter = chapter;
         this.verse = verse;
@@ -661,10 +565,8 @@ public final class Verse implements Key {
      * 
      * @param ordinal
      *            The ordinal of the verse
-     * @exception NoSuchVerseException
-     *                If the verse can not be understood
      */
-    private void set(int ordinal) throws NoSuchVerseException {
+    private void set(int ordinal) {
         Verse v = BibleInfo.decodeOrdinal(ordinal);
 
         book = v.book;
@@ -708,11 +610,7 @@ public final class Verse implements Key {
         // Call even if there is no default serializable fields.
         in.defaultReadObject();
 
-        try {
-            set(in.readInt());
-        } catch (NoSuchVerseException ex) {
-            throw new IOException(ex.getMessage());
-        }
+        set(in.readInt());
 
         // We are ignoring the originalName. It was set to null in the
         // default ctor so I will ignore it here.

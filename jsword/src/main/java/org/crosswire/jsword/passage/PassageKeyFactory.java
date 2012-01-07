@@ -272,7 +272,7 @@ public final class PassageKeyFactory implements KeyFactory {
                 int bit = (ord % 8) - 1;
 
                 if ((buffer[idx0] & (1 << bit)) != 0) {
-                    ref.add(new Verse(ord));
+                    ref.add(BibleInfo.decodeOrdinal(ord));
                 }
             }
             // index gets left behind here, but we dont care
@@ -282,7 +282,7 @@ public final class PassageKeyFactory implements KeyFactory {
             int verses = fromBinary(buffer, index, BibleInfo.maximumOrdinal());
             for (int i = 0; i < verses; i++) {
                 int ord = fromBinary(buffer, index, BibleInfo.maximumOrdinal());
-                ref.add(new Verse(ord));
+                ref.add(BibleInfo.decodeOrdinal(ord));
             }
             break;
 
@@ -291,7 +291,7 @@ public final class PassageKeyFactory implements KeyFactory {
             for (int i = 0; i < ranges; i++) {
                 int ord = fromBinary(buffer, index, BibleInfo.maximumOrdinal());
                 int len = fromBinary(buffer, index, BibleInfo.maximumOrdinal());
-                ref.add(RestrictionType.NONE.toRange(new Verse(ord), len));
+                ref.add(RestrictionType.NONE.toRange(BibleInfo.decodeOrdinal(ord), len));
             }
             break;
 

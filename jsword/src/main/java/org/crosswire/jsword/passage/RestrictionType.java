@@ -77,27 +77,22 @@ public enum RestrictionType {
 
         @Override
         public VerseRange blur(VerseRange range, int blurDown, int blurUp) {
-            try {
-                Verse start = range.getStart();
-                BibleBook startBook = start.getBook();
-                int startChapter = start.getChapter();
-                int startVerse = start.getVerse() - blurDown;
+            Verse start = range.getStart();
+            BibleBook startBook = start.getBook();
+            int startChapter = start.getChapter();
+            int startVerse = start.getVerse() - blurDown;
 
-                Verse end = range.getEnd();
-                BibleBook endBook = end.getBook();
-                int endChapter = end.getChapter();
-                int endVerse = end.getVerse() + blurUp;
+            Verse end = range.getEnd();
+            BibleBook endBook = end.getBook();
+            int endChapter = end.getChapter();
+            int endVerse = end.getVerse() + blurUp;
 
-                startVerse = Math.max(startVerse, 1);
-                endVerse = Math.min(endVerse, BibleInfo.versesInChapter(endBook, endChapter));
+            startVerse = Math.max(startVerse, 1);
+            endVerse = Math.min(endVerse, BibleInfo.versesInChapter(endBook, endChapter));
 
-                Verse newStart = new Verse(startBook, startChapter, startVerse);
-                Verse newEnd = new Verse(endBook, endChapter, endVerse);
-                return new VerseRange(newStart, newEnd);
-            } catch (NoSuchVerseException ex) {
-                assert false : ex;
-                return null;
-            }
+            Verse newStart = new Verse(startBook, startChapter, startVerse);
+            Verse newEnd = new Verse(endBook, endChapter, endVerse);
+            return new VerseRange(newStart, newEnd);
         }
 
         @Override

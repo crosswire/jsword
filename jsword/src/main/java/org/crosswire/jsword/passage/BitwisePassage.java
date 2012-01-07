@@ -298,19 +298,14 @@ public class BitwisePassage extends AbstractPassage {
          * @see java.util.Iterator#next()
          */
         public Key next() throws NoSuchElementException {
-            try {
-                if (!hasNext()) {
-                    throw new NoSuchElementException();
-                }
-
-                Key retcode = new Verse(next);
-                calculateNext();
-
-                return retcode;
-            } catch (NoSuchVerseException ex) {
-                assert false;
-                return null;
+            if (!hasNext()) {
+                throw new NoSuchElementException();
             }
+
+            Key retcode = BibleInfo.decodeOrdinal(next);
+            calculateNext();
+
+            return retcode;
         }
 
         /* (non-Javadoc)

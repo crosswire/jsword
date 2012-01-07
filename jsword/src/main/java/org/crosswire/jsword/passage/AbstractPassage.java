@@ -1219,40 +1219,36 @@ public abstract class AbstractPassage implements Passage {
         raiseEventSuppresion();
         raiseNormalizeProtection();
 
-        try {
-            int type = is.readInt();
-            switch (type) {
-            case BITWISE:
-                BitSet store = (BitSet) is.readObject();
-                for (int i = 0; i < BibleInfo.maximumOrdinal(); i++) {
-                    if (store.get(i)) {
-                        add(new Verse(i + 1));
-                    }
+        int type = is.readInt();
+        switch (type) {
+        case BITWISE:
+            BitSet store = (BitSet) is.readObject();
+            for (int i = 0; i < BibleInfo.maximumOrdinal(); i++) {
+                if (store.get(i)) {
+                    add(BibleInfo.decodeOrdinal(i + 1));
                 }
-                break;
-
-            case DISTINCT:
-                int verses = is.readInt();
-                for (int i = 0; i < verses; i++) {
-                    int ord = is.readInt();
-                    add(new Verse(ord));
-                }
-                break;
-
-            case RANGED:
-                int ranges = is.readInt();
-                for (int i = 0; i < ranges; i++) {
-                    int ord = is.readInt();
-                    int count = is.readInt();
-                    add(RestrictionType.NONE.toRange(new Verse(ord), count));
-                }
-                break;
-
-            default:
-                throw new ClassCastException(JSOtherMsg.lookupText("Can only use Verses and VerseRanges in this Collection"));
             }
-        } catch (NoSuchVerseException ex) {
-            throw new IOException(ex.getMessage());
+            break;
+
+        case DISTINCT:
+            int verses = is.readInt();
+            for (int i = 0; i < verses; i++) {
+                int ord = is.readInt();
+                add(BibleInfo.decodeOrdinal(ord));
+            }
+            break;
+
+        case RANGED:
+            int ranges = is.readInt();
+            for (int i = 0; i < ranges; i++) {
+                int ord = is.readInt();
+                int count = is.readInt();
+                add(RestrictionType.NONE.toRange(BibleInfo.decodeOrdinal(ord), count));
+            }
+            break;
+
+        default:
+            throw new ClassCastException(JSOtherMsg.lookupText("Can only use Verses and VerseRanges in this Collection"));
         }
 
         // We are ignoring the originalName. It was set to null in the

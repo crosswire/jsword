@@ -338,7 +338,7 @@ public class PassageUtilTest extends TestCase {
         Passage empty = (Passage) keyf.createEmptyKeyList();
 
         for (int i = 1; i < BibleInfo.maximumOrdinal(); i += 10) {
-            hard.add(new Verse(i));
+            hard.add(BibleInfo.decodeOrdinal(i));
         }
 
         byte[] temp = PassageKeyFactory.toBinaryRepresentation(gen1_135);

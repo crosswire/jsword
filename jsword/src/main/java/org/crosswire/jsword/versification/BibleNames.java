@@ -30,8 +30,6 @@ import java.util.ResourceBundle;
 import org.crosswire.common.util.CWClassLoader;
 import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.StringUtil;
-import org.crosswire.jsword.JSOtherMsg;
-import org.crosswire.jsword.passage.NoSuchVerseException;
 
 /**
  * BibleNames deals with locale sensitive BibleBook name lookup conversions.
@@ -50,17 +48,11 @@ import org.crosswire.jsword.passage.NoSuchVerseException;
         initialize();
     }
 
-    /* package */ BookName getBookName(BibleBook book) throws NoSuchVerseException {
+    /* package */ BookName getBookName(BibleBook book) {
         // This is faster than doing the check explicitly, unless
         // The exception is actually thrown, then it is a lot slower
         // I'd like to think that the norm is to get it right
-        try {
-            return books[book.ordinal()];
-        } catch (NullPointerException ex) {
-            throw new NoSuchVerseException(JSOtherMsg.lookupText("Book must not be null"));
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            throw new NoSuchVerseException(JSOtherMsg.lookupText("Book must be between 0 and 66 (given {0,number,integer}).", Integer.valueOf(book.ordinal())));
-        }
+        return books[book.ordinal()];
     }
 
     /**
@@ -70,10 +62,8 @@ import org.crosswire.jsword.passage.NoSuchVerseException;
      * @param book
      *            The book of the Bible
      * @return The full name of the book
-     * @exception NoSuchVerseException
-     *                If the book number is not valid
      */
-    /* package */ String getPreferredName(BibleBook book) throws NoSuchVerseException {
+    /* package */ String getPreferredName(BibleBook book) {
         return getBookName(book).getPreferredName();
     }
 
@@ -84,10 +74,8 @@ import org.crosswire.jsword.passage.NoSuchVerseException;
      * @param book
      *            The book of the Bible
      * @return The full name of the book
-     * @exception NoSuchVerseException
-     *                If the book number is not valid
      */
-    /* package */ String getLongName(BibleBook book) throws NoSuchVerseException {
+    /* package */ String getLongName(BibleBook book) {
         return getBookName(book).getLongName();
     }
 
@@ -98,10 +86,8 @@ import org.crosswire.jsword.passage.NoSuchVerseException;
      * @param book
      *            The book of the Bible
      * @return The short name of the book
-     * @exception NoSuchVerseException
-     *                If the book number is not valid
      */
-    /* package */ String getShortName(BibleBook book) throws NoSuchVerseException {
+    /* package */ String getShortName(BibleBook book) {
         return getBookName(book).getShortName();
     }
 

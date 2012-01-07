@@ -15,7 +15,7 @@
  *      Boston, MA 02111-1307, USA
  *
  * Copyright: 2005
- *     The copyright to this program is held by it's authors.
+ *     The copyright to this program is held by it's authors. 
  *
  * ID: $Id$
  */
@@ -315,7 +315,7 @@ public class PassageTally extends AbstractPassage {
     public boolean contains(Key that) {
         for (Key aKey : that) {
             Verse verse = (Verse) aKey;
-            if (board[verse.getOrdinal() - 1] == 0) {
+            if (board[verse.getOrdinal()] == 0) {
                 return false;
             }
         }
@@ -331,7 +331,7 @@ public class PassageTally extends AbstractPassage {
      * @return The rank of the verse in question
      */
     public int getTallyOf(Verse verse) {
-        return board[verse.getOrdinal() - 1];
+        return board[verse.getOrdinal()];
     }
 
     /**
@@ -342,7 +342,7 @@ public class PassageTally extends AbstractPassage {
      * @return The index of the verse or -1 if the verse was not found
      */
     public int getIndexOf(Verse verse) {
-        int pos = verse.getOrdinal() - 1;
+        int pos = verse.getOrdinal();
         int tally = board[pos];
         return tally > 0 ? pos : -1;
     }
@@ -447,7 +447,7 @@ public class PassageTally extends AbstractPassage {
 
             int vib = BibleInfo.maximumOrdinal();
             for (int i = 0; i < vib; i++) {
-                increment(i, -that_rt.board[i - 1]);
+                increment(i, -that_rt.board[i]);
             }
         } else {
             for (Key aKey : that) {
@@ -675,19 +675,19 @@ public class PassageTally extends AbstractPassage {
      *            The amount to increase by
      */
     private void increment(int ord, int tally) {
-        boolean exists = board[ord - 1] > 0;
-        board[ord - 1] += tally;
-        if (board[ord - 1] > MAX_TALLY) {
-            board[ord - 1] = MAX_TALLY;
+        boolean exists = board[ord] > 0;
+        board[ord] += tally;
+        if (board[ord] > MAX_TALLY) {
+            board[ord] = MAX_TALLY;
         }
-        if (board[ord - 1] < 0) {
-            board[ord - 1] = 0;
+        if (board[ord] < 0) {
+            board[ord] = 0;
         }
 
         // Recompute the size
-        if (exists && board[ord - 1] == 0) {
+        if (exists && board[ord] == 0) {
             size--;
-        } else if (!exists && board[ord - 1] > 0) {
+        } else if (!exists && board[ord] > 0) {
             size++;
         }
     }
@@ -715,11 +715,11 @@ public class PassageTally extends AbstractPassage {
      *            The verse to increment
      */
     private void kill(int ord) {
-        if (board[ord - 1] > 0) {
+        if (board[ord] > 0) {
             size--;
         }
 
-        board[ord - 1] = 0;
+        board[ord] = 0;
     }
 
     public enum Order {
@@ -752,7 +752,7 @@ public class PassageTally extends AbstractPassage {
     /**
      * The tally board itself
      */
-    protected int[] board = new int[BibleInfo.maximumOrdinal()];
+    protected int[] board = new int[BibleInfo.maximumOrdinal() + 1];
 
     /**
      * The maximum tally possible
@@ -798,19 +798,14 @@ public class PassageTally extends AbstractPassage {
          * @see java.util.Iterator#next()
          */
         public Key next() throws NoSuchElementException {
-            try {
-                if (next > BibleInfo.maximumOrdinal()) {
-                    throw new NoSuchElementException();
-                }
-
-                Key retcode = new Verse(next);
-                calculateNext();
-
-                return retcode;
-            } catch (NoSuchVerseException ex) {
-                assert false : ex;
-                return Verse.DEFAULT;
+            if (next > BibleInfo.maximumOrdinal()) {
+                throw new NoSuchElementException();
             }
+
+            Key retcode = BibleInfo.decodeOrdinal(next);
+            calculateNext();
+
+            return retcode;
         }
 
         /* (non-Javadoc)
@@ -826,7 +821,7 @@ public class PassageTally extends AbstractPassage {
         private void calculateNext() {
             do {
                 next++;
-            } while (next <= BibleInfo.maximumOrdinal() && board[next - 1] == 0);
+            } while (next <= BibleInfo.maximumOrdinal() && board[next] == 0);
         }
 
         /** What is the next Verse to be considered */
@@ -867,13 +862,8 @@ public class PassageTally extends AbstractPassage {
          * @see java.util.Iterator#next()
          */
         public Key next() throws NoSuchElementException {
-            try {
-                last = it.next();
-                return new Verse(last.ord);
-            } catch (NoSuchVerseException ex) {
-                assert false : ex;
-                return Verse.DEFAULT;
-            }
+            last = it.next();
+            return BibleInfo.decodeOrdinal(last.ord);
         }
 
         /* (non-Javadoc)
@@ -993,7 +983,7 @@ public class PassageTally extends AbstractPassage {
                 int rank = 0;
                 for (Key aKey : range) {
                     Verse verse = (Verse) aKey;
-                    int temp = board[verse.getOrdinal() - 1];
+                    int temp = board[verse.getOrdinal()];
                     if (temp > rank) {
                         rank = temp;
                     }

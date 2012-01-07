@@ -25,10 +25,9 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import org.crosswire.jsword.passage.NoSuchVerseException;
-
 /**
  * A BibleBook is a book of the Bible. It may or may not be canonical.
+ * Note that the ordering of these books varies from one ReferenceSystem to another. 
  */
 public enum BibleBook {
     // JSword introduction to the Bible
@@ -194,10 +193,8 @@ public enum BibleBook {
      * @param book
      *            The book of the Bible
      * @return The requested BookName
-     * @exception NoSuchVerseException
-     *                If the book number is not valid
      */
-    public BookName getBookName() throws NoSuchVerseException {
+    public BookName getBookName() {
         return bibleNames.getBookName(this);
     }
 
@@ -208,10 +205,8 @@ public enum BibleBook {
      * @param book
      *            The book of the Bible
      * @return The full name of the book
-     * @exception NoSuchVerseException
-     *                If the book is not valid
      */
-    public String getPreferredName() throws NoSuchVerseException {
+    public String getPreferredName() {
         return bibleNames.getPreferredName(this);
     }
 
@@ -222,10 +217,8 @@ public enum BibleBook {
      * @param book
      *            The book of the Bible
      * @return The full name of the book
-     * @exception NoSuchVerseException
-     *                If the book is not valid
      */
-    public String getLongName() throws NoSuchVerseException {
+    public String getLongName() {
         return bibleNames.getLongName(this);
     }
 
@@ -236,10 +229,8 @@ public enum BibleBook {
      * @param book
      *            The book of the Bible
      * @return The short name of the book
-     * @exception NoSuchVerseException
-     *                If the book is not valid
      */
-    public String getShortName() throws NoSuchVerseException {
+    public String getShortName() {
         return bibleNames.getShortName(this);
     }
 

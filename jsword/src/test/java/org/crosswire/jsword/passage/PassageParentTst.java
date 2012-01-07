@@ -156,6 +156,39 @@ public class PassageParentTst extends TestCase {
         PassageKeyFactory.setDefaultPassage(PassageType.toInteger(PassageType.SPEED));
     }
 
+    public void testWholeBible() throws Exception {
+        Iterator<Key> it = gen_rev.rangeIterator(RestrictionType.NONE);
+        assertTrue(it.hasNext());
+        assertEquals(it.next().getOsisRef(), VerseRangeFactory.fromString("Gen-Rev").getOsisRef());
+        assertTrue(!it.hasNext());
+
+        // it = gen_rev.rangeIterator(RestrictionType.BOOK);
+        // assertTrue(it.hasNext());
+        //        assertEquals(it.next(), VerseRangeFactory.fromString("Gen"));
+        // assertTrue(it.hasNext());
+        //        assertEquals(it.next(), VerseRangeFactory.fromString("Exo"));
+        // assertTrue(it.hasNext());
+        //        assertEquals(it.next(), VerseRangeFactory.fromString("Lev"));
+        // assertTrue(it.hasNext());
+        //        assertEquals(it.next(), VerseRangeFactory.fromString("Num"));
+        // assertTrue(!it.hasNext());
+
+        it = gen_rev.rangeIterator(RestrictionType.CHAPTER);
+        assertTrue(it.hasNext());
+        assertEquals(it.next().getOsisRef(), VerseRangeFactory.fromString("Gen 1").getOsisRef());
+        assertTrue(it.hasNext());
+        assertEquals(it.next().getOsisRef(), VerseRangeFactory.fromString("Gen 2").getOsisRef());
+        assertTrue(it.hasNext());
+        assertEquals(it.next().getOsisRef(), VerseRangeFactory.fromString("Gen 3").getOsisRef());
+        assertTrue(it.hasNext());
+        assertEquals(it.next().getOsisRef(), VerseRangeFactory.fromString("Gen 4").getOsisRef());
+        // assertTrue(!it.hasNext());
+
+        it = empty.rangeIterator(RestrictionType.NONE);
+        assertTrue(!it.hasNext());
+    }
+
+
     public void testReadAddPassageListener() throws Exception {
         // for (int i=0; i<300; i++)
         {
@@ -190,11 +223,11 @@ public class PassageParentTst extends TestCase {
         {
             Iterator<Key> it = gen1_135.rangeIterator(RestrictionType.NONE);
             assertTrue(it.hasNext());
-            assertEquals(VerseRangeFactory.fromString("Gen 1:1"), it.next());
+            assertEquals(VerseRangeFactory.fromString("Gen 1:1").getOsisRef(), it.next().getOsisRef());
             assertTrue(it.hasNext());
-            assertEquals(VerseRangeFactory.fromString("Gen 1:3"), it.next());
+            assertEquals(VerseRangeFactory.fromString("Gen 1:3").getOsisRef(), it.next().getOsisRef());
             assertTrue(it.hasNext());
-            assertEquals(VerseRangeFactory.fromString("Gen 1:5"), it.next());
+            assertEquals(VerseRangeFactory.fromString("Gen 1:5").getOsisRef(), it.next().getOsisRef());
             assertTrue(!it.hasNext());
             it = empty.rangeIterator(RestrictionType.NONE);
             assertTrue(!it.hasNext());
@@ -421,31 +454,31 @@ public class PassageParentTst extends TestCase {
         assertEquals(temp, keyf.getKey("Gen 1:1-6"));
         temp = (Passage) gen1_135.clone();
         temp.blur(1, RestrictionType.NONE);
-        assertEquals(temp, keyf.getKey("Gen 1:1-6"));
+        assertEquals(temp, keyf.getKey("Gen 1:0-6"));
         temp = (Passage) gen1_135.clone();
         temp.blur(2, RestrictionType.CHAPTER);
         assertEquals(temp, keyf.getKey("Gen 1:1-7"));
         temp = (Passage) gen1_135.clone();
         temp.blur(2, RestrictionType.NONE);
-        assertEquals(temp, keyf.getKey("Gen 1:1-7"));
+        assertEquals(temp, keyf.getKey("Gen 0:0-1:7"));
         temp = (Passage) gen1_135.clone();
         temp.blur(12, RestrictionType.CHAPTER);
         assertEquals(temp, keyf.getKey("Gen 1:1-17"));
         temp = (Passage) gen1_135.clone();
         temp.blur(12, RestrictionType.NONE);
-        assertEquals(temp, keyf.getKey("Gen 1:1-17"));
+        assertEquals(temp, keyf.getKey("Intro.OT 0:0-Gen 1:17"));
         temp = (Passage) gen1_135.clone();
         temp.blur(26, RestrictionType.CHAPTER);
         assertEquals(temp, keyf.getKey("Gen 1:1-31"));
         temp = (Passage) gen1_135.clone();
         temp.blur(26, RestrictionType.NONE);
-        assertEquals(temp, keyf.getKey("Gen 1:1-31"));
+        assertEquals(temp, keyf.getKey("Intro.OT-Gen 1:31"));
         temp = (Passage) gen1_135.clone();
         temp.blur(27, RestrictionType.CHAPTER);
         assertEquals(temp, keyf.getKey("Gen 1:1-31"));
         temp = (Passage) gen1_135.clone();
         temp.blur(27, RestrictionType.NONE);
-        assertEquals(temp, keyf.getKey("Gen 1:1-2:1"));
+        assertEquals(temp, keyf.getKey("Intro.OT-Gen 2:0"));
         // temp = (Passage) exo2a_3b.clone();
         // temp.blur(0, RestrictionType.CHAPTER);
         //        assertEquals(temp, keyf.getKey("Exo 2:1-10, Exo 3:1-11"));
@@ -800,7 +833,7 @@ public class PassageParentTst extends TestCase {
     public void testWriteObject() throws Exception {
         Passage hard = (Passage) keyf.createEmptyKeyList();
         for (int i = 10; i < BibleInfo.maximumOrdinal(); i += 200) {
-            hard.add(new Verse(i));
+            hard.add(BibleInfo.decodeOrdinal(i));
         }
 
         File test_dat = new File("test.dat");

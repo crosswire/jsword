@@ -284,17 +284,12 @@ public final class VerseRange implements Key {
         // TODO(DM): could analyze each book and chapter in the range
         // to see if it is wholly contained in the range and output it if it is.
 
-        // Estimate the size of the buffer: book.dd.dd (where book is 3-5, 3
-        // typical)
+        // Estimate the size of the buffer: book.dd.dd (where book is 3-5, 3 typical)
         StringBuilder buf = new StringBuilder((endOrdinal - startOrdinal + 1) * 10);
         buf.append(start.getOsisID());
         for (int i = startOrdinal + 1; i < endOrdinal; i++) {
-            try {
-                buf.append(AbstractPassage.REF_OSIS_DELIM);
-                buf.append(new Verse(i).getOsisID());
-            } catch (NoSuchVerseException e) {
-                assert false : e;
-            }
+            buf.append(AbstractPassage.REF_OSIS_DELIM);
+            buf.append(BibleInfo.decodeOrdinal(i).getOsisID());
         }
 
         // It just might be a single verse range!
@@ -649,18 +644,13 @@ public final class VerseRange implements Key {
      * @return The array of verses that this makes up
      */
     public Verse[] toVerseArray() {
-        try {
-            Verse[] retcode = new Verse[verseCount];
+        Verse[] retcode = new Verse[verseCount];
 
-            for (int i = 0; i < verseCount; i++) {
-                retcode[i] = new Verse(start.getOrdinal() + i);
-            }
-
-            return retcode;
-        } catch (NoSuchVerseException ex) {
-            assert false : ex;
-            return new Verse[0];
+        for (int i = 0; i < verseCount; i++) {
+            retcode[i] = BibleInfo.decodeOrdinal(start.getOrdinal() + i);
         }
+
+        return retcode;
     }
 
     /**
@@ -916,16 +906,12 @@ public final class VerseRange implements Key {
         // Call even if there is no default serializable fields.
         in.defaultReadObject();
 
-        try {
-            start = new Verse(in.readInt());
-            verseCount = in.readInt();
-            end = calcEnd(start, verseCount);
-            shaper = new NumberShaper();
+        start = BibleInfo.decodeOrdinal(in.readInt());
+        verseCount = in.readInt();
+        end = calcEnd(start, verseCount);
+        shaper = new NumberShaper();
 
-            verifyData();
-        } catch (NoSuchVerseException ex) {
-            throw new IOException(ex.getMessage());
-        }
+        verifyData();
 
         // We are ignoring the originalName. It was set to null in the
         // default ctor so I will ignore it here.
@@ -958,12 +944,7 @@ public final class VerseRange implements Key {
                 throw new NoSuchElementException();
             }
 
-            try {
-                return new Verse(next++);
-            } catch (NoSuchVerseException ex) {
-                assert false : ex;
-                return Verse.DEFAULT;
-            }
+            return BibleInfo.decodeOrdinal(next++);
         }
 
         /* (non-Javadoc)
@@ -1140,26 +1121,11 @@ public final class VerseRange implements Key {
     private static transient VerseRange ntRange;
 
     static {
-        try {
-            whole = new VerseRange(new Verse(BibleBook.GEN, 1, 1), new Verse(BibleBook.REV, 22, 21));
-        } catch (NoSuchVerseException ex) {
-            assert false : ex;
-            whole = new VerseRange();
-        }
+        whole = new VerseRange(new Verse(BibleBook.GEN, 1, 1), new Verse(BibleBook.REV, 22, 21));
 
-        try {
-            otRange = new VerseRange(new Verse(BibleBook.GEN, 1, 1), new Verse(BibleBook.MAL, 4, 6));
-        } catch (NoSuchVerseException ex) {
-            assert false : ex;
-            otRange = new VerseRange();
-        }
+        otRange = new VerseRange(new Verse(BibleBook.GEN, 1, 1), new Verse(BibleBook.MAL, 4, 6));
 
-        try {
-            ntRange = new VerseRange(new Verse(BibleBook.MATT, 1, 1), new Verse(BibleBook.REV, 22, 21));
-        } catch (NoSuchVerseException ex) {
-            assert false : ex;
-            ntRange = new VerseRange();
-        }
+        ntRange = new VerseRange(new Verse(BibleBook.MATT, 1, 1), new Verse(BibleBook.REV, 22, 21));
     }
 
     /**

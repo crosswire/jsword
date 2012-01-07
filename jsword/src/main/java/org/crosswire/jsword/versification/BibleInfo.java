@@ -26,7 +26,6 @@ import java.io.PrintStream;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.CaseType;
-import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
 
@@ -245,29 +244,32 @@ public final class BibleInfo {
      * @exception NoSuchVerseException
      *                If the reference is illegal
      */
-    public static Verse decodeOrdinal(int ordinal) throws NoSuchVerseException {
+    public static Verse decodeOrdinal(int ordinal) {
+        int ord = ordinal;
         BibleBook book = null;
         int bookIndex = -1;
         int chapterIndex = 0;
         int verse = 0;
 
-        if (ordinal < 0 || ordinal > BibleInfo.maximumOrdinal()) {
-            throw new NoSuchVerseException(JSOtherMsg.lookupText("Ordinal must be between 0 and {0,number,integer} (given {1,number,integer}).", Integer.valueOf(BibleInfo.maximumOrdinal()), Integer.valueOf(ordinal)));
+        if (ord < 0) {
+            ord = 0;
+        } else if (ord > maximumOrdinal()) {
+            ord = maximumOrdinal();
         }
 
         // Handle three special cases
         // Book/Module introduction
-        if (ordinal == 0) {
+        if (ord == 0) {
             return new Verse(BibleBook.INTRO_BIBLE, 0, 0);
         }
 
         // OT introduction
-        if (ordinal == 1) {
+        if (ord == 1) {
             return new Verse(BibleBook.INTRO_OT, 0, 0);
         }
 
         // NT introduction
-        if (ordinal == NT_ORDINAL_START) {
+        if (ord == NT_ORDINAL_START) {
             return new Verse(BibleBook.INTRO_NT, 0, 0);
         }
 
@@ -277,7 +279,7 @@ public final class BibleInfo {
         for (int b = lastBook; b >= 0; b--) {
             // A book has a slot for a heading followed by a slot for a chapter heading.
             // These precede the start of the chapter.
-            if (ordinal >= ORDINAL_AT_START_OF_CHAPTER[b][0]) {
+            if (ord >= ORDINAL_AT_START_OF_CHAPTER[b][0]) {
                 bookIndex = b;
                 break;
             }
@@ -285,21 +287,21 @@ public final class BibleInfo {
 
         // There is a gap for the New Testament introduction.
         // This occurs when ordinal is one less than the book introduction of the next book.
-        if (bookIndex == BibleBook.INTRO_NT.ordinal() - 1 && ordinal == ORDINAL_AT_START_OF_CHAPTER[bookIndex + 1][0] - 1) {
-            bookIndex++;
-        }
+//        if (bookIndex == BibleBook.INTRO_NT.ordinal() - 1 && ord == ORDINAL_AT_START_OF_CHAPTER[bookIndex + 1][0] - 1) {
+//            bookIndex++;
+//        }
 
         book = BibleBook.getBooks()[bookIndex];
         int cib = BibleInfo.chaptersInBook(book);
         for (int c = cib; c >= 0; c--) {
-            if (ordinal >= ORDINAL_AT_START_OF_CHAPTER[bookIndex][c]) {
+            if (ord >= ORDINAL_AT_START_OF_CHAPTER[bookIndex][c]) {
                 chapterIndex = c;
                 break;
             }
         }
 
         if (chapterIndex > 0) {
-            verse = ordinal - ORDINAL_AT_START_OF_CHAPTER[bookIndex][chapterIndex];
+            verse = ord - ORDINAL_AT_START_OF_CHAPTER[bookIndex][chapterIndex];
         }
         
         return new Verse(book, chapterIndex, verse);
@@ -321,6 +323,12 @@ public final class BibleInfo {
      *                If the reference is illegal
      */
     public static void validate(BibleBook book, int chapter, int verse) throws NoSuchVerseException {
+
+        // Check the book
+        if (book == null) {
+            // TRANSLATOR: The user did not supply a book for a verse reference.
+            throw new NoSuchVerseException(JSOtherMsg.lookupText("Book must not be null"));
+        }
 
         // Check the chapter
         int maxChapter = chaptersInBook(book);
@@ -383,20 +391,35 @@ public final class BibleInfo {
         int patchedChapter = chapter;
         int patchedVerse = verse;
         
-        try {
-            // If the book is null, then patch to GENESIS
-            if (patchedBook == null) {
-                patchedBook = BibleBook.GEN;
-            }
-            // If they are too small
-            if (patchedChapter < 0) {
-                patchedChapter = 0;
-            }
-            if (patchedVerse < 0) {
-                patchedVerse = 0;
-            }
+        // If the book is null, then patch to GENESIS
+        if (patchedBook == null) {
+            patchedBook = BibleBook.GEN;
+        }
+        // If they are too small
+        if (patchedChapter < 0) {
+            patchedChapter = 0;
+        }
+        if (patchedVerse < 0) {
+            patchedVerse = 0;
+        }
 
-            while (patchedChapter > chaptersInBook(patchedBook)) {
+        while (patchedChapter > chaptersInBook(patchedBook)) {
+            patchedChapter -= chaptersInBook(patchedBook);
+            patchedBook = BibleInfo.getNextBook(patchedBook);
+
+            if (patchedBook == null) {
+                patchedBook = BibleBook.REV;
+                patchedChapter = chaptersInBook(patchedBook);
+                patchedVerse = versesInChapter(patchedBook, patchedChapter);
+                return new Verse(patchedBook, patchedChapter, patchedVerse);
+            }
+        }
+
+        while (patchedVerse > versesInChapter(patchedBook, patchedChapter)) {
+            patchedVerse -= versesInChapter(patchedBook, patchedChapter);
+            patchedChapter += 1;
+
+            if (patchedChapter > chaptersInBook(patchedBook)) {
                 patchedChapter -= chaptersInBook(patchedBook);
                 patchedBook = BibleInfo.getNextBook(patchedBook);
 
@@ -407,29 +430,9 @@ public final class BibleInfo {
                     return new Verse(patchedBook, patchedChapter, patchedVerse);
                 }
             }
-
-            while (patchedVerse > versesInChapter(patchedBook, patchedChapter)) {
-                patchedVerse -= versesInChapter(patchedBook, patchedChapter);
-                patchedChapter += 1;
-
-                if (patchedChapter > chaptersInBook(patchedBook)) {
-                    patchedChapter -= chaptersInBook(patchedBook);
-                    patchedBook = BibleInfo.getNextBook(patchedBook);
-
-                    if (patchedBook == null) {
-                        patchedBook = BibleBook.REV;
-                        patchedChapter = chaptersInBook(patchedBook);
-                        patchedVerse = versesInChapter(patchedBook, patchedChapter);
-                        return new Verse(patchedBook, patchedChapter, patchedVerse);
-                    }
-                }
-            }
-
-            return new Verse(patchedBook, patchedChapter, patchedVerse);
-        } catch (NoSuchKeyException ex) {
-            assert false : ex;
-            return new Verse(BibleBook.GEN, 1, 1, true);
         }
+
+        return new Verse(patchedBook, patchedChapter, patchedVerse);
     }
 
     /**

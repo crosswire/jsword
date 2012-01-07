@@ -29,6 +29,8 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.crosswire.jsword.versification.BibleInfo;
+
 /**
  * A Passage that is implemented using a TreeSet of VerseRanges. The attributes
  * of the style are:
@@ -325,21 +327,17 @@ public class RangedPassage extends AbstractPassage {
          * Passages iterator, with remove() overridden.
          */
         public VerseIterator(Iterator<Key> it) {
-            try {
-                Set<Key> temp = new TreeSet<Key>();
+            Set<Key> temp = new TreeSet<Key>();
 
-                while (it.hasNext()) {
-                    VerseRange range = (VerseRange) it.next();
+            while (it.hasNext()) {
+                VerseRange range = (VerseRange) it.next();
 
-                    for (int i = 0; i < range.getCardinality(); i++) {
-                        temp.add(new Verse(range.getStart().getOrdinal() + i));
-                    }
+                for (int i = 0; i < range.getCardinality(); i++) {
+                    temp.add(BibleInfo.decodeOrdinal(range.getStart().getOrdinal() + i));
                 }
-
-                real = temp.iterator();
-            } catch (NoSuchVerseException ex) {
-                assert false : ex;
             }
+
+            real = temp.iterator();
         }
 
         /* (non-Javadoc)

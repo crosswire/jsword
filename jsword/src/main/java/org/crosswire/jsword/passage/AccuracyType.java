@@ -121,11 +121,11 @@ public enum AccuracyType {
 
         @Override
         public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException {
-            // Very similar to the start verse but we want the end of the
-            // chapter
-            Verse end = createStartVerse(endVerseDesc, null, endParts);
-            // except that this gives us end at verse 1, and not the book end
-            return end.getLastVerseInChapter();
+            // Very similar to the start verse but we want the end of the chapter
+            BibleBook book = BibleBook.getBook(endParts[0]);
+            int chapter = getChapter(book, endParts[1]);
+            int verse = BibleInfo.versesInChapter(book, chapter);
+            return new Verse(endVerseDesc, book, chapter, verse);
         }
     },
 
@@ -147,12 +147,10 @@ public enum AccuracyType {
 
         @Override
         public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException {
-            // And we end with a book, so we need to encompass the lot
-            // For example "Gen 3-Exo"
-            // Very similar to the start verse but we want the end of the book
-            Verse end = createStartVerse(endVerseDesc, null, endParts);
-            // except that this gives us end at 1:1, and not the book end
-            return end.getLastVerseInBook();
+            BibleBook book = BibleBook.getBook(endParts[0]);
+            int chapter = BibleInfo.chaptersInBook(book);
+            int verse = BibleInfo.versesInChapter(book, chapter);
+            return new Verse(endVerseDesc, book, chapter, verse);
         }
     },
 
@@ -215,7 +213,7 @@ public enum AccuracyType {
             // and it gets the end of the chapter
             BibleBook book = verseBasis.getBook();
             int chapter = getChapter(book, endParts[0]);
-            return new Verse(endVerseDesc, book, chapter, 0).getLastVerseInChapter();
+            return new Verse(endVerseDesc, book, chapter, BibleInfo.versesInChapter(book, chapter));
         }
     },
 

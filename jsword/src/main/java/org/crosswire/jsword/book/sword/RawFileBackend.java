@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2009
+ * Copyright: 2009-2012
  *     The copyright to this program is held by it's authors.
  *
  * ID: $Id$
@@ -40,10 +40,31 @@ import org.crosswire.jsword.versification.Testament;
 
 /**
  * A Raw File format that allows for each verse to have it's own storage.
+ * The basic structure of the index is as follows:
+ * <ul>
+ * <li><strong>incfile</strong> --
+ *      Is initialized with 1 and is incremented once for each non-linked verse
+ *      that is actually stored in the Book.</li>
+ * <li><strong>idx</strong> --
+ *      There is one index file for each testament having verses, named nt and ot.
+ *      These index files contain offsets into the corresponding data file.
+ *      The idx files are indexed by the ordinal value of the verse within the Testament
+ *      for the Book's versification.</li>
+ * <li><strong>dat</strong> --
+ *      There is a data file for each testament having verses, named nt.vss and ot.vss.
+ *      These data files do not contain the verses but rather the file names that
+ *      contain the verse text.</li>
+ * <li><strong>verse</strong> --
+ *      For each stored verse there is a file containing the verse text.
+ *      The filename is a zero padded number corresponding to the current increment
+ *      from incfile, when it was created. It is this 7 character name that is stored
+ *      in a dat file.</li>
+ * </ul>
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author mbergmann
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class RawFileBackend extends RawBackend {
 
@@ -73,7 +94,7 @@ public class RawFileBackend extends RawBackend {
     protected String getEntry(String name, Testament testament, long index) throws IOException {
         RandomAccessFile idxRaf = otIdxRaf;
         RandomAccessFile txtRaf = otTxtRaf;
-        if (testament == Testament.OLD) {
+        if (testament == Testament.NEW) {
             idxRaf = ntIdxRaf;
             txtRaf = ntTxtRaf;
         }
@@ -119,14 +140,13 @@ public class RawFileBackend extends RawBackend {
             txtFile = ntTxtFile;
         }
 
-        int oIndex = verse.getOrdinal() - 1;
-
         DataIndex dataIndex = getIndex(idxRaf, index);
         File dataFile;
         if (dataIndex.getSize() == 0) {
-            dataFile = createDataTextFile(oIndex);
+            dataFile = createDataTextFile(incfileValue);
             updateIndexFile(idxRaf, index, txtRaf.length());
-            updateDataFile(oIndex, txtFile);
+            updateDataFile(incfileValue, txtFile);
+            checkAndIncrementIncfile(incfileValue);
         } else {
             dataFile = getDataTextFile(txtRaf, dataIndex);
         }
@@ -134,8 +154,6 @@ public class RawFileBackend extends RawBackend {
         byte[] textData = text.getBytes("UTF-8");
         encipher(textData);
         writeTextDataFile(dataFile, textData);
-
-        checkAndIncrementIncfile(oIndex);
     }
 
     @Override
@@ -146,21 +164,16 @@ public class RawFileBackend extends RawBackend {
         Testament testament = BibleInfo.getTestament(aliasIndex);
         aliasIndex = BibleInfo.getTestamentOrdinal(aliasIndex);
         RandomAccessFile idxRaf = otIdxRaf;
-        RandomAccessFile txtRaf = otTxtRaf;
-        File txtFile = otTxtFile;
         if (testament == Testament.NEW) {
             idxRaf = ntIdxRaf;
-            txtRaf = ntTxtRaf;
-            txtFile = ntTxtFile;
         }
 
-        int aliasOIndex = aliasVerse.getOrdinal() - 1;
-        int sourceOIndex = sourceVerse.getOrdinal() - 1;
+        int sourceOIndex = sourceVerse.getOrdinal();
+        sourceOIndex = BibleInfo.getTestamentOrdinal(sourceOIndex);
+        DataIndex dataIndex = getIndex(idxRaf, sourceOIndex);
 
-        updateIndexFile(idxRaf, aliasIndex, txtRaf.length());
-        updateDataFile(sourceOIndex, txtFile);
-
-        checkAndIncrementIncfile(aliasOIndex);
+        // Only the index is updated to point to the same place as what is linked.
+        updateIndexFile(idxRaf, aliasIndex, dataIndex.getOffset());
     }
 
     private void initIncFile() {
@@ -184,22 +197,41 @@ public class RawFileBackend extends RawBackend {
         return dataFile;
     }
 
-    private File getDataTextFile(RandomAccessFile txtRaf, DataIndex dataIndex) throws IOException, BookException {
-        File dataFile;
+    /**
+     * Gets the Filename for the File having the verse text.
+     * 
+     * @param txtRaf The random access file containing the file names for the verse storage.
+     * @param dataIndex The index of where to get the data
+     * @return the file having the verse text.
+     * @throws IOException
+     */
+    private String getTextFilename(RandomAccessFile txtRaf, DataIndex dataIndex) throws IOException {
         // data size to be read from the data file (ot or nt) should be 9 bytes
         // this will be the filename of the actual text file "\r\n"
         byte[] data = SwordUtil.readRAF(txtRaf, dataIndex.getOffset(), dataIndex.getSize());
         decipher(data);
         if (data.length == 7) {
-            String dataFilename = new String(data, 0, 7);
-            String dataPath = getExpandedDataPath().getPath() + File.separator + dataFilename;
-            dataFile = new File(dataPath);
-        } else {
-            log.error("Read data is not of appropriate size of 9 bytes!");
-            throw new IOException("Datalength is not 9 bytes!");
+            return new String(data, 0, 7);
         }
-        return dataFile;
+        log.error("Read data is not of appropriate size of 9 bytes!");
+        throw new IOException("Datalength is not 9 bytes!");
     }
+
+    /**
+     * Gets the File having the verse text.
+     * 
+     * @param txtRaf The random access file containing the file names for the verse storage.
+     * @param dataIndex The index of where to get the data
+     * @return the file having the verse text.
+     * @throws IOException
+     * @throws BookException
+     */
+    private File getDataTextFile(RandomAccessFile txtRaf, DataIndex dataIndex) throws IOException, BookException {
+        String dataFilename = getTextFilename(txtRaf, dataIndex);
+        String dataPath = getExpandedDataPath().getPath() + File.separator + dataFilename;
+        return new File(dataPath);
+    }
+
 
     protected void updateIndexFile(RandomAccessFile idxRaf, long index, long dataFileStartPosition) throws IOException {
         long indexFileWriteOffset = index * entrysize;

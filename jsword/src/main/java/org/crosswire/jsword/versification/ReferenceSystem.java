@@ -23,7 +23,6 @@ package org.crosswire.jsword.versification;
 
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
-import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
 
@@ -86,10 +85,8 @@ public class ReferenceSystem {
      * @param book
      *            The book part of the reference.
      * @return The last valid chapter number for a book.
-     * @exception NoSuchVerseException
-     *                If the book is not valid
      */
-    public int getLastChapter(BibleBook book) throws NoSuchVerseException {
+    public int getLastChapter(BibleBook book) {
         // This is faster than doing the check explicitly, unless
         // The exception is actually thrown, then it is a lot slower
         // I'd like to think that the norm is to get it right
@@ -110,10 +107,8 @@ public class ReferenceSystem {
      * @param chapter
      *            The current chapter
      * @return The last valid verse number for a chapter
-     * @exception NoSuchVerseException
-     *                If the book or chapter number is not valid
      */
-    public int getLastVerse(BibleBook book, int chapter) throws NoSuchVerseException {
+    public int getLastVerse(BibleBook book, int chapter) {
         // This is faster than doing the check explicitly, unless
         // The exception is actually thrown, then it is a lot slower
         // I'd like to think that the norm is to get it right
@@ -124,6 +119,164 @@ public class ReferenceSystem {
         } catch (ArrayIndexOutOfBoundsException ex) {
             return 0;
         }
+    }
+
+    /**
+     * Create a new Verse being the last verse in the current book
+     * 
+     * @return The last verse in this book
+     */
+    public Verse getLastVerseInBook(Verse verse) {
+        BibleBook book = verse.getBook();
+        int lastchap = BibleInfo.chaptersInBook(book);
+        int lastverse = BibleInfo.versesInChapter(book, lastchap);
+
+        return new Verse(book, lastchap, lastverse);
+    }
+
+    /**
+     * Create a new Verse being the last verse in the current book
+     * 
+     * @return The last verse in this book
+     */
+    public Verse getLastVerseInChapter(Verse verse) {
+        BibleBook book = verse.getBook();
+        int chapter = verse.getChapter();
+        int lastverse = BibleInfo.versesInChapter(book, chapter);
+
+        return new Verse(book, chapter, lastverse);
+    }
+
+    /**
+     * Create a new Verse being the first verse in the current book
+     * 
+     * @return The first verse in this book
+     */
+    public Verse getFirstVerseInBook(Verse verse) {
+        return new Verse(verse.getBook(), 1, 1);
+    }
+
+    /**
+     * Create a new Verse being the first verse in the current book
+     * 
+     * @return The first verse in this book
+     */
+    public Verse getFirstVerseInChapter(Verse verse) {
+        return new Verse(verse.getBook(), verse.getChapter(), 1);
+    }
+
+    /**
+     * Is this verse the first in a chapter
+     * 
+     * @return true or false ...
+     */
+    public boolean isStartOfChapter(Verse verse) {
+        int v = verse.getVerse();
+        return v == 1 || v == 0;
+    }
+
+    /**
+     * Is this verse the first in a chapter
+     * 
+     * @return true or false ...
+     */
+    public boolean isEndOfChapter(Verse verse) {
+        int v = verse.getVerse();
+        return v == getLastVerse(verse.getBook(), verse.getChapter());
+    }
+
+    /**
+     * Is this verse the first in a chapter
+     * 
+     * @return true or false ...
+     */
+    public boolean isStartOfBook(Verse verse) {
+        int v = verse.getVerse();
+        int c = verse.getChapter();
+        return (v == 1 || v == 0) && (c == 1 || c == 0);
+    }
+
+    /**
+     * Is this verse the last in the book
+     * 
+     * @return true or false ...
+     */
+    public boolean isEndOfBook(Verse verse) {
+        BibleBook b = verse.getBook();
+        int v = verse.getVerse();
+        int c = verse.getChapter();
+        return v == BibleInfo.versesInChapter(b, c) && c == BibleInfo.chaptersInBook(b);
+    }
+
+    /**
+     * Is this verse in the same chapter as that one
+     * 
+     * @param that
+     *            The verse to compare to
+     * @return true or false ...
+     */
+    public boolean isSameChapter(Verse a, Verse that) {
+        return a.getBook() == that.getBook() && a.getChapter() == that.getChapter();
+    }
+
+    /**
+     * Is this verse in the same book as that one
+     * 
+     * @param that
+     *            The verse to compare to
+     * @return true or false ...
+     */
+    public boolean isSameBook(Verse a, Verse that) {
+        return a.getBook() == that.getBook();
+    }
+
+    /**
+     * Is this verse adjacent to another verse
+     * 
+     * @param first
+     *            The first verse in the comparison
+     * @param second
+     *            The second verse in the comparison
+     * @return true if the verses are adjacent.
+     */
+    public boolean adjacentTo(Verse first, Verse second) {
+        return Math.abs(getOrdinal(second) - getOrdinal(first)) == 1;
+    }
+
+    /**
+     * How many verses are there in between the 2 Verses. The answer is -ve if
+     * start is bigger than end. The answer is inclusive of start and exclusive
+     * of end, so that <code>distance(gen11, gen12) == 1</code>
+     * 
+     * @param start
+     *            The first Verse in the range
+     * @param end The last Verse in the range
+     * @return The count of verses between this and that.
+     */
+    public int distance(Verse start, Verse end) {
+        return getOrdinal(start) - getOrdinal(end);
+    }
+
+    /**
+     * Get the verse n down from here this Verse.
+     * 
+     * @param n
+     *            The number to count down by
+     * @return The new Verse
+     */
+    public Verse subtract(Verse verse, int n) {
+        return decodeOrdinal(getOrdinal(verse) - n);
+    }
+
+    /**
+     * Get the verse that is a few verses on from the one we've got.
+     * 
+     * @param n
+     *            the number of verses later than the one we're one
+     * @return The new verse
+     */
+    public Verse add(Verse verse, int n) {
+        return decodeOrdinal(getOrdinal(verse) + n);
     }
 
     /**
@@ -162,15 +315,9 @@ public class ReferenceSystem {
      * @param verse
      *            The verse to convert
      * @return The ordinal number of verses
-     * @exception NoSuchVerseException
-     *                If the reference is illegal
      */
-    public int getOrdinal(Verse verse) throws NoSuchVerseException {
-        BibleBook b = verse.getBook();
-        int c = verse.getChapter();
-        int v = verse.getVerse();
-        validate(b, c, v);
-        return chapterStarts[b.ordinal()][c] + v;
+    public int getOrdinal(Verse verse) {
+        return chapterStarts[verse.getBook().ordinal()][verse.getChapter()] + verse.getVerse();
     }
 
     /**
@@ -198,53 +345,50 @@ public class ReferenceSystem {
      * @param verse
      *            The verse to convert
      * @return The ordinal number of verses
-     * @exception NoSuchVerseException
-     *                If the reference is illegal
      */
-    public int getTestamentOrdinal(Verse verse) throws NoSuchVerseException {
-        BibleBook b = verse.getBook();
-        int c = verse.getChapter();
-        int v = verse.getVerse();
-        validate(b, c, v);
-        int ordinal = chapterStarts[b.ordinal()][c] + v;
-        if (ordinal >= ntSart) {
-            return ordinal - ntSart + 1;
+    public int getTestamentOrdinal(Verse verse) {
+        int ordinal = chapterStarts[verse.getBook().ordinal()][verse.getChapter()] + verse.getVerse();
+        if (ordinal >= ntStart) {
+            return ordinal - ntStart + 1;
         }
         return ordinal;
     }
 
     /**
      * Where does this verse come in the Bible. This will unwind the value returned by getOrdinal(Verse).
+     * If the ordinal value is less than 0 or greater than the last verse in this ReferenceSystem,
+     * then constrain it to the first or last verse in this ReferenceSystem.
      * 
      * @param ordinal
      *            The ordinal number of the verse
      * @return A Verse
-     * @exception NoSuchVerseException
-     *                If the reference is illegal
      */
-    public Verse decodeOrdinal(int ordinal) throws NoSuchVerseException {
+    public Verse decodeOrdinal(int ordinal) {
+        int ord = ordinal;
         BibleBook book = null;
         int bookIndex = -1;
         int chapterIndex = 0;
         int verse = 0;
 
-        if (ordinal < 0 || ordinal > maximumOrdinal()) {
-            throw new NoSuchVerseException(JSOtherMsg.lookupText("Ordinal must be between 0 and {0,number,integer} (given {1,number,integer}).", Integer.valueOf(maximumOrdinal()), Integer.valueOf(ordinal)));
+        if (ord < 0) {
+            ord = 0;
+        } else if (ord > maximumOrdinal()) {
+            ord = maximumOrdinal();
         }
 
         // Handle three special cases
         // Book/Module introduction
-        if (ordinal == 0) {
+        if (ord == 0) {
             return new Verse(BibleBook.INTRO_BIBLE, 0, 0);
         }
 
         // OT introduction
-        if (ordinal == 1) {
+        if (ord == 1) {
             return new Verse(BibleBook.INTRO_OT, 0, 0);
         }
 
         // NT introduction
-        if (ordinal == ntSart) {
+        if (ord == ntStart) {
             return new Verse(BibleBook.INTRO_NT, 0, 0);
         }
 
@@ -254,32 +398,26 @@ public class ReferenceSystem {
         for (int b = lastBook; b >= 0; b--) {
             // A book has a slot for a heading followed by a slot for a chapter heading.
             // These precede the start of the chapter.
-            if (ordinal >= chapterStarts[b][0]) {
+            if (ord >= chapterStarts[b][0]) {
                 bookIndex = b;
                 break;
             }
         }
 
-        // There is a gap for the New Testament introduction.
-        // This occurs when ordinal is one less than the book introduction of the next book.
-        if (bookIndex == otLastBook && ordinal == chapterStarts[bookIndex + 1][0] - 1) {
-            bookIndex++;
-        }
-
         book = BibleBook.getBooks()[bookIndex];
         int cib = getLastChapter(book);
         for (int c = cib; c >= 0; c--) {
-            if (ordinal >= chapterStarts[bookIndex][c]) {
+            if (ord >= chapterStarts[bookIndex][c]) {
                 chapterIndex = c;
                 break;
             }
         }
 
         if (chapterIndex > 0) {
-            verse = ordinal - chapterStarts[bookIndex][chapterIndex];
+            verse = ord - chapterStarts[bookIndex][chapterIndex];
         }
         
-        return new Verse(book, chapterIndex, verse);
+        return new Verse(book, chapterIndex, verse, true);
     }
 
     /**
@@ -298,6 +436,12 @@ public class ReferenceSystem {
      *                If the reference is illegal
      */
     public void validate(BibleBook book, int chapter, int verse) throws NoSuchVerseException {
+
+        // Check the book
+        if (book == null) {
+            // TRANSLATOR: The user did not supply a book for a verse reference.
+            throw new NoSuchVerseException(JSOtherMsg.lookupText("Book must not be null"));
+        }
 
         // Check the chapter
         int maxChapter = getLastChapter(book);
@@ -360,20 +504,35 @@ public class ReferenceSystem {
         int patchedChapter = chapter;
         int patchedVerse = verse;
         
-        try {
-            // If the book is null, then patch to GENESIS
-            if (patchedBook == null) {
-                patchedBook = BibleBook.GEN;
-            }
-            // If they are too small
-            if (patchedChapter < 0) {
-                patchedChapter = 0;
-            }
-            if (patchedVerse < 0) {
-                patchedVerse = 0;
-            }
+        // If the book is null, then patch to GENESIS
+        if (patchedBook == null) {
+            patchedBook = BibleBook.GEN;
+        }
+        // If they are too small
+        if (patchedChapter < 0) {
+            patchedChapter = 0;
+        }
+        if (patchedVerse < 0) {
+            patchedVerse = 0;
+        }
 
-            while (patchedChapter > getLastChapter(patchedBook)) {
+        while (patchedChapter > getLastChapter(patchedBook)) {
+            patchedChapter -= getLastChapter(patchedBook);
+            patchedBook = getNextBook(patchedBook);
+
+            if (patchedBook == null) {
+                patchedBook = BibleBook.REV;
+                patchedChapter = getLastChapter(patchedBook);
+                patchedVerse = getLastVerse(patchedBook, patchedChapter);
+                return new Verse(patchedBook, patchedChapter, patchedVerse);
+            }
+        }
+
+        while (patchedVerse > getLastVerse(patchedBook, patchedChapter)) {
+            patchedVerse -= getLastVerse(patchedBook, patchedChapter);
+            patchedChapter += 1;
+
+            if (patchedChapter > getLastChapter(patchedBook)) {
                 patchedChapter -= getLastChapter(patchedBook);
                 patchedBook = getNextBook(patchedBook);
 
@@ -384,29 +543,9 @@ public class ReferenceSystem {
                     return new Verse(patchedBook, patchedChapter, patchedVerse);
                 }
             }
-
-            while (patchedVerse > getLastVerse(patchedBook, patchedChapter)) {
-                patchedVerse -= getLastVerse(patchedBook, patchedChapter);
-                patchedChapter += 1;
-
-                if (patchedChapter > getLastChapter(patchedBook)) {
-                    patchedChapter -= getLastChapter(patchedBook);
-                    patchedBook = getNextBook(patchedBook);
-
-                    if (patchedBook == null) {
-                        patchedBook = BibleBook.REV;
-                        patchedChapter = getLastChapter(patchedBook);
-                        patchedVerse = getLastVerse(patchedBook, patchedChapter);
-                        return new Verse(patchedBook, patchedChapter, patchedVerse);
-                    }
-                }
-            }
-
-            return new Verse(patchedBook, patchedChapter, patchedVerse);
-        } catch (NoSuchKeyException ex) {
-            assert false : ex;
-            return new Verse(BibleBook.GEN, 1, 1, true);
         }
+
+        return new Verse(patchedBook, patchedChapter, patchedVerse);
     }
 
     /** The OSIS name of the reference system. */
@@ -415,8 +554,7 @@ public class ReferenceSystem {
     /** The ordered list of BibleBooks */
     private BibleBook[] books;
 
-    private int otLastBook = 38;
-    private int ntSart = 24115;
+    private int ntStart = 24115;
 
     /** Constant for the max verse number in each chapter */
     private int[][] lastVerse =

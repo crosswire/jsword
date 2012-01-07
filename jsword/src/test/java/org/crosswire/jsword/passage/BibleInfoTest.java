@@ -256,7 +256,7 @@ public class BibleInfoTest extends TestCase {
     public void testPatch() throws Exception {
         int all = 1;
         // for (BibleBook b : BibleBook.values()) {
-        for (BibleBook b: EnumSet.range(BibleBook.GEN, BibleBook.REV)) {
+        for (BibleBook b: EnumSet.range(BibleBook.GEN, BibleBook.MAL)) {
             int cib = BibleInfo.chaptersInBook(b);
             for (int c = 1; c <= cib; c++) {
                 int vic = BibleInfo.versesInChapter(b, c);
@@ -270,46 +270,68 @@ public class BibleInfoTest extends TestCase {
                 }
             }
         }
+        all = 1;
+        for (BibleBook b: EnumSet.range(BibleBook.MATT, BibleBook.REV)) {
+            int cib = BibleInfo.chaptersInBook(b);
+            for (int c = 1; c <= cib; c++) {
+                int vic = BibleInfo.versesInChapter(b, c);
+                for (int v = 1; v <= vic; v++) {
+                    Verse pv = BibleInfo.patch(BibleBook.MATT, 1, all);
+
+                    assertEquals(pv.getName(), b, pv.getBook());
+                    assertEquals(pv.getName(), c, pv.getChapter());
+                    assertEquals(pv.getName(), v, pv.getVerse());
+                    all++;
+                }
+            }
+        }
         Verse gen11 = new Verse(BibleBook.GEN, 1, 1);
         assertEquals(gen11, BibleInfo.patch(BibleBook.GEN, 1, 1));
-        assertEquals(gen11, BibleInfo.patch(BibleBook.GEN, 1, 0));
+//        assertEquals(gen11, BibleInfo.patch(BibleBook.GEN, 1, 0));
         assertEquals(gen11, BibleInfo.patch(BibleBook.GEN, 0, 1));
-        assertEquals(gen11, BibleInfo.patch(BibleBook.GEN, 0, 0));
+//        assertEquals(gen11, BibleInfo.patch(BibleBook.GEN, 0, 0));
         assertEquals(gen11, BibleInfo.patch(null, 1, 1));
-        assertEquals(gen11, BibleInfo.patch(null, 1, 0));
+//        assertEquals(gen11, BibleInfo.patch(null, 1, 0));
         assertEquals(gen11, BibleInfo.patch(null, 0, 1));
-        assertEquals(gen11, BibleInfo.patch(null, 0, 0));
+//        assertEquals(gen11, BibleInfo.patch(null, 0, 0));
     }
 
     public void testVerseCount() throws Exception {
         int count_up = 0;
-        int count_down = BibleInfo.maximumOrdinal();
         Verse gen00 = new Verse(BibleBook.GEN, 0, 0);
         Verse gen110 = new Verse(BibleBook.GEN, 1, 10);
         Verse rev99 = new Verse(BibleBook.REV, 22, 21);
-        assertEquals(rev99.getOrdinal(), count_down);
         // for (BibleBook b : BibleBook.values()) {
         for (BibleBook b: EnumSet.range(BibleBook.GEN, BibleBook.REV)) {
             for (int c = 0; c <= BibleInfo.chaptersInBook(b); c++) {
                 for (int v = 0; v <= BibleInfo.versesInChapter(b, c); v++) {
                     Verse curVerse = new Verse(b, c, v);
                     int up = curVerse.subtract(gen00) + 1;
-//                    int down = rev99.subtract(curVerse) + 1;
-
                     assertEquals(++count_up, up);
-//                    assertEquals(count_down--, down);
-
 //                    assertEquals(verseCountSlow(gen00, curVerse), up);
                 }
             }
 
         }
-        assertEquals(9, gen110.subtract(gen00));
+        int count_down = BibleInfo.maximumOrdinal();
+        assertEquals(rev99.getOrdinal(), count_down);
+        count_down -= 2; // Subtract for the Module and OT intros
+        for (BibleBook b: EnumSet.range(BibleBook.GEN, BibleBook.REV)) {
+            for (int c = 0; c <= BibleInfo.chaptersInBook(b); c++) {
+                for (int v = 0; v <= BibleInfo.versesInChapter(b, c); v++) {
+                    Verse curVerse = new Verse(b, c, v);
+                    int down = rev99.subtract(curVerse);
+                    assertEquals(count_down--, down);
+                }
+            }
+
+        }
+        assertEquals(11, gen110.subtract(gen00));
     }
 
     public void testNames() {
-        assertEquals(0, BibleBook.GEN.ordinal());
-        assertEquals(65, BibleBook.REV.ordinal());
+        assertEquals(2, BibleBook.GEN.ordinal());
+        assertEquals(68, BibleBook.REV.ordinal());
     }
 
 }
