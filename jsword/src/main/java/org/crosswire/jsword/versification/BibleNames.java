@@ -143,9 +143,9 @@ import org.crosswire.common.util.StringUtil;
      * upper and lower versions of them.
      */
     private void initialize() {
-        int booksInBible = BibleInfo.booksInBible();
+        int booksInBible = BibleBook.values().length;
 
-        books = new BookName[BibleBook.values().length];
+        books = new BookName[booksInBible];
 
         // Create the book name maps
         fullBooksMap = new HashMap<String, BookName>(booksInBible);

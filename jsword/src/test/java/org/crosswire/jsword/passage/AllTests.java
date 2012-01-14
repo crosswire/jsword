@@ -15,7 +15,6 @@ public class AllTests {
         TestSuite suite = new TestSuite("Test for org.crosswire.jsword.passage");
         // $JUnit-BEGIN$
         suite.addTestSuite(AccuracyTypeTest.class);
-        suite.addTestSuite(BibleInfoTest.class);
         suite.addTestSuite(PassageConstantsTest.class);
         suite.addTestSuite(PassageMixTest.class);
         suite.addTestSuite(PassageSizeTest.class);

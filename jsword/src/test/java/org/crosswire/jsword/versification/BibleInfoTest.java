@@ -19,13 +19,15 @@
  *
  * ID: $Id$
  */
-package org.crosswire.jsword.passage;
+package org.crosswire.jsword.versification;
 
 import java.util.EnumSet;
 
 import junit.framework.TestCase;
 
 import org.crosswire.jsword.book.CaseType;
+import org.crosswire.jsword.passage.NoSuchVerseException;
+import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.BibleInfo;
 import org.crosswire.jsword.versification.BookName;

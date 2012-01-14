@@ -29,7 +29,9 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
+import org.crosswire.jsword.book.CaseType;
 import org.crosswire.jsword.versification.BibleBook;
+import org.crosswire.jsword.versification.BookName;
 
 /**
  * JUnit Test.
@@ -42,6 +44,10 @@ public class PassageTally2Test extends TestCase {
     public PassageTally2Test(String s) {
         super(s);
     }
+
+    /** Control the output of names */
+    private CaseType storedCase;
+    private boolean fullName;
 
     /**
      * How we create Passages
@@ -72,13 +78,13 @@ public class PassageTally2Test extends TestCase {
     PassageTally empty = new PassageTally();
     PassageTally temp = null;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see junit.framework.TestCase#setUp()
-     */
     @Override
     protected void setUp() throws Exception {
+        storedCase = BookName.getDefaultCase();
+        BookName.setCase(CaseType.SENTENCE);
+        fullName = BookName.isFullBookName();
+        BookName.setFullBookName(false);
+
         gen11_1 = RestrictionType.NONE.toRange(new Verse(BibleBook.GEN, 1, 1), 1);
         gen11_2 = RestrictionType.NONE.toRange(new Verse(BibleBook.GEN, 1, 1), 2);
         gen12_1 = RestrictionType.NONE.toRange(new Verse(BibleBook.GEN, 1, 2), 1);
@@ -107,13 +113,10 @@ public class PassageTally2Test extends TestCase {
         tally.addAll(gen1_157);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see junit.framework.TestCase#tearDown()
-     */
     @Override
     protected void tearDown() {
+        BookName.setCase(storedCase);
+        BookName.setFullBookName(fullName);
     }
 
     public void testGetName() {
@@ -289,7 +292,7 @@ public class PassageTally2Test extends TestCase {
         temp.blur(1, RestrictionType.NONE);
         assertEquals(
                 temp.getNameAndTally(),
-                "Gen 1:1 (100%), Gen 1:2 (100%), Gen 1:4 (75%), Gen 1:5 (75%), Gen 1:6 (75%), Gen 1:3 (50%), Gen 1:7 (50%), Gen 2:1 (50%), Gen 3:1 (50%), Gen 1:8 (25%), Gen 1:31 (25%), Gen 2:2 (25%), Gen 2:25 (25%), Gen 3:2 (25%)");
+                "Gen 1:1 (100%), Gen 1:2 (100%), Gen 1:0 (75%), Gen 1:4 (75%), Gen 1:5 (75%), Gen 1:6 (75%), Gen 1:3 (50%), Gen 1:7 (50%), Gen 2:1 (50%), Gen 3:1 (50%), Gen 1:8 (25%), Gen 1:31 (25%), Gen 2:2 (25%), Gen 2:25 (25%), Gen 3:2 (25%)");
         // temp = (PassageTally) tally.clone();
         // temp.blur(1, Verse.RESTRICT_CHAPTER);
         // assertEquals(temp.getOrderedNameAndTally(),
