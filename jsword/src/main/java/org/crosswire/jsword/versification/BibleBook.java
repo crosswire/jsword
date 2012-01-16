@@ -107,7 +107,7 @@ public enum BibleBook {
     // Apocrypha
     TOB("Tob"),
     JDT("Jdt"),
-    ADD_EST("AddEsth"),
+    ADD_ESTH("AddEsth"),
     WIS("Wis"),
     SIR("Sir"),
     BAR("Bar"),
@@ -166,24 +166,44 @@ public enum BibleBook {
     HERM("Herm"),
     HERM_MAND("Herm.Mand"),
     HERM_SIM("Herm.Sim"),
-    HERM_VIS("Herm.Vis")
+    HERM_VIS("Herm.Vis"),
+    // Other books
+    ADD_DAN("AddDan"),
+    ADD_PS("AddPs"),
+    ESTH_GR("EsthGr"),
    ;
 
     BibleBook(String osis) {
         this.osis = osis;
     }
 
+    /**
+     * Get the OSIS representation of this BibleBook.
+     * 
+     * @return the OSIS name
+     */
     public String getOSIS() {
         return osis;
     }
 
+    /**
+     * Get the OSIS representation of this BibleBook.
+     * 
+     * @return the OSIS name
+     */
     @Override
     public String toString() {
         return osis;
     }
 
+    /**
+     * Case insensitive search for BibleBook for an OSIS name.
+     * 
+     * @param osis
+     * @return the matching BibleBook or null
+     */
     public static BibleBook fromOSIS(String osis) {
-        String match = BookName.normalize(osis, EN_LOCALE);
+        String match = BookName.normalize(osis, Locale.ENGLISH);
         return osisMap.get(match);
     }
 
@@ -234,24 +254,8 @@ public enum BibleBook {
         return bibleNames.getShortName(this);
     }
 
-    /* package */ BibleBook previous() {
-        try {
-            return BibleBook.books[ordinal() - 1];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return null;
-        }
-    }
-
-    /* package */ BibleBook next() {
-        try {
-            return BibleBook.books[ordinal() + 1];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return null;
-        }
-    }
-
     /**
-     * Get number of a book from its name.
+     * Get a book from its name.
      * 
      * @param find
      *            The string to identify
@@ -285,7 +289,7 @@ public enum BibleBook {
         return getBook(find) != null;
     }
 
-    public static BibleBook[] getBooks() {
+    /* package */ static BibleBook[] getBooks() {
         return books;
     }
 
@@ -297,8 +301,8 @@ public enum BibleBook {
         bibleNames = new BibleNames(locale);
 
         // If the locale is not the program's default get it for alternates
-        if (!locale.getLanguage().equals(EN_LOCALE.getLanguage())) {
-            englishBibleNames = new BibleNames(EN_LOCALE);
+        if (!locale.getLanguage().equals(Locale.ENGLISH.getLanguage())) {
+            englishBibleNames = new BibleNames(Locale.ENGLISH);
         }
     }
 
@@ -333,12 +337,9 @@ public enum BibleBook {
     /** English BibleNames, or null when using the program's default locale */
     private static BibleNames englishBibleNames;
 
-    /** The Locale of OSIS Names */
-    private static final Locale EN_LOCALE = new Locale("en");
-
     static {
         for (BibleBook book : BibleBook.values()) {
-            osisMap.put(BookName.normalize(book.getOSIS(), EN_LOCALE), book);
+            osisMap.put(BookName.normalize(book.getOSIS(), Locale.ENGLISH), book);
         }
         initialize();
     }

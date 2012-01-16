@@ -14,33 +14,37 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005 - 2012
+ * Copyright: 2012
  *     The copyright to this program is held by it's authors.
  *
  * ID: $Id$
  */
-package org.crosswire.jsword.versification;
+package org.crosswire.jsword.versification.system;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.crosswire.jsword.versification.ReferenceSystem;
 
 /**
- * JUnit test of Versification classes.
+ * The ReferenceSystems class manages the creation of ReferenceSystems as needed.
  *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class AllTests {
-    public static Test suite() {
-        TestSuite suite = new TestSuite("Test for org.crosswire.jsword.versification");
-        // $JUnit-BEGIN$
-        suite.addTestSuite(BookNameTest.class);
-        suite.addTestSuite(BibleNamesTest.class);
-        suite.addTestSuite(BibleBookTest.class);
-        suite.addTestSuite(BibleBookListTest.class);
-        suite.addTestSuite(ReferenceSystemTest.class);
-        // $JUnit-END$
-        return suite;
+public class ReferenceSystems {
+    
+    public synchronized ReferenceSystem getReferenceSystem(String name) {
+        if (rsMap.containsKey(name)) {
+            return rsMap.get(name);
+        }
+        return null;
     }
+
+    private ReferenceSystems() {
+        
+    }
+
+    private Map<String, ReferenceSystem> rsMap = new HashMap<String, ReferenceSystem>();
 }

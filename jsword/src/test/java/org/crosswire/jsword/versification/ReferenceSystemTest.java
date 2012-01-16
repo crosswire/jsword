@@ -39,8 +39,8 @@ import org.crosswire.jsword.versification.BookName;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class BibleInfoTest extends TestCase {
-    public BibleInfoTest(String s) {
+public class ReferenceSystemTest extends TestCase {
+    public ReferenceSystemTest(String s) {
         super(s);
     }
 
@@ -54,104 +54,6 @@ public class BibleInfoTest extends TestCase {
     @Override
     protected void tearDown() {
         BookName.setCase(storedCase);
-    }
-
-    public void testCase() {
-        BookName.setCase(CaseType.LOWER);
-        assertEquals(CaseType.LOWER, BookName.getDefaultCase());
-
-        BookName.setCase(CaseType.UPPER);
-        assertEquals(CaseType.UPPER, BookName.getDefaultCase());
-
-        BookName.setCase(CaseType.SENTENCE);
-        assertEquals(CaseType.SENTENCE, BookName.getDefaultCase());
-    }
-
-    public void testGetLongBookName() throws Exception {
-        BookName.setCase(CaseType.SENTENCE);
-        assertEquals("Genesis", BibleBook.GEN.getLongName());
-        assertEquals("Revelation of John", BibleBook.REV.getLongName());
-
-        BookName.setCase(CaseType.LOWER);
-        assertEquals("genesis", BibleBook.GEN.getLongName());
-        assertEquals("revelation of john", BibleBook.REV.getLongName());
-
-        BookName.setCase(CaseType.UPPER);
-        assertEquals("GENESIS", BibleBook.GEN.getLongName());
-        assertEquals("REVELATION OF JOHN", BibleBook.REV.getLongName());
-
-    }
-
-    public void testGetShortBookName() throws Exception {
-        BookName.setCase(CaseType.SENTENCE);
-        assertEquals("Gen", BibleBook.GEN.getShortName());
-        assertEquals("Exo", BibleBook.EXOD.getShortName());
-        assertEquals("Judg", BibleBook.JUDG.getShortName());
-        assertEquals("Mal", BibleBook.MAL.getShortName());
-        assertEquals("Mat", BibleBook.MATT.getShortName());
-        assertEquals("Phili", BibleBook.PHIL.getShortName());
-        assertEquals("Phile", BibleBook.PHLM.getShortName());
-        assertEquals("Jude", BibleBook.JUDE.getShortName());
-        assertEquals("Rev", BibleBook.REV.getShortName());
-
-        BookName.setCase(CaseType.LOWER);
-        assertEquals("gen", BibleBook.GEN.getShortName());
-        assertEquals("exo", BibleBook.EXOD.getShortName());
-        assertEquals("judg", BibleBook.JUDG.getShortName());
-        assertEquals("mal", BibleBook.MAL.getShortName());
-        assertEquals("mat", BibleBook.MATT.getShortName());
-        assertEquals("phili", BibleBook.PHIL.getShortName());
-        assertEquals("phile", BibleBook.PHLM.getShortName());
-        assertEquals("jude", BibleBook.JUDE.getShortName());
-        assertEquals("rev", BibleBook.REV.getShortName());
-
-        BookName.setCase(CaseType.UPPER);
-        assertEquals("GEN", BibleBook.GEN.getShortName());
-        assertEquals("EXO", BibleBook.EXOD.getShortName());
-        assertEquals("JUDG", BibleBook.JUDG.getShortName());
-        assertEquals("MAL", BibleBook.MAL.getShortName());
-        assertEquals("MAT", BibleBook.MATT.getShortName());
-        assertEquals("PHILI", BibleBook.PHIL.getShortName());
-        assertEquals("PHILE", BibleBook.PHLM.getShortName());
-        assertEquals("JUDE", BibleBook.JUDE.getShortName());
-        assertEquals("REV", BibleBook.REV.getShortName());
-    }
-
-    public void testGetBookJogger() throws Exception {
-        assertEquals("Gen", BibleBook.GEN.getOSIS());
-        assertEquals("Exod", BibleBook.EXOD.getOSIS());
-        assertEquals("Rev", BibleBook.REV.getOSIS());
-    }
-
-    public void testGetBookNumber() {
-        assertEquals(BibleBook.GEN, BibleBook.getBook("Genesis"));
-        assertEquals(BibleBook.GEN, BibleBook.getBook("Gene"));
-        assertEquals(BibleBook.GEN, BibleBook.getBook("Gen"));
-        assertEquals(BibleBook.GEN, BibleBook.getBook("G"));
-        assertEquals(BibleBook.GEN, BibleBook.getBook("g"));
-        assertEquals(BibleBook.GEN, BibleBook.getBook("GEN"));
-        assertEquals(BibleBook.GEN, BibleBook.getBook("genesis"));
-        assertEquals(BibleBook.PS, BibleBook.getBook("psa"));
-        assertEquals(BibleBook.PS, BibleBook.getBook("ps"));
-        assertEquals(BibleBook.PS, BibleBook.getBook("pss"));
-        assertEquals(BibleBook.PS, BibleBook.getBook("psalter"));
-        assertEquals(BibleBook.ECCL, BibleBook.getBook("ecc"));
-        assertEquals(BibleBook.ECCL, BibleBook.getBook("Qohelot"));
-        assertEquals(BibleBook.SONG, BibleBook.getBook("son"));
-        assertEquals(BibleBook.SONG, BibleBook.getBook("song"));
-        assertEquals(BibleBook.SONG, BibleBook.getBook("song of solomon"));
-        assertEquals(BibleBook.SONG, BibleBook.getBook("songofsolomon"));
-        assertEquals(BibleBook.SONG, BibleBook.getBook("ss"));
-        assertEquals(BibleBook.SONG, BibleBook.getBook("canticle"));
-        assertEquals(BibleBook.SONG, BibleBook.getBook("can"));
-        assertEquals(BibleBook.PHIL, BibleBook.getBook("phi"));
-        assertEquals(BibleBook.PHIL, BibleBook.getBook("phil"));
-        assertEquals(BibleBook.PHIL, BibleBook.getBook("phili"));
-        assertEquals(BibleBook.PHLM, BibleBook.getBook("phile"));
-        assertEquals(BibleBook.REV, BibleBook.getBook("revelations"));
-        assertEquals(BibleBook.REV, BibleBook.getBook("rev"));
-
-        assertEquals(null, BibleBook.getBook("1"));
     }
 
     public void testIn() throws Exception {

@@ -122,35 +122,4 @@ public class BookNameTest extends TestCase {
         assertEquals("Rev", BibleBook.REV.getOSIS());
     }
 
-    public void testGetBookNumber() {
-        assertEquals(BibleBook.GEN, BibleBook.getBook("Genesis"));
-        assertEquals(BibleBook.GEN, BibleBook.getBook("Gene"));
-        assertEquals(BibleBook.GEN, BibleBook.getBook("Gen"));
-        assertEquals(BibleBook.GEN, BibleBook.getBook("G"));
-        assertEquals(BibleBook.GEN, BibleBook.getBook("g"));
-        assertEquals(BibleBook.GEN, BibleBook.getBook("GEN"));
-        assertEquals(BibleBook.GEN, BibleBook.getBook("genesis"));
-        assertEquals(BibleBook.PS, BibleBook.getBook("psa"));
-        assertEquals(BibleBook.PS, BibleBook.getBook("ps"));
-        assertEquals(BibleBook.PS, BibleBook.getBook("pss"));
-        assertEquals(BibleBook.PS, BibleBook.getBook("psalter"));
-        assertEquals(BibleBook.ECCL, BibleBook.getBook("ecc"));
-        assertEquals(BibleBook.ECCL, BibleBook.getBook("Qohelot"));
-        assertEquals(BibleBook.SONG, BibleBook.getBook("son"));
-        assertEquals(BibleBook.SONG, BibleBook.getBook("song"));
-        assertEquals(BibleBook.SONG, BibleBook.getBook("song of solomon"));
-        assertEquals(BibleBook.SONG, BibleBook.getBook("songofsolomon"));
-        assertEquals(BibleBook.SONG, BibleBook.getBook("ss"));
-        assertEquals(BibleBook.SONG, BibleBook.getBook("canticle"));
-        assertEquals(BibleBook.SONG, BibleBook.getBook("can"));
-        assertEquals(BibleBook.PHIL, BibleBook.getBook("phi"));
-        assertEquals(BibleBook.PHIL, BibleBook.getBook("phil"));
-        assertEquals(BibleBook.PHIL, BibleBook.getBook("phili"));
-        assertEquals(BibleBook.PHLM, BibleBook.getBook("phile"));
-        assertEquals(BibleBook.REV, BibleBook.getBook("revelations"));
-        assertEquals(BibleBook.REV, BibleBook.getBook("rev"));
-
-        assertEquals(null, BibleBook.getBook("1"));
-    }
-
 }

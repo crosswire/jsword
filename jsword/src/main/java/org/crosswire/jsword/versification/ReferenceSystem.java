@@ -39,6 +39,9 @@ import org.crosswire.jsword.passage.Verse;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class ReferenceSystem {
+    public ReferenceSystem() {
+    }
+
     /**
      * Construct a ReferenceSystem.
      * 
@@ -157,8 +160,8 @@ public class ReferenceSystem {
      */
     public Verse getLastVerseInBook(Verse verse) {
         BibleBook book = verse.getBook();
-        int lastchap = BibleInfo.chaptersInBook(book);
-        int lastverse = BibleInfo.versesInChapter(book, lastchap);
+        int lastchap = getLastChapter(book);
+        int lastverse = getLastVerse(book, lastchap);
 
         return new Verse(book, lastchap, lastverse);
     }
@@ -171,7 +174,7 @@ public class ReferenceSystem {
     public Verse getLastVerseInChapter(Verse verse) {
         BibleBook book = verse.getBook();
         int chapter = verse.getChapter();
-        int lastverse = BibleInfo.versesInChapter(book, chapter);
+        int lastverse = getLastVerse(book, chapter);
 
         return new Verse(book, chapter, lastverse);
     }
@@ -234,7 +237,7 @@ public class ReferenceSystem {
         BibleBook b = verse.getBook();
         int v = verse.getVerse();
         int c = verse.getChapter();
-        return v == BibleInfo.versesInChapter(b, c) && c == BibleInfo.chaptersInBook(b);
+        return v == getLastVerse(b, c) && c == getLastChapter(b);
     }
 
     /**

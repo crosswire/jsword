@@ -49,9 +49,6 @@ import org.crosswire.common.util.StringUtil;
     }
 
     /* package */ BookName getBookName(BibleBook book) {
-        // This is faster than doing the check explicitly, unless
-        // The exception is actually thrown, then it is a lot slower
-        // I'd like to think that the norm is to get it right
         return books[book.ordinal()];
     }
 
