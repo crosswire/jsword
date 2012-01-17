@@ -25,6 +25,7 @@ import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.CaseType;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.versification.system.SystemKJV;
 
 /**
  * BibleInfo is a static class that deals with Bible book names, and conversion to and from
@@ -1103,7 +1104,7 @@ public final class BibleInfo {
         },
     };
 
-    public static ReferenceSystem referenceSystem = new ReferenceSystem(osisName, kjvBooks, kjvLastVerse);
+    public static ReferenceSystem referenceSystem = new ReferenceSystem(osisName, SystemKJV.booksOT, SystemKJV.booksNT, SystemKJV.lastVerseOT, SystemKJV.lastVerseNT);
 
     /**
      * A singleton used to do initialization. Could be used to change static

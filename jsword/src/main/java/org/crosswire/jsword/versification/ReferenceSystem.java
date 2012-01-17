@@ -100,6 +100,135 @@ public class ReferenceSystem {
     }
 
     /**
+     * Construct a ReferenceSystem.
+     * 
+     * @param osisName
+     *            The name of this reference system
+     * @param booksOT
+     *            An ordered list of books in this reference system. The list
+     *            should not include INTRO_BIBLE, or INTRO_OT.
+     * @param booksOT
+     *            An ordered list of books in this reference system. The list
+     *            should not include INTRO_BIBLE, or INTRO_OT.
+     * @param lastVerseOT
+     *            For each book in booksOT, this has an array with one entry for
+     *            each chapter whose value is the highest numbered verse in that
+     *            chapter. Do not include chapter 0.
+     * @param lastVerseNT
+     *            For each book in booksNT, this has an array with one entry for
+     *            each chapter whose value is the highest numbered verse in that
+     *            chapter. Do not include chapter 0.
+     */
+    public ReferenceSystem(String osisName, BibleBook[] booksOT, BibleBook[] booksNT, int[][] lastVerseOT, int[][] lastVerseNT) {
+        this.osisName = osisName;
+
+        // Copy the books into an aggregated BibleBook array
+        // including INTRO_BIBLE and INTRO_OT/INTRO_NT for non-null book lists
+        int bookCount = 1; // Always include the INTRO_BIBLE
+        if (booksOT.length > 0) {
+            bookCount += booksOT.length + 1; // All of the OT books and INTRO_OT
+        }
+
+        int ntStart = bookCount;
+        if (booksNT.length > 0) {
+            bookCount += booksNT.length + 1; // All of the NT books and INTRO_NT
+        }
+        BibleBook[] books= new BibleBook[bookCount];
+        books[0] = BibleBook.INTRO_BIBLE;
+        if (booksOT.length > 0) {
+            books[1] = BibleBook.INTRO_OT;
+            System.arraycopy(booksOT, 0, books, 2, booksOT.length);
+        }
+
+        if (booksNT.length > 0) {
+            books[ntStart] = BibleBook.INTRO_NT;
+            System.arraycopy(booksNT, 0, books, ntStart + 1, booksNT.length);
+        }
+
+        this.bookList = new BibleBookList(books);
+
+        int ordinal = 0;
+
+        // Create an independent copy of lastVerse.
+        this.lastVerse = new int[bookCount][];
+        int bookIndex = 0;
+
+        // Add in the bible introduction
+        int chapters[] = new int[1];
+        chapters[0] = 0;
+        this.lastVerse[bookIndex++] = chapters;
+
+        // Now append the OT info
+        if (lastVerseOT.length > 0) {
+            // Add in the testament intro
+            chapters = new int[1];
+            chapters[0] = 0;
+            this.lastVerse[bookIndex++] = chapters;
+            // then all the testament info
+            for (int i = 0; i < lastVerseOT.length; i++) {
+                int[] src = lastVerseOT[i];
+                // Add one as the location for chapter 0.
+                int[] dest = new int[src.length + 1];
+                this.lastVerse[bookIndex++] = dest;
+                // The last verse of chapter 0 is 0
+                dest[0] = 0;
+                // copy the last verse array for the chapter
+                System.arraycopy(src, 0, dest, 1, src.length);
+            }
+        }
+
+        // Now append the NT info
+        if (lastVerseNT.length > 0) {
+            // Add in the testament intro
+            chapters = new int[1];
+            chapters[0] = 0;
+            this.lastVerse[bookIndex++] = chapters;
+            // then all the testament info
+            for (int i = 0; i < lastVerseNT.length; i++) {
+                int[] src = lastVerseNT[i];
+                // Add one as the location for chapter 0.
+                int[] dest = new int[src.length + 1];
+                this.lastVerse[bookIndex++] = dest;
+                // The last verse of chapter 0 is 0
+                dest[0] = 0;
+                // copy the last verse array for the chapter
+                System.arraycopy(src, 0, dest, 1, src.length);
+            }
+        }
+
+        // Initialize chapterStarts to be a parallel array to lastVerse,
+        // but with chapter starts
+        this.chapterStarts = new int[bookCount][];
+        for (bookIndex = 0; bookIndex < bookCount; bookIndex++) {
+
+            // Remember where the OT ends
+            if (bookList.getBook(bookIndex) == BibleBook.INTRO_NT) {
+                this.otMaxOrdinal = ordinal - 1;
+            }
+
+            // Save off the chapter starts
+            int[] src = this.lastVerse[bookIndex];
+            int numChapters = src.length;
+            int[] dest = new int[numChapters];
+            this.chapterStarts[bookIndex] = dest;
+            for (int chapterIndex = 0; chapterIndex < numChapters; chapterIndex++) {
+                // Save off the chapter start
+                dest[chapterIndex] = ordinal;
+
+                // Set ordinal to the start of the next chapter or book introduction.
+                // The number of verses in each chapter, when including verse 0,
+                // is one more that the largest numbered verse in the chapter.
+                ordinal += src[chapterIndex] + 1;
+            }
+        }
+
+        // Remember where the NT ends
+        this.ntMaxOrdinal = ordinal - 1;
+//        ReferenceSystem.dump(System.out, this.osisName, this.bookList, this.lastVerse);
+//        ReferenceSystem.dump(System.out, this.osisName, this.bookList, this.chapterStarts);
+    }
+
+    /**
      * Get the OSIS name for this ReferenceSystem.
      * @return the OSIS name of the ReferenceSystem
      */
