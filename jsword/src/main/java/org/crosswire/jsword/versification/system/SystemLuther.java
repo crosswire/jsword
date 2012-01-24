@@ -32,6 +32,13 @@ import org.crosswire.jsword.versification.ReferenceSystem;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class SystemLuther extends ReferenceSystem {
+    /**
+     * Build the "Luther" ReferenceSystem.
+     */
+    public SystemLuther() {
+        super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);
+    }
+
     public static String name = "Luther";
 
     // Different ordering of SystemDefault.booksNT

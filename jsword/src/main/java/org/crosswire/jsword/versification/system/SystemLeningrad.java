@@ -36,6 +36,13 @@ import org.crosswire.jsword.versification.ReferenceSystem;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class SystemLeningrad extends ReferenceSystem {
+    /**
+     * Build the "Leningrad" ReferenceSystem.
+     */
+    public SystemLeningrad() {
+        super(name, booksOT, booksNT, lastVerseOT, null);
+    }
+
     public static String name = "Leningrad";
 
     public static BibleBook[] booksNT = SystemDefault.booksNone;

@@ -22,6 +22,7 @@
 package org.crosswire.jsword.versification;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * A BibleBookList is an ordered list of one or more BibleBooks.
@@ -31,7 +32,7 @@ import java.util.Iterator;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class BibleBookList {
+public class BibleBookList implements Iterable<BibleBook> {
     /**
      * Create an ordered BibleBookList from the input.
      * @param books
@@ -96,8 +97,52 @@ public class BibleBookList {
      * 
      * @return an Iterator over the books
      */
-    public Iterator getBooks() {
-        return null;
+    public Iterator<BibleBook> iterator() {
+        return new Iterator<BibleBook>() {
+
+            BibleBook nextBook = books[0];
+
+            @Override
+            public boolean hasNext() {
+                return nextBook != null;
+            }
+
+            @Override
+            public BibleBook next() {
+
+                if (nextBook == null) {
+                    throw new NoSuchElementException();
+                }
+
+                BibleBook current = nextBook;
+                nextBook = getNextBook(nextBook);
+                return current;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+            
+        };
+    }
+
+    /**
+     * Return the first book in the list.
+     * 
+     * @return the first book in the list
+     */
+    public BibleBook getFirstBook() {
+        return books[0];
+    }
+
+    /**
+     * Return the first book in the list.
+     * 
+     * @return the first book in the list
+     */
+    public BibleBook getLastBook() {
+        return books[books.length - 1];
     }
 
     /**

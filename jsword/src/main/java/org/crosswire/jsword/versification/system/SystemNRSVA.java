@@ -32,6 +32,13 @@ import org.crosswire.jsword.versification.ReferenceSystem;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class SystemNRSVA extends ReferenceSystem {
+    /**
+     * Build the "NRSVA" ReferenceSystem.
+     */
+    public SystemNRSVA() {
+        super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);
+    }
+
     public static String name = "NRSVA";
 
     public static BibleBook[] booksNT = SystemDefault.booksNT;

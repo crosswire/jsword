@@ -47,69 +47,12 @@ public class ReferenceSystem {
      * 
      * @param osisName
      *            The name of this reference system
-     * @param books
-     *            An ordered list of books in this reference system. The list
-     *            should always start with INTRO_BIBLE and INTRO_OT. The first
-     *            New Testament book should be preceded by INTRO_NT.
-     * @param lastVerse
-     *            For each book in books, this has an array with one entry for
-     *            each chapter including chapter 0 whose value is the highest
-     *            numbered verse in that chapter.
-     */
-    public ReferenceSystem(String osisName, BibleBook[] books, int[][] lastVerse) {
-        this.osisName = osisName;
-        this.bookList = new BibleBookList(books);
-
-        int ordinal = 0;
-        int bookCount = lastVerse.length;
-
-        // Create an independent copy of lastVerse.
-        this.lastVerse = lastVerse.clone();
-        for (int bookIndex = 0; bookIndex < bookCount; bookIndex++) {
-            this.lastVerse[bookIndex] = lastVerse[bookIndex].clone();
-        }
-
-        // Initialize chapterStarts to be a parallel array to lastVerse,
-        // but with chapter starts
-        this.chapterStarts = new int[bookCount][];
-        for (int bookIndex = 0; bookIndex < bookCount; bookIndex++) {
-
-            // Remember where the OT ends
-            if (bookList.getBook(bookIndex) == BibleBook.INTRO_NT) {
-                this.otMaxOrdinal = ordinal - 1;
-            }
-
-            // Save off the chapter starts
-            int[] src = this.lastVerse[bookIndex];
-            int numChapters = src.length;
-            int[] dest = new int[numChapters];
-            this.chapterStarts[bookIndex] = dest;
-            for (int chapterIndex = 0; chapterIndex < numChapters; chapterIndex++) {
-                // Save off the chapter start
-                dest[chapterIndex] = ordinal;
-
-                // Set ordinal to the start of the next chapter or book introduction.
-                // The number of verses in each chapter, when including verse 0,
-                // is one more that the largest numbered verse in the chapter.
-                ordinal += src[chapterIndex] + 1;
-            }
-        }
-
-        // Remember where the NT ends
-        this.ntMaxOrdinal = ordinal - 1;
-    }
-
-    /**
-     * Construct a ReferenceSystem.
-     * 
-     * @param osisName
-     *            The name of this reference system
      * @param booksOT
      *            An ordered list of books in this reference system. The list
      *            should not include INTRO_BIBLE, or INTRO_OT.
-     * @param booksOT
+     * @param booksNT
      *            An ordered list of books in this reference system. The list
-     *            should not include INTRO_BIBLE, or INTRO_OT.
+     *            should not include INTRO_NT.
      * @param lastVerseOT
      *            For each book in booksOT, this has an array with one entry for
      *            each chapter whose value is the highest numbered verse in that
@@ -441,6 +384,46 @@ public class ReferenceSystem {
     }
 
     /**
+     * How many chapters in this range
+     * 
+     * @return The number of chapters. Always >= 1.
+     */
+    public int getChapterCount(Verse start, Verse end) {
+        BibleBook startBook = start.getBook();
+        int startChap = start.getChapter();
+        BibleBook endBook = end.getBook();
+        int endChap = end.getChapter();
+
+        if (startBook == endBook) {
+            return endChap - startChap + 1;
+        }
+
+        // So we are going to have to count up chapters from start to end
+        int total = getLastChapter(startBook) - startChap;
+        BibleBookList books = getBooks();
+        startBook = books.getNextBook(startBook);
+        endBook = books.getPreviousBook(endBook);
+        for (BibleBook b =  startBook; b != endBook; b = books.getNextBook(b)) {
+            total += getLastChapter(b);
+        }
+        total += endChap;
+
+        return total;
+    }
+
+    /**
+     * How many books in this range
+     * 
+     * @return The number of books. Always >= 1.
+     */
+    public int getBookCount(Verse start, Verse end) {
+        int startBook = getBooks().getOrdinal(start.getBook());
+        int endBook = getBooks().getOrdinal(end.getBook());
+
+        return endBook - startBook + 1;
+    }
+
+    /**
      * The maximum number of verses in the Bible, including module, testament, book and chapter introductions.
      *
      * @return the number of addressable verses in this versification.
@@ -607,7 +590,7 @@ public class ReferenceSystem {
             verse = ord - chapterStarts[bookIndex][chapterIndex];
         }
 
-        return new Verse(book, chapterIndex, verse, true);
+        return new Verse(book, chapterIndex, verse);
     }
 
     /**
@@ -694,9 +677,10 @@ public class ReferenceSystem {
         int patchedChapter = chapter;
         int patchedVerse = verse;
 
-        // If the book is null, then patch to GENESIS
+        // If the book is null,
+        // then patch to the first book in the reference system
         if (patchedBook == null) {
-            patchedBook = BibleBook.GEN;
+            patchedBook = getBooks().getFirstBook();
         }
         // If they are too small
         if (patchedChapter < 0) {
@@ -707,11 +691,13 @@ public class ReferenceSystem {
         }
 
         while (patchedChapter > getLastChapter(patchedBook)) {
-            patchedChapter -= getLastChapter(patchedBook);
+            patchedChapter -= getLastChapter(patchedBook) + 1;
             patchedBook = bookList.getNextBook(patchedBook);
 
+            // If we have gone beyond the last book
+            // then return the last chapter and verse in that book
             if (patchedBook == null) {
-                patchedBook = BibleBook.REV;
+                patchedBook = getBooks().getLastBook();
                 patchedChapter = getLastChapter(patchedBook);
                 patchedVerse = getLastVerse(patchedBook, patchedChapter);
                 return new Verse(patchedBook, patchedChapter, patchedVerse);
@@ -726,8 +712,10 @@ public class ReferenceSystem {
                 patchedChapter -= getLastChapter(patchedBook);
                 patchedBook = bookList.getNextBook(patchedBook);
 
+                // If we have gone beyond the last book
+                // then return the last chapter and verse in that book
                 if (patchedBook == null) {
-                    patchedBook = BibleBook.REV;
+                    patchedBook = getBooks().getLastBook();
                     patchedChapter = getLastChapter(patchedBook);
                     patchedVerse = getLastVerse(patchedBook, patchedChapter);
                     return new Verse(patchedBook, patchedChapter, patchedVerse);

@@ -34,6 +34,13 @@ import org.crosswire.jsword.versification.ReferenceSystem;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class SystemCatholic2 extends ReferenceSystem {
+    /**
+     * Build the "Catholic2" ReferenceSystem.
+     */
+    public SystemCatholic2() {
+        super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);
+    }
+
     public static String name = "Catholic2";
     public static BibleBook[] booksNT = SystemDefault.booksNT;
     public static int[][] lastVerseNT = SystemCatholic.lastVerseNT;

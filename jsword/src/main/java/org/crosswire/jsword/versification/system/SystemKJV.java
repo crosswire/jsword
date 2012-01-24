@@ -33,6 +33,13 @@ import org.crosswire.jsword.versification.ReferenceSystem;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class SystemKJV extends ReferenceSystem {
+    /**
+     * Build the "KJV" ReferenceSystem.
+     */
+    public SystemKJV() {
+        super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);
+    }
+
     public static String name = "KJV";
     public static BibleBook[] booksNT = SystemDefault.booksNT;
 

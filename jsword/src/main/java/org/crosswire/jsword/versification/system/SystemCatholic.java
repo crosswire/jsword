@@ -32,6 +32,14 @@ import org.crosswire.jsword.versification.ReferenceSystem;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class SystemCatholic extends ReferenceSystem {
+
+    /**
+     * Build the "Catholic" ReferenceSystem.
+     */
+    public SystemCatholic() {
+        super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);
+    }
+
     public static String name = "Catholic";
 
     public static BibleBook[] booksNT = SystemDefault.booksNT;

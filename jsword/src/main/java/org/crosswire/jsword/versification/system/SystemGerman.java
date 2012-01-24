@@ -32,6 +32,13 @@ import org.crosswire.jsword.versification.ReferenceSystem;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class SystemGerman extends ReferenceSystem {
+    /**
+     * Build the "German" ReferenceSystem.
+     */
+    public SystemGerman() {
+        super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);
+    }
+
     public static String name = "German";
     public static BibleBook[] booksNT = SystemDefault.booksNT;
     public static int[][] lastVerseNT =

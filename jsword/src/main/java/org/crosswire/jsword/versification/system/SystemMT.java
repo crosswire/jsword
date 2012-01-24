@@ -36,6 +36,13 @@ import org.crosswire.jsword.versification.ReferenceSystem;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class SystemMT extends ReferenceSystem {
+    /**
+     * Build the "MT" ReferenceSystem.
+     */
+    public SystemMT() {
+        super(name, booksOT, booksNT, lastVerseOT, null);
+    }
+
     public static String name = "MT";
 
     public static BibleBook[] booksNT = SystemDefault.booksNone;

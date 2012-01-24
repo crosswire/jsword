@@ -35,6 +35,13 @@ import org.crosswire.jsword.versification.ReferenceSystem;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class SystemSynodalP extends ReferenceSystem {
+    /**
+     * Build the "SynodalP" ReferenceSystem.
+     */
+    public SystemSynodalP() {
+        super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);
+    }
+
     public static String name = "SynodalP";
     public static BibleBook[] booksNT = SystemDefault.booksNT;
     public static final int[][] lastVerseNT =

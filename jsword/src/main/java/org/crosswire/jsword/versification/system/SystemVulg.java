@@ -32,6 +32,13 @@ import org.crosswire.jsword.versification.ReferenceSystem;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class SystemVulg extends ReferenceSystem {
+    /**
+     * Build the "Vulg" ReferenceSystem.
+     */
+    public SystemVulg() {
+        super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);
+    }
+
     public static String name = "Vulg";
 
     // Start with SystemDefault.booksNT

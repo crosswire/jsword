@@ -57,6 +57,13 @@ import org.crosswire.jsword.versification.ReferenceSystem;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class SystemSynodal extends ReferenceSystem {
+    /**
+     * Build the "Synodal" ReferenceSystem.
+     */
+    public SystemSynodal() {
+        super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);
+    }
+
     public static String name = "Synodal";
 
     // The books are the SystemDefault.booksNT
