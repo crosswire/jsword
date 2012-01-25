@@ -211,7 +211,7 @@ public abstract class AbstractPassageBook extends AbstractBook {
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyFactory#getKey(org.crosswire.jsword.versification.ReferenceSystem, java.lang.String)
+     * @see org.crosswire.jsword.passage.KeyFactory#getKey(java.lang.String)
      */
     public final Key getKey(String text) throws NoSuchKeyException {
         return PassageKeyFactory.instance().getKey(Versifications.instance().getVersification(versification), text);

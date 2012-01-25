@@ -33,7 +33,7 @@ import org.crosswire.jsword.versification.Versification;
  */
 public class SystemGerman extends Versification {
     /**
-     * Build the "German" ReferenceSystem.
+     * Build the "German" Versification.
      */
     public SystemGerman() {
         super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);

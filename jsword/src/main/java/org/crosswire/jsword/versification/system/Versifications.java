@@ -29,8 +29,8 @@ import java.util.Set;
 import org.crosswire.jsword.versification.Versification;
 
 /**
- * The ReferenceSystems class manages the creation of ReferenceSystems as needed.
- * It delays the construction of the ReferenceSystem until getReferenceSystem(String name) is called.
+ * The Versifications class manages the creation of Versifications as needed.
+ * It delays the construction of the Versification until getVersification(String name) is called.
  *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
@@ -39,7 +39,7 @@ import org.crosswire.jsword.versification.Versification;
 public class Versifications {
 
     /**
-     * Get the singleton instance of ReferenceSystems.
+     * Get the singleton instance of Versifications.
      * 
      * @return the singleton
      */
@@ -48,10 +48,10 @@ public class Versifications {
     }
 
     /**
-     * Get the ReferenceSystem by its name. If name is null then return the default ReferenceSystem.
+     * Get the Versification by its name. If name is null then return the default Versification.
      * 
-     * @param name the name of the ReferenceSystem
-     * @return the ReferenceSystem or null if it is not known.
+     * @param name the name of the Versification
+     * @return the Versification or null if it is not known.
      */
     public synchronized Versification getVersification(String name) {
         String actual = name;
@@ -59,7 +59,7 @@ public class Versifications {
             actual = DEFAULT_REFERENCE_SYSTEM;
         }
 
-        // This class delays the building of a ReferenceSystem to when it is
+        // This class delays the building of a Versification to when it is
         // actually needed.
         Versification rs = fluffed.get(actual);
         if (rs == null) {
@@ -73,10 +73,10 @@ public class Versifications {
     }
 
     /**
-     * Determine whether the named ReferenceSystem is known.
+     * Determine whether the named Versification is known.
      * 
-     * @param name the name of the ReferenceSystem
-     * @return true when the ReferenceSystem is available for use
+     * @param name the name of the Versification
+     * @return true when the Versification is available for use
      */
     public synchronized boolean isDefined(String name) {
         return name == null || known.contains(name);
@@ -123,13 +123,13 @@ public class Versifications {
     }
 
     /**
-     * Add a ReferenceSystem that is not predefined by JSword.
+     * Add a Versification that is not predefined by JSword.
      * 
-     * @param rs the ReferenceSystem to register
+     * @param rs the Versification to register
      */
     public synchronized void register(Versification rs) {
-        fluffed.put(rs.getOSISName(), rs);
-        known.add(rs.getOSISName());
+        fluffed.put(rs.getName(), rs);
+        known.add(rs.getName());
     }
 
     /**
@@ -154,7 +154,7 @@ public class Versifications {
     }
 
     /**
-     * The default ReferenceSystem for JSword is the KJV.
+     * The default Versification for JSword is the KJV.
      * This is subject to change at any time.
      */
     private final String DEFAULT_REFERENCE_SYSTEM = "KJV";
@@ -165,7 +165,7 @@ public class Versifications {
     private Set<String> known;
 
     /**
-     * The map of instantiated ReferenceSystems, given by their names.
+     * The map of instantiated Versifications, given by their names.
      */
     private Map<String, Versification> fluffed;
 

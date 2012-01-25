@@ -612,7 +612,7 @@ public abstract class AbstractPassage implements Passage {
         optimizeWrites();
         raiseNormalizeProtection();
 
-        remove(VerseRange.getWholeBibleVerseRange());
+        remove(getVersification().getAllVerses());
 
         if (lowerEventSuppresionAndTest()) {
             fireIntervalRemoved(this, null, null);

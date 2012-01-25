@@ -35,7 +35,7 @@ import org.crosswire.jsword.versification.Versification;
  */
 public class SystemNRSV extends Versification {
     /**
-     * Build the "NRSV" ReferenceSystem.
+     * Build the "NRSV" Versification.
      */
     public SystemNRSV() {
         super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);

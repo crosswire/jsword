@@ -26,8 +26,10 @@ import java.io.Serializable;
 
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
+import org.crosswire.jsword.book.ReferenceSystem;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.passage.VerseRange;
 
 /**
  * A named Versification defines
@@ -46,7 +48,7 @@ public class Versification implements ReferenceSystem, Serializable {
     /**
      * Construct a Versification.
      * 
-     * @param osisName
+     * @param name
      *            The name of this reference system
      * @param booksOT
      *            An ordered list of books in this reference system. The list
@@ -63,8 +65,8 @@ public class Versification implements ReferenceSystem, Serializable {
      *            each chapter whose value is the highest numbered verse in that
      *            chapter. Do not include chapter 0.
      */
-    public Versification(String osisName, BibleBook[] booksOT, BibleBook[] booksNT, int[][] lastVerseOT, int[][] lastVerseNT) {
-        this.osisName = osisName;
+    public Versification(String name, BibleBook[] booksOT, BibleBook[] booksNT, int[][] lastVerseOT, int[][] lastVerseNT) {
+        this.name = name;
 
         // Copy the books into an aggregated BibleBook array
         // including INTRO_BIBLE and INTRO_OT/INTRO_NT for non-null book lists
@@ -176,8 +178,8 @@ public class Versification implements ReferenceSystem, Serializable {
      * Get the OSIS name for this Versification.
      * @return the OSIS name of the Versification
      */
-    public String getOSISName() {
-        return osisName;
+    public String getName() {
+        return name;
     }
 
     public BibleBookList getBooks() {
@@ -224,6 +226,19 @@ public class Versification implements ReferenceSystem, Serializable {
         } catch (ArrayIndexOutOfBoundsException ex) {
             return 0;
         }
+    }
+
+    /**
+     * Get a VerseRange encompassing this Versification.
+     */
+    public VerseRange getAllVerses() {
+        BibleBook book = bookList.getFirstBook();
+        int chapter = getLastChapter(book);
+        Verse first = new Verse(book, chapter, getLastVerse(book, chapter));
+        book = bookList.getLastBook();
+        chapter = getLastChapter(book);
+        Verse last = new Verse(book, chapter, getLastVerse(book, chapter));
+        return new VerseRange(this, first, last);
     }
 
     /**
@@ -728,7 +743,7 @@ public class Versification implements ReferenceSystem, Serializable {
     }
 
     /** The OSIS name of the reference system. */
-    private String osisName;
+    private String name;
 
 
     private BibleBookList bookList;

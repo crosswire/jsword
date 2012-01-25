@@ -19,7 +19,7 @@
  *
  * ID: $Id: org.eclipse.jdt.ui.prefs 1178 2006-11-06 12:48:02Z dmsmith $
  */
-package org.crosswire.jsword.versification;
+package org.crosswire.jsword.book;
 
 /**
  * A ReferenceSystem is a marker interface.

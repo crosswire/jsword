@@ -33,7 +33,7 @@ import org.crosswire.jsword.versification.Versification;
  */
 public class SystemKJVA extends Versification {
     /**
-     * Build the "KJVA" ReferenceSystem.
+     * Build the "KJVA" Versification.
      */
     public SystemKJVA() {
         super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);

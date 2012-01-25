@@ -50,7 +50,6 @@ import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.PreferredKey;
 import org.crosswire.jsword.passage.RestrictionType;
 import org.crosswire.jsword.passage.SetKeyList;
-import org.crosswire.jsword.versification.ReferenceSystem;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.jdom.Content;
 import org.jdom.Element;
@@ -198,13 +197,6 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyFactory#getValidKey(org.crosswire.jsword.versification.ReferenceSystem, java.lang.String)
-     */
-    public Key getValidKey(ReferenceSystem referenceSystem, String name) {
-        return getValidKey(name);
-    }
-
-    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getValidKey(java.lang.String)
      */
     public Key getValidKey(String name) {
@@ -213,13 +205,6 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
         } catch (NoSuchKeyException e) {
             return createEmptyKeyList();
         }
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyFactory#getKey(org.crosswire.jsword.versification.ReferenceSystem, java.lang.String)
-     */
-    public Key getKey(ReferenceSystem referenceSystem, String name) throws NoSuchKeyException {
-        return getKey(name);
     }
 
     /* (non-Javadoc)
@@ -232,24 +217,10 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
     }
 
     /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyFactory#getGlobalKeyList(org.crosswire.jsword.versification.ReferenceSystem)
-     */
-    public Key getGlobalKeyList(ReferenceSystem referenceSystem) {
-        return getGlobalKeyList();
-    }
-
-    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getGlobalKeyList()
      */
     public Key getGlobalKeyList() {
         return global;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyFactory#createEmptyKeyList(org.crosswire.jsword.versification.ReferenceSystem)
-     */
-    public Key createEmptyKeyList(ReferenceSystem referenceSystem) {
-        return createEmptyKeyList();
     }
 
     /* (non-Javadoc)

@@ -36,7 +36,7 @@ import org.crosswire.jsword.versification.Versification;
  */
 public class SystemSynodalP extends Versification {
     /**
-     * Build the "SynodalP" ReferenceSystem.
+     * Build the "SynodalP" Versification.
      */
     public SystemSynodalP() {
         super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);

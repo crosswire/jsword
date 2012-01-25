@@ -33,7 +33,7 @@ import org.crosswire.jsword.versification.Versification;
  */
 public class SystemVulg extends Versification {
     /**
-     * Build the "Vulg" ReferenceSystem.
+     * Build the "Vulg" Versification.
      */
     public SystemVulg() {
         super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);

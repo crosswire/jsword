@@ -38,7 +38,7 @@ public class SystemNRSVA extends Versification {
     private static final long serialVersionUID = -1915001343269114316L;
 
     /**
-     * Build the "NRSVA" ReferenceSystem.
+     * Build the "NRSVA" Versification.
      */
     public SystemNRSVA() {
         super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);

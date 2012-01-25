@@ -34,7 +34,7 @@ import org.crosswire.jsword.versification.Versification;
 public class SystemCatholic extends Versification {
 
     /**
-     * Build the "Catholic" ReferenceSystem.
+     * Build the "Catholic" Versification.
      */
     public SystemCatholic() {
         super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);

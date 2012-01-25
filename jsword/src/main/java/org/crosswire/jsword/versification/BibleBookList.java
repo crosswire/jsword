@@ -27,7 +27,7 @@ import java.util.NoSuchElementException;
 
 /**
  * A BibleBookList is an ordered list of one or more BibleBooks.
- * Typically, a BibleBookList is a member of a ReferenceSystem.
+ * Typically, a BibleBookList is a member of a Versification.
  *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
@@ -44,7 +44,7 @@ public class BibleBookList implements Iterable<BibleBook>, Serializable {
     }
 
     /**
-     * Does this ReferenceSystem contain the BibleBook.
+     * Does this Versification contain the BibleBook.
      * 
      * @param book
      * @return true if it is present.
@@ -67,7 +67,7 @@ public class BibleBookList implements Iterable<BibleBook>, Serializable {
     }
 
     /**
-     * Get the number of books in this ReferenceSystem.
+     * Get the number of books in this Versification.
      * @return the number of books
      */
     public int getBookCount() {
@@ -75,7 +75,7 @@ public class BibleBookList implements Iterable<BibleBook>, Serializable {
     }
 
     /**
-     * Get the BibleBook by its position in this ReferenceSystem.
+     * Get the BibleBook by its position in this Versification.
      * If the position is negative, return the first book.
      * If the position is greater than the last, return the last book.
      * 
@@ -94,7 +94,7 @@ public class BibleBookList implements Iterable<BibleBook>, Serializable {
     }
 
     /**
-     * Get the BibleBooks in this ReferenceSystem.
+     * Get the BibleBooks in this Versification.
      * 
      * @return an Iterator over the books
      */
@@ -147,8 +147,8 @@ public class BibleBookList implements Iterable<BibleBook>, Serializable {
     }
 
     /**
-     * Given a BibleBook, get the previous BibleBook in this ReferenceSystem. If it is the first book, return null.
-     * @param book A BibleBook in the ReferenceSystem
+     * Given a BibleBook, get the previous BibleBook in this Versification. If it is the first book, return null.
+     * @param book A BibleBook in the Versification
      * @return the previous BibleBook or null.
      */
     public BibleBook getPreviousBook(BibleBook book) {
@@ -162,8 +162,8 @@ public class BibleBookList implements Iterable<BibleBook>, Serializable {
     }
 
     /**
-     * Given a BibleBook, get the next BibleBook in this ReferenceSystem. If it is the last book, return null.
-     * @param book A BibleBook in the ReferenceSystem
+     * Given a BibleBook, get the next BibleBook in this Versification. If it is the last book, return null.
+     * @param book A BibleBook in the Versification
      * @return the previous BibleBook or null.
      */
     public BibleBook getNextBook(BibleBook book) {

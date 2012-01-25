@@ -33,7 +33,7 @@ import org.crosswire.jsword.versification.Versification;
  */
 public class SystemLuther extends Versification {
     /**
-     * Build the "Luther" ReferenceSystem.
+     * Build the "Luther" Versification.
      */
     public SystemLuther() {
         super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);

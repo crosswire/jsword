@@ -37,7 +37,7 @@ import org.crosswire.jsword.versification.Versification;
  */
 public class SystemMT extends Versification {
     /**
-     * Build the "MT" ReferenceSystem.
+     * Build the "MT" Versification.
      */
     public SystemMT() {
         super(name, booksOT, booksNT, lastVerseOT, null);

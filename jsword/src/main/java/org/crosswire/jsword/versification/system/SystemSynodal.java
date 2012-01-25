@@ -62,7 +62,7 @@ public class SystemSynodal extends Versification {
      */
     private static final long serialVersionUID = -6281906491023123413L;
     /**
-     * Build the "Synodal" ReferenceSystem.
+     * Build the "Synodal" Versification.
      */
     public SystemSynodal() {
         super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);

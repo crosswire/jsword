@@ -27,7 +27,7 @@ import java.util.Map;
 
 /**
  * A BibleBook is a book of the Bible. It may or may not be canonical.
- * Note that the ordering of these books varies from one ReferenceSystem to another. 
+ * Note that the ordering of these books varies from one Versification to another. 
  */
 public enum BibleBook {
     // JSword introduction to the Bible

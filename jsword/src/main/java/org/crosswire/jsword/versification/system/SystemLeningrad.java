@@ -37,7 +37,7 @@ import org.crosswire.jsword.versification.Versification;
  */
 public class SystemLeningrad extends Versification {
     /**
-     * Build the "Leningrad" ReferenceSystem.
+     * Build the "Leningrad" Versification.
      */
     public SystemLeningrad() {
         super(name, booksOT, booksNT, lastVerseOT, null);

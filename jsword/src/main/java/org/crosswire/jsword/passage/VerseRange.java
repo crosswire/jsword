@@ -773,36 +773,6 @@ public final class VerseRange implements Key {
         return null;
     }
 
-    /**
-     * Returns a VerseRange that wraps the whole Bible
-     * 
-     * @return The whole Bible VerseRange
-     */
-    @Deprecated
-    public static VerseRange getWholeBibleVerseRange() {
-        return whole;
-    }
-
-    /**
-     * Returns a VerseRange that wraps the Old Testament
-     * 
-     * @return The Old Testament VerseRange
-     */
-    @Deprecated
-    public static VerseRange getOldTestamentVerseRange() {
-        return otRange;
-    }
-
-    /**
-     * Returns a VerseRange that wraps the New Testament
-     * 
-     * @return The New Testament VerseRange
-     */
-    @Deprecated
-    public static VerseRange getNewTestamentVerseRange() {
-        return ntRange;
-    }
-
     private String doGetName(Key base) throws NoSuchVerseException {
         // Cache these we're going to be using them a lot.
         BibleBook startBook = start.getBook();
@@ -1144,32 +1114,6 @@ public final class VerseRange implements Key {
      * The original string for picky users
      */
     private transient String originalName;
-
-    /**
-     * The whole Bible VerseRange
-     */
-    @Deprecated
-    private static transient VerseRange whole;
-
-    /**
-     * The Old Testament VerseRange
-     */
-    @Deprecated
-    private static transient VerseRange otRange;
-
-    /**
-     * The New Testament VerseRange
-     */
-    @Deprecated
-    private static transient VerseRange ntRange;
-
-    static {
-        whole = new VerseRange(new Verse(BibleBook.GEN, 1, 1), new Verse(BibleBook.REV, 22, 21));
-
-        otRange = new VerseRange(new Verse(BibleBook.GEN, 1, 1), new Verse(BibleBook.MAL, 4, 6));
-
-        ntRange = new VerseRange(new Verse(BibleBook.MATT, 1, 1), new Verse(BibleBook.REV, 22, 21));
-    }
 
     /**
      * The log stream
