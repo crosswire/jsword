@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2012
  *     The copyright to this program is held by it's authors.
  *
  * ID: $Id$
@@ -40,9 +40,9 @@ import org.xml.sax.helpers.DefaultHandler;
  * To convert SAX events into OSIS events.
  * 
  * <p>
- * I used the THML ref page: <a
- * href="http://www.ccel.org/ThML/ThML1.04.htm">http
- * ://www.ccel.org/ThML/ThML1.04.htm</a> to work out what the tags meant.
+ * This is based upon the THML reference page:
+ * <a href="http://www.ccel.org/ThML/ThML1.04.htm">http://www.ccel.org/ThML/ThML1.04.htm</a>
+ * to work out what the tags meant.
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
@@ -53,17 +53,11 @@ public class CustomHandler extends DefaultHandler {
      * Simple ctor
      */
     public CustomHandler(Book book, Key key) {
-        DataPolice.setBook(book.getBookMetaData());
-        DataPolice.setKey(key);
-        stack = new LinkedList<Content>();
+        this.book = book;
+        this.key = key;
+        this.stack = new LinkedList<Content>();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String,
-     * java.lang.String, java.lang.String, org.xml.sax.Attributes)
-     */
     @Override
     public void startElement(String uri, String localname, String qname, Attributes attrs) throws SAXException {
         Element ele = null;
@@ -88,15 +82,10 @@ public class CustomHandler extends DefaultHandler {
         Tag t = getTag(localname, qname);
 
         if (t != null) {
-            stack.addFirst(t.processTag(ele, attrs));
+            stack.addFirst(t.processTag(book, key, ele, attrs));
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
-     */
     @Override
     public void characters(char[] data, int offset, int length) {
         // what we are adding
@@ -142,12 +131,6 @@ public class CustomHandler extends DefaultHandler {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String,
-     * java.lang.String, java.lang.String)
-     */
     @Override
     public void endElement(String uri, String localname, String qname) {
         if (stack.isEmpty()) {
@@ -161,7 +144,7 @@ public class CustomHandler extends DefaultHandler {
             Tag t = getTag(localname, qname);
 
             if (t != null) {
-                t.processContent(finished);
+                t.processContent(book, key, finished);
             }
 
             // If it was the last element then it was the root element
@@ -186,7 +169,7 @@ public class CustomHandler extends DefaultHandler {
             t = TAG_MAP.get(qname.toLowerCase(Locale.ENGLISH));
 
             if (t == null) {
-                DataPolice.report("Unknown thml element: " + localname + " qname=" + qname);
+                DataPolice.report(book, key, "Unknown thml element: " + localname + " qname=" + qname);
 
                 // Report on it only once and make sure the content is output.
                 t = new AnonymousTag(qname);
@@ -194,7 +177,7 @@ public class CustomHandler extends DefaultHandler {
                 return t;
             }
 
-            DataPolice.report("Wrong case used in thml element: " + qname);
+            DataPolice.report(book, key, "Wrong case used in thml element: " + qname);
         }
         return t;
     }
@@ -204,6 +187,16 @@ public class CustomHandler extends DefaultHandler {
      * stack.
      */
     private Element rootElement;
+
+    /**
+     * The book being parsed.
+     */
+    private Book book;
+
+    /**
+     * The book being parsed.
+     */
+    private Key key;
 
     /**
      * The stack of elements that we have created

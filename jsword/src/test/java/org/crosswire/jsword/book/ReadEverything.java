@@ -69,8 +69,6 @@ public class ReadEverything {
      * Perform a test read on an iterator over a set of keys
      */
     private static void testReadMultiple(Book book, Key set) {
-        DataPolice.setBook(book.getBookMetaData());
-
         // log.info("Testing: "+bmd.getInitials()+"="+bmd.getName());
         long start = System.currentTimeMillis();
         int entries = 0;

@@ -22,7 +22,7 @@
 package org.crosswire.jsword.versification.system;
 
 import org.crosswire.jsword.versification.BibleBook;
-import org.crosswire.jsword.versification.ReferenceSystem;
+import org.crosswire.jsword.versification.Versification;
 
 /**
  *
@@ -31,7 +31,7 @@ import org.crosswire.jsword.versification.ReferenceSystem;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class SystemLuther extends ReferenceSystem {
+public class SystemLuther extends Versification {
     /**
      * Build the "Luther" ReferenceSystem.
      */
@@ -543,4 +543,9 @@ public class SystemLuther extends ReferenceSystem {
                16,
         },
     };
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = -1165901663498643158L;
 }

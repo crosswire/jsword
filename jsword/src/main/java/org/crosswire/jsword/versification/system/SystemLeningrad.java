@@ -22,7 +22,7 @@
 package org.crosswire.jsword.versification.system;
 
 import org.crosswire.jsword.versification.BibleBook;
-import org.crosswire.jsword.versification.ReferenceSystem;
+import org.crosswire.jsword.versification.Versification;
 
 /**
  * The Leningrad Codex versification differs from the Masoretic Text (MT)
@@ -35,7 +35,7 @@ import org.crosswire.jsword.versification.ReferenceSystem;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class SystemLeningrad extends ReferenceSystem {
+public class SystemLeningrad extends Versification {
     /**
      * Build the "Leningrad" ReferenceSystem.
      */
@@ -327,4 +327,9 @@ public class SystemLeningrad extends ReferenceSystem {
                40,    36,    47,    31,
         },
     };
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = -1483944788413812511L;
 }

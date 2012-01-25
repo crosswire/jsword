@@ -22,7 +22,7 @@
 package org.crosswire.jsword.versification.system;
 
 import org.crosswire.jsword.versification.BibleBook;
-import org.crosswire.jsword.versification.ReferenceSystem;
+import org.crosswire.jsword.versification.Versification;
 
 /**
  *
@@ -31,7 +31,7 @@ import org.crosswire.jsword.versification.ReferenceSystem;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class SystemCatholic extends ReferenceSystem {
+public class SystemCatholic extends Versification {
 
     /**
      * Build the "Catholic" ReferenceSystem.
@@ -495,4 +495,9 @@ public class SystemCatholic extends ReferenceSystem {
           14, 17, 24,
         },
     };
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = -2425837859408015667L;
 }

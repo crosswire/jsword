@@ -306,4 +306,9 @@ public interface BookMetaData extends Comparable<BookMetaData> {
      * The key for the indexed status in the properties map
      */
     String KEY_INDEXSTATUS = "IndexStatus";
+
+    /**
+     * The key for the Versification property.
+     */
+    String KEY_VERSIFICATION = "Versification";
 }

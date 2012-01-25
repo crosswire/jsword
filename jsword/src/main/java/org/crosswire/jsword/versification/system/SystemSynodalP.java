@@ -22,7 +22,7 @@
 package org.crosswire.jsword.versification.system;
 
 import org.crosswire.jsword.versification.BibleBook;
-import org.crosswire.jsword.versification.ReferenceSystem;
+import org.crosswire.jsword.versification.Versification;
 
 /**
  * The SynodalP versification is essentially the KJV v11n, using its book order
@@ -34,7 +34,7 @@ import org.crosswire.jsword.versification.ReferenceSystem;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class SystemSynodalP extends ReferenceSystem {
+public class SystemSynodalP extends Versification {
     /**
      * Build the "SynodalP" ReferenceSystem.
      */
@@ -410,4 +410,9 @@ public class SystemSynodalP extends ReferenceSystem {
                14,    17,    18,     6,
         },
     };
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 2662552205377421107L;
 }

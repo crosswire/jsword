@@ -28,6 +28,7 @@ import java.util.Iterator;
 
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.versification.BibleBook;
+import org.crosswire.jsword.versification.Versification;
 
 /**
  * This is a simple proxy to a real Passage object that denies all attempts to
@@ -49,6 +50,13 @@ final class ReadOnlyPassage implements Passage {
     protected ReadOnlyPassage(Passage ref, boolean ignore) {
         this.ref = ref;
         this.ignore = ignore;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#getVersification()
+     */
+    public Versification getVersification() {
+        return ref.getVersification();
     }
 
     /* (non-Javadoc)

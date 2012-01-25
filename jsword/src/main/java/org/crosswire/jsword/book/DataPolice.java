@@ -43,23 +43,6 @@ public final class DataPolice {
     }
 
     /**
-     * Set the current book to enhance error reports
-     * 
-     * @param bmd
-     *            the book to report.
-     */
-    public static void setBook(BookMetaData bmd) {
-        DataPolice.bmd = bmd;
-    }
-
-    /**
-     * Set the current item to enhance error reports
-     */
-    public static void setKey(Key key) {
-        DataPolice.key = key;
-    }
-
-    /**
      * Set the current level at which to report problems. Problems at too fine
      * grain a level might be filtered by default.
      * 
@@ -88,8 +71,9 @@ public final class DataPolice {
      * @param message
      *            the police report.
      */
-    public static void report(Level lev, String message) {
+    public static void report(Book book, Key key, Level lev, String message) {
         StringBuilder buf = new StringBuilder();
+        BookMetaData bmd = book.getBookMetaData();
         if (bmd != null) {
             buf.append(bmd.getInitials());
         }
@@ -111,19 +95,9 @@ public final class DataPolice {
      * @param message
      *            the police report.
      */
-    public static void report(String message) {
-        report(level, message);
+    public static void report(Book book, Key key, String message) {
+        report(book, key, level, message);
     }
-
-    /**
-     * the last known item
-     */
-    private static Key key;
-
-    /**
-     * The last known Book
-     */
-    private static BookMetaData bmd;
 
     /**
      * The level at which to do logging. Default is FINE.

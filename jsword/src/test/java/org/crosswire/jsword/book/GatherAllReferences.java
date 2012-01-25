@@ -39,9 +39,7 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyFactory;
 import org.crosswire.jsword.passage.NoSuchKeyException;
-import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 
@@ -110,8 +108,6 @@ public class GatherAllReferences {
      * Perform a test read on an iterator over a set of keys
      */
     private static void readBook(Book book, Key set) {
-        DataPolice.setBook(book.getBookMetaData());
-
         int[] stats = new int[] {
                 0, 0
         };
@@ -151,7 +147,7 @@ public class GatherAllReferences {
                     stats[0]++;
                     String message = book.getInitials() + ':' + key.getOsisRef() + '/' + rawRef;
                     try {
-                        Key ref = keyf.getKey(rawRef);
+                        Key ref = book.getKey(rawRef);
                         message += '/' + ref.getOsisRef();
                     } catch (NoSuchKeyException e) {
                         message += '!' + e.getMessage();
@@ -170,7 +166,6 @@ public class GatherAllReferences {
     private static Pattern thmlPassagePattern = Pattern.compile("passage=\"([^\"]*)");
     private static Pattern gbfPassagePattern = Pattern.compile("<RX>([^<]*)");
     private static Pattern osisPassagePattern = Pattern.compile("osisRef=\"([^\"]*)");
-    private static KeyFactory keyf = PassageKeyFactory.instance();
     private static PrintWriter out;
     /**
      * The log stream

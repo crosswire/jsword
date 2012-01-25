@@ -22,7 +22,7 @@
 package org.crosswire.jsword.versification.system;
 
 import org.crosswire.jsword.versification.BibleBook;
-import org.crosswire.jsword.versification.ReferenceSystem;
+import org.crosswire.jsword.versification.Versification;
 
 /**
  * The NRSV Versification is nearly the same as the KJV versification.
@@ -33,7 +33,7 @@ import org.crosswire.jsword.versification.ReferenceSystem;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class SystemNRSV extends ReferenceSystem {
+public class SystemNRSV extends Versification {
     /**
      * Build the "NRSV" ReferenceSystem.
      */
@@ -174,4 +174,9 @@ public class SystemNRSV extends ReferenceSystem {
 
     public static BibleBook[] booksOT = SystemDefault.booksOT;
     public static int[][] lastVerseOT = SystemKJV.lastVerseOT;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 6104112750913219370L;
 }

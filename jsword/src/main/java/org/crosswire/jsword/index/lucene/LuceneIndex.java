@@ -54,7 +54,6 @@ import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.index.AbstractIndex;
@@ -67,6 +66,8 @@ import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.PassageTally;
 import org.crosswire.jsword.passage.VerseFactory;
+import org.crosswire.jsword.versification.Versification;
+import org.crosswire.jsword.versification.system.Versifications;
 import org.jdom.Element;
 
 /**
@@ -146,9 +147,6 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
             // TRANSLATOR: Error condition: Could not initialize a search index. Lucene is the name of the search technology being used.
             throw new BookException(JSMsg.gettext("Failed to initialize Lucene search engine."), ex);
         }
-
-        // Indexing the book is a good way to police data errors.
-        DataPolice.setBook(book.getBookMetaData());
 
         // TRANSLATOR: Progress label indicating the start of indexing. {0} is a placeholder for the book's short name.
         String jobName = JSMsg.gettext("Creating index. Processing {0}", book.getInitials());
@@ -239,6 +237,8 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
      */
     public Key find(String search) throws BookException {
         checkActive();
+        String v11nName = book.getBookMetaData().getProperty("Versification").toString();
+        Versification v11n = Versifications.instance().getVersification(v11nName);
 
         SearchModifier modifier = getSearchModifier();
         Key results = null;
@@ -254,7 +254,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
 
                 // For ranking we use a PassageTally
                 if (modifier != null && modifier.isRanked()) {
-                    PassageTally tally = new PassageTally();
+                    PassageTally tally = new PassageTally(v11n);
                     tally.raiseEventSuppresion();
                     tally.raiseNormalizeProtection();
                     results = tally;
@@ -266,7 +266,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
                     for (int i = 0; i < hits.length; i++) {
                         int docId = hits[i].doc;
                         Document doc = searcher.doc(docId);
-                        Key key = VerseFactory.fromString(doc.get(LuceneIndex.FIELD_KEY));
+                        Key key = VerseFactory.fromString(v11n, doc.get(LuceneIndex.FIELD_KEY));
                         // PassageTally understands a score of 0 as the verse
                         // not participating
                         int score = (int) (hits[i].score * 100 + 1);
@@ -284,7 +284,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
                         passage.raiseEventSuppresion();
                         passage.raiseNormalizeProtection();
                     }
-                    searcher.search(query, new VerseCollector(searcher, results));
+                    searcher.search(query, new VerseCollector(v11n, searcher, results));
                     if (passage != null) {
                         passage.lowerNormalizeProtection();
                         passage.lowerEventSuppresionAndTest();
@@ -314,7 +314,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
 
         if (results == null) {
             if (modifier != null && modifier.isRanked()) {
-                results = new PassageTally();
+                results = new PassageTally(v11n);
             } else {
                 results = book.createEmptyKeyList();
             }
@@ -383,6 +383,8 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
      * Dig down into a Key indexing as we go.
      */
     private void generateSearchIndexImpl(Progress job, List<Key> errors, IndexWriter writer, Key key, int count) throws BookException, IOException {
+        String v11nName = book.getBookMetaData().getProperty("Versification").toString();
+        Versification v11n = Versifications.instance().getVersification(v11nName);
         boolean hasStrongs = book.getBookMetaData().hasFeature(FeatureType.STRONGS_NUMBERS);
         boolean hasXRefs = book.getBookMetaData().hasFeature(FeatureType.SCRIPTURE_REFERENCES);
         boolean hasNotes = book.getBookMetaData().hasFeature(FeatureType.FOOTNOTES);
@@ -409,9 +411,6 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
             if (subkey.canHaveChildren()) {
                 generateSearchIndexImpl(job, errors, writer, subkey, subCount);
             } else {
-                // Set up DataPolice for this key.
-                DataPolice.setKey(subkey);
-
                 data = new BookData(book, subkey);
                 osis = null;
 
@@ -437,7 +436,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
                 }
 
                 if (hasXRefs) {
-                    addField(doc, xrefField, OSISUtil.getReferences(osis));
+                    addField(doc, xrefField, OSISUtil.getReferences(v11n, osis));
                 }
 
                 if (hasNotes) {

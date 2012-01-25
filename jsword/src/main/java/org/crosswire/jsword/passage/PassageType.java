@@ -21,6 +21,8 @@
  */
 package org.crosswire.jsword.passage;
 
+import org.crosswire.jsword.versification.Versification;
+
 
 /**
  * Types of Passage optimizations.
@@ -35,16 +37,16 @@ public enum PassageType {
      */
     SPEED {
         @Override
-        public Passage createPassage(String passage) throws NoSuchVerseException {
+        public Passage createPassage(Versification v11n, String passage) throws NoSuchVerseException {
             if (passage == null || passage.length() == 0) {
-                return createEmptyPassage();
+                return createEmptyPassage(v11n);
             }
-            return new RocketPassage(passage);
+            return new RocketPassage(v11n, passage);
         }
 
         @Override
-        public Passage createEmptyPassage() {
-            return new RocketPassage();
+        public Passage createEmptyPassage(Versification v11n) {
+            return new RocketPassage(v11n);
         }
     },
 
@@ -53,16 +55,16 @@ public enum PassageType {
      */
     WRITE_SPEED {
         @Override
-        public Passage createPassage(String passage) throws NoSuchVerseException {
+        public Passage createPassage(Versification v11n, String passage) throws NoSuchVerseException {
             if (passage == null || passage.length() == 0) {
-                return createEmptyPassage();
+                return createEmptyPassage(v11n);
             }
-            return new BitwisePassage(passage);
+            return new BitwisePassage(v11n, passage);
         }
 
         @Override
-        public Passage createEmptyPassage() {
-            return new BitwisePassage();
+        public Passage createEmptyPassage(Versification v11n) {
+            return new BitwisePassage(v11n);
         }
     },
 
@@ -71,16 +73,16 @@ public enum PassageType {
      */
     SIZE {
         @Override
-        public Passage createPassage(String passage) throws NoSuchVerseException {
+        public Passage createPassage(Versification v11n, String passage) throws NoSuchVerseException {
             if (passage == null || passage.length() == 0) {
-                return createEmptyPassage();
+                return createEmptyPassage(v11n);
             }
-            return new DistinctPassage(passage);
+            return new DistinctPassage(v11n, passage);
         }
 
         @Override
-        public Passage createEmptyPassage() {
-            return new DistinctPassage();
+        public Passage createEmptyPassage(Versification v11n) {
+            return new DistinctPassage(v11n);
         }
 
         /**
@@ -94,16 +96,16 @@ public enum PassageType {
      */
     MIX {
         @Override
-        public Passage createPassage(String passage) throws NoSuchVerseException {
+        public Passage createPassage(Versification v11n, String passage) throws NoSuchVerseException {
             if (passage == null || passage.length() == 0) {
-                return createEmptyPassage();
+                return createEmptyPassage(v11n);
             }
-            return new PassageTally(passage);
+            return new PassageTally(v11n, passage);
         }
 
         @Override
-        public Passage createEmptyPassage() {
-            return new PassageTally();
+        public Passage createEmptyPassage(Versification v11n) {
+            return new PassageTally(v11n);
         }
     },
 
@@ -112,16 +114,16 @@ public enum PassageType {
      */
     TALLY {
         @Override
-        public Passage createPassage(String passage) throws NoSuchVerseException {
+        public Passage createPassage(Versification v11n, String passage) throws NoSuchVerseException {
             if (passage == null || passage.length() == 0) {
-                return createEmptyPassage();
+                return createEmptyPassage(v11n);
             }
-            return new PassageTally(passage);
+            return new PassageTally(v11n, passage);
         }
 
         @Override
-        public Passage createEmptyPassage() {
-            return new PassageTally();
+        public Passage createEmptyPassage(Versification v11n) {
+            return new PassageTally(v11n);
         }
     };
 
@@ -132,7 +134,7 @@ public enum PassageType {
      * @return the optimized passage
      * @throws NoSuchVerseException
      */
-    public abstract Passage createPassage(String passage) throws NoSuchVerseException;
+    public abstract Passage createPassage(Versification v11n, String passage) throws NoSuchVerseException;
 
     /**
      * Create an empty, optimized passage
@@ -140,7 +142,7 @@ public enum PassageType {
      * @return the optimized, empty passage
      * @throws NoSuchVerseException
      */
-    public abstract Passage createEmptyPassage();
+    public abstract Passage createEmptyPassage(Versification v11n);
 
     /**
      * Lookup method to convert from a String

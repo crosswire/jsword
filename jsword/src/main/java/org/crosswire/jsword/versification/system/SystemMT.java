@@ -22,7 +22,7 @@
 package org.crosswire.jsword.versification.system;
 
 import org.crosswire.jsword.versification.BibleBook;
-import org.crosswire.jsword.versification.ReferenceSystem;
+import org.crosswire.jsword.versification.Versification;
 
 /**
  * The Masoretic Text (MT) versification differs from the Leningrad Codex
@@ -35,7 +35,7 @@ import org.crosswire.jsword.versification.ReferenceSystem;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class SystemMT extends ReferenceSystem {
+public class SystemMT extends Versification {
     /**
      * Build the "MT" ReferenceSystem.
      */
@@ -329,4 +329,9 @@ public class SystemMT extends ReferenceSystem {
                27,    21,    33,    25,    33,    27,    23,
         },
     };
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = -3679238882055120660L;
 }

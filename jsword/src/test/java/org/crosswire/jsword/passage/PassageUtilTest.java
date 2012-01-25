@@ -21,9 +21,10 @@
  */
 package org.crosswire.jsword.passage;
 
-import junit.framework.TestCase;
+import org.crosswire.jsword.versification.Versification;
+import org.crosswire.jsword.versification.system.Versifications;
 
-import org.crosswire.jsword.versification.BibleInfo;
+import junit.framework.TestCase;
 
 /**
  * JUnit Test.
@@ -40,7 +41,8 @@ public class PassageUtilTest extends TestCase {
     /**
      * How we create Passages
      */
-    private static KeyFactory keyf = PassageKeyFactory.instance();
+    private static PassageKeyFactory keyf = PassageKeyFactory.instance();
+    private Versification v11n;
 
     /*
      * (non-Javadoc)
@@ -49,6 +51,7 @@ public class PassageUtilTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
+        v11n = Versifications.instance().getVersification("KJV");
     }
 
     /*
@@ -75,22 +78,22 @@ public class PassageUtilTest extends TestCase {
         boolean stored_naming = PassageUtil.isPersistentNaming();
         PassageUtil.setPersistentNaming(false);
         assertTrue(!PassageUtil.isPersistentNaming());
-        assertEquals(VerseFactory.fromString("Genesis 1 1").toString(), "Gen 1:1");
-        assertEquals(VerseFactory.fromString("Gen 1 1").toString(), "Gen 1:1");
-        assertEquals(VerseFactory.fromString("Genesis 1:1").toString(), "Gen 1:1");
-        assertEquals(VerseFactory.fromString("Gen 1 1").toString(), "Gen 1:1");
-        assertEquals(VerseFactory.fromString("g 1 1").toString(), "Gen 1:1");
-        assertEquals(VerseFactory.fromString("g").toString(), "Gen 0:0");
-        assertEquals(VerseFactory.fromString("G:1:1").toString(), "Gen 1:1");
+        assertEquals(VerseFactory.fromString(v11n, "Genesis 1 1").toString(), "Gen 1:1");
+        assertEquals(VerseFactory.fromString(v11n, "Gen 1 1").toString(), "Gen 1:1");
+        assertEquals(VerseFactory.fromString(v11n, "Genesis 1:1").toString(), "Gen 1:1");
+        assertEquals(VerseFactory.fromString(v11n, "Gen 1 1").toString(), "Gen 1:1");
+        assertEquals(VerseFactory.fromString(v11n, "g 1 1").toString(), "Gen 1:1");
+        assertEquals(VerseFactory.fromString(v11n, "g").toString(), "Gen 0:0");
+        assertEquals(VerseFactory.fromString(v11n, "G:1:1").toString(), "Gen 1:1");
         PassageUtil.setPersistentNaming(true);
         assertTrue(PassageUtil.isPersistentNaming());
-        assertEquals(VerseFactory.fromString("Genesis 1 1").toString(), "Genesis 1 1");
-        assertEquals(VerseFactory.fromString("Gen 1 1").toString(), "Gen 1 1");
-        assertEquals(VerseFactory.fromString("Genesis 1:1").toString(), "Genesis 1:1");
-        assertEquals(VerseFactory.fromString("Gen 1 1").toString(), "Gen 1 1");
-        assertEquals(VerseFactory.fromString("g 1 1").toString(), "g 1 1");
-        assertEquals(VerseFactory.fromString("g").toString(), "g");
-        assertEquals(VerseFactory.fromString("G:1:1").toString(), "G:1:1");
+        assertEquals(VerseFactory.fromString(v11n, "Genesis 1 1").toString(), "Genesis 1 1");
+        assertEquals(VerseFactory.fromString(v11n, "Gen 1 1").toString(), "Gen 1 1");
+        assertEquals(VerseFactory.fromString(v11n, "Genesis 1:1").toString(), "Genesis 1:1");
+        assertEquals(VerseFactory.fromString(v11n, "Gen 1 1").toString(), "Gen 1 1");
+        assertEquals(VerseFactory.fromString(v11n, "g 1 1").toString(), "g 1 1");
+        assertEquals(VerseFactory.fromString(v11n, "g").toString(), "g");
+        assertEquals(VerseFactory.fromString(v11n, "G:1:1").toString(), "G:1:1");
         PassageUtil.setPersistentNaming(stored_naming);
     }
 
@@ -331,14 +334,14 @@ public class PassageUtilTest extends TestCase {
     }
 
     public void testBinaryRepresentation() throws Exception {
-        Passage gen1_135 = (Passage) keyf.getKey("Gen 1:1, Gen 1:3, Gen 1:5");
-        Passage exo2a_3b = (Passage) keyf.getKey("Exo 2:1-10, Exo 3:1-11");
-        Passage gen_rev = (Passage) keyf.getKey("Gen 1:1-Rev 22:21");
-        Passage hard = (Passage) keyf.createEmptyKeyList();
-        Passage empty = (Passage) keyf.createEmptyKeyList();
+        Passage gen1_135 = (Passage) keyf.getKey(v11n, "Gen 1:1, Gen 1:3, Gen 1:5");
+        Passage exo2a_3b = (Passage) keyf.getKey(v11n, "Exo 2:1-10, Exo 3:1-11");
+        Passage gen_rev = (Passage) keyf.getKey(v11n, "Gen 1:1-Rev 22:21");
+        Passage hard = (Passage) keyf.createEmptyKeyList(v11n);
+        Passage empty = (Passage) keyf.createEmptyKeyList(v11n);
 
-        for (int i = 1; i < BibleInfo.maximumOrdinal(); i += 10) {
-            hard.add(BibleInfo.decodeOrdinal(i));
+        for (int i = 1; i < v11n.maximumOrdinal(); i += 10) {
+            hard.add(v11n.decodeOrdinal(i));
         }
 
         byte[] temp = PassageKeyFactory.toBinaryRepresentation(gen1_135);

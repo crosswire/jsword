@@ -26,6 +26,7 @@ import java.io.ObjectInputStream;
 import java.util.Iterator;
 
 import org.crosswire.jsword.versification.BibleBook;
+import org.crosswire.jsword.versification.Versification;
 
 /**
  * A RocketPassage is a bit and heavy implementation of Passage that goes fairly
@@ -40,8 +41,12 @@ import org.crosswire.jsword.versification.BibleBook;
 public class RocketPassage extends BitwisePassage {
     /**
      * Create a new RocketPassage
+     * 
+     * @param v11n
+     *            The Versification to which this Passage belongs.
      */
-    public RocketPassage() {
+    public RocketPassage(Versification v11n) {
+        super(v11n);
     }
 
     /**
@@ -54,13 +59,16 @@ public class RocketPassage extends BitwisePassage {
      * However since getName() is standardized this will be true. We don't need
      * to worry about thread safety in a ctor since we don't exist yet.
      * 
+     * 
+     * @param v11n
+     *            The Versification to which this Passage belongs.
      * @param refs
      *            A String containing the text of the RangedPassage
      * @throws NoSuchVerseException
      *             if refs is invalid
      */
-    protected RocketPassage(String refs) throws NoSuchVerseException {
-        super(refs);
+    protected RocketPassage(Versification v11n, String refs) throws NoSuchVerseException {
+        super(v11n, refs);
     }
 
     /*
@@ -78,12 +86,12 @@ public class RocketPassage extends BitwisePassage {
         // danger of them being optimized before the optimizations
         // are ready for use.
 
-        DistinctPassage dtemp = new DistinctPassage();
+        DistinctPassage dtemp = new DistinctPassage(getVersification());
         dtemp.raiseEventSuppresion();
         dtemp.addAll(this);
         dtemp.lowerEventSuppresionAndTest();
 
-        RangedPassage rtemp = new RangedPassage();
+        RangedPassage rtemp = new RangedPassage(getVersification());
         rtemp.raiseEventSuppresion();
         rtemp.addAll(this);
         rtemp.lowerEventSuppresionAndTest();

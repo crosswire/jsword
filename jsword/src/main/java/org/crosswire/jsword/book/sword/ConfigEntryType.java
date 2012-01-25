@@ -88,8 +88,8 @@ public enum ConfigEntryType {
     ),
 
     /**
-     * The type of compression in use. JSword does not support LZSS. While it is
-     * the default, it is not used. At least so far.
+     * The type of compression in use. While LZSS is the default, it is not used.
+     * At least so far.
      */
     COMPRESS_TYPE("CompressType", 0,
         "LZSS",
@@ -164,7 +164,7 @@ public enum ConfigEntryType {
     ),
 
     /**
-     * Global Option Filters are the names of routines in Sword that can be used
+     * Global Option Filters are the names of routines in SWORD that can be used
      * to display the data. These are not used by JSword.
      */
     GLOBAL_OPTION_FILTER("GlobalOptionFilter", -1,
@@ -173,7 +173,7 @@ public enum ConfigEntryType {
         "GBFMorph",
         "GBFHeadings",
         "GBFRedLetterWords",
-        "GBFScripref",
+        "GBFScripref", // no longer in wiki
         "ThMLStrongs",
         "ThMLFootnotes",
         "ThMLScripref",
@@ -218,8 +218,6 @@ public enum ConfigEntryType {
         "Plaintext",
         "GBF",
         "ThML",
-        "OSIS",
-        "TEI",
         "OSIS",
         "TEI"
     ),
@@ -502,6 +500,12 @@ public enum ConfigEntryType {
     },
 
     /**
+     * Single value version number, lowest sword c++ version that can read this
+     * book JSword does not use this value.
+     */
+    OSIS_VERSION("OSISVersion"),
+
+    /**
      * Informational copyright notice.
      */
     COPYRIGHT("Copyright") {
@@ -646,12 +650,14 @@ public enum ConfigEntryType {
             return true;
         }
     },
+
     /**
      * Contains the URL (a bare URL, not an HTML <a> link) of a web page for unlocking instructions/payment.
      */
     UNLOCK_URL("UnlockURL"),
+
     /**
-     * Similar to DataPath. It gives where on the CrossWire server the book can
+     * Deliberately not in wiki. Similar to DataPath. It gives where on the CrossWire server the book can
      * be found. Informational only.
      */
     DISTRIBUTION_SOURCE("DistributionSource") {
@@ -663,10 +669,14 @@ public enum ConfigEntryType {
     },
 
     /**
-     * Single value version number, lowest sword c++ version that can read this
-     * book JSword does not use this value.
+     * New. Not in wiki. Present in SWORD engine. Present in hesychius.conf w/ PapyriPlain
      */
-    OSIS_VERSION("OSISVersion", "2.0"),
+    LOCAL_STRIP_FILTER("LocalStripFilter"),
+
+    /**
+     * New. Not in wiki. Present in SWORD engine. Present in hesychius.conf w/ IncludeKeyInSearch
+     */
+    SEARCH_OPTION("SearchOption"),
 
     /**
      * The location of a collection of modules. JSword uses this to install and

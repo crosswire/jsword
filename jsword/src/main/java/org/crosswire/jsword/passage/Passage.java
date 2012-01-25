@@ -27,6 +27,7 @@ import java.io.Writer;
 import java.util.Iterator;
 
 import org.crosswire.jsword.versification.BibleBook;
+import org.crosswire.jsword.versification.Versification;
 
 /**
  * A Passage is a specialized Collection of Verses. The additions are:
@@ -78,6 +79,13 @@ import org.crosswire.jsword.versification.BibleBook;
  * @author Joe Walker [joe at eireneh dot com]
  */
 public interface Passage extends Key {
+    /**
+     * Get the Versification that defines the Verses in the passage.
+     * 
+     * @return this Passage's Versification.
+     */
+    Versification getVersification();
+
     /**
      * A summary of the verses in this Passage For example
      * "10 verses in 4 books"

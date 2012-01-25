@@ -54,13 +54,6 @@ public class SwordBook extends AbstractPassageBook {
         this.backend = backend;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.common.activate.Activatable#activate(org.crosswire.common
-     * .activate.Lock)
-     */
     @Override
     public final void activate(Lock lock) {
         super.activate(lock);
@@ -69,13 +62,6 @@ public class SwordBook extends AbstractPassageBook {
         // of doing it for itself.
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common
-     * .activate.Lock)
-     */
     @Override
     public final void deactivate(Lock lock) {
         super.deactivate(lock);
@@ -83,22 +69,15 @@ public class SwordBook extends AbstractPassageBook {
         Activator.deactivate(backend);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.Book#contains(org.crosswire.jsword.passage.Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#contains(org.crosswire.jsword.passage.Key)
      */
     public boolean contains(Key key) {
         return backend != null && backend.contains(key);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.basic.AbstractPassageBook#getRawText(org.crosswire
-     * .jsword.passage.Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
      */
     public String getRawText(Key key) throws BookException {
         if (backend == null) {
@@ -110,13 +89,6 @@ public class SwordBook extends AbstractPassageBook {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.basic.AbstractPassageBook#addOSIS(org.crosswire
-     * .jsword.passage.Key, org.jdom.Element, java.util.List)
-     */
     @Override
     public void addOSIS(Key key, Element div, List<Content> osisContent) {
         // See if the text is marked up with verses
@@ -169,33 +141,20 @@ public class SwordBook extends AbstractPassageBook {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.Book#isWritable()
-     */
     @Override
     public boolean isWritable() {
         return backend.isWritable();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.basic.AbstractPassageBook#setRawText(org.crosswire
-     * .jsword.passage.Key, java.lang.String)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#setRawText(org.crosswire.jsword.passage.Key, java.lang.String)
      */
     public void setRawText(Key key, String rawData) throws BookException {
         throw new BookException(JSOtherMsg.lookupText("This Book is read-only."));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.Book#setAliasKey(org.crosswire.jsword.passage
-     * .Key, org.crosswire.jsword.passage.Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#setAliasKey(org.crosswire.jsword.passage.Key, org.crosswire.jsword.passage.Key)
      */
     public void setAliasKey(Key alias, Key source) throws BookException {
         try {
@@ -205,9 +164,7 @@ public class SwordBook extends AbstractPassageBook {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.basic.AbstractPassageBook#getFilter()
      */
     @Override

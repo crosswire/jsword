@@ -31,6 +31,7 @@ import org.apache.lucene.search.Searcher;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.VerseFactory;
+import org.crosswire.jsword.versification.Versification;
 
 /**
  * A simple collector of verses that stores the verses in a Key.
@@ -44,7 +45,8 @@ public class VerseCollector extends Collector {
     /**
      * Create a collector for the searcher that populates results.
      */
-    public VerseCollector(Searcher searcher, Key results) {
+    public VerseCollector(Versification refSystem, Searcher searcher, Key results) {
+        this.v11n = refSystem;
         this.searcher = searcher;
         this.results = results;
     }
@@ -69,7 +71,7 @@ public class VerseCollector extends Collector {
     public void collect(int docId) throws IOException {
         Document doc = searcher.doc(docBase + docId);
         try {
-            Key key = VerseFactory.fromString(doc.get(LuceneIndex.FIELD_KEY));
+            Key key = VerseFactory.fromString(v11n, doc.get(LuceneIndex.FIELD_KEY));
             results.addAll(key);
         } catch (NoSuchVerseException e) {
             // Wrap the NoSuchVerseException in an IOException so it can be
@@ -107,6 +109,7 @@ public class VerseCollector extends Collector {
     }
 
     private int docBase;
+    private Versification v11n;
     private Searcher searcher;
     private Key results;
 }

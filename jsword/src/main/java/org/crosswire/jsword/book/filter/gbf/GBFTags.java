@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2012
  *     The copyright to this program is held by it's authors.
  *
  * ID: $Id$
@@ -25,13 +25,13 @@ import java.util.LinkedList;
 
 import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.xml.XMLUtil;
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.OSISUtil.OSISFactory;
-import org.crosswire.jsword.passage.KeyFactory;
+import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.jdom.Content;
 import org.jdom.Element;
 import org.jdom.Text;
@@ -62,9 +62,9 @@ public final class GBFTags {
             super(name);
         }
 
-        public void updateOsisStack(LinkedList<Content> stack) {
+        public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
             if (stack.isEmpty()) {
-                DataPolice.report("Ignoring end tag without corresponding start tag: " + getName());
+                DataPolice.report(book, key, "Ignoring end tag without corresponding start tag: " + getName());
                 return;
             }
             stack.removeFirst();
@@ -82,10 +82,10 @@ public final class GBFTags {
             super(name);
         }
 
-        public void updateOsisStack(LinkedList<Content> stack) {
+        public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
             Element ele = OSIS_FACTORY.createHI();
             ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_BOLD);
-            GBFTags.updateOsisStack(stack, ele);
+            GBFTags.updateOsisStack(book, key, stack, ele);
         }
     }
 
@@ -97,17 +97,17 @@ public final class GBFTags {
             super(name);
         }
 
-        public void updateOsisStack(LinkedList<Content> stack) {
+        public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
             Element ele = OSIS_FACTORY.createReference();
 
             String refstr = getName().substring(2);
             try {
-                Passage ref = (Passage) KEY_FACTORY.getKey(refstr);
+                Passage ref = (Passage) book.getKey(refstr);
                 ele.setAttribute(OSISUtil.OSIS_ATTR_REF, ref.getOsisRef());
             } catch (NoSuchKeyException ex) {
-                DataPolice.report("unable to parse reference: " + refstr);
+                DataPolice.report(book, key, "unable to parse reference: " + refstr);
             }
-            GBFTags.updateOsisStack(stack, ele);
+            GBFTags.updateOsisStack(book, key, stack, ele);
         }
     }
 
@@ -122,7 +122,7 @@ public final class GBFTags {
             super(name);
         }
 
-        public void updateOsisStack(LinkedList<Content> stack) {
+        public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
 
             Element p = OSIS_FACTORY.createLB();
             if (stack.isEmpty()) {
@@ -148,10 +148,10 @@ public final class GBFTags {
             super(name);
         }
 
-        public void updateOsisStack(LinkedList<Content> stack) {
+        public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
             Element ele = OSIS_FACTORY.createNote();
             ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.NOTETYPE_STUDY);
-            GBFTags.updateOsisStack(stack, ele);
+            GBFTags.updateOsisStack(book, key, stack, ele);
         }
     }
 
@@ -166,15 +166,15 @@ public final class GBFTags {
             super(name);
         }
 
-        public void updateOsisStack(LinkedList<Content> stack) {
+        public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
             if (stack.isEmpty()) {
-                DataPolice.report("Ignoring end tag without corresponding start tag: " + getName());
+                DataPolice.report(book, key, "Ignoring end tag without corresponding start tag: " + getName());
                 return;
             }
 
             Object pop = stack.removeFirst();
             if (!(pop instanceof Element)) {
-                DataPolice.report("expected to pop a Note, but found " + ClassUtil.getShortClassName(pop.getClass()));
+                DataPolice.report(book, key, "expected to pop a Note, but found " + ClassUtil.getShortClassName(pop.getClass()));
                 return;
             }
 
@@ -200,8 +200,8 @@ public final class GBFTags {
             super(name);
         }
 
-        public void updateOsisStack(LinkedList<Content> stack) {
-            GBFTags.updateOsisStack(stack, OSIS_FACTORY.createTitle());
+        public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
+            GBFTags.updateOsisStack(book, key, stack, OSIS_FACTORY.createTitle());
         }
     }
 
@@ -216,7 +216,7 @@ public final class GBFTags {
             super(name);
         }
 
-        public void updateOsisStack(LinkedList<Content> stack) {
+        public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
         }
     }
 
@@ -231,10 +231,10 @@ public final class GBFTags {
             super(name);
         }
 
-        public void updateOsisStack(LinkedList<Content> stack) {
+        public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
             Element ele = OSIS_FACTORY.createHI();
             ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_ITALIC);
-            GBFTags.updateOsisStack(stack, ele);
+            GBFTags.updateOsisStack(book, key, stack, ele);
         }
     }
 
@@ -249,11 +249,11 @@ public final class GBFTags {
             super(name);
         }
 
-        public void updateOsisStack(LinkedList<Content> stack) {
+        public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
             // LATER(joe): is seg the right thing?
             Element ele = OSIS_FACTORY.createSeg();
             ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.SEG_JUSTIFYRIGHT);
-            GBFTags.updateOsisStack(stack, ele);
+            GBFTags.updateOsisStack(book, key, stack, ele);
         }
     }
 
@@ -268,10 +268,10 @@ public final class GBFTags {
             super(name);
         }
 
-        public void updateOsisStack(LinkedList<Content> stack) {
+        public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
             Element ele = OSIS_FACTORY.createSeg();
             ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.SEG_JUSTIFYLEFT);
-            GBFTags.updateOsisStack(stack, ele);
+            GBFTags.updateOsisStack(book, key, stack, ele);
         }
     }
 
@@ -286,8 +286,8 @@ public final class GBFTags {
             super(name);
         }
 
-        public void updateOsisStack(LinkedList<Content> stack) {
-            GBFTags.updateOsisStack(stack, OSIS_FACTORY.createQ());
+        public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
+            GBFTags.updateOsisStack(book, key, stack, OSIS_FACTORY.createQ());
         }
     }
 
@@ -302,7 +302,7 @@ public final class GBFTags {
             super(name);
         }
 
-        public void updateOsisStack(LinkedList<Content> stack) {
+        public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
 
             if (stack.isEmpty()) {
                 Element p = OSIS_FACTORY.createLB();
@@ -329,8 +329,8 @@ public final class GBFTags {
             super(name);
         }
 
-        public void updateOsisStack(LinkedList<Content> stack) {
-            GBFTags.updateOsisStack(stack, OSIS_FACTORY.createLG());
+        public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
+            GBFTags.updateOsisStack(book, key, stack, OSIS_FACTORY.createLG());
         }
     }
 
@@ -345,8 +345,8 @@ public final class GBFTags {
             super(name);
         }
 
-        public void updateOsisStack(LinkedList<Content> stack) {
-            GBFTags.updateOsisStack(stack, OSIS_FACTORY.createTitle());
+        public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
+            GBFTags.updateOsisStack(book, key, stack, OSIS_FACTORY.createTitle());
         }
     }
 
@@ -361,10 +361,10 @@ public final class GBFTags {
             super(name);
         }
 
-        public void updateOsisStack(LinkedList<Content> stack) {
+        public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
             Element ele = OSIS_FACTORY.createQ();
             ele.setAttribute(OSISUtil.ATTRIBUTE_Q_WHO, "Jesus");
-            GBFTags.updateOsisStack(stack, ele);
+            GBFTags.updateOsisStack(book, key, stack, ele);
         }
     }
 
@@ -376,7 +376,7 @@ public final class GBFTags {
             super(name);
         }
 
-        public void updateOsisStack(LinkedList<Content> stack) {
+        public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
             String name = getName().trim();
 
             Content top = stack.get(0);
@@ -384,7 +384,7 @@ public final class GBFTags {
                 Element ele = (Element) top;
                 int size = ele.getContentSize();
                 if (size == 0) {
-                    DataPolice.report("No content to attach word to: <" + name + ">.");
+                    DataPolice.report(book, key, "No content to attach word to: <" + name + ">.");
                     return;
                 }
 
@@ -400,7 +400,7 @@ public final class GBFTags {
                 } else if (prevObj instanceof Element) {
                     word = (Element) prevObj;
                 } else {
-                    DataPolice.report("No words to attach word to: <" + name + ">.");
+                    DataPolice.report(book, key, "No words to attach word to: <" + name + ">.");
                     return;
                 }
 
@@ -427,7 +427,7 @@ public final class GBFTags {
             super(name);
         }
 
-        public void updateOsisStack(LinkedList<Content> stack) {
+        public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
             String name = getName().trim();
 
             Content top = stack.get(0);
@@ -435,7 +435,7 @@ public final class GBFTags {
                 Element ele = (Element) top;
                 int size = ele.getContentSize();
                 if (size == 0) {
-                    DataPolice.report("No content to attach word to: <" + name + ">.");
+                    DataPolice.report(book, key, "No content to attach word to: <" + name + ">.");
                     return;
                 }
 
@@ -452,7 +452,7 @@ public final class GBFTags {
                 } else if (prevObj instanceof Element) {
                     word = (Element) prevObj;
                 } else {
-                    DataPolice.report("No words to attach word to: <" + name + ">.");
+                    DataPolice.report(book, key, "No words to attach word to: <" + name + ">.");
                     return;
                 }
 
@@ -482,10 +482,10 @@ public final class GBFTags {
             super(name);
         }
 
-        public void updateOsisStack(LinkedList<Content> stack) {
+        public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
             Element ele = OSIS_FACTORY.createNote();
             ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.NOTETYPE_STUDY);
-            GBFTags.updateOsisStack(stack, ele);
+            GBFTags.updateOsisStack(book, key, stack, ele);
         }
     }
 
@@ -500,7 +500,7 @@ public final class GBFTags {
             super(name);
         }
 
-        public void updateOsisStack(LinkedList<Content> stack) {
+        public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
             // Make sure that characters that XML requires to be escaped are.
             String text = XMLUtil.escape(getName());
             if (stack.isEmpty()) {
@@ -526,8 +526,8 @@ public final class GBFTags {
             super(name);
         }
 
-        public void updateOsisStack(LinkedList<Content> stack) {
-            GBFTags.updateOsisStack(stack, OSIS_FACTORY.createTitle());
+        public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
+            GBFTags.updateOsisStack(book, key, stack, OSIS_FACTORY.createTitle());
         }
     }
 
@@ -542,14 +542,14 @@ public final class GBFTags {
             super(name);
         }
 
-        public void updateOsisStack(LinkedList<Content> stack) {
+        public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
             Element ele = OSIS_FACTORY.createHI();
             ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_UNDERLINE);
-            GBFTags.updateOsisStack(stack, ele);
+            GBFTags.updateOsisStack(book, key, stack, ele);
         }
     }
 
-    /* private */static void updateOsisStack(LinkedList<Content> stack, Content content) {
+    /* private */static void updateOsisStack(Book book, Key key, LinkedList<Content> stack, Content content) {
         Content top = stack.get(0);
         if (top instanceof Element) {
             Element current = (Element) top;
@@ -557,11 +557,6 @@ public final class GBFTags {
             stack.addFirst(content);
         }
     }
-
-    /**
-     * To convert strings into Biblical keys.
-     */
-    static final KeyFactory KEY_FACTORY = PassageKeyFactory.instance();
 
     /**
      * To create OSIS DOM nodes.

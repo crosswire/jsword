@@ -22,7 +22,7 @@
 package org.crosswire.jsword.versification.system;
 
 import org.crosswire.jsword.versification.BibleBook;
-import org.crosswire.jsword.versification.ReferenceSystem;
+import org.crosswire.jsword.versification.Versification;
 
 /**
  *
@@ -31,7 +31,7 @@ import org.crosswire.jsword.versification.ReferenceSystem;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class SystemKJVA extends ReferenceSystem {
+public class SystemKJVA extends Versification {
     /**
      * Build the "KJVA" ReferenceSystem.
      */
@@ -409,4 +409,9 @@ public class SystemKJVA extends ReferenceSystem {
               38,    38,    45,    26,    46,    39,
         },
     };
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 1054681694714921358L;
 }

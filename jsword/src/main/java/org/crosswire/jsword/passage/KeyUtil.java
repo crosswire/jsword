@@ -22,6 +22,8 @@
 package org.crosswire.jsword.passage;
 
 import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.versification.Versification;
+import org.crosswire.jsword.versification.system.Versifications;
 
 /**
  * .
@@ -71,8 +73,9 @@ public final class KeyUtil {
             return ref.getVerseAt(0);
         }
 
+        Versification v11n = Versifications.instance().getVersification("KJV");
         try {
-            return VerseFactory.fromString(key.getName());
+            return VerseFactory.fromString(v11n, key.getName());
         } catch (NoSuchVerseException ex) {
             log.warn("Key can't be a verse: " + key.getName());
             return Verse.DEFAULT;
@@ -94,11 +97,12 @@ public final class KeyUtil {
         }
 
         Key ref = null;
+        Versification v11n = Versifications.instance().getVersification("KJV");
         try {
-            ref = keyf.getKey(key.getName());
+            ref = keyf.getKey(v11n, key.getName());
         } catch (NoSuchKeyException ex) {
             log.warn("Key can't be a passage: " + key.getName());
-            ref = keyf.createEmptyKeyList();
+            ref = keyf.createEmptyKeyList(v11n);
         }
         return (Passage) ref;
     }
@@ -106,7 +110,7 @@ public final class KeyUtil {
     /**
      * How we create Passages
      */
-    private static KeyFactory keyf = PassageKeyFactory.instance();
+    private static PassageKeyFactory keyf = PassageKeyFactory.instance();
 
     /**
      * The log stream

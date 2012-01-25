@@ -26,7 +26,8 @@ import java.io.Reader;
 import java.util.Iterator;
 
 import org.crosswire.jsword.JSOtherMsg;
-import org.crosswire.jsword.versification.BibleInfo;
+import org.crosswire.jsword.versification.Versification;
+import org.crosswire.jsword.versification.system.Versifications;
 
 /**
  * An implementation of KeyFactory that works for most Bibles that contain all
@@ -37,65 +38,57 @@ import org.crosswire.jsword.versification.BibleInfo;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class PassageKeyFactory implements KeyFactory {
+public final class PassageKeyFactory {
     /**
      * This class implements a Singleton pattern. So the ctor is private
      */
     private PassageKeyFactory() {
     }
 
-    public static KeyFactory instance() {
+    public static PassageKeyFactory instance() {
         return keyf;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#createEmptyKeyList()
      */
-    public Key createEmptyKeyList() {
-        return defaultType.createEmptyPassage();
+    public Key createEmptyKeyList(Versification v11n) {
+        return defaultType.createEmptyPassage(v11n);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.KeyFactory#isValidKey(java.lang.String)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#getValidKey(java.lang.String)
      */
-    public Key getValidKey(String name) {
+    public Key getValidKey(Versification v11n, String name) {
         try {
-            return getKey(name);
+            return getKey(v11n, name);
         } catch (NoSuchKeyException e) {
-            return createEmptyKeyList();
+            return createEmptyKeyList(v11n);
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.KeyFactory#createKey(java.lang.String)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#getKey(java.lang.String)
      */
-    public Key getKey(String name) throws NoSuchKeyException {
+    public Key getKey(Versification v11n, String name) throws NoSuchKeyException {
         // since normalization is relatively expensive
         // don't try it unless it solves a problem.
         try {
-            return defaultType.createPassage(name);
+            return defaultType.createPassage(v11n, name);
         } catch (Exception e) {
             try {
-                return defaultType.createPassage(normalize(name));
+                return defaultType.createPassage(v11n, normalize(name));
             } catch (Exception e1) {
                 // TODO(DM): Parser should allow valid osis refs!
-                return defaultType.createPassage(mungOsisRef(name));
+                return defaultType.createPassage(v11n, mungOsisRef(name));
             }
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getGlobalKeyList()
      */
-    public Key getGlobalKeyList() {
+    public Key getGlobalKeyList(Versification v11n) {
         return whole;
     }
 
@@ -161,19 +154,20 @@ public final class PassageKeyFactory implements KeyFactory {
      *            The Passage to convert
      * @return a byte array
      */
-    public static byte[] toBinaryRepresentation(Passage ref) {
+    static byte[] toBinaryRepresentation(Passage ref) {
+        int maxOrdinal = ref.getVersification().maximumOrdinal();
         // store these locally we use them so often
         int verses = ref.countVerses();
         int ranges = ref.countRanges(RestrictionType.NONE);
 
         // the size in bytes of teach storage method
-        int bitwise_size = BibleInfo.maximumOrdinal() / 8;
+        int bitwise_size = maxOrdinal / 8;
         int ranged_size = (ranges * 4) + 1;
         int distinct_size = (verses * 2) + 1;
 
         // if bitwise is equal smallest
         if (bitwise_size <= ranged_size && bitwise_size <= distinct_size) {
-            int array_size = binarySize(AbstractPassage.METHOD_COUNT) + (BibleInfo.maximumOrdinal() / 8) + 1;
+            int array_size = binarySize(AbstractPassage.METHOD_COUNT) + (maxOrdinal / 8) + 1;
             byte[] buffer = new byte[array_size];
             int index = 0;
 
@@ -195,41 +189,41 @@ public final class PassageKeyFactory implements KeyFactory {
             return buffer;
         } else if (distinct_size <= ranged_size) {
             // if distinct is not bigger than ranged
-            int array_size = binarySize(AbstractPassage.METHOD_COUNT) + binarySize(BibleInfo.maximumOrdinal())
-                    + (verses * binarySize(BibleInfo.maximumOrdinal()));
+            int array_size = binarySize(AbstractPassage.METHOD_COUNT) + binarySize(maxOrdinal)
+                    + (verses * binarySize(maxOrdinal));
             byte[] buffer = new byte[array_size];
             int index = 0;
 
             // write the Passage type and the number of verses. There must be
             // less than 2**16 verses
             index += toBinary(buffer, index, AbstractPassage.DISTINCT, AbstractPassage.METHOD_COUNT);
-            index += toBinary(buffer, index, verses, BibleInfo.maximumOrdinal());
+            index += toBinary(buffer, index, verses, maxOrdinal);
 
             // write the verse ordinals in a loop
             for (Key aKey : ref) {
                 Verse verse = (Verse) aKey;
                 int ord = verse.getOrdinal();
-                index += toBinary(buffer, index, ord, BibleInfo.maximumOrdinal());
+                index += toBinary(buffer, index, ord, maxOrdinal);
             }
 
             return buffer;
         } else {
             // otherwise use ranges
-            int array_size = binarySize(AbstractPassage.METHOD_COUNT) + binarySize(BibleInfo.maximumOrdinal() / 2)
-                    + (2 * ranges * binarySize(BibleInfo.maximumOrdinal()));
+            int array_size = binarySize(AbstractPassage.METHOD_COUNT) + binarySize(maxOrdinal / 2)
+                    + (2 * ranges * binarySize(maxOrdinal));
             byte[] buffer = new byte[array_size];
             int index = 0;
 
             // write the Passage type and the number of ranges
             index += toBinary(buffer, index, AbstractPassage.RANGED, AbstractPassage.METHOD_COUNT);
-            index += toBinary(buffer, index, ranges, BibleInfo.maximumOrdinal() / 2);
+            index += toBinary(buffer, index, ranges, maxOrdinal / 2);
 
             // write the verse ordinals in a loop
             Iterator<Key> it = ref.rangeIterator(RestrictionType.NONE);
             while (it.hasNext()) {
                 VerseRange range = (VerseRange) it.next();
-                index += toBinary(buffer, index, range.getStart().getOrdinal(), BibleInfo.maximumOrdinal());
-                index += toBinary(buffer, index, range.getCardinality(), BibleInfo.maximumOrdinal());
+                index += toBinary(buffer, index, range.getStart().getOrdinal(), maxOrdinal);
+                index += toBinary(buffer, index, range.getCardinality(), maxOrdinal);
             }
 
             // chop to size
@@ -246,8 +240,10 @@ public final class PassageKeyFactory implements KeyFactory {
      * @throws NoSuchVerseException
      *             If the buffer is invalid
      */
-    public static Passage fromBinaryRepresentation(byte[] buffer) throws NoSuchVerseException {
-        Passage ref = (Passage) keyf.createEmptyKeyList();
+    static Passage fromBinaryRepresentation(byte[] buffer) throws NoSuchVerseException {
+        Versification rs = Versifications.instance().getVersification("KJV");
+        int maxOrdinal = rs.maximumOrdinal();
+        Passage ref = (Passage) keyf.createEmptyKeyList(rs);
 
         // Some speedups
         AbstractPassage aref = null;
@@ -264,7 +260,7 @@ public final class PassageKeyFactory implements KeyFactory {
 
         switch (type) {
         case AbstractPassage.BITWISE:
-            for (int ord = 1; ord <= BibleInfo.maximumOrdinal(); ord++) {
+            for (int ord = 1; ord <= maxOrdinal; ord++) {
                 // Which byte should we be viewing
                 int idx0 = (ord / 8) + index[0];
 
@@ -272,26 +268,26 @@ public final class PassageKeyFactory implements KeyFactory {
                 int bit = (ord % 8) - 1;
 
                 if ((buffer[idx0] & (1 << bit)) != 0) {
-                    ref.add(BibleInfo.decodeOrdinal(ord));
+                    ref.add(rs.decodeOrdinal(ord));
                 }
             }
             // index gets left behind here, but we dont care
             break;
 
         case AbstractPassage.DISTINCT:
-            int verses = fromBinary(buffer, index, BibleInfo.maximumOrdinal());
+            int verses = fromBinary(buffer, index, maxOrdinal);
             for (int i = 0; i < verses; i++) {
-                int ord = fromBinary(buffer, index, BibleInfo.maximumOrdinal());
-                ref.add(BibleInfo.decodeOrdinal(ord));
+                int ord = fromBinary(buffer, index, maxOrdinal);
+                ref.add(rs.decodeOrdinal(ord));
             }
             break;
 
         case AbstractPassage.RANGED:
-            int ranges = fromBinary(buffer, index, BibleInfo.maximumOrdinal() / 2);
+            int ranges = fromBinary(buffer, index, maxOrdinal / 2);
             for (int i = 0; i < ranges; i++) {
-                int ord = fromBinary(buffer, index, BibleInfo.maximumOrdinal());
-                int len = fromBinary(buffer, index, BibleInfo.maximumOrdinal());
-                ref.add(RestrictionType.NONE.toRange(BibleInfo.decodeOrdinal(ord), len));
+                int ord = fromBinary(buffer, index, maxOrdinal);
+                int len = fromBinary(buffer, index, maxOrdinal);
+                ref.add(RestrictionType.NONE.toRange(rs, rs.decodeOrdinal(ord), len));
             }
             break;
 
@@ -320,7 +316,8 @@ public final class PassageKeyFactory implements KeyFactory {
      *             if the data was not a valid passage
      */
     public static Passage readPassage(Reader in) throws IOException, NoSuchVerseException {
-        Passage ref = (Passage) keyf.createEmptyKeyList();
+        Versification rs = Versifications.instance().getVersification("KJV");
+        Passage ref = (Passage) keyf.createEmptyKeyList(rs);
         ref.readDescription(in);
         return ref;
     }
@@ -541,7 +538,7 @@ public final class PassageKeyFactory implements KeyFactory {
     /**
      * How we create Passages
      */
-    private static KeyFactory keyf = new PassageKeyFactory();
+    private static PassageKeyFactory keyf = new PassageKeyFactory();
 
     /**
      * The cached whole Bible passage
@@ -550,10 +547,10 @@ public final class PassageKeyFactory implements KeyFactory {
 
     static {
         try {
-            whole = new ReadOnlyPassage(defaultType.createPassage("Gen 1:1-Rev 22:21"), true);
+            whole = new ReadOnlyPassage(defaultType.createPassage(Versifications.instance().getVersification("KJV"), "Gen 1:1-Rev 22:21"), true);
         } catch (NoSuchKeyException ex) {
             assert false : ex;
-            whole = defaultType.createEmptyPassage();
+            whole = defaultType.createEmptyPassage(Versifications.instance().getVersification("KJV"));
         }
     }
 }

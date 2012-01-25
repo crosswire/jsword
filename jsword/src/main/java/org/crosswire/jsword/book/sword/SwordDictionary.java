@@ -36,6 +36,7 @@ import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.DefaultLeafKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
+import org.crosswire.jsword.versification.ReferenceSystem;
 import org.jdom.Content;
 import org.jdom.Element;
 
@@ -59,12 +60,8 @@ public class SwordDictionary extends AbstractBook {
         active = false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage
-     * .Key, boolean)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage.Key, boolean)
      */
     public Iterator<Content> getOsisIterator(Key key, boolean allowEmpty) throws BookException {
         checkActive();
@@ -85,22 +82,15 @@ public class SwordDictionary extends AbstractBook {
         return content.iterator();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.Book#contains(org.crosswire.jsword.passage.Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#contains(org.crosswire.jsword.passage.Key)
      */
     public boolean contains(Key key) {
         return backend != null && backend.contains(key);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage
-     * .Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
      */
     public String getRawText(Key key) throws BookException {
         checkActive();
@@ -111,41 +101,36 @@ public class SwordDictionary extends AbstractBook {
         return backend.getRawText(key);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#isWritable()
      */
     public boolean isWritable() {
         return backend.isWritable();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.basic.AbstractPassageBook#setRawText(org.crosswire
-     * .jsword.passage.Key, java.lang.String)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#setRawText(org.crosswire.jsword.passage.Key, java.lang.String)
      */
     public void setRawText(Key key, String rawData) throws BookException {
         throw new BookException(JSOtherMsg.lookupText("This Book is read-only."));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.Book#setAliasKey(org.crosswire.jsword.passage
-     * .Key, org.crosswire.jsword.passage.Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#setAliasKey(org.crosswire.jsword.passage.Key, org.crosswire.jsword.passage.Key)
      */
     public void setAliasKey(Key alias, Key source) throws BookException {
         throw new BookException(JSOtherMsg.lookupText("This Book is read-only."));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.KeyFactory#getGlobalKeyList()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#getGlobalKeyList(org.crosswire.jsword.versification.ReferenceSystem)
+     */
+    public Key getGlobalKeyList(ReferenceSystem referenceSystem) {
+        return getGlobalKeyList();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getGlobalKeyList()
      */
     public Key getGlobalKeyList() {
         checkActive();
@@ -153,10 +138,15 @@ public class SwordDictionary extends AbstractBook {
         return backend;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.KeyFactory#isValidKey(java.lang.String)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#getValidKey(org.crosswire.jsword.versification.ReferenceSystem, java.lang.String)
+     */
+    public Key getValidKey(ReferenceSystem referenceSystem, String name) {
+        return getValidKey(name);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getValidKey(java.lang.String)
      */
     public Key getValidKey(String name) {
         try {
@@ -166,10 +156,15 @@ public class SwordDictionary extends AbstractBook {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.KeyFactory#getKey(java.lang.String)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#getKey(org.crosswire.jsword.versification.ReferenceSystem, java.lang.String)
+     */
+    public Key getKey(ReferenceSystem referenceSystem, String text) throws NoSuchKeyException {
+        return getKey(text);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getKey(java.lang.String)
      */
     public Key getKey(String text) throws NoSuchKeyException {
         checkActive();
@@ -184,22 +179,17 @@ public class SwordDictionary extends AbstractBook {
         return backend.get(pos);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.KeyFactory#getEmptyKeyList()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#createEmptyKeyList(org.crosswire.jsword.versification.ReferenceSystem)
      */
+    public Key createEmptyKeyList(ReferenceSystem referenceSystem) {
+        return createEmptyKeyList();
+    }
+
     public Key createEmptyKeyList() {
         return new DefaultKeyList();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.common.activate.Activatable#activate(org.crosswire.common
-     * .activate.Lock)
-     */
     @Override
     public final void activate(Lock lock) {
         super.activate(lock);
@@ -209,13 +199,6 @@ public class SwordDictionary extends AbstractBook {
         // of doing it for itself.
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common
-     * .activate.Lock)
-     */
     @Override
     public final void deactivate(Lock lock) {
         super.deactivate(lock);

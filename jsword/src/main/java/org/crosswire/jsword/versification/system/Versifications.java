@@ -26,7 +26,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.crosswire.jsword.versification.ReferenceSystem;
+import org.crosswire.jsword.versification.Versification;
 
 /**
  * The ReferenceSystems class manages the creation of ReferenceSystems as needed.
@@ -36,14 +36,14 @@ import org.crosswire.jsword.versification.ReferenceSystem;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class ReferenceSystems {
+public class Versifications {
 
     /**
      * Get the singleton instance of ReferenceSystems.
      * 
      * @return the singleton
      */
-    public static ReferenceSystems instance() {
+    public static Versifications instance() {
         return instance;
     }
 
@@ -53,7 +53,7 @@ public class ReferenceSystems {
      * @param name the name of the ReferenceSystem
      * @return the ReferenceSystem or null if it is not known.
      */
-    public synchronized ReferenceSystem getReferenceSystem(String name) {
+    public synchronized Versification getVersification(String name) {
         String actual = name;
         if (actual == null) {
             actual = DEFAULT_REFERENCE_SYSTEM;
@@ -61,7 +61,7 @@ public class ReferenceSystems {
 
         // This class delays the building of a ReferenceSystem to when it is
         // actually needed.
-        ReferenceSystem rs = fluffed.get(actual);
+        Versification rs = fluffed.get(actual);
         if (rs == null) {
             rs = fluff(actual);
             if (rs != null) {
@@ -82,7 +82,7 @@ public class ReferenceSystems {
         return name == null || known.contains(name);
     }
 
-    private ReferenceSystem fluff(String name) {
+    private Versification fluff(String name) {
         if (SystemKJV.name.equals(name)) {
             return new SystemKJV();
         }
@@ -127,7 +127,7 @@ public class ReferenceSystems {
      * 
      * @param rs the ReferenceSystem to register
      */
-    public synchronized void register(ReferenceSystem rs) {
+    public synchronized void register(Versification rs) {
         fluffed.put(rs.getOSISName(), rs);
         known.add(rs.getOSISName());
     }
@@ -135,7 +135,7 @@ public class ReferenceSystems {
     /**
      * This class is a singleton, enforced by a private constructor.
      */
-    private ReferenceSystems() {
+    private Versifications() {
         known = new HashSet<String>();
         known.add(SystemCatholic.name);
         known.add(SystemCatholic2.name);
@@ -150,7 +150,7 @@ public class ReferenceSystems {
         known.add(SystemSynodal.name);
         known.add(SystemSynodalP.name);
         known.add(SystemVulg.name);
-        fluffed = new HashMap<String, ReferenceSystem>();
+        fluffed = new HashMap<String, Versification>();
     }
 
     /**
@@ -167,7 +167,7 @@ public class ReferenceSystems {
     /**
      * The map of instantiated ReferenceSystems, given by their names.
      */
-    private Map<String, ReferenceSystem> fluffed;
+    private Map<String, Versification> fluffed;
 
-    private static final ReferenceSystems instance = new ReferenceSystems();
+    private static final Versifications instance = new Versifications();
 }

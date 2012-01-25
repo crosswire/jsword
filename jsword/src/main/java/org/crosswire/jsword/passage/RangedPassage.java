@@ -29,7 +29,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.crosswire.jsword.versification.BibleInfo;
+import org.crosswire.jsword.versification.Versification;
 
 /**
  * A Passage that is implemented using a TreeSet of VerseRanges. The attributes
@@ -61,8 +61,12 @@ public class RangedPassage extends AbstractPassage {
     /**
      * Create an empty RangedPassage. There are no ctors from either Verse or
      * VerseRange so you need to do new <code>RangedPassage().add(...);</code>
+     * 
+     * @param refSystem
+     *            The Versification to which this Passage belongs.
      */
-    protected RangedPassage() {
+    protected RangedPassage(Versification refSystem) {
+        super(refSystem);
         store = new TreeSet<Key>();
     }
 
@@ -81,8 +85,8 @@ public class RangedPassage extends AbstractPassage {
      * @throws NoSuchVerseException
      *             if refs is invalid
      */
-    protected RangedPassage(String refs) throws NoSuchVerseException {
-        super(refs);
+    protected RangedPassage(Versification refSystem, String refs) throws NoSuchVerseException {
+        super(refSystem, refs);
 
         store = new TreeSet<Key>();
         addVerses(refs);
@@ -130,7 +134,7 @@ public class RangedPassage extends AbstractPassage {
      * @see java.lang.Iterable#iterator()
      */
     public Iterator<Key> iterator() {
-        return new VerseIterator(rangeIterator(RestrictionType.NONE));
+        return new VerseIterator(getVersification(), rangeIterator(RestrictionType.NONE));
     }
 
     @Override
@@ -153,7 +157,7 @@ public class RangedPassage extends AbstractPassage {
         // 'return store.contains(that);' will not work because
         // VerseRanges can contain others but not be equal to them.
 
-        VerseRange that_range = toVerseRange(obj);
+        VerseRange that_range = toVerseRange(getVersification(), obj);
 
         Iterator<Key> it = rangeIterator(RestrictionType.NONE);
         while (it.hasNext()) {
@@ -174,7 +178,7 @@ public class RangedPassage extends AbstractPassage {
     public void add(Key obj) {
         optimizeWrites();
 
-        VerseRange that_range = toVerseRange(obj);
+        VerseRange that_range = toVerseRange(getVersification(), obj);
         store.add(that_range);
 
         normalize();
@@ -200,7 +204,7 @@ public class RangedPassage extends AbstractPassage {
     public void remove(Key obj) {
         optimizeWrites();
 
-        VerseRange that_range = toVerseRange(obj);
+        VerseRange that_range = toVerseRange(getVersification(), obj);
         boolean removed = false;
 
         // This allows us to modify store which iterating through a copy
@@ -251,7 +255,7 @@ public class RangedPassage extends AbstractPassage {
         }
 
         while (that_it.hasNext()) {
-            VerseRange that_range = toVerseRange(that_it.next());
+            VerseRange that_range = toVerseRange(getVersification(), that_it.next());
 
             // go through all the VerseRanges
             Iterator<Key> this_it = rangeIterator(RestrictionType.NONE);
@@ -326,14 +330,14 @@ public class RangedPassage extends AbstractPassage {
          * Create a basic iterator that is a proxy for the RangedPassage
          * Passages iterator, with remove() overridden.
          */
-        public VerseIterator(Iterator<Key> it) {
+        public VerseIterator(Versification v11n, Iterator<Key> it) {
             Set<Key> temp = new TreeSet<Key>();
 
             while (it.hasNext()) {
                 VerseRange range = (VerseRange) it.next();
 
                 for (int i = 0; i < range.getCardinality(); i++) {
-                    temp.add(BibleInfo.decodeOrdinal(range.getStart().getOrdinal() + i));
+                    temp.add(v11n.decodeOrdinal(range.getStart().getOrdinal() + i));
                 }
             }
 

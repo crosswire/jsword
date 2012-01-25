@@ -21,6 +21,8 @@
  */
 package org.crosswire.jsword.passage;
 
+import org.crosswire.jsword.versification.Versification;
+
 /**
  * A factory to create a Verse from user input.
  * 
@@ -47,14 +49,19 @@ public final class VerseFactory {
      * @exception NoSuchVerseException
      *                If the text can not be understood
      */
+    @Deprecated
     public static Verse fromString(String original) throws NoSuchVerseException {
+        return fromString(null, original);
+    }
+
+    public static Verse fromString(Versification v11n, String original) throws NoSuchVerseException {
         if ("".equals(original)) {
             return null;
         }
         String[] parts = AccuracyType.tokenize(original);
-        AccuracyType accuracy = AccuracyType.fromText(original, parts);
+        AccuracyType accuracy = AccuracyType.fromText(v11n, original, parts);
         assert accuracy != null;
-        return accuracy.createStartVerse(original, null, parts);
+        return accuracy.createStartVerse(v11n, original, null, parts);
     }
 
     /**
@@ -69,14 +76,19 @@ public final class VerseFactory {
      * @exception NoSuchVerseException
      *                If the reference is illegal
      */
+    @Deprecated
     public static Verse fromString(String original, VerseRange verseRangeBasis) throws NoSuchVerseException {
+        return fromString(null, original, verseRangeBasis);
+    }
+
+    public static Verse fromString(Versification v11n, String original, VerseRange verseRangeBasis) throws NoSuchVerseException {
         if ("".equals(original)) {
             return null;
         }
         String[] parts = AccuracyType.tokenize(original);
-        AccuracyType accuracy = AccuracyType.fromText(original, parts, null, verseRangeBasis);
+        AccuracyType accuracy = AccuracyType.fromText(v11n, original, parts, null, verseRangeBasis);
         assert accuracy != null;
-        return accuracy.createStartVerse(original, verseRangeBasis, parts);
+        return accuracy.createStartVerse(v11n, original, verseRangeBasis, parts);
     }
 
 }

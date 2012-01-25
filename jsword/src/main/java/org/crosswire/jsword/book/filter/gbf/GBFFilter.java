@@ -48,7 +48,6 @@ public class GBFFilter implements Filter {
      * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.Book, org.crosswire.jsword.passage.Key, java.lang.String)
      */
     public List<Content> toOSIS(Book book, Key key, String plain) {
-        DataPolice.setKey(key);
         Element ele = OSISUtil.factory().createDiv();
         LinkedList<Content> stack = new LinkedList<Content>();
         stack.addFirst(ele);
@@ -60,11 +59,10 @@ public class GBFFilter implements Filter {
             }
 
             Tag tag = taglist.remove(0);
-            tag.updateOsisStack(stack);
+            tag.updateOsisStack(book, key, stack);
         }
 
         stack.removeFirst();
-        DataPolice.setKey(null);
         return ele.removeContent();
     }
 
@@ -108,10 +106,10 @@ public class GBFFilter implements Filter {
                         && ltpos < remains.length() + 1
                         && Character.isUpperCase(remains.charAt(ltpos + 1)))
                 {
-                    DataPolice.report("Possible bad GBF tag" + remains);
+                    DataPolice.report(book, key, "Possible bad GBF tag" + remains);
                 }
                 if (gtpos != -1 && ltpos >= 0) {
-                    DataPolice.report("Possible bad GBF tag" + remains);
+                    DataPolice.report(book, key, "Possible bad GBF tag" + remains);
                 }
                 int pos = Math.max(ltpos, gtpos) + 1;
                 // If there were not any <, > or either ended the string

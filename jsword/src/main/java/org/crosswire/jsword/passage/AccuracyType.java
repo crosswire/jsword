@@ -24,7 +24,7 @@ package org.crosswire.jsword.passage;
 import org.crosswire.common.icu.NumberShaper;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.versification.BibleBook;
-import org.crosswire.jsword.versification.BibleInfo;
+import org.crosswire.jsword.versification.Versification;
 
 /**
  * Types of Accuracy for verse references. For example:
@@ -79,25 +79,25 @@ public enum AccuracyType {
         }
 
         @Override
-        public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
+        public Verse createStartVerse(Versification refSystem, String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
             BibleBook book = BibleBook.getBook(parts[0]);
             int chapter = 1;
             int verse = 1;
             if (parts.length == 3) {
-                chapter = getChapter(book, parts[1]);
-                verse = getVerse(book, chapter, parts[2]);
+                chapter = getChapter(refSystem, book, parts[1]);
+                verse = getVerse(refSystem, book, chapter, parts[2]);
             } else {
                 // Some books only have 1 chapter
-                verse = getVerse(book, chapter, parts[1]);
+                verse = getVerse(refSystem, book, chapter, parts[1]);
             }
             return new Verse(original, book, chapter, verse);
         }
 
         @Override
-        public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException {
+        public Verse createEndVerse(Versification refSystem, String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException {
             // A fully specified verse is the same regardless of whether it is a
             // start or an end to a range.
-            return createStartVerse(endVerseDesc, null, endParts);
+            return createStartVerse(refSystem, endVerseDesc, null, endParts);
         }
     },
 
@@ -112,19 +112,19 @@ public enum AccuracyType {
         }
 
         @Override
-        public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
+        public Verse createStartVerse(Versification refSystem, String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
             BibleBook book = BibleBook.getBook(parts[0]);
-            int chapter = getChapter(book, parts[1]);
+            int chapter = getChapter(refSystem, book, parts[1]);
             int verse = 0;
             return new Verse(original, book, chapter, verse);
         }
 
         @Override
-        public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException {
+        public Verse createEndVerse(Versification refSystem, String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException {
             // Very similar to the start verse but we want the end of the chapter
             BibleBook book = BibleBook.getBook(endParts[0]);
-            int chapter = getChapter(book, endParts[1]);
-            int verse = BibleInfo.versesInChapter(book, chapter);
+            int chapter = getChapter(refSystem, book, endParts[1]);
+            int verse = refSystem.getLastVerse(book, chapter);
             return new Verse(endVerseDesc, book, chapter, verse);
         }
     },
@@ -140,16 +140,16 @@ public enum AccuracyType {
         }
 
         @Override
-        public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
+        public Verse createStartVerse(Versification refSystem, String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
             BibleBook book = BibleBook.getBook(parts[0]);
             return new Verse(original, book, 0, 0);
         }
 
         @Override
-        public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException {
+        public Verse createEndVerse(Versification refSystem, String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException {
             BibleBook book = BibleBook.getBook(endParts[0]);
-            int chapter = BibleInfo.chaptersInBook(book);
-            int verse = BibleInfo.versesInChapter(book, chapter);
+            int chapter = refSystem.getLastChapter(book);
+            int verse = refSystem.getLastVerse(book, chapter);
             return new Verse(endVerseDesc, book, chapter, verse);
         }
     },
@@ -165,24 +165,24 @@ public enum AccuracyType {
         }
 
         @Override
-        public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
+        public Verse createStartVerse(Versification refSystem, String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
             if (verseRangeBasis == null) {
                 // TRANSLATOR: The user supplied a verse reference but did not give the book of the Bible.
                 throw new NoSuchVerseException(JSMsg.gettext("Book is missing"));
             }
             BibleBook book = verseRangeBasis.getEnd().getBook();
-            int chapter = getChapter(book, parts[0]);
-            int verse = getVerse(book, chapter, parts[1]);
+            int chapter = getChapter(refSystem, book, parts[0]);
+            int verse = getVerse(refSystem, book, chapter, parts[1]);
 
             return new Verse(original, book, chapter, verse);
         }
 
         @Override
-        public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException {
+        public Verse createEndVerse(Versification refSystem, String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException {
             // Very similar to the start verse but use the verse as a basis
             BibleBook book = verseBasis.getBook();
-            int chapter = getChapter(book, endParts[0]);
-            int verse = getVerse(book, chapter, endParts[1]);
+            int chapter = getChapter(refSystem, book, endParts[0]);
+            int verse = getVerse(refSystem, book, chapter, endParts[1]);
             return new Verse(endVerseDesc, book, chapter, verse);
         }
     },
@@ -197,23 +197,23 @@ public enum AccuracyType {
         }
 
         @Override
-        public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
+        public Verse createStartVerse(Versification refSystem, String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
             if (verseRangeBasis == null) {
                 // TRANSLATOR: The user supplied a verse reference but did not give the book of the Bible.
                 throw new NoSuchVerseException(JSMsg.gettext("Book is missing"));
             }
             BibleBook book = verseRangeBasis.getEnd().getBook();
-            int chapter = getChapter(book, parts[0]);
+            int chapter = getChapter(refSystem, book, parts[0]);
             return new Verse(original, book, chapter, 0);
         }
 
         @Override
-        public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException {
+        public Verse createEndVerse(Versification refSystem, String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException {
             // Very similar to the start verse but use the verse as a basis
             // and it gets the end of the chapter
             BibleBook book = verseBasis.getBook();
-            int chapter = getChapter(book, endParts[0]);
-            return new Verse(endVerseDesc, book, chapter, BibleInfo.versesInChapter(book, chapter));
+            int chapter = getChapter(refSystem, book, endParts[0]);
+            return new Verse(endVerseDesc, book, chapter, refSystem.getLastVerse(book, chapter));
         }
     },
 
@@ -227,24 +227,24 @@ public enum AccuracyType {
         }
 
         @Override
-        public Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
+        public Verse createStartVerse(Versification refSystem, String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
             if (verseRangeBasis == null) {
                 // TRANSLATOR: The user supplied a verse reference but did not give the book or chapter of the Bible.
                 throw new NoSuchVerseException(JSMsg.gettext("Book and chapter are missing"));
             }
             BibleBook book = verseRangeBasis.getEnd().getBook();
             int chapter = verseRangeBasis.getEnd().getChapter();
-            int verse = getVerse(book, chapter, parts[0]);
+            int verse = getVerse(refSystem, book, chapter, parts[0]);
             return new Verse(original, book, chapter, verse);
         }
 
         @Override
-        public Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException {
+        public Verse createEndVerse(Versification refSystem, String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException {
             // Very similar to the start verse but use the verse as a basis
             // and it gets the end of the chapter
             BibleBook book = verseBasis.getBook();
             int chapter = verseBasis.getChapter();
-            int verse = getVerse(book, chapter, endParts[0]);
+            int verse = getVerse(refSystem, book, chapter, endParts[0]);
             return new Verse(endVerseDesc, book, chapter, verse);
         }
     };
@@ -259,7 +259,7 @@ public enum AccuracyType {
      * @return a <code>Verse</code> for the original
      * @throws NoSuchVerseException
      */
-    public abstract Verse createStartVerse(String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException;
+    public abstract Verse createStartVerse(Versification refSystem, String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException;
 
     /**
      * @param endVerseDesc
@@ -271,7 +271,7 @@ public enum AccuracyType {
      * @return a <code>Verse</code> for the original
      * @throws NoSuchVerseException
      */
-    public abstract Verse createEndVerse(String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException;
+    public abstract Verse createEndVerse(Versification refSystem, String endVerseDesc, Verse verseBasis, String[] endParts) throws NoSuchVerseException;
 
     /**
      * @return true if this AccuracyType specifies down to the book but not
@@ -301,16 +301,16 @@ public enum AccuracyType {
      * (meaning "what follows")
      * 
      * @param lbook
-     *            the integer representation of the book
+     *            the book
      * @param chapter
      *            a string representation of the chapter. May be "ff" or "$" for
      *            "what follows".
      * @return the number of the chapter
      * @throws NoSuchVerseException
      */
-    public static final int getChapter(BibleBook lbook, String chapter) throws NoSuchVerseException {
+    public static final int getChapter(Versification refSystem, BibleBook lbook, String chapter) throws NoSuchVerseException {
         if (isEndMarker(chapter)) {
-            return BibleInfo.chaptersInBook(lbook);
+            return refSystem.getLastChapter(lbook);
         }
         return parseInt(chapter);
     }
@@ -328,9 +328,9 @@ public enum AccuracyType {
      * @return the number of the verse
      * @throws NoSuchVerseException
      */
-    public static final int getVerse(BibleBook lbook, int lchapter, String verse) throws NoSuchVerseException {
+    public static final int getVerse(Versification refSystem, BibleBook lbook, int lchapter, String verse) throws NoSuchVerseException {
         if (isEndMarker(verse)) {
-            return BibleInfo.versesInChapter(lbook, lchapter);
+            return refSystem.getLastVerse(lbook, lchapter);
         }
         return parseInt(verse);
     }
@@ -351,8 +351,8 @@ public enum AccuracyType {
      * @return what is the kind of accuracy of the string reference.
      * @throws NoSuchVerseException
      */
-    public static AccuracyType fromText(String original, String[] parts) throws NoSuchVerseException {
-        return fromText(original, parts, null, null);
+    public static AccuracyType fromText(Versification refSystem, String original, String[] parts) throws NoSuchVerseException {
+        return fromText(refSystem, original, parts, null, null);
     }
 
     /**
@@ -362,8 +362,8 @@ public enum AccuracyType {
      * @return the accuracy of the parts
      * @throws NoSuchVerseException
      */
-    public static AccuracyType fromText(String original, String[] parts, AccuracyType verseAccuracy) throws NoSuchVerseException {
-        return fromText(original, parts, verseAccuracy, null);
+    public static AccuracyType fromText(Versification refSystem, String original, String[] parts, AccuracyType verseAccuracy) throws NoSuchVerseException {
+        return fromText(refSystem, original, parts, verseAccuracy, null);
     }
 
     /**
@@ -373,8 +373,8 @@ public enum AccuracyType {
      * @return the accuracy of the parts
      * @throws NoSuchVerseException
      */
-    public static AccuracyType fromText(String original, String[] parts, VerseRange basis) throws NoSuchVerseException {
-        return fromText(original, parts, null, basis);
+    public static AccuracyType fromText(Versification refSystem, String original, String[] parts, VerseRange basis) throws NoSuchVerseException {
+        return fromText(refSystem, original, parts, null, basis);
     }
 
     /**
@@ -395,7 +395,7 @@ public enum AccuracyType {
      * @return the accuracy of the parts
      * @throws NoSuchVerseException
      */
-    public static AccuracyType fromText(String original, String[] parts, AccuracyType verseAccuracy, VerseRange basis) throws NoSuchVerseException {
+    public static AccuracyType fromText(Versification refSystem, String original, String[] parts, AccuracyType verseAccuracy, VerseRange basis) throws NoSuchVerseException {
         switch (parts.length) {
         case 1:
             if (BibleBook.isBook(parts[0])) {
@@ -435,7 +435,7 @@ public enum AccuracyType {
                 return CHAPTER_VERSE;
             }
 
-            if (BibleInfo.chaptersInBook(pbook) == 1) {
+            if (refSystem.getLastChapter(pbook) == 1) {
                 return BOOK_VERSE;
             }
 

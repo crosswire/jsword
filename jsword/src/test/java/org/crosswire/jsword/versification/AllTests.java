@@ -39,7 +39,7 @@ public class AllTests {
         suite.addTestSuite(BibleNamesTest.class);
         suite.addTestSuite(BibleBookTest.class);
         suite.addTestSuite(BibleBookListTest.class);
-        suite.addTestSuite(ReferenceSystemTest.class);
+        suite.addTestSuite(VersificationTest.class);
         // $JUnit-END$
         return suite;
     }

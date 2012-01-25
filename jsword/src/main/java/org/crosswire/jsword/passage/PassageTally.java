@@ -21,6 +21,9 @@
  */
 package org.crosswire.jsword.passage;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -28,7 +31,7 @@ import java.util.TreeSet;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.JSOtherMsg;
-import org.crosswire.jsword.versification.BibleInfo;
+import org.crosswire.jsword.versification.Versification;
 
 /**
  * Similar to a Passage, but that stores a ranking for each of the Verses that
@@ -100,20 +103,28 @@ import org.crosswire.jsword.versification.BibleInfo;
 public class PassageTally extends AbstractPassage {
     /**
      * Create an empty PassageTally
+     * 
+     * @param v11n
+     *            The Versification to which this Passage belongs.
      */
-    public PassageTally() {
+    public PassageTally(Versification v11n) {
+        super(v11n);
+        board = new int[v11n.maximumOrdinal() + 1];
     }
 
     /**
      * Create a Verse from a human readable string. The opposite of toString()
      * 
+     * @param v11n
+     *            The Versification to which this Passage belongs.
      * @param refs
      *            The text to interpret
      * @throws NoSuchVerseException
      *             If refs is invalid
      */
-    public PassageTally(String refs) throws NoSuchVerseException {
-        super(refs);
+    public PassageTally(Versification v11n, String refs) throws NoSuchVerseException {
+        super(v11n, refs);
+        board = new int[v11n.maximumOrdinal() + 1];
         addVerses(refs);
     }
 
@@ -219,7 +230,7 @@ public class PassageTally extends AbstractPassage {
                 max_count = Integer.MAX_VALUE;
             }
 
-            Iterator<Key> it = new OrderedVerseIterator(board);
+            Iterator<Key> it = new OrderedVerseIterator(getVersification(), board);
             Key current = null;
             int count = 0;
 
@@ -264,7 +275,7 @@ public class PassageTally extends AbstractPassage {
             max_count = Integer.MAX_VALUE;
         }
 
-        OrderedVerseIterator it = new OrderedVerseIterator(board);
+        OrderedVerseIterator it = new OrderedVerseIterator(getVersification(), board);
         int count = 0;
 
         while (it.hasNext() && count < max_count) {
@@ -293,15 +304,15 @@ public class PassageTally extends AbstractPassage {
         if (order == Order.BIBLICAL) {
             return new VerseIterator();
         }
-        return new OrderedVerseIterator(board);
+        return new OrderedVerseIterator(getVersification(), board);
     }
 
     @Override
     public Iterator<Key> rangeIterator(RestrictionType restrict) {
         if (order == Order.BIBLICAL) {
-            return new VerseRangeIterator(iterator(), restrict);
+            return new VerseRangeIterator(getVersification(), iterator(), restrict);
         }
-        return new OrderedVerseRangeIterator(iterator(), board);
+        return new OrderedVerseRangeIterator(getVersification(), iterator(), board);
     }
 
     /**
@@ -415,7 +426,7 @@ public class PassageTally extends AbstractPassage {
         if (that instanceof PassageTally) {
             PassageTally that_rt = (PassageTally) that;
 
-            int vib = BibleInfo.maximumOrdinal();
+            int vib = getVersification().maximumOrdinal();
             for (int i = 0; i <= vib; i++) {
                 increment(i, that_rt.board[i]);
             }
@@ -445,7 +456,7 @@ public class PassageTally extends AbstractPassage {
         if (that instanceof PassageTally) {
             PassageTally that_rt = (PassageTally) that;
 
-            int vib = BibleInfo.maximumOrdinal();
+            int vib = getVersification().maximumOrdinal();
             for (int i = 0; i <= vib; i++) {
                 increment(i, -that_rt.board[i]);
             }
@@ -472,7 +483,7 @@ public class PassageTally extends AbstractPassage {
         if (that instanceof PassageTally) {
             PassageTally that_rt = (PassageTally) that;
 
-            int vib = BibleInfo.maximumOrdinal();
+            int vib = getVersification().maximumOrdinal();
             for (int i = 0; i <= vib; i++) {
                 if (that_rt.board[i] != 0) {
                     kill(i);
@@ -496,8 +507,7 @@ public class PassageTally extends AbstractPassage {
     public void clear() {
         optimizeWrites();
 
-        int vib = BibleInfo.maximumOrdinal();
-        for (int i = 0; i <= vib; i++) {
+        for (int i = 0; i < board.length; i++) {
             board[i] = 0;
         }
 
@@ -551,8 +561,7 @@ public class PassageTally extends AbstractPassage {
     public void flatten() {
         optimizeWrites();
 
-        int vib = BibleInfo.maximumOrdinal();
-        for (int i = 0; i <= vib; i++) {
+        for (int i = 0; i < board.length; i++) {
             if (board[i] != 0) {
                 board[i] = 1;
             }
@@ -580,14 +589,13 @@ public class PassageTally extends AbstractPassage {
             while (it.hasNext()) {
                 VerseRange range = (VerseRange) it.next();
                 for (int i = 0; i <= verses; i++) {
-                    add(restrict.blur(range, i, i));
+                    add(restrict.blur(getVersification(), range, i, i));
                 }
             }
         } else {
-            int vib = BibleInfo.maximumOrdinal();
-            int[] new_board = new int[vib + 1];
+            int[] new_board = new int[board.length];
 
-            for (int i = 0; i <= vib; i++) {
+            for (int i = 0; i < board.length; i++) {
                 if (board[i] != 0) {
                     // This could be re-written more simply:
                     // for (int j = -verses; j <= verses; j++) {
@@ -609,7 +617,7 @@ public class PassageTally extends AbstractPassage {
 
                     for (int j = 1; j <= verses; j++) {
                         int k = i + j;
-                        if (k < vib) {
+                        if (k < board.length - 1) {
                             new_board[k] += board[i] + verses - j;
                         }
                     }
@@ -634,10 +642,9 @@ public class PassageTally extends AbstractPassage {
     private void resetMax() {
         optimizeWrites();
 
-        int vib = BibleInfo.maximumOrdinal();
         max = 0;
         size = 0;
-        for (int i = 0; i <= vib; i++) {
+        for (int i = 0; i < board.length; i++) {
             if (board[i] > 0) {
                 size++;
             }
@@ -722,6 +729,42 @@ public class PassageTally extends AbstractPassage {
         board[ord] = 0;
     }
 
+    /**
+     * Call the support mechanism in AbstractPassage
+     * 
+     * @param out
+     *            The stream to write our state to
+     * @serialData Write the ordinal number of this verse
+     * @see AbstractPassage#writeObjectSupport(ObjectOutputStream)
+     * @throws IOException
+     *             if the read fails
+     */
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+
+        writeObjectSupport(out);
+    }
+
+    /**
+     * Call the support mechanism in AbstractPassage
+     * 
+     * @param in
+     *            The stream to read our state from
+     * @throws IOException
+     *             if the read fails
+     * @throws ClassNotFoundException
+     *             If the read data is incorrect
+     * @serialData Write the ordinal number of this verse
+     * @see AbstractPassage#readObjectSupport(ObjectInputStream)
+     */
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        optimizeWrites();
+
+        in.defaultReadObject();
+
+        readObjectSupport(in);
+    }
+
     public enum Order {
         /**
          * Sort in Biblical order
@@ -752,7 +795,7 @@ public class PassageTally extends AbstractPassage {
     /**
      * The tally board itself
      */
-    protected int[] board = new int[BibleInfo.maximumOrdinal() + 1];
+    protected int[] board;
 
     /**
      * The maximum tally possible
@@ -791,18 +834,18 @@ public class PassageTally extends AbstractPassage {
          * @see java.util.Iterator#hasNext()
          */
         public boolean hasNext() {
-            return next <= BibleInfo.maximumOrdinal();
+            return next <= board.length - 1;
         }
 
         /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
         public Key next() throws NoSuchElementException {
-            if (next > BibleInfo.maximumOrdinal()) {
+            if (next >= board.length) {
                 throw new NoSuchElementException();
             }
 
-            Key retcode = BibleInfo.decodeOrdinal(next);
+            Key retcode = getVersification().decodeOrdinal(next);
             calculateNext();
 
             return retcode;
@@ -821,7 +864,7 @@ public class PassageTally extends AbstractPassage {
         private void calculateNext() {
             do {
                 next++;
-            } while (next <= BibleInfo.maximumOrdinal() && board[next] == 0);
+            } while (next < board.length && board[next] == 0);
         }
 
         /** What is the next Verse to be considered */
@@ -837,10 +880,11 @@ public class PassageTally extends AbstractPassage {
         /**
          * Find the first unused verse
          */
-        protected OrderedVerseIterator(int[] board) {
+        protected OrderedVerseIterator(Versification v11n, int[] board) {
+            referenceSystem = v11n;
             TreeSet<TalliedVerse> output = new TreeSet<TalliedVerse>();
 
-            int vib = BibleInfo.maximumOrdinal();
+            int vib = board.length - 1;
             for (int i = 0; i <= vib; i++) {
                 if (board[i] != 0) {
                     output.add(new TalliedVerse(i, board[i]));
@@ -863,7 +907,7 @@ public class PassageTally extends AbstractPassage {
          */
         public Key next() throws NoSuchElementException {
             last = it.next();
-            return BibleInfo.decodeOrdinal(last.ord);
+            return referenceSystem.decodeOrdinal(last.ord);
         }
 
         /* (non-Javadoc)
@@ -885,6 +929,10 @@ public class PassageTally extends AbstractPassage {
             throw new NoSuchElementException(JSOtherMsg.lookupText("nextElement() has not been called yet."));
         }
 
+        /**
+         * The Versification is needed to decode board positions.
+         */
+        private Versification referenceSystem;
         /**
          * So that we can get at the ranking of the given verse
          */
@@ -972,10 +1020,10 @@ public class PassageTally extends AbstractPassage {
         /**
          * Find the first unused verse
          */
-        public OrderedVerseRangeIterator(Iterator<Key> vit, int[] board) {
+        public OrderedVerseRangeIterator(Versification referenceSystem, Iterator<Key> vit, int[] board) {
             Set<TalliedVerseRange> output = new TreeSet<TalliedVerseRange>();
 
-            Iterator<Key> rit = new VerseRangeIterator(vit, RestrictionType.NONE);
+            Iterator<Key> rit = new VerseRangeIterator(referenceSystem, vit, RestrictionType.NONE);
             while (rit.hasNext()) {
                 VerseRange range = (VerseRange) rit.next();
 

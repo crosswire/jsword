@@ -31,7 +31,8 @@ import org.crosswire.common.util.ItemIterator;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.versification.BibleBook;
-import org.crosswire.jsword.versification.BibleInfo;
+import org.crosswire.jsword.versification.Versification;
+import org.crosswire.jsword.versification.system.Versifications;
 
 /**
  * A Verse is a pointer to a single verse. Externally its unique identifier is
@@ -303,7 +304,7 @@ public final class Verse implements Key {
      * @return The new Verse
      */
     public Verse subtract(int n) {
-        return BibleInfo.decodeOrdinal(getOrdinal() - n);
+        return Versifications.instance().getVersification("KJV").subtract(this, n);
     }
 
     /**
@@ -314,7 +315,7 @@ public final class Verse implements Key {
      * @return The new verse
      */
     public Verse add(int n) {
-        return BibleInfo.decodeOrdinal(getOrdinal() + n);
+        return Versifications.instance().getVersification("KJV").add(this, n);
     }
 
     /**
@@ -359,7 +360,7 @@ public final class Verse implements Key {
      * @return true or false ...
      */
     public boolean isEndOfChapter() {
-        return verse == BibleInfo.versesInChapter(book, chapter);
+        return Versifications.instance().getVersification("KJV").isEndOfChapter(this);
     }
 
     /**
@@ -377,7 +378,7 @@ public final class Verse implements Key {
      * @return true or false ...
      */
     public boolean isEndOfBook() {
-        return verse == BibleInfo.versesInChapter(book, chapter) && chapter == BibleInfo.chaptersInBook(book);
+        return Versifications.instance().getVersification("KJV").isEndOfBook(this);
     }
 
     /**
@@ -409,7 +410,7 @@ public final class Verse implements Key {
      * @return The verse number
      */
     public int getOrdinal() {
-        return BibleInfo.getOrdinal(this);
+        return Versifications.instance().getVersification("KJV").getOrdinal(this);
     }
 
     /**
@@ -486,7 +487,7 @@ public final class Verse implements Key {
      */
     private String doGetName(Verse verseBase) {
         // To cope with thing like Jude 2...
-        if (BibleInfo.chaptersInBook(book) == 1) {
+        if (Versifications.instance().getVersification("KJV").getLastChapter(book) == 1) {
             if (verseBase == null || verseBase.book != book) {
                 return book.getPreferredName() + Verse.VERSE_PREF_DELIM1 + verse;
             }
@@ -536,7 +537,8 @@ public final class Verse implements Key {
      *            The verse to set
      */
     private void setAndPatch(BibleBook book, int chapter, int verse) {
-        Verse patched = BibleInfo.patch(book, chapter, verse);
+        Versification v11n = Versifications.instance().getVersification("KJV");
+        Verse patched = v11n.patch(book, chapter, verse);
 
         this.book = patched.book;
         this.chapter = patched.chapter;
@@ -567,7 +569,8 @@ public final class Verse implements Key {
      *            The ordinal of the verse
      */
     private void set(int ordinal) {
-        Verse v = BibleInfo.decodeOrdinal(ordinal);
+        Versification v11n = Versifications.instance().getVersification("KJV");
+        Verse v = v11n.decodeOrdinal(ordinal);
 
         book = v.book;
         chapter = v.chapter;
@@ -736,7 +739,7 @@ public final class Verse implements Key {
     /**
      * The default verse
      */
-    public static final Verse DEFAULT = new Verse(BibleBook.GEN, 1, 1, true);
+    public static final Verse DEFAULT = new Verse(BibleBook.GEN, 1, 1);
 
     /**
      * Allow the conversion to and from other number representations.

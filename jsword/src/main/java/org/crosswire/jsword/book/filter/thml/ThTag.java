@@ -14,14 +14,16 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2012
  *     The copyright to this program is held by it's authors.
  *
  * ID: $Id$
  */
 package org.crosswire.jsword.book.filter.thml;
 
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.OSISUtil;
+import org.crosswire.jsword.passage.Key;
 import org.jdom.Element;
 import org.xml.sax.Attributes;
 
@@ -33,24 +35,15 @@ import org.xml.sax.Attributes;
  * @author Joe Walker [joe at eireneh dot com]
  */
 public class ThTag extends AbstractTag {
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
     public String getTagName() {
         return "th";
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element,
-     * org.xml.sax.Attributes)
-     */
     @Override
-    public Element processTag(Element ele, Attributes attrs) {
+    public Element processTag(Book book, Key key, Element ele, Attributes attrs) {
         Element cell = OSISUtil.factory().createCell();
 
         if (ele != null) {

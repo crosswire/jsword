@@ -22,7 +22,7 @@
 package org.crosswire.jsword.book.sword;
 
 import org.crosswire.common.crypt.Sapphire;
-import org.crosswire.jsword.book.DataPolice;
+import org.crosswire.common.util.Logger;
 
 /**
  * Data entry represents an entry in a Data file. The entry consists of a key
@@ -70,7 +70,7 @@ public class DataEntry {
             keyEnd = SwordUtil.findByte(data, SEPARATOR);
 
             if (keyEnd < 0) {
-                DataPolice.report("Failed to find key. name='" + name + "'");
+                log.error("Failed to find key. name='" + name + "'");
                 return "";
             }
 
@@ -214,4 +214,9 @@ public class DataEntry {
      * The index of the separator between the link and the rest of the stuff.
      */
     private int linkEnd;
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(DataEntry.class);
 }

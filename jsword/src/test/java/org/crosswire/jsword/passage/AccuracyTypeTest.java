@@ -3,6 +3,8 @@ package org.crosswire.jsword.passage;
 import junit.framework.TestCase;
 
 import org.crosswire.jsword.JSMsg;
+import org.crosswire.jsword.versification.Versification;
+import org.crosswire.jsword.versification.system.Versifications;
 
 public class AccuracyTypeTest extends TestCase {
 
@@ -10,9 +12,16 @@ public class AccuracyTypeTest extends TestCase {
         super(s);
     }
 
+    private Versification rs;
+
+    @Override
+    protected void setUp() throws Exception {
+        rs = Versifications.instance().getVersification("KJV");
+    }
+
     public void testFromText_onePartInvalidBook() {
         try {
-            AccuracyType.fromText("10", new String[] { "10"}, null, null);
+            AccuracyType.fromText(rs, "10", new String[] { "10"}, null, null);
         } catch (NoSuchVerseException nsve) {
             // expected
         } catch (ArrayIndexOutOfBoundsException aioobe) {
@@ -24,7 +33,7 @@ public class AccuracyTypeTest extends TestCase {
     public void testFromText_TooManyParts() {
         boolean caught = false;
         try {
-            AccuracyType.fromText("1:2:3:4", new String[] { "1", "2", "3", "4"}, null, null);
+            AccuracyType.fromText(rs, "1:2:3:4", new String[] { "1", "2", "3", "4"}, null, null);
         } catch (NoSuchVerseException nsve) {
             // TRANSLATOR: The user specified a verse with too many separators. {0} is a placeholder for the allowable separators.
             NoSuchVerseException correctException = new NoSuchVerseException(JSMsg.gettext("Too many parts to the Verse. (Parts are separated by any of {0})", 
@@ -43,7 +52,7 @@ public class AccuracyTypeTest extends TestCase {
     public void testFromText_ThreePartsInvalidBook() {
         boolean caught = false;
         try {
-            AccuracyType.fromText("-1:2:3", new String[] { "-1", "2", "3"}, null, null);
+            AccuracyType.fromText(rs, "-1:2:3", new String[] { "-1", "2", "3"}, null, null);
         } catch (NoSuchVerseException nsve) {
             // TRANSLATOR: The user specified a verse with too many separators. {0} is a placeholder for the allowable separators.
             NoSuchVerseException correctException = new NoSuchVerseException(JSMsg.gettext("Too many parts to the Verse. (Parts are separated by any of {0})", 

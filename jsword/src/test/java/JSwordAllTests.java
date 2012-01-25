@@ -43,6 +43,7 @@ public class JSwordAllTests extends TestCase {
         suite.addTest(org.crosswire.jsword.passage.AllTests.suite());
         suite.addTest(org.crosswire.jsword.bridge.AllTests.suite());
         suite.addTest(org.crosswire.jsword.index.lucene.analysis.AllTests.suite());
+        suite.addTest(org.crosswire.jsword.versification.AllTests.suite());
         return suite;
     }
 }

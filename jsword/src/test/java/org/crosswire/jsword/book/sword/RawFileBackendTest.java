@@ -11,6 +11,8 @@ import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseFactory;
 import org.crosswire.jsword.versification.BibleBook;
+import org.crosswire.jsword.versification.Versification;
+import org.crosswire.jsword.versification.system.Versifications;
 
 /**
  * A Raw File format that allows for each verse to have it's own storage.
@@ -21,12 +23,14 @@ import org.crosswire.jsword.versification.BibleBook;
  */
 public class RawFileBackendTest extends TestCase {
 
-    final String modName = "TestComment";
-    File configFile = new File("testconfig.conf");
-    RawFileBackend backend = null;
+    private final String modName = "TestComment";
+    private File configFile = new File("testconfig.conf");
+    private RawFileBackend backend = null;
+    private Versification v11n;
 
     @Override
     protected void setUp() throws Exception {
+        v11n = Versifications.instance().getVersification("KJV");
         ConfigEntryTable table = new ConfigEntryTable(modName);
         table.add(ConfigEntryType.LANG, "de");
         table.add(ConfigEntryType.INITIALS, modName);
@@ -82,9 +86,9 @@ public class RawFileBackendTest extends TestCase {
     }
 
     public void testSetAliasKey() throws NoSuchVerseException, IOException, BookException {
-        Verse source = VerseFactory.fromString("Gen 1:1");
-        Verse alias1 = VerseFactory.fromString("Gen 1:2");
-        Verse alias2 = VerseFactory.fromString("Gen 1:3");
+        Verse source = VerseFactory.fromString(v11n, "Gen 1:1");
+        Verse alias1 = VerseFactory.fromString(v11n, "Gen 1:2");
+        Verse alias2 = VerseFactory.fromString(v11n, "Gen 1:3");
 
         backend.setRawText(source, "Hello Alias test!");
         backend.setAliasKey(alias1, source);

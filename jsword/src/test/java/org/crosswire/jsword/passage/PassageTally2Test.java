@@ -32,6 +32,8 @@ import junit.framework.TestCase;
 import org.crosswire.jsword.book.CaseType;
 import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.BookName;
+import org.crosswire.jsword.versification.Versification;
+import org.crosswire.jsword.versification.system.Versifications;
 
 /**
  * JUnit Test.
@@ -48,11 +50,12 @@ public class PassageTally2Test extends TestCase {
     /** Control the output of names */
     private CaseType storedCase;
     private boolean fullName;
+    private Versification v11n;
 
     /**
      * How we create Passages
      */
-    private static KeyFactory keyf = PassageKeyFactory.instance();
+    private static PassageKeyFactory keyf = PassageKeyFactory.instance();
 
     VerseRange gen11_1 = null;
     VerseRange gen11_2 = null;
@@ -74,8 +77,8 @@ public class PassageTally2Test extends TestCase {
     Passage gen123_1 = null;
     Passage gen1_157 = null;
 
-    PassageTally tally = new PassageTally();
-    PassageTally empty = new PassageTally();
+    PassageTally tally = new PassageTally(Versifications.instance().getVersification("KJV"));
+    PassageTally empty = new PassageTally(Versifications.instance().getVersification("KJV"));
     PassageTally temp = null;
 
     @Override
@@ -84,13 +87,14 @@ public class PassageTally2Test extends TestCase {
         BookName.setCase(CaseType.SENTENCE);
         fullName = BookName.isFullBookName();
         BookName.setFullBookName(false);
+        v11n = Versifications.instance().getVersification("KJV");
 
-        gen11_1 = RestrictionType.NONE.toRange(new Verse(BibleBook.GEN, 1, 1), 1);
-        gen11_2 = RestrictionType.NONE.toRange(new Verse(BibleBook.GEN, 1, 1), 2);
-        gen12_1 = RestrictionType.NONE.toRange(new Verse(BibleBook.GEN, 1, 2), 1);
-        exo21_1 = RestrictionType.NONE.toRange(new Verse(BibleBook.EXOD, 2, 1), 1);
-        exo21_2 = RestrictionType.NONE.toRange(new Verse(BibleBook.EXOD, 2, 1), 2);
-        exo22_1 = RestrictionType.NONE.toRange(new Verse(BibleBook.EXOD, 2, 2), 1);
+        gen11_1 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.GEN, 1, 1), 1);
+        gen11_2 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.GEN, 1, 1), 2);
+        gen12_1 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.GEN, 1, 2), 1);
+        exo21_1 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.EXOD, 2, 1), 1);
+        exo21_2 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.EXOD, 2, 1), 2);
+        exo22_1 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.EXOD, 2, 2), 1);
 
         gen11 = new Verse(BibleBook.GEN, 1, 1);
         gen12 = new Verse(BibleBook.GEN, 1, 2);
@@ -101,9 +105,9 @@ public class PassageTally2Test extends TestCase {
         exo23 = new Verse(BibleBook.EXOD, 2, 3);
         exo3b = new Verse(BibleBook.EXOD, 3, 11);
 
-        gen1_135 = (Passage) keyf.getKey("Gen 1:1, Gen 1:3, Gen 1:5");
-        gen123_1 = (Passage) keyf.getKey("Gen 1:1, Gen 2:1, Gen 3:1");
-        gen1_157 = (Passage) keyf.getKey("Gen 1:1, Gen 1:5, Gen 1:7");
+        gen1_135 = (Passage) keyf.getKey(v11n, "Gen 1:1, Gen 1:3, Gen 1:5");
+        gen123_1 = (Passage) keyf.getKey(v11n, "Gen 1:1, Gen 2:1, Gen 3:1");
+        gen1_157 = (Passage) keyf.getKey(v11n, "Gen 1:1, Gen 1:5, Gen 1:7");
 
         tally.setOrdering(PassageTally.Order.TALLY);
         empty.setOrdering(PassageTally.Order.TALLY);
@@ -159,12 +163,12 @@ public class PassageTally2Test extends TestCase {
         temp = tally.clone();
         temp.addPassageListener(li);
         assertTrue(li.check(0, 0, 0));
-        temp.add(VerseFactory.fromString("Gen 1:7"));
+        temp.add(VerseFactory.fromString(v11n, "Gen 1:7"));
         assertTrue(li.check(1, 0, 0));
-        temp.add(VerseFactory.fromString("Gen 1:9"));
+        temp.add(VerseFactory.fromString(v11n, "Gen 1:9"));
         assertTrue(li.check(2, 0, 0));
         temp.removePassageListener(li);
-        temp.add(VerseFactory.fromString("Gen 1:11"));
+        temp.add(VerseFactory.fromString(v11n, "Gen 1:11"));
         assertTrue(li.check(2, 0, 0));
     }
 
@@ -178,17 +182,17 @@ public class PassageTally2Test extends TestCase {
     public void testVerseIterator() throws Exception {
         Iterator<Key> it = tally.iterator();
         assertTrue(it.hasNext());
-        assertEquals(it.next(), VerseFactory.fromString("Gen 1:1"));
+        assertEquals(it.next(), VerseFactory.fromString(v11n, "Gen 1:1"));
         assertTrue(it.hasNext());
-        assertEquals(it.next(), VerseFactory.fromString("Gen 1:5"));
+        assertEquals(it.next(), VerseFactory.fromString(v11n, "Gen 1:5"));
         assertTrue(it.hasNext());
-        assertEquals(it.next(), VerseFactory.fromString("Gen 1:3"));
+        assertEquals(it.next(), VerseFactory.fromString(v11n, "Gen 1:3"));
         assertTrue(it.hasNext());
-        assertEquals(it.next(), VerseFactory.fromString("Gen 1:7"));
+        assertEquals(it.next(), VerseFactory.fromString(v11n, "Gen 1:7"));
         assertTrue(it.hasNext());
-        assertEquals(it.next(), VerseFactory.fromString("Gen 2:1"));
+        assertEquals(it.next(), VerseFactory.fromString(v11n, "Gen 2:1"));
         assertTrue(it.hasNext());
-        assertEquals(it.next(), VerseFactory.fromString("Gen 3:1"));
+        assertEquals(it.next(), VerseFactory.fromString(v11n, "Gen 3:1"));
         assertTrue(!it.hasNext());
         it = empty.iterator();
         assertTrue(!it.hasNext());
@@ -197,17 +201,17 @@ public class PassageTally2Test extends TestCase {
     public void testRangeIterator() throws Exception {
         Iterator<Key> it = tally.rangeIterator(RestrictionType.NONE);
         assertTrue(it.hasNext());
-        assertEquals(it.next(), VerseRangeFactory.fromString("Gen 1:1"));
+        assertEquals(it.next(), VerseRangeFactory.fromString(v11n, "Gen 1:1"));
         assertTrue(it.hasNext());
-        assertEquals(it.next(), VerseRangeFactory.fromString("Gen 1:5"));
+        assertEquals(it.next(), VerseRangeFactory.fromString(v11n, "Gen 1:5"));
         assertTrue(it.hasNext());
-        assertEquals(it.next(), VerseRangeFactory.fromString("Gen 1:3"));
+        assertEquals(it.next(), VerseRangeFactory.fromString(v11n, "Gen 1:3"));
         assertTrue(it.hasNext());
-        assertEquals(it.next(), VerseRangeFactory.fromString("Gen 1:7"));
+        assertEquals(it.next(), VerseRangeFactory.fromString(v11n, "Gen 1:7"));
         assertTrue(it.hasNext());
-        assertEquals(it.next(), VerseRangeFactory.fromString("Gen 2:1"));
+        assertEquals(it.next(), VerseRangeFactory.fromString(v11n, "Gen 2:1"));
         assertTrue(it.hasNext());
-        assertEquals(it.next(), VerseRangeFactory.fromString("Gen 3:1"));
+        assertEquals(it.next(), VerseRangeFactory.fromString(v11n, "Gen 3:1"));
         assertTrue(!it.hasNext());
         it = empty.rangeIterator(RestrictionType.NONE);
         assertTrue(!it.hasNext());
@@ -246,12 +250,12 @@ public class PassageTally2Test extends TestCase {
 
     public void testAdd() throws Exception {
         temp = tally.clone();
-        temp.add(VerseFactory.fromString("Gen 1:2"));
+        temp.add(VerseFactory.fromString(v11n, "Gen 1:2"));
         assertEquals(temp.getName(), "Gen 1:1, 5, 2, 3, 7, 2:1, 3:1");
-        temp.add(VerseFactory.fromString("Gen 1:4"));
+        temp.add(VerseFactory.fromString(v11n, "Gen 1:4"));
         assertEquals(temp.getName(), "Gen 1:1, 5, 2, 3, 4, 7, 2:1, 3:1");
         temp = tally.clone();
-        temp.add(VerseRangeFactory.fromString("Gen 1:2-4"));
+        temp.add(VerseRangeFactory.fromString(v11n, "Gen 1:2-4"));
         assertEquals(temp.getName(), "Gen 1:1, 3, 5, 2, 4, 7, 2:1, 3:1");
         try {
             temp.addAll((Key) null);
@@ -262,17 +266,17 @@ public class PassageTally2Test extends TestCase {
 
     public void testUnAdd() throws Exception {
         temp = tally.clone();
-        temp.unAdd(VerseFactory.fromString("Gen 1:5"));
+        temp.unAdd(VerseFactory.fromString(v11n, "Gen 1:5"));
         assertEquals(temp.getName(), "Gen 1:1, 3, 5, 7, 2:1, 3:1");
-        temp.unAdd(VerseFactory.fromString("Gen 1:5"));
+        temp.unAdd(VerseFactory.fromString(v11n, "Gen 1:5"));
         assertEquals(temp.getName(), "Gen 1:1, 3, 7, 2:1, 3:1");
-        temp.unAdd(VerseFactory.fromString("Gen 1:5"));
+        temp.unAdd(VerseFactory.fromString(v11n, "Gen 1:5"));
         assertEquals(temp.getName(), "Gen 1:1, 3, 7, 2:1, 3:1");
     }
 
     public void testAddAll() throws Exception {
         temp = tally.clone();
-        temp.addAll(keyf.getKey("Gen 1:2, Gen 1:4"));
+        temp.addAll(keyf.getKey(v11n, "Gen 1:2, Gen 1:4"));
         assertEquals(temp.getName(), "Gen 1:1, 5, 2, 3, 4, 7, 2:1, 3:1");
     }
 

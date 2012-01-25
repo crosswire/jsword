@@ -21,6 +21,7 @@
  */
 package org.crosswire.jsword.versification;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -32,7 +33,7 @@ import java.util.NoSuchElementException;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class BibleBookList implements Iterable<BibleBook> {
+public class BibleBookList implements Iterable<BibleBook>, Serializable {
     /**
      * Create an ordered BibleBookList from the input.
      * @param books
@@ -195,6 +196,10 @@ public class BibleBookList implements Iterable<BibleBook> {
     private BibleBook[] books;
     
     /** The bookMap maps from a BibleBook to the position that book has in <code>books</code>. */
-    transient private int bookMap[];
+    private int bookMap[];
 
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = -2681289798451902815L;
 }

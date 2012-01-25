@@ -38,6 +38,7 @@ import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.ReadOnlyKeyList;
+import org.crosswire.jsword.versification.ReferenceSystem;
 import org.jdom.Content;
 
 /**
@@ -161,6 +162,13 @@ public class SwordGenBook extends AbstractBook {
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#getGlobalKeyList(org.crosswire.jsword.versification.ReferenceSystem)
+     */
+    public Key getGlobalKeyList(ReferenceSystem ref) {
+        return getGlobalKeyList();
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#getGlobalKeyList()
      */
     public Key getGlobalKeyList() {
@@ -178,6 +186,13 @@ public class SwordGenBook extends AbstractBook {
         } catch (NoSuchKeyException e) {
             return createEmptyKeyList();
         }
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#getValidKey(org.crosswire.jsword.versification.ReferenceSystem, java.lang.String)
+     */
+    public Key getValidKey(ReferenceSystem referenceSystem, String name) {
+        return getValidKey(name);
     }
 
     /* (non-Javadoc)
@@ -219,10 +234,24 @@ public class SwordGenBook extends AbstractBook {
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#getKey(org.crosswire.jsword.versification.ReferenceSystem, java.lang.String)
+     */
+    public Key getKey(ReferenceSystem referenceSystem, String text) throws NoSuchKeyException {
+        return getKey(text);
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.KeyFactory#createEmptyKeyList()
      */
     public Key createEmptyKeyList() {
         return new DefaultKeyList();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#createEmptyKeyList(org.crosswire.jsword.versification.ReferenceSystem)
+     */
+    public Key createEmptyKeyList(ReferenceSystem referenceSystem) {
+        return createEmptyKeyList();
     }
 
     /**

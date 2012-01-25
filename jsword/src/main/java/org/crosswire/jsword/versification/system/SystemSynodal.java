@@ -22,7 +22,7 @@
 package org.crosswire.jsword.versification.system;
 
 import org.crosswire.jsword.versification.BibleBook;
-import org.crosswire.jsword.versification.ReferenceSystem;
+import org.crosswire.jsword.versification.Versification;
 
 /**
  * The Synodal versification data is based on the Synodal and Slavonic
@@ -56,7 +56,11 @@ import org.crosswire.jsword.versification.ReferenceSystem;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class SystemSynodal extends ReferenceSystem {
+public class SystemSynodal extends Versification {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -6281906491023123413L;
     /**
      * Build the "Synodal" ReferenceSystem.
      */

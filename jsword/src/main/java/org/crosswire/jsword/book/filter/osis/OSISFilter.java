@@ -59,7 +59,6 @@ public class OSISFilter implements Filter {
      * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.Book, org.crosswire.jsword.passage.Key, java.lang.String)
      */
     public List<Content> toOSIS(Book book, Key key, String plain) {
-        DataPolice.setKey(key);
         Element ele = null;
         Exception ex = null;
         String clean = plain;
@@ -87,14 +86,11 @@ public class OSISFilter implements Filter {
                 ex = e;
             } catch (IOException e) {
                 ex = e;
-            } finally {
-                // Make sure that other places don't report this problem
-                DataPolice.setKey(null);
             }
         }
 
         if (ex != null) {
-            DataPolice.report("Parse " + book.getInitials() + "(" + key.getName() + ") failed: " + ex.getMessage() + "\non: " + plain);
+            DataPolice.report(book, key, "Parse " + book.getInitials() + "(" + key.getName() + ") failed: " + ex.getMessage() + "\non: " + plain);
             ele = cleanTags(book, key, clean);
         }
 

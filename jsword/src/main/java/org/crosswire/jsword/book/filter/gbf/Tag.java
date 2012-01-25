@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2012
  *     The copyright to this program is held by it's authors.
  *
  * ID: $Id$
@@ -23,6 +23,8 @@ package org.crosswire.jsword.book.filter.gbf;
 
 import java.util.LinkedList;
 
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.passage.Key;
 import org.jdom.Content;
 
 /**
@@ -36,5 +38,5 @@ public interface Tag {
     /**
      * Sub-classes should implement this method to generate OSIS Object
      */
-    void updateOsisStack(LinkedList<Content> osisStack);
+    void updateOsisStack(Book book, Key key, LinkedList<Content> osisStack);
 }

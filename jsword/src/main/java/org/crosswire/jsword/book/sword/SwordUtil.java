@@ -26,7 +26,6 @@ import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 
 import org.crosswire.common.util.Logger;
-import org.crosswire.jsword.book.DataPolice;
 
 /**
  * Various utilities used by different Sword classes.
@@ -77,17 +76,17 @@ public final class SwordUtil {
         long rafSize = raf.length();
 
         if (offset >= rafSize) {
-            DataPolice.report("Attempt to read beyond end. offset=" + offset + " size=" + size + " but raf.length=" + rafSize);
+            log.error("Attempt to read beyond end. offset=" + offset + " size=" + size + " but raf.length=" + rafSize);
             return new byte[0];
         }
 
         if (offset + size > raf.length()) {
-            DataPolice.report("Need to reduce size to avoid EOFException. offset=" + offset + " size=" + size + " but raf.length=" + rafSize);
+            log.error("Need to reduce size to avoid EOFException. offset=" + offset + " size=" + size + " but raf.length=" + rafSize);
             size = (int) (raf.length() - offset);
         }
 
         if (size < 1) {
-            DataPolice.report("Nothing to read at offset = " + offset + " returning empty because size=" + size);
+            log.error("Nothing to read at offset = " + offset + " returning empty because size=" + size);
             return new byte[0];
         }
 
@@ -364,7 +363,7 @@ public final class SwordUtil {
             int c = data[i] & 0xFF;
             if ((c >= 0x00 && c < 0x20 && c != 0x09 && c != 0x0A && c != 0x0D) || (c == 0x81 || c == 0x8D || c == 0x8F || c == 0x90 || c == 0x9D)) {
                 data[i] = 0x20;
-                DataPolice.report(key + " has bad character 0x" + Integer.toString(c, 16) + " at position " + i + " in input.");
+                log.error(key + " has bad character 0x" + Integer.toString(c, 16) + " at position " + i + " in input.");
             }
         }
     }
@@ -373,4 +372,5 @@ public final class SwordUtil {
      * The log stream
      */
     private static final Logger log = Logger.getLogger(SwordUtil.class);
+
 }

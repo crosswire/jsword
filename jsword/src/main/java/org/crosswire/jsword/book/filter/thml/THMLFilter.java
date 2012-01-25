@@ -32,7 +32,6 @@ import javax.xml.parsers.SAXParserFactory;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.Book;
-import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.passage.Key;
@@ -61,9 +60,7 @@ public class THMLFilter implements Filter {
      * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.Book, org.crosswire.jsword.passage.Key, java.lang.String)
      */
     public List<Content> toOSIS(Book book, Key key, String plain) {
-        DataPolice.setKey(key);
         Element ele = cleanParse(book, key, plain);
-        DataPolice.setKey(null);
 
         if (ele == null) {
             if (error instanceof SAXParseException) {

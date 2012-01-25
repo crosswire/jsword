@@ -36,12 +36,12 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.Verse;
-import org.crosswire.jsword.versification.BibleInfo;
 import org.crosswire.jsword.versification.Testament;
+import org.crosswire.jsword.versification.Versification;
+import org.crosswire.jsword.versification.system.Versifications;
 
 /**
  * Both Books and Commentaries seem to use the same format so this class
@@ -70,14 +70,14 @@ public class RawBackend extends AbstractBackend {
     public boolean contains(Key key) {
         checkActive();
 
-        try {
-        DataPolice.setKey(key);
         Verse verse = KeyUtil.getVerse(key);
 
         try {
-            int index = BibleInfo.getOrdinal(verse);
-            Testament testament = BibleInfo.getTestament(index);
-            index = BibleInfo.getTestamentOrdinal(index);
+            String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
+            Versification v11n = Versifications.instance().getVersification(v11nName);
+            int index = v11n.getOrdinal(verse);
+            Testament testament = v11n.getTestament(index);
+            index = v11n.getTestamentOrdinal(index);
             RandomAccessFile idxRaf = otIdxRaf;
             if (testament == Testament.OLD) {
                 idxRaf = ntIdxRaf;
@@ -94,9 +94,6 @@ public class RawBackend extends AbstractBackend {
         } catch (IOException ex) {
             return false;
         }
-        } finally {
-            DataPolice.setKey(null);
-        }
     }
 
     /* (non-Javadoc)
@@ -106,31 +103,28 @@ public class RawBackend extends AbstractBackend {
     public String getRawText(Key key) throws BookException {
         checkActive();
 
+        Verse verse = KeyUtil.getVerse(key);
         try {
-            DataPolice.setKey(key);
-            Verse verse = KeyUtil.getVerse(key);
-            try {
-                int index = BibleInfo.getOrdinal(verse);
-                Testament testament = BibleInfo.getTestament(index);
-                index = BibleInfo.getTestamentOrdinal(index);
-                RandomAccessFile idxRaf = otIdxRaf;
-                if (testament == Testament.OLD) {
-                    idxRaf = ntIdxRaf;
-                }
-
-                // If this is a single testament Bible, return nothing.
-                if (idxRaf == null) {
-                    return "";
-                }
-
-                return getEntry(key.getName(), testament, index);
-            } catch (IOException ex) {
-                // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
-                // {0} is a placeholder for the file.
-                throw new BookException(JSMsg.gettext("Error reading {0}", verse.getName()), ex);
+            String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
+            Versification v11n = Versifications.instance().getVersification(v11nName);
+            int index = v11n.getOrdinal(verse);
+            Testament testament = v11n.getTestament(index);
+            index = v11n.getTestamentOrdinal(index);
+            RandomAccessFile idxRaf = otIdxRaf;
+            if (testament == Testament.OLD) {
+                idxRaf = ntIdxRaf;
             }
-        } finally {
-            DataPolice.setKey(null);
+
+            // If this is a single testament Bible, return nothing.
+            if (idxRaf == null) {
+                return "";
+            }
+
+            return getEntry(key.getName(), testament, index);
+        } catch (IOException ex) {
+            // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
+            // {0} is a placeholder for the file.
+            throw new BookException(JSMsg.gettext("Error reading {0}", verse.getName()), ex);
         }
     }
 

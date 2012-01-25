@@ -24,14 +24,14 @@ package org.crosswire.jsword.passage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.crosswire.common.icu.NumberShaper;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.versification.BibleBook;
-import org.crosswire.jsword.versification.BibleInfo;
+import org.crosswire.jsword.versification.Versification;
+import org.crosswire.jsword.versification.system.Versifications;
 
 /**
  * A VerseRange is one step between a Verse and a Passage - it is a Verse plus a
@@ -52,8 +52,9 @@ public final class VerseRange implements Key {
      * provide this constructor however, you are supposed to provide a default
      * ctor for all beans. For this reason I suggest you don't use it.
      */
+    @Deprecated
     public VerseRange() {
-        this(Verse.DEFAULT);
+        this(null, null, Verse.DEFAULT, Verse.DEFAULT);
     }
 
     /**
@@ -63,12 +64,38 @@ public final class VerseRange implements Key {
      * @param start
      *            The verse to start from
      */
+    @Deprecated
     public VerseRange(Verse start) {
-        this(start, start);
+        this(null, null, start, start);
     }
 
+    @Deprecated
     public VerseRange(Verse start, Verse end) {
-        this(null, start, end);
+        this(null, null, start, end);
+    }
+
+    /**
+     * The default VerseRange is a single verse - Genesis 1:1. I didn't want to
+     * provide this constructor however, you are supposed to provide a default
+     * ctor for all beans. For this reason I suggest you don't use it.
+     */
+    public VerseRange(Versification rs) {
+        this(rs, null, Verse.DEFAULT, Verse.DEFAULT);
+    }
+
+    /**
+     * Construct a VerseRange from a Verse. The resultant VerseRange will be 1
+     * verse in verseCount.
+     * 
+     * @param start
+     *            The verse to start from
+     */
+    public VerseRange(Versification rs, Verse start) {
+        this(rs, null, start, start);
+    }
+
+    public VerseRange(Versification rs, Verse start, Verse end) {
+        this(rs, null, start, end);
     }
 
     /**
@@ -81,9 +108,19 @@ public final class VerseRange implements Key {
      * @param end
      *            The verse to end with
      */
+    @Deprecated
     /* package */VerseRange(String original, Verse start, Verse end) {
+        this(null, original, start, end);
+    }
+
+    /* package */VerseRange(Versification rs, String original, Verse start, Verse end) {
         assert start != null;
         assert end != null;
+
+        v11n = rs;
+        if (v11n == null) {
+            v11n = Versifications.instance().getVersification("KJV");
+        }
 
         this.originalName = original;
         shaper = new NumberShaper();
@@ -112,6 +149,15 @@ public final class VerseRange implements Key {
         }
 
         verifyData();
+    }
+
+    /**
+     * Get the Versification to which this VerseRange participates.
+     * 
+     * @return the reference system.
+     */
+    public Versification getVersification() {
+        return v11n;
     }
 
     /**
@@ -264,6 +310,7 @@ public final class VerseRange implements Key {
      * @see org.crosswire.jsword.passage.Key#getOsisID()
      */
     public String getOsisID() {
+
         // This range is exactly a whole book
         if (isWholeBook()) {
             // Just report the name of the book, we don't need to worry
@@ -281,7 +328,6 @@ public final class VerseRange implements Key {
         int startOrdinal = start.getOrdinal();
         int endOrdinal = end.getOrdinal();
 
-        // TODO(DM): could analyze each book and chapter in the range
         // to see if it is wholly contained in the range and output it if it is.
 
         // Estimate the size of the buffer: book.dd.dd (where book is 3-5, 3 typical)
@@ -289,7 +335,7 @@ public final class VerseRange implements Key {
         buf.append(start.getOsisID());
         for (int i = startOrdinal + 1; i < endOrdinal; i++) {
             buf.append(AbstractPassage.REF_OSIS_DELIM);
-            buf.append(BibleInfo.decodeOrdinal(i).getOsisID());
+            buf.append(v11n.decodeOrdinal(i).getOsisID());
         }
 
         // It just might be a single verse range!
@@ -329,24 +375,9 @@ public final class VerseRange implements Key {
      * 
      * @return The number of chapters. Always >= 1.
      */
+    @Deprecated
     public int getChapterCount() {
-        BibleBook startBook = start.getBook();
-        int startChap = start.getChapter();
-        BibleBook endBook = end.getBook();
-        int endChap = end.getChapter();
-
-        if (startBook == endBook) {
-            return endChap - startChap + 1;
-        }
-
-        // So we are going to have to count up chapters from start to end
-        int total = BibleInfo.chaptersInBook(startBook) - startChap;
-        for (BibleBook b : EnumSet.range(BibleInfo.getNextBook(startBook), BibleInfo.getPreviousBook(endBook))) {
-            total += BibleInfo.chaptersInBook(b);
-        }
-        total += endChap;
-
-        return total;
+        return v11n.getChapterCount(start, end);
     }
 
     /**
@@ -354,11 +385,9 @@ public final class VerseRange implements Key {
      * 
      * @return The number of books. Always >= 1.
      */
+    @Deprecated
     public int getBookCount() {
-        int startBook = start.getBook().ordinal();
-        int endBook = end.getBook().ordinal();
-
-        return endBook - startBook + 1;
+        return v11n.getBookCount(start, end);
     }
 
     @Override
@@ -647,7 +676,7 @@ public final class VerseRange implements Key {
         Verse[] retcode = new Verse[verseCount];
 
         for (int i = 0; i < verseCount; i++) {
-            retcode[i] = BibleInfo.decodeOrdinal(start.getOrdinal() + i);
+            retcode[i] = v11n.decodeOrdinal(start.getOrdinal() + i);
         }
 
         return retcode;
@@ -659,7 +688,7 @@ public final class VerseRange implements Key {
      * @return a range iterator
      */
     public Iterator<Key> rangeIterator(RestrictionType restrict) {
-        return new AbstractPassage.VerseRangeIterator(iterator(), restrict);
+        return new AbstractPassage.VerseRangeIterator(v11n, iterator(), restrict);
     }
 
     /* (non-Javadoc)
@@ -749,6 +778,7 @@ public final class VerseRange implements Key {
      * 
      * @return The whole Bible VerseRange
      */
+    @Deprecated
     public static VerseRange getWholeBibleVerseRange() {
         return whole;
     }
@@ -758,6 +788,7 @@ public final class VerseRange implements Key {
      * 
      * @return The Old Testament VerseRange
      */
+    @Deprecated
     public static VerseRange getOldTestamentVerseRange() {
         return otRange;
     }
@@ -767,6 +798,7 @@ public final class VerseRange implements Key {
      * 
      * @return The New Testament VerseRange
      */
+    @Deprecated
     public static VerseRange getNewTestamentVerseRange() {
         return ntRange;
     }
@@ -903,10 +935,11 @@ public final class VerseRange implements Key {
      * @serialData Write the ordinal number of this verse
      */
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        Versification rs = Versifications.instance().getVersification("KJV");
         // Call even if there is no default serializable fields.
         in.defaultReadObject();
 
-        start = BibleInfo.decodeOrdinal(in.readInt());
+        start = rs.decodeOrdinal(in.readInt());
         verseCount = in.readInt();
         end = calcEnd(start, verseCount);
         shaper = new NumberShaper();
@@ -925,6 +958,7 @@ public final class VerseRange implements Key {
          * Ctor
          */
         protected VerseIterator(VerseRange range) {
+            v11n = range.getVersification();
             next = range.getStart().getOrdinal();
             last = range.getEnd().getOrdinal();
         }
@@ -944,7 +978,7 @@ public final class VerseRange implements Key {
                 throw new NoSuchElementException();
             }
 
-            return BibleInfo.decodeOrdinal(next++);
+            return v11n.decodeOrdinal(next++);
         }
 
         /* (non-Javadoc)
@@ -954,6 +988,7 @@ public final class VerseRange implements Key {
             throw new UnsupportedOperationException();
         }
 
+        private Versification v11n;
         private int next;
         private int last;
     }
@@ -1050,7 +1085,7 @@ public final class VerseRange implements Key {
      * @see org.crosswire.jsword.passage.Key#blur(int, org.crosswire.jsword.passage.RestrictionType)
      */
     public void blur(int by, RestrictionType restrict) {
-        VerseRange newRange = restrict.blur(this, by, by);
+        VerseRange newRange = restrict.blur(v11n, this, by, by);
         start = newRange.start;
         end = newRange.end;
         verseCount = newRange.verseCount;
@@ -1070,6 +1105,11 @@ public final class VerseRange implements Key {
      * To make serialization work across new versions
      */
     static final long serialVersionUID = 8307795549869653580L;
+
+    /**
+     * The Versification with which this range is defined.
+     */
+    private transient Versification v11n;
 
     /**
      * The real data - how many verses long are we?. All ctors init this so
@@ -1108,16 +1148,19 @@ public final class VerseRange implements Key {
     /**
      * The whole Bible VerseRange
      */
+    @Deprecated
     private static transient VerseRange whole;
 
     /**
      * The Old Testament VerseRange
      */
+    @Deprecated
     private static transient VerseRange otRange;
 
     /**
      * The New Testament VerseRange
      */
+    @Deprecated
     private static transient VerseRange ntRange;
 
     static {

@@ -35,8 +35,9 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.Verse;
-import org.crosswire.jsword.versification.BibleInfo;
+import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.Testament;
+import org.crosswire.jsword.versification.system.Versifications;
 
 /**
  * A Raw File format that allows for each verse to have it's own storage.
@@ -128,9 +129,11 @@ public class RawFileBackend extends RawBackend {
         checkActive();
 
         Verse verse = KeyUtil.getVerse(key);
-        int index = BibleInfo.getOrdinal(verse);
-        Testament testament = BibleInfo.getTestament(index);
-        index = BibleInfo.getTestamentOrdinal(index);
+        String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
+        Versification v11n = Versifications.instance().getVersification(v11nName);
+        int index = v11n.getOrdinal(verse);
+        Testament testament = v11n.getTestament(index);
+        index = v11n.getTestamentOrdinal(index);
         RandomAccessFile idxRaf = otIdxRaf;
         RandomAccessFile txtRaf = otTxtRaf;
         File txtFile = otTxtFile;
@@ -160,16 +163,18 @@ public class RawFileBackend extends RawBackend {
     public void setAliasKey(Key alias, Key source) throws IOException {
         Verse aliasVerse = KeyUtil.getVerse(alias);
         Verse sourceVerse = KeyUtil.getVerse(source);
-        int aliasIndex = BibleInfo.getOrdinal(aliasVerse);
-        Testament testament = BibleInfo.getTestament(aliasIndex);
-        aliasIndex = BibleInfo.getTestamentOrdinal(aliasIndex);
+        String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
+        Versification v11n = Versifications.instance().getVersification(v11nName);
+        int aliasIndex = v11n.getOrdinal(aliasVerse);
+        Testament testament = v11n.getTestament(aliasIndex);
+        aliasIndex = v11n.getTestamentOrdinal(aliasIndex);
         RandomAccessFile idxRaf = otIdxRaf;
         if (testament == Testament.NEW) {
             idxRaf = ntIdxRaf;
         }
 
         int sourceOIndex = sourceVerse.getOrdinal();
-        sourceOIndex = BibleInfo.getTestamentOrdinal(sourceOIndex);
+        sourceOIndex = v11n.getTestamentOrdinal(sourceOIndex);
         DataIndex dataIndex = getIndex(idxRaf, sourceOIndex);
 
         // Only the index is updated to point to the same place as what is linked.
@@ -332,8 +337,10 @@ public class RawFileBackend extends RawBackend {
     }
 
     private void prepopulateIndexFiles() throws IOException {
-        int otCount = BibleInfo.getCount(Testament.OLD);
-        int ntCount = BibleInfo.getCount(Testament.NEW) + 1;
+        String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
+        Versification v11n = Versifications.instance().getVersification(v11nName);
+        int otCount = v11n.getCount(Testament.OLD);
+        int ntCount = v11n.getCount(Testament.NEW) + 1;
         BufferedOutputStream otIdxBos = new BufferedOutputStream(new FileOutputStream(otIdxFile, false));
         try {
             for (int i = 0; i < otCount; i++) {

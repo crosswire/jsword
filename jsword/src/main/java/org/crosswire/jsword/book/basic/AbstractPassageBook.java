@@ -32,13 +32,14 @@ import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyFactory;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.RestrictionType;
 import org.crosswire.jsword.passage.VerseRange;
+import org.crosswire.jsword.versification.Versification;
+import org.crosswire.jsword.versification.system.Versifications;
 import org.jdom.Content;
 import org.jdom.Element;
 
@@ -53,6 +54,7 @@ import org.jdom.Element;
 public abstract class AbstractPassageBook extends AbstractBook {
     public AbstractPassageBook(BookMetaData bmd) {
         super(bmd);
+        this.versification = (String) bmd.getProperty(BookMetaData.KEY_VERSIFICATION);
     }
 
     /* (non-Javadoc)
@@ -138,6 +140,10 @@ public abstract class AbstractPassageBook extends AbstractBook {
 
     /**
      * For when we want to add writing functionality. This does not work.
+     * 
+     * @param key
+     * @param bdata
+     * @throws BookException
      */
     public void setDocument(Key key, BookData bdata) throws BookException {
         // For all of the sections
@@ -162,33 +168,28 @@ public abstract class AbstractPassageBook extends AbstractBook {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#isWritable()
      */
     public boolean isWritable() {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.KeyFactory#getEmptyKeyList()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#createEmptyKeyList()
      */
     public final Key createEmptyKeyList() {
-        return keyf.createEmptyKeyList();
+        return keyf.createEmptyKeyList(Versifications.instance().getVersification(versification));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.KeyFactory#getGlobalKeyList()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getGlobalKeyList()
      */
     public final Key getGlobalKeyList() {
         if (global == null) {
-            global = keyf.createEmptyKeyList();
-            Key all = keyf.getGlobalKeyList();
+            Versification v11n = Versifications.instance().getVersification(versification);
+            global = keyf.createEmptyKeyList(v11n);
+            Key all = keyf.getGlobalKeyList(v11n);
             for (Key key : all) {
                 if (contains(key)) {
                     global.addAll(key);
@@ -198,10 +199,8 @@ public abstract class AbstractPassageBook extends AbstractBook {
         return global;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.KeyFactory#isValidKey(java.lang.String)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#getValidKey(java.lang.String)
      */
     public Key getValidKey(String name) {
         try {
@@ -211,13 +210,11 @@ public abstract class AbstractPassageBook extends AbstractBook {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.KeyFactory#getKey(java.lang.String)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#getKey(org.crosswire.jsword.versification.ReferenceSystem, java.lang.String)
      */
     public final Key getKey(String text) throws NoSuchKeyException {
-        return keyf.getKey(text);
+        return PassageKeyFactory.instance().getKey(Versifications.instance().getVersification(versification), text);
     }
 
     /**
@@ -226,9 +223,14 @@ public abstract class AbstractPassageBook extends AbstractBook {
     private Key global;
 
     /**
+     * The name of the versification or null
+     */
+    private String versification;
+
+    /**
      * Our key manager
      */
-    private KeyFactory keyf = PassageKeyFactory.instance();
+    private PassageKeyFactory keyf = PassageKeyFactory.instance();
 
     /**
      * The log stream

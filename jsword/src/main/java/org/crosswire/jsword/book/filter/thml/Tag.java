@@ -14,13 +14,15 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2012
  *     The copyright to this program is held by it's authors.
  *
  * ID: $Id$
  */
 package org.crosswire.jsword.book.filter.thml;
 
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.passage.Key;
 import org.jdom.Element;
 import org.xml.sax.Attributes;
 
@@ -35,7 +37,8 @@ import org.xml.sax.Attributes;
 public interface Tag {
     /**
      * What element does this class represent. For example the Tag that
-     * represents the &gtfont ...> element would return the string "font".
+     * represents the font element would return the string "font".
+     * @return the element's tag name
      */
     String getTagName();
 
@@ -49,7 +52,7 @@ public interface Tag {
      *            The source document attributes.
      * @return the element to which content is attached
      */
-    Element processTag(Element ele, Attributes attrs);
+    Element processTag(Book book, Key key, Element ele, Attributes attrs);
 
     /**
      * Do additional processing of the tag after the element has been created.
@@ -57,5 +60,5 @@ public interface Tag {
      * @param ele
      *            the created element to process
      */
-    void processContent(Element ele);
+    void processContent(Book book, Key key, Element ele);
 }

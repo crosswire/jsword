@@ -44,6 +44,7 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.OSISUtil;
+import org.crosswire.jsword.versification.system.Versifications;
 import org.jdom.Element;
 
 /**
@@ -171,7 +172,7 @@ public final class ConfigEntryTable {
     }
 
     /**
-     * Determines whether the Sword Book's conf is supported by JSword.
+     * Determines whether the Sword Book's conf is dubious theologically as stated in conf.
      */
     public boolean isQuestionable() {
         return questionable;
@@ -610,6 +611,15 @@ public final class ConfigEntryTable {
             return;
         }
 
+        // At the moment only the KJV is supported.
+        String v11n = (String) getValue(ConfigEntryType.VERSIFICATION);
+        if (! Versifications.instance().isDefined(v11n)) {
+            supported = false;
+            return;
+        }
+        // Add the versification so that it can be part of the "props"
+        add(ConfigEntryType.VERSIFICATION, v11n);
+
         bookType = BookType.fromString(modTypeName);
         if (getBookType() == null) {
             log.error("Book not supported: malformed conf file for " + internal + " no book type found");
@@ -759,36 +769,73 @@ public final class ConfigEntryTable {
      * that Sword requires.
      */
     /*
-     * For documentation purposes at this time. private static final
-     * ConfigEntryType[] REQUIRED = { ConfigEntryType.INITIALS,
-     * ConfigEntryType.DESCRIPTION, ConfigEntryType.CATEGORY, // may not be
-     * present in conf ConfigEntryType.DATA_PATH, ConfigEntryType.MOD_DRV, };
+     * For documentation purposes at this time.
+     * private static final ConfigEntryType[] REQUIRED = {
+     *         ConfigEntryType.INITIALS,
+     *         ConfigEntryType.DESCRIPTION,
+     *         ConfigEntryType.CATEGORY, // may not be present in conf
+     *         ConfigEntryType.DATA_PATH,
+     *         ConfigEntryType.MOD_DRV,
+     * };
      */
 
     private static final ConfigEntryType[] BASIC_INFO = {
-            ConfigEntryType.INITIALS, ConfigEntryType.DESCRIPTION, ConfigEntryType.CATEGORY, ConfigEntryType.LCSH, ConfigEntryType.SWORD_VERSION_DATE,
-            ConfigEntryType.VERSION, ConfigEntryType.HISTORY, ConfigEntryType.OBSOLETES, ConfigEntryType.INSTALL_SIZE,
+            ConfigEntryType.INITIALS,
+            ConfigEntryType.DESCRIPTION,
+            ConfigEntryType.CATEGORY,
+            ConfigEntryType.LCSH,
+            ConfigEntryType.SWORD_VERSION_DATE,
+            ConfigEntryType.VERSION,
+            ConfigEntryType.HISTORY,
+            ConfigEntryType.OBSOLETES,
+            ConfigEntryType.INSTALL_SIZE,
     };
 
     private static final ConfigEntryType[] LANG_INFO = {
-            ConfigEntryType.LANG, ConfigEntryType.GLOSSARY_FROM, ConfigEntryType.GLOSSARY_TO,
+            ConfigEntryType.LANG,
+            ConfigEntryType.GLOSSARY_FROM,
+            ConfigEntryType.GLOSSARY_TO,
     };
 
     private static final ConfigEntryType[] COPYRIGHT_INFO = {
-            ConfigEntryType.ABOUT, ConfigEntryType.SHORT_PROMO, ConfigEntryType.DISTRIBUTION_LICENSE, ConfigEntryType.DISTRIBUTION_NOTES,
-            ConfigEntryType.DISTRIBUTION_SOURCE, ConfigEntryType.SHORT_COPYRIGHT, ConfigEntryType.COPYRIGHT, ConfigEntryType.COPYRIGHT_DATE,
-            ConfigEntryType.COPYRIGHT_HOLDER, ConfigEntryType.COPYRIGHT_CONTACT_NAME, ConfigEntryType.COPYRIGHT_CONTACT_ADDRESS,
-            ConfigEntryType.COPYRIGHT_CONTACT_EMAIL, ConfigEntryType.COPYRIGHT_CONTACT_NOTES, ConfigEntryType.COPYRIGHT_NOTES, ConfigEntryType.TEXT_SOURCE,
+            ConfigEntryType.ABOUT,
+            ConfigEntryType.SHORT_PROMO,
+            ConfigEntryType.DISTRIBUTION_LICENSE,
+            ConfigEntryType.DISTRIBUTION_NOTES,
+            ConfigEntryType.DISTRIBUTION_SOURCE,
+            ConfigEntryType.SHORT_COPYRIGHT,
+            ConfigEntryType.COPYRIGHT,
+            ConfigEntryType.COPYRIGHT_DATE,
+            ConfigEntryType.COPYRIGHT_HOLDER,
+            ConfigEntryType.COPYRIGHT_CONTACT_NAME,
+            ConfigEntryType.COPYRIGHT_CONTACT_ADDRESS,
+            ConfigEntryType.COPYRIGHT_CONTACT_EMAIL,
+            ConfigEntryType.COPYRIGHT_CONTACT_NOTES,
+            ConfigEntryType.COPYRIGHT_NOTES,
+            ConfigEntryType.TEXT_SOURCE,
     };
 
     private static final ConfigEntryType[] FEATURE_INFO = {
-            ConfigEntryType.FEATURE, ConfigEntryType.GLOBAL_OPTION_FILTER, ConfigEntryType.FONT,
+            ConfigEntryType.FEATURE,
+            ConfigEntryType.GLOBAL_OPTION_FILTER,
+            ConfigEntryType.FONT,
     };
 
     private static final ConfigEntryType[] SYSTEM_INFO = {
-            ConfigEntryType.DATA_PATH, ConfigEntryType.MOD_DRV, ConfigEntryType.SOURCE_TYPE, ConfigEntryType.BLOCK_TYPE, ConfigEntryType.BLOCK_COUNT,
-            ConfigEntryType.COMPRESS_TYPE, ConfigEntryType.ENCODING, ConfigEntryType.MINIMUM_VERSION, ConfigEntryType.OSIS_VERSION,
-            ConfigEntryType.OSIS_Q_TO_TICK, ConfigEntryType.DIRECTION, ConfigEntryType.KEY_TYPE, ConfigEntryType.DISPLAY_LEVEL,
+            ConfigEntryType.DATA_PATH,
+            ConfigEntryType.MOD_DRV,
+            ConfigEntryType.SOURCE_TYPE,
+            ConfigEntryType.BLOCK_TYPE,
+            ConfigEntryType.BLOCK_COUNT,
+            ConfigEntryType.COMPRESS_TYPE,
+            ConfigEntryType.ENCODING,
+            ConfigEntryType.MINIMUM_VERSION,
+            ConfigEntryType.OSIS_VERSION,
+            ConfigEntryType.OSIS_Q_TO_TICK,
+            ConfigEntryType.DIRECTION,
+            ConfigEntryType.KEY_TYPE,
+            ConfigEntryType.DISPLAY_LEVEL,
+            ConfigEntryType.VERSIFICATION,
     };
 
     private static final ConfigEntryType[] HIDDEN = {

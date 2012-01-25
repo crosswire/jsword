@@ -38,12 +38,13 @@ public class CommonAllTests extends TestCase {
 
     public static Test suite() {
         TestSuite suite = new TestSuite();
-        suite.addTest(org.crosswire.common.util.AllTests.suite());
-        suite.addTest(org.crosswire.common.progress.AllTests.suite());
+        suite.addTest(org.crosswire.common.compress.AllTests.suite());
         suite.addTest(org.crosswire.common.diff.AllTests.suite());
         suite.addTest(org.crosswire.common.history.AllTests.suite());
-        suite.addTest(org.crosswire.common.xml.AllTests.suite());
         suite.addTest(org.crosswire.common.icu.AllTests.suite());
+        suite.addTest(org.crosswire.common.progress.AllTests.suite());
+        suite.addTest(org.crosswire.common.xml.AllTests.suite());
+        suite.addTest(org.crosswire.common.util.AllTests.suite());
         return suite;
     }
 }

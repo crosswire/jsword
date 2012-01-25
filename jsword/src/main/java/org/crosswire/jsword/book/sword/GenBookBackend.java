@@ -35,7 +35,6 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.TreeKey;
@@ -112,12 +111,9 @@ public class GenBookBackend extends AbstractBackend {
         checkActive();
 
         try {
-            DataPolice.setKey(key);
             return null != find(key);
         } catch (IOException e) {
             return false;
-        } finally {
-            DataPolice.setKey(null);
         }
     }
 
@@ -126,7 +122,6 @@ public class GenBookBackend extends AbstractBackend {
         checkActive();
 
         try {
-            DataPolice.setKey(key);
             TreeNode node = find(key);
 
             if (node == null) {
@@ -152,8 +147,6 @@ public class GenBookBackend extends AbstractBackend {
             // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
             // {0} is a placeholder for the file.
             throw new BookException(JSMsg.gettext("Error reading {0}", key.getName()), e);
-        } finally {
-            DataPolice.setKey(null);
         }
     }
 

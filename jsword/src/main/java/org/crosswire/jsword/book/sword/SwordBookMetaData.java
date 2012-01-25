@@ -58,6 +58,13 @@ import org.jdom.Document;
  * @author Jacky Cheung
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
+/**
+ *
+ *
+ * @see gnu.lgpl.License for license details.<br>
+ *      The copyright to this program is held by it's authors.
+ * @author DM Smith [dmsmith555 at yahoo dot com]
+ */
 public final class SwordBookMetaData extends AbstractBookMetaData {
     /**
      * Loads a sword config from a given File.
@@ -87,9 +94,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         buildProperties();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#isQuestionable()
      */
     @Override
@@ -97,59 +102,47 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         return cet.isQuestionable();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.BookMetaData#isSupported()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#isSupported()
      */
     @Override
     public boolean isSupported() {
         return cet.isSupported() && cet.getBookType().isSupported(this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.BookMetaData#isEnciphered()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#isEnciphered()
      */
     @Override
     public boolean isEnciphered() {
         return cet.isEnciphered();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.BookMetaData#isLocked()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#isLocked()
      */
     @Override
     public boolean isLocked() {
         return cet.isLocked();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.BookMetaData#unlock(String)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#unlock(java.lang.String)
      */
     @Override
     public boolean unlock(String unlockKey) {
         return cet.unlock(unlockKey);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.BookMetaData#getUnlockKey()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#getUnlockKey()
      */
     @Override
     public String getUnlockKey() {
         return cet.getUnlockKey();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getName()
      */
     public String getName() {
@@ -165,9 +158,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         return ENCODING_JAVA.get(getProperty(ConfigEntryType.ENCODING));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#getKeyType()
      */
     @Override
@@ -201,12 +192,8 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         return SwordConstants.DIR_CONF + '/' + getInitials().toLowerCase(Locale.ENGLISH) + SwordConstants.EXTENSION_CONF;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.basic.AbstractBookMetaData#setLibrary(java.
-     * net.URI)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#setLibrary(java.net.URI)
      */
     @Override
     public void setLibrary(URI library) {
@@ -237,9 +224,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         super.setLocation(location);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getBookCategory()
      */
     public BookCategory getBookCategory() {
@@ -252,19 +237,15 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         return type;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.BookMetaData#toOSIS()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#toOSIS()
      */
     @Override
     public Document toOSIS() {
         return new Document(cet.toOSIS());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#getInitials()
      */
     public String getInitials() {
@@ -283,9 +264,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         return cet.getValue(entry);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#isLeftToRight()
      */
     public boolean isLeftToRight() {
@@ -302,12 +281,8 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         return ConfigEntryType.DIRECTION_LTOR.equalsIgnoreCase(dir);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.BookMetaData#hasFeature(org.crosswire.jsword
-     * .book.FeatureType)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#hasFeature(org.crosswire.jsword.book.FeatureType)
      */
     @Override
     public boolean hasFeature(FeatureType feature) {

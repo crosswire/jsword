@@ -14,13 +14,15 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2012
  *     The copyright to this program is held by it's authors.
  *
  * ID: $Id: IgnoreTag.java 1466 2007-07-02 02:48:09Z dmsmith $
  */
 package org.crosswire.jsword.book.filter.thml;
 
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.passage.Key;
 import org.jdom.Element;
 
 /**
@@ -38,15 +40,8 @@ public class SkipTag extends AnonymousTag {
         super(name);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.filter.thml.AbstractTag#processContent(org.
-     * jdom.Element)
-     */
     @Override
-    public void processContent(Element ele) {
+    public void processContent(Book book, Key key, Element ele) {
         // Remove this element and all it's children
         Element parent = ele.getParentElement();
         parent.removeContent(ele);

@@ -23,6 +23,7 @@ package org.crosswire.jsword.passage;
 
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.JSMsg;
+import org.crosswire.jsword.versification.Versification;
 
 /**
  * A factory that creates VerseRanges from user input.
@@ -50,8 +51,13 @@ public final class VerseRangeFactory {
      * @exception NoSuchVerseException
      *                If the text can not be understood
      */
+    @Deprecated
     public static VerseRange fromString(String orginal) throws NoSuchVerseException {
-        return fromString(orginal, null);
+        return fromString(null, orginal, null);
+    }
+
+    public static VerseRange fromString(Versification v11n, String orginal) throws NoSuchVerseException {
+        return fromString(v11n, orginal, null);
     }
 
     /**
@@ -75,15 +81,20 @@ public final class VerseRangeFactory {
      * @exception NoSuchVerseException
      *                If the reference is illegal
      */
+    @Deprecated
     public static VerseRange fromString(String original, VerseRange basis) throws NoSuchVerseException {
+        return fromString(null, original, basis);
+    }
+
+    public static VerseRange fromString(Versification v11n, String original, VerseRange basis) throws NoSuchVerseException {
         String[] parts = StringUtil.split(original, VerseRange.RANGE_ALLOWED_DELIMS);
 
         switch (parts.length) {
         case 1:
-            return fromText(original, parts[0], parts[0], basis);
+            return fromText(v11n, original, parts[0], parts[0], basis);
 
         case 2:
-            return fromText(original, parts[0], parts[1], basis);
+            return fromText(v11n, original, parts[0], parts[1], basis);
 
         default:
             // TRANSLATOR: The user specified a verse range with too many separators. {0} is a placeholder for the allowable separators.
@@ -91,10 +102,10 @@ public final class VerseRangeFactory {
         }
     }
 
-    private static VerseRange fromText(String original, String startVerseDesc, String endVerseDesc, VerseRange basis) throws NoSuchVerseException {
+    private static VerseRange fromText(Versification v11n, String original, String startVerseDesc, String endVerseDesc, VerseRange basis) throws NoSuchVerseException {
         String[] startParts = AccuracyType.tokenize(startVerseDesc);
-        AccuracyType accuracyStart = AccuracyType.fromText(original, startParts, basis);
-        Verse start = accuracyStart.createStartVerse(startVerseDesc, basis, startParts);
+        AccuracyType accuracyStart = AccuracyType.fromText(v11n, original, startParts, basis);
+        Verse start = accuracyStart.createStartVerse(v11n, startVerseDesc, basis, startParts);
 
         String[] endParts;
         if (startVerseDesc.equals(endVerseDesc)) {
@@ -103,9 +114,9 @@ public final class VerseRangeFactory {
             endParts = AccuracyType.tokenize(endVerseDesc);
         }
 
-        AccuracyType accuracyEnd = AccuracyType.fromText(original, endParts, accuracyStart, basis);
-        Verse end = accuracyEnd.createEndVerse(endVerseDesc, start, endParts);
+        AccuracyType accuracyEnd = AccuracyType.fromText(v11n, original, endParts, accuracyStart, basis);
+        Verse end = accuracyEnd.createEndVerse(v11n, endVerseDesc, start, endParts);
 
-        return new VerseRange(original, start, end);
+        return new VerseRange(v11n, original, start, end);
     }
 }

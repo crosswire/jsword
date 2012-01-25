@@ -46,7 +46,6 @@ import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.passage.DefaultLeafKeyList;
 import org.crosswire.jsword.passage.Key;
@@ -83,9 +82,7 @@ public class RawLDBackend extends AbstractKeyBackend {
      */
     @Override
     public String getRawText(Key key) throws BookException {
-        DataPolice.setKey(key);
         String result = getRawText(key.getName());
-        DataPolice.setKey(null);
         return result;
     }
 
@@ -166,12 +163,9 @@ public class RawLDBackend extends AbstractKeyBackend {
      */
     public int indexOf(Key that) {
         try {
-            DataPolice.setKey(that);
             return search(that.getName());
         } catch (IOException e) {
             return -getCardinality() - 1;
-        } finally {
-            DataPolice.setKey(null);
         }
     }
 

@@ -44,13 +44,14 @@ import org.crosswire.jsword.book.basic.AbstractBook;
 import org.crosswire.jsword.book.basic.DefaultBookMetaData;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyFactory;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.PreferredKey;
 import org.crosswire.jsword.passage.RestrictionType;
 import org.crosswire.jsword.passage.SetKeyList;
+import org.crosswire.jsword.versification.ReferenceSystem;
+import org.crosswire.jsword.versification.system.Versifications;
 import org.jdom.Content;
 import org.jdom.Element;
 
@@ -109,9 +110,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
         global = new SetKeyList(hash.keySet(), getName());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.PreferredKey#getPreferred()
      */
     public Key getPreferred() {
@@ -138,8 +137,8 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
         }
 
         try {
-            KeyFactory keyf = PassageKeyFactory.instance();
-            Passage ref = (Passage) keyf.getKey(readings);
+            PassageKeyFactory keyf = PassageKeyFactory.instance();
+            Passage ref = (Passage) keyf.getKey(Versifications.instance().getVersification("KJV"), readings);
 
             Element list = OSISUtil.factory().createList();
             content.add(list);
@@ -163,62 +162,50 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
         return content.iterator();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.Book#contains(org.crosswire.jsword.passage.Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#contains(org.crosswire.jsword.passage.Key)
      */
     public boolean contains(Key key) {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage
-     * .Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
      */
     public String getRawText(Key key) throws BookException {
         return "";
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#isWritable()
      */
     public boolean isWritable() {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.basic.AbstractPassageBook#setRawText(org.crosswire
-     * .jsword.passage.Key, java.lang.String)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#setRawText(org.crosswire.jsword.passage.Key, java.lang.String)
      */
     public void setRawText(Key key, String rawData) throws BookException {
         throw new BookException(JSOtherMsg.lookupText("This Book is read-only."));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.Book#setAliasKey(org.crosswire.jsword.passage
-     * .Key, org.crosswire.jsword.passage.Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#setAliasKey(org.crosswire.jsword.passage.Key, org.crosswire.jsword.passage.Key)
      */
     public void setAliasKey(Key alias, Key source) throws BookException {
         throw new BookException(JSOtherMsg.lookupText("This Book is read-only."));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.KeyFactory#isValidKey(java.lang.String)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#getValidKey(org.crosswire.jsword.versification.ReferenceSystem, java.lang.String)
+     */
+    public Key getValidKey(ReferenceSystem referenceSystem, String name) {
+        return getValidKey(name);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getValidKey(java.lang.String)
      */
     public Key getValidKey(String name) {
         try {
@@ -228,10 +215,15 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.KeyFactory#getKey(java.lang.String)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#getKey(org.crosswire.jsword.versification.ReferenceSystem, java.lang.String)
+     */
+    public Key getKey(ReferenceSystem referenceSystem, String name) throws NoSuchKeyException {
+        return getKey(name);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getKey(java.lang.String)
      */
     public Key getKey(String name) throws NoSuchKeyException {
         DefaultKeyList reply = new DefaultKeyList();
@@ -239,19 +231,29 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
         return reply;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.KeyFactory#getGlobalKeyList()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#getGlobalKeyList(org.crosswire.jsword.versification.ReferenceSystem)
+     */
+    public Key getGlobalKeyList(ReferenceSystem referenceSystem) {
+        return getGlobalKeyList();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getGlobalKeyList()
      */
     public Key getGlobalKeyList() {
         return global;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.KeyFactory#getEmptyKeyList()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.KeyFactory#createEmptyKeyList(org.crosswire.jsword.versification.ReferenceSystem)
+     */
+    public Key createEmptyKeyList(ReferenceSystem referenceSystem) {
+        return createEmptyKeyList();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#createEmptyKeyList()
      */
     public Key createEmptyKeyList() {
         return new DefaultKeyList();

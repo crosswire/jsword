@@ -25,7 +25,7 @@ import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.CaseType;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
-import org.crosswire.jsword.versification.system.ReferenceSystems;
+import org.crosswire.jsword.versification.system.Versifications;
 
 /**
  * BibleInfo is a static class that deals with Bible book names, and conversion to and from
@@ -64,7 +64,7 @@ public final class BibleInfo {
      * @return the next book or null if no following book
      */
     public static BibleBook getNextBook(BibleBook book) {
-        return referenceSystem.getBooks().getNextBook(book);
+        return v11n.getBooks().getNextBook(book);
     }
 
     /**
@@ -73,7 +73,7 @@ public final class BibleInfo {
      * @return the previous book or null if no previous book
      */
     public static BibleBook getPreviousBook(BibleBook book) {
-        return referenceSystem.getBooks().getPreviousBook(book);
+        return v11n.getBooks().getPreviousBook(book);
     }
 
     /**
@@ -94,7 +94,7 @@ public final class BibleInfo {
      * @return The last valid chapter number for a book.
      */
     public static int chaptersInBook(BibleBook book) {
-        return referenceSystem.getLastChapter(book);
+        return v11n.getLastChapter(book);
     }
 
     /**
@@ -108,7 +108,7 @@ public final class BibleInfo {
      *                If the book or chapter number is not valid
      */
     public static int versesInChapter(BibleBook book, int chapter) {
-        return referenceSystem.getLastVerse(book, chapter);
+        return v11n.getLastVerse(book, chapter);
     }
 
     /**
@@ -117,7 +117,7 @@ public final class BibleInfo {
      * @return the number of addressable verses in this versification.
      */
     public static int maximumOrdinal() {
-        return referenceSystem.maximumOrdinal();
+        return v11n.maximumOrdinal();
     }
 
     /**
@@ -147,7 +147,7 @@ public final class BibleInfo {
      * @return The ordinal number of verses
      */
     public static int getOrdinal(Verse verse) {
-        return referenceSystem.getOrdinal(verse);
+        return v11n.getOrdinal(verse);
     }
 
     /**
@@ -177,14 +177,14 @@ public final class BibleInfo {
      * @return The ordinal number of verses
      */
     public static int getTestamentOrdinal(int ordinal) {
-        return referenceSystem.getTestamentOrdinal(ordinal);
+        return v11n.getTestamentOrdinal(ordinal);
     }
 
     /**
      * Get the testament of a given verse
      */
     public static Testament getTestament(int ordinal) {
-        return referenceSystem.getTestament(ordinal);
+        return v11n.getTestament(ordinal);
     }
 
     /**
@@ -194,7 +194,7 @@ public final class BibleInfo {
      * @return the number of verses in the testament
      */
     public static int getCount(Testament testament) {
-        return referenceSystem.getCount(testament);
+        return v11n.getCount(testament);
     }
 
     /**
@@ -207,7 +207,7 @@ public final class BibleInfo {
      *                If the reference is illegal
      */
     public static Verse decodeOrdinal(int ordinal) {
-        return referenceSystem.decodeOrdinal(ordinal);
+        return v11n.decodeOrdinal(ordinal);
     }
 
     /**
@@ -226,7 +226,7 @@ public final class BibleInfo {
      *                If the reference is illegal
      */
     public static void validate(BibleBook book, int chapter, int verse) throws NoSuchVerseException {
-        referenceSystem.validate(book, chapter, verse);
+        v11n.validate(book, chapter, verse);
     }
 
     /**
@@ -258,7 +258,7 @@ public final class BibleInfo {
      * @return The resultant verse.
      */
     public static Verse patch(BibleBook book, int chapter, int verse) {
-        return referenceSystem.patch(book, chapter, verse);
+        return v11n.patch(book, chapter, verse);
     }
 
     /**
@@ -267,12 +267,12 @@ public final class BibleInfo {
      * @return The number of books in the Bible, including the three introductions
      */
     public static int booksInBible() {
-        return referenceSystem.getBooks().getBookCount();
+        return v11n.getBooks().getBookCount();
     }
 
     /** The OSIS name of the reference system. */
     public static String osisName = "KJV";
-    public static ReferenceSystem referenceSystem = ReferenceSystems.instance().getReferenceSystem(osisName);
+    public static Versification v11n = Versifications.instance().getVersification(osisName);
 
     /**
      * Constant for the ordinal number of the first verse in each chapter.

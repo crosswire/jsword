@@ -29,6 +29,8 @@ import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.crosswire.jsword.versification.Versification;
+
 /**
  * A Passage that is implemented using a TreeSet of Verses. The attributes of
  * the style are:
@@ -46,8 +48,12 @@ public class DistinctPassage extends AbstractPassage {
     /**
      * Create an empty DistinctPassage. There are no ctors from either Verse or
      * VerseRange so you need to do new <code>DistinctPassage().add(...);</code>
+     * 
+     * @param v11n
+     *            The Versification to which this Passage belongs.
      */
-    protected DistinctPassage() {
+    protected DistinctPassage(Versification v11n) {
+        super(v11n);
     }
 
     /**
@@ -61,13 +67,15 @@ public class DistinctPassage extends AbstractPassage {
      * however. We don't need to worry about thread safety in a ctor since we
      * don't exist yet.
      * 
+     * @param v11n
+     *            The Versification to which this Passage belongs.
      * @param refs
      *            A String containing the text of the DistinctPassage
      * @throws NoSuchVerseException
      *             If the string is not valid
      */
-    protected DistinctPassage(String refs) throws NoSuchVerseException {
-        super(refs);
+    protected DistinctPassage(Versification v11n, String refs) throws NoSuchVerseException {
+        super(v11n, refs);
 
         store = Collections.synchronizedSortedSet(new TreeSet<Key>());
         addVerses(refs);

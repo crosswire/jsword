@@ -14,19 +14,19 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2012
  *     The copyright to this program is held by it's authors.
  *
  * ID: $Id$
  */
 package org.crosswire.jsword.book.filter.thml;
 
+import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.OSISUtil;
-import org.crosswire.jsword.passage.KeyFactory;
+import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.jdom.Element;
 import org.xml.sax.Attributes;
 
@@ -38,36 +38,27 @@ import org.xml.sax.Attributes;
  * @author Joe Walker [joe at eireneh dot com]
  */
 public class ScripRefTag extends AbstractTag {
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
     public String getTagName() {
         return "scripRef";
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element,
-     * org.xml.sax.Attributes)
-     */
     @Override
-    public Element processTag(Element ele, Attributes attrs) {
+    public Element processTag(Book book, Key key, Element ele, Attributes attrs) {
         Element reference = null;
 
         String refstr = attrs.getValue("passage");
         if (refstr != null) {
             Passage ref = null;
             try {
-                ref = (Passage) keyf.getKey(refstr);
+                ref = (Passage) book.getKey(refstr);
             } catch (NoSuchKeyException ex) {
-                DataPolice.report("Unparsable passage: (" + refstr + ") due to " + ex.getMessage());
+                DataPolice.report(book, key, "Unparsable passage: (" + refstr + ") due to " + ex.getMessage());
             }
 
-            // If we don't have a Passage then use the origial string
+            // If we don't have a Passage then use the original string
             String osisname = ref != null ? ref.getOsisRef() : refstr;
             reference = OSISUtil.factory().createReference();
             reference.setAttribute(OSISUtil.OSIS_ATTR_REF, osisname);
@@ -83,30 +74,17 @@ public class ScripRefTag extends AbstractTag {
         return reference;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.filter.thml.AbstractTag#processContent(org.
-     * jdom.Element)
-     */
     @Override
-    public void processContent(Element ele) {
+    public void processContent(Book book, Key key, Element ele) {
         String refstr = ele.getValue();
         try {
             if (ele.getAttribute(OSISUtil.OSIS_ATTR_REF) == null) {
-                Passage ref = (Passage) keyf.getKey(refstr);
+                Passage ref = (Passage) book.getKey(refstr);
                 String osisname = ref.getOsisRef();
                 ele.setAttribute(OSISUtil.OSIS_ATTR_REF, osisname);
             }
         } catch (NoSuchKeyException ex) {
-            DataPolice.report("scripRef has no passage attribute, unable to guess: (" + refstr + ") due to " + ex.getMessage());
+            DataPolice.report(book, key, "scripRef has no passage attribute, unable to guess: (" + refstr + ") due to " + ex.getMessage());
         }
     }
-
-    /**
-     * To convert strings into Biblical keys
-     */
-    protected KeyFactory keyf = PassageKeyFactory.instance();
-
 }

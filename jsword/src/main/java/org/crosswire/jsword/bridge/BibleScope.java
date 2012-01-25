@@ -25,8 +25,6 @@ import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyFactory;
-import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.versification.BookName;
 
 /**
@@ -65,10 +63,9 @@ public class BibleScope {
 
     private void computeScope() {
         if (inScope == null) {
-            KeyFactory keyf = PassageKeyFactory.instance();
-            Key all = keyf.getGlobalKeyList();
-            inScope = keyf.createEmptyKeyList();
-            outScope = keyf.createEmptyKeyList();
+            Key all = book.getGlobalKeyList();
+            inScope = book.createEmptyKeyList();
+            outScope = book.createEmptyKeyList();
             for (Key key : all) {
                 if (book.contains(key)) {
                     inScope.addAll(key);

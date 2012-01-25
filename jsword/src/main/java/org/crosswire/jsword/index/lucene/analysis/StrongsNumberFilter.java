@@ -25,9 +25,9 @@ import java.io.IOException;
 
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.TermAttribute;
+import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.study.StrongsNumber;
 
 /**
@@ -83,7 +83,7 @@ public class StrongsNumberFilter extends AbstractBookTokenFilter {
                         }
                     }
                 } catch (BookException e) {
-                    DataPolice.report(e.getDetailedMessage());
+                    log.error(e.getDetailedMessage());
                 }
 
                 // We are providing a term
@@ -116,4 +116,9 @@ public class StrongsNumberFilter extends AbstractBookTokenFilter {
 
     private TermAttribute termAtt;
     private StrongsNumber number;
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(StrongsNumberFilter.class);
 }

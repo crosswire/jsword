@@ -28,7 +28,7 @@ import java.util.BitSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.crosswire.jsword.versification.BibleInfo;
+import org.crosswire.jsword.versification.Versification;
 
 /**
  * A Passage that is implemented using a BitSet - one for each verse. The
@@ -54,8 +54,13 @@ public class BitwisePassage extends AbstractPassage {
     /**
      * Create an empty BitwisePassage. There are no ctors from either Verse or
      * VerseRange so you need to do new <code>DistinctPassage().add(...);</code>
+     * 
+     * @param v11n
+     *            The Versification to which this Passage belongs.
      */
-    protected BitwisePassage() {
+    protected BitwisePassage(Versification v11n) {
+        super(v11n);
+        store = new BitSet(v11n.maximumOrdinal() + 1);
     }
 
     /**
@@ -69,13 +74,16 @@ public class BitwisePassage extends AbstractPassage {
      * We don't need to worry about thread safety in a ctor since we don't exist
      * yet.
      * 
+     * @param v11n
+     *            The Versification to which this Passage belongs.
      * @param refs
      *            A String containing the text of the BitwisePassage
      * @throws NoSuchVerseException
      *             If the string is not parsable
      */
-    protected BitwisePassage(String refs) throws NoSuchVerseException {
-        super(refs);
+    protected BitwisePassage(Versification v11n, String refs) throws NoSuchVerseException {
+        super(v11n, refs);
+        store = new BitSet(v11n.maximumOrdinal() + 1);
         addVerses(refs);
     }
 
@@ -215,7 +223,7 @@ public class BitwisePassage extends AbstractPassage {
         if (that instanceof BitwisePassage) {
             thatStore = ((BitwisePassage) that).store;
         } else {
-            thatStore = new BitSet(BibleInfo.maximumOrdinal() + 1);
+            thatStore = new BitSet(getVersification().maximumOrdinal() + 1);
 
             for (Key aKey : that) {
                 int ord = ((Verse) aKey).getOrdinal();
@@ -251,7 +259,7 @@ public class BitwisePassage extends AbstractPassage {
             raiseEventSuppresion();
             raiseNormalizeProtection();
 
-            int maximumOrdinal = BibleInfo.maximumOrdinal();
+            int maximumOrdinal = getVersification().maximumOrdinal();
             BitSet newStore = new BitSet(maximumOrdinal + 1);
 
             for (int i = store.nextSetBit(0); i >= 0; i = store.nextSetBit(i + 1)) {
@@ -302,7 +310,7 @@ public class BitwisePassage extends AbstractPassage {
                 throw new NoSuchElementException();
             }
 
-            Key retcode = BibleInfo.decodeOrdinal(next);
+            Key retcode = getVersification().decodeOrdinal(next);
             calculateNext();
 
             return retcode;
@@ -359,9 +367,9 @@ public class BitwisePassage extends AbstractPassage {
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         optimizeWrites();
 
-        store = new BitSet(BibleInfo.maximumOrdinal() + 1);
-
         in.defaultReadObject();
+
+        store = new BitSet(getVersification().maximumOrdinal() + 1);
 
         readObjectSupport(in);
     }
@@ -374,5 +382,5 @@ public class BitwisePassage extends AbstractPassage {
     /**
      * The place the real data is stored
      */
-    protected transient BitSet store = new BitSet(BibleInfo.maximumOrdinal() + 1);
+    protected transient BitSet store;
 }

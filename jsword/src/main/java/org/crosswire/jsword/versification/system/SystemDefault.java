@@ -22,7 +22,7 @@
 package org.crosswire.jsword.versification.system;
 
 import org.crosswire.jsword.versification.BibleBook;
-import org.crosswire.jsword.versification.ReferenceSystem;
+import org.crosswire.jsword.versification.Versification;
 
 /**
  * The SystemDefault versification (v11n) is that of the Protestant KJV.
@@ -32,8 +32,7 @@ import org.crosswire.jsword.versification.ReferenceSystem;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class SystemDefault extends ReferenceSystem {
-
+public class SystemDefault extends Versification {
     public static String name = "";
 
     // Default for other Testament in single Testament Bibles
@@ -115,5 +114,8 @@ public class SystemDefault extends ReferenceSystem {
         BibleBook.ZECH,
         BibleBook.MAL,
     };
-
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = -921273257871599555L;
 }

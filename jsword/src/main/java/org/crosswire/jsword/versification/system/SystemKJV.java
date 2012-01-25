@@ -22,7 +22,7 @@
 package org.crosswire.jsword.versification.system;
 
 import org.crosswire.jsword.versification.BibleBook;
-import org.crosswire.jsword.versification.ReferenceSystem;
+import org.crosswire.jsword.versification.Versification;
 
 /**
  * The KJV versification is the first implemented versification
@@ -32,7 +32,7 @@ import org.crosswire.jsword.versification.ReferenceSystem;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class SystemKJV extends ReferenceSystem {
+public class SystemKJV extends Versification {
     /**
      * Build the "KJV" ReferenceSystem.
      */
@@ -788,4 +788,9 @@ public class SystemKJV extends ReferenceSystem {
             32294, 32310, 32338,
         },
     };
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 3365882007485277007L;
 }

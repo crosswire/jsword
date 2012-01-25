@@ -45,6 +45,7 @@ public class BibleBookTest extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
     }
+
     public void testGetBook() {
         assertEquals(BibleBook.GEN, BibleBook.getBook("Genesis"));
         assertEquals(BibleBook.GEN, BibleBook.getBook("Gene"));

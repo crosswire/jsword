@@ -37,12 +37,12 @@ import org.crosswire.common.diff.EditType;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyFactory;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseFactory;
+import org.crosswire.jsword.versification.Versification;
 import org.jdom.Content;
 import org.jdom.Element;
 import org.jdom.Parent;
@@ -722,16 +722,16 @@ public final class OSISUtil {
      * 
      * @return The references in the text
      */
-    public static String getReferences(Element root) {
-        KeyFactory keyf = PassageKeyFactory.instance();
-        Key collector = keyf.createEmptyKeyList();
+    public static String getReferences(Versification v11n, Element root) {
+        PassageKeyFactory keyf = PassageKeyFactory.instance();
+        Key collector = keyf.createEmptyKeyList(v11n);
 
         for (Content content : getDeepContent(root, OSISUtil.OSIS_ELEMENT_REFERENCE)) {
             Element ele = (Element) content;
             String attr = ele.getAttributeValue(OSISUtil.OSIS_ATTR_REF);
             if (attr != null) {
                 try {
-                    Key key = keyf.getKey(attr);
+                    Key key = keyf.getKey(v11n, attr);
                     collector.addAll(key);
                 } catch (NoSuchKeyException e) {
                     log.warn("Unable to parse: " + attr, e);
@@ -860,13 +860,13 @@ public final class OSISUtil {
      *            The start point for our verse hunt.
      * @return The verse we are in
      */
-    public static Verse getVerse(Element ele) throws BookException {
+    public static Verse getVerse(Versification v11n, Element ele) throws BookException {
         if (ele.getName().equals(OSIS_ELEMENT_VERSE)) {
             // If the element is an OSIS Verse then this is fairly easy
             String osisid = ele.getAttributeValue(OSIS_ATTR_OSISID);
 
             try {
-                return VerseFactory.fromString(osisid);
+                return VerseFactory.fromString(v11n, osisid);
             } catch (NoSuchVerseException ex) {
                 throw new BookException(JSOtherMsg.lookupText("OsisID not valid: {0}", osisid), ex);
             }
@@ -875,7 +875,7 @@ public final class OSISUtil {
         // So we just walk up the tree trying to find a verse
         Parent parent = ele.getParent();
         if (parent instanceof Element) {
-            return getVerse((Element) parent);
+            return getVerse(v11n, (Element) parent);
         }
 
         throw new BookException(JSOtherMsg.lookupText("Verse element could not be found"));

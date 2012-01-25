@@ -32,6 +32,38 @@ import junit.framework.TestCase;
  */
 public class BibleBookListTest extends TestCase {
 
+    public static BibleBook[] booksNT =
+    {
+        BibleBook.MATT,
+        BibleBook.MARK,
+        BibleBook.LUKE,
+        BibleBook.JOHN,
+        BibleBook.ACTS,
+        BibleBook.JAS,
+        BibleBook.PET1,
+        BibleBook.PET2,
+        BibleBook.JOHN1,
+        BibleBook.JOHN2,
+        BibleBook.JOHN3,
+        BibleBook.JUDE,
+        BibleBook.ROM,
+        BibleBook.COR1,
+        BibleBook.COR2,
+        BibleBook.GAL,
+        BibleBook.EPH,
+        BibleBook.PHIL,
+        BibleBook.COL,
+        BibleBook.THESS1,
+        BibleBook.THESS2,
+        BibleBook.TIM1,
+        BibleBook.TIM2,
+        BibleBook.TITUS,
+        BibleBook.PHLM,
+        BibleBook.HEB,
+        BibleBook.REV,
+    };
+
+    BibleBookList list;
     /**
      * @param name
      */
@@ -43,6 +75,7 @@ public class BibleBookListTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        list = new BibleBookList(booksNT);
     }
 
     @Override
@@ -50,4 +83,54 @@ public class BibleBookListTest extends TestCase {
         super.tearDown();
     }
 
+    public void testCount() {
+        assertEquals(booksNT.length, list.getBookCount());
+    }
+
+    public void testContains() {
+        // Are all the books from booksNT present
+        for (BibleBook b : booksNT) {
+            assertTrue(b.getOSIS(), list.contains(b));
+        }
+    }
+
+    public void testOrdinal() {
+        for (int i = 0; i < booksNT.length; i++) {
+            BibleBook b = booksNT[i];
+            assertEquals(b.getOSIS(), i, list.getOrdinal(b));
+        }
+    }
+
+    public void testGet() {
+        for (int i = 0; i < booksNT.length; i++) {
+            BibleBook b = booksNT[i];
+            assertEquals(b.getOSIS(), b, list.getBook(i));
+        }
+        assertEquals(booksNT[0].getOSIS(), booksNT[0], list.getBook(-1));
+        assertEquals(booksNT[booksNT.length - 1].getOSIS(), booksNT[booksNT.length - 1], list.getBook(booksNT.length));
+    }
+
+    public void testNextBook() {
+        for (int i = 0; i < booksNT.length - 1; i++) {
+            BibleBook b = booksNT[i];
+            BibleBook n = booksNT[i + 1];
+            assertEquals(b.getOSIS(), n, list.getNextBook(b));
+        }        
+    }
+
+    public void testPreviousBook() {
+        for (int i = 1; i < booksNT.length; i++) {
+            BibleBook b = booksNT[i];
+            BibleBook p = booksNT[i - 1];
+            assertEquals(b.getOSIS(), p, list.getPreviousBook(b));
+        }        
+    }
+
+    public void testIterator() {
+        int i = 0;
+        for (BibleBook book: list) {
+            BibleBook b = booksNT[i++];
+            assertEquals(b.getOSIS(), b, book);
+        }
+    }
 }

@@ -22,7 +22,8 @@
 package org.crosswire.jsword.passage;
 
 import org.crosswire.jsword.versification.BibleBook;
-import org.crosswire.jsword.versification.BibleInfo;
+import org.crosswire.jsword.versification.Versification;
+import org.crosswire.jsword.versification.system.Versifications;
 
 /**
  * Types of Passage Blurring Restrictions.
@@ -43,26 +44,26 @@ public enum RestrictionType {
         }
 
         @Override
-        public VerseRange blur(VerseRange range, int blurDown, int blurUp) {
+        public VerseRange blur(Versification v11n, VerseRange range, int blurDown, int blurUp) {
             Verse start = range.getStart().subtract(blurDown);
             Verse end = range.getEnd().add(blurUp);
-            return new VerseRange(start, end);
+            return new VerseRange(v11n, start, end);
         }
 
         @Override
-        public VerseRange blur(Verse verse, int blurDown, int blurUp) {
+        public VerseRange blur(Versification v11n, Verse verse, int blurDown, int blurUp) {
             Verse start = verse.subtract(blurDown);
             Verse end = verse.add(blurUp);
-            return new VerseRange(start, end);
+            return new VerseRange(v11n, start, end);
         }
 
         @Override
-        public VerseRange toRange(Verse verse, int count) {
+        public VerseRange toRange(Versification v11n, Verse verse, int count) {
             Verse end = verse;
             if (count > 1) {
                 end = verse.add(count - 1);
             }
-            return new VerseRange(verse, end);
+            return new VerseRange(v11n, verse, end);
         }
     },
 
@@ -76,7 +77,9 @@ public enum RestrictionType {
         }
 
         @Override
-        public VerseRange blur(VerseRange range, int blurDown, int blurUp) {
+        public VerseRange blur(Versification v11n, VerseRange range, int blurDown, int blurUp) {
+            Versification rs = Versifications.instance().getVersification("KJV");
+
             Verse start = range.getStart();
             BibleBook startBook = start.getBook();
             int startChapter = start.getChapter();
@@ -88,15 +91,15 @@ public enum RestrictionType {
             int endVerse = end.getVerse() + blurUp;
 
             startVerse = Math.max(startVerse, 1);
-            endVerse = Math.min(endVerse, BibleInfo.versesInChapter(endBook, endChapter));
+            endVerse = Math.min(endVerse, rs.getLastVerse(endBook, endChapter));
 
             Verse newStart = new Verse(startBook, startChapter, startVerse);
             Verse newEnd = new Verse(endBook, endChapter, endVerse);
-            return new VerseRange(newStart, newEnd);
+            return new VerseRange(v11n, newStart, newEnd);
         }
 
         @Override
-        public VerseRange blur(Verse verse, int blurDown, int blurUp) {
+        public VerseRange blur(Versification v11n, Verse verse, int blurDown, int blurUp) {
             int verseNumber = verse.getVerse();
 
             int down = verseNumber - Math.max(verseNumber - blurDown, 1);
@@ -108,19 +111,19 @@ public enum RestrictionType {
 
             BibleBook book = verse.getBook();
             int chapterNumber = verse.getChapter();
-            int up = Math.min(verseNumber + blurUp, BibleInfo.versesInChapter(book, chapterNumber)) - verseNumber;
+            int up = Math.min(verseNumber + blurUp, Versifications.instance().getVersification("KJV").getLastVerse(book, chapterNumber)) - verseNumber;
             Verse end = verse;
             if (up > 0) {
                 end = verse.add(up);
             }
 
-            return new VerseRange(start, end);
+            return new VerseRange(v11n, start, end);
         }
 
         @Override
-        public VerseRange toRange(Verse verse, int count) {
+        public VerseRange toRange(Versification v11n, Verse verse, int count) {
             Verse end = verse.add(count - 1);
-            return new VerseRange(verse, end);
+            return new VerseRange(v11n, verse, end);
         }
     };
 
@@ -144,7 +147,7 @@ public enum RestrictionType {
      * @param blurUp
      * @return a verse range after blurring.
      */
-    public abstract VerseRange blur(VerseRange range, int blurDown, int blurUp);
+    public abstract VerseRange blur(Versification v11n, VerseRange range, int blurDown, int blurUp);
 
     /**
      * Blur a verse the specified amount. Since verse are immutable and refer to
@@ -155,7 +158,7 @@ public enum RestrictionType {
      * @param blurUp
      * @return a verse range after blurring
      */
-    public abstract VerseRange blur(Verse verse, int blurDown, int blurUp);
+    public abstract VerseRange blur(Versification v11n, Verse verse, int blurDown, int blurUp);
 
     /**
      * Create a range from the verse having the specified number of verses.
@@ -164,7 +167,7 @@ public enum RestrictionType {
      * @param count
      * @return a verse range created by extending a verse forward.
      */
-    public abstract VerseRange toRange(Verse verse, int count);
+    public abstract VerseRange toRange(Versification v11n, Verse verse, int count);
 
     /**
      * Get an integer representation for this RestrictionType

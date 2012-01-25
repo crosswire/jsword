@@ -14,13 +14,15 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2012
  *     The copyright to this program is held by it's authors.
  *
  * ID: $Id$
  */
 package org.crosswire.jsword.book.filter.thml;
 
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.passage.Key;
 import org.jdom.Element;
 import org.xml.sax.Attributes;
 
@@ -33,26 +35,18 @@ import org.xml.sax.Attributes;
  */
 public abstract class AbstractTag implements Tag {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.filter.thml.Tag#processTag(org.jdom.Element,
-     * org.xml.sax.Attributes)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.filter.thml.Tag#processTag(org.crosswire.jsword.book.Book, org.jdom.Element, org.xml.sax.Attributes)
      */
-    public Element processTag(Element ele, Attributes attrs) {
+    public Element processTag(Book book, Key key, Element ele, Attributes attrs) {
         // Ignore the tag
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.filter.thml.Tag#processContent(org.jdom.Element
-     * )
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.filter.thml.Tag#processContent(org.crosswire.jsword.book.Book, org.jdom.Element)
      */
-    public void processContent(Element ele) {
+    public void processContent(Book book, Key key, Element ele) {
         // By default do nothing
     }
 

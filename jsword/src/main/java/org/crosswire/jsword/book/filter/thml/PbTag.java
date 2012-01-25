@@ -30,9 +30,7 @@ package org.crosswire.jsword.book.filter.thml;
  * @author Joe Walker [joe at eireneh dot com]
  */
 public class PbTag extends AbstractTag {
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.thml.Tag#getTagName()
      */
     public String getTagName() {
