@@ -27,7 +27,11 @@ import java.util.Map;
 
 /**
  * A BibleBook is a book of the Bible. It may or may not be canonical.
- * Note that the ordering of these books varies from one Versification to another. 
+ * Note that the ordering of these books varies from one Versification to another.
+ *
+ * @see gnu.lgpl.License for license details.<br>
+ *      The copyright to this program is held by it's authors.
+ * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public enum BibleBook {
     // JSword introduction to the Bible
@@ -153,7 +157,7 @@ public enum BibleBook {
     T12PATR_TISS("T12Patr.TIss"),
     T12PATR_TJOS("T12Patr.TJos"),
     T12PATR_TJUD("T12Patr.TJud"),
-    T12PATR_TLEVI("T12Patr.TLevi"),    
+    T12PATR_TLEVI("T12Patr.TLevi"),
     T12PATR_TNAPH("T12Patr.TNaph"),
     T12PATR_TREU("T12Patr.TReu"),
     T12PATR_TSIM("T12Patr.TSim"),
@@ -170,8 +174,7 @@ public enum BibleBook {
     // Other books
     ADD_DAN("AddDan"),
     ADD_PS("AddPs"),
-    ESTH_GR("EsthGr"),
-   ;
+    ESTH_GR("EsthGr");
 
     BibleBook(String osis) {
         this.osis = osis;
@@ -179,7 +182,7 @@ public enum BibleBook {
 
     /**
      * Get the OSIS representation of this BibleBook.
-     * 
+     *
      * @return the OSIS name
      */
     public String getOSIS() {
@@ -188,7 +191,7 @@ public enum BibleBook {
 
     /**
      * Get the OSIS representation of this BibleBook.
-     * 
+     *
      * @return the OSIS name
      */
     @Override
@@ -198,7 +201,7 @@ public enum BibleBook {
 
     /**
      * Case insensitive search for BibleBook for an OSIS name.
-     * 
+     *
      * @param osis
      * @return the matching BibleBook or null
      */
@@ -209,7 +212,7 @@ public enum BibleBook {
 
     /**
      * Get the BookName.
-     * 
+     *
      * @param book
      *            The book of the Bible
      * @return The requested BookName
@@ -221,7 +224,7 @@ public enum BibleBook {
     /**
      * Get the preferred name of a book. Altered by the case setting (see
      * setBookCase() and isFullBookName())
-     * 
+     *
      * @param book
      *            The book of the Bible
      * @return The full name of the book
@@ -233,7 +236,7 @@ public enum BibleBook {
     /**
      * Get the full name of a book (e.g. "Genesis"). Altered by the case setting
      * (see setBookCase())
-     * 
+     *
      * @param book
      *            The book of the Bible
      * @return The full name of the book
@@ -245,7 +248,7 @@ public enum BibleBook {
     /**
      * Get the short name of a book (e.g. "Gen"). Altered by the case setting
      * (see setBookCase())
-     * 
+     *
      * @param book
      *            The book of the Bible
      * @return The short name of the book
@@ -256,7 +259,7 @@ public enum BibleBook {
 
     /**
      * Get a book from its name.
-     * 
+     *
      * @param find
      *            The string to identify
      * @return The BibleBook, On error null
@@ -280,7 +283,7 @@ public enum BibleBook {
     /**
      * Is the given string a valid book name. If this method returns true then
      * getBook() will return a BibleBook and not null.
-     * 
+     *
      * @param find
      *            The string to identify
      * @return true when the book name is recognized
@@ -308,7 +311,7 @@ public enum BibleBook {
 
     /**
      * This is simply a convenience function to wrap Character.isLetter()
-     * 
+     *
      * @param text
      *            The string to be parsed
      * @return true if the string contains letters

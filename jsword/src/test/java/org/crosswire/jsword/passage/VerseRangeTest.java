@@ -73,7 +73,8 @@ public class VerseRangeTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
-        v11n = Versifications.instance().getVersification("KJV");
+        // AV11N(DMS): Update test to test all V11Ns
+        v11n = Versifications.instance().getDefaultVersification();
 
         gen11_1 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.GEN, 1, 1), 1);
         gen11_2 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.GEN, 1, 1), 2);

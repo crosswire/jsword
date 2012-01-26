@@ -39,16 +39,16 @@ public class SystemMT extends Versification {
     /**
      * Build the "MT" Versification.
      */
-    public SystemMT() {
-        super(name, booksOT, booksNT, lastVerseOT, null);
+    /* protected */ SystemMT() {
+        super(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_NT, null);
     }
 
-    public static String name = "MT";
+    public static final String V11N_NAME = "MT";
 
-    public static BibleBook[] booksNT = SystemDefault.booksNone;
+    /* protected */ static final BibleBook[] BOOKS_NT = SystemDefault.BOOKS_NONE;
 
     // Different ordering of SystemDefault.booksOT
-    public static BibleBook[] booksOT =
+    /* protected */ static final BibleBook[] BOOKS_OT =
     {
         BibleBook.GEN,
         BibleBook.EXOD,
@@ -91,7 +91,7 @@ public class SystemMT extends Versification {
         BibleBook.CHR2,
     };
 
-    public static int lastVerseOT[][] =
+    /* protected */ static final int[][] LAST_VERSE_NT =
     {
         // Genesis
         {

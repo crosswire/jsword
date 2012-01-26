@@ -36,7 +36,7 @@ import org.crosswire.jsword.versification.Versification;
  * has some errors in verse numbers). In select instances, printed editions of a
  * Polish translation and an OCS Bible, which employ very similar
  * versifications, were also consulted.
- * 
+ *
  * Some details that may not be immediately obvious: <br/>
  * The Prologue to Sirach is neither a separate book nor a separate chapter of
  * Sirach. It should be placed within the introduction of Sirach (Sir.0.0). <br/>
@@ -50,29 +50,25 @@ import org.crosswire.jsword.versification.Versification;
  * in the eastern & western Churches and the standard naming conventions
  * proscribed by the SBL (which BTG & OSIS follow). <br/>
  * The Epistle of Jeremiah and Baruch are two separate books.
- * 
- * 
+ *
+ *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class SystemSynodal extends Versification {
     /**
-     * 
-     */
-    private static final long serialVersionUID = -6281906491023123413L;
-    /**
      * Build the "Synodal" Versification.
      */
-    public SystemSynodal() {
-        super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);
+    /* protected */ SystemSynodal() {
+        super(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, LAST_VERSE_NT);
     }
 
-    public static String name = "Synodal";
+    public static final String V11N_NAME = "Synodal";
 
-    // The books are the SystemDefault.booksNT
+    // The books are the SystemDefault.BOOKS_NT
     // in a different order
-    public static BibleBook[] booksNT =
+    /* protected */ static final BibleBook[] BOOKS_NT =
     {
         BibleBook.MATT,
         BibleBook.MARK,
@@ -102,7 +98,8 @@ public class SystemSynodal extends Versification {
         BibleBook.HEB,
         BibleBook.REV,
     };
-    public static final int[][] lastVerseNT =
+
+    /* protected */ static final int[][] LAST_VERSE_NT =
     {
         // Matthew
         {
@@ -230,7 +227,7 @@ public class SystemSynodal extends Versification {
     };
 
     // Contains deuterocanonical books
-    public static BibleBook[] booksOT =
+    /* protected */ static final BibleBook[] BOOKS_OT =
     {
         BibleBook.GEN,
         BibleBook.EXOD,
@@ -284,7 +281,8 @@ public class SystemSynodal extends Versification {
         BibleBook.MACC3,
         BibleBook.ESD2,
     };
-    public static final int[][] lastVerseOT =
+
+    /* protected */ static final int[][] LAST_VERSE_OT =
     {
         // Genesis
         {
@@ -581,4 +579,9 @@ public class SystemSynodal extends Versification {
                60,    46,    51,    58,    48,    63,    78,
         },
     };
+
+   /**
+    * Serialization ID
+    */
+   private static final long serialVersionUID = -6281906491023123413L;
 }

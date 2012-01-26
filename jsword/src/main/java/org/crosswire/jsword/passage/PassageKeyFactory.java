@@ -241,7 +241,8 @@ public final class PassageKeyFactory {
      *             If the buffer is invalid
      */
     static Passage fromBinaryRepresentation(byte[] buffer) throws NoSuchVerseException {
-        Versification rs = Versifications.instance().getVersification("KJV");
+        // AV11N(DMS): Is this right?
+        Versification rs = Versifications.instance().getDefaultVersification();
         int maxOrdinal = rs.maximumOrdinal();
         Passage ref = (Passage) keyf.createEmptyKeyList(rs);
 
@@ -316,7 +317,8 @@ public final class PassageKeyFactory {
      *             if the data was not a valid passage
      */
     public static Passage readPassage(Reader in) throws IOException, NoSuchVerseException {
-        Versification rs = Versifications.instance().getVersification("KJV");
+        // AV11N(DMS): Is this right?
+        Versification rs = Versifications.instance().getDefaultVersification();
         Passage ref = (Passage) keyf.createEmptyKeyList(rs);
         ref.readDescription(in);
         return ref;
@@ -547,10 +549,11 @@ public final class PassageKeyFactory {
 
     static {
         try {
-            whole = new ReadOnlyPassage(defaultType.createPassage(Versifications.instance().getVersification("KJV"), "Gen 1:1-Rev 22:21"), true);
+            // AV11N(DMS): Is this right?
+            whole = new ReadOnlyPassage(defaultType.createPassage(Versifications.instance().getDefaultVersification(), "Gen 1:1-Rev 22:21"), true);
         } catch (NoSuchKeyException ex) {
             assert false : ex;
-            whole = defaultType.createEmptyPassage(Versifications.instance().getVersification("KJV"));
+            whole = defaultType.createEmptyPassage(Versifications.instance().getDefaultVersification());
         }
     }
 }

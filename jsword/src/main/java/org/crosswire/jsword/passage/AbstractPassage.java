@@ -377,8 +377,8 @@ public abstract class AbstractPassage implements Passage {
      * @see org.crosswire.jsword.passage.Passage#versesInPassage(int, int)
      */
     public int versesInPassage(BibleBook book, int chapter) throws NoSuchVerseException {
-		if (book != null) {
-		    getVersification().validate(book, chapter == 0 ? 1 : chapter, 1);
+        if (book != null) {
+            getVersification().validate(book, chapter == 0 ? 1 : chapter, 1);
         }
 
         int verse_count = 0;
@@ -1012,6 +1012,7 @@ public abstract class AbstractPassage implements Passage {
      * @return The VerseRange
      * @exception java.lang.ClassCastException
      *                If this is not a Verse or a VerseRange
+     * @deprecated  use {@link #toVerseRange(Versification, String)} instead
      */
     @Deprecated
     protected static VerseRange toVerseRange(Object base) throws ClassCastException {

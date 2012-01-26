@@ -33,15 +33,15 @@ import org.crosswire.jsword.versification.Versification;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class SystemDefault extends Versification {
-    public static String name = "";
+    public static final String V11N_NAME = "";
 
     // Default for other Testament in single Testament Bibles
-    public static BibleBook[] booksNone =
+    /* protected */ static final BibleBook[] BOOKS_NONE =
     {
     };
 
     // Default NT list is the most common
-    public static BibleBook[] booksNT =
+    /* protected */ static final BibleBook[] BOOKS_NT =
     {
         BibleBook.MATT,
         BibleBook.MARK,
@@ -72,7 +72,7 @@ public class SystemDefault extends Versification {
         BibleBook.REV,
     };
 
-    public static BibleBook[] booksOT =
+    /* protected */ static final BibleBook[] BOOKS_OT =
     {
         BibleBook.GEN,
         BibleBook.EXOD,

@@ -304,7 +304,8 @@ public final class Verse implements Key {
      * @return The new Verse
      */
     public Verse subtract(int n) {
-        return Versifications.instance().getVersification("KJV").subtract(this, n);
+        // AV11N(DMS): deprecate?
+        return Versifications.instance().getDefaultVersification().subtract(this, n);
     }
 
     /**
@@ -315,7 +316,8 @@ public final class Verse implements Key {
      * @return The new verse
      */
     public Verse add(int n) {
-        return Versifications.instance().getVersification("KJV").add(this, n);
+        // AV11N(DMS): deprecate?
+        return Versifications.instance().getDefaultVersification().add(this, n);
     }
 
     /**
@@ -360,7 +362,8 @@ public final class Verse implements Key {
      * @return true or false ...
      */
     public boolean isEndOfChapter() {
-        return Versifications.instance().getVersification("KJV").isEndOfChapter(this);
+        // AV11N(DMS): deprecate?
+        return Versifications.instance().getDefaultVersification().isEndOfChapter(this);
     }
 
     /**
@@ -378,7 +381,8 @@ public final class Verse implements Key {
      * @return true or false ...
      */
     public boolean isEndOfBook() {
-        return Versifications.instance().getVersification("KJV").isEndOfBook(this);
+        // AV11N(DMS): deprecate?
+        return Versifications.instance().getDefaultVersification().isEndOfBook(this);
     }
 
     /**
@@ -410,7 +414,8 @@ public final class Verse implements Key {
      * @return The verse number
      */
     public int getOrdinal() {
-        return Versifications.instance().getVersification("KJV").getOrdinal(this);
+        // AV11N(DMS): deprecate?
+        return Versifications.instance().getDefaultVersification().getOrdinal(this);
     }
 
     /**
@@ -487,7 +492,8 @@ public final class Verse implements Key {
      */
     private String doGetName(Verse verseBase) {
         // To cope with thing like Jude 2...
-        if (Versifications.instance().getVersification("KJV").getLastChapter(book) == 1) {
+        // AV11N(DMS): move to Versification???
+        if (Versifications.instance().getDefaultVersification().getLastChapter(book) == 1) {
             if (verseBase == null || verseBase.book != book) {
                 return book.getPreferredName() + Verse.VERSE_PREF_DELIM1 + verse;
             }
@@ -537,7 +543,8 @@ public final class Verse implements Key {
      *            The verse to set
      */
     private void setAndPatch(BibleBook book, int chapter, int verse) {
-        Versification v11n = Versifications.instance().getVersification("KJV");
+        // AV11N(DMS): deprecate?
+        Versification v11n = Versifications.instance().getDefaultVersification();
         Verse patched = v11n.patch(book, chapter, verse);
 
         this.book = patched.book;
@@ -569,7 +576,8 @@ public final class Verse implements Key {
      *            The ordinal of the verse
      */
     private void set(int ordinal) {
-        Versification v11n = Versifications.instance().getVersification("KJV");
+        // AV11N(DMS): deprecate?
+        Versification v11n = Versifications.instance().getDefaultVersification();
         Verse v = v11n.decodeOrdinal(ordinal);
 
         book = v.book;

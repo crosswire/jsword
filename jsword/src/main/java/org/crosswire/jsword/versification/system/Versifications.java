@@ -39,8 +39,14 @@ import org.crosswire.jsword.versification.Versification;
 public class Versifications {
 
     /**
+     * The default Versification for JSword is the KJV.
+     * This is subject to change at any time.
+     */
+    public static final String DEFAULT_V11N = SystemKJV.V11N_NAME;
+
+    /**
      * Get the singleton instance of Versifications.
-     * 
+     *
      * @return the singleton
      */
     public static Versifications instance() {
@@ -48,15 +54,24 @@ public class Versifications {
     }
 
     /**
+     * Get the default Versification.
+     *
+     * @return the default Versification.
+     */
+    public synchronized Versification getDefaultVersification() {
+        return getVersification(DEFAULT_V11N);
+    }
+
+    /**
      * Get the Versification by its name. If name is null then return the default Versification.
-     * 
+     *
      * @param name the name of the Versification
      * @return the Versification or null if it is not known.
      */
     public synchronized Versification getVersification(String name) {
         String actual = name;
         if (actual == null) {
-            actual = DEFAULT_REFERENCE_SYSTEM;
+            actual = DEFAULT_V11N;
         }
 
         // This class delays the building of a Versification to when it is
@@ -74,7 +89,7 @@ public class Versifications {
 
     /**
      * Determine whether the named Versification is known.
-     * 
+     *
      * @param name the name of the Versification
      * @return true when the Versification is available for use
      */
@@ -83,40 +98,40 @@ public class Versifications {
     }
 
     private Versification fluff(String name) {
-        if (SystemKJV.name.equals(name)) {
+        if (SystemKJV.V11N_NAME.equals(name)) {
             return new SystemKJV();
         }
-        if (SystemCatholic.name.equals(name)) {
+        if (SystemCatholic.V11N_NAME.equals(name)) {
             return new SystemCatholic();
         }
-        if (SystemCatholic2.name.equals(name)) {
+        if (SystemCatholic2.V11N_NAME.equals(name)) {
             return new SystemCatholic2();
         }
-        if (SystemKJVA.name.equals(name)) {
+        if (SystemKJVA.V11N_NAME.equals(name)) {
             return new SystemKJVA();
         }
-        if (SystemGerman.name.equals(name)) {
+        if (SystemGerman.V11N_NAME.equals(name)) {
             return new SystemGerman();
         }
-        if (SystemLeningrad.name.equals(name)) {
+        if (SystemLeningrad.V11N_NAME.equals(name)) {
             return new SystemLeningrad();
         }
-        if (SystemLuther.name.equals(name)) {
+        if (SystemLuther.V11N_NAME.equals(name)) {
             return new SystemLuther();
         }
-        if (SystemMT.name.equals(name)) {
+        if (SystemMT.V11N_NAME.equals(name)) {
             return new SystemMT();
         }
-        if (SystemNRSV.name.equals(name)) {
+        if (SystemNRSV.V11N_NAME.equals(name)) {
             return new SystemNRSV();
         }
-        if (SystemNRSVA.name.equals(name)) {
+        if (SystemNRSVA.V11N_NAME.equals(name)) {
             return new SystemNRSVA();
         }
-        if (SystemSynodal.name.equals(name)) {
+        if (SystemSynodal.V11N_NAME.equals(name)) {
             return new SystemSynodal();
         }
-        if (SystemSynodalP.name.equals(name)) {
+        if (SystemSynodalP.V11N_NAME.equals(name)) {
             return new SystemSynodalP();
         }
         return null;
@@ -124,7 +139,7 @@ public class Versifications {
 
     /**
      * Add a Versification that is not predefined by JSword.
-     * 
+     *
      * @param rs the Versification to register
      */
     public synchronized void register(Versification rs) {
@@ -137,27 +152,21 @@ public class Versifications {
      */
     private Versifications() {
         known = new HashSet<String>();
-        known.add(SystemCatholic.name);
-        known.add(SystemCatholic2.name);
-        known.add(SystemKJV.name);
-        known.add(SystemGerman.name);
-        known.add(SystemKJVA.name);
-        known.add(SystemLeningrad.name);
-        known.add(SystemLuther.name);
-        known.add(SystemMT.name);
-        known.add(SystemNRSV.name);
-        known.add(SystemNRSVA.name);
-        known.add(SystemSynodal.name);
-        known.add(SystemSynodalP.name);
-        known.add(SystemVulg.name);
+        known.add(SystemCatholic.V11N_NAME);
+        known.add(SystemCatholic2.V11N_NAME);
+        known.add(SystemKJV.V11N_NAME);
+        known.add(SystemGerman.V11N_NAME);
+        known.add(SystemKJVA.V11N_NAME);
+        known.add(SystemLeningrad.V11N_NAME);
+        known.add(SystemLuther.V11N_NAME);
+        known.add(SystemMT.V11N_NAME);
+        known.add(SystemNRSV.V11N_NAME);
+        known.add(SystemNRSVA.V11N_NAME);
+        known.add(SystemSynodal.V11N_NAME);
+        known.add(SystemSynodalP.V11N_NAME);
+        known.add(SystemVulg.V11N_NAME);
         fluffed = new HashMap<String, Versification>();
     }
-
-    /**
-     * The default Versification for JSword is the KJV.
-     * This is subject to change at any time.
-     */
-    private final String DEFAULT_REFERENCE_SYSTEM = "KJV";
 
     /**
      * The set of v11n names.

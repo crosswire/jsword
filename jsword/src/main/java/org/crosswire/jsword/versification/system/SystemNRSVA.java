@@ -33,25 +33,20 @@ import org.crosswire.jsword.versification.Versification;
  */
 public class SystemNRSVA extends Versification {
     /**
-     * 
-     */
-    private static final long serialVersionUID = -1915001343269114316L;
-
-    /**
      * Build the "NRSVA" Versification.
      */
-    public SystemNRSVA() {
-        super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);
+    /* protected */ SystemNRSVA() {
+        super(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, LAST_VERSE_NT);
     }
 
-    public static String name = "NRSVA";
+    public static final String V11N_NAME = "NRSVA";
 
-    public static BibleBook[] booksNT = SystemDefault.booksNT;
-    public static int[][] lastVerseNT = SystemNRSV.lastVerseNT;
+    /* protected */ static final BibleBook[] BOOKS_NT = SystemDefault.BOOKS_NT;
+    /* protected */ static final int[][] LAST_VERSE_NT = SystemNRSV.LAST_VERSE_NT;
 
     // SystemDefault.booksOT followed by
     // deuterocanonical books
-    public static BibleBook[] booksOT =
+    /* protected */ static final BibleBook[] BOOKS_OT =
     {
         BibleBook.GEN,
         BibleBook.EXOD,
@@ -111,7 +106,7 @@ public class SystemNRSVA extends Versification {
         BibleBook.MACC4,
     };
 
-    public static final int[][] lastVerseOT =
+    /* protected */ static final int[][] LAST_VERSE_OT =
     {
         // Gen
         {
@@ -430,4 +425,9 @@ public class SystemNRSVA extends Versification {
                21,    27,    19,    27,    20,    32,    25,    24,    24,
         },
     };
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = -1915001343269114316L;
 }

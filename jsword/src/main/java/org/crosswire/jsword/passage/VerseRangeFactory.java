@@ -50,6 +50,7 @@ public final class VerseRangeFactory {
      *            The textual representation
      * @exception NoSuchVerseException
      *                If the text can not be understood
+     * @deprecated  use {@link #fromString(Versification, String)} instead
      */
     @Deprecated
     public static VerseRange fromString(String orginal) throws NoSuchVerseException {
@@ -80,6 +81,7 @@ public final class VerseRangeFactory {
      *            original.
      * @exception NoSuchVerseException
      *                If the reference is illegal
+     * @deprecated  use {@link #fromString(Versification, String, VerseRange)} instead
      */
     @Deprecated
     public static VerseRange fromString(String original, VerseRange basis) throws NoSuchVerseException {

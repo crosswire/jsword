@@ -79,7 +79,7 @@ public class Versification implements ReferenceSystem, Serializable {
         if (booksNT.length > 0) {
             bookCount += booksNT.length + 1; // All of the NT books and INTRO_NT
         }
-        BibleBook[] books= new BibleBook[bookCount];
+        BibleBook[] books = new BibleBook[bookCount];
         books[0] = BibleBook.INTRO_BIBLE;
         if (booksOT.length > 0) {
             books[1] = BibleBook.INTRO_OT;
@@ -100,7 +100,7 @@ public class Versification implements ReferenceSystem, Serializable {
         int bookIndex = 0;
 
         // Add in the bible introduction
-        int chapters[] = new int[1];
+        int[] chapters = new int[1];
         chapters[0] = 0;
         this.lastVerse[bookIndex++] = chapters;
 

@@ -35,18 +35,18 @@ public class SystemKJVA extends Versification {
     /**
      * Build the "KJVA" Versification.
      */
-    public SystemKJVA() {
-        super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);
+    /* protected */ SystemKJVA() {
+        super(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, LAST_VERSE_NT);
     }
 
-    public static String name = "KJVA";
+    public static final String V11N_NAME = "KJVA";
 
-    public static BibleBook[] booksNT = SystemDefault.booksNT;
-    public static int[][] lastVerseNT = SystemKJV.lastVerseNT; 
+    /* protected */ static final BibleBook[] BOOKS_NT = SystemDefault.BOOKS_NT;
+    /* protected */ static final int[][] LAST_VERSE_NT = SystemKJV.LAST_VERSE_NT;
 
     // SystemDefault.booksOT followed by
     // deuterocanonical books
-    public static BibleBook[] booksOT = 
+    /* protected */ static final BibleBook[] BOOKS_OT =
     {
         BibleBook.GEN,
         BibleBook.EXOD,
@@ -103,7 +103,7 @@ public class SystemKJVA extends Versification {
         BibleBook.MACC2,
     };
 
-    public static final int[][] lastVerseOT =
+    /* protected */ static final int[][] LAST_VERSE_OT =
     {
         // Gen
         {

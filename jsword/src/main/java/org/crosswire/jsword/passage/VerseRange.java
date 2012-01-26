@@ -51,6 +51,7 @@ public final class VerseRange implements Key {
      * The default VerseRange is a single verse - Genesis 1:1. I didn't want to
      * provide this constructor however, you are supposed to provide a default
      * ctor for all beans. For this reason I suggest you don't use it.
+     * @deprecated  use {@link #VerseRange(Versification)} instead
      */
     @Deprecated
     public VerseRange() {
@@ -63,12 +64,18 @@ public final class VerseRange implements Key {
      * 
      * @param start
      *            The verse to start from
+     * @deprecated  use {@link #VerseRange(Versification, Verse)} instead
      */
     @Deprecated
     public VerseRange(Verse start) {
         this(null, null, start, start);
     }
 
+    /**
+     * @param start
+     * @param end
+     * @deprecated  use {@link #VerseRange(Versification, Verse, Verse)} instead
+     */
     @Deprecated
     public VerseRange(Verse start, Verse end) {
         this(null, null, start, end);
@@ -107,6 +114,7 @@ public final class VerseRange implements Key {
      *            The verse to start from
      * @param end
      *            The verse to end with
+     * @deprecated  use {@link #VerseRange(Versification, String, Verse, Verse)} instead
      */
     @Deprecated
     /* package */VerseRange(String original, Verse start, Verse end) {
@@ -119,7 +127,7 @@ public final class VerseRange implements Key {
 
         v11n = rs;
         if (v11n == null) {
-            v11n = Versifications.instance().getVersification("KJV");
+            v11n = Versifications.instance().getDefaultVersification();
         }
 
         this.originalName = original;
@@ -374,6 +382,7 @@ public final class VerseRange implements Key {
      * How many chapters in this range
      * 
      * @return The number of chapters. Always >= 1.
+     * @deprecated  use {@link org.crosswire.jsword.versification.Versification#getChapterCount(Verse, Verse)} instead
      */
     @Deprecated
     public int getChapterCount() {
@@ -384,6 +393,7 @@ public final class VerseRange implements Key {
      * How many books in this range
      * 
      * @return The number of books. Always >= 1.
+     * @deprecated  use {@link org.crosswire.jsword.versification.Versification#getBookCount(Verse, Verse)} instead
      */
     @Deprecated
     public int getBookCount() {
@@ -905,7 +915,8 @@ public final class VerseRange implements Key {
      * @serialData Write the ordinal number of this verse
      */
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        Versification rs = Versifications.instance().getVersification("KJV");
+        // AV11N(DMS): Is this right?
+        Versification rs = Versifications.instance().getDefaultVersification();
         // Call even if there is no default serializable fields.
         in.defaultReadObject();
 

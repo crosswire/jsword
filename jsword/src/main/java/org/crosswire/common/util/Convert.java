@@ -46,11 +46,11 @@ public final class Convert {
      */
     public static boolean string2Boolean(String data) {
         return Boolean.valueOf(data).booleanValue()
-                || data.equalsIgnoreCase("yes")
-                || data.equalsIgnoreCase("ok")
-                || data.equalsIgnoreCase("okay")
-                || data.equalsIgnoreCase("on")
-                || data.equals("1");
+                || "yes".equalsIgnoreCase(data)
+                || "ok".equalsIgnoreCase(data)
+                || "okay".equalsIgnoreCase(data)
+                || "on".equalsIgnoreCase(data)
+                || "1".equals(data);
     }
 
     /**

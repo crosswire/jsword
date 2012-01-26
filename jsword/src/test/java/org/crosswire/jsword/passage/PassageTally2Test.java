@@ -77,8 +77,9 @@ public class PassageTally2Test extends TestCase {
     Passage gen123_1 = null;
     Passage gen1_157 = null;
 
-    PassageTally tally = new PassageTally(Versifications.instance().getVersification("KJV"));
-    PassageTally empty = new PassageTally(Versifications.instance().getVersification("KJV"));
+    // AV11N(DMS): Update test to test all V11Ns
+    PassageTally tally = new PassageTally(Versifications.instance().getDefaultVersification());
+    PassageTally empty = new PassageTally(Versifications.instance().getDefaultVersification());
     PassageTally temp = null;
 
     @Override
@@ -87,7 +88,8 @@ public class PassageTally2Test extends TestCase {
         BookName.setCase(CaseType.SENTENCE);
         fullName = BookName.isFullBookName();
         BookName.setFullBookName(false);
-        v11n = Versifications.instance().getVersification("KJV");
+        // AV11N(DMS): Update test to test all V11Ns
+        v11n = Versifications.instance().getDefaultVersification();
 
         gen11_1 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.GEN, 1, 1), 1);
         gen11_2 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.GEN, 1, 1), 2);

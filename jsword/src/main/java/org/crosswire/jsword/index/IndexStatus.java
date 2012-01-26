@@ -68,7 +68,7 @@ public enum IndexStatus {
      * Lookup method to convert from a String
      */
     public static IndexStatus fromString(String name) {
-        for (IndexStatus o: IndexStatus.values()) {
+        for (IndexStatus o : IndexStatus.values()) {
             if (o.name.equalsIgnoreCase(name)) {
                 return o;
             }

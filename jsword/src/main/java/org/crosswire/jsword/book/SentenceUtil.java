@@ -91,7 +91,7 @@ public final class SentenceUtil {
                 pos = nextDDash + 2;
             }
 
-            if (temp != null && !temp.trim().equals("")) {
+            if (temp != null && !"".equals(temp.trim())) {
                 tokens.add(temp);
             }
         }

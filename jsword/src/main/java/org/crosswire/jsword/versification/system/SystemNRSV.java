@@ -37,14 +37,14 @@ public class SystemNRSV extends Versification {
     /**
      * Build the "NRSV" Versification.
      */
-    public SystemNRSV() {
-        super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);
+    /* protected */ SystemNRSV() {
+        super(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, LAST_VERSE_NT);
     }
 
-    public static String name = "NRSV";
-    public static BibleBook[] booksNT = SystemDefault.booksNT;
+    public static final String V11N_NAME = "NRSV";
+    /* protected */ static final BibleBook[] BOOKS_NT = SystemDefault.BOOKS_NT;
 
-    public static int[][] lastVerseNT =
+    /* protected */ static final int[][] LAST_VERSE_NT =
     {
         // Matt
         {
@@ -171,9 +171,8 @@ public class SystemNRSV extends Versification {
         },
     };
 
-
-    public static BibleBook[] booksOT = SystemDefault.booksOT;
-    public static int[][] lastVerseOT = SystemKJV.lastVerseOT;
+    /* protected */ static final BibleBook[] BOOKS_OT = SystemDefault.BOOKS_OT;
+    /* protected */ static final int[][] LAST_VERSE_OT = SystemKJV.LAST_VERSE_OT;
 
     /**
      * Serialization ID

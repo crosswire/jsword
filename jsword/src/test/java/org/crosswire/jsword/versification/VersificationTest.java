@@ -48,7 +48,8 @@ public class VersificationTest extends TestCase {
     @Override
     protected void setUp() {
         storedCase = BookName.getDefaultCase();
-        v11n = Versifications.instance().getVersification("KJV");
+        // AV11N(DMS): Update test to test all V11Ns
+        v11n = Versifications.instance().getDefaultVersification();
     }
 
     @Override
@@ -234,6 +235,7 @@ public class VersificationTest extends TestCase {
     }
 
     public void testNames() {
+        // AV11N(DMS): Is this right?
         assertEquals(2, BibleBook.GEN.ordinal());
         assertEquals(68, BibleBook.REV.ordinal());
     }

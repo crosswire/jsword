@@ -39,15 +39,15 @@ public class SystemLeningrad extends Versification {
     /**
      * Build the "Leningrad" Versification.
      */
-    public SystemLeningrad() {
-        super(name, booksOT, booksNT, lastVerseOT, null);
+    /* protected */ SystemLeningrad() {
+        super(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, null);
     }
 
-    public static String name = "Leningrad";
+    public static final String V11N_NAME = "Leningrad";
 
-    public static BibleBook[] booksNT = SystemDefault.booksNone;
+    /* protected */ static final BibleBook[] BOOKS_NT = SystemDefault.BOOKS_NONE;
 
-    public static BibleBook[] booksOT =
+    /* protected */ static final BibleBook[] BOOKS_OT =
     {
         BibleBook.GEN,
         BibleBook.EXOD,
@@ -89,7 +89,8 @@ public class SystemLeningrad extends Versification {
         BibleBook.EZRA,
         BibleBook.NEH,
     };
-    public static int lastVerseOT[][] =
+
+    /* protected */ static final int[][] LAST_VERSE_OT =
     {
         // Genesis
         {

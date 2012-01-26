@@ -45,7 +45,7 @@ public class BibleBookList implements Iterable<BibleBook>, Serializable {
 
     /**
      * Does this Versification contain the BibleBook.
-     * 
+     *
      * @param book
      * @return true if it is present.
      */
@@ -58,7 +58,7 @@ public class BibleBookList implements Iterable<BibleBook>, Serializable {
      * The first book is 0, the next is 1 and so forth.
      * If the BibleBook is not in this Reference System,
      * then the return value of this routine is -1.
-     * 
+     *
      * @param book
      * return the ordinal value of the book or -1 if not present
      */
@@ -78,7 +78,7 @@ public class BibleBookList implements Iterable<BibleBook>, Serializable {
      * Get the BibleBook by its position in this Versification.
      * If the position is negative, return the first book.
      * If the position is greater than the last, return the last book.
-     * 
+     *
      * @param ordinal
      * @return the indicated book
      */
@@ -95,13 +95,13 @@ public class BibleBookList implements Iterable<BibleBook>, Serializable {
 
     /**
      * Get the BibleBooks in this Versification.
-     * 
+     *
      * @return an Iterator over the books
      */
     public Iterator<BibleBook> iterator() {
         return new Iterator<BibleBook>() {
 
-            BibleBook nextBook = books[0];
+            private BibleBook nextBook = books[0];
 
             @Override
             public boolean hasNext() {
@@ -124,13 +124,13 @@ public class BibleBookList implements Iterable<BibleBook>, Serializable {
             public void remove() {
                 throw new UnsupportedOperationException();
             }
-            
+
         };
     }
 
     /**
      * Return the first book in the list.
-     * 
+     *
      * @return the first book in the list
      */
     public BibleBook getFirstBook() {
@@ -139,7 +139,7 @@ public class BibleBookList implements Iterable<BibleBook>, Serializable {
 
     /**
      * Return the first book in the list.
-     * 
+     *
      * @return the first book in the list
      */
     public BibleBook getLastBook() {
@@ -186,7 +186,7 @@ public class BibleBookList implements Iterable<BibleBook>, Serializable {
         for (BibleBook b : BibleBook.values()) {
             bookMap[b.ordinal()] = -1;
         }
-        
+
         // Fill in the position of the books into that list
         for (int i = 0; i < books.length; i++) {
             bookMap[books[i].ordinal()] = i;
@@ -194,9 +194,9 @@ public class BibleBookList implements Iterable<BibleBook>, Serializable {
     }
 
     private BibleBook[] books;
-    
+
     /** The bookMap maps from a BibleBook to the position that book has in <code>books</code>. */
-    private int bookMap[];
+    private int[] bookMap;
 
     /**
      * Serialization ID

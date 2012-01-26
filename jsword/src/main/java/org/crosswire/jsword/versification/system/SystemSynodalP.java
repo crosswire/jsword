@@ -28,8 +28,8 @@ import org.crosswire.jsword.versification.Versification;
  * The SynodalP versification is essentially the KJV v11n, using its book order
  * and chapter counts,
  * but merged with verse counts similar to those of the Synodal v11n
- * 
- * 
+ *
+ *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
@@ -38,13 +38,15 @@ public class SystemSynodalP extends Versification {
     /**
      * Build the "SynodalP" Versification.
      */
-    public SystemSynodalP() {
-        super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);
+    /* protected */ SystemSynodalP() {
+        super(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, LAST_VERSE_NT);
     }
 
-    public static String name = "SynodalP";
-    public static BibleBook[] booksNT = SystemDefault.booksNT;
-    public static final int[][] lastVerseNT =
+    public static final String V11N_NAME = "SynodalP";
+
+    /* protected */ static final BibleBook[] BOOKS_NT = SystemDefault.BOOKS_NT;
+
+    /* protected */ static final int[][] LAST_VERSE_NT =
     {
         // Matthew
         {
@@ -171,8 +173,8 @@ public class SystemSynodalP extends Versification {
         }
     };
 
-    public static BibleBook[] booksOT = SystemDefault.booksOT;
-    public static final int[][] lastVerseOT =
+    /* protected */ static final BibleBook[] BOOKS_OT = SystemDefault.BOOKS_OT;
+    /* protected */ static final int[][] LAST_VERSE_OT =
     {
         // Gen
         {

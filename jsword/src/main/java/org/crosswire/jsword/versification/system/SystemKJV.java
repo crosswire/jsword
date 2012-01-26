@@ -36,14 +36,14 @@ public class SystemKJV extends Versification {
     /**
      * Build the "KJV" Versification.
      */
-    public SystemKJV() {
-        super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);
+    /* protected */ SystemKJV() {
+        super(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, LAST_VERSE_NT);
     }
 
-    public static String name = "KJV";
-    public static BibleBook[] booksNT = SystemDefault.booksNT;
+    public static final String V11N_NAME = "KJV";
+    /* protected */ static final BibleBook[] BOOKS_NT = SystemDefault.BOOKS_NT;
 
-    public static int[][] lastVerseNT =
+    /* protected */ static final int[][] LAST_VERSE_NT =
     {
         // Matt
         {
@@ -170,10 +170,10 @@ public class SystemKJV extends Versification {
         },
     };
 
-    public static BibleBook[] booksOT = SystemDefault.booksOT;
+    /* protected */ static final BibleBook[] BOOKS_OT = SystemDefault.BOOKS_OT;
 
     /** Constant for the max verse number in each chapter */
-    public static final int[][] lastVerseOT =
+    /* protected */ static final int[][] LAST_VERSE_OT =
     {
         // Gen
         {
@@ -415,7 +415,7 @@ public class SystemKJV extends Versification {
     /**
      * Constant for the ordinal number of the first verse in each chapter.
      */
-    public static final int[][] kjvChapterStarts =
+    /* protected */ static final int[][] CHAPTER_STARTS =
     {
         // Bible Introduction
         {

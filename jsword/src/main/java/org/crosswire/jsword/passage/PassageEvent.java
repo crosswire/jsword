@@ -36,6 +36,9 @@ import org.crosswire.jsword.versification.BibleBook;
  */
 public class PassageEvent extends EventObject {
 
+    /**
+     * Indicates what kind of change happened to a Passage.
+     */
     public enum EventType {
         /**
          * Identifies one or more changes in the lists contents.

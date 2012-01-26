@@ -34,7 +34,7 @@ import org.crosswire.common.icu.NumberShaper;
  * A base class for implementing type safe internationalization (i18n) that is
  * easy for most cases. See {@link org.crosswire.common.util.Msg} for an example
  * of how to inherit from here.
- * 
+ *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -51,7 +51,7 @@ public class MsgBase {
 
     /**
      * Get the internationalized text, but return key if key is unknown.
-     * 
+     *
      * @param key
      * @return the internationalized text
      */
@@ -63,7 +63,7 @@ public class MsgBase {
 
         //MessageFormat strips off all single apostrophes from the message so replace single quotes with two quotes
         rawMessage = rawMessage.replaceAll("'", "''");
-        
+
         return shaper.shape(MessageFormat.format(rawMessage, params));
     }
 

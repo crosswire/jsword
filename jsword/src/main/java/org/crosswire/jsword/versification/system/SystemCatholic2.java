@@ -37,16 +37,16 @@ public class SystemCatholic2 extends Versification {
     /**
      * Build the "Catholic2" Versification.
      */
-    public SystemCatholic2() {
-        super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);
+    /* protected */ SystemCatholic2() {
+        super(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, LAST_VERSE_NT);
     }
 
-    public static String name = "Catholic2";
-    public static BibleBook[] booksNT = SystemDefault.booksNT;
-    public static int[][] lastVerseNT = SystemCatholic.lastVerseNT;
+    public static final String V11N_NAME = "Catholic2";
+    /* protected */ static final BibleBook[] BOOKS_NT = SystemDefault.BOOKS_NT;
+    /* protected */ static final int[][] LAST_VERSE_NT = SystemCatholic.LAST_VERSE_NT;
 
-    public static BibleBook[] booksOT = SystemCatholic.booksOT;
-    public static int lastVerseOT[][] =
+    /* protected */ static final BibleBook[] BOOKS_OT = SystemCatholic.BOOKS_OT;
+    /* protected */ static final int[][] LAST_VERSE_OT =
     {
         // Gen
         {
@@ -162,7 +162,7 @@ public class SystemCatholic2 extends Versification {
         // Esther
         {
           22, 23, 15, 17, 14, 14, 10, 17, 32,
-          13, 12, 6, 18, 19, 19, 24, 
+          13, 12, 6, 18, 19, 19, 24,
         },
         // I Maccabees
         {

@@ -33,8 +33,8 @@ import org.crosswire.jsword.JSOtherMsg;
 /**
  * A class which holds a list of EventListeners. This code is lifted from
  * javax.sw*ng.event.EventListnerList. It is very useful in non GUI code which
- * does not need the rest of sw*ng. BORROWED: From
- * javax.sw*ng.event.EventListnerList
+ * does not need the rest of sw*ng. 
+ * BORROWED: From javax.sw*ng.event.EventListnerList
  * 
  * <p>
  * It differs in that it is fully synchronized, thus thread safe.

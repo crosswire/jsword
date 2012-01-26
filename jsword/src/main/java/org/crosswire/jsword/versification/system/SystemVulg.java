@@ -35,15 +35,15 @@ public class SystemVulg extends Versification {
     /**
      * Build the "Vulg" Versification.
      */
-    public SystemVulg() {
-        super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);
+    /* protected */ SystemVulg() {
+        super(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, LAST_VERSE_NT);
     }
 
-    public static String name = "Vulg";
+    public static final String V11N_NAME = "Vulg";
 
     // Start with SystemDefault.booksNT
     // and follow with additional deuterocanonical books
-    public static BibleBook[] booksNT = 
+    /* protected */ static final BibleBook[] BOOKS_NT =
     {
         BibleBook.MATT,
         BibleBook.MARK,
@@ -79,7 +79,8 @@ public class SystemVulg extends Versification {
         BibleBook.ADD_PS,
         BibleBook.EP_LAO,
     };
-    public static int[][] lastVerseNT =
+
+    /* protected */ static final int[][] LAST_VERSE_NT =
     {
         // Matthew
         {
@@ -230,7 +231,7 @@ public class SystemVulg extends Versification {
     // Has all the SystemDefault.booksOT
     // with deuterocanonical books mixed into
     // a very distinctive order
-    public static BibleBook[] booksOT = 
+    /* protected */ static final BibleBook[] BOOKS_OT =
     {
         BibleBook.GEN,
         BibleBook.EXOD,
@@ -280,7 +281,7 @@ public class SystemVulg extends Versification {
         BibleBook.MACC2,
     };
 
-    public static int[][] lastVerseOT =
+    /* protected */ static final int[][] LAST_VERSE_OT =
     {
         // Genesis
         {

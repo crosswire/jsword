@@ -73,7 +73,8 @@ public final class KeyUtil {
             return ref.getVerseAt(0);
         }
 
-        Versification v11n = Versifications.instance().getVersification("KJV");
+        // AV11N(DMS): Is this right?
+        Versification v11n = Versifications.instance().getDefaultVersification();
         try {
             return VerseFactory.fromString(v11n, key.getName());
         } catch (NoSuchVerseException ex) {
@@ -97,7 +98,8 @@ public final class KeyUtil {
         }
 
         Key ref = null;
-        Versification v11n = Versifications.instance().getVersification("KJV");
+        // AV11N(DMS): Is this right?
+        Versification v11n = Versifications.instance().getDefaultVersification();
         try {
             ref = keyf.getKey(v11n, key.getName());
         } catch (NoSuchKeyException ex) {

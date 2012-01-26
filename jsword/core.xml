@@ -334,6 +334,7 @@
     <javac debug="on"
            includes="**/*.java"
            destdir="${target.classes}"
+           includeantruntime="false"
            source="1.5">
       <src refid="source.path"/>
       <classpath refid="runtime.jarpath"/>

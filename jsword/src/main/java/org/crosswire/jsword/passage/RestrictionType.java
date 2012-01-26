@@ -78,7 +78,7 @@ public enum RestrictionType {
 
         @Override
         public VerseRange blur(Versification v11n, VerseRange range, int blurDown, int blurUp) {
-            Versification rs = Versifications.instance().getVersification("KJV");
+            Versification rs = range.getVersification();
 
             Verse start = range.getStart();
             BibleBook startBook = start.getBook();
@@ -111,7 +111,8 @@ public enum RestrictionType {
 
             BibleBook book = verse.getBook();
             int chapterNumber = verse.getChapter();
-            int up = Math.min(verseNumber + blurUp, Versifications.instance().getVersification("KJV").getLastVerse(book, chapterNumber)) - verseNumber;
+            // AV11N(DMS): Is this right?
+            int up = Math.min(verseNumber + blurUp, Versifications.instance().getDefaultVersification().getLastVerse(book, chapterNumber)) - verseNumber;
             Verse end = verse;
             if (up > 0) {
                 end = verse.add(up);

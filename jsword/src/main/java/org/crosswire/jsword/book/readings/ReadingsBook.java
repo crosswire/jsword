@@ -136,8 +136,9 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
         }
 
         try {
+            // AV11N(DMS): Is this right?
             PassageKeyFactory keyf = PassageKeyFactory.instance();
-            Passage ref = (Passage) keyf.getKey(Versifications.instance().getVersification("KJV"), readings);
+            Passage ref = (Passage) keyf.getKey(Versifications.instance().getDefaultVersification(), readings);
 
             Element list = OSISUtil.factory().createList();
             content.add(list);

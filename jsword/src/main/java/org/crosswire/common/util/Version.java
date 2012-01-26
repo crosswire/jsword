@@ -47,7 +47,7 @@ public class Version implements Comparable<Version> {
     /**
      * The default version "1.0".
      */
-    public static final Version defaultVersion = new Version("1.0");
+    public static final Version DEFAULT_VERSION = new Version("1.0");
 
     /**
      * Created a version identifier from the specified string.
@@ -103,13 +103,18 @@ public class Version implements Comparable<Version> {
      * @param object The <code>Version</code> object to be compared.
      * @return true if the two objects are equal.
      */
-    public boolean equals(Version object) {
-        if (object == this) {
+    public boolean equals(Object object) {
+        if (!(object instanceof Version)) {
+            return false;
+        }
+
+        Version that = (Version) object;
+        if (that == this) {
             return true;
         }
 
         for (int i = 0; i < parts.length; i++) {
-            if (parts[i] != object.parts[i]) {
+            if (parts[i] != that.parts[i]) {
                 return false;
             }
         }
@@ -148,6 +153,6 @@ public class Version implements Comparable<Version> {
     }
 
     private final String         original;
-    private final int            parts[];
+    private final int[]          parts;
 
 }

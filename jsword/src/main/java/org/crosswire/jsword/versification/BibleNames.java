@@ -33,7 +33,7 @@ import org.crosswire.common.util.StringUtil;
 
 /**
  * BibleNames deals with locale sensitive BibleBook name lookup conversions.
- * 
+ *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -55,7 +55,7 @@ import org.crosswire.common.util.StringUtil;
     /**
      * Get the preferred name of a book. Altered by the case setting (see
      * setBookCase() and isFullBookName())
-     * 
+     *
      * @param book
      *            The book of the Bible
      * @return The full name of the book
@@ -67,7 +67,7 @@ import org.crosswire.common.util.StringUtil;
     /**
      * Get the full name of a book (e.g. "Genesis"). Altered by the case setting
      * (see setBookCase())
-     * 
+     *
      * @param book
      *            The book of the Bible
      * @return The full name of the book
@@ -79,7 +79,7 @@ import org.crosswire.common.util.StringUtil;
     /**
      * Get the short name of a book (e.g. "Gen"). Altered by the case setting
      * (see setBookCase())
-     * 
+     *
      * @param book
      *            The book of the Bible
      * @return The short name of the book
@@ -90,7 +90,7 @@ import org.crosswire.common.util.StringUtil;
 
     /**
      * Get number of a book from its name.
-     * 
+     *
      * @param find
      *            The string to identify
      * @return The BibleBook, On error null
@@ -126,7 +126,7 @@ import org.crosswire.common.util.StringUtil;
     /**
      * Is the given string a valid book name. If this method returns true then
      * getBook() will return a BibleBook and not null.
-     * 
+     *
      * @param find
      *            The string to identify
      * @return true if the book name is known
@@ -154,7 +154,7 @@ import org.crosswire.common.util.StringUtil;
         String shortClassName = ClassUtil.getShortClassName(className);
         ResourceBundle resources = ResourceBundle.getBundle(shortClassName, locale, CWClassLoader.instance(BibleNames.class));
 
-        for (BibleBook book: BibleBook.values()) {
+        for (BibleBook book : BibleBook.values()) {
             String osisName = book.getOSIS();
 
             String fullBook = getString(resources, osisName + FULL_KEY);
@@ -172,7 +172,7 @@ import org.crosswire.common.util.StringUtil;
             fullBooksMap.put(bookName.getNormalizedLongName(), bookName);
 
             shortBooksMap.put(bookName.getNormalizedShortName(), bookName);
-            
+
             String[] alternates = StringUtil.split(BookName.normalize(altBook, locale), ',');
 
             for (int j = 0; j < alternates.length; j++) {

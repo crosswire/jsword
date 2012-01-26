@@ -109,7 +109,8 @@ public class PassageParentTst extends TestCase {
         BookName.setCase(CaseType.SENTENCE);
         fullName = BookName.isFullBookName();
         BookName.setFullBookName(false);
-        v11n = Versifications.instance().getVersification("KJV");
+        // AV11N(DMS): Update test to test all V11Ns
+        v11n = Versifications.instance().getDefaultVersification();
 
         start = System.currentTimeMillis();
         gen1_135 = (Passage) keyf.getKey(v11n, "Gen 1:1, Gen 1:3, Gen 1:5");

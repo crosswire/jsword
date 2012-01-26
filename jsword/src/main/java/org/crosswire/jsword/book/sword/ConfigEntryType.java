@@ -193,7 +193,8 @@ public enum ConfigEntryType {
         "OSISRedLetterWords",
         "OSISLemma",
         "OSISRuby"
-    ) {
+    )
+    {
         @Override
         public boolean mayRepeat() {
             return true;
@@ -267,7 +268,8 @@ public enum ConfigEntryType {
     OSIS_Q_TO_TICK("OSISqToTick", 0,
         "true",
         "false"
-    ) {
+    )
+    {
         @Override
         public Object convert(String input) {
             return Boolean.valueOf(input);
@@ -286,7 +288,8 @@ public enum ConfigEntryType {
         "DailyDevotion",
         "Glossary",
         "Images"
-    ) {
+    )
+    {
         @Override
         public boolean mayRepeat() {
             return true;
@@ -413,7 +416,8 @@ public enum ConfigEntryType {
         "Commentaries",
         "Lexicons / Dictionaries",
         "Generic Books"
-    ) {
+    )
+    {
         @Override
         public Object convert(String input) {
             return BookCategory.fromString(input);

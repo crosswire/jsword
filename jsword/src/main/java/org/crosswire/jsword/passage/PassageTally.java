@@ -765,6 +765,9 @@ public class PassageTally extends AbstractPassage {
         readObjectSupport(in);
     }
 
+    /**
+     * Indicates how this PassageTally is to order it's Verses.
+     */
     public enum Order {
         /**
          * Sort in Biblical order

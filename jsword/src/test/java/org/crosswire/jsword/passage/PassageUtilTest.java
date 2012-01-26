@@ -51,7 +51,8 @@ public class PassageUtilTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
-        v11n = Versifications.instance().getVersification("KJV");
+        // AV11N(DMS): Update test to test all V11Ns
+        v11n = Versifications.instance().getDefaultVersification();
     }
 
     /*

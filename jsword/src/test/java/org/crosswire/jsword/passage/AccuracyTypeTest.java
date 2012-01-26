@@ -16,7 +16,8 @@ public class AccuracyTypeTest extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
-        rs = Versifications.instance().getVersification("KJV");
+        // AV11N(DMS): Update test to test all V11Ns
+        rs = Versifications.instance().getDefaultVersification();
     }
 
     public void testFromText_onePartInvalidBook() {

@@ -36,14 +36,14 @@ public class SystemCatholic extends Versification {
     /**
      * Build the "Catholic" Versification.
      */
-    public SystemCatholic() {
-        super(name, booksOT, booksNT, lastVerseOT, lastVerseNT);
+    /* protected */ SystemCatholic() {
+        super(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, LAST_VERSE_NT);
     }
 
-    public static String name = "Catholic";
+    public static final String V11N_NAME = "Catholic";
 
-    public static BibleBook[] booksNT = SystemDefault.booksNT;
-    public static int lastVerseNT[][] =
+    /* protected */ static final BibleBook[] BOOKS_NT = SystemDefault.BOOKS_NT;
+    /* protected */ static final int[][] LAST_VERSE_NT =
     {
         // Matthew
         {
@@ -169,7 +169,7 @@ public class SystemCatholic extends Versification {
         },
     };
 
-    public static BibleBook[] booksOT =
+    /* protected */ static final BibleBook[] BOOKS_OT =
     {
         BibleBook.GEN,
         BibleBook.EXOD,
@@ -219,7 +219,7 @@ public class SystemCatholic extends Versification {
         BibleBook.MAL,
     };
 
-    public static int lastVerseOT[][] =
+    /* protected */ static final int[][] LAST_VERSE_OT =
     {
         // Gen
         {

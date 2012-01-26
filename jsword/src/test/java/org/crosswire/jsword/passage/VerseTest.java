@@ -69,7 +69,8 @@ public class VerseTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         BookName.setFullBookName(false);
-        v11n = Versifications.instance().getVersification("KJV");
+        // AV11N(DMS): Update test to test all V11Ns
+        v11n = Versifications.instance().getDefaultVersification();
 
         gen00 = new Verse(BibleBook.GEN, 0, 0);
         gen10 = new Verse(BibleBook.GEN, 1, 0);

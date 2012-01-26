@@ -30,7 +30,9 @@ import org.crosswire.jsword.JSMsg;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
+ * @deprecated Use {@link DivisonName} instead.
  */
+@Deprecated
 public enum SectionNames {
     /** BIBLE consists of the entire/whole Bible (Gen - Rev) **/
     BIBLE {
@@ -451,7 +453,7 @@ public enum SectionNames {
             return MAJOR_PROPHETS;
         }
 
-        // AV11N(DMS): might not be true
+        // AAV11N(DMS): might not be true
         return REVELATION;
     }
 

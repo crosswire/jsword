@@ -613,7 +613,7 @@ public final class ConfigEntryTable {
 
         // At the moment only the KJV is supported.
         String v11n = (String) getValue(ConfigEntryType.VERSIFICATION);
-        if (! Versifications.instance().isDefined(v11n)) {
+        if (!Versifications.instance().isDefined(v11n)) {
             supported = false;
             return;
         }
