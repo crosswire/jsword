@@ -26,6 +26,30 @@ import org.crosswire.jsword.JSMsg;
 /**
  * DivisionName deals with traditional sections of the Bible.
  * 
+ * AV11N(DMS): Is this right?
+ * <ul>
+ * <li><strong>contains(BibleBook)</strong> - This has several problems:
+ * <ol>
+ * <li>The use of BibleBook.ordinal() is dependent upon the ordering of the
+ * members of the BibleBook enum. Currently it is ordered OT and NT according to
+ * the KJV and then has the deuterocanonical and apocryphal books in no
+ * particular order.</li>
+ * <li>Each versification defines the what books are present and the order of
+ * books. So for one versification, GEN might not be the first and REV might not
+ * be the last. E.g. Some V11Ns consist only of the OT.</li>
+ * </ol>
+ * </li>
+ * <li><strong>getSize()</strong> - This can vary by versification for at least
+ * BIBLE, OT and NT for those that include deuterocanonical or apocryphal books.
+ * </li>
+ * <li><strong>getRange()</strong> - This range is fixed text giving end points
+ * that may include BibleBooks that are not intended and may exclude BibleBooks
+ * that are intended. It works for the default Versification and may not work
+ * for others.</li>
+ * <li>A given V11N might be a single testament or just the gospels. In this case,
+ * it'd be good to know whether a division isDefined()</li>
+ * </ul>
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -36,14 +60,12 @@ public enum DivisionName {
     BIBLE {
         @Override
         public boolean contains(BibleBook book) {
-            // AV11N(DMS): Is this right?
             int bookNum = book.ordinal();
             return bookNum >= BibleBook.GEN.ordinal() && bookNum <= BibleBook.REV.ordinal();
         }
 
         @Override
         public int getSize() {
-            // AV11N(DMS): Is this right?
             return 66;
         }
 
@@ -55,23 +77,20 @@ public enum DivisionName {
 
         @Override
         public String getRange() {
-            // AV11N(DMS): Is this right?
             return "Gen-Rev";
         }
 
     },
-    /** OLD_TESTAMENT consists of the old testament (Gen - Rev) **/
+    /** OLD_TESTAMENT consists of the old testament (Gen - Mal) **/
     OLD_TESTAMENT {
         @Override
         public boolean contains(BibleBook book) {
-            // AV11N(DMS): Is this right?
             int bookNum = book.ordinal();
             return bookNum >= BibleBook.GEN.ordinal() && bookNum <= BibleBook.MAL.ordinal();
         }
 
         @Override
         public int getSize() {
-            // AV11N(DMS): Is this right?
             return 39;
         }
 
@@ -83,7 +102,6 @@ public enum DivisionName {
 
         @Override
         public String getRange() {
-            // AV11N(DMS): Is this right?
             return "Gen-Mal";
         }
     },
@@ -91,14 +109,12 @@ public enum DivisionName {
     PENTATEUCH {
         @Override
         public boolean contains(BibleBook book) {
-            // AV11N(DMS): Is this right?
             int bookNum = book.ordinal();
             return bookNum >= BibleBook.GEN.ordinal() && bookNum <= BibleBook.DEUT.ordinal();
         }
 
         @Override
         public int getSize() {
-            // AV11N(DMS): Is this right?
             return 5;
         }
 
@@ -110,7 +126,6 @@ public enum DivisionName {
 
         @Override
         public String getRange() {
-            // AV11N(DMS): Is this right?
             return "Gen-Deu";
         }
     },
@@ -118,14 +133,12 @@ public enum DivisionName {
     HISTORY {
         @Override
         public boolean contains(BibleBook book) {
-            // AV11N(DMS): Is this right?
             int bookNum = book.ordinal();
             return bookNum >= BibleBook.JOSH.ordinal() && bookNum <= BibleBook.ESTH.ordinal();
         }
 
         @Override
         public int getSize() {
-            // AV11N(DMS): Is this right?
             return 12;
         }
 
@@ -137,7 +150,6 @@ public enum DivisionName {
 
         @Override
         public String getRange() {
-            // AV11N(DMS): Is this right?
             return "Jos-Est";
         }
     },
@@ -145,14 +157,12 @@ public enum DivisionName {
     POETRY {
         @Override
         public boolean contains(BibleBook book) {
-            // AV11N(DMS): Is this right?
             int bookNum = book.ordinal();
             return bookNum >= BibleBook.JOB.ordinal() && bookNum <= BibleBook.SONG.ordinal();
         }
 
         @Override
         public int getSize() {
-            // AV11N(DMS): Is this right?
             return 5;
         }
 
@@ -165,7 +175,6 @@ public enum DivisionName {
 
         @Override
         public String getRange() {
-            // AV11N(DMS): Is this right?
             return "Job-Song";
         }
     },
@@ -173,14 +182,12 @@ public enum DivisionName {
     PROPHECY {
         @Override
         public boolean contains(BibleBook book) {
-            // AV11N(DMS): Is this right?
             int bookNum = book.ordinal();
             return bookNum == BibleBook.REV.ordinal() || bookNum >= BibleBook.ISA.ordinal() && bookNum <= BibleBook.MAL.ordinal();
         }
 
         @Override
         public int getSize() {
-            // AV11N(DMS): Is this right?
             return 18;
         }
 
@@ -197,7 +204,6 @@ public enum DivisionName {
 
         @Override
         public String getRange() {
-            // AV11N(DMS): Is this right?
             return "Deu 28,Isa-Mal,Rev";
         }
     },
@@ -205,14 +211,12 @@ public enum DivisionName {
     MAJOR_PROPHETS {
         @Override
         public boolean contains(BibleBook book) {
-            // AV11N(DMS): Is this right?
             int bookNum = book.ordinal();
             return bookNum >= BibleBook.ISA.ordinal() && bookNum <= BibleBook.DAN.ordinal();
         }
 
         @Override
         public int getSize() {
-            // AV11N(DMS): Is this right?
             return 5;
         }
 
@@ -225,7 +229,6 @@ public enum DivisionName {
 
         @Override
         public String getRange() {
-            // AV11N(DMS): Is this right?
             return "Isa-Dan";
         }
     },
@@ -233,14 +236,12 @@ public enum DivisionName {
     MINOR_PROPHETS {
         @Override
         public boolean contains(BibleBook book) {
-            // AV11N(DMS): Is this right?
             int bookNum = book.ordinal();
             return bookNum >= BibleBook.HOS.ordinal() && bookNum <= BibleBook.MAL.ordinal();
         }
 
         @Override
         public int getSize() {
-            // AV11N(DMS): Is this right?
             return 12;
         }
 
@@ -254,7 +255,6 @@ public enum DivisionName {
 
         @Override
         public String getRange() {
-            // AV11N(DMS): Is this right?
             return "Hos-Mal";
         }
     },
@@ -262,14 +262,12 @@ public enum DivisionName {
     NEW_TESTAMENT {
         @Override
         public boolean contains(BibleBook book) {
-            // AV11N(DMS): Is this right?
             int bookNum = book.ordinal();
             return bookNum >= BibleBook.GEN.ordinal() && bookNum <= BibleBook.REV.ordinal();
         }
 
         @Override
         public int getSize() {
-            // AV11N(DMS): Is this right?
             return 27;
         }
 
@@ -281,7 +279,6 @@ public enum DivisionName {
 
         @Override
         public String getRange() {
-            // AV11N(DMS): Is this right?
             return "Mat-Rev";
         }
     },
@@ -289,14 +286,12 @@ public enum DivisionName {
     GOSPELS_AND_ACTS {
         @Override
         public boolean contains(BibleBook book) {
-            // AV11N(DMS): Is this right?
             int bookNum = book.ordinal();
             return bookNum >= BibleBook.MATT.ordinal() && bookNum <= BibleBook.ACTS.ordinal();
         }
 
         @Override
         public int getSize() {
-            // AV11N(DMS): Is this right?
             return 5;
         }
 
@@ -309,7 +304,6 @@ public enum DivisionName {
 
         @Override
         public String getRange() {
-            // AV11N(DMS): Is this right?
             return "Mat-Acts";
         }
     },
@@ -317,14 +311,12 @@ public enum DivisionName {
     LETTERS {
         @Override
         public boolean contains(BibleBook book) {
-            // AV11N(DMS): Is this right?
             int bookNum = book.ordinal();
             return bookNum >= BibleBook.ROM.ordinal() && bookNum <= BibleBook.JUDE.ordinal();
         }
 
         @Override
         public int getSize() {
-            // AV11N(DMS): Is this right?
             return 21;
         }
 
@@ -339,7 +331,6 @@ public enum DivisionName {
 
         @Override
         public String getRange() {
-            // AV11N(DMS): Is this right?
             return "Rom-Jud";
         }
     },
@@ -347,14 +338,12 @@ public enum DivisionName {
     PAULINE_LETTERS {
         @Override
         public boolean contains(BibleBook book) {
-            // AV11N(DMS): Is this right?
             int bookNum = book.ordinal();
             return bookNum >= BibleBook.ROM.ordinal() && bookNum <= BibleBook.JUDE.ordinal();
         }
 
         @Override
         public int getSize() {
-            // AV11N(DMS): Is this right?
             return 14;
         }
 
@@ -368,7 +357,6 @@ public enum DivisionName {
 
         @Override
         public String getRange() {
-            // AV11N(DMS): Is this right?
             return "Rom-Heb";
         }
     },
@@ -376,14 +364,12 @@ public enum DivisionName {
     GENERAL_LETTERS {
         @Override
         public boolean contains(BibleBook book) {
-            // AV11N(DMS): Is this right?
             int bookNum = book.ordinal();
             return bookNum >= BibleBook.ROM.ordinal() && bookNum <= BibleBook.JUDE.ordinal();
         }
 
         @Override
         public int getSize() {
-            // AV11N(DMS): Is this right?
             return 7;
         }
 
@@ -396,7 +382,6 @@ public enum DivisionName {
 
         @Override
         public String getRange() {
-            // AV11N(DMS): Is this right?
             return "Jas-Jud";
         }
     },
@@ -409,7 +394,6 @@ public enum DivisionName {
 
         @Override
         public int getSize() {
-            // AV11N(DMS): Is this right?
             return 1;
         }
 

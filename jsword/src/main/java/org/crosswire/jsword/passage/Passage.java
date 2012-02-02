@@ -26,7 +26,6 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.Iterator;
 
-import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.Versification;
 
 /**
@@ -163,31 +162,6 @@ public interface Passage extends Key {
      * @return The number of distinct books
      */
     int booksInPassage();
-
-    /**
-     * How many chapters are there in a particular book in this Passage
-     * 
-     * @param book
-     *            The book to check (null for distinct chapters in all books)
-     * @return The number of distinct chapters
-     * @throws NoSuchVerseException
-     *             if the book is invalid
-     */
-    int chaptersInPassage(BibleBook book) throws NoSuchVerseException;
-
-    /**
-     * How many chapters are there in a particular book in this Passage Note
-     * that <code>versesInPassage(ref, 0, 0) == ref.countVerses()</code>
-     * 
-     * @param book
-     *            The book to check (null for distinct chapters in all books)
-     * @param chapter
-     *            The chapter to check (0 for distinct verses in all chapters)
-     * @return The number of distinct chapters
-     * @throws NoSuchVerseException
-     *             if the book/chapter is invalid
-     */
-    int versesInPassage(BibleBook book, int chapter) throws NoSuchVerseException;
 
     /**
      * Get a specific Verse from this collection

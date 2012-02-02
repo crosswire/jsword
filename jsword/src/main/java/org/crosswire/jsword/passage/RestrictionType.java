@@ -23,7 +23,6 @@ package org.crosswire.jsword.passage;
 
 import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.Versification;
-import org.crosswire.jsword.versification.system.Versifications;
 
 /**
  * Types of Passage Blurring Restrictions.
@@ -39,21 +38,21 @@ public enum RestrictionType {
      */
     NONE {
         @Override
-        public boolean isSameScope(Verse start, Verse end) {
+        public boolean isSameScope(Versification v11n, Verse start, Verse end) {
             return true;
         }
 
         @Override
         public VerseRange blur(Versification v11n, VerseRange range, int blurDown, int blurUp) {
-            Verse start = range.getStart().subtract(blurDown);
-            Verse end = range.getEnd().add(blurUp);
+            Verse start = v11n.subtract(range.getStart(), blurDown);
+            Verse end = v11n.add(range.getEnd(), blurUp);
             return new VerseRange(v11n, start, end);
         }
 
         @Override
         public VerseRange blur(Versification v11n, Verse verse, int blurDown, int blurUp) {
-            Verse start = verse.subtract(blurDown);
-            Verse end = verse.add(blurUp);
+            Verse start = v11n.subtract(verse, blurDown);
+            Verse end = v11n.add(verse, blurUp);
             return new VerseRange(v11n, start, end);
         }
 
@@ -61,7 +60,7 @@ public enum RestrictionType {
         public VerseRange toRange(Versification v11n, Verse verse, int count) {
             Verse end = verse;
             if (count > 1) {
-                end = verse.add(count - 1);
+                end = v11n.add(verse, count - 1);
             }
             return new VerseRange(v11n, verse, end);
         }
@@ -72,14 +71,12 @@ public enum RestrictionType {
      */
     CHAPTER {
         @Override
-        public boolean isSameScope(Verse start, Verse end) {
-            return start.isSameChapter(end);
+        public boolean isSameScope(Versification v11n, Verse start, Verse end) {
+            return v11n.isSameChapter(start, end);
         }
 
         @Override
         public VerseRange blur(Versification v11n, VerseRange range, int blurDown, int blurUp) {
-            Versification rs = range.getVersification();
-
             Verse start = range.getStart();
             BibleBook startBook = start.getBook();
             int startChapter = start.getChapter();
@@ -90,8 +87,8 @@ public enum RestrictionType {
             int endChapter = end.getChapter();
             int endVerse = end.getVerse() + blurUp;
 
-            startVerse = Math.max(startVerse, 1);
-            endVerse = Math.min(endVerse, rs.getLastVerse(endBook, endChapter));
+            startVerse = Math.max(startVerse, 0);
+            endVerse = Math.min(endVerse, v11n.getLastVerse(endBook, endChapter));
 
             Verse newStart = new Verse(startBook, startChapter, startVerse);
             Verse newEnd = new Verse(endBook, endChapter, endVerse);
@@ -100,30 +97,22 @@ public enum RestrictionType {
 
         @Override
         public VerseRange blur(Versification v11n, Verse verse, int blurDown, int blurUp) {
-            int verseNumber = verse.getVerse();
-
-            int down = verseNumber - Math.max(verseNumber - blurDown, 1);
-
-            Verse start = verse;
-            if (down > 0) {
-                start = verse.subtract(down);
-            }
-
             BibleBook book = verse.getBook();
-            int chapterNumber = verse.getChapter();
-            // AV11N(DMS): Is this right?
-            int up = Math.min(verseNumber + blurUp, Versifications.instance().getDefaultVersification().getLastVerse(book, chapterNumber)) - verseNumber;
-            Verse end = verse;
-            if (up > 0) {
-                end = verse.add(up);
-            }
+            int chapter = verse.getChapter();
+            int startVerse = verse.getVerse() - blurDown;
+            int endVerse = verse.getVerse() + blurUp;
 
+            startVerse = Math.max(startVerse, 0);
+            endVerse = Math.min(endVerse, v11n.getLastVerse(book, chapter));
+
+            Verse start = new Verse(book, chapter, startVerse);
+            Verse end = new Verse(book, chapter, endVerse);
             return new VerseRange(v11n, start, end);
         }
 
         @Override
         public VerseRange toRange(Versification v11n, Verse verse, int count) {
-            Verse end = verse.add(count - 1);
+            Verse end = v11n.add(verse, count - 1);
             return new VerseRange(v11n, verse, end);
         }
     };
@@ -137,7 +126,7 @@ public enum RestrictionType {
      *            the second verse
      * @return true if the two are in the same scope.
      */
-    public abstract boolean isSameScope(Verse start, Verse end);
+    public abstract boolean isSameScope(Versification v11n, Verse start, Verse end);
 
     /**
      * Blur a verse range the specified amount. Since verse ranges are

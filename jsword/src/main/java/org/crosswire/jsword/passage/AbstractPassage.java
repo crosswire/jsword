@@ -40,6 +40,7 @@ import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.Versification;
+import org.crosswire.jsword.versification.system.Versifications;
 
 /**
  * This is a base class to help with some of the common implementation details
@@ -352,46 +353,6 @@ public abstract class AbstractPassage implements Passage {
         }
 
         return book_count;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#chaptersInPassage(int)
-     */
-    public int chaptersInPassage(BibleBook book) throws NoSuchVerseException {
-        int current_chapter = 0;
-        int chapter_count = 0;
-
-        for (Key aKey : this) {
-            Verse verse = (Verse) aKey;
-
-            if ((book == null || verse.getBook() == book) && current_chapter != verse.getChapter()) {
-                current_chapter = verse.getChapter();
-                chapter_count++;
-            }
-        }
-
-        return chapter_count;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#versesInPassage(int, int)
-     */
-    public int versesInPassage(BibleBook book, int chapter) throws NoSuchVerseException {
-        if (book != null) {
-            getVersification().validate(book, chapter == 0 ? 1 : chapter, 1);
-        }
-
-        int verse_count = 0;
-
-        for (Key aKey : this) {
-            Verse verse = (Verse) aKey;
-
-            if ((book == null || verse.getBook() == book) && (chapter == 0 || verse.getChapter() == chapter)) {
-                verse_count++;
-            }
-        }
-
-        return verse_count;
     }
 
     /* (non-Javadoc)
@@ -1038,7 +999,7 @@ public abstract class AbstractPassage implements Passage {
          * iterate, amalgamating Verses into VerseRanges
          */
         protected VerseRangeIterator(Versification v11n, Iterator<Key> it, RestrictionType restrict) {
-            this.referenceSystem = v11n;
+            this.v11n = v11n;
             this.it = it;
             this.restrict = restrict;
 
@@ -1098,26 +1059,26 @@ public abstract class AbstractPassage implements Passage {
                 next_verse = (Verse) it.next();
 
                 // If the next verse adjacent
-                if (!end.adjacentTo(next_verse)) {
+                if (!v11n.adjacentTo(end, next_verse)) {
                     break;
                 }
 
                 // Even if the next verse is adjacent we might want to break
                 // if we have moved into a new chapter/book
-                if (!restrict.isSameScope(end, next_verse)) {
+                if (!restrict.isSameScope(v11n, end, next_verse)) {
                     break findnext;
                 }
 
                 end = next_verse;
             }
 
-            next_range = new VerseRange(referenceSystem, start, end);
+            next_range = new VerseRange(v11n, start, end);
         }
 
         /**
          * The Versification to which these verses belong.
          */
-        private Versification referenceSystem;
+        private Versification v11n;
 
         /**
          * The Iterator that we are proxying to
@@ -1163,8 +1124,11 @@ public abstract class AbstractPassage implements Passage {
      *             if the read fails
      */
     protected void writeObjectSupport(ObjectOutputStream out) throws IOException {
+        // Save off the versification by name
+        out.writeUTF(v11n.getName());
+
         // the size in bits of teach storage method
-        int bitwise_size = getVersification().maximumOrdinal();
+        int bitwise_size = v11n.maximumOrdinal();
         int ranged_size = 8 * countRanges(RestrictionType.NONE);
         int distinct_size = 4 * countVerses();
 
@@ -1175,7 +1139,7 @@ public abstract class AbstractPassage implements Passage {
             BitSet store = new BitSet(bitwise_size);
             for (Key aKey : this) {
                 Verse verse = (Verse) aKey;
-                store.set(verse.getOrdinal() - 1);
+                store.set(v11n.getOrdinal(verse) - 1);
             }
 
             out.writeObject(store);
@@ -1188,7 +1152,7 @@ public abstract class AbstractPassage implements Passage {
             // write the verse ordinals in a loop
             for (Key aKey : this) {
                 Verse verse = (Verse) aKey;
-                out.writeInt(verse.getOrdinal());
+                out.writeInt(v11n.getOrdinal(verse));
             }
         } else {
             // otherwise use ranges
@@ -1200,7 +1164,7 @@ public abstract class AbstractPassage implements Passage {
             Iterator<Key> it = rangeIterator(RestrictionType.NONE);
             while (it.hasNext()) {
                 VerseRange range = (VerseRange) it.next();
-                out.writeInt(range.getStart().getOrdinal());
+                out.writeInt(v11n.getOrdinal(range.getStart()));
                 out.writeInt(range.getCardinality());
             }
         }
@@ -1240,6 +1204,10 @@ public abstract class AbstractPassage implements Passage {
     protected void readObjectSupport(ObjectInputStream is) throws IOException, ClassNotFoundException {
         raiseEventSuppresion();
         raiseNormalizeProtection();
+
+        // Read the versification by name
+        String v11nName = is.readUTF();
+        v11n = Versifications.instance().getVersification(v11nName);
 
         int type = is.readInt();
         switch (type) {
@@ -1310,7 +1278,7 @@ public abstract class AbstractPassage implements Passage {
     /**
      * The Versification to which this passage belongs.
      */
-    private Versification v11n;
+    private transient Versification v11n;
 
     /**
      * The parent key. See the key interface for more information. NOTE(joe):

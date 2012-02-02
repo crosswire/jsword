@@ -324,9 +324,10 @@ public class PassageTally extends AbstractPassage {
      */
     @Override
     public boolean contains(Key that) {
+        Versification v11n = getVersification();
         for (Key aKey : that) {
             Verse verse = (Verse) aKey;
-            if (board[verse.getOrdinal()] == 0) {
+            if (board[v11n.getOrdinal(verse)] == 0) {
                 return false;
             }
         }
@@ -342,7 +343,8 @@ public class PassageTally extends AbstractPassage {
      * @return The rank of the verse in question
      */
     public int getTallyOf(Verse verse) {
-        return board[verse.getOrdinal()];
+        Versification v11n = getVersification();
+        return board[v11n.getOrdinal(verse)];
     }
 
     /**
@@ -353,7 +355,8 @@ public class PassageTally extends AbstractPassage {
      * @return The index of the verse or -1 if the verse was not found
      */
     public int getIndexOf(Verse verse) {
-        int pos = verse.getOrdinal();
+        Versification v11n = getVersification();
+        int pos = v11n.getOrdinal(verse);
         int tally = board[pos];
         return tally > 0 ? pos : -1;
     }
@@ -409,11 +412,12 @@ public class PassageTally extends AbstractPassage {
      *            The verses to remove/decrement
      */
     public void remove(Key that) {
+        Versification v11n = getVersification();
         optimizeWrites();
 
         for (Key aKey : that) {
             Verse verse = (Verse) aKey;
-            kill(verse.getOrdinal());
+            kill(v11n.getOrdinal(verse));
         }
 
         fireIntervalRemoved(this, null, null);
@@ -421,6 +425,7 @@ public class PassageTally extends AbstractPassage {
 
     @Override
     public void addAll(Key that) {
+        Versification v11n = getVersification();
         optimizeWrites();
 
         if (that instanceof PassageTally) {
@@ -435,7 +440,7 @@ public class PassageTally extends AbstractPassage {
         } else {
             for (Key aKey : that) {
                 Verse verse = (Verse) aKey;
-                increment(verse.getOrdinal(), 1);
+                increment(v11n.getOrdinal(verse), 1);
             }
 
             incrementMax(1);
@@ -451,6 +456,7 @@ public class PassageTally extends AbstractPassage {
      *            The verses to remove/decrement
      */
     public void unAddAll(Passage that) {
+        Versification v11n = getVersification();
         optimizeWrites();
 
         if (that instanceof PassageTally) {
@@ -463,7 +469,7 @@ public class PassageTally extends AbstractPassage {
         } else {
             for (Key aKey : that) {
                 Verse verse = (Verse) aKey;
-                increment(verse.getOrdinal(), -1);
+                increment(v11n.getOrdinal(verse), -1);
             }
         }
 
@@ -476,6 +482,7 @@ public class PassageTally extends AbstractPassage {
 
     @Override
     public void removeAll(Key key) {
+        Versification v11n = getVersification();
         Passage that = KeyUtil.getPassage(key);
 
         optimizeWrites();
@@ -492,7 +499,7 @@ public class PassageTally extends AbstractPassage {
         } else {
             for (Key aKey : that) {
                 Verse verse = (Verse) aKey;
-                kill(verse.getOrdinal());
+                kill(v11n.getOrdinal(verse));
             }
         }
 
@@ -663,9 +670,10 @@ public class PassageTally extends AbstractPassage {
      *            The amount to increment/decrement by
      */
     private void alterVerseBase(Key that, int tally) {
+        Versification v11n = getVersification();
         for (Key aKey : that) {
             Verse verse = (Verse) aKey;
-            increment(verse.getOrdinal(), tally);
+            increment(v11n.getOrdinal(verse), tally);
         }
 
         if (tally > 0) {
@@ -1023,10 +1031,10 @@ public class PassageTally extends AbstractPassage {
         /**
          * Find the first unused verse
          */
-        public OrderedVerseRangeIterator(Versification referenceSystem, Iterator<Key> vit, int[] board) {
+        public OrderedVerseRangeIterator(Versification v11n, Iterator<Key> vit, int[] board) {
             Set<TalliedVerseRange> output = new TreeSet<TalliedVerseRange>();
 
-            Iterator<Key> rit = new VerseRangeIterator(referenceSystem, vit, RestrictionType.NONE);
+            Iterator<Key> rit = new VerseRangeIterator(v11n, vit, RestrictionType.NONE);
             while (rit.hasNext()) {
                 VerseRange range = (VerseRange) rit.next();
 
@@ -1034,7 +1042,7 @@ public class PassageTally extends AbstractPassage {
                 int rank = 0;
                 for (Key aKey : range) {
                     Verse verse = (Verse) aKey;
-                    int temp = board[verse.getOrdinal()];
+                    int temp = board[v11n.getOrdinal(verse)];
                     if (temp > rank) {
                         rank = temp;
                     }

@@ -278,7 +278,9 @@ public final class Verse implements Key {
      * @param that
      *            The thing to compare against
      * @return 1 means he is earlier than me, -1 means he is later ...
+     * @deprecated
      */
+    @Deprecated
     public boolean adjacentTo(Verse that) {
         return Math.abs(that.getOrdinal() - getOrdinal()) == 1;
     }
@@ -291,7 +293,9 @@ public final class Verse implements Key {
      * @param start
      *            The Verse to compare this to
      * @return The count of verses between this and that.
+     * @deprecated
      */
+    @Deprecated
     public int subtract(Verse start) {
         return getOrdinal() - start.getOrdinal();
     }
@@ -302,7 +306,9 @@ public final class Verse implements Key {
      * @param n
      *            The number to count down by
      * @return The new Verse
+     * @deprecated
      */
+    @Deprecated
     public Verse subtract(int n) {
         // AV11N(DMS): deprecate?
         return Versifications.instance().getDefaultVersification().subtract(this, n);
@@ -314,7 +320,9 @@ public final class Verse implements Key {
      * @param n
      *            the number of verses later than the one we're one
      * @return The new verse
+     * @deprecated
      */
+    @Deprecated
     public Verse add(int n) {
         // AV11N(DMS): deprecate?
         return Versifications.instance().getDefaultVersification().add(this, n);
@@ -351,16 +359,20 @@ public final class Verse implements Key {
      * Is this verse the first in a chapter
      * 
      * @return true or false ...
+     * @deprecated
      */
+    @Deprecated
     public boolean isStartOfChapter() {
-        return verse == 1 || verse == 0;
+        return verse == 0;
     }
 
     /**
      * Is this verse the first in a chapter
      * 
      * @return true or false ...
+     * @deprecated
      */
+    @Deprecated
     public boolean isEndOfChapter() {
         // AV11N(DMS): deprecate?
         return Versifications.instance().getDefaultVersification().isEndOfChapter(this);
@@ -370,16 +382,20 @@ public final class Verse implements Key {
      * Is this verse the first in a chapter
      * 
      * @return true or false ...
+     * @deprecated
      */
+    @Deprecated
     public boolean isStartOfBook() {
-        return (verse == 1 || verse == 0) && (chapter == 1 || chapter == 0);
+        return verse == 0 && chapter == 0;
     }
 
     /**
      * Is this verse the first in a chapter
      * 
      * @return true or false ...
+     * @deprecated
      */
+    @Deprecated
     public boolean isEndOfBook() {
         // AV11N(DMS): deprecate?
         return Versifications.instance().getDefaultVersification().isEndOfBook(this);
@@ -391,7 +407,9 @@ public final class Verse implements Key {
      * @param that
      *            The verse to compare to
      * @return true or false ...
+     * @deprecated
      */
+    @Deprecated
     public boolean isSameChapter(Verse that) {
         return book == that.book && chapter == that.chapter;
     }
@@ -402,7 +420,9 @@ public final class Verse implements Key {
      * @param that
      *            The verse to compare to
      * @return true or false ...
+     * @deprecated
      */
+    @Deprecated
     public boolean isSameBook(Verse that) {
         return book == that.book;
     }
@@ -412,7 +432,9 @@ public final class Verse implements Key {
      * 31104
      * 
      * @return The verse number
+     * @deprecated do not use
      */
+    @Deprecated
     public int getOrdinal() {
         // AV11N(DMS): deprecate?
         return Versifications.instance().getDefaultVersification().getOrdinal(this);
@@ -427,7 +449,9 @@ public final class Verse implements Key {
      * @param b
      *            The second verse to compare
      * @return The bigger of the 2 verses
+     * @deprecated do not use
      */
+    @Deprecated
     public static Verse max(Verse a, Verse b) {
         if (a.compareTo(b) == -1) {
             return b;
@@ -444,7 +468,9 @@ public final class Verse implements Key {
      * @param b
      *            The second verse to compare
      * @return The smaller of the 2 verses
+     * @deprecated do not use
      */
+    @Deprecated
     public static Verse min(Verse a, Verse b) {
         if (a.compareTo(b) == 1) {
             return b;
@@ -489,7 +515,9 @@ public final class Verse implements Key {
      * @param verseBase
      *            the context or null if there is none
      * @return the verse representation
+     * @deprecated do not use
      */
+    @Deprecated
     private String doGetName(Verse verseBase) {
         // To cope with thing like Jude 2...
         // AV11N(DMS): move to Versification???
@@ -541,7 +569,9 @@ public final class Verse implements Key {
      *            The chapter to set
      * @param verse
      *            The verse to set
+     * @deprecated do not use
      */
+    @Deprecated
     private void setAndPatch(BibleBook book, int chapter, int verse) {
         // AV11N(DMS): deprecate?
         Versification v11n = Versifications.instance().getDefaultVersification();
@@ -574,7 +604,9 @@ public final class Verse implements Key {
      * 
      * @param ordinal
      *            The ordinal of the verse
+     * @deprecated do not use
      */
+    @Deprecated
     private void set(int ordinal) {
         // AV11N(DMS): deprecate?
         Versification v11n = Versifications.instance().getDefaultVersification();

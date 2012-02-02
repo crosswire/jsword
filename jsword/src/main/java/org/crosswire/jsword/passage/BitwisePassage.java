@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.crosswire.jsword.versification.Versification;
+import org.crosswire.jsword.versification.system.Versifications;
 
 /**
  * A Passage that is implemented using a BitSet - one for each verse. The
@@ -116,9 +117,10 @@ public class BitwisePassage extends AbstractPassage {
 
     @Override
     public boolean contains(Key obj) {
+        Versification v11n = getVersification();
         for (Key aKey : obj) {
             Verse verse = (Verse) aKey;
-            if (!store.get(verse.getOrdinal())) {
+            if (!store.get(v11n.getOrdinal(verse))) {
                 return false;
             }
         }
@@ -130,6 +132,7 @@ public class BitwisePassage extends AbstractPassage {
      * @see org.crosswire.jsword.passage.Passage#add(org.crosswire.jsword.passage.Key)
      */
     public void add(Key obj) {
+        Versification v11n = getVersification();
         optimizeWrites();
 
         Verse firstVerse = null;
@@ -139,7 +142,7 @@ public class BitwisePassage extends AbstractPassage {
             if (firstVerse == null) {
                 firstVerse = lastVerse;
             }
-            store.set(lastVerse.getOrdinal());
+            store.set(v11n.getOrdinal(lastVerse));
         }
 
         // we do an extra check here because the cost of calculating the
@@ -153,6 +156,7 @@ public class BitwisePassage extends AbstractPassage {
      * @see org.crosswire.jsword.passage.Passage#remove(org.crosswire.jsword.passage.Key)
      */
     public void remove(Key obj) {
+        Versification v11n = getVersification();
         optimizeWrites();
 
         Verse firstVerse = null;
@@ -162,7 +166,7 @@ public class BitwisePassage extends AbstractPassage {
             if (firstVerse == null) {
                 firstVerse = lastVerse;
             }
-            store.clear(lastVerse.getOrdinal());
+            store.clear(v11n.getOrdinal(lastVerse));
         }
 
         // we do an extra check here because the cost of calculating the
@@ -215,6 +219,7 @@ public class BitwisePassage extends AbstractPassage {
 
     @Override
     public void retainAll(Key key) {
+        Versification v11n = getVersification();
         Passage that = KeyUtil.getPassage(key);
 
         optimizeWrites();
@@ -223,10 +228,10 @@ public class BitwisePassage extends AbstractPassage {
         if (that instanceof BitwisePassage) {
             thatStore = ((BitwisePassage) that).store;
         } else {
-            thatStore = new BitSet(getVersification().maximumOrdinal() + 1);
+            thatStore = new BitSet(v11n.maximumOrdinal() + 1);
 
             for (Key aKey : that) {
-                int ord = ((Verse) aKey).getOrdinal();
+                int ord = v11n.getOrdinal((Verse) aKey);
                 if (store.get(ord)) {
                     thatStore.set(ord);
                 }
@@ -349,6 +354,9 @@ public class BitwisePassage extends AbstractPassage {
     private void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
 
+        // Save off the versification by name
+        out.writeUTF(getVersification().getName());
+
         writeObjectSupport(out);
     }
 
@@ -369,7 +377,11 @@ public class BitwisePassage extends AbstractPassage {
 
         in.defaultReadObject();
 
-        store = new BitSet(getVersification().maximumOrdinal() + 1);
+        // Read the versification by name
+        String v11nName = in.readUTF();
+        Versification v11n = Versifications.instance().getVersification(v11nName);
+
+        store = new BitSet(v11n.maximumOrdinal() + 1);
 
         readObjectSupport(in);
     }

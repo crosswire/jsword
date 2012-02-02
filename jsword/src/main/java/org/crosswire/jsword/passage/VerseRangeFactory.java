@@ -108,6 +108,7 @@ public final class VerseRangeFactory {
         String[] startParts = AccuracyType.tokenize(startVerseDesc);
         AccuracyType accuracyStart = AccuracyType.fromText(v11n, original, startParts, basis);
         Verse start = accuracyStart.createStartVerse(v11n, startVerseDesc, basis, startParts);
+        v11n.validate(start.getBook(), start.getChapter(), start.getVerse());
 
         String[] endParts;
         if (startVerseDesc.equals(endVerseDesc)) {
@@ -118,6 +119,7 @@ public final class VerseRangeFactory {
 
         AccuracyType accuracyEnd = AccuracyType.fromText(v11n, original, endParts, accuracyStart, basis);
         Verse end = accuracyEnd.createEndVerse(v11n, endVerseDesc, start, endParts);
+        v11n.validate(end.getBook(), end.getChapter(), end.getVerse());
 
         return new VerseRange(v11n, original, start, end);
     }

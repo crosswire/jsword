@@ -155,7 +155,8 @@ public final class PassageKeyFactory {
      * @return a byte array
      */
     static byte[] toBinaryRepresentation(Passage ref) {
-        int maxOrdinal = ref.getVersification().maximumOrdinal();
+        Versification v11n = ref.getVersification();
+        int maxOrdinal = v11n.maximumOrdinal();
         // store these locally we use them so often
         int verses = ref.countVerses();
         int ranges = ref.countRanges(RestrictionType.NONE);
@@ -175,7 +176,7 @@ public final class PassageKeyFactory {
 
             for (Key aKey : ref) {
                 Verse verse = (Verse) aKey;
-                int ord = verse.getOrdinal();
+                int ord = v11n.getOrdinal(verse);
 
                 // Which byte should we be altering
                 int idx0 = (ord / 8) + index;
@@ -202,7 +203,7 @@ public final class PassageKeyFactory {
             // write the verse ordinals in a loop
             for (Key aKey : ref) {
                 Verse verse = (Verse) aKey;
-                int ord = verse.getOrdinal();
+                int ord = v11n.getOrdinal(verse);
                 index += toBinary(buffer, index, ord, maxOrdinal);
             }
 
@@ -222,7 +223,7 @@ public final class PassageKeyFactory {
             Iterator<Key> it = ref.rangeIterator(RestrictionType.NONE);
             while (it.hasNext()) {
                 VerseRange range = (VerseRange) it.next();
-                index += toBinary(buffer, index, range.getStart().getOrdinal(), maxOrdinal);
+                index += toBinary(buffer, index, v11n.getOrdinal(range.getStart()), maxOrdinal);
                 index += toBinary(buffer, index, range.getCardinality(), maxOrdinal);
             }
 

@@ -234,8 +234,8 @@ public class VerseTest extends TestCase {
     }
 
     public void testNewViaIntIntIntBoolean() {
-        assertEquals(gen11, new Verse(null, 1, 1, true));
-        assertEquals(gen11, new Verse(BibleBook.GEN, 0, 1, true));
+        assertEquals(gen00, new Verse(null, 1, 1, true));
+        assertEquals(gen10, new Verse(BibleBook.GEN, 0, 1, true));
         assertEquals(gen10, new Verse(BibleBook.GEN, 1, 0, true));
         assertEquals(rev99, new Verse(BibleBook.REV, 22, 22, true));
         assertEquals(rev99, new Verse(BibleBook.REV, 23, 21, true));
@@ -263,8 +263,8 @@ public class VerseTest extends TestCase {
 
     public void testHashCode() {
         assertEquals(gen11.hashCode(), gen11a.hashCode());
-        assertEquals(gen11.hashCode(), gen11.getOrdinal());
-        assertTrue(gen11.hashCode() != gen12.getOrdinal());
+        assertEquals(gen11.hashCode(), v11n.getOrdinal(gen11));
+        assertTrue(gen11.hashCode() != v11n.getOrdinal(gen12));
         assertTrue(gen11.hashCode() != 0);
     }
 
@@ -275,36 +275,36 @@ public class VerseTest extends TestCase {
     }
 
     public void testAddSubtract() {
-        assertEquals(gen12.subtract(gen11), 1);
-        assertEquals(gen11.subtract(gen11), 0);
-        assertEquals(gen11.subtract(gen12), -1);
+        assertEquals(v11n.distance(gen11, gen12), 1);
+        assertEquals(v11n.distance(gen11, gen11), 0);
+        assertEquals(v11n.distance(gen12, gen11), -1);
         Verse last = gen11.clone();
         for (int i = 0; i < v11n.maximumOrdinal(); i += 99) {
-            Verse next = last.add(i);
-            assertEquals(next.subtract(last), i);
+            Verse next = v11n.add(last, i);
+            assertEquals(v11n.distance(last, next), i);
 
-            Verse next2 = next.subtract(i);
+            Verse next2 = v11n.subtract(next, i);
             assertEquals(gen11.getOsisID(), gen11, next2);
         }
-        assertEquals(gen11.getOsisID(), gen11, gen11.subtract(0));
-//        assertEquals(gen11.getOsisID(), gen11, gen11.subtract(1));
-//        assertEquals(gen11.getOsisID(), gen11, gen11.subtract(2));
-        assertEquals(gen11.getOsisID(), gen11, gen11.add(0));
-        assertEquals(rev99.getOsisID(), rev99, rev99.add(0));
-        assertEquals(rev99.getOsisID(), rev99, rev99.add(1));
-        assertEquals(rev99.getOsisID(), rev99, rev99.add(2));
+        assertEquals(gen11.getOsisID(), gen11, v11n.subtract(gen11, 0));
+//        assertEquals(gen11.getOsisID(), gen11, v11n.subtract(gen11, 1));
+//        assertEquals(gen11.getOsisID(), gen11, v11n.subtract(gen11, 2));
+        assertEquals(gen11.getOsisID(), gen11, v11n.add(gen11, 0));
+        assertEquals(rev99.getOsisID(), rev99, v11n.add(rev99, 0));
+        assertEquals(rev99.getOsisID(), rev99, v11n.add(rev99, 1));
+        assertEquals(rev99.getOsisID(), rev99, v11n.add(rev99, 2));
     }
 
     public void testToString() {
-        assertEquals(gen11.toString(), "Gen 1:1");
-        assertEquals(gen12.toString(), "Gen 1:2");
-        assertEquals(gen21.toString(), "Gen 2:1");
-        assertEquals(gen22.toString(), "Gen 2:2");
-        assertEquals(rev11.toString(), "Rev 1:1");
-        assertEquals(rev12.toString(), "Rev 1:2");
-        assertEquals(rev21.toString(), "Rev 2:1");
-        assertEquals(rev22.toString(), "Rev 2:2");
-        assertEquals(rev99.toString(), "Rev 22:21");
+        assertEquals("Gen 1:1", gen11.toString());
+        assertEquals("Gen 1:2", gen12.toString());
+        assertEquals("Gen 2:1", gen21.toString());
+        assertEquals("Gen 2:2", gen22.toString());
+        assertEquals("Rev 1:1", rev11.toString());
+        assertEquals("Rev 1:2", rev12.toString());
+        assertEquals("Rev 2:1", rev21.toString());
+        assertEquals("Rev 2:2", rev22.toString());
+        assertEquals("Rev 22:21", rev99.toString());
     }
 
     public void testGetBook() {
@@ -344,15 +344,15 @@ public class VerseTest extends TestCase {
     }
 
     public void testGetOrdinal() {
-        assertEquals(gen11.getOrdinal(), 4);
-        assertEquals(gen12.getOrdinal(), 5);
-        assertEquals(gen21.getOrdinal(), 36);
-        assertEquals(gen22.getOrdinal(), 37);
-        assertEquals(rev11.getOrdinal(), 31935);
-        assertEquals(rev12.getOrdinal(), 31936);
-        assertEquals(rev21.getOrdinal(), 31956);
-        assertEquals(rev22.getOrdinal(), 31957);
-        assertEquals(rev99.getOrdinal(), 32359);
+        assertEquals(4, v11n.getOrdinal(gen11));
+        assertEquals(5, v11n.getOrdinal(gen12));
+        assertEquals(36, v11n.getOrdinal(gen21));
+        assertEquals(37, v11n.getOrdinal(gen22));
+        assertEquals(31935, v11n.getOrdinal(rev11));
+        assertEquals(31936, v11n.getOrdinal(rev12));
+        assertEquals(31956, v11n.getOrdinal(rev21));
+        assertEquals(31957, v11n.getOrdinal(rev22));
+        assertEquals(32359, v11n.getOrdinal(rev99));
     }
 
     public void testGetAccuracy() throws Exception {
@@ -382,60 +382,61 @@ public class VerseTest extends TestCase {
     }
 
     public void testIsStartEndOfChapterBook() throws Exception {
-        assertTrue(VerseFactory.fromString(v11n, "Gen 1:1").isStartOfChapter());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen 1:10").isStartOfChapter());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen 1:$").isStartOfChapter());
-        assertTrue(VerseFactory.fromString(v11n, "Gen 10:1").isStartOfChapter());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen 10:10").isStartOfChapter());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen 10:$").isStartOfChapter());
-        assertTrue(VerseFactory.fromString(v11n, "Gen $:1").isStartOfChapter());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen $:10").isStartOfChapter());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen $:$").isStartOfChapter());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen 1:1").isEndOfChapter());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen 1:10").isEndOfChapter());
-        assertTrue(VerseFactory.fromString(v11n, "Gen 1:$").isEndOfChapter());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen 10:1").isEndOfChapter());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen 10:10").isEndOfChapter());
-        assertTrue(VerseFactory.fromString(v11n, "Gen 10:$").isEndOfChapter());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen $:1").isEndOfChapter());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen $:10").isEndOfChapter());
-        assertTrue(VerseFactory.fromString(v11n, "Gen $:$").isEndOfChapter());
-        assertTrue(VerseFactory.fromString(v11n, "Gen 1:1").isStartOfBook());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen 1:10").isStartOfBook());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen 1:$").isStartOfBook());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen 10:1").isStartOfBook());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen 10:10").isStartOfBook());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen 10:$").isStartOfBook());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen $:1").isStartOfBook());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen $:10").isStartOfBook());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen $:$").isStartOfBook());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen 1:1").isEndOfBook());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen 1:10").isEndOfBook());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen 1:$").isEndOfBook());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen 10:1").isEndOfBook());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen 10:10").isEndOfBook());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen 10:$").isEndOfBook());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen $:1").isEndOfBook());
-        assertTrue(!VerseFactory.fromString(v11n, "Gen $:10").isEndOfBook());
-        assertTrue(VerseFactory.fromString(v11n, "Gen $:$").isEndOfBook());
+        assertTrue(v11n.isStartOfChapter(VerseFactory.fromString(v11n, "Gen 0:0")));
+        assertTrue(!v11n.isStartOfChapter(VerseFactory.fromString(v11n, "Gen 1:10")));
+        assertTrue(!v11n.isStartOfChapter(VerseFactory.fromString(v11n, "Gen 1:$")));
+        assertTrue(v11n.isStartOfChapter(VerseFactory.fromString(v11n, "Gen 10:0")));
+        assertTrue(!v11n.isStartOfChapter(VerseFactory.fromString(v11n, "Gen 10:10")));
+        assertTrue(!v11n.isStartOfChapter(VerseFactory.fromString(v11n, "Gen 10:$")));
+        assertTrue(v11n.isStartOfChapter(VerseFactory.fromString(v11n, "Gen $:0")));
+        assertTrue(!v11n.isStartOfChapter(VerseFactory.fromString(v11n, "Gen $:10")));
+        assertTrue(!v11n.isStartOfChapter(VerseFactory.fromString(v11n, "Gen $:$")));
+        assertTrue(!v11n.isEndOfChapter(VerseFactory.fromString(v11n, "Gen 1:1")));
+        assertTrue(!v11n.isEndOfChapter(VerseFactory.fromString(v11n, "Gen 1:10")));
+        assertTrue(v11n.isEndOfChapter(VerseFactory.fromString(v11n, "Gen 1:$")));
+        assertTrue(!v11n.isEndOfChapter(VerseFactory.fromString(v11n, "Gen 10:1")));
+        assertTrue(!v11n.isEndOfChapter(VerseFactory.fromString(v11n, "Gen 10:10")));
+        assertTrue(v11n.isEndOfChapter(VerseFactory.fromString(v11n, "Gen 10:$")));
+        assertTrue(!v11n.isEndOfChapter(VerseFactory.fromString(v11n, "Gen $:1")));
+        assertTrue(!v11n.isEndOfChapter(VerseFactory.fromString(v11n, "Gen $:10")));
+        assertTrue(v11n.isEndOfChapter(VerseFactory.fromString(v11n, "Gen $:$")));
+        assertTrue(v11n.isStartOfBook(VerseFactory.fromString(v11n, "Gen 0:0")));
+        assertTrue(!v11n.isStartOfBook(VerseFactory.fromString(v11n, "Gen 1:10")));
+        assertTrue(!v11n.isStartOfBook(VerseFactory.fromString(v11n, "Gen 1:$")));
+        assertTrue(!v11n.isStartOfBook(VerseFactory.fromString(v11n, "Gen 10:1")));
+        assertTrue(!v11n.isStartOfBook(VerseFactory.fromString(v11n, "Gen 10:10")));
+        assertTrue(!v11n.isStartOfBook(VerseFactory.fromString(v11n, "Gen 10:$")));
+        assertTrue(!v11n.isStartOfBook(VerseFactory.fromString(v11n, "Gen $:1")));
+        assertTrue(!v11n.isStartOfBook(VerseFactory.fromString(v11n, "Gen $:10")));
+        assertTrue(!v11n.isStartOfBook(VerseFactory.fromString(v11n, "Gen $:$")));
+        
+        assertTrue(!v11n.isEndOfBook(VerseFactory.fromString(v11n, "Gen 1:1")));
+        assertTrue(!v11n.isEndOfBook(VerseFactory.fromString(v11n, "Gen 1:10")));
+        assertTrue(!v11n.isEndOfBook(VerseFactory.fromString(v11n, "Gen 1:$")));
+        assertTrue(!v11n.isEndOfBook(VerseFactory.fromString(v11n, "Gen 10:1")));
+        assertTrue(!v11n.isEndOfBook(VerseFactory.fromString(v11n, "Gen 10:10")));
+        assertTrue(!v11n.isEndOfBook(VerseFactory.fromString(v11n, "Gen 10:$")));
+        assertTrue(!v11n.isEndOfBook(VerseFactory.fromString(v11n, "Gen $:1")));
+        assertTrue(!v11n.isEndOfBook(VerseFactory.fromString(v11n, "Gen $:10")));
+        assertTrue(v11n.isEndOfBook(VerseFactory.fromString(v11n, "Gen $:$")));
     }
 
     public void testMax() {
-        assertEquals(Verse.max(gen11, gen12), gen12);
-        assertEquals(Verse.max(gen11, rev99), rev99);
-        assertEquals(Verse.max(gen11, gen11a), gen11);
-        assertEquals(Verse.max(gen12, gen11), gen12);
-        assertEquals(Verse.max(rev99, gen11), rev99);
-        assertEquals(Verse.max(gen11a, gen11), gen11a);
+        assertEquals(v11n.max(gen11, gen12), gen12);
+        assertEquals(v11n.max(gen11, rev99), rev99);
+        assertEquals(v11n.max(gen11, gen11a), gen11);
+        assertEquals(v11n.max(gen12, gen11), gen12);
+        assertEquals(v11n.max(rev99, gen11), rev99);
+        assertEquals(v11n.max(gen11a, gen11), gen11a);
     }
 
     public void testMin() {
-        assertEquals(Verse.min(gen11, gen12), gen11);
-        assertEquals(Verse.min(gen11, rev99), gen11);
-        assertEquals(Verse.min(gen11, gen11a), gen11);
-        assertEquals(Verse.min(gen12, gen11), gen11);
-        assertEquals(Verse.min(rev99, gen11), gen11);
-        assertEquals(Verse.min(gen11a, gen11a), gen11a);
+        assertEquals(v11n.min(gen11, gen12), gen11);
+        assertEquals(v11n.min(gen11, rev99), gen11);
+        assertEquals(v11n.min(gen11, gen11a), gen11);
+        assertEquals(v11n.min(gen12, gen11), gen11);
+        assertEquals(v11n.min(rev99, gen11), gen11);
+        assertEquals(v11n.min(gen11a, gen11a), gen11a);
     }
 
     public void testToVerseArray() {

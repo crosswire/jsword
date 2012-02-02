@@ -335,9 +335,11 @@ public class RangedPassage extends AbstractPassage {
 
             while (it.hasNext()) {
                 VerseRange range = (VerseRange) it.next();
+                int start = v11n.getOrdinal(range.getStart());
+                int end = range.getCardinality();
 
-                for (int i = 0; i < range.getCardinality(); i++) {
-                    temp.add(v11n.decodeOrdinal(range.getStart().getOrdinal() + i));
+                for (int i = 0; i < end; i++) {
+                    temp.add(v11n.decodeOrdinal(start + i));
                 }
             }
 
@@ -411,7 +413,7 @@ public class RangedPassage extends AbstractPassage {
 
             // So we know what is broadly next, however the range might need
             // splitting according to restrict
-            if (restrict.isSameScope(next.getStart(), next.getEnd())) {
+            if (restrict.isSameScope(next.getVersification(), next.getStart(), next.getEnd())) {
                 return replyNext();
             }
             return splitNext();

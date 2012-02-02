@@ -26,7 +26,6 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.Iterator;
 
-import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.Versification;
 
 /**
@@ -222,20 +221,6 @@ final class SynchronizedPassage implements Passage {
      */
     public synchronized int booksInPassage() {
         return ref.booksInPassage();
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#chaptersInPassage(BibleBook)
-     */
-    public synchronized int chaptersInPassage(BibleBook book) throws NoSuchVerseException {
-        return ref.chaptersInPassage(book);
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.Passage#versesInPassage(BibleBook, int)
-     */
-    public synchronized int versesInPassage(BibleBook book, int chapter) throws NoSuchVerseException {
-        return ref.versesInPassage(book, chapter);
     }
 
     /* (non-Javadoc)

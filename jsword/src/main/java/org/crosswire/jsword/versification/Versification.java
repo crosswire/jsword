@@ -292,7 +292,7 @@ public class Versification implements ReferenceSystem, Serializable {
      */
     public boolean isStartOfChapter(Verse verse) {
         int v = verse.getVerse();
-        return v == 1 || v == 0;
+        return v == 0;
     }
 
     /**
@@ -301,8 +301,10 @@ public class Versification implements ReferenceSystem, Serializable {
      * @return true or false ...
      */
     public boolean isEndOfChapter(Verse verse) {
+        BibleBook b = verse.getBook();
         int v = verse.getVerse();
-        return v == getLastVerse(verse.getBook(), verse.getChapter());
+        int c = verse.getChapter();
+        return v == getLastVerse(b, c);
     }
 
     /**
@@ -313,7 +315,7 @@ public class Versification implements ReferenceSystem, Serializable {
     public boolean isStartOfBook(Verse verse) {
         int v = verse.getVerse();
         int c = verse.getChapter();
-        return (v == 1 || v == 0) && (c == 1 || c == 0);
+        return v == 0 && c == 0;
     }
 
     /**
@@ -342,12 +344,14 @@ public class Versification implements ReferenceSystem, Serializable {
     /**
      * Is this verse in the same book as that one
      *
-     * @param that
+     * @param a
+     *            The verse to compare to
+     * @param b
      *            The verse to compare to
      * @return true or false ...
      */
-    public boolean isSameBook(Verse a, Verse that) {
-        return a.getBook() == that.getBook();
+    public boolean isSameBook(Verse a, Verse b) {
+        return a.getBook() == b.getBook();
     }
 
     /**
@@ -374,7 +378,27 @@ public class Versification implements ReferenceSystem, Serializable {
      * @return The count of verses between this and that.
      */
     public int distance(Verse start, Verse end) {
-        return getOrdinal(start) - getOrdinal(end);
+        return getOrdinal(end) - getOrdinal(start);
+    }
+
+    /**
+     * Determine the earlier of the two verses. If a == b then return a.
+     * @param a the first verse to compare
+     * @param b the second verse to compare
+     * @return The earlier of the two verses
+     */
+    public Verse min(Verse a, Verse b) {
+        return getOrdinal(a) <= getOrdinal(b) ? a : b;
+    }
+
+    /**
+     * Determine the later of the two verses. If a == b then return b.
+     * @param a the first verse to compare
+     * @param b the second verse to compare
+     * @return The later of the two verses
+     */
+    public Verse max(Verse a, Verse b) {
+        return getOrdinal(a) > getOrdinal(b) ? a : b;
     }
 
     /**
@@ -556,10 +580,6 @@ public class Versification implements ReferenceSystem, Serializable {
      */
     public Verse decodeOrdinal(int ordinal) {
         int ord = ordinal;
-        BibleBook book = null;
-        int bookIndex = -1;
-        int chapterIndex = 0;
-        int verse = 0;
 
         if (ord < 0) {
             ord = 0;
@@ -583,29 +603,55 @@ public class Versification implements ReferenceSystem, Serializable {
             return new Verse(BibleBook.INTRO_NT, 0, 0);
         }
 
-        int lastBook = chapterStarts.length - 1;
-        for (int b = lastBook; b >= 0; b--) {
-            // A book has a slot for a heading followed by a slot for a chapter heading.
-            // These precede the start of the chapter.
-            if (ord >= chapterStarts[b][0]) {
-                bookIndex = b;
+        // To find the book, do a binary search in chapterStarts against chapter 0
+        int low = 0;
+        int high = chapterStarts.length;
+        int match = -1;
+
+        while (high - low > 1) {
+            // use >>> to keep mid always in range
+            int mid = (low + high) >>> 1;
+
+            // Compare the for the item at "mid"
+            int cmp = chapterStarts[mid][0] - ord;
+            if (cmp < 0) {
+                low = mid;
+            } else if (cmp > 0) {
+                high = mid;
+            } else {
+                match = mid;
                 break;
             }
         }
 
-        book = bookList.getBook(bookIndex);
-        int cib = getLastChapter(book);
-        for (int c = cib; c >= 0; c--) {
-            if (ord >= chapterStarts[bookIndex][c]) {
-                chapterIndex = c;
+        // If we didn't have an exact match then use the low value
+        int bookIndex = match >= 0 ? match : low;
+        BibleBook book = bookList.getBook(bookIndex);
+
+        // To find the chapter, do a binary search in chapterStarts against bookIndex
+        low = 0;
+        high = chapterStarts[bookIndex].length;
+        match = -1;
+
+        while (high - low > 1) {
+            // use >>> to keep mid always in range
+            int mid = (low + high) >>> 1;
+
+            // Compare the for the item at "mid"
+            int cmp = chapterStarts[bookIndex][mid] - ord;
+            if (cmp < 0) {
+                low = mid;
+            } else if (cmp > 0) {
+                high = mid;
+            } else {
+                match = mid;
                 break;
             }
         }
 
-        if (chapterIndex > 0) {
-            verse = ord - chapterStarts[bookIndex][chapterIndex];
-        }
-
+        // If we didn't have an exact match then use the low value
+        int chapterIndex = match >= 0 ? match : low;
+        int verse = chapterIndex == 0 ? 0 : ord - chapterStarts[bookIndex][chapterIndex];
         return new Verse(book, chapterIndex, verse);
     }
 
@@ -706,6 +752,11 @@ public class Versification implements ReferenceSystem, Serializable {
             patchedVerse = 0;
         }
 
+        // Goal is to start in the current book and go forward that number of chapters
+        // which might cause one to land in a later book.
+        // For each book, the chapters number from 0 to n, where n is the last chapter number.
+        // So if we want Genesis 53, then that would be 3 chapters into Exodus,
+        // which would be chapter 2.
         while (patchedChapter > getLastChapter(patchedBook)) {
             patchedChapter -= getLastChapter(patchedBook) + 1;
             patchedBook = bookList.getNextBook(patchedBook);
@@ -720,12 +771,17 @@ public class Versification implements ReferenceSystem, Serializable {
             }
         }
 
+        // At this point we have a valid chapter.
+        // Now we do the same for the verses.
+        // For each book, the chapters number from 0 to n, where n is the last chapter number.
+        // So if we want Genesis 49:36, then that would be 3 verses into Genesis 50,
+        // which would be verse 50:2.     
         while (patchedVerse > getLastVerse(patchedBook, patchedChapter)) {
-            patchedVerse -= getLastVerse(patchedBook, patchedChapter);
+            patchedVerse -= getLastVerse(patchedBook, patchedChapter) + 1;
             patchedChapter += 1;
 
             if (patchedChapter > getLastChapter(patchedBook)) {
-                patchedChapter -= getLastChapter(patchedBook);
+                patchedChapter -= getLastChapter(patchedBook) + 1;
                 patchedBook = bookList.getNextBook(patchedBook);
 
                 // If we have gone beyond the last book

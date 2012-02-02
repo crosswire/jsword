@@ -21,6 +21,8 @@
  */
 package org.crosswire.jsword.passage;
 
+import org.crosswire.jsword.book.CaseType;
+import org.crosswire.jsword.versification.BookName;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
 
@@ -42,6 +44,10 @@ public class PassageUtilTest extends TestCase {
      * How we create Passages
      */
     private static PassageKeyFactory keyf = PassageKeyFactory.instance();
+    /** Control the output of names */
+    private CaseType storedCase;
+    private boolean fullName;
+    private boolean persist;
     private Versification v11n;
 
     /*
@@ -51,6 +57,12 @@ public class PassageUtilTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
+        storedCase = BookName.getDefaultCase();
+        BookName.setCase(CaseType.SENTENCE);
+        fullName = BookName.isFullBookName();
+        BookName.setFullBookName(false);
+        persist = PassageUtil.isPersistentNaming();
+
         // AV11N(DMS): Update test to test all V11Ns
         v11n = Versifications.instance().getDefaultVersification();
     }
@@ -62,6 +74,9 @@ public class PassageUtilTest extends TestCase {
      */
     @Override
     protected void tearDown() throws Exception {
+        BookName.setCase(storedCase);
+        BookName.setFullBookName(fullName);
+        PassageUtil.setPersistentNaming(persist);
     }
 
     public void testOther() {
@@ -76,26 +91,24 @@ public class PassageUtilTest extends TestCase {
     }
 
     public void testPersistentNaming() throws Exception {
-        boolean stored_naming = PassageUtil.isPersistentNaming();
         PassageUtil.setPersistentNaming(false);
         assertTrue(!PassageUtil.isPersistentNaming());
-        assertEquals(VerseFactory.fromString(v11n, "Genesis 1 1").toString(), "Gen 1:1");
-        assertEquals(VerseFactory.fromString(v11n, "Gen 1 1").toString(), "Gen 1:1");
-        assertEquals(VerseFactory.fromString(v11n, "Genesis 1:1").toString(), "Gen 1:1");
-        assertEquals(VerseFactory.fromString(v11n, "Gen 1 1").toString(), "Gen 1:1");
-        assertEquals(VerseFactory.fromString(v11n, "g 1 1").toString(), "Gen 1:1");
-        assertEquals(VerseFactory.fromString(v11n, "g").toString(), "Gen 0:0");
-        assertEquals(VerseFactory.fromString(v11n, "G:1:1").toString(), "Gen 1:1");
+        assertEquals("Gen 1:1", VerseFactory.fromString(v11n, "Genesis 1 1").toString());
+        assertEquals("Gen 1:1", VerseFactory.fromString(v11n, "Gen 1 1").toString());
+        assertEquals("Gen 1:1", VerseFactory.fromString(v11n, "Genesis 1:1").toString());
+        assertEquals("Gen 1:1", VerseFactory.fromString(v11n, "Gen 1 1").toString());
+        assertEquals("Gen 1:1", VerseFactory.fromString(v11n, "g 1 1").toString());
+        assertEquals("Gen 0:0", VerseFactory.fromString(v11n, "g").toString());
+        assertEquals("Gen 1:1", VerseFactory.fromString(v11n, "G:1:1").toString());
         PassageUtil.setPersistentNaming(true);
         assertTrue(PassageUtil.isPersistentNaming());
-        assertEquals(VerseFactory.fromString(v11n, "Genesis 1 1").toString(), "Genesis 1 1");
-        assertEquals(VerseFactory.fromString(v11n, "Gen 1 1").toString(), "Gen 1 1");
-        assertEquals(VerseFactory.fromString(v11n, "Genesis 1:1").toString(), "Genesis 1:1");
-        assertEquals(VerseFactory.fromString(v11n, "Gen 1 1").toString(), "Gen 1 1");
-        assertEquals(VerseFactory.fromString(v11n, "g 1 1").toString(), "g 1 1");
-        assertEquals(VerseFactory.fromString(v11n, "g").toString(), "g");
-        assertEquals(VerseFactory.fromString(v11n, "G:1:1").toString(), "G:1:1");
-        PassageUtil.setPersistentNaming(stored_naming);
+        assertEquals("Genesis 1 1", VerseFactory.fromString(v11n, "Genesis 1 1").toString());
+        assertEquals("Gen 1 1", VerseFactory.fromString(v11n, "Gen 1 1").toString());
+        assertEquals("Genesis 1:1", VerseFactory.fromString(v11n, "Genesis 1:1").toString());
+        assertEquals("Gen 1 1", VerseFactory.fromString(v11n, "Gen 1 1").toString());
+        assertEquals("g 1 1", VerseFactory.fromString(v11n, "g 1 1").toString());
+        assertEquals("g", VerseFactory.fromString(v11n, "g").toString());
+        assertEquals("G:1:1", VerseFactory.fromString(v11n, "G:1:1").toString());
     }
 
     public void testTokenize() {

@@ -21,8 +21,6 @@
  */
 package org.crosswire.jsword.versification;
 
-import java.util.EnumSet;
-
 import junit.framework.TestCase;
 
 import org.crosswire.jsword.book.CaseType;
@@ -143,7 +141,6 @@ public class VersificationTest extends TestCase {
     public void testPatch() throws Exception {
 
         int all = 0;
-/*
         // For all the books
         for (BibleBook b : v11n.getBooks()) {
             int cib = v11n.getLastChapter(b);
@@ -158,60 +155,27 @@ public class VersificationTest extends TestCase {
                 }
             }
         }
-*/
-        // for (BibleBook b : BibleBook.values()) {
-        all = 1;
-        for (BibleBook b: EnumSet.range(BibleBook.GEN, BibleBook.MAL)) {
-            int cib = v11n.getLastChapter(b);
-            for (int c = 1; c <= cib; c++) {
-                int vic = v11n.getLastVerse(b, c);
-                for (int v = 1; v <= vic; v++) {
-                    Verse pv = v11n.patch(BibleBook.GEN, 1, all);
 
-                    assertEquals(pv.getName(), b, pv.getBook());
-                    assertEquals(pv.getName(), c, pv.getChapter());
-                    assertEquals(pv.getName(), v, pv.getVerse());
-                    all++;
-                }
-            }
-        }
-        all = 1;
-        for (BibleBook b: EnumSet.range(BibleBook.MATT, BibleBook.REV)) {
-            int cib = v11n.getLastChapter(b);
-            for (int c = 1; c <= cib; c++) {
-                int vic = v11n.getLastVerse(b, c);
-                for (int v = 1; v <= vic; v++) {
-                    Verse pv = v11n.patch(BibleBook.MATT, 1, all);
-
-                    assertEquals(pv.getName(), b, pv.getBook());
-                    assertEquals(pv.getName(), c, pv.getChapter());
-                    assertEquals(pv.getName(), v, pv.getVerse());
-                    all++;
-                }
-            }
-        }
         Verse gen11 = new Verse(BibleBook.GEN, 1, 1);
         assertEquals(gen11, v11n.patch(BibleBook.GEN, 1, 1));
-//        assertEquals(gen11, v11n.patch(BibleBook.GEN, 1, 0));
-        assertEquals(gen11, v11n.patch(BibleBook.GEN, 0, 1));
-//        assertEquals(gen11, v11n.patch(BibleBook.GEN, 0, 0));
-        assertEquals(gen11, v11n.patch(null, 1, 1));
-//        assertEquals(gen11, v11n.patch(null, 1, 0));
-        assertEquals(gen11, v11n.patch(null, 0, 1));
-//        assertEquals(gen11, v11n.patch(null, 0, 0));
+        assertEquals(gen11, v11n.patch(BibleBook.GEN, 0, 2));
+        assertEquals(gen11, v11n.patch(null, 3, 1));
+        assertEquals(gen11, v11n.patch(null, 0, 4));
     }
 
     public void testVerseCount() throws Exception {
         int count_up = 0;
-        Verse gen00 = new Verse(BibleBook.GEN, 0, 0);
-        Verse gen110 = new Verse(BibleBook.GEN, 1, 10);
-        Verse rev99 = new Verse(BibleBook.REV, 22, 21);
-        // for (BibleBook b : BibleBook.values()) {
-        for (BibleBook b: EnumSet.range(BibleBook.GEN, BibleBook.REV)) {
-            for (int c = 0; c <= v11n.getLastChapter(b); c++) {
-                for (int v = 0; v <= v11n.getLastVerse(b, c); v++) {
+        Verse firstVerse = new Verse(v11n.getBooks().getFirstBook(), 0, 0);
+        BibleBook lastBook = v11n.getBooks().getLastBook();
+        int lastChapter = v11n.getLastChapter(lastBook);
+        Verse lastVerse = new Verse(lastBook, lastChapter, v11n.getLastVerse(lastBook, lastChapter));
+        for (BibleBook b : v11n.getBooks()) {
+            int cib = v11n.getLastChapter(b);
+            for (int c = 0; c <= cib; c++) {
+                int vic = v11n.getLastVerse(b, c);
+                for (int v = 0; v <= vic; v++) {
                     Verse curVerse = new Verse(b, c, v);
-                    int up = curVerse.subtract(gen00) + 1;
+                    int up = v11n.distance(firstVerse, curVerse) + 1;
                     assertEquals(++count_up, up);
 //                    assertEquals(verseCountSlow(gen00, curVerse), up);
                 }
@@ -219,19 +183,19 @@ public class VersificationTest extends TestCase {
 
         }
         int count_down = v11n.maximumOrdinal();
-        assertEquals(rev99.getOrdinal(), count_down);
-        count_down -= 2; // Subtract for the Module and OT intros
-        for (BibleBook b: EnumSet.range(BibleBook.GEN, BibleBook.REV)) {
-            for (int c = 0; c <= v11n.getLastChapter(b); c++) {
-                for (int v = 0; v <= v11n.getLastVerse(b, c); v++) {
+        assertEquals(v11n.getOrdinal(lastVerse), count_down);
+        for (BibleBook b : v11n.getBooks()) {
+            int cib = v11n.getLastChapter(b);
+            for (int c = 0; c <= cib; c++) {
+                int vic = v11n.getLastVerse(b, c);
+                for (int v = 0; v <= vic; v++) {
                     Verse curVerse = new Verse(b, c, v);
-                    int down = rev99.subtract(curVerse);
+                    int down = v11n.distance(curVerse, lastVerse);
                     assertEquals(count_down--, down);
                 }
             }
 
         }
-        assertEquals(11, gen110.subtract(gen00));
     }
 
     public void testNames() {

@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Iterator;
 
-import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.Versification;
 
 /**
@@ -224,34 +223,6 @@ public class RocketPassage extends BitwisePassage {
         }
 
         return super.booksInPassage();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#chaptersInPassage(int)
-     */
-    @Override
-    public int chaptersInPassage(BibleBook book) throws NoSuchVerseException {
-        if (distinct != null) {
-            return distinct.chaptersInPassage(book);
-        }
-
-        return super.chaptersInPassage(book);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.passage.Passage#versesInPassage(int, int)
-     */
-    @Override
-    public int versesInPassage(BibleBook book, int chapter) throws NoSuchVerseException {
-        if (distinct != null) {
-            return distinct.versesInPassage(book, chapter);
-        }
-
-        return super.versesInPassage(book, chapter);
     }
 
     /*

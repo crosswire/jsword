@@ -173,7 +173,7 @@ public class RawFileBackend extends RawBackend {
             idxRaf = ntIdxRaf;
         }
 
-        int sourceOIndex = sourceVerse.getOrdinal();
+        int sourceOIndex = v11n.getOrdinal(sourceVerse);
         sourceOIndex = v11n.getTestamentOrdinal(sourceOIndex);
         DataIndex dataIndex = getIndex(idxRaf, sourceOIndex);
 
