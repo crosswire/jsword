@@ -64,9 +64,10 @@ public final class ClassUtil {
         for (int i = 0; i < paths.length; i++) {
             // Search the jar
             if (paths[i].endsWith(EXTENSION_ZIP) || paths[i].endsWith(EXTENSION_JAR)) {
+                ZipFile zip = null;
                 try {
                     String fileName = classname.replace(',', '/') + EXTENSION_CLASS;
-                    ZipFile zip = new ZipFile(paths[i]);
+                    zip = new ZipFile(paths[i]);
                     ZipEntry entry = zip.getEntry(fileName);
 
                     if (entry != null && !entry.isDirectory()) {
@@ -79,6 +80,8 @@ public final class ClassUtil {
                 } catch (IOException ex) {
                     // If that zip file failed, then ignore it and move on.
                     log.warn("Missing zip file for " + classname + " and " + paths[i]);
+                } finally {
+                    IOUtil.close(zip);
                 }
             } else {
                 StringBuilder path = new StringBuilder(256);

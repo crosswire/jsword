@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.RandomAccessFile;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
@@ -111,7 +112,11 @@ public class RawLDBackend extends AbstractKeyBackend {
 
     protected String getRawText(DataEntry entry) {
         String cipherKeyString = (String) getBookMetaData().getProperty(ConfigEntryType.CIPHER_KEY);
-        return entry.getRawText((cipherKeyString != null) ? cipherKeyString.getBytes() : null);
+        try {
+            return entry.getRawText((cipherKeyString != null) ? cipherKeyString.getBytes(getBookMetaData().getBookCharset()) : null);
+        } catch (UnsupportedEncodingException e) {
+            return entry.getRawText(cipherKeyString.getBytes());
+        }
     }
 
     /*

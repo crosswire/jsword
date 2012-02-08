@@ -63,36 +63,57 @@ public final class IOUtil {
     public static void unpackZip(File file, File destdir) throws IOException {
         // unpack the zip.
         byte[] dbuf = new byte[4096];
-        ZipFile zf = new ZipFile(file);
-        Enumeration<? extends ZipEntry> entries = zf.entries();
-        while (entries.hasMoreElements()) {
-            ZipEntry entry = entries.nextElement();
-            String entrypath = entry.getName();
-            File entryFile = new File(destdir, entrypath);
-            File parentDir = entryFile.getParentFile();
-            // Is it already a directory ?
-            if (!parentDir.isDirectory()) {
-                // Create the directory and make sure it worked.
-                if (!parentDir.mkdirs()) {
-                    // TRANSLATOR: Error condition: A directory could not be created. {0} is a placeholder for the directory
-                    throw new MalformedURLException(JSMsg.gettext("The URL {0} could not be created as a directory.", parentDir.toString()));
+        ZipFile zf = null;
+        try {
+            zf = new ZipFile(file);
+            Enumeration<? extends ZipEntry> entries = zf.entries();
+            while (entries.hasMoreElements()) {
+                ZipEntry entry = entries.nextElement();
+                String entrypath = entry.getName();
+                File entryFile = new File(destdir, entrypath);
+                File parentDir = entryFile.getParentFile();
+                // Is it already a directory ?
+                if (!parentDir.isDirectory()) {
+                    // Create the directory and make sure it worked.
+                    if (!parentDir.mkdirs()) {
+                        // TRANSLATOR: Error condition: A directory could not be created. {0} is a placeholder for the directory
+                        throw new MalformedURLException(JSMsg.gettext("The URL {0} could not be created as a directory.", parentDir.toString()));
+                    }
                 }
-            }
 
-            URI child = NetUtil.getURI(entryFile);
+                URI child = NetUtil.getURI(entryFile);
 
-            OutputStream dataOut = NetUtil.getOutputStream(child);
-            InputStream dataIn = zf.getInputStream(entry);
+                OutputStream dataOut = NetUtil.getOutputStream(child);
+                InputStream dataIn = zf.getInputStream(entry);
 
-            while (true) {
-                int count = dataIn.read(dbuf);
-                if (count == -1) {
-                    break;
+                while (true) {
+                    int count = dataIn.read(dbuf);
+                    if (count == -1) {
+                        break;
+                    }
+                    dataOut.write(dbuf, 0, count);
                 }
-                dataOut.write(dbuf, 0, count);
-            }
 
-            dataOut.close();
+                dataOut.close();
+            }
+        } finally {
+            IOUtil.close(zf);
+        }
+    }
+
+    /**
+     * Close the zip file without complaining
+     * 
+     * @param zip
+     *            The zip file to close
+     */
+    public static void close(ZipFile zip) {
+        if (null != zip) {
+            try {
+                zip.close();
+            } catch (IOException ex) {
+                log.error("close", ex);
+            }
         }
     }
 

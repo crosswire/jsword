@@ -40,12 +40,13 @@ public class SystemMT extends Versification {
      * Build the "MT" Versification.
      */
     /* protected */ SystemMT() {
-        super(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_NT, null);
+        super(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, LAST_VERSE_NT);
     }
 
     public static final String V11N_NAME = "MT";
 
     /* protected */ static final BibleBook[] BOOKS_NT = SystemDefault.BOOKS_NONE;
+    /* protected */ static final int[][] LAST_VERSE_NT = SystemDefault.LAST_VERSE_NONE;
 
     // Different ordering of SystemDefault.booksOT
     /* protected */ static final BibleBook[] BOOKS_OT =
@@ -91,7 +92,7 @@ public class SystemMT extends Versification {
         BibleBook.CHR2,
     };
 
-    /* protected */ static final int[][] LAST_VERSE_NT =
+    /* protected */ static final int[][] LAST_VERSE_OT =
     {
         // Genesis
         {

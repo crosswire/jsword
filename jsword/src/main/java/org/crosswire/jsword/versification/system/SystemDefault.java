@@ -35,8 +35,13 @@ import org.crosswire.jsword.versification.Versification;
 public class SystemDefault extends Versification {
     public static final String V11N_NAME = "";
 
-    // Default for other Testament in single Testament Bibles
+    // Default Books for other Testament in single Testament Bibles
     /* protected */ static final BibleBook[] BOOKS_NONE =
+    {
+    };
+
+    // Default offsets for other Testament in single Testament Bibles
+    /* protected */ static final int[][] LAST_VERSE_NONE =
     {
     };
 

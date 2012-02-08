@@ -40,12 +40,13 @@ public class SystemLeningrad extends Versification {
      * Build the "Leningrad" Versification.
      */
     /* protected */ SystemLeningrad() {
-        super(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, null);
+        super(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, LAST_VERSE_NT);
     }
 
     public static final String V11N_NAME = "Leningrad";
 
     /* protected */ static final BibleBook[] BOOKS_NT = SystemDefault.BOOKS_NONE;
+    /* protected */ static final int[][] LAST_VERSE_NT = SystemDefault.LAST_VERSE_NONE;
 
     /* protected */ static final BibleBook[] BOOKS_OT =
     {

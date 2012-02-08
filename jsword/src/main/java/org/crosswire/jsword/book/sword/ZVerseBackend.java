@@ -238,7 +238,7 @@ public class ZVerseBackend extends AbstractBackend {
             }
 
             // 10 because the index is 10 bytes long for each verse
-            byte[] temp = SwordUtil.readRAF(compRaf, index * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE);
+            byte[] temp = SwordUtil.readRAF(compRaf, 1L * index * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE);
 
             // If the Bible does not contain the desired verse, return nothing.
             // Some Bibles have different versification, so the requested verse may not exist.
@@ -290,7 +290,7 @@ public class ZVerseBackend extends AbstractBackend {
             }
 
             // 10 because the index is 10 bytes long for each verse
-            byte[] temp = SwordUtil.readRAF(compRaf, index * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE);
+            byte[] temp = SwordUtil.readRAF(compRaf, 1L * index * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE);
 
             // If the Bible does not contain the desired verse, return nothing.
             // Some Bibles have different versification, so the requested verse may not exist.

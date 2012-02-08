@@ -260,7 +260,7 @@ public class RawFileBackend extends RawBackend {
         BufferedOutputStream bos = null;
         try {
             bos = new BufferedOutputStream(new FileOutputStream(txtFile, true));
-            bos.write(fileName.getBytes());
+            bos.write(fileName.getBytes(getBookMetaData().getBookCharset()));
         } finally {
             if (bos != null) {
                 bos.close();

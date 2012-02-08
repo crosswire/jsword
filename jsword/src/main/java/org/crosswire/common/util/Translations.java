@@ -155,7 +155,7 @@ public class Translations {
         try {
             translation = found;
             PropertyMap props = new PropertyMap();
-            if (translation != DEFAULT_TRANSLATION) {
+            if (!DEFAULT_TRANSLATION.equals(translation)) {
                 props.put(TRANSLATION_KEY, translation);
             }
 

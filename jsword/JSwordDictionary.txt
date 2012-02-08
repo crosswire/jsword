@@ -196,3 +196,7 @@ masoretic
 nehemiah
 charset
 luther
+enum
+rev
+prequel
+zip

@@ -111,7 +111,7 @@ public class DefaultBookmark implements Bookmark {
     /**
      * The list of books.
      */
-    private List<Book> books;
+    private transient List<Book> books;
 
     /**
      * The lookup request.

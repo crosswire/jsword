@@ -396,7 +396,7 @@ public final class NetUtil {
 
             return new URI(orig.getScheme(), orig.getUserInfo(), orig.getHost(), orig.getPort(), path.toString(), orig.getQuery(), orig.getFragment());
         } catch (URISyntaxException ex) {
-            assert false : ex;
+//            assert false : ex;
             return null;
         }
     }
