@@ -205,10 +205,11 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         cet.add(ConfigEntryType.LIBRARY_URL, library.toString());
         super.setLibrary(library);
 
-        // Currently all DATA_PATH entries end in / to indicate dirs or not to
-        // indicate file prefixes
+        // Previously, all DATA_PATH entries end in / to indicate dirs
+        // or not to indicate file prefixes.
+        // This is no longer true.
+        // Now we need to test the file/url to see if it exists and is a directory.
         String datapath = (String) getProperty(ConfigEntryType.DATA_PATH);
-
         int lastSlash = datapath.lastIndexOf('/');
 
         // There were modules that did not have a valid datapath.
@@ -217,8 +218,26 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             return;
         }
 
-        datapath = datapath.substring(0, lastSlash);
+        // DataPath typically ends in a '/' to indicate a directory.
+        // If so remove it.
+        if (lastSlash == datapath.length() - 1) {
+            datapath = datapath.substring(0, lastSlash);
+        }
+
         URI location = NetUtil.lengthenURI(library, datapath);
+        File bookDir = new File(location.getPath());
+        // For some modules, the last element of the DataPath
+        // is a prefix for file names.
+        if (!bookDir.isDirectory()) {
+            // Shorten it by one segment and test again.
+            lastSlash = datapath.lastIndexOf('/');
+            datapath = datapath.substring(0, lastSlash);
+            location = NetUtil.lengthenURI(library, datapath);
+            bookDir = new File(location.getPath());
+            if (!bookDir.isDirectory()) {
+                return;
+            }
+        }
 
         cet.add(ConfigEntryType.LOCATION_URL, location.toString());
         super.setLocation(location);
