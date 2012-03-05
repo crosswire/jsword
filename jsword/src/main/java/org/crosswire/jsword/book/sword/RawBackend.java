@@ -79,7 +79,7 @@ public class RawBackend extends AbstractBackend {
             Testament testament = v11n.getTestament(index);
             index = v11n.getTestamentOrdinal(index);
             RandomAccessFile idxRaf = otIdxRaf;
-            if (testament == Testament.OLD) {
+            if (testament == Testament.NEW) {
                 idxRaf = ntIdxRaf;
             }
 
@@ -111,7 +111,7 @@ public class RawBackend extends AbstractBackend {
             Testament testament = v11n.getTestament(index);
             index = v11n.getTestamentOrdinal(index);
             RandomAccessFile idxRaf = otIdxRaf;
-            if (testament == Testament.OLD) {
+            if (testament == Testament.NEW) {
                 idxRaf = ntIdxRaf;
             }
 
@@ -293,7 +293,7 @@ public class RawBackend extends AbstractBackend {
     protected String getEntry(String name, Testament testament, long index) throws IOException {
         RandomAccessFile idxRaf = otIdxRaf;
         RandomAccessFile txtRaf = otTxtRaf;
-        if (testament == Testament.OLD) {
+        if (testament == Testament.NEW) {
             idxRaf = ntIdxRaf;
             txtRaf = ntTxtRaf;
         }
