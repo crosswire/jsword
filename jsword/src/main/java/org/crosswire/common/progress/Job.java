@@ -208,7 +208,8 @@ public final class Job implements Progress {
             workUnits += step;
 
             int oldPercent = percent;
-            percent = 100 * workUnits / totalUnits;
+            // use long in arithmetic to avoid integer overflow 
+            percent = (int)(100L * workUnits / totalUnits);
             if (oldPercent == percent) {
                 return;
             }
