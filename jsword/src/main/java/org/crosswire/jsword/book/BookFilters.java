@@ -112,6 +112,13 @@ public final class BookFilters {
     }
 
     /**
+     * A filter that accepts everything that implements Maps
+     */
+    public static BookFilter getMaps() {
+        return new BookCategoryFilter(BookCategory.MAPS);
+    }
+
+    /**
      * A filter that accepts everything that is a Greek Definition Dictionary
      */
     public static BookFilter getGreekDefinitions() {
