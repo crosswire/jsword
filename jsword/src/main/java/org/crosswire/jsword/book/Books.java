@@ -248,7 +248,7 @@ public final class Books implements BookList {
 
         boolean removed = books.remove(book);
         if (removed) {
-            fireBooksChanged(instance, book, true);
+            fireBooksChanged(instance, book, false);
         } else {
             throw new BookException(JSOtherMsg.lookupText("Could not remove unregistered Book: {0}", book.getName()));
         }
