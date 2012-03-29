@@ -52,22 +52,10 @@
     =========================================================================-->
   <patternset id="external.runtime.jars">
     <exclude name="**/*-src.jar"/>
-    <exclude name="**/*-source.jar"/>
-    <include name="**/jlfgr-*.jar"/>
-    <include name="**/jsword-common-aqua-*.jar"/>
-    <!-- Exclude ICU4J for now.
-    <exclude name="**/icu4j-charsets-*.jar"/>
-  	<include name="**/icu4j-*.jar"/> -->
-    <!--
-    <include name="**/activation.jar"/>
-    <include name="**/servlet.jar"/>
-    <include name="**/rome-*.jar"/>
-    <include name="**/xmlrpc-*.jar"/>
-    <include name="**/gnu-regexp-*.jar"/>
-    <include name="**/werx-*.jar"/>
-    <include name="**/blogapps-*.jar"/>
-    <include name="**/kafenio-*/*.jar"/>
-    -->
+    <exclude name="**/*-sources.jar"/>
+    <exclude name="**/activation*.jar"/>
+    <exclude name="**/junit*.jar"/>
+    <include name="**/*.jar"/>
   </patternset>
 
   <!--=======================================================================
@@ -297,7 +285,10 @@
           description="Prepare this build from the dependency.">
     <mkdir dir="${target.jar}"/>
     <copy verbose="${verbose.copy}" todir="${target.jar}" flatten="true" preservelastmodified="true">
-      <fileset dir="${dependency.jar}" includes="*.jar"/>
+      <fileset dir="${dependency.jar}">
+      	<include name="**/*.jar"/>
+	    <exclude name="**/*-sources.jar"/>
+      </fileset>
     </copy>
   </target>
 
