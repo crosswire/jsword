@@ -78,7 +78,6 @@ public abstract class AbstractPassage implements Passage {
         this.listeners = new ArrayList<PassageListener>();
     }
 
-    @Override
     public Versification getVersification() {
         return v11n;
     }

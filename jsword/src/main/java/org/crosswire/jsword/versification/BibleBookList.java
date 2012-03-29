@@ -103,12 +103,10 @@ public class BibleBookList implements Iterable<BibleBook>, Serializable {
 
             private BibleBook nextBook = books[0];
 
-            @Override
             public boolean hasNext() {
                 return nextBook != null;
             }
 
-            @Override
             public BibleBook next() {
 
                 if (nextBook == null) {
@@ -120,7 +118,6 @@ public class BibleBookList implements Iterable<BibleBook>, Serializable {
                 return current;
             }
 
-            @Override
             public void remove() {
                 throw new UnsupportedOperationException();
             }

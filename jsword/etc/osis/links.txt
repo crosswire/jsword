@@ -1,5 +1,5 @@
 
-some links in understandinf OSIS
+some links in understanding OSIS
 
 OSIS 1.5 user guide: http://www.bibletechnologies.net/osistext/
 OSIS 2.0 user guide: http://www.bibletechnologies.net/OSISTools.dsp

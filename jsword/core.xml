@@ -19,7 +19,7 @@
   <property name="source.test"      value="${source.root}/test"/>
   <property name="target.root"      value="target"/>
   <property name="target.classes"   value="${target.root}/classes"/>
-  <property name="target.jar"       value="${target.root}/jar"/>
+  <property name="target.jar"       value="lib"/>
   <property name="target.installed" value="${target.root}/installed"/> <!-- override -->
   <property name="test.root"        value="${target.root}/test"/>
   <property name="test.classes"     value="${test.root}/classes"/>
@@ -47,26 +47,16 @@
   <!--=======================================================================
     == These jars are necessary for Bible Desktop to be compiled and run.
     == The version numbers in jar files is replaced w/ *.
+    == Note: This only includes files not managed via ivy/maven.
     == This way we can upgrade without impacting this ant build file.
     =========================================================================-->
   <patternset id="external.runtime.jars">
-  	<exclude name="**/*-src.jar"/>
-    <include name="**/jdom-*.jar"/>
-    <include name="**/commons-codec-*.jar"/>
-    <include name="**/httpcore-*.jar"/>
-    <include name="**/httpclient-*.jar"/>
-    <include name="**/commons-logging-*.jar"/>
-    <include name="**/commons-net-*.jar"/>
-    <include name="**/lucene-core-*.jar"/>
-    <include name="**/lucene-analyzers-*.jar"/>
-    <include name="**/lucene-smartcn-*.jar"/>
-    <include name="**/lucene-snowball-*.jar"/>
+    <exclude name="**/*-src.jar"/>
+    <exclude name="**/*-source.jar"/>
     <include name="**/jlfgr-*.jar"/>
     <include name="**/jsword-common-aqua-*.jar"/>
-    <include name="**/javatar-*.jar"/>
     <!-- Exclude ICU4J for now.
     <exclude name="**/icu4j-charsets-*.jar"/>
-    <exclude name="**/icu4j-*-src.jar"/>
   	<include name="**/icu4j-*.jar"/> -->
     <!--
     <include name="**/activation.jar"/>
@@ -174,6 +164,7 @@
           depends="init, clean.dependency"
           description="Remove the target directory">
     <delete dir="${target.root}"/>
+    <delete dir="${target.jar}"/>
     <antcall target="clean.extra"/>
   </target>
 
@@ -293,9 +284,7 @@
           description="Prepare the build by copying needed jars and files.">
     <!-- Copy the jars from the std location to the target jar directory -->
     <antcall target="prepare.dependency"/>
-<!-- Not currently needed.
     <antcall target="prepare.extra"/>
--->
   </target>
 
   <!--=======================================================================

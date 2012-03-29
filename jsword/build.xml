@@ -1,8 +1,78 @@
-<project name="jsword" default="all">
+<project xmlns:ivy="antlib:org.apache.ivy.ant" 
+         name="jsword"
+         default="all">
 
   <!-- This build uses the core build targets -->
   <import file="../jsword/core.xml"/>
 
+  <!--=======================================================================
+    == Use ivy to manage external jars.
+    == These are properties related to ivy.
+    =========================================================================-->
+  <property name="ivy.install.version"          value="2.2.0" />
+  <property name="ivy.jar.dir"                  value="${basedir}/tools/ivy" />
+  <property name="ivy.jar.file"                 value="${ivy.jar.dir}/ivy-${ivy.install.version}.jar" />
+  <property name="ivy.default.ivy.user.dir"     value="${basedir}/ivy"/>
+  <available file="${ivy.jar.file}" type="file" property="ivy.present"/>
+
+  <!--=======================================================================
+    == Get ivy from the maven repository
+    =========================================================================-->
+  <target name="ivy.download" unless="ivy.present">
+    <mkdir dir="${ivy.jar.dir}"/>
+    <!-- download Ivy from web site so that it can be used even without any special installation -->
+    <echo message="installing ivy..."/>
+    <get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar"
+         dest="${ivy.jar.file}" usetimestamp="true"/>
+  </target>
+  
+  <!--=======================================================================
+    == Make ivy visible to ant
+    =========================================================================-->
+  <target name="ivy" depends="ivy.download" description="Make ivy visible to Ant">
+    <!-- try to load ivy here from local ivy dir, in case the user has not already dropped
+         it into ant's lib dir (note that the latter copy will always take precedence).
+         We will not fail as long as local lib dir exists (it may be empty) and
+         ivy is in at least one of ant's lib dir or the local lib dir. -->
+    <path id="ivy.lib.path">
+      <fileset dir="${ivy.jar.dir}" includes="*.jar"/>
+    </path>
+    <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>
+  </target>    
+  
+  <!--=======================================================================
+        target: ivy.clean            
+    =========================================================================-->
+  <target name="ivy.clean" description="Remove the ivy installation">
+    <delete dir="${ivy.jar.dir}"/>
+  </target>
+  
+  <!--=======================================================================
+    == target: ivy.clean-cache              
+    =========================================================================-->
+  <target name="ivy.clean-cache" depends="ivy" 
+          description="Remove dependent jars that ivy manages">
+    <ivy:cleancache />
+  </target>
+
+  <!--=======================================================================
+    == Get all the dependencies that have been registered in ivy.xml
+    =========================================================================-->
+  <target name="ivy.resolve" depends="ivy" description="Retrieve dependencies with ivy">
+    <ivy:retrieve />
+  </target>
+
+  <!--=======================================================================
+    == Use the prepare.extra hook to get dependency jars.
+    =========================================================================-->
+  <target name="prepare.extra" depends="ivy.resolve"
+          description="Prepare extras files.">
+    <echo message="Done getting 3-rd Party dependencies."/>
+  </target>
+
+  <!--=======================================================================
+    == When we clean jsword, we also have to delete the keystore file.
+    =========================================================================-->
   <target name="clean.extra" description="Extra stuff to do after calling clean">
     <delete dir="${keystore.file}"/>
   </target>

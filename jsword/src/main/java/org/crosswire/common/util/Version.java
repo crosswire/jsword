@@ -103,6 +103,7 @@ public class Version implements Comparable<Version> {
      * @param object The <code>Version</code> object to be compared.
      * @return true if the two objects are equal.
      */
+    @Override
     public boolean equals(Object object) {
         if (!(object instanceof Version)) {
             return false;
