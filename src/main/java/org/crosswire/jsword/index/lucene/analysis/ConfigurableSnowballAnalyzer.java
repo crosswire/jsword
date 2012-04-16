@@ -109,7 +109,7 @@ public class ConfigurableSnowballAnalyzer extends AbstractBookAnalyzer {
             }
 
             if (doStemming) {
-                streams.setResult(new PorterStemFilter(streams.getResult()));
+                streams.setResult(new SnowballFilter(streams.getResult(), stemmerName));
             }
 
             setPreviousTokenStream(streams);
