@@ -36,7 +36,8 @@ import org.crosswire.jsword.versification.BookName;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class DwrBridgeTest extends TestCase {
+// TODO: make this test use mocks or setup its own environment
+public class DwrBridgeMissingAssets extends TestCase {
     DwrBridge dwrBridge = new DwrBridge();
 
     @Override
