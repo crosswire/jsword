@@ -64,21 +64,25 @@ public class EnglishLuceneAnalyzerTest extends TestCase {
     }
 
     public void testSetDoStopWords() throws ParseException {
+        myAnalyzer = new EnglishLuceneAnalyzer();
+        myAnalyzer.setDoStopWords(true);
+        parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
         String testInput = "Surely will every man walketh";
         Query query = parser.parse(testInput);
 
         // enable stop word
-        myAnalyzer.setDoStopWords(true);
-        query = parser.parse(testInput);
         assertTrue(query.toString().indexOf(field + ":will") == -1);
-
+    }
+    public void testCustomStopWords() throws Exception {
+        myAnalyzer = new EnglishLuceneAnalyzer();
         // set custom stop word
         myAnalyzer.setDoStopWords(true);
         String[] stopWords = {
                 "thy", "ye", "unto", "shalt"};
         myAnalyzer.setStopWords(new CharArraySet(Arrays.asList(stopWords), false));
-        testInput = "Upon thy belly Shalt thou go";
-        query = parser.parse(testInput);
+        parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
+        String testInput = "Upon thy belly Shalt thou go";
+        Query query = parser.parse(testInput);
         // System.out.println("ParsedQuery- "+ query.toString());
 
         assertTrue(query.toString().indexOf(field + ":shalt") == -1);
@@ -88,11 +92,12 @@ public class EnglishLuceneAnalyzerTest extends TestCase {
     }
 
     public void testSetDoStemming() throws ParseException {
+        myAnalyzer = new EnglishLuceneAnalyzer();
+        myAnalyzer.setDoStemming(false);
+        parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
         String testInput = "Surely will every man walketh";
         Query query = parser.parse(testInput);
 
-        myAnalyzer.setDoStemming(false);
-        query = parser.parse(testInput);
         assertTrue(query.toString().indexOf(field + ":surely") > -1);
         assertTrue(query.toString().indexOf(field + ":every") > -1);
 

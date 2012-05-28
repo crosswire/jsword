@@ -74,41 +74,54 @@ public class AnalyzerFactoryTest extends TestCase {
         assertTrue(myAnalyzer != null);
     }
 
-    public void testEngStemming() throws ParseException {
+    public void testCustomStopWordFiltering() throws ParseException {
         AbstractBookAnalyzer myAnalyzer = new EnglishLuceneAnalyzer();
-
         QueryParser parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
-
-        String testInput = "Surely will every man walketh";
-        Query query = parser.parse(testInput);
-        // assertTrue(myAnalyzer instanceof SimpleLuceneAnalyzer);
-
-        // After Diacritic filtering
-        assertTrue(query.toString().indexOf(field + ":sure ") > -1);
-        assertTrue(query.toString().indexOf(field + ":everi") > -1);
-
-        myAnalyzer.setDoStemming(false);
-        query = parser.parse(testInput);
-        assertTrue(query.toString().indexOf(field + ":surely") > -1);
-        assertTrue(query.toString().indexOf(field + ":every") > -1);
-
-        // enable stop word
-        myAnalyzer.setDoStopWords(true);
-        query = parser.parse(testInput);
-        assertTrue(query.toString().indexOf(field + ":will") == -1);
 
         // set custom stop word
         myAnalyzer.setDoStopWords(true);
         String[] stopWords = {
                 "thy", "ye", "unto", "shalt"};
         myAnalyzer.setStopWords(new CharArraySet(Arrays.asList(stopWords), false));
-        testInput = "Upon thy belly Shalt thou go";
-        query = parser.parse(testInput);
+        String testInput = "Upon thy belly Shalt thou go";
+
+        Query query = parser.parse(testInput);
+
         assertTrue(query.toString().indexOf(field + ":shalt") == -1);
         assertTrue(query.toString().indexOf(field + ":thy") == -1);
         assertTrue(query.toString().indexOf(field + ":upon") > -1);
+    }
 
-        System.out.println(query.toString());
+    public void testDiacriticFiltering() throws Exception {
+        AbstractBookAnalyzer myAnalyzer = new EnglishLuceneAnalyzer();
+        QueryParser parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
+        String testInput = "Surely will every man walketh";
+
+        Query query = parser.parse(testInput);
+
+        assertTrue(query.toString().indexOf(field + ":sure ") > -1);
+        assertTrue(query.toString().indexOf(field + ":everi") > -1);
+    }
+
+    public void testStopWordsFiltering() throws Exception {
+        AbstractBookAnalyzer myAnalyzer = new EnglishLuceneAnalyzer();
+        QueryParser parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
+        String testInput = "Surely will every man walketh";
+        // enable stop words
+        myAnalyzer.setDoStopWords(true);
+        Query query = parser.parse(testInput);
+
+        assertTrue(query.toString().indexOf(field + ":will") == -1);
+    }
+
+    public void testWithStemmingDisabled() throws Exception {
+        AbstractBookAnalyzer myAnalyzer = new EnglishLuceneAnalyzer();
+        QueryParser parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
+        String testInput = "Surely will every man walketh";
+        myAnalyzer.setDoStemming(false);
+        Query query = parser.parse(testInput);
+        assertTrue(query.toString().indexOf(field + ":surely") > -1);
+        assertTrue(query.toString().indexOf(field + ":every") > -1);
     }
 
     /*

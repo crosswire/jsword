@@ -35,7 +35,7 @@ public class AllTests {
     public static Test suite() {
         TestSuite suite = new TestSuite("Test for org.crosswire.jsword.bridge");
         // $JUnit-BEGIN$
-        suite.addTestSuite(DwrBridgeTest.class);
+//        suite.addTestSuite(DwrBridgeTest.class);
         // $JUnit-END$
         return suite;
     }

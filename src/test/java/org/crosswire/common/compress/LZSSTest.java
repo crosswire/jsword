@@ -125,7 +125,6 @@ public class LZSSTest extends TestCase {
         try {
             byte[] back = bosUncompressed.toByteArray();
             String result = new String(back, "UTF-8");
-            System.out.println(result);
         } catch (UnsupportedEncodingException e) {
             fail();
             return;

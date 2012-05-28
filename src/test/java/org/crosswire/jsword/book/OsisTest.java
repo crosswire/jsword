@@ -26,6 +26,8 @@ import junit.framework.TestCase;
 import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
 
+import java.io.ByteArrayOutputStream;
+
 /**
  * JUnit Test.
  * 
@@ -83,7 +85,9 @@ public class OsisTest extends TestCase {
         blank.addContent(osistext);
 
         // create a Marshaller and marshal to System.out
-        outputter.output(blank, System.out);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        outputter.output(blank, out);
+        assertTrue(out.toString().trim().length() > 0);
     }
 
     private XMLOutputter outputter = new XMLOutputter();
