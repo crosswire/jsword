@@ -774,6 +774,10 @@ public final class OSISUtil {
 
         for (Content content : getDeepContent(root, OSISUtil.OSIS_ELEMENT_TITLE)) {
             Element ele = (Element) content;
+            
+            if (buffer.length() > 0) {
+                buffer.append(' ');
+            }
             buffer.append(OSISUtil.getTextContent(ele.getContent()));
         }
 
