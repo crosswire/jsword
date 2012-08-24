@@ -35,6 +35,7 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.sword.state.RawBackendState;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.TreeKey;
@@ -63,7 +64,7 @@ public class GenBookBackend extends AbstractBackend {
 
         URI path = null;
         try {
-            path = getExpandedDataPath();
+            path = SwordUtil.getExpandedDataPath(getBookMetaData());
         } catch (BookException e) {
             Reporter.informUser(this, e);
             return;
@@ -221,7 +222,7 @@ public class GenBookBackend extends AbstractBackend {
     }
 
     @Override
-    public void setRawText(Key key, String text) throws BookException, IOException {
+    public void setRawText(RawBackendState state, Key key, String text) throws BookException, IOException {
         throw new UnsupportedOperationException();
     }
 

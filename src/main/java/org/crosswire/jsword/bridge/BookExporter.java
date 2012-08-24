@@ -52,7 +52,7 @@ public class BookExporter {
 
         StringBuilder buf = new StringBuilder();
         for (Key key : keys) {
-            String rawText = book.getRawText(key);
+            String rawText = book.getRawText(key, bob);
             if (rawText != null && rawText.trim().length() > 0) {
                 buf.delete(0, buf.length());
                 buf.append("$$$").append(key).append('\n').append(rawText);

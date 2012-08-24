@@ -67,14 +67,14 @@ public class RawFileBackendTest extends TestCase {
         Verse ntVerse3 = new Verse(BibleBook.REV, 22, 21);
         Verse ntVerse4 = new Verse(BibleBook.JOHN3, 1, 2);
 
-        backend.setRawText(otVerse, "Hello OT");
-        backend.setRawText(otVerse2, "Hello OT2");
-        backend.setRawText(otVerse3, "Hello OT3");
-        backend.setRawText(otVerse4, "Hello OT4");
-        backend.setRawText(ntVerse, "Hello NT");
-        backend.setRawText(ntVerse2, "Hello NT2");
-        backend.setRawText(ntVerse3, "Hello NT3");
-        backend.setRawText(ntVerse4, "Hello NT4");
+        backend.setRawText(bob, otVerse, "Hello OT");
+        backend.setRawText(bob, otVerse2, "Hello OT2");
+        backend.setRawText(bob, otVerse3, "Hello OT3");
+        backend.setRawText(bob, otVerse4, "Hello OT4");
+        backend.setRawText(bob, ntVerse, "Hello NT");
+        backend.setRawText(bob, ntVerse2, "Hello NT2");
+        backend.setRawText(bob, ntVerse3, "Hello NT3");
+        backend.setRawText(bob, ntVerse4, "Hello NT4");
 
         assertEquals("Hello OT", backend.getRawText(otVerse));
         assertEquals("Hello OT2", backend.getRawText(otVerse2));
@@ -91,7 +91,7 @@ public class RawFileBackendTest extends TestCase {
         Verse alias1 = VerseFactory.fromString(v11n, "Gen 1:2");
         Verse alias2 = VerseFactory.fromString(v11n, "Gen 1:3");
 
-        backend.setRawText(source, "Hello Alias test!");
+        backend.setRawText(bob, source, "Hello Alias test!");
         backend.setAliasKey(alias1, source);
         backend.setAliasKey(alias2, source);
 

@@ -22,10 +22,12 @@
 package org.crosswire.jsword.book;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.crosswire.common.activate.Activatable;
 import org.crosswire.common.util.Language;
+import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
 import org.crosswire.jsword.index.IndexStatus;
 import org.crosswire.jsword.index.IndexStatusListener;
 import org.crosswire.jsword.index.search.SearchRequest;
@@ -124,11 +126,12 @@ public interface Book extends Activatable, Comparable<Book> {
      * 
      * @param key
      *            The item to locate
+     * @param processor TODO
      * @return The found Book data
      * @throws BookException
      *             If anything goes wrong with this method
      */
-    String getRawText(Key key) throws BookException;
+    List<Content> getRawText(Key key, RawTextToXmlProcessor processor) throws BookException;
 
     /**
      * A Book is writable if the file system allows the underlying files to be

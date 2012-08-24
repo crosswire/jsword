@@ -21,7 +21,6 @@
  */
 package org.crosswire.jsword.book.basic;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,6 +30,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
+import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.NoSuchKeyException;
@@ -60,40 +60,45 @@ public abstract class AbstractPassageBook extends AbstractBook {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage.Key, boolean)
      */
-    public Iterator<Content> getOsisIterator(Key key, boolean allowEmpty) throws BookException {
+    public Iterator<Content> getOsisIterator(Key key, final boolean allowEmpty) throws BookException {
         // Note: allowEmpty indicates parallel view
         // TODO(DMS): make the iterator be demand driven
-        Filter filter = getFilter();
-        List<Content> content = new ArrayList<Content>();
+        final Filter filter = getFilter();
+//        final List<Content> content = new ArrayList<Content>();
 
         // For all the ranges in this Passage
         Passage ref = KeyUtil.getPassage(key);
-        boolean showTitles = ref.hasRanges(RestrictionType.CHAPTER) || !allowEmpty;
-        Iterator<Key> rit = ref.rangeIterator(RestrictionType.CHAPTER);
+        final boolean showTitles = ref.hasRanges(RestrictionType.CHAPTER) || !allowEmpty;
 
-        while (rit.hasNext()) {
-            VerseRange range = (VerseRange) rit.next();
+        
+    //        Iterator<Key> rit = ref.rangeIterator(RestrictionType.CHAPTER);
+//        while (rit.hasNext()) {
+//            VerseRange range = (VerseRange) rit.next(); TO BE MOVED
 
-            if (showTitles) {
-                Element title = OSISUtil.factory().createTitle();
-                title.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.GENERATED_CONTENT);
-                title.addContent(range.getName());
-                content.add(title);
-            }
+        RawTextToXmlProcessor processor = new RawTextToXmlProcessor() {
+                public void preRange(VerseRange range, List<Content> partialDom) {
+                    if (showTitles) {
+                        Element title = OSISUtil.factory().createTitle();
+                        title.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.GENERATED_CONTENT);
+                        title.addContent(range.getName());
+                        partialDom.add(title);
+                    }
+                }
+
+                public void postVerse(Key verse, List<Content> partialDom, String rawText) {
+                 // If the verse is empty then we shouldn't add the verse tag
+                    if (allowEmpty || rawText.length() > 0) {
+                        List<Content> osisContent = filter.toOSIS(AbstractPassageBook.this, verse, rawText);
+                        addOSIS(verse, partialDom, osisContent);
+                    }
+                }
+            };
 
             // For all the verses in this range
-            for (Key verse : range) {
-                String txt = getRawText(verse);
+//            for (Key verse : range) {
+                return getRawText(ref, processor).iterator();
 
-                // If the verse is empty then we shouldn't add the verse tag
-                if (allowEmpty || txt.length() > 0) {
-                    List<Content> osisContent = filter.toOSIS(this, verse, txt);
-                    addOSIS(verse, content, osisContent);
-                }
-            }
-        }
-
-        return content.iterator();
+//        return content.iterator();
     }
 
     /**

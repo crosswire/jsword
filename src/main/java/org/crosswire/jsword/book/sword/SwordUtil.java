@@ -24,8 +24,12 @@ package org.crosswire.jsword.book.sword;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 
 import org.crosswire.common.util.Logger;
+import org.crosswire.common.util.NetUtil;
+import org.crosswire.jsword.JSOtherMsg;
+import org.crosswire.jsword.book.BookException;
 
 /**
  * Various utilities used by different Sword classes.
@@ -182,7 +186,7 @@ public final class SwordUtil {
      *            the offset into the array
      * @return The decoded data
      */
-    protected static int decodeLittleEndian32(byte[] data, int offset) {
+    public static int decodeLittleEndian32(byte[] data, int offset) {
         // Convert from a byte to an int, but prevent sign extension.
         // So -16 becomes 240
         int byte1 = data[0 + offset] & 0xFF;
@@ -368,6 +372,23 @@ public final class SwordUtil {
         }
     }
 
+    /**
+     * Returns where the book should be located
+     * @param bookMetaData meta information about the book
+     * @return the URI locating the resource
+     * @throws BookException thrown if an issue is encountered, e.g. missing data files.
+     */
+    public static URI getExpandedDataPath(SwordBookMetaData bookMetaData) throws BookException {
+        URI loc = NetUtil.lengthenURI(bookMetaData.getLibrary(), (String) bookMetaData.getProperty(ConfigEntryType.DATA_PATH));
+
+        if (loc == null) {
+            // FIXME(DMS): missing parameter
+            throw new BookException(JSOtherMsg.lookupText("Missing data files for old and new testaments in {0}."));
+        }
+
+        return loc;
+    }
+    
     /**
      * The log stream
      */

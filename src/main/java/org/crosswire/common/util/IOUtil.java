@@ -21,6 +21,7 @@
  */
 package org.crosswire.common.util;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -106,79 +107,15 @@ public final class IOUtil {
     }
 
     /**
-     * Close the zip file without complaining
+     * Closes any {@link Closeable} object
      * 
-     * @param zip
+     * @param closeable
      *            The zip file to close
      */
-    public static void close(ZipFile zip) {
-        if (null != zip) {
+    public static void close(Closeable closeable) {
+        if (null != closeable) {
             try {
-                zip.close();
-            } catch (IOException ex) {
-                log.error("close", ex);
-            }
-        }
-    }
-
-    /**
-     * Close the random access file without complaining
-     * 
-     * @param raf
-     *            The random access file to close
-     */
-    public static void close(RandomAccessFile raf) {
-        if (null != raf) {
-            try {
-                raf.close();
-            } catch (IOException ex) {
-                log.error("close", ex);
-            }
-        }
-    }
-
-    /**
-     * Close the stream whatever without complaining
-     * 
-     * @param out
-     *            The stream to close
-     */
-    public static void close(OutputStream out) {
-        if (null != out) {
-            try {
-                out.close();
-            } catch (IOException ex) {
-                log.error("close", ex);
-            }
-        }
-    }
-
-    /**
-     * Close the stream whatever without complaining
-     * 
-     * @param in
-     *            The stream to close
-     */
-    public static void close(InputStream in) {
-        if (null != in) {
-            try {
-                in.close();
-            } catch (IOException ex) {
-                log.error("close", ex);
-            }
-        }
-    }
-
-    /**
-     * Close the stream whatever without complaining
-     * 
-     * @param in
-     *            The stream to close
-     */
-    public static void close(Reader in) {
-        if (null != in) {
-            try {
-                in.close();
+                closeable.close();
             } catch (IOException ex) {
                 log.error("close", ex);
             }

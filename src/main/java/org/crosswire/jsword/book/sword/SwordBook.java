@@ -22,6 +22,7 @@
 package org.crosswire.jsword.book.sword;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import org.crosswire.common.activate.Activator;
@@ -31,6 +32,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractPassageBook;
 import org.crosswire.jsword.book.filter.Filter;
+import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.jdom.Content;
@@ -79,12 +81,12 @@ public class SwordBook extends AbstractPassageBook {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
      */
-    public String getRawText(Key key) throws BookException {
+    public List<Content> getRawText(Key key, RawTextToXmlProcessor processor) throws BookException {
         if (backend == null) {
-            return "";
+            return Collections.emptyList();
         }
 
-        String result = backend.getRawText(key);
+        List<Content> result = backend.getRawText(key, processor);
         assert result != null;
         return result;
     }

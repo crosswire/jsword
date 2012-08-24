@@ -61,7 +61,7 @@ public class GenBookTest extends TestCase {
         if (book != null) {
             Key key = book.getGlobalKeyList();
             try {
-                book.getRawText(key);
+                book.getRawText(key, bob);
             } catch (NullPointerException e) {
                 Assert.fail("test for bad key should not have thrown an NPE.");
             } catch (BookException e) {

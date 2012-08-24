@@ -53,7 +53,7 @@ public class BookLookup {
             buf.append(':');
             buf.append(osisID);
             buf.append(" - ");
-            String rawText = book.getRawText(currentKey);
+            String rawText = book.getRawText(currentKey, bob);
             if (rawText != null && rawText.trim().length() > 0) {
                 buf.append(rawText);
             } else {

@@ -33,6 +33,7 @@ import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.FeatureType;
+import org.crosswire.jsword.book.sword.processing.NoOpRawTextProcessor;
 import org.crosswire.jsword.index.IndexStatus;
 import org.crosswire.jsword.index.IndexStatusEvent;
 import org.crosswire.jsword.index.IndexStatusListener;
@@ -345,7 +346,7 @@ public abstract class AbstractBook implements Book {
                 key = key.get(0);
             }
 
-            getRawText(key);
+            getRawText(key, new NoOpRawTextProcessor());
 
             return true;
         } catch (Exception ex) {

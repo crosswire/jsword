@@ -21,6 +21,8 @@
  */
 package org.crosswire.jsword.book.sword;
 
+import static org.crosswire.jsword.book.sword.state.RawFileBackendState.INCFILE;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -30,36 +32,35 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
+import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.sword.state.RawBackendState;
+import org.crosswire.jsword.book.sword.state.RawFileBackendState;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.Verse;
-import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.Testament;
+import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
 
 /**
- * A Raw File format that allows for each verse to have it's own storage.
- * The basic structure of the index is as follows:
+ * A Raw File format that allows for each verse to have it's own storage. The
+ * basic structure of the index is as follows:
  * <ul>
- * <li><strong>incfile</strong> --
- *      Is initialized with 1 and is incremented once for each non-linked verse
- *      that is actually stored in the Book.</li>
- * <li><strong>idx</strong> --
- *      There is one index file for each testament having verses, named nt and ot.
- *      These index files contain offsets into the corresponding data file.
- *      The idx files are indexed by the ordinal value of the verse within the Testament
- *      for the Book's versification.</li>
- * <li><strong>dat</strong> --
- *      There is a data file for each testament having verses, named nt.vss and ot.vss.
- *      These data files do not contain the verses but rather the file names that
- *      contain the verse text.</li>
- * <li><strong>verse</strong> --
- *      For each stored verse there is a file containing the verse text.
- *      The filename is a zero padded number corresponding to the current increment
- *      from incfile, when it was created. It is this 7 character name that is stored
- *      in a dat file.</li>
+ * <li><strong>incfile</strong> -- Is initialized with 1 and is incremented once
+ * for each non-linked verse that is actually stored in the Book.</li>
+ * <li><strong>idx</strong> -- There is one index file for each testament having
+ * verses, named nt and ot. These index files contain offsets into the
+ * corresponding data file. The idx files are indexed by the ordinal value of
+ * the verse within the Testament for the Book's versification.</li>
+ * <li><strong>dat</strong> -- There is a data file for each testament having
+ * verses, named nt.vss and ot.vss. These data files do not contain the verses
+ * but rather the file names that contain the verse text.</li>
+ * <li><strong>verse</strong> -- For each stored verse there is a file
+ * containing the verse text. The filename is a zero padded number corresponding
+ * to the current increment from incfile, when it was created. It is this 7
+ * character name that is stored in a dat file.</li>
  * </ul>
  * 
  * @see gnu.lgpl.License for license details.<br>
@@ -67,37 +68,25 @@ import org.crosswire.jsword.versification.system.Versifications;
  * @author mbergmann
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class RawFileBackend extends RawBackend {
+public class RawFileBackend extends RawBackend<RawFileBackendState> {
 
     public RawFileBackend(SwordBookMetaData sbmd, int datasize) {
         super(sbmd, datasize);
-
-        initIncFile();
-        try {
-            incfileValue = readIncfile();
-        } catch (IOException e) {
-            log.error("Error on reading incfile!");
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.RawBackend#getRawText(org.crosswire.jsword.passage.Key)
-     */
-    @Override
-    public String getRawText(Key key) throws BookException {
-        return super.getRawText(key);
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.RawBackend#getEntry(java.lang.String, org.crosswire.jsword.versification.Testament, long)
      */
     @Override
-    protected String getEntry(String name, Testament testament, long index) throws IOException {
-        RandomAccessFile idxRaf = otIdxRaf;
-        RandomAccessFile txtRaf = otTxtRaf;
+    protected String getEntry(RawBackendState state, String name, Testament testament, long index) throws IOException {
+        RandomAccessFile idxRaf;
+        RandomAccessFile txtRaf;
         if (testament == Testament.NEW) {
-            idxRaf = ntIdxRaf;
-            txtRaf = ntTxtRaf;
+            idxRaf = state.getNtIdxRaf();
+            txtRaf = state.getNtTextRaf();
+        } else {
+            idxRaf = state.getOtIdxRaf();
+            txtRaf = state.getOtTextRaf();
         }
 
         DataIndex dataIndex = getIndex(idxRaf, index);
@@ -123,10 +112,11 @@ public class RawFileBackend extends RawBackend {
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.RawBackend#setRawText(org.crosswire.jsword.passage.Key, java.lang.String)
+     * 
+     * FIXME(CJB) unlikely to be used for just one key, so let's have the user pass in the state by calling .initState()
+     * and have him be responsible for closing the RAFs
      */
-    @Override
-    public void setRawText(Key key, String text) throws BookException, IOException {
-        checkActive();
+    public void setRawText(RawFileBackendState state, Key key, String text) throws BookException, IOException {
 
         Verse verse = KeyUtil.getVerse(key);
         String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
@@ -134,22 +124,27 @@ public class RawFileBackend extends RawBackend {
         int index = v11n.getOrdinal(verse);
         Testament testament = v11n.getTestament(index);
         index = v11n.getTestamentOrdinal(index);
-        RandomAccessFile idxRaf = otIdxRaf;
-        RandomAccessFile txtRaf = otTxtRaf;
-        File txtFile = otTxtFile;
+
+        RandomAccessFile idxRaf;
+        RandomAccessFile txtRaf;
+        File txtFile;
         if (testament == Testament.NEW) {
-            idxRaf = ntIdxRaf;
-            txtRaf = ntTxtRaf;
-            txtFile = ntTxtFile;
+            idxRaf = state.getNtIdxRaf();
+            txtRaf = state.getNtTextRaf();
+            txtFile = state.getNtTextFile();
+        } else {
+            idxRaf = state.getOtIdxRaf();
+            txtRaf = state.getOtTextRaf();
+            txtFile = state.getOtTextFile();
         }
 
         DataIndex dataIndex = getIndex(idxRaf, index);
         File dataFile;
         if (dataIndex.getSize() == 0) {
-            dataFile = createDataTextFile(incfileValue);
+            dataFile = createDataTextFile(state.getIncfileValue());
             updateIndexFile(idxRaf, index, txtRaf.length());
-            updateDataFile(incfileValue, txtFile);
-            checkAndIncrementIncfile(incfileValue);
+            updateDataFile(state.getIncfileValue(), txtFile);
+            checkAndIncrementIncfile(state, state.getIncfileValue());
         } else {
             dataFile = getDataTextFile(txtRaf, dataIndex);
         }
@@ -159,8 +154,7 @@ public class RawFileBackend extends RawBackend {
         writeTextDataFile(dataFile, textData);
     }
 
-    @Override
-    public void setAliasKey(Key alias, Key source) throws IOException {
+    public void setAliasKey(RawFileBackendState state, Key alias, Key source) throws IOException {
         Verse aliasVerse = KeyUtil.getVerse(alias);
         Verse sourceVerse = KeyUtil.getVerse(source);
         String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
@@ -168,32 +162,19 @@ public class RawFileBackend extends RawBackend {
         int aliasIndex = v11n.getOrdinal(aliasVerse);
         Testament testament = v11n.getTestament(aliasIndex);
         aliasIndex = v11n.getTestamentOrdinal(aliasIndex);
-        RandomAccessFile idxRaf = otIdxRaf;
-        if (testament == Testament.NEW) {
-            idxRaf = ntIdxRaf;
-        }
+        RandomAccessFile idxRaf = testament == Testament.NEW ? state.getNtIdxRaf() : state.getOtIdxRaf();
 
         int sourceOIndex = v11n.getOrdinal(sourceVerse);
         sourceOIndex = v11n.getTestamentOrdinal(sourceOIndex);
         DataIndex dataIndex = getIndex(idxRaf, sourceOIndex);
 
-        // Only the index is updated to point to the same place as what is linked.
+        // Only the index is updated to point to the same place as what is
+        // linked.
         updateIndexFile(idxRaf, aliasIndex, dataIndex.getOffset());
     }
 
-    private void initIncFile() {
-        try {
-            File tempIncfile = new File(getExpandedDataPath().getPath() + File.separator + INCFILE);
-            if (tempIncfile.exists()) {
-                this.incfile = tempIncfile;
-            }
-        } catch (BookException e) {
-            log.error("Error on checking incfile: " + e.getMessage());
-        }
-    }
-
     private File createDataTextFile(int index) throws BookException, IOException {
-        String dataPath = getExpandedDataPath().getPath();
+        String dataPath = SwordUtil.getExpandedDataPath(getBookMetaData()).getPath();
         dataPath += File.separator + String.format("%07d", Integer.valueOf(index));
         File dataFile = new File(dataPath);
         if (!dataFile.exists() && !dataFile.createNewFile()) {
@@ -205,8 +186,11 @@ public class RawFileBackend extends RawBackend {
     /**
      * Gets the Filename for the File having the verse text.
      * 
-     * @param txtRaf The random access file containing the file names for the verse storage.
-     * @param dataIndex The index of where to get the data
+     * @param txtRaf
+     *            The random access file containing the file names for the verse
+     *            storage.
+     * @param dataIndex
+     *            The index of where to get the data
      * @return the file having the verse text.
      * @throws IOException
      */
@@ -225,18 +209,20 @@ public class RawFileBackend extends RawBackend {
     /**
      * Gets the File having the verse text.
      * 
-     * @param txtRaf The random access file containing the file names for the verse storage.
-     * @param dataIndex The index of where to get the data
+     * @param txtRaf
+     *            The random access file containing the file names for the verse
+     *            storage.
+     * @param dataIndex
+     *            The index of where to get the data
      * @return the file having the verse text.
      * @throws IOException
      * @throws BookException
      */
     private File getDataTextFile(RandomAccessFile txtRaf, DataIndex dataIndex) throws IOException, BookException {
         String dataFilename = getTextFilename(txtRaf, dataIndex);
-        String dataPath = getExpandedDataPath().getPath() + File.separator + dataFilename;
+        String dataPath = SwordUtil.getExpandedDataPath(getBookMetaData()).getPath() + File.separator + dataFilename;
         return new File(dataPath);
     }
-
 
     protected void updateIndexFile(RandomAccessFile idxRaf, long index, long dataFileStartPosition) throws IOException {
         long indexFileWriteOffset = index * entrysize;
@@ -268,10 +254,17 @@ public class RawFileBackend extends RawBackend {
         }
     }
 
-    private void checkAndIncrementIncfile(int index) throws IOException {
-        if (index >= this.incfileValue) {
-            this.incfileValue = index + 1;
-            writeIncfile(this.incfileValue);
+    private void checkAndIncrementIncfile(RawFileBackendState state, int index) throws IOException {
+        if (index >= state.getIncfileValue()) {
+            int incValue = index + 1;
+
+            // FIXME(CJB) this portion of code is unsafe for concurrency
+            // operations, but without knowing the
+            // reason for the inc file, I would guess it unlikely to be a
+            // problem
+            // this essentially destroys consistency of the state
+            state.setIncfileValue(incValue);
+            writeIncfile(state, incValue);
         }
     }
 
@@ -280,37 +273,31 @@ public class RawFileBackend extends RawBackend {
      * 
      * @see org.crosswire.jsword.book.sword.RawBackend#create()
      */
+    // FIXME(CJB) : DM - API change to pass in state, or is this a one-off for
+    // which we want to release resources afterwards (opted for the second
+    // option)
     @Override
     public void create() throws IOException, BookException {
         super.create();
+
         createDataFiles();
         createIndexFiles();
-        createIncfile();
 
-        checkActive();
+        RawFileBackendState state = null;
+        try {
+            state = this.initState();
 
-        prepopulateIndexFiles();
-        prepopulateIncfile();
-    }
+            createIncfile(state);
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.sword.RawBackend#isWritable()
-     */
-    @Override
-    public boolean isWritable() {
-        File incFile = this.incfile;
-
-        if (otTxtFile.exists() && otTxtFile.canRead() && otTxtFile.canWrite() && ntTxtFile.exists() && ntTxtFile.canRead() && ntTxtFile.canWrite()
-                && otIdxFile.exists() && otIdxFile.canRead() && otIdxFile.canWrite() && ntIdxFile.exists() && ntIdxFile.canRead()
-                && ntIdxFile.canWrite() && incFile.exists() && incFile.canRead() && incFile.canWrite())
-        {
-            return true;
+            prepopulateIndexFiles(state);
+            prepopulateIncfile(state);
+        } finally {
+            IOUtil.close(state);
         }
-        return false;
     }
 
     private void createDataFiles() throws IOException, BookException {
-        String path = getExpandedDataPath().getPath();
+        String path = SwordUtil.getExpandedDataPath(getBookMetaData()).getPath();
 
         File otTextFile = new File(path + File.separator + SwordConstants.FILE_OT);
         if (!otTextFile.exists() && !otTextFile.createNewFile()) {
@@ -324,7 +311,7 @@ public class RawFileBackend extends RawBackend {
     }
 
     private void createIndexFiles() throws IOException, BookException {
-        String path = getExpandedDataPath().getPath();
+        String path = SwordUtil.getExpandedDataPath(getBookMetaData()).getPath();
         File otIndexFile = new File(path + File.separator + SwordConstants.FILE_OT + SwordConstants.EXTENSION_VSS);
         if (!otIndexFile.exists() && !otIndexFile.createNewFile()) {
             throw new IOException("Could not create ot index file.");
@@ -336,12 +323,13 @@ public class RawFileBackend extends RawBackend {
         }
     }
 
-    private void prepopulateIndexFiles() throws IOException {
+    private void prepopulateIndexFiles(RawFileBackendState state) throws IOException {
+
         String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
         Versification v11n = Versifications.instance().getVersification(v11nName);
         int otCount = v11n.getCount(Testament.OLD);
         int ntCount = v11n.getCount(Testament.NEW) + 1;
-        BufferedOutputStream otIdxBos = new BufferedOutputStream(new FileOutputStream(otIdxFile, false));
+        BufferedOutputStream otIdxBos = new BufferedOutputStream(new FileOutputStream(state.getOtIdxFile(), false));
         try {
             for (int i = 0; i < otCount; i++) {
                 writeInitialIndex(otIdxBos);
@@ -350,7 +338,7 @@ public class RawFileBackend extends RawBackend {
             otIdxBos.close();
         }
 
-        BufferedOutputStream ntIdxBos = new BufferedOutputStream(new FileOutputStream(ntIdxFile, false));
+        BufferedOutputStream ntIdxBos = new BufferedOutputStream(new FileOutputStream(state.getNtIdxFile(), false));
         try {
             for (int i = 0; i < ntCount; i++) {
                 writeInitialIndex(ntIdxBos);
@@ -360,22 +348,22 @@ public class RawFileBackend extends RawBackend {
         }
     }
 
-    private void createIncfile() throws IOException, BookException {
-        File tempIncfile = new File(getExpandedDataPath().getPath() + File.separator + INCFILE);
+    private void createIncfile(RawFileBackendState state) throws IOException, BookException {
+        File tempIncfile = new File(SwordUtil.getExpandedDataPath(getBookMetaData()).getPath() + File.separator + INCFILE);
         if (!tempIncfile.exists() && !tempIncfile.createNewFile()) {
             throw new IOException("Could not create incfile file.");
         }
-        this.incfile = tempIncfile;
+        state.setIncfile(tempIncfile);
     }
 
-    private void prepopulateIncfile() throws IOException {
-        writeIncfile(1);
+    private void prepopulateIncfile(RawFileBackendState state) throws IOException {
+        writeIncfile(state, 1);
     }
 
-    private void writeIncfile(int value) throws IOException {
+    private void writeIncfile(RawFileBackendState state, int value) throws IOException {
         FileOutputStream fos = null;
         try {
-            fos = new FileOutputStream(this.incfile, false);
+            fos = new FileOutputStream(state.getIncfile(), false);
             fos.write(littleEndian32BitByteArrayFromInt(value));
         } catch (FileNotFoundException e) {
             log.error("Error on writing to incfile, file should exist already!");
@@ -385,31 +373,6 @@ public class RawFileBackend extends RawBackend {
                 fos.close();
             }
         }
-    }
-
-    private int readIncfile() throws IOException {
-        int ret = -1;
-        if (this.incfile != null) {
-            FileInputStream fis = null;
-            try {
-                fis = new FileInputStream(this.incfile);
-                byte[] buffer = new byte[4];
-                if (fis.read(buffer) != 4) {
-                    log.error("Read data is not of appropriate size of 4 bytes!");
-                    throw new IOException("Incfile is not 4 bytes long");
-                }
-                ret = SwordUtil.decodeLittleEndian32(buffer, 0);
-            } catch (FileNotFoundException e) {
-                log.error("Error on writing to incfile, file should exist already!");
-                log.error(e.getMessage());
-            } finally {
-                if (fis != null) {
-                    fis.close();
-                }
-            }
-        }
-
-        return ret;
     }
 
     private void writeInitialIndex(BufferedOutputStream outStream) throws IOException {
@@ -461,11 +424,6 @@ public class RawFileBackend extends RawBackend {
         SwordUtil.encodeLittleEndian16(val, buffer, 0);
         return buffer;
     }
-
-    private static final String INCFILE = "incfile";
-
-    private File incfile;
-    private int incfileValue;
 
     private static final Logger log = Logger.getLogger(RawFileBackend.class);
 }

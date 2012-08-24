@@ -1,0 +1,1291 @@
+diff --git a/.classpath b/.classpath
+index 0a5a503..3c96d64 100644
+--- a/.classpath
++++ b/.classpath
+@@ -1,23 +1,10 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <classpath>
+-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+-	<classpathentry kind="src" path="src/main/resources"/>
+-	<classpathentry kind="src" path="src/main/java"/>
+-	<classpathentry kind="src" path="src/test/java"/>
+-	<classpathentry kind="src" path="src/test/resources"/>
+-	<classpathentry exported="true" kind="lib" path="lib/commons-codec-1.6.jar" sourcepath="lib/commons-codec-1.6-sources.jar"/>
+-	<classpathentry exported="true" kind="lib" path="lib/commons-logging-1.1.1.jar" sourcepath="lib/commons-logging-1.1.1-sources.jar"/>
+-	<classpathentry exported="true" kind="lib" path="lib/commons-net-3.0.jar" sourcepath="lib/commons-net-3.0-sources.jar"/>
+-	<classpathentry exported="true" kind="lib" path="lib/httpclient-4.2-beta1.jar" sourcepath="lib/httpclient-4.2-beta1-sources.jar"/>
+-	<classpathentry exported="true" kind="lib" path="lib/httpcore-4.2-beta1.jar" sourcepath="lib/httpcore-4.2-beta1-sources.jar"/>
+-	<classpathentry exported="true" kind="lib" path="lib/icu4j-4.8.1.1.jar" sourcepath="lib/icu4j-4.8.1.1-sources.jar"/>
+-	<classpathentry exported="true" kind="lib" path="lib/javatar-2.5.jar"/>
+-	<classpathentry exported="true" kind="lib" path="lib/jdom-1.1.3.jar" sourcepath="lib/jdom-1.1.3-sources.jar"/>
+-	<classpathentry exported="true" kind="lib" path="lib/lucene-core-3.0.3.jar" sourcepath="lib/lucene-3.0.3-sources.jar"/>
+-	<classpathentry exported="true" kind="lib" path="lib/lucene-smartcn-3.0.3.jar" sourcepath="lib/lucene-3.0.3-sources.jar"/>
+-	<classpathentry exported="true" kind="lib" path="lib/lucene-snowball-3.0.3.jar" sourcepath="lib/lucene-3.0.3-sources.jar"/>
+-	<classpathentry exported="true" kind="lib" path="lib/lucene-analyzers-3.0.3.jar" sourcepath="lib/lucene-analyzers-3.0.3-sources.jar"/>
+-	<classpathentry exported="true" kind="lib" path="lib/activation-1.1.1.jar" sourcepath="lib/activation-1.1.1-sources.jar"/>
+-	<classpathentry exported="true" kind="lib" path="lib/junit-3.8.1.jar" sourcepath="lib/junit-3.8.1-sources.jar"/>
+-	<classpathentry kind="output" path="bin"/>
++	<classpathentry kind="src" output="target/classes" path="src/main/java"/>
++	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources"/>
++	<classpathentry kind="src" output="target/test-classes" path="src/test/java"/>
++	<classpathentry excluding="**" kind="src" output="target/test-classes" path="src/test/resources"/>
++	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
++	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER"/>
++	<classpathentry kind="output" path="target/classes"/>
+ </classpath>
+diff --git a/.gitignore b/.gitignore
+index ea8c4bf..2f45068 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -1 +1,4 @@
+ /target
++.classpath
++.settings/*
++*.launch
+diff --git a/.project b/.project
+index 93c2858..c8031fd 100644
+--- a/.project
++++ b/.project
+@@ -15,8 +15,14 @@
+ 			<arguments>
+ 			</arguments>
+ 		</buildCommand>
++		<buildCommand>
++			<name>org.eclipse.m2e.core.maven2Builder</name>
++			<arguments>
++			</arguments>
++		</buildCommand>
+ 	</buildSpec>
+ 	<natures>
++		<nature>org.eclipse.m2e.core.maven2Nature</nature>
+ 		<nature>com.ibm.etools.java.JavaMOFNature</nature>
+ 		<nature>org.eclipse.jdt.core.javanature</nature>
+ 		<nature>com.ibm.etools.beaninfo.BeaninfoNature</nature>
+diff --git a/.settings/org.eclipse.jdt.core.prefs b/.settings/org.eclipse.jdt.core.prefs
+index e002348..5ab356b 100644
+--- a/.settings/org.eclipse.jdt.core.prefs
++++ b/.settings/org.eclipse.jdt.core.prefs
+@@ -1,4 +1,3 @@
+-#Thu Jan 26 16:18:13 EST 2012
+ eclipse.preferences.version=1
+ org.eclipse.jdt.core.builder.cleanOutputFolder=clean
+ org.eclipse.jdt.core.builder.duplicateResourceTask=warning
+@@ -18,8 +17,11 @@ org.eclipse.jdt.core.codeComplete.staticFieldPrefixes=
+ org.eclipse.jdt.core.codeComplete.staticFieldSuffixes=
+ org.eclipse.jdt.core.codeComplete.staticFinalFieldPrefixes=
+ org.eclipse.jdt.core.codeComplete.staticFinalFieldSuffixes=
++org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.5
++org.eclipse.jdt.core.compiler.compliance=1.5
+ org.eclipse.jdt.core.compiler.doc.comment.support=enabled
+ org.eclipse.jdt.core.compiler.maxProblemPerUnit=1000
++org.eclipse.jdt.core.compiler.problem.forbiddenReference=warning
+ org.eclipse.jdt.core.compiler.problem.invalidJavadoc=warning
+ org.eclipse.jdt.core.compiler.problem.invalidJavadocTags=disabled
+ org.eclipse.jdt.core.compiler.problem.invalidJavadocTagsDeprecatedRef=enabled
+@@ -33,6 +35,7 @@ org.eclipse.jdt.core.compiler.problem.missingJavadocTags=ignore
+ org.eclipse.jdt.core.compiler.problem.missingJavadocTagsOverriding=enabled
+ org.eclipse.jdt.core.compiler.problem.missingJavadocTagsVisibility=private
+ org.eclipse.jdt.core.compiler.problem.unsafeTypeOperation=warning
++org.eclipse.jdt.core.compiler.source=1.5
+ org.eclipse.jdt.core.compiler.taskCaseSensitive=enabled
+ org.eclipse.jdt.core.compiler.taskPriorities=NORMAL,HIGH,HIGH,NORMAL,LOW,NORMAL,LOW,LOW,NORMAL,LOW,LOW,LOW,LOW,LOW,HIGH
+ org.eclipse.jdt.core.compiler.taskTags=TODO,FIXME,URGENT,PENDING,LATER,BUG,DEAD,SPEEDUP,I18N,JDK14,JDK15,NOWARN,BORROWED,SERIALUID,AV11N
+diff --git a/etc/eclipse/APIExamples.launch b/etc/eclipse/APIExamples.launch
+index 9ebbee5..d615740 100644
+--- a/etc/eclipse/APIExamples.launch
++++ b/etc/eclipse/APIExamples.launch
+@@ -20,9 +20,11 @@
+ <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;common-swing&quot; type=&quot;1&quot;/&gt;&#10;"/>
+ <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry containerPath=&quot;org.eclipse.jdt.launching.JRE_CONTAINER&quot; javaProject=&quot;common&quot; path=&quot;3&quot; type=&quot;4&quot;/&gt;&#10;"/>
+ </listAttribute>
++<stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.m2e.launchconfig.classpathProvider"/>
+ <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
+ <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/JVM 1.6"/>
+ <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.crosswire.jsword.examples.APIExamples"/>
+ <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="jsword"/>
++<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
+ <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx1024m"/>
+ </launchConfiguration>
+diff --git a/etc/eclipse/common-junit-alltests.launch b/etc/eclipse/common-junit-alltests.launch
+index bcd81c2..eaa2405 100644
+--- a/etc/eclipse/common-junit-alltests.launch
++++ b/etc/eclipse/common-junit-alltests.launch
+@@ -1,4 +1,4 @@
+-<?xml version="1.0" encoding="UTF-8"?>
++<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+ <launchConfiguration type="org.eclipse.jdt.junit.launchconfig">
+ <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+ <listEntry value="/common/src/test/java/AllTests.java"/>
+@@ -17,7 +17,9 @@
+ <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
+ <stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
+ <stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit3"/>
++<stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.m2e.launchconfig.classpathProvider"/>
+ <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="AllTests"/>
+ <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="jsword"/>
++<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
+ <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx128m -ea"/>
+ </launchConfiguration>
+diff --git a/src/main/java/org/crosswire/common/util/IOUtil.java b/src/main/java/org/crosswire/common/util/IOUtil.java
+index 788b43e..f4979eb 100644
+--- a/src/main/java/org/crosswire/common/util/IOUtil.java
++++ b/src/main/java/org/crosswire/common/util/IOUtil.java
+@@ -21,6 +21,7 @@
+  */
+ package org.crosswire.common.util;
+ 
++import java.io.Closeable;
+ import java.io.File;
+ import java.io.IOException;
+ import java.io.InputStream;
+@@ -106,79 +107,15 @@ public final class IOUtil {
+     }
+ 
+     /**
+-     * Close the zip file without complaining
++     * Closes any {@link Closeable} object
+      * 
+-     * @param zip
++     * @param closeable
+      *            The zip file to close
+      */
+-    public static void close(ZipFile zip) {
+-        if (null != zip) {
++    public static void close(Closeable closeable) {
++        if (null != closeable) {
+             try {
+-                zip.close();
+-            } catch (IOException ex) {
+-                log.error("close", ex);
+-            }
+-        }
+-    }
+-
+-    /**
+-     * Close the random access file without complaining
+-     * 
+-     * @param raf
+-     *            The random access file to close
+-     */
+-    public static void close(RandomAccessFile raf) {
+-        if (null != raf) {
+-            try {
+-                raf.close();
+-            } catch (IOException ex) {
+-                log.error("close", ex);
+-            }
+-        }
+-    }
+-
+-    /**
+-     * Close the stream whatever without complaining
+-     * 
+-     * @param out
+-     *            The stream to close
+-     */
+-    public static void close(OutputStream out) {
+-        if (null != out) {
+-            try {
+-                out.close();
+-            } catch (IOException ex) {
+-                log.error("close", ex);
+-            }
+-        }
+-    }
+-
+-    /**
+-     * Close the stream whatever without complaining
+-     * 
+-     * @param in
+-     *            The stream to close
+-     */
+-    public static void close(InputStream in) {
+-        if (null != in) {
+-            try {
+-                in.close();
+-            } catch (IOException ex) {
+-                log.error("close", ex);
+-            }
+-        }
+-    }
+-
+-    /**
+-     * Close the stream whatever without complaining
+-     * 
+-     * @param in
+-     *            The stream to close
+-     */
+-    public static void close(Reader in) {
+-        if (null != in) {
+-            try {
+-                in.close();
++                closeable.close();
+             } catch (IOException ex) {
+                 log.error("close", ex);
+             }
+diff --git a/src/main/java/org/crosswire/jsword/book/Book.java b/src/main/java/org/crosswire/jsword/book/Book.java
+index 759c4f0..18d873d 100644
+--- a/src/main/java/org/crosswire/jsword/book/Book.java
++++ b/src/main/java/org/crosswire/jsword/book/Book.java
+@@ -22,10 +22,12 @@
+ package org.crosswire.jsword.book;
+ 
+ import java.util.Iterator;
++import java.util.List;
+ import java.util.Map;
+ 
+ import org.crosswire.common.activate.Activatable;
+ import org.crosswire.common.util.Language;
++import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
+ import org.crosswire.jsword.index.IndexStatus;
+ import org.crosswire.jsword.index.IndexStatusListener;
+ import org.crosswire.jsword.index.search.SearchRequest;
+@@ -124,11 +126,12 @@ public interface Book extends Activatable, Comparable<Book> {
+      * 
+      * @param key
+      *            The item to locate
++     * @param processor TODO
+      * @return The found Book data
+      * @throws BookException
+      *             If anything goes wrong with this method
+      */
+-    String getRawText(Key key) throws BookException;
++    List<Content> getRawText(Key key, RawTextToXmlProcessor processor) throws BookException;
+ 
+     /**
+      * A Book is writable if the file system allows the underlying files to be
+diff --git a/src/main/java/org/crosswire/jsword/book/basic/AbstractBook.java b/src/main/java/org/crosswire/jsword/book/basic/AbstractBook.java
+index a869a3c..a05ffb3 100644
+--- a/src/main/java/org/crosswire/jsword/book/basic/AbstractBook.java
++++ b/src/main/java/org/crosswire/jsword/book/basic/AbstractBook.java
+@@ -33,6 +33,7 @@ import org.crosswire.jsword.book.BookDriver;
+ import org.crosswire.jsword.book.BookException;
+ import org.crosswire.jsword.book.BookMetaData;
+ import org.crosswire.jsword.book.FeatureType;
++import org.crosswire.jsword.book.sword.processing.NoOpRawTextProcessor;
+ import org.crosswire.jsword.index.IndexStatus;
+ import org.crosswire.jsword.index.IndexStatusEvent;
+ import org.crosswire.jsword.index.IndexStatusListener;
+@@ -345,7 +346,7 @@ public abstract class AbstractBook implements Book {
+                 key = key.get(0);
+             }
+ 
+-            getRawText(key);
++            getRawText(key, new NoOpRawTextProcessor());
+ 
+             return true;
+         } catch (Exception ex) {
+diff --git a/src/main/java/org/crosswire/jsword/book/basic/AbstractPassageBook.java b/src/main/java/org/crosswire/jsword/book/basic/AbstractPassageBook.java
+index 0886d21..7e90b2c 100644
+--- a/src/main/java/org/crosswire/jsword/book/basic/AbstractPassageBook.java
++++ b/src/main/java/org/crosswire/jsword/book/basic/AbstractPassageBook.java
+@@ -21,7 +21,6 @@
+  */
+ package org.crosswire.jsword.book.basic;
+ 
+-import java.util.ArrayList;
+ import java.util.Iterator;
+ import java.util.List;
+ 
+@@ -31,6 +30,7 @@ import org.crosswire.jsword.book.BookException;
+ import org.crosswire.jsword.book.BookMetaData;
+ import org.crosswire.jsword.book.OSISUtil;
+ import org.crosswire.jsword.book.filter.Filter;
++import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
+ import org.crosswire.jsword.passage.Key;
+ import org.crosswire.jsword.passage.KeyUtil;
+ import org.crosswire.jsword.passage.NoSuchKeyException;
+@@ -60,40 +60,45 @@ public abstract class AbstractPassageBook extends AbstractBook {
+     /* (non-Javadoc)
+      * @see org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage.Key, boolean)
+      */
+-    public Iterator<Content> getOsisIterator(Key key, boolean allowEmpty) throws BookException {
++    public Iterator<Content> getOsisIterator(Key key, final boolean allowEmpty) throws BookException {
+         // Note: allowEmpty indicates parallel view
+         // TODO(DMS): make the iterator be demand driven
+-        Filter filter = getFilter();
+-        List<Content> content = new ArrayList<Content>();
++        final Filter filter = getFilter();
++//        final List<Content> content = new ArrayList<Content>();
+ 
+         // For all the ranges in this Passage
+         Passage ref = KeyUtil.getPassage(key);
+-        boolean showTitles = ref.hasRanges(RestrictionType.CHAPTER) || !allowEmpty;
+-        Iterator<Key> rit = ref.rangeIterator(RestrictionType.CHAPTER);
+-
+-        while (rit.hasNext()) {
+-            VerseRange range = (VerseRange) rit.next();
++        final boolean showTitles = ref.hasRanges(RestrictionType.CHAPTER) || !allowEmpty;
++
++        
++    //        Iterator<Key> rit = ref.rangeIterator(RestrictionType.CHAPTER);
++//        while (rit.hasNext()) {
++//            VerseRange range = (VerseRange) rit.next(); TO BE MOVED
++
++        RawTextToXmlProcessor processor = new RawTextToXmlProcessor() {
++                public void preRange(VerseRange range, List<Content> partialDom) {
++                    if (showTitles) {
++                        Element title = OSISUtil.factory().createTitle();
++                        title.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.GENERATED_CONTENT);
++                        title.addContent(range.getName());
++                        partialDom.add(title);
++                    }
++                }
+ 
+-            if (showTitles) {
+-                Element title = OSISUtil.factory().createTitle();
+-                title.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.GENERATED_CONTENT);
+-                title.addContent(range.getName());
+-                content.add(title);
+-            }
++                public void postVerse(Key verse, List<Content> partialDom, String rawText) {
++                 // If the verse is empty then we shouldn't add the verse tag
++                    if (allowEmpty || rawText.length() > 0) {
++                        List<Content> osisContent = filter.toOSIS(AbstractPassageBook.this, verse, rawText);
++                        addOSIS(verse, partialDom, osisContent);
++                    }
++                }
++            };
+ 
+             // For all the verses in this range
+-            for (Key verse : range) {
+-                String txt = getRawText(verse);
+-
+-                // If the verse is empty then we shouldn't add the verse tag
+-                if (allowEmpty || txt.length() > 0) {
+-                    List<Content> osisContent = filter.toOSIS(this, verse, txt);
+-                    addOSIS(verse, content, osisContent);
+-                }
+-            }
+-        }
++//            for (Key verse : range) {
++                return getRawText(ref, processor).iterator();
+ 
+-        return content.iterator();
++//        return content.iterator();
+     }
+ 
+     /**
+diff --git a/src/main/java/org/crosswire/jsword/book/filter/osis/OSISFilter.java b/src/main/java/org/crosswire/jsword/book/filter/osis/OSISFilter.java
+index 621caa7..8557fab 100644
+--- a/src/main/java/org/crosswire/jsword/book/filter/osis/OSISFilter.java
++++ b/src/main/java/org/crosswire/jsword/book/filter/osis/OSISFilter.java
+@@ -24,6 +24,8 @@ package org.crosswire.jsword.book.filter.osis;
+ import java.io.IOException;
+ import java.io.StringReader;
+ import java.util.List;
++import java.util.concurrent.ArrayBlockingQueue;
++import java.util.concurrent.BlockingQueue;
+ 
+ import org.crosswire.common.util.Logger;
+ import org.crosswire.common.xml.XMLUtil;
+@@ -47,13 +49,6 @@ import org.xml.sax.InputSource;
+  * @author Joe Walker [joe at eireneh dot com]
+  */
+ public class OSISFilter implements Filter {
+-    /**
+-     * Default constructor of an OSISFilter
+-     */
+-    public OSISFilter() {
+-        builder = new SAXBuilder();
+-        builder.setFastReconfigure(true);
+-    }
+ 
+     /* (non-Javadoc)
+      * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.Book, org.crosswire.jsword.passage.Key, java.lang.String)
+@@ -134,12 +129,30 @@ public class OSISFilter implements Filter {
+      * at parsing it
+      */
+     private Element parse(String plain) throws JDOMException, IOException {
++        SAXBuilder builder = saxBuilders.poll();
++        if(builder == null) {
++            //then we have no sax builders available, so let's create a new one and store
++            builder = new SAXBuilder();
++            builder.setFastReconfigure(true);
++        }
++
+         // create a root element to house our document fragment
+-        StringReader in = new StringReader("<div>" + plain + "</div>");
+-        InputSource is = new InputSource(in);
+-        Document doc = builder.build(is);
+-        Element div = doc.getRootElement();
++        StringReader in = null;
++        Element div;
++        try {
++            in = new StringReader("<div>" + plain + "</div>"); 
++            InputSource is = new InputSource(in);
++            Document doc = builder.build(is);
++            div = doc.getRootElement();
++        } finally {
++            if(in != null) {
++                in.close();
++            }
++        }
+ 
++        //return builder to queue, or offer a new one. Ignore return value as we don't care whether the builder is going to be re-used
++        saxBuilders.offer(builder);
++        
+         return div;
+     }
+ 
+@@ -148,8 +161,6 @@ public class OSISFilter implements Filter {
+      */
+     private static final Logger log = Logger.getLogger(OSISFilter.class);
+ 
+-    /**
+-     * A reusable SAX Builder
+-     */
+-    private SAXBuilder builder;
++    //space for 32 re-usable sax builders, but doesn't bound the number available to the callers
++    private BlockingQueue<SAXBuilder> saxBuilders = new ArrayBlockingQueue<SAXBuilder>(32);
+ }
+diff --git a/src/main/java/org/crosswire/jsword/book/readings/ReadingsBook.java b/src/main/java/org/crosswire/jsword/book/readings/ReadingsBook.java
+index b02386b..5b64c19 100644
+--- a/src/main/java/org/crosswire/jsword/book/readings/ReadingsBook.java
++++ b/src/main/java/org/crosswire/jsword/book/readings/ReadingsBook.java
+@@ -42,6 +42,7 @@ import org.crosswire.jsword.book.FeatureType;
+ import org.crosswire.jsword.book.OSISUtil;
+ import org.crosswire.jsword.book.basic.AbstractBook;
+ import org.crosswire.jsword.book.basic.DefaultBookMetaData;
++import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
+ import org.crosswire.jsword.passage.DefaultKeyList;
+ import org.crosswire.jsword.passage.Key;
+ import org.crosswire.jsword.passage.NoSuchKeyException;
+@@ -172,7 +173,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
+     /* (non-Javadoc)
+      * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
+      */
+-    public String getRawText(Key key) throws BookException {
++    public List<Content> getRawText(Key key, RawTextToXmlProcessor processor) throws BookException {
+         return "";
+     }
+ 
+diff --git a/src/main/java/org/crosswire/jsword/book/sword/AbstractBackend.java b/src/main/java/org/crosswire/jsword/book/sword/AbstractBackend.java
+index 973b1e7..9028812 100644
+--- a/src/main/java/org/crosswire/jsword/book/sword/AbstractBackend.java
++++ b/src/main/java/org/crosswire/jsword/book/sword/AbstractBackend.java
+@@ -24,13 +24,27 @@ package org.crosswire.jsword.book.sword;
+ import java.io.File;
+ import java.io.IOException;
+ import java.net.URI;
++import java.util.ArrayList;
++import java.util.Iterator;
++import java.util.List;
+ 
+ import org.crosswire.common.activate.Activatable;
++import org.crosswire.common.activate.Lock;
+ import org.crosswire.common.crypt.Sapphire;
++import org.crosswire.common.util.IOUtil;
+ import org.crosswire.common.util.NetUtil;
++import org.crosswire.jsword.JSMsg;
+ import org.crosswire.jsword.JSOtherMsg;
+ import org.crosswire.jsword.book.BookException;
++import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
++import org.crosswire.jsword.book.sword.state.ZVerseBackendState;
+ import org.crosswire.jsword.passage.Key;
++import org.crosswire.jsword.passage.KeyUtil;
++import org.crosswire.jsword.passage.Passage;
++import org.crosswire.jsword.passage.RestrictionType;
++import org.crosswire.jsword.passage.Verse;
++import org.crosswire.jsword.passage.VerseRange;
++import org.jdom.Content;
+ 
+ /**
+  * A generic way to read data from disk for later formatting.
+@@ -92,16 +106,7 @@ public abstract class AbstractBackend implements Activatable {
+         decipher(data);
+     }
+ 
+-    public URI getExpandedDataPath() throws BookException {
+-        URI loc = NetUtil.lengthenURI(bmd.getLibrary(), (String) bmd.getProperty(ConfigEntryType.DATA_PATH));
+ 
+-        if (loc == null) {
+-            // FIXME(DMS): missing parameter
+-            throw new BookException(JSOtherMsg.lookupText("Missing data files for old and new testaments in {0}."));
+-        }
+-
+-        return loc;
+-    }
+ 
+     /**
+      * Initialize a AbstractBackend before use. This method needs to call
+@@ -127,11 +132,70 @@ public abstract class AbstractBackend implements Activatable {
+      * 
+      * @param key
+      *            The key to fetch
++     * @param processor processor that executes before/after the content is read from disk or another kind of backend
+      * @return String The data for the verse in question
+      * @throws BookException
+      *             If the data can not be read.
+      */
+-    public abstract String getRawText(Key key) throws BookException;
++    /* (non-Javadoc)
++     * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key)
++     */
++    @Override
++    public List<Content> getRawText(Key key, RawTextToXmlProcessor processor) throws BookException {
++        SwordBookMetaData sbmd = getBookMetaData();
++        final List<Content> content = new ArrayList<Content>();
++        // FIXME(CJB) behaviour has changed from previously where not finding OT
++        // or NT did not throw exception
++        ZVerseBackendState rafBook = null;
++        Passage ref = (key instanceof Passage ? (Passage) key : KeyUtil.getPassage(key));
++        Verse currentVerse = null;
++
++        try {
++            rafBook = new ZVerseBackendState(sbmd, getBlockType());
++
++            Iterator<Key> rit = ref.rangeIterator(RestrictionType.CHAPTER);
++            while (rit.hasNext()) {
++                VerseRange range = (VerseRange) rit.next();
++                processor.preRange(range, content);
++
++                //FIXME(CJB): can this now be optmized since we can calculate the buffer size of what to read?
++                //now iterate through all verses in range
++                for(Key verseInRange : range) {
++                    currentVerse = KeyUtil.getVerse(verseInRange);
++                    final String keyName = verseInRange.getName();
++                    String rawText = readRawVerse(rafBook, currentVerse, keyName);
++                    processor.postVerse(verseInRange, content, rawText);
++                }
++            }
++
++            return content;
++        } catch (IOException e) {
++            // TRANSLATOR: Common error condition: The file could not be read.
++            // There can be many reasons.
++            // {0} is a placeholder for the key.
++            if(currentVerse == null) {
++                throw new BookException(JSMsg.gettext("Error reading {0}", key.getName()), e);
++            } else {
++                throw new BookException(JSMsg.gettext("Error reading {0}", currentVerse.getName()), e);
++            }
++        } finally {
++            IOUtil.close(rafBook);
++        }
++    }
++    
++    
++    protected abstract BlockType getBlockType();
++
++    /**
++     * 
++     * @param rafBook the state object containing all the open random access files
++     * @param currentVerse the verse that is sought
++     * @param keyName the name of the current key
++     * @return the raw text
++     * @throws IOException something whent wrong when reading the verse
++     */
++    protected abstract String readRawVerse(ZVerseBackendState rafBook, Verse currentVerse, String keyName) throws IOException;
++
+ 
+     /**
+      * Set the text allotted for the given verse
+@@ -163,7 +227,7 @@ public abstract class AbstractBackend implements Activatable {
+      * @throws BookException
+      */
+     public void create() throws IOException, BookException {
+-        File dataPath = new File(getExpandedDataPath());
++        File dataPath = new File(SwordUtil.getExpandedDataPath(getBookMetaData()));
+         if (!dataPath.exists() && !dataPath.mkdirs()) {
+             throw new IOException("Unable to create module data path!");
+         }
+@@ -191,5 +255,13 @@ public abstract class AbstractBackend implements Activatable {
+         return false;
+     }
+ 
++    public void activate(Lock lock) {
++      //do nothing by default
++    }
++    
++    public void deactivate(Lock lock) {
++        //do nothing by default
++    }
++    
+     private SwordBookMetaData bmd;
+ }
+diff --git a/src/main/java/org/crosswire/jsword/book/sword/AbstractKeyBackend.java b/src/main/java/org/crosswire/jsword/book/sword/AbstractKeyBackend.java
+index fe461f6..8e0160a 100644
+--- a/src/main/java/org/crosswire/jsword/book/sword/AbstractKeyBackend.java
++++ b/src/main/java/org/crosswire/jsword/book/sword/AbstractKeyBackend.java
+@@ -22,12 +22,23 @@
+ package org.crosswire.jsword.book.sword;
+ 
+ import java.io.IOException;
++import java.util.ArrayList;
+ import java.util.Iterator;
++import java.util.List;
+ import java.util.NoSuchElementException;
+ 
++import org.crosswire.common.util.IOUtil;
++import org.crosswire.jsword.JSMsg;
+ import org.crosswire.jsword.book.BookException;
++import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
++import org.crosswire.jsword.book.sword.state.ZVerseBackendState;
+ import org.crosswire.jsword.passage.Key;
++import org.crosswire.jsword.passage.KeyUtil;
++import org.crosswire.jsword.passage.Passage;
+ import org.crosswire.jsword.passage.RestrictionType;
++import org.crosswire.jsword.passage.Verse;
++import org.crosswire.jsword.passage.VerseRange;
++import org.jdom.Content;
+ 
+ /**
+  * A Backend that can be used as a global key list.
+@@ -108,6 +119,7 @@ public abstract class AbstractKeyBackend extends AbstractBackend implements Key
+         };
+     }
+ 
++
+     /* (non-Javadoc)
+      * @see org.crosswire.jsword.passage.Key#addAll(org.crosswire.jsword.passage.Key)
+      */
+diff --git a/src/main/java/org/crosswire/jsword/book/sword/GenBookBackend.java b/src/main/java/org/crosswire/jsword/book/sword/GenBookBackend.java
+index 942051a..95902d3 100644
+--- a/src/main/java/org/crosswire/jsword/book/sword/GenBookBackend.java
++++ b/src/main/java/org/crosswire/jsword/book/sword/GenBookBackend.java
+@@ -63,7 +63,7 @@ public class GenBookBackend extends AbstractBackend {
+ 
+         URI path = null;
+         try {
+-            path = getExpandedDataPath();
++            path = SwordUtil.getExpandedDataPath(getBookMetaData());
+         } catch (BookException e) {
+             Reporter.informUser(this, e);
+             return;
+diff --git a/src/main/java/org/crosswire/jsword/book/sword/SwordBook.java b/src/main/java/org/crosswire/jsword/book/sword/SwordBook.java
+index f6277b3..9b0cb86 100644
+--- a/src/main/java/org/crosswire/jsword/book/sword/SwordBook.java
++++ b/src/main/java/org/crosswire/jsword/book/sword/SwordBook.java
+@@ -22,6 +22,7 @@
+ package org.crosswire.jsword.book.sword;
+ 
+ import java.io.IOException;
++import java.util.Collections;
+ import java.util.List;
+ 
+ import org.crosswire.common.activate.Activator;
+@@ -31,6 +32,7 @@ import org.crosswire.jsword.book.BookException;
+ import org.crosswire.jsword.book.OSISUtil;
+ import org.crosswire.jsword.book.basic.AbstractPassageBook;
+ import org.crosswire.jsword.book.filter.Filter;
++import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
+ import org.crosswire.jsword.passage.Key;
+ import org.crosswire.jsword.passage.KeyUtil;
+ import org.jdom.Content;
+@@ -79,12 +81,12 @@ public class SwordBook extends AbstractPassageBook {
+     /* (non-Javadoc)
+      * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
+      */
+-    public String getRawText(Key key) throws BookException {
++    public List<Content> getRawText(Key key, RawTextToXmlProcessor processor) throws BookException {
+         if (backend == null) {
+-            return "";
++            return Collections.emptyList();
+         }
+ 
+-        String result = backend.getRawText(key);
++        List<Content> result = backend.getRawText(key, processor);
+         assert result != null;
+         return result;
+     }
+diff --git a/src/main/java/org/crosswire/jsword/book/sword/SwordDictionary.java b/src/main/java/org/crosswire/jsword/book/sword/SwordDictionary.java
+index eefe21f..aa339b1 100644
+--- a/src/main/java/org/crosswire/jsword/book/sword/SwordDictionary.java
++++ b/src/main/java/org/crosswire/jsword/book/sword/SwordDictionary.java
+@@ -32,6 +32,7 @@ import org.crosswire.jsword.book.BookException;
+ import org.crosswire.jsword.book.OSISUtil;
+ import org.crosswire.jsword.book.basic.AbstractBook;
+ import org.crosswire.jsword.book.filter.Filter;
++import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
+ import org.crosswire.jsword.passage.DefaultKeyList;
+ import org.crosswire.jsword.passage.DefaultLeafKeyList;
+ import org.crosswire.jsword.passage.Key;
+@@ -91,7 +92,7 @@ public class SwordDictionary extends AbstractBook {
+     /* (non-Javadoc)
+      * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
+      */
+-    public String getRawText(Key key) throws BookException {
++    public List<Content> getRawText(Key key, RawTextToXmlProcessor processor) throws BookException {
+         checkActive();
+ 
+         assert key != null;
+diff --git a/src/main/java/org/crosswire/jsword/book/sword/SwordGenBook.java b/src/main/java/org/crosswire/jsword/book/sword/SwordGenBook.java
+index 085498a..52e2e14 100644
+--- a/src/main/java/org/crosswire/jsword/book/sword/SwordGenBook.java
++++ b/src/main/java/org/crosswire/jsword/book/sword/SwordGenBook.java
+@@ -34,6 +34,7 @@ import org.crosswire.jsword.JSOtherMsg;
+ import org.crosswire.jsword.book.BookException;
+ import org.crosswire.jsword.book.basic.AbstractBook;
+ import org.crosswire.jsword.book.filter.Filter;
++import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
+ import org.crosswire.jsword.passage.DefaultKeyList;
+ import org.crosswire.jsword.passage.Key;
+ import org.crosswire.jsword.passage.NoSuchKeyException;
+@@ -130,7 +131,7 @@ public class SwordGenBook extends AbstractBook {
+     /* (non-Javadoc)
+      * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
+      */
+-    public String getRawText(Key key) throws BookException {
++    public List<Content> getRawText(Key key, RawTextToXmlProcessor processor) throws BookException {
+         checkActive();
+ 
+         assert key != null;
+diff --git a/src/main/java/org/crosswire/jsword/book/sword/SwordUtil.java b/src/main/java/org/crosswire/jsword/book/sword/SwordUtil.java
+index ac03863..501140c 100644
+--- a/src/main/java/org/crosswire/jsword/book/sword/SwordUtil.java
++++ b/src/main/java/org/crosswire/jsword/book/sword/SwordUtil.java
+@@ -24,8 +24,12 @@ package org.crosswire.jsword.book.sword;
+ import java.io.IOException;
+ import java.io.RandomAccessFile;
+ import java.io.UnsupportedEncodingException;
++import java.net.URI;
+ 
+ import org.crosswire.common.util.Logger;
++import org.crosswire.common.util.NetUtil;
++import org.crosswire.jsword.JSOtherMsg;
++import org.crosswire.jsword.book.BookException;
+ 
+ /**
+  * Various utilities used by different Sword classes.
+@@ -369,6 +373,23 @@ public final class SwordUtil {
+     }
+ 
+     /**
++     * Returns where the book should be located
++     * @param bookMetaData meta information about the book
++     * @return the URI locating the resource
++     * @throws BookException thrown if an issue is encountered, e.g. missing data files.
++     */
++    public static URI getExpandedDataPath(SwordBookMetaData bookMetaData) throws BookException {
++        URI loc = NetUtil.lengthenURI(bookMetaData.getLibrary(), (String) bookMetaData.getProperty(ConfigEntryType.DATA_PATH));
++
++        if (loc == null) {
++            // FIXME(DMS): missing parameter
++            throw new BookException(JSOtherMsg.lookupText("Missing data files for old and new testaments in {0}."));
++        }
++
++        return loc;
++    }
++    
++    /**
+      * The log stream
+      */
+     private static final Logger log = Logger.getLogger(SwordUtil.class);
+diff --git a/src/main/java/org/crosswire/jsword/book/sword/ZVerseBackend.java b/src/main/java/org/crosswire/jsword/book/sword/ZVerseBackend.java
+index c3df60c..e92ab46 100644
+--- a/src/main/java/org/crosswire/jsword/book/sword/ZVerseBackend.java
++++ b/src/main/java/org/crosswire/jsword/book/sword/ZVerseBackend.java
+@@ -21,26 +21,30 @@
+  */
+ package org.crosswire.jsword.book.sword;
+ 
+-import java.io.File;
+-import java.io.FileNotFoundException;
+ import java.io.IOException;
+ import java.io.RandomAccessFile;
+-import java.net.URI;
++import java.util.ArrayList;
++import java.util.Collections;
++import java.util.Iterator;
++import java.util.List;
+ 
+-import org.crosswire.common.activate.Activator;
+-import org.crosswire.common.activate.Lock;
+ import org.crosswire.common.compress.CompressorType;
+-import org.crosswire.common.util.FileUtil;
++import org.crosswire.common.util.IOUtil;
+ import org.crosswire.common.util.Logger;
+-import org.crosswire.common.util.NetUtil;
+ import org.crosswire.jsword.JSMsg;
+ import org.crosswire.jsword.book.BookException;
++import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
++import org.crosswire.jsword.book.sword.state.ZVerseBackendState;
+ import org.crosswire.jsword.passage.Key;
+ import org.crosswire.jsword.passage.KeyUtil;
++import org.crosswire.jsword.passage.Passage;
++import org.crosswire.jsword.passage.RestrictionType;
+ import org.crosswire.jsword.passage.Verse;
++import org.crosswire.jsword.passage.VerseRange;
+ import org.crosswire.jsword.versification.Testament;
+ import org.crosswire.jsword.versification.Versification;
+ import org.crosswire.jsword.versification.system.Versifications;
++import org.jdom.Content;
+ 
+ /**
+  * A backend to read compressed data verse based files. While the text file
+@@ -105,10 +109,10 @@ import org.crosswire.jsword.versification.system.Versifications;
+  * @author Joe Walker [joe at eireneh dot com]
+  */
+ public class ZVerseBackend extends AbstractBackend {
+-    private static final String SUFFIX_COMP = "v";
+-    private static final String SUFFIX_INDEX = "s";
+-    private static final String SUFFIX_PART1 = "z";
+-    private static final String SUFFIX_TEXT = "z";
++    /**
++     * Whether the book is blocked by Book, Chapter or Verse.
++     */
++    private BlockType blockType;
+ 
+     /**
+      * Simple ctor
+@@ -119,118 +123,25 @@ public class ZVerseBackend extends AbstractBackend {
+     }
+ 
+     /* (non-Javadoc)
+-     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
+-     */
+-    public final void activate(Lock lock) {
+-        try {
+-            if (otIdxFile == null) {
+-                URI path = getExpandedDataPath();
+-                String otAllButLast = NetUtil.lengthenURI(path, File.separator + SwordConstants.FILE_OT + '.' + blockType.getIndicator() + SUFFIX_PART1).getPath();
+-                otIdxFile = new File(otAllButLast + SUFFIX_INDEX);
+-                otTextFile = new File(otAllButLast + SUFFIX_TEXT);
+-                otCompFile = new File(otAllButLast + SUFFIX_COMP);
+-
+-                String ntAllButLast = NetUtil.lengthenURI(path, File.separator + SwordConstants.FILE_NT + '.' + blockType.getIndicator() + SUFFIX_PART1).getPath();
+-                ntIdxFile = new File(ntAllButLast + SUFFIX_INDEX);
+-                ntTextFile = new File(ntAllButLast + SUFFIX_TEXT);
+-                ntCompFile = new File(ntAllButLast + SUFFIX_COMP);
+-            }
+-        } catch (BookException e) {
+-            otIdxFile = null;
+-            otTextFile = null;
+-            otCompFile = null;
+-
+-            ntIdxFile = null;
+-            ntTextFile = null;
+-            ntCompFile = null;
+-
+-            return;
+-        }
+-
+-        if (otIdxFile.canRead()) {
+-            try {
+-                otIdxRaf = new RandomAccessFile(otIdxFile, FileUtil.MODE_READ);
+-                otTextRaf = new RandomAccessFile(otTextFile, FileUtil.MODE_READ);
+-                otCompRaf = new RandomAccessFile(otCompFile, FileUtil.MODE_READ);
+-            } catch (FileNotFoundException ex) {
+-                assert false : ex;
+-                log.error("Could not open OT", ex);
+-                otIdxRaf = null;
+-                otTextRaf = null;
+-                otCompRaf = null;
+-            }
+-        }
+-
+-        if (ntIdxFile.canRead()) {
+-            try {
+-                ntIdxRaf = new RandomAccessFile(ntIdxFile, FileUtil.MODE_READ);
+-                ntTextRaf = new RandomAccessFile(ntTextFile, FileUtil.MODE_READ);
+-                ntCompRaf = new RandomAccessFile(ntCompFile, FileUtil.MODE_READ);
+-            } catch (FileNotFoundException ex) {
+-                assert false : ex;
+-                log.error("Could not open NT", ex);
+-                ntIdxRaf = null;
+-                ntTextRaf = null;
+-                ntCompRaf = null;
+-            }
+-        }
+-
+-        active = true;
+-    }
+-
+-    /* (non-Javadoc)
+-     * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
+-     */
+-    public final void deactivate(Lock lock) {
+-        if (ntIdxRaf != null) {
+-            try {
+-                ntIdxRaf.close();
+-                ntTextRaf.close();
+-                ntCompRaf.close();
+-            } catch (IOException ex) {
+-                log.error("failed to close nt files", ex);
+-            } finally {
+-                ntIdxRaf = null;
+-                ntTextRaf = null;
+-                ntCompRaf = null;
+-            }
+-        }
+-
+-        if (otIdxRaf != null) {
+-            try {
+-                otIdxRaf.close();
+-                otTextRaf.close();
+-                otCompRaf.close();
+-            } catch (IOException ex) {
+-                log.error("failed to close ot files", ex);
+-            } finally {
+-                otIdxRaf = null;
+-                otTextRaf = null;
+-                otCompRaf = null;
+-            }
+-        }
+-
+-        active = false;
+-    }
+-
+-    /* (non-Javadoc)
+      * @see org.crosswire.jsword.book.sword.AbstractBackend#contains(org.crosswire.jsword.passage.Key)
+      */
+     @Override
+     public boolean contains(Key key) {
+-        checkActive();
+-        Verse verse = KeyUtil.getVerse(key);
++        // FIXME(CJB): doesn't cater for ranges... - currently experiencing a performance hit
+ 
++        ZVerseBackendState rafBook = null;
+         try {
++            rafBook = new ZVerseBackendState(getBookMetaData(), blockType);
++
++            Verse verse = KeyUtil.getVerse(key);
+             String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
+             Versification v11n = Versifications.instance().getVersification(v11nName);
+             int index = v11n.getOrdinal(verse);
+             Testament testament = v11n.getTestament(index);
+             index = v11n.getTestamentOrdinal(index);
+-            RandomAccessFile compRaf = otCompRaf;
+-            if (testament == Testament.NEW) {
+-                compRaf = ntCompRaf;
+-            }
++
++            RandomAccessFile compRaf = testament == Testament.NEW ? rafBook.getNtCompRaf() : rafBook.getOtCompRaf();
++            ;
+ 
+             // If Bible does not contain the desired testament, then false
+             if (compRaf == null) {
+@@ -241,108 +152,112 @@ public class ZVerseBackend extends AbstractBackend {
+             byte[] temp = SwordUtil.readRAF(compRaf, 1L * index * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE);
+ 
+             // If the Bible does not contain the desired verse, return nothing.
+-            // Some Bibles have different versification, so the requested verse may not exist.
++            // Some Bibles have different versification, so the requested verse
++            // may not exist.
+             if (temp == null || temp.length == 0) {
+                 return false;
+             }
+ 
+-            // The data is little endian - extract the blockNum, verseStart and verseSize
++            // The data is little endian - extract the blockNum, verseStart and
++            // verseSize
+             int verseSize = SwordUtil.decodeLittleEndian16(temp, 8);
+ 
+             return verseSize > 0;
+ 
+         } catch (IOException e) {
+             return false;
++        } catch (BookException e) {
++            // FIXME(CJB): fail silently as before, but i don't think this is
++            // correct behaviour - would cause API changes
++            log.fatal("Unable to ascertain key validity", e);
++            return false;
++        } finally {
++            IOUtil.close(rafBook);
+         }
+     }
+ 
+-    /* (non-Javadoc)
+-     * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key)
+-     */
+-    @Override
+-    public String getRawText(Key key) throws BookException {
+-        checkActive();
+-
+-        SwordBookMetaData sbmd = getBookMetaData();
+-        String charset = sbmd.getBookCharset();
+-        String compressType = (String) sbmd.getProperty(ConfigEntryType.COMPRESS_TYPE);
++    
++    protected String readRawVerse(ZVerseBackendState rafBook, Verse verse, String keyName) throws IOException {
++
++        SwordBookMetaData bookMetaData = getBookMetaData();
++        final String charset = bookMetaData.getBookCharset();
++        final String compressType = (String) bookMetaData.getProperty(ConfigEntryType.COMPRESS_TYPE);
++
++        final String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
++        final Versification v11n = Versifications.instance().getVersification(v11nName);
++        int index = v11n.getOrdinal(verse);
++        final Testament testament = v11n.getTestament(index);
++        index = v11n.getTestamentOrdinal(index);
++        final RandomAccessFile compRaf;
++        final RandomAccessFile idxRaf;
++        final RandomAccessFile textRaf;
++
++        if (testament == Testament.OLD) {
++            compRaf = rafBook.getOtCompRaf();
++            idxRaf = rafBook.getOtIdxRaf();
++            textRaf = rafBook.getOtTextRaf();
++        } else {
++            compRaf = rafBook.getNtCompRaf();
++            idxRaf = rafBook.getNtIdxRaf();
++            textRaf = rafBook.getNtTextRaf();
++        }
+ 
+-        Verse verse = KeyUtil.getVerse(key);
++        // If Bible does not contain the desired testament, return nothing.
++        if (compRaf == null) {
++            return "";
++        }
+ 
+-        try {
+-            String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
+-            Versification v11n = Versifications.instance().getVersification(v11nName);
+-            int index = v11n.getOrdinal(verse);
+-            Testament testament = v11n.getTestament(index);
+-            index = v11n.getTestamentOrdinal(index);
+-            RandomAccessFile compRaf = otCompRaf;
+-            RandomAccessFile idxRaf = otIdxRaf;
+-            RandomAccessFile textRaf = otTextRaf;
+-            if (testament == Testament.NEW) {
+-                compRaf = ntCompRaf;
+-                idxRaf = ntIdxRaf;
+-                textRaf = ntTextRaf;
+-            }
++        // 10 because the index is 10 bytes long for each verse
++        byte[] temp = SwordUtil.readRAF(compRaf, 1L * index * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE);
+ 
+-            // If Bible does not contain the desired testament, return nothing.
+-            if (compRaf == null) {
+-                return "";
+-            }
+-
+-            // 10 because the index is 10 bytes long for each verse
+-            byte[] temp = SwordUtil.readRAF(compRaf, 1L * index * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE);
++        // If the Bible does not contain the desired verse, return nothing.
++        // Some Bibles have different versification, so the requested verse
++        // may not exist.
++        if (temp == null || temp.length == 0) {
++            return "";
++        }
+ 
+-            // If the Bible does not contain the desired verse, return nothing.
+-            // Some Bibles have different versification, so the requested verse may not exist.
++        // The data is little endian - extract the blockNum, verseStart
++        // and
++        // verseSize
++        final long blockNum = SwordUtil.decodeLittleEndian32(temp, 0);
++        final int verseStart = SwordUtil.decodeLittleEndian32(temp, 4);
++        final int verseSize = SwordUtil.decodeLittleEndian16(temp, 8);
++
++        // Can we get the data from the cache
++        byte[] uncompressed = null;
++        if (blockNum == rafBook.getLastBlockNum() && testament == rafBook.getLastTestament()) {
++            uncompressed = rafBook.getLastUncompressed();
++        } else {
++            // Then seek using this index into the idx file
++            temp = SwordUtil.readRAF(idxRaf, blockNum * IDX_ENTRY_SIZE, IDX_ENTRY_SIZE);
+             if (temp == null || temp.length == 0) {
+                 return "";
+             }
+ 
+-            // The data is little endian - extract the blockNum, verseStart
+-            // and
+-            // verseSize
+-            long blockNum = SwordUtil.decodeLittleEndian32(temp, 0);
+-            int verseStart = SwordUtil.decodeLittleEndian32(temp, 4);
+-            int verseSize = SwordUtil.decodeLittleEndian16(temp, 8);
+-
+-            // Can we get the data from the cache
+-            byte[] uncompressed = null;
+-            if (blockNum == lastBlockNum && testament == lastTestament) {
+-                uncompressed = lastUncompressed;
+-            } else {
+-                // Then seek using this index into the idx file
+-                temp = SwordUtil.readRAF(idxRaf, blockNum * IDX_ENTRY_SIZE, IDX_ENTRY_SIZE);
+-                if (temp == null || temp.length == 0) {
+-                    return "";
+-                }
++            final int blockStart = SwordUtil.decodeLittleEndian32(temp, 0);
++            final int blockSize = SwordUtil.decodeLittleEndian32(temp, 4);
++            final int uncompressedSize = SwordUtil.decodeLittleEndian32(temp, 8);
+ 
+-                int blockStart = SwordUtil.decodeLittleEndian32(temp, 0);
+-                int blockSize = SwordUtil.decodeLittleEndian32(temp, 4);
+-                int uncompressedSize = SwordUtil.decodeLittleEndian32(temp, 8);
++            // Read from the data file.
++            final byte[] data = SwordUtil.readRAF(textRaf, blockStart, blockSize);
+ 
+-                // Read from the data file.
+-                byte[] data = SwordUtil.readRAF(textRaf, blockStart, blockSize);
++            decipher(data);
+ 
+-                decipher(data);
++            uncompressed = CompressorType.fromString(compressType).getCompressor(data).uncompress(uncompressedSize).toByteArray();
+ 
+-                uncompressed = CompressorType.fromString(compressType).getCompressor(data).uncompress(uncompressedSize).toByteArray();
++            // cache the uncompressed data for next time
++            rafBook.setLastBlockNum(blockNum);
++            rafBook.setLastTestament(testament);
++            rafBook.setLastUncompressed(uncompressed);
++        }
+ 
+-                // cache the uncompressed data for next time
+-                lastBlockNum = blockNum;
+-                lastTestament = testament;
+-                lastUncompressed = uncompressed;
+-            }
++        // and cut out the required section.
++        final byte[] chopped = new byte[verseSize];
++        System.arraycopy(uncompressed, verseStart, chopped, 0, verseSize);
+ 
+-            // and cut out the required section.
+-            byte[] chopped = new byte[verseSize];
+-            System.arraycopy(uncompressed, verseStart, chopped, 0, verseSize);
++        return SwordUtil.decode(keyName, chopped, charset);
+ 
+-            return SwordUtil.decode(key.getName(), chopped, charset);
+-        } catch (IOException e) {
+-            // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
+-            // {0} is a placeholder for the file.
+-            throw new BookException(JSMsg.gettext("Error reading {0}", verse.getName()), e);
+-        }
+     }
+ 
+     /* (non-Javadoc)
+@@ -361,77 +276,16 @@ public class ZVerseBackend extends AbstractBackend {
+         throw new UnsupportedOperationException();
+     }
+ 
+-    /**
+-     * Helper method so we can quickly activate ourselves on access
+-     */
+-    protected final void checkActive() {
+-        if (!active) {
+-            Activator.activate(this);
+-        }
++    public BlockType getBlockType() {
++        return this.blockType;
+     }
+-
+-    /**
+-     * Whether the book is blocked by Book, Chapter or Verse.
+-     */
+-    private BlockType blockType;
+-
+-    /**
+-     *
+-     */
+-    private Testament lastTestament;
+-
+-    /**
+-     *
+-     */
+-    private long lastBlockNum = -1;
+-
+-    /**
+-     *
+-     */
+-    private byte[] lastUncompressed;
+-
++    
+     /**
+      * Are we active
+      */
+     private boolean active;
+ 
+     /**
+-     * The index random access files
+-     */
+-    private RandomAccessFile otIdxRaf;
+-    private RandomAccessFile ntIdxRaf;
+-
+-    /**
+-     * The data random access files
+-     */
+-    private RandomAccessFile otTextRaf;
+-    private RandomAccessFile ntTextRaf;
+-
+-    /**
+-     * The compressed random access files
+-     */
+-    private RandomAccessFile otCompRaf;
+-    private RandomAccessFile ntCompRaf;
+-
+-    /**
+-     * The index random access files
+-     */
+-    private File otIdxFile;
+-    private File ntIdxFile;
+-
+-    /**
+-     * The data random access files
+-     */
+-    private File otTextFile;
+-    private File ntTextFile;
+-
+-    /**
+-     * The compressed random access files
+-     */
+-    private File otCompFile;
+-    private File ntCompFile;
+-
+-    /**
+      * How many bytes in the comp index?
+      */
+     private static final int COMP_ENTRY_SIZE = 10;
+diff --git a/src/main/java/org/crosswire/jsword/bridge/BookExporter.java b/src/main/java/org/crosswire/jsword/bridge/BookExporter.java
+index 2dffc56..5c9592f 100644
+--- a/src/main/java/org/crosswire/jsword/bridge/BookExporter.java
++++ b/src/main/java/org/crosswire/jsword/bridge/BookExporter.java
+@@ -52,7 +52,7 @@ public class BookExporter {
+ 
+         StringBuilder buf = new StringBuilder();
+         for (Key key : keys) {
+-            String rawText = book.getRawText(key);
++            String rawText = book.getRawText(key, bob);
+             if (rawText != null && rawText.trim().length() > 0) {
+                 buf.delete(0, buf.length());
+                 buf.append("$$$").append(key).append('\n').append(rawText);
+diff --git a/src/main/java/org/crosswire/jsword/bridge/BookLookup.java b/src/main/java/org/crosswire/jsword/bridge/BookLookup.java
+index 0db6d90..9f4a29a 100644
+--- a/src/main/java/org/crosswire/jsword/bridge/BookLookup.java
++++ b/src/main/java/org/crosswire/jsword/bridge/BookLookup.java
+@@ -53,7 +53,7 @@ public class BookLookup {
+             buf.append(':');
+             buf.append(osisID);
+             buf.append(" - ");
+-            String rawText = book.getRawText(currentKey);
++            String rawText = book.getRawText(currentKey, bob);
+             if (rawText != null && rawText.trim().length() > 0) {
+                 buf.append(rawText);
+             } else {
+diff --git a/src/main/java/org/crosswire/jsword/examples/BibleToOsis.java b/src/main/java/org/crosswire/jsword/examples/BibleToOsis.java
+index 7573825..5b5ec50 100644
+--- a/src/main/java/org/crosswire/jsword/examples/BibleToOsis.java
++++ b/src/main/java/org/crosswire/jsword/examples/BibleToOsis.java
+@@ -85,7 +85,7 @@ public class BibleToOsis {
+         // Get a verse iterator
+         for (Key key : keys) {
+             Verse verse = (Verse) key;
+-            String raw = bible.getRawText(verse);
++            String raw = bible.getRawText(verse, bob);
+             String osisID = verse.getOsisID();
+             String currentBookName = verse.getBook().getOSIS();
+             int currentChapter = verse.getChapter();
+diff --git a/src/test/java/org/crosswire/jsword/book/GatherAllReferences.java b/src/test/java/org/crosswire/jsword/book/GatherAllReferences.java
+index 1444f24..aff086a 100644
+--- a/src/test/java/org/crosswire/jsword/book/GatherAllReferences.java
++++ b/src/test/java/org/crosswire/jsword/book/GatherAllReferences.java
+@@ -126,7 +126,7 @@ public class GatherAllReferences {
+         try {
+             String orig;
+             try {
+-                orig = book.getRawText(key);
++                orig = book.getRawText(key, bob);
+             } catch (BookException ex) {
+                 log.warn("Failed to read: " + book.getInitials() + '(' + key.getName() + "):" + ex.getMessage(), ex);
+                 return;
+diff --git a/src/test/java/org/crosswire/jsword/book/sword/GenBookTest.java b/src/test/java/org/crosswire/jsword/book/sword/GenBookTest.java
+index 736b658..1ffab1a 100644
+--- a/src/test/java/org/crosswire/jsword/book/sword/GenBookTest.java
++++ b/src/test/java/org/crosswire/jsword/book/sword/GenBookTest.java
+@@ -61,7 +61,7 @@ public class GenBookTest extends TestCase {
+         if (book != null) {
+             Key key = book.getGlobalKeyList();
+             try {
+-                book.getRawText(key);
++                book.getRawText(key, bob);
+             } catch (NullPointerException e) {
+                 Assert.fail("test for bad key should not have thrown an NPE.");
+             } catch (BookException e) {

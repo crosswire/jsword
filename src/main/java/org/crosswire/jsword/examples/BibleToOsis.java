@@ -85,7 +85,7 @@ public class BibleToOsis {
         // Get a verse iterator
         for (Key key : keys) {
             Verse verse = (Verse) key;
-            String raw = bible.getRawText(verse);
+            String raw = bible.getRawText(verse, bob);
             String osisID = verse.getOsisID();
             String currentBookName = verse.getBook().getOSIS();
             int currentChapter = verse.getChapter();

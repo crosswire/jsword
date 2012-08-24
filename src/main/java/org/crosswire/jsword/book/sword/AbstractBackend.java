@@ -24,13 +24,29 @@ package org.crosswire.jsword.book.sword;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import org.crosswire.common.activate.Activatable;
+import org.crosswire.common.activate.Lock;
 import org.crosswire.common.crypt.Sapphire;
+import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.NetUtil;
+import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
+import org.crosswire.jsword.book.sword.state.OpenFileState;
+import org.crosswire.jsword.book.sword.state.RawBackendState;
+import org.crosswire.jsword.book.sword.state.ZVerseBackendState;
 import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyUtil;
+import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.RestrictionType;
+import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.passage.VerseRange;
+import org.jdom.Content;
 
 /**
  * A generic way to read data from disk for later formatting.
@@ -40,7 +56,7 @@ import org.crosswire.jsword.passage.Key;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public abstract class AbstractBackend implements Activatable {
+public abstract class AbstractBackend<T extends OpenFileState> implements Activatable, StatefulFileBackedBackend<T> {
     /**
      * Default constructor for the sake of serialization.
      */
@@ -92,17 +108,6 @@ public abstract class AbstractBackend implements Activatable {
         decipher(data);
     }
 
-    public URI getExpandedDataPath() throws BookException {
-        URI loc = NetUtil.lengthenURI(bmd.getLibrary(), (String) bmd.getProperty(ConfigEntryType.DATA_PATH));
-
-        if (loc == null) {
-            // FIXME(DMS): missing parameter
-            throw new BookException(JSOtherMsg.lookupText("Missing data files for old and new testaments in {0}."));
-        }
-
-        return loc;
-    }
-
     /**
      * Initialize a AbstractBackend before use. This method needs to call
      * addKey() a number of times on GenBookBackend
@@ -127,34 +132,57 @@ public abstract class AbstractBackend implements Activatable {
      * 
      * @param key
      *            The key to fetch
+     * @param processor
+     *            processor that executes before/after the content is read from
+     *            disk or another kind of backend
      * @return String The data for the verse in question
      * @throws BookException
      *             If the data can not be read.
      */
-    public abstract String getRawText(Key key) throws BookException;
-
-    /**
-     * Set the text allotted for the given verse
-     * 
-     * @param key
-     *            The key to set text to
-     * @param text
-     *            The text to be set for key
-     * @throws BookException
-     *             If the data can not be set.
-     * @throws IOException
-     *             If the module data path could not be created.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key)
      */
-    public abstract void setRawText(Key key, String text) throws BookException, IOException;
+    public List<Content> getRawText(Key key, RawTextToXmlProcessor processor) throws BookException {
+        final List<Content> content = new ArrayList<Content>();
+        // FIXME(CJB) behaviour has changed from previously where not finding OT
+        // or NT did not throw exception
+        Passage ref = (key instanceof Passage ? (Passage) key : KeyUtil.getPassage(key));
+        Verse currentVerse = null;
+        T openFileState = null;
+        try {
+            openFileState = initState();
+            Iterator<Key> rit = ref.rangeIterator(RestrictionType.CHAPTER);
+            while (rit.hasNext()) {
+                VerseRange range = (VerseRange) rit.next();
+                processor.preRange(range, content);
 
-    /**
-     * Sets alias for a comment on a verse range
-     * I.e. setRawText() was for verse range Gen.1.1-3 then setAliasKey should be called for Gen.1.1.2 and Gen.1.1.3
-     * @param alias Alias Key
-     * @param source Source Key
-     * @throws IOException Exception when anything goes wrong on writing the alias
-     */
-    public abstract void setAliasKey(Key alias, Key source) throws IOException;
+                // FIXME(CJB): can this now be optmized since we can calculate
+                // the buffer size of what to read?
+                // now iterate through all verses in range
+                for (Key verseInRange : range) {
+                    currentVerse = KeyUtil.getVerse(verseInRange);
+                    final String keyName = verseInRange.getName();
+                    String rawText = readRawVerse(openFileState, currentVerse, keyName);
+                    processor.postVerse(verseInRange, content, rawText);
+                }
+            }
+
+            return content;
+        } catch (IOException e) {
+            // TRANSLATOR: Common error condition: The file could not be read.
+            // There can be many reasons.
+            // {0} is a placeholder for the key.
+            if (currentVerse == null) {
+                throw new BookException(JSMsg.gettext("Error reading {0}", key.getName()), e);
+            } else {
+                throw new BookException(JSMsg.gettext("Error reading {0}", currentVerse.getName()), e);
+            }
+        } finally {
+            IOUtil.close(openFileState);
+        }
+    }
+
+
 
     /**
      * Create the directory to hold the Book if it does not exist.
@@ -163,7 +191,7 @@ public abstract class AbstractBackend implements Activatable {
      * @throws BookException
      */
     public void create() throws IOException, BookException {
-        File dataPath = new File(getExpandedDataPath());
+        File dataPath = new File(SwordUtil.getExpandedDataPath(getBookMetaData()));
         if (!dataPath.exists() && !dataPath.mkdirs()) {
             throw new IOException("Unable to create module data path!");
         }
@@ -191,5 +219,14 @@ public abstract class AbstractBackend implements Activatable {
         return false;
     }
 
+    public void activate(Lock lock) {
+        // do nothing by default
+    }
+
+    public void deactivate(Lock lock) {
+        // do nothing by default
+    }
+
     private SwordBookMetaData bmd;
+
 }
