@@ -23,23 +23,16 @@ package org.crosswire.jsword.book.sword;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.crosswire.common.activate.Activatable;
-import org.crosswire.common.activate.Lock;
 import org.crosswire.common.crypt.Sapphire;
 import org.crosswire.common.util.IOUtil;
-import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.JSMsg;
-import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
 import org.crosswire.jsword.book.sword.state.OpenFileState;
-import org.crosswire.jsword.book.sword.state.RawBackendState;
-import org.crosswire.jsword.book.sword.state.ZVerseBackendState;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.Passage;
@@ -56,7 +49,7 @@ import org.jdom.Content;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public abstract class AbstractBackend<T extends OpenFileState> implements Activatable, StatefulFileBackedBackend<T> {
+public abstract class AbstractBackend<T extends OpenFileState> implements StatefulFileBackedBackend<T> {
     /**
      * Default constructor for the sake of serialization.
      */
@@ -219,13 +212,6 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Activa
         return false;
     }
 
-    public void activate(Lock lock) {
-        // do nothing by default
-    }
-
-    public void deactivate(Lock lock) {
-        // do nothing by default
-    }
 
     private SwordBookMetaData bmd;
 

@@ -39,7 +39,7 @@ public interface StatefulFileBackedBackend<T extends OpenFileState> {
      * @throws IOException
      *             something whent wrong when reading the verse
      */
-     String readRawVerse(T state, Verse currentVerse, String keyName) throws IOException;
+     String readRawVerse(T state, Verse currentVerse, String keyName) throws BookException, IOException;
  
      /**
       * Set the text allotted for the given verse

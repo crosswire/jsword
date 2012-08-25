@@ -63,7 +63,7 @@ import org.crosswire.jsword.passage.Verse;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class RawLDBackend extends AbstractKeyBackend<RawLDBackendState> {
+public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBackend<RawLDBackendState> {
     /**
      * Simple ctor
      * 
@@ -105,7 +105,7 @@ public class RawLDBackend extends AbstractKeyBackend<RawLDBackendState> {
                 if (entry.isLinkEntry()) {
                     return readRawVerse(state, entry.getLinkTarget());
                 }
-                return getRawText(entry);
+                return getRawText(state, entry);
             }
             // TRANSLATOR: Error condition: Indicates that something could not
             // be found in the book. {0} is a placeholder for the unknown key.
@@ -118,7 +118,7 @@ public class RawLDBackend extends AbstractKeyBackend<RawLDBackendState> {
         }
     }
 
-    protected String getRawText(DataEntry entry) {
+    protected String getRawText(RawLDBackendState state, DataEntry entry) {
         String cipherKeyString = (String) getBookMetaData().getProperty(ConfigEntryType.CIPHER_KEY);
         try {
             return entry.getRawText((cipherKeyString != null) ? cipherKeyString.getBytes(getBookMetaData().getBookCharset()) : null);

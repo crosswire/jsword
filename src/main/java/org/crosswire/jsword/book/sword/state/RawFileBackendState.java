@@ -84,9 +84,7 @@ public class RawFileBackendState extends RawBackendState {
                 log.error("Error on writing to incfile, file should exist already!");
                 log.error(e.getMessage());
             } finally {
-                if (fis != null) {
-                    fis.close();
-                }
+                IOUtil.close(fis);
             }
         }
 

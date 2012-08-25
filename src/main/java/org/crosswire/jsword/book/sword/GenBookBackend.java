@@ -31,14 +31,19 @@ import java.util.List;
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
 import org.crosswire.common.util.FileUtil;
+import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.sword.state.GenBookBackendState;
 import org.crosswire.jsword.book.sword.state.RawBackendState;
+import org.crosswire.jsword.book.sword.state.RawLDBackendState;
+import org.crosswire.jsword.book.sword.state.ZVerseBackendState;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.TreeKey;
+import org.crosswire.jsword.passage.Verse;
 
 /**
  * Backend for General Books.
@@ -47,7 +52,7 @@ import org.crosswire.jsword.passage.TreeKey;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class GenBookBackend extends AbstractBackend {
+public class GenBookBackend extends AbstractBackend<GenBookBackendState> {
     /**
      * Simple ctor
      */
@@ -56,61 +61,12 @@ public class GenBookBackend extends AbstractBackend {
         index = new TreeKeyIndex(sbmd);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.common.activate.Activatable#activate(org.crosswire.common.activate.Lock)
-     */
-    public final void activate(Lock lock) {
-        Activator.activate(index);
-
-        URI path = null;
-        try {
-            path = SwordUtil.getExpandedDataPath(getBookMetaData());
-        } catch (BookException e) {
-            Reporter.informUser(this, e);
-            return;
-        }
-
-        bdtFile = new File(path.getPath() + EXTENSION_BDT);
-
-        if (!bdtFile.canRead()) {
-            // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
-            // {0} is a placeholder for the file.
-            Reporter.informUser(this, new BookException(JSMsg.gettext("Error reading {0}", bdtFile.getAbsolutePath())));
-            return;
-        }
-
-        try {
-            bdtRaf = new RandomAccessFile(bdtFile, FileUtil.MODE_READ);
-        } catch (IOException ex) {
-            log.error("failed to open files", ex);
-            bdtRaf = null;
-        }
-        active = true;
-    }
-
-    /* (non-Javadoc)
-     * @see org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common.activate.Lock)
-     */
-    public final void deactivate(Lock lock) {
-        try {
-            if (bdtRaf != null) {
-                bdtRaf.close();
-            }
-        } catch (IOException ex) {
-            log.error("failed to close gen book files", ex);
-        } finally {
-            bdtRaf = null;
-        }
-        active = false;
-
-        // Also deactivate the index
-        Activator.deactivate(index);
+    public GenBookBackendState initState() throws BookException {
+        return new GenBookBackendState(getBookMetaData());
     }
 
     @Override
     public boolean contains(Key key) {
-        checkActive();
-
         try {
             return null != find(key);
         } catch (IOException e) {
@@ -118,37 +74,29 @@ public class GenBookBackend extends AbstractBackend {
         }
     }
 
-    @Override
-    public String getRawText(Key key) throws BookException {
-        checkActive();
+    public String readRawVerse(GenBookBackendState state, Verse verse, String keyName) throws IOException, BookException {
+        TreeNode node = find(verse);
 
-        try {
-            TreeNode node = find(key);
-
-            if (node == null) {
-                // TRANSLATOR: Error condition: Indicates that something could not be found in the book.
-                // {0} is a placeholder for the unknown key.
-                // {1} is the short name of the book
-                throw new BookException(JSMsg.gettext("No entry for '{0}' in {1}.", key.getName(), getBookMetaData().getInitials()));
-            }
-
-            byte[] userData = node.getUserData();
-
-            // Some entries may be empty.
-            if (userData.length == 8) {
-                int start = SwordUtil.decodeLittleEndian32(userData, 0);
-                int size = SwordUtil.decodeLittleEndian32(userData, 4);
-                byte[] data = SwordUtil.readRAF(bdtRaf, start, size);
-                decipher(data);
-                return SwordUtil.decode(key.getName(), data, getBookMetaData().getBookCharset());
-            }
-
-            return "";
-        } catch (IOException e) {
-            // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
-            // {0} is a placeholder for the file.
-            throw new BookException(JSMsg.gettext("Error reading {0}", key.getName()), e);
+        if (node == null) {
+            // TRANSLATOR: Error condition: Indicates that something could
+            // not be found in the book.
+            // {0} is a placeholder for the unknown key.
+            // {1} is the short name of the book
+            throw new BookException(JSMsg.gettext("No entry for '{0}' in {1}.", keyName, getBookMetaData().getInitials()));
         }
+
+        byte[] userData = node.getUserData();
+
+        // Some entries may be empty.
+        if (userData.length == 8) {
+            int start = SwordUtil.decodeLittleEndian32(userData, 0);
+            int size = SwordUtil.decodeLittleEndian32(userData, 4);
+            byte[] data = SwordUtil.readRAF(state.getBdtRaf(), start, size);
+            decipher(data);
+            return SwordUtil.decode(keyName, data, getBookMetaData().getBookCharset());
+        }
+
+        return "";
     }
 
     /**
@@ -216,13 +164,17 @@ public class GenBookBackend extends AbstractBackend {
         return reply;
     }
 
-    @Override
-    public void setAliasKey(Key alias, Key source) throws IOException {
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#setAliasKey(org.crosswire.jsword.passage.Key, org.crosswire.jsword.passage.Key)
+     */
+    public void setAliasKey(GenBookBackendState state, Key alias, Key source) throws IOException {
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    public void setRawText(RawBackendState state, Key key, String text) throws BookException, IOException {
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.sword.AbstractBackend#setRawText(org.crosswire.jsword.passage.Key, java.lang.String)
+     */
+    public void setRawText(GenBookBackendState rafBook, Key key, String text) throws BookException, IOException {
         throw new UnsupportedOperationException();
     }
 
@@ -255,37 +207,9 @@ public class GenBookBackend extends AbstractBackend {
     }
 
     /**
-     * Helper method so we can quickly activate ourselves on access
-     */
-    protected final void checkActive() {
-        if (!active) {
-            Activator.activate(this);
-        }
-    }
-
-    /**
-     * Raw GenBook file extensions
-     */
-    private static final String EXTENSION_BDT = ".bdt";
-
-    /**
-     * The raw data file
-     */
-    private File bdtFile;
-
-    /**
-     * The random access file for the raw data
-     */
-    private RandomAccessFile bdtRaf;
-
-    /**
      * The raw index file
      */
-    private TreeKeyIndex index;
-    /**
-     * Are we active
-     */
-    private boolean active;
+    private final TreeKeyIndex index;
 
     /**
      * The log stream

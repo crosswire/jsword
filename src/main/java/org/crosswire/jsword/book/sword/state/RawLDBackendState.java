@@ -18,8 +18,8 @@ import org.crosswire.jsword.book.sword.SwordUtil;
 
 /**
  * State for {@link RawLDBackend}
- *
- *
+ * 
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
@@ -65,19 +65,23 @@ public class RawLDBackendState implements OpenFileState {
             datFile = new File(path.getPath() + SwordConstants.EXTENSION_DATA);
 
             if (!idxFile.canRead()) {
-                // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
+                // TRANSLATOR: Common error condition: The file could not be
+                // read. There can be many reasons.
                 // {0} is a placeholder for the file.
                 Reporter.informUser(this, new BookException(JSMsg.gettext("Error reading {0}", idxFile.getAbsolutePath())));
-                
-                //FIXME(CJB) we may want to throw an exception here... let whoever calls this handle it for us.
+
+                // FIXME(CJB) we may want to throw an exception here... let
+                // whoever calls this handle it for us.
                 return;
             }
 
             if (!datFile.canRead()) {
-                // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
+                // TRANSLATOR: Common error condition: The file could not be
+                // read. There can be many reasons.
                 // {0} is a placeholder for the file.
                 Reporter.informUser(this, new BookException(JSMsg.gettext("Error reading {0}", datFile.getAbsolutePath())));
-                //FIXME(CJB) we may want to throw an exception here... let whoever calls this handle it for us.
+                // FIXME(CJB) we may want to throw an exception here... let
+                // whoever calls this handle it for us.
                 return;
             }
 
@@ -88,21 +92,20 @@ public class RawLDBackendState implements OpenFileState {
             log.error("failed to open files", ex);
             idxRaf = null;
             datRaf = null;
-            // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
+            // TRANSLATOR: Common error condition: The file could not be read.
+            // There can be many reasons.
             // {0} is a placeholder for the file.
             throw new BookException(JSMsg.gettext("Error reading {0}", datFile.getAbsolutePath()), ex);
         }
     }
-    
-    
-    public void close() throws IOException {
+
+    public void close() {
         size = -1;
         IOUtil.close(idxRaf);
         IOUtil.close(datRaf);
-            idxRaf = null;
-            datRaf = null;
+        idxRaf = null;
+        datRaf = null;
     }
-
 
     /**
      * @return the size
@@ -111,14 +114,12 @@ public class RawLDBackendState implements OpenFileState {
         return size;
     }
 
-
     /**
      * @return the idxFile
      */
     public File getIdxFile() {
         return idxFile;
     }
-
 
     /**
      * @return the idxRaf
@@ -127,7 +128,6 @@ public class RawLDBackendState implements OpenFileState {
         return idxRaf;
     }
 
-
     /**
      * @return the datRaf
      */
@@ -135,13 +135,12 @@ public class RawLDBackendState implements OpenFileState {
         return datRaf;
     }
 
-
     /**
-     * @param size the size to set
+     * @param size
+     *            the size to set
      */
     public void setSize(int size) {
         this.size = size;
     }
-
 
 }
