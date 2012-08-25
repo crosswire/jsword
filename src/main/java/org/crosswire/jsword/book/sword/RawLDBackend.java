@@ -41,6 +41,7 @@ import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
 import org.crosswire.common.icu.DateFormatter;
 import org.crosswire.common.util.FileUtil;
+import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.StringUtil;
@@ -48,8 +49,11 @@ import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.FeatureType;
+import org.crosswire.jsword.book.sword.state.RawLDBackendState;
+import org.crosswire.jsword.book.sword.state.ZVerseBackendState;
 import org.crosswire.jsword.passage.DefaultLeafKeyList;
 import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.Verse;
 
 /**
  * An implementation AbstractKeyBackend to read RAW format files.
@@ -59,7 +63,7 @@ import org.crosswire.jsword.passage.Key;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class RawLDBackend extends AbstractKeyBackend {
+public class RawLDBackend extends AbstractKeyBackend<RawLDBackendState> {
     /**
      * Simple ctor
      * 
@@ -69,44 +73,48 @@ public class RawLDBackend extends AbstractKeyBackend {
      */
     public RawLDBackend(SwordBookMetaData sbmd, int datasize) {
         super(sbmd);
-        this.size = -1;
         this.datasize = datasize;
         this.entrysize = OFFSETSIZE + datasize;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire
-     * .jsword.passage.Key, java.lang.String)
-     */
-    @Override
-    public String getRawText(Key key) throws BookException {
-        String result = getRawText(key.getName());
+    public String readRawVerse(RawLDBackendState state, Verse verse, String keyName) throws IOException {
+        String result = readRawVerse(state, verse.getName());
         return result;
     }
 
-    public String getRawText(String key) throws BookException {
-        if (!checkActive()) {
-            return "";
+    public RawLDBackendState initState() throws BookException {
+        return new RawLDBackendState(getBookMetaData());
+    }
+
+    public String readRawVerse(String key) throws IOException, BookException {
+        RawLDBackendState state = null;
+        try {
+            state = initState();
+            return readRawVerse(state, key);
+        } finally {
+            IOUtil.close(state);
         }
+    }
+
+    public String readRawVerse(RawLDBackendState state, String key) throws IOException {
 
         try {
-            int pos = search(key);
+            int pos = search(state, key);
             if (pos >= 0) {
-                DataEntry entry = getEntry(key, pos);
+                DataEntry entry = getEntry(state, key, pos);
                 if (entry.isLinkEntry()) {
-                    return getRawText(entry.getLinkTarget());
+                    return readRawVerse(state, entry.getLinkTarget());
                 }
                 return getRawText(entry);
             }
-            // TRANSLATOR: Error condition: Indicates that something could not be found in the book. {0} is a placeholder for the unknown key.
-            throw new BookException(JSMsg.gettext("Key not found {0}", key));
+            // TRANSLATOR: Error condition: Indicates that something could not
+            // be found in the book. {0} is a placeholder for the unknown key.
+            throw new IOException(JSMsg.gettext("Key not found {0}", key));
         } catch (IOException ex) {
-            // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
+            // TRANSLATOR: Common error condition: The file could not be read.
+            // There can be many reasons.
             // {0} is a placeholder for the file.
-            throw new BookException(JSMsg.gettext("Error reading {0}", key), ex);
+            throw new IOException(JSMsg.gettext("Error reading {0}", key), ex);
         }
     }
 
@@ -125,18 +133,22 @@ public class RawLDBackend extends AbstractKeyBackend {
      * @see org.crosswire.jsword.passage.Key#getCardinality()
      */
     public int getCardinality() {
-        if (!checkActive()) {
-            return 0;
-        }
+        RawLDBackendState state = null;
+        try {
+            state = initState();
 
-        if (size == -1) {
-            try {
-                size = (int) (idxRaf.length() / entrysize);
-            } catch (IOException e) {
-                size = 0;
+            if (state.getSize() == -1) {
+                state.setSize((int) (state.getIdxRaf().length() / entrysize));
             }
+            return state.getSize();
+        } catch (BookException e) {
+            return 0;
+        } catch (IOException e) {
+            // FIXME(CJB) no logging as per previous implementation
+            return 0;
+        } finally {
+            IOUtil.close(state);
         }
-        return size;
     }
 
     /*
@@ -145,16 +157,21 @@ public class RawLDBackend extends AbstractKeyBackend {
      * @see org.crosswire.jsword.passage.Key#get(int)
      */
     public Key get(int index) {
-        if (checkActive()) {
-            try {
-                if (index < getCardinality()) {
-                    DataEntry entry = getEntry(getBookMetaData().getInitials(), index);
-                    String keytitle = internal2external(entry.getKey());
-                    return new DefaultLeafKeyList(keytitle);
-                }
-            } catch (IOException e) {
-                // fall through
+        RawLDBackendState state = null;
+        try {
+            state = initState();
+
+            if (index < getCardinality()) {
+                DataEntry entry = getEntry(state, getBookMetaData().getInitials(), index);
+                String keytitle = internal2external(entry.getKey());
+                return new DefaultLeafKeyList(keytitle);
             }
+        } catch (BookException e) {
+            // fall through FIXM(CJB) Log?
+        } catch (IOException e) {
+            // fall through FIXM(CJB) Log?
+        } finally {
+            IOUtil.close(state);
         }
         throw new ArrayIndexOutOfBoundsException(index);
     }
@@ -167,108 +184,15 @@ public class RawLDBackend extends AbstractKeyBackend {
      * .Key)
      */
     public int indexOf(Key that) {
+        RawLDBackendState state;
         try {
-            return search(that.getName());
+            state = initState();
+            return search(state, that.getName());
         } catch (IOException e) {
             return -getCardinality() - 1;
-        }
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.common.activate.Activatable#activate(org.crosswire.common
-     * .activate.Lock)
-     */
-    public void activate(Lock lock) {
-        active = false;
-        size = -1;
-        idxFile = null;
-        datFile = null;
-        idxRaf = null;
-        datRaf = null;
-
-        URI path = null;
-        try {
-            path = getExpandedDataPath();
         } catch (BookException e) {
-            Reporter.informUser(this, e);
-            return;
+            return -getCardinality() - 1;
         }
-
-        try {
-            idxFile = new File(path.getPath() + SwordConstants.EXTENSION_INDEX);
-            datFile = new File(path.getPath() + SwordConstants.EXTENSION_DATA);
-
-            if (!idxFile.canRead()) {
-                // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
-                // {0} is a placeholder for the file.
-                Reporter.informUser(this, new BookException(JSMsg.gettext("Error reading {0}", idxFile.getAbsolutePath())));
-                return;
-            }
-
-            if (!datFile.canRead()) {
-                // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
-                // {0} is a placeholder for the file.
-                Reporter.informUser(this, new BookException(JSMsg.gettext("Error reading {0}", datFile.getAbsolutePath())));
-                return;
-            }
-
-            // Open the files
-            idxRaf = new RandomAccessFile(idxFile, FileUtil.MODE_READ);
-            datRaf = new RandomAccessFile(datFile, FileUtil.MODE_READ);
-        } catch (IOException ex) {
-            log.error("failed to open files", ex);
-            idxRaf = null;
-            datRaf = null;
-            return;
-        }
-
-        active = true;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common
-     * .activate.Lock)
-     */
-    public void deactivate(Lock lock) {
-        size = -1;
-        try {
-            if (idxRaf != null) {
-                idxRaf.close();
-            }
-            if (datRaf != null) {
-                datRaf.close();
-            }
-        } catch (IOException ex) {
-            log.error("failed to close files", ex);
-        } finally {
-            idxRaf = null;
-            datRaf = null;
-        }
-
-        active = false;
-    }
-
-    /**
-     * Helper method so we can quickly activate ourselves on access
-     */
-    protected boolean checkActive() {
-        if (!isActive()) {
-            Activator.activate(this);
-        }
-        return isActive();
-    }
-
-    /**
-     * Determine whether we are active.
-     */
-    protected boolean isActive() {
-        return active;
     }
 
     /**
@@ -278,9 +202,9 @@ public class RawLDBackend extends AbstractKeyBackend {
      * @return the index of the entry
      * @throws IOException
      */
-    private DataIndex getIndex(long entry) throws IOException {
+    private DataIndex getIndex(RawLDBackendState state, long entry) throws IOException {
         // Read the offset and size for this key from the index
-        byte[] buffer = SwordUtil.readRAF(idxRaf, entry * entrysize, entrysize);
+        byte[] buffer = SwordUtil.readRAF(state.getIdxRaf(), entry * entrysize, entrysize);
         int entryOffset = SwordUtil.decodeLittleEndian32(buffer, 0);
         int entrySize = -1;
         switch (datasize) {
@@ -304,10 +228,10 @@ public class RawLDBackend extends AbstractKeyBackend {
      * @return the text for the entry.
      * @throws IOException
      */
-    private DataEntry getEntry(String reply, int index) throws IOException {
-        DataIndex dataIndex = getIndex(index);
+    private DataEntry getEntry(RawLDBackendState state, String reply, int index) throws IOException {
+        DataIndex dataIndex = getIndex(state, index);
         // Now read the data file for this key using the offset and size
-        byte[] data = SwordUtil.readRAF(datRaf, dataIndex.getOffset(), dataIndex.getSize());
+        byte[] data = SwordUtil.readRAF(state.getDatRaf(), dataIndex.getOffset(), dataIndex.getSize());
 
         return new DataEntry(reply, data, getBookMetaData().getBookCharset());
     }
@@ -320,52 +244,50 @@ public class RawLDBackend extends AbstractKeyBackend {
      * @return the match
      * @throws IOException
      */
-    private int search(String key) throws IOException {
-        if (!checkActive()) {
-            return -1;
-        }
+    private int search(RawLDBackendState state, String key) throws IOException {
+            String target = external2internal(key);
 
-        String target = external2internal(key);
+            // Initialize to one beyond both ends.
+            int total = getCardinality();
+            // Note: In some dictionaries, the first element is out of order and
+            // represents the title of the work.
+            // So, do the bin search from 1 to end and if not found, check the
+            // first
+            // element as a special case.
+            // If that does not match return the position found otherwise.
+            int low = 0;
+            int high = total;
+            int match = -1;
 
-        // Initialize to one beyond both ends.
-        int total = getCardinality();
-        // Note: In some dictionaries, the first element is out of order and
-        // represents the title of the work.
-        // So, do the bin search from 1 to end and if not found, check the first
-        // element as a special case.
-        // If that does not match return the position found otherwise.
-        int low = 0;
-        int high = total;
-        int match = -1;
+            while (high - low > 1) {
+                // use >>> to keep mid always in range
+                int mid = (low + high) >>> 1;
 
-        while (high - low > 1) {
-            // use >>> to keep mid always in range
-            int mid = (low + high) >>> 1;
-
-            // Get the key for the item at "mid"
-            int cmp = normalizeForSearch(getEntry(key, mid).getKey()).compareTo(target);
-            if (cmp < 0) {
-                low = mid;
-            } else if (cmp > 0) {
-                high = mid;
-            } else {
-                match = mid;
-                break;
+                // Get the key for the item at "mid"
+                int cmp = normalizeForSearch(getEntry(state, key, mid).getKey()).compareTo(target);
+                if (cmp < 0) {
+                    low = mid;
+                } else if (cmp > 0) {
+                    high = mid;
+                } else {
+                    match = mid;
+                    break;
+                }
             }
-        }
 
-        // Do we have an exact match?
-        if (match >= 0) {
-            return match;
-        }
+            // Do we have an exact match?
+            if (match >= 0) {
+                return match;
+            }
 
-        // Strong's Greek And Hebrew dictionaries have an introductory entry, so
-        // check it for a match.
-        if (normalizeForSearch(getEntry(key, 0).getKey()).compareTo(target) == 0) {
-            return 0;
-        }
+            // Strong's Greek And Hebrew dictionaries have an introductory
+            // entry, so
+            // check it for a match.
+            if (normalizeForSearch(getEntry(state, key, 0).getKey()).compareTo(target) == 0) {
+                return 0;
+            }
 
-        return -(high + 1);
+            return -(high + 1);
     }
 
     /**
@@ -422,18 +344,17 @@ public class RawLDBackend extends AbstractKeyBackend {
                 // and Hebrew have G or H prefix
                 StringBuilder buf = new StringBuilder();
                 buf.append(Character.toUpperCase(type));
-                buf.append(ZERO_4PAD.format(strongsNumber));
+                buf.append(getZero4Pad().format(strongsNumber));
 
                 // The NAS lexicon has some entries that end in A-Z, but it is
                 // not preceded by a !
-                if (hasTrailingLetter && "naslex".equalsIgnoreCase(bmd.getInitials()))
-                {
+                if (hasTrailingLetter && "naslex".equalsIgnoreCase(bmd.getInitials())) {
                     buf.append(Character.toUpperCase(lastLetter));
                 }
                 return buf.toString();
             }
 
-            return ZERO_5PAD.format(strongsNumber);
+            return getZero5Pad().format(strongsNumber);
         } else {
             return keytitle.toUpperCase(Locale.US);
         }
@@ -465,6 +386,23 @@ public class RawLDBackend extends AbstractKeyBackend {
         return keytitle;
     }
 
+
+
+    /**
+     * A means to normalize Strong's Numbers.
+     */
+    private DecimalFormat getZero5Pad() {
+        return new DecimalFormat("00000");
+    }
+
+    /**
+     * A means to normalize Strong's Numbers.
+     */
+    private DecimalFormat getZero4Pad() {
+        return new DecimalFormat("0000");
+    }
+
+    
     /**
      * Serialization support.
      * 
@@ -473,60 +411,10 @@ public class RawLDBackend extends AbstractKeyBackend {
      * @throws ClassNotFoundException
      */
     private void readObject(ObjectInputStream is) throws IOException, ClassNotFoundException {
-        active = false;
-        size = -1;
-        idxFile = null;
-        datFile = null;
-        idxRaf = null;
-        datRaf = null;
         is.defaultReadObject();
     }
 
-    /**
-     * How many bytes in the offset pointers in the index
-     */
-    private static final int OFFSETSIZE = 4;
-
-    /**
-     * Flags whether there are open files or not
-     */
-    private transient boolean active;
-
-    /**
-     * The number of bytes in the size count in the index
-     */
-    private int datasize;
-
-    /**
-     * The number of bytes for each entry in the index: either 6 or 8
-     */
-    private int entrysize;
-
-    /**
-     * The number of entries in the book.
-     */
-    private transient int size;
-
-    /**
-     * The index file
-     */
-    private transient File idxFile;
-
-    /**
-     * The index random access file
-     */
-    private transient RandomAccessFile idxRaf;
-
-    /**
-     * The data file
-     */
-    private transient File datFile;
-
-    /**
-     * The data random access file
-     */
-    private transient RandomAccessFile datRaf;
-
+    
     /**
      * Date formatter
      */
@@ -540,16 +428,24 @@ public class RawLDBackend extends AbstractKeyBackend {
     private static final Pattern STRONGS_PATTERN = Pattern.compile("^([GH])(\\d+)((!)?([a-z])?)$");
 
     /**
-     * A means to normalize Strong's Numbers.
-     */
-    private static final DecimalFormat ZERO_5PAD = new DecimalFormat("00000");
-
-    private static final DecimalFormat ZERO_4PAD = new DecimalFormat("0000");
-
-    /**
      * Serialization ID
      */
     private static final long serialVersionUID = 818089833394450383L;
+
+    /**
+     * The number of bytes in the size count in the index
+     */
+    private final int datasize;
+
+    /**
+     * The number of bytes for each entry in the index: either 6 or 8
+     */
+    private final int entrysize;
+
+    /**
+     * How many bytes in the offset pointers in the index
+     */
+    private static final int OFFSETSIZE = 4;
 
     /**
      * The log stream

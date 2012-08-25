@@ -31,6 +31,7 @@ import org.crosswire.common.util.IOUtil;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
+import org.crosswire.jsword.book.sword.state.OpenFileState;
 import org.crosswire.jsword.book.sword.state.RawBackendState;
 import org.crosswire.jsword.book.sword.state.ZVerseBackendState;
 import org.crosswire.jsword.passage.Key;
@@ -48,7 +49,7 @@ import org.jdom.Content;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public abstract class AbstractKeyBackend extends AbstractBackend implements Key {
+public abstract class AbstractKeyBackend<T extends OpenFileState> extends AbstractBackend<T> implements Key {
     /**
      * Simple ctor
      * 
@@ -142,13 +143,11 @@ public abstract class AbstractKeyBackend extends AbstractBackend implements Key 
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    public void setAliasKey(Key alias, Key source) throws IOException {
+    public void setAliasKey(T state, Key alias, Key source) throws IOException {
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    public void setRawText(RawBackendState state, Key key, String text) throws BookException, IOException {
+    public void setRawText(T state, Key key, String text) throws BookException, IOException {
         throw new UnsupportedOperationException();
     }
 
@@ -160,10 +159,10 @@ public abstract class AbstractKeyBackend extends AbstractBackend implements Key 
     }
 
     @Override
-    public AbstractKeyBackend clone() {
-        AbstractKeyBackend clone = null;
+    public AbstractKeyBackend<T> clone() {
+        AbstractKeyBackend<T> clone = null;
         try {
-            clone = (AbstractKeyBackend) super.clone();
+            clone = (AbstractKeyBackend<T>) super.clone();
         } catch (CloneNotSupportedException e) {
             assert false : e;
         }

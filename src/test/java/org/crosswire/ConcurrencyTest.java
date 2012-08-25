@@ -10,7 +10,7 @@ import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 
 public class ConcurrencyTest extends TestCase {
-    // FIXME: currently disabled
+
     public void testConcurrencyIssueOnBookData() throws NoSuchKeyException, BookException,
             InterruptedException {
         final String[] names = { "KJV", "ESV" };

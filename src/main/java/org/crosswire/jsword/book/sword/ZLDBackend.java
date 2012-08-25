@@ -126,7 +126,7 @@ public class ZLDBackend extends RawLDBackend {
 
         URI path = null;
         try {
-            path = getExpandedDataPath();
+            path = SwordUtil.getExpandedDataPath(getBookMetaData());
         } catch (BookException e) {
             Reporter.informUser(this, e);
             return;
