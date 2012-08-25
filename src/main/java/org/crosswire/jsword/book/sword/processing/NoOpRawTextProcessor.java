@@ -15,4 +15,8 @@ public class NoOpRawTextProcessor implements RawTextToXmlProcessor {
     public void postVerse(Key verse, List<Content> partialDom, String rawText) {
         // No-Op
     }
+
+    public void init(List<Content> partialDom) {
+        // No-Op
+    }
 }

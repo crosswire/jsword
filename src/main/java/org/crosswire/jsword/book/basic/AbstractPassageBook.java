@@ -92,13 +92,13 @@ public abstract class AbstractPassageBook extends AbstractBook {
                         addOSIS(verse, partialDom, osisContent);
                     }
                 }
+
+                public void init(List<Content> partialDom) {
+                   //no-op
+                }
             };
 
-            // For all the verses in this range
-//            for (Key verse : range) {
                 return getRawText(ref, processor).iterator();
-
-//        return content.iterator();
     }
 
     /**

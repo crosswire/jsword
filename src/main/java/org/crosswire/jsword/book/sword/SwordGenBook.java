@@ -34,11 +34,13 @@ import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.AbstractBook;
 import org.crosswire.jsword.book.filter.Filter;
+import org.crosswire.jsword.book.sword.processing.NoOpRawTextProcessor;
 import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.ReadOnlyKeyList;
+import org.crosswire.jsword.passage.VerseRange;
 import org.jdom.Content;
 
 /**
@@ -71,6 +73,7 @@ public class SwordGenBook extends AbstractBook {
     public final void activate(Lock lock) {
         super.activate(lock);
 
+        //FIXME(CJB) => another issue with synchronisation, since you might come in while it's being read
         set = backend.readIndex();
 
         map = new HashMap<String, Key>();
@@ -97,8 +100,6 @@ public class SwordGenBook extends AbstractBook {
         set = null;
         global = null;
 
-        Activator.deactivate(backend);
-
         active = false;
     }
 
@@ -111,14 +112,20 @@ public class SwordGenBook extends AbstractBook {
         assert key != null;
         assert backend != null;
 
-        List<Content> content = new ArrayList<Content>();
 
-        String txt = backend.getRawText(key);
+        return backend.getRawText(key, new RawTextToXmlProcessor() {
+            public void preRange(VerseRange range, List<Content> partialDom) {
+                // no - op
+            }
+            
+            public void postVerse(Key verse, List<Content> partialDom, String rawText) {
+                partialDom.addAll(filter.toOSIS(SwordGenBook.this, verse, rawText));
+            }
 
-        List<Content> osisContent = filter.toOSIS(this, key, txt);
-        content.addAll(osisContent);
-
-        return content.iterator();
+            public void init(List<Content> partialDom) {
+             //no-op
+            }
+        }).iterator();
     }
 
     /* (non-Javadoc)
@@ -137,7 +144,7 @@ public class SwordGenBook extends AbstractBook {
         assert key != null;
         assert backend != null;
 
-        return backend.getRawText(key);
+        return backend.getRawText(key, processor);
     }
 
     /* (non-Javadoc)

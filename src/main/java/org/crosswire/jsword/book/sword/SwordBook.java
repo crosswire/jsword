@@ -27,12 +27,14 @@ import java.util.List;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
+import org.crosswire.common.util.IOUtil;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractPassageBook;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
+import org.crosswire.jsword.book.sword.state.OpenFileState;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.jdom.Content;
@@ -49,7 +51,7 @@ public class SwordBook extends AbstractPassageBook {
     /**
      * Simple ctor
      */
-    public SwordBook(SwordBookMetaData sbmd, AbstractBackend backend) {
+    public SwordBook(SwordBookMetaData sbmd, AbstractBackend<?> backend) {
         super(sbmd);
 
         this.filter = sbmd.getFilter();
@@ -67,8 +69,6 @@ public class SwordBook extends AbstractPassageBook {
     @Override
     public final void deactivate(Lock lock) {
         super.deactivate(lock);
-
-        Activator.deactivate(backend);
     }
 
     /* (non-Javadoc)
@@ -159,10 +159,16 @@ public class SwordBook extends AbstractPassageBook {
      * @see org.crosswire.jsword.book.Book#setAliasKey(org.crosswire.jsword.passage.Key, org.crosswire.jsword.passage.Key)
      */
     public void setAliasKey(Key alias, Key source) throws BookException {
+        OpenFileState state = null;
         try {
-            backend.setAliasKey(alias, source);
+            //FIXME(CJB): suggested API change to force callers to call with state, so that it doesn't get closed everytime.
+            state = backend.initState();
+            
+            backend.setAliasKey(state, alias, source);
         } catch (IOException e) {
             throw new BookException(JSOtherMsg.lookupText("Unable to save {0}.", alias.getOsisID()));
+        } finally {
+            IOUtil.close(state);
         }
     }
 

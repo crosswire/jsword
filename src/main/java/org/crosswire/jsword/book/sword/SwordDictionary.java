@@ -37,6 +37,7 @@ import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.DefaultLeafKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
+import org.crosswire.jsword.passage.VerseRange;
 import org.jdom.Content;
 import org.jdom.Element;
 
@@ -63,23 +64,30 @@ public class SwordDictionary extends AbstractBook {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage.Key, boolean)
      */
-    public Iterator<Content> getOsisIterator(Key key, boolean allowEmpty) throws BookException {
+    public Iterator<Content> getOsisIterator(final Key key, boolean allowEmpty) throws BookException {
         checkActive();
 
         assert key != null;
         assert backend != null;
 
-        List<Content> content = new ArrayList<Content>();
-        Element title = OSISUtil.factory().createTitle();
-        title.addContent(key.getName());
-        content.add(title);
+        //FIXME(CJB) can be de-duplicated from others.
+        return backend.getRawText(key, new RawTextToXmlProcessor() {
 
-        String txt = backend.getRawText(key);
+            public void init(List<Content> partialDom) {
+                Element title = OSISUtil.factory().createTitle();
+                title.addContent(key.getName());
+                partialDom.add(title);
+            }
+            
+            public void preRange(VerseRange range, List<Content> partialDom) {
+                //no - op                
+            }
+            
+            public void postVerse(Key verse, List<Content> partialDom, String rawText) {
+                partialDom.addAll(filter.toOSIS(SwordDictionary.this, verse, rawText));
+            }
 
-        List<Content> osisContent = filter.toOSIS(this, key, txt);
-        content.addAll(osisContent);
-
-        return content.iterator();
+        }).iterator();
     }
 
     /* (non-Javadoc)
@@ -98,7 +106,7 @@ public class SwordDictionary extends AbstractBook {
         assert key != null;
         assert backend != null;
 
-        return backend.getRawText(key);
+        return backend.getRawText(key, processor);
     }
 
     /* (non-Javadoc)
@@ -177,7 +185,6 @@ public class SwordDictionary extends AbstractBook {
     @Override
     public final void deactivate(Lock lock) {
         super.deactivate(lock);
-        Activator.deactivate(backend);
         active = false;
     }
 

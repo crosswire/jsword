@@ -22,6 +22,7 @@
 package org.crosswire.jsword.book.readings;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -173,8 +174,9 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
      */
+    //FIXME(CJB) should really rename this, and provide a new method to actually get the raw text
     public List<Content> getRawText(Key key, RawTextToXmlProcessor processor) throws BookException {
-        return "";
+        return Collections.emptyList();
     }
 
     /* (non-Javadoc)

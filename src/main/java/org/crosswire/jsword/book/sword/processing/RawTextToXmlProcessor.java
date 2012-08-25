@@ -16,6 +16,12 @@ import org.jdom.Content;
  */
 public interface RawTextToXmlProcessor {
     /**
+     * Runs before the processing starts
+     * @param partialDom the dom, empty at this stage
+     */
+    void init(List<Content> partialDom);
+    
+    /**
      * Executes before a range is read from the raw data
      * @param range the verse that is currently being examined
      * @param partialDom the DOM that is being built up as data is read
