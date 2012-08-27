@@ -21,6 +21,7 @@
  */
 package org.crosswire.jsword.book.basic;
 
+import java.util.List;
 import java.util.Map;
 
 import org.crosswire.common.activate.Lock;
@@ -34,6 +35,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.sword.processing.NoOpRawTextProcessor;
+import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
 import org.crosswire.jsword.index.IndexStatus;
 import org.crosswire.jsword.index.IndexStatusEvent;
 import org.crosswire.jsword.index.IndexStatusListener;
@@ -42,6 +44,7 @@ import org.crosswire.jsword.index.search.SearchRequest;
 import org.crosswire.jsword.index.search.Searcher;
 import org.crosswire.jsword.index.search.SearcherFactory;
 import org.crosswire.jsword.passage.Key;
+import org.jdom.Content;
 import org.jdom.Document;
 
 /**
@@ -346,13 +349,15 @@ public abstract class AbstractBook implements Book {
                 key = key.get(0);
             }
 
-            getRawText(key, new NoOpRawTextProcessor());
+            getOsis(key, new NoOpRawTextProcessor());
 
             return true;
         } catch (Exception ex) {
             return false;
         }
     }
+
+    abstract protected List<Content> getOsis(Key key, RawTextToXmlProcessor noOpRawTextProcessor) throws BookException;
 
     /*
      * (non-Javadoc)

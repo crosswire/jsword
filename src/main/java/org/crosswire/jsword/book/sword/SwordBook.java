@@ -81,12 +81,18 @@ public class SwordBook extends AbstractPassageBook {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
      */
-    public List<Content> getRawText(Key key, RawTextToXmlProcessor processor) throws BookException {
+    public String getRawText(Key key) throws BookException {
+        //FIXME(CJB)
+        return null;
+    }
+    
+    
+    protected List<Content> getOsis(Key key, RawTextToXmlProcessor processor) throws BookException {
         if (backend == null) {
             return Collections.emptyList();
         }
 
-        List<Content> result = backend.getRawText(key, processor);
+        List<Content> result = backend.readToOsis(key, processor);
         assert result != null;
         return result;
     }

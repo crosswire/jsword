@@ -113,7 +113,7 @@ public class SwordGenBook extends AbstractBook {
         assert backend != null;
 
 
-        return backend.getRawText(key, new RawTextToXmlProcessor() {
+        return backend.readToOsis(key, new RawTextToXmlProcessor() {
             public void preRange(VerseRange range, List<Content> partialDom) {
                 // no - op
             }
@@ -128,6 +128,12 @@ public class SwordGenBook extends AbstractBook {
         }).iterator();
     }
 
+
+    public String getRawText(Key key) throws BookException {
+        //FIXME(CJB)
+        return null;
+    }
+    
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#contains(org.crosswire.jsword.passage.Key)
      */
@@ -138,13 +144,13 @@ public class SwordGenBook extends AbstractBook {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
      */
-    public List<Content> getRawText(Key key, RawTextToXmlProcessor processor) throws BookException {
+    public List<Content> getOsis(Key key, RawTextToXmlProcessor processor) throws BookException {
         checkActive();
 
         assert key != null;
         assert backend != null;
 
-        return backend.getRawText(key, processor);
+        return backend.readToOsis(key, processor);
     }
 
     /* (non-Javadoc)
@@ -271,4 +277,5 @@ public class SwordGenBook extends AbstractBook {
      * The filter to use to convert to OSIS.
      */
     private Filter filter;
+
 }

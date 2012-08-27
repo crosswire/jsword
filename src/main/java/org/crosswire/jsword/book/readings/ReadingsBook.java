@@ -171,11 +171,17 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
         return false;
     }
 
+    
+
+    public String getRawText(Key key) throws BookException {
+        return "";
+    }
+    
+    
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
      */
-    //FIXME(CJB) should really rename this, and provide a new method to actually get the raw text
-    public List<Content> getRawText(Key key, RawTextToXmlProcessor processor) throws BookException {
+    public List<Content> getOsis(Key key, RawTextToXmlProcessor processor) throws BookException {
         return Collections.emptyList();
     }
 

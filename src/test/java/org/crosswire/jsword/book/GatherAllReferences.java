@@ -126,7 +126,7 @@ public class GatherAllReferences {
         try {
             String orig;
             try {
-                orig = book.getRawText(key, bob);
+                orig = book.getRawText(key);
             } catch (BookException ex) {
                 log.warn("Failed to read: " + book.getInitials() + '(' + key.getName() + "):" + ex.getMessage(), ex);
                 return;

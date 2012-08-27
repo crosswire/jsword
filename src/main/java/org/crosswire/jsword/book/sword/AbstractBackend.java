@@ -135,13 +135,15 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key)
      */
-    public List<Content> getRawText(Key key, RawTextToXmlProcessor processor) throws BookException {
+    public List<Content> readToOsis(Key key, RawTextToXmlProcessor processor) throws BookException {
         final List<Content> content = new ArrayList<Content>();
         // FIXME(CJB) behaviour has changed from previously where not finding OT
         // or NT did not throw exception
         Passage ref = (key instanceof Passage ? (Passage) key : KeyUtil.getPassage(key));
         Verse currentVerse = null;
         T openFileState = null;
+        
+        
         try {
             openFileState = initState();
             Iterator<Key> rit = ref.rangeIterator(RestrictionType.CHAPTER);

@@ -44,6 +44,7 @@ public class BookLookup {
     public String locate(Key key) throws BookException {
         StringBuilder buf = new StringBuilder();
 
+        //FIXME(iteration should be pushed down for performanace gains
         for (Key currentKey : key) {
             String osisID = currentKey.getOsisID();
             if (buf.length() > 0) {
@@ -53,7 +54,7 @@ public class BookLookup {
             buf.append(':');
             buf.append(osisID);
             buf.append(" - ");
-            String rawText = book.getRawText(currentKey, bob);
+            String rawText = book.getRawText(currentKey);
             if (rawText != null && rawText.trim().length() > 0) {
                 buf.append(rawText);
             } else {

@@ -121,18 +121,18 @@ public interface Book extends Activatable, Comparable<Book> {
      */
     boolean contains(Key key);
 
+    
     /**
      * Returns the raw text that getData(Key key) builds into OSIS.
      * 
      * @param key
      *            The item to locate
-     * @param processor TODO
      * @return The found Book data
      * @throws BookException
      *             If anything goes wrong with this method
      */
-    List<Content> getRawText(Key key, RawTextToXmlProcessor processor) throws BookException;
-
+    String getRawText(Key key) throws BookException;
+    
     /**
      * A Book is writable if the file system allows the underlying files to be
      * opened for writing and if the driver for the book allows writing.

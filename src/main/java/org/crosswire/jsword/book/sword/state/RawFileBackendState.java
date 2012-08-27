@@ -35,20 +35,17 @@ public class RawFileBackendState extends RawBackendState {
     private static final Logger log = Logger.getLogger(RawFileBackendState.class);
     private File incfile;
     private Integer incfileValue;
-    private SwordBookMetaData bookMetaData;
 
     
     public RawFileBackendState(SwordBookMetaData bookMetaData) {
        super(bookMetaData);
-    this.bookMetaData = bookMetaData;
-       
     }
     
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#isWritable()
      */
     public boolean isWritable() {
-            File incFile = this.incfile;
+            File incFile = getIncfile();
 
             if (getOtTextFile().exists() && getOtTextFile().canRead() && getOtTextFile().canWrite() && getNtTextFile().exists()
                     && getNtTextFile().canRead() && getNtTextFile().canWrite() && getOtIdxFile().exists() && getOtIdxFile().canRead()
@@ -93,7 +90,7 @@ public class RawFileBackendState extends RawBackendState {
 
     private void initIncFile() {
         try {
-            File tempIncfile = new File(SwordUtil.getExpandedDataPath(bookMetaData).getPath() + File.separator + INCFILE);
+            File tempIncfile = new File(SwordUtil.getExpandedDataPath(getBookMetaData()).getPath() + File.separator + INCFILE);
             if (tempIncfile.exists()) {
                 this.incfile = tempIncfile;
             }

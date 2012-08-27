@@ -91,6 +91,10 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
        return (T) new RawBackendState(getBookMetaData());
     }
     
+    public String getRawText(RawBackendState state, Verse verse) throws IOException {
+        return readRawVerse(state, verse, verse.getName());
+    }
+    
     
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key)

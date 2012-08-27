@@ -21,23 +21,25 @@
  */
 package org.crosswire.jsword.book.sword;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
+import org.crosswire.common.util.IOUtil;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractBook;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
+import org.crosswire.jsword.book.sword.state.OpenFileState;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.DefaultLeafKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
-import org.crosswire.jsword.passage.VerseRange;
 import org.jdom.Content;
 import org.jdom.Element;
 
@@ -70,26 +72,41 @@ public class SwordDictionary extends AbstractBook {
         assert key != null;
         assert backend != null;
 
-        //FIXME(CJB) can be de-duplicated from others.
-        return backend.getRawText(key, new RawTextToXmlProcessor() {
 
-            public void init(List<Content> partialDom) {
-                Element title = OSISUtil.factory().createTitle();
-                title.addContent(key.getName());
-                partialDom.add(title);
-            }
-            
-            public void preRange(VerseRange range, List<Content> partialDom) {
-                //no - op                
-            }
-            
-            public void postVerse(Key verse, List<Content> partialDom, String rawText) {
-                partialDom.addAll(filter.toOSIS(SwordDictionary.this, verse, rawText));
-            }
-
-        }).iterator();
+        List<Content> content = new ArrayList<Content>();
+        Element title = OSISUtil.factory().createTitle();
+        title.addContent(key.getName());
+        content.add(title);
+  
+        
+        OpenFileState state = null;
+        String txt = null;
+        try {
+            backend.initState();
+            txt = backend.readRawVerse(state, key, key.getName());
+        } catch (IOException e) {
+            throw new BookException(e.getMessage(), e);
+        } finally {
+            IOUtil.close(state);
+        }
+  
+        List<Content> osisContent = filter.toOSIS(this, key, txt);
+        content.addAll(osisContent);
+  
+        return content.iterator();
     }
 
+
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
+     */
+    public String getRawText(Key key) throws BookException {
+        //FIXME(TODO)
+        return null;
+    }
+    
+    
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#contains(org.crosswire.jsword.passage.Key)
      */
@@ -100,13 +117,13 @@ public class SwordDictionary extends AbstractBook {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
      */
-    public List<Content> getRawText(Key key, RawTextToXmlProcessor processor) throws BookException {
+    public List<Content> getOsis(Key key, RawTextToXmlProcessor processor) throws BookException {
         checkActive();
 
         assert key != null;
         assert backend != null;
 
-        return backend.getRawText(key, processor);
+        return backend.readToOsis(key, processor);
     }
 
     /* (non-Javadoc)
@@ -211,4 +228,5 @@ public class SwordDictionary extends AbstractBook {
      * The filter to use to convert to OSIS.
      */
     private Filter filter;
+
 }

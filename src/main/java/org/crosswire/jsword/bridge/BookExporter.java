@@ -52,7 +52,8 @@ public class BookExporter {
 
         StringBuilder buf = new StringBuilder();
         for (Key key : keys) {
-            String rawText = book.getRawText(key, bob);
+            //FIXME(CJB) iteration should be pushed down to benefit from performance improvement
+            String rawText = book.getRawText(key);
             if (rawText != null && rawText.trim().length() > 0) {
                 buf.delete(0, buf.length());
                 buf.append("$$$").append(key).append('\n').append(rawText);

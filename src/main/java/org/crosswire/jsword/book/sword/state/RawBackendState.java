@@ -40,8 +40,10 @@ public class RawBackendState implements OpenFileState {
     protected File otIdxFile;
     protected File otTextFile;
 
-    
+    private SwordBookMetaData bookMetaData;
+
     public RawBackendState(SwordBookMetaData bookMetaData) {
+        this.bookMetaData = bookMetaData;
         URI path = null;
         try {
             path = SwordUtil.getExpandedDataPath(bookMetaData);
@@ -60,6 +62,7 @@ public class RawBackendState implements OpenFileState {
         ntIdxFile = new File(ntPath.getPath() + SwordConstants.EXTENSION_VSS);
 
         // It is an error to be neither OT nor NT
+        //FIXME:(CJB) continuing with a state that is not wholly initialised
         if (!otTextFile.canRead() && !ntTextFile.canRead()) {
             Reporter.informUser(this, new BookException(JSOtherMsg.lookupText("Missing data files for old and new testaments in {0}.", path)));
             return;
@@ -176,4 +179,10 @@ public class RawBackendState implements OpenFileState {
         return otIdxFile;
     }
     
+    /**
+     * @return the bookMetaData
+     */
+    public SwordBookMetaData getBookMetaData() {
+        return bookMetaData;
+    }
 }

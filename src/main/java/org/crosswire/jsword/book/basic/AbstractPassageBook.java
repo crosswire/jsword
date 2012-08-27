@@ -64,17 +64,12 @@ public abstract class AbstractPassageBook extends AbstractBook {
         // Note: allowEmpty indicates parallel view
         // TODO(DMS): make the iterator be demand driven
         final Filter filter = getFilter();
-//        final List<Content> content = new ArrayList<Content>();
 
         // For all the ranges in this Passage
         Passage ref = KeyUtil.getPassage(key);
         final boolean showTitles = ref.hasRanges(RestrictionType.CHAPTER) || !allowEmpty;
 
         
-    //        Iterator<Key> rit = ref.rangeIterator(RestrictionType.CHAPTER);
-//        while (rit.hasNext()) {
-//            VerseRange range = (VerseRange) rit.next(); TO BE MOVED
-
         RawTextToXmlProcessor processor = new RawTextToXmlProcessor() {
                 public void preRange(VerseRange range, List<Content> partialDom) {
                     if (showTitles) {
@@ -98,9 +93,10 @@ public abstract class AbstractPassageBook extends AbstractBook {
                 }
             };
 
-                return getRawText(ref, processor).iterator();
+        return getOsis(ref, processor).iterator();
     }
 
+    
     /**
      * Add the OSIS elements to the div element. Note, this assumes that the
      * data is fully marked up.

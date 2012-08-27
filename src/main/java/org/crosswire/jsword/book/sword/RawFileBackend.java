@@ -74,6 +74,10 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
         super(sbmd, datasize);
     }
 
+    public RawFileBackendState initState() {
+        return new RawFileBackendState(getBookMetaData());
+    }
+    
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.RawBackend#getEntry(java.lang.String, org.crosswire.jsword.versification.Testament, long)
      */

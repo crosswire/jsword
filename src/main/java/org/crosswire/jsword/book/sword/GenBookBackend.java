@@ -74,8 +74,8 @@ public class GenBookBackend extends AbstractBackend<GenBookBackendState> {
         }
     }
 
-    public String readRawVerse(GenBookBackendState state, Verse verse, String keyName) throws IOException, BookException {
-        TreeNode node = find(verse);
+    public String readRawVerse(GenBookBackendState state, Key key, String keyName) throws IOException, BookException {
+        TreeNode node = find(key);
 
         if (node == null) {
             // TRANSLATOR: Error condition: Indicates that something could
