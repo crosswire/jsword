@@ -242,8 +242,13 @@ public class StrongsNumber {
         }
 
         // Get the number after the G or H
+        try {
         strongsNumber = Short.parseShort(m.group(2));
-
+        } catch(NumberFormatException e) {
+            //fails to convert the number, malformed strong number. Warn an exit
+            // TRANSLATOR: User error condition: Indicates that what was given is not a Strong's Number. {0} is a placeholder for the bad Strong's Number.
+            throw new BookException(JSMsg.gettext("Not a valid Strong's Number \"{0}\"", toString()), e);
+        }
         // FYI: OSIS refers to what follows a ! as a grain
         part = m.group(3);
     }
