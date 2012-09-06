@@ -483,7 +483,7 @@ public class PassageTally extends AbstractPassage {
     @Override
     public void removeAll(Key key) {
         Versification v11n = getVersification();
-        Passage that = KeyUtil.getPassage(key);
+        Passage that = KeyUtil.getPassage(key, v11n);
 
         optimizeWrites();
 

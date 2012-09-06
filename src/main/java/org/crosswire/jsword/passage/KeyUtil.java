@@ -63,18 +63,25 @@ public final class KeyUtil {
      * Not all keys represent verses, but we ought to be able to get something
      * close to a verse from anything that does verse like work.
      */
+    @Deprecated
     public static Verse getVerse(Key key) {
+      return getVerse(key, Versifications.instance().getDefaultVersification());
+    }
+
+    /**
+     * Not all keys represent verses, but we ought to be able to get something
+     * close to a verse from anything that does verse like work.
+     */
+    public static Verse getVerse(Key key, Versification v11n) {
         if (key instanceof Verse) {
             return (Verse) key;
         }
 
         if (key instanceof Passage) {
-            Passage ref = getPassage(key);
+            Passage ref = getPassage(key, v11n);
             return ref.getVerseAt(0);
         }
 
-        // AV11N(DMS): Is this right?
-        Versification v11n = Versifications.instance().getDefaultVersification();
         try {
             return VerseFactory.fromString(v11n, key.getName());
         } catch (NoSuchVerseException ex) {
@@ -83,12 +90,25 @@ public final class KeyUtil {
         }
     }
 
+    
+    
     /**
      * Not all keys represent passages, but we ought to be able to get something
      * close to a passage from anything that does passage like work. If you pass
      * a null key into this method, you get a null Passage out.
      */
+    @Deprecated
     public static Passage getPassage(Key key) {
+        return getPassage(key, Versifications.instance().getDefaultVersification());
+    }
+    
+    
+    /**
+     * Not all keys represent passages, but we ought to be able to get something
+     * close to a passage from anything that does passage like work. If you pass
+     * a null key into this method, you get a null Passage out.
+     */
+    public static Passage getPassage(Key key, Versification v11n) {
         if (key == null) {
             return null;
         }
@@ -99,7 +119,6 @@ public final class KeyUtil {
 
         Key ref = null;
         // AV11N(DMS): Is this right?
-        Versification v11n = Versifications.instance().getDefaultVersification();
         try {
             ref = keyf.getKey(v11n, key.getName());
         } catch (NoSuchKeyException ex) {

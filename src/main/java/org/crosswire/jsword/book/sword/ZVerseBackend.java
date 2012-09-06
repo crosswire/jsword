@@ -219,11 +219,12 @@ public class ZVerseBackend extends AbstractBackend {
     @Override
     public boolean contains(Key key) {
         checkActive();
-        Verse verse = KeyUtil.getVerse(key);
+
+        String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
+        Versification v11n = Versifications.instance().getVersification(v11nName);
+        Verse verse = KeyUtil.getVerse(key, v11n);
 
         try {
-            String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
-            Versification v11n = Versifications.instance().getVersification(v11nName);
             int index = v11n.getOrdinal(verse);
             Testament testament = v11n.getTestament(index);
             index = v11n.getTestamentOrdinal(index);
@@ -267,11 +268,11 @@ public class ZVerseBackend extends AbstractBackend {
         String charset = sbmd.getBookCharset();
         String compressType = (String) sbmd.getProperty(ConfigEntryType.COMPRESS_TYPE);
 
-        Verse verse = KeyUtil.getVerse(key);
+        String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
+        Versification v11n = Versifications.instance().getVersification(v11nName);
+        Verse verse = KeyUtil.getVerse(key, v11n);
 
         try {
-            String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
-            Versification v11n = Versifications.instance().getVersification(v11nName);
             int index = v11n.getOrdinal(verse);
             Testament testament = v11n.getTestament(index);
             index = v11n.getTestamentOrdinal(index);
