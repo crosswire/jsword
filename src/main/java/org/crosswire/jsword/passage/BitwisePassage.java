@@ -120,6 +120,11 @@ public class BitwisePassage extends AbstractPassage {
         Versification v11n = getVersification();
         for (Key aKey : obj) {
             Verse verse = (Verse) aKey;
+            if(verse.getVerse() == 0) {
+                //skip - as not all modules have verse 0
+                continue;
+            }
+            
             if (!store.get(v11n.getOrdinal(verse))) {
                 return false;
             }
