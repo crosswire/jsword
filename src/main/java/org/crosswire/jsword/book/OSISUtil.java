@@ -667,8 +667,9 @@ public final class OSISUtil {
                 // containing entities.
                 int lastIndex = buffer.length() - 1;
                 String text = ((Text) data).getText();
-                // Ignore empty text nodes.
+                // Ignore empty text nodes and do not add 
                 if (text.length() != 0) {
+                    //do not add spaces when within a OSIS seg
                     if (lastIndex >= 0 && !Character.isWhitespace(buffer.charAt(lastIndex)) && !Character.isWhitespace(text.charAt(0))) {
                         buffer.append(' ');
                     }
@@ -814,7 +815,7 @@ public final class OSISUtil {
                 // containing entities.
                 int lastIndex = buffer.length() - 1;
                 String text = ((Text) data).getText();
-                if (lastIndex >= 0 && !Character.isWhitespace(buffer.charAt(lastIndex)) && (text.length() == 0 || !Character.isWhitespace(text.charAt(0)))) {
+                if (lastIndex >= 0 && !Character.isWhitespace(buffer.charAt(lastIndex)) && (text.length() == 0 || !Character.isWhitespace(text.charAt(0)))  && !OSIS_ELEMENT_SEG.equals(parent.getName())) {
                     buffer.append(' ');
                 }
                 buffer.append(text);
