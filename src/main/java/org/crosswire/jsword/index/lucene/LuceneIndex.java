@@ -113,6 +113,11 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
     public static final String FIELD_NOTE = "note";
 
     /**
+     * Combines the strong numbers with the morphology field
+     */
+    public static final String FIELD_MORPHOLOGY = "morph";
+    
+    /**
      * Read an existing index and use it.
      * 
      * @throws BookException
@@ -389,7 +394,8 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
         boolean hasXRefs = book.getBookMetaData().hasFeature(FeatureType.SCRIPTURE_REFERENCES);
         boolean hasNotes = book.getBookMetaData().hasFeature(FeatureType.FOOTNOTES);
         boolean hasHeadings = book.getBookMetaData().hasFeature(FeatureType.HEADINGS);
-
+        boolean hasMorphology = book.getBookMetaData().hasFeature(FeatureType.MORPHOLOGY);
+        
         String oldRootName = "";
         int percent = 0;
         String rootName = "";
@@ -404,7 +410,8 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
         Field xrefField = new Field(FIELD_XREF, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
         Field noteField = new Field(FIELD_NOTE, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
         Field headingField = new Field(FIELD_HEADING, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
-
+        Field morphologyField  = new Field(FIELD_MORPHOLOGY , "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
+        
         int size = key.getCardinality();
         int subCount = count;
         for (Key subkey : key) {
@@ -447,6 +454,10 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
                     addField(doc, headingField, OSISUtil.getHeadings(osis));
                 }
 
+                if(hasMorphology) {
+                    addField(doc, morphologyField, OSISUtil.getMorphologiesWithStrong(osis));
+                }
+                
                 // Add the document if we added more than just the key.
                 if (doc.getFields().size() > 1) {
                     writer.addDocument(doc);
