@@ -21,29 +21,17 @@
  */
 package org.crosswire.jsword.book.sword;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.crosswire.common.activate.Activator;
-import org.crosswire.common.activate.Lock;
-import org.crosswire.common.util.FileUtil;
-import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.sword.state.GenBookBackendState;
-import org.crosswire.jsword.book.sword.state.RawBackendState;
-import org.crosswire.jsword.book.sword.state.RawLDBackendState;
-import org.crosswire.jsword.book.sword.state.ZVerseBackendState;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.TreeKey;
-import org.crosswire.jsword.passage.Verse;
 
 /**
  * Backend for General Books.
@@ -74,7 +62,7 @@ public class GenBookBackend extends AbstractBackend<GenBookBackendState> {
         }
     }
 
-    public String readRawVerse(GenBookBackendState state, Key key, String keyName) throws IOException, BookException {
+    public String readRawContent(GenBookBackendState state, Key key, String keyName) throws IOException, BookException {
         TreeNode node = find(key);
 
         if (node == null) {

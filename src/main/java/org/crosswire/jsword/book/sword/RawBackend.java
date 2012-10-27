@@ -63,11 +63,11 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
     public boolean contains(Key key) {
         //FIXME(CJB) can't deal with ranges, yet
         
-        Verse verse = KeyUtil.getVerse(key);
+        String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
+        Versification v11n = Versifications.instance().getVersification(v11nName);
+        Verse verse = KeyUtil.getVerse(key, v11n);
 
         try {
-            String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
-            Versification v11n = Versifications.instance().getVersification(v11nName);
             int index = v11n.getOrdinal(verse);
             Testament testament = v11n.getTestament(index);
             index = v11n.getTestamentOrdinal(index);
@@ -91,18 +91,21 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
        return (T) new RawBackendState(getBookMetaData());
     }
     
-    public String getRawText(RawBackendState state, Verse verse) throws IOException {
-        return readRawVerse(state, verse, verse.getName());
+    public String getRawText(RawBackendState state, Key key) throws IOException {
+        return readRawContent(state, key, key.getName());
     }
     
     
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key)
      */
-    public String readRawVerse(RawBackendState state, Verse currentVerse, String keyName) throws IOException {
+    public String readRawContent(RawBackendState state, Key key, String keyName) throws IOException {
             String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
             Versification v11n = Versifications.instance().getVersification(v11nName);
-            int index = v11n.getOrdinal(currentVerse);
+            Verse verse = KeyUtil.getVerse(key, v11n);
+            
+            int index = v11n.getOrdinal(verse);
+
             Testament testament = v11n.getTestament(index);
             index = v11n.getTestamentOrdinal(index);
             RandomAccessFile idxRaf = testament == Testament.NEW ? state.getNtIdxRaf() : state.getOtIdxRaf();
@@ -112,7 +115,7 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
                 return "";
             }
 
-            return getEntry(state, currentVerse.getName(), testament, index);
+            return getEntry(state, verse.getName(), testament, index);
     }
 
     /* (non-Javadoc)

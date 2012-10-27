@@ -21,12 +21,9 @@
  */
 package org.crosswire.jsword.book.sword;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.ParseException;
@@ -37,23 +34,17 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.crosswire.common.activate.Activator;
-import org.crosswire.common.activate.Lock;
 import org.crosswire.common.icu.DateFormatter;
-import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.Reporter;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.sword.state.RawLDBackendState;
-import org.crosswire.jsword.book.sword.state.ZVerseBackendState;
 import org.crosswire.jsword.passage.DefaultLeafKeyList;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.Verse;
 
 /**
  * An implementation AbstractKeyBackend to read RAW format files.
@@ -77,8 +68,8 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
         this.entrysize = OFFSETSIZE + datasize;
     }
 
-    public String readRawVerse(RawLDBackendState state, Verse verse, String keyName) throws IOException {
-        String result = readRawVerse(state, verse.getName());
+    public String readRawContent(RawLDBackendState state, Key key, String keyName) throws IOException {
+        String result = readRawContent(state, key.getName());
         return result;
     }
 
@@ -86,24 +77,15 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
         return new RawLDBackendState(getBookMetaData());
     }
 
-    public String readRawVerse(String key) throws IOException, BookException {
-        RawLDBackendState state = null;
-        try {
-            state = initState();
-            return readRawVerse(state, key);
-        } finally {
-            IOUtil.close(state);
-        }
-    }
 
-    public String readRawVerse(RawLDBackendState state, String key) throws IOException {
+    public String readRawContent(RawLDBackendState state, String key) throws IOException {
 
         try {
             int pos = search(state, key);
             if (pos >= 0) {
                 DataEntry entry = getEntry(state, key, pos);
                 if (entry.isLinkEntry()) {
-                    return readRawVerse(state, entry.getLinkTarget());
+                    return readRawContent(state, entry.getLinkTarget());
                 }
                 return getRawText(state, entry);
             }

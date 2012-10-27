@@ -21,6 +21,7 @@
  */
 package org.crosswire.jsword.book.sword;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -29,6 +30,7 @@ import java.util.Map;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
+import org.crosswire.common.util.IOUtil;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
@@ -36,6 +38,7 @@ import org.crosswire.jsword.book.basic.AbstractBook;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.sword.processing.NoOpRawTextProcessor;
 import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
+import org.crosswire.jsword.book.sword.state.OpenFileState;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
@@ -130,8 +133,15 @@ public class SwordGenBook extends AbstractBook {
 
 
     public String getRawText(Key key) throws BookException {
-        //FIXME(CJB)
-        return null;
+        OpenFileState state = null;
+        try {
+            state = backend.initState();
+            return backend.readRawContent(state, key, key.getName());
+        } catch (IOException e) {
+           throw new BookException("Unable to obtain raw content from backend", e);
+        } finally {
+            IOUtil.close(state);
+        }
     }
     
     /* (non-Javadoc)

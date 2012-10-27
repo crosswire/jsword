@@ -52,6 +52,7 @@ import org.jdom.Element;
  * @author Joe Walker [joe at eireneh dot com]
  */
 public abstract class AbstractPassageBook extends AbstractBook {
+    
     public AbstractPassageBook(BookMetaData bmd) {
         super(bmd);
         this.versification = (String) bmd.getProperty(BookMetaData.KEY_VERSIFICATION);
@@ -66,32 +67,32 @@ public abstract class AbstractPassageBook extends AbstractBook {
         final Filter filter = getFilter();
 
         // For all the ranges in this Passage
-        Passage ref = KeyUtil.getPassage(key);
+        Passage ref = KeyUtil.getPassage(key, getVersification());
         final boolean showTitles = ref.hasRanges(RestrictionType.CHAPTER) || !allowEmpty;
 
         
         RawTextToXmlProcessor processor = new RawTextToXmlProcessor() {
-                public void preRange(VerseRange range, List<Content> partialDom) {
-                    if (showTitles) {
-                        Element title = OSISUtil.factory().createTitle();
-                        title.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.GENERATED_CONTENT);
-                        title.addContent(range.getName());
-                        partialDom.add(title);
-                    }
+            public void preRange(VerseRange range, List<Content> partialDom) {
+                if (showTitles) {
+                    Element title = OSISUtil.factory().createTitle();
+                    title.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.GENERATED_CONTENT);
+                    title.addContent(range.getName());
+                    partialDom.add(title);
                 }
+            }
 
-                public void postVerse(Key verse, List<Content> partialDom, String rawText) {
-                 // If the verse is empty then we shouldn't add the verse tag
-                    if (allowEmpty || rawText.length() > 0) {
-                        List<Content> osisContent = filter.toOSIS(AbstractPassageBook.this, verse, rawText);
-                        addOSIS(verse, partialDom, osisContent);
-                    }
+            public void postVerse(Key verse, List<Content> partialDom, String rawText) {
+                // If the verse is empty then we shouldn't add the verse tag
+                if (allowEmpty || rawText.length() > 0) {
+                    List<Content> osisContent = filter.toOSIS(AbstractPassageBook.this, verse, rawText);
+                    addOSIS(verse, partialDom, osisContent);
                 }
+            }
 
-                public void init(List<Content> partialDom) {
-                   //no-op
-                }
-            };
+            public void init(List<Content> partialDom) {
+                // no-op
+            }
+        };
 
         return getOsis(ref, processor).iterator();
     }
@@ -218,6 +219,13 @@ public abstract class AbstractPassageBook extends AbstractBook {
         return PassageKeyFactory.instance().getKey(Versifications.instance().getVersification(versification), text);
     }
 
+    public Versification getVersification() {
+        if(this.versificationSystem == null) {
+            this.versificationSystem = Versifications.instance().getVersification((String) getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION)); 
+        }
+        return versificationSystem;
+    }
+    
     /**
      * A cached representation of the global key list.
      */
@@ -228,6 +236,11 @@ public abstract class AbstractPassageBook extends AbstractBook {
      */
     private String versification;
 
+    /**
+     * Versification system, created lazily, so use getter
+     */
+    private Versification versificationSystem;
+    
     /**
      * Our key manager
      */

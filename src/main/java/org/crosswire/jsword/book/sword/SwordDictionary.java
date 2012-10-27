@@ -67,11 +67,9 @@ public class SwordDictionary extends AbstractBook {
      * @see org.crosswire.jsword.book.Book#getOsisIterator(org.crosswire.jsword.passage.Key, boolean)
      */
     public Iterator<Content> getOsisIterator(final Key key, boolean allowEmpty) throws BookException {
-        checkActive();
 
         assert key != null;
         assert backend != null;
-
 
         List<Content> content = new ArrayList<Content>();
         Element title = OSISUtil.factory().createTitle();
@@ -82,8 +80,8 @@ public class SwordDictionary extends AbstractBook {
         OpenFileState state = null;
         String txt = null;
         try {
-            backend.initState();
-            txt = backend.readRawVerse(state, key, key.getName());
+            state = backend.initState();
+            txt = backend.readRawContent(state, key, key.getName());
         } catch (IOException e) {
             throw new BookException(e.getMessage(), e);
         } finally {
@@ -102,8 +100,15 @@ public class SwordDictionary extends AbstractBook {
      * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
      */
     public String getRawText(Key key) throws BookException {
-        //FIXME(TODO)
-        return null;
+        OpenFileState state = null;
+        try {
+            state = backend.initState();
+            return backend.readRawContent(state, key, key.getName());
+        } catch (IOException e) {
+           throw new BookException("Unable to obtain raw content from backend", e);
+        } finally {
+            IOUtil.close(state);
+        }
     }
     
     

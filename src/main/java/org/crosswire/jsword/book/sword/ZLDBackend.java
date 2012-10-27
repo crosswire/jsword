@@ -27,6 +27,7 @@ import java.io.ObjectInputStream;
 import org.crosswire.common.compress.CompressorType;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.sword.state.RawLDBackendState;
 import org.crosswire.jsword.book.sword.state.ZLDBackendState;
 
 /**
@@ -50,7 +51,17 @@ public class ZLDBackend extends RawLDBackend<ZLDBackendState> {
         return new ZLDBackendState(getBookMetaData());
      }
     
-    protected String getRawText(ZLDBackendState state, DataEntry entry) {
+    @Override
+    protected String getRawText(RawLDBackendState fileState, DataEntry entry) {
+        ZLDBackendState state = null;
+        if(fileState instanceof ZLDBackendState) {
+            state = (ZLDBackendState) fileState;
+        } else {
+            //something went terribly wrong
+            log.error("Backend State was not of type ZLDBackendState. Ignoring this entry and exiting.");
+            return "";
+        }
+        
         DataIndex blockIndex = entry.getBlockIndex();
         long blockNum = blockIndex.getOffset();
         int blockEntry = blockIndex.getSize();

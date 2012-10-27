@@ -120,6 +120,11 @@ public class BitwisePassage extends AbstractPassage {
         Versification v11n = getVersification();
         for (Key aKey : obj) {
             Verse verse = (Verse) aKey;
+            if(verse.getVerse() == 0) {
+                //skip - as not all modules have verse 0
+                continue;
+            }
+            
             if (!store.get(v11n.getOrdinal(verse))) {
                 return false;
             }
@@ -178,7 +183,7 @@ public class BitwisePassage extends AbstractPassage {
 
     @Override
     public void addAll(Key key) {
-        Passage that = KeyUtil.getPassage(key);
+        Passage that = KeyUtil.getPassage(key, super.getVersification());
 
         optimizeWrites();
 
@@ -198,7 +203,7 @@ public class BitwisePassage extends AbstractPassage {
 
     @Override
     public void removeAll(Key key) {
-        Passage that = KeyUtil.getPassage(key);
+        Passage that = KeyUtil.getPassage(key, super.getVersification());
 
         optimizeWrites();
 
@@ -220,7 +225,7 @@ public class BitwisePassage extends AbstractPassage {
     @Override
     public void retainAll(Key key) {
         Versification v11n = getVersification();
-        Passage that = KeyUtil.getPassage(key);
+        Passage that = KeyUtil.getPassage(key, super.getVersification());
 
         optimizeWrites();
 

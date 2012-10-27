@@ -126,13 +126,16 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
     public boolean contains(Key key) {
         // FIXME(CJB): doesn't cater for ranges... - currently experiencing a performance hit
 
+
         ZVerseBackendState rafBook = null;
         try {
             rafBook = new ZVerseBackendState(getBookMetaData(), blockType);
 
-            Verse verse = KeyUtil.getVerse(key);
             String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
             Versification v11n = Versifications.instance().getVersification(v11nName);
+            Verse verse = KeyUtil.getVerse(key, v11n);
+
+            
             int index = v11n.getOrdinal(verse);
             Testament testament = v11n.getTestament(index);
             index = v11n.getTestamentOrdinal(index);
@@ -177,14 +180,17 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
         return new ZVerseBackendState(getBookMetaData(), blockType);
     }
     
-    public String readRawVerse(ZVerseBackendState rafBook, Verse verse, String keyName) throws IOException {
-
+    public String readRawContent(ZVerseBackendState rafBook, Key key, String keyName) throws IOException {
+        
+        
         SwordBookMetaData bookMetaData = getBookMetaData();
         final String charset = bookMetaData.getBookCharset();
         final String compressType = (String) bookMetaData.getProperty(ConfigEntryType.COMPRESS_TYPE);
 
         final String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
         final Versification v11n = Versifications.instance().getVersification(v11nName);
+        Verse verse = KeyUtil.getVerse(key, v11n);
+
         int index = v11n.getOrdinal(verse);
         final Testament testament = v11n.getTestament(index);
         index = v11n.getTestamentOrdinal(index);

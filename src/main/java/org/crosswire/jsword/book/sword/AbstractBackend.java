@@ -31,6 +31,7 @@ import org.crosswire.common.crypt.Sapphire;
 import org.crosswire.common.util.IOUtil;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
 import org.crosswire.jsword.book.sword.state.OpenFileState;
 import org.crosswire.jsword.passage.Key;
@@ -39,6 +40,8 @@ import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.RestrictionType;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
+import org.crosswire.jsword.versification.Versification;
+import org.crosswire.jsword.versification.system.Versifications;
 import org.jdom.Content;
 
 /**
@@ -50,6 +53,7 @@ import org.jdom.Content;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public abstract class AbstractBackend<T extends OpenFileState> implements StatefulFileBackedBackend<T> {
+ 
     /**
      * Default constructor for the sake of serialization.
      */
@@ -136,17 +140,71 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
      * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key)
      */
     public List<Content> readToOsis(Key key, RawTextToXmlProcessor processor) throws BookException {
+
         final List<Content> content = new ArrayList<Content>();
+
         // FIXME(CJB) behaviour has changed from previously where not finding OT
         // or NT did not throw exception
-        Passage ref = (key instanceof Passage ? (Passage) key : KeyUtil.getPassage(key));
-        Verse currentVerse = null;
         T openFileState = null;
-        
-        
+
         try {
             openFileState = initState();
-            Iterator<Key> rit = ref.rangeIterator(RestrictionType.CHAPTER);
+            switch (this.bmd.getKeyType()) {
+            case LIST:
+            case TREE:
+                readNormalOsis(key, processor, content, openFileState);
+                break;
+            case VERSE:
+                readPassageOsis(key, processor, content, openFileState);
+                break;
+            default:
+                throw new BookException("Book has unsupported type of key");
+            }
+
+            return content;
+        } finally {
+            IOUtil.close(openFileState);
+        }
+    }
+
+    private void readNormalOsis(Key key, RawTextToXmlProcessor processor, List<Content> content, T openFileState) throws BookException {
+        // simply lookup the key and process the relevant information
+        Iterator<Key> iterator = key.iterator();
+
+        while (iterator.hasNext()) {
+            Key next = iterator.next();
+            String rawText;
+            try {
+                rawText = readRawContent(openFileState, next, next.getName());
+                processor.postVerse(next, content, rawText);
+            } catch (IOException e) {
+                // failed to process key 'next'
+                throwFailedKeyException(key, next, e);
+            }
+        }
+    }
+
+    /**
+     * Reads a passage as OSIS
+     * 
+     * @param key
+     *            the given key
+     * @param processor
+     *            a processor for which to do things with
+     * @param content
+     *            a list of content to be appended to (i.e. the OSIS data)
+     * @param openFileState
+     *            the open file state, from which we read things
+     * @throws BookException
+     *             a book exception if we failed to read the book
+     */
+    private Verse readPassageOsis(Key key, RawTextToXmlProcessor processor, final List<Content> content, T openFileState) throws BookException {
+        Verse currentVerse = null;
+        try {
+            
+            
+            final Passage ref = (key instanceof Passage ? (Passage) key : KeyUtil.getPassage(key, getVersification()));
+            final Iterator<Key> rit = ref.rangeIterator(RestrictionType.CHAPTER);
             while (rit.hasNext()) {
                 VerseRange range = (VerseRange) rit.next();
                 processor.preRange(range, content);
@@ -155,29 +213,40 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
                 // the buffer size of what to read?
                 // now iterate through all verses in range
                 for (Key verseInRange : range) {
-                    currentVerse = KeyUtil.getVerse(verseInRange);
+                    currentVerse = KeyUtil.getVerse(verseInRange, getVersification());
                     final String keyName = verseInRange.getName();
-                    String rawText = readRawVerse(openFileState, currentVerse, keyName);
+                    String rawText = readRawContent(openFileState, currentVerse, keyName);
                     processor.postVerse(verseInRange, content, rawText);
                 }
             }
-
-            return content;
         } catch (IOException e) {
-            // TRANSLATOR: Common error condition: The file could not be read.
-            // There can be many reasons.
-            // {0} is a placeholder for the key.
-            if (currentVerse == null) {
-                throw new BookException(JSMsg.gettext("Error reading {0}", key.getName()), e);
-            } else {
-                throw new BookException(JSMsg.gettext("Error reading {0}", currentVerse.getName()), e);
-            }
-        } finally {
-            IOUtil.close(openFileState);
+            throwFailedKeyException(key, currentVerse, e);
         }
+        return currentVerse;
     }
 
-
+    /**
+     * If non-null, currentKey is used to throw the exception, other, masterKey
+     * is used instead, which will be more general.
+     * 
+     * @param masterKey
+     *            the key containing currentKey
+     * @param currentKey
+     *            the currentKey
+     * @param e
+     *            the exception that occured
+     * @throws BookException
+     *             always thrown, a {@link BookException}
+     */
+    private void throwFailedKeyException(Key masterKey, Key currentKey, IOException e) throws BookException {
+        // TRANSLATOR: Common error condition: The file could not be read.
+        // There can be many reasons.
+        // {0} is a placeholder for the key.
+        if (currentKey == null) {
+            throw new BookException(JSMsg.gettext("Error reading {0}", masterKey.getName()), e);
+        }
+        throw new BookException(JSMsg.gettext("Error reading {0}", currentKey.getName()), e);
+    }
 
     /**
      * Create the directory to hold the Book if it does not exist.
@@ -214,7 +283,13 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
         return false;
     }
 
-
+    public Versification getVersification() {
+        if(this.versificationSystem == null) {
+            this.versificationSystem = Versifications.instance().getVersification((String) getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION)); 
+        }
+        return versificationSystem;
+    }
+    
     private SwordBookMetaData bmd;
-
+    private Versification versificationSystem;
 }

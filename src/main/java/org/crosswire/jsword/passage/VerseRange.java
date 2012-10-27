@@ -133,27 +133,20 @@ public final class VerseRange implements Key {
         this.originalName = original;
         shaper = new NumberShaper();
 
-        switch (start.compareTo(end)) {
-        case -1:
-            this.start = start;
-            this.end = end;
-            this.verseCount = calcVerseCount();
-            break;
-
-        case 0:
-            this.start = start;
-            this.end = start;
-            this.verseCount = 1;
-            break;
-
-        case 1:
+        int distance = v11n.distance(start, end);
+        
+        if(distance < 0) {
             this.start = end;
             this.end = start;
             this.verseCount = calcVerseCount();
-            break;
-
-        default:
-            assert false;
+        } else if (distance == 0) {
+            this.start = start;
+            this.end = start;
+            this.verseCount = 1;
+        } else {
+            this.start = start;
+            this.end = end;
+            this.verseCount = calcVerseCount();
         }
 
         verifyData();
