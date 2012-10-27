@@ -79,7 +79,7 @@ public enum FeatureType {
     /**
      * The book marks the Word's of Christ
      */
-    WORDS_OF_CHRIST ("RedLetterText"),
+    WORDS_OF_CHRIST ("RedLetterWords"),
 
     /**
      * The book contains Morphology info
