@@ -24,6 +24,8 @@ package org.crosswire.jsword.book.filter.osis;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.xml.XMLUtil;
@@ -47,13 +49,6 @@ import org.xml.sax.InputSource;
  * @author Joe Walker [joe at eireneh dot com]
  */
 public class OSISFilter implements Filter {
-    /**
-     * Default constructor of an OSISFilter
-     */
-    public OSISFilter() {
-        builder = new SAXBuilder();
-        builder.setFastReconfigure(true);
-    }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.filter.Filter#toOSIS(org.crosswire.jsword.book.Book, org.crosswire.jsword.passage.Key, java.lang.String)
@@ -134,12 +129,30 @@ public class OSISFilter implements Filter {
      * at parsing it
      */
     private Element parse(String plain) throws JDOMException, IOException {
-        // create a root element to house our document fragment
-        StringReader in = new StringReader("<div>" + plain + "</div>");
-        InputSource is = new InputSource(in);
-        Document doc = builder.build(is);
-        Element div = doc.getRootElement();
+        SAXBuilder builder = saxBuilders.poll();
+        if(builder == null) {
+            //then we have no sax builders available, so let's create a new one and store
+            builder = new SAXBuilder();
+            builder.setFastReconfigure(true);
+        }
 
+        // create a root element to house our document fragment
+        StringReader in = null;
+        Element div;
+        try {
+            in = new StringReader("<div>" + plain + "</div>"); 
+            InputSource is = new InputSource(in);
+            Document doc = builder.build(is);
+            div = doc.getRootElement();
+        } finally {
+            if(in != null) {
+                in.close();
+            }
+        }
+
+        //return builder to queue, or offer a new one. Ignore return value as we don't care whether the builder is going to be re-used
+        saxBuilders.offer(builder);
+        
         return div;
     }
 
@@ -148,8 +161,6 @@ public class OSISFilter implements Filter {
      */
     private static final Logger log = Logger.getLogger(OSISFilter.class);
 
-    /**
-     * A reusable SAX Builder
-     */
-    private SAXBuilder builder;
+    //space for 32 re-usable sax builders, but doesn't bound the number available to the callers
+    private BlockingQueue<SAXBuilder> saxBuilders = new ArrayBlockingQueue<SAXBuilder>(32);
 }

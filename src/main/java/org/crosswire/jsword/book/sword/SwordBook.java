@@ -22,15 +22,18 @@
 package org.crosswire.jsword.book.sword;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
-import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
+import org.crosswire.common.util.IOUtil;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractPassageBook;
 import org.crosswire.jsword.book.filter.Filter;
+import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
+import org.crosswire.jsword.book.sword.state.OpenFileState;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.jdom.Content;
@@ -47,7 +50,7 @@ public class SwordBook extends AbstractPassageBook {
     /**
      * Simple ctor
      */
-    public SwordBook(SwordBookMetaData sbmd, AbstractBackend backend) {
+    public SwordBook(SwordBookMetaData sbmd, AbstractBackend<?> backend) {
         super(sbmd);
 
         this.filter = sbmd.getFilter();
@@ -65,8 +68,6 @@ public class SwordBook extends AbstractPassageBook {
     @Override
     public final void deactivate(Lock lock) {
         super.deactivate(lock);
-
-        Activator.deactivate(backend);
     }
 
     /* (non-Javadoc)
@@ -80,11 +81,24 @@ public class SwordBook extends AbstractPassageBook {
      * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
      */
     public String getRawText(Key key) throws BookException {
+
+        OpenFileState state = null;
+        try {
+            state = backend.initState();
+            return backend.readRawContent(state, key, key.getName());
+        } catch (IOException e) {
+           throw new BookException("Unable to obtain raw content from backend", e);
+        } finally {
+            IOUtil.close(state);
+        }
+    }
+
+    protected List<Content> getOsis(Key key, RawTextToXmlProcessor processor) throws BookException {
         if (backend == null) {
-            return "";
+            return Collections.emptyList();
         }
 
-        String result = backend.getRawText(key);
+        List<Content> result = backend.readToOsis(key, processor);
         assert result != null;
         return result;
     }
@@ -105,7 +119,7 @@ public class SwordBook extends AbstractPassageBook {
 
         // If we get here then the text is not marked up with verse
         // In this case we add the verse markup, if the verse is not 0.
-        if (KeyUtil.getPassage(key).getVerseAt(0).getVerse() == 0) {
+        if (KeyUtil.getPassage(key, getVersification()).getVerseAt(0).getVerse() == 0) {
             super.addOSIS(key, div, osisContent);
         } else {
             Element everse = OSISUtil.factory().createVerse();
@@ -131,7 +145,7 @@ public class SwordBook extends AbstractPassageBook {
 
         // If we get here then the text is not marked up with verse
         // In this case we add the verse markup, if the verse is not 0.
-        if (KeyUtil.getPassage(key).getVerseAt(0).getVerse() == 0) {
+        if (KeyUtil.getPassage(key, getVersification()).getVerseAt(0).getVerse() == 0) {
             super.addOSIS(key, contentList, osisContent);
         } else {
             Element everse = OSISUtil.factory().createVerse();
@@ -157,10 +171,17 @@ public class SwordBook extends AbstractPassageBook {
      * @see org.crosswire.jsword.book.Book#setAliasKey(org.crosswire.jsword.passage.Key, org.crosswire.jsword.passage.Key)
      */
     public void setAliasKey(Key alias, Key source) throws BookException {
+        OpenFileState state = null;
         try {
-            backend.setAliasKey(alias, source);
+            // FIXME(CJB): suggested API change to force callers to call with
+            // state, so that it doesn't get closed everytime.
+            state = backend.initState();
+
+            backend.setAliasKey(state, alias, source);
         } catch (IOException e) {
             throw new BookException(JSOtherMsg.lookupText("Unable to save {0}.", alias.getOsisID()));
+        } finally {
+            IOUtil.close(state);
         }
     }
 

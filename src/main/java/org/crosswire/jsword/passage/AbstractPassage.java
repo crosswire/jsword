@@ -109,7 +109,8 @@ public abstract class AbstractPassage implements Passage {
         Verse thatfirst = thatref.getVerseAt(0);
         Verse thisfirst = getVerseAt(0);
 
-        return thisfirst.compareTo(thatfirst);
+        
+        return getVersification().distance(thisfirst, thatfirst);
     }
 
     @Override
@@ -487,7 +488,7 @@ public abstract class AbstractPassage implements Passage {
      * @see org.crosswire.jsword.passage.Key#addAll(org.crosswire.jsword.passage.Key)
      */
     public void addAll(Key key) {
-        Passage that = KeyUtil.getPassage(key);
+        Passage that = KeyUtil.getPassage(key, this.v11n);
 
         optimizeWrites();
         raiseEventSuppresion();
@@ -517,7 +518,7 @@ public abstract class AbstractPassage implements Passage {
      * @see org.crosswire.jsword.passage.Key#removeAll(org.crosswire.jsword.passage.Key)
      */
     public void removeAll(Key key) {
-        Passage that = KeyUtil.getPassage(key);
+        Passage that = KeyUtil.getPassage(key, this.v11n);
 
         optimizeWrites();
         raiseEventSuppresion();
@@ -546,7 +547,7 @@ public abstract class AbstractPassage implements Passage {
      * @see org.crosswire.jsword.passage.Key#retainAll(org.crosswire.jsword.passage.Key)
      */
     public void retainAll(Key key) {
-        Passage that = KeyUtil.getPassage(key);
+        Passage that = KeyUtil.getPassage(key, this.v11n);
 
         optimizeWrites();
         raiseEventSuppresion();
@@ -684,7 +685,7 @@ public abstract class AbstractPassage implements Passage {
      * @see org.crosswire.jsword.passage.Passage#contains(org.crosswire.jsword.passage.Key)
      */
     public boolean contains(Key key) {
-        Passage ref = KeyUtil.getPassage(key);
+        Passage ref = KeyUtil.getPassage(key, this.v11n);
         return containsAll(ref);
     }
 

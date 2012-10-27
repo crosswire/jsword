@@ -28,8 +28,6 @@ import java.net.URISyntaxException;
 
 import junit.framework.TestCase;
 
-import org.crosswire.common.util.NetUtil;
-
 /**
  * JUnit Test.
  * 
@@ -53,7 +51,7 @@ public class JobTest extends TestCase {
     public void testJob() throws IOException, URISyntaxException {
         Progress job;
         File tempfile = File.createTempFile("jobtest", "tmp");
-        URI uri = new URI(NetUtil.PROTOCOL_FILE, null, tempfile.getAbsolutePath(), null);
+        URI uri = tempfile.toURI();
 
         job = JobManager.createJob(WIBBLE);
         job.beginJob(WIBBLE);

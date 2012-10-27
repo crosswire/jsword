@@ -61,6 +61,10 @@ public class LuceneAnalyzer extends Analyzer {
         // Strong's Numbers are normalized to a consistent representation
         analyzer.addAnalyzer(LuceneIndex.FIELD_STRONG, new StrongsNumberAnalyzer());
 
+        // Keywords are normalized to osisIDs
+        analyzer.addAnalyzer(LuceneIndex.FIELD_MORPHOLOGY, new MorphologyAnalyzer());
+        
+        
         // XRefs are normalized from ranges into a list of osisIDs
         analyzer.addAnalyzer(LuceneIndex.FIELD_XREF, new XRefAnalyzer());
     }

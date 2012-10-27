@@ -22,6 +22,7 @@
 package org.crosswire.jsword.book.readings;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -42,6 +43,7 @@ import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractBook;
 import org.crosswire.jsword.book.basic.DefaultBookMetaData;
+import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
@@ -169,11 +171,21 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
         return false;
     }
 
-    /* (non-Javadoc)
+    
+
+    /** Returns an empty string
+     * (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
      */
     public String getRawText(Key key) throws BookException {
         return "";
+    }
+    
+    /**
+     * Returns an empty list
+     */
+    public List<Content> getOsis(Key key, RawTextToXmlProcessor processor) throws BookException {
+        return Collections.emptyList();
     }
 
     /* (non-Javadoc)
