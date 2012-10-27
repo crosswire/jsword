@@ -21,12 +21,11 @@
  */
 package org.crosswire.common.util;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.RandomAccessFile;
-import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.Enumeration;
@@ -106,15 +105,15 @@ public final class IOUtil {
     }
 
     /**
-     * Close the zip file without complaining
+     * Closes any {@link Closeable} object
      * 
-     * @param zip
+     * @param closeable
      *            The zip file to close
      */
-    public static void close(ZipFile zip) {
-        if (null != zip) {
+    public static void close(Closeable closeable) {
+        if (null != closeable) {
             try {
-                zip.close();
+                closeable.close();
             } catch (IOException ex) {
                 log.error("close", ex);
             }
@@ -122,69 +121,23 @@ public final class IOUtil {
     }
 
     /**
-     * Close the random access file without complaining
+     * Closes any {@link Closeable} object
      * 
-     * @param raf
-     *            The random access file to close
+     * @param closeable
+     *            The zip file to close
      */
-    public static void close(RandomAccessFile raf) {
-        if (null != raf) {
+    public static void close(ZipFile closeable) {
+        if (null != closeable) {
             try {
-                raf.close();
+                closeable.close();
             } catch (IOException ex) {
                 log.error("close", ex);
             }
         }
     }
 
-    /**
-     * Close the stream whatever without complaining
-     * 
-     * @param out
-     *            The stream to close
-     */
-    public static void close(OutputStream out) {
-        if (null != out) {
-            try {
-                out.close();
-            } catch (IOException ex) {
-                log.error("close", ex);
-            }
-        }
-    }
-
-    /**
-     * Close the stream whatever without complaining
-     * 
-     * @param in
-     *            The stream to close
-     */
-    public static void close(InputStream in) {
-        if (null != in) {
-            try {
-                in.close();
-            } catch (IOException ex) {
-                log.error("close", ex);
-            }
-        }
-    }
-
-    /**
-     * Close the stream whatever without complaining
-     * 
-     * @param in
-     *            The stream to close
-     */
-    public static void close(Reader in) {
-        if (null != in) {
-            try {
-                in.close();
-            } catch (IOException ex) {
-                log.error("close", ex);
-            }
-        }
-    }
-
+        
+    
     /**
      * The log stream
      */

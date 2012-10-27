@@ -21,7 +21,7 @@
  */
 package org.crosswire.jsword.book.sword;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -29,15 +29,19 @@ import java.util.Map;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
+import org.crosswire.common.util.IOUtil;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.basic.AbstractBook;
 import org.crosswire.jsword.book.filter.Filter;
+import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
+import org.crosswire.jsword.book.sword.state.OpenFileState;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.ReadOnlyKeyList;
+import org.crosswire.jsword.passage.VerseRange;
 import org.jdom.Content;
 
 /**
@@ -72,7 +76,7 @@ public class SwordGenBook extends AbstractBook {
 
         set = backend.readIndex();
 
-        map = new HashMap<String, Key>();
+        map = new HashMap<String,Key>();
         for (Key key : set) {
             map.put(key.getName(), key);
         }
@@ -96,8 +100,6 @@ public class SwordGenBook extends AbstractBook {
         set = null;
         global = null;
 
-        Activator.deactivate(backend);
-
         active = false;
     }
 
@@ -110,14 +112,34 @@ public class SwordGenBook extends AbstractBook {
         assert key != null;
         assert backend != null;
 
-        List<Content> content = new ArrayList<Content>();
+        return backend.readToOsis(key, new RawTextToXmlProcessor() {
+            public void preRange(VerseRange range, List<Content> partialDom) {
+                // no - op
+            }
 
-        String txt = backend.getRawText(key);
+            public void postVerse(Key verse, List<Content> partialDom, String rawText) {
+                partialDom.addAll(filter.toOSIS(SwordGenBook.this, verse, rawText));
+            }
 
-        List<Content> osisContent = filter.toOSIS(this, key, txt);
-        content.addAll(osisContent);
+            public void init(List<Content> partialDom) {
+                // no-op
+            }
+        }).iterator();
+    }
 
-        return content.iterator();
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
+     */
+    public String getRawText(Key key) throws BookException {
+        OpenFileState state = null;
+        try {
+            state = backend.initState();
+            return backend.readRawContent(state, key, key.getName());
+        } catch (IOException e) {
+            throw new BookException("Unable to obtain raw content from backend", e);
+        } finally {
+            IOUtil.close(state);
+        }
     }
 
     /* (non-Javadoc)
@@ -127,16 +149,17 @@ public class SwordGenBook extends AbstractBook {
         return backend != null && backend.contains(key);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
+    /*
+     * (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractBook#getOsis(org.crosswire.jsword.passage.Key, org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor)
      */
-    public String getRawText(Key key) throws BookException {
+    public List<Content> getOsis(Key key, RawTextToXmlProcessor processor) throws BookException {
         checkActive();
 
         assert key != null;
         assert backend != null;
 
-        return backend.getRawText(key);
+        return backend.readToOsis(key, processor);
     }
 
     /* (non-Javadoc)
@@ -212,7 +235,8 @@ public class SwordGenBook extends AbstractBook {
             }
         }
 
-        // TRANSLATOR: Error condition: Indicates that something could not be found in the book.
+        // TRANSLATOR: Error condition: Indicates that something could not be
+        // found in the book.
         // {0} is a placeholder for the unknown key.
         // {1} is the short name of the book
         throw new NoSuchKeyException(JSMsg.gettext("No entry for '{0}' in {1}.", text, getInitials()));
@@ -247,7 +271,7 @@ public class SwordGenBook extends AbstractBook {
     /**
      * So we can quickly find a Key given the text for the key
      */
-    private Map<String, Key> map;
+    private Map<String,Key> map;
 
     /**
      * So we can implement getIndex() easily
@@ -263,4 +287,5 @@ public class SwordGenBook extends AbstractBook {
      * The filter to use to convert to OSIS.
      */
     private Filter filter;
+
 }

@@ -241,7 +241,7 @@ public class RangedPassage extends AbstractPassage {
 
     @Override
     public void retainAll(Key key) {
-        Passage that = KeyUtil.getPassage(key);
+        Passage that = KeyUtil.getPassage(key, this.getVersification());
 
         optimizeWrites();
 

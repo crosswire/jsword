@@ -98,20 +98,23 @@ public class Versifications {
     }
 
     private Versification fluff(String name) {
+        //keep KJV at the top as it is the most common
         if (SystemKJV.V11N_NAME.equals(name)) {
             return new SystemKJV();
         }
+        
+        //then in alphabetical order, to ease the developer checking we have them all
         if (SystemCatholic.V11N_NAME.equals(name)) {
             return new SystemCatholic();
         }
         if (SystemCatholic2.V11N_NAME.equals(name)) {
             return new SystemCatholic2();
         }
-        if (SystemKJVA.V11N_NAME.equals(name)) {
-            return new SystemKJVA();
-        }
         if (SystemGerman.V11N_NAME.equals(name)) {
             return new SystemGerman();
+        }
+        if (SystemKJVA.V11N_NAME.equals(name)) {
+            return new SystemKJVA();
         }
         if (SystemLeningrad.V11N_NAME.equals(name)) {
             return new SystemLeningrad();
@@ -134,6 +137,11 @@ public class Versifications {
         if (SystemSynodalP.V11N_NAME.equals(name)) {
             return new SystemSynodalP();
         }
+        if (SystemVulg.V11N_NAME.equals(name)) {
+            return new SystemVulg();
+        }
+        
+        
         return null;
     }
 
@@ -154,8 +162,8 @@ public class Versifications {
         known = new HashSet<String>();
         known.add(SystemCatholic.V11N_NAME);
         known.add(SystemCatholic2.V11N_NAME);
-        known.add(SystemKJV.V11N_NAME);
         known.add(SystemGerman.V11N_NAME);
+        known.add(SystemKJV.V11N_NAME);
         known.add(SystemKJVA.V11N_NAME);
         known.add(SystemLeningrad.V11N_NAME);
         known.add(SystemLuther.V11N_NAME);

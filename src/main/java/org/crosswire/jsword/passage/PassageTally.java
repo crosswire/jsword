@@ -483,7 +483,7 @@ public class PassageTally extends AbstractPassage {
     @Override
     public void removeAll(Key key) {
         Versification v11n = getVersification();
-        Passage that = KeyUtil.getPassage(key);
+        Passage that = KeyUtil.getPassage(key, v11n);
 
         optimizeWrites();
 
@@ -545,6 +545,7 @@ public class PassageTally extends AbstractPassage {
         Passage remainder = this.clone();
 
         for (Key verse : this) {
+            i++;
             if (i > count) {
                 remove(verse);
                 overflow = true;
@@ -552,7 +553,6 @@ public class PassageTally extends AbstractPassage {
                 remainder.remove(verse);
             }
 
-            i++;
         }
 
         if (overflow) {
