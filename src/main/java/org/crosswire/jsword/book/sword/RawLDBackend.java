@@ -42,6 +42,7 @@ import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.FeatureType;
+import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
 import org.crosswire.jsword.book.sword.state.RawLDBackendState;
 import org.crosswire.jsword.passage.DefaultLeafKeyList;
 import org.crosswire.jsword.passage.Key;
@@ -74,7 +75,7 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
     }
 
     public RawLDBackendState initState() throws BookException {
-        return new RawLDBackendState(getBookMetaData());
+        return OpenFileStateManager.getRawLDBackendState(getBookMetaData());
     }
 
 

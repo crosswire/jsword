@@ -27,6 +27,8 @@ import java.io.RandomAccessFile;
 import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.sword.state.OpenFileState;
+import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
 import org.crosswire.jsword.book.sword.state.RawBackendState;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
@@ -88,7 +90,7 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
     }
 
     public T initState() {
-       return (T) new RawBackendState(getBookMetaData());
+        return (T) OpenFileStateManager.getRawBackendState(getBookMetaData());
     }
     
     public String getRawText(RawBackendState state, Key key) throws IOException {

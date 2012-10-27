@@ -55,7 +55,7 @@ public class ConcurrencyTest extends TestCase {
         };
 
         int ii = 0;
-        while (ii++ < 100) {
+        while (ii++ < 50) {
             final Thread t1 = new Thread(r1);
             final Thread t2 = new Thread(r2);
             t1.start();

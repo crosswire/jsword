@@ -29,6 +29,7 @@ import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.sword.state.GenBookBackendState;
+import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.TreeKey;
@@ -50,7 +51,7 @@ public class GenBookBackend extends AbstractBackend<GenBookBackendState> {
     }
 
     public GenBookBackendState initState() throws BookException {
-        return new GenBookBackendState(getBookMetaData());
+        return OpenFileStateManager.getGenBookBackendState(getBookMetaData());
     }
 
     @Override

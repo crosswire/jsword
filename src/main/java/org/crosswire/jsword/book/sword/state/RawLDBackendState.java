@@ -24,7 +24,7 @@ import org.crosswire.jsword.book.sword.SwordUtil;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class RawLDBackendState implements OpenFileState {
+public class RawLDBackendState extends AbstractOpenFileState  {
     private static final Logger log = Logger.getLogger(RawLDBackend.class);
     /**
      * The number of entries in the book.
@@ -50,8 +50,10 @@ public class RawLDBackendState implements OpenFileState {
      * The data random access file
      */
     private RandomAccessFile datRaf;
+    private SwordBookMetaData bookMetaData;
 
     public RawLDBackendState(SwordBookMetaData bookMetaData) throws BookException {
+        this.bookMetaData = bookMetaData;
         URI path = null;
         try {
             path = SwordUtil.getExpandedDataPath(bookMetaData);
@@ -99,7 +101,7 @@ public class RawLDBackendState implements OpenFileState {
         }
     }
 
-    public void close() {
+    public void releaseResources() {
         size = -1;
         IOUtil.close(idxRaf);
         IOUtil.close(datRaf);
@@ -141,6 +143,10 @@ public class RawLDBackendState implements OpenFileState {
      */
     public void setSize(int size) {
         this.size = size;
+    }
+
+    public SwordBookMetaData getBookMetaData() {
+        return this.bookMetaData;
     }
 
 }

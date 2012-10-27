@@ -35,6 +35,7 @@ import java.io.RandomAccessFile;
 import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
 import org.crosswire.jsword.book.sword.state.RawBackendState;
 import org.crosswire.jsword.book.sword.state.RawFileBackendState;
 import org.crosswire.jsword.passage.Key;
@@ -75,7 +76,7 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
     }
 
     public RawFileBackendState initState() {
-        return new RawFileBackendState(getBookMetaData());
+        return OpenFileStateManager.getRawFileBackendState(getBookMetaData());
     }
     
     /* (non-Javadoc)

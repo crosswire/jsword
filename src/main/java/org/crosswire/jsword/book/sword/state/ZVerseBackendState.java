@@ -26,8 +26,7 @@ import org.crosswire.jsword.versification.Testament;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-//FIXME(CJB) we don't need all those getters/setters
-public class ZVerseBackendState implements OpenFileState {
+public class ZVerseBackendState extends AbstractOpenFileState {
     private static final String SUFFIX_COMP = "v";
     private static final String SUFFIX_INDEX = "s";
     private static final String SUFFIX_PART1 = "z";
@@ -58,21 +57,25 @@ public class ZVerseBackendState implements OpenFileState {
     private Testament lastTestament;
     private long lastBlockNum = -1;
     private byte[] lastUncompressed;
+    private SwordBookMetaData bookMetaData;
 
     public ZVerseBackendState(SwordBookMetaData bookMetaData, BlockType blockType) throws BookException {
-        //FIXME(CJB): this can now be optimized just to open the one testament? although you'd then pay the penalty of having ranges spanning multiple testaments...
-            URI path = SwordUtil.getExpandedDataPath(bookMetaData);
-            String otAllButLast = NetUtil.lengthenURI(path, File.separator + SwordConstants.FILE_OT + '.' + blockType.getIndicator() + SUFFIX_PART1).getPath();
-            File otIdxFile = new File(otAllButLast + SUFFIX_INDEX);
-            File otTextFile = new File(otAllButLast + SUFFIX_TEXT);
-            File otCompFile = new File(otAllButLast + SUFFIX_COMP);
+        this.bookMetaData = bookMetaData;
+        // FIXME(CJB): this can now be optimized just to open the one testament?
+        // although you'd then pay the penalty of having ranges spanning
+        // multiple testaments...
+        URI path = SwordUtil.getExpandedDataPath(bookMetaData);
+        String otAllButLast = NetUtil.lengthenURI(path, File.separator + SwordConstants.FILE_OT + '.' + blockType.getIndicator() + SUFFIX_PART1).getPath();
+        File otIdxFile = new File(otAllButLast + SUFFIX_INDEX);
+        File otTextFile = new File(otAllButLast + SUFFIX_TEXT);
+        File otCompFile = new File(otAllButLast + SUFFIX_COMP);
 
-            String ntAllButLast = NetUtil.lengthenURI(path, File.separator + SwordConstants.FILE_NT + '.' + blockType.getIndicator() + SUFFIX_PART1).getPath();
-            File ntIdxFile = new File(ntAllButLast + SUFFIX_INDEX);
-            File ntTextFile = new File(ntAllButLast + SUFFIX_TEXT);
-            File ntCompFile = new File(ntAllButLast + SUFFIX_COMP);
+        String ntAllButLast = NetUtil.lengthenURI(path, File.separator + SwordConstants.FILE_NT + '.' + blockType.getIndicator() + SUFFIX_PART1).getPath();
+        File ntIdxFile = new File(ntAllButLast + SUFFIX_INDEX);
+        File ntTextFile = new File(ntAllButLast + SUFFIX_TEXT);
+        File ntCompFile = new File(ntAllButLast + SUFFIX_COMP);
 
-        //check whether exists to swallow any exception as befor
+        // check whether exists to swallow any exception as befor
         if (otIdxFile.canRead()) {
             try {
                 otIdxRaf = new RandomAccessFile(otIdxFile, FileUtil.MODE_READ);
@@ -84,7 +87,8 @@ public class ZVerseBackendState implements OpenFileState {
             }
         }
 
-        //why do swallow the exception and log. Can Books have one testament without the other.
+        // why do swallow the exception and log. Can Books have one testament
+        // without the other.
         if (ntIdxFile.canRead()) {
             try {
                 ntIdxRaf = new RandomAccessFile(ntIdxFile, FileUtil.MODE_READ);
@@ -97,7 +101,7 @@ public class ZVerseBackendState implements OpenFileState {
         }
     }
 
-    public void close() {
+    public void releaseResources() {
         IOUtil.close(ntIdxRaf);
         IOUtil.close(ntTextRaf);
         IOUtil.close(ntCompRaf);
@@ -111,8 +115,6 @@ public class ZVerseBackendState implements OpenFileState {
         otTextRaf = null;
         otCompRaf = null;
     }
-
-
 
     /**
      * @return the otIdxRaf
@@ -156,7 +158,6 @@ public class ZVerseBackendState implements OpenFileState {
         return ntCompRaf;
     }
 
-   
     /**
      * @return the lastTestament
      */
@@ -200,5 +201,12 @@ public class ZVerseBackendState implements OpenFileState {
      */
     public void setLastUncompressed(byte[] lastUncompressed) {
         this.lastUncompressed = lastUncompressed;
+    }
+
+    /**
+     * @return the bookMetaData
+     */
+    public SwordBookMetaData getBookMetaData() {
+        return bookMetaData;
     }
 }

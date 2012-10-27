@@ -35,6 +35,7 @@ import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
 import org.crosswire.jsword.book.sword.state.OpenFileState;
+import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
 import org.crosswire.jsword.book.sword.state.RawBackendState;
 import org.crosswire.jsword.book.sword.state.ZVerseBackendState;
 import org.crosswire.jsword.passage.Key;
@@ -177,7 +178,7 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
     }
 
     public ZVerseBackendState initState() throws BookException {
-        return new ZVerseBackendState(getBookMetaData(), blockType);
+        return OpenFileStateManager.getZVerseBackendState(getBookMetaData(), blockType);
     }
     
     public String readRawContent(ZVerseBackendState rafBook, Key key, String keyName) throws IOException {

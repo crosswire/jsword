@@ -27,6 +27,7 @@ import java.io.ObjectInputStream;
 import org.crosswire.common.compress.CompressorType;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
 import org.crosswire.jsword.book.sword.state.RawLDBackendState;
 import org.crosswire.jsword.book.sword.state.ZLDBackendState;
 
@@ -48,7 +49,7 @@ public class ZLDBackend extends RawLDBackend<ZLDBackendState> {
 
     @Override
     public ZLDBackendState initState() throws BookException{
-        return new ZLDBackendState(getBookMetaData());
+        return OpenFileStateManager.getZLDBackendState(getBookMetaData());
      }
     
     @Override

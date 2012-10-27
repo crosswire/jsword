@@ -113,8 +113,8 @@ public class ZLDBackendState extends RawLDBackendState {
     
     
 
-    public void close() {
-        super.close();
+    public void releaseResources() {
+        super.releaseResources();
         lastBlockNum = -1;
         lastUncompressed = EMPTY_BYTES;
 

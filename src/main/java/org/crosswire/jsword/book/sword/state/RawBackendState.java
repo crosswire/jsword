@@ -26,10 +26,9 @@ import org.crosswire.jsword.book.sword.SwordUtil;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class RawBackendState implements OpenFileState {
+public class RawBackendState extends AbstractOpenFileState {
     /** The log stream */
     private static final Logger log = Logger.getLogger(RawBackendState.class);
-
 
     protected RandomAccessFile otIdxRaf;
     protected RandomAccessFile ntIdxRaf;
@@ -48,7 +47,7 @@ public class RawBackendState implements OpenFileState {
         try {
             path = SwordUtil.getExpandedDataPath(bookMetaData);
         } catch (BookException e) {
-            //FIXME - this return should abort
+            // FIXME - this return should abort
             Reporter.informUser(this, e);
             return;
         }
@@ -62,7 +61,7 @@ public class RawBackendState implements OpenFileState {
         ntIdxFile = new File(ntPath.getPath() + SwordConstants.EXTENSION_VSS);
 
         // It is an error to be neither OT nor NT
-        //FIXME:(CJB) continuing with a state that is not wholly initialised
+        // FIXME:(CJB) continuing with a state that is not wholly initialised
         if (!otTextFile.canRead() && !ntTextFile.canRead()) {
             Reporter.informUser(this, new BookException(JSOtherMsg.lookupText("Missing data files for old and new testaments in {0}.", path)));
             return;
@@ -94,7 +93,7 @@ public class RawBackendState implements OpenFileState {
             }
         }
     }
-    
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#isWritable()
      */
@@ -112,7 +111,7 @@ public class RawBackendState implements OpenFileState {
         return otIdxFile.canRead() || ntIdxFile.canRead();
     }
 
-    public void close() {
+    public void releaseResources() {
         IOUtil.close(ntIdxRaf);
         IOUtil.close(ntTextRaf);
         IOUtil.close(otIdxRaf);
@@ -178,7 +177,7 @@ public class RawBackendState implements OpenFileState {
     public File getOtIdxFile() {
         return otIdxFile;
     }
-    
+
     /**
      * @return the bookMetaData
      */

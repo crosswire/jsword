@@ -137,7 +137,5 @@ public class RawFileBackendState extends RawBackendState {
     public void setIncfile(File incfile) {
         this.incfile = incfile;
     }
-
-
     
 }

@@ -24,7 +24,7 @@ import org.crosswire.jsword.book.sword.SwordUtil;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class GenBookBackendState implements OpenFileState {
+public class GenBookBackendState extends AbstractOpenFileState {
     /** The log stream */
     private static final Logger log = Logger.getLogger(GenBookBackendState.class);
     /**
@@ -40,8 +40,8 @@ public class GenBookBackendState implements OpenFileState {
      * The random access file for the raw data
      */
     private RandomAccessFile bdtRaf;
+    private SwordBookMetaData bookMetaData;
 
-    
     public GenBookBackendState(SwordBookMetaData bookMetaData) {
         URI path = null;
         try {
@@ -54,7 +54,8 @@ public class GenBookBackendState implements OpenFileState {
         bdtFile = new File(path.getPath() + EXTENSION_BDT);
 
         if (!bdtFile.canRead()) {
-            // TRANSLATOR: Common error condition: The file could not be read. There can be many reasons.
+            // TRANSLATOR: Common error condition: The file could not be read.
+            // There can be many reasons.
             // {0} is a placeholder for the file.
             Reporter.informUser(this, new BookException(JSMsg.gettext("Error reading {0}", bdtFile.getAbsolutePath())));
             return;
@@ -67,8 +68,8 @@ public class GenBookBackendState implements OpenFileState {
             bdtRaf = null;
         }
     }
-    
-    public void close() {
+
+    public void releaseResources() {
         IOUtil.close(bdtRaf);
         bdtRaf = null;
     }
@@ -78,5 +79,12 @@ public class GenBookBackendState implements OpenFileState {
      */
     public RandomAccessFile getBdtRaf() {
         return bdtRaf;
+    }
+
+    /**
+     * @return the bookMetaData
+     */
+    public SwordBookMetaData getBookMetaData() {
+        return bookMetaData;
     }
 }
