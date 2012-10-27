@@ -41,16 +41,9 @@ public class RawBackendState extends AbstractOpenFileState {
 
     private SwordBookMetaData bookMetaData;
 
-    public RawBackendState(SwordBookMetaData bookMetaData) {
+    public RawBackendState(SwordBookMetaData bookMetaData) throws BookException {
         this.bookMetaData = bookMetaData;
-        URI path = null;
-        try {
-            path = SwordUtil.getExpandedDataPath(bookMetaData);
-        } catch (BookException e) {
-            // FIXME - this return should abort
-            Reporter.informUser(this, e);
-            return;
-        }
+        URI path =  SwordUtil.getExpandedDataPath(bookMetaData);
 
         URI otPath = NetUtil.lengthenURI(path, File.separator + SwordConstants.FILE_OT);
         otTextFile = new File(otPath.getPath());
@@ -61,10 +54,11 @@ public class RawBackendState extends AbstractOpenFileState {
         ntIdxFile = new File(ntPath.getPath() + SwordConstants.EXTENSION_VSS);
 
         // It is an error to be neither OT nor NT
-        // FIXME:(CJB) continuing with a state that is not wholly initialised
+        // Throwing exception, as if we can't read either the ot or nt file, then we might as well give up
         if (!otTextFile.canRead() && !ntTextFile.canRead()) {
-            Reporter.informUser(this, new BookException(JSOtherMsg.lookupText("Missing data files for old and new testaments in {0}.", path)));
-            return;
+            BookException prob = new BookException(JSOtherMsg.lookupText("Missing data files for old and new testaments in {0}.", path));
+            Reporter.informUser(this, prob);
+            throw prob;
         }
 
         String fileMode = isWritable() ? FileUtil.MODE_WRITE : FileUtil.MODE_READ;

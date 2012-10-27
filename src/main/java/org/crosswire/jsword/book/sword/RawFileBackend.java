@@ -75,7 +75,7 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
         super(sbmd, datasize);
     }
 
-    public RawFileBackendState initState() {
+    public RawFileBackendState initState() throws BookException {
         return OpenFileStateManager.getRawFileBackendState(getBookMetaData());
     }
     
@@ -118,8 +118,6 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.RawBackend#setRawText(org.crosswire.jsword.passage.Key, java.lang.String)
      * 
-     * FIXME(CJB) unlikely to be used for just one key, so let's have the user pass in the state by calling .initState()
-     * and have him be responsible for closing the RAFs
      */
     public void setRawText(RawFileBackendState state, Key key, String text) throws BookException, IOException {
 

@@ -173,13 +173,16 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
 
     
 
+    /** Returns an empty string
+     * (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
+     */
     public String getRawText(Key key) throws BookException {
         return "";
     }
     
-    
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
+    /**
+     * Returns an empty list
      */
     public List<Content> getOsis(Key key, RawTextToXmlProcessor processor) throws BookException {
         return Collections.emptyList();

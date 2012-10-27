@@ -28,8 +28,6 @@ import java.net.URISyntaxException;
 
 import junit.framework.TestCase;
 
-import org.crosswire.common.util.NetUtil;
-
 /**
  * JUnit Test.
  * 

@@ -143,8 +143,6 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
 
         final List<Content> content = new ArrayList<Content>();
 
-        // FIXME(CJB) behaviour has changed from previously where not finding OT
-        // or NT did not throw exception
         T openFileState = null;
 
         try {

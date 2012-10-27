@@ -127,7 +127,6 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
         } catch (BookException e) {
             return 0;
         } catch (IOException e) {
-            // FIXME(CJB) no logging as per previous implementation
             return 0;
         } finally {
             IOUtil.close(state);

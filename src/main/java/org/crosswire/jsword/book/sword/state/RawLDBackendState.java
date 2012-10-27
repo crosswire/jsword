@@ -72,19 +72,19 @@ public class RawLDBackendState extends AbstractOpenFileState  {
                 // {0} is a placeholder for the file.
                 Reporter.informUser(this, new BookException(JSMsg.gettext("Error reading {0}", idxFile.getAbsolutePath())));
 
-                // FIXME(CJB) we may want to throw an exception here... let
-                // whoever calls this handle it for us.
+                // As per previous behaviour, we continue with state half made, having informed the user of the error
                 return;
             }
 
             if (!datFile.canRead()) {
+                // Throwing exception, as if we can't read our data file, then we might as well give up
+
                 // TRANSLATOR: Common error condition: The file could not be
                 // read. There can be many reasons.
                 // {0} is a placeholder for the file.
-                Reporter.informUser(this, new BookException(JSMsg.gettext("Error reading {0}", datFile.getAbsolutePath())));
-                // FIXME(CJB) we may want to throw an exception here... let
-                // whoever calls this handle it for us.
-                return;
+                BookException prob = new BookException(JSMsg.gettext("Error reading {0}", datFile.getAbsolutePath()));
+                Reporter.informUser(this, prob);
+                throw prob;
             }
 
             // Open the files

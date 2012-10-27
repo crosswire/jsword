@@ -22,12 +22,10 @@
 package org.crosswire.jsword.book;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.crosswire.common.activate.Activatable;
 import org.crosswire.common.util.Language;
-import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
 import org.crosswire.jsword.index.IndexStatus;
 import org.crosswire.jsword.index.IndexStatusListener;
 import org.crosswire.jsword.index.search.SearchRequest;

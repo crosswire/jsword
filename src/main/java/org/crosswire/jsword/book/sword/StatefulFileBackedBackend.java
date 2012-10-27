@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.sword.state.OpenFileState;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.Verse;
 
 /**
  * Indicates that there is a stateful backend

@@ -26,8 +26,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.RandomAccessFile;
-import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.Enumeration;
@@ -122,6 +120,24 @@ public final class IOUtil {
         }
     }
 
+    /**
+     * Closes any {@link Closeable} object
+     * 
+     * @param closeable
+     *            The zip file to close
+     */
+    public static void close(ZipFile closeable) {
+        if (null != closeable) {
+            try {
+                closeable.close();
+            } catch (IOException ex) {
+                log.error("close", ex);
+            }
+        }
+    }
+
+        
+    
     /**
      * The log stream
      */

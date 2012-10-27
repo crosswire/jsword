@@ -27,7 +27,6 @@ import java.io.RandomAccessFile;
 import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.sword.state.OpenFileState;
 import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
 import org.crosswire.jsword.book.sword.state.RawBackendState;
 import org.crosswire.jsword.passage.Key;
@@ -63,8 +62,6 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
      */
     @Override
     public boolean contains(Key key) {
-        //FIXME(CJB) can't deal with ranges, yet
-        
         String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
         Versification v11n = Versifications.instance().getVersification(v11nName);
         Verse verse = KeyUtil.getVerse(key, v11n);
@@ -86,10 +83,12 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
             return dataIndex.getSize() > 0;
         } catch (IOException ex) {
             return false;
+        } catch (BookException e) {
+            return false;
         }
     }
 
-    public T initState() {
+    public T initState() throws BookException {
         return (T) OpenFileStateManager.getRawBackendState(getBookMetaData());
     }
     
@@ -134,6 +133,8 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
         try {
         rawBackendState = new RawBackendState(getBookMetaData());
         return rawBackendState.isWritable();
+        } catch (BookException e) {
+            return false;
         } finally {
             IOUtil.close(rawBackendState);
         }

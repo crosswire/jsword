@@ -23,31 +23,19 @@ package org.crosswire.jsword.book.sword;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
 
 import org.crosswire.common.compress.CompressorType;
 import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Logger;
-import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
-import org.crosswire.jsword.book.sword.state.OpenFileState;
 import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
-import org.crosswire.jsword.book.sword.state.RawBackendState;
 import org.crosswire.jsword.book.sword.state.ZVerseBackendState;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
-import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.RestrictionType;
 import org.crosswire.jsword.passage.Verse;
-import org.crosswire.jsword.passage.VerseRange;
 import org.crosswire.jsword.versification.Testament;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
-import org.jdom.Content;
 
 /**
  * A backend to read compressed data verse based files. While the text file
@@ -120,14 +108,14 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
         this.blockType = blockType;
     }
 
-    /* (non-Javadoc)
+    /* This method assumes single keeps. It is the responsibility of the caller to provide the iteration. 
+     * 
+     * FIXME: this could be refactored to push the iterations down, but no performance benefit would be gained since we have a manager that keeps the file accesses open
+     * (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#contains(org.crosswire.jsword.passage.Key)
      */
     @Override
     public boolean contains(Key key) {
-        // FIXME(CJB): doesn't cater for ranges... - currently experiencing a performance hit
-
-
         ZVerseBackendState rafBook = null;
         try {
             rafBook = new ZVerseBackendState(getBookMetaData(), blockType);
@@ -136,13 +124,11 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
             Versification v11n = Versifications.instance().getVersification(v11nName);
             Verse verse = KeyUtil.getVerse(key, v11n);
 
-            
             int index = v11n.getOrdinal(verse);
             Testament testament = v11n.getTestament(index);
             index = v11n.getTestamentOrdinal(index);
 
             RandomAccessFile compRaf = testament == Testament.NEW ? rafBook.getNtCompRaf() : rafBook.getOtCompRaf();
-            ;
 
             // If Bible does not contain the desired testament, then false
             if (compRaf == null) {
@@ -180,10 +166,9 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
     public ZVerseBackendState initState() throws BookException {
         return OpenFileStateManager.getZVerseBackendState(getBookMetaData(), blockType);
     }
-    
+
     public String readRawContent(ZVerseBackendState rafBook, Key key, String keyName) throws IOException {
-        
-        
+
         SwordBookMetaData bookMetaData = getBookMetaData();
         final String charset = bookMetaData.getBookCharset();
         final String compressType = (String) bookMetaData.getProperty(ConfigEntryType.COMPRESS_TYPE);
@@ -280,7 +265,6 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
     public void setRawText(ZVerseBackendState rafBook, Key key, String text) throws BookException, IOException {
         throw new UnsupportedOperationException();
     }
-
 
     /**
      * Whether the book is blocked by Book, Chapter or Verse.

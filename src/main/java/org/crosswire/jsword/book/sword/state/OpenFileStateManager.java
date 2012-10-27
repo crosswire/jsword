@@ -36,7 +36,7 @@ public class OpenFileStateManager {
         // no op
     }
 
-    public static RawBackendState getRawBackendState(SwordBookMetaData metadata) {
+    public static RawBackendState getRawBackendState(SwordBookMetaData metadata) throws BookException {
         RawBackendState state = getInstance(metadata);
         if (state == null) {
             state = new RawBackendState(metadata);
@@ -45,7 +45,7 @@ public class OpenFileStateManager {
         return state;
     }
 
-    public static RawFileBackendState getRawFileBackendState(SwordBookMetaData metadata) {
+    public static RawFileBackendState getRawFileBackendState(SwordBookMetaData metadata) throws BookException {
         RawFileBackendState state = getInstance(metadata);
         if (state == null) {
             state = new RawFileBackendState(metadata);
@@ -54,7 +54,7 @@ public class OpenFileStateManager {
         return state;
     }
 
-    public static GenBookBackendState getGenBookBackendState(SwordBookMetaData metadata) {
+    public static GenBookBackendState getGenBookBackendState(SwordBookMetaData metadata) throws BookException {
         GenBookBackendState state = getInstance(metadata);
         if (state == null) {
             state = new GenBookBackendState(metadata);

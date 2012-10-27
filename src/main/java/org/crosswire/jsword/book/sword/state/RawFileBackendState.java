@@ -3,20 +3,12 @@ package org.crosswire.jsword.book.sword.state;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.net.URI;
 
-import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.NetUtil;
-import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.sword.SwordBookMetaData;
-import org.crosswire.jsword.book.sword.SwordConstants;
 import org.crosswire.jsword.book.sword.SwordUtil;
 
 /**
@@ -37,7 +29,7 @@ public class RawFileBackendState extends RawBackendState {
     private Integer incfileValue;
 
     
-    public RawFileBackendState(SwordBookMetaData bookMetaData) {
+    public RawFileBackendState(SwordBookMetaData bookMetaData) throws BookException {
        super(bookMetaData);
     }
     
