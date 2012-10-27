@@ -9,6 +9,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
+import org.crosswire.jsword.versification.BookName;
 import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
@@ -302,12 +303,15 @@ public class BackendTest extends TestCase {
     }
 
     private String backendTest(Book currentBook, Key key, String... assertions) throws NoSuchKeyException, BookException {
+        //order in test can be inconsistent and it seems on a linux build server the full book name is sometimes not used...
+        BookName.setFullBookName(true);
+        
         final BookData bookData = new BookData(currentBook, key);
         final Element osisFragment = bookData.getOsisFragment();
 
         final XMLOutputter xmlOutputter = new XMLOutputter(Format.getPrettyFormat());
         String xml = xmlOutputter.outputString(osisFragment);
-        LOGGER.debug("For book " + currentBook.getInitials() + " with key " + key.getName() + "Got " +xml);
+        LOGGER.debug("For book " + currentBook.getInitials() + " with key " + key.getName() + ", Got " +xml);
 
         for (String s : assertions)
             Assert.assertTrue(s, xml.contains(s));
