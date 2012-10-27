@@ -307,7 +307,7 @@ public class BackendTest extends TestCase {
 
         final XMLOutputter xmlOutputter = new XMLOutputter(Format.getPrettyFormat());
         String xml = xmlOutputter.outputString(osisFragment);
-        LOGGER.debug(xml);
+        LOGGER.debug("For book " + currentBook.getInitials() + " with key " + key.getName() + "Got " +xml);
 
         for (String s : assertions)
             Assert.assertTrue(s, xml.contains(s));
