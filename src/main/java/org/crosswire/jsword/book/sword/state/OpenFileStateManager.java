@@ -28,6 +28,7 @@ import org.crosswire.jsword.book.sword.SwordBookMetaData;
  */
 public class OpenFileStateManager {
     private static volatile Map<SwordBookMetaData,Queue<OpenFileState>> metaToStates = new HashMap<SwordBookMetaData,Queue<OpenFileState>>();
+    private static volatile boolean shuttingDown = false;
 
     /**
      * prevent instantiation
@@ -117,6 +118,19 @@ public class OpenFileStateManager {
         // ignore if we couldn't offer to the queue
         if (!offered) {
             fileState.releaseResources();
+        }
+    }
+    
+    /**
+     * Shuts down all open files
+     */
+    public static void shutDown() {
+        shuttingDown  = true;
+        for(Queue<OpenFileState> e : metaToStates.values()) {
+            OpenFileState state = null;
+            while((state = e.poll()) != null) {
+                state.releaseResources();
+            }
         }
     }
 }
