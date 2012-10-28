@@ -250,6 +250,7 @@ public final class Verse implements Key {
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
+    @Deprecated
     public int compareTo(Key obj) {
         Verse that = null;
         if (obj instanceof Verse) {
