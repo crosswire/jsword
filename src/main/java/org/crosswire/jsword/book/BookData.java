@@ -220,6 +220,7 @@ public class BookData implements BookProvider {
                     cell = OSISUtil.factory().createCell();
                     Language lang = (Language) book.getProperty(BookMetaData.KEY_XML_LANG);
                     cell.setAttribute(OSISUtil.OSIS_ATTR_LANG, lang.getCode(), Namespace.XML_NAMESPACE);
+                    
                     row.addContent(cell);
 
                     StringBuilder newText = new StringBuilder(doDiffs ? 32 : 0);
@@ -235,7 +236,10 @@ public class BookData implements BookProvider {
                         
                         if (doDiffs) {
                             String thisText = newText.toString();
-
+                            if(unaccenter != null) {
+                                thisText = unaccenter.unaccent(thisText);
+                            }
+                            
                             if (i > 0 && showDiffs[i - 1]) {
                                 List<Difference> diffs = new Diff(lastText, thisText, false).compare();
                                 DiffCleanup.cleanupSemantic(diffs);
@@ -295,6 +299,14 @@ public class BookData implements BookProvider {
             }
         }
     }
+    
+    
+    /**
+     * @param unaccenter the unaccenter to set
+     */
+    public void setUnaccenter(UnAccenter unaccenter) {
+        this.unaccenter = unaccenter;
+    }
 
     /**
      * What key was used to create this data
@@ -320,4 +332,6 @@ public class BookData implements BookProvider {
      * Just the element
      */
     private Element fragment;
+    
+    private UnAccenter unaccenter;
 }
