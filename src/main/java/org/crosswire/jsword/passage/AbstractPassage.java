@@ -109,7 +109,8 @@ public abstract class AbstractPassage implements Passage {
         Verse thatfirst = thatref.getVerseAt(0);
         Verse thisfirst = getVerseAt(0);
 
-        return thisfirst.compareTo(thatfirst);
+        
+        return getVersification().distance(thisfirst, thatfirst);
     }
 
     @Override

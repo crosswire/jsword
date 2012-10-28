@@ -315,7 +315,7 @@ public final class Logger {
             Logger.level = null;
         }
     }
-
+    
     private static final String ROOT_LOGGER = "";
     private static final String CLASS_NAME = Logger.class.getName();
     private static volatile boolean established;
