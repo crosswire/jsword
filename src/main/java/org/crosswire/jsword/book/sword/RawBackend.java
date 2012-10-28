@@ -70,11 +70,11 @@ public class RawBackend extends AbstractBackend {
     public boolean contains(Key key) {
         checkActive();
 
-        Verse verse = KeyUtil.getVerse(key);
+        String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
+        Versification v11n = Versifications.instance().getVersification(v11nName);
+        Verse verse = KeyUtil.getVerse(key, v11n);
 
         try {
-            String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
-            Versification v11n = Versifications.instance().getVersification(v11nName);
             int index = v11n.getOrdinal(verse);
             Testament testament = v11n.getTestament(index);
             index = v11n.getTestamentOrdinal(index);
@@ -103,10 +103,10 @@ public class RawBackend extends AbstractBackend {
     public String getRawText(Key key) throws BookException {
         checkActive();
 
-        Verse verse = KeyUtil.getVerse(key);
+        String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
+        Versification v11n = Versifications.instance().getVersification(v11nName);
+        Verse verse = KeyUtil.getVerse(key, v11n);
         try {
-            String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
-            Versification v11n = Versifications.instance().getVersification(v11nName);
             int index = v11n.getOrdinal(verse);
             Testament testament = v11n.getTestament(index);
             index = v11n.getTestamentOrdinal(index);

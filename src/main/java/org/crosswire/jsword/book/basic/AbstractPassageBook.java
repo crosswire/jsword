@@ -52,6 +52,7 @@ import org.jdom.Element;
  * @author Joe Walker [joe at eireneh dot com]
  */
 public abstract class AbstractPassageBook extends AbstractBook {
+    
     public AbstractPassageBook(BookMetaData bmd) {
         super(bmd);
         this.versification = (String) bmd.getProperty(BookMetaData.KEY_VERSIFICATION);
@@ -67,7 +68,7 @@ public abstract class AbstractPassageBook extends AbstractBook {
         List<Content> content = new ArrayList<Content>();
 
         // For all the ranges in this Passage
-        Passage ref = KeyUtil.getPassage(key);
+        Passage ref = KeyUtil.getPassage(key, getVersification());
         boolean showTitles = ref.hasRanges(RestrictionType.CHAPTER) || !allowEmpty;
         Iterator<Key> rit = ref.rangeIterator(RestrictionType.CHAPTER);
 
@@ -217,6 +218,14 @@ public abstract class AbstractPassageBook extends AbstractBook {
         return PassageKeyFactory.instance().getKey(Versifications.instance().getVersification(versification), text);
     }
 
+    public Versification getVersification() {
+        if(this.versificationSystem == null) {
+            this.versificationSystem = Versifications.instance().getVersification((String) getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION)); 
+        }
+        return versificationSystem;
+                
+    }
+    
     /**
      * A cached representation of the global key list.
      */
@@ -227,6 +236,11 @@ public abstract class AbstractPassageBook extends AbstractBook {
      */
     private String versification;
 
+    /**
+     * Versification system, created lazily, so use getter
+     */
+    private Versification versificationSystem;
+    
     /**
      * Our key manager
      */

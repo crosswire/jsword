@@ -178,7 +178,7 @@ public class BitwisePassage extends AbstractPassage {
 
     @Override
     public void addAll(Key key) {
-        Passage that = KeyUtil.getPassage(key);
+        Passage that = KeyUtil.getPassage(key, super.getVersification());
 
         optimizeWrites();
 
@@ -198,7 +198,7 @@ public class BitwisePassage extends AbstractPassage {
 
     @Override
     public void removeAll(Key key) {
-        Passage that = KeyUtil.getPassage(key);
+        Passage that = KeyUtil.getPassage(key, super.getVersification());
 
         optimizeWrites();
 
@@ -220,7 +220,7 @@ public class BitwisePassage extends AbstractPassage {
     @Override
     public void retainAll(Key key) {
         Versification v11n = getVersification();
-        Passage that = KeyUtil.getPassage(key);
+        Passage that = KeyUtil.getPassage(key, super.getVersification());
 
         optimizeWrites();
 
