@@ -29,7 +29,16 @@ public class RawFileBackendState extends RawBackendState {
     private Integer incfileValue;
 
     
-    public RawFileBackendState(SwordBookMetaData bookMetaData) throws BookException {
+    /**
+     * This is default package access for forcing the use of the
+     * OpenFileStateManager to manage the creation. Not doing so may result in
+     * new instances of OpenFileState being created for no reason, and as a
+     * result, if they are released to the OpenFileStateManager by mistake this
+     * would result in leakage
+     * 
+     * @param bookMetaData the appropriate metadata for the book
+     */
+    /* default */ RawFileBackendState(SwordBookMetaData bookMetaData) throws BookException {
        super(bookMetaData);
     }
     
