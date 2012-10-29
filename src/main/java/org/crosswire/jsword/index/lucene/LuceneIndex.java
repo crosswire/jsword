@@ -236,6 +236,13 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
         }
     }
 
+    /**
+     * Temporary work-around, while we wait before removing Activator completely.
+     */
+    public void close() {
+        Activator.deactivate(this);
+    }
+
     /*
      * (non-Javadoc)
      * 
