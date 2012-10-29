@@ -38,6 +38,8 @@ public class OpenFileStateManager {
     }
 
     public static RawBackendState getRawBackendState(SwordBookMetaData metadata) throws BookException {
+        ensureNotShuttingDown();
+        
         RawBackendState state = getInstance(metadata);
         if (state == null) {
             state = new RawBackendState(metadata);
@@ -47,6 +49,8 @@ public class OpenFileStateManager {
     }
 
     public static RawFileBackendState getRawFileBackendState(SwordBookMetaData metadata) throws BookException {
+        ensureNotShuttingDown();
+
         RawFileBackendState state = getInstance(metadata);
         if (state == null) {
             state = new RawFileBackendState(metadata);
@@ -56,6 +60,9 @@ public class OpenFileStateManager {
     }
 
     public static GenBookBackendState getGenBookBackendState(SwordBookMetaData metadata) throws BookException {
+        ensureNotShuttingDown();
+
+        
         GenBookBackendState state = getInstance(metadata);
         if (state == null) {
             state = new GenBookBackendState(metadata);
@@ -64,6 +71,8 @@ public class OpenFileStateManager {
     }
 
     public static RawLDBackendState getRawLDBackendState(SwordBookMetaData metadata) throws BookException {
+        ensureNotShuttingDown();
+
         RawLDBackendState state = getInstance(metadata);
         if (state == null) {
             state = new RawLDBackendState(metadata);
@@ -73,6 +82,8 @@ public class OpenFileStateManager {
     }
 
     public static ZLDBackendState getZLDBackendState(SwordBookMetaData metadata) throws BookException {
+        ensureNotShuttingDown();
+
         ZLDBackendState state = getInstance(metadata);
         if (state == null) {
             state = new ZLDBackendState(metadata);
@@ -82,6 +93,8 @@ public class OpenFileStateManager {
     }
 
     public static ZVerseBackendState getZVerseBackendState(SwordBookMetaData metadata, BlockType blockType) throws BookException {
+        ensureNotShuttingDown();
+
         ZVerseBackendState state = getInstance(metadata);
         if (state == null) {
             state = new ZVerseBackendState(metadata, blockType);
@@ -131,6 +144,13 @@ public class OpenFileStateManager {
             while((state = e.poll()) != null) {
                 state.releaseResources();
             }
+        }
+    }
+
+
+    private static void ensureNotShuttingDown() throws BookException {
+        if(shuttingDown) {
+            throw new BookException("Unable to read book, application is shutting down.");
         }
     }
 }
