@@ -131,7 +131,7 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
     public boolean isWritable() {
         RawBackendState rawBackendState = null;
         try {
-        rawBackendState = new RawBackendState(getBookMetaData());
+        rawBackendState = OpenFileStateManager.getRawBackendState(getBookMetaData());
         return rawBackendState.isWritable();
         } catch (BookException e) {
             return false;

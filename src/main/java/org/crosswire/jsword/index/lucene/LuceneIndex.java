@@ -166,7 +166,8 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
         File tempPath = new File(path + '.' + IndexStatus.CREATING.toString());
 
         try {
-            synchronized (CREATING) {
+            //Lock on metadata to allow creation of multiple indexes, so long as they are on different books
+            synchronized (book.getBookMetaData()) {
 
                 book.setIndexStatus(IndexStatus.CREATING);
 
