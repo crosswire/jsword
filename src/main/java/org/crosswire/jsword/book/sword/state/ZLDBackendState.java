@@ -73,7 +73,7 @@ public class ZLDBackendState extends RawLDBackendState {
      * 
      * @param bookMetaData the appropriate metadata for the book
      */
-    /* default */ ZLDBackendState(SwordBookMetaData bookMetaData) throws BookException {
+     ZLDBackendState(SwordBookMetaData bookMetaData) throws BookException {
         super(bookMetaData);
         zdxFile = null;
         zdtFile = null;

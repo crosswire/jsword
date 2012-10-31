@@ -38,7 +38,7 @@ public class RawFileBackendState extends RawBackendState {
      * 
      * @param bookMetaData the appropriate metadata for the book
      */
-    /* default */ RawFileBackendState(SwordBookMetaData bookMetaData) throws BookException {
+    RawFileBackendState(SwordBookMetaData bookMetaData) throws BookException {
        super(bookMetaData);
     }
     
