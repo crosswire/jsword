@@ -61,7 +61,7 @@ public class RawLDBackendState extends AbstractOpenFileState  {
      * 
      * @param bookMetaData the appropriate metadata for the book
      */
-    /* default */ RawLDBackendState(SwordBookMetaData bookMetaData) throws BookException {
+     RawLDBackendState(SwordBookMetaData bookMetaData) throws BookException {
         this.bookMetaData = bookMetaData;
         URI path = null;
         try {

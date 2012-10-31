@@ -68,7 +68,7 @@ public class ZVerseBackendState extends AbstractOpenFileState {
      * 
      * @param bookMetaData the appropriate metadata for the book
      */
-    /* default */ ZVerseBackendState(SwordBookMetaData bookMetaData, BlockType blockType) throws BookException {
+     ZVerseBackendState(SwordBookMetaData bookMetaData, BlockType blockType) throws BookException {
         this.bookMetaData = bookMetaData;
         URI path = SwordUtil.getExpandedDataPath(bookMetaData);
         String otAllButLast = NetUtil.lengthenURI(path, File.separator + SwordConstants.FILE_OT + '.' + blockType.getIndicator() + SUFFIX_PART1).getPath();
