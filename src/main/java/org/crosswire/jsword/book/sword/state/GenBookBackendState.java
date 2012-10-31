@@ -51,7 +51,7 @@ public class GenBookBackendState extends AbstractOpenFileState {
      * 
      * @param bookMetaData the appropriate metadata for the book
      */
-    /* default */GenBookBackendState(SwordBookMetaData bookMetaData) {
+    GenBookBackendState(SwordBookMetaData bookMetaData) {
         URI path = null;
         try {
             path = SwordUtil.getExpandedDataPath(bookMetaData);

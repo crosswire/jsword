@@ -51,7 +51,7 @@ public class RawBackendState extends AbstractOpenFileState {
      * @param bookMetaData
      *            the appropriate metadata for the book
      */
-    /* default */RawBackendState(SwordBookMetaData bookMetaData) throws BookException {
+    RawBackendState(SwordBookMetaData bookMetaData) throws BookException {
         this.bookMetaData = bookMetaData;
         URI path = SwordUtil.getExpandedDataPath(bookMetaData);
 
