@@ -22,7 +22,9 @@
 package org.crosswire.jsword.index.lucene;
 
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -154,10 +156,22 @@ public class LuceneIndexManager implements IndexManager {
         File tempPath = null;
         try {
             // TODO(joe): This needs some checks that it isn't being used
+            //temporary fix, which closes the index - non-thread safe since someone could theoretically come in and activate this again!
+            Index index = INDEXES.get(book);
+            if(index != null) {
+                index.close();
+            }
+            
             File storage = NetUtil.getAsFile(getStorageArea(book));
             String finalCanonicalPath = storage.getCanonicalPath();
             tempPath = new File(finalCanonicalPath + '.' + IndexStatus.CREATING.toString());
-            FileUtil.delete(tempPath);
+            
+            if(tempPath.exists()) {
+                FileUtil.delete(tempPath);
+            }
+
+            //Issues in at least Windows seem to create issues with reusing a file that's been deleted... 
+            tempPath = new File(finalCanonicalPath + '.' + IndexStatus.CREATING.toString());
             if (!storage.renameTo(tempPath)) {
                 // TRANSLATOR: Error condition: The index could not be deleted.
                 throw new BookException(JSMsg.gettext("Failed to delete search index."));

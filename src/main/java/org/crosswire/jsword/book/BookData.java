@@ -232,7 +232,7 @@ public class BookData implements BookProvider {
                             content = iters[i].next();
                             contents.add(content);
                             addText(doDiffs, newText, content);
-                        } while(!hasOsisId(content));
+                        } while(!isNextVerse(content));
                         
                         if (doDiffs) {
                             String thisText = newText.toString();
@@ -273,13 +273,9 @@ public class BookData implements BookProvider {
         return div;
     }
 
-    private boolean hasOsisId(Content content) {
+    private boolean isNextVerse(Content content) {
         if(content instanceof Element) {
-            Attribute attribute = ((Element) content).getAttribute(OSISUtil.OSIS_ATTR_OSISID);
-            
-            if(attribute != null) {
-                return true;
-            }
+            return OSISUtil.OSIS_ELEMENT_VERSE.equals(((Element) content).getName());
         }
         
         return false;

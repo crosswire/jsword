@@ -64,7 +64,16 @@ public class ZLDBackendState extends RawLDBackendState {
     private  byte[] lastUncompressed;
 
 
-    public ZLDBackendState(SwordBookMetaData bookMetaData) throws BookException {
+    /**
+     * This is default package access for forcing the use of the
+     * OpenFileStateManager to manage the creation. Not doing so may result in
+     * new instances of OpenFileState being created for no reason, and as a
+     * result, if they are released to the OpenFileStateManager by mistake this
+     * would result in leakage
+     * 
+     * @param bookMetaData the appropriate metadata for the book
+     */
+     ZLDBackendState(SwordBookMetaData bookMetaData) throws BookException {
         super(bookMetaData);
         zdxFile = null;
         zdtFile = null;
