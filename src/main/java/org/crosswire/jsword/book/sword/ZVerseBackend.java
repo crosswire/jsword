@@ -118,7 +118,7 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
     public boolean contains(Key key) {
         ZVerseBackendState rafBook = null;
         try {
-            rafBook = OpenFileStateManager.getZVerseBackendState(getBookMetaData(), blockType);
+            rafBook = initState();
 
             String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
             Versification v11n = Versifications.instance().getVersification(v11nName);

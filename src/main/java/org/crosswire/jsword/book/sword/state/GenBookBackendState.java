@@ -71,8 +71,11 @@ public class GenBookBackendState extends AbstractOpenFileState {
         }
 
         try {
-            bdtRaf = new RandomAccessFile(bdtFile, FileUtil.MODE_READ);
+            bdtRaf  = new RandomAccessFile(bdtFile, FileUtil.MODE_READ);
         } catch (IOException ex) {
+            //failed to open the files, so close them now
+            IOUtil.close(bdtRaf);
+
             log.error("failed to open files", ex);
             bdtRaf = null;
         }

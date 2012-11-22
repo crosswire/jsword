@@ -88,6 +88,12 @@ public class ZVerseBackendState extends AbstractOpenFileState {
                 otTextRaf = new RandomAccessFile(otTextFile, FileUtil.MODE_READ);
                 otCompRaf = new RandomAccessFile(otCompFile, FileUtil.MODE_READ);
             } catch (FileNotFoundException ex) {
+                //failed to open the files, so close them now
+                IOUtil.close(otIdxRaf);
+                IOUtil.close(otTextRaf);
+                IOUtil.close(otCompRaf);
+
+                
                 assert false : ex;
                 log.error("Could not open OT", ex);
             }
@@ -101,6 +107,11 @@ public class ZVerseBackendState extends AbstractOpenFileState {
                 ntTextRaf = new RandomAccessFile(ntTextFile, FileUtil.MODE_READ);
                 ntCompRaf = new RandomAccessFile(ntCompFile, FileUtil.MODE_READ);
             } catch (FileNotFoundException ex) {
+                //failed to open the files, so close them now
+                IOUtil.close(ntIdxRaf);
+                IOUtil.close(ntTextRaf);
+                IOUtil.close(ntCompRaf);
+
                 assert false : ex;
                 log.error("Could not open OT", ex);
             }
