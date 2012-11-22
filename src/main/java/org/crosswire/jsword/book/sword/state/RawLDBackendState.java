@@ -100,6 +100,11 @@ public class RawLDBackendState extends AbstractOpenFileState  {
             idxRaf = new RandomAccessFile(idxFile, FileUtil.MODE_READ);
             datRaf = new RandomAccessFile(datFile, FileUtil.MODE_READ);
         } catch (IOException ex) {
+            //failed to open the files, so close them now
+            IOUtil.close(idxRaf);
+            IOUtil.close(datRaf);
+
+            
             log.error("failed to open files", ex);
             idxRaf = null;
             datRaf = null;

@@ -28,7 +28,6 @@ public class RawFileBackendState extends RawBackendState {
     private File incfile;
     private Integer incfileValue;
 
-    
     /**
      * This is default package access for forcing the use of the
      * OpenFileStateManager to manage the creation. Not doing so may result in
@@ -36,35 +35,43 @@ public class RawFileBackendState extends RawBackendState {
      * result, if they are released to the OpenFileStateManager by mistake this
      * would result in leakage
      * 
-     * @param bookMetaData the appropriate metadata for the book
+     * @param bookMetaData
+     *            the appropriate metadata for the book
      */
     RawFileBackendState(SwordBookMetaData bookMetaData) throws BookException {
-       super(bookMetaData);
+        super(bookMetaData);
     }
-    
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#isWritable()
      */
     public boolean isWritable() {
-            File incFile = getIncfile();
+        File incFile = getIncfile();
 
-            if (getOtTextFile().exists() && getOtTextFile().canRead() && getOtTextFile().canWrite() && getNtTextFile().exists()
-                    && getNtTextFile().canRead() && getNtTextFile().canWrite() && getOtIdxFile().exists() && getOtIdxFile().canRead()
-                    && getOtIdxFile().canWrite() && getNtIdxFile().exists() && getNtIdxFile().canRead() && getNtIdxFile().canWrite()
-                    && incFile.exists() && incFile.canRead() && incFile.canWrite()) {
-                return true;
-            }
-            return false;
+        if (existsReadAndWrite(getOtTextFile()) && existsReadAndWrite(getOtIdxFile()) && existsReadAndWrite(getNtTextFile())
+                && existsReadAndWrite(getNtIdxFile()) && existsReadAndWrite(incFile)) {
+            return true;
+        }
+        return false;
     }
-    
+
+    /**
+     * If file is null, then maybe we don't have an OT, so we still want to return true, because the NT might be writable
+     * @param file the file to check. 
+     * @return true if exists, readable and writable, OR if file is null
+     */
+    private boolean existsReadAndWrite(File file) {
+        return (file.exists() && file.canRead() && file.canWrite()) || file == null;
+    }
+
     private int readIncfile() throws IOException {
         int ret = -1;
-        
-        if(incfile == null) {
-            //then attempt  to initialise it
+
+        if (incfile == null) {
+            // then attempt to initialise it
             initIncFile();
         }
-        
+
         if (this.incfile != null) {
             FileInputStream fis = null;
             try {
@@ -75,8 +82,8 @@ public class RawFileBackendState extends RawBackendState {
                     throw new IOException("Incfile is not 4 bytes long");
                 }
                 ret = SwordUtil.decodeLittleEndian32(buffer, 0);
-                
-                //also store this
+
+                // also store this
                 this.incfileValue = ret;
             } catch (FileNotFoundException e) {
                 log.error("Error on writing to incfile, file should exist already!");
@@ -100,43 +107,43 @@ public class RawFileBackendState extends RawBackendState {
             this.incfile = null;
         }
     }
-    
 
     /**
      * @return the incfileValue
      */
     public int getIncfileValue() {
-        if(incfileValue == null) {
+        if (incfileValue == null) {
             try {
                 readIncfile();
             } catch (IOException e) {
                 log.error(e.getMessage(), e);
             }
         }
-        
+
         return incfileValue;
     }
 
     public void setIncfileValue(int incValue) {
         this.incfileValue = incValue;
-        
+
     }
 
     /**
      * @return the incfile
      */
     public File getIncfile() {
-        if(incfile == null) {
+        if (incfile == null) {
             initIncFile();
         }
         return incfile;
     }
 
     /**
-     * @param incfile the incfile to set
+     * @param incfile
+     *            the incfile to set
      */
     public void setIncfile(File incfile) {
         this.incfile = incfile;
     }
-    
+
 }

@@ -62,7 +62,7 @@ public class RawBackendState extends AbstractOpenFileState {
         URI ntPath = NetUtil.lengthenURI(path, File.separator + SwordConstants.FILE_NT);
         ntTextFile = new File(ntPath.getPath());
         ntIdxFile = new File(ntPath.getPath() + SwordConstants.EXTENSION_VSS);
-
+        
         // It is an error to be neither OT nor NT
         // Throwing exception, as if we can't read either the ot or nt file,
         // then we might as well give up
@@ -79,7 +79,12 @@ public class RawBackendState extends AbstractOpenFileState {
                 otIdxRaf = new RandomAccessFile(otIdxFile, fileMode);
                 otTextRaf = new RandomAccessFile(otTextFile, fileMode);
             } catch (FileNotFoundException ex) {
+                //failed to open the files, so close them now
+                IOUtil.close(otIdxRaf);
+                IOUtil.close(otTextRaf);
+                
                 assert false : ex;
+            
                 log.error("Could not open OT", ex);
                 ntIdxRaf = null;
                 ntTextRaf = null;
@@ -91,6 +96,10 @@ public class RawBackendState extends AbstractOpenFileState {
                 ntIdxRaf = new RandomAccessFile(ntIdxFile, fileMode);
                 ntTextRaf = new RandomAccessFile(ntTextFile, fileMode);
             } catch (FileNotFoundException ex) {
+                //failed to open the files, so close them now
+                IOUtil.close(ntIdxRaf);
+                IOUtil.close(ntTextRaf);
+
                 assert false : ex;
                 log.error("Could not open NT", ex);
                 ntIdxRaf = null;
