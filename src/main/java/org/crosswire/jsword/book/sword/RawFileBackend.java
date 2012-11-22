@@ -288,7 +288,7 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
 
         RawFileBackendState state = null;
         try {
-            state = this.initState();
+            state = initState();
 
             createIncfile(state);
 

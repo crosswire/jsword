@@ -173,8 +173,6 @@ public class SwordBook extends AbstractPassageBook {
     public void setAliasKey(Key alias, Key source) throws BookException {
         OpenFileState state = null;
         try {
-            // FIXME(CJB): suggested API change to force callers to call with
-            // state, so that it doesn't get closed everytime.
             state = backend.initState();
 
             backend.setAliasKey(state, alias, source);

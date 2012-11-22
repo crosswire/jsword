@@ -112,6 +112,10 @@ public class ZLDBackendState extends RawLDBackendState {
             zdxRaf = new RandomAccessFile(zdxFile, FileUtil.MODE_READ);
             zdtRaf = new RandomAccessFile(zdtFile, FileUtil.MODE_READ);
         } catch (IOException ex) {
+            //failed to open the files, so close them now
+            IOUtil.close(zdxRaf);
+            IOUtil.close(zdtRaf);
+            
             log.error("failed to open files", ex);
             zdxRaf = null;
             zdtRaf = null;
