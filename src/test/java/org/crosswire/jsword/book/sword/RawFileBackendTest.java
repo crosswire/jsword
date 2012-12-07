@@ -16,6 +16,7 @@ import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -54,11 +55,13 @@ public class RawFileBackendTest {
         backend = new RawFileBackend(swordBookMetaData, 2);
     }
 
+    @Ignore
     @Test
     public void testCreate() throws IOException, BookException {
         backend.create();
     }
 
+    @Ignore
     @Test
     public void testSetRawText() throws NoSuchVerseException, IOException, BookException {
         Verse otVerse = new Verse(BibleBook.GEN, 3, 1);
@@ -97,6 +100,7 @@ public class RawFileBackendTest {
 
     }
 
+    @Ignore
     @Test
     public void testSetAliasKey() throws NoSuchVerseException, IOException, BookException {
         Verse source = VerseFactory.fromString(v11n, "Gen 1:1");
