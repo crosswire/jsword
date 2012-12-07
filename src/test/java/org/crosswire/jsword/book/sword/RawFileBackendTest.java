@@ -15,6 +15,10 @@ import org.crosswire.jsword.passage.VerseFactory;
 import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * A Raw File format that allows for each verse to have it's own storage.
@@ -23,15 +27,15 @@ import org.crosswire.jsword.versification.system.Versifications;
  *      The copyright to this program is held by it's authors.
  * @author mbergmann
  */
-public class RawFileBackendTest extends TestCase {
+public class RawFileBackendTest {
 
     private final String modName = "TestComment";
     private File configFile = new File("testconfig.conf");
     private RawFileBackend backend = null;
     private Versification v11n;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         // AV11N(DMS): Update test to test all V11Ns
         v11n = Versifications.instance().getDefaultVersification();
         ConfigEntryTable table = new ConfigEntryTable(modName);
@@ -50,15 +54,12 @@ public class RawFileBackendTest extends TestCase {
         backend = new RawFileBackend(swordBookMetaData, 2);
     }
 
-    @Override
-    protected void tearDown() throws Exception {
-        // configFile.delete();
-    }
-
+    @Test
     public void testCreate() throws IOException, BookException {
         backend.create();
     }
 
+    @Test
     public void testSetRawText() throws NoSuchVerseException, IOException, BookException {
         Verse otVerse = new Verse(BibleBook.GEN, 3, 1);
         Verse otVerse2 = new Verse(BibleBook.LEV, 3, 5);
@@ -96,6 +97,7 @@ public class RawFileBackendTest extends TestCase {
 
     }
 
+    @Test
     public void testSetAliasKey() throws NoSuchVerseException, IOException, BookException {
         Verse source = VerseFactory.fromString(v11n, "Gen 1:1");
         Verse alias1 = VerseFactory.fromString(v11n, "Gen 1:2");
