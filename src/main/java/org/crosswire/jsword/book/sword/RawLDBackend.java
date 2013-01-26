@@ -166,7 +166,7 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
      * .Key)
      */
     public int indexOf(Key that) {
-        RawLDBackendState state;
+        RawLDBackendState state = null;
         try {
             state = initState();
             return search(state, that.getName());
@@ -174,6 +174,8 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
             return -getCardinality() - 1;
         } catch (BookException e) {
             return -getCardinality() - 1;
+        } finally {
+            IOUtil.close(state);
         }
     }
 

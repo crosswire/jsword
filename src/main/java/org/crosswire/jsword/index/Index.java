@@ -75,4 +75,9 @@ public interface Index {
      * @return the current search modifier, or null if there is not one.
      */
     SearchModifier getSearchModifier();
+
+    /**
+     * Closes resources related to the index
+     */
+    void close();
 }

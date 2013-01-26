@@ -59,11 +59,17 @@ public class ZVerseBackendState extends AbstractOpenFileState {
     private byte[] lastUncompressed;
     private SwordBookMetaData bookMetaData;
 
-    public ZVerseBackendState(SwordBookMetaData bookMetaData, BlockType blockType) throws BookException {
+    /**
+     * This is default package access for forcing the use of the
+     * OpenFileStateManager to manage the creation. Not doing so may result in
+     * new instances of OpenFileState being created for no reason, and as a
+     * result, if they are released to the OpenFileStateManager by mistake this
+     * would result in leakage
+     * 
+     * @param bookMetaData the appropriate metadata for the book
+     */
+     ZVerseBackendState(SwordBookMetaData bookMetaData, BlockType blockType) throws BookException {
         this.bookMetaData = bookMetaData;
-        // FIXME(CJB): this can now be optimized just to open the one testament?
-        // although you'd then pay the penalty of having ranges spanning
-        // multiple testaments...
         URI path = SwordUtil.getExpandedDataPath(bookMetaData);
         String otAllButLast = NetUtil.lengthenURI(path, File.separator + SwordConstants.FILE_OT + '.' + blockType.getIndicator() + SUFFIX_PART1).getPath();
         File otIdxFile = new File(otAllButLast + SUFFIX_INDEX);
@@ -82,6 +88,12 @@ public class ZVerseBackendState extends AbstractOpenFileState {
                 otTextRaf = new RandomAccessFile(otTextFile, FileUtil.MODE_READ);
                 otCompRaf = new RandomAccessFile(otCompFile, FileUtil.MODE_READ);
             } catch (FileNotFoundException ex) {
+                //failed to open the files, so close them now
+                IOUtil.close(otIdxRaf);
+                IOUtil.close(otTextRaf);
+                IOUtil.close(otCompRaf);
+
+                
                 assert false : ex;
                 log.error("Could not open OT", ex);
             }
@@ -95,6 +107,11 @@ public class ZVerseBackendState extends AbstractOpenFileState {
                 ntTextRaf = new RandomAccessFile(ntTextFile, FileUtil.MODE_READ);
                 ntCompRaf = new RandomAccessFile(ntCompFile, FileUtil.MODE_READ);
             } catch (FileNotFoundException ex) {
+                //failed to open the files, so close them now
+                IOUtil.close(ntIdxRaf);
+                IOUtil.close(ntTextRaf);
+                IOUtil.close(ntCompRaf);
+
                 assert false : ex;
                 log.error("Could not open OT", ex);
             }
