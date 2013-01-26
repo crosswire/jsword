@@ -13,6 +13,9 @@ import org.crosswire.jsword.versification.BookName;
 import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
+import org.junit.Test;
+
+import static org.junit.Assert.assertFalse;
 
 /**
  * Test simple functionality across multiple backends, to ensure that all types
@@ -23,7 +26,7 @@ import org.jdom.output.XMLOutputter;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class BackendTest extends TestCase {
+public class BackendTest {
     private static final org.crosswire.common.util.Logger LOGGER = org.crosswire.common.util.Logger.getLogger(BackendTest.class);
 
     /**
@@ -32,6 +35,7 @@ public class BackendTest extends TestCase {
      * @throws Exception
      *             an uncaught, failing, exception
      */
+    @Test
     public void testBackendKJVTextZ() throws Exception {
         String version = "KJV";
         String reference = "Romans 1:1-3";
@@ -46,6 +50,7 @@ public class BackendTest extends TestCase {
      * @throws Exception
      *             an uncaught, failing, exception
      */
+    @Test
     public void testBackendESV() throws Exception {
         String version = "ESV";
         String reference = "Romans 1:1-3";
@@ -60,6 +65,7 @@ public class BackendTest extends TestCase {
      * @throws Exception
      *             an uncaught, failing, exception
      */
+    @Test
     public void testBackendESVFullChapter() throws Exception {
         String version = "ESV";
         String reference = "Romans 1";
@@ -74,6 +80,7 @@ public class BackendTest extends TestCase {
      * @throws Exception
      *             an uncaught, failing, exception
      */
+    @Test
     public void testBackendESV1AndFollowing() throws Exception {
         String version = "ESV";
         String reference = "Romans 1:1-ff";
@@ -88,6 +95,7 @@ public class BackendTest extends TestCase {
      * @throws Exception
      *             an uncaught, failing, exception
      */
+    @Test
     public void testBackendCrossChapterBoundary() throws Exception {
         String version = "ESV";
         String reference = "Rom 1:32-Rom:2:2";
@@ -106,6 +114,7 @@ public class BackendTest extends TestCase {
      * @throws Exception
      *             an uncaught, failing, exception
      */
+    @Test
     public void testBackendMiddleChapter() throws Exception {
         String version = "ESV";
         String reference = "Rom 1:2-1:31";
@@ -123,6 +132,7 @@ public class BackendTest extends TestCase {
      * @throws Exception
      *             an uncaught, failing, exception
      */
+    @Test
     public void testBackendMiddleToEnd() throws Exception {
         String version = "ESV";
         String reference = "Rom 1:5-ff";
@@ -143,6 +153,7 @@ public class BackendTest extends TestCase {
      * @throws Exception
      *             an uncaught, failing, exception
      */
+    @Test
     public void testBackend2ChaptersStartMiddle() throws Exception {
         String version = "ESV";
         String reference = "Rom 1:5-3:14";
@@ -163,6 +174,7 @@ public class BackendTest extends TestCase {
      * @throws Exception
      *             an uncaught, failing, exception
      */
+    @Test
     public void testBackend2ChaptersStartVerse1() throws Exception {
         String version = "ESV";
         String reference = "Rom 1:1-3:14";
@@ -185,6 +197,7 @@ public class BackendTest extends TestCase {
      * @throws Exception
      *             an uncaught, failing, exception
      */
+    @Test
     public void testBackend2ChaptersStartVerse0() throws Exception {
         String version = "ESV";
         String reference = "Rom 1:0-3:14";
@@ -206,6 +219,7 @@ public class BackendTest extends TestCase {
      * @throws Exception
      *             an uncaught, failing, exception
      */
+    @Test
     public void testBackendMHCCCommentsRaw() throws Exception {
         String version = "MHCC";
         String reference = "Romans 1:1-3";
@@ -220,6 +234,7 @@ public class BackendTest extends TestCase {
      * @throws Exception
      *             an uncaught, failing, exception
      */
+    @Test
     public void testBackendGenevaCommentsZ() throws Exception {
         String version = "Geneva";
         String reference = "Romans 1:1-3";
@@ -234,6 +249,7 @@ public class BackendTest extends TestCase {
      * @throws Exception
      *             an uncaught, failing, exception
      */
+    @Test
     public void testBackendStrongsGreekRawLd() throws Exception {
         String version = "StrongsGreek";
         String reference = "G3588";
@@ -248,6 +264,7 @@ public class BackendTest extends TestCase {
      * @throws Exception
      *             an uncaught, failing, exception
      */
+    @Test
     public void testBackendNaveZld() throws Exception {
         String version = "Nave";
         String reference = "AARON";
@@ -262,6 +279,7 @@ public class BackendTest extends TestCase {
      * @throws Exception
      *             an uncaught, failing, exception
      */
+    @Test
     public void testBackendJosephus() throws Exception {
         String version = "Josephus";
         String assertion = "calamity of our whole nation; for those that were fond of";
@@ -281,6 +299,7 @@ public class BackendTest extends TestCase {
      * @throws Exception
      *             an uncaught, failing, exception
      */
+    @Test
     public void testBackendOt1Nt2Devotional() throws Exception {
         String version = "ot1nt2";
         String assertion = "Genesis 1-2";
