@@ -301,8 +301,13 @@ public enum BibleBook {
     private static BibleNames getBibleNamesForLocale(Locale locale) {
         BibleNames bibleNames = localizedBibleNames.get(locale);
         if(bibleNames == null) {
-            bibleNames = new BibleNames(locale);
-            localizedBibleNames.put(locale, bibleNames);
+            synchronized (BibleBook.class) {
+                bibleNames = localizedBibleNames.get(locale);
+                if(bibleNames == null) {
+                    bibleNames = new BibleNames(locale);
+                    localizedBibleNames.put(locale, bibleNames);
+                }
+            }
         }
         
         return bibleNames;
