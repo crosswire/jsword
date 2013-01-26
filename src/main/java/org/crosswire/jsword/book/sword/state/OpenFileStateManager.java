@@ -28,6 +28,7 @@ import org.crosswire.jsword.book.sword.SwordBookMetaData;
  */
 public class OpenFileStateManager {
     private static volatile Map<SwordBookMetaData,Queue<OpenFileState>> metaToStates = new HashMap<SwordBookMetaData,Queue<OpenFileState>>();
+    private static volatile boolean shuttingDown = false;
 
     /**
      * prevent instantiation
@@ -37,6 +38,8 @@ public class OpenFileStateManager {
     }
 
     public static RawBackendState getRawBackendState(SwordBookMetaData metadata) throws BookException {
+        ensureNotShuttingDown();
+        
         RawBackendState state = getInstance(metadata);
         if (state == null) {
             state = new RawBackendState(metadata);
@@ -46,6 +49,8 @@ public class OpenFileStateManager {
     }
 
     public static RawFileBackendState getRawFileBackendState(SwordBookMetaData metadata) throws BookException {
+        ensureNotShuttingDown();
+
         RawFileBackendState state = getInstance(metadata);
         if (state == null) {
             state = new RawFileBackendState(metadata);
@@ -55,6 +60,9 @@ public class OpenFileStateManager {
     }
 
     public static GenBookBackendState getGenBookBackendState(SwordBookMetaData metadata) throws BookException {
+        ensureNotShuttingDown();
+
+        
         GenBookBackendState state = getInstance(metadata);
         if (state == null) {
             state = new GenBookBackendState(metadata);
@@ -63,6 +71,8 @@ public class OpenFileStateManager {
     }
 
     public static RawLDBackendState getRawLDBackendState(SwordBookMetaData metadata) throws BookException {
+        ensureNotShuttingDown();
+
         RawLDBackendState state = getInstance(metadata);
         if (state == null) {
             state = new RawLDBackendState(metadata);
@@ -72,6 +82,8 @@ public class OpenFileStateManager {
     }
 
     public static ZLDBackendState getZLDBackendState(SwordBookMetaData metadata) throws BookException {
+        ensureNotShuttingDown();
+
         ZLDBackendState state = getInstance(metadata);
         if (state == null) {
             state = new ZLDBackendState(metadata);
@@ -81,6 +93,8 @@ public class OpenFileStateManager {
     }
 
     public static ZVerseBackendState getZVerseBackendState(SwordBookMetaData metadata, BlockType blockType) throws BookException {
+        ensureNotShuttingDown();
+
         ZVerseBackendState state = getInstance(metadata);
         if (state == null) {
             state = new ZVerseBackendState(metadata, blockType);
@@ -117,6 +131,26 @@ public class OpenFileStateManager {
         // ignore if we couldn't offer to the queue
         if (!offered) {
             fileState.releaseResources();
+        }
+    }
+    
+    /**
+     * Shuts down all open files
+     */
+    public static void shutDown() {
+        shuttingDown  = true;
+        for(Queue<OpenFileState> e : metaToStates.values()) {
+            OpenFileState state = null;
+            while((state = e.poll()) != null) {
+                state.releaseResources();
+            }
+        }
+    }
+
+
+    private static void ensureNotShuttingDown() throws BookException {
+        if(shuttingDown) {
+            throw new BookException("Unable to read book, application is shutting down.");
         }
     }
 }

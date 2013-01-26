@@ -66,11 +66,12 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
         Versification v11n = Versifications.instance().getVersification(v11nName);
         Verse verse = KeyUtil.getVerse(key, v11n);
 
+        RawBackendState initState = null;
         try {
             int index = v11n.getOrdinal(verse);
             Testament testament = v11n.getTestament(index);
             index = v11n.getTestamentOrdinal(index);
-            RawBackendState initState = initState();
+            initState = initState();
             RandomAccessFile idxRaf = testament == Testament.NEW ? initState.getNtIdxRaf() : initState.getOtIdxRaf();
 
             // If this is a single testament Bible, return nothing.
@@ -85,6 +86,8 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
             return false;
         } catch (BookException e) {
             return false;
+        } finally {
+            OpenFileStateManager.release(initState);
         }
     }
 
@@ -131,7 +134,7 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
     public boolean isWritable() {
         RawBackendState rawBackendState = null;
         try {
-        rawBackendState = new RawBackendState(getBookMetaData());
+        rawBackendState = initState();
         return rawBackendState.isWritable();
         } catch (BookException e) {
             return false;

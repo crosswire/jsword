@@ -52,7 +52,16 @@ public class RawLDBackendState extends AbstractOpenFileState  {
     private RandomAccessFile datRaf;
     private SwordBookMetaData bookMetaData;
 
-    public RawLDBackendState(SwordBookMetaData bookMetaData) throws BookException {
+    /**
+     * This is default package access for forcing the use of the
+     * OpenFileStateManager to manage the creation. Not doing so may result in
+     * new instances of OpenFileState being created for no reason, and as a
+     * result, if they are released to the OpenFileStateManager by mistake this
+     * would result in leakage
+     * 
+     * @param bookMetaData the appropriate metadata for the book
+     */
+     RawLDBackendState(SwordBookMetaData bookMetaData) throws BookException {
         this.bookMetaData = bookMetaData;
         URI path = null;
         try {
@@ -91,6 +100,11 @@ public class RawLDBackendState extends AbstractOpenFileState  {
             idxRaf = new RandomAccessFile(idxFile, FileUtil.MODE_READ);
             datRaf = new RandomAccessFile(datFile, FileUtil.MODE_READ);
         } catch (IOException ex) {
+            //failed to open the files, so close them now
+            IOUtil.close(idxRaf);
+            IOUtil.close(datRaf);
+
+            
             log.error("failed to open files", ex);
             idxRaf = null;
             datRaf = null;
