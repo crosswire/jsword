@@ -25,6 +25,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import org.crosswire.jsword.internationalisation.LocaleProviderManager;
+
 /**
  * A BibleBook is a book of the Bible. It may or may not be canonical.
  * Note that the ordering of these books varies from one Versification to another.
@@ -218,7 +220,7 @@ public enum BibleBook {
      * @return The requested BookName
      */
     public BookName getBookName() {
-        return bibleNames.getBookName(this);
+        return getLocalisedBibleNames().getBookName(this);
     }
 
     /**
@@ -230,7 +232,7 @@ public enum BibleBook {
      * @return The full name of the book
      */
     public String getPreferredName() {
-        return bibleNames.getPreferredName(this);
+        return getLocalisedBibleNames().getPreferredName(this);
     }
 
     /**
@@ -242,7 +244,7 @@ public enum BibleBook {
      * @return The full name of the book
      */
     public String getLongName() {
-        return bibleNames.getLongName(this);
+        return getLocalisedBibleNames().getLongName(this);
     }
 
     /**
@@ -254,7 +256,7 @@ public enum BibleBook {
      * @return The short name of the book
      */
     public String getShortName() {
-        return bibleNames.getShortName(this);
+        return getLocalisedBibleNames().getShortName(this);
     }
 
     /**
@@ -270,7 +272,7 @@ public enum BibleBook {
             book = fromOSIS(find);
 
             if (book == null) {
-                book = bibleNames.getBook(find);
+                book = getLocalisedBibleNames().getBook(find);
             }
 
             if (book == null && englishBibleNames != null) {
@@ -278,6 +280,37 @@ public enum BibleBook {
             }
         }
         return book;
+    }
+
+    /**
+     * Gets the localised bible names, based on the {@link LocaleProviderManager}
+     *
+     * @return the localised bible names
+     */
+    private static BibleNames getLocalisedBibleNames() {
+        //get the current Locale
+        return getBibleNamesForLocale(LocaleProviderManager.getLocale());
+    }
+
+    /**
+     * Gets the bible names for a specific locale.
+     *
+     * @param locale the locale
+     * @return the bible names for locale
+     */
+    private static BibleNames getBibleNamesForLocale(Locale locale) {
+        BibleNames bibleNames = localizedBibleNames.get(locale);
+        if(bibleNames == null) {
+            synchronized (BibleBook.class) {
+                bibleNames = localizedBibleNames.get(locale);
+                if(bibleNames == null) {
+                    bibleNames = new BibleNames(locale);
+                    localizedBibleNames.put(locale, bibleNames);
+                }
+            }
+        }
+        
+        return bibleNames;
     }
 
     /**
@@ -300,13 +333,8 @@ public enum BibleBook {
      * Load up the resources for Bible book and section names.
      */
     private static void initialize() {
-        Locale locale = Locale.getDefault();
-        bibleNames = new BibleNames(locale);
-
-        // If the locale is not the program's default get it for alternates
-        if (!locale.getLanguage().equals(Locale.ENGLISH.getLanguage())) {
-            englishBibleNames = new BibleNames(Locale.ENGLISH);
-        }
+        //Always load up the English Locale Bible names as we can't guarantee how many different locales we are supporting.
+        englishBibleNames = getBibleNamesForLocale(Locale.ENGLISH);
     }
 
     /**
@@ -334,12 +362,12 @@ public enum BibleBook {
     /** The universe of ordered books, allowing for efficient previous next */
     private static BibleBook[] books = BibleBook.values();
 
-    /** Localized BibleNames */
-    private static BibleNames bibleNames;
-
+    /** we cache the Localised Bible Names because there is quite a bit of processing going on for each individual Locale */
+    private static Map<Locale, BibleNames> localizedBibleNames = new HashMap<Locale,BibleNames>();
+    
     /** English BibleNames, or null when using the program's default locale */
     private static BibleNames englishBibleNames;
-
+    
     static {
         for (BibleBook book : BibleBook.values()) {
             osisMap.put(BookName.normalize(book.getOSIS(), Locale.ENGLISH), book);
