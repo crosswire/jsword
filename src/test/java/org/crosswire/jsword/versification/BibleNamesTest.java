@@ -210,4 +210,9 @@ public class BibleNamesTest extends TestCase {
     public void testLoadChineseSimplified() {
         new BibleNames(new Locale("zh"));
     }
+    
+
+    public void testLoadSwahili() {
+        new BibleNames(new Locale("sw"));
+    }
 }
