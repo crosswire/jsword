@@ -23,6 +23,7 @@ package org.crosswire.jsword.examples;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -122,7 +123,7 @@ public class StrongsAnalysis {
                     }
 
                     // now we can actually store the mapping
-                    sms.add(buffer.toString(), text);
+                    sms.add(buffer.toString(), text, new Locale(book.getLanguage().getCode()));
                 }
             }
         }

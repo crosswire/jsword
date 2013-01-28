@@ -53,15 +53,16 @@ public class StrongsMapSet {
      *            the Strong's Number
      * @param representation
      *            a way the Strong's number is represented.
+     * @param locale the locale of the book being indexed
      */
-    public void add(String strongsNumber, String representation) {
+    public void add(String strongsNumber, String representation, Locale locale) {
         Set<String> reps = map.get(strongsNumber);
         if (reps == null) {
             reps = new TreeSet<String>();
             map.put(strongsNumber, reps);
         }
         // TODO(DMS): change parameter to include the locale of the Book.
-        reps.add(representation.toLowerCase(Locale.getDefault()));
+        reps.add(representation.toLowerCase(locale));
     }
 
     /**

@@ -25,6 +25,8 @@ package org.crosswire.common.icu;
 import java.io.Serializable;
 import java.util.Locale;
 
+import org.crosswire.jsword.internationalisation.LocaleProviderManager;
+
 /**
  * NumberShaper changes numbers from one number system to another. That is, the
  * numbers 0-9 have different representations in some locales. This means that
@@ -56,17 +58,6 @@ public class NumberShaper implements Serializable {
      * Create a shaper that is appropriate for the user's locale.
      */
     public NumberShaper() {
-        this(Locale.getDefault());
-    }
-
-    /**
-     * Create a shaper that is appropriate for the given locale.
-     * 
-     * @param locale
-     *            the requested Locale
-     */
-    public NumberShaper(Locale locale) {
-        this.locale = locale;
         this.nineShape = '\u0000';
     }
 
@@ -284,6 +275,7 @@ public class NumberShaper implements Serializable {
     private char getNine() {
         if (nineShape == '\u0000') {
             nineShape = '9';
+            Locale locale = LocaleProviderManager.getLocale();
             if ("fa".equals(locale.getLanguage())) {
                 nineShape = '\u06f9';
             } else if ("ar".equals(locale.getLanguage())) {
@@ -293,10 +285,6 @@ public class NumberShaper implements Serializable {
         return nineShape;
     }
 
-    /**
-     * The locale for this shaper.
-     */
-    private Locale locale;
 
     /**
      * Nine for this shaper.

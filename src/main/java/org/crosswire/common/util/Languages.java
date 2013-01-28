@@ -21,9 +21,14 @@
  */
 package org.crosswire.common.util;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+
+import org.crosswire.jsword.book.Books;
+import org.crosswire.jsword.internationalisation.LocaleProviderManager;
 
 /**
  * A utility class that converts ISO-639 codes or locales to their "friendly"
@@ -55,7 +60,7 @@ public class Languages {
             if (DEFAULT_LANG_CODE.equals(code) || UNKNOWN_LANG_CODE.equals(code)) {
                 return true;
             }
-            commonLangs.getString(code);
+            getLocalisedCommonLanguages().getString(code);
             return true;
         } catch (MissingResourceException e) {
             return false;
@@ -76,7 +81,7 @@ public class Languages {
     public static String getLanguageName(String iso639Code) {
         String code = getLanguageCode(iso639Code);
         try {
-            return commonLangs.getString(code);
+            return getLocalisedCommonLanguages().getString(code);
         } catch (MissingResourceException e) {
             try {
                 return allLangs.getString(code);
@@ -120,22 +125,45 @@ public class Languages {
         return lookup;
     }
 
+    /**
+     * Gets the localised common languages. Caching here, is done to prevent extra logging 
+     * happening every time we miss the iso639 ResourceBundle
+     * and end up having to lookup the iso639full
+     * 
+     * @return the localised common languages
+     */
+    private static ResourceBundle getLocalisedCommonLanguages() {
+        Locale locale = LocaleProviderManager.getLocale();
+        ResourceBundle langs = localisedCommonLanguages.get(locale);
+        if(langs == null) {
+            synchronized(Languages.class) {
+                langs = localisedCommonLanguages.get(locale);
+                if(langs == null) {
+                    langs = initLanguages(locale);
+                    localisedCommonLanguages.put(locale, langs);
+                }
+            }
+        }
+        return langs;
+    }
+    
+    private static ResourceBundle initLanguages(Locale locale) {
+        try {
+            return ResourceBundle.getBundle("iso639", locale, CWClassLoader.instance());
+        } catch (MissingResourceException e) {
+            // try the iso 639 full
+            log.info("Unable to find language in iso639 bundle", e);
+        }
+
+        // this is incorrect but see JS-195
+        return ResourceBundle.getBundle("iso639full", locale, CWClassLoader.instance());
+    }
+
+    
     public static final String DEFAULT_LANG_CODE = "en";
     private static final String UNKNOWN_LANG_CODE = "und";
-
-    private static/* final */ResourceBundle commonLangs;
+    private static final Logger log = Logger.getLogger(Books.class);
+    
     private static/* final */ResourceBundle allLangs;
-    static {
-        try {
-            commonLangs = ResourceBundle.getBundle("iso639", Locale.getDefault(), CWClassLoader.instance());
-        } catch (MissingResourceException e) {
-            assert false;
-        }
-        try {
-            // this is incorrect but see JS-195
-            commonLangs = ResourceBundle.getBundle("iso639full", Locale.getDefault(), CWClassLoader.instance());
-        } catch (MissingResourceException e) {
-            assert false;
-        }
-    }
+    private static Map<Locale, ResourceBundle> localisedCommonLanguages = new HashMap<Locale, ResourceBundle>();
 }
