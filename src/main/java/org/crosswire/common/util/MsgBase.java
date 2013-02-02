@@ -29,6 +29,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.crosswire.common.icu.NumberShaper;
+import org.crosswire.jsword.internationalisation.LocaleProviderManager;
 
 /**
  * A base class for implementing type safe internationalization (i18n) that is
@@ -46,7 +47,6 @@ public class MsgBase {
      */
     protected MsgBase() {
         this.shaper = new NumberShaper();
-        loadResources();
     }
 
     /**
@@ -67,57 +67,92 @@ public class MsgBase {
         return shaper.shape(MessageFormat.format(rawMessage, params));
     }
 
-    /**
-     * Initialize any resource bundles
-     */
-    protected final void loadResources() {
-        Class<? extends MsgBase> implementingClass = getClass();
-        String className = implementingClass.getName();
-        String shortClassName = ClassUtil.getShortClassName(className);
-
-        // Class lock is needed around static resourceMap
-        synchronized (MsgBase.class) {
-            // see if it is in the cache
-            resources = resourceMap.get(className);
-
-            // if not then create it and put it into the cache
-            if (resources == null) {
-                Locale defaultLocale = Locale.getDefault();
-                try {
-                    resources = ResourceBundle.getBundle(shortClassName, defaultLocale, CWClassLoader.instance(implementingClass));
-                    resourceMap.put(className, resources);
-                } catch (MissingResourceException ex) {
-                    log.warn("Assuming key is the default message " + className);
-                }
-            }
-            if (resources == null) {
-                log.error("Missing resources: Locale=" + Locale.getDefault().toString() + " class=" + className);
-            }
-        }
-    }
-
     private String obtainString(String key) {
         try {
-            if (resources != null) {
-                return resources.getString(key);
+            if (getLocalisedResources() != null) {
+                return getLocalisedResources().getString(key);
             }
         } catch (MissingResourceException ex) {
-            log.error("Missing resource: Locale=" + Locale.getDefault().toString() + " name=" + key + " package=" + getClass().getName());
+            log.error("Missing resource: Locale=" + LocaleProviderManager.getLocale().toString() + " name=" + key + " package=" + getClass().getName());
         }
 
         return key;
     }
 
-    /**
-     * Resource map maintains a mapping of class names to resources found by
-     * that name.
-     */
-    private static Map<String, ResourceBundle> resourceMap = new HashMap<String, ResourceBundle>();
+    private ResourceBundle getLocalisedResources() {
+        Class<? extends MsgBase> implementingClass = getClass();
+        String className = implementingClass.getName();
+        String shortClassName = ClassUtil.getShortClassName(className);
+
+        Locale currentUserLocale = LocaleProviderManager.getLocale();
+        Map<String,ResourceBundle> localisedResourceMap = getLazyLocalisedResourceMap(currentUserLocale);
+        
+        ResourceBundle resourceBundle = localisedResourceMap.get(className);
+        if(resourceBundle == null) {
+            resourceBundle = getResourceBundleForClass(implementingClass, className, shortClassName, currentUserLocale, localisedResourceMap);
+        }
+
+        //if for some reason, we are still looking at a null, then we can only do our best, which is to return the English Locale.
+        if(resourceBundle == null) {
+            resourceBundle  = getResourceBundleForClass(implementingClass, className, shortClassName, Locale.ENGLISH, localisedResourceMap);
+        }
+        
+        //if we're still looking at a null, there is definitely nothing else we can do, so throw an exception
+        if(resourceBundle == null) {
+            log.error("Missing resources: Locale=" + currentUserLocale.toString() + " class=" + className);
+            throw new MissingResourceException("Unable to find the language resources.", className, shortClassName);
+        }
+        return resourceBundle;
+    }
 
     /**
-     * If there is any internationalization to be done, it is thru this
+     * Gets the resource bundle for a particular class
+     *
+     * @param implementingClass the implementing class
+     * @param className the class name
+     * @param shortClassName the short class name
+     * @param currentUserLocale the current user locale
+     * @param localisedResourceMap the localised resource map
+     * @return the resource bundle for class
      */
-    private ResourceBundle resources;
+    private ResourceBundle getResourceBundleForClass(Class<? extends MsgBase> implementingClass, String className, String shortClassName, Locale currentUserLocale,
+            Map<String,ResourceBundle> localisedResourceMap) {
+        ResourceBundle resourceBundle;
+        synchronized (getClass()) {
+            resourceBundle = localisedResourceMap.get(className);
+            if(resourceBundle == null) {
+                try {
+                    resourceBundle = ResourceBundle.getBundle(shortClassName, currentUserLocale, CWClassLoader.instance(implementingClass));
+                    localisedResourceMap.put(className, resourceBundle);
+                } catch (MissingResourceException ex) {
+                    log.warn("Assuming key is the default message " + className);
+                }
+            }
+        }
+        return resourceBundle;
+    }
+
+    /**
+     * Gets the localised resource map, initialising it if it doesn't already exist
+     *
+     * @param currentUserLocale the current user locale
+     * @return the lazy localised resource map
+     */
+    private Map<String,ResourceBundle> getLazyLocalisedResourceMap(Locale currentUserLocale) {
+        Map<String,ResourceBundle> localisedResourceMap = localeToResourceMap.get(currentUserLocale);
+        if(localisedResourceMap == null) {
+            synchronized(MsgBase.class) {
+                localisedResourceMap = localeToResourceMap.get(currentUserLocale);
+                if(localisedResourceMap == null) {
+                    localisedResourceMap = new HashMap<String, ResourceBundle>(512);
+                    localeToResourceMap.put(currentUserLocale, localisedResourceMap);
+                }
+            }
+        }
+        return localisedResourceMap;
+    }
+    
+    private static Map<Locale, Map<String,ResourceBundle>> localeToResourceMap = new HashMap<Locale, Map<String, ResourceBundle>>();
 
     /** Internationalize numbers */
     private NumberShaper shaper;

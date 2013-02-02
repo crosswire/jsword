@@ -26,6 +26,10 @@ import java.util.Locale;
 
 import junit.framework.TestCase;
 
+import org.crosswire.jsword.internationalisation.DefaultLocaleProvider;
+import org.crosswire.jsword.internationalisation.LocaleProvider;
+import org.crosswire.jsword.internationalisation.LocaleProviderManager;
+
 /**
  * JUnit test of NumberShaper.
  * 
@@ -38,7 +42,15 @@ public class NumberShaperTest extends TestCase {
     private static final String easternArabicDigits = "\u06f0\u06f1\u06f2\u06f3\u06f4\u06f5\u06f6\u06f7\u06f8\u06f9";
 
     public void testShape() {
-        NumberShaper shaper = new NumberShaper(new Locale("fa"));
+        //This presumably prevents tests from running in parallel, but can't do much about this, given all the statics.
+        LocaleProviderManager.setLocaleProvider(new LocaleProvider() {
+            public Locale getUserLocale() {
+                return new Locale("fa");
+            }
+        });
+        
+        //test the number shaper
+        NumberShaper shaper = new NumberShaper();
         assertEquals(easternArabicDigits, shaper.shape(europeanDigits));
         // Note: the following depends upon whether icu is on the classpath
         if (shaper.canUnshape()) {
@@ -48,4 +60,8 @@ public class NumberShaperTest extends TestCase {
         }
     }
 
+    @Override
+    protected void tearDown()  {
+        LocaleProviderManager.setLocaleProvider(new DefaultLocaleProvider());
+    }
 }
