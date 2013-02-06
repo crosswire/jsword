@@ -222,8 +222,6 @@ public final class Logger {
 
     // Private method to infer the caller's class and method names
     private void doLogging(Level theLevel, String message, Throwable th) {
-        initialize();
-
         //now check whether we should do any work: if 
         if(!shouldLog(theLevel) ) {
             return;
@@ -282,7 +280,8 @@ public final class Logger {
      * @return true, if successful
      */
     public boolean shouldLog(Level theLevel) {
-        return theLevel.intValue() >= this.logger.getLevel().intValue();
+        initialize();
+        return this.logger.isLoggable(theLevel);
     }
 
     private synchronized void initialize() {
