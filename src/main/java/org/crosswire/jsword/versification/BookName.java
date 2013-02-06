@@ -166,7 +166,7 @@ public final class BookName {
         }
 
         // or a short version
-        if (normalizedShortName.startsWith(normalizedName) || normalizedName.startsWith(normalizedShortName)) {
+        if (normalizedShortName.startsWith(normalizedName) || (normalizedShortName.length()>0 && normalizedName.startsWith(normalizedShortName))) {
             return true;
         }
 
