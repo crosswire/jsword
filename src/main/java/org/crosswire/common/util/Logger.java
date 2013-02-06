@@ -222,8 +222,6 @@ public final class Logger {
 
     // Private method to infer the caller's class and method names
     private void doLogging(Level theLevel, String message, Throwable th) {
-        initialize();
-
         //now check whether we should do any work: if 
         if(!shouldLog(theLevel) ) {
             return;
@@ -275,14 +273,14 @@ public final class Logger {
     }
 
     /**
-     * Should log, returns true if theLevel (i.e. the value passed in by calling the debug() or warn(), etc.) 
-     * is more severe than the current logger level. More severe means a higher intValue() for {@link Level}
+     * Should log, returns true if theLevel should be logged by this logger. See {@link java.util.logging.Logger#isLoggable(Level) for more details}
      *
      * @param theLevel the the level
      * @return true, if successful
      */
     public boolean shouldLog(Level theLevel) {
-        return theLevel.intValue() >= this.logger.getLevel().intValue();
+        initialize();
+        return this.logger.isLoggable(theLevel);
     }
 
     private synchronized void initialize() {
