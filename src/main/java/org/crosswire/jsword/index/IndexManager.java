@@ -66,4 +66,9 @@ public interface IndexManager {
      * you created.
      */
     void deleteIndex(Book book) throws BookException;
+
+    /**
+     * Close all indexes associated with this Index Manager
+     */
+    void closeAllIndexes();
 }
