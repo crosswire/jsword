@@ -26,8 +26,8 @@ import java.io.IOException;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.TermAttribute;
 import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.Book;
-import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.study.StrongsNumber;
 
 /**
@@ -65,28 +65,33 @@ public class StrongsNumberFilter extends AbstractBookTokenFilter {
         // 1 or more letters
         // then create a token without the suffix and also for the whole.
         if (number == null) {
-            if (input.incrementToken()) {
-                try {
-                    String tokenText = termAtt.term();
+            // Need to loop over invalid tokens
+            while (input.incrementToken()) {
+                String tokenText = termAtt.term();
 
-                    number = new StrongsNumber(tokenText);
-                    String s = number.getStrongsNumber();
+                number = new StrongsNumber(tokenText);
 
-                    // Was it a Strong's Number? If so it transformed.
-                    if (!s.equals(tokenText)) {
-                        termAtt.setTermBuffer(s);
+                // Skip invalid Strong's Numbers.
+                // Still need to return true as there may be more tokens to filter.
+                if (!number.isValid()) {
+                    // TRANSLATOR: User error condition: Indicates that what was given is not a Strong's Number. {0} is a placeholder for the bad Strong's Number.
+                    log.warn(JSMsg.gettext("Not a valid Strong's Number \"{0}\"", tokenText));
 
-                        // If the number had a part keep it around for the next
-                        // call
-                        if (!number.isPart()) {
-                            number = null;
-                        }
-                    }
-                } catch (BookException e) {
-                    log.error(e.getDetailedMessage());
+                    // Go get the next token
+                    continue;
                 }
 
-                // We are providing a term
+                String s = number.getStrongsNumber();
+                termAtt.setTermBuffer(s);
+
+                // If the number had a part keep it around for the next call
+                // DMS(TODO): if there is a part, then treat as a synonym,
+                //      setting the same position increment.
+                if (!number.isPart()) {
+                    number = null;
+                }
+
+                // incrementToken returned a value. There may be more input.
                 return true;
             }
 
@@ -98,7 +103,8 @@ public class StrongsNumberFilter extends AbstractBookTokenFilter {
         termAtt.setTermBuffer(number.getFullStrongsNumber());
         // We are done with the Strong's Number so mark it as used
         number = null;
-        // We are providing a term
+        // We are working on a value returned by incrementToken.
+        // There may be more input.
         return true;
     }
 
