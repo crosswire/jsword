@@ -240,7 +240,7 @@ public class StrongsNumber {
             language = 'H';
             break;
         default:
-            return false;
+            // pass through
         }
 
         // Get the number after the G or H
