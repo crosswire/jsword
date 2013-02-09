@@ -44,6 +44,7 @@ import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.basic.AbstractBook;
 import org.crosswire.jsword.book.basic.DefaultBookMetaData;
 import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
+import org.crosswire.jsword.internationalisation.LocaleProviderManager;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
@@ -72,7 +73,9 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
 
         hash = new TreeMap<Key, String>();
 
-        Locale defaultLocale = Locale.getDefault();
+        //although we're getting this from the LocaleProviderManager, we're still setting 
+        //the language on the metadata once, so won't cope for dynamic changes
+        Locale defaultLocale = LocaleProviderManager.getLocale();
         ResourceBundle prop = ResourceBundle.getBundle(setname, defaultLocale, CWClassLoader.instance(ReadingsBookDriver.class));
 
         // TRANSLATOR: The default name for JSword's Reading plan.
@@ -85,7 +88,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
 
         DefaultBookMetaData bmd = new DefaultBookMetaData(driver, name, type);
         bmd.setInitials(setname);
-        bmd.setLanguage(new Language(Locale.getDefault().getLanguage()));
+        bmd.setLanguage(new Language(defaultLocale.getLanguage()));
         setBookMetaData(bmd);
 
         // Go through the current year
@@ -110,7 +113,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
 
         global = new SetKeyList(hash.keySet(), getName());
     }
-
+    
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.PreferredKey#getPreferred()
      */
