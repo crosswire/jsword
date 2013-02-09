@@ -1,3 +1,23 @@
+/**
+ * Distribution License:
+ * JSword is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License, version 2.1 as published by
+ * the Free Software Foundation. This program is distributed in the hope
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * The License is available on the internet at:
+ *       http://www.gnu.org/copyleft/lgpl.html
+ * or by writing to:
+ *      Free Software Foundation, Inc.
+ *      59 Temple Place - Suite 330
+ *      Boston, MA 02111-1307, USA
+ *
+ * Copyright: 2013
+ *     The copyright to this program is held by it's authors.
+ *
+ */
 package org.crosswire.jsword.book.sword.state;
 
 import java.io.File;
@@ -48,21 +68,27 @@ public class RawFileBackendState extends RawBackendState {
     public boolean isWritable() {
         File incFile = getIncfile();
 
-        if (existsReadAndWrite(getOtTextFile()) && existsReadAndWrite(getOtIdxFile()) && existsReadAndWrite(getNtTextFile())
-                && existsReadAndWrite(getNtIdxFile()) && existsReadAndWrite(incFile)) {
-            return true;
-        }
-        return false;
+            if(existsAndCanReadAndWrite(otTextFile) && 
+                    existsAndCanReadAndWrite(ntTextFile) && 
+                    existsAndCanReadAndWrite(otIdxFile) && 
+                    existsAndCanReadAndWrite(otTextFile) && 
+                    (incFile == null || existsAndCanReadAndWrite(incFile))) {
+                return true;
+            }
+            return false;
     }
-
+    
     /**
-     * If file is null, then maybe we don't have an OT, so we still want to return true, because the NT might be writable
-     * @param file the file to check. 
-     * @return true if exists, readable and writable, OR if file is null
+     * Returns true if the file exists, can be read and can be written to.
+     * 
+     *
+     * @param file the file
+     * @return true, if successful
      */
-    private boolean existsReadAndWrite(File file) {
-        return (file.exists() && file.canRead() && file.canWrite()) || file == null;
+    private boolean existsAndCanReadAndWrite(File file) {
+        return file.exists() && file.canRead() && file.canWrite();
     }
+    
 
     private int readIncfile() throws IOException {
         int ret = -1;
