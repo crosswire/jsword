@@ -109,15 +109,12 @@ public class StrongsAnalysis {
 
                     Matcher matcher = strongsNumberPattern.matcher(snAttr);
                     while (matcher.find()) {
-                        try {
-                            StrongsNumber strongsNumber = new StrongsNumber(matcher.group(1));
+                        StrongsNumber strongsNumber = new StrongsNumber(matcher.group(1));
+                        if (strongsNumber.isValid()) {
                             if (buffer.length() > 0) {
                                 buffer.append(' ');
                             }
                             buffer.append(strongsNumber.getStrongsNumber());
-                        } catch (BookException e) {
-                            errors.add(subkey);
-                            continue;
                         }
                     }
 
