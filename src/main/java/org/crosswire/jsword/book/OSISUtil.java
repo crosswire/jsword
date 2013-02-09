@@ -35,7 +35,6 @@ import java.util.regex.Pattern;
 import org.crosswire.common.diff.Difference;
 import org.crosswire.common.diff.EditType;
 import org.crosswire.common.util.Logger;
-import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
@@ -44,7 +43,6 @@ import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseFactory;
 import org.crosswire.jsword.versification.Versification;
-import org.jdom.Attribute;
 import org.jdom.Content;
 import org.jdom.Element;
 import org.jdom.Parent;
@@ -194,7 +192,7 @@ public final class OSISUtil {
      * Constant for the variant type segment
      */
     public static final String VARIANT_TYPE = "x-variant";
-    public static final String VARIANT_CLASS = "x-class";
+    public static final String VARIANT_CLASS = "x-";
 
     /**
      * Constant for JSword generated content. Used for type or subType.
@@ -712,7 +710,7 @@ public final class OSISUtil {
      * @param root the osis element in question
      * @return the string
      */
-    public static String getMorphologiesWithStrong(Element root) {  StringBuilder sb = new StringBuilder();
+    public static String getMorphologiesWithStrong(Element root) {
         return getLexicalInformation(root, true);
     }
 
