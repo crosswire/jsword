@@ -25,7 +25,6 @@ import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookException;
 
 /**
@@ -60,36 +59,31 @@ public class StrongsNumber {
      *            a string that needs to be parsed.
      * @throws BookException
      */
-    public StrongsNumber(String input) throws BookException {
-        parse(input);
-        validate();
+    public StrongsNumber(String input) {
+        valid = parse(input);
     }
 
     /**
-     * Build an immutable Strong's Number. If the language is not 'G' or 'H' or
-     * the number is invalid, throw a BookException.
+     * Build an immutable Strong's Number. 
      * 
      * @param language
      * @param strongsNumber
-     * @throws BookException
      */
-    public StrongsNumber(char language, short strongsNumber) throws BookException {
+    public StrongsNumber(char language, short strongsNumber) {
         this(language, strongsNumber, null);
     }
 
     /**
-     * Build an immutable Strong's Number. If the language is not 'G' or 'H' or
-     * the number is invalid, throw a BookException.
+     * Build an immutable Strong's Number.
      * 
      * @param language
-     * @param strongsNumber
-     * @throws BookException
+     * @param strongsNumber     * @throws BookException
      */
-    public StrongsNumber(char language, short strongsNumber, String part) throws BookException {
+    public StrongsNumber(char language, short strongsNumber, String part) {
         this.language = language;
         this.strongsNumber = strongsNumber;
         this.part = part;
-        validate();
+        valid = isValid();
     }
 
     /**
@@ -151,6 +145,12 @@ public class StrongsNumber {
      * @return true if the Strong's number is in range.
      */
     public boolean isValid() {
+        if (!valid) {
+            return false;
+        }
+
+        // Dig deeper.
+        // The valid flag when set by parse indicates whether it had problems.
         if (language == 'H'
                 && strongsNumber >= 1
                 && strongsNumber <= 8674)
@@ -167,6 +167,7 @@ public class StrongsNumber {
             return true;
         }
 
+        valid = false;
         return false;
     }
 
@@ -212,20 +213,21 @@ public class StrongsNumber {
     }
 
     /**
-     * Do the actual parsing. Anything that does not match causes a
-     * BookException.
+     * Do the actual parsing.
      * 
      * @param input
-     * @throws BookException
+     * @return true when the input looks like a Strong's Number
      */
-    private void parse(String input) throws BookException {
+    private boolean parse(String input) {
         String text = input;
+        language = 'U';
+        strongsNumber = 9999;
+        part = "";
 
         // Does it match
         Matcher m = STRONGS_PATTERN.matcher(text);
         if (!m.lookingAt()) {
-            // TRANSLATOR: User error condition: Indicates that what was given is not a Strong's Number. {0} is a placeholder for the bad Strong's Number.
-            throw new BookException(JSMsg.gettext("Not a valid Strong's Number \"{0}\"", input));
+            return false;
         }
 
         String lang = m.group(1);
@@ -243,21 +245,15 @@ public class StrongsNumber {
 
         // Get the number after the G or H
         try {
-        strongsNumber = Short.parseShort(m.group(2));
+            strongsNumber = Short.parseShort(m.group(2));
         } catch(NumberFormatException e) {
-            //fails to convert the number, malformed strong number. Warn an exit
-            // TRANSLATOR: User error condition: Indicates that what was given is not a Strong's Number. {0} is a placeholder for the bad Strong's Number.
-            throw new BookException(JSMsg.gettext("Not a valid Strong's Number \"{0}\"", toString()), e);
+            strongsNumber = 0; // An invalid Strong's Number
+            return false;
         }
+
         // FYI: OSIS refers to what follows a ! as a grain
         part = m.group(3);
-    }
-
-    private void validate() throws BookException {
-        if (language != 'G' && language != 'H') {
-            // TRANSLATOR: User error condition: Indicates that what was given is not a Strong's Number. {0} is a placeholder for the bad Strong's Number.
-            throw new BookException(JSMsg.gettext("Not a valid Strong's Number \"{0}\"", toString()));
-        }
+        return true;
     }
 
     /**
@@ -275,9 +271,14 @@ public class StrongsNumber {
      */
     private String part;
 
+    /*
+     * The value is valid.
+     */
+    private boolean valid;
+
     /**
      * The pattern of an acceptable Strong's number.
      */
-    private static final Pattern STRONGS_PATTERN = Pattern.compile("([GgHh])0*([1-9][0-9]*)!?([A-Za-z]+)?");
+    private static final Pattern STRONGS_PATTERN = Pattern.compile("([GgHh])([0-9]*)!?([A-Za-z]+)?");
     private static final DecimalFormat ZERO_PAD = new DecimalFormat("0000");
 }
