@@ -222,14 +222,18 @@ public final class Logger {
 
     // Private method to infer the caller's class and method names
     private void doLogging(Level theLevel, String message, Throwable th) {
-        initialize();
-
+        //now check whether we should do any work: if 
+        if(!shouldLog(theLevel) ) {
+            return;
+        }
+        
+        
         LogRecord logRecord = new LogRecord(theLevel, message);
         logRecord.setLoggerName(logger.getName());
         logRecord.setSourceClassName(CallContext.getCallingClass(1).getName());
         logRecord.setThrown(th);
 
-        if (showLocation) {
+        if (showLocation && (showLocationForInfoDebugTrace || theLevel.intValue() > Level.INFO.intValue()) ) {
             String methodName = null;
             int lineNumber = -1;
 
@@ -266,6 +270,17 @@ public final class Logger {
         }
 
         logger.log(logRecord);
+    }
+
+    /**
+     * Should log, returns true if theLevel should be logged by this logger. See {@link java.util.logging.Logger#isLoggable(Level) for more details}
+     *
+     * @param theLevel the the level
+     * @return true, if successful
+     */
+    public boolean shouldLog(Level theLevel) {
+        initialize();
+        return this.logger.isLoggable(theLevel);
     }
 
     private synchronized void initialize() {
@@ -316,11 +331,21 @@ public final class Logger {
         }
     }
     
+    /**
+     * Sets the show location for debug and trace.
+     *
+     * @param enabled true to display the location on info, debug and trace as well as error and warn
+     */
+    public static void setShowLocationForInfoDebugTrace(boolean enabled) {
+        showLocationForInfoDebugTrace = enabled;
+    }
+    
     private static final String ROOT_LOGGER = "";
     private static final String CLASS_NAME = Logger.class.getName();
     private static volatile boolean established;
     private static volatile Level level;
-
+    private static boolean showLocationForInfoDebugTrace = true;
+    
     /**
      * The actual logger.
      */
