@@ -21,6 +21,7 @@
  */
 package org.crosswire.jsword.index.lucene;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -42,9 +43,6 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
-import org.crosswire.common.activate.Activatable;
-import org.crosswire.common.activate.Activator;
-import org.crosswire.common.activate.Lock;
 import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.progress.Progress;
 import org.crosswire.common.util.Logger;
@@ -57,6 +55,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.index.AbstractIndex;
+import org.crosswire.jsword.index.IndexManager;
 import org.crosswire.jsword.index.IndexStatus;
 import org.crosswire.jsword.index.lucene.analysis.LuceneAnalyzer;
 import org.crosswire.jsword.index.search.SearchModifier;
@@ -77,7 +76,7 @@ import org.jdom.Element;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class LuceneIndex extends AbstractIndex implements Activatable {
+public class LuceneIndex extends AbstractIndex implements Closeable {
     /*
      * The following fields are named the same as Sword in the hopes of sharing
      * indexes.
@@ -132,6 +131,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
             // TRANSLATOR: Error condition: Could not initialize a search index.
             throw new BookException(JSMsg.gettext("Failed to initialize Lucene search engine."), ex);
         }
+        initDirectoryAndSearcher();
     }
 
     /**
@@ -226,6 +226,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
                 }
 
             }
+            initDirectoryAndSearcher();
         } catch (IOException ex) {
             job.cancel();
             // TRANSLATOR: Common error condition: Some error happened while creating a search index.
@@ -233,23 +234,28 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
         } finally {
             book.setIndexStatus(finalStatus);
             job.done();
+            
         }
     }
 
     /**
-     * Temporary work-around, while we wait before removing Activator completely.
+     * Inits the directory and searcher.
      */
-    public void close() {
-        Activator.deactivate(this);
-    }
-
+    private void initDirectoryAndSearcher() {
+        try {
+            directory = FSDirectory.open(new File(path));
+            searcher = new IndexSearcher(directory, true);
+        } catch (IOException ex) {
+            log.warn("second load failure", ex);
+        }
+    } 
+    
     /*
      * (non-Javadoc)
      * 
      * @see org.crosswire.jsword.index.search.Index#findWord(java.lang.String)
      */
     public Key find(String search) throws BookException {
-        checkActive();
         String v11nName = book.getBookMetaData().getProperty("Versification").toString();
         Versification v11n = Versifications.instance().getVersification(v11nName);
 
@@ -320,9 +326,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
             } catch (ParseException e) {
                 // TRANSLATOR: Error condition: An unexpected error happened that caused search to fail.
                 throw new BookException(JSMsg.gettext("Search failed."), e);
-            } finally {
-                Activator.deactivate(this);
-            }
+            } 
         }
 
         if (results == null) {
@@ -344,52 +348,21 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
         return book.getKey(name);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.common.activate.Activatable#activate(org.crosswire.common
-     * .activate.Lock)
-     */
-    public final void activate(Lock lock) {
-        try {
-            directory = FSDirectory.open(new File(path));
-            searcher = new IndexSearcher(directory, true);
-        } catch (IOException ex) {
-            log.warn("second load failure", ex);
-        }
-
-        active = true;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.common.activate.Activatable#deactivate(org.crosswire.common
-     * .activate.Lock)
-     */
-    public final void deactivate(Lock lock) {
+    public final void close() {
         try {
             searcher.close();
-            directory.close();
         } catch (IOException ex) {
             Reporter.informUser(this, ex);
-        } finally {
-            searcher = null;
-            directory = null;
         }
-
-        active = false;
-    }
-
-    /**
-     * Helper method so we can quickly activate ourselves on access
-     */
-    protected final void checkActive() {
-        if (!active) {
-            Activator.activate(this);
+        
+        try {
+            directory.close();
+        } catch(IOException ex) {
+            Reporter.informUser(this,  ex);
         }
+        
+        searcher = null;
+        directory = null;
     }
 
     /**
@@ -414,7 +387,7 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
         Document doc = new Document();
         Field keyField = new Field(FIELD_KEY, "", Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.NO);
         Field bodyField = new Field(FIELD_BODY, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
-        Field strongField = new Field(FIELD_STRONG, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
+        Field strongField = new Field(FIELD_STRONG, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.YES);
         Field xrefField = new Field(FIELD_XREF, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
         Field noteField = new Field(FIELD_NOTE, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
         Field headingField = new Field(FIELD_HEADING, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
@@ -503,15 +476,16 @@ public class LuceneIndex extends AbstractIndex implements Activatable {
     }
 
     /**
-     * A synchronization lock point to prevent us from doing 2 index runs at a
-     * time.
+     * Could be null if the index has been closed down. This is helpful to third party applications which wish to have greater control over 
+     * the underlying Lucene functionality.
+     * 
+     * Note: by using this method, you need to ensure you don't close the searcher while it is being used. See {@link IndexManager#closeAllIndexes()} for more information
      */
-    private static final Object CREATING = new Object();
+    public Searcher getSearcher() {
+        return searcher;
+    }
 
-    /**
-     * Are we active
-     */
-    private boolean active;
+
 
     /**
      * The log stream

@@ -22,9 +22,7 @@
 package org.crosswire.jsword.index.lucene;
 
 import java.io.File;
-import java.io.FileDescriptor;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -86,6 +84,16 @@ public class LuceneIndexManager implements IndexManager {
         } catch (IOException ex) {
             // TRANSLATOR: Common error condition: Some error happened while opening a search index.
             throw new BookException(JSMsg.gettext("Failed to initialize Lucene search engine."), ex);
+        }
+    }
+    
+    /*
+     *     @Override(non-Javadoc)
+     * @see org.crosswire.jsword.index.IndexManager#closeAllIndexes()
+     */
+    public void closeAllIndexes() {
+        for(Index index : INDEXES.values()) {
+            index.close();
         }
     }
 
