@@ -21,25 +21,28 @@
  */
 package org.crosswire.common.util;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.logging.Level;
+
+import org.junit.Test;
 
 /**
- * JUnit Test.
- * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
- * @author Joe Walker [joe at eireneh dot com]
+ * Tests the Logger class
  */
-public class AllTests {
-    public static Test suite() {
-        TestSuite suite = new TestSuite("Test for org.crosswire.common.util");
-        // $JUnit-BEGIN$
-        suite.addTest(new TestSuite(HelpDeskTest.class));
-        suite.addTest(new TestSuite(StringUtilTest.class));
-        suite.addTest(new TestSuite(PropertyMapTest.class));
-        suite.addTest(new TestSuite(LoggerTest.class));
-        // $JUnit-END$
-        return suite;
+public class LoggerTest {
+    
+    /**
+     * Test should log.
+     */
+    @Test
+    public void testShouldLog() {
+        Logger l = Logger.getLogger(LoggerTest.class);
+        l.setLevel(Level.INFO);
+        
+        assertTrue(l.shouldLog(Level.WARNING));
+        assertTrue(l.shouldLog(Level.INFO));
+        assertFalse(l.shouldLog(Level.FINE));
     }
 }
