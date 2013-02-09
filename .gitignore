@@ -2,3 +2,7 @@
 .classpath
 .settings/*
 *.launch
+/ivy
+/lib
+/tools
+/bin
