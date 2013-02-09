@@ -21,7 +21,7 @@
  */
 package org.crosswire.jsword.book;
 
-import java.util.Locale;
+import org.crosswire.jsword.internationalisation.LocaleProviderManager;
 
 /**
  * Types of Sentence Case.
@@ -35,7 +35,7 @@ public enum CaseType {
     LOWER  {
         @Override
         public String setCase(String word) {
-            return word.toLowerCase(Locale.getDefault());
+            return word.toLowerCase(LocaleProviderManager.getLocale());
         }
     },
 
@@ -68,7 +68,7 @@ public enum CaseType {
     UPPER {
         @Override
         public String setCase(String word) {
-            return word.toUpperCase(Locale.getDefault());
+            return word.toUpperCase(LocaleProviderManager.getLocale());
         }
     };
 
@@ -88,7 +88,7 @@ public enum CaseType {
             return "";
         }
 
-        return Character.toUpperCase(word.charAt(0)) + word.substring(1).toLowerCase(Locale.getDefault());
+        return Character.toUpperCase(word.charAt(0)) + word.substring(1).toLowerCase(LocaleProviderManager.getLocale());
     }
 
     /**
@@ -117,13 +117,13 @@ public enum CaseType {
         }
 
         // Lower case?
-        if (word.equals(word.toLowerCase(Locale.getDefault()))) {
+        if (word.equals(word.toLowerCase(LocaleProviderManager.getLocale()))) {
             return LOWER;
         }
 
         // Upper case?
         // A string length of 1 is no good ('I' or 'A' is sentence case)
-        if (word.equals(word.toUpperCase(Locale.getDefault())) && word.length() != 1) {
+        if (word.equals(word.toUpperCase(LocaleProviderManager.getLocale())) && word.length() != 1) {
             return UPPER;
         }
 

@@ -21,9 +21,10 @@
  */
 package org.crosswire.common.util;
 
-import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+
+import org.crosswire.jsword.internationalisation.LocaleProviderManager;
 
 /**
  * A utility class that converts ISO-3166 codes or locales to their "friendly"
@@ -65,7 +66,7 @@ public class Countries {
         }
 
         try {
-            countries.getString(lookup);
+            getLocalisedCountries().getString(lookup);
             return true;
         } catch (MissingResourceException e) {
             return false;
@@ -94,21 +95,21 @@ public class Countries {
         }
 
         try {
-            return countries.getString(lookup);
+            return getLocalisedCountries().getString(lookup);
         } catch (MissingResourceException e) {
             return getCountry(UNKNOWN_COUNTRY_CODE);
         }
     }
 
+    /**
+     * Gets the localised countries.
+     *
+     * @return the localised countries
+     */
+    private static ResourceBundle getLocalisedCountries() {
+        return ResourceBundle.getBundle("iso3166", LocaleProviderManager.getLocale(), CWClassLoader.instance());
+    }
+    
     public static final String DEFAULT_COUNTRY_CODE = "US";
     private static final String UNKNOWN_COUNTRY_CODE = "XX";
-
-    private static/* final */ResourceBundle countries;
-    static {
-        try {
-            countries = ResourceBundle.getBundle("iso3166", Locale.getDefault(), CWClassLoader.instance());
-        } catch (MissingResourceException e) {
-            assert false;
-        }
-    }
 }
