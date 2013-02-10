@@ -20,7 +20,6 @@
  */
 package org.crosswire.jsword.book.sword.state;
 
-
 /**
   *
  * @see gnu.lgpl.License for license details.<br>
@@ -28,7 +27,6 @@ package org.crosswire.jsword.book.sword.state;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public abstract class AbstractOpenFileState implements OpenFileState {
-    
     /**
      * Allows us to decide whether to release the resources or continue using them
      */

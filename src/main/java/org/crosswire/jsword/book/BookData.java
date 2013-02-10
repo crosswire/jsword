@@ -32,7 +32,6 @@ import org.crosswire.common.util.Language;
 import org.crosswire.common.xml.JDOMSAXEventProvider;
 import org.crosswire.common.xml.SAXEventProvider;
 import org.crosswire.jsword.passage.Key;
-import org.jdom.Attribute;
 import org.jdom.Content;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -220,11 +219,11 @@ public class BookData implements BookProvider {
                     cell = OSISUtil.factory().createCell();
                     Language lang = (Language) book.getProperty(BookMetaData.KEY_XML_LANG);
                     cell.setAttribute(OSISUtil.OSIS_ATTR_LANG, lang.getCode(), Namespace.XML_NAMESPACE);
-                    
+
                     row.addContent(cell);
 
                     StringBuilder newText = new StringBuilder(doDiffs ? 32 : 0);
-                    
+
                     if (iters[i].hasNext()) {
                         List<Content> contents = new ArrayList<Content>(1);
 
@@ -232,14 +231,14 @@ public class BookData implements BookProvider {
                             content = iters[i].next();
                             contents.add(content);
                             addText(doDiffs, newText, content);
-                        } while(!isNextVerse(content));
-                        
+                        } while (!isNextVerse(content));
+
                         if (doDiffs) {
                             String thisText = newText.toString();
-                            if(unaccenter != null) {
+                            if (unaccenter != null) {
                                 thisText = unaccenter.unaccent(thisText);
                             }
-                            
+
                             if (i > 0 && showDiffs[i - 1]) {
                                 List<Difference> diffs = new Diff(lastText, thisText, false).compare();
                                 DiffCleanup.cleanupSemantic(diffs);
@@ -274,20 +273,20 @@ public class BookData implements BookProvider {
     }
 
     private boolean isNextVerse(Content content) {
-        if(content instanceof Element) {
+        if (content instanceof Element) {
             return OSISUtil.OSIS_ELEMENT_VERSE.equals(((Element) content).getName());
         }
-        
+
         return false;
     }
 
     private void addText(boolean doDiffs, StringBuilder newText, Content content) {
-        if(doDiffs) {
-            //if we already have content, let's add a space to avoid chaining words together
-            if(newText.length() != 0) {
+        if (doDiffs) {
+            // if we already have content, let's add a space to avoid chaining words together
+            if (newText.length() != 0) {
                 newText.append(' ');
             }
-            
+
             if (content instanceof Element) {
                 newText.append(OSISUtil.getCanonicalText((Element) content));
             } else if (content instanceof Text) {
@@ -295,8 +294,7 @@ public class BookData implements BookProvider {
             }
         }
     }
-    
-    
+
     /**
      * @param unaccenter the unaccenter to set
      */
@@ -328,6 +326,6 @@ public class BookData implements BookProvider {
      * Just the element
      */
     private Element fragment;
-    
+
     private UnAccenter unaccenter;
 }

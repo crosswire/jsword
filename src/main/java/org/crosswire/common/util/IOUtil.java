@@ -79,15 +79,15 @@ public final class IOUtil {
                         throw new MalformedURLException(JSMsg.gettext("The URL {0} could not be created as a directory.", parentDir.toString()));
                     }
                 }
-                
+
                 // write entryFile from zip to filesystem but avoid writing dir entries out as files
                 if (!entry.isDirectory()) {
 
                     URI child = NetUtil.getURI(entryFile);
-    
+
                     OutputStream dataOut = NetUtil.getOutputStream(child);
                     InputStream dataIn = zf.getInputStream(entry);
-    
+
                     while (true) {
                         int count = dataIn.read(dbuf);
                         if (count == -1) {
@@ -95,7 +95,7 @@ public final class IOUtil {
                         }
                         dataOut.write(dbuf, 0, count);
                     }
-    
+
                     dataOut.close();
                 }
             }
@@ -136,8 +136,6 @@ public final class IOUtil {
         }
     }
 
-        
-    
     /**
      * The log stream
      */

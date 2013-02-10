@@ -62,6 +62,7 @@ public final class KeyUtil {
     /**
      * Not all keys represent verses, but we ought to be able to get something
      * close to a verse from anything that does verse like work.
+     * @deprecated use {@link #getPassage(Key, Versification)}
      */
     @Deprecated
     public static Verse getVerse(Key key) {
@@ -90,19 +91,18 @@ public final class KeyUtil {
         }
     }
 
-    
-    
     /**
      * Not all keys represent passages, but we ought to be able to get something
      * close to a passage from anything that does passage like work. If you pass
      * a null key into this method, you get a null Passage out.
+     * 
+     * @deprecated {@link #getPassage(Key, Versification)}
      */
     @Deprecated
     public static Passage getPassage(Key key) {
         return getPassage(key, Versifications.instance().getDefaultVersification());
     }
-    
-    
+
     /**
      * Not all keys represent passages, but we ought to be able to get something
      * close to a passage from anything that does passage like work. If you pass

@@ -525,9 +525,9 @@ public class Versification implements ReferenceSystem, Serializable {
      * <li>...</li>
      * </ul>
      *
-     * @param verse
-     *            The verse to convert
-     * @return The ordinal number of verses
+     * @param ordinal
+     *            The ordinal number of the verse to convert
+     * @return The ordinal number of the Verse within its Testament
      */
     public int getTestamentOrdinal(int ordinal) {
         int nt_ordinal = otMaxOrdinal + 1;

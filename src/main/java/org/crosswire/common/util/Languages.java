@@ -135,10 +135,10 @@ public class Languages {
     private static ResourceBundle getLocalisedCommonLanguages() {
         Locale locale = LocaleProviderManager.getLocale();
         ResourceBundle langs = localisedCommonLanguages.get(locale);
-        if(langs == null) {
-            synchronized(Languages.class) {
+        if (langs == null) {
+            synchronized (Languages.class) {
                 langs = localisedCommonLanguages.get(locale);
-                if(langs == null) {
+                if (langs == null) {
                     langs = initLanguages(locale);
                     localisedCommonLanguages.put(locale, langs);
                 }
@@ -146,7 +146,7 @@ public class Languages {
         }
         return langs;
     }
-    
+
     private static ResourceBundle initLanguages(Locale locale) {
         try {
             return ResourceBundle.getBundle("iso639", locale, CWClassLoader.instance());
@@ -159,11 +159,9 @@ public class Languages {
         return ResourceBundle.getBundle("iso639full", locale, CWClassLoader.instance());
     }
 
-    
     public static final String DEFAULT_LANG_CODE = "en";
     private static final String UNKNOWN_LANG_CODE = "und";
     private static final Logger log = Logger.getLogger(Books.class);
-    
     private static/* final */ResourceBundle allLangs;
     private static Map<Locale, ResourceBundle> localisedCommonLanguages = new HashMap<Locale, ResourceBundle>();
 }

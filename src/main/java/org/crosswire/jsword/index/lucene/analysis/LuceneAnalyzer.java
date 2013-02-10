@@ -17,18 +17,15 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id:LuceneIndex.java 984 2006-01-23 14:18:33 -0500 (Mon, 23 Jan 2006) dmsmith $
  */
 package org.crosswire.jsword.index.lucene.analysis;
 
 import java.io.Reader;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.KeywordAnalyzer;
 import org.apache.lucene.analysis.PerFieldAnalyzerWrapper;
 import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.index.lucene.IndexMetadata;
 import org.crosswire.jsword.index.lucene.LuceneIndex;
@@ -63,10 +60,9 @@ public class LuceneAnalyzer extends Analyzer {
         // Strong's Numbers are normalized to a consistent representation
         analyzer.addAnalyzer(LuceneIndex.FIELD_STRONG, new StrongsNumberAnalyzer());
 
-        // Keywords are normalized to osisIDs
+        // Strong's Numbers and Robinson's morphological codes are normalized to a consistent representation
         analyzer.addAnalyzer(LuceneIndex.FIELD_MORPHOLOGY, new MorphologyAnalyzer());
-        
-        
+
         // XRefs are normalized from ranges into a list of osisIDs
         analyzer.addAnalyzer(LuceneIndex.FIELD_XREF, new XRefAnalyzer());
     }

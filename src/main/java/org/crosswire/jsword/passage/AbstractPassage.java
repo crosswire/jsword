@@ -109,7 +109,6 @@ public abstract class AbstractPassage implements Passage {
         Verse thatfirst = thatref.getVerseAt(0);
         Verse thisfirst = getVerseAt(0);
 
-        
         return getVersification().distance(thisfirst, thatfirst);
     }
 
@@ -973,7 +972,7 @@ public abstract class AbstractPassage implements Passage {
      * @return The VerseRange
      * @exception java.lang.ClassCastException
      *                If this is not a Verse or a VerseRange
-     * @deprecated  use {@link #toVerseRange(Versification, String)} instead
+     * @deprecated  use {@link #toVerseRange(Versification, Object)} instead
      */
     @Deprecated
     protected static VerseRange toVerseRange(Object base) throws ClassCastException {

@@ -45,23 +45,6 @@ import org.crosswire.jsword.book.sword.SwordUtil;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class GenBookBackendState extends AbstractOpenFileState {
-    /** The log stream */
-    private static final Logger log = Logger.getLogger(GenBookBackendState.class);
-    /**
-     * Raw GenBook file extensions
-     */
-    private static final String EXTENSION_BDT = ".bdt";
-
-    /**
-     * The raw data file
-     */
-    private File bdtFile;
-    /**
-     * The random access file for the raw data
-     */
-    private RandomAccessFile bdtRaf;
-    private SwordBookMetaData bookMetaData;
-
     /**
      * This is default package access for forcing the use of the
      * OpenFileStateManager to manage the creation. Not doing so may result in
@@ -119,4 +102,22 @@ public class GenBookBackendState extends AbstractOpenFileState {
     public SwordBookMetaData getBookMetaData() {
         return bookMetaData;
     }
+
+    /**
+     * Raw GenBook file extensions
+     */
+    private static final String EXTENSION_BDT = ".bdt";
+
+    /**
+     * The raw data file
+     */
+    private File bdtFile;
+    /**
+     * The random access file for the raw data
+     */
+    private RandomAccessFile bdtRaf;
+    private SwordBookMetaData bookMetaData;
+
+    /** The log stream */
+    private static final Logger log = Logger.getLogger(GenBookBackendState.class);
 }
