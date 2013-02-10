@@ -52,7 +52,7 @@ import org.jdom.Element;
  * @author Joe Walker [joe at eireneh dot com]
  */
 public abstract class AbstractPassageBook extends AbstractBook {
-    
+
     public AbstractPassageBook(BookMetaData bmd) {
         super(bmd);
         this.versification = (String) bmd.getProperty(BookMetaData.KEY_VERSIFICATION);
@@ -70,7 +70,6 @@ public abstract class AbstractPassageBook extends AbstractBook {
         Passage ref = KeyUtil.getPassage(key, getVersification());
         final boolean showTitles = ref.hasRanges(RestrictionType.CHAPTER) || !allowEmpty;
 
-        
         RawTextToXmlProcessor processor = new RawTextToXmlProcessor() {
             public void preRange(VerseRange range, List<Content> partialDom) {
                 if (showTitles) {
@@ -97,7 +96,6 @@ public abstract class AbstractPassageBook extends AbstractBook {
         return getOsis(ref, processor).iterator();
     }
 
-    
     /**
      * Add the OSIS elements to the div element. Note, this assumes that the
      * data is fully marked up.
@@ -220,12 +218,12 @@ public abstract class AbstractPassageBook extends AbstractBook {
     }
 
     public Versification getVersification() {
-        if(this.versificationSystem == null) {
-            this.versificationSystem = Versifications.instance().getVersification((String) getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION)); 
+        if (this.versificationSystem == null) {
+            this.versificationSystem = Versifications.instance().getVersification((String) getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION));
         }
         return versificationSystem;
     }
-    
+
     /**
      * A cached representation of the global key list.
      */
@@ -240,7 +238,7 @@ public abstract class AbstractPassageBook extends AbstractBook {
      * Versification system, created lazily, so use getter
      */
     private Versification versificationSystem;
-    
+
     /**
      * Our key manager
      */

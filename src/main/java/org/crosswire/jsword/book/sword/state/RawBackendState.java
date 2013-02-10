@@ -47,26 +47,12 @@ import org.crosswire.jsword.book.sword.SwordUtil;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class RawBackendState extends AbstractOpenFileState {
-    /** The log stream */
-    private static final Logger log = Logger.getLogger(RawBackendState.class);
-
-    protected RandomAccessFile otIdxRaf;
-    protected RandomAccessFile ntIdxRaf;
-    protected RandomAccessFile otTextRaf;
-    protected RandomAccessFile ntTextRaf;
-    protected File ntIdxFile;
-    protected File ntTextFile;
-    protected File otIdxFile;
-    protected File otTextFile;
-
-    private SwordBookMetaData bookMetaData;
-
     /**
      * This is default package access for forcing the use of the
      * OpenFileStateManager to manage the creation. Not doing so may result in
      * new instances of OpenFileState being created for no reason, and as a
      * result, if they are released to the OpenFileStateManager by mistake this
-     * would result in leakage
+     * would result in leakage.
      * 
      * @param bookMetaData
      *            the appropriate metadata for the book
@@ -82,7 +68,7 @@ public class RawBackendState extends AbstractOpenFileState {
         URI ntPath = NetUtil.lengthenURI(path, File.separator + SwordConstants.FILE_NT);
         ntTextFile = new File(ntPath.getPath());
         ntIdxFile = new File(ntPath.getPath() + SwordConstants.EXTENSION_VSS);
-        
+
         // It is an error to be neither OT nor NT
         // Throwing exception, as if we can't read either the ot or nt file,
         // then we might as well give up
@@ -102,9 +88,9 @@ public class RawBackendState extends AbstractOpenFileState {
                 //failed to open the files, so close them now
                 IOUtil.close(otIdxRaf);
                 IOUtil.close(otTextRaf);
-                
+
                 assert false : ex;
-            
+
                 log.error("Could not open OT", ex);
                 ntIdxRaf = null;
                 ntTextRaf = null;
@@ -226,4 +212,18 @@ public class RawBackendState extends AbstractOpenFileState {
     public SwordBookMetaData getBookMetaData() {
         return bookMetaData;
     }
+
+    protected RandomAccessFile otIdxRaf;
+    protected RandomAccessFile ntIdxRaf;
+    protected RandomAccessFile otTextRaf;
+    protected RandomAccessFile ntTextRaf;
+    protected File ntIdxFile;
+    protected File ntTextFile;
+    protected File otIdxFile;
+    protected File otTextFile;
+
+    private SwordBookMetaData bookMetaData;
+
+    /** The log stream */
+    private static final Logger log = Logger.getLogger(RawBackendState.class);
 }

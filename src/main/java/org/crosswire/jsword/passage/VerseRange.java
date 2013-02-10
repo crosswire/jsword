@@ -134,8 +134,8 @@ public final class VerseRange implements Key {
         shaper = new NumberShaper();
 
         int distance = v11n.distance(start, end);
-        
-        if(distance < 0) {
+
+        if (distance < 0) {
             this.start = end;
             this.end = start;
             this.verseCount = calcVerseCount();
@@ -850,10 +850,6 @@ public final class VerseRange implements Key {
     /**
      * Calculate the last verse in this range.
      * 
-     * @param start
-     *            The first verse in the range
-     * @param verseCount
-     *            The number of verses
      * @return The last verse in the range
      */
     private Verse calcEnd() {
@@ -866,10 +862,6 @@ public final class VerseRange implements Key {
     /**
      * Calculate how many verses in this range
      * 
-     * @param a
-     *            The first verse in the range
-     * @param b
-     *            The last verse in the range
      * @return The number of verses. Always >= 1.
      */
     private int calcVerseCount() {

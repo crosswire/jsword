@@ -30,7 +30,7 @@ import org.crosswire.jsword.JSMsg;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
- * @deprecated Use {@link DivisonName} instead.
+ * @deprecated Use org.crosswire.jsword.versification.DivisonName instead.
  */
 @Deprecated
 public enum SectionNames {

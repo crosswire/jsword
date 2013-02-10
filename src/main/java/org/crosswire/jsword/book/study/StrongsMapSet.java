@@ -53,7 +53,6 @@ public class StrongsMapSet {
      *            the Strong's Number
      * @param representation
      *            a way the Strong's number is represented.
-     * @param locale the locale of the book being indexed
      */
     public void add(String strongsNumber, String representation) {
         Set<String> reps = map.get(strongsNumber);

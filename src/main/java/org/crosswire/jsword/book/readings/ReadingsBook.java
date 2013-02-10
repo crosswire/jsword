@@ -113,7 +113,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
 
         global = new SetKeyList(hash.keySet(), getName());
     }
-    
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.PreferredKey#getPreferred()
      */
@@ -174,8 +174,6 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
         return false;
     }
 
-    
-
     /** Returns an empty string
      * (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
@@ -183,7 +181,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
     public String getRawText(Key key) throws BookException {
         return "";
     }
-    
+
     /**
      * Returns an empty list
      */

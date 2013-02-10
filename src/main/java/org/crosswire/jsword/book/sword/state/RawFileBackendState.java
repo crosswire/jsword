@@ -42,12 +42,6 @@ import org.crosswire.jsword.book.sword.SwordUtil;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class RawFileBackendState extends RawBackendState {
-    public static final String INCFILE = "incfile";
-    /** The log stream */
-    private static final Logger log = Logger.getLogger(RawFileBackendState.class);
-    private File incfile;
-    private Integer incfileValue;
-
     /**
      * This is default package access for forcing the use of the
      * OpenFileStateManager to manage the creation. Not doing so may result in
@@ -68,19 +62,19 @@ public class RawFileBackendState extends RawBackendState {
     public boolean isWritable() {
         File incFile = getIncfile();
 
-            if(existsAndCanReadAndWrite(otTextFile) && 
-                    existsAndCanReadAndWrite(ntTextFile) && 
-                    existsAndCanReadAndWrite(otIdxFile) && 
-                    existsAndCanReadAndWrite(otTextFile) && 
-                    (incFile == null || existsAndCanReadAndWrite(incFile))) {
-                return true;
-            }
-            return false;
+        if (existsAndCanReadAndWrite(otTextFile)
+                && existsAndCanReadAndWrite(ntTextFile)
+                && existsAndCanReadAndWrite(otIdxFile)
+                && existsAndCanReadAndWrite(otTextFile)
+                && (incFile == null || existsAndCanReadAndWrite(incFile)))
+        {
+            return true;
+        }
+        return false;
     }
-    
+
     /**
      * Returns true if the file exists, can be read and can be written to.
-     * 
      *
      * @param file the file
      * @return true, if successful
@@ -88,7 +82,6 @@ public class RawFileBackendState extends RawBackendState {
     private boolean existsAndCanReadAndWrite(File file) {
         return file.exists() && file.canRead() && file.canWrite();
     }
-    
 
     private int readIncfile() throws IOException {
         int ret = -1;
@@ -151,7 +144,6 @@ public class RawFileBackendState extends RawBackendState {
 
     public void setIncfileValue(int incValue) {
         this.incfileValue = incValue;
-
     }
 
     /**
@@ -172,4 +164,10 @@ public class RawFileBackendState extends RawBackendState {
         this.incfile = incfile;
     }
 
+    public static final String INCFILE = "incfile";
+    private File incfile;
+    private Integer incfileValue;
+
+    /** The log stream */
+    private static final Logger log = Logger.getLogger(RawFileBackendState.class);
 }

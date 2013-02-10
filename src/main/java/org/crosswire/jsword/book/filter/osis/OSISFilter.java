@@ -130,7 +130,7 @@ public class OSISFilter implements Filter {
      */
     private Element parse(String plain) throws JDOMException, IOException {
         SAXBuilder builder = saxBuilders.poll();
-        if(builder == null) {
+        if (builder == null) {
             //then we have no sax builders available, so let's create a new one and store
             builder = new SAXBuilder();
             builder.setFastReconfigure(true);
@@ -140,19 +140,19 @@ public class OSISFilter implements Filter {
         StringReader in = null;
         Element div;
         try {
-            in = new StringReader("<div>" + plain + "</div>"); 
+            in = new StringReader("<div>" + plain + "</div>");
             InputSource is = new InputSource(in);
             Document doc = builder.build(is);
             div = doc.getRootElement();
         } finally {
-            if(in != null) {
+            if (in != null) {
                 in.close();
             }
         }
 
         //return builder to queue, or offer a new one. Ignore return value as we don't care whether the builder is going to be re-used
         saxBuilders.offer(builder);
-        
+
         return div;
     }
 

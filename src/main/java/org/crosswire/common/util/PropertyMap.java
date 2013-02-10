@@ -38,13 +38,6 @@ import java.util.Properties;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-/**
- *
- *
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
- * @author DM Smith [dmsmith555 at yahoo dot com]
- */
 public class PropertyMap extends LinkedHashMap<String, String> {
     /**
      * Creates an empty property list with no default values.
@@ -97,14 +90,14 @@ public class PropertyMap extends LinkedHashMap<String, String> {
     }
 
     /**
-     * Merely a call to {@link #put(String, String)}, provided as
+     * Merely a call to <code>put(String, String)</code>, provided as
      * a simple way to migrate from {@link java.lang.Properties}.
      *
      * @param key the key to be placed into this property list.
      * @param value the value corresponding to <tt>key</tt>.
      * @return     the previous value of the specified key in this property
      *             list, or <code>null</code> if it did not have one.
-     * @deprecated use {@link #put(String, String)} instead
+     * @deprecated use <code>put(String, String)</code> instead.
      */
     @Deprecated
     public String setProperty(String key, String value) {
@@ -117,7 +110,7 @@ public class PropertyMap extends LinkedHashMap<String, String> {
      * 
      * @param key the lookup key
      * @return  the value in this property list with the specified key value.
-     * @deprecated use {@link @get(String)} instead
+     * @deprecated use {@link #get(String)} instead
      */
     @Deprecated
     public String getProperty(String key) {

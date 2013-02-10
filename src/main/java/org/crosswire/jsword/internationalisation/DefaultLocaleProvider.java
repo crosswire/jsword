@@ -17,13 +17,17 @@
  * Copyright: 2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
- */package org.crosswire.jsword.internationalisation;
+ */
+package org.crosswire.jsword.internationalisation;
 
 import java.util.Locale;
 
 /**
  * A default Locale provider simply returns Locale.getDefault()
+ *
+ * @see gnu.lgpl.License for license details.<br>
+ *      The copyright to this program is held by it's authors.
+ * @author Chris Burrell
  */
 public class DefaultLocaleProvider implements LocaleProvider {
 
