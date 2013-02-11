@@ -21,10 +21,12 @@
  */
 package org.crosswire.common.util;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 import org.crosswire.jsword.book.Books;
@@ -83,11 +85,7 @@ public class Languages {
         try {
             return getLocalisedCommonLanguages().getString(code);
         } catch (MissingResourceException e) {
-            try {
-                return allLangs.getString(code);
-            } catch (MissingResourceException e1) {
-                return code;
-            }
+            return AllLanguages.getLanguageName(code);
         }
     }
 
@@ -159,11 +157,48 @@ public class Languages {
         return ResourceBundle.getBundle("iso639full", locale, CWClassLoader.instance());
     }
 
+    /**
+     * Provide a fallback lookup against a huge list of all languages.
+     * The basic list has a few hundred languages. The full list has
+     * over 7000. As a fallback, this file is not internationalized.
+     */
+    private static class AllLanguages {
+        /**
+         * This is a singleton class. Do not allow construction.
+         */
+        private AllLanguages() {}
+
+        /**
+         * Get the language name for the code. If the language name is not known
+         * then return the code.
+         * 
+         * @param languageCode
+         * @return the name for the language.
+         */
+        public static String getLanguageName(String languageCode) {
+            String name = instance.get(languageCode);
+            if (name != null) {
+                return name;
+            }
+            return languageCode;
+        }
+
+        /**
+         * Do lazy loading of the huge file of languages.
+         */
+        private static PropertyMap instance;
+        static {
+            try {
+                instance = ResourceUtil.getProperties("iso639full");
+                log.debug("Loading iso639full.properties file");
+            } catch (IOException e) {
+                log.fatal("Unable to load iso639full.properties", e);
+            }
+        }
+    }
     
     public static final String DEFAULT_LANG_CODE = "en";
     private static final String UNKNOWN_LANG_CODE = "und";
     private static final Logger log = Logger.getLogger(Books.class);
-    
-    private static/* final */ResourceBundle allLangs;
-    private static Map<Locale, ResourceBundle> localisedCommonLanguages = new HashMap<Locale, ResourceBundle>();
+    private static volatile Map<Locale, ResourceBundle> localisedCommonLanguages = new HashMap<Locale, ResourceBundle>();
 }
