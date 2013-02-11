@@ -75,8 +75,7 @@ public class SwordDictionary extends AbstractBook {
         Element title = OSISUtil.factory().createTitle();
         title.addContent(key.getName());
         content.add(title);
-  
-        
+
         OpenFileState state = null;
         String txt = null;
         try {
@@ -87,14 +86,12 @@ public class SwordDictionary extends AbstractBook {
         } finally {
             IOUtil.close(state);
         }
-  
+
         List<Content> osisContent = filter.toOSIS(this, key, txt);
         content.addAll(osisContent);
-  
+
         return content.iterator();
     }
-
-
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
@@ -110,8 +107,7 @@ public class SwordDictionary extends AbstractBook {
             IOUtil.close(state);
         }
     }
-    
-    
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#contains(org.crosswire.jsword.passage.Key)
      */

@@ -45,33 +45,6 @@ import org.crosswire.jsword.book.sword.SwordUtil;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class RawLDBackendState extends AbstractOpenFileState  {
-    private static final Logger log = Logger.getLogger(RawLDBackend.class);
-    /**
-     * The number of entries in the book.
-     */
-    private int size = -1;
-
-    /**
-     * The index file
-     */
-    private File idxFile;
-
-    /**
-     * The index random access file
-     */
-    private RandomAccessFile idxRaf;
-
-    /**
-     * The data file
-     */
-    private File datFile;
-
-    /**
-     * The data random access file
-     */
-    private RandomAccessFile datRaf;
-    private SwordBookMetaData bookMetaData;
-
     /**
      * This is default package access for forcing the use of the
      * OpenFileStateManager to manage the creation. Not doing so may result in
@@ -124,7 +97,6 @@ public class RawLDBackendState extends AbstractOpenFileState  {
             IOUtil.close(idxRaf);
             IOUtil.close(datRaf);
 
-            
             log.error("failed to open files", ex);
             idxRaf = null;
             datRaf = null;
@@ -183,4 +155,31 @@ public class RawLDBackendState extends AbstractOpenFileState  {
         return this.bookMetaData;
     }
 
+    /**
+     * The number of entries in the book.
+     */
+    private int size = -1;
+
+    /**
+     * The index file
+     */
+    private File idxFile;
+
+    /**
+     * The index random access file
+     */
+    private RandomAccessFile idxRaf;
+
+    /**
+     * The data file
+     */
+    private File datFile;
+
+    /**
+     * The data random access file
+     */
+    private RandomAccessFile datRaf;
+    private SwordBookMetaData bookMetaData;
+
+    private static final Logger log = Logger.getLogger(RawLDBackend.class);
 }

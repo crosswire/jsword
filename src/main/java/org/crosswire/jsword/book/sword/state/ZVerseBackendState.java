@@ -37,48 +37,16 @@ import org.crosswire.jsword.book.sword.SwordUtil;
 import org.crosswire.jsword.versification.Testament;
 
 /**
- * Stores the random access files required for processing the passage request
+ * Stores the random access files required for processing the passage request.
  * 
  * The caller is required to close to correctly free resources and avoid File
- * pointer leaks
+ * pointer leaks.
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class ZVerseBackendState extends AbstractOpenFileState {
-    private static final String SUFFIX_COMP = "v";
-    private static final String SUFFIX_INDEX = "s";
-    private static final String SUFFIX_PART1 = "z";
-    private static final String SUFFIX_TEXT = "z";
-
-    /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(ZVerseBackendState.class);
-
-    /**
-     * The index random access files
-     */
-    private RandomAccessFile otIdxRaf;
-    private RandomAccessFile ntIdxRaf;
-
-    /**
-     * The data random access files
-     */
-    private RandomAccessFile otTextRaf;
-    private RandomAccessFile ntTextRaf;
-
-    /**
-     * The compressed random access files
-     */
-    private RandomAccessFile otCompRaf;
-    private RandomAccessFile ntCompRaf;
-    private Testament lastTestament;
-    private long lastBlockNum = -1;
-    private byte[] lastUncompressed;
-    private SwordBookMetaData bookMetaData;
-
     /**
      * This is default package access for forcing the use of the
      * OpenFileStateManager to manage the creation. Not doing so may result in
@@ -113,7 +81,6 @@ public class ZVerseBackendState extends AbstractOpenFileState {
                 IOUtil.close(otTextRaf);
                 IOUtil.close(otCompRaf);
 
-                
                 assert false : ex;
                 log.error("Could not open OT", ex);
             }
@@ -246,4 +213,35 @@ public class ZVerseBackendState extends AbstractOpenFileState {
     public SwordBookMetaData getBookMetaData() {
         return bookMetaData;
     }
+    private static final String SUFFIX_COMP = "v";
+    private static final String SUFFIX_INDEX = "s";
+    private static final String SUFFIX_PART1 = "z";
+    private static final String SUFFIX_TEXT = "z";
+
+    /**
+     * The index random access files
+     */
+    private RandomAccessFile otIdxRaf;
+    private RandomAccessFile ntIdxRaf;
+
+    /**
+     * The data random access files
+     */
+    private RandomAccessFile otTextRaf;
+    private RandomAccessFile ntTextRaf;
+
+    /**
+     * The compressed random access files
+     */
+    private RandomAccessFile otCompRaf;
+    private RandomAccessFile ntCompRaf;
+    private Testament lastTestament;
+    private long lastBlockNum = -1;
+    private byte[] lastUncompressed;
+    private SwordBookMetaData bookMetaData;
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(ZVerseBackendState.class);
 }

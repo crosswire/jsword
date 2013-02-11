@@ -48,7 +48,7 @@ public final class Job implements Progress {
      * Create a new Job. This will automatically fire a workProgressed event to
      * all WorkListeners, with the work property of this job set to 0.
      * 
-     * @param description
+     * @param jobName
      *            Short description of this job
      * @param worker
      *            Optional thread to use in request to stop worker
@@ -209,7 +209,7 @@ public final class Job implements Progress {
 
             int oldPercent = percent;
             // use long in arithmetic to avoid integer overflow 
-            percent = (int)(100L * workUnits / totalUnits);
+            percent = (int) (100L * workUnits / totalUnits);
             if (oldPercent == percent) {
                 return;
             }

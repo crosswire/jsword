@@ -115,7 +115,7 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
      * Combines the strong numbers with the morphology field
      */
     public static final String FIELD_MORPHOLOGY = "morph";
-    
+
     /**
      * Read an existing index and use it.
      * 
@@ -234,7 +234,6 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
         } finally {
             book.setIndexStatus(finalStatus);
             job.done();
-            
         }
     }
 
@@ -248,8 +247,8 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
         } catch (IOException ex) {
             log.warn("second load failure", ex);
         }
-    } 
-    
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -326,7 +325,7 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
             } catch (ParseException e) {
                 // TRANSLATOR: Error condition: An unexpected error happened that caused search to fail.
                 throw new BookException(JSMsg.gettext("Search failed."), e);
-            } 
+            }
         }
 
         if (results == null) {
@@ -354,13 +353,13 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
         } catch (IOException ex) {
             Reporter.informUser(this, ex);
         }
-        
+
         try {
             directory.close();
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             Reporter.informUser(this,  ex);
         }
-        
+
         searcher = null;
         directory = null;
     }
@@ -376,7 +375,7 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
         boolean hasNotes = book.getBookMetaData().hasFeature(FeatureType.FOOTNOTES);
         boolean hasHeadings = book.getBookMetaData().hasFeature(FeatureType.HEADINGS);
         boolean hasMorphology = book.getBookMetaData().hasFeature(FeatureType.MORPHOLOGY);
-        
+
         String oldRootName = "";
         int percent = 0;
         String rootName = "";
@@ -392,7 +391,7 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
         Field noteField = new Field(FIELD_NOTE, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
         Field headingField = new Field(FIELD_HEADING, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
         Field morphologyField  = new Field(FIELD_MORPHOLOGY , "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
-        
+
         int size = key.getCardinality();
         int subCount = count;
         for (Key subkey : key) {
@@ -435,10 +434,10 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
                     addField(doc, headingField, OSISUtil.getHeadings(osis));
                 }
 
-                if(hasMorphology) {
+                if (hasMorphology) {
                     addField(doc, morphologyField, OSISUtil.getMorphologiesWithStrong(osis));
                 }
-                
+
                 // Add the document if we added more than just the key.
                 if (doc.getFields().size() > 1) {
                     writer.addDocument(doc);
@@ -479,7 +478,8 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
      * Could be null if the index has been closed down. This is helpful to third party applications which wish to have greater control over 
      * the underlying Lucene functionality.
      * 
-     * Note: by using this method, you need to ensure you don't close the searcher while it is being used. See {@link IndexManager#closeAllIndexes()} for more information
+     * Note: by using this method, you need to ensure you don't close the searcher while it is being used.
+     * See {@link IndexManager#closeAllIndexes()} for more information
      */
     public Searcher getSearcher() {
         return searcher;

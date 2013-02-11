@@ -46,9 +46,11 @@ import org.crosswire.jsword.internationalisation.LocaleProviderManager;
  * change that. So to get around this we mark the ':' as a right-to-left
  * character.
  * </p>
+ * <p>
+ * See also: com.ibm.icu.text.ArabicShaping
+ * </p>
  * 
  * @see java.awt.font.NumericShaper
- * @see com.ibm.icu.text.ArabicShaping
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]

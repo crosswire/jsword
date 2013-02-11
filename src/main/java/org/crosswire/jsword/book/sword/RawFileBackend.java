@@ -78,7 +78,7 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
     public RawFileBackendState initState() throws BookException {
         return OpenFileStateManager.getRawFileBackendState(getBookMetaData());
     }
-    
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.RawBackend#getEntry(java.lang.String, org.crosswire.jsword.versification.Testament, long)
      */

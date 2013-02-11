@@ -357,7 +357,7 @@ public abstract class AbstractBook implements Book {
         }
     }
 
-    abstract protected List<Content> getOsis(Key key, RawTextToXmlProcessor noOpRawTextProcessor) throws BookException;
+    protected abstract List<Content> getOsis(Key key, RawTextToXmlProcessor noOpRawTextProcessor) throws BookException;
 
     /*
      * (non-Javadoc)

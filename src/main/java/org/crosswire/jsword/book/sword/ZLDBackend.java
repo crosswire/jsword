@@ -48,21 +48,21 @@ public class ZLDBackend extends RawLDBackend<ZLDBackendState> {
     }
 
     @Override
-    public ZLDBackendState initState() throws BookException{
+    public ZLDBackendState initState() throws BookException {
         return OpenFileStateManager.getZLDBackendState(getBookMetaData());
-     }
-    
+    }
+
     @Override
     protected String getRawText(RawLDBackendState fileState, DataEntry entry) {
         ZLDBackendState state = null;
-        if(fileState instanceof ZLDBackendState) {
+        if (fileState instanceof ZLDBackendState) {
             state = (ZLDBackendState) fileState;
         } else {
             //something went terribly wrong
             log.error("Backend State was not of type ZLDBackendState. Ignoring this entry and exiting.");
             return "";
         }
-        
+
         DataIndex blockIndex = entry.getBlockIndex();
         long blockNum = blockIndex.getOffset();
         int blockEntry = blockIndex.getSize();
@@ -113,9 +113,6 @@ public class ZLDBackend extends RawLDBackend<ZLDBackendState> {
         return SwordUtil.decode(entry.getName(), entryBytes, getBookMetaData().getBookCharset()).trim();
     }
 
-   
-
-
     /**
      * Serialization support.
      * 
@@ -127,11 +124,9 @@ public class ZLDBackend extends RawLDBackend<ZLDBackendState> {
         is.defaultReadObject();
     }
 
-
     private static final int ZDX_ENTRY_SIZE = 8;
     private static final int BLOCK_ENTRY_COUNT = 4;
     private static final int BLOCK_ENTRY_SIZE = 8;
-
 
     /**
      * The log stream

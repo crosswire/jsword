@@ -109,7 +109,7 @@ public class Countries {
     private static ResourceBundle getLocalisedCountries() {
         return ResourceBundle.getBundle("iso3166", LocaleProviderManager.getLocale(), CWClassLoader.instance());
     }
-    
+
     public static final String DEFAULT_COUNTRY_CODE = "US";
     private static final String UNKNOWN_COUNTRY_CODE = "XX";
 }

@@ -45,7 +45,7 @@ import org.crosswire.jsword.versification.system.Versifications;
  * @author Joe Walker [joe at eireneh dot com]
  */
 public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBackendState> {
-   
+
     /**
      * Simple ctor
      */
@@ -94,12 +94,11 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
     public T initState() throws BookException {
         return (T) OpenFileStateManager.getRawBackendState(getBookMetaData());
     }
-    
+
     public String getRawText(RawBackendState state, Key key) throws IOException {
         return readRawContent(state, key, key.getName());
     }
-    
-    
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key)
      */
@@ -107,7 +106,7 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
             String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
             Versification v11n = Versifications.instance().getVersification(v11nName);
             Verse verse = KeyUtil.getVerse(key, v11n);
-            
+
             int index = v11n.getOrdinal(verse);
 
             Testament testament = v11n.getTestament(index);
