@@ -24,8 +24,8 @@ package org.crosswire.jsword.index.lucene.analysis;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import org.apache.lucene.analysis.LowerCaseTokenizer;
 import org.apache.lucene.analysis.StopAnalyzer;
@@ -124,26 +124,27 @@ public class ConfigurableSnowballAnalyzer extends AbstractBookAnalyzer {
         stemmerName = null;
         if (book != null) {
             // stemmer name are same as language name, in most cases
-            pickStemmer(book.getLanguage().getName());
+            pickStemmer(book.getLanguage().getCode());
         }
     }
 
     /**
      * Given the name of a stemmer, use that one.
      * 
-     * @param language
+     * @param languageCode
      */
-    public void pickStemmer(String language) {
-        stemmerName = language;
-        if (stemmerName != null) {
+    public void pickStemmer(String languageCode) {
+        if (languageCode != null) {
             // Check for allowed stemmers
-            if (!allowedStemmers.matcher(stemmerName).matches()) {
+            if (languageCodeToStemmerLanguageNameMap.containsKey(languageCode)) {
+                stemmerName = languageCodeToStemmerLanguageNameMap.get(languageCode);
+            } else {
                 throw new IllegalArgumentException("SnowballAnalyzer configured for unavailable stemmer " + stemmerName);
-            }
+            } 
 
             // Initialize the default stop words
-            if (defaultStopWordMap.containsKey(stemmerName)) {
-                stopSet = defaultStopWordMap.get(stemmerName);
+            if (defaultStopWordMap.containsKey(languageCode)) {
+                stopSet = defaultStopWordMap.get(languageCode);
             }
         }
     }
@@ -153,18 +154,29 @@ public class ConfigurableSnowballAnalyzer extends AbstractBookAnalyzer {
      */
     private String stemmerName;
 
-    private static Pattern allowedStemmers = Pattern
-            .compile("(Danish|Dutch|English|Finnish|French|German2|German|Italian|Kp|Lovins|Norwegian|Porter|Portuguese|Russian|Spanish|Swedish)");
+    private static Map<String, String> languageCodeToStemmerLanguageNameMap = new HashMap<String, String>();
+    static {
+    	languageCodeToStemmerLanguageNameMap.put("da", "Danish");
+    	languageCodeToStemmerLanguageNameMap.put("nl", "Dutch");
+    	languageCodeToStemmerLanguageNameMap.put("en", "English");
+    	languageCodeToStemmerLanguageNameMap.put("fi", "Finnish");
+    	languageCodeToStemmerLanguageNameMap.put("fr", "French");
+    	languageCodeToStemmerLanguageNameMap.put("de", "German");
+    	languageCodeToStemmerLanguageNameMap.put("it", "Italian");
+    	languageCodeToStemmerLanguageNameMap.put("no", "Norwegian");
+    	languageCodeToStemmerLanguageNameMap.put("pt", "Portuguese");
+    	languageCodeToStemmerLanguageNameMap.put("ru", "Russian");
+    	languageCodeToStemmerLanguageNameMap.put("es", "Spanish");
+    	languageCodeToStemmerLanguageNameMap.put("sv", "Swedish");
+    }
 
     // Maps StemmerName > String array of standard stop words
     private static HashMap<String, Set<?>> defaultStopWordMap = new HashMap<String, Set<?>>();
     static {
-        defaultStopWordMap.put("French", FrenchAnalyzer.getDefaultStopSet());
-        defaultStopWordMap.put("German", GermanAnalyzer.getDefaultStopSet());
-        defaultStopWordMap.put("German2", GermanAnalyzer.getDefaultStopSet());
-        defaultStopWordMap.put("Dutch", DutchAnalyzer.getDefaultStopSet());
-        defaultStopWordMap.put("English", StopAnalyzer.ENGLISH_STOP_WORDS_SET);
-        defaultStopWordMap.put("Porter", StopAnalyzer.ENGLISH_STOP_WORDS_SET);
+        defaultStopWordMap.put("fr", FrenchAnalyzer.getDefaultStopSet());
+        defaultStopWordMap.put("de", GermanAnalyzer.getDefaultStopSet());
+        defaultStopWordMap.put("nl", DutchAnalyzer.getDefaultStopSet());
+        defaultStopWordMap.put("en", StopAnalyzer.ENGLISH_STOP_WORDS_SET);
     }
 
     private final Version matchVersion = Version.LUCENE_29;
