@@ -102,7 +102,7 @@ public class Versifications {
         if (SystemKJV.V11N_NAME.equals(name)) {
             return new SystemKJV();
         }
-        
+
         //then in alphabetical order, to ease the developer checking we have them all
         if (SystemCatholic.V11N_NAME.equals(name)) {
             return new SystemCatholic();
@@ -140,8 +140,7 @@ public class Versifications {
         if (SystemVulg.V11N_NAME.equals(name)) {
             return new SystemVulg();
         }
-        
-        
+
         return null;
     }
 

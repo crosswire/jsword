@@ -17,7 +17,6 @@
  * Copyright: 2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.internationalisation;
 
@@ -28,18 +27,19 @@ import java.util.Locale;
  * <p />
  * It is expected that the LocaleProvider will only be set once, as a result, no effort is made to make this thread-safe as this should happen on
  * start up of the application. A default locale provider is given which simply returns the default locale. See {@link DefaultLocaleProvider} for more details.
+ *
+ * @see gnu.lgpl.License for license details.<br>
+ *      The copyright to this program is held by it's authors.
+ * @author Chris Burrell
  */
 public class LocaleProviderManager {
-    private static LocaleProvider localeProvider = new DefaultLocaleProvider();
-
-    
     /**
      * Prevent public access. Instantiates a new locale provider factory.
      */
     private LocaleProviderManager() {
         //No OP
     }
-    
+
     /**
      * Gets the locale provider.
      *
@@ -48,7 +48,7 @@ public class LocaleProviderManager {
     public static LocaleProvider getLocaleProvider() {
         return localeProvider;
     }
-    
+
     /**
      * Gets the locale to be used by the JSword library
      *
@@ -57,7 +57,7 @@ public class LocaleProviderManager {
     public static Locale getLocale() {
         return localeProvider.getUserLocale();
     }
-    
+
     /**
      * Allow third-party applications to.
      *
@@ -66,4 +66,6 @@ public class LocaleProviderManager {
     public static void setLocaleProvider(LocaleProvider provider) {
         localeProvider = provider;
     }
+
+    private static LocaleProvider localeProvider = new DefaultLocaleProvider();
 }

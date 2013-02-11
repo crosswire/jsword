@@ -215,8 +215,6 @@ public enum BibleBook {
     /**
      * Get the BookName.
      *
-     * @param book
-     *            The book of the Bible
      * @return The requested BookName
      */
     public BookName getBookName() {
@@ -227,8 +225,6 @@ public enum BibleBook {
      * Get the preferred name of a book. Altered by the case setting (see
      * setBookCase() and isFullBookName())
      *
-     * @param book
-     *            The book of the Bible
      * @return The full name of the book
      */
     public String getPreferredName() {
@@ -239,8 +235,6 @@ public enum BibleBook {
      * Get the full name of a book (e.g. "Genesis"). Altered by the case setting
      * (see setBookCase())
      *
-     * @param book
-     *            The book of the Bible
      * @return The full name of the book
      */
     public String getLongName() {
@@ -251,8 +245,6 @@ public enum BibleBook {
      * Get the short name of a book (e.g. "Gen"). Altered by the case setting
      * (see setBookCase())
      *
-     * @param book
-     *            The book of the Bible
      * @return The short name of the book
      */
     public String getShortName() {
@@ -300,16 +292,16 @@ public enum BibleBook {
      */
     private static BibleNames getBibleNamesForLocale(Locale locale) {
         BibleNames bibleNames = localizedBibleNames.get(locale);
-        if(bibleNames == null) {
+        if (bibleNames == null) {
             synchronized (BibleBook.class) {
                 bibleNames = localizedBibleNames.get(locale);
-                if(bibleNames == null) {
+                if (bibleNames == null) {
                     bibleNames = new BibleNames(locale);
                     localizedBibleNames.put(locale, bibleNames);
                 }
             }
         }
-        
+
         return bibleNames;
     }
 
@@ -363,11 +355,11 @@ public enum BibleBook {
     private static BibleBook[] books = BibleBook.values();
 
     /** we cache the Localised Bible Names because there is quite a bit of processing going on for each individual Locale */
-    private static Map<Locale, BibleNames> localizedBibleNames = new HashMap<Locale,BibleNames>();
-    
+    private static Map<Locale, BibleNames> localizedBibleNames = new HashMap<Locale, BibleNames>();
+
     /** English BibleNames, or null when using the program's default locale */
     private static BibleNames englishBibleNames;
-    
+
     static {
         for (BibleBook book : BibleBook.values()) {
             osisMap.put(BookName.normalize(book.getOSIS(), Locale.ENGLISH), book);

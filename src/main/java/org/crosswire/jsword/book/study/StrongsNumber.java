@@ -25,8 +25,6 @@ import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.crosswire.jsword.book.BookException;
-
 /**
  * A Strong's Number is either Greek or Hebrew, where the actual numbers for
  * each start at 1. This class can parse Strong's Numbers that begin with G, g,
@@ -246,7 +244,7 @@ public class StrongsNumber {
         // Get the number after the G or H
         try {
             strongsNumber = Short.parseShort(m.group(2));
-        } catch(NumberFormatException e) {
+        } catch (NumberFormatException e) {
             strongsNumber = 0; // An invalid Strong's Number
             return false;
         }

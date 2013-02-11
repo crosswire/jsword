@@ -247,7 +247,8 @@ public final class Verse implements Key {
         return getOrdinal();
     }
 
-    /* (non-Javadoc)
+    /**
+     * @deprecated Use {@link Versification#distance(Verse, Verse)}
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     @Deprecated
@@ -279,7 +280,7 @@ public final class Verse implements Key {
      * @param that
      *            The thing to compare against
      * @return 1 means he is earlier than me, -1 means he is later ...
-     * @deprecated
+     * @deprecated Use {@link Versification#adjacentTo(Verse, Verse)}
      */
     @Deprecated
     public boolean adjacentTo(Verse that) {
@@ -294,7 +295,7 @@ public final class Verse implements Key {
      * @param start
      *            The Verse to compare this to
      * @return The count of verses between this and that.
-     * @deprecated
+     * @deprecated Use {@link Versification#distance(Verse, Verse)}
      */
     @Deprecated
     public int subtract(Verse start) {
@@ -307,7 +308,7 @@ public final class Verse implements Key {
      * @param n
      *            The number to count down by
      * @return The new Verse
-     * @deprecated
+     * @deprecated Use {@link Versification#subtract(Verse, int)}
      */
     @Deprecated
     public Verse subtract(int n) {
@@ -321,7 +322,7 @@ public final class Verse implements Key {
      * @param n
      *            the number of verses later than the one we're one
      * @return The new verse
-     * @deprecated
+     * @deprecated Use {@link Versification#add(Verse, int)}
      */
     @Deprecated
     public Verse add(int n) {
@@ -360,7 +361,7 @@ public final class Verse implements Key {
      * Is this verse the first in a chapter
      * 
      * @return true or false ...
-     * @deprecated
+     * @deprecated Use {@link Versification#isStartOfChapter(Verse)}
      */
     @Deprecated
     public boolean isStartOfChapter() {
@@ -371,7 +372,7 @@ public final class Verse implements Key {
      * Is this verse the first in a chapter
      * 
      * @return true or false ...
-     * @deprecated
+     * @deprecated Use {@link Versification#isEndOfChapter(Verse)}
      */
     @Deprecated
     public boolean isEndOfChapter() {
@@ -383,7 +384,7 @@ public final class Verse implements Key {
      * Is this verse the first in a chapter
      * 
      * @return true or false ...
-     * @deprecated
+     * @deprecated Use {@link Versification#isStartOfBook(Verse)}
      */
     @Deprecated
     public boolean isStartOfBook() {
@@ -394,7 +395,7 @@ public final class Verse implements Key {
      * Is this verse the first in a chapter
      * 
      * @return true or false ...
-     * @deprecated
+     * @deprecated Use {@link Versification#isEndOfBook(Verse)}
      */
     @Deprecated
     public boolean isEndOfBook() {
@@ -408,7 +409,7 @@ public final class Verse implements Key {
      * @param that
      *            The verse to compare to
      * @return true or false ...
-     * @deprecated
+     * @deprecated Use {@link Versification#isSameChapter(Verse,Verse)}
      */
     @Deprecated
     public boolean isSameChapter(Verse that) {
@@ -421,7 +422,7 @@ public final class Verse implements Key {
      * @param that
      *            The verse to compare to
      * @return true or false ...
-     * @deprecated
+     * @deprecated Use {@link Versification#isSameBook(Verse,Verse)}
      */
     @Deprecated
     public boolean isSameBook(Verse that) {
@@ -433,7 +434,7 @@ public final class Verse implements Key {
      * 31104
      * 
      * @return The verse number
-     * @deprecated do not use
+     * @deprecated Use {@link Versification#getOrdinal(Verse)}
      */
     @Deprecated
     public int getOrdinal() {
@@ -450,7 +451,7 @@ public final class Verse implements Key {
      * @param b
      *            The second verse to compare
      * @return The bigger of the 2 verses
-     * @deprecated do not use
+     * @deprecated Use {@link Versification#max(Verse,Verse)}
      */
     @Deprecated
     public static Verse max(Verse a, Verse b) {
@@ -469,7 +470,7 @@ public final class Verse implements Key {
      * @param b
      *            The second verse to compare
      * @return The smaller of the 2 verses
-     * @deprecated do not use
+     * @deprecated Use {@link Versification#min(Verse,Verse)}
      */
     @Deprecated
     public static Verse min(Verse a, Verse b) {
@@ -570,7 +571,7 @@ public final class Verse implements Key {
      *            The chapter to set
      * @param verse
      *            The verse to set
-     * @deprecated do not use
+     * @deprecated Use {@link Versification#patch(BibleBook,int,int)}
      */
     @Deprecated
     private void setAndPatch(BibleBook book, int chapter, int verse) {
@@ -605,7 +606,7 @@ public final class Verse implements Key {
      * 
      * @param ordinal
      *            The ordinal of the verse
-     * @deprecated do not use
+     * @deprecated Use {@link Versification#decodeOrdinal(int)}
      */
     @Deprecated
     private void set(int ordinal) {

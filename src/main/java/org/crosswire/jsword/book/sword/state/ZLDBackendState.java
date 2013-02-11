@@ -35,55 +35,16 @@ import org.crosswire.jsword.book.sword.SwordBookMetaData;
 import org.crosswire.jsword.book.sword.SwordUtil;
 
 /**
- * Stores the random access files required for processing the passage request
+ * Stores the random access files required for processing the passage request.
  * 
  * The caller is required to close to correctly free resources and avoid File
- * pointer leaks
+ * pointer leaks.
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class ZLDBackendState extends RawLDBackendState {
-    /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(ZLDBackendState.class);
-    private static final byte[] EMPTY_BYTES = new byte[0];
-    private static final String EXTENSION_Z_INDEX = ".zdx";
-    private static final String EXTENSION_Z_DATA = ".zdt";
-    
-    /**
-     * The compressed index.
-     */
-    private File zdxFile;
-
-    /**
-     * The compressed index random access file.
-     */
-    private RandomAccessFile zdxRaf;
-
-    /**
-     * The compressed text.
-     */
-    private  File zdtFile;
-
-    /**
-     * The compressed text random access file.
-     */
-    private  RandomAccessFile zdtRaf;
-
-    /**
-     * The index of the block that is cached.
-     */
-    private  long lastBlockNum;
-
-    /**
-     * The cache for a read of a compressed block.
-     */
-    private  byte[] lastUncompressed;
-
-
     /**
      * This is default package access for forcing the use of the
      * OpenFileStateManager to manage the creation. Not doing so may result in
@@ -135,15 +96,13 @@ public class ZLDBackendState extends RawLDBackendState {
             //failed to open the files, so close them now
             IOUtil.close(zdxRaf);
             IOUtil.close(zdtRaf);
-            
+
             log.error("failed to open files", ex);
             zdxRaf = null;
             zdtRaf = null;
             return;
         }
     }
-    
-    
 
     public void releaseResources() {
         super.releaseResources();
@@ -156,16 +115,12 @@ public class ZLDBackendState extends RawLDBackendState {
             zdtRaf = null;
     }
 
-
-
     /**
      * @return the zdxRaf
      */
     public RandomAccessFile getZdxRaf() {
         return zdxRaf;
     }
-
-
 
     /**
      * @return the zdtRaf
@@ -174,8 +129,6 @@ public class ZLDBackendState extends RawLDBackendState {
         return zdtRaf;
     }
 
-
-
     /**
      * @return the lastBlockNum
      */
@@ -183,16 +136,12 @@ public class ZLDBackendState extends RawLDBackendState {
         return lastBlockNum;
     }
 
-
-
     /**
      * @return the lastUncompressed
      */
     public byte[] getLastUncompressed() {
         return lastUncompressed;
     }
-
-
 
     /**
      * @param lastBlockNum the lastBlockNum to set
@@ -208,5 +157,42 @@ public class ZLDBackendState extends RawLDBackendState {
         this.lastUncompressed = lastUncompressed;
     }
 
-    
+    private static final byte[] EMPTY_BYTES = new byte[0];
+    private static final String EXTENSION_Z_INDEX = ".zdx";
+    private static final String EXTENSION_Z_DATA = ".zdt";
+
+    /**
+     * The compressed index.
+     */
+    private File zdxFile;
+
+    /**
+     * The compressed index random access file.
+     */
+    private RandomAccessFile zdxRaf;
+
+    /**
+     * The compressed text.
+     */
+    private  File zdtFile;
+
+    /**
+     * The compressed text random access file.
+     */
+    private  RandomAccessFile zdtRaf;
+
+    /**
+     * The index of the block that is cached.
+     */
+    private  long lastBlockNum;
+
+    /**
+     * The cache for a read of a compressed block.
+     */
+    private  byte[] lastUncompressed;
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(ZLDBackendState.class);
 }

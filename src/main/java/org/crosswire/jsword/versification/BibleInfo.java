@@ -164,7 +164,7 @@ public final class BibleInfo {
      * @param verse
      *            The verse to convert
      * @return The ordinal number of verses
-     * @deprecated use {@link Versification#getOrdinal()} instead
+     * @deprecated use {@link Versification#getOrdinal(Verse)} instead
      */
     @Deprecated
     public static int getOrdinal(Verse verse) {
@@ -193,10 +193,10 @@ public final class BibleInfo {
      * <li>...</li>
      * </ul>
      *
-     * @param verse
-     *            The verse to convert
-     * @return The ordinal number of verses
-     * @deprecated use {@link Versification#getTestamentOrdinal()} instead
+     * @param ordinal
+     *            The ordinal number of the Verse
+     * @return The ordinal number of the verse in its testament
+     * @deprecated use {@link Versification#getTestamentOrdinal(int)} instead
      */
     @Deprecated
     public static int getTestamentOrdinal(int ordinal) {
@@ -475,7 +475,7 @@ public final class BibleInfo {
      * @return the number of verses
      * @exception NoSuchVerseException
      *                If either reference is illegal
-     * @deprecated Use {@link Versification#subtract(Verse, Verse)} instead.
+     * @deprecated Use {@link Versification#distance(Verse, Verse) + 1} instead.
      */
     @Deprecated
     public static int verseCount(Verse verse1, Verse verse2) throws NoSuchVerseException {

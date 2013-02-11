@@ -718,7 +718,6 @@ public final class OSISUtil {
      * concatenates strong and morphology information together
      * @param root
      * @param includeMorphology
-     * @param separator
      * @return root of the element
      */
     public static String getLexicalInformation(Element root, boolean includeMorphology) {
@@ -734,17 +733,17 @@ public final class OSISUtil {
                     if (buffer.length() > 0) {
                         buffer.append(' ');
                     }
-                    
-                    if(includeMorphology) {
+
+                    if (includeMorphology) {
                         //if including morphology, we want 1 big field, separated with '@'
                         strongsNum = strongsNum.replace(SPACE_SEPARATOR, MORPH_INFO_SEPARATOR);
                     }
                     buffer.append(strongsNum);
-                    
-                    if(includeMorphology) {
+
+                    if (includeMorphology) {
                         //also include morphology if available
                         String morph = ele.getAttributeValue(OSISUtil.ATTRIBUTE_W_MORPH);
-                        if(morph != null && morph.length() != 0) {
+                        if (morph != null && morph.length() != 0) {
                             buffer.append(MORPH_INFO_SEPARATOR);
                             buffer.append(morph.replace(SPACE_SEPARATOR, MORPH_INFO_SEPARATOR));
                         }
@@ -756,7 +755,6 @@ public final class OSISUtil {
         return buffer.toString().trim();
     }
 
-    
     /**
      * A space separate string containing osisID from the reference element.
      * 
@@ -814,7 +812,7 @@ public final class OSISUtil {
 
         for (Content content : getDeepContent(root, OSISUtil.OSIS_ELEMENT_TITLE)) {
             Element ele = (Element) content;
-            
+
             if (buffer.length() > 0) {
                 buffer.append(' ');
             }

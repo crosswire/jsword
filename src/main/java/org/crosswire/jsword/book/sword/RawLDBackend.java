@@ -36,7 +36,6 @@ import java.util.regex.Pattern;
 
 import org.crosswire.common.icu.DateFormatter;
 import org.crosswire.common.util.IOUtil;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookCategory;
@@ -370,8 +369,6 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
         return keytitle;
     }
 
-
-
     /**
      * A means to normalize Strong's Numbers.
      */
@@ -386,7 +383,6 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
         return new DecimalFormat("0000");
     }
 
-    
     /**
      * Serialization support.
      * 
@@ -398,7 +394,6 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
         is.defaultReadObject();
     }
 
-    
     /**
      * Date formatter
      */
@@ -430,9 +425,4 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
      * How many bytes in the offset pointers in the index
      */
     private static final int OFFSETSIZE = 4;
-
-    /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(RawLDBackend.class);
 }
