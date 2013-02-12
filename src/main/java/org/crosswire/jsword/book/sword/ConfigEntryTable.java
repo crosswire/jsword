@@ -38,7 +38,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.crosswire.common.util.Language;
-import org.crosswire.common.util.Languages;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSMsg;
@@ -563,14 +562,14 @@ public final class ConfigEntryTable {
         // If we have either langFrom or langTo, we are dealing with a glossary
         if (langFrom != null || langTo != null) {
             if (langFrom == null) {
-                log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_FROM.getName() + '=' + Languages.DEFAULT_LANG_CODE);
+                log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_FROM.getName() + '=' + Language.DEFAULT_LANG_CODE);
                 langFrom = Language.DEFAULT_LANG;
                 add(ConfigEntryType.GLOSSARY_FROM, lang.getCode());
             }
             testLanguage(internal, langFrom);
 
             if (langTo == null) {
-                log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_TO.getName() + '=' + Languages.DEFAULT_LANG_CODE);
+                log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_TO.getName() + '=' + Language.DEFAULT_LANG_CODE);
                 langTo = Language.DEFAULT_LANG;
                 add(ConfigEntryType.GLOSSARY_TO, lang.getCode());
             }

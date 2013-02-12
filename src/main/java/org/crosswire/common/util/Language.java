@@ -382,9 +382,14 @@ public class Language implements Comparable<Language> {
 
     /**
      * Split the specification on '-' into 1 to 3 parts.
-     * @param specification
+     * @param spec
      */
-    private void parse(String specification) {
+    private void parse(String spec) {
+        String specification = spec;
+        if (specification == null) {
+            specification = DEFAULT_LANG_CODE;
+        }
+
         int len = specification.length();
 
         // It used to be that SWORD modules used x- and X- as a language prefix
@@ -397,9 +402,9 @@ public class Language implements Comparable<Language> {
         }
 
         int partLen = 0;
-        int start = 2;
+        int start = 0;
         int split;
-        for (split = start; split < len; ++split) {
+        for (split = 2; split < len; ++split) {
             char c = specification.charAt(split);
             if (c == '-') {
                 break;
