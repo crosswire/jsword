@@ -45,10 +45,8 @@ public class LanguagesTest extends TestCase {
 
     public void test() {
         // Some day there may be a zzz language code and then this test will need to change.
-        assertEquals("Test for unknown code", "zzz", Languages.getLanguageName("zzz"));
-        // codes of length > 3 return und for the language code
-        assertEquals("Test for unknown code", "und", Languages.getLanguageCode("zzzz"));
-        // When the code length > 3 the language name will be localized variant of Unknown Language
-        assertFalse("Test for bad code", "zzzz".equals(Languages.getLanguageName("zzzz")));
+        assertEquals("Test for unknown code", "zzz", Languages.getName("zzz"));
+        // When the code is not valid the language name will the code
+        assertEquals("Test for bad code", "zzzz", Languages.getName("zzzz"));
     }
 }

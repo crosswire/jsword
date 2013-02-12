@@ -227,7 +227,7 @@ public class Translations {
     }
 
     public String toString(String translationCode) {
-        StringBuilder currentTranslation = new StringBuilder(Languages.getLanguageName(translationCode));
+        StringBuilder currentTranslation = new StringBuilder(Languages.getName(translationCode));
 
         if (translationCode.indexOf('_') != -1) {
             String[] locale = StringUtil.split(translationCode, '_');

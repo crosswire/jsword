@@ -14,64 +14,171 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007
+ * Copyright: 2007-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: Languages.java 1462 2007-07-02 02:32:23Z dmsmith $
  */
 package org.crosswire.common.util;
 
+import java.util.Locale;
+
 /**
- * A single language, paring an ISO-639 code to a localized representation of
- * the language.
+ * An immutable Language by specification. The specifier consists of up to three parts:
+ * <ul>
+ * <li>LL - An iso639-2 or iso639-3 language code</li>
+ * <li>SSSS - A 4-letter iso15924 script code</li>
+ * <li>CC - A 2-letter iso3166 country code</li>
+ * </ul>
+ * Note: This is a subset of the BCP-47 standard.
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class Language implements Comparable<Language> {
-    public static final Language DEFAULT_LANG = new Language(null);
+    /**
+     * The default language code is en for English.
+     */
+    public static final String DEFAULT_LANG_CODE = "en";
+
+    /**
+     * The language code for invalid language specifications is und for Undetermined.
+     */
+    public static final String UNKNOWN_LANG_CODE = "und";
+
+    /**
+     * The default language is English.
+     */
+    public static final Language DEFAULT_LANG = new Language(DEFAULT_LANG_CODE);
+
 
     /**
      * A single language defined by an ISO-639 code. If the code is null or
-     * empty then it is considered to be DEFAULT_LANG_CODE (that is, English).
+     * empty then it is considered to be DEFAULT_LANG (that is, English).
      * 
-     * @param iso639Code
-     *            the particular language
+     * @param specification
+     *            the specifier for the particular language
      */
-    public Language(String iso639Code) {
-        this.code = Languages.getLanguageCode(iso639Code);
+    public Language(String specification) {
+        parse(specification);
     }
 
     /**
-     * Determine whether this language is valid. The code is valid if it is in
-     * iso639.properties.
+     * Determine whether this language is valid.
+     * <ul>
+     * <li>LL - An iso639-2 or iso639-3 language code</li>
+     * <li>SSSS - A 4-letter iso15924 script code</li>
+     * <li>CC - A 2-letter iso3166 country code</li>
+     * </ul>
      * 
      * @return true if the language is valid.
      */
     public boolean isValidLanguage() {
-        return Languages.isValidLanguage(code);
+        getName();
+        return valid;
     }
 
     /**
-     * Get the language code.
+     * Get the iso639 language code.
      * 
-     * @return the code for the language
+     * @return the code for the language in lower case.
      */
     public String getCode() {
         return code;
     }
 
     /**
-     * Get the language name.
+     * Get the iso15924 script for the language. May be null.
+     * 
+     * @return the code for the script in Title case.
+     */
+    public String getScript() {
+        return script;
+    }
+
+    /**
+     * Get the iso3166 script for the language. May be null.
+     * 
+     * @return the code for the country in UPPER case.
+     */
+    public String getCountry() {
+        return country;
+    }
+
+    /**
+     * Get the localized language name.
      * 
      * @return the name of the language
      */
     public String getName() {
+        // Note: This is not quite thread safe. Unless name is volatile.
+        // But it will just do the work multiple times.
         if (name == null) {
-            name = Languages.getLanguageName(code);
+            StringBuilder sb = new StringBuilder();
+            // The lookup is as follows.
+            // There is always a code
+            // If all parts are specified then use that
+            if (script != null && country != null) {
+                sb.append(code);
+                sb.append('-');
+                sb.append(script);
+                sb.append('-');
+                sb.append(country);
+                found = sb.toString();
+                name = Languages.getName(found);
+            }
+
+            // If script is specified it has precedence over country
+            if (code.equals(name) && script != null) {
+                sb.setLength(0);
+                sb.append(code);
+                sb.append('-');
+                sb.append(script);
+                found = sb.toString();
+                name = Languages.getName(found);
+            }
+
+            // If country was specified, check for that now.
+            if (code.equals(name) && country != null) {
+                sb.setLength(0);
+                sb.append(code);
+                sb.append('-');
+                sb.append(country);
+                found = sb.toString();
+                name = Languages.getName(found);
+            }
+
+            // Now check just the code.
+            if (code.equals(name)) {
+                found = code;
+                name = Languages.getName(code);                
+            }
+
+            // Oops, the localized lookup failed.
+            // See if Java has one.
+            if (code.equals(name)) {
+                name = new Locale(code).getDisplayLanguage();
+            }
+
+            // Oops, Java doesn't have a clue
+            // Look into our heavy handed listing
+            if (code.equals(name)) {
+                name = Languages.AllLanguages.getName(code);
+            }
         }
         return name;
+    }
+
+    /**
+     * The specification that was given might not be be the one that
+     * ultimately gets the name.
+     * 
+     * @return the specification that was used to find the name.
+     */
+    public String getFoundSpecification()
+    {
+        getName();
+        return found;
     }
 
     /**
@@ -99,9 +206,7 @@ public class Language implements Comparable<Language> {
         return ltor;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -109,9 +214,7 @@ public class Language implements Comparable<Language> {
         return code.hashCode();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -129,9 +232,7 @@ public class Language implements Comparable<Language> {
         return code.equals(other.code);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
     @Override
@@ -139,17 +240,245 @@ public class Language implements Comparable<Language> {
         return getName();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(Language o) {
         return getName().compareTo(o.toString());
     }
 
+    private static boolean isUpperASCII(char c) {
+        return c >= 'A' && c <= 'Z';
+    }
+
+    private static boolean isLowerASCII(char c) {
+        return c >= 'a' && c <= 'z';
+    }
+
+    private static char toUpperASCII(char c) {
+        return isLowerASCII(c) ? (char) (c - 32) : c;
+    }
+
+    private static char toLowerASCII(char c) {
+        return isUpperASCII(c) ? (char) (c + 32) : c;
+    }
+
+    /**
+     * The iso639 language code's canonical form is lower case.
+     * 
+     * @param specification the bcp47 specification of the language
+     * @param start the start of the code
+     * @param end the position of the character following the code
+     * @return the canonical representation for the code
+     */
+    private static String toCanonicalLanguage(String specification, int start, int end) {
+
+        // An empty string means no work
+        if (start == end) {
+            return null;
+        }
+
+        // Avoid construction by analyzing the string
+        // to see if it is already LanguageCase.
+        // Find the first character that is not LanguageCase
+        int first;
+        for (first = start; first < end && isLowerASCII(specification.charAt(first)); ++first) {
+            continue; // keep going
+        }
+
+        // If we get to the end of the string then it is CountryCase
+        if (first == end) {
+            return specification.substring(start, end);
+        }
+
+        // Bummer, we need to do work
+        int len = end - start;
+        char[] buf = new char[len];
+        int i = 0;
+        for (int j = start; j < end; ++j) {
+            buf[i++] = j < first ? specification.charAt(j) : toLowerASCII(specification.charAt(j));
+        }
+        return new String(buf);
+    }
+
+    /**
+     * The iso3166 country code's canonical form is upper case.
+     * 
+     * @param specification the bcp47 specification of the language
+     * @param start the start of the code
+     * @param end the position of the character following the code
+     * @return the canonical representation for the code
+     */
+    private static String toCanonicalCountry(String specification, int start, int end) {
+
+        // An empty string means no work
+        if (start == end) {
+            return null;
+        }
+
+        // Avoid construction by analyzing the string
+        // to see if it is already CountryCase.
+        // Find the first character that is not CountryCase
+        int first;
+        for (first = start; first < end && isUpperASCII(specification.charAt(first)); ++first) {
+            continue; // keep going
+        }
+
+        // If we get to the end of the string then it is CountryCase
+        if (first == end) {
+            return specification.substring(start, end);
+        }
+
+        // Bummer, we need to do work
+        int len = end - start;
+        char[] buf = new char[len];
+        int i = 0;
+        for (int j = start; j < end; ++j) {
+            buf[i++] = j < first ? specification.charAt(j) : toUpperASCII(specification.charAt(j));
+        }
+        return new String(buf);
+    }
+
+    /**
+     * The iso15924 script code's canonical form is title case.
+     * 
+     * @param specification the bcp47 specification of the language
+     * @param start the start of the code
+     * @param end the position of the character following the code
+     * @return the canonical representation for the code
+     */
+    private static String toCanonicalScript(String specification, int start, int end) {
+
+        // An empty string means no work
+        if (start == end) {
+            return null;
+        }
+
+        // Avoid construction by analyzing the string
+        // to see if it is already ScriptCase.
+        // Find the first character that is not ScriptCase
+        int first = start;
+        if (isUpperASCII(specification.charAt(start))) {
+            for (first = start + 1; first < end && isLowerASCII(specification.charAt(first)); ++first) {
+                continue; // keep going
+            }
+
+            // If we get to the end of the string then it is ScriptCase
+            if (first == end) {
+                return specification.substring(start, end);
+            }
+        }
+
+        // Bummer, we need to do work.
+        int len = end - start;
+        char[] buf = new char[len];
+        buf[0] = first == start ? toUpperASCII(specification.charAt(first)) : specification.charAt(first);
+        int i = 1;
+        for (int j = start + 1; j < end; ++j) {
+            buf[i++] = j < first ? specification.charAt(j) : toLowerASCII(specification.charAt(j));
+        }
+        return new String(buf);
+    }
+
+    /**
+     * Split the specification on '-' into 1 to 3 parts.
+     * @param specification
+     */
+    private void parse(String specification) {
+        int len = specification.length();
+
+        // It used to be that SWORD modules used x- and X- as a language prefix
+        // for minority languages. Now that we have a complete iso639 spec,
+        // SWORD does not use it.
+        if (len < 2 || specification.charAt(0) == '-' || specification.charAt(1) == '-') {
+            valid = false;
+            code = UNKNOWN_LANG_CODE;
+            return;
+        }
+
+        int partLen = 0;
+        int start = 2;
+        int split;
+        for (split = start; split < len; ++split) {
+            char c = specification.charAt(split);
+            if (c == '-') {
+                break;
+            }
+        }
+        code = Language.toCanonicalLanguage(specification, start, split);
+        partLen = split - start;
+        valid = partLen == 2 || partLen == 3;
+        start = split + 1;
+
+        // Get the second part. It is either a script or a country code
+        if (split < len) {
+            for (split = start; split < len; ++split) {
+                char c = specification.charAt(split);
+                if (c == '-') {
+                    break;
+                }
+            }
+            partLen = split - start;
+            if (partLen == 4) {
+                script = Language.toCanonicalScript(specification, start, split);
+            } else if (partLen == 2) {
+                country = Language.toCanonicalCountry(specification, start, split);
+            } else {
+                valid = false;
+            }
+            start = split + 1;
+        }
+
+        // Get the third part, if any. It can only be a country code.
+        if (country == null && split < len) {
+            for (split = start; split < len; ++split) {
+                char c = specification.charAt(split);
+                if (c == '-') {
+                    break;
+                }
+            }
+            partLen = split - start;
+            if (partLen == 2) {
+                country = Language.toCanonicalCountry(specification, start, split);
+            } else {
+                valid = false;
+            }
+            start = split + 1;
+        }
+
+        if (start <= len) {
+            valid = false;
+        }
+    }
+
+    /**
+     * The original specification provided by the user.
+     */
+    //private String specification;
+    /**
+     * The effective specification.
+     */
+    private String found;
+    /**
+     * The lower case iso639 language code. 
+     */
     private String code;
+    /**
+     * The Title case iso15924 script code.
+     */
+    private String script;
+    /**
+     * The UPPER case iso3166 country code. 
+     */
+    private String country;
+    /**
+     * The name as defined by Languages. 
+     */
     private String name;
+    /**
+     * Flag to store whether the code is valid.
+     */
+    private boolean valid;
     private boolean knowsDirection;
     private boolean ltor;
 }

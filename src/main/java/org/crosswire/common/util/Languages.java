@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.util;
 
@@ -32,14 +31,15 @@ import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.internationalisation.LocaleProviderManager;
 
 /**
- * A utility class that converts ISO-639 codes or locales to their "friendly"
- * language name.
+ * A utility class that converts bcp-47 codes as supported by {@link Language} to their
+ * localized language name.
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class Languages {
+
     /**
      * Make the class a true utility class by having a private constructor.
      */
@@ -47,79 +47,23 @@ public class Languages {
     }
 
     /**
-     * Determine whether the language code is valid. The code is valid if it is
-     * null or empty. The code is valid if it is in iso639.properties. If a
-     * locale is used for the iso639Code, it will use the part before the '_'.
-     * Thus, this code does not support dialects, except as found in the iso639.
+     * Get the language name for the BCP-47 specification of the language.
      * 
-     * @param iso639Code
-     * @return true if the language is valid.
-     */
-    public static boolean isValidLanguage(String iso639Code) {
-        try {
-            String code = getLanguageCode(iso639Code);
-            if (DEFAULT_LANG_CODE.equals(code) || UNKNOWN_LANG_CODE.equals(code)) {
-                return true;
-            }
-            getLocalisedCommonLanguages().getString(code);
-            return true;
-        } catch (MissingResourceException e) {
-            return false;
-        }
-    }
-
-    /**
-     * Get the language name from the language code. If the code is null or
-     * empty then it is considered to be DEFAULT_LANG_CODE (that is, English).
-     * If it starts with x- or is too long then it will return unknown. If the
-     * code's name cannot be found, it will return the code. If a locale is used
-     * for the iso639Code, it will use the part before the '_'. Thus, this code
-     * does not support dialects, except as found in the iso639.
-     * 
-     * @param iso639Code
+     * @param code the BCP-47 specification for the language
      * @return the name of the language
      */
-    public static String getLanguageName(String iso639Code) {
-        String code = getLanguageCode(iso639Code);
+    public static String getName(String code) {
+        // Returning the code is the fallback for lookup
+        String name = code;
         try {
-            return getLocalisedCommonLanguages().getString(code);
+            ResourceBundle langs = getLocalisedCommonLanguages();
+            if (langs != null) {
+                name = langs.getString(code);
+            }
         } catch (MissingResourceException e) {
-            return AllLanguages.getLanguageName(code);
+            // This is allowed
         }
-    }
-
-    /**
-     * Get the language code from the input. If the code is null or empty then
-     * it is considered to be DEFAULT_LANG_CODE (that is, English). If a locale
-     * is used for the iso639Code, it will use the part before the '_'. Thus,
-     * this code does not support dialects, except as found in the iso639. If it
-     * is known to be unknown then return unknown. Otherwise, return the 2 or 3
-     * letter code. Note: it might not be valid.
-     * 
-     * @param input
-     * @return the code for the language
-     */
-    public static String getLanguageCode(String input) {
-        String lookup = input;
-        if (lookup == null || lookup.length() == 0) {
-            return DEFAULT_LANG_CODE;
-        }
-
-        if (lookup.indexOf('_') != -1) {
-            String[] locale = StringUtil.split(lookup, '_');
-            // We need to check what stands before the _, it might be empty or
-            // unknown.
-            return getLanguageCode(locale[0]);
-        }
-
-        // These are not uncommon. Looking for them prevents exceptions
-        // and provides the same result.
-        if (lookup.startsWith("x-") || lookup.startsWith("X-") || lookup.length() > 3)
-        {
-            return UNKNOWN_LANG_CODE;
-        }
-
-        return lookup;
+        return name;
     }
 
     /**
@@ -137,7 +81,9 @@ public class Languages {
                 langs = localisedCommonLanguages.get(locale);
                 if (langs == null) {
                     langs = initLanguages(locale);
-                    localisedCommonLanguages.put(locale, langs);
+                    if (langs != null) {
+                        localisedCommonLanguages.put(locale, langs);                        
+                    }
                 }
             }
         }
@@ -148,12 +94,9 @@ public class Languages {
         try {
             return ResourceBundle.getBundle("iso639", locale, CWClassLoader.instance());
         } catch (MissingResourceException e) {
-            // try the iso 639 full
             log.info("Unable to find language in iso639 bundle", e);
         }
-
-        // this is incorrect but see JS-195
-        return ResourceBundle.getBundle("iso639full", locale, CWClassLoader.instance());
+        return null;
     }
 
     /**
@@ -161,11 +104,11 @@ public class Languages {
      * The basic list has a few hundred languages. The full list has
      * over 7000. As a fallback, this file is not internationalized.
      */
-    private static class AllLanguages {
+    public static class AllLanguages {
         /**
          * This is a singleton class. Do not allow construction.
          */
-        private AllLanguages() {}
+        private AllLanguages() { }
 
         /**
          * Get the language name for the code. If the language name is not known
@@ -174,16 +117,19 @@ public class Languages {
          * @param languageCode
          * @return the name for the language.
          */
-        public static String getLanguageName(String languageCode) {
-            String name = instance.get(languageCode);
-            if (name != null) {
-                return name;
+        public static String getName(String languageCode) {
+            if (instance != null) {
+                String name = instance.get(languageCode);
+                if (name != null) {
+                    return name;
+                }
             }
             return languageCode;
         }
 
         /**
          * Do lazy loading of the huge file of languages.
+         * Note: It is OK for it not to be present.
          */
         private static PropertyMap instance;
         static {
@@ -191,13 +137,11 @@ public class Languages {
                 instance = ResourceUtil.getProperties("iso639full");
                 log.debug("Loading iso639full.properties file");
             } catch (IOException e) {
-                log.fatal("Unable to load iso639full.properties", e);
+                log.info("Unable to load iso639full.properties", e);
             }
         }
     }
 
-    public static final String DEFAULT_LANG_CODE = "en";
-    private static final String UNKNOWN_LANG_CODE = "und";
     private static final Logger log = Logger.getLogger(Books.class);
     private static Map<Locale, ResourceBundle> localisedCommonLanguages = new HashMap<Locale, ResourceBundle>();
 }
