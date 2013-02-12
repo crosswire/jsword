@@ -114,6 +114,9 @@ public class Language implements Comparable<Language> {
         // Note: This is not quite thread safe. Unless name is volatile.
         // But it will just do the work multiple times.
         if (name == null) {
+            // The ultimate fall back is that we use the code for the name
+            name = code;
+
             StringBuilder sb = new StringBuilder();
             // The lookup is as follows.
             // There is always a code
