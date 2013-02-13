@@ -218,7 +218,9 @@ public class BookData implements BookProvider {
                     Book book = books[i];
                     cell = OSISUtil.factory().createCell();
                     Language lang = (Language) book.getProperty(BookMetaData.KEY_XML_LANG);
-                    cell.setAttribute(OSISUtil.OSIS_ATTR_LANG, lang.getCode(), Namespace.XML_NAMESPACE);
+                    if (lang != null) {
+                        cell.setAttribute(OSISUtil.OSIS_ATTR_LANG, lang.getCode(), Namespace.XML_NAMESPACE);
+                    }
 
                     row.addContent(cell);
 

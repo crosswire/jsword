@@ -77,7 +77,7 @@ public class DefaultBookMetaData extends AbstractBookMetaData {
         setDriver(driver);
         setName(name);
         setBookCategory(type);
-        setLanguage(new Language(null)); // Default language
+        setLanguage(Language.DEFAULT_LANG); // Default language
     }
 
     /*

@@ -38,7 +38,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.crosswire.common.util.Language;
-import org.crosswire.common.util.Languages;
 import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSMsg;
@@ -552,8 +551,9 @@ public final class ConfigEntryTable {
     private void adjustLanguage() {
         Language lang = (Language) getValue(ConfigEntryType.LANG);
         if (lang == null) {
+            log.warn("Setting default lang for " + internal + ". Assuming " + ConfigEntryType.LANG.getName() + '=' + Language.DEFAULT_LANG_CODE);
             lang = Language.DEFAULT_LANG;
-            add(ConfigEntryType.LANG, lang.toString());
+            add(ConfigEntryType.LANG, lang.getGivenSpecification());
         }
         testLanguage(internal, lang);
 
@@ -563,16 +563,16 @@ public final class ConfigEntryTable {
         // If we have either langFrom or langTo, we are dealing with a glossary
         if (langFrom != null || langTo != null) {
             if (langFrom == null) {
-                log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_FROM.getName() + '=' + Languages.DEFAULT_LANG_CODE);
-                langFrom = Language.DEFAULT_LANG;
-                add(ConfigEntryType.GLOSSARY_FROM, lang.getCode());
+                log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_FROM.getName() + '=' + lang.getGivenSpecification());
+                langFrom = lang;
+                add(ConfigEntryType.GLOSSARY_FROM, langFrom.getGivenSpecification());
             }
             testLanguage(internal, langFrom);
 
             if (langTo == null) {
-                log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_TO.getName() + '=' + Languages.DEFAULT_LANG_CODE);
+                log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_TO.getName() + '=' + Language.DEFAULT_LANG_CODE);
                 langTo = Language.DEFAULT_LANG;
-                add(ConfigEntryType.GLOSSARY_TO, lang.getCode());
+                add(ConfigEntryType.GLOSSARY_TO, langTo.getGivenSpecification());
             }
             testLanguage(internal, langTo);
 
@@ -584,15 +584,14 @@ public final class ConfigEntryTable {
                           + " match " + ConfigEntryType.LANG.getName());
             } else if (!langFrom.equals(lang)) {
                 // The LANG field should match the GLOSSARY_FROM field
-                /*
-                 * log.error("Data error in " + internal + ". " +
-                 * ConfigEntryType.GLOSSARY_FROM.getName() + " ("
-                 * + langFrom.getCode() + ") does not match " +
-                 * ConfigEntryType.LANG.getName() + " (" + lang.getCode() +
-                 * ")");
-                 */
+//                log.error("Data error in " + internal + ". "
+//                        + ConfigEntryType.GLOSSARY_FROM.getName()
+//                        + " (" + langFrom.getCode()
+//                        + ") does not match "
+//                        + ConfigEntryType.LANG.getName()
+//                        + " (" + lang.getCode() + ")");
                 lang = langFrom;
-                add(ConfigEntryType.LANG, lang.getCode());
+                add(ConfigEntryType.LANG, lang.getGivenSpecification());
             }
         }
     }
@@ -664,7 +663,7 @@ public final class ConfigEntryTable {
 
     private void testLanguage(String initials, Language lang) {
         if (!lang.isValidLanguage()) {
-            log.warn("Unknown language " + lang.getCode() + " in book " + initials);
+            log.warn("Unknown language " + lang.getGivenSpecification() + " in book " + initials);
         }
     }
 
