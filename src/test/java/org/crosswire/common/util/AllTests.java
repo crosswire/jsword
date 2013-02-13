@@ -35,10 +35,11 @@ public class AllTests {
     public static Test suite() {
         TestSuite suite = new TestSuite("Test for org.crosswire.common.util");
         // $JUnit-BEGIN$
-        suite.addTest(new TestSuite(HelpDeskTest.class));
         suite.addTest(new TestSuite(StringUtilTest.class));
         suite.addTest(new TestSuite(PropertyMapTest.class));
         suite.addTest(new TestSuite(LoggerTest.class));
+        suite.addTest(new TestSuite(LanguageTest.class));
+        suite.addTest(new TestSuite(LanguagesTest.class));
         // $JUnit-END$
         return suite;
     }

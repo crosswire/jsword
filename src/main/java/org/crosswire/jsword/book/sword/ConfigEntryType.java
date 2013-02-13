@@ -309,7 +309,7 @@ public enum ConfigEntryType {
         @Override
         public String unconvert(Object internal) {
             if (internal instanceof Language) {
-                return ((Language) internal).getCode();
+                return ((Language) internal).getGivenSpecification();
             }
             return super.unconvert(internal);
         }
@@ -328,7 +328,7 @@ public enum ConfigEntryType {
         @Override
         public String unconvert(Object internal) {
             if (internal instanceof Language) {
-                return ((Language) internal).getCode();
+                return ((Language) internal).getGivenSpecification();
             }
             return super.unconvert(internal);
         }
@@ -442,7 +442,7 @@ public enum ConfigEntryType {
         @Override
         public String unconvert(Object internal) {
             if (internal instanceof Language) {
-                return ((Language) internal).getCode();
+                return ((Language) internal).getGivenSpecification();
             }
             return super.unconvert(internal);
         }
