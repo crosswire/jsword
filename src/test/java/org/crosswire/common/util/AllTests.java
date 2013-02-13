@@ -38,6 +38,7 @@ public class AllTests {
         suite.addTest(new TestSuite(StringUtilTest.class));
         suite.addTest(new TestSuite(PropertyMapTest.class));
         suite.addTest(new TestSuite(LoggerTest.class));
+        suite.addTest(new TestSuite(LanguageTest.class));
         suite.addTest(new TestSuite(LanguagesTest.class));
         // $JUnit-END$
         return suite;

@@ -21,11 +21,14 @@
 package org.crosswire.common.util;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.internationalisation.LocaleProviderManager;
@@ -138,6 +141,63 @@ public class Languages {
                 log.debug("Loading iso639full.properties file");
             } catch (IOException e) {
                 log.info("Unable to load iso639full.properties", e);
+            }
+        }
+    }
+
+    /**
+     * Provide a fallback lookup against a huge list of all languages.
+     * The basic list has a few hundred languages. The full list has
+     * over 7000. As a fallback, this file is not internationalized.
+     */
+    public static class RtoL {
+        /**
+         * This is a singleton class. Do not allow construction.
+         */
+        private RtoL() { }
+
+        /**
+         * Determine whether this language is a Left-to-Right or a Right-to-Left
+         * language. If the language has a script, it is used for the determination.
+         * Otherwise, check the language.
+         * <p>
+         * Note: This is problematic. Languages do not have direction.
+         * Scripts do. Further, there are over 7000 living languages, many of which
+         * are written in Right-to-Left scripts and are not listed here.
+         * </p>
+         * 
+         * @param script the iso15924 script code, must be in Title case
+         * @param lang the iso639 language code, must be lower case
+         * @return true if the language is Right-to-Left
+         */
+        public static boolean isRtoL(String script, String lang) {
+            if (script != null) {
+                return rtol.contains(script);
+            }
+            if (lang != null) {
+                return rtol.contains(lang);
+            }
+            return false;
+        }
+
+        /**
+         * Do lazy loading of the huge file of languages.
+         * Note: It is OK for it not to be present.
+         */
+        private static Set rtol = new HashSet();
+        /**
+         * load RtoL data
+         */
+        static {
+            try {
+                URL index = ResourceUtil.getResource(Translations.class, "rtol.txt");
+                String[] list = NetUtil.listByIndexFile(NetUtil.toURI(index));
+                log.debug("Loading iso639full.properties file");
+                for (int i = 0; i < list.length; i++) {
+                    rtol.add(list[i]);
+                }
+            } catch (IOException ex) {
+                log.info("Unable to load rtol.txt", ex);
             }
         }
     }

@@ -534,13 +534,17 @@ public final class NetUtil {
     }
 
     /**
-     * List all the files specified by the index file passed in. To be
-     * acceptable it:
+     * List all the files specified by the index file passed in.
+     * <p>Each line is pre-processed:</p>
      * <ul>
-     * <li> must be a non-0 length string,</li>
-     * <li> not commented with #,</li>
-     * <li> not the index file itself</li>
-     * <li> and acceptable by the filter.</li>
+     * <li>Ignore comments (# to end of line)</li>
+     * <li>Trim spaces from line.</li>
+     * <li>Ignore blank lines.</li>
+     * 
+     * To be acceptable it:
+     * <ul>
+     * <li> cannot be the index file itself</li>
+     * <li> and must acceptable by the filter.</li>
      * </ul>
      * 
      * @return String[] Matching results.
@@ -565,11 +569,24 @@ public final class NetUtil {
                     break;
                 }
 
+                String name = line;
+
+                // Strip comments from the line
+                int len = name.length();
+                int commentPos;
+                for (commentPos = 0; commentPos < len && name.charAt(commentPos) != '#'; ++commentPos) {
+                    continue; // test does the work
+                }
+
+                if (commentPos < len) {
+                    name = name.substring(0, commentPos);
+                }
+
                 // we need to trim extraneous whitespace on the line
-                String name = line.trim();
+                name = name.trim();
 
                 // Is it acceptable?
-                if (name.length() > 0 && name.charAt(0) != '#' && !name.equals(INDEX_FILE) && filter.accept(name)) {
+                if (name.length() > 0 && !name.equals(INDEX_FILE) && filter.accept(name)) {
                     list.add(name);
                 }
             }

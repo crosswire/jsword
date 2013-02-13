@@ -60,7 +60,31 @@ public class Language implements Comparable<Language> {
      *            the specifier for the particular language
      */
     public Language(String specification) {
-        parse(specification);
+        given = specification;
+        parse(given);
+    }
+
+    /**
+     * The specification that was given might not be be the one that
+     * ultimately gets the name.
+     * 
+     * @return the specification that was originally given.
+     */
+    public String getGivenSpecification()
+    {
+        return given;
+    }
+
+    /**
+     * The specification that was given might not be be the one that
+     * ultimately gets the name.
+     * 
+     * @return the specification that was used to find the name.
+     */
+    public String getFoundSpecification()
+    {
+        getName();
+        return found;
     }
 
     /**
@@ -114,8 +138,10 @@ public class Language implements Comparable<Language> {
         // Note: This is not quite thread safe. Unless name is volatile.
         // But it will just do the work multiple times.
         if (name == null) {
-            // The ultimate fall back is that we use the code for the name
-            name = code;
+            boolean more = true;
+            // Code is the ultimate fallback
+            String result = code;
+            String lookup = code;
 
             StringBuilder sb = new StringBuilder();
             // The lookup is as follows.
@@ -127,85 +153,85 @@ public class Language implements Comparable<Language> {
                 sb.append(script);
                 sb.append('-');
                 sb.append(country);
-                found = sb.toString();
-                name = Languages.getName(found);
+                lookup = sb.toString();
+                result = Languages.getName(lookup);
+                more = lookup.equals(result);
             }
 
             // If script is specified it has precedence over country
-            if (code.equals(name) && script != null) {
+            if (more && script != null) {
                 sb.setLength(0);
                 sb.append(code);
                 sb.append('-');
                 sb.append(script);
-                found = sb.toString();
-                name = Languages.getName(found);
+                lookup = sb.toString();
+                result = Languages.getName(lookup);
+                more = lookup.equals(result);
             }
 
             // If country was specified, check for that now.
-            if (code.equals(name) && country != null) {
+            if (more && country != null) {
                 sb.setLength(0);
                 sb.append(code);
                 sb.append('-');
                 sb.append(country);
-                found = sb.toString();
-                name = Languages.getName(found);
+                lookup = sb.toString();
+                result = Languages.getName(lookup);
+                more = lookup.equals(result);
             }
 
             // Now check just the code.
-            if (code.equals(name)) {
-                found = code;
-                name = Languages.getName(code);                
+            if (more) {
+                lookup = code;
+                result = Languages.getName(lookup);                
+                more = lookup.equals(result);
             }
 
             // Oops, the localized lookup failed.
             // See if Java has one.
-            if (code.equals(name)) {
-                name = new Locale(code).getDisplayLanguage();
+            if (more) {
+                lookup = code;
+                result = new Locale(lookup).getDisplayLanguage();
+                more = lookup.equals(result);
             }
 
             // Oops, Java doesn't have a clue
             // Look into our heavy handed listing
-            if (code.equals(name)) {
-                name = Languages.AllLanguages.getName(code);
+            if (more) {
+                lookup = code;
+                result = Languages.AllLanguages.getName(lookup);
+                more = lookup.equals(result);
             }
+
+            // Oops, didn't find it anywhere. Mark it as invalid.
+            if (more) {
+                valid = false;
+            }
+            // now that we are here go with what we last used and got
+            found = lookup;
+            // Assign name last to help with synchronization issues
+            name = result;
         }
         return name;
     }
 
     /**
-     * The specification that was given might not be be the one that
-     * ultimately gets the name.
-     * 
-     * @return the specification that was used to find the name.
-     */
-    public String getFoundSpecification()
-    {
-        getName();
-        return found;
-    }
-
-    /**
      * Determine whether this language is a Left-to-Right or a Right-to-Left
-     * language. Note: This is problematic. Languages do not have direction.
+     * language. If the language has a script, it is used for the determination.
+     * Otherwise, check the language.
+     * <p>
+     * Note: This is problematic. Languages do not have direction.
      * Scripts do. Further, there are over 7000 living languages, many of which
      * are written in Right-to-Left scripts and are not listed here.
+     * </p>
      * 
      * @return true if the language is Left-to-Right.
      */
     public boolean isLeftToRight() {
         if (!knowsDirection) {
-            // TODO(DMS): Improve this.
-            ltor = !("he".equals(code)  || // Hebrew
-                     "ar".equals(code)  || // Arabic
-                     "fa".equals(code)  || // Farsi/Persian
-                     "ur".equals(code)  || // Uighur
-                     "uig".equals(code) || // Uighur, too
-                     "syr".equals(code) || // Syriac
-                     "iw".equals(code));   // Java's notion of Hebrew
-
+            ltor = ! Languages.RtoL.isRtoL(script, code);
             knowsDirection = true;
         }
-
         return ltor;
     }
 
@@ -214,7 +240,7 @@ public class Language implements Comparable<Language> {
      */
     @Override
     public int hashCode() {
-        return code.hashCode();
+        return found.hashCode();
     }
 
     /* (non-Javadoc)
@@ -232,7 +258,7 @@ public class Language implements Comparable<Language> {
 
         final Language other = (Language) obj;
 
-        return code.equals(other.code);
+        return code.equals(other.code)  && compareStrings(script, other.script) && compareStrings(country, other.country);
     }
 
     /* (non-Javadoc)
@@ -247,140 +273,7 @@ public class Language implements Comparable<Language> {
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(Language o) {
-        return getName().compareTo(o.toString());
-    }
-
-    private static boolean isUpperASCII(char c) {
-        return c >= 'A' && c <= 'Z';
-    }
-
-    private static boolean isLowerASCII(char c) {
-        return c >= 'a' && c <= 'z';
-    }
-
-    private static char toUpperASCII(char c) {
-        return isLowerASCII(c) ? (char) (c - 32) : c;
-    }
-
-    private static char toLowerASCII(char c) {
-        return isUpperASCII(c) ? (char) (c + 32) : c;
-    }
-
-    /**
-     * The iso639 language code's canonical form is lower case.
-     * 
-     * @param specification the bcp47 specification of the language
-     * @param start the start of the code
-     * @param end the position of the character following the code
-     * @return the canonical representation for the code
-     */
-    private static String toCanonicalLanguage(String specification, int start, int end) {
-
-        // An empty string means no work
-        if (start == end) {
-            return null;
-        }
-
-        // Avoid construction by analyzing the string
-        // to see if it is already LanguageCase.
-        // Find the first character that is not LanguageCase
-        int first;
-        for (first = start; first < end && isLowerASCII(specification.charAt(first)); ++first) {
-            continue; // keep going
-        }
-
-        // If we get to the end of the string then it is CountryCase
-        if (first == end) {
-            return specification.substring(start, end);
-        }
-
-        // Bummer, we need to do work
-        int len = end - start;
-        char[] buf = new char[len];
-        int i = 0;
-        for (int j = start; j < end; ++j) {
-            buf[i++] = j < first ? specification.charAt(j) : toLowerASCII(specification.charAt(j));
-        }
-        return new String(buf);
-    }
-
-    /**
-     * The iso3166 country code's canonical form is upper case.
-     * 
-     * @param specification the bcp47 specification of the language
-     * @param start the start of the code
-     * @param end the position of the character following the code
-     * @return the canonical representation for the code
-     */
-    private static String toCanonicalCountry(String specification, int start, int end) {
-
-        // An empty string means no work
-        if (start == end) {
-            return null;
-        }
-
-        // Avoid construction by analyzing the string
-        // to see if it is already CountryCase.
-        // Find the first character that is not CountryCase
-        int first;
-        for (first = start; first < end && isUpperASCII(specification.charAt(first)); ++first) {
-            continue; // keep going
-        }
-
-        // If we get to the end of the string then it is CountryCase
-        if (first == end) {
-            return specification.substring(start, end);
-        }
-
-        // Bummer, we need to do work
-        int len = end - start;
-        char[] buf = new char[len];
-        int i = 0;
-        for (int j = start; j < end; ++j) {
-            buf[i++] = j < first ? specification.charAt(j) : toUpperASCII(specification.charAt(j));
-        }
-        return new String(buf);
-    }
-
-    /**
-     * The iso15924 script code's canonical form is title case.
-     * 
-     * @param specification the bcp47 specification of the language
-     * @param start the start of the code
-     * @param end the position of the character following the code
-     * @return the canonical representation for the code
-     */
-    private static String toCanonicalScript(String specification, int start, int end) {
-
-        // An empty string means no work
-        if (start == end) {
-            return null;
-        }
-
-        // Avoid construction by analyzing the string
-        // to see if it is already ScriptCase.
-        // Find the first character that is not ScriptCase
-        int first = start;
-        if (isUpperASCII(specification.charAt(start))) {
-            for (first = start + 1; first < end && isLowerASCII(specification.charAt(first)); ++first) {
-                continue; // keep going
-            }
-
-            // If we get to the end of the string then it is ScriptCase
-            if (first == end) {
-                return specification.substring(start, end);
-            }
-        }
-
-        // Bummer, we need to do work.
-        int len = end - start;
-        char[] buf = new char[len];
-        buf[0] = first == start ? toUpperASCII(specification.charAt(first)) : specification.charAt(first);
-        int i = 1;
-        for (int j = start + 1; j < end; ++j) {
-            buf[i++] = j < first ? specification.charAt(j) : toLowerASCII(specification.charAt(j));
-        }
-        return new String(buf);
+        return getName().compareTo(o.getName());
     }
 
     /**
@@ -404,6 +297,11 @@ public class Language implements Comparable<Language> {
             return;
         }
 
+        // Obvious optimization of the most common case: only the language code is given
+        if (len <= 3) {
+            code = CanonicalUtils.getLanguage(specification, 0, len);
+        }
+
         int partLen = 0;
         int start = 0;
         int split;
@@ -413,7 +311,7 @@ public class Language implements Comparable<Language> {
                 break;
             }
         }
-        code = Language.toCanonicalLanguage(specification, start, split);
+        code = CanonicalUtils.getLanguage(specification, start, split);
         partLen = split - start;
         valid = partLen == 2 || partLen == 3;
         start = split + 1;
@@ -428,9 +326,9 @@ public class Language implements Comparable<Language> {
             }
             partLen = split - start;
             if (partLen == 4) {
-                script = Language.toCanonicalScript(specification, start, split);
+                script = CanonicalUtils.getScript(specification, start, split);
             } else if (partLen == 2) {
-                country = Language.toCanonicalCountry(specification, start, split);
+                country = CanonicalUtils.getCountry(specification, start, split);
             } else {
                 valid = false;
             }
@@ -447,7 +345,7 @@ public class Language implements Comparable<Language> {
             }
             partLen = split - start;
             if (partLen == 2) {
-                country = Language.toCanonicalCountry(specification, start, split);
+                country = CanonicalUtils.getCountry(specification, start, split);
             } else {
                 valid = false;
             }
@@ -460,9 +358,196 @@ public class Language implements Comparable<Language> {
     }
 
     /**
+     * Equal if both a and b are the same.
+     * @param a
+     * @param b
+     * @return true if both are the same.
+     */
+    private boolean compareStrings(String a, String b) {
+        return (a == null && b == null) || (a != null && a.equals(b));
+    }
+
+    /**
+     * Converts substrings to the canonical representation for language code, script and country.
+     */
+    private static class CanonicalUtils {
+        /**
+         * Utility class. Private constructor.
+         */
+        private CanonicalUtils() {
+        }
+
+        /**
+         * The iso639 language code's canonical form is lower case.
+         * 
+         * @param specification
+         *            the bcp47 specification of the language
+         * @param start
+         *            the start of the code
+         * @param end
+         *            the position of the character following the code
+         * @return the canonical representation for the code
+         */
+        public static String getLanguage(String specification, int start, int end) {
+
+            // An empty string means no work
+            if (start == end) {
+                return null;
+            }
+
+            // Avoid construction by analyzing the string
+            // to see if it is already LanguageCase.
+            // Find the first character that is not LanguageCase
+            int first;
+            for (first = start; first < end && isLowerASCII(specification.charAt(first)); ++first) {
+                continue; // keep going
+            }
+
+            // If we get to the end of the string then it is CountryCase
+            if (first == end) {
+                return specification.substring(start, end);
+            }
+
+            // Bummer, we need to do work
+            int len = end - start;
+            char[] buf = new char[len];
+            int i = 0;
+            for (int j = start; j < end; ++j) {
+                buf[i++] = j < first ? specification.charAt(j) : toLowerASCII(specification.charAt(j));
+            }
+            return new String(buf);
+        }
+
+        /**
+         * The iso3166 country code's canonical form is upper case.
+         * 
+         * @param specification
+         *            the bcp47 specification of the language
+         * @param start
+         *            the start of the code
+         * @param end
+         *            the position of the character following the code
+         * @return the canonical representation for the code
+         */
+        public static String getCountry(String specification, int start, int end) {
+
+            // An empty string means no work
+            if (start == end) {
+                return null;
+            }
+
+            // Avoid construction by analyzing the string
+            // to see if it is already CountryCase.
+            // Find the first character that is not CountryCase
+            int first;
+            for (first = start; first < end && isUpperASCII(specification.charAt(first)); ++first) {
+                continue; // keep going
+            }
+
+            // If we get to the end of the string then it is CountryCase
+            if (first == end) {
+                return specification.substring(start, end);
+            }
+
+            // Bummer, we need to do work
+            int len = end - start;
+            char[] buf = new char[len];
+            int i = 0;
+            for (int j = start; j < end; ++j) {
+                buf[i++] = j < first ? specification.charAt(j) : toUpperASCII(specification.charAt(j));
+            }
+            return new String(buf);
+        }
+
+        /**
+         * The iso15924 script code's canonical form is title case.
+         * 
+         * @param specification
+         *            the bcp47 specification of the language
+         * @param start
+         *            the start of the code
+         * @param end
+         *            the position of the character following the code
+         * @return the canonical representation for the code
+         */
+        public static String getScript(String specification, int start, int end) {
+
+            // An empty string means no work
+            if (start == end) {
+                return null;
+            }
+
+            // Avoid construction by analyzing the string
+            // to see if it is already ScriptCase.
+            // Find the first character that is not ScriptCase
+            int first = start;
+            if (isUpperASCII(specification.charAt(start))) {
+                for (first = start + 1; first < end && isLowerASCII(specification.charAt(first)); ++first) {
+                    continue; // keep going
+                }
+
+                // If we get to the end of the string then it is ScriptCase
+                if (first == end) {
+                    return specification.substring(start, end);
+                }
+            }
+
+            // Bummer, we need to do work.
+            int len = end - start;
+            char[] buf = new char[len];
+            buf[0] = first == start ? toUpperASCII(specification.charAt(first)) : specification.charAt(first);
+            int i = 1;
+            for (int j = start + 1; j < end; ++j) {
+                buf[i++] = j < first ? specification.charAt(j) : toLowerASCII(specification.charAt(j));
+            }
+            return new String(buf);
+        }
+
+        /**
+         * Determine whether the character is one of A-Z.
+         * 
+         * @param c the character to examine
+         * @return true if it is in A-Z
+         */
+        private static boolean isUpperASCII(char c) {
+            return c >= 'A' && c <= 'Z';
+        }
+
+        /**
+         * Determine whether the character is one of a-z.
+         * 
+         * @param c the character to examine
+         * @return true if it is in a-z
+         */
+        private static boolean isLowerASCII(char c) {
+            return c >= 'a' && c <= 'z';
+        }
+
+        /**
+         * Convert a character, in in a-z to its upper case value, otherwise leave it alone.
+         * 
+         * @param c the character to convert, if in a-z
+         * @return the upper case ASCII representation of the character or the character itself.
+         */
+        private static char toUpperASCII(char c) {
+            return isLowerASCII(c) ? (char) (c - 32) : c;
+        }
+
+        /**
+         * Convert a character, in in A-Z to its lower case value, otherwise leave it alone.
+         * 
+         * @param c the character to convert, if in A-Z
+         * @return the lower case ASCII representation of the character or the character itself.
+         */
+        private static char toLowerASCII(char c) {
+            return isUpperASCII(c) ? (char) (c + 32) : c;
+        }
+    }
+
+    /**
      * The original specification provided by the user.
      */
-    //private String specification;
+    private String given;
     /**
      * The effective specification.
      */
