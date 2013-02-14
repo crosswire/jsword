@@ -1,4 +1,4 @@
-<project name="core" default="all">
+<project name="core" default="all" xmlns:ivy="antlib:org.apache.ivy.ant">
 
   <!--=======================================================================
     == To make eclipse recognise this file as an ant file, go to preferences,
@@ -10,7 +10,7 @@
     == These are the standard locations that this build file uses.
     == This assumes that the build file is in the root of the project.
     =========================================================================-->
-  <property name="release.version"  value="1.6"/>
+  <property name="release.version"  value="2.0-beta"/>
   <property name="source.root"      value="src"/>
   <property name="source.etc"       value="etc"/>
   <property name="source.jar"       value="jar"/>
@@ -19,12 +19,14 @@
   <property name="source.test"      value="${source.root}/test"/>
   <property name="target.root"      value="target"/>
   <property name="target.classes"   value="${target.root}/classes"/>
-  <property name="target.jar"       value="lib"/>
+  <property name="target.jar"       value="lib/jars"/>
   <property name="target.installed" value="${target.root}/installed"/> <!-- override -->
+  <property name="jsword.home"      value="${basedir}/../jsword" />
+  <property name="tools.home"       value="${jsword.home}/tools" />
   <property name="test.root"        value="${target.root}/test"/>
   <property name="test.classes"     value="${test.root}/classes"/>
   <property name="test.jar"         value="${test.root}"/>
-  <property name="keystore.devfile" value="../jsword/crosswire.keystore"/>
+  <property name="keystore.devfile" value="${jsword.home}/crosswire.keystore"/>
   <property name="keystore.file"    value="${keystore.devfile}"/>
   <property name="keystore.alias"   value="jsword"/>
   <property name="keystore.pswd"    value="p455w0rd"/>
@@ -152,7 +154,7 @@
           depends="init, clean.dependency"
           description="Remove the target directory">
     <delete dir="${target.root}"/>
-    <delete dir="${target.jar}"/>
+    <!-- delete dir="${target.jar}"/ -->
     <antcall target="clean.extra"/>
   </target>
 
@@ -401,6 +403,90 @@
          target="install"
          inheritAll="false"/>
   </target>
+
+	<target name="checkfiles" description="check on downloaded tools" >
+		<available file="${findbugs.home}" type="dir" property="findbugs.present"/>
+		<available file="${ivy.jar.file}" type="file" property="ivy.present"/>
+	</target>
+
+	<!--=======================================================================
+	== Use findbugs to find bugs.
+	== These are properties related to findbugs.
+	=========================================================================-->
+	<property name="findbugs.install.version"     value="2.0.2" />
+	<property name="findbugs.home"                value="${tools.home}/findbugs-${findbugs.install.version}" />
+	<property name="findbugs.url"                 value="http://prdownloads.sourceforge.net/findbugs/findbugs-${findbugs.install.version}.zip?download"/>
+	<property name="findbugs.zip"                 value="${findbugs.home}/findbugs-${findbugs.install.version}.zip" />
+	<target name="findbugs.download" description="Download findbugs" depends="checkfiles" unless="findbugs.present">
+		<mkdir dir="${tools.home}"/>
+		<get src="${findbugs.url}" dest="${findbugs.zip}" usetimestamp="true" />
+		<unzip src="${findbugs.zip}" dest="${tools.home}" />
+		<delete file="${findbugs.zip}"/>
+	</target>
+
+	<path id="findbugs.lib.path">
+		<fileset dir="${findbugs.home}" includes="**/*.jar"/>
+	</path>
+	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpathref="findbugs.lib.path"/>
+
+	<!--=======================================================================
+    == Use ivy to manage external jars.
+    == These are properties related to ivy.
+    =========================================================================-->
+	<property name="ivy.install.version"          value="2.3.0" />
+	<property name="ivy.jar.dir"                  value="${tools.home}/ivy" />
+	<property name="ivy.jar.file"                 value="${ivy.jar.dir}/ivy-${ivy.install.version}.jar" />
+	<property name="ivy.lib.path"                 value="${tools.home}/ivy" />
+	<property name="ivy.quiet"                    value="quiet"/> <!-- default or quiet -->
+	<property name="ivy.default.ivy.user.dir"     value="${basedir}/${jsword.home}/ivy"/>
+
+	<!--=======================================================================
+    == Get ivy from the maven repository
+    =========================================================================-->
+	<target name="ivy.download" description="Download ivy" depends="checkfiles" unless="ivy.present">
+		<mkdir dir="${ivy.jar.dir}"/>
+		<!-- download Ivy from web site so that it can be used even without any special installation -->
+		<echo message="installing ivy..."/>
+		<get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar"
+         dest="${ivy.jar.file}" usetimestamp="true"/>
+	</target>
+
+	<!--=======================================================================
+    == Make ivy visible to ant
+    =========================================================================-->
+	<target name="ivy.task" depends="ivy.download" description="Make ivy visible to Ant">
+		<!-- try to load ivy here from local ivy dir, in case the user has not already dropped
+         it into ant's lib dir (note that the latter copy will always take precedence).
+         We will not fail as long as local lib dir exists (it may be empty) and
+         ivy is in at least one of ant's lib dir or the local lib dir. -->
+		<path id="ivy.lib.path">
+			<fileset dir="${ivy.jar.dir}" includes="*.jar"/>
+		</path>
+		<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>
+	</target>
+
+	<!--=======================================================================
+        target: ivy.clean            
+    =========================================================================-->
+	<target name="ivy.clean" description="Remove the ivy installation">
+		<delete dir="${ivy.jar.dir}"/>
+	</target>
+
+	<!--=======================================================================
+    == target: ivy.clean-cache              
+    =========================================================================-->
+	<target name="ivy.clean-cache" depends="ivy.task" 
+          description="Remove dependent jars that ivy manages">
+		<ivy:cleancache />
+	</target>
+
+	<!--=======================================================================
+    == Get all the dependencies that have been registered in ivy.xml
+    =========================================================================-->
+	<target name="ivy.resolve" depends="ivy.task" description="Retrieve dependencies with ivy">
+		<ivy:retrieve sync="true" pattern="lib/[type]s/[artifact]-[revision].[ext]" log="${ivy.quiet}"/>
+		<ivy:cachepath pathid="default.path"/>
+	</target>
 
   <!--=======================================================================
     == A keystore is needed to sign jars.
