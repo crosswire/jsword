@@ -20,7 +20,6 @@ JSWORD_HOME=`pwd`/jsword
 
 . $JSWORD_HOME/etc/build/settings.`dnsdomainname`.sh
 . $JSWORD_HOME/etc/build/settings.global.sh
-. $JSWORD_HOME/etc/build/commands.`dnsdomainname`.sh
 
 rm -f $LOGFILE
 

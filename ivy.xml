@@ -4,8 +4,8 @@
     <dependency org="commons-codec"             name="commons-codec"    rev="1.7"       conf="default->master,sources" />
     <dependency org="commons-logging"           name="commons-logging"  rev="1.1.1"     conf="default->master,sources" />
     <dependency org="commons-net"               name="commons-net"      rev="3.2"       conf="default->master,sources" />
-    <dependency org="org.apache.httpcomponents" name="httpcore"         rev="4.2.3" conf="default->master,sources" />
-    <dependency org="org.apache.httpcomponents" name="httpclient"       rev="4.2.3" conf="default->master,sources" />
+    <dependency org="org.apache.httpcomponents" name="httpcore"         rev="4.2.3"     conf="default->master,sources" />
+    <dependency org="org.apache.httpcomponents" name="httpclient"       rev="4.2.3"     conf="default->master,sources" />
     <dependency org="javatar"                   name="javatar"          rev="2.5"       conf="default->master,sources" />
     <dependency org="org.jdom"                  name="jdom"             rev="1.1.3"     conf="default->master,sources" />
     <dependency org="org.apache.lucene"         name="lucene-core"      rev="3.0.3"     conf="default->master,sources" />
@@ -13,7 +13,7 @@
     <dependency org="org.apache.lucene"         name="lucene-smartcn"   rev="3.0.3"     conf="default->master,sources" />
     <dependency org="org.apache.lucene"         name="lucene-snowball"  rev="3.0.3"     conf="default->master,sources" />
     <dependency org="junit"                     name="junit"            rev="4.11"      conf="default->master,sources" />
-    <dependency org="com.ibm.icu"               name="icu4j"            rev="50.1.1"   conf="default->master,sources" />
+    <dependency org="com.ibm.icu"               name="icu4j"            rev="50.1.1"    conf="default->master,sources" />
     <dependency org="javax.activation"          name="activation"       rev="1.1.1"     conf="default->master,sources" />
     <!-- dependency org="xalan"                     name="xalan"            rev="2.7.1"     / -->
     <!-- dependency org="xalan"                     name="serializer"       rev="2.7.1"     / -->
