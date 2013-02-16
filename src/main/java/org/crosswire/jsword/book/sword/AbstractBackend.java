@@ -53,7 +53,7 @@ import org.jdom.Content;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public abstract class AbstractBackend<T extends OpenFileState> implements StatefulFileBackedBackend<T> {
- 
+
     /**
      * Default constructor for the sake of serialization.
      */
@@ -124,6 +124,17 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
      */
     public abstract boolean contains(Key key);
 
+    /**
+     * Gets the fast global key list, and if this operation is not supported, throws a {@link UnsupportedOperationException}
+     *
+     * @return the fast global key list
+     * @throws BookException the book exception if for some reason the book failed to be read properly.
+     */
+    public Key getGlobalKeyList() throws BookException {
+        //by default, this is not implemented
+        throw new UnsupportedOperationException("Fast global key list unsupported in this backend");
+    }
+    
     /**
      * Get the text allotted for the given entry
      * 
@@ -199,9 +210,8 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
     private Verse readPassageOsis(Key key, RawTextToXmlProcessor processor, final List<Content> content, T openFileState) throws BookException {
         Verse currentVerse = null;
         try {
-            
-            
-            final Passage ref = (key instanceof Passage ? (Passage) key : KeyUtil.getPassage(key, getVersification()));
+
+            final Passage ref = key instanceof Passage ? (Passage) key : KeyUtil.getPassage(key, getVersification());
             final Iterator<Key> rit = ref.rangeIterator(RestrictionType.CHAPTER);
             while (rit.hasNext()) {
                 VerseRange range = (VerseRange) rit.next();
@@ -282,12 +292,12 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
     }
 
     public Versification getVersification() {
-        if(this.versificationSystem == null) {
-            this.versificationSystem = Versifications.instance().getVersification((String) getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION)); 
+        if (this.versificationSystem == null) {
+            this.versificationSystem = Versifications.instance().getVersification((String) getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION));
         }
         return versificationSystem;
     }
-    
+
     private SwordBookMetaData bmd;
     private Versification versificationSystem;
 }

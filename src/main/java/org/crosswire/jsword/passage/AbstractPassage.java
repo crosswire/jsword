@@ -109,7 +109,6 @@ public abstract class AbstractPassage implements Passage {
         Verse thatfirst = thatref.getVerseAt(0);
         Verse thisfirst = getVerseAt(0);
 
-        
         return getVersification().distance(thisfirst, thatfirst);
     }
 
@@ -509,7 +508,7 @@ public abstract class AbstractPassage implements Passage {
         }
 
         lowerNormalizeProtection();
-        if (lowerEventSuppresionAndTest()) {
+        if (lowerEventSuppressionAndTest()) {
             fireIntervalAdded(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1));
         }
     }
@@ -538,7 +537,7 @@ public abstract class AbstractPassage implements Passage {
         }
 
         lowerNormalizeProtection();
-        if (lowerEventSuppresionAndTest()) {
+        if (lowerEventSuppressionAndTest()) {
             fireIntervalRemoved(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1));
         }
     }
@@ -561,7 +560,7 @@ public abstract class AbstractPassage implements Passage {
         }
 
         lowerNormalizeProtection();
-        if (lowerEventSuppresionAndTest()) {
+        if (lowerEventSuppressionAndTest()) {
             fireIntervalRemoved(this, null, null);
         }
     }
@@ -575,7 +574,7 @@ public abstract class AbstractPassage implements Passage {
 
         remove(getVersification().getAllVerses());
 
-        if (lowerEventSuppresionAndTest()) {
+        if (lowerEventSuppressionAndTest()) {
             fireIntervalRemoved(this, null, null);
         }
     }
@@ -597,7 +596,7 @@ public abstract class AbstractPassage implements Passage {
         }
 
         lowerNormalizeProtection();
-        if (lowerEventSuppresionAndTest()) {
+        if (lowerEventSuppressionAndTest()) {
             fireIntervalAdded(this, null, null);
         }
     }
@@ -646,7 +645,7 @@ public abstract class AbstractPassage implements Passage {
         }
 
         lowerNormalizeProtection();
-        if (lowerEventSuppresionAndTest()) {
+        if (lowerEventSuppressionAndTest()) {
             fireIntervalAdded(this, getVerseAt(0), getVerseAt(countVerses() - 1));
         }
     }
@@ -957,7 +956,7 @@ public abstract class AbstractPassage implements Passage {
      * 
      * @return true if it is then safe to fire an event.
      */
-    public boolean lowerEventSuppresionAndTest() {
+    public boolean lowerEventSuppressionAndTest() {
         suppressEvents--;
         assert suppressEvents >= 0;
 
@@ -973,7 +972,7 @@ public abstract class AbstractPassage implements Passage {
      * @return The VerseRange
      * @exception java.lang.ClassCastException
      *                If this is not a Verse or a VerseRange
-     * @deprecated  use {@link #toVerseRange(Versification, String)} instead
+     * @deprecated  use {@link #toVerseRange(Versification, Object)} instead
      */
     @Deprecated
     protected static VerseRange toVerseRange(Object base) throws ClassCastException {
@@ -1246,7 +1245,7 @@ public abstract class AbstractPassage implements Passage {
 
         // We don't bother to call fireContentsChanged(...) because
         // nothing can have registered at this point
-        lowerEventSuppresionAndTest();
+        lowerEventSuppressionAndTest();
         lowerNormalizeProtection();
     }
 

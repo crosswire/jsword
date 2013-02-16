@@ -25,6 +25,7 @@ import java.net.URI;
 import java.util.Map;
 
 import org.crosswire.common.util.Language;
+import org.crosswire.jsword.book.sword.MissingDataFilesException;
 import org.crosswire.jsword.index.IndexStatus;
 import org.jdom.Document;
 
@@ -197,8 +198,9 @@ public interface BookMetaData extends Comparable<BookMetaData> {
      * 
      * @param library
      *            the base URI or null if there is none
+     * @throws MissingDataFilesException  indicates missing data files
      */
-    void setLibrary(URI library);
+    void setLibrary(URI library) throws MissingDataFilesException;
 
     /**
      * Get the base URI for relative URIs in the document.

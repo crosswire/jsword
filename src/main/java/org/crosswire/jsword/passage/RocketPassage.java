@@ -88,18 +88,18 @@ public class RocketPassage extends BitwisePassage {
         DistinctPassage dtemp = new DistinctPassage(getVersification());
         dtemp.raiseEventSuppresion();
         dtemp.addAll(this);
-        dtemp.lowerEventSuppresionAndTest();
+        dtemp.lowerEventSuppressionAndTest();
 
         RangedPassage rtemp = new RangedPassage(getVersification());
         rtemp.raiseEventSuppresion();
         rtemp.addAll(this);
-        rtemp.lowerEventSuppresionAndTest();
+        rtemp.lowerEventSuppressionAndTest();
 
         distinct = dtemp;
         ranged = rtemp;
 
         // This is just an optimization so we dont need to fire any events
-        lowerEventSuppresionAndTest();
+        lowerEventSuppressionAndTest();
     }
 
     /*

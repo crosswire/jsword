@@ -388,7 +388,7 @@ public final class SwordUtil {
 
         return loc;
     }
-    
+
     /**
      * The log stream
      */

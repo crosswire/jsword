@@ -17,25 +17,26 @@
  * Copyright: 2013
  *     The copyright to this program is held by it's authors.
  *
+ * ID: $Id$
  */
-package org.crosswire.jsword.internationalisation;
 
-import java.util.Locale;
+package org.crosswire.jsword.book.sword;
+
+import org.crosswire.jsword.book.BookException;
 
 /**
- * A default Locale provider simply returns Locale.getDefault()
- *
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
- * @author Chris Burrell
+ * Indicates that the files are missing, and therefore this book should be excluded
  */
-public class DefaultLocaleProvider implements LocaleProvider {
-
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.internationalisation.LocaleProvider#getUserLocale()
+public class MissingDataFilesException extends BookException {
+    
+    /**
+     * Instantiates a new missing data files exception.
+     *
+     * @param msg the msg
      */
-    public Locale getUserLocale() {
-        //Default locale are cached by the underlying java implementation, so no need to cache here.
-        return Locale.getDefault();
+    public MissingDataFilesException(String msg) {
+        super(msg);
     }
+
+    private static final long serialVersionUID = -130074367541462750L;
 }

@@ -31,7 +31,7 @@ import org.apache.lucene.util.Version;
 /**
  * A simple wrapper for {@link SmartChineseAnalyzer}, which takes overlapping
  * two character tokenization approach which leads to larger index size, like
- * {@link org.apache.lucene.analyzer.cjk.CJKAnalyzer}. This analyzer's stop list
+ * <code>org.apache.lucene.analyzer.cjk.CJKAnalyzer</code>. This analyzer's stop list
  * is merely of punctuation. It does stemming of English.
  * 
  * @see gnu.lgpl.License for license details.<br>

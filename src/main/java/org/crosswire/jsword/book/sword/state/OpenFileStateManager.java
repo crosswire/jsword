@@ -44,12 +44,16 @@ import org.crosswire.jsword.book.sword.SwordBookMetaData;
  * 
  * We may want to set a maximum to prevent leaking resources on heavy concurrent
  * usage. However, at the current time, with single thread access, we are
- * bounded to having 1 open file per module installed, which should be acceptable across platforms.
+ * bounded to having 1 open file per module installed, which should be
+ * acceptable across platforms.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
+ *      The copyright to this program is held by it's authors.
+ * 
+ * @author DM Smith
+ * @author Chris Burrell
  */
 public class OpenFileStateManager {
-    private static volatile Map<SwordBookMetaData,Queue<OpenFileState>> metaToStates = new HashMap<SwordBookMetaData,Queue<OpenFileState>>();
-    private static volatile boolean shuttingDown = false;
-
     /**
      * prevent instantiation
      */
@@ -59,7 +63,7 @@ public class OpenFileStateManager {
 
     public static RawBackendState getRawBackendState(SwordBookMetaData metadata) throws BookException {
         ensureNotShuttingDown();
-        
+
         RawBackendState state = getInstance(metadata);
         if (state == null) {
             state = new RawBackendState(metadata);
@@ -82,7 +86,6 @@ public class OpenFileStateManager {
     public static GenBookBackendState getGenBookBackendState(SwordBookMetaData metadata) throws BookException {
         ensureNotShuttingDown();
 
-        
         GenBookBackendState state = getInstance(metadata);
         if (state == null) {
             state = new GenBookBackendState(metadata);
@@ -143,7 +146,13 @@ public class OpenFileStateManager {
         return availableStates;
     }
 
-    public static void release(OpenFileState fileState)  {
+    public static void release(OpenFileState fileState) {
+        if (fileState == null) {
+            // can't release anything. JSword has failed to open a file state,
+            // and a finally block is trying to close this
+            return;
+        }
+
         // instead of releasing, we add to our queue
         Queue<OpenFileState> queueForMeta = getQueueForMeta(fileState.getBookMetaData());
         boolean offered = queueForMeta.offer(fileState);
@@ -153,24 +162,26 @@ public class OpenFileStateManager {
             fileState.releaseResources();
         }
     }
-    
+
     /**
      * Shuts down all open files
      */
     public static void shutDown() {
-        shuttingDown  = true;
-        for(Queue<OpenFileState> e : metaToStates.values()) {
+        shuttingDown = true;
+        for (Queue<OpenFileState> e : metaToStates.values()) {
             OpenFileState state = null;
-            while((state = e.poll()) != null) {
+            while ((state = e.poll()) != null) {
                 state.releaseResources();
             }
         }
     }
 
-
     private static void ensureNotShuttingDown() throws BookException {
-        if(shuttingDown) {
+        if (shuttingDown) {
             throw new BookException("Unable to read book, application is shutting down.");
         }
     }
+
+    private static volatile Map<SwordBookMetaData,Queue<OpenFileState>> metaToStates = new HashMap<SwordBookMetaData,Queue<OpenFileState>>();
+    private static volatile boolean shuttingDown;
 }

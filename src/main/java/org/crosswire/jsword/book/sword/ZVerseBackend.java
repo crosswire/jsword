@@ -27,11 +27,16 @@ import java.io.RandomAccessFile;
 import org.crosswire.common.compress.CompressorType;
 import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Logger;
+import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
 import org.crosswire.jsword.book.sword.state.ZVerseBackendState;
+import org.crosswire.jsword.passage.BitwisePassage;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
+import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageKeyFactory;
+import org.crosswire.jsword.passage.RocketPassage;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.versification.Testament;
 import org.crosswire.jsword.versification.Versification;
@@ -158,6 +163,64 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
             // correct behaviour - would cause API changes
             log.fatal("Unable to ascertain key validity", e);
             return false;
+        } finally {
+            IOUtil.close(rafBook);
+        }
+    }
+
+    public Key getGlobalKeyList() throws BookException {
+        ZVerseBackendState rafBook = null;
+        try {
+            rafBook = initState();
+
+            String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
+            Versification v11n = Versifications.instance().getVersification(v11nName);
+
+            Testament[] testaments = new Testament[] {
+                    Testament.OLD, Testament.NEW
+            };
+
+            BitwisePassage passage = new RocketPassage(v11n);
+            passage.raiseEventSuppresion();
+            passage.raiseNormalizeProtection();
+
+            for (Testament currentTestament : testaments) {
+                RandomAccessFile compRaf = currentTestament == Testament.NEW ? rafBook.getNtCompRaf() : rafBook.getOtCompRaf();
+
+                // If Bible does not contain the desired testament, then false
+                if (compRaf == null) {
+                    // no keys in this testament
+                    continue;
+                }
+
+                int maxIndex = v11n.getCount(currentTestament) - 1;
+
+                // Read in the whole index, a few hundred Kb at most.
+                byte[] temp = SwordUtil.readRAF(compRaf, 0, COMP_ENTRY_SIZE * maxIndex);
+
+                // for each block of 10 bytes, we consider the last 2 bytes.
+                for (int ii = 0; ii < temp.length; ii += COMP_ENTRY_SIZE) {
+                    // can this be simplified to temp[8] == 0 && temp[9] == 0?
+                    int verseSize = SwordUtil.decodeLittleEndian16(temp, ii + 8);
+
+                    // can this be optimized even further - i.e. why
+                    // decodeOrdinal, when add() go simply pass in and store an
+                    // ordinal
+                    if (verseSize > 0) {
+                        int ordinal = ii / COMP_ENTRY_SIZE;
+                            passage.addVersifiedOrdinal(ordinal);
+                    }
+                }
+            }
+
+            if (passage != null) {
+                passage.lowerNormalizeProtection();
+                passage.lowerEventSuppressionAndTest();
+            }
+
+            return passage;
+        } catch (IOException e) {
+            throw new BookException(JSMsg.gettext("Unable to read key list from book."));
         } finally {
             IOUtil.close(rafBook);
         }

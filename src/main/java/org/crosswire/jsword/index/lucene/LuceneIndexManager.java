@@ -86,13 +86,13 @@ public class LuceneIndexManager implements IndexManager {
             throw new BookException(JSMsg.gettext("Failed to initialize Lucene search engine."), ex);
         }
     }
-    
+
     /*
      *     @Override(non-Javadoc)
      * @see org.crosswire.jsword.index.IndexManager#closeAllIndexes()
      */
     public void closeAllIndexes() {
-        for(Index index : INDEXES.values()) {
+        for (Index index : INDEXES.values()) {
             index.close();
         }
     }
@@ -166,19 +166,19 @@ public class LuceneIndexManager implements IndexManager {
             // TODO(joe): This needs some checks that it isn't being used
             //temporary fix, which closes the index - non-thread safe since someone could theoretically come in and activate this again!
             Index index = INDEXES.get(book);
-            if(index != null) {
+            if (index != null) {
                 index.close();
             }
-            
+
             File storage = NetUtil.getAsFile(getStorageArea(book));
             String finalCanonicalPath = storage.getCanonicalPath();
             tempPath = new File(finalCanonicalPath + '.' + IndexStatus.CREATING.toString());
-            
-            if(tempPath.exists()) {
+
+            if (tempPath.exists()) {
                 FileUtil.delete(tempPath);
             }
 
-            //Issues in at least Windows seem to create issues with reusing a file that's been deleted... 
+            // Issues in at least Windows seem to create issues with reusing a file that's been deleted... 
             tempPath = new File(finalCanonicalPath + '.' + IndexStatus.CREATING.toString());
             if (!storage.renameTo(tempPath)) {
                 // TRANSLATOR: Error condition: The index could not be deleted.

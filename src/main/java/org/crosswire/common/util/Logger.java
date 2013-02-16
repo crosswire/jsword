@@ -213,7 +213,7 @@ public final class Logger {
     }
 
     /**
-     * Create a logger for the class. Wrapped by {@link #java.util.logging.Logger.getLogger(String)}.
+     * Create a logger for the class. Wrapped by {@link java.util.logging.Logger#getLogger(String)}.
      */
     private <T> Logger(Class<T> id, boolean showLocation) {
         this.logger = java.util.logging.Logger.getLogger(id.getName());
@@ -222,18 +222,17 @@ public final class Logger {
 
     // Private method to infer the caller's class and method names
     private void doLogging(Level theLevel, String message, Throwable th) {
-        //now check whether we should do any work: if 
-        if(!shouldLog(theLevel) ) {
+        // now check whether we should do any work
+        if (!shouldLog(theLevel)) {
             return;
         }
-        
-        
+
         LogRecord logRecord = new LogRecord(theLevel, message);
         logRecord.setLoggerName(logger.getName());
         logRecord.setSourceClassName(CallContext.getCallingClass(1).getName());
         logRecord.setThrown(th);
 
-        if (showLocation && (showLocationForInfoDebugTrace || theLevel.intValue() > Level.INFO.intValue()) ) {
+        if (showLocation && (showLocationForInfoDebugTrace || theLevel.intValue() > Level.INFO.intValue())) {
             String methodName = null;
             int lineNumber = -1;
 
@@ -330,7 +329,7 @@ public final class Logger {
             Logger.level = null;
         }
     }
-    
+
     /**
      * Sets the show location for debug and trace.
      *
@@ -339,13 +338,13 @@ public final class Logger {
     public static void setShowLocationForInfoDebugTrace(boolean enabled) {
         showLocationForInfoDebugTrace = enabled;
     }
-    
+
     private static final String ROOT_LOGGER = "";
     private static final String CLASS_NAME = Logger.class.getName();
     private static volatile boolean established;
     private static volatile Level level;
     private static boolean showLocationForInfoDebugTrace = true;
-    
+
     /**
      * The actual logger.
      */
