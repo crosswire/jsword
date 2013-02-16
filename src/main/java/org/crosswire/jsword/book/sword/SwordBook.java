@@ -82,7 +82,7 @@ public class SwordBook extends AbstractPassageBook {
     public final Key getGlobalKeyList() {
         if (global == null) {
             try {
-                global = this.backend.getFastGlobalKeyList();
+                global = this.backend.getGlobalKeyList();
                 return global;
             } catch (UnsupportedOperationException ex) {
                 // fail silently, operation not supported by the backend

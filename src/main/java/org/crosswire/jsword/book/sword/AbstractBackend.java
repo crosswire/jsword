@@ -130,7 +130,7 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
      * @return the fast global key list
      * @throws BookException the book exception if for some reason the book failed to be read properly.
      */
-    public Key getFastGlobalKeyList() throws BookException {
+    public Key getGlobalKeyList() throws BookException {
         //by default, this is not implemented
         throw new UnsupportedOperationException("Fast global key list unsupported in this backend");
     }

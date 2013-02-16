@@ -36,6 +36,7 @@ import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageKeyFactory;
+import org.crosswire.jsword.passage.RocketPassage;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.versification.Testament;
 import org.crosswire.jsword.versification.Versification;
@@ -167,7 +168,7 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
         }
     }
 
-    public Key getFastGlobalKeyList() throws BookException {
+    public Key getGlobalKeyList() throws BookException {
         ZVerseBackendState rafBook = null;
         try {
             rafBook = initState();
@@ -178,17 +179,11 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
             Testament[] testaments = new Testament[] {
                     Testament.OLD, Testament.NEW
             };
-            
-            Key globalList = PassageKeyFactory.instance().createEmptyKeyList(v11n);
-            Passage passage = KeyUtil.getPassage(globalList, v11n);
-            BitwisePassage bitwisePassage = null;
-            if(passage instanceof BitwisePassage) {
-                bitwisePassage = (BitwisePassage) passage;
-                bitwisePassage.raiseEventSuppresion();
-                bitwisePassage.raiseNormalizeProtection();
-            }
-            
-            
+
+            BitwisePassage passage = new RocketPassage(v11n);
+            passage.raiseEventSuppresion();
+            passage.raiseNormalizeProtection();
+
             for (Testament currentTestament : testaments) {
                 RandomAccessFile compRaf = currentTestament == Testament.NEW ? rafBook.getNtCompRaf() : rafBook.getOtCompRaf();
 
@@ -198,7 +193,7 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
                     continue;
                 }
 
-                int maxIndex = v11n.getCount(currentTestament) -1;
+                int maxIndex = v11n.getCount(currentTestament) - 1;
 
                 // Read in the whole index, a few hundred Kb at most.
                 byte[] temp = SwordUtil.readRAF(compRaf, 0, COMP_ENTRY_SIZE * maxIndex);
@@ -207,25 +202,23 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
                 for (int ii = 0; ii < temp.length; ii += COMP_ENTRY_SIZE) {
                     // can this be simplified to temp[8] == 0 && temp[9] == 0?
                     int verseSize = SwordUtil.decodeLittleEndian16(temp, ii + 8);
-                    
-                    //can this be optimized even further - i.e. why decodeOrdinal, when add() go simply pass in and store an ordinal
+
+                    // can this be optimized even further - i.e. why
+                    // decodeOrdinal, when add() go simply pass in and store an
+                    // ordinal
                     if (verseSize > 0) {
                         int ordinal = ii / COMP_ENTRY_SIZE;
-                        if(bitwisePassage != null) {
-                            bitwisePassage.addVersifiedOrdinal(ordinal);
-                        } else {
-                            globalList.addAll(v11n.decodeOrdinal(ordinal));
-                        }
+                            passage.addVersifiedOrdinal(ordinal);
                     }
                 }
             }
-            
-            if(bitwisePassage != null) {
-                bitwisePassage.lowerNormalizeProtection();
-                bitwisePassage.lowerEventSuppressionAndTest();
+
+            if (passage != null) {
+                passage.lowerNormalizeProtection();
+                passage.lowerEventSuppressionAndTest();
             }
 
-            return globalList;
+            return passage;
         } catch (IOException e) {
             throw new BookException(JSMsg.gettext("Unable to read key list from book."));
         } finally {
