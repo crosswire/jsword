@@ -123,8 +123,8 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
 
         String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
         Versification v11n = Versifications.instance().getVersification(v11nName);
-        Verse verse = KeyUtil.getVerse(key, v11n);
-        int index = v11n.getOrdinal(verse);
+        Verse verse = KeyUtil.getVerse(v11n, key);
+        int index = verse.getOrdinal();
         Testament testament = v11n.getTestament(index);
         index = v11n.getTestamentOrdinal(index);
 
@@ -160,14 +160,14 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
     public void setAliasKey(RawFileBackendState state, Key alias, Key source) throws IOException {
         String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
         Versification v11n = Versifications.instance().getVersification(v11nName);
-        Verse aliasVerse = KeyUtil.getVerse(alias, v11n);
-        Verse sourceVerse = KeyUtil.getVerse(source, v11n);
-        int aliasIndex = v11n.getOrdinal(aliasVerse);
+        Verse aliasVerse = KeyUtil.getVerse(v11n, alias);
+        Verse sourceVerse = KeyUtil.getVerse(v11n, source);
+        int aliasIndex = aliasVerse.getOrdinal();
         Testament testament = v11n.getTestament(aliasIndex);
         aliasIndex = v11n.getTestamentOrdinal(aliasIndex);
         RandomAccessFile idxRaf = testament == Testament.NEW ? state.getNtIdxRaf() : state.getOtIdxRaf();
 
-        int sourceOIndex = v11n.getOrdinal(sourceVerse);
+        int sourceOIndex = sourceVerse.getOrdinal();
         sourceOIndex = v11n.getTestamentOrdinal(sourceOIndex);
         DataIndex dataIndex = getIndex(idxRaf, sourceOIndex);
 

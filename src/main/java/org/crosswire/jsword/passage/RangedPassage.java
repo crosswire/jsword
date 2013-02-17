@@ -241,7 +241,7 @@ public class RangedPassage extends AbstractPassage {
 
     @Override
     public void retainAll(Key key) {
-        Passage that = KeyUtil.getPassage(key, this.getVersification());
+        Passage that = KeyUtil.getPassage(this.getVersification(), key);
 
         optimizeWrites();
 
@@ -335,7 +335,7 @@ public class RangedPassage extends AbstractPassage {
 
             while (it.hasNext()) {
                 VerseRange range = (VerseRange) it.next();
-                int start = v11n.getOrdinal(range.getStart());
+                int start = range.getStart().getOrdinal();
                 int end = range.getCardinality();
 
                 for (int i = 0; i < end; i++) {

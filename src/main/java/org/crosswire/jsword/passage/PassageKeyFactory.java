@@ -49,15 +49,21 @@ public final class PassageKeyFactory {
         return keyf;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyFactory#createEmptyKeyList()
+    /**
+     * Create an empty list of keys for the v11n
+     * @param v11n The v11n for this key list
+     * @return the empty key list
      */
     public Key createEmptyKeyList(Versification v11n) {
         return defaultType.createEmptyPassage(v11n);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyFactory#getValidKey(java.lang.String)
+    /**
+     * Convert the name into a key list.
+     * 
+     * @param v11n the v11n for this key list
+     * @param name the string to convert into a key list
+     * @return the constructed key list
      */
     public Key getValidKey(Versification v11n, String name) {
         try {
@@ -85,10 +91,21 @@ public final class PassageKeyFactory {
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyFactory#getGlobalKeyList()
+    /**
+     * Get a key list of the verses in this versification.
+     * 
+     * @param v11n
+     * @return the global key list
      */
     public Key getGlobalKeyList(Versification v11n) {
+        Passage whole = null;
+        try {
+            // AV11N(DMS): Is this right?
+            whole = new ReadOnlyPassage(defaultType.createPassage(v11n, "Gen 1:1-Rev 22:21"), true);
+        } catch (NoSuchKeyException ex) {
+            assert false : ex;
+            whole = defaultType.createEmptyPassage(v11n);
+        }
         return whole;
     }
 
@@ -176,7 +193,7 @@ public final class PassageKeyFactory {
 
             for (Key aKey : ref) {
                 Verse verse = (Verse) aKey;
-                int ord = v11n.getOrdinal(verse);
+                int ord = verse.getOrdinal();
 
                 // Which byte should we be altering
                 int idx0 = (ord / 8) + index;
@@ -203,7 +220,7 @@ public final class PassageKeyFactory {
             // write the verse ordinals in a loop
             for (Key aKey : ref) {
                 Verse verse = (Verse) aKey;
-                int ord = v11n.getOrdinal(verse);
+                int ord = verse.getOrdinal();
                 index += toBinary(buffer, index, ord, maxOrdinal);
             }
 
@@ -223,7 +240,7 @@ public final class PassageKeyFactory {
             Iterator<Key> it = ref.rangeIterator(RestrictionType.NONE);
             while (it.hasNext()) {
                 VerseRange range = (VerseRange) it.next();
-                index += toBinary(buffer, index, v11n.getOrdinal(range.getStart()), maxOrdinal);
+                index += toBinary(buffer, index, range.getStart().getOrdinal(), maxOrdinal);
                 index += toBinary(buffer, index, range.getCardinality(), maxOrdinal);
             }
 
@@ -542,19 +559,4 @@ public final class PassageKeyFactory {
      * How we create Passages
      */
     private static PassageKeyFactory keyf = new PassageKeyFactory();
-
-    /**
-     * The cached whole Bible passage
-     */
-    private static Passage whole;
-
-    static {
-        try {
-            // AV11N(DMS): Is this right?
-            whole = new ReadOnlyPassage(defaultType.createPassage(Versifications.instance().getDefaultVersification(), "Gen 1:1-Rev 22:21"), true);
-        } catch (NoSuchKeyException ex) {
-            assert false : ex;
-            whole = defaultType.createEmptyPassage(Versifications.instance().getDefaultVersification());
-        }
-    }
 }

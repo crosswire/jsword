@@ -111,7 +111,7 @@ public class Speed implements Runnable {
             // Part 3, a power match, and doc generate
             String nextInput = book.find("aaron & manna").getName();
             Key key = book.getKey(nextInput);
-            Passage ref = KeyUtil.getPassage(key,  Versifications.instance().getDefaultVersification());
+            Passage ref = KeyUtil.getPassage(Versifications.instance().getDefaultVersification(), key);
             ref.trimVerses(35);
             dummyDisplay(ref);
             ref = null;

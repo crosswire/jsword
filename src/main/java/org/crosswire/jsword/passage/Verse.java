@@ -37,31 +37,35 @@ import org.crosswire.jsword.versification.system.Versifications;
 /**
  * A Verse is a pointer to a single verse. Externally its unique identifier is
  * a String of the form "Gen 1:1" Internally we use
- * <code>( book, chapter, verse )</code>
+ * <code>( v11n, book, chapter, verse )</code>
  * 
  * <p>
  * A Verse is designed to be immutable. This is a necessary from a collections
  * point of view. A Verse should always be valid, although some versions may not
- * return any text for verses that they consider to be mis-translated in some
+ * return any text for verses that they consider to be untranslated in some
  * way.
  * </p>
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith
  */
 public final class Verse implements Key {
     /**
      * The default Verse is Genesis 1:1. I didn't want to provide this
      * constructor however, you are supposed to provide a default ctor for all
      * beans. For this reason I suggest you don't use it.
+     * @deprecated no replacement
      */
+    @Deprecated
     public Verse() {
         originalName = null;
 
         book = DEFAULT.book;
         chapter = DEFAULT.chapter;
         verse = DEFAULT.verse;
+        v11n = DEFAULT.v11n;
     }
 
     /**
@@ -77,10 +81,36 @@ public final class Verse implements Key {
      *            The chapter number
      * @param verse
      *            The verse number
+     * @deprecated Use {@link #Verse(String, Versification, BibleBook, int, int)} instead
      */
+    @Deprecated
     /* package */Verse(String original, BibleBook book, int chapter, int verse) {
-        originalName = original;
-        set(book, chapter, verse);
+        this(original, Versifications.instance().getDefaultVersification(), book, chapter, verse);
+    }
+
+    /**
+     * Create a Verse from book, chapter and verse numbers, throwing up if the
+     * specified Verse does not exist. This constructor is deliberately package
+     * protected so that is used only by VerseFactory.
+     * 
+     * @param original
+     *            The original verse reference
+     * @param v11n
+     *            The versification to which this verse belongs
+     * @param book
+     *            The book number (Genesis = 1)
+     * @param chapter
+     *            The chapter number
+     * @param verse
+     *            The verse number
+     */
+    /* package */Verse(String original, Versification v11n, BibleBook book, int chapter, int verse) {
+        this.originalName = original;
+        this.v11n = v11n;
+        this.book = book;
+        this.chapter = chapter;
+        this.verse = verse;
+        this.ordinal = v11n.getOrdinal(this);
     }
 
     /**
@@ -93,9 +123,28 @@ public final class Verse implements Key {
      *            The chapter number
      * @param verse
      *            The verse number
+     * @deprecated Use {@link #Verse(Versification, BibleBook, int, int)} instead
      */
+    @Deprecated
     public Verse(BibleBook book, int chapter, int verse) {
-        this(null, book, chapter, verse);
+        this(null, Versifications.instance().getDefaultVersification(), book, chapter, verse);
+    }
+
+    /**
+     * Create a Verse from book, chapter and verse numbers, throwing up if the
+     * specified Verse does not exist.
+     * 
+     * @param v11n
+     *            The versification to which this verse belongs
+     * @param book
+     *            The book number (Genesis = 1)
+     * @param chapter
+     *            The chapter number
+     * @param verse
+     *            The verse number
+     */
+    public Verse(Versification v11n, BibleBook book, int chapter, int verse) {
+        this(null, v11n, book, chapter, verse);
     }
 
     /**
@@ -116,14 +165,46 @@ public final class Verse implements Key {
      *            The verse number
      * @param patch_up
      *            True to trigger reference fixing
+     * @deprecated Use {@link #Verse(Versification, BibleBook, int, int, boolean)} instead.
      */
+    @Deprecated
     public Verse(BibleBook book, int chapter, int verse, boolean patch_up) {
+        this(Versifications.instance().getDefaultVersification(), book, chapter, verse, patch_up);
+    }
+
+    /**
+     * Create a Verse from book, chapter and verse numbers, patching up if the
+     * specified verse does not exist.
+     * <p>
+     * The actual value of the boolean is ignored. However for future proofing
+     * you should only use 'true'. Do not use patch_up=false, use
+     * <code>Verse(int, int, int)</code> This so that we can declare this
+     * constructor to not throw an exception. Is there a better way of doing
+     * this?
+     * 
+     * @param v11n
+     *            The versification to which this verse belongs
+     * @param book
+     *            The book number (Genesis = 1)
+     * @param chapter
+     *            The chapter number
+     * @param verse
+     *            The verse number
+     * @param patch_up
+     *            True to trigger reference fixing
+     */
+    public Verse(Versification v11n, BibleBook book, int chapter, int verse, boolean patch_up) {
         if (!patch_up) {
             throw new IllegalArgumentException(JSOtherMsg.lookupText("Use patch=true."));
         }
 
-        originalName = null;
-        setAndPatch(book, chapter, verse);
+        this.v11n = v11n;
+        Verse patched = this.v11n.patch(book, chapter, verse);
+        this.originalName = null;
+        this.book = patched.book;
+        this.chapter = patched.chapter;
+        this.verse = patched.verse;
+        this.ordinal = patched.ordinal;
     }
 
     /**
@@ -135,10 +216,32 @@ public final class Verse implements Key {
      * 
      * @param ordinal
      *            The verse id
+     * @deprecated Use {@link #Verse(Versification, int)} instead.
      */
+    @Deprecated
     public Verse(int ordinal) {
-        originalName = null;
-        set(ordinal);
+        this(Versifications.instance().getDefaultVersification(), ordinal);
+    }
+
+    /**
+     * Set a Verse using a Verse Ordinal number - WARNING Do not use this method
+     * unless you really know the dangers of doing so. Ordinals are not always
+     * going to be the same. So you should use a Verse or an int[3] in
+     * preference to an int ordinal whenever possible. Ordinal numbers are 1
+     * based and not 0 based.
+     * 
+     * @param v11n
+     *            The versification to which this verse belongs
+     * @param ordinal
+     *            The verse id
+     */
+    public Verse(Versification v11n, int ordinal) {
+        Verse decoded = v11n.decodeOrdinal(ordinal);
+        this.originalName = null;
+        this.book = decoded.book;
+        this.chapter = decoded.chapter;
+        this.verse = decoded.verse;
+        this.ordinal = decoded.ordinal;
     }
 
     @Override
@@ -200,10 +303,12 @@ public final class Verse implements Key {
         Verse copy = null;
         try {
             copy = (Verse) super.clone();
-            copy.book = book;
-            copy.chapter = chapter;
-            copy.verse = verse;
-            copy.originalName = originalName;
+            copy.originalName = this.originalName;
+            copy.v11n = this.v11n;
+            copy.book = this.book;
+            copy.chapter = this.chapter;
+            copy.verse = this.verse;
+            copy.ordinal = this.ordinal;
         } catch (CloneNotSupportedException e) {
             assert false : e;
         }
@@ -224,34 +329,20 @@ public final class Verse implements Key {
             return false;
         }
 
-        Verse v = (Verse) obj;
+        Verse that = (Verse) obj;
 
         // The real tests
-        if (v.getBook() != getBook()) {
-            return false;
-        }
-
-        if (v.getChapter() != getChapter()) {
-            return false;
-        }
-
-        if (v.getVerse() != getVerse()) {
-            return false;
-        }
-
-        return true;
+        return this.ordinal == that.ordinal && this.v11n.equals(that.v11n);
     }
 
     @Override
     public int hashCode() {
-        return getOrdinal();
+        return ordinal;
     }
 
-    /**
-     * @deprecated Use {@link Versification#distance(Verse, Verse)}
+    /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    @Deprecated
     public int compareTo(Key obj) {
         Verse that = null;
         if (obj instanceof Verse) {
@@ -260,8 +351,8 @@ public final class Verse implements Key {
             that = ((VerseRange) obj).getStart();
         }
 
-        int thatStart = that.getOrdinal();
-        int thisStart = this.getOrdinal();
+        int thatStart = that.ordinal;
+        int thisStart = this.ordinal;
 
         if (thatStart > thisStart) {
             return -1;
@@ -279,12 +370,12 @@ public final class Verse implements Key {
      * 
      * @param that
      *            The thing to compare against
-     * @return 1 means he is earlier than me, -1 means he is later ...
-     * @deprecated Use {@link Versification#adjacentTo(Verse, Verse)}
+     * @return true if that verse is next to this verse
+     * @deprecated Use {@link Versification#isAdjacentVerse(Verse, Verse)}
      */
     @Deprecated
     public boolean adjacentTo(Verse that) {
-        return Math.abs(that.getOrdinal() - getOrdinal()) == 1;
+        return v11n.isAdjacentVerse(this, that);
     }
 
     /**
@@ -299,7 +390,7 @@ public final class Verse implements Key {
      */
     @Deprecated
     public int subtract(Verse start) {
-        return getOrdinal() - start.getOrdinal();
+        return v11n.distance(this, start);
     }
 
     /**
@@ -312,8 +403,7 @@ public final class Verse implements Key {
      */
     @Deprecated
     public Verse subtract(int n) {
-        // AV11N(DMS): deprecate?
-        return Versifications.instance().getDefaultVersification().subtract(this, n);
+        return v11n.subtract(this, n);
     }
 
     /**
@@ -326,8 +416,16 @@ public final class Verse implements Key {
      */
     @Deprecated
     public Verse add(int n) {
-        // AV11N(DMS): deprecate?
-        return Versifications.instance().getDefaultVersification().add(this, n);
+        return v11n.add(this, n);
+    }
+
+    /**
+     * Return the versification to which this verse belongs.
+     * 
+     * @return the versification of this verse
+     */
+    public Versification getVersification() {
+        return v11n;
     }
 
     /**
@@ -365,19 +463,18 @@ public final class Verse implements Key {
      */
     @Deprecated
     public boolean isStartOfChapter() {
-        return verse == 0;
+        return v11n.isStartOfChapter(this);
     }
 
     /**
-     * Is this verse the first in a chapter
+     * Is this verse the last in a chapter
      * 
      * @return true or false ...
      * @deprecated Use {@link Versification#isEndOfChapter(Verse)}
      */
     @Deprecated
-    public boolean isEndOfChapter() {
-        // AV11N(DMS): deprecate?
-        return Versifications.instance().getDefaultVersification().isEndOfChapter(this);
+     public boolean isEndOfChapter() {
+        return v11n.isEndOfChapter(this);
     }
 
     /**
@@ -388,19 +485,18 @@ public final class Verse implements Key {
      */
     @Deprecated
     public boolean isStartOfBook() {
-        return verse == 0 && chapter == 0;
+        return v11n.isStartOfBook(this);
     }
 
     /**
-     * Is this verse the first in a chapter
+     * Is this verse the last in a chapter
      * 
      * @return true or false ...
      * @deprecated Use {@link Versification#isEndOfBook(Verse)}
      */
     @Deprecated
     public boolean isEndOfBook() {
-        // AV11N(DMS): deprecate?
-        return Versifications.instance().getDefaultVersification().isEndOfBook(this);
+        return v11n.isEndOfBook(this);
     }
 
     /**
@@ -430,16 +526,12 @@ public final class Verse implements Key {
     }
 
     /**
-     * Return the verse id that we refer to, where Gen 1:1 = 1, and Rev 22:21 =
-     * 31104
+     * Return the ordinal value of the verse in its versification.
      * 
      * @return The verse number
-     * @deprecated Use {@link Versification#getOrdinal(Verse)}
      */
-    @Deprecated
     public int getOrdinal() {
-        // AV11N(DMS): deprecate?
-        return Versifications.instance().getDefaultVersification().getOrdinal(this);
+        return ordinal;
     }
 
     /**
@@ -491,24 +583,11 @@ public final class Verse implements Key {
         };
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getParent()
      */
     public Key getParent() {
-        return parent;
-    }
-
-    /**
-     * Set a parent Key. This allows us to follow the Key interface more
-     * closely, although the concept of a parent for a verse is fairly alien.
-     * 
-     * @param parent
-     *            The parent Key for this verse
-     */
-    public void setParent(Key parent) {
-        this.parent = parent;
+        return null;
     }
 
     /**
@@ -517,29 +596,38 @@ public final class Verse implements Key {
      * @param verseBase
      *            the context or null if there is none
      * @return the verse representation
-     * @deprecated do not use
      */
-    @Deprecated
     private String doGetName(Verse verseBase) {
+        StringBuilder buf = new StringBuilder();
         // To cope with thing like Jude 2...
-        // AV11N(DMS): move to Versification???
-        if (Versifications.instance().getDefaultVersification().getLastChapter(book) == 1) {
+        if (v11n.getLastChapter(book) == 1) {
             if (verseBase == null || verseBase.book != book) {
-                return book.getPreferredName() + Verse.VERSE_PREF_DELIM1 + verse;
+                buf.append(book.getPreferredName());
+                buf.append(Verse.VERSE_PREF_DELIM1);
+                buf.append(verse);
+                return buf.toString();
             }
 
-            return String.valueOf(verse);
+            return Integer.toString(verse);
         }
 
         if (verseBase == null || verseBase.book != book) {
-            return book.getPreferredName() + Verse.VERSE_PREF_DELIM1 + chapter + Verse.VERSE_PREF_DELIM2 + verse;
+            buf.append(book.getPreferredName());
+            buf.append(Verse.VERSE_PREF_DELIM1);
+            buf.append(chapter);
+            buf.append(Verse.VERSE_PREF_DELIM2);
+            buf.append(verse);
+            return buf.toString();
         }
 
         if (verseBase.chapter != chapter) {
-            return chapter + Verse.VERSE_PREF_DELIM2 + verse;
+            buf.append(chapter);
+            buf.append(Verse.VERSE_PREF_DELIM2);
+            buf.append(verse);
+            return buf.toString();
         }
 
-        return String.valueOf(verse);
+        return Integer.toString(verse);
     }
 
     /**
@@ -562,64 +650,6 @@ public final class Verse implements Key {
     }
 
     /**
-     * Mutate into this reference and fix the reference if needed. This must
-     * only be called from a ctor to maintain immutability
-     * 
-     * @param book
-     *            The book to set (Genesis = 1)
-     * @param chapter
-     *            The chapter to set
-     * @param verse
-     *            The verse to set
-     * @deprecated Use {@link Versification#patch(BibleBook,int,int)}
-     */
-    @Deprecated
-    private void setAndPatch(BibleBook book, int chapter, int verse) {
-        // AV11N(DMS): deprecate?
-        Versification v11n = Versifications.instance().getDefaultVersification();
-        Verse patched = v11n.patch(book, chapter, verse);
-
-        this.book = patched.book;
-        this.chapter = patched.chapter;
-        this.verse = patched.verse;
-    }
-
-    /**
-     * Verify and set the references. This must only be called from a ctor to
-     * maintain immutability
-     * 
-     * @param book
-     *            The book to set (Genesis = 1)
-     * @param chapter
-     *            The chapter to set
-     * @param verse
-     *            The verse to set
-     */
-    private void set(BibleBook book, int chapter, int verse) {
-        this.book = book;
-        this.chapter = chapter;
-        this.verse = verse;
-    }
-
-    /**
-     * Set the references. This must only be called from a ctor to maintain immutability
-     * 
-     * @param ordinal
-     *            The ordinal of the verse
-     * @deprecated Use {@link Versification#decodeOrdinal(int)}
-     */
-    @Deprecated
-    private void set(int ordinal) {
-        // AV11N(DMS): deprecate?
-        Versification v11n = Versifications.instance().getDefaultVersification();
-        Verse v = v11n.decodeOrdinal(ordinal);
-
-        book = v.book;
-        chapter = v.chapter;
-        verse = v.verse;
-    }
-
-    /**
      * Write out the object to the given ObjectOutputStream
      * 
      * @param out
@@ -629,11 +659,8 @@ public final class Verse implements Key {
      * @serialData Write the ordinal number of this verse
      */
     private void writeObject(ObjectOutputStream out) throws IOException {
-        // Call even if there is no default serializable fields.
         out.defaultWriteObject();
-
-        // save the ordinal of the verse
-        out.writeInt(getOrdinal());
+        out.writeUTF(v11n.getName());
 
         // Ignore the original name. Is this wise?
         // I am expecting that people are not that fussed about it and
@@ -652,10 +679,14 @@ public final class Verse implements Key {
      * @serialData Write the ordinal number of this verse
      */
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        // Call even if there is no default serializable fields.
         in.defaultReadObject();
+        String v11nName = in.readUTF();
+        v11n = Versifications.instance().getVersification(v11nName);
+        Verse decoded = v11n.decodeOrdinal(ordinal);
 
-        set(in.readInt());
+        this.book = decoded.book;
+        this.chapter = decoded.chapter;
+        this.verse = decoded.verse;
 
         // We are ignoring the originalName. It was set to null in the
         // default ctor so I will ignore it here.
@@ -728,6 +759,7 @@ public final class Verse implements Key {
      * @see org.crosswire.jsword.passage.Key#clear()
      */
     public void clear() {
+        // do nothing
     }
 
     /* (non-Javadoc)
@@ -781,7 +813,7 @@ public final class Verse implements Key {
     /**
      * The default verse
      */
-    public static final Verse DEFAULT = new Verse(BibleBook.GEN, 1, 1);
+    public static final Verse DEFAULT = new Verse(Versifications.instance().getVersification("KJV"), BibleBook.GEN, 1, 1);
 
     /**
      * Allow the conversion to and from other number representations.
@@ -789,13 +821,14 @@ public final class Verse implements Key {
     private static NumberShaper shaper = new NumberShaper();
 
     /**
-     * The parent key. See the key interface for more information.
-     * 
-     * NOTE(joe): These keys are not serialized, should we?
-     * 
-     * @see Key
+     * The versification for this verse.
      */
-    private transient Key parent;
+    private transient Versification v11n;
+
+    /**
+     * The ordinal value for this verse within its versification.
+     */
+    private int ordinal;
 
     /**
      * The book of the Bible.
@@ -812,7 +845,7 @@ public final class Verse implements Key {
      */
     private transient int verse;
 
-    /**
+   /**
      * The original string for picky users
      */
     private transient String originalName;

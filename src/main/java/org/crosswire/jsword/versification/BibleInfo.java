@@ -164,11 +164,11 @@ public final class BibleInfo {
      * @param verse
      *            The verse to convert
      * @return The ordinal number of verses
-     * @deprecated use {@link Versification#getOrdinal(Verse)} instead
+     * @deprecated use {@link Verse#getOrdinal()} instead
      */
     @Deprecated
     public static int getOrdinal(Verse verse) {
-        return v11n.getOrdinal(verse);
+        return verse.getOrdinal();
     }
 
     /**

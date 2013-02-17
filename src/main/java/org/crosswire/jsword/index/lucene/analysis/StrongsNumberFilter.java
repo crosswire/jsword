@@ -85,7 +85,7 @@ public class StrongsNumberFilter extends AbstractBookTokenFilter {
                 termAtt.setTermBuffer(s);
 
                 // If the number had a part keep it around for the next call
-                // DMS(TODO): if there is a part, then treat as a synonym,
+                // TODO(DMS): if there is a part, then treat as a synonym,
                 //      setting the same position increment.
                 if (!number.isPart()) {
                     number = null;

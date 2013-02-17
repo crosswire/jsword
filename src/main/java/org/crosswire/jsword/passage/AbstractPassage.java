@@ -487,7 +487,7 @@ public abstract class AbstractPassage implements Passage {
      * @see org.crosswire.jsword.passage.Key#addAll(org.crosswire.jsword.passage.Key)
      */
     public void addAll(Key key) {
-        Passage that = KeyUtil.getPassage(key, this.v11n);
+        Passage that = KeyUtil.getPassage(this.v11n, key);
 
         optimizeWrites();
         raiseEventSuppresion();
@@ -517,7 +517,7 @@ public abstract class AbstractPassage implements Passage {
      * @see org.crosswire.jsword.passage.Key#removeAll(org.crosswire.jsword.passage.Key)
      */
     public void removeAll(Key key) {
-        Passage that = KeyUtil.getPassage(key, this.v11n);
+        Passage that = KeyUtil.getPassage(this.v11n, key);
 
         optimizeWrites();
         raiseEventSuppresion();
@@ -546,7 +546,7 @@ public abstract class AbstractPassage implements Passage {
      * @see org.crosswire.jsword.passage.Key#retainAll(org.crosswire.jsword.passage.Key)
      */
     public void retainAll(Key key) {
-        Passage that = KeyUtil.getPassage(key, this.v11n);
+        Passage that = KeyUtil.getPassage(this.v11n, key);
 
         optimizeWrites();
         raiseEventSuppresion();
@@ -684,7 +684,7 @@ public abstract class AbstractPassage implements Passage {
      * @see org.crosswire.jsword.passage.Passage#contains(org.crosswire.jsword.passage.Key)
      */
     public boolean contains(Key key) {
-        Passage ref = KeyUtil.getPassage(key, this.v11n);
+        Passage ref = KeyUtil.getPassage(this.v11n, key);
         return containsAll(ref);
     }
 
@@ -1058,13 +1058,16 @@ public abstract class AbstractPassage implements Passage {
                 next_verse = (Verse) it.next();
 
                 // If the next verse adjacent
-                if (!v11n.adjacentTo(end, next_verse)) {
+                if (!v11n.isAdjacentVerse(end, next_verse)) {
                     break;
                 }
 
                 // Even if the next verse is adjacent we might want to break
                 // if we have moved into a new chapter/book
                 if (!restrict.isSameScope(v11n, end, next_verse)) {
+                    if (next_verse.getVerse() == 0 && it.hasNext()) {
+                        next_verse = (Verse) it.next();
+                    }
                     break findnext;
                 }
 
@@ -1138,7 +1141,7 @@ public abstract class AbstractPassage implements Passage {
             BitSet store = new BitSet(bitwise_size);
             for (Key aKey : this) {
                 Verse verse = (Verse) aKey;
-                store.set(v11n.getOrdinal(verse) - 1);
+                store.set(verse.getOrdinal());
             }
 
             out.writeObject(store);
@@ -1151,7 +1154,7 @@ public abstract class AbstractPassage implements Passage {
             // write the verse ordinals in a loop
             for (Key aKey : this) {
                 Verse verse = (Verse) aKey;
-                out.writeInt(v11n.getOrdinal(verse));
+                out.writeInt(verse.getOrdinal());
             }
         } else {
             // otherwise use ranges
@@ -1163,7 +1166,7 @@ public abstract class AbstractPassage implements Passage {
             Iterator<Key> it = rangeIterator(RestrictionType.NONE);
             while (it.hasNext()) {
                 VerseRange range = (VerseRange) it.next();
-                out.writeInt(v11n.getOrdinal(range.getStart()));
+                out.writeInt(range.getStart().getOrdinal());
                 out.writeInt(range.getCardinality());
             }
         }
@@ -1214,7 +1217,7 @@ public abstract class AbstractPassage implements Passage {
             BitSet store = (BitSet) is.readObject();
             for (int i = 0; i < v11n.maximumOrdinal(); i++) {
                 if (store.get(i)) {
-                    add(v11n.decodeOrdinal(i + 1));
+                    add(v11n.decodeOrdinal(i));
                 }
             }
             break;

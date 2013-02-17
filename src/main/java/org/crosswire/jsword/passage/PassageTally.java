@@ -324,10 +324,9 @@ public class PassageTally extends AbstractPassage {
      */
     @Override
     public boolean contains(Key that) {
-        Versification v11n = getVersification();
         for (Key aKey : that) {
             Verse verse = (Verse) aKey;
-            if (board[v11n.getOrdinal(verse)] == 0) {
+            if (board[verse.getOrdinal()] == 0) {
                 return false;
             }
         }
@@ -343,8 +342,7 @@ public class PassageTally extends AbstractPassage {
      * @return The rank of the verse in question
      */
     public int getTallyOf(Verse verse) {
-        Versification v11n = getVersification();
-        return board[v11n.getOrdinal(verse)];
+        return board[verse.getOrdinal()];
     }
 
     /**
@@ -355,8 +353,7 @@ public class PassageTally extends AbstractPassage {
      * @return The index of the verse or -1 if the verse was not found
      */
     public int getIndexOf(Verse verse) {
-        Versification v11n = getVersification();
-        int pos = v11n.getOrdinal(verse);
+        int pos = verse.getOrdinal();
         int tally = board[pos];
         return tally > 0 ? pos : -1;
     }
@@ -417,7 +414,7 @@ public class PassageTally extends AbstractPassage {
 
         for (Key aKey : that) {
             Verse verse = (Verse) aKey;
-            kill(v11n.getOrdinal(verse));
+            kill(verse.getOrdinal());
         }
 
         fireIntervalRemoved(this, null, null);
@@ -425,7 +422,6 @@ public class PassageTally extends AbstractPassage {
 
     @Override
     public void addAll(Key that) {
-        Versification v11n = getVersification();
         optimizeWrites();
 
         if (that instanceof PassageTally) {
@@ -440,7 +436,7 @@ public class PassageTally extends AbstractPassage {
         } else {
             for (Key aKey : that) {
                 Verse verse = (Verse) aKey;
-                increment(v11n.getOrdinal(verse), 1);
+                increment(verse.getOrdinal(), 1);
             }
 
             incrementMax(1);
@@ -456,7 +452,6 @@ public class PassageTally extends AbstractPassage {
      *            The verses to remove/decrement
      */
     public void unAddAll(Passage that) {
-        Versification v11n = getVersification();
         optimizeWrites();
 
         if (that instanceof PassageTally) {
@@ -469,7 +464,7 @@ public class PassageTally extends AbstractPassage {
         } else {
             for (Key aKey : that) {
                 Verse verse = (Verse) aKey;
-                increment(v11n.getOrdinal(verse), -1);
+                increment(verse.getOrdinal(), -1);
             }
         }
 
@@ -483,7 +478,7 @@ public class PassageTally extends AbstractPassage {
     @Override
     public void removeAll(Key key) {
         Versification v11n = getVersification();
-        Passage that = KeyUtil.getPassage(key, v11n);
+        Passage that = KeyUtil.getPassage(v11n, key);
 
         optimizeWrites();
 
@@ -499,7 +494,7 @@ public class PassageTally extends AbstractPassage {
         } else {
             for (Key aKey : that) {
                 Verse verse = (Verse) aKey;
-                kill(v11n.getOrdinal(verse));
+                kill(verse.getOrdinal());
             }
         }
 
@@ -670,10 +665,9 @@ public class PassageTally extends AbstractPassage {
      *            The amount to increment/decrement by
      */
     private void alterVerseBase(Key that, int tally) {
-        Versification v11n = getVersification();
         for (Key aKey : that) {
             Verse verse = (Verse) aKey;
-            increment(v11n.getOrdinal(verse), tally);
+            increment(verse.getOrdinal(), tally);
         }
 
         if (tally > 0) {
@@ -1042,7 +1036,7 @@ public class PassageTally extends AbstractPassage {
                 int rank = 0;
                 for (Key aKey : range) {
                     Verse verse = (Verse) aKey;
-                    int temp = board[v11n.getOrdinal(verse)];
+                    int temp = board[verse.getOrdinal()];
                     if (temp > rank) {
                         rank = temp;
                     }

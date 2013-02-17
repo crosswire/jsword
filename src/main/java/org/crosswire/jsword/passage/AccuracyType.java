@@ -90,7 +90,7 @@ public enum AccuracyType {
                 // Some books only have 1 chapter
                 verse = getVerse(refSystem, book, chapter, parts[1]);
             }
-            return new Verse(original, book, chapter, verse);
+            return new Verse(original, refSystem, book, chapter, verse);
         }
 
         @Override
@@ -115,8 +115,8 @@ public enum AccuracyType {
         public Verse createStartVerse(Versification refSystem, String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
             BibleBook book = BibleBook.getBook(parts[0]);
             int chapter = getChapter(refSystem, book, parts[1]);
-            int verse = 0;
-            return new Verse(original, book, chapter, verse);
+            int verse = chapter > 0 ? 1 : 0;
+            return new Verse(original, refSystem, book, chapter, verse);
         }
 
         @Override
@@ -125,7 +125,7 @@ public enum AccuracyType {
             BibleBook book = BibleBook.getBook(endParts[0]);
             int chapter = getChapter(refSystem, book, endParts[1]);
             int verse = refSystem.getLastVerse(book, chapter);
-            return new Verse(endVerseDesc, book, chapter, verse);
+            return new Verse(endVerseDesc, refSystem, book, chapter, verse);
         }
     },
 
@@ -142,7 +142,9 @@ public enum AccuracyType {
         @Override
         public Verse createStartVerse(Versification refSystem, String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
             BibleBook book = BibleBook.getBook(parts[0]);
-            return new Verse(original, book, 0, 0);
+            int chapter = refSystem.getLastChapter(book) > 0 ? 1 : 0;
+            int verse = refSystem.getLastVerse(book, chapter) > 0 ? 1 : 0;
+            return new Verse(original, refSystem, book, chapter, verse);
         }
 
         @Override
@@ -150,7 +152,7 @@ public enum AccuracyType {
             BibleBook book = BibleBook.getBook(endParts[0]);
             int chapter = refSystem.getLastChapter(book);
             int verse = refSystem.getLastVerse(book, chapter);
-            return new Verse(endVerseDesc, book, chapter, verse);
+            return new Verse(endVerseDesc, refSystem, book, chapter, verse);
         }
     },
 
@@ -174,7 +176,7 @@ public enum AccuracyType {
             int chapter = getChapter(refSystem, book, parts[0]);
             int verse = getVerse(refSystem, book, chapter, parts[1]);
 
-            return new Verse(original, book, chapter, verse);
+            return new Verse(original, refSystem, book, chapter, verse);
         }
 
         @Override
@@ -183,7 +185,7 @@ public enum AccuracyType {
             BibleBook book = verseBasis.getBook();
             int chapter = getChapter(refSystem, book, endParts[0]);
             int verse = getVerse(refSystem, book, chapter, endParts[1]);
-            return new Verse(endVerseDesc, book, chapter, verse);
+            return new Verse(endVerseDesc, refSystem, book, chapter, verse);
         }
     },
 
@@ -204,7 +206,8 @@ public enum AccuracyType {
             }
             BibleBook book = verseRangeBasis.getEnd().getBook();
             int chapter = getChapter(refSystem, book, parts[0]);
-            return new Verse(original, book, chapter, 0);
+            int verse = chapter > 0 ? 1 : 0;
+            return new Verse(original, refSystem, book, chapter, verse);
         }
 
         @Override
@@ -213,7 +216,7 @@ public enum AccuracyType {
             // and it gets the end of the chapter
             BibleBook book = verseBasis.getBook();
             int chapter = getChapter(refSystem, book, endParts[0]);
-            return new Verse(endVerseDesc, book, chapter, refSystem.getLastVerse(book, chapter));
+            return new Verse(endVerseDesc, refSystem, book, chapter, refSystem.getLastVerse(book, chapter));
         }
     },
 
@@ -235,7 +238,7 @@ public enum AccuracyType {
             BibleBook book = verseRangeBasis.getEnd().getBook();
             int chapter = verseRangeBasis.getEnd().getChapter();
             int verse = getVerse(refSystem, book, chapter, parts[0]);
-            return new Verse(original, book, chapter, verse);
+            return new Verse(original, refSystem, book, chapter, verse);
         }
 
         @Override
@@ -245,7 +248,7 @@ public enum AccuracyType {
             BibleBook book = verseBasis.getBook();
             int chapter = verseBasis.getChapter();
             int verse = getVerse(refSystem, book, chapter, endParts[0]);
-            return new Verse(endVerseDesc, book, chapter, verse);
+            return new Verse(endVerseDesc, refSystem, book, chapter, verse);
         }
     };
 

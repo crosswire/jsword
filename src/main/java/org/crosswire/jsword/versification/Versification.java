@@ -182,7 +182,13 @@ public class Versification implements ReferenceSystem, Serializable {
         return name;
     }
 
+    /**
+     * Get the ordered list of books in this versification.
+     * 
+     * @return that very list
+     */
     public BibleBookList getBooks() {
+        // TODO(DMS): make this a read-only list
         return bookList;
     }
 
@@ -230,74 +236,123 @@ public class Versification implements ReferenceSystem, Serializable {
 
     /**
      * Get a VerseRange encompassing this Versification.
+     * 
+     * @return a VerseRange for the whole versification
      */
     public VerseRange getAllVerses() {
-        BibleBook book = bookList.getFirstBook();
+        Verse first = new Verse(this, bookList.getFirstBook(), 0, 0);
+        BibleBook book = bookList.getLastBook();
         int chapter = getLastChapter(book);
-        Verse first = new Verse(book, chapter, getLastVerse(book, chapter));
-        book = bookList.getLastBook();
-        chapter = getLastChapter(book);
-        Verse last = new Verse(book, chapter, getLastVerse(book, chapter));
+        Verse last = new Verse(this, book, chapter, getLastVerse(book, chapter));
         return new VerseRange(this, first, last);
     }
 
+//    /**
+//     * Create a new Verse being the last verse in the current book
+//     *
+//     * @param verse the verse that designates the book 
+//     * @return The last verse in this book of the given verse
+//     */
+//    public Verse getLastVerseInBook(Verse verse) {
+//        BibleBook book = verse.getBook();
+//        int lastchap = getLastChapter(book);
+//        int lastverse = getLastVerse(book, lastchap);
+//
+//        return new Verse(this, book, lastchap, lastverse);
+//    }
+//
+//    /**
+//     * Create a new Verse being the last verse in the current book
+//     *
+//     * @param verse the verse that designates the book and chapter
+//     * @return The last verse in this book
+//     */
+//    public Verse getLastVerseInChapter(Verse verse) {
+//        BibleBook book = verse.getBook();
+//        int chapter = verse.getChapter();
+//        int lastverse = getLastVerse(book, chapter);
+//
+//        return new Verse(this, book, chapter, lastverse);
+//    }
+//
+//    /**
+//     * Create a new Verse for the book introduction
+//     *
+//     * @param verse the verse that designates the book 
+//     * @return The introduction in this book
+//     */
+//    public Verse getBookIntro(Verse verse) {
+//        return new Verse(this, verse.getBook(), 0, 0);
+//    }
+//
+//    /**
+//     * Create a new Verse being the first verse in the current book
+//     *
+//     * @param verse the verse that designates the book 
+//     * @return The first verse in this book
+//     */
+//    public Verse getFirstVerseInBook(Verse verse) {
+//        return new Verse(this, verse.getBook(), 1, 1);
+//    }
+//
+//    /**
+//     * Create a new Verse being the introduction in the current chapter
+//     *
+//     * @return The introduction in this chapter
+//     */
+//    public Verse getChapterIntro(Verse verse) {
+//        return new Verse(this, verse.getBook(), verse.getChapter(), 0);
+//    }
+//
+//    /**
+//     * Create a new Verse being the first verse in the current chapter
+//     *
+//     * @param verse the verse that designates the book and chapter
+//     * @return The first verse in this chapter
+//     */
+//    public Verse getFirstVerseInChapter(Verse verse) {
+//        return new Verse(this, verse.getBook(), verse.getChapter(), 1);
+//    }
+
     /**
-     * Create a new Verse being the last verse in the current book
+     * Is this verse a chapter introduction
      *
-     * @return The last verse in this book
+     * @param verse the verse to test
+     * @return true or false ...
      */
-    public Verse getLastVerseInBook(Verse verse) {
-        BibleBook book = verse.getBook();
-        int lastchap = getLastChapter(book);
-        int lastverse = getLastVerse(book, lastchap);
-
-        return new Verse(book, lastchap, lastverse);
-    }
-
-    /**
-     * Create a new Verse being the last verse in the current book
-     *
-     * @return The last verse in this book
-     */
-    public Verse getLastVerseInChapter(Verse verse) {
-        BibleBook book = verse.getBook();
-        int chapter = verse.getChapter();
-        int lastverse = getLastVerse(book, chapter);
-
-        return new Verse(book, chapter, lastverse);
-    }
-
-    /**
-     * Create a new Verse being the first verse in the current book
-     *
-     * @return The first verse in this book
-     */
-    public Verse getFirstVerseInBook(Verse verse) {
-        return new Verse(verse.getBook(), 1, 1);
-    }
-
-    /**
-     * Create a new Verse being the first verse in the current book
-     *
-     * @return The first verse in this book
-     */
-    public Verse getFirstVerseInChapter(Verse verse) {
-        return new Verse(verse.getBook(), verse.getChapter(), 1);
+    public boolean isChapterIntro(Verse verse) {
+        int v = verse.getVerse();
+        int c = verse.getChapter();
+        return v == 0 && c != 0;
     }
 
     /**
      * Is this verse the first in a chapter
      *
+     * @param verse the verse to test
+     * @return true or false ...
+     */
+    public boolean isBookIntro(Verse verse) {
+        int v = verse.getVerse();
+        int c = verse.getChapter();
+        return v == 0 && c == 0;
+    }
+
+    /**
+     * Is this verse the first in a chapter
+     *
+     * @param verse the verse to test
      * @return true or false ...
      */
     public boolean isStartOfChapter(Verse verse) {
         int v = verse.getVerse();
-        return v == 0;
+        return v <= 1;
     }
 
     /**
      * Is this verse the first in a chapter
      *
+     * @param verse the verse to test
      * @return true or false ...
      */
     public boolean isEndOfChapter(Verse verse) {
@@ -310,17 +365,19 @@ public class Versification implements ReferenceSystem, Serializable {
     /**
      * Is this verse the first in a chapter
      *
+     * @param verse the verse to test
      * @return true or false ...
      */
     public boolean isStartOfBook(Verse verse) {
         int v = verse.getVerse();
         int c = verse.getChapter();
-        return v == 0 && c == 0;
+        return v <= 1 && c <= 1;
     }
 
     /**
      * Is this verse the last in the book
      *
+     * @param verse the verse to test
      * @return true or false ...
      */
     public boolean isEndOfBook(Verse verse) {
@@ -333,25 +390,61 @@ public class Versification implements ReferenceSystem, Serializable {
     /**
      * Is this verse in the same chapter as that one
      *
-     * @param that
+     * @param first
+     *            The verse to compare to
+     * @param second
      *            The verse to compare to
      * @return true or false ...
      */
-    public boolean isSameChapter(Verse a, Verse that) {
-        return a.getBook() == that.getBook() && a.getChapter() == that.getChapter();
+    public boolean isSameChapter(Verse first, Verse second) {
+        return first.getBook() == second.getBook() && first.getChapter() == second.getChapter();
+    }
+
+    /**
+     * Determine whether the two verses are in adjacent chapters, even across book boundaries.
+     *
+     * @param first
+     *            The verse to compare to
+     * @param second
+     *            The verse to compare to
+     * @return true or false ...
+     */
+    public boolean isAdjacentChapter(Verse first, Verse second) {
+        Verse before = min(first, second);
+        Verse after = max(first, second);
+        if (isSameBook(first, second)) {
+            return after.getChapter() - before.getChapter() == 1;
+        }
+        // The earlier verse has to be the  last chapter
+        return isAdjacentBook(before, after)
+             && getLastChapter(before.getBook()) == before.getChapter()
+             && after.getChapter() <= 1;
     }
 
     /**
      * Is this verse in the same book as that one
      *
-     * @param a
+     * @param first
      *            The verse to compare to
-     * @param b
+     * @param second
      *            The verse to compare to
      * @return true or false ...
      */
-    public boolean isSameBook(Verse a, Verse b) {
-        return a.getBook() == b.getBook();
+    public boolean isSameBook(Verse first, Verse second) {
+        return first.getBook() == second.getBook();
+    }
+
+    /**
+     * Determine whether the two verses are in adjacent books.
+     *
+     * @param first
+     *            The verse to compare to
+     * @param second
+     *            The verse to compare to
+     * @return true or false ...
+     */
+    public boolean isAdjacentBook(Verse first, Verse second) {
+        return Math.abs(bookList.getOrdinal(second.getBook()) - bookList.getOrdinal(first.getBook())) == 1;
     }
 
     /**
@@ -363,8 +456,16 @@ public class Versification implements ReferenceSystem, Serializable {
      *            The second verse in the comparison
      * @return true if the verses are adjacent.
      */
-    public boolean adjacentTo(Verse first, Verse second) {
-        return Math.abs(getOrdinal(second) - getOrdinal(first)) == 1;
+    public boolean isAdjacentVerse(Verse first, Verse second) {
+        Verse before = min(first, second);
+        Verse after = max(first, second);
+        if (isSameChapter(first, second)) {
+            return after.getVerse() - before.getVerse() == 1;
+        }
+        // The earlier verse has to be the last verse in the chapter
+        return isAdjacentChapter(before, after)
+             && getLastVerse(before.getBook(), before.getChapter()) == before.getVerse()
+             && after.getVerse() <= 1;
     }
 
     /**
@@ -378,54 +479,65 @@ public class Versification implements ReferenceSystem, Serializable {
      * @return The count of verses between this and that.
      */
     public int distance(Verse start, Verse end) {
-        return getOrdinal(end) - getOrdinal(start);
+        return end.getOrdinal() - start.getOrdinal();
     }
 
     /**
-     * Determine the earlier of the two verses. If a == b then return a.
-     * @param a the first verse to compare
-     * @param b the second verse to compare
+     * Determine the earlier of the two verses.
+     * If first == second then return first.
+     * 
+     * @param first the first verse to compare
+     * @param second the second verse to compare
      * @return The earlier of the two verses
      */
-    public Verse min(Verse a, Verse b) {
-        return getOrdinal(a) <= getOrdinal(b) ? a : b;
+    public Verse min(Verse first, Verse second) {
+        return first.getOrdinal() <= second.getOrdinal() ? first : second;
     }
 
     /**
-     * Determine the later of the two verses. If a == b then return b.
-     * @param a the first verse to compare
-     * @param b the second verse to compare
+     * Determine the later of the two verses.
+     * If first == second then return first.
+     * 
+     * @param first the first verse to compare
+     * @param second the second verse to compare
      * @return The later of the two verses
      */
-    public Verse max(Verse a, Verse b) {
-        return getOrdinal(a) > getOrdinal(b) ? a : b;
+    public Verse max(Verse first, Verse second) {
+        return first.getOrdinal() > second.getOrdinal() ? first : second;
     }
 
     /**
      * Get the verse n down from here this Verse.
      *
+     * @param verse
+     *            The verse to use as a start
      * @param n
      *            The number to count down by
      * @return The new Verse
      */
     public Verse subtract(Verse verse, int n) {
-        return decodeOrdinal(getOrdinal(verse) - n);
+        return decodeOrdinal(verse.getOrdinal() - n);
     }
 
     /**
      * Get the verse that is a few verses on from the one we've got.
      *
+     * @param verse
+     *            The verse to use as a start
      * @param n
      *            the number of verses later than the one we're one
      * @return The new verse
      */
     public Verse add(Verse verse, int n) {
-        return decodeOrdinal(getOrdinal(verse) + n);
+        return decodeOrdinal(verse.getOrdinal() + n);
     }
 
     /**
      * How many chapters in this range
      * 
+     * @param start
+     *            The first Verse in the range
+     * @param end The last Verse in the range
      * @return The number of chapters. Always >= 1.
      */
     public int getChapterCount(Verse start, Verse end) {
@@ -454,6 +566,9 @@ public class Versification implements ReferenceSystem, Serializable {
     /**
      * How many books in this range
      * 
+     * @param start
+     *            The first Verse in the range
+     * @param end The last Verse in the range
      * @return The number of books. Always >= 1.
      */
     public int getBookCount(Verse start, Verse end) {
@@ -494,13 +609,19 @@ public class Versification implements ReferenceSystem, Serializable {
      * <li>n + 4 - Matt 1:1</li>
      * <li>...</li>
      * </ul>
+     * 
+     * If the verse is not in this versification, return 0.
      *
      * @param verse
      *            The verse to convert
      * @return The ordinal number of verses
-     */
+    */
     public int getOrdinal(Verse verse) {
-        return chapterStarts[bookList.getOrdinal(verse.getBook())][verse.getChapter()] + verse.getVerse();
+        try {
+            return chapterStarts[bookList.getOrdinal(verse.getBook())][verse.getChapter()] + verse.getVerse();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return 0;
+        }
     }
 
     /**
@@ -590,17 +711,17 @@ public class Versification implements ReferenceSystem, Serializable {
         // Handle three special cases
         // Book/Module introduction
         if (ord == 0) {
-            return new Verse(BibleBook.INTRO_BIBLE, 0, 0);
+            return new Verse(this, BibleBook.INTRO_BIBLE, 0, 0);
         }
 
         // OT introduction
         if (ord == 1) {
-            return new Verse(BibleBook.INTRO_OT, 0, 0);
+            return new Verse(this, BibleBook.INTRO_OT, 0, 0);
         }
 
         // NT introduction
         if (ord == otMaxOrdinal + 1) {
-            return new Verse(BibleBook.INTRO_NT, 0, 0);
+            return new Verse(this, BibleBook.INTRO_NT, 0, 0);
         }
 
         // To find the book, do a binary search in chapterStarts against chapter 0
@@ -652,7 +773,7 @@ public class Versification implements ReferenceSystem, Serializable {
         // If we didn't have an exact match then use the low value
         int chapterIndex = match >= 0 ? match : low;
         int verse = chapterIndex == 0 ? 0 : ord - chapterStarts[bookIndex][chapterIndex];
-        return new Verse(book, chapterIndex, verse);
+        return new Verse(this, book, chapterIndex, verse);
     }
 
     /**
@@ -767,7 +888,7 @@ public class Versification implements ReferenceSystem, Serializable {
                 patchedBook = getBooks().getLastBook();
                 patchedChapter = getLastChapter(patchedBook);
                 patchedVerse = getLastVerse(patchedBook, patchedChapter);
-                return new Verse(patchedBook, patchedChapter, patchedVerse);
+                return new Verse(this, patchedBook, patchedChapter, patchedVerse);
             }
         }
 
@@ -790,18 +911,18 @@ public class Versification implements ReferenceSystem, Serializable {
                     patchedBook = getBooks().getLastBook();
                     patchedChapter = getLastChapter(patchedBook);
                     patchedVerse = getLastVerse(patchedBook, patchedChapter);
-                    return new Verse(patchedBook, patchedChapter, patchedVerse);
+                    return new Verse(this, patchedBook, patchedChapter, patchedVerse);
                 }
             }
         }
 
-        return new Verse(patchedBook, patchedChapter, patchedVerse);
+        return new Verse(this, patchedBook, patchedChapter, patchedVerse);
     }
 
     /** The OSIS name of the reference system. */
     private String name;
 
-
+    /** The ordered list of books in this versification. */
     private BibleBookList bookList;
 
     /** The last ordinal number of the Old Testament */

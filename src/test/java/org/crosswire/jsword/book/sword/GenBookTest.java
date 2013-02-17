@@ -2,7 +2,6 @@ package org.crosswire.jsword.book.sword;
 
 import java.io.IOException;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import org.crosswire.jsword.book.Book;
@@ -42,7 +41,7 @@ public class GenBookTest extends TestCase {
                 try {
                     assertEquals("PART_II.THE_FIRST_STAGE", key.getOsisID());
                 } catch(RuntimeException e) {
-                   Assert.fail("Could not get the osisID for a GenBook key.");
+                   fail("Could not get the osisID for a GenBook key.");
                 }
             }
         }
@@ -63,7 +62,7 @@ public class GenBookTest extends TestCase {
             try {
                 book.getRawText(key);
             } catch (NullPointerException e) {
-                Assert.fail("test for bad key should not have thrown an NPE.");
+                fail("test for bad key should not have thrown an NPE.");
             } catch (BookException e) {
                 assertEquals("testing for a bad key", "No entry for '' in Pilgrim.", e.getMessage());
             }

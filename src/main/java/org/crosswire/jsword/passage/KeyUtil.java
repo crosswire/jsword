@@ -66,20 +66,20 @@ public final class KeyUtil {
      */
     @Deprecated
     public static Verse getVerse(Key key) {
-      return getVerse(key, Versifications.instance().getDefaultVersification());
+      return getVerse(Versifications.instance().getDefaultVersification(), key);
     }
 
     /**
      * Not all keys represent verses, but we ought to be able to get something
      * close to a verse from anything that does verse like work.
      */
-    public static Verse getVerse(Key key, Versification v11n) {
+    public static Verse getVerse(Versification v11n, Key key) {
         if (key instanceof Verse) {
             return (Verse) key;
         }
 
         if (key instanceof Passage) {
-            Passage ref = getPassage(key, v11n);
+            Passage ref = getPassage(v11n, key);
             return ref.getVerseAt(0);
         }
 
@@ -96,11 +96,11 @@ public final class KeyUtil {
      * close to a passage from anything that does passage like work. If you pass
      * a null key into this method, you get a null Passage out.
      * 
-     * @deprecated {@link #getPassage(Key, Versification)}
+     * @deprecated {@link #getPassage(Versification, Key)}
      */
     @Deprecated
     public static Passage getPassage(Key key) {
-        return getPassage(key, Versifications.instance().getDefaultVersification());
+        return getPassage(Versifications.instance().getDefaultVersification(), key);
     }
 
     /**
@@ -108,7 +108,7 @@ public final class KeyUtil {
      * close to a passage from anything that does passage like work. If you pass
      * a null key into this method, you get a null Passage out.
      */
-    public static Passage getPassage(Key key, Versification v11n) {
+    public static Passage getPassage(Versification v11n, Key key) {
         if (key == null) {
             return null;
         }
@@ -118,7 +118,6 @@ public final class KeyUtil {
         }
 
         Key ref = null;
-        // AV11N(DMS): Is this right?
         try {
             ref = keyf.getKey(v11n, key.getName());
         } catch (NoSuchKeyException ex) {

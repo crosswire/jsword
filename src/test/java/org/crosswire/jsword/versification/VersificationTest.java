@@ -78,7 +78,7 @@ public class VersificationTest extends TestCase {
             for (int c = 0; c <= cib; c++) {
                 int vic = v11n.getLastVerse(b, c);
                 for (int v = 0; v <= vic; v++) {
-                    Verse verse = new Verse(b, c, v);
+                    Verse verse = new Verse(v11n, b, c, v);
                     assertEquals(verse.getOsisID(), ordinal++, v11n.getOrdinal(verse));
                 }
             }
@@ -92,7 +92,7 @@ public class VersificationTest extends TestCase {
             for (int c = 0; c <= cib; c++) {
                 int vic = v11n.getLastVerse(b, c);
                 for (int v = 0; v <= vic; v++) {
-                    Verse verse = new Verse(b, c, v);
+                    Verse verse = new Verse(v11n, b, c, v);
                     assertEquals(verse.getOsisID(), verse, v11n.decodeOrdinal(ordinal++));
                 }
             }
@@ -156,7 +156,7 @@ public class VersificationTest extends TestCase {
             }
         }
 
-        Verse gen11 = new Verse(BibleBook.GEN, 1, 1);
+        Verse gen11 = new Verse(v11n, BibleBook.GEN, 1, 1);
         assertEquals(gen11, v11n.patch(BibleBook.GEN, 1, 1));
         assertEquals(gen11, v11n.patch(BibleBook.GEN, 0, 2));
         assertEquals(gen11, v11n.patch(null, 3, 1));
@@ -165,16 +165,16 @@ public class VersificationTest extends TestCase {
 
     public void testVerseCount() throws Exception {
         int count_up = 0;
-        Verse firstVerse = new Verse(v11n.getBooks().getFirstBook(), 0, 0);
+        Verse firstVerse = new Verse(v11n, v11n.getBooks().getFirstBook(), 0, 0);
         BibleBook lastBook = v11n.getBooks().getLastBook();
         int lastChapter = v11n.getLastChapter(lastBook);
-        Verse lastVerse = new Verse(lastBook, lastChapter, v11n.getLastVerse(lastBook, lastChapter));
+        Verse lastVerse = new Verse(v11n, lastBook, lastChapter, v11n.getLastVerse(lastBook, lastChapter));
         for (BibleBook b : v11n.getBooks()) {
             int cib = v11n.getLastChapter(b);
             for (int c = 0; c <= cib; c++) {
                 int vic = v11n.getLastVerse(b, c);
                 for (int v = 0; v <= vic; v++) {
-                    Verse curVerse = new Verse(b, c, v);
+                    Verse curVerse = new Verse(v11n, b, c, v);
                     int up = v11n.distance(firstVerse, curVerse) + 1;
                     assertEquals(++count_up, up);
 //                    assertEquals(verseCountSlow(gen00, curVerse), up);
@@ -189,7 +189,7 @@ public class VersificationTest extends TestCase {
             for (int c = 0; c <= cib; c++) {
                 int vic = v11n.getLastVerse(b, c);
                 for (int v = 0; v <= vic; v++) {
-                    Verse curVerse = new Verse(b, c, v);
+                    Verse curVerse = new Verse(v11n, b, c, v);
                     int down = v11n.distance(curVerse, lastVerse);
                     assertEquals(count_down--, down);
                 }

@@ -117,7 +117,6 @@ public class BitwisePassage extends AbstractPassage {
 
     @Override
     public boolean contains(Key obj) {
-        Versification v11n = getVersification();
         for (Key aKey : obj) {
             Verse verse = (Verse) aKey;
             if (verse.getVerse() == 0) {
@@ -125,7 +124,7 @@ public class BitwisePassage extends AbstractPassage {
                 continue;
             }
 
-            if (!store.get(v11n.getOrdinal(verse))) {
+            if (!store.get(verse.getOrdinal())) {
                 return false;
             }
         }
@@ -137,7 +136,6 @@ public class BitwisePassage extends AbstractPassage {
      * @see org.crosswire.jsword.passage.Passage#add(org.crosswire.jsword.passage.Key)
      */
     public void add(Key obj) {
-        Versification v11n = getVersification();
         optimizeWrites();
 
         Verse firstVerse = null;
@@ -147,7 +145,7 @@ public class BitwisePassage extends AbstractPassage {
             if (firstVerse == null) {
                 firstVerse = lastVerse;
             }
-            store.set(v11n.getOrdinal(lastVerse));
+            store.set(lastVerse.getOrdinal());
         }
 
         // we do an extra check here because the cost of calculating the
@@ -161,7 +159,6 @@ public class BitwisePassage extends AbstractPassage {
      * @see org.crosswire.jsword.passage.Passage#remove(org.crosswire.jsword.passage.Key)
      */
     public void remove(Key obj) {
-        Versification v11n = getVersification();
         optimizeWrites();
 
         Verse firstVerse = null;
@@ -171,7 +168,7 @@ public class BitwisePassage extends AbstractPassage {
             if (firstVerse == null) {
                 firstVerse = lastVerse;
             }
-            store.clear(v11n.getOrdinal(lastVerse));
+            store.clear(lastVerse.getOrdinal());
         }
 
         // we do an extra check here because the cost of calculating the
@@ -183,7 +180,7 @@ public class BitwisePassage extends AbstractPassage {
 
     @Override
     public void addAll(Key key) {
-        Passage that = KeyUtil.getPassage(key, super.getVersification());
+        Passage that = KeyUtil.getPassage(super.getVersification(), key);
 
         optimizeWrites();
 
@@ -203,7 +200,7 @@ public class BitwisePassage extends AbstractPassage {
 
     @Override
     public void removeAll(Key key) {
-        Passage that = KeyUtil.getPassage(key, super.getVersification());
+        Passage that = KeyUtil.getPassage(super.getVersification(), key);
 
         optimizeWrites();
 
@@ -225,7 +222,7 @@ public class BitwisePassage extends AbstractPassage {
     @Override
     public void retainAll(Key key) {
         Versification v11n = getVersification();
-        Passage that = KeyUtil.getPassage(key, super.getVersification());
+        Passage that = KeyUtil.getPassage(super.getVersification(), key);
 
         optimizeWrites();
 
@@ -236,7 +233,7 @@ public class BitwisePassage extends AbstractPassage {
             thatStore = new BitSet(v11n.maximumOrdinal() + 1);
 
             for (Key aKey : that) {
-                int ord = v11n.getOrdinal((Verse) aKey);
+                int ord = ((Verse) aKey).getOrdinal();
                 if (store.get(ord)) {
                     thatStore.set(ord);
                 }
