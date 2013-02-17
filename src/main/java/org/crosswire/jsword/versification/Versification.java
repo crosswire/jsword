@@ -315,31 +315,41 @@ public class Versification implements ReferenceSystem, Serializable {
 //    }
 
     /**
-     * Is this verse a chapter introduction
+     * An introduction is a Verse that has a verse number of 0.
      *
      * @param verse the verse to test
      * @return true or false ...
      */
-    public boolean isChapterIntro(Verse verse) {
+    public boolean isIntro(Verse verse) {
         int v = verse.getVerse();
-        int c = verse.getChapter();
-        return v == 0 && c != 0;
+        return v == 0;
     }
 
     /**
-     * Is this verse the first in a chapter
+     * A book introduction is an introduction
+     * that has a chapter of 0.
      *
      * @param verse the verse to test
      * @return true or false ...
      */
     public boolean isBookIntro(Verse verse) {
-        int v = verse.getVerse();
-        int c = verse.getChapter();
-        return v == 0 && c == 0;
+        return 0 == verse.getChapter() && isIntro(verse);
     }
 
     /**
-     * Is this verse the first in a chapter
+     * A chapter introduction is an introduction
+     * that has a chapter other than 0
+     *
+     * @param verse the verse to test
+     * @return true or false ...
+     */
+    public boolean isChapterIntro(Verse verse) {
+        return 0 != verse.getChapter() && isIntro(verse);
+    }
+
+    /**
+     * The start of a chapter is indicated by
+     * a verse number of 0 or 1
      *
      * @param verse the verse to test
      * @return true or false ...
@@ -350,7 +360,8 @@ public class Versification implements ReferenceSystem, Serializable {
     }
 
     /**
-     * Is this verse the first in a chapter
+     * The end of the chapter is indicated by
+     * the verse number matching the last in the chapter.
      *
      * @param verse the verse to test
      * @return true or false ...
@@ -363,7 +374,9 @@ public class Versification implements ReferenceSystem, Serializable {
     }
 
     /**
-     * Is this verse the first in a chapter
+     * The start of a book is indicated by
+     * a chapter number of 0 or 1 and
+     * a verse number of 0 or 1.
      *
      * @param verse the verse to test
      * @return true or false ...
@@ -375,7 +388,10 @@ public class Versification implements ReferenceSystem, Serializable {
     }
 
     /**
-     * Is this verse the last in the book
+     * The end of the book is indicated by
+     * the chapter number matching the last chapter
+     * in the book and the verse number matching
+     * the last verse in the chapter.
      *
      * @param verse the verse to test
      * @return true or false ...
@@ -388,7 +404,8 @@ public class Versification implements ReferenceSystem, Serializable {
     }
 
     /**
-     * Is this verse in the same chapter as that one
+     * Two verses are in the same chapter if both
+     * the book and chapter agree.
      *
      * @param first
      *            The verse to compare to
@@ -401,7 +418,22 @@ public class Versification implements ReferenceSystem, Serializable {
     }
 
     /**
-     * Determine whether the two verses are in adjacent chapters, even across book boundaries.
+     * Two verse are adjacent if one immediately follows the other,
+     * even across book boundaries. Introductions are considered
+     * as having "zero width" in this determination. That is the
+     * last verse in a chapter or book is adjacent every verse that
+     * follows up to and including verse 1 of the next chapter in
+     * the versification.
+     * <br/>
+     * For example:<br/>
+     * The last verse in the Old Testament is adjacent to:
+     * <ul>
+     * <li>Intro.NT - the New Testament introduction</li>
+     * <li>Matt 0:0 - the book introduction</li>
+     * <li>Matt 1:0 - the chapter introduction</li>
+     * <li>Matt 1:1 - the first verse of Matt</li>
+     * </ul>
+     * Note: the verses can be in any order.
      *
      * @param first
      *            The verse to compare to
@@ -422,7 +454,8 @@ public class Versification implements ReferenceSystem, Serializable {
     }
 
     /**
-     * Is this verse in the same book as that one
+     * Two verses are in the same book
+     * when they have the same book.
      *
      * @param first
      *            The verse to compare to
@@ -435,7 +468,9 @@ public class Versification implements ReferenceSystem, Serializable {
     }
 
     /**
-     * Determine whether the two verses are in adjacent books.
+     * Two verses are in adjacent books if one book
+     * follows the other in this versification.
+     * Note: the verses can be in any order.
      *
      * @param first
      *            The verse to compare to
@@ -516,7 +551,54 @@ public class Versification implements ReferenceSystem, Serializable {
      * @return The new Verse
      */
     public Verse subtract(Verse verse, int n) {
+        int newVerse = verse.getVerse() - n;
+        // Try the simple case of the verse being in the same chapter
+        if (newVerse >= 0) {
+            return new Verse(verse.getVersification(), verse.getBook(), verse.getChapter(), newVerse);
+        }
         return decodeOrdinal(verse.getOrdinal() - n);
+    }
+
+    /**
+     * Get the verse that is a few verses on from the one we've got.
+     *
+     * @param verse
+     *            The verse to use as a start
+     * @param n
+     *            the number of verses later than the one we're one
+     * @return The new verse or null if there is no next verse
+     */
+    public Verse next(Verse verse) {
+        // Cannot increment past the end.
+        if (verse.getOrdinal() == ntMaxOrdinal) {
+            return null;
+        }
+
+        BibleBook nextBook = verse.getBook(); 
+        int nextChapter = verse.getChapter();
+        int nextVerse = verse.getVerse() + 1;
+        if (nextVerse > getLastVerse(nextBook, nextChapter)) {
+            // Go to an introduction.
+            nextVerse = 0;
+            // of the next chapter
+            nextChapter += 1;
+            // check to see that the chapter is valid for the book
+            if (nextChapter > getLastChapter(nextBook)) {
+                // To to an introduction
+                nextChapter = 0;
+                // of the next book
+                nextBook = bookList.getNextBook(verse.getBook());
+            }
+        }
+
+        // nextBook is null when we try to increment past the last verse
+        // The test at the beginning is designed to prevent that
+        if (nextBook == null) {
+            assert false;
+            return null;
+        }
+
+        return new Verse(this, nextBook, nextChapter, nextVerse);
     }
 
     /**
@@ -529,11 +611,17 @@ public class Versification implements ReferenceSystem, Serializable {
      * @return The new verse
      */
     public Verse add(Verse verse, int n) {
+        int newVerse = verse.getVerse() + n;
+        // Try the simple case of the verse being in the same chapter
+        if (newVerse <= getLastVerse(verse.getBook(), verse.getChapter())) {
+            return new Verse(verse.getVersification(), verse.getBook(), verse.getChapter(), newVerse);
+        }
         return decodeOrdinal(verse.getOrdinal() + n);
     }
 
     /**
-     * How many chapters in this range
+     * The number of chapters between two verses includes
+     * the chapters of the two verses and everything in between.
      * 
      * @param start
      *            The first Verse in the range
@@ -552,10 +640,9 @@ public class Versification implements ReferenceSystem, Serializable {
 
         // So we are going to have to count up chapters from start to end
         int total = getLastChapter(startBook) - startChap;
-        BibleBookList books = getBooks();
-        startBook = books.getNextBook(startBook);
-        endBook = books.getPreviousBook(endBook);
-        for (BibleBook b =  startBook; b != endBook; b = books.getNextBook(b)) {
+        startBook = bookList.getNextBook(startBook);
+        endBook = bookList.getPreviousBook(endBook);
+        for (BibleBook b =  startBook; b != endBook; b = bookList.getNextBook(b)) {
             total += getLastChapter(b);
         }
         total += endChap;
@@ -564,7 +651,8 @@ public class Versification implements ReferenceSystem, Serializable {
     }
 
     /**
-     * How many books in this range
+     * The number of books between two verses includes
+     * the books of the two verses and everything in between.
      * 
      * @param start
      *            The first Verse in the range
@@ -572,8 +660,8 @@ public class Versification implements ReferenceSystem, Serializable {
      * @return The number of books. Always >= 1.
      */
     public int getBookCount(Verse start, Verse end) {
-        int startBook = getBooks().getOrdinal(start.getBook());
-        int endBook = getBooks().getOrdinal(end.getBook());
+        int startBook = bookList.getOrdinal(start.getBook());
+        int endBook = bookList.getOrdinal(end.getBook());
 
         return endBook - startBook + 1;
     }
@@ -863,7 +951,7 @@ public class Versification implements ReferenceSystem, Serializable {
         // If the book is null,
         // then patch to the first book in the reference system
         if (patchedBook == null) {
-            patchedBook = getBooks().getFirstBook();
+            patchedBook = bookList.getFirstBook();
         }
         // If they are too small
         if (patchedChapter < 0) {
@@ -878,18 +966,9 @@ public class Versification implements ReferenceSystem, Serializable {
         // For each book, the chapters number from 0 to n, where n is the last chapter number.
         // So if we want Genesis 53, then that would be 3 chapters into Exodus,
         // which would be chapter 2.
-        while (patchedChapter > getLastChapter(patchedBook)) {
+        while (patchedBook != null && patchedChapter > getLastChapter(patchedBook)) {
             patchedChapter -= getLastChapter(patchedBook) + 1;
             patchedBook = bookList.getNextBook(patchedBook);
-
-            // If we have gone beyond the last book
-            // then return the last chapter and verse in that book
-            if (patchedBook == null) {
-                patchedBook = getBooks().getLastBook();
-                patchedChapter = getLastChapter(patchedBook);
-                patchedVerse = getLastVerse(patchedBook, patchedChapter);
-                return new Verse(this, patchedBook, patchedChapter, patchedVerse);
-            }
         }
 
         // At this point we have a valid chapter.
@@ -897,23 +976,22 @@ public class Versification implements ReferenceSystem, Serializable {
         // For each book, the chapters number from 0 to n, where n is the last chapter number.
         // So if we want Genesis 49:36, then that would be 3 verses into Genesis 50,
         // which would be verse 50:2.     
-        while (patchedVerse > getLastVerse(patchedBook, patchedChapter)) {
+        while (patchedBook != null && patchedVerse > getLastVerse(patchedBook, patchedChapter)) {
             patchedVerse -= getLastVerse(patchedBook, patchedChapter) + 1;
             patchedChapter += 1;
 
             if (patchedChapter > getLastChapter(patchedBook)) {
                 patchedChapter -= getLastChapter(patchedBook) + 1;
                 patchedBook = bookList.getNextBook(patchedBook);
-
-                // If we have gone beyond the last book
-                // then return the last chapter and verse in that book
-                if (patchedBook == null) {
-                    patchedBook = getBooks().getLastBook();
-                    patchedChapter = getLastChapter(patchedBook);
-                    patchedVerse = getLastVerse(patchedBook, patchedChapter);
-                    return new Verse(this, patchedBook, patchedChapter, patchedVerse);
-                }
             }
+        }
+
+        // If we have gone beyond the last book
+        // then return the last chapter and verse in the last book
+        if (patchedBook == null) {
+            patchedBook = bookList.getLastBook();
+            patchedChapter = getLastChapter(patchedBook);
+            patchedVerse = getLastVerse(patchedBook, patchedChapter);
         }
 
         return new Verse(this, patchedBook, patchedChapter, patchedVerse);

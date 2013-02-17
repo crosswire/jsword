@@ -31,7 +31,6 @@ import org.crosswire.common.icu.NumberShaper;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.Versification;
-import org.crosswire.jsword.versification.system.Versifications;
 
 /**
  * A VerseRange is one step between a Verse and a Passage - it is a Verse plus a
@@ -736,10 +735,8 @@ public final class VerseRange implements Key {
             // This range is exactly a whole book
             if (isWholeBooks()) {
                 // Just report the name of the book, we don't need to worry
-                // about the
-                // base since we start at the start of a book, and should have
-                // been
-                // recently normalized()
+                // about the base since we start at the start of a book,
+                // and should have been recently normalized()
                 return startBook.getPreferredName() + VerseRange.RANGE_PREF_DELIM + endBook.getPreferredName();
             }
 
@@ -750,6 +747,12 @@ public final class VerseRange implements Key {
                         + endBook.getPreferredName() + Verse.VERSE_PREF_DELIM1 + endChapter;
             }
 
+            if (v11n.isChapterIntro(start)) {
+                return startBook.getPreferredName() + Verse.VERSE_PREF_DELIM1 + startChapter + VerseRange.RANGE_PREF_DELIM  + end.getName(base);
+            }
+            if (v11n.isBookIntro(start)) {
+                return startBook.getPreferredName() + VerseRange.RANGE_PREF_DELIM + end.getName(base);
+            }
             return start.getName(base) + VerseRange.RANGE_PREF_DELIM + end.getName(base);
         }
 
@@ -864,26 +867,28 @@ public final class VerseRange implements Key {
          */
         protected VerseIterator(VerseRange range) {
             v11n = range.getVersification();
-            next = range.getStart().getOrdinal();
-            last = range.getEnd().getOrdinal();
+            nextVerse = range.getStart();
+            total = range.getCardinality();
+            count = 0;
         }
 
         /* (non-Javadoc)
          * @see java.util.Iterator#hasNext()
          */
         public boolean hasNext() {
-            return next <= last;
+            return nextVerse != null;
         }
 
         /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
         public Key next() throws NoSuchElementException {
-            if (next > last) {
+            if (nextVerse == null) {
                 throw new NoSuchElementException();
             }
-
-            return v11n.decodeOrdinal(next++);
+            Verse currentVerse = nextVerse;
+            nextVerse = ++count < total ? v11n.next(nextVerse) : null;
+            return currentVerse;
         }
 
         /* (non-Javadoc)
@@ -894,8 +899,9 @@ public final class VerseRange implements Key {
         }
 
         private Versification v11n;
-        private int next;
-        private int last;
+        private Verse nextVerse;
+        private int count;
+        private int total;
     }
 
     /* (non-Javadoc)

@@ -119,11 +119,6 @@ public class BitwisePassage extends AbstractPassage {
     public boolean contains(Key obj) {
         for (Key aKey : obj) {
             Verse verse = (Verse) aKey;
-            if (verse.getVerse() == 0) {
-                //skip - as not all modules have verse 0
-                continue;
-            }
-
             if (!store.get(verse.getOrdinal())) {
                 return false;
             }

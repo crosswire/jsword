@@ -185,8 +185,8 @@ public class PassageParentTst extends TestCase {
         // assertTrue(!it.hasNext());
 
         it = gen_rev.rangeIterator(RestrictionType.CHAPTER);
-//        assertTrue(it.hasNext());
-//        assertEquals(it.next(), VerseRangeFactory.fromString(v11n, "Gen 0"));
+        assertTrue(it.hasNext());
+        assertEquals(it.next(), VerseRangeFactory.fromString(v11n, "Gen 0"));
         assertTrue(it.hasNext());
         assertEquals(it.next(), VerseRangeFactory.fromString(v11n, "Gen 1"));
         assertTrue(it.hasNext());
@@ -406,12 +406,12 @@ public class PassageParentTst extends TestCase {
     }
 
     public void testWriteBlur() throws Exception {
-        // temp = (Passage) gen1_135.clone();
-        // temp.blur(0, RestrictionType.CHAPTER);
-        // assertEquals(temp, gen1_135);
-        // temp = (Passage) gen1_135.clone();
-        // temp.blur(0, RestrictionType.NONE);
-        // assertEquals(temp, gen1_135);
+        temp = (Passage) gen1_135.clone();
+        temp.blur(0, RestrictionType.CHAPTER);
+        assertEquals(temp, gen1_135);
+        temp = (Passage) gen1_135.clone();
+        temp.blur(0, RestrictionType.NONE);
+        assertEquals(temp, gen1_135);
         temp = (Passage) gen1_135.clone();
         temp.blur(1, RestrictionType.CHAPTER);
         assertEquals(temp, keyf.getKey(v11n, "Gen 1:0-6"));
@@ -442,12 +442,12 @@ public class PassageParentTst extends TestCase {
         temp = (Passage) gen1_135.clone();
         temp.blur(27, RestrictionType.NONE);
         assertEquals(temp, keyf.getKey(v11n, "Intro.OT-Gen 2:0"));
-        // temp = (Passage) exo2a_3b.clone();
-        // temp.blur(0, RestrictionType.CHAPTER);
-        //        assertEquals(temp, keyf.getKey(v11n, "Exo 2:1-10, Exo 3:1-11"));
-        // temp = (Passage) exo2a_3b.clone();
-        // temp.blur(0, RestrictionType.NONE);
-        //        assertEquals(temp, keyf.getKey(v11n, "Exo 2:1-10, Exo 3:1-11"));
+        temp = (Passage) exo2a_3b.clone();
+        temp.blur(0, RestrictionType.CHAPTER);
+        assertEquals(temp, keyf.getKey(v11n, "Exo 2:1-10, Exo 3:1-11"));
+        temp = (Passage) exo2a_3b.clone();
+        temp.blur(0, RestrictionType.NONE);
+        assertEquals(temp, keyf.getKey(v11n, "Exo 2:1-10, Exo 3:1-11"));
         temp = (Passage) exo2a_3b.clone();
         temp.blur(1, RestrictionType.CHAPTER);
         assertEquals(temp, keyf.getKey(v11n, "Exo 2:0-11, Exo 3:0-12"));
@@ -480,20 +480,16 @@ public class PassageParentTst extends TestCase {
         assertEquals(temp, keyf.getKey(v11n, "Exo 1:9-2:25, Exo 2:11-4:3"));
         temp = (Passage) exo2a_3b.clone();
         temp.blur(16, RestrictionType.CHAPTER);
-//        assertEquals(temp, keyf.getKey(v11n, "Exo 2:1-3:22"));
+        assertEquals(temp, keyf.getKey(v11n, "Exo 2:1-3:22"));
         temp = (Passage) exo2a_3b.clone();
         temp.blur(16, RestrictionType.NONE);
-//        assertEquals(temp, keyf.getKey(v11n, "Exo 1:8-4:4"));
+        assertEquals(temp, keyf.getKey(v11n, "Exo 1:8-4:4"));
         temp = (Passage) exo2a_3b.clone();
         temp.blur(99999, RestrictionType.CHAPTER);
-//        assertEquals(temp, keyf.getKey(v11n, "Exo 2:1-3:22"));
+        assertEquals(temp, keyf.getKey(v11n, "Exo 2:1-3:22"));
         temp = (Passage) exo2a_3b.clone();
         temp.blur(99999, RestrictionType.NONE);
         assertEquals(temp, keyf.getKey(v11n, "Intro.OT-Rev 22:21"));
-        // try { temp.blur(-1, RestrictionType.NONE); fail(temp.toString()); }
-        // catch (IllegalArgumentException ex) { }
-        // try { temp.blur(-1, RestrictionType.BOOK); fail(temp.toString()); }
-        // catch (IllegalArgumentException ex) { }
     }
 
     public void testWriteAddPassageListener() throws Exception {
@@ -538,6 +534,7 @@ public class PassageParentTst extends TestCase {
         assertEquals(it.next(), VerseRangeFactory.fromString(v11n, "Gen-Rev"));
         assertTrue(!it.hasNext());
 
+        // No longer have RestrictionType.BOOK
         // it = gen_rev.rangeIterator(RestrictionType.BOOK);
         // assertTrue(it.hasNext());
         //        assertEquals(it.next(), VerseRangeFactory.fromString(v11n, "Gen"));
@@ -550,8 +547,8 @@ public class PassageParentTst extends TestCase {
         // assertTrue(!it.hasNext());
 
         it = gen_rev.rangeIterator(RestrictionType.CHAPTER);
-//        assertTrue(it.hasNext());
-//        assertEquals(it.next(), VerseRangeFactory.fromString(v11n, "Gen 0"));
+        assertTrue(it.hasNext());
+        assertEquals(it.next(), VerseRangeFactory.fromString(v11n, "Gen 0"));
         assertTrue(it.hasNext());
         assertEquals(it.next(), VerseRangeFactory.fromString(v11n, "Gen 1"));
         assertTrue(it.hasNext());

@@ -1065,9 +1065,9 @@ public abstract class AbstractPassage implements Passage {
                 // Even if the next verse is adjacent we might want to break
                 // if we have moved into a new chapter/book
                 if (!restrict.isSameScope(v11n, end, next_verse)) {
-                    if (next_verse.getVerse() == 0 && it.hasNext()) {
-                        next_verse = (Verse) it.next();
-                    }
+//                    if (next_verse.getVerse() == 0 && it.hasNext()) {
+//                        next_verse = (Verse) it.next();
+//                    }
                     break findnext;
                 }
 

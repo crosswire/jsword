@@ -54,6 +54,7 @@ public class VerseTest extends TestCase {
     private Verse rev21 = null;
     private Verse rev22 = null;
     private Verse rev99 = null;
+    private Verse jude0 = null;
     private Verse jude1 = null;
     private Verse jude2 = null;
     private Verse jude9 = null;
@@ -85,6 +86,7 @@ public class VerseTest extends TestCase {
         rev21 = new Verse(v11n, BibleBook.REV, 2, 1);
         rev22 = new Verse(v11n, BibleBook.REV, 2, 2);
         rev99 = new Verse(v11n, BibleBook.REV, 22, 21);
+        jude0 = new Verse(v11n, BibleBook.JUDE, 0, 0);
         jude1 = new Verse(v11n, BibleBook.JUDE, 1, 1);
         jude2 = new Verse(v11n, BibleBook.JUDE, 1, 2);
         jude9 = new Verse(v11n, BibleBook.JUDE, 1, 25);
@@ -112,13 +114,13 @@ public class VerseTest extends TestCase {
         assertEquals(gen11, VerseFactory.fromString(v11n, "GENESIS 1 1"));
         assertEquals(gen11, VerseFactory.fromString(v11n, "GENESI 1 1"));
         assertEquals(gen11, VerseFactory.fromString(v11n, "g 1 1"));
-        assertEquals(gen11, VerseFactory.fromString(v11n, "g 1"));
-        assertEquals(gen11, VerseFactory.fromString(v11n, "g"));
-        assertEquals(gen11, VerseFactory.fromString(v11n, "gen"));
+        assertEquals(gen10, VerseFactory.fromString(v11n, "g 1"));
+        assertEquals(gen00, VerseFactory.fromString(v11n, "g"));
+        assertEquals(gen00, VerseFactory.fromString(v11n, "gen"));
         assertEquals(rev99, VerseFactory.fromString(v11n, "rev 22 21"));
         assertEquals(rev99, VerseFactory.fromString(v11n, "REVE 22 21"));
         assertEquals(rev99, VerseFactory.fromString(v11n, "REVELATIONS 22 21"));
-        assertEquals(gen21, VerseFactory.fromString(v11n, "g 2"));
+        assertEquals(gen20, VerseFactory.fromString(v11n, "g 2"));
         assertEquals(gen11, VerseFactory.fromString(v11n, "g.1.1"));
         assertEquals(gen11, VerseFactory.fromString(v11n, "g 1.1"));
         assertEquals(gen11, VerseFactory.fromString(v11n, "g.1 1"));
@@ -126,30 +128,13 @@ public class VerseTest extends TestCase {
         assertEquals(gen11, VerseFactory.fromString(v11n, "g:1:1"));
         assertEquals(gen11, VerseFactory.fromString(v11n, "g:1 1"));
         assertEquals(gen11, VerseFactory.fromString(v11n, " g 1 1 "));
-        assertEquals(gen11, VerseFactory.fromString(v11n, "gen1"));
-        assertEquals(gen11, VerseFactory.fromString(v11n, "GEN1"));
+        assertEquals(gen10, VerseFactory.fromString(v11n, "gen1"));
+        assertEquals(gen10, VerseFactory.fromString(v11n, "GEN1"));
         assertEquals(gen11, VerseFactory.fromString(v11n, "GENESIS1:1"));
         assertEquals(gen11, VerseFactory.fromString(v11n, "G1    1"));
         assertEquals(gen11, VerseFactory.fromString(v11n, " GEN  1  1  "));
-        /*
-         * See note in AccuracyType.tokenize() assertEquals(gen11,
-         * VerseFactory.fromString(v11n, "gen1v1")); assertEquals(gen11,
-         * VerseFactory.fromString(v11n, "gen 1 v 1"));
-         * assertEquals(gen11, VerseFactory.fromString(v11n, "gen 1v1"));
-         * assertEquals(gen11,
-         * VerseFactory.fromString(v11n, "gen 1  v  1"));
-         * assertEquals(gen11, VerseFactory.fromString(v11n, "gen 1  v  1 "));
-         * assertEquals(gen11,
-         * VerseFactory.fromString(v11n, " gen 1  v  1 "));
-         * assertEquals(gen11, VerseFactory.fromString(v11n, "gen ch1 1"));
-         * assertEquals(gen11, VerseFactory.fromString(v11n, "gen ch 1 1"));
-         * assertEquals(gen11, VerseFactory.fromString(v11n, "gen ch  1 1"));
-         * assertEquals(gen11, VerseFactory.fromString(v11n, "gen ch1v1"));
-         * assertEquals(gen11, VerseFactory.fromString(v11n, " gen ch 1 v 1 "));
-         */
+
         assertEquals(gen11, VerseFactory.fromString(v11n, " gen 1 1 "));
-        //assertEquals(pro11, VerseFactory.fromString(v11n, "proverbs 1v1"));
-        // assertEquals(ch111, VerseFactory.fromString(v11n, "1chronicles ch1 1"));
         assertEquals(ssa11, VerseFactory.fromString(v11n, "2Sa 1:1"));
         assertEquals(ssa11, VerseFactory.fromString(v11n, "2Sa 1 1"));
         assertEquals(ssa11, VerseFactory.fromString(v11n, "2Sa1 1"));
@@ -157,9 +142,9 @@ public class VerseTest extends TestCase {
         assertEquals(ssa11, VerseFactory.fromString(v11n, "2 Sa1 1"));
         assertEquals(ssa11, VerseFactory.fromString(v11n, "2Sa1:1"));
         assertEquals(ssa11, VerseFactory.fromString(v11n, "2 Sa 1 1"));
-        assertEquals(ssa11, VerseFactory.fromString(v11n, "  2  Sa  1  "));
-        assertEquals(ssa11, VerseFactory.fromString(v11n, "  2  Sa  "));
-        assertEquals(ssa11, VerseFactory.fromString(v11n, "  2  Sa1  "));
+        assertEquals(ssa10, VerseFactory.fromString(v11n, "  2  Sa  1  "));
+        assertEquals(ssa00, VerseFactory.fromString(v11n, "  2  Sa  "));
+        assertEquals(ssa10, VerseFactory.fromString(v11n, "  2  Sa1  "));
         assertEquals(ssa11, VerseFactory.fromString(v11n, "  2  Sa1  1  "));
         assertEquals(ssa11, VerseFactory.fromString(v11n, "  2 : Sa1  1  "));
         assertEquals(rev99, VerseFactory.fromString(v11n, "Rev 22:$"));
@@ -219,10 +204,10 @@ public class VerseTest extends TestCase {
         assertEquals(VerseFactory.fromString(v11n, "Genesis 1:1").getName(), "Gen 1:1");
         assertEquals(VerseFactory.fromString(v11n, "Gen 1 1").getName(), "Gen 1:1");
         assertEquals(VerseFactory.fromString(v11n, "g 1 1").getName(), "Gen 1:1");
-        assertEquals(VerseFactory.fromString(v11n, "g").getName(), "Gen 1:1");
+        assertEquals(VerseFactory.fromString(v11n, "g").getName(), "Gen 0:0");
         assertEquals(VerseFactory.fromString(v11n, "G:1:1").getName(), "Gen 1:1");
         assertEquals(VerseFactory.fromString(v11n, "Jude 1").getName(), "Jude 1");
-        assertEquals(VerseFactory.fromString(v11n, "Jude").getName(), "Jude 1");
+        assertEquals(VerseFactory.fromString(v11n, "Jude").getName(), "Jude 0");
         assertEquals(VerseFactory.fromString(v11n, "Jude 1:1").getName(), "Jude 1");
     }
 
@@ -287,8 +272,8 @@ public class VerseTest extends TestCase {
             assertEquals(gen11.getOsisID(), gen11, next2);
         }
         assertEquals(gen11.getOsisID(), gen11, v11n.subtract(gen11, 0));
-//        assertEquals(gen11.getOsisID(), gen11, v11n.subtract(gen11, 1));
-//        assertEquals(gen11.getOsisID(), gen11, v11n.subtract(gen11, 2));
+        assertEquals(gen11.getOsisID(), gen10, v11n.subtract(gen11, 1));
+        assertEquals(gen11.getOsisID(), gen00, v11n.subtract(gen11, 2));
         assertEquals(gen11.getOsisID(), gen11, v11n.add(gen11, 0));
         assertEquals(rev99.getOsisID(), rev99, v11n.add(rev99, 0));
         assertEquals(rev99.getOsisID(), rev99, v11n.add(rev99, 1));

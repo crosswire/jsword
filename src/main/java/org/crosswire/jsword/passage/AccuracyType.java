@@ -115,7 +115,7 @@ public enum AccuracyType {
         public Verse createStartVerse(Versification refSystem, String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
             BibleBook book = BibleBook.getBook(parts[0]);
             int chapter = getChapter(refSystem, book, parts[1]);
-            int verse = chapter > 0 ? 1 : 0;
+            int verse = 0; // chapter > 0 ? 1 : 0; // 0 ?
             return new Verse(original, refSystem, book, chapter, verse);
         }
 
@@ -142,8 +142,8 @@ public enum AccuracyType {
         @Override
         public Verse createStartVerse(Versification refSystem, String original, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException {
             BibleBook book = BibleBook.getBook(parts[0]);
-            int chapter = refSystem.getLastChapter(book) > 0 ? 1 : 0;
-            int verse = refSystem.getLastVerse(book, chapter) > 0 ? 1 : 0;
+            int chapter = 0; // refSystem.getLastChapter(book) > 0 ? 1 : 0; // 0 ?
+            int verse = 0; // refSystem.getLastVerse(book, chapter) > 0 ? 1 : 0; // 0 ?
             return new Verse(original, refSystem, book, chapter, verse);
         }
 
@@ -206,7 +206,7 @@ public enum AccuracyType {
             }
             BibleBook book = verseRangeBasis.getEnd().getBook();
             int chapter = getChapter(refSystem, book, parts[0]);
-            int verse = chapter > 0 ? 1 : 0;
+            int verse = 0; // chapter > 0 ? 1 : 0; // 0 ?
             return new Verse(original, refSystem, book, chapter, verse);
         }
 

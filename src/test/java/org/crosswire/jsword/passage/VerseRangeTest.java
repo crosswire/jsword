@@ -130,7 +130,7 @@ public class VerseRangeTest extends TestCase {
         assertEquals(gen11_1, VerseRangeFactory.fromString(v11n, "Gen 1:1-1"));
         assertEquals(gen11_2, VerseRangeFactory.fromString(v11n, "Gen 1:1-2"));
         assertEquals(gen11_2, VerseRangeFactory.fromString(v11n, "Gen 1:1-1:2"));
-//        assertEquals(gen_all, VerseRangeFactory.fromString(v11n, "Gen"));
+        assertEquals(gen_all, VerseRangeFactory.fromString(v11n, "Gen"));
         assertEquals(gen_all, VerseRangeFactory.fromString(v11n, "Gen 0:0-50:26"));
         assertEquals(gen_all, VerseRangeFactory.fromString(v11n, "Gen 0:0-50:$"));
         assertEquals(gen_all, VerseRangeFactory.fromString(v11n, "Gen 0:0-50:ff"));
@@ -141,7 +141,7 @@ public class VerseRangeTest extends TestCase {
         assertEquals(gen_all, VerseRangeFactory.fromString(v11n, "Gen 0:0-ff:$"));
         assertEquals(gen_all, VerseRangeFactory.fromString(v11n, "Gen 0:0-ff:ff"));
         assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "Gen 0:0-Exo 1:1"));
-//        assertEquals(gen_exo, VerseRangeFactory.fromString(v11n, "Gen-Exo"));
+        assertEquals(gen_exo, VerseRangeFactory.fromString(v11n, "Gen-Exo"));
         assertEquals(gen_rev, VerseRangeFactory.fromString(v11n, "Gen 1:1-Rev 22:21"));
         assertEquals(gen_rev, VerseRangeFactory.fromString(v11n, "Gen 1:1-Rev 22:$"));
         assertEquals(gen_rev, VerseRangeFactory.fromString(v11n, "Gen 1:1-Rev 22:ff"));
@@ -159,9 +159,9 @@ public class VerseRangeTest extends TestCase {
         assertEquals(rev99_1, VerseRangeFactory.fromString(v11n, "Rev 22:21-21"));
         assertEquals(gen11_1, VerseRangeFactory.fromString(v11n, "Gen 1:1-1:1"));
         assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "g 0 0-e 1 1"));
-//        assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "g -e 1 1"));
+        assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "g -e 1 1"));
         assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "Genesis 0:0-e 1 1"));
-//        assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "g-e:1:1"));
+        assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "g-e:1:1"));
         try {
             VerseRangeFactory.fromString(v11n, "Gen 1:1-Gen 1:2-Gen 1:3");
             fail();
@@ -187,9 +187,9 @@ public class VerseRangeTest extends TestCase {
             fail();
         } catch (NoSuchVerseException ex) {
         }
-//        assertEquals(gen_all, VerseRangeFactory.fromString(v11n, "Gen"));
-//        assertEquals(rev99_9, VerseRangeFactory.fromString(v11n, "Rev 22"));
-//        assertEquals(rev11_9, VerseRangeFactory.fromString(v11n, "Rev"));
+        assertEquals(gen_all, VerseRangeFactory.fromString(v11n, "Gen"));
+        assertEquals(rev99_9, VerseRangeFactory.fromString(v11n, "Rev 22"));
+        assertEquals(rev11_9, VerseRangeFactory.fromString(v11n, "Rev"));
     }
 
     public void testToString() {
@@ -199,7 +199,7 @@ public class VerseRangeTest extends TestCase {
         assertEquals("Gen 1:1-2:1", gen11_a.toString());
         assertEquals("Gen 1:2", gen12_1.toString());
         assertEquals("Gen", gen_all.toString());
-        assertEquals("Gen 0:0-Exo 1:1", gen_ex1.toString());
+        assertEquals("Gen-Exo 1:1", gen_ex1.toString());
         assertEquals("Gen-Rev", gen_rev.toString());
         assertEquals("Rev 22", rev99_9.toString());
         assertEquals("Rev", rev11_9.toString());
@@ -211,7 +211,7 @@ public class VerseRangeTest extends TestCase {
         assertEquals("1Cor 8-9", VerseRangeFactory.fromString(v11n, "1corinth 8-9").toString());
         assertEquals("Gen 1:1", VerseRangeFactory.fromString(v11n, "Genesis 1 1").toString());
         assertEquals("Gen 1:1-Exo 1:1", VerseRangeFactory.fromString(v11n, "g 1 1-e 1 1").toString());
-        assertEquals("Gen 1:1-Exo 1:10", VerseRangeFactory.fromString(v11n, "g-e:1:10").toString());
+        assertEquals("Gen-Exo 1:10", VerseRangeFactory.fromString(v11n, "g-e:1:10").toString());
         assertEquals("Gen 1-Exo 2", VerseRangeFactory.fromString(v11n, "g 1-e 2").toString());
         PassageUtil.setPersistentNaming(true);
         assertEquals("Genesis 1 1", VerseRangeFactory.fromString(v11n, "Genesis 1 1").toString());
@@ -274,15 +274,11 @@ public class VerseRangeTest extends TestCase {
         assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11, 1, 32));
         assertEquals(gen11_a, RestrictionType.NONE.blur(v11n, gen11, 0, 32));
         assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11, 9, 32));
-        assertEquals(gen_all, RestrictionType.NONE.blur(v11n, gen11, 2, 1581));
         assertEquals(gen11_9, RestrictionType.CHAPTER.blur(v11n, gen11, 0, 1581));
         assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11, 3, 1581));
-        assertEquals(gen_all, RestrictionType.NONE.blur(v11n, gen11, 2, 1581));
         assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11, 9, 1581));
-        assertEquals(gen_ex1, RestrictionType.NONE.blur(v11n, gen11, 2, 1584));
         assertEquals(gen11_9, RestrictionType.CHAPTER.blur(v11n, gen11, 0, 1533));
         assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11, 1, 1584));
-        assertEquals(gen_ex1, RestrictionType.NONE.blur(v11n, gen11, 2, 1584));
         assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11, 2, 1584));
         assertEquals(gen_rev, RestrictionType.NONE.blur(v11n, gen11, 0, 32356));
         assertEquals(gen11_9, RestrictionType.CHAPTER.blur(v11n, gen11, 0, 32356));
@@ -313,10 +309,14 @@ public class VerseRangeTest extends TestCase {
         assertEquals(rev99_9, RestrictionType.CHAPTER.blur(v11n, rev99, 21, 9));
         assertEquals(rev99_9, RestrictionType.NONE.blur(v11n, rev99, 21, 9));
         assertEquals(rev99_9, RestrictionType.CHAPTER.blur(v11n, rev99, 425, 0));
-        assertEquals(rev11_9, RestrictionType.NONE.blur(v11n, rev99, 426, 0));
         assertEquals(rev99_9, RestrictionType.CHAPTER.blur(v11n, rev99, 427, 1));
-        assertEquals(rev11_9, RestrictionType.NONE.blur(v11n, rev99, 426, 1));
         assertEquals(rev99_9, RestrictionType.CHAPTER.blur(v11n, rev99, 427, 9));
+        assertEquals(gen_all, RestrictionType.NONE.blur(v11n, gen11, 2, 1581));
+        assertEquals(gen_all, RestrictionType.NONE.blur(v11n, gen11, 2, 1581));
+        assertEquals(gen_ex1, RestrictionType.NONE.blur(v11n, gen11, 2, 1584));
+        assertEquals(gen_ex1, RestrictionType.NONE.blur(v11n, gen11, 2, 1584));
+        assertEquals(rev11_9, RestrictionType.NONE.blur(v11n, rev99, 426, 0));
+        assertEquals(rev11_9, RestrictionType.NONE.blur(v11n, rev99, 426, 1));
         assertEquals(rev11_9, RestrictionType.NONE.blur(v11n, rev99, 426, 9));
     }
 
@@ -417,7 +417,7 @@ public class VerseRangeTest extends TestCase {
         assertEquals("Gen 1:1-2:1", gen11_a.getName());
         assertEquals("Gen 1:2", gen12_1.getName());
         assertEquals("Gen", gen_all.getName());
-        assertEquals("Gen 0:0-Exo 1:1", gen_ex1.getName());
+        assertEquals("Gen-Exo 1:1", gen_ex1.getName());
         assertEquals("Gen-Rev", gen_rev.getName());
         assertEquals("Rev 22", rev99_9.getName());
         assertEquals("Rev", rev11_9.getName());
