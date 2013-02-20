@@ -637,7 +637,7 @@ public class PassageTally extends AbstractPassage {
         resetMax();
 
         lowerNormalizeProtection();
-        if (lowerEventSuppresionAndTest()) {
+        if (lowerEventSuppressionAndTest()) {
             fireIntervalAdded(this, null, null);
         }
     }

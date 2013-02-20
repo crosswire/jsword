@@ -122,6 +122,8 @@ public class SwordBookDriver extends AbstractBookDriver {
                     }
                 } catch (IOException e) {
                     log.warn("Couldn't create SwordBookMetaData", e);
+                } catch(MissingDataFilesException e) {
+                    log.warn(e.getMessage() + " This book will be excluded.", e);
                 } catch (BookException e) {
                     log.warn("Couldn't create SwordBookMetaData", e);
                 }
