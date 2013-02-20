@@ -160,24 +160,32 @@ public class CustomHandler extends DefaultHandler {
     }
 
     private Tag getTag(String localname, String qname) {
-        Tag t = TAG_MAP.get(qname);
+        // sometimes qname is empty e.g. on Android 2.1
+        String name;
+        if (qname!=null && qname.length()>0) {
+            name = qname;
+        } else {
+            name = localname;
+        }
+        
+        Tag t = TAG_MAP.get(name);
 
         // Some of the THML books are broken in that they use uppercase
         // element names, which the spec disallows, but we might as well
         // look out for them
         if (t == null) {
-            t = TAG_MAP.get(qname.toLowerCase(Locale.ENGLISH));
+            t = TAG_MAP.get(name.toLowerCase(Locale.ENGLISH));
 
             if (t == null) {
-                DataPolice.report(book, key, "Unknown thml element: " + localname + " qname=" + qname);
+                DataPolice.report(book, key, "Unknown thml element: " + localname + " qname=" + name);
 
                 // Report on it only once and make sure the content is output.
-                t = new AnonymousTag(qname);
-                TAG_MAP.put(qname, t);
+                t = new AnonymousTag(name);
+                TAG_MAP.put(name, t);
                 return t;
             }
 
-            DataPolice.report(book, key, "Wrong case used in thml element: " + qname);
+            DataPolice.report(book, key, "Wrong case used in thml element: " + name);
         }
         return t;
     }
