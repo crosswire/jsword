@@ -299,7 +299,7 @@ public final class PassageKeyFactory {
 
         // Some speedups
         if (aref != null) {
-            aref.lowerEventSuppresionAndTest();
+            aref.lowerEventSuppressionAndTest();
             aref.lowerNormalizeProtection();
         }
 
