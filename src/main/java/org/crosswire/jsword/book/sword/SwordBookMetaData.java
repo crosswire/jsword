@@ -30,6 +30,7 @@ import java.util.Locale;
 import org.crosswire.common.util.Language;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PropertyMap;
+import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.KeyType;
@@ -72,8 +73,9 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * @param file
      * @param internal
      * @throws IOException
+     * @throws MissingDataFilesException indicates missing data files
      */
-    public SwordBookMetaData(File file, String internal, URI bookRootPath) throws IOException {
+    public SwordBookMetaData(File file, String internal, URI bookRootPath) throws IOException, MissingDataFilesException {
         cet = new ConfigEntryTable(internal);
         cet.load(file);
 
@@ -196,7 +198,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#setLibrary(java.net.URI)
      */
     @Override
-    public void setLibrary(URI library) {
+    public void setLibrary(URI library) throws MissingDataFilesException {
         // Ignore it if it is not supported.
         if (!isSupported()) {
             return;
@@ -220,7 +222,9 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
 
         // DataPath typically ends in a '/' to indicate a directory.
         // If so remove it.
+        boolean isDirectoryPath = false;
         if (lastSlash == datapath.length() - 1) {
+            isDirectoryPath = true;
             datapath = datapath.substring(0, lastSlash);
         }
 
@@ -229,14 +233,24 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         // For some modules, the last element of the DataPath
         // is a prefix for file names.
         if (!bookDir.isDirectory()) {
+            if(isDirectoryPath) {
+                // TRANSLATOR: This indicates that the Book is only partially installed.
+                throw new MissingDataFilesException(JSMsg.gettext("The book is missing its data files", cet.getValue(ConfigEntryType.INITIALS)));
+            }
+            
+            //not a directory path
+            //try appending .dat on the end to see if we have a file, if not, then 
+            if(!new File(datapath + ".dat").exists()) {
+             // TRANSLATOR: This indicates that the Book is only partially installed.
+                throw new MissingDataFilesException(JSMsg.gettext("The book is missing its data files", cet.getValue(ConfigEntryType.INITIALS)));                
+            }
+            
+            //then we have a module that has a prefix
+                
             // Shorten it by one segment and test again.
             lastSlash = datapath.lastIndexOf('/');
             datapath = datapath.substring(0, lastSlash);
             location = NetUtil.lengthenURI(library, datapath);
-            bookDir = new File(location.getPath());
-            if (!bookDir.isDirectory()) {
-                return;
-            }
         }
 
         cet.add(ConfigEntryType.LOCATION_URL, location.toString());

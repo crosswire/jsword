@@ -291,7 +291,7 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
                         tally.add(key, score);
                     }
                     tally.lowerNormalizeProtection();
-                    tally.lowerEventSuppresionAndTest();
+                    tally.lowerEventSuppressionAndTest();
                 } else {
                     results = book.createEmptyKeyList();
                     // If we have an abstract passage,
@@ -305,7 +305,7 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
                     searcher.search(query, new VerseCollector(v11n, searcher, results));
                     if (passage != null) {
                         passage.lowerNormalizeProtection();
-                        passage.lowerEventSuppresionAndTest();
+                        passage.lowerEventSuppressionAndTest();
                     }
                 }
             } catch (IOException e) {

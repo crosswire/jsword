@@ -22,11 +22,13 @@
 package org.crosswire.jsword.book.sword;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.List;
 
 import org.crosswire.common.activate.Lock;
 import org.crosswire.common.util.IOUtil;
+import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.OSISUtil;
@@ -34,8 +36,12 @@ import org.crosswire.jsword.book.basic.AbstractPassageBook;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
 import org.crosswire.jsword.book.sword.state.OpenFileState;
+import org.crosswire.jsword.book.sword.state.RawBackendState;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
+import org.crosswire.jsword.passage.PassageKeyFactory;
+import org.crosswire.jsword.versification.Versification;
+import org.crosswire.jsword.versification.system.Versifications;
 import org.jdom.Content;
 import org.jdom.Element;
 
@@ -71,6 +77,38 @@ public class SwordBook extends AbstractPassageBook {
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.Book#getGlobalKeyList()
+     */
+    public final Key getGlobalKeyList() {
+        if (global == null) {
+            try {
+                global = this.backend.getGlobalKeyList();
+                return global;
+            } catch (UnsupportedOperationException ex) {
+                // fail silently, operation not supported by the backend
+                log.debug(ex.getMessage());
+            } catch (BookException ex) {
+                // failing silently, as previous behaviour was to attempt to
+                // return as much as we can using the slower method
+                log.debug(ex.getMessage());
+            }
+
+            Versification v11n = super.getVersification();
+
+            global = super.createEmptyKeyList();
+            Key all = PassageKeyFactory.instance().getGlobalKeyList(v11n);
+
+            for (Key key : all) {
+                if (contains(key)) {
+                    global.addAll(key);
+                }
+            }
+        }
+
+        return global;
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#contains(org.crosswire.jsword.passage.Key)
      */
     public boolean contains(Key key) {
@@ -87,7 +125,7 @@ public class SwordBook extends AbstractPassageBook {
             state = backend.initState();
             return backend.readRawContent(state, key, key.getName());
         } catch (IOException e) {
-           throw new BookException("Unable to obtain raw content from backend", e);
+            throw new BookException("Unable to obtain raw content from backend", e);
         } finally {
             IOUtil.close(state);
         }
@@ -200,4 +238,11 @@ public class SwordBook extends AbstractPassageBook {
      * The filter to use to convert to OSIS.
      */
     private Filter filter;
+
+    /**
+     * A cached representation of the global key list.
+     */
+    private Key global;
+    
+    private static final Logger log = Logger.getLogger(SwordBook.class);
 }

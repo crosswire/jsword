@@ -150,6 +150,25 @@ public class BitwisePassage extends AbstractPassage {
         }
     }
 
+    /**
+     * A shortcut to adding a key, by ordinal. The ordinal needs to be taken
+     * from the same versification as the passage being created.
+     * 
+     * @param ordinal
+     *            the ordinal
+     */
+    public void addVersifiedOrdinal(int ordinal) {
+        optimizeWrites();
+        store.set(ordinal);
+
+        // we do an extra check here because the cost of calculating the
+        // params is non-zero and may be wasted
+        if (suppressEvents == 0) {
+            Verse verse = getVersification().decodeOrdinal(ordinal);
+            fireIntervalAdded(this, verse, verse);
+        }
+    }
+
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#remove(org.crosswire.jsword.passage.Key)
      */
@@ -288,7 +307,7 @@ public class BitwisePassage extends AbstractPassage {
             store = newStore;
 
             lowerNormalizeProtection();
-            if (lowerEventSuppresionAndTest()) {
+            if (lowerEventSuppressionAndTest()) {
                 fireIntervalAdded(this, null, null);
             }
         }

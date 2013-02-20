@@ -506,7 +506,7 @@ public abstract class AbstractPassage implements Passage {
         }
 
         lowerNormalizeProtection();
-        if (lowerEventSuppresionAndTest()) {
+        if (lowerEventSuppressionAndTest()) {
             if (key instanceof Passage) {
                 Passage that = (Passage) key;
                 fireIntervalAdded(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1));
@@ -542,7 +542,7 @@ public abstract class AbstractPassage implements Passage {
         }
 
         lowerNormalizeProtection();
-        if (lowerEventSuppresionAndTest()) {
+        if (lowerEventSuppressionAndTest()) {
             if (key instanceof Passage) {
                 Passage that = (Passage) key;
                 fireIntervalRemoved(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1));
@@ -572,7 +572,7 @@ public abstract class AbstractPassage implements Passage {
         }
 
         lowerNormalizeProtection();
-        if (lowerEventSuppresionAndTest()) {
+        if (lowerEventSuppressionAndTest()) {
             fireIntervalRemoved(this, null, null);
         }
     }
@@ -586,7 +586,7 @@ public abstract class AbstractPassage implements Passage {
 
         remove(getVersification().getAllVerses());
 
-        if (lowerEventSuppresionAndTest()) {
+        if (lowerEventSuppressionAndTest()) {
             fireIntervalRemoved(this, null, null);
         }
     }
@@ -608,7 +608,7 @@ public abstract class AbstractPassage implements Passage {
         }
 
         lowerNormalizeProtection();
-        if (lowerEventSuppresionAndTest()) {
+        if (lowerEventSuppressionAndTest()) {
             fireIntervalAdded(this, null, null);
         }
     }
@@ -663,7 +663,7 @@ public abstract class AbstractPassage implements Passage {
         }
 
         lowerNormalizeProtection();
-        if (lowerEventSuppresionAndTest()) {
+        if (lowerEventSuppressionAndTest()) {
             fireIntervalAdded(this, getVerseAt(0), getVerseAt(countVerses() - 1));
         }
     }
@@ -974,7 +974,7 @@ public abstract class AbstractPassage implements Passage {
      * 
      * @return true if it is then safe to fire an event.
      */
-    public boolean lowerEventSuppresionAndTest() {
+    public boolean lowerEventSuppressionAndTest() {
         suppressEvents--;
         assert suppressEvents >= 0;
 
@@ -1263,7 +1263,7 @@ public abstract class AbstractPassage implements Passage {
 
         // We don't bother to call fireContentsChanged(...) because
         // nothing can have registered at this point
-        lowerEventSuppresionAndTest();
+        lowerEventSuppressionAndTest();
         lowerNormalizeProtection();
     }
 

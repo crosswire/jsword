@@ -32,6 +32,7 @@ import org.crosswire.jsword.book.BookDriver;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.KeyType;
+import org.crosswire.jsword.book.sword.MissingDataFilesException;
 import org.crosswire.jsword.index.IndexStatus;
 import org.jdom.Document;
 
@@ -166,7 +167,7 @@ public abstract class AbstractBookMetaData implements BookMetaData {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookMetaData#setLibrary(java.net.URI)
      */
-    public void setLibrary(URI library) {
+    public void setLibrary(URI library) throws MissingDataFilesException {
         putProperty(KEY_LIBRARY_URI, library.toString());
     }
 
