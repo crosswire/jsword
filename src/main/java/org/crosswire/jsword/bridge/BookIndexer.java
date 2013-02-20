@@ -140,21 +140,21 @@ public class BookIndexer {
         }
 
         BookIndexer indexer = new BookIndexer(b);
-        if (operation.equalsIgnoreCase("create")) {
+        if ("create".equalsIgnoreCase(operation)) {
             try {
                 indexer.createIndex();
             } catch (BookException e) {
                 System.err.println("Unable to re-index book.");
                 e.printStackTrace();
             }
-        } else if (operation.equalsIgnoreCase("delete")) {
+        } else if ("delete".equalsIgnoreCase(operation)) {
             try {
                 indexer.deleteIndex();
             } catch (BookException e) {
                 System.err.println("Unable to delete index for book.");
                 e.printStackTrace();
             }
-        } else if (operation.equalsIgnoreCase("check")) {
+        } else if ("check".equalsIgnoreCase(operation)) {
             System.err.println(indexer.isIndexed());
         } else {
             usage();

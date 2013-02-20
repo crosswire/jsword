@@ -200,7 +200,7 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
         Verse currentVerse = null;
         try {
 
-            final Passage ref = key instanceof Passage ? (Passage) key : KeyUtil.getPassage(getVersification(), key);
+            final Passage ref = KeyUtil.getPassage(key);
             final Iterator<Key> rit = ref.rangeIterator(RestrictionType.CHAPTER);
             while (rit.hasNext()) {
                 VerseRange range = (VerseRange) rit.next();
@@ -210,7 +210,7 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
                 // the buffer size of what to read?
                 // now iterate through all verses in range
                 for (Key verseInRange : range) {
-                    currentVerse = KeyUtil.getVerse(getVersification(), verseInRange);
+                    currentVerse = KeyUtil.getVerse(verseInRange);
                     final String keyName = verseInRange.getName();
                     String rawText = readRawContent(openFileState, currentVerse, keyName);
                     processor.postVerse(verseInRange, content, rawText);

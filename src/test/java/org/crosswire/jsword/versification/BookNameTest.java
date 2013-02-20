@@ -24,6 +24,7 @@ package org.crosswire.jsword.versification;
 import junit.framework.TestCase;
 
 import org.crosswire.jsword.book.CaseType;
+import org.crosswire.jsword.versification.system.Versifications;
 
 /**
  * JUnit test of BookName
@@ -39,9 +40,12 @@ public class BookNameTest extends TestCase {
 
     private CaseType storedCase;
     private boolean fullName;
+    private Versification v11n;
 
     @Override
     protected void setUp() {
+        // AV11N(DMS): Update test to test all V11Ns
+        v11n = Versifications.instance().getDefaultVersification();
         storedCase = BookName.getDefaultCase();
         BookName.setCase(CaseType.SENTENCE);
         fullName = BookName.isFullBookName();
@@ -68,52 +72,52 @@ public class BookNameTest extends TestCase {
 
     public void testGetLongBookName() throws Exception {
         BookName.setCase(CaseType.SENTENCE);
-        assertEquals("Genesis", BibleBook.GEN.getLongName());
-        assertEquals("Revelation of John", BibleBook.REV.getLongName());
+        assertEquals("Genesis", v11n.getLongName(BibleBook.GEN));
+        assertEquals("Revelation of John", v11n.getLongName(BibleBook.REV));
 
         BookName.setCase(CaseType.LOWER);
-        assertEquals("genesis", BibleBook.GEN.getLongName());
-        assertEquals("revelation of john", BibleBook.REV.getLongName());
+        assertEquals("genesis", v11n.getLongName(BibleBook.GEN));
+        assertEquals("revelation of john", v11n.getLongName(BibleBook.REV));
 
         BookName.setCase(CaseType.UPPER);
-        assertEquals("GENESIS", BibleBook.GEN.getLongName());
-        assertEquals("REVELATION OF JOHN", BibleBook.REV.getLongName());
+        assertEquals("GENESIS", v11n.getLongName(BibleBook.GEN));
+        assertEquals("REVELATION OF JOHN", v11n.getLongName(BibleBook.REV));
 
     }
 
     public void testGetShortBookName() throws Exception {
         BookName.setCase(CaseType.SENTENCE);
-        assertEquals("Gen", BibleBook.GEN.getShortName());
-        assertEquals("Exo", BibleBook.EXOD.getShortName());
-        assertEquals("Judg", BibleBook.JUDG.getShortName());
-        assertEquals("Mal", BibleBook.MAL.getShortName());
-        assertEquals("Mat", BibleBook.MATT.getShortName());
-        assertEquals("Phili", BibleBook.PHIL.getShortName());
-        assertEquals("Phile", BibleBook.PHLM.getShortName());
-        assertEquals("Jude", BibleBook.JUDE.getShortName());
-        assertEquals("Rev", BibleBook.REV.getShortName());
+        assertEquals("Gen", v11n.getShortName(BibleBook.GEN));
+        assertEquals("Exo", v11n.getShortName(BibleBook.EXOD));
+        assertEquals("Judg", v11n.getShortName(BibleBook.JUDG));
+        assertEquals("Mal", v11n.getShortName(BibleBook.MAL));
+        assertEquals("Mat", v11n.getShortName(BibleBook.MATT));
+        assertEquals("Phili", v11n.getShortName(BibleBook.PHIL));
+        assertEquals("Phile", v11n.getShortName(BibleBook.PHLM));
+        assertEquals("Jude", v11n.getShortName(BibleBook.JUDE));
+        assertEquals("Rev", v11n.getShortName(BibleBook.REV));
 
         BookName.setCase(CaseType.LOWER);
-        assertEquals("gen", BibleBook.GEN.getShortName());
-        assertEquals("exo", BibleBook.EXOD.getShortName());
-        assertEquals("judg", BibleBook.JUDG.getShortName());
-        assertEquals("mal", BibleBook.MAL.getShortName());
-        assertEquals("mat", BibleBook.MATT.getShortName());
-        assertEquals("phili", BibleBook.PHIL.getShortName());
-        assertEquals("phile", BibleBook.PHLM.getShortName());
-        assertEquals("jude", BibleBook.JUDE.getShortName());
-        assertEquals("rev", BibleBook.REV.getShortName());
+        assertEquals("gen", v11n.getShortName(BibleBook.GEN));
+        assertEquals("exo", v11n.getShortName(BibleBook.EXOD));
+        assertEquals("judg", v11n.getShortName(BibleBook.JUDG));
+        assertEquals("mal", v11n.getShortName(BibleBook.MAL));
+        assertEquals("mat", v11n.getShortName(BibleBook.MATT));
+        assertEquals("phili", v11n.getShortName(BibleBook.PHIL));
+        assertEquals("phile", v11n.getShortName(BibleBook.PHLM));
+        assertEquals("jude", v11n.getShortName(BibleBook.JUDE));
+        assertEquals("rev", v11n.getShortName(BibleBook.REV));
 
         BookName.setCase(CaseType.UPPER);
-        assertEquals("GEN", BibleBook.GEN.getShortName());
-        assertEquals("EXO", BibleBook.EXOD.getShortName());
-        assertEquals("JUDG", BibleBook.JUDG.getShortName());
-        assertEquals("MAL", BibleBook.MAL.getShortName());
-        assertEquals("MAT", BibleBook.MATT.getShortName());
-        assertEquals("PHILI", BibleBook.PHIL.getShortName());
-        assertEquals("PHILE", BibleBook.PHLM.getShortName());
-        assertEquals("JUDE", BibleBook.JUDE.getShortName());
-        assertEquals("REV", BibleBook.REV.getShortName());
+        assertEquals("GEN", v11n.getShortName(BibleBook.GEN));
+        assertEquals("EXO", v11n.getShortName(BibleBook.EXOD));
+        assertEquals("JUDG", v11n.getShortName(BibleBook.JUDG));
+        assertEquals("MAL", v11n.getShortName(BibleBook.MAL));
+        assertEquals("MAT", v11n.getShortName(BibleBook.MATT));
+        assertEquals("PHILI", v11n.getShortName(BibleBook.PHIL));
+        assertEquals("PHILE", v11n.getShortName(BibleBook.PHLM));
+        assertEquals("JUDE", v11n.getShortName(BibleBook.JUDE));
+        assertEquals("REV", v11n.getShortName(BibleBook.REV));
     }
 
     public void testGetBookJogger() throws Exception {

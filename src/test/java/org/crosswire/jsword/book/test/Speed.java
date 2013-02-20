@@ -32,7 +32,6 @@ import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageTally;
-import org.crosswire.jsword.versification.system.Versifications;
 
 /**
  * Speed is a simple benchmark that tests how fast a version is. The current set
@@ -111,7 +110,7 @@ public class Speed implements Runnable {
             // Part 3, a power match, and doc generate
             String nextInput = book.find("aaron & manna").getName();
             Key key = book.getKey(nextInput);
-            Passage ref = KeyUtil.getPassage(Versifications.instance().getDefaultVersification(), key);
+            Passage ref = KeyUtil.getPassage(key);
             ref.trimVerses(35);
             dummyDisplay(ref);
             ref = null;

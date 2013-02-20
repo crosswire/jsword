@@ -85,7 +85,7 @@ public class Languages {
                 if (langs == null) {
                     langs = initLanguages(locale);
                     if (langs != null) {
-                        localisedCommonLanguages.put(locale, langs);                        
+                        localisedCommonLanguages.put(locale, langs);
                     }
                 }
             }

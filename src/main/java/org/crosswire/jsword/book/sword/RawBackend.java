@@ -64,7 +64,7 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
     public boolean contains(Key key) {
         String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
         Versification v11n = Versifications.instance().getVersification(v11nName);
-        Verse verse = KeyUtil.getVerse(v11n, key);
+        Verse verse = KeyUtil.getVerse(key);
 
         RawBackendState initState = null;
         try {
@@ -105,7 +105,7 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
     public String readRawContent(RawBackendState state, Key key, String keyName) throws IOException {
             String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
             Versification v11n = Versifications.instance().getVersification(v11nName);
-            Verse verse = KeyUtil.getVerse(v11n, key);
+            Verse verse = KeyUtil.getVerse(key);
 
             int index = verse.getOrdinal();
 

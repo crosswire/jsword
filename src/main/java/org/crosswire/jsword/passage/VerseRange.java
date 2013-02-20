@@ -737,21 +737,21 @@ public final class VerseRange implements Key {
                 // Just report the name of the book, we don't need to worry
                 // about the base since we start at the start of a book,
                 // and should have been recently normalized()
-                return startBook.getPreferredName() + VerseRange.RANGE_PREF_DELIM + endBook.getPreferredName();
+                return v11n.getPreferredName(startBook) + VerseRange.RANGE_PREF_DELIM + v11n.getPreferredName(endBook);
             }
 
             // If this range is exactly a whole chapter
             if (isWholeChapters()) {
                 // Just report book and chapter names
-                return startBook.getPreferredName() + Verse.VERSE_PREF_DELIM1 + startChapter + VerseRange.RANGE_PREF_DELIM
-                        + endBook.getPreferredName() + Verse.VERSE_PREF_DELIM1 + endChapter;
+                return v11n.getPreferredName(startBook) + Verse.VERSE_PREF_DELIM1 + startChapter + VerseRange.RANGE_PREF_DELIM
+                        + v11n.getPreferredName(endBook) + Verse.VERSE_PREF_DELIM1 + endChapter;
             }
 
             if (v11n.isChapterIntro(start)) {
-                return startBook.getPreferredName() + Verse.VERSE_PREF_DELIM1 + startChapter + VerseRange.RANGE_PREF_DELIM  + end.getName(base);
+                return v11n.getPreferredName(startBook) + Verse.VERSE_PREF_DELIM1 + startChapter + VerseRange.RANGE_PREF_DELIM  + end.getName(base);
             }
             if (v11n.isBookIntro(start)) {
-                return startBook.getPreferredName() + VerseRange.RANGE_PREF_DELIM + end.getName(base);
+                return v11n.getPreferredName(startBook) + VerseRange.RANGE_PREF_DELIM + end.getName(base);
             }
             return start.getName(base) + VerseRange.RANGE_PREF_DELIM + end.getName(base);
         }
@@ -762,7 +762,7 @@ public final class VerseRange implements Key {
             // the
             // base since we start at the start of a book, and should have been
             // recently normalized()
-            return startBook.getPreferredName();
+            return v11n.getPreferredName(startBook);
         }
 
         // If this is 2 separate chapters
@@ -770,7 +770,7 @@ public final class VerseRange implements Key {
             // If this range is a whole number of chapters
             if (isWholeChapters()) {
                 // Just report the name of the book and the chapters
-                return startBook.getPreferredName() + Verse.VERSE_PREF_DELIM1 + startChapter + VerseRange.RANGE_PREF_DELIM + endChapter;
+                return v11n.getPreferredName(startBook) + Verse.VERSE_PREF_DELIM1 + startChapter + VerseRange.RANGE_PREF_DELIM + endChapter;
             }
 
             return start.getName(base) + VerseRange.RANGE_PREF_DELIM + endChapter + Verse.VERSE_PREF_DELIM2 + endVerse;
@@ -779,7 +779,7 @@ public final class VerseRange implements Key {
         // If this range is exactly a whole chapter
         if (isWholeChapter()) {
             // Just report the name of the book and the chapter
-            return startBook.getPreferredName() + Verse.VERSE_PREF_DELIM1 + startChapter;
+            return v11n.getPreferredName(startBook) + Verse.VERSE_PREF_DELIM1 + startChapter;
         }
 
         // If this is 2 separate verses

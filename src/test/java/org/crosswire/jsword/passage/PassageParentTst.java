@@ -388,7 +388,7 @@ public class PassageParentTst extends TestCase {
         assertEquals("Gen 1:1-3, 22:2-10, Rev 22",
                 keyf.getKey(v11n, "Gen 1 3;gen 22 2;rev 22 21;gen 22 3-10; rev 22 19;gen 1 1;rev 22 10-18; gen 1 2; rev 22 1-21").toString());
         assertEquals("", keyf.getKey(v11n, "").toString());
-        assertEquals("Gen-Exo", keyf.getKey(v11n, "gen 1 1-50:26,e,e 1 2,e 1 3-10").toString());
+        assertEquals("Gen-Exo", keyf.getKey(v11n, "gen 1 1-50:26,ex,ex 1 2,ex 1 3-10").toString());
         assertEquals("", keyf.getKey(v11n, null).toString());
     }
 
@@ -397,7 +397,7 @@ public class PassageParentTst extends TestCase {
         assertEquals("Gen 1:1-3, 22:2-10, Rev 22", 
                 keyf.getKey(v11n, "Gen 1 3;gen 22 2;rev 22 21;gen 22 3-10; rev 22 19;gen 1 1;rev 22 10-18; gen 1 2; rev 22 1-21").getName());
         assertEquals("", keyf.getKey(v11n, "").getName());
-        assertEquals("Gen-Exo", keyf.getKey(v11n, "gen 1 1-50:26,e,e 1 2,e 1 3-10").getName());
+        assertEquals("Gen-Exo", keyf.getKey(v11n, "gen 1 1-50:26,ex,ex 1 2,ex 1 3-10").getName());
         assertEquals("Exo 1:1, 4", keyf.getKey(v11n, "exo 1:1, 4").getName());
         assertEquals("Exo 1:1-4, 6-22", keyf.getKey(v11n, "exo 1:1, 4, 2-3, 11-ff, 6-10").getName());
         assertEquals("Num 1-2", keyf.getKey(v11n, "Num 1, 2").getName());

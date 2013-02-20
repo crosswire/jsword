@@ -281,7 +281,7 @@ public final class Verse implements Key {
      * @see org.crosswire.jsword.passage.Key#getRootName()
      */
     public String getRootName() {
-        return book.getShortName();
+        return v11n.getShortName(book);
     }
 
     /* (non-Javadoc)
@@ -602,7 +602,7 @@ public final class Verse implements Key {
         // To cope with thing like Jude 2...
         if (v11n.getLastChapter(book) == 1) {
             if (verseBase == null || verseBase.book != book) {
-                buf.append(book.getPreferredName());
+                buf.append(v11n.getPreferredName(book));
                 buf.append(Verse.VERSE_PREF_DELIM1);
                 buf.append(verse);
                 return buf.toString();
@@ -612,7 +612,7 @@ public final class Verse implements Key {
         }
 
         if (verseBase == null || verseBase.book != book) {
-            buf.append(book.getPreferredName());
+            buf.append(v11n.getPreferredName(book));
             buf.append(Verse.VERSE_PREF_DELIM1);
             buf.append(chapter);
             buf.append(Verse.VERSE_PREF_DELIM2);

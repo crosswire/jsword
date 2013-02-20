@@ -271,7 +271,7 @@ public class BookInstaller {
         BookInstaller installer = new BookInstaller();
 
         String operation = args[0];
-        if (operation.equalsIgnoreCase("uninstall")) {
+        if ("uninstall".equalsIgnoreCase(operation)) {
             if (args.length == 2) {
                 Book b = Books.installed().getBook(args[1]);
                 if (b == null) {
@@ -286,13 +286,13 @@ public class BookInstaller {
             } else {
                 usage();
             }
-        } else if (operation.equalsIgnoreCase("sources")) {
+        } else if ("sources".equalsIgnoreCase(operation)) {
             // Get all the installers one after the other
             Map<String, Installer> installers = installer.getInstallers();
             for (String name : installers.keySet()) {
                 System.out.println(name);
             }
-        } else if (operation.equalsIgnoreCase("list")) {
+        } else if ("list".equalsIgnoreCase(operation)) {
             if (args.length == 1) {
                 for (Book book : BookInstaller.getInstalledBooks()) {
                     System.out.println(book.getInitials());
@@ -304,7 +304,7 @@ public class BookInstaller {
             } else {
                 usage();
             }
-        } else if (operation.equalsIgnoreCase("reload")) {
+        } else if ("reload".equalsIgnoreCase(operation)) {
             if (args.length == 2) {
                 try {
                     installer.reloadBookList(args[1]);
@@ -314,7 +314,7 @@ public class BookInstaller {
             } else {
                 usage();
             }
-        } else if (operation.equalsIgnoreCase("install")) {
+        } else if ("install".equalsIgnoreCase(operation)) {
             if (args.length == 3) {
                 Book b = installer.getBook(args[1], args[2]);
                 if (b == null) {

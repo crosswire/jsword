@@ -23,10 +23,15 @@ package org.crosswire.jsword.versification;
 
 import java.io.PrintStream;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
 
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.ReferenceSystem;
+import org.crosswire.jsword.internationalisation.LocaleProviderManager;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
@@ -172,6 +177,8 @@ public class Versification implements ReferenceSystem, Serializable {
         this.ntMaxOrdinal = ordinal - 1;
 //        Versification.dump(System.out, this.osisName, this.bookList, this.lastVerse);
 //        Versification.dump(System.out, this.osisName, this.bookList, this.chapterStarts);
+
+        initBookLookup();
     }
 
     /**
@@ -183,16 +190,159 @@ public class Versification implements ReferenceSystem, Serializable {
     }
 
     /**
-     * Get the ordered list of books in this versification.
-     * 
-     * @return that very list
+     * Does this Versification contain the BibleBook.
+     *
+     * @param book
+     * @return true if it is present.
      */
-    public BibleBookList getBooks() {
-        // TODO(DMS): make this a read-only list
-        return bookList;
+    public boolean containsBook(BibleBook book) {
+        return bookList.contains(book);
     }
 
     /**
+     * Get the BibleBook by its position in this Versification.
+     * If the position is negative, return the first book.
+     * If the position is greater than the last, return the last book.
+     *
+     * @param ordinal
+     * @return the indicated book
+     */
+    public BibleBook getBook(int ordinal) {
+        return bookList.getBook(ordinal);
+    }
+
+    /**
+     * Get the number of books in this Versification.
+     * @return the number of books
+     */
+    public int getBookCount() {
+        return bookList.getBookCount();
+    }
+
+    /**
+     * Return the first book in the list.
+     *
+     * @return the first book in the list
+     */
+    public BibleBook getFirstBook() {
+        return bookList.getFirstBook();
+    }
+
+    /**
+     * Return the first book in the list.
+     *
+     * @return the first book in the list
+     */
+    public BibleBook getLastBook() {
+        return bookList.getLastBook();
+    }
+
+    /**
+     * Given a BibleBook, get the next BibleBook in this Versification. If it is the last book, return null.
+     * @param book A BibleBook in the Versification
+     * @return the previous BibleBook or null.
+     */
+    public BibleBook getNextBook(BibleBook book) {
+        return bookList.getNextBook(book);
+    }
+
+    /**
+     * Given a BibleBook, get the previous BibleBook in this Versification. If it is the first book, return null.
+     * @param book A BibleBook in the Versification
+     * @return the previous BibleBook or null.
+     */
+    public BibleBook getPreviousBook(BibleBook book) {
+        return bookList.getPreviousBook(book);
+    }
+
+    /**
+     * Get the BibleBooks in this Versification.
+     *
+     * @return an Iterator over the books
+     */
+    public Iterator<BibleBook> getBookIterator() {
+        return bookList.iterator();
+    }
+
+    /**
+     * Get the BookName.
+     *
+     * @param book the desired book
+     * @return The requested BookName or null if not in this versification
+     */
+    public BookName getBookName(BibleBook book) {
+        return getLocalizedBibleNames().getBookName(book);
+    }
+
+    /**
+     * Get the preferred name of a book. Altered by the case setting (see
+     * setBookCase() and isFullBookName())
+     *
+     * @param book the desired book
+     * @return The full name of the book or blank if not in this versification
+     */
+    public String getPreferredName(BibleBook book) {
+        return getLocalizedBibleNames().getPreferredName(book);
+    }
+
+    /**
+     * Get the full name of a book (e.g. "Genesis"). Altered by the case setting
+     * (see setBookCase())
+     *
+     * @return The full name of the book or blank if not in this versification
+     */
+    public String getLongName(BibleBook book) {
+        return getLocalizedBibleNames().getLongName(book);
+    }
+
+    /**
+     * Get the short name of a book (e.g. "Gen"). Altered by the case setting
+     * (see setBookCase())
+     *
+     * @return The short name of the book or blank if not in this versification
+     */
+    public String getShortName(BibleBook book) {
+        return getLocalizedBibleNames().getShortName(book);
+    }
+
+    /**
+     * Get a book from its name.
+     *
+     * @param find
+     *            The string to identify
+     * @return The BibleBook, On error null
+     */
+    public BibleBook getBook(String find) {
+        BibleBook book = null;
+        if (containsLetter(find)) {
+            book = BibleBook.fromOSIS(find);
+
+            if (book == null) {
+                book = getLocalizedBibleNames().getBook(find);
+            }
+
+            if (book == null && englishBibleNames != null) {
+                book = englishBibleNames.getBook(find);
+            }
+        }
+       if (containsBook(book)) {
+            return book;
+        }
+        return null;
+    }
+
+    /**
+     * Is the given string a valid book name. If this method returns true then
+     * getBook() will return a BibleBook and not null.
+     *
+     * @param find
+     *            The string to identify
+     * @return true when the book name is recognized
+     */
+    public boolean isBook(String find) {
+        return getBook(find) != null;
+    }
+/**
      * Get the last valid chapter number for a book.
      *
      * @param book
@@ -574,7 +724,7 @@ public class Versification implements ReferenceSystem, Serializable {
             return null;
         }
 
-        BibleBook nextBook = verse.getBook(); 
+        BibleBook nextBook = verse.getBook();
         int nextChapter = verse.getChapter();
         int nextVerse = verse.getVerse() + 1;
         if (nextVerse > getLastVerse(nextBook, nextChapter)) {
@@ -896,7 +1046,7 @@ public class Versification implements ReferenceSystem, Serializable {
             // {2} is a placeholder for the Bible book name.
             // {3,number,integer} is a placeholder for the chapter number that the user gave.
             throw new NoSuchVerseException(JSMsg.gettext("Chapter should be between {0} and {1,number,integer} for {2} (given {3,number,integer}).",
-                    Integer.valueOf(0), Integer.valueOf(maxChapter), book.getPreferredName(), Integer.valueOf(chapter)
+                    Integer.valueOf(0), Integer.valueOf(maxChapter), getPreferredName(book), Integer.valueOf(chapter)
                     ));
         }
 
@@ -910,7 +1060,7 @@ public class Versification implements ReferenceSystem, Serializable {
             // {3,number,integer} is a placeholder for the chapter number that the user gave.
             // {4,number,integer} is a placeholder for the verse number that the user gave.
             throw new NoSuchVerseException(JSMsg.gettext("Verse should be between {0} and {1,number,integer} for {2} {3,number,integer} (given {4,number,integer}).",
-                    Integer.valueOf(0), Integer.valueOf(maxVerse), book.getPreferredName(), Integer.valueOf(chapter), Integer.valueOf(verse)
+                    Integer.valueOf(0), Integer.valueOf(maxVerse), getPreferredName(book), Integer.valueOf(chapter), Integer.valueOf(verse)
                     ));
         }
     }
@@ -996,31 +1146,6 @@ public class Versification implements ReferenceSystem, Serializable {
 
         return new Verse(this, patchedBook, patchedChapter, patchedVerse);
     }
-
-    /** The OSIS name of the reference system. */
-    private String name;
-
-    /** The ordered list of books in this versification. */
-    private BibleBookList bookList;
-
-    /** The last ordinal number of the Old Testament */
-    private int otMaxOrdinal;
-
-    /** The last ordinal number of the New Testament and the maximum ordinal number of this Reference System */
-    private int ntMaxOrdinal;
-
-    /** Constant for the max verse number in each chapter */
-    private int[][] lastVerse;
-
-    /**
-     * Constant for the ordinal number of the first verse in each chapter.
-     */
-    private int[][] chapterStarts;
-
-    /**
-     * Serialization ID
-     */
-    private static final long serialVersionUID = -6226916242596368765L;
 
     public static void dump(PrintStream out, String name, BibleBookList bookList, int[][] array) {
         String vstr1 = "";
@@ -1125,5 +1250,87 @@ public class Versification implements ReferenceSystem, Serializable {
         out.println("    /** The last ordinal number of the New Testament and the maximum ordinal number of this Reference System */");
         out.println("    private int ntMaxOrdinal = " + (ordinal - 1) + ";");
     }
+
+    /**
+     * Gets the localized bible names, based on the {@link LocaleProviderManager}
+     *
+     * @return the localized bible names
+     */
+    private BibleNames getLocalizedBibleNames() {
+        //get the current Locale
+        return getBibleNamesForLocale(LocaleProviderManager.getLocale());
+    }
+
+    /**
+     * Gets the bible names for a specific locale.
+     *
+     * @param locale the locale
+     * @return the bible names for locale
+     */
+    private BibleNames getBibleNamesForLocale(Locale locale) {
+        BibleNames bibleNames = localizedBibleNames.get(locale);
+        if (bibleNames == null) {
+            bibleNames = new BibleNames(this, locale);
+            localizedBibleNames.put(locale, bibleNames);
+        }
+
+        return bibleNames;
+    }
+
+    /**
+     * Load up the resources for Bible book and section names.
+     */
+    private void initBookLookup() {
+        //Always load up the English Locale Bible names as we can't guarantee how many different locales we are supporting.
+        englishBibleNames = getBibleNamesForLocale(Locale.ENGLISH);
+    }
+
+    /**
+     * This is simply a convenience function to wrap Character.isLetter()
+     *
+     * @param text
+     *            The string to be parsed
+     * @return true if the string contains letters
+     */
+    private static boolean containsLetter(String text) {
+        for (int i = 0; i < text.length(); i++) {
+            if (Character.isLetter(text.charAt(i))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /** The OSIS name of the reference system. */
+    private String name;
+
+    /** The ordered list of books in this versification. */
+    private BibleBookList bookList;
+
+    /** The last ordinal number of the Old Testament */
+    private int otMaxOrdinal;
+
+    /** The last ordinal number of the New Testament and the maximum ordinal number of this Reference System */
+    private int ntMaxOrdinal;
+
+    /** Constant for the max verse number in each chapter */
+    private int[][] lastVerse;
+
+    /**
+     * Constant for the ordinal number of the first verse in each chapter.
+     */
+    private int[][] chapterStarts;
+
+    /** we cache the Localized Bible Names because there is quite a bit of processing going on for each individual Locale */
+    private transient Map<Locale, BibleNames> localizedBibleNames = new HashMap<Locale, BibleNames>();
+
+    /** English BibleNames, or null when using the program's default locale */
+    private static BibleNames englishBibleNames;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = -6226916242596368765L;
 
 }

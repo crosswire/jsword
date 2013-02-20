@@ -158,10 +158,10 @@ public class VerseRangeTest extends TestCase {
         assertEquals(rev99_1, VerseRangeFactory.fromString(v11n, "Rev 22:21-$"));
         assertEquals(rev99_1, VerseRangeFactory.fromString(v11n, "Rev 22:21-21"));
         assertEquals(gen11_1, VerseRangeFactory.fromString(v11n, "Gen 1:1-1:1"));
-        assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "g 0 0-e 1 1"));
-        assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "g -e 1 1"));
-        assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "Genesis 0:0-e 1 1"));
-        assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "g-e:1:1"));
+        assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "ge 0 0-ex 1 1"));
+        assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "ge -ex 1 1"));
+        assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "Genesis 0:0-ex 1 1"));
+        assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "ge-ex:1:1"));
         try {
             VerseRangeFactory.fromString(v11n, "Gen 1:1-Gen 1:2-Gen 1:3");
             fail();
@@ -210,14 +210,14 @@ public class VerseRangeTest extends TestCase {
         PassageUtil.setPersistentNaming(false);
         assertEquals("1Cor 8-9", VerseRangeFactory.fromString(v11n, "1corinth 8-9").toString());
         assertEquals("Gen 1:1", VerseRangeFactory.fromString(v11n, "Genesis 1 1").toString());
-        assertEquals("Gen 1:1-Exo 1:1", VerseRangeFactory.fromString(v11n, "g 1 1-e 1 1").toString());
-        assertEquals("Gen-Exo 1:10", VerseRangeFactory.fromString(v11n, "g-e:1:10").toString());
-        assertEquals("Gen 1-Exo 2", VerseRangeFactory.fromString(v11n, "g 1-e 2").toString());
+        assertEquals("Gen 1:1-Exo 1:1", VerseRangeFactory.fromString(v11n, "ge 1 1-ex 1 1").toString());
+        assertEquals("Gen-Exo 1:10", VerseRangeFactory.fromString(v11n, "ge-ex:1:10").toString());
+        assertEquals("Gen 1-Exo 2", VerseRangeFactory.fromString(v11n, "ge 1-ex 2").toString());
         PassageUtil.setPersistentNaming(true);
         assertEquals("Genesis 1 1", VerseRangeFactory.fromString(v11n, "Genesis 1 1").toString());
-        assertEquals("g 1 1-e 1 1", VerseRangeFactory.fromString(v11n, "g 1 1-e 1 1").toString());
-        assertEquals("g-e:1:1", VerseRangeFactory.fromString(v11n, "g-e:1:1").toString());
-        assertEquals("g 1-e 2", VerseRangeFactory.fromString(v11n, "g 1-e 2").toString());
+        assertEquals("ge 1 1-ex 1 1", VerseRangeFactory.fromString(v11n, "ge 1 1-ex 1 1").toString());
+        assertEquals("ge-ex:1:1", VerseRangeFactory.fromString(v11n, "ge-ex:1:1").toString());
+        assertEquals("ge 1-ex 2", VerseRangeFactory.fromString(v11n, "ge 1-ex 2").toString());
         PassageUtil.setPersistentNaming(false);
     }
 

@@ -175,32 +175,37 @@ public class BitwisePassage extends AbstractPassage {
 
     @Override
     public void addAll(Key key) {
-        Passage that = KeyUtil.getPassage(super.getVersification(), key);
-
         optimizeWrites();
 
-        if (that instanceof BitwisePassage) {
-            BitwisePassage thatRef = (BitwisePassage) that;
+        if (key instanceof BitwisePassage) {
+            BitwisePassage thatRef = (BitwisePassage) key;
             store.or(thatRef.store);
         } else {
-            super.addAll(that);
+            super.addAll(key);
         }
 
         // we do an extra check here because the cost of calculating the
         // params is non-zero and may be wasted
-        if (suppressEvents == 0 && !that.isEmpty()) {
-            fireIntervalAdded(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1));
+        if (suppressEvents == 0 && !key.isEmpty()) {
+            if (key instanceof Passage) {
+                Passage that = (Passage) key;
+                fireIntervalAdded(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1));
+            } else if (key instanceof VerseRange) {
+                VerseRange that = (VerseRange) key;
+                fireIntervalAdded(this, that.getStart(), that.getEnd());
+            } else if (key instanceof Verse) {
+                Verse that = (Verse) key;
+                fireIntervalAdded(this, that, that);
+            }
         }
     }
 
     @Override
     public void removeAll(Key key) {
-        Passage that = KeyUtil.getPassage(super.getVersification(), key);
-
         optimizeWrites();
 
-        if (that instanceof BitwisePassage) {
-            BitwisePassage thatRef = (BitwisePassage) that;
+        if (key instanceof BitwisePassage) {
+            BitwisePassage thatRef = (BitwisePassage) key;
 
             store.andNot(thatRef.store);
         } else {
@@ -209,25 +214,32 @@ public class BitwisePassage extends AbstractPassage {
 
         // we do an extra check here because the cost of calculating the
         // params is non-zero and may be wasted
-        if (suppressEvents == 0 && !that.isEmpty()) {
-            fireIntervalRemoved(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1));
+        if (suppressEvents == 0 && !key.isEmpty()) {
+            if (key instanceof Passage) {
+                Passage that = (Passage) key;
+                fireIntervalRemoved(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1));
+            } else if (key instanceof VerseRange) {
+                VerseRange that = (VerseRange) key;
+                fireIntervalRemoved(this, that.getStart(), that.getEnd());
+            } else if (key instanceof Verse) {
+                Verse that = (Verse) key;
+                fireIntervalRemoved(this, that, that);
+            }
         }
     }
 
     @Override
     public void retainAll(Key key) {
-        Versification v11n = getVersification();
-        Passage that = KeyUtil.getPassage(super.getVersification(), key);
-
         optimizeWrites();
 
         BitSet thatStore = null;
-        if (that instanceof BitwisePassage) {
-            thatStore = ((BitwisePassage) that).store;
+        if (key instanceof BitwisePassage) {
+            thatStore = ((BitwisePassage) key).store;
         } else {
+            Versification v11n = getVersification();
             thatStore = new BitSet(v11n.maximumOrdinal() + 1);
 
-            for (Key aKey : that) {
+            for (Key aKey : key) {
                 int ord = ((Verse) aKey).getOrdinal();
                 if (store.get(ord)) {
                     thatStore.set(ord);

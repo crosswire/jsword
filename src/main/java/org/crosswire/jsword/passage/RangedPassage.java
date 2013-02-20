@@ -241,17 +241,15 @@ public class RangedPassage extends AbstractPassage {
 
     @Override
     public void retainAll(Key key) {
-        Passage that = KeyUtil.getPassage(this.getVersification(), key);
-
         optimizeWrites();
 
         Set<Key> new_store = new TreeSet<Key>();
 
         Iterator<Key> that_it = null;
-        if (that instanceof RangedPassage) {
-            that_it = that.rangeIterator(RestrictionType.CHAPTER);
+        if (key instanceof RangedPassage) {
+            that_it = ((RangedPassage) key).rangeIterator(RestrictionType.CHAPTER);
         } else {
-            that_it = that.iterator();
+            that_it = key.iterator();
         }
 
         while (that_it.hasNext()) {

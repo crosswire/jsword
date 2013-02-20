@@ -119,7 +119,7 @@ public class SwordBook extends AbstractPassageBook {
 
         // If we get here then the text is not marked up with verse
         // In this case we add the verse markup, if the verse is not 0.
-        if (KeyUtil.getPassage(getVersification(), key).getVerseAt(0).getVerse() == 0) {
+        if (KeyUtil.getVerse(key).getVerse() == 0) {
             super.addOSIS(key, div, osisContent);
         } else {
             Element everse = OSISUtil.factory().createVerse();
@@ -145,7 +145,7 @@ public class SwordBook extends AbstractPassageBook {
 
         // If we get here then the text is not marked up with verse
         // In this case we add the verse markup, if the verse is not 0.
-        if (KeyUtil.getPassage(getVersification(), key).getVerseAt(0).getVerse() == 0) {
+        if (KeyUtil.getVerse(key).getVerse() == 0) {
             super.addOSIS(key, contentList, osisContent);
         } else {
             Element everse = OSISUtil.factory().createVerse();

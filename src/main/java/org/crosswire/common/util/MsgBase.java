@@ -116,7 +116,7 @@ public class MsgBase {
      */
     private ResourceBundle getResourceBundleForClass(Class<? extends MsgBase> implementingClass, String className, String shortClassName, Locale currentUserLocale, Map<String, ResourceBundle> localisedResourceMap) {
         ResourceBundle resourceBundle;
-        synchronized (getClass()) {
+        synchronized (MsgBase.class) {
             resourceBundle = localisedResourceMap.get(className);
             if (resourceBundle == null) {
                 try {

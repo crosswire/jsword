@@ -409,7 +409,6 @@ public class PassageTally extends AbstractPassage {
      *            The verses to remove/decrement
      */
     public void remove(Key that) {
-        Versification v11n = getVersification();
         optimizeWrites();
 
         for (Key aKey : that) {
@@ -477,13 +476,10 @@ public class PassageTally extends AbstractPassage {
 
     @Override
     public void removeAll(Key key) {
-        Versification v11n = getVersification();
-        Passage that = KeyUtil.getPassage(v11n, key);
-
         optimizeWrites();
 
-        if (that instanceof PassageTally) {
-            PassageTally that_rt = (PassageTally) that;
+        if (key instanceof PassageTally) {
+            PassageTally that_rt = (PassageTally) key;
 
             int vib = getVersification().maximumOrdinal();
             for (int i = 0; i <= vib; i++) {
@@ -492,7 +488,7 @@ public class PassageTally extends AbstractPassage {
                 }
             }
         } else {
-            for (Key aKey : that) {
+            for (Key aKey : key) {
                 Verse verse = (Verse) aKey;
                 kill(verse.getOrdinal());
             }

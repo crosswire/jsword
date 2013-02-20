@@ -487,29 +487,36 @@ public abstract class AbstractPassage implements Passage {
      * @see org.crosswire.jsword.passage.Key#addAll(org.crosswire.jsword.passage.Key)
      */
     public void addAll(Key key) {
-        Passage that = KeyUtil.getPassage(this.v11n, key);
-
         optimizeWrites();
         raiseEventSuppresion();
         raiseNormalizeProtection();
 
         Iterator<?> that_it = null;
 
-        if (that instanceof RangedPassage) {
-            that_it = that.rangeIterator(RestrictionType.NONE);
+        if (key instanceof RangedPassage) {
+            that_it = ((RangedPassage) key).rangeIterator(RestrictionType.NONE);
             while (that_it.hasNext()) {
                 // Avoid touching store to make thread safety easier.
                 add((Key) that_it.next());
             }
         } else {
-            for (Key subkey : that) {
+            for (Key subkey : key) {
                 add(subkey);
             }
         }
 
         lowerNormalizeProtection();
         if (lowerEventSuppresionAndTest()) {
-            fireIntervalAdded(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1));
+            if (key instanceof Passage) {
+                Passage that = (Passage) key;
+                fireIntervalAdded(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1));
+            } else if (key instanceof VerseRange) {
+                VerseRange that = (VerseRange) key;
+                fireIntervalAdded(this, that.getStart(), that.getEnd());
+            } else if (key instanceof Verse) {
+                Verse that = (Verse) key;
+                fireIntervalAdded(this, that, that);
+            }
         }
     }
 
@@ -517,28 +524,35 @@ public abstract class AbstractPassage implements Passage {
      * @see org.crosswire.jsword.passage.Key#removeAll(org.crosswire.jsword.passage.Key)
      */
     public void removeAll(Key key) {
-        Passage that = KeyUtil.getPassage(this.v11n, key);
-
         optimizeWrites();
         raiseEventSuppresion();
         raiseNormalizeProtection();
 
-        Iterator<?> that_it = null;
+        Iterator<Key> that_it = null;
 
-        if (that instanceof RangedPassage) {
-            that_it = that.rangeIterator(RestrictionType.NONE);
+        if (key instanceof RangedPassage) {
+            that_it = ((RangedPassage) key).rangeIterator(RestrictionType.NONE);
         } else {
-            that_it = that.iterator();
+            that_it = key.iterator();
         }
 
         while (that_it.hasNext()) {
             // Avoid touching store to make thread safety easier.
-            remove((Key) that_it.next());
+            remove(that_it.next());
         }
 
         lowerNormalizeProtection();
         if (lowerEventSuppresionAndTest()) {
-            fireIntervalRemoved(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1));
+            if (key instanceof Passage) {
+                Passage that = (Passage) key;
+                fireIntervalRemoved(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1));
+            } else if (key instanceof VerseRange) {
+                VerseRange that = (VerseRange) key;
+                fireIntervalRemoved(this, that.getStart(), that.getEnd());
+            } else if (key instanceof Verse) {
+                Verse that = (Verse) key;
+                fireIntervalRemoved(this, that, that);
+            }
         }
     }
 
@@ -546,15 +560,13 @@ public abstract class AbstractPassage implements Passage {
      * @see org.crosswire.jsword.passage.Key#retainAll(org.crosswire.jsword.passage.Key)
      */
     public void retainAll(Key key) {
-        Passage that = KeyUtil.getPassage(this.v11n, key);
-
         optimizeWrites();
         raiseEventSuppresion();
         raiseNormalizeProtection();
 
         Passage temp = this.clone();
         for (Key verse : temp) {
-            if (!that.contains(verse)) {
+            if (!key.contains(verse)) {
                 remove(verse);
             }
         }
@@ -606,6 +618,8 @@ public abstract class AbstractPassage implements Passage {
      */
     public void writeDescription(Writer out) throws IOException {
         BufferedWriter bout = new BufferedWriter(out);
+        bout.write(v11n.getName());
+        bout.newLine();
 
         Iterator<Key> it = rangeIterator(RestrictionType.NONE);
 
@@ -629,6 +643,10 @@ public abstract class AbstractPassage implements Passage {
         // Quiet Android from complaining about using the default BufferReader buffer size.
         // The actual buffer size is undocumented. So this is a good idea any way.
         BufferedReader bin = new BufferedReader(in, 8192);
+
+        String v11nName = bin.readLine();
+        v11n = Versifications.instance().getVersification(v11nName);
+
         while (true) {
             String line = bin.readLine();
             if (line == null) {
@@ -684,7 +702,7 @@ public abstract class AbstractPassage implements Passage {
      * @see org.crosswire.jsword.passage.Passage#contains(org.crosswire.jsword.passage.Key)
      */
     public boolean contains(Key key) {
-        Passage ref = KeyUtil.getPassage(this.v11n, key);
+        Passage ref = KeyUtil.getPassage(key);
         return containsAll(ref);
     }
 
@@ -1065,9 +1083,6 @@ public abstract class AbstractPassage implements Passage {
                 // Even if the next verse is adjacent we might want to break
                 // if we have moved into a new chapter/book
                 if (!restrict.isSameScope(v11n, end, next_verse)) {
-//                    if (next_verse.getVerse() == 0 && it.hasNext()) {
-//                        next_verse = (Verse) it.next();
-//                    }
                     break findnext;
                 }
 

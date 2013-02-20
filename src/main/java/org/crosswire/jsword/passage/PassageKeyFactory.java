@@ -259,8 +259,8 @@ public final class PassageKeyFactory {
      *             If the buffer is invalid
      */
     static Passage fromBinaryRepresentation(byte[] buffer) throws NoSuchVerseException {
-        // AV11N(DMS): Is this right?
-        Versification rs = Versifications.instance().getDefaultVersification();
+        // AV11N(DMS): This is wrong, but toBinaryRepresentation does not write the v11n name
+        Versification rs = Versifications.instance().getVersification("KJV");
         int maxOrdinal = rs.maximumOrdinal();
         Passage ref = (Passage) keyf.createEmptyKeyList(rs);
 
@@ -335,8 +335,8 @@ public final class PassageKeyFactory {
      *             if the data was not a valid passage
      */
     public static Passage readPassage(Reader in) throws IOException, NoSuchVerseException {
-        // AV11N(DMS): Is this right?
-        Versification rs = Versifications.instance().getDefaultVersification();
+        // Get any versification. It does not matter. readDescripton will overwrite it.
+        Versification rs = Versifications.instance().getVersification("KJV");
         Passage ref = (Passage) keyf.createEmptyKeyList(rs);
         ref.readDescription(in);
         return ref;

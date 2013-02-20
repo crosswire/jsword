@@ -21,8 +21,6 @@
  */
 package org.crosswire.jsword.book.sword;
 
-import static org.crosswire.jsword.book.sword.state.RawFileBackendState.INCFILE;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -123,7 +121,7 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
 
         String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
         Versification v11n = Versifications.instance().getVersification(v11nName);
-        Verse verse = KeyUtil.getVerse(v11n, key);
+        Verse verse = KeyUtil.getVerse(key);
         int index = verse.getOrdinal();
         Testament testament = v11n.getTestament(index);
         index = v11n.getTestamentOrdinal(index);
@@ -160,8 +158,8 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
     public void setAliasKey(RawFileBackendState state, Key alias, Key source) throws IOException {
         String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
         Versification v11n = Versifications.instance().getVersification(v11nName);
-        Verse aliasVerse = KeyUtil.getVerse(v11n, alias);
-        Verse sourceVerse = KeyUtil.getVerse(v11n, source);
+        Verse aliasVerse = KeyUtil.getVerse(alias);
+        Verse sourceVerse = KeyUtil.getVerse(source);
         int aliasIndex = aliasVerse.getOrdinal();
         Testament testament = v11n.getTestament(aliasIndex);
         aliasIndex = v11n.getTestamentOrdinal(aliasIndex);
@@ -352,7 +350,7 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
     }
 
     private void createIncfile(RawFileBackendState state) throws IOException, BookException {
-        File tempIncfile = new File(SwordUtil.getExpandedDataPath(getBookMetaData()).getPath() + File.separator + INCFILE);
+        File tempIncfile = new File(SwordUtil.getExpandedDataPath(getBookMetaData()).getPath() + File.separator + RawFileBackendState.INCFILE);
         if (!tempIncfile.exists() && !tempIncfile.createNewFile()) {
             throw new IOException("Could not create incfile file.");
         }

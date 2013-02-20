@@ -60,7 +60,7 @@ public class VersificationTest extends TestCase {
         int verseCount = 0;
 
         // For all the books
-        for (BibleBook b : v11n.getBooks()) {
+        for (BibleBook b = v11n.getFirstBook(); b != null; b = v11n.getNextBook(b)) {
             // Continue the verse counts for the whole Bible
             for (int c = 0; c <= v11n.getLastChapter(b); c++) {
                 verseCount += v11n.getLastVerse(b, c) + 1;
@@ -73,7 +73,7 @@ public class VersificationTest extends TestCase {
 
     public void testOrdinal() throws Exception {
         int ordinal = 0;
-        for (BibleBook b : v11n.getBooks()) {
+        for (BibleBook b = v11n.getFirstBook(); b != null; b = v11n.getNextBook(b)) {
             int cib = v11n.getLastChapter(b);
             for (int c = 0; c <= cib; c++) {
                 int vic = v11n.getLastVerse(b, c);
@@ -87,7 +87,7 @@ public class VersificationTest extends TestCase {
 
     public void testDecodeOrdinal() throws Exception {
         int ordinal = 0;
-        for (BibleBook b : v11n.getBooks()) {
+        for (BibleBook b = v11n.getFirstBook(); b != null; b = v11n.getNextBook(b)) {
             int cib = v11n.getLastChapter(b);
             for (int c = 0; c <= cib; c++) {
                 int vic = v11n.getLastVerse(b, c);
@@ -100,7 +100,7 @@ public class VersificationTest extends TestCase {
     }
 
     public void testValidate() throws Exception {
-        for (BibleBook b : v11n.getBooks()) {
+        for (BibleBook b = v11n.getFirstBook(); b != null; b = v11n.getNextBook(b)) {
             // Test that negative chapters are invalid
             try {
                 v11n.validate(b, -1, 0);
@@ -142,7 +142,7 @@ public class VersificationTest extends TestCase {
 
         int all = 0;
         // For all the books
-        for (BibleBook b : v11n.getBooks()) {
+        for (BibleBook b = v11n.getFirstBook(); b != null; b = v11n.getNextBook(b)) {
             int cib = v11n.getLastChapter(b);
             for (int c = 0; c <= cib; c++) {
                 int vic = v11n.getLastVerse(b, c);
@@ -165,11 +165,11 @@ public class VersificationTest extends TestCase {
 
     public void testVerseCount() throws Exception {
         int count_up = 0;
-        Verse firstVerse = new Verse(v11n, v11n.getBooks().getFirstBook(), 0, 0);
-        BibleBook lastBook = v11n.getBooks().getLastBook();
+        Verse firstVerse = new Verse(v11n, v11n.getFirstBook(), 0, 0);
+        BibleBook lastBook = v11n.getLastBook();
         int lastChapter = v11n.getLastChapter(lastBook);
         Verse lastVerse = new Verse(v11n, lastBook, lastChapter, v11n.getLastVerse(lastBook, lastChapter));
-        for (BibleBook b : v11n.getBooks()) {
+        for (BibleBook b = v11n.getFirstBook(); b != null; b = v11n.getNextBook(b)) {
             int cib = v11n.getLastChapter(b);
             for (int c = 0; c <= cib; c++) {
                 int vic = v11n.getLastVerse(b, c);
@@ -184,7 +184,7 @@ public class VersificationTest extends TestCase {
         }
         int count_down = v11n.maximumOrdinal();
         assertEquals(v11n.getOrdinal(lastVerse), count_down);
-        for (BibleBook b : v11n.getBooks()) {
+        for (BibleBook b = v11n.getFirstBook(); b != null; b = v11n.getNextBook(b)) {
             int cib = v11n.getLastChapter(b);
             for (int c = 0; c <= cib; c++) {
                 int vic = v11n.getLastVerse(b, c);
