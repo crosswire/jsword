@@ -90,8 +90,8 @@ public enum RestrictionType {
             startVerse = Math.max(startVerse, 0);
             endVerse = Math.min(endVerse, v11n.getLastVerse(endBook, endChapter));
 
-            Verse newStart = new Verse(startBook, startChapter, startVerse);
-            Verse newEnd = new Verse(endBook, endChapter, endVerse);
+            Verse newStart = new Verse(v11n, startBook, startChapter, startVerse);
+            Verse newEnd = new Verse(v11n, endBook, endChapter, endVerse);
             return new VerseRange(v11n, newStart, newEnd);
         }
 
@@ -105,8 +105,8 @@ public enum RestrictionType {
             startVerse = Math.max(startVerse, 0);
             endVerse = Math.min(endVerse, v11n.getLastVerse(book, chapter));
 
-            Verse start = new Verse(book, chapter, startVerse);
-            Verse end = new Verse(book, chapter, endVerse);
+            Verse start = new Verse(v11n, book, chapter, startVerse);
+            Verse end = new Verse(v11n, book, chapter, endVerse);
             return new VerseRange(v11n, start, end);
         }
 

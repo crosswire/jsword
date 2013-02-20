@@ -31,7 +31,6 @@ import org.crosswire.common.icu.NumberShaper;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.Versification;
-import org.crosswire.jsword.versification.system.Versifications;
 
 /**
  * A VerseRange is one step between a Verse and a Passage - it is a Verse plus a
@@ -122,14 +121,11 @@ public final class VerseRange implements Key {
     }
 
     /* package */VerseRange(Versification v11n, String original, Verse start, Verse end) {
+        assert v11n != null;
         assert start != null;
         assert end != null;
 
         this.v11n = v11n;
-        if (this.v11n == null) {
-            this.v11n = Versifications.instance().getDefaultVersification();
-        }
-
         this.originalName = original;
         shaper = new NumberShaper();
 
@@ -327,8 +323,8 @@ public final class VerseRange implements Key {
             return start.getBook().getOSIS() + Verse.VERSE_OSIS_DELIM + start.getChapter();
         }
 
-        int startOrdinal = v11n.getOrdinal(start);
-        int endOrdinal = v11n.getOrdinal(end);
+        int startOrdinal = start.getOrdinal();
+        int endOrdinal = end.getOrdinal();
 
         // to see if it is wholly contained in the range and output it if it is.
 
@@ -445,7 +441,7 @@ public final class VerseRange implements Key {
 
     @Override
     public int hashCode() {
-        return (v11n.getOrdinal(start) << 16) + verseCount;
+        return (start.getOrdinal() << 16) + verseCount;
     }
 
     /* (non-Javadoc)
@@ -495,10 +491,10 @@ public final class VerseRange implements Key {
      * @return true if the ranges are adjacent
      */
     public boolean adjacentTo(VerseRange that) {
-        int thatStart = v11n.getOrdinal(that.getStart());
-        int thatEnd = v11n.getOrdinal(that.getEnd());
-        int thisStart = v11n.getOrdinal(getStart());
-        int thisEnd = v11n.getOrdinal(getEnd());
+        int thatStart = that.getStart().getOrdinal();
+        int thatEnd = that.getEnd().getOrdinal();
+        int thisStart = getStart().getOrdinal();
+        int thisEnd = getEnd().getOrdinal();
 
         // if that starts inside or is next to this we are adjacent.
         if (thatStart >= thisStart - 1 && thatStart <= thisEnd + 1) {
@@ -526,10 +522,10 @@ public final class VerseRange implements Key {
      * @return true if the ranges are adjacent
      */
     public boolean overlaps(VerseRange that) {
-        int thatStart = v11n.getOrdinal(that.getStart());
-        int thatEnd = v11n.getOrdinal(that.getEnd());
-        int thisStart = v11n.getOrdinal(getStart());
-        int thisEnd = v11n.getOrdinal(getEnd());
+        int thatStart = that.getStart().getOrdinal();
+        int thatEnd = that.getEnd().getOrdinal();
+        int thisStart = getStart().getOrdinal();
+        int thisEnd = getEnd().getOrdinal();
 
         // if that starts inside this we are adjacent.
         if (thatStart >= thisStart && thatStart <= thisEnd) {
@@ -555,15 +551,7 @@ public final class VerseRange implements Key {
      * @return true if we contain it.
      */
     public boolean contains(Verse that) {
-        if (start.compareTo(that) == 1) {
-            return false;
-        }
-
-        if (end.compareTo(that) == -1) {
-            return false;
-        }
-
-        return true;
+        return v11n.distance(start, that) >= 0 && v11n.distance(that, end) >= 0;
     }
 
     /**
@@ -576,15 +564,7 @@ public final class VerseRange implements Key {
      * @return true if we contain it.
      */
     public boolean contains(VerseRange that) {
-        if (start.compareTo(that.getStart()) == 1) {
-            return false;
-        }
-
-        if (end.compareTo(that.getEnd()) == -1) {
-            return false;
-        }
-
-        return true;
+        return v11n.distance(start, that.getStart()) >= 0 && v11n.distance(that.getEnd(), end) >= 0;
     }
 
     /**
@@ -593,19 +573,7 @@ public final class VerseRange implements Key {
      * @return true if we are exactly one chapter.
      */
     public boolean isWholeChapter() {
-        if (!v11n.isStartOfChapter(start)) {
-            return false;
-        }
-
-        if (!v11n.isEndOfChapter(end)) {
-            return false;
-        }
-
-        if (!v11n.isSameChapter(start, end)) {
-            return false;
-        }
-
-        return true;
+        return v11n.isSameChapter(start, end) && isWholeChapters();
     }
 
     /**
@@ -614,15 +582,7 @@ public final class VerseRange implements Key {
      * @return true if we are a whole number of chapters.
      */
     public boolean isWholeChapters() {
-        if (!v11n.isStartOfChapter(start)) {
-            return false;
-        }
-
-        if (!v11n.isEndOfChapter(end)) {
-            return false;
-        }
-
-        return true;
+        return v11n.isStartOfChapter(start) && v11n.isEndOfChapter(end);
     }
 
     /**
@@ -631,19 +591,7 @@ public final class VerseRange implements Key {
      * @return true if we are exactly one book.
      */
     public boolean isWholeBook() {
-        if (!v11n.isStartOfBook(start)) {
-            return false;
-        }
-
-        if (!v11n.isEndOfBook(end)) {
-            return false;
-        }
-
-        if (!v11n.isSameBook(start, end)) {
-            return false;
-        }
-
-        return true;
+        return v11n.isSameBook(start, end) && isWholeBooks();
     }
 
     /**
@@ -652,15 +600,7 @@ public final class VerseRange implements Key {
      * @return true if we are a whole number of books.
      */
     public boolean isWholeBooks() {
-        if (!v11n.isStartOfBook(start)) {
-            return false;
-        }
-
-        if (!v11n.isEndOfBook(end)) {
-            return false;
-        }
-
-        return true;
+        return v11n.isStartOfBook(start) && v11n.isEndOfBook(end);
     }
 
     /**
@@ -679,7 +619,7 @@ public final class VerseRange implements Key {
      */
     public Verse[] toVerseArray() {
         Verse[] retcode = new Verse[verseCount];
-        int ord = v11n.getOrdinal(start);
+        int ord = start.getOrdinal();
         for (int i = 0; i < verseCount; i++) {
             retcode[i] = v11n.decodeOrdinal(ord + i);
         }
@@ -774,7 +714,7 @@ public final class VerseRange implements Key {
         Verse new_start = v11n.max(a.getStart(), b.getStart());
         Verse new_end = v11n.min(a.getEnd(), b.getEnd());
 
-        if (new_start.compareTo(new_end) < 1) {
+        if (v11n.distance(new_start, new_end) <= 0) {
             return new VerseRange(a.getVersification(), new_start, new_end);
         }
 
@@ -795,20 +735,24 @@ public final class VerseRange implements Key {
             // This range is exactly a whole book
             if (isWholeBooks()) {
                 // Just report the name of the book, we don't need to worry
-                // about the
-                // base since we start at the start of a book, and should have
-                // been
-                // recently normalized()
-                return startBook.getPreferredName() + VerseRange.RANGE_PREF_DELIM + endBook.getPreferredName();
+                // about the base since we start at the start of a book,
+                // and should have been recently normalized()
+                return v11n.getPreferredName(startBook) + VerseRange.RANGE_PREF_DELIM + v11n.getPreferredName(endBook);
             }
 
             // If this range is exactly a whole chapter
             if (isWholeChapters()) {
                 // Just report book and chapter names
-                return startBook.getPreferredName() + Verse.VERSE_PREF_DELIM1 + startChapter + VerseRange.RANGE_PREF_DELIM
-                        + endBook.getPreferredName() + Verse.VERSE_PREF_DELIM1 + endChapter;
+                return v11n.getPreferredName(startBook) + Verse.VERSE_PREF_DELIM1 + startChapter + VerseRange.RANGE_PREF_DELIM
+                        + v11n.getPreferredName(endBook) + Verse.VERSE_PREF_DELIM1 + endChapter;
             }
 
+            if (v11n.isChapterIntro(start)) {
+                return v11n.getPreferredName(startBook) + Verse.VERSE_PREF_DELIM1 + startChapter + VerseRange.RANGE_PREF_DELIM  + end.getName(base);
+            }
+            if (v11n.isBookIntro(start)) {
+                return v11n.getPreferredName(startBook) + VerseRange.RANGE_PREF_DELIM + end.getName(base);
+            }
             return start.getName(base) + VerseRange.RANGE_PREF_DELIM + end.getName(base);
         }
 
@@ -818,7 +762,7 @@ public final class VerseRange implements Key {
             // the
             // base since we start at the start of a book, and should have been
             // recently normalized()
-            return startBook.getPreferredName();
+            return v11n.getPreferredName(startBook);
         }
 
         // If this is 2 separate chapters
@@ -826,7 +770,7 @@ public final class VerseRange implements Key {
             // If this range is a whole number of chapters
             if (isWholeChapters()) {
                 // Just report the name of the book and the chapters
-                return startBook.getPreferredName() + Verse.VERSE_PREF_DELIM1 + startChapter + VerseRange.RANGE_PREF_DELIM + endChapter;
+                return v11n.getPreferredName(startBook) + Verse.VERSE_PREF_DELIM1 + startChapter + VerseRange.RANGE_PREF_DELIM + endChapter;
             }
 
             return start.getName(base) + VerseRange.RANGE_PREF_DELIM + endChapter + Verse.VERSE_PREF_DELIM2 + endVerse;
@@ -835,7 +779,7 @@ public final class VerseRange implements Key {
         // If this range is exactly a whole chapter
         if (isWholeChapter()) {
             // Just report the name of the book and the chapter
-            return startBook.getPreferredName() + Verse.VERSE_PREF_DELIM1 + startChapter;
+            return v11n.getPreferredName(startBook) + Verse.VERSE_PREF_DELIM1 + startChapter;
         }
 
         // If this is 2 separate verses
@@ -885,12 +829,7 @@ public final class VerseRange implements Key {
      * @serialData Write the ordinal number of this verse
      */
     private void writeObject(ObjectOutputStream out) throws IOException {
-        // Call even if there is no default serializable fields.
         out.defaultWriteObject();
-
-        out.writeUTF(v11n.getName());
-        out.writeInt(v11n.getOrdinal(start));
-        out.writeInt(verseCount);
 
         // Ignore the original name. Is this wise?
         // I am expecting that people are not that fussed about it and
@@ -909,20 +848,14 @@ public final class VerseRange implements Key {
      * @serialData Write the ordinal number of this verse
      */
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        // Call even if there is no default serializable fields.
         in.defaultReadObject();
 
-        String v11nName = in.readUTF();
-        v11n = Versifications.instance().getVersification(v11nName);
-        start = v11n.decodeOrdinal(in.readInt());
-        verseCount = in.readInt();
         end = calcEnd();
         shaper = new NumberShaper();
 
         verifyData();
 
-        // We are ignoring the originalName. It was set to null in the
-        // default ctor so I will ignore it here.
+        // We are ignoring the originalName and parent.
     }
 
     /**
@@ -934,26 +867,28 @@ public final class VerseRange implements Key {
          */
         protected VerseIterator(VerseRange range) {
             v11n = range.getVersification();
-            next = v11n.getOrdinal(range.getStart());
-            last = v11n.getOrdinal(range.getEnd());
+            nextVerse = range.getStart();
+            total = range.getCardinality();
+            count = 0;
         }
 
         /* (non-Javadoc)
          * @see java.util.Iterator#hasNext()
          */
         public boolean hasNext() {
-            return next <= last;
+            return nextVerse != null;
         }
 
         /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
         public Key next() throws NoSuchElementException {
-            if (next > last) {
+            if (nextVerse == null) {
                 throw new NoSuchElementException();
             }
-
-            return v11n.decodeOrdinal(next++);
+            Verse currentVerse = nextVerse;
+            nextVerse = ++count < total ? v11n.next(nextVerse) : null;
+            return currentVerse;
         }
 
         /* (non-Javadoc)
@@ -964,8 +899,9 @@ public final class VerseRange implements Key {
         }
 
         private Versification v11n;
-        private int next;
-        private int last;
+        private Verse nextVerse;
+        private int count;
+        private int total;
     }
 
     /* (non-Javadoc)
@@ -1087,18 +1023,17 @@ public final class VerseRange implements Key {
     private transient Versification v11n;
 
     /**
-     * The real data - how many verses long are we?. All ctors init this so
-     * leave default
+     * The start of the range
      */
-    private transient int verseCount;
+    private Verse start;
 
     /**
-     * The real data - where do we start?. All ctors init this so leave default
+     * The number of verses in the range
      */
-    private transient Verse start;
+    private int verseCount;
 
     /**
-     * The real data - where do we end?. All ctors init this so leave default
+     * The last verse. Not actually needed, since it can be computed.
      */
     private transient Verse end;
 
@@ -1108,10 +1043,7 @@ public final class VerseRange implements Key {
     private transient NumberShaper shaper;
 
     /**
-     * The parent key. See the key interface for more information. NOTE(joe):
-     * These keys are not serialized, should we?
-     * 
-     * @see Key
+     * The parent key.
      */
     private transient Key parent;
 

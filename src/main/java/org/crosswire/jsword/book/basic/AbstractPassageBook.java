@@ -67,7 +67,7 @@ public abstract class AbstractPassageBook extends AbstractBook {
         final Filter filter = getFilter();
 
         // For all the ranges in this Passage
-        Passage ref = KeyUtil.getPassage(key, getVersification());
+        Passage ref = KeyUtil.getPassage(key);
         final boolean showTitles = ref.hasRanges(RestrictionType.CHAPTER) || !allowEmpty;
 
         RawTextToXmlProcessor processor = new RawTextToXmlProcessor() {
