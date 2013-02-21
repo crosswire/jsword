@@ -88,36 +88,36 @@ public class VerseRangeTest extends TestCase {
         // AV11N(DMS): Update test to test all V11Ns
         v11n = Versifications.instance().getDefaultVersification();
 
-        gen10_9 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.GEN, 1, 0), 32);
-        gen10_1 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.GEN, 1, 0), 2);
-        gen11_1 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.GEN, 1, 1), 1);
-        gen10_2 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.GEN, 1, 0), 3);
-        gen11_2 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.GEN, 1, 1), 2);
-        gen11_9 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.GEN, 1, 1), 31);
-        gen10_a = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.GEN, 1, 0), 34);
-        gen11_a = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.GEN, 1, 1), 33);
-        gen12_1 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.GEN, 1, 2), 1);
-        gen_all = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.GEN, 0, 0), 1584);
-        gen_ex1 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.GEN, 0, 0), 1587);
-        gen_exo = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.GEN, 0, 0), 2838);
-        gen_rev = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.GEN, 1, 1), 32356);
-        rev99_9 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.REV, 22, 0), 22);
-        rev11_9 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.REV, 0, 0), 428);
-        rev99_1 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.REV, 22, 21), 1);
+        gen10_9 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 0), 32);
+        gen10_1 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 0), 2);
+        gen11_1 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 1), 1);
+        gen10_2 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 0), 3);
+        gen11_2 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 1), 2);
+        gen11_9 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 1), 31);
+        gen10_a = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 0), 34);
+        gen11_a = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 1), 33);
+        gen12_1 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 2), 1);
+        gen_all = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 0, 0), 1584);
+        gen_ex1 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 0, 0), 1587);
+        gen_exo = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 0, 0), 2838);
+        gen_rev = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 1), 32356);
+        rev99_9 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.REV, 22, 0), 22);
+        rev11_9 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.REV, 0, 0), 428);
+        rev99_1 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.REV, 22, 21), 1);
 
-        gen00 = new Verse(BibleBook.GEN, 0, 0);
-        gen11 = new Verse(BibleBook.GEN, 1, 1);
-        gen12 = new Verse(BibleBook.GEN, 1, 2);
-        gen19 = new Verse(BibleBook.GEN, 1, 31);
-        gen21 = new Verse(BibleBook.GEN, 2, 1);
-        gen99 = new Verse(BibleBook.GEN, 50, 26);
-        exo11 = new Verse(BibleBook.EXOD, 1, 1);
-        rev00 = new Verse(BibleBook.REV, 0, 0);
-        rev11 = new Verse(BibleBook.REV, 1, 1);
-        rev12 = new Verse(BibleBook.REV, 1, 2);
-        rev99 = new Verse(BibleBook.REV, 22, 21);
-        rev90 = new Verse(BibleBook.REV, 22, 0);
-        rev91 = new Verse(BibleBook.REV, 22, 1);
+        gen00 = new Verse(v11n, BibleBook.GEN, 0, 0);
+        gen11 = new Verse(v11n, BibleBook.GEN, 1, 1);
+        gen12 = new Verse(v11n, BibleBook.GEN, 1, 2);
+        gen19 = new Verse(v11n, BibleBook.GEN, 1, 31);
+        gen21 = new Verse(v11n, BibleBook.GEN, 2, 1);
+        gen99 = new Verse(v11n, BibleBook.GEN, 50, 26);
+        exo11 = new Verse(v11n, BibleBook.EXOD, 1, 1);
+        rev00 = new Verse(v11n, BibleBook.REV, 0, 0);
+        rev11 = new Verse(v11n, BibleBook.REV, 1, 1);
+        rev12 = new Verse(v11n, BibleBook.REV, 1, 2);
+        rev99 = new Verse(v11n, BibleBook.REV, 22, 21);
+        rev90 = new Verse(v11n, BibleBook.REV, 22, 0);
+        rev91 = new Verse(v11n, BibleBook.REV, 22, 1);
     }
 
     @Override
@@ -158,10 +158,10 @@ public class VerseRangeTest extends TestCase {
         assertEquals(rev99_1, VerseRangeFactory.fromString(v11n, "Rev 22:21-$"));
         assertEquals(rev99_1, VerseRangeFactory.fromString(v11n, "Rev 22:21-21"));
         assertEquals(gen11_1, VerseRangeFactory.fromString(v11n, "Gen 1:1-1:1"));
-        assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "g 0 0-e 1 1"));
-        assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "g -e 1 1"));
-        assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "Genesis 0:0-e 1 1"));
-        assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "g-e:1:1"));
+        assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "ge 0 0-ex 1 1"));
+        assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "ge -ex 1 1"));
+        assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "Genesis 0:0-ex 1 1"));
+        assertEquals(gen_ex1, VerseRangeFactory.fromString(v11n, "ge-ex:1:1"));
         try {
             VerseRangeFactory.fromString(v11n, "Gen 1:1-Gen 1:2-Gen 1:3");
             fail();
@@ -195,12 +195,12 @@ public class VerseRangeTest extends TestCase {
     public void testToString() {
         assertEquals("Gen 1:1", gen11_1.toString());
         assertEquals("Gen 1:1-2", gen11_2.toString());
-        assertEquals("Gen 1:1-31", gen11_9.toString());
+        assertEquals("Gen 1", gen11_9.toString());
         assertEquals("Gen 1:1-2:1", gen11_a.toString());
         assertEquals("Gen 1:2", gen12_1.toString());
         assertEquals("Gen", gen_all.toString());
-        assertEquals("Gen 0:0-Exo 1:1", gen_ex1.toString());
-        assertEquals("Gen 1:1-Rev 22:21", gen_rev.toString());
+        assertEquals("Gen-Exo 1:1", gen_ex1.toString());
+        assertEquals("Gen-Rev", gen_rev.toString());
         assertEquals("Rev 22", rev99_9.toString());
         assertEquals("Rev", rev11_9.toString());
         assertEquals("Rev 22:21", rev99_1.toString());
@@ -210,14 +210,14 @@ public class VerseRangeTest extends TestCase {
         PassageUtil.setPersistentNaming(false);
         assertEquals("1Cor 8-9", VerseRangeFactory.fromString(v11n, "1corinth 8-9").toString());
         assertEquals("Gen 1:1", VerseRangeFactory.fromString(v11n, "Genesis 1 1").toString());
-        assertEquals("Gen 1:1-Exo 1:1", VerseRangeFactory.fromString(v11n, "g 1 1-e 1 1").toString());
-        assertEquals("Gen 0:0-Exo 1:10", VerseRangeFactory.fromString(v11n, "g-e:1:10").toString());
-        assertEquals("Gen 1-Exo 2", VerseRangeFactory.fromString(v11n, "g 1-e 2").toString());
+        assertEquals("Gen 1:1-Exo 1:1", VerseRangeFactory.fromString(v11n, "ge 1 1-ex 1 1").toString());
+        assertEquals("Gen-Exo 1:10", VerseRangeFactory.fromString(v11n, "ge-ex:1:10").toString());
+        assertEquals("Gen 1-Exo 2", VerseRangeFactory.fromString(v11n, "ge 1-ex 2").toString());
         PassageUtil.setPersistentNaming(true);
         assertEquals("Genesis 1 1", VerseRangeFactory.fromString(v11n, "Genesis 1 1").toString());
-        assertEquals("g 1 1-e 1 1", VerseRangeFactory.fromString(v11n, "g 1 1-e 1 1").toString());
-        assertEquals("g-e:1:1", VerseRangeFactory.fromString(v11n, "g-e:1:1").toString());
-        assertEquals("g 1-e 2", VerseRangeFactory.fromString(v11n, "g 1-e 2").toString());
+        assertEquals("ge 1 1-ex 1 1", VerseRangeFactory.fromString(v11n, "ge 1 1-ex 1 1").toString());
+        assertEquals("ge-ex:1:1", VerseRangeFactory.fromString(v11n, "ge-ex:1:1").toString());
+        assertEquals("ge 1-ex 2", VerseRangeFactory.fromString(v11n, "ge 1-ex 2").toString());
         PassageUtil.setPersistentNaming(false);
     }
 
@@ -246,7 +246,7 @@ public class VerseRangeTest extends TestCase {
         assertEquals(gen_all, new VerseRange(v11n, gen99, gen00));
         assertEquals(gen_ex1, new VerseRange(v11n, gen00, exo11));
         assertEquals(gen_ex1, new VerseRange(v11n, exo11, gen00));
-        assertEquals(gen11_1, new VerseRange(v11n, gen11, new Verse(BibleBook.GEN, 1, 1)));
+        assertEquals(gen11_1, new VerseRange(v11n, gen11, new Verse(v11n, BibleBook.GEN, 1, 1)));
     }
 
     public void testNewViaVerseIntIntBoolean() {
@@ -274,15 +274,11 @@ public class VerseRangeTest extends TestCase {
         assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11, 1, 32));
         assertEquals(gen11_a, RestrictionType.NONE.blur(v11n, gen11, 0, 32));
         assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11, 9, 32));
-        assertEquals(gen_all, RestrictionType.NONE.blur(v11n, gen11, 2, 1581));
         assertEquals(gen11_9, RestrictionType.CHAPTER.blur(v11n, gen11, 0, 1581));
         assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11, 3, 1581));
-        assertEquals(gen_all, RestrictionType.NONE.blur(v11n, gen11, 2, 1581));
         assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11, 9, 1581));
-        assertEquals(gen_ex1, RestrictionType.NONE.blur(v11n, gen11, 2, 1584));
         assertEquals(gen11_9, RestrictionType.CHAPTER.blur(v11n, gen11, 0, 1533));
         assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11, 1, 1584));
-        assertEquals(gen_ex1, RestrictionType.NONE.blur(v11n, gen11, 2, 1584));
         assertEquals(gen10_9, RestrictionType.CHAPTER.blur(v11n, gen11, 2, 1584));
         assertEquals(gen_rev, RestrictionType.NONE.blur(v11n, gen11, 0, 32356));
         assertEquals(gen11_9, RestrictionType.CHAPTER.blur(v11n, gen11, 0, 32356));
@@ -313,10 +309,14 @@ public class VerseRangeTest extends TestCase {
         assertEquals(rev99_9, RestrictionType.CHAPTER.blur(v11n, rev99, 21, 9));
         assertEquals(rev99_9, RestrictionType.NONE.blur(v11n, rev99, 21, 9));
         assertEquals(rev99_9, RestrictionType.CHAPTER.blur(v11n, rev99, 425, 0));
-        assertEquals(rev11_9, RestrictionType.NONE.blur(v11n, rev99, 426, 0));
         assertEquals(rev99_9, RestrictionType.CHAPTER.blur(v11n, rev99, 427, 1));
-        assertEquals(rev11_9, RestrictionType.NONE.blur(v11n, rev99, 426, 1));
         assertEquals(rev99_9, RestrictionType.CHAPTER.blur(v11n, rev99, 427, 9));
+        assertEquals(gen_all, RestrictionType.NONE.blur(v11n, gen11, 2, 1581));
+        assertEquals(gen_all, RestrictionType.NONE.blur(v11n, gen11, 2, 1581));
+        assertEquals(gen_ex1, RestrictionType.NONE.blur(v11n, gen11, 2, 1584));
+        assertEquals(gen_ex1, RestrictionType.NONE.blur(v11n, gen11, 2, 1584));
+        assertEquals(rev11_9, RestrictionType.NONE.blur(v11n, rev99, 426, 0));
+        assertEquals(rev11_9, RestrictionType.NONE.blur(v11n, rev99, 426, 1));
         assertEquals(rev11_9, RestrictionType.NONE.blur(v11n, rev99, 426, 9));
     }
 
@@ -413,12 +413,12 @@ public class VerseRangeTest extends TestCase {
     public void testGetName() {
         assertEquals("Gen 1:1", gen11_1.getName());
         assertEquals("Gen 1:1-2", gen11_2.getName());
-        assertEquals("Gen 1:1-31", gen11_9.getName());
+        assertEquals("Gen 1", gen11_9.getName());
         assertEquals("Gen 1:1-2:1", gen11_a.getName());
         assertEquals("Gen 1:2", gen12_1.getName());
         assertEquals("Gen", gen_all.getName());
-        assertEquals("Gen 0:0-Exo 1:1", gen_ex1.getName());
-        assertEquals("Gen 1:1-Rev 22:21", gen_rev.getName());
+        assertEquals("Gen-Exo 1:1", gen_ex1.getName());
+        assertEquals("Gen-Rev", gen_rev.getName());
         assertEquals("Rev 22", rev99_9.getName());
         assertEquals("Rev", rev11_9.getName());
         assertEquals("Rev 22:21", rev99_1.getName());
@@ -446,17 +446,17 @@ public class VerseRangeTest extends TestCase {
     }
 
     public void testGetEnd() {
-        assertEquals(gen11_1.getEnd(), gen11);
-        assertEquals(gen11_2.getEnd(), gen12);
-        assertEquals(gen11_9.getEnd(), gen19);
-        assertEquals(gen11_a.getEnd(), gen21);
-        assertEquals(gen12_1.getEnd(), gen12);
-        assertEquals(gen_all.getEnd(), gen99);
-        assertEquals(gen_ex1.getEnd(), exo11);
-        assertEquals(gen_rev.getEnd(), rev99);
-        assertEquals(rev99_9.getEnd(), rev99);
-        assertEquals(rev11_9.getEnd(), rev99);
-        assertEquals(rev99_1.getEnd(), rev99);
+        assertEquals(gen11, gen11_1.getEnd());
+        assertEquals(gen12, gen11_2.getEnd());
+        assertEquals(gen19, gen11_9.getEnd());
+        assertEquals(gen21, gen11_a.getEnd());
+        assertEquals(gen12, gen12_1.getEnd());
+        assertEquals(gen99, gen_all.getEnd());
+        assertEquals(exo11, gen_ex1.getEnd());
+        assertEquals(rev99, gen_rev.getEnd());
+        assertEquals(rev99, rev99_9.getEnd());
+        assertEquals(rev99, rev11_9.getEnd());
+        assertEquals(rev99, rev99_1.getEnd());
     }
 
     public void testGetVerseCount() {
@@ -481,19 +481,19 @@ public class VerseRangeTest extends TestCase {
     }
 
     public void testCompareTo() {
-        assertEquals(rev99_1.compareTo(gen11_1), 1);
-        assertEquals(gen11_1.compareTo(rev99_1), -1);
-        assertEquals(gen11_1.compareTo(gen11_1), 0);
-        assertEquals(gen11_1.compareTo(gen11_2), -1);
-        assertEquals(gen11_1.compareTo(gen11_9), -1);
-        assertEquals(gen11_1.compareTo(gen11_a), -1);
-        assertEquals(gen11_1.compareTo(gen_all), 1);
-        assertEquals(gen12_1.compareTo(gen11_1), 1);
-        assertEquals(gen12_1.compareTo(gen11_2), 1);
-        assertEquals(gen12_1.compareTo(gen_rev), 1);
-        assertEquals(gen12_1.compareTo(gen12_1), 0);
-        assertEquals(gen12_1.compareTo(rev99_1), -1);
-        assertEquals(gen12_1.compareTo(rev99_9), -1);
+        assertEquals(1, rev99_1.compareTo(gen11_1));
+        assertEquals(-1, gen11_1.compareTo(rev99_1));
+        assertEquals(0, gen11_1.compareTo(gen11_1));
+        assertEquals(-1, gen11_1.compareTo(gen11_2));
+        assertEquals(-1, gen11_1.compareTo(gen11_9));
+        assertEquals(-1, gen11_1.compareTo(gen11_a));
+        assertEquals(1, gen11_1.compareTo(gen_all));
+        assertEquals(1, gen12_1.compareTo(gen11_1));
+        assertEquals(1, gen12_1.compareTo(gen11_2));
+        assertEquals(1, gen12_1.compareTo(gen_rev));
+        assertEquals(0, gen12_1.compareTo(gen12_1));
+        assertEquals(-1, gen12_1.compareTo(rev99_1));
+        assertEquals(-1, gen12_1.compareTo(rev99_9));
         try {
             gen12_1.compareTo(null);
             fail();
@@ -636,17 +636,17 @@ public class VerseRangeTest extends TestCase {
         while (it.hasNext()) {
             assertTrue(it.hasNext());
             Verse v = (Verse) it.next();
-            assertEquals(v, gen11);
+            assertEquals(gen11, v);
             assertTrue(!it.hasNext());
         }
         it = gen11_2.iterator();
         while (it.hasNext()) {
             assertTrue(it.hasNext());
             Verse v = (Verse) it.next();
-            assertEquals(v, gen11);
+            assertEquals(gen11, v);
             assertTrue(it.hasNext());
             v = (Verse) it.next();
-            assertEquals(v, gen12);
+            assertEquals(gen12, v);
             assertTrue(!it.hasNext());
         }
     }

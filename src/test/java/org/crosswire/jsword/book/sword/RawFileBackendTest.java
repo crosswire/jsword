@@ -19,8 +19,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-
 /**
  * A Raw File format that allows for each verse to have it's own storage.
  * 
@@ -28,7 +26,7 @@ import static org.junit.Assert.assertEquals;
  *      The copyright to this program is held by it's authors.
  * @author mbergmann
  */
-public class RawFileBackendTest {
+public class RawFileBackendTest extends TestCase {
 
     private final String modName = "TestComment";
     private File configFile = new File("testconfig.conf");
@@ -64,14 +62,14 @@ public class RawFileBackendTest {
     @Ignore
     @Test
     public void testSetRawText() throws NoSuchVerseException, IOException, BookException {
-        Verse otVerse = new Verse(BibleBook.GEN, 3, 1);
-        Verse otVerse2 = new Verse(BibleBook.LEV, 3, 5);
-        Verse otVerse3 = new Verse(BibleBook.EXOD, 6, 4);
-        Verse otVerse4 = new Verse(BibleBook.JUDG, 3, 1);
-        Verse ntVerse = new Verse(BibleBook.PET2, 1, 2);
-        Verse ntVerse2 = new Verse(BibleBook.PET1, 1, 2);
-        Verse ntVerse3 = new Verse(BibleBook.REV, 22, 21);
-        Verse ntVerse4 = new Verse(BibleBook.JOHN3, 1, 2);
+        Verse otVerse = new Verse(v11n, BibleBook.GEN, 3, 1);
+        Verse otVerse2 = new Verse(v11n, BibleBook.LEV, 3, 5);
+        Verse otVerse3 = new Verse(v11n, BibleBook.EXOD, 6, 4);
+        Verse otVerse4 = new Verse(v11n, BibleBook.JUDG, 3, 1);
+        Verse ntVerse = new Verse(v11n, BibleBook.PET2, 1, 2);
+        Verse ntVerse2 = new Verse(v11n, BibleBook.PET1, 1, 2);
+        Verse ntVerse3 = new Verse(v11n, BibleBook.REV, 22, 21);
+        Verse ntVerse4 = new Verse(v11n, BibleBook.JOHN3, 1, 2);
 
         RawFileBackendState state = null;
         try {

@@ -57,7 +57,9 @@ public class Versifications {
      * Get the default Versification.
      *
      * @return the default Versification.
+     * @deprecated Use {@link #getVersification(String)} instead.
      */
+    @Deprecated
     public synchronized Versification getDefaultVersification() {
         return getVersification(DEFAULT_V11N);
     }

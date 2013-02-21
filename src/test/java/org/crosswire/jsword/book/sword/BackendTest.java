@@ -1,6 +1,5 @@
 package org.crosswire.jsword.book.sword;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import org.crosswire.jsword.book.Book;
@@ -15,8 +14,6 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
-
 /**
  * Test simple functionality across multiple backends, to ensure that all types
  * of backing drivers are working correctly
@@ -26,7 +23,7 @@ import static org.junit.Assert.assertFalse;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class BackendTest {
+public class BackendTest extends TestCase {
     private static final org.crosswire.common.util.Logger LOGGER = org.crosswire.common.util.Logger.getLogger(BackendTest.class);
 
     /**
@@ -332,8 +329,9 @@ public class BackendTest {
         String xml = xmlOutputter.outputString(osisFragment);
         LOGGER.debug("For book " + currentBook.getInitials() + " with key " + key.getName() + ", Got " +xml);
 
-        for (String s : assertions)
-            Assert.assertTrue(s, xml.contains(s));
+        for (String s : assertions) {
+            assertTrue(s, xml.contains(s));
+        }
         return xml;
     }
 }

@@ -33,7 +33,7 @@ import java.util.NoSuchElementException;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class BibleBookList implements Iterable<BibleBook>, Serializable {
+/* pkg protected */ class BibleBookList implements Iterable<BibleBook>, Serializable {
     /**
      * Create an ordered BibleBookList from the input.
      * @param books
@@ -50,7 +50,7 @@ public class BibleBookList implements Iterable<BibleBook>, Serializable {
      * @return true if it is present.
      */
     public boolean contains(BibleBook book) {
-        return bookMap[book.ordinal()] != -1;
+        return book != null && bookMap[book.ordinal()] != -1;
     }
 
     /**

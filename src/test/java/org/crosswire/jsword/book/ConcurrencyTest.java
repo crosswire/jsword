@@ -1,12 +1,7 @@
 package org.crosswire.jsword.book;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
 
-import org.crosswire.jsword.book.Book;
-import org.crosswire.jsword.book.BookData;
-import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 
 public class ConcurrencyTest extends TestCase {
@@ -26,11 +21,11 @@ public class ConcurrencyTest extends TestCase {
                 } catch (final NoSuchKeyException e) {
                     System.err.println("A jsword error during test");
                     e.printStackTrace();
-                    Assert.fail("JSword bug has occured");
+                    fail("JSword bug has occured");
                 } catch (final BookException e) {
                     System.err.println("A jsword error during test");
                     e.printStackTrace();
-                    Assert.fail("JSword bug has occured");
+                    fail("JSword bug has occured");
                 }
             }
         };
@@ -45,11 +40,11 @@ public class ConcurrencyTest extends TestCase {
                 } catch (final NoSuchKeyException e) {
                     System.err.println("A jsword error during test");
                     e.printStackTrace();
-                    Assert.fail("JSword bug has occured");
+                    fail("JSword bug has occured");
                 } catch (final BookException e) {
                     System.err.println("A jsword error during test");
                     e.printStackTrace();
-                    Assert.fail("JSword bug has occured");
+                    fail("JSword bug has occured");
                 }
             }
         };

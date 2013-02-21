@@ -23,6 +23,8 @@ package org.crosswire.jsword.versification;
 
 import java.util.Locale;
 
+import org.crosswire.jsword.versification.system.Versifications;
+
 import junit.framework.TestCase;
 
 /**
@@ -34,6 +36,9 @@ import junit.framework.TestCase;
  */
 public class BibleNamesTest extends TestCase {
 
+    private Versification v11n;
+
+
     /**
      * @param name
      */
@@ -44,6 +49,8 @@ public class BibleNamesTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        // AV11N(DMS): Update test to test all V11Ns
+        v11n = Versifications.instance().getDefaultVersification();
     }
 
     @Override
@@ -52,167 +59,167 @@ public class BibleNamesTest extends TestCase {
     }
 
     public void testLoadEnglish() {
-        new BibleNames(Locale.ENGLISH);
+        new BibleNames(v11n, Locale.ENGLISH);
     }
 
     public void testLoadAF() {
-        new BibleNames(new Locale("af"));
+        new BibleNames(v11n, new Locale("af"));
     }
 
     public void testLoadEgyptianArabic() {
-        new BibleNames(new Locale("ar", "EG"));
+        new BibleNames(v11n, new Locale("ar", "EG"));
     }
 
     public void testLoadBG() {
-        new BibleNames(new Locale("bg"));
+        new BibleNames(v11n, new Locale("bg"));
     }
 
     public void testLoadCS() {
-        new BibleNames(new Locale("cs"));
+        new BibleNames(v11n, new Locale("cs"));
     }
 
     public void testLoadCY() {
-        new BibleNames(new Locale("cy"));
+        new BibleNames(v11n, new Locale("cy"));
     }
 
     public void testLoadDanish() {
-        new BibleNames(new Locale("da"));
+        new BibleNames(v11n, new Locale("da"));
     }
 
     public void testLoadGerman() {
-        new BibleNames(new Locale("de"));
+        new BibleNames(v11n, new Locale("de"));
     }
 
     public void testLoadSpanish() {
-        new BibleNames(new Locale("es"));
+        new BibleNames(v11n, new Locale("es"));
     }
 
     public void testLoadET() {
-        new BibleNames(new Locale("et"));
+        new BibleNames(v11n, new Locale("et"));
     }
 
     public void testLoadFarsi() {
-        new BibleNames(new Locale("fa"));
+        new BibleNames(v11n, new Locale("fa"));
     }
 
     public void testLoadFinnish() {
-        new BibleNames(new Locale("fi"));
+        new BibleNames(v11n, new Locale("fi"));
     }
 
     public void testLoadFO() {
-        new BibleNames(new Locale("fo"));
+        new BibleNames(v11n, new Locale("fo"));
     }
 
     public void testLoadFrench() {
-        new BibleNames(new Locale("fr"));
+        new BibleNames(v11n, new Locale("fr"));
     }
 
     public void testLoadHebrew() {
-        new BibleNames(new Locale("he"));
+        new BibleNames(v11n, new Locale("he"));
     }
 
     public void testLoadHU() {
-        new BibleNames(new Locale("hu"));
+        new BibleNames(v11n, new Locale("hu"));
     }
 
     public void testLoadID() {
-        new BibleNames(new Locale("id"));
+        new BibleNames(v11n, new Locale("id"));
     }
 
     public void testLoadIN() {
-        new BibleNames(new Locale("in"));
+        new BibleNames(v11n, new Locale("in"));
     }
 
     public void testLoadItalian() {
-        new BibleNames(new Locale("it"));
+        new BibleNames(v11n, new Locale("it"));
     }
 
     public void testLoadIW() {
-        new BibleNames(new Locale("iw"));
+        new BibleNames(v11n, new Locale("iw"));
     }
 
     public void testLoadKO() {
-        new BibleNames(new Locale("ko"));
+        new BibleNames(v11n, new Locale("ko"));
     }
 
     public void testLoadLA() {
-        new BibleNames(new Locale("la"));
+        new BibleNames(v11n, new Locale("la"));
     }
 
     public void testLoadLT() {
-        new BibleNames(new Locale("lt"));
+        new BibleNames(v11n, new Locale("lt"));
     }
 
     public void testLoadNB() {
-        new BibleNames(new Locale("nb"));
+        new BibleNames(v11n, new Locale("nb"));
     }
 
     public void testLoadDutch() {
-        new BibleNames(new Locale("nl"));
+        new BibleNames(v11n, new Locale("nl"));
     }
 
     public void testLoadNN() {
-        new BibleNames(new Locale("nn"));
+        new BibleNames(v11n, new Locale("nn"));
     }
 
     public void testLoadPL() {
-        new BibleNames(new Locale("pl"));
+        new BibleNames(v11n, new Locale("pl"));
     }
 
     public void testLoadBrazillianPortuguese() {
-        new BibleNames(new Locale("pt", "BR"));
+        new BibleNames(v11n, new Locale("pt", "BR"));
     }
 
     public void testLoadPortuguese() {
-        new BibleNames(new Locale("pt"));
+        new BibleNames(v11n, new Locale("pt"));
     }
 
     public void testLoadRo() {
-        new BibleNames(new Locale("ro"));
+        new BibleNames(v11n, new Locale("ro"));
     }
 
     public void testLoadRU() {
-        new BibleNames(new Locale("ru"));
+        new BibleNames(v11n, new Locale("ru"));
     }
 
     public void testLoadSK() {
-        new BibleNames(new Locale("sk"));
+        new BibleNames(v11n, new Locale("sk"));
     }
 
     public void testLoadSL() {
-        new BibleNames(new Locale("sl"));
+        new BibleNames(v11n, new Locale("sl"));
     }
 
     public void testLoadSwedish() {
-        new BibleNames(new Locale("sv"));
+        new BibleNames(v11n, new Locale("sv"));
     }
 
     public void testLoadThai() {
-        new BibleNames(new Locale("th"));
+        new BibleNames(v11n, new Locale("th"));
     }
 
     public void testLoadTR() {
-        new BibleNames(new Locale("tr"));
+        new BibleNames(v11n, new Locale("tr"));
     }
 
     public void testLoadUkranian() {
-        new BibleNames(new Locale("uk"));
+        new BibleNames(v11n, new Locale("uk"));
     }
 
     public void testLoadVietnamese() {
-        new BibleNames(new Locale("vi"));
+        new BibleNames(v11n, new Locale("vi"));
     }
 
     public void testLoadChineseTraditional() {
-        new BibleNames(new Locale("zh", "CN"));
+        new BibleNames(v11n, new Locale("zh", "CN"));
     }
 
     public void testLoadChineseSimplified() {
-        new BibleNames(new Locale("zh"));
+        new BibleNames(v11n, new Locale("zh"));
     }
     
 
     public void testLoadSwahili() {
-        new BibleNames(new Locale("sw"));
+        new BibleNames(v11n, new Locale("sw"));
     }
 }

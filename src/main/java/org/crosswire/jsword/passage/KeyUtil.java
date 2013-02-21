@@ -21,9 +21,7 @@
  */
 package org.crosswire.jsword.passage;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.versification.Versification;
-import org.crosswire.jsword.versification.system.Versifications;
 
 /**
  * .
@@ -60,55 +58,43 @@ public final class KeyUtil {
     }
 
     /**
-     * Not all keys represent verses, but we ought to be able to get something
-     * close to a verse from anything that does verse like work.
-     * @deprecated use {@link #getPassage(Key, Versification)}
+     * Cast a Key to a Verse. Only those keys that are a Verse or can
+     * contain Verses (i.e. Passage and VerseRange) may be cast to one.
+     * Verse containers (i.e. Passage and VerseRange) return their
+     * first verse.
+     * 
+     * @param key The key to cast
+     * @return The key cast to a Verse
+     * @throws ClassCastException
      */
-    @Deprecated
     public static Verse getVerse(Key key) {
-      return getVerse(key, Versifications.instance().getDefaultVersification());
-    }
-
-    /**
-     * Not all keys represent verses, but we ought to be able to get something
-     * close to a verse from anything that does verse like work.
-     */
-    public static Verse getVerse(Key key, Versification v11n) {
         if (key instanceof Verse) {
             return (Verse) key;
         }
 
+        if (key instanceof VerseRange) {
+            VerseRange range = (VerseRange) key;
+            return range.getStart();
+        }
+
         if (key instanceof Passage) {
-            Passage ref = getPassage(key, v11n);
+            Passage ref = (Passage) key;
             return ref.getVerseAt(0);
         }
 
-        try {
-            return VerseFactory.fromString(v11n, key.getName());
-        } catch (NoSuchVerseException ex) {
-            log.warn("Key can't be a verse: " + key.getName());
-            return Verse.DEFAULT;
-        }
+        throw new ClassCastException("Expected key to be a Verse, VerseRange or Passage");
     }
 
     /**
-     * Not all keys represent passages, but we ought to be able to get something
-     * close to a passage from anything that does passage like work. If you pass
-     * a null key into this method, you get a null Passage out.
+     * Cast a Key to a Passage. Only those keys that are a Passage or can
+     * be held by a Passage (i.e. Verse and VerseRange) may be cast to one.
+     * If you pass a null key into this method, you get a null Passage out.
      * 
-     * @deprecated {@link #getPassage(Key, Versification)}
+     * @param key The key to cast
+     * @return The key cast to a Passage
+     * @throws ClassCastException
      */
-    @Deprecated
     public static Passage getPassage(Key key) {
-        return getPassage(key, Versifications.instance().getDefaultVersification());
-    }
-
-    /**
-     * Not all keys represent passages, but we ought to be able to get something
-     * close to a passage from anything that does passage like work. If you pass
-     * a null key into this method, you get a null Passage out.
-     */
-    public static Passage getPassage(Key key, Versification v11n) {
         if (key == null) {
             return null;
         }
@@ -117,24 +103,48 @@ public final class KeyUtil {
             return (Passage) key;
         }
 
+        PassageKeyFactory keyf = PassageKeyFactory.instance();
         Key ref = null;
-        // AV11N(DMS): Is this right?
-        try {
-            ref = keyf.getKey(v11n, key.getName());
-        } catch (NoSuchKeyException ex) {
-            log.warn("Key can't be a passage: " + key.getName());
-            ref = keyf.createEmptyKeyList(v11n);
+        if (key instanceof Verse) {
+            Verse verse = (Verse) key;
+            ref = keyf.createEmptyKeyList(verse.getVersification());
+            ref.addAll(verse);
+            return (Passage) ref;
         }
-        return (Passage) ref;
+
+        if (key instanceof VerseRange) {
+            VerseRange range = (VerseRange) key;
+            ref = keyf.createEmptyKeyList(range.getVersification());
+            ref.addAll(range);
+            return (Passage) ref;
+        }
+
+        throw new ClassCastException("Expected key to be a Verse, VerseRange or Passage");
     }
 
     /**
-     * How we create Passages
+     * Not all keys represent verses, but we ought to be able to get something
+     * close to a verse from anything that does verse like work.
+     * @deprecated use {@link #getVerse(Key)}
      */
-    private static PassageKeyFactory keyf = PassageKeyFactory.instance();
+    @Deprecated
+    public static Verse getVerse(Versification v11n, Key key) {
+        return getVerse(key);
+    }
 
     /**
-     * The log stream
+     * Cast a Key to a Passage. Only those keys that are a Passage or can
+     * be held by a Passage (i.e. Verse and VerseRange) may be cast to one.
+     * If you pass a null key into this method, you get a null Passage out.
+     * 
+     * @param v11n
+     * @param key The key to cast
+     * @return The key cast to a Passage
+     * 
+     * @deprecated {@link #getPassage(Key)}
      */
-    private static final Logger log = Logger.getLogger(KeyUtil.class);
+    @Deprecated
+    public static Passage getPassage(Versification v11n, Key key) {
+        return getPassage(key);
+    }
 }

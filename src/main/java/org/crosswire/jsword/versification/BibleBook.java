@@ -25,8 +25,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import org.crosswire.jsword.internationalisation.LocaleProviderManager;
-
 /**
  * A BibleBook is a book of the Bible. It may or may not be canonical.
  * Note that the ordering of these books varies from one Versification to another.
@@ -216,9 +214,12 @@ public enum BibleBook {
      * Get the BookName.
      *
      * @return The requested BookName
+     * @throws UnsupportedOperationException
+     * @deprecated Use {@link Versification#getBookName(BibleBook)} instead.
      */
+    @Deprecated
     public BookName getBookName() {
-        return getLocalisedBibleNames().getBookName(this);
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -226,9 +227,12 @@ public enum BibleBook {
      * setBookCase() and isFullBookName())
      *
      * @return The full name of the book
+     * @throws UnsupportedOperationException
+     * @deprecated Use {@link Versification#getPreferredName(BibleBook)} instead.
      */
+    @Deprecated
     public String getPreferredName() {
-        return getLocalisedBibleNames().getPreferredName(this);
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -236,9 +240,12 @@ public enum BibleBook {
      * (see setBookCase())
      *
      * @return The full name of the book
+     * @throws UnsupportedOperationException
+     * @deprecated Use {@link Versification#getLongName(BibleBook)} instead.
      */
+    @Deprecated
     public String getLongName() {
-        return getLocalisedBibleNames().getLongName(this);
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -246,9 +253,12 @@ public enum BibleBook {
      * (see setBookCase())
      *
      * @return The short name of the book
+     * @throws UnsupportedOperationException
+     * @deprecated Use {@link Versification#getShortName(BibleBook)} instead.
      */
+    @Deprecated
     public String getShortName() {
-        return getLocalisedBibleNames().getShortName(this);
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -257,52 +267,12 @@ public enum BibleBook {
      * @param find
      *            The string to identify
      * @return The BibleBook, On error null
+     * @throws UnsupportedOperationException
+     * @deprecated Use {@link Versification#getBook(String)} instead.
      */
+    @Deprecated
     public static BibleBook getBook(String find) {
-        BibleBook book = null;
-        if (containsLetter(find)) {
-            book = fromOSIS(find);
-
-            if (book == null) {
-                book = getLocalisedBibleNames().getBook(find);
-            }
-
-            if (book == null && englishBibleNames != null) {
-                book = englishBibleNames.getBook(find);
-            }
-        }
-        return book;
-    }
-
-    /**
-     * Gets the localised bible names, based on the {@link LocaleProviderManager}
-     *
-     * @return the localised bible names
-     */
-    private static BibleNames getLocalisedBibleNames() {
-        //get the current Locale
-        return getBibleNamesForLocale(LocaleProviderManager.getLocale());
-    }
-
-    /**
-     * Gets the bible names for a specific locale.
-     *
-     * @param locale the locale
-     * @return the bible names for locale
-     */
-    private static BibleNames getBibleNamesForLocale(Locale locale) {
-        BibleNames bibleNames = localizedBibleNames.get(locale);
-        if (bibleNames == null) {
-            synchronized (BibleBook.class) {
-                bibleNames = localizedBibleNames.get(locale);
-                if (bibleNames == null) {
-                    bibleNames = new BibleNames(locale);
-                    localizedBibleNames.put(locale, bibleNames);
-                }
-            }
-        }
-
-        return bibleNames;
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -312,38 +282,12 @@ public enum BibleBook {
      * @param find
      *            The string to identify
      * @return true when the book name is recognized
+     * @throws UnsupportedOperationException
+     * @deprecated Use {@link Versification#isBook(String)} instead.
      */
+    @Deprecated
     public static boolean isBook(String find) {
-        return getBook(find) != null;
-    }
-
-    /* package */ static BibleBook[] getBooks() {
-        return books;
-    }
-
-    /**
-     * Load up the resources for Bible book and section names.
-     */
-    private static void initialize() {
-        //Always load up the English Locale Bible names as we can't guarantee how many different locales we are supporting.
-        englishBibleNames = getBibleNamesForLocale(Locale.ENGLISH);
-    }
-
-    /**
-     * This is simply a convenience function to wrap Character.isLetter()
-     *
-     * @param text
-     *            The string to be parsed
-     * @return true if the string contains letters
-     */
-    private static boolean containsLetter(String text) {
-        for (int i = 0; i < text.length(); i++) {
-            if (Character.isLetter(text.charAt(i))) {
-                return true;
-            }
-        }
-
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     private String osis;
@@ -351,20 +295,10 @@ public enum BibleBook {
     /** A quick lookup based on OSIS name for the book */
     private static Map<String, BibleBook> osisMap = new HashMap<String, BibleBook>();
 
-    /** The universe of ordered books, allowing for efficient previous next */
-    private static BibleBook[] books = BibleBook.values();
-
-    /** we cache the Localised Bible Names because there is quite a bit of processing going on for each individual Locale */
-    private static Map<Locale, BibleNames> localizedBibleNames = new HashMap<Locale, BibleNames>();
-
-    /** English BibleNames, or null when using the program's default locale */
-    private static BibleNames englishBibleNames;
-
-    static {
+     static {
         for (BibleBook book : BibleBook.values()) {
             osisMap.put(BookName.normalize(book.getOSIS(), Locale.ENGLISH), book);
         }
-        initialize();
     }
 
 }

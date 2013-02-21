@@ -70,8 +70,7 @@ public class Language implements Comparable<Language> {
      * 
      * @return the specification that was originally given.
      */
-    public String getGivenSpecification()
-    {
+    public String getGivenSpecification() {
         return given;
     }
 
@@ -81,8 +80,7 @@ public class Language implements Comparable<Language> {
      * 
      * @return the specification that was used to find the name.
      */
-    public String getFoundSpecification()
-    {
+    public String getFoundSpecification() {
         getName();
         return found;
     }
@@ -183,7 +181,7 @@ public class Language implements Comparable<Language> {
             // Now check just the code.
             if (more) {
                 lookup = code;
-                result = Languages.getName(lookup);                
+                result = Languages.getName(lookup);
                 more = lookup.equals(result);
             }
 
@@ -229,7 +227,7 @@ public class Language implements Comparable<Language> {
      */
     public boolean isLeftToRight() {
         if (!knowsDirection) {
-            ltor = ! Languages.RtoL.isRtoL(script, code);
+            ltor = !Languages.RtoL.isRtoL(script, code);
             knowsDirection = true;
         }
         return ltor;

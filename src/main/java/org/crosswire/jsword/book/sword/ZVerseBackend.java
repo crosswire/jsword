@@ -127,9 +127,9 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
 
             String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
             Versification v11n = Versifications.instance().getVersification(v11nName);
-            Verse verse = KeyUtil.getVerse(key, v11n);
+            Verse verse = KeyUtil.getVerse(key);
 
-            int index = v11n.getOrdinal(verse);
+            int index = verse.getOrdinal();
             Testament testament = v11n.getTestament(index);
             index = v11n.getTestamentOrdinal(index);
 
@@ -238,9 +238,9 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
 
         final String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
         final Versification v11n = Versifications.instance().getVersification(v11nName);
-        Verse verse = KeyUtil.getVerse(key, v11n);
+        Verse verse = KeyUtil.getVerse(key);
 
-        int index = v11n.getOrdinal(verse);
+        int index = verse.getOrdinal();
         final Testament testament = v11n.getTestament(index);
         index = v11n.getTestamentOrdinal(index);
         final RandomAccessFile compRaf;
