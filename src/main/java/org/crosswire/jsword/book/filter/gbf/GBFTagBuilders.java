@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.filter.gbf;
 
@@ -306,11 +305,6 @@ public final class GBFTagBuilders {
     }
 
     /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(GBFTagBuilders.class);
-
-    /**
      * The <code>BUILDERS</code> maps the 2 letter GBF tag to a class that
      * proxies for the tag.
      */
@@ -374,4 +368,9 @@ public final class GBFTagBuilders {
         BUILDERS.put("CG", new EscapeTagBuilder());
         BUILDERS.put("CT", new EscapeTagBuilder());
     }
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(GBFTagBuilders.class);
 }

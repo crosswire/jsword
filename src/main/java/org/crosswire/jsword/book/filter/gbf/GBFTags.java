@@ -17,7 +17,6 @@
  * Copyright: 2005 - 2012
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.filter.gbf;
 
@@ -85,7 +84,7 @@ public final class GBFTags {
         public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
             Element ele = OSIS_FACTORY.createHI();
             ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_BOLD);
-            GBFTags.updateOsisStack(book, key, stack, ele);
+            GBFTags.updateOsisStack(stack, ele);
         }
     }
 
@@ -107,7 +106,7 @@ public final class GBFTags {
             } catch (NoSuchKeyException ex) {
                 DataPolice.report(book, key, "unable to parse reference: " + refstr);
             }
-            GBFTags.updateOsisStack(book, key, stack, ele);
+            GBFTags.updateOsisStack(stack, ele);
         }
     }
 
@@ -151,7 +150,7 @@ public final class GBFTags {
         public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
             Element ele = OSIS_FACTORY.createNote();
             ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.NOTETYPE_STUDY);
-            GBFTags.updateOsisStack(book, key, stack, ele);
+            GBFTags.updateOsisStack(stack, ele);
         }
     }
 
@@ -201,7 +200,7 @@ public final class GBFTags {
         }
 
         public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
-            GBFTags.updateOsisStack(book, key, stack, OSIS_FACTORY.createTitle());
+            GBFTags.updateOsisStack(stack, OSIS_FACTORY.createTitle());
         }
     }
 
@@ -234,7 +233,7 @@ public final class GBFTags {
         public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
             Element ele = OSIS_FACTORY.createHI();
             ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_ITALIC);
-            GBFTags.updateOsisStack(book, key, stack, ele);
+            GBFTags.updateOsisStack(stack, ele);
         }
     }
 
@@ -253,7 +252,7 @@ public final class GBFTags {
             // LATER(joe): is seg the right thing?
             Element ele = OSIS_FACTORY.createSeg();
             ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.SEG_JUSTIFYRIGHT);
-            GBFTags.updateOsisStack(book, key, stack, ele);
+            GBFTags.updateOsisStack(stack, ele);
         }
     }
 
@@ -271,7 +270,7 @@ public final class GBFTags {
         public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
             Element ele = OSIS_FACTORY.createSeg();
             ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.SEG_JUSTIFYLEFT);
-            GBFTags.updateOsisStack(book, key, stack, ele);
+            GBFTags.updateOsisStack(stack, ele);
         }
     }
 
@@ -287,7 +286,7 @@ public final class GBFTags {
         }
 
         public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
-            GBFTags.updateOsisStack(book, key, stack, OSIS_FACTORY.createQ());
+            GBFTags.updateOsisStack(stack, OSIS_FACTORY.createQ());
         }
     }
 
@@ -330,7 +329,7 @@ public final class GBFTags {
         }
 
         public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
-            GBFTags.updateOsisStack(book, key, stack, OSIS_FACTORY.createLG());
+            GBFTags.updateOsisStack(stack, OSIS_FACTORY.createLG());
         }
     }
 
@@ -346,7 +345,7 @@ public final class GBFTags {
         }
 
         public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
-            GBFTags.updateOsisStack(book, key, stack, OSIS_FACTORY.createTitle());
+            GBFTags.updateOsisStack(stack, OSIS_FACTORY.createTitle());
         }
     }
 
@@ -364,7 +363,7 @@ public final class GBFTags {
         public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
             Element ele = OSIS_FACTORY.createQ();
             ele.setAttribute(OSISUtil.ATTRIBUTE_Q_WHO, "Jesus");
-            GBFTags.updateOsisStack(book, key, stack, ele);
+            GBFTags.updateOsisStack(stack, ele);
         }
     }
 
@@ -485,7 +484,7 @@ public final class GBFTags {
         public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
             Element ele = OSIS_FACTORY.createNote();
             ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.NOTETYPE_STUDY);
-            GBFTags.updateOsisStack(book, key, stack, ele);
+            GBFTags.updateOsisStack(stack, ele);
         }
     }
 
@@ -527,7 +526,7 @@ public final class GBFTags {
         }
 
         public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
-            GBFTags.updateOsisStack(book, key, stack, OSIS_FACTORY.createTitle());
+            GBFTags.updateOsisStack(stack, OSIS_FACTORY.createTitle());
         }
     }
 
@@ -545,11 +544,11 @@ public final class GBFTags {
         public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
             Element ele = OSIS_FACTORY.createHI();
             ele.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.HI_UNDERLINE);
-            GBFTags.updateOsisStack(book, key, stack, ele);
+            GBFTags.updateOsisStack(stack, ele);
         }
     }
 
-    /* private */static void updateOsisStack(Book book, Key key, LinkedList<Content> stack, Content content) {
+    /* private */static void updateOsisStack(LinkedList<Content> stack, Content content) {
         Content top = stack.get(0);
         if (top instanceof Element) {
             Element current = (Element) top;

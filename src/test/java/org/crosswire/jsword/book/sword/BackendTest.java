@@ -1,7 +1,28 @@
+/**
+ * Distribution License:
+ * JSword is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License, version 2.1 as published by
+ * the Free Software Foundation. This program is distributed in the hope
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * The License is available on the internet at:
+ *       http://www.gnu.org/copyleft/lgpl.html
+ * or by writing to:
+ *      Free Software Foundation, Inc.
+ *      59 Temple Place - Suite 330
+ *      Boston, MA 02111-1307, USA
+ *
+ * Copyright: 2012
+ *     The copyright to this program is held by it's authors.
+ *
+ */
 package org.crosswire.jsword.book.sword;
 
 import junit.framework.TestCase;
 
+import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
@@ -24,8 +45,6 @@ import org.junit.Test;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class BackendTest extends TestCase {
-    private static final org.crosswire.common.util.Logger LOGGER = org.crosswire.common.util.Logger.getLogger(BackendTest.class);
-
     /**
      * Z Text
      * 
@@ -318,7 +337,7 @@ public class BackendTest extends TestCase {
         return backendTest(currentBook, currentBook.getKey(reference), assertion);
     }
 
-    private String backendTest(Book currentBook, Key key, String... assertions) throws NoSuchKeyException, BookException {
+    private String backendTest(Book currentBook, Key key, String... assertions) throws BookException {
         //order in test can be inconsistent and it seems on a linux build server the full book name is sometimes not used...
         BookName.setFullBookName(true);
         
@@ -327,11 +346,16 @@ public class BackendTest extends TestCase {
 
         final XMLOutputter xmlOutputter = new XMLOutputter(Format.getPrettyFormat());
         String xml = xmlOutputter.outputString(osisFragment);
-        LOGGER.debug("For book " + currentBook.getInitials() + " with key " + key.getName() + ", Got " +xml);
+        log.debug("For book " + currentBook.getInitials() + " with key " + key.getName() + ", Got " +xml);
 
         for (String s : assertions) {
             assertTrue(s, xml.contains(s));
         }
         return xml;
     }
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(BackendTest.class);
 }

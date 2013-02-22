@@ -224,6 +224,8 @@ public class RawBackendState extends AbstractOpenFileState {
 
     private SwordBookMetaData bookMetaData;
 
-    /** The log stream */
+    /**
+     * The log stream
+     */
     private static final Logger log = Logger.getLogger(RawBackendState.class);
 }

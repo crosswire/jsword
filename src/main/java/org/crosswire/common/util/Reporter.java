@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.util;
 
@@ -193,26 +192,6 @@ public final class Reporter {
     }
 
     /**
-     * The system property name for registering AWT exceptions
-     */
-    private static final String AWT_HANDLER_PROPERTY = "sun.awt.exception.handler";
-
-    /**
-     * The name of the class to register for AWT exceptions
-     */
-    private static final String OUR_NAME = CustomAWTExceptionHandler.class.getName();
-
-    /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(Reporter.class);
-
-    /**
-     * The list of listeners
-     */
-    private static final EventListenerList LISTENERS = new EventListenerList();
-
-    /**
      * A class to handle AWT caught Exceptions
      */
     public static final class CustomAWTExceptionHandler {
@@ -238,4 +217,24 @@ public final class Reporter {
 
         private static TimeGate gate = new TimeGate(2000);
     }
+
+    /**
+     * The system property name for registering AWT exceptions
+     */
+    private static final String AWT_HANDLER_PROPERTY = "sun.awt.exception.handler";
+
+    /**
+     * The name of the class to register for AWT exceptions
+     */
+    private static final String OUR_NAME = CustomAWTExceptionHandler.class.getName();
+
+    /**
+     * The list of listeners
+     */
+    private static final EventListenerList LISTENERS = new EventListenerList();
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(Reporter.class);
 }

@@ -17,16 +17,13 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.List;
 
-import org.crosswire.common.activate.Lock;
 import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.JSOtherMsg;
@@ -36,12 +33,10 @@ import org.crosswire.jsword.book.basic.AbstractPassageBook;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
 import org.crosswire.jsword.book.sword.state.OpenFileState;
-import org.crosswire.jsword.book.sword.state.RawBackendState;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.versification.Versification;
-import org.crosswire.jsword.versification.system.Versifications;
 import org.jdom.Content;
 import org.jdom.Element;
 
@@ -61,19 +56,6 @@ public class SwordBook extends AbstractPassageBook {
 
         this.filter = sbmd.getFilter();
         this.backend = backend;
-    }
-
-    @Override
-    public final void activate(Lock lock) {
-        super.activate(lock);
-
-        // We don't need to activate the backend because it should be capable
-        // of doing it for itself.
-    }
-
-    @Override
-    public final void deactivate(Lock lock) {
-        super.deactivate(lock);
     }
 
     /* (non-Javadoc)
@@ -131,6 +113,7 @@ public class SwordBook extends AbstractPassageBook {
         }
     }
 
+    @Override
     protected List<Content> getOsis(Key key, RawTextToXmlProcessor processor) throws BookException {
         if (backend == null) {
             return Collections.emptyList();
@@ -243,6 +226,9 @@ public class SwordBook extends AbstractPassageBook {
      * A cached representation of the global key list.
      */
     private Key global;
-    
+
+    /**
+     * The log stream
+     */
     private static final Logger log = Logger.getLogger(SwordBook.class);
 }

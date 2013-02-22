@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: ReadEverything.java 1185 2006-11-13 08:32:18 -0500 (Mon, 13 Nov 2006) dmsmith $
  */
 package org.crosswire.jsword.book;
 
@@ -167,6 +166,7 @@ public class GatherAllReferences {
     private static Pattern gbfPassagePattern = Pattern.compile("<RX>([^<]*)");
     private static Pattern osisPassagePattern = Pattern.compile("osisRef=\"([^\"]*)");
     private static PrintWriter out;
+
     /**
      * The log stream
      */

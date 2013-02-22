@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.install.sword;
 
@@ -654,11 +653,6 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     protected static final String ZIP_SUFFIX = ".zip";
 
     /**
-     * The log stream
-     */
-    protected static final Logger log = Logger.getLogger(AbstractSwordInstaller.class);
-
-    /**
      * The relative path of the dir holding the search index files
      */
     protected static final String SEARCH_DIR = "search/jsword/L1";
@@ -668,4 +662,8 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
      */
     protected static final String DOWNLOAD_PREFIX = "download-";
 
+    /**
+     * The log stream
+     */
+    protected static final Logger log = Logger.getLogger(AbstractSwordInstaller.class);
 }

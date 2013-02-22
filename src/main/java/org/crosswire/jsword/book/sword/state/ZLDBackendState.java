@@ -104,6 +104,7 @@ public class ZLDBackendState extends RawLDBackendState {
         }
     }
 
+    @Override
     public void releaseResources() {
         super.releaseResources();
         lastBlockNum = -1;

@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
@@ -34,8 +33,6 @@ import org.crosswire.jsword.book.sword.state.ZVerseBackendState;
 import org.crosswire.jsword.passage.BitwisePassage;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
-import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.RocketPassage;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.versification.Testament;
@@ -168,6 +165,7 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
         }
     }
 
+    @Override
     public Key getGlobalKeyList() throws BookException {
         ZVerseBackendState rafBook = null;
         try {
@@ -213,10 +211,8 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
                 }
             }
 
-            if (passage != null) {
-                passage.lowerNormalizeProtection();
-                passage.lowerEventSuppressionAndTest();
-            }
+            passage.lowerNormalizeProtection();
+            passage.lowerEventSuppressionAndTest();
 
             return passage;
         } catch (IOException e) {

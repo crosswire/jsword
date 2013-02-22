@@ -28,7 +28,7 @@ import java.util.NoSuchElementException;
  * An <code>EmptyIterator</code> is an <code>Iterator</code> that iterates over
  * nothing.
  * 
- * 
+ * @param <E> The type of the element that this empty iterator will never return.
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]

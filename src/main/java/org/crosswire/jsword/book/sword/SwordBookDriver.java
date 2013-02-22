@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
@@ -122,7 +121,7 @@ public class SwordBookDriver extends AbstractBookDriver {
                     }
                 } catch (IOException e) {
                     log.warn("Couldn't create SwordBookMetaData", e);
-                } catch(MissingDataFilesException e) {
+                } catch (MissingDataFilesException e) {
                     log.warn(e.getMessage() + " This book will be excluded.", e);
                 } catch (BookException e) {
                     log.warn("Couldn't create SwordBookMetaData", e);

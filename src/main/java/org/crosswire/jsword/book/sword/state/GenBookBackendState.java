@@ -118,6 +118,8 @@ public class GenBookBackendState extends AbstractOpenFileState {
     private RandomAccessFile bdtRaf;
     private SwordBookMetaData bookMetaData;
 
-    /** The log stream */
+    /**
+     * The log stream
+     */
     private static final Logger log = Logger.getLogger(GenBookBackendState.class);
 }

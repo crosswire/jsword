@@ -152,9 +152,6 @@ public class THMLFilter implements Filter {
         } catch (IllegalArgumentException e) {
             // JDOM has a few exceptions which are all derived from this.
             ex = e;
-        } catch (RuntimeException e) {
-            // Catch everything else so that we handle the exception properly within a Sw*ng callback
-            ex = e;
         }
 
         errorMessage = failMessage;

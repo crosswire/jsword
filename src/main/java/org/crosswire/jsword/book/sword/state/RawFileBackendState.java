@@ -59,6 +59,7 @@ public class RawFileBackendState extends RawBackendState {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#isWritable()
      */
+    @Override
     public boolean isWritable() {
         File incFile = getIncfile();
 
@@ -168,6 +169,8 @@ public class RawFileBackendState extends RawBackendState {
     private File incfile;
     private Integer incfileValue;
 
-    /** The log stream */
+    /**
+     * The log stream
+     */
     private static final Logger log = Logger.getLogger(RawFileBackendState.class);
 }

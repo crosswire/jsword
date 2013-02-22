@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.passage;
 
@@ -1347,5 +1346,5 @@ public abstract class AbstractPassage implements Passage {
     /**
      * Serialization ID
      */
-    static final long serialVersionUID = -5931560451407396276L;
+    private static final long serialVersionUID = -5931560451407396276L;
 }

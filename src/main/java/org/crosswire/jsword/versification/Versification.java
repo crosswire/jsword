@@ -17,7 +17,6 @@
  * Copyright: 2012
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: org.eclipse.jdt.ui.prefs 1178 2006-11-06 12:48:02Z dmsmith $
  */
 package org.crosswire.jsword.versification;
 
@@ -1332,5 +1331,4 @@ public class Versification implements ReferenceSystem, Serializable {
      * Serialization ID
      */
     private static final long serialVersionUID = -6226916242596368765L;
-
 }

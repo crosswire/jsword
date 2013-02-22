@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.passage;
 
@@ -81,10 +80,10 @@ public final class PassageKeyFactory {
         // don't try it unless it solves a problem.
         try {
             return defaultType.createPassage(v11n, name);
-        } catch (Exception e) {
+        } catch (NoSuchKeyException e) {
             try {
                 return defaultType.createPassage(v11n, normalize(name));
-            } catch (Exception e1) {
+            } catch (NoSuchKeyException e1) {
                 // TODO(DM): Parser should allow valid osis refs!
                 return defaultType.createPassage(v11n, mungOsisRef(name));
             }

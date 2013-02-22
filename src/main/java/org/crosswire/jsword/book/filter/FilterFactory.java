@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.filter;
 
@@ -43,14 +42,42 @@ public final class FilterFactory {
     }
 
     /**
-     * The log stream
+     * Find a filter given a lookup string. If lookup is null or the filter is
+     * not found then the default filter will be used.
      */
-    private static final Logger log = Logger.getLogger(FilterFactory.class);
+    public static Filter getFilter(String lookup) {
+        Filter reply = filters.get(lookup.toLowerCase(Locale.ENGLISH));
+
+        if (reply == null) {
+            reply = deft;
+        }
+
+        return reply.clone();
+    }
+
+    /**
+     * Find a filter given a lookup string
+     */
+    public static Filter getDefaultFilter() {
+        return deft.clone();
+    }
+
+    /**
+     * Add to our list of known filters
+     */
+    public static void addFilter(String name, Filter instance) {
+        filters.put(name.toLowerCase(Locale.ENGLISH), instance);
+    }
 
     /**
      * The lookup table of filters
      */
     private static Map<String, Filter> filters = new HashMap<String, Filter>();
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(FilterFactory.class);
 
     /**
      * The lookup table of filters
@@ -92,33 +119,5 @@ public final class FilterFactory {
         if (deft == null) {
             deft = instance;
         }
-    }
-
-    /**
-     * Find a filter given a lookup string. If lookup is null or the filter is
-     * not found then the default filter will be used.
-     */
-    public static Filter getFilter(String lookup) {
-        Filter reply = filters.get(lookup.toLowerCase(Locale.ENGLISH));
-
-        if (reply == null) {
-            reply = deft;
-        }
-
-        return reply.clone();
-    }
-
-    /**
-     * Find a filter given a lookup string
-     */
-    public static Filter getDefaultFilter() {
-        return deft.clone();
-    }
-
-    /**
-     * Add to our list of known filters
-     */
-    public static void addFilter(String name, Filter instance) {
-        filters.put(name.toLowerCase(Locale.ENGLISH), instance);
     }
 }

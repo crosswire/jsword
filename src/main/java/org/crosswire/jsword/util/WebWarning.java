@@ -41,7 +41,7 @@ import org.crosswire.jsword.JSMsg;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class WebWarning {
+public final class WebWarning {
     /**
      * This is a utility class, thus it's constructor is private.
      */

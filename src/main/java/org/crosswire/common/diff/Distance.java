@@ -17,9 +17,7 @@
  * Copyright: 2007
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
-
 package org.crosswire.common.diff;
 
 /**
@@ -30,7 +28,7 @@ package org.crosswire.common.diff;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class Distance {
+public final class Distance {
     /**
      * Prevent instantiation.
      */

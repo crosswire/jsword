@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.passage;
 
@@ -189,18 +188,13 @@ public final class VerseRange implements Key {
             return originalName;
         }
 
-        try {
-            String rangeName = doGetName(base);
-            // Only shape it if it can be unshaped.
-            if (shaper.canUnshape()) {
-                return shaper.shape(rangeName);
-            }
-
-            return rangeName;
-        } catch (NoSuchVerseException ex) {
-            assert false : ex;
-            return "!Error!";
+        String rangeName = doGetName(base);
+        // Only shape it if it can be unshaped.
+        if (shaper.canUnshape()) {
+            return shaper.shape(rangeName);
         }
+
+        return rangeName;
     }
 
     /* (non-Javadoc)
@@ -721,7 +715,7 @@ public final class VerseRange implements Key {
         return null;
     }
 
-    private String doGetName(Key base) throws NoSuchVerseException {
+    private String doGetName(Key base) {
         // Cache these we're going to be using them a lot.
         BibleBook startBook = start.getBook();
         int startChapter = start.getChapter();
@@ -1013,11 +1007,6 @@ public final class VerseRange implements Key {
     public static final String RANGE_PREF_DELIM = RANGE_ALLOWED_DELIMS;
 
     /**
-     * To make serialization work across new versions
-     */
-    static final long serialVersionUID = 8307795549869653580L;
-
-    /**
      * The Versification with which this range is defined.
      */
     private transient Versification v11n;
@@ -1057,4 +1046,9 @@ public final class VerseRange implements Key {
      */
     /* pkg protected */static final transient Logger log = Logger.getLogger(VerseRange.class);
 
+
+    /**
+     * Serialization ID
+     */
+    static final long serialVersionUID = 8307795549869653580L;
 }

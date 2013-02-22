@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
@@ -40,6 +39,7 @@ import org.crosswire.jsword.versification.system.Versifications;
  * Both Books and Commentaries seem to use the same format so this class
  * abstracts out the similarities.
  * 
+ * @param <T> The type of the RawBackendState that this class extends.
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -103,14 +103,17 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
      * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key)
      */
     public String readRawContent(RawBackendState state, Key key, String keyName) throws IOException {
-            String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
-            Versification v11n = Versifications.instance().getVersification(v11nName);
-            Verse verse = KeyUtil.getVerse(key);
+        String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
+        Versification v11n = Versifications.instance().getVersification(v11nName);
+        Verse verse = KeyUtil.getVerse(key);
 
-            int index = verse.getOrdinal();
+        int index = verse.getOrdinal();
 
-            Testament testament = v11n.getTestament(index);
-            index = v11n.getTestamentOrdinal(index);
+        Testament testament = v11n.getTestament(index);
+        index = v11n.getTestamentOrdinal(index);
+        RawBackendState initState = null;
+        try {
+            initState = initState();
             RandomAccessFile idxRaf = testament == Testament.NEW ? state.getNtIdxRaf() : state.getOtIdxRaf();
 
             // If this is a single testament Bible, return nothing.
@@ -119,6 +122,11 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
             }
 
             return getEntry(state, verse.getName(), testament, index);
+        } catch (BookException e) {
+            return "";
+        } finally {
+            OpenFileStateManager.release(initState);
+        }
     }
 
     /* (non-Javadoc)
@@ -130,6 +138,7 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#isWritable()
      */
+    @Override
     public boolean isWritable() {
         RawBackendState rawBackendState = null;
         try {

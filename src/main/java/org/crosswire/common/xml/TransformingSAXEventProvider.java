@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.xml;
 
@@ -278,6 +277,36 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
     }
 
     /**
+     * A simple struct to link modification times to Templates objects
+     */
+    private static class TemplateInfo {
+        /**
+         * Simple ctor
+         */
+        public TemplateInfo(Templates templates, long modtime) {
+            this.templates = templates;
+            this.modtime = modtime;
+        }
+
+        /**
+         * The transformer
+         */
+        Templates getTemplates() {
+            return templates;
+        }
+
+        /**
+         * The modtime of the xsl file
+         */
+        long getModtime() {
+            return modtime;
+        }
+
+        private Templates templates;
+        private long modtime;
+    }
+
+    /**
      * In development mode the style sheet is checked for modifications before use and if so, it is recompiled.
      */
     private static boolean developmentMode;
@@ -327,34 +356,4 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
      * The log stream
      */
     private static final Logger log = Logger.getLogger(TransformingSAXEventProvider.class);
-
-    /**
-     * A simple struct to link modification times to Templates objects
-     */
-    private static class TemplateInfo {
-        /**
-         * Simple ctor
-         */
-        public TemplateInfo(Templates templates, long modtime) {
-            this.templates = templates;
-            this.modtime = modtime;
-        }
-
-        /**
-         * The transformer
-         */
-        Templates getTemplates() {
-            return templates;
-        }
-
-        /**
-         * The modtime of the xsl file
-         */
-        long getModtime() {
-            return modtime;
-        }
-
-        private Templates templates;
-        private long modtime;
-    }
 }

@@ -17,7 +17,6 @@
  * Copyright: 2009-2012
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
@@ -73,6 +72,7 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
         super(sbmd, datasize);
     }
 
+    @Override
     public RawFileBackendState initState() throws BookException {
         return OpenFileStateManager.getRawFileBackendState(getBookMetaData());
     }

@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
@@ -233,20 +232,19 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         // For some modules, the last element of the DataPath
         // is a prefix for file names.
         if (!bookDir.isDirectory()) {
-            if(isDirectoryPath) {
+            if (isDirectoryPath) {
                 // TRANSLATOR: This indicates that the Book is only partially installed.
                 throw new MissingDataFilesException(JSMsg.gettext("The book is missing its data files", cet.getValue(ConfigEntryType.INITIALS)));
             }
-            
-            //not a directory path
-            //try appending .dat on the end to see if we have a file, if not, then 
-            if(!new File(datapath + ".dat").exists()) {
+
+            // not a directory path
+            // try appending .dat on the end to see if we have a file, if not, then 
+            if (!new File(datapath + ".dat").exists()) {
              // TRANSLATOR: This indicates that the Book is only partially installed.
-                throw new MissingDataFilesException(JSMsg.gettext("The book is missing its data files", cet.getValue(ConfigEntryType.INITIALS)));                
+                throw new MissingDataFilesException(JSMsg.gettext("The book is missing its data files", cet.getValue(ConfigEntryType.INITIALS)));
             }
-            
-            //then we have a module that has a prefix
-                
+
+            // then we have a module that has a prefix
             // Shorten it by one segment and test again.
             lastSlash = datapath.lastIndexOf('/');
             datapath = datapath.substring(0, lastSlash);

@@ -41,7 +41,7 @@ import org.crosswire.jsword.internationalisation.LocaleProviderManager;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class Languages {
+public final class Languages {
 
     /**
      * Make the class a true utility class by having a private constructor.
@@ -107,7 +107,7 @@ public class Languages {
      * The basic list has a few hundred languages. The full list has
      * over 7000. As a fallback, this file is not internationalized.
      */
-    public static class AllLanguages {
+    public static final class AllLanguages {
         /**
          * This is a singleton class. Do not allow construction.
          */
@@ -150,7 +150,7 @@ public class Languages {
      * The basic list has a few hundred languages. The full list has
      * over 7000. As a fallback, this file is not internationalized.
      */
-    public static class RtoL {
+    public static final class RtoL {
         /**
          * This is a singleton class. Do not allow construction.
          */
@@ -202,6 +202,10 @@ public class Languages {
         }
     }
 
-    private static final Logger log = Logger.getLogger(Books.class);
     private static Map<Locale, ResourceBundle> localisedCommonLanguages = new HashMap<Locale, ResourceBundle>();
+
+    /**
+     * The log stream
+     */
+    protected static final Logger log = Logger.getLogger(Books.class);
 }

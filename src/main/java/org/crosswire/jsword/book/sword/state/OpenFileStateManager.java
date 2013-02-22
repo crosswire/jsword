@@ -53,7 +53,7 @@ import org.crosswire.jsword.book.sword.SwordBookMetaData;
  * @author DM Smith
  * @author Chris Burrell
  */
-public class OpenFileStateManager {
+public final class OpenFileStateManager {
     /**
      * prevent instantiation
      */
@@ -137,10 +137,8 @@ public class OpenFileStateManager {
         Queue<OpenFileState> availableStates = metaToStates.get(metadata);
         if (availableStates == null) {
             synchronized (OpenFileState.class) {
-                if (availableStates == null) {
-                    availableStates = new ConcurrentLinkedQueue<OpenFileState>();
-                    metaToStates.put(metadata, availableStates);
-                }
+                availableStates = new ConcurrentLinkedQueue<OpenFileState>();
+                metaToStates.put(metadata, availableStates);
             }
         }
         return availableStates;
@@ -182,6 +180,6 @@ public class OpenFileStateManager {
         }
     }
 
-    private static volatile Map<SwordBookMetaData,Queue<OpenFileState>> metaToStates = new HashMap<SwordBookMetaData,Queue<OpenFileState>>();
+    private static volatile Map<SwordBookMetaData, Queue<OpenFileState>> metaToStates = new HashMap<SwordBookMetaData, Queue<OpenFileState>>();
     private static volatile boolean shuttingDown;
 }

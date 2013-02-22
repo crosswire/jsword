@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.filter.osis;
 
@@ -156,11 +155,11 @@ public class OSISFilter implements Filter {
         return div;
     }
 
+    //space for 32 re-usable sax builders, but doesn't bound the number available to the callers
+    private BlockingQueue<SAXBuilder> saxBuilders = new ArrayBlockingQueue<SAXBuilder>(32);
+
     /**
      * The log stream
      */
     private static final Logger log = Logger.getLogger(OSISFilter.class);
-
-    //space for 32 re-usable sax builders, but doesn't bound the number available to the callers
-    private BlockingQueue<SAXBuilder> saxBuilders = new ArrayBlockingQueue<SAXBuilder>(32);
 }

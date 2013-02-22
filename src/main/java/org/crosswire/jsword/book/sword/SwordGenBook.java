@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
@@ -153,6 +152,7 @@ public class SwordGenBook extends AbstractBook {
      * (non-Javadoc)
      * @see org.crosswire.jsword.book.basic.AbstractBook#getOsis(org.crosswire.jsword.passage.Key, org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor)
      */
+    @Override
     public List<Content> getOsis(Key key, RawTextToXmlProcessor processor) throws BookException {
         checkActive();
 
@@ -286,6 +286,6 @@ public class SwordGenBook extends AbstractBook {
     /**
      * The filter to use to convert to OSIS.
      */
-    private Filter filter;
+    protected Filter filter;
 
 }

@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
@@ -47,6 +46,7 @@ import org.jdom.Content;
 /**
  * A generic way to read data from disk for later formatting.
  * 
+ * @param <T> The type of the OpenFileState that this class extends.
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -134,7 +134,7 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
         //by default, this is not implemented
         throw new UnsupportedOperationException("Fast global key list unsupported in this backend");
     }
-    
+
     /**
      * Get the text allotted for the given entry
      * 

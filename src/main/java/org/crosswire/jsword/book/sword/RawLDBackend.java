@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
@@ -26,7 +25,6 @@ import java.io.ObjectInputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -49,6 +47,7 @@ import org.crosswire.jsword.passage.Key;
 /**
  * An implementation AbstractKeyBackend to read RAW format files.
  * 
+ * @param <T> The type of the RawLDBackendState that this class extends.
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -77,27 +76,18 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
         return OpenFileStateManager.getRawLDBackendState(getBookMetaData());
     }
 
-
     public String readRawContent(RawLDBackendState state, String key) throws IOException {
-
-        try {
-            int pos = search(state, key);
-            if (pos >= 0) {
-                DataEntry entry = getEntry(state, key, pos);
-                if (entry.isLinkEntry()) {
-                    return readRawContent(state, entry.getLinkTarget());
-                }
-                return getRawText(state, entry);
+        int pos = search(state, key);
+        if (pos >= 0) {
+            DataEntry entry = getEntry(state, key, pos);
+            if (entry.isLinkEntry()) {
+                return readRawContent(state, entry.getLinkTarget());
             }
-            // TRANSLATOR: Error condition: Indicates that something could not
-            // be found in the book. {0} is a placeholder for the unknown key.
-            throw new IOException(JSMsg.gettext("Key not found {0}", key));
-        } catch (IOException ex) {
-            // TRANSLATOR: Common error condition: The file could not be read.
-            // There can be many reasons.
-            // {0} is a placeholder for the file.
-            throw new IOException(JSMsg.gettext("Error reading {0}", key), ex);
+            return getRawText(state, entry);
         }
+        // TRANSLATOR: Error condition: Indicates that something could not
+        // be found in the book. {0} is a placeholder for the unknown key.
+        throw new IOException(JSMsg.gettext("Key not found {0}", key));
     }
 
     protected String getRawText(RawLDBackendState state, DataEntry entry) {
@@ -287,17 +277,15 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
             Calendar greg = new GregorianCalendar();
             DateFormatter nameDF = DateFormatter.getDateInstance();
             nameDF.setLenient(true);
-            try {
-                Date date = nameDF.parse(keytitle);
-                greg.setTime(date);
-                Object[] objs = {
-                        Integer.valueOf(1 + greg.get(Calendar.MONTH)), Integer.valueOf(greg.get(Calendar.DATE))
-                };
-                return DATE_KEY_FORMAT.format(objs);
-            } catch (ParseException e) {
-                assert false : e;
-            }
-        } else if (bmd.hasFeature(FeatureType.GREEK_DEFINITIONS) || bmd.hasFeature(FeatureType.HEBREW_DEFINITIONS)) {
+            Date date = nameDF.parse(keytitle);
+            greg.setTime(date);
+            Object[] objs = {
+                    Integer.valueOf(1 + greg.get(Calendar.MONTH)), Integer.valueOf(greg.get(Calendar.DATE))
+            };
+            return DATE_KEY_FORMAT.format(objs);
+        }
+
+        if (bmd.hasFeature(FeatureType.GREEK_DEFINITIONS) || bmd.hasFeature(FeatureType.HEBREW_DEFINITIONS)) {
             // Is the string valid?
             Matcher m = STRONGS_PATTERN.matcher(keytitle);
             if (!m.matches()) {
@@ -338,11 +326,8 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
             }
 
             return getZero5Pad().format(strongsNumber);
-        } else {
-            return keytitle.toUpperCase(Locale.US);
         }
-
-        return keytitle;
+            return keytitle.toUpperCase(Locale.US);
     }
 
     private String internal2external(String internalKey) {
@@ -407,11 +392,6 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
     private static final Pattern STRONGS_PATTERN = Pattern.compile("^([GH])(\\d+)((!)?([a-z])?)$");
 
     /**
-     * Serialization ID
-     */
-    private static final long serialVersionUID = 818089833394450383L;
-
-    /**
      * The number of bytes in the size count in the index
      */
     private final int datasize;
@@ -425,4 +405,9 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
      * How many bytes in the offset pointers in the index
      */
     private static final int OFFSETSIZE = 4;
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = 818089833394450383L;
 }

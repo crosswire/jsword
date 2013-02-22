@@ -17,7 +17,6 @@
  * Copyright: 2007
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id:  $
  */
 package org.crosswire.jsword.index.lucene.analysis;
 
@@ -112,9 +111,12 @@ public final class AnalyzerFactory {
     }
 
     public static final String DEFAULT_ID = "Default";
-    private static final Logger log = Logger.getLogger(AnalyzerFactory.class);
     private static AnalyzerFactory myInstance = new AnalyzerFactory();
 
     private PropertyMap myProperties;
 
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(AnalyzerFactory.class);
 }

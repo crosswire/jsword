@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.install;
 
@@ -324,11 +323,6 @@ public final class InstallManager {
     private Map<String, Class<InstallerFactory>> factories;
 
     /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(InstallManager.class);
-
-    /**
      * The list of discovered installers
      */
     private Map<String, Installer> installers;
@@ -337,4 +331,9 @@ public final class InstallManager {
      * The list of listeners
      */
     private static EventListenerList listeners = new EventListenerList();
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(InstallManager.class);
 }

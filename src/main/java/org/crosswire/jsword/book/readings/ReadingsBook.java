@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.readings;
 
@@ -187,6 +186,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
     /**
      * Returns an empty list
      */
+    @Override
     public List<Content> getOsis(Key key, RawTextToXmlProcessor processor) throws BookException {
         return Collections.emptyList();
     }

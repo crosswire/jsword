@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: IntOptionsChoice.java 1575 2007-07-28 16:18:14Z dmsmith $
  */
 package org.crosswire.common.config;
 
@@ -110,10 +109,14 @@ public class MappedOptionsChoice extends AbstractReflectedChoice implements Mapp
                 return mapEntry.getKey().toString();
             }
         }
-        logger.warn(JSOtherMsg.lookupText("Ignoring invalid option: {0}", orig));
+        log.warn(JSOtherMsg.lookupText("Ignoring invalid option: {0}", orig));
         return "";
     }
 
-    private static Logger logger = Logger.getLogger(MappedOptionsChoice.class);
     private Map<?, ?> options;
+
+    /**
+     * The log stream
+     */
+    private static Logger log = Logger.getLogger(MappedOptionsChoice.class);
 }

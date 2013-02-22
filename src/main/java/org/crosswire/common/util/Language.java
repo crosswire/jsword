@@ -368,7 +368,7 @@ public class Language implements Comparable<Language> {
     /**
      * Converts substrings to the canonical representation for language code, script and country.
      */
-    private static class CanonicalUtils {
+    private static final class CanonicalUtils {
         /**
          * Utility class. Private constructor.
          */

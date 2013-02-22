@@ -17,14 +17,12 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.progress;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import junit.framework.TestCase;
 
@@ -48,7 +46,7 @@ public class JobTest extends TestCase {
         super(arg0);
     }
 
-    public void testJob() throws IOException, URISyntaxException {
+    public void testJob() throws IOException {
         Progress job;
         File tempfile = File.createTempFile("jobtest", "tmp");
         URI uri = tempfile.toURI();

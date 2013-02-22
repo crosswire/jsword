@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
@@ -118,6 +117,7 @@ public class SwordDictionary extends AbstractBook {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.Book#getRawText(org.crosswire.jsword.passage.Key)
      */
+    @Override
     public List<Content> getOsis(Key key, RawTextToXmlProcessor processor) throws BookException {
         checkActive();
 

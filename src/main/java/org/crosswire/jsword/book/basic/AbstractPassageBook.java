@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.basic;
 
@@ -200,7 +199,6 @@ public abstract class AbstractPassageBook extends AbstractBook {
     public final Key getKey(String text) throws NoSuchKeyException {
         return PassageKeyFactory.instance().getKey(Versifications.instance().getVersification(versification), text);
     }
-    
 
     public Versification getVersification() {
         if (this.versificationSystem == null) {

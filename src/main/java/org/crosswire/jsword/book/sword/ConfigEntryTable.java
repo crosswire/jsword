@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
@@ -842,11 +841,6 @@ public final class ConfigEntryTable {
     };
 
     /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(ConfigEntryTable.class);
-
-    /**
      * The original name of this config file from mods.d. This is only used for
      * managing warnings and errors
      */
@@ -896,4 +890,8 @@ public final class ConfigEntryTable {
      */
     private static final Pattern KEY_VALUE_PATTERN = Pattern.compile("^([A-Za-z0-9_.]+)\\s*=\\s*(.*)$");
 
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(ConfigEntryTable.class);
 }

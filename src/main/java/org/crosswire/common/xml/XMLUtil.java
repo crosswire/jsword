@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.xml;
 
@@ -468,11 +467,6 @@ public final class XMLUtil {
     }
 
     /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(XMLUtil.class);
-
-    /**
      * Pattern for numeric entities.
      */
     private static Pattern validCharacterEntityPattern = Pattern.compile("^&#x?\\d{2,4};");
@@ -488,4 +482,9 @@ public final class XMLUtil {
      * Pattern that matches open &lt;br&gt;,&lt;hr&gt; and &lt;img&gt; tags.
      */
     private static Pattern openHTMLTagPattern = Pattern.compile("<(img|hr|br)([^>]*)(?<!/)>");
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(XMLUtil.class);
 }

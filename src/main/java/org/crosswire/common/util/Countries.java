@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: Countries.java 1462 2007-07-02 02:32:23Z dmsmith $
  */
 package org.crosswire.common.util;
 
@@ -34,7 +33,7 @@ import org.crosswire.jsword.internationalisation.LocaleProviderManager;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class Countries {
+public final class Countries {
     /**
      * Make the class a true utility class by having a private constructor.
      */

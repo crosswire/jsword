@@ -35,7 +35,7 @@ import org.crosswire.common.util.ClassUtil;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class XalanProcess {
+public final class XalanProcess {
     /**
      * This is a utility class so the constructor is hidden.
      */

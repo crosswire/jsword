@@ -46,7 +46,7 @@ import org.crosswire.jsword.book.Books;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class SwordBookPath {
+public final class SwordBookPath {
     /**
      * Some basic name initialization
      */

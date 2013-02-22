@@ -37,7 +37,7 @@ import org.crosswire.common.config.ChoiceFactory;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class Translations {
+public final class Translations {
     /**
      * Singleton classes have private constructors.
      */

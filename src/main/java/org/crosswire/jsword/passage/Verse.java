@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.passage;
 
@@ -790,11 +789,6 @@ public final class Verse implements Key {
     }
 
     /**
-     * To make serialization work across new versions
-     */
-    static final long serialVersionUID = -4033921076023185171L;
-
-    /**
      * What characters should we use to separate parts of an OSIS verse
      * reference
      */
@@ -850,4 +844,8 @@ public final class Verse implements Key {
      */
     private transient String originalName;
 
+    /**
+     * To make serialization work across new versions
+     */
+    private static final long serialVersionUID = -4033921076023185171L;
 }

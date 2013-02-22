@@ -30,21 +30,29 @@
     <module name="AnnotationUseStyle"/>
     <module name="MissingDeprecated"/>
     <module name="MissingOverride"/>
+    <module name="PackageAnnotation"/> <!-- new -->
     <module name="SuppressWarnings"/>
     
     <!-- Checks for Javadoc Comments -->
     <module name="JavadocType">
-      <property name="allowMissingParamTags" value="true"/>
       <property name="authorFormat" value="\S"/>
     </module>
     <!-- This would be a big change
     <module name="JavadocType">
       <property name="scope" value="public"/>
     </module>
+    -->
+    <!--  Should do this
     <module name="JavadocMethod">
       <property name="scope" value="public"/>
     </module>
-    <module name="JavadocVariable"/>
+     -->
+    <!--  Should do this
+	<module name="JavadocVariable">
+	   <property name="scope" value="public"/>
+	</module>
+	-->
+    <!--  Should do this
     <module name="JavadocStyle">
       <property name="scope" value="public"/>
     </module>
@@ -245,8 +253,8 @@
     <module name="SuperClone"/>
     <module name="SuperFinalize"/>
     <!-- We are not ready for this
+try    -->
     <module name="IllegalCatch"/>
-    -->
     <module name="IllegalThrows"/>
     <module name="PackageDeclaration"/>
     <module name="JUnitTestCase"/>
@@ -282,9 +290,7 @@
     <module name="VisibilityModifier">
       <property name="protectedAllowed" value="true"/>
     </module>
-    <!-- We are not ready for this
     <module name="FinalClass"/>
-    -->
     <module name="InterfaceIsType"/>
     <module name="HideUtilityClassConstructor"/>
     <!-- This would be a big change
@@ -298,7 +304,7 @@
     -->
     <!-- This would be a big change
     <module name="InnerTypeLast"/>
-    -->
+tried    -->
     <!-- The ant task cpd does this
     <module name="StrictDuplicateCode"/>
     -->
@@ -343,19 +349,22 @@
     <module name="ArrayTypeStyle"/>
     <!-- This would be a big change
     <module name="FinalParameters"/>
-    -->
+tried    -->
     <module name="DescendantToken"/>
     <!-- This would be a big change
     <module name="Indentation"/>
-    -->
+tried    -->
     <!-- This would be a big change.
     <module name="TrailingComment"/>
-    -->
+tried    -->
 
     <!-- Perhaps we should check for the GPL license @author, @id, ...
     <module name="RequiredRegexp"/>
     -->
+    <module name="OuterTypeFilename"/>
 
+    <module name="ModifierOrder"/>
+    <module name="RedundantModifier"/>
   </module>
 
 </module>

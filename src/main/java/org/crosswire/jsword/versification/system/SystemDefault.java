@@ -17,7 +17,6 @@
  * Copyright: 2012
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.versification.system;
 
@@ -119,6 +118,7 @@ public class SystemDefault extends Versification {
         BibleBook.ZECH,
         BibleBook.MAL,
     };
+
     /**
      * Serialization ID
      */

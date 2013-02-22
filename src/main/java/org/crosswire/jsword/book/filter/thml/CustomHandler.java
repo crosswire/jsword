@@ -17,7 +17,6 @@
  * Copyright: 2005 - 2012
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.filter.thml;
 
@@ -162,12 +161,12 @@ public class CustomHandler extends DefaultHandler {
     private Tag getTag(String localname, String qname) {
         // sometimes qname is empty e.g. on Android 2.1
         String name;
-        if (qname!=null && qname.length()>0) {
+        if (qname != null && qname.length() > 0) {
             name = qname;
         } else {
             name = localname;
         }
-        
+
         Tag t = TAG_MAP.get(name);
 
         // Some of the THML books are broken in that they use uppercase

@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
@@ -417,11 +416,6 @@ public final class ConfigEntry {
     }
 
     /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(ConfigEntry.class);
-
-    /**
      * A pattern of allowable RTF in a SWORD conf. These are: \pard, \pae, \par,
      * \qc \b, \i and embedded Unicode
      */
@@ -437,4 +431,9 @@ public final class ConfigEntry {
     private String name;
     private List<String> values;
     private Object value;
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = Logger.getLogger(ConfigEntry.class);
 }

@@ -35,11 +35,10 @@ import org.crosswire.common.util.ResourceUtil;
  *      The copyright to this program is held by it's authors.
  * @author Sijo Cherian [sijocherian at yahoo dot com]
  */
-public class IndexMetadata {
+public final class IndexMetadata {
     private IndexMetadata() {
         try {
             props = ResourceUtil.getProperties(getClass());
-
         } catch (IOException e) {
             log.error("Property file read error", e);
         }

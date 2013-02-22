@@ -17,14 +17,11 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.crosswire.common.util.Logger;
 
 /**
  * Some common implementations of BookFilter.
@@ -366,9 +363,4 @@ public final class BookFilters {
             protected String result;
         }
     }
-
-    /**
-     * The log stream
-     */
-    static final Logger log = Logger.getLogger(BookFilters.class);
 }

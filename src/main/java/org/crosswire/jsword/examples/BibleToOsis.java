@@ -58,10 +58,18 @@ public class BibleToOsis {
      * @param args
      */
     public static void main(String[] args) {
+        Exception error = null;
         try {
             new BibleToOsis().dump(BIBLE_NAME, BIBLE_RANGE);
-        } catch (Exception e) {
-            e.printStackTrace(System.err);
+        } catch (NoSuchKeyException e) {
+            error = e;
+        } catch (BookException e) {
+            error = e;
+        } catch (IOException e) {
+            error = e;
+        }
+        if (error != null) {
+            error.printStackTrace();
         }
     }
 

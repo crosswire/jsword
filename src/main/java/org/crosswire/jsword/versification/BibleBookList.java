@@ -17,7 +17,6 @@
  * Copyright: 2012
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.versification;
 
@@ -190,9 +189,10 @@ import java.util.NoSuchElementException;
         }
     }
 
-    private BibleBook[] books;
+    /** The ordered books in this list */
+    protected BibleBook[] books;
 
-    /** The bookMap maps from a BibleBook to the position that book has in <code>books</code>. */
+    /** The bookMap maps from a BibleBook to the position that it has in <code>books</code>. */
     private int[] bookMap;
 
     /**

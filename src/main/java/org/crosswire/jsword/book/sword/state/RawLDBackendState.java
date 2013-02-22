@@ -181,5 +181,8 @@ public class RawLDBackendState extends AbstractOpenFileState  {
     private RandomAccessFile datRaf;
     private SwordBookMetaData bookMetaData;
 
+    /**
+     * The log stream
+     */
     private static final Logger log = Logger.getLogger(RawLDBackend.class);
 }
