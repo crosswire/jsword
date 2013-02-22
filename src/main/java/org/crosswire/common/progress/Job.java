@@ -199,7 +199,7 @@ public final class Job implements Progress {
     /* (non-Javadoc)
      * @see org.crosswire.common.progress.Progress#incrementWorkDone(int)
      */
-    public synchronized void incrementWorkDone(int step) {
+    public void incrementWorkDone(int step) {
         if (finished) {
             return;
         }
@@ -399,7 +399,7 @@ public final class Job implements Progress {
     /**
      * Load the predictive timings if any
      */
-    private synchronized int loadPredictions() {
+    private int loadPredictions() {
         int maxAge = UNKNOWN;
         try {
             currentPredictionMap = new HashMap<String, Integer>();
@@ -432,7 +432,7 @@ public final class Job implements Progress {
     /**
      * Save the known timings to a properties file.
      */
-    private synchronized void savePredictions() {
+    private void savePredictions() {
         // Now we know the start and the end we can convert all times to
         // percents
         PropertyMap predictions = new PropertyMap();
