@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.util;
 
@@ -33,7 +32,7 @@ import org.crosswire.jsword.JSOtherMsg;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]
  */
-public final class CallContext extends SecurityManager {
+public final class CallContext {
     /**
      * Prevent instantiation
      */
@@ -55,16 +54,6 @@ public final class CallContext extends SecurityManager {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.SecurityManager#getClassContext()
-     */
-    @Override
-    protected Class<?>[] getClassContext() {
-        return super.getClassContext();
-    }
-
     /**
      * When called from a method it will return the class calling that method.
      */
@@ -81,7 +70,9 @@ public final class CallContext extends SecurityManager {
      *             if the index is not valid
      */
     public static Class<?> getCallingClass(int i) {
-        return instance().getClassContext()[CALL_CONTEXT_OFFSET + i];
+        // Android 4.0 does not return anything from getClassContext() so using the default JSword code causes Exception in Initializer resulting from an NPE
+        return Thread.currentThread().getStackTrace()[CALL_CONTEXT_OFFSET + i].getClass();
+        // return instance().getClassContext()[CALL_CONTEXT_OFFSET + i];
     }
 
     // may need to change if this class is redesigned
