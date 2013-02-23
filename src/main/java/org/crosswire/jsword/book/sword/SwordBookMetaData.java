@@ -239,7 +239,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
 
             // not a directory path
             // try appending .dat on the end to see if we have a file, if not, then 
-            if (!new File(datapath + ".dat").exists()) {
+            if (!new File(location.getPath() + ".dat").exists()) {
              // TRANSLATOR: This indicates that the Book is only partially installed.
                 throw new MissingDataFilesException(JSMsg.gettext("The book is missing its data files", cet.getValue(ConfigEntryType.INITIALS)));
             }
