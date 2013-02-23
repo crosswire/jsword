@@ -53,14 +53,14 @@ public class ZLDBackend extends RawLDBackend<ZLDBackendState> {
     }
 
     @Override
-    protected String getRawText(RawLDBackendState fileState, DataEntry entry) {
+    protected DataEntry getEntry(RawLDBackendState fileState, DataEntry entry) {
         ZLDBackendState state = null;
         if (fileState instanceof ZLDBackendState) {
             state = (ZLDBackendState) fileState;
         } else {
             //something went terribly wrong
             log.error("Backend State was not of type ZLDBackendState. Ignoring this entry and exiting.");
-            return "";
+            return new DataEntry(entry.getName(), new byte[0], entry.getCharset());
         }
 
         DataIndex blockIndex = entry.getBlockIndex();
@@ -76,7 +76,7 @@ public class ZLDBackend extends RawLDBackend<ZLDBackendState> {
             try {
                 temp = SwordUtil.readRAF(state.getZdxRaf(), blockNum * ZDX_ENTRY_SIZE, ZDX_ENTRY_SIZE);
                 if (temp == null || temp.length == 0) {
-                    return "";
+                    return new DataEntry(entry.getName(), new byte[0], entry.getCharset());
                 }
 
                 int blockStart = SwordUtil.decodeLittleEndian32(temp, 0);
@@ -93,24 +93,29 @@ public class ZLDBackend extends RawLDBackend<ZLDBackendState> {
                 state.setLastBlockNum(blockNum);
                 state.setLastUncompressed(uncompressed);
             } catch (IOException e) {
-                return "";
+                return new DataEntry(entry.getName(), new byte[0], entry.getCharset());
             }
         }
 
         // get the "entry" from this block.
         int entryCount = SwordUtil.decodeLittleEndian32(uncompressed, 0);
         if (blockEntry >= entryCount) {
-            return "";
+            return new DataEntry(entry.getName(), new byte[0], entry.getCharset());
         }
 
         int entryOffset = BLOCK_ENTRY_COUNT + (BLOCK_ENTRY_SIZE * blockEntry);
         int entryStart = SwordUtil.decodeLittleEndian32(uncompressed, entryOffset);
-        // Note: the actual entry is '\0' terminated
         int entrySize = SwordUtil.decodeLittleEndian32(uncompressed, entryOffset + 4);
+        // Note: the actual entry is '\0' terminated
+        int nullTerminator = SwordUtil.findByte(uncompressed, entryStart, (byte) 0x00);
+        if (nullTerminator - entryStart + 1 == entrySize) {
+            entrySize -= 1;
+        }
         byte[] entryBytes = new byte[entrySize];
         System.arraycopy(uncompressed, entryStart, entryBytes, 0, entrySize);
+        DataEntry finalEntry = new DataEntry(entry.getName(), entryBytes, getBookMetaData().getBookCharset());
 
-        return SwordUtil.decode(entry.getName(), entryBytes, getBookMetaData().getBookCharset()).trim();
+        return finalEntry;
     }
 
     /**

@@ -67,22 +67,28 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
         this.entrysize = OFFSETSIZE + datasize;
     }
 
-    public String readRawContent(RawLDBackendState state, Key key, String keyName) throws IOException {
-        String result = readRawContent(state, key.getName());
-        return result;
+    public String readRawContent(RawLDBackendState state, Key key) throws IOException {
+        return readRawContent(state, key.getName());
     }
 
     public RawLDBackendState initState() throws BookException {
         return OpenFileStateManager.getRawLDBackendState(getBookMetaData());
     }
 
-    public String readRawContent(RawLDBackendState state, String key) throws IOException {
+    private String readRawContent(RawLDBackendState state, String key) throws IOException {
         int pos = search(state, key);
         if (pos >= 0) {
             DataEntry entry = getEntry(state, key, pos);
+            entry = getEntry(state, entry);
             if (entry.isLinkEntry()) {
                 return readRawContent(state, entry.getLinkTarget());
             }
+//            // If the ZLDBackend is linked then the above isn't linked but
+//            // the raw text is.
+//            String raw = getRawText(state, entry);
+//            if (raw.startsWith("@LINK")) {
+//                return readRawContent(state, raw.substring(6).trim());
+//            }
             return getRawText(state, entry);
         }
         // TRANSLATOR: Error condition: Indicates that something could not
@@ -92,16 +98,18 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
 
     protected String getRawText(RawLDBackendState state, DataEntry entry) {
         String cipherKeyString = (String) getBookMetaData().getProperty(ConfigEntryType.CIPHER_KEY);
-        try {
-            return entry.getRawText((cipherKeyString != null) ? cipherKeyString.getBytes(getBookMetaData().getBookCharset()) : null);
-        } catch (UnsupportedEncodingException e) {
-            return entry.getRawText(cipherKeyString.getBytes());
+        byte[] cipherKeyBytes = null;
+        if (cipherKeyString != null) {
+            try {
+                cipherKeyBytes = cipherKeyString.getBytes(getBookMetaData().getBookCharset());
+            } catch (UnsupportedEncodingException e) {
+                cipherKeyBytes = cipherKeyString.getBytes();
+            }
         }
+        return entry.getRawText(cipherKeyBytes);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getCardinality()
      */
     public int getCardinality() {
@@ -122,9 +130,7 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#get(int)
      */
     public Key get(int index) {
@@ -147,12 +153,8 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
         throw new ArrayIndexOutOfBoundsException(index);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage
-     * .Key)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Key#indexOf(org.crosswire.jsword.passage.Key)
      */
     public int indexOf(Key that) {
         RawLDBackendState state = null;
@@ -205,8 +207,19 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
         DataIndex dataIndex = getIndex(state, index);
         // Now read the data file for this key using the offset and size
         byte[] data = SwordUtil.readRAF(state.getDatRaf(), dataIndex.getOffset(), dataIndex.getSize());
-
         return new DataEntry(reply, data, getBookMetaData().getBookCharset());
+    }
+
+    /**
+     * Get the entry indicated by this entry. If this entry doesn't indicate any other entry
+     * then it returns the entry. Note, this is used by compressed dictionaries to get the deeper stuff.
+     * 
+     * @param state the state where the entry can be found
+     * @param entry the entry that might indicate a deeper entry
+     * @return the final entry
+     */
+    protected DataEntry getEntry(RawLDBackendState state, DataEntry entry) {
+        return entry;
     }
 
     /**
@@ -218,59 +231,57 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
      * @throws IOException
      */
     private int search(RawLDBackendState state, String key) throws IOException {
-            String target = external2internal(key);
+        // Note: In some dictionaries, the first element is out of order and
+        // represents the title of the work.
+        // So, do the bin search from 1 to end and if not found, check the
+        // first element as a special case.
+        // If that does not match return the position found otherwise.
 
-            // Initialize to one beyond both ends.
-            int total = getCardinality();
-            // Note: In some dictionaries, the first element is out of order and
-            // represents the title of the work.
-            // So, do the bin search from 1 to end and if not found, check the
-            // first
-            // element as a special case.
-            // If that does not match return the position found otherwise.
-            int low = 0;
-            int high = total;
-            int match = -1;
+        // Initialize to one beyond both ends.
+        int total = getCardinality();
+        int low = 0;
+        int high = total;
+        int match = -1;
 
-            while (high - low > 1) {
-                // use >>> to keep mid always in range
-                int mid = (low + high) >>> 1;
+        while (high - low > 1) {
+            // use >>> to keep mid always in range
+            int mid = (low + high) >>> 1;
 
-                // Get the key for the item at "mid"
-                int cmp = normalizeForSearch(getEntry(state, key, mid).getKey()).compareTo(target);
-                if (cmp < 0) {
-                    low = mid;
-                } else if (cmp > 0) {
-                    high = mid;
-                } else {
-                    match = mid;
-                    break;
-                }
+            // Get the key for the item at "mid"
+            String entryKey = getEntry(state, key, mid).getKey();
+            int cmp = entryKey.compareTo(normalizeForSearch(external2internal(key, entryKey)));
+            if (cmp < 0) {
+                low = mid;
+            } else if (cmp > 0) {
+                high = mid;
+            } else {
+                match = mid;
+                break;
             }
+        }
 
-            // Do we have an exact match?
-            if (match >= 0) {
-                return match;
-            }
+        // Do we have an exact match?
+        if (match >= 0) {
+            return match;
+        }
 
-            // Strong's Greek And Hebrew dictionaries have an introductory
-            // entry, so
-            // check it for a match.
-            if (normalizeForSearch(getEntry(state, key, 0).getKey()).compareTo(target) == 0) {
-                return 0;
-            }
+        // Many dictionaries have an introductory entry, so check it for a match.
+        if (normalizeForSearch(getEntry(state, key, 0).getKey()).compareTo(key) == 0) {
+            return 0;
+        }
 
-            return -(high + 1);
+        return -(high + 1);
     }
 
     /**
-     * Convert the supplied key to something that can be understood by the
-     * module.
+     * Convert the supplied key to something that can be understood by the module.
+     * Use firstKey to determine the pattern for Strong's numbers.
      * 
-     * @param externalKey
+     * @param externalKey The external key to normalize
+     * @param pattern The first non-introduction key in the module.
      * @return the internal representation of the key.
      */
-    private String external2internal(String externalKey) {
+    private String external2internal(String externalKey, String pattern) {
         SwordBookMetaData bmd = getBookMetaData();
         String keytitle = externalKey;
         if (BookCategory.DAILY_DEVOTIONS.equals(bmd.getBookCategory())) {
@@ -310,10 +321,11 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
 
             // Get the number after the G or H
             int strongsNumber = Integer.parseInt(keytitle.substring(1));
+            // If it has both Greek and Hebrew, then the G and H are needed.
+            StringBuilder buf = new StringBuilder();
             if (bmd.hasFeature(FeatureType.GREEK_DEFINITIONS) && bmd.hasFeature(FeatureType.HEBREW_DEFINITIONS)) {
                 // The convention is that a Strong's dictionary with both Greek
                 // and Hebrew have G or H prefix
-                StringBuilder buf = new StringBuilder();
                 buf.append(Character.toUpperCase(type));
                 buf.append(getZero4Pad().format(strongsNumber));
 
@@ -325,9 +337,27 @@ public class RawLDBackend<T extends RawLDBackendState> extends AbstractKeyBacken
                 return buf.toString();
             }
 
+            m = STRONGS_PATTERN.matcher(pattern);
+            if (m.matches()) {
+                buf.append(Character.toUpperCase(type));
+                int numLength = m.group(2).length();
+                if (numLength == 4) {
+                    buf.append(getZero4Pad().format(strongsNumber));
+                } else {
+                    buf.append(getZero5Pad().format(strongsNumber));
+                }
+                // The NAS lexicon has some entries that end in A-Z, but it is
+                // not preceded by a !
+                if (hasTrailingLetter && "naslex".equalsIgnoreCase(bmd.getInitials())) {
+                    buf.append(Character.toUpperCase(lastLetter));
+                }
+                return buf.toString();
+            }
+
+            // It is just the number
             return getZero5Pad().format(strongsNumber);
         }
-            return keytitle.toUpperCase(Locale.US);
+        return keytitle.toUpperCase(Locale.US);
     }
 
     private String internal2external(String internalKey) {

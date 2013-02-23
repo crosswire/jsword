@@ -96,13 +96,13 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
     }
 
     public String getRawText(RawBackendState state, Key key) throws IOException {
-        return readRawContent(state, key, key.getName());
+        return readRawContent(state, key);
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key)
      */
-    public String readRawContent(RawBackendState state, Key key, String keyName) throws IOException {
+    public String readRawContent(RawBackendState state, Key key) throws IOException {
         String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
         Versification v11n = Versifications.instance().getVersification(v11nName);
         Verse verse = KeyUtil.getVerse(key);

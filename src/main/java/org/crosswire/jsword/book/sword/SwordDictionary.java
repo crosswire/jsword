@@ -79,7 +79,7 @@ public class SwordDictionary extends AbstractBook {
         String txt = null;
         try {
             state = backend.initState();
-            txt = backend.readRawContent(state, key, key.getName());
+            txt = backend.readRawContent(state, key);
         } catch (IOException e) {
             throw new BookException(e.getMessage(), e);
         } finally {
@@ -99,7 +99,7 @@ public class SwordDictionary extends AbstractBook {
         OpenFileState state = null;
         try {
             state = backend.initState();
-            return backend.readRawContent(state, key, key.getName());
+            return backend.readRawContent(state, key);
         } catch (IOException e) {
            throw new BookException("Unable to obtain raw content from backend", e);
         } finally {

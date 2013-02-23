@@ -287,6 +287,7 @@ public final class SwordUtil {
     /**
      * Transform a byte array into a string given the encoding. If the encoding
      * is bad then it just does it as a string.
+     * Note: this may modify data. Don't use it to examine data.
      * 
      * @param data
      *            The byte array to be converted
@@ -301,6 +302,7 @@ public final class SwordUtil {
     /**
      * Transform a portion of a byte array into a string given the encoding. If
      * the encoding is bad then it just does it as a string.
+     * Note: this may modify data. Don't use it to examine data.
      * 
      * @param data
      *            The byte array to be converted
@@ -317,7 +319,7 @@ public final class SwordUtil {
     /**
      * Transform a portion of a byte array starting at an offset into a string
      * given the encoding. If the encoding is bad then it just does it as a
-     * string.
+     * string. Note: this may modify data. Don't use it to examine data.
      * 
      * @param data
      *            The byte array to be converted
@@ -330,12 +332,14 @@ public final class SwordUtil {
      * @return a string that is UTF-8 internally
      */
     public static String decode(String key, byte[] data, int offset, int length, String charset) {
-        if ("WINDOWS-1252".equals(charset)) {
-            clean1252(key, data, length);
-        }
+         if ("WINDOWS-1252".equals(charset)) {
+            clean1252(key, data, offset, length);
+         }
         String txt = "";
         try {
-            txt = new String(data, offset, length, charset);
+            if (offset + length <= data.length) {
+                txt = new String(data, offset, length, charset);
+            }
         } catch (UnsupportedEncodingException ex) {
             // It is impossible! In case, use system default...
             log.error(key + ": Encoding: " + charset + " not supported", ex);
@@ -350,18 +354,14 @@ public final class SwordUtil {
      * valid in cp1252 aka WINDOWS-1252 and in UTF-8 or are non-printing control
      * characters in the range of 0-32.
      */
-    public static void clean1252(String key, byte[] data) {
-        clean1252(key, data, data.length);
-    }
-
-    /**
-     * Remove rogue characters in the source. These are characters that are not
-     * valid in cp1252 aka WINDOWS-1252 and in UTF-8 or are non-printing control
-     * characters in the range of 0-32.
-     */
-    public static void clean1252(String key, byte[] data, int length) {
-        for (int i = 0; i < length; i++) {
-            // between 0-32 only allow whitespace
+    private static void clean1252(String key, byte[] data, int offset, int length) {
+        int end = offset + length;
+        // make sure it doesn't go off the end
+        if (end > data.length) {
+            end = data.length;
+        }
+        for (int i = offset; i < end; i++) {
+            // between 0-32 only allow whitespace: \t, \n, \r, ' '
             // characters 0x81, 0x8D, 0x8F, 0x90 and 0x9D are undefined in
             // cp1252
             int c = data[i] & 0xFF;

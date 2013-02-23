@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.util;
 
@@ -85,7 +84,7 @@ public final class StackTrace {
         int j = 0;
         for (int i = 0; i < calls.length - discard; i++) {
             String call = calls[i + discard];
-
+            boolean oops = false;
             try {
                 if (!(call.startsWith("Caused") || call.indexOf("...") >= 0)) {
                     int spcIndex = call.indexOf(' ');
@@ -109,6 +108,13 @@ public final class StackTrace {
                     j++;
                 }
             } catch (NumberFormatException ex2) {
+                oops = true;
+            } catch (StringIndexOutOfBoundsException ex2) {
+                // For whatever reason, Java 7 under Web Start is throwing this on
+                // call.substring(spcIndex + 1, lhsIndex) with a -56 being passed.
+                oops = true;
+            }
+            if (oops) {
                 classNames[j] = "ParseError: ";
                 methodNames[j] = call;
                 fileNames[j] = "Error";

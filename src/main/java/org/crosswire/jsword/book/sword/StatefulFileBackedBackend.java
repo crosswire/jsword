@@ -55,9 +55,9 @@ public interface StatefulFileBackedBackend<T extends OpenFileState> {
      *            the name of the current key
      * @return the raw text
      * @throws IOException
-     *             something whent wrong when reading the verse
+     *             something went wrong when reading the verse
      */
-     String readRawContent(T state, Key key, String keyName) throws BookException, IOException;
+     String readRawContent(T state, Key key) throws BookException, IOException;
 
      /**
       * Set the text allotted for the given verse

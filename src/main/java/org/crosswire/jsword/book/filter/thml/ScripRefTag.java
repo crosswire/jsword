@@ -27,6 +27,8 @@ import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageKeyFactory;
+import org.crosswire.jsword.versification.system.Versifications;
 import org.jdom.Element;
 import org.xml.sax.Attributes;
 
@@ -53,7 +55,7 @@ public class ScripRefTag extends AbstractTag {
         if (refstr != null) {
             Passage ref = null;
             try {
-                ref = (Passage) book.getKey(refstr);
+                ref = (Passage) PassageKeyFactory.instance().getKey(Versifications.instance().getDefaultVersification(), refstr);
             } catch (NoSuchKeyException ex) {
                 DataPolice.report(book, key, "Unparsable passage: (" + refstr + ") due to " + ex.getMessage());
             }
@@ -79,9 +81,14 @@ public class ScripRefTag extends AbstractTag {
         String refstr = ele.getValue();
         try {
             if (ele.getAttribute(OSISUtil.OSIS_ATTR_REF) == null) {
-                Passage ref = (Passage) book.getKey(refstr);
-                String osisname = ref.getOsisRef();
-                ele.setAttribute(OSISUtil.OSIS_ATTR_REF, osisname);
+                Key refKey = PassageKeyFactory.instance().getKey(Versifications.instance().getDefaultVersification(), refstr);
+                if (refKey instanceof Passage) {
+                    Passage ref = (Passage) refKey;
+                    String osisname = ref.getOsisRef();
+                    ele.setAttribute(OSISUtil.OSIS_ATTR_REF, osisname);
+                } else {
+                    DataPolice.report(book, key, "reference is not a passage");
+                }
             }
         } catch (NoSuchKeyException ex) {
             DataPolice.report(book, key, "scripRef has no passage attribute, unable to guess: (" + refstr + ") due to " + ex.getMessage());

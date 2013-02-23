@@ -63,7 +63,7 @@ public class GenBookBackend extends AbstractBackend<GenBookBackendState> {
         }
     }
 
-    public String readRawContent(GenBookBackendState state, Key key, String keyName) throws IOException, BookException {
+    public String readRawContent(GenBookBackendState state, Key key) throws IOException, BookException {
         TreeNode node = find(key);
 
         if (node == null) {
@@ -71,7 +71,7 @@ public class GenBookBackend extends AbstractBackend<GenBookBackendState> {
             // not be found in the book.
             // {0} is a placeholder for the unknown key.
             // {1} is the short name of the book
-            throw new BookException(JSMsg.gettext("No entry for '{0}' in {1}.", keyName, getBookMetaData().getInitials()));
+            throw new BookException(JSMsg.gettext("No entry for '{0}' in {1}.", key.getName(), getBookMetaData().getInitials()));
         }
 
         byte[] userData = node.getUserData();
@@ -82,7 +82,7 @@ public class GenBookBackend extends AbstractBackend<GenBookBackendState> {
             int size = SwordUtil.decodeLittleEndian32(userData, 4);
             byte[] data = SwordUtil.readRAF(state.getBdtRaf(), start, size);
             decipher(data);
-            return SwordUtil.decode(keyName, data, getBookMetaData().getBookCharset());
+            return SwordUtil.decode(key.getName(), data, getBookMetaData().getBookCharset());
         }
 
         return "";

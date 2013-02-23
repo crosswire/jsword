@@ -26,9 +26,13 @@ import org.crosswire.common.util.Logger;
 
 /**
  * Data entry represents an entry in a Data file. The entry consists of a key
- * and an optional payload. The payload may be the content, that is rawtext. The
- * payload may be an alias for another entry. The payload may be a block
- * locator.
+ * and an optional payload.
+ * <p>The payload may be:</p>
+ * <ul>
+ * <li>the content, that is raw text</li>
+ * <li>an alias (@LINK) for another entry</li>
+ * <li>a block locator</li>
+ * </ul>
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
@@ -49,6 +53,8 @@ public class DataEntry {
         this.name = name;
         this.data = data.clone();
         this.charset = charset;
+        // The key always ends with \n, typically \r\n
+        this.keyEnd = SwordUtil.findByte(this.data, SEPARATOR);
     }
 
     /**
@@ -61,19 +67,27 @@ public class DataEntry {
     }
 
     /**
+     * Get the charset in which the data is encoded.
+     * @return this entry's charset
+     */
+    public String getCharset() {
+        return charset;
+    }
+
+    /**
      * Get the key from this DataEntry.
      * 
      * @return the key
      */
     public String getKey() {
         if (key == null) {
-            keyEnd = SwordUtil.findByte(data, SEPARATOR);
-
             if (keyEnd < 0) {
                 log.error("Failed to find key. name='" + name + "'");
                 return "";
             }
 
+            // The key may have whitespace, including \r on the end,
+            // that is not actually part of the key.
             key = SwordUtil.decode(name, data, keyEnd, charset).trim();
 
             // for some weird reason plain text dictionaries
@@ -92,11 +106,13 @@ public class DataEntry {
      * @return whether this is an alias entry
      */
     public boolean isLinkEntry() {
-        if (data.length >= 5) {
-            String linkCheck = SwordUtil.decode(name, data, getKeyEnd() + 1, 5, charset);
-            return "@LINK".equals(linkCheck);
-        }
-        return false;
+        // 6 represents the length of "@LINK" when keyEnd is -1
+        return keyEnd + 6 < data.length
+                && data[keyEnd + 1] == '@'
+                && data[keyEnd + 2] == 'L'
+                && data[keyEnd + 3] == 'I'
+                && data[keyEnd + 4] == 'N'
+                && data[keyEnd + 5] == 'K';
     }
 
     /**
@@ -108,7 +124,7 @@ public class DataEntry {
      */
     public String getLinkTarget() {
         // 6 represents the length of "@LINK" + 1 to skip the last separator.
-        int linkStart = getKeyEnd() + 6;
+        int linkStart = keyEnd + 6;
         int len = getLinkEnd() - linkStart + 1;
         return SwordUtil.decode(name, data, linkStart, len, charset).trim();
     }
@@ -121,7 +137,7 @@ public class DataEntry {
      * @return the raw text
      */
     public String getRawText(byte[] cipherKey) {
-        int textStart = getKeyEnd() + 1;
+        int textStart = keyEnd + 1;
         cipher(cipherKey, textStart);
         return SwordUtil.decode(name, data, textStart, data.length - textStart, charset).trim();
     }
@@ -132,21 +148,8 @@ public class DataEntry {
      * @return the index of the block
      */
     public DataIndex getBlockIndex() {
-        int start = getKeyEnd() + 1;
+        int start = keyEnd + 1;
         return new DataIndex(SwordUtil.decodeLittleEndian32(data, start), SwordUtil.decodeLittleEndian32(data, start + 4));
-    }
-
-    /**
-     * Get the position of the first \n in the data. This represents the end of
-     * the key and the start of the rest of the data.
-     * 
-     * @return the end of the key or -1 if not found.
-     */
-    private int getKeyEnd() {
-        if (keyEnd == 0) {
-            keyEnd = SwordUtil.findByte(data, SEPARATOR);
-        }
-        return keyEnd;
     }
 
     /**
@@ -157,7 +160,10 @@ public class DataEntry {
      */
     private int getLinkEnd() {
         if (linkEnd == 0) {
-            linkEnd = SwordUtil.findByte(data, getKeyEnd() + 1, SEPARATOR);
+            linkEnd = SwordUtil.findByte(data, keyEnd + 1, SEPARATOR);
+            if (linkEnd == -1) {
+                linkEnd = data.length - 1;
+            }
         }
         return linkEnd;
     }
@@ -206,12 +212,12 @@ public class DataEntry {
     private String key;
 
     /**
-     * The index of the separator between the key and the rest of the stuff.
+     * The index of the separator between the key and the payload.
      */
     private int keyEnd;
 
     /**
-     * The index of the separator between the link and the rest of the stuff.
+     * The index of the separator between the link and the payload.
      */
     private int linkEnd;
 

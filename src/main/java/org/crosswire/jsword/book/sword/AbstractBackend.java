@@ -184,7 +184,7 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
             Key next = iterator.next();
             String rawText;
             try {
-                rawText = readRawContent(openFileState, next, next.getName());
+                rawText = readRawContent(openFileState, next);
                 processor.postVerse(next, content, rawText);
             } catch (IOException e) {
                 // failed to process key 'next'
@@ -222,8 +222,7 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
                 // now iterate through all verses in range
                 for (Key verseInRange : range) {
                     currentVerse = KeyUtil.getVerse(verseInRange);
-                    final String keyName = verseInRange.getName();
-                    String rawText = readRawContent(openFileState, currentVerse, keyName);
+                    String rawText = readRawContent(openFileState, currentVerse);
                     processor.postVerse(verseInRange, content, rawText);
                 }
             }

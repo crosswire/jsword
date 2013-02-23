@@ -226,7 +226,7 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
         return OpenFileStateManager.getZVerseBackendState(getBookMetaData(), blockType);
     }
 
-    public String readRawContent(ZVerseBackendState rafBook, Key key, String keyName) throws IOException {
+    public String readRawContent(ZVerseBackendState rafBook, Key key) throws IOException {
 
         SwordBookMetaData bookMetaData = getBookMetaData();
         final String charset = bookMetaData.getBookCharset();
@@ -307,7 +307,7 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
         final byte[] chopped = new byte[verseSize];
         System.arraycopy(uncompressed, verseStart, chopped, 0, verseSize);
 
-        return SwordUtil.decode(keyName, chopped, charset);
+        return SwordUtil.decode(key.getName(), chopped, charset);
 
     }
 
