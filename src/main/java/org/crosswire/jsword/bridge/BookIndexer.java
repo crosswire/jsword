@@ -26,6 +26,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.index.IndexManager;
 import org.crosswire.jsword.index.IndexManagerFactory;
+import org.crosswire.jsword.index.IndexStatus;
 import org.crosswire.jsword.index.IndexStatusEvent;
 import org.crosswire.jsword.index.IndexStatusListener;
 
@@ -106,7 +107,10 @@ public class BookIndexer {
         }
 
         public void statusChanged(IndexStatusEvent ev) {
-            indexer.setDone(true);
+            IndexStatus newStatus = ev.getIndexStatus(); 
+            if (IndexStatus.DONE.equals(newStatus) || IndexStatus.UNDONE.equals(newStatus) || IndexStatus.INVALID.equals(newStatus)) {
+                indexer.setDone(true);
+            }
         }
 
         private BookIndexer indexer;
