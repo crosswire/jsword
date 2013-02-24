@@ -44,7 +44,7 @@ import org.crosswire.jsword.versification.Versification;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public final class VerseRange implements Key {
+public final class VerseRange implements VerseKey {
     /**
      * The default VerseRange is a single verse - Genesis 1:1. I didn't want to
      * provide this constructor however, you are supposed to provide a default

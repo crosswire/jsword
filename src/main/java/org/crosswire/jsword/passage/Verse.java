@@ -50,7 +50,7 @@ import org.crosswire.jsword.versification.system.Versifications;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith
  */
-public final class Verse implements Key {
+public final class Verse implements VerseKey {
     /**
      * The default Verse is Genesis 1:1. I didn't want to provide this
      * constructor however, you are supposed to provide a default ctor for all

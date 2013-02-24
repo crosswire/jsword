@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -79,17 +79,25 @@ public class RangedPassage extends AbstractPassage {
      * However since getName() is standardized this will be true. We don't need
      * to worry about thread safety in a ctor since we don't exist yet.
      * 
+     * @param v11n
+     *            The Versification to which this Passage belongs.
      * @param refs
      *            A String containing the text of the RangedPassage
+     * @param basis
+     *           The basis by which to interpret refs
      * @throws NoSuchVerseException
      *             if refs is invalid
      */
-    protected RangedPassage(Versification refSystem, String refs) throws NoSuchVerseException {
-        super(refSystem, refs);
+    protected RangedPassage(Versification v11n, String refs, Key basis) throws NoSuchVerseException {
+        super(v11n, refs);
 
         store = new TreeSet<Key>();
-        addVerses(refs);
+        addVerses(refs, basis);
         normalize();
+    }
+
+    protected RangedPassage(Versification v11n, String refs) throws NoSuchVerseException {
+        this(v11n, refs, null);
     }
 
     @Override

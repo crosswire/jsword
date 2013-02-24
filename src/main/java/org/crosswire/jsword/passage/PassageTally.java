@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors. 
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.passage;
 
@@ -119,13 +118,19 @@ public class PassageTally extends AbstractPassage {
      *            The Versification to which this Passage belongs.
      * @param refs
      *            The text to interpret
+     * @param basis
+     *           The basis by which to interpret refs
      * @throws NoSuchVerseException
      *             If refs is invalid
      */
-    public PassageTally(Versification v11n, String refs) throws NoSuchVerseException {
+    public PassageTally(Versification v11n, String refs, Key basis) throws NoSuchVerseException {
         super(v11n, refs);
         board = new int[v11n.maximumOrdinal() + 1];
-        addVerses(refs);
+        addVerses(refs, basis);
+    }
+
+    public PassageTally(Versification v11n, String refs) throws NoSuchVerseException {
+        this(v11n, refs, null);
     }
 
     @Override

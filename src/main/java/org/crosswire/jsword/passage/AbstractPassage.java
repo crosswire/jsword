@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2103
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -50,7 +50,8 @@ import org.crosswire.jsword.versification.system.Versifications;
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
- * @author Joe Walker [joe at eireneh dot com]
+ * @author Joe Walker
+ * @author DM Smith
  */
 public abstract class AbstractPassage implements Passage {
     /**
@@ -653,7 +654,7 @@ public abstract class AbstractPassage implements Passage {
             }
 
             count++;
-            addVerses(line);
+            addVerses(line, null);
         }
 
         // If the file was empty then there is nothing to do
@@ -880,10 +881,12 @@ public abstract class AbstractPassage implements Passage {
      * 
      * @param refs
      *            A String containing the text of the RangedPassage
+     * @param basis
+     *            The basis for understanding refs
      * @throws NoSuchVerseException
      *             if the string is invalid
      */
-    protected void addVerses(String refs) throws NoSuchVerseException {
+    protected void addVerses(String refs, Key basis) throws NoSuchVerseException {
         optimizeWrites();
 
         String[] parts = StringUtil.split(refs, AbstractPassage.REF_ALLOWED_DELIMS);
@@ -891,17 +894,28 @@ public abstract class AbstractPassage implements Passage {
             return;
         }
 
-        // We treat the first as a special case because there is
-        // nothing to sensibly base this reference on
-        VerseRange basis = VerseRangeFactory.fromString(v11n, parts[0].trim());
-        add(basis);
+        int start = 0;
+        VerseRange vrBasis = null;
+        if (basis instanceof Verse) {
+            vrBasis = new VerseRange(v11n, (Verse) basis);
+        } else if (basis instanceof VerseRange) {
+            vrBasis = (VerseRange) basis;
+        } else {
+            // If we are not passed a useful basis,
+            // then we treat the first as a special case because there is
+            // nothing to sensibly base this reference on
+            vrBasis = VerseRangeFactory.fromString(v11n, parts[0].trim());
+            // We add it because it was part of the given input
+            add(vrBasis);
+            start = 1;
+        }
 
         // Loop for the other verses, interpreting each on the
         // basis of the one before.
-        for (int i = 1; i < parts.length; i++) {
-            VerseRange next = VerseRangeFactory.fromString(v11n, parts[i].trim(), basis);
+        for (int i = start; i < parts.length; i++) {
+            VerseRange next = VerseRangeFactory.fromString(v11n, parts[i].trim(), vrBasis);
             add(next);
-            basis = next;
+            vrBasis = next;
         }
     }
 

@@ -14,14 +14,14 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.passage;
 
 import org.crosswire.jsword.versification.Versification;
+import org.crosswire.jsword.versification.system.Versifications;
 
 /**
  * .
@@ -103,25 +103,28 @@ public final class KeyUtil {
             return (Passage) key;
         }
 
-        PassageKeyFactory keyf = PassageKeyFactory.instance();
-        Key ref = null;
-        if (key instanceof Verse) {
-            Verse verse = (Verse) key;
-            ref = keyf.createEmptyKeyList(verse.getVersification());
-            ref.addAll(verse);
-            return (Passage) ref;
-        }
-
-        if (key instanceof VerseRange) {
-            VerseRange range = (VerseRange) key;
-            ref = keyf.createEmptyKeyList(range.getVersification());
-            ref.addAll(range);
+        if (key instanceof VerseKey) {
+            VerseKey verseKey = (VerseKey) key;
+            Key ref = PassageKeyFactory.instance().createEmptyKeyList(verseKey.getVersification());
+            ref.addAll(verseKey);
             return (Passage) ref;
         }
 
         throw new ClassCastException("Expected key to be a Verse, VerseRange or Passage");
     }
 
+    /**
+     * Get the versification for the key or the default versification.
+     * 
+     * @param key the key that should provide for the Versification
+     * @return the versification for the key
+     */
+    public static Versification getVersification(Key key) {
+        if (key instanceof VerseKey) {
+            return ((VerseKey) key).getVersification();
+        } 
+        return Versifications.instance().getVersification(Versifications.DEFAULT_V11N);
+    }
     /**
      * Not all keys represent verses, but we ought to be able to get something
      * close to a verse from anything that does verse like work.

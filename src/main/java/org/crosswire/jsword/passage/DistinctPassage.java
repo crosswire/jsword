@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -70,14 +70,20 @@ public class DistinctPassage extends AbstractPassage {
      *            The Versification to which this Passage belongs.
      * @param refs
      *            A String containing the text of the DistinctPassage
+     * @param basis
+     *           The basis by which to interpret refs
      * @throws NoSuchVerseException
      *             If the string is not valid
      */
-    protected DistinctPassage(Versification v11n, String refs) throws NoSuchVerseException {
+    protected DistinctPassage(Versification v11n, String refs, Key basis) throws NoSuchVerseException {
         super(v11n, refs);
 
         store = Collections.synchronizedSortedSet(new TreeSet<Key>());
-        addVerses(refs);
+        addVerses(refs, basis);
+    }
+
+    protected DistinctPassage(Versification v11n, String refs) throws NoSuchVerseException {
+        this(v11n, refs, null);
     }
 
     /**

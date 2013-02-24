@@ -14,15 +14,13 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.passage;
 
 import org.crosswire.jsword.versification.Versification;
-
 
 /**
  * Types of Passage optimizations.
@@ -37,11 +35,11 @@ public enum PassageType {
      */
     SPEED {
         @Override
-        public Passage createPassage(Versification v11n, String passage) throws NoSuchVerseException {
+        public Passage createPassage(Versification v11n, String passage, Key basis) throws NoSuchVerseException {
             if (passage == null || passage.length() == 0) {
                 return createEmptyPassage(v11n);
             }
-            return new RocketPassage(v11n, passage);
+            return new RocketPassage(v11n, passage, basis);
         }
 
         @Override
@@ -55,11 +53,11 @@ public enum PassageType {
      */
     WRITE_SPEED {
         @Override
-        public Passage createPassage(Versification v11n, String passage) throws NoSuchVerseException {
+        public Passage createPassage(Versification v11n, String passage, Key basis) throws NoSuchVerseException {
             if (passage == null || passage.length() == 0) {
                 return createEmptyPassage(v11n);
             }
-            return new BitwisePassage(v11n, passage);
+            return new BitwisePassage(v11n, passage, basis);
         }
 
         @Override
@@ -73,11 +71,11 @@ public enum PassageType {
      */
     SIZE {
         @Override
-        public Passage createPassage(Versification v11n, String passage) throws NoSuchVerseException {
+        public Passage createPassage(Versification v11n, String passage, Key basis) throws NoSuchVerseException {
             if (passage == null || passage.length() == 0) {
                 return createEmptyPassage(v11n);
             }
-            return new DistinctPassage(v11n, passage);
+            return new DistinctPassage(v11n, passage, basis);
         }
 
         @Override
@@ -96,11 +94,11 @@ public enum PassageType {
      */
     MIX {
         @Override
-        public Passage createPassage(Versification v11n, String passage) throws NoSuchVerseException {
+        public Passage createPassage(Versification v11n, String passage, Key basis) throws NoSuchVerseException {
             if (passage == null || passage.length() == 0) {
                 return createEmptyPassage(v11n);
             }
-            return new PassageTally(v11n, passage);
+            return new PassageTally(v11n, passage, basis);
         }
 
         @Override
@@ -114,11 +112,11 @@ public enum PassageType {
      */
     TALLY {
         @Override
-        public Passage createPassage(Versification v11n, String passage) throws NoSuchVerseException {
+        public Passage createPassage(Versification v11n, String passage, Key basis) throws NoSuchVerseException {
             if (passage == null || passage.length() == 0) {
                 return createEmptyPassage(v11n);
             }
-            return new PassageTally(v11n, passage);
+            return new PassageTally(v11n, passage, basis);
         }
 
         @Override
@@ -134,7 +132,10 @@ public enum PassageType {
      * @return the optimized passage
      * @throws NoSuchVerseException
      */
-    public abstract Passage createPassage(Versification v11n, String passage) throws NoSuchVerseException;
+    public abstract Passage createPassage(Versification v11n, String passage, Key basis) throws NoSuchVerseException;
+    public Passage createPassage(Versification v11n, String passage) throws NoSuchVerseException {
+        return createPassage(v11n, passage, null);
+    }
 
     /**
      * Create an empty, optimized passage
