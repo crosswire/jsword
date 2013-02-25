@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.util;
 
@@ -25,6 +24,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import org.slf4j.LoggerFactory;
 
 /**
  * Various Java Class Utilities.
@@ -72,14 +73,14 @@ public final class ClassUtil {
 
                     if (entry != null && !entry.isDirectory()) {
                         if (full != null && !full.equals(fileName)) {
-                            log.warn("Warning duplicate " + classname + " found: " + full + " and " + paths[i]);
+                            log.warn("Warning duplicate {} found: {} and {}", classname, full, paths[i]);
                         } else {
                             full = paths[i];
                         }
                     }
                 } catch (IOException ex) {
                     // If that zip file failed, then ignore it and move on.
-                    log.warn("Missing zip file for " + classname + " and " + paths[i]);
+                    log.warn("Missing zip file for {} and {}", classname, paths[i]);
                 } finally {
                     IOUtil.close(zip);
                 }
@@ -100,7 +101,7 @@ public final class ClassUtil {
 
                 if (new File(fileName).isFile()) {
                     if (full != null && !full.equals(fileName)) {
-                        log.warn("Warning duplicate " + classname + " found: " + full + " and " + paths[i]);
+                        log.warn("Warning duplicate {} found: {} and {}", classname, full, paths[i]);
                     } else {
                         full = paths[i];
                     }
@@ -211,5 +212,5 @@ public final class ClassUtil {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(ClassUtil.class);
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(ClassUtil.class);
 }

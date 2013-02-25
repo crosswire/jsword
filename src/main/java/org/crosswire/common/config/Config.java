@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import org.crosswire.common.util.EventListenerList;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LucidException;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PropertyMap;
@@ -39,6 +38,8 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSOtherMsg;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Config is the core part of the configuration system; it is simply a
@@ -110,7 +111,7 @@ public class Config implements Iterable<Choice> {
      */
     public void add(Choice model) {
         String key = model.getKey();
-        // log.debug("Adding key=" + key);
+        // log.debug("Adding key={}", key);
 
         keys.add(key);
         models.add(model);
@@ -118,7 +119,7 @@ public class Config implements Iterable<Choice> {
         String value = model.getString();
         if (value == null) {
             value = "";
-            log.info("key=" + key + " had a null value");
+            log.info("key={} had a null value", key);
         }
 
         local.put(key, value);
@@ -160,7 +161,7 @@ public class Config implements Iterable<Choice> {
             }
 
             if (ex != null) {
-                log.warn("Error creating config element, key=" + key, ex);
+                log.warn("Error creating config element, key={}", key, ex);
             }
         }
     }
@@ -268,14 +269,14 @@ public class Config implements Iterable<Choice> {
             // if force==true or if a higher priority choice has
             // changed.
             if (!newValue.equals(oldValue)) {
-                log.info("Setting " + key + "=" + newValue + " (was " + oldValue + ")");
+                log.info("Setting {}={} (was {})", key, newValue, oldValue);
                 try {
                     choice.setString(newValue);
                     if (changeListeners != null) {
                         changeListeners.firePropertyChange(new PropertyChangeEvent(choice, choice.getKey(), oldValue, newValue));
                     }
                 } catch (LucidException ex) {
-                    log.warn("Failure setting " + key + "=" + newValue, ex);
+                    log.warn("Failure setting {}={}", key, newValue, ex);
                     Reporter.informUser(this, new ConfigException(JSOtherMsg.lookupText("Failed to set option: {0}", choice.getFullPath()), ex));
                 }
             }
@@ -512,5 +513,5 @@ public class Config implements Iterable<Choice> {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(Config.class);
+    private static final Logger log = LoggerFactory.getLogger(Config.class);
 }

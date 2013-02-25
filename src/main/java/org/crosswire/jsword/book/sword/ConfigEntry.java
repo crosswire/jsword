@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -25,11 +25,12 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.crosswire.common.util.Histogram;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.OSISUtil;
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A ConfigEntry holds the value(s) for an entry of ConfigEntryType.
@@ -209,7 +210,7 @@ public final class ConfigEntry {
 
         // Report on fields that shouldn't have RTF but do
         if (!allowsRTF() && RTF_PATTERN.matcher(aValue).find()) {
-            log.info(report("Ignoring unexpected RTF for", getName(), aValue));
+            log.info("Ignoring unexpected RTF for {} in {}: {}", confEntryName, internal, aValue);
         }
 
         if (mayRepeat()) {
@@ -221,20 +222,20 @@ public final class ConfigEntry {
                 histogram.increment(confEntryName + '.' + aValue);
             }
             if (!isAllowed(aValue)) {
-                log.info(report("Ignoring unknown config value for", confEntryName, aValue));
+                log.info("Ignoring unknown config value for {} in {}: {}", confEntryName, internal, aValue);
                 return;
             }
             values.add(aValue);
         } else {
             if (value != null) {
-                log.info(report("Ignoring unexpected additional entry for", confEntryName, aValue));
+                log.info("Ignoring unexpected additional entry for {} in {}: {}", confEntryName, internal, aValue);
             } else {
                 histogram.increment(confEntryName);
                 if (type.hasChoices()) {
                     histogram.increment(confEntryName + '.' + aValue);
                 }
                 if (!isAllowed(aValue)) {
-                    log.info(report("Ignoring unknown config value for", confEntryName, aValue));
+                    log.info("Ignoring unknown config value for {} in {}: {}", confEntryName, internal, aValue);
                     return;
                 }
                 value = type.convert(aValue);
@@ -402,19 +403,6 @@ public final class ConfigEntry {
         return list;
     }
 
-    private String report(String issue, String confEntryName, String aValue) {
-        StringBuilder buf = new StringBuilder(100);
-        buf.append(issue);
-        buf.append(' ');
-        buf.append(confEntryName);
-        buf.append(" in ");
-        buf.append(internal);
-        buf.append(": ");
-        buf.append(aValue);
-
-        return buf.toString();
-    }
-
     /**
      * A pattern of allowable RTF in a SWORD conf. These are: \pard, \pae, \par,
      * \qc \b, \i and embedded Unicode
@@ -435,5 +423,5 @@ public final class ConfigEntry {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(ConfigEntry.class);
+    private static final Logger log = LoggerFactory.getLogger(ConfigEntry.class);
 }

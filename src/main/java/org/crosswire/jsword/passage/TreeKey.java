@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -24,7 +24,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.crosswire.common.util.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A Key that knows where the data is in the real file.
@@ -206,7 +207,7 @@ public class TreeKey extends AbstractKeyList {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(TreeKey.class);
+    private static final Logger log = LoggerFactory.getLogger(TreeKey.class);
 
     /**
      * Serialization ID

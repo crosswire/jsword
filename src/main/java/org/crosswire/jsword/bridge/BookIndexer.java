@@ -107,7 +107,7 @@ public class BookIndexer {
         }
 
         public void statusChanged(IndexStatusEvent ev) {
-            IndexStatus newStatus = ev.getIndexStatus(); 
+            IndexStatus newStatus = ev.getIndexStatus();
             if (IndexStatus.DONE.equals(newStatus) || IndexStatus.UNDONE.equals(newStatus) || IndexStatus.INVALID.equals(newStatus)) {
                 indexer.setDone(true);
             }

@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
@@ -26,10 +25,11 @@ import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Various utilities used by different Sword classes.
@@ -80,17 +80,17 @@ public final class SwordUtil {
         long rafSize = raf.length();
 
         if (offset >= rafSize) {
-            log.error("Attempt to read beyond end. offset=" + offset + " size=" + size + " but raf.length=" + rafSize);
+            log.error("Attempt to read beyond end. offset={} size={} but raf.length={}", Long.toString(offset), Integer.toString(size), Long.toString(rafSize));
             return new byte[0];
         }
 
         if (offset + size > raf.length()) {
-            log.error("Need to reduce size to avoid EOFException. offset=" + offset + " size=" + size + " but raf.length=" + rafSize);
+            log.error("Need to reduce size to avoid EOFException. offset={} size={} but raf.length={}", Long.toString(offset), Integer.toString(size), Long.toString(rafSize));
             size = (int) (raf.length() - offset);
         }
 
         if (size < 1) {
-            log.error("Nothing to read at offset = " + offset + " returning empty because size=" + size);
+            log.error("Nothing to read at offset = {} returning empty because size={}", Long.toString(offset), Integer.toString(size));
             return new byte[0];
         }
 
@@ -342,7 +342,7 @@ public final class SwordUtil {
             }
         } catch (UnsupportedEncodingException ex) {
             // It is impossible! In case, use system default...
-            log.error(key + ": Encoding: " + charset + " not supported", ex);
+            log.error("{}: Encoding {} not supported.", key, charset, ex);
             txt = new String(data, offset, length);
         }
 
@@ -367,7 +367,7 @@ public final class SwordUtil {
             int c = data[i] & 0xFF;
             if ((c >= 0x00 && c < 0x20 && c != 0x09 && c != 0x0A && c != 0x0D) || (c == 0x81 || c == 0x8D || c == 0x8F || c == 0x90 || c == 0x9D)) {
                 data[i] = 0x20;
-                log.error(key + " has bad character 0x" + Integer.toString(c, 16) + " at position " + i + " in input.");
+                log.error("{} has bad character 0x{} at position {} in input.", key, Integer.toString(c, 16), Integer.toString(i));
             }
         }
     }
@@ -392,6 +392,6 @@ public final class SwordUtil {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(SwordUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(SwordUtil.class);
 
 }

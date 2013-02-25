@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
@@ -31,12 +30,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.crosswire.common.util.CWProject;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.OSType;
 import org.crosswire.common.util.PropertyMap;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Books;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This represents all of the Sword Books (aka modules).
@@ -371,7 +371,7 @@ public final class SwordBookPath {
     public static void setDownloadDir(File dlDir) {
         if (!"".equals(dlDir.getPath())) {
             overrideDownloadDir = dlDir;
-            log.debug("Setting sword download directory to: " + dlDir);
+            log.debug("Setting sword download directory to: {}", dlDir);
         }
     }
 
@@ -463,6 +463,6 @@ public final class SwordBookPath {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(SwordBookPath.class);
+    private static final Logger log = LoggerFactory.getLogger(SwordBookPath.class);
 
 }

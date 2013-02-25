@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2009-2012
+ * Copyright: 2009-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import org.crosswire.common.util.IOUtil;
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
 import org.crosswire.jsword.book.sword.state.RawBackendState;
@@ -41,6 +40,8 @@ import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.versification.Testament;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A Raw File format that allows for each verse to have it's own storage. The
@@ -99,7 +100,7 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
         }
 
         if (size < 0) {
-            log.error("In " + getBookMetaData().getInitials() + ": Verse " + name + " has a bad index size of " + size);
+            log.error("In {}: Verse {} has a bad index size of {}.", getBookMetaData().getInitials(), name, Integer.toString(size));
             return "";
         }
 
@@ -367,8 +368,7 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
             fos = new FileOutputStream(state.getIncfile(), false);
             fos.write(littleEndian32BitByteArrayFromInt(value));
         } catch (FileNotFoundException e) {
-            log.error("Error on writing to incfile, file should exist already!");
-            log.error(e.getMessage());
+            log.error("Error on writing to incfile, file should exist already!", e);
         } finally {
             if (fos != null) {
                 fos.close();
@@ -388,13 +388,13 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
             byte[] textData = new byte[len];
             inStream = new BufferedInputStream(new FileInputStream(dataFile));
             if (inStream.read(textData) != len) {
-                log.error("Read data is not of appropriate size of " + len + " bytes!");
+                log.error("Read data is not of appropriate size of {} bytes!", Integer.toString(len));
                 throw new IOException("data is not " + len + " bytes long");
             }
             return textData;
         } catch (FileNotFoundException ex) {
-            log.error(ex.getMessage());
-            throw new IOException("Could not read text data file, file not found: " + dataFile.getName());
+            log.error("Could not read text data file, file not found: {}", dataFile.getName(), ex);
+            throw ex;
         } finally {
             if (inStream != null) {
                 inStream.close();
@@ -426,5 +426,5 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
         return buffer;
     }
 
-    private static final Logger log = Logger.getLogger(RawFileBackend.class);
+    private static final Logger log = LoggerFactory.getLogger(RawFileBackend.class);
 }

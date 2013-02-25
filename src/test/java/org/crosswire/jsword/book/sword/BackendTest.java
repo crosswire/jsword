@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2012
+ * Copyright: 2012-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -22,7 +22,6 @@ package org.crosswire.jsword.book.sword;
 
 import junit.framework.TestCase;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
@@ -34,6 +33,8 @@ import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Test simple functionality across multiple backends, to ensure that all types
@@ -346,7 +347,7 @@ public class BackendTest extends TestCase {
 
         final XMLOutputter xmlOutputter = new XMLOutputter(Format.getPrettyFormat());
         String xml = xmlOutputter.outputString(osisFragment);
-        log.debug("For book " + currentBook.getInitials() + " with key " + key.getName() + ", Got " +xml);
+        log.debug("For book {} with key {}, Got {}", currentBook.getInitials(), key.getName(), xml);
 
         for (String s : assertions) {
             assertTrue(s, xml.contains(s));
@@ -357,5 +358,5 @@ public class BackendTest extends TestCase {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(BackendTest.class);
+    private static final Logger log = LoggerFactory.getLogger(BackendTest.class);
 }

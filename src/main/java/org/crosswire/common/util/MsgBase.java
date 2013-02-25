@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.util;
 
@@ -30,6 +29,7 @@ import java.util.ResourceBundle;
 
 import org.crosswire.common.icu.NumberShaper;
 import org.crosswire.jsword.internationalisation.LocaleProviderManager;
+import org.slf4j.LoggerFactory;
 
 /**
  * A base class for implementing type safe internationalization (i18n) that is
@@ -72,7 +72,7 @@ public class MsgBase {
                 return getLocalisedResources().getString(key);
             }
         } catch (MissingResourceException ex) {
-            log.error("Missing resource: Locale=" + LocaleProviderManager.getLocale().toString() + " name=" + key + " package=" + getClass().getName());
+            log.error("Missing resource: Locale={} name={} package={}", LocaleProviderManager.getLocale(), key, getClass().getName());
         }
 
         return key;
@@ -98,7 +98,7 @@ public class MsgBase {
 
         //if we're still looking at a null, there is definitely nothing else we can do, so throw an exception
         if (resourceBundle == null) {
-            log.error("Missing resources: Locale=" + currentUserLocale.toString() + " class=" + className);
+            log.error("Missing resources: Locale={} class={}", currentUserLocale, className);
             throw new MissingResourceException("Unable to find the language resources.", className, shortClassName);
         }
         return resourceBundle;
@@ -123,7 +123,7 @@ public class MsgBase {
                     resourceBundle = ResourceBundle.getBundle(shortClassName, currentUserLocale, CWClassLoader.instance(implementingClass));
                     localisedResourceMap.put(className, resourceBundle);
                 } catch (MissingResourceException ex) {
-                    log.warn("Assuming key is the default message " + className);
+                    log.warn("Assuming key is the default message {}", className);
                 }
             }
         }
@@ -158,5 +158,5 @@ public class MsgBase {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(MsgBase.class);
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(MsgBase.class);
 }

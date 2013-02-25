@@ -26,10 +26,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.crosswire.common.util.IOUtil;
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.sword.SwordBookMetaData;
 import org.crosswire.jsword.book.sword.SwordUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Stores the random access files required for processing the passage request
@@ -106,8 +107,7 @@ public class RawFileBackendState extends RawBackendState {
                 // also store this
                 this.incfileValue = ret;
             } catch (FileNotFoundException e) {
-                log.error("Error on writing to incfile, file should exist already!");
-                log.error(e.getMessage());
+                log.error("Error on writing to incfile, file should exist already!: {}", e.getMessage(), e);
             } finally {
                 IOUtil.close(fis);
             }
@@ -123,7 +123,7 @@ public class RawFileBackendState extends RawBackendState {
                 this.incfile = tempIncfile;
             }
         } catch (BookException e) {
-            log.error("Error on checking incfile: " + e.getMessage());
+            log.error("Error on checking incfile: {}", e.getMessage(), e);
             this.incfile = null;
         }
     }
@@ -136,7 +136,7 @@ public class RawFileBackendState extends RawBackendState {
             try {
                 readIncfile();
             } catch (IOException e) {
-                log.error(e.getMessage(), e);
+                log.error("IO Error: {}", e.getMessage(), e);
             }
         }
 
@@ -172,5 +172,5 @@ public class RawFileBackendState extends RawBackendState {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(RawFileBackendState.class);
+    private static final Logger log = LoggerFactory.getLogger(RawFileBackendState.class);
 }

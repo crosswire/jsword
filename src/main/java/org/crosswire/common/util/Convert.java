@@ -14,14 +14,15 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.util;
 
 import java.util.Map;
+
+import org.slf4j.LoggerFactory;
 
 /**
  * Conversions between various types and Strings.
@@ -160,7 +161,7 @@ public final class Convert {
                     commands.put(key, value);
                 }
             } catch (ClassNotFoundException ex) {
-                log.warn("Invalid config file entry: " + entry + " System message: " + ex.getMessage());
+                log.warn("Invalid config file entry: {} System message: {}", entry, ex.getMessage());
                 Reporter.informUser(Convert.class, ex);
             }
         }
@@ -223,5 +224,5 @@ public final class Convert {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(Convert.class);
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(Convert.class);
 }

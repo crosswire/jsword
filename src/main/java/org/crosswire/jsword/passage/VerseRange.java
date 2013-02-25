@@ -27,9 +27,10 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.crosswire.common.icu.NumberShaper;
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.Versification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A VerseRange is one step between a Verse and a Passage - it is a Verse plus a
@@ -1044,7 +1045,7 @@ public final class VerseRange implements VerseKey {
     /**
      * The log stream
      */
-    /* pkg protected */static final transient Logger log = Logger.getLogger(VerseRange.class);
+    /* pkg protected */static final transient Logger log = LoggerFactory.getLogger(VerseRange.class);
 
 
     /**

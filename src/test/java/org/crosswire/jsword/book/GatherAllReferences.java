@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -34,13 +34,14 @@ import org.crosswire.common.config.ChoiceFactory;
 import org.crosswire.common.config.Config;
 import org.crosswire.common.util.CWClassLoader;
 import org.crosswire.common.util.CWProject;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.jdom.Document;
 import org.jdom.JDOMException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Gather all references.
@@ -127,7 +128,7 @@ public class GatherAllReferences {
             try {
                 orig = book.getRawText(key);
             } catch (BookException ex) {
-                log.warn("Failed to read: " + book.getInitials() + '(' + key.getName() + "):" + ex.getMessage(), ex);
+                log.warn("Failed to read: {}({}):{}", book.getInitials(), key.getName(), ex.getMessage(), ex);
                 return;
             }
 
@@ -158,7 +159,7 @@ public class GatherAllReferences {
             }
 
         } catch (Throwable ex) {
-            log.error("Unexpected error reading: " + book.getInitials() + '(' + key.getName() + ')', ex);
+            log.error("Unexpected error reading: {} ({})", book.getInitials(), key.getName(), ex);
         }
     }
 
@@ -170,5 +171,5 @@ public class GatherAllReferences {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(GatherAllReferences.class);
+    private static final Logger log = LoggerFactory.getLogger(GatherAllReferences.class);
 }
