@@ -42,7 +42,9 @@ import java.util.logging.LogManager;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith [dmsmith555 at yahoo dot com]
+ * @deprecated Use {@link org.slf4j.LoggerFactory} and {@link org.slf4j.Logger} directly.
  */
+@Deprecated
 public final class Logger {
     /**
      * Get a new logger for the class that shows the class, method and line
