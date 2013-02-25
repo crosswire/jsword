@@ -22,7 +22,6 @@
 package org.crosswire.jsword.book;
 
 import java.util.List;
-import java.util.logging.Level;
 
 import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.passage.Key;
@@ -47,12 +46,9 @@ public class ReadEverything {
      */
     public static void main(String[] args) {
         Logger.outputEverything();
-        DataPolice.setReportingLevel(Level.WARNING);
-        DataPolice.setLevel(Level.FINEST);
-
         // Loop through all the Books
         log.warn("*** Reading all installed Bibles");
-        BookFilter filter = BookFilters.getCustom("SourceType=TEI");
+        BookFilter filter = BookFilters.getCustom("SourceType=ThML;Initials=TSK");
         List<Book> comments = Books.installed().getBooks(filter);
         for (Book book : comments) {
 
