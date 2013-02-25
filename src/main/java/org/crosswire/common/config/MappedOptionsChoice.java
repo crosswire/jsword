@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -25,9 +25,10 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.JSOtherMsg;
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A class to convert between strings and objects of a type.
@@ -118,5 +119,5 @@ public class MappedOptionsChoice extends AbstractReflectedChoice implements Mapp
     /**
      * The log stream
      */
-    private static Logger log = Logger.getLogger(MappedOptionsChoice.class);
+    private static Logger log = LoggerFactory.getLogger(MappedOptionsChoice.class);
 }

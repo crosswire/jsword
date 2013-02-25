@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.util;
 
@@ -45,6 +44,7 @@ import java.util.jar.JarEntry;
 
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
+import org.slf4j.LoggerFactory;
 
 /**
  * The NetUtil class looks after general utility stuff around the java.net
@@ -492,12 +492,12 @@ public final class NetUtil {
 
             // Check that the answers are the same
             if (files.length != reply.length) {
-                log.warn("index file for " + uri.toString() + " has incorrect number of entries.");
+                log.warn("index file for {} has incorrect number of entries.", uri.toString());
             } else {
                 List<String> list = Arrays.asList(files);
                 for (int i = 0; i < files.length; i++) {
                     if (!list.contains(files[i])) {
-                        log.warn("file: based index found " + files[i] + " but this was not found using index file.");
+                        log.warn("file: based index found {} but this was not found using index file.", files[i]);
                     }
                 }
             }
@@ -873,5 +873,5 @@ public final class NetUtil {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(NetUtil.class);
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(NetUtil.class);
 }

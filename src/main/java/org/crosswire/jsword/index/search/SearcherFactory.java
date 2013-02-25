@@ -14,22 +14,22 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.index.search;
 
 import java.io.IOException;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.PluginUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.index.Index;
 import org.crosswire.jsword.index.IndexManager;
 import org.crosswire.jsword.index.IndexManagerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Factory method for creating a new Searcher.
@@ -78,5 +78,5 @@ public final class SearcherFactory {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(SearcherFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(SearcherFactory.class);
 }

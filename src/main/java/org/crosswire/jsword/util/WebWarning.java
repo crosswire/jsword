@@ -26,11 +26,12 @@ import java.net.URI;
 
 import org.crosswire.common.util.CWProject;
 import org.crosswire.common.util.FileUtil;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PropertyMap;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.JSMsg;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Provide a configurable warning that the Internet is going to be accessed.
@@ -131,5 +132,5 @@ public final class WebWarning {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(WebWarning.class);
+    private static final Logger log = LoggerFactory.getLogger(WebWarning.class);
 }

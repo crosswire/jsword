@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -23,6 +23,7 @@ package org.crosswire.common.util;
 import java.util.Properties;
 
 import org.crosswire.jsword.JSMsg;
+import org.slf4j.LoggerFactory;
 
 /**
  * This package looks after Exceptions and messages as they happen. It would be
@@ -72,7 +73,7 @@ public final class Reporter {
      */
     public static void informUser(Object source, Throwable prob) {
         Class<?> cat = (source != null) ? source.getClass() : Reporter.class;
-        Logger templog = Logger.getLogger(cat);
+        org.slf4j.Logger templog = LoggerFactory.getLogger(cat);
 
         templog.warn(prob.getMessage(), prob);
 
@@ -92,7 +93,7 @@ public final class Reporter {
      */
     public static void informUser(Object source, LucidException prob) {
         Class<?> cat = (source != null) ? source.getClass() : Reporter.class;
-        Logger templog = Logger.getLogger(cat);
+        org.slf4j.Logger templog = LoggerFactory.getLogger(cat);
 
         templog.warn(prob.getMessage(), prob);
 
@@ -112,7 +113,7 @@ public final class Reporter {
      */
     public static void informUser(Object source, LucidRuntimeException prob) {
         Class<?> cat = (source != null) ? source.getClass() : Reporter.class;
-        Logger templog = Logger.getLogger(cat);
+        org.slf4j.Logger templog = LoggerFactory.getLogger(cat);
 
         templog.warn(prob.getMessage(), prob);
 
@@ -157,7 +158,7 @@ public final class Reporter {
         Object[] liArr = LISTENERS.getListenerList();
 
         if (liArr.length == 0) {
-            log.warn("Nothing to listen to report: message=" + ev.getMessage(), ev.getException());
+            log.warn("Nothing to listen to report: message={}", ev.getMessage(), ev.getException());
         }
 
         // Process the listeners last to first, notifying
@@ -236,5 +237,5 @@ public final class Reporter {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(Reporter.class);
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(Reporter.class);
 }

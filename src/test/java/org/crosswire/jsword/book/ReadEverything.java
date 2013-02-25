@@ -14,19 +14,18 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book;
 
 import java.util.List;
-import java.util.logging.Level;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.TreeKey;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Test to check that all books can be read.
@@ -46,18 +45,14 @@ public class ReadEverything {
      * Read all the books that we can get our hands on.
      */
     public static void main(String[] args) {
-        Logger.outputEverything();
-        DataPolice.setReportingLevel(Level.WARNING);
-        DataPolice.setLevel(Level.FINEST);
-
         // Loop through all the Books
         log.warn("*** Reading all installed Bibles");
-        BookFilter filter = BookFilters.getCustom("SourceType=TEI");
+        BookFilter filter = BookFilters.getCustom("SourceType=ThML;Initials=TSK");
         List<Book> comments = Books.installed().getBooks(filter);
         for (Book book : comments) {
 
             if (!book.isLocked()) {
-                log.warn("****** Reading: " + book.getInitials());
+                log.warn("****** Reading: {}", book.getInitials());
                 Key set = book.getGlobalKeyList();
 
                 testReadMultiple(book, set);
@@ -69,7 +64,7 @@ public class ReadEverything {
      * Perform a test read on an iterator over a set of keys
      */
     private static void testReadMultiple(Book book, Key set) {
-        // log.info("Testing: "+bmd.getInitials()+"="+bmd.getName());
+        // log.info("Testing: {}={}", bmd.getInitials(), bmd.getName());
         long start = System.currentTimeMillis();
         int entries = 0;
 
@@ -90,7 +85,7 @@ public class ReadEverything {
         long end = System.currentTimeMillis();
         float time = (end - start) / 1000F;
 
-        log.info("Tested: book=" + book.getInitials() + " entries=" + entries + " time=" + time + "s (" + (1000 * time / entries) + "ms per entry)");
+        log.info("Tested: book={} entries={} time={}s ({}ms per entry)", book.getInitials(), Integer.toString(entries), Float.toString(time), Float.toString(1000 * time / entries));
     }
 
     /**
@@ -98,23 +93,23 @@ public class ReadEverything {
      */
     private static void testReadSingle(Book book, Key key) {
         try {
-            // log.debug("reading: "+bmd.getInitials()+"/"+key.getText());
+            // log.debug("reading: {}/{}", bmd.getInitials(), key.getText());
 
             BookData data = new BookData(book, key);
             if (data.getOsisFragment() == null) {
-                log.warn("No output from: " + book.getInitials() + ", " + key.getName());
+                log.warn("No output from: {},{}", book.getInitials(), key.getName());
             }
 
             // This might be a useful extra test, except that a failure gives
             // you no help at all.
             // data.validate();
         } catch (Throwable ex) {
-            log.error("Unexpected error reading: " + book.getInitials() + ", " + key.getName(), ex);
+            log.error("Unexpected error reading: {}, {}", book.getInitials(), key.getName(), ex);
         }
     }
 
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(ReadEverything.class);
+    private static final Logger log = LoggerFactory.getLogger(ReadEverything.class);
 }

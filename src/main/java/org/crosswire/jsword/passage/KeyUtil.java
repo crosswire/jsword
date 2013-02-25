@@ -122,7 +122,7 @@ public final class KeyUtil {
     public static Versification getVersification(Key key) {
         if (key instanceof VerseKey) {
             return ((VerseKey) key).getVersification();
-        } 
+        }
         return Versifications.instance().getVersification(Versifications.DEFAULT_V11N);
     }
     /**

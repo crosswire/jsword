@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -35,7 +35,6 @@ import org.crosswire.common.progress.Progress;
 import org.crosswire.common.util.CWProject;
 import org.crosswire.common.util.CollectionUtil;
 import org.crosswire.common.util.IOUtil;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSMsg;
@@ -56,6 +55,8 @@ import org.crosswire.jsword.book.sword.SwordBookDriver;
 import org.crosswire.jsword.book.sword.SwordBookMetaData;
 import org.crosswire.jsword.book.sword.SwordBookPath;
 import org.crosswire.jsword.book.sword.SwordConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ice.tar.TarEntry;
 import com.ice.tar.TarInputStream;
@@ -278,7 +279,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                         try {
                             NetUtil.delete(temp);
                         } catch (IOException e) {
-                            log.warn("Error deleting temp download file:" + e.getMessage());
+                            log.warn("Error deleting temp download file.", e);
                         }
                     }
                 }
@@ -373,7 +374,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
                         // Every now and then an empty entry sneaks in
                         if (size == 0) {
-                            log.error("Empty entry: " + internal);
+                            log.error("Empty entry: {}", internal);
                             continue;
                         }
 
@@ -381,14 +382,14 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                         if (tin.read(buffer) != size) {
                             // This should not happen, but if it does then skip
                             // it.
-                            log.error("Did not read all that was expected " + internal);
+                            log.error("Did not read all that was expected {}", internal);
                             continue;
                         }
 
                         if (internal.endsWith(SwordConstants.EXTENSION_CONF)) {
                             internal = internal.substring(0, internal.length() - 5);
                         } else {
-                            log.error("Not a SWORD config file: " + internal);
+                            log.error("Not a SWORD config file: {}", internal);
                             continue;
                         }
 
@@ -401,7 +402,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                         Book book = new SwordBook(sbmd, null);
                         entries.put(book.getName(), book);
                     } catch (IOException ex) {
-                        log.error("Failed to load config for entry: " + internal, ex);
+                        log.error("Failed to load config for entry: {}", internal, ex);
                     }
                 }
             }
@@ -665,5 +666,5 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /**
      * The log stream
      */
-    protected static final Logger log = Logger.getLogger(AbstractSwordInstaller.class);
+    protected static final Logger log = LoggerFactory.getLogger(AbstractSwordInstaller.class);
 }

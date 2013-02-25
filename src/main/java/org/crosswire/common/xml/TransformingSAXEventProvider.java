@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -41,8 +41,9 @@ import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamSource;
 
 import org.crosswire.common.util.IOUtil;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
@@ -83,13 +84,13 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
                 if (modtime > tinfo.getModtime()) {
                     txers.remove(xsluri);
                     tinfo = null;
-                    log.debug("updated style, re-caching. xsl=" + xsluri);
+                    log.debug("updated style, re-caching. xsl={}", xsluri);
                 }
             }
         }
 
         if (tinfo == null) {
-            log.debug("generating templates for " + xsluri);
+            log.debug("generating templates for {}", xsluri);
 
             InputStream xslStream = null;
             try {
@@ -355,5 +356,5 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(TransformingSAXEventProvider.class);
+    private static final Logger log = LoggerFactory.getLogger(TransformingSAXEventProvider.class);
 }

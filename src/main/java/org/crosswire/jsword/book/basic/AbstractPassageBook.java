@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -23,7 +23,6 @@ package org.crosswire.jsword.book.basic;
 import java.util.Iterator;
 import java.util.List;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
@@ -41,6 +40,8 @@ import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.jdom.Content;
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * An abstract implementation of Book that lets implementors just concentrate on
@@ -225,6 +226,6 @@ public abstract class AbstractPassageBook extends AbstractBook {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(AbstractPassageBook.class);
+    private static final Logger log = LoggerFactory.getLogger(AbstractPassageBook.class);
 
 }

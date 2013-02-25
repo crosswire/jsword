@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book;
 
@@ -31,10 +30,11 @@ import java.util.Set;
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.util.CollectionUtil;
 import org.crosswire.common.util.EventListenerList;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.PluginUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSOtherMsg;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The Books class (along with Book) is the central point of contact between the
@@ -242,7 +242,7 @@ public final class Books implements BookList {
      * called by BibleDrivers, it is not a method for general consumption.
      */
     public synchronized void removeBook(Book book) throws BookException {
-        // log.debug("unregistering book: "+bmd.getName());
+        // log.debug("unregistering book: {}", bmd.getName());
 
         Activator.deactivate(book);
 
@@ -263,7 +263,7 @@ public final class Books implements BookList {
      *            The BookDriver to add
      */
     public synchronized void registerDriver(BookDriver driver) throws BookException {
-        log.debug("begin registering driver: " + driver.getClass().getName());
+        log.debug("begin registering driver: {}", driver.getClass().getName());
 
         drivers.add(driver);
 
@@ -290,7 +290,7 @@ public final class Books implements BookList {
             removeBook(book);
         }
 
-        log.debug("end registering driver: " + driver.getClass().getName());
+        log.debug("end registering driver: {}", driver.getClass().getName());
     }
 
     /**
@@ -300,7 +300,7 @@ public final class Books implements BookList {
      *            The BookDriver to remove
      */
     public synchronized void unregisterDriver(BookDriver driver) throws BookException {
-        log.debug("begin un-registering driver: " + driver.getClass().getName());
+        log.debug("begin un-registering driver: {}", driver.getClass().getName());
 
         Book[] bookArray = driver.getBooks();
         for (int j = 0; j < bookArray.length; j++) {
@@ -311,7 +311,7 @@ public final class Books implements BookList {
             throw new BookException(JSOtherMsg.lookupText("Could not remove unregistered Driver: {0}", driver.getClass().getName()));
         }
 
-        log.debug("end un-registering driver: " + driver.getClass().getName());
+        log.debug("end un-registering driver: {}", driver.getClass().getName());
     }
 
     /**
@@ -391,7 +391,7 @@ public final class Books implements BookList {
         // This will classload them all and they will register themselves.
         Class<? extends BookDriver>[] types = PluginUtil.getImplementors(BookDriver.class);
 
-        log.debug("begin auto-registering " + types.length + " drivers:");
+        log.debug("begin auto-registering {} drivers:", Integer.toString(types.length));
 
         for (int i = 0; i < types.length; i++) {
             // job.setProgress(Msg.JOB_DRIVER.toString() +
@@ -440,7 +440,7 @@ public final class Books implements BookList {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(Books.class);
+    private static final Logger log = LoggerFactory.getLogger(Books.class);
 
     /**
      * The singleton instance. This needs to be declared after all other statics

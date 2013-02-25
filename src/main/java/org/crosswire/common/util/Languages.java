@@ -32,6 +32,8 @@ import java.util.Set;
 
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.internationalisation.LocaleProviderManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A utility class that converts bcp-47 codes as supported by {@link Language} to their
@@ -207,5 +209,5 @@ public final class Languages {
     /**
      * The log stream
      */
-    protected static final Logger log = Logger.getLogger(Books.class);
+    protected static final Logger log = LoggerFactory.getLogger(Books.class);
 }

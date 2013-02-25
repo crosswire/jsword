@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import org.crosswire.common.util.IOUtil;
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
 import org.crosswire.jsword.book.sword.state.RawBackendState;
@@ -34,6 +33,8 @@ import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.versification.Testament;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Both Books and Commentaries seem to use the same format so this class
@@ -220,7 +221,7 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
         }
 
         if (size < 0) {
-            log.error("In " + getBookMetaData().getInitials() + ": Verse " + name + " has a bad index size of " + size);
+            log.error("In {}: Verse {} has a bad index size of {}", getBookMetaData().getInitials(), name, Integer.toString(size));
             return "";
         }
 
@@ -250,7 +251,7 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(RawBackend.class);
+    private static final Logger log = LoggerFactory.getLogger(RawBackend.class);
 
 
 }
