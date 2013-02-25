@@ -111,7 +111,7 @@ public class Config implements Iterable<Choice> {
      */
     public void add(Choice model) {
         String key = model.getKey();
-        // log.debug("Adding key=" + key);
+        // log.debug("Adding key={}", key);
 
         keys.add(key);
         models.add(model);
@@ -119,7 +119,7 @@ public class Config implements Iterable<Choice> {
         String value = model.getString();
         if (value == null) {
             value = "";
-            log.info("key=" + key + " had a null value");
+            log.info("key={} had a null value", key);
         }
 
         local.put(key, value);
@@ -161,7 +161,7 @@ public class Config implements Iterable<Choice> {
             }
 
             if (ex != null) {
-                log.warn("Error creating config element, key=" + key, ex);
+                log.warn("Error creating config element, key={}", key, ex);
             }
         }
     }
@@ -269,14 +269,14 @@ public class Config implements Iterable<Choice> {
             // if force==true or if a higher priority choice has
             // changed.
             if (!newValue.equals(oldValue)) {
-                log.info("Setting " + key + "=" + newValue + " (was " + oldValue + ")");
+                log.info("Setting {}={} (was {})", key, newValue, oldValue);
                 try {
                     choice.setString(newValue);
                     if (changeListeners != null) {
                         changeListeners.firePropertyChange(new PropertyChangeEvent(choice, choice.getKey(), oldValue, newValue));
                     }
                 } catch (LucidException ex) {
-                    log.warn("Failure setting " + key + "=" + newValue, ex);
+                    log.warn("Failure setting {}={}", key, newValue, ex);
                     Reporter.informUser(this, new ConfigException(JSOtherMsg.lookupText("Failed to set option: {0}", choice.getFullPath()), ex));
                 }
             }

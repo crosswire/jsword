@@ -82,7 +82,7 @@ public class DataEntry {
     public String getKey() {
         if (key == null) {
             if (keyEnd < 0) {
-                log.error("Failed to find key. name='" + name + "'");
+                log.error("Failed to find key. name='{}'", name);
                 return "";
             }
 

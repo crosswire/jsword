@@ -83,7 +83,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
         try {
             name = prop.getString("title");
         } catch (MissingResourceException e) {
-            log.warn("Missing resource: 'title' while parsing: " + setname);
+            log.warn("Missing resource: 'title' while parsing: {}", setname);
         }
 
         DefaultBookMetaData bmd = new DefaultBookMetaData(driver, name, type);
@@ -105,7 +105,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
                 readings = prop.getString(internalKey);
                 hash.put(new ReadingsKey(greg.getTime()), readings);
             } catch (MissingResourceException e) {
-                log.warn("Missing resource: " + internalKey + " while parsing: " + setname);
+                log.warn("Missing resource: {} while parsing: {}", internalKey, setname);
             }
 
             greg.add(java.util.Calendar.DATE, 1);

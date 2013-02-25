@@ -583,7 +583,7 @@ public class PassageTally extends AbstractPassage {
         raiseNormalizeProtection();
 
         if (!restrict.equals(RestrictionType.NONE)) {
-            log.warn("Restrict=" + restrict + " is not properly supported.");
+            log.warn("Restrict={} is not properly supported.", restrict);
 
             // This is a bit of a cheat, but there is no way I'm going
             // to do the math to speed up the restricted version

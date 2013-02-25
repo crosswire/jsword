@@ -133,7 +133,7 @@ public class DefaultBook {
             }
         }
 
-        log.warn("Book not found. Ignoring: " + name);
+        log.warn("Book not found. Ignoring: {}", name);
     }
 
     /**

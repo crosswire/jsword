@@ -69,14 +69,14 @@ public final class PluginUtil {
                     if (clazz.isAssignableFrom(impl)) {
                         matches.add(impl);
                     } else {
-                        log.warn("Class " + impl.getName() + " does not implement " + clazz.getName() + ". Ignoring.");
+                        log.warn("Class {} does not implement {}. Ignoring.", impl.getName(), clazz.getName());
                     }
                 } catch (ClassNotFoundException ex) {
-                    log.warn("Failed to add class to list: " + clazz.getName(), ex);
+                    log.warn("Failed to add class to list: {}", clazz.getName(), ex);
                 }
             }
 
-            log.debug("Found " + matches.size() + " implementors of " + clazz.getName());
+            log.debug("Found {} implementors of {}", Integer.toString(matches.size()), clazz.getName());
             return matches.toArray(new Class[matches.size()]);
         } catch (IOException ex) {
             log.error("Failed to get any classes.", ex);
@@ -109,14 +109,14 @@ public final class PluginUtil {
                     if (clazz.isAssignableFrom(impl)) {
                         matches.put(key, impl);
                     } else {
-                        log.warn("Class " + impl.getName() + " does not implement " + clazz.getName() + ". Ignoring.");
+                        log.warn("Class {} does not implement {}. Ignoring.", impl.getName(), clazz.getName());
                     }
                 } catch (ClassNotFoundException ex) {
-                    log.warn("Failed to add class to list: " + clazz.getName(), ex);
+                    log.warn("Failed to add class to list: {}", clazz.getName(), ex);
                 }
             }
 
-            log.debug("Found " + matches.size() + " implementors of " + clazz.getName());
+            log.debug("Found {} implementors of {}", Integer.toString(matches.size()), clazz.getName());
         } catch (IOException ex) {
             log.error("Failed to get any classes.", ex);
         }

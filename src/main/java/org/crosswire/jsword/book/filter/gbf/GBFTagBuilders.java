@@ -92,7 +92,7 @@ public final class GBFTagBuilders {
             if (tag == null) {
                 // I'm not confident enough that we handle all the GBF tags
                 // that I will blame the book instead of the program
-                log.warn("In " + book.getInitials() + "(" + key.getName() + ") ignoring tag of <" + name + ">");
+                log.warn("In {}({}) ignoring tag of <{}>", book.getInitials(), key.getName(), name);
                 // DataPolice.report("Ignoring tag of <" + name + ">");
             }
         }

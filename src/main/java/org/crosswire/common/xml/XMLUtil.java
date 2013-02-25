@@ -69,7 +69,7 @@ public final class XMLUtil {
         String resource = subject + FileUtil.EXTENSION_XML;
         InputStream in = ResourceUtil.getResourceAsStream(resource);
 
-        log.debug("Loading " + subject + ".xml from classpath: [OK]");
+        log.debug("Loading {}.xml from classpath: [OK]", subject);
         SAXBuilder builder = new SAXBuilder(true);
         return builder.build(in);
     }
@@ -109,7 +109,7 @@ public final class XMLUtil {
      */
     public static void debugSAXAttributes(Attributes attrs) {
         for (int i = 0; i < attrs.getLength(); i++) {
-            log.debug("attr[" + i + "]: " + attrs.getQName(i) + '=' + attrs.getValue(i));
+            log.debug("attr[{}]: {}={}", Integer.toString(i), attrs.getQName(i), attrs.getValue(i));
         }
     }
 
@@ -200,8 +200,7 @@ public final class XMLUtil {
                 if (c == ';') {
                     String entity = working.substring(amp, i + 1);
                     String replace = handleEntity(entity);
-                    // log.warn("replacing entity: '" + entity + "' with: '" +
-                    // replace + "'");
+                    // log.warn("replacing entity: '{}' with: '{}'", entity, replace);
 
                     working = working.substring(0, amp) + replace + working.substring(i + 1);
                     break;
@@ -212,8 +211,7 @@ public final class XMLUtil {
                 if (!Character.isLetterOrDigit(c)) {
                     // String entity = working.substring(amp, i);
                     // String replace = "&amp;" + working.substring(amp + 1, i);
-                    // log.warn("replacing invalid entity: '" + entity +
-                    // "' with: '" + replace + "': " + broken);
+                    // log.warn("replacing invalid entity: '{}' with: '{}': {}", entity, replace, broken);
 
                     working = working.substring(0, amp) + "&amp;" + working.substring(amp + 1);
                     amp = i + 4; // account for the 4 extra characters

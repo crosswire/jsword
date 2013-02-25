@@ -66,7 +66,7 @@ public final class InstallManager {
 
                     Class<InstallerFactory> clazz = factories.get(type);
                     if (clazz == null) {
-                        log.warn("");
+                        log.warn("Unable to get class for {}", type);
                     } else {
                         InstallerFactory ifactory = clazz.newInstance();
                         Installer installer = ifactory.createInstaller(rest);
@@ -134,13 +134,13 @@ public final class InstallManager {
                     return name;
                 }
             } catch (InstantiationException e) {
-                log.warn("Failed to instantiate installer factory: " + name + "=" + factclazz.getName(), e);
+                log.warn("Failed to instantiate installer factory: {}={}", name, factclazz.getName(), e);
             } catch (IllegalAccessException e) {
-                log.warn("Failed to instantiate installer factory: " + name + "=" + factclazz.getName(), e);
+                log.warn("Failed to instantiate installer factory: {}={}", name, factclazz.getName(), e);
             }
         }
 
-        log.warn("Failed to find factory name for " + installer.toString() + " among the " + factories.size() + " factories.");
+        log.warn("Failed to find factory name for {} among the {} factories.", installer, Integer.toString(factories.size()));
         return null;
     }
 
@@ -157,10 +157,10 @@ public final class InstallManager {
             }
         }
 
-        log.warn("Failed to find installer name for " + installer.toString() + " among the " + installers.size() + " installers.");
+        log.warn("Failed to find installer name for {} among the {} installers.", installer, Integer.toString(installers.size()));
         for (String name : installers.keySet()) {
             Installer test = installers.get(name);
-            log.warn("  it isn't equal to " + test.getInstallerDefinition());
+            log.warn("  it isn't equal to {}", test.getInstallerDefinition());
         }
         return null;
     }
@@ -237,7 +237,7 @@ public final class InstallManager {
 
             if (tinstaller.equals(installer)) {
                 // We have a dupe - remove the old name
-                log.warn("duplicate installers: " + name + "=" + tname + ". removing " + tname);
+                log.warn("duplicate installers: {}={}. removing {}", name, tname, tname);
 
                 // Can't call removeInstaller while iterating.
                 it.remove();

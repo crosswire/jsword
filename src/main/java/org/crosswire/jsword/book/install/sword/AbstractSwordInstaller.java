@@ -279,7 +279,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                         try {
                             NetUtil.delete(temp);
                         } catch (IOException e) {
-                            log.warn("Error deleting temp download file:" + e.getMessage());
+                            log.warn("Error deleting temp download file.", e);
                         }
                     }
                 }
@@ -374,7 +374,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
                         // Every now and then an empty entry sneaks in
                         if (size == 0) {
-                            log.error("Empty entry: " + internal);
+                            log.error("Empty entry: {}", internal);
                             continue;
                         }
 
@@ -382,14 +382,14 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                         if (tin.read(buffer) != size) {
                             // This should not happen, but if it does then skip
                             // it.
-                            log.error("Did not read all that was expected " + internal);
+                            log.error("Did not read all that was expected {}", internal);
                             continue;
                         }
 
                         if (internal.endsWith(SwordConstants.EXTENSION_CONF)) {
                             internal = internal.substring(0, internal.length() - 5);
                         } else {
-                            log.error("Not a SWORD config file: " + internal);
+                            log.error("Not a SWORD config file: {}", internal);
                             continue;
                         }
 
@@ -402,7 +402,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                         Book book = new SwordBook(sbmd, null);
                         entries.put(book.getName(), book);
                     } catch (IOException ex) {
-                        log.error("Failed to load config for entry: " + internal, ex);
+                        log.error("Failed to load config for entry: {}", internal, ex);
                     }
                 }
             }

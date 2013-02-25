@@ -52,7 +52,7 @@ public final class AnalyzerFactory {
         if (lang != null) {
             String aClass = getAnalyzerValue(lang);
 
-            log.debug("Creating analyzer:" + aClass + " BookLang:" + lang);
+            log.debug("Creating analyzer:{} BookLang:{}", aClass, lang);
 
             if (aClass != null) {
                 try {

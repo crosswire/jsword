@@ -210,7 +210,15 @@ public final class ConfigEntry {
 
         // Report on fields that shouldn't have RTF but do
         if (!allowsRTF() && RTF_PATTERN.matcher(aValue).find()) {
-            log.info(report("Ignoring unexpected RTF for", getName(), aValue));
+            buf.append(issue);
+            buf.append(' ');
+            buf.append(confEntryName);
+            buf.append(" in ");
+            buf.append(internal);
+            buf.append(": ");
+            buf.append(aValue);
+
+            log.info("Ignoring unexpected RTF for {} in {}: {}", confEntryName, internal, aValue);
         }
 
         if (mayRepeat()) {
@@ -222,20 +230,20 @@ public final class ConfigEntry {
                 histogram.increment(confEntryName + '.' + aValue);
             }
             if (!isAllowed(aValue)) {
-                log.info(report("Ignoring unknown config value for", confEntryName, aValue));
+                log.info("Ignoring unknown config value for {} in {}: {}", confEntryName, internal, aValue);
                 return;
             }
             values.add(aValue);
         } else {
             if (value != null) {
-                log.info(report("Ignoring unexpected additional entry for", confEntryName, aValue));
+                log.info("Ignoring unexpected additional entry for {} in {}: {}", confEntryName, internal, aValue);
             } else {
                 histogram.increment(confEntryName);
                 if (type.hasChoices()) {
                     histogram.increment(confEntryName + '.' + aValue);
                 }
                 if (!isAllowed(aValue)) {
-                    log.info(report("Ignoring unknown config value for", confEntryName, aValue));
+                    log.info("Ignoring unknown config value for {} in {}: {}", confEntryName, internal, aValue);
                     return;
                 }
                 value = type.convert(aValue);
@@ -401,19 +409,6 @@ public final class ConfigEntry {
             list.add(lineElement);
         }
         return list;
-    }
-
-    private String report(String issue, String confEntryName, String aValue) {
-        StringBuilder buf = new StringBuilder(100);
-        buf.append(issue);
-        buf.append(' ');
-        buf.append(confEntryName);
-        buf.append(" in ");
-        buf.append(internal);
-        buf.append(": ");
-        buf.append(aValue);
-
-        return buf.toString();
     }
 
     /**

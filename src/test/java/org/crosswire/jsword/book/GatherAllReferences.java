@@ -128,7 +128,7 @@ public class GatherAllReferences {
             try {
                 orig = book.getRawText(key);
             } catch (BookException ex) {
-                log.warn("Failed to read: " + book.getInitials() + '(' + key.getName() + "):" + ex.getMessage(), ex);
+                log.warn("Failed to read: {}({}):{}", book.getInitials(), key.getName(), ex.getMessage(), ex);
                 return;
             }
 
@@ -159,7 +159,7 @@ public class GatherAllReferences {
             }
 
         } catch (Throwable ex) {
-            log.error("Unexpected error reading: " + book.getInitials() + '(' + key.getName() + ')', ex);
+            log.error("Unexpected error reading: {} ({})", book.getInitials(), key.getName(), ex);
         }
     }
 

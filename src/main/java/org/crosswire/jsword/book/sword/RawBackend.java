@@ -221,7 +221,7 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
         }
 
         if (size < 0) {
-            log.error("In " + getBookMetaData().getInitials() + ": Verse " + name + " has a bad index size of " + size);
+            log.error("In {}: Verse {} has a bad index size of {}", getBookMetaData().getInitials(), name, Integer.toString(size));
             return "";
         }
 

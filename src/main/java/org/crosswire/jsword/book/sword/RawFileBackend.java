@@ -100,7 +100,7 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
         }
 
         if (size < 0) {
-            log.error("In " + getBookMetaData().getInitials() + ": Verse " + name + " has a bad index size of " + size);
+            log.error("In {}: Verse {} has a bad index size of {}.", getBookMetaData().getInitials(), name, Integer.toString(size));
             return "";
         }
 
@@ -368,8 +368,7 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
             fos = new FileOutputStream(state.getIncfile(), false);
             fos.write(littleEndian32BitByteArrayFromInt(value));
         } catch (FileNotFoundException e) {
-            log.error("Error on writing to incfile, file should exist already!");
-            log.error(e.getMessage());
+            log.error("Error on writing to incfile, file should exist already!", e);
         } finally {
             if (fos != null) {
                 fos.close();
@@ -389,13 +388,13 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
             byte[] textData = new byte[len];
             inStream = new BufferedInputStream(new FileInputStream(dataFile));
             if (inStream.read(textData) != len) {
-                log.error("Read data is not of appropriate size of " + len + " bytes!");
+                log.error("Read data is not of appropriate size of {} bytes!", Integer.toString(len));
                 throw new IOException("data is not " + len + " bytes long");
             }
             return textData;
         } catch (FileNotFoundException ex) {
-            log.error(ex.getMessage());
-            throw new IOException("Could not read text data file, file not found: " + dataFile.getName());
+            log.error("Could not read text data file, file not found: {}", dataFile.getName(), ex);
+            throw ex;
         } finally {
             if (inStream != null) {
                 inStream.close();

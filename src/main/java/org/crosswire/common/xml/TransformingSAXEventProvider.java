@@ -84,13 +84,13 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
                 if (modtime > tinfo.getModtime()) {
                     txers.remove(xsluri);
                     tinfo = null;
-                    log.debug("updated style, re-caching. xsl=" + xsluri);
+                    log.debug("updated style, re-caching. xsl={}", xsluri);
                 }
             }
         }
 
         if (tinfo == null) {
-            log.debug("generating templates for " + xsluri);
+            log.debug("generating templates for {}", xsluri);
 
             InputStream xslStream = null;
             try {

@@ -242,7 +242,7 @@ public final class Books implements BookList {
      * called by BibleDrivers, it is not a method for general consumption.
      */
     public synchronized void removeBook(Book book) throws BookException {
-        // log.debug("unregistering book: "+bmd.getName());
+        // log.debug("unregistering book: {}", bmd.getName());
 
         Activator.deactivate(book);
 
@@ -263,7 +263,7 @@ public final class Books implements BookList {
      *            The BookDriver to add
      */
     public synchronized void registerDriver(BookDriver driver) throws BookException {
-        log.debug("begin registering driver: " + driver.getClass().getName());
+        log.debug("begin registering driver: {}", driver.getClass().getName());
 
         drivers.add(driver);
 
@@ -290,7 +290,7 @@ public final class Books implements BookList {
             removeBook(book);
         }
 
-        log.debug("end registering driver: " + driver.getClass().getName());
+        log.debug("end registering driver: {}", driver.getClass().getName());
     }
 
     /**
@@ -300,7 +300,7 @@ public final class Books implements BookList {
      *            The BookDriver to remove
      */
     public synchronized void unregisterDriver(BookDriver driver) throws BookException {
-        log.debug("begin un-registering driver: " + driver.getClass().getName());
+        log.debug("begin un-registering driver: {}", driver.getClass().getName());
 
         Book[] bookArray = driver.getBooks();
         for (int j = 0; j < bookArray.length; j++) {
@@ -311,7 +311,7 @@ public final class Books implements BookList {
             throw new BookException(JSOtherMsg.lookupText("Could not remove unregistered Driver: {0}", driver.getClass().getName()));
         }
 
-        log.debug("end un-registering driver: " + driver.getClass().getName());
+        log.debug("end un-registering driver: {}", driver.getClass().getName());
     }
 
     /**
@@ -391,7 +391,7 @@ public final class Books implements BookList {
         // This will classload them all and they will register themselves.
         Class<? extends BookDriver>[] types = PluginUtil.getImplementors(BookDriver.class);
 
-        log.debug("begin auto-registering " + types.length + " drivers:");
+        log.debug("begin auto-registering {} drivers:", Integer.toString(types.length));
 
         for (int i = 0; i < types.length; i++) {
             // job.setProgress(Msg.JOB_DRIVER.toString() +

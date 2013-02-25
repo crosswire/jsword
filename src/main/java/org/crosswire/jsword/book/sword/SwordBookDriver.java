@@ -123,13 +123,13 @@ public class SwordBookDriver extends AbstractBookDriver {
                 } catch (IOException e) {
                     log.warn("Couldn't create SwordBookMetaData", e);
                 } catch (MissingDataFilesException e) {
-                    log.warn(e.getMessage() + " This book will be excluded.", e);
+                    log.warn("This book will be excluded.", e);
                 } catch (BookException e) {
                     log.warn("Couldn't create SwordBookMetaData", e);
                 }
             }
         } else {
-            log.debug("mods.d directory at " + mods + " does not exist");
+            log.debug("mods.d directory at {} does not exist", mods);
         }
     }
 

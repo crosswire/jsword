@@ -116,7 +116,7 @@ public class GenBookBackend extends AbstractBackend<GenBookBackendState> {
                 if (node.hasNextSibling()) {
                     node = index.getNextSibling(node);
                 } else {
-                    log.error("Could not find " + name);
+                    log.error("Could not find {}", name);
                     node = null;
                 }
             }

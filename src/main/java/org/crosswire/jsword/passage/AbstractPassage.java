@@ -88,7 +88,7 @@ public abstract class AbstractPassage implements Passage {
      */
     public int compareTo(Key obj) {
         if (!(obj instanceof Passage)) {
-            log.warn("Can't compare a Passage to a " + obj.getClass().getName());
+            log.warn("Can't compare a Passage to a {}", obj.getClass().getName());
             return -1;
         }
 
@@ -944,7 +944,7 @@ public abstract class AbstractPassage implements Passage {
             // chance to fix the error
             // throw new LogicError();
 
-            log.warn("skip_normalization=" + skipNormalization);
+            log.warn("skip_normalization={}", Integer.toString(skipNormalization));
         }
     }
 
@@ -977,7 +977,7 @@ public abstract class AbstractPassage implements Passage {
             // chance to fix the error
             // throw new LogicError();
 
-            log.warn("suppress_events=" + suppressEvents);
+            log.warn("suppress_events={}", Integer.toString(suppressEvents));
         }
     }
 

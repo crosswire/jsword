@@ -119,7 +119,7 @@ public class OSISFilter implements Filter {
             ex = e;
         }
 
-        log.warn("Could not fix " + book.getInitials() + "(" + key.getName() + ")  by cleaning tags: " + ex.getMessage());
+        log.warn("Could not fix {}({}) by cleaning tags: {}", book.getInitials(), key.getName(), ex.getMessage());
 
         return null;
     }

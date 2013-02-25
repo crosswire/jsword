@@ -158,7 +158,7 @@ public final class Reporter {
         Object[] liArr = LISTENERS.getListenerList();
 
         if (liArr.length == 0) {
-            log.warn("Nothing to listen to report: message=" + ev.getMessage(), ev.getException());
+            log.warn("Nothing to listen to report: message={}", ev.getMessage(), ev.getException());
         }
 
         // Process the listeners last to first, notifying

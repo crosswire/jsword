@@ -149,8 +149,7 @@ public class BooksTest extends TestCase {
      * data Book ver = bibles[i]; boolean skip = false; for (int j = 0; j <
      * ignorebibles.length; j++) { // if (ver instanceof fullbibles[j]) if
      * (ignorebibles[j].isAssignableFrom(ver.getClass())) skip = true; } if
-     * (skip) continue; log.debug("thorough testing bible: " +
-     * ver.getFullName());
+     * (skip) continue; log.debug("thorough testing bible: {}", ver.getFullName());
      * 
      * Key key = ver.find(new Search("aaron", false)); Passage ref
      * = KeyUtil.getPassage(key); assertTrue(ref.countVerses() > 10); key =
@@ -195,8 +194,7 @@ public class BooksTest extends TestCase {
      * for (int j=0; j<ignorebibles.length; j++) { // if (ver instanceof
      * fullbibles[j]) if (origver.getClass().isAssignableFrom(ignorebibles[j]))
      * skip = true; } if (skip) continue;
-     * log.debug("thorough testing bible: "+origver
-     * .getBibleMetaData().getFullName());
+     * log.debug("thorough testing bible: {}", origver.getBibleMetaData().getFullName());
      * 
      * if (origver instanceof SearchableBible) { SearchableBible ver =
      * (SearchableBible) origver; String[] sa =

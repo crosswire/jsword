@@ -107,8 +107,7 @@ public class RawFileBackendState extends RawBackendState {
                 // also store this
                 this.incfileValue = ret;
             } catch (FileNotFoundException e) {
-                log.error("Error on writing to incfile, file should exist already!");
-                log.error(e.getMessage());
+                log.error("Error on writing to incfile, file should exist already!: {}", e.getMessage(), e);
             } finally {
                 IOUtil.close(fis);
             }
@@ -124,7 +123,7 @@ public class RawFileBackendState extends RawBackendState {
                 this.incfile = tempIncfile;
             }
         } catch (BookException e) {
-            log.error("Error on checking incfile: " + e.getMessage());
+            log.error("Error on checking incfile: {}", e.getMessage(), e);
             this.incfile = null;
         }
     }
@@ -137,7 +136,7 @@ public class RawFileBackendState extends RawBackendState {
             try {
                 readIncfile();
             } catch (IOException e) {
-                log.error(e.getMessage(), e);
+                log.error("IO Error: {}", e.getMessage(), e);
             }
         }
 

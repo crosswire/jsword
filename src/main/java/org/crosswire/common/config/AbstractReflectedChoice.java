@@ -116,9 +116,7 @@ public abstract class AbstractReflectedChoice implements Choice {
             throw new StartupException(JSOtherMsg.lookupText("Missing {0} element in config.xml", "property"));
         }
 
-        // log.debug("Looking up " + clazzname + ".set" + propertyname + "(" +
-        // getConvertionClass().getName() +
-        // " arg0)");
+        // log.debug("Looking up {}.set{}({} arg0)", clazzname, propertyname, getConvertionClass().getName());
 
         try {
             clazz = ClassUtil.forName(clazzname);
@@ -145,7 +143,7 @@ public abstract class AbstractReflectedChoice implements Choice {
         }
 
         if (getter.getReturnType() != getConversionClass()) {
-            log.debug("Not using " + propertyname + " from " + clazz.getName() + " because the return type of the getter is not " + getConversionClass().getName());
+            log.debug("Not using {} from {} because the return type of the getter is not {}", propertyname, clazz.getName(), getConversionClass().getName());
             throw new StartupException(JSOtherMsg.lookupText("Mismatch of return types, found: {0} required: {1}", getter.getReturnType(), getConversionClass()));
         }
     }
@@ -260,10 +258,10 @@ public abstract class AbstractReflectedChoice implements Choice {
             Object retval = getter.invoke(null, new Object[0]);
             return convertToString(retval);
         } catch (IllegalAccessException ex) {
-            log.error("Illegal access getting value from " + clazz.getName() + "." + getter.getName(), ex);
+            log.error("Illegal access getting value from {}.{}", clazz.getName(), getter.getName(), ex);
             return "";
         } catch (InvocationTargetException ex) {
-            log.error("Failed to get value from " + clazz.getName() + "." + getter.getName(), ex);
+            log.error("Failed to get value from {}.{}", clazz.getName(), getter.getName(), ex);
             return "";
         }
     }
@@ -291,7 +289,7 @@ public abstract class AbstractReflectedChoice implements Choice {
         }
 
         if (ex != null) {
-            log.info("Exception while attempting to execute: " + setter.toString());
+            log.info("Exception while attempting to execute: {}", setter.toString());
 
             // So we can't re-throw the original exception because it wasn't an
             // Exception so we will have to re-throw the

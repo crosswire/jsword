@@ -371,7 +371,7 @@ public final class SwordBookPath {
     public static void setDownloadDir(File dlDir) {
         if (!"".equals(dlDir.getPath())) {
             overrideDownloadDir = dlDir;
-            log.debug("Setting sword download directory to: " + dlDir);
+            log.debug("Setting sword download directory to: {}", dlDir);
         }
     }
 

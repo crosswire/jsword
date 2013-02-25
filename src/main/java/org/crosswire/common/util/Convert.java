@@ -161,7 +161,7 @@ public final class Convert {
                     commands.put(key, value);
                 }
             } catch (ClassNotFoundException ex) {
-                log.warn("Invalid config file entry: " + entry + " System message: " + ex.getMessage());
+                log.warn("Invalid config file entry: {} System message: {}", entry, ex.getMessage());
                 Reporter.informUser(Convert.class, ex);
             }
         }

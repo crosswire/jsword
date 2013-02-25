@@ -73,14 +73,14 @@ public final class ClassUtil {
 
                     if (entry != null && !entry.isDirectory()) {
                         if (full != null && !full.equals(fileName)) {
-                            log.warn("Warning duplicate " + classname + " found: " + full + " and " + paths[i]);
+                            log.warn("Warning duplicate {} found: {} and {}", classname, full, paths[i]);
                         } else {
                             full = paths[i];
                         }
                     }
                 } catch (IOException ex) {
                     // If that zip file failed, then ignore it and move on.
-                    log.warn("Missing zip file for " + classname + " and " + paths[i]);
+                    log.warn("Missing zip file for {} and {}", classname, paths[i]);
                 } finally {
                     IOUtil.close(zip);
                 }
@@ -101,7 +101,7 @@ public final class ClassUtil {
 
                 if (new File(fileName).isFile()) {
                     if (full != null && !full.equals(fileName)) {
-                        log.warn("Warning duplicate " + classname + " found: " + full + " and " + paths[i]);
+                        log.warn("Warning duplicate {} found: {} and {}", classname, full, paths[i]);
                     } else {
                         full = paths[i];
                     }

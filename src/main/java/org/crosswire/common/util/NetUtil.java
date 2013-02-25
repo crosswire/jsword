@@ -492,12 +492,12 @@ public final class NetUtil {
 
             // Check that the answers are the same
             if (files.length != reply.length) {
-                log.warn("index file for " + uri.toString() + " has incorrect number of entries.");
+                log.warn("index file for {} has incorrect number of entries.", uri.toString());
             } else {
                 List<String> list = Arrays.asList(files);
                 for (int i = 0; i < files.length; i++) {
                     if (!list.contains(files[i])) {
-                        log.warn("file: based index found " + files[i] + " but this was not found using index file.");
+                        log.warn("file: based index found {} but this was not found using index file.", files[i]);
                     }
                 }
             }

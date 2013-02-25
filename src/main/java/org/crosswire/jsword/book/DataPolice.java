@@ -56,7 +56,6 @@ public final class DataPolice {
         }
         if (bmd != null && key != null) {
             buf.append(':');
-            log.debug(bmd.getInitials() + ':' + key.getName());
         }
         if (key != null) {
             buf.append(key.getName());

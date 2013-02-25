@@ -772,7 +772,7 @@ public final class OSISUtil {
                     Key key = keyf.getKey(v11n, attr);
                     collector.addAll(key);
                 } catch (NoSuchKeyException e) {
-                    log.warn("Unable to parse: " + attr, e);
+                    log.warn("Unable to parse: {}", attr, e);
                 }
             }
         }
@@ -1159,7 +1159,7 @@ public final class OSISUtil {
         } else if (sub instanceof Element) {
             recurseChildren((Element) sub, buffer);
         } else {
-            log.error("unknown type: " + sub.getClass().getName());
+            log.error("unknown type: {}", sub.getClass().getName());
         }
     }
 
