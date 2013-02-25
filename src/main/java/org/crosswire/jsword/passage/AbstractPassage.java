@@ -33,13 +33,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This is a base class to help with some of the common implementation details
@@ -1283,7 +1284,7 @@ public abstract class AbstractPassage implements Passage {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(AbstractPassage.class);
+    private static final Logger log = LoggerFactory.getLogger(AbstractPassage.class);
 
     /**
      * Serialization type constant for a BitWise layout

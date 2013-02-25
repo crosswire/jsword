@@ -28,9 +28,10 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.versification.Versification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Similar to a Passage, but that stores a ranking for each of the Verses that
@@ -816,7 +817,7 @@ public class PassageTally extends AbstractPassage {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(PassageTally.class);
+    private static final Logger log = LoggerFactory.getLogger(PassageTally.class);
 
     /**
      * Serialization ID

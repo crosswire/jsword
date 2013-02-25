@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
@@ -26,10 +25,11 @@ import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Various utilities used by different Sword classes.
@@ -392,6 +392,6 @@ public final class SwordUtil {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(SwordUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(SwordUtil.class);
 
 }

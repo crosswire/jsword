@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -31,11 +31,12 @@ import java.util.Set;
 import org.crosswire.common.util.CWProject;
 import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.FileUtil;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PluginUtil;
 import org.crosswire.common.util.PropertyMap;
 import org.crosswire.common.util.Reporter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A manager to abstract out the non-view specific book installation tasks.
@@ -335,5 +336,5 @@ public final class InstallManager {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(InstallManager.class);
+    private static final Logger log = LoggerFactory.getLogger(InstallManager.class);
 }

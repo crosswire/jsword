@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.passage;
 
@@ -26,7 +25,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.crosswire.common.util.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A Key that uses a Set of Keys as it's store of data.
@@ -233,5 +233,5 @@ public class SetKeyList extends AbstractKeyList {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(SetKeyList.class);
+    private static final Logger log = LoggerFactory.getLogger(SetKeyList.class);
 }

@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.passage;
 
@@ -25,7 +24,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.crosswire.common.util.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A default implementation of Key.
@@ -196,5 +196,5 @@ public class DefaultKeyList extends AbstractKeyList {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(DefaultKeyList.class);
+    private static final Logger log = LoggerFactory.getLogger(DefaultKeyList.class);
 }

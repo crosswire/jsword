@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.util;
 
@@ -30,6 +29,7 @@ import java.util.ResourceBundle;
 
 import org.crosswire.common.icu.NumberShaper;
 import org.crosswire.jsword.internationalisation.LocaleProviderManager;
+import org.slf4j.LoggerFactory;
 
 /**
  * A base class for implementing type safe internationalization (i18n) that is
@@ -158,5 +158,5 @@ public class MsgBase {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(MsgBase.class);
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(MsgBase.class);
 }

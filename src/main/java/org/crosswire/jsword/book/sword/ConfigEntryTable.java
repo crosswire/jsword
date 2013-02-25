@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -37,13 +37,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.crosswire.common.util.Language;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A utility class for loading the entries in a Sword book's conf file. Since
@@ -893,5 +894,5 @@ public final class ConfigEntryTable {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(ConfigEntryTable.class);
+    private static final Logger log = LoggerFactory.getLogger(ConfigEntryTable.class);
 }

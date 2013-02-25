@@ -14,18 +14,18 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007
+ * Copyright: 2007-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: KeyAnalyzer.java 1376 2007-06-01 18:27:01Z dmsmith $
  */
 package org.crosswire.jsword.index.lucene;
 
 import java.io.IOException;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.PropertyMap;
 import org.crosswire.common.util.ResourceUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A singleton that Reads and Maintains IndexMetadata from properties file All
@@ -73,7 +73,7 @@ public final class IndexMetadata {
     public static final float INDEX_VERSION_1_1 = 1.1f;
     public static final float INDEX_VERSION_1_2 = 1.2f;
 
-    private static final Logger log = Logger.getLogger(IndexMetadata.class);
+    private static final Logger log = LoggerFactory.getLogger(IndexMetadata.class);
     private static IndexMetadata myInstance = new IndexMetadata();
     private PropertyMap props;
 }

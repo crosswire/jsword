@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import org.crosswire.common.util.EventListenerList;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.LucidException;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PropertyMap;
@@ -39,6 +38,8 @@ import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSOtherMsg;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Config is the core part of the configuration system; it is simply a
@@ -512,5 +513,5 @@ public class Config implements Iterable<Choice> {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(Config.class);
+    private static final Logger log = LoggerFactory.getLogger(Config.class);
 }

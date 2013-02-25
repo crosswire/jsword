@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -24,8 +24,9 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.PluginUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A simple container for all the known filters.
@@ -77,7 +78,7 @@ public final class FilterFactory {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(FilterFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(FilterFactory.class);
 
     /**
      * The lookup table of filters
@@ -96,9 +97,9 @@ public final class FilterFactory {
             Class<Filter> cdeft = map.remove("default");
             deft = cdeft.newInstance();
         } catch (InstantiationException e) {
-            log.fatal("Failed to get default filter, will attempt to use first", e);
+            log.error("Failed to get default filter, will attempt to use first", e);
         } catch (IllegalAccessException e) {
-            log.fatal("Failed to get default filter, will attempt to use first", e);
+            log.error("Failed to get default filter, will attempt to use first", e);
         }
 
         // the lookup table

@@ -27,12 +27,13 @@ import java.net.URI;
 
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.IOUtil;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.sword.SwordBookMetaData;
 import org.crosswire.jsword.book.sword.SwordUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Stores the random access files required for processing the passage request
@@ -121,5 +122,5 @@ public class GenBookBackendState extends AbstractOpenFileState {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(GenBookBackendState.class);
+    private static final Logger log = LoggerFactory.getLogger(GenBookBackendState.class);
 }

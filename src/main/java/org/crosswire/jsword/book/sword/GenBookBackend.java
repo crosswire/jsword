@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
@@ -25,7 +24,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.sword.state.GenBookBackendState;
@@ -33,6 +31,8 @@ import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.TreeKey;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Backend for General Books.
@@ -203,5 +203,5 @@ public class GenBookBackend extends AbstractBackend<GenBookBackendState> {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(GenBookBackend.class);
+    private static final Logger log = LoggerFactory.getLogger(GenBookBackend.class);
 }

@@ -26,10 +26,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.crosswire.common.util.IOUtil;
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.sword.SwordBookMetaData;
 import org.crosswire.jsword.book.sword.SwordUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Stores the random access files required for processing the passage request
@@ -172,5 +173,5 @@ public class RawFileBackendState extends RawBackendState {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(RawFileBackendState.class);
+    private static final Logger log = LoggerFactory.getLogger(RawFileBackendState.class);
 }

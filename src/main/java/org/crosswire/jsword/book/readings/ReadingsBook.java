@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -33,7 +33,6 @@ import java.util.TreeMap;
 
 import org.crosswire.common.util.CWClassLoader;
 import org.crosswire.common.util.Language;
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookCategory;
@@ -55,6 +54,8 @@ import org.crosswire.jsword.passage.SetKeyList;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.jdom.Content;
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A Dictionary that displays daily Readings.
@@ -264,5 +265,5 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(ReadingsBook.class);
+    private static final Logger log = LoggerFactory.getLogger(ReadingsBook.class);
 }

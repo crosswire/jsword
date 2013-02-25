@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2008
+ * Copyright: 2008-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: PluginUtil.java 1505 2007-07-21 19:40:19Z dmsmith $
  */
 package org.crosswire.common.util;
 
@@ -31,6 +30,7 @@ import java.util.Map;
 import java.util.MissingResourceException;
 
 import org.crosswire.jsword.JSOtherMsg;
+import org.slf4j.LoggerFactory;
 
 /**
  * A plugin maps one or more implementations to an interface or abstract class
@@ -221,6 +221,6 @@ public final class PluginUtil {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(PluginUtil.class);
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(PluginUtil.class);
 
 }

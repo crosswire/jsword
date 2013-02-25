@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.util;
 
@@ -25,6 +24,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import org.slf4j.LoggerFactory;
 
 /**
  * Various Java Class Utilities.
@@ -211,5 +212,5 @@ public final class ClassUtil {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(ClassUtil.class);
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(ClassUtil.class);
 }

@@ -14,15 +14,15 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2008
+ * Copyright: 2008-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: org.eclipse.jdt.ui.prefs 1178 2006-11-06 12:48:02Z dmsmith $
  */
 package org.crosswire.jsword.book.sword;
 
 import org.crosswire.common.crypt.Sapphire;
-import org.crosswire.common.util.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Data entry represents an entry in a Data file. The entry consists of a key
@@ -224,5 +224,5 @@ public class DataEntry {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(DataEntry.class);
+    private static final Logger log = LoggerFactory.getLogger(DataEntry.class);
 }

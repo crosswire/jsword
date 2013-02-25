@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -35,7 +35,6 @@ import org.crosswire.common.progress.Progress;
 import org.crosswire.common.util.CWProject;
 import org.crosswire.common.util.CollectionUtil;
 import org.crosswire.common.util.IOUtil;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSMsg;
@@ -56,6 +55,8 @@ import org.crosswire.jsword.book.sword.SwordBookDriver;
 import org.crosswire.jsword.book.sword.SwordBookMetaData;
 import org.crosswire.jsword.book.sword.SwordBookPath;
 import org.crosswire.jsword.book.sword.SwordConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ice.tar.TarEntry;
 import com.ice.tar.TarInputStream;
@@ -665,5 +666,5 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /**
      * The log stream
      */
-    protected static final Logger log = Logger.getLogger(AbstractSwordInstaller.class);
+    protected static final Logger log = LoggerFactory.getLogger(AbstractSwordInstaller.class);
 }

@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.util;
 
@@ -49,7 +48,9 @@ public final class Logger {
      * Get a new logger for the class that shows the class, method and line
      * number of the caller.
      * @param clazz the class that holds the logger.
+     * @deprecated Use {@link org.slf4j.LoggerFactory#getLogger(Class)} instead.
      */
+    @Deprecated
     public static <T> Logger getLogger(Class<T> clazz) {
         return new Logger(clazz);
     }
@@ -58,7 +59,9 @@ public final class Logger {
      * Get a new logger for the class that shows the class of the caller.
      * @param clazz the class that holds the logger.
      * @param showLocation when true it will get the method and line where logging occurred.
+     * @deprecated Use {@link org.slf4j.LoggerFactory#getLogger(Class)} instead.
      */
+    @Deprecated
     public static <T> Logger getLogger(Class<T> clazz, boolean showLocation) {
         return new Logger(clazz);
     }

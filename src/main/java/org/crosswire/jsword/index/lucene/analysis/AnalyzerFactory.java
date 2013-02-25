@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007
+ * Copyright: 2007-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -24,10 +24,11 @@ import java.io.IOException;
 
 import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Language;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.PropertyMap;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.book.Book;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A factory creating the appropriate Analyzer for natural language analysis of
@@ -118,5 +119,5 @@ public final class AnalyzerFactory {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(AnalyzerFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(AnalyzerFactory.class);
 }

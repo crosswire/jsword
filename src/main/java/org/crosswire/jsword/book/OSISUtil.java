@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book;
 
@@ -34,7 +33,6 @@ import java.util.regex.Pattern;
 
 import org.crosswire.common.diff.Difference;
 import org.crosswire.common.diff.EditType;
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
@@ -47,6 +45,8 @@ import org.jdom.Content;
 import org.jdom.Element;
 import org.jdom.Parent;
 import org.jdom.Text;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Some simple utilities to help working with OSIS classes.
@@ -324,7 +324,7 @@ public final class OSISUtil {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(OSISUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(OSISUtil.class);
 
 
     /**

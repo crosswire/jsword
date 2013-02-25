@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.filter.thml;
 
@@ -29,7 +28,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.OSISUtil;
@@ -37,6 +35,8 @@ import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.passage.Key;
 import org.jdom.Content;
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -166,5 +166,5 @@ public class THMLFilter implements Filter {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(THMLFilter.class);
+    private static final Logger log = LoggerFactory.getLogger(THMLFilter.class);
 }

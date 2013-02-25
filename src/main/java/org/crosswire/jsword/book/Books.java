@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book;
 
@@ -31,10 +30,11 @@ import java.util.Set;
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.util.CollectionUtil;
 import org.crosswire.common.util.EventListenerList;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.PluginUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSOtherMsg;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The Books class (along with Book) is the central point of contact between the
@@ -440,7 +440,7 @@ public final class Books implements BookList {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(Books.class);
+    private static final Logger log = LoggerFactory.getLogger(Books.class);
 
     /**
      * The singleton instance. This needs to be declared after all other statics

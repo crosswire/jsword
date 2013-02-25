@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -25,11 +25,12 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.crosswire.common.util.Histogram;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.OSISUtil;
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A ConfigEntry holds the value(s) for an entry of ConfigEntryType.
@@ -435,5 +436,5 @@ public final class ConfigEntry {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(ConfigEntry.class);
+    private static final Logger log = LoggerFactory.getLogger(ConfigEntry.class);
 }

@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.util;
 
@@ -45,6 +44,7 @@ import java.util.jar.JarEntry;
 
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
+import org.slf4j.LoggerFactory;
 
 /**
  * The NetUtil class looks after general utility stuff around the java.net
@@ -873,5 +873,5 @@ public final class NetUtil {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(NetUtil.class);
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(NetUtil.class);
 }

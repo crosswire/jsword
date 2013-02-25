@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id:LuceneIndex.java 984 2006-01-23 14:18:33 -0500 (Mon, 23 Jan 2006) dmsmith $
  */
 package org.crosswire.jsword.index.lucene;
 
@@ -45,7 +44,6 @@ import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.progress.Progress;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSMsg;
@@ -68,6 +66,8 @@ import org.crosswire.jsword.passage.VerseFactory;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implement the SearchEngine using Lucene as the search engine.
@@ -490,7 +490,7 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(LuceneIndex.class);
+    private static final Logger log = LoggerFactory.getLogger(LuceneIndex.class);
 
     /**
      * The Book that we are indexing

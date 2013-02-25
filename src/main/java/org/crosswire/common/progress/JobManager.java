@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.progress;
 
@@ -26,7 +25,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.crosswire.common.util.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * JobManager is responsible for creating jobs and informing listeners about the
@@ -179,5 +179,5 @@ public final class JobManager {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(JobManager.class);
+    private static final Logger log = LoggerFactory.getLogger(JobManager.class);
 }
