@@ -210,14 +210,6 @@ public final class ConfigEntry {
 
         // Report on fields that shouldn't have RTF but do
         if (!allowsRTF() && RTF_PATTERN.matcher(aValue).find()) {
-            buf.append(issue);
-            buf.append(' ');
-            buf.append(confEntryName);
-            buf.append(" in ");
-            buf.append(internal);
-            buf.append(": ");
-            buf.append(aValue);
-
             log.info("Ignoring unexpected RTF for {} in {}: {}", confEntryName, internal, aValue);
         }
 
