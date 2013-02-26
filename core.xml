@@ -10,13 +10,16 @@
     == These are the standard locations that this build file uses.
     == This assumes that the build file is in the root of the project.
     =========================================================================-->
+    <dirname property="core.basedir" file="${ant.file.core}"/>
+
 	<property name="release.version"  value="2.0-beta"/>
-	<property name="jsword.home"      location="${basedir}/../jsword" />
+	<property name="jsword.home"      location="${core.basedir}" />
 	<property name="lib.dir"          location="${jsword.home}/lib/jars" />
+	<property name="tools.home"       location="${jsword.home}/tools" />
 	<property name="src.dir"          location="${basedir}/src" />
-	<property name="bin.dir"          location="${jsword.home}/bin" />
-	<property name="html.dir"         location="${jsword.home}/html" />
-	<property name="report.dir"       location="${jsword.home}/report" />
+	<property name="bin.dir"          location="${basedir}/bin" />
+	<property name="html.dir"         location="${basedir}/html" />
+	<property name="report.dir"       location="${basedir}/report" />
 
 	<property name="source.root"      value="src"/>
 	<property name="source.etc"       value="etc"/>
@@ -24,11 +27,12 @@
 	<property name="source.java"      value="${source.root}/main/java"/>
 	<property name="source.res"       value="${source.root}/main/resources"/>
 	<property name="source.test"      value="${source.root}/test"/>
-	<property name="tools.home"       location="${jsword.home}/tools" />
-	<property name="target.root"      location="${jsword.home}/target"/>
-	<property name="target.classes"   location="${target.root}/classes"/>
-	<property name="target.jar"       location="${jsword.home}/lib/jars"/>
-	<property name="target.installed" location="${target.root}/installed"/>
+
+	<property name="target.root"      value="target"/>
+	<property name="target.classes"   value="${target.root}/classes"/>
+	<property name="target.jar"       value="${lib.dir}"/>
+	<property name="target.installed" value="${target.root}/installed"/>
+
 	<!-- override -->
 	<property name="test.root"        location="${target.root}/test"/>
 	<property name="test.classes"     location="${test.root}/classes"/>
@@ -71,7 +75,7 @@
     == This is a path to all of the jars in the target.jar directory
     =========================================================================-->
 	<path id="runtime.jarpath">
-		<fileset dir="${target.jar}" includes="*.jar"/>
+		<fileset dir="${lib.dir}" includes="*.jar"/>
 	</path>
 
 	<!--=======================================================================
@@ -246,20 +250,6 @@
 	</target>
 
 	<!--=======================================================================
-    == Copy all the local 3rd party jars to a single locaton.
-    =========================================================================-->
-	<target name="prepare.jars"
-          if="jardir.present">
-		<!-- Copy the jars from the std location to the target jar directory -->
-		<mkdir dir="${target.jar}"/>
-		<copy verbose="${verbose.copy}" todir="${target.jar}" flatten="true" preservelastmodified="true">
-			<fileset dir="${source.jar}">
-				<patternset refid="external.runtime.jars"/>
-			</fileset>
-		</copy>
-	</target>
-
-	<!--=======================================================================
     == Copy all the resources to a single locaton.
     =========================================================================-->
 	<target name="prepare.resources"
@@ -274,31 +264,13 @@
 	<!--=======================================================================
     == Copy all the local and external 3rd party jars to a single locaton.
     == Also copy the resources to ${target.classes}
-    == Calls prepare.dependency.
+    == Calls prepare.extra.
     =========================================================================-->
 	<target name="prepare"
-          depends="build.dependency, prepare.jars, prepare.resources"
+          depends="build.dependency, prepare.resources"
           description="Prepare the build by copying needed jars and files.">
 		<!-- Copy the jars from the std location to the target jar directory -->
-		<antcall target="prepare.dependency"/>
 		<antcall target="prepare.extra"/>
-	</target>
-
-	<!--=======================================================================
-    == Copy external jars of dependent projects, if any.
-    == This target requires the "dependency.jar" property to be set by
-    == the importing ant build file.
-    =========================================================================-->
-	<target name="prepare.dependency"
-          if="dependency.jar"
-          description="Prepare this build from the dependency.">
-		<mkdir dir="${target.jar}"/>
-		<copy verbose="${verbose.copy}" todir="${target.jar}" flatten="true" preservelastmodified="true">
-			<fileset dir="${dependency.jar}">
-				<include name="**/*.jar"/>
-				<exclude name="**/*-sources.jar"/>
-			</fileset>
-		</copy>
 	</target>
 
 	<!--=======================================================================
@@ -320,6 +292,7 @@
           unless="source.uptodate"
           description="Compile the source">
 		<mkdir dir="${target.classes}"/>
+<!--		<echo>"$${ant.refid:runtime.jarpath}=${ant.refid:runtime.jarpath}"</echo> -->
 		<javac debug="on"
            includes="**/*.java"
            destdir="${target.classes}"
