@@ -32,11 +32,11 @@ import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.passage.Key;
-import org.jdom.Content;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
+import org.jdom2.Content;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
@@ -133,7 +133,9 @@ public class OSISFilter implements Filter {
         if (builder == null) {
             //then we have no sax builders available, so let's create a new one and store
             builder = new SAXBuilder();
-            builder.setFastReconfigure(true);
+            // With JDom 1.x it was important to set Fast Reconfigure on re-usable SAXBuilders
+            // This is the default with 2.x and this method does nothing
+            // builder.setFastReconfigure(true);
         }
 
         // create a root element to house our document fragment

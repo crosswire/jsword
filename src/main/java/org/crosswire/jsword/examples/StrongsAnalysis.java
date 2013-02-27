@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007
+ * Copyright: 2007-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: DictToOsis.java 1344 2007-05-23 21:50:52 -0400 (Wed, 23 May 2007) dmsmith $
  */
 package org.crosswire.jsword.examples;
 
@@ -36,8 +35,8 @@ import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.study.StrongsMapSet;
 import org.crosswire.jsword.book.study.StrongsNumber;
 import org.crosswire.jsword.passage.Key;
-import org.jdom.Content;
-import org.jdom.Element;
+import org.jdom2.Content;
+import org.jdom2.Element;
 
 /**
  * Analyze Strong's Numbers in a module.

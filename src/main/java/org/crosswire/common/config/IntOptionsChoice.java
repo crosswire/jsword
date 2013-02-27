@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.config;
 
@@ -26,7 +25,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 
-import org.jdom.Element;
+import org.jdom2.Element;
 
 /**
  * A class to convert between strings and objects of a type.
@@ -40,7 +39,7 @@ public class IntOptionsChoice extends AbstractReflectedChoice implements MappedC
     /*
      * (non-Javadoc)
      * 
-     * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
+     * @see org.crosswire.common.config.Choice#init(org.jdom2.Element)
      */
     @Override
     public void init(Element option, ResourceBundle configResources) throws StartupException {
