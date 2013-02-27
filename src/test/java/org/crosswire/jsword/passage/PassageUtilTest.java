@@ -97,9 +97,9 @@ public class PassageUtilTest extends TestCase {
         assertEquals("Gen 1:1", VerseFactory.fromString(v11n, "Gen 1 1").toString());
         assertEquals("Gen 1:1", VerseFactory.fromString(v11n, "Genesis 1:1").toString());
         assertEquals("Gen 1:1", VerseFactory.fromString(v11n, "Gen 1 1").toString());
-        assertEquals("Gen 1:1", VerseFactory.fromString(v11n, "g 1 1").toString());
-        assertEquals("Gen 0:0", VerseFactory.fromString(v11n, "g").toString());
-        assertEquals("Gen 1:1", VerseFactory.fromString(v11n, "G:1:1").toString());
+        assertEquals("Gal 1:1", VerseFactory.fromString(v11n, "g 1 1").toString());
+        assertEquals("Gal 0:0", VerseFactory.fromString(v11n, "g").toString());
+        assertEquals("Gal 1:1", VerseFactory.fromString(v11n, "G:1:1").toString());
         PassageUtil.setPersistentNaming(true);
         assertTrue(PassageUtil.isPersistentNaming());
         assertEquals("Genesis 1 1", VerseFactory.fromString(v11n, "Genesis 1 1").toString());
@@ -109,15 +109,6 @@ public class PassageUtilTest extends TestCase {
         assertEquals("g 1 1", VerseFactory.fromString(v11n, "g 1 1").toString());
         assertEquals("g", VerseFactory.fromString(v11n, "g").toString());
         assertEquals("G:1:1", VerseFactory.fromString(v11n, "G:1:1").toString());
-    }
-
-    public void testTokenize() {
-        /*
-         * log("PassageUtil.tokenize()"); String[] temp =
-         * PassageUtil.tokenize(" one  two three ", " ");
-         * assertEquals(temp.length, 3); assertEquals(temp[0], "one");
-         * assertEquals(temp[1], "two"); assertEquals(temp[2], "three");
-         */
     }
 
     public void testBinary() {

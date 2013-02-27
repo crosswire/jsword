@@ -1,8 +1,25 @@
+/**
+ * Distribution License:
+ * JSword is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License, version 2.1 as published by
+ * the Free Software Foundation. This program is distributed in the hope
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * The License is available on the internet at:
+ *       http://www.gnu.org/copyleft/lgpl.html
+ * or by writing to:
+ *      Free Software Foundation, Inc.
+ *      59 Temple Place - Suite 330
+ *      Boston, MA 02111-1307, USA
+ *
+ * Copyright: 2012
+ *     The copyright to this program is held by it's authors.
+ *
+ */
 package org.crosswire.jsword.book.sword;
 
-import java.io.IOException;
-
-import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import org.crosswire.jsword.book.Book;
@@ -28,7 +45,7 @@ public class GenBookTest extends TestCase {
     protected void tearDown() throws Exception {
     }
 
-    public void testOsisID() throws IOException, BookException {
+    public void testOsisID() {
         Book book = Books.installed().getBook("Pilgrim"); // Bunyan's Pilgrim's Progress
         if (book != null) {
             Key key = null;
@@ -42,7 +59,7 @@ public class GenBookTest extends TestCase {
                 try {
                     assertEquals("PART_II.THE_FIRST_STAGE", key.getOsisID());
                 } catch(RuntimeException e) {
-                   Assert.fail("Could not get the osisID for a GenBook key.");
+                   fail("Could not get the osisID for a GenBook key.");
                 }
             }
         }
@@ -63,7 +80,7 @@ public class GenBookTest extends TestCase {
             try {
                 book.getRawText(key);
             } catch (NullPointerException e) {
-                Assert.fail("test for bad key should not have thrown an NPE.");
+                fail("test for bad key should not have thrown an NPE.");
             } catch (BookException e) {
                 assertEquals("testing for a bad key", "No entry for '' in Pilgrim.", e.getMessage());
             }

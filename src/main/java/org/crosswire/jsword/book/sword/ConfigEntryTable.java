@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
@@ -38,14 +37,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.crosswire.common.util.Language;
-import org.crosswire.common.util.Languages;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.versification.system.Versifications;
-import org.jdom.Element;
+import org.jdom2.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A utility class for loading the entries in a Sword book's conf file. Since
@@ -370,7 +369,7 @@ public final class ConfigEntryTable {
 
             Matcher matcher = KEY_VALUE_PATTERN.matcher(line);
             if (!matcher.matches()) {
-                log.warn("Expected to see '=' in " + internal + ": " + line);
+                log.warn("Expected to see '=' in {}: {}", internal, line);
                 continue;
             }
 
@@ -378,7 +377,7 @@ public final class ConfigEntryTable {
             String value = matcher.group(2).trim();
             // Only CIPHER_KEYS that are empty are not ignored
             if (value.length() == 0 && !ConfigEntryType.CIPHER_KEY.getName().equals(key)) {
-                log.warn("Ignoring empty entry in " + internal + ": " + line);
+                log.warn("Ignoring empty entry in {}: {}", internal, line);
                 continue;
             }
 
@@ -391,10 +390,10 @@ public final class ConfigEntryTable {
 
             if (e == null) {
                 if (type == null) {
-                    log.warn("Extra entry in " + internal + " of " + configEntry.getName());
+                    log.warn("Extra entry in {} of {}", internal, configEntry.getName());
                     extra.put(key, configEntry);
                 } else if (type.isSynthetic()) {
-                    log.warn("Ignoring unexpected entry in " + internal + " of " + configEntry.getName());
+                    log.warn("Ignoring unexpected entry in {} of {}", internal, configEntry.getName());
                 } else {
                     table.put(type, configEntry);
                 }
@@ -434,7 +433,7 @@ public final class ConfigEntryTable {
             }
         }
         if (initials == null) {
-            log.error("Malformed conf file for " + internal + " no initials found. Using internal of " + internal);
+            log.error("Malformed conf file for {} no initials found. Using internal of {}", internal, internal);
             initials = internal;
         }
         add(ConfigEntryType.INITIALS, initials);
@@ -457,17 +456,17 @@ public final class ConfigEntryTable {
 
             if (isKeyLine(line)) {
                 if (continuation_expected) {
-                    log.warn(report("Continuation followed by key for", configEntry.getName(), line));
+                    log.warn("Continuation followed by key for {} in {}: {}", configEntry.getName(), internal, line);
                 }
 
                 backup(line);
                 break;
             } else if (!continuation_expected) {
-                log.warn(report("Line without previous continuation for", configEntry.getName(), line));
+                log.warn("Line without previous continuation for {} in {}: {}", configEntry.getName(), internal, line);
             }
 
             if (!configEntry.allowsContinuation()) {
-                log.warn(report("Ignoring unexpected additional line for", configEntry.getName(), line));
+                log.warn("Ignoring unexpected additional line for {} in {}: {}", configEntry.getName(), internal, line);
             } else {
                 if (continuation_expected) {
                     buf.append('\n');
@@ -517,7 +516,7 @@ public final class ConfigEntryTable {
             readahead = oops;
         } else {
             // should never happen
-            log.error("Backup an empty string for " + internal);
+            log.error("Backup an empty string for {}", internal);
         }
     }
 
@@ -552,8 +551,9 @@ public final class ConfigEntryTable {
     private void adjustLanguage() {
         Language lang = (Language) getValue(ConfigEntryType.LANG);
         if (lang == null) {
+            log.warn("Setting default lang for {}. Assuming {}={}", internal, ConfigEntryType.LANG.getName(), Language.DEFAULT_LANG_CODE);
             lang = Language.DEFAULT_LANG;
-            add(ConfigEntryType.LANG, lang.toString());
+            add(ConfigEntryType.LANG, lang.getGivenSpecification());
         }
         testLanguage(internal, lang);
 
@@ -563,36 +563,36 @@ public final class ConfigEntryTable {
         // If we have either langFrom or langTo, we are dealing with a glossary
         if (langFrom != null || langTo != null) {
             if (langFrom == null) {
-                log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_FROM.getName() + '=' + Languages.DEFAULT_LANG_CODE);
-                langFrom = Language.DEFAULT_LANG;
-                add(ConfigEntryType.GLOSSARY_FROM, lang.getCode());
+                log.warn("Missing data for {}. Assuming {}={}", internal, ConfigEntryType.GLOSSARY_FROM.getName(), lang.getGivenSpecification());
+                langFrom = lang;
+                add(ConfigEntryType.GLOSSARY_FROM, langFrom.getGivenSpecification());
             }
             testLanguage(internal, langFrom);
 
             if (langTo == null) {
-                log.warn("Missing data for " + internal + ". Assuming " + ConfigEntryType.GLOSSARY_TO.getName() + '=' + Languages.DEFAULT_LANG_CODE);
+                log.warn("Missing data for {}. Assuming {}={}", internal, ConfigEntryType.GLOSSARY_TO.getName(), Language.DEFAULT_LANG_CODE);
                 langTo = Language.DEFAULT_LANG;
-                add(ConfigEntryType.GLOSSARY_TO, lang.getCode());
+                add(ConfigEntryType.GLOSSARY_TO, langTo.getGivenSpecification());
             }
             testLanguage(internal, langTo);
 
             // At least one of the two languages should match the lang entry
             if (!langFrom.equals(lang) && !langTo.equals(lang)) {
-                log.error("Data error in " + internal
-                          + ". Neither " + ConfigEntryType.GLOSSARY_FROM.getName()
-                          + " or " + ConfigEntryType.GLOSSARY_FROM.getName()
-                          + " match " + ConfigEntryType.LANG.getName());
+                log.error("Data error in {}. Neither {} or {} match {}"
+                        , internal
+                        , ConfigEntryType.GLOSSARY_FROM.getName()
+                        , ConfigEntryType.GLOSSARY_TO.getName()
+                        , ConfigEntryType.LANG.getName());
             } else if (!langFrom.equals(lang)) {
                 // The LANG field should match the GLOSSARY_FROM field
-                /*
-                 * log.error("Data error in " + internal + ". " +
-                 * ConfigEntryType.GLOSSARY_FROM.getName() + " ("
-                 * + langFrom.getCode() + ") does not match " +
-                 * ConfigEntryType.LANG.getName() + " (" + lang.getCode() +
-                 * ")");
-                 */
+//                log.error("Data error in {}. {} ({}) does not match {} ({})."
+//                        , internal
+//                        , ConfigEntryType.GLOSSARY_FROM.getName()
+//                        , langFrom.getCode()
+//                        , ConfigEntryType.LANG.getName()
+//                        , lang.getCode());
                 lang = langFrom;
-                add(ConfigEntryType.LANG, lang.getCode());
+                add(ConfigEntryType.LANG, lang.getGivenSpecification());
             }
         }
     }
@@ -606,7 +606,7 @@ public final class ConfigEntryTable {
         // From the config map, extract the important bean properties
         String modTypeName = (String) getValue(ConfigEntryType.MOD_DRV);
         if (modTypeName == null) {
-            log.error("Book not supported: malformed conf file for " + internal + " no " + ConfigEntryType.MOD_DRV.getName() + " found");
+            log.error("Book not supported: malformed conf file for {} no {} found.", internal, ConfigEntryType.MOD_DRV.getName());
             supported = false;
             return;
         }
@@ -622,7 +622,7 @@ public final class ConfigEntryTable {
 
         bookType = BookType.fromString(modTypeName);
         if (getBookType() == null) {
-            log.error("Book not supported: malformed conf file for " + internal + " no book type found");
+            log.error("Book not supported: malformed conf file for {} no book type found", internal);
             supported = false;
             return;
         }
@@ -645,7 +645,7 @@ public final class ConfigEntryTable {
     private void adjustName() {
         // If there is no name then use the internal name
         if (table.get(ConfigEntryType.DESCRIPTION) == null) {
-            log.error("Malformed conf file for " + internal + " no " + ConfigEntryType.DESCRIPTION.getName() + " found. Using internal of " + internal);
+            log.error("Malformed conf file for {}. No {} found. Using internal of {}", internal,  ConfigEntryType.DESCRIPTION.getName(), internal);
             add(ConfigEntryType.DESCRIPTION, internal);
         }
     }
@@ -656,7 +656,7 @@ public final class ConfigEntryTable {
     private void validate() {
         // if (isEnciphered())
         // {
-        //            log.debug("Book not supported: " + internal + " because it is locked and there is no key.");
+        //            log.debug("Book not supported: {} because it is locked and there is no key.", internal);
         // supported = false;
         // return;
         // }
@@ -664,7 +664,7 @@ public final class ConfigEntryTable {
 
     private void testLanguage(String initials, Language lang) {
         if (!lang.isValidLanguage()) {
-            log.warn("Unknown language " + lang.getCode() + " in book " + initials);
+            log.warn("Unknown language {} in book {}", lang.getGivenSpecification(), initials);
         }
     }
 
@@ -742,19 +742,6 @@ public final class ConfigEntryTable {
                 buf.append(text);
             }
         }
-    }
-
-    private String report(String issue, String confEntryName, String line) {
-        StringBuilder buf = new StringBuilder(100);
-        buf.append(issue);
-        buf.append(' ');
-        buf.append(confEntryName);
-        buf.append(" in ");
-        buf.append(internal);
-        buf.append(": ");
-        buf.append(line);
-
-        return buf.toString();
     }
 
     /**
@@ -843,11 +830,6 @@ public final class ConfigEntryTable {
     };
 
     /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(ConfigEntryTable.class);
-
-    /**
      * The original name of this config file from mods.d. This is only used for
      * managing warnings and errors
      */
@@ -897,4 +879,8 @@ public final class ConfigEntryTable {
      */
     private static final Pattern KEY_VALUE_PATTERN = Pattern.compile("^([A-Za-z0-9_.]+)\\s*=\\s*(.*)$");
 
+    /**
+     * The log stream
+     */
+    private static final Logger log = LoggerFactory.getLogger(ConfigEntryTable.class);
 }

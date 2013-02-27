@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
@@ -28,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.crosswire.common.util.FileUtil;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
@@ -40,6 +38,8 @@ import org.crosswire.jsword.book.basic.AbstractBookDriver;
 import org.crosswire.jsword.index.IndexManager;
 import org.crosswire.jsword.index.IndexManagerFactory;
 import org.crosswire.jsword.index.IndexStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This represents all of the Sword Books (aka modules).
@@ -122,14 +122,14 @@ public class SwordBookDriver extends AbstractBookDriver {
                     }
                 } catch (IOException e) {
                     log.warn("Couldn't create SwordBookMetaData", e);
-                } catch(MissingDataFilesException e) {
-                    log.warn(e.getMessage() + " This book will be excluded.", e);
+                } catch (MissingDataFilesException e) {
+                    log.warn("This book will be excluded.", e);
                 } catch (BookException e) {
                     log.warn("Couldn't create SwordBookMetaData", e);
                 }
             }
         } else {
-            log.debug("mods.d directory at " + mods + " does not exist");
+            log.debug("mods.d directory at {} does not exist", mods);
         }
     }
 
@@ -237,6 +237,6 @@ public class SwordBookDriver extends AbstractBookDriver {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(SwordBookDriver.class);
+    private static final Logger log = LoggerFactory.getLogger(SwordBookDriver.class);
 
 }

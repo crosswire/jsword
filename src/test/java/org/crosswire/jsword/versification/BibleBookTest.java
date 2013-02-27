@@ -21,6 +21,8 @@
  */
 package org.crosswire.jsword.versification;
 
+import org.crosswire.jsword.versification.system.Versifications;
+
 import junit.framework.TestCase;
 
 /**
@@ -47,34 +49,35 @@ public class BibleBookTest extends TestCase {
     }
 
     public void testGetBook() {
-        assertEquals(BibleBook.GEN, BibleBook.getBook("Genesis"));
-        assertEquals(BibleBook.GEN, BibleBook.getBook("Gene"));
-        assertEquals(BibleBook.GEN, BibleBook.getBook("Gen"));
-        assertEquals(BibleBook.GEN, BibleBook.getBook("G"));
-        assertEquals(BibleBook.GEN, BibleBook.getBook("g"));
-        assertEquals(BibleBook.GEN, BibleBook.getBook("GEN"));
-        assertEquals(BibleBook.GEN, BibleBook.getBook("genesis"));
-        assertEquals(BibleBook.PS, BibleBook.getBook("psa"));
-        assertEquals(BibleBook.PS, BibleBook.getBook("ps"));
-        assertEquals(BibleBook.PS, BibleBook.getBook("pss"));
-        assertEquals(BibleBook.PS, BibleBook.getBook("psalter"));
-        assertEquals(BibleBook.ECCL, BibleBook.getBook("ecc"));
-        assertEquals(BibleBook.ECCL, BibleBook.getBook("Qohelot"));
-        assertEquals(BibleBook.SONG, BibleBook.getBook("son"));
-        assertEquals(BibleBook.SONG, BibleBook.getBook("song"));
-        assertEquals(BibleBook.SONG, BibleBook.getBook("song of solomon"));
-        assertEquals(BibleBook.SONG, BibleBook.getBook("songofsolomon"));
-        assertEquals(BibleBook.SONG, BibleBook.getBook("ss"));
-        assertEquals(BibleBook.SONG, BibleBook.getBook("canticle"));
-        assertEquals(BibleBook.SONG, BibleBook.getBook("can"));
-        assertEquals(BibleBook.PHIL, BibleBook.getBook("phi"));
-        assertEquals(BibleBook.PHIL, BibleBook.getBook("phil"));
-        assertEquals(BibleBook.PHIL, BibleBook.getBook("phili"));
-        assertEquals(BibleBook.PHLM, BibleBook.getBook("phile"));
-        assertEquals(BibleBook.REV,  BibleBook.getBook("revelations"));
-        assertEquals(BibleBook.REV,  BibleBook.getBook("rev"));
+        Versification v11n = Versifications.instance().getDefaultVersification();
+        assertEquals(BibleBook.GEN, v11n.getBook("Genesis"));
+        assertEquals(BibleBook.GEN, v11n.getBook("Gene"));
+        assertEquals(BibleBook.GEN, v11n.getBook("Gen"));
+        assertEquals(BibleBook.GEN, v11n.getBook("GE"));
+        assertEquals(BibleBook.GEN, v11n.getBook("ge"));
+        assertEquals(BibleBook.GEN, v11n.getBook("GEN"));
+        assertEquals(BibleBook.GEN, v11n.getBook("genesis"));
+        assertEquals(BibleBook.PS, v11n.getBook("psa"));
+        assertEquals(BibleBook.PS, v11n.getBook("ps"));
+        assertEquals(BibleBook.PS, v11n.getBook("pss"));
+        assertEquals(BibleBook.PS, v11n.getBook("psalter"));
+        assertEquals(BibleBook.ECCL, v11n.getBook("ecc"));
+        assertEquals(BibleBook.ECCL, v11n.getBook("Qohelot"));
+        assertEquals(BibleBook.SONG, v11n.getBook("son"));
+        assertEquals(BibleBook.SONG, v11n.getBook("song"));
+        assertEquals(BibleBook.SONG, v11n.getBook("song of solomon"));
+        assertEquals(BibleBook.SONG, v11n.getBook("songofsolomon"));
+        assertEquals(BibleBook.SONG, v11n.getBook("ss"));
+        assertEquals(BibleBook.SONG, v11n.getBook("canticle"));
+        assertEquals(BibleBook.SONG, v11n.getBook("can"));
+        assertEquals(BibleBook.PHIL, v11n.getBook("phi"));
+        assertEquals(BibleBook.PHIL, v11n.getBook("phil"));
+        assertEquals(BibleBook.PHIL, v11n.getBook("phili"));
+        assertEquals(BibleBook.PHLM, v11n.getBook("phile"));
+        assertEquals(BibleBook.REV,  v11n.getBook("revelations"));
+        assertEquals(BibleBook.REV,  v11n.getBook("rev"));
 
-        assertEquals(null, BibleBook.getBook("1"));
+        assertEquals(null, v11n.getBook("1"));
     }
 
     public void testGetBookOSIS() throws Exception {

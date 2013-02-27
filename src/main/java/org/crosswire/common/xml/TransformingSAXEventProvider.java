@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.xml;
 
@@ -42,8 +41,9 @@ import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamSource;
 
 import org.crosswire.common.util.IOUtil;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
@@ -84,13 +84,13 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
                 if (modtime > tinfo.getModtime()) {
                     txers.remove(xsluri);
                     tinfo = null;
-                    log.debug("updated style, re-caching. xsl=" + xsluri);
+                    log.debug("updated style, re-caching. xsl={}", xsluri);
                 }
             }
         }
 
         if (tinfo == null) {
-            log.debug("generating templates for " + xsluri);
+            log.debug("generating templates for {}", xsluri);
 
             InputStream xslStream = null;
             try {
@@ -278,6 +278,36 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
     }
 
     /**
+     * A simple struct to link modification times to Templates objects
+     */
+    private static class TemplateInfo {
+        /**
+         * Simple ctor
+         */
+        public TemplateInfo(Templates templates, long modtime) {
+            this.templates = templates;
+            this.modtime = modtime;
+        }
+
+        /**
+         * The transformer
+         */
+        Templates getTemplates() {
+            return templates;
+        }
+
+        /**
+         * The modtime of the xsl file
+         */
+        long getModtime() {
+            return modtime;
+        }
+
+        private Templates templates;
+        private long modtime;
+    }
+
+    /**
      * In development mode the style sheet is checked for modifications before use and if so, it is recompiled.
      */
     private static boolean developmentMode;
@@ -326,35 +356,5 @@ public class TransformingSAXEventProvider extends Transformer implements SAXEven
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(TransformingSAXEventProvider.class);
-
-    /**
-     * A simple struct to link modification times to Templates objects
-     */
-    private static class TemplateInfo {
-        /**
-         * Simple ctor
-         */
-        public TemplateInfo(Templates templates, long modtime) {
-            this.templates = templates;
-            this.modtime = modtime;
-        }
-
-        /**
-         * The transformer
-         */
-        Templates getTemplates() {
-            return templates;
-        }
-
-        /**
-         * The modtime of the xsl file
-         */
-        long getModtime() {
-            return modtime;
-        }
-
-        private Templates templates;
-        private long modtime;
-    }
+    private static final Logger log = LoggerFactory.getLogger(TransformingSAXEventProvider.class);
 }

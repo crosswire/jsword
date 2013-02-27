@@ -22,6 +22,7 @@
 package org.crosswire.jsword.versification;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -43,13 +44,13 @@ import org.crosswire.common.util.StringUtil;
     /**
      * Create BibleNames for the given locale
      */
-    /* package */ BibleNames(Locale locale) {
+    /* package */ BibleNames(Versification v11n, Locale locale) {
         this.locale = locale;
-        initialize();
+        initialize(v11n);
     }
 
     /* package */ BookName getBookName(BibleBook book) {
-        return books[book.ordinal()];
+        return books.get(book);
     }
 
     /**
@@ -98,25 +99,54 @@ import org.crosswire.common.util.StringUtil;
     /* package */ BibleBook getBook(String find) {
         String match = BookName.normalize(find, locale);
 
-        BookName bookName = fullBooksMap.get(match);
+        BookName bookName = fullNT.get(match);
         if (bookName != null) {
             return bookName.getBook();
         }
 
-        bookName = shortBooksMap.get(match);
+        bookName = shortNT.get(match);
         if (bookName != null) {
             return bookName.getBook();
         }
 
-        bookName = altBooksMap.get(match);
+        bookName = altNT.get(match);
         if (bookName != null) {
             return bookName.getBook();
         }
 
-        for (int i = 0; i < books.length; i++) {
-            bookName = books[i];
-            if (bookName.match(match)) {
-                return bookName.getBook();
+        bookName = fullOT.get(match);
+        if (bookName != null) {
+            return bookName.getBook();
+        }
+
+        bookName = shortOT.get(match);
+        if (bookName != null) {
+            return bookName.getBook();
+        }
+
+        bookName = altOT.get(match);
+        if (bookName != null) {
+            return bookName.getBook();
+        }
+
+        bookName = fullNC.get(match);
+        if (bookName != null) {
+            return bookName.getBook();
+        }
+
+        bookName = shortNC.get(match);
+        if (bookName != null) {
+            return bookName.getBook();
+        }
+
+        bookName = altNC.get(match);
+        if (bookName != null) {
+            return bookName.getBook();
+        }
+
+        for (BookName aBook: books.values()) {
+            if (aBook.match(match)) {
+                return aBook.getBook();
             }
         }
 
@@ -139,46 +169,96 @@ import org.crosswire.common.util.StringUtil;
      * Load up the resources for Bible book and section names, and cache the
      * upper and lower versions of them.
      */
-    private void initialize() {
-        int booksInBible = BibleBook.values().length;
-
-        books = new BookName[booksInBible];
+    private void initialize(Versification v11n) {
+        int ntCount = 0;
+        int otCount = 0;
+        int ncCount = 0;
+        BibleBook[] bibleBooks = BibleBook.values();
+        for (BibleBook book : bibleBooks) {
+            // Only need those books that are in this versification
+            if (!v11n.containsBook(book)) {
+                continue;
+            }
+            int ordinal = book.ordinal();
+            if (ordinal > BibleBook.INTRO_OT.ordinal() && ordinal < BibleBook.INTRO_NT.ordinal()) {
+                ++ntCount;
+            } else if (ordinal > BibleBook.INTRO_NT.ordinal() && ordinal <= BibleBook.REV.ordinal()) {
+                ++otCount;
+            } else {
+                ++ncCount;
+            }
+        }
 
         // Create the book name maps
-        fullBooksMap = new HashMap<String, BookName>(booksInBible);
-        shortBooksMap = new HashMap<String, BookName>(booksInBible);
-
-        altBooksMap = new HashMap<String, BookName>(booksInBible);
+        books = new LinkedHashMap<BibleBook, BookName>(ntCount + otCount + ncCount);
 
         String className = BibleNames.class.getName();
         String shortClassName = ClassUtil.getShortClassName(className);
         ResourceBundle resources = ResourceBundle.getBundle(shortClassName, locale, CWClassLoader.instance(BibleNames.class));
 
-        for (BibleBook book : BibleBook.values()) {
-            String osisName = book.getOSIS();
-
-            String fullBook = getString(resources, osisName + FULL_KEY);
-
-            String shortBook = getString(resources, osisName + SHORT_KEY);
-            if (shortBook.length() == 0) {
-                shortBook = fullBook;
+        fullNT = new HashMap<String, BookName>(ntCount);
+        shortNT = new HashMap<String, BookName>(ntCount);
+        altNT = new HashMap<String, BookName>(ntCount);
+        for (int i = BibleBook.MATT.ordinal(); i <= BibleBook.REV.ordinal(); ++i) {
+            BibleBook book = bibleBooks[i];
+            if (v11n.containsBook(book)) {
+                store(resources, book, fullNT, shortNT, altNT);
             }
+        }
 
-            String altBook = getString(resources, osisName + ALT_KEY);
-
-            BookName bookName = new BookName(locale, BibleBook.fromOSIS(osisName), fullBook, shortBook, altBook);
-            books[book.ordinal()] = bookName;
-
-            fullBooksMap.put(bookName.getNormalizedLongName(), bookName);
-
-            shortBooksMap.put(bookName.getNormalizedShortName(), bookName);
-
-            String[] alternates = StringUtil.split(BookName.normalize(altBook, locale), ',');
-
-            for (int j = 0; j < alternates.length; j++) {
-                altBooksMap.put(alternates[j], bookName);
+        fullOT = new HashMap<String, BookName>(otCount);
+        shortOT = new HashMap<String, BookName>(otCount);
+        altOT = new HashMap<String, BookName>(otCount);
+        for (int i = BibleBook.GEN.ordinal(); i <= BibleBook.MAL.ordinal(); ++i) {
+            BibleBook book = bibleBooks[i];
+            if (v11n.containsBook(book)) {
+                store(resources, book, fullOT, shortOT, altOT);
             }
+        }
 
+        fullNC = new HashMap<String, BookName>(ncCount);
+        shortNC = new HashMap<String, BookName>(ncCount);
+        altNC = new HashMap<String, BookName>(ncCount);
+        if (v11n.containsBook(BibleBook.INTRO_BIBLE)) {
+            store(resources, BibleBook.INTRO_BIBLE, fullNC, shortNC, altNC);
+        }
+        if (v11n.containsBook(BibleBook.INTRO_OT)) {
+            store(resources, BibleBook.INTRO_OT, fullNC, shortNC, altNC);
+        }
+        if (v11n.containsBook(BibleBook.INTRO_NT)) {
+            store(resources, BibleBook.INTRO_NT, fullNC, shortNC, altNC);
+        }
+        for (int i = BibleBook.REV.ordinal() + 1; i < bibleBooks.length; ++i) {
+            BibleBook book = bibleBooks[i];
+            if (v11n.containsBook(book)) {
+                store(resources, book, fullNC, shortNC, altNC);
+            }
+        }
+    }
+
+    private void store(ResourceBundle resources, BibleBook book, Map fullMap, Map shortMap, Map altMap) {
+        String osisName = book.getOSIS();
+
+        String fullBook = getString(resources, osisName + FULL_KEY);
+
+        String shortBook = getString(resources, osisName + SHORT_KEY);
+        if (shortBook.length() == 0) {
+            shortBook = fullBook;
+        }
+
+        String altBook = getString(resources, osisName + ALT_KEY);
+
+        BookName bookName = new BookName(locale, BibleBook.fromOSIS(osisName), fullBook, shortBook, altBook);
+        books.put(book, bookName);
+
+        fullMap.put(bookName.getNormalizedLongName(), bookName);
+
+        shortMap.put(bookName.getNormalizedShortName(), bookName);
+
+        String[] alternates = StringUtil.split(BookName.normalize(altBook, locale), ',');
+
+        for (int j = 0; j < alternates.length; j++) {
+            altMap.put(alternates[j], bookName);
         }
     }
 
@@ -198,25 +278,65 @@ import org.crosswire.common.util.StringUtil;
     private static final String SHORT_KEY = ".Short";
     private static final String ALT_KEY = ".Alt";
 
-    private BookName[] books;
-
     /** The locale for the Bible Names */
     private Locale locale;
 
     /**
-     * The full names of the book of the Bible, normalized, generated at runtime
+     * The collection of BookNames by BibleBooks.
      */
-    private Map<String, BookName> fullBooksMap;
+    private LinkedHashMap<BibleBook, BookName> books;
 
     /**
-     * Standard shortened names for the book of the Bible, normalized, generated
-     * at runtime.
+     * The full names of the New Testament books of the Bible
+     * normalized, generated at runtime
      */
-    private Map<String, BookName> shortBooksMap;
+    private Map<String, BookName> fullNT;
 
     /**
-     * Alternative shortened names for the book of the Bible, normalized,
-     * generated at runtime
+     * The full names of the Old Testament books of the Bible
+     * normalized, generated at runtime
      */
-    private Map<String, BookName> altBooksMap;
+    private Map<String, BookName> fullOT;
+
+    /**
+     * The full names of the Deuterocanonical books of the Bible
+     * normalized, generated at runtime
+     */
+    private Map<String, BookName> fullNC;
+
+    /**
+     * Standard shortened names for the New Testament books of the Bible,
+     * normalized, generated at runtime.
+     */
+    private Map<String, BookName> shortNT;
+
+    /**
+     * Standard shortened names for the Old Testament books of the Bible
+     * normalized, generated at runtime.
+     */
+    private Map<String, BookName> shortOT;
+
+    /**
+     * Standard shortened names for the Deuterocanonical books of the Bible
+     * normalized, generated at runtime.
+     */
+    private Map<String, BookName> shortNC;
+
+    /**
+     * Alternative shortened names for the New Testament books of the Bible
+     * normalized, generated at runtime.
+     */
+    private Map<String, BookName> altNT;
+
+    /**
+     * Alternative shortened names for the Old Testament books of the Bible
+     * normalized, generated at runtime.
+     */
+    private Map<String, BookName> altOT;
+
+    /**
+     * Alternative shortened names for the Deuterocanonical books of the Bible
+     * normalized, generated at runtime.
+     */
+    private Map<String, BookName> altNC;
 }

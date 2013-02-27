@@ -32,7 +32,7 @@ import java.util.Locale;
  *      The copyright to this program is held by it's authors.
  * @author Chris Burrell
  */
-public class LocaleProviderManager {
+public final class LocaleProviderManager {
     /**
      * Prevent public access. Instantiates a new locale provider factory.
      */

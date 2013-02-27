@@ -1,3 +1,23 @@
+/**
+ * Distribution License:
+ * JSword is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License, version 2.1 as published by
+ * the Free Software Foundation. This program is distributed in the hope
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * The License is available on the internet at:
+ *       http://www.gnu.org/copyleft/lgpl.html
+ * or by writing to:
+ *      Free Software Foundation, Inc.
+ *      59 Temple Place - Suite 330
+ *      Boston, MA 02111-1307, USA
+ *
+ * Copyright: 2012
+ *     The copyright to this program is held by it's authors.
+ *
+ */
 package org.crosswire.jsword.book.sword;
 
 import java.io.File;
@@ -19,8 +39,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-
 /**
  * A Raw File format that allows for each verse to have it's own storage.
  * 
@@ -28,13 +46,14 @@ import static org.junit.Assert.assertEquals;
  *      The copyright to this program is held by it's authors.
  * @author mbergmann
  */
-public class RawFileBackendTest {
+public class RawFileBackendTest extends TestCase {
 
     private final String modName = "TestComment";
     private File configFile = new File("testconfig.conf");
     private RawFileBackend backend = null;
     private Versification v11n;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         // AV11N(DMS): Update test to test all V11Ns
@@ -63,15 +82,15 @@ public class RawFileBackendTest {
 
     @Ignore
     @Test
-    public void testSetRawText() throws NoSuchVerseException, IOException, BookException {
-        Verse otVerse = new Verse(BibleBook.GEN, 3, 1);
-        Verse otVerse2 = new Verse(BibleBook.LEV, 3, 5);
-        Verse otVerse3 = new Verse(BibleBook.EXOD, 6, 4);
-        Verse otVerse4 = new Verse(BibleBook.JUDG, 3, 1);
-        Verse ntVerse = new Verse(BibleBook.PET2, 1, 2);
-        Verse ntVerse2 = new Verse(BibleBook.PET1, 1, 2);
-        Verse ntVerse3 = new Verse(BibleBook.REV, 22, 21);
-        Verse ntVerse4 = new Verse(BibleBook.JOHN3, 1, 2);
+    public void testSetRawText() throws IOException, BookException {
+        Verse otVerse = new Verse(v11n, BibleBook.GEN, 3, 1);
+        Verse otVerse2 = new Verse(v11n, BibleBook.LEV, 3, 5);
+        Verse otVerse3 = new Verse(v11n, BibleBook.EXOD, 6, 4);
+        Verse otVerse4 = new Verse(v11n, BibleBook.JUDG, 3, 1);
+        Verse ntVerse = new Verse(v11n, BibleBook.PET2, 1, 2);
+        Verse ntVerse2 = new Verse(v11n, BibleBook.PET1, 1, 2);
+        Verse ntVerse3 = new Verse(v11n, BibleBook.REV, 22, 21);
+        Verse ntVerse4 = new Verse(v11n, BibleBook.JOHN3, 1, 2);
 
         RawFileBackendState state = null;
         try {

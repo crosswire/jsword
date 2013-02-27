@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.config;
 
@@ -27,10 +26,11 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.crosswire.common.util.ClassUtil;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.JSOtherMsg;
-import org.jdom.Element;
+import org.jdom2.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A helper for when we need to be a choice created dynamically.
@@ -44,7 +44,7 @@ public abstract class AbstractReflectedChoice implements Choice {
     /*
      * (non-Javadoc)
      * 
-     * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
+     * @see org.crosswire.common.config.Choice#init(org.jdom2.Element)
      */
     public void init(Element option, ResourceBundle configResources) throws StartupException {
         assert configResources != null;
@@ -116,9 +116,7 @@ public abstract class AbstractReflectedChoice implements Choice {
             throw new StartupException(JSOtherMsg.lookupText("Missing {0} element in config.xml", "property"));
         }
 
-        // log.debug("Looking up " + clazzname + ".set" + propertyname + "(" +
-        // getConvertionClass().getName() +
-        // " arg0)");
+        // log.debug("Looking up {}.set{}({} arg0)", clazzname, propertyname, getConvertionClass().getName());
 
         try {
             clazz = ClassUtil.forName(clazzname);
@@ -145,7 +143,7 @@ public abstract class AbstractReflectedChoice implements Choice {
         }
 
         if (getter.getReturnType() != getConversionClass()) {
-            log.debug("Not using " + propertyname + " from " + clazz.getName() + " because the return type of the getter is not " + getConversionClass().getName());
+            log.debug("Not using {} from {} because the return type of the getter is not {}", propertyname, clazz.getName(), getConversionClass().getName());
             throw new StartupException(JSOtherMsg.lookupText("Mismatch of return types, found: {0} required: {1}", getter.getReturnType(), getConversionClass()));
         }
     }
@@ -260,10 +258,10 @@ public abstract class AbstractReflectedChoice implements Choice {
             Object retval = getter.invoke(null, new Object[0]);
             return convertToString(retval);
         } catch (IllegalAccessException ex) {
-            log.error("Illegal access getting value from " + clazz.getName() + "." + getter.getName(), ex);
+            log.error("Illegal access getting value from {}.{}", clazz.getName(), getter.getName(), ex);
             return "";
         } catch (InvocationTargetException ex) {
-            log.error("Failed to get value from " + clazz.getName() + "." + getter.getName(), ex);
+            log.error("Failed to get value from {}.{}", clazz.getName(), getter.getName(), ex);
             return "";
         }
     }
@@ -291,7 +289,7 @@ public abstract class AbstractReflectedChoice implements Choice {
         }
 
         if (ex != null) {
-            log.info("Exception while attempting to execute: " + setter.toString());
+            log.info("Exception while attempting to execute: {}", setter.toString());
 
             // So we can't re-throw the original exception because it wasn't an
             // Exception so we will have to re-throw the
@@ -363,5 +361,5 @@ public abstract class AbstractReflectedChoice implements Choice {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(AbstractReflectedChoice.class);
+    private static final Logger log = LoggerFactory.getLogger(AbstractReflectedChoice.class);
 }

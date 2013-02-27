@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.passage;
 
@@ -80,17 +79,25 @@ public class RangedPassage extends AbstractPassage {
      * However since getName() is standardized this will be true. We don't need
      * to worry about thread safety in a ctor since we don't exist yet.
      * 
+     * @param v11n
+     *            The Versification to which this Passage belongs.
      * @param refs
      *            A String containing the text of the RangedPassage
+     * @param basis
+     *           The basis by which to interpret refs
      * @throws NoSuchVerseException
      *             if refs is invalid
      */
-    protected RangedPassage(Versification refSystem, String refs) throws NoSuchVerseException {
-        super(refSystem, refs);
+    protected RangedPassage(Versification v11n, String refs, Key basis) throws NoSuchVerseException {
+        super(v11n, refs);
 
         store = new TreeSet<Key>();
-        addVerses(refs);
+        addVerses(refs, basis);
         normalize();
+    }
+
+    protected RangedPassage(Versification v11n, String refs) throws NoSuchVerseException {
+        this(v11n, refs, null);
     }
 
     @Override
@@ -241,17 +248,15 @@ public class RangedPassage extends AbstractPassage {
 
     @Override
     public void retainAll(Key key) {
-        Passage that = KeyUtil.getPassage(key, this.getVersification());
-
         optimizeWrites();
 
         Set<Key> new_store = new TreeSet<Key>();
 
         Iterator<Key> that_it = null;
-        if (that instanceof RangedPassage) {
-            that_it = that.rangeIterator(RestrictionType.CHAPTER);
+        if (key instanceof RangedPassage) {
+            that_it = ((RangedPassage) key).rangeIterator(RestrictionType.CHAPTER);
         } else {
-            that_it = that.iterator();
+            that_it = key.iterator();
         }
 
         while (that_it.hasNext()) {
@@ -335,7 +340,7 @@ public class RangedPassage extends AbstractPassage {
 
             while (it.hasNext()) {
                 VerseRange range = (VerseRange) it.next();
-                int start = v11n.getOrdinal(range.getStart());
+                int start = range.getStart().getOrdinal();
                 int end = range.getCardinality();
 
                 for (int i = 0; i < end; i++) {
@@ -499,7 +504,7 @@ public class RangedPassage extends AbstractPassage {
     /**
      * To make serialization work across new versions
      */
-    static final long serialVersionUID = 955115811339960826L;
+    private static final long serialVersionUID = 955115811339960826L;
 
     /**
      * The place the real data is stored

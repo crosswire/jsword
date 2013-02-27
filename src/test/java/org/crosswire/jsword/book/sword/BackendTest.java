@@ -1,6 +1,25 @@
+/**
+ * Distribution License:
+ * JSword is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License, version 2.1 as published by
+ * the Free Software Foundation. This program is distributed in the hope
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * The License is available on the internet at:
+ *       http://www.gnu.org/copyleft/lgpl.html
+ * or by writing to:
+ *      Free Software Foundation, Inc.
+ *      59 Temple Place - Suite 330
+ *      Boston, MA 02111-1307, USA
+ *
+ * Copyright: 2012-2013
+ *     The copyright to this program is held by it's authors.
+ *
+ */
 package org.crosswire.jsword.book.sword;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import org.crosswire.jsword.book.Book;
@@ -10,12 +29,12 @@ import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.versification.BookName;
-import org.jdom.Element;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
+import org.jdom2.Element;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 import org.junit.Test;
-
-import static org.junit.Assert.assertFalse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Test simple functionality across multiple backends, to ensure that all types
@@ -26,9 +45,7 @@ import static org.junit.Assert.assertFalse;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class BackendTest {
-    private static final org.crosswire.common.util.Logger LOGGER = org.crosswire.common.util.Logger.getLogger(BackendTest.class);
-
+public class BackendTest extends TestCase {
     /**
      * Z Text
      * 
@@ -85,7 +102,7 @@ public class BackendTest {
         String version = "ESV";
         String reference = "Romans 1:1-ff";
 
-        backendTest(version, reference, "<title type=\"x-gen\">Romans 1:1-32</title>", "<verse osisID=\"Rom.1.1\">", "<verse osisID=\"Rom.1.32\">",
+        backendTest(version, reference, "<title type=\"x-gen\">Romans 1</title>", "<verse osisID=\"Rom.1.1\">", "<verse osisID=\"Rom.1.32\">",
                 "set apart for the gospel of God,", "give approval to those who practice them");
     }
 
@@ -321,7 +338,7 @@ public class BackendTest {
         return backendTest(currentBook, currentBook.getKey(reference), assertion);
     }
 
-    private String backendTest(Book currentBook, Key key, String... assertions) throws NoSuchKeyException, BookException {
+    private String backendTest(Book currentBook, Key key, String... assertions) throws BookException {
         //order in test can be inconsistent and it seems on a linux build server the full book name is sometimes not used...
         BookName.setFullBookName(true);
         
@@ -330,10 +347,16 @@ public class BackendTest {
 
         final XMLOutputter xmlOutputter = new XMLOutputter(Format.getPrettyFormat());
         String xml = xmlOutputter.outputString(osisFragment);
-        LOGGER.debug("For book " + currentBook.getInitials() + " with key " + key.getName() + ", Got " +xml);
+        log.debug("For book {} with key {}, Got {}", currentBook.getInitials(), key.getName(), xml);
 
-        for (String s : assertions)
-            Assert.assertTrue(s, xml.contains(s));
+        for (String s : assertions) {
+            assertTrue(s, xml.contains(s));
+        }
         return xml;
     }
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = LoggerFactory.getLogger(BackendTest.class);
 }

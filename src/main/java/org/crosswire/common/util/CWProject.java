@@ -14,16 +14,17 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2008
+ * Copyright: 2008-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.util;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+
+import org.slf4j.LoggerFactory;
 
 /**
  * The Project class looks after the source of project files. These are per user
@@ -309,5 +310,5 @@ public final class CWProject {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(CWProject.class);
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(CWProject.class);
 }

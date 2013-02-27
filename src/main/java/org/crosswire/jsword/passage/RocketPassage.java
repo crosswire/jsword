@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.passage;
 
@@ -63,11 +62,35 @@ public class RocketPassage extends BitwisePassage {
      *            The Versification to which this Passage belongs.
      * @param refs
      *            A String containing the text of the RangedPassage
+     * @param basis
+     *           The basis by which to interpret refs
      * @throws NoSuchVerseException
-     *             if refs is invalid
+     *           if refs is invalid
+     */
+    protected RocketPassage(Versification v11n, String refs, Key basis) throws NoSuchVerseException {
+        super(v11n, refs, basis);
+    }
+
+    /**
+     * Create a Verse from a human readable string. The opposite of getName(),
+     * Given any RangedPassage v1, and the following
+     * <code>RangedPassage v2 = new RangedPassage(v1.getName());</code> Then
+     * <code>v1.equals(v2);</code> Theoretically, since there are many ways of
+     * representing a RangedPassage as text string comparison along the lines
+     * of: <code>v1.getName().equals(v2.getName())</code> could be false.
+     * However since getName() is standardized this will be true. We don't need
+     * to worry about thread safety in a ctor since we don't exist yet.
+     * 
+     * 
+     * @param v11n
+     *            The Versification to which this Passage belongs.
+     * @param refs
+     *            A String containing the text of the RangedPassage
+     * @throws NoSuchVerseException
+     *            if refs is invalid
      */
     protected RocketPassage(Versification v11n, String refs) throws NoSuchVerseException {
-        super(v11n, refs);
+        this(v11n, refs, null);
     }
 
     /*

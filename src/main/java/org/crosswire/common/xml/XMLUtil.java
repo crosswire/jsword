@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.xml;
 
@@ -28,12 +27,14 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.crosswire.common.util.FileUtil;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.PropertyMap;
 import org.crosswire.common.util.ResourceUtil;
-import org.jdom.Document;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
+import org.jdom2.Document;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.input.sax.XMLReaders;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
@@ -69,8 +70,9 @@ public final class XMLUtil {
         String resource = subject + FileUtil.EXTENSION_XML;
         InputStream in = ResourceUtil.getResourceAsStream(resource);
 
-        log.debug("Loading " + subject + ".xml from classpath: [OK]");
-        SAXBuilder builder = new SAXBuilder(true);
+        log.debug("Loading {}.xml from classpath: [OK]", subject);
+        // With JDom 1.x this passed true
+        SAXBuilder builder = new SAXBuilder(XMLReaders.DTDVALIDATING);
         return builder.build(in);
     }
 
@@ -109,7 +111,7 @@ public final class XMLUtil {
      */
     public static void debugSAXAttributes(Attributes attrs) {
         for (int i = 0; i < attrs.getLength(); i++) {
-            log.debug("attr[" + i + "]: " + attrs.getQName(i) + '=' + attrs.getValue(i));
+            log.debug("attr[{}]: {}={}", Integer.toString(i), attrs.getQName(i), attrs.getValue(i));
         }
     }
 
@@ -200,8 +202,7 @@ public final class XMLUtil {
                 if (c == ';') {
                     String entity = working.substring(amp, i + 1);
                     String replace = handleEntity(entity);
-                    // log.warn("replacing entity: '" + entity + "' with: '" +
-                    // replace + "'");
+                    // log.warn("replacing entity: '{}' with: '{}'", entity, replace);
 
                     working = working.substring(0, amp) + replace + working.substring(i + 1);
                     break;
@@ -212,8 +213,7 @@ public final class XMLUtil {
                 if (!Character.isLetterOrDigit(c)) {
                     // String entity = working.substring(amp, i);
                     // String replace = "&amp;" + working.substring(amp + 1, i);
-                    // log.warn("replacing invalid entity: '" + entity +
-                    // "' with: '" + replace + "': " + broken);
+                    // log.warn("replacing invalid entity: '{}' with: '{}': {}", entity, replace, broken);
 
                     working = working.substring(0, amp) + "&amp;" + working.substring(amp + 1);
                     amp = i + 4; // account for the 4 extra characters
@@ -468,11 +468,6 @@ public final class XMLUtil {
     }
 
     /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(XMLUtil.class);
-
-    /**
      * Pattern for numeric entities.
      */
     private static Pattern validCharacterEntityPattern = Pattern.compile("^&#x?\\d{2,4};");
@@ -488,4 +483,9 @@ public final class XMLUtil {
      * Pattern that matches open &lt;br&gt;,&lt;hr&gt; and &lt;img&gt; tags.
      */
     private static Pattern openHTMLTagPattern = Pattern.compile("<(img|hr|br)([^>]*)(?<!/)>");
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = LoggerFactory.getLogger(XMLUtil.class);
 }

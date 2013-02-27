@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007
+ * Copyright: 2007-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id:  $
  */
 package org.crosswire.jsword.index.lucene.analysis;
 
@@ -25,10 +24,11 @@ import java.io.IOException;
 
 import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.Language;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.PropertyMap;
 import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.jsword.book.Book;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A factory creating the appropriate Analyzer for natural language analysis of
@@ -52,7 +52,7 @@ public final class AnalyzerFactory {
         if (lang != null) {
             String aClass = getAnalyzerValue(lang);
 
-            log.debug("Creating analyzer:" + aClass + " BookLang:" + lang);
+            log.debug("Creating analyzer:{} BookLang:{}", aClass, lang);
 
             if (aClass != null) {
                 try {
@@ -112,9 +112,12 @@ public final class AnalyzerFactory {
     }
 
     public static final String DEFAULT_ID = "Default";
-    private static final Logger log = Logger.getLogger(AnalyzerFactory.class);
     private static AnalyzerFactory myInstance = new AnalyzerFactory();
 
     private PropertyMap myProperties;
 
+    /**
+     * The log stream
+     */
+    private static final Logger log = LoggerFactory.getLogger(AnalyzerFactory.class);
 }

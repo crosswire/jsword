@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.util;
 
@@ -45,6 +44,7 @@ import java.util.jar.JarEntry;
 
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
+import org.slf4j.LoggerFactory;
 
 /**
  * The NetUtil class looks after general utility stuff around the java.net
@@ -492,12 +492,12 @@ public final class NetUtil {
 
             // Check that the answers are the same
             if (files.length != reply.length) {
-                log.warn("index file for " + uri.toString() + " has incorrect number of entries.");
+                log.warn("index file for {} has incorrect number of entries.", uri.toString());
             } else {
                 List<String> list = Arrays.asList(files);
                 for (int i = 0; i < files.length; i++) {
                     if (!list.contains(files[i])) {
-                        log.warn("file: based index found " + files[i] + " but this was not found using index file.");
+                        log.warn("file: based index found {} but this was not found using index file.", files[i]);
                     }
                 }
             }
@@ -534,13 +534,17 @@ public final class NetUtil {
     }
 
     /**
-     * List all the files specified by the index file passed in. To be
-     * acceptable it:
+     * List all the files specified by the index file passed in.
+     * <p>Each line is pre-processed:</p>
      * <ul>
-     * <li> must be a non-0 length string,</li>
-     * <li> not commented with #,</li>
-     * <li> not the index file itself</li>
-     * <li> and acceptable by the filter.</li>
+     * <li>Ignore comments (# to end of line)</li>
+     * <li>Trim spaces from line.</li>
+     * <li>Ignore blank lines.</li>
+     * 
+     * To be acceptable it:
+     * <ul>
+     * <li> cannot be the index file itself</li>
+     * <li> and must acceptable by the filter.</li>
      * </ul>
      * 
      * @return String[] Matching results.
@@ -565,11 +569,24 @@ public final class NetUtil {
                     break;
                 }
 
+                String name = line;
+
+                // Strip comments from the line
+                int len = name.length();
+                int commentPos;
+                for (commentPos = 0; commentPos < len && name.charAt(commentPos) != '#'; ++commentPos) {
+                    continue; // test does the work
+                }
+
+                if (commentPos < len) {
+                    name = name.substring(0, commentPos);
+                }
+
                 // we need to trim extraneous whitespace on the line
-                String name = line.trim();
+                name = name.trim();
 
                 // Is it acceptable?
-                if (name.length() > 0 && name.charAt(0) != '#' && !name.equals(INDEX_FILE) && filter.accept(name)) {
+                if (name.length() > 0 && !name.equals(INDEX_FILE) && filter.accept(name)) {
                     list.add(name);
                 }
             }
@@ -856,5 +873,5 @@ public final class NetUtil {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(NetUtil.class);
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(NetUtil.class);
 }

@@ -28,7 +28,7 @@ import java.util.NoSuchElementException;
  * An <code>ItemIterator</code> is an <code>Iterator</code> that iterates a
  * single item.
  * 
- * 
+ * @param <T> The type of the single element that this iterator will return.
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [ dmsmith555 at yahoo dot com]

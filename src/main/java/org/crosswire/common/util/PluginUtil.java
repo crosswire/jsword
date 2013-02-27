@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2008
+ * Copyright: 2008-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: PluginUtil.java 1505 2007-07-21 19:40:19Z dmsmith $
  */
 package org.crosswire.common.util;
 
@@ -31,6 +30,7 @@ import java.util.Map;
 import java.util.MissingResourceException;
 
 import org.crosswire.jsword.JSOtherMsg;
+import org.slf4j.LoggerFactory;
 
 /**
  * A plugin maps one or more implementations to an interface or abstract class
@@ -69,14 +69,14 @@ public final class PluginUtil {
                     if (clazz.isAssignableFrom(impl)) {
                         matches.add(impl);
                     } else {
-                        log.warn("Class " + impl.getName() + " does not implement " + clazz.getName() + ". Ignoring.");
+                        log.warn("Class {} does not implement {}. Ignoring.", impl.getName(), clazz.getName());
                     }
                 } catch (ClassNotFoundException ex) {
-                    log.warn("Failed to add class to list: " + clazz.getName(), ex);
+                    log.warn("Failed to add class to list: {}", clazz.getName(), ex);
                 }
             }
 
-            log.debug("Found " + matches.size() + " implementors of " + clazz.getName());
+            log.debug("Found {} implementors of {}", Integer.toString(matches.size()), clazz.getName());
             return matches.toArray(new Class[matches.size()]);
         } catch (IOException ex) {
             log.error("Failed to get any classes.", ex);
@@ -109,14 +109,14 @@ public final class PluginUtil {
                     if (clazz.isAssignableFrom(impl)) {
                         matches.put(key, impl);
                     } else {
-                        log.warn("Class " + impl.getName() + " does not implement " + clazz.getName() + ". Ignoring.");
+                        log.warn("Class {} does not implement {}. Ignoring.", impl.getName(), clazz.getName());
                     }
                 } catch (ClassNotFoundException ex) {
-                    log.warn("Failed to add class to list: " + clazz.getName(), ex);
+                    log.warn("Failed to add class to list: {}", clazz.getName(), ex);
                 }
             }
 
-            log.debug("Found " + matches.size() + " implementors of " + clazz.getName());
+            log.debug("Found {} implementors of {}", Integer.toString(matches.size()), clazz.getName());
         } catch (IOException ex) {
             log.error("Failed to get any classes.", ex);
         }
@@ -221,6 +221,6 @@ public final class PluginUtil {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(PluginUtil.class);
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(PluginUtil.class);
 
 }

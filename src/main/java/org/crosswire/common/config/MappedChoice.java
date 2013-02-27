@@ -17,7 +17,6 @@
  * Copyright: 2007
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: MappedChoice.java 1462 2007-07-02 02:32:23Z dmsmith $
  */
 package org.crosswire.common.config;
 
@@ -27,6 +26,8 @@ import java.util.Map;
  * MappedChoice is simply a Choice where there are a number of alternative
  * options where each entry is a Map.Entry.
  * 
+ * @param <K> the key's type
+ * @param <V> the value's type
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]

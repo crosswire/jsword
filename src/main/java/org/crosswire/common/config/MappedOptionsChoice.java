@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: IntOptionsChoice.java 1575 2007-07-28 16:18:14Z dmsmith $
  */
 package org.crosswire.common.config;
 
@@ -26,9 +25,10 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.JSOtherMsg;
-import org.jdom.Element;
+import org.jdom2.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A class to convert between strings and objects of a type.
@@ -42,7 +42,7 @@ public class MappedOptionsChoice extends AbstractReflectedChoice implements Mapp
     /*
      * (non-Javadoc)
      * 
-     * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
+     * @see org.crosswire.common.config.Choice#init(org.jdom2.Element)
      */
     @Override
     public void init(Element option, ResourceBundle configResources) throws StartupException {
@@ -110,10 +110,14 @@ public class MappedOptionsChoice extends AbstractReflectedChoice implements Mapp
                 return mapEntry.getKey().toString();
             }
         }
-        logger.warn(JSOtherMsg.lookupText("Ignoring invalid option: {0}", orig));
+        log.warn(JSOtherMsg.lookupText("Ignoring invalid option: {0}", orig));
         return "";
     }
 
-    private static Logger logger = Logger.getLogger(MappedOptionsChoice.class);
     private Map<?, ?> options;
+
+    /**
+     * The log stream
+     */
+    private static Logger log = LoggerFactory.getLogger(MappedOptionsChoice.class);
 }

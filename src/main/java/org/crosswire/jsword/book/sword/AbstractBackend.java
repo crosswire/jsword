@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
@@ -42,11 +41,12 @@ import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
-import org.jdom.Content;
+import org.jdom2.Content;
 
 /**
  * A generic way to read data from disk for later formatting.
  * 
+ * @param <T> The type of the OpenFileState that this class extends.
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
@@ -134,7 +134,7 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
         //by default, this is not implemented
         throw new UnsupportedOperationException("Fast global key list unsupported in this backend");
     }
-    
+
     /**
      * Get the text allotted for the given entry
      * 
@@ -184,7 +184,7 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
             Key next = iterator.next();
             String rawText;
             try {
-                rawText = readRawContent(openFileState, next, next.getName());
+                rawText = readRawContent(openFileState, next);
                 processor.postVerse(next, content, rawText);
             } catch (IOException e) {
                 // failed to process key 'next'
@@ -211,19 +211,18 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
         Verse currentVerse = null;
         try {
 
-            final Passage ref = key instanceof Passage ? (Passage) key : KeyUtil.getPassage(key, getVersification());
+            final Passage ref = KeyUtil.getPassage(key);
             final Iterator<Key> rit = ref.rangeIterator(RestrictionType.CHAPTER);
             while (rit.hasNext()) {
                 VerseRange range = (VerseRange) rit.next();
                 processor.preRange(range, content);
 
-                // FIXME(CJB): can this now be optmized since we can calculate
+                // FIXME(CJB): can this now be optimized since we can calculate
                 // the buffer size of what to read?
                 // now iterate through all verses in range
                 for (Key verseInRange : range) {
-                    currentVerse = KeyUtil.getVerse(verseInRange, getVersification());
-                    final String keyName = verseInRange.getName();
-                    String rawText = readRawContent(openFileState, currentVerse, keyName);
+                    currentVerse = KeyUtil.getVerse(verseInRange);
+                    String rawText = readRawContent(openFileState, currentVerse);
                     processor.postVerse(verseInRange, content, rawText);
                 }
             }

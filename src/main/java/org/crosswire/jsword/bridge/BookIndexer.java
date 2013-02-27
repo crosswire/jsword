@@ -26,6 +26,7 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.index.IndexManager;
 import org.crosswire.jsword.index.IndexManagerFactory;
+import org.crosswire.jsword.index.IndexStatus;
 import org.crosswire.jsword.index.IndexStatusEvent;
 import org.crosswire.jsword.index.IndexStatusListener;
 
@@ -106,7 +107,10 @@ public class BookIndexer {
         }
 
         public void statusChanged(IndexStatusEvent ev) {
-            indexer.setDone(true);
+            IndexStatus newStatus = ev.getIndexStatus();
+            if (IndexStatus.DONE.equals(newStatus) || IndexStatus.UNDONE.equals(newStatus) || IndexStatus.INVALID.equals(newStatus)) {
+                indexer.setDone(true);
+            }
         }
 
         private BookIndexer indexer;
@@ -140,21 +144,21 @@ public class BookIndexer {
         }
 
         BookIndexer indexer = new BookIndexer(b);
-        if (operation.equalsIgnoreCase("create")) {
+        if ("create".equalsIgnoreCase(operation)) {
             try {
                 indexer.createIndex();
             } catch (BookException e) {
                 System.err.println("Unable to re-index book.");
                 e.printStackTrace();
             }
-        } else if (operation.equalsIgnoreCase("delete")) {
+        } else if ("delete".equalsIgnoreCase(operation)) {
             try {
                 indexer.deleteIndex();
             } catch (BookException e) {
                 System.err.println("Unable to delete index for book.");
                 e.printStackTrace();
             }
-        } else if (operation.equalsIgnoreCase("check")) {
+        } else if ("check".equalsIgnoreCase(operation)) {
             System.err.println(indexer.isIndexed());
         } else {
             usage();

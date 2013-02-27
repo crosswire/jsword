@@ -14,21 +14,17 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.List;
 
-import org.crosswire.common.activate.Lock;
 import org.crosswire.common.util.IOUtil;
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.OSISUtil;
@@ -36,14 +32,14 @@ import org.crosswire.jsword.book.basic.AbstractPassageBook;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
 import org.crosswire.jsword.book.sword.state.OpenFileState;
-import org.crosswire.jsword.book.sword.state.RawBackendState;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.versification.Versification;
-import org.crosswire.jsword.versification.system.Versifications;
-import org.jdom.Content;
-import org.jdom.Element;
+import org.jdom2.Content;
+import org.jdom2.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * SwordBook is a base class for all verse based Sword type books.
@@ -61,19 +57,6 @@ public class SwordBook extends AbstractPassageBook {
 
         this.filter = sbmd.getFilter();
         this.backend = backend;
-    }
-
-    @Override
-    public final void activate(Lock lock) {
-        super.activate(lock);
-
-        // We don't need to activate the backend because it should be capable
-        // of doing it for itself.
-    }
-
-    @Override
-    public final void deactivate(Lock lock) {
-        super.deactivate(lock);
     }
 
     /* (non-Javadoc)
@@ -123,7 +106,7 @@ public class SwordBook extends AbstractPassageBook {
         OpenFileState state = null;
         try {
             state = backend.initState();
-            return backend.readRawContent(state, key, key.getName());
+            return backend.readRawContent(state, key);
         } catch (IOException e) {
             throw new BookException("Unable to obtain raw content from backend", e);
         } finally {
@@ -131,6 +114,7 @@ public class SwordBook extends AbstractPassageBook {
         }
     }
 
+    @Override
     protected List<Content> getOsis(Key key, RawTextToXmlProcessor processor) throws BookException {
         if (backend == null) {
             return Collections.emptyList();
@@ -157,7 +141,7 @@ public class SwordBook extends AbstractPassageBook {
 
         // If we get here then the text is not marked up with verse
         // In this case we add the verse markup, if the verse is not 0.
-        if (KeyUtil.getPassage(key, getVersification()).getVerseAt(0).getVerse() == 0) {
+        if (KeyUtil.getVerse(key).getVerse() == 0) {
             super.addOSIS(key, div, osisContent);
         } else {
             Element everse = OSISUtil.factory().createVerse();
@@ -183,7 +167,7 @@ public class SwordBook extends AbstractPassageBook {
 
         // If we get here then the text is not marked up with verse
         // In this case we add the verse markup, if the verse is not 0.
-        if (KeyUtil.getPassage(key, getVersification()).getVerseAt(0).getVerse() == 0) {
+        if (KeyUtil.getVerse(key).getVerse() == 0) {
             super.addOSIS(key, contentList, osisContent);
         } else {
             Element everse = OSISUtil.factory().createVerse();
@@ -243,6 +227,9 @@ public class SwordBook extends AbstractPassageBook {
      * A cached representation of the global key list.
      */
     private Key global;
-    
-    private static final Logger log = Logger.getLogger(SwordBook.class);
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = LoggerFactory.getLogger(SwordBook.class);
 }

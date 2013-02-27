@@ -17,18 +17,19 @@
  * Copyright: 2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
-
 package org.crosswire.jsword.book.sword;
 
 import org.crosswire.jsword.book.BookException;
 
 /**
  * Indicates that the files are missing, and therefore this book should be excluded
+ *
+ * @see gnu.lgpl.License for license details.<br>
+ *      The copyright to this program is held by it's authors.
+ * @author Chris Burrell
  */
 public class MissingDataFilesException extends BookException {
-    
     /**
      * Instantiates a new missing data files exception.
      *
@@ -38,5 +39,8 @@ public class MissingDataFilesException extends BookException {
         super(msg);
     }
 
+    /**
+     * Serialization ID
+     */
     private static final long serialVersionUID = -130074367541462750L;
 }

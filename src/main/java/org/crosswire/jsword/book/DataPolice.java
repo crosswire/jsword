@@ -14,17 +14,15 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book;
 
-import java.util.logging.Level;
-
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.passage.Key;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * When we can't convert some source data then the user doesn't really care and
@@ -43,27 +41,6 @@ public final class DataPolice {
     }
 
     /**
-     * Set the current level at which to report problems. Problems at too fine
-     * grain a level might be filtered by default.
-     * 
-     * @param lev
-     *            the level to set
-     */
-    public static void setReportingLevel(Level lev) {
-        DataPolice.level = lev;
-    }
-
-    /**
-     * Set the level at which to show problems.
-     * 
-     * @param lev
-     *            the level to set
-     */
-    public static void setLevel(Level lev) {
-        log.setLevel(lev);
-    }
-
-    /**
      * Report a message against the current book and key.
      * 
      * @param lev
@@ -71,7 +48,7 @@ public final class DataPolice {
      * @param message
      *            the police report.
      */
-    public static void report(Book book, Key key, Level lev, String message) {
+    public static void report(Book book, Key key, String message) {
         StringBuilder buf = new StringBuilder();
         BookMetaData bmd = book.getBookMetaData();
         if (bmd != null) {
@@ -79,33 +56,17 @@ public final class DataPolice {
         }
         if (bmd != null && key != null) {
             buf.append(':');
-            log.debug(bmd.getInitials() + ':' + key.getName());
         }
         if (key != null) {
             buf.append(key.getName());
         }
         buf.append(": ");
         buf.append(message);
-        log.log(lev, buf.toString());
+        log.info(buf.toString());
     }
-
-    /**
-     * Report a message against the current book and key.
-     * 
-     * @param message
-     *            the police report.
-     */
-    public static void report(Book book, Key key, String message) {
-        report(book, key, level, message);
-    }
-
-    /**
-     * The level at which to do logging. Default is FINE.
-     */
-    private static Level level = Level.FINE;
 
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(DataPolice.class, false);
+    private static final Logger log = LoggerFactory.getLogger(DataPolice.class);
 }

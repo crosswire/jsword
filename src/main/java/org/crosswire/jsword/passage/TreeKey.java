@@ -1,5 +1,3 @@
-package org.crosswire.jsword.passage;
-
 /**
  * Distribution License:
  * JSword is free software; you can redistribute it and/or modify it under
@@ -16,16 +14,18 @@ package org.crosswire.jsword.passage;
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
+package org.crosswire.jsword.passage;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.crosswire.common.util.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A Key that knows where the data is in the real file.
@@ -205,12 +205,12 @@ public class TreeKey extends AbstractKeyList {
     private List<Key> children;
 
     /**
+     * The log stream
+     */
+    private static final Logger log = LoggerFactory.getLogger(TreeKey.class);
+
+    /**
      * Serialization ID
      */
     private static final long serialVersionUID = -6560408145705717977L;
-
-    /**
-     * The log stream
-     */
-    private static final Logger log = Logger.getLogger(TreeKey.class);
 }

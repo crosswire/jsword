@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: AllTests.java 1405 2007-06-14 16:22:52Z dmsmith $
  */
 package org.crosswire.common.compress;
 
@@ -121,10 +120,12 @@ public class LZSSTest extends TestCase {
         } catch (IOException e) {
             fail();
             return;
-        }
+        };
+        String result;
         try {
             byte[] back = bosUncompressed.toByteArray();
-            String result = new String(back, "UTF-8");
+            result = new String(back, "UTF-8");
+            assertTrue("round trip LZSS uncompression", result.startsWith("          \nThe First Book of Moses, called Genesis"));
         } catch (UnsupportedEncodingException e) {
             fail();
             return;

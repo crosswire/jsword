@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
@@ -37,7 +36,7 @@ import org.crosswire.jsword.book.KeyType;
 import org.crosswire.jsword.book.basic.AbstractBookMetaData;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterFactory;
-import org.jdom.Document;
+import org.jdom2.Document;
 
 /**
  * A utility class for loading and representing Sword book configs.
@@ -233,20 +232,19 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
         // For some modules, the last element of the DataPath
         // is a prefix for file names.
         if (!bookDir.isDirectory()) {
-            if(isDirectoryPath) {
+            if (isDirectoryPath) {
                 // TRANSLATOR: This indicates that the Book is only partially installed.
                 throw new MissingDataFilesException(JSMsg.gettext("The book is missing its data files", cet.getValue(ConfigEntryType.INITIALS)));
             }
-            
-            //not a directory path
-            //try appending .dat on the end to see if we have a file, if not, then 
-            if(!new File(datapath + ".dat").exists()) {
+
+            // not a directory path
+            // try appending .dat on the end to see if we have a file, if not, then 
+            if (!new File(location.getPath() + ".dat").exists()) {
              // TRANSLATOR: This indicates that the Book is only partially installed.
-                throw new MissingDataFilesException(JSMsg.gettext("The book is missing its data files", cet.getValue(ConfigEntryType.INITIALS)));                
+                throw new MissingDataFilesException(JSMsg.gettext("The book is missing its data files", cet.getValue(ConfigEntryType.INITIALS)));
             }
-            
-            //then we have a module that has a prefix
-                
+
+            // then we have a module that has a prefix
             // Shorten it by one segment and test again.
             lastSlash = datapath.lastIndexOf('/');
             datapath = datapath.substring(0, lastSlash);

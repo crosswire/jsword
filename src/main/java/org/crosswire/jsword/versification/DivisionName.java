@@ -365,7 +365,7 @@ public enum DivisionName {
         @Override
         public boolean contains(BibleBook book) {
             int bookNum = book.ordinal();
-            return bookNum >= BibleBook.ROM.ordinal() && bookNum <= BibleBook.JUDE.ordinal();
+            return bookNum >= BibleBook.JAS.ordinal() && bookNum <= BibleBook.JUDE.ordinal();
         }
 
         @Override

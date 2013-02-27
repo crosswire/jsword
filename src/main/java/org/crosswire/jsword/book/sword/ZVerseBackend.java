@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
@@ -26,7 +25,6 @@ import java.io.RandomAccessFile;
 
 import org.crosswire.common.compress.CompressorType;
 import org.crosswire.common.util.IOUtil;
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
@@ -34,13 +32,13 @@ import org.crosswire.jsword.book.sword.state.ZVerseBackendState;
 import org.crosswire.jsword.passage.BitwisePassage;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
-import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.RocketPassage;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.versification.Testament;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A backend to read compressed data verse based files. While the text file
@@ -127,9 +125,9 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
 
             String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
             Versification v11n = Versifications.instance().getVersification(v11nName);
-            Verse verse = KeyUtil.getVerse(key, v11n);
+            Verse verse = KeyUtil.getVerse(key);
 
-            int index = v11n.getOrdinal(verse);
+            int index = verse.getOrdinal();
             Testament testament = v11n.getTestament(index);
             index = v11n.getTestamentOrdinal(index);
 
@@ -161,13 +159,14 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
         } catch (BookException e) {
             // FIXME(CJB): fail silently as before, but i don't think this is
             // correct behaviour - would cause API changes
-            log.fatal("Unable to ascertain key validity", e);
+            log.error("Unable to ascertain key validity", e);
             return false;
         } finally {
             IOUtil.close(rafBook);
         }
     }
 
+    @Override
     public Key getGlobalKeyList() throws BookException {
         ZVerseBackendState rafBook = null;
         try {
@@ -213,10 +212,8 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
                 }
             }
 
-            if (passage != null) {
-                passage.lowerNormalizeProtection();
-                passage.lowerEventSuppressionAndTest();
-            }
+            passage.lowerNormalizeProtection();
+            passage.lowerEventSuppressionAndTest();
 
             return passage;
         } catch (IOException e) {
@@ -230,7 +227,7 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
         return OpenFileStateManager.getZVerseBackendState(getBookMetaData(), blockType);
     }
 
-    public String readRawContent(ZVerseBackendState rafBook, Key key, String keyName) throws IOException {
+    public String readRawContent(ZVerseBackendState rafBook, Key key) throws IOException {
 
         SwordBookMetaData bookMetaData = getBookMetaData();
         final String charset = bookMetaData.getBookCharset();
@@ -238,9 +235,9 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
 
         final String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
         final Versification v11n = Versifications.instance().getVersification(v11nName);
-        Verse verse = KeyUtil.getVerse(key, v11n);
+        Verse verse = KeyUtil.getVerse(key);
 
-        int index = v11n.getOrdinal(verse);
+        int index = verse.getOrdinal();
         final Testament testament = v11n.getTestament(index);
         index = v11n.getTestamentOrdinal(index);
         final RandomAccessFile compRaf;
@@ -262,6 +259,8 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
             return "";
         }
 
+        //dumpCompRaf(v11n, 0, compRaf);
+        //dumpIdxRaf(idxRaf);
         // 10 because the index is 10 bytes long for each verse
         byte[] temp = SwordUtil.readRAF(compRaf, 1L * index * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE);
 
@@ -311,7 +310,7 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
         final byte[] chopped = new byte[verseSize];
         System.arraycopy(uncompressed, verseStart, chopped, 0, verseSize);
 
-        return SwordUtil.decode(keyName, chopped, charset);
+        return SwordUtil.decode(key.getName(), chopped, charset);
 
     }
 
@@ -327,6 +326,108 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
      */
     public void setRawText(ZVerseBackendState rafBook, Key key, String text) throws BookException, IOException {
         throw new UnsupportedOperationException();
+    }
+
+    /** 
+     * Experimental code.
+     * 
+     * @param v11n
+     * @param ordinalStart
+     * @param raf
+     */
+    public void dumpCompRaf(Versification v11n, int ordinalStart, RandomAccessFile raf) {
+        long end = -1;
+        try {
+            end = raf.length();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        int i = ordinalStart;
+        StringBuilder buf = new StringBuilder();
+        System.out.println("osisID\tblock\tstart\tsize");
+        for (long offset = 0; offset < end; offset += COMP_ENTRY_SIZE) {
+            // 10 because the index is 10 bytes long for each verse
+            byte[] temp = null;
+            try {
+                temp = SwordUtil.readRAF(raf, offset, COMP_ENTRY_SIZE);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // If the Bible does not contain the desired verse, return nothing.
+            // Some Bibles have different versification, so the requested verse
+            // may not exist.
+            long blockNum = -1;
+            int verseStart = -1;
+            int verseSize = -1;
+            if (temp != null && temp.length > 0) {
+                // The data is little endian - extract the blockNum, verseStar and verseSize
+                blockNum = SwordUtil.decodeLittleEndian32(temp, 0);
+                verseStart = SwordUtil.decodeLittleEndian32(temp, 4);
+                verseSize = SwordUtil.decodeLittleEndian16(temp, 8);
+            }
+            buf.setLength(0);
+            buf.append(v11n.decodeOrdinal(i++).getOsisID());
+            buf.append('\t');
+            buf.append(blockNum);
+            buf.append('\t');
+            buf.append(verseStart);
+            buf.append('\t');
+            buf.append(verseSize);
+            System.out.println(buf.toString());
+        }
+    }
+
+    /**
+     * Experimental code.
+     * 
+     * @param raf
+     */
+    public void dumpIdxRaf(RandomAccessFile raf) {
+        long end = -1;
+        try {
+            end = raf.length();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        int blockNum = 0;
+        StringBuilder buf = new StringBuilder();
+        System.out.println("block\tstart\tsize\tuncompressed");
+        for (long offset = 0; offset < end; offset += IDX_ENTRY_SIZE) {
+            // 10 because the index is 10 bytes long for each verse
+            byte[] temp = null;
+            try {
+                temp = SwordUtil.readRAF(raf, offset, IDX_ENTRY_SIZE);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // If the Bible does not contain the desired verse, return nothing.
+            // Some Bibles have different versification, so the requested verse
+            // may not exist.
+            int blockStart = -1;
+            int blockSize = -1;
+            int uncompressedSize = -1;
+            if (temp != null && temp.length > 0) {
+                // The data is little endian - extract the blockNum, verseStar and verseSize
+                 blockStart = SwordUtil.decodeLittleEndian32(temp, 0);
+                 blockSize = SwordUtil.decodeLittleEndian32(temp, 4);
+                 uncompressedSize = SwordUtil.decodeLittleEndian32(temp, 8);
+            }
+            buf.setLength(0);
+            buf.append(blockNum);
+            buf.append('\t');
+            buf.append(blockStart);
+            buf.append('\t');
+            buf.append(blockSize);
+            buf.append('\t');
+            buf.append(uncompressedSize);
+            System.out.println(buf.toString());
+        }
     }
 
     /**
@@ -347,5 +448,5 @@ public class ZVerseBackend extends AbstractBackend<ZVerseBackendState> {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(ZVerseBackend.class);
+    private static final Logger log = LoggerFactory.getLogger(ZVerseBackend.class);
 }

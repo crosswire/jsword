@@ -17,14 +17,11 @@
  * Copyright: 2007
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: org.eclipse.jdt.ui.prefs 1178 2006-11-06 12:48:02Z dmsmith $
  */
-
 package org.crosswire.common.icu;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -40,16 +37,46 @@ import org.crosswire.common.util.ReflectionUtil;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class DateFormatter {
+public final class DateFormatter {
+    // Note these values are the same for Java and ICU4J
+    /**
+     * Constant for full style pattern.
+     */
+    public static final int FULL = 0;
+    /**
+     * Constant for long style pattern.
+     */
+    public static final int LONG = 1;
+    /**
+     * Constant for medium style pattern.
+     */
+    public static final int MEDIUM = 2;
+    /**
+     * Constant for short style pattern.
+     */
+    public static final int SHORT = 3;
+    /**
+     * Constant for default style pattern. Its value is MEDIUM.
+     */
+    public static final int DEFAULT = MEDIUM;
+
+    /** The actual formatter. */
+    private Object formatter;
+
+    /** The class of the formatter */
+    private Class<?> formatterClass;
+
     /**
      * Prevent instantiation.
      */
     private DateFormatter() {
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Construct a DateFormatter with the given date format.
      * 
+     * @param format the date format
+     * @return a DateFormatter of the given format
      * @see java.text.DateFormat#getDateInstance(int)
      */
     public static DateFormatter getDateInstance(int format) {
@@ -84,18 +111,21 @@ public class DateFormatter {
         return fmt;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Construct a DateFormatter with the default date format.
      * 
+     * @return a DateFormatter of the default format
      * @see java.text.DateFormat#getDateInstance()
      */
     public static DateFormatter getDateInstance() {
         return getDateInstance(DEFAULT);
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Construct a simple DateFormatter with the given date format.
      * 
+     * @param format the date format
+     * @return a DateFormatter with the given date format
      * @see java.text.DateFormat#getDateInstance(int)
      */
     public static DateFormatter getSimpleDateInstance(String format) {
@@ -124,9 +154,10 @@ public class DateFormatter {
         return fmt;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Set whether this DataFormatter should be lenient in parsing dates.
      * 
+     * @param lenient
      * @see java.text.DateFormat#setLenient(boolean)
      */
     public void setLenient(boolean lenient) {
@@ -147,63 +178,43 @@ public class DateFormatter {
         }
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Formats a Date into a date/time string.
      * 
+     * @param date the time value to be formatted into a time string.
+     * @return the formatted time string.
      * @see java.text.DateFormat#format(java.util.Date)
      */
     public String format(Date date) {
         try {
             return (String) ReflectionUtil.invoke(formatterClass, formatter, "format", date);
-        } catch (Exception e) {
+        } catch (NoSuchMethodException e) {
             assert false : e;
-            return "";
+        } catch (IllegalAccessException e) {
+            assert false : e;
+        } catch (InvocationTargetException e) {
+            assert false : e;
         }
+        return "";
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Convert text to a date.
      * 
+     * @param text the input to parse as a date
+     * @return the resultant date
      * @see java.text.DateFormat#parse(java.lang.String)
      */
-    public Date parse(String text) throws ParseException {
+    public Date parse(String text) {
         try {
             return (Date) ReflectionUtil.invoke(formatterClass, formatter, "parse", text);
-        } catch (Exception e) {
-            if (e instanceof ParseException) {
-                throw (ParseException) e;
-            }
-
+        } catch (NoSuchMethodException e) {
             assert false : e;
-            return new Date();
+        } catch (IllegalAccessException e) {
+            assert false : e;
+        } catch (InvocationTargetException e) {
+            assert false : e;
         }
+        return new Date();
     }
-
-    // Note these values are the same for Java and ICU4J
-    /**
-     * Constant for full style pattern.
-     */
-    public static final int FULL = 0;
-    /**
-     * Constant for long style pattern.
-     */
-    public static final int LONG = 1;
-    /**
-     * Constant for medium style pattern.
-     */
-    public static final int MEDIUM = 2;
-    /**
-     * Constant for short style pattern.
-     */
-    public static final int SHORT = 3;
-    /**
-     * Constant for default style pattern. Its value is MEDIUM.
-     */
-    public static final int DEFAULT = MEDIUM;
-
-    /** The actual formatter. */
-    private Object formatter;
-
-    /** The class of the formatter */
-    private Class<?> formatterClass;
 }

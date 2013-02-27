@@ -14,17 +14,17 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.index.query;
 
 import java.io.IOException;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.PluginUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A Factory class for QueryBuilder.
@@ -55,7 +55,7 @@ public final class QueryBuilderFactory {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(QueryBuilderFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(QueryBuilderFactory.class);
 
     /**
      * Setup the instance

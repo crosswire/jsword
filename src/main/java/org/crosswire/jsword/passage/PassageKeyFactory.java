@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.passage;
 
@@ -30,8 +29,38 @@ import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
 
 /**
- * An implementation of KeyFactory that works for most Bibles that contain all
- * the verses in the Bible.
+ * The PassageKeyFactory constructs Passages of the default Passage type.
+ * This allows for tuning the application to specific time/space needs
+ * and it allows for the development of other types of Passages without
+ * needing to change the application.
+ * <p>
+ * It is strongly recommended to use this factory to create passages
+ * if there is no driving need to create them for a specific purpose.
+ * </p>
+ * <p>
+ * Most of the methods take the same arguments:
+ * </p>
+ * <ul>
+ * <li><strong>Versification v11n<strong> - All Passages are created as part
+ * of a Versification. Verses and VerseRanges which make up a Passage, require
+ * a one.</li>
+ * <li><strong>String passageReference</strong> - A string representation for the Passage.
+ * The parser is very lenient, but requires the verses to be a member of the
+ * Versification.</li>
+ * <li><strong>VerseRange basis</strong> - When interpreting a reference, the
+ * prior reference forms the context to understand that reference. For example,
+ * when seeing 11:1, it needs the context of the BibleBook to know what this
+ * chapter and verse belongs. A basis is not needed for OSIS references, as
+ * every verse is fully qualified. But for references from ThML and GBF,
+ * it is highly needed.</li>  
+ * </ul>
+ * <p>
+ * Most of the methods will throw:
+ * </p>
+ * <ul><li><strong>NoSuchKeyException</strong> - Indicating that something
+ * in the string references could not be understood as a verse. The message
+ * of the exception will give the precise reason for the failure.</li></ul>
+ * 
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
@@ -45,55 +74,148 @@ public final class PassageKeyFactory {
     private PassageKeyFactory() {
     }
 
+    /**
+     * This PassageKeyFactory is accessed through this instance.
+     * 
+     * @return this PassageKeyFactory
+     */
     public static PassageKeyFactory instance() {
         return keyf;
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyFactory#createEmptyKeyList()
+    /**
+     * Create an empty list of keys for the v11n
+     * 
+     * @param v11n
+     *            The Versification to which this Passage belongs.
+     * @return an empty Passage
      */
     public Key createEmptyKeyList(Versification v11n) {
         return defaultType.createEmptyPassage(v11n);
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyFactory#getValidKey(java.lang.String)
+    /**
+     * Get a Passage containing all the Verses in this Versification.
+     * 
+     * @param v11n
+     *            The Versification to which this Passage belongs.
+     * @return the Passage with all the Verses in the Versification
      */
-    public Key getValidKey(Versification v11n, String name) {
+    public Key getGlobalKeyList(Versification v11n) {
+        Passage whole = null;
         try {
-            return getKey(v11n, name);
+            // AV11N(DMS): Is this right?
+            whole = new ReadOnlyPassage(defaultType.createPassage(v11n, "Gen 1:1-Rev 22:21"), true);
+        } catch (NoSuchKeyException ex) {
+            assert false : ex;
+            whole = defaultType.createEmptyPassage(v11n);
+        }
+        return whole;
+    }
+
+    /**
+     * Convert the passageReference into a Passage or an empty Passage,
+     * if there is an error. Note, this is not recommended as it throws
+     * away the error.
+     * 
+     * @param v11n
+     *            The Versification to which this Passage belongs.
+     * @param passageReference
+     *            A String containing the text of the Passage
+     * @param basis
+     *           The basis by which to interpret passageReference
+     * @return a new Passage filled with the desired Verses or an empty Passage
+     */
+    public Key getValidKey(Versification v11n, String passageReference, Key basis) {
+        try {
+            return getKey(v11n, passageReference, basis);
         } catch (NoSuchKeyException e) {
             return createEmptyKeyList(v11n);
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyFactory#getKey(java.lang.String)
+    /**
+     * Convert the passageReference into a Passage or an empty Passage,
+     * if there is an error. Note, this is not recommended as it throws
+     * away the error.
+     * 
+     * @param v11n
+     *            The Versification to which this Passage belongs.
+     * @param passageReference
+     *            A String containing the text for the Passage
+     * @return a new Passage filled with the desired Verses or an empty Passage
      */
-    public Key getKey(Versification v11n, String name) throws NoSuchKeyException {
+    public Key getValidKey(Versification v11n, String passageReference) {
+        return getValidKey(v11n, passageReference, null);
+    }
+
+    /**
+     * Convert the passageReference into a Passage. This is the recommended
+     * form for understanding references in ThML and GBF.
+     * 
+     * @param v11n
+     *            The Versification to which this Passage belongs.
+     * @param passageReference
+     *            A String containing the text for the Passage
+     * @param basis
+     *           The basis by which to interpret passageReference
+     * @return a new Passage filled with the desired Verses
+     * @throws NoSuchKeyException
+     *             If the passageReference has anything that could not be understood as a Verse
+     */
+    public Key getKey(Versification v11n, String passageReference, Key basis) throws NoSuchKeyException {
         // since normalization is relatively expensive
         // don't try it unless it solves a problem.
         try {
-            return defaultType.createPassage(v11n, name);
-        } catch (Exception e) {
+            return defaultType.createPassage(v11n, passageReference, basis);
+        } catch (NoSuchKeyException e) {
             try {
-                return defaultType.createPassage(v11n, normalize(name));
-            } catch (Exception e1) {
-                // TODO(DM): Parser should allow valid osis refs!
-                return defaultType.createPassage(v11n, mungOsisRef(name));
+                return defaultType.createPassage(v11n, normalize(passageReference), basis);
+            } catch (NoSuchKeyException e1) {
+                // TODO(DM): Parser should allow valid osisRefs!
+                return defaultType.createPassage(v11n, mungOsisRef(passageReference), basis);
             }
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.jsword.passage.KeyFactory#getGlobalKeyList()
+    /**
+     * Convert the passageReference into a Passage. This is the recommended
+     * form for application constructed references and user input. Both of
+     * these should have a fully qualified first reference.
+     * 
+     * @param v11n
+     *            The Versification to which this Passage belongs.
+     * @param passageReference
+     *            A String containing the text for the Passage
+     * @return a new Passage filled with the desired Verses
+     * @throws NoSuchKeyException
+     *             If the passageReference has anything that could not be understood as a Verse
      */
-    public Key getGlobalKeyList(Versification v11n) {
-        return whole;
+    public Key getKey(Versification v11n, String passageReference) throws NoSuchKeyException {
+        return getKey(v11n, passageReference, null);
     }
 
     /**
-     * Set the default reference type. Must be one of:
+     * Set the default PassageType
+     * 
+     * @param newDefaultType
+     *            The new default PassageType.
+     */
+    public static void setDefaultType(PassageType newDefaultType) {
+        PassageKeyFactory.defaultType = newDefaultType;
+    }
+
+    /**
+     * Get the default PassageType.
+     * 
+     * @return The default PassageType.
+     */
+    public static PassageType getDefaultType() {
+        return defaultType;
+    }
+
+    /**
+     * Set the default PassageType. Must be the ordinal value of one of:
      * <ul>
      * <li>PassageType.SPEED
      * <li>PassageType.WRITE_SPEED
@@ -106,11 +228,11 @@ public final class PassageKeyFactory {
      *            The new default type.
      */
     public static void setDefaultPassage(int newDefaultType) {
-        PassageKeyFactory.defaultType = PassageType.fromInteger(newDefaultType);
+        setDefaultType(PassageType.fromInteger(newDefaultType));
     }
 
     /**
-     * Get the default reference type.
+     * Get the default passage type as the ordinal value of the PassageType.
      * 
      * @return default_type The new default type.
      * @see PassageKeyFactory#setDefaultPassage
@@ -176,7 +298,7 @@ public final class PassageKeyFactory {
 
             for (Key aKey : ref) {
                 Verse verse = (Verse) aKey;
-                int ord = v11n.getOrdinal(verse);
+                int ord = verse.getOrdinal();
 
                 // Which byte should we be altering
                 int idx0 = (ord / 8) + index;
@@ -203,7 +325,7 @@ public final class PassageKeyFactory {
             // write the verse ordinals in a loop
             for (Key aKey : ref) {
                 Verse verse = (Verse) aKey;
-                int ord = v11n.getOrdinal(verse);
+                int ord = verse.getOrdinal();
                 index += toBinary(buffer, index, ord, maxOrdinal);
             }
 
@@ -223,7 +345,7 @@ public final class PassageKeyFactory {
             Iterator<Key> it = ref.rangeIterator(RestrictionType.NONE);
             while (it.hasNext()) {
                 VerseRange range = (VerseRange) it.next();
-                index += toBinary(buffer, index, v11n.getOrdinal(range.getStart()), maxOrdinal);
+                index += toBinary(buffer, index, range.getStart().getOrdinal(), maxOrdinal);
                 index += toBinary(buffer, index, range.getCardinality(), maxOrdinal);
             }
 
@@ -238,12 +360,12 @@ public final class PassageKeyFactory {
      * @param buffer
      *            The stream to read our state from
      * @return The converted Passage
-     * @throws NoSuchVerseException
+     * @throws NoSuchKeyException
      *             If the buffer is invalid
      */
-    static Passage fromBinaryRepresentation(byte[] buffer) throws NoSuchVerseException {
-        // AV11N(DMS): Is this right?
-        Versification rs = Versifications.instance().getDefaultVersification();
+    static Passage fromBinaryRepresentation(byte[] buffer) throws NoSuchKeyException {
+        // AV11N(DMS): This is wrong, but toBinaryRepresentation does not write the v11n name
+        Versification rs = Versifications.instance().getVersification("KJV");
         int maxOrdinal = rs.maximumOrdinal();
         Passage ref = (Passage) keyf.createEmptyKeyList(rs);
 
@@ -294,7 +416,7 @@ public final class PassageKeyFactory {
             break;
 
         default:
-            throw new NoSuchVerseException(JSOtherMsg.lookupText("Unknown passage type."));
+            throw new NoSuchKeyException(JSOtherMsg.lookupText("Unknown passage type."));
         }
 
         // Some speedups
@@ -314,12 +436,12 @@ public final class PassageKeyFactory {
      * @return a newly built Passage
      * @throws IOException
      *             If there was trouble reading the stream
-     * @throws NoSuchVerseException
+     * @throws NoSuchKeyException
      *             if the data was not a valid passage
      */
-    public static Passage readPassage(Reader in) throws IOException, NoSuchVerseException {
-        // AV11N(DMS): Is this right?
-        Versification rs = Versifications.instance().getDefaultVersification();
+    public static Passage readPassage(Reader in) throws IOException, NoSuchKeyException {
+        // Get any versification. It does not matter. readDescripton will overwrite it.
+        Versification rs = Versifications.instance().getVersification("KJV");
         Passage ref = (Passage) keyf.createEmptyKeyList(rs);
         ref.readDescription(in);
         return ref;
@@ -442,11 +564,11 @@ public final class PassageKeyFactory {
     /**
      * Replace spaces with semi-colons, because the parser expects them.
      * 
-     * @param name
+     * @param passageReference
      * @return the munged value
      */
-    private String mungOsisRef(String name) {
-        return name.replace(' ', ';');
+    private String mungOsisRef(String passageReference) {
+        return passageReference.replace(' ', ';');
     }
 
     /**
@@ -462,16 +584,16 @@ public final class PassageKeyFactory {
      * So we use a counter when we see a number, if the counter reaches 2 and
      * then we see a name or a number we emit a reference delimiter.
      * 
-     * @param name
+     * @param passageReference
      * @return the normalized value
      */
-    private String normalize(String name) {
-        if (name == null) {
+    private String normalize(String passageReference) {
+        if (passageReference == null) {
             return null;
         }
 
         // Note this has a lot in common with AccuracyType.tokenize
-        int size = name.length();
+        int size = passageReference.length();
         StringBuilder buf = new StringBuilder(size * 2);
 
         char curChar = ' ';
@@ -479,10 +601,10 @@ public final class PassageKeyFactory {
         boolean wasNumber = false;
         int i = 0;
         while (i < size) {
-            curChar = name.charAt(i);
+            curChar = passageReference.charAt(i);
 
             // Determine whether we are starting a number
-            isNumber = curChar == '$' || Character.isDigit(curChar) || (curChar == 'f' && (i + 1 < size ? name.charAt(i + 1) : ' ') == 'f');
+            isNumber = curChar == '$' || Character.isDigit(curChar) || (curChar == 'f' && (i + 1 < size ? passageReference.charAt(i + 1) : ' ') == 'f');
 
             // If the last thing we saw was a number and the next thing we see
             // is another number or a word
@@ -510,7 +632,7 @@ public final class PassageKeyFactory {
                 } else if (curChar != '$') {
                     // If it wasn't an 'f' or a '$' then it was digits
                     while (i < size) {
-                        curChar = name.charAt(i);
+                        curChar = passageReference.charAt(i);
                         if (!Character.isDigit(curChar)) {
                             break;
                         }
@@ -521,7 +643,7 @@ public final class PassageKeyFactory {
 
                 // skip all following whitespace, it will be added back in as
                 // needed
-                while (i < size && Character.isWhitespace(name.charAt(i))) {
+                while (i < size && Character.isWhitespace(passageReference.charAt(i))) {
                     i++;
                 }
             } else {
@@ -542,19 +664,4 @@ public final class PassageKeyFactory {
      * How we create Passages
      */
     private static PassageKeyFactory keyf = new PassageKeyFactory();
-
-    /**
-     * The cached whole Bible passage
-     */
-    private static Passage whole;
-
-    static {
-        try {
-            // AV11N(DMS): Is this right?
-            whole = new ReadOnlyPassage(defaultType.createPassage(Versifications.instance().getDefaultVersification(), "Gen 1:1-Rev 22:21"), true);
-        } catch (NoSuchKeyException ex) {
-            assert false : ex;
-            whole = defaultType.createEmptyPassage(Versifications.instance().getDefaultVersification());
-        }
-    }
 }

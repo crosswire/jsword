@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors. 
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.passage;
 
@@ -29,9 +28,10 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.versification.Versification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Similar to a Passage, but that stores a ranking for each of the Verses that
@@ -119,13 +119,19 @@ public class PassageTally extends AbstractPassage {
      *            The Versification to which this Passage belongs.
      * @param refs
      *            The text to interpret
+     * @param basis
+     *           The basis by which to interpret refs
      * @throws NoSuchVerseException
      *             If refs is invalid
      */
-    public PassageTally(Versification v11n, String refs) throws NoSuchVerseException {
+    public PassageTally(Versification v11n, String refs, Key basis) throws NoSuchVerseException {
         super(v11n, refs);
         board = new int[v11n.maximumOrdinal() + 1];
-        addVerses(refs);
+        addVerses(refs, basis);
+    }
+
+    public PassageTally(Versification v11n, String refs) throws NoSuchVerseException {
+        this(v11n, refs, null);
     }
 
     @Override
@@ -324,10 +330,9 @@ public class PassageTally extends AbstractPassage {
      */
     @Override
     public boolean contains(Key that) {
-        Versification v11n = getVersification();
         for (Key aKey : that) {
             Verse verse = (Verse) aKey;
-            if (board[v11n.getOrdinal(verse)] == 0) {
+            if (board[verse.getOrdinal()] == 0) {
                 return false;
             }
         }
@@ -343,8 +348,7 @@ public class PassageTally extends AbstractPassage {
      * @return The rank of the verse in question
      */
     public int getTallyOf(Verse verse) {
-        Versification v11n = getVersification();
-        return board[v11n.getOrdinal(verse)];
+        return board[verse.getOrdinal()];
     }
 
     /**
@@ -355,8 +359,7 @@ public class PassageTally extends AbstractPassage {
      * @return The index of the verse or -1 if the verse was not found
      */
     public int getIndexOf(Verse verse) {
-        Versification v11n = getVersification();
-        int pos = v11n.getOrdinal(verse);
+        int pos = verse.getOrdinal();
         int tally = board[pos];
         return tally > 0 ? pos : -1;
     }
@@ -412,12 +415,11 @@ public class PassageTally extends AbstractPassage {
      *            The verses to remove/decrement
      */
     public void remove(Key that) {
-        Versification v11n = getVersification();
         optimizeWrites();
 
         for (Key aKey : that) {
             Verse verse = (Verse) aKey;
-            kill(v11n.getOrdinal(verse));
+            kill(verse.getOrdinal());
         }
 
         fireIntervalRemoved(this, null, null);
@@ -425,7 +427,6 @@ public class PassageTally extends AbstractPassage {
 
     @Override
     public void addAll(Key that) {
-        Versification v11n = getVersification();
         optimizeWrites();
 
         if (that instanceof PassageTally) {
@@ -440,7 +441,7 @@ public class PassageTally extends AbstractPassage {
         } else {
             for (Key aKey : that) {
                 Verse verse = (Verse) aKey;
-                increment(v11n.getOrdinal(verse), 1);
+                increment(verse.getOrdinal(), 1);
             }
 
             incrementMax(1);
@@ -456,7 +457,6 @@ public class PassageTally extends AbstractPassage {
      *            The verses to remove/decrement
      */
     public void unAddAll(Passage that) {
-        Versification v11n = getVersification();
         optimizeWrites();
 
         if (that instanceof PassageTally) {
@@ -469,7 +469,7 @@ public class PassageTally extends AbstractPassage {
         } else {
             for (Key aKey : that) {
                 Verse verse = (Verse) aKey;
-                increment(v11n.getOrdinal(verse), -1);
+                increment(verse.getOrdinal(), -1);
             }
         }
 
@@ -482,13 +482,10 @@ public class PassageTally extends AbstractPassage {
 
     @Override
     public void removeAll(Key key) {
-        Versification v11n = getVersification();
-        Passage that = KeyUtil.getPassage(key, v11n);
-
         optimizeWrites();
 
-        if (that instanceof PassageTally) {
-            PassageTally that_rt = (PassageTally) that;
+        if (key instanceof PassageTally) {
+            PassageTally that_rt = (PassageTally) key;
 
             int vib = getVersification().maximumOrdinal();
             for (int i = 0; i <= vib; i++) {
@@ -497,9 +494,9 @@ public class PassageTally extends AbstractPassage {
                 }
             }
         } else {
-            for (Key aKey : that) {
+            for (Key aKey : key) {
                 Verse verse = (Verse) aKey;
-                kill(v11n.getOrdinal(verse));
+                kill(verse.getOrdinal());
             }
         }
 
@@ -579,14 +576,14 @@ public class PassageTally extends AbstractPassage {
 
     @Override
     public void blur(int verses, RestrictionType restrict) {
-        assert verses > 0;
+        assert verses >= 0;
 
         optimizeWrites();
         raiseEventSuppresion();
         raiseNormalizeProtection();
 
         if (!restrict.equals(RestrictionType.NONE)) {
-            log.warn("Restrict=" + restrict + " is not properly supported.");
+            log.warn("Restrict={} is not properly supported.", restrict);
 
             // This is a bit of a cheat, but there is no way I'm going
             // to do the math to speed up the restricted version
@@ -670,10 +667,9 @@ public class PassageTally extends AbstractPassage {
      *            The amount to increment/decrement by
      */
     private void alterVerseBase(Key that, int tally) {
-        Versification v11n = getVersification();
         for (Key aKey : that) {
             Verse verse = (Verse) aKey;
-            increment(v11n.getOrdinal(verse), tally);
+            increment(verse.getOrdinal(), tally);
         }
 
         if (tally > 0) {
@@ -821,7 +817,7 @@ public class PassageTally extends AbstractPassage {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(PassageTally.class);
+    private static final Logger log = LoggerFactory.getLogger(PassageTally.class);
 
     /**
      * Serialization ID
@@ -1042,7 +1038,7 @@ public class PassageTally extends AbstractPassage {
                 int rank = 0;
                 for (Key aKey : range) {
                     Verse verse = (Verse) aKey;
-                    int temp = board[v11n.getOrdinal(verse)];
+                    int temp = board[verse.getOrdinal()];
                     if (temp > rank) {
                         rank = temp;
                     }

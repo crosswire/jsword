@@ -138,21 +138,21 @@ public class PassageParentTst extends TestCase {
             empty.optimizeReads();
         }
 
-        gen11_1 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.GEN, 1, 1), 1);
-        gen11_2 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.GEN, 1, 1), 2);
-        gen12_1 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.GEN, 1, 2), 1);
-        exo21_1 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.EXOD, 2, 1), 1);
-        exo21_2 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.EXOD, 2, 1), 2);
-        exo22_1 = RestrictionType.NONE.toRange(v11n, new Verse(BibleBook.EXOD, 2, 2), 1);
+        gen11_1 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 1), 1);
+        gen11_2 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 1), 2);
+        gen12_1 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.GEN, 1, 2), 1);
+        exo21_1 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.EXOD, 2, 1), 1);
+        exo21_2 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.EXOD, 2, 1), 2);
+        exo22_1 = RestrictionType.NONE.toRange(v11n, new Verse(v11n, BibleBook.EXOD, 2, 2), 1);
 
-        gen11 = new Verse(BibleBook.GEN, 1, 1);
-        gen12 = new Verse(BibleBook.GEN, 1, 2);
-        gen13 = new Verse(BibleBook.GEN, 1, 3);
-        gen15 = new Verse(BibleBook.GEN, 1, 5);
-        exo21 = new Verse(BibleBook.EXOD, 2, 1);
-        exo22 = new Verse(BibleBook.EXOD, 2, 2);
-        exo23 = new Verse(BibleBook.EXOD, 2, 3);
-        exo3b = new Verse(BibleBook.EXOD, 3, 11);
+        gen11 = new Verse(v11n, BibleBook.GEN, 1, 1);
+        gen12 = new Verse(v11n, BibleBook.GEN, 1, 2);
+        gen13 = new Verse(v11n, BibleBook.GEN, 1, 3);
+        gen15 = new Verse(v11n, BibleBook.GEN, 1, 5);
+        exo21 = new Verse(v11n, BibleBook.EXOD, 2, 1);
+        exo22 = new Verse(v11n, BibleBook.EXOD, 2, 2);
+        exo23 = new Verse(v11n, BibleBook.EXOD, 2, 3);
+        exo3b = new Verse(v11n, BibleBook.EXOD, 3, 11);
         rev99 = VerseFactory.fromString(v11n, "Rev 22:21");
     }
 
@@ -385,19 +385,19 @@ public class PassageParentTst extends TestCase {
 
     public void testWriteToString() throws Exception {
         assertEquals("Gen 1:1-3, Rev 22:21", keyf.getKey(v11n, "gen 1 1,gen 1 3,rev 22 21,gen 1 2").toString());
-        assertEquals("Gen 1:1-3, 22:2-10, Rev 22:1-21",
+        assertEquals("Gen 1:1-3, 22:2-10, Rev 22",
                 keyf.getKey(v11n, "Gen 1 3;gen 22 2;rev 22 21;gen 22 3-10; rev 22 19;gen 1 1;rev 22 10-18; gen 1 2; rev 22 1-21").toString());
         assertEquals("", keyf.getKey(v11n, "").toString());
-        assertEquals("Gen 1:1-Exo 40:38", keyf.getKey(v11n, "gen 1 1-50:26,e,e 1 2,e 1 3-10").toString());
+        assertEquals("Gen-Exo", keyf.getKey(v11n, "gen 1 1-50:26,ex,ex 1 2,ex 1 3-10").toString());
         assertEquals("", keyf.getKey(v11n, null).toString());
     }
 
     public void testWriteGetName() throws Exception {
         assertEquals("Gen 1:1-3, Rev 22:21", keyf.getKey(v11n, "gen 1 1,gen 1 3,rev 22 21,gen 1 2").getName());
-        assertEquals("Gen 1:1-3, 22:2-10, Rev 22:1-21", 
+        assertEquals("Gen 1:1-3, 22:2-10, Rev 22", 
                 keyf.getKey(v11n, "Gen 1 3;gen 22 2;rev 22 21;gen 22 3-10; rev 22 19;gen 1 1;rev 22 10-18; gen 1 2; rev 22 1-21").getName());
         assertEquals("", keyf.getKey(v11n, "").getName());
-        assertEquals("Gen 1:1-Exo 40:38", keyf.getKey(v11n, "gen 1 1-50:26,e,e 1 2,e 1 3-10").getName());
+        assertEquals("Gen-Exo", keyf.getKey(v11n, "gen 1 1-50:26,ex,ex 1 2,ex 1 3-10").getName());
         assertEquals("Exo 1:1, 4", keyf.getKey(v11n, "exo 1:1, 4").getName());
         assertEquals("Exo 1:1-4, 6-22", keyf.getKey(v11n, "exo 1:1, 4, 2-3, 11-ff, 6-10").getName());
         assertEquals("Num 1-2", keyf.getKey(v11n, "Num 1, 2").getName());
@@ -406,12 +406,12 @@ public class PassageParentTst extends TestCase {
     }
 
     public void testWriteBlur() throws Exception {
-        // temp = (Passage) gen1_135.clone();
-        // temp.blur(0, RestrictionType.CHAPTER);
-        // assertEquals(temp, gen1_135);
-        // temp = (Passage) gen1_135.clone();
-        // temp.blur(0, RestrictionType.NONE);
-        // assertEquals(temp, gen1_135);
+        temp = (Passage) gen1_135.clone();
+        temp.blur(0, RestrictionType.CHAPTER);
+        assertEquals(temp, gen1_135);
+        temp = (Passage) gen1_135.clone();
+        temp.blur(0, RestrictionType.NONE);
+        assertEquals(temp, gen1_135);
         temp = (Passage) gen1_135.clone();
         temp.blur(1, RestrictionType.CHAPTER);
         assertEquals(temp, keyf.getKey(v11n, "Gen 1:0-6"));
@@ -442,12 +442,12 @@ public class PassageParentTst extends TestCase {
         temp = (Passage) gen1_135.clone();
         temp.blur(27, RestrictionType.NONE);
         assertEquals(temp, keyf.getKey(v11n, "Intro.OT-Gen 2:0"));
-        // temp = (Passage) exo2a_3b.clone();
-        // temp.blur(0, RestrictionType.CHAPTER);
-        //        assertEquals(temp, keyf.getKey(v11n, "Exo 2:1-10, Exo 3:1-11"));
-        // temp = (Passage) exo2a_3b.clone();
-        // temp.blur(0, RestrictionType.NONE);
-        //        assertEquals(temp, keyf.getKey(v11n, "Exo 2:1-10, Exo 3:1-11"));
+        temp = (Passage) exo2a_3b.clone();
+        temp.blur(0, RestrictionType.CHAPTER);
+        assertEquals(temp, keyf.getKey(v11n, "Exo 2:1-10, Exo 3:1-11"));
+        temp = (Passage) exo2a_3b.clone();
+        temp.blur(0, RestrictionType.NONE);
+        assertEquals(temp, keyf.getKey(v11n, "Exo 2:1-10, Exo 3:1-11"));
         temp = (Passage) exo2a_3b.clone();
         temp.blur(1, RestrictionType.CHAPTER);
         assertEquals(temp, keyf.getKey(v11n, "Exo 2:0-11, Exo 3:0-12"));
@@ -480,20 +480,16 @@ public class PassageParentTst extends TestCase {
         assertEquals(temp, keyf.getKey(v11n, "Exo 1:9-2:25, Exo 2:11-4:3"));
         temp = (Passage) exo2a_3b.clone();
         temp.blur(16, RestrictionType.CHAPTER);
-//        assertEquals(temp, keyf.getKey(v11n, "Exo 2:1-3:22"));
+        assertEquals(temp, keyf.getKey(v11n, "Exo 2:1-3:22"));
         temp = (Passage) exo2a_3b.clone();
         temp.blur(16, RestrictionType.NONE);
-//        assertEquals(temp, keyf.getKey(v11n, "Exo 1:8-4:4"));
+        assertEquals(temp, keyf.getKey(v11n, "Exo 1:8-4:4"));
         temp = (Passage) exo2a_3b.clone();
         temp.blur(99999, RestrictionType.CHAPTER);
-//        assertEquals(temp, keyf.getKey(v11n, "Exo 2:1-3:22"));
+        assertEquals(temp, keyf.getKey(v11n, "Exo 2:1-3:22"));
         temp = (Passage) exo2a_3b.clone();
         temp.blur(99999, RestrictionType.NONE);
         assertEquals(temp, keyf.getKey(v11n, "Intro.OT-Rev 22:21"));
-        // try { temp.blur(-1, RestrictionType.NONE); fail(temp.toString()); }
-        // catch (IllegalArgumentException ex) { }
-        // try { temp.blur(-1, RestrictionType.BOOK); fail(temp.toString()); }
-        // catch (IllegalArgumentException ex) { }
     }
 
     public void testWriteAddPassageListener() throws Exception {
@@ -538,6 +534,7 @@ public class PassageParentTst extends TestCase {
         assertEquals(it.next(), VerseRangeFactory.fromString(v11n, "Gen-Rev"));
         assertTrue(!it.hasNext());
 
+        // No longer have RestrictionType.BOOK
         // it = gen_rev.rangeIterator(RestrictionType.BOOK);
         // assertTrue(it.hasNext());
         //        assertEquals(it.next(), VerseRangeFactory.fromString(v11n, "Gen"));

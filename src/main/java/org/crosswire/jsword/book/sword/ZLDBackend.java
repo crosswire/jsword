@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
@@ -25,11 +24,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 
 import org.crosswire.common.compress.CompressorType;
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
 import org.crosswire.jsword.book.sword.state.RawLDBackendState;
 import org.crosswire.jsword.book.sword.state.ZLDBackendState;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * An extension of RawLDBackend to read Z format files.
@@ -53,14 +53,14 @@ public class ZLDBackend extends RawLDBackend<ZLDBackendState> {
     }
 
     @Override
-    protected String getRawText(RawLDBackendState fileState, DataEntry entry) {
+    protected DataEntry getEntry(RawLDBackendState fileState, DataEntry entry) {
         ZLDBackendState state = null;
         if (fileState instanceof ZLDBackendState) {
             state = (ZLDBackendState) fileState;
         } else {
             //something went terribly wrong
             log.error("Backend State was not of type ZLDBackendState. Ignoring this entry and exiting.");
-            return "";
+            return new DataEntry(entry.getName(), new byte[0], entry.getCharset());
         }
 
         DataIndex blockIndex = entry.getBlockIndex();
@@ -76,7 +76,7 @@ public class ZLDBackend extends RawLDBackend<ZLDBackendState> {
             try {
                 temp = SwordUtil.readRAF(state.getZdxRaf(), blockNum * ZDX_ENTRY_SIZE, ZDX_ENTRY_SIZE);
                 if (temp == null || temp.length == 0) {
-                    return "";
+                    return new DataEntry(entry.getName(), new byte[0], entry.getCharset());
                 }
 
                 int blockStart = SwordUtil.decodeLittleEndian32(temp, 0);
@@ -93,24 +93,29 @@ public class ZLDBackend extends RawLDBackend<ZLDBackendState> {
                 state.setLastBlockNum(blockNum);
                 state.setLastUncompressed(uncompressed);
             } catch (IOException e) {
-                return "";
+                return new DataEntry(entry.getName(), new byte[0], entry.getCharset());
             }
         }
 
         // get the "entry" from this block.
         int entryCount = SwordUtil.decodeLittleEndian32(uncompressed, 0);
         if (blockEntry >= entryCount) {
-            return "";
+            return new DataEntry(entry.getName(), new byte[0], entry.getCharset());
         }
 
         int entryOffset = BLOCK_ENTRY_COUNT + (BLOCK_ENTRY_SIZE * blockEntry);
         int entryStart = SwordUtil.decodeLittleEndian32(uncompressed, entryOffset);
-        // Note: the actual entry is '\0' terminated
         int entrySize = SwordUtil.decodeLittleEndian32(uncompressed, entryOffset + 4);
+        // Note: the actual entry is '\0' terminated
+        int nullTerminator = SwordUtil.findByte(uncompressed, entryStart, (byte) 0x00);
+        if (nullTerminator - entryStart + 1 == entrySize) {
+            entrySize -= 1;
+        }
         byte[] entryBytes = new byte[entrySize];
         System.arraycopy(uncompressed, entryStart, entryBytes, 0, entrySize);
+        DataEntry finalEntry = new DataEntry(entry.getName(), entryBytes, getBookMetaData().getBookCharset());
 
-        return SwordUtil.decode(entry.getName(), entryBytes, getBookMetaData().getBookCharset()).trim();
+        return finalEntry;
     }
 
     /**
@@ -131,6 +136,6 @@ public class ZLDBackend extends RawLDBackend<ZLDBackendState> {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(ZLDBackend.class);
+    private static final Logger log = LoggerFactory.getLogger(ZLDBackend.class);
     private static final long serialVersionUID = 3536098410391064446L;
 }

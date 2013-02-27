@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005 - 2012
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.filter.thml;
 
@@ -25,9 +24,11 @@ import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
-import org.jdom.Element;
+import org.crosswire.jsword.passage.PassageKeyFactory;
+import org.jdom2.Element;
 import org.xml.sax.Attributes;
 
 /**
@@ -53,7 +54,7 @@ public class ScripRefTag extends AbstractTag {
         if (refstr != null) {
             Passage ref = null;
             try {
-                ref = (Passage) book.getKey(refstr);
+                ref = (Passage) PassageKeyFactory.instance().getKey(KeyUtil.getVersification(key), refstr, key);
             } catch (NoSuchKeyException ex) {
                 DataPolice.report(book, key, "Unparsable passage: (" + refstr + ") due to " + ex.getMessage());
             }
@@ -79,7 +80,7 @@ public class ScripRefTag extends AbstractTag {
         String refstr = ele.getValue();
         try {
             if (ele.getAttribute(OSISUtil.OSIS_ATTR_REF) == null) {
-                Passage ref = (Passage) book.getKey(refstr);
+                Passage ref = (Passage) PassageKeyFactory.instance().getKey(KeyUtil.getVersification(key), refstr, key);
                 String osisname = ref.getOsisRef();
                 ele.setAttribute(OSISUtil.OSIS_ATTR_REF, osisname);
             }

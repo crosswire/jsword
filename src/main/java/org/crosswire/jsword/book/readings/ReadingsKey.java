@@ -17,20 +17,16 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.readings;
 
 import java.text.MessageFormat;
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
 import org.crosswire.common.icu.DateFormatter;
-import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.passage.DefaultLeafKeyList;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.NoSuchKeyException;
 
 /**
  * For a readings dictionary the keys are dates.
@@ -52,16 +48,12 @@ public class ReadingsKey extends DefaultLeafKeyList {
      * @param parent
      *            This Key's parent (or null of this Key has no parent)
      */
-    protected ReadingsKey(String text, String osisName, Key parent) throws NoSuchKeyException {
+    protected ReadingsKey(String text, String osisName, Key parent) {
         super(text, osisName, parent);
 
-        try {
-            DateFormatter formatter = DateFormatter.getDateInstance();
-            formatter.setLenient(true);
-            date = formatter.parse(text);
-        } catch (ParseException ex) {
-            throw new NoSuchKeyException(JSOtherMsg.lookupText("Failed to parse {0}", text), ex);
-        }
+        DateFormatter formatter = DateFormatter.getDateInstance();
+        formatter.setLenient(true);
+        date = formatter.parse(text);
     }
 
     /**
@@ -134,12 +126,12 @@ public class ReadingsKey extends DefaultLeafKeyList {
     private Date date;
 
     /**
-     * Serialization ID
-     */
-    private static final long serialVersionUID = -5500401548068844993L;
-
-    /**
      * Date formatter
      */
     private static final MessageFormat KEY_FORMAT = new MessageFormat("{0,number,00}.{1,number,00}");
+
+    /**
+     * Serialization ID
+     */
+    private static final long serialVersionUID = -5500401548068844993L;
 }

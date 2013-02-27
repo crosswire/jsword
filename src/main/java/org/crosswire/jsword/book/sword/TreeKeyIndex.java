@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
@@ -30,7 +29,6 @@ import org.crosswire.common.activate.Activatable;
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.activate.Lock;
 import org.crosswire.common.util.FileUtil;
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSMsg;
@@ -38,6 +36,8 @@ import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.DefaultKeyList;
 import org.crosswire.jsword.passage.Key;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * TreeKeyIndex reads Sword index files that are path based. Paths are of the
@@ -253,5 +253,5 @@ public class TreeKeyIndex implements Activatable {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(TreeKeyIndex.class);
+    private static final Logger log = LoggerFactory.getLogger(TreeKeyIndex.class);
 }

@@ -22,5 +22,6 @@
 		<nature>com.ibm.etools.beaninfo.BeaninfoNature</nature>
 		<nature>SimianUI.simiannature</nature>
 		<nature>com.atlassw.tools.eclipse.checkstyle.CheckstyleNature</nature>
+		<nature>org.apache.ivyde.eclipse.ivynature</nature>
 	</natures>
 </projectDescription>

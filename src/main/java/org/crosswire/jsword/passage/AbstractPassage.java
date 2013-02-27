@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2103
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.passage;
 
@@ -34,13 +33,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This is a base class to help with some of the common implementation details
@@ -51,7 +51,8 @@ import org.crosswire.jsword.versification.system.Versifications;
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
- * @author Joe Walker [joe at eireneh dot com]
+ * @author Joe Walker
+ * @author DM Smith
  */
 public abstract class AbstractPassage implements Passage {
     /**
@@ -87,7 +88,7 @@ public abstract class AbstractPassage implements Passage {
      */
     public int compareTo(Key obj) {
         if (!(obj instanceof Passage)) {
-            log.warn("Can't compare a Passage to a " + obj.getClass().getName());
+            log.warn("Can't compare a Passage to a {}", obj.getClass().getName());
             return -1;
         }
 
@@ -487,29 +488,36 @@ public abstract class AbstractPassage implements Passage {
      * @see org.crosswire.jsword.passage.Key#addAll(org.crosswire.jsword.passage.Key)
      */
     public void addAll(Key key) {
-        Passage that = KeyUtil.getPassage(key, this.v11n);
-
         optimizeWrites();
         raiseEventSuppresion();
         raiseNormalizeProtection();
 
         Iterator<?> that_it = null;
 
-        if (that instanceof RangedPassage) {
-            that_it = that.rangeIterator(RestrictionType.NONE);
+        if (key instanceof RangedPassage) {
+            that_it = ((RangedPassage) key).rangeIterator(RestrictionType.NONE);
             while (that_it.hasNext()) {
                 // Avoid touching store to make thread safety easier.
                 add((Key) that_it.next());
             }
         } else {
-            for (Key subkey : that) {
+            for (Key subkey : key) {
                 add(subkey);
             }
         }
 
         lowerNormalizeProtection();
         if (lowerEventSuppressionAndTest()) {
-            fireIntervalAdded(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1));
+            if (key instanceof Passage) {
+                Passage that = (Passage) key;
+                fireIntervalAdded(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1));
+            } else if (key instanceof VerseRange) {
+                VerseRange that = (VerseRange) key;
+                fireIntervalAdded(this, that.getStart(), that.getEnd());
+            } else if (key instanceof Verse) {
+                Verse that = (Verse) key;
+                fireIntervalAdded(this, that, that);
+            }
         }
     }
 
@@ -517,28 +525,35 @@ public abstract class AbstractPassage implements Passage {
      * @see org.crosswire.jsword.passage.Key#removeAll(org.crosswire.jsword.passage.Key)
      */
     public void removeAll(Key key) {
-        Passage that = KeyUtil.getPassage(key, this.v11n);
-
         optimizeWrites();
         raiseEventSuppresion();
         raiseNormalizeProtection();
 
-        Iterator<?> that_it = null;
+        Iterator<Key> that_it = null;
 
-        if (that instanceof RangedPassage) {
-            that_it = that.rangeIterator(RestrictionType.NONE);
+        if (key instanceof RangedPassage) {
+            that_it = ((RangedPassage) key).rangeIterator(RestrictionType.NONE);
         } else {
-            that_it = that.iterator();
+            that_it = key.iterator();
         }
 
         while (that_it.hasNext()) {
             // Avoid touching store to make thread safety easier.
-            remove((Key) that_it.next());
+            remove(that_it.next());
         }
 
         lowerNormalizeProtection();
         if (lowerEventSuppressionAndTest()) {
-            fireIntervalRemoved(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1));
+            if (key instanceof Passage) {
+                Passage that = (Passage) key;
+                fireIntervalRemoved(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1));
+            } else if (key instanceof VerseRange) {
+                VerseRange that = (VerseRange) key;
+                fireIntervalRemoved(this, that.getStart(), that.getEnd());
+            } else if (key instanceof Verse) {
+                Verse that = (Verse) key;
+                fireIntervalRemoved(this, that, that);
+            }
         }
     }
 
@@ -546,15 +561,13 @@ public abstract class AbstractPassage implements Passage {
      * @see org.crosswire.jsword.passage.Key#retainAll(org.crosswire.jsword.passage.Key)
      */
     public void retainAll(Key key) {
-        Passage that = KeyUtil.getPassage(key, this.v11n);
-
         optimizeWrites();
         raiseEventSuppresion();
         raiseNormalizeProtection();
 
         Passage temp = this.clone();
         for (Key verse : temp) {
-            if (!that.contains(verse)) {
+            if (!key.contains(verse)) {
                 remove(verse);
             }
         }
@@ -606,6 +619,8 @@ public abstract class AbstractPassage implements Passage {
      */
     public void writeDescription(Writer out) throws IOException {
         BufferedWriter bout = new BufferedWriter(out);
+        bout.write(v11n.getName());
+        bout.newLine();
 
         Iterator<Key> it = rangeIterator(RestrictionType.NONE);
 
@@ -629,6 +644,10 @@ public abstract class AbstractPassage implements Passage {
         // Quiet Android from complaining about using the default BufferReader buffer size.
         // The actual buffer size is undocumented. So this is a good idea any way.
         BufferedReader bin = new BufferedReader(in, 8192);
+
+        String v11nName = bin.readLine();
+        v11n = Versifications.instance().getVersification(v11nName);
+
         while (true) {
             String line = bin.readLine();
             if (line == null) {
@@ -636,7 +655,7 @@ public abstract class AbstractPassage implements Passage {
             }
 
             count++;
-            addVerses(line);
+            addVerses(line, null);
         }
 
         // If the file was empty then there is nothing to do
@@ -684,7 +703,7 @@ public abstract class AbstractPassage implements Passage {
      * @see org.crosswire.jsword.passage.Passage#contains(org.crosswire.jsword.passage.Key)
      */
     public boolean contains(Key key) {
-        Passage ref = KeyUtil.getPassage(key, this.v11n);
+        Passage ref = KeyUtil.getPassage(key);
         return containsAll(ref);
     }
 
@@ -863,10 +882,12 @@ public abstract class AbstractPassage implements Passage {
      * 
      * @param refs
      *            A String containing the text of the RangedPassage
+     * @param basis
+     *            The basis for understanding refs
      * @throws NoSuchVerseException
      *             if the string is invalid
      */
-    protected void addVerses(String refs) throws NoSuchVerseException {
+    protected void addVerses(String refs, Key basis) throws NoSuchVerseException {
         optimizeWrites();
 
         String[] parts = StringUtil.split(refs, AbstractPassage.REF_ALLOWED_DELIMS);
@@ -874,17 +895,28 @@ public abstract class AbstractPassage implements Passage {
             return;
         }
 
-        // We treat the first as a special case because there is
-        // nothing to sensibly base this reference on
-        VerseRange basis = VerseRangeFactory.fromString(v11n, parts[0].trim());
-        add(basis);
+        int start = 0;
+        VerseRange vrBasis = null;
+        if (basis instanceof Verse) {
+            vrBasis = new VerseRange(v11n, (Verse) basis);
+        } else if (basis instanceof VerseRange) {
+            vrBasis = (VerseRange) basis;
+        } else {
+            // If we are not passed a useful basis,
+            // then we treat the first as a special case because there is
+            // nothing to sensibly base this reference on
+            vrBasis = VerseRangeFactory.fromString(v11n, parts[0].trim());
+            // We add it because it was part of the given input
+            add(vrBasis);
+            start = 1;
+        }
 
         // Loop for the other verses, interpreting each on the
         // basis of the one before.
-        for (int i = 1; i < parts.length; i++) {
-            VerseRange next = VerseRangeFactory.fromString(v11n, parts[i].trim(), basis);
+        for (int i = start; i < parts.length; i++) {
+            VerseRange next = VerseRangeFactory.fromString(v11n, parts[i].trim(), vrBasis);
             add(next);
-            basis = next;
+            vrBasis = next;
         }
     }
 
@@ -912,7 +944,7 @@ public abstract class AbstractPassage implements Passage {
             // chance to fix the error
             // throw new LogicError();
 
-            log.warn("skip_normalization=" + skipNormalization);
+            log.warn("skip_normalization={}", Integer.toString(skipNormalization));
         }
     }
 
@@ -945,7 +977,7 @@ public abstract class AbstractPassage implements Passage {
             // chance to fix the error
             // throw new LogicError();
 
-            log.warn("suppress_events=" + suppressEvents);
+            log.warn("suppress_events={}", Integer.toString(suppressEvents));
         }
     }
 
@@ -1058,7 +1090,7 @@ public abstract class AbstractPassage implements Passage {
                 next_verse = (Verse) it.next();
 
                 // If the next verse adjacent
-                if (!v11n.adjacentTo(end, next_verse)) {
+                if (!v11n.isAdjacentVerse(end, next_verse)) {
                     break;
                 }
 
@@ -1138,7 +1170,7 @@ public abstract class AbstractPassage implements Passage {
             BitSet store = new BitSet(bitwise_size);
             for (Key aKey : this) {
                 Verse verse = (Verse) aKey;
-                store.set(v11n.getOrdinal(verse) - 1);
+                store.set(verse.getOrdinal());
             }
 
             out.writeObject(store);
@@ -1151,7 +1183,7 @@ public abstract class AbstractPassage implements Passage {
             // write the verse ordinals in a loop
             for (Key aKey : this) {
                 Verse verse = (Verse) aKey;
-                out.writeInt(v11n.getOrdinal(verse));
+                out.writeInt(verse.getOrdinal());
             }
         } else {
             // otherwise use ranges
@@ -1163,7 +1195,7 @@ public abstract class AbstractPassage implements Passage {
             Iterator<Key> it = rangeIterator(RestrictionType.NONE);
             while (it.hasNext()) {
                 VerseRange range = (VerseRange) it.next();
-                out.writeInt(v11n.getOrdinal(range.getStart()));
+                out.writeInt(range.getStart().getOrdinal());
                 out.writeInt(range.getCardinality());
             }
         }
@@ -1214,7 +1246,7 @@ public abstract class AbstractPassage implements Passage {
             BitSet store = (BitSet) is.readObject();
             for (int i = 0; i < v11n.maximumOrdinal(); i++) {
                 if (store.get(i)) {
-                    add(v11n.decodeOrdinal(i + 1));
+                    add(v11n.decodeOrdinal(i));
                 }
             }
             break;
@@ -1252,7 +1284,7 @@ public abstract class AbstractPassage implements Passage {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(AbstractPassage.class);
+    private static final Logger log = LoggerFactory.getLogger(AbstractPassage.class);
 
     /**
      * Serialization type constant for a BitWise layout
@@ -1329,5 +1361,5 @@ public abstract class AbstractPassage implements Passage {
     /**
      * Serialization ID
      */
-    static final long serialVersionUID = -5931560451407396276L;
+    private static final long serialVersionUID = -5931560451407396276L;
 }

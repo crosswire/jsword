@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2103
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
@@ -192,7 +191,9 @@ public enum ConfigEntryType {
         "OSISVariants",
         "OSISRedLetterWords",
         "OSISLemma",
-        "OSISRuby"
+        "OSISRuby",
+        "OSISXlit",
+        "OSISEnum"
     )
     {
         @Override
@@ -309,7 +310,7 @@ public enum ConfigEntryType {
         @Override
         public String unconvert(Object internal) {
             if (internal instanceof Language) {
-                return ((Language) internal).getCode();
+                return ((Language) internal).getGivenSpecification();
             }
             return super.unconvert(internal);
         }
@@ -328,7 +329,7 @@ public enum ConfigEntryType {
         @Override
         public String unconvert(Object internal) {
             if (internal instanceof Language) {
-                return ((Language) internal).getCode();
+                return ((Language) internal).getGivenSpecification();
             }
             return super.unconvert(internal);
         }
@@ -442,7 +443,7 @@ public enum ConfigEntryType {
         @Override
         public String unconvert(Object internal) {
             if (internal instanceof Language) {
-                return ((Language) internal).getCode();
+                return ((Language) internal).getGivenSpecification();
             }
             return super.unconvert(internal);
         }
@@ -622,7 +623,7 @@ public enum ConfigEntryType {
         "Copyrighted; Free non-commercial distribution",
         "Copyrighted; Permission to distribute granted to CrossWire",
         "Copyrighted; Freely distributable",
-        "Copyrighted; Permission granted to distribute non-commercially in Sword format",
+        "Copyrighted; Permission granted to distribute non-commercially in SWORD format",
         "GFDL",
         "GPL",
         "Creative Commons: by-nc-nd",
@@ -630,7 +631,8 @@ public enum ConfigEntryType {
         "Creative Commons: by-nc",
         "Creative Commons: by-nd",
         "Creative Commons: by-sa",
-        "Creative Commons: by"
+        "Creative Commons: by",
+        "Creative Commons: CC0"
     ),
 
     /**

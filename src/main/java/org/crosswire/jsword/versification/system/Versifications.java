@@ -36,7 +36,7 @@ import org.crosswire.jsword.versification.Versification;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class Versifications {
+public final class Versifications {
 
     /**
      * The default Versification for JSword is the KJV.
@@ -57,7 +57,9 @@ public class Versifications {
      * Get the default Versification.
      *
      * @return the default Versification.
+     * @deprecated Use {@link #getVersification(String)} instead.
      */
+    @Deprecated
     public synchronized Versification getDefaultVersification() {
         return getVersification(DEFAULT_V11N);
     }

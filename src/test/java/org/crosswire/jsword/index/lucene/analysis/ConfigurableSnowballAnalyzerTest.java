@@ -53,7 +53,7 @@ public class ConfigurableSnowballAnalyzerTest extends TestCase {
     public void testStemmers() {
 
         // valid
-        myAnalyzer.pickStemmer("Finnish");
+        myAnalyzer.pickStemmer("fi");
         // invalid stemmer
         try {
             myAnalyzer.pickStemmer("test");
@@ -64,7 +64,7 @@ public class ConfigurableSnowballAnalyzerTest extends TestCase {
 
     public void testStemming() throws ParseException {
 
-        myAnalyzer.pickStemmer("French");
+        myAnalyzer.pickStemmer("fr");
 
         String testInput = " tant aimé le monde qu'il a donné son";
 
@@ -76,7 +76,7 @@ public class ConfigurableSnowballAnalyzerTest extends TestCase {
 
     public void testStopwords() throws ParseException {
 
-        myAnalyzer.pickStemmer("French");
+        myAnalyzer.pickStemmer("fr");
         myAnalyzer.setDoStopWords(true);
         String testInput = " tant aimé le monde qu 'il a donné son";
 
@@ -88,7 +88,7 @@ public class ConfigurableSnowballAnalyzerTest extends TestCase {
 
     public void testStemmingOff() throws ParseException {
 
-        myAnalyzer.pickStemmer("French");
+        myAnalyzer.pickStemmer("fr");
         myAnalyzer.setDoStemming(false);
 
         String testInput = " tant aimé le monde qu'il a donné son";
@@ -101,7 +101,7 @@ public class ConfigurableSnowballAnalyzerTest extends TestCase {
 
     public void testStemmerConfig() throws ParseException {
 
-        myAnalyzer.pickStemmer("French");
+        myAnalyzer.pickStemmer("fr");
         myAnalyzer.setDoStemming(false);
 
         String testInput = " tant aimé le monde qu'il a donné son";
@@ -114,7 +114,7 @@ public class ConfigurableSnowballAnalyzerTest extends TestCase {
 
     public void testMultipleStemmers() throws ParseException {
 
-        myAnalyzer.pickStemmer("German");
+        myAnalyzer.pickStemmer("de");
 
         String testInput = "Denn also hat Gott die Welt geliebt, daß er seinen eingeborenen Sohn gab, auf daß jeder, der an ihn glaubt, nicht verloren gehe, sondern ewiges Leben habe";
 

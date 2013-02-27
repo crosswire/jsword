@@ -21,17 +21,16 @@
  */
 package org.crosswire.common.util;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.util.logging.Level;
+
+import junit.framework.TestCase;
 
 import org.junit.Test;
 
 /**
  * Tests the Logger class
  */
-public class LoggerTest {
+public class LoggerTest  extends TestCase {
     
     /**
      * Test should log.

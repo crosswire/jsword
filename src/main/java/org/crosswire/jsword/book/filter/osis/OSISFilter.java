@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.filter.osis;
 
@@ -27,18 +26,19 @@ import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.DataPolice;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.passage.Key;
-import org.jdom.Content;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
+import org.jdom2.Content;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 
 /**
@@ -119,7 +119,7 @@ public class OSISFilter implements Filter {
             ex = e;
         }
 
-        log.warn("Could not fix " + book.getInitials() + "(" + key.getName() + ")  by cleaning tags: " + ex.getMessage());
+        log.warn("Could not fix {}({}) by cleaning tags: {}", book.getInitials(), key.getName(), ex.getMessage());
 
         return null;
     }
@@ -133,7 +133,9 @@ public class OSISFilter implements Filter {
         if (builder == null) {
             //then we have no sax builders available, so let's create a new one and store
             builder = new SAXBuilder();
-            builder.setFastReconfigure(true);
+            // With JDom 1.x it was important to set Fast Reconfigure on re-usable SAXBuilders
+            // This is the default with 2.x and this method does nothing
+            // builder.setFastReconfigure(true);
         }
 
         // create a root element to house our document fragment
@@ -156,11 +158,11 @@ public class OSISFilter implements Filter {
         return div;
     }
 
+    //space for 32 re-usable sax builders, but doesn't bound the number available to the callers
+    private BlockingQueue<SAXBuilder> saxBuilders = new ArrayBlockingQueue<SAXBuilder>(32);
+
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(OSISFilter.class);
-
-    //space for 32 re-usable sax builders, but doesn't bound the number available to the callers
-    private BlockingQueue<SAXBuilder> saxBuilders = new ArrayBlockingQueue<SAXBuilder>(32);
+    private static final Logger log = LoggerFactory.getLogger(OSISFilter.class);
 }

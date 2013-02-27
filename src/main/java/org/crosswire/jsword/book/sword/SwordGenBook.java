@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
@@ -42,7 +41,7 @@ import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.ReadOnlyKeyList;
 import org.crosswire.jsword.passage.VerseRange;
-import org.jdom.Content;
+import org.jdom2.Content;
 
 /**
  * A Sword version of Dictionary.
@@ -134,7 +133,7 @@ public class SwordGenBook extends AbstractBook {
         OpenFileState state = null;
         try {
             state = backend.initState();
-            return backend.readRawContent(state, key, key.getName());
+            return backend.readRawContent(state, key);
         } catch (IOException e) {
             throw new BookException("Unable to obtain raw content from backend", e);
         } finally {
@@ -153,6 +152,7 @@ public class SwordGenBook extends AbstractBook {
      * (non-Javadoc)
      * @see org.crosswire.jsword.book.basic.AbstractBook#getOsis(org.crosswire.jsword.passage.Key, org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor)
      */
+    @Override
     public List<Content> getOsis(Key key, RawTextToXmlProcessor processor) throws BookException {
         checkActive();
 
@@ -286,6 +286,6 @@ public class SwordGenBook extends AbstractBook {
     /**
      * The filter to use to convert to OSIS.
      */
-    private Filter filter;
+    protected Filter filter;
 
 }

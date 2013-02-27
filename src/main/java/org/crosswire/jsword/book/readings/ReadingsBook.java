@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.readings;
 
@@ -34,7 +33,6 @@ import java.util.TreeMap;
 
 import org.crosswire.common.util.CWClassLoader;
 import org.crosswire.common.util.Language;
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookCategory;
@@ -54,8 +52,10 @@ import org.crosswire.jsword.passage.PreferredKey;
 import org.crosswire.jsword.passage.RestrictionType;
 import org.crosswire.jsword.passage.SetKeyList;
 import org.crosswire.jsword.versification.system.Versifications;
-import org.jdom.Content;
-import org.jdom.Element;
+import org.jdom2.Content;
+import org.jdom2.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A Dictionary that displays daily Readings.
@@ -83,7 +83,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
         try {
             name = prop.getString("title");
         } catch (MissingResourceException e) {
-            log.warn("Missing resource: 'title' while parsing: " + setname);
+            log.warn("Missing resource: 'title' while parsing: {}", setname);
         }
 
         DefaultBookMetaData bmd = new DefaultBookMetaData(driver, name, type);
@@ -105,7 +105,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
                 readings = prop.getString(internalKey);
                 hash.put(new ReadingsKey(greg.getTime()), readings);
             } catch (MissingResourceException e) {
-                log.warn("Missing resource: " + internalKey + " while parsing: " + setname);
+                log.warn("Missing resource: {} while parsing: {}", internalKey, setname);
             }
 
             greg.add(java.util.Calendar.DATE, 1);
@@ -142,8 +142,10 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
 
         try {
             // AV11N(DMS): Is this right?
+            // At this point and time, ReadingsBook is a verse list from the KJV.
+            // Should store the v11n in the ReadingsBook
             PassageKeyFactory keyf = PassageKeyFactory.instance();
-            Passage ref = (Passage) keyf.getKey(Versifications.instance().getDefaultVersification(), readings);
+            Passage ref = (Passage) keyf.getKey(Versifications.instance().getVersification("KJV"), readings);
 
             Element list = OSISUtil.factory().createList();
             content.add(list);
@@ -185,6 +187,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
     /**
      * Returns an empty list
      */
+    @Override
     public List<Content> getOsis(Key key, RawTextToXmlProcessor processor) throws BookException {
         return Collections.emptyList();
     }
@@ -262,5 +265,5 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(ReadingsBook.class);
+    private static final Logger log = LoggerFactory.getLogger(ReadingsBook.class);
 }

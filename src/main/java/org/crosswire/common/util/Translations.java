@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: Translations.java 1738 2008-01-15 02:56:55Z dmsmith $
  */
 package org.crosswire.common.util;
 
@@ -28,6 +27,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.crosswire.common.config.ChoiceFactory;
+import org.slf4j.LoggerFactory;
 
 /**
  * Translations provides a list of locales that BibleDesktop has been translated
@@ -37,7 +37,7 @@ import org.crosswire.common.config.ChoiceFactory;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
-public class Translations {
+public final class Translations {
     /**
      * Singleton classes have private constructors.
      */
@@ -227,7 +227,7 @@ public class Translations {
     }
 
     public String toString(String translationCode) {
-        StringBuilder currentTranslation = new StringBuilder(Languages.getLanguageName(translationCode));
+        StringBuilder currentTranslation = new StringBuilder(Languages.getName(translationCode));
 
         if (translationCode.indexOf('_') != -1) {
             String[] locale = StringUtil.split(translationCode, '_');
@@ -274,5 +274,5 @@ public class Translations {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(Translations.class);
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(Translations.class);
 }

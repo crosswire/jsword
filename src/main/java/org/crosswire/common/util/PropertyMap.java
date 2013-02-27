@@ -17,7 +17,6 @@
  * Copyright: 2008
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.util;
 
@@ -196,7 +195,7 @@ public class PropertyMap extends LinkedHashMap<String, String> {
     private PropertyMap defaults;
 
     /**
-     * The serialization id
+     * Serialization ID
      */
     private static final long serialVersionUID = 2821277155924802795L;
 }

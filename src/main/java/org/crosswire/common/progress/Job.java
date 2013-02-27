@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.progress;
 
@@ -30,10 +29,11 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PropertyMap;
 import org.crosswire.jsword.JSMsg;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A Generic method of keeping track of Threads and monitoring their progress.
@@ -199,7 +199,7 @@ public final class Job implements Progress {
     /* (non-Javadoc)
      * @see org.crosswire.common.progress.Progress#incrementWorkDone(int)
      */
-    public synchronized void incrementWorkDone(int step) {
+    public void incrementWorkDone(int step) {
         if (finished) {
             return;
         }
@@ -399,7 +399,7 @@ public final class Job implements Progress {
     /**
      * Load the predictive timings if any
      */
-    private synchronized int loadPredictions() {
+    private int loadPredictions() {
         int maxAge = UNKNOWN;
         try {
             currentPredictionMap = new HashMap<String, Integer>();
@@ -432,7 +432,7 @@ public final class Job implements Progress {
     /**
      * Save the known timings to a properties file.
      */
-    private synchronized void savePredictions() {
+    private void savePredictions() {
         // Now we know the start and the end we can convert all times to
         // percents
         PropertyMap predictions = new PropertyMap();
@@ -557,5 +557,5 @@ public final class Job implements Progress {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(Job.class);
+    private static final Logger log = LoggerFactory.getLogger(Job.class);
 }

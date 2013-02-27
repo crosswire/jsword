@@ -56,7 +56,7 @@ public enum CaseType {
                 return "No-one";
             }
 
-            if (word.substring(0, 4).equalsIgnoreCase("god-")) {
+            if ("god-".equalsIgnoreCase(word.substring(0, 4))) {
                 return toSentenceCase(word);
             }
 

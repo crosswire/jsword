@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
 
@@ -26,10 +25,11 @@ import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 
-import org.crosswire.common.util.Logger;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.BookException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Various utilities used by different Sword classes.
@@ -80,17 +80,17 @@ public final class SwordUtil {
         long rafSize = raf.length();
 
         if (offset >= rafSize) {
-            log.error("Attempt to read beyond end. offset=" + offset + " size=" + size + " but raf.length=" + rafSize);
+            log.error("Attempt to read beyond end. offset={} size={} but raf.length={}", Long.toString(offset), Integer.toString(size), Long.toString(rafSize));
             return new byte[0];
         }
 
         if (offset + size > raf.length()) {
-            log.error("Need to reduce size to avoid EOFException. offset=" + offset + " size=" + size + " but raf.length=" + rafSize);
+            log.error("Need to reduce size to avoid EOFException. offset={} size={} but raf.length={}", Long.toString(offset), Integer.toString(size), Long.toString(rafSize));
             size = (int) (raf.length() - offset);
         }
 
         if (size < 1) {
-            log.error("Nothing to read at offset = " + offset + " returning empty because size=" + size);
+            log.error("Nothing to read at offset = {} returning empty because size={}", Long.toString(offset), Integer.toString(size));
             return new byte[0];
         }
 
@@ -287,6 +287,7 @@ public final class SwordUtil {
     /**
      * Transform a byte array into a string given the encoding. If the encoding
      * is bad then it just does it as a string.
+     * Note: this may modify data. Don't use it to examine data.
      * 
      * @param data
      *            The byte array to be converted
@@ -301,6 +302,7 @@ public final class SwordUtil {
     /**
      * Transform a portion of a byte array into a string given the encoding. If
      * the encoding is bad then it just does it as a string.
+     * Note: this may modify data. Don't use it to examine data.
      * 
      * @param data
      *            The byte array to be converted
@@ -317,7 +319,7 @@ public final class SwordUtil {
     /**
      * Transform a portion of a byte array starting at an offset into a string
      * given the encoding. If the encoding is bad then it just does it as a
-     * string.
+     * string. Note: this may modify data. Don't use it to examine data.
      * 
      * @param data
      *            The byte array to be converted
@@ -330,15 +332,17 @@ public final class SwordUtil {
      * @return a string that is UTF-8 internally
      */
     public static String decode(String key, byte[] data, int offset, int length, String charset) {
-        if ("WINDOWS-1252".equals(charset)) {
-            clean1252(key, data, length);
-        }
+         if ("WINDOWS-1252".equals(charset)) {
+            clean1252(key, data, offset, length);
+         }
         String txt = "";
         try {
-            txt = new String(data, offset, length, charset);
+            if (offset + length <= data.length) {
+                txt = new String(data, offset, length, charset);
+            }
         } catch (UnsupportedEncodingException ex) {
             // It is impossible! In case, use system default...
-            log.error(key + ": Encoding: " + charset + " not supported", ex);
+            log.error("{}: Encoding {} not supported.", key, charset, ex);
             txt = new String(data, offset, length);
         }
 
@@ -350,24 +354,20 @@ public final class SwordUtil {
      * valid in cp1252 aka WINDOWS-1252 and in UTF-8 or are non-printing control
      * characters in the range of 0-32.
      */
-    public static void clean1252(String key, byte[] data) {
-        clean1252(key, data, data.length);
-    }
-
-    /**
-     * Remove rogue characters in the source. These are characters that are not
-     * valid in cp1252 aka WINDOWS-1252 and in UTF-8 or are non-printing control
-     * characters in the range of 0-32.
-     */
-    public static void clean1252(String key, byte[] data, int length) {
-        for (int i = 0; i < length; i++) {
-            // between 0-32 only allow whitespace
+    private static void clean1252(String key, byte[] data, int offset, int length) {
+        int end = offset + length;
+        // make sure it doesn't go off the end
+        if (end > data.length) {
+            end = data.length;
+        }
+        for (int i = offset; i < end; i++) {
+            // between 0-32 only allow whitespace: \t, \n, \r, ' '
             // characters 0x81, 0x8D, 0x8F, 0x90 and 0x9D are undefined in
             // cp1252
             int c = data[i] & 0xFF;
             if ((c >= 0x00 && c < 0x20 && c != 0x09 && c != 0x0A && c != 0x0D) || (c == 0x81 || c == 0x8D || c == 0x8F || c == 0x90 || c == 0x9D)) {
                 data[i] = 0x20;
-                log.error(key + " has bad character 0x" + Integer.toString(c, 16) + " at position " + i + " in input.");
+                log.error("{} has bad character 0x{} at position {} in input.", key, Integer.toString(c, 16), Integer.toString(i));
             }
         }
     }
@@ -392,6 +392,6 @@ public final class SwordUtil {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(SwordUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(SwordUtil.class);
 
 }

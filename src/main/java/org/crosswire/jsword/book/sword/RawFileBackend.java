@@ -14,14 +14,11 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2009-2012
+ * Copyright: 2009-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.sword;
-
-import static org.crosswire.jsword.book.sword.state.RawFileBackendState.INCFILE;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -33,7 +30,6 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import org.crosswire.common.util.IOUtil;
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
 import org.crosswire.jsword.book.sword.state.RawBackendState;
@@ -44,6 +40,8 @@ import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.versification.Testament;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A Raw File format that allows for each verse to have it's own storage. The
@@ -75,6 +73,7 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
         super(sbmd, datasize);
     }
 
+    @Override
     public RawFileBackendState initState() throws BookException {
         return OpenFileStateManager.getRawFileBackendState(getBookMetaData());
     }
@@ -101,7 +100,7 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
         }
 
         if (size < 0) {
-            log.error("In " + getBookMetaData().getInitials() + ": Verse " + name + " has a bad index size of " + size);
+            log.error("In {}: Verse {} has a bad index size of {}.", getBookMetaData().getInitials(), name, Integer.toString(size));
             return "";
         }
 
@@ -123,8 +122,8 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
 
         String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
         Versification v11n = Versifications.instance().getVersification(v11nName);
-        Verse verse = KeyUtil.getVerse(key, v11n);
-        int index = v11n.getOrdinal(verse);
+        Verse verse = KeyUtil.getVerse(key);
+        int index = verse.getOrdinal();
         Testament testament = v11n.getTestament(index);
         index = v11n.getTestamentOrdinal(index);
 
@@ -160,14 +159,14 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
     public void setAliasKey(RawFileBackendState state, Key alias, Key source) throws IOException {
         String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
         Versification v11n = Versifications.instance().getVersification(v11nName);
-        Verse aliasVerse = KeyUtil.getVerse(alias, v11n);
-        Verse sourceVerse = KeyUtil.getVerse(source, v11n);
-        int aliasIndex = v11n.getOrdinal(aliasVerse);
+        Verse aliasVerse = KeyUtil.getVerse(alias);
+        Verse sourceVerse = KeyUtil.getVerse(source);
+        int aliasIndex = aliasVerse.getOrdinal();
         Testament testament = v11n.getTestament(aliasIndex);
         aliasIndex = v11n.getTestamentOrdinal(aliasIndex);
         RandomAccessFile idxRaf = testament == Testament.NEW ? state.getNtIdxRaf() : state.getOtIdxRaf();
 
-        int sourceOIndex = v11n.getOrdinal(sourceVerse);
+        int sourceOIndex = sourceVerse.getOrdinal();
         sourceOIndex = v11n.getTestamentOrdinal(sourceOIndex);
         DataIndex dataIndex = getIndex(idxRaf, sourceOIndex);
 
@@ -352,7 +351,7 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
     }
 
     private void createIncfile(RawFileBackendState state) throws IOException, BookException {
-        File tempIncfile = new File(SwordUtil.getExpandedDataPath(getBookMetaData()).getPath() + File.separator + INCFILE);
+        File tempIncfile = new File(SwordUtil.getExpandedDataPath(getBookMetaData()).getPath() + File.separator + RawFileBackendState.INCFILE);
         if (!tempIncfile.exists() && !tempIncfile.createNewFile()) {
             throw new IOException("Could not create incfile file.");
         }
@@ -369,8 +368,7 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
             fos = new FileOutputStream(state.getIncfile(), false);
             fos.write(littleEndian32BitByteArrayFromInt(value));
         } catch (FileNotFoundException e) {
-            log.error("Error on writing to incfile, file should exist already!");
-            log.error(e.getMessage());
+            log.error("Error on writing to incfile, file should exist already!", e);
         } finally {
             if (fos != null) {
                 fos.close();
@@ -390,13 +388,13 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
             byte[] textData = new byte[len];
             inStream = new BufferedInputStream(new FileInputStream(dataFile));
             if (inStream.read(textData) != len) {
-                log.error("Read data is not of appropriate size of " + len + " bytes!");
+                log.error("Read data is not of appropriate size of {} bytes!", Integer.toString(len));
                 throw new IOException("data is not " + len + " bytes long");
             }
             return textData;
         } catch (FileNotFoundException ex) {
-            log.error(ex.getMessage());
-            throw new IOException("Could not read text data file, file not found: " + dataFile.getName());
+            log.error("Could not read text data file, file not found: {}", dataFile.getName(), ex);
+            throw ex;
         } finally {
             if (inStream != null) {
                 inStream.close();
@@ -428,5 +426,5 @@ public class RawFileBackend extends RawBackend<RawFileBackendState> {
         return buffer;
     }
 
-    private static final Logger log = Logger.getLogger(RawFileBackend.class);
+    private static final Logger log = LoggerFactory.getLogger(RawFileBackend.class);
 }

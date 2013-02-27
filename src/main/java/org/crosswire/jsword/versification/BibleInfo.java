@@ -67,24 +67,22 @@ public final class BibleInfo {
      * Get the immediately following book in the current versification.
      * @param book
      * @return the next book or null if no following book
-     * @deprecated use Versification.getBooks().getNextBook(BibleBook) instead
-     *             see {@link Versification#getBooks()} and {@link BibleBookList#getNextBook(BibleBook)}.
+     * @deprecated Use {@link Versification#getNextBook(BibleBook)} instead
      */
     @Deprecated
     public static BibleBook getNextBook(BibleBook book) {
-        return v11n.getBooks().getNextBook(book);
+        return v11n.getNextBook(book);
     }
 
     /**
      * Get the immediately prior book in the current versification.
      * @param book
      * @return the previous book or null if no previous book
-     * @deprecated use Versification.getBooks().getPreviousBook(BibleBook) instead
-     *             see {@link Versification#getBooks()} and {@link BibleBookList#getPreviousBook(BibleBook)}.
+     * @deprecated Use {@link Versification#getPreviousBook(BibleBook)} instead.
      */
     @Deprecated
     public static BibleBook getPreviousBook(BibleBook book) {
-        return v11n.getBooks().getPreviousBook(book);
+        return v11n.getPreviousBook(book);
     }
 
     /**
@@ -92,11 +90,11 @@ public final class BibleInfo {
      * This includes the 3 introductions.
      *
      * @return the array of books
-     * @deprecated use {@link Versification#getBooks()} instead
+     * @deprecated No replacement
      */
     @Deprecated
     public static BibleBook[] getBooks() {
-        return BibleBook.getBooks();
+        return BibleBook.values();
     }
 
     /**
@@ -164,11 +162,11 @@ public final class BibleInfo {
      * @param verse
      *            The verse to convert
      * @return The ordinal number of verses
-     * @deprecated use {@link Versification#getOrdinal(Verse)} instead
+     * @deprecated use {@link Verse#getOrdinal()} instead
      */
     @Deprecated
     public static int getOrdinal(Verse verse) {
-        return v11n.getOrdinal(verse);
+        return verse.getOrdinal();
     }
 
     /**
@@ -298,14 +296,12 @@ public final class BibleInfo {
      * Count the books in the Bible.
      *
      * @return The number of books in the Bible, including the three introductions
-     * @deprecated use {@link Versification#getBooks()} and {@link BibleBookList#getBookCount()} instead
+     * @deprecated use {@link Versification#getBookCount()} instead
      */
     @Deprecated
     public static int booksInBible() {
-        return v11n.getBooks().getBookCount();
+        return v11n.getBookCount();
     }
-
-    private static Versification v11n = Versifications.instance().getDefaultVersification();
 
     /**
      * Get the BookName.
@@ -317,12 +313,12 @@ public final class BibleInfo {
      * @return The requested BookName
      * @exception NoSuchVerseException
      *                If the book is not valid
-     * @deprecated Use {@link BibleBook#getBookName()} instead.
+     * @deprecated Use {@link Versification#getBookName()} instead.
      */
     @Deprecated
     public static BookName getBookName(BibleBook book) throws NoSuchVerseException {
         try {
-            return book.getBookName();
+            return v11n.getBookName(book);
         } catch (NullPointerException ex) {
             throw new NoSuchVerseException(JSOtherMsg.lookupText("Book must not be null"));
         }
@@ -334,11 +330,11 @@ public final class BibleInfo {
      * @param find
      *            The string to identify
      * @return The BibleBook, On error null
-     * @deprecated use {@link BibleBook#getBook(String)}
+     * @deprecated use {@link Versification#getBook(String)}
      */
     @Deprecated
     public static BibleBook getBook(String find) {
-        return BibleBook.getBook(find);
+        return v11n.getBook(find);
     }
 
     /**
@@ -348,11 +344,11 @@ public final class BibleInfo {
      * @param find
      *            The string to identify
      * @return true when the book name is recognized
-     * @deprecated use {@link BibleBook#isBook(String)}
+     * @deprecated use {@link Versification#isBook(String)}
      */
     @Deprecated
     public static boolean isBookName(String find) {
-        return BibleBook.isBook(find);
+        return v11n.isBook(find);
     }
 
     /**
@@ -389,12 +385,12 @@ public final class BibleInfo {
      * @return The full name of the book
      * @exception NoSuchVerseException
      *                If the book is not valid
-     * @deprecated Use {@link BibleBook#getPreferredName()} instead.
+     * @deprecated Use {@link Versification#getPreferredName(BibleBook)} instead.
      */
     @Deprecated
     public static String getPreferredBookName(BibleBook book) throws NoSuchVerseException {
         try {
-            return book.getPreferredName();
+            return v11n.getPreferredName(book);
         } catch (NullPointerException ex) {
             throw new NoSuchVerseException(JSOtherMsg.lookupText("Book must not be null"));
         }
@@ -411,12 +407,12 @@ public final class BibleInfo {
      * @return The full name of the book
      * @exception NoSuchVerseException
      *                If the book is not valid
-     * @deprecated Use {@link BibleBook#getLongName()} instead.
+     * @deprecated Use {@link Versification#getLongName(BibleBook)} instead.
      */
     @Deprecated
     public static String getLongBookName(BibleBook book) throws NoSuchVerseException {
         try {
-            return book.getLongName();
+            return v11n.getLongName(book);
         } catch (NullPointerException ex) {
             throw new NoSuchVerseException(JSOtherMsg.lookupText("Book must not be null"));
         }
@@ -433,12 +429,12 @@ public final class BibleInfo {
      * @return The short name of the book
      * @exception NoSuchVerseException
      *                If the book is not valid
-     * @deprecated Use {@link BibleBook#getShortName()} instead.
+     * @deprecated Use {@link Versification#getShortName(BibleBook)} instead.
      */
     @Deprecated
     public static String getShortBookName(BibleBook book) throws NoSuchVerseException {
         try {
-            return book.getShortName();
+            return v11n.getShortName(book);
         } catch (NullPointerException ex) {
             throw new NoSuchVerseException(JSOtherMsg.lookupText("Book must not be null"));
         }
@@ -475,7 +471,7 @@ public final class BibleInfo {
      * @return the number of verses
      * @exception NoSuchVerseException
      *                If either reference is illegal
-     * @deprecated Use {@link Versification#distance(Verse, Verse) + 1} instead.
+     * @deprecated Use {@link Verse#subtract(Verse) + 1} instead.
      */
     @Deprecated
     public static int verseCount(Verse verse1, Verse verse2) throws NoSuchVerseException {
@@ -564,5 +560,7 @@ public final class BibleInfo {
     public static CaseType getDefaultCase() {
         return BookName.getDefaultCase();
     }
+
+    private static Versification v11n = Versifications.instance().getDefaultVersification();
 
 }

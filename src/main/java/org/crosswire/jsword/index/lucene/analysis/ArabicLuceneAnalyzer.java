@@ -17,7 +17,6 @@
  * Copyright: 2009
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id:  $
  */
 package org.crosswire.jsword.index.lucene.analysis;
 
@@ -44,7 +43,7 @@ import org.apache.lucene.util.Version;
  * @author DM Smith [dmsmith555 at yahoo dot com]
  */
 public class ArabicLuceneAnalyzer extends AbstractBookAnalyzer {
-    public ArabicLuceneAnalyzer() throws IOException {
+    public ArabicLuceneAnalyzer() {
         stopSet = ArabicAnalyzer.getDefaultStopSet();
     }
 

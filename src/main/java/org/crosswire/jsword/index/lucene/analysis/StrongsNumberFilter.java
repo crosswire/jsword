@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007
+ * Copyright: 2007-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.index.lucene.analysis;
 
@@ -25,10 +24,11 @@ import java.io.IOException;
 
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.TermAttribute;
-import org.crosswire.common.util.Logger;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.study.StrongsNumber;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A StrongsNumberFilter normalizes Strong's Numbers.
@@ -85,7 +85,7 @@ public class StrongsNumberFilter extends AbstractBookTokenFilter {
                 termAtt.setTermBuffer(s);
 
                 // If the number had a part keep it around for the next call
-                // DMS(TODO): if there is a part, then treat as a synonym,
+                // TODO(DMS): if there is a part, then treat as a synonym,
                 //      setting the same position increment.
                 if (!number.isPart()) {
                     number = null;
@@ -126,5 +126,5 @@ public class StrongsNumberFilter extends AbstractBookTokenFilter {
     /**
      * The log stream
      */
-    private static final Logger log = Logger.getLogger(StrongsNumberFilter.class);
+    private static final Logger log = LoggerFactory.getLogger(StrongsNumberFilter.class);
 }

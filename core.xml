@@ -1,182 +1,195 @@
-<project name="core" default="all">
+<project name="core" default="all" xmlns:ivy="antlib:org.apache.ivy.ant" >
 
-  <!--=======================================================================
+	<!--=======================================================================
     == To make eclipse recognise this file as an ant file, go to preferences,
     == ant and add core.xml to the "Names" field, and then under Workbench,
     == "File Associations" add a type "core.xml" with ant as the editor.
     =========================================================================-->
 
-  <!--=======================================================================
+	<!--=======================================================================
     == These are the standard locations that this build file uses.
     == This assumes that the build file is in the root of the project.
     =========================================================================-->
-  <property name="release.version"  value="1.6"/>
-  <property name="source.root"      value="src"/>
-  <property name="source.etc"       value="etc"/>
-  <property name="source.jar"       value="jar"/>
-  <property name="source.java"      value="${source.root}/main/java"/>
-  <property name="source.res"       value="${source.root}/main/resources"/>
-  <property name="source.test"      value="${source.root}/test"/>
-  <property name="target.root"      value="target"/>
-  <property name="target.classes"   value="${target.root}/classes"/>
-  <property name="target.jar"       value="lib"/>
-  <property name="target.installed" value="${target.root}/installed"/> <!-- override -->
-  <property name="test.root"        value="${target.root}/test"/>
-  <property name="test.classes"     value="${test.root}/classes"/>
-  <property name="test.jar"         value="${test.root}"/>
-  <property name="keystore.devfile" value="../jsword/crosswire.keystore"/>
-  <property name="keystore.file"    value="${keystore.devfile}"/>
-  <property name="keystore.alias"   value="jsword"/>
-  <property name="keystore.pswd"    value="p455w0rd"/>
-  <available file="${source.jar}"   type="dir" property="jardir.present"/>
-  <available file="${source.res}"   type="dir" property="resdir.present"/>
+    <dirname property="core.basedir" file="${ant.file.core}"/>
 
-  <property name="verbose.copy"     value="false"/>
+	<property name="release.version"  value="2.0-beta"/>
+	<property name="jsword.home"      location="${core.basedir}" />
+	<property name="lib.dir"          location="${jsword.home}/lib/jars" />
+	<property name="tools.home"       location="${jsword.home}/tools" />
+	<property name="src.dir"          location="${basedir}/src" />
+	<property name="bin.dir"          location="${basedir}/bin" />
+	<property name="html.dir"         location="${basedir}/html" />
+	<property name="report.dir"       location="${basedir}/report" />
 
-  <!--=======================================================================
+	<property name="source.root"      value="src"/>
+	<property name="source.etc"       value="etc"/>
+	<property name="source.jar"       value="jar"/>
+	<property name="source.java"      value="${source.root}/main/java"/>
+	<property name="source.res"       value="${source.root}/main/resources"/>
+	<property name="source.test"      value="${source.root}/test"/>
+
+	<property name="target.root"      value="target"/>
+	<property name="target.classes"   value="${target.root}/classes"/>
+	<property name="target.jar"       value="${lib.dir}"/>
+	<property name="target.installed" value="${target.root}/installed"/>
+
+	<!-- override -->
+	<property name="test.root"        location="${target.root}/test"/>
+	<property name="test.classes"     location="${test.root}/classes"/>
+	<property name="test.jar"         location="${test.root}"/>
+	<property name="keystore.devfile" location="${jsword.home}/crosswire.keystore"/>
+	<property name="keystore.file"    location="${keystore.devfile}"/>
+	<property name="keystore.alias"   value="jsword"/>
+	<property name="keystore.pswd"    value="p455w0rd"/>
+	<available file="${source.jar}"   type="dir" property="jardir.present"/>
+	<available file="${source.res}"   type="dir" property="resdir.present"/>
+
+	<property name="verbose.copy"     value="false"/>
+
+	<!--=======================================================================
     == These jars are built by the various JSword projects.
     == It excludes jsword-common-aqua which is treated as an external jar.
     =========================================================================-->
-  <patternset id="internal.built.jars">
-    <include name="**/bibledesktop-${release.version}.jar"/>
-    <include name="**/jsword-${release.version}.jar"/>
-    <include name="**/jsword-common-swing-${release.version}.jar"/>
-    <include name="**/jsword-${release.version}.jar"/>
-  </patternset>
+	<patternset id="internal.built.jars">
+		<include name="**/bibledesktop-${release.version}.jar"/>
+		<include name="**/jsword-${release.version}.jar"/>
+		<include name="**/jsword-common-swing-${release.version}.jar"/>
+		<include name="**/jsword-${release.version}.jar"/>
+	</patternset>
 
-  <!--=======================================================================
+	<!--=======================================================================
     == These jars are necessary for Bible Desktop to be compiled and run.
     == The version numbers in jar files is replaced w/ *.
     == Note: This only includes files not managed via ivy/maven.
     == This way we can upgrade without impacting this ant build file.
     =========================================================================-->
-  <patternset id="external.runtime.jars">
-    <exclude name="**/*-src.jar"/>
-    <exclude name="**/*-sources.jar"/>
-    <exclude name="**/activation*.jar"/>
-    <exclude name="**/junit*.jar"/>
-    <include name="**/*.jar"/>
-  </patternset>
+	<patternset id="external.runtime.jars">
+		<exclude name="**/*-src.jar"/>
+		<exclude name="**/*-sources.jar"/>
+		<exclude name="**/activation*.jar"/>
+		<exclude name="**/junit*.jar"/>
+		<include name="**/*.jar"/>
+	</patternset>
 
-  <!--=======================================================================
+	<!--=======================================================================
     == This is a path to all of the jars in the target.jar directory
     =========================================================================-->
-  <path id="runtime.jarpath">
-    <fileset dir="${target.jar}" includes="*.jar"/>
-  </path>
+	<path id="runtime.jarpath">
+		<fileset dir="${lib.dir}" includes="*.jar"/>
+	</path>
 
-  <!--=======================================================================
+	<!--=======================================================================
     == This is a path to all of the jars in the target.jar directory
     =========================================================================-->
-  <path id="test.jarpath">
-    <fileset dir="${target.jar}" includes="*.jar"/>
-    <fileset dir="../jsword/jar" includes="**/junit*.jar"/>
-  </path>
+	<path id="test.jarpath">
+		<fileset dir="${target.jar}" includes="*.jar"/>
+		<fileset dir="../jsword/jar" includes="**/junit*.jar"/>
+	</path>
 
-  <!--=======================================================================
+	<!--=======================================================================
     == This is a path to all non-test source directories.
     == These are the ones without "test" in their names.
     =========================================================================-->
-  <patternset id="java.compile">
-    <include name="**/*.java"/>
-  </patternset>
-  <path id="source.path">
-    <dirset dir="${source.java}" includes="*"/>
-  </path>
+	<patternset id="java.compile">
+		<include name="**/*.java"/>
+	</patternset>
+	<path id="source.path">
+		<dirset dir="${source.java}" includes="*"/>
+	</path>
 
-  <!--=======================================================================
+	<!--=======================================================================
     == This is a path to all test source directories.
     == These are the ones with "test" in their names.
     =========================================================================-->
-  <path id="testsource.path">
-    <dirset dir="${source.test}" includes="*"/>
-  </path>
+	<path id="testsource.path">
+		<dirset dir="${source.test}" includes="*"/>
+	</path>
 
-  <!--=======================================================================
+	<!--=======================================================================
     == These are the non-java resource files
     == that may appear along side of java files.
     =========================================================================-->
-  <patternset id="java.non.compile">
-    <include name="**/*"/>
-    <exclude name="**/*.html"/>
-    <exclude name="**/*.java"/>
-    <exclude name="**/*.class"/>
-  </patternset>
+	<patternset id="java.non.compile">
+		<include name="**/*"/>
+		<exclude name="**/*.html"/>
+		<exclude name="**/*.java"/>
+		<exclude name="**/*.class"/>
+	</patternset>
 
-  <!--=======================================================================
+	<!--=======================================================================
     == These are local copies of DTDs used by ant xslt/style.
     == This is necessary to prevent HTTPD 503 responses
     == and it is useful to speed up the build.
     =========================================================================-->
-  <xmlcatalog id="commonDTDs">
-    <dtd 
+	<xmlcatalog id="commonDTDs">
+		<dtd 
       publicId="-//W3C//DTD XHTML 1.0 Strict//EN"
       location="../jsword/etc/dtdcatalog/xhtml1-strict.dtd"/>
-    <dtd 
+		<dtd 
       publicId="-//W3C//DTD XHTML 1.0 Transitional//EN"
       location="../jsword/etc/dtdcatalog/xhtml1-transitional.dtd"/>
-  </xmlcatalog>
+	</xmlcatalog>
 
-  <!--=======================================================================
+	<!--=======================================================================
     == Mark this build with the current timestamp
     =========================================================================-->
-  <target name="init"
+	<target name="init"
           description="Prepare for other tasks">
-    <echo message="Initializing ${ant.project.name}"/>
-    <tstamp/>
-  </target>
+		<echo message="Initializing ${ant.project.name}"/>
+		<tstamp/>
+	</target>
 
-  <!--=======================================================================
+	<!--=======================================================================
     == Clean the intermediate files and build everything, test it and
     == then install it.
     =========================================================================-->
-  <target name="all"
+	<target name="all"
           depends="clean, incremental"
           description="Run a full clean/build/test/install cycle">
-  </target>
+	</target>
 
-  <!--=======================================================================
+	<!--=======================================================================
     == Build everything that has changed, test it and then install the changes.
     =========================================================================-->
-  <target name="incremental"
+	<target name="incremental"
           depends="build, install"
           description="Run a build/test/install cycle">
-    <!-- broken right now: test, -->
-  </target>
+		<!-- broken right now: test, -->
+	</target>
 
-  <!--=======================================================================
+	<!--=======================================================================
     == Clean the intermediate files.
     == Also invoke a clean on any dependencies, if any.
     =========================================================================-->
-  <target name="clean"
+	<target name="clean"
           depends="init, clean.dependency"
           description="Remove the target directory">
-    <delete dir="${target.root}"/>
-    <delete dir="${target.jar}"/>
-    <antcall target="clean.extra"/>
-  </target>
+		<delete dir="${target.root}"/>
+		<!-- delete dir="${target.jar}"/ -->
+		<antcall target="clean.extra"/>
+	</target>
 
-  <!--=======================================================================
+	<!--=======================================================================
     == Do any other needed work after clean.
     == By overriding this target in the importing ant build file,
     == it will allow for the definition of any other post clean activities.
     =========================================================================-->
-  <target name="clean.extra"
+	<target name="clean.extra"
           description="Extra stuff to do after calling clean"/>
 
-  <!--=======================================================================
+	<!--=======================================================================
     == Invoke a clean on any dependencies, if any.
     == This target requires the "dependency" property to be set by
     == the importing ant build file.
     =========================================================================-->
-  <target name="clean.dependency"
+	<target name="clean.dependency"
           if="dependency"
           description="Clean the dependencies">
-    <echo message="Clean project dependency first: ${dependency}."/>
-    <ant dir="../${dependency}" target="clean" inheritAll="false"/>
-  </target>
+		<echo message="Clean project dependency first: ${dependency}."/>
+		<ant dir="../${dependency}" target="clean" inheritAll="false"/>
+	</target>
 
-  <!--=======================================================================
+	<!--=======================================================================
     == Build all the non-test java files into class files and
     == create a jar file for the project with the name project.jar,
     == where project is replaced with the name of the project.
@@ -185,172 +198,141 @@
     ==
     == Also build all test java files into class files in their own directory.
     =========================================================================-->
-  <target name="build"
+	<target name="build"
           depends="compile, jar.check"
           unless="jar.uptodate"
           description="Run a full build">
-    <jar jarfile="${target.jar}/${ant.project.name}-${release.version}.jar">
-      <fileset dir="${target.classes}"/>
-    </jar>
-  </target>
-  <target name="jar.check">
-    <uptodate property="jar.uptodate"
+		<jar jarfile="${target.jar}/${ant.project.name}-${release.version}.jar">
+			<fileset dir="${target.classes}"/>
+		</jar>
+	</target>
+	<target name="jar.check">
+		<uptodate property="jar.uptodate"
         targetfile="${target.jar}/${ant.project.name}-${release.version}.jar">
-      <srcfiles dir="${target.classes}"/>
-    </uptodate>
-    <echo message="jar.uptodate result: ${jar.uptodate}"/>
-  </target>
+			<srcfiles dir="${target.classes}"/>
+		</uptodate>
+		<echo message="jar.uptodate result: ${jar.uptodate}"/>
+	</target>
 
-  <!--=======================================================================
+	<!--=======================================================================
     == Invoke a clean on any dependencies, if any.
     == This target requires the "dependency" property to be set by
     == the importing ant build file.
     =========================================================================-->
-  <target name="build.dependency"
+	<target name="build.dependency"
           if="dependency"
           description="Build the dependencies">
-    <echo message="Build project dependency first: ${dependency}."/>
-    <ant dir="../${dependency}" target="build" inheritAll="false"/>
-  </target>
+		<echo message="Build project dependency first: ${dependency}."/>
+		<ant dir="../${dependency}" target="build" inheritAll="false"/>
+	</target>
 
-  <!--=======================================================================
+	<!--=======================================================================
     == Build all test java files into class files in their own directory.
     == But first invoke a testbuild on any dependencies, if any.
     ==
     =========================================================================-->
-  <target name="test"
+	<target name="test"
           depends="test.dependency, testcompile, test.suite"
           description="Run a full test build"/>
-  <target name="test.suite"
+	<target name="test.suite"
           description="Run a full test suite"/>
 
-  <!--=======================================================================
+	<!--=======================================================================
     == Invoke a test on any dependencies, if any.
     == This target requires the "dependency" property to be set by
     == the importing ant build file.
     =========================================================================-->
-  <target name="test.dependency"
+	<target name="test.dependency"
           if="dependency"
           description="Build the test dependencies">
-    <echo message="Build project test dependency first: ${dependency}."/>
-    <ant dir="../${dependency}" target="test" inheritAll="false"/>
-  </target>
+		<echo message="Build project test dependency first: ${dependency}."/>
+		<ant dir="../${dependency}" target="test" inheritAll="false"/>
+	</target>
 
-  <!--=======================================================================
-    == Copy all the local 3rd party jars to a single locaton.
-    =========================================================================-->
-  <target name="prepare.jars"
-          if="jardir.present">
-    <!-- Copy the jars from the std location to the target jar directory -->
-    <mkdir dir="${target.jar}"/>
-    <copy verbose="${verbose.copy}" todir="${target.jar}" flatten="true" preservelastmodified="true">
-      <fileset dir="${source.jar}">
-        <patternset refid="external.runtime.jars"/>
-      </fileset>
-    </copy>
-  </target>
-
-  <!--=======================================================================
+	<!--=======================================================================
     == Copy all the resources to a single locaton.
     =========================================================================-->
-  <target name="prepare.resources"
+	<target name="prepare.resources"
           if="resdir.present">
-    <!-- Copy the resources from the std location to the target classes directory -->
-    <mkdir dir="${target.classes}"/>
-    <copy verbose="${verbose.copy}" todir="${target.classes}" flatten="false" failonerror="false" preservelastmodified="true">
-      <fileset dir="${source.res}" includes="**"/>
-    </copy>
-  </target>
+		<!-- Copy the resources from the std location to the target classes directory -->
+		<mkdir dir="${target.classes}"/>
+		<copy verbose="${verbose.copy}" todir="${target.classes}" flatten="false" failonerror="false" preservelastmodified="true">
+			<fileset dir="${source.res}" includes="**"/>
+		</copy>
+	</target>
 
-  <!--=======================================================================
+	<!--=======================================================================
     == Copy all the local and external 3rd party jars to a single locaton.
     == Also copy the resources to ${target.classes}
-    == Calls prepare.dependency.
+    == Calls prepare.extra.
     =========================================================================-->
-  <target name="prepare"
-          depends="build.dependency, prepare.jars, prepare.resources"
+	<target name="prepare"
+          depends="build.dependency, prepare.resources"
           description="Prepare the build by copying needed jars and files.">
-    <!-- Copy the jars from the std location to the target jar directory -->
-    <antcall target="prepare.dependency"/>
-    <antcall target="prepare.extra"/>
-  </target>
+		<!-- Copy the jars from the std location to the target jar directory -->
+		<antcall target="prepare.extra"/>
+	</target>
 
-  <!--=======================================================================
-    == Copy external jars of dependent projects, if any.
-    == This target requires the "dependency.jar" property to be set by
-    == the importing ant build file.
-    =========================================================================-->
-  <target name="prepare.dependency"
-          if="dependency.jar"
-          description="Prepare this build from the dependency.">
-    <mkdir dir="${target.jar}"/>
-    <copy verbose="${verbose.copy}" todir="${target.jar}" flatten="true" preservelastmodified="true">
-      <fileset dir="${dependency.jar}">
-      	<include name="**/*.jar"/>
-	    <exclude name="**/*-sources.jar"/>
-      </fileset>
-    </copy>
-  </target>
-
-  <!--=======================================================================
+	<!--=======================================================================
     == Do any other needed preparation.
     == By overriding this target in the importing ant build file,
     == it will allow for the definition of any other needed preparation.
     =========================================================================-->
-  <target name="prepare.extra"
+	<target name="prepare.extra"
           description="Prepare extras files.">
-    <echo message="${ant.project.name} has no extra files to prepare."/>
-  </target>
+		<echo message="${ant.project.name} has no extra files to prepare."/>
+	</target>
 
-  <!--=======================================================================
+	<!--=======================================================================
     == Compile all the java files under source.path into class files.
     == Make sure that all the resources in those directories make it over too.
     =========================================================================-->
-  <target name="compile"
+	<target name="compile"
           depends="prepare, compile.check"
           unless="source.uptodate"
           description="Compile the source">
-    <mkdir dir="${target.classes}"/>
-    <javac debug="on"
+		<mkdir dir="${target.classes}"/>
+<!--		<echo>"$${ant.refid:runtime.jarpath}=${ant.refid:runtime.jarpath}"</echo> -->
+		<javac debug="on"
            includes="**/*.java"
            destdir="${target.classes}"
            includeantruntime="false"
            source="1.5">
-      <src refid="source.path"/>
-      <classpath refid="runtime.jarpath"/>
-    </javac>
-    <!-- Copy the adjacent property files to the proper org/crosswire directory.
+			<src refid="source.path"/>
+			<classpath refid="runtime.jarpath"/>
+		</javac>
+		<!-- Copy the adjacent property files to the proper org/crosswire directory.
       == The path separator could be either / or \
       -->
-    <copy verbose="${verbose.copy}"
+		<copy verbose="${verbose.copy}"
           todir="${target.classes}"
           includeEmptyDirs="false"
           preservelastmodified="true">
-      <fileset dir="${source.java}">
-        <patternset refid="java.non.compile"/>
-      </fileset>
-    </copy>
-    <antcall target="compile.extra"/>
-  </target>
-  <target name="compile.check">
-    <uptodate property="source.uptodate"
+			<fileset dir="${source.java}">
+				<patternset refid="java.non.compile"/>
+			</fileset>
+		</copy>
+		<antcall target="compile.extra"/>
+	</target>
+	<target name="compile.check">
+		<uptodate property="source.uptodate"
         targetfile="${target.jar}/${ant.project.name}-${release.version}.jar">
-      <srcfiles dir="${source.java}"/>
-      <srcfiles dir="${source.root}" includes="resources/**/*.*"/>
-    </uptodate>
-    <echo message="source.uptodate result: ${source.uptodate}"/>
-  </target>
+			<srcfiles dir="${source.java}"/>
+			<srcfiles dir="${source.root}" includes="resources/**/*.*"/>
+		</uptodate>
+		<echo message="source.uptodate result: ${source.uptodate}"/>
+	</target>
 
-  <!--=======================================================================
+	<!--=======================================================================
     == Do any other needed compilation.
     == By overriding this target in the importing ant build file,
     == it will allow for the definition of any other post compilation,
     == pre jar activities.
     =========================================================================-->
-  <target name="compile.extra"
+	<target name="compile.extra"
           description="Compile extras files."/>
 
-  <!--=======================================================================
+	<!--=======================================================================
     == Compile all the test java files under testsource.path into class files.
     == Make sure that all the resources in those directories make it over too.
     == At this time a project-test.jar is not being created.
@@ -358,78 +340,229 @@
     == This depends upon build having been completed, but we don't have the
     == depends="build" here as an optimization.
     =========================================================================-->
-  <target name="testcompile"
+	<target name="testcompile"
           description="Compile the test source">
-    <mkdir dir="${test.classes}"/>
-    <javac debug="on"
+		<mkdir dir="${test.classes}"/>
+		<javac debug="on"
            includes="**/*.java"
            destdir="${test.classes}"
            source="1.5">
-      <src refid="testsource.path"/>
-      <classpath refid="test.jarpath"/>
-    </javac>
-    <antcall target="testcompile.extra"/>
-  </target>
+			<src refid="testsource.path"/>
+			<classpath refid="test.jarpath"/>
+		</javac>
+		<antcall target="testcompile.extra"/>
+	</target>
 
-  <!--=======================================================================
+	<!--=======================================================================
     == Do any other needed test compilation.
     == By overriding this target in the importing ant build file,
     == it will allow for the definition of any other post compilation.
     =========================================================================-->
-  <target name="testcompile.extra"
+	<target name="testcompile.extra"
           description="Compile extras test files."/>
 
-  <!--=======================================================================
+	<!--=======================================================================
     == Install the built artifacts.
     == By overriding this target in the importing ant build file,
     == it will allow for the definition of any other needed work.
     =========================================================================-->
-  <target name="install"
+	<target name="install"
           depends="install.dependency"
           description="Install the built project."/>
 
-  <!--=======================================================================
+	<!--=======================================================================
     == Invoke an install on any dependencies, if any.
     == This target requires the "dependency" property to be set by
     == the importing ant build file.
     =========================================================================-->
-  <target name="install.dependency"
+	<target name="install.dependency"
           if="dependency"
           description="Clean the dependencies">
-    <echo message="Install project dependency first: ${dependency}."/>
-    <ant dir="../${dependency}"
+		<echo message="Install project dependency first: ${dependency}."/>
+		<ant dir="../${dependency}"
          target="install"
          inheritAll="false"/>
-  </target>
+	</target>
 
-  <!--=======================================================================
+	<!--=======================================================================
+	== External 3-rd Party Tools
+	=========================================================================-->
+	<property name="ivy.version"        value="2.3.0" />
+	<property name="ivy.home"           location="${tools.home}/ivy" />
+
+	<property name="checkstyle.version" value="5.6" />
+	<property name="checkstyle.home"    location="${tools.home}/checkstyle-${checkstyle.version}"/>
+	<property name="checkstyle.report"  location="${report.dir}/checkstyle" />
+
+	<property name="findbugs.version"   value="2.0.2" />
+	<property name="findbugs.home"      location="${tools.home}/findbugs-${findbugs.version}" />
+	<property name="findbugs.report"    location="${report.dir}/findbugs" />
+
+	<property name="pmd.version"        value="5.0.1" />
+	<property name="pmd.home"           location="${tools.home}/pmd-${pmd.version}" />
+	<property name="pmd.report"         location="${report.dir}/pmd" />
+	<property name="cpd.report"         location="${report.dir}/cpd" />
+
+	<property name="junit.report"       location="${report.dir}/junit" />
+	<property name="cobertura.report"   location="${report.dir}/cobertura" />
+
+	<target name="checkfiles" description="check on downloaded tools" >
+		<available file="${findbugs.home}"   type="dir"  property="findbugs.present"/>
+		<available file="${checkstyle.home}" type="dir"  property="checkstyle.present"/>
+		<available file="${pmd.home}"        type="dir"  property="pmd.present"/>
+		<available file="${ivy.jar.file}"    type="file" property="ivy.present"/>
+	</target>
+
+	<!--=======================================================================
+	== Use Checkstyle to check the style of JSword files
+	== These are properties related to findbugs.
+	=========================================================================-->
+	<property name="checkstyle.url"             value="http://sourceforge.net/projects/checkstyle/files/checkstyle/${checkstyle.version}/checkstyle-${checkstyle.version}-bin.zip" />
+	<property name="checkstyle.zip"             location="${tools.home}/checkstyle-${checkstyle.version}.zip" />
+	<property name="checkstyle.jar.file"        location="${checkstyle.home}/checkstyle-${checkstyle.version}-all.jar"/>
+	<property name="checkstyle.fail"            value="false"/>
+	<property name="checkstyle.config"          location="${jsword.home}/JSword.checkstyle.xml" />
+
+	<target name="checkstyle.download" description="Download checkstyle" depends="checkfiles" unless="checkstyle.present">
+		<mkdir dir="${tools.home}"/>
+		<get src="${checkstyle.url}" dest="${checkstyle.zip}" usetimestamp="true" />
+		<unzip src="${checkstyle.zip}" dest="${tools.home}" />
+		<delete file="${checkstyle.zip}"/>
+	</target>
+
+	<target name="checkstyle.task" depends="checkstyle.download" description="Make checkstyle visible to Ant">
+		<taskdef resource="checkstyletask.properties" classpath="${checkstyle.jar.file}"/>
+	</target>
+
+	<!--=======================================================================
+	== Use findbugs to find bugs.
+	== These are properties related to findbugs.
+	=========================================================================-->
+	<property name="findbugs.url"     value="http://prdownloads.sourceforge.net/findbugs/findbugs-${findbugs.version}.zip?download" />
+	<property name="findbugs.zip"     location="${tools.home}/findbugs-${findbugs.version}.zip" />
+
+	<target name="findbugs.download" description="Download findbugs" depends="checkfiles" unless="findbugs.present">
+		<mkdir dir="${tools.home}"/>
+		<get src="${findbugs.url}" dest="${findbugs.zip}" usetimestamp="true" />
+		<unzip src="${findbugs.zip}" dest="${tools.home}" />
+		<delete file="${findbugs.zip}"/>
+	</target>
+
+	<target name="findbugs.task" depends="findbugs.download" description="Make findbugs visible to Ant">
+		<path id="findbugs.lib.path">
+			<fileset dir="${findbugs.home}" includes="**/*.jar"/>
+		</path>
+		<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpathref="findbugs.lib.path"/>
+	</target>
+
+	<!--=======================================================================
+	== Use PMD and CPD to find bad code
+	== These are properties related to PMD.
+	=========================================================================-->
+	<property name="pmd.url"     value="http://sourceforge.net/projects/pmd/files/pmd/${pmd.version}/pmd-bin-${pmd.version}.zip/download"/>
+	<property name="pmd.zip"     location="${tools.home}/pmd-bin-${pmd.version}.zip"/>
+
+	<target name="pmd.download" description="Download PMD" depends="checkfiles" unless="pmd.present">
+		<mkdir dir="${tools.home}"/>
+		<get src="${pmd.url}" dest="${pmd.zip}" usetimestamp="true" />
+		<unzip src="${pmd.zip}" dest="${tools.home}" />
+		<delete file="${pmd.zip}"/>
+	</target>
+
+	<target name="pmd.task" depends="pmd.download" description="Make PMD visible to Ant">
+		<path id="pmd.lib.path">
+			<pathelement location="${pmd.home}"/>
+			<fileset dir="${pmd.home}" includes="*/*.jar"/>
+		</path>
+		<taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.lib.path" />
+	</target>
+
+	<target name="cpd.task" depends="pmd.download" description="Make CPD visible to Ant">
+		<path id="pmd.lib.path">
+			<fileset dir="${pmd.home}" includes="*/*.jar"/>
+		</path>
+		<taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask" classpathref="pmd.lib.path" />
+	</target>
+
+	<!--=======================================================================
+    == Use ivy to manage external jars.
+    == These are properties related to ivy.
+    =========================================================================-->
+	<property name="ivy.url"     value="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.version}/ivy-${ivy.version}.jar"/>
+	<property name="ivy.jar.file"             location="${ivy.home}/ivy-${ivy.version}.jar" />
+	<property name="ivy.quiet"                value="default"/> <!-- default or quiet -->
+	<property name="ivy.default.ivy.user.dir" location="${jsword.home}/ivy"/>
+
+	<!--=======================================================================
+    == Get ivy from the maven repository
+    =========================================================================-->
+	<target name="ivy.download" description="Download ivy" depends="checkfiles" unless="ivy.present">
+		<mkdir dir="${ivy.home}"/>
+		<!-- download Ivy from web site so that it can be used even without any special installation -->
+		<get src="${ivy.url}" dest="${ivy.jar.file}" usetimestamp="true"/>
+	</target>
+
+	<!--=======================================================================
+    == Make ivy visible to ant
+    =========================================================================-->
+	<target name="ivy.task" depends="ivy.download" description="Make ivy visible to Ant">
+		<path id="ivy.lib.path">
+			<fileset dir="${ivy.home}" includes="*.jar"/>
+		</path>
+		<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>
+	</target>
+
+	<!--=======================================================================
+        target: ivy.clean            
+    =========================================================================-->
+	<target name="ivy.clean" description="Remove the ivy installation">
+		<delete dir="${ivy.home}"/>
+	</target>
+
+	<!--=======================================================================
+    == target: ivy.clean-cache              
+    =========================================================================-->
+	<target name="ivy.clean-cache" depends="ivy.task" 
+          description="Remove dependent jars that ivy manages">
+		<ivy:cleancache />
+	</target>
+
+	<!--=======================================================================
+    == Get all the dependencies that have been registered in ivy.xml
+    =========================================================================-->
+	<target name="ivy.resolve" depends="ivy.task" description="Retrieve dependencies with ivy">
+		<ivy:retrieve sync="true" pattern="lib/[type]s/[artifact]-[revision].[ext]" log="${ivy.quiet}"/>
+		<ivy:cachepath pathid="default.path"/>
+	</target>
+
+	<!--=======================================================================
     == A keystore is needed to sign jars.
     == It does not need to be build very often and can be shared.
     =========================================================================-->
-  <target name="keygen"
+	<target name="keygen"
           depends="keygen.check"
           unless="keygen.uptodate"
           description="Generates a key for use in signing the JARs">
-    <echo message="Generating keystore for signing jars"/>
-    <genkey alias="${keystore.alias}"
+		<echo message="Generating keystore for signing jars"/>
+		<genkey alias="${keystore.alias}"
           storepass="${keystore.pswd}"
           keystore="${keystore.devfile}">
-      <dname>
-        <param name="CN" value="JSword Project"/>
-        <param name="OU" value="Test Builds"/>
-        <param name="O"  value="Crosswire.org"/>
-        <param name="C"  value="UK" />
-      </dname>
-    </genkey>
-  </target>
-  <target name="keygen.check"
+			<dname>
+				<param name="CN" value="JSword Project"/>
+				<param name="OU" value="Test Builds"/>
+				<param name="O"  value="Crosswire.org"/>
+				<param name="C"  value="UK" />
+			</dname>
+		</genkey>
+	</target>
+	<target name="keygen.check"
           description="Check the keystore is there">
-    <available
+		<available
         property="keygen.uptodate"
         file="${keystore.devfile}"/>
-  </target>
+	</target>
 
-  <!--=======================================================================
+	<!--=======================================================================
     == A handy target that can be useful for testing various things. Designed
     == to be hacked about before it is run. The main class is done as a property
     == so it can be overridden from outside if needed. Main classes that have
@@ -439,18 +572,18 @@
     ==   abbot.editor.Costello
     ==   org.acm.seguin.tools.install.PrettyPrinterConfigGUI
     =========================================================================-->
-  <property name="exec.main"
+	<property name="exec.main"
             value="org.crosswire.bibledesktop.desktop.Desktop"/>
-  <target name="exec"
+	<target name="exec"
           description="Test execution">
-    <java classname="${exec.main}"
+		<java classname="${exec.main}"
           fork="true">
-      <assertions enablesystemassertions="true">
-        <enable/>
-      </assertions>
-      <jvmarg value="-Xmx512m"/>
-      <classpath refid="runtime.jarpath"/>
-    </java>
-  </target>
+			<assertions enablesystemassertions="true">
+				<enable/>
+			</assertions>
+			<jvmarg value="-Xmx512m"/>
+			<classpath refid="runtime.jarpath"/>
+		</java>
+	</target>
 
 </project>
