@@ -102,7 +102,7 @@ public class BackendTest extends TestCase {
         String version = "ESV";
         String reference = "Romans 1:1-ff";
 
-        backendTest(version, reference, "<title type=\"x-gen\">Romans 1:1-32</title>", "<verse osisID=\"Rom.1.1\">", "<verse osisID=\"Rom.1.32\">",
+        backendTest(version, reference, "<title type=\"x-gen\">Romans 1</title>", "<verse osisID=\"Rom.1.1\">", "<verse osisID=\"Rom.1.32\">",
                 "set apart for the gospel of God,", "give approval to those who practice them");
     }
 
