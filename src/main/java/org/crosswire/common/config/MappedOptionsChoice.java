@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
 import java.util.TreeMap;
 
 import org.crosswire.jsword.JSOtherMsg;
-import org.jdom.Element;
+import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +42,7 @@ public class MappedOptionsChoice extends AbstractReflectedChoice implements Mapp
     /*
      * (non-Javadoc)
      * 
-     * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
+     * @see org.crosswire.common.config.Choice#init(org.jdom2.Element)
      */
     @Override
     public void init(Element option, ResourceBundle configResources) throws StartupException {

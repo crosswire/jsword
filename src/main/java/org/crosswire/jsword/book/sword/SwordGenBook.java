@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -41,7 +41,7 @@ import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.ReadOnlyKeyList;
 import org.crosswire.jsword.passage.VerseRange;
-import org.jdom.Content;
+import org.jdom2.Content;
 
 /**
  * A Sword version of Dictionary.

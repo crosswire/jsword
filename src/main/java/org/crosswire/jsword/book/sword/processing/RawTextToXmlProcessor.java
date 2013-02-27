@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.VerseRange;
-import org.jdom.Content;
+import org.jdom2.Content;
 
 /**
  * This interface declares operations to be carried out after Raw Text

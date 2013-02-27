@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.basic;
 
@@ -34,7 +33,7 @@ import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.KeyType;
 import org.crosswire.jsword.book.sword.MissingDataFilesException;
 import org.crosswire.jsword.index.IndexStatus;
-import org.jdom.Document;
+import org.jdom2.Document;
 
 /**
  * An implementation of the Property Change methods from BookMetaData.

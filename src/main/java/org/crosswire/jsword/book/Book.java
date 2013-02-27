@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book;
 
@@ -31,8 +30,8 @@ import org.crosswire.jsword.index.IndexStatusListener;
 import org.crosswire.jsword.index.search.SearchRequest;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
-import org.jdom.Content;
-import org.jdom.Document;
+import org.jdom2.Content;
+import org.jdom2.Document;
 
 /**
  * Book is the most basic store of textual data - It can retrieve data either as
