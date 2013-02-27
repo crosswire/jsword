@@ -241,7 +241,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
             // try appending .dat on the end to see if we have a file, if not, then 
             if (!new File(location.getPath() + ".dat").exists()) {
              // TRANSLATOR: This indicates that the Book is only partially installed.
-                throw new MissingDataFilesException(JSMsg.gettext("The book is missing its data files", cet.getValue(ConfigEntryType.INITIALS)));
+                throw new MissingDataFilesException(JSMsg.gettext("The book {0} is missing its data files", cet.getValue(ConfigEntryType.INITIALS)));
             }
 
             // then we have a module that has a prefix
