@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -41,7 +41,7 @@ import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
-import org.jdom.Content;
+import org.jdom2.Content;
 
 /**
  * A generic way to read data from disk for later formatting.

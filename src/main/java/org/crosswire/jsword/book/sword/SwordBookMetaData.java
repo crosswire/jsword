@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -36,7 +36,7 @@ import org.crosswire.jsword.book.KeyType;
 import org.crosswire.jsword.book.basic.AbstractBookMetaData;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.filter.FilterFactory;
-import org.jdom.Document;
+import org.jdom2.Document;
 
 /**
  * A utility class for loading and representing Sword book configs.

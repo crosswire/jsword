@@ -28,7 +28,7 @@ import java.util.ResourceBundle;
 import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.JSOtherMsg;
-import org.jdom.Element;
+import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +44,7 @@ public abstract class AbstractReflectedChoice implements Choice {
     /*
      * (non-Javadoc)
      * 
-     * @see org.crosswire.common.config.Choice#init(org.jdom.Element)
+     * @see org.crosswire.common.config.Choice#init(org.jdom2.Element)
      */
     public void init(Element option, ResourceBundle configResources) throws StartupException {
         assert configResources != null;

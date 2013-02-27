@@ -14,16 +14,15 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.config;
 
 import java.util.ResourceBundle;
 
-import org.jdom.Element;
+import org.jdom2.Element;
 
 /**
  * Choice is the fundamental building block of the config system.

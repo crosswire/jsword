@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -43,8 +43,8 @@ import org.crosswire.jsword.index.search.SearchRequest;
 import org.crosswire.jsword.index.search.Searcher;
 import org.crosswire.jsword.index.search.SearcherFactory;
 import org.crosswire.jsword.passage.Key;
-import org.jdom.Content;
-import org.jdom.Document;
+import org.jdom2.Content;
+import org.jdom2.Document;
 
 /**
  * AbstractBook implements a few of the more generic methods of Book. This class

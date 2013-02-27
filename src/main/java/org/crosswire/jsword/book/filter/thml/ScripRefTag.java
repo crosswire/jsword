@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005 - 2012
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.filter.thml;
 
@@ -29,7 +28,7 @@ import org.crosswire.jsword.passage.KeyUtil;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageKeyFactory;
-import org.jdom.Element;
+import org.jdom2.Element;
 import org.xml.sax.Attributes;
 
 /**

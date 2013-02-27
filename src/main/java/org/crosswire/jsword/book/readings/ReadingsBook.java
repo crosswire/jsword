@@ -52,8 +52,8 @@ import org.crosswire.jsword.passage.PreferredKey;
 import org.crosswire.jsword.passage.RestrictionType;
 import org.crosswire.jsword.passage.SetKeyList;
 import org.crosswire.jsword.versification.system.Versifications;
-import org.jdom.Content;
-import org.jdom.Element;
+import org.jdom2.Content;
+import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
