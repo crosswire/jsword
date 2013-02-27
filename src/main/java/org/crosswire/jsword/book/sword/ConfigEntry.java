@@ -28,7 +28,7 @@ import org.crosswire.common.util.Histogram;
 import org.crosswire.common.util.StringUtil;
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.book.OSISUtil;
-import org.jdom.Element;
+import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

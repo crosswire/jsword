@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007
+ * Copyright: 2007-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.study;
 
@@ -243,7 +242,7 @@ public class StrongsNumber {
 
         // Get the number after the G or H
         try {
-            strongsNumber = Short.parseShort(m.group(2));
+            strongsNumber = Integer.parseInt(m.group(2));
         } catch (NumberFormatException e) {
             strongsNumber = 0; // An invalid Strong's Number
             return false;
@@ -262,7 +261,7 @@ public class StrongsNumber {
     /**
      * The Strong's Number.
      */
-    private short strongsNumber;
+    private int strongsNumber;
 
     /**
      * The part if any.

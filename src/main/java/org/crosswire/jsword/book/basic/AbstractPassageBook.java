@@ -38,8 +38,8 @@ import org.crosswire.jsword.passage.RestrictionType;
 import org.crosswire.jsword.passage.VerseRange;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
-import org.jdom.Content;
-import org.jdom.Element;
+import org.jdom2.Content;
+import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -152,7 +152,7 @@ public abstract class AbstractPassageBook extends AbstractBook {
                 Element div = (Element) nextElem;
 
                 // For all of the Verses in the section
-                for (Content data : (List<Content>) div.getContent()) {
+                for (Content data : div.getContent()) {
                     if (data instanceof Element) {
                         Element overse = (Element) data;
                         String text = OSISUtil.getPlainText(overse);

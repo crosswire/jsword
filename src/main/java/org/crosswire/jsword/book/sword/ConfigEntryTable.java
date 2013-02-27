@@ -42,7 +42,7 @@ import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookCategory;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.versification.system.Versifications;
-import org.jdom.Element;
+import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

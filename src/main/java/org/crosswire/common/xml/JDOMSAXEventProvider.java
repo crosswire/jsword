@@ -14,16 +14,15 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.xml;
 
-import org.jdom.Document;
-import org.jdom.JDOMException;
-import org.jdom.output.SAXOutputter;
+import org.jdom2.Document;
+import org.jdom2.JDOMException;
+import org.jdom2.output.SAXOutputter;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 

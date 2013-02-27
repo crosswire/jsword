@@ -38,8 +38,8 @@ import org.crosswire.common.util.ResourceUtil;
 import org.crosswire.common.xml.XMLUtil;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
-import org.jdom.Document;
-import org.jdom.JDOMException;
+import org.jdom2.Document;
+import org.jdom2.JDOMException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

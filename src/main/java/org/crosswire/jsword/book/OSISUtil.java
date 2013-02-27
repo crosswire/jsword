@@ -41,10 +41,10 @@ import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseFactory;
 import org.crosswire.jsword.versification.Versification;
-import org.jdom.Content;
-import org.jdom.Element;
-import org.jdom.Parent;
-import org.jdom.Text;
+import org.jdom2.Content;
+import org.jdom2.Element;
+import org.jdom2.Parent;
+import org.jdom2.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -1141,7 +1141,7 @@ public final class OSISUtil {
 
 //        Content data = null;
         Element ele = null;
-        for (Content data : (List<Content>) start.getContent()) {
+        for (Content data : start.getContent()) {
             if (data instanceof Element) {
                 ele = (Element) data;
                 recurseDeepContent(ele, name, reply);
@@ -1173,7 +1173,7 @@ public final class OSISUtil {
      */
     private static void recurseChildren(Element ele, StringBuilder buffer) {
         // ele is a JDOM Element that might have a getContent() method
-        for (Content sub : (List<Content>) ele.getContent()) {
+        for (Content sub : ele.getContent()) {
             recurseElement(sub, buffer);
         }
     }

@@ -29,9 +29,10 @@ import java.util.regex.Pattern;
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.PropertyMap;
 import org.crosswire.common.util.ResourceUtil;
-import org.jdom.Document;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
+import org.jdom2.Document;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.input.sax.XMLReaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
@@ -70,7 +71,8 @@ public final class XMLUtil {
         InputStream in = ResourceUtil.getResourceAsStream(resource);
 
         log.debug("Loading {}.xml from classpath: [OK]", subject);
-        SAXBuilder builder = new SAXBuilder(true);
+        // With JDom 1.x this passed true
+        SAXBuilder builder = new SAXBuilder(XMLReaders.DTDVALIDATING);
         return builder.build(in);
     }
 
