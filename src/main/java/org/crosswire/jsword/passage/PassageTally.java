@@ -576,7 +576,7 @@ public class PassageTally extends AbstractPassage {
 
     @Override
     public void blur(int verses, RestrictionType restrict) {
-        assert verses > 0;
+        assert verses >= 0;
 
         optimizeWrites();
         raiseEventSuppresion();
