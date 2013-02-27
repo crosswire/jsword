@@ -40,6 +40,7 @@ public class AllTests {
         suite.addTest(new TestSuite(SwordBookDriverTest.class));
         suite.addTest(new TestSuite(SwordBookMetaDataTest.class));
         suite.addTest(new TestSuite(SwordBookTest.class));
+        suite.addTest(new TestSuite(BackendTest.class));
         // $JUnit-END$
         return suite;
     }

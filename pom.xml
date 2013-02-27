@@ -24,7 +24,7 @@
         <jdom.version>2.0.4</jdom.version>
         <lucene.version>3.0.3</lucene.version>
         <httpcomponents-httpcore.version>4.2.3</httpcomponents-httpcore.version>
-        <httpcomponents-httpclient.version>4.2.3<</httpcomponents-httpclient.version>
+        <httpcomponents-httpclient.version>4.2.3</httpcomponents-httpclient.version>
 
         <!-- maven plugin versions -->
         <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
