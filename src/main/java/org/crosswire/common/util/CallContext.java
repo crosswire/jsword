@@ -43,15 +43,7 @@ public final class CallContext {
      * Singleton accessor
      */
     public static CallContext instance() {
-        try {
-            if (resolver == null) {
-                resolver = new CallContext();
-            }
-
-            return resolver;
-        } catch (SecurityException se) {
-            throw new LucidRuntimeException(JSOtherMsg.lookupText("Could not create ClassResolver:"), se);
-        }
+        return resolver;
     }
 
     /**
@@ -70,13 +62,11 @@ public final class CallContext {
      *             if the index is not valid
      */
     public static Class<?> getCallingClass(int i) {
-        // Android 4.0 does not return anything from getClassContext() so using the default JSword code causes Exception in Initializer resulting from an NPE        
         try {
             return Class.forName(Thread.currentThread().getStackTrace()[CALL_CONTEXT_OFFSET + i].getClassName());
         } catch (ClassNotFoundException e) {
             return CallContext.class;
         }
-        // return instance().getClassContext()[CALL_CONTEXT_OFFSET + i];
     }
 
     // may need to change if this class is redesigned
@@ -87,5 +77,5 @@ public final class CallContext {
      */
     private static final int CALL_CONTEXT_OFFSET = 3;
 
-    private static volatile CallContext resolver;
+    private static CallContext resolver = new CallContext();;
 }

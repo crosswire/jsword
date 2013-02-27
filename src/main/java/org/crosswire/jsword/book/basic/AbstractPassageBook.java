@@ -114,7 +114,7 @@ public abstract class AbstractPassageBook extends AbstractBook {
     }
 
     /**
-     * Add the OSIS elements to the div element. Note, this assumes that the
+     * Add the OSIS elements to the content list. Note, this assumes that the
      * data is fully marked up.
      * 
      * @param key
