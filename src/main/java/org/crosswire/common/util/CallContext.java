@@ -70,8 +70,12 @@ public final class CallContext {
      *             if the index is not valid
      */
     public static Class<?> getCallingClass(int i) {
-        // Android 4.0 does not return anything from getClassContext() so using the default JSword code causes Exception in Initializer resulting from an NPE
-        return Thread.currentThread().getStackTrace()[CALL_CONTEXT_OFFSET + i].getClass();
+        // Android 4.0 does not return anything from getClassContext() so using the default JSword code causes Exception in Initializer resulting from an NPE        
+        try {
+            return Class.forName(Thread.currentThread().getStackTrace()[CALL_CONTEXT_OFFSET + i].getClassName());
+        } catch (ClassNotFoundException e) {
+            return CallContext.class;
+        }
         // return instance().getClassContext()[CALL_CONTEXT_OFFSET + i];
     }
 
