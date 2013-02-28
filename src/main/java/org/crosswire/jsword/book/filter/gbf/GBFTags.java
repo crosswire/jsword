@@ -345,7 +345,12 @@ public final class GBFTags {
         }
 
         public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
-            GBFTags.updateOsisStack(stack, OSIS_FACTORY.createTitle());
+            // In OSIS Psalm titles are canonical
+            Element title = OSIS_FACTORY.createTitle();
+            title.setAttribute(OSISUtil.OSIS_ATTR_TYPE, "psalm");
+            title.setAttribute(OSISUtil.OSIS_ATTR_SUBTYPE, "x-preverse");
+            title.setAttribute(OSISUtil.OSIS_ATTR_CANONICAL, "true");
+            GBFTags.updateOsisStack(stack, title);
         }
     }
 

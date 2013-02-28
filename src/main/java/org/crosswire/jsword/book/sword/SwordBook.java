@@ -156,6 +156,25 @@ public class SwordBook extends AbstractPassageBook {
 
     @Override
     public void addOSIS(Key key, List<Content> contentList, List<Content> osisContent) {
+        // If there is no content, then there is nothing to do.
+        if (osisContent.size() == 0) {
+            return;
+        }
+
+        // Note: Verse 0 is an introduction and not a verse so it never gets verse markup.
+        // However, it should be wrapped by a div as it should be isolated as an intro.
+        if (KeyUtil.getVerse(key).getVerse() == 0) {
+            Element div = OSISUtil.factory().createDiv();
+            div.setAttribute(OSISUtil.OSIS_ATTR_OSISID, key.getOsisID());
+            // Mark it as generated
+            div.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.GENERATED_CONTENT);
+            // Put the OSIS into the div
+            div.addContent(osisContent);
+            // Then put the div at the end of the contentList
+            contentList.add(div);            
+            return;
+        }
+
         // SWORD modules typically do not have the verse marker. When they don't
         // then the verse element needs to wrap the verse content.
         // However, the verse content may have "pre-verse" content.
@@ -171,35 +190,51 @@ public class SwordBook extends AbstractPassageBook {
         //    In this we only need to look for the ending.
         // The critical observation is that the verse marker is to
         // follow the last element marked x-preverse.
+        // Also, there are a good number of modules that have a title marked
+        // type="psalm" and not canonical="true" which they should be.
         
-        // Note: Verse 0 is an introduction and not a verse so it never gets verse markup.
-        if (KeyUtil.getVerse(key).getVerse() == 0) {
-            super.addOSIS(key, contentList, osisContent);
-            return;
-        }
-
-        Element preverse = null;
-        // See if the text is marked up with verses
+        // See if the text is marked up with verse elements
         // If it is then just add it.
         int start = 0;
         int found = -1;
+        boolean wrapped = false;
+        Element preverse = null;
         for (Content content : osisContent) {
             if (content instanceof Element) {
                 Element ele = (Element) content;
-                if (OSISUtil.OSIS_ELEMENT_VERSE.equals(ele.getName())) {
-                    super.addOSIS(key, contentList, osisContent);
-                    return;
+                String name = ele.getName();
+                if (OSISUtil.OSIS_ELEMENT_VERSE.equals(name)) {
+                    wrapped = true;
+                    continue;
                 }
-                Attribute attr = ele.getAttribute(OSISUtil.OSIS_ATTR_SUBTYPE);
-                if (attr != null && "x-preverse".equals(attr.getValue())) {
-                    String name = ele.getName();
+                Attribute typeAttr = ele.getAttribute(OSISUtil.OSIS_ATTR_TYPE);
+                Attribute subTypeAttr = ele.getAttribute(OSISUtil.OSIS_ATTR_SUBTYPE);
+                if (subTypeAttr != null && "x-preverse".equals(subTypeAttr.getValue())) {
                     if (OSISUtil.OSIS_ELEMENT_DIV.equals(name) || OSISUtil.OSIS_ELEMENT_TITLE.equals(name)) {
                         preverse = ele;
                         found = start;
                     }
-                }    
+                } else if (typeAttr != null && "psalm".equals(typeAttr.getValue()) && OSISUtil.OSIS_ELEMENT_TITLE.equals(name)) {
+                    // Psalm titles should be both canonical and preverse
+                    // set the appropriate attributes if not already set.
+                    Attribute canonicalAttr = ele.getAttribute(OSISUtil.OSIS_ATTR_CANONICAL);
+                    if (canonicalAttr == null) {
+                        ele.setAttribute(OSISUtil.OSIS_ATTR_CANONICAL, "true");
+                    }
+                    if (subTypeAttr == null) {
+                        ele.setAttribute(OSISUtil.OSIS_ATTR_SUBTYPE, "x-preverse");
+                        preverse = ele;
+                        found = start;
+                    }
+                }
             }
             start++;
+        }
+
+        // Check to see whether the text is marked up with verse
+        if (wrapped) {
+            super.addOSIS(key, contentList, osisContent);
+            return;
         }
 
         // If we get here then the text is not marked up with verse
