@@ -14,10 +14,9 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005-2013
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.util;
 
@@ -158,11 +157,13 @@ public class WebResource {
             // Configure the host and port
             HttpHost proxy = new HttpHost(theProxyHost, theProxyPort == null ? -1 : theProxyPort.intValue());
             ConnRouteParams.setDefaultProxy(params, proxy);
+            
+            //MJD start move all proxy code inside proxy specific block
+            ProxySelectorRoutePlanner routePlanner = new ProxySelectorRoutePlanner(
+                    client.getConnectionManager().getSchemeRegistry(),
+                    ProxySelector.getDefault());
+            ((AbstractHttpClient) client).setRoutePlanner(routePlanner);
         }
-        ProxySelectorRoutePlanner routePlanner = new ProxySelectorRoutePlanner(
-                client.getConnectionManager().getSchemeRegistry(),
-                ProxySelector.getDefault());
-                ((AbstractHttpClient) client).setRoutePlanner(routePlanner);
     }
 
     /**
