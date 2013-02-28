@@ -328,19 +328,28 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      */
     @Override
     public boolean hasFeature(FeatureType feature) {
-        if (cet.match(ConfigEntryType.FEATURE, feature.toString())) {
+        String name = feature.toString();
+        if (cet.match(ConfigEntryType.FEATURE, name)) {
             return true;
         }
         // Many "features" are GlobalOptionFilters, which in the Sword C++ API
         // indicate a class to use for filtering.
         // These mostly have the source type prepended to the feature
         StringBuilder buffer = new StringBuilder((String) getProperty(ConfigEntryType.SOURCE_TYPE));
-        buffer.append(feature);
+        buffer.append(name);
         if (cet.match(ConfigEntryType.GLOBAL_OPTION_FILTER, buffer.toString())) {
             return true;
         }
+
+        // Check for the alias prefixed by the source type
+        String alias = feature.getAlias();
+        buffer.setLength(0);
+        buffer.append((String) getProperty(ConfigEntryType.SOURCE_TYPE));
+        buffer.append(alias);
+
         // But some do not
-        return cet.match(ConfigEntryType.GLOBAL_OPTION_FILTER, feature.toString());
+        return cet.match(ConfigEntryType.GLOBAL_OPTION_FILTER, name)
+            || cet.match(ConfigEntryType.GLOBAL_OPTION_FILTER, alias);
     }
 
     private void buildProperties() {

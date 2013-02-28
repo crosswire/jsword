@@ -62,9 +62,10 @@ public enum FeatureType {
     GLOSSARY ("Glossary"),
 
     /**
-     * The book contains Strong's Numbers
+     * The book contains Strong's Numbers.
+     * The alias is used to match GlobalOptionFilters.
      */
-    STRONGS_NUMBERS ("StrongsNumbers"),
+    STRONGS_NUMBERS ("StrongsNumbers", "Strongs"),
 
     /**
      * The book contains footnotes
@@ -96,7 +97,18 @@ public enum FeatureType {
      *            The name of the FeatureType
      */
     private FeatureType(String name) {
+        this(name, "");
+    }
+
+    /**
+     * @param name
+     *            The name of the FeatureType
+     * @param alias
+     *            The alias of the FeatureType
+     */
+    private FeatureType(String name, String alias) {
         this.name = name;
+        this.alias = alias;
     }
 
     /**
@@ -123,7 +135,21 @@ public enum FeatureType {
     }
 
     /**
+     * Get the alias for this feature.
+     * 
+     * @return the alias
+     */
+    public String getAlias() {
+        return alias;
+    }
+
+    /**
      * The name of the FeatureType
      */
     private String name;
+
+    /**
+     * The alias of the FeatureType
+     */
+    private String alias;
 }
