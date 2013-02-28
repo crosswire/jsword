@@ -55,12 +55,9 @@ public class BookInstaller {
      * @throws BookException
      */
     public void deleteBook(Book book) throws BookException {
-        // Make the book unavailable.
-        // This is normally done via listeners.
-        Books.installed().removeBook(book);
-
         // Actually do the delete
         // This should be a call on installer.
+        // This will also remove the book from the list of installed books.
         book.getDriver().delete(book);
     }
 
