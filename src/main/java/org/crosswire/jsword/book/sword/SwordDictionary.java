@@ -71,7 +71,7 @@ public class SwordDictionary extends AbstractBook {
         assert backend != null;
 
         List<Content> content = new ArrayList<Content>();
-        Element title = OSISUtil.factory().createTitle();
+        Element title = OSISUtil.factory().createGeneratedTitle();
         title.addContent(key.getName());
         content.add(title);
 

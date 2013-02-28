@@ -518,10 +518,19 @@ public final class OSISUtil {
         }
 
         /**
-         *
+        *
+        */
+       public Element createTitle() {
+           return new Element(OSIS_ELEMENT_TITLE);
+       }
+
+        /**
+         * Create a title marked as generated.
          */
-        public Element createTitle() {
-            return new Element(OSIS_ELEMENT_TITLE);
+        public Element createGeneratedTitle() {
+            Element title = new Element(OSIS_ELEMENT_TITLE);
+            title.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.GENERATED_CONTENT);
+            return title;
         }
 
         /**

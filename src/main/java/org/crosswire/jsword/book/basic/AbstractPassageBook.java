@@ -73,8 +73,7 @@ public abstract class AbstractPassageBook extends AbstractBook {
         RawTextToXmlProcessor processor = new RawTextToXmlProcessor() {
             public void preRange(VerseRange range, List<Content> partialDom) {
                 if (showTitles) {
-                    Element title = OSISUtil.factory().createTitle();
-                    title.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.GENERATED_CONTENT);
+                    Element title = OSISUtil.factory().createGeneratedTitle();
                     title.addContent(range.getName());
                     partialDom.add(title);
                 }
