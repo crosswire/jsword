@@ -56,19 +56,15 @@ public class SwordBookDriver extends AbstractBookDriver {
     public SwordBookDriver() {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.BookDriver#getName()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookDriver#getDriverName()
      */
     public String getDriverName() {
         return "Sword";
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.BookDriver#getBooks()
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookProvider#getBooks()
      */
     public Book[] getBooks() {
         ConfigEntry.resetStatistics();
@@ -134,38 +130,27 @@ public class SwordBookDriver extends AbstractBookDriver {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.BookDriver#isDeletable(org.crosswire.jsword
-     * .book.BookMetaData)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractBookDriver#isDeletable(org.crosswire.jsword.book.Book)
      */
     @Override
     public boolean isDeletable(Book dead) {
         SwordBookMetaData sbmd = (SwordBookMetaData) dead.getBookMetaData();
-        File dlDir = SwordBookPath.getSwordDownloadDir();
-        File confFile = new File(dlDir, sbmd.getConfPath());
-
+        File confFile = sbmd.getConfigFile();
         // We can only uninstall what we download into our download dir.
-        return confFile.exists();
+        return confFile != null && confFile.exists();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.BookDriver#delete(org.crosswire.jsword.book
-     * .BookMetaData)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.basic.AbstractBookDriver#delete(org.crosswire.jsword.book.Book)
      */
     @Override
     public void delete(Book dead) throws BookException {
         SwordBookMetaData sbmd = (SwordBookMetaData) dead.getBookMetaData();
-        File dlDir = SwordBookPath.getSwordDownloadDir();
-        File confFile = new File(dlDir, sbmd.getConfPath());
+        File confFile = sbmd.getConfigFile();
 
         // We can only uninstall what we download into our download dir.
-        if (!confFile.exists()) {
+        if (confFile == null || !confFile.exists()) {
             // TRANSLATOR: Common error condition: The file could not be deleted. There can be many reasons.
             // {0} is a placeholder for the file.
             throw new BookException(JSMsg.gettext("Unable to delete: {0}", confFile));
@@ -239,5 +224,4 @@ public class SwordBookDriver extends AbstractBookDriver {
      * The log stream
      */
     private static final Logger log = LoggerFactory.getLogger(SwordBookDriver.class);
-
 }

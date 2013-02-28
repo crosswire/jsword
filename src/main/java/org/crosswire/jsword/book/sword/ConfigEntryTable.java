@@ -171,6 +171,15 @@ public final class ConfigEntryTable {
     }
 
     /**
+     * Get the conf file for this ConfigEntryTable.
+     * 
+     * @return Returns the conf file or null if loaded from a byte buffer.
+     */
+    public File getConfigFile() {
+        return configFile;
+    }
+
+    /**
      * Determines whether the Sword Book's conf is dubious theologically as stated in conf.
      */
     public boolean isQuestionable() {

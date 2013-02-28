@@ -179,7 +179,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     }
 
     /**
-     * Returns the sourceType.
+     * Returns the Filter based upon the SourceType.
      */
     public Filter getFilter() {
         String sourcetype = (String) getProperty(ConfigEntryType.SOURCE_TYPE);
@@ -188,9 +188,20 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
 
     /**
      * @return Returns the relative path of the book's conf.
+     * @deprecated Use {@link #getConf} instead
      */
+    @Deprecated
     public String getConfPath() {
         return SwordConstants.DIR_CONF + '/' + getInitials().toLowerCase(Locale.ENGLISH) + SwordConstants.EXTENSION_CONF;
+    }
+
+    /**
+     * Get the conf file for this SwordMetaData.
+     * 
+     * @return Returns the conf file or null if loaded from a byte buffer.
+     */
+    public File getConfigFile() {
+        return cet.getConfigFile();
     }
 
     /* (non-Javadoc)
