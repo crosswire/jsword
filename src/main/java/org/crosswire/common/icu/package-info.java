@@ -1,0 +1,7 @@
+/**
+  Utilities that require icu4j via reflection.
+  That is, if the icu4j jar is not on the classpath,
+  the utilities in this package provide standard java
+  behavior.
+*/
+package org.crosswire.common.icu;
