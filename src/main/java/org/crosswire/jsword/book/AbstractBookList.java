@@ -18,19 +18,13 @@
  *     The copyright to this program is held by it's authors.
  *
  */
-package org.crosswire.jsword.book.basic;
+package org.crosswire.jsword.book;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.crosswire.common.util.CollectionUtil;
-import org.crosswire.jsword.book.Book;
-import org.crosswire.jsword.book.BookFilter;
-import org.crosswire.jsword.book.BookFilterIterator;
-import org.crosswire.jsword.book.BookList;
-import org.crosswire.jsword.book.BooksEvent;
-import org.crosswire.jsword.book.BooksListener;
 
 /**
  * A basic implementation of BookList. The methods in this abstract class are

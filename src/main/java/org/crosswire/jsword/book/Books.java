@@ -32,7 +32,6 @@ import org.crosswire.common.util.CollectionUtil;
 import org.crosswire.common.util.PluginUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSOtherMsg;
-import org.crosswire.jsword.book.basic.AbstractBookList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
