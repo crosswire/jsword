@@ -76,7 +76,12 @@ public class BookIndexer {
             if (isIndexed()) {
                 deleteIndex();
             }
-            indexManager.scheduleIndexCreation(book);
+            Thread work = new Thread(new Runnable() {
+                public void run() {
+                    indexManager.scheduleIndexCreation(book);
+                }
+            });
+            work.start();
             while (!done) {
                 try {
                     Thread.sleep(100);
@@ -92,8 +97,8 @@ public class BookIndexer {
         done = state;
     }
 
-    private Book book;
-    private IndexManager indexManager;
+    protected Book book;
+    protected IndexManager indexManager;
     private IndexStatusListener isl;
     private boolean done;
 

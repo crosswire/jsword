@@ -40,13 +40,6 @@ import org.crosswire.jsword.book.install.InstallException;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith
  */
-/**
- *
- *
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
- * @author DM Smith
- */
 public class HttpSwordInstaller extends AbstractSwordInstaller {
 
     /* (non-Javadoc)
@@ -59,14 +52,14 @@ public class HttpSwordInstaller extends AbstractSwordInstaller {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#getSize(org.crosswire.jsword.book.Book)
      */
-    public int getSize(Book book) {
+    public int getSize(final Book book) {
         return NetUtil.getSize(toRemoteURI(book), proxyHost, proxyPort);
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#toRemoteURI(org.crosswire.jsword.book.Book)
      */
-    public URI toRemoteURI(Book book) {
+    public URI toRemoteURI(final Book book) {
         try {
             return new URI(NetUtil.PROTOCOL_HTTP, host, packageDirectory + '/' + book.getInitials() + ZIP_SUFFIX, null);
         } catch (URISyntaxException e) {

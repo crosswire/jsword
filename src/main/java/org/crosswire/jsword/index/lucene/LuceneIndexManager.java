@@ -107,28 +107,23 @@ public class LuceneIndexManager implements IndexManager {
     public void scheduleIndexCreation(final Book book) {
         book.setIndexStatus(IndexStatus.SCHEDULED);
 
-        Thread work = new Thread(new Runnable() {
-            public void run() {
-                IndexStatus finalStatus = IndexStatus.UNDONE;
+        IndexStatus finalStatus = IndexStatus.UNDONE;
 
-                try {
-                    URI storage = getStorageArea(book);
-                    Index index = new LuceneIndex(book, storage, true);
-                    // We were successful if the directory exists.
-                    if (NetUtil.getAsFile(storage).exists()) {
-                        finalStatus = IndexStatus.DONE;
-                        INDEXES.put(book, index);
-                    }
-                } catch (IOException e) {
-                    Reporter.informUser(LuceneIndexManager.this, e);
-                } catch (BookException e) {
-                    Reporter.informUser(LuceneIndexManager.this, e);
-                } finally {
-                    book.setIndexStatus(finalStatus);
-                }
+        try {
+            URI storage = getStorageArea(book);
+            Index index = new LuceneIndex(book, storage, true);
+            // We were successful if the directory exists.
+            if (NetUtil.getAsFile(storage).exists()) {
+                finalStatus = IndexStatus.DONE;
+                INDEXES.put(book, index);
             }
-        });
-        work.start();
+        } catch (IOException e) {
+            Reporter.informUser(LuceneIndexManager.this, e);
+        } catch (BookException e) {
+            Reporter.informUser(LuceneIndexManager.this, e);
+        } finally {
+            book.setIndexStatus(finalStatus);
+        }
     }
 
     /*

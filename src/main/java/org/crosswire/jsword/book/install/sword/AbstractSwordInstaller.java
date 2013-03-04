@@ -116,7 +116,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#isNewer(org.crosswire.jsword.book.Book)
      */
-    public boolean isNewer(Book book) {
+    public boolean isNewer(final Book book) {
         SwordBookMetaData sbmd = (SwordBookMetaData) book.getBookMetaData();
         File conf = sbmd.getConfigFile();
 
@@ -153,17 +153,21 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#getBook(java.lang.String)
      */
-    public synchronized Book getBook(String name) {
+    public Book getBook(final String name) {
+        List<Book> books = null;
+        synchronized (this) {
+            books = getBooks();
+        }
         // Check name first
         // First check for exact matches
-        for (Book book : getBooks()) {
+        for (Book book : books) {
             if (name.equals(book.getName())) {
                 return book;
             }
         }
 
         // Next check for case-insensitive matches
-        for (Book book : getBooks()) {
+        for (Book book : books) {
             if (name.equalsIgnoreCase(book.getName())) {
                 return book;
             }
@@ -171,7 +175,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
         // Then check initials
         // First check for exact matches
-        for (Book book : getBooks()) {
+        for (Book book : books) {
             BookMetaData bmd = book.getBookMetaData();
             if (name.equals(bmd.getInitials())) {
                 return book;
@@ -179,7 +183,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         }
 
         // Next check for case-insensitive matches
-        for (Book book : getBooks()) {
+        for (Book book : books) {
             if (name.equalsIgnoreCase(book.getInitials())) {
                 return book;
             }
@@ -191,15 +195,19 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
      * @see org.crosswire.jsword.book.basic.AbstractBookList#getBooks(org.crosswire.jsword.book.BookFilter)
      */
     @Override
-    public synchronized List<Book> getBooks(BookFilter filter) {
-        List<Book> temp = CollectionUtil.createList(new BookFilterIterator(getBooks(), filter));
+    public List<Book> getBooks(BookFilter filter) {
+        List<Book> books = null;
+        synchronized (this) {
+            books = getBooks();
+        }
+        List<Book> temp = CollectionUtil.createList(new BookFilterIterator(books, filter));
         return new BookSet(temp);
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.install.Installer#install(org.crosswire.jsword.book.Book)
      */
-    public void install(Book book) {
+    public void install(final Book book) {
         // // Is the book already installed? Then nothing to do.
         // if (Books.installed().getBook(book.getName()) != null)
         // {
@@ -208,73 +216,57 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         //
         final SwordBookMetaData sbmd = (SwordBookMetaData) book.getBookMetaData();
 
-        // So now we know what we want to install - all we need to do
-        // is installer.install(name) however we are doing it in the
-        // background so we create a job for it.
-        final Thread worker = new Thread("DisplayPreLoader")
-        {
-            /* (non-Javadoc)
-             * @see java.lang.Thread#run()
-             */
-            @Override
-            public void run() {
-                // TRANSLATOR: Progress label indicating the installation of a book. {0} is a placeholder for the name of the book.
-                String jobName = JSMsg.gettext("Installing book: {0}", sbmd.getName());
-                Progress job = JobManager.createJob(jobName, this);
+        // TRANSLATOR: Progress label indicating the installation of a book. {0} is a placeholder for the name of the book.
+        String jobName = JSMsg.gettext("Installing book: {0}", sbmd.getName());
+        Progress job = JobManager.createJob(jobName, Thread.currentThread());
 
-                // Don't bother setting a size, we'll do it later.
-                job.beginJob(jobName);
+        URI temp = null;
+        try {
+            // Don't bother setting a size, we'll do it later.
+            job.beginJob(jobName);
 
-                yield();
+            Thread.yield();
 
-                URI temp = null;
+            // TRANSLATOR: Progress label indicating the Initialization of installing of a book.
+            job.setSectionName(JSMsg.gettext("Initializing"));
+
+            temp = NetUtil.getTemporaryURI("swd", ZIP_SUFFIX);
+
+            download(job, packageDirectory, sbmd.getInitials() + ZIP_SUFFIX, temp);
+
+            // Once the unzipping is started, we need to continue
+            job.setCancelable(false);
+            if (!job.isFinished()) {
+                File dldir = SwordBookPath.getSwordDownloadDir();
+                IOUtil.unpackZip(NetUtil.getAsFile(temp), dldir);
+                // TRANSLATOR: Progress label for installing the conf file for a book.
+                job.setSectionName(JSMsg.gettext("Copying config file"));
+                sbmd.setLibrary(NetUtil.getURI(dldir));
+                SwordBookDriver.registerNewBook(sbmd);
+            }
+
+        } catch (IOException e) {
+            Reporter.informUser(this, e);
+            job.cancel();
+        } catch (InstallException e) {
+            Reporter.informUser(this, e);
+            job.cancel();
+        } catch (BookException e) {
+            Reporter.informUser(this, e);
+            job.cancel();
+        } finally {
+            job.done();
+            // tidy up after ourselves
+            // This is a best effort. If for some reason it does not delete now
+            // it will automatically be deleted when the JVM exits normally.
+            if (temp != null) {
                 try {
-                    // TRANSLATOR: Progress label indicating the Initialization of installing of a book.
-                    job.setSectionName(JSMsg.gettext("Initializing"));
-
-                    temp = NetUtil.getTemporaryURI("swd", ZIP_SUFFIX);
-
-                    download(job, packageDirectory, sbmd.getInitials() + ZIP_SUFFIX, temp);
-
-                    // Once the unzipping is started, we need to continue
-                    job.setCancelable(false);
-                    if (!job.isFinished()) {
-                        File dldir = SwordBookPath.getSwordDownloadDir();
-                        IOUtil.unpackZip(NetUtil.getAsFile(temp), dldir);
-                        // TRANSLATOR: Progress label for installing the conf file for a book.
-                        job.setSectionName(JSMsg.gettext("Copying config file"));
-                        sbmd.setLibrary(NetUtil.getURI(dldir));
-                        SwordBookDriver.registerNewBook(sbmd);
-                    }
-
+                    NetUtil.delete(temp);
                 } catch (IOException e) {
-                    Reporter.informUser(this, e);
-                    job.cancel();
-                } catch (InstallException e) {
-                    Reporter.informUser(this, e);
-                    job.cancel();
-                } catch (BookException e) {
-                    Reporter.informUser(this, e);
-                    job.cancel();
-                } finally {
-                    job.done();
-                    // tidy up after ourselves
-                    // This is a best effort. If for some reason it does not delete now
-                    // it will automatically be deleted when the JVM exits normally.
-                    if (temp != null) {
-                        try {
-                            NetUtil.delete(temp);
-                        } catch (IOException e) {
-                            log.warn("Error deleting temp download file.", e);
-                        }
-                    }
+                    log.warn("Error deleting temp download file.", e);
                 }
             }
-        };
-
-        // this actually starts the thread off
-        worker.setPriority(Thread.MIN_PRIORITY);
-        worker.start();
+        }
     }
 
     /* (non-Javadoc)

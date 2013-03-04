@@ -62,7 +62,7 @@ public interface Installer extends BookList {
      *            The book meta-data to get a URI from.
      * @return the remote URI for the BookMetaData
      */
-    URI toRemoteURI(Book book);
+    URI toRemoteURI(final Book book);
 
     /**
      * Get a list of BookMetaData objects that represent downloadable books. If
@@ -77,7 +77,7 @@ public interface Installer extends BookList {
     /**
      * Get a Book matching the name from the local cache. Null if none is found.
      */
-    Book getBook(String Book);
+    Book getBook(final String Book);
 
     /**
      * Return true if the book is not installed or there is a newer version to
@@ -87,7 +87,7 @@ public interface Installer extends BookList {
      *            The book meta-data to check on.
      * @return whether there is a newer version to install
      */
-    int getSize(Book book);
+    int getSize(final Book book);
 
     /**
      * Return true if the book is not installed or there is a newer version to
@@ -97,7 +97,7 @@ public interface Installer extends BookList {
      *            The book meta-data to check on.
      * @return whether there is a newer version to install
      */
-    boolean isNewer(Book book);
+    boolean isNewer(final Book book);
 
     /**
      * Re-fetch a list of names from the remote source. <b>It would make sense
@@ -114,7 +114,7 @@ public interface Installer extends BookList {
      * @param book
      *            The book to install
      */
-    void install(Book book) throws InstallException;
+    void install(final Book book) throws InstallException;
 
     /**
      * Download a search index for the given Book. The installation of the
@@ -126,5 +126,5 @@ public interface Installer extends BookList {
      *            A temporary URI for downloading to. Passed to the BookIndexer
      *            for installation.
      */
-    void downloadSearchIndex(Book book, URI tempDest) throws InstallException;
+    void downloadSearchIndex(final Book book, final URI tempDest) throws InstallException;
 }
