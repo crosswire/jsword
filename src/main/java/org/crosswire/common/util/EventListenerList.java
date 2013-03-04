@@ -112,7 +112,9 @@ import org.crosswire.jsword.JSOtherMsg;
  * @author Georges Saab
  * @author Hans Muller
  * @author James Gosling
+ * @deprecated Use {@link CopyOnWriteArrayList} instead.
  */
+@Deprecated
 public class EventListenerList implements Serializable {
     /**
      * This passes back the event listener list as an array of ListenerType -

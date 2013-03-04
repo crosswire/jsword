@@ -76,7 +76,7 @@ public class THMLFilter implements Filter {
                         , Integer.toString(colNumber)
                         , Integer.toString(finalInput.length())
                         , Integer.toString(here)
-                        ,finalInput.substring(start, stop));
+                        , finalInput.substring(start, stop));
             } else {
                 log.warn("Could not fix {}({}) by {}: {}"
                         , book.getInitials()

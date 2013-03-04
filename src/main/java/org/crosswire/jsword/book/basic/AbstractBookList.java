@@ -22,9 +22,9 @@ package org.crosswire.jsword.book.basic;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.crosswire.common.util.CollectionUtil;
-import org.crosswire.common.util.EventListenerList;
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookFilter;
 import org.crosswire.jsword.book.BookFilterIterator;
@@ -42,38 +42,33 @@ import org.crosswire.jsword.book.BooksListener;
  * @author Joe Walker [joe at eireneh dot com]
  */
 public abstract class AbstractBookList implements BookList {
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.BookList#getBooks(org.crosswire.jsword.book
-     * .BookFilter)
+    /**
+     * Build a default BookList
+     */
+    public AbstractBookList() {
+        listeners = new CopyOnWriteArrayList<BooksListener>();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookList#getBooks(org.crosswire.jsword.book.BookFilter)
      */
     public List<Book> getBooks(BookFilter filter) {
         List<Book> temp = CollectionUtil.createList(new BookFilterIterator(getBooks(), filter));
         return Collections.unmodifiableList(temp);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.BookList#addBooksListener(org.crosswire.jsword
-     * .book.BooksListener)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookList#addBooksListener(org.crosswire.jsword.book.BooksListener)
      */
-    public synchronized void addBooksListener(BooksListener li) {
-        listeners.add(BooksListener.class, li);
+    public void addBooksListener(BooksListener li) {
+        listeners.add(li);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.BookList#removeBooksListener(org.crosswire.
-     * jsword.book.BooksListener)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookList#removeBooksListener(org.crosswire.jsword.book.BooksListener)
      */
-    public synchronized void removeBooksListener(BooksListener li) {
-        listeners.remove(BooksListener.class, li);
+    public  void removeBooksListener(BooksListener li) {
+        listeners.remove(li);
     }
 
     /**
@@ -86,24 +81,13 @@ public abstract class AbstractBookList implements BookList {
      * @param added
      *            Is it added?
      */
-    protected static synchronized void fireBooksChanged(Object source, Book book, boolean added) {
-        // Guaranteed to return a non-null array
-        Object[] contents = listeners.getListenerList();
-
-        // Process the listeners last to first, notifying
-        // those that are interested in this event
-        BooksEvent ev = null;
-        for (int i = contents.length - 2; i >= 0; i -= 2) {
-            if (contents[i] == BooksListener.class) {
-                if (ev == null) {
-                    ev = new BooksEvent(source, book, added);
-                }
-
-                if (added) {
-                    ((BooksListener) contents[i + 1]).bookAdded(ev);
-                } else {
-                    ((BooksListener) contents[i + 1]).bookRemoved(ev);
-                }
+    protected void fireBooksChanged(Object source, Book book, boolean added) {
+        BooksEvent ev = new BooksEvent(source, book, added);
+        for (BooksListener listener : listeners) {
+            if (added) {
+                listener.bookAdded(ev);
+            } else {
+                listener.bookRemoved(ev);
             }
         }
     }
@@ -111,5 +95,5 @@ public abstract class AbstractBookList implements BookList {
     /**
      * The list of listeners
      */
-    private static EventListenerList listeners = new EventListenerList();
+    private List<BooksListener> listeners = new CopyOnWriteArrayList<BooksListener>();
 }

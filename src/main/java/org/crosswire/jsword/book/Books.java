@@ -29,10 +29,10 @@ import java.util.Set;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.util.CollectionUtil;
-import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.PluginUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSOtherMsg;
+import org.crosswire.jsword.book.basic.AbstractBookList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,18 +45,15 @@ import org.slf4j.LoggerFactory;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith
  */
-public final class Books implements BookList {
+public final class Books extends AbstractBookList {
     /**
      * Create a singleton instance of the class. This is private to ensure that
      * only one can be created. This also makes the class final!
      */
     private Books() {
+        super();
         books = new BookSet();
         drivers = new HashSet<BookDriver>();
-        listeners = new EventListenerList();
-        threaded = false;
-
-        initialize(threaded);
     }
 
     /**
@@ -68,19 +65,21 @@ public final class Books implements BookList {
         return instance;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.book.BookList#getBooks()
      */
     public synchronized List<Book> getBooks() {
         return new BookSet(books);
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Search for the book by name. Looks for exact matches first,
+     * then searches case insensitive. If that doesn't work, matches
+     * the initials of the book first case sensitive, then insensitive.
+     * In all cases the whole name or the whole initials has to match.
      * 
-     * @see org.crosswire.jsword.book.BookList#getBook(java.lang.String)
+     * @param name The book to find
+     * @return the book or null
      */
     public synchronized Book getBook(String name) {
         if (name == null) {
@@ -120,13 +119,10 @@ public final class Books implements BookList {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.BookList#getBooks(org.crosswire.jsword.book
-     * .BookFilter)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.book.BookList#getBooks(org.crosswire.jsword.book.BookFilter)
      */
+    @Override
     public synchronized List<Book> getBooks(BookFilter filter) {
         List<Book> temp = CollectionUtil.createList(new BookFilterIterator(getBooks(), filter));
         return new BookSet(temp);
@@ -170,60 +166,6 @@ public final class Books implements BookList {
             }
         }
         return max;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.BookList#addBooksListener(org.crosswire.jsword
-     * .book.BooksListener)
-     */
-    public synchronized void addBooksListener(BooksListener li) {
-        listeners.add(BooksListener.class, li);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.BookList#removeBooksListener(org.crosswire.
-     * jsword.book.BooksListener)
-     */
-    public synchronized void removeBooksListener(BooksListener li) {
-        listeners.remove(BooksListener.class, li);
-    }
-
-    /**
-     * Kick of an event sequence
-     * 
-     * @param source
-     *            The event source
-     * @param book
-     *            The changed Book
-     * @param added
-     *            Is it added?
-     */
-    protected synchronized void fireBooksChanged(Object source, Book book, boolean added) {
-        // Guaranteed to return a non-null array
-        Object[] contents = listeners.getListenerList();
-
-        // Process the listeners last to first, notifying
-        // those that are interested in this event
-        BooksEvent ev = null;
-        for (int i = contents.length - 2; i >= 0; i -= 2) {
-            if (contents[i] == BooksListener.class) {
-                if (ev == null) {
-                    ev = new BooksEvent(source, book, added);
-                }
-
-                if (added) {
-                    ((BooksListener) contents[i + 1]).bookAdded(ev);
-                } else {
-                    ((BooksListener) contents[i + 1]).bookRemoved(ev);
-                }
-            }
-        }
     }
 
     /**
@@ -365,29 +307,9 @@ public final class Books implements BookList {
     }
 
     /**
-     * Registers all the drivers known to the program. Either in a thread or in
-     * the main thread
-     */
-    private void initialize(boolean doThreading) {
-        if (doThreading) {
-            Runnable runner = new Runnable() {
-                public void run() {
-                    autoRegister();
-                }
-            };
-
-            Thread init = new Thread(runner, "book-driver-registration");
-            init.setPriority(Thread.MIN_PRIORITY);
-            init.start();
-        } else {
-            autoRegister();
-        }
-    }
-
-    /**
      * Registers all the drivers known to the program.
      */
-    protected void autoRegister() {
+    private void autoRegister() {
         // This will classload them all and they will register themselves.
         Class<? extends BookDriver>[] types = PluginUtil.getImplementors(BookDriver.class);
 
@@ -426,25 +348,19 @@ public final class Books implements BookList {
     private Set<BookDriver> drivers;
 
     /**
-     * The list of listeners
-     */
-    private EventListenerList listeners;
-
-    /**
-     * Do we try to get clever in registering books?. Not until we can get it to
-     * work! At this time there is no way to set this or influence it So it just
-     * acts as a means of commenting out code.
-     */
-    private boolean threaded;
-
-    /**
      * The log stream
      */
     private static final Logger log = LoggerFactory.getLogger(Books.class);
 
     /**
-     * The singleton instance. This needs to be declared after all other statics
-     * it uses.
+     * The singleton instance.
+     * This needs to be declared after all other statics it uses.
      */
     private static final Books instance = new Books();
+    // And it cannot register books until it is fully constructed
+    // When this was the last call in the constructor it resulted
+    // in "instance" being null in something it called.
+    static {
+        instance.autoRegister();
+    }
 }

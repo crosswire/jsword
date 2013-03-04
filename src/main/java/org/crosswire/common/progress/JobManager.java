@@ -20,10 +20,11 @@
  */
 package org.crosswire.common.progress;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,35 +103,22 @@ public final class JobManager {
     /**
      * Add a listener to the list
      */
-    public static synchronized void addWorkListener(WorkListener li) {
-        List<WorkListener> temp = new ArrayList<WorkListener>();
-        temp.addAll(listeners);
-
-        if (!temp.contains(li)) {
-            temp.add(li);
-            listeners = temp;
-        }
+    public static void addWorkListener(WorkListener li) {
+        listeners.add(li);
     }
 
     /**
      * Remote a listener from the list
      */
-    public static synchronized void removeWorkListener(WorkListener li) {
-        if (listeners.contains(li)) {
-            List<WorkListener> temp = new ArrayList<WorkListener>();
-            temp.addAll(listeners);
-            temp.remove(li);
-            listeners = temp;
-        }
+    public static void removeWorkListener(WorkListener li) {
+        listeners.remove(li);
     }
 
     /**
      * Accessor for the currently known jobs
      */
-    public static synchronized Set<Progress> getJobs() {
-        Set<Progress> reply = new HashSet<Progress>();
-        reply.addAll(jobs);
-        return reply;
+    public static Iterator<Progress> iterator() {
+        return jobs.iterator();
     }
 
     /**
@@ -139,42 +127,30 @@ public final class JobManager {
     protected static void fireWorkProgressed(Progress job) {
         final WorkEvent ev = new WorkEvent(job);
 
-        // we need to keep the synchronized section very small to avoid deadlock
-        // certainly keep the event dispatch clear of the synchronized block or
-        // there will be a deadlock
-        final List<WorkListener> temp = new ArrayList<WorkListener>();
-        synchronized (JobManager.class) {
-            temp.addAll(listeners);
-        }
-
         // We ought only to tell listeners about jobs that are in our
         // list of jobs so we need to fire before delete.
-        if (listeners != null) {
-            for (WorkListener worker : temp) {
-                worker.workProgressed(ev);
-            }
+        for (WorkListener worker : listeners) {
+            worker.workProgressed(ev);
         }
 
         // Do we need to remove the job? Note that the section above will
         // probably execute after this so we will be firing events for jobs
         // that are no longer in our list of jobs. ho hum.
-        synchronized (JobManager.class) {
-            if (job.isFinished()) {
-                log.debug("job finished: {}", job.getJobName());
-                jobs.remove(job);
-            }
+        if (job.isFinished()) {
+            log.debug("job finished: {}", job.getJobName());
+            jobs.remove(job);
         }
     }
 
     /**
-     * List of listeners
+     * List of listeners using thread safe list
      */
-    private static List<WorkListener> listeners = new ArrayList<WorkListener>();
+    private static List<WorkListener> listeners = new CopyOnWriteArrayList<WorkListener>();
 
     /**
      * List of current jobs
      */
-    private static Set<Progress> jobs = new HashSet<Progress>();
+    private static Set<Progress> jobs = new CopyOnWriteArraySet<Progress>();
 
     /**
      * The log stream

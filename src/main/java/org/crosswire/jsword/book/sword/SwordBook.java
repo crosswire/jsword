@@ -171,7 +171,7 @@ public class SwordBook extends AbstractPassageBook {
             // Put the OSIS into the div
             div.addContent(osisContent);
             // Then put the div at the end of the contentList
-            contentList.add(div);            
+            contentList.add(div);
             return;
         }
 
@@ -192,7 +192,7 @@ public class SwordBook extends AbstractPassageBook {
         // follow the last element marked x-preverse.
         // Also, there are a good number of modules that have a title marked
         // type="psalm" and not canonical="true" which they should be.
-        
+
         // See if the text is marked up with verse elements
         // If it is then just add it.
         int start = 0;
@@ -253,7 +253,7 @@ public class SwordBook extends AbstractPassageBook {
             super.addOSIS(key, contentList, osisContent);
         }
         // Then put the verse at the end of the contentList
-        contentList.add(everse);            
+        contentList.add(everse);
     }
 
     @Override

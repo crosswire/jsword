@@ -157,7 +157,7 @@ public class WebResource {
             // Configure the host and port
             HttpHost proxy = new HttpHost(theProxyHost, theProxyPort == null ? -1 : theProxyPort.intValue());
             ConnRouteParams.setDefaultProxy(params, proxy);
-            
+
             //MJD start move all proxy code inside proxy specific block
             ProxySelectorRoutePlanner routePlanner = new ProxySelectorRoutePlanner(
                     client.getConnectionManager().getSchemeRegistry(),

@@ -25,11 +25,12 @@ import java.net.URI;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.crosswire.common.util.CWProject;
-import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PluginUtil;
@@ -51,6 +52,7 @@ public final class InstallManager {
      * Simple ctor
      */
     public InstallManager() {
+        listeners = new CopyOnWriteArrayList<InstallerListener>();
         installers = new LinkedHashMap<String, Installer>();
 
         try {
@@ -267,8 +269,8 @@ public final class InstallManager {
      * @param li
      *            The old listener
      */
-    public synchronized void addInstallerListener(InstallerListener li) {
-        listeners.add(InstallerListener.class, li);
+    public void addInstallerListener(InstallerListener li) {
+        listeners.add(li);
     }
 
     /**
@@ -277,8 +279,8 @@ public final class InstallManager {
      * @param li
      *            The new listener
      */
-    public synchronized void removeBooksListener(InstallerListener li) {
-        listeners.remove(InstallerListener.class, li);
+    public void removeBooksListener(InstallerListener li) {
+        listeners.remove(li);
     }
 
     /**
@@ -291,24 +293,13 @@ public final class InstallManager {
      * @param added
      *            Is it added?
      */
-    protected synchronized void fireInstallersChanged(Object source, Installer installer, boolean added) {
-        // Guaranteed to return a non-null array
-        Object[] contents = listeners.getListenerList();
-
-        // Process the listeners last to first, notifying
-        // those that are interested in this event
-        InstallerEvent ev = null;
-        for (int i = contents.length - 2; i >= 0; i -= 2) {
-            if (contents[i] == InstallerListener.class) {
-                if (ev == null) {
-                    ev = new InstallerEvent(source, installer, added);
-                }
-
-                if (added) {
-                    ((InstallerListener) contents[i + 1]).installerAdded(ev);
-                } else {
-                    ((InstallerListener) contents[i + 1]).installerRemoved(ev);
-                }
+    protected void fireInstallersChanged(Object source, Installer installer, boolean added) {
+        InstallerEvent ev = new InstallerEvent(source, installer, added);
+        for (InstallerListener listener : listeners) {
+            if (added) {
+                listener.installerAdded(ev);
+            } else {
+                listener.installerRemoved(ev);
             }
         }
     }
@@ -331,7 +322,7 @@ public final class InstallManager {
     /**
      * The list of listeners
      */
-    private static EventListenerList listeners = new EventListenerList();
+    private List<InstallerListener> listeners;
 
     /**
      * The log stream

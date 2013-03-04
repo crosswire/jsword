@@ -22,9 +22,9 @@ package org.crosswire.jsword.book.basic;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.crosswire.common.activate.Lock;
-import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.Language;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.book.Book;
@@ -62,7 +62,8 @@ public abstract class AbstractBook implements Book {
      * @param bmd the metadata that describes the book
      */
     public AbstractBook(BookMetaData bmd) {
-        setBookMetaData(bmd);
+        this.bmd = bmd;
+        this.listeners = new CopyOnWriteArrayList<IndexStatusListener>();
     }
 
     /* (non-Javadoc)
@@ -330,9 +331,9 @@ public abstract class AbstractBook implements Book {
      */
     public void addIndexStatusListener(IndexStatusListener listener) {
         if (listeners == null) {
-            listeners = new EventListenerList();
+            listeners = new CopyOnWriteArrayList<IndexStatusListener>();
         }
-        listeners.add(IndexStatusListener.class, listener);
+        listeners.add(listener);
     }
 
     /* (non-Javadoc)
@@ -343,7 +344,7 @@ public abstract class AbstractBook implements Book {
             return;
         }
 
-        listeners.remove(IndexStatusListener.class, listener);
+        listeners.remove(listener);
     }
 
     /**
@@ -358,19 +359,13 @@ public abstract class AbstractBook implements Book {
      *            the new value of the property (as an Object)
      */
     protected void firePropertyChange(IndexStatus oldStatus, IndexStatus newStatus) {
-        if (listeners != null) {
-            if (oldStatus != null && newStatus != null && oldStatus.equals(newStatus)) {
-                return;
-            }
+        if (oldStatus != null && newStatus != null && oldStatus.equals(newStatus)) {
+            return;
+        }
 
-            Object[] listenerList = listeners.getListenerList();
-            for (int i = 0; i <= listenerList.length - 2; i += 2) {
-                if (listenerList[i] == IndexStatusListener.class) {
-                    IndexStatusEvent ev = new IndexStatusEvent(this, newStatus);
-                    IndexStatusListener li = (IndexStatusListener) listenerList[i + 1];
-                    li.statusChanged(ev);
-                }
-            }
+        IndexStatusEvent ev = new IndexStatusEvent(this, newStatus);
+        for (IndexStatusListener listener : listeners) {
+            listener.statusChanged(ev);
         }
     }
 
@@ -442,5 +437,5 @@ public abstract class AbstractBook implements Book {
     /**
      * The list of property change listeners
      */
-    private EventListenerList listeners;
+    private List<IndexStatusListener> listeners;
 }

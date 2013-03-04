@@ -29,8 +29,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.crosswire.common.util.EventListenerList;
 import org.crosswire.common.util.LucidException;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PropertyMap;
@@ -94,7 +94,7 @@ public class Config implements Iterable<Choice> {
         keys = new ArrayList<String>();
         models = new ArrayList<Choice>();
         local = new PropertyMap();
-        listenerList = new EventListenerList();
+        listeners = new CopyOnWriteArrayList<ConfigListener>();
     }
 
     /**
@@ -427,7 +427,7 @@ public class Config implements Iterable<Choice> {
      * we capture an Exception
      */
     public void addConfigListener(ConfigListener li) {
-        listenerList.add(ConfigListener.class, li);
+        listeners.add(li);
     }
 
     /**
@@ -435,27 +435,16 @@ public class Config implements Iterable<Choice> {
      * whenever we capture an Exception
      */
     public void removeConfigListener(ConfigListener li) {
-        listenerList.remove(ConfigListener.class, li);
+        listeners.remove(li);
     }
 
     /**
      * A Choice got added
      */
-    protected void fireChoiceAdded(String key, Choice model) {
-        // Guaranteed to return a non-null array
-        Object[] listeners = listenerList.getListenerList();
-
-        // Process the listeners last to first, notifying
-        // those that are interested in this event
-        ConfigEvent ev = null;
-        for (int i = listeners.length - 2; i >= 0; i -= 2) {
-            if (listeners[i] == ConfigListener.class) {
-                if (ev == null) {
-                    ev = new ConfigEvent(this, key, model);
-                }
-
-                ((ConfigListener) listeners[i + 1]).choiceAdded(ev);
-            }
+   protected void fireChoiceAdded(String key, Choice model) {
+        ConfigEvent ev = new ConfigEvent(this, key, model);
+        for (ConfigListener listener : listeners) {
+            listener.choiceAdded(ev);
         }
     }
 
@@ -463,20 +452,9 @@ public class Config implements Iterable<Choice> {
      * A Choice got added
      */
     protected void fireChoiceRemoved(String key, Choice model) {
-        // Guaranteed to return a non-null array
-        Object[] listeners = listenerList.getListenerList();
-
-        // Process the listeners last to first, notifying
-        // those that are interested in this event
-        ConfigEvent ev = null;
-        for (int i = listeners.length - 2; i >= 0; i -= 2) {
-            if (listeners[i] == ConfigListener.class) {
-                if (ev == null) {
-                    ev = new ConfigEvent(this, key, model);
-                }
-
-                ((ConfigListener) listeners[i + 1]).choiceRemoved(ev);
-            }
+        ConfigEvent ev = new ConfigEvent(this, key, model);
+        for (ConfigListener listener : listeners) {
+            listener.choiceRemoved(ev);
         }
     }
 
@@ -508,7 +486,7 @@ public class Config implements Iterable<Choice> {
     /**
      * The list of listeners
      */
-    protected EventListenerList listenerList = new EventListenerList();
+    protected List<ConfigListener> listeners;
 
     /**
      * The log stream

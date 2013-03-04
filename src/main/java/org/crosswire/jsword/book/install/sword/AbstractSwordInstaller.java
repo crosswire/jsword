@@ -62,21 +62,22 @@ import com.ice.tar.TarEntry;
 import com.ice.tar.TarInputStream;
 
 /**
- * .
+ * The AbstractSwordInstaller provides for the common implementation of derived classes.
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith
  */
-/**
- *
- *
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
- * @author DM Smith
- */
 public abstract class AbstractSwordInstaller extends AbstractBookList implements Installer, Comparable<AbstractSwordInstaller> {
+
+    /**
+     * Build a default AbstractSwordInstaller
+     */
+    public AbstractSwordInstaller() {
+        super();
+    }
+
     /**
      * Utility to download a file from a remote site
      * 

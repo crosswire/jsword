@@ -20,7 +20,6 @@
  */
 package org.crosswire.common.util;
 
-import org.crosswire.jsword.JSOtherMsg;
 
 /**
  * This singleton class provides a way for a method to determine which class
