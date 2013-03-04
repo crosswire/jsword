@@ -56,7 +56,10 @@ public class BackendTest extends TestCase {
     public void testBackendKJVTextZ() throws Exception {
         String version = "KJV";
         String reference = "Romans 1:1-3";
-        String assertion = "<w lemma=\"strong:G3588 strong:G5207\" morph=\"robinson:T-GSM robinson:N-GSM\" src=\"2 3\">Son</w>";
+        String[] assertion = {
+                "<w lemma=\"strong:G3588 strong:G5207",
+                " morph=\"robinson:T-GSM robinson:N-GSM\" src=\"2 3\">Son</w>"
+        };
 
         backendTest(version, reference, assertion);
     }
