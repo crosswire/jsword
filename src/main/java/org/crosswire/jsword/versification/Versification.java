@@ -896,6 +896,25 @@ public class Versification implements ReferenceSystem, Serializable {
     }
 
     /**
+     * Determine the ordinal value for this versification given the
+     * ordinal value in a testament. If the ordinal is out of bounds it
+     * is constrained to be within the boundaries of the testament.
+     * This unwinds getTestamentOrdinal.
+     * 
+     * @param testament the testament in which the ordinal value pertains
+     * @param testamentOrdinal the ordinal value within the testament
+     * @return the ordinal value for the versification as a whole
+     */
+    public int getOrdinal(Testament testament, int testamentOrdinal) {
+        int ordinal = testamentOrdinal >= 0 ? testamentOrdinal : 0;
+        if (Testament.NEW == testament) {
+            ordinal = otMaxOrdinal + testamentOrdinal;
+            return ordinal <= ntMaxOrdinal ? ordinal : ntMaxOrdinal;
+        }
+        return ordinal <= otMaxOrdinal ? ordinal : otMaxOrdinal;
+    }
+
+    /**
      * Get the testament of a given verse
      */
     public Testament getTestament(int ordinal) {
