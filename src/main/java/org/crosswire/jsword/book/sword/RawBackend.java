@@ -24,11 +24,14 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import org.crosswire.common.util.IOUtil;
+import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.sword.state.OpenFileStateManager;
 import org.crosswire.jsword.book.sword.state.RawBackendState;
+import org.crosswire.jsword.passage.BitwisePassage;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.KeyUtil;
+import org.crosswire.jsword.passage.RocketPassage;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.versification.Testament;
 import org.crosswire.jsword.versification.Versification;
@@ -89,6 +92,74 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
             return false;
         } finally {
             OpenFileStateManager.release(initState);
+        }
+    }
+
+    @Override
+    public Key getGlobalKeyList() throws BookException {
+        RawBackendState rafBook = null;
+        try {
+            rafBook = initState();
+
+            String v11nName = getBookMetaData().getProperty(ConfigEntryType.VERSIFICATION).toString();
+            Versification v11n = Versifications.instance().getVersification(v11nName);
+
+            Testament[] testaments = new Testament[] {
+                    Testament.OLD, Testament.NEW
+            };
+
+            BitwisePassage passage = new RocketPassage(v11n);
+            passage.raiseEventSuppresion();
+            passage.raiseNormalizeProtection();
+
+            for (Testament currentTestament : testaments) {
+                RandomAccessFile idxRaf = currentTestament == Testament.NEW ? rafBook.getNtIdxRaf() : rafBook.getOtIdxRaf();
+
+                // If Bible does not contain the desired testament, then false
+                if (idxRaf == null) {
+                    // no keys in this testament
+                    continue;
+                }
+
+                int maxIndex = v11n.getCount(currentTestament) - 1;
+
+                // Read in the whole index, a few hundred Kb at most.
+                byte[] temp = SwordUtil.readRAF(idxRaf, 0, entrysize * maxIndex);
+
+                // For each entry of entrysize bytes, the length of the verse in bytes
+                // is in the last datasize bytes. If all bytes are 0, then there is no content.
+                if (datasize == 2) {
+                    for (int ii = 0; ii < temp.length; ii += entrysize) {
+                        // This can be simplified to temp[ii + 4] == 0 && temp[ii + 5] == 0.
+                        // int verseSize = SwordUtil.decodeLittleEndian16(temp, ii + 4);
+                        // if (verseSize > 0) {
+                        if (temp[ii + 4] != 0 || temp[ii + 5] != 0) {
+                            int ordinal = ii / entrysize;
+                            passage.addVersifiedOrdinal(v11n.getOrdinal(currentTestament, ordinal));
+                        }
+                    }
+                } else { // datasize == 4
+                    for (int ii = 0; ii < temp.length; ii += entrysize) {
+                        // This can be simplified to temp[ii + 4] == 0 && temp[ii + 5] == 0 && temp[ii + 6] == 0 && temp[ii + 7] == 0.
+                        // int verseSize = SwordUtil.decodeLittleEndian32(temp, ii + 4);
+                        // if (verseSize > 0) {
+                        if (temp[ii + 4] != 0 || temp[ii + 5] != 0 || temp[ii + 6] != 0 || temp[ii + 7] != 0) {
+                            int ordinal = ii / entrysize;
+                            passage.addVersifiedOrdinal(v11n.getOrdinal(currentTestament, ordinal));
+                        }
+                    }
+                    
+                }
+            }
+
+            passage.lowerNormalizeProtection();
+            passage.lowerEventSuppressionAndTest();
+
+            return passage;
+        } catch (IOException e) {
+            throw new BookException(JSMsg.gettext("Unable to read key list from book."));
+        } finally {
+            IOUtil.close(rafBook);
         }
     }
 

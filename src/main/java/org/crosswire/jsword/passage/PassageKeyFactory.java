@@ -96,21 +96,15 @@ public final class PassageKeyFactory {
 
     /**
      * Get a Passage containing all the Verses in this Versification.
+     * This differs from {@link Book#getGlobalKeyList} which gets the
+     * verses in the Book, which may be a small part of the whole.
      * 
      * @param v11n
      *            The Versification to which this Passage belongs.
      * @return the Passage with all the Verses in the Versification
      */
     public Key getGlobalKeyList(Versification v11n) {
-        Passage whole = null;
-        try {
-            // AV11N(DMS): Is this right?
-            whole = new ReadOnlyPassage(defaultType.createPassage(v11n, "Gen 1:1-Rev 22:21"), true);
-        } catch (NoSuchKeyException ex) {
-            assert false : ex;
-            whole = defaultType.createEmptyPassage(v11n);
-        }
-        return whole;
+        return new ReadOnlyPassage(KeyUtil.getPassage(v11n.getAllVerses()), true);
     }
 
     /**

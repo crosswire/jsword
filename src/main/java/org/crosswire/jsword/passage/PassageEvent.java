@@ -25,7 +25,7 @@ import java.util.EventObject;
 /**
  * Defines an event that encapsulates changes to a Passage. For many operations
  * on a Passage, calculating the extent of the changes is hard. In these cases
- * we default the range to Gen 1:1-Rev 22:21
+ * we default the range to the whole Bible.
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
