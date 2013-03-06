@@ -34,18 +34,24 @@ import org.crosswire.jsword.book.BookException;
  */
 public interface IndexManager {
     /**
-     * Detects if index data has been stored for this Bible already
+     * Detects if index data has been stored and is valid for this Bible.
+     * 
+     * @return true if the book has a usable index
      */
     boolean isIndexed(Book book);
 
     /**
      * Create a new Searcher.
+     * 
+     * @return an index that can be searched.
      */
     Index getIndex(Book book) throws BookException;
 
     /**
      * Read from the given source version to generate ourselves. On completion
      * of this method the index should be usable.
+     * 
+     * @param book The book that should be indexed
      */
     void scheduleIndexCreation(Book book);
 
@@ -63,6 +69,8 @@ public interface IndexManager {
     /**
      * Tidy up after yourself and remove all the files that make up any indexes
      * you created.
+     * 
+     * @param book the book who's index should be deleted.
      */
     void deleteIndex(Book book) throws BookException;
 
@@ -70,4 +78,19 @@ public interface IndexManager {
      * Close all indexes associated with this Index Manager
      */
     void closeAllIndexes();
+
+    /**
+     * Obtain the current IndexPolicy. Defaults to IndexPolicyAdapter.
+     * 
+     * @return the current IndexPolicy
+     */
+    IndexPolicy getIndexPolicy();
+
+    /**
+     * Set the desired IndexPolicy. Setting to null will cause the
+     * IndexPolicyAdapter to be used.
+     * 
+     * @param policy the IndexPolicy to use when creating indexes.
+     */
+    void setIndexPolicy(IndexPolicy policy);
 }

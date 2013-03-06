@@ -40,10 +40,10 @@ import org.apache.lucene.search.Searcher;
 import org.apache.lucene.search.TopScoreDocCollector;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.progress.Progress;
+import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSMsg;
@@ -54,6 +54,7 @@ import org.crosswire.jsword.book.FeatureType;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.index.AbstractIndex;
 import org.crosswire.jsword.index.IndexManager;
+import org.crosswire.jsword.index.IndexPolicy;
 import org.crosswire.jsword.index.IndexStatus;
 import org.crosswire.jsword.index.lucene.analysis.LuceneAnalyzer;
 import org.crosswire.jsword.index.search.SearchModifier;
@@ -117,6 +118,12 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
     public static final String FIELD_MORPHOLOGY = "morph";
 
     /**
+     * An estimate of the percent of time spent indexing.
+     * The remaining time, if any, is spent doing cleanup.
+     */
+    private static final int WORK_ESTIMATE = 98;
+
+    /**
      * Read an existing index and use it.
      * 
      * @throws BookException
@@ -140,8 +147,7 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
      * @throws BookException
      *             If we fail to read the index files
      */
-    public LuceneIndex(Book book, URI storage, boolean create) throws BookException {
-        assert create;
+    public LuceneIndex(Book book, URI storage, IndexPolicy policy) throws BookException {
 
         this.book = book;
         File finalPath = null;
@@ -160,47 +166,41 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
 
         IndexStatus finalStatus = IndexStatus.UNDONE;
 
-        Analyzer analyzer = new LuceneAnalyzer(book);
-
         List<Key> errors = new ArrayList<Key>();
+        // Build to another location and rename in the end.
         File tempPath = new File(path + '.' + IndexStatus.CREATING.toString());
 
+        // Ensure that the temp path is gone
+        // It is not good for it to have been leftover from before.
+        if (tempPath.exists()) {
+            FileUtil.delete(tempPath);
+        }
+
         try {
-            //Lock on metadata to allow creation of multiple indexes, so long as they are on different books
-            synchronized (book.getBookMetaData()) {
+            // When misconfigured, this can throw errors.
+            Analyzer analyzer = new LuceneAnalyzer(book);
+
+            // Lock on metadata to allow creation of multiple indexes, so long as they are on different books.
+            // Otherwise lock on a single object to make this serial
+            Object mutex = policy.isSerial() ? CREATING : book.getBookMetaData();
+            synchronized (mutex) {
 
                 book.setIndexStatus(IndexStatus.CREATING);
 
-                // An index is created by opening an IndexWriter with the create
-                // argument set to true.
-                // IndexWriter writer = new
-                // IndexWriter(tempPath.getCanonicalPath(), analyzer, true);
+                IndexWriter writer = null;
+                try {
+                    // Write the core index to disk.
+                    final Directory destination = FSDirectory.open(new File(tempPath.getCanonicalPath()));
+                    writer = new IndexWriter(destination, analyzer, true, IndexWriter.MaxFieldLength.UNLIMITED);
+                    writer.setRAMBufferSizeMB(policy.getRAMBufferSize());
 
-                // Create the index in core.
-                final RAMDirectory ramDir = new RAMDirectory();
-                IndexWriter writer = new IndexWriter(ramDir, analyzer, true, IndexWriter.MaxFieldLength.UNLIMITED);
+                    generateSearchIndexImpl(job, errors, writer, book.getGlobalKeyList(), 0, policy);
 
-                generateSearchIndexImpl(job, errors, writer, book.getGlobalKeyList(), 0);
-
-                // TRANSLATOR: Progress label for optimizing a search index. This may take a bit of time, so we have a label for it.
-                job.setSectionName(JSMsg.gettext("Optimizing"));
-                job.setWork(95);
-
-                // Consolidate the index into the minimum number of files.
-                // writer.optimize(); /* Optimize is done by addIndexes */
-                writer.close();
-
-                // Write the core index to disk.
-                final Directory destination = FSDirectory.open(new File(tempPath.getCanonicalPath()));
-                IndexWriter fsWriter = new IndexWriter(destination, analyzer, true, IndexWriter.MaxFieldLength.UNLIMITED);
-                fsWriter.addIndexesNoOptimize(new Directory[] {
-                    ramDir
-                });
-                fsWriter.optimize();
-                fsWriter.close();
-
-                // Free up the space used by the ram directory
-                ramDir.close();
+                } finally {
+                    if (writer != null) {
+                        writer.close();
+                    }
+                }
 
                 job.setCancelable(false);
                 if (!job.isFinished()) {
@@ -224,9 +224,8 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
                     // This message gives a listing of them to the user.
                     Reporter.informUser(this, JSMsg.gettext("The following verses have errors and could not be indexed\n{0}", buf));
                 }
-
+                initDirectoryAndSearcher();
             }
-            initDirectoryAndSearcher();
         } catch (IOException ex) {
             job.cancel();
             // TRANSLATOR: Common error condition: Some error happened while creating a search index.
@@ -234,11 +233,15 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
         } finally {
             book.setIndexStatus(finalStatus);
             job.done();
+            // Ensure that the temp path is gone - errors can leave it there and cause further problems.
+            if (tempPath.exists()) {
+                FileUtil.delete(tempPath);
+            }
         }
     }
 
     /**
-     * Inits the directory and searcher.
+     * Initializes the directory and searcher.
      */
     private void initDirectoryAndSearcher() {
         try {
@@ -249,10 +252,8 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.index.search.Index#findWord(java.lang.String)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.index.Index#find(java.lang.String)
      */
     public Key find(String search) throws BookException {
         String v11nName = book.getBookMetaData().getProperty("Versification").toString();
@@ -262,6 +263,7 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
         Key results = null;
 
         if (search != null) {
+            Throwable theCause = null;
             try {
                 Analyzer analyzer = new LuceneAnalyzer(book);
 
@@ -309,22 +311,18 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
                     }
                 }
             } catch (IOException e) {
-                // The VerseCollector may throw IOExceptions that merely wrap a
-                // NoSuchVerseException
+                // The VerseCollector may throw IOExceptions that merely wrap a NoSuchVerseException
                 Throwable cause = e.getCause();
-                if (cause instanceof NoSuchVerseException) {
-                    // TRANSLATOR: Error condition: An unexpected error happened that caused search to fail.
-                    throw new BookException(JSMsg.gettext("Search failed."), cause);
-                }
-
-                // TRANSLATOR: Error condition: An unexpected error happened that caused search to fail.
-                throw new BookException(JSMsg.gettext("Search failed."), e);
+                theCause = cause instanceof NoSuchVerseException ? cause : e;
             } catch (NoSuchVerseException e) {
-                // TRANSLATOR: Error condition: An unexpected error happened that caused search to fail.
-                throw new BookException(JSMsg.gettext("Search failed."), e);
+                theCause = e;
             } catch (ParseException e) {
+                theCause = e;
+            }
+
+            if (theCause != null) {
                 // TRANSLATOR: Error condition: An unexpected error happened that caused search to fail.
-                throw new BookException(JSMsg.gettext("Search failed."), e);
+                throw new BookException(JSMsg.gettext("Search failed."), theCause);
             }
         }
 
@@ -338,15 +336,16 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
         return results;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.index.search.Index#getKey(java.lang.String)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.index.Index#getKey(java.lang.String)
      */
     public Key getKey(String name) throws NoSuchKeyException {
         return book.getKey(name);
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.index.Index#close()
+     */
     public final void close() {
         try {
             searcher.close();
@@ -366,15 +365,16 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
 
     /**
      * Dig down into a Key indexing as we go.
+     * @param policy 
      */
-    private void generateSearchIndexImpl(Progress job, List<Key> errors, IndexWriter writer, Key key, int count) throws BookException, IOException {
+    private void generateSearchIndexImpl(Progress job, List<Key> errors, IndexWriter writer, Key key, int count, IndexPolicy policy) throws BookException, IOException {
         String v11nName = book.getBookMetaData().getProperty("Versification").toString();
         Versification v11n = Versifications.instance().getVersification(v11nName);
-        boolean hasStrongs = book.getBookMetaData().hasFeature(FeatureType.STRONGS_NUMBERS);
-        boolean hasXRefs = book.getBookMetaData().hasFeature(FeatureType.SCRIPTURE_REFERENCES);
-        boolean hasNotes = book.getBookMetaData().hasFeature(FeatureType.FOOTNOTES);
-        boolean hasHeadings = book.getBookMetaData().hasFeature(FeatureType.HEADINGS);
-        boolean hasMorphology = book.getBookMetaData().hasFeature(FeatureType.MORPHOLOGY);
+        boolean includeStrongs = book.getBookMetaData().hasFeature(FeatureType.STRONGS_NUMBERS) && policy.isStrongsIndexed();
+        boolean includeXrefs = book.getBookMetaData().hasFeature(FeatureType.SCRIPTURE_REFERENCES) && policy.isXrefIndexed();
+        boolean includeNotes = book.getBookMetaData().hasFeature(FeatureType.FOOTNOTES) && policy.isNoteIndexed();
+        boolean includeHeadings = book.getBookMetaData().hasFeature(FeatureType.HEADINGS) && policy.isTitleIndexed();
+        boolean includeMorphology = book.getBookMetaData().hasFeature(FeatureType.MORPHOLOGY) && policy.isMorphIndexed();
 
         String oldRootName = "";
         int percent = 0;
@@ -394,79 +394,95 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
 
         int size = key.getCardinality();
         int subCount = count;
+        log.debug("Number of keys = {}", Integer.toString(size));
         for (Key subkey : key) {
+            // Bibles and verse based commentaries don't have keys with children.
+            // However, tree keyed Books do. So we only index the leaf keys.
+            // FIXME(DMS): Should not use recursion!!!!
             if (subkey.canHaveChildren()) {
-                generateSearchIndexImpl(job, errors, writer, subkey, subCount);
-            } else {
-                data = new BookData(book, subkey);
-                osis = null;
+                generateSearchIndexImpl(job, errors, writer, subkey, subCount, policy);
+                continue;
+            }
 
-                try {
-                    osis = data.getOsisFragment();
-                } catch (BookException e) {
-                    errors.add(subkey);
-                    continue;
-                }
+            data = new BookData(book, subkey);
+            osis = null;
 
-                // Remove all fields from the document
-                doc.getFields().clear();
+            try {
+                osis = data.getOsisFragment();
+            } catch (BookException e) {
+                errors.add(subkey);
+                continue;
+            }
 
-                // Do the actual indexing
-                // Always add the key
-                keyField.setValue(subkey.getOsisRef());
-                doc.add(keyField);
+            // Remove all fields from the document
+            doc.getFields().clear();
 
-                addField(doc, bodyField, OSISUtil.getCanonicalText(osis));
+            // Do the actual indexing
+            // Always add the key
+            keyField.setValue(subkey.getOsisRef());
+            doc.add(keyField);
 
-                if (hasStrongs) {
-                    addField(doc, strongField, OSISUtil.getStrongsNumbers(osis));
-                }
+            addField(doc, bodyField, OSISUtil.getCanonicalText(osis));
 
-                if (hasXRefs) {
-                    addField(doc, xrefField, OSISUtil.getReferences(v11n, osis));
-                }
+            if (includeStrongs) {
+                addField(doc, strongField, OSISUtil.getStrongsNumbers(osis));
+            }
 
-                if (hasNotes) {
-                    addField(doc, noteField, OSISUtil.getNotes(osis));
-                }
+            if (includeXrefs) {
+                addField(doc, xrefField, OSISUtil.getReferences(v11n, osis));
+            }
 
-                if (hasHeadings) {
-                    addField(doc, headingField, OSISUtil.getHeadings(osis));
-                }
+            if (includeNotes) {
+                addField(doc, noteField, OSISUtil.getNotes(osis));
+            }
 
-                if (hasMorphology) {
-                    addField(doc, morphologyField, OSISUtil.getMorphologiesWithStrong(osis));
-                }
+            if (includeHeadings) {
+                addField(doc, headingField, OSISUtil.getHeadings(osis));
+            }
 
-                // Add the document if we added more than just the key.
-                if (doc.getFields().size() > 1) {
-                    writer.addDocument(doc);
-                }
+            if (includeMorphology) {
+                addField(doc, morphologyField, OSISUtil.getMorphologiesWithStrong(osis));
+            }
 
-                // report progress
-                rootName = subkey.getRootName();
-                if (!rootName.equals(oldRootName)) {
-                    oldRootName = rootName;
-                    job.setSectionName(rootName);
-                }
+            // Add the document if we added more than just the key.
+            if (doc.getFields().size() > 1) {
+                writer.addDocument(doc);
+            }
 
-                subCount++;
-                int oldPercent = percent;
-                percent = 95 * subCount / size;
+            // report progress
+            rootName = subkey.getRootName();
+            if (!rootName.equals(oldRootName)) {
+                oldRootName = rootName;
+                // Note, this does not cause progress to be updated
+                // It will show up the next time progress is updated.
+                job.setSectionName(rootName);
+            }
 
-                if (oldPercent != percent) {
-                    job.setWork(percent);
-                }
+            subCount++;
+            int oldPercent = percent;
+            percent = WORK_ESTIMATE * subCount / size;
 
-                // This could take a long time ...
-                Thread.yield();
-                if (Thread.currentThread().isInterrupted()) {
-                    break;
-                }
+            // Only send out a max of 95 progress updates
+            if (oldPercent != percent) {
+                job.setWork(percent);
+            }
+
+            // This could take a long time ...
+            Thread.yield();
+            if (Thread.currentThread().isInterrupted()) {
+                break;
             }
         }
     }
 
+    /**
+     * Add the text to the Field and put the Field in the document,
+     * ignoring null and empty text.
+     * 
+     * @param doc The Document to which the Field should be added
+     * @param field The Field to add
+     * @param text The text for the field
+     */
     private void addField(Document doc, Field field, String text) {
         if (text != null && text.length() > 0) {
             field.setValue(text);
@@ -485,17 +501,10 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
         return searcher;
     }
 
-
-
-    /**
-     * The log stream
-     */
-    private static final Logger log = LoggerFactory.getLogger(LuceneIndex.class);
-
     /**
      * The Book that we are indexing
      */
-    protected Book book;
+    private Book book;
 
     /**
      * The location of this index
@@ -505,10 +514,21 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
     /**
      * The Lucene directory for the path.
      */
-    protected Directory directory;
+    private Directory directory;
 
     /**
      * The Lucene search engine
      */
-    protected Searcher searcher;
+    private Searcher searcher;
+
+    /**
+     * A synchronization lock point to prevent us from doing 2 index runs at a
+     * time.
+     */
+    private static final Object CREATING = new Object();
+
+    /**
+     * The log stream
+     */
+    private static final Logger log = LoggerFactory.getLogger(LuceneIndex.class);
 }
