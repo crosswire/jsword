@@ -6,10 +6,8 @@
 	<!--=======================================================================-->
 	<!-- override -->
 	<property name="website.jsword.dir"		value="${dest.install.web.dir}"/>
-	<property name="dest.install.web.dir"	value="${website.jsword.dir}"/>
 	<!-- override -->
-	<property name="package.jsword.dir"		value="${dest.install.dir}"/>
-	<property name="dest.install.dir"		value="${package.jsword.dir}"/>
+	<property name="package.jsword.dir"		value="${dest.install.pkg.dir}"/>
 
 	<!--=======================================================================
 	== Override the prepare target to get dependency jars.

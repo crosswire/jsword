@@ -47,12 +47,9 @@
 	<property name="dest.dir"				value="target" />
 	<property name="dest.main.classes.dir"	value="${dest.dir}/main/classes" />
 	<property name="dest.test.classes.dir"	value="${dest.dir}/test/classes" />
-	<property name="dest.install.dir"		value="${jsword.home}/${dest.dir}/installed" />
-	<property name="dest.install.web.dir"	value="${dest.install.dir}/${ant.project.name}/webapp" />
-	<!-- Report Home is designed to be over-ridden with a better location for reports. -->
-	<property name="report.home"            location="${dest.install.dir}"/>
-	<!-- Each project builds its reports to its own directory. -->
-	<property name="report.dir"				location="${report.home}/${ant.project.name}/report" />
+	<property name="dest.install.pkg.dir"	value="${jsword.home}/${dest.dir}/${ant.project.name}" />
+	<property name="dest.install.web.dir"	value="${jsword.home}/${dest.dir}/${ant.project.name}" />
+	<property name="report.dir"				value="${jsword.home}/${dest.dir}/${ant.project.name}" />
 
 	<!-- override -->
 	<property name="keystore.devfile"		location="${jsword.home}/crosswire.keystore" />
@@ -330,8 +327,8 @@
 			description="Install all the files"
 		    depends="package">
 		<!-- Create a flag file used to determine whether this task finished successfully -->
-		<mkdir dir="${dest.install.dir}"/>
-		<touch file="${dest.install.dir}/.flagfile"/>
+		<mkdir dir="${dest.install.pkg.dir}"/>
+		<touch file="${dest.install.pkg.dir}/.flagfile"/>
 	</target>
 
 	<target	name="package"
@@ -346,66 +343,29 @@
 	<!--=======================================================================-->
 	<!-- source packages -->
 	<target	name="package.src">
-		<mkdir dir="${dest.install.dir}"/>
-		<zip zipfile="${dest.install.dir}/${name.timestamped}-src.zip">
-			<zipfileset prefix="${name.versioned}" dir="${src.main.java.dir}"/>
-			<zipfileset prefix="${name.versioned}" dir="${src.main.res.dir}"/>
-		</zip>
-		<symlink link="${dest.install.dir}/${ant.project.name}-latest-src.zip"
-             resource="${dest.install.dir}/${name.timestamped}-src.zip"
-             overwrite="true"
-             failonerror="false"/>
-
-		<tar tarfile="${dest.install.dir}/${name.timestamped}-src.tar.gz" compression="gzip">
-			<zipfileset src="${dest.install.dir}/${name.timestamped}-src.zip"/>
+		<mkdir dir="${dest.install.pkg.dir}"/>
+		<tar tarfile="${dest.install.pkg.dir}/${name.timestamped}-src.tar.gz" compression="gzip">
+			<tarfileset prefix="${name.versioned}" dir="${src.main.java.dir}"/>
+			<tarfileset prefix="${name.versioned}" dir="${src.main.res.dir}"/>
 		</tar>
-		<symlink link="${dest.install.dir}/${ant.project.name}-latest-src.tar.gz"
-             resource="${dest.install.dir}/${name.timestamped}-src.tar.gz"
-             overwrite="true"
-             failonerror="false"/>
 	</target>
 
 	<!-- doc packages -->
 	<target	name="package.doc"
 			depends="javadoc">
-		<mkdir dir="${dest.install.dir}"/>
-		<zip zipfile="${dest.install.dir}/${name.timestamped}-doc.zip">
-			<zipfileset prefix="${name.versioned}" dir="${javadoc.report}"/>
-		</zip>
-		<symlink link="${dest.install.dir}/${ant.project.name}-latest-doc.zip"
-             resource="${dest.install.dir}/${name.timestamped}-doc.zip"
-             overwrite="true"
-             failonerror="false"/>
-
-		<tar tarfile="${dest.install.dir}/${name.timestamped}-doc.tar.gz" compression="gzip">
-			<zipfileset src="${dest.install.dir}/${name.timestamped}-doc.zip"/>
+		<mkdir dir="${dest.install.pkg.dir}"/>
+		<tar tarfile="${dest.install.pkg.dir}/${name.timestamped}-doc.tar.gz" compression="gzip">
+			<tarfileset prefix="${name.versioned}" dir="${javadoc.report}"/>
 		</tar>
-		<symlink link="${dest.install.dir}/${ant.project.name}-latest-doc.tar.gz"
-             resource="${dest.install.dir}/${name.timestamped}-doc.tar.gz"
-             overwrite="true"
-             failonerror="false"/>
 	</target>
 
 	<!-- binary packages -->
 	<target	name="package.bin"
 			depends="build">
-		<mkdir dir="${dest.install.dir}"/>
-		<zip zipfile="${dest.install.dir}/${name.timestamped}-bin.zip">
-			<zipfileset prefix="${name.versioned}" dir="${lib.dir}" includes="${name.versioned}.jar"/>
-		</zip>
-		<symlink link="${dest.install.dir}/${ant.project.name}-latest-bin.zip"
-             resource="${dest.install.dir}/${name.timestamped}-bin.zip"
-             overwrite="true"
-             failonerror="false"/>
-
-		<tar tarfile="${dest.install.dir}/${name.timestamped}-bin.tar.gz" compression="gzip">
-			<zipfileset src="${dest.install.dir}/${name.timestamped}-bin.zip"/>
+		<mkdir dir="${dest.install.pkg.dir}"/>
+		<tar tarfile="${dest.install.pkg.dir}/${name.timestamped}-bin.tar.gz" compression="gzip">
+			<tarfileset prefix="${name.versioned}" dir="${lib.dir}" includes="${name.versioned}.jar"/>
 		</tar>
-		<symlink link="${dest.install.dir}/${ant.project.name}-latest-bin.tar.gz"
-             resource="${dest.install.dir}/${name.timestamped}-bin.tar.gz"
-             overwrite="true"
-             failonerror="false"/>
-
 	</target>
 
 	<property name="javadoc.report"			location="${report.dir}/javadoc" />
