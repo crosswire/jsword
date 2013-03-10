@@ -327,16 +327,21 @@
 	== it will allow for the definition of any other needed work.
 	=========================================================================-->
 	<target	name="install"
-		    depends="package"
-			description="Install all the files">
+			description="Install all the files"
+		    depends="package">
 		<!-- Create a flag file used to determine whether this task finished successfully -->
 		<mkdir dir="${dest.install.dir}"/>
 		<touch file="${dest.install.dir}/.flagfile"/>
 	</target>
 
 	<target	name="package"
-			depends="package.src, package.doc, package.bin"
-			description="Install project specific files and directories"/>
+			description="Create basic project packaging"
+			depends="package.src, package.doc, package.bin">
+		<antcall target="package.extra"/>
+	</target>
+
+	<target	name="package.extra"
+			description="Create extra project packaging"/>
 
 	<!--=======================================================================-->
 	<!-- source packages -->
