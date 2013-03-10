@@ -372,21 +372,22 @@
 	<!--=======================================================================-->
 	<!-- source packages -->
 	<target	name="package.src">
-		<zip zipfile="${dest.install.dir}/${ant.project.name}-${release.version}-${today}-src.zip">
-			<zipfileset prefix="${ant.project.name}-${release.version}" dir="${src.main.java.dir}"/>
-			<zipfileset prefix="${ant.project.name}-${release.version}" dir="${src.main.res.dir}"/>
+		<property name="name.versioned" value="${ant.project.name}-${release.version}"/>
+		<property name="name.timestamped" value="${dest.install.dir}/${name.versioned}-${today}"/>
+		<zip zipfile="${name.timestamped}-src.zip">
+			<zipfileset prefix="${name.versioned}" dir="${src.main.java.dir}"/>
+			<zipfileset prefix="${name.versioned}" dir="${src.main.res.dir}"/>
 		</zip>
 		<symlink link="${dest.install.dir}/${ant.project.name}-latest-src.zip"
-             resource="${dest.install.dir}/${ant.project.name}-${release.version}-${today}-src.zip"
+             resource="${name.timestamped}-src.zip"
              overwrite="true"
              failonerror="false"/>
 
-		<tar tarfile="${dest.install.dir}/${ant.project.name}-${release.version}-${today}-src.tar.gz" compression="gzip">
-			<tarfileset prefix="${ant.project.name}-${release.version}" dir="${src.main.java.dir}"/>
-			<tarfileset prefix="${ant.project.name}-${release.version}" dir="${src.main.res.dir}"/>
+		<tar tarfile="${name.timestamped}-src.tar.gz" compression="gzip">
+			<zipfileset src="${name.timestamped}-src.zip"/>
 		</tar>
 		<symlink link="${dest.install.dir}/${ant.project.name}-latest-src.tar.gz"
-             resource="${dest.install.dir}/${ant.project.name}-${release.version}-${today}-src.tar.gz"
+             resource="${name.timestamped}-src.tar.gz"
              overwrite="true"
              failonerror="false"/>
 	</target>
@@ -394,19 +395,21 @@
 	<!-- doc packages -->
 	<target	name="package.doc"
 			depends="javadoc">
-		<zip zipfile="${dest.install.dir}/${ant.project.name}-${release.version}-${today}-doc.zip">
-			<zipfileset prefix="${ant.project.name}-${release.version}" dir="${javadoc.report}"/>
+		<property name="name.versioned" value="${ant.project.name}-${release.version}"/>
+		<property name="name.timestamped" value="${dest.install.dir}/${name.versioned}-${today}"/>
+		<zip zipfile="${name.timestamped}-doc.zip">
+			<zipfileset prefix="${name.versioned}" dir="${javadoc.report}"/>
 		</zip>
 		<symlink link="${dest.install.dir}/${ant.project.name}-latest-doc.zip"
-             resource="${dest.install.dir}/${ant.project.name}-${release.version}-${today}-doc.zip"
+             resource="${name.timestamped}-doc.zip"
              overwrite="true"
              failonerror="false"/>
 
-		<tar tarfile="${dest.install.dir}/${ant.project.name}-${release.version}-${today}-doc.tar.gz" compression="gzip">
-			<tarfileset prefix="${ant.project.name}-${release.version}" dir="${javadoc.report}"/>
+		<tar tarfile="${name.timestamped}-doc.tar.gz" compression="gzip">
+			<zipfileset src="${name.timestamped}-doc.zip"/>
 		</tar>
 		<symlink link="${dest.install.dir}/${ant.project.name}-latest-doc.tar.gz"
-             resource="${dest.install.dir}/${ant.project.name}-${release.version}-${today}-doc.tar.gz"
+             resource="${name.timestamped}-doc.tar.gz"
              overwrite="true"
              failonerror="false"/>
 	</target>
@@ -414,19 +417,21 @@
 	<!-- binary packages -->
 	<target	name="package.bin"
 			depends="build">
-		<zip zipfile="${dest.install.dir}/${ant.project.name}-${release.version}-${today}-bin.zip">
-			<zipfileset prefix="${ant.project.name}-${release.version}" dir="${dest.install.dir}"/>
+		<property name="name.versioned" value="${ant.project.name}-${release.version}"/>
+		<property name="name.timestamped" value="${dest.install.dir}/${name.versioned}-${today}"/>
+		<zip zipfile="${name.timestamped}-bin.zip">
+			<zipfileset prefix="${name.versioned}" dir="${dest.install.dir}" file="${name.versioned}.jar"/>
 		</zip>
 		<symlink link="${dest.install.dir}/${ant.project.name}-latest-bin.zip"
-             resource="${dest.install.dir}/${ant.project.name}-${release.version}-${today}-bin.zip"
+             resource="${name.timestamped}-bin.zip"
              overwrite="true"
              failonerror="false"/>
 
-		<tar tarfile="${dest.install.dir}/${ant.project.name}-${release.version}-${today}-bin.tar.gz" compression="gzip">
-			<tarfileset prefix="${ant.project.name}-${release.version}" dir="${dest.install.dir}"/>
+		<tar tarfile="${name.timestamped}-bin.tar.gz" compression="gzip">
+			<zipfileset src="${name.timestamped}-bin.zip"/>
 		</tar>
 		<symlink link="${dest.install.dir}/${ant.project.name}-latest-bin.tar.gz"
-             resource="${dest.install.dir}/${ant.project.name}-${release.version}-${today}-bin.tar.gz"
+             resource="${name.timestamped}-bin.tar.gz"
              overwrite="true"
              failonerror="false"/>
 
