@@ -233,21 +233,10 @@
 	=========================================================================-->
 	<target	name="build"
 			description="Run a full build"
-			depends="compile, jar.check"
-			unless="jar.uptodate">
+			depends="compile">
 		<jar jarfile="${lib.dir}/${ant.project.name}-${release.version}.jar">
 			<fileset dir="${dest.main.classes.dir}" />
 		</jar>
-	</target>
-
-	<target	name="jar.check">
-		<uptodate
-				property="jar.uptodate"
-				targetfile="${lib.dir}/${ant.project.name}-${release.version}.jar">
-			<!-- check java that's included in jar and associated resources -->
-			<srcfiles dir="${dest.main.classes.dir}" includes="**/*"/>
-		</uptodate>
-		<echo message="jar.uptodate result: ${jar.uptodate}"/>
 	</target>
 
 	<!--=======================================================================
@@ -260,8 +249,7 @@
 
 	<!-- Compile the main source -->
 	<target	name="compile.main"
-			depends="prepare, compile.main.check"
-			unless="source.uptodate"
+			depends="prepare"
 			if="src.main.java.present">
 		<mkdir dir="${dest.main.classes.dir}" />
 		<!--		<echo>"$${ant.refid:classpath.runtime}=${ant.refid:classpath.runtime}"</echo> -->
@@ -290,17 +278,6 @@
 				preservelastmodified="true">
 			<fileset dir="${src.main.res.dir}" includes="**" />
 		</copy>
-	</target>
-
-	<!-- Check to see if the jar needs to be rebuilt. -->
-	<target	name="compile.main.check">
-		<uptodate
-				property="source.uptodate"
-				targetfile="${lib.dir}/${ant.project.name}-${release.version}.jar">
-			<srcfiles dir="${src.main.java.dir}" includes="**/*"/>
-			<srcfiles dir="${src.main.res.dir}" includes="**/*"/>
-		</uptodate>
-		<echo message="source.uptodate result: ${source.uptodate}" />
 	</target>
 
 	<!--=======================================================================
@@ -346,7 +323,6 @@
 	== it will allow for the definition of any other needed work.
 	=========================================================================-->
 	<target	name="install"
-			unless="install.uptodate"
 			description="Install all the files">
 		<mkdir dir="${dest.install.dir}"/>
 		<antcall target="package.src"/>
@@ -359,15 +335,6 @@
 
 	<target	name="package"
 			description="Install project specific files and directories"/>
-
-	<target	name="install.check">
-		<uptodate
-				property="install.uptodate"
-				targetfile="${dest.install.dir}/.flagfile">
-			<srcfiles dir="${lib.dir}" includes="*"/>
-		</uptodate>
-		<echo message="install.uptodate result: ${install.uptodate}"/>
-	</target>
 
 	<!--=======================================================================-->
 	<!-- source packages -->
@@ -420,7 +387,7 @@
 		<property name="name.versioned" value="${ant.project.name}-${release.version}"/>
 		<property name="name.timestamped" value="${dest.install.dir}/${name.versioned}-${today}"/>
 		<zip zipfile="${name.timestamped}-bin.zip">
-			<zipfileset prefix="${name.versioned}" dir="${dest.install.dir}" file="${name.versioned}.jar"/>
+			<zipfileset prefix="${name.versioned}" dir="${lib.dir}" includes="${name.versioned}.jar"/>
 		</zip>
 		<symlink link="${dest.install.dir}/${ant.project.name}-latest-bin.zip"
              resource="${name.timestamped}-bin.zip"
