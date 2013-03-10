@@ -246,8 +246,6 @@
 				targetfile="${lib.dir}/${ant.project.name}-${release.version}.jar">
 			<!-- check java that's included in jar and associated resources -->
 			<srcfiles dir="${dest.main.classes.dir}" includes="**/*"/>
-			<!-- also check test cases and associated resources -->
-			<srcfiles dir="${dest.test.classes.dir}"  includes="**/*"/>
 		</uptodate>
 		<echo message="jar.uptodate result: ${jar.uptodate}"/>
 	</target>
