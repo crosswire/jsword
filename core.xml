@@ -12,7 +12,9 @@
 	=========================================================================-->
 	<property name="release.version"		value="2.0-beta" />
 
-	<tstamp><format property="today" pattern="yyyyMMdd"/></tstamp>
+	<tstamp><format property="today" pattern="-yyyyMMdd"/></tstamp>
+	<property name="name.versioned" value="${ant.project.name}-${release.version}"/>
+	<property name="name.timestamped" value="${name.versioned}${today}"/>
 
 	<dirname property="core.basedir"		file="${ant.file.core}" />
 	<property name="jsword.home"			location="${core.basedir}" />
@@ -24,6 +26,8 @@
 	<property name="tools.home"				location="${jsword.home}/tools" />
 	<!-- Location of supplemental files useful for the build. -->
 	<property name="etc.dir"				value="etc" />
+	<!-- Shared location of supplemental files useful for the build. -->
+	<property name="etc.shared.dir"			value="${jsword.home}/etc" />
 
 	<!-- Properties regarding the location of source files -->
 	<property name="src.dir"				value="src" />
@@ -234,7 +238,7 @@
 	<target	name="build"
 			description="Run a full build"
 			depends="compile">
-		<jar jarfile="${lib.dir}/${ant.project.name}-${release.version}.jar">
+		<jar jarfile="${lib.dir}/${name.versioned}.jar">
 			<fileset dir="${dest.main.classes.dir}" />
 		</jar>
 	</target>
@@ -323,38 +327,35 @@
 	== it will allow for the definition of any other needed work.
 	=========================================================================-->
 	<target	name="install"
+		    depends="package"
 			description="Install all the files">
-		<mkdir dir="${dest.install.dir}"/>
-		<antcall target="package.src"/>
-		<antcall target="package.doc"/>
-		<antcall target="package.bin"/>
-		<antcall target="package"/>
 		<!-- Create a flag file used to determine whether this task finished successfully -->
+		<mkdir dir="${dest.install.dir}"/>
 		<touch file="${dest.install.dir}/.flagfile"/>
 	</target>
 
 	<target	name="package"
+			depends="package.src, package.doc, package.bin"
 			description="Install project specific files and directories"/>
 
 	<!--=======================================================================-->
 	<!-- source packages -->
 	<target	name="package.src">
-		<property name="name.versioned" value="${ant.project.name}-${release.version}"/>
-		<property name="name.timestamped" value="${dest.install.dir}/${name.versioned}-${today}"/>
-		<zip zipfile="${name.timestamped}-src.zip">
+		<mkdir dir="${dest.install.dir}"/>
+		<zip zipfile="${dest.install.dir}/${name.timestamped}-src.zip">
 			<zipfileset prefix="${name.versioned}" dir="${src.main.java.dir}"/>
 			<zipfileset prefix="${name.versioned}" dir="${src.main.res.dir}"/>
 		</zip>
 		<symlink link="${dest.install.dir}/${ant.project.name}-latest-src.zip"
-             resource="${name.timestamped}-src.zip"
+             resource="${dest.install.dir}/${name.timestamped}-src.zip"
              overwrite="true"
              failonerror="false"/>
 
-		<tar tarfile="${name.timestamped}-src.tar.gz" compression="gzip">
-			<zipfileset src="${name.timestamped}-src.zip"/>
+		<tar tarfile="${dest.install.dir}/${name.timestamped}-src.tar.gz" compression="gzip">
+			<zipfileset src="${dest.install.dir}/${name.timestamped}-src.zip"/>
 		</tar>
 		<symlink link="${dest.install.dir}/${ant.project.name}-latest-src.tar.gz"
-             resource="${name.timestamped}-src.tar.gz"
+             resource="${dest.install.dir}/${name.timestamped}-src.tar.gz"
              overwrite="true"
              failonerror="false"/>
 	</target>
@@ -362,21 +363,20 @@
 	<!-- doc packages -->
 	<target	name="package.doc"
 			depends="javadoc">
-		<property name="name.versioned" value="${ant.project.name}-${release.version}"/>
-		<property name="name.timestamped" value="${dest.install.dir}/${name.versioned}-${today}"/>
-		<zip zipfile="${name.timestamped}-doc.zip">
+		<mkdir dir="${dest.install.dir}"/>
+		<zip zipfile="${dest.install.dir}/${name.timestamped}-doc.zip">
 			<zipfileset prefix="${name.versioned}" dir="${javadoc.report}"/>
 		</zip>
 		<symlink link="${dest.install.dir}/${ant.project.name}-latest-doc.zip"
-             resource="${name.timestamped}-doc.zip"
+             resource="${dest.install.dir}/${name.timestamped}-doc.zip"
              overwrite="true"
              failonerror="false"/>
 
-		<tar tarfile="${name.timestamped}-doc.tar.gz" compression="gzip">
-			<zipfileset src="${name.timestamped}-doc.zip"/>
+		<tar tarfile="${dest.install.dir}/${name.timestamped}-doc.tar.gz" compression="gzip">
+			<zipfileset src="${dest.install.dir}/${name.timestamped}-doc.zip"/>
 		</tar>
 		<symlink link="${dest.install.dir}/${ant.project.name}-latest-doc.tar.gz"
-             resource="${name.timestamped}-doc.tar.gz"
+             resource="${dest.install.dir}/${name.timestamped}-doc.tar.gz"
              overwrite="true"
              failonerror="false"/>
 	</target>
@@ -384,21 +384,20 @@
 	<!-- binary packages -->
 	<target	name="package.bin"
 			depends="build">
-		<property name="name.versioned" value="${ant.project.name}-${release.version}"/>
-		<property name="name.timestamped" value="${dest.install.dir}/${name.versioned}-${today}"/>
-		<zip zipfile="${name.timestamped}-bin.zip">
+		<mkdir dir="${dest.install.dir}"/>
+		<zip zipfile="${dest.install.dir}/${name.timestamped}-bin.zip">
 			<zipfileset prefix="${name.versioned}" dir="${lib.dir}" includes="${name.versioned}.jar"/>
 		</zip>
 		<symlink link="${dest.install.dir}/${ant.project.name}-latest-bin.zip"
-             resource="${name.timestamped}-bin.zip"
+             resource="${dest.install.dir}/${name.timestamped}-bin.zip"
              overwrite="true"
              failonerror="false"/>
 
-		<tar tarfile="${name.timestamped}-bin.tar.gz" compression="gzip">
-			<zipfileset src="${name.timestamped}-bin.zip"/>
+		<tar tarfile="${dest.install.dir}/${name.timestamped}-bin.tar.gz" compression="gzip">
+			<zipfileset src="${dest.install.dir}/${name.timestamped}-bin.zip"/>
 		</tar>
 		<symlink link="${dest.install.dir}/${ant.project.name}-latest-bin.tar.gz"
-             resource="${name.timestamped}-bin.tar.gz"
+             resource="${dest.install.dir}/${name.timestamped}-bin.tar.gz"
              overwrite="true"
              failonerror="false"/>
 
@@ -414,7 +413,7 @@
 		<javadoc
 				sourcepath="${src.main.java.dir}"
 				classpathref="classpath.runtime"
-				stylesheetfile="${etc.dir}/javadoc/stylesheet.css"
+				stylesheetfile="${etc.shared.dir}/javadoc/stylesheet.css"
 				destdir="${javadoc.report}"
 				overview="../jsword/src/main/java/overview.html"
 				private="true"
@@ -427,7 +426,7 @@
 			<footer>Copyright &#168; 2003-2013</footer>
 			<link	offline="true"
 					href="http://download.oracle.com/javase/1.5.0/docs/api/"
-					packagelistLoc="${etc.dir}/javadoc"/>
+					packagelistLoc="${etc.shared.dir}/javadoc"/>
 		</javadoc>
 	</target>
 
@@ -497,7 +496,7 @@
 	=========================================================================-->
 	<target	name="tools"
 			description="Run QA reports"
-			depends="javancss, checkstyle, findbugs, pmd, cpd, jdepend"
+			depends="javancss, checkstyle, findbugs, pmd, cpd, jdepend, java2html"
 			if="src.main.java.present"/>
 
 	<!--=======================================================================
@@ -830,7 +829,7 @@
 				footer="false"
 				destination="${java2html.report}">
 			<fileset dir="${src.main.java.dir}" includes="**/*.java" />
-			<javadoc localRef="${etc.dir}/javadoc" httpRef="http://download.oracle.com/javase/1.5.0/docs/api/"/>
+			<javadoc localRef="${etc.shared.dir}/javadoc" httpRef="http://download.oracle.com/javase/1.5.0/docs/api/"/>
 		</java2html>    
 	</target>
 

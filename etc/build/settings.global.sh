@@ -1,8 +1,8 @@
 export LOGFILE=$WEBAPP_JSWORD/buildlog.txt
 
 export PROPERTIES=
-export PROPERTIES="$PROPERTIES -Dwebapp.jsword=$WEBAPP_JSWORD"
-export PROPERTIES="$PROPERTIES -Dwebapp.bibledesktop=$WEBAPP_BIBLEDESKTOP"
+export PROPERTIES="$PROPERTIES -Dwebsite.jsword.dir=$WEBAPP_JSWORD"
+export PROPERTIES="$PROPERTIES -Dwebsite.bd.dir=$WEBAPP_BIBLEDESKTOP"
 export PROPERTIES="$PROPERTIES -Dftp.base=$FTP_BASE"
 export PROPERTIES="$PROPERTIES -Dftp.prefix=$FTP_PREFIX"
 export PROPERTIES="$PROPERTIES -Djnlp.homepage=$JNLP_HOMEPAGE"
