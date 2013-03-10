@@ -373,7 +373,7 @@
 
 	<!--=======================================================================-->
 	<!-- source packages -->
-	<target name="package.src">
+	<target	name="package.src">
 		<zip zipfile="${dest.install.dir}/${ant.project.name}-${release.version}-${today}-src.zip">
 			<zipfileset prefix="${ant.project.name}-${release.version}" dir="${src.main.java.dir}"/>
 			<zipfileset prefix="${ant.project.name}-${release.version}" dir="${src.main.res.dir}"/>
@@ -394,7 +394,8 @@
 	</target>
 
 	<!-- doc packages -->
-	<target name="package.doc">
+	<target	name="package.doc"
+			depends="javadoc">
 		<zip zipfile="${dest.install.dir}/${ant.project.name}-${release.version}-${today}-doc.zip">
 			<zipfileset prefix="${ant.project.name}-${release.version}" dir="${javadoc.report}"/>
 		</zip>
@@ -413,7 +414,8 @@
 	</target>
 
 	<!-- binary packages -->
-	<target name="package.bin">
+	<target	name="package.bin"
+			depends="build">
 		<zip zipfile="${dest.install.dir}/${ant.project.name}-${release.version}-${today}-bin.zip">
 			<zipfileset prefix="${ant.project.name}-${release.version}" dir="${dest.install.dir}"/>
 		</zip>
@@ -639,7 +641,7 @@
 	== These are properties related to PMD.
 	=========================================================================-->
 	<property name="pmd.version"			value="5.0.1" />
-	<property name="pmd.home"				location="${tools.home}/pmd-${pmd.version}" />
+	<property name="pmd.home"				location="${tools.home}/pmd-bin-${pmd.version}" />
 	<property name="pmd.report"				location="${report.dir}/pmd" />
 	<property name="cpd.report"				location="${report.dir}/cpd" />
 	<property name="pmd.url"				value="http://sourceforge.net/projects/pmd/files/pmd/${pmd.version}/pmd-bin-${pmd.version}.zip/download" />
@@ -722,7 +724,8 @@
 	<property name="cobertura.version"		value="1.9.4.1" />
 	<property name="cobertura.home"			location="${tools.home}/cobertura-${cobertura.version}" />
 	<property name="cobertura.report"		location="${report.dir}/cobertura" />
-	<property name="cobertura.url"			value="http://sourceforge.net/projects/cobertura/files/cobertura/${cobertura.version}/cobertura-1.9.4.1-bin.zip/download" />
+	<property name="cobertura.url"			value="http://sourceforge.net/projects/cobertura/files/cobertura/${cobertura.version}/cobertura-${cobertura.version}-bin.zip/download" />
+	<property name="cobertura.zip"			location="${tools.home}/cobertura-${cobertura.version}.zip" />
 	<property name="cobertura.instrument.dir"	value="${cobertura.report}/tmp" />
 	<property name="cobertura.datafile"		value="${cobertura.instrument.dir}/cobertura.ser" />
 	<property name="junit.report"			location="${report.dir}/junit" />
@@ -829,9 +832,8 @@
 		<delete	file="${cobertura.zip}" />
 	</target>
 
-	<!-- -->
-	<target	name="cobertura.check"
-			description="See if Cobertura is installed">
+	<!-- See if Cobertura is installed -->
+	<target	name="cobertura.check">
 		<available file="${cobertura.home}"		type="dir"  property="cobertura.present" />
 	</target>
 
