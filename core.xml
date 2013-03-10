@@ -342,7 +342,8 @@
 
 	<!--=======================================================================-->
 	<!-- source packages -->
-	<target	name="package.src">
+	<target	name="package.src"
+			if="src.main.java.present">
 		<mkdir dir="${dest.install.pkg.dir}"/>
 		<tar tarfile="${dest.install.pkg.dir}/${name.timestamped}-src.tar.gz" compression="gzip">
 			<tarfileset prefix="${name.versioned}" dir="${src.main.java.dir}"/>
@@ -352,7 +353,8 @@
 
 	<!-- doc packages -->
 	<target	name="package.doc"
-			depends="javadoc">
+			depends="javadoc"
+			if="src.main.java.present">
 		<mkdir dir="${dest.install.pkg.dir}"/>
 		<tar tarfile="${dest.install.pkg.dir}/${name.timestamped}-doc.tar.gz" compression="gzip">
 			<tarfileset prefix="${name.versioned}" dir="${javadoc.report}"/>
@@ -361,7 +363,8 @@
 
 	<!-- binary packages -->
 	<target	name="package.bin"
-			depends="build">
+			depends="build"
+			if="src.main.java.present">
 		<mkdir dir="${dest.install.pkg.dir}"/>
 		<tar tarfile="${dest.install.pkg.dir}/${name.timestamped}-bin.tar.gz" compression="gzip">
 			<tarfileset prefix="${name.versioned}" dir="${lib.dir}" includes="${name.versioned}.jar"/>
