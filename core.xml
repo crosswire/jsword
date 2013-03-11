@@ -328,8 +328,12 @@
 		    depends="package">
 		<!-- Create a flag file used to determine whether this task finished successfully -->
 		<mkdir dir="${dest.install.pkg.dir}"/>
+		<antcall target="install.extra"/>
 		<touch file="${dest.install.pkg.dir}/.flagfile"/>
 	</target>
+
+	<target	name="install.extra"
+			description="Do extra project installation"/>
 
 	<target	name="package"
 			description="Create basic project packaging"
