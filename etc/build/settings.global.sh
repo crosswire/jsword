@@ -1,4 +1,4 @@
-export LOGFILE=$WEBAPP_JSWORD/buildlog.txt
+export LOGFILE=$WEBSITE_JSWORD/buildlog.txt
 
 export PROPERTIES=
 export PROPERTIES="$PROPERTIES -Dftp.base=$FTP_BASE"
