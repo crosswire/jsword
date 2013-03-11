@@ -349,10 +349,10 @@
 	<target	name="package.src"
 			if="src.main.java.present">
 		<mkdir dir="${dest.install.pkg.dir}"/>
-		<tar tarfile="${dest.install.pkg.dir}/${name.timestamped}-src.tar.gz" compression="gzip">
-			<tarfileset prefix="${name.versioned}" dir="${src.main.java.dir}"/>
-			<tarfileset prefix="${name.versioned}" dir="${src.main.res.dir}"/>
-		</tar>
+		<zip destfile="${dest.install.pkg.dir}/${name.timestamped}-src.zip">
+			<zipfileset prefix="${name.versioned}" dir="${src.main.java.dir}"/>
+			<zipfileset prefix="${name.versioned}" dir="${src.main.res.dir}"/>
+		</zip>
 	</target>
 
 	<!-- doc packages -->
@@ -360,9 +360,9 @@
 			depends="javadoc"
 			if="src.main.java.present">
 		<mkdir dir="${dest.install.pkg.dir}"/>
-		<tar tarfile="${dest.install.pkg.dir}/${name.timestamped}-doc.tar.gz" compression="gzip">
-			<tarfileset prefix="${name.versioned}" dir="${javadoc.report}"/>
-		</tar>
+		<zip destfile="${dest.install.pkg.dir}/${name.timestamped}-doc.zip">
+			<zipfileset prefix="${name.versioned}" dir="${javadoc.report}"/>
+		</zip>
 	</target>
 
 	<!-- binary packages -->
@@ -370,9 +370,9 @@
 			depends="build"
 			if="src.main.java.present">
 		<mkdir dir="${dest.install.pkg.dir}"/>
-		<tar tarfile="${dest.install.pkg.dir}/${name.timestamped}-bin.tar.gz" compression="gzip">
-			<tarfileset prefix="${name.versioned}" dir="${lib.dir}" includes="${name.versioned}.jar"/>
-		</tar>
+		<zip tarfile="${dest.install.pkg.dir}/${name.timestamped}-bin.zip">
+			<zipfileset prefix="${name.versioned}" dir="${lib.dir}" includes="${name.versioned}.jar"/>
+		</zip>
 	</target>
 
 	<property name="javadoc.report"			location="${report.dir}/javadoc" />
