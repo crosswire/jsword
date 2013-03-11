@@ -370,7 +370,7 @@
 			depends="build"
 			if="src.main.java.present">
 		<mkdir dir="${dest.install.pkg.dir}"/>
-		<zip tarfile="${dest.install.pkg.dir}/${name.timestamped}-bin.zip">
+		<zip destfile="${dest.install.pkg.dir}/${name.timestamped}-bin.zip">
 			<zipfileset prefix="${name.versioned}" dir="${lib.dir}" includes="${name.versioned}.jar"/>
 		</zip>
 	</target>
