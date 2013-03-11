@@ -6,7 +6,7 @@ export WEBSITE_JSWORD=/home/jsword/html
 export PACKAGE_JSWORD=$FTP_BASE/nightly
 
 export WEBSITE_BIBLEDESKTOP=/home/jsword/bibledesktop/html
-export PACKAGE_BIBLEDESKTOP=$WEBAPP_BIBLEDESKTOP/nightly
+export PACKAGE_BIBLEDESKTOP=$WEBSITE_BIBLEDESKTOP/nightly
 export JNLP_HOMEPAGE=http://www.crosswire.org/bibledesktop
 export JNLP_CODEBASE=$JNLP_HOMEPAGE/nightly/webstart
 
