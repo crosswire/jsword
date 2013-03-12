@@ -628,7 +628,7 @@
 		</cpd>
 		<xslt	in="${cpd.report}/report_cpd.xml"
 				style="${pmd.home}/etc/xslt/cpdhtml.xslt"
-				out="${cpd.report}/cpd/index.html">
+				out="${cpd.report}/index.html">
 			<xmlcatalog refid="commonDTDs" />
 		</xslt>
 	</target>
@@ -934,7 +934,7 @@
 		</taskdef>
 	</target>
 
-	<!-- Download JDepend -->
+	<!-- Download JavaNCSS -->
 	<target	name="javancss.download"
 			depends="javancss.check"
 			unless="javancss.present">
@@ -947,6 +947,73 @@
 	<!-- See if JavaNCSS is installed -->
 	<target	name="javancss.check">
 		<available file="${javancss.home}"		type="dir"  property="javancss.present" />
+	</target>
+
+	<!--=======================================================================
+	== Use NSIS to create Windows installers
+	== These are properties related to NSIS.
+	=========================================================================-->
+	<property name="nsis.version"		value="1.3" />
+	<property name="nsis.home"			location="${tools.home}/nsis-${nsis.version}" />
+	<property name="nsis.report"		location="${report.dir}/nsis" />
+	<property name="nsis.url"			value="http://cloud.github.com/downloads/dreese/nsis-ant/nsisant-${nsis.version}.jar"/>
+
+	<target	name="nsis.task"
+			depends="nsis.download, nsis.verify">
+		<path id="nsis.classpath">
+			<fileset dir="${nsis.home}" includes="*.jar" />
+		</path>
+		<taskdef name="nsis" classpathref="nsis.classpath" classname="com.danielreese.nsisant.Task"/>
+	</target>
+
+	<!-- JDepend visibility instructions -->
+	<target name="nsis.verify"
+		    depends="nsis.visible"
+	        unless="nsis.available">
+		<echo>$${nsis.available}=${nsis.available}</echo>
+		<echo>NSIS cannot run. nsis-${nsis.version}.jar is not visible to Ant.</echo>
+		<echo>Also, makensis needs to be on your path</echo>
+		<echo>To make it visible you need to do one of two things depending</echo>
+		<echo>on whether you are running ant in Eclipse or not.</echo>
+		<echo>In Eclipse, add nsis-*.jar to Preferences -> Ant -> Runtime -> Global Entries</echo>
+		<echo>Otherwise, run the nsis.antlibs task to copy jars to ANT_HOME/lib</echo>
+	</target>
+
+	<!-- Check to see if JDepend is visible to Ant. -->
+	<target name="nsis.visible">
+	    <available property="nsis.available"
+	               classname="com.danielreese.nsisant.Task"/>
+	</target>
+
+	<!-- Download NSIS -->
+	<target	name="nsis.download"
+			depends="nsis.check"
+			unless="nsis.present">
+		<mkdir	dir="${tools.home}" />
+		<mkdir	dir="${nsis.home}" />
+		<get	src="${nsis.url}"	dest="${nsis.home}"	usetimestamp="true" />
+	</target>
+
+	<!-- See if NSIS is installed -->
+	<target	name="nsis.check">
+		<available file="${nsis.home}/nsisant-${nsis.version}.jar"		type="file"  property="nsis.present" />
+	</target>
+
+	<!-- the only purpose of this is to provide a useful diagnostic. -->
+	<target	name="nsis">
+	    <echo>NSIS may fail if nsisant.jar is not visible to Ant and makensis is not in your path.
+	To make the task visible you need to do one of two things depending
+	on whether you are running ant in Eclipse or not.
+	In Eclipse, add nsisant-*.jar to Preferences -> Ant -> Runtime -> Global Entries
+	Otherwise, run the nsis.antlibs task to copy jars to ANT_HOME/lib</echo>
+	</target>
+
+	<!-- This does not need to be done in Eclipse. Add it to Ant preferences instead -->
+	<target	name="nsis.antlibs"
+			depends="nsis.download"
+			description="Copy required nsis jars to ant/lib">
+		<echo message="copy ${nsis.home}/nsisant-${nsis.version}.jar"/>
+		<copy file="${nsis.home}/nsisant-${nsis.version}.jar" todir="${ant.home}/lib"/>
 	</target>
 
 	<!--=======================================================================
