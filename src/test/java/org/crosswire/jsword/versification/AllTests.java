@@ -38,7 +38,19 @@ public class AllTests {
         suite.addTestSuite(BibleNamesTest.class);
         suite.addTestSuite(BibleBookTest.class);
         suite.addTestSuite(BibleBookListTest.class);
-        suite.addTestSuite(VersificationTest.class);
+        suite.addTestSuite(Catholic2Test.class);
+        suite.addTestSuite(CatholicTest.class);
+        suite.addTestSuite(GermanTest.class);
+        suite.addTestSuite(KJVATest.class);
+        suite.addTestSuite(KJVTest.class);
+        suite.addTestSuite(LeningradTest.class);
+        suite.addTestSuite(LutherTest.class);
+        suite.addTestSuite(MTTest.class);
+        suite.addTestSuite(NRSVATest.class);
+        suite.addTestSuite(NRSVTest.class);
+        suite.addTestSuite(SynodalPTest.class);
+        suite.addTestSuite(SynodalTest.class);
+        suite.addTestSuite(VulgTest.class);
         // $JUnit-END$
         return suite;
     }

@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2013
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -35,19 +35,18 @@ import org.crosswire.jsword.versification.system.Versifications;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class VersificationTest extends TestCase {
-    public VersificationTest(String s) {
-        super(s);
-    }
-
-    private CaseType storedCase;
+public class VersificationParentTst extends TestCase {
     private Versification v11n;
+    private CaseType storedCase;
+
+    public VersificationParentTst(String s, String v11nName) {
+        super(s);
+        this.v11n = Versifications.instance().getVersification(v11nName);
+    }
 
     @Override
     protected void setUp() {
         storedCase = BookName.getDefaultCase();
-        // AV11N(DMS): Update test to test all V11Ns
-        v11n = Versifications.instance().getDefaultVersification();
     }
 
     @Override
@@ -206,6 +205,7 @@ public class VersificationTest extends TestCase {
 
     public void testMTSystem() {
         // The MT v11n is OT only and had a problem where this would have failed.
+        // At this time all versifications have an OT and Gen 1:1
         Versification v11nMT = Versifications.instance().getVersification(SystemMT.V11N_NAME);
         Verse verse = new Verse(v11n, BibleBook.GEN, 1, 1);
         int index = verse.getOrdinal();
