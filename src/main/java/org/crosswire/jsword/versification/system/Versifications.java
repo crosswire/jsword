@@ -22,6 +22,7 @@ package org.crosswire.jsword.versification.system;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -100,7 +101,7 @@ public final class Versifications {
 
     private Versification fluff(String name) {
         //keep KJV at the top as it is the most common
-        if (SystemKJV.V11N_NAME.equals(name)) {
+        if (name == null || SystemKJV.V11N_NAME.equals(name)) {
             return new SystemKJV();
         }
 
@@ -153,6 +154,15 @@ public final class Versifications {
     public synchronized void register(Versification rs) {
         fluffed.put(rs.getName(), rs);
         known.add(rs.getName());
+    }
+
+    /**
+     * Get an iterator over all known versifications.
+     * 
+     * @return an iterator of versification names.
+     */
+    public Iterator<String> iterator() {
+        return known.iterator();
     }
 
     /**

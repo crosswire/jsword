@@ -153,6 +153,7 @@ public class Versification implements ReferenceSystem, Serializable {
 
             // Remember where the OT ends
             if (bookList.getBook(bookIndex) == BibleBook.INTRO_NT) {
+                // This is not reached for a v11n without a NT.
                 this.otMaxOrdinal = ordinal - 1;
             }
 
@@ -174,6 +175,11 @@ public class Versification implements ReferenceSystem, Serializable {
 
         // Remember where the NT ends
         this.ntMaxOrdinal = ordinal - 1;
+
+        // The MT v11n has no NT, so at this point otMaxOrdinal == 0
+        if (booksNT.length == 0) {
+            this.otMaxOrdinal = this.ntMaxOrdinal;
+        }
 //        Versification.dump(System.out, this.osisName, this.bookList, this.lastVerse);
 //        Versification.dump(System.out, this.osisName, this.bookList, this.chapterStarts);
 

@@ -25,6 +25,7 @@ import junit.framework.TestCase;
 import org.crosswire.jsword.book.CaseType;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.versification.system.SystemMT;
 import org.crosswire.jsword.versification.system.Versifications;
 
 /**
@@ -201,6 +202,16 @@ public class VersificationTest extends TestCase {
         // AV11N(DMS): Is this right?
         assertEquals(2, BibleBook.GEN.ordinal());
         assertEquals(68, BibleBook.REV.ordinal());
+    }
+
+    public void testMTSystem() {
+        // The MT v11n is OT only and had a problem where this would have failed.
+        Versification v11nMT = Versifications.instance().getVersification(SystemMT.V11N_NAME);
+        Verse verse = new Verse(v11n, BibleBook.GEN, 1, 1);
+        int index = verse.getOrdinal();
+        Testament testament = v11nMT.getTestament(index);
+        assertEquals("Gen 1:1 is old testament", Testament.OLD, testament);
+        assertEquals("ordinals in OT do not change", index, v11n.getTestamentOrdinal(index));
     }
 
 }
