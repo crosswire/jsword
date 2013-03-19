@@ -492,7 +492,7 @@ public class SystemVulg extends Versification {
         },
         // Daniel
         {
-               21,    49,    100,    34,    31,    28,    28,    27,    27,
+               21,    49,   100,    34,    31,    28,    28,    27,    27,
                21,    45,    13,    65,    42,
         },
         // Hosea
