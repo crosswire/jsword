@@ -86,7 +86,7 @@ public class SystemKJV extends Versification {
         // II Corinthians
         {
                24,    17,    18,    18,    21,    18,    16,    24,    15,
-               18,    33,    21,    13,
+               18,    33,    21,    14,
         },
         // Galatians
         {
@@ -402,7 +402,7 @@ public class SystemKJV extends Versification {
         },
         // Zechariah
         {
-               17,    17,    10,    14,    11,    15,    14,    23,    17,
+               21,    13,    10,    14,    11,    15,    14,    23,    17,
                12,    17,    14,     9,    21,
         },
         // Malachi
