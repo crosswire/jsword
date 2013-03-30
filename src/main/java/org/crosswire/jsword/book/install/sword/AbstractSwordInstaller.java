@@ -391,6 +391,14 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         }
     }
 
+    /** remove the cached book list to clear memory
+     */
+    @Override
+    public void close() {
+        entries.clear();
+        loaded = false;
+    }
+    
     /**
      * @return the catologDirectory
      */
