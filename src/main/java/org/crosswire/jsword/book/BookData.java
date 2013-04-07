@@ -1,10 +1,10 @@
 /**
  * Distribution License:
  * JSword is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License, version 2.1 as published by
- * the Free Software Foundation. This program is distributed in the hope
- * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * the terms of the GNU Lesser General Public License, version 2.1 or later
+ * as published by the Free Software Foundation. This program is distributed
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
@@ -48,7 +48,7 @@ import org.jdom2.Text;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
- * @author DM Smith [dmsmith555 at yahoo dot com]
+ * @author DM Smith
  */
 public class BookData implements BookProvider {
     /**
@@ -176,17 +176,17 @@ public class BookData implements BookProvider {
                 cell = OSISUtil.factory().createHeaderCell();
 
                 if (i > 0) {
-                    Book prevBook = books[i - 1];
+                    Book firstBook = books[0];
                     BookCategory category = book.getBookCategory();
 
-                    BookCategory prevCategory = prevBook.getBookCategory();
-                    String prevName = prevBook.getInitials();
+                    BookCategory prevCategory = firstBook.getBookCategory();
+                    String prevName = firstBook.getInitials();
                     showDiffs[i - 1] = comparingBooks && BookCategory.BIBLE.equals(category) && category.equals(prevCategory)
-                            && book.getLanguage().equals(prevBook.getLanguage()) && !book.getInitials().equals(prevName);
+                            && book.getLanguage().equals(firstBook.getLanguage()) && !book.getInitials().equals(prevName);
 
                     if (showDiffs[i - 1]) {
                         doDiffs = true;
-                        StringBuilder buf = new StringBuilder(prevBook.getInitials());
+                        StringBuilder buf = new StringBuilder(firstBook.getInitials());
                         buf.append(" ==> ");
                         buf.append(book.getInitials());
 
@@ -211,7 +211,7 @@ public class BookData implements BookProvider {
 
                 row = OSISUtil.factory().createRow();
 
-                String lastText = "";
+                String firstText = "";
 
                 for (int i = 0; i < iters.length; i++) {
                     Book book = books[i];
@@ -241,7 +241,7 @@ public class BookData implements BookProvider {
                             }
 
                             if (i > 0 && showDiffs[i - 1]) {
-                                List<Difference> diffs = new Diff(lastText, thisText, false).compare();
+                                List<Difference> diffs = new Diff(firstText, thisText, false).compare();
                                 DiffCleanup.cleanupSemantic(diffs);
                                 cell.addContent(OSISUtil.diffToOsis(diffs));
 
@@ -251,7 +251,9 @@ public class BookData implements BookProvider {
                                 cell.setAttribute(OSISUtil.OSIS_ATTR_LANG, lang.getCode(), Namespace.XML_NAMESPACE);
                                 row.addContent(cell);
                             }
-                            lastText = thisText;
+                            if (i == 0) {
+                                firstText = thisText;
+                            }
                         }
                         cell.addContent(contents);
                         cellCount++;

@@ -1,10 +1,10 @@
 /**
  * Distribution License:
  * JSword is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License, version 2.1 as published by
- * the Free Software Foundation. This program is distributed in the hope
- * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * the terms of the GNU Lesser General Public License, version 2.1 or later
+ * as published by the Free Software Foundation. This program is distributed
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.common.history;
 
@@ -26,8 +25,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.crosswire.common.util.EventListenerList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Maintains a navigable history of objects. This maintains a dated list of
@@ -35,9 +33,8 @@ import org.crosswire.common.util.EventListenerList;
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
- * @author DM Smith [dmsmith555 at yahoo dot com]
+ * @author DM Smith
  */
-
 public class History {
     /**
      * Create an empty navigation and history list.
@@ -46,7 +43,7 @@ public class History {
     public History() {
         nav = new ArrayList<Object>();
         history = new HashMap<Object, Long>();
-        listeners = new EventListenerList();
+        listeners = new CopyOnWriteArrayList<HistoryListener>();
     }
 
     /**
@@ -198,8 +195,8 @@ public class History {
      * @param li
      *            the interested listener
      */
-    public synchronized void addHistoryListener(HistoryListener li) {
-        listeners.add(HistoryListener.class, li);
+    public void addHistoryListener(HistoryListener li) {
+        listeners.add(li);
     }
 
     /**
@@ -208,8 +205,8 @@ public class History {
      * @param li
      *            the disinterested listener
      */
-    public synchronized void removeHistoryListener(HistoryListener li) {
-        listeners.remove(HistoryListener.class, li);
+    public void removeHistoryListener(HistoryListener li) {
+        listeners.remove(li);
     }
 
     /**
@@ -224,21 +221,10 @@ public class History {
     /**
      * Kick of an event sequence
      */
-    private synchronized void fireHistoryChanged() {
-        // Guaranteed to return a non-null array
-        Object[] contents = listeners.getListenerList();
-
-        // Process the listeners last to first, notifying
-        // those that are interested in this event
-        HistoryEvent ev = null;
-        for (int i = contents.length - 2; i >= 0; i -= 2) {
-            if (contents[i] == HistoryListener.class) {
-                if (ev == null) {
-                    ev = new HistoryEvent(this);
-                }
-
-                ((HistoryListener) contents[i + 1]).historyChanged(ev);
-            }
+    private void fireHistoryChanged() {
+        HistoryEvent ev = new HistoryEvent(this);
+        for (HistoryListener listener: listeners) {
+            listener.historyChanged(ev);
         }
     }
 
@@ -260,5 +246,5 @@ public class History {
     /**
      * Listeners that are interested when history has changed.
      */
-    private EventListenerList listeners;
+    private List<HistoryListener> listeners;
 }

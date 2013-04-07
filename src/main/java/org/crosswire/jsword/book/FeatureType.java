@@ -1,10 +1,10 @@
 /**
  * Distribution License:
  * JSword is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License, version 2.1 as published by
- * the Free Software Foundation. This program is distributed in the hope
- * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * the terms of the GNU Lesser General Public License, version 2.1 or later
+ * as published by the Free Software Foundation. This program is distributed
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book;
 
@@ -62,9 +61,10 @@ public enum FeatureType {
     GLOSSARY ("Glossary"),
 
     /**
-     * The book contains Strong's Numbers
+     * The book contains Strong's Numbers.
+     * The alias is used to match GlobalOptionFilters.
      */
-    STRONGS_NUMBERS ("StrongsNumbers"),
+    STRONGS_NUMBERS ("StrongsNumbers", "Strongs"),
 
     /**
      * The book contains footnotes
@@ -96,7 +96,18 @@ public enum FeatureType {
      *            The name of the FeatureType
      */
     private FeatureType(String name) {
+        this(name, "");
+    }
+
+    /**
+     * @param name
+     *            The name of the FeatureType
+     * @param alias
+     *            The alias of the FeatureType
+     */
+    private FeatureType(String name, String alias) {
         this.name = name;
+        this.alias = alias;
     }
 
     /**
@@ -123,7 +134,21 @@ public enum FeatureType {
     }
 
     /**
+     * Get the alias for this feature.
+     * 
+     * @return the alias
+     */
+    public String getAlias() {
+        return alias;
+    }
+
+    /**
      * The name of the FeatureType
      */
     private String name;
+
+    /**
+     * The alias of the FeatureType
+     */
+    private String alias;
 }

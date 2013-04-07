@@ -1,10 +1,10 @@
 /**
  * Distribution License:
  * JSword is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License, version 2.1 as published by
- * the Free Software Foundation. This program is distributed in the hope
- * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * the terms of the GNU Lesser General Public License, version 2.1 or later
+ * as published by the Free Software Foundation. This program is distributed
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book.install;
 
@@ -41,7 +40,7 @@ import org.crosswire.jsword.book.BookList;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
- * @author DM Smith [dmsmith555 at yahoo dot com]
+ * @author DM Smith
  */
 public interface Installer extends BookList {
     /**
@@ -63,7 +62,7 @@ public interface Installer extends BookList {
      *            The book meta-data to get a URI from.
      * @return the remote URI for the BookMetaData
      */
-    URI toRemoteURI(Book book);
+    URI toRemoteURI(final Book book);
 
     /**
      * Get a list of BookMetaData objects that represent downloadable books. If
@@ -78,7 +77,7 @@ public interface Installer extends BookList {
     /**
      * Get a Book matching the name from the local cache. Null if none is found.
      */
-    Book getBook(String Book);
+    Book getBook(final String Book);
 
     /**
      * Return true if the book is not installed or there is a newer version to
@@ -88,7 +87,7 @@ public interface Installer extends BookList {
      *            The book meta-data to check on.
      * @return whether there is a newer version to install
      */
-    int getSize(Book book);
+    int getSize(final Book book);
 
     /**
      * Return true if the book is not installed or there is a newer version to
@@ -98,7 +97,7 @@ public interface Installer extends BookList {
      *            The book meta-data to check on.
      * @return whether there is a newer version to install
      */
-    boolean isNewer(Book book);
+    boolean isNewer(final Book book);
 
     /**
      * Re-fetch a list of names from the remote source. <b>It would make sense
@@ -115,7 +114,7 @@ public interface Installer extends BookList {
      * @param book
      *            The book to install
      */
-    void install(Book book) throws InstallException;
+    void install(final Book book) throws InstallException;
 
     /**
      * Download a search index for the given Book. The installation of the
@@ -127,5 +126,5 @@ public interface Installer extends BookList {
      *            A temporary URI for downloading to. Passed to the BookIndexer
      *            for installation.
      */
-    void downloadSearchIndex(Book book, URI tempDest) throws InstallException;
+    void downloadSearchIndex(final Book book, final URI tempDest) throws InstallException;
 }

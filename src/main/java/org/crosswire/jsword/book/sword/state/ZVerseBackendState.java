@@ -1,10 +1,10 @@
 /**
  * Distribution License:
  * JSword is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License, version 2.1 as published by
- * the Free Software Foundation. This program is distributed in the hope
- * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * the terms of the GNU Lesser General Public License, version 2.1 or later
+ * as published by the Free Software Foundation. This program is distributed
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
@@ -45,7 +45,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
- * @author DM Smith [dmsmith555 at yahoo dot com]
+ * @author DM Smith
  */
 public class ZVerseBackendState extends AbstractOpenFileState {
     /**
@@ -70,17 +70,17 @@ public class ZVerseBackendState extends AbstractOpenFileState {
         File ntTextFile = new File(ntAllButLast + SUFFIX_TEXT);
         File ntCompFile = new File(ntAllButLast + SUFFIX_COMP);
 
-        // check whether exists to swallow any exception as befor
+        // check whether exists to swallow any exception as before
         if (otIdxFile.canRead()) {
             try {
-                otIdxRaf = new RandomAccessFile(otIdxFile, FileUtil.MODE_READ);
+                otCompRaf = new RandomAccessFile(otIdxFile, FileUtil.MODE_READ);
                 otTextRaf = new RandomAccessFile(otTextFile, FileUtil.MODE_READ);
-                otCompRaf = new RandomAccessFile(otCompFile, FileUtil.MODE_READ);
+                otIdxRaf = new RandomAccessFile(otCompFile, FileUtil.MODE_READ);
             } catch (FileNotFoundException ex) {
                 //failed to open the files, so close them now
-                IOUtil.close(otIdxRaf);
-                IOUtil.close(otTextRaf);
                 IOUtil.close(otCompRaf);
+                IOUtil.close(otTextRaf);
+                IOUtil.close(otIdxRaf);
 
                 assert false : ex;
                 log.error("Could not open OT", ex);
@@ -91,14 +91,14 @@ public class ZVerseBackendState extends AbstractOpenFileState {
         // without the other.
         if (ntIdxFile.canRead()) {
             try {
-                ntIdxRaf = new RandomAccessFile(ntIdxFile, FileUtil.MODE_READ);
+                ntCompRaf = new RandomAccessFile(ntIdxFile, FileUtil.MODE_READ);
                 ntTextRaf = new RandomAccessFile(ntTextFile, FileUtil.MODE_READ);
-                ntCompRaf = new RandomAccessFile(ntCompFile, FileUtil.MODE_READ);
+                ntIdxRaf = new RandomAccessFile(ntCompFile, FileUtil.MODE_READ);
             } catch (FileNotFoundException ex) {
                 //failed to open the files, so close them now
-                IOUtil.close(ntIdxRaf);
-                IOUtil.close(ntTextRaf);
                 IOUtil.close(ntCompRaf);
+                IOUtil.close(ntTextRaf);
+                IOUtil.close(ntIdxRaf);
 
                 assert false : ex;
                 log.error("Could not open OT", ex);
@@ -107,32 +107,32 @@ public class ZVerseBackendState extends AbstractOpenFileState {
     }
 
     public void releaseResources() {
-        IOUtil.close(ntIdxRaf);
-        IOUtil.close(ntTextRaf);
         IOUtil.close(ntCompRaf);
-        IOUtil.close(otIdxRaf);
-        IOUtil.close(otTextRaf);
+        IOUtil.close(ntTextRaf);
+        IOUtil.close(ntIdxRaf);
         IOUtil.close(otCompRaf);
-        ntIdxRaf = null;
-        ntTextRaf = null;
+        IOUtil.close(otTextRaf);
+        IOUtil.close(otIdxRaf);
         ntCompRaf = null;
-        otIdxRaf = null;
-        otTextRaf = null;
+        ntTextRaf = null;
+        ntIdxRaf = null;
         otCompRaf = null;
+        otTextRaf = null;
+        otIdxRaf = null;
     }
 
     /**
-     * @return the otIdxRaf
+     * @return the otCompRaf
      */
-    public RandomAccessFile getOtIdxRaf() {
-        return otIdxRaf;
+    public RandomAccessFile getOtCompRaf() {
+        return otCompRaf;
     }
 
     /**
-     * @return the ntIdxRaf
+     * @return the ntCompRaf
      */
-    public RandomAccessFile getNtIdxRaf() {
-        return ntIdxRaf;
+    public RandomAccessFile getNtCompRaf() {
+        return ntCompRaf;
     }
 
     /**
@@ -150,17 +150,17 @@ public class ZVerseBackendState extends AbstractOpenFileState {
     }
 
     /**
-     * @return the otCompRaf
+     * @return the otIdxRaf
      */
-    public RandomAccessFile getOtCompRaf() {
-        return otCompRaf;
+    public RandomAccessFile getOtIdxRaf() {
+        return otIdxRaf;
     }
 
     /**
-     * @return the ntCompRaf
+     * @return the ntIdxRaf
      */
-    public RandomAccessFile getNtCompRaf() {
-        return ntCompRaf;
+    public RandomAccessFile getNtIdxRaf() {
+        return ntIdxRaf;
     }
 
     /**
@@ -214,16 +214,17 @@ public class ZVerseBackendState extends AbstractOpenFileState {
     public SwordBookMetaData getBookMetaData() {
         return bookMetaData;
     }
+
     private static final String SUFFIX_COMP = "v";
     private static final String SUFFIX_INDEX = "s";
     private static final String SUFFIX_PART1 = "z";
     private static final String SUFFIX_TEXT = "z";
 
     /**
-     * The index random access files
+     * The compressed random access files
      */
-    private RandomAccessFile otIdxRaf;
-    private RandomAccessFile ntIdxRaf;
+    private RandomAccessFile otCompRaf;
+    private RandomAccessFile ntCompRaf;
 
     /**
      * The data random access files
@@ -232,10 +233,10 @@ public class ZVerseBackendState extends AbstractOpenFileState {
     private RandomAccessFile ntTextRaf;
 
     /**
-     * The compressed random access files
+     * The index random access files
      */
-    private RandomAccessFile otCompRaf;
-    private RandomAccessFile ntCompRaf;
+    private RandomAccessFile otIdxRaf;
+    private RandomAccessFile ntIdxRaf;
     private Testament lastTestament;
     private long lastBlockNum = -1;
     private byte[] lastUncompressed;

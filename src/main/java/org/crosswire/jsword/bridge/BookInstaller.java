@@ -1,10 +1,10 @@
 /**
  * Distribution License:
  * JSword is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License, version 2.1 as published by
- * the Free Software Foundation. This program is distributed in the hope
- * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * the terms of the GNU Lesser General Public License, version 2.1 or later
+ * as published by the Free Software Foundation. This program is distributed
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
@@ -17,7 +17,6 @@
  * Copyright: 2008
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id: BookIndexer.java 1466 2007-07-02 02:48:09Z dmsmith $
  */
 package org.crosswire.jsword.bridge;
 
@@ -39,7 +38,7 @@ import org.crosswire.jsword.book.install.Installer;
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
- * @author DM Smith [dmsmith555 at yahoo dot com]
+ * @author DM Smith
  */
 public class BookInstaller {
 
@@ -55,12 +54,9 @@ public class BookInstaller {
      * @throws BookException
      */
     public void deleteBook(Book book) throws BookException {
-        // Make the book unavailable.
-        // This is normally done via listeners.
-        Books.installed().removeBook(book);
-
         // Actually do the delete
         // This should be a call on installer.
+        // This will also remove the book from the list of installed books.
         book.getDriver().delete(book);
     }
 

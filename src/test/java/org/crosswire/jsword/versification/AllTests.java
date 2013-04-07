@@ -1,10 +1,10 @@
 /**
  * Distribution License:
  * JSword is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License, version 2.1 as published by
- * the Free Software Foundation. This program is distributed in the hope
- * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * the terms of the GNU Lesser General Public License, version 2.1 or later
+ * as published by the Free Software Foundation. This program is distributed
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
@@ -17,7 +17,6 @@
  * Copyright: 2005 - 2012
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.versification;
 
@@ -29,7 +28,7 @@ import junit.framework.TestSuite;
  *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
- * @author DM Smith [dmsmith555 at yahoo dot com]
+ * @author DM Smith
  */
 public class AllTests {
     public static Test suite() {
@@ -39,7 +38,19 @@ public class AllTests {
         suite.addTestSuite(BibleNamesTest.class);
         suite.addTestSuite(BibleBookTest.class);
         suite.addTestSuite(BibleBookListTest.class);
-        suite.addTestSuite(VersificationTest.class);
+        suite.addTestSuite(Catholic2Test.class);
+        suite.addTestSuite(CatholicTest.class);
+        suite.addTestSuite(GermanTest.class);
+        suite.addTestSuite(KJVATest.class);
+        suite.addTestSuite(KJVTest.class);
+        suite.addTestSuite(LeningradTest.class);
+        suite.addTestSuite(LutherTest.class);
+        suite.addTestSuite(MTTest.class);
+        suite.addTestSuite(NRSVATest.class);
+        suite.addTestSuite(NRSVTest.class);
+        suite.addTestSuite(SynodalPTest.class);
+        suite.addTestSuite(SynodalTest.class);
+        suite.addTestSuite(VulgTest.class);
         // $JUnit-END$
         return suite;
     }

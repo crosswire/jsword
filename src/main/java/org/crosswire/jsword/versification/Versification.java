@@ -1,10 +1,10 @@
 /**
  * Distribution License:
  * JSword is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License, version 2.1 as published by
- * the Free Software Foundation. This program is distributed in the hope
- * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * the terms of the GNU Lesser General Public License, version 2.1 or later
+ * as published by the Free Software Foundation. This program is distributed
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
@@ -43,7 +43,7 @@ import org.crosswire.jsword.passage.VerseRange;
  *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
- * @author DM Smith [dmsmith555 at yahoo dot com]
+ * @author DM Smith
  */
 public class Versification implements ReferenceSystem, Serializable {
     public Versification() {
@@ -153,6 +153,7 @@ public class Versification implements ReferenceSystem, Serializable {
 
             // Remember where the OT ends
             if (bookList.getBook(bookIndex) == BibleBook.INTRO_NT) {
+                // This is not reached for a v11n without a NT.
                 this.otMaxOrdinal = ordinal - 1;
             }
 
@@ -174,6 +175,11 @@ public class Versification implements ReferenceSystem, Serializable {
 
         // Remember where the NT ends
         this.ntMaxOrdinal = ordinal - 1;
+
+        // The MT v11n has no NT, so at this point otMaxOrdinal == 0
+        if (booksNT.length == 0) {
+            this.otMaxOrdinal = this.ntMaxOrdinal;
+        }
 //        Versification.dump(System.out, this.osisName, this.bookList, this.lastVerse);
 //        Versification.dump(System.out, this.osisName, this.bookList, this.chapterStarts);
 
@@ -893,6 +899,25 @@ public class Versification implements ReferenceSystem, Serializable {
             return ordinal - nt_ordinal + 1;
         }
         return ordinal;
+    }
+
+    /**
+     * Determine the ordinal value for this versification given the
+     * ordinal value in a testament. If the ordinal is out of bounds it
+     * is constrained to be within the boundaries of the testament.
+     * This unwinds getTestamentOrdinal.
+     * 
+     * @param testament the testament in which the ordinal value pertains
+     * @param testamentOrdinal the ordinal value within the testament
+     * @return the ordinal value for the versification as a whole
+     */
+    public int getOrdinal(Testament testament, int testamentOrdinal) {
+        int ordinal = testamentOrdinal >= 0 ? testamentOrdinal : 0;
+        if (Testament.NEW == testament) {
+            ordinal = otMaxOrdinal + testamentOrdinal;
+            return ordinal <= ntMaxOrdinal ? ordinal : ntMaxOrdinal;
+        }
+        return ordinal <= otMaxOrdinal ? ordinal : otMaxOrdinal;
     }
 
     /**

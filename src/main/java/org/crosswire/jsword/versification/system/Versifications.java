@@ -1,10 +1,10 @@
 /**
  * Distribution License:
  * JSword is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License, version 2.1 as published by
- * the Free Software Foundation. This program is distributed in the hope
- * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * the terms of the GNU Lesser General Public License, version 2.1 or later
+ * as published by the Free Software Foundation. This program is distributed
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
@@ -17,12 +17,12 @@
  * Copyright: 2012
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.versification.system;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,7 +34,7 @@ import org.crosswire.jsword.versification.Versification;
  *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
- * @author DM Smith [dmsmith555 at yahoo dot com]
+ * @author DM Smith
  */
 public final class Versifications {
 
@@ -101,7 +101,7 @@ public final class Versifications {
 
     private Versification fluff(String name) {
         //keep KJV at the top as it is the most common
-        if (SystemKJV.V11N_NAME.equals(name)) {
+        if (name == null || SystemKJV.V11N_NAME.equals(name)) {
             return new SystemKJV();
         }
 
@@ -154,6 +154,15 @@ public final class Versifications {
     public synchronized void register(Versification rs) {
         fluffed.put(rs.getName(), rs);
         known.add(rs.getName());
+    }
+
+    /**
+     * Get an iterator over all known versifications.
+     * 
+     * @return an iterator of versification names.
+     */
+    public Iterator<String> iterator() {
+        return known.iterator();
     }
 
     /**

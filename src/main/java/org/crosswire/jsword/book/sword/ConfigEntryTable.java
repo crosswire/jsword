@@ -1,10 +1,10 @@
 /**
  * Distribution License:
  * JSword is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License, version 2.1 as published by
- * the Free Software Foundation. This program is distributed in the hope
- * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * the terms of the GNU Lesser General Public License, version 2.1 or later
+ * as published by the Free Software Foundation. This program is distributed
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
@@ -66,7 +66,7 @@ import org.slf4j.LoggerFactory;
  * @author Mark Goodwin [mark at thorubio dot org]
  * @author Joe Walker [joe at eireneh dot com]
  * @author Jacky Cheung
- * @author DM Smith [dmsmith555 at yahoo dot com]
+ * @author DM Smith
  */
 public final class ConfigEntryTable {
     /**
@@ -168,6 +168,15 @@ public final class ConfigEntryTable {
                 in.close();
             }
         }
+    }
+
+    /**
+     * Get the conf file for this ConfigEntryTable.
+     * 
+     * @return Returns the conf file or null if loaded from a byte buffer.
+     */
+    public File getConfigFile() {
+        return configFile;
     }
 
     /**
@@ -611,9 +620,9 @@ public final class ConfigEntryTable {
             return;
         }
 
-        // At the moment only the KJV is supported.
         String v11n = (String) getValue(ConfigEntryType.VERSIFICATION);
         if (!Versifications.instance().isDefined(v11n)) {
+            log.error("Book not supported: Unknown versification for {}. {} is unknown.", internal, v11n);
             supported = false;
             return;
         }

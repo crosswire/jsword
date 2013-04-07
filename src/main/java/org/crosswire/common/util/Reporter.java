@@ -1,10 +1,10 @@
 /**
  * Distribution License:
  * JSword is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License, version 2.1 as published by
- * the Free Software Foundation. This program is distributed in the hope
- * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * the terms of the GNU Lesser General Public License, version 2.1 or later
+ * as published by the Free Software Foundation. This program is distributed
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
@@ -20,7 +20,9 @@
  */
 package org.crosswire.common.util;
 
+import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.crosswire.jsword.JSMsg;
 import org.slf4j.LoggerFactory;
@@ -139,7 +141,7 @@ public final class Reporter {
      * we capture an Exception
      */
     public static void addReporterListener(ReporterListener li) {
-        LISTENERS.add(ReporterListener.class, li);
+        LISTENERS.add(li);
     }
 
     /**
@@ -147,30 +149,22 @@ public final class Reporter {
      * whenever we capture an Exception
      */
     public static void removeReporterListener(ReporterListener li) {
-        LISTENERS.remove(ReporterListener.class, li);
+        LISTENERS.remove(li);
     }
 
     /**
      * Log a message.
      */
     protected static void fireCapture(ReporterEvent ev) {
-        // Guaranteed to return a non-null array
-        Object[] liArr = LISTENERS.getListenerList();
-
-        if (liArr.length == 0) {
+        if (LISTENERS.size() == 0) {
             log.warn("Nothing to listen to report: message={}", ev.getMessage(), ev.getException());
         }
 
-        // Process the listeners last to first, notifying
-        // those that are interested in this event
-        for (int i = liArr.length - 2; i >= 0; i -= 2) {
-            if (liArr[i] == ReporterListener.class) {
-                ReporterListener li = (ReporterListener) liArr[i + 1];
-                if (ev.getException() != null) {
-                    li.reportException(ev);
-                } else {
-                    li.reportMessage(ev);
-                }
+        for (ReporterListener listener : LISTENERS) {
+            if (ev.getException() != null) {
+                listener.reportException(ev);
+            } else {
+                listener.reportMessage(ev);
             }
         }
     }
@@ -183,7 +177,7 @@ public final class Reporter {
             // register ourselves
             System.setProperty(AWT_HANDLER_PROPERTY, OUR_NAME);
         } else {
-            // deregister ourselves
+            // unregister ourselves
             String current = System.getProperty(AWT_HANDLER_PROPERTY);
             if (current != null && current.equals(OUR_NAME)) {
                 Properties prop = System.getProperties();
@@ -198,8 +192,8 @@ public final class Reporter {
     public static final class CustomAWTExceptionHandler {
         /**
          * Its important that we have a no-arg ctor to make this work. So if we
-         * ever create an arged ctor then we need to add: public
-         * CustomAWTExceptionHandler() { }
+         * ever create an arged ctor then we need to add:
+         * public CustomAWTExceptionHandler() { }
          */
 
         /**
@@ -232,7 +226,7 @@ public final class Reporter {
     /**
      * The list of listeners
      */
-    private static final EventListenerList LISTENERS = new EventListenerList();
+    private static final List<ReporterListener> LISTENERS = new CopyOnWriteArrayList<ReporterListener>();
 
     /**
      * The log stream

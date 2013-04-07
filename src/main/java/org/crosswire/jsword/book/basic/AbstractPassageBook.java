@@ -1,10 +1,10 @@
 /**
  * Distribution License:
  * JSword is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License, version 2.1 as published by
- * the Free Software Foundation. This program is distributed in the hope
- * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * the terms of the GNU Lesser General Public License, version 2.1 or later
+ * as published by the Free Software Foundation. This program is distributed
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
@@ -73,8 +73,7 @@ public abstract class AbstractPassageBook extends AbstractBook {
         RawTextToXmlProcessor processor = new RawTextToXmlProcessor() {
             public void preRange(VerseRange range, List<Content> partialDom) {
                 if (showTitles) {
-                    Element title = OSISUtil.factory().createTitle();
-                    title.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.GENERATED_CONTENT);
+                    Element title = OSISUtil.factory().createGeneratedTitle();
                     title.addContent(range.getName());
                     partialDom.add(title);
                 }
@@ -114,7 +113,7 @@ public abstract class AbstractPassageBook extends AbstractBook {
     }
 
     /**
-     * Add the OSIS elements to the div element. Note, this assumes that the
+     * Add the OSIS elements to the content list. Note, this assumes that the
      * data is fully marked up.
      * 
      * @param key

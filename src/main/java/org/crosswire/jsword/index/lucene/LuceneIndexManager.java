@@ -1,10 +1,10 @@
 /**
  * Distribution License:
  * JSword is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License, version 2.1 as published by
- * the Free Software Foundation. This program is distributed in the hope
- * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * the terms of the GNU Lesser General Public License, version 2.1 or later
+ * as published by the Free Software Foundation. This program is distributed
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
@@ -37,6 +37,8 @@ import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.index.Index;
 import org.crosswire.jsword.index.IndexManager;
+import org.crosswire.jsword.index.IndexPolicy;
+import org.crosswire.jsword.index.IndexPolicyAdapter;
 import org.crosswire.jsword.index.IndexStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,10 +51,15 @@ import org.slf4j.LoggerFactory;
  * @author Joe Walker [joe at eireneh dot com]
  */
 public class LuceneIndexManager implements IndexManager {
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.index.search.AbstractIndex#isIndexed()
+    /**
+     * Create a LuceneIndexManager with a default IndexPolicy.
+     */
+    public LuceneIndexManager() {
+        policy = new IndexPolicyAdapter();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.index.IndexManager#isIndexed(org.crosswire.jsword.book.Book)
      */
     public boolean isIndexed(Book book) {
         try {
@@ -64,12 +71,8 @@ public class LuceneIndexManager implements IndexManager {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.index.search.IndexManager#getIndex(org.crosswire
-     * .jsword.book.Book)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.index.IndexManager#getIndex(org.crosswire.jsword.book.Book)
      */
     public Index getIndex(Book book) throws BookException {
         try {
@@ -87,8 +90,7 @@ public class LuceneIndexManager implements IndexManager {
         }
     }
 
-    /*
-     *     @Override(non-Javadoc)
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.index.IndexManager#closeAllIndexes()
      */
     public void closeAllIndexes() {
@@ -97,46 +99,33 @@ public class LuceneIndexManager implements IndexManager {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.index.search.AbstractIndex#generateSearchIndex(org
-     * .crosswire.common.progress.Job)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.index.IndexManager#scheduleIndexCreation(org.crosswire.jsword.book.Book)
      */
     public void scheduleIndexCreation(final Book book) {
         book.setIndexStatus(IndexStatus.SCHEDULED);
 
-        Thread work = new Thread(new Runnable() {
-            public void run() {
-                IndexStatus finalStatus = IndexStatus.UNDONE;
+        IndexStatus finalStatus = IndexStatus.UNDONE;
 
-                try {
-                    URI storage = getStorageArea(book);
-                    Index index = new LuceneIndex(book, storage, true);
-                    // We were successful if the directory exists.
-                    if (NetUtil.getAsFile(storage).exists()) {
-                        finalStatus = IndexStatus.DONE;
-                        INDEXES.put(book, index);
-                    }
-                } catch (IOException e) {
-                    Reporter.informUser(LuceneIndexManager.this, e);
-                } catch (BookException e) {
-                    Reporter.informUser(LuceneIndexManager.this, e);
-                } finally {
-                    book.setIndexStatus(finalStatus);
-                }
+        try {
+            URI storage = getStorageArea(book);
+            Index index = new LuceneIndex(book, storage, this.policy);
+            // We were successful if the directory exists.
+            if (NetUtil.getAsFile(storage).exists()) {
+                finalStatus = IndexStatus.DONE;
+                INDEXES.put(book, index);
             }
-        });
-        work.start();
+        } catch (IOException e) {
+            Reporter.informUser(LuceneIndexManager.this, e);
+        } catch (BookException e) {
+            Reporter.informUser(LuceneIndexManager.this, e);
+        } finally {
+            book.setIndexStatus(finalStatus);
+        }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.index.search.IndexManager#installDownloadedIndex
-     * (org.crosswire.jsword.book.Book, java.net.URI)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.index.IndexManager#installDownloadedIndex(org.crosswire.jsword.book.Book, java.net.URI)
      */
     public void installDownloadedIndex(Book book, URI tempDest) throws BookException {
         try {
@@ -149,12 +138,8 @@ public class LuceneIndexManager implements IndexManager {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.index.search.IndexManager#deleteIndex(org.crosswire
-     * .jsword.book.Book)
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.index.IndexManager#deleteIndex(org.crosswire.jsword.book.Book)
      */
     public void deleteIndex(Book book) throws BookException {
         // Lucene can build in the directory that currently exists,
@@ -193,6 +178,25 @@ public class LuceneIndexManager implements IndexManager {
         FileUtil.delete(tempPath);
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.index.IndexManager#getIndexPolicy()
+     */
+    public IndexPolicy getIndexPolicy() {
+        return policy;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.index.IndexManager#setIndexPolicy(org.crosswire.jsword.index.IndexPolicy)
+     */
+    public void setIndexPolicy(IndexPolicy policy) {
+        if (policy != null) {
+            this.policy = policy;
+        } else {
+            this.policy = new IndexPolicyAdapter();
+        }
+
+    }
+
     /**
      * Determine where an index should be stored
      * 
@@ -215,6 +219,8 @@ public class LuceneIndexManager implements IndexManager {
 
         return NetUtil.lengthenURI(driver, bookName);
     }
+
+    private IndexPolicy policy;
 
     /**
      * The created indexes

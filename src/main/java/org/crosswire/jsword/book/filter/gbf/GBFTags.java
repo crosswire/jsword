@@ -1,10 +1,10 @@
 /**
  * Distribution License:
  * JSword is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License, version 2.1 as published by
- * the Free Software Foundation. This program is distributed in the hope
- * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * the terms of the GNU Lesser General Public License, version 2.1 or later
+ * as published by the Free Software Foundation. This program is distributed
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
@@ -41,7 +41,7 @@ import org.jdom2.Text;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
- * @author DM Smith [dmsmith555 at yahoo dot com]
+ * @author DM Smith
  */
 public final class GBFTags {
     /**
@@ -345,7 +345,12 @@ public final class GBFTags {
         }
 
         public void updateOsisStack(Book book, Key key, LinkedList<Content> stack) {
-            GBFTags.updateOsisStack(stack, OSIS_FACTORY.createTitle());
+            // In OSIS Psalm titles are canonical
+            Element title = OSIS_FACTORY.createTitle();
+            title.setAttribute(OSISUtil.OSIS_ATTR_TYPE, "psalm");
+            title.setAttribute(OSISUtil.OSIS_ATTR_SUBTYPE, "x-preverse");
+            title.setAttribute(OSISUtil.OSIS_ATTR_CANONICAL, "true");
+            GBFTags.updateOsisStack(stack, title);
         }
     }
 

@@ -1,10 +1,10 @@
 /**
  * Distribution License:
  * JSword is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License, version 2.1 as published by
- * the Free Software Foundation. This program is distributed in the hope
- * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * the terms of the GNU Lesser General Public License, version 2.1 or later
+ * as published by the Free Software Foundation. This program is distributed
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
@@ -17,7 +17,6 @@
  * Copyright: 2012
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.versification.system;
 
@@ -29,7 +28,7 @@ import org.crosswire.jsword.versification.Versification;
  *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
- * @author DM Smith [dmsmith555 at yahoo dot com]
+ * @author DM Smith
  */
 public class SystemNRSVA extends Versification {
     /**
@@ -108,7 +107,7 @@ public class SystemNRSVA extends Versification {
 
     /* protected */ static final int[][] LAST_VERSE_OT =
     {
-        // Gen
+        // Genesis
         {
                31,    25,    24,    26,    32,    22,    24,    22,    29,
                32,    32,    20,    18,    24,    21,    16,    27,    33,    38,
@@ -117,7 +116,7 @@ public class SystemNRSVA extends Versification {
                23,    57,    38,    34,    34,    28,    34,    31,    22,    33,
                26,
         },
-        // Exod
+        // Exodus
         {
                22,    25,    22,    31,    23,    30,    25,    32,    35,
                29,    10,    51,    22,    31,    27,    36,    16,    27,    25,
@@ -125,33 +124,33 @@ public class SystemNRSVA extends Versification {
                38,    18,    35,    23,    35,    35,    38,    29,    31,    43,
                38,
         },
-        // Lev
+        // Leviticus
         {
                17,    16,    17,    35,    19,    30,    38,    36,    24,
                20,    47,     8,    59,    57,    33,    34,    16,    30,    37,
                27,    24,    33,    44,    23,    55,    46,    34,
         },
-        // Num
+        // Numbers
         {
                54,    34,    51,    49,    31,    27,    89,    26,    23,
                36,    35,    16,    33,    45,    41,    50,    13,    32,    22,
                29,    35,    41,    30,    25,    18,    65,    23,    31,    40,
                16,    54,    42,    56,    29,    34,    13,
         },
-        // Deut
+        // Deuteronomy
         {
                46,    37,    29,    49,    33,    25,    26,    20,    29,
                22,    32,    32,    18,    29,    23,    22,    20,    22,    21,
                20,    23,    30,    25,    22,    19,    19,    26,    68,    29,
                20,    30,    52,    29,    12,
         },
-        // Josh
+        // Joshua
         {
                18,    24,    17,    24,    15,    27,    26,    35,    27,
                43,    23,    24,    33,    15,    63,    10,    18,    28,    51,
                 9,    45,    34,    16,    33,
         },
-        // Judg
+        // Judges
         {
                36,    23,    31,    24,    31,    40,    25,    35,    57,
                18,    40,    15,    25,    20,    20,    31,    13,    31,    30,
@@ -161,38 +160,38 @@ public class SystemNRSVA extends Versification {
         {
                22,    23,    18,    22,
         },
-        // 1Sam
+        // I Samuel
         {
                28,    36,    21,    22,    12,    21,    17,    22,    27,
                27,    15,    25,    23,    52,    35,    23,    58,    30,    24,
                42,    15,    23,    29,    22,    44,    25,    12,    25,    11,
                31,    13,
         },
-        // 2Sam
+        // II Samuel
         {
                27,    32,    39,    12,    25,    23,    29,    18,    13,
                19,    27,    31,    39,    33,    37,    23,    29,    33,    43,
                26,    22,    51,    39,    25,
         },
-        // 1Kgs
+        // I Kings
         {
                53,    46,    28,    34,    18,    38,    51,    66,    28,
                29,    43,    33,    34,    31,    34,    34,    24,    46,    21,
                43,    29,    53,
         },
-        // 2Kgs
+        // II Kings
         {
                18,    25,    27,    44,    27,    33,    20,    29,    37,
                36,    21,    21,    25,    29,    38,    20,    41,    37,    37,
                21,    26,    20,    37,    20,    30,
         },
-        // 1Chr
+        // I Chronicles
         {
                54,    55,    24,    43,    26,    81,    40,    40,    44,
                14,    47,    40,    14,    17,    29,    43,    27,    17,    19,
                 8,    30,    19,    32,    31,    31,    32,    34,    21,    30,
         },
-        // 2Chr
+        // II Chronicles
         {
                17,    18,    17,    22,    14,    42,    22,    18,    31,
                19,    23,    16,    22,    15,    19,    14,    19,    34,    11,
@@ -204,12 +203,12 @@ public class SystemNRSVA extends Versification {
                11,    70,    13,    24,    17,    22,    28,    36,    15,
                44,
         },
-        // Neh
+        // Nehemiah
         {
                11,    20,    32,    23,    19,    19,    73,    18,    38,
                39,    36,    47,    31,
         },
-        // Esth
+        // Esther
         {
                22,    23,    15,    17,    14,    14,    10,    17,    32,
                 3,
@@ -222,7 +221,7 @@ public class SystemNRSVA extends Versification {
                31,    40,    22,    33,    37,    16,    33,    24,    41,    30,
                24,    34,    17,
         },
-        // Ps
+        // Psalms
         {
                 6,    12,     8,     8,    12,    10,    17,     9,    20,
                18,     7,     8,     6,     7,     5,    11,    15,    50,    14,
@@ -241,23 +240,23 @@ public class SystemNRSVA extends Versification {
                13,    10,     7,    12,    15,    21,    10,    20,    14,     9,
                 6,
         },
-        // Prov
+        // Proverbs
         {
                33,    22,    35,    27,    23,    35,    27,    36,    18,
                32,    31,    28,    25,    35,    33,    33,    28,    24,    29,
                30,    31,    29,    35,    34,    28,    28,    27,    28,    27,
                33,    31,
         },
-        // Eccl
+        // Ecclesiastes
         {
                18,    26,    22,    16,    20,    12,    29,    17,    18,
                20,    10,    14,
         },
-        // Song
+        // Song of Solomon
         {
                17,    17,    11,    16,    16,    13,    13,    14,
         },
-        // Isa
+        // Isaiah
         {
                31,    22,    26,     6,    30,    13,    25,    22,    21,
                34,    16,     6,    22,    32,     9,    14,    14,     7,    25,
@@ -265,9 +264,9 @@ public class SystemNRSVA extends Versification {
                33,     9,    20,    24,    17,    10,    22,    38,    22,     8,
                31,    29,    25,    28,    28,    25,    13,    15,    22,    26,
                11,    23,    15,    12,    17,    13,    12,    21,    14,    21,
-                      22,    11,    12,    19,    12,    25,    24,
+               22,    11,    12,    19,    12,    25,    24,
         },
-        // Jer
+        // Jeremiah
         {
                19,    37,    25,    31,    31,    30,    34,    22,    26,
                25,    23,    17,    27,    22,    21,    21,    27,    23,    15,
@@ -276,11 +275,11 @@ public class SystemNRSVA extends Versification {
                16,    18,    22,    13,    30,     5,    28,     7,    47,    39,
                46,    64,    34,
         },
-        // Lam
+        // Lamentations
         {
                22,    22,    66,    22,    22,
         },
-        // Ezek
+        // Ezekiel
         {
                28,    10,    27,    17,    17,    14,    27,    18,    11,
                22,    25,    28,    23,    23,     8,    63,    24,    32,    14,
@@ -288,12 +287,12 @@ public class SystemNRSVA extends Versification {
                26,    18,    32,    33,    31,    15,    38,    28,    23,    29,
                49,    26,    20,    27,    31,    25,    24,    23,    35,
         },
-        // Dan
+        // Daniel
         {
                21,    49,    30,    37,    31,    28,    28,    27,    27,
                21,    45,    13,
         },
-        // Hos
+        // Hosea
         {
                11,    23,     5,    19,    15,    11,    16,    14,    17,
                15,    12,    14,    16,     9,
@@ -306,7 +305,7 @@ public class SystemNRSVA extends Versification {
         {
                15,    16,    15,    13,    27,    14,    17,    14,    15,
         },
-        // Obad
+        // Obadiah
         {
                21,
         },
@@ -314,32 +313,32 @@ public class SystemNRSVA extends Versification {
         {
                17,    10,    10,    11,
         },
-        // Mic
+        // Micah
         {
                16,    13,    12,    13,    15,    16,    20,
         },
-        // Nah
+        // Nahum
         {
                15,    13,    19,
         },
-        // Hab
+        // Habakkuk
         {
                17,    20,    19,
         },
-        // Zeph
+        // Zephaniah
         {
                18,    15,    20,
         },
-        // Hag
+        // Haggai
         {
                15,    23,
         },
-        // Zech
+        // Zechariah
         {
                21,    13,    10,    14,    11,    15,    14,    23,    17,
                12,    17,    14,     9,    21,
         },
-        // Mal
+        // Malachi
         {
                14,    17,    18,     6,
         },
@@ -391,12 +390,12 @@ public class SystemNRSVA extends Versification {
         // I Maccabees
         {
                64,    70,    60,    61,    68,    63,    50,    32,    73,
-              89,     74,    53,    53,    49,    41,    24,
+               89,    74,    53,    53,    49,    41,    24,
         },
         // II Maccabees
         {
-              36,    32,    40,    50,    27,    31,    42,    36,    29,
-              38,    38,    45,    26,    46,    39,
+               36,    32,    40,    50,    27,    31,    42,    36,    29,
+               38,    38,    45,    26,    46,    39,
         },
         // I Esdras
         {

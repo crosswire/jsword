@@ -1,10 +1,10 @@
 /**
  * Distribution License:
  * JSword is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License, version 2.1 as published by
- * the Free Software Foundation. This program is distributed in the hope
- * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * the terms of the GNU Lesser General Public License, version 2.1 or later
+ * as published by the Free Software Foundation. This program is distributed
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
@@ -56,14 +56,14 @@ import org.jdom2.Document;
  * @author Mark Goodwin [mark at thorubio dot org]
  * @author Joe Walker [joe at eireneh dot com]
  * @author Jacky Cheung
- * @author DM Smith [dmsmith555 at yahoo dot com]
+ * @author DM Smith
  */
 /**
  *
  *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
- * @author DM Smith [dmsmith555 at yahoo dot com]
+ * @author DM Smith
  */
 public final class SwordBookMetaData extends AbstractBookMetaData {
     /**
@@ -179,7 +179,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     }
 
     /**
-     * Returns the sourceType.
+     * Returns the Filter based upon the SourceType.
      */
     public Filter getFilter() {
         String sourcetype = (String) getProperty(ConfigEntryType.SOURCE_TYPE);
@@ -188,9 +188,20 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
 
     /**
      * @return Returns the relative path of the book's conf.
+     * @deprecated Use {@link #getConf} instead
      */
+    @Deprecated
     public String getConfPath() {
         return SwordConstants.DIR_CONF + '/' + getInitials().toLowerCase(Locale.ENGLISH) + SwordConstants.EXTENSION_CONF;
+    }
+
+    /**
+     * Get the conf file for this SwordMetaData.
+     * 
+     * @return Returns the conf file or null if loaded from a byte buffer.
+     */
+    public File getConfigFile() {
+        return cet.getConfigFile();
     }
 
     /* (non-Javadoc)
@@ -317,19 +328,28 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
      */
     @Override
     public boolean hasFeature(FeatureType feature) {
-        if (cet.match(ConfigEntryType.FEATURE, feature.toString())) {
+        String name = feature.toString();
+        if (cet.match(ConfigEntryType.FEATURE, name)) {
             return true;
         }
         // Many "features" are GlobalOptionFilters, which in the Sword C++ API
         // indicate a class to use for filtering.
         // These mostly have the source type prepended to the feature
         StringBuilder buffer = new StringBuilder((String) getProperty(ConfigEntryType.SOURCE_TYPE));
-        buffer.append(feature);
+        buffer.append(name);
         if (cet.match(ConfigEntryType.GLOBAL_OPTION_FILTER, buffer.toString())) {
             return true;
         }
+
+        // Check for the alias prefixed by the source type
+        String alias = feature.getAlias();
+        buffer.setLength(0);
+        buffer.append((String) getProperty(ConfigEntryType.SOURCE_TYPE));
+        buffer.append(alias);
+
         // But some do not
-        return cet.match(ConfigEntryType.GLOBAL_OPTION_FILTER, feature.toString());
+        return cet.match(ConfigEntryType.GLOBAL_OPTION_FILTER, name)
+            || cet.match(ConfigEntryType.GLOBAL_OPTION_FILTER, alias);
     }
 
     private void buildProperties() {

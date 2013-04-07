@@ -1,10 +1,10 @@
 /**
  * Distribution License:
  * JSword is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License, version 2.1 as published by
- * the Free Software Foundation. This program is distributed in the hope
- * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * the terms of the GNU Lesser General Public License, version 2.1 or later
+ * as published by the Free Software Foundation. This program is distributed
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
@@ -65,7 +65,7 @@ import org.crosswire.jsword.versification.system.Versifications;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
- * @author DM Smith [dmsmith555 at yahoo dot com]
+ * @author DM Smith
  */
 public final class PassageKeyFactory {
     /**
@@ -96,21 +96,15 @@ public final class PassageKeyFactory {
 
     /**
      * Get a Passage containing all the Verses in this Versification.
+     * This differs from {@link Book#getGlobalKeyList} which gets the
+     * verses in the Book, which may be a small part of the whole.
      * 
      * @param v11n
      *            The Versification to which this Passage belongs.
      * @return the Passage with all the Verses in the Versification
      */
     public Key getGlobalKeyList(Versification v11n) {
-        Passage whole = null;
-        try {
-            // AV11N(DMS): Is this right?
-            whole = new ReadOnlyPassage(defaultType.createPassage(v11n, "Gen 1:1-Rev 22:21"), true);
-        } catch (NoSuchKeyException ex) {
-            assert false : ex;
-            whole = defaultType.createEmptyPassage(v11n);
-        }
-        return whole;
+        return new ReadOnlyPassage(KeyUtil.getPassage(v11n.getAllVerses()), true);
     }
 
     /**

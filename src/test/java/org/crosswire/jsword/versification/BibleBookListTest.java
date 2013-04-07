@@ -1,10 +1,10 @@
 /**
  * Distribution License:
  * JSword is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License, version 2.1 as published by
- * the Free Software Foundation. This program is distributed in the hope
- * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * the terms of the GNU Lesser General Public License, version 2.1 or later
+ * as published by the Free Software Foundation. This program is distributed
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
@@ -17,9 +17,11 @@
  * Copyright: 2012
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.versification;
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import junit.framework.TestCase;
 
@@ -28,7 +30,7 @@ import junit.framework.TestCase;
  *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
- * @author DM Smith [dmsmith555 at yahoo dot com]
+ * @author DM Smith
  */
 public class BibleBookListTest extends TestCase {
 
@@ -115,7 +117,11 @@ public class BibleBookListTest extends TestCase {
             BibleBook b = booksNT[i];
             BibleBook n = booksNT[i + 1];
             assertEquals(b.getOSIS(), n, list.getNextBook(b));
-        }        
+        }
+        // Test the last book in the list
+        assertEquals("Next after last book", null, list.getNextBook(booksNT[booksNT.length - 1]));
+        // Test a book not in the list
+        assertEquals(BibleBook.GEN.getOSIS(), null, list.getNextBook(BibleBook.GEN));
     }
 
     public void testPreviousBook() {
@@ -123,7 +129,11 @@ public class BibleBookListTest extends TestCase {
             BibleBook b = booksNT[i];
             BibleBook p = booksNT[i - 1];
             assertEquals(b.getOSIS(), p, list.getPreviousBook(b));
-        }        
+        }
+        // Test the first book in the list
+        assertEquals("Prior before first book", null, list.getPreviousBook(booksNT[0]));
+        // Test a book not in the list
+        assertEquals(BibleBook.GEN.getOSIS(), null, list.getPreviousBook(BibleBook.GEN));
     }
 
     public void testIterator() {
@@ -132,5 +142,26 @@ public class BibleBookListTest extends TestCase {
             BibleBook b = booksNT[i++];
             assertEquals(b.getOSIS(), b, book);
         }
+        // Same loop written differently.
+        i = 0;
+        Iterator<BibleBook> iter = list.iterator();
+        while (iter.hasNext()) {
+            BibleBook book = iter.next();
+            BibleBook b = booksNT[i++];
+            assertEquals(b.getOSIS(), b, book);
+            try {
+                iter.remove();
+                fail("Remove is not a supported operation on a BibleBookList");
+            } catch (UnsupportedOperationException e) {
+                ;
+            }
+        }
+        try {
+            iter.next();
+            fail("Cannot call next after exhausting a BibleBookList iterator");
+        } catch (NoSuchElementException e) {
+            ;
+        }
+        
     }
 }

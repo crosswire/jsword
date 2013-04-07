@@ -1,10 +1,10 @@
 /**
  * Distribution License:
  * JSword is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License, version 2.1 as published by
- * the Free Software Foundation. This program is distributed in the hope
- * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * the terms of the GNU Lesser General Public License, version 2.1 or later
+ * as published by the Free Software Foundation. This program is distributed
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book;
 
@@ -36,7 +35,7 @@ import org.crosswire.common.util.Filter;
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
- * @author DM Smith [dmsmith555 at yahoo dot com]
+ * @author DM Smith
  */
 public class BookSet extends ArrayList<Book> implements Set<Book> {
     public BookSet() {
@@ -86,10 +85,8 @@ public class BookSet extends ArrayList<Book> implements Set<Book> {
         return filter(new GroupFilter(key, value));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.List#add(int, java.lang.Object)
+    /* (non-Javadoc)
+     * @see java.util.ArrayList#add(int, java.lang.Object)
      */
     @Override
     public void add(int index, Book element) {
@@ -97,10 +94,8 @@ public class BookSet extends ArrayList<Book> implements Set<Book> {
         add(element);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.Collection#add(java.lang.Object)
+    /* (non-Javadoc)
+     * @see java.util.ArrayList#add(java.lang.Object)
      */
     @Override
     public final boolean add(Book book) {
@@ -114,10 +109,8 @@ public class BookSet extends ArrayList<Book> implements Set<Book> {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.Collection#addAll(java.util.Collection)
+    /* (non-Javadoc)
+     * @see java.util.ArrayList#addAll(java.util.Collection)
      */
     @Override
     public final boolean addAll(Collection<? extends Book> c) {
@@ -133,10 +126,8 @@ public class BookSet extends ArrayList<Book> implements Set<Book> {
         return added;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.List#addAll(int, java.util.Collection)
+    /* (non-Javadoc)
+     * @see java.util.ArrayList#addAll(int, java.util.Collection)
      */
     @Override
     public final boolean addAll(int index, Collection<? extends Book> c) {
@@ -144,10 +135,8 @@ public class BookSet extends ArrayList<Book> implements Set<Book> {
         return addAll(c);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.List#set(int, java.lang.Object)
+    /* (non-Javadoc)
+     * @see java.util.ArrayList#set(int, java.lang.Object)
      */
     @Override
     public Book set(int index, Book element) {
@@ -158,7 +147,13 @@ public class BookSet extends ArrayList<Book> implements Set<Book> {
         return item;
     }
 
-    public BookSet filter(Filter filter) {
+    /**
+     * Get a set of books that satisfy the condition imposed by the filter.
+     * 
+     * @param filter the condition on which to select books
+     * @return the set of matching books
+     */
+    public BookSet filter(Filter<Book> filter) {
         // create a copy of the list and
         // remove everything that fails the test.
         BookSet listSet = (BookSet) clone();
@@ -175,14 +170,13 @@ public class BookSet extends ArrayList<Book> implements Set<Book> {
     /**
      * GroupFilter does the SQL traditional group by.
      */
-    private static final class GroupFilter implements Filter {
+    private static final class GroupFilter implements Filter<Book> {
         public GroupFilter(String aKey, Object aValue) {
             key = aKey;
             value = aValue;
         }
 
-        public boolean test(Object obj) {
-            Book book = (Book) obj;
+        public boolean test(Book book) {
             Object property = book.getProperty(key);
             return property != null && property.equals(value);
         }

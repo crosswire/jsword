@@ -1,10 +1,10 @@
 /**
  * Distribution License:
  * JSword is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License, version 2.1 as published by
- * the Free Software Foundation. This program is distributed in the hope
- * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * the terms of the GNU Lesser General Public License, version 2.1 or later
+ * as published by the Free Software Foundation. This program is distributed
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The License is available on the internet at:
@@ -17,7 +17,6 @@
  * Copyright: 2005
  *     The copyright to this program is held by it's authors.
  *
- * ID: $Id$
  */
 package org.crosswire.jsword.book;
 
@@ -35,7 +34,7 @@ import org.crosswire.common.config.ChoiceFactory;
  */
 public final class Defaults {
     /**
-     * Prevent construction
+     * Prevent construction.
      */
     private Defaults() {
     }
@@ -73,6 +72,11 @@ public final class Defaults {
         }
     }
 
+    /**
+     * Get the current Bible, if set, else the default Bible.
+     * 
+     * @return the current Bible
+     */
     public static Book getCurrentBible() {
         if (currentBible == null) {
             return bibleDeft.getDefault();
@@ -80,418 +84,370 @@ public final class Defaults {
         return currentBible;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Set the default Bible.
      * 
-     * @see
-     * org.crosswire.jsword.book.DefaultBook#setDefault(org.crosswire.jsword
-     * .book.Book)
+     * @param book
      */
     public static void setBible(Book book) {
         bibleDeft.setDefault(book);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.DefaultBook#unsetDefault()
+    /**
+     * Unset the default Bible.
      */
     protected static void unsetBible() {
         bibleDeft.unsetDefault();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.DefaultBook#getDefault()
+    /**
+     * @return the default Bible
      */
     public static Book getBible() {
         return bibleDeft.getDefault();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.DefaultBook#getDefaultName()
+    /**
+     * @return the name of the default Bible
      */
     public static String getBibleByName() {
         return bibleDeft.getDefaultName();
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Set the default Bible by name.
      * 
-     * @see
-     * org.crosswire.jsword.book.DefaultBook#setDefaultByName(java.lang.String)
+     * @param name
      */
     public static void setBibleByName(String name) {
         bibleDeft.setDefaultByName(name);
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Set the default commentary.
      * 
-     * @see
-     * org.crosswire.jsword.book.DefaultBook#setDefault(org.crosswire.jsword
-     * .book.Book)
+     * @param book
      */
     public static void setCommentary(Book book) {
         commentaryDeft.setDefault(book);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.DefaultBook#unsetDefault()
+    /**
+     * Unset the default commentary.
      */
     protected static void unsetCommentary() {
         commentaryDeft.unsetDefault();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.DefaultBook#getDefault()
+    /**
+     * @return the default commentary
      */
     public static Book getCommentary() {
         return commentaryDeft.getDefault();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.DefaultBook#getDefaultName()
+    /**
+     * @return the name of the default commentary
      */
     public static String getCommentaryByName() {
         return commentaryDeft.getDefaultName();
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Set the default commentary by name.
      * 
-     * @see
-     * org.crosswire.jsword.book.DefaultBook#setDefaultByName(java.lang.String)
+     * @param name
      */
     public static void setCommentaryByName(String name) {
         commentaryDeft.setDefaultByName(name);
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Set the default dictionary.
      * 
-     * @see
-     * org.crosswire.jsword.book.DefaultBook#setDefault(org.crosswire.jsword
-     * .book.Book)
+     * @param book
      */
     public static void setDictionary(Book book) {
         dictionaryDeft.setDefault(book);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.DefaultBook#unsetDefault()
+    /**
+     * Unset the default dictionary.
      */
     protected static void unsetDictionary() {
         dictionaryDeft.unsetDefault();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.DefaultBook#getDefault()
+    /**
+     * @return the default dictionary
      */
     public static Book getDictionary() {
         return dictionaryDeft.getDefault();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.DefaultBook#getDefaultName()
+    /**
+     * @return the name of the default dictionary
      */
     public static String getDictionaryByName() {
         return dictionaryDeft.getDefaultName();
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Set the default dictionary by name.
      * 
-     * @see
-     * org.crosswire.jsword.book.DefaultBook#setDefaultByName(java.lang.String)
+     * @param name
      */
     public static void setDictionaryByName(String name) {
         dictionaryDeft.setDefaultByName(name);
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Set the default daily devotional.
      * 
-     * @see
-     * org.crosswire.jsword.book.DefaultBook#setDefault(org.crosswire.jsword
-     * .book.Book)
+     * @param book
      */
     public static void setDailyDevotional(Book book) {
         dictionaryDeft.setDefault(book);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.DefaultBook#unsetDefault()
+    /**
+     * Unset the default daily devotional.
      */
     protected static void unsetDailyDevotional() {
         dailyDevotionalDeft.unsetDefault();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.DefaultBook#getDefault()
+    /**
+     * @return the default daily devotional
      */
     public static Book getDailyDevotional() {
         return dailyDevotionalDeft.getDefault();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.DefaultBook#getDefaultName()
+    /**
+     * @return the name of the default daily devotional
      */
     public static String getDailyDevotionalByName() {
         return dailyDevotionalDeft.getDefaultName();
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Set the default daily devotional by name.
      * 
-     * @see
-     * org.crosswire.jsword.book.DefaultBook#setDefaultByName(java.lang.String)
+     * @param name
      */
     public static void setDailyDevotionalByName(String name) {
         dailyDevotionalDeft.setDefaultByName(name);
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Set the default Greek Strong's Numbers dictionary.
      * 
-     * @see
-     * org.crosswire.jsword.book.DefaultBook#setDefault(org.crosswire.jsword
-     * .book.Book)
+     * @param book
      */
     public static void setGreekDefinitions(Book book) {
         greekDefinitionsDeft.setDefault(book);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.DefaultBook#unsetDefault()
+    /**
+     * Unset the default Greek Strong's Numbers dictionary.
      */
     protected static void unsetGreekDefinitions() {
         greekDefinitionsDeft.unsetDefault();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.DefaultBook#getDefault()
+    /**
+     * @return the default Greek Strong's Numbers dictionary
      */
     public static Book getGreekDefinitions() {
         return greekDefinitionsDeft.getDefault();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.DefaultBook#getDefaultName()
+    /**
+     * @return the name of the default Greek Strong's Numbers dictionary
      */
     public static String getGreekDefinitionsByName() {
         return greekDefinitionsDeft.getDefaultName();
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Set the default Greek Strong's Numbers dictionary by name.
      * 
-     * @see
-     * org.crosswire.jsword.book.DefaultBook#setDefaultByName(java.lang.String)
+     * @param name
      */
     public static void setGreekDefinitionsByName(String name) {
         greekDefinitionsDeft.setDefaultByName(name);
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Set the default Hebrew Strong's Numbers dictionary.
      * 
-     * @see
-     * org.crosswire.jsword.book.DefaultBook#setDefault(org.crosswire.jsword
-     * .book.Book)
+     * @param book
      */
     public static void setHebrewDefinitions(Book book) {
         hebrewDefinitionsDeft.setDefault(book);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.DefaultBook#unsetDefault()
+    /**
+     * Unset the default Hebrew Strong's Numbers dictionary.
      */
     protected static void unsetHebrewDefinitions() {
         hebrewDefinitionsDeft.unsetDefault();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.DefaultBook#getDefault()
+    /**
+     * @return the default Hebrew Strong's Numbers dictionary
      */
     public static Book getHebrewDefinitions() {
         return hebrewDefinitionsDeft.getDefault();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.DefaultBook#getDefaultName()
+    /**
+     * @return the name of the default Hebrew Strong's Numbers dictionary
      */
     public static String getHebrewDefinitionsByName() {
         return hebrewDefinitionsDeft.getDefaultName();
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Set the default Hebrew Strong's Numbers dictionary by name.
      * 
-     * @see
-     * org.crosswire.jsword.book.DefaultBook#setDefaultByName(java.lang.String)
+     * @param name
      */
     public static void setHebrewDefinitionsByName(String name) {
         hebrewDefinitionsDeft.setDefaultByName(name);
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Set the default Greek morphology dictionary.
      * 
-     * @see
-     * org.crosswire.jsword.book.DefaultBook#setDefault(org.crosswire.jsword
-     * .book.Book)
+     * @param book
      */
     public static void setGreekParse(Book book) {
         greekParseDeft.setDefault(book);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.DefaultBook#unsetDefault()
+    /**
+     * Unset the default Greek morphology dictionary.
      */
     protected static void unsetGreekParse() {
         greekParseDeft.unsetDefault();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.DefaultBook#getDefault()
+    /**
+     * @return the default Greek morphology dictionary
      */
     public static Book getGreekParse() {
         return greekParseDeft.getDefault();
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Set the default Greek morphology dictionary by name.
      * 
-     * @see org.crosswire.jsword.book.DefaultBook#getDefaultName()
+     * @return the name of the default Greek morphology dictionary
      */
     public static String getGreekParseByName() {
         return greekParseDeft.getDefaultName();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.crosswire.jsword.book.DefaultBook#setDefaultByName(java.lang.String)
+    /**
+     * @param name
      */
     public static void setGreekParseByName(String name) {
         greekParseDeft.setDefaultByName(name);
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Set the default Hebrew morphology dictionary by name.
      * 
-     * @see
-     * org.crosswire.jsword.book.DefaultBook#setDefault(org.crosswire.jsword
-     * .book.Book)
+     * @param book
      */
     public static void setHebrewParse(Book book) {
         hebrewParseDeft.setDefault(book);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.DefaultBook#unsetDefault()
+    /**
+     * Unset the default Hebrew morphology dictionary.
      */
     protected static void unsetHebrewParse() {
         hebrewParseDeft.unsetDefault();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.DefaultBook#getDefault()
+    /**
+     * @return the default Hebrew morphology dictionary
      */
     public static Book getHebrewParse() {
         return hebrewParseDeft.getDefault();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.crosswire.jsword.book.DefaultBook#getDefaultName()
+    /**
+     * @return the name of the default Hebrew morphology dictionary
      */
     public static String getHebrewParseByName() {
         return hebrewParseDeft.getDefaultName();
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Set the default Hebrew morphology dictionary by name.
      * 
-     * @see
-     * org.crosswire.jsword.book.DefaultBook#setDefaultByName(java.lang.String)
+     * @param name
      */
     public static void setHebrewParseByName(String name) {
         hebrewParseDeft.setDefaultByName(name);
     }
 
+    /**
+     * @return the default Bible
+     */
     protected static DefaultBook getDefaultBible() {
         return bibleDeft;
     }
 
+    /**
+     * @return the default commentary
+     */
     protected static DefaultBook getDefaultCommentary() {
         return commentaryDeft;
     }
 
+    /**
+     * @return the default dictionary
+     */
     protected static DefaultBook getDefaultDictionary() {
         return dictionaryDeft;
     }
 
+    /**
+     * @return the default daily devotional
+     */
     protected static DefaultBook getDefaultDailyDevotional() {
         return dailyDevotionalDeft;
     }
 
+    /**
+     * @return the default Greek Strong's Numbers dictionary
+     */
     protected static DefaultBook getDefaultGreekDefinitions() {
         return greekDefinitionsDeft;
     }
 
+    /**
+     * @return the default Hebrew Strong's Numbers dictionary
+     */
     protected static DefaultBook getDefaultHebrewDefinitions() {
         return hebrewDefinitionsDeft;
     }
 
+    /**
+     * @return the default Greek morphology dictionary
+     */
     protected static DefaultBook getDefaultGreekParse() {
         return greekParseDeft;
     }
 
+    /**
+     * @return the default Hebrew morphology dictionary
+     */
     protected static DefaultBook getDefaultHebrewParse() {
         return hebrewParseDeft;
     }
@@ -577,12 +533,8 @@ public final class Defaults {
      * To keep us up to date with changes in the available Books
      */
     static class DefaultsBookListener implements BooksListener {
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.BooksListener#bookAdded(org.crosswire.jsword
-         * .book.BooksEvent)
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.BooksListener#bookAdded(org.crosswire.jsword.book.BooksEvent)
          */
         public void bookAdded(BooksEvent ev) {
             Book book = ev.getBook();
@@ -590,12 +542,8 @@ public final class Defaults {
             refreshBooks();
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.crosswire.jsword.book.BooksListener#bookRemoved(org.crosswire
-         * .jsword.book.BooksEvent)
+        /* (non-Javadoc)
+         * @see org.crosswire.jsword.book.BooksListener#bookRemoved(org.crosswire.jsword.book.BooksEvent)
          */
         public void bookRemoved(BooksEvent ev) {
             Book book = ev.getBook();
@@ -651,17 +599,17 @@ public final class Defaults {
     private static DefaultBook dictionaryDeft = new DefaultBook(Books.installed(), BookFilters.getDictionaries());
 
     /**
-     * The default Greek Parse Dictinary.
+     * The default Greek Parse Dictionary.
      */
     private static DefaultBook greekParseDeft = new DefaultBook(Books.installed(), BookFilters.getGreekParse());
 
     /**
-     * The default Hebrew Parse Dictinary.
+     * The default Hebrew Parse Dictionary.
      */
     private static DefaultBook hebrewParseDeft = new DefaultBook(Books.installed(), BookFilters.getHebrewParse());
 
     /**
-     * The default Greek Definitions Dictinary.
+     * The default Greek Definitions Dictionary.
      */
     private static DefaultBook greekDefinitionsDeft = new DefaultBook(Books.installed(), BookFilters.getGreekDefinitions());
 
