@@ -20,12 +20,17 @@
  */
 package org.crosswire.jsword.versification;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 import junit.framework.TestCase;
 
 import org.crosswire.jsword.book.CaseType;
+import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchVerseException;
+import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.versification.system.SystemMT;
 import org.crosswire.jsword.versification.system.Versifications;
@@ -546,4 +551,37 @@ public class VersificationParentTst extends TestCase {
         }
     }
 
+    public void testVerseListSortOrder() {
+        if (v11n.containsBook(BibleBook.GEN) && v11n.containsBook(BibleBook.REV)) {
+            List<Key> keyList = new ArrayList<Key>();
+            Verse gen11 = new Verse(v11n, BibleBook.GEN, 1, 1);
+            Verse rev11 = new Verse(v11n, BibleBook.REV, 1, 1);
+    
+            keyList.add(gen11);
+            keyList.add(rev11);
+            Collections.sort(keyList);
+            
+            assertEquals("Genesis should be at start when sorted", gen11, keyList.get(0));
+            assertEquals("Revelation should be at end when sorted", rev11, keyList.get(1));
+        }
+    }
+
+    public void testPassageListSortOrder() {
+        try {
+            if (v11n.containsBook(BibleBook.GEN) && v11n.containsBook(BibleBook.REV)) {
+                List<Key> keyList = new ArrayList<Key>();
+                Key gen11 = PassageKeyFactory.instance().getKey(v11n, "Gen.1.1");
+                Key rev11 = PassageKeyFactory.instance().getKey(v11n, "Rev.1.1");
+        
+                keyList.add(gen11);
+                keyList.add(rev11);
+                Collections.sort(keyList);
+                
+                assertEquals("Genesis should be at start when sorted", gen11, keyList.get(0));
+                assertEquals("Revelation should be at end when sorted", rev11, keyList.get(1));
+            }
+        } catch (Exception e) {
+            fail("Exception in testPassageListSort:"+e.getMessage());
+        }
+    }
 }
