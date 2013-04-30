@@ -122,6 +122,13 @@ public final class JobManager {
     }
 
     /**
+     * @return the number of current jobs
+     */
+    public static int getJobCount() {
+        return jobs.size();
+    }
+
+    /**
      * Inform the listeners that a title has changed.
      */
     protected static void fireWorkProgressed(Progress job) {

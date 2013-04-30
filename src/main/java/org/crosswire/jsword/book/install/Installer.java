@@ -127,4 +127,8 @@ public interface Installer extends BookList {
      *            for installation.
      */
     void downloadSearchIndex(final Book book, final URI tempDest) throws InstallException;
+    
+    /** remove the cached book list to clear memory
+     */
+    void close();
 }
