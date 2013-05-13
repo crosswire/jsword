@@ -45,7 +45,11 @@ public class ATag extends AbstractTag {
     public Element processTag(Book book, Key key, Element ele, Attributes attrs) {
         Element reference = OSISUtil.factory().createReference();
 
-        // LATER(joe): put the correct reference here
+        String href = attrs.getValue("href");
+        if (href!=null && href.length()>0) {
+            reference.setAttribute(OSISUtil.OSIS_ATTR_REF, href);
+        }
+        
         if (ele != null) {
             ele.addContent(reference);
         }

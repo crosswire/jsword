@@ -110,7 +110,7 @@ public abstract class AbstractPassage implements Passage {
         Verse thatfirst = thatref.getVerseAt(0);
         Verse thisfirst = getVerseAt(0);
 
-        return getVersification().distance(thisfirst, thatfirst);
+        return getVersification().distance(thatfirst, thisfirst);
     }
 
     @Override
