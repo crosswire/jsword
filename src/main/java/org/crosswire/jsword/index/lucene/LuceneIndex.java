@@ -63,6 +63,7 @@ import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.PassageTally;
+import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseFactory;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
@@ -116,6 +117,12 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
      * Combines the strong numbers with the morphology field
      */
     public static final String FIELD_MORPHOLOGY = "morph";
+    
+    /**
+     * Combines the strong numbers with the morphology field
+     */
+    public static final String FIELD_INTRO = "intro";
+    
 
     /**
      * An estimate of the percent of time spent indexing.
@@ -386,6 +393,7 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
         Document doc = new Document();
         Field keyField = new Field(FIELD_KEY, "", Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.NO);
         Field bodyField = new Field(FIELD_BODY, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
+        Field introField = new Field(FIELD_INTRO, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
         Field strongField = new Field(FIELD_STRONG, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.YES);
         Field xrefField = new Field(FIELD_XREF, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
         Field noteField = new Field(FIELD_NOTE, "", Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO);
@@ -422,8 +430,12 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
             keyField.setValue(subkey.getOsisRef());
             doc.add(keyField);
 
-            addField(doc, bodyField, OSISUtil.getCanonicalText(osis));
-
+            if(subkey instanceof Verse && ((Verse)subkey).getVerse() == 0) {
+                addField(doc, introField, OSISUtil.getCanonicalText(osis));
+            }else {
+                addField(doc, bodyField, OSISUtil.getCanonicalText(osis));
+            }
+            
             if (includeStrongs) {
                 addField(doc, strongField, OSISUtil.getStrongsNumbers(osis));
             }
