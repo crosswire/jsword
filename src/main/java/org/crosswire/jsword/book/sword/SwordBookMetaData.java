@@ -349,7 +349,7 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
 
         // But some do not
         return cet.match(ConfigEntryType.GLOBAL_OPTION_FILTER, name)
-            || cet.match(ConfigEntryType.GLOBAL_OPTION_FILTER, alias);
+            || cet.match(ConfigEntryType.GLOBAL_OPTION_FILTER, buffer.toString());
     }
 
     private void buildProperties() {

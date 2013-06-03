@@ -649,4 +649,17 @@ public class VerseRangeTest extends TestCase {
             assertTrue(!it.hasNext());
         }
     }
+    
+
+    /**
+     * Test fix related to JS-274 to ensure key.contains(verse) works correctly
+     */
+    public void testKeyContainsVerse() {
+        // this passes
+        assertTrue(gen_all.contains(gen11));
+        
+        // this fails
+        Key gen_allKey = gen_all;
+        assertTrue(gen_allKey.contains(gen11));
+    }
 }
