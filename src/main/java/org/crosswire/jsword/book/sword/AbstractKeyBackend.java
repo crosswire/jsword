@@ -71,7 +71,7 @@ public abstract class AbstractKeyBackend<T extends OpenFileState> extends Abstra
 
     @Override
     public boolean contains(Key key) {
-        return indexOf(key) > 0;
+        return indexOf(key) >= 0;
     }
 
     /* (non-Javadoc)
