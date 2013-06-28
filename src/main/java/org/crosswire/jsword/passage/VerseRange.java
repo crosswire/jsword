@@ -934,6 +934,9 @@ public final class VerseRange implements VerseKey {
         if (key instanceof VerseRange) {
             return contains((VerseRange) key);
         }
+        if (key instanceof Verse) {
+            return contains((Verse) key);
+        }
         return false;
     }
 
