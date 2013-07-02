@@ -236,6 +236,7 @@ public final class Verse implements VerseKey {
      */
     public Verse(Versification v11n, int ordinal) {
         Verse decoded = v11n.decodeOrdinal(ordinal);
+        this.v11n = v11n;
         this.originalName = null;
         this.book = decoded.book;
         this.chapter = decoded.chapter;
@@ -322,21 +323,29 @@ public final class Verse implements VerseKey {
             return false;
         }
 
-        // Check that that is the same as this
-        // Don't use instanceOf since that breaks inheritance
-        if (!obj.getClass().equals(this.getClass())) {
-            return false;
+        if(obj instanceof Verse) {
+            Verse that = (Verse) obj;
+
+            // The real tests
+            return this.ordinal == that.ordinal && this.v11n.equals(that.v11n);
         }
 
-        Verse that = (Verse) obj;
+        //I think omitting this breaks reciprocity.
+        if(obj instanceof Passage) {
+            //then we compare if we have a simple cardinality of 1 and the same v11n
+            final Passage passage = (Passage) obj;
+            return passage.getCardinality() == 1 &&
+                    passage.getVersification().equals(this.v11n) &&
+                    passage.equals(this);
+        }
 
-        // The real tests
-        return this.ordinal == that.ordinal && this.v11n.equals(that.v11n);
+            return false;
     }
 
     @Override
     public int hashCode() {
-        return ordinal;
+        //This needs to match the hashcode for Passage, otherwise, we're in trouble
+        return getName().hashCode();
     }
 
     /* (non-Javadoc)
