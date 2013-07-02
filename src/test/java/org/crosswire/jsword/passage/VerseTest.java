@@ -427,4 +427,9 @@ public class VerseTest extends TestCase {
     public void testToVerseArray() {
         assertEquals(gen11.toVerseArray().length, 1);
     }
+
+    public void testVerseHasName() {
+        Verse v = new Verse(Versifications.instance().getVersification(Versifications.DEFAULT_V11N), 5);
+        assertEquals("Gen 1:2", v.getName());
+    }
 }

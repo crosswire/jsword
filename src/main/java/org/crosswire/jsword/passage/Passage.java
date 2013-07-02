@@ -189,7 +189,7 @@ public interface Passage extends VerseKey {
     /**
      * Like verseElements() that iterates over VerseRanges instead of Verses.
      * Exactly the same data will be traversed, however using rangeIterator()
-     * will usually give less iterations (and never more)
+     * will usually give fewer iterations (and never more)
      * 
      * @param restrict
      *            Do we break ranges over chapters
