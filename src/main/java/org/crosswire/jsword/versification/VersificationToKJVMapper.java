@@ -1,7 +1,6 @@
 package org.crosswire.jsword.versification;
 
 import org.crosswire.common.util.KeyValuePair;
-import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.passage.*;
 import org.crosswire.jsword.versification.system.Versifications;
@@ -16,8 +15,8 @@ import java.util.*;
  * A Versification mapper allows you to a map a given verse to the KJV versification,
  * or unmap it from the KJV versification into your own versification.
  * <p/>
- * A properties file will contain the non-KJV versification as they key, and the KJV versification value
- * as the target value...
+ * A properties-like file will contain the non-KJV versification as they key, and the KJV versification value
+ * as the target value... Duplicate keys are allowed.
  * <p/>
  * i.e. Gen.1.1=Gen.1.2 means Gen.1.1 in X versification is Gen.1.2 in the KJV versification
  * <p/>
@@ -31,7 +30,6 @@ import java.util.*;
  * It does not make much sense to have an offset for a single verse, so this is not supported.
  * Offsetting for multiple ranges however does, and operates range by range, i.e. each range is calculated separately.
  * <p/>
- * <p/>
  * You can use part-mappings. This is important if you want to preserve transformations from one side to another without
  * losing resolution of the verse.
  * <p/>
@@ -42,10 +40,12 @@ import java.util.*;
  * V1(Gen.1.1) actually equals V2(Gen.1.1). So instead, we use a split on the right hand-side:
  * <p/>
  * For example,
- * V1 defines Gen.1.1=Gen1.1a, Gen1.2=Gen1.1b
- * V2 defines Gen.1.1=Gen1.1a, Gen.1.2=Gen.1.1b
+ * V1 defines Gen.1.1=Gen1.1@a, Gen1.2=Gen1.1@b
+ * V2 defines Gen.1.1=Gen1.1@a, Gen.1.2=Gen.1.1@b
  * then, mapping from V1=>KJV and KJV=>V2 gives you Gen.1.1=>Gen.1.1a=>Gen.1.1, which is now accurate.
- * <p/>
+ * A part is a string fragment placed after the end of a key reference. We cannot use # because that is commonly known
+ * as a comment in real properties-file. Using a marker, means we can have meaningful part names if we so choose.
+ * Parts of ranges are not supported.
  * <p/>
  * Note: splits should never be seen by a user. The mapping from one versification to another is abstracted
  * such that the user can simply request the mapping between 2 verse (ranges).
@@ -63,9 +63,10 @@ import java.util.*;
  *
  * @author chrisburrell
  */
-public class VersificationMapper {
-    private static final Logger LOGGER = LoggerFactory.getLogger(VersificationMapper.class);
+public class VersificationToKJVMapper {
+    private static final Logger LOGGER = LoggerFactory.getLogger(VersificationToKJVMapper.class);
     private static final Versification KJV = Versifications.instance().getVersification(Versifications.DEFAULT_V11N);
+    public static final char PART_MARKER = '@';
 
     /* the 'from' or 'left' versification */
     private Versification nonKjv;
@@ -78,7 +79,7 @@ public class VersificationMapper {
     /**
      * @param mapping the mappings from one versification to another
      */
-    public VersificationMapper(Versification nonKjv, final FileVersificationMapping mapping) {
+    public VersificationToKJVMapper(Versification nonKjv, final FileVersificationMapping mapping) {
         this.nonKjv = nonKjv;
         processMappings(mapping);
         trace();
@@ -346,7 +347,15 @@ public class VersificationMapper {
      * @return the qualified key representing this
      */
     private QualifiedKey getExistingQualifiedKey(final Versification versification, final String versesKey) throws NoSuchKeyException {
-        return new QualifiedKey(PassageKeyFactory.instance().getKey(versification, versesKey));
+        //if we have a part, then we extra it. Unless we're mapping whole books, a single alpha character has to signify a part.
+        String reference = versesKey;
+        String part = null;
+        int indexOfPart = versesKey.lastIndexOf(PART_MARKER);
+        if(indexOfPart != -1) {
+            reference = reference.substring(0, indexOfPart);
+            part = versesKey.substring(indexOfPart);
+        }
+        return new QualifiedKey(PassageKeyFactory.instance().getKey(versification, reference), part);
     }
 
     /**
@@ -384,6 +393,8 @@ public class VersificationMapper {
      * This key is useful if different versifications (say Dan 3 in the 2 Catholic versifications) have the same
      * section which is not present in the KJV versification.
      *
+     * Its sister method, taking in a Key, and returning a QualifiedKey will be more helpful, generally speaking
+     *
      * @return the equivalent key, which may or may not be used to look up a reference in a book.
      */
     public String mapToQualifiedKey(final String key) throws NoSuchKeyException {
@@ -391,7 +402,12 @@ public class VersificationMapper {
         StringBuilder representation = new StringBuilder(128);
         for (int i = 0; i < qualifiedKeys.size(); i++) {
             final QualifiedKey qk = qualifiedKeys.get(i);
-            representation.append(qk.getAbsentType() == QualifiedKey.Qualifier.ABSENT_IN_KJV ? qk.getSectionName() : qk.getKey());
+            representation.append(qk.getAbsentType() == QualifiedKey.Qualifier.ABSENT_IN_KJV ? qk.getSectionName() : qk.getKey().getOsisRef());
+
+            if(qk.getPart() != null) {
+                representation.append(qk.getPart());
+            }
+
             if (i < qualifiedKeys.size() - 1) {
                 representation.append(' ');
             }
@@ -478,10 +494,11 @@ public class VersificationMapper {
         for (Map.Entry<Key, List<QualifiedKey>> entry : this.toKJVMappings.entrySet()) {
             List<QualifiedKey> kjvVerses = entry.getValue();
             for (QualifiedKey q : kjvVerses) {
-                LOGGER.trace("\t({}) {} => {}{} (KJV)",
+                LOGGER.trace("\t({}) {} => {}{}{} (KJV)",
                         this.nonKjv.getName(),
                         entry.getKey().getOsisRef(),
                         q.getKey() != null ? q.getKey().getOsisRef() : "",
+                        q.getPart() != null ? q.getPart() : "",
                         getStringAbsentType(q));
             }
         }
@@ -502,6 +519,7 @@ public class VersificationMapper {
 
     /**
      * A string printable version of absent type held in the qualified key
+     *
      * @param q the qualified key
      * @return the printable form of the absent type.
      */

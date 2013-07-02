@@ -2,23 +2,20 @@ package org.crosswire.jsword.versification;
 
 import org.crosswire.jsword.passage.*;
 import org.crosswire.jsword.versification.system.SystemCatholic;
-import org.crosswire.jsword.versification.system.SystemNRSV;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.junit.Test;
-
-import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Some tests based on the principles outlined in the Javadoc of {@link VersificationMapper }
+ * Some tests based on the principles outlined in the Javadoc of {@link VersificationToKJVMapper }
  *
  * @author chrisburrell
  */
-public class VersificationMapperTest {
+public class VersificationToKJVMapperTest {
     private final FileVersificationMapping properties = new FileVersificationMapping();
-    private VersificationMapper mapper;
+    private VersificationToKJVMapper mapper;
 
     @Test
     public void testSimpleMapping() throws NoSuchKeyException {
@@ -103,13 +100,15 @@ public class VersificationMapperTest {
 
     @Test
     public void testPartsAreReturned() throws NoSuchKeyException {
-        addProperty("Gen.1.1", "Gen.1.3a");
-        addProperty("Gen.1.2", "Gen.1.3b");
+        addProperty("Gen.1.1", "Gen.1.3@a");
+        addProperty("Gen.1.2", "Gen.1.3@b");
         init();
 
 
-        assertEquals("Gen.1.3a", mapper.map("Gen.1.1"));
-        assertEquals("Gen.1.3b", mapper.map("Gen.1.2"));
+        assertEquals("Gen.1.3@a", mapper.mapToQualifiedKey("Gen.1.1"));
+        assertEquals("Gen.1.3@b", mapper.mapToQualifiedKey("Gen.1.2"));
+        assertEquals("Gen.1.3", mapper.map("Gen.1.1"));
+        assertEquals("Gen.1.3", mapper.map("Gen.1.2"));
         assertEquals("Gen.1.1-Gen.1.2", mapper.unmap("Gen.1.3"));
     }
 
@@ -154,7 +153,7 @@ public class VersificationMapperTest {
      * Checks that we have the same hashcode and equals methods
      */
     @Test
-    public void testVerseAndPassageHaveSameHashcode() throws NoSuchKeyException {
+    public void testVerseAndPassageHaveSameHashCode() throws NoSuchKeyException {
         Versification kjv = Versifications.instance().getVersification(Versifications.DEFAULT_V11N);
         Verse v = VerseFactory.fromString(kjv, "Gen.1.2");
         Key p = PassageKeyFactory.instance().getKey(kjv, "Gen.1.2");
@@ -168,7 +167,7 @@ public class VersificationMapperTest {
      * Initialises the object under test.
      */
     private void init() {
-        mapper = new VersificationMapper(Versifications.instance().getVersification(SystemCatholic.V11N_NAME), properties);
+        mapper = new VersificationToKJVMapper(Versifications.instance().getVersification(SystemCatholic.V11N_NAME), properties);
     }
 
     private void addProperty(final String left, final String right) {
