@@ -61,7 +61,8 @@ public final class ResourceUtil {
      * Generic resource URL fetcher. One way or the other we'll find it! Either
      * as a relative or an absolute reference.
      * 
-     * @param clazz
+     * @param clazz the basis to search for the resource first.
+     * @param resourceName
      *            The resource to find
      * @return The requested resource
      * @throws MissingResourceException

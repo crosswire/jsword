@@ -92,10 +92,11 @@ public class QualifiedKey {
 
     @Override
     public int hashCode() {
-        //use a prime number in case key or absent type is not around
+        //use a prime number in case one of the values is not around
         return (this.key == null ? 17 : key.hashCode()) +
                 (this.absentType == null ? 13 : this.absentType.ordinal()) +
-                (this.sectionName == null ? 19 : this.sectionName.hashCode());
+                (this.sectionName == null ? 19 : this.sectionName.hashCode()) +
+                (this.getPart() == null ? 23 : this.getPart().hashCode());
     }
 
     @Override
@@ -106,6 +107,7 @@ public class QualifiedKey {
             //purposefully inlining the various checks, because we do want to avoid doing too many comparisons
             //when using QualifiedKey in a hash map/set, so placing the expensive equals() nearer the end.
             return this.getAbsentType() == otherKey.getAbsentType() &&
+                    (this.part == null ? otherKey.part == null : this.part.equals(otherKey.part)) &&
                     (sectionName == null ? otherKey.sectionName == null : sectionName.equals(otherKey.sectionName)) &&
                     (this.key == null ? otherKey.key == null : this.key.equals(otherKey.key));
         }
