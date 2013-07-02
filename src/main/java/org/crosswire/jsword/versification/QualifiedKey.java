@@ -9,8 +9,8 @@ import org.crosswire.jsword.passage.Key;
  */
 public class QualifiedKey {
     public static enum Qualifier {DEFAULT, ABSENT_IN_LEFT, ABSENT_IN_KJV}
-
     private String sectionName;
+    private String part;
     private Key key;
     //we use the null character here to avoid boxing/unboxing a Character all the time. A slightly smaller
     //memory foot-print.
@@ -23,6 +23,18 @@ public class QualifiedKey {
      */
     public QualifiedKey(Key key) {
         this.key = key;
+    }
+
+    /**
+     * Constructs the Qualified key, leaving the qualifier as set to the null character, but specifying the part.
+     *
+     * @param key the key to be wrapped
+     * @param part the part associated with a key, often null ; used for patching across the KJV versification which not
+     *             support the breakdown.
+     */
+    public QualifiedKey(Key key, String part) {
+        this.key = key;
+        this.part = part;
     }
 
     /**
@@ -61,6 +73,13 @@ public class QualifiedKey {
      */
     public String getSectionName() {
         return sectionName;
+    }
+
+    /**
+     * @return the part associated with a verse
+     */
+    public String getPart() {
+        return part;
     }
 
     /**
