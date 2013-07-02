@@ -5,8 +5,8 @@ import org.crosswire.jsword.versification.system.SystemCatholic;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.junit.Test;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Some tests based on the principles outlined in the Javadoc of {@link VersificationToKJVMapper }
@@ -109,6 +109,8 @@ public class VersificationToKJVMapperTest {
         assertEquals("Gen.1.3@b", mapper.mapToQualifiedKey("Gen.1.2"));
         assertEquals("Gen.1.3", mapper.map("Gen.1.1"));
         assertEquals("Gen.1.3", mapper.map("Gen.1.2"));
+        assertEquals("Gen.1.1", mapper.unmap("Gen.1.3@a"));
+        assertEquals("Gen.1.2", mapper.unmap("Gen.1.3@b"));
         assertEquals("Gen.1.1-Gen.1.2", mapper.unmap("Gen.1.3"));
     }
 
@@ -170,6 +172,11 @@ public class VersificationToKJVMapperTest {
         mapper = new VersificationToKJVMapper(Versifications.instance().getVersification(SystemCatholic.V11N_NAME), properties);
     }
 
+    /**
+     * Helper method to add a property to our mappings
+     * @param left the left key
+     * @param right the kjv key
+     */
     private void addProperty(final String left, final String right) {
         properties.addProperty(left, right);
     }
