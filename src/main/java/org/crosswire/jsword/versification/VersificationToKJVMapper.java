@@ -167,6 +167,11 @@ public class VersificationToKJVMapper {
     private void addKJVToMapping(final QualifiedKey kjvVerses, final Key leftKey) {
         if (leftKey != null) {
             getNonEmptyKey(this.fromKJVMappings, kjvVerses).addAll(leftKey);
+
+            //if we have a part, then we need to add the generified key as well...
+            if(kjvVerses.getPart() != null) {
+                getNonEmptyKey(this.fromKJVMappings, new QualifiedKey(kjvVerses.getKey())).addAll(leftKey);
+            }
         }
     }
 
@@ -427,7 +432,7 @@ public class VersificationToKJVMapper {
      *
      * @return the equivalent key
      */
-    public Key map(final Key leftKey) throws NoSuchKeyException {
+    public Key map(final Key leftKey) {
         //we drop the part when going from left-to-kjv
         List<QualifiedKey> qualifiedKeys = mapToQualifiedKey(leftKey);
 
@@ -451,7 +456,7 @@ public class VersificationToKJVMapper {
      * @return the key in the left-hand versification
      */
     public String unmap(final String kjvVerse) throws NoSuchKeyException {
-        return unmap(getRange(KJV, kjvVerse).getKey()).getOsisRef();
+        return unmap(getRange(KJV, kjvVerse)).getOsisRef();
     }
 
     /**
@@ -462,6 +467,13 @@ public class VersificationToKJVMapper {
     public Key unmap(final QualifiedKey kjvVerse) {
         //TODO: cope for parts?
         Key left = this.fromKJVMappings.get(kjvVerse);
+
+        if(left == null && kjvVerse.getPart() != null) {
+            //try again, but without the part this time
+            QualifiedKey genericKjvVerse = new QualifiedKey(kjvVerse.getKey());
+            left = this.fromKJVMappings.get(genericKjvVerse);
+        }
+
 
         //if we have no mapping, then we are in 1 of two scenarios
         //the verse is either totally absent, or the verse is not part of the mappings, meaning it is a straight map
