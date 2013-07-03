@@ -65,7 +65,7 @@ public class VersificationToKJVMapperTest {
 
 
     @Test
-    public void tesMissingMapping() throws NoSuchKeyException {
+    public void testMissingMapping() throws NoSuchKeyException {
         init();
 
         assertEquals("Gen.1.1", mapper.map("Gen.1.1"));
