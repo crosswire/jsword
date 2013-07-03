@@ -423,10 +423,17 @@ public class VersificationToKJVMapper {
     /**
      * @return the qualified keys associated with the input key.
      */
-    public List<QualifiedKey> mapToQualifiedKey(final Key leftKey) {
+    private List<QualifiedKey> getQualifiedKeys(final Key leftKey) {
         return this.toKJVMappings.get(leftKey);
     }
 
+    public List<QualifiedKey> map(QualifiedKey k) {
+        //TODO: cope when k.getKey() is null
+        
+        
+        return null;
+    }
+    
     /**
      * Converts the input to the KJV versification
      *
@@ -434,7 +441,7 @@ public class VersificationToKJVMapper {
      */
     public Key map(final Key leftKey) {
         //we drop the part when going from left-to-kjv
-        List<QualifiedKey> qualifiedKeys = mapToQualifiedKey(leftKey);
+        List<QualifiedKey> qualifiedKeys = getQualifiedKeys(leftKey);
 
         RocketPassage keyList = new RocketPassage(KJV);
         if (qualifiedKeys == null) {
