@@ -72,7 +72,7 @@ public class VersificationToKJVMapper {
     private Versification nonKjv;
 
     /* the absent verses, i.e. those present in the KJV, but not in the left versification */
-    private Key absentVerses = PassageKeyFactory.instance().createEmptyKeyList(KJV);
+    private Key absentVerses = new RocketPassage(KJV);
     private Map<Key, List<QualifiedKey>> toKJVMappings = new HashMap<Key, List<QualifiedKey>>();
     private Map<QualifiedKey, Key> fromKJVMappings = new HashMap<QualifiedKey, Key>();
 
@@ -169,7 +169,7 @@ public class VersificationToKJVMapper {
             getNonEmptyKey(this.fromKJVMappings, kjvVerses).addAll(leftKey);
 
             //if we have a part, then we need to add the generified key as well...
-            if(kjvVerses.getPart() != null) {
+            if (kjvVerses.getPart() != null) {
                 getNonEmptyKey(this.fromKJVMappings, new QualifiedKey(kjvVerses.getKey())).addAll(leftKey);
             }
         }
@@ -356,7 +356,7 @@ public class VersificationToKJVMapper {
         String reference = versesKey;
         String part = null;
         int indexOfPart = versesKey.lastIndexOf(PART_MARKER);
-        if(indexOfPart != -1) {
+        if (indexOfPart != -1) {
             reference = reference.substring(0, indexOfPart);
             part = versesKey.substring(indexOfPart);
         }
@@ -391,25 +391,52 @@ public class VersificationToKJVMapper {
         return map(getRange(nonKjv, key).getKey()).getOsisRef();
     }
 
+
+    /**
+     * @return the qualified keys associated with the input key.
+     */
+    private List<QualifiedKey> getQualifiedKeys(final Key leftKey) {
+        return this.toKJVMappings.get(leftKey);
+    }
+
+
+    /**
+     * Returns the key in the target versification, by using the OsisRef. Note: if the key doesn't exist
+     * in the other versification, it is most probably because that key doesn't exist at all. So we'll log a warning,
+     * but return an empty key.
+     *
+     * @param qualifiedKey the qualified key containing the OSIS key ref.
+     * @return the same key represented by the OSIS ref, except that it is the target versification.
+     */
+    private QualifiedKey getKeyRefInDifferentVersification(final QualifiedKey qualifiedKey, Versification target) {
+        try {
+            return new QualifiedKey(PassageKeyFactory.instance().getKey(target, qualifiedKey.getKey().getOsisRef()));
+        } catch (NoSuchKeyException ex) {
+            LOGGER.warn("Unable to transfer key contents [{}] to versification [{}]", qualifiedKey.getKey().getOsisRef(), target.getName());
+            return new QualifiedKey(new RocketPassage(target));
+        }
+    }
+
+
     /**
      * Converts the input to the KJV versification, but returns the qualified key representation, i.e. not necessarily
      * an OSIS representation.
      * <p/>
      * This key is useful if different versifications (say Dan 3 in the 2 Catholic versifications) have the same
      * section which is not present in the KJV versification.
-     *
+     * <p/>
      * Its sister method, taking in a Key, and returning a QualifiedKey will be more helpful, generally speaking
      *
      * @return the equivalent key, which may or may not be used to look up a reference in a book.
      */
     public String mapToQualifiedKey(final String key) throws NoSuchKeyException {
-        List<QualifiedKey> qualifiedKeys = mapToQualifiedKey(getRange(nonKjv, key).getKey());
+        List<QualifiedKey> qualifiedKeys = map(getRange(nonKjv, key));
         StringBuilder representation = new StringBuilder(128);
         for (int i = 0; i < qualifiedKeys.size(); i++) {
             final QualifiedKey qk = qualifiedKeys.get(i);
             representation.append(qk.getAbsentType() == QualifiedKey.Qualifier.ABSENT_IN_KJV ? qk.getSectionName() : qk.getKey().getOsisRef());
 
-            if(qk.getPart() != null) {
+            if (qk.getPart() != null) {
                 representation.append(qk.getPart());
             }
 
@@ -420,38 +447,43 @@ public class VersificationToKJVMapper {
         return representation.toString();
     }
 
+
     /**
-     * @return the qualified keys associated with the input key.
+     * Maps the full qualified key to its proper equivalent in the KJV.
+     *
+     * @param qualifiedKey the qualified key
+     * @return the list of matching qualified keys in the KJV versification.
      */
-    private List<QualifiedKey> getQualifiedKeys(final Key leftKey) {
-        return this.toKJVMappings.get(leftKey);
+    public List<QualifiedKey> map(QualifiedKey qualifiedKey) {
+        if (qualifiedKey.getKey() != null) {
+            List<QualifiedKey> kjvKeys = getQualifiedKeys(qualifiedKey.getKey());
+            if (kjvKeys == null || kjvKeys.size() == 0) {
+                //then we found no mapping, so we're essentially going to return the same key back...
+                kjvKeys = new ArrayList<QualifiedKey>();
+                kjvKeys.add(getKeyRefInDifferentVersification(qualifiedKey, KJV));
+                return kjvKeys;
+            }
+            return kjvKeys;
+        }
+
+        return new ArrayList<QualifiedKey>();
     }
 
-    public List<QualifiedKey> map(QualifiedKey k) {
-        //TODO: cope when k.getKey() is null
-        
-        
-        return null;
-    }
-    
     /**
      * Converts the input to the KJV versification
      *
      * @return the equivalent key
      */
     public Key map(final Key leftKey) {
-        //we drop the part when going from left-to-kjv
-        List<QualifiedKey> qualifiedKeys = getQualifiedKeys(leftKey);
+        List<QualifiedKey> qualifiedKeys = map(new QualifiedKey(leftKey));
 
+        //convert qualified keys into a passage representation, since that's what the user is after.
         RocketPassage keyList = new RocketPassage(KJV);
-        if (qualifiedKeys == null) {
-            //then we found no mapping, so we're essentially going to return the same key back...
-            return leftKey;
-        }
-
-        //if we've found a qualified key, we will either have a absent in kjv, or a key to the kjv
         for (QualifiedKey qualifiedKey : qualifiedKeys) {
-            keyList.addAll(qualifiedKey.getKey());
+            //we may bits in here, that don't exist in the KJV
+            if (qualifiedKey.getKey() != null) {
+                keyList.addAll(qualifiedKey.getKey());
+            }
         }
 
         return keyList;
@@ -475,7 +507,7 @@ public class VersificationToKJVMapper {
         //TODO: cope for parts?
         Key left = this.fromKJVMappings.get(kjvVerse);
 
-        if(left == null && kjvVerse.getPart() != null) {
+        if (left == null && kjvVerse.getPart() != null) {
             //try again, but without the part this time
             QualifiedKey genericKjvVerse = new QualifiedKey(kjvVerse.getKey());
             left = this.fromKJVMappings.get(genericKjvVerse);
@@ -485,7 +517,7 @@ public class VersificationToKJVMapper {
         //if we have no mapping, then we are in 1 of two scenarios
         //the verse is either totally absent, or the verse is not part of the mappings, meaning it is a straight map
         if (left == null) {
-            return this.absentVerses.contains(kjvVerse.getKey()) ? PassageKeyFactory.instance().createEmptyKeyList(KJV) : kjvVerse.getKey();
+            return this.absentVerses.contains(kjvVerse.getKey()) ? new RocketPassage(KJV) : this.getKeyRefInDifferentVersification(kjvVerse, this.nonKjv).getKey();
         }
         return left;
     }

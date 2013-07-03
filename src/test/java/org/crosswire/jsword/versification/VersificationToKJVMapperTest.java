@@ -5,7 +5,6 @@ import org.crosswire.jsword.versification.system.SystemCatholic;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.junit.Test;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -174,7 +173,8 @@ public class VersificationToKJVMapperTest {
 
     /**
      * Helper method to add a property to our mappings
-     * @param left the left key
+     *
+     * @param left  the left key
      * @param right the kjv key
      */
     private void addProperty(final String left, final String right) {
