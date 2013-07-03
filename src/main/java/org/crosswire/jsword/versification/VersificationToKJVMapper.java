@@ -26,7 +26,7 @@ import java.util.*;
  * <p/>
  * Mappings can be specified by offset. In this case, be aware this maps verse 0 as well. So for example:
  * <p/>
- * Ps.19-20=-1 means Ps.19.0=doesn't map, Ps.19.1=Ps.19.1, Ps.19.2=Ps.19.1, etc.
+ * Ps.19-20=-1 means Ps.19.0=Ps.18.50, Ps.19.1=Ps.19.0, Ps.19.2=Ps.19.1, etc.
  * It does not make much sense to have an offset for a single verse, so this is not supported.
  * Offsetting for multiple ranges however does, and operates range by range, i.e. each range is calculated separately.
  * <p/>
