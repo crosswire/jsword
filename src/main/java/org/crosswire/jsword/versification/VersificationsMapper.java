@@ -63,15 +63,17 @@ public class VersificationsMapper {
         VersificationToKJVMapper mapper = MAPPERS.get(v.getVersification());
 
         // mapped verses could be more than 1 verse in KJV
-        List<QualifiedKey> kjvVerses = new ArrayList<QualifiedKey>();
+        List<QualifiedKey> kjvVerses;
         if (mapper == null) {
             // we can't map to the KJV, so we're going to take a wild guess and
             // return the equivalent verse
             // and assume that it maps directly on to the KJV, and thereby
             // continue with the process
+            kjvVerses = new ArrayList<QualifiedKey>();
             kjvVerses.add(new QualifiedKey(new Verse(KJV, v.getBook(), v.getChapter(), v.getVerse())));
         } else {
-            kjvVerses = mapper.mapToQualifiedKey(v);
+            //we need qualified keys back, so as to preserve parts
+            kjvVerses = mapper.map(new QualifiedKey(v));
         }
 
         if (KJV.equals(targetVersification)) {
