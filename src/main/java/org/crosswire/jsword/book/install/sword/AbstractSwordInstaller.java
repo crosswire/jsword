@@ -372,7 +372,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                         SwordBookMetaData sbmd = new SwordBookMetaData(buffer, internal);
                         sbmd.setDriver(fake);
                         Book book = new SwordBook(sbmd, null);
-                        entries.put(book.getName(), book);
+                        entries.put(book.getInitials()+book.getName(), book);
                     } catch (IOException ex) {
                         log.error("Failed to load config for entry: {}", internal, ex);
                     }

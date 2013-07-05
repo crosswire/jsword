@@ -21,6 +21,9 @@
 package org.crosswire.jsword.book;
 
 import junit.framework.TestCase;
+import org.crosswire.jsword.book.sword.SwordBookMetaData;
+
+import java.io.IOException;
 
 /**
  * JUnit Test.
@@ -50,6 +53,22 @@ public class BookMetaDataTest extends TestCase {
      */
     @Override
     protected void tearDown() {
+    }
+
+
+    public void testDifferentInitialsNotEqual() {
+        String kjvMetaData = "[KJV]\nDataPath=./modules/texts/ztext/kjv/\nModDrv=zText\nEncoding=UTF-8\nBlockType=BOOK\nCompressType=ZIP\nSourceType=OSIS\nLang=en\nVersion=2.3\nDescription=King James Version (1769) with Strongs Numbers and Morphology\nLCSH=Bible. English.\n";
+        // the only difference is the initials
+        String kjvaMetaData = "[KJVA]\nDataPath=./modules/texts/ztext/kjva/\nModDrv=zText\nEncoding=UTF-8\nBlockType=BOOK\nCompressType=ZIP\nSourceType=OSIS\nLang=en\nVersion=2.3\nDescription=King James Version (1769) with Strongs Numbers and Morphology\nLCSH=Bible. English.\n";
+        try {
+            BookMetaData bmKJV = new SwordBookMetaData(kjvMetaData.getBytes(), "KJV");
+            BookMetaData bmKJV2 = new SwordBookMetaData(kjvMetaData.getBytes(), "KJV");
+            BookMetaData bmKJVA = new SwordBookMetaData(kjvaMetaData.getBytes(), "KJVA");
+            assertTrue( "Same metadata should equal", bmKJV.equals(bmKJV2));
+            assertFalse("Different initials should not equal", bmKJV.equals(bmKJVA));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void testVersion() {
