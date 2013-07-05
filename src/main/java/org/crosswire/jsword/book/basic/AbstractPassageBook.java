@@ -20,36 +20,31 @@
  */
 package org.crosswire.jsword.book.basic;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
-import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyUtil;
-import org.crosswire.jsword.passage.NoSuchKeyException;
-import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageKeyFactory;
-import org.crosswire.jsword.passage.RestrictionType;
-import org.crosswire.jsword.passage.VerseRange;
+import org.crosswire.jsword.passage.*;
 import org.crosswire.jsword.versification.Versification;
+import org.crosswire.jsword.versification.VersificationsMapper;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.jdom2.Content;
 import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * An abstract implementation of Book that lets implementors just concentrate on
  * reading book data.
- * 
+ *
+ * @author Joe Walker [joe at eireneh dot com]
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
- * @author Joe Walker [joe at eireneh dot com]
  */
 public abstract class AbstractPassageBook extends AbstractBook {
 
@@ -67,7 +62,10 @@ public abstract class AbstractPassageBook extends AbstractBook {
         final Filter filter = getFilter();
 
         // For all the ranges in this Passage
-        Passage ref = KeyUtil.getPassage(key);
+        //TODO:CJB I'd prefer to do the key mapping in KeyUtil, and pass in our current versification.
+        //we could remove the method that doesn't support the versification parameter.
+        //but that has far reaching consequences.
+        Passage ref = VersificationsMapper.instance().map(KeyUtil.getPassage(key), this.getVersification());
         final boolean showTitles = ref.hasRanges(RestrictionType.CHAPTER) || !allowEmpty;
 
         RawTextToXmlProcessor processor = new RawTextToXmlProcessor() {
@@ -98,14 +96,11 @@ public abstract class AbstractPassageBook extends AbstractBook {
     /**
      * Add the OSIS elements to the div element. Note, this assumes that the
      * data is fully marked up.
-     * 
-     * @param key
-     *            The key being added
-     * @param div
-     *            The div element to which the key's OSIS representation is
-     *            being added
-     * @param osisContent
-     *            The OSIS representation of the key being added.
+     *
+     * @param key         The key being added
+     * @param div         The div element to which the key's OSIS representation is
+     *                    being added
+     * @param osisContent The OSIS representation of the key being added.
      */
     public void addOSIS(Key key, Element div, List<Content> osisContent) {
         assert key != null;
@@ -115,13 +110,10 @@ public abstract class AbstractPassageBook extends AbstractBook {
     /**
      * Add the OSIS elements to the content list. Note, this assumes that the
      * data is fully marked up.
-     * 
-     * @param key
-     *            The key being added
-     * @param content
-     *            The list to which the key's OSIS representation is being added
-     * @param osisContent
-     *            The OSIS representation of the key being added.
+     *
+     * @param key         The key being added
+     * @param content     The list to which the key's OSIS representation is being added
+     * @param osisContent The OSIS representation of the key being added.
      */
     public void addOSIS(Key key, List<Content> content, List<Content> osisContent) {
         assert key != null;
@@ -139,7 +131,7 @@ public abstract class AbstractPassageBook extends AbstractBook {
 
     /**
      * For when we want to add writing functionality. This does not work.
-     * 
+     *
      * @param key
      * @param bdata
      * @throws BookException

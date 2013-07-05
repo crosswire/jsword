@@ -1,6 +1,8 @@
 package org.crosswire.jsword.versification;
 
 import org.crosswire.common.util.KeyValuePair;
+import org.crosswire.common.util.LucidException;
+import org.crosswire.common.util.LucidRuntimeException;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.passage.*;
 import org.crosswire.jsword.versification.system.Versifications;
@@ -146,6 +148,13 @@ public class VersificationToKJVMapper {
             if (isKJVMany) {
                 if (kjvKeys == null) {
                     kjvKeys = kjvVerses.getKey().iterator();
+                }
+
+                if(!kjvKeys.hasNext()) {
+                    //TODO: change this to a neater exception
+                    throw new LucidRuntimeException(String.format("%s has a cardinality of %d whilst %s has a cardinality of %d.",
+                            leftHand.getKey(), leftHand.getKey().getCardinality(),
+                            kjvVerses.getKey(), kjvVerses.getKey().getCardinality()));
                 }
                 QualifiedKey kjvKey = new QualifiedKey(kjvKeys.next());
                 addForwardMappingFromSingleKeyToRange(leftKey, kjvKey);
