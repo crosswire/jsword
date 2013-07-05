@@ -647,6 +647,13 @@ public final class OSISUtil {
      * @return The canonical text without markup
      */
     public static String getCanonicalText(Element root) {
+        //if someone passes a root element which has text in, we need to check whether it's worth processing.
+        //For example. where you have a non-canonical title being passed in, we deal with this here.
+        if(!isCanonical(root)) {
+            //no point in continuing...
+            return "";
+        }
+
         StringBuilder buffer = new StringBuilder();
 
         // Dig past osis, osisText, if present, to get to the real content.

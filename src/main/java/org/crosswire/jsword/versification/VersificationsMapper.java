@@ -1,10 +1,7 @@
 package org.crosswire.jsword.versification;
 
 import org.crosswire.common.config.ConfigException;
-import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.NoSuchKeyException;
-import org.crosswire.jsword.passage.PassageKeyFactory;
-import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.passage.*;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +15,7 @@ import java.util.*;
 public class VersificationsMapper {
     private static final Versification KJV = Versifications.instance().getVersification(Versifications.DEFAULT_V11N);
     private static final Logger LOGGER = LoggerFactory.getLogger(VersificationsMapper.class);
-    private static final Map<Versification,VersificationToKJVMapper> MAPPERS = new HashMap<Versification,VersificationToKJVMapper>();
+    private static final Map<Versification, VersificationToKJVMapper> MAPPERS = new HashMap<Versification, VersificationToKJVMapper>();
     private static volatile VersificationsMapper INSTANCE = null;
 
     /**
@@ -31,7 +28,7 @@ public class VersificationsMapper {
     }
 
     /**
-     * @return a singleton instance of the mapper - 
+     * @return a singleton instance of the mapper -
      */
     public static VersificationsMapper instance() {
         if (INSTANCE == null) {
@@ -45,12 +42,40 @@ public class VersificationsMapper {
     }
 
     /**
-     * @param v
-     *            the verse
-     * @param targetVersification
-     *            the final versification that we want
+     * Maps a whole passage, and does so verse by verse. We can't do any better, since, we may for
+     * example have:
+     * Ps.1.1-10 => Ps.1.2-11 so one would think we can simply map each of the start and end verses.
+     * However, this would be inacurate since verse 9 might map to verse 12, 13, etc.
+     *
+     * @param key    the key if the source versification
+     * @param target the target versification
+     * @return the new key in the new versification
      */
-    public Key map(Verse v, Versification targetVersification) {
+    public Passage map(final Passage key, final Versification target) {
+        if (key.getVersification().equals(target)) {
+            return key;
+        }
+
+        Passage newPassage = KeyUtil.getPassage(PassageKeyFactory.instance().createEmptyKeyList(target));
+        Iterator<Key> verses = key.iterator();
+        while (verses.hasNext()) {
+            Key verseKey = verses.next();
+            if (!(verseKey instanceof Verse)) {
+                throw new UnsupportedOperationException("Somehow, a passage is not resolving to verses");
+            }
+
+            Verse verse = (Verse) verseKey;
+            newPassage.addAll(this.mapVerse(verse, target));
+        }
+
+        return newPassage;
+    }
+
+    /**
+     * @param v                   the verse
+     * @param targetVersification the final versification that we want
+     */
+    public Key mapVerse(Verse v, Versification targetVersification) {
         if (v.getVersification().equals(targetVersification)) {
             return v;
         }
@@ -105,11 +130,9 @@ public class VersificationsMapper {
     /**
      * This is a last attempt at trying to get something, on the basis that
      * something is better than nothing.
-     * 
-     * @param targetVersification
-     *            the target versification
-     * @param kjvVerses
-     *            the verses in the KJV versification.
+     *
+     * @param targetVersification the target versification
+     * @param kjvVerses           the verses in the KJV versification.
      * @return the possible verses in the target versification, no guarantees
      *         made
      */
@@ -131,8 +154,7 @@ public class VersificationsMapper {
     }
 
     /**
-     * @param kjvVerses
-     *            the list of keys
+     * @param kjvVerses the list of keys
      * @return the aggregate key
      */
     private Key getKeyFromQualifiedKeys(Versification versification, final List<QualifiedKey> kjvVerses) {
@@ -150,15 +172,14 @@ public class VersificationsMapper {
 
     /**
      * Reads the mapping from file if it does not exist
-     * 
-     * @param versification
-     *            the versification we want to look
+     *
+     * @param versification the versification we want to look
      */
     private void ensure(final Versification versification) {
         if (MAPPERS.containsKey(versification)) {
             return;
         }
-        
+
         try {
             MAPPERS.put(versification, new VersificationToKJVMapper(versification, new FileVersificationMapping(versification)));
         } catch (IOException e) {
@@ -172,6 +193,10 @@ public class VersificationsMapper {
         } catch (MissingResourceException e) {
             // we've attempted to load it once, and that's all we'll do.
             LOGGER.error("Failed to load versification mappings for versification [{}]", versification, e);
+            MAPPERS.put(versification, null);
+        } catch(Exception e) {
+            // we've attempted to load it once, and that's all we'll do.
+            LOGGER.error("Failed for an unknown reason for versification [{}]", versification, e);
             MAPPERS.put(versification, null);
         }
     }

@@ -20,22 +20,19 @@
  */
 package org.crosswire.jsword.book;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.crosswire.common.diff.Diff;
 import org.crosswire.common.diff.DiffCleanup;
 import org.crosswire.common.diff.Difference;
 import org.crosswire.common.util.Language;
 import org.crosswire.common.xml.JDOMSAXEventProvider;
 import org.crosswire.common.xml.SAXEventProvider;
-import org.crosswire.jsword.passage.Key;
-import org.jdom2.Content;
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.Namespace;
-import org.jdom2.Text;
+import org.crosswire.jsword.passage.*;
+import org.crosswire.jsword.versification.Versification;
+import org.crosswire.jsword.versification.VersificationsMapper;
+import org.crosswire.jsword.versification.system.Versifications;
+import org.jdom2.*;
+
+import java.util.*;
 
 /**
  * BookData is the assembler of the OSIS that is returned by the filters. As
@@ -44,11 +41,11 @@ import org.jdom2.Text;
  * Note: it is critical that all the books are able to understand the same key.
  * That does not mean that each has to have content for each key. Missing keys
  * are represented by empty cells.
- * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ *
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith
+ * @see gnu.lgpl.License for license details.<br>
+ *      The copyright to this program is held by it's authors.
  */
 public class BookData implements BookProvider {
     /**
@@ -105,7 +102,7 @@ public class BookData implements BookProvider {
 
     /**
      * Output the current data as a SAX stream.
-     * 
+     *
      * @return A way of posting SAX events
      */
     public SAXEventProvider getSAXEventProvider() throws BookException {
@@ -120,7 +117,7 @@ public class BookData implements BookProvider {
 
     /**
      * Who created this data.
-     * 
+     *
      * @return Returns the book.
      */
     public Book[] getBooks() {
@@ -136,7 +133,7 @@ public class BookData implements BookProvider {
 
     /**
      * The key used to obtain data from one or more books.
-     * 
+     *
      * @return Returns the key.
      */
     public Key getKey() {
@@ -167,53 +164,56 @@ public class BookData implements BookProvider {
             table.addContent(row);
 
             Iterator<Content>[] iters = new Iterator[books.length];
+            Passage[] passages = new Passage[books.length];
             boolean[] showDiffs = new boolean[books.length - 1];
             boolean doDiffs = false;
 
+            //iterate through a first time mapping out our data. This enables us to detect a difference in number
+            //of ranges later on and flag it to the user...
+            boolean[] ommittedVerses = new boolean[books.length];
+            int numRangesInMasterPassage = 0;
             for (int i = 0; i < books.length; i++) {
-                Book book = books[i];
+                //although the osis iterator now caters for keys in different versifications
+                //we are going to want to analyse the resulting key, so let's do the conversion up-front
+                passages[i] = VersificationsMapper.instance().map(KeyUtil.getPassage(key), getVersification(i));
 
-                cell = OSISUtil.factory().createHeaderCell();
+                //iterator takes care of versification differences here...
+                iters[i] = books[i].getOsisIterator(passages[i], true);
 
-                if (i > 0) {
-                    Book firstBook = books[0];
-                    BookCategory category = book.getBookCategory();
-
-                    BookCategory prevCategory = firstBook.getBookCategory();
-                    String prevName = firstBook.getInitials();
-                    showDiffs[i - 1] = comparingBooks && BookCategory.BIBLE.equals(category) && category.equals(prevCategory)
-                            && book.getLanguage().equals(firstBook.getLanguage()) && !book.getInitials().equals(prevName);
-
-                    if (showDiffs[i - 1]) {
-                        doDiffs = true;
-                        StringBuilder buf = new StringBuilder(firstBook.getInitials());
-                        buf.append(" ==> ");
-                        buf.append(book.getInitials());
-
-                        cell.addContent(OSISUtil.factory().createText(buf.toString()));
-                        row.addContent(cell);
-                        cell = OSISUtil.factory().createHeaderCell();
-                    }
+                if (i == 0) {
+                    //we never omit a verse for the first passage, since we're going to output everything based on that.
+                    ommittedVerses[i] = false;
+                    numRangesInMasterPassage = passages[i].countRanges(RestrictionType.NONE);
+                } else {
+                    // basically, if we end up with more ranges than we started with, then we're omitting a verse
+                    //somewhere along the lines.
+                    ommittedVerses[i] = passages[i].countRanges(RestrictionType.NONE) > numRangesInMasterPassage;
                 }
+            }
 
-                cell.addContent(OSISUtil.factory().createText(book.getInitials()));
-                row.addContent(cell);
 
-                iters[i] = book.getOsisIterator(key, true);
+            //now read the content and map it out
+            BookVerseContent[] booksContents = new BookVerseContent[books.length];
+            for (int i = 0; i < books.length; i++) {
+                doDiffs |= addHeaderAndSetShowDiffsState(row, showDiffs, i, ommittedVerses[i]);
+                booksContents[i] = keyIteratorContentByVerse(
+                        getVersification(i),
+                        iters[i],
+                        doDiffs);
             }
 
             Content content = null;
 
             int cellCount = 0;
             int rowCount = 0;
-            while (true) {
+
+            //we iterate through the first book's contents, and match the verses from all the other ones
+            for (Map.Entry<Verse, List<Content>> verseContent : booksContents[0].entrySet()) {
                 cellCount = 0;
-
                 row = OSISUtil.factory().createRow();
-
                 String firstText = "";
 
-                for (int i = 0; i < iters.length; i++) {
+                for (int i = 0; i < books.length; i++) {
                     Book book = books[i];
                     cell = OSISUtil.factory().createCell();
                     Language lang = (Language) book.getProperty(BookMetaData.KEY_XML_LANG);
@@ -225,14 +225,28 @@ public class BookData implements BookProvider {
 
                     StringBuilder newText = new StringBuilder(doDiffs ? 32 : 0);
 
-                    if (iters[i].hasNext()) {
-                        List<Content> contents = new ArrayList<Content>(1);
+                    //get the contents from the mapped verse - key might be null if we had content outside of a verse.
+                    //might be a no-op if it's in the same versification.
+                    Key verseInRelavantBookContents = VersificationsMapper.instance().mapVerse(verseContent.getKey(), getVersification(i));
 
-                        do {
-                            content = iters[i].next();
-                            contents.add(content);
-                            addText(doDiffs, newText, content);
-                        } while (!isNextVerse(content));
+                    //key might have several child keys, ie. a verse mapping to a range, or list of verses
+                    Passage passageOfInterest = KeyUtil.getPassage(verseInRelavantBookContents);
+                    Iterator<Key> passageKeys = passageOfInterest.iterator();
+                    while (passageKeys.hasNext()) {
+                        Key singleKey = passageKeys.next();
+                        if (!(singleKey instanceof Verse)) {
+                            throw new UnsupportedOperationException("Iterating through a passage gives non-verses");
+                        }
+
+                        List<Content> xmlContent = booksContents[i].get((Verse) singleKey);
+
+                        //if the book simply did not contain that reference (say Greek book, with Gen.1 as a reference)
+                        //then we end up with a key that doesn't exist in the map. Therefore, we need to cope for this.
+                        if (xmlContent == null) {
+                            xmlContent = new ArrayList<Content>(0);
+                        }
+
+                        addText(doDiffs, newText, xmlContent);
 
                         if (doDiffs) {
                             String thisText = newText.toString();
@@ -255,7 +269,8 @@ public class BookData implements BookProvider {
                                 firstText = thisText;
                             }
                         }
-                        cell.addContent(contents);
+
+                        addContentSafely(cell, xmlContent);
                         cellCount++;
                     }
                 }
@@ -275,14 +290,160 @@ public class BookData implements BookProvider {
         return div;
     }
 
-    private boolean isNextVerse(Content content) {
-        if (content instanceof Element) {
-            return OSISUtil.OSIS_ELEMENT_VERSE.equals(((Element) content).getName());
+    /**
+     * JDOM will throw an exception if we try and add the content to multiple parents.
+     * As a result, we take the opportunity to add it safely, and add a note indicating
+     * this content appears twice.
+     *
+     * @param cell
+     * @param xmlContent
+     */
+    private void addContentSafely(final Element cell, final List<Content> xmlContent) {
+        for (Content c : xmlContent) {
+            if (c.getParent() == null) {
+                cell.addContent(c);
+            } else {
+                //we're in the situation where we have added this already.
+                //add note. In this case, we wrap the content that has already been applied.
+                Element note = appendVersificationNotice(cell, "duplicate");
+                note.addContent(c.clone());
+            }
         }
-
-        return false;
     }
 
+    /**
+     * Creates a notice element.
+     *
+     * @param notice the notice fragment to be applied to the sub-type
+     * @return the new element
+     */
+    private Element appendVersificationNotice(Element parent, final String notice) {
+        Element note = OSISUtil.factory().createDiv();
+        note.setAttribute(OSISUtil.OSIS_ATTR_TYPE, OSISUtil.GENERATED_CONTENT);
+        note.setAttribute(OSISUtil.OSIS_ATTR_SUBTYPE, OSISUtil.TYPE_X_PREFIX + notice);
+        parent.addContent(note);
+        return note;
+    }
+
+    /**
+     * @param i the current position in the array of books
+     * @return the versification of the book.
+     */
+    private Versification getVersification(final int i) {
+        return Versifications.instance().getVersification(
+                (String) books[i].getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION));
+    }
+
+
+    /**
+     * We iterate through the content, making sure we key together those bits that belong together.
+     * And separating out each verse.
+     *
+     * @param iter the iterator of OSIS content
+     */
+    private BookVerseContent keyIteratorContentByVerse(Versification v11n, final Iterator<Content> iter, boolean doDiffs) throws BookException {
+        BookVerseContent contentsByOsisID = new BookVerseContent();
+
+        //we will be using this map later to track which keys have been catered for in the order calculation
+        Verse currentVerse = null;
+        Content content;
+
+        List<Content> contents = new ArrayList<Content>();
+        while (iter.hasNext()) {
+            content = iter.next();
+            if (content instanceof Element && OSISUtil.OSIS_ELEMENT_VERSE.equals(((Element) content).getName())) {
+                //TODO: cater for verse 0
+                if (currentVerse != null) {
+                    contentsByOsisID.put(currentVerse, contents);
+                    contents = new ArrayList<Content>();
+                }
+
+                currentVerse = OSISUtil.getVerse(v11n, (Element) content);
+
+                //if we still have stuff in here, then let's assign it to the previous verse (i.e.
+                //we might have come across content that legitimately sits in verse 0 for example).
+                //of perhaps we've somehow come across previous content. Either way, it clearly doesn't
+                //belong to the current verse.
+                if (contents.size() > 0) {
+                    Verse previousVerse = new Verse(currentVerse.getVersification(), currentVerse.getOrdinal() -1);
+                    contentsByOsisID.put(previousVerse, contents);
+                    contents = new ArrayList<Content>();
+                }
+            }
+
+            contents.add(content);
+        }
+
+        //now append what's left into the last verse
+        contentsByOsisID.put(currentVerse, contents);
+
+        return contentsByOsisID;
+    }
+
+    /**
+     * @param row           our current OSIS row
+     * @param showDiffs     the array of states as to whether we are showing diffs for this column
+     * @param i             our current place in the state
+     * @param ommittedVerse true to indicate this column will be ommiting a verse
+     * @return true if we are doing diffs
+     */
+    private boolean addHeaderAndSetShowDiffsState(final Element row, final boolean[] showDiffs, final int i, final boolean ommittedVerse) {
+        boolean doDiffs = false;
+        Book book = books[i];
+        Element cell = OSISUtil.factory().createHeaderCell();
+
+        if (i > 0) {
+            Book firstBook = books[0];
+            BookCategory category = book.getBookCategory();
+
+            BookCategory prevCategory = firstBook.getBookCategory();
+            String prevName = firstBook.getInitials();
+            showDiffs[i - 1] = comparingBooks && BookCategory.BIBLE.equals(category) && category.equals(prevCategory)
+                    && book.getLanguage().equals(firstBook.getLanguage()) && !book.getInitials().equals(prevName);
+
+            if (showDiffs[i - 1]) {
+                doDiffs = true;
+                StringBuilder buf = new StringBuilder(firstBook.getInitials());
+                buf.append(" ==> ");
+                buf.append(book.getInitials());
+
+                cell.addContent(OSISUtil.factory().createText(buf.toString()));
+                row.addContent(cell);
+                cell = OSISUtil.factory().createHeaderCell();
+            }
+        }
+
+        final Text text = OSISUtil.factory().createText(book.getInitials());
+        if (ommittedVerse) {
+            Element notice = this.appendVersificationNotice(cell, "omitted-verses");
+            notice.addContent(text);
+        } else {
+            cell.addContent(text);
+        }
+        row.addContent(cell);
+        return doDiffs;
+    }
+
+    /**
+     * Loops around contents and calls addText for a single element
+     *
+     * @param doDiffs  true for calculating differences
+     * @param newText  the newText buffer used to compare one portion of text to another
+     * @param contents the contents to be added
+     */
+    private void addText(boolean doDiffs, StringBuilder newText, List<Content> contents) {
+        for (Content c : contents) {
+            addText(doDiffs, newText, c);
+        }
+    }
+
+    /**
+     * Adds the text to the diff buffer
+     *
+     * @param doDiffs true for calculating differences
+     * @param newText the newText buffer used to compare one portion of text to another
+     * @param content the content element to be added
+     */
     private void addText(boolean doDiffs, StringBuilder newText, Content content) {
         if (doDiffs) {
             // if we already have content, let's add a space to avoid chaining words together
@@ -303,6 +464,13 @@ public class BookData implements BookProvider {
      */
     public void setUnaccenter(UnAccenter unaccenter) {
         this.unaccenter = unaccenter;
+    }
+
+    /**
+     * A temporary holder for a map that links each verse ID to its set of OSIS elements.
+     * Used purely to avoid having too many generic/array notations entangled in the code
+     */
+    class BookVerseContent extends TreeMap<Verse, List<Content>> {
     }
 
     /**
