@@ -42,27 +42,30 @@ import org.crosswire.jsword.passage.VerseRange;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.jdom2.Content;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A generic way to read data from disk for later formatting.
- * 
+ *
  * @param <T> The type of the OpenFileState that this class extends.
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith
+ * @see gnu.lgpl.License for license details.<br>
+ *      The copyright to this program is held by it's authors.
  */
 public abstract class AbstractBackend<T extends OpenFileState> implements StatefulFileBackedBackend<T> {
 
     /**
      * Default constructor for the sake of serialization.
      */
-    /* protected */public AbstractBackend() {
+    /* protected */
+    public AbstractBackend() {
     }
 
     /**
      * Construct a minimal backend
-     * 
+     *
      * @param sbmd
      */
     public AbstractBackend(SwordBookMetaData sbmd) {
@@ -79,9 +82,8 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
     /**
      * Decipher the data in place, if it is enciphered and there is a key to
      * unlock it.
-     * 
-     * @param data
-     *            the data to unlock
+     *
+     * @param data the data to unlock
      */
     public void decipher(byte[] data) {
         String cipherKeyString = (String) getBookMetaData().getProperty(ConfigEntryType.CIPHER_KEY);
@@ -97,7 +99,7 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
 
     /**
      * Encipher the data in place, if there is a key to unlock it.
-     * 
+     *
      * @param data
      */
     public void encipher(byte[] data) {
@@ -117,9 +119,8 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
 
     /**
      * Determine whether this Book contains the key in question
-     * 
-     * @param key
-     *            The key whose presence is desired.
+     *
+     * @param key The key whose presence is desired.
      * @return true if the Book contains the key
      */
     public abstract boolean contains(Key key);
@@ -137,15 +138,12 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
 
     /**
      * Get the text allotted for the given entry
-     * 
-     * @param key
-     *            The key to fetch
-     * @param processor
-     *            processor that executes before/after the content is read from
-     *            disk or another kind of backend
+     *
+     * @param key       The key to fetch
+     * @param processor processor that executes before/after the content is read from
+     *                  disk or another kind of backend
      * @return String The data for the verse in question
-     * @throws BookException
-     *             If the data can not be read.
+     * @throws BookException If the data can not be read.
      */
     /* (non-Javadoc)
      * @see org.crosswire.jsword.book.sword.AbstractBackend#getRawText(org.crosswire.jsword.passage.Key)
@@ -159,15 +157,15 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
         try {
             openFileState = initState();
             switch (this.bmd.getKeyType()) {
-            case LIST:
-            case TREE:
-                readNormalOsis(key, processor, content, openFileState);
-                break;
-            case VERSE:
-                readPassageOsis(key, processor, content, openFileState);
-                break;
-            default:
-                throw new BookException("Book has unsupported type of key");
+                case LIST:
+                case TREE:
+                    readNormalOsis(key, processor, content, openFileState);
+                    break;
+                case VERSE:
+                    readPassageOsis(key, processor, content, openFileState);
+                    break;
+                default:
+                    throw new BookException("Book has unsupported type of key");
             }
 
             return content;
@@ -195,22 +193,15 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
 
     /**
      * Reads a passage as OSIS
-     * 
-     * @param key
-     *            the given key
-     * @param processor
-     *            a processor for which to do things with
-     * @param content
-     *            a list of content to be appended to (i.e. the OSIS data)
-     * @param openFileState
-     *            the open file state, from which we read things
-     * @throws BookException
-     *             a book exception if we failed to read the book
+     *
+     * @param key           the given key
+     * @param processor     a processor for which to do things with
+     * @param content       a list of content to be appended to (i.e. the OSIS data)
+     * @param openFileState the open file state, from which we read things
+     * @throws BookException a book exception if we failed to read the book
      */
     private Verse readPassageOsis(Key key, RawTextToXmlProcessor processor, final List<Content> content, T openFileState) throws BookException {
         Verse currentVerse = null;
-        try {
-
             final Passage ref = KeyUtil.getPassage(key);
             final Iterator<Key> rit = ref.rangeIterator(RestrictionType.CHAPTER);
             while (rit.hasNext()) {
@@ -222,29 +213,34 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
                 // now iterate through all verses in range
                 for (Key verseInRange : range) {
                     currentVerse = KeyUtil.getVerse(verseInRange);
-                    String rawText = readRawContent(openFileState, currentVerse);
-                    processor.postVerse(verseInRange, content, rawText);
+                    try {
+                        String rawText = readRawContent(openFileState, currentVerse);
+                        processor.postVerse(verseInRange, content, rawText);
+                    } catch (IOException e) {
+                        //some versifications have more verses than modules contain - so can't throw
+                        //an error here...
+                        LOGGER.debug(e.getMessage(), e);
+                    }
                 }
             }
-        } catch (IOException e) {
-            throwFailedKeyException(key, currentVerse, e);
-        }
-        return currentVerse;
-    }
 
-    /**
-     * If non-null, currentKey is used to throw the exception, other, masterKey
-     * is used instead, which will be more general.
-     * 
-     * @param masterKey
-     *            the key containing currentKey
-     * @param currentKey
-     *            the currentKey
-     * @param e
-     *            the exception that occured
-     * @throws BookException
-     *             always thrown, a {@link BookException}
-     */
+            return currentVerse;
+        }
+
+        /**
+         * If non-null, currentKey is used to throw the exception, other, masterKey
+         * is used instead, which will be more general.
+         *
+         * @param masterKey
+         *            the key containing currentKey
+         * @param currentKey
+         *            the currentKey
+         * @param e
+         *            the exception that occured
+         * @throws BookException
+         *             always thrown, a {@link BookException}
+         */
+
     private void throwFailedKeyException(Key masterKey, Key currentKey, IOException e) throws BookException {
         // TRANSLATOR: Common error condition: The file could not be read.
         // There can be many reasons.
@@ -257,7 +253,7 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
 
     /**
      * Create the directory to hold the Book if it does not exist.
-     * 
+     *
      * @throws IOException
      * @throws BookException
      */
@@ -270,7 +266,7 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
 
     /**
      * Returns whether this AbstractBackend is implemented.
-     * 
+     *
      * @return true if this AbstractBackend is implemented.
      */
     public boolean isSupported() {
@@ -283,7 +279,7 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
      * Ultimately, all drivers should allow writing. At this time writing is not
      * supported by backends, so abstract implementations should return false
      * and let specific implementations return true otherwise.
-     * 
+     *
      * @return true if the book is writable
      */
     public boolean isWritable() {
@@ -299,4 +295,5 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
 
     private SwordBookMetaData bmd;
     private Versification versificationSystem;
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractBackend.class);
 }
