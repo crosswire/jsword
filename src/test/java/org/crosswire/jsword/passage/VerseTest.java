@@ -248,8 +248,9 @@ public class VerseTest extends TestCase {
 
     public void testHashCode() {
         assertEquals(gen11.hashCode(), gen11a.hashCode());
-        assertEquals(gen11.hashCode(), gen11.getOrdinal());
-        assertTrue(gen11.hashCode() != gen12.getOrdinal());
+        //TODO:CJB: Why is this here?
+//        assertEquals(gen11.hashCode(), gen11.getOrdinal());
+//        assertTrue(gen11.hashCode() != gen12.getOrdinal());
         assertTrue(gen11.hashCode() != 0);
     }
 
