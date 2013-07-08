@@ -157,7 +157,7 @@ public final class PassageKeyFactory {
      * @throws NoSuchKeyException
      *             If the passageReference has anything that could not be understood as a Verse
      */
-    public Key getKey(Versification v11n, String passageReference, Key basis) throws NoSuchKeyException {
+    public Passage getKey(Versification v11n, String passageReference, Key basis) throws NoSuchKeyException {
         // since normalization is relatively expensive
         // don't try it unless it solves a problem.
         try {
@@ -185,7 +185,7 @@ public final class PassageKeyFactory {
      * @throws NoSuchKeyException
      *             If the passageReference has anything that could not be understood as a Verse
      */
-    public Key getKey(Versification v11n, String passageReference) throws NoSuchKeyException {
+    public Passage getKey(Versification v11n, String passageReference) throws NoSuchKeyException {
         return getKey(v11n, passageReference, null);
     }
 

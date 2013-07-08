@@ -25,12 +25,16 @@ import java.util.*;
  * You can specify a range on either side. If a range is present on both sides, they have to have the same number of
  * verses, i.e. verses are mapped verse by verse to each other
  * Gen.1.1-2=Gen.1.2-3 means Gen.1.1=Gen.1.2 and Gen.1.2=Gen.1.3
+ *
+ * Note: if the cardinality of the left & KJV sides are different by only one, the algorithm makes the
+ * assumption that verse 0 should be disregarded in both ranges.
  * <p/>
  * Mappings can be specified by offset. In this case, be aware this maps verse 0 as well. So for example:
  * <p/>
  * Ps.19-20=-1 means Ps.19.0=Ps.18.50, Ps.19.1=Ps.19.0, Ps.19.2=Ps.19.1, etc.
  * It does not make much sense to have an offset for a single verse, so this is not supported.
  * Offsetting for multiple ranges however does, and operates range by range, i.e. each range is calculated separately.
+ * Offsetting is somewhat equivalent to specifying ranges, and as a result, the verse 0 behaviour is identical.
  * <p/>
  * You can use part-mappings. This is important if you want to preserve transformations from one side to another without
  * losing resolution of the verse.
@@ -99,6 +103,7 @@ public class VersificationToKJVMapper {
             try {
                 processEntry(entry);
             } catch (NoSuchKeyException ex) {
+                //TODO: should be throw a config exception?
                 LOGGER.error("Unable to process entry [{}] with value [{}]", entry.getKey(), entry.getValue(), ex);
             }
         }
@@ -136,27 +141,46 @@ public class VersificationToKJVMapper {
      * @param leftHand, is assumed to be many
      * @param kjvVerses could be 1 or many
      */
+    //TODO:optimize getCardinality calls
     private void addManyToMany(final QualifiedKey leftHand, final QualifiedKey kjvVerses) {
         Iterator<Key> leftKeys = leftHand.getKey().iterator();
 
         boolean isKJVMany = kjvVerses.getAbsentType() != QualifiedKey.Qualifier.ABSENT_IN_KJV && kjvVerses.getKey().getCardinality() != 1;
+        boolean skipVerse0 = false;
         Iterator<Key> kjvKeys = null;
+
+        if (isKJVMany) {
+            //we detect if the keys are 1-apart from each other. If so, then we skip verse 0 on both sides.
+            int diff = Math.abs(leftHand.getKey().getCardinality() - kjvVerses.getKey().getCardinality());
+
+            if(diff > 1) {
+                reportCardinalityError(leftHand, kjvVerses);
+            }
+            skipVerse0 = diff == 1;
+        }
 
         while (leftKeys.hasNext()) {
             final Key leftKey = leftKeys.next();
 
             if (isKJVMany) {
+                if (skipVerse0 && ((Verse) leftKey).getVerse() == 0) {
+                    continue;
+                }
+
                 if (kjvKeys == null) {
                     kjvKeys = kjvVerses.getKey().iterator();
                 }
 
-                if(!kjvKeys.hasNext()) {
-                    //TODO: change this to a neater exception
-                    throw new LucidRuntimeException(String.format("%s has a cardinality of %d whilst %s has a cardinality of %d.",
-                            leftHand.getKey(), leftHand.getKey().getCardinality(),
-                            kjvVerses.getKey(), kjvVerses.getKey().getCardinality()));
+                if (!kjvKeys.hasNext()) {
+                    reportCardinalityError(leftHand, kjvVerses);
                 }
-                QualifiedKey kjvKey = new QualifiedKey(kjvKeys.next());
+
+                Key nextKjvKey = kjvKeys.next();
+                if(skipVerse0 && ((Verse)nextKjvKey).getVerse() == 0) {
+                    nextKjvKey = kjvKeys.next();
+                }
+
+                QualifiedKey kjvKey = new QualifiedKey(nextKjvKey);
                 addForwardMappingFromSingleKeyToRange(leftKey, kjvKey);
                 addKJVToMapping(kjvKey, leftKey);
 
@@ -165,6 +189,25 @@ public class VersificationToKJVMapper {
                 addKJVToMapping(kjvVerses, leftKey);
             }
         }
+
+        if (isKJVMany && kjvKeys.hasNext()) {
+            reportCardinalityError(leftHand, kjvVerses);
+
+        }
+    }
+
+    /**
+     * If for some reason cardinalities of keys are different, we report it.
+     *
+     * @param leftHand  the left hand key
+     * @param kjvVerses the kjv qualified key
+     */
+    private void reportCardinalityError(final QualifiedKey leftHand, final QualifiedKey kjvVerses) {
+        //TODO: change this to a neater exception
+        //then something went wrong, as we have remaining verses
+        throw new LucidRuntimeException(String.format("%s has a cardinality of %d whilst %s has a cardinality of %d.",
+                leftHand.getKey(), leftHand.getKey().getCardinality(),
+                kjvVerses.getKey(), kjvVerses.getKey().getCardinality()));
     }
 
     /**
