@@ -41,6 +41,7 @@ public class VersificationsMapper {
         return INSTANCE;
     }
 
+
     /**
      * Maps a whole passage, and does so verse by verse. We can't do any better, since, we may for
      * example have:
