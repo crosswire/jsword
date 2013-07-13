@@ -234,6 +234,8 @@ public class BookData implements BookProvider {
                     Iterator<Key> passageKeys = passageOfInterest.iterator();
                     while (passageKeys.hasNext()) {
                         Key singleKey = passageKeys.next();
+                        //TODO:CJB: for performance, we probably want to avoid the instanceof, so either change the
+                        //method signature, or cast directly and be optimistic
                         if (!(singleKey instanceof Verse)) {
                             throw new UnsupportedOperationException("Iterating through a passage gives non-verses");
                         }
@@ -270,6 +272,9 @@ public class BookData implements BookProvider {
                             }
                         }
 
+                        //TODO:wrong location - we should record the keys in a set and notify
+                        //when there is a problem
+                        //this should be outside of the loop?
                         addContentSafely(cell, xmlContent);
                         cellCount++;
                     }
@@ -297,15 +302,19 @@ public class BookData implements BookProvider {
      *
      * @param cell
      * @param xmlContent
+     * @returns true to indicate a duplicate notice has been added
      */
     private void addContentSafely(final Element cell, final List<Content> xmlContent) {
+        Element note = null;
         for (Content c : xmlContent) {
             if (c.getParent() == null) {
                 cell.addContent(c);
+            } else if(note != null) {
+                note.addContent(c.clone());
             } else {
                 //we're in the situation where we have added this already.
                 //add note. In this case, we wrap the content that has already been applied.
-                Element note = appendVersificationNotice(cell, "duplicate");
+                note = appendVersificationNotice(cell, "duplicate");
                 note.addContent(c.clone());
             }
         }

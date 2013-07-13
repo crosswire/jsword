@@ -50,11 +50,10 @@ public class FileVersificationMapping {
 
             int firstEqual = line.indexOf('=');
             if (firstEqual == -1) {
-                //TODO: internationalize
-                throw new ConfigException(JSMsg.gettext("Unable to parse line {0}", line));
+                this.addProperty(line, null);
+            } else {
+                this.addProperty(line.substring(0, firstEqual), line.substring(firstEqual + 1));
             }
-
-            this.addProperty(line.substring(0, firstEqual), line.substring(firstEqual + 1));
         }
     }
 
