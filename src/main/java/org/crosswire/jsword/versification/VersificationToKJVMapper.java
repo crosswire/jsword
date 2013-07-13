@@ -1,7 +1,6 @@
 package org.crosswire.jsword.versification;
 
 import org.crosswire.common.util.KeyValuePair;
-import org.crosswire.common.util.LucidException;
 import org.crosswire.common.util.LucidRuntimeException;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.passage.*;
@@ -66,7 +65,9 @@ import java.util.*;
  * ?=Gen1.1;Gen.1.5;
  * means that the non-KJV book simply does not contain verses Gen.1.1 and Gen.1.5 and therefore can't
  * be mapped.
- *
+ * <p />
+ * We allow some global flags (one at present):
+ * !zerosUnmapped : means that any mapping to or from a zero verse
  * @author chrisburrell
  */
 public class VersificationToKJVMapper {
@@ -81,6 +82,7 @@ public class VersificationToKJVMapper {
     private Key absentVerses = new RocketPassage(KJV);
     private Map<Key, List<QualifiedKey>> toKJVMappings = new HashMap<Key, List<QualifiedKey>>();
     private Map<QualifiedKey, Key> fromKJVMappings = new HashMap<QualifiedKey, Key>();
+    private boolean zerosUnmapped = false;
 
     /**
      * @param mapping the mappings from one versification to another
@@ -92,7 +94,7 @@ public class VersificationToKJVMapper {
     }
 
     /**
-     * We getRange properties to their real meanings. This is the crux of the decoding facility.
+     * This is the crux of the decoding facility.
      *
      * @param mappings the input mappings, in a contracted, short-hand form
      * @return the properties expanded
@@ -103,7 +105,7 @@ public class VersificationToKJVMapper {
             try {
                 processEntry(entry);
             } catch (NoSuchKeyException ex) {
-                //TODO: should be throw a config exception?
+                //TODO: should we throw a config exception?
                 LOGGER.error("Unable to process entry [{}] with value [{}]", entry.getKey(), entry.getValue(), ex);
             }
         }
@@ -113,6 +115,12 @@ public class VersificationToKJVMapper {
         String leftHand = (String) entry.getKey();
         String kjvHand = (String) entry.getValue();
         QualifiedKey left = getRange(this.nonKjv, leftHand, null);
+
+        // some global flag was specified, proceed to next key value pair.
+        if(left == null) {
+            return;
+        }
+
         QualifiedKey kjv = getRange(KJV, kjvHand, left.getKey());
         addMappings(left, kjv);
     }
@@ -312,14 +320,28 @@ public class VersificationToKJVMapper {
 
 
     /**
-     * Expands a reference to all its verses
+     * Gets the input range as a single verse or throws an exception
      *
-     * @param versesKey the verses
+     * @param verseKey the verses
      * @return the separate list of verses
-     *         TODO: cope for '+' and for parts
      */
-    private QualifiedKey getRange(final Versification versification, String versesKey) throws NoSuchKeyException {
-        return getRange(versification, versesKey, null);
+    private QualifiedKey getRangeAsVerse(final Versification versification, String verseKey) throws NoSuchKeyException {
+        final QualifiedKey range = getRange(versification, verseKey, null);
+        Key encapsulatedRange = range.getKey();
+        if(encapsulatedRange != null) {
+            final Iterator<Key> keyIterator = encapsulatedRange.iterator();
+            //get first key
+            if(!keyIterator.hasNext()) {
+                throw new UnsupportedOperationException("Attempting to resolve an empty range. Only single verse look-ups are supported.");
+            }
+
+            range.setKey(KeyUtil.getVerse(keyIterator.next()));
+            if(keyIterator.hasNext()) {
+                throw new UnsupportedOperationException("Attempting to resolve more than 1 verse at a time. Only single verse look-ups are supported.");
+            }
+        }
+
+        return range;
     }
 
     /**
@@ -327,12 +349,17 @@ public class VersificationToKJVMapper {
      *
      * @param versesKey the verses
      * @return the separate list of verses
-     *         TODO: cope for '+' and for parts
      */
     private QualifiedKey getRange(final Versification versification, String versesKey, Key offsetBasis) throws NoSuchKeyException {
         //deal with absent keys in left & absent keys in right, which are simply marked by a '?'
         if (versesKey == null || versesKey.length() == 0) {
             throw new NoSuchKeyException(JSMsg.gettext("Cannot understand [{0}] as a chapter or verse.", versesKey));
+        }
+
+        // we allow some global flags properties - for a want of a better syntax!
+        if("!zerosUnmapped".equals(versesKey)) {
+            this.zerosUnmapped = true;
+            return null;
         }
 
         char firstChar = versesKey.charAt(0);
@@ -440,7 +467,8 @@ public class VersificationToKJVMapper {
      * @return the equivalent key
      */
     public String map(final String key) throws NoSuchKeyException {
-        return map(getRange(nonKjv, key).getKey()).getOsisRef();
+        final QualifiedKey range = getRangeAsVerse(nonKjv, key);
+        return map(((Verse) range.getKey())).getOsisRef();
     }
 
 
@@ -456,12 +484,18 @@ public class VersificationToKJVMapper {
      * Returns the key in the target versification, by using the OsisRef. Note: if the key doesn't exist
      * in the other versification, it is most probably because that key doesn't exist at all. So we'll log a warning,
      * but return an empty key.
+     * <p/>
+     * There is one exception however, and that is, for Versifications that don't use verse 0s we allow a global
+     * flag to prevent mappings for verse 0.
      *
      * @param qualifiedKey the qualified key containing the OSIS key ref.
      * @return the same key represented by the OSIS ref, except that it is the target versification.
      */
     private QualifiedKey getKeyRefInDifferentVersification(final QualifiedKey qualifiedKey, Versification target) {
         try {
+            if(this.zerosUnmapped && isZero(qualifiedKey)) {
+                return new QualifiedKey(new RocketPassage(target));
+            }
             return new QualifiedKey(PassageKeyFactory.instance().getKey(target, qualifiedKey.getKey().getOsisRef()));
         } catch (NoSuchKeyException ex) {
             LOGGER.warn("Unable to transfer key contents [{}] to versification [{}]", qualifiedKey.getKey().getOsisRef(), target.getName());
@@ -469,10 +503,32 @@ public class VersificationToKJVMapper {
         }
     }
 
+    /**
+     * Qualified key to test for a verse 0
+     * @param qualifiedKey the qualified key
+     * @return true, if the qualified key represents verse 0
+     */
+    private boolean isZero(final QualifiedKey qualifiedKey) {
+        Key k = qualifiedKey.getKey();
+        if(k == null) {
+            return false;
+        }
+
+        Iterator<Key> keys = k.iterator();
+        boolean isZero = false;
+        if(keys.hasNext() && ((Verse) keys.next()).getVerse() == 0) {
+            // true if we don't have any more keys in our set
+            return !keys.hasNext();
+        }
+
+        //no keys in iterator
+        return false;
+    }
+
 
     /**
      * Converts the input to the KJV versification, but returns the qualified key representation, i.e. not necessarily
-     * an OSIS representation.
+     * an OSIS representation. The key needs to represent a single verse
      * <p/>
      * This key is useful if different versifications (say Dan 3 in the 2 Catholic versifications) have the same
      * section which is not present in the KJV versification.
@@ -481,8 +537,10 @@ public class VersificationToKJVMapper {
      *
      * @return the equivalent key, which may or may not be used to look up a reference in a book.
      */
-    public String mapToQualifiedKey(final String key) throws NoSuchKeyException {
-        List<QualifiedKey> qualifiedKeys = map(getRange(nonKjv, key));
+    public String mapToQualifiedKey(final String verseKey) throws NoSuchKeyException {
+        final QualifiedKey qualifiedVerse = getRangeAsVerse(nonKjv, verseKey);
+        List<QualifiedKey> qualifiedKeys = map(qualifiedVerse);
+
         StringBuilder representation = new StringBuilder(128);
         for (int i = 0; i < qualifiedKeys.size(); i++) {
             final QualifiedKey qk = qualifiedKeys.get(i);
@@ -499,7 +557,6 @@ public class VersificationToKJVMapper {
         return representation.toString();
     }
 
-
     /**
      * Maps the full qualified key to its proper equivalent in the KJV.
      *
@@ -511,6 +568,7 @@ public class VersificationToKJVMapper {
             List<QualifiedKey> kjvKeys = getQualifiedKeys(qualifiedKey.getKey());
             if (kjvKeys == null || kjvKeys.size() == 0) {
                 //then we found no mapping, so we're essentially going to return the same key back...
+                //unless it's a verse 0 and then we'll check the global flag.
                 kjvKeys = new ArrayList<QualifiedKey>();
                 kjvKeys.add(getKeyRefInDifferentVersification(qualifiedKey, KJV));
                 return kjvKeys;
@@ -526,7 +584,7 @@ public class VersificationToKJVMapper {
      *
      * @return the equivalent key
      */
-    public Key map(final Key leftKey) {
+    public Key map(final Verse leftKey) {
         List<QualifiedKey> qualifiedKeys = map(new QualifiedKey(leftKey));
 
         //convert qualified keys into a passage representation, since that's what the user is after.
@@ -547,7 +605,7 @@ public class VersificationToKJVMapper {
      * @return the key in the left-hand versification
      */
     public String unmap(final String kjvVerse) throws NoSuchKeyException {
-        return unmap(getRange(KJV, kjvVerse)).getOsisRef();
+        return unmap(getRangeAsVerse(KJV, kjvVerse)).getOsisRef();
     }
 
     /**
