@@ -83,6 +83,7 @@ public class VersificationToKJVMapper {
     private Map<Key, List<QualifiedKey>> toKJVMappings = new HashMap<Key, List<QualifiedKey>>();
     private Map<QualifiedKey, Key> fromKJVMappings = new HashMap<QualifiedKey, Key>();
     private boolean zerosUnmapped = false;
+    private boolean hasErrors = false;
 
     /**
      * @param mapping the mappings from one versification to another
@@ -107,6 +108,11 @@ public class VersificationToKJVMapper {
             } catch (NoSuchKeyException ex) {
                 //TODO: should we throw a config exception?
                 LOGGER.error("Unable to process entry [{}] with value [{}]", entry.getKey(), entry.getValue(), ex);
+                hasErrors = true;
+            } catch(Exception ex) {
+                //TODO: should we throw a config exception?
+                LOGGER.error("Unable to process entry [{}] with value [{}]", entry.getKey(), entry.getValue(), ex);
+                hasErrors = true;
             }
         }
     }
@@ -698,5 +704,12 @@ public class VersificationToKJVMapper {
                 break;
         }
         return absentType;
+    }
+
+    /**
+     * Returns whether we initialised with errors
+     */
+    boolean hasErrors() {
+        return hasErrors;
     }
 }
