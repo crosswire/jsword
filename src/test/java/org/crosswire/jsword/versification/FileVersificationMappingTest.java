@@ -1,11 +1,8 @@
 package org.crosswire.jsword.versification;
 
-import org.crosswire.jsword.versification.system.SystemSynodal;
-import org.crosswire.jsword.versification.system.SystemVulg;
+import org.crosswire.jsword.versification.system.*;
 import org.junit.Assert;
 import org.crosswire.common.config.ConfigException;
-import org.crosswire.jsword.versification.system.SystemLeningrad;
-import org.crosswire.jsword.versification.system.Versifications;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -33,7 +30,9 @@ public class FileVersificationMappingTest {
         Object[][] data = new Object[][]{
                 {SystemLeningrad.V11N_NAME},
                 {SystemSynodal.V11N_NAME},
-                {SystemVulg.V11N_NAME}, };
+                {SystemVulg.V11N_NAME},
+                {SystemGerman.V11N_NAME}
+        };
         return Arrays.asList(data);
     }
 
