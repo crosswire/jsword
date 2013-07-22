@@ -384,7 +384,9 @@ public class BookData implements BookProvider {
         }
 
         //now append what's left into the last verse
-        contentsByOsisID.put(currentVerse, contents);
+        if(currentVerse != null) {
+            contentsByOsisID.put(currentVerse, contents);
+        }
 
         return contentsByOsisID;
     }
