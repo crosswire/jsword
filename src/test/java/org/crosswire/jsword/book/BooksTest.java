@@ -25,6 +25,11 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.VerseRangeFactory;
+import org.crosswire.jsword.versification.system.Versifications;
+import org.jdom2.Element;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 
 /**
  * JUnit Test.
@@ -126,6 +131,23 @@ public class BooksTest extends TestCase {
         }
     }
 
+	/** Bibles like TurNTB contain merged (linked) verses which are duplicated when chapters are displayed- see JS-224.
+	 *	This tests the deduplication code in AbstractPassageBook.
+	 */
+	public void testLinkedVersesNotDuplicated() throws Exception {
+		Book turNTB = Books.installed().getBook("TurNTB");
+		if (turNTB!=null) {
+			// Eph 2:4,5 are merged/linked in TurNTB
+			Key eph245 = VerseRangeFactory.fromString(Versifications.instance().getVersification("KJV"), "Eph 2:4-5");
+			BookData bookData = new BookData(turNTB, eph245);
+			final Element osisFragment = bookData.getOsisFragment();
+
+			final XMLOutputter xmlOutputter = new XMLOutputter(Format.getPrettyFormat());
+			String xml = xmlOutputter.outputString(osisFragment);
+
+			assertTrue("Probable duplicate text", xml.length()<300);
+		}
+	}
     /*
      * FIXME: These are only valid if all bibles are English public void
      * testGetFind() throws Exception { // This only checks that find() does

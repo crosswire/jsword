@@ -71,6 +71,9 @@ public abstract class AbstractPassageBook extends AbstractBook {
         final boolean showTitles = ref.hasRanges(RestrictionType.CHAPTER) || !allowEmpty;
 
         RawTextToXmlProcessor processor = new RawTextToXmlProcessor() {
+            // track previous text to exclude duplicates caused by merged verses
+            private String previousVerseText = "";
+            
             public void preRange(VerseRange range, List<Content> partialDom) {
                 if (showTitles) {
                     Element title = OSISUtil.factory().createGeneratedTitle();
@@ -80,11 +83,12 @@ public abstract class AbstractPassageBook extends AbstractBook {
             }
 
             public void postVerse(Key verse, List<Content> partialDom, String rawText) {
-                // If the verse is empty then we shouldn't add the verse tag
-                if (allowEmpty || rawText.length() > 0) {
+                // If the verse is empty or repeated then we shouldn't add the verse
+                if ((allowEmpty || rawText.length() > 0 ) && !previousVerseText.equals(rawText)) {
                     List<Content> osisContent = filter.toOSIS(AbstractPassageBook.this, verse, rawText);
                     addOSIS(verse, partialDom, osisContent);
                 }
+                previousVerseText = rawText;
             }
 
             public void init(List<Content> partialDom) {
