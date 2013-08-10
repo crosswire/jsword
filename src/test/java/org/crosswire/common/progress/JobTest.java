@@ -20,11 +20,12 @@
  */
 package org.crosswire.common.progress;
 
+import junit.framework.TestCase;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-
-import junit.framework.TestCase;
+import java.util.UUID;
 
 /**
  * JUnit Test.
@@ -64,7 +65,7 @@ public class JobTest extends TestCase {
         assertEquals(100, job.getWork());
         assertEquals(job.isCancelable(), false);
 
-        job = JobManager.createJob(WIBBLE, Thread.currentThread());
+        job = JobManager.createJob(UUID.randomUUID().toString(), WIBBLE, Thread.currentThread());
         job.beginJob(WIBBLE);
         assertEquals(WIBBLE, job.getJobName());
         assertEquals(false, job.isFinished());
@@ -89,7 +90,7 @@ public class JobTest extends TestCase {
         assertEquals(100, job.getWork());
         // assertEquals(false, job.isCancelable());
 
-        job = JobManager.createJob(WIBBLE, Thread.currentThread());
+        job = JobManager.createJob(UUID.randomUUID().toString(), WIBBLE, Thread.currentThread());
         job.beginJob(WIBBLE, uri);
         assertEquals(WIBBLE, job.getJobName());
         assertEquals(false, job.isFinished());

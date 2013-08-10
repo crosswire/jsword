@@ -34,6 +34,10 @@ public interface Progress {
      * Indicate that the total amount of work is unknown.
      */
     int UNKNOWN = -1;
+    String INSTALL_BOOK = "INSTALL_BOOK-%s";
+    String RELOAD_BOOK_LIST = "RELOAD_BOOK_LIST";
+    String DOWNLOAD_SEARCH_INDEX = "DOWNLOAD_SEARCH_INDEX-%s";
+    String CREATE_INDEX = "CREATE_INDEX-%s";
 
     /**
      * Start the task measured from 0 to 100. It is the caller's responsibility to compute percentages.
@@ -70,6 +74,11 @@ public interface Progress {
      * @return the job name
      */
     String getJobName();
+
+    /**
+     * @return the unique ID of the job
+     */
+    String getJobID();
 
     /**
      * Gets the current ProgressMode. Builders of progress bars should use

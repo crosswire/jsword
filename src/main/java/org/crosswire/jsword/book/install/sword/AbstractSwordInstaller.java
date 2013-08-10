@@ -20,6 +20,20 @@
  */
 package org.crosswire.jsword.book.install.sword;
 
+import com.ice.tar.TarEntry;
+import com.ice.tar.TarInputStream;
+import org.crosswire.common.progress.JobManager;
+import org.crosswire.common.progress.Progress;
+import org.crosswire.common.util.*;
+import org.crosswire.jsword.JSMsg;
+import org.crosswire.jsword.JSOtherMsg;
+import org.crosswire.jsword.book.*;
+import org.crosswire.jsword.book.install.InstallException;
+import org.crosswire.jsword.book.install.Installer;
+import org.crosswire.jsword.book.sword.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,37 +43,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
-
-import org.crosswire.common.progress.JobManager;
-import org.crosswire.common.progress.Progress;
-import org.crosswire.common.util.CWProject;
-import org.crosswire.common.util.CollectionUtil;
-import org.crosswire.common.util.IOUtil;
-import org.crosswire.common.util.NetUtil;
-import org.crosswire.common.util.Reporter;
-import org.crosswire.jsword.JSMsg;
-import org.crosswire.jsword.JSOtherMsg;
-import org.crosswire.jsword.book.AbstractBookList;
-import org.crosswire.jsword.book.Book;
-import org.crosswire.jsword.book.BookDriver;
-import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.BookFilter;
-import org.crosswire.jsword.book.BookFilterIterator;
-import org.crosswire.jsword.book.BookMetaData;
-import org.crosswire.jsword.book.BookSet;
-import org.crosswire.jsword.book.install.InstallException;
-import org.crosswire.jsword.book.install.Installer;
-import org.crosswire.jsword.book.sword.ConfigEntry;
-import org.crosswire.jsword.book.sword.SwordBook;
-import org.crosswire.jsword.book.sword.SwordBookDriver;
-import org.crosswire.jsword.book.sword.SwordBookMetaData;
-import org.crosswire.jsword.book.sword.SwordBookPath;
-import org.crosswire.jsword.book.sword.SwordConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.ice.tar.TarEntry;
-import com.ice.tar.TarInputStream;
 
 /**
  * The AbstractSwordInstaller provides for the common implementation of derived classes.
@@ -218,7 +201,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
 
         // TRANSLATOR: Progress label indicating the installation of a book. {0} is a placeholder for the name of the book.
         String jobName = JSMsg.gettext("Installing book: {0}", sbmd.getName());
-        Progress job = JobManager.createJob(jobName, Thread.currentThread());
+        Progress job = JobManager.createJob(String.format(Progress.INSTALL_BOOK, book.getInitials()), jobName, Thread.currentThread());
 
         URI temp = null;
         try {
@@ -275,7 +258,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     public void reloadBookList() throws InstallException {
         // TRANSLATOR: Progress label for downloading one or more files.
         String jobName = JSMsg.gettext("Downloading files");
-        Progress job = JobManager.createJob(jobName, Thread.currentThread());
+        Progress job = JobManager.createJob(Progress.RELOAD_BOOK_LIST, jobName, Thread.currentThread());
         job.beginJob(jobName);
 
         try {
@@ -296,7 +279,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     public void downloadSearchIndex(Book book, URI localDest) throws InstallException {
         // TRANSLATOR: Progress label for downloading one or more files.
         String jobName = JSMsg.gettext("Downloading files");
-        Progress job = JobManager.createJob(jobName, Thread.currentThread());
+        Progress job = JobManager.createJob(String.format(Progress.DOWNLOAD_SEARCH_INDEX, book.getInitials()), jobName, Thread.currentThread());
         job.beginJob(jobName);
 
         try {
