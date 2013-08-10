@@ -20,24 +20,13 @@
  */
 package org.crosswire.jsword.index.lucene;
 
-import java.io.Closeable;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.Searcher;
-import org.apache.lucene.search.TopScoreDocCollector;
+import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
@@ -47,29 +36,26 @@ import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSMsg;
-import org.crosswire.jsword.book.Book;
-import org.crosswire.jsword.book.BookData;
-import org.crosswire.jsword.book.BookException;
-import org.crosswire.jsword.book.FeatureType;
-import org.crosswire.jsword.book.OSISUtil;
+import org.crosswire.jsword.book.*;
 import org.crosswire.jsword.index.AbstractIndex;
 import org.crosswire.jsword.index.IndexManager;
 import org.crosswire.jsword.index.IndexPolicy;
 import org.crosswire.jsword.index.IndexStatus;
 import org.crosswire.jsword.index.lucene.analysis.LuceneAnalyzer;
 import org.crosswire.jsword.index.search.SearchModifier;
-import org.crosswire.jsword.passage.AbstractPassage;
-import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.NoSuchKeyException;
-import org.crosswire.jsword.passage.NoSuchVerseException;
-import org.crosswire.jsword.passage.PassageTally;
-import org.crosswire.jsword.passage.Verse;
-import org.crosswire.jsword.passage.VerseFactory;
+import org.crosswire.jsword.passage.*;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.Closeable;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implement the SearchEngine using Lucene as the search engine.
@@ -168,7 +154,7 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
 
         // TRANSLATOR: Progress label indicating the start of indexing. {0} is a placeholder for the book's short name.
         String jobName = JSMsg.gettext("Creating index. Processing {0}", book.getInitials());
-        Progress job = JobManager.createJob(jobName, Thread.currentThread());
+        Progress job = JobManager.createJob(String.format(Progress.CREATE_INDEX, book.getInitials()), jobName, Thread.currentThread());
         job.beginJob(jobName);
 
         IndexStatus finalStatus = IndexStatus.UNDONE;

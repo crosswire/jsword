@@ -20,11 +20,11 @@
  */
 package org.crosswire.jsword.book.install;
 
-import java.net.URI;
-import java.util.List;
-
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookList;
+
+import java.net.URI;
+import java.util.List;
 
 /**
  * An interface that allows us to download from a specific source of Bible data.
@@ -111,8 +111,11 @@ public interface Installer extends BookList {
      * Download and install a book locally. The name should be one from an index
      * list retrieved from getIndex() or reloadIndex()
      * 
+     *
+     *
      * @param book
      *            The book to install
+     * @return the jobId that can be used to track progress
      */
     void install(final Book book) throws InstallException;
 
