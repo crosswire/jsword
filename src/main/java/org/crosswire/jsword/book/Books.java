@@ -360,6 +360,8 @@ public final class Books extends AbstractBookList {
     // When this was the last call in the constructor it resulted
     // in "instance" being null in something it called.
     static {
+        log.trace("Auto-registering start @ {}", System.currentTimeMillis());
         instance.autoRegister();
+        log.trace("Auto-registering stop @ {}", System.currentTimeMillis());
     }
 }

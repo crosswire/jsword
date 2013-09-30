@@ -341,13 +341,17 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
      */
     public final void close() {
         try {
-            searcher.close();
+            if(searcher != null) {
+                searcher.close();
+            }
         } catch (IOException ex) {
             Reporter.informUser(this, ex);
         }
 
         try {
-            directory.close();
+            if(directory == null) {
+                directory.close();
+            }
         } catch (IOException ex) {
             Reporter.informUser(this,  ex);
         }
