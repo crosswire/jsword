@@ -6,7 +6,7 @@
 	<groupId>org.crosswire</groupId>
 	<artifactId>jsword</artifactId>
 	<packaging>jar</packaging>
-	<version>1.6.1-STEP.1.2.1</version>
+	<version>1.6.1-SNAPSHOT</version>
 	<name>jsword</name>
 	<url>http://maven.apache.org</url>
 
