@@ -50,6 +50,7 @@ public final class Books extends AbstractBookList {
      * only one can be created. This also makes the class final!
      */
     private Books() {
+
         super();
         books = new BookSet();
         drivers = new HashSet<BookDriver>();

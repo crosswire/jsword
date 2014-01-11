@@ -42,11 +42,7 @@ import java.util.regex.Pattern;
  * @author DM Smith
  */
 public class Version implements Comparable<Version> {
-
-    /**
-     * The default version "1.0".
-     */
-    public static final Version DEFAULT_VERSION = new Version("1.0");
+    public static final Pattern VERSION_PATTERN = Pattern.compile("^(\\d+)(?:.(\\d+))?(?:.(\\d+))?(?:.(\\d+))?$");
 
     /**
      * Created a version identifier from the specified string.
@@ -61,8 +57,7 @@ public class Version implements Comparable<Version> {
         }
         this.original = version;
         this.parts = new int[] { -1, -1, -1, -1 };
-        Pattern regexp = Pattern.compile("^(\\d+)(?:.(\\d+))?(?:.(\\d+))?(?:.(\\d+))?$");
-        Matcher matcher = regexp.matcher(this.original);
+        Matcher matcher = VERSION_PATTERN.matcher(this.original);
         if (matcher.matches()) {
             int count = matcher.groupCount();
             for (int i = 1; i <= count; i++) {
