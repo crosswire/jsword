@@ -20,14 +20,15 @@
  */
 package org.crosswire.common.progress;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * JobManager is responsible for creating jobs and informing listeners about the
@@ -82,7 +83,7 @@ public final class JobManager {
      * @param jobName the name of the Job
      */
     public static Progress createJob(String jobName) {
-        return createJob(jobName, null);
+        return createJob(UUID.randomUUID().toString(), jobName, null);
     }
 
     /**
@@ -91,8 +92,8 @@ public final class JobManager {
      * @param jobName the name of the Job
      * @param workerThread the thread on which this job runs
      */
-    public static Progress createJob(String jobName, Thread workerThread) {
-        Progress job = new Job(jobName, workerThread);
+    public static Progress createJob(String jobID, String jobName, Thread workerThread) {
+        Progress job = new Job(jobID, jobName, workerThread);
         jobs.add(job);
 
         log.debug("job starting: {}", job.getJobName());

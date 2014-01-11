@@ -20,20 +20,15 @@
  */
 package org.crosswire.common.progress;
 
-import java.io.IOException;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.PropertyMap;
 import org.crosswire.jsword.JSMsg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.net.URI;
+import java.util.*;
 
 /**
  * A Generic method of keeping track of Threads and monitoring their progress.
@@ -53,8 +48,9 @@ public final class Job implements Progress {
      * @param worker
      *            Optional thread to use in request to stop worker
      */
-    protected Job(String jobName, Thread worker) {
+    protected Job(String jobID, String jobName, Thread worker) {
         this.jobName = jobName;
+        this.jobID = jobID;
         this.workerThread = worker;
         this.listeners = new ArrayList<WorkListener>();
         this.cancelable = workerThread != null;
@@ -499,6 +495,7 @@ public final class Job implements Progress {
      */
     private String jobName;
 
+    private final String jobID;
     /**
      * Optional thread to monitor progress
      */
@@ -538,6 +535,13 @@ public final class Job implements Progress {
      * People that want to know about "cancelable" changes
      */
     private List<WorkListener> listeners;
+
+    /**
+     * The Job ID associated with this job
+     */
+    public String getJobID() {
+        return jobID;
+    }
 
     /**
      * So we can fake progress for Jobs that don't tell us how they are doing
