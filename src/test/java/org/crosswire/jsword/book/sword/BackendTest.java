@@ -74,9 +74,8 @@ public class BackendTest extends TestCase {
     public void testBackendESV() throws Exception {
         String version = "ESV";
         String reference = "Romans 1:1-3";
-        String assertion = "set apart for the gospel of God,";
-
-        backendTest(version, reference, assertion);
+        //need to specify individual words to cope with tagged ESV
+        backendTest(version, reference, "set", "apart", "for", "the", "gospel", "of", "God");
     }
 
     /**
@@ -91,7 +90,7 @@ public class BackendTest extends TestCase {
         String reference = "Romans 1";
 
         backendTest(version, reference, " <title type=\"x-gen\">Romans 1</title>", "<verse osisID=\"Rom.1.1\">", "<verse osisID=\"Rom.1.32\">",
-                "set apart for the gospel of God,", "give approval to those who practice them");
+                "set", "apart", "for", "the", "gospel", "of", "God", "give", "approval", "to", "those", "who", "practice", "them");
     }
 
     /**
@@ -106,7 +105,7 @@ public class BackendTest extends TestCase {
         String reference = "Romans 1:1-ff";
 
         backendTest(version, reference, "<title type=\"x-gen\">Romans 1</title>", "<verse osisID=\"Rom.1.1\">", "<verse osisID=\"Rom.1.32\">",
-                "set apart for the gospel of God,", "give approval to those who practice them");
+                "set", "apart", "for", "the", "gospel", "of", "God", "give", "approval", "to", "those", "who", "practice", "them");
     }
 
     /**

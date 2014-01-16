@@ -38,6 +38,7 @@ import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.Versification;
+import org.crosswire.jsword.versification.VersificationsMapper;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +49,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  * Importantly, this class takes care of Serialization in a general yet
  * optimized way. I think I am going to have a look at replacement here.
- * 
+ *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker
@@ -67,7 +68,7 @@ public abstract class AbstractPassage implements Passage {
 
     /**
      * Setup the original name of this reference
-     * 
+     *
      * @param v11n
      *            The Versification to which this Passage belongs.
      * @param passageName
@@ -144,17 +145,17 @@ public abstract class AbstractPassage implements Passage {
         // to equal a DistinctPassage since the point of the Factory
         // is that the user does not need to know the actual type of the
         // Object he is using.
-        if (!(obj instanceof Passage)) {
-            return false;
+        if (obj instanceof Passage) {
+            // The real test
+            //FIXME: this is not really true since the versification any longer.
+            return ((Passage) obj).getName().equals(getName());
         }
 
-        Passage ref = (Passage) obj;
-        // The real test
-        if (!ref.getName().equals(getName())) {
-            return false;
+        if(obj instanceof Verse) {
+            return ((Verse) obj).getName().equals(getName());
         }
 
-        return true;
+        return false;
     }
 
     @Override
@@ -484,7 +485,8 @@ public abstract class AbstractPassage implements Passage {
         return null;
     }
 
-    /* (non-Javadoc)
+    /* Now supports adding keys from different versifications.
+     * (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#addAll(org.crosswire.jsword.passage.Key)
      */
     public void addAll(Key key) {
@@ -761,7 +763,7 @@ public abstract class AbstractPassage implements Passage {
     /**
      * Set a parent Key. This allows us to follow the Key interface more
      * closely, although the concept of a parent for a verse is fairly alien.
-     * 
+     *
      * @param parent
      *            The parent Key for this verse
      */
@@ -773,7 +775,7 @@ public abstract class AbstractPassage implements Passage {
      * AbstractPassage subclasses must call this method <b>after</b> one or more
      * elements of the list are added. The changed elements are specified by a
      * closed interval from start to end.
-     * 
+     *
      * @param source
      *            The thing that changed, typically "this".
      * @param start
@@ -808,7 +810,7 @@ public abstract class AbstractPassage implements Passage {
      * AbstractPassage subclasses must call this method <b>before</b> one or
      * more elements of the list are added. The changed elements are specified
      * by a closed interval from start to end.
-     * 
+     *
      * @param source
      *            The thing that changed, typically "this".
      * @param start
@@ -843,7 +845,7 @@ public abstract class AbstractPassage implements Passage {
      * AbstractPassage subclasses must call this method <b>before</b> one or
      * more elements of the list are added. The changed elements are specified
      * by a closed interval from start to end.
-     * 
+     *
      * @param source
      *            The thing that changed, typically "this".
      * @param start
@@ -879,7 +881,7 @@ public abstract class AbstractPassage implements Passage {
      * <code>toString()</code>. Since this method is not public it leaves
      * control of <code>suppress_events<code> up to the people
      * that call it.
-     * 
+     *
      * @param refs
      *            A String containing the text of the RangedPassage
      * @param basis
@@ -985,7 +987,7 @@ public abstract class AbstractPassage implements Passage {
      * If things want to prevent event firing because they are doing a set of
      * changes that should be notified in one go, they should call
      * raiseEventSuppression() and when done call this.
-     * 
+     *
      * @return true if it is then safe to fire an event.
      */
     public boolean lowerEventSuppressionAndTest() {
@@ -998,7 +1000,7 @@ public abstract class AbstractPassage implements Passage {
     /**
      * Convert the Object to a VerseRange. If base is a Verse then return a
      * VerseRange of zero length.
-     * 
+     *
      * @param base
      *            The object to be cast
      * @return The VerseRange
@@ -1148,7 +1150,7 @@ public abstract class AbstractPassage implements Passage {
      * first then bitwise is preferred, then distinct, then ranged, because I
      * imagine that for speed of deserialization this is the sensible order.
      * I've not tested it though.
-     * 
+     *
      * @param out
      *            The stream to write our state to
      * @throws IOException
@@ -1207,7 +1209,7 @@ public abstract class AbstractPassage implements Passage {
 
     /**
      * Serialization support.
-     * 
+     *
      * @param is
      * @throws IOException
      * @throws ClassNotFoundException
@@ -1224,7 +1226,7 @@ public abstract class AbstractPassage implements Passage {
 
     /**
      * Write out the object to the given ObjectOutputStream
-     * 
+     *
      * @param is
      *            The stream to read our state from
      * @throws IOException
@@ -1314,7 +1316,7 @@ public abstract class AbstractPassage implements Passage {
     /**
      * The parent key. See the key interface for more information. NOTE(joe):
      * These keys are not serialized, should we?
-     * 
+     *
      * @see Key
      */
     private transient Key parent;
