@@ -160,7 +160,7 @@ public abstract class AbstractPassage implements Passage {
 
     @Override
     public int hashCode() {
-        return getName().hashCode();
+        return getOsisRef().hashCode();
     }
 
     /* (non-Javadoc)
