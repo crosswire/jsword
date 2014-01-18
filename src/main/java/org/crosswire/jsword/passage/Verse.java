@@ -324,11 +324,11 @@ public final class Verse implements VerseKey {
         }
 
         if(obj instanceof Verse) {
-            Verse that = (Verse) obj;
+        Verse that = (Verse) obj;
 
-            // The real tests
-            return this.ordinal == that.ordinal && this.v11n.equals(that.v11n);
-        }
+        // The real tests
+        return this.ordinal == that.ordinal && this.v11n.equals(that.v11n);
+    }
 
         //I think omitting this breaks reciprocity.
         if(obj instanceof Passage) {
@@ -344,8 +344,7 @@ public final class Verse implements VerseKey {
 
     @Override
     public int hashCode() {
-        //This needs to match the hashcode for Passage, otherwise, we're in trouble
-        return getName().hashCode();
+        return this.getOsisRef().hashCode();
     }
 
     /* (non-Javadoc)

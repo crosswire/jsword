@@ -7,3 +7,5 @@
 /tools
 /bin
 /report
+*.iml
+*.orig
