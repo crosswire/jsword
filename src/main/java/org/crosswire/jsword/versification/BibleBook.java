@@ -68,7 +68,7 @@ public enum BibleBook {
     HOS("Hos"),
     JOEL("Joel"),
     AMOS("Amos"),
-    OBAD("Obad"),
+    OBAD("Obad", true),
     JONAH("Jonah"),
     MIC("Mic"),
     NAH("Nah"),
@@ -97,15 +97,15 @@ public enum BibleBook {
     TIM1("1Tim"),
     TIM2("2Tim"),
     TITUS("Titus"),
-    PHLM("Phlm"),
+    PHLM("Phlm", true),
     HEB("Heb"),
     JAS("Jas"),
     PET1("1Pet"),
     PET2("2Pet"),
     JOHN1("1John"),
-    JOHN2("2John"),
-    JOHN3("3John"),
-    JUDE("Jude"),
+    JOHN2("2John", true),
+    JOHN3("3John", true),
+    JUDE("Jude", true),
     REV("Rev"),
     // Apocrypha
     TOB("Tob"),
@@ -175,6 +175,11 @@ public enum BibleBook {
     ADD_PS("AddPs"),
     ESTH_GR("EsthGr");
 
+    BibleBook(String osis, boolean shortBook) {
+        this(osis);
+        this.isShortBook = shortBook;
+    }
+    
     BibleBook(String osis) {
         this.osis = osis;
     }
@@ -209,6 +214,14 @@ public enum BibleBook {
         return osisMap.get(match);
     }
 
+    /**
+     * @param osis the osis book reference, case sensitive
+     * @return the corresponding BibleBook
+     */
+    public static BibleBook fromExactOSIS(String osis) {
+        return exactMatches.get(osis);
+    }
+    
     /**
      * Get the BookName.
      *
@@ -289,14 +302,24 @@ public enum BibleBook {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * @return true to indicate a 1-chapter book only
+     */
+    public boolean isShortBook() {
+        return isShortBook;
+    }
+
     private String osis;
+    private boolean isShortBook = false;
 
     /** A quick lookup based on OSIS name for the book */
-    private static Map<String, BibleBook> osisMap = new HashMap<String, BibleBook>();
+    private static Map<String, BibleBook> osisMap = new HashMap<String, BibleBook>(128);
+    private static Map<String, BibleBook> exactMatches = new HashMap<String, BibleBook>(128);
 
      static {
         for (BibleBook book : BibleBook.values()) {
             osisMap.put(BookName.normalize(book.getOSIS(), Locale.ENGLISH), book);
+            exactMatches.put(book.getOSIS(), book);
         }
     }
 
