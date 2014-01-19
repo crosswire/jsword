@@ -171,10 +171,20 @@ public class VersificationsMapper {
         return finalKey;
     }
 
+    /** 
+     * Call this to ensure mapping data is loaded (maybe for newly installed books).  
+     * Should normally be called from a background thread, not the ui thread.
+
+     * @param versification the versification we want to load mapping data for
+     */
+    public void ensureMappingDataLoaded(Versification versification) {
+        ensure(versification);
+    }
+    
     /**
      * Reads the mapping from file if it does not exist
      *
-     * @param versification the versification we want to look
+     * @param versification the versification we want to load
      */
     private void ensure(final Versification versification) {
         if (MAPPERS.containsKey(versification)) {
