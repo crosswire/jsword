@@ -144,8 +144,6 @@ public final class VerseRange implements VerseKey {
             this.end = end;
             this.verseCount = calcVerseCount();
         }
-
-        verifyData();
     }
 
     /**
