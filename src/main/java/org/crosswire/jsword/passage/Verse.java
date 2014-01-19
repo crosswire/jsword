@@ -344,7 +344,6 @@ public final class Verse implements VerseKey {
 
     @Override
     public int hashCode() {
-        //This needs to match the hashcode for Passage, otherwise, we're in trouble
         return this.getOsisRef().hashCode();
     }
 

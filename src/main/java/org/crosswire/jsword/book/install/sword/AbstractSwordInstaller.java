@@ -295,7 +295,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
     /**
      * Load the cached index file into memory
      */
-    private void loadCachedIndex() throws InstallException {
+    protected void loadCachedIndex() throws InstallException {
         // We need a sword book driver so the installer can use the driver
         // name to use in deciding where to put the index.
         BookDriver fake = SwordBookDriver.instance();
