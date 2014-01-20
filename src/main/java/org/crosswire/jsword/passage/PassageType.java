@@ -98,12 +98,12 @@ public enum PassageType {
             if (passage == null || passage.length() == 0) {
                 return createEmptyPassage(v11n);
             }
-            return new PassageTally(v11n, passage, basis);
+            return new RangedPassage(v11n, passage, basis);
         }
 
         @Override
         public Passage createEmptyPassage(Versification v11n) {
-            return new PassageTally(v11n);
+            return new RangedPassage(v11n);
         }
     },
 
