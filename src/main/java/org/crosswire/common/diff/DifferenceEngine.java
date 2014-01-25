@@ -39,6 +39,7 @@ import java.util.Set;
  * @author DM Smith
  */
 public class DifferenceEngine {
+
     /**
      * Empty Difference Engine, which won't find anything.
      */
@@ -58,22 +59,8 @@ public class DifferenceEngine {
     public DifferenceEngine(final String source, final String target) {
         this.source = source;
         this.target = target;
-    }
-
-    /**
-     * @param newSource
-     *            the source to set
-     */
-    public void setSource(String newSource) {
-        this.source = newSource;
-    }
-
-    /**
-     * @param newTarget
-     *            the target to set
-     */
-    public void setTarget(String newTarget) {
-        this.target = newTarget;
+        this.sourceLength = source.length();
+        this.targetLength = target.length();
     }
 
     /**
@@ -83,7 +70,7 @@ public class DifferenceEngine {
      */
     public List<Difference> generate() {
         long msEnd = System.currentTimeMillis() + (long) (timeout * 1000);
-        int maxD = (source.length() + target.length()) / 2;
+        int maxD = (this.sourceLength + this.targetLength) / 2;
         List<Set<String>> vMap1 = new ArrayList<Set<String>>();
         List<Set<String>> vMap2 = new ArrayList<Set<String>>();
         Map<Integer, Integer> v1 = new HashMap<Integer, Integer>();
@@ -97,7 +84,7 @@ public class DifferenceEngine {
         boolean done = false;
         // If the total number of characters is odd, then the front path will
         // collide with the reverse path.
-        boolean front = (source.length() + target.length()) % 2 != 0;
+        boolean front = (this.sourceLength + this.targetLength) % 2 != 0;
         for (int d = 0; d < maxD; d++) {
             // Bail out if timeout reached.
             if (timeout > 0 && System.currentTimeMillis() > msEnd) {
@@ -124,7 +111,7 @@ public class DifferenceEngine {
                 if (!front) {
                     footsteps.put(footstep, Integer.valueOf(d));
                 }
-                while (!done && x < source.length() && y < target.length() && source.charAt(x) == target.charAt(y)) {
+                while (!done && x < this.sourceLength && y < this.targetLength && source.charAt(x) == target.charAt(y)) {
                     x++;
                     y++;
                     footstep = x + "," + y;
@@ -161,17 +148,17 @@ public class DifferenceEngine {
                     x = kMinus1Value.intValue() + 1;
                 }
                 y = x - k;
-                footstep = (source.length() - x) + "," + (target.length() - y);
+                footstep = (this.sourceLength - x) + "," + (this.targetLength - y);
                 if (!front && (footsteps.containsKey(footstep))) {
                     done = true;
                 }
                 if (front) {
                     footsteps.put(footstep, Integer.valueOf(d));
                 }
-                while (!done && x < source.length() && y < target.length() && source.charAt(source.length() - x - 1) == target.charAt(target.length() - y - 1)) {
+                while (!done && x < this.sourceLength && y < this.targetLength && source.charAt(this.sourceLength - x - 1) == target.charAt(this.targetLength - y - 1)) {
                     x++;
                     y++;
-                    footstep = (source.length() - x) + "," + (target.length() - y);
+                    footstep = (this.sourceLength - x) + "," + (this.targetLength - y);
                     if (!front && (footsteps.containsKey(footstep))) {
                         done = true;
                     }
@@ -187,8 +174,8 @@ public class DifferenceEngine {
                     // Reverse path ran over front path.
                     Integer footstepValue = footsteps.get(footstep);
                     vMap1 = vMap1.subList(0, footstepValue.intValue() + 1);
-                    List<Difference> a = path1(vMap1, source.substring(0, source.length() - x), target.substring(0, target.length() - y));
-                    a.addAll(path2(vMap2, source.substring(source.length() - x), target.substring(target.length() - y)));
+                    List<Difference> a = path1(vMap1, source.substring(0, this.sourceLength - x), target.substring(0, this.targetLength - y));
+                    a.addAll(path2(vMap2, source.substring(this.sourceLength - x), target.substring(this.targetLength - y)));
                     return a;
                 }
             }
@@ -267,8 +254,13 @@ public class DifferenceEngine {
      */
     protected List<Difference> path2(final List<Set<String>> vMap, final String newSource, final String newTarget) {
         List<Difference> path = new ArrayList<Difference>();
-        int x = newSource.length();
-        int y = newTarget.length();
+        
+        //cached versions of length from immutable strings
+        final int cachedNewSourceLength = newSource.length();
+        final int cachedNewTargetLength = newTarget.length();
+        
+        int x = cachedNewSourceLength;
+        int y = cachedNewTargetLength;
         EditType lastEditType = null;
         for (int d = vMap.size() - 2; d >= 0; d--) {
             while (true) {
@@ -277,9 +269,9 @@ public class DifferenceEngine {
                     x--;
                     if (EditType.DELETE.equals(lastEditType)) {
                         Difference lastDiff = path.get(path.size() - 1);
-                        lastDiff.appendText(newSource.charAt(newSource.length() - x - 1));
+                        lastDiff.appendText(newSource.charAt(cachedNewSourceLength - x - 1));
                     } else {
-                        path.add(new Difference(EditType.DELETE, newSource.substring(newSource.length() - x - 1, newSource.length() - x)));
+                        path.add(new Difference(EditType.DELETE, newSource.substring(cachedNewSourceLength - x - 1, cachedNewSourceLength - x)));
                     }
                     lastEditType = EditType.DELETE;
                     break;
@@ -287,22 +279,22 @@ public class DifferenceEngine {
                     y--;
                     if (EditType.INSERT.equals(lastEditType)) {
                         Difference lastDiff = path.get(path.size() - 1);
-                        lastDiff.appendText(newTarget.charAt(newTarget.length() - y - 1));
+                        lastDiff.appendText(newTarget.charAt(cachedNewTargetLength - y - 1));
                     } else {
-                        path.add(new Difference(EditType.INSERT, newTarget.substring(newTarget.length() - y - 1, newTarget.length() - y)));
+                        path.add(new Difference(EditType.INSERT, newTarget.substring(cachedNewTargetLength - y - 1, cachedNewTargetLength - y)));
                     }
                     lastEditType = EditType.INSERT;
                     break;
                 } else {
                     x--;
                     y--;
-                    assert newSource.charAt(newSource.length() - x - 1) == newTarget.charAt(newTarget.length() - y - 1) : "No diagonal.  Can't happen. (path2)";
+                    assert newSource.charAt(cachedNewSourceLength - x - 1) == newTarget.charAt(cachedNewTargetLength - y - 1) : "No diagonal.  Can't happen. (path2)";
 
                     if (EditType.EQUAL.equals(lastEditType)) {
                         Difference lastDiff = path.get(path.size() - 1);
-                        lastDiff.appendText(newSource.charAt(newSource.length() - x - 1));
+                        lastDiff.appendText(newSource.charAt(cachedNewSourceLength - x - 1));
                     } else {
-                        path.add(new Difference(EditType.EQUAL, newSource.substring(newSource.length() - x - 1, newSource.length() - x)));
+                        path.add(new Difference(EditType.EQUAL, newSource.substring(cachedNewSourceLength - x - 1, cachedNewSourceLength - x)));
                     }
                     lastEditType = EditType.EQUAL;
                 }
@@ -327,12 +319,21 @@ public class DifferenceEngine {
     private static final float TIMEOUT = 1.0f;
     private static float timeout = TIMEOUT;
     /**
+     * Made final because we now rely on caching the string lengths (they could be cached
+     * at method level if require non-final in future)
      * The baseline text.
      */
-    private String source;
+    private final String source;
 
     /**
      * The changed text.
+     * 
      */
-    private String target;
+    private final String target;
+
+    // cached versions of source and target length, 
+    // as for roughly 1 call to generate(), was causing 117'000 calls to length()
+    private final int targetLength;
+    private final int sourceLength;
+
 }
