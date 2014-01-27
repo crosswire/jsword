@@ -27,15 +27,17 @@ import java.util.Date;
 
 import org.crosswire.common.util.ClassUtil;
 import org.crosswire.common.util.ReflectionUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * DateFormat provides a wrapper of some of DateFormat and SimpleDateFormat
  * using ICU4J if present, otherwise from core Java. Note, only those methods in
  * DateFormat that are actually used are here.
- * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ *
  * @author DM Smith
+ * @see gnu.lgpl.License for license details.<br>
+ * The copyright to this program is held by it's authors.
  */
 public final class DateFormatter {
     // Note these values are the same for Java and ICU4J
@@ -59,12 +61,36 @@ public final class DateFormatter {
      * Constant for default style pattern. Its value is MEDIUM.
      */
     public static final int DEFAULT = MEDIUM;
+    private static final Logger LOGGER = LoggerFactory.getLogger(DateFormatter.class);
+    private static final String DEFAULT_SIMPLE_DATE_FORMAT_CLASS = "com.ibm.icu.text.SimpleDateFormat";
+    private static final String DEFAULT_DATE_FORMAT_CLASS = "com.ibm.icu.text.DateFormat";
 
-    /** The actual formatter. */
+    /**
+     * The actual formatter.
+     */
     private Object formatter;
-
-    /** The class of the formatter */
+    /**
+     * The class of the formatter
+     */
     private Class<?> formatterClass;
+    private static Class<?> DEFAULT_SIMPLE_DATE_FORMAT;
+    private static Class<?> DEFAULT_DATE_FORMAT;
+    
+
+    static {
+        try {
+            DEFAULT_SIMPLE_DATE_FORMAT = ClassUtil.forName(DEFAULT_SIMPLE_DATE_FORMAT_CLASS);
+        } catch(ClassNotFoundException ex) {
+            LOGGER.info("Error loading simple date format class [{}]", DEFAULT_SIMPLE_DATE_FORMAT_CLASS);
+        }
+        
+        try {
+            DEFAULT_DATE_FORMAT = ClassUtil.forName(DEFAULT_DATE_FORMAT_CLASS);
+        } catch(ClassNotFoundException ex) {
+            LOGGER.info("Error loading date format class [{}]", DEFAULT_SIMPLE_DATE_FORMAT_CLASS);
+        }
+    }
+
 
     /**
      * Prevent instantiation.
@@ -74,7 +100,7 @@ public final class DateFormatter {
 
     /**
      * Construct a DateFormatter with the given date format.
-     * 
+     *
      * @param format the date format
      * @return a DateFormatter of the given format
      * @see java.text.DateFormat#getDateInstance(int)
@@ -83,14 +109,14 @@ public final class DateFormatter {
         DateFormatter fmt = new DateFormatter();
         boolean oops = false;
         try {
-            fmt.formatterClass = ClassUtil.forName("com.ibm.icu.text.DateFormat");
+            fmt.formatterClass = DEFAULT_DATE_FORMAT;
             // To call a method taking a type of int, the type has to match but
             // the object has to be wrapped
             Class<?>[] instanceTypes = {
-                int.class
+                    int.class
             };
             Object[] instanceParams = {
-                Integer.valueOf(format)
+                    Integer.valueOf(format)
             };
             fmt.formatter = ReflectionUtil.invoke(fmt.formatterClass, fmt.formatterClass, "getDateInstance", instanceParams, instanceTypes);
         } catch (NoSuchMethodException e) {
@@ -99,7 +125,7 @@ public final class DateFormatter {
             oops = true;
         } catch (InvocationTargetException e) {
             oops = true;
-        } catch (ClassNotFoundException e) {
+        } catch (NullPointerException e) {
             oops = true;
         }
 
@@ -113,7 +139,7 @@ public final class DateFormatter {
 
     /**
      * Construct a DateFormatter with the default date format.
-     * 
+     *
      * @return a DateFormatter of the default format
      * @see java.text.DateFormat#getDateInstance()
      */
@@ -123,7 +149,7 @@ public final class DateFormatter {
 
     /**
      * Construct a simple DateFormatter with the given date format.
-     * 
+     *
      * @param format the date format
      * @return a DateFormatter with the given date format
      * @see java.text.DateFormat#getDateInstance(int)
@@ -132,15 +158,15 @@ public final class DateFormatter {
         DateFormatter fmt = new DateFormatter();
         boolean oops = false;
         try {
-            fmt.formatterClass = ClassUtil.forName("com.ibm.icu.text.SimpleDateFormat");
-            fmt.formatter = ReflectionUtil.construct("com.ibm.icu.text.SimpleDateFormat", format);
+            fmt.formatterClass = DEFAULT_SIMPLE_DATE_FORMAT;
+            fmt.formatter = ReflectionUtil.construct(fmt.formatterClass, format);
         } catch (NoSuchMethodException e) {
             oops = true;
         } catch (IllegalAccessException e) {
             oops = true;
         } catch (InvocationTargetException e) {
             oops = true;
-        } catch (ClassNotFoundException e) {
+        } catch (NullPointerException e) {
             oops = true;
         } catch (InstantiationException e) {
             oops = true;
@@ -156,17 +182,17 @@ public final class DateFormatter {
 
     /**
      * Set whether this DataFormatter should be lenient in parsing dates.
-     * 
+     *
      * @param lenient
      * @see java.text.DateFormat#setLenient(boolean)
      */
     public void setLenient(boolean lenient) {
         try {
             Class<?>[] lenientTypes = {
-                boolean.class
+                    boolean.class
             };
             Object[] lenientParams = {
-                Boolean.valueOf(lenient)
+                    Boolean.valueOf(lenient)
             };
             ReflectionUtil.invoke(formatterClass, formatter, "setLenient", lenientParams, lenientTypes);
         } catch (NoSuchMethodException e) {
@@ -180,7 +206,7 @@ public final class DateFormatter {
 
     /**
      * Formats a Date into a date/time string.
-     * 
+     *
      * @param date the time value to be formatted into a time string.
      * @return the formatted time string.
      * @see java.text.DateFormat#format(java.util.Date)
@@ -200,7 +226,7 @@ public final class DateFormatter {
 
     /**
      * Convert text to a date.
-     * 
+     *
      * @param text the input to parse as a date
      * @return the resultant date
      * @see java.text.DateFormat#parse(java.lang.String)
