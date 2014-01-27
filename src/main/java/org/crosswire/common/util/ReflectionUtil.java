@@ -76,8 +76,27 @@ public final class ReflectionUtil {
     public static <T> T construct(String className, Object... params) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException,
             InvocationTargetException, InstantiationException
     {
-        Class<?>[] paramTypes = describeParameters(params);
         Class<T> clazz = (Class<T>) ClassUtil.forName(className);
+        return construct(clazz, params);
+    }
+
+    /**
+     * Build an object using the supplied parameters. Note: a constructor that
+     * takes a boolean needs a type of boolean.class, but a parameter of type
+     * Boolean. Likewise for other primitives.
+     *
+     * @param clazz
+     *            the class of the object
+     * @param params
+     *            the constructor's arguments
+     * @return the built object
+     * @throws ClassNotFoundException
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws InstantiationException
+     */    public static <T> T construct(final Class<T> clazz, final Object... params) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        Class<?>[] paramTypes = describeParameters(params);
         final Constructor<T> c = clazz.getConstructor(paramTypes);
         return c.newInstance(params);
     }
