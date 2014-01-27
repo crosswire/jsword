@@ -21,7 +21,6 @@
 package org.crosswire.jsword.book;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -39,7 +38,7 @@ public class BookFilterIterator implements Iterable<Book>, Iterator<Book> {
      * @param filter
      *            The filter to use, if null, will iterate over all values
      */
-    public BookFilterIterator(List<Book> books, BookFilter filter) {
+    public BookFilterIterator(Iterable<Book> books, BookFilter filter) {
         this.it = books.iterator();
         this.filter = filter;
     }

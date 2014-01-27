@@ -23,9 +23,12 @@ package org.crosswire.jsword.book;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.crosswire.common.activate.Activator;
 import org.crosswire.common.util.CollectionUtil;
@@ -50,10 +53,11 @@ public final class Books extends AbstractBookList {
      * only one can be created. This also makes the class final!
      */
     private Books() {
-
         super();
-        books = new BookSet();
+        initials = new HashMap<String, Book>();
+        names = new HashMap<String, Book>();
         drivers = new HashSet<BookDriver>();
+        books = new TreeSet();
     }
 
     /**
@@ -69,54 +73,7 @@ public final class Books extends AbstractBookList {
      * @see org.crosswire.jsword.book.BookList#getBooks()
      */
     public synchronized List<Book> getBooks() {
-        return new BookSet(books);
-    }
-
-    /**
-     * Search for the book by name. Looks for exact matches first,
-     * then searches case insensitive. If that doesn't work, matches
-     * the initials of the book first case sensitive, then insensitive.
-     * In all cases the whole name or the whole initials has to match.
-     * 
-     * @param name The book to find
-     * @return the book or null
-     */
-    public synchronized Book getBook(String name) {
-        if (name == null) {
-            return null;
-        }
-
-        // Check name first
-        // First check for exact matches
-        for (Book book : books) {
-            if (name.equals(book.getName())) {
-                return book;
-            }
-        }
-
-        // Next check for case-insensitive matches
-        for (Book book : books) {
-            if (name.equalsIgnoreCase(book.getName())) {
-                return book;
-            }
-        }
-
-        // Then check initials
-        // First check for exact matches
-        for (Book book : books) {
-            BookMetaData bmd = book.getBookMetaData();
-            if (name.equals(bmd.getInitials())) {
-                return book;
-            }
-        }
-
-        // Next check for case-insensitive matches
-        for (Book book : books) {
-            if (name.equalsIgnoreCase(book.getInitials())) {
-                return book;
-            }
-        }
-        return null;
+        return CollectionUtil.createList(books);
     }
 
     /* (non-Javadoc)
@@ -124,8 +81,40 @@ public final class Books extends AbstractBookList {
      */
     @Override
     public synchronized List<Book> getBooks(BookFilter filter) {
-        List<Book> temp = CollectionUtil.createList(new BookFilterIterator(getBooks(), filter));
-        return new BookSet(temp);
+        return CollectionUtil.createList(new BookFilterIterator(books, filter));
+    }
+
+    /**
+     * Search for the book by initials and name.
+     * Looks for exact matches first, then searches case insensitive. 
+     * In all cases the whole initials or the whole name has to match.
+     * 
+     * @param name The initials or name of the book to find
+     * @return the book or null
+     */
+    public synchronized Book getBook(String name) {
+        if (name == null) {
+            return null;
+        }
+
+        Book book = initials.get(name);
+        if (book != null) {
+            return book;
+        }
+
+        book = names.get(name);
+        if (book != null) {
+            return book;
+        }
+
+        // Check for case-insensitive initial and name matches
+        for (Book b : books) {
+            if (name.equalsIgnoreCase(b.getInitials()) || name.equalsIgnoreCase(b.getName())) {
+                return b;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -134,10 +123,12 @@ public final class Books extends AbstractBookList {
      * @param propertyKey
      *            The desired property
      * @return -1 if there is no match, otherwise the maximum length.
+     * @deprecated no replacement
      */
+    @Deprecated
     public int getMaxLength(String propertyKey) {
         int max = -1;
-        for (Book book : getBooks()) {
+        for (Book book : books) {
             Object property = book.getProperty(propertyKey);
             if (property != null) {
                 String value = property instanceof String ? (String) property : property.toString();
@@ -155,7 +146,9 @@ public final class Books extends AbstractBookList {
      * @param filter
      *            The filter
      * @return -1 if there is no match, otherwise the maximum length.
+     * @deprecated no replacement
      */
+    @Deprecated
     public int getMaxLength(String propertyKey, BookFilter filter) {
         int max = -1;
         for (Book book : getBooks(filter)) {
@@ -173,10 +166,11 @@ public final class Books extends AbstractBookList {
      * called by BibleDrivers, it is not a method for general consumption.
      */
     public synchronized void addBook(Book book) {
-        // log.debug("registering book: "+bmd.getName());
-
-        books.add(book);
-        fireBooksChanged(instance, book, true);
+        if (book != null && books.add(book)) {
+            initials.put(book.getInitials(), book);
+            names.put(book.getName(), book);
+            fireBooksChanged(instance, book, true);
+        }
     }
 
     /**
@@ -190,6 +184,8 @@ public final class Books extends AbstractBookList {
 
         boolean removed = books.remove(book);
         if (removed) {
+            initials.remove(book.getInitials());
+            names.put(book.getName(), book);
             fireBooksChanged(instance, book, false);
         } else {
             throw new BookException(JSOtherMsg.lookupText("Could not remove unregistered Book: {0}", book.getName()));
@@ -212,7 +208,7 @@ public final class Books extends AbstractBookList {
         // Go through all the books and add all the new ones.
         // Remove those that are not known to the driver, but used to be.
         Book[] bookArray = driver.getBooks();
-        Set<Book> current = CollectionUtil.createSet(new BookFilterIterator(getBooks(), BookFilters.getBooksByDriver(driver)));
+        Set<Book> current = CollectionUtil.createSet(new BookFilterIterator(books, BookFilters.getBooksByDriver(driver)));
 
         for (int j = 0; j < bookArray.length; j++) {
             Book b = bookArray[j];
@@ -240,7 +236,9 @@ public final class Books extends AbstractBookList {
      * 
      * @param driver
      *            The BookDriver to remove
+     * @deprecated no replacement
      */
+    @Deprecated
     public synchronized void unregisterDriver(BookDriver driver) throws BookException {
         log.debug("begin un-registering driver: {}", driver.getClass().getName());
 
@@ -282,31 +280,6 @@ public final class Books extends AbstractBookList {
     }
 
     /**
-     * Get an array of all the known drivers
-     * 
-     * @return Found int or the default value
-     */
-    public synchronized BookDriver[] getWritableDrivers() {
-        int i = 0;
-        for (BookDriver driver : drivers) {
-            if (driver.isWritable()) {
-                i++;
-            }
-        }
-
-        BookDriver[] reply = new BookDriver[i];
-
-        i = 0;
-        for (BookDriver driver : drivers) {
-            if (driver.isWritable()) {
-                reply[i++] = driver;
-            }
-        }
-
-        return reply;
-    }
-
-    /**
      * Registers all the drivers known to the program.
      */
     private void autoRegister() {
@@ -338,9 +311,19 @@ public final class Books extends AbstractBookList {
     }
 
     /**
-     * The list of Books
+     * The collection of Books
      */
-    private BookSet books;
+    private Set<Book> books;
+
+    /**
+     * The map of book initials
+     */
+    private Map<String, Book> initials;
+
+    /**
+     * The map of book names
+     */
+    private Map<String, Book> names;
 
     /**
      * An array of BookDrivers
@@ -361,8 +344,8 @@ public final class Books extends AbstractBookList {
     // When this was the last call in the constructor it resulted
     // in "instance" being null in something it called.
     static {
-        log.trace("Auto-registering start @ {}", System.currentTimeMillis());
+        log.trace("Auto-registering start @ {}", Long.toString(System.currentTimeMillis()));
         instance.autoRegister();
-        log.trace("Auto-registering stop @ {}", System.currentTimeMillis());
+        log.trace("Auto-registering stop @ {}", Long.toString(System.currentTimeMillis()));
     }
 }
