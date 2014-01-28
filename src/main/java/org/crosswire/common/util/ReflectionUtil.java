@@ -94,8 +94,10 @@ public final class ReflectionUtil {
      * @throws NoSuchMethodException
      * @throws IllegalAccessException
      * @throws InvocationTargetException
-     * @throws InstantiationException
-     */    public static <T> T construct(final Class<T> clazz, final Object... params) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+     */
+    public static <T> T construct(final Class<T> clazz, final Object... params) throws NoSuchMethodException, InstantiationException, IllegalAccessException,
+            InvocationTargetException
+    {
         Class<?>[] paramTypes = describeParameters(params);
         final Constructor<T> c = clazz.getConstructor(paramTypes);
         return c.newInstance(params);

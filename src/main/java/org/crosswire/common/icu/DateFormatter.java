@@ -73,24 +73,22 @@ public final class DateFormatter {
      * The class of the formatter
      */
     private Class<?> formatterClass;
-    private static Class<?> DEFAULT_SIMPLE_DATE_FORMAT;
-    private static Class<?> DEFAULT_DATE_FORMAT;
-    
+    private static Class<?> defaultSimpleDateFormat;
+    private static Class<?> defaultDateFormat;
 
     static {
         try {
-            DEFAULT_SIMPLE_DATE_FORMAT = ClassUtil.forName(DEFAULT_SIMPLE_DATE_FORMAT_CLASS);
-        } catch(ClassNotFoundException ex) {
+            defaultSimpleDateFormat = ClassUtil.forName(DEFAULT_SIMPLE_DATE_FORMAT_CLASS);
+        } catch (ClassNotFoundException ex) {
             LOGGER.info("Error loading simple date format class [{}]", DEFAULT_SIMPLE_DATE_FORMAT_CLASS);
         }
-        
+
         try {
-            DEFAULT_DATE_FORMAT = ClassUtil.forName(DEFAULT_DATE_FORMAT_CLASS);
-        } catch(ClassNotFoundException ex) {
+            defaultDateFormat = ClassUtil.forName(DEFAULT_DATE_FORMAT_CLASS);
+        } catch (ClassNotFoundException ex) {
             LOGGER.info("Error loading date format class [{}]", DEFAULT_SIMPLE_DATE_FORMAT_CLASS);
         }
     }
-
 
     /**
      * Prevent instantiation.
@@ -109,14 +107,14 @@ public final class DateFormatter {
         DateFormatter fmt = new DateFormatter();
         boolean oops = false;
         try {
-            fmt.formatterClass = DEFAULT_DATE_FORMAT;
+            fmt.formatterClass = defaultDateFormat;
             // To call a method taking a type of int, the type has to match but
             // the object has to be wrapped
             Class<?>[] instanceTypes = {
-                    int.class
+                int.class
             };
             Object[] instanceParams = {
-                    Integer.valueOf(format)
+                Integer.valueOf(format)
             };
             fmt.formatter = ReflectionUtil.invoke(fmt.formatterClass, fmt.formatterClass, "getDateInstance", instanceParams, instanceTypes);
         } catch (NoSuchMethodException e) {
@@ -158,7 +156,7 @@ public final class DateFormatter {
         DateFormatter fmt = new DateFormatter();
         boolean oops = false;
         try {
-            fmt.formatterClass = DEFAULT_SIMPLE_DATE_FORMAT;
+            fmt.formatterClass = defaultSimpleDateFormat;
             fmt.formatter = ReflectionUtil.construct(fmt.formatterClass, format);
         } catch (NoSuchMethodException e) {
             oops = true;
