@@ -33,6 +33,7 @@ import org.apache.lucene.util.Version;
 import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.progress.Progress;
 import org.crosswire.common.util.FileUtil;
+import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSMsg;
@@ -340,23 +341,9 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
      * @see org.crosswire.jsword.index.Index#close()
      */
     public final void close() {
-        try {
-            if(searcher != null) {
-                searcher.close();
-            }
-        } catch (IOException ex) {
-            Reporter.informUser(this, ex);
-        }
-
-        try {
-            if(directory == null) {
-                directory.close();
-            }
-        } catch (IOException ex) {
-            Reporter.informUser(this,  ex);
-        }
-
+        IOUtil.close(searcher);
         searcher = null;
+        IOUtil.close(directory);
         directory = null;
     }
 
