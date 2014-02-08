@@ -79,7 +79,7 @@ public class VersificationToKJVMapper {
     private Versification nonKjv;
 
     /* the absent verses, i.e. those present in the KJV, but not in the left versification */
-    private Key absentVerses = new RocketPassage(KJV);
+    private Key absentVerses = createEmptyPassage(KJV);
     private Map<Key, List<QualifiedKey>> toKJVMappings = new HashMap<Key, List<QualifiedKey>>();
     private Map<QualifiedKey, Key> fromKJVMappings = new HashMap<QualifiedKey, Key>();
     private boolean zerosUnmapped = false;
@@ -95,10 +95,9 @@ public class VersificationToKJVMapper {
     }
 
     /**
-     * This is the crux of the decoding facility.
+     * This is the crux of the decoding facility.  The properties are expanded.
      *
      * @param mappings the input mappings, in a contracted, short-hand form
-     * @return the properties expanded
      */
     private void processMappings(FileVersificationMapping mappings) {
         final List<KeyValuePair> entries = mappings.getMappings();
@@ -300,7 +299,7 @@ public class VersificationToKJVMapper {
     private Key getNonEmptyKey(final Map<QualifiedKey, Key> mappings, final QualifiedKey key) {
         Key matchingVerses = mappings.get(key);
         if (matchingVerses == null) {
-            matchingVerses = new RocketPassage(this.nonKjv);
+            matchingVerses = createEmptyPassage(this.nonKjv);
             mappings.put(key, matchingVerses);
         }
         return matchingVerses;
@@ -406,7 +405,7 @@ public class VersificationToKJVMapper {
             newKey = getNewVerseRange(versification, offset, (VerseRange) approximateKey);
         } else if (approximateKey instanceof AbstractPassage) {
             Iterator<Key> rangeIterator = ((AbstractPassage) approximateKey).rangeIterator(RestrictionType.NONE);
-            newKey = new RocketPassage(versification);
+            newKey = createEmptyPassage(versification);
             while (rangeIterator.hasNext()) {
                 final Key nextInRange = rangeIterator.next();
                 if (nextInRange instanceof VerseRange) {
@@ -500,12 +499,12 @@ public class VersificationToKJVMapper {
     private QualifiedKey getKeyRefInDifferentVersification(final QualifiedKey qualifiedKey, Versification target) {
         try {
             if(this.zerosUnmapped && isZero(qualifiedKey)) {
-                return new QualifiedKey(new RocketPassage(target));
+                return new QualifiedKey(createEmptyPassage(target));
             }
             return new QualifiedKey(PassageKeyFactory.instance().getKey(target, qualifiedKey.getKey().getOsisRef()));
         } catch (NoSuchKeyException ex) {
             LOGGER.warn("Unable to transfer key contents [{}] to versification [{}]", qualifiedKey.getKey().getOsisRef(), target.getName());
-            return new QualifiedKey(new RocketPassage(target));
+            return new QualifiedKey(createEmptyPassage(target));
         }
     }
 
@@ -521,7 +520,6 @@ public class VersificationToKJVMapper {
         }
 
         Iterator<Key> keys = k.iterator();
-        boolean isZero = false;
         if(keys.hasNext() && ((Verse) keys.next()).getVerse() == 0) {
             // true if we don't have any more keys in our set
             return !keys.hasNext();
@@ -594,7 +592,7 @@ public class VersificationToKJVMapper {
         List<QualifiedKey> qualifiedKeys = map(new QualifiedKey(leftKey));
 
         //convert qualified keys into a passage representation, since that's what the user is after.
-        RocketPassage keyList = new RocketPassage(KJV);
+        Passage keyList = createEmptyPassage(KJV);
         for (QualifiedKey qualifiedKey : qualifiedKeys) {
             //we may bits in here, that don't exist in the KJV
             if (qualifiedKey.getKey() != null) {
@@ -633,7 +631,7 @@ public class VersificationToKJVMapper {
         //if we have no mapping, then we are in 1 of two scenarios
         //the verse is either totally absent, or the verse is not part of the mappings, meaning it is a straight map
         if (left == null) {
-            return this.absentVerses.contains(kjvVerse.getKey()) ? new RocketPassage(KJV) : this.getKeyRefInDifferentVersification(kjvVerse, this.nonKjv).getKey();
+            return this.absentVerses.contains(kjvVerse.getKey()) ? createEmptyPassage(KJV) : this.getKeyRefInDifferentVersification(kjvVerse, this.nonKjv).getKey();
         }
         return left;
     }
@@ -711,5 +709,14 @@ public class VersificationToKJVMapper {
      */
     boolean hasErrors() {
         return hasErrors;
+    }
+    
+    /** Simplify creation of an empty passage object of the default type, with the required v11n.
+     * 
+     * @param versification required v11n for new Passage
+     * @return              empty Passage
+     */
+    private Passage createEmptyPassage(Versification versification) {
+        return PassageKeyFactory.getDefaultType().createEmptyPassage(versification);
     }
 }
