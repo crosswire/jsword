@@ -39,21 +39,22 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * A Raw File format that allows for each verse to have it's own storage.
- * 
- * @see gnu.lgpl.License for license details.<br>
- *      The copyright to this program is held by it's authors.
+ *
  * @author mbergmann
+ * @see gnu.lgpl.License for license details.<br>
+ * The copyright to this program is held by it's authors.
  */
-public class RawFileBackendTest extends TestCase {
+public class RawFileBackendTest {
 
     private final String modName = "TestComment";
     private File configFile = new File("testconfig.conf");
     private RawFileBackend backend = null;
     private Versification v11n;
 
-    @Override
     @Before
     public void setUp() throws Exception {
         // AV11N(DMS): Update test to test all V11Ns
@@ -70,7 +71,7 @@ public class RawFileBackendTest extends TestCase {
             System.out.println(e.getMessage());
         }
 
-        SwordBookMetaData swordBookMetaData = new SwordBookMetaData(configFile, modName, new URI("file:///tmp"));
+        SwordBookMetaData swordBookMetaData = new SwordBookMetaData(configFile, modName, new URI("file:///temp"));
         backend = new RawFileBackend(swordBookMetaData, 2);
     }
 
