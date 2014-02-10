@@ -148,7 +148,6 @@ public class RawBackend<T extends RawBackendState> extends AbstractBackend<RawBa
                             passage.addVersifiedOrdinal(v11n.getOrdinal(currentTestament, ordinal));
                         }
                     }
-                    
                 }
             }
 

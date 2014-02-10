@@ -20,13 +20,22 @@
  */
 package org.crosswire.jsword.book.basic;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.crosswire.jsword.book.BookData;
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.book.BookMetaData;
 import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.book.filter.Filter;
 import org.crosswire.jsword.book.sword.processing.RawTextToXmlProcessor;
-import org.crosswire.jsword.passage.*;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyUtil;
+import org.crosswire.jsword.passage.NoSuchKeyException;
+import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageKeyFactory;
+import org.crosswire.jsword.passage.RestrictionType;
+import org.crosswire.jsword.passage.VerseRange;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.VersificationsMapper;
 import org.crosswire.jsword.versification.system.Versifications;
@@ -34,9 +43,6 @@ import org.jdom2.Content;
 import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * An abstract implementation of Book that lets implementors just concentrate on
@@ -62,7 +68,7 @@ public abstract class AbstractPassageBook extends AbstractBook {
         final Filter filter = getFilter();
 
         // For all the ranges in this Passage
-        //TODO:CJB I'd prefer to do the key mapping in KeyUtil, and pass in our current versification.
+        //TODO(CJB): I'd prefer to do the key mapping in KeyUtil, and pass in our current versification.
         //we could remove the method that doesn't support the versification parameter.
         //but that has far reaching consequences.
         Passage ref = VersificationsMapper.instance().map(KeyUtil.getPassage(key), this.getVersification());
@@ -71,7 +77,7 @@ public abstract class AbstractPassageBook extends AbstractBook {
         RawTextToXmlProcessor processor = new RawTextToXmlProcessor() {
             // track previous text to exclude duplicates caused by merged verses
             private String previousVerseText = "";
-            
+
             public void preRange(VerseRange range, List<Content> partialDom) {
                 if (showTitles) {
                     Element title = OSISUtil.factory().createGeneratedTitle();
@@ -82,7 +88,7 @@ public abstract class AbstractPassageBook extends AbstractBook {
 
             public void postVerse(Key verse, List<Content> partialDom, String rawText) {
                 // If the verse is empty or repeated then we shouldn't add the verse
-                if ((allowEmpty || rawText.length() > 0 ) && !previousVerseText.equals(rawText)) {
+                if ((allowEmpty || rawText.length() > 0) && !previousVerseText.equals(rawText)) {
                     List<Content> osisContent = filter.toOSIS(AbstractPassageBook.this, verse, rawText);
                     addOSIS(verse, partialDom, osisContent);
                 }

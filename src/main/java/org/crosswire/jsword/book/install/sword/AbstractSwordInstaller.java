@@ -20,20 +20,6 @@
  */
 package org.crosswire.jsword.book.install.sword;
 
-import com.ice.tar.TarEntry;
-import com.ice.tar.TarInputStream;
-import org.crosswire.common.progress.JobManager;
-import org.crosswire.common.progress.Progress;
-import org.crosswire.common.util.*;
-import org.crosswire.jsword.JSMsg;
-import org.crosswire.jsword.JSOtherMsg;
-import org.crosswire.jsword.book.*;
-import org.crosswire.jsword.book.install.InstallException;
-import org.crosswire.jsword.book.install.Installer;
-import org.crosswire.jsword.book.sword.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,6 +29,37 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
+
+import org.crosswire.common.progress.JobManager;
+import org.crosswire.common.progress.Progress;
+import org.crosswire.common.util.CWProject;
+import org.crosswire.common.util.CollectionUtil;
+import org.crosswire.common.util.IOUtil;
+import org.crosswire.common.util.NetUtil;
+import org.crosswire.common.util.Reporter;
+import org.crosswire.jsword.JSMsg;
+import org.crosswire.jsword.JSOtherMsg;
+import org.crosswire.jsword.book.AbstractBookList;
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookDriver;
+import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.BookFilter;
+import org.crosswire.jsword.book.BookFilterIterator;
+import org.crosswire.jsword.book.BookMetaData;
+import org.crosswire.jsword.book.BookSet;
+import org.crosswire.jsword.book.install.InstallException;
+import org.crosswire.jsword.book.install.Installer;
+import org.crosswire.jsword.book.sword.ConfigEntry;
+import org.crosswire.jsword.book.sword.SwordBook;
+import org.crosswire.jsword.book.sword.SwordBookDriver;
+import org.crosswire.jsword.book.sword.SwordBookMetaData;
+import org.crosswire.jsword.book.sword.SwordBookPath;
+import org.crosswire.jsword.book.sword.SwordConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.ice.tar.TarEntry;
+import com.ice.tar.TarInputStream;
 
 /**
  * The AbstractSwordInstaller provides for the common implementation of derived classes.
@@ -355,7 +372,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
                         SwordBookMetaData sbmd = new SwordBookMetaData(buffer, internal);
                         sbmd.setDriver(fake);
                         Book book = new SwordBook(sbmd, null);
-                        entries.put(book.getInitials()+book.getName(), book);
+                        entries.put(book.getInitials() + book.getName(), book);
                     } catch (IOException ex) {
                         log.error("Failed to load config for entry: {}", internal, ex);
                     }
@@ -380,7 +397,7 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         entries.clear();
         loaded = false;
     }
-    
+
     /**
      * @return the catologDirectory
      */

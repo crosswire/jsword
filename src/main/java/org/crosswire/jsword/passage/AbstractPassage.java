@@ -38,7 +38,6 @@ import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.Versification;
-import org.crosswire.jsword.versification.VersificationsMapper;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -151,7 +150,7 @@ public abstract class AbstractPassage implements Passage {
             return ((Passage) obj).getName().equals(getName());
         }
 
-        if(obj instanceof Verse) {
+        if (obj instanceof Verse) {
             return ((Verse) obj).getName().equals(getName());
         }
 

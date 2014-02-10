@@ -20,13 +20,24 @@
  */
 package org.crosswire.jsword.index.lucene;
 
+import java.io.Closeable;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.search.*;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.Searcher;
+import org.apache.lucene.search.TopScoreDocCollector;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
@@ -37,26 +48,28 @@ import org.crosswire.common.util.IOUtil;
 import org.crosswire.common.util.NetUtil;
 import org.crosswire.common.util.Reporter;
 import org.crosswire.jsword.JSMsg;
-import org.crosswire.jsword.book.*;
+import org.crosswire.jsword.book.Book;
+import org.crosswire.jsword.book.BookData;
+import org.crosswire.jsword.book.BookException;
+import org.crosswire.jsword.book.FeatureType;
+import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.index.AbstractIndex;
-import org.crosswire.jsword.index.IndexManager;
 import org.crosswire.jsword.index.IndexPolicy;
 import org.crosswire.jsword.index.IndexStatus;
 import org.crosswire.jsword.index.lucene.analysis.LuceneAnalyzer;
 import org.crosswire.jsword.index.search.SearchModifier;
-import org.crosswire.jsword.passage.*;
+import org.crosswire.jsword.passage.AbstractPassage;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.NoSuchKeyException;
+import org.crosswire.jsword.passage.NoSuchVerseException;
+import org.crosswire.jsword.passage.PassageTally;
+import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.passage.VerseFactory;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.Closeable;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Implement the SearchEngine using Lucene as the search engine.
@@ -104,12 +117,11 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
      * Combines the strong numbers with the morphology field
      */
     public static final String FIELD_MORPHOLOGY = "morph";
-    
+
     /**
      * Combines the strong numbers with the morphology field
      */
     public static final String FIELD_INTRO = "intro";
-    
 
     /**
      * An estimate of the percent of time spent indexing.
@@ -407,12 +419,12 @@ public class LuceneIndex extends AbstractIndex implements Closeable {
             keyField.setValue(subkey.getOsisRef());
             doc.add(keyField);
 
-            if(subkey instanceof Verse && ((Verse)subkey).getVerse() == 0) {
+            if (subkey instanceof Verse && ((Verse) subkey).getVerse() == 0) {
                 addField(doc, introField, OSISUtil.getCanonicalText(osis));
-            }else {
+            } else {
                 addField(doc, bodyField, OSISUtil.getCanonicalText(osis));
             }
-            
+
             if (includeStrongs) {
                 addField(doc, strongField, OSISUtil.getStrongsNumbers(osis));
             }
