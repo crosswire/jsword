@@ -1,23 +1,51 @@
+/**
+ * Distribution License:
+ * JSword is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License, version 2.1 or later
+ * as published by the Free Software Foundation. This program is distributed
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * The License is available on the internet at:
+ *       http://www.gnu.org/copyleft/lgpl.html
+ * or by writing to:
+ *      Free Software Foundation, Inc.
+ *      59 Temple Place - Suite 330
+ *      Boston, MA 02111-1307, USA
+ *
+ * Copyright: 2013 - 2014
+ *     The copyright to this program is held by it's authors.
+ *
+ */
 package org.crosswire.jsword.versification;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.MissingResourceException;
+
 import org.crosswire.common.config.ConfigException;
-import org.crosswire.jsword.passage.*;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyUtil;
+import org.crosswire.jsword.passage.NoSuchKeyException;
+import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageKeyFactory;
+import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.util.*;
-
 /**
+ * 
+ * @see gnu.lgpl.License for license details.<br>
+ *      The copyright to this program is held by it's authors.
  * @author chrisburrell
  */
-public class VersificationsMapper {
-    private static final Versification KJV = Versifications.instance().getVersification(Versifications.DEFAULT_V11N);
-    private static final Logger LOGGER = LoggerFactory.getLogger(VersificationsMapper.class);
-    private static final Map<Versification, VersificationToKJVMapper> MAPPERS = new HashMap<Versification, VersificationToKJVMapper>();
-    private static volatile VersificationsMapper INSTANCE = null;
-
+public final class VersificationsMapper {
     /**
      * Prevent instantiation
      */
@@ -31,14 +59,14 @@ public class VersificationsMapper {
      * @return a singleton instance of the mapper -
      */
     public static VersificationsMapper instance() {
-        if (INSTANCE == null) {
+        if (instance == null) {
             synchronized (VersificationsMapper.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = new VersificationsMapper();
+                if (instance == null) {
+                    instance = new VersificationsMapper();
                 }
             }
         }
-        return INSTANCE;
+        return instance;
     }
 
 
@@ -180,7 +208,7 @@ public class VersificationsMapper {
     public void ensureMappingDataLoaded(Versification versification) {
         ensure(versification);
     }
-    
+
     /**
      * Reads the mapping from file if it does not exist
      *
@@ -205,10 +233,15 @@ public class VersificationsMapper {
             // we've attempted to load it once, and that's all we'll do.
             LOGGER.error("Failed to load versification mappings for versification [{}]", versification, e);
             MAPPERS.put(versification, null);
-        } catch(Exception e) {
+        } catch (Exception e) {
             // we've attempted to load it once, and that's all we'll do.
             LOGGER.error("Failed for an unknown reason for versification [{}]", versification, e);
             MAPPERS.put(versification, null);
         }
     }
+
+    private static volatile VersificationsMapper instance;
+    private static final Versification KJV = Versifications.instance().getVersification(Versifications.DEFAULT_V11N);
+    private static final Map<Versification, VersificationToKJVMapper> MAPPERS = new HashMap<Versification, VersificationToKJVMapper>();
+    private static final Logger LOGGER = LoggerFactory.getLogger(VersificationsMapper.class);
 }
