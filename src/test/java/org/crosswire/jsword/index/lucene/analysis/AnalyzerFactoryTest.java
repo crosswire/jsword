@@ -14,15 +14,15 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007
+ * Copyright: 2007 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.jsword.index.lucene.analysis;
 
-import java.util.Arrays;
+import static org.junit.Assert.assertTrue;
 
-import junit.framework.TestCase;
+import java.util.Arrays;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.CharArraySet;
@@ -30,6 +30,7 @@ import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
+import org.junit.Test;
 
 /**
  * 
@@ -37,34 +38,16 @@ import org.apache.lucene.util.Version;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author sijo cherian [sijocherian at yahoo dot com]
+ * @author DM Smith
  */
-public class AnalyzerFactoryTest extends TestCase {
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see junit.framework.TestCase#setUp()
-     */
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see junit.framework.TestCase#tearDown()
-     */
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
+public class AnalyzerFactoryTest {
 
     /**
      * Test method for
      * {@link org.crosswire.jsword.index.lucene.analysis.AnalyzerFactory#createAnalyzer(java.lang.String)}
      * .
      */
+    @Test
     public void testCreateAnalyzer() {
         Analyzer myAnalyzer = AnalyzerFactory.getInstance().createAnalyzer(null);
         assertTrue(myAnalyzer != null);
@@ -73,6 +56,7 @@ public class AnalyzerFactoryTest extends TestCase {
         assertTrue(myAnalyzer != null);
     }
 
+    @Test
     public void testCustomStopWordFiltering() throws ParseException {
         AbstractBookAnalyzer myAnalyzer = new EnglishLuceneAnalyzer();
         QueryParser parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
@@ -91,6 +75,7 @@ public class AnalyzerFactoryTest extends TestCase {
         assertTrue(query.toString().indexOf(field + ":upon") > -1);
     }
 
+    @Test
     public void testDiacriticFiltering() throws Exception {
         AbstractBookAnalyzer myAnalyzer = new EnglishLuceneAnalyzer();
         QueryParser parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
@@ -102,6 +87,7 @@ public class AnalyzerFactoryTest extends TestCase {
         assertTrue(query.toString().indexOf(field + ":everi") > -1);
     }
 
+    @Test
     public void testStopWordsFiltering() throws Exception {
         AbstractBookAnalyzer myAnalyzer = new EnglishLuceneAnalyzer();
         QueryParser parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
@@ -113,6 +99,7 @@ public class AnalyzerFactoryTest extends TestCase {
         assertTrue(query.toString().indexOf(field + ":will") == -1);
     }
 
+    @Test
     public void testWithStemmingDisabled() throws Exception {
         AbstractBookAnalyzer myAnalyzer = new EnglishLuceneAnalyzer();
         QueryParser parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);

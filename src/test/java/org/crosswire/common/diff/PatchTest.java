@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005-2011
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -27,9 +27,10 @@ package org.crosswire.common.diff;
  * subsequent tests often rely on earlier ones.
  */
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
 import org.crosswire.common.diff.Patch.PatchResults;
+import org.junit.Test;
 
 /**
  * JUnit Test.
@@ -41,11 +42,8 @@ import org.crosswire.common.diff.Patch.PatchResults;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith
  */
-public class PatchTest extends TestCase {
-    @Override
-    protected void setUp() {
-    }
-
+public class PatchTest {
+    @Test
     public void testMatchFromText() {
         String strp = "@@ -21,18 +22,17 @@\n jump\n-s\n+ed\n  over \n-the\n+a\n  laz\n";
         assertEquals("patch_fromText: #1.", strp, new Patch(strp).toText());
@@ -56,6 +54,7 @@ public class PatchTest extends TestCase {
                 "patch_fromText: #5.", "@@ -1,9 +1,9 @@\n-f\n+F\n oo fooba\n@@ -7,9 +7,9 @@\n obar\n-,\n+.\n  tes\n", new Patch("@@ -1,9 +1,9 @@\n-f\n+F\n oo fooba\n@@ -7,9 +7,9 @@\n obar\n-,\n+.\n  tes\n").toText());
     }
 
+    @Test
     public void testMatchMake() {
         Patch p = new Patch("The quick brown fox jumps over the lazy dog.", "That quick brown fox jumped over a lazy dog.");
         assertEquals("patch_make", "@@ -1,11 +1,12 @@\n Th\n-e\n+at\n  quick b\n@@ -21,18 +22,17 @@\n jump\n-s\n+ed\n  over \n-the\n+a\n  laz\n", p.toText());
@@ -65,6 +64,7 @@ public class PatchTest extends TestCase {
         //        assertEquals("patch_fromText: Character decoding.", diffs, new Patch("@@ -1,21 +1,21 @@\n-%601234567890-=%5B%5D%5C;',./\n+~!@#$%25%5E&*()_+%7B%7D%7C:%22%3C%3E?\n").get(0).diffs);
     }
 
+    @Test
     public void testMatchSplitMax() {
         // Assumes that Match.getMaxPatternLength() is 32.
         Patch p = new Patch("abcdef1234567890123456789012345678901234567890123456789012345678901234567890uvwxyz", "abcdefuvwxyz");
@@ -73,6 +73,7 @@ public class PatchTest extends TestCase {
                 "patch_splitMax:", "@@ -3,32 +3,8 @@\n cdef\n-123456789012345678901234\n 5678\n@@ -27,32 +3,8 @@\n cdef\n-567890123456789012345678\n 9012\n@@ -51,30 +3,8 @@\n cdef\n-9012345678901234567890\n uvwx\n", p.toText());
     }
 
+    @Test
     public void testMatchApply() {
         Patch p = new Patch("The quick brown fox jumps over the lazy dog.", "That quick brown fox jumped over a lazy dog.");
         PatchResults results = p.apply("The quick brown fox jumps over the lazy dog.");

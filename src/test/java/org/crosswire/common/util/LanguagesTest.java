@@ -14,13 +14,17 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.common.util;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
 
 /**
  * JUnit Test.
@@ -28,20 +32,10 @@ import junit.framework.TestCase;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith
  */
-public class LanguagesTest extends TestCase {
-    public LanguagesTest(String s) {
-        super(s);
-    }
-
-    @Override
-    protected void setUp() throws Exception {
-    }
-
-    @Override
-    protected void tearDown() throws Exception {
-    }
-
+public class LanguagesTest {
+    @Test
     public void testBCP47() {
         // Some day there may be a zzz language code and then this test will need to change.
         assertEquals("Test for unknown code", "zzz", Languages.getName("zzz"));
@@ -51,6 +45,8 @@ public class LanguagesTest extends TestCase {
         // is Locale dependent, so we don't test for an exact value
         assertFalse("Test for known code", "ur-Deva".equals(Languages.getName("ur-Deva")));
     }
+
+    @Test
     public void testISO639() {
         // Some day there may be a zzz language code and then this test will need to change.
         assertEquals("Test for unknown code", "zzz", Languages.AllLanguages.getName("zzz"));
@@ -61,6 +57,8 @@ public class LanguagesTest extends TestCase {
         // en-US is defined above but not here, so it should return the code.
         assertEquals("Test for known code", "en-US", Languages.AllLanguages.getName("en-US"));
     }
+
+    @Test
     public void testRtoL() {
         // Known means in rtol.txt
         assertTrue("Test for known RtoL script: Arab  # Arabic", Languages.RtoL.isRtoL("Arab", null));

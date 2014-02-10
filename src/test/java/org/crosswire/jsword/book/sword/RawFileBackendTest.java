@@ -14,17 +14,17 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2012
+ * Copyright: 2012 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.jsword.book.sword;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-
-import junit.framework.TestCase;
 
 import org.crosswire.common.util.IOUtil;
 import org.crosswire.jsword.book.BookException;
@@ -35,8 +35,9 @@ import org.crosswire.jsword.passage.VerseFactory;
 import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
+import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.Ignore;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -45,15 +46,23 @@ import org.junit.Test;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author mbergmann
+ * @author DM Smith
  */
-public class RawFileBackendTest extends TestCase {
+public class RawFileBackendTest {
 
     private final String modName = "TestComment";
     private File configFile = new File("testconfig.conf");
     private RawFileBackend backend = null;
     private Versification v11n;
 
-    @Override
+    @BeforeClass
+    public static void setUpBeforeClass() throws Exception {
+    }
+
+    @AfterClass
+    public static void tearDownAfterClass() throws Exception {
+    }
+
     @Before
     public void setUp() throws Exception {
         // AV11N(DMS): Update test to test all V11Ns
@@ -72,15 +81,9 @@ public class RawFileBackendTest extends TestCase {
 
         SwordBookMetaData swordBookMetaData = new SwordBookMetaData(configFile, modName, new URI("file:///tmp"));
         backend = new RawFileBackend(swordBookMetaData, 2);
-    }
-
-    @Ignore
-    @Test
-    public void testCreate() throws IOException, BookException {
         backend.create();
     }
 
-    @Ignore
     @Test
     public void testSetRawText() throws IOException, BookException {
         Verse otVerse = new Verse(v11n, BibleBook.GEN, 3, 1);
@@ -91,6 +94,11 @@ public class RawFileBackendTest extends TestCase {
         Verse ntVerse2 = new Verse(v11n, BibleBook.PET1, 1, 2);
         Verse ntVerse3 = new Verse(v11n, BibleBook.REV, 22, 21);
         Verse ntVerse4 = new Verse(v11n, BibleBook.JOHN3, 1, 2);
+
+        File dataPath = new File(SwordUtil.getExpandedDataPath(backend.getBookMetaData()));
+        if (!dataPath.exists()) {
+            backend.create();
+        }
 
         RawFileBackendState state = null;
         try {
@@ -119,12 +127,16 @@ public class RawFileBackendTest extends TestCase {
 
     }
 
-    @Ignore
     @Test
     public void testSetAliasKey() throws NoSuchVerseException, IOException, BookException {
         Verse source = VerseFactory.fromString(v11n, "Gen 1:1");
         Verse alias1 = VerseFactory.fromString(v11n, "Gen 1:2");
         Verse alias2 = VerseFactory.fromString(v11n, "Gen 1:3");
+
+        File dataPath = new File(SwordUtil.getExpandedDataPath(backend.getBookMetaData()));
+        if (!dataPath.exists()) {
+            backend.create();
+        }
 
         RawFileBackendState state = null;
         try {

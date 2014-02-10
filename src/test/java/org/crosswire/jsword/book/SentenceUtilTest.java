@@ -14,46 +14,28 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.jsword.book;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
 import org.crosswire.common.util.StringUtil;
+import org.junit.Test;
 
 /**
- * .
+ * JUnit Test
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith
  */
-public class SentenceUtilTest extends TestCase {
-    public SentenceUtilTest(String s) {
-        super(s);
-    }
+public class SentenceUtilTest {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see junit.framework.TestCase#setUp()
-     */
-    @Override
-    protected void setUp() throws Exception {
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see junit.framework.TestCase#tearDown()
-     */
-    @Override
-    protected void tearDown() throws Exception {
-    }
-
+    @Test
     public void testTokenize() {
         String[] sa;
 
@@ -116,6 +98,7 @@ public class SentenceUtilTest extends TestCase {
         assertEquals("four?", sa[3]);
     }
 
+    @Test
     public void testGetCase() {
         assertEquals(CaseType.UPPER, CaseType.getCase("FRED"));
         assertEquals(CaseType.UPPER, CaseType.getCase("F-ED"));
@@ -131,6 +114,7 @@ public class SentenceUtilTest extends TestCase {
         // assertEquals(CaseType.SENTENCE, PassageUtil.getCase("FreD"));
     }
 
+    @Test
     public void testSetCase() {
         assertEquals("FRED", CaseType.UPPER.setCase("FRED"));
         assertEquals("FRED", CaseType.UPPER.setCase("Fred"));
@@ -164,6 +148,7 @@ public class SentenceUtilTest extends TestCase {
         assertEquals("", CaseType.SENTENCE.setCase(""));
     }
 
+    @Test
     public void testToSentenceCase() {
         assertEquals("One", CaseType.toSentenceCase("one"));
         assertEquals("One two", CaseType.toSentenceCase("one two"));
@@ -176,6 +161,7 @@ public class SentenceUtilTest extends TestCase {
         assertEquals("1 two", CaseType.toSentenceCase("1 TWO"));
     }
 
+    @Test
     public void testStripPunctuation() {
         String[] sa;
 
@@ -209,6 +195,7 @@ public class SentenceUtilTest extends TestCase {
         assertEquals("Four", sa[3]);
     }
 
+    @Test
     public void testStripWordsStringArray() {
         String[] sa;
 
@@ -236,22 +223,27 @@ public class SentenceUtilTest extends TestCase {
         assertEquals("\"", sa[4]);
     }
 
+    @Test
     public void testUpdatePassageTally() {
         // SentenceUtil.updatePassageTally(version, tally, words);
     }
 
+    @Test
     public void testUpdatePassageTallyFlat() {
         // SentenceUtil.updatePassageTallyFlat(version, tally, words);
     }
 
+    @Test
     public void testGetPassage() {
         // Passage ref = SentenceUtil.getPassage(version, words);
     }
 
+    @Test
     public void testIsNewPara() {
         // boolean b = SentenceUtil.isNewPara(doc);
     }
 
+    @Test
     public void testGetWords() {
         String[] sa;
 
@@ -290,6 +282,7 @@ public class SentenceUtilTest extends TestCase {
         assertEquals("two-three", sa[1]);
     }
 
+    @Test
     public void testStripPunctuationWord() {
         assertEquals("abcde", SentenceUtil.stripPunctuationWord("abcde"));
         assertEquals("a---e", SentenceUtil.stripPunctuationWord("a---e"));
@@ -351,10 +344,12 @@ public class SentenceUtilTest extends TestCase {
         assertEquals("test", SentenceUtil.stripPunctuationWord(" $%^\" test %^&"));
     }
 
+    @Test
     public void testStripWordsStringString() {
         // String s = SentenceUtil.stripWords(first, last);
     }
 
+    @Test
     public void testFirstLetter() {
         assertEquals(0, SentenceUtil.firstLetter("abcde"));
         assertEquals(1, SentenceUtil.firstLetter(" abcde"));
@@ -362,6 +357,7 @@ public class SentenceUtilTest extends TestCase {
         assertEquals(3, SentenceUtil.firstLetter(" \"%abcde--!   "));
     }
 
+    @Test
     public void testLastLetter() {
         assertEquals(4, SentenceUtil.lastLetter("abcde"));
         assertEquals(4, SentenceUtil.lastLetter("abcde "));
@@ -375,6 +371,7 @@ public class SentenceUtilTest extends TestCase {
         assertEquals(5, SentenceUtil.lastLetter(" abcde\"%$-- "));
     }
 
+    @Test
     public void testStripWords() {
         assertEquals("", SentenceUtil.stripWords("one", "two"));
         assertEquals(",", SentenceUtil.stripWords("one,", "two"));

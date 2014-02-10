@@ -14,11 +14,15 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.common.compress;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -27,9 +31,8 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.MissingResourceException;
 
-import junit.framework.TestCase;
-
 import org.crosswire.common.util.ResourceUtil;
+import org.junit.Test;
 
 /**
  * JUnit Test.
@@ -38,29 +41,13 @@ import org.crosswire.common.util.ResourceUtil;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith
  */
-public class LZSSTest extends TestCase {
+public class LZSSTest {
     public static final int RING_SIZE = 4096;
     public static final int RING_WRAP = RING_SIZE - 1;
     public static final int THRESHOLD = 3;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see junit.framework.TestCase#setUp()
-     */
-    @Override
-    protected void setUp() {
-    }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see junit.framework.TestCase#tearDown()
-     */
-    @Override
-    protected void tearDown() {
-    }
-
+    @Test
     public void testCore() {
         // Test the idiom s = (s + 1) & RING_WRAP
         for (int i = -1; i < RING_SIZE - 1; i++) {
@@ -95,6 +82,7 @@ public class LZSSTest extends TestCase {
         assertEquals(len, (short) ((highPart & 0x0F) + THRESHOLD));
     }
 
+    @Test
     public void testCompression() {
         InputStream kjvGenesis = null;
         try {

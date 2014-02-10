@@ -14,14 +14,15 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.jsword.book;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * JUnit Test.
@@ -30,23 +31,12 @@ import junit.framework.TestSuite;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith
  */
+@RunWith(Suite.class)
+@SuiteClasses({
+    BooksTest.class,
+    BookMetaDataTest.class,
+    SentenceUtilTest.class,
+    OsisTest.class
+})
 public class AllTests {
-    public static Test suite() {
-        TestSuite suite = new TestSuite("Test for org.crosswire.jsword.book");
-        // $JUnit-BEGIN$
-        suite.addTestSuite(BooksTest.class);
-        suite.addTestSuite(BookMetaDataTest.class);
-        suite.addTestSuite(SentenceUtilTest.class);
-
-        // run independently:
-        // suite.addTestSuite(ReadEverything.class);
-        // commented out because the tests were very poor.
-        // suite.addTestSuite(OsisTest.class);
-
-        // Not a JUnit test
-        // suite.addTestSuite(Speed.class);
-
-        // $JUnit-END$
-        return suite;
-    }
 }

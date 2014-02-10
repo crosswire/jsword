@@ -14,15 +14,17 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.jsword.book;
 
-import java.util.List;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import junit.framework.TestCase;
+import java.util.List;
 
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.VerseRangeFactory;
@@ -30,6 +32,8 @@ import org.crosswire.jsword.versification.system.Versifications;
 import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * JUnit Test.
@@ -38,24 +42,15 @@ import org.jdom2.output.XMLOutputter;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class BooksTest extends TestCase {
-    public BooksTest(String s) {
-        super(s);
-    }
-
+public class BooksTest {
     protected Key[] gen11 = null;
     protected BookMetaData[] bmds = null;
     protected Book[] bibles = null;
 
     //protected Class[] ignorebibles = {};
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see junit.framework.TestCase#setUp()
-     */
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         List<Book> lbmds = Books.installed().getBooks(BookFilters.getOnlyBibles());
         int numBibles = lbmds.size();
         bibles = new Book[numBibles];
@@ -71,15 +66,7 @@ public class BooksTest extends TestCase {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see junit.framework.TestCase#tearDown()
-     */
-    @Override
-    protected void tearDown() throws Exception {
-    }
-
+    @Test
     public void testGetBible() {
         for (int i = 0; i < bibles.length; i++) {
             Book bible = bibles[i];
@@ -87,6 +74,7 @@ public class BooksTest extends TestCase {
         }
     }
 
+    @Test
     public void testGetBibleMetaData() {
         for (int i = 0; i < bibles.length; i++) {
             Book bible = bibles[i];
@@ -95,6 +83,7 @@ public class BooksTest extends TestCase {
         }
     }
 
+    @Test
     public void testMetaData() {
         for (int i = 0; i < bmds.length; i++) {
             BookMetaData bmd = bmds[i];
@@ -106,6 +95,7 @@ public class BooksTest extends TestCase {
         }
     }
 
+    @Test
     public void testGetBookMetaData() {
         for (int i = 0; i < bibles.length; i++) {
             Book bible = bibles[i];
@@ -114,6 +104,7 @@ public class BooksTest extends TestCase {
         }
     }
 
+    @Test
     public void testGetDataKey() throws Exception {
         for (int i = 0; i < bibles.length; i++) {
             Book bible = bibles[i];
@@ -123,6 +114,7 @@ public class BooksTest extends TestCase {
         }
     }
 
+    @Test
     public void testGetDataPassage() throws Exception {
         for (int i = 0; i < bibles.length; i++) {
             Book bible = bibles[i];
@@ -134,6 +126,7 @@ public class BooksTest extends TestCase {
 	/** Bibles like TurNTB contain merged (linked) verses which are duplicated when chapters are displayed- see JS-224.
 	 *	This tests the deduplication code in AbstractPassageBook.
 	 */
+    @Test
 	public void testLinkedVersesNotDuplicated() throws Exception {
 		Book turNTB = Books.installed().getBook("TurNTB");
 		if (turNTB!=null) {

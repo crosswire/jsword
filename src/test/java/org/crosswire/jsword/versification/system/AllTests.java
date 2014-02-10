@@ -14,11 +14,11 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005 - 2014
+ * Copyright: 2014
  *     The copyright to this program is held by it's authors.
  *
  */
-package org.crosswire.jsword.passage;
+package org.crosswire.jsword.versification.system;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -33,19 +33,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-    AccuracyTypeTest.class,
-    PassageConstantsTest.class,
-    PassageMixTest.class,
-    PassageSizeTest.class,
-    PassageSpeedOptTest.class,
-    PassageSpeedTest.class,
-    PassageTallyTest.class,
-    PassageTally2Test.class,
-    PassageUtilTest.class,
-    PassageWriteSpeedTest.class,
-    SimpleOsisIDParserTest.class,
-    VerseTest.class,
-    VerseRangeTest.class
+    VersificationsTest.class,
 })
 public class AllTests {
 }

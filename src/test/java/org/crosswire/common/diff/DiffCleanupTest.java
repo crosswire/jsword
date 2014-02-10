@@ -14,17 +14,19 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005-2011
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.common.diff;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
 /**
  * JUnit Test.
@@ -36,12 +38,9 @@ import junit.framework.TestCase;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith
  */
-public class DiffCleanupTest extends TestCase {
+public class DiffCleanupTest {
 
-    @Override
-    protected void setUp() {
-    }
-
+    @Test
     public void testDiffCleanupMerge() {
         // Cleanup a messy diff
         List<Difference> diffs = diffList();
@@ -76,6 +75,7 @@ public class DiffCleanupTest extends TestCase {
                 "DiffCleanup.cleanupMerge: Prefix and suffix detection.", diffList( new Difference(EditType.EQUAL, "a"), new Difference(EditType.DELETE, "d"), new Difference(EditType.INSERT, "b"), new Difference(EditType.EQUAL, "c")), diffs);
     }
 
+    @Test
     public void testDiffCleanupSemantic() {
         // Cleanup semantically trivial equalities
         List<Difference> diffs = diffList();
@@ -98,6 +98,7 @@ public class DiffCleanupTest extends TestCase {
                 "DiffCleanup.cleanupSemantic: Backpass elimination.", diffList(new Difference(EditType.DELETE, "abcdef"), new Difference(EditType.INSERT, "cdfg")), diffs);
     }
 
+    @Test
     public void testDiffCleanupEfficiency() {
         // Cleanup operationally trivial equalities
         DiffCleanup.setEditCost(4);

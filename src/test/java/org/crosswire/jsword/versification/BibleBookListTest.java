@@ -14,16 +14,21 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2012
+ * Copyright: 2012 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.jsword.versification;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  *
@@ -32,7 +37,7 @@ import junit.framework.TestCase;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith
  */
-public class BibleBookListTest extends TestCase {
+public class BibleBookListTest {
 
     public static BibleBook[] booksNT =
     {
@@ -66,29 +71,18 @@ public class BibleBookListTest extends TestCase {
     };
 
     BibleBookList list;
-    /**
-     * @param name
-     */
-    public BibleBookListTest(String name) {
-        super(name);
-    }
 
-
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         list = new BibleBookList(booksNT);
     }
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testCount() {
         assertEquals(booksNT.length, list.getBookCount());
     }
 
+    @Test
     public void testContains() {
         // Are all the books from booksNT present
         for (BibleBook b : booksNT) {
@@ -96,6 +90,7 @@ public class BibleBookListTest extends TestCase {
         }
     }
 
+    @Test
     public void testOrdinal() {
         for (int i = 0; i < booksNT.length; i++) {
             BibleBook b = booksNT[i];
@@ -103,6 +98,7 @@ public class BibleBookListTest extends TestCase {
         }
     }
 
+    @Test
     public void testGet() {
         for (int i = 0; i < booksNT.length; i++) {
             BibleBook b = booksNT[i];
@@ -112,6 +108,7 @@ public class BibleBookListTest extends TestCase {
         assertEquals(booksNT[booksNT.length - 1].getOSIS(), booksNT[booksNT.length - 1], list.getBook(booksNT.length));
     }
 
+    @Test
     public void testNextBook() {
         for (int i = 0; i < booksNT.length - 1; i++) {
             BibleBook b = booksNT[i];
@@ -124,6 +121,7 @@ public class BibleBookListTest extends TestCase {
         assertEquals(BibleBook.GEN.getOSIS(), null, list.getNextBook(BibleBook.GEN));
     }
 
+    @Test
     public void testPreviousBook() {
         for (int i = 1; i < booksNT.length; i++) {
             BibleBook b = booksNT[i];
@@ -136,6 +134,7 @@ public class BibleBookListTest extends TestCase {
         assertEquals(BibleBook.GEN.getOSIS(), null, list.getPreviousBook(BibleBook.GEN));
     }
 
+    @Test
     public void testIterator() {
         int i = 0;
         for (BibleBook book: list) {

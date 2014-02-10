@@ -14,18 +14,23 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.jsword.passage;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.BookName;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * JUnit Test.
@@ -33,11 +38,9 @@ import org.crosswire.jsword.versification.system.Versifications;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith
  */
-public class VerseTest extends TestCase {
-    public VerseTest(String s) {
-        super(s);
-    }
+public class VerseTest {
 
     private Versification v11n;
     private Verse gen00 = null;
@@ -61,13 +64,8 @@ public class VerseTest extends TestCase {
     private Verse ssa10 = null;
     private Verse ssa11 = null;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see junit.framework.TestCase#setUp()
-     */
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         BookName.setFullBookName(false);
         // AV11N(DMS): Update test to test all V11Ns
         v11n = Versifications.instance().getDefaultVersification();
@@ -99,10 +97,11 @@ public class VerseTest extends TestCase {
      * 
      * @see junit.framework.TestCase#tearDown()
      */
-    @Override
-    protected void tearDown() {
+    @After
+    public void tearDown() {
     }
 
+    @Test
     public void testNewViaString() throws Exception {
         assertEquals(gen11, Verse.DEFAULT);
         assertEquals(gen11, VerseFactory.fromString(v11n, "Genesis 1 1"));
@@ -198,6 +197,7 @@ public class VerseTest extends TestCase {
         assertEquals(jude9, VerseFactory.fromString(v11n, "jude 25"));
     }
 
+    @Test
     public void testGetName() throws Exception {
         assertEquals(VerseFactory.fromString(v11n, "Genesis 1 1").getName(), "Gen 1:1");
         assertEquals(VerseFactory.fromString(v11n, "Gen 1 1").getName(), "Gen 1:1");
@@ -211,6 +211,7 @@ public class VerseTest extends TestCase {
         assertEquals(VerseFactory.fromString(v11n, "Jude 1:1").getName(), "Jude 1");
     }
 
+    @Test
     public void testGetNameVerse() throws Exception {
         assertEquals(VerseFactory.fromString(v11n, "Gen 1:2").getName(gen11), "2");
         assertEquals(VerseFactory.fromString(v11n, "Gen 2:1").getName(gen11), "2:1");
@@ -218,6 +219,7 @@ public class VerseTest extends TestCase {
         assertEquals(VerseFactory.fromString(v11n, "Gen 2:1").getName(null), "Gen 2:1");
     }
 
+    @Test
     public void testNewViaIntIntIntBoolean() {
         assertEquals(gen00, new Verse(v11n, null, 1, 1, true));
         assertEquals(gen10, new Verse(v11n, BibleBook.GEN, 0, 1, true));
@@ -229,6 +231,7 @@ public class VerseTest extends TestCase {
         assertEquals(rev99, new Verse(v11n, BibleBook.GEN, 0, 999999, true));
     }
 
+    @Test
     public void testClone() {
         assertEquals(gen11, gen11.clone());
         assertEquals(gen11, gen11.clone());
@@ -236,6 +239,7 @@ public class VerseTest extends TestCase {
         assertEquals(rev99, rev99.clone());
     }
 
+    @Test
     public void testEquals() {
         assertTrue(!gen11.equals(null));
         assertTrue(!gen11.equals(Integer.valueOf(0)));
@@ -246,6 +250,7 @@ public class VerseTest extends TestCase {
         assertTrue(!gen11.equals(gen12));
     }
 
+    @Test
     public void testHashCode() {
         assertEquals(gen11.hashCode(), gen11a.hashCode());
         //TODO:CJB: Why is this here?
@@ -254,12 +259,14 @@ public class VerseTest extends TestCase {
         assertTrue(gen11.hashCode() != 0);
     }
 
+    @Test
     public void testCompareTo() {
         assertEquals(gen11.compareTo(rev99), -1);
         assertEquals(rev99.compareTo(gen11), 1);
         assertEquals(gen11.compareTo(gen11), 0);
     }
 
+    @Test
     public void testAddSubtract() {
         assertEquals(v11n.distance(gen11, gen12), 1);
         assertEquals(v11n.distance(gen11, gen11), 0);
@@ -281,6 +288,7 @@ public class VerseTest extends TestCase {
         assertEquals(rev99.getOsisID(), rev99, v11n.add(rev99, 2));
     }
 
+    @Test
     public void testToString() {
         assertEquals("Gen 1:1", gen11.toString());
         assertEquals("Gen 1:2", gen12.toString());
@@ -293,6 +301,7 @@ public class VerseTest extends TestCase {
         assertEquals("Rev 22:21", rev99.toString());
     }
 
+    @Test
     public void testGetBook() {
         assertEquals(gen11.getBook(), BibleBook.GEN);
         assertEquals(gen12.getBook(), BibleBook.GEN);
@@ -305,6 +314,7 @@ public class VerseTest extends TestCase {
         assertEquals(rev99.getBook(), BibleBook.REV);
     }
 
+    @Test
     public void testGetChapter() {
         assertEquals(gen11.getChapter(), 1);
         assertEquals(gen12.getChapter(), 1);
@@ -317,6 +327,7 @@ public class VerseTest extends TestCase {
         assertEquals(rev99.getChapter(), 22);
     }
 
+    @Test
     public void testGetVerse() {
         assertEquals(gen11.getVerse(), 1);
         assertEquals(gen12.getVerse(), 2);
@@ -329,6 +340,7 @@ public class VerseTest extends TestCase {
         assertEquals(rev99.getVerse(), 21);
     }
 
+    @Test
     public void testGetOrdinal() {
         assertEquals(4, gen11.getOrdinal());
         assertEquals(5, gen12.getOrdinal());
@@ -341,6 +353,7 @@ public class VerseTest extends TestCase {
         assertEquals(32359, rev99.getOrdinal());
     }
 
+    @Test
     public void testGetAccuracy() throws Exception {
         VerseRange vr = new VerseRange(v11n, gen11, gen11);
         assertEquals(AccuracyType.fromText(v11n, "Gen 1:1", AccuracyType.tokenize("Gen 1:1"), vr), AccuracyType.BOOK_VERSE);
@@ -367,6 +380,7 @@ public class VerseTest extends TestCase {
         }
     }
 
+    @Test
     public void testIsStartEndOfChapterBook() throws Exception {
         assertTrue(v11n.isStartOfChapter(VerseFactory.fromString(v11n, "Gen 1:1")));
         assertTrue(!v11n.isStartOfChapter(VerseFactory.fromString(v11n, "Gen 1:10")));
@@ -407,6 +421,7 @@ public class VerseTest extends TestCase {
         assertTrue(v11n.isEndOfBook(VerseFactory.fromString(v11n, "Gen $:$")));
     }
 
+    @Test
     public void testMax() {
         assertEquals(v11n.max(gen11, gen12), gen12);
         assertEquals(v11n.max(gen11, rev99), rev99);
@@ -416,6 +431,7 @@ public class VerseTest extends TestCase {
         assertEquals(v11n.max(gen11a, gen11), gen11a);
     }
 
+    @Test
     public void testMin() {
         assertEquals(v11n.min(gen11, gen12), gen11);
         assertEquals(v11n.min(gen11, rev99), gen11);
@@ -425,10 +441,12 @@ public class VerseTest extends TestCase {
         assertEquals(v11n.min(gen11a, gen11a), gen11a);
     }
 
+    @Test
     public void testToVerseArray() {
         assertEquals(gen11.toVerseArray().length, 1);
     }
 
+    @Test
     public void testVerseHasName() {
         Verse v = new Verse(Versifications.instance().getVersification(Versifications.DEFAULT_V11N), 5);
         assertEquals("Gen 1:2", v.getName());

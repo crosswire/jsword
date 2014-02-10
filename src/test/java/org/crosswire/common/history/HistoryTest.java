@@ -14,13 +14,15 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007
+ * Copyright: 2007 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.common.history;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 /**
  * JUnit Test.
@@ -29,7 +31,8 @@ import junit.framework.TestCase;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith
  */
-public class HistoryTest extends TestCase {
+public class HistoryTest {
+    @Test
     public void testAdd() {
         History history = new History();
         assertEquals(null, history.getCurrent());
@@ -44,6 +47,7 @@ public class HistoryTest extends TestCase {
         assertEquals("[a, b, c]", history.getPreviousList().toString());
     }
 
+    @Test
     public void testGo() {
         History history = new History();
         assertEquals(null, history.getCurrent());
@@ -71,6 +75,7 @@ public class HistoryTest extends TestCase {
         assertEquals("[a, b, c, d]", history.getPreviousList().toString());
     }
 
+    @Test
     public void testNav() {
         History history = new History();
         assertEquals(null, history.getCurrent());

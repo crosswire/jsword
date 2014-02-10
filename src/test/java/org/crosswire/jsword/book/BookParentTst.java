@@ -14,15 +14,18 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.jsword.book;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * JUnit Test. For when we don't actually want to do testing of responses
@@ -31,21 +34,12 @@ import junit.framework.TestCase;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class BookParentTst extends TestCase {
-    public BookParentTst(String s) {
-        super(s);
-    }
-
+public class BookParentTst {
     protected BookMetaData[] bmds = null;
     protected Book[] bibles = null;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see junit.framework.TestCase#setUp()
-     */
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         List<Book> lbmds = Books.installed().getBooks(BookFilters.getOnlyBibles());
         bibles = new Book[lbmds.size()];
         bmds = new BookMetaData[lbmds.size()];
@@ -57,15 +51,7 @@ public class BookParentTst extends TestCase {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see junit.framework.TestCase#tearDown()
-     */
-    @Override
-    protected void tearDown() throws Exception {
-    }
-
+    @Test
     public void testNothing() {
         assertTrue(true);
     }

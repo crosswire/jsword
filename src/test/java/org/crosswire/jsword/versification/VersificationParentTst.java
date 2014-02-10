@@ -14,18 +14,19 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005 - 2013
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.jsword.versification;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-
-import junit.framework.TestCase;
 
 import org.crosswire.jsword.book.CaseType;
 import org.crosswire.jsword.passage.Key;
@@ -34,6 +35,9 @@ import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.versification.system.SystemMT;
 import org.crosswire.jsword.versification.system.Versifications;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * JUnit Test.
@@ -42,25 +46,25 @@ import org.crosswire.jsword.versification.system.Versifications;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class VersificationParentTst extends TestCase {
+public class VersificationParentTst {
     private Versification v11n;
     private CaseType storedCase;
 
-    public VersificationParentTst(String s, String v11nName) {
-        super(s);
+    public VersificationParentTst(String v11nName) {
         this.v11n = Versifications.instance().getVersification(v11nName);
     }
 
-    @Override
-    protected void setUp() {
+    @Before
+    public void setUp() {
         storedCase = BookName.getDefaultCase();
     }
 
-    @Override
-    protected void tearDown() {
+    @After
+    public void tearDown() {
         BookName.setCase(storedCase);
     }
 
+    @Test
     public void testIn() throws Exception {
         // Counts using loops
         int verseCount = 0;
@@ -77,6 +81,7 @@ public class VersificationParentTst extends TestCase {
         assertEquals(verseCount, v11n.getCount(null));
     }
 
+    @Test
     public void testOrdinal() throws Exception {
         int ordinal = 0;
         for (BibleBook b = v11n.getFirstBook(); b != null; b = v11n.getNextBook(b)) {
@@ -91,6 +96,7 @@ public class VersificationParentTst extends TestCase {
         }
     }
 
+    @Test
     public void testDecodeOrdinal() throws Exception {
         int ordinal = 0;
         for (BibleBook b = v11n.getFirstBook(); b != null; b = v11n.getNextBook(b)) {
@@ -105,6 +111,7 @@ public class VersificationParentTst extends TestCase {
         }
     }
 
+    @Test
     public void testValidate() throws Exception {
         for (BibleBook b = v11n.getFirstBook(); b != null; b = v11n.getNextBook(b)) {
             // Test that negative chapters are invalid
@@ -144,6 +151,7 @@ public class VersificationParentTst extends TestCase {
         }
     }
 
+    @Test
     public void testPatch() throws Exception {
 
         int all = 0;
@@ -169,6 +177,7 @@ public class VersificationParentTst extends TestCase {
         assertEquals(gen11, v11n.patch(null, 0, 4));
     }
 
+    @Test
     public void testVerseCount() throws Exception {
         int count_up = 0;
         Verse firstVerse = new Verse(v11n, v11n.getFirstBook(), 0, 0);
@@ -204,12 +213,14 @@ public class VersificationParentTst extends TestCase {
         }
     }
 
+    @Test
     public void testNames() {
         // AV11N(DMS): Is this right?
         assertEquals(2, BibleBook.GEN.ordinal());
         assertEquals(68, BibleBook.REV.ordinal());
     }
 
+    @Test
     public void testMTSystem() {
         // The MT v11n is OT only and had a problem where this would have failed.
         // At this time all versifications have an OT and Gen 1:1
@@ -221,6 +232,7 @@ public class VersificationParentTst extends TestCase {
         assertEquals("ordinals in OT do not change", index, v11n.getTestamentOrdinal(index));
     }
 
+    @Test
     public void testGetBook() {
         if (v11n.containsBook(BibleBook.GEN)) {
             assertEquals(BibleBook.GEN, v11n.getBook("Genesis"));
@@ -272,170 +284,212 @@ public class VersificationParentTst extends TestCase {
         assertEquals(null, v11n.getBook("1"));
     }
 
+    @Test
     public void testLoadEnglish() {
         new BibleNames(v11n, Locale.ENGLISH);
     }
 
+    @Test
     public void testLoadAF() {
         new BibleNames(v11n, new Locale("af"));
     }
 
+    @Test
     public void testLoadEgyptianArabic() {
         new BibleNames(v11n, new Locale("ar", "EG"));
     }
 
+    @Test
     public void testLoadBG() {
         new BibleNames(v11n, new Locale("bg"));
     }
 
+    @Test
     public void testLoadCS() {
         new BibleNames(v11n, new Locale("cs"));
     }
 
+    @Test
     public void testLoadCY() {
         new BibleNames(v11n, new Locale("cy"));
     }
 
+    @Test
     public void testLoadDanish() {
         new BibleNames(v11n, new Locale("da"));
     }
 
+    @Test
     public void testLoadGerman() {
         new BibleNames(v11n, new Locale("de"));
     }
 
+    @Test
     public void testLoadSpanish() {
         new BibleNames(v11n, new Locale("es"));
     }
 
+    @Test
     public void testLoadET() {
         new BibleNames(v11n, new Locale("et"));
     }
 
+    @Test
     public void testLoadFarsi() {
         new BibleNames(v11n, new Locale("fa"));
     }
 
+    @Test
     public void testLoadFinnish() {
         new BibleNames(v11n, new Locale("fi"));
     }
 
+    @Test
     public void testLoadFO() {
         new BibleNames(v11n, new Locale("fo"));
     }
 
+    @Test
     public void testLoadFrench() {
         new BibleNames(v11n, new Locale("fr"));
     }
 
+    @Test
     public void testLoadHebrew() {
         new BibleNames(v11n, new Locale("he"));
     }
 
+    @Test
     public void testLoadHU() {
         new BibleNames(v11n, new Locale("hu"));
     }
 
+    @Test
     public void testLoadID() {
         new BibleNames(v11n, new Locale("id"));
     }
 
+    @Test
     public void testLoadIN() {
         new BibleNames(v11n, new Locale("in"));
     }
 
+    @Test
     public void testLoadItalian() {
         new BibleNames(v11n, new Locale("it"));
     }
 
+    @Test
     public void testLoadIW() {
         new BibleNames(v11n, new Locale("iw"));
     }
 
+    @Test
     public void testLoadKO() {
         new BibleNames(v11n, new Locale("ko"));
     }
 
+    @Test
     public void testLoadLA() {
         new BibleNames(v11n, new Locale("la"));
     }
 
+    @Test
     public void testLoadLT() {
         new BibleNames(v11n, new Locale("lt"));
     }
 
+    @Test
     public void testLoadNB() {
         new BibleNames(v11n, new Locale("nb"));
     }
 
+    @Test
     public void testLoadDutch() {
         new BibleNames(v11n, new Locale("nl"));
     }
 
+    @Test
     public void testLoadNN() {
         new BibleNames(v11n, new Locale("nn"));
     }
 
+    @Test
     public void testLoadPL() {
         new BibleNames(v11n, new Locale("pl"));
     }
 
+    @Test
     public void testLoadBrazillianPortuguese() {
         new BibleNames(v11n, new Locale("pt", "BR"));
     }
 
+    @Test
     public void testLoadPortuguese() {
         new BibleNames(v11n, new Locale("pt"));
     }
 
+    @Test
     public void testLoadRo() {
         new BibleNames(v11n, new Locale("ro"));
     }
 
+    @Test
     public void testLoadRU() {
         new BibleNames(v11n, new Locale("ru"));
     }
 
+    @Test
     public void testLoadSK() {
         new BibleNames(v11n, new Locale("sk"));
     }
 
+    @Test
     public void testLoadSL() {
         new BibleNames(v11n, new Locale("sl"));
     }
 
+    @Test
     public void testLoadSwedish() {
         new BibleNames(v11n, new Locale("sv"));
     }
 
+    @Test
     public void testLoadThai() {
         new BibleNames(v11n, new Locale("th"));
     }
 
+    @Test
     public void testLoadTR() {
         new BibleNames(v11n, new Locale("tr"));
     }
 
+    @Test
     public void testLoadUkranian() {
         new BibleNames(v11n, new Locale("uk"));
     }
 
+    @Test
     public void testLoadVietnamese() {
         new BibleNames(v11n, new Locale("vi"));
     }
 
+    @Test
     public void testLoadChineseTraditional() {
         new BibleNames(v11n, new Locale("zh", "CN"));
     }
 
+    @Test
     public void testLoadChineseSimplified() {
         new BibleNames(v11n, new Locale("zh"));
     }
 
+    @Test
     public void testLoadSwahili() {
         new BibleNames(v11n, new Locale("sw"));
     }
 
+    @Test
     public void testGetLongBookName() throws Exception {
         BookName.setCase(CaseType.SENTENCE);
         if (v11n.containsBook(BibleBook.GEN)) {
@@ -462,6 +516,7 @@ public class VersificationParentTst extends TestCase {
         }
     }
 
+    @Test
     public void testGetShortBookName() throws Exception {
         BookName.setCase(CaseType.SENTENCE);
         if (v11n.containsBook(BibleBook.GEN)) {
@@ -551,6 +606,7 @@ public class VersificationParentTst extends TestCase {
         }
     }
 
+    @Test
     public void testVerseListSortOrder() {
         if (v11n.containsBook(BibleBook.GEN) && v11n.containsBook(BibleBook.REV)) {
             List<Key> keyList = new ArrayList<Key>();
@@ -566,6 +622,7 @@ public class VersificationParentTst extends TestCase {
         }
     }
 
+    @Test
     public void testPassageListSortOrder() {
         try {
             if (v11n.containsBook(BibleBook.GEN) && v11n.containsBook(BibleBook.REV)) {

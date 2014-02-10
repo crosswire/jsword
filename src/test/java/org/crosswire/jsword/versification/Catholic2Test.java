@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2013
+ * Copyright: 2013 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -31,8 +31,8 @@ import org.crosswire.jsword.versification.system.SystemCatholic2;
  */
 public class Catholic2Test extends VersificationParentTst {
 
-    public Catholic2Test(String s) {
-        super(s, SystemCatholic2.V11N_NAME);
+    public Catholic2Test() {
+        super(SystemCatholic2.V11N_NAME);
     }
 
 }

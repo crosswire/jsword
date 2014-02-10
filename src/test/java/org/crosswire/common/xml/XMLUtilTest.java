@@ -14,13 +14,16 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.common.xml;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
+import org.junit.Test;
 
 /**
  * JUnit Test.
@@ -28,8 +31,10 @@ import junit.framework.TestCase;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith
  */
-public class XMLUtilTest extends TestCase {
+public class XMLUtilTest {
+    @Test
     public void testCleanAllEntities() {
         assertNull(XMLUtil.cleanAllEntities(null));
 
@@ -61,6 +66,7 @@ public class XMLUtilTest extends TestCase {
         assertEquals("-&amp;-\u00A0-&lt;-&gt;-&quot;-\u00A3-\u20AC-", XMLUtil.cleanAllEntities("-&amp;-&nbsp;-&lt;-&gt;-&quot;-&pound;-&euro;-"));
     }
 
+    @Test
     public void testCleanAllTags() {
         assertNull(XMLUtil.cleanAllTags(null));
 

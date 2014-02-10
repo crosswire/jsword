@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005-2011
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -27,10 +27,12 @@ package org.crosswire.common.diff;
  * subsequent tests often rely on earlier ones.
  */
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
 /**
  * JUnit Test.
@@ -42,12 +44,9 @@ import junit.framework.TestCase;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith
  */
-public class BitapTest extends TestCase {
+public class BitapTest {
 
-    @Override
-    protected void setUp() {
-    }
-
+    @Test
     public void testAlphabet() {
         // Initialise the bitmasks for Bitap
         Map<Character,Integer> bitmask;
@@ -67,6 +66,7 @@ public class BitapTest extends TestCase {
         assertEquals("match_alphabet: Duplicates.", bitmask, bitap.getAlphabet());
     }
 
+    @Test
     public void testBitap() {
         // Bitap algorithm
         Bitap.setBalance(0.5f);

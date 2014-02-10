@@ -14,32 +14,30 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.common.util;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * JUnit Test.
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
- * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith
  */
+@RunWith(Suite.class)
+@SuiteClasses({
+    StringUtilTest.class,
+    PropertyMapTest.class,
+    LoggerTest.class,
+    LanguageTest.class,
+    LanguagesTest.class    
+})
 public class AllTests {
-    public static Test suite() {
-        TestSuite suite = new TestSuite("Test for org.crosswire.common.util");
-        // $JUnit-BEGIN$
-        suite.addTest(new TestSuite(StringUtilTest.class));
-        suite.addTest(new TestSuite(PropertyMapTest.class));
-        suite.addTest(new TestSuite(LoggerTest.class));
-        suite.addTest(new TestSuite(LanguageTest.class));
-        suite.addTest(new TestSuite(LanguagesTest.class));
-        // $JUnit-END$
-        return suite;
-    }
 }

@@ -14,17 +14,22 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2009
+ * Copyright: 2009 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.jsword.book.sword;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * A Raw File format that allows for each verse to have it's own storage.
@@ -32,14 +37,15 @@ import junit.framework.TestCase;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author mbergmann
+ * @author DM Smith
  */
-public class SwordBookMetaDataTest extends TestCase {
+public class SwordBookMetaDataTest {
 
     File configFile = new File("testconfig.conf");
     SwordBookMetaData swordBookMetaData = null;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         ConfigEntryTable table = new ConfigEntryTable("TestBook");
         table.add(ConfigEntryType.LANG, "de");
         table.add(ConfigEntryType.INITIALS, "TestBook");
@@ -54,11 +60,12 @@ public class SwordBookMetaDataTest extends TestCase {
         swordBookMetaData = new SwordBookMetaData(configFile, "TestBook", new URI(""));
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         configFile.delete();
     }
 
+    @Test
     public void testPropertiesAccessors() {
         assertNotNull(swordBookMetaData);
         assertEquals("MyNewBook", swordBookMetaData.getName());

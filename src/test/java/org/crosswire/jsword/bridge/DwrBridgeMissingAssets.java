@@ -14,17 +14,22 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2008
+ * Copyright: 2008 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.jsword.bridge;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.crosswire.jsword.book.BookException;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.versification.BookName;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Test of functionality for use with DWR. This test assumes, at a minimum, that
@@ -36,14 +41,15 @@ import org.crosswire.jsword.versification.BookName;
  * @author DM Smith
  */
 // TODO: make this test use mocks or setup its own environment
-public class DwrBridgeMissingAssets extends TestCase {
+public class DwrBridgeMissingAssets {
     DwrBridge dwrBridge = new DwrBridge();
 
-    @Override
-    protected void setUp() {
+    @Before
+    public void setUp() {
         BookName.setFullBookName(true);
     }
 
+    @Test
     public void testGetBooks() {
         String[][] bibles = dwrBridge.getInstalledBooks("Category=Biblical Texts");
         assertTrue(bibles.length > 1);
@@ -52,6 +58,7 @@ public class DwrBridgeMissingAssets extends TestCase {
         assertTrue(dicts.length > 1);
     }
 
+    @Test
     public void testGetOsisString() {
         try {
             String verse = dwrBridge.getOSISString("KJV", "Gen 1:1", 0, 100);
@@ -60,7 +67,7 @@ public class DwrBridgeMissingAssets extends TestCase {
                     verse);
             String hdef = dwrBridge.getOSISString("StrongsHebrew", "H07225", 0, 100);
             assertEquals(
-                    "<div><title>07225</title>7225  re'shiyth  ray-sheeth'\r<lb></lb>\r<lb></lb> from the same as 7218; the first, in place, time, order or\r<lb></lb> rank (specifically, a firstfruit):--beginning, chief(-est),\r<lb></lb> first(-fruits, part, time), principal thing.\r<lb></lb> see HEBREW for 07218</div>",
+                    "<div><title type=\"x-gen\">07225</title>7225  re'shiyth  ray-sheeth'\r<lb></lb>\r<lb></lb> from the same as 7218; the first, in place, time, order or\r<lb></lb> rank (specifically, a firstfruit):--beginning, chief(-est),\r<lb></lb> first(-fruits, part, time), principal thing.\r<lb></lb> see HEBREW for 07218</div>",
                     hdef);
         } catch (BookException e) {
             fail(e.getDetailedMessage());
@@ -69,11 +76,13 @@ public class DwrBridgeMissingAssets extends TestCase {
         }
     }
 
+    @Test
     public void testIndexed() {
         assertTrue(dwrBridge.isIndexed("KJV"));
         assertFalse(dwrBridge.isIndexed("not a bible")); 
     }
 
+    @Test
     public void testSearch() {
         try {
             String result = dwrBridge.search("KJV", "aaron AND moses AND egypt");
@@ -83,6 +92,7 @@ public class DwrBridgeMissingAssets extends TestCase {
         }
     }
 
+    @Test
     public void testMatch() {
         String[] result = dwrBridge.match("StrongsGreek", "0001", 10);
         assertTrue(result.length == 10);

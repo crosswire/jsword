@@ -14,13 +14,15 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2012
+ * Copyright: 2012 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.jsword.versification;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 /**
  *
@@ -29,22 +31,9 @@ import junit.framework.TestCase;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith
  */
-public class BibleBookTest extends TestCase {
+public class BibleBookTest {
 
-    public BibleBookTest(String name) {
-        super(name);
-    }
-
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testGetBookOSIS() throws Exception {
         assertEquals("Gen", BibleBook.GEN.getOSIS());
         assertEquals("Exod", BibleBook.EXOD.getOSIS());

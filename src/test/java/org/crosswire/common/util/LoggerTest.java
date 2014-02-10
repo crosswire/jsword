@@ -14,25 +14,27 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.common.util;
 
-import java.util.logging.Level;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import junit.framework.TestCase;
+import java.util.logging.Level;
 
 import org.junit.Test;
 
 /**
- * Tests the Logger class
+ * JUnit Test.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
+ *      The copyright to this program is held by it's authors.
+ * @author DM Smith
  */
-public class LoggerTest  extends TestCase {
-    /**
-     * Test should log.
-     */
+public class LoggerTest {
     @Test
     public void testShouldLog() {
         Logger l = Logger.getLogger(LoggerTest.class);

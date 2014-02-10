@@ -14,13 +14,17 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.common.util;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
 
 /**
  * JUnit Test.
@@ -28,20 +32,10 @@ import junit.framework.TestCase;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith
  */
-public class LanguageTest extends TestCase {
-    public LanguageTest(String s) {
-        super(s);
-    }
-
-    @Override
-    protected void setUp() throws Exception {
-    }
-
-    @Override
-    protected void tearDown() throws Exception {
-    }
-
+public class LanguageTest {
+    @Test
     public void testCanonical() {
         Language lang = new Language("en");
         assertEquals("Test for LL.getCode", "en", lang.getCode());
@@ -65,6 +59,7 @@ public class LanguageTest extends TestCase {
         assertEquals("Test for LL-CC-SSSS.getCountry", "US", lang.getCountry());
     }
 
+    @Test
     public void testNonCanonical() {
         Language lang = new Language("EN");
         assertEquals("Test for LL.getCode", "en", lang.getCode());
@@ -87,6 +82,8 @@ public class LanguageTest extends TestCase {
         assertEquals("Test for LL-CC-SSSS.getScript", null, lang.getScript());
         assertEquals("Test for LL-CC-SSSS.getCountry", "US", lang.getCountry());
     }
+
+    @Test
     public void testMixed() {
         Language lang = new Language("En");
         assertEquals("Test for LL.getCode", "en", lang.getCode());

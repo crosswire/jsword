@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005-2011
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -27,13 +27,16 @@ package org.crosswire.common.diff;
  * subsequent tests often rely on earlier ones.
  */
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
 /**
  * JUnit Test.
@@ -45,11 +48,8 @@ import junit.framework.TestCase;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith
  */
-public class DifferenceEngineTest extends TestCase {
-    @Override
-    protected void setUp() {
-    }
-
+public class DifferenceEngineTest {
+    @Test
     public void testDiffPath() {
         // Single letters
         // Trace a path from back to front.
@@ -133,6 +133,7 @@ public class DifferenceEngineTest extends TestCase {
         assertEquals("diff_path2: Double letters.", diffs, generator.path2(v_map, "CD34", "34YZ"));
     }
 
+    @Test
     public void testTimeout() {
         DifferenceEngine.setTimeout(0.001f); // 1ms
         // This test may fail on extremely fast computers. If so, just increase

@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005-2011
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -27,7 +27,11 @@ package org.crosswire.common.diff;
  * subsequent tests often rely on earlier ones.
  */
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
 
 /**
  * JUnit Test.
@@ -39,18 +43,15 @@ import junit.framework.TestCase;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith
  */
-public class DifferenceTest extends TestCase {
-
-    @Override
-    protected void setUp() {
-    }
-
+public class DifferenceTest {
+    @Test
     public void testHashCode() {
         assertTrue("Difference.hashCode:", (new Difference(EditType.EQUAL, "a")).hashCode() == (new Difference(EditType.EQUAL, "a")).hashCode());
         assertFalse("Difference.hashCode:", (new Difference(EditType.EQUAL, "a")).hashCode() == (new Difference(EditType.EQUAL, "ab")).hashCode());
         assertFalse("Difference.hashCode:", (new Difference(EditType.EQUAL, "a")).hashCode() == (new Difference(EditType.INSERT, "a")).hashCode());
     }
 
+    @Test
     public void testEquals() {
         // First check that Diff equality works
         assertTrue("Difference.equals:", new Difference(EditType.EQUAL, "a").equals(new Difference(EditType.EQUAL, "a")));

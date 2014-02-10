@@ -14,18 +14,20 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.common.progress;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.UUID;
+
+import org.junit.Test;
 
 /**
  * JUnit Test.
@@ -33,20 +35,13 @@ import java.util.UUID;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith
  */
-public class JobTest extends TestCase {
+public class JobTest {
 
     private static final String WIBBLE = "wibble";
 
-    /**
-     * Constructor for JobTest.
-     * 
-     * @param arg0
-     */
-    public JobTest(String arg0) {
-        super(arg0);
-    }
-
+    @Test
     public void testJob() throws IOException {
         Progress job;
         File tempfile = File.createTempFile("jobtest", "tmp");
@@ -56,24 +51,24 @@ public class JobTest extends TestCase {
         job.beginJob(WIBBLE);
 
         assertEquals(WIBBLE, job.getJobName());
-        assertEquals(false, job.isFinished());
-        assertEquals(false, job.isCancelable());
+        assertFalse(job.isFinished());
+        assertFalse(job.isCancelable());
         assertEquals(WIBBLE, job.getSectionName());
         assertEquals(0, job.getWork());
         job.done();
-        assertEquals(true, job.isFinished());
+        assertTrue(job.isFinished());
         assertEquals(100, job.getWork());
-        assertEquals(job.isCancelable(), false);
+        assertFalse(job.isCancelable());
 
         job = JobManager.createJob(UUID.randomUUID().toString(), WIBBLE, Thread.currentThread());
         job.beginJob(WIBBLE);
         assertEquals(WIBBLE, job.getJobName());
-        assertEquals(false, job.isFinished());
-        assertEquals(true, job.isCancelable());
+        assertFalse(job.isFinished());
+        assertTrue(job.isCancelable());
         assertEquals(WIBBLE, job.getSectionName());
         assertEquals(0, job.getWork());
         job.done();
-        assertEquals(true, job.isFinished());
+        assertTrue(job.isFinished());
         assertEquals(100, job.getWork());
         // assertEquals(job.isCancelable(), false);
 
@@ -81,24 +76,24 @@ public class JobTest extends TestCase {
         job.beginJob(WIBBLE, uri);
         job.setTotalWork(100);
         assertEquals(WIBBLE, job.getJobName());
-        assertEquals(false, job.isFinished());
-        assertEquals(false, job.isCancelable());
+        assertFalse(job.isFinished());
+        assertFalse(job.isCancelable());
         assertEquals(WIBBLE, job.getSectionName());
         job.cancel();
         job.done();
-        assertEquals(true, job.isFinished());
+        assertTrue(job.isFinished());
         assertEquals(100, job.getWork());
-        // assertEquals(false, job.isCancelable());
+        // assertFalse(job.isCancelable());
 
         job = JobManager.createJob(UUID.randomUUID().toString(), WIBBLE, Thread.currentThread());
         job.beginJob(WIBBLE, uri);
         assertEquals(WIBBLE, job.getJobName());
-        assertEquals(false, job.isFinished());
-        assertEquals(true, job.isCancelable());
+        assertFalse(job.isFinished());
+        assertTrue(job.isCancelable());
         assertEquals(WIBBLE, job.getSectionName());
         job.done();
-        assertEquals(true, job.isFinished());
+        assertTrue(job.isFinished());
         assertEquals(100, job.getWork());
-        // assertEquals(false, job.isCancelable());
+        // assertFalse(job.isCancelable());
     }
 }

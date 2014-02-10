@@ -14,11 +14,15 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.jsword.passage;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -26,13 +30,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Iterator;
 
-import junit.framework.TestCase;
-
 import org.crosswire.jsword.book.CaseType;
 import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.BookName;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * JUnit Test.
@@ -41,11 +46,7 @@ import org.crosswire.jsword.versification.system.Versifications;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class PassageTally2Test extends TestCase {
-    public PassageTally2Test(String s) {
-        super(s);
-    }
-
+public class PassageTally2Test {
     /** Control the output of names */
     private CaseType storedCase;
     private boolean fullName;
@@ -81,8 +82,8 @@ public class PassageTally2Test extends TestCase {
     PassageTally empty = new PassageTally(Versifications.instance().getDefaultVersification());
     PassageTally temp = null;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         storedCase = BookName.getDefaultCase();
         BookName.setCase(CaseType.SENTENCE);
         fullName = BookName.isFullBookName();
@@ -106,9 +107,9 @@ public class PassageTally2Test extends TestCase {
         exo23 = new Verse(v11n, BibleBook.EXOD, 2, 3);
         exo3b = new Verse(v11n, BibleBook.EXOD, 3, 11);
 
-        gen1_135 = (Passage) keyf.getKey(v11n, "Gen 1:1, Gen 1:3, Gen 1:5");
-        gen123_1 = (Passage) keyf.getKey(v11n, "Gen 1:1, Gen 2:1, Gen 3:1");
-        gen1_157 = (Passage) keyf.getKey(v11n, "Gen 1:1, Gen 1:5, Gen 1:7");
+        gen1_135 = keyf.getKey(v11n, "Gen 1:1, Gen 1:3, Gen 1:5");
+        gen123_1 = keyf.getKey(v11n, "Gen 1:1, Gen 2:1, Gen 3:1");
+        gen1_157 = keyf.getKey(v11n, "Gen 1:1, Gen 1:5, Gen 1:7");
 
         tally.setOrdering(PassageTally.Order.TALLY);
         empty.setOrdering(PassageTally.Order.TALLY);
@@ -118,12 +119,13 @@ public class PassageTally2Test extends TestCase {
         tally.addAll(gen1_157);
     }
 
-    @Override
-    protected void tearDown() {
+    @After
+    public void tearDown() {
         BookName.setCase(storedCase);
         BookName.setFullBookName(fullName);
     }
 
+    @Test
     public void testGetName() {
         assertEquals("Gen 1:1, 5, 3, 7, 2:1, 3:1", tally.getName(0));
         assertEquals("Gen 1:1", tally.getName(1));
@@ -149,16 +151,19 @@ public class PassageTally2Test extends TestCase {
         assertEquals("", empty.getName(10));
     }
 
+    @Test
     public void testToString() {
         assertEquals("Gen 1:1, 5, 3, 7, 2:1, 3:1", tally.toString());
         assertEquals("", empty.toString());
     }
 
+    @Test
     public void testGetOrderedNameAndTally() {
         assertEquals("Gen 1:1 (100%), Gen 1:5 (66%), Gen 1:3 (33%), Gen 1:7 (33%), Gen 2:1 (33%), Gen 3:1 (33%)", tally.getNameAndTally());
         assertEquals("", empty.getNameAndTally());
     }
 
+    @Test
     public void testAddPassageListener() throws Exception {
         FixturePassageListener li = new FixturePassageListener();
         temp = tally.clone();
@@ -173,6 +178,7 @@ public class PassageTally2Test extends TestCase {
         assertTrue(li.check(2, 0, 0));
     }
 
+    @Test
     public void testClone() {
         assertTrue(tally != tally.clone());
         assertEquals(tally, tally.clone());
@@ -180,6 +186,7 @@ public class PassageTally2Test extends TestCase {
         assertEquals(empty, empty.clone());
     }
 
+    @Test
     public void testVerseIterator() throws Exception {
         Iterator<Key> it = tally.iterator();
         assertTrue(it.hasNext());
@@ -199,6 +206,7 @@ public class PassageTally2Test extends TestCase {
         assertTrue(!it.hasNext());
     }
 
+    @Test
     public void testRangeIterator() throws Exception {
         Iterator<Key> it = tally.rangeIterator(RestrictionType.NONE);
         assertTrue(it.hasNext());
@@ -218,21 +226,25 @@ public class PassageTally2Test extends TestCase {
         assertTrue(!it.hasNext());
     }
 
+    @Test
     public void testIsEmpty() {
         assertTrue(!tally.isEmpty());
         assertTrue(empty.isEmpty());
     }
 
+    @Test
     public void testCountVerses() {
         assertEquals(tally.countVerses(), 6);
         assertEquals(empty.countVerses(), 0);
     }
 
+    @Test
     public void testCountRanges() {
         assertEquals(6, tally.countRanges(RestrictionType.NONE));
         assertEquals(0, empty.countRanges(RestrictionType.NONE));
     }
 
+    @Test
     public void testContainsVerse() {
         assertTrue(!empty.contains(gen11));
         assertTrue(tally.contains(gen11));
@@ -241,6 +253,7 @@ public class PassageTally2Test extends TestCase {
         assertTrue(tally.contains(gen15));
     }
 
+    @Test
     public void testContainsVerseRange() {
         assertTrue(!empty.contains(gen11_1));
         assertTrue(tally.contains(gen11_1));
@@ -249,6 +262,7 @@ public class PassageTally2Test extends TestCase {
         assertTrue(!tally.contains(exo21_1));
     }
 
+    @Test
     public void testAdd() throws Exception {
         temp = tally.clone();
         temp.add(VerseFactory.fromString(v11n, "Gen 1:2"));
@@ -265,6 +279,7 @@ public class PassageTally2Test extends TestCase {
         }
     }
 
+    @Test
     public void testUnAdd() throws Exception {
         temp = tally.clone();
         temp.unAdd(VerseFactory.fromString(v11n, "Gen 1:5"));
@@ -275,12 +290,14 @@ public class PassageTally2Test extends TestCase {
         assertEquals("Gen 1:1, 3, 7, 2:1, 3:1", temp.getName());
     }
 
+    @Test
     public void testAddAll() throws Exception {
         temp = tally.clone();
         temp.addAll(keyf.getKey(v11n, "Gen 1:2, Gen 1:4"));
         assertEquals("Gen 1:1, 5, 2, 3, 4, 7, 2:1, 3:1", temp.getName());
     }
 
+    @Test
     public void testClear() {
         temp = tally.clone();
         temp.clear();
@@ -292,6 +309,7 @@ public class PassageTally2Test extends TestCase {
         assertEquals("", temp.getName());
     }
 
+    @Test
     public void testBlur() {
         temp = tally.clone();
         temp.blur(1, RestrictionType.NONE);
@@ -299,12 +317,14 @@ public class PassageTally2Test extends TestCase {
                 temp.getNameAndTally());
     }
 
+    @Test
     public void testFlatten() {
         temp = tally.clone();
         temp.flatten();
         assertEquals(temp.getName(), "Gen 1:1, 3, 5, 7, 2:1, 3:1");
     }
 
+    @Test
     public void testObject() throws Exception {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         ObjectOutputStream obj_out = new ObjectOutputStream(bout);

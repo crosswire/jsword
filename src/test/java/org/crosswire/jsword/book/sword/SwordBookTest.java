@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -30,7 +30,4 @@ import org.crosswire.jsword.book.BookAdvancedParentTst;
  * @author Joe Walker [joe at eireneh dot com]
  */
 public class SwordBookTest extends BookAdvancedParentTst {
-    public SwordBookTest(String s) {
-        super(s);
-    }
 }

@@ -14,35 +14,33 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 // package default;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * JUnit Test.
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
- * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith
  */
-public class JSwordAllTests extends TestCase {
-    public JSwordAllTests(String s) {
-        super(s);
-    }
-
-    public static Test suite() {
-        TestSuite suite = new TestSuite();
-        suite.addTest(org.crosswire.jsword.book.AllTests.suite());
-        suite.addTest(org.crosswire.jsword.book.sword.AllTests.suite());
-        suite.addTest(org.crosswire.jsword.passage.AllTests.suite());
-        suite.addTest(org.crosswire.jsword.bridge.AllTests.suite());
-        suite.addTest(org.crosswire.jsword.index.lucene.analysis.AllTests.suite());
-        suite.addTest(org.crosswire.jsword.versification.AllTests.suite());
-        return suite;
-    }
+@RunWith(Suite.class)
+@SuiteClasses({
+    org.crosswire.jsword.prerequisites.AllTests.class,
+    org.crosswire.jsword.book.AllTests.class,
+    org.crosswire.jsword.book.filter.thml.AllTests.class,
+    org.crosswire.jsword.book.sword.AllTests.class,
+    org.crosswire.jsword.bridge.AllTests.class,
+    org.crosswire.jsword.index.lucene.analysis.AllTests.class,
+    org.crosswire.jsword.passage.AllTests.class,
+    org.crosswire.jsword.versification.AllTests.class,
+    org.crosswire.jsword.versification.system.AllTests.class
+})
+public class JSwordAllTests {
 }

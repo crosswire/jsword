@@ -14,36 +14,31 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 // package default;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * JUnit Test.
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
- * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith
  */
-public class CommonAllTests extends TestCase {
-    public CommonAllTests(String s) {
-        super(s);
-    }
-
-    public static Test suite() {
-        TestSuite suite = new TestSuite();
-        suite.addTest(org.crosswire.common.compress.AllTests.suite());
-        suite.addTest(org.crosswire.common.diff.AllTests.suite());
-        suite.addTest(org.crosswire.common.history.AllTests.suite());
-        suite.addTest(org.crosswire.common.icu.AllTests.suite());
-        suite.addTest(org.crosswire.common.progress.AllTests.suite());
-        suite.addTest(org.crosswire.common.xml.AllTests.suite());
-        suite.addTest(org.crosswire.common.util.AllTests.suite());
-        return suite;
-    }
+@RunWith(Suite.class)
+@SuiteClasses({
+    org.crosswire.common.compress.AllTests.class,
+    org.crosswire.common.diff.AllTests.class,
+    org.crosswire.common.history.AllTests.class,
+    org.crosswire.common.icu.AllTests.class,
+    org.crosswire.common.progress.AllTests.class,
+    org.crosswire.common.xml.AllTests.class,
+    org.crosswire.common.util.AllTests.class
+})
+public class CommonAllTests {
 }

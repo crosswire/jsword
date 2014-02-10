@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005-2011
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -27,7 +27,10 @@ package org.crosswire.common.diff;
  * subsequent tests often rely on earlier ones.
  */
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
+import org.junit.Test;
 
 /**
  * JUnit Test.
@@ -39,24 +42,23 @@ import junit.framework.TestCase;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith
  */
-public class CommonalityTest extends TestCase {
+public class CommonalityTest {
 
-    @Override
-    protected void setUp() {
-    }
-
+    @Test
     public void testPrefix() {
         // Detect and remove any common prefix.
         assertEquals("Commonality.prefix: Null case.", 0, Commonality.prefix("abc", "xyz"));
         assertEquals("Commonality.prefix: Non-null case.", 4, Commonality.prefix("1234abc", "1234xyz"));
     }
 
+    @Test
     public void testSuffix() {
         // Detect and remove any common suffix.
         assertEquals("Commonality.suffix: Null case.", 0, Commonality.suffix("abc", "xyz"));
         assertEquals("Commonality.suffix: Non-null case.", 4, Commonality.suffix("abc1234", "xyz1234"));
     }
 
+    @Test
     public void testHalfmatch() {
         // Detect a halfmatch.
         assertNull("Commonality.halfMatch: No match.", Commonality.halfMatch("1234567890", "abcdef"));

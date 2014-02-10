@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005-2011
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -27,11 +27,13 @@ package org.crosswire.common.diff;
  * subsequent tests often rely on earlier ones.
  */
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
 /**
  * JUnit Test.
@@ -43,12 +45,9 @@ import junit.framework.TestCase;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith
  */
-public class LineMapTest extends TestCase {
+public class LineMapTest {
 
-    @Override
-    protected void setUp() {
-    }
-
+    @Test
     public void testCompile() {
         // Convert lines down to characters
         ArrayList<String> list = new ArrayList<String>();
@@ -71,6 +70,7 @@ public class LineMapTest extends TestCase {
         assertEquals("new LineMap:", list, map.getLines());
     }
 
+    @Test
     public void testRestore() {
         // Convert chars up to lines
         List<Difference> diffs = diffList(

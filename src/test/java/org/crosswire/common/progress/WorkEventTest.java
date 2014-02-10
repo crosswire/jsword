@@ -14,13 +14,15 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.common.progress;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 /**
  * JUnit Test.
@@ -28,17 +30,10 @@ import junit.framework.TestCase;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith
  */
-public class WorkEventTest extends TestCase {
-    /**
-     * Constructor for WorkEventTest.
-     * 
-     * @param arg0
-     */
-    public WorkEventTest(String arg0) {
-        super(arg0);
-    }
-
+public class WorkEventTest {
+    @Test
     public void testGetJob() {
         Progress job = JobManager.createJob("wibble");
         job.beginJob("wibble");

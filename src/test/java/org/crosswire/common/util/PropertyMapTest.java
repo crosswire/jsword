@@ -14,11 +14,14 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007
+ * Copyright: 2007 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.common.util;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,47 +29,30 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.util.MissingResourceException;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
- *
+ * JUnit Test
  *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author DM Smith
  */
-public class PropertyMapTest extends TestCase {
-
-    /**
-     * @param name
-     */
-    public PropertyMapTest(String name) {
-        super(name);
-    }
-
-    /* (non-Javadoc)
-     * @see junit.framework.TestCase#setUp()
-     */
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+public class PropertyMapTest {
+    @Before
+    public void setUp() throws Exception {
         m = new PropertyMap();
     }
 
-    /* (non-Javadoc)
-     * @see junit.framework.TestCase#tearDown()
-     */
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testBasic() {
         assertEquals("Test for an element not present", null, m.get("diddly"));
         m.put("diddly", "squat");
         assertEquals("Test for a present element", "squat", m.get("diddly"));
     }
 
+    @Test
     public void testLoad() {
         InputStream in = null;
         try {
@@ -81,6 +67,7 @@ public class PropertyMapTest extends TestCase {
         }
     }
 
+    @Test
     public void testRead() {
         InputStream in = null;
         try {
@@ -96,6 +83,8 @@ public class PropertyMapTest extends TestCase {
         assertEquals("Only one element was in the file", 1, m.size());
         assertEquals("Test that the load worked", "I am", m.get("Here"));
     }
+
+    @Test
     public void testSave() {
         m.put("Here", "Am I");
         URI uri = CWProject.instance().getWritableURI("test", FileUtil.EXTENSION_PROPERTIES);
@@ -110,6 +99,7 @@ public class PropertyMapTest extends TestCase {
         }
     }
 
+    @Test
     public void testReload() {
         assertEquals("The map is empty", 0, m.size());
 

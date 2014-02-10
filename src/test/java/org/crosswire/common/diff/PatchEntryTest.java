@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005-2011
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -27,11 +27,13 @@ package org.crosswire.common.diff;
  * subsequent tests often rely on earlier ones.
  */
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
 /**
  * JUnit Test.
@@ -43,11 +45,8 @@ import junit.framework.TestCase;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith
  */
-public class PatchEntryTest extends TestCase {
-    @Override
-    protected void setUp() {
-    }
-
+public class PatchEntryTest {
+    @Test
     public void testPatchObj() {
         // Patch Object
         PatchEntry p = new PatchEntry();

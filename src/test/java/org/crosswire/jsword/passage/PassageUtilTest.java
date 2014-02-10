@@ -14,18 +14,22 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.jsword.passage;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import org.crosswire.jsword.book.CaseType;
 import org.crosswire.jsword.versification.BookName;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
-
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * JUnit Test.
@@ -34,11 +38,7 @@ import junit.framework.TestCase;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class PassageUtilTest extends TestCase {
-    public PassageUtilTest(String s) {
-        super(s);
-    }
-
+public class PassageUtilTest {
     /**
      * How we create Passages
      */
@@ -54,8 +54,8 @@ public class PassageUtilTest extends TestCase {
      * 
      * @see junit.framework.TestCase#setUp()
      */
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         storedCase = BookName.getDefaultCase();
         BookName.setCase(CaseType.SENTENCE);
         fullName = BookName.isFullBookName();
@@ -71,13 +71,14 @@ public class PassageUtilTest extends TestCase {
      * 
      * @see junit.framework.TestCase#tearDown()
      */
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         BookName.setCase(storedCase);
         BookName.setFullBookName(fullName);
         PassageUtil.setPersistentNaming(persist);
     }
 
+    @Test
     public void testOther() {
         // Need to add:
         /*
@@ -89,6 +90,7 @@ public class PassageUtilTest extends TestCase {
          */
     }
 
+    @Test
     public void testPersistentNaming() throws Exception {
         PassageUtil.setPersistentNaming(false);
         assertTrue(!PassageUtil.isPersistentNaming());
@@ -110,6 +112,7 @@ public class PassageUtilTest extends TestCase {
         assertEquals("G:1:1", VerseFactory.fromString(v11n, "G:1:1").toString());
     }
 
+    @Test
     public void testBinary() {
         byte[] buffer;
         int[] index;
@@ -337,10 +340,11 @@ public class PassageUtilTest extends TestCase {
         }
     }
 
+    @Test
     public void testBinaryRepresentation() throws Exception {
-        Passage gen1_135 = (Passage) keyf.getKey(v11n, "Gen 1:1, Gen 1:3, Gen 1:5");
-        Passage exo2a_3b = (Passage) keyf.getKey(v11n, "Exo 2:1-10, Exo 3:1-11");
-        Passage gen_rev = (Passage) keyf.getKey(v11n, "Gen 1:1-Rev 22:21");
+        Passage gen1_135 = keyf.getKey(v11n, "Gen 1:1, Gen 1:3, Gen 1:5");
+        Passage exo2a_3b = keyf.getKey(v11n, "Exo 2:1-10, Exo 3:1-11");
+        Passage gen_rev = keyf.getKey(v11n, "Gen 1:1-Rev 22:21");
         Passage hard = (Passage) keyf.createEmptyKeyList(v11n);
         Passage empty = (Passage) keyf.createEmptyKeyList(v11n);
 

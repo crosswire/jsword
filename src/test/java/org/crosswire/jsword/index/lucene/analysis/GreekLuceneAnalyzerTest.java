@@ -14,18 +14,20 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007
+ * Copyright: 2007 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.jsword.index.lucene.analysis;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertTrue;
 
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Test the Greek Analyzer
@@ -33,22 +35,18 @@ import org.apache.lucene.util.Version;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Sijo Cherian [sijocherian at yahoo dot com]
+ * @author DM Smith
  */
-public class GreekLuceneAnalyzerTest extends TestCase {
+public class GreekLuceneAnalyzerTest {
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         myAnalyzer = new GreekLuceneAnalyzer();
 
         parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
     }
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testTokenization() throws ParseException {
         // From john 3:16
 

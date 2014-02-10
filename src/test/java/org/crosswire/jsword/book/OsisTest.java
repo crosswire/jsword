@@ -14,18 +14,19 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005-2013
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.jsword.book;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertTrue;
+
+import java.io.ByteArrayOutputStream;
 
 import org.jdom2.Element;
 import org.jdom2.output.XMLOutputter;
-
-import java.io.ByteArrayOutputStream;
+import org.junit.Test;
 
 /**
  * JUnit Test.
@@ -33,30 +34,10 @@ import java.io.ByteArrayOutputStream;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith
  */
-public class OsisTest extends TestCase {
-    public OsisTest(String s) {
-        super(s);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see junit.framework.TestCase#setUp()
-     */
-    @Override
-    protected void setUp() throws Exception {
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see junit.framework.TestCase#tearDown()
-     */
-    @Override
-    protected void tearDown() throws Exception {
-    }
-
+public class OsisTest {
+    @Test
     public void testManual() throws Exception {
         Element seg = OSISUtil.factory().createSeg();
         seg.addContent("In the beginning God created the heaven and the earth.");

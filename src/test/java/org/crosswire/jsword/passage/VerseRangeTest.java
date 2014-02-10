@@ -14,21 +14,26 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.jsword.passage;
 
-import java.util.Iterator;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import junit.framework.TestCase;
+import java.util.Iterator;
 
 import org.crosswire.jsword.book.CaseType;
 import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.BookName;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * JUnit Test.
@@ -36,12 +41,9 @@ import org.crosswire.jsword.versification.system.Versifications;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith
  */
-public class VerseRangeTest extends TestCase {
-    public VerseRangeTest(String s) {
-        super(s);
-    }
-
+public class VerseRangeTest {
     /** Control the output of names */
     private CaseType storedCase;
     private boolean fullName;
@@ -78,8 +80,8 @@ public class VerseRangeTest extends TestCase {
     private Verse rev90 = null;
     private Verse rev91 = null;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         storedCase = BookName.getDefaultCase();
         BookName.setCase(CaseType.SENTENCE);
         fullName = BookName.isFullBookName();
@@ -119,12 +121,13 @@ public class VerseRangeTest extends TestCase {
         rev91 = new Verse(v11n, BibleBook.REV, 22, 1);
     }
 
-    @Override
-    protected void tearDown() {
+    @After
+    public void tearDown() {
         BookName.setCase(storedCase);
         BookName.setFullBookName(fullName);
     }
 
+    @Test
     public void testNewViaString() throws Exception {
         assertEquals(gen11_1, VerseRangeFactory.fromString(v11n, "Gen 1:1-1"));
         assertEquals(gen11_2, VerseRangeFactory.fromString(v11n, "Gen 1:1-2"));
@@ -191,6 +194,7 @@ public class VerseRangeTest extends TestCase {
         assertEquals(rev11_9, VerseRangeFactory.fromString(v11n, "Rev"));
     }
 
+    @Test
     public void testToString() {
         assertEquals("Gen 1:1", gen11_1.toString());
         assertEquals("Gen 1:1-2", gen11_2.toString());
@@ -205,6 +209,7 @@ public class VerseRangeTest extends TestCase {
         assertEquals("Rev 22:21", rev99_1.toString());
     }
 
+    @Test
     public void testPersistentNaming() throws Exception {
         PassageUtil.setPersistentNaming(false);
         assertEquals("1Cor 8-9", VerseRangeFactory.fromString(v11n, "1corinth 8-9").toString());
@@ -220,21 +225,25 @@ public class VerseRangeTest extends TestCase {
         PassageUtil.setPersistentNaming(false);
     }
 
+    @Test
     public void testNewViaVerseInt() throws Exception {
         assertEquals(gen11_1, RestrictionType.NONE.toRange(v11n, VerseFactory.fromString(v11n, "Gen 1:1"), 1));
     }
 
+    @Test
     public void testNewViaVerseIntBoolean() {
         assertEquals(gen_rev, RestrictionType.NONE.toRange(v11n, gen11, 999999));
         assertEquals(gen11_1, RestrictionType.NONE.toRange(v11n, gen11, 0));
         assertEquals(gen11_1, RestrictionType.NONE.toRange(v11n, gen11, -1));
     }
 
+    @Test
     public void testNewViaVerse() {
         assertEquals(gen11_1, new VerseRange(v11n, gen11));
         assertEquals(rev99_1, new VerseRange(v11n, rev99));
     }
 
+    @Test
     public void testNewViaVerseVerse() throws Exception {
         assertEquals(gen11_1, new VerseRange(v11n, gen11, gen11));
         assertEquals(gen11_2, new VerseRange(v11n, gen11, gen12));
@@ -248,6 +257,7 @@ public class VerseRangeTest extends TestCase {
         assertEquals(gen11_1, new VerseRange(v11n, gen11, new Verse(v11n, BibleBook.GEN, 1, 1)));
     }
 
+    @Test
     public void testNewViaVerseIntIntBoolean() {
         assertEquals(gen11_1, RestrictionType.CHAPTER.blur(v11n, gen11, 0, 0));
         assertEquals(gen11_1, RestrictionType.NONE.blur(v11n, gen11, 0, 0));
@@ -319,6 +329,7 @@ public class VerseRangeTest extends TestCase {
         assertEquals(rev11_9, RestrictionType.NONE.blur(v11n, rev99, 426, 9));
     }
 
+    @Test
     public void testNewViaVerseRangeIntIntBoolean() {
         assertEquals(gen11_1, RestrictionType.CHAPTER.blur(v11n, gen11_1, 0, 0));
         assertEquals(gen11_1, RestrictionType.NONE.blur(v11n, gen11_1, 0, 0));
@@ -387,6 +398,7 @@ public class VerseRangeTest extends TestCase {
         assertEquals(rev11_9, RestrictionType.NONE.blur(v11n, rev99_1, 426, 9));
     }
 
+    @Test
     public void testNewViaVerseRangeVerseRange() {
         assertEquals(gen_rev, new VerseRange(gen11_1, rev99_9));
         assertEquals(gen_rev, new VerseRange(gen_rev, rev99_9));
@@ -409,6 +421,7 @@ public class VerseRangeTest extends TestCase {
         }
     }
 
+    @Test
     public void testGetName() {
         assertEquals("Gen 1:1", gen11_1.getName());
         assertEquals("Gen 1:1-2", gen11_2.getName());
@@ -423,6 +436,7 @@ public class VerseRangeTest extends TestCase {
         assertEquals("Rev 22:21", rev99_1.getName());
     }
 
+    @Test
     public void testGetNameVerse() {
         assertEquals("1-2", gen11_2.getName(gen11));
         assertEquals("2", gen12_1.getName(gen11));
@@ -430,6 +444,7 @@ public class VerseRangeTest extends TestCase {
         assertEquals("Rev 22",rev99_9.getName(null));
     }
 
+    @Test
     public void testGetStart() {
         assertEquals(gen11, gen11_1.getStart());
         assertEquals(gen11, gen11_2.getStart());
@@ -444,6 +459,7 @@ public class VerseRangeTest extends TestCase {
         assertEquals(rev99, rev99_1.getStart());
     }
 
+    @Test
     public void testGetEnd() {
         assertEquals(gen11, gen11_1.getEnd());
         assertEquals(gen12, gen11_2.getEnd());
@@ -458,6 +474,7 @@ public class VerseRangeTest extends TestCase {
         assertEquals(rev99, rev99_1.getEnd());
     }
 
+    @Test
     public void testGetVerseCount() {
         assertEquals(1, gen11_1.getCardinality());
         assertEquals(2, gen11_2.getCardinality());
@@ -472,6 +489,7 @@ public class VerseRangeTest extends TestCase {
         assertEquals(1, rev99_1.getCardinality());
     }
 
+    @Test
     public void testClone() {
         assertTrue(gen11_1 != gen11_1.clone());
         assertTrue(gen11_1.equals(gen11_1.clone()));
@@ -479,6 +497,7 @@ public class VerseRangeTest extends TestCase {
         assertTrue(rev99_1.equals(rev99_1.clone()));
     }
 
+    @Test
     public void testCompareTo() {
         assertEquals(1, rev99_1.compareTo(gen11_1));
         assertEquals(-1, gen11_1.compareTo(rev99_1));
@@ -500,6 +519,7 @@ public class VerseRangeTest extends TestCase {
         }
     }
 
+    @Test
     public void testAdjacentTo() throws Exception {
         assertTrue(!gen11_1.adjacentTo(rev99_9));
         assertTrue(!gen11_1.adjacentTo(rev11_9));
@@ -524,6 +544,7 @@ public class VerseRangeTest extends TestCase {
         }
     }
 
+    @Test
     public void testOverlaps() throws Exception {
         assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:10-11").overlaps(VerseRangeFactory.fromString(v11n, "Gen 1:11-12")));
         assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:10-12").overlaps(VerseRangeFactory.fromString(v11n, "Gen 1:11-13")));
@@ -541,6 +562,7 @@ public class VerseRangeTest extends TestCase {
         }
     }
 
+    @Test
     public void testContainsVerse() {
         assertTrue(gen_all.contains(gen11));
         assertTrue(gen_all.contains(gen12));
@@ -562,6 +584,7 @@ public class VerseRangeTest extends TestCase {
         }
     }
 
+    @Test
     public void testContainsVerseRange() {
         assertTrue(gen_all.contains(gen11_1));
         assertTrue(gen_all.contains(gen11_2));
@@ -583,6 +606,7 @@ public class VerseRangeTest extends TestCase {
         }
     }
 
+    @Test
     public void testIsChapter() throws Exception {
         assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1").isWholeChapter());
         assertTrue(VerseRangeFactory.fromString(v11n, "Gen 1:0-ff").isWholeChapter());
@@ -596,6 +620,7 @@ public class VerseRangeTest extends TestCase {
         assertTrue(!VerseRangeFactory.fromString(v11n, "Lev").isWholeChapter());
     }
 
+    @Test
     public void testIsBook() throws Exception {
         assertTrue(VerseRangeFactory.fromString(v11n, "Gen").isWholeBook());
         assertTrue(VerseRangeFactory.fromString(v11n, "Gen 0:0-Gen 50:ff").isWholeBook());
@@ -607,6 +632,7 @@ public class VerseRangeTest extends TestCase {
         assertTrue(!VerseRangeFactory.fromString(v11n, "Lev-Deu 1:1").isWholeBook());
     }
 
+    @Test
     public void testToVerseArray() {
         assertEquals(1, gen11_1.toVerseArray().length);
         assertEquals(2, gen11_2.toVerseArray().length);
@@ -630,6 +656,7 @@ public class VerseRangeTest extends TestCase {
         assertEquals(rev99, rev11_9.toVerseArray()[426]);
     }
 
+    @Test
     public void testVerseElements() {
         Iterator<Key> it = gen11_1.iterator();
         while (it.hasNext()) {
@@ -654,6 +681,7 @@ public class VerseRangeTest extends TestCase {
     /**
      * Test fix related to JS-274 to ensure key.contains(verse) works correctly
      */
+    @Test
     public void testKeyContainsVerse() {
         // this passes
         assertTrue(gen_all.contains(gen11));

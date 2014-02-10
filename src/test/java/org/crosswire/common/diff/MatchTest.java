@@ -14,13 +14,15 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005-2011
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.common.diff;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 /**
  * JUnit Test.
@@ -32,12 +34,9 @@ import junit.framework.TestCase;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith
  */
-public class MatchTest extends TestCase {
+public class MatchTest {
 
-    @Override
-    protected void setUp() {
-    }
-
+    @Test
     public void testMatchMain() {
         assertEquals("match_main: Equality.", 0, new Match("abcdef", "abcdef", 1000).locate());
         assertEquals("match_main: Null text.", -1, new Match("", "abcdef", 1).locate());

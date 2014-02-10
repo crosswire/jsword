@@ -14,18 +14,20 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.common.util;
+
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.io.PipedReader;
 import java.io.PipedWriter;
 import java.io.PrintWriter;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
 /**
  * JUnit Test.
@@ -33,20 +35,11 @@ import junit.framework.TestCase;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith
  */
-public class StringUtilTest extends TestCase {
-    public StringUtilTest(String s) {
-        super(s);
-    }
+public class StringUtilTest {
 
-    @Override
-    protected void setUp() {
-    }
-
-    @Override
-    protected void tearDown() {
-    }
-
+    @Test
     public void testRead() throws IOException {
         PipedReader in = new PipedReader();
         PipedWriter pout = new PipedWriter(in);
@@ -58,12 +51,14 @@ public class StringUtilTest extends TestCase {
         assertEquals("a b c d e" + StringUtil.NEWLINE + "f g h i j" + StringUtil.NEWLINE, StringUtil.read(in));
     }
 
+    @Test
     public void testGetInitials() {
         assertEquals("CoE", StringUtil.getInitials("Church of England"));
         assertEquals("JDC", StringUtil.getInitials("Java DataBase Connectivity"));
         assertEquals("", StringUtil.getInitials(""));
     }
 
+    @Test
     public void testCreateTitle() {
         assertEquals("One Two", StringUtil.createTitle("OneTwo"));
         assertEquals("One Two", StringUtil.createTitle("one_two"));

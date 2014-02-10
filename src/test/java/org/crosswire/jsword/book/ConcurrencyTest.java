@@ -14,18 +14,27 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2012
+ * Copyright: 2012 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.jsword.book;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.fail;
 
 import org.crosswire.jsword.passage.NoSuchKeyException;
+import org.junit.Test;
 
-public class ConcurrencyTest extends TestCase {
+/**
+ * JUnit Test.
+ * 
+ * @see gnu.lgpl.License for license details.<br>
+ *      The copyright to this program is held by it's authors.
+ * @author DM Smith
+ */
+public class ConcurrencyTest {
 
+    @Test
     public void testConcurrencyIssueOnBookData() throws InterruptedException {
         final String[] names = { "KJV", "ESV" };
         final String ref = "Rom.1.1";

@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -28,7 +28,7 @@ package org.crosswire.jsword.passage;
  * @author Joe Walker [joe at eireneh dot com]
  */
 public class PassageSizeTest extends PassageParentTst {
-    public PassageSizeTest(String s) {
-        super(s, PassageType.SIZE, false);
+    public PassageSizeTest() {
+        super(PassageType.SIZE, false);
     }
 }

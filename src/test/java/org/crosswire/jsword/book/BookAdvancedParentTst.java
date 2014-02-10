@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -26,9 +26,9 @@ package org.crosswire.jsword.book;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith
  */
 public class BookAdvancedParentTst extends BookParentTst {
-    public BookAdvancedParentTst(String s) {
-        super(s);
+    public BookAdvancedParentTst() {
     }
 }

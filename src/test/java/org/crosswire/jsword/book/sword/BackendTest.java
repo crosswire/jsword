@@ -14,13 +14,14 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2012-2013
+ * Copyright: 2012 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.jsword.book.sword;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.crosswire.jsword.book.Book;
 import org.crosswire.jsword.book.BookData;
@@ -45,7 +46,7 @@ import org.slf4j.LoggerFactory;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith
  */
-public class BackendTest extends TestCase {
+public class BackendTest {
     /**
      * Z Text
      * 
@@ -233,7 +234,7 @@ public class BackendTest extends TestCase {
     }
 
     /**
-     * Commentariess Raw
+     * Commentaries Raw
      * 
      * @throws Exception
      *             an uncaught, failing, exception

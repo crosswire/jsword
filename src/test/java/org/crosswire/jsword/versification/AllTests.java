@@ -14,14 +14,15 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005 - 2012
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.jsword.versification;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * JUnit test of Versification classes.
@@ -30,28 +31,25 @@ import junit.framework.TestSuite;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith
  */
+@RunWith(Suite.class)
+@SuiteClasses({
+    BookNameTest.class,
+    BibleNamesTest.class,
+    BibleBookListTest.class,
+    Catholic2Test.class,
+    CatholicTest.class,
+    GermanTest.class,
+    KJVATest.class,
+    KJVTest.class,
+    LeningradTest.class,
+    LutherTest.class,
+    MTTest.class,
+    NRSVATest.class,
+    SynodalPTest.class,
+    SynodalTest.class,
+    FileVersificationMappingTest.class,
+    VersificationsMapperTest.class,
+    VersificationToKJVMapperTest.class
+})
 public class AllTests {
-    public static Test suite() {
-        TestSuite suite = new TestSuite("Test for org.crosswire.jsword.versification");
-        // $JUnit-BEGIN$
-        suite.addTestSuite(BookNameTest.class);
-        suite.addTestSuite(BibleNamesTest.class);
-        suite.addTestSuite(BibleBookTest.class);
-        suite.addTestSuite(BibleBookListTest.class);
-        suite.addTestSuite(Catholic2Test.class);
-        suite.addTestSuite(CatholicTest.class);
-        suite.addTestSuite(GermanTest.class);
-        suite.addTestSuite(KJVATest.class);
-        suite.addTestSuite(KJVTest.class);
-        suite.addTestSuite(LeningradTest.class);
-        suite.addTestSuite(LutherTest.class);
-        suite.addTestSuite(MTTest.class);
-        suite.addTestSuite(NRSVATest.class);
-        suite.addTestSuite(NRSVTest.class);
-        suite.addTestSuite(SynodalPTest.class);
-        suite.addTestSuite(SynodalTest.class);
-        suite.addTestSuite(VulgTest.class);
-        // $JUnit-END$
-        return suite;
-    }
 }

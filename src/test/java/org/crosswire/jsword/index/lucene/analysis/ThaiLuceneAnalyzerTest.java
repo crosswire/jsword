@@ -14,18 +14,20 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007
+ * Copyright: 2007 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.jsword.index.lucene.analysis;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertTrue;
 
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Test the Thai Analyzer
@@ -33,22 +35,18 @@ import org.apache.lucene.util.Version;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Sijo Cherian [sijocherian at yahoo dot com]
+ * @author DM Smith
  */
-public class ThaiLuceneAnalyzerTest extends TestCase {
+public class ThaiLuceneAnalyzerTest {
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         myAnalyzer = new ThaiLuceneAnalyzer();
 
         parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
     }
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testDefaultBehavior() throws ParseException {
         String testInput = "\u0E1A\u0E38\u0E15\u0E23\u0E21\u0E19\u0E38\u0E29\u0E22\u0E4C\u0E08\u0E30\u0E15\u0E49\u0E2D";
 
@@ -58,6 +56,7 @@ public class ThaiLuceneAnalyzerTest extends TestCase {
         assertTrue(query.toString().indexOf("\u0E4C \u0E08\u0E30 \u0E15\u0E49\u0E2D") > -1); 
     }
 
+    @Test
     public void testWhitespaceQuery() throws ParseException {
         // From john 3:3
         String testInput = "\u0E40\u0E23\u0E32\u0E1A\u0E2D\u0E01\u0E04\u0E27\u0E32\u0E21\u0E08\u0E23\u0E34\u0E07\u0E41\u0E01\u0E48\u0E17\u0E48\u0E32\u0E19\u0E27\u0E48\u0E32 \u0E16\u0E49\u0E32\u0E1C\u0E39\u0E49\u0E43\u0E14\u0E44\u0E21\u0E48\u0E44\u0E14\u0E49\u0E1A\u0E31\u0E07\u0E40\u0E01\u0E34\u0E14\u0E43\u0E2B\u0E21\u0E48";

@@ -14,21 +14,23 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007
+ * Copyright: 2007 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.jsword.index.lucene.analysis;
 
-import java.util.Arrays;
+import static org.junit.Assert.assertTrue;
 
-import junit.framework.TestCase;
+import java.util.Arrays;
 
 import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Test the English Analyzer
@@ -36,23 +38,18 @@ import org.apache.lucene.util.Version;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Sijo Cherian [sijocherian at yahoo dot com]
+ * @author DM Smith
  */
-public class EnglishLuceneAnalyzerTest extends TestCase {
+public class EnglishLuceneAnalyzerTest {
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         myAnalyzer = new EnglishLuceneAnalyzer();
 
         parser = new QueryParser(Version.LUCENE_29, field, myAnalyzer);
-
     }
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testDefaultBehavior() throws ParseException {
         String testInput = "Surely will every man walketh";
         Query query = parser.parse(testInput);
@@ -62,6 +59,7 @@ public class EnglishLuceneAnalyzerTest extends TestCase {
         assertTrue(query.toString().indexOf(field + ":everi") > -1);    
     }
 
+    @Test
     public void testSetDoStopWords() throws ParseException {
         myAnalyzer = new EnglishLuceneAnalyzer();
         myAnalyzer.setDoStopWords(true);
@@ -72,6 +70,8 @@ public class EnglishLuceneAnalyzerTest extends TestCase {
         // enable stop word
         assertTrue(query.toString().indexOf(field + ":will") == -1);
     }
+
+    @Test
     public void testCustomStopWords() throws Exception {
         myAnalyzer = new EnglishLuceneAnalyzer();
         // set custom stop word
@@ -90,6 +90,7 @@ public class EnglishLuceneAnalyzerTest extends TestCase {
 
     }
 
+    @Test
     public void testSetDoStemming() throws ParseException {
         myAnalyzer = new EnglishLuceneAnalyzer();
         myAnalyzer.setDoStemming(false);

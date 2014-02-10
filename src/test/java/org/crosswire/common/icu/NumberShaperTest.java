@@ -14,19 +14,21 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007
+ * Copyright: 2007 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.common.icu;
 
-import java.util.Locale;
+import static org.junit.Assert.assertEquals;
 
-import junit.framework.TestCase;
+import java.util.Locale;
 
 import org.crosswire.jsword.internationalisation.DefaultLocaleProvider;
 import org.crosswire.jsword.internationalisation.LocaleProvider;
 import org.crosswire.jsword.internationalisation.LocaleProviderManager;
+import org.junit.After;
+import org.junit.Test;
 
 /**
  * JUnit test of NumberShaper.
@@ -35,10 +37,16 @@ import org.crosswire.jsword.internationalisation.LocaleProviderManager;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith
  */
-public class NumberShaperTest extends TestCase {
+public class NumberShaperTest {
     private static final String europeanDigits = "0123456789";
     private static final String easternArabicDigits = "\u06f0\u06f1\u06f2\u06f3\u06f4\u06f5\u06f6\u06f7\u06f8\u06f9";
 
+    @After
+    public void tearDown()  {
+        LocaleProviderManager.setLocaleProvider(new DefaultLocaleProvider());
+    }
+
+    @Test
     public void testShape() {
         //This presumably prevents tests from running in parallel, but can't do much about this, given all the statics.
         LocaleProviderManager.setLocaleProvider(new LocaleProvider() {
@@ -58,8 +66,4 @@ public class NumberShaperTest extends TestCase {
         }
     }
 
-    @Override
-    protected void tearDown()  {
-        LocaleProviderManager.setLocaleProvider(new DefaultLocaleProvider());
-    }
 }

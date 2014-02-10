@@ -14,7 +14,7 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2013
+ * Copyright: 2013 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
@@ -31,8 +31,8 @@ import org.crosswire.jsword.versification.system.SystemKJV;
  */
 public class KJVTest extends VersificationParentTst {
 
-    public KJVTest(String s) {
-        super(s, SystemKJV.V11N_NAME);
+    public KJVTest() {
+        super(SystemKJV.V11N_NAME);
     }
 
 }

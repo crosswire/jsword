@@ -14,16 +14,19 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2009-2013
+ * Copyright: 2009 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.jsword.book.sword;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
-
-import junit.framework.TestCase;
 
 import org.crosswire.common.util.Language;
 import org.crosswire.jsword.book.Book;
@@ -35,6 +38,7 @@ import org.crosswire.jsword.book.OSISUtil;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.jdom2.Element;
+import org.junit.Test;
 
 /**
  * A Raw File format that allows for each verse to have it's own storage.
@@ -42,15 +46,18 @@ import org.jdom2.Element;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author mbergmann
+ * @author DM Smith
  */
-public class ConfigEntryTableTest extends TestCase {
+public class ConfigEntryTableTest {
 
+    @Test
     public void testCreateConfigEntryTableInstance() {
         ConfigEntryTable table = new ConfigEntryTable("TestBook");
         assertNotNull(table);
     }
 
     // TODO: make this test use mocks or setup its own environment
+    @Test
     public void failingAddConfigEntry() {
         ConfigEntryTable table = new ConfigEntryTable("TestBook");
         assertNotNull(table);
@@ -90,9 +97,9 @@ public class ConfigEntryTableTest extends TestCase {
         } catch (NoSuchKeyException e1) {
             fail("Should have Gen 1:1 key");
         }
-        
     }
 
+    @Test
     public void testSaveConfigEntryTable() {
         ConfigEntryTable table = new ConfigEntryTable("TestBook");
         assertNotNull(table);

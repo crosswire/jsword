@@ -14,15 +14,18 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005 - 2012
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.jsword.versification;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
 import org.crosswire.jsword.book.CaseType;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * JUnit test of BookName
@@ -30,24 +33,22 @@ import org.crosswire.jsword.book.CaseType;
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
+ * @author DM Smith
  */
-public class BookNameTest extends TestCase {
-    public BookNameTest(String s) {
-        super(s);
-    }
-
+public class BookNameTest {
     private CaseType storedCase;
 
-    @Override
-    protected void setUp() {
+    @Before
+    public void setUp() {
         storedCase = BookName.getDefaultCase();
     }
 
-    @Override
-    protected void tearDown() {
+    @After
+    public void tearDown() {
         BookName.setCase(storedCase);
     }
 
+    @Test
     public void testCase() {
         BookName.setCase(CaseType.LOWER);
         assertEquals(CaseType.LOWER, BookName.getDefaultCase());
@@ -59,6 +60,7 @@ public class BookNameTest extends TestCase {
         assertEquals(CaseType.SENTENCE, BookName.getDefaultCase());
     }
 
+    @Test
     public void testGetBookJogger() throws Exception {
         assertEquals("Gen", BibleBook.GEN.getOSIS());
         assertEquals("Exod", BibleBook.EXOD.getOSIS());

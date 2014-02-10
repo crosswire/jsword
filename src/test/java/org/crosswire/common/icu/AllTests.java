@@ -14,14 +14,15 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2007
+ * Copyright: 2007 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.common.icu;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * JUnit Test.
@@ -30,12 +31,9 @@ import junit.framework.TestSuite;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith
  */
+@RunWith(Suite.class)
+@SuiteClasses({
+    NumberShaperTest.class
+})
 public class AllTests {
-    public static Test suite() {
-        TestSuite suite = new TestSuite("Test for org.crosswire.common.icu");
-        // $JUnit-BEGIN$
-        suite.addTest(new TestSuite(NumberShaperTest.class));
-        // $JUnit-END$
-        return suite;
-    }
 }

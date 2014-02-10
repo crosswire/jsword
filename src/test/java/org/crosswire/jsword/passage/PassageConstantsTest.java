@@ -14,13 +14,15 @@
  *      59 Temple Place - Suite 330
  *      Boston, MA 02111-1307, USA
  *
- * Copyright: 2005
+ * Copyright: 2005 - 2014
  *     The copyright to this program is held by it's authors.
  *
  */
 package org.crosswire.jsword.passage;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 /**
  * JUnit Test.
@@ -29,29 +31,9 @@ import junit.framework.TestCase;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public class PassageConstantsTest extends TestCase {
-    public PassageConstantsTest(String s) {
-        super(s);
-    }
+public class PassageConstantsTest {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see junit.framework.TestCase#setUp()
-     */
-    @Override
-    protected void setUp() throws Exception {
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see junit.framework.TestCase#tearDown()
-     */
-    @Override
-    protected void tearDown() throws Exception {
-    }
-
+    @Test
     public void testAllowedDelims() {
         // Check that we're not re-using delimiters
         for (int i = 0; i < AccuracyType.VERSE_ALLOWED_DELIMS.length(); i++) {
