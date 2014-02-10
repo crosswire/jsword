@@ -647,9 +647,9 @@ public final class OSISUtil {
      * @return The canonical text without markup
      */
     public static String getCanonicalText(Element root) {
-        //if someone passes a root element which has text in, we need to check whether it's worth processing.
-        //For example. where you have a non-canonical title being passed in, we deal with this here.
-        if(!isCanonical(root)) {
+        // if someone passes a root element which has text in, we need to check whether it's worth processing.
+        // For example. where you have a non-canonical title being passed in, we deal with this here.
+        if (!isCanonical(root)) {
             //no point in continuing...
             return "";
         }
@@ -1196,6 +1196,4 @@ public final class OSISUtil {
 
     private static String strongsNumber = "strong:([GgHh][0-9]+!?[A-Za-z]*)";
     private static Pattern strongsNumberPattern = Pattern.compile(strongsNumber);
-    private static String robinsons = "robinson:([a-zA-Z][-a-zA-Z]*)";
-    private static Pattern robinsonsPattern = Pattern.compile(robinsons);
 }
