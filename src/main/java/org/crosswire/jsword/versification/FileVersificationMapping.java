@@ -1,11 +1,28 @@
+/**
+ * Distribution License:
+ * JSword is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License, version 2.1 or later
+ * as published by the Free Software Foundation. This program is distributed
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * The License is available on the internet at:
+ *       http://www.gnu.org/copyleft/lgpl.html
+ * or by writing to:
+ *      Free Software Foundation, Inc.
+ *      59 Temple Place - Suite 330
+ *      Boston, MA 02111-1307, USA
+ *
+ * Copyright: 2013 - 2014
+ *     The copyright to this program is held by it's authors.
+ *
+ */
 package org.crosswire.jsword.versification;
 
 import org.crosswire.common.config.ConfigException;
-import org.crosswire.common.util.CWClassLoader;
-import org.crosswire.common.util.FileUtil;
 import org.crosswire.common.util.KeyValuePair;
 import org.crosswire.common.util.ResourceUtil;
-import org.crosswire.jsword.JSMsg;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,10 +32,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This reads a file upfront and creates the key value pairs. Because
+ * This reads a file up front and creates the key value pairs. Because
  * we're not quite using the 'properties' file definition because we allow
  * duplicate keys on either side of the '=' sign, we need to do the processing ourselves.
  *
+ * @see gnu.lgpl.License for license details.<br>
+ *      The copyright to this program is held by it's authors.
  * @author chrisburrell
  */
 public class FileVersificationMapping {
@@ -39,7 +58,7 @@ public class FileVersificationMapping {
      * @throws ConfigException error parsing the contents of the file
      */
     public FileVersificationMapping(Versification versification) throws IOException, ConfigException {
-        //TODO: deal with Missing Resource Exceptions
+        //TODO(CJB): deal with Missing Resource Exceptions
         InputStream s = ResourceUtil.getResourceAsStream(getClass(), versification.getName() + ".properties");
         BufferedReader lineReader = new BufferedReader(new InputStreamReader(s));
         String line;
