@@ -95,9 +95,9 @@ public final class ConfigEntryTable {
         BufferedReader in = null;
         try {
             // optimise buffer size to that required for the file but keep it within reasonable limits
-            int bufferSize = (int)Math.min(MAX_BUFF_SIZE, file.length());
+            int bufferSize = (int) Math.min(MAX_BUFF_SIZE, file.length());
             bufferSize = Math.max(MIN_BUFF_SIZE, bufferSize);
-            
+
             // Quiet Android from complaining about using the default BufferReader buffer size.
             // The actual buffer size is undocumented. So this is a good idea any way.
             in = new BufferedReader(new InputStreamReader(new FileInputStream(file), ENCODING_UTF8), bufferSize);
@@ -886,9 +886,9 @@ public final class ConfigEntryTable {
     /**
      * Buffer size is based on file size but keep it with within reasonable limits
      */
-    private static long MAX_BUFF_SIZE = 8*1024;
-    private static int MIN_BUFF_SIZE = 128;
-    
+    private static final long MAX_BUFF_SIZE = 8 * 1024;
+    private static final int MIN_BUFF_SIZE = 128;
+
     /**
      * Pattern that matches a key=value. The key can contain ascii letters,
      * numbers, underscore and period. The key must begin at the beginning of
