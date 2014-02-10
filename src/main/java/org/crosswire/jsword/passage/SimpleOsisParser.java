@@ -32,13 +32,11 @@ import java.util.regex.Pattern;
  * OSIS Refs should be separated by a '-'.  
  * 
  * The current implementation doesn't support an OSIS ID or OSIS ref with a missing chapter, 
- * as are currently returned by the getOsisRef() calls oaccasionally.
+ * as are currently returned by the getOsisRef() calls occasionally.
  * 
  * @author chrisburrell
  */
 public final class SimpleOsisParser {
-    private static final Pattern OSIS_ID_SPLITTER = Pattern.compile("\\.");
-    private static final Pattern OSIS_REF_SPLITTER = Pattern.compile("-");
     /**
      * Hiding constructor
      */
@@ -53,28 +51,28 @@ public final class SimpleOsisParser {
      * @return the equivalent verse range
      */
     public static VerseRange parseOsisRef(final Versification v11n, final String osisRef) {
-        if(osisRef == null) {
+        if (osisRef == null) {
             return null;
         }
 
         final String[] osisIDs = OSIS_REF_SPLITTER.split(osisRef);
-        if(osisIDs.length != 2) {
+        if (osisIDs.length != 2) {
             return null;
         }
-        
+
         Verse start = parseOsisID(v11n, osisIDs[0]);
-        if(start == null) {
+        if (start == null) {
             return null;
         }
-        
+
         Verse end = parseOsisID(v11n, osisIDs[1]);
-        if(end == null) {
+        if (end == null) {
             return null;
         }
-        
+
         return new VerseRange(v11n, osisRef, start, end);
     }
-    
+
     /**
      * Strict OSIS ID parsers, case-sensitive
      * @param v11n the versification to use when constructing the verse
@@ -82,31 +80,36 @@ public final class SimpleOsisParser {
      * @return the verse that matches the OSIS ID
      */
     public static Verse parseOsisID(final Versification v11n, final String osisID) {
-        if(osisID == null) {
+        if (osisID == null) {
             return null;
         }
 
         final String[] verseParts = OSIS_ID_SPLITTER.split(osisID);
-        
-        if(verseParts.length != 2 && verseParts.length != 3) {
+
+        if (verseParts.length != 2 && verseParts.length != 3) {
             return null;
         }
-        
-        final BibleBook b = BibleBook.fromExactOSIS(verseParts[0]);        
-        if(b == null) {
+
+        final BibleBook b = BibleBook.fromExactOSIS(verseParts[0]);
+        if (b == null) {
             return null;
         }
-        
-        if(b.isShortBook()) {
-            if(verseParts.length != 2) {
+
+        if (b.isShortBook()) {
+            if (verseParts.length != 2) {
                 return null;
             }
+
             return new Verse(v11n, b, 1, Integer.parseInt(verseParts[1]));
         }
-        
-        if(verseParts.length != 3) {
+
+        if (verseParts.length != 3) {
             return null;
         }
+
         return new Verse(osisID, v11n, b, Integer.parseInt(verseParts[1]), Integer.parseInt(verseParts[2]));
     }
+
+    private static final Pattern OSIS_ID_SPLITTER = Pattern.compile("\\.");
+    private static final Pattern OSIS_REF_SPLITTER = Pattern.compile("-");
 }
