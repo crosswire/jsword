@@ -1,3 +1,23 @@
+/**
+ * Distribution License:
+ * JSword is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License, version 2.1 or later
+ * as published by the Free Software Foundation. This program is distributed
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * The License is available on the internet at:
+ *       http://www.gnu.org/copyleft/lgpl.html
+ * or by writing to:
+ *      Free Software Foundation, Inc.
+ *      59 Temple Place - Suite 330
+ *      Boston, MA 02111-1307, USA
+ *
+ * Copyright: 2013 - 2014
+ *     The copyright to this program is held by it's authors.
+ *
+ */
 package org.crosswire.jsword.versification;
 
 import org.crosswire.jsword.passage.Key;
@@ -5,16 +25,15 @@ import org.crosswire.jsword.passage.Key;
 /**
  * Wraps around a key, and allows a specified to distinguish between different mappings
  *
+ * @see gnu.lgpl.License for license details.<br>
+ *      The copyright to this program is held by it's authors.
  * @author chrisburrell
  */
 public class QualifiedKey {
-    public static enum Qualifier {DEFAULT, ABSENT_IN_LEFT, ABSENT_IN_KJV}
-    private String sectionName;
-    private String part;
-    private Key key;
-    //we use the null character here to avoid boxing/unboxing a Character all the time. A slightly smaller
-    //memory foot-print.
-    private Qualifier absentType = Qualifier.DEFAULT;
+    /**
+     * A Qualifier indicates whether the verse is numbered the same in both the KJV and the other, is missing in the KJV or the other.
+     */
+    public static enum Qualifier { DEFAULT, ABSENT_IN_LEFT, ABSENT_IN_KJV }
 
     /**
      * Constructs the Qualified key, leaving the qualifier as set to the null character.
@@ -93,10 +112,10 @@ public class QualifiedKey {
     @Override
     public int hashCode() {
         //use a prime number in case one of the values is not around
-        return (this.key == null ? 17 : key.hashCode()) +
-                (this.absentType == null ? 13 : this.absentType.ordinal()) +
-                (this.sectionName == null ? 19 : this.sectionName.hashCode()) +
-                (this.getPart() == null ? 23 : this.getPart().hashCode());
+        return (this.key == null ? 17 : key.hashCode())
+             + (this.absentType == null ? 13 : this.absentType.ordinal())
+             + (this.sectionName == null ? 19 : this.sectionName.hashCode())
+             + (this.getPart() == null ? 23 : this.getPart().hashCode());
     }
 
     @Override
@@ -104,13 +123,22 @@ public class QualifiedKey {
         if (obj instanceof QualifiedKey) {
             final QualifiedKey otherKey = (QualifiedKey) obj;
 
-            //purposefully inlining the various checks, because we do want to avoid doing too many comparisons
-            //when using QualifiedKey in a hash map/set, so placing the expensive equals() nearer the end.
-            return this.getAbsentType() == otherKey.getAbsentType() &&
-                    (this.part == null ? otherKey.part == null : this.part.equals(otherKey.part)) &&
-                    (sectionName == null ? otherKey.sectionName == null : sectionName.equals(otherKey.sectionName)) &&
-                    (this.key == null ? otherKey.key == null : this.key.equals(otherKey.key));
+            // purposefully inlining the various checks, because we do want to avoid doing too many comparisons
+            // when using QualifiedKey in a hash map/set, so placing the expensive equals() nearer the end.
+            return this.getAbsentType() == otherKey.getAbsentType()
+                && (this.part == null ? otherKey.part == null : this.part.equals(otherKey.part))
+                && (sectionName == null ? otherKey.sectionName == null : sectionName.equals(otherKey.sectionName))
+                && (this.key == null ? otherKey.key == null : this.key.equals(otherKey.key));
         }
         return false;
     }
+
+    private String sectionName;
+    private String part;
+    private Key key;
+
+    // We use the null character here to avoid boxing/unboxing a Character all the time. A slightly smaller
+    // memory foot-print.
+    private Qualifier absentType = Qualifier.DEFAULT;
+
 }
