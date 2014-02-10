@@ -254,11 +254,11 @@ public class DifferenceEngine {
      */
     protected List<Difference> path2(final List<Set<String>> vMap, final String newSource, final String newTarget) {
         List<Difference> path = new ArrayList<Difference>();
-        
+
         //cached versions of length from immutable strings
         final int cachedNewSourceLength = newSource.length();
         final int cachedNewTargetLength = newTarget.length();
-        
+
         int x = cachedNewSourceLength;
         int y = cachedNewTargetLength;
         EditType lastEditType = null;

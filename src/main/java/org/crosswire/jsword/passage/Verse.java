@@ -323,7 +323,7 @@ public final class Verse implements VerseKey {
             return false;
         }
 
-        if(obj instanceof Verse) {
+        if (obj instanceof Verse) {
             Verse that = (Verse) obj;
 
             // The real tests
@@ -331,7 +331,7 @@ public final class Verse implements VerseKey {
         }
 
         //I think omitting this breaks reciprocity.
-        if(obj instanceof Passage) {
+        if (obj instanceof Passage) {
             //then we compare if we have a simple cardinality of 1 and the same v11n
             final Passage passage = (Passage) obj;
             return passage.getCardinality() == 1 &&
@@ -339,7 +339,7 @@ public final class Verse implements VerseKey {
                     passage.equals(this);
         }
 
-            return false;
+        return false;
     }
 
     @Override

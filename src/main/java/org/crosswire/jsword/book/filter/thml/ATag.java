@@ -46,10 +46,10 @@ public class ATag extends AbstractTag {
         Element reference = OSISUtil.factory().createReference();
 
         String href = attrs.getValue("href");
-        if (href!=null && href.length()>0) {
+        if (href != null && href.length() > 0) {
             reference.setAttribute(OSISUtil.OSIS_ATTR_REF, href);
         }
-        
+
         if (ele != null) {
             ele.addContent(reference);
         }
