@@ -179,7 +179,7 @@ public enum BibleBook {
         this(osis);
         this.isShortBook = shortBook;
     }
-    
+
     BibleBook(String osis) {
         this.osis = osis;
     }
@@ -221,7 +221,7 @@ public enum BibleBook {
     public static BibleBook fromExactOSIS(String osis) {
         return exactMatches.get(osis);
     }
-    
+
     /**
      * Get the BookName.
      *
@@ -309,8 +309,15 @@ public enum BibleBook {
         return isShortBook;
     }
 
+    /**
+     * The OSIS name for the book. 
+     */
     private String osis;
-    private boolean isShortBook = false;
+
+    /**
+     * Indicates that the book consists of a single chapter.
+     */
+    private boolean isShortBook;
 
     /** A quick lookup based on OSIS name for the book */
     private static Map<String, BibleBook> osisMap = new HashMap<String, BibleBook>(128);

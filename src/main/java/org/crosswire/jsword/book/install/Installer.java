@@ -115,7 +115,6 @@ public interface Installer extends BookList {
      *
      * @param book
      *            The book to install
-     * @return the jobId that can be used to track progress
      */
     void install(final Book book) throws InstallException;
 
@@ -130,7 +129,7 @@ public interface Installer extends BookList {
      *            for installation.
      */
     void downloadSearchIndex(final Book book, final URI tempDest) throws InstallException;
-    
+
     /** remove the cached book list to clear memory
      */
     void close();
