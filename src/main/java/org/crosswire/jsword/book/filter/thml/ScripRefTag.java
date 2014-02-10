@@ -54,7 +54,7 @@ public class ScripRefTag extends AbstractTag {
         if (refstr != null) {
             Passage ref = null;
             try {
-                ref = (Passage) PassageKeyFactory.instance().getKey(KeyUtil.getVersification(key), refstr, key);
+                ref = PassageKeyFactory.instance().getKey(KeyUtil.getVersification(key), refstr, key);
             } catch (NoSuchKeyException ex) {
                 DataPolice.report(book, key, "Unparsable passage: (" + refstr + ") due to " + ex.getMessage());
             }
@@ -80,7 +80,7 @@ public class ScripRefTag extends AbstractTag {
         String refstr = ele.getValue();
         try {
             if (ele.getAttribute(OSISUtil.OSIS_ATTR_REF) == null) {
-                Passage ref = (Passage) PassageKeyFactory.instance().getKey(KeyUtil.getVersification(key), refstr, key);
+                Passage ref = PassageKeyFactory.instance().getKey(KeyUtil.getVersification(key), refstr, key);
                 String osisname = ref.getOsisRef();
                 ele.setAttribute(OSISUtil.OSIS_ATTR_REF, osisname);
             }

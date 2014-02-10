@@ -145,7 +145,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
             // At this point and time, ReadingsBook is a verse list from the KJV.
             // Should store the v11n in the ReadingsBook
             PassageKeyFactory keyf = PassageKeyFactory.instance();
-            Passage ref = (Passage) keyf.getKey(Versifications.instance().getVersification("KJV"), readings);
+            Passage ref = keyf.getKey(Versifications.instance().getVersification("KJV"), readings);
 
             Element list = OSISUtil.factory().createList();
             content.add(list);
