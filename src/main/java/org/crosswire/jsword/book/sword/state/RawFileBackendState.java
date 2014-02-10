@@ -55,6 +55,7 @@ public class RawFileBackendState extends RawBackendState {
      */
     RawFileBackendState(SwordBookMetaData bookMetaData) throws BookException {
         super(bookMetaData);
+        incfileValue = -1;
     }
 
     /* (non-Javadoc)
@@ -132,7 +133,7 @@ public class RawFileBackendState extends RawBackendState {
      * @return the incfileValue
      */
     public int getIncfileValue() {
-        if (incfileValue == null) {
+        if (incfileValue == -1) {
             try {
                 readIncfile();
             } catch (IOException e) {
@@ -167,7 +168,7 @@ public class RawFileBackendState extends RawBackendState {
 
     public static final String INCFILE = "incfile";
     private File incfile;
-    private Integer incfileValue;
+    private int incfileValue;
 
     /**
      * The log stream
