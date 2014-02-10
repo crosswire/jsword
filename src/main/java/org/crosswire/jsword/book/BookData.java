@@ -20,19 +20,31 @@
  */
 package org.crosswire.jsword.book;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.crosswire.common.diff.Diff;
 import org.crosswire.common.diff.DiffCleanup;
 import org.crosswire.common.diff.Difference;
 import org.crosswire.common.util.Language;
 import org.crosswire.common.xml.JDOMSAXEventProvider;
 import org.crosswire.common.xml.SAXEventProvider;
-import org.crosswire.jsword.passage.*;
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.KeyUtil;
+import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.RestrictionType;
+import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.VersificationsMapper;
 import org.crosswire.jsword.versification.system.Versifications;
-import org.jdom2.*;
-
-import java.util.*;
+import org.jdom2.Content;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.Namespace;
+import org.jdom2.Text;
 
 /**
  * BookData is the assembler of the OSIS that is returned by the filters. As
@@ -198,11 +210,8 @@ public class BookData implements BookProvider {
                 doDiffs |= addHeaderAndSetShowDiffsState(row, showDiffs, i, ommittedVerses[i]);
                 booksContents[i] = keyIteratorContentByVerse(
                         getVersification(i),
-                        iters[i],
-                        doDiffs);
+                        iters[i]);
             }
-
-            Content content = null;
 
             int cellCount = 0;
             int rowCount = 0;
@@ -234,13 +243,13 @@ public class BookData implements BookProvider {
                     Iterator<Key> passageKeys = passageOfInterest.iterator();
                     while (passageKeys.hasNext()) {
                         Key singleKey = passageKeys.next();
-                        //TODO:CJB: for performance, we probably want to avoid the instanceof, so either change the
+                        //TODO(CJB): for performance, we probably want to avoid the instanceof, so either change the
                         //method signature, or cast directly and be optimistic
                         if (!(singleKey instanceof Verse)) {
                             throw new UnsupportedOperationException("Iterating through a passage gives non-verses");
                         }
 
-                        List<Content> xmlContent = booksContents[i].get((Verse) singleKey);
+                        List<Content> xmlContent = booksContents[i].get(singleKey);
 
                         //if the book simply did not contain that reference (say Greek book, with Gen.1 as a reference)
                         //then we end up with a key that doesn't exist in the map. Therefore, we need to cope for this.
@@ -272,7 +281,7 @@ public class BookData implements BookProvider {
                             }
                         }
 
-                        //TODO:wrong location - we should record the keys in a set and notify
+                        //TODO(CJB): wrong location - we should record the keys in a set and notify
                         //when there is a problem
                         //this should be outside of the loop?
                         addContentSafely(cell, xmlContent);
@@ -309,7 +318,7 @@ public class BookData implements BookProvider {
         for (Content c : xmlContent) {
             if (c.getParent() == null) {
                 cell.addContent(c);
-            } else if(note != null) {
+            } else if (note != null) {
                 note.addContent(c.clone());
             } else {
                 //we're in the situation where we have added this already.
@@ -350,10 +359,10 @@ public class BookData implements BookProvider {
      *
      * @param iter the iterator of OSIS content
      */
-    private BookVerseContent keyIteratorContentByVerse(Versification v11n, final Iterator<Content> iter, boolean doDiffs) throws BookException {
+    private BookVerseContent keyIteratorContentByVerse(Versification v11n, final Iterator<Content> iter) throws BookException {
         BookVerseContent contentsByOsisID = new BookVerseContent();
 
-        //we will be using this map later to track which keys have been catered for in the order calculation
+        //we will be using this map later to track whi ch keys have been catered for in the order calculation
         Verse currentVerse = null;
         Content content;
 
@@ -361,7 +370,6 @@ public class BookData implements BookProvider {
         while (iter.hasNext()) {
             content = iter.next();
             if (content instanceof Element && OSISUtil.OSIS_ELEMENT_VERSE.equals(((Element) content).getName())) {
-                //TODO: cater for verse 0
                 if (currentVerse != null) {
                     contentsByOsisID.put(currentVerse, contents);
                     contents = new ArrayList<Content>();
@@ -374,7 +382,7 @@ public class BookData implements BookProvider {
                 //of perhaps we've somehow come across previous content. Either way, it clearly doesn't
                 //belong to the current verse.
                 if (contents.size() > 0) {
-                    Verse previousVerse = new Verse(currentVerse.getVersification(), currentVerse.getOrdinal() -1);
+                    Verse previousVerse = new Verse(currentVerse.getVersification(), currentVerse.getOrdinal() - 1);
                     contentsByOsisID.put(previousVerse, contents);
                     contents = new ArrayList<Content>();
                 }
@@ -384,7 +392,7 @@ public class BookData implements BookProvider {
         }
 
         //now append what's left into the last verse
-        if(currentVerse != null) {
+        if (currentVerse != null) {
             contentsByOsisID.put(currentVerse, contents);
         }
 
