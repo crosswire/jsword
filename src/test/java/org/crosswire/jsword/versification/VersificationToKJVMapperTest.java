@@ -60,7 +60,7 @@ public class VersificationToKJVMapperTest {
 
     @Test
     public void testLeftRangeMappings() throws NoSuchKeyException {
-        addProperty("Gen.1.1-2", "Gen.1.1");
+        addProperty("Gen.1.1-Gen.1.2", "Gen.1.1");
         init();
         assertEquals("Gen.1.1", mapper.map("Gen.1.1"));
         assertEquals("Gen.1.1", mapper.map("Gen.1.2"));
@@ -77,7 +77,7 @@ public class VersificationToKJVMapperTest {
 
     @Test
     public void testRightRangeMappings() throws NoSuchKeyException {
-        addProperty("Gen.1.1", "Gen.1.1-2");
+        addProperty("Gen.1.1", "Gen.1.1-Gen.1.2");
         init();
 
         assertEquals("Gen.1.1-Gen.1.2", mapper.map("Gen.1.1"));
@@ -96,7 +96,7 @@ public class VersificationToKJVMapperTest {
 
     @Test
     public void testRangeToRange() throws NoSuchKeyException {
-        addProperty("Gen.1.1-3", "Gen.1.2-4");
+        addProperty("Gen.1.1-Gen.1.3", "Gen.1.2-Gen.1.4");
         init();
 
         assertEquals("Gen.1.2", mapper.map("Gen.1.1"));
@@ -109,7 +109,7 @@ public class VersificationToKJVMapperTest {
 
     @Test
     public void testMappingWithPositiveOffset() throws NoSuchKeyException {
-        addProperty("Gen.1.1-2", "+1");
+        addProperty("Gen.1.1-Gen.1.2", "+1");
         init();
 
         assertEquals("Gen.1.2", mapper.map("Gen.1.1"));
@@ -146,7 +146,7 @@ public class VersificationToKJVMapperTest {
 
     @Test
     public void testExtraUnmappedVersesWithRange() throws NoSuchKeyException {
-        addProperty("Dan.3.31-68", "?StoryOfThreeYoungMen");
+        addProperty("Dan.3.31-Dan.3.68", "?StoryOfThreeYoungMen");
         init();
 
         assertEquals("?StoryOfThreeYoungMen", mapper.mapToQualifiedKey("Dan.3.31"));
@@ -164,7 +164,7 @@ public class VersificationToKJVMapperTest {
 
     @Test
     public void testAbsentVersesWithRange() throws NoSuchKeyException {
-        addProperty("?", "Gen.1.1-3");
+        addProperty("?", "Gen.1.1-Gen.1.3");
         init();
         assertEquals("", mapper.unmap("Gen.1.1"));
         assertEquals("", mapper.unmap("Gen.1.2"));
