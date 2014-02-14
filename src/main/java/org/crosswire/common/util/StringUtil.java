@@ -23,12 +23,9 @@ package org.crosswire.common.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * A generic class of String utils. It would be good if we could put this stuff
- * in java.lang ...
+ * A generic class of String utilities.
  * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
@@ -154,16 +151,12 @@ public final class StringUtil {
      * separators are treated as one separator.
      * </p>
      * 
-     * <p>
-     * A <code>null</code> input String returns <code>null</code>.
-     * </p>
-     * 
      * <pre>
-     * StringUtils.split(null)       = null
-     * StringUtils.split(&quot;&quot;)         = []
-     * StringUtils.split(&quot;abc def&quot;)  = [&quot;abc&quot;, &quot;def&quot;]
-     * StringUtils.split(&quot;abc  def&quot;) = [&quot;abc&quot;, &quot;def&quot;]
-     * StringUtils.split(&quot; abc &quot;)    = [&quot;abc&quot;]
+     * StringUtil.split(null)       = []
+     * StringUtil.split("")         = []
+     * StringUtil.split("abc def")  = ["abc", "def"]
+     * StringUtil.split("abc  def") = ["abc", "def"]
+     * StringUtil.split(" abc ")    = ["abc"]
      * </pre>
      * 
      * @param str
@@ -172,7 +165,149 @@ public final class StringUtil {
      *         input
      */
     public static String[] split(String str) {
-        return split(str, null, -1);
+        if (str == null) {
+            return EMPTY_STRING_ARRAY.clone();
+        }
+
+        int len = str.length();
+        if (len == 0) {
+            return EMPTY_STRING_ARRAY.clone();
+        }
+
+        char[] cstr = str.toCharArray();
+
+        int count = 0;
+        int start = 0;
+        int i = 0;
+        while ((i = indexOfWhitespace(cstr, start)) != -1) {
+            // Don't count separator at beginning,
+            // after another or at the end
+            if (i > start) {
+                ++count;
+            }
+            start = i + 1;
+        }
+
+        // If it didn't end with a separator then add in the last part
+        if (start < len) {
+            ++count;
+        }
+
+        // Create the array
+        String[] list = new String[count];
+
+        // If there were no separators
+        // then we have one big part
+        if (start == 0) {
+            list[0] = str;
+            return list;
+        }
+ 
+        start = 0;
+        i = 0;
+        int x = 0;
+        while ((i = indexOfWhitespace(cstr, start)) != -1) {
+            // Don't count separator at beginning,
+            // after another or at the end
+            if (i > start) {
+                list[x++] = str.substring(start, i);
+            }
+            start = i + 1;
+        }
+        // If it didn't end with a separator then add in the last part
+        if (start < len) {
+            list[x++] = str.substring(start);
+        }
+
+        return list;
+    }
+
+    /**
+     * <p>
+     * Splits the provided text into an array, using whitespace as the
+     * separator. Whitespace is defined by {@link Character#isWhitespace(char)}.
+     * </p>
+     * 
+     * <p>
+     * The separator is not included in the returned String array. Adjacent
+     * separators are treated as one separator.
+     * </p>
+     * 
+     * <pre>
+     * StringUtil.split(null)       = []
+     * StringUtil.split("")         = []
+     * StringUtil.split("abc def")  = ["abc", "def"]
+     * StringUtil.split("abc  def") = ["abc", "def"]
+     * StringUtil.split(" abc ")    = ["abc"]
+     * </pre>
+     * 
+     * @param str
+     *            the String to parse, may be null
+     * @return an array of parsed Strings, <code>null</code> if null String
+     *         input
+     */
+    public static String[] split(String str, int max) {
+        if (str == null) {
+            return EMPTY_STRING_ARRAY.clone();
+        }
+
+        int len = str.length();
+        if (len == 0) {
+            return EMPTY_STRING_ARRAY.clone();
+        }
+
+        char[] cstr = str.toCharArray();
+
+        int count = 0;
+        int start = 0;
+        int i = 0;
+        while ((i = indexOfWhitespace(cstr, start)) != -1) {
+            // Don't count separator at beginning,
+            // after another or at the end
+            if (i > start) {
+                ++count;
+            }
+            start = i + 1;
+        }
+
+        // If it didn't end with a separator then add in the last part
+        if (start < len) {
+            ++count;
+        }
+
+        // If there were no separators
+        // then we have one big part
+        if (start == 0) {
+            String[] list = new String[count];
+            list[0] = str;
+            return list;
+        }
+ 
+        // Limit the result
+        if (max > 0 && count > max) {
+            count = max;
+        }
+        
+        // Create the array
+        String[] list = new String[count];
+
+        start = 0;
+        i = 0;
+        int x = 0;
+        while ((i = indexOfWhitespace(cstr, start)) != -1) {
+            // Don't count separator at beginning,
+            // after another or at the end
+            if (i > start && x < count) {
+                list[x++] = str.substring(start, i);
+            }
+            start = i + 1;
+        }
+        // If it didn't end with a separator then add in the last part
+        if (start < len && x < count) {
+            list[x++] = str.substring(start);
+        }
+
+        return list;
     }
 
     /**
@@ -191,53 +326,74 @@ public final class StringUtil {
      * </p>
      * 
      * <pre>
-     * StringUtils.split(null, *)         = null
-     * StringUtils.split(&quot;&quot;, *)           = []
-     * StringUtils.split(&quot;a.b.c&quot;, '.')    = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]
-     * StringUtils.split(&quot;a..b.c&quot;, '.')   = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]
-     * StringUtils.split(&quot;a:b:c&quot;, '.')    = [&quot;a:b:c&quot;]
-     * StringUtils.split(&quot;a\tb\nc&quot;, null) = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]
-     * StringUtils.split(&quot;a b c&quot;, ' ')    = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]
+     * StringUtil.split(null, *)         = []
+     * StringUtil.split("", *)           = []
+     * StringUtil.split("a.b.c", '.')    = ["a", "b", "c"]
+     * StringUtil.split("a..b.c", '.')   = ["a", "b", "c"]
+     * StringUtil.split("a:b:c", '.')    = ["a:b:c"]
+     * StringUtil.split("a b c", ' ')    = ["a", "b", "c"]
      * </pre>
      * 
      * @param str
      *            the String to parse, may be null
      * @param separatorChar
-     *            the character used as the delimiter, <code>null</code> splits
-     *            on whitespace
+     *            the character used as the delimiter
      * @return an array of parsed Strings
-     * @since 2.0
      */
     public static String[] split(String str, char separatorChar) {
-        // Performance tuned for 2.0 (JDK1.4)
-
         if (str == null) {
             return EMPTY_STRING_ARRAY.clone();
         }
+
         int len = str.length();
         if (len == 0) {
             return EMPTY_STRING_ARRAY.clone();
         }
-        List<String> list = new ArrayList<String>();
-        int i = 0;
+        
+        // Determine the size of the array
+        int count = 0;        
         int start = 0;
-        boolean match = false;
-        while (i < len) {
-            if (str.charAt(i) == separatorChar) {
-                if (match) {
-                    list.add(str.substring(start, i));
-                    match = false;
-                }
-                start = ++i;
-                continue;
+        int i = 0;
+        while ((i = str.indexOf(separatorChar, start)) != -1) {
+            // Don't count separator at beginning,
+            // after another or at the end
+            if (i > start && i < len) {
+                ++count;
             }
-            match = true;
-            i++;
+            start = i + 1;
         }
-        if (match) {
-            list.add(str.substring(start, i));
+        // If it didn't end with a separator then add in the last part
+        if (start < len) {
+            ++count;
         }
-        return list.toArray(new String[list.size()]);
+
+        // Create the array
+        String[] list = new String[count];
+
+        // If there were no separators
+        // then we have one big part
+        if (count == 1) {
+            list[0] = str;
+            return list;
+        }
+ 
+        start = 0;
+        i = 0;
+        int x = 0;
+        while ((i = str.indexOf(separatorChar, start)) != -1) {
+            // Don't count separator at beginning,
+            // after another or at the end
+            if (i > start) {
+                list[x++] = str.substring(start, i);
+            }
+            start = i + 1;
+        }
+        // If it didn't end with a separator then add in the last part
+        if (start < len) {
+            list[x++] = str.substring(start, len);
+        }
+
+        return list;
     }
 
     /**
@@ -248,7 +404,7 @@ public final class StringUtil {
      * 
      * <p>
      * The separator is not included in the returned String array. Adjacent
-     * separators are treated individually.
+     * separators are treated as one separator.
      * </p>
      * 
      * <p>
@@ -256,75 +412,12 @@ public final class StringUtil {
      * </p>
      * 
      * <pre>
-     * StringUtils.split(null, *)         = null
-     * StringUtils.split(&quot;&quot;, *)           = []
-     * StringUtils.split(&quot;a.b.c&quot;, '.')    = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]
-     * StringUtils.split(&quot;a..b.c&quot;, '.')   = [&quot;a&quot;, &quot;&quot;, &quot;b&quot;, &quot;c&quot;]
-     * StringUtils.split(&quot;a:b:c&quot;, '.')    = [&quot;a:b:c&quot;]
-     * StringUtils.split(&quot;a\tb\nc&quot;, null) = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]
-     * StringUtils.split(&quot;a b c&quot;, ' ')    = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]
-     * </pre>
-     * 
-     * @param str
-     *            the String to parse, may be null
-     * @param separatorChar
-     *            the character used as the delimiter, <code>null</code> splits
-     *            on whitespace
-     * @return an array of parsed Strings
-     * @since 2.0
-     */
-    public static String[] splitAll(String str, char separatorChar) {
-        // Performance tuned for 2.0 (JDK1.4)
-
-        if (str == null) {
-            return EMPTY_STRING_ARRAY.clone();
-        }
-        int len = str.length();
-        if (len == 0) {
-            return EMPTY_STRING_ARRAY.clone();
-        }
-        List<String> list = new ArrayList<String>();
-        int i = 0;
-        int start = 0;
-        boolean match = false;
-        while (i < len) {
-            if (str.charAt(i) == separatorChar) {
-                list.add(str.substring(start, i));
-                start = ++i;
-                match = false;
-                continue;
-            }
-            match = true;
-            i++;
-        }
-        if (match) {
-            list.add(str.substring(start, i));
-        }
-        return list.toArray(new String[list.size()]);
-    }
-
-    /**
-     * <p>
-     * Splits the provided text into an array, separator specified. This is an
-     * alternative to using StringTokenizer.
-     * </p>
-     * 
-     * <p>
-     * The separator is not included in the returned String array. Adjacent
-     * separators are treated individually.
-     * </p>
-     * 
-     * <p>
-     * A <code>null</code> input String returns <code>null</code>.
-     * </p>
-     * 
-     * <pre>
-     * StringUtils.split(null, *)         = null
-     * StringUtils.split(&quot;&quot;, *)           = []
-     * StringUtils.split(&quot;a.b.c&quot;, '.')    = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]
-     * StringUtils.split(&quot;a..b.c&quot;, '.')   = [&quot;a&quot;, &quot;&quot;, &quot;b&quot;, &quot;c&quot;]
-     * StringUtils.split(&quot;a:b:c&quot;, '.')    = [&quot;a:b:c&quot;]
-     * StringUtils.split(&quot;a b c&quot;, ' ')    = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]
+     * StringUtil.split(null, *, 2)         = []
+     * StringUtil.split("", *, 2)           = []
+     * StringUtil.split("a.b.c", '.', 2)    = ["a", "b"]
+     * StringUtil.split("a..b.c", '.', 2)   = ["a", "b"]
+     * StringUtil.split("a:b:c", '.', 2)    = ["a:b:c"]
+     * StringUtil.split("a b c", ' ', 2)    = ["a", "b"]
      * </pre>
      * 
      * @param str
@@ -332,43 +425,227 @@ public final class StringUtil {
      * @param separatorChar
      *            the character used as the delimiter
      * @param max
-     *            the maximum number of elements to include in the array. A zero
-     *            or negative value implies no limit
+     *            the maximum number of elements to include in the array.
+     *            A zero or negative value implies no limit
      * @return an array of parsed Strings
-     * @since 2.0
      */
-    public static String[] splitAll(String str, char separatorChar, int max) {
-        // Performance tuned for 2.0 (JDK1.4)
-
+    public static String[] split(String str, char separatorChar, int max) {
         if (str == null) {
             return EMPTY_STRING_ARRAY.clone();
         }
+
         int len = str.length();
         if (len == 0) {
             return EMPTY_STRING_ARRAY.clone();
         }
-        List<String> list = new ArrayList<String>();
-        int sizePlus1 = 1;
-        int i = 0;
+        
+        // Determine the size of the array
+        int count = 0;        
         int start = 0;
-        boolean match = false;
-        while (i < len) {
-            if (str.charAt(i) == separatorChar) {
-                if (sizePlus1++ == max) {
-                    i = len;
-                }
-                list.add(str.substring(start, i));
-                start = ++i;
-                match = false;
-                continue;
+        int i = 0;
+        while ((i = str.indexOf(separatorChar, start)) != -1) {
+            // Don't count separator at beginning,
+            // after another or at the end
+            if (i > start) {
+                ++count;
             }
-            match = true;
-            i++;
+            start = i + 1;
         }
-        if (match) {
-            list.add(str.substring(start, i));
+
+        // If it didn't end with a separator then add in the last part
+        if (start < len) {
+            ++count;
         }
-        return list.toArray(new String[list.size()]);
+
+        // If there were no separators
+        // then we have one big part
+        if (count == 1) {
+            String[] list = new String[count];
+            list[0] = str;
+            return list;
+        }
+ 
+        // Limit the result
+        if (max > 0 && count > max) {
+            count = max;
+        }
+        
+        // Create the array
+        String[] list = new String[count];
+
+        start = 0;
+        i = 0;
+        int x = 0;
+        while ((i = str.indexOf(separatorChar, start)) != -1) {
+            // Don't count separator at beginning,
+            // after another or at the end
+            if (i > start && x < count) {
+                list[x++] = str.substring(start, i);
+            }
+            start = i + 1;
+        }
+        // If it didn't end with a separator then add in the last part
+        if (start < len && x < count) {
+            list[x++] = str.substring(start);
+        }
+
+        return list;
+    }
+
+    /**
+     * <p>
+     * Splits the provided text into an array, separator specified. This is an
+     * alternative to using StringTokenizer.
+     * </p>
+     * 
+     * <p>
+     * The separator is not included in the returned String array. Adjacent
+     * separators are treated individually.
+     * </p>
+     * 
+     * <p>
+     * A <code>null</code> input String returns <code>null</code>.
+     * </p>
+     * 
+     * <pre>
+     * StringUtil.splitAll(null, *)         = []
+     * StringUtil.splitAll("", *)           = []
+     * StringUtil.splitAll("a.b.c", '.')    = ["a", "b", "c"]
+     * StringUtil.splitAll("a..b.c", '.')   = ["a", "", "b", "c"]
+     * StringUtil.splitAll("a:b:c", '.')    = ["a:b:c"]
+     * </pre>
+     * 
+     * @param str
+     *            the String to parse, may be null
+     * @param separatorChar
+     *            the character used as the delimiter
+     * @return an array of parsed Strings
+     */
+    public static String[] splitAll(String str, char separatorChar) {
+        if (str == null) {
+            return EMPTY_STRING_ARRAY.clone();
+        }
+
+        int len = str.length();
+        if (len == 0) {
+            return EMPTY_STRING_ARRAY.clone();
+        }
+        
+        // Determine the size of the array
+        int count = 1;        
+        int start = 0;
+        int i = 0;
+        while ((i = str.indexOf(separatorChar, start)) != -1) {
+            ++count;
+            start = i + 1;
+        }
+
+        // Create the array
+        String[] list = new String[count];
+
+        // If there were no separators
+        // then we have one big part
+        if (count == 1) {
+            list[0] = str;
+            return list;
+        }
+ 
+        start = 0;
+        i = 0;
+        for (int x = 0; x < count; x++) {
+            i = str.indexOf(separatorChar, start);
+            if (i != -1) {
+                list[x] = str.substring(start, i);
+            } else {
+                list[x] = str.substring(start);
+            }
+            start = i + 1;
+        }
+
+        return list;
+    }
+
+    /**
+     * <p>
+     * Splits the provided text into an array, separator specified. This is an
+     * alternative to using StringTokenizer.
+     * </p>
+     * 
+     * <p>
+     * The separator is not included in the returned String array. Adjacent
+     * separators are treated individually.
+     * </p>
+     * 
+     * <p>
+     * A <code>null</code> input String returns <code>null</code>.
+     * </p>
+     * 
+     * <pre>
+     * StringUtil.splitAll(null, *, 2)         = []
+     * StringUtil.splitAll("", *, 2)           = []
+     * StringUtil.splitAll("a.b.c", '.', 2)    = ["a", "b"]
+     * StringUtil.splitAll("a..b.c", '.', 2)   = ["a", ""]
+     * StringUtil.splitAll("a:b:c", '.', 2)    = ["a:b:c"]
+     * StringUtil.splitAll("a b c", ' ', 2)    = ["a", "b"]
+     * </pre>
+     * 
+     * @param str
+     *            the String to parse, may be null
+     * @param separatorChar
+     *            the character used as the delimiter
+     * @param max
+     *            the maximum number of elements to include in the array.
+     *             A zero or negative value implies no limit
+     * @return an array of parsed Strings
+     */
+    public static String[] splitAll(String str, char separatorChar, int max) {
+        if (str == null) {
+            return EMPTY_STRING_ARRAY.clone();
+        }
+
+        int len = str.length();
+        if (len == 0) {
+            return EMPTY_STRING_ARRAY.clone();
+        }
+        
+        // Determine the size of the array
+        int count = 1;        
+        int start = 0;
+        int i = 0;
+        while ((i = str.indexOf(separatorChar, start)) != -1) {
+            ++count;
+            start = i + 1;
+        }
+
+        // If there were no separators
+        // then we have one big part
+        if (count == 1) {
+            String[] list = new String[count];
+            list[0] = str;
+            return list;
+        }
+ 
+        // Limit the result
+        if (max > 0 && count > max) {
+            count = max;
+        }
+
+        // Create the array
+        String[] list = new String[count];
+
+        start = 0;
+        i = 0;
+        for (int x = 0; x < count; x++) {
+            i = str.indexOf(separatorChar, start);
+            if (i != -1) {
+                list[x] = str.substring(start, i);
+            } else {
+                list[x] = str.substring(start, len);
+            }
+            start = i + 1;
+        }
+
+        return list;
     }
 
     /**
@@ -388,12 +665,12 @@ public final class StringUtil {
      * </p>
      * 
      * <pre>
-     * StringUtils.split(null, *)         = null
-     * StringUtils.split(&quot;&quot;, *)           = []
-     * StringUtils.split(&quot;abc def&quot;, null) = [&quot;abc&quot;, &quot;def&quot;]
-     * StringUtils.split(&quot;abc def&quot;, &quot; &quot;)  = [&quot;abc&quot;, &quot;def&quot;]
-     * StringUtils.split(&quot;abc  def&quot;, &quot; &quot;) = [&quot;abc&quot;, &quot;def&quot;]
-     * StringUtils.split(&quot;ab:cd:ef&quot;, &quot;:&quot;) = [&quot;ab&quot;, &quot;cd&quot;, &quot;ef&quot;]
+     * StringUtil.split(null, *)         = []
+     * StringUtil.split("", *)           = []
+     * StringUtil.split("abc def", null) = ["abc", "def"]
+     * StringUtil.split("abc def", " ")  = ["abc", "def"]
+     * StringUtil.split("abc  def", " ") = ["abc", "def"]
+     * StringUtil.split("ab:cd:ef", ":") = ["ab", "cd", "ef"]
      * </pre>
      * 
      * @param str
@@ -425,17 +702,17 @@ public final class StringUtil {
      * </p>
      * 
      * <pre>
-     * StringUtils.split(null, *, *)            = null
-     * StringUtils.split(&quot;&quot;, *, *)              = []
-     * StringUtils.split(&quot;ab de fg&quot;, null, 0)   = [&quot;ab&quot;, &quot;cd&quot;, &quot;ef&quot;]
-     * StringUtils.split(&quot;ab   de fg&quot;, null, 0) = [&quot;ab&quot;, &quot;cd&quot;, &quot;ef&quot;]
-     * StringUtils.split(&quot;ab:cd:ef&quot;, &quot;:&quot;, 0)    = [&quot;ab&quot;, &quot;cd&quot;, &quot;ef&quot;]
-     * StringUtils.split(&quot;ab:cd:ef&quot;, &quot;:&quot;, 2)    = [&quot;ab&quot;, &quot;cd:ef&quot;]
+     * StringUtil.split(null, *, *)            = []
+     * StringUtil.split("", *, *)              = []
+     * StringUtil.split("ab de fg", null, 0)   = ["ab", "cd", "ef"]
+     * StringUtil.split("ab   de fg", null, 0) = ["ab", "cd", "ef"]
+     * StringUtil.split("ab:cd:ef", ":", 0)    = ["ab", "cd", "ef"]
+     * StringUtil.split("ab:cd:ef", ":", 2)    = ["ab", "cd:ef"]
      * </pre>
      * 
      * @param str
      *            the String to parse, may be null
-     * @param separatorChars
+     * @param separatorStr
      *            the characters used as the delimiters, <code>null</code>
      *            splits on whitespace
      * @param max
@@ -443,80 +720,81 @@ public final class StringUtil {
      *            or negative value implies no limit
      * @return an array of parsed Strings
      */
-    public static String[] split(String str, String separatorChars, int max) {
+    public static String[] split(String str, String separatorStr, int max) {
         // Performance tuned for 2.0 (JDK1.4)
         // Direct code is quicker than StringTokenizer.
         // Also, StringTokenizer uses isSpace() not isWhitespace()
 
+       if (separatorStr == null) {
+            return split(str, max);
+        }
+
+        if (separatorStr.length() == 1) {
+            return split(str, separatorStr.charAt(0), max);
+        }
+
         if (str == null) {
             return EMPTY_STRING_ARRAY.clone();
         }
+
         int len = str.length();
         if (len == 0) {
             return EMPTY_STRING_ARRAY.clone();
         }
-        List<String> list = new ArrayList<String>();
-        int sizePlus1 = 1;
-        int i = 0;
+
+        char[] cstr = str.toCharArray();
+        char[] separatorChars = separatorStr.toCharArray();
+
+        int count = 0;
         int start = 0;
-        boolean match = false;
-        if (separatorChars == null) {
-            // Null separator means use whitespace
-            while (i < len) {
-                if (Character.isWhitespace(str.charAt(i))) {
-                    if (match) {
-                        if (sizePlus1++ == max) {
-                            i = len;
-                        }
-                        list.add(str.substring(start, i));
-                        match = false;
-                    }
-                    start = ++i;
-                    continue;
-                }
-                match = true;
-                i++;
+        int i = 0;
+        while ((i = indexOfAny(cstr, separatorChars, start)) != -1) {
+            // Don't count separator at beginning,
+            // after another or at the end
+            if (i > start) {
+                ++count;
             }
-        } else if (separatorChars.length() == 1) {
-            // Optimize 1 character case
-            char sep = separatorChars.charAt(0);
-            while (i < len) {
-                if (str.charAt(i) == sep) {
-                    if (match) {
-                        if (sizePlus1++ == max) {
-                            i = len;
-                        }
-                        list.add(str.substring(start, i));
-                        match = false;
-                    }
-                    start = ++i;
-                    continue;
-                }
-                match = true;
-                i++;
-            }
-        } else {
-            // standard case
-            while (i < len) {
-                if (separatorChars.indexOf(str.charAt(i)) >= 0) {
-                    if (match) {
-                        if (sizePlus1++ == max) {
-                            i = len;
-                        }
-                        list.add(str.substring(start, i));
-                        match = false;
-                    }
-                    start = ++i;
-                    continue;
-                }
-                match = true;
-                i++;
-            }
+            start = i + 1;
         }
-        if (match) {
-            list.add(str.substring(start, i));
+
+        // If it didn't end with a separator then add in the last part
+        if (start < len) {
+            ++count;
         }
-        return list.toArray(new String[list.size()]);
+
+        // If there were no separators
+        // then we have one big part
+        if (count == 1) {
+            String[] list = new String[count];
+            list[0] = str;
+            return list;
+        }
+ 
+        // Limit the result
+        if (max > 0 && count > max) {
+            count = max;
+        }
+        
+        // Create the array
+        String[] list = new String[count];
+
+        start = 0;
+        i = 0;
+        int x = 0;
+        while ((i = indexOfAny(cstr, separatorChars, start)) != -1) {
+            // Don't count separator at beginning,
+            // after another or at the end
+            if (i > start && x < count) {
+                list[x++] = str.substring(start, i);
+            }
+            start = i + 1;
+        }
+        // If it didn't end with a separator then add in the last part
+        if (start < len && x < count) {
+            list[x++] = str.substring(start);
+        }
+
+        return list;
     }
 
     /**
@@ -532,13 +810,13 @@ public final class StringUtil {
      * </p>
      * 
      * <pre>
-     * StringUtils.join(null, *)                = null
-     * StringUtils.join([], *)                  = &quot;&quot;
-     * StringUtils.join([null], *)              = &quot;&quot;
-     * StringUtils.join([&quot;a&quot;, &quot;b&quot;, &quot;c&quot;], &quot;--&quot;)  = &quot;a--b--c&quot;
-     * StringUtils.join([&quot;a&quot;, &quot;b&quot;, &quot;c&quot;], null)  = &quot;abc&quot;
-     * StringUtils.join([&quot;a&quot;, &quot;b&quot;, &quot;c&quot;], &quot;&quot;)    = &quot;abc&quot;
-     * StringUtils.join([null, &quot;&quot;, &quot;a&quot;], ',')   = &quot;,,a&quot;
+     * StringUtil.join(null, *)                = null
+     * StringUtil.join([], *)                  = ""
+     * StringUtil.join([null], *)              = ""
+     * StringUtil.join(["a", "b", "c"], "--")  = "a--b--c"
+     * StringUtil.join(["a", "b", "c"], null)  = "abc"
+     * StringUtil.join(["a", "b", "c"], "")    = "abc"
+     * StringUtil.join([null, "", "a"], ',')   = ",,a"
      * </pre>
      * 
      * @param array
@@ -573,6 +851,54 @@ public final class StringUtil {
             }
         }
         return buf.toString();
+    }
+
+    /**
+     * Find the first occurrence of a separator in the character buffer beginning
+     * at the given offset.
+     * 
+     * @param str
+     *            the String to parse, may be null
+     * @param separatorChars
+     *            the characters used as the delimiters, <code>null</code>
+     *            splits on whitespace
+     * @param offset
+     *            the index of the first character to consider
+     * @return the index of a separator char in the string or -1
+     */
+    public static int indexOfAny(char[] str, char[] separatorChars, int offset) {
+        int strlen = str.length;
+        int seplen = separatorChars.length;
+        for (int i = offset; i < strlen; i++) {
+            char ch = str[i];
+            for (int j = 0; j < seplen; j++) {
+                if (separatorChars[j] == ch) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Find the first occurrence of a whitespace in the character buffer beginning
+     * at the given offset. 
+     * Whitespace is defined by {@link Character#isWhitespace(char)}.
+     * 
+     * @param str
+     *            the String to parse, may be null
+     * @param offset
+     *            the index of the first character to consider
+     * @return the index of a separator char in the string or -1
+     */
+    public static int indexOfWhitespace(char[] str, int offset) {
+        int strlen = str.length;
+        for (int i = offset; i < strlen; i++) {
+            if (Character.isWhitespace(str[i])) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     /**

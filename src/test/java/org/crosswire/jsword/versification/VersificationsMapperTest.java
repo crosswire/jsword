@@ -82,7 +82,7 @@ public class VersificationsMapperTest {
     @Test
     public void testPassageResolves() throws NoSuchKeyException {
         final VersificationsMapper mapper = VersificationsMapper.instance();
-        Key k = mapper.map(KeyUtil.getPassage(PassageKeyFactory.instance().getKey(CATHOLIC, "Gen.1.1-3")), CATHOLIC2);
+        Key k = mapper.map(KeyUtil.getPassage(PassageKeyFactory.instance().getKey(CATHOLIC, "Gen.1.1-Gen.1.3")), CATHOLIC2);
 
         assertEquals("Gen.1.2-Gen.1.4", k.getOsisRef());
         assertVersification(CATHOLIC2, k);
