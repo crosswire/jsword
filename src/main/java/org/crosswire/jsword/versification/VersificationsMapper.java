@@ -73,8 +73,8 @@ public final class VersificationsMapper {
     /**
      * Maps a whole passage, and does so verse by verse. We can't do any better, since, we may for
      * example have:
-     * Ps.1.1-10 => Ps.1.2-11 so one would think we can simply map each of the start and end verses.
-     * However, this would be inacurate since verse 9 might map to verse 12, 13, etc.
+     * Ps.1.1-Ps.1.10 => Ps.1.2-Ps.1.11 so one would think we can simply map each of the start and end verses.
+     * However, this would be inaccurate since verse 9 might map to verse 12, 13, etc.
      *
      * @param key    the key if the source versification
      * @param target the target versification
@@ -170,6 +170,7 @@ public final class VersificationsMapper {
         try {
             for (QualifiedKey qualifiedKey : kjvVerses) {
                 if (qualifiedKey.getKey() != null) {
+                    // TODO(DMS): Optimize, don't convert to a string and back again
                     finalKeys.addAll(PassageKeyFactory.instance().getKey(targetVersification, qualifiedKey.getKey().getOsisRef()));
                 }
             }

@@ -72,8 +72,8 @@ public class VersificationsMapperTest {
 
     @Test
     public void testSingleStepFromKJV() throws NoSuchVerseException {
-        doTest(KJV, "Ex.1.2", CATHOLIC, "Gen.1.1");
-        doTest(KJV, "Ex.1.3", CATHOLIC, "Gen.1.2-Gen.1.3");
+        doTest(KJV, "Exod.1.2", CATHOLIC, "Gen.1.1");
+        doTest(KJV, "Exod.1.3", CATHOLIC, "Gen.1.2-Gen.1.3");
     }
 
     /**
