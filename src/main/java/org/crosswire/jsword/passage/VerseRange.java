@@ -50,83 +50,33 @@ public final class VerseRange implements VerseKey {
      * The default VerseRange is a single verse - Genesis 1:1. I didn't want to
      * provide this constructor however, you are supposed to provide a default
      * ctor for all beans. For this reason I suggest you don't use it.
-     * @deprecated  use {@link #VerseRange(Versification)} instead
-     */
-    @Deprecated
-    public VerseRange() {
-        this(null, null, Verse.DEFAULT, Verse.DEFAULT);
-    }
-
-    /**
-     * Construct a VerseRange from a Verse. The resultant VerseRange will be 1
-     * verse in verseCount.
      * 
-     * @param start
-     *            The verse to start from
-     * @deprecated  use {@link #VerseRange(Versification, Verse)} instead
-     */
-    @Deprecated
-    public VerseRange(Verse start) {
-        this(null, null, start, start);
-    }
-
-    /**
-     * @param start
-     * @param end
-     * @deprecated  use {@link #VerseRange(Versification, Verse, Verse)} instead
-     */
-    @Deprecated
-    public VerseRange(Verse start, Verse end) {
-        this(null, null, start, end);
-    }
-
-    /**
-     * The default VerseRange is a single verse - Genesis 1:1. I didn't want to
-     * provide this constructor however, you are supposed to provide a default
-     * ctor for all beans. For this reason I suggest you don't use it.
+     *      * @param v11n
+     *            The versification for the range
      */
     public VerseRange(Versification v11n) {
-        this(v11n, null, Verse.DEFAULT, Verse.DEFAULT);
+        this(v11n, Verse.DEFAULT, Verse.DEFAULT);
     }
 
     /**
      * Construct a VerseRange from a Verse. The resultant VerseRange will be 1
      * verse in verseCount.
      * 
+     * @param v11n
+     *            The versification for the range
      * @param start
      *            The verse to start from
      */
     public VerseRange(Versification v11n, Verse start) {
-        this(v11n, null, start, start);
+        this(v11n, start, start);
     }
 
     public VerseRange(Versification v11n, Verse start, Verse end) {
-        this(v11n, null, start, end);
-    }
-
-    /**
-     * Construct a VerseRange from 2 Verses If start is later than end then swap
-     * the two around. This constructor is deliberately package protected so
-     * that is used only by VerseFactory.
-     * 
-     * @param start
-     *            The verse to start from
-     * @param end
-     *            The verse to end with
-     * @deprecated  use {@link #VerseRange(Versification, String, Verse, Verse)} instead
-     */
-    @Deprecated
-    /* package */VerseRange(String original, Verse start, Verse end) {
-        this(null, original, start, end);
-    }
-
-    /* package */VerseRange(Versification v11n, String original, Verse start, Verse end) {
         assert v11n != null;
         assert start != null;
         assert end != null;
 
         this.v11n = v11n;
-        this.originalName = original;
         shaper = new NumberShaper();
 
         int distance = v11n.distance(start, end);
@@ -170,6 +120,46 @@ public final class VerseRange implements VerseKey {
         start = v11n.min(a.getStart(), b.getStart());
         end = v11n.max(a.getEnd(), b.getEnd());
         verseCount = calcVerseCount();
+    }
+
+    /**
+     * The default VerseRange is a single verse - Genesis 1:1. I didn't want to
+     * provide this constructor however, you are supposed to provide a default
+     * ctor for all beans. For this reason I suggest you don't use it.
+     * @deprecated  use {@link #VerseRange(Versification)} instead
+     */
+    @Deprecated
+    public VerseRange() {
+        this(null, Verse.DEFAULT, Verse.DEFAULT);
+    }
+
+    /**
+     * Construct a VerseRange from a Verse. The resultant VerseRange will be 1
+     * verse in verseCount.
+     * 
+     * @param start
+     *            The verse to start from
+     * @deprecated  use {@link #VerseRange(Versification, Verse)} instead
+     */
+    @Deprecated
+    public VerseRange(Verse start) {
+        this(null, start, start);
+    }
+
+    /**
+     * Construct a VerseRange from 2 Verses If start is later than end then swap
+     * the two around. This constructor is deliberately package protected so
+     * that is used only by VerseFactory.
+     * 
+     * @param start
+     *            The verse to start from
+     * @param end
+     *            The verse to end with
+     * @deprecated  use {@link #VerseRange(Versification, String, Verse, Verse)} instead
+     */
+    @Deprecated
+    /* package */VerseRange(Verse start, Verse end) {
+        this(null, start, end);
     }
 
     /* (non-Javadoc)
@@ -1001,12 +991,12 @@ public final class VerseRange implements VerseKey {
     /**
      * What characters can we use to separate the 2 parts to a VerseRanges
      */
-    public static final String RANGE_ALLOWED_DELIMS = "-";
+    public static final char RANGE_OSIS_DELIM = '-';
 
     /**
      * What characters should we use to separate VerseRange parts on output
      */
-    public static final String RANGE_PREF_DELIM = RANGE_ALLOWED_DELIMS;
+    public static final char RANGE_PREF_DELIM = RANGE_OSIS_DELIM;
 
     /**
      * The Versification with which this range is defined.

@@ -52,84 +52,6 @@ import org.crosswire.jsword.versification.system.Versifications;
  */
 public final class Verse implements VerseKey {
     /**
-     * The default Verse is Genesis 1:1. I didn't want to provide this
-     * constructor however, you are supposed to provide a default ctor for all
-     * beans. For this reason I suggest you don't use it.
-     * @deprecated no replacement
-     */
-    @Deprecated
-    public Verse() {
-        originalName = null;
-
-        book = DEFAULT.book;
-        chapter = DEFAULT.chapter;
-        verse = DEFAULT.verse;
-        v11n = DEFAULT.v11n;
-    }
-
-    /**
-     * Create a Verse from book, chapter and verse numbers, throwing up if the
-     * specified Verse does not exist. This constructor is deliberately package
-     * protected so that is used only by VerseFactory.
-     * 
-     * @param original
-     *            The original verse reference
-     * @param book
-     *            The book number (Genesis = 1)
-     * @param chapter
-     *            The chapter number
-     * @param verse
-     *            The verse number
-     * @deprecated Use {@link #Verse(String, Versification, BibleBook, int, int)} instead
-     */
-    @Deprecated
-    /* package */Verse(String original, BibleBook book, int chapter, int verse) {
-        this(original, Versifications.instance().getDefaultVersification(), book, chapter, verse);
-    }
-
-    /**
-     * Create a Verse from book, chapter and verse numbers, throwing up if the
-     * specified Verse does not exist. This constructor is deliberately package
-     * protected so that is used only by VerseFactory.
-     * 
-     * @param original
-     *            The original verse reference
-     * @param v11n
-     *            The versification to which this verse belongs
-     * @param book
-     *            The book number (Genesis = 1)
-     * @param chapter
-     *            The chapter number
-     * @param verse
-     *            The verse number
-     */
-    /* package */Verse(String original, Versification v11n, BibleBook book, int chapter, int verse) {
-        this.originalName = original;
-        this.v11n = v11n;
-        this.book = book;
-        this.chapter = chapter;
-        this.verse = verse;
-        this.ordinal = v11n.getOrdinal(this);
-    }
-
-    /**
-     * Create a Verse from book, chapter and verse numbers, throwing up if the
-     * specified Verse does not exist.
-     * 
-     * @param book
-     *            The book number (Genesis = 1)
-     * @param chapter
-     *            The chapter number
-     * @param verse
-     *            The verse number
-     * @deprecated Use {@link #Verse(Versification, BibleBook, int, int)} instead
-     */
-    @Deprecated
-    public Verse(BibleBook book, int chapter, int verse) {
-        this(null, Versifications.instance().getDefaultVersification(), book, chapter, verse);
-    }
-
-    /**
      * Create a Verse from book, chapter and verse numbers, throwing up if the
      * specified Verse does not exist.
      * 
@@ -143,32 +65,31 @@ public final class Verse implements VerseKey {
      *            The verse number
      */
     public Verse(Versification v11n, BibleBook book, int chapter, int verse) {
-        this(null, v11n, book, chapter, verse);
+        this(v11n, book, chapter, verse, null);
     }
 
     /**
-     * Create a Verse from book, chapter and verse numbers, patching up if the
-     * specified verse does not exist.
-     * <p>
-     * The actual value of the boolean is ignored. However for future proofing
-     * you should only use 'true'. Do not use patch_up=false, use
-     * <code>Verse(int, int, int)</code> This so that we can declare this
-     * constructor to not throw an exception. Is there a better way of doing
-     * this?
+     * Create a Verse from book, chapter and verse numbers, throwing up if the
+     * specified Verse does not exist.
      * 
+     * @param v11n
+     *            The versification to which this verse belongs
      * @param book
      *            The book number (Genesis = 1)
      * @param chapter
      *            The chapter number
      * @param verse
      *            The verse number
-     * @param patch_up
-     *            True to trigger reference fixing
-     * @deprecated Use {@link #Verse(Versification, BibleBook, int, int, boolean)} instead.
+     * @param subIdentifier
+     *            The optional sub identifier
      */
-    @Deprecated
-    public Verse(BibleBook book, int chapter, int verse, boolean patch_up) {
-        this(Versifications.instance().getDefaultVersification(), book, chapter, verse, patch_up);
+    public Verse(Versification v11n, BibleBook book, int chapter, int verse, String subIdentifier) {
+        this.v11n = v11n;
+        this.book = book;
+        this.chapter = chapter;
+        this.verse = verse;
+        this.subIdentifier = subIdentifier;
+        this.ordinal = v11n.getOrdinal(this);
     }
 
     /**
@@ -199,7 +120,6 @@ public final class Verse implements VerseKey {
 
         this.v11n = v11n;
         Verse patched = this.v11n.patch(book, chapter, verse);
-        this.originalName = null;
         this.book = patched.book;
         this.chapter = patched.chapter;
         this.verse = patched.verse;
@@ -207,26 +127,10 @@ public final class Verse implements VerseKey {
     }
 
     /**
-     * Set a Verse using a Verse Ordinal number - WARNING Do not use this method
+     * Set a Verse using a verse ordinal number - WARNING Do not use this method
      * unless you really know the dangers of doing so. Ordinals are not always
-     * going to be the same. So you should use a Verse or an int[3] in
-     * preference to an int ordinal whenever possible. Ordinal numbers are 1
-     * based and not 0 based.
-     * 
-     * @param ordinal
-     *            The verse id
-     * @deprecated Use {@link #Verse(Versification, int)} instead.
-     */
-    @Deprecated
-    public Verse(int ordinal) {
-        this(Versifications.instance().getDefaultVersification(), ordinal);
-    }
-
-    /**
-     * Set a Verse using a Verse Ordinal number - WARNING Do not use this method
-     * unless you really know the dangers of doing so. Ordinals are not always
-     * going to be the same. So you should use a Verse or an int[3] in
-     * preference to an int ordinal whenever possible. Ordinal numbers are 1
+     * going to be the same. So you should use Versification, Book, Chapter and Verse
+     * in preference to an int ordinal whenever possible. Ordinal numbers are 1
      * based and not 0 based.
      * 
      * @param v11n
@@ -237,11 +141,121 @@ public final class Verse implements VerseKey {
     public Verse(Versification v11n, int ordinal) {
         Verse decoded = v11n.decodeOrdinal(ordinal);
         this.v11n = v11n;
-        this.originalName = null;
         this.book = decoded.book;
         this.chapter = decoded.chapter;
         this.verse = decoded.verse;
         this.ordinal = decoded.ordinal;
+    }
+
+    /**
+     * Create a Verse from book, chapter and verse numbers, throwing up if the
+     * specified Verse does not exist. This constructor is deliberately package
+     * protected so that is used only by VerseFactory.
+     * 
+     * @param original
+     *            The original verse reference
+     * @param v11n
+     *            The versification to which this verse belongs
+     * @param book
+     *            The book number (Genesis = 1)
+     * @param chapter
+     *            The chapter number
+     * @param verse
+     *            The verse number
+     * @deprecated Use {@link #Verse(Versification, BibleBook, int, int)} instead
+     */
+    @Deprecated
+    /* package */Verse(String original, Versification v11n, BibleBook book, int chapter, int verse) {
+        this(v11n, book, chapter, verse, null);
+    }
+
+    /**
+     * The default Verse is Genesis 1:1. I didn't want to provide this
+     * constructor however, you are supposed to provide a default ctor for all
+     * beans. For this reason I suggest you don't use it.
+     * @deprecated no replacement
+     */
+    @Deprecated
+    public Verse() {
+        this(DEFAULT.v11n, DEFAULT.book, DEFAULT.chapter, DEFAULT.verse, null);
+    }
+
+    /**
+     * Create a Verse from book, chapter and verse numbers, throwing up if the
+     * specified Verse does not exist. This constructor is deliberately package
+     * protected so that is used only by VerseFactory.
+     * 
+     * @param original
+     *            The original verse reference
+     * @param book
+     *            The book number (Genesis = 1)
+     * @param chapter
+     *            The chapter number
+     * @param verse
+     *            The verse number
+     * @deprecated Use {@link #Verse(Versification, BibleBook, int, int)} instead
+     */
+    @Deprecated
+    /* package */Verse(String original, BibleBook book, int chapter, int verse) {
+        this(Versifications.instance().getDefaultVersification(), book, chapter, verse, null);
+    }
+
+    /**
+     * Create a Verse from book, chapter and verse numbers, throwing up if the
+     * specified Verse does not exist.
+     * 
+     * @param book
+     *            The book number (Genesis = 1)
+     * @param chapter
+     *            The chapter number
+     * @param verse
+     *            The verse number
+     * @deprecated Use {@link #Verse(Versification, BibleBook, int, int)} instead
+     */
+    @Deprecated
+    public Verse(BibleBook book, int chapter, int verse) {
+        this(Versifications.instance().getDefaultVersification(), book, chapter, verse, null);
+    }
+
+    /**
+     * Create a Verse from book, chapter and verse numbers, patching up if the
+     * specified verse does not exist.
+     * <p>
+     * The actual value of the boolean is ignored. However for future proofing
+     * you should only use 'true'. Do not use patch_up=false, use
+     * <code>Verse(int, int, int)</code> This so that we can declare this
+     * constructor to not throw an exception. Is there a better way of doing
+     * this?
+     * 
+     * @param book
+     *            The book number (Genesis = 1)
+     * @param chapter
+     *            The chapter number
+     * @param verse
+     *            The verse number
+     * @param patch_up
+     *            True to trigger reference fixing
+     * @deprecated Use {@link #Verse(Versification, BibleBook, int, int, boolean)} instead.
+     */
+    @Deprecated
+    public Verse(BibleBook book, int chapter, int verse, boolean patch_up) {
+        this(Versifications.instance().getDefaultVersification(), book, chapter, verse, patch_up);
+    }
+
+    /**
+     * Set a Verse using a Verse Ordinal number - WARNING Do not use this method
+     * unless you really know the dangers of doing so. Ordinals are not always
+     * going to be the same. So you should use Versification, Book, Chapter and Verse
+     * in preference to an int ordinal whenever possible. Ordinal numbers are 1
+     * based and not 0 based.
+     * 
+     * @param ordinal
+     *            The verse id
+     * @deprecated Use {@link #Verse(Versification, int)} instead.
+     */
+    @Deprecated
+    public Verse(int ordinal) {
+        this(Versifications.instance().getDefaultVersification(), ordinal);
     }
 
     @Override
@@ -264,10 +278,6 @@ public final class Verse implements VerseKey {
             return getName();
         }
 
-        if (PassageUtil.isPersistentNaming() && originalName != null) {
-            return originalName;
-        }
-
         String verseName = doGetName((Verse) base);
         // Only shape it if it can be unshaped.
         if (shaper.canUnshape()) {
@@ -288,14 +298,24 @@ public final class Verse implements VerseKey {
      * @see org.crosswire.jsword.passage.Key#getOsisRef()
      */
     public String getOsisRef() {
-        return book.getOSIS() + Verse.VERSE_OSIS_DELIM + chapter + Verse.VERSE_OSIS_DELIM + verse;
+        return getOsisID();
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getOsisID()
      */
     public String getOsisID() {
-        return getOsisRef();
+        StringBuilder buf = new StringBuilder();
+        buf.append(book.getOSIS());
+        buf.append(Verse.VERSE_OSIS_DELIM);
+        buf.append(chapter);
+        buf.append(Verse.VERSE_OSIS_DELIM);
+        buf.append(verse);
+        if (subIdentifier != null && subIdentifier.length() > 0) {
+            buf.append(VERSE_OSIS_SUB_PREFIX);
+            buf.append(subIdentifier);
+        }
+        return buf.toString();
     }
 
     @Override
@@ -303,12 +323,12 @@ public final class Verse implements VerseKey {
         Verse copy = null;
         try {
             copy = (Verse) super.clone();
-            copy.originalName = this.originalName;
             copy.v11n = this.v11n;
             copy.book = this.book;
             copy.chapter = this.chapter;
             copy.verse = this.verse;
             copy.ordinal = this.ordinal;
+            copy.subIdentifier = this.subIdentifier;
         } catch (CloneNotSupportedException e) {
             assert false : e;
         }
@@ -327,9 +347,12 @@ public final class Verse implements VerseKey {
             Verse that = (Verse) obj;
 
             // The real tests
-            return this.ordinal == that.ordinal && this.v11n.equals(that.v11n);
+            return this.ordinal == that.ordinal
+                    && this.v11n.equals(that.v11n)
+                    && bothNullOrEqual(this.subIdentifier, that.subIdentifier);
         }
 
+        // TODO(DMS): Remove this. Doing this now breaks V11N Mapping code.
         //I think omitting this breaks reciprocity.
         if (obj instanceof Passage) {
             //then we compare if we have a simple cardinality of 1 and the same v11n
@@ -344,19 +367,20 @@ public final class Verse implements VerseKey {
 
     @Override
     public int hashCode() {
-        return this.getOsisRef().hashCode();
+        return getOsisID().hashCode();
+        // TODO(DMS): Change to this.
+        /*
+        int result = 31 + ordinal;
+        result = 31 * result + ((v11n == null) ? 0 : v11n.hashCode());
+        return 31 * result + ((subIdentifier == null) ? 0 : subIdentifier.hashCode());
+        */
     }
 
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(Key obj) {
-        Verse that = null;
-        if (obj instanceof Verse) {
-            that = (Verse) obj;
-        } else {
-            that = ((VerseRange) obj).getStart();
-        }
+        Verse that = (Verse) obj;
 
         int thatStart = that.ordinal;
         int thisStart = this.ordinal;
@@ -598,6 +622,16 @@ public final class Verse implements VerseKey {
     }
 
     /**
+     * Determine whether two objects are equal, allowing nulls
+     * @param x
+     * @param y
+     * @return true if both are null or the two are equal
+     */
+    public static boolean bothNullOrEqual(Object x, Object y) {
+        return (x == y || (x != null && x.equals(y)));
+    }
+
+    /**
      * Compute the verse representation given the context.
      * 
      * @param verseBase
@@ -668,10 +702,6 @@ public final class Verse implements VerseKey {
     private void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
         out.writeUTF(v11n.getName());
-
-        // Ignore the original name. Is this wise?
-        // I am expecting that people are not that fussed about it and
-        // it could make everything far more verbose
     }
 
     /**
@@ -694,9 +724,6 @@ public final class Verse implements VerseKey {
         this.book = decoded.book;
         this.chapter = decoded.chapter;
         this.verse = decoded.verse;
-
-        // We are ignoring the originalName. It was set to null in the
-        // default ctor so I will ignore it here.
     }
 
     /* (non-Javadoc)
@@ -800,17 +827,22 @@ public final class Verse implements VerseKey {
      * What characters should we use to separate parts of an OSIS verse
      * reference
      */
-    public static final String VERSE_OSIS_DELIM = ".";
+    public static final char VERSE_OSIS_DELIM = '.';
+
+    /**
+     * What characters should we use to start an OSIS sub identifier
+     */
+    public static final char VERSE_OSIS_SUB_PREFIX = '!';
 
     /**
      * What characters should we use to separate the book from the chapter
      */
-    public static final String VERSE_PREF_DELIM1 = " ";
+    public static final char VERSE_PREF_DELIM1 = ' ';
 
     /**
      * What characters should we use to separate the chapter from the verse
      */
-    public static final String VERSE_PREF_DELIM2 = ":";
+    public static final char VERSE_PREF_DELIM2 = ':';
 
     /**
      * The default verse
@@ -847,10 +879,12 @@ public final class Verse implements VerseKey {
      */
     private transient int verse;
 
-   /**
-     * The original string for picky users
+    /**
+     * The OSIS Sub-identifier if present.
+     * This should be a string that allows for the likes of:
+     * a.xy.asdf.qr
      */
-    private transient String originalName;
+    private String subIdentifier;
 
     /**
      * To make serialization work across new versions

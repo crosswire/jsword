@@ -20,10 +20,9 @@
  */
 package org.crosswire.jsword.passage;
 
+import org.crosswire.common.util.StringUtil;
 import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.Versification;
-
-import java.util.regex.Pattern;
 
 /**
  * The Osis ID parser simply assumes 2-3 parts divided by '.' and is very strict.
@@ -51,12 +50,14 @@ public final class SimpleOsisParser {
      * @return the equivalent verse range
      */
     public static VerseRange parseOsisRef(final Versification v11n, final String osisRef) {
-        if (osisRef == null) {
+        final String[] osisIDs = StringUtil.splitAll(osisRef, VerseRange.RANGE_OSIS_DELIM);
+        // Too many or few parts?
+        if (osisIDs.length < 1 || osisIDs.length > 2) {
             return null;
         }
 
-        final String[] osisIDs = OSIS_REF_SPLITTER.split(osisRef);
-        if (osisIDs.length != 2) {
+        // Parts must have content.
+        if (osisIDs[0].length() == 0 || (osisIDs.length == 2 && osisIDs[1].length() == 0)) {
             return null;
         }
 
@@ -65,12 +66,16 @@ public final class SimpleOsisParser {
             return null;
         }
 
+        if (osisIDs.length == 1) {
+            return new VerseRange(v11n, start);
+        }
+
         Verse end = parseOsisID(v11n, osisIDs[1]);
         if (end == null) {
             return null;
         }
 
-        return new VerseRange(v11n, osisRef, start, end);
+        return new VerseRange(v11n, start, end);
     }
 
     /**
@@ -84,7 +89,7 @@ public final class SimpleOsisParser {
             return null;
         }
 
-        final String[] verseParts = OSIS_ID_SPLITTER.split(osisID);
+        final String[] verseParts = StringUtil.splitAll(osisID, Verse.VERSE_OSIS_DELIM);
 
         if (verseParts.length != 2 && verseParts.length != 3) {
             return null;
@@ -95,21 +100,20 @@ public final class SimpleOsisParser {
             return null;
         }
 
-        if (b.isShortBook()) {
-            if (verseParts.length != 2) {
-                return null;
-            }
-
-            return new Verse(v11n, b, 1, Integer.parseInt(verseParts[1]));
-        }
+// All OSIS ids have chapter 1 for all books that even have a single chapter.
+// So 3 John 14 would be 3John.1.14
+//        if (b.isShortBook()) {
+//            if (verseParts.length != 2) {
+//                return null;
+//            }
+//
+//            return new Verse(v11n, b, 1, Integer.parseInt(verseParts[1]));
+//        }
 
         if (verseParts.length != 3) {
             return null;
         }
 
-        return new Verse(osisID, v11n, b, Integer.parseInt(verseParts[1]), Integer.parseInt(verseParts[2]));
+        return new Verse(v11n, b, Integer.parseInt(verseParts[1]), Integer.parseInt(verseParts[2]));
     }
-
-    private static final Pattern OSIS_ID_SPLITTER = Pattern.compile("\\.");
-    private static final Pattern OSIS_REF_SPLITTER = Pattern.compile("-");
 }

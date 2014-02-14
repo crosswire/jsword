@@ -42,7 +42,7 @@ public class SimpleOsisIDParserTest {
         assertEquals("Gen.1.2", SimpleOsisParser.parseOsisID(testV11n, "Gen.1.2").getOsisID());
         assertEquals("Gen.2.1", SimpleOsisParser.parseOsisID(testV11n, "Gen.2.1").getOsisID());
         assertEquals("Exod.2.1", SimpleOsisParser.parseOsisID(testV11n, "Exod.2.1").getOsisID());
-        assertEquals("3John.1.1", SimpleOsisParser.parseOsisID(testV11n, "3John.1").getOsisID());
+        assertEquals("3John.1.1", SimpleOsisParser.parseOsisID(testV11n, "3John.1.1").getOsisID());
     }
 
     @Test
@@ -59,7 +59,7 @@ public class SimpleOsisIDParserTest {
         assertEquals("Gen.1.2-Gen.1.4", SimpleOsisParser.parseOsisRef(testV11n, "Gen.1.2-Gen.1.4").getOsisRef());
         assertEquals("Gen.2.2-Gen.3.4", SimpleOsisParser.parseOsisRef(testV11n, "Gen.2.2-Gen.3.4").getOsisRef());
         assertEquals("Exod.2.2-Lev.1.1", SimpleOsisParser.parseOsisRef(testV11n, "Exod.2.2-Lev.1.1").getOsisRef());
-        assertEquals("3John.1.2-3John.1.10", SimpleOsisParser.parseOsisRef(testV11n, "3John.2-3John.10").getOsisRef());
+        assertEquals("3John.1.2-3John.1.10", SimpleOsisParser.parseOsisRef(testV11n, "3John.1.2-3John.1.10").getOsisRef());
     }
 
     @Test

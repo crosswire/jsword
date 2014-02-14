@@ -210,22 +210,6 @@ public class VerseRangeTest {
     }
 
     @Test
-    public void testPersistentNaming() throws Exception {
-        PassageUtil.setPersistentNaming(false);
-        assertEquals("1Cor 8-9", VerseRangeFactory.fromString(v11n, "1corinth 8-9").toString());
-        assertEquals("Gen 1:1", VerseRangeFactory.fromString(v11n, "Genesis 1 1").toString());
-        assertEquals("Gen 1:1-Exo 1:1", VerseRangeFactory.fromString(v11n, "ge 1 1-ex 1 1").toString());
-        assertEquals("Gen-Exo 1:10", VerseRangeFactory.fromString(v11n, "ge-ex:1:10").toString());
-        assertEquals("Gen 1-Exo 2", VerseRangeFactory.fromString(v11n, "ge 1-ex 2").toString());
-        PassageUtil.setPersistentNaming(true);
-        assertEquals("Genesis 1 1", VerseRangeFactory.fromString(v11n, "Genesis 1 1").toString());
-        assertEquals("ge 1 1-ex 1 1", VerseRangeFactory.fromString(v11n, "ge 1 1-ex 1 1").toString());
-        assertEquals("ge-ex:1:1", VerseRangeFactory.fromString(v11n, "ge-ex:1:1").toString());
-        assertEquals("ge 1-ex 2", VerseRangeFactory.fromString(v11n, "ge 1-ex 2").toString());
-        PassageUtil.setPersistentNaming(false);
-    }
-
-    @Test
     public void testNewViaVerseInt() throws Exception {
         assertEquals(gen11_1, RestrictionType.NONE.toRange(v11n, VerseFactory.fromString(v11n, "Gen 1:1"), 1));
     }

@@ -124,7 +124,7 @@ public final class VerseRangeFactory {
      *                If the reference is illegal
      */
     public static VerseRange fromString(Versification v11n, String original, VerseRange basis) throws NoSuchVerseException {
-        String[] parts = StringUtil.split(original, VerseRange.RANGE_ALLOWED_DELIMS);
+        String[] parts = StringUtil.splitAll(original, VerseRange.RANGE_OSIS_DELIM);
 
         switch (parts.length) {
         case 1:
@@ -135,7 +135,7 @@ public final class VerseRangeFactory {
 
         default:
             // TRANSLATOR: The user specified a verse range with too many separators. {0} is a placeholder for the allowable separators.
-            throw new NoSuchVerseException(JSMsg.gettext("A verse range cannot have more than 2 parts. (Parts are separated by {0}) Given {1}", VerseRange.RANGE_ALLOWED_DELIMS, original));
+            throw new NoSuchVerseException(JSMsg.gettext("A verse range cannot have more than 2 parts. (Parts are separated by {0}) Given {1}", VerseRange.RANGE_OSIS_DELIM, original));
         }
     }
 
@@ -159,7 +159,7 @@ public final class VerseRangeFactory {
     private static VerseRange fromText(Versification v11n, String original, String startVerseDesc, String endVerseDesc, VerseRange basis) throws NoSuchVerseException {
         String[] startParts = AccuracyType.tokenize(startVerseDesc);
         AccuracyType accuracyStart = AccuracyType.fromText(v11n, original, startParts, basis);
-        Verse start = accuracyStart.createStartVerse(v11n, startVerseDesc, basis, startParts);
+        Verse start = accuracyStart.createStartVerse(v11n, basis, startParts);
         v11n.validate(start.getBook(), start.getChapter(), start.getVerse());
 
         String[] endParts;
@@ -170,9 +170,9 @@ public final class VerseRangeFactory {
         }
 
         AccuracyType accuracyEnd = AccuracyType.fromText(v11n, original, endParts, accuracyStart, basis);
-        Verse end = accuracyEnd.createEndVerse(v11n, endVerseDesc, start, endParts);
+        Verse end = accuracyEnd.createEndVerse(v11n, start, endParts);
         v11n.validate(end.getBook(), end.getChapter(), end.getVerse());
 
-        return new VerseRange(v11n, original, start, end);
+        return new VerseRange(v11n, start, end);
     }
 }
