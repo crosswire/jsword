@@ -21,7 +21,6 @@
 package org.crosswire.jsword.passage;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import org.crosswire.jsword.book.CaseType;
 import org.crosswire.jsword.versification.BookName;
@@ -88,28 +87,6 @@ public class PassageUtilTest {
          * log("PassageUtil.isValidCase()"); log("PassageUtil.getCases()");
          * log("PassageUtil.isValidAccuracy()"); Should there be getAccuracies()
          */
-    }
-
-    @Test
-    public void testPersistentNaming() throws Exception {
-        PassageUtil.setPersistentNaming(false);
-        assertTrue(!PassageUtil.isPersistentNaming());
-        assertEquals("Gen 1:1", VerseFactory.fromString(v11n, "Genesis 1 1").toString());
-        assertEquals("Gen 1:1", VerseFactory.fromString(v11n, "Gen 1 1").toString());
-        assertEquals("Gen 1:1", VerseFactory.fromString(v11n, "Genesis 1:1").toString());
-        assertEquals("Gen 1:1", VerseFactory.fromString(v11n, "Gen 1 1").toString());
-        assertEquals("Gal 1:1", VerseFactory.fromString(v11n, "g 1 1").toString());
-        assertEquals("Gal 0:0", VerseFactory.fromString(v11n, "g").toString());
-        assertEquals("Gal 1:1", VerseFactory.fromString(v11n, "G:1:1").toString());
-        PassageUtil.setPersistentNaming(true);
-        assertTrue(PassageUtil.isPersistentNaming());
-        assertEquals("Genesis 1 1", VerseFactory.fromString(v11n, "Genesis 1 1").toString());
-        assertEquals("Gen 1 1", VerseFactory.fromString(v11n, "Gen 1 1").toString());
-        assertEquals("Genesis 1:1", VerseFactory.fromString(v11n, "Genesis 1:1").toString());
-        assertEquals("Gen 1 1", VerseFactory.fromString(v11n, "Gen 1 1").toString());
-        assertEquals("g 1 1", VerseFactory.fromString(v11n, "g 1 1").toString());
-        assertEquals("g", VerseFactory.fromString(v11n, "g").toString());
-        assertEquals("G:1:1", VerseFactory.fromString(v11n, "G:1:1").toString());
     }
 
     @Test

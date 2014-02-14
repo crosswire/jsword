@@ -28,7 +28,6 @@ import org.crosswire.jsword.versification.BibleBook;
 import org.crosswire.jsword.versification.BookName;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -47,6 +46,7 @@ public class VerseTest {
     private Verse gen10 = null;
     private Verse gen11 = null;
     private Verse gen11a = null;
+    private Verse gen11s = null;
     private Verse gen12 = null;
     private Verse gen20 = null;
     private Verse gen21 = null;
@@ -74,6 +74,7 @@ public class VerseTest {
         gen10 = new Verse(v11n, BibleBook.GEN, 1, 0);
         gen11 = new Verse(v11n, BibleBook.GEN, 1, 1);
         gen11a = new Verse(v11n, BibleBook.GEN, 1, 1);
+        gen11s = new Verse(v11n, BibleBook.GEN, 1, 1, "sub");
         gen12 = new Verse(v11n, BibleBook.GEN, 1, 2);
         gen20 = new Verse(v11n, BibleBook.GEN, 2, 0);
         gen21 = new Verse(v11n, BibleBook.GEN, 2, 1);
@@ -92,17 +93,9 @@ public class VerseTest {
         ssa11 = new Verse(v11n, BibleBook.SAM2, 1, 1);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see junit.framework.TestCase#tearDown()
-     */
-    @After
-    public void tearDown() {
-    }
-
-    @Test
+   @Test
     public void testNewViaString() throws Exception {
+       assertEquals(gen11s, VerseFactory.fromString(v11n, "Gen.1.1!sub"));
         assertEquals(gen11, Verse.DEFAULT);
         assertEquals(gen11, VerseFactory.fromString(v11n, "Genesis 1 1"));
         assertEquals(gen11, VerseFactory.fromString(v11n, "Gen 1 1"));
@@ -131,7 +124,6 @@ public class VerseTest {
         assertEquals(gen11, VerseFactory.fromString(v11n, "GENESIS1:1"));
         assertEquals(gen11, VerseFactory.fromString(v11n, "GE1    1"));
         assertEquals(gen11, VerseFactory.fromString(v11n, " GEN  1  1  "));
-
         assertEquals(gen11, VerseFactory.fromString(v11n, " gen 1 1 "));
         assertEquals(ssa11, VerseFactory.fromString(v11n, "2Sa 1:1"));
         assertEquals(ssa11, VerseFactory.fromString(v11n, "2Sa 1 1"));
@@ -253,9 +245,6 @@ public class VerseTest {
     @Test
     public void testHashCode() {
         assertEquals(gen11.hashCode(), gen11a.hashCode());
-        //TODO:CJB: Why is this here?
-//        assertEquals(gen11.hashCode(), gen11.getOrdinal());
-//        assertTrue(gen11.hashCode() != gen12.getOrdinal());
         assertTrue(gen11.hashCode() != 0);
     }
 
