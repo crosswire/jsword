@@ -37,6 +37,7 @@ import org.crosswire.jsword.passage.NoSuchVerseException;
 import org.crosswire.jsword.passage.Passage;
 import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.RestrictionType;
+import org.crosswire.jsword.passage.SimpleOsisParser;
 import org.crosswire.jsword.passage.Verse;
 import org.crosswire.jsword.passage.VerseRange;
 import org.crosswire.jsword.versification.system.Versifications;
@@ -56,7 +57,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  * You can specify a range on either side. If a range is present on both sides, they have to have the same number of
  * verses, i.e. verses are mapped verse by verse to each other<br/>
- * Gen.1.1-2=Gen.1.2-3 means Gen.1.1=Gen.1.2 and Gen.1.2=Gen.1.3<br/>
+ * Gen.1.1-Gen.1.2=Gen.1.2-Gen.1.3 means Gen.1.1=Gen.1.2 and Gen.1.2=Gen.1.3<br/>
  *<br/>
  * Note: if the cardinality of the left & KJV sides are different by only one, the algorithm makes the
  * assumption that verse 0 should be disregarded in both ranges.
@@ -65,7 +66,7 @@ import org.slf4j.LoggerFactory;
  * Mappings can be specified by offset. In this case, be aware this maps verse 0 as well. So for example:
  * </p>
  * <p>
- * Ps.19-20=-1 means Ps.19.0=Ps.18.50, Ps.19.1=Ps.19.0, Ps.19.2=Ps.19.1, etc.<br/>
+ * Ps.19-Ps.20=-1 means Ps.19.0=Ps.18.50, Ps.19.1=Ps.19.0, Ps.19.2=Ps.19.1, etc.<br/>
  * It does not make much sense to have an offset for a single verse, so this is not supported.
  * Offsetting for multiple ranges however does, and operates range by range, i.e. each range is calculated separately.
  * Offsetting is somewhat equivalent to specifying ranges, and as a result, the verse 0 behaviour is identical.
@@ -78,7 +79,7 @@ import org.slf4j.LoggerFactory;
  * For example,<br/>
  * if V1 defines Gen.1.1=Gen1.1, Gen1.2=Gen1.1<br/>
  * if V2 defines Gen.1.1=Gen1.1, Gen.1.2=Gen.1.1<br/>
- * then, mapping from V1=>KJV and KJV=>V2 gives you Gen.1.1=>Gen.1.1=>Gen.1.1-2 which is inaccurate if in fact
+ * then, mapping from V1=>KJV and KJV=>V2 gives you Gen.1.1=>Gen.1.1=>Gen.1.1-Gen.1.2 which is inaccurate if in fact
  * V1(Gen.1.1) actually equals V2(Gen.1.1). So instead, we use a split on the right hand-side:
  * </p>
  * <p>
@@ -120,7 +121,7 @@ import org.slf4j.LoggerFactory;
  * @author chrisburrell
  */
 public class VersificationToKJVMapper {
-    public static final char PART_MARKER = '@';
+    public static final char PART_MARKER = '!';
 
     /**
      * @param mapping the mappings from one versification to another
@@ -159,6 +160,10 @@ public class VersificationToKJVMapper {
     private void processEntry(final KeyValuePair entry) throws NoSuchKeyException {
         String leftHand = entry.getKey();
         String kjvHand = entry.getValue();
+        // TODO(CJB): Consider handling !zerosUnmapped here. It is the only place it can happen.
+        
+        // TODO(CJB): If ? can't be on left, consider directly calling
+        // getExistingQualifiedKey(this.nonKjv, leftHand);
         QualifiedKey left = getRange(this.nonKjv, leftHand, null);
 
         // some global flag was specified, proceed to next key value pair.
@@ -194,7 +199,7 @@ public class VersificationToKJVMapper {
      * @param leftHand is assumed to be many
      * @param kjvVerses could be 1 or many
      */
-    // TODO(CJB): optimize getCardinality calls
+    // TODO(CJB): optimize getCardinality calls by using VerseRange and Verse as Key in QualifiedKey
     private void addManyToMany(final QualifiedKey leftHand, final QualifiedKey kjvVerses) {
         Iterator<Key> leftKeys = leftHand.getKey().iterator();
 
@@ -245,7 +250,6 @@ public class VersificationToKJVMapper {
 
         if (isKJVMany && kjvKeys.hasNext()) {
             reportCardinalityError(leftHand, kjvVerses);
-
         }
     }
 
@@ -368,6 +372,7 @@ public class VersificationToKJVMapper {
      * @param verseKey the verses
      * @return the separate list of verses
      */
+    // TODO(CJB): Consider eliminating this by replacing where it is used with a Verse parameter
     private QualifiedKey getRangeAsVerse(final Versification versification, String verseKey) throws NoSuchKeyException {
         final QualifiedKey range = getRange(versification, verseKey, null);
         Key encapsulatedRange = range.getKey();
@@ -399,6 +404,7 @@ public class VersificationToKJVMapper {
             throw new NoSuchKeyException(JSMsg.gettext("Cannot understand [{0}] as a chapter or verse.", versesKey));
         }
 
+        // TODO(CJB): maybe move this up to processEntry
         // we allow some global flags properties - for a want of a better syntax!
         if ("!zerosUnmapped".equals(versesKey)) {
             this.zerosUnmapped = true;
@@ -408,9 +414,12 @@ public class VersificationToKJVMapper {
         char firstChar = versesKey.charAt(0);
         switch (firstChar) {
             case '?':
+                // TODO(CJB): The class JavaDoc has ? on the left side
+                // Where is that in any of the mapping code.
                 return getAbsentQualifiedKey(versification, versesKey);
             case '+':
             case '-':
+                // TODO(CJB): Is + or - allowed only on the right hand side
                 return getOffsetQualifiedKey(versification, versesKey, offsetBasis);
             default:
                 return getExistingQualifiedKey(versification, versesKey);
@@ -427,40 +436,78 @@ public class VersificationToKJVMapper {
     private QualifiedKey getOffsetQualifiedKey(final Versification versification, final String versesKey, Key offsetBasis) throws NoSuchKeyException {
         if (offsetBasis == null || offsetBasis.getCardinality() == 0) {
             // TODO(CJB): internationalize
-            throw new NoSuchKeyException(JSMsg.gettext("Unable to offset the given key [{}]", offsetBasis));
+            throw new NoSuchKeyException(JSMsg.gettext("Unable to offset the given key [{0}]", offsetBasis));
         }
         int offset = Integer.parseInt(versesKey.substring(1));
 
         // Convert key immediately to the our target versification system, namely the KJV, since it is the only
         // one supported. Convert by ref - since the whole purpose of this is to define equivalents.
-        QualifiedKey approximateQualifiedKey = this.getExistingQualifiedKey(versification, offsetBasis.getOsisID());
-        Key approximateKey = approximateQualifiedKey.getKey();
 
-        //we now need to apply the offset to our key... So if it's a negative offset, we need to add the keys
-        //that occur before the key and therefore blur the key
-        Key newKey = null;
-        if (approximateKey instanceof VerseRange) {
-            newKey = getNewVerseRange(versification, offset, (VerseRange) approximateKey);
-        } else if (approximateKey instanceof AbstractPassage) {
-            Iterator<Key> rangeIterator = ((AbstractPassage) approximateKey).rangeIterator(RestrictionType.NONE);
-            newKey = createEmptyPassage(versification);
-            while (rangeIterator.hasNext()) {
-                final Key nextInRange = rangeIterator.next();
-                if (nextInRange instanceof VerseRange) {
-                    newKey.addAll(getNewVerseRange(versification, offset, (VerseRange) nextInRange));
-                } else {
-                    throw new UnsupportedOperationException("Not sure how to parse key of type: "
-                            + nextInRange.getClass() + " found in range " + nextInRange);
-                }
-            }
-        }
-        approximateQualifiedKey.setKey(newKey);
+        // TODO(CJB): Optimize. Don't convert to a string and back. Both are expensive.
+        // I do realize this code is not currently used.
+        //    Basically, the left hand side, offsetBasis, is a verse or a range given by start and end osisIDs.
+        //    A VerseRange actually is a start Verse and a cardinality, possibly 1.
+        //    So the start verse needs to be located in the new versification and then incremented/decremented
+        //    See the Versification class for increment/decrement.
+        // Something like (untested):
+         VerseRange vr = null;
+         if (offsetBasis instanceof VerseRange) {
+             vr = (VerseRange) offsetBasis;
+         } else if (offsetBasis instanceof Passage) {
+             Iterator iter = ((Passage) offsetBasis).rangeIterator(RestrictionType.NONE);
+             if (iter.hasNext()) {
+                 vr = (VerseRange) iter.next();
+             }
+         }
+         if (vr == null) {
+             // TODO(CJB): internationalize
+             throw new NoSuchKeyException(JSMsg.gettext("Unable to offset the given key [{0}]", offsetBasis));
+         }
 
-        //no longer approximate
-        return approximateQualifiedKey;
+         Verse vrStart = vr.getStart();
+         Verse start = new Verse(versification, vrStart.getBook(), vrStart.getChapter(), vrStart.getVerse());
+         // While you can add a negative number, these are optimized for their operation
+         if (offset < 0) {
+             start = versification.subtract(start, -offset);
+         } else if (offset > 0) {
+             start = versification.add(start, offset);
+         }
+         Verse end = start;
+         if (vr.getCardinality() > 1) {
+             end = versification.add(start, vr.getCardinality() - 1);
+         }
+         VerseRange newvr = new VerseRange(versification, start, end);
+         return new QualifiedKey(KeyUtil.getPassage(newvr));
+//        QualifiedKey approximateQualifiedKey = this.getExistingQualifiedKey(versification, offsetBasis.getOsisID());
+//        Key approximateKey = approximateQualifiedKey.getKey();
+//
+//        //we now need to apply the offset to our key... So if it's a negative offset, we need to add the keys
+//        //that occur before the key and therefore blur the key
+//        Key newKey = null;
+//        if (approximateKey instanceof VerseRange) {
+//            newKey = getNewVerseRange(versification, offset, (VerseRange) approximateKey);
+//        } else if (approximateKey instanceof AbstractPassage) {
+//            Iterator<Key> rangeIterator = ((AbstractPassage) approximateKey).rangeIterator(RestrictionType.NONE);
+//            newKey = createEmptyPassage(versification);
+//            while (rangeIterator.hasNext()) {
+//                final Key nextInRange = rangeIterator.next();
+//                if (nextInRange instanceof VerseRange) {
+//                    newKey.addAll(getNewVerseRange(versification, offset, (VerseRange) nextInRange));
+//                } else {
+//                    throw new UnsupportedOperationException("Not sure how to parse key of type: "
+//                            + nextInRange.getClass() + " found in range " + nextInRange);
+//                }
+//            }
+//        }
+//        approximateQualifiedKey.setKey(newKey);
+//
+//        //no longer approximate
+//        return approximateQualifiedKey;
     }
 
     private VerseRange getNewVerseRange(final Versification versification, final int offset, final VerseRange verseRange) {
+        // TODO(CJB): See comment in previous method for a better way.
+        // The Versification class has optimized methods to compute a verse offset from another.
         final Verse newStart = new Verse(versification, verseRange.getStart().getOrdinal() + offset);
         final Verse newEnd = new Verse(versification, verseRange.getEnd().getOrdinal() + offset);
         return new VerseRange(versification, newStart, newEnd);
@@ -479,10 +526,21 @@ public class VersificationToKJVMapper {
         String part = null;
         int indexOfPart = versesKey.lastIndexOf(PART_MARKER);
         if (indexOfPart != -1) {
+            // BUG(CJB): Synodal has: 1Kgs.18.34=1Kgs.18.33!b-1Kgs.18.34
+            // This will create a reference of 1Kgs.18.33, dropping 1Kgs.18.34
+            // Maybe substring the part with a length of 2
+            // Maybe remove 2 chars to create reference
+            // Would there ever be something like ...=yyy!b-xxx!a
+            // which splits both the start and the end verses?
             reference = reference.substring(0, indexOfPart);
             part = versesKey.substring(indexOfPart);
         }
-        return new QualifiedKey(PassageKeyFactory.instance().getKey(versification, reference), part);
+        // TODO(CJB): Use a VerseRange rather than a default Passage or a RangedPassage
+        // Note the following code will also take a single verse and make it into a VerseRange of cardinality 1
+        // E.g.
+        //return new QualifiedKey(VerseRangeFactory.fromString(versification, reference), part);
+        VerseRange vr = SimpleOsisParser.parseOsisRef(versification, reference);
+        return new QualifiedKey(KeyUtil.getPassage(vr), part);
     }
 
     /**
@@ -510,7 +568,12 @@ public class VersificationToKJVMapper {
      * @return the equivalent key
      */
     public String map(final String key) throws NoSuchKeyException {
+        // TODO(CJB): Consider changing the parameter to Verse key.
+        // Converting a Verse to a string is expensive.
+        // Parsing the string is expensive.
         final QualifiedKey range = getRangeAsVerse(nonKjv, key);
+        // TODO(CJB): Consider changing return type to a VerseRange or a Verse
+        // Converting a Passage, VerseRange or Verse to a string is expensive
         return map((Verse) range.getKey()).getOsisRef();
     }
 
@@ -582,6 +645,9 @@ public class VersificationToKJVMapper {
      * @return the equivalent key, which may or may not be used to look up a reference in a book.
      */
     public String mapToQualifiedKey(final String verseKey) throws NoSuchKeyException {
+        // TODO(CJB): Consider changing the parameter to Verse key.
+        // Converting a Verse to a string is expensive.
+        // Parsing the string is expensive.
         final QualifiedKey qualifiedVerse = getRangeAsVerse(nonKjv, verseKey);
         List<QualifiedKey> qualifiedKeys = map(qualifiedVerse);
 
@@ -649,6 +715,11 @@ public class VersificationToKJVMapper {
      * @return the key in the left-hand versification
      */
     public String unmap(final String kjvVerse) throws NoSuchKeyException {
+        // TODO(CJB): Consider changing the parameter to Verse key.
+        // Converting a Verse to a string is expensive.
+        // Parsing the string is expensive.
+        // TODO(CJB): Consider changing return type to a VerseRange or a Verse
+        // Converting a Passage, VerseRange or Verse to a string is expensive
         return unmap(getRangeAsVerse(KJV, kjvVerse)).getOsisRef();
     }
 

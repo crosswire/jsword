@@ -121,17 +121,17 @@ public class VersificationToKJVMapperTest {
 
     @Test
     public void testPartsAreReturned() throws NoSuchKeyException {
-        addProperty("Gen.1.1", "Gen.1.3@a");
-        addProperty("Gen.1.2", "Gen.1.3@b");
+        addProperty("Gen.1.1", "Gen.1.3!a");
+        addProperty("Gen.1.2", "Gen.1.3!b");
         init();
 
 
-        assertEquals("Gen.1.3@a", mapper.mapToQualifiedKey("Gen.1.1"));
-        assertEquals("Gen.1.3@b", mapper.mapToQualifiedKey("Gen.1.2"));
+        assertEquals("Gen.1.3!a", mapper.mapToQualifiedKey("Gen.1.1"));
+        assertEquals("Gen.1.3!b", mapper.mapToQualifiedKey("Gen.1.2"));
         assertEquals("Gen.1.3", mapper.map("Gen.1.1"));
         assertEquals("Gen.1.3", mapper.map("Gen.1.2"));
-        assertEquals("Gen.1.1", mapper.unmap("Gen.1.3@a"));
-        assertEquals("Gen.1.2", mapper.unmap("Gen.1.3@b"));
+        assertEquals("Gen.1.1", mapper.unmap("Gen.1.3!a"));
+        assertEquals("Gen.1.2", mapper.unmap("Gen.1.3!b"));
         assertEquals("Gen.1.1-Gen.1.2", mapper.unmap("Gen.1.3"));
     }
 
