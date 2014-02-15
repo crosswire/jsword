@@ -124,13 +124,13 @@ public class PassageTally extends AbstractPassage {
      * @throws NoSuchVerseException
      *             If refs is invalid
      */
-    public PassageTally(Versification v11n, String refs, Key basis) throws NoSuchVerseException {
+    protected PassageTally(Versification v11n, String refs, Key basis) throws NoSuchVerseException {
         super(v11n, refs);
         board = new int[v11n.maximumOrdinal() + 1];
         addVerses(refs, basis);
     }
 
-    public PassageTally(Versification v11n, String refs) throws NoSuchVerseException {
+    protected PassageTally(Versification v11n, String refs) throws NoSuchVerseException {
         this(v11n, refs, null);
     }
 

@@ -64,7 +64,7 @@ public class RangedPassage extends AbstractPassage {
      * @param refSystem
      *            The Versification to which this Passage belongs.
      */
-    protected RangedPassage(Versification refSystem) {
+    public RangedPassage(Versification refSystem) {
         super(refSystem);
         store = new TreeSet<Key>();
     }

@@ -45,7 +45,7 @@ final class ReadOnlyPassage implements Passage {
      * @param ignore
      *            Do we throw up if someone tries to change us
      */
-    protected ReadOnlyPassage(Passage ref, boolean ignore) {
+    public ReadOnlyPassage(Passage ref, boolean ignore) {
         this.ref = ref;
         this.ignore = ignore;
     }

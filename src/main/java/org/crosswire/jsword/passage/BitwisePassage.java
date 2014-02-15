@@ -58,7 +58,7 @@ public class BitwisePassage extends AbstractPassage {
      * @param v11n
      *            The Versification to which this Passage belongs.
      */
-    protected BitwisePassage(Versification v11n) {
+    public BitwisePassage(Versification v11n) {
         super(v11n);
         store = new BitSet(v11n.maximumOrdinal() + 1);
     }
