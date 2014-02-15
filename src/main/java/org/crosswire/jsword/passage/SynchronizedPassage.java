@@ -43,7 +43,7 @@ final class SynchronizedPassage implements Passage {
      * @param ref
      *            The real Passage
      */
-    protected SynchronizedPassage(Passage ref) {
+    public SynchronizedPassage(Passage ref) {
         this.ref = ref;
     }
 

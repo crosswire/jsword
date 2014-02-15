@@ -51,7 +51,7 @@ public class DistinctPassage extends AbstractPassage {
      * @param v11n
      *            The Versification to which this Passage belongs.
      */
-    protected DistinctPassage(Versification v11n) {
+    public DistinctPassage(Versification v11n) {
         super(v11n);
     }
 
