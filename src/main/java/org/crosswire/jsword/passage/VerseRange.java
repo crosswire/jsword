@@ -96,13 +96,23 @@ public final class VerseRange implements VerseKey {
         }
     }
 
-    /**
-     * Get the Versification to which this VerseRange participates.
-     * 
-     * @return the reference system.
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.VerseKey#getVersification()
      */
     public Versification getVersification() {
         return v11n;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.VerseKey#reversify(org.crosswire.jsword.versification.Versification)
+     */
+    public VerseKey reversify(Versification newVersification) {
+        if (v11n.equals(newVersification)) {
+            return this;
+        }
+        Verse newStart = (Verse) start.reversify(newVersification);
+        Verse newEnd = (Verse) end.reversify(newVersification);
+        return new VerseRange(newVersification, newStart, newEnd);
     }
 
     /**
