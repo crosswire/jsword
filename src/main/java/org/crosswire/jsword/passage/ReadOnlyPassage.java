@@ -58,6 +58,13 @@ final class ReadOnlyPassage implements Passage {
     }
 
     /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#reversify(org.crosswire.jsword.versification.Versification)
+     */
+    public VerseKey reversify(Versification newVersification) {
+        return ref.reversify(newVersification);
+    }
+
+    /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#addAll(org.crosswire.jsword.passage.Key)
      */
     public void addAll(Key key) {

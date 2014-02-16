@@ -30,5 +30,25 @@ import org.crosswire.jsword.versification.Versification;
  * @author DM Smith
  */
 public interface VerseKey extends Key {
+    /**
+     * Get the Versification that defines the Verses in this VerseKey.
+     * 
+     * @return this VerseKey Versification.
+     */
     Versification getVersification();
+
+    /**
+     * Cast this VerseKey into another Versification. OSIS Sub Identifiers are ignored.
+     * 
+     * <p>
+     * Note: This is dangerous as it does not consider chapter boundaries
+     * or whether the verses in this VerseKey are actually part of the
+     * new versification. It should only be used when the start and end
+     * verses are in both Versifications. You have been warned.
+     * </p>
+     * 
+     * 
+     * @return this VerseKey Versification.
+     */
+    VerseKey reversify(Versification newVersification);
 }

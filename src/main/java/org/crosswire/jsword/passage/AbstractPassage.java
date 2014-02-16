@@ -79,8 +79,21 @@ public abstract class AbstractPassage implements Passage {
         this.listeners = new ArrayList<PassageListener>();
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#getVersification()
+     */
     public Versification getVersification() {
         return v11n;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.VerseKey#reversify(org.crosswire.jsword.versification.Versification)
+     */
+    public VerseKey reversify(Versification newVersification) {
+        if (v11n.equals(newVersification)) {
+            return this;
+        }
+        throw new UnsupportedOperationException();
     }
 
     /* (non-Javadoc)
@@ -1011,6 +1024,7 @@ public abstract class AbstractPassage implements Passage {
     protected static VerseRange toVerseRange(Object base) throws ClassCastException {
         return toVerseRange(null, base);
     }
+
     protected static VerseRange toVerseRange(Versification v11n, Object base) throws ClassCastException {
         assert base != null;
 

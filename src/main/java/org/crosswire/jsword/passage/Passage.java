@@ -78,13 +78,6 @@ import org.crosswire.jsword.versification.Versification;
  */
 public interface Passage extends VerseKey {
     /**
-     * Get the Versification that defines the Verses in the passage.
-     * 
-     * @return this Passage's Versification.
-     */
-    Versification getVersification();
-
-    /**
      * A summary of the verses in this Passage For example
      * "10 verses in 4 books"
      * 

@@ -30,6 +30,7 @@ import org.crosswire.common.util.ItemIterator;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.versification.BibleBook;
+import org.crosswire.jsword.versification.QualifiedKey;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
 
@@ -450,13 +451,21 @@ public final class Verse implements VerseKey {
         return v11n.add(this, n);
     }
 
-    /**
-     * Return the versification to which this verse belongs.
-     * 
-     * @return the versification of this verse
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.VerseKey#getVersification()
      */
     public Versification getVersification() {
         return v11n;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.Passage#reversify(org.crosswire.jsword.versification.Versification)
+     */
+    public VerseKey reversify(Versification newVersification) {
+        if (v11n.equals(newVersification)) {
+            return this;
+        }
+        return new Verse(newVersification, book, chapter, verse);
     }
 
     /**
@@ -486,6 +495,13 @@ public final class Verse implements VerseKey {
         return verse;
     }
 
+    /**
+     * Return the sub identifier if any
+     * @return The optional OSIS sub identifier
+     */
+    public String getSubIdentifier() {
+        return subIdentifier;
+    }
     /**
      * Is this verse the first in a chapter
      * 
