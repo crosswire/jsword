@@ -336,9 +336,9 @@ public final class PassageKeyFactory {
             index += toBinary(buffer, index, ranges, maxOrdinal / 2);
 
             // write the verse ordinals in a loop
-            Iterator<Key> it = ref.rangeIterator(RestrictionType.NONE);
+            Iterator<VerseRange> it = ref.rangeIterator(RestrictionType.NONE);
             while (it.hasNext()) {
-                VerseRange range = (VerseRange) it.next();
+                VerseRange range = it.next();
                 index += toBinary(buffer, index, range.getStart().getOrdinal(), maxOrdinal);
                 index += toBinary(buffer, index, range.getCardinality(), maxOrdinal);
             }

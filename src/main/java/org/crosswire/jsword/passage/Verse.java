@@ -30,7 +30,6 @@ import org.crosswire.common.util.ItemIterator;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.versification.BibleBook;
-import org.crosswire.jsword.versification.QualifiedKey;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
 
@@ -51,7 +50,7 @@ import org.crosswire.jsword.versification.system.Versifications;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith
  */
-public final class Verse implements VerseKey {
+public final class Verse implements VerseKey<Verse> {
     /**
      * Create a Verse from book, chapter and verse numbers, throwing up if the
      * specified Verse does not exist.
@@ -259,6 +258,23 @@ public final class Verse implements VerseKey {
         this(Versifications.instance().getDefaultVersification(), ordinal);
     }
 
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.VerseKey#isWhole()
+     */
+    public boolean isWhole() {
+        return subIdentifier == null || subIdentifier.length() == 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.VerseKey#getWhole()
+     */
+    public Verse getWhole() {
+        if (isWhole()) {
+            return this;
+        }
+        return new Verse(v11n, book, chapter, verse);
+    }
+
     @Override
     public String toString() {
         return getName();
@@ -461,7 +477,7 @@ public final class Verse implements VerseKey {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#reversify(org.crosswire.jsword.versification.Versification)
      */
-    public VerseKey reversify(Versification newVersification) {
+    public Verse reversify(Versification newVersification) {
         if (v11n.equals(newVersification)) {
             return this;
         }
@@ -502,6 +518,7 @@ public final class Verse implements VerseKey {
     public String getSubIdentifier() {
         return subIdentifier;
     }
+
     /**
      * Is this verse the first in a chapter
      * 

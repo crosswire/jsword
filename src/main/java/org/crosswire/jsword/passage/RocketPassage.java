@@ -184,7 +184,7 @@ public class RocketPassage extends BitwisePassage {
      * @see org.crosswire.jsword.passage.Passage#rangeIterator(int)
      */
     @Override
-    public Iterator<Key> rangeIterator(RestrictionType restrict) {
+    public Iterator<VerseRange> rangeIterator(RestrictionType restrict) {
         if (ranged != null) {
             return ranged.rangeIterator(restrict);
         }

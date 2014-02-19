@@ -37,6 +37,7 @@ import org.crosswire.jsword.book.Books;
 import org.crosswire.jsword.passage.Key;
 import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.passage.VerseKey;
 
 /**
  * Start of a mechanism to extract a Bible module to OSIS.
@@ -81,7 +82,7 @@ public class BibleToOsis {
         StringBuffer buf = new StringBuffer();
         boolean inPreVerse = false;
 
-        Key keys = bible.getKey(range);
+        VerseKey keys = (VerseKey) bible.getKey(range);
 
         openOutputFile(bmd.getInitials(), !BY_BOOK);
         buildDocumentOpen(buf, bmd, range, !BY_BOOK);

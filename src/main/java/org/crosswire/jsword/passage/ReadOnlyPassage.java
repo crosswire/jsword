@@ -60,8 +60,22 @@ final class ReadOnlyPassage implements Passage {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#reversify(org.crosswire.jsword.versification.Versification)
      */
-    public VerseKey reversify(Versification newVersification) {
+    public Passage reversify(Versification newVersification) {
         return ref.reversify(newVersification);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.VerseKey#isWhole()
+     */
+    public boolean isWhole() {
+        return ref.isWhole();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.VerseKey#getWhole()
+     */
+    public Passage getWhole() {
+        return ref.getWhole();
     }
 
     /* (non-Javadoc)
@@ -264,7 +278,7 @@ final class ReadOnlyPassage implements Passage {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Passage#rangeIterator(org.crosswire.jsword.passage.RestrictionType)
      */
-    public Iterator<Key> rangeIterator(RestrictionType restrict) {
+    public Iterator<VerseRange> rangeIterator(RestrictionType restrict) {
         return ref.rangeIterator(restrict);
     }
 

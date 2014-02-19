@@ -219,10 +219,10 @@ public class PassageTally extends AbstractPassage {
         StringBuilder retcode = new StringBuilder();
 
         if (order == Order.BIBLICAL) {
-            Iterator<Key> it = rangeIterator(RestrictionType.NONE);
+            Iterator<VerseRange> it = rangeIterator(RestrictionType.NONE);
             Verse current = null;
             while (it.hasNext()) {
-                VerseRange range = (VerseRange) it.next();
+                VerseRange range = it.next();
                 retcode.append(range.getName(current));
 
                 if (it.hasNext()) {
@@ -314,7 +314,7 @@ public class PassageTally extends AbstractPassage {
     }
 
     @Override
-    public Iterator<Key> rangeIterator(RestrictionType restrict) {
+    public Iterator<VerseRange> rangeIterator(RestrictionType restrict) {
         if (order == Order.BIBLICAL) {
             return new VerseRangeIterator(getVersification(), iterator(), restrict);
         }
@@ -588,10 +588,10 @@ public class PassageTally extends AbstractPassage {
             // This is a bit of a cheat, but there is no way I'm going
             // to do the math to speed up the restricted version
             PassageTally temp = this.clone();
-            Iterator<Key> it = temp.rangeIterator(RestrictionType.NONE);
+            Iterator<VerseRange> it = temp.rangeIterator(RestrictionType.NONE);
 
             while (it.hasNext()) {
-                VerseRange range = (VerseRange) it.next();
+                VerseRange range = it.next();
                 for (int i = 0; i <= verses; i++) {
                     add(restrict.blur(getVersification(), range, i, i));
                 }
@@ -1023,21 +1023,22 @@ public class PassageTally extends AbstractPassage {
      * 
      * @author Joe Walker
      */
-    private static final class OrderedVerseRangeIterator implements Iterator<Key> {
+    private static final class OrderedVerseRangeIterator<T> implements Iterator<VerseRange> {
         /**
          * Find the first unused verse
          */
         public OrderedVerseRangeIterator(Versification v11n, Iterator<Key> vit, int[] board) {
             Set<TalliedVerseRange> output = new TreeSet<TalliedVerseRange>();
 
-            Iterator<Key> rit = new VerseRangeIterator(v11n, vit, RestrictionType.NONE);
+            Iterator<VerseRange> rit = new VerseRangeIterator(v11n, vit, RestrictionType.NONE);
             while (rit.hasNext()) {
-                VerseRange range = (VerseRange) rit.next();
+                VerseRange range = rit.next();
 
                 // Calculate the maximum rank for a verse
                 int rank = 0;
-                for (Key aKey : range) {
-                    Verse verse = (Verse) aKey;
+                Iterator<Key> iter = range.iterator();
+                while (iter.hasNext()) {
+                    Verse verse = (Verse) iter.next();
                     int temp = board[verse.getOrdinal()];
                     if (temp > rank) {
                         rank = temp;

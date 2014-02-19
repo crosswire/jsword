@@ -25,8 +25,6 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.Iterator;
 
-import org.crosswire.jsword.versification.Versification;
-
 /**
  * A Passage is a specialized Collection of Verses. The additions are:
  * <ul>
@@ -76,7 +74,7 @@ import org.crosswire.jsword.versification.Versification;
  *      The copyright to this program is held by it's authors.
  * @author Joe Walker [joe at eireneh dot com]
  */
-public interface Passage extends VerseKey {
+public interface Passage extends VerseKey<Passage> {
     /**
      * A summary of the verses in this Passage For example
      * "10 verses in 4 books"
@@ -188,7 +186,7 @@ public interface Passage extends VerseKey {
      *            Do we break ranges over chapters
      * @return A list enumerator
      */
-    Iterator<Key> rangeIterator(RestrictionType restrict);
+    Iterator<VerseRange> rangeIterator(RestrictionType restrict);
 
     /**
      * Returns true if this collection contains all the specified Verse

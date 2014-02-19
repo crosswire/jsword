@@ -45,7 +45,7 @@ import org.slf4j.LoggerFactory;
  * @author Joe Walker [joe at eireneh dot com]
  * @author DM Smith
  */
-public final class VerseRange implements VerseKey {
+public final class VerseRange implements VerseKey<VerseRange> {
     /**
      * The default VerseRange is a single verse - Genesis 1:1. I didn't want to
      * provide this constructor however, you are supposed to provide a default
@@ -106,13 +106,30 @@ public final class VerseRange implements VerseKey {
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.VerseKey#reversify(org.crosswire.jsword.versification.Versification)
      */
-    public VerseKey reversify(Versification newVersification) {
+    public VerseRange reversify(Versification newVersification) {
         if (v11n.equals(newVersification)) {
             return this;
         }
-        Verse newStart = (Verse) start.reversify(newVersification);
-        Verse newEnd = (Verse) end.reversify(newVersification);
+        Verse newStart = start.reversify(newVersification);
+        Verse newEnd = end.reversify(newVersification);
         return new VerseRange(newVersification, newStart, newEnd);
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.VerseKey#isWhole()
+     */
+    public boolean isWhole() {
+        return start.isWhole() && end.isWhole();
+    }
+
+    /* (non-Javadoc)
+     * @see org.crosswire.jsword.passage.VerseKey#getWhole()
+     */
+    public VerseRange getWhole() {
+        if (isWhole()) {
+            return this;
+        }
+        return new VerseRange(v11n, start.getWhole(), end.getWhole());
     }
 
     /**
@@ -625,7 +642,7 @@ public final class VerseRange implements VerseKey {
      * 
      * @return a range iterator
      */
-    public Iterator<Key> rangeIterator(RestrictionType restrict) {
+    public Iterator<VerseRange> rangeIterator(RestrictionType restrict) {
         return new AbstractPassage.VerseRangeIterator(v11n, iterator(), restrict);
     }
 

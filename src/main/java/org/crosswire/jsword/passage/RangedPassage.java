@@ -66,7 +66,7 @@ public class RangedPassage extends AbstractPassage {
      */
     public RangedPassage(Versification refSystem) {
         super(refSystem);
-        store = new TreeSet<Key>();
+        store = new TreeSet<VerseRange>();
     }
 
     /**
@@ -91,7 +91,7 @@ public class RangedPassage extends AbstractPassage {
     protected RangedPassage(Versification v11n, String refs, Key basis) throws NoSuchVerseException {
         super(v11n, refs);
 
-        store = new TreeSet<Key>();
+        store = new TreeSet<VerseRange>();
         addVerses(refs, basis);
         normalize();
     }
@@ -109,7 +109,7 @@ public class RangedPassage extends AbstractPassage {
         // copy.store = (SortedSet) store.clone();
         // However SortedSet is not Cloneable so I can't
         // Watch out for this, I'm not sure if it breaks anything.
-        copy.store = new TreeSet<Key>();
+        copy.store = new TreeSet<VerseRange>();
         copy.store.addAll(store);
 
         return copy;
@@ -126,11 +126,11 @@ public class RangedPassage extends AbstractPassage {
 
     @Override
     public int countVerses() {
-        Iterator<Key> it = rangeIterator(RestrictionType.NONE);
+        Iterator<VerseRange> it = rangeIterator(RestrictionType.NONE);
         int count = 0;
 
         while (it.hasNext()) {
-            VerseRange range = (VerseRange) it.next();
+            VerseRange range = it.next();
             count += range.getCardinality();
         }
 
@@ -145,7 +145,7 @@ public class RangedPassage extends AbstractPassage {
     }
 
     @Override
-    public final Iterator<Key> rangeIterator(RestrictionType restrict) {
+    public final Iterator<VerseRange> rangeIterator(RestrictionType restrict) {
         if (restrict.equals(RestrictionType.NONE)) {
             return store.iterator();
         }
@@ -166,9 +166,9 @@ public class RangedPassage extends AbstractPassage {
 
         VerseRange that_range = toVerseRange(getVersification(), obj);
 
-        Iterator<Key> it = rangeIterator(RestrictionType.NONE);
+        Iterator<VerseRange> it = rangeIterator(RestrictionType.NONE);
         while (it.hasNext()) {
-            VerseRange this_range = (VerseRange) it.next();
+            VerseRange this_range = it.next();
             if (this_range.contains(that_range)) {
                 return true;
             }
@@ -250,32 +250,48 @@ public class RangedPassage extends AbstractPassage {
     public void retainAll(Key key) {
         optimizeWrites();
 
-        Set<Key> new_store = new TreeSet<Key>();
+        Set<VerseRange> new_store = new TreeSet<VerseRange>();
 
-        Iterator<Key> that_it = null;
         if (key instanceof RangedPassage) {
-            that_it = ((RangedPassage) key).rangeIterator(RestrictionType.CHAPTER);
+            Iterator<VerseRange> that_it = ((RangedPassage) key).rangeIterator(RestrictionType.CHAPTER);
+            while (that_it.hasNext()) {
+                VerseRange that_range = that_it.next();
+
+                // go through all the VerseRanges
+                Iterator<VerseRange> this_it = rangeIterator(RestrictionType.NONE);
+                while (this_it.hasNext()) {
+                    // if this range touches the range to be removed ...
+                    VerseRange this_range = this_it.next();
+                    if (this_range.overlaps(that_range)) {
+                        // ... remove it and add the remainder
+                        VerseRange interstect = VerseRange.intersection(this_range, that_range);
+                        if (interstect != null) {
+                            new_store.add(interstect);
+                        }
+                    }
+                }
+            }
         } else {
-            that_it = key.iterator();
-        }
+            Iterator<Key> that_it = key.iterator();
+            while (that_it.hasNext()) {
+                VerseRange that_range = toVerseRange(getVersification(), that_it.next());
 
-        while (that_it.hasNext()) {
-            VerseRange that_range = toVerseRange(getVersification(), that_it.next());
-
-            // go through all the VerseRanges
-            Iterator<Key> this_it = rangeIterator(RestrictionType.NONE);
-            while (this_it.hasNext()) {
-                // if this range touches the range to be removed ...
-                VerseRange this_range = (VerseRange) this_it.next();
-                if (this_range.overlaps(that_range)) {
-                    // ... remove it and add the remainder
-                    VerseRange interstect = VerseRange.intersection(this_range, that_range);
-                    if (interstect != null) {
-                        new_store.add(interstect);
+                // go through all the VerseRanges
+                Iterator<VerseRange> this_it = rangeIterator(RestrictionType.NONE);
+                while (this_it.hasNext()) {
+                    // if this range touches the range to be removed ...
+                    VerseRange this_range = this_it.next();
+                    if (this_range.overlaps(that_range)) {
+                        // ... remove it and add the remainder
+                        VerseRange interstect = VerseRange.intersection(this_range, that_range);
+                        if (interstect != null) {
+                            new_store.add(interstect);
+                        }
                     }
                 }
             }
         }
+
 
         store = new_store;
         normalize();
@@ -299,11 +315,11 @@ public class RangedPassage extends AbstractPassage {
 
         VerseRange last = null;
         VerseRange next = null;
-        Set<Key> new_store = new TreeSet<Key>();
+        Set<VerseRange> new_store = new TreeSet<VerseRange>();
 
-        Iterator<Key> it = rangeIterator(RestrictionType.NONE);
+        Iterator<VerseRange> it = rangeIterator(RestrictionType.NONE);
         while (it.hasNext()) {
-            next = (VerseRange) it.next();
+            next = it.next();
 
             if (last != null && next.adjacentTo(last)) {
                 VerseRange merge = new VerseRange(last, next);
@@ -335,11 +351,11 @@ public class RangedPassage extends AbstractPassage {
          * Create a basic iterator that is a proxy for the RangedPassage
          * Passages iterator, with remove() overridden.
          */
-        public VerseIterator(Versification v11n, Iterator<Key> it) {
+        public VerseIterator(Versification v11n, Iterator<VerseRange> it) {
             Set<Key> temp = new TreeSet<Key>();
 
             while (it.hasNext()) {
-                VerseRange range = (VerseRange) it.next();
+                VerseRange range = it.next();
                 int start = range.getStart().getOrdinal();
                 int end = range.getCardinality();
 
@@ -381,11 +397,11 @@ public class RangedPassage extends AbstractPassage {
     /**
      * Loop over the VerseRanges and check that they do not require digging into
      */
-    private static final class VerseRangeIterator implements Iterator<Key> {
+    private static final class VerseRangeIterator implements Iterator<VerseRange> {
         /**
          * Simple ctor
          */
-        public VerseRangeIterator(Iterator<Key> it, RestrictionType restrict) {
+        public VerseRangeIterator(Iterator<VerseRange> it, RestrictionType restrict) {
             this.restrict = restrict;
             this.real = it;
         }
@@ -407,9 +423,9 @@ public class RangedPassage extends AbstractPassage {
         /* (non-Javadoc)
          * @see java.util.Iterator#next()
          */
-        public Key next() {
+        public VerseRange next() {
             if (next == null) {
-                next = (VerseRange) real.next();
+                next = real.next();
             }
 
             if (next == null) {
@@ -427,7 +443,7 @@ public class RangedPassage extends AbstractPassage {
         /**
          * The next object is correct, use that one
          */
-        private Key replyNext() {
+        private VerseRange replyNext() {
             VerseRange reply = next;
             next = null;
             return reply;
@@ -436,9 +452,9 @@ public class RangedPassage extends AbstractPassage {
         /**
          * The next object is too big, so cut it up
          */
-        private Key splitNext() {
-            Iterator<Key> chop = next.rangeIterator(restrict);
-            VerseRange first = (VerseRange) chop.next();
+        private VerseRange splitNext() {
+            Iterator<VerseRange> chop = next.rangeIterator(restrict);
+            VerseRange first = chop.next();
             VerseRange[] ranges = VerseRange.remainder(next, first);
 
             assert ranges.length == 1;
@@ -460,7 +476,7 @@ public class RangedPassage extends AbstractPassage {
         /**
          * Where we read our base ranges from
          */
-        private Iterator<Key> real;
+        private Iterator<VerseRange> real;
     }
 
     /**
@@ -494,7 +510,7 @@ public class RangedPassage extends AbstractPassage {
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         optimizeWrites();
 
-        store = new TreeSet<Key>();
+        store = new TreeSet<VerseRange>();
 
         in.defaultReadObject();
 
@@ -509,5 +525,5 @@ public class RangedPassage extends AbstractPassage {
     /**
      * The place the real data is stored
      */
-    private transient Set<Key> store;
+    private transient Set<VerseRange> store;
 }

@@ -203,9 +203,9 @@ public abstract class AbstractBackend<T extends OpenFileState> implements Statef
     private Verse readPassageOsis(Key key, RawTextToXmlProcessor processor, final List<Content> content, T openFileState) throws BookException {
         Verse currentVerse = null;
             final Passage ref = KeyUtil.getPassage(key);
-            final Iterator<Key> rit = ref.rangeIterator(RestrictionType.CHAPTER);
+            final Iterator<VerseRange> rit = ref.rangeIterator(RestrictionType.CHAPTER);
             while (rit.hasNext()) {
-                VerseRange range = (VerseRange) rit.next();
+                VerseRange range = rit.next();
                 processor.preRange(range, content);
 
                 // FIXME(CJB): can this now be optimized since we can calculate
