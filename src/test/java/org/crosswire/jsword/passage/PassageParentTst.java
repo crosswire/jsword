@@ -170,7 +170,7 @@ public class PassageParentTst {
 
     @Test
     public void testWholeBible() throws Exception {
-        Iterator<Key> it = gen_rev.rangeIterator(RestrictionType.NONE);
+        Iterator<VerseRange> it = gen_rev.rangeIterator(RestrictionType.NONE);
         assertTrue(it.hasNext());
         assertEquals(it.next(), VerseRangeFactory.fromString(v11n, "Gen-Rev"));
         assertTrue(!it.hasNext());
@@ -235,7 +235,7 @@ public class PassageParentTst {
         // stage.
         // for (int i=0; i<12; i++)
         {
-            Iterator<Key> it = gen1_135.rangeIterator(RestrictionType.NONE);
+            Iterator<VerseRange> it = gen1_135.rangeIterator(RestrictionType.NONE);
             assertTrue(it.hasNext());
             assertEquals(VerseRangeFactory.fromString(v11n, "Gen 1:1"), it.next());
             assertTrue(it.hasNext());
@@ -542,7 +542,7 @@ public class PassageParentTst {
 
     @Test
     public void testWriteRangeIterator() throws Exception {
-        Iterator<Key> it = gen1_135.rangeIterator(RestrictionType.NONE);
+        Iterator<VerseRange> it = gen1_135.rangeIterator(RestrictionType.NONE);
         assertTrue(it.hasNext());
         assertEquals(it.next(), VerseRangeFactory.fromString(v11n, "Gen 1:1"));
         assertTrue(it.hasNext());

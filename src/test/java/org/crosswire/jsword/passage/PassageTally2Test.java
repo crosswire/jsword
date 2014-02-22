@@ -208,7 +208,7 @@ public class PassageTally2Test {
 
     @Test
     public void testRangeIterator() throws Exception {
-        Iterator<Key> it = tally.rangeIterator(RestrictionType.NONE);
+        Iterator<VerseRange> it = tally.rangeIterator(RestrictionType.NONE);
         assertTrue(it.hasNext());
         assertEquals(VerseRangeFactory.fromString(v11n, "Gen 1:1"), it.next());
         assertTrue(it.hasNext());

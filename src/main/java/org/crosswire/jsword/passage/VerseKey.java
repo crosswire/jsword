@@ -29,7 +29,7 @@ import org.crosswire.jsword.versification.Versification;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith
  */
-public interface VerseKey extends Key {
+public interface VerseKey<T extends VerseKey> extends Key {
     /**
      * Get the Versification that defines the Verses in this VerseKey.
      * 
@@ -50,5 +50,21 @@ public interface VerseKey extends Key {
      * 
      * @return this VerseKey Versification.
      */
-    VerseKey reversify(Versification newVersification);
+    T reversify(Versification newVersification);
+
+    /**
+     * A VerseKey that does not have an OSIS sub identifier is a whole reference.
+     * 
+     * @return whether this is a whole reference
+     */
+     boolean isWhole();
+
+    /**
+     * Convert this reference into one without a sub-identifier.
+     * A Verse with an OSIS sub-identifier represents part of a reference.
+     * 
+     * @return a whole reference
+     */
+     T getWhole();
+
 }

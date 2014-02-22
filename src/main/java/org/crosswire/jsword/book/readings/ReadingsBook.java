@@ -51,6 +51,7 @@ import org.crosswire.jsword.passage.PassageKeyFactory;
 import org.crosswire.jsword.passage.PreferredKey;
 import org.crosswire.jsword.passage.RestrictionType;
 import org.crosswire.jsword.passage.SetKeyList;
+import org.crosswire.jsword.passage.VerseRange;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -150,7 +151,7 @@ public class ReadingsBook extends AbstractBook implements PreferredKey {
             Element list = OSISUtil.factory().createList();
             content.add(list);
 
-            Iterator<Key> it = ref.rangeIterator(RestrictionType.NONE);
+            Iterator<VerseRange> it = ref.rangeIterator(RestrictionType.NONE);
             while (it.hasNext()) {
                 Key range = it.next();
 
