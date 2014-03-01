@@ -23,7 +23,6 @@ package org.crosswire.common.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.ProxySelector;
 import java.net.URI;
 import java.util.Date;
 
@@ -33,16 +32,13 @@ import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
 import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.conn.params.ConnRouteParams;
-import org.apache.http.impl.client.AbstractHttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.ProxySelectorRoutePlanner;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
+import org.apache.http.client.utils.DateUtils;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.crosswire.common.progress.Progress;
 import org.crosswire.jsword.JSMsg;
 
@@ -144,26 +140,16 @@ public class WebResource {
      */
     public WebResource(URI theURI, String theProxyHost, Integer theProxyPort, int theTimeout) {
         uri = theURI;
-        client = new DefaultHttpClient();
-        HttpParams params = client.getParams();
-
-        // Allowable time between packets
-        HttpConnectionParams.setSoTimeout(params, theTimeout);
-        // Allowable time to get a connection
-        HttpConnectionParams.setConnectionTimeout(params, theTimeout);
+        HttpHost proxy = null;
 
         // Configure proxy info if necessary and defined
         if (theProxyHost != null && theProxyHost.length() > 0) {
-            // Configure the host and port
-            HttpHost proxy = new HttpHost(theProxyHost, theProxyPort == null ? -1 : theProxyPort.intValue());
-            ConnRouteParams.setDefaultProxy(params, proxy);
-
-            //MJD start move all proxy code inside proxy specific block
-            ProxySelectorRoutePlanner routePlanner = new ProxySelectorRoutePlanner(
-                    client.getConnectionManager().getSchemeRegistry(),
-                    ProxySelector.getDefault());
-            ((AbstractHttpClient) client).setRoutePlanner(routePlanner);
+            proxy = new HttpHost(theProxyHost, theProxyPort == null ? -1 : theProxyPort.intValue());
         }
+
+        final RequestConfig.Builder builder = RequestConfig.custom();
+        builder.setConnectTimeout(theTimeout).setConnectionRequestTimeout(theTimeout).setSocketTimeout(theTimeout).setProxy(proxy);
+        client = HttpClientBuilder.create().setDefaultRequestConfig(builder.build()).build();
     }
 
     /**
@@ -171,7 +157,7 @@ public class WebResource {
      * underlying resources back to the OS.
      */
     public void shutdown() {
-        client.getConnectionManager().shutdown();
+        IOUtil.close(client);
     }
 
     /**
@@ -341,16 +327,11 @@ public class WebResource {
      * @param field the header field to check
      * @return number of seconds since start of epoch
      */
-    @SuppressWarnings("deprecation")
     private long getHeaderAsDate(HttpResponse response, String field) {
         Header header = response.getFirstHeader(field);
         String value = header.getValue();
-        try {
-            // This date cannot be readily parsed with DateFormatter
-            return Date.parse(value);
-        } catch (IllegalArgumentException ex) {
-            return 0;
-        }
+        // This date cannot be readily parsed with DateFormatter
+        return DateUtils.parseDate(value).getTime();
     }
     /**
      * Define a 750 ms timeout to get a connection
@@ -358,5 +339,5 @@ public class WebResource {
     private static int timeout = 750;
 
     private URI uri;
-    private HttpClient client;
+    private CloseableHttpClient client;
 }
