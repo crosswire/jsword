@@ -33,7 +33,11 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-    LZSSTest.class
+    BZip2Test.class,
+    GzipTest.class,
+    LZSSTest.class,
+    XZTest.class,
+    ZipTest.class
 })
 public class AllTests {
 }

@@ -20,7 +20,7 @@
  */
 package org.crosswire.jsword.versification;
 
-import org.crosswire.jsword.versification.system.SystemSynodalP;
+import org.crosswire.jsword.versification.system.SystemSynodalProt;
 
 /**
  * Test the SynodalP v11n.
@@ -29,10 +29,10 @@ import org.crosswire.jsword.versification.system.SystemSynodalP;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith
  */
-public class SynodalPTest extends VersificationParentTst {
+public class SynodalProtTest extends VersificationParentTst {
 
-    public SynodalPTest() {
-        super(SystemSynodalP.V11N_NAME);
+    public SynodalProtTest() {
+        super(SystemSynodalProt.V11N_NAME);
     }
 
 }

@@ -45,7 +45,7 @@ import org.junit.runners.Suite.SuiteClasses;
     LutherTest.class,
     MTTest.class,
     NRSVATest.class,
-    SynodalPTest.class,
+    SynodalProtTest.class,
     SynodalTest.class,
     FileVersificationMappingTest.class,
     VersificationsMapperTest.class,

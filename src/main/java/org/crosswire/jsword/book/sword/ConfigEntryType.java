@@ -92,7 +92,10 @@ public enum ConfigEntryType {
      */
     COMPRESS_TYPE("CompressType", 0,
         "LZSS",
-        "ZIP"
+        "ZIP",
+        "GZIP",
+        "BZIP2",
+        "XZ"
     ),
 
     /**
@@ -152,13 +155,15 @@ public enum ConfigEntryType {
         "German",
         "KJV",
         "KJVA",
+        "LXX",
         "Leningrad",
         "Luther",
         "MT",
         "NRSV",
         "NRSVA",
+        "Orthodox",
         "Synodal",
-        "SynodalP",
+        "SynodalProt",
         "Vulg"
     ),
 
@@ -191,9 +196,11 @@ public enum ConfigEntryType {
         "OSISVariants",
         "OSISRedLetterWords",
         "OSISLemma",
-        "OSISRuby",
+        "OSISRuby", // Deprecated, replaced by OSISGlosses
+        "OSISGlosses",
         "OSISXlit",
-        "OSISEnum"
+        "OSISEnum",
+        "OSISReferenceLinks"
     )
     {
         @Override
@@ -288,7 +295,8 @@ public enum ConfigEntryType {
         "HebrewParse",
         "DailyDevotion",
         "Glossary",
-        "Images"
+        "Images",
+        "NoParagraphs"
     )
     {
         @Override

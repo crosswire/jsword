@@ -38,10 +38,23 @@ public enum CompressorType {
     },
 
     LZSS {
-
         @Override
         public Compressor getCompressor(byte[] input) {
             return new LZSS(new ByteArrayInputStream(input));
+        }
+    },
+
+    GZIP {
+        @Override
+        public Compressor getCompressor(byte[] input) {
+            return new Gzip(new ByteArrayInputStream(input));
+        }
+    },
+
+    XZ {
+        @Override
+        public Compressor getCompressor(byte[] input) {
+            return new XZ(new ByteArrayInputStream(input));
         }
     };
 

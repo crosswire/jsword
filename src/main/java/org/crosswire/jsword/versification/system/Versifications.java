@@ -136,8 +136,8 @@ public final class Versifications {
         if (SystemSynodal.V11N_NAME.equals(name)) {
             return new SystemSynodal();
         }
-        if (SystemSynodalP.V11N_NAME.equals(name)) {
-            return new SystemSynodalP();
+        if (SystemSynodalProt.V11N_NAME.equals(name)) {
+            return new SystemSynodalProt();
         }
         if (SystemVulg.V11N_NAME.equals(name)) {
             return new SystemVulg();
@@ -181,7 +181,7 @@ public final class Versifications {
         known.add(SystemNRSV.V11N_NAME);
         known.add(SystemNRSVA.V11N_NAME);
         known.add(SystemSynodal.V11N_NAME);
-        known.add(SystemSynodalP.V11N_NAME);
+        known.add(SystemSynodalProt.V11N_NAME);
         known.add(SystemVulg.V11N_NAME);
         fluffed = new HashMap<String, Versification>();
     }
