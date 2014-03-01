@@ -28,8 +28,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.GZIPInputStream;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 
+import org.apache.commons.compress.archivers.ArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.crosswire.common.progress.JobManager;
 import org.crosswire.common.progress.Progress;
 import org.crosswire.common.util.CWProject;
@@ -57,9 +59,6 @@ import org.crosswire.jsword.book.sword.SwordBookPath;
 import org.crosswire.jsword.book.sword.SwordConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.ice.tar.TarEntry;
-import com.ice.tar.TarInputStream;
 
 /**
  * The AbstractSwordInstaller provides for the common implementation of derived classes.
@@ -325,16 +324,16 @@ public abstract class AbstractSwordInstaller extends AbstractBookList implements
         }
 
         InputStream in = null;
-        GZIPInputStream gin = null;
-        TarInputStream tin = null;
+        GzipCompressorInputStream gin = null;
+        TarArchiveInputStream tin = null;
         try {
             ConfigEntry.resetStatistics();
 
             in = NetUtil.getInputStream(cache);
-            gin = new GZIPInputStream(in);
-            tin = new TarInputStream(gin);
+            gin = new GzipCompressorInputStream(in);
+            tin = new TarArchiveInputStream(gin);
             while (true) {
-                TarEntry entry = tin.getNextEntry();
+                ArchiveEntry entry = tin.getNextEntry();
                 if (entry == null) {
                     break;
                 }

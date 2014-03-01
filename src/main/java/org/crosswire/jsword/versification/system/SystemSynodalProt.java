@@ -33,15 +33,15 @@ import org.crosswire.jsword.versification.Versification;
  *      The copyright to this program is held by it's authors.
  * @author DM Smith
  */
-public class SystemSynodalP extends Versification {
+public class SystemSynodalProt extends Versification {
     /**
      * Build the "SynodalP" Versification.
      */
-    /* protected */ SystemSynodalP() {
+    SystemSynodalProt() {
         super(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, LAST_VERSE_NT);
     }
 
-    public static final String V11N_NAME = "SynodalP";
+    public static final String V11N_NAME = "SynodalProt";
 
     /* protected */ static final BibleBook[] BOOKS_NT = SystemDefault.BOOKS_NT;
 
