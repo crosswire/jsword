@@ -20,12 +20,22 @@
  */
 package org.crosswire.jsword.versification;
 
-import org.crosswire.jsword.passage.*;
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+
+import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.NoSuchKeyException;
+import org.crosswire.jsword.passage.Passage;
+import org.crosswire.jsword.passage.PassageKeyFactory;
+import org.crosswire.jsword.passage.RangedPassage;
+import org.crosswire.jsword.passage.SimpleOsisParser;
+import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.passage.VerseFactory;
+import org.crosswire.jsword.passage.VerseRange;
 import org.crosswire.jsword.versification.system.SystemCatholic;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * Some tests based on the principles outlined in the Javadoc of {@link VersificationToKJVMapper }
@@ -39,137 +49,137 @@ public class VersificationToKJVMapperTest {
     private VersificationToKJVMapper mapper;
 
     @Test
-    public void testSimpleMapping() throws NoSuchKeyException {
+    public void testSimpleMapping() {
         addProperty("Gen.1.1", "Gen.1.2");
         init();
-        assertEquals("Gen.1.2", mapper.map("Gen.1.1"));
-        assertEquals("Gen.1.1", mapper.unmap("Gen.1.2"));
+        assertEquals("Gen.1.2", map("Gen.1.1"));
+        assertEquals("Gen.1.1", unmap("Gen.1.2"));
     }
 
     @Test
-    public void testTwoLeftMappings() throws NoSuchKeyException {
+    public void testTwoLeftMappings() {
         addProperty("Gen.1.1", "Gen.1.1");
         addProperty("Gen.1.2", "Gen.1.1");
         init();
 
         //map always go to 1.1
-        assertEquals("Gen.1.1", mapper.map("Gen.1.1"));
-        assertEquals("Gen.1.1", mapper.map("Gen.1.2"));
-        assertEquals("Gen.1.1-Gen.1.2", mapper.unmap("Gen.1.1"));
+        assertEquals("Gen.1.1", map("Gen.1.1"));
+        assertEquals("Gen.1.1", map("Gen.1.2"));
+        assertEquals("Gen.1.1-Gen.1.2", unmap("Gen.1.1"));
     }
 
     @Test
-    public void testLeftRangeMappings() throws NoSuchKeyException {
+    public void testLeftRangeMappings() {
         addProperty("Gen.1.1-Gen.1.2", "Gen.1.1");
         init();
-        assertEquals("Gen.1.1", mapper.map("Gen.1.1"));
-        assertEquals("Gen.1.1", mapper.map("Gen.1.2"));
-        assertEquals("Gen.1.1-Gen.1.2", mapper.unmap("Gen.1.1"));
+        assertEquals("Gen.1.1", map("Gen.1.1"));
+        assertEquals("Gen.1.1", map("Gen.1.2"));
+        assertEquals("Gen.1.1-Gen.1.2", unmap("Gen.1.1"));
     }
 
     @Test
-    public void testTwoRightMappings() throws NoSuchKeyException {
+    public void testTwoRightMappings() {
         addProperty("Gen.1.1", "Gen.1.1");
         addProperty("Gen.1.1", "Gen.1.2");
         init();
-        assertEquals("Gen.1.1-Gen.1.2", mapper.map("Gen.1.1"));
+        assertEquals("Gen.1.1-Gen.1.2", map("Gen.1.1"));
     }
 
     @Test
-    public void testRightRangeMappings() throws NoSuchKeyException {
+    public void testRightRangeMappings() {
         addProperty("Gen.1.1", "Gen.1.1-Gen.1.2");
         init();
 
-        assertEquals("Gen.1.1-Gen.1.2", mapper.map("Gen.1.1"));
-        assertEquals("Gen.1.1", mapper.unmap("Gen.1.1"));
-        assertEquals("Gen.1.1", mapper.unmap("Gen.1.2"));
+        assertEquals("Gen.1.1-Gen.1.2", map("Gen.1.1"));
+        assertEquals("Gen.1.1", unmap("Gen.1.1"));
+        assertEquals("Gen.1.1", unmap("Gen.1.2"));
     }
 
 
     @Test
-    public void testMissingMapping() throws NoSuchKeyException {
+    public void testMissingMapping() {
         init();
 
-        assertEquals("Gen.1.1", mapper.map("Gen.1.1"));
-        assertEquals("Gen.1.1", mapper.unmap("Gen.1.1"));
+        assertEquals("Gen.1.1", map("Gen.1.1"));
+        assertEquals("Gen.1.1", unmap("Gen.1.1"));
     }
 
     @Test
-    public void testRangeToRange() throws NoSuchKeyException {
+    public void testRangeToRange() {
         addProperty("Gen.1.1-Gen.1.3", "Gen.1.2-Gen.1.4");
         init();
 
-        assertEquals("Gen.1.2", mapper.map("Gen.1.1"));
-        assertEquals("Gen.1.3", mapper.map("Gen.1.2"));
-        assertEquals("Gen.1.4", mapper.map("Gen.1.3"));
-        assertEquals("Gen.1.1", mapper.unmap("Gen.1.2"));
-        assertEquals("Gen.1.2", mapper.unmap("Gen.1.3"));
-        assertEquals("Gen.1.3", mapper.unmap("Gen.1.4"));
+        assertEquals("Gen.1.2", map("Gen.1.1"));
+        assertEquals("Gen.1.3", map("Gen.1.2"));
+        assertEquals("Gen.1.4", map("Gen.1.3"));
+        assertEquals("Gen.1.1", unmap("Gen.1.2"));
+        assertEquals("Gen.1.2", unmap("Gen.1.3"));
+        assertEquals("Gen.1.3", unmap("Gen.1.4"));
     }
 
     @Test
-    public void testMappingWithPositiveOffset() throws NoSuchKeyException {
+    public void testMappingWithPositiveOffset() {
         addProperty("Gen.1.1-Gen.1.2", "+1");
         init();
 
-        assertEquals("Gen.1.2", mapper.map("Gen.1.1"));
-        assertEquals("Gen.1.3", mapper.map("Gen.1.2"));
+        assertEquals("Gen.1.2", map("Gen.1.1"));
+        assertEquals("Gen.1.3", map("Gen.1.2"));
 
-        assertEquals("Gen.1.1", mapper.unmap("Gen.1.2"));
-        assertEquals("Gen.1.2", mapper.unmap("Gen.1.3"));
+        assertEquals("Gen.1.1", unmap("Gen.1.2"));
+        assertEquals("Gen.1.2", unmap("Gen.1.3"));
     }
 
     @Test
-    public void testPartsAreReturned() throws NoSuchKeyException {
+    public void testPartsAreReturned() {
         addProperty("Gen.1.1", "Gen.1.3!a");
         addProperty("Gen.1.2", "Gen.1.3!b");
         init();
 
 
-        assertEquals("Gen.1.3!a", mapper.mapToQualifiedKey("Gen.1.1"));
-        assertEquals("Gen.1.3!b", mapper.mapToQualifiedKey("Gen.1.2"));
-        assertEquals("Gen.1.3", mapper.map("Gen.1.1"));
-        assertEquals("Gen.1.3", mapper.map("Gen.1.2"));
-        assertEquals("Gen.1.1", mapper.unmap("Gen.1.3!a"));
-        assertEquals("Gen.1.2", mapper.unmap("Gen.1.3!b"));
-        assertEquals("Gen.1.1-Gen.1.2", mapper.unmap("Gen.1.3"));
+        assertEquals("Gen.1.3!a", mapToQualifiedKey("Gen.1.1"));
+        assertEquals("Gen.1.3!b", mapToQualifiedKey("Gen.1.2"));
+        assertEquals("Gen.1.3", map("Gen.1.1"));
+        assertEquals("Gen.1.3", map("Gen.1.2"));
+        assertEquals("Gen.1.1", unmap("Gen.1.3!a"));
+        assertEquals("Gen.1.2", unmap("Gen.1.3!b"));
+        assertEquals("Gen.1.1-Gen.1.2", unmap("Gen.1.3"));
     }
 
     @Test
-    public void testExtraUnmappedVersesSingle() throws NoSuchKeyException {
+    public void testExtraUnmappedVersesSingle() {
         addProperty("Dan.3.32", "?StoryOfThreeYoungMen.1.1");
         init();
 
-        assertEquals("?StoryOfThreeYoungMen.1.1", mapper.mapToQualifiedKey("Dan.3.32"));
+        assertEquals("?StoryOfThreeYoungMen.1.1", mapToQualifiedKey("Dan.3.32"));
         assertEquals("Dan.3.32", mapper.unmap(new QualifiedKey("?StoryOfThreeYoungMen.1.1")).getOsisRef());
     }
 
     @Test
-    public void testExtraUnmappedVersesWithRange() throws NoSuchKeyException {
+    public void testExtraUnmappedVersesWithRange() {
         addProperty("Dan.3.31-Dan.3.68", "?StoryOfThreeYoungMen");
         init();
 
-        assertEquals("?StoryOfThreeYoungMen", mapper.mapToQualifiedKey("Dan.3.31"));
-        assertEquals("?StoryOfThreeYoungMen", mapper.mapToQualifiedKey("Dan.3.32"));
-        assertEquals("?StoryOfThreeYoungMen", mapper.mapToQualifiedKey("Dan.3.45"));
+        assertEquals("?StoryOfThreeYoungMen", mapToQualifiedKey("Dan.3.31"));
+        assertEquals("?StoryOfThreeYoungMen", mapToQualifiedKey("Dan.3.32"));
+        assertEquals("?StoryOfThreeYoungMen", mapToQualifiedKey("Dan.3.45"));
         assertEquals("Dan.3.31-Dan.3.68", mapper.unmap(new QualifiedKey("?StoryOfThreeYoungMen")).getOsisRef());
     }
 
     @Test
-    public void testAbsentVerses() throws NoSuchKeyException {
+    public void testAbsentVerses() {
         addProperty("?", "Gen.1.1");
         init();
-        assertEquals("", mapper.unmap("Gen.1.1"));
+        assertEquals("", unmap("Gen.1.1"));
     }
 
     @Test
-    public void testAbsentVersesWithRange() throws NoSuchKeyException {
+    public void testAbsentVersesWithRange() {
         addProperty("?", "Gen.1.1-Gen.1.3");
         init();
-        assertEquals("", mapper.unmap("Gen.1.1"));
-        assertEquals("", mapper.unmap("Gen.1.2"));
-        assertEquals("", mapper.unmap("Gen.1.3"));
-        assertEquals("Gen.1.4", mapper.unmap("Gen.1.4"));
+        assertEquals("", unmap("Gen.1.1"));
+        assertEquals("", unmap("Gen.1.2"));
+        assertEquals("", unmap("Gen.1.3"));
+        assertEquals("Gen.1.4", unmap("Gen.1.4"));
     }
 
     /**
@@ -202,4 +212,44 @@ public class VersificationToKJVMapperTest {
     private void addProperty(final String left, final String right) {
         properties.addProperty(left, right);
     }
+
+    public String map(final String key) {
+        VerseRange vr = SimpleOsisParser.parseOsisRef(NON_KJV, key);
+        final QualifiedKey range = new QualifiedKey(vr);
+        List<QualifiedKey> qualifiedKeys = mapper.map(range);
+        Passage vk = new RangedPassage(KJV);
+        for (QualifiedKey qualifiedKey : qualifiedKeys) {
+            //we may bits in here, that don't exist in the KJV
+            if (qualifiedKey.getKey() != null) {
+                vk.addAll(qualifiedKey.getKey().getWhole());
+            }
+        }
+
+        return vk.getOsisRef();
+    }
+
+    public String unmap(final String kjvVerse) {
+        return mapper.unmap(new QualifiedKey(SimpleOsisParser.parseOsisRef(KJV, kjvVerse))).getOsisRef();
+    }
+
+    public String mapToQualifiedKey(final String verseKey) {
+        VerseRange vk = SimpleOsisParser.parseOsisRef(NON_KJV, verseKey);
+        final QualifiedKey qualifiedVerse = new QualifiedKey(vk);
+        List<QualifiedKey> qualifiedKeys = mapper.map(qualifiedVerse);
+
+        StringBuilder representation = new StringBuilder(128);
+        int len = qualifiedKeys.size();
+        for (int i = 0; i < len; i++) {
+            final QualifiedKey qk = qualifiedKeys.get(i);
+            if (i > 0) {
+                representation.append(' ');
+            }
+            representation.append(qk);
+
+        }
+        return representation.toString();
+    }
+
+    private static final Versification KJV = Versifications.instance().getVersification(Versifications.DEFAULT_V11N);
+    private static final Versification NON_KJV = Versifications.instance().getVersification(SystemCatholic.V11N_NAME);
 }

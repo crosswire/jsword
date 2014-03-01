@@ -30,17 +30,33 @@ import java.util.MissingResourceException;
 
 import org.crosswire.common.config.ConfigException;
 import org.crosswire.jsword.passage.Key;
-import org.crosswire.jsword.passage.KeyUtil;
-import org.crosswire.jsword.passage.NoSuchKeyException;
 import org.crosswire.jsword.passage.Passage;
-import org.crosswire.jsword.passage.PassageKeyFactory;
+import org.crosswire.jsword.passage.RangedPassage;
 import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.passage.VerseKey;
 import org.crosswire.jsword.versification.system.Versifications;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
+ * VersificationMapper maps a Verse or a Passage in one Versification (v11n)
+ * to another, using the KJV v11n as an intermediary.
+ * <p>
+ * Practically speaking, a Verse in one v11n may map:
+ * <ul>
+ * <li>to the same verse in another v11n. This is the typical case.</li>
+ * <li>to another verse in the same chapter. This is common and typically by one, shifting following verses.</li>
+ * <li>to another verse in a different chapter. This is fairly common.</li>
+ * <li>to two other verses. This is common in the Psalms and a few places elsewhere.</li>
+ * </ul>
+ * The internal details of the mapping can be found in VersificationToKJVMapper.
+ * </p>
+ * <p>
+ * This transitive relationship is not perfect. It assumes that verses
+ * outside of the KJV versification map 1:1 between the source and
+ * target Versifications. That it uses the KJV as an intermediary is an
+ * implementation detail that may change. Do not rely on it.
+ * </p>
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author chrisburrell
@@ -85,15 +101,10 @@ public final class VersificationsMapper {
             return key;
         }
 
-        Passage newPassage = KeyUtil.getPassage(PassageKeyFactory.instance().createEmptyKeyList(target));
+        Passage newPassage = new RangedPassage(target);
         Iterator<Key> verses = key.iterator();
         while (verses.hasNext()) {
-            Key verseKey = verses.next();
-            if (!(verseKey instanceof Verse)) {
-                throw new UnsupportedOperationException("Somehow, a passage is not resolving to verses");
-            }
-
-            Verse verse = (Verse) verseKey;
+            Verse verse = (Verse) verses.next();
             newPassage.addAll(this.mapVerse(verse, target));
         }
 
@@ -104,7 +115,7 @@ public final class VersificationsMapper {
      * @param v                   the verse
      * @param targetVersification the final versification that we want
      */
-    public Key mapVerse(Verse v, Versification targetVersification) {
+    public VerseKey mapVerse(Verse v, Versification targetVersification) {
         if (v.getVersification().equals(targetVersification)) {
             return v;
         }
@@ -119,12 +130,12 @@ public final class VersificationsMapper {
         // mapped verses could be more than 1 verse in KJV
         List<QualifiedKey> kjvVerses;
         if (mapper == null) {
-            // we can't map to the KJV, so we're going to take a wild guess and
-            // return the equivalent verse
-            // and assume that it maps directly on to the KJV, and thereby
-            // continue with the process
+            // we can't map to the KJV, so we're going to take a wild guess
+            // and return the equivalent verse
+            // and assume that it maps directly on to the KJV,
+            // and thereby continue with the process
             kjvVerses = new ArrayList<QualifiedKey>();
-            kjvVerses.add(new QualifiedKey(new Verse(KJV, v.getBook(), v.getChapter(), v.getVerse())));
+            kjvVerses.add(new QualifiedKey(v.reversify(KJV)));
         } else {
             //we need qualified keys back, so as to preserve parts
             kjvVerses = mapper.map(new QualifiedKey(v));
@@ -139,9 +150,8 @@ public final class VersificationsMapper {
         // the new versification.
         VersificationToKJVMapper targetMapper = MAPPERS.get(targetVersification);
         if (targetMapper == null) {
-            // failed to load, so we'll do our wild-guess again, and assume that
-            // the KJV keys map to the
-            // target
+            // failed to load, so we'll do our wild-guess again,
+            // and assume that the KJV keys map to the target
             return guessKeyFromKjvVerses(targetVersification, kjvVerses);
         }
 
@@ -149,7 +159,7 @@ public final class VersificationsMapper {
         // qualified keys, we do so for every qualified
         // key in the list - this means that parts would get transported as
         // well.
-        Key finalKeys = PassageKeyFactory.instance().createEmptyKeyList(targetVersification);
+        VerseKey finalKeys = new RangedPassage(targetVersification);
         for (QualifiedKey qualifiedKey : kjvVerses) {
             finalKeys.addAll(targetMapper.unmap(qualifiedKey));
         }
@@ -165,30 +175,22 @@ public final class VersificationsMapper {
      * @return the possible verses in the target versification, no guarantees
      *         made
      */
-    private Key guessKeyFromKjvVerses(final Versification targetVersification, final List<QualifiedKey> kjvVerses) {
-        final Key finalKeys = PassageKeyFactory.instance().createEmptyKeyList(targetVersification);
-        try {
-            for (QualifiedKey qualifiedKey : kjvVerses) {
-                if (qualifiedKey.getKey() != null) {
-                    // TODO(DMS): Optimize, don't convert to a string and back again
-                    finalKeys.addAll(PassageKeyFactory.instance().getKey(targetVersification, qualifiedKey.getKey().getOsisRef()));
-                }
+    private VerseKey guessKeyFromKjvVerses(final Versification targetVersification, final List<QualifiedKey> kjvVerses) {
+        final VerseKey finalKeys = new RangedPassage(targetVersification);
+        for (QualifiedKey qualifiedKey : kjvVerses) {
+            if (qualifiedKey.getKey() != null) {
+                finalKeys.addAll(qualifiedKey.reversify(targetVersification).getKey());
             }
-            return finalKeys;
-        } catch (NoSuchKeyException ex) {
-            // we swallow the exception, as we've already alerted that we failed
-            // to load the missing resources.
-            LOGGER.trace(ex.getMessage(), ex);
-            return finalKeys;
         }
+        return finalKeys;
     }
 
     /**
      * @param kjvVerses the list of keys
      * @return the aggregate key
      */
-    private Key getKeyFromQualifiedKeys(Versification versification, final List<QualifiedKey> kjvVerses) {
-        final Key finalKey = PassageKeyFactory.instance().createEmptyKeyList(versification);
+    private VerseKey getKeyFromQualifiedKeys(Versification versification, final List<QualifiedKey> kjvVerses) {
+        final VerseKey finalKey = new RangedPassage(versification);
         for (QualifiedKey k : kjvVerses) {
             // we simply ignore everything else at this stage. The other bits
             // and pieces are used while we're converting

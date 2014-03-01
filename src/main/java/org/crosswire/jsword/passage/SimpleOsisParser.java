@@ -114,6 +114,13 @@ public final class SimpleOsisParser {
             return null;
         }
 
-        return new Verse(v11n, b, Integer.parseInt(verseParts[1]), Integer.parseInt(verseParts[2]));
+        // Allow a Verse to have a sub identifier on the last part.
+        // We should use it, but throwing it away for now.
+        String[] endParts = StringUtil.splitAll(verseParts[2], Verse.VERSE_OSIS_SUB_PREFIX);
+        String subIdentifier = null;
+        if (endParts.length == 2 && endParts[1].length() > 0) {
+            subIdentifier = endParts[1];
+        }
+        return new Verse(v11n, b, Integer.parseInt(verseParts[1]), Integer.parseInt(endParts[0]), subIdentifier);
     }
 }

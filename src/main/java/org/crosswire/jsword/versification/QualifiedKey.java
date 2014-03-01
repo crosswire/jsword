@@ -20,40 +20,88 @@
  */
 package org.crosswire.jsword.versification;
 
-import org.crosswire.jsword.passage.Key;
+import org.crosswire.jsword.passage.Verse;
+import org.crosswire.jsword.passage.VerseKey;
+import org.crosswire.jsword.passage.VerseRange;
 
 /**
- * Wraps around a key, and allows a specified to distinguish between different mappings
- *
+ * A QualifiedKey represents the various left and right sides of a map entry.
+ * <p>
+ * The QualifiedKey is Qualified:
+ * <ul>
+ * <li><strong>DEFAULT</strong> - This QualifiedKey is either a Verse or a VerseRange.</li>
+ * <li><strong>ABSENT_IN_KJV</strong> - This QualifiedKey has a section name for what is absent in the KJV (the right hand of the map entry).</li>
+ * <li><strong>ABSENT_IN_LEFT</strong> - This QualifiedKey has no other content.</li>
+ * </ul>
+ * </p>
+ * <p>
+ * The mapping can indicate a part of a verse. This is an internal implementation detail of the Versification mapping code.
+ * Here it is used to distinguish one QualifiedKey from another in equality tests and in containers.
+ * </p>
+ * 
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.
  * @author chrisburrell
  */
-public class QualifiedKey {
+public final class QualifiedKey {
     /**
      * A Qualifier indicates whether the verse is numbered the same in both the KJV and the other, is missing in the KJV or the other.
      */
-    public static enum Qualifier { DEFAULT, ABSENT_IN_LEFT, ABSENT_IN_KJV }
+    static enum Qualifier {
+        /**
+         * The DEFAULT Qualifier indicates a Verse or a VerseRange.
+         */
+        DEFAULT {
+            @Override
+            public String getDescription(QualifiedKey q) {
+                return "";
+            }
+        },
+        /**
+         * The ABSENT_IN_LEFT Qualifier indicates that the left side of the map has no equivalent on the right (KJV).
+         */
+        ABSENT_IN_LEFT {
+            @Override
+            public String getDescription(QualifiedKey q) {
+                return "Absent in Left";
+            }
+        },
+        /**
+         * The ABSENT_IN_KJV Qualifier indicates that the right (KJV) side of the map has no equivalent on the left.
+         */
+        ABSENT_IN_KJV {
+            @Override
+            public String getDescription(QualifiedKey q) {
+                return q != null && q.getSectionName() != null ? q.getSectionName() : "Missing section name";
+            }
+        };
+        /**
+         * @param q
+         *            the QualifiedKey that this describes
+         * @return The description for the qualified key
+         */
+        public abstract String getDescription(QualifiedKey q);
 
-    /**
-     * Constructs the Qualified key, leaving the qualifier as set to the null character.
-     *
-     * @param key the key to be wrapped
-     */
-    public QualifiedKey(Key key) {
-        this.key = key;
     }
 
     /**
-     * Constructs the Qualified key, leaving the qualifier as set to the null character, but specifying the part.
-     *
-     * @param key the key to be wrapped
-     * @param part the part associated with a key, often null ; used for patching across the KJV versification which not
-     *             support the breakdown.
+     * Construct a QualifiedKey from a Verse.
+     * 
+     * @param key the verse from which to create this QualifiedKey
      */
-    public QualifiedKey(Key key, String part) {
-        this.key = key;
-        this.part = part;
+    public QualifiedKey(Verse key) {
+        setKey(key);
+        this.absentType = Qualifier.DEFAULT;
+    }
+
+    /**
+     * Construct a QualifiedKey from a Verse.
+     * 
+     * @param key the verse range from which to create this QualifiedKey
+     */
+    public QualifiedKey(VerseRange key) {
+        setKey(key);
+        this.absentType = Qualifier.DEFAULT;
     }
 
     /**
@@ -65,19 +113,38 @@ public class QualifiedKey {
     }
 
     /**
-     * Constructs the Qualified key, leaving the qualifier as set to the null character.
+     * Constructs the QualifiedKey with the ABSENT_IN_LEFT qualifier.
+     * This really means that there are no fields in this QualifiedKey.
      *
-     * @param absentType the qualifier indicating if it is absent from the left text, or the KJV text.
      */
-    public QualifiedKey(Qualifier absentType) {
-        this.absentType = absentType;
+    public QualifiedKey() {
+        this.absentType = Qualifier.ABSENT_IN_LEFT;
     }
 
     /**
-     * @return * The internal key
+     * Create a QualifiedKey from a Verse or a VerseRange.
+     * 
+     * @param k the Verse or VerseRange
+     * @return the created QualifiedKey
+     * @throws ClassCastException
      */
-    public Key getKey() {
-        return key;
+    public static QualifiedKey create(VerseKey k) {
+        return k instanceof Verse ? new QualifiedKey((Verse) k) : new QualifiedKey((VerseRange) k);
+    }
+
+    /**
+     * @return * The internal key which is either a Verse or VerseRange
+     */
+    public VerseKey getKey() {
+        return wholeKey;
+    }
+
+    /**
+     * @return * The internal key cast as a Verse
+     * @throws ClassCastException
+     */
+    public Verse getVerse() {
+        return (Verse) wholeKey;
     }
 
     /**
@@ -95,50 +162,105 @@ public class QualifiedKey {
     }
 
     /**
-     * @return the part associated with a verse
+     * A QualifiedKey is whole if it does not split part of a reference.
+     * 
+     * @return whether this QualifiedKey has a whole reference
      */
-    public String getPart() {
-        return part;
+    public boolean isWhole() {
+        // If the reference is null, then it cannot be part or whole.
+        // But we say it is whole because the calls to this are really testing
+        // to see if it is a part.
+        return qualifiedKey == null || qualifiedKey.isWhole();
     }
 
     /**
-     * Allow override of the key, particular useful if we're constructing in 2 stages like the offset mechanism
-     * @param key the new key
+     * Convert this QualifiedKey from one Versification to another.
+     * This is a potentially dangerous operation that does no mapping
+     * from one versification to another. Use it only when it is known
+     * to be safe.
+     * 
+     * @param target The target versification
+     * @return The reversified QualifiedKey
      */
-    public void setKey(final Key key) {
-        this.key = key;
+    public QualifiedKey reversify(Versification target) {
+        // Only if it has a qualified key can it be reversified
+        if (this.qualifiedKey == null) {
+            return this;
+        }
+
+        return create(qualifiedKey.reversify(target));
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder buf = new StringBuilder();
+        if (wholeKey != null) {
+            buf.append(qualifiedKey.getOsisRef());
+        }
+        String desc = absentType.getDescription(this);
+        if (desc.length() > 0) {
+            if (buf.length() > 0) {
+                buf.append(": ");
+            }
+            buf.append(absentType.getDescription(this));
+        }
+        return buf.toString();
     }
 
     @Override
     public int hashCode() {
-        //use a prime number in case one of the values is not around
-        return (this.key == null ? 17 : key.hashCode())
+        // Use a prime number in case one of the values is not around
+        return (this.qualifiedKey == null ? 17 : qualifiedKey.hashCode())
              + (this.absentType == null ? 13 : this.absentType.ordinal())
-             + (this.sectionName == null ? 19 : this.sectionName.hashCode())
-             + (this.getPart() == null ? 23 : this.getPart().hashCode());
+             + (this.sectionName == null ? 19 : this.sectionName.hashCode());
     }
 
     @Override
     public boolean equals(final Object obj) {
         if (obj instanceof QualifiedKey) {
             final QualifiedKey otherKey = (QualifiedKey) obj;
-
-            // purposefully inlining the various checks, because we do want to avoid doing too many comparisons
-            // when using QualifiedKey in a hash map/set, so placing the expensive equals() nearer the end.
             return this.getAbsentType() == otherKey.getAbsentType()
-                && (this.part == null ? otherKey.part == null : this.part.equals(otherKey.part))
-                && (sectionName == null ? otherKey.sectionName == null : sectionName.equals(otherKey.sectionName))
-                && (this.key == null ? otherKey.key == null : this.key.equals(otherKey.key));
+                && bothNullOrEqual(this.sectionName, otherKey.sectionName)
+                && bothNullOrEqual(this.qualifiedKey, otherKey.qualifiedKey);
         }
         return false;
     }
 
-    private String sectionName;
-    private String part;
-    private Key key;
+    /**
+     * Allow override of the key, particular useful if we're constructing in 2 stages like the offset mechanism
+     * @param key the new key
+     */
+    private void setKey(final Verse key) {
+        this.qualifiedKey = key;
+        this.wholeKey = key.getWhole();
+    }
 
-    // We use the null character here to avoid boxing/unboxing a Character all the time. A slightly smaller
-    // memory foot-print.
-    private Qualifier absentType = Qualifier.DEFAULT;
+    /**
+     * Allow override of the key, particular useful if we're constructing in 2 stages like the offset mechanism
+     * @param key the new key
+     */
+    private void setKey(final VerseRange key) {
+        if (key.getCardinality() == 1) {
+            this.qualifiedKey = key.getStart();
+        } else {
+            this.qualifiedKey = key;
+        }
+        this.wholeKey = this.qualifiedKey.getWhole();
+    }
+
+    /**
+     * Determine whether two objects are equal, allowing nulls
+     * @param x
+     * @param y
+     * @return true if both are null or the two are equal
+     */
+    private static boolean bothNullOrEqual(Object x, Object y) {
+        return (x == y || (x != null && x.equals(y)));
+    }
+
+    private VerseKey qualifiedKey;
+    private VerseKey wholeKey;
+    private String sectionName;
+    private Qualifier absentType;
 
 }
