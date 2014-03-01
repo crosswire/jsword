@@ -35,7 +35,6 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
     StringUtilTest.class,
     PropertyMapTest.class,
-    LoggerTest.class,
     LanguageTest.class,
     LanguagesTest.class    
 })
