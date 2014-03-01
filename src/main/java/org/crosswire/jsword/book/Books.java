@@ -185,7 +185,7 @@ public final class Books extends AbstractBookList {
         boolean removed = books.remove(book);
         if (removed) {
             initials.remove(book.getInitials());
-            names.put(book.getName(), book);
+            names.remove(book.getName());
             fireBooksChanged(instance, book, false);
         } else {
             throw new BookException(JSOtherMsg.lookupText("Could not remove unregistered Book: {0}", book.getName()));
