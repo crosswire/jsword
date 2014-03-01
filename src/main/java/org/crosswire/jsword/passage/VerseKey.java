@@ -24,6 +24,8 @@ import org.crosswire.jsword.versification.Versification;
 
 /**
  * A Versified indicates that a Key has a Versification reference system.
+ * 
+ * @param <T> The type of VerseKey that reversify returns.
  *
  * @see gnu.lgpl.License for license details.<br>
  *      The copyright to this program is held by it's authors.

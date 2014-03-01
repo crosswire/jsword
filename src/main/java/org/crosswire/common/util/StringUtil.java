@@ -202,7 +202,7 @@ public final class StringUtil {
             list[0] = str;
             return list;
         }
- 
+
         start = 0;
         i = 0;
         int x = 0;
@@ -282,12 +282,12 @@ public final class StringUtil {
             list[0] = str;
             return list;
         }
- 
+
         // Limit the result
         if (max > 0 && count > max) {
             count = max;
         }
-        
+
         // Create the array
         String[] list = new String[count];
 
@@ -349,9 +349,9 @@ public final class StringUtil {
         if (len == 0) {
             return EMPTY_STRING_ARRAY.clone();
         }
-        
+
         // Determine the size of the array
-        int count = 0;        
+        int count = 0;
         int start = 0;
         int i = 0;
         while ((i = str.indexOf(separatorChar, start)) != -1) {
@@ -376,7 +376,7 @@ public final class StringUtil {
             list[0] = str;
             return list;
         }
- 
+
         start = 0;
         i = 0;
         int x = 0;
@@ -438,9 +438,9 @@ public final class StringUtil {
         if (len == 0) {
             return EMPTY_STRING_ARRAY.clone();
         }
-        
+
         // Determine the size of the array
-        int count = 0;        
+        int count = 0;
         int start = 0;
         int i = 0;
         while ((i = str.indexOf(separatorChar, start)) != -1) {
@@ -464,12 +464,12 @@ public final class StringUtil {
             list[0] = str;
             return list;
         }
- 
+
         // Limit the result
         if (max > 0 && count > max) {
             count = max;
         }
-        
+
         // Create the array
         String[] list = new String[count];
 
@@ -530,9 +530,9 @@ public final class StringUtil {
         if (len == 0) {
             return EMPTY_STRING_ARRAY.clone();
         }
-        
+
         // Determine the size of the array
-        int count = 1;        
+        int count = 1;
         int start = 0;
         int i = 0;
         while ((i = str.indexOf(separatorChar, start)) != -1) {
@@ -549,7 +549,7 @@ public final class StringUtil {
             list[0] = str;
             return list;
         }
- 
+
         start = 0;
         i = 0;
         for (int x = 0; x < count; x++) {
@@ -607,9 +607,9 @@ public final class StringUtil {
         if (len == 0) {
             return EMPTY_STRING_ARRAY.clone();
         }
-        
+
         // Determine the size of the array
-        int count = 1;        
+        int count = 1;
         int start = 0;
         int i = 0;
         while ((i = str.indexOf(separatorChar, start)) != -1) {
@@ -624,7 +624,7 @@ public final class StringUtil {
             list[0] = str;
             return list;
         }
- 
+
         // Limit the result
         if (max > 0 && count > max) {
             count = max;
@@ -769,12 +769,12 @@ public final class StringUtil {
             list[0] = str;
             return list;
         }
- 
+
         // Limit the result
         if (max > 0 && count > max) {
             count = max;
         }
-        
+
         // Create the array
         String[] list = new String[count];
 

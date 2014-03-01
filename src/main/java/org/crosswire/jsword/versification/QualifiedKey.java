@@ -255,7 +255,7 @@ public final class QualifiedKey {
      * @return true if both are null or the two are equal
      */
     private static boolean bothNullOrEqual(Object x, Object y) {
-        return (x == y || (x != null && x.equals(y)));
+        return x == y || (x != null && x.equals(y));
     }
 
     private VerseKey qualifiedKey;

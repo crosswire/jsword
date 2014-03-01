@@ -73,7 +73,6 @@
 	== to be used at run time
 	=========================================================================-->
 	<patternset	id="patternset.runtime">
-		<exclude name="**/activation*.jar" />
 		<exclude name="**/junit*.jar" />
 		<include name="**/*.jar" />
 	</patternset>
@@ -477,7 +476,7 @@
 	== Use Checkstyle to check the style of JSword files
 	== These are properties related to checkstyle.
 	=========================================================================-->
-	<property name="checkstyle.version"		value="5.6" />
+	<property name="checkstyle.version"		value="5.7" />
 	<property name="checkstyle.home"		location="${tools.home}/checkstyle-${checkstyle.version}" />
 	<property name="checkstyle.report"		location="${report.dir}/checkstyle" />
 	<property name="checkstyle.url"			value="http://sourceforge.net/projects/checkstyle/files/checkstyle/${checkstyle.version}/checkstyle-${checkstyle.version}-bin.zip" />
@@ -531,7 +530,7 @@
 	== Use findbugs to find bugs.
 	== These are properties related to findbugs.
 	=========================================================================-->
-	<property name="findbugs.version"		value="2.0.2" />
+	<property name="findbugs.version"		value="2.0.3" />
 	<property name="findbugs.home"			location="${tools.home}/findbugs-${findbugs.version}" />
 	<property name="findbugs.report"		location="${report.dir}/findbugs" />
 	<property name="findbugs.url"			value="http://prdownloads.sourceforge.net/findbugs/findbugs-${findbugs.version}.zip?download" />
@@ -583,7 +582,7 @@
 	== Use PMD and CPD to find bad code
 	== These are properties related to PMD.
 	=========================================================================-->
-	<property name="pmd.version"			value="5.0.1" />
+	<property name="pmd.version"			value="5.1.0" />
 	<property name="pmd.home"				location="${tools.home}/pmd-bin-${pmd.version}" />
 	<property name="pmd.report"				location="${report.dir}/pmd" />
 	<property name="cpd.report"				location="${report.dir}/cpd" />
@@ -664,7 +663,7 @@
 	== Cobertura is a fork of JCoverage.
 	== These are properties and tasks related to Cobertura.
 	=========================================================================-->
-	<property name="cobertura.version"		value="1.9.4.1" />
+	<property name="cobertura.version"		value="2.0.3" />
 	<property name="cobertura.home"			location="${tools.home}/cobertura-${cobertura.version}" />
 	<property name="cobertura.report"		location="${report.dir}/cobertura" />
 	<property name="cobertura.url"			value="http://sourceforge.net/projects/cobertura/files/cobertura/${cobertura.version}/cobertura-${cobertura.version}-bin.zip/download" />
@@ -749,6 +748,9 @@
 			<fileset dir="${dest.main.classes.dir}">
 				<include name="**/*.class" />
 			</fileset>
+			<auxClasspath>
+			  <path refid="classpath.runtime" />
+			</auxClasspath>
 		</cobertura-instrument>
 	</target>
 
@@ -757,7 +759,7 @@
 			depends="cobertura.download">
 		<path id="cobertura.classpath">
 			<fileset dir="${cobertura.home}">
-				<include name="cobertura.jar" />
+				<include name="cobertura-${cobertura.version}.jar" />
 				<include name="lib/**/*.jar" />
 			</fileset>
 		</path>

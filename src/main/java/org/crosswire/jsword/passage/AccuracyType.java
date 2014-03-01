@@ -526,7 +526,7 @@ public enum AccuracyType {
 
     private static boolean hasSubIdentifier(String[] parts) {
         String subIdentifier = parts[parts.length - 1];
-        return (subIdentifier != null && subIdentifier.length() > 0 && subIdentifier.charAt(0) == '!');
+        return subIdentifier != null && subIdentifier.length() > 0 && subIdentifier.charAt(0) == '!';
     }
 
     protected static String getSubIdentifier(String[] parts) {

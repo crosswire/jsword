@@ -380,9 +380,8 @@ public class VersificationToKJVMapper {
      *
      * @param verseKey the verses
      * @return the separate list of verses
-     * @deprecated
+     * @deprecated no replacement
      */
-    // TODO(CJB): Consider eliminating this by replacing where it is used with a Verse parameter
     @Deprecated
     private QualifiedKey getRangeAsVerse(final Versification versification, String verseKey) throws NoSuchKeyException {
         final QualifiedKey range = getRange(versification, verseKey, null);
@@ -468,6 +467,13 @@ public class VersificationToKJVMapper {
          return new QualifiedKey(newvr);
     }
 
+    /**
+     * @param versification
+     * @param offset
+     * @param verseRange
+     * @return a VerseRange
+     * @deprecated no replacement
+     */
     @Deprecated
     private VerseRange getNewVerseRange(final Versification versification, final int offset, final VerseRange verseRange) {
         // TODO(CJB): See comment in previous method for a better way.
@@ -510,7 +516,7 @@ public class VersificationToKJVMapper {
      * Converts the input to the KJV versification
      *
      * @return the equivalent key
-     * @deprecated
+     * @deprecated no replacement
      */
     @Deprecated
     private String map(final String key) throws NoSuchKeyException {
@@ -583,7 +589,7 @@ public class VersificationToKJVMapper {
      * </p>
      * 
      * @return the equivalent key, which may or may not be used to look up a reference in a book.
-     * @deprecated
+     * @deprecated no replacement
      */
     @Deprecated
     private String mapToQualifiedKey(final String verseKey) throws NoSuchKeyException {
@@ -639,7 +645,7 @@ public class VersificationToKJVMapper {
      * Converts the input to the KJV versification
      *
      * @return the equivalent key
-     * @deprecated
+     * @deprecated no replacement
      */
     @Deprecated
     private Key map(final Verse leftKey) {
@@ -661,7 +667,7 @@ public class VersificationToKJVMapper {
      * Converts a KJV verse to the target versification
      *
      * @return the key in the left-hand versification
-     * @deprecated
+     * @deprecated no replacement
      */
     @Deprecated
     private String unmap(final String kjvVerse) throws NoSuchKeyException {
@@ -687,13 +693,12 @@ public class VersificationToKJVMapper {
             left = this.fromKJVMappings.get(new QualifiedKey(kjvVerse.getVerse().getWhole()));
         }
 
-
         //if we have no mapping, then we are in 1 of two scenarios
         //the verse is either totally absent, or the verse is not part of the mappings, meaning it is a straight map
         if (left == null) {
             VerseKey vk = kjvVerse.getKey();
             if (vk != null && this.absentVerses.contains(vk)) {
-                return createEmptyPassage(KJV); 
+                return createEmptyPassage(KJV);
             }
             return this.getKeyRefInDifferentVersification(kjvVerse, this.nonKjv).getKey();
         }
@@ -704,7 +709,7 @@ public class VersificationToKJVMapper {
      * Converts a KJV verse to the target versification
      *
      * @return the key in the left-hand versification
-     * @deprecated
+     * @deprecated no replacement
      */
     @Deprecated
     private Key unmap(final VerseKey kjvVerse) {

@@ -374,9 +374,9 @@ public final class Verse implements VerseKey<Verse> {
         if (obj instanceof Passage) {
             //then we compare if we have a simple cardinality of 1 and the same v11n
             final Passage passage = (Passage) obj;
-            return passage.getCardinality() == 1 &&
-                    passage.getVersification().equals(this.v11n) &&
-                    passage.equals(this);
+            return passage.getCardinality() == 1
+                && passage.getVersification().equals(this.v11n)
+                && passage.equals(this);
         }
 
         return false;
@@ -661,7 +661,7 @@ public final class Verse implements VerseKey<Verse> {
      * @return true if both are null or the two are equal
      */
     public static boolean bothNullOrEqual(Object x, Object y) {
-        return (x == y || (x != null && x.equals(y)));
+        return x == y || (x != null && x.equals(y));
     }
 
     /**
