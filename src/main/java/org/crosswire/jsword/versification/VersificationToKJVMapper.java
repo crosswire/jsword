@@ -228,26 +228,67 @@ public class VersificationToKJVMapper {
 
             Iterator<Key> kjvIter = kjvKeys.iterator();
             while (leftIter.hasNext()) {
-                final Verse leftKey = (Verse) leftIter.next();
+                Verse leftVerse = (Verse) leftIter.next();
 
-                if (skipVerse0 && leftKey.getVerse() == 0) {
-                    continue;
-                }
-
+                // hasNext() and next() have to be paired
                 if (!kjvIter.hasNext()) {
                     reportCardinalityError(leftKeys, kjvKeys);
                 }
 
-                Verse nextKjvKey = KeyUtil.getVerse(kjvIter.next());
-                if (skipVerse0 && nextKjvKey.getVerse() == 0) {
-                    nextKjvKey = KeyUtil.getVerse(kjvIter.next());
+                Verse rightVerse = (Verse) kjvIter.next();
+
+                // Identity mapping is the default
+                // We might want to report this
+                if (leftVerse.getVerse() == rightVerse.getVerse()) {
+                    continue;
                 }
 
-                QualifiedKey kjvKey = new QualifiedKey(nextKjvKey);
-                addForwardMappingFromSingleKeyToRange(leftKey, kjvKey);
-                addKJVToMapping(kjvKey, leftKey);
+                QualifiedKey kjvKey = new QualifiedKey(rightVerse);
+
+                // When the lists are of lengths differing by one
+                // it is because 0 is extra.
+                // When this is encountered on the left side,
+                // we map it and the next verse to the current
+                // right verse.
+                // In this block we'll handle the case of mapping 0
+                // and at the end of the loop we'll handle the next verse.
+                if (skipVerse0 && leftVerse.getVerse() == 0) {
+
+                    addForwardMappingFromSingleKeyToRange(leftVerse, kjvKey);
+                    addKJVToMapping(kjvKey, leftVerse);
+
+                    if (!leftIter.hasNext()) {
+                        reportCardinalityError(leftKeys, kjvKeys);
+                    }
+
+                    leftVerse = (Verse) leftIter.next();
+                }
+
+                // Likewise for the right side,
+                // we map it and the next verse to the current
+                // left verse.
+                // Likewise for this block, it only handles mapping 0
+                // Code at the end will map the following verse
+                if (skipVerse0 && rightVerse.getVerse() == 0) {
+
+                    addForwardMappingFromSingleKeyToRange(leftVerse, kjvKey);
+                    addKJVToMapping(kjvKey, leftVerse);
+
+                    if (!kjvIter.hasNext()) {
+                        reportCardinalityError(leftKeys, kjvKeys);
+                    }
+
+                    rightVerse = (Verse) kjvIter.next();
+                    kjvKey = new QualifiedKey(rightVerse);
+                }
+
+                // Now do the normal case mapping
+                addForwardMappingFromSingleKeyToRange(leftVerse, kjvKey);
+                addKJVToMapping(kjvKey, leftVerse);
             }
 
+            // Check to see if, having exhausted left that there is more
+            // on the right
             if (kjvIter.hasNext()) {
                 reportCardinalityError(leftKeys, kjvKeys);
             }
@@ -547,7 +588,9 @@ public class VersificationToKJVMapper {
      *
      * @param qualifiedKey the qualified key containing the OSIS key ref.
      * @return the same key represented by the OSIS ref, except that it is the target versification.
+     * @deprecated no replacement
      */
+    @Deprecated
     private QualifiedKey getKeyRefInDifferentVersification(final QualifiedKey qualifiedKey, Versification target) {
         if (this.zerosUnmapped && isZero(qualifiedKey)) {
             return new QualifiedKey();
@@ -559,7 +602,9 @@ public class VersificationToKJVMapper {
      * Qualified key to test for a verse 0
      * @param qualifiedKey the qualified key
      * @return true, if the qualified key represents verse 0
+     * @deprecated no replacement
      */
+    @Deprecated
     private boolean isZero(final QualifiedKey qualifiedKey) {
         VerseKey k = qualifiedKey.getKey();
         if (k == null) {
@@ -632,7 +677,7 @@ public class VersificationToKJVMapper {
                 //then we found no mapping, so we're essentially going to return the same key back...
                 //unless it's a verse 0 and then we'll check the global flag.
                 kjvKeys = new ArrayList<QualifiedKey>();
-                kjvKeys.add(getKeyRefInDifferentVersification(qualifiedKey, KJV));
+                kjvKeys.add(qualifiedKey.reversify(KJV));
                 return kjvKeys;
             }
             return kjvKeys;
@@ -700,7 +745,7 @@ public class VersificationToKJVMapper {
             if (vk != null && this.absentVerses.contains(vk)) {
                 return createEmptyPassage(KJV);
             }
-            return this.getKeyRefInDifferentVersification(kjvVerse, this.nonKjv).getKey();
+            return kjvVerse.reversify(this.nonKjv).getKey();
         }
         return left;
     }
