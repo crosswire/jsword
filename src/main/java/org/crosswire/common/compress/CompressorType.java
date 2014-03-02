@@ -44,6 +44,13 @@ public enum CompressorType {
         }
     },
 
+    BZIP2 {
+        @Override
+        public Compressor getCompressor(byte[] input) {
+            return new BZip2(new ByteArrayInputStream(input));
+        }
+    },
+
     GZIP {
         @Override
         public Compressor getCompressor(byte[] input) {
