@@ -30,6 +30,7 @@ import org.crosswire.common.util.ItemIterator;
 import org.crosswire.jsword.JSMsg;
 import org.crosswire.jsword.JSOtherMsg;
 import org.crosswire.jsword.versification.BibleBook;
+import org.crosswire.jsword.versification.BibleNames;
 import org.crosswire.jsword.versification.Versification;
 import org.crosswire.jsword.versification.system.Versifications;
 
@@ -308,7 +309,7 @@ public final class Verse implements VerseKey<Verse> {
      * @see org.crosswire.jsword.passage.Key#getRootName()
      */
     public String getRootName() {
-        return v11n.getShortName(book);
+        return BibleNames.instance().getShortName(book);
     }
 
     /* (non-Javadoc)
@@ -674,9 +675,9 @@ public final class Verse implements VerseKey<Verse> {
     private String doGetName(Verse verseBase) {
         StringBuilder buf = new StringBuilder();
         // To cope with thing like Jude 2...
-        if (v11n.getLastChapter(book) == 1) {
+        if (book.isShortBook()) {
             if (verseBase == null || verseBase.book != book) {
-                buf.append(v11n.getPreferredName(book));
+                buf.append(BibleNames.instance().getPreferredName(book));
                 buf.append(Verse.VERSE_PREF_DELIM1);
                 buf.append(verse);
                 return buf.toString();
@@ -686,7 +687,7 @@ public final class Verse implements VerseKey<Verse> {
         }
 
         if (verseBase == null || verseBase.book != book) {
-            buf.append(v11n.getPreferredName(book));
+            buf.append(BibleNames.instance().getPreferredName(book));
             buf.append(Verse.VERSE_PREF_DELIM1);
             buf.append(chapter);
             buf.append(Verse.VERSE_PREF_DELIM2);
