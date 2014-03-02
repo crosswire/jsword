@@ -24,7 +24,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
-import java.util.Locale;
 
 import org.crosswire.common.util.Language;
 import org.crosswire.common.util.NetUtil;
@@ -184,15 +183,6 @@ public final class SwordBookMetaData extends AbstractBookMetaData {
     public Filter getFilter() {
         String sourcetype = (String) getProperty(ConfigEntryType.SOURCE_TYPE);
         return FilterFactory.getFilter(sourcetype);
-    }
-
-    /**
-     * @return Returns the relative path of the book's conf.
-     * @deprecated Use {@link #getConf} instead
-     */
-    @Deprecated
-    public String getConfPath() {
-        return SwordConstants.DIR_CONF + '/' + getInitials().toLowerCase(Locale.ENGLISH) + SwordConstants.EXTENSION_CONF;
     }
 
     /**

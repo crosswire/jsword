@@ -118,50 +118,6 @@ public final class Books extends AbstractBookList {
     }
 
     /**
-     * Get the maximum string length of a property
-     * 
-     * @param propertyKey
-     *            The desired property
-     * @return -1 if there is no match, otherwise the maximum length.
-     * @deprecated no replacement
-     */
-    @Deprecated
-    public int getMaxLength(String propertyKey) {
-        int max = -1;
-        for (Book book : books) {
-            Object property = book.getProperty(propertyKey);
-            if (property != null) {
-                String value = property instanceof String ? (String) property : property.toString();
-                max = Math.max(max, value.length());
-            }
-        }
-        return max;
-    }
-
-    /**
-     * Get the maximum string length of a property on a subset of books.
-     * 
-     * @param propertyKey
-     *            The desired property
-     * @param filter
-     *            The filter
-     * @return -1 if there is no match, otherwise the maximum length.
-     * @deprecated no replacement
-     */
-    @Deprecated
-    public int getMaxLength(String propertyKey, BookFilter filter) {
-        int max = -1;
-        for (Book book : getBooks(filter)) {
-            Object property = book.getProperty(propertyKey);
-            if (property != null) {
-                String value = property instanceof String ? (String) property : property.toString();
-                max = Math.max(max, value.length());
-            }
-        }
-        return max;
-    }
-
-    /**
      * Add a Book to the current list of Books. This method should only be
      * called by BibleDrivers, it is not a method for general consumption.
      */
@@ -229,29 +185,6 @@ public final class Books extends AbstractBookList {
         }
 
         log.debug("end registering driver: {}", driver.getClass().getName());
-    }
-
-    /**
-     * Remove from the list of drivers
-     * 
-     * @param driver
-     *            The BookDriver to remove
-     * @deprecated no replacement
-     */
-    @Deprecated
-    public synchronized void unregisterDriver(BookDriver driver) throws BookException {
-        log.debug("begin un-registering driver: {}", driver.getClass().getName());
-
-        Book[] bookArray = driver.getBooks();
-        for (int j = 0; j < bookArray.length; j++) {
-            removeBook(bookArray[j]);
-        }
-
-        if (!drivers.remove(driver)) {
-            throw new BookException(JSOtherMsg.lookupText("Could not remove unregistered Driver: {0}", driver.getClass().getName()));
-        }
-
-        log.debug("end un-registering driver: {}", driver.getClass().getName());
     }
 
     /**

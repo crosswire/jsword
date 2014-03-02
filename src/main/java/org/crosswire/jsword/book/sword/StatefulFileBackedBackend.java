@@ -51,8 +51,6 @@ public interface StatefulFileBackedBackend<T extends OpenFileState> {
      *            the state object containing all the open random access files
      * @param key
      *            the verse that is sought
-     * @param keyName
-     *            the name of the current key
      * @return the raw text
      * @throws IOException
      *             something went wrong when reading the verse

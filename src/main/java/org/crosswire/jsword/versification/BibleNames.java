@@ -192,6 +192,14 @@ public final class BibleNames {
         return false;
     }
 
+    /**
+     * NameList is the internal, internationalize list of names
+     * for a locale.
+     *
+     * @see gnu.lgpl.License for license details.<br>
+     *      The copyright to this program is held by it's authors.
+     * @author DM Smith [dmsmith555 at yahoo dot com]
+     */
     private class NameList {
         /**
          * Create NameList for the given locale
@@ -326,31 +334,31 @@ public final class BibleNames {
             }
 
             // Create the book name maps
-            books = new LinkedHashMap<BibleBook,BookName>(ntCount + otCount + ncCount);
+            books = new LinkedHashMap<BibleBook, BookName>(ntCount + otCount + ncCount);
 
             String className = BibleNames.class.getName();
             String shortClassName = ClassUtil.getShortClassName(className);
             ResourceBundle resources = ResourceBundle.getBundle(shortClassName, locale, CWClassLoader.instance(BibleNames.class));
 
-            fullNT = new HashMap<String,BookName>(ntCount);
-            shortNT = new HashMap<String,BookName>(ntCount);
-            altNT = new HashMap<String,BookName>(ntCount);
+            fullNT = new HashMap<String, BookName>(ntCount);
+            shortNT = new HashMap<String, BookName>(ntCount);
+            altNT = new HashMap<String, BookName>(ntCount);
             for (int i = BibleBook.MATT.ordinal(); i <= BibleBook.REV.ordinal(); ++i) {
                 BibleBook book = bibleBooks[i];
                 store(resources, book, fullNT, shortNT, altNT);
             }
 
-            fullOT = new HashMap<String,BookName>(otCount);
-            shortOT = new HashMap<String,BookName>(otCount);
-            altOT = new HashMap<String,BookName>(otCount);
+            fullOT = new HashMap<String, BookName>(otCount);
+            shortOT = new HashMap<String, BookName>(otCount);
+            altOT = new HashMap<String, BookName>(otCount);
             for (int i = BibleBook.GEN.ordinal(); i <= BibleBook.MAL.ordinal(); ++i) {
                 BibleBook book = bibleBooks[i];
                 store(resources, book, fullOT, shortOT, altOT);
             }
 
-            fullNC = new HashMap<String,BookName>(ncCount);
-            shortNC = new HashMap<String,BookName>(ncCount);
-            altNC = new HashMap<String,BookName>(ncCount);
+            fullNC = new HashMap<String, BookName>(ncCount);
+            shortNC = new HashMap<String, BookName>(ncCount);
+            altNC = new HashMap<String, BookName>(ncCount);
             store(resources, BibleBook.INTRO_BIBLE, fullNC, shortNC, altNC);
             store(resources, BibleBook.INTRO_OT, fullNC, shortNC, altNC);
             store(resources, BibleBook.INTRO_NT, fullNC, shortNC, altNC);
@@ -408,61 +416,61 @@ public final class BibleNames {
         /**
          * The collection of BookNames by BibleBooks.
          */
-        private LinkedHashMap<BibleBook,BookName> books;
+        private LinkedHashMap<BibleBook, BookName> books;
 
         /**
          * The full names of the New Testament books of the Bible normalized,
          * generated at runtime
          */
-        private Map<String,BookName> fullNT;
+        private Map<String, BookName> fullNT;
 
         /**
          * The full names of the Old Testament books of the Bible normalized,
          * generated at runtime
          */
-        private Map<String,BookName> fullOT;
+        private Map<String, BookName> fullOT;
 
         /**
          * The full names of the Deuterocanonical books of the Bible normalized,
          * generated at runtime
          */
-        private Map<String,BookName> fullNC;
+        private Map<String, BookName> fullNC;
 
         /**
          * Standard shortened names for the New Testament books of the Bible,
          * normalized, generated at runtime.
          */
-        private Map<String,BookName> shortNT;
+        private Map<String, BookName> shortNT;
 
         /**
          * Standard shortened names for the Old Testament books of the Bible
          * normalized, generated at runtime.
          */
-        private Map<String,BookName> shortOT;
+        private Map<String, BookName> shortOT;
 
         /**
          * Standard shortened names for the Deuterocanonical books of the Bible
          * normalized, generated at runtime.
          */
-        private Map<String,BookName> shortNC;
+        private Map<String, BookName> shortNC;
 
         /**
          * Alternative shortened names for the New Testament books of the Bible
          * normalized, generated at runtime.
          */
-        private Map<String,BookName> altNT;
+        private Map<String, BookName> altNT;
 
         /**
          * Alternative shortened names for the Old Testament books of the Bible
          * normalized, generated at runtime.
          */
-        private Map<String,BookName> altOT;
+        private Map<String, BookName> altOT;
 
         /**
          * Alternative shortened names for the Deuterocanonical books of the
          * Bible normalized, generated at runtime.
          */
-        private Map<String,BookName> altNC;
+        private Map<String, BookName> altNC;
     }
 
     /** we cache the Localized Bible Names because there is quite a bit of processing going on for each individual Locale */

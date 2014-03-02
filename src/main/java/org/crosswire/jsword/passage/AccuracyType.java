@@ -252,8 +252,6 @@ public enum AccuracyType {
     };
 
     /**
-     * @param original
-     *            the original verse reference as a string
      * @param verseRangeBasis
      *            the range that stood before the string reference
      * @param parts
@@ -264,8 +262,6 @@ public enum AccuracyType {
     public abstract Verse createStartVerse(Versification v11n, VerseRange verseRangeBasis, String[] parts) throws NoSuchVerseException;
 
     /**
-     * @param endVerseDesc
-     *            the original verse reference as a string
      * @param verseBasis
      *            the verse at the beginning of the range
      * @param endParts

@@ -43,8 +43,10 @@ public final class DataPolice {
     /**
      * Report a message against the current book and key.
      * 
-     * @param lev
-     *            the level at which to report
+     * @param book
+     *            the book against which to report
+     * @param key
+     *            the key against which to report
      * @param message
      *            the police report.
      */

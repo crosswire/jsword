@@ -311,7 +311,7 @@ public class BookData implements BookProvider {
      *
      * @param cell
      * @param xmlContent
-     * @returns true to indicate a duplicate notice has been added
+     * @return true to indicate a duplicate notice has been added
      */
     private void addContentSafely(final Element cell, final List<Content> xmlContent) {
         Element note = null;

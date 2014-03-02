@@ -644,12 +644,10 @@ public class Versification implements ReferenceSystem, Serializable {
     }
 
     /**
-     * Get the verse that is a few verses on from the one we've got.
+     * Get the verse that is a verses on from the one we've got.
      *
      * @param verse
      *            The verse to use as a start
-     * @param n
-     *            the number of verses later than the one we're one
      * @return The new verse or null if there is no next verse
      */
     public Verse next(Verse verse) {

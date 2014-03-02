@@ -149,46 +149,6 @@ public final class VerseRange implements VerseKey<VerseRange> {
         verseCount = calcVerseCount();
     }
 
-    /**
-     * The default VerseRange is a single verse - Genesis 1:1. I didn't want to
-     * provide this constructor however, you are supposed to provide a default
-     * ctor for all beans. For this reason I suggest you don't use it.
-     * @deprecated  use {@link #VerseRange(Versification)} instead
-     */
-    @Deprecated
-    public VerseRange() {
-        this(null, Verse.DEFAULT, Verse.DEFAULT);
-    }
-
-    /**
-     * Construct a VerseRange from a Verse. The resultant VerseRange will be 1
-     * verse in verseCount.
-     * 
-     * @param start
-     *            The verse to start from
-     * @deprecated  use {@link #VerseRange(Versification, Verse)} instead
-     */
-    @Deprecated
-    public VerseRange(Verse start) {
-        this(null, start, start);
-    }
-
-    /**
-     * Construct a VerseRange from 2 Verses If start is later than end then swap
-     * the two around. This constructor is deliberately package protected so
-     * that is used only by VerseFactory.
-     * 
-     * @param start
-     *            The verse to start from
-     * @param end
-     *            The verse to end with
-     * @deprecated  use {@link #VerseRange(Versification, String, Verse, Verse)} instead
-     */
-    @Deprecated
-    /* package */VerseRange(Verse start, Verse end) {
-        this(null, start, end);
-    }
-
     /* (non-Javadoc)
      * @see org.crosswire.jsword.passage.Key#getName()
      */
@@ -376,28 +336,6 @@ public final class VerseRange implements VerseKey<VerseRange> {
      */
     public Verse getEnd() {
         return end;
-    }
-
-    /**
-     * How many chapters in this range
-     * 
-     * @return The number of chapters. Always >= 1.
-     * @deprecated  use {@link org.crosswire.jsword.versification.Versification#getChapterCount(Verse, Verse)} instead
-     */
-    @Deprecated
-    public int getChapterCount() {
-        return v11n.getChapterCount(start, end);
-    }
-
-    /**
-     * How many books in this range
-     * 
-     * @return The number of books. Always >= 1.
-     * @deprecated  use {@link org.crosswire.jsword.versification.Versification#getBookCount(Verse, Verse)} instead
-     */
-    @Deprecated
-    public int getBookCount() {
-        return v11n.getBookCount(start, end);
     }
 
     @Override

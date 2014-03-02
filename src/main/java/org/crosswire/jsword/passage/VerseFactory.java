@@ -47,13 +47,7 @@ public final class VerseFactory {
      * @return the Verse representation of the string
      * @exception NoSuchVerseException
      *                If the text can not be understood
-     * @deprecated use {@link #fromString(Versification, String)} instead
      */
-    @Deprecated
-    public static Verse fromString(String original) throws NoSuchVerseException {
-        return fromString(null, original);
-    }
-
     public static Verse fromString(Versification v11n, String original) throws NoSuchVerseException {
         if ("".equals(original)) {
             return null;
@@ -75,13 +69,7 @@ public final class VerseFactory {
      * @return the verse representation of the string
      * @exception NoSuchVerseException
      *                If the reference is illegal
-     * @deprecated use {@link #fromString(Versification, String, VerseRange)} instead
      */
-    @Deprecated
-    public static Verse fromString(String original, VerseRange verseRangeBasis) throws NoSuchVerseException {
-        return fromString(null, original, verseRangeBasis);
-    }
-
     public static Verse fromString(Versification v11n, String original, VerseRange verseRangeBasis) throws NoSuchVerseException {
         if ("".equals(original)) {
             return null;

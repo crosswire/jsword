@@ -89,47 +89,6 @@ public class PropertyMap extends LinkedHashMap<String, String> {
     }
 
     /**
-     * Merely a call to <code>put(String, String)</code>, provided as
-     * a simple way to migrate from {@link java.lang.Properties}.
-     *
-     * @param key the key to be placed into this property list.
-     * @param value the value corresponding to <tt>key</tt>.
-     * @return     the previous value of the specified key in this property
-     *             list, or <code>null</code> if it did not have one.
-     * @deprecated use <code>put(String, String)</code> instead.
-     */
-    @Deprecated
-    public String setProperty(String key, String value) {
-        return put(key, value);
-    }
-
-    /**
-     * Merely a call to {@link #get(String)}, provided as
-     * a simple way to migrate from {@link java.lang.Properties}.
-     * 
-     * @param key the lookup key
-     * @return  the value in this property list with the specified key value.
-     * @deprecated use {@link #get(String)} instead
-     */
-    @Deprecated
-    public String getProperty(String key) {
-        return get(key);
-    }
-
-    /**
-     * Merely a call to {@link #get(String, String)}, provided as
-     * a simple way to migrate from {@link java.lang.Properties}.
-     * @param   key            the lookup key.
-     * @param   defaultValue   a default value.
-     * @return  the value in this property list with the specified key value.
-     * @deprecated use {@link #get(String, String)} instead
-     */
-    @Deprecated
-    public String getProperty(String key, String defaultValue) {
-        return get(key, defaultValue);
-    }
-
-    /**
      * Reads a property list (key and element pairs) from the input
      * byte stream. The input stream is in a simple line-oriented
      * format as specified in

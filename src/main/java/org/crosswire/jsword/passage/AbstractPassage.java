@@ -1037,13 +1037,7 @@ public abstract class AbstractPassage implements Passage {
      * @return The VerseRange
      * @exception java.lang.ClassCastException
      *                If this is not a Verse or a VerseRange
-     * @deprecated  use {@link #toVerseRange(Versification, Object)} instead
      */
-    @Deprecated
-    protected static VerseRange toVerseRange(Object base) throws ClassCastException {
-        return toVerseRange(null, base);
-    }
-
     protected static VerseRange toVerseRange(Versification v11n, Object base) throws ClassCastException {
         assert base != null;
 

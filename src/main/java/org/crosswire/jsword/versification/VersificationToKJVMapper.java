@@ -171,8 +171,8 @@ public class VersificationToKJVMapper {
         }
 
         // we allow some global flags properties - for a want of a better syntax!
+        // TODO(DMS): remove this from the mapping files
         if ("!zerosUnmapped".equals(leftHand)) {
-            this.zerosUnmapped = true;
             return;
         }
 
@@ -305,8 +305,8 @@ public class VersificationToKJVMapper {
     /**
      * If for some reason cardinalities of keys are different, we report it.
      *
-     * @param leftHand  the left hand key
-     * @param kjvVerses the kjv qualified key
+     * @param leftKeys  the left hand key
+     * @param kjvKeys the kjv qualified key
      */
     private void reportCardinalityError(final VerseKey leftKeys, final VerseKey kjvKeys) {
         // TODO (CJB): change this to a neater exception
@@ -417,22 +417,6 @@ public class VersificationToKJVMapper {
     }
 
     /**
-     * Gets the input range as a single verse or throws an exception
-     *
-     * @param verseKey the verses
-     * @return the separate list of verses
-     * @deprecated no replacement
-     */
-    @Deprecated
-    private QualifiedKey getRangeAsVerse(final Versification versification, String verseKey) throws NoSuchKeyException {
-        final QualifiedKey range = getRange(versification, verseKey, null);
-        if (range.getKey() instanceof VerseRange) {
-            return new QualifiedKey(((VerseRange) range.getKey()).getStart());
-        }
-        return range;
-    }
-
-    /**
      * Expands a reference to all its verses
      *
      * @param versesKey the verses
@@ -509,22 +493,6 @@ public class VersificationToKJVMapper {
     }
 
     /**
-     * @param versification
-     * @param offset
-     * @param verseRange
-     * @return a VerseRange
-     * @deprecated no replacement
-     */
-    @Deprecated
-    private VerseRange getNewVerseRange(final Versification versification, final int offset, final VerseRange verseRange) {
-        // TODO(CJB): See comment in previous method for a better way.
-        // The Versification class has optimized methods to compute a verse offset from another.
-        final Verse newStart = new Verse(versification, verseRange.getStart().getOrdinal() + offset);
-        final Verse newEnd = new Verse(versification, verseRange.getEnd().getOrdinal() + offset);
-        return new VerseRange(versification, newStart, newEnd);
-    }
-
-    /**
      * Deals with real keys found in the versification.
      *
      * @param versification the versification of the passed in key
@@ -554,113 +522,10 @@ public class VersificationToKJVMapper {
     }
 
     /**
-     * Converts the input to the KJV versification
-     *
-     * @return the equivalent key
-     * @deprecated no replacement
-     */
-    @Deprecated
-    private String map(final String key) throws NoSuchKeyException {
-        // TODO(CJB): Consider changing the parameter to Verse key.
-        // Converting a Verse to a string is expensive.
-        // Parsing the string is expensive.
-        final QualifiedKey range = getRangeAsVerse(nonKjv, key);
-        // TODO(CJB): Consider changing return type to a VerseRange or a Verse
-        // Converting a Passage, VerseRange or Verse to a string is expensive
-        return map((Verse) range.getKey()).getOsisRef();
-    }
-
-    /**
      * @return the qualified keys associated with the input key.
      */
     private List<QualifiedKey> getQualifiedKeys(final Key leftKey) {
         return this.toKJVMappings.get(leftKey);
-    }
-
-    /**
-     * Returns the key in the target versification, by using the OsisRef. Note: if the key doesn't exist
-     * in the other versification, it is most probably because that key doesn't exist at all. So we'll log a warning,
-     * but return an empty key.
-     * <p>
-     * There is one exception however, and that is, for Versifications that don't use verse 0s we allow a global
-     * flag to prevent mappings for verse 0.
-     * </p>
-     *
-     * @param qualifiedKey the qualified key containing the OSIS key ref.
-     * @return the same key represented by the OSIS ref, except that it is the target versification.
-     * @deprecated no replacement
-     */
-    @Deprecated
-    private QualifiedKey getKeyRefInDifferentVersification(final QualifiedKey qualifiedKey, Versification target) {
-        if (this.zerosUnmapped && isZero(qualifiedKey)) {
-            return new QualifiedKey();
-        }
-        return qualifiedKey.reversify(target);
-    }
-
-    /**
-     * Qualified key to test for a verse 0
-     * @param qualifiedKey the qualified key
-     * @return true, if the qualified key represents verse 0
-     * @deprecated no replacement
-     */
-    @Deprecated
-    private boolean isZero(final QualifiedKey qualifiedKey) {
-        VerseKey k = qualifiedKey.getKey();
-        if (k == null) {
-            // This is not a verse that can be reversified.
-            return true;
-        }
-
-        Iterator<Key> keys = k.iterator();
-        if (keys.hasNext() && ((Verse) keys.next()).getVerse() == 0) {
-            // true if we don't have any more keys in our set
-            return !keys.hasNext();
-        }
-
-        //no keys in iterator
-        return false;
-    }
-
-    /**
-     * Converts the input to the KJV versification, but returns the qualified key representation, i.e. not necessarily
-     * an OSIS representation. The key needs to represent a single verse
-     * <p>
-     * This key is useful if different versifications (say Dan 3 in the 2 Catholic versifications) have the same
-     * section which is not present in the KJV versification.
-     * </p>
-     * <p>
-     * Its sister method, taking in a Key, and returning a QualifiedKey will be more helpful, generally speaking
-     * </p>
-     * 
-     * @return the equivalent key, which may or may not be used to look up a reference in a book.
-     * @deprecated no replacement
-     */
-    @Deprecated
-    private String mapToQualifiedKey(final String verseKey) throws NoSuchKeyException {
-        // TODO(CJB): Consider changing the parameter to Verse key.
-        // Converting a Verse to a string is expensive.
-        // Parsing the string is expensive.
-        final QualifiedKey qualifiedVerse = getRangeAsVerse(nonKjv, verseKey);
-        List<QualifiedKey> qualifiedKeys = map(qualifiedVerse);
-
-        StringBuilder representation = new StringBuilder(128);
-        for (int i = 0; i < qualifiedKeys.size(); i++) {
-            final QualifiedKey qk = qualifiedKeys.get(i);
-            String sectionName = qk.getSectionName();
-            VerseKey vk = qk.getKey();
-            if (sectionName != null) {
-                representation.append(qk.getSectionName());
-            } else if (vk != null) {
-                representation.append(vk.getOsisRef());
-            }
-            if (sectionName != null || vk != null) {
-                if (i < qualifiedKeys.size() - 1) {
-                    representation.append(' ');
-                }
-            }
-        }
-        return representation.toString();
     }
 
     /**
@@ -687,44 +552,6 @@ public class VersificationToKJVMapper {
     }
 
     /**
-     * Converts the input to the KJV versification
-     *
-     * @return the equivalent key
-     * @deprecated no replacement
-     */
-    @Deprecated
-    private Key map(final Verse leftKey) {
-        List<QualifiedKey> qualifiedKeys = map(new QualifiedKey(leftKey));
-
-        //convert qualified keys into a passage representation, since that's what the user is after.
-        Passage keyList = createEmptyPassage(KJV);
-        for (QualifiedKey qualifiedKey : qualifiedKeys) {
-            //we may bits in here, that don't exist in the KJV
-            if (qualifiedKey.getKey() != null) {
-                keyList.addAll(qualifiedKey.getKey());
-            }
-        }
-
-        return keyList;
-    }
-
-    /**
-     * Converts a KJV verse to the target versification
-     *
-     * @return the key in the left-hand versification
-     * @deprecated no replacement
-     */
-    @Deprecated
-    private String unmap(final String kjvVerse) throws NoSuchKeyException {
-        // TODO(CJB): Consider changing the parameter to Verse key.
-        // Converting a Verse to a string is expensive.
-        // Parsing the string is expensive.
-        // TODO(CJB): Consider changing return type to a VerseRange or a Verse
-        // Converting a Passage, VerseRange or Verse to a string is expensive
-        return unmap(getRangeAsVerse(KJV, kjvVerse)).getOsisRef();
-    }
-
-    /**
      * Converts a KJV verse to the target versification, from a qualified key, rather than a real key
      *
      * @return the key in the left-hand versification
@@ -748,17 +575,6 @@ public class VersificationToKJVMapper {
             return kjvVerse.reversify(this.nonKjv).getKey();
         }
         return left;
-    }
-
-    /**
-     * Converts a KJV verse to the target versification
-     *
-     * @return the key in the left-hand versification
-     * @deprecated no replacement
-     */
-    @Deprecated
-    private Key unmap(final VerseKey kjvVerse) {
-        return unmap(QualifiedKey.create(kjvVerse));
     }
 
     /**
@@ -841,7 +657,6 @@ public class VersificationToKJVMapper {
     private Passage absentVerses;
     private Map<VerseKey, List<QualifiedKey>> toKJVMappings;
     private Map<QualifiedKey, Passage> fromKJVMappings;
-    private boolean zerosUnmapped;
     private boolean hasErrors;
 
     private static final Versification KJV = Versifications.instance().getVersification(Versifications.DEFAULT_V11N);

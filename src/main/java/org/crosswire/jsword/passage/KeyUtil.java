@@ -125,29 +125,4 @@ public final class KeyUtil {
         }
         return Versifications.instance().getVersification(Versifications.DEFAULT_V11N);
     }
-    /**
-     * Not all keys represent verses, but we ought to be able to get something
-     * close to a verse from anything that does verse like work.
-     * @deprecated use {@link #getVerse(Key)}
-     */
-    @Deprecated
-    public static Verse getVerse(Versification v11n, Key key) {
-        return getVerse(key);
-    }
-
-    /**
-     * Cast a Key to a Passage. Only those keys that are a Passage or can
-     * be held by a Passage (i.e. Verse and VerseRange) may be cast to one.
-     * If you pass a null key into this method, you get a null Passage out.
-     * 
-     * @param v11n
-     * @param key The key to cast
-     * @return The key cast to a Passage
-     * 
-     * @deprecated {@link #getPassage(Key)}
-     */
-    @Deprecated
-    public static Passage getPassage(Versification v11n, Key key) {
-        return getPassage(key);
-    }
 }
